@@ -33,37 +33,6 @@ import junit.framework.*;
 public class TestMisc extends TestCase
 {
     /**
-     * Creates a new TestMisc object.
-     *
-     * @param name The name of the Test class
-     *
-     */
-    public TestMisc(String name) throws Exception
-    {
-        super(name);
-    }
-
-    /**
-     * Standard JUnit setup method
-     *
-     */
-    public void setUp() throws Exception
-    {
-        super.setUp();
-    }
-
-
-    /**
-     * Standard JUnit teardown method
-     *
-     */
-    public void tearDown() throws Exception
-    {
-        super.tearDown();
-    }
-
-
-    /**
      * This is a testcase for checking if the jdk1.4 method
      * cal.getTimeInMillis() is approximate to the jdk1.3
      * workaround cal.getDate().getTime()
@@ -72,9 +41,9 @@ public class TestMisc extends TestCase
     public void testTimeInMillisApproximate() throws Exception
     {
         System.out.println("IF YOU ARE ON JDK1.4, PLEASE UNCOMMENT THE CONTENTS OF testJDK to TEST 1.4 versus 1.3 method.");
-        //long jdk14Method = cal.getTimeInMillis();
-        //long jdk13Method = cal.getTime().getTime();
-        //assertTrue("jdk14Method == jdk13Method", (jdk14Method == jdk13Method));
+        long jdk14Method = cal.getTimeInMillis();
+        long jdk13Method = cal.getTime().getTime();
+        assertTrue("jdk14Method == jdk13Method", (jdk14Method == jdk13Method));
     }
 
 }
