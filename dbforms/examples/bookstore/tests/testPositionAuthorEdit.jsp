@@ -16,36 +16,36 @@
          </db:header>
          <db:errors/>
          <db:body>
-            <table class="fixed" align="center">
-               <tr class="even">
-                     <td style="width:300px">ID</td>
-			         <td style="width:100px"><db:label fieldName="AUTHOR_ID"/>&nbsp;</td>
+            <table>
+               <tr>
+                     <td>ID</td>
+			         <td><db:label fieldName="AUTHOR_ID"/>&nbsp;</td>
                </tr>
-               <tr class="odd">
-                    <td style="width:300px">NAME</td>
-                    <td style="width:300px"><db:textField size="25" fieldName="NAME"/></td>
+               <tr>
+                    <td>NAME</td>
+                    <td><db:textField fieldName="NAME"/></td>
                </tr>
-               <tr class="even">
+               <tr>
                     <td>ORGANISATION</td>
-                    <td><db:textField size="25" fieldName="ORGANISATION"/>
+                    <td><db:textField fieldName="ORGANISATION"/>
                     </td>
                </tr>
          </db:body>
          <db:footer>
-            <tr class="button">
-               <td colspan="2" style="text-align:center">
-                 <db:updateButton style="width:100" caption="Save"/>
-                 <db:deleteButton style="width:100" caption="Delete"/>
-                 <db:insertButton style="width:100" caption="Insert" showAlways="false" />
+            <tr>
+               <td colspan="2">
+                 <db:updateButton caption="Save"/>
+                 <db:deleteButton caption="Delete"/>
+                 <db:insertButton caption="Insert" showAlways="false" />
                </td>
             </tr>
-            <tr class="button">
-               <td colspan="2" style="text-align:center">
-                 <db:navFirstButton style="width:100" caption="<< First"/>
-                 <db:navPrevButton  style="width:100" caption="<  Previous"/>
-                 <db:navNextButton  style="width:100" caption=">  Next"/>
-                 <db:navLastButton  style="width:100" caption=">> Last"/>
-                 <db:navNewButton   style="width:100" caption="New" showAlwaysInFooter="false" />
+            <tr>
+               <td colspan="2">
+                 <db:navFirstButton caption="<< First"/>
+                 <db:navPrevButton  caption="<  Previous"/>
+                 <db:navNextButton  caption=">  Next"/>
+                 <db:navLastButton  caption=">> Last"/>
+                 <db:navNewButton   caption="New" showAlwaysInFooter="false" />
                  &nbsp;
                </td>
             </tr>

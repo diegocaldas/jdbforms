@@ -13,21 +13,31 @@
 			</db:header>
 			<db:body>
 				<tr>
-					<td><db:label fieldName="BOOK_ID"/></a>&nbsp;</td>
-					<td><db:label fieldName="ISBN"/>&nbsp;</td>
+					<td><db:textField fieldName="BOOK_ID"/></a>&nbsp;</td>
+					<td><db:textField fieldName="ISBN"/>&nbsp;</td>
 					<td><db:label fieldName="AUTHOR_ID"/>&nbsp;</td>
-					<td><db:label fieldName="TITLE"/>&nbsp;</td>
+					<td><db:textField fieldName="TITLE"/>&nbsp;</td>
 				</tr>
 			</db:body>
 			<db:footer>
 				</table>
 				<table>
+		            <tr class="button">
+        		       <td >
+		               	 <db:updateButton caption="Save"/>
+        		         <db:deleteButton caption="Delete"/>
+                		 <db:insertButton caption="Insert" showAlways="false" />
+		               </td>
+        		    </tr>
 					<tr>
-						<td><db:navFirstButton caption="first"/></td>
-						<td><db:navPrevButton  caption="previous"/></td>
-						<td><db:navNextButton  caption="next"/></td>
-						<td><db:navLastButton  caption="last"/></td>
-						<td><db:navReloadButton  caption="reload"/></td>
+						<td>
+							<db:navFirstButton caption="first"/>
+							<db:navPrevButton  caption="previous"/>
+							<db:navNextButton  caption="next"/>
+							<db:navLastButton  caption="last"/>
+							<db:navReloadButton  caption="reload"/>
+		                	<db:navNewButton   caption="New" showAlwaysInFooter="false" />
+		                </td>
 					</tr>
 				</table>
 			</db:footer>
