@@ -29,7 +29,7 @@
   <distributionDirectory></distributionDirectory> 
   <repository>
     <connection>scm:cvs:pserver:anonymous@cvs.jdbforms.sourceforge.net:/cvsroot/jdbforms:dbforms</connection> 
-    <url>http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/jdbforms</url> 
+	<url>http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/jdbforms/dbforms/</url>
   </repository>
 
   <mailingLists>
@@ -51,7 +51,7 @@
     <developer>
       <name>Joachim Peer</name>
       <id>joepeer</id>
-      <email></email>
+      <email>j.peer@gmx.net</email>
       <organization/>
       <roles>
         <role>Project founder</role>
@@ -72,7 +72,7 @@
     <developer>
       <name>Sebastian Bogaci</name>
       <id>sbogaci</id>
-      <email></email>
+      <email>Sebastian.Bogaci@daimlerchrysler.com</email>
       <organization/>
       <roles>
         <role>Java Developer</role>
@@ -92,7 +92,7 @@
     <developer>
       <name>Mark Dimon</name>
       <id>mdimon</id>
-      <email></email>
+      <email>mark.dimon@btinternet.com</email>
       <organization/>
       <roles>
         <role>Java Developer</role>
@@ -112,7 +112,7 @@
     <developer>
       <name>John Gagon</name>
       <id>johngagon</id>
-      <email></email>
+      <email>JohnG@ATSER.com</email>
       <organization/>
       <roles>
         <role>Java Developer</role>
@@ -122,7 +122,7 @@
     <developer>
       <name>Philip Grunikiewicz</name>
       <id>pgrunik</id>
-      <email></email>
+      <email>Grunikiewicz.Philip@hydro.qc.ca</email>
       <organization/>
       <roles>
         <role>Java Developer</role>
@@ -152,7 +152,7 @@
     <developer>
       <name>John Peterson</name>
       <id>jdp1120</id>
-      <email></email>
+      <email>jdp@ix.netcom.com</email>
       <organization/>
       <roles>
         <role>Java Developer</role>
