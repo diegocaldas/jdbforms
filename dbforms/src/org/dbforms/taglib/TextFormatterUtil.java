@@ -25,7 +25,11 @@ package org.dbforms.taglib;
 
 import org.dbforms.config.Field;
 
+import org.dbforms.util.MessageResources;
+
 import java.util.Locale;
+
+import javax.servlet.http.HttpServletRequest;
 
 
 
@@ -47,14 +51,55 @@ public class TextFormatterUtil extends DbBaseHandlerTag {
     * @param obj DOCUMENT ME!
     */
    public TextFormatterUtil(Field  field,
-                        Locale locale,
-                        String pattern,
-                        Object obj) {
+                            Locale locale,
+                            String pattern,
+                            Object obj) {
       this.obj    = obj;
       this.locale = locale;
       setPattern(pattern);
       setField(field);
    }
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param field DOCUMENT ME!
+    * @param locale DOCUMENT ME!
+    * @param pattern DOCUMENT ME!
+    * @param obj DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public static String FormatText(Field  field,
+                                   Locale locale,
+                                   String pattern,
+                                   Object obj) {
+      TextFormatterUtil tf = new TextFormatterUtil(field, locale, pattern, obj);
+
+      return tf.getFormattedFieldValue();
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param field DOCUMENT ME!
+    * @param request DOCUMENT ME!
+    * @param pattern DOCUMENT ME!
+    * @param obj DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public static String FormatText(Field              field,
+                                   HttpServletRequest request,
+                                   String             pattern,
+                                   Object             obj) {
+      Locale            locale = MessageResources.getLocale(request);
+      TextFormatterUtil tf = new TextFormatterUtil(field, locale, pattern, obj);
+
+      return tf.getFormattedFieldValue();
+   }
+
 
    /**
     * DOCUMENT ME!
@@ -65,6 +110,7 @@ public class TextFormatterUtil extends DbBaseHandlerTag {
     */
    public String getFormFieldName(DbFormTag parentForm) {
       setParent(parentForm);
+
       return super.getFormFieldName();
    }
 
