@@ -37,8 +37,8 @@ import org.apache.log4j.Category;
  * to be embedded inside a linkURL-element, as shown in example below:
  *
  * <linkURL href="customer.jsp" table="customer" />
- *   <position field="id" value="103" />
- *   <position field="cust_lang" value="2" />
+ *   <position fieldName="id" value="103" />
+ *   <position fieldName="cust_lang" value="2" />
  * </link>
  *
  */
@@ -49,9 +49,9 @@ public class DbLinkPositionItemTag extends TagSupport
     private String value;
 
     /**
-     * DOCUMENT ME!
+     * Return the name of the field being linked to
      *
-     * @return DOCUMENT ME!
+     * @return The field name
      */
     public String getFieldName()
     {
@@ -60,9 +60,9 @@ public class DbLinkPositionItemTag extends TagSupport
 
 
     /**
-     * DOCUMENT ME!
+     * The name of the field being linked to
      *
-     * @param fieldName DOCUMENT ME!
+     * @param fieldName The name of the Field
      */
     public void setFieldName(String fieldName)
     {
@@ -71,9 +71,9 @@ public class DbLinkPositionItemTag extends TagSupport
 
 
     /**
-     * DOCUMENT ME!
+     * Return the value of the field being linked
      *
-     * @return DOCUMENT ME!
+     * @return The value
      */
     public String getValue()
     {
@@ -82,9 +82,9 @@ public class DbLinkPositionItemTag extends TagSupport
 
 
     /**
-     * DOCUMENT ME!
+     * Set the value of the field being linked to
      *
-     * @param value DOCUMENT ME!
+     * @param value The value of the field being linked to
      */
     public void setValue(String value)
     {
@@ -93,11 +93,13 @@ public class DbLinkPositionItemTag extends TagSupport
 
 
     /**
-     * DOCUMENT ME!
+     * Set up the tag with parent tag's table and link to the field.  Then add the data to the
+     * enclosing linkURL tag.
      *
      * @return DOCUMENT ME!
      *
-     * @throws JspException DOCUMENT ME!
+     * @throws JspException  thrown when error occurs in processing the body of
+     *                       this method
      */
     public int doStartTag() throws JspException
     {
@@ -116,4 +118,6 @@ public class DbLinkPositionItemTag extends TagSupport
 
         return EVAL_BODY_INCLUDE;
     }
+
+
 }
