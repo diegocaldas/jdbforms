@@ -57,6 +57,7 @@ public class ServletUtil
         return dumpRequest(req, "\n");
     }
 
+
     /**
      *  Dumps all the incoming HttpServletRequest informations.
      *
@@ -78,6 +79,7 @@ public class ServletUtil
 
         return s;
     }
+
 
     /**
      *  Dump the incoming HttpServletRequest object
@@ -115,6 +117,8 @@ public class ServletUtil
 
         if (queryString != null)
         {
+        	// warning, this should be deprecated... servlet2.3 specs
+        	// do not have this HttpUtils method... I read somewhere...
             Hashtable ht = HttpUtils.parseQueryString(queryString);
             sb.append(geKeyData(ht, returnToken)).append(returnToken);
         }
@@ -180,6 +184,7 @@ public class ServletUtil
         return s;
     }
 
+
     /**
      *   Get the data from the input hashMap where keys are string and key values are
      *   string arrays.
@@ -209,10 +214,13 @@ public class ServletUtil
 
 
     /**
+     *  Return a String containin blank chars. 
+     *  Its length is equal to ($spacesToAdd - $fromString.length)
      * 
-     * @param spacesToAdd
-     * @param fromString
-     * @return
+     * @param spacesToAdd number of space characters to add
+     * @param fromString  the string where to start to add chars
+     * @return a String containin blank chars whose length is equal 
+     *         to ($spacesToAdd - $fromString.length)
      */
     private static String addSpaces(int spacesToAdd, String fromString)
     {
@@ -234,9 +242,10 @@ public class ServletUtil
 
 
     /**
+     *  Get the length of the request parameter having the longer name
      * 
-     * @param paramNames
-     * @return
+     * @param paramNames the enumeration got from req.getParameterNames()
+     * @return the length of the request parameter having the longer name
      */
     private static int getParametersNameMaxLength(Enumeration paramNames)
     {
