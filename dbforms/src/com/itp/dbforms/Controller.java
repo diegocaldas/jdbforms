@@ -125,6 +125,8 @@ public class Controller extends HttpServlet {
 		}
 
 		Connection con = config.getDbConnection().getConnection();
+		request.setAttribute("connection",con);
+
 		try {
 
 			Vector errors = new Vector();
@@ -178,7 +180,7 @@ public class Controller extends HttpServlet {
 
 		} finally {
 			try {
-			  con.close();
+			 // con.close();
 			}	catch(SQLException sqle3) {
 				sqle3.printStackTrace();
 			}

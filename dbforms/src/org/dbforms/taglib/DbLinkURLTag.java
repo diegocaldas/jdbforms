@@ -154,7 +154,8 @@ public class DbLinkURLTag extends BodyTagSupport {
 
 			// build tag
 			StringBuffer tagBuf = new StringBuffer(200);
-			tagBuf.append("servlet/control?ac_goto_x=t&dataac_goto_x_fu=");
+			tagBuf.append( ((HttpServletRequest) pageContext.getRequest()).getContextPath() );
+			tagBuf.append("/servlet/control?ac_goto_x=t&dataac_goto_x_fu=");
 			tagBuf.append(href);
 			tagBuf.append("&dataac_goto_x_destTable="); // table is required. we force to define a valid table. because we do not want the developer to use this tag instead of normal <a href="">-tags to arbitrary (static) ressources, as this would slow down the application.
 			tagBuf.append(table.getId());

@@ -68,6 +68,8 @@ public class FileServlet extends HttpServlet {
 
 		logCat.info("writing to client:"+fileName+" ct="+contentType);
 
+		if(contentType==null) contentType = "text/plain";
+
 		response.setContentType(contentType);
 
 		ServletOutputStream out = response.getOutputStream();

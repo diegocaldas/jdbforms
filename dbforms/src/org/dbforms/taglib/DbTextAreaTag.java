@@ -50,7 +50,8 @@ public class DbTextAreaTag extends DbBaseInputTag  {
 
   static Category logCat = Category.getInstance(DbTextAreaTag.class.getName()); // logging category for this class
 
-	private String wrap;
+	protected String wrap;
+	protected String renderBody;
 
 	public void setWrap(String wrap) {
 		this.wrap = wrap;
@@ -60,18 +61,22 @@ public class DbTextAreaTag extends DbBaseInputTag  {
 		return wrap;
 	}
 
+	public void setrenderBody(String renderBody) {
+		this.renderBody = renderBody;
+	}
+
+	public String getrenderBody() {
+		return renderBody;
+	}
+
+
   public int doStartTag() throws javax.servlet.jsp.JspException {
-	return SKIP_BODY;
-  }  
-
-public int doEndTag() throws javax.servlet.jsp.JspException {
-
 
 	HttpServletRequest request = (HttpServletRequest) this.pageContext.getRequest();
 	Vector errors = (Vector) request.getAttribute("errors");
-	
 
-	try {
+
+
 
 		StringBuffer tagBuf = new StringBuffer("<textarea name=\"");
 		tagBuf.append(getFormFieldName());
@@ -115,35 +120,65 @@ public int doEndTag() throws javax.servlet.jsp.JspException {
 			retrieved from the database.  This mechanism can be used to set an initial default
 			value for a given field. */
 
-		if (this.getOverrideValue() != null) 
-		{
-			//If the redisplayFieldsOnError attribute is set and we are in error mode, forget override!
-			if ("true".equals(parentForm.getRedisplayFieldsOnError()) && errors != null && errors.size() > 0) 
+		if(!"true".equals(renderBody)) {
+
+			if (this.getOverrideValue() != null)
+			{
+				//If the redisplayFieldsOnError attribute is set and we are in error mode, forget override!
+				if ("true".equals(parentForm.getRedisplayFieldsOnError()) && errors != null && errors.size() > 0)
+				{
+					tagBuf.append(getFormFieldValue());
+
+				}
+				else
+				{
+					tagBuf.append(this.getOverrideValue());
+
+				}
+			}
+			else
 			{
 				tagBuf.append(getFormFieldValue());
-
-			} 
-			else 
-			{
-				tagBuf.append(this.getOverrideValue());				
-
 			}
-		}
-		else
-		{
-			tagBuf.append(getFormFieldValue());
-		} 
-		tagBuf.append("</textarea>");
 
-		pageContext.getOut().write(tagBuf.toString());
-	} catch (java.io.IOException ioe) {
-		throw new JspException("IO Error: " + ioe.getMessage());
+		}
+
+
+	    try {
+			pageContext.getOut().write(tagBuf.toString());
+
+		}
+		catch(java.io.IOException e) {
+			throw new JspException("IO Error: " + e.getMessage());
+		}
+
+
+		if("true".equals(renderBody))
+			return EVAL_BODY_TAG;
+		else
+			return SKIP_BODY;
+  }
+
+	public int doEndTag() throws javax.servlet.jsp.JspException {
+
+	    try {
+		  	if("true".equals(renderBody) && bodyContent != null) {
+					bodyContent.writeOut(bodyContent.getEnclosingWriter());
+					bodyContent.clearBody(); // workaround for duplicate rows in JRun 3.1
+		    }
+
+			pageContext.getOut().write("</textarea>");
+
+		}
+		catch(java.io.IOException e) {
+			throw new JspException("IO Error: " + e.getMessage());
+		}
+		return EVAL_PAGE;
 	}
 
-	return EVAL_PAGE;
-}
 
-	private java.lang.String overrideValue;
+
+	protected java.lang.String overrideValue;
 
 /**
  * Insert the method's description here.

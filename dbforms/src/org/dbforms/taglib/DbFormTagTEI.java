@@ -39,7 +39,8 @@ public class DbFormTagTEI extends TagExtraInfo {
 	 new StringBuffer("searchFieldNames"),
 	 new StringBuffer("searchFieldModeNames"),
 	 new StringBuffer("searchFieldAlgorithmNames"),
-	 new StringBuffer("rsv")
+	 new StringBuffer("rsv"),
+	 new StringBuffer("form")
 	};
 
 	// convention for DbFroms TEI-provided variables: varName "_" tableName
@@ -97,6 +98,13 @@ public class DbFormTagTEI extends TagExtraInfo {
 		new VariableInfo(
 		    	varNames[5].toString(),
 		    	"org.dbforms.util.ResultSetVector",
+		    	true,
+		    	VariableInfo.NESTED
+    	),
+
+		new VariableInfo(
+		    	varNames[6].toString(),
+		    	"org.dbforms.taglib.DbFormTag",
 		    	true,
 		    	VariableInfo.NESTED
     	)

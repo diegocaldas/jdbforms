@@ -138,6 +138,9 @@ public class InsertEvent extends DatabaseEvent {
 	public void processEvent(Connection con)
 	throws SQLException {
 
+
+		Hashtable fileNamesWithOutFileHolder = new Hashtable(); // only needed if fileuploads occur outside the fileholder-functionality (plain html upload)
+
 		// Applying given security contraints (as defined in dbforms-config xml file)
 		// part 1: check if requested privilge is granted for role
 		if(!hasUserPrivileg(GrantedPrivileges.PRIVILEG_INSERT))
@@ -214,14 +217,26 @@ public class InsertEvent extends DatabaseEvent {
 				if("yes".equals(curField.getEncoding())) {
 					FileHolder fileHolder = ParseUtil.getFileHolder(request, "f_"+tableId+"_ins"+idStr+"_"+iiFieldId);
 
-					// encode fileName
-					String fileName = fileHolder.getFileName();
-					int dotIndex = fileName.lastIndexOf('.');
-					String suffix = (dotIndex != -1) ? fileName.substring(dotIndex) : "";
-					fileHolder.setFileName(UniqueIDGenerator.getUniqueID()+suffix);
+					if(fileHolder != null) { // the file was uploaded via multipart..
 
-					// a diskblob gets stored to db as an ordinary string (it's only the reference!)
-					value = fileHolder.getFileName();
+						// encode fileName
+						String fileName = fileHolder.getFileName();
+						int dotIndex = fileName.lastIndexOf('.');
+						String suffix = (dotIndex != -1) ? fileName.substring(dotIndex) : "";
+						fileHolder.setFileName("db"+UniqueIDGenerator.getUniqueID()+suffix);
+
+						// a diskblob gets stored to db as an ordinary string (it's only the reference!)
+						value = fileHolder.getFileName();
+
+					} else { // the file was uploaded via common html form fields!
+
+						String suffix = ParseUtil.getParameter(request, "suffix_f_"+tableId+"_ins"+idStr+"_"+iiFieldId);
+						value = "db"+UniqueIDGenerator.getUniqueID() + "." + suffix;
+						fileNamesWithOutFileHolder.put("f_"+tableId+"_ins"+idStr+"_"+iiFieldId, value);
+
+					}
+
+
 
 				} else {
 
@@ -291,7 +306,29 @@ public class InsertEvent extends DatabaseEvent {
 					throw new SQLException("could not store file '"+fileHolder.getFileName()+"' to dir '"+directory+"'");
 				  }
 
-				} else logCat.info("uh! empty fileHolder");
+				} else {
+
+					String clobValue = ParseUtil.getParameter(request, "f_"+tableId+"_ins"+idStr+"_"+iiFieldId);
+
+					if(clobValue != null) {
+
+						String fileName = (String) fileNamesWithOutFileHolder.get("f_"+tableId+"_ins"+idStr+"_"+iiFieldId);
+
+						try {
+							File fileOut = new File(dir, fileName);
+							FileWriter fw = new FileWriter(fileOut);
+							fw.write(clobValue);
+							fw.close();
+						} catch(IOException ioe) {
+							throw new SQLException("could not store file '"+fileName+"' to dir '"+directory+"'");
+						}
+
+
+					} else {
+						logCat.info("uh! empty fileHolder, and no plain HTML form data available!");
+					}
+
+				}
 			}
 		}
 

@@ -91,6 +91,8 @@ public class UpdateEvent extends DatabaseEvent {
 	public void processEvent(Connection con)
 	throws SQLException {
 
+		Hashtable fileNamesWithOutFileHolder = new Hashtable();
+
 		// Apply given security contraints (as defined in dbforms-config.xml)
 		if(!hasUserPrivileg(GrantedPrivileges.PRIVILEG_UPDATE))
 			throw new SQLException("Sorry, updating table "+table.getName()+" is not granted for this session.");
@@ -177,24 +179,35 @@ public class UpdateEvent extends DatabaseEvent {
 			} else if(fieldType == FieldTypes.DISKBLOB) {
 
 				FileHolder fileHolder = ParseUtil.getFileHolder(request, "f_"+tableId+"_"+keyId+"_"+iiFieldId);
-				String fileName = fileHolder.getFileName();
 
-				// check if we need to store it encoded or not
-				if("yes".equals(curField.getEncoding())) {
+				if(fileHolder != null) { // upload via MULTIPART
 
-					// encode fileName
+					String fileName = fileHolder.getFileName();
 
-					int dotIndex = fileName.lastIndexOf('.');
-					String suffix = (dotIndex != -1) ? fileName.substring(dotIndex) : "";
-					fileHolder.setFileName(UniqueIDGenerator.getUniqueID()+suffix);
+					// check if we need to store it encoded or not
+					if("yes".equals(curField.getEncoding())) {
 
-					// a diskblob gets stored to db as an ordinary string (it's only the reference!)
-					value = fileHolder.getFileName();
+						// encode fileName
+
+						int dotIndex = fileName.lastIndexOf('.');
+						String suffix = (dotIndex != -1) ? fileName.substring(dotIndex) : "";
+						fileHolder.setFileName(UniqueIDGenerator.getUniqueID()+suffix);
+
+						// a diskblob gets stored to db as an ordinary string (it's only the reference!)
+						value = fileHolder.getFileName();
+
+					} else {
+
+						// a diskblob gets stored to db as an ordinary string	 (it's only the reference!)
+						value = fileName;
+
+					}
 
 				} else {
 
-					// a diskblob gets stored to db as an ordinary string	 (it's only the reference!)
-					value = fileName;
+					value = ParseUtil.getParameter(request, "fn_f_"+tableId+"_"+keyId+"_"+iiFieldId);
+					fileNamesWithOutFileHolder.put("f_"+tableId+"_"+keyId+"_"+iiFieldId, value);
+
 				}
 
 			} else {
@@ -261,7 +274,28 @@ public class UpdateEvent extends DatabaseEvent {
 					throw new SQLException("could not store file '"+fileHolder.getFileName()+"' to dir '"+directory+"'");
 				  }
 
-				} else logCat.info("uh! empty fileHolder");
+				} else {
+
+
+					String clobValue = ParseUtil.getParameter(request, "f_"+tableId+"_"+keyId+"_"+iiFieldId);
+
+
+					if(clobValue != null) {
+
+						String fileName = (String) fileNamesWithOutFileHolder.get("f_"+tableId+"_"+keyId+"_"+iiFieldId);
+
+						try {
+							File fileOut = new File(dir, fileName);
+							FileWriter fw = new FileWriter(fileOut);
+							fw.write(clobValue);
+							fw.close();
+						} catch(IOException ioe) {
+							throw new SQLException("could not store file '"+fileName+"' to dir '"+directory+"'");
+						}
+
+					}
+				 	else logCat.info("uh! empty fileHolder, no alternative clob data (coming from plain form fields or such) available");
+				}
 			}
 		}
 
