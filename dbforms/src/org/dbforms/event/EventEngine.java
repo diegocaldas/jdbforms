@@ -167,8 +167,8 @@ for new code - it would be great to add new Web-Events without even compiling th
             logCat.info("sourcePath = " + sourcePath);
 
             /* If length of context Path is greater then zero (not root context)
-and sourcePath begins with context Path, then remove context path from
-sourcePath */
+				and sourcePath begins with context Path, then remove context path from
+			sourcePath */
             if ((contextPath.length() > 0) && sourcePath.startsWith(contextPath))
             {
                 if (contextPath.endsWith("/")) // shouldn't! just make sure!

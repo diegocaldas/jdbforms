@@ -64,6 +64,8 @@ import org.apache.log4j.Category;
  *
  * @author Joachim Peer <j.peer@gmx.net>
  */
+
+
 public class DbLinkURLTag extends BodyTagSupport
 {
     static Category logCat = Category.getInstance(DbLinkURLTag.class.getName()); // logging category for this class
@@ -77,6 +79,22 @@ public class DbLinkURLTag extends BodyTagSupport
     private String position;
     private DbFormTag parentForm;
 
+    private String keyToDestPos;
+    private String keyToKeyToDestPos;
+
+    /** 
+     * used if parentTable is different to tableName:  
+     * field(s) in the main form that is/are linked to this form 
+     **/
+    private String parentField;
+
+    /** 
+     * used if parentTable is different to tableName:  
+     * field(s) in this forme that is/are linked to the parent form 
+     **/
+    private String childField;
+    
+	 
     /**
      * DOCUMENT ME!
      *
@@ -152,7 +170,6 @@ public class DbLinkURLTag extends BodyTagSupport
         {
             positionFv = new Hashtable();
         }
-
         positionFv.put(field, value);
     }
 
@@ -189,7 +206,7 @@ public class DbLinkURLTag extends BodyTagSupport
         }
         else
         {
-            throw new IllegalArgumentException("no table specified. either you define expliclty the attribute \"tableName\" or you put this tag inside a db:form/db-element!");
+            throw new IllegalArgumentException("no table specified. either you define expliclty the attribute \"tableName\" or you put this tag inside a db:form!");
         }
 
         if (position == null) // if position was not set explicitly,
@@ -213,6 +230,24 @@ public class DbLinkURLTag extends BodyTagSupport
     public int doBodyEndTag() throws javax.servlet.jsp.JspException
     {
         return SKIP_BODY;
+    }
+
+
+
+    private String getDataTag(String primaryTagName, String dataKey, String dataValue)
+    {
+		  String s = "";	
+		  if (!Util.isNull(dataValue)) {	
+	        StringBuffer tagBuf = new StringBuffer();
+   	     tagBuf.append(primaryTagName);
+      	  tagBuf.append("_");
+	        tagBuf.append(dataKey);
+   	     tagBuf.append("=");
+      	  tagBuf.append(dataValue);
+	        tagBuf.append("&");
+   	     s = tagBuf.toString();
+		  }
+		  return s;
     }
 
 
@@ -240,7 +275,8 @@ public class DbLinkURLTag extends BodyTagSupport
 
             // build tag
             StringBuffer tagBuf = new StringBuffer(200);
-            String contextPath = ((HttpServletRequest) pageContext.getRequest()).getContextPath();
+            HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
+            String contextPath = request.getContextPath();
             tagBuf.append(contextPath);
 
             // 2002-01-17 Fix contributed by Dirk Kraemer and Bertram Gong//
@@ -248,20 +284,41 @@ public class DbLinkURLTag extends BodyTagSupport
             {
                 tagBuf.append("/");
             }
+            tagBuf.append("servlet/control?");
 
-            tagBuf.append("servlet/control?ac_goto_x=t&dataac_goto_x_fu=");
-            tagBuf.append(href);
-            tagBuf.append("&dataac_goto_x_destTable="); // table is required. we force to define a valid table. because we do not want the developer to use this tag instead of normal <a href="">-tags to arbitrary (static) ressources, as this would slow down the application.
-            tagBuf.append(table.getId());
+            String tagName = "ac_goto";
+            tagBuf.append(getDataTag(tagName, "x", "t"));
 
-            if (position != null)
-            { // position within table is not required. if no position was provided/determinated, dbForm will navigate to the first row
-                tagBuf.append("&dataac_goto_x_destPos=");
-                tagBuf.append(java.net.URLEncoder.encode( position));
+				tagName = "data" + tagName + "_x";
+            tagBuf.append(getDataTag(tagName, "fu", href));
+
+				// table is required. we force to define a valid table. 
+				// because we do not want the developer to use this tag instead of 
+				// normal <a href="">-tags to arbitrary (static) ressources, as this would slow down the application.
+            tagBuf.append(getDataTag(tagName, "destTable", table.getName())); 
+
+            // position within table is not required. 
+            // if no position was provided/determinated, dbForm will navigate to the first row
+				
+				// 2002-11-20 HKK: Fixed encoding bug!
+            tagBuf.append(getDataTag(tagName, "destPos", Util.encode(position)));
+
+				// 2002-11-21 HKK: Allow same keys as in dbgotobutton
+            tagBuf.append(getDataTag(tagName, "keyToDestPos", Util.encode(keyToDestPos)));
+            tagBuf.append(getDataTag(tagName, "keyToKeyDestPos", Util.encode(keyToKeyToDestPos)));
+
+            // 2002-11-21 HKK: New: send parent table name as parameter if it is different to table
+            if (table != parentForm.getTable()) {
+	            tagBuf.append(getDataTag(tagName, "srcTable", parentForm.getTable().getName())); 
+	            tagBuf.append(getDataTag(tagName, "childField", Util.encode(childField))); 
+	            tagBuf.append(getDataTag(tagName, "parentField", Util.encode(parentField))); 
             }
 
             HttpServletResponse response = (HttpServletResponse) pageContext.getResponse();
-            pageContext.getOut().write(response.encodeURL(tagBuf.toString()));
+            String s = tagBuf.toString();
+            s = s.substring(0, s.length() - 1);
+            s = response.encodeUrl(s);
+            pageContext.getOut().write(s);
         }
         catch (java.io.IOException ioe)
         {
@@ -298,4 +355,90 @@ public class DbLinkURLTag extends BodyTagSupport
         super.setParent(parent);
         this.parentForm = (DbFormTag) findAncestorWithClass(this, DbFormTag.class); // may be null!
     }
+   /**
+    * Returns the keyToDestPos.
+    * @return String
+    */
+   public String getKeyToDestPos() {
+      return keyToDestPos;
+   }
+
+   /**
+    * Returns the keyToKeyToDestPos.
+    * @return String
+    */
+   public String getKeyToKeyToDestPos() {
+      return keyToKeyToDestPos;
+   }
+
+   /**
+    * Sets the keyToDestPos.
+    * @param keyToDestPos The keyToDestPos to set
+    */
+   public void setKeyToDestPos(String keyToDestPos) {
+      this.keyToDestPos = keyToDestPos;
+   }
+
+   /**
+    * Sets the keyToKeyToDestPos.
+    * @param keyToKeyToDestPos The keyToKeyToDestPos to set
+    */
+   public void setKeyToKeyToDestPos(String keyToKeyToDestPos) {
+      this.keyToKeyToDestPos = keyToKeyToDestPos;
+   }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public String getDestPos()
+    {
+        return position;
+    }
+
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param position DOCUMENT ME!
+     */
+    public void setDestPos(String position)
+    {
+        this.position = position;
+    }
+
+
+   /**
+    * Returns the childField.
+    * @return String
+    */
+   public String getChildField() {
+      return childField;
+   }
+
+   /**
+    * Returns the parentField.
+    * @return String
+    */
+   public String getParentField() {
+      return parentField;
+   }
+
+   /**
+    * Sets the childField.
+    * @param childField The childField to set
+    */
+   public void setChildField(String childField) {
+      this.childField = childField;
+   }
+
+   /**
+    * Sets the parentField.
+    * @param parentField The parentField to set
+    */
+   public void setParentField(String parentField) {
+      this.parentField = parentField;
+   }
+
 }

@@ -26,6 +26,7 @@ package org.dbforms;
 import java.util.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
+import org.dbforms.util.Util;
 import org.dbforms.util.DbConnection;
 import org.apache.log4j.Category;
 import java.text.SimpleDateFormat;
@@ -55,6 +56,7 @@ public class DbFormsConfig
     private DbConnection defaultDbConnection;
     private ArrayList dbConnectionsList;
     private Hashtable dbConnectionsHash;
+    private String realPath;
 
     //private DbConnection dbConnection;
     private ServletConfig servletConfig;
@@ -62,8 +64,9 @@ public class DbFormsConfig
     /**
      * Creates a new DbFormsConfig object.
      */
-    public DbFormsConfig()
+    public DbFormsConfig(String realPath)
     {
+        this.realPath = realPath;
         tables = new Vector();
         tableNameHash = new Hashtable();
         dbConnectionsHash = new Hashtable();
@@ -119,6 +122,7 @@ public class DbFormsConfig
      */
     public void addDbConnection(DbConnection dbConnection)
     {
+    	dbConnection.setName(Util.replaceRealPath(dbConnection.getName(), realPath));	
         dbConnectionsList.add(dbConnection);
 
         if ((dbConnection.getId() != null) && (dbConnection.getId().trim().length() > 0))
@@ -270,4 +274,20 @@ public class DbFormsConfig
 
         return buf.toString();
     }
+	/**
+	 * Returns the realPath.
+	 * @return String
+	 */
+	public String getRealPath() {
+		return realPath;
+	}
+
+	/**
+	 * Sets the realPath.
+	 * @param realPath The realPath to set
+	 */
+	public void setRealPath(String realPath) {
+		this.realPath = realPath;
+	}
+
 }

@@ -44,11 +44,10 @@ import java.util.*;
  * number of rows to display
  * 
  ***********************************************************/
-public class HasMoreRecordsTag extends DbBaseHandlerTag
+public class HasNoRecordsTag extends DbBaseHandlerTag
 {
     // logging category for this class
-    static Category logCat = Category.getInstance(HasMoreRecordsTag.class.getName());
-    private String count = null;
+    static Category logCat = Category.getInstance(HasNoRecordsTag.class.getName());
     private String message = null;
     private DbFormsErrors errors;
 
@@ -61,7 +60,7 @@ public class HasMoreRecordsTag extends DbBaseHandlerTag
     {
         int rsvSize = parentForm.getResultSetVector().size();
 
-        if (rsvSize >= getCountAsInt())
+        if (rsvSize == 0)
         {
             return EVAL_BODY_TAG;
         }
@@ -87,7 +86,7 @@ public class HasMoreRecordsTag extends DbBaseHandlerTag
         {
             int rsvSize = parentForm.getResultSetVector().size();
 
-            if (rsvSize >= getCountAsInt())
+            if (rsvSize == 0)
             {
                 if (bodyContent != null)
                 {
@@ -121,35 +120,6 @@ public class HasMoreRecordsTag extends DbBaseHandlerTag
         return EVAL_PAGE;
     }
 
-
-    /**
-     * Gets the count
-     * @return Returns a String
-     */
-    public String getCount()
-    {
-        return count;
-    }
-
-
-    /**
-     * Sets the count
-     * @param count The count to set
-     */
-    public void setCount(String count)
-    {
-        this.count = count;
-    }
-
-
-    /**
-     * Gets the count as int
-     * @param count Returns an int
-     */
-    public int getCountAsInt()
-    {
-        return Integer.parseInt(getCount());
-    }
 
 
     /**

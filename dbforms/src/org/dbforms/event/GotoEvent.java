@@ -44,6 +44,9 @@ public class GotoEvent extends NavigationEvent
     static Category logCat = Category.getInstance(GotoEvent.class.getName()); // logging category for this class
     private String position; // where to go in associated table
     private Table table;
+    private Table srcTable;
+    private String childField;
+    private String parentField;
 
     /**
     * <p>constructor - parses the event details</p>
@@ -55,10 +58,12 @@ public class GotoEvent extends NavigationEvent
     public GotoEvent(String action, HttpServletRequest request, DbFormsConfig config)
     {
         this.config = config;
-        this.followUp = ParseUtil.getParameter(request, "data" + action + "_fu");
 
+	    /* 2002-11-20 HKK: doubled in EventEngine! 
+	    this.followUp = ParseUtil.getParameter(request, "data" + action + "_fu");
         logCat.info("gotoevent's followup = " + followUp);
-
+		*/  
+        
         String destTable = ParseUtil.getParameter(request, "data" + action + "_destTable");
 
         if (destTable == null)
@@ -71,13 +76,24 @@ public class GotoEvent extends NavigationEvent
 
         //# fixme: decision for *1* of the 2 approaches should be met soon!! (either id- OR name-based lookup)
         this.table = config.getTableByName(destTable);
-
         if (table == null)
         {
             this.table = config.getTable(Integer.parseInt(destTable));
         }
 
         this.tableId = table.getId();
+
+
+        String srcTable = ParseUtil.getParameter(request, "data" + action + "_srcTable");
+        if (srcTable != null) {
+			   this.srcTable = config.getTableByName(srcTable);
+            if (this.srcTable == null) {
+            	this.srcTable = config.getTable(Integer.parseInt(srcTable));
+            } 			   
+            childField  = ParseUtil.getParameter(request, "data" + action + "_childField");
+            parentField = ParseUtil.getParameter(request, "data" + action + "_parentField");
+        }
+
 
         // the position to go to within the destination-jsp's-table	can be given
         // more or less directly
@@ -109,10 +125,10 @@ public class GotoEvent extends NavigationEvent
 
                     this.position = (String) ParseUtil.getParameter(request, "k_" + widgetValue); // i.e. 1:2:23
 
-                    logCat.info("--->pos=" + position);
                 }
             }
         }
+        logCat.info("--->pos=" + position);
     }
 
 
@@ -143,14 +159,20 @@ public class GotoEvent extends NavigationEvent
      */
     public ResultSetVector processEvent(FieldValue[] childFieldValues, FieldValue[] orderConstraint, int count, String firstPosition, String lastPosition, Connection con) throws SQLException
     {
-        // 20020705-HKK: position.length() maybe 0!
-        if ((position != null) && (position.length() > 0))
-        {
+        int compMode = !Util.isNull(position) ? FieldValue.COMPARE_INCLUSIVE : FieldValue.COMPARE_NONE;
+        if ( !Util.isNull(position) && (srcTable != null) && !Util.isNull(childField) && !Util.isNull(parentField) ) {
+				FieldValue[] fv = table.mapChildFieldValues(srcTable, 
+																		parentField,
+																		childField, 
+																		position);
+				childFieldValues = fv;
+				compMode = FieldValue.COMPARE_NONE;
+        } else if (!Util.isNull(position) ) {
             table.fillWithValues(orderConstraint, position);
         }
 
         logCat.info("gotopos = " + position);
 
-        return table.doConstrainedSelect(table.getFields(), childFieldValues, orderConstraint, (position != null) ? FieldValue.COMPARE_INCLUSIVE : FieldValue.COMPARE_NONE, count, con);
+        return table.doConstrainedSelect(table.getFields(), childFieldValues, orderConstraint, compMode, count, con);
     }
 }

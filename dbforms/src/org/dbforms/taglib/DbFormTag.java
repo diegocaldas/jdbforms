@@ -1795,14 +1795,11 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
          
          String aPosition = parentForm.getTable().getPositionString(parentForm.getResultSetVector());
          
-/***
 			childFieldValues = getTable().mapChildFieldValues(parentForm.getTable(), 
 																			  parentField, 
 																			  childField, 
 																			  aPosition);
-***/
-/**** 20021120-HKK: Split in new function FieldValue.mapChildFieldValues 
- */
+/* 20021120-HKK: Split in new function FieldValue.mapChildFieldValues 
         // 1 to n fields may be mapped
         Vector childFieldNames = ParseUtil.splitString(childField, ",;~");
         Vector parentFieldNames = ParseUtil.splitString(parentField, ",;~");
@@ -1839,7 +1836,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
             }
             childFieldValues[i] = new FieldValue(childField, currentParentFieldValue, true);
         }
-/****/        
+*/        
     }
 
 

@@ -1,3 +1,32 @@
+2002-11-26
+(Henner.Kollmann@gmx.de)
+	taglib_docu.xml:
+		added descriptions extensions to filter attribute in form
+		Cleaned up description of destPos, keyToDestPos, keyToKeyToDestPos
+		added new tag hasNoRecords
+		extended dblink tag
+	ConfigServlet.java, DbFormsConfig.java:
+		Added SERVLETCONTEXT_REALPATH
+	Table.java:
+	 	Added new method getPositionString
+	 DbForm.java:
+	 	Use Table.getPositionString
+	 HasMoreRecords.java
+	 	Will now render body if true!
+	 HasNoRecords.java
+	 	New tag. Same as HasMoreRecords. But with recCount = 0
+	 DbLinkURL.java
+	 	Added Child, parent stuff, corrected char encoding
+	 EventEngine.java, GotoEvent.java
+	 	Added Child, parent stuff for DbLinkURL
+	 Util.java:
+	 	Some more helpers.
+	 	
+	 
+		
+		
+		
+	
 2002-11-18
 (fossato@pow2.com)
         connectionProviders' connection pool configuration

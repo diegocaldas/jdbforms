@@ -1655,4 +1655,66 @@ public class Table
     {
         this.defaultVisibleFields = defaultVisibleFields;
     }
+
+    /**
+    used for instance by gotoEvent 
+    */
+   public String getPositionString(FieldValue[] fv) {
+        StringBuffer buf = new StringBuffer();
+        for (int i = 0; i < fv.length; i++) {
+            Field f = fv[i].getField();
+            String value = fv[i].getFieldValue();
+            if (value == null) {
+                throw new IllegalArgumentException("wrong fields provided");
+            }
+            if (i > 0) {
+                buf.append("-"); // control byte
+            }
+            buf.append(createToken(f, value));
+        }
+        return buf.toString();
+   }
+
+	public FieldValue[] mapChildFieldValues(
+											 Table parentTable,
+											 String parentFieldString, 
+											 String childFieldString, 
+											 String aPosition) {
+
+        // 1 to n fields may be mapped
+        Vector childFieldNames = ParseUtil.splitString(childFieldString, ",;~");
+        Vector parentFieldNames = ParseUtil.splitString(parentFieldString, ",;~");
+
+        // do some basic checks
+        // deeper checks like Datatyp-compatibility,etc not done yet
+        int len = childFieldNames.size();
+        if ((len == 0) || (len != parentFieldNames.size()))
+        {
+            return null;
+        }
+
+		  Hashtable ht = parentTable.getFieldValuesFromPositionAsHt(aPosition);
+        FieldValue[] childFieldValues = new FieldValue[len];
+        for (int i = 0; i < len; i++)
+        {
+            String parentFieldName = (String) parentFieldNames.elementAt(i);
+            Field parentField = parentTable.getFieldByName(parentFieldName);
+            String childFieldName = (String) childFieldNames.elementAt(i);
+            Field childField = this.getFieldByName(childFieldName);
+            FieldValue aFieldValue = (FieldValue) ht.get(new Integer(parentField.getId()));
+            if (aFieldValue == null)
+            {
+                throw new IllegalArgumentException("ERROR: Make sure that field " + 
+                			parentField.getName() + 
+                			" is a KEY of the table " + 
+                			this.getName() + 
+                			"! Otherwise you can not use it as PARENT/CHILD LINK argument!");
+            }
+            String currentParentFieldValue = aFieldValue.getFieldValue();
+            childFieldValues[i] = new FieldValue(childField, currentParentFieldValue, true);
+        }
+        return childFieldValues; 
+	}		
+
+
 }

@@ -447,7 +447,9 @@ public class ConfigServlet extends HttpServlet
         }
 
         // Build a digester to process our configuration resource
-        DbFormsConfig dbFormsConfig = new DbFormsConfig();
+        String realPath = getServletContext().getRealPath("/");
+        
+        DbFormsConfig dbFormsConfig = new DbFormsConfig(realPath);
         Digester digester = null;
         digester = initDigester(digesterDebugLevel, dbFormsConfig);
 
