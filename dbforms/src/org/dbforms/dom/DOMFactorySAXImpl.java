@@ -110,7 +110,7 @@ public class DOMFactorySAXImpl extends DOMFactory
          }
          catch (Exception e)
          {
-            logCat.error(e);
+            logCat.error(e.getMessage() + "\n" + data);
          }
       }
 
