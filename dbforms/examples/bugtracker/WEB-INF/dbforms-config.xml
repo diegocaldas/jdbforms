@@ -85,7 +85,7 @@
 	-->
 
         <dbconnection
-                name = "jdbc:hsqldb:./webapps/bugtracker/WEB-INF/db/bugtracker"
+                name = "jdbc:hsqldb:./webapps/bugtracker/WEB-INF/db_hsqldb/bugtracker"
                 isJndi = "false"
                 conClass = "org.hsqldb.jdbcDriver"
                 username = "sa"
