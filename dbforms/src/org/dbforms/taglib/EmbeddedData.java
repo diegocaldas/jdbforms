@@ -222,7 +222,7 @@ public abstract class EmbeddedData extends TagSupport
       {
          if (Util.isNull(getFormatClass()))
          {
-            setFormatClass("org.dbforms.util.PrintfFormat");
+            setFormatClass("org.dbforms.util.external.PrintfFormat");
          }
 
          if (Util.isNull(getFormat()))
