@@ -97,7 +97,7 @@
         msg.bienvenue.2=Heureux de vous servir en franais.
         boutton.login=Authentifier
         boutton.logout=Quitter
- 
+
     </screen>
     <para/>
     <para>
@@ -106,9 +106,9 @@
     <screen>
         msg.bienvenue.1=&lt;B&gt;Bienvenue dans l'application XYZ&lt;/B&gt;
         msg.bienvenue.2=Heureux de servir nos amis Canadiens en franais.
-        boutton.login=Authentifier
-        boutton.logout=Quitter
- 
+        boutton.login=Authentifier
+        boutton.logout=Quitter
+
    
       </screen>
     <para/>
@@ -118,9 +118,9 @@
     <screen>
         msg.bienvenue.1=&lt;B&gt;Welcome in XYZ application&lt;/B&gt;
         msg.bienvenue.2=Happy to serve you in english.
-        boutton.login=Login
-        boutton.logout=Logout
-  
+        boutton.login=Login
+        boutton.logout=Logout
+
       </screen>
     <para/>
     <para>
@@ -130,7 +130,7 @@
         msg.bienvenue.1=&lt;B&gt;Recepcin en la aplicacin XYZ&lt;/B&gt;
         msg.bienvenue.2=Feliz servirle en espaol
         boutton.login=Conexin
-        boutton.logout=Fin de comunicacin
+        boutton.logout=Fin de comunicacin
       </screen>
     <para/>
     <para>In this example, the default language is French.  In addition to the default language, this application supports English and Spanish.  For French speaking clients from Canada, a special resource has also been developed.
@@ -145,23 +145,23 @@
       <emphasis role="bold">&lt;web-app&gt;</emphasis>
         &lt;!--=========== DbForms Configuration Servlet ===========--&gt;
         
-      <emphasis role="bold">&lt;servlet&gt;</emphasis> 
-            &lt;servlet-name&gt;org.dbforms.ConfigServlet&lt;/servlet-name&gt; 
-            &lt;servlet-class&gt;org.dbforms.ConfigServlet&lt;/servlet-class&gt; 
-    &lt;init-param&gt; 
-                    &lt;param-name&gt;log4j.configuration&lt;/param-name&gt; 
-                    &lt;param-value&gt;log4j.properties&lt;/param-value&gt; 
+      <emphasis role="bold">&lt;servlet&gt;</emphasis>
+            &lt;servlet-name&gt;org.dbforms.ConfigServlet&lt;/servlet-name&gt;
+            &lt;servlet-class&gt;org.dbforms.ConfigServlet&lt;/servlet-class&gt;
+    &lt;init-param&gt;
+                    &lt;param-name&gt;log4j.configuration&lt;/param-name&gt;
+                    &lt;param-value&gt;log4j.properties&lt;/param-value&gt;
     &lt;/init-param&gt;
                 
-      <emphasis role="bold">&lt;init-param&gt;</emphasis> 
+      <emphasis role="bold">&lt;init-param&gt;</emphasis>
                     &lt;param-name&gt;
-      <emphasis role="bold">resourceBundle</emphasis>&lt;/param-name&gt; 
+      <emphasis role="bold">resourceBundle</emphasis>&lt;/param-name&gt;
                     &lt;param-value&gt;
-      <emphasis role="bold">ApplicationResources</emphasis>&lt;/param-value&gt; 
+      <emphasis role="bold">ApplicationResources</emphasis>&lt;/param-value&gt;
     
       <emphasis role="bold">&lt;/init-param&gt;</emphasis>
-            &lt;load-on-startup&gt;1&lt;/load-on-startup&gt; 
-  &lt;/servlet&gt; 
+            &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;
+  &lt;/servlet&gt;
     
     </screen>
   </sect1>
@@ -173,41 +173,41 @@
     <screen>
     &lt;%@ taglib uri="/WEB-INF/dbforms.tld" prefix="db" %&gt;
     
-        &lt;! - - Retrieving a message  - - &gt; 
+        &lt;! - - Retrieving a message  - - &gt;
         
         
-      <emphasis role="bold">&lt;db:message</emphasis> key="msg.bienvenue.1"/&gt; 
+      <emphasis role="bold">&lt;db:message</emphasis> key="msg.bienvenue.1"/&gt;
     
-        &lt;BR&gt;&lt;BR&gt; 
+        &lt;BR&gt;&lt;BR&gt;
     
         &lt;center&gt;
-      <emphasis role="bold">&lt;db:message</emphasis> key="msg.bienvenue.2"/&gt;&lt;/center&gt; 
+      <emphasis role="bold">&lt;db:message</emphasis> key="msg.bienvenue.2"/&gt;&lt;/center&gt;
     
-        &lt;BR&gt;&lt;BR&gt; 
+        &lt;BR&gt;&lt;BR&gt;
     
     </screen>
     <para>Another feature supported, is the ability to have dbForm button tags display language-specific captions.  This is achieved by setting the 'captionResource' attribute (in the dbform tag) to true.  When this feature is turned on, text in the caption attribute (in a button tag) is recognized as a key and is used to lookup text in the appropriate resource bundle.  If the key cannot be found, the caption value is displayed as is.
 </para>
     <screen>
     &lt;%@ taglib uri="/WEB-INF/dbforms.tld" prefix="db" %&gt;
-    &lt;! - - Lookup caption in associated resource bundle - - &gt; 
+    &lt;! - - Lookup caption in associated resource bundle - - &gt;
     
         &lt;db:form  tableName="myTable" 
-      <emphasis role="bold">captionResource="true" </emphasis>&gt; 
+      <emphasis role="bold">captionResource="true" </emphasis>&gt;
     
             &lt;db:gotoButton caption="
-      <emphasis role="bold">button.login</emphasis>" destination="/login.jsp" /&gt; 
+      <emphasis role="bold">button.login</emphasis>" destination="/login.jsp" /&gt;
             
             &lt;db:gotoButton caption="
-      <emphasis role="bold">button.logout</emphasis>" destination="/logout.jsp" /&gt; 
-     
-        &lt;/db:form&gt; 
+      <emphasis role="bold">button.logout</emphasis>" destination="/logout.jsp" /&gt;
+
+        &lt;/db:form&gt; 
      
     </screen>
     <para/>
   </sect1>
   <sect1>
-    <title>Setting the Pattern Attribue</title>
+    <title>Setting the Pattern Attribute</title>
     <para>Many tags make use of the <computeroutput>pattern</computeroutput> attribute.  For example,<screen>
     &lt;dateField pattern=&quot;date&quot;
     </screen>  To set values globally for 
@@ -232,4 +232,21 @@ As defaults, Dbforms is using the following if you do not specify the patterns f
  </para>
 
   </sect1>
+    <sect1>
+        <title>Additional Information</title>
+        <para>An article on using Unicode with DbForms 2.4rcX is available at either:</para>
+
+        <itemizedlist>
+            <listitem>
+                <para>
+                    <ulink url="http://www.javaworld.com/javaworld/jw-09-2004/jw-0906-unicode.html"><citetitle>javaworld</citetitle></ulink>
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    <computeroutput>dbforms/articles/usefull/Unicode_development_with_DbForms.html</computeroutput>
+                </para>
+            </listitem>
+        </itemizedlist>
+    </sect1>
 </chapter>
