@@ -1,0 +1,84 @@
+This is a guide to generate DbForms-jsps with the provided 
+XSL-Stylesheets for use inside a Struts Application with tiles-templating.
+
+
+1.) (Struts) Place the ForwardToUrlAction into a package of your 
+    application and add an action-mapping to your struts-config.xml
+    
+    Example:
+    
+    <action path="/showDbFormsPage" validate="false" type="at.milestonemedia.myapp.admin.struts.action.ForwardToUrlAction"/>
+
+
+2.) (Struts) Add the following properties to Struts' ApplicationResources.properties
+
+    Example:
+    dbforms.navigation.link.list=[List]
+    dbforms.navigation.link.menu=[Menu]
+    dbforms.detailpage.buttontext.save=save
+    dbforms.detailpage.buttontext.first=<< first
+    dbforms.detailpage.buttontext.previous=< previous
+    dbforms.detailpage.buttontext.next=next >
+    dbforms.detailpage.buttontext.last=last >>
+    dbforms.detailpage.buttontext.delete=delete
+    dbforms.detailpage.buttontext.new=new
+    dbforms.listpage.buttontext.new=new entry
+
+
+3.) Adjust the paths of the tiles-specific lines in the XSL-stylesheets 
+    to your application. You should be familiar with Struts-tiles to do that.
+    
+    Example:
+    .
+    .
+    <tiles:insert page="/my-module/layout/dealerextranetLayout.jsp" flush="true">
+	<tiles:put name="navigation" value="/my-module/tiles/navigation.jsp"/>
+	<tiles:put name="body" value="/my-module/pages/dbformspages/{$fileName_body}"/>
+	<tiles:put name="footer" value="/my-module/tiles/footer.jsp"/>
+    </tiles:insert>
+
+
+4.) Add following elements in the dbforms-config.xml file.
+
+    * date-format
+      Defines the format, date values should be displayed in,
+      on the generated jsps. Also used for jcal.
+      
+      Example: <date-format>dd.MM.yyyy</date-format>
+      
+    * number-format
+      Defines the format, number values should be displayed in,
+      on the generated jsps.
+      
+      Example: <number-format>#.#</number-format>
+    
+    * module-prefix
+      DbForms-tags aren't module-aware like Struts-tags. 
+      If you want to use DbForms inside a Struts-module, 
+      you have to specify the module-path in this element. 
+      If your DbForms-pages aren't inside a Struts-module 
+      leave this element empty.
+      
+      Example: <module-prefix>/my-module</module-prefix>
+    
+    * url-prefix
+      In order to work in Struts , the DbForms jsp pages have 
+      to be delivered to the client by a kind of forward-action 
+      which is part of this release (ForwardToUrlAction.java).
+      This action forwards to the URL provided by the request-parameter 
+      "forward". Links to generated DbForms-jsps will be prefixed 
+      with this elements value.
+      
+      Example: <url-prefix>/showDbFormsPage.do?forward=/dbformspages/</url-prefix>
+      Where "dbformspages" is the directory where your generated jsps will be.
+
+
+5.) Generate the jsps with the DevGUI as usual with "generate_struts_lists.xsl", 
+    "generate_struts_menu.xsl" and "generate_struts_singleforms.xsl"
+
+
+6.) The link in your application to the table-overview-page (/dbformspages/menu.jsp) should look like this.
+
+    <html:link onfocus="blur()" page="/showDbFormsPage.do?forward=/dbformspages/menu.jsp">
+        <bean:message key="webui.admin.navigation.link.legacydata"/>
+    </html:link>
