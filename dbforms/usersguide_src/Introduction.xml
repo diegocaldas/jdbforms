@@ -140,12 +140,9 @@
               <blockquote>
                 <para>Note:  Many drivers pass in JDBC properties using the URL such as:</para>
                 <screen>
-  &lt;<emphasis role="bold">dbconnection</emphasis>
+  &lt;<emphasis role="bold">dbconnection</emphasis> name = "jdbc:mysql://localhost/fashion<emphasis role="bold">?charSet=ISO-8859-1</emphasis>"                            
 
-                            name   = "jdbc:mysql://localhost/fashion
-                  <emphasis role="bold">?charSet=ISO-8859-1</emphasis>"
-                            
-                            ....
+  ....
                             
                 </screen>
                 <para>If your driver does not allow this and you need to pass in a property, please see 
@@ -241,8 +238,8 @@
           <para>The body tag is used for showing data-rows coming from the database, and for providing the user with functionality to edit that data. How many times the body tag and its sub-elements get executed (evaluated  rendered) depends on the value of the 
             <emphasis role="bold">maxRows</emphasis> attribute of the form  element (and of course, on the number of datasets actually stored in the table)
           </para>
-          <para>maxRows = n    =&gt; body gets executed n times at maximum (with n ( ()</para>
-          <para>maxRows = *     =&gt; body gets executed for every row in the table (=&gt;endless form)</para>
+          <para>maxRows = n =&gt; body gets executed n times at maximum (with n ( ()</para>
+          <para>maxRows = * =&gt; body gets executed for every row in the table (=&gt;endless form)</para>
           <para>
             <emphasis role="bold">Nested forms</emphasis>
           </para>
