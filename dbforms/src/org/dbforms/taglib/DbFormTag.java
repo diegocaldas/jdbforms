@@ -1720,7 +1720,6 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
       } catch (IOException ioe) {
          logCat.error("::doEndTag - IOException", ioe);
       }
-
       logCat.info("end reached of " + tableName);
 
       return EVAL_PAGE;

@@ -155,10 +155,10 @@ public class TestBooksSingle2 extends HttpTestCase {
       list.add(new KeyValuePair("ac_next_1_4", "next"));
       list.add(new KeyValuePair("k_1_0@root", "0%3A1%3A1-2%3A1%3A1"));
       list.add(new KeyValuePair("k_1_1@root", "0%3A1%3A2-2%3A1%3A1"));
-      post("http://localhost/bookstore/servlet/control;jsessionid=2A16D33176377CD4E9B75073252FA5D2", list);
+      post("http://localhost/bookstore/servlet/control", list);
       printResponse();
-      assertTrue(responseContains("Hijacking through the Galaxy 3"));
-      assertTrue(responseContains("Hijacking through the Galaxy 4"));
+      assertTrue(responseContains("Hijacking through the Galaxy 1"));
+      assertTrue(responseContains("Hijacking through the Galaxy 2"));
       assertTrue(responseContains("value=\"42-1\""));
       assertTrue(responseContains("value=\"42-2\""));
 
@@ -196,10 +196,49 @@ public class TestBooksSingle2 extends HttpTestCase {
       list.add(new KeyValuePair("k_1_0@root", "0%3A1%3A3-2%3A1%3A2"));
       list.add(new KeyValuePair("k_1_1@root", "0%3A1%3A4-2%3A1%3A2"));
       post("http://localhost/bookstore/servlet/control", list);
-      assertTrue(responseContains("Hijacking through the Galaxy 3"));
-      assertTrue(responseContains("Hijacking through the Galaxy 4"));
+      assertTrue(responseContains("Hijacking through the Galaxy 1"));
+      assertTrue(responseContains("Hijacking through the Galaxy 2"));
       assertTrue(responseContains("value=\"42-1\""));
       assertTrue(responseContains("value=\"42-42\""));
+
+      list = new ArrayList();
+      list.add(new KeyValuePair("invtable", "1"));
+      list.add(new KeyValuePair("invname_1", ""));
+      list.add(new KeyValuePair("autoupdate_1", "false"));
+      list.add(new KeyValuePair("fu_1", "/tests/testBOOKSSingle2.jsp"));
+      list.add(new KeyValuePair("lang", "de"));
+      list.add(new KeyValuePair("source", "/bookstore/tests/testBOOKSSingle2.jsp"));
+      list.add(new KeyValuePair("customEvent", ""));
+      list.add(new KeyValuePair("firstpos_1", "0%3A1%3A3-2%3A1%3A2"));
+      list.add(new KeyValuePair("lastpos_1", "0%3A1%3A4-2%3A1%3A2"));
+      list.add(new KeyValuePair("f_1_0@root_0", "3"));
+      list.add(new KeyValuePair("of_1_0@root_0", "3"));
+      list.add(new KeyValuePair("pf_1_0@root_0", "#,##0"));
+      list.add(new KeyValuePair("f_1_0@root_1", "42-1"));
+      list.add(new KeyValuePair("of_1_0@root_1", "42-1"));
+      list.add(new KeyValuePair("f_1_0@root_2", "2"));
+      list.add(new KeyValuePair("of_1_0@root_2", "2"));
+      list.add(new KeyValuePair("pf_1_0@root_2", "#,##0"));
+      list.add(new KeyValuePair("f_1_0@root_3", "Hijacking through the Galaxy 1"));
+      list.add(new KeyValuePair("of_1_0@root_3", "Hijacking through the Galaxy 1"));
+      list.add(new KeyValuePair("f_1_1@root_0", "4"));
+      list.add(new KeyValuePair("of_1_1@root_0", "4"));
+      list.add(new KeyValuePair("pf_1_1@root_0", "#,##0"));
+      list.add(new KeyValuePair("f_1_1@root_1", "42-2"));
+      list.add(new KeyValuePair("of_1_1@root_1", "42-42"));
+      list.add(new KeyValuePair("f_1_1@root_2", "2"));
+      list.add(new KeyValuePair("of_1_1@root_2", "2"));
+      list.add(new KeyValuePair("pf_1_1@root_2", "#,##0"));
+      list.add(new KeyValuePair("f_1_1@root_3", "Hijacking through the Galaxy 2"));
+      list.add(new KeyValuePair("of_1_1@root_3", "Hijacking through the Galaxy 2"));
+      list.add(new KeyValuePair("ac_update_1_1@root_8", "Save"));
+      list.add(new KeyValuePair("k_1_0@root", "0%3A1%3A3-2%3A1%3A2"));
+      list.add(new KeyValuePair("k_1_1@root", "0%3A1%3A4-2%3A1%3A2"));
+      post("http://localhost/bookstore/servlet/control", list);
+      assertTrue(responseContains("Hijacking through the Galaxy 1"));
+      assertTrue(responseContains("Hijacking through the Galaxy 2"));
+      assertTrue(responseContains("value=\"42-1\""));
+      assertTrue(responseContains("value=\"42-2\""));
 
       list = new ArrayList();
       list.add(new KeyValuePair("invtable", "1"));
@@ -236,8 +275,8 @@ public class TestBooksSingle2 extends HttpTestCase {
       list.add(new KeyValuePair("k_1_1@root", "0%3A1%3A4-2%3A1%3A2"));
       post("http://localhost/bookstore/servlet/control", list);
       printResponse();
-      assertTrue(responseContains("Test null value"));
-      assertTrue(responseContains("Luca's favorite thing to eat is  \"delicious Italian pasta\""));
+      assertTrue(responseContains("Hijacking through the Galaxy 3"));
+      assertTrue(responseContains("Hijacking through the Galaxy 4"));
 
    }
 
