@@ -1,4 +1,4 @@
-<project name="dbforms" default="createReleaseFiles" basedir=".">
+<project name="dbforms" default="default" basedir=".">
 
     <!-- 
 
@@ -132,7 +132,66 @@ Happy coding!
         <echo message="end of xsl translation "/>
     </target>
 
-   
+     <!--
+     -  JAVADOC TARGET
+     -
+     -  Build the API javadoc documentation.
+     -->
+  <target name="javadoc" depends="jar_classes">
+    <javadoc packagenames = "org.dbforms.*" 
+             sourcepath   = "${javasrc.dir}" 
+             destdir      = "${dist.dir}/api" 
+             author       = "true" 
+             version      = "true" 
+             use          = "true" 
+             windowtitle  = "DbForms API" 
+             doctitle     = "DbForms API" 
+             bottom       = "DbForms API" 
+             private      = "false">
+
+      <classpath refid="classpath"/>
+
+      <!-- external links to the javadocs api -->
+      <link href="http://java.sun.com/j2se/1.3/docs/api/"/>
+      <link href="http://java.sun.com/products/jdbc/jdbc20.stdext.javadoc/"/>
+      <link href="http://java.sun.com/products/servlet/2.2/javadoc/"/>
+      <link href="http://xml.apache.org/xerces2-j/javadocs/api/"/>
+      <link href="http://xml.apache.org/xalan-j/apidocs/"/>
+    </javadoc>
+  </target>
+
+  <target name="generate_taglib_htmldocs">
+
+    <!-- Generate  HTML reference documentation within doc/html from taglib-docu.xml -->
+    <echo message="begin xsl translation to generate HTML documentation  "/>
+
+    <delete file = "{dist.dir}/taglib/DbFormsTags.html"/>
+    <echo message="style 1"/>
+    <style 
+    	   style = "${etc.dir}/tldoc2html.xsl" 
+           in    = "${etc.dir}/taglib_docu.xml" 
+           out   = "${dist.dir}/taglib/lDbFormsTags.html"
+     >
+     </style>
+
+    <delete file="${taglibdoc.dir}/DbFormsTags_TocSem.html"/>
+    <echo message="style 2"/>
+    <style style = "${etc.dir}/tldoc2html_toc.xsl" 
+           in    = "${etc.dir}/taglib_docu.xml" 
+           out   = "${dist.dir}/taglib/DbFormsTags_TocSem.html"/>
+
+    <delete file = "${taglibdoc.dir}/DbFormsTags_TocAlph.html"/>
+    <echo message="style 3"/>
+    <style style = "${etc.dir}/tldoc2html_toc.xsl" 
+           in    = "${etc.dir}/taglib_docu.xml" 
+           out   = "${dist.dir}/taglib/DbFormsTags_TocAlph.html">
+      <param name="sortTagsAlphabetically" expression="true"/>
+    </style>
+    <echo message="end of xsl translation "/>
+  </target>
+
+  <target name="default" depends="generate_taglib, javadoc, generate_taglib_htmldocs"/>
+
     
     <!-- make an example app -->
 
