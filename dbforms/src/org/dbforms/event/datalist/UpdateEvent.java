@@ -30,9 +30,13 @@ import javax.servlet.http.HttpServletRequest;
 import org.dbforms.util.Util;
 import org.dbforms.util.ParseUtil;
 import org.dbforms.util.FieldValues;
+import org.dbforms.util.SqlUtil;
+
 import org.dbforms.config.GrantedPrivileges;
 import org.dbforms.config.DbFormsConfig;
+
 import org.apache.log4j.Category;
+
 import org.dbforms.event.DatabaseEvent;
 import org.dbforms.event.MultipleValidationException;
 import org.dbforms.event.DbEventInterceptor;
@@ -49,7 +53,7 @@ import org.dbforms.event.datalist.dao.DataSourceFactory;
  */
 public class UpdateEvent extends DatabaseEvent
 {
-//	logging category for this class
+   // logging category for this class
    static Category logCat = Category.getInstance(UpdateEvent.class.getName()); 
 
 
@@ -113,7 +117,8 @@ public class UpdateEvent extends DatabaseEvent
       // Apply given security contraints (as defined in dbforms-config.xml)
       if (!hasUserPrivileg(GrantedPrivileges.PRIVILEG_UPDATE))
       {
-         throw new SQLException("Sorry, updating table " + table.getName()
+         throw new SQLException("Sorry, updating table " 
+                                + table.getName()
                                 + " is not granted for this session.");
       }
 
@@ -143,22 +148,14 @@ public class UpdateEvent extends DatabaseEvent
             // synchronize data which may be changed by interceptor:
             table.synchronizeData(fieldValues, associativeArray);
          }
-         
-		 // [2003.07.10 - fossato] catch and throw without logging ? Is not useful...
-		 //                        can we delethe the try statement ??
-         //
          catch (SQLException sqle)
          {
-            // PG = 2001-12-04
-            // No need to add extra comments, just re-throw exceptions as SqlExceptions
-            //throw new SQLException(sqle.getMessage());
+			SqlUtil.logSqlException(sqle, "::processEvent - SQL exception during PRE_UPDATE interceptors procession");
             throw sqle;
          }
          catch (MultipleValidationException mve)
          {
-            // PG, 2001-12-14
-            // Support for multiple error messages in one interceptor
-            //throw new MultipleValidationException(mve.getMessages());
+			logCat.error("::processEvent - MVE exception during PRE_UPDATE interceptors procession", mve);
             throw mve;
          }
       }
@@ -169,7 +166,7 @@ public class UpdateEvent extends DatabaseEvent
 
       if (Util.isNull(keyValuesStr))
       {
-         logCat.error("At least one key is required per table, check your dbforms-config.xml");
+         logCat.error("::processEvent - at least one key is required per table, check your dbforms-config.xml");
          
          return;
       }
@@ -189,9 +186,7 @@ public class UpdateEvent extends DatabaseEvent
          }
          catch (SQLException sqle)
          {
-            // PG = 2001-12-04
-            // No need to add extra comments, just re-throw exceptions as SqlExceptions
-            //throw new SQLException(sqle.getMessage());
+			SqlUtil.logSqlException(sqle, "::processEvent - SQL exception during POST_UPDATE interceptors procession");
 			throw sqle;
          }
       }

@@ -150,7 +150,7 @@ public class DeleteEvent extends DatabaseEvent
          }
          catch (SQLException sqle)
          {
-			SqlUtil.logSqlException(sqle, "SQL exception during PRE_DELETE interceptors procession");
+			SqlUtil.logSqlException(sqle, "::processEvent - SQL exception during PRE_DELETE interceptors procession");
 			throw sqle;
          }
          catch (MultipleValidationException mve)
@@ -165,7 +165,7 @@ public class DeleteEvent extends DatabaseEvent
 
       if (Util.isNull(keyValuesStr))
       {
-         logCat.error("At least one key is required per table, check your dbforms-config.xml");
+         logCat.error("::processEvent - At least one key is required per table, check your dbforms-config.xml");
 
          return;
       }
@@ -185,7 +185,7 @@ public class DeleteEvent extends DatabaseEvent
          }
          catch (SQLException sqle)
          {
-			SqlUtil.logSqlException(sqle, "SQL exception during POST_DELETE interceptors procession");
+			SqlUtil.logSqlException(sqle, "::processEvent - SQL exception during POST_DELETE interceptors procession");
 			throw sqle;
          }
       }

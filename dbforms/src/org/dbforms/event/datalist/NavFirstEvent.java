@@ -21,6 +21,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.event.datalist;
+
+
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -36,32 +38,32 @@ import org.dbforms.event.datalist.dao.DataSourceList;
 import org.dbforms.event.datalist.dao.DataSourceFactory;
 
 import org.dbforms.util.ResultSetVector;
-import org.dbforms.util.ParseUtil;
 import org.dbforms.util.FieldValue;
 
 
-
-/****
- *
- * <p>This event scrolls the current ResultSet to its first row of data</p>
- *
- * <p>Works with new factory classes</p>
- *
+/**
+ * This event scrolls the current ResultSet to its first row of data.
+ * <br>
+ * Works with new factory classes.
+ * 
  * @author Henner Kollmann <Henner.Kollmann@gmx.de>
  */
 public class NavFirstEvent extends NavigationEvent
 {
-   static Category logCat = Category.getInstance(NavFirstEvent.class.getName()); // logging category for this class
+   // logging category for this class
+   static Category logCat = Category.getInstance(NavFirstEvent.class.getName()); 
+
 
    /**
     * Creates a new NavFirstEvent object.
     *
-    * @param action DOCUMENT ME!
-    * @param request DOCUMENT ME!
-    * @param config DOCUMENT ME!
+    * @param action  the action string
+    * @param request the request object
+    * @param config  the configuration object
     */
-   public NavFirstEvent(String action, HttpServletRequest request,
-      DbFormsConfig config)
+   public NavFirstEvent(String             action, 
+                        HttpServletRequest request,
+                        DbFormsConfig      config)
    {
       super(action, request, config);
    }
@@ -70,32 +72,39 @@ public class NavFirstEvent extends NavigationEvent
    /**
     * Creates a new NavFirstEvent object.
     *
-    * @param table DOCUMENT ME!
-    * @param config DOCUMENT ME!
+    * @param table the input table object
+    * @param config the configuration object
     */
-   public NavFirstEvent(Table table, HttpServletRequest request,
-      DbFormsConfig config)
+   public NavFirstEvent(Table              table, 
+                        HttpServletRequest request,
+                        DbFormsConfig      config)
    {
       super(table, request, config);
    }
 
+
    /**
-    * DOCUMENT ME!
-    *
-    * @param childFieldValues DOCUMENT ME!
-    * @param orderConstraint DOCUMENT ME!
-    * @param count DOCUMENT ME!
-    * @param firstPost DOCUMENT ME!
-    * @param lastPos DOCUMENT ME!
-    * @param con DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    *
-    * @throws SQLException DOCUMENT ME!
-    */
+	*  Process the current event.
+	*
+	* @param  childFieldValues FieldValue array used to restrict a set in a subform where
+	*                          all "childFields" in the  resultset match their respective
+	*                          "parentFields" in main form
+	* @param  orderConstraint FieldValue array used to build a cumulation of rules for ordering
+	*                         (sorting) and restricting fields
+	* @param  count           record count
+	* @param  firstPosition   a string identifying the first resultset position
+	* @param  lastPosition    a string identifying the last resultset position
+	* @param  con             the JDBC Connection object
+	* @return  a ResultSetVector object
+	* @exception  SQLException if any error occurs
+	*/
    public ResultSetVector processEvent(FieldValue[] childFieldValues,
-      FieldValue[] orderConstraint, int count, String firstPosition,
-      String lastPosition, Connection con, String dbConnectionName)
+                                       FieldValue[] orderConstraint, 
+                                       int          count, 
+                                       String       firstPosition,
+                                       String       lastPosition, 
+                                       Connection   con, 
+                                       String       dbConnectionName)
       throws SQLException
    {
       logCat.info("==>NavFirstEvent.processEvent");
