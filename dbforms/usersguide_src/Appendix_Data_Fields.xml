@@ -291,7 +291,7 @@
           <row>
             <entry>ac_reload_[tableId]_[buttonId]_fue</entry>
             <entry></entry>
-            <entry>reload event. Reloads all data from database. Changed fields stay changed</entry>
+            <entry>reload event. Reloads all data from current dataset. Query is not reexecuted! Changed fields stay changed</entry>
           </row>
           <row>
             <entry>ac_reload_[tableId]_[buttonId]_fu</entry>
@@ -315,6 +315,21 @@
           </row>
           <row>
             <entry>ac_reload_[tableId]_ins_[buttonId]_fue</entry>
+            <entry></entry>
+            <entry></entry>
+          </row>
+          <row>
+            <entry>ac_reload_[tableId]_force_[buttonId]</entry>
+            <entry></entry>
+            <entry>force the reload event. Reloads all data from database. Changed fields will be reloaded</entry>
+          </row>
+          <row>
+            <entry>ac_reload_[tableId]_force_[buttonId]_fu</entry>
+            <entry></entry>
+            <entry></entry>
+          </row>
+          <row>
+            <entry>ac_reload_[tableId]_force_[buttonId]_fue</entry>
             <entry></entry>
             <entry></entry>
           </row>
