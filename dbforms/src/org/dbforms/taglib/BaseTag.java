@@ -61,11 +61,11 @@ public class BaseTag extends BodyTagSupport
       if ((port != 80)  && (port !=443))
       {
          buf.append(":");
-         buf.append(port);
+		 buf.append(String.valueOf(port));
       }
 
       buf.append(request.getRequestURI());
-      buf.append("\">");
+      buf.append("\"/>");
 
       JspWriter out = pageContext.getOut();
 
