@@ -55,7 +55,7 @@ public class DbNavCopyButtonTag extends DbBaseButtonTag {
 
 		try {
 			StringBuffer tagBuf = new StringBuffer();
-			String tagName = EventType.EVENT_NAVIGATION_TRANSFER_COPY + table.getId();
+			String tagName = EventType.EVENT_NAVIGATION_TRANSFER_COPY + table.getId() + "_" + Integer.toString(getUniqueID());
 			if (followUp != null) {
 				tagBuf.append(getDataTag(tagName, "fu", followUp));
 			}

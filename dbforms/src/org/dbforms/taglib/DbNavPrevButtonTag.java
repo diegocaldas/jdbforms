@@ -83,7 +83,7 @@ public class DbNavPrevButtonTag extends DbBaseButtonTag
       try
       {
          StringBuffer tagBuf  = new StringBuffer();
-         String       tagName = EventType.EVENT_NAVIGATION_TRANSFER_PREV + table.getId();
+         String       tagName = EventType.EVENT_NAVIGATION_TRANSFER_PREV + table.getId() + "_" + Integer.toString(getUniqueID());
 
          if (stepWidth != null)
          {

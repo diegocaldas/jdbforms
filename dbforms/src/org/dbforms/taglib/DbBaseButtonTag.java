@@ -80,7 +80,14 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag
    /** DOCUMENT ME! */
    protected String border; // used to set html border attribute"
 
+	// logging category for this class
+	private static int uniqueID = 0;
 
+   protected static int getUniqueID()
+   {
+		uniqueID++;
+		return uniqueID; 
+   }
 
 	public int doStartTag() throws javax.servlet.jsp.JspException 
 	{

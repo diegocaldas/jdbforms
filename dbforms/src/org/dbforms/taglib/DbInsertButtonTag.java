@@ -38,16 +38,9 @@ import org.apache.log4j.Category;
  */
 public class DbInsertButtonTag extends DbBaseButtonTag
 {
-   static Category logCat = Category.getInstance(DbInsertButtonTag.class
+   private static Category logCat = Category.getInstance(DbInsertButtonTag.class
          .getName());
 
-   // logging category for this class
-   private static int uniqueID;
-
-   static
-   {
-      uniqueID = 1;
-   }
 
    private String showAlways = "false";
 
@@ -64,8 +57,6 @@ public class DbInsertButtonTag extends DbBaseButtonTag
 
 		super.doStartTag();
 		
-      DbInsertButtonTag.uniqueID++; // make sure that we don't mix up buttons
-
       logCat.info("pos DbInsertButtonTag 1");
 
       if (!"true".equalsIgnoreCase(showAlways)
@@ -96,7 +87,7 @@ public class DbInsertButtonTag extends DbBaseButtonTag
 
          // PG - Render the name unique
          tagNameBuf.append("_");
-         tagNameBuf.append(uniqueID);
+         tagNameBuf.append(Integer.toString(getUniqueID()));
 
          String tagName = tagNameBuf.toString();
 

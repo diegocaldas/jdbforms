@@ -118,7 +118,7 @@ public class DbUpdateButtonTag extends DbBaseButtonTag
 
          // PG - Render the name unique
          tagNameBuf.append("_");
-         tagNameBuf.append(uniqueID);
+         tagNameBuf.append(Integer.toString(getUniqueID()));
 
          String tagName = tagNameBuf.toString();
 

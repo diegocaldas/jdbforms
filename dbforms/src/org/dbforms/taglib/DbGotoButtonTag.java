@@ -40,8 +40,6 @@ public class DbGotoButtonTag extends DbBaseButtonTag
    private String     keyToKeyToDestPos;
 	private String     singleRow = "false";
 
-   private static int uniqueID = 1;
-
 
    /**
     * DOCUMENT ME!
@@ -165,11 +163,9 @@ public class DbGotoButtonTag extends DbBaseButtonTag
    {
       super.doStartTag();
 
-      DbGotoButtonTag.uniqueID++; // make sure that we don't mix up buttons
-
       try
       {
-			String       tagName = EventType.EVENT_NAVIGATION_TRANSFER_GOTO + table.getId();
+			String       tagName = EventType.EVENT_NAVIGATION_TRANSFER_GOTO + table.getId() + "_" + Integer.toString(getUniqueID());
 
          StringBuffer tagBuf = new StringBuffer();
 

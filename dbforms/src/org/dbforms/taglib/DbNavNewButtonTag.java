@@ -72,7 +72,7 @@ public class DbNavNewButtonTag extends DbBaseButtonTag
          int    tableId = ((destTable != null) && (destTable.length() != 0))
             ? config.getTableByName(destTable).getId() : table.getId();
 
-         String tagName = EventType.EVENT_NAVIGATION_TRANSFER_NEW + tableId;
+         String tagName = EventType.EVENT_NAVIGATION_TRANSFER_NEW + tableId + "_" + Integer.toString(getUniqueID());
 
          if (followUp != null)
          {
