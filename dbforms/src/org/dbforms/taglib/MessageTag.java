@@ -16,72 +16,67 @@ import javax.servlet.ServletContext;
 
 public class MessageTag extends TagSupport {
 
-	private static MessageResources messages = null;
-	
-	private String key = null;
-        private String param = null;
+   private static MessageResources messages = null;
 
-	public void setKey(String newKey) {
-		key = newKey;
-	}
+   private String key = null;
+   private String param = null;
 
-	public String getKey() {
-		return key;
-	}
+   public void setKey(String newKey) {
+      key = newKey;
+   }
 
-        public void setParam(String newParam) {
-            param = newParam;
-	}
+   public String getKey() {
+      return key;
+   }
 
-	public String getParam() {
-		return param;
-	}
+   public void setParam(String newParam) {
+      param = newParam;
+   }
 
-	public int doStartTag() throws javax.servlet.jsp.JspException {
-		return SKIP_BODY;
-  	} 
-	
-	public int doEndTag() throws JspException {
-		
-		if(getKey()!=null){
-			Locale locale = MessageResources.getLocale((HttpServletRequest)pageContext.getRequest());
-			ServletContext application = pageContext.getServletContext();
-                        String message; 
-			if ((param == null) || (param.length() == 0)) {
-         	message = MessageResources.getMessage( getKey(), locale);
+   public String getParam() {
+      return param;
+   }
+
+   public int doStartTag() throws javax.servlet.jsp.JspException {
+      return SKIP_BODY;
+   }
+
+   public int doEndTag() throws JspException {
+
+      if (getKey() != null) {
+         Locale locale = MessageResources.getLocale((HttpServletRequest) pageContext.getRequest());
+         String message;
+         if ((param == null) || (param.length() == 0)) {
+            message = MessageResources.getMessage(getKey(), locale);
          } else {
             message = MessageResources.getMessage(getKey(), locale, splitString(param, ","));
          }
-	
-			try{
-				if(message!=null) {
-					pageContext.getOut().write(message);
-				} else {
-					pageContext.getOut().write(getKey());
-					if (param != null) { 
-   					pageContext.getOut().write("&nbsp;");
-   					pageContext.getOut().write(param);
-					}
-				}
-			} catch (java.io.IOException ioe) {
-				throw new JspException("IO Error: " + ioe.getMessage());
-			}
+         try {
+            if (message != null) {
+               pageContext.getOut().write(message);
+            } else {
+               pageContext.getOut().write(getKey());
+               if (param != null) {
+                  pageContext.getOut().write("&nbsp;");
+                  pageContext.getOut().write(param);
+               }
+            }
+         } catch (java.io.IOException ioe) {
+            throw new JspException("IO Error: " + ioe.getMessage());
+         }
+      }
+      return EVAL_PAGE;
+   }
 
-		}			
-	
-		return EVAL_PAGE;
-	}
+   private String[] splitString(String str, String delimeter) {
+      StringTokenizer st = new StringTokenizer(str, delimeter);
+      int i = 0;
+      String[] result = new String[st.countTokens()];
+      while (st.hasMoreTokens()) {
+         result[i] = st.nextToken();
+         i++;
+      }
+      return result;
+   }
 
-        private String[] splitString(String str, String delimeter) {
-		StringTokenizer st = new StringTokenizer(str, delimeter);
-		int i = 0;
-		String [] result = new String [st.countTokens()];
-                while (st.hasMoreTokens()) {
-			result[i] = st.nextToken();
-                        i++;
-                }                        
-		return result;
-	}
-	
 }
-
