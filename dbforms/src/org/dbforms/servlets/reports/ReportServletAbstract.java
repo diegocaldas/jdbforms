@@ -269,7 +269,8 @@ public abstract class ReportServletAbstract extends HttpServlet {
 			for (int i = 0; i < reportdirs.length; i++) {
 				reportFile = context
 						.getRealPath(reportdirs[i] + reportFileName) ;
-				if (FileUtil.fileExists(reportFile + "." + getReportFileExtension())) {
+				String testName = reportFile  + getReportFileExtension();
+				if (FileUtil.fileExists(testName)) {
 					found = true;
 					break;
 				}

@@ -74,7 +74,7 @@ public class CSVReportServlet extends LineReportServletAbstract {
 	}
 
 	protected String getFileExtension() {
-		return "csv";
+		return ".csv";
 	}
 
 	private PrintWriter pw;

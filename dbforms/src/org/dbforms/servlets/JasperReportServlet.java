@@ -73,7 +73,7 @@ public class JasperReportServlet extends ReportServletAbstract {
 	private static Log logCat = LogFactory.getLog(JasperReportServlet.class
 			.getName());
 
-	private static final String REPORTFILEEXTENSION = "jrxml";
+	private static final String REPORTFILEEXTENSION = ".jrxml";
 
 	/** DOCUMENT ME! */
 	private static final String REPORTNAMEPARAM = "reportname";
@@ -163,15 +163,15 @@ public class JasperReportServlet extends ReportServletAbstract {
 					if ("PDF".equals(outputFormat)) {
 						res.mimeType = "application/pdf";
 						res.data = exportToPDF(jPrint);
-						fName = FileUtil.basename(reportFileFullName, "pdf");
+						fName = FileUtil.basename(reportFileFullName) + ".pdf";
 					} else if ("XLS".equals(outputFormat)) {
 						res.mimeType = "application/msexcel";
 						res.data = exportToXLS(jPrint);
-						fName = FileUtil.basename(reportFileFullName, "xls");
+						fName = FileUtil.basename(reportFileFullName) + ".xls";
 					} else if ("CSV".equalsIgnoreCase(outputFormat)) {
 						res.mimeType = "text/comma-separated-values";
 						res.data = exportToCSV(jPrint);
-						fName = FileUtil.basename(reportFileFullName, "csv");
+						fName = FileUtil.basename(reportFileFullName) + ".csv";
 					}
 					res.fileName = ParseUtil.getParameter(request, REPORTNAMEPARAM, fName);
 					jPrint = null;

@@ -102,7 +102,7 @@ public abstract class LineReportServletAbstract extends ReportServletAbstract {
 	}
 
 	protected String getReportFileExtension() {
-		return "xr";
+		return ".xr";
 	}
 
 	protected void writeHeader(String[] header) throws Exception {
@@ -243,7 +243,7 @@ public abstract class LineReportServletAbstract extends ReportServletAbstract {
 			HttpServletRequest request, HttpServletResponse response) {
 
 		try {
-			File f = new File(reportFileFullName);
+			File f = new File(reportFileFullName + getReportFileExtension());
 			BufferedReader in = new BufferedReader(new FileReader(f));
 			String line1 = in.readLine();
 			String line2 = in.readLine();
