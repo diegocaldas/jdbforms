@@ -80,7 +80,8 @@
               The controller servlet forwards the client to the target resource referred from the 
               <computeroutput>followUp</computeroutput>
               attribute of the jsp form if there are no errors.
-              Else redirects to the resource specified by the <computeroutput>followUpOnError</computeroutput> form attribute.
+              Else redirects to the resource specified by the 
+              <computeroutput>followUpOnError</computeroutput> form attribute.
             </para>         
           </listitem>
 
@@ -198,7 +199,7 @@
       This <ulink url="./images/figures/uml/sequence/datalist-gotoEvent.processEvent.usd.png">diagram</ulink>
       shows the interaction between the <computeroutput>Controller</computeroutput> object, the 
       <computeroutput>GotoEvent</computeroutput> object and all the other actors that are used 
-      to process this database event.
+      to process this navigation event.
     </para>
     <sect2>
       <title>Steps</title>
@@ -215,7 +216,7 @@
           <listitem>
             <para>
               The <computeroutput>GotoEvent</computeroutput> object parses the position string 
-              and builds a FieldValues data structure representing the values 
+              and build a FieldValues data structure representing the values 
               of the fields decoded from that position.
               The position string uses the following format:
               <programlisting>
@@ -237,23 +238,23 @@
           <listitem>
             <para>
               Having the FieldValues data for the input position, 
-              the <computeroutput>GotoEvent</computeroutput> object tries to build
+              the <computeroutput>GotoEvent</computeroutput> object try to build
               the key position string.
               It uses the same format as position string:
               <programlisting>
   field(0).id : field(0).length : field(0).value - ... - field(n).id : field(n).length : field(n).value
               </programlisting>
-              but contains data only for the fields that define the key set (or fields set to sortable="true" in dbforms-config.xml) for the current table.
+              but contains data only for the fields that define the key set for the current table.
             </para>         
           </listitem>
 
           <listitem>
             <para>
               The <computeroutput>GotoEvent</computeroutput> object gets the
-              <computeroutput>DataSourceList</computeroutput> instance and removes the 
+              <computeroutput>DataSourceList</computeroutput> instance and remove the 
               <computeroutput>DataSourceFactory</computeroutput> associated to the current table
-              and to the current queryString from its internal list. 
-              (queryString example value:  
+              and to the current the current request URI from its internal list. 
+              (the current request URI example value:  
                <computeroutput>/bookstore_v1_1_x_20030819/tests/testAUTHOR_list.jsp?AUTHOR</computeroutput>)
             </para>         
           </listitem>
@@ -281,13 +282,17 @@
     </sect2>
   </sect1>
 
+
+
+
+
   <sect1>
     <title>The NavNextEvent</title>
     <para>
       This <ulink url="./images/figures/uml/sequence/datalist-navNextEvent.processEvent.usd.png">diagram</ulink>
       shows the interaction between the <computeroutput>Controller</computeroutput> object, the 
       <computeroutput>NavNextEvent</computeroutput> object and all the other actors that are used 
-      to process this database event.
+      to process this navigation event.
     </para>
     <para>
       <emphasis role="bold">Note</emphasis>: 
@@ -355,6 +360,108 @@
               <computeroutput>DataSourceFactory.getLast</computeroutput> to obtain
               the last records from the current table 
               (it simulates a <computeroutput>NavLastEvent</computeroutput> event).
+            </para>         
+          </listitem>
+
+        </itemizedlist>
+      </para>
+    </sect2>
+  </sect1>
+
+
+
+  <sect1>
+    <title>The InsertEvent</title>
+    <para>
+      This <ulink url="./images/figures/uml/sequence/datalist-navInsertEvent.processEvent.usd.png">diagram</ulink>
+      shows the interaction between the <computeroutput>Controller</computeroutput> object, the 
+      <computeroutput>InsertEvent</computeroutput> object and all the other actors that are used 
+      to process this database event.
+    </para>
+    <sect2>
+      <title>Steps</title>
+      <para>
+        <itemizedlist mark="opencircle">
+
+          <listitem>
+            <para>
+              The <computeroutput>Controller</computeroutput> servlet calls the InsertEvent's
+              <computeroutput>processEvent</computeroutput> method.
+            </para>         
+          </listitem>
+
+          <listitem>
+            <para>
+              The <computeroutput>InsertEvent</computeroutput> object checks if the current user 
+              has got the INSERT privilege.
+            </para>         
+          </listitem>
+
+          <listitem>
+            <para>
+              The <computeroutput>InsertEvent</computeroutput> object builds a 
+              <computeroutput>FieldValues</computeroutput> object representing 
+              the set of <computeroutput>FieldValue</computeroutput> objects to process.
+              Then it copy the <computeroutput>FieldValues</computeroutput> 
+              data into a new <computeroutput>fieldValueHashTable</computeroutput> 
+              object that will be used as interceptor's input parameter.
+            </para>         
+          </listitem>
+
+          <listitem>
+            <para>
+              The <computeroutput>InsertEvent</computeroutput> object 
+              checks if there is any interceptor object binded to the current main table.
+              If yes, executes its <computeroutput>PRE_INSERT</computeroutput> hook method.
+            </para>         
+            <para>
+              Then the <computeroutput>InsertEvent</computeroutput> object  
+              synchronizes data from the <computeroutput>fieldValueHashTable</computeroutput> structure used as
+              interceptor's input parameter (the hash table could contains values modified by the interceptor code) 
+              to the original <computeroutput>FieldValues</computeroutput> object 
+              (that will be used by the database insert operation).
+            </para>
+          </listitem>
+
+          <listitem>
+            <para>
+              The <computeroutput>InsertEvent</computeroutput> object builds a 
+              <computeroutput>FieldValues</computeroutput> object representing 
+              the set of <computeroutput>FieldValue</computeroutput> objects to process.
+              Then it copy the <computeroutput>FieldValues</computeroutput> 
+              data into a new <computeroutput>fieldValueHashTable</computeroutput> 
+              object that will be used as interceptor's input parameter.
+            </para>         
+          </listitem>
+
+         <listitem>
+            <para>
+              The <computeroutput>InsertEvent</computeroutput> object calls the 
+              <computeroutput>checkSufficentValues</computeroutput> method to 
+              check a list of conditions on the the input FieldValues object:
+              
+              <itemizedlist>
+                <listitem>
+                  it must contains the same number of fields as the current main Table
+                </listitem>
+                <listitem>
+                  any autoInc field must NOT have a related FieldValue object (generated by a request
+                  parameter) because that field value must be calculated by the underlying RDBMS
+                </listitem>
+              <itemizedlist>
+
+               if all the conditions above are true, the system continues the execution of the event flow,
+               else it generates a SQLException that stop the event procession.
+            </para>         
+          </listitem>
+
+          <listitem>
+            <para>
+              The <computeroutput>InsertEvent</computeroutput> object retrieve the 
+              <computeroutput>DataSourceFactory</computeroutput> and executes its
+              <computeroutput>doInsert</computeroutput> method to store the data
+              contained into the  <computeroutput>FieldValues</computeroutput> object
+              into the underlying database.
             </para>         
           </listitem>
 
