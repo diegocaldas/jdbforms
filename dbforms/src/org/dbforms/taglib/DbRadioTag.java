@@ -25,8 +25,6 @@ package org.dbforms.taglib;
 import java.util.*;
 import javax.servlet.jsp.*;
 import org.dbforms.util.*;
-import org.dbforms.event.WebEvent;
-import org.dbforms.event.eventtype.EventType;
 import org.apache.log4j.Category;
 
 
@@ -43,32 +41,8 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer,
 {
    private static Category logCat = Category.getInstance(DbRadioTag.class.getName()); // logging category for this class
    private Vector  embeddedData  = null;
-   private String  checked; // only needed if parentForm is in "insert-mode", otherwise the DbForms-Framework determinates whether a radio should be selected or not.
    private String  growDirection; // only needed if we have a whole "group" of DbRadioTags; default = null == horizontal
    private String  growSize      = "0"; // limit the number of elements per row (growDirection="horizontal")
-   private String  noValue;
-   private String  value;
-
-   /**
-    * DOCUMENT ME!
-    * 
-    * @param checked DOCUMENT ME!
-    */
-   public void setChecked(String checked)
-   {
-      this.checked = checked;
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    * 
-    * @return DOCUMENT ME!
-    */
-   public String getChecked()
-   {
-      return checked;
-   }
 
 
    /**
@@ -201,7 +175,6 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer,
    public int doEndTag() throws javax.servlet.jsp.JspException
    {
       StringBuffer       tagBuf  = new StringBuffer();
-      WebEvent           we = getParentForm().getWebEvent();
 
       // current Value from Database; or if no data: explicitly set by user; or ""
       String currentValue = getFormFieldValue();
@@ -211,20 +184,7 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer,
          currentValue = getDefaultValue();
       }
 
-      if (embeddedData == null)
-      { // no embedded data is nested in this tag
-
-
-         // select, if datadriven and data matches with current value OR if explicitly set by user
-         boolean isSelected = ((!getParentForm().getFooterReached()
-                                 || ((we != null) && we.getType() == EventType.EVENT_PAGE_RELOAD))
-                              && (getValue() != null) && getValue().equals(currentValue))
-                              || (getParentForm().getFooterReached()
-                              && "true".equals(checked));
-
-         tagBuf.append(generateTagString(getValue(), "", isSelected));
-      }
-      else
+	  if (embeddedData != null)
       {
          int embeddedDataSize = embeddedData.size();
 
@@ -292,18 +252,6 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer,
          tagBuf.append("</tr></table>");
       }
 
-		if (!Util.isNull(getNoValue()))
-		{
-			// Write noValue first. During parameter parsing the 
-			// first written value will be returned.
-			// This the setted value!!!
-			tagBuf.append("<input type=\"hidden\" name=\"");
-			tagBuf.append(getFormFieldName());
-			tagBuf.append("\" value =\"");
-			tagBuf.append(getNoValue());
-			tagBuf.append("\" ");
-			tagBuf.append("/>");
-		}
 
       // For generation Javascript Validation.  Need all original and modified fields name
       getParentForm().addChildName(getName(), getFormFieldName());
@@ -323,35 +271,11 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer,
    }
 
 
-   /**
-    * Returns the noValue.
-    * 
-    * @return String
-    */
-   public String getNoValue()
-   {
-      return noValue;
-   }
-
-
-   /**
-    * Sets the noValue.
-    * 
-    * @param noValue The noValue to set
-    */
-   public void setNoValue(String noValue)
-   {
-      this.noValue = noValue;
-   }
-   
 	public void doFinally()
 	{
 		embeddedData  = null;
-		checked = null;
 		growDirection = null;
 		growSize      = "0";
-		noValue = null;
-		value = null;
 		super.doFinally();
 	}
 
@@ -363,18 +287,5 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer,
       throw t;
    }
 
-   /**
-    * @return
-    */
-   public String getValue() {
-      return value;
-   }
-
-   /**
-    * @param string
-    */
-   public void setValue(String string) {
-      value = string;
-   }
 
 }
