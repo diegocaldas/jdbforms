@@ -29,12 +29,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
-import java.io.FileInputStream;
-import java.io.ObjectInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.File;
-import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -44,7 +39,6 @@ import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.Field;
 import org.dbforms.config.FieldTypes;
 import org.dbforms.config.Table;
-import org.dbforms.util.FileHolder;
 import org.dbforms.util.ParseUtil;
 import org.dbforms.util.SqlUtil;
 import org.dbforms.util.Util;
@@ -131,6 +125,9 @@ public class FileServlet extends HttpServlet {
 			// JPeer 03/2004 - optional parameter
 			String nameField = request.getParameter("nf");
 
+			InputStream is = null;
+			String fileName = null;
+
 			queryBuf.append("SELECT ");
 			queryBuf.append(field.getName());
 			if (nameField != null) {
@@ -153,165 +150,30 @@ public class FileServlet extends HttpServlet {
 			if (rs.next()) {
 				// use the filesystem;
 				if (field.getType() == FieldTypes.DISKBLOB) {
-					readDiskBlob(rs.getString(1), field.getDirectory(),
-							request, response);
+					fileName = rs.getString(1);
+					is = SqlUtil.readDiskBlob(fileName, field.getDirectory(),
+							request.getParameter("defaultValue"));
 				}
 
 				// use the rdbms;
 				else if (field.getType() == FieldTypes.BLOB) {
 					// if no fileholder is used (new BLOB model)
-					String fileName = null;
 					if (nameField != null) {
 						fileName = rs.getString(2);
 					}
-					readDbFieldBlob(rs, fileName, request, response);
+					is = SqlUtil.readDbFieldBlob(rs, fileName);
 				}
 			} else {
 				logCat.info("::doGet - we have got no result using query "
 						+ queryBuf);
 			}
+			if (is != null)
+				writeToClient(request, response, fileName, is);
 			SqlUtil.closeConnection(con);
 		} catch (SQLException sqle) {
 			logCat.error("::doGet - SQL exception", sqle);
 		}
 
-	}
-
-	/**
-	 * Read the database field and write to the client its content
-	 * 
-	 * @param rs
-	 *            Description of the Parameter
-	 * @param request
-	 *            Description of the Parameter
-	 * @param response
-	 *            Description of the Parameter
-	 * @param fileName
-	 *            is the filename or NULL in the classic (Fileholder-based) BLOB
-	 *            handling
-	 * @exception IOException
-	 *                Description of the Exception
-	 * @exception SQLException
-	 *                Description of the Exception
-	 */
-	private void readDbFieldBlob(ResultSet rs, String fileName,
-			HttpServletRequest request, HttpServletResponse response)
-			throws IOException, SQLException {
-		logCat.info("READING BLOB");
-
-		try {
-			Object o = rs.getObject(1);
-			if (o == null) {
-				logCat.warn("::readDbFieldBlob - blob null, no response sent");
-				return;
-			}
-			System.out.println("o instanceof ..." + o.getClass().getName());
-			// if the object the JDBC driver returns to us implements
-			// the java.sql.Blob interface, then we use the BLOB object
-			// which wraps the binary stream of our FileHolder:
-			if (o instanceof java.sql.Blob) {
-				Blob blob = rs.getBlob(1);
-
-				// classic mode
-				if (fileName == null) {
-					ObjectInputStream ois = new ObjectInputStream(blob
-							.getBinaryStream());
-
-					FileHolder fh = (FileHolder) ois.readObject();
-					writeToClient(request, response, fh.getFileName(), fh
-							.getInputStreamFromBuffer());
-				}
-				// new mode
-				else {
-					writeToClient(request, response, fileName, blob
-							.getBinaryStream());
-				}
-			}
-
-			/*
-			 * else if(o instanceof java.sql.Clob) { Clob clob = rs.getClob(1);
-			 * ObjectInputStream ois = new
-			 * ObjectInputStream(clob.getAsciiStream()); FileHolder fh =
-			 * (FileHolder) ois.readObject(); writeToClient(response,
-			 * fh.getFileName(), fh.getInputStreamFromBuffer()); }
-			 */
-
-			// otherwise we are aquiring the stream directly:
-			else {
-				if (fileName == null) {
-					// old ("classic") mode
-					InputStream blobIS = rs.getBinaryStream(1);
-					ObjectInputStream ois = new ObjectInputStream(blobIS);
-					FileHolder fh = (FileHolder) ois.readObject();
-					writeToClient(request, response, fh.getFileName(), fh
-							.getInputStreamFromBuffer());
-				} else {
-					// new mode
-					InputStream blobIS = rs.getBinaryStream(1);
-					writeToClient(request, response, fileName, blobIS);
-				}
-			}
-		} catch (ClassNotFoundException cnfe) {
-			logCat.error("::readDbFieldBlob - class not found", cnfe);
-			throw new IOException("error:" + cnfe.toString());
-		}
-	}
-
-	/**
-	 * Read the blob field from the filesystem and write to the client its
-	 * content.
-	 * 
-	 * @param fileName
-	 *            Description of the Parameter
-	 * @param directory
-	 *            Description of the Parameter
-	 * @param request
-	 *            Description of the Parameter
-	 * @param response
-	 *            Description of the Parameter
-	 * @exception FileNotFoundException
-	 *                Description of the Exception
-	 * @exception IOException
-	 *                Description of the Exception
-	 */
-	private void readDiskBlob(String fileName, String directory,
-			HttpServletRequest request, HttpServletResponse response)
-			throws FileNotFoundException, IOException {
-		logCat.info(new StringBuffer("READING DISKBLOB\n  directory = [")
-				.append(directory).append("]\n").append("  fileName = [")
-				.append(fileName).append("]\n").append("  defaultValue = [")
-				.append(request.getParameter("defaultValue")).append("]\n")
-				.toString());
-
-		if ((fileName == null) || (fileName.trim().length() == 0)) {
-			if ((fileName = request.getParameter("defaultValue")) != null) {
-				logCat
-						.info("::readDiskBlob - database data is null; use the default value ["
-								+ fileName + "]");
-			}
-		}
-
-		// directory or fileName can be null!
-		//if ((directory != null) && (fileName != null))
-		if (fileName != null) {
-			fileName = fileName.trim();
-
-			File file = new File(directory, fileName);
-
-			if (file.exists()) {
-				logCat.info("::readDiskBlob - file found ["
-						+ file.getAbsoluteFile() + "]");
-
-				FileInputStream fis = new FileInputStream(file);
-				writeToClient(request, response, fileName, fis);
-			} else {
-				logCat.error("::readDiskBlob - file ["
-						+ (directory + "/" + fileName) + "] not found");
-			}
-		} else {
-			logCat
-					.warn("::readDiskBlob - file name or directory value is null");
-		}
 	}
 
 	/**
@@ -335,6 +197,8 @@ public class FileServlet extends HttpServlet {
 				+ contentType);
 		if (!Util.isNull(contentType))
 			response.setContentType(contentType);
+		response.setHeader("Cache-control", "private"); // w/o this MSIE fails
+														// to "Open" the file
 		response.setHeader("Content-Disposition", "attachment; fileName=\""
 				+ fileName + "\"");
 

@@ -32,6 +32,7 @@ import java.sql.SQLException;
 import java.sql.Blob;
 
 import org.dbforms.config.FieldTypes;
+import org.dbforms.config.Table;
 import org.dbforms.util.SqlUtil;
 import org.apache.log4j.Category;
 
@@ -86,71 +87,34 @@ public class DbBlobContentTag extends DbBaseHandlerTag implements
 				ResultSet rs = ps.executeQuery();
 
 				if (rs.next()) {
+					InputStream is = null;
+					String fileName = null;
 					if (getField().getType() == FieldTypes.DISKBLOB) {
-						String fileName = rs.getString(1);
-
-						if (fileName != null) {
-							fileName = fileName.trim();
-						}
-
-						logCat.info("READING DISKBLOB field.getDirectory()="
-								+ getField().getDirectory() + " " + "fileName="
-								+ fileName);
-
-						if ((fileName == null)
-								|| (getField().getDirectory() == null)
-								|| (fileName.length() == 0)
-								|| (getField().getDirectory().length() == 0)) {
-							return EVAL_PAGE;
-						}
-
-						File file = new File(getField().getDirectory(),
-								fileName);
-
-						if (file.exists()) {
-							logCat.info("fs- file found " + file.getName());
-
-							FileInputStream fis = new FileInputStream(file);
-							try {
-								BufferedReader br = new BufferedReader(
-										new InputStreamReader(fis));
-								char[] c = new char[1024];
-								int read;
-								while ((read = br.read(c)) != -1) {
-									contentBuf.append(c, 0, read);
-								}
-							} finally {
-								fis.close();
-							}
-						} else {
-							logCat.info("fs- file not found");
-						}
+						fileName = rs.getString(1);
+						is = SqlUtil.readDiskBlob(fileName, getField()
+								.getDirectory(), null);
 					} else {
-						//                  throw new IllegalArgumentException("DbBlobContentTag
-						// is currently only for
-						// DISKBLOBS - feel free to copy code from
-						// FileServlet.java to this place to
-						// bring this limitation to an end :=)");
-						try {
-							/*
-							 * TODO: we obviously need a classic mode blob
-							 * handling here as well
-							 */
-							Blob blob = rs.getBlob(1);
-							InputStream is = blob.getBinaryStream();
-							try {
-								BufferedReader br = new BufferedReader(
-										new InputStreamReader(is));
-								char[] c = new char[1024];
-								int read;
-								while ((read = br.read(c)) != -1)
-									contentBuf.append(c, 0, read);
-							} finally {
-								is.close();
-							}
-						} catch (NullPointerException e) {
-							// the blob field was empty
+						/*
+						 * As the classic and new blob handling modes are
+						 * distinguished by fileName, we use a small hack here
+						 * to provide empty string or null as the fileName
+						 * according to the blob handling strategy defined in
+						 * the configuration file.
+						 */
+						fileName = (getField().getTable()
+								.getBlobHandlingStrategy() == Table.BLOB_CLASSIC) ? null
+								: "";
+						is = SqlUtil.readDbFieldBlob(rs, fileName);
+					}
+					if (is != null) {
+						BufferedReader br = new BufferedReader(
+								new InputStreamReader(is));
+						char[] c = new char[1024];
+						int read;
+						while ((read = br.read(c)) != -1) {
+							contentBuf.append(c, 0, read);
 						}
+						is.close();
 					}
 				} else {
 					logCat.info("fs- we have got no result" + queryBuf);

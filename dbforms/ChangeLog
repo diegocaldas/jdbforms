@@ -1,3 +1,46 @@
+2004-08-05
+(Henner.Kollmann@gmx.de)
+Moved the filename patch from BlobInterceptor to MultiPartRequest class!
+
+2004-08-04
+(dziugas.baltrunas@metasite.net)
+* It is now possible to EDIT blob columns from within textarea form tag. Here is the simple example:
+	<db:textAreaForBlobs fieldName="BODY" renderBody="true">
+		<db:blobContent fieldName="BODY"/>
+	</db:textAreaForBlobs>
+  Currently the text will be inserted into the database using system 
+  default character set, which generally depends on your locale settings.
+
+* As Henner suggested, readDbFieldBlob() and readDiskBlob() methods 
+  moved from src/org/dbforms/servlets/FileServlet.java to 
+  src/org/dbforms/utils/SqlUtil.java class. As a result, code in 
+  taglib.DbBlobContentTag.java looks better.
+
+* BlobInterceptor (src/org/dbforms/event/BlobInterceptor.java) now can 
+  optionaly save the mime type and file size of an uploaded file if 
+  additional parameters are provided to dbforms-config.xml. It could look 
+  like this:
+
+	<interceptor className="org.dbforms.event.BlobInterceptor">
+		<param name="blob-column" value="BODY"/>
+		<param name="name-column" value="FILE_NAME"/>
+		<param name="mime-column" value="MIME_TYPE"/>
+		<param name="size-column" value="BODY_SIZE"/>
+	</interceptor>
+
+* According to my tests on Linux Redhat 
+  with Tomcat 5.0.25, the file name comes with full path (c:\temp\file.txt 
+  for example), so patched BlobInterceptor strips out everything before 
+  the last slash (/) or backslash (\), if necessary. Dunno why 
+  commons-fileupload does not always handle this.
+
+* The FileServlet servlet now adds "Cache-control: private" header as 
+  according to my tests, without this MSIE gives an error while trying to 
+  "Open" the file. "Save" works ok.
+
+
+
+
 2004-08-01
 (nkdbf@nechsi.com)
 Added New Tags: IsError , SetCustomFormatter, RedirectUrl

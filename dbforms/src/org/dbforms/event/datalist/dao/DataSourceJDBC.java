@@ -430,9 +430,12 @@ public class DataSourceJDBC extends DataSource {
 				Object value = null;
 
 				if (fieldType == FieldTypes.BLOB) {
-					// in case of a BLOB we supply the FileHolder object to
-					// SqlUtils for further operations
-					value = fv.getFileHolder();
+					// in case of a BLOB we supply the FileHolder object to SqlUtils for further operations
+                                        if (fv.getFileHolder() == null) { // if the blob field is updated from within textarea
+                                           value = fv.getFieldValue();
+                                        } else { // if we have a file upload
+                                           value = fv.getFileHolder();
+                                        }
 				} else if (fieldType == FieldTypes.DISKBLOB) {
 					FileHolder fileHolder = fv.getFileHolder();
 					// encode fileName

@@ -45,7 +45,6 @@ import org.dbforms.util.Escaper;
 import org.dbforms.util.Util;
 import org.dbforms.util.ReflectionUtil;
 import org.apache.log4j.Category;
-import org.apache.commons.lang.StringEscapeUtils;
 
 /**
  * <p>Base class for db-tags that render form data-elements capable of including JavaScript
@@ -562,10 +561,9 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
       tagBuf.append(Constants.FIELDNAME_OLDVALUETAG + getFormFieldName());
       tagBuf.append("\" value=\"");
       if (!getParentForm().getFooterReached()) {
-         tagBuf.append(StringEscapeUtils.escapeHtml(getFormattedFieldValue()));
+         tagBuf.append(escapeHtml(getFormattedFieldValue()));
       } else {
-         tagBuf.append(
-            StringEscapeUtils.escapeHtml(getFormFieldDefaultValue()));
+         tagBuf.append(escapeHtml(getFormFieldDefaultValue()));
       }
       tagBuf.append("\" />");
       return tagBuf.toString();

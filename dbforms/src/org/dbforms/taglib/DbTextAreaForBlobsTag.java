@@ -104,13 +104,7 @@ public class DbTextAreaForBlobsTag extends DbTextAreaTag
    {
       try
       {
-         if ("true".equals(renderBody) && (bodyContent != null))
-         {
-            bodyContent.writeOut(bodyContent.getEnclosingWriter());
-            bodyContent.clearBody(); // workaround for duplicate rows in JRun 3.1
-         }
-
-         pageContext.getOut().write("</textarea>");
+        super.doEndTag(); 
 
          StringBuffer suffixBuf = new StringBuffer(
                "<input type=\"hidden\" name=\"");
