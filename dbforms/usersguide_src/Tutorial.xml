@@ -51,123 +51,112 @@
       <title>Physical table creation</title>
       <para>Here is the SQL code for creating the database model shown in the preceeding Figure:</para>
       <programlisting>
-     CREATE TABLE <emphasis role="bold">service</emphasis> 
-     (
-       id          int        NOT NULL PRIMARY KEY,
-       name        char (30)  NULL ,
-       description char (255) NULL
-     )
+  CREATE TABLE <emphasis role="bold">service</emphasis> 
+  (
+    id          int        NOT NULL PRIMARY KEY,
+    name        char (30)  NULL ,
+    description char (255) NULL
+  )
                 
-    CREATE TABLE <emphasis role="bold">customer</emphasis> 
-    (
-      id        int       NOT NULL PRIMARY KEY,
-      firstname char (50) NULL ,
-      lastname  char (50) NULL ,
-      address   char (30) NULL ,
-      pcode     char (10) NULL ,
-      city      char (40) NULL
-    )
+  CREATE TABLE <emphasis role="bold">customer</emphasis> 
+  (
+    id        int       NOT NULL PRIMARY KEY,
+    firstname char (50) NULL ,
+    lastname  char (50) NULL ,
+    address   char (30) NULL ,
+    pcode     char (10) NULL ,
+    city      char (40) NULL
+  )
  
-    CREATE TABLE <emphasis role="bold">order</emphasis>
-    (
-      order_id     int       IDENTITY  NOT NULL ,
-            customer_id  int       NOT NULL ,
-            service_id   int       NULL ,
-            orderdate    char (20) NULL ,
+  CREATE TABLE <emphasis role="bold">order</emphasis>
+  (
+    order_id     int       IDENTITY  NOT NULL ,
+    customer_id  int       NOT NULL ,
+    service_id   int       NULL ,
+    orderdate    char (20) NULL ,
 
-            PRIMARY KEY ( order_id, customer_id )
-    )
+    PRIMARY KEY ( order_id, customer_id )
+  )
                 
-    CREATE TABLE <emphasis role="bold">complaint</emphasis> 
-	(
-      complaint_id int        IDENTITY NOT NULL ,
-	  customer_id  int        NOT NULL ,
-	  usermessage  char (255) NULL ,
-	  incomingdate char (20)  NULL ,
-	  priority     int        NULL ,
+  CREATE TABLE <emphasis role="bold">complaint</emphasis> 
+  (
+    complaint_id int        IDENTITY NOT NULL ,
+    customer_id  int        NOT NULL ,
+    usermessage  char (255) NULL ,
+    incomingdate char (20)  NULL ,
+    priority     int        NULL ,
  
-      PRIMARY KEY ( complaint_id, customer_id ) 
-    )
+    PRIMARY KEY ( complaint_id, customer_id ) 
+  )
  
-    CREATE TABLE <emphasis role="bold">priority</emphasis>
-	( 
-      id          char (10)  NOT NULL PRIMARY KEY,
-      shortname   char (30)  NULL ,
-	  description char (100) NULL 
-    )
+  CREATE TABLE <emphasis role="bold">priority</emphasis>
+  ( 
+    id          char (10)  NOT NULL PRIMARY KEY,
+    shortname   char (30)  NULL ,
+    description char (100) NULL 
+   )
     
       </programlisting>
       <para>It would be desirable to add referential integrity, (by adding foreign keys and/or triggers) but to keep things simple</para>
     </sect2>
     <sect2>
-      <title>Defining a database description for DbForms
-</title>
-      <para>The next step is to create the XML-based description of this model, as follows.
-</para>
+      <title>Defining a database description for DbForms</title>
+      <para>The next step is to create the XML-based description of this model, as follows.</para>
       <example>
         <title>tables in dbforms-config.xml</title>
         <programlisting>
-            &lt;table name="
-          <emphasis role="bold">service</emphasis>"&gt;
-                &lt;field name="id" fieldType="int" isKey="true" /&gt; 
-    &lt;field name="name" fieldType="char" /&gt; 
+  &lt;table name="<emphasis role="bold">service</emphasis>"&gt;
+    &lt;field name="id"          fieldType="int" isKey="true" /&gt; 
+    &lt;field name="name"        fieldType="char" /&gt; 
     &lt;field name="description" fieldType="char" /&gt; 
-            &lt;/table&gt;
+  &lt;/table&gt;
              
-            &lt;table name="
-          <emphasis role="bold">customer</emphasis>"&gt; 
-    &lt;field name="id" fieldType="int" isKey="true"/&gt; 
+  &lt;table name="<emphasis role="bold">customer</emphasis>"&gt; 
+    &lt;field name="id"        fieldType="int" isKey="true"/&gt; 
     &lt;field name="firstname" fieldType="char" /&gt; 
-    &lt;field name="lastname" fieldType="char" /&gt; 
-    &lt;field name="address" fieldType="char" /&gt; 
-    &lt;field name="pcode" fieldType="char" /&gt; 
-    &lt;field name="city" fieldType="char" /&gt;
-            &lt;/table&gt;
+    &lt;field name="lastname"  fieldType="char" /&gt; 
+    &lt;field name="address"   fieldType="char" /&gt; 
+    &lt;field name="pcode"     fieldType="char" /&gt; 
+    &lt;field name="city"      fieldType="char" /&gt;
+  &lt;/table&gt;
              
-            &lt;table name="
-          <emphasis role="bold">orders</emphasis>"&gt; 
-    &lt;field name="order_id" fieldType="int" isKey ="true" identity="true" /&gt; 
-    &lt;field name="customer_id" fieldType="int" isKey ="true" /&gt; 
-    &lt;field name="service_id" fieldType="char" /&gt; 
-    &lt;field name="orderdate" fieldType="char" /&gt; 
-            &lt;/table&gt;
+  &lt;table name="<emphasis role="bold">orders</emphasis>"&gt; 
+    &lt;field name="order_id"    fieldType="int" isKey="true" identity="true" /&gt; 
+    &lt;field name="customer_id" fieldType="int" isKey="true" /&gt; 
+    &lt;field name="service_id"  fieldType="char" /&gt; 
+    &lt;field name="orderdate"   fieldType="char" /&gt; 
+  &lt;/table&gt;
                  
-            &lt;table name="
-          <emphasis role="bold">complaint</emphasis>"&gt; 
+  &lt;table name="<emphasis role="bold">complaint</emphasis>"&gt; 
     &lt;field name="complaint_id" fieldType="int" isKey="true" identity="true" /&gt; 
-    &lt;field name="customer_id" fieldType="int" isKey ="true" /&gt; 
-    &lt;field name="usermessage" fieldType="char" /&gt; 
+    &lt;field name="customer_id"  fieldType="int" isKey="true" /&gt; 
+    &lt;field name="usermessage"  fieldType="char" /&gt; 
     &lt;field name="incomingdate" fieldType="char" /&gt; 
-    &lt;field name="priority" fieldType="int" /&gt; 
-            &lt;/table&gt;
+    &lt;field name="priority"     fieldType="int" /&gt; 
+  &lt;/table&gt;
              
-            &lt;table name="
-          <emphasis role="bold">priority</emphasis>"&gt; 
-    &lt;field name="id" fieldType="int" isKey ="true" /&gt; 
-    &lt;field name="shortname" fieldType ="char" /&gt; 
-    &lt;field name="description" fieldType ="char" /&gt; 
-            &lt;/table&gt; 
-    
+  &lt;table name="<emphasis role="bold">priority</emphasis>"&gt; 
+    &lt;field name="id"          fieldType="int" isKey="true" /&gt; 
+    &lt;field name="shortname"   fieldType="char" /&gt; 
+    &lt;field name="description" fieldType="char" /&gt; 
+  &lt;/table&gt;     
         </programlisting>
       </example>
       <para>There exists a little tool which does all the painful work of transferring a database scheme into XML. See 
         <link linkend="devgui">
-          <emphasis role="bold">DevGui</emphasis>(click here)
-        </link> for more information.
-        
+          <emphasis role="bold">DevGui</emphasis> (click here)
+        </link> for more information.        
       </para>
-      <para>NOTE: If we would want to use advanced DbForms-features like fine-grained-security, sorting facility, etc. We would need to add additional information to the XML-description. This will be shown in the advanced tutorial mentioned earlier.
-</para>
+      <para>
+        NOTE: If we would want to use advanced DbForms-features like fine-grained-security, sorting facility, etc. We would need to add additional information to the XML-description. This will be shown in the advanced tutorial mentioned earlier.
+      </para>
     </sect2>
   </sect1>
   <sect1>
-    <title>Planning the overall structure and screen-flow of the application
-</title>
-    <para>To fulfill the requirements, we need to implements at least the following JSP  views:
-</para>
+    <title>Planning the overall structure and screen-flow of the application</title>
+    <para>To fulfill the requirements, we need to implements at least the following JSP  views:</para>
     <table>
-      <title>Core requirements for our sample application
-</title>
+      <title>Core requirements for our sample application</title>
       <tgroup cols="2">
         <tbody>
           <row>
@@ -185,11 +174,9 @@
         </tbody>
       </tgroup>
     </table>
-    <para>In addition to the core requirements, well implement the following views for users convenience:
-</para>
+    <para>In addition to the core requirements, well implement the following views for users convenience:</para>
     <table>
-      <title>Additional features for our sample application
-</title>
+      <title>Additional features for our sample application</title>
       <tgroup cols="2">
         <tbody>
           <row>
@@ -213,8 +200,7 @@
     </table>
     <para>
       <figure id="screen_flow">
-        <title>Screen flow of our application
-</title>
+        <title>Screen flow of our application</title>
         <mediaobject>
           <imageobject role="html">
             <imagedata format="PNG" fileref="images/figures/screen_flow.png"/>
@@ -227,39 +213,38 @@
     </para>
   </sect1>
   <sect1>
-    <title>Implementing the Forms
-</title>
-    <para>The following sections will demonstrate how to create our sample-application using some basic and some more advanced elements of DbForms.
-</para>
-    <para>For each JSP view we are going to discuss here, I will show the JSP source containing DbForms-elements (printed in 
-      <emphasis role="bold">bold</emphasis> style) and then show a representative screenshot of the resulting JSP page.
-
+    <title>Implementing the Forms</title>
+    <para>
+      The following sections will demonstrate how to create our sample-application using some basic and some more advanced elements of DbForms.
     </para>
-    <para>I highly suggest installing the dbForms example application and taking a detailed look at it  you will quickly find out how the elements behave and which pattern of combined DbForms-elements is used best for each purpose.
-</para>
-    <para>For more detailed information about each DbForms-Custom Tag, please refer to the See the 
+    <para>
+      For each JSP view we are going to discuss here, I will show the JSP source containing DbForms-elements (printed in 
+      <emphasis role="bold">bold</emphasis> style) and then show a representative screenshot of the resulting JSP page.
+    </para>
+    <para>
+      I highly suggest installing the dbForms example application and taking a detailed look at it  you will quickly find out how the elements behave and which pattern of combined DbForms-elements is used best for each purpose.
+    </para>
+    <para>
+      For more detailed information about each DbForms-Custom Tag, please refer to the See the 
       <ulink url="../../taglib/DbFormsTags_Frame.html">
         <citetitle>DbForms Custom Tag Library</citetitle>
       </ulink> chapter, which contains a complete description of all DbForms-Tags and their attributes.
-
     </para>
     <para/>
     <sect2>
-      <title>Main-Menu
-</title>
-      <para>The main menus only purpose is to link to the other pages. Of course, this could be done by simply coding html-hyperlinks, but I would like to demonstrate how to use an empty 
+      <title>Main-Menu</title>
+      <para>
+        The main menus only purpose is to link to the other pages. Of course, this could be done by simply coding html-hyperlinks, but I would like to demonstrate how to use an empty 
         <emphasis role="bold">dbform</emphasis>  element and how to use 
         <emphasis role="bold">gotoButton</emphasis> elements:
-
       </para>
       <example>
         <title>menu.jsp code</title>
         <programlisting>
-&lt;%@ taglib uri="/WEB-INF/dbForms.tld" prefix="db" %&gt;
- &lt;html&gt;
+  &lt;%@ taglib uri="/WEB-INF/dbForms.tld" prefix="db" %&gt;
+  &lt;html&gt;
   &lt;head&gt;
-    
-          <emphasis role="bold">&lt;db:base/&gt;</emphasis> 
+    <emphasis role="bold">&lt;db:base/&gt;</emphasis> 
   &lt;/head&gt;
      
   &lt;body&gt; 
