@@ -1,9 +1,43 @@
 Release Notes for DbForms Version 2.5,  xxxx-xx-xx
 
 Contents:
-1)    About this release
-2)    Details about enhancements and changes
+1)      About this release
+2)      Details about enhancements and changes
+2-1)    New features
+2-1-1)  Support for charting
+2-1-2)  add support for calc fields
+2-1-3)  add support for boolean fields
+2-2)    Changes to the tag library
+2-3-1)  new tag: IsError 
+2-4-2)  new tag: SetCustomFormatter
+2-5-3)  new tag: RedirectUrl
+2-5-4)  Added new custom formatter attribute to rendering tags
+2-5-5)  add new option to handle empty data sets in DbSelectTag 
+2-5-6)  add new option to force state to checked in DbCheckboxTag
+2-5-7)  enable editing of blob columns in textarea tag
+2-6)    changed interceptor interface
+2-7)    changes in BLOB handling
+2-8)    added new report systems to create excel spreadsheet and comma seperated values reports
+2-9)    Others
+2-10-1) Changed logging system
+2-10-2) Makes dbforms jdb 1.5 compliant
+
 
 1) About this release
 ----------------------
+
+DbForms 2.5 is the next release to be labelled production/stable. It is the result of the further development of 
+the 2.5-SNAPSHOT releases. Changes made in those releases are included and described below.
+
+Please report any problems or comments to the DbForms mailing list:
+
+    jdbforms-interest@lists.sourceforge.net
+
+This document summarizes the changes since release 2.4, which are of interest to end users. Note that their have 
+also been several internal enhancements to DbForms which are documented uniquely within the source code(i.e.: code 
+cleanup, improved algorithms).
+
+2)    Details about enhancements and changes
+---------------------------------------------
+
 
