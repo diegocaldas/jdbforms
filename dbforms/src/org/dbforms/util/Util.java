@@ -134,27 +134,49 @@ public class Util
 
     /**
      *Encode a string with desired character encoding.  
-     *Works from java sdk 1.4, and calls encode(String s) if 1.3 is used
+     *Works from java jdk 1.4, and defaults to "ISO8859-1"if jdk 1.3 is used
      *@param s the string to encode
      *@param enc the desired encoding
-     * @return the encoded string
+     *@return the encoded string
      */
     public static final String encode (String s, String enc)
-    throws UnsupportedEncodingException
-    {  try
-       {
-           if (!Util.isNull (s))
-           {
-               s = URLEncoder.encode (s, enc);
-           }
-           
-       }catch (NoSuchMethodException nsme)
+    throws UnsupportedEncodingException 
+    {  
+        if (!Util.isNull (s))
         {
-            s = encode (s);
-        }
+            try
+                {
+                    s = Util.encCheck(s, enc);
+                } 
+    
+            catch (NoSuchMethodException nsme)
+                {
+                    s = encode (s);
+                }
+           
+         }
        return s;
     }
-	/**
+    
+    /**
+     *checks to see if URLEncoder.encode(String s, String enc) is available (from jdk 1.4)
+     *@throws NoSuchMethodException to signal that jdk 1.3 is being used 
+     *@param s the string to encode
+     *@param enc the desired encoding
+     *@return the encoded string
+     *
+     */
+    public static final String encCheck (String s, String enc) 
+    throws UnsupportedEncodingException, NoSuchMethodException
+    {	
+        
+        s = URLEncoder.encode (s, enc);
+    
+        return s;
+    
+    }
+    
+    /**
 	 * returns a formated string
 	 *
 	 * @param f
