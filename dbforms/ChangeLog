@@ -1,3 +1,8 @@
+2003-10-04
+(Henner.Kollmann@gmx.de)
+   - changed to jasperreports 0.5.0
+   - new howto for printing jasperreport in bookstore
+   
 2003-10-03
 (Henner.Kollmann@gmx.de)
    - bug fixed server side validation. Server side validation did not work with datalist navigation.
