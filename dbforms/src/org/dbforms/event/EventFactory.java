@@ -203,11 +203,12 @@ public abstract class EventFactory
 
         if (config != null)
         {
-            // get the table object from the input action string;
-            // must use different methods, depending on the request mode (GET | POST)
-            if (request.getMethod().equals("GET"))
+            // try to retrieve a valid  target table name from the request;
+            // if it's null, try to retrieve the table id from the action string.
+            String tableName = EventUtil.getDestinationTableName(request, action);
+
+            if (!Util.isNull(tableName))
             {
-                String tableName = EventUtil.getDestinationTableName(request, action);
                 table = config.getTableByName(tableName);
             }
             else
