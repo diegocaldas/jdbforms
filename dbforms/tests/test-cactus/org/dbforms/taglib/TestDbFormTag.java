@@ -27,7 +27,6 @@ import org.apache.cactus.JspTestCase;
 import org.apache.cactus.WebResponse;
 
 import org.dbforms.config.DbFormsConfigRegistry;
-import org.dbforms.config.Table;
 
 import org.dbforms.servlets.ConfigServlet;
 
@@ -44,7 +43,6 @@ import javax.servlet.jsp.tagext.BodyTag;
  */
 public class TestDbFormTag extends JspTestCase {
    private DbFormTag tag;
-   private Table     tblResult = null;
 
    /**
     * In addition to creating the tag instance and adding the pageContext to
@@ -56,7 +54,6 @@ public class TestDbFormTag extends JspTestCase {
    public void setUp() throws Exception {
       super.setUp();
 
-      tblResult = null;
 
       DbFormsConfigRegistry.instance()
                            .register(null);
@@ -187,7 +184,6 @@ public class TestDbFormTag extends JspTestCase {
       // followUp="/AUTHOR_poweruser_list.jsp" maxRows="*" tableName="AUTHOR">
       this.tag.setMaxRows("*");
       this.tag.setTableName("AUTHOR");
-      tblResult = tag.getTable();
       assertTrue("Make sure we get table name back",
                  tag.getTableName().equals("AUTHOR"));
       assertTrue("Make sure we get table with right name back",
@@ -246,7 +242,6 @@ public class TestDbFormTag extends JspTestCase {
       // followUp="/AUTHOR_poweruser_list.jsp" maxRows="*" tableName="AUTHOR">
       this.tag.setMaxRows("*");
       this.tag.setTableName("AUTHOR");
-      tblResult = tag.getTable();
       assertTrue("Make sure we get table name back",
                  tag.getTableName().equals("AUTHOR"));
       assertTrue("Make sure we get table with right name back",
@@ -296,7 +291,6 @@ public class TestDbFormTag extends JspTestCase {
       // followUp="/BOOK_poweruser_list.jsp" maxRows="*" tableName="BOOK">
       this.tag.setMaxRows("*");
       this.tag.setTableName("BOOK");
-      tblResult = tag.getTable();
       assertTrue("Make sure we get table name back",
                  tag.getTableName().equals("BOOK"));
       assertTrue("Make sure we get table with right name back",

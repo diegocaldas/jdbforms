@@ -107,7 +107,6 @@ public class IDCustomFormatter implements Formatter {
          int  i   = 0;
          int  j   = 0;
          char pch;
-         char ch;
 
          for (i = 0; i != s.length(); i++) {
             while ((j < pattern.length())
