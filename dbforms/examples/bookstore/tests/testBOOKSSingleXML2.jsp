@@ -11,6 +11,7 @@
 			maxRows="2" 
 			tableName="XMLBOOKS">
 			<db:header>
+				<db:errors/>
 				<table>
 			</db:header>
 			<db:body>

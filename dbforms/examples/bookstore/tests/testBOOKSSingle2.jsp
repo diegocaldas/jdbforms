@@ -12,6 +12,7 @@
 			tableName="BOOK"
 		>
 			<db:header>
+				<db:errors/>
 				<table>
 			</db:header>
 			<db:body>

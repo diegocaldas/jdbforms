@@ -10,6 +10,7 @@
 			followUp="/tests/testBOOKSSingleXML.jsp" 
 			maxRows="1" tableName="XMLBOOKS">
 			<db:header>
+				<db:errors/>
 				<table>
 			</db:header>
 			<db:body>

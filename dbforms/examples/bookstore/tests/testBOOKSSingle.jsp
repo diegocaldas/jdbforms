@@ -9,6 +9,7 @@
 			followUp="/tests/testBOOKSSingle.jsp" 
 			maxRows="1" tableName="BOOK">
 			<db:header>
+				<db:errors/>
 				<table>
 			</db:header>
 			<db:body>
