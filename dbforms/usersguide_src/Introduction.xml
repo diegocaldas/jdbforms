@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter>
+	<title>Introduction</title>
+	<sect1>
+		<title>Technical background</title>
+		<para>DbForms is based on the following specifications: Java Servlets 2.2 and Java Server Pages 1.1 by Sun Microsystems. For more information on server-side Java technology please see [Servlet]</para>
+		<para>DbForms makes extensively use of the JSP Tag Library Extension included in the JSP 1.1 specification. [Taglib]</para>
+		<para>XML parsing facilities and other parts of DbForms are based on code taken from Apache Groups Jakarta-Struts project. [Struts]</para>
+	</sect1>
+	<sect1>
+		<title>DbForms concepts</title>
+		<sect2>
+			<title>The Model  View  Controller Design paradigm</title>
+			<para>DbForms implements the concepts of the Model - View - Controller design pattern [Gamma] which leads to the development of  3-tiered web-applications.</para>
+			<para/>
+			<para>
+				<figure>
+					<title>Figure 1 - architecture of DbForms</title>
+					<graphic fileref="1" format="GIF"/>
+				</figure>
+			</para>
+			<para>Just like most applications and application frameworks, DbForms does not completely separate these three components. For instance, the <emphasis role="bold">Controller Servlet</emphasis> is declared to be the Controller Component of DbForms, however, consider the use of a hyperlink rendered by the users web browser: clicking on it will trigger some operation  hence controller functionality.  It is not my intention to set off into an in-depth discussion of the MVC-paradigm, but rather to use its concepts as a useful metaphor for explaining the components of DbForms.</para>
+			<sect3>
+				<title>The Model: database objects described by database metadata</title>
+				<para>The aim of DbForms is to perform operations on databases. The tables and views utilized by DbForms must be declared in a XML  configuration file (<computeroutput>dbforms-config.xml</computeroutput>), which will be parsed and evaluated at Web-Application start-up time.</para>
+				<example>
+					<title>Listing 1 - defining the model</title>
+					<programlisting>
+                &lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;&lt;!DOCTYPE dbforms-config PUBLIC "http://www.dbforms.org/dtd/dbf_conf.dtd"&gt; 
+		
+                &lt;dbforms-config&gt; 
+                    
+                    &lt;table name="customer"&gt; 
+                        &lt;field name="id" fieldType="int" isKey="true" /&gt; 
+                        &lt;field name="firstname" fieldType="char" /&gt; 
+                        &lt;field name="lastname" fieldType="char" /&gt; 
+                        &lt;field name="address" fieldType="char" /&gt; 
+                    &lt;/table&gt; 
+		    
+                    &lt;table name="orders"&gt; 
+                        &lt;field name="orderid" fieldType="int" isKey="true" /&gt; 
+                        &lt;field name="customerid" fieldType="int" isKey="true" autoInc="true" /&gt; 
+                        &lt;field name="date" fieldType="char" /&gt; 
+                        &lt;field name="annotation" fieldType="char" /&gt; 
+                        &lt;field name="amount" fieldType="int" /&gt; 
+                    &lt;/table&gt;
+                     
+                    &lt;dbconnection
+ 
+                        name = "jdbc/dbformstest"
+ 
+                        isJndi = "true"
+ 
+                    /&gt;
+                 
+		&lt;/dbforms-config&gt;
+                </programlisting>
+				</example>
+				<para>[Current versions restrict you to use only <emphasis role="italic">one</emphasis> database per Web-Application. Further releases are expected to support multiple databases in a single application]</para>
+				<sect4>
+					<title>Defining the logical model</title>
+					<para>As shown in Listing 1, every table or view to be accessed by DbForms has to be declared inside a <computeroutput>&lt;table&gt;</computeroutput> tag. All relevant table fields need to be declared inside a <computeroutput>&lt;field&gt;</computeroutput> tag nested in their respective table-tag. (There exists a tool for generating this XML-data. It reads and processes database-metadata, see Appendix III)</para>
+					<para>DbForms makes no difference whether a table tag really represents a table or just a logical view to one or more (joined) tables. If and under which circumstances you may use views instead of simple tables depends entirely on the RDBMS you use. Before you plan to use views, you should check if your RDBMS support them. DbForms makes no difference between tables and views; therefore this document will refer to only tables from now on.</para>
+				</sect4>
+				<sect4>
+					<title>Defining physical access to the model</title>
+					<para>DbForms needs to be able to create connections to the database which contains the tables and fields declared in the dbforms-config.xml file.</para>
+					<para>Accessing the Application Servers connection pool via JNDI</para>
+					<para>Lets look into this XML tag (originally taken from Listing 1):</para>
+					<example>
+						<title>Listing 2- defining the database connection (1)</title>
+						<programlisting>
+                                                
+                        &lt;dbconnection
+                        
+                            name   = "jdbc/dbformstest"
+ 
+                            isJndi = "true"
+ 
+                        /&gt;   
+                </programlisting>
+					</example>
+					<para>In the example above DbForms assumes that the JNDI-entry "jdbc/dbformstest" is configured correctly in the Application-Server's database configuration [i.e. date-sources.xml]) and takes all the connections it needs from that JNDI-entry.</para>
+				</sect4>
+				<sect4>
+					<title>Using arbitrary connection pool</title>
+					<para>If you are not using an Application Server but a JSP-Engine like Apache Tomcat or Caucho Resin in conjunction with a Connection-Pool-Manager like poolman [Poolman], you have to tell DbForms which class it has to load in order to access the connection-pool manager. As an analogy to the JNDI  key, you have to tell DbForms how the Connection-Pool should be called.</para>
+					<example>
+						<title>Listing 3- defining the database connection (2)</title>
+						<programlisting>
+                        &lt;dbconnection
+                        
+                            name   = "jdbc:poolman://dbformstest"
+ 
+                            isJndi = "false"
+ 
+                            class  = "com.codestudio.sql.PoolMan"
+ 
+                        /&gt;</programlisting>
+					</example>
+					<para>In the example above DbForms assumes that the connection pool-entry called "jdbc:poolman://dbformstest" is correctly configured in the associated connection pool managers properties file and takes all the connections it needs from that connection pool.</para>
+					<para>The actual configuration of data-sources (how many pooled instances to create, duration of invalidation timeouts, etc.) <emphasis role="bold">is not in the scope of this user's guide</emphasis>. Please refer to your Application Server/JSP-engine documentation for more details.</para>
+				</sect4>
+				<sect4>
+					<title>Using no connection pool</title>
+					<para>If you just want to test the functionality of DbForms and you do not care about speed (at the moment), then you might want to define a simple database connection as follows:</para>
+					<example>
+						<title>Listing 4 - defining the database connection (3)</title>
+						<programlisting>
+                        &lt;dbconnection
+
+                            name   = "jdbc:mysql://localhost/fashion"
+ 
+                            isJndi = "false"
+ 
+                            conClass  = "org.gjt.mm.mysql.Driver"
+ 
+                            username = "scott"
+ 
+                            password = "tiger"
+ 
+                        /&gt;</programlisting>
+					</example>
+				</sect4>
+			</sect3>
+			<sect3>
+				<title>The Controller: Event parsing, dispatching and executing facilities</title>
+				<para>The Controller includes several components:</para>
+				<para>
+					<emphasis role="bold">Controller-Servlet</emphasis>: this servlet is the single-point-of-entry for all incoming HTTP-requests.</para>
+				<para>
+					<emphasis role="bold">EventEngine</emphasis>: a kind of assistant to the Controller-servlet - it focuses on filtering requests for WebEvents and instantiates them.</para>
+				<para>
+					<emphasis role="bold">WebEvent-Objects</emphasis>: all Objects derived from this abstract super-class have the ability to initialize themselves by reading a given request. These events get executed either by the controller directly or by the View.</para>
+				<para>The following should give you a better picture of what the controller does and how it interacts with other components:</para>
+				<para>A user presses the delete row button on his/her DbForms  application.</para>
+				<para>The client's browser submits data via an HTTP-POST to the Controller-servlet.</para>
+				<para>The Controller-servlet delegates the incoming request to the EventEngine which determines the main-event. (the event, the user <emphasis role="italic">explicitly</emphasis> triggered by clicking a button) Secondary - <emphasis role="italic">implicit</emphasis> events may also have been requested  i.e. automatic updating of all changed input fields of all data rows.</para>
+				<para>The EventEngine-component parses the request and determines the kind of action the user wants to execute.</para>
+				<para>The EventEngine creates the appropriate WebEvent (in our case: a DeleteEvent) and delegates the Request-Object to this newly created WebEvent which finalizes its own initialization. After that, the EventEngine returns the event back to the Controller.</para>
+				<para>The Controller tells the event, if it is a Database-Event, to execute its built-in operation.  Else (Navigation-Events, .etc.), events are delegated to the appropriate View-component.</para>
+				<para>The controller invokes EventEngine again to check if there are additional (implicit) events to be executed. If so, the appropriate WebEvents-Objects are created and executed in the same manner as the main event described above.</para>
+				<para>The controller determines the View-component the request should be forwarded to. If found, the controller invokes it and forwards the request to it.</para>
+				<para>If the view-component is a JSP-page containing DbForms  tags, those tags will search for navigation- events to be executed, once completed, a response will be generated.</para>
+				<para>This response is then rendered by the users web browser.</para>
+			</sect3>
+			<sect3>
+				<title>The View: JSP templates provided by the Application developer</title>
+				<para>The view-portion of a DbForms- Application is generally constructed using <emphasis role="bold">JSP-technology</emphasis>. JSP-files may contain static HTML-Elements as well as dynamic elements containing Java-Code (definitions, statements, expressions). For more information about JSP please look into [JSP]</para>
+				<para>With release 1.1 of the JSP-API, the concept of <emphasis role="bold">Custom tag libraries</emphasis> [Taglib] was introduced. Custom tags allow a developer the ability to encapsulate even the most sophisticated Java-code into an easy-to-use lightweight JSP-tag. You may think of Tag libraries as a sort of advanced macro.</para>
+				<para>DbForms is, essentially, a collection of custom tags for placing data-forms and data-fields on JSP-pages.</para>
+				<sect4>
+					<title>The structure of a DBForms - view</title>
+					<para>Figure 2 gives an overview of the main components of a typical DbForms-View:</para>
+					<para/>
+					<para>
+						<figure>
+							<title>Figure 2- overall structure of a simple DbForms  View</title>
+							<graphic fileref="2" format="GIF"/>
+						</figure>
+					</para>
+				</sect4>
+				<sect4>
+					<title>The basic concepts of a dbform</title>
+					<para>Each DbForms-View-JSP may have one or more root tags of the type <emphasis role="bold">dbform</emphasis>.  Every dbform-tag has to contain exactly 1 header tag, exactly 1 body tag and exactly 1 footer-tag, in exactly that order.</para>
+					<para>Each of those tags may contain sub-elements like Data-Fields, Input-Fields, Action-Buttons, and - of course - plain HTML text and JSP code.</para>
+					<para>Header and footer- tags are commonly used for titles of pages, for labeling tables, for placing action and navigation- buttons, input-fields to enter new data, etc.</para>
+					<para>Header and footer- tags get evaluated only once.</para>
+					<para>The body tag is used for showing data-rows coming from the database, and for providing the user with functionality to edit that data. How many times the body tag and its sub-elements get executed (evaluated  rendered) depends on the value of the <emphasis role="bold">maxRows</emphasis> attribute of the form  element (and of course, on the number of datasets actually stored in the table)</para>
+					<para>maxRows = n    =&gt; body gets executed n times at maximum (with n ( ()</para>
+					<para>maxRows = *     =&gt; body gets executed for every row in the table (=&gt;endless form)</para>
+					<para>
+						<emphasis role="bold">Nested forms</emphasis>
+					</para>
+					<para>Every form may contain (one or more) nested sub-forms inside its body tag.</para>
+					<para/>
+					<para>
+						<figure>
+							<title>Figure 3 - example of a nested form</title>
+							<graphic fileref="3" format="GIF"/>
+						</figure>
+					</para>
+					<para>The orders form is nested within the body-element of the customer-form, as shown in Figure 3. The user will see <emphasis role="italic">one</emphasis> customer per page (because maxRows is set to 1) and <emphasis role="italic">all</emphasis> the orders (because maxRows = *!) the customer has pending. The user may navigate through the list of customers by clicking the navigation buttons.</para>
+				</sect4>
+			</sect3>
+		</sect2>
+	</sect1>
+</chapter>
