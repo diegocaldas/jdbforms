@@ -248,6 +248,10 @@ Happy coding!
             <param name="example.name" value="testsuite"/>
         </antcall>
 
+        <antcall target="createExample">
+            <param name="example.name" value="bookstore"/>
+        </antcall>
+
         <!-- clean up temporary directories -->
         <antcall target="cleanWorkspace"/>
 
