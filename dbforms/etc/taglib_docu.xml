@@ -4769,6 +4769,221 @@ is released.</info>
 					<info>The tab order (ascending positive integers) for this element.</info>
 				</attribute>
 			</tag>
+			<!-- **************************** navCopyButton tag ***********************************-->									
+            <tag>
+                <name>navCopyButton</name>
+                <summary>this tag renders a navigation button for creating a copy of a row of data</summary>
+                <tagclass>org.dbforms.taglib.DbNavCopyButtonTag</tagclass>
+                <bodycontent>JSP</bodycontent>
+                <info>
+                    <p>navigation button to scroll to a copy of an existent dataset</p>
+                </info>
+
+                <attribute>
+                    <name>id</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>expose id, enables interaction with JavaScript</info>
+                </attribute>
+
+                <attribute>
+                    <name>flavor</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>
+                        <p>styling of the button</p>
+                        choices:
+                        <ul>
+                            <li>
+                                <b>standard</b>
+                                a standard form button. if you use it you should specify &quot;caption&quot;
+                            </li>
+                            <li>
+                                <b>image</b>
+                                an image-button. if you use it you should specify &quot;src&quot; and &quot;alt&quot;
+                            </li>
+                            <li>
+                                <b>modern</b>
+                                a fancy button according to HTML4; dont use if no all of your users have got 5th-generation browsers! You may embed any code into this tag. (see docu or www.w3.org)
+                            </li>
+                        </ul>
+                    </info>
+                </attribute>
+
+                <attribute>
+                    <name>caption</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>caption of the button (use it if the chosen flavor is "standard")</info>
+                </attribute>
+
+                <attribute>
+                    <name>src</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>source of the image (use it if the coosen flavor is "image")</info>
+                </attribute>
+
+                <attribute>
+                    <name>alt</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>alternative to image (use it if the coosen flavor is "image")</info>
+                </attribute>
+
+                <attribute>
+                    <name>border</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>set html border attribute</info>
+                </attribute>
+
+                <attribute>
+                    <name>followUp</name>
+                    <info>
+                        <p>site to be invoked after this button has been clicked and the associated actions are done</p>
+                        <p>this attribute over-rules the followUp-attribute of the parent form(s)!</p>
+                    </info>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                </attribute>
+
+				<attribute>
+                    <name>followUpOnError</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>
+                        <p>site to be invoked after this button has been clicked and the associated actions are done</p>
+                        <p>this attribute over-rules the followUpOnError-attribute of the parent form(s)!</p>
+                    </info>
+                </attribute>                
+
+                <attribute>
+                    <name>accessKey</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>The keyboard character used to move focus immediately to this element.</info>
+                </attribute>
+
+                <attribute>
+                    <name>onBlur</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>JavaScript event handler executed when this element loses inputfocus.</info>
+                </attribute>
+
+                <attribute>
+                    <name>onChange</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>JavaScript event handler executed when this element loses inputfocus and its value has changed.</info>
+                </attribute>
+
+                <attribute>
+                    <name>onSelect</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>JavaScipt event hanlder executed when the user selects some text</info>
+                </attribute>
+
+                <attribute>
+                    <name>onClick</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>JavaScript event handler executed when this element receives amouse click.</info>
+                </attribute>
+
+                <attribute>
+                    <name>onDblClick</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>JavaScript event handler executed when this element receives amouse double click.</info>
+                </attribute>
+				
+                <attribute>
+                    <name>onFocus</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>JavaScript event handler executed when this element receives inputfocus.</info>
+                </attribute>
+
+                <attribute>
+                    <name>onKeyDown</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>JavaScript event handler executed when this element has focus and akey is depressed.</info>
+                </attribute>
+
+                <attribute>
+                    <name>onKeyPress</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>JavaScript event handler executed when this element has focus and akey is depressed and released.</info>
+                </attribute>
+
+                <attribute>
+                    <name>onKeyUp</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>JavaScript event handler executed when this element has focus and akey is released.</info>
+                </attribute>
+
+                <attribute>
+                    <name>onMouseDown</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>JavaScript event handler executed when this element is under the mousepointer and a mouse button is depressed.</info>
+                </attribute>
+
+                <attribute>
+                    <name>onMouseMove</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>JavaScript event handler executed when this element is under themouse pointer and the pointer is moved.</info>
+                </attribute>
+				
+                <attribute>
+                    <name>onMouseOut</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>JavaScript event handler executed when this element was under themouse pointer but the pointer was moved outside the element.</info>
+                </attribute>
+
+                <attribute>
+                    <name>onMouseOver</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>JavaScript event handler executed when this element was not underthe mouse pointer but the pointer is moved inside the element.</info>
+                </attribute>
+
+                <attribute>
+                    <name>onMouseUp</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>JavaScript event handler executed when this element is under themouse pointer and a mouse button is released.</info>
+                </attribute>
+
+                <attribute>
+                    <name>style</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>CSS styles to be applied to this HTML element.</info>
+                </attribute>
+
+                <attribute>
+                    <name>styleClass</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>CSS stylesheet class to be applied to this HTML element.</info>
+                </attribute>
+
+                <attribute>
+                    <name>tabIndex</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>The tab order (ascending positive integers) for this element.</info>
+                </attribute>
+            </tag>			
 			<!-- **************************** gotoButton tag ***********************************-->
 			<tag>
 				<name>gotoButton</name>

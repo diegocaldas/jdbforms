@@ -65,6 +65,7 @@ public class NavigationEventTypeStrategy implements EventTypeStrategy
                || eventString.startsWith("ac_next_")
                || eventString.startsWith("ac_last_")
                || eventString.startsWith("ac_new_")
+               || eventString.startsWith("ac_copy_")
                || eventString.startsWith("ac_goto_")
                || eventString.equals("navFirst")
                || eventString.equals("navPrev")
@@ -112,6 +113,11 @@ public class NavigationEventTypeStrategy implements EventTypeStrategy
                || eventString.equals("navNew"))
       {
          eventType = EventType.EVENT_NAVIGATION_NEW;
+      }
+      else if (eventString.startsWith("ac_copy_")
+               || eventString.equals("navCopy"))
+      {
+         eventType = EventType.EVENT_NAVIGATION_COPY;
       }
       else if (eventString.startsWith("ac_goto_") || eventString.equals("goto"))
       {

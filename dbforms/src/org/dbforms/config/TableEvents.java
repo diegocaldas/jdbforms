@@ -60,6 +60,7 @@ public class TableEvents
          addEventInfo(EventType.EVENT_NAVIGATION_GOTO);
          addEventInfo(EventType.EVENT_NAVIGATION_LAST);
          addEventInfo(EventType.EVENT_NAVIGATION_NEW);
+         addEventInfo(EventType.EVENT_NAVIGATION_COPY);
          addEventInfo(EventType.EVENT_NAVIGATION_NEXT);
          addEventInfo(EventType.EVENT_NAVIGATION_PREV);
       }

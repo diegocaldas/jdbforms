@@ -66,6 +66,9 @@ public class EventType
    /**  value of the navigation new event */
    public static final String EVENT_NAVIGATION_NEW = "navNew";
 
+   /**  value of the navigation new event */
+   public static final String EVENT_NAVIGATION_COPY = "navCopy";
+
    /**  value of the navigation goto event */
    public static final String EVENT_NAVIGATION_GOTO = "navGoto";
 

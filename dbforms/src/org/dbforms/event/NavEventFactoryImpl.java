@@ -187,6 +187,8 @@ public class NavEventFactoryImpl extends NavEventFactory
    {
       addEventInfo(new EventInfo(EventType.EVENT_NAVIGATION_NEW,
             "org.dbforms.event.NavNewEvent"));
+      addEventInfo(new EventInfo(EventType.EVENT_NAVIGATION_COPY,
+            "org.dbforms.event.NavCopyEvent"));
       addEventInfo(new EventInfo(EventType.EVENT_NAVIGATION_GOTO,
             "org.dbforms.event.datalist.GotoEvent"));
       addEventInfo(new EventInfo(EventType.EVENT_NAVIGATION_FIRST,

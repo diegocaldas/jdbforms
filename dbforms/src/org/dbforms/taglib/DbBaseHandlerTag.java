@@ -30,6 +30,7 @@ import java.util.Vector;
 import org.dbforms.util.ParseUtil;
 import org.dbforms.config.*;
 import org.dbforms.event.ReloadEvent;
+import org.dbforms.event.NavCopyEvent;
 import org.dbforms.event.WebEvent;
 import javax.servlet.http.HttpServletRequest;
 
@@ -704,6 +705,12 @@ public abstract class DbBaseHandlerTag extends BodyTagSupport
       }
       else
       {
+         if (we instanceof NavCopyEvent){
+		    String copyValue = ParseUtil.getParameter(request, getFormFieldNameForCopyEvent());
+            if (copyValue != null)
+                return copyValue;
+		 } 
+
          // the form field is in 'insert-mode'
          if (we instanceof ReloadEvent)
          {
@@ -777,6 +784,17 @@ public abstract class DbBaseHandlerTag extends BodyTagSupport
       }
 
       return buf.toString();
+   }
+
+   /**
+    * generates the decoded name for the html-widget in the case of copy events. 
+    */
+   private String getFormFieldNameForCopyEvent() {
+       boolean footerReached = parentForm.getFooterReached();
+       parentForm.setFooterReached(false);
+       String name = getFormFieldName();
+       parentForm.setFooterReached(footerReached);
+       return name;
    }
 
 

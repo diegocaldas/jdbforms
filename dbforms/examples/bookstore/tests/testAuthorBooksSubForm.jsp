@@ -44,6 +44,7 @@
                  <db:navNextButton  style="width:100" caption=">  Next"/>
                  <db:navLastButton  style="width:100" caption=">> Last"/>
                  <db:navNewButton   style="width:100" caption="New"/>
+                 <db:navCopyButton  style="width:100" caption="Copy"/>
                  &nbsp;
                </td>
             </tr>
@@ -78,6 +79,7 @@
 						 <db:navNextButton  style="width:100" caption=">  Next"/>
 						 <db:navLastButton  style="width:100" caption=">> Last"/>
 						 <db:navNewButton   style="width:100" caption="New"/>
+		                 <db:navCopyButton  style="width:100" caption="Copy"/>
 						 &nbsp;
 					   </td>
 					</tr>
