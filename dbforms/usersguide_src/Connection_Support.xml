@@ -78,11 +78,7 @@
 			<sect2>
 				<title>DbForms and ConnectionFactory configuration
 </title>
-				<example>
-					<title/>
-					<programlisting>
-</programlisting>
-				</example>
+				 
 				<para>The examples below show how to configure the "dbconnection" xml element contained in the dbforms-config.xml file.
 </para>
 				<sect3>
@@ -200,8 +196,8 @@
 						<title>configuration parameters</title>
  
 					<para>
-						<table>
-							<title/>
+						<informaltable>
+							
 							<tgroup cols="2">
 								<tbody>
 									<row>
@@ -247,7 +243,7 @@ Used by ProtomatterConnectionProvider class.</entry>
 									</row>
 								</tbody>
 							</tgroup>
-						</table>
+						</informaltable>
 					</para></sect2>
                                         <sect2>
 					<title>Setting JDBC Properties
@@ -266,16 +262,10 @@ Used by ProtomatterConnectionProvider class.</entry>
 					 
 					<para>This properties will result in a DriverManager.getConnection(url, properties) call. It is not necessary to include the username and the password in the property list, this will be handled by the connection class.
 </para>
-					<para>Currently properties are supported for native connections (isJNDI=false, isPow2=false) and for connection with the Connection factory (isPow2=true)
-</para>
-					<para>
-						<emphasis role="bold">Example:</emphasis>
-
-                                         					</para>
+					<para>Currently properties are supported for native connections (isJNDI=false, isPow2=false) and for connection with the Connection factory (isPow2=true).<emphasis role="bold">Example:</emphasis>
+</para> 
 
 <blockquote><screen>
-
-    
 &lt;dbconnection
     id                      = "simple"
     isPow2                  = "true"
@@ -292,8 +282,6 @@ Used by ProtomatterConnectionProvider class.</entry>
         <emphasis role="bold">&lt;property</emphasis> name="characterEncoding" value="Shift_JIS" /&gt;
 
 &lt;/dbconnection&gt;
-
-
 </screen></blockquote>					
 				
 			</sect2>
@@ -362,6 +350,7 @@ http://protomatter.sourceforge.net/1.1.8-pre5/javadoc/com/protomatter/jdbc/pool/
 			<sect2>
 				<title>Protomatter ConnectionProvider configuration example
 </title>
+<blockquote>
 <screen>
     &lt;dbconnection
         id                      = "protomatter"
@@ -386,7 +375,7 @@ http://protomatter.sourceforge.net/1.1.8-pre5/javadoc/com/protomatter/jdbc/pool/
             &lt;pool-property name="pool.maidThreadCheckInterval" value=""    /&gt;
             &lt;pool-property name="jdbc.validityCheckStatement"  value=""    /&gt;
     &lt;/dbconnection&gt;
-</screen>				
+</screen>	</blockquote>			
 			</sect2>
 			<sect2>
 				<title>Jakarta ConnectionProvider supported properties
@@ -431,6 +420,7 @@ http://jakarta.apache.org/commons/dbcp/api/org/apache/commons/dbcp/BasicDataSour
 			<sect2>
 				<title>Jakarta ConnectionProvider configuration example
 </title>
+<blockquote>
 <screen>
     &lt;dbconnection
         id                      = "jakarta-commons-dbcp"
@@ -454,7 +444,7 @@ http://jakarta.apache.org/commons/dbcp/api/org/apache/commons/dbcp/BasicDataSour
                 &lt;pool-property name="maxWait"         value="-1"   /&gt;
                 &lt;pool-property name="useLog"          value="true" /&gt;
     &lt;/dbconnection&gt;
-</screen>
+</screen></blockquote>
 			</sect2>
 		</sect1>
 		<sect1>
@@ -504,6 +494,7 @@ http://jakarta.apache.org/commons/dbcp/api/org/apache/commons/dbcp/BasicDataSour
 				
 				<para>Here's what the JakartaConnectionProvider class does:
 </para>
+<blockquote>
 <screen>
 
   /**
@@ -533,7 +524,7 @@ http://jakarta.apache.org/commons/dbcp/api/org/apache/commons/dbcp/BasicDataSour
     dataSource.setMaxWait(-1);
 
   }
-</screen>			
+</screen>	</blockquote>		
 			</sect2>
 			<sect2>
 				<title>The getConnection method
@@ -542,6 +533,7 @@ http://jakarta.apache.org/commons/dbcp/api/org/apache/commons/dbcp/BasicDataSour
 </para>
 				<para>Example of  the JakartaConnectionProvider class:
 </para>
+<blockquote>
 <screen>
     /**
     *  Get a JDBC Connection
@@ -556,7 +548,7 @@ http://jakarta.apache.org/commons/dbcp/api/org/apache/commons/dbcp/BasicDataSour
             return dataSource.getConnection();
         
         }
-</screen>				
+</screen></blockquote>				
 			</sect2>
 		</sect1>
 		<sect1>
@@ -710,6 +702,7 @@ Every connection pool package uses its own configuration system; here's the exam
 				<para/>
 				<para>and here's the (simpler) code for J<emphasis role="italic">akartaConnectionProvider</emphasis> class:
 </para>
+<blockquote>
 <screen>
     Properties props = null;
         ...
@@ -743,7 +736,7 @@ Every connection pool package uses its own configuration system; here's the exam
                 dataSource.setLogWriter(new Log4jPrintWriter(cat, cat.getPriority()));
                 }
 </screen>				
-
+</blockquote>
 				<para/>
 			</sect2>
 		</sect1>
