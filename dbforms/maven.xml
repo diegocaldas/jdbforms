@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:ant="jelly:ant" xmlns:deploy="deploy" xmlns:doc="doc" xmlns:u="jelly:util" xmlns:j="jelly:core" default="">
+
   <ant:echo message="Hack to use xalan transformer!" />
   ${systemScope.setProperty('javax.xml.transform.TransformerFactory','org.apache.xalan.processor.TransformerFactoryImpl')}
+  <ant:echo message="${systemScope.getProperty('javax.xml.transform.TransformerFactory')}" />
 
   <ant:echo message="set enviroment variable so that it can be used in property files" />
   <ant:property environment="env" />
