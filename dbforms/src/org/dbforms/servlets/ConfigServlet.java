@@ -22,11 +22,10 @@
  */
 
 package org.dbforms.servlets;
+import java.util.Properties;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.URL;
-import java.net.MalformedURLException;
 import javax.servlet.ServletException;
 import javax.servlet.UnavailableException;
 import javax.servlet.http.HttpServlet;
@@ -55,7 +54,7 @@ import org.dbforms.event.NavEventFactoryImpl;
  * This Servlet runs at application startup and reads the XML configuration in
  * dbforms-config.xml, populates a DbFormsConfig - Object and stores it in
  * application context.
- * 
+ *
  * @author Joe Peer
  */
 public class ConfigServlet extends HttpServlet
@@ -91,7 +90,7 @@ public class ConfigServlet extends HttpServlet
 
    /**
     * Initialize this servlet.
-    * 
+    *
     * @exception ServletException if we cannot configure ourselves correctly
     */
    public void init() throws ServletException
@@ -132,37 +131,32 @@ public class ConfigServlet extends HttpServlet
       {
          try
          {
-            // Assuming that a webapp relative path starts with "/WEB-INF/"...
-            // is the log4j.configuration parameter value a relative URL ?
-            // (example: "/WEB-INF/log4j.configuration")
-            // [Fossato <fossato@pow2.com>, 20011123]
-            if (configurationStr.startsWith("/WEB-INF/"))
+            //Works fine with Tomcat 4.1.27 and Weblogic
+            InputStream fis = getServletContext()
+                                 .getResourceAsStream(configurationStr);
+
+            if (fis != null)
             {
-               // get the web application context prefix;
-               String prefix = this.getServletContext().getRealPath("/");
-               configurationStr = (prefix + configurationStr);
-
-               // you can configure log4J using also a simple
-               // file path string... example:
-               //PropertyConfigurator.configure(configurationStr);
+               Properties log4jProperties = new Properties();
+               log4jProperties.load(fis);
+               PropertyConfigurator.configure(log4jProperties);
             }
-
-            System.out.println(
-                     "ConfigServlet::initLogging - log4j configuration str = ["
-                     + configurationStr + "]");
-
-            URL configURL = new URL(configurationStr);
-            PropertyConfigurator.configure(configURL);
+            else
+            {
+               System.err.println(
+                        "ConfigServlet::initLogging - log4j.configuration not found!");
+            }
          }
-         catch (MalformedURLException mue)
+         catch (IOException e)
          {
+            System.err.println(
+                     "ConfigServlet::initLogging - log4j.properties not found!");
+
             PropertyConfigurator.configure(configurationStr);
             usingURL = false;
          }
 
          logCat = Logger.getLogger(ConfigServlet.class.getName());
-
-
          // logging category for this class
          logCat.info("### LOGGING INITALIZED, USING URL: " + usingURL + " ###");
       }
@@ -170,22 +164,21 @@ public class ConfigServlet extends HttpServlet
       {
          BasicConfigurator.configure();
          logCat = Logger.getLogger(ConfigServlet.class.getName());
-
-
          // logging category for this class
          logCat.info("### LOGGING INITALIZED, USING BASIC CONFIGURATION.");
          logCat.info(
-          "### You can use init-parameter \"log4j.configuration\" in web.xml for defining individual properties, if you want. Check DbForms manual!");
+                  "### You can use init-parameter \"log4j.configuration\" in web.xml for defining individual properties, if you want. Check DbForms manual!");
       }
+
    }
 
 
    /**
     * Process an HTTP "GET" request.
-    * 
+    *
     * @param request The servlet request we are processing
     * @param response The servlet response we are creating
-    * 
+    *
     * @exception IOException if an input/output error occurs
     * @exception ServletException if a servlet exception occurs
     */
@@ -198,10 +191,10 @@ public class ConfigServlet extends HttpServlet
 
    /**
     * Process an HTTP "POST" request.
-    * 
+    *
     * @param request The servlet request we are processing
     * @param response The servlet response we are creating
-    * 
+    *
     * @exception IOException if an input/output error occurs
     * @exception ServletException if a servlet exception occurs
     */
@@ -218,17 +211,18 @@ public class ConfigServlet extends HttpServlet
    /**
     * Construct and return a digester that uses the new configuration file
     * format.
-    * 
+    *
     * @param detail DOCUMENT ME!
     * @param dbFormsConfig DOCUMENT ME!
-    * 
+    *
     * @return DOCUMENT ME!
     */
    protected Digester initDigester(DbFormsConfig dbFormsConfig)
    {
       // Initialize a new Digester instance
       Digester digester = new Digester();
-      digester.setLogger(new org.apache.commons.logging.impl.Log4JLogger(logCat));
+      digester.setLogger(
+               new org.apache.commons.logging.impl.Log4JLogger(logCat));
       digester.push(dbFormsConfig);
       digester.setNamespaceAware(true);
       digester.setValidating(false);
@@ -453,10 +447,10 @@ public class ConfigServlet extends HttpServlet
 
    /**
     * Construct and return a digester that uses the new errors file format.
-    * 
+    *
     * @param detail DOCUMENT ME!
     * @param dbFormsErrors DOCUMENT ME!
-    * 
+    *
     * @return DOCUMENT ME!
     */
    protected Digester initErrorsDigester(DbFormsErrors dbFormsErrors)
@@ -465,7 +459,8 @@ public class ConfigServlet extends HttpServlet
       logCat.info("initialize Errors Digester.");
 
       Digester digester = new Digester();
-	  digester.setLogger(new org.apache.commons.logging.impl.Log4JLogger(logCat));
+      digester.setLogger(
+               new org.apache.commons.logging.impl.Log4JLogger(logCat));
       digester.push(dbFormsErrors);
       digester.setValidating(false);
 
@@ -493,14 +488,13 @@ public class ConfigServlet extends HttpServlet
 
    /**
     * Initialize the mapping information for this application.
-    * 
+    *
     * @param digesterDebugLevel DOCUMENT ME!
-    * 
+    *
     * @exception IOException if an input/output error is encountered
     * @exception ServletException if we cannot initialize these resources
     */
-   protected void initXMLErrors()
-                         throws IOException, ServletException
+   protected void initXMLErrors() throws IOException, ServletException
    {
       logCat.info("initialize XML Errors.");
 
@@ -553,14 +547,13 @@ public class ConfigServlet extends HttpServlet
 
    /**
     * Initialize the mapping information for this application.
-    * 
+    *
     * @param digesterDebugLevel DOCUMENT ME!
-    * 
+    *
     * @exception IOException if an input/output error is encountered
     * @exception ServletException if we cannot initialize these resources
     */
-   protected void initXMLConfig()
-                         throws IOException, ServletException
+   protected void initXMLConfig() throws IOException, ServletException
    {
       // Initialize the context-relative path to our configuration resources
       String value = getServletConfig().getInitParameter(DbFormsConfig.CONFIG);
@@ -579,15 +572,15 @@ public class ConfigServlet extends HttpServlet
 
    /**
     * DOCUMENT ME!
-    * 
+    *
     * @param config DOCUMENT ME!
     * @param digesterDebugLevel DOCUMENT ME!
-    * 
+    *
     * @throws IOException DOCUMENT ME!
     * @throws ServletException DOCUMENT ME!
     */
-   protected void initXMLConfigFile(String config)
-                             throws IOException, ServletException
+   protected void initXMLConfigFile(String config) throws IOException, 
+                                                          ServletException
    {
       // Build a digester to process our configuration resource
       String realPath = getServletContext().getRealPath("/");
@@ -647,10 +640,10 @@ public class ConfigServlet extends HttpServlet
 
    /**
     * DOCUMENT ME!
-    * 
+    *
     * @param resources DOCUMENT ME!
     * @param validator_rules DOCUMENT ME!
-    * 
+    *
     * @throws IOException DOCUMENT ME!
     * @throws ServletException DOCUMENT ME!
     */
@@ -705,10 +698,10 @@ public class ConfigServlet extends HttpServlet
 
    /**
     * DOCUMENT ME!
-    * 
+    *
     * @param resources DOCUMENT ME!
     * @param validation DOCUMENT ME!
-    * 
+    *
     * @throws IOException DOCUMENT ME!
     * @throws ServletException DOCUMENT ME!
     */
@@ -734,7 +727,7 @@ public class ConfigServlet extends HttpServlet
 
       try
       {
-		ValidatorResourcesInitializer.initialize(resources, inputValidation);
+         ValidatorResourcesInitializer.initialize(resources, inputValidation);
       }
       catch (IOException e)
       {
@@ -762,7 +755,7 @@ public class ConfigServlet extends HttpServlet
 
    /**
     * Initialize the ValidatorResources information for this application.
-    * 
+    *
     * @exception IOException if an input/output error is encountered
     * @exception ServletException if we cannot initialize these resources
     */
@@ -811,7 +804,7 @@ public class ConfigServlet extends HttpServlet
     * Initialize the SubClass information use by the ResourceBundle for this
     * application. ATTENTION: Here the "application" it's use as Class name,
     * not like path/file coordonnates. (see java.util.ResourceBundle)
-    * 
+    *
     * @exception IOException if an input/output error is encountered
     * @exception ServletException if we cannot initialize these resources
     */
@@ -867,10 +860,10 @@ public class ConfigServlet extends HttpServlet
 
    /**
     * Process an HTTP request.
-    * 
+    *
     * @param request The servlet request we are processing
     * @param response The servlet response we are creating
-    * 
+    *
     * @exception IOException if an input/output error occurs
     * @exception ServletException if a servlet exception occurs
     */
