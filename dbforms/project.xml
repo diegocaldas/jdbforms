@@ -352,28 +352,28 @@
       </dependency>
       <dependency>
          <id>jasperreports</id>
-         <version>0.6.1</version>
+         <version>0.6.4</version>
          <properties>
             <war.bundle>true</war.bundle>
          </properties>
       </dependency>
       <dependency>
          <id>jcommon</id>
-         <version>0.9.5</version>
+         <version>0.9.6</version>
          <properties>
             <war.bundle>true</war.bundle>
          </properties>
       </dependency>
       <dependency>
          <id>jfreechart</id>
-         <version>0.9.20</version>
+         <version>0.9.21</version>
          <properties>
             <war.bundle>true</war.bundle>
          </properties>
       </dependency>
       <dependency>
          <id>cewolf</id>
-         <version>0.10.a7</version>
+         <version>0.10.1</version>
          <properties>
             <war.bundle>true</war.bundle>
          </properties>
@@ -432,7 +432,7 @@
       </dependency>
       <dependency>
          <id>cactus</id>
-         <version>13-1.7dev20041109</version>
+         <version>13-1.7</version>
          <properties>
             <war.bundle>false</war.bundle>
          </properties>
