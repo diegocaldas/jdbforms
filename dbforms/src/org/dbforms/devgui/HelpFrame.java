@@ -41,7 +41,7 @@ public class HelpFrame extends javax.swing.JFrame
         if (dbFormsHomeStr != null)
         {
             String fileSeparator = System.getProperties().getProperty("file.separator");
-            String helpfilename = dbFormsHomeStr + fileSeparator + "doc" + fileSeparator + "html" + fileSeparator + "devgui.html";
+            String helpfilename = dbFormsHomeStr + fileSeparator + "doc" + fileSeparator + "devgui" + fileSeparator + "devgui.html";
 
             try
             {
