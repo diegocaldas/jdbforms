@@ -106,7 +106,7 @@ public class TimeUtil
             new Long(m),
             new Long(seconds)
          };
-         zeit = StringUtil.sprintf("%i:%02i:%02i:%02i", o);
+         zeit = Util.sprintf("%i:%02i:%02i:%02i", o);
       }
       else
       {
@@ -116,7 +116,7 @@ public class TimeUtil
             new Long(m),
             new Long(seconds)
          };
-         zeit = StringUtil.sprintf("%i:%02i:%02i", o);
+         zeit = Util.sprintf("%i:%02i:%02i", o);
       }
 
       return zeit;

@@ -25,6 +25,9 @@ package org.dbforms.util;
 
 import java.net.URLEncoder;
 import java.net.URLDecoder;
+
+import org.dbforms.util.external.PrintfFormat;
+
 import org.dbforms.config.DbFormsConfig;
 
 
@@ -125,6 +128,20 @@ public class Util
 
       return s;
    }
+
+
+	/**
+	 * returns a formated string
+	 *
+	 * @param f
+	 * @param s
+	 * @return String
+	 */
+	public static String sprintf(String format, Object[] o)
+	{
+		PrintfFormat printfFormat = new PrintfFormat(format); // create instance of PrintfFormat class
+		return printfFormat.sprintf(o);
+	}
 
 
    /**
