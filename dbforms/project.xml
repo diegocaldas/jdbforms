@@ -25,11 +25,14 @@
   <siteAddress></siteAddress>
   <siteDirectory></siteDirectory>
   <distributionDirectory></distributionDirectory>
-
-
+  
+  <issueTrackingUrl>http://sourceforge.net/tracker/?group_id=17608</issueTrackingUrl> 
+  <siteAddress>jdbforms.sourceforge.net</siteAddress> 
+  <siteDirectory>/www/jdbforms.sourceforge.net/www/</siteDirectory> 
+  <distributionDirectory></distributionDirectory> 
   <repository>
-    <connection></connection>
-    <url></url>
+    <connection>scm:cvs:pserver:anonymous@cvs.jdbforms.sourceforge.net:/cvsroot/jdbforms</connection> 
+    <url>http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/jdbforms</url> 
   </repository>
 
   <mailingLists>
@@ -157,7 +160,13 @@
       <id>xalan</id>
       <version>2.3.1</version>
     </dependency>       
-   
+    <dependency>
+      <id>protomatter</id>
+      <version>1.1.8-pre5</version>
+      <properties>        
+        <war.bundle.jar>true</war.bundle.jar>
+      </properties>
+    </dependency>         
     <!-- testing only -->
     <dependency>
       <id>hsqldb</id>
@@ -201,6 +210,14 @@
         <include>**/*.txt</include>
       </resources>
     </unitTest>
+    <testResources>
+      <testResource>
+        <directory>tests/test</directory>
+        <includes>
+          <include>**/*.txt</include>
+        </includes>
+      </testResource>
+    </testResources>
     
     <resources></resources>
     <jars></jars>
