@@ -103,7 +103,7 @@
 	<tr valign="middle" class="clsHeaderDataTableRow">
 		<xsl:for-each select="field[not(@autoInc) or @autoInc='false']">
 			<td class="clsHeaderDataTableCell">
-			<xsl:value-of select="@name"/>
+			<db:message><xsl:attribute name="key"><xsl:value-of select='@name'/></xsl:attribute></db:message>
 			</td>
 		</xsl:for-each>
            <td colspan="2">Action</td>

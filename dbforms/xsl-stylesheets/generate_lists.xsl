@@ -91,7 +91,7 @@ choose appropriate values that fit your needs
 		<tr class="clsHeaderDataTableRow">
 			<xsl:for-each select="field">
 				<xsl:text disable-output-escaping="yes">&lt;td class="clsHeaderDataTableCell"&gt;</xsl:text>
-				<xsl:value-of select="@name"></xsl:value-of>
+				<db:message><xsl:attribute name="key"><xsl:value-of select='@name'/></xsl:attribute></db:message>
 				<xsl:text disable-output-escaping="yes">&lt;/td&gt;</xsl:text>
 			</xsl:for-each>
 		</tr>

@@ -76,7 +76,7 @@ choose appropriate values that fit your needs
 					</xsl:choose>
 				</xsl:variable>
 		<tr class="{$customClass}">
-			<td align="left" style="font-weight: bold"><xsl:value-of select="@name"/></td>
+			<td align="left" style="font-weight: bold"><db:message><xsl:attribute name="key"><xsl:value-of select='@name'/></xsl:attribute></db:message></td>
 			<td align="left">
                <xsl:choose>
                  <xsl:when test="@fieldType='int' or @fieldType='smallint'  or @fieldType='tinyint' or @fieldType='integer'">
