@@ -21,10 +21,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.taglib;
-import java.io.IOException;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.BodyTagSupport;
@@ -245,16 +243,11 @@ public class StyleTag extends BodyTagSupport
 
          pageContext.include(templateBaseDir + template + "_" + part + ".jsp");
       }
-      catch (IOException ioe)
+      catch (Exception ioe)
       {
          throw new JspException("Problem 2 including template end - "
             + ioe.toString());
       }
-      catch (ServletException se)
-      {
-         ;
-      }
-
       return EVAL_PAGE;
    }
 

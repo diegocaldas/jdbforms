@@ -27,7 +27,6 @@ import java.sql.*;
 import org.apache.log4j.Category;
 import org.dbforms.config.*;
 import org.dbforms.event.*;
-import org.dbforms.util.*;
 
 
 
@@ -46,7 +45,6 @@ public class NavNextEvent extends NavigationEvent
 {
    private static Category logCat = Category.getInstance(
                                              NavNextEvent.class.getName()); // logging category for this class
-   private int             stepWidth = 1;
 
    /**
     *  Constructor.
@@ -59,14 +57,6 @@ public class NavNextEvent extends NavigationEvent
                        DbFormsConfig config)
    {
       super(action, request, config);
-
-      String stepWidthStr = ParseUtil.getParameter(request, 
-                                                   "data" + action + "_sw");
-
-      if (stepWidthStr != null)
-      {
-         stepWidth = Integer.parseInt(stepWidthStr);
-      }
    }
 
 

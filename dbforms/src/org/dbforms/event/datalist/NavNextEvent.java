@@ -33,7 +33,6 @@ import org.dbforms.config.DbFormsConfig;
 import org.dbforms.event.NavigationEvent;
 import org.dbforms.event.datalist.dao.DataSourceList;
 import org.dbforms.event.datalist.dao.DataSourceFactory;
-import org.dbforms.util.ParseUtil;
 
 
 
@@ -49,8 +48,6 @@ public class NavNextEvent extends NavigationEvent
    // logging category for this class
    private static Category logCat = Category.getInstance(
                                              NavNextEvent.class.getName());
-   private int             stepWidth = 1;
-
    /**
     * Constructor.
     *
@@ -62,14 +59,6 @@ public class NavNextEvent extends NavigationEvent
                        DbFormsConfig config)
    {
       super(action, request, config);
-
-      String stepWidthStr = ParseUtil.getParameter(request, 
-                                                   "data" + action + "_sw");
-
-      if (stepWidthStr != null)
-      {
-         stepWidth = Integer.parseInt(stepWidthStr);
-      }
    }
 
 
