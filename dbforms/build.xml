@@ -196,7 +196,7 @@
     <copy file="${dist.dir}/dbforms.tld" todir="${build.dir}/${example.name}/WEB-INF" />
     <!-- copy libraries dbforms depends on to WEB-INF/lib -->
     <copy todir="${build.dir}/${example.name}/WEB-INF/lib">
-      <fileset dir="${dependend.dir}" />
+      <fileset dir="${dependend.dir}" excludes="**/tools.jar" />
     </copy>
     <!-- xerces.jar, xalan.jar might be neccessary for other tasks, but are disturbing with tomcat 4 -->
     <!-- FIXME: must be documented what do do with other servers.... -->
@@ -304,7 +304,7 @@
       <fileset dir="." includes="doc/**/*.html,doc/**/*.png,doc/**/*.gif,doc/**/*.jpg,doc/**/*.txt,doc/**/*.pdf,doc/**/*.css" />
       <fileset dir="." includes="dist/*.tld  dist/*.jar" />
       <fileset dir="." includes="etc/*.xml etc/*.xsl" />
-      <fileset dir="." includes="examples/**/*" />
+      <fileset dir="." includes="examples/**/*" excludes="**/tools.jar" />
       <fileset dir="." includes="src/org/**/*.java" />
       <fileset dir="." includes="temp/*.txt" />
       <fileset dir="." includes="xsl-stylesheets/*.xsl" />
