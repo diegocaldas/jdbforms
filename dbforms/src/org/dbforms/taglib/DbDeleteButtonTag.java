@@ -22,60 +22,43 @@
  */
 package org.dbforms.taglib;
 
-import javax.servlet.jsp.JspException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.dbforms.config.ResultSetVector;
-import org.apache.log4j.Category;
 
 import org.dbforms.util.MessageResources;
-import javax.servlet.http.HttpServletRequest;
 
-/****
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.jsp.JspException;
+
+
+
+/**
+ * <p>
+ * This tag renders a Delete Button
+ * </p>
  *
- * <p>This tag renders a Delete Button</p>
- *
- *
- *
- * @author Joachim Peer <j.peer@gmx.net>
+ * @author Joachim Peer
  */
 public class DbDeleteButtonTag extends DbBaseButtonTag
-   implements javax.servlet.jsp.tagext.TryCatchFinally
-{
-   private static Category    logCat         = Category.getInstance(DbDeleteButtonTag.class
-         .getName()); // logging category for this class
+   implements javax.servlet.jsp.tagext.TryCatchFinally {
+   private static Log logCat   = LogFactory.getLog(DbDeleteButtonTag.class);
    private static int uniqueID;
-   private String     confirmMessage = null;
-   private String associatedRadio;
 
-   static
-   {
+   static {
       uniqueID = 1;
    }
 
-
-	public void doFinally()
-	{
-		confirmMessage = null;
-		associatedRadio = null;
-		super.doFinally();
-	}
-
-
-   /**
-    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
-    */
-   public void doCatch(Throwable t) throws Throwable
-   {
-      throw t;
-   }
+   private String associatedRadio;
+   private String confirmMessage = null;
 
    /**
     * DOCUMENT ME!
     *
     * @param associatedRadio DOCUMENT ME!
     */
-   public void setAssociatedRadio(String associatedRadio)
-   {
+   public void setAssociatedRadio(String associatedRadio) {
       this.associatedRadio = associatedRadio;
    }
 
@@ -85,8 +68,7 @@ public class DbDeleteButtonTag extends DbBaseButtonTag
     *
     * @return DOCUMENT ME!
     */
-   public String getAssociatedRadio()
-   {
+   public String getAssociatedRadio() {
       return associatedRadio;
    }
 
@@ -96,8 +78,7 @@ public class DbDeleteButtonTag extends DbBaseButtonTag
     *
     * @param confirmMessage DOCUMENT ME!
     */
-   public void setConfirmMessage(String confirmMessage)
-   {
+   public void setConfirmMessage(String confirmMessage) {
       this.confirmMessage = confirmMessage;
    }
 
@@ -107,9 +88,26 @@ public class DbDeleteButtonTag extends DbBaseButtonTag
     *
     * @return DOCUMENT ME!
     */
-   public String getConfirmMessage()
-   {
+   public String getConfirmMessage() {
       return confirmMessage;
+   }
+
+
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable {
+      throw t;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    */
+   public void doFinally() {
+      confirmMessage  = null;
+      associatedRadio = null;
+      super.doFinally();
    }
 
 
@@ -121,62 +119,55 @@ public class DbDeleteButtonTag extends DbBaseButtonTag
     * @throws javax.servlet.jsp.JspException DOCUMENT ME!
     * @throws JspException DOCUMENT ME!
     */
-   public int doStartTag() throws javax.servlet.jsp.JspException
-   {
-		super.doStartTag();
-		
+   public int doStartTag() throws javax.servlet.jsp.JspException {
+      super.doStartTag();
+
       DbDeleteButtonTag.uniqueID++; // make sure that we don't mix up buttons
 
+      if (getConfirmMessage() != null) {
+         String onclick = (getOnClick() != null) ? getOnClick()
+                                                 : "";
 
-      if (getConfirmMessage() != null)
-      {
-         String onclick = (getOnClick() != null) ? getOnClick() : "";
-
-         if (onclick.lastIndexOf(";") != (onclick.length() - 1))
-         {
+         if (onclick.lastIndexOf(";") != (onclick.length() - 1)) {
             onclick += ";"; // be sure javascript end with ";"
          }
 
          String message = getConfirmMessage();
 
-         if (getParentForm().hasCaptionResourceSet())
-         {
-            try
-            {
-               message = MessageResources.getMessage((HttpServletRequest)pageContext.getRequest(), getConfirmMessage());
-            }
-            catch (Exception e)
-            {
+         if (getParentForm()
+                      .hasCaptionResourceSet()) {
+            try {
+               message = MessageResources.getMessage((HttpServletRequest) pageContext
+                                                     .getRequest(),
+                                                     getConfirmMessage());
+            } catch (Exception e) {
                logCat.debug("confirm(" + getCaption() + ") Exception : "
-                  + e.getMessage());
+                            + e.getMessage());
             }
          }
 
          setOnClick(onclick + "return confirm('" + message + "');");
       }
 
-      if (getParentForm().getFooterReached()
-               && ResultSetVector.isNull(getParentForm().getResultSetVector()))
-      {
+      if (getParentForm()
+                   .getFooterReached()
+                && ResultSetVector.isNull(getParentForm().getResultSetVector())) {
          // 20030521 HKK: Bug fixing, thanks to Michael Slack! 
          return SKIP_BODY;
       }
 
-      try
-      {
+      try {
          // first, determinate the name of the button tag
          StringBuffer tagNameBuf = new StringBuffer("ac_delete");
 
-         if (associatedRadio != null)
-         {
+         if (associatedRadio != null) {
             tagNameBuf.append("ar");
          }
 
          tagNameBuf.append("_");
          tagNameBuf.append(getTable().getId());
 
-         if (associatedRadio == null)
-         {
+         if (associatedRadio == null) {
             tagNameBuf.append("_");
             tagNameBuf.append(getParentForm().getPositionPath());
          }
@@ -190,42 +181,33 @@ public class DbDeleteButtonTag extends DbBaseButtonTag
          // then render it and its associtated data-tags
          StringBuffer tagBuf = new StringBuffer();
 
-         if (associatedRadio != null)
-         {
+         if (associatedRadio != null) {
             tagBuf.append(getDataTag(tagName, "arname", associatedRadio));
          }
 
-         if (getFollowUp() != null)
-         {
+         if (getFollowUp() != null) {
             tagBuf.append(getDataTag(tagName, "fu", getFollowUp()));
          }
 
-         if (getFollowUpOnError() != null)
-         {
+         if (getFollowUpOnError() != null) {
             tagBuf.append(getDataTag(tagName, "fue", getFollowUpOnError()));
          }
 
          tagBuf.append(getButtonBegin());
          tagBuf.append(" name=\"");
          tagBuf.append(tagName);
-			tagBuf.append(getButtonEnd());
+         tagBuf.append(getButtonEnd());
 
-         pageContext.getOut().write(tagBuf.toString());
-      }
-      catch (java.io.IOException ioe)
-      {
+         pageContext.getOut()
+                    .write(tagBuf.toString());
+      } catch (java.io.IOException ioe) {
          throw new JspException("IO Error: " + ioe.getMessage());
       }
 
-      if (getChoosenFlavor() == FLAVOR_MODERN)
-      {
+      if (getChoosenFlavor() == FLAVOR_MODERN) {
          return EVAL_BODY_BUFFERED;
-      }
-      else
-      {
+      } else {
          return SKIP_BODY;
       }
    }
-
-
 }

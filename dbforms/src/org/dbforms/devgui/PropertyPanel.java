@@ -26,18 +26,19 @@
  * Created on 26. April 2001, 15:42
  */
 package org.dbforms.devgui;
+
 import javax.swing.*;
 
 
 
 /**
+ * DOCUMENT ME!
  *
- * @author  Joachim Peer <j.peer@gmx.net>
+ * @author Joachim Peer
  * @version
  */
 public abstract class PropertyPanel extends javax.swing.JPanel
-   implements PropertyNames
-{
+   implements PropertyNames {
    /** DOCUMENT ME! */
    protected ProjectData projectData;
 
@@ -46,30 +47,11 @@ public abstract class PropertyPanel extends javax.swing.JPanel
     *
     * @param projectData DOCUMENT ME!
     */
-   public PropertyPanel(ProjectData projectData)
-   {
+   public PropertyPanel(ProjectData projectData) {
       this.projectData = projectData;
 
       //ToolTipManager.sharedInstance().registerComponent(this);
    }
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param tf DOCUMENT ME!
-    * @param p DOCUMENT ME!
-    */
-   protected void addAFocusListener(final JTextField tf, final String p)
-   {
-      tf.addFocusListener(new java.awt.event.FocusAdapter()
-         {
-            public void focusLost(java.awt.event.FocusEvent e)
-            {
-               projectData.setProperty(p, tf.getText());
-            }
-         });
-   }
-
 
    /**
     * DOCUMENT ME!
@@ -82,12 +64,28 @@ public abstract class PropertyPanel extends javax.swing.JPanel
    /**
     * DOCUMENT ME!
     *
+    * @param tf DOCUMENT ME!
+    * @param p DOCUMENT ME!
+    */
+   protected void addAFocusListener(final JTextField tf,
+                                    final String     p) {
+      tf.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent e) {
+               projectData.setProperty(p, tf.getText());
+            }
+         });
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
     * @param e DOCUMENT ME!
     */
-   protected void showExceptionDialog(Exception e)
-   {
+   protected void showExceptionDialog(Exception e) {
       JOptionPane.showMessageDialog(this,
-         "An exception occurred:\n\n" + e.toString() + "\n", "Exception",
-         JOptionPane.ERROR_MESSAGE);
+                                    "An exception occurred:\n\n" + e.toString()
+                                    + "\n", "Exception",
+                                    JOptionPane.ERROR_MESSAGE);
    }
 }

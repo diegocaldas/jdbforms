@@ -23,24 +23,29 @@
 package org.dbforms.conprovider;
 
 import java.util.Properties;
+
 import javax.servlet.ServletContext;
 
 
 
 /**
- *  Preferences class for Connection Providers.
- * 
- * 
+ * Preferences class for Connection Providers.
+ *
  * @author Luca Fossato
- * 
  */
-public class ConnectionProviderPrefs
-{
-   /** connection provider class name */
-   private String connectionProviderClass;
+public class ConnectionProviderPrefs {
+   /** Holds connection pool custom properties */
+   private Properties poolProperties;
+
+   /** Holds jdbc properties */
+   private Properties     properties;
+   private ServletContext servletContext;
 
    /** connection pool url */
    private String connectionPoolURL;
+
+   /** connection provider class name */
+   private String connectionProviderClass;
 
    /** the JDBC driver class name */
    private String jdbcDriver;
@@ -48,208 +53,192 @@ public class ConnectionProviderPrefs
    /** the JDBC URL string */
    private String jdbcURL;
 
-   /** database user name */
-   private String user;
-
    /** database user password */
    private String password;
 
-   /** Holds jdbc properties * */
-   private Properties properties;
-
-   /** Holds connection pool custom properties * */
-   private Properties poolProperties;
-   
-   private ServletContext servletContext;
-
+   /** database user name */
+   private String user;
 
    /**
-    *  Gets the connectionProviderClass attribute of the ConnectionProviderPrefs object
+    * Sets the connectionPoolURL attribute of the ConnectionProviderPrefs
+    * object
     *
-    * @return  The connectionProviderClass value
+    * @param connectionPoolURL The new connectionPoolURL value
     */
-   public String getConnectionProviderClass()
-   {
-      return connectionProviderClass;
-   }
-
-
-   /**
-    *  Gets the connectionPoolURL attribute of the ConnectionProviderPrefs object
-    *
-    * @return  The connectionPoolURL value
-    */
-   public String getConnectionPoolURL()
-   {
-      return connectionPoolURL;
-   }
-
-
-   /**
-    *  Gets the jdbcURL attribute of the ConnectionProviderPrefs object
-    *
-    * @return  The jdbcURL value
-    */
-   public String getJdbcURL()
-   {
-      return jdbcURL;
-   }
-
-
-   /**
-    *  Gets the jdbcDriver attribute of the ConnectionProviderPrefs object
-    *
-    * @return  The jdbcDriver value
-    */
-   public String getJdbcDriver()
-   {
-      return jdbcDriver;
-   }
-
-
-   /**
-    *  Gets the password attribute of the ConnectionProviderPrefs object
-    *
-    * @return  The password value
-    */
-   public String getPassword()
-   {
-      return password;
-   }
-
-
-   /**
-    *  Gets the user attribute of the ConnectionProviderPrefs object
-    *
-    * @return  The user value
-    */
-   public String getUser()
-   {
-      return user;
-   }
-
-
-   /**
-    *  Sets the user attribute of the ConnectionProviderPrefs object
-    *
-    * @param  user The new user value
-    */
-   public void setUser(String user)
-   {
-      this.user = user;
-   }
-
-
-   /**
-    *  Sets the password attribute of the ConnectionProviderPrefs object
-    *
-    * @param  password The new password value
-    */
-   public void setPassword(String password)
-   {
-      this.password = password;
-   }
-
-
-   /**
-    *  Sets the jdbcURL attribute of the ConnectionProviderPrefs object
-    *
-    * @param  jdbcURL The new jdbcURL value
-    */
-   public void setJdbcURL(String jdbcURL)
-   {
-      this.jdbcURL = jdbcURL;
-   }
-
-
-   /**
-    *  Sets the jdbcDriver attribute of the ConnectionProviderPrefs object
-    *
-    * @param  jdbcDriver The new jdbcDriver value
-    */
-   public void setJdbcDriver(String jdbcDriver)
-   {
-      this.jdbcDriver = jdbcDriver;
-   }
-
-
-   /**
-    *  Sets the connectionPoolURL attribute of the ConnectionProviderPrefs object
-    *
-    * @param  connectionPoolURL The new connectionPoolURL value
-    */
-   public void setConnectionPoolURL(String connectionPoolURL)
-   {
+   public void setConnectionPoolURL(String connectionPoolURL) {
       this.connectionPoolURL = connectionPoolURL;
    }
 
 
    /**
-    *  Sets the connectionProviderClass attribute of the ConnectionProviderPrefs object
+    * Gets the connectionPoolURL attribute of the ConnectionProviderPrefs
+    * object
     *
-    * @param  connectionProviderClass The new connectionProviderClass value
+    * @return The connectionPoolURL value
     */
-   public void setConnectionProviderClass(String connectionProviderClass)
-   {
+   public String getConnectionPoolURL() {
+      return connectionPoolURL;
+   }
+
+
+   /**
+    * Sets the connectionProviderClass attribute of the ConnectionProviderPrefs
+    * object
+    *
+    * @param connectionProviderClass The new connectionProviderClass value
+    */
+   public void setConnectionProviderClass(String connectionProviderClass) {
       this.connectionProviderClass = connectionProviderClass;
    }
 
 
    /**
-    * Returns the properties.
+    * Gets the connectionProviderClass attribute of the ConnectionProviderPrefs
+    * object
     *
-    * @return  Properties
+    * @return The connectionProviderClass value
     */
-   public Properties getProperties()
-   {
-      return properties;
+   public String getConnectionProviderClass() {
+      return connectionProviderClass;
    }
 
 
    /**
-    * Sets the properties.
+    * Sets the jdbcDriver attribute of the ConnectionProviderPrefs object
     *
-    * @param  properties The properties to set
+    * @param jdbcDriver The new jdbcDriver value
     */
-   public void setProperties(Properties properties)
-   {
-      this.properties = properties;
+   public void setJdbcDriver(String jdbcDriver) {
+      this.jdbcDriver = jdbcDriver;
    }
 
 
    /**
-    * Returns the connection pool custom properties.
+    * Gets the jdbcDriver attribute of the ConnectionProviderPrefs object
     *
-    * @return  Properties
+    * @return The jdbcDriver value
     */
-   public Properties getPoolProperties()
-   {
-      return poolProperties;
+   public String getJdbcDriver() {
+      return jdbcDriver;
+   }
+
+
+   /**
+    * Sets the jdbcURL attribute of the ConnectionProviderPrefs object
+    *
+    * @param jdbcURL The new jdbcURL value
+    */
+   public void setJdbcURL(String jdbcURL) {
+      this.jdbcURL = jdbcURL;
+   }
+
+
+   /**
+    * Gets the jdbcURL attribute of the ConnectionProviderPrefs object
+    *
+    * @return The jdbcURL value
+    */
+   public String getJdbcURL() {
+      return jdbcURL;
+   }
+
+
+   /**
+    * Sets the password attribute of the ConnectionProviderPrefs object
+    *
+    * @param password The new password value
+    */
+   public void setPassword(String password) {
+      this.password = password;
+   }
+
+
+   /**
+    * Gets the password attribute of the ConnectionProviderPrefs object
+    *
+    * @return The password value
+    */
+   public String getPassword() {
+      return password;
    }
 
 
    /**
     * Sets the connection pool custom properties.
     *
-    * @param  poolProperties The pool properties to set
+    * @param poolProperties The pool properties to set
     */
-   public void setPoolProperties(Properties poolProperties)
-   {
+   public void setPoolProperties(Properties poolProperties) {
       this.poolProperties = poolProperties;
    }
 
-   /**
-    * @return
-    */
-   public ServletContext getServletContext() {
-      return servletContext;
-   }
 
    /**
+    * Returns the connection pool custom properties.
+    *
+    * @return Properties
+    */
+   public Properties getPoolProperties() {
+      return poolProperties;
+   }
+
+
+   /**
+    * Sets the properties.
+    *
+    * @param properties The properties to set
+    */
+   public void setProperties(Properties properties) {
+      this.properties = properties;
+   }
+
+
+   /**
+    * Returns the properties.
+    *
+    * @return Properties
+    */
+   public Properties getProperties() {
+      return properties;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
     * @param context
     */
    public void setServletContext(ServletContext context) {
       servletContext = context;
    }
 
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return
+    */
+   public ServletContext getServletContext() {
+      return servletContext;
+   }
+
+
+   /**
+    * Sets the user attribute of the ConnectionProviderPrefs object
+    *
+    * @param user The new user value
+    */
+   public void setUser(String user) {
+      this.user = user;
+   }
+
+
+   /**
+    * Gets the user attribute of the ConnectionProviderPrefs object
+    *
+    * @return The user value
+    */
+   public String getUser() {
+      return user;
+   }
 }

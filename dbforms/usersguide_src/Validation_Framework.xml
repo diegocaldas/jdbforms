@@ -146,7 +146,7 @@ in need of maxlength validating
     <para>Various tags are used within the Validation.xml file to describe validation rules.  The following describes each tag in detail:
 </para>
     <para>
-      <table>
+      <table width="100%">
         <title>Validation Tag Details</title>
         <tgroup cols="2">
           <tbody>

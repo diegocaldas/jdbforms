@@ -46,7 +46,9 @@ public class TestBaseTag extends JspTestCase
      */
     public void setUp()
     {
-        this.tag = new BaseTag();
+    	super.setUp();	
+
+    	this.tag = new BaseTag();
         this.tag.setPageContext(this.pageContext);
     }
 

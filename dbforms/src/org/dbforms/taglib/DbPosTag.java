@@ -20,36 +20,24 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.taglib;
+
 import org.dbforms.util.Util;
 
 
 
-/****
+/**
  * <p>
- *  renders a position to use with keyToDestPos.
- *  This is the same string wich would be used as value in the DbassociatedRadioTag.
+ * renders a position to use with keyToDestPos. This is the same string wich
+ * would be used as value in the DbassociatedRadioTag.
  * </p>
- *
  */
 public class DbPosTag extends DbBaseHandlerTag
-   implements javax.servlet.jsp.tagext.TryCatchFinally
-{
-   /**
-    * DOCUMENT ME!
-    */
-   public void doFinally()
-   {
-      super.doFinally();
-   }
-
-
+   implements javax.servlet.jsp.tagext.TryCatchFinally {
    /**
     * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
     */
-   public void doCatch(Throwable t) throws Throwable
-   {
+   public void doCatch(Throwable t) throws Throwable {
       throw t;
    }
 
@@ -62,24 +50,28 @@ public class DbPosTag extends DbBaseHandlerTag
     * @throws javax.servlet.jsp.JspException DOCUMENT ME!
     * @throws JspException DOCUMENT ME!
     */
-   public int doEndTag() throws javax.servlet.jsp.JspException
-   {
-      try
-      {
+   public int doEndTag() throws javax.servlet.jsp.JspException {
+      try {
          StringBuffer tagBuf = new StringBuffer();
          tagBuf.append(getParentForm().getTable().getId());
          tagBuf.append("_");
          tagBuf.append(getParentForm().getPositionPath());
          pageContext.getOut()
-           .write(Util.decode(tagBuf.toString(), 
-                              pageContext.getRequest().getCharacterEncoding()));
-      }
-      catch (java.io.IOException ioe)
-      {
+                    .write(Util.decode(tagBuf.toString(),
+                                       pageContext.getRequest().getCharacterEncoding()));
+      } catch (java.io.IOException ioe) {
          throw new javax.servlet.jsp.JspException("IO Error: "
                                                   + ioe.getMessage());
       }
 
       return EVAL_PAGE;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    */
+   public void doFinally() {
+      super.doFinally();
    }
 }

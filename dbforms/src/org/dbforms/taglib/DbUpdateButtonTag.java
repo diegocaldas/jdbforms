@@ -22,51 +22,35 @@
  */
 package org.dbforms.taglib;
 
-import javax.servlet.jsp.JspException;
-
 import org.dbforms.config.ResultSetVector;
-import org.dbforms.validation.ValidatorConstants;
+
 import org.dbforms.util.Util;
 
+import org.dbforms.validation.ValidatorConstants;
+
+import javax.servlet.jsp.JspException;
 
 
-/****
+
+/**
+ * <p>
+ * this tag renders an update-button. #fixme - define abstract base class
+ * [should be fixed in release 0.6]
+ * </p>
  *
- * <p>this tag renders an update-button.
- *
- * #fixme - define abstract base class [should be fixed in release 0.6]
- *
- * @author Joachim Peer <j.peer@gmx.net>
+ * @author Joachim Peer
  */
 public class DbUpdateButtonTag extends DbBaseButtonTag
-      implements javax.servlet.jsp.tagext.TryCatchFinally
-{
-
-	private String associatedRadio;
-	private String showAlways = "false";
-
-	public void doFinally()
-	{
-		associatedRadio = null;
-		showAlways = "false";
-		super.doFinally();
-	}
-
-   /**
-    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
-    */
-   public void doCatch(Throwable t) throws Throwable
-   {
-      throw t;
-   }
+   implements javax.servlet.jsp.tagext.TryCatchFinally {
+   private String associatedRadio;
+   private String showAlways = "false";
 
    /**
     * DOCUMENT ME!
     *
     * @param associatedRadio DOCUMENT ME!
     */
-   public void setAssociatedRadio(String associatedRadio)
-   {
+   public void setAssociatedRadio(String associatedRadio) {
       this.associatedRadio = associatedRadio;
    }
 
@@ -76,25 +60,48 @@ public class DbUpdateButtonTag extends DbBaseButtonTag
     *
     * @return DOCUMENT ME!
     */
-   public String getAssociatedRadio()
-   {
+   public String getAssociatedRadio() {
       return associatedRadio;
    }
 
-	/**
-	 * returns the JavaScript validation flags.
-	 * Will be put into the onClick event of the main form
-	 * Must be overloaded by update and delete button
-	 *
-	 * @return the java script validation vars.
-	 */
-	protected String JsValidation()
-	{
-		return ( ValidatorConstants.JS_CANCEL_VALIDATION	
-				 + "=true;" 
-				 + ValidatorConstants.JS_UPDATE_VALIDATION_MODE
-				+ "=true;");
-	}
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param string
+    */
+   public void setShowAlways(String string) {
+      showAlways = string;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return
+    */
+   public String getShowAlways() {
+      return showAlways;
+   }
+
+
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable {
+      throw t;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    */
+   public void doFinally() {
+      associatedRadio = null;
+      showAlways      = "false";
+      super.doFinally();
+   }
+
 
    /**
     * DOCUMENT ME!
@@ -104,35 +111,29 @@ public class DbUpdateButtonTag extends DbBaseButtonTag
     * @throws javax.servlet.jsp.JspException DOCUMENT ME!
     * @throws JspException DOCUMENT ME!
     */
-   public int doStartTag() throws javax.servlet.jsp.JspException
-   {
+   public int doStartTag() throws javax.servlet.jsp.JspException {
+      super.doStartTag();
 
-		super.doStartTag();
-	
-
-      if (!Util.getTrue(showAlways) 
-      		&& getParentForm().getFooterReached()
-               && ResultSetVector.isNull(getParentForm().getResultSetVector()))
-      {
+      if (!Util.getTrue(showAlways)
+                && getParentForm()
+                            .getFooterReached()
+                && ResultSetVector.isNull(getParentForm().getResultSetVector())) {
          // 20030521 HKK: Bug fixing, thanks to Michael Slack! 
          return SKIP_BODY;
       }
 
-      try
-      {
+      try {
          // first, determinate the name of the button tag
          StringBuffer tagNameBuf = new StringBuffer("ac_update");
 
-         if (associatedRadio != null)
-         {
+         if (associatedRadio != null) {
             tagNameBuf.append("ar");
          }
 
          tagNameBuf.append("_");
          tagNameBuf.append(getTable().getId());
 
-         if (associatedRadio == null)
-         {
+         if (associatedRadio == null) {
             tagNameBuf.append("_");
             tagNameBuf.append(getParentForm().getPositionPath());
          }
@@ -146,56 +147,45 @@ public class DbUpdateButtonTag extends DbBaseButtonTag
          // then render it and its associtated data-tags
          StringBuffer tagBuf = new StringBuffer();
 
-         if (associatedRadio != null)
-         {
+         if (associatedRadio != null) {
             tagBuf.append(getDataTag(tagName, "arname", associatedRadio));
          }
 
-         if (getFollowUp() != null)
-         {
+         if (getFollowUp() != null) {
             tagBuf.append(getDataTag(tagName, "fu", getFollowUp()));
          }
 
-         if (getFollowUpOnError() != null)
-         {
+         if (getFollowUpOnError() != null) {
             tagBuf.append(getDataTag(tagName, "fue", getFollowUpOnError()));
          }
 
          tagBuf.append(getButtonBegin());
          tagBuf.append(" name=\"");
          tagBuf.append(tagName);
-		 tagBuf.append(getButtonEnd());
+         tagBuf.append(getButtonEnd());
 
-         pageContext.getOut().write(tagBuf.toString());
-      }
-      catch (java.io.IOException ioe)
-      {
+         pageContext.getOut()
+                    .write(tagBuf.toString());
+      } catch (java.io.IOException ioe) {
          throw new JspException("IO Error: " + ioe.getMessage());
       }
 
-      if (getChoosenFlavor() == FLAVOR_MODERN)
-      {
+      if (getChoosenFlavor() == FLAVOR_MODERN) {
          return EVAL_BODY_BUFFERED;
-      }
-      else
-      {
+      } else {
          return SKIP_BODY;
       }
    }
 
 
    /**
-    * @return
+    * returns the JavaScript validation flags. Will be put into the onClick
+    * event of the main form Must be overloaded by update and delete button
+    *
+    * @return the java script validation vars.
     */
-   public String getShowAlways() {
-      return showAlways;
+   protected String JsValidation() {
+      return (ValidatorConstants.JS_CANCEL_VALIDATION + "=true;"
+             + ValidatorConstants.JS_UPDATE_VALIDATION_MODE + "=true;");
    }
-
-   /**
-    * @param string
-    */
-   public void setShowAlways(String string) {
-      showAlways = string;
-   }
-
 }

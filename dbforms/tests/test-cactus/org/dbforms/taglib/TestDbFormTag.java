@@ -54,6 +54,8 @@ public class TestDbFormTag extends JspTestCase {
 	 * @throws Exception DOCUMENT ME!
 	 */
 	public void setUp() throws Exception {
+    	super.setUp();	
+
 		tblResult = null;
 
 		DbFormsConfigRegistry.instance().register(null);

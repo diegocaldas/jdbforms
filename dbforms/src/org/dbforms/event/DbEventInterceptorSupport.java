@@ -21,61 +21,108 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.event;
-import javax.servlet.http.HttpServletRequest;
-import java.sql.Connection;
-import java.util.Map;
 
 import org.dbforms.config.DbEventInterceptor;
-import org.dbforms.config.ValidationException;
 import org.dbforms.config.DbFormsConfig;
-import org.dbforms.config.FieldValues;
-import org.dbforms.config.FieldValue;
 import org.dbforms.config.Field;
+import org.dbforms.config.FieldValue;
+import org.dbforms.config.FieldValues;
 import org.dbforms.config.Table;
+import org.dbforms.config.ValidationException;
+
+import java.sql.Connection;
+
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+
 
 /**
-* convenience class
-* 
-* @author Joe Peer
-*/
-public class DbEventInterceptorSupport implements DbEventInterceptor
-{
+ * convenience class
+ *
+ * @author Joe Peer
+ */
+public class DbEventInterceptorSupport implements DbEventInterceptor {
+   private Map params;
 
-	private Map params;
-	
-	public void setParams(Map params) {
-		this.params = params;
-	}
+   /**
+    * DOCUMENT ME!
+    *
+    * @param params DOCUMENT ME!
+    */
+   public void setParams(Map params) {
+      this.params = params;
+   }
 
-	public Map getParams() {
-		return params;
-	}	 	
-	
-	/**
-	 * adds or replace a value in the fieldValues
-	 * @param table wich should be used to lookup for the fieldName
-	 * @param fieldValues to add/replace value to
-	 * @param fieldName to add/replace value
-	 * @param value to add/replace
-	 */
-	protected void setValue(Table table, FieldValues fieldValues, String fieldName, String value) {
-		FieldValue fv = fieldValues.get(fieldName);
-		Field f = table.getFieldByName(fieldName);
-		if (f != null) {
-			if (fv == null) {
-				fv = new FieldValue(f, value);
-				fieldValues.put(fv);
-			} else {
-				fv.setFieldValue(value);
-			}
-		}
-	}
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public Map getParams() {
+      return params;
+   }
 
 
    /**
     * DOCUMENT ME!
     *
     * @param request DOCUMENT ME!
+    * @param config DOCUMENT ME!
+    * @param con DOCUMENT ME!
+    */
+   public void postDelete(HttpServletRequest request,
+                          DbFormsConfig      config,
+                          Connection         con) {
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param request DOCUMENT ME!
+    * @param config DOCUMENT ME!
+    * @param con DOCUMENT ME!
+    */
+   public void postInsert(HttpServletRequest request,
+                          DbFormsConfig      config,
+                          Connection         con) {
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param request DOCUMENT ME!
+    * @param config DOCUMENT ME!
+    * @param con DOCUMENT ME!
+    */
+   public void postSelect(HttpServletRequest request,
+                          DbFormsConfig      config,
+                          Connection         con) {
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param request DOCUMENT ME!
+    * @param config DOCUMENT ME!
+    * @param con DOCUMENT ME!
+    */
+   public void postUpdate(HttpServletRequest request,
+                          DbFormsConfig      config,
+                          Connection         con) {
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param request DOCUMENT ME!
+    * @param table DOCUMENT ME!
     * @param fieldValues DOCUMENT ME!
     * @param config DOCUMENT ME!
     * @param con DOCUMENT ME!
@@ -84,9 +131,11 @@ public class DbEventInterceptorSupport implements DbEventInterceptor
     *
     * @throws ValidationException DOCUMENT ME!
     */
-   public int preInsert(HttpServletRequest request,  Table table, FieldValues fieldValues,
-      DbFormsConfig config, Connection con) throws ValidationException
-   {
+   public int preDelete(HttpServletRequest request,
+                        Table              table,
+                        FieldValues        fieldValues,
+                        DbFormsConfig      config,
+                        Connection         con) throws ValidationException {
       return GRANT_OPERATION;
    }
 
@@ -95,19 +144,7 @@ public class DbEventInterceptorSupport implements DbEventInterceptor
     * DOCUMENT ME!
     *
     * @param request DOCUMENT ME!
-    * @param config DOCUMENT ME!
-    * @param con DOCUMENT ME!
-    */
-   public void postInsert(HttpServletRequest request, DbFormsConfig config,
-      Connection con)
-   {
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param request DOCUMENT ME!
+    * @param table DOCUMENT ME!
     * @param fieldValues DOCUMENT ME!
     * @param config DOCUMENT ME!
     * @param con DOCUMENT ME!
@@ -116,10 +153,11 @@ public class DbEventInterceptorSupport implements DbEventInterceptor
     *
     * @throws ValidationException DOCUMENT ME!
     */
-   public int preUpdate(HttpServletRequest request, Table table, 
-         FieldValues fieldValues, DbFormsConfig config, Connection con)
-      throws ValidationException
-   {
+   public int preInsert(HttpServletRequest request,
+                        Table              table,
+                        FieldValues        fieldValues,
+                        DbFormsConfig      config,
+                        Connection         con) throws ValidationException {
       return GRANT_OPERATION;
    }
 
@@ -130,10 +168,15 @@ public class DbEventInterceptorSupport implements DbEventInterceptor
     * @param request DOCUMENT ME!
     * @param config DOCUMENT ME!
     * @param con DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws ValidationException DOCUMENT ME!
     */
-   public void postUpdate(HttpServletRequest request, DbFormsConfig config,
-      Connection con)
-   {
+   public int preSelect(HttpServletRequest request,
+                        DbFormsConfig      config,
+                        Connection         con) throws ValidationException {
+      return GRANT_OPERATION;
    }
 
 
@@ -141,6 +184,7 @@ public class DbEventInterceptorSupport implements DbEventInterceptor
     * DOCUMENT ME!
     *
     * @param request DOCUMENT ME!
+    * @param table DOCUMENT ME!
     * @param fieldValues DOCUMENT ME!
     * @param config DOCUMENT ME!
     * @param con DOCUMENT ME!
@@ -149,53 +193,37 @@ public class DbEventInterceptorSupport implements DbEventInterceptor
     *
     * @throws ValidationException DOCUMENT ME!
     */
-   public int preDelete(HttpServletRequest request,  Table table, FieldValues fieldValues,
-      DbFormsConfig config, Connection con) throws ValidationException
-   {
+   public int preUpdate(HttpServletRequest request,
+                        Table              table,
+                        FieldValues        fieldValues,
+                        DbFormsConfig      config,
+                        Connection         con) throws ValidationException {
       return GRANT_OPERATION;
    }
 
 
    /**
-    * DOCUMENT ME!
+    * adds or replace a value in the fieldValues
     *
-    * @param request DOCUMENT ME!
-    * @param config DOCUMENT ME!
-    * @param con DOCUMENT ME!
+    * @param table wich should be used to lookup for the fieldName
+    * @param fieldValues to add/replace value to
+    * @param fieldName to add/replace value
+    * @param value to add/replace
     */
-   public void postDelete(HttpServletRequest request, DbFormsConfig config,
-      Connection con)
-   {
-   }
+   protected void setValue(Table       table,
+                           FieldValues fieldValues,
+                           String      fieldName,
+                           String      value) {
+      FieldValue fv = fieldValues.get(fieldName);
+      Field      f = table.getFieldByName(fieldName);
 
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param request DOCUMENT ME!
-    * @param config DOCUMENT ME!
-    * @param con DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    *
-    * @throws ValidationException DOCUMENT ME!
-    */
-   public int preSelect(HttpServletRequest request, DbFormsConfig config,
-      Connection con) throws ValidationException
-   {
-      return GRANT_OPERATION;
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param request DOCUMENT ME!
-    * @param config DOCUMENT ME!
-    * @param con DOCUMENT ME!
-    */
-   public void postSelect(HttpServletRequest request, DbFormsConfig config,
-      Connection con)
-   {
+      if (f != null) {
+         if (fv == null) {
+            fv = new FieldValue(f, value);
+            fieldValues.put(fv);
+         } else {
+            fv.setFieldValue(value);
+         }
+      }
    }
 }

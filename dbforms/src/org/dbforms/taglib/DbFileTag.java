@@ -21,120 +21,129 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.taglib;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import javax.servlet.jsp.*;
 
-import org.apache.log4j.Category;
 
-/****
+
+/**
+ * <p>
+ * This tag renders a HTML TextArea - Element
+ * </p>
+ * this tag renders a dabase-datadriven textArea, which is an active element -
+ * the user can change data
  *
- * <p>This tag renders a HTML TextArea - Element</p>
- *
- * this tag renders a dabase-datadriven textArea, which is an active element - the user
- * can change data
- *
- * @author Joachim Peer <j.peer@gmx.net>
+ * @author Joachim Peer
  */
-public class DbFileTag
-	extends DbBaseInputTag
-	implements javax.servlet.jsp.tagext.TryCatchFinally {
-	private static Category logCat =
-		Category.getInstance(DbFileTag.class.getName());
+public class DbFileTag extends DbBaseInputTag
+   implements javax.servlet.jsp.tagext.TryCatchFinally {
+   private static Log logCat = LogFactory.getLog(DbFileTag.class.getName());
+   private String     accept;
 
-	private String accept;
+   /**
+    * DOCUMENT ME!
+    *
+    * @param accept DOCUMENT ME!
+    */
+   public void setAccept(String accept) {
+      this.accept = accept;
+   }
 
-	public void doFinally() {
-		accept = null;
-		super.doFinally();
-	}
 
-	/**
-	 * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
-	 */
-	public void doCatch(Throwable t) throws Throwable {
-		throw t;
-	}
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String getAccept() {
+      return accept;
+   }
 
-	/**
-	 * DOCUMENT ME!
-	 *
-	 * @param accept DOCUMENT ME!
-	 */
-	public void setAccept(String accept) {
-		this.accept = accept;
-	}
 
-	/**
-	 * DOCUMENT ME!
-	 *
-	 * @return DOCUMENT ME!
-	 */
-	public String getAccept() {
-		return accept;
-	}
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable {
+      throw t;
+   }
 
-	/**
-	 * DOCUMENT ME!
-	 *
-	 * @return DOCUMENT ME!
-	 *
-	 * @throws javax.servlet.jsp.JspException DOCUMENT ME!
-	 * @throws JspException DOCUMENT ME!
-	 */
-	public int doStartTag() throws javax.servlet.jsp.JspException {
-		super.doStartTag();
 
-		if (!getParentForm().hasMultipartSet()) {
-			logCat.warn(
-				"DbFileTag is used but DbFormTag.multipart is not set (FALSE)");
-			throw new JspException("DbFileTag is used but DbFormTag.multipart is not set (it is set to \"FALSE\"). you must set it to \"TRUE\" to enable file uploads!");
-		}
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws javax.servlet.jsp.JspException DOCUMENT ME!
+    * @throws JspException DOCUMENT ME!
+    */
+   public int doEndTag() throws javax.servlet.jsp.JspException {
+      try {
+         StringBuffer tagBuf = new StringBuffer();
 
-		return SKIP_BODY;
-	}
+         if (hasReadOnlySet() || getParentForm()
+                                          .hasReadOnlySet()) {
+            // if read-only, remove the browse button (for netscape problem)
+            tagBuf.append("<input type=\"text\"");
+         } else {
+            tagBuf.append("<input type=\"file\"");
+         }
 
-	/**
-	 * DOCUMENT ME!
-	 *
-	 * @return DOCUMENT ME!
-	 *
-	 * @throws javax.servlet.jsp.JspException DOCUMENT ME!
-	 * @throws JspException DOCUMENT ME!
-	 */
-	public int doEndTag() throws javax.servlet.jsp.JspException {
-		try {
-			StringBuffer tagBuf = new StringBuffer();
+         tagBuf.append(prepareName());
 
-			if (hasReadOnlySet() || getParentForm().hasReadOnlySet()) {
-				// if read-only, remove the browse button (for netscape problem)
-				tagBuf.append("<input type=\"text\"");
-			} else {
-				tagBuf.append("<input type=\"file\"");
-			}
+         if (accept != null) {
+            tagBuf.append(" accept=\"");
+            tagBuf.append(accept);
+            tagBuf.append("\"");
+         }
 
-			tagBuf.append(prepareName());
+         tagBuf.append(prepareSize());
+         tagBuf.append(prepareKeys());
+         tagBuf.append(prepareStyles());
+         tagBuf.append(prepareEventHandlers());
+         tagBuf.append("/>");
 
-			if (accept != null) {
-				tagBuf.append(" accept=\"");
-				tagBuf.append(accept);
-				tagBuf.append("\"");
-			}
+         // Writes out the old field value
+         // Joe Peer: this is deadly for FileTags
+         //writeOutSpecialValues();
+         pageContext.getOut()
+                    .write(tagBuf.toString());
+      } catch (java.io.IOException ioe) {
+         throw new JspException("IO Error: " + ioe.getMessage());
+      }
 
-			tagBuf.append(prepareSize());
-			tagBuf.append(prepareKeys());
-			tagBuf.append(prepareStyles());
-			tagBuf.append(prepareEventHandlers());
-			tagBuf.append("/>");
+      return EVAL_PAGE;
+   }
 
-			// Writes out the old field value
-			
-			// Joe Peer: this is deadly for FileTags
-			//writeOutSpecialValues();
 
-			pageContext.getOut().write(tagBuf.toString());
-		} catch (java.io.IOException ioe) {
-			throw new JspException("IO Error: " + ioe.getMessage());
-		}
+   /**
+    * DOCUMENT ME!
+    */
+   public void doFinally() {
+      accept = null;
+      super.doFinally();
+   }
 
-		return EVAL_PAGE;
-	}
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws javax.servlet.jsp.JspException DOCUMENT ME!
+    * @throws JspException DOCUMENT ME!
+    */
+   public int doStartTag() throws javax.servlet.jsp.JspException {
+      super.doStartTag();
+
+      if (!getParentForm()
+                    .hasMultipartSet()) {
+         logCat.warn("DbFileTag is used but DbFormTag.multipart is not set (FALSE)");
+         throw new JspException("DbFileTag is used but DbFormTag.multipart is not set (it is set to \"FALSE\"). you must set it to \"TRUE\" to enable file uploads!");
+      }
+
+      return SKIP_BODY;
+   }
 }

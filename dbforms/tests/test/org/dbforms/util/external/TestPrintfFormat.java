@@ -1,52 +1,67 @@
 /*
- *  $Header$
- *  $Revision$
- *  $Date$
+ * $Header$
+ * $Revision$
+ * $Date$
  *
- *  DbForms - a Rapid Application Development Framework
- *  Copyright (C) 2001 Joachim Peer <joepeer@excite.com>
+ * DbForms - a Rapid Application Development Framework
+ * Copyright (C) 2001 Joachim Peer <joepeer@excite.com>
  *
- *  This library is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public
- *  License as published by the Free Software Foundation; either
- *  version 2.1 of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
  *
- *  This library is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *  Lesser General Public License for more details.
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
- *  License along with this library; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.util.external;
 
-import java.util.Locale;
 import junit.framework.*;
 
-public class TestPrintfFormat extends TestCase {
+import java.util.Locale;
 
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author $author$
+ * @version $Revision$
+ */
+public class TestPrintfFormat extends TestCase {
+   /**
+    * DOCUMENT ME!
+    */
    public void testFormatFloat() {
-      Locale loc = new Locale("de");
+      Locale       loc = new Locale("de");
       PrintfFormat f = new PrintfFormat(loc, "%.2f");
-      double d = 12;
-      String s = f.sprintf(d);
+      double       d = 12;
+      String       s = f.sprintf(d);
       assertEquals("12,00", s);
    }
 
+
+   /**
+    * DOCUMENT ME!
+    */
    public void testWrongType() {
-      Locale loc = new Locale("de");
+      Locale       loc = new Locale("de");
       PrintfFormat f = new PrintfFormat(loc, "%.2f");
-      int i = 12;
-      String s;
+      int          i = 12;
+      String       s;
+
       try {
          s = f.sprintf(i);
       } catch (IllegalArgumentException e) {
          return;
       }
+
       assertEquals("11", s);
    }
-
 }

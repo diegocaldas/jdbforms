@@ -21,30 +21,67 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.taglib;
-import javax.servlet.jsp.JspException;
 
 import org.dbforms.config.Field;
+
 import org.dbforms.util.Util;
 
-/**
- * <p>renders a input field for searching with special default search modes.</p>
- * <p>example:</p>
-        &lt;input type="hidden" name="searchalgo_0_1" value="weakEnd"/&gt;<br/>
-        &lt;input type="hidden" name="searchmode_0_1" value="AND"/&gt;<br/>
-        &lt;input type="input" name="search_0_1"/&gt;<br/>
- *
- *  searchalgo and searchmode are set by parameter.
- *
- * @author Henner Kollmann  (Henner.Kollmann@gmx.de)
- */
-public class DbSearchCheckBoxTag extends DbSearchTag 
-   implements 
-      javax.servlet.jsp.tagext.TryCatchFinally {
+import javax.servlet.jsp.JspException;
 
-   private String value = null;
+
+
+/**
+ * <p>
+ * renders a input field for searching with special default search modes.
+ * </p>
+ *
+ * <p>
+ * example:
+ * </p>
+ * &lt;input type="hidden" name="searchalgo_0_1" value="weakEnd"/&gt; &lt;input
+ * type="hidden" name="searchmode_0_1" value="AND"/&gt; &lt;input type="input"
+ * name="search_0_1"/&gt; searchalgo and searchmode are set by parameter.
+ *
+ * @author Henner Kollmann
+ */
+public class DbSearchCheckBoxTag extends DbSearchTag
+   implements javax.servlet.jsp.tagext.TryCatchFinally {
    private String checked = "false";
+   private String value = null;
 
    /**
+    * DOCUMENT ME!
+    *
+    * @param string
+    */
+   public void setChecked(String string) {
+      checked = string;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return
+    */
+   public String getChecked() {
+      return checked;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param string
+    */
+   public void setValue(String string) {
+      value = string;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
     * @return
     */
    public String getValue() {
@@ -53,24 +90,10 @@ public class DbSearchCheckBoxTag extends DbSearchTag
 
 
    /**
-    * @param string
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
     */
-   public void setValue(String string) {
-      value = string;
-   }
-
-   /**
-    * @return
-    */
-   public String getChecked() {
-      return checked;
-   }
-
-   /**
-    * @param string
-    */
-   public void setChecked(String string) {
-      checked = string;
+   public void doCatch(Throwable t) throws Throwable {
+      throw t;
    }
 
 
@@ -101,6 +124,7 @@ public class DbSearchCheckBoxTag extends DbSearchTag
          tagBuf.append("\" ");
          tagBuf.append("value=\"");
          tagBuf.append(getValue());
+
          if (Util.getTrue(getChecked())) {
             tagBuf.append(" checked=\"checked\" ");
          }
@@ -110,9 +134,12 @@ public class DbSearchCheckBoxTag extends DbSearchTag
          tagBuf.append(prepareEventHandlers());
          tagBuf.append("/>\n");
 
- 		 pageContext.getOut().write(renderPatternHtmlInputField());
-         pageContext.getOut().write(RenderHiddenFields(field));
-         pageContext.getOut().write(tagBuf.toString());
+         pageContext.getOut()
+                    .write(renderPatternHtmlInputField());
+         pageContext.getOut()
+                    .write(RenderHiddenFields(field));
+         pageContext.getOut()
+                    .write(tagBuf.toString());
       } catch (java.io.IOException ioe) {
          throw new JspException("IO Error: " + ioe.getMessage());
       }
@@ -120,17 +147,13 @@ public class DbSearchCheckBoxTag extends DbSearchTag
       return EVAL_PAGE;
    }
 
-   public void doFinally() {
-      checked = "false";
-      value = null;
-      super.doFinally();
-   }
 
    /**
-    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    * DOCUMENT ME!
     */
-   public void doCatch(Throwable t) throws Throwable {
-      throw t;
+   public void doFinally() {
+      checked = "false";
+      value   = null;
+      super.doFinally();
    }
-
 }

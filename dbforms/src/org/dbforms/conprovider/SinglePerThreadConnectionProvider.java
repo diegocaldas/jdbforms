@@ -22,44 +22,46 @@
  */
 package org.dbforms.conprovider;
 
-import java.util.Properties;
-
-import java.sql.DriverManager;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import java.util.Properties;
+
+
+
 /**
- *  Single Connection per thread provider.
- *  <br>
- *  provides one connection for all
- * 
+ * Single Connection per thread provider. <br> provides one connection for all
+ *
  * @author Henner Kollmann
- * 
  */
 public class SinglePerThreadConnectionProvider extends ConnectionProvider {
-   private final static ThreadLocal singlePerThread = new ThreadLocal();
+   private static final ThreadLocal singlePerThread = new ThreadLocal();
 
    /**
-    *  Default constructor.
+    * Default constructor.
     *
-    * @exception  Exception Description of the Exception
-    * @throws  Exception because of the <code>throws Exception</code> clause
-    *          of the  <code>init</code> method.
+    * @exception Exception Description of the Exception
+    * @throws Exception because of the <code>throws Exception</code> clause of
+    *         the  <code>init</code> method.
     */
    public SinglePerThreadConnectionProvider() throws Exception {
       super();
    }
 
    /**
-    *  Get a JDBC Connection
+    * Get a JDBC Connection
     *
-    * @return  a JDBC Connection
-    * @exception  SQLException Description of the Exception
+    * @return a JDBC Connection
+    *
+    * @exception SQLException Description of the Exception
     */
    protected synchronized Connection getConnection() throws SQLException {
       Connection con = (Connection) singlePerThread.get();
+
       if (con == null) {
-         Properties props = getPrefs().getProperties();
+         Properties props = getPrefs()
+                               .getProperties();
 
          // uses custom jdbc properties;
          if ((props != null) && !props.isEmpty()) {
@@ -67,23 +69,27 @@ public class SinglePerThreadConnectionProvider extends ConnectionProvider {
             props.put("password", getPrefs().getPassword());
             con = DriverManager.getConnection(getPrefs().getJdbcURL(), props);
          }
-
          // "plain" flavour;
          else {
-            con = DriverManager.getConnection(getPrefs().getJdbcURL(), getPrefs().getUser(), getPrefs().getPassword());
+            con = DriverManager.getConnection(getPrefs().getJdbcURL(),
+                                              getPrefs().getUser(),
+                                              getPrefs().getPassword());
          }
+
          singlePerThread.set(con);
       }
+
       return new SingleConnectionWrapper(con);
    }
 
+
    /**
-    *  Initialize the ConnectionProvider.
+    * Initialize the ConnectionProvider.
     *
-    * @throws  Exception if any error occurs
+    * @throws Exception if any error occurs
     */
    protected void init() throws Exception {
-      Class.forName(getPrefs().getJdbcDriver()).newInstance();
+      Class.forName(getPrefs().getJdbcDriver())
+           .newInstance();
    }
-
 }

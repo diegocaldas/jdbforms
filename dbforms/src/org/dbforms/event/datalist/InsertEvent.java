@@ -20,79 +20,90 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.event.datalist;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.Vector;
-import javax.servlet.http.HttpServletRequest;
+
 import org.dbforms.config.DbEventInterceptor;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.Field;
 import org.dbforms.config.FieldValues;
 import org.dbforms.config.GrantedPrivileges;
+
 import org.dbforms.event.ValidationEvent;
-import org.dbforms.event.datalist.dao.DataSourceList;
 import org.dbforms.event.datalist.dao.DataSourceFactory;
+import org.dbforms.event.datalist.dao.DataSourceList;
+
 import org.dbforms.util.MessageResourcesInternal;
 import org.dbforms.util.ParseUtil;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+
+import java.util.Vector;
+
+import javax.servlet.http.HttpServletRequest;
+
+
+
 /**
- * This event prepares and performs a SQL-Insert operation.
- * <br>
+ * This event prepares and performs a SQL-Insert operation. <br>
  * Works with new factory classes
  *
- * @author Henner Kollmann <Henner.Kollmann@gmx.de>
+ * @author Henner Kollmann
  */
 public class InsertEvent extends ValidationEvent {
-
-    /**
-     * Creates a new InsertEvent object.
-     *
-     * @param tableId the table identifier
-     * @param keyId   the key
-     * @param request the request object
-     * @param config  the configuration object
-     */
-    public InsertEvent(Integer tableId, String keyId, HttpServletRequest request, DbFormsConfig config) {
-        super(tableId.intValue(), keyId, request, config);
-     }
-
-    /**
-    *  Constructor.
-    *  <br>
-    *  Insert actionbutton-strings is as follows: ac_insert_12_root_3
-    *  which is equivalent to:
+   /**
+    * Creates a new InsertEvent object.
     *
-    *       ac_insert  : insert action event
-    *       12         : table id
-    *       root       : key
-    *       3          : button count used to identify individual insert buttons
-    *
-    * @param  action  the action string
-    * @param  request the request object
-    * @param  config  the config object
+    * @param tableId the table identifier
+    * @param keyId the key
+    * @param request the request object
+    * @param config the configuration object
     */
-   public InsertEvent(String action, HttpServletRequest request, DbFormsConfig config) {
-      super(ParseUtil.getEmbeddedStringAsInteger(action, 2, '_'), ParseUtil.getEmbeddedString(action, 3, '_'), request, config);
+   public InsertEvent(Integer            tableId,
+                      String             keyId,
+                      HttpServletRequest request,
+                      DbFormsConfig      config) {
+      super(tableId.intValue(), keyId, request, config);
+   }
+
+
+   /**
+    * Constructor. <br>
+    * Insert actionbutton-strings is as follows: ac_insert_12_root_3 which is
+    * equivalent to: ac_insert  : insert action event 12         : table id
+    * root       : key 3          : button count used to identify individual
+    * insert buttons
+    *
+    * @param action the action string
+    * @param request the request object
+    * @param config the config object
+    */
+   public InsertEvent(String             action,
+                      HttpServletRequest request,
+                      DbFormsConfig      config) {
+      super(ParseUtil.getEmbeddedStringAsInteger(action, 2, '_'),
+            ParseUtil.getEmbeddedString(action, 3, '_'), request, config);
    }
 
    /**
-    * Get the FieldValues object representing the collection
-    * of FieldValue objects builded from the request parameters
+    * Get the FieldValues object representing the collection of FieldValue
+    * objects builded from the request parameters
     *
-    * @return the FieldValues object representing the collection
-    *         of FieldValue objects builded from the request parameters
+    * @return the FieldValues object representing the collection of FieldValue
+    *         objects builded from the request parameters
     */
+
    // must be public because protected will break cactus testing!
    public FieldValues getFieldValues() {
       return getFieldValues(true);
    }
 
+
    /**
-    *  Process this event.
+    * Process this event.
     *
-    * @param  con the jdbc connection object
+    * @param con the jdbc connection object
+    *
     * @throws SQLException if any data access error occurs
     * @throws MultipleValidationException if any validation error occurs
     */
@@ -100,11 +111,12 @@ public class InsertEvent extends ValidationEvent {
       // Applying given security contraints (as defined in dbforms-config xml file)
       // part 1: check if requested privilge is granted for role
       if (!hasUserPrivileg(GrantedPrivileges.PRIVILEG_INSERT)) {
-         String s =
-            MessageResourcesInternal.getMessage(
-               "dbforms.events.insert.nogrant",
-               getRequest().getLocale(),
-               new String[] { getTable().getName()});
+         String s = MessageResourcesInternal.getMessage("dbforms.events.insert.nogrant",
+                                                        getRequest().getLocale(),
+                                                        new String[] {
+                                                           getTable()
+                                                              .getName()
+                                                        });
          throw new SQLException(s);
       }
 
@@ -115,56 +127,78 @@ public class InsertEvent extends ValidationEvent {
       }
 
       // process the interceptors associated to this table
-      int operation = getTable().processInterceptors(DbEventInterceptor.PRE_INSERT, getRequest(), fieldValues, getConfig(), con);
+      int operation = getTable()
+                         .processInterceptors(DbEventInterceptor.PRE_INSERT,
+                                              getRequest(), fieldValues,
+                                              getConfig(), con);
 
-      if ((operation == DbEventInterceptor.GRANT_OPERATION) && (fieldValues.size() > 0)) {
+      if ((operation == DbEventInterceptor.GRANT_OPERATION)
+                && (fieldValues.size() > 0)) {
          // End of interceptor processing
          if (!checkSufficentValues(fieldValues)) {
             throw new SQLException("unsufficent parameters");
          }
 
          // INSERT operation;
-         DataSourceList ds = DataSourceList.getInstance(getRequest());
+         DataSourceList    ds  = DataSourceList.getInstance(getRequest());
          DataSourceFactory qry = ds.get(getTable(), getRequest());
-         
-         boolean own = false;
+
+         boolean           own = false;
+
          if (qry == null) {
             qry = new DataSourceFactory(getTable());
             own = true;
          }
 
          qry.doInsert(con, fieldValues);
-         if (own) 
+
+         if (own) {
             qry.close();
-         else
+         } else {
             ds.remove(getTable(), getRequest());
+         }
 
          // Show the last record inserted
-         String firstPosition = getTable().getPositionString(fieldValues);
-         getRequest().setAttribute("firstpos_" + getTable().getId(), firstPosition);
+         String firstPosition = getTable()
+                                   .getPositionString(fieldValues);
+         getRequest()
+            .setAttribute("firstpos_" + getTable().getId(), firstPosition);
 
          // finally, we process interceptor again (post-insert)
          // process the interceptors associated to this table
-         getTable().processInterceptors(DbEventInterceptor.POST_INSERT, getRequest(), fieldValues, getConfig(), con);
+         getTable()
+            .processInterceptors(DbEventInterceptor.POST_INSERT, getRequest(),
+                                 fieldValues, getConfig(), con);
       }
    }
 
+
    /**
-    *  Check a list of conditions on the the input FieldValues object:
-    *  <ul>
-    *    <li>it must contains the same number of fields as the current main Table</li>
-    *    <li>
-    *      any autoInc field must NOT have a related FieldValue object (generated by a request
-    *      parameter) because that field value must be calculated by the underlying RDBMS
-    *    </li>
-    *  </ul>
+    * Check a list of conditions on the the input FieldValues object:
     *
-    * @param fieldValues the FieldValues object containing the Field elements to check
+    * <ul>
+    * <li>
+    * it must contains the same number of fields as the current main Table
+    * </li>
+    * <li>
+    * any autoInc field must NOT have a related FieldValue object (generated by
+    * a request parameter) because that field value must be calculated by the
+    * underlying RDBMS
+    * </li>
+    * </ul>
+    *
+    *
+    * @param fieldValues the FieldValues object containing the Field elements
+    *        to check
+    *
     * @return true  if the  all the above conditions are true, false otherwise
-    * @throws SQLException  if any check condition fails
+    *
+    * @throws SQLException if any check condition fails
     */
-   private boolean checkSufficentValues(FieldValues fieldValues) throws SQLException {
-      Vector fields = getTable().getFields();
+   private boolean checkSufficentValues(FieldValues fieldValues)
+                                 throws SQLException {
+      Vector fields = getTable()
+                         .getFields();
 
       for (int i = 0; i < fields.size(); i++) {
          Field field = (Field) fields.elementAt(i);
@@ -173,14 +207,15 @@ public class InsertEvent extends ValidationEvent {
          // then it should be provided by the user
          if (!field.hasAutoIncSet() && field.hasIsKeySet()) {
             if (fieldValues.get(field.getName()) == null) {
-               throw new SQLException("Field " + field.getName() + " is missing");
+               throw new SQLException("Field " + field.getName()
+                                      + " is missing");
             }
          }
-
          // in opposite, if a field is automatically generated by the RDBMS, we need to
          else if (field.hasAutoIncSet()) {
             if (fieldValues.get(field.getName()) != null) {
-               throw new SQLException("Field " + field.getName() + " should be calculated by RDBMS, remove it from the form");
+               throw new SQLException("Field " + field.getName()
+                                      + " should be calculated by RDBMS, remove it from the form");
             }
          }
 

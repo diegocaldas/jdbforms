@@ -22,113 +22,115 @@
  */
 package org.dbforms.taglib;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.dbforms.event.WebEvent;
+
+import org.dbforms.util.Util;
+
 import javax.servlet.jsp.JspException;
 
-import org.apache.log4j.Category;
-import org.dbforms.util.Util;
+
 
 /**
  * DOCUMENT ME!
  *
- * @version $Revision$
  * @author $author$
+ * @version $Revision$
  */
-public class IsWebEvent
-	extends DbBaseHandlerTag
-	implements javax.servlet.jsp.tagext.TryCatchFinally {
+public class IsWebEvent extends DbBaseHandlerTag
+   implements javax.servlet.jsp.tagext.TryCatchFinally {
+   // logging category for this class
+   private static Log logCat = LogFactory.getLog(IsWebEvent.class.getName());
+   private String     event;
+   private String     value;
 
-	// logging category for this class
-	private static Category logCat =
-		Category.getInstance(IsWebEvent.class.getName());
-	private String value;
-	private String event;
+   /**
+    * Creates a new IsWebEvent object.
+    */
+   public IsWebEvent() {
+      value = "true";
+      event = null;
+   }
 
-	public void doFinally() {
-		value = "true";
-		event = null;
-		super.doFinally();
-	}
-
-	/**
-	 * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
-	 */
-	public void doCatch(Throwable t) throws Throwable {
-		throw t;
-	}
-
-	/**
-	 * Creates a new IsWebEvent object.
-	 */
-	public IsWebEvent() {
-		value = "true";
-		event = null;
-	}
-
-	/**
-	 * DOCUMENT ME!
-	 *
-	 * @return DOCUMENT ME!
-	 *
-	 * @throws JspException DOCUMENT ME!
-	 */
-	public int doStartTag() throws JspException {
-		WebEvent we = getParentForm().getWebEvent();
-		if ((we == null) || (event == null) || (value == null)) {
-			logCat.debug(
-				"Can't do IsWebEvent with  webEvent: "
-					+ we
-					+ "  event: "
-					+ event
-					+ "   value: "
-					+ value);
-
-			return SKIP_BODY;
-		}
-
-		
-		String className = we.getType();
-
-		boolean eventNameMatch =
-			className.toUpperCase().indexOf(event.toUpperCase()) != -1;
-
-		if (logCat.isDebugEnabled()) {
-			logCat.debug(
-				" IsLocalWebEvent webEvent className: "
-					+ className
-					+ "    event: "
-					+ event
-					+ "  value: "
-					+ value);
-		}
-
-		return (Util.getTrue(value) == eventNameMatch)
-			? EVAL_BODY_INCLUDE
-			: SKIP_BODY;
-	}
-
-	/**
-	 * DOCUMENT ME!
-	 *
-	 * @param str DOCUMENT ME!
-	 */
-	public final void setEvent(String str) {
-		event = str;
-	}
+   /**
+    * DOCUMENT ME!
+    *
+    * @param str DOCUMENT ME!
+    */
+   public final void setEvent(String str) {
+      event = str;
+   }
 
 
-	/**
-	 * @return
-	 */
-	public String getValue() {
-		return value;
-	}
+   /**
+    * DOCUMENT ME!
+    *
+    * @param string
+    */
+   public void setValue(String string) {
+      value = string;
+   }
 
-	/**
-	 * @param string
-	 */
-	public void setValue(String string) {
-		value = string;
-	}
 
+   /**
+    * DOCUMENT ME!
+    *
+    * @return
+    */
+   public String getValue() {
+      return value;
+   }
+
+
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable {
+      throw t;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    */
+   public void doFinally() {
+      value = "true";
+      event = null;
+      super.doFinally();
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws JspException DOCUMENT ME!
+    */
+   public int doStartTag() throws JspException {
+      WebEvent we = getParentForm()
+                       .getWebEvent();
+
+      if ((we == null) || (event == null) || (value == null)) {
+         logCat.debug("Can't do IsWebEvent with  webEvent: " + we + "  event: "
+                      + event + "   value: " + value);
+
+         return SKIP_BODY;
+      }
+
+      String  className = we.getType();
+
+      boolean eventNameMatch = className.toUpperCase()
+                                        .indexOf(event.toUpperCase()) != -1;
+
+      if (logCat.isDebugEnabled()) {
+         logCat.debug(" IsLocalWebEvent webEvent className: " + className
+                      + "    event: " + event + "  value: " + value);
+      }
+
+      return (Util.getTrue(value) == eventNameMatch) ? EVAL_BODY_INCLUDE
+                                                     : SKIP_BODY;
+   }
 }

@@ -22,131 +22,219 @@
  */
 package org.dbforms.util;
 
+import com.meterware.httpunit.GetMethodWebRequest;
+import com.meterware.httpunit.PostMethodWebRequest;
+import com.meterware.httpunit.WebConversation;
+import com.meterware.httpunit.WebRequest;
+import com.meterware.httpunit.WebResponse;
+
 // imports
 import junit.framework.TestCase;
 
-import java.util.List;
 import java.util.Iterator;
-import com.meterware.httpunit.WebConversation;
-import com.meterware.httpunit.WebResponse;
-import com.meterware.httpunit.WebRequest;
-import com.meterware.httpunit.GetMethodWebRequest;
-import com.meterware.httpunit.PostMethodWebRequest;
+import java.util.List;
+
+
 
 // definition of test class
 public abstract class HttpTestCase extends TestCase {
-	private String urlSearch;
-	private String urlReplace;
-	private String paramSearch;
-	private String paramReplace;
-	private WebConversation wc = new WebConversation();
-	private WebResponse resp = null;
+   private String          paramReplace;
+   private String          paramSearch;
+   private String          urlReplace;
+   private String          urlSearch;
+   private WebConversation wc   = new WebConversation();
+   private WebResponse     resp = null;
 
-	public HttpTestCase(String name) {
-		super(name);
-		String context = System.getProperty("cactus.contextURL");
-		if (!Util.isNull(context)) {
-			println("change context to: " + context);
-			urlSearch    = "http://localhost/bookstore";
-			urlReplace   = context;
-			paramSearch  = "/bookstore/";
-			paramReplace = "/dbforms-cactus/";
-		}
-	}
+   /**
+    * Creates a new HttpTestCase object.
+    *
+    * @param name DOCUMENT ME!
+    */
+   public HttpTestCase(String name) {
+      super(name);
+
+      String context = System.getProperty("cactus.contextURL");
+
+      if (!Util.isNull(context)) {
+         println("change context to: " + context);
+         urlSearch    = "http://localhost/bookstore";
+         urlReplace   = context;
+         paramSearch  = "/bookstore/";
+         paramReplace = "/dbforms-cactus/";
+      }
+   }
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param url DOCUMENT ME!
+    *
+    * @throws Exception DOCUMENT ME!
+    */
+   public void get(String url) throws Exception {
+      get(url, null);
+   }
 
 
+   /**
+    * DOCUMENT ME!
+    *
+    * @param url DOCUMENT ME!
+    * @param args DOCUMENT ME!
+    *
+    * @throws Exception DOCUMENT ME!
+    */
+   public void get(String url,
+                   List   args) throws Exception {
+      url = replaceURL(url);
+      println("=========================");
+      println("url" + " = " + url);
+      println("=========================");
 
-	private String replaceURL(String url) {
-		return replace(url, urlSearch, urlReplace);
-	}
+      WebRequest request = new GetMethodWebRequest(url);
+      doIt(request, args);
+   }
 
- 
-    private String replaceParam(String param) {
-    	return replace(param, paramSearch, paramReplace); 
-    }	
-    
-    private String replace(String from, String search, String replace) {
-		if (search == null || replace == null)
-			return from;
-		else {
-			int pos = from.indexOf(search);
-			if (pos == -1)
-				return from;
-			else {
-				String str =
-				from.substring(0, pos)
-						+ replace
-						+ from.substring(pos + search.length());
-				return str;
-			}
-		}
-    }	
-    	
-	protected void println(String s) {
-		System.out.println(s);
-	}
 
-	protected boolean responseContains(String text) throws Exception {
-		if (resp == null || resp.getText() == null)
-			return false;
-		return resp.getText().indexOf(text) != -1;
-	}
+   /**
+    * DOCUMENT ME!
+    *
+    * @param url DOCUMENT ME!
+    *
+    * @throws Exception DOCUMENT ME!
+    */
+   public void post(String url) throws Exception {
+      post(url, null);
+   }
 
-	protected void printResponse() throws Exception {
-		println(resp.getText());
-	}
 
-	private int getStatusCode() {
-		return resp.getResponseCode();
-	}
+   /**
+    * DOCUMENT ME!
+    *
+    * @param url DOCUMENT ME!
+    * @param args DOCUMENT ME!
+    *
+    * @throws Exception DOCUMENT ME!
+    */
+   public void post(String url,
+                    List   args) throws Exception {
+      url = replaceURL(url);
+      println("=========================");
+      println("url" + " = " + url);
+      println("=========================");
 
-	public void get(String url) throws Exception {
-		get(url, null);
-	}
+      WebRequest request = new PostMethodWebRequest(url);
+      doIt(request, args);
+   }
 
-	public void get(String url, List args) throws Exception {
-		url = replaceURL(url);
-		println("=========================");
-		println("url" + " = " + url);
-		println("=========================");
-		WebRequest request = new GetMethodWebRequest(url);
-		doIt(request, args);
-	}
 
-	public void post(String url) throws Exception {
-		post(url, null);
-	}
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   protected WebResponse getResponse() {
+      return resp;
+   }
 
-	public void post(String url, List args) throws Exception {
-		url = replaceURL(url);
-		println("=========================");
-		println("url" + " = " + url);
-		println("=========================");
-		WebRequest request = new PostMethodWebRequest(url);
-		doIt(request, args);
-	}
 
-	private void doIt(WebRequest request, List args) throws Exception {
-		resp = null;
-		if (args != null) {
-			println("parameters");
-			println("=========================");
-			Iterator iter = args.iterator();
-			while (iter.hasNext()) {
-				KeyValuePair pair = (KeyValuePair) iter.next();
-				println(pair.getKey() + " = " + pair.getValue());
-				request.setParameter(pair.getKey(), replaceParam(pair.getValue()));
-			}
-			println("=========================");
-		}
-		wc.setExceptionsThrownOnErrorStatus(false);
-		resp = wc.getResponse(request);
-		println("Response code: " + getStatusCode());
-		println("=========================");
-		assertEquals("Page not found: ", 200, getStatusCode());
-	}
+   /**
+    * DOCUMENT ME!
+    *
+    * @throws Exception DOCUMENT ME!
+    */
+   protected void printResponse() throws Exception {
+      println(resp.getText());
+   }
 
-	protected WebResponse getResponse() {
-		return resp;
-	}
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param s DOCUMENT ME!
+    */
+   protected void println(String s) {
+      System.out.println(s);
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param text DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws Exception DOCUMENT ME!
+    */
+   protected boolean responseContains(String text) throws Exception {
+      if ((resp == null) || (resp.getText() == null)) {
+         return false;
+      }
+
+      return resp.getText()
+                 .indexOf(text) != -1;
+   }
+
+
+   private int getStatusCode() {
+      return resp.getResponseCode();
+   }
+
+
+   private void doIt(WebRequest request,
+                     List       args) throws Exception {
+      resp = null;
+
+      if (args != null) {
+         println("parameters");
+         println("=========================");
+
+         Iterator iter = args.iterator();
+
+         while (iter.hasNext()) {
+            KeyValuePair pair = (KeyValuePair) iter.next();
+            println(pair.getKey() + " = " + pair.getValue());
+            request.setParameter(pair.getKey(), replaceParam(pair.getValue()));
+         }
+
+         println("=========================");
+      }
+
+      wc.setExceptionsThrownOnErrorStatus(false);
+      resp = wc.getResponse(request);
+      println("Response code: " + getStatusCode());
+      println("=========================");
+      assertEquals("Page not found: ", 200, getStatusCode());
+   }
+
+
+   private String replace(String from,
+                          String search,
+                          String replace) {
+      if ((search == null) || (replace == null)) {
+         return from;
+      } else {
+         int pos = from.indexOf(search);
+
+         if (pos == -1) {
+            return from;
+         } else {
+            String str = from.substring(0, pos) + replace
+                         + from.substring(pos + search.length());
+
+            return str;
+         }
+      }
+   }
+
+
+   private String replaceParam(String param) {
+      return replace(param, paramSearch, paramReplace);
+   }
+
+
+   private String replaceURL(String url) {
+      return replace(url, urlSearch, urlReplace);
+   }
 }

@@ -20,51 +20,47 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.taglib;
-import javax.servlet.jsp.JspException;
-import org.apache.log4j.Category;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.dbforms.util.Util;
+
+import javax.servlet.jsp.JspException;
 
 
 
 /**
- * this tag renders a dabase-datadriven LABEL, which is apassive element (it can't be changed by
- * the user) - it is predestinated for use with read-only data (i.e. primary keys you don't want
- * the user to change, etc)
+ * this tag renders a dabase-datadriven LABEL, which is apassive element (it
+ * can't be changed by the user) - it is predestinated for use with read-only
+ * data (i.e. primary keys you don't want the user to change, etc)
  *
- * @author  Joachim Peer <j.peer@gmx.net>
- * @created  29 agosto 2002
+ * @author Joachim Peer
+ *
  */
 public class DbLabelTag extends DbBaseHandlerTag
-      implements javax.servlet.jsp.tagext.TryCatchFinally
-{
+   implements javax.servlet.jsp.tagext.TryCatchFinally {
    // logging category for this class
-   static Category logCat = Category.getInstance(DbLabelTag.class.getName());
-
-	public void doFinally()
-	{
-		super.doFinally();
-	}
+   static Log logCat = LogFactory.getLog(DbLabelTag.class.getName());
 
    /**
     * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
     */
-   public void doCatch(Throwable t) throws Throwable
-   {
+   public void doCatch(Throwable t) throws Throwable {
       throw t;
    }
 
+
    /**
-    *  Description of the Method
+    * Description of the Method
     *
-    * @return  Description of the Return Value
-    * @exception  javax.servlet.jsp.JspException Description of the Exception
+    * @return Description of the Return Value
+    *
+    * @exception javax.servlet.jsp.JspException Description of the Exception
     */
-   public int doEndTag() throws javax.servlet.jsp.JspException
-   {
-      try
-      {
+   public int doEndTag() throws javax.servlet.jsp.JspException {
+      try {
          String fieldValue = getFormattedFieldValue();
 
          // PG, 2001-12-14
@@ -72,14 +68,13 @@ public class DbLabelTag extends DbBaseHandlerTag
          String size = null;
 
          if (((size = this.getMaxlength()) != null)
-                   && (size.trim().length() > 0))
-         {
+                   && (size.trim()
+                                 .length() > 0)) {
             //convert to int
             int count = Integer.parseInt(size);
 
             // Trim and add trim indicator (...)
-            if (count < fieldValue.length())
-            {
+            if (count < fieldValue.length()) {
                fieldValue = fieldValue.substring(0, count);
                fieldValue += "...";
             }
@@ -88,30 +83,33 @@ public class DbLabelTag extends DbBaseHandlerTag
          // SM 2003-08-05
          // if styleClass is present, render a SPAN with text included
          String s = prepareStyles();
-         fieldValue = escapeHtml(fieldValue); 
-         if (Util.isNull(s))
-         {
-            pageContext.getOut().write(fieldValue);
-         }
-         else
-         {
+         fieldValue = escapeHTML(fieldValue);
+
+         if (Util.isNull(s)) {
+            pageContext.getOut()
+                       .write(fieldValue);
+         } else {
             pageContext.getOut()
                        .write("<span " + s + "\">" + fieldValue + "</span>");
          }
-      }
-      catch (java.io.IOException ioe)
-      {
+      } catch (java.io.IOException ioe) {
          // better to KNOW what happended !
          logCat.error("::doEndTag - IO Error", ioe);
          throw new JspException("IO Error: " + ioe.getMessage());
-      }
-      catch (Exception e)
-      {
+      } catch (Exception e) {
          // better to KNOW what happended !
          logCat.error("::doEndTag - general exception", e);
          throw new JspException("Error: " + e.getMessage());
       }
 
       return EVAL_PAGE;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    */
+   public void doFinally() {
+      super.doFinally();
    }
 }

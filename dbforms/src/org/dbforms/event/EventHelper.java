@@ -22,41 +22,49 @@
  */
 package org.dbforms.event;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.dbforms.util.ParseUtil;
 
+import javax.servlet.http.HttpServletRequest;
+
+
+
 /**
- *  EventUtil class.
+ * EventUtil class.
  *
- * @author  Luca Fossato
- * @created  30 novembre 2002
+ * @author Luca Fossato
+ *
  */
 public class EventHelper {
-	/**
-	 *  Gets the name of the destination table.
-	 *
-	 * @param  request the request object
-	 * @param  action the action string
-	 * @return  the destination table string
-	 */
-	public static final String getDestinationTableName(HttpServletRequest request, String action) {
-		return ParseUtil.getParameter(request, "data" + action + "_destTable");
-	}
+   /**
+    * Gets the name of the destination table.
+    *
+    * @param request the request object
+    * @param action the action string
+    *
+    * @return the destination table string
+    */
+   public static final String getDestinationTableName(HttpServletRequest request,
+                                                      String             action) {
+      return ParseUtil.getParameter(request, "data" + action + "_destTable");
+   }
 
-	/**
-	 *  Gets the table id value.
-	 *
-	 * @param action the action string
-	 * @return the table id value
-	 */
-	public static final int getTableId(String action) {
-		int res = -1;
-		try {
-			res = ParseUtil.getEmbeddedStringAsInteger(action, 2, '_');
-		} catch (Exception e) {
-			res = -1;
-		}
-		return res;
-	}
+
+   /**
+    * Gets the table id value.
+    *
+    * @param action the action string
+    *
+    * @return the table id value
+    */
+   public static final int getTableId(String action) {
+      int res = -1;
+
+      try {
+         res = ParseUtil.getEmbeddedStringAsInteger(action, 2, '_');
+      } catch (Exception e) {
+         res = -1;
+      }
+
+      return res;
+   }
 }

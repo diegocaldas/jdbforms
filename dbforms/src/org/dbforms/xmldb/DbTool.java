@@ -21,8 +21,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.xmldb;
-import java.sql.*;
+
 import java.io.*;
+
+import java.sql.*;
+
 import java.util.*;
 
 
@@ -33,12 +36,11 @@ import java.util.*;
  * @version $Revision$
  * @author $author$
  */
-public class DbTool
-{
-   private String propertyFile;
-   private String outputFile;
-   private String driverClass;
+public class DbTool {
    private String dbURL;
+   private String driverClass;
+   private String outputFile;
+   private String propertyFile;
 
    /**
     * Creates a new DbTool object.
@@ -46,64 +48,34 @@ public class DbTool
     * @param propertyFile DOCUMENT ME!
     * @param outputFile DOCUMENT ME!
     */
-   public DbTool(String propertyFile, String outputFile)
-   {
-      this.propertyFile    = propertyFile;
-      this.outputFile      = outputFile;
+   public DbTool(String propertyFile,
+                 String outputFile) {
+      this.propertyFile = propertyFile;
+      this.outputFile   = outputFile;
    }
-
-   private Connection createConnection()
-      throws SQLException, ClassNotFoundException, InstantiationException, 
-         IOException, IllegalAccessException
-   {
-      Properties props = new Properties();
-      props.load(new FileInputStream(new File(propertyFile)));
-
-      this.driverClass    = props.getProperty("connection-class");
-      this.dbURL          = props.getProperty("connection-url");
-
-      String dbUser       = props.getProperty("username");
-      String dbPwd = props.getProperty("password");
-
-      System.out.println("driverClass=" + driverClass);
-      System.out.println("dbURL=" + dbURL);
-      System.out.println("dbUser=" + dbUser);
-      System.out.println("dbPwd=" + dbPwd);
-
-      Class.forName(driverClass).newInstance();
-
-      return DriverManager.getConnection(dbURL, dbUser, dbPwd);
-   }
-
 
    /**
     * DOCUMENT ME!
     */
-   public void createXMLOutput()
-   {
-      try
-      {
+   public void createXMLOutput() {
+      try {
          StringBuffer result = new StringBuffer();
-         result.append(
-            "<?xml version=\"1.0\" encoding=\"ISO-8859-1\" ?>\n\n<dbforms-config>\n");
+         result.append("<?xml version=\"1.0\" encoding=\"ISO-8859-1\" ?>\n\n<dbforms-config>\n");
 
          Connection con = createConnection();
 
-         if (con == null)
-         {
+         if (con == null) {
             System.exit(1);
          }
 
-         DatabaseMetaData dbmd     = con.getMetaData();
-         String[]         types    = 
-         {
-            "TABLE",
-            "VIEW"
-         };
-         ResultSet        tablesRS = dbmd.getTables("", "", "", types);
+         DatabaseMetaData dbmd  = con.getMetaData();
+         String[]         types = {
+                                     "TABLE",
+                                     "VIEW"
+                                  };
+         ResultSet tablesRS = dbmd.getTables("", "", "", types);
 
-         while (tablesRS.next())
-         {
+         while (tablesRS.next()) {
             String tableName = tablesRS.getString(3);
 
             result.append("\t<table name=\"");
@@ -113,8 +85,7 @@ public class DbTool
             ResultSet rsKeys = dbmd.getPrimaryKeys("", "", tableName);
             Vector    keys = new Vector();
 
-            while (rsKeys.next())
-            {
+            while (rsKeys.next()) {
                String columnName = rsKeys.getString(4);
                keys.addElement(columnName);
             }
@@ -123,8 +94,7 @@ public class DbTool
 
             ResultSet rsFields = dbmd.getColumns("", "", tableName, null);
 
-            while (rsFields.next())
-            {
+            while (rsFields.next()) {
                String columnName = rsFields.getString(4);
                String typeName   = rsFields.getString(6);
                int    columnSize = rsFields.getInt(7);
@@ -137,8 +107,7 @@ public class DbTool
                result.append(columnSize);
                result.append("\"");
 
-               if (keys.contains(columnName))
-               {
+               if (keys.contains(columnName)) {
                   result.append(" isKey=\"true\"");
                }
 
@@ -147,17 +116,14 @@ public class DbTool
 
             rsFields.close();
 
-            result.append(
-               "\n\t\t<!-- add \"granted-privileges\" element for security constraints -->\n\n\t</table>\n\n");
+            result.append("\n\t\t<!-- add \"granted-privileges\" element for security constraints -->\n\n\t</table>\n\n");
          }
 
          tablesRS.close();
 
-         result.append(
-            "\t<!-- ========== Connection =================================== -->\n");
+         result.append("\t<!-- ========== Connection =================================== -->\n");
          result.append("\t<!--\n");
-         result.append(
-            "\tuncomment this if you have access to JNDI of an application server (see users guide for more info)\n");
+         result.append("\tuncomment this if you have access to JNDI of an application server (see users guide for more info)\n");
          result.append("\t<dbconnection\n");
          result.append("\t\tname = \"jdbc/dbformstest\"\n");
          result.append("\t\tisJndi = \"true\"\n");
@@ -172,22 +138,18 @@ public class DbTool
          result.append("</dbforms-config>");
 
          FileOutputStream     os = new FileOutputStream(new File(outputFile));
-         ByteArrayInputStream is = new ByteArrayInputStream(result.toString()
-                                                                  .getBytes());
+         ByteArrayInputStream is = new ByteArrayInputStream(result.toString().getBytes());
 
          byte[]               b    = new byte[1024];
          int                  read;
 
-         while ((read = is.read(b)) != -1)
-         {
+         while ((read = is.read(b)) != -1) {
             os.write(b, 0, read);
          }
 
          os.close();
          System.out.println("finished");
-      }
-      catch (Exception e)
-      {
+      } catch (Exception e) {
          System.out.println("Error:" + e.toString());
          e.printStackTrace();
       }
@@ -199,15 +161,37 @@ public class DbTool
     *
     * @param args DOCUMENT ME!
     */
-   public static void main(String[] args)
-   {
-      if (args.length != 2)
-      {
-         System.out.println(
-            "usage: java DbTool propertyFile outputFile\n\nexample:\njava DbTool db.properties config.xml");
+   public static void main(String[] args) {
+      if (args.length != 2) {
+         System.out.println("usage: java DbTool propertyFile outputFile\n\nexample:\njava DbTool db.properties config.xml");
          System.exit(1);
       }
 
       new DbTool(args[0], args[1]).createXMLOutput();
+   }
+
+
+   private Connection createConnection()
+                                throws SQLException, ClassNotFoundException, 
+                                       InstantiationException, IOException, 
+                                       IllegalAccessException {
+      Properties props = new Properties();
+      props.load(new FileInputStream(new File(propertyFile)));
+
+      this.driverClass = props.getProperty("connection-class");
+      this.dbURL       = props.getProperty("connection-url");
+
+      String dbUser    = props.getProperty("username");
+      String dbPwd = props.getProperty("password");
+
+      System.out.println("driverClass=" + driverClass);
+      System.out.println("dbURL=" + dbURL);
+      System.out.println("dbUser=" + dbUser);
+      System.out.println("dbPwd=" + dbPwd);
+
+      Class.forName(driverClass)
+           .newInstance();
+
+      return DriverManager.getConnection(dbURL, dbUser, dbPwd);
    }
 }

@@ -20,28 +20,28 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.util;
+
 
 /**
  * DOCUMENT ME!
- * 
+ *
  * @version $Revision$
  * @author $author$
  */
-public  class  UniqueIDGenerator
-{
+public class UniqueIDGenerator {
+   private static int counter = 0;
 
-   private static int counter = 0;  
    /**
     * may be optimized in future versions
     * @return DOCUMENT ME!
     */
-   public  static synchronized String getUniqueID()
-   {
+   public static synchronized String getUniqueID() {
       long first  = new java.util.Date().getTime();
       int  second = (int) (Math.random() * 100);
-      counter++;  
-      return Long.toString(first) + Integer.toString(second) + Integer.toString(counter);
+      counter++;
+
+      return Long.toString(first) + Integer.toString(second)
+             + Integer.toString(counter);
    }
 }

@@ -21,42 +21,43 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.taglib;
+
 import java.io.*;
+
 import javax.servlet.jsp.JspException;
 
 
 
 /**
  * Renders an dbforms style tag
- * @author Joe Peer <joepeer@wap-force.net>
+ *
+ * @author Joe Peer
  */
 public class TemplateBasedirTag extends TagSupportWithScriptHandler
-		implements javax.servlet.jsp.tagext.TryCatchFinally
+   implements javax.servlet.jsp.tagext.TryCatchFinally {
+   private String baseDir;
 
-{
-   private String  baseDir;
-
-	public void doFinally()
-	{
-		baseDir = null;
-	}
-
-	public void doCatch(Throwable t) throws Throwable
-	{
-		throw t;
-	}
+   /**
+    * DOCUMENT ME!
+    *
+    * @param pageContext DOCUMENT ME!
+    */
+   public void setPageContext(final javax.servlet.jsp.PageContext pageContext) {
+      super.setPageContext(pageContext);
+      this.baseDir = (String) pageContext.getRequest()
+                                         .getAttribute("baseDir");
+   }
 
 
    /**
     * DOCUMENT ME!
     *
-    * @return DOCUMENT ME!
+    * @param t DOCUMENT ME!
     *
-    * @throws JspException DOCUMENT ME!
+    * @throws Throwable DOCUMENT ME!
     */
-   public int doStartTag() throws JspException
-   {
-      return SKIP_BODY;
+   public void doCatch(Throwable t) throws Throwable {
+      throw t;
    }
 
 
@@ -67,19 +68,17 @@ public class TemplateBasedirTag extends TagSupportWithScriptHandler
     *
     * @throws JspException DOCUMENT ME!
     */
-   public int doEndTag() throws JspException
-   {
-      try
-      {
+   public int doEndTag() throws JspException {
+      try {
          StringBuffer buf = new StringBuffer();
          buf.append(baseDir);
-         pageContext.getOut().flush();
-         pageContext.getOut().write(buf.toString());
-      }
-      catch (IOException ioe)
-      {
+         pageContext.getOut()
+                    .flush();
+         pageContext.getOut()
+                    .write(buf.toString());
+      } catch (IOException ioe) {
          throw new JspException("Problem including template end - "
-            + ioe.toString());
+                                + ioe.toString());
       }
 
       return EVAL_PAGE;
@@ -88,12 +87,20 @@ public class TemplateBasedirTag extends TagSupportWithScriptHandler
 
    /**
     * DOCUMENT ME!
-    *
-    * @param pageContext DOCUMENT ME!
     */
-   public void setPageContext(final javax.servlet.jsp.PageContext pageContext)
-   {
-      super.setPageContext(pageContext);
-      this.baseDir = (String) pageContext.getRequest().getAttribute("baseDir");
+   public void doFinally() {
+      baseDir = null;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws JspException DOCUMENT ME!
+    */
+   public int doStartTag() throws JspException {
+      return SKIP_BODY;
    }
 }

@@ -20,14 +20,18 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.config;
-import java.util.Locale;
+
+import org.dbforms.config.Constants;
+import org.dbforms.config.Field;
+import org.dbforms.config.FieldValue;
 
 import org.dbforms.util.AbstractTestCase;
-import org.dbforms.config.Field;
-import org.dbforms.config.Constants;
-import org.dbforms.config.FieldValue;
+
+import java.util.Locale;
+
+
+
 /**
  *  Description of the Class
  *
@@ -35,11 +39,11 @@ import org.dbforms.config.FieldValue;
  * @created    May 3, 2002
  */
 public class TestFieldValue extends AbstractTestCase {
-   Field fAuthorId = null;
-   Field fBookId = null;
-   FieldValue fvLogicalOR = null;
-   FieldValue fvNotLogicalOR = null;
+   Field      fAuthorId             = null;
+   Field      fBookId               = null;
+   FieldValue fvLogicalOR           = null;
    FieldValue fvLogicalORLikeFilter = null;
+   FieldValue fvNotLogicalOR        = null;
 
    /**
     * DOCUMENT ME!
@@ -64,6 +68,21 @@ public class TestFieldValue extends AbstractTestCase {
       fvLogicalORLikeFilter.setLogicalOR(true);
    }
 
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @throws Exception DOCUMENT ME!
+    */
+   public void testClone() throws Exception {
+      FieldValue fv = new FieldValue(fAuthorId, "10");
+
+      FieldValue fvClone = (FieldValue) fv.clone();
+      assertTrue("Make sure toStrings match",
+                 fv.toString().equals(fvClone.toString()));
+   }
+
+
    /**
     * DOCUMENT ME!
     *
@@ -71,9 +90,46 @@ public class TestFieldValue extends AbstractTestCase {
     */
    public void testCon() throws Exception {
       FieldValue fv = new FieldValue(fAuthorId, "10");
-      assertTrue("make sure we get our field back.", fv.getField().equals(fAuthorId));
-      assertTrue("make sure we get our field value.", fv.getFieldValue().equals("10"));
+      assertTrue("make sure we get our field back.",
+                 fv.getField().equals(fAuthorId));
+      assertTrue("make sure we get our field value.",
+                 fv.getFieldValue().equals("10"));
    }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @throws Exception DOCUMENT ME!
+    */
+   public void testInvert() throws Exception {
+      fvLogicalOR.setSortDirection(Constants.ORDER_ASCENDING);
+      fvNotLogicalOR.setSortDirection(Constants.ORDER_ASCENDING);
+      fvLogicalORLikeFilter.setSortDirection(Constants.ORDER_ASCENDING);
+
+      FieldValue fvLogicalOROrig           = (FieldValue) fvLogicalOR.clone();
+      FieldValue fvNotLogicalOROrig        = (FieldValue) fvNotLogicalOR.clone();
+      FieldValue fvLogicalORLikeFilterOrig = (FieldValue) fvLogicalORLikeFilter
+                                             .clone();
+
+      FieldValue[] fvs = {
+                            fvLogicalOR,
+                            fvNotLogicalOR,
+                            fvLogicalORLikeFilter
+                         };
+
+      FieldValue.invert(fvs);
+      assertTrue("fv was flipped",
+                 fvLogicalOR.getSortDirection() != fvLogicalOROrig
+                                                   .getSortDirection());
+      assertTrue("fv was flipped",
+                 fvNotLogicalOR.getSortDirection() != fvNotLogicalOROrig
+                                                      .getSortDirection());
+      assertTrue("fv was flipped",
+                 fvLogicalORLikeFilter.getSortDirection() != fvLogicalORLikeFilterOrig
+                                                             .getSortDirection());
+   }
+
 
    /**
     * DOCUMENT ME!
@@ -87,49 +143,19 @@ public class TestFieldValue extends AbstractTestCase {
       assertTrue("make sure this is a logical OR.", fv.getLogicalOR());
    }
 
-   /**
-    * DOCUMENT ME!
-    *
-    * @throws Exception DOCUMENT ME!
-    */
-   public void testClone() throws Exception {
-      FieldValue fv = new FieldValue(fAuthorId, "10");
-
-      FieldValue fvClone = (FieldValue) fv.clone();
-      assertTrue("Make sure toStrings match", fv.toString().equals(fvClone.toString()));
-   }
 
    /**
     * DOCUMENT ME!
-    *
-    * @throws Exception DOCUMENT ME!
     */
-   public void testInvert() throws Exception {
-      fvLogicalOR.setSortDirection(Constants.ORDER_ASCENDING);
-      fvNotLogicalOR.setSortDirection(Constants.ORDER_ASCENDING);
-      fvLogicalORLikeFilter.setSortDirection(Constants.ORDER_ASCENDING);
-
-      FieldValue fvLogicalOROrig = (FieldValue) fvLogicalOR.clone();
-      FieldValue fvNotLogicalOROrig = (FieldValue) fvNotLogicalOR.clone();
-      FieldValue fvLogicalORLikeFilterOrig = (FieldValue) fvLogicalORLikeFilter.clone();
-
-      FieldValue[] fvs = { fvLogicalOR, fvNotLogicalOR, fvLogicalORLikeFilter };
-
-      FieldValue.invert(fvs);
-      assertTrue("fv was flipped", fvLogicalOR.getSortDirection() != fvLogicalOROrig.getSortDirection());
-      assertTrue("fv was flipped", fvNotLogicalOR.getSortDirection() != fvNotLogicalOROrig.getSortDirection());
-      assertTrue("fv was flipped", fvLogicalORLikeFilter.getSortDirection() != fvLogicalORLikeFilterOrig.getSortDirection());
-   }
-
    public void testNull() {
       Field f = new Field();
       f.setName("TESTINT");
       f.setFieldType("int");
+
       FieldValue fv = new FieldValue(f, "");
       fv.setLocale(Locale.ENGLISH);
+
       Integer i = (Integer) fv.getFieldValueAsObject();
       assertTrue(i == null);
-
    }
-
 }

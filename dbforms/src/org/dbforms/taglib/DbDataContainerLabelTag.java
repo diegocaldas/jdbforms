@@ -21,39 +21,71 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.taglib;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.dbforms.config.ResultSetVector;
+
+import org.dbforms.util.KeyValuePair;
+import org.dbforms.util.Util;
+
 import java.util.List;
 
 import javax.servlet.jsp.JspException;
 
-import org.apache.log4j.Category;
-import org.dbforms.config.ResultSetVector;
-import org.dbforms.util.KeyValuePair;
-import org.dbforms.util.Util;
 
-/****
+
+/**
+ * this tag renders a dabase-datadriven LABEL, which is a passive element (it
+ * can't be changed by the user) - it is predestinated for use with read-only
+ * data (i.e. primary keys you don't want the user to change, etc) so far it
+ * is equivalent to DbLabelTag. But this tag may have a body containing any
+ * kind of EmbeddedData - tag. i put this feature into a seperate class for
+ * performance reasons (we do not want the overhead of pushing and poping the
+ * jsp writer to and off the stack
  *
- * this tag renders a dabase-datadriven LABEL, which is a passive element (it can't be changed by
- * the user) - it is predestinated for use with read-only data (i.e. primary keys you don't want
- * the user to change, etc)
- *
- * so far it is equivalent to DbLabelTag. But this tag may have a body containing any kind of
- * EmbeddedData - tag.
- * i put this feature into a seperate class for performance reasons (we do not want the overhead
- * of pushing and poping the jsp writer to and off the stack
- *
- * @author Joachim Peer <j.peer@gmx.net>
+ * @author Joachim Peer
  */
-public class DbDataContainerLabelTag extends DbBaseHandlerTag implements DataContainer, javax.servlet.jsp.tagext.TryCatchFinally {
-   private Category logCat = Category.getInstance(this.getClass().getName());
-
+public class DbDataContainerLabelTag extends DbBaseHandlerTag
+   implements DataContainer, javax.servlet.jsp.tagext.TryCatchFinally {
    // logging category for this class
-   private List embeddedData = null;
+   private List   embeddedData = null;
+   private Log    logCat = LogFactory.getLog(this.getClass().getName());
    private String strict = "false";
 
-   public void doFinally() {
-      embeddedData = null;
-      super.doFinally();
+   /**
+    * This method is a "hookup" for EmbeddedData - Tags which can assign the
+    * lines of data they loaded (by querying a database, or by rendering
+    * data-subelements, etc. etc.) and make the data available to this tag.
+    * [this method is defined in Interface DataContainer]
+    *
+    * @param embeddedData DOCUMENT ME!
+    */
+   public void setEmbeddedData(List embeddedData) {
+      this.embeddedData = embeddedData;
    }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param string
+    */
+   public void setStrict(String string) {
+      strict = string;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return
+    */
+   public String getStrict() {
+      return strict;
+   }
+
 
    /**
     * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
@@ -62,15 +94,6 @@ public class DbDataContainerLabelTag extends DbBaseHandlerTag implements DataCon
       throw t;
    }
 
-   /**
-   This method is a "hookup" for EmbeddedData - Tags which can assign the lines of data they loaded
-   (by querying a database, or by rendering data-subelements, etc. etc.) and make the data
-   available to this tag.
-   [this method is defined in Interface DataContainer]
-   */
-   public void setEmbeddedData(List embeddedData) {
-      this.embeddedData = embeddedData;
-   }
 
    /**
     * DOCUMENT ME!
@@ -83,24 +106,28 @@ public class DbDataContainerLabelTag extends DbBaseHandlerTag implements DataCon
    public int doEndTag() throws javax.servlet.jsp.JspException {
       try {
          String fieldValue = "";
+
          if (!Util.getTrue(strict)) {
-            fieldValue = this.getFormattedFieldValue();	   
+            fieldValue = this.getFormattedFieldValue();
          }
+
          String compareValue = this.getFieldValue();
+
          // "fieldValue" is the variable actually printed out
          if (!ResultSetVector.isNull(getParentForm().getResultSetVector())) {
-
             if (embeddedData != null) { //  embedded data is nested in this tag
 
-               int embeddedDataSize = embeddedData.size();
-               int i = 0;
+               int    embeddedDataSize  = embeddedData.size();
+               int    i                 = 0;
                String embeddedDataValue = null;
 
                while (i < embeddedDataSize) {
                   KeyValuePair aKeyValuePair = (KeyValuePair) embeddedData.get(i);
 
-                  if (aKeyValuePair.getKey().equals(compareValue)) {
+                  if (aKeyValuePair.getKey()
+                                         .equals(compareValue)) {
                      embeddedDataValue = aKeyValuePair.getValue();
+
                      break;
                   }
 
@@ -119,7 +146,9 @@ public class DbDataContainerLabelTag extends DbBaseHandlerTag implements DataCon
          // If maxlength was input, trim display
          String size = null;
 
-         if (((size = this.getMaxlength()) != null) && (size.trim().length() > 0)) {
+         if (((size = this.getMaxlength()) != null)
+                   && (size.trim()
+                                 .length() > 0)) {
             //convert to int
             int count = Integer.parseInt(size);
 
@@ -133,10 +162,13 @@ public class DbDataContainerLabelTag extends DbBaseHandlerTag implements DataCon
          // SM 2003-08-05
          // if styleClass is present, render a SPAN with text included
          String s = prepareStyles();
+
          if (Util.isNull(s)) {
-            pageContext.getOut().write(fieldValue);
+            pageContext.getOut()
+                       .write(fieldValue);
          } else {
-            pageContext.getOut().write("<span " + s + "\">" + fieldValue + "</span>");
+            pageContext.getOut()
+                       .write("<span " + s + "\">" + fieldValue + "</span>");
          }
       } catch (java.io.IOException ioe) {
          logCat.error(ioe);
@@ -149,18 +181,12 @@ public class DbDataContainerLabelTag extends DbBaseHandlerTag implements DataCon
       return EVAL_PAGE;
    }
 
-   /**
-    * @return
-    */
-   public String getStrict() {
-      return strict;
-   }
 
    /**
-    * @param string
+    * DOCUMENT ME!
     */
-   public void setStrict(String string) {
-      strict = string;
+   public void doFinally() {
+      embeddedData = null;
+      super.doFinally();
    }
-
 }

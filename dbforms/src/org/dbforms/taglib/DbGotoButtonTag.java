@@ -22,77 +22,51 @@
  */
 package org.dbforms.taglib;
 
-import javax.servlet.jsp.JspException;
 import org.dbforms.event.eventtype.EventType;
+
 import org.dbforms.util.Util;
-/****
+
+import javax.servlet.jsp.JspException;
+
+
+
+/**
+ * <p>
+ * this tag renders a Goto-button.
+ * </p>
  *
- * <p>this tag renders a Goto-button.
- *
- * @author Joachim Peer 
+ * @author Joachim Peer
  */
-public class DbGotoButtonTag extends DbBaseButtonTag implements javax.servlet.jsp.tagext.TryCatchFinally {
-   private String destination;
-   private String destTable;
+public class DbGotoButtonTag extends DbBaseButtonTag
+   implements javax.servlet.jsp.tagext.TryCatchFinally {
+   private String childField;
    private String destPos;
+   private String destTable;
+   private String destination;
    private String keyToDestPos;
    private String keyToKeyToDestPos;
-   private String singleRow = "false";
-   private String childField;
    private String parentField;
-
-   public void doFinally() {
-      destination = null;
-      destTable = null;
-      destPos = null;
-      keyToDestPos = null;
-      keyToKeyToDestPos = null;
-      singleRow = "false";
-      super.doFinally();
-   }
-
-   /**
-    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
-    */
-   public void doCatch(Throwable t) throws Throwable {
-      throw t;
-   }
+   private String singleRow = "false";
 
    /**
     * DOCUMENT ME!
     *
-    * @param destination DOCUMENT ME!
+    * @param string
     */
-   public void setDestination(String destination) {
-      this.destination = destination;
+   public void setChildField(String string) {
+      childField = string;
    }
+
 
    /**
     * DOCUMENT ME!
     *
-    * @return DOCUMENT ME!
+    * @return
     */
-   public String getDestination() {
-      return destination;
+   public String getChildField() {
+      return childField;
    }
 
-   /**
-    * DOCUMENT ME!
-    *
-    * @param destTable DOCUMENT ME!
-    */
-   public void setDestTable(String destTable) {
-      this.destTable = destTable;
-   }
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    */
-   public String getDestTable() {
-      return destTable;
-   }
 
    /**
     * DOCUMENT ME!
@@ -103,6 +77,7 @@ public class DbGotoButtonTag extends DbBaseButtonTag implements javax.servlet.js
       this.destPos = destPos;
    }
 
+
    /**
     * DOCUMENT ME!
     *
@@ -111,6 +86,47 @@ public class DbGotoButtonTag extends DbBaseButtonTag implements javax.servlet.js
    public String getDestPos() {
       return destPos;
    }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param destTable DOCUMENT ME!
+    */
+   public void setDestTable(String destTable) {
+      this.destTable = destTable;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String getDestTable() {
+      return destTable;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param destination DOCUMENT ME!
+    */
+   public void setDestination(String destination) {
+      this.destination = destination;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String getDestination() {
+      return destination;
+   }
+
 
    /**
     * DOCUMENT ME!
@@ -121,6 +137,7 @@ public class DbGotoButtonTag extends DbBaseButtonTag implements javax.servlet.js
       this.keyToDestPos = keyToDestPos;
    }
 
+
    /**
     * DOCUMENT ME!
     *
@@ -129,6 +146,7 @@ public class DbGotoButtonTag extends DbBaseButtonTag implements javax.servlet.js
    public String getKeyToDestPos() {
       return keyToDestPos;
    }
+
 
    /**
     * DOCUMENT ME!
@@ -139,6 +157,7 @@ public class DbGotoButtonTag extends DbBaseButtonTag implements javax.servlet.js
       this.keyToKeyToDestPos = keyToKeyToDestPos;
    }
 
+
    /**
     * DOCUMENT ME!
     *
@@ -147,6 +166,69 @@ public class DbGotoButtonTag extends DbBaseButtonTag implements javax.servlet.js
    public String getKeyToKeyToDestPos() {
       return keyToKeyToDestPos;
    }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param string
+    */
+   public void setParentField(String string) {
+      parentField = string;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return
+    */
+   public String getParentField() {
+      return parentField;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param string
+    */
+   public void setSingleRow(String string) {
+      singleRow = string;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return the attribute
+    */
+   public String getSingleRow() {
+      return singleRow;
+   }
+
+
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable {
+      throw t;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    */
+   public void doFinally() {
+      destination       = null;
+      destTable         = null;
+      destPos           = null;
+      keyToDestPos      = null;
+      keyToKeyToDestPos = null;
+      singleRow         = "false";
+      super.doFinally();
+   }
+
 
    /**
     * DOCUMENT ME!
@@ -160,7 +242,11 @@ public class DbGotoButtonTag extends DbBaseButtonTag implements javax.servlet.js
       super.doStartTag();
 
       try {
-         String tagName = EventType.EVENT_NAVIGATION_TRANSFER_GOTO + ((getTable() != null) ? getTable().getId() : -1) + "_" + Integer.toString(getUniqueID());
+         String tagName = EventType.EVENT_NAVIGATION_TRANSFER_GOTO
+                          + ((getTable() != null) ? getTable()
+                                                       .getId()
+                                                  : (-1)) + "_"
+                          + Integer.toString(getUniqueID());
 
          StringBuffer tagBuf = new StringBuffer();
 
@@ -179,14 +265,26 @@ public class DbGotoButtonTag extends DbBaseButtonTag implements javax.servlet.js
          // 2004-05-20 HKK: destPos should be already encoded! So do not encode it twice!
          // tagBuf.append(getDataTag(tagName, "destPos", Util.encode(destPos, pageContext.getRequest().getCharacterEncoding())));
          tagBuf.append(getDataTag(tagName, "destPos", destPos));
-         tagBuf.append(getDataTag(tagName, "keyToDestPos", Util.encode(keyToDestPos, pageContext.getRequest().getCharacterEncoding())));
-         tagBuf.append(getDataTag(tagName, "keyToKeyToDestPos", Util.encode(keyToKeyToDestPos, pageContext.getRequest().getCharacterEncoding())));
+         tagBuf.append(getDataTag(tagName, "keyToDestPos",
+                                  Util.encode(keyToDestPos,
+                                              pageContext.getRequest().getCharacterEncoding())));
+         tagBuf.append(getDataTag(tagName, "keyToKeyToDestPos",
+                                  Util.encode(keyToKeyToDestPos,
+                                              pageContext.getRequest().getCharacterEncoding())));
 
          // 2004-01-13 HKK: Add support for childField/parentField
-         if ((getConfig().getTableByName(destTable) != getTable()) && (getParentForm().getTable() != null)) {
-            tagBuf.append(getDataTag(tagName, "srcTable", getParentForm().getTable().getName()));
-            tagBuf.append(getDataTag(tagName, "childField", Util.encode(childField, pageContext.getRequest().getCharacterEncoding())));
-            tagBuf.append(getDataTag(tagName, "parentField", Util.encode(parentField, pageContext.getRequest().getCharacterEncoding())));
+         if ((getConfig()
+                       .getTableByName(destTable) != getTable())
+                   && (getParentForm()
+                                .getTable() != null)) {
+            tagBuf.append(getDataTag(tagName, "srcTable",
+                                     getParentForm().getTable().getName()));
+            tagBuf.append(getDataTag(tagName, "childField",
+                                     Util.encode(childField,
+                                                 pageContext.getRequest().getCharacterEncoding())));
+            tagBuf.append(getDataTag(tagName, "parentField",
+                                     Util.encode(parentField,
+                                                 pageContext.getRequest().getCharacterEncoding())));
          }
 
          tagBuf.append(getDataTag(tagName, "singleRow", getSingleRow()));
@@ -196,7 +294,8 @@ public class DbGotoButtonTag extends DbBaseButtonTag implements javax.servlet.js
          tagBuf.append(tagName);
          tagBuf.append(getButtonEnd());
 
-         pageContext.getOut().write(tagBuf.toString());
+         pageContext.getOut()
+                    .write(tagBuf.toString());
       } catch (java.io.IOException ioe) {
          throw new JspException("IO Error: " + ioe.getMessage());
       }
@@ -207,47 +306,4 @@ public class DbGotoButtonTag extends DbBaseButtonTag implements javax.servlet.js
          return SKIP_BODY;
       }
    }
-
-   /**
-    * @return the attribute
-    */
-   public String getSingleRow() {
-      return singleRow;
-   }
-
-   /**
-    * @param string
-    */
-   public void setSingleRow(String string) {
-      singleRow = string;
-   }
-
-   /**
-    * @return
-    */
-   public String getChildField() {
-      return childField;
-   }
-
-   /**
-    * @return
-    */
-   public String getParentField() {
-      return parentField;
-   }
-
-   /**
-    * @param string
-    */
-   public void setChildField(String string) {
-      childField = string;
-   }
-
-   /**
-    * @param string
-    */
-   public void setParentField(String string) {
-      parentField = string;
-   }
-
 }

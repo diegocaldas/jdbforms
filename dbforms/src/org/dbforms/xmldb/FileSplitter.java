@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.xmldb;
+
 import java.io.*;
 
 
@@ -31,12 +32,11 @@ import java.io.*;
  * @version $Revision$
  * @author $author$
  */
-public class FileSplitter
-{
-   private String sourceFile;
-   private String destDir;
-   File           fSource;
+public class FileSplitter {
    File           fDestDir;
+   File           fSource;
+   private String destDir;
+   private String sourceFile;
 
    /**
     * Creates a new FileSplitter object.
@@ -44,10 +44,10 @@ public class FileSplitter
     * @param s DOCUMENT ME!
     * @param d DOCUMENT ME!
     */
-   public FileSplitter(File s, File d)
-   {
-      this.fSource     = s;
-      this.fDestDir    = d;
+   public FileSplitter(File s,
+                       File d) {
+      this.fSource  = s;
+      this.fDestDir = d;
 
       testFiles();
    }
@@ -59,70 +59,44 @@ public class FileSplitter
     * @param sourceFile DOCUMENT ME!
     * @param destDir DOCUMENT ME!
     */
-   public FileSplitter(String sourceFile, String destDir)
-   {
-      this.sourceFile    = sourceFile;
-      this.destDir       = destDir;
+   public FileSplitter(String sourceFile,
+                       String destDir) {
+      this.sourceFile = sourceFile;
+      this.destDir    = destDir;
 
-      this.fSource     = new File(sourceFile);
-      this.fDestDir    = new File(destDir);
+      this.fSource  = new File(sourceFile);
+      this.fDestDir = new File(destDir);
 
       testFiles();
    }
 
-   private void testFiles()
-   {
-      // preparing INPUT
-      if (!fSource.exists())
-      {
-         System.out.println("ERROR: source file not found");
+   /**
+    * DOCUMENT ME!
+    *
+    * @param args DOCUMENT ME!
+    */
+   public static void main(String[] args) {
+      if (args.length != 2) {
+         System.out.println("usage: java FileSplitter sourceFile destinationDirectory\n\nexample:\njava FileSplitter source.jsp c:\\tomcat\\webapps\\your_app\\");
          System.exit(1);
       }
 
-      if (!fSource.canRead())
-      {
-         System.out.println("ERROR: source file not readable for this process");
-         System.exit(1);
-      }
-
-      // preparing OUTPUT
-      if (!fDestDir.exists())
-      {
-         System.out.println("ERROR: destination directory not found");
-         System.exit(1);
-      }
-
-      if (!fDestDir.isDirectory())
-      {
-         System.out.println("ERROR: destination is not a directory");
-         System.exit(1);
-      }
-
-      if (!fDestDir.canWrite())
-      {
-         System.out.println(
-            "ERROR: destination directory not writable for this process");
-         System.exit(1);
-      }
+      new FileSplitter(args[0], args[1]).splitFile();
    }
 
 
    /**
     * DOCUMENT ME!
     */
-   public void splitFile()
-   {
-      try
-      {
+   public void splitFile() {
+      try {
          BufferedReader in       = new BufferedReader(new FileReader(fSource));
          BufferedWriter out      = null;
          String         line     = null;
          String         fileName = null;
 
-         while ((line = in.readLine()) != null)
-         {
-            if (line.startsWith("//--file"))
-            {
+         while ((line = in.readLine()) != null) {
+            if (line.startsWith("//--file")) {
                int preBegin = line.indexOf('\"');
                int postEnd = line.indexOf('\"', preBegin + 1);
 
@@ -130,50 +104,55 @@ public class FileSplitter
 
                System.out.println("current file:" + fileName);
 
-               if (out != null)
-               {
+               if (out != null) {
                   out.close();
                }
 
-               out = new BufferedWriter(new FileWriter(
-                        new File(fDestDir, fileName)));
-            }
-            else
-            {
-               if (out != null)
-               {
+               out = new BufferedWriter(new FileWriter(new File(fDestDir,
+                                                                fileName)));
+            } else {
+               if (out != null) {
                   out.write(line);
                   out.newLine();
                }
             }
          }
 
-         if (out != null)
-         {
+         if (out != null) {
             out.close();
          }
-      }
-      catch (IOException ioe)
-      {
+      } catch (IOException ioe) {
          System.out.println("ERROR: " + ioe.toString());
       }
    }
 
 
-   /**
-    * DOCUMENT ME!
-    *
-    * @param args DOCUMENT ME!
-    */
-   public static void main(String[] args)
-   {
-      if (args.length != 2)
-      {
-         System.out.println(
-            "usage: java FileSplitter sourceFile destinationDirectory\n\nexample:\njava FileSplitter source.jsp c:\\tomcat\\webapps\\your_app\\");
+   private void testFiles() {
+      // preparing INPUT
+      if (!fSource.exists()) {
+         System.out.println("ERROR: source file not found");
          System.exit(1);
       }
 
-      new FileSplitter(args[0], args[1]).splitFile();
+      if (!fSource.canRead()) {
+         System.out.println("ERROR: source file not readable for this process");
+         System.exit(1);
+      }
+
+      // preparing OUTPUT
+      if (!fDestDir.exists()) {
+         System.out.println("ERROR: destination directory not found");
+         System.exit(1);
+      }
+
+      if (!fDestDir.isDirectory()) {
+         System.out.println("ERROR: destination is not a directory");
+         System.exit(1);
+      }
+
+      if (!fDestDir.canWrite()) {
+         System.out.println("ERROR: destination directory not writable for this process");
+         System.exit(1);
+      }
    }
 }

@@ -22,49 +22,69 @@
  */
 package org.dbforms.config;
 
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
-/****
+
+
+/**
  * <p>
- * This class holds XML config data defining interceptors for tables.
- * compare org.dbforms.event.DbEventInterceptor
+ * This class holds XML config data defining interceptors for tables. compare
+ * org.dbforms.event.DbEventInterceptor
  * </p>
  *
- * @author Joachim Peer <j.peer@gmx.net>
+ * @author Joachim Peer
  */
 public class Interceptor {
-	private String className;
-	// params may contain configuration data for the interceptor
-	private Map params;
+   // params may contain configuration data for the interceptor
+   private Map    params;
+   private String className;
 
-	public Interceptor() {
-		params = new HashMap();
-	}
+   /**
+    * Creates a new Interceptor object.
+    */
+   public Interceptor() {
+      params = new HashMap();
+   }
 
-	/**
-	 * sets the name of the interceptor class to be invoked during runtime
-	 *
-	 * @param className - name of the Interceptor class
-	 */
-	public void setClassName(String className) {
-		this.className = className;
-	}
+   /**
+    * sets the name of the interceptor class to be invoked during runtime
+    *
+    * @param className - name of the Interceptor class
+    */
+   public void setClassName(String className) {
+      this.className = className;
+   }
 
-	/**
-	 * returns the name of the interceptor class
-	 *
-	 * @return the name of the interceptor class
-	 */
-	public String getClassName() {
-		return className;
-	}
 
-	public void addParam(String name, String value) {
-		params.put(name, value);
-	}
+   /**
+    * returns the name of the interceptor class
+    *
+    * @return the name of the interceptor class
+    */
+   public String getClassName() {
+      return className;
+   }
 
-	public Map getParams() {
-		return params;
-	}
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public Map getParams() {
+      return params;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param name DOCUMENT ME!
+    * @param value DOCUMENT ME!
+    */
+   public void addParam(String name,
+                        String value) {
+      params.put(name, value);
+   }
 }

@@ -20,85 +20,78 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 /**
- *  this class was introduced in DbForms 0.9
- *  it is used for holding simple data
- *  for example in EmbeddedData - Classes
+ * this class was introduced in DbForms 0.9 it is used for holding simple data
+ * for example in EmbeddedData - Classes
  */
 package org.dbforms.util;
 
+
 /**
- *  Description of the Class
+ * Description of the Class
  *
- * @author  foxat
- * @created  3 dicembre 2002
+ * @author foxat
+ *
  */
-public class KeyValuePair
-{
+public class KeyValuePair {
    private String key;
    private String value;
 
    /**
-    *  Creates a new KeyValuePair object.
+    * Creates a new KeyValuePair object.
     */
-   public KeyValuePair()
-   {
+   public KeyValuePair() {
    }
 
 
    /**
     * Creates a new KeyValuePair object.
     *
-    * @param  key  the key value
-    * @param  value the value related to the key
+    * @param key the key value
+    * @param value the value related to the key
     */
-   public KeyValuePair(String key, String value)
-   {
-      this.key      = key;
-      this.value    = value;
+   public KeyValuePair(String key,
+                       String value) {
+      this.key   = key;
+      this.value = value;
    }
 
    /**
-    *  Gets the key attribute of the KeyValuePair object
+    * Sets the key attribute of the KeyValuePair object
     *
-    * @return  The key value
+    * @param key The new key value
     */
-   public String getKey()
-   {
-      return key;
-   }
-
-
-   /**
-    *  Gets the value attribute of the KeyValuePair object
-    *
-    * @return  The value value
-    */
-   public String getValue()
-   {
-      return value;
-   }
-
-
-   /**
-    *  Sets the key attribute of the KeyValuePair object
-    *
-    * @param  key The new key value
-    */
-   public void setKey(String key)
-   {
+   public void setKey(String key) {
       this.key = key;
    }
 
 
    /**
-    *  Sets the value attribute of the KeyValuePair object
+    * Gets the key attribute of the KeyValuePair object
     *
-    * @param  value The new value value
+    * @return The key value
     */
-   public void setValue(String value)
-   {
+   public String getKey() {
+      return key;
+   }
+
+
+   /**
+    * Sets the value attribute of the KeyValuePair object
+    *
+    * @param value The new value value
+    */
+   public void setValue(String value) {
       this.value = value;
+   }
+
+
+   /**
+    * Gets the value attribute of the KeyValuePair object
+    *
+    * @return The value value
+    */
+   public String getValue() {
+      return value;
    }
 }

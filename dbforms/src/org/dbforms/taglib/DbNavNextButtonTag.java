@@ -22,48 +22,29 @@
  */
 package org.dbforms.taglib;
 
+import org.dbforms.config.ResultSetVector;
+
+import org.dbforms.event.eventtype.EventType;
 
 import javax.servlet.jsp.JspException;
 
-import org.dbforms.config.ResultSetVector;
-import org.dbforms.event.eventtype.EventType;
 
 
-
-
-/****
+/**
+ * this tag renders a "next"-button.
  *
- * <p>this tag renders a "next"-button.
- *
- *
- * @author Joachim Peer <j.peer@gmx.net>
+ * @author Joachim Peer
  */
 public class DbNavNextButtonTag extends DbBaseButtonTag
-      implements javax.servlet.jsp.tagext.TryCatchFinally
-{
-   private String  stepWidth;
-
-	public void doFinally()
-	{
-		stepWidth = null;
-		super.doFinally();
-	}
-
-   /**
-    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
-    */
-   public void doCatch(Throwable t) throws Throwable
-   {
-      throw t;
-   }
+   implements javax.servlet.jsp.tagext.TryCatchFinally {
+   private String stepWidth;
 
    /**
     * DOCUMENT ME!
     *
     * @param stepWidth DOCUMENT ME!
     */
-   public void setStepWidth(String stepWidth)
-   {
+   public void setStepWidth(String stepWidth) {
       this.stepWidth = stepWidth;
    }
 
@@ -73,9 +54,25 @@ public class DbNavNextButtonTag extends DbBaseButtonTag
     *
     * @return DOCUMENT ME!
     */
-   public String getStepWidth()
-   {
+   public String getStepWidth() {
       return stepWidth;
+   }
+
+
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable {
+      throw t;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    */
+   public void doFinally() {
+      stepWidth = null;
+      super.doFinally();
    }
 
 
@@ -87,72 +84,71 @@ public class DbNavNextButtonTag extends DbBaseButtonTag
     * @throws javax.servlet.jsp.JspException DOCUMENT ME!
     * @throws JspException DOCUMENT ME!
     */
-   public int doStartTag() throws javax.servlet.jsp.JspException
-   {
+   public int doStartTag() throws javax.servlet.jsp.JspException {
       super.doStartTag();
 
-      if (getParentForm().getFooterReached()
-               && ResultSetVector.isNull(getParentForm().getResultSetVector()))
-      {
+      if (getParentForm()
+                   .getFooterReached()
+                && ResultSetVector.isNull(getParentForm().getResultSetVector())) {
          // 20030521 HKK: Bug fixing, thanks to Michael Slack! 
          return SKIP_BODY;
       }
-      
-      boolean isLastPage = getParentForm().getResultSetVector().isLastPage();
 
-      try
-      {
-      	 //20040227 JFM
-	      if (isLastPage && "nohtml".equals(getDisabledBehaviour())) {
-	      	return SKIP_BODY;
-	      } else if (isLastPage && "altimage".equals(getDisabledBehaviour())) {
-	      	pageContext.getOut().write(getDisabledImage());
-	      	return SKIP_BODY;
-	      } 
-	      //default: "disabled".equals(getDisabledBehaviour())
-	      else {
-	         StringBuffer tagBuf  = new StringBuffer();
-	         String       tagName = EventType.EVENT_NAVIGATION_TRANSFER_NEXT + getTable().getId() + "_" + Integer.toString(getUniqueID());
-	
-	         if (stepWidth != null)
-	         {
-	            tagBuf.append(getDataTag(tagName, "sw", stepWidth));
-	         }
-	
-	         if (getFollowUp() != null)
-	         {
-	            tagBuf.append(getDataTag(tagName, "fu", getFollowUp()));
-	         }
-	
-	         if (getFollowUpOnError() != null)
-	         {
-	            tagBuf.append(getDataTag(tagName, "fue", getFollowUpOnError()));
-	         }
-	
-	         tagBuf.append(getButtonBegin());
-			 if (isLastPage) 
-					tagBuf.append(" disabled=\"true\"");
-	         tagBuf.append(" name=\"");
-				tagBuf.append(tagName);
-	         tagBuf.append(getButtonEnd());
-	
-	         pageContext.getOut().write(tagBuf.toString());
-	      }
-      }
-      catch (java.io.IOException ioe)
-      {
+      boolean isLastPage = getParentForm()
+                              .getResultSetVector()
+                              .isLastPage();
+
+      try {
+         //20040227 JFM
+         if (isLastPage && "nohtml".equals(getDisabledBehaviour())) {
+            return SKIP_BODY;
+         } else if (isLastPage && "altimage".equals(getDisabledBehaviour())) {
+            pageContext.getOut()
+                       .write(getDisabledImage());
+
+            return SKIP_BODY;
+         }
+         //default: "disabled".equals(getDisabledBehaviour())
+         else {
+            StringBuffer tagBuf  = new StringBuffer();
+            String       tagName = EventType.EVENT_NAVIGATION_TRANSFER_NEXT
+                                   + getTable()
+                                        .getId() + "_"
+                                   + Integer.toString(getUniqueID());
+
+            if (stepWidth != null) {
+               tagBuf.append(getDataTag(tagName, "sw", stepWidth));
+            }
+
+            if (getFollowUp() != null) {
+               tagBuf.append(getDataTag(tagName, "fu", getFollowUp()));
+            }
+
+            if (getFollowUpOnError() != null) {
+               tagBuf.append(getDataTag(tagName, "fue", getFollowUpOnError()));
+            }
+
+            tagBuf.append(getButtonBegin());
+
+            if (isLastPage) {
+               tagBuf.append(" disabled=\"true\"");
+            }
+
+            tagBuf.append(" name=\"");
+            tagBuf.append(tagName);
+            tagBuf.append(getButtonEnd());
+
+            pageContext.getOut()
+                       .write(tagBuf.toString());
+         }
+      } catch (java.io.IOException ioe) {
          throw new JspException("IO Error: " + ioe.getMessage());
       }
 
-      if (getChoosenFlavor() == FLAVOR_MODERN)
-      {
+      if (getChoosenFlavor() == FLAVOR_MODERN) {
          return EVAL_BODY_BUFFERED;
-      }
-      else
-      {
+      } else {
          return SKIP_BODY;
       }
    }
-
-
 }

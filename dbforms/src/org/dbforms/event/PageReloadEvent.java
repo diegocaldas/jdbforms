@@ -20,10 +20,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.event;
-import javax.servlet.http.HttpServletRequest;
+
 import org.dbforms.config.DbFormsConfig;
+
+import javax.servlet.http.HttpServletRequest;
 
 
 
@@ -32,21 +33,20 @@ import org.dbforms.config.DbFormsConfig;
  * object. When you want to do action on different field when one of them
  * change. Use for field manipulation server side. <br>
  * Example: Select child change when Select parent change.
- * 
+ *
  * @author Eric Beaumier
  */
-public class PageReloadEvent extends WebEvent
-{
-
+public class PageReloadEvent extends WebEvent {
    /**
     * Creates a new ReloadEvent object.
+    *
     * @param tableId DOCUMENT ME!
     * @param request DOCUMENT ME!
     * @param config DOCUMENT ME!
     */
-   public PageReloadEvent(int tableId, HttpServletRequest request, 
-                      DbFormsConfig config)
-   {
+   public PageReloadEvent(int                tableId,
+                          HttpServletRequest request,
+                          DbFormsConfig      config) {
       super(tableId, request, config);
    }
 }

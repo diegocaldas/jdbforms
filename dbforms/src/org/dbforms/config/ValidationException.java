@@ -22,24 +22,20 @@
  */
 package org.dbforms.config;
 
+
 /**
-*   this exception may be thrown by user code
-*   in classes implementing the interceptor interface
-* 
-* @author joe peer
-* 
-*
-*
-*/
-public class ValidationException extends Exception
-{
+ * this exception may be thrown by user code in classes implementing the
+ * interceptor interface
+ *
+ * @author joe peer
+ */
+public class ValidationException extends Exception {
    /**
     * Creates a new ValidationException object.
     *
     * @param message DOCUMENT ME!
     */
-   public ValidationException(String message)
-   {
+   public ValidationException(String message) {
       super(message);
    }
 
@@ -47,8 +43,7 @@ public class ValidationException extends Exception
    /**
     * Creates a new ValidationException object.
     */
-   public ValidationException()
-   {
+   public ValidationException() {
       super();
    }
 }

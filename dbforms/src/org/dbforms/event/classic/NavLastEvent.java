@@ -20,27 +20,30 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.event.classic;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.dbforms.config.*;
+
 import org.dbforms.event.NavigationEvent;
-import javax.servlet.http.*;
+
 import java.sql.*;
-import org.apache.log4j.Category;
+
+import javax.servlet.http.*;
 
 
 
-/****
+/**
+ * DOCUMENT ME!
  *
- * @deprecated
+ * @author Joe Peer
  *
- * <p>This event scrolls the current ResultSet to its last row of data</p>
- *
- * @author Joe Peer <j.peer@gmx.net>
+ * @deprecated <p>
  */
-public class NavLastEvent extends NavigationEvent
-{
-   static Category logCat = Category.getInstance(NavLastEvent.class.getName()); // logging category for this class
+public class NavLastEvent extends NavigationEvent {
+   static Log logCat = LogFactory.getLog(NavLastEvent.class.getName()); // logging category for this class
 
    /**
     * Creates a new NavLastEvent object.
@@ -49,9 +52,9 @@ public class NavLastEvent extends NavigationEvent
     * @param request DOCUMENT ME!
     * @param config DOCUMENT ME!
     */
-   public NavLastEvent(String action, HttpServletRequest request, 
-                       DbFormsConfig config)
-   {
+   public NavLastEvent(String             action,
+                       HttpServletRequest request,
+                       DbFormsConfig      config) {
       super(action, request, config);
    }
 
@@ -60,54 +63,57 @@ public class NavLastEvent extends NavigationEvent
     * Creates a new NavLastEvent object.
     *
     * @param table DOCUMENT ME!
+    * @param request DOCUMENT ME!
     * @param config DOCUMENT ME!
     */
-   public NavLastEvent(Table table, HttpServletRequest request, 
-                       DbFormsConfig config)
-   {
+   public NavLastEvent(Table              table,
+                       HttpServletRequest request,
+                       DbFormsConfig      config) {
       super(table, request, config);
    }
 
    /**
     * Process the current event.
     *
-    * @param filterFieldValues    FieldValue array used to restrict a set of data
-    * @param orderConstraint    FieldValue array used to build a cumulation of
-    *                       rules for ordering (sorting) and restricting fields
-    *                      to the actual block of data
-    * @param count              record count
-    * @param firstPost         a string identifying the first resultset position
-    * @param lastPos          a string identifying the last resultset position
-    * @param dbConnectionName   name of the used db connection. Can be used to
-    *                           get an own db connection, e.g. to hold it during the
-    *                           session (see DataSourceJDBC for example!)
-    * @param con                the JDBC Connection object
+    * @param childFieldValues FieldValue array used to restrict a set of data
+    * @param orderConstraint FieldValue array used to build a cumulation of
+    *        rules for ordering (sorting) and restricting fields to the actual
+    *        block of data
+    * @param firstPosition DOCUMENT ME!
+    * @param sqlFilterParams a string identifying the last resultset position
+    * @param count record count
+    * @param firstPosition a string identifying the first resultset position
+    * @param lastPosition DOCUMENT ME!
+    * @param dbConnectionName name of the used db connection. Can be used to
+    *        get an own db connection, e.g. to hold it during the session (see
+    *        DataSourceJDBC for example!)
+    * @param con the JDBC Connection object
     *
     * @return a ResultSetVector object
     *
     * @exception SQLException if any error occurs
     */
-   public ResultSetVector processEvent(FieldValue[] childFieldValues, 
-                                       FieldValue[] orderConstraint, 
-                                       String sqlFilter, 
-                                       FieldValue[] sqlFilterParams, int count, 
-                                       String firstPosition, 
-                                       String lastPosition, 
-                                       String dbConnectionName, Connection con)
-                                throws SQLException
-   {
+   public ResultSetVector processEvent(FieldValue[] childFieldValues,
+                                       FieldValue[] orderConstraint,
+                                       String       sqlFilter,
+                                       FieldValue[] sqlFilterParams,
+                                       int          count,
+                                       String       firstPosition,
+                                       String       lastPosition,
+                                       String       dbConnectionName,
+                                       Connection   con)
+                                throws SQLException {
       // select from table in inverted order
       logCat.info("==>NavLastEvent");
       FieldValue.invert(orderConstraint);
 
       ResultSetVector resultSetVector = getTable()
-                                           .doConstrainedSelect(getTable()
-                                                                   .getFields(), 
-                                                                childFieldValues, 
-                                                                orderConstraint, 
-                                                                sqlFilter, 
-                                                                sqlFilterParams, 
-                                                                Constants.COMPARE_NONE, 
+                                           .doConstrainedSelect(getTable().getFields(),
+                                                                childFieldValues,
+                                                                orderConstraint,
+                                                                sqlFilter,
+                                                                sqlFilterParams,
+                                                                Constants.COMPARE_NONE,
                                                                 count, con);
       FieldValue.invert(orderConstraint);
       resultSetVector.flip();

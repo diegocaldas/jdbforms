@@ -22,9 +22,11 @@
  */
 package org.dbforms.util;
 
-import java.util.ResourceBundle;
-import java.util.Locale;
 import java.util.HashMap;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
+
 
 /**
  * base class for handling message resources
@@ -32,55 +34,51 @@ import java.util.HashMap;
  * @author Henner Kollmann
  */
 public class MessageResource {
-
-
-   /*********************************************************************************************
-    *  Use of HashMap for allowing null value (ReourceBundle)
-    *  and avoiding to call getBundle each time if resources file is not present.
-    ********************************************************************************************/
+   /**
+    * Use of HashMap for allowing null value (ReourceBundle) and avoiding to
+    * call getBundle each time if resources file is not present.
+    */
    private HashMap hashResources = new HashMap();
-   private String subClass = null;
+   private String  subClass = null;
 
+   /**
+    * Creates a new MessageResource object.
+    *
+    * @param subClass DOCUMENT ME!
+    */
    public MessageResource(String subClass) {
       this.subClass = subClass;
    }
 
    /**
-    * DOCUMENT ME!
+    * Retrieve message from ResourceBundle.  If the ResourceBundle is not yet
+    * cached, cache it and retreive message.
     *
-    * @return DOCUMENT ME!
+    * @param msgmsg </code> : Message key to lookup.
+    * @param locloc </code> : Locale object to map message with good
+    *        ResourceBundle.
+    *
+    * @return <code>String</code> : Message resolve, null if not found.
     */
-   public String getSubClass() {
-      return subClass;
-   }
-
-   /********************************************************************************************
-    *  Retrieve message from ResourceBundle.  If the ResourceBundle is not yet cached,
-    *  cache it and retreive message.
-    *
-    *         @param  <code>msg</code> : Message key to lookup.
-    *         @param  <code>loc</code> : Locale object to map message with good ResourceBundle.
-    *
-    *         @return        <code>String</code> : Message resolve, null if not found.
-    ********************************************************************************************/
-   public String getMessage(String msg, Locale loc) {
+   public String getMessage(String msg,
+                            Locale loc) {
       if (subClass == null) {
          return null;
       }
+
       if (loc == null) {
          return null;
       }
 
       ResourceBundle rb = null;
+
       // Faster than String (immuable) concatenation
-      String key =
-         new StringBuffer()
-            .append(loc.getLanguage())
-            .append("_")
-            .append(loc.getCountry())
-            .append("_")
-            .append(loc.getVariant())
-            .toString();
+      String key = new StringBuffer().append(loc.getLanguage())
+                                     .append("_")
+                                     .append(loc.getCountry())
+                                     .append("_")
+                                     .append(loc.getVariant())
+                                     .toString();
 
       if (hashResources.containsKey(key)) {
          rb = (ResourceBundle) hashResources.get(key);
@@ -88,32 +86,42 @@ public class MessageResource {
          try {
             rb = ResourceBundle.getBundle(subClass, loc);
          } catch (Exception e) {
-         	rb = null;
+            rb = null;
          }
+
          // Put the ResourceBundle or null value in HashMap with the key
          hashResources.put(key, rb);
       }
+
       String s = null;
+
       if (rb != null) {
          try {
             s = rb.getString(msg);
          } catch (Exception e) {
-         	s = null;
+            s = null;
          }
-      } 
+      }
+
       return s;
    }
 
-   /*********************************************************************************************
-    *  Retrieve message from ResourceBundle and replace parameter "{x}" with values in parms array.
+
+   /**
+    * Retrieve message from ResourceBundle and replace parameter "{x}" with
+    * values in parms array.
     *
-    *         @param  <code>msg</code> : Message key to lookup.
-    *         @param  <code>loc</code> : Locale object to map message with good ResourceBundle.
-    *         @param  <code>parms[]</code> : Parameters to replace "{x}" in message .
+    * @param msgmsg </code> : Message key to lookup.
+    * @param locloc </code> : Locale object to map message with good
+    *        ResourceBundle.
+    * @param parmsparms[] </code> : Parameters to replace "{x}" in message .
     *
-    *         @return        <code>String</code> : Message resolve with parameter replaced, null if message key not found.
-    ********************************************************************************************/
-   public String getMessage(String msg, Locale loc, String[] parms) {
+    * @return <code>String</code> : Message resolve with parameter replaced,
+    *         null if message key not found.
+    */
+   public String getMessage(String   msg,
+                            Locale   loc,
+                            String[] parms) {
       String result = getMessage(msg, loc);
 
       if (result == null) {
@@ -130,18 +138,31 @@ public class MessageResource {
       return result;
    }
 
-   /*********************************************************************************************
-   *  Replace all expression {...} by the appropriate string.
-   *
-   * @param  <code>str</code> : Original string.
-   * @param  <code>search</code> : Expression to search.
-   * @param  <code>replace</code> : Replacement string.
-   *
-   * @return        <code>String</code> : The string with all expression replaced.
-   ********************************************************************************************/
-   private String replaceAll(String str, String search, String replace) {
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String getSubClass() {
+      return subClass;
+   }
+
+
+   /**
+    * Replace all expression {...} by the appropriate string.
+    *
+    * @param strstr </code> : Original string.
+    * @param searchsearch </code> : Expression to search.
+    * @param replacereplace </code> : Replacement string.
+    *
+    * @return <code>String</code> : The string with all expression replaced.
+    */
+   private String replaceAll(String str,
+                             String search,
+                             String replace) {
       StringBuffer result = null;
-      int oldpos = 0;
+      int          oldpos = 0;
 
       do {
          int pos = str.indexOf(search, oldpos);
@@ -170,5 +191,4 @@ public class MessageResource {
          return new String(result);
       }
    }
-
 }

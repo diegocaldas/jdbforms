@@ -20,11 +20,13 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.config;
-import org.dbforms.config.Field;
+
 import org.dbforms.config.Constants;
+import org.dbforms.config.Field;
 import org.dbforms.config.FieldValue;
+
+
 
 /**
  *  Description of the Class
@@ -33,12 +35,12 @@ import org.dbforms.config.FieldValue;
  * @created    May 3, 2002
  */
 public class TestQuery extends org.dbforms.util.AbstractTestCase {
-   Field fAuthorId = null;
-   Field fBookId = null;
-   FieldValue fvLogicalOR = null;
-   FieldValue fvNotLogicalOR = null;
+   Field      fAuthorId             = null;
+   Field      fBookId               = null;
+   FieldValue fvLogicalOR           = null;
    FieldValue fvLogicalORLikeFilter = null;
-   Query table = null;
+   FieldValue fvNotLogicalOR        = null;
+   Query      table                 = null;
 
    /**
     * DOCUMENT ME!
@@ -57,17 +59,17 @@ public class TestQuery extends org.dbforms.util.AbstractTestCase {
       fvLogicalOR = new FieldValue(fAuthorId, "10");
       fvLogicalOR.setOperator(Constants.FILTER_EQUAL);
       fvLogicalOR.setLogicalOR(true);
-      
+
       fvNotLogicalOR = new FieldValue(fBookId, "10");
       fvNotLogicalOR.setOperator(Constants.FILTER_EQUAL);
       fvNotLogicalOR.setLogicalOR(false);
-      
+
       fvLogicalORLikeFilter = new FieldValue(fAuthorId, "10");
       fvLogicalORLikeFilter.setOperator(Constants.FILTER_LIKE);
       fvLogicalORLikeFilter.setLogicalOR(true);
-      
+
       table = new Query();
-      table.setWhere("td.id = td1.id and td.id1 = td1.id1"); 
+      table.setWhere("td.id = td1.id and td.id1 = td1.id1");
       table.setFollowAfterWhere("AND");
       table.setFrom("td");
    }
@@ -79,36 +81,50 @@ public class TestQuery extends org.dbforms.util.AbstractTestCase {
     * @throws Exception DOCUMENT ME!
     */
    public void testGetSelectQuery() throws Exception {
-      FieldValue[] fvs = { fvLogicalOR, fvNotLogicalOR };
-      String s = table.getSelectQuery(null, null, null, "f1 >= ?", Constants.COMPARE_NONE);
-      assertTrue(
-         "Test fvs Where clause equals:" + s,
-         s.indexOf("SELECT * FROM td WHERE ( td.id = td1.id and td.id1 = td1.id1 ) AND ( f1 >= ? )") >= 0);
+      FieldValue[] fvs = {
+                            fvLogicalOR,
+                            fvNotLogicalOR
+                         };
+      String       s = table.getSelectQuery(null, null, null, "f1 >= ?",
+                                            Constants.COMPARE_NONE);
+      assertTrue("Test fvs Where clause equals:" + s,
+                 s.indexOf("SELECT * FROM td WHERE ( td.id = td1.id and td.id1 = td1.id1 ) AND ( f1 >= ? )") >= 0);
 
-      s = table.getSelectQuery(null, fvs, null, "f1 >= ?", Constants.COMPARE_NONE);
-      assertTrue(
-         "Test fvs Where clause equals:" + s,
-         s.indexOf("SELECT * FROM td WHERE ( td.id = td1.id and td.id1 = td1.id1 ) AND ( f1 >= ? )  AND ( (  ( AUTHOR_ID =  ?  ) AND ( BOOK_ID =  ?  )  ) )") >= 0);
+      s = table.getSelectQuery(null, fvs, null, "f1 >= ?",
+                               Constants.COMPARE_NONE);
+      assertTrue("Test fvs Where clause equals:" + s,
+                 s.indexOf("SELECT * FROM td WHERE ( td.id = td1.id and td.id1 = td1.id1 ) AND ( f1 >= ? )  AND ( (  ( AUTHOR_ID =  ?  ) AND ( BOOK_ID =  ?  )  ) )") >= 0);
    }
 
 
+   /**
+    * DOCUMENT ME!
+    *
+    * @throws Exception DOCUMENT ME!
+    */
    public void testGetWhereClause() throws Exception {
-      FieldValue[] fvs = { fvLogicalOR, fvNotLogicalOR };
-      String s = table.getWhereClause(fvs);
-      assertTrue(
-         "Test fvs Where clause equals: (AUTHOR_ID =  ?)  AND (BOOK_ID =  ?):" + s,
-         s.indexOf("( AUTHOR_ID =  ?  ) AND ( BOOK_ID =  ?  )") >= 0);
+      FieldValue[] fvs = {
+                            fvLogicalOR,
+                            fvNotLogicalOR
+                         };
+      String       s = table.getWhereClause(fvs);
+      assertTrue("Test fvs Where clause equals: (AUTHOR_ID =  ?)  AND (BOOK_ID =  ?):"
+                 + s,
+                 s.indexOf("( AUTHOR_ID =  ?  ) AND ( BOOK_ID =  ?  )") >= 0);
 
-      FieldValue[] fvs2 = { fvLogicalOR, fvLogicalOR };
-      assertTrue(
-         "Test fvs2 Where clause equals:" + table.getWhereClause(fvs2),
-      table.getWhereClause(fvs2).indexOf("AUTHOR_ID =  ?  OR AUTHOR_ID =  ?") >= 0);
+      FieldValue[] fvs2 = {
+                             fvLogicalOR,
+                             fvLogicalOR
+                          };
+      assertTrue("Test fvs2 Where clause equals:" + table.getWhereClause(fvs2),
+                 table.getWhereClause(fvs2).indexOf("AUTHOR_ID =  ?  OR AUTHOR_ID =  ?") >= 0);
 
-      FieldValue[] fvs3 = { fvLogicalORLikeFilter, fvLogicalOR };
+      FieldValue[] fvs3 = {
+                             fvLogicalORLikeFilter,
+                             fvLogicalOR
+                          };
       s = table.getWhereClause(fvs3);
       assertTrue("Test fvs3 Where clause equals:" + s,
                  s.indexOf("AUTHOR_ID LIKE  ?  OR AUTHOR_ID =  ?") >= 0);
    }
-
-
 }

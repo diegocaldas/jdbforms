@@ -164,10 +164,4 @@ public class TestParseUtilCactus extends org.apache.cactus.ServletTestCase
     }
 
 
-    /**
-     * DOCUMENT ME!
-     */
-    public void tearDown()
-    {
-    }
 }

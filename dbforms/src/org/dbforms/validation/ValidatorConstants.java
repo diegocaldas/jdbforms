@@ -23,7 +23,6 @@
 package org.dbforms.validation;
 
 
-
 /****
  * <p>
  * This class is use for static reference primarily.
@@ -31,8 +30,7 @@ package org.dbforms.validation;
  *
  * @author Eric Beaumier
  */
-public class ValidatorConstants
-{
+public class ValidatorConstants {
    /** DOCUMENT ME! */
    public static final String VALIDATION = "validation";
 
@@ -57,7 +55,6 @@ public class ValidatorConstants
    /**
     * Creates a new ValidatorConstants object.
     */
-   public ValidatorConstants()
-   {
+   public ValidatorConstants() {
    }
 }

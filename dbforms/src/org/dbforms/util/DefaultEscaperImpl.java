@@ -22,49 +22,97 @@
  */
 package org.dbforms.util;
 
+
 /**
  * DefaultEscaper
- * 
+ *
  */
 public class DefaultEscaperImpl implements Escaper {
-	public String escapeHTML(String s) {
-		if (s == null)
-         return null;      
-      int i;
-		StringBuffer v = new StringBuffer("");
-		for (i = 0; i < s.length(); i++) {
-			switch (s.charAt(i)) {
-				case '%' :
-					v.append("&#37;");
-					break;
-				case '"' :
-					v.append("&quot;");
-					break;
-				case '<' :
-					v.append("&lt;");
-					break;
-				case '>' :
-					v.append("&gt;");
-					break;
-				case '&' :
-					v.append("&amp;");
-					break;
-				default :
-					v.append(s.charAt(i));
-					break;
-			}
-		}
-		return v.toString();
-	}
+   /**
+    * DOCUMENT ME!
+    *
+    * @param s DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String escapeHTML(String s) {
+      if (s == null) {
+         return null;
+      }
 
-	public String unescapeHTML(String s) {
-		return s;
-	}
-	public String escapeJDBC(String s) {
-		return s;
-	}
-	public String unescapeJDBC(String s) {
-		return s;
-	}
+      int          i;
+      StringBuffer v = new StringBuffer("");
 
+      for (i = 0; i < s.length(); i++) {
+         switch (s.charAt(i)) {
+            case '%':
+               v.append("&#37;");
+
+               break;
+
+            case '"':
+               v.append("&quot;");
+
+               break;
+
+            case '<':
+               v.append("&lt;");
+
+               break;
+
+            case '>':
+               v.append("&gt;");
+
+               break;
+
+            case '&':
+               v.append("&amp;");
+
+               break;
+
+            default:
+               v.append(s.charAt(i));
+
+               break;
+         }
+      }
+
+      return v.toString();
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param s DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String escapeJDBC(String s) {
+      return s;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param s DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String unescapeHTML(String s) {
+      return s;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param s DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String unescapeJDBC(String s) {
+      return s;
+   }
 }

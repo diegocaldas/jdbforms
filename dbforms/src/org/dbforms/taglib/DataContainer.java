@@ -21,24 +21,32 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.taglib;
-import java.util.*;
+
 import org.dbforms.util.Escaper;
+
+import java.util.*;
 
 
 
 /**
  * DOCUMENT ME!
  *
- * @version $Revision$
  * @author $author$
+ * @version $Revision$
  */
-public interface DataContainer
-{
+public interface DataContainer {
    /**
     * DOCUMENT ME!
     *
     * @param embeddedData DOCUMENT ME!
     */
    public void setEmbeddedData(List embeddedData);
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
    public Escaper getEscaper();
 }

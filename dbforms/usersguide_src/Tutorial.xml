@@ -155,7 +155,7 @@
   <sect1>
     <title>Planning the overall structure and screen-flow of the application</title>
     <para>To fulfill the requirements, we need to implements at least the following JSP  views:</para>
-    <table>
+    <table width="100%">
       <title>Core requirements for our sample application</title>
       <tgroup cols="2">
         <tbody>
@@ -175,7 +175,7 @@
       </tgroup>
     </table>
     <para>In addition to the core requirements, well implement the following views for users convenience:</para>
-    <table>
+    <table width="100%">
       <title>Additional features for our sample application</title>
       <tgroup cols="2">
         <tbody>

@@ -20,133 +20,155 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.servlets.reports;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.dbforms.config.Field;
+
+import org.dbforms.taglib.TextFormatter;
+
+import org.dbforms.util.MessageResources;
+import org.dbforms.util.ParseUtil;
+
+import java.io.File;
 
 /**
  * Helper class send as parameter to JasperReports. So it is not neccesary to
  * send all the stuff in different parameters
  */
 import java.sql.Connection;
+
 import java.util.Locale;
-import java.io.File;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import org.dbforms.util.MessageResources;
-import org.dbforms.util.ParseUtil;
-import org.dbforms.config.Field;
-import org.dbforms.taglib.TextFormatter;
 
-import org.apache.log4j.Logger;
+
 
 /**
  * DOCUMENT ME!
- * 
- * @version $Revision$
+ *
  * @author $author$
+ * @version $Revision$
  */
 public class ReportParameter {
-   private ServletContext context;
+   private static Log         logCat     = LogFactory.getLog(ReportParameter.class);
+   private Connection         connection;
    private HttpServletRequest request;
-   private Connection connection;
-   private String reportPath;
-   private Locale locale;
-   private Logger logCat = Logger.getLogger(this.getClass().getName());
+   private Locale             locale;
+   private ServletContext     context;
+   private String             reportPath;
 
    /**
     * Creates a new ReportParameter object.
-    * 
+    *
+    * @param context DOCUMENT ME!
     * @param request DOCUMENT ME!
     * @param connection DOCUMENT ME!
     * @param reportPath DOCUMENT ME!
-    * @param contextPath DOCUMENT ME!
     */
-   public ReportParameter(ServletContext context, HttpServletRequest request, Connection connection, String reportPath) {
-      this.context = context;
-      this.request = request;
+   public ReportParameter(ServletContext     context,
+                          HttpServletRequest request,
+                          Connection         connection,
+                          String             reportPath) {
+      this.context    = context;
+      this.request    = request;
       this.connection = connection;
       this.reportPath = reportPath;
-      this.locale = MessageResources.getLocale(request);
-   }
-
-   /**
-    * Returns a formatted string with the same formatting as used inside
-    * dbforms
-    * 
-    * @param obj The object to format
-    * @param pattern to use as pattern for numeric and date fields
-    * 
-    * @return The string representation
-    */
-   public String getStringValue(Object obj, String pattern) {
-      try {
-         Field field = new Field();
-         field.setTypeByObject(obj);
-         TextFormatter f = new TextFormatter(field, locale, pattern, obj);
-         return f.getFormattedFieldValue();
-      } catch (Exception e) {
-         logCat.error(e);
-         return e.getMessage();
-      }
-   }
-
-   /**
-    * Returns a formatted string with the same formatting as used inside
-    * dbforms
-    * 
-    * @param obj The object to format
-    * 
-    * @return The string representation
-    */
-   public String getStringValue(Object obj) {
-      return getStringValue(obj, null);
-   }
-
-   /**
-    * Returns a message
-    * 
-    * @param msg DOCUMENT ME!
-    * 
-    * @return String
-    */
-   public String getMessage(String msg) {
-      return MessageResources.getMessage(request, msg);
-   }
-
-   /**
-    * Returns a request parameter
-    * 
-    * @param param DOCUMENT ME!
-    * 
-    * @return String
-    */
-   public String getParameter(String param) {
-      return ParseUtil.getParameter(request, param);
+      this.locale     = MessageResources.getLocale(request);
    }
 
    /**
     * Returns the connection.
-    * 
+    *
     * @return Connection
     */
    public Connection getConnection() {
       return connection;
    }
 
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return
+    */
+   public String getContextPath() {
+      return context.getRealPath("") + File.separator;
+   }
+
+
+   /**
+    * Returns a message
+    *
+    * @param msg DOCUMENT ME!
+    *
+    * @return String
+    */
+   public String getMessage(String msg) {
+      return MessageResources.getMessage(request, msg);
+   }
+
+
+   /**
+    * Returns a request parameter
+    *
+    * @param param DOCUMENT ME!
+    *
+    * @return String
+    */
+   public String getParameter(String param) {
+      return ParseUtil.getParameter(request, param);
+   }
+
+
    /**
     * Returns the reportPath.
-    * 
+    *
     * @return String
     */
    public String getReportPath() {
       return reportPath;
    }
 
+
    /**
-    * @return
+    * Returns a formatted string with the same formatting as used inside
+    * dbforms
+    *
+    * @param obj The object to format
+    * @param pattern to use as pattern for numeric and date fields
+    *
+    * @return The string representation
     */
-   public String getContextPath() {
-	  return context.getRealPath("") + File.separator;
+   public String getStringValue(Object obj,
+                                String pattern) {
+      try {
+         Field field = new Field();
+         field.setTypeByObject(obj);
+
+         TextFormatter f = new TextFormatter(field, locale, pattern, obj);
+
+         return f.getFormattedFieldValue();
+      } catch (Exception e) {
+         logCat.error(e);
+
+         return e.getMessage();
+      }
    }
 
+
+   /**
+    * Returns a formatted string with the same formatting as used inside
+    * dbforms
+    *
+    * @param obj The object to format
+    *
+    * @return The string representation
+    */
+   public String getStringValue(Object obj) {
+      return getStringValue(obj, null);
+   }
 }

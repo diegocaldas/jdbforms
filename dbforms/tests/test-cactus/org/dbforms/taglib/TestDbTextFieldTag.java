@@ -68,7 +68,9 @@ public class TestDbTextFieldTag extends JspTestCase {
     * it, this method creates a BodyContent object and passes it to the tag.
     */
    public void setUp() throws Exception {
-      initConfig();
+	super.setUp();	
+
+   	initConfig();
 
       form = new DbFormTag();
       form.setPageContext(this.pageContext);

@@ -75,15 +75,6 @@ public class TestConfigServlet extends ServletTestCase
 
 
     /**
-     * In addition to creating the tag instance and adding the pageContext to
-     * it, this method creates a BodyContent object and passes it to the tag.
-     */
-    public void setUp()
-    {
-    }
-
-
-    /**
      * DOCUMENT ME!
      *
      * @throws Exception DOCUMENT ME!
@@ -103,10 +94,4 @@ public class TestConfigServlet extends ServletTestCase
     }
 
 
-    /**
-     * DOCUMENT ME!
-     */
-    public void tearDown()
-    {
-    }
 }

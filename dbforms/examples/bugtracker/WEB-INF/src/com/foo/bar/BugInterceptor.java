@@ -71,7 +71,7 @@ public int preInsert(HttpServletRequest request,  Table table, FieldValues field
         dateBuf.append(day);
 
         setValue(table, fieldValues, "indate", dateBuf.toString());
-        setValue(table, fieldValues, "bugstate", new String("0"));
+        setValue(table, fieldValues, "bugstate", "0");
 
         return GRANT_OPERATION;
   }

@@ -22,51 +22,37 @@
  */
 package org.dbforms.event.eventtype;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-import org.apache.log4j.Category;
 
 
 /**
- * Database EventTypeStrategy class. Provides implementations of the super class
- * methods for Database events.
+ * Database EventTypeStrategy class. Provides implementations of the super
+ * class methods for Database events.
  *
- * @author  Luca Fossato
- * @created  28 novembre 2002
+ * @author Luca Fossato
+ *
  */
-public class DatabaseEventTypeStrategy implements EventTypeStrategy
-{
+public class DatabaseEventTypeStrategy implements EventTypeStrategy {
    /** logging category */
-   protected static Category logCat = Category.getInstance(DatabaseEventTypeStrategy.class
-         .getName());
+   private static Log logCat = LogFactory.getLog(DatabaseEventTypeStrategy.class);
 
    /**
-    *  Gets the EventTypeStrategy identifier.
+    * Gets the eventGroup attribute of the EventTypeStrategyImpl object
     *
-    * @return  the EventTypeStrategy identifier
-    */
-   public String getId()
-   {
-      return "DatabaseEventTypeStrategy";
-   }
-
-
-   /**
-    *  Gets the eventGroup attribute of the EventTypeStrategyImpl object
+    * @param eventString Description of the Parameter
     *
-    * @param  eventString Description of the Parameter
-    * @return  The eventGroup value, or EventType.EVENT_UNDEFINED otherwise
+    * @return The eventGroup value, or EventType.EVENT_UNDEFINED otherwise
     */
-   public int getEventGroup(String eventString)
-   {
+   public int getEventGroup(String eventString) {
       int eventGroup = EventType.EVENT_UNDEFINED;
 
-      if (        (eventString.startsWith("ac_insert_"))
-               || (eventString.startsWith("ac_update_"))
-               || (eventString.startsWith("ac_updatear_"))
-               || (eventString.startsWith("ac_delete_"))
-               || (eventString.startsWith("ac_deletear_"))
-         )
-      {
+      if ((eventString.startsWith("ac_insert_"))
+                || (eventString.startsWith("ac_update_"))
+                || (eventString.startsWith("ac_updatear_"))
+                || (eventString.startsWith("ac_delete_"))
+                || (eventString.startsWith("ac_deletear_"))) {
          eventGroup = EventType.EVENT_GROUP_DATABASE;
       }
 
@@ -75,30 +61,35 @@ public class DatabaseEventTypeStrategy implements EventTypeStrategy
 
 
    /**
-    *  Gets the eventType attribute of the EventTypeStrategyImpl object
+    * Gets the eventType attribute of the EventTypeStrategyImpl object
     *
-    * @param  eventString Description of the Parameter
-    * @return  The eventType value
+    * @param eventString Description of the Parameter
+    *
+    * @return The eventType value
     */
-   public String getEventType(String eventString)
-   {
+   public String getEventType(String eventString) {
       String eventType = String.valueOf(EventType.EVENT_UNDEFINED);
 
-      if (eventString.startsWith("ac_insert_"))
-      {
+      if (eventString.startsWith("ac_insert_")) {
          eventType = EventType.EVENT_DATABASE_INSERT;
-      }
-      else if (eventString.startsWith("ac_update_")
-               || eventString.startsWith("ac_updatear_"))
-      {
+      } else if (eventString.startsWith("ac_update_")
+                       || eventString.startsWith("ac_updatear_")) {
          eventType = EventType.EVENT_DATABASE_UPDATE;
-      }
-      else if (eventString.startsWith("ac_delete_")
-               || eventString.startsWith("ac_deletear_"))
-      {
+      } else if (eventString.startsWith("ac_delete_")
+                       || eventString.startsWith("ac_deletear_")) {
          eventType = EventType.EVENT_DATABASE_DELETE;
       }
 
       return eventType;
+   }
+
+
+   /**
+    * Gets the EventTypeStrategy identifier.
+    *
+    * @return the EventTypeStrategy identifier
+    */
+   public String getId() {
+      return "DatabaseEventTypeStrategy";
    }
 }

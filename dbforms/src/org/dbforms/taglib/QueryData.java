@@ -22,90 +22,112 @@
  */
 package org.dbforms.taglib;
 
-import java.util.List;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.dbforms.config.ResultSetVector;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import org.dbforms.config.ResultSetVector;
+import java.util.List;
 
-import org.apache.log4j.Category;
 
-/****
+
+/**
+ * external data to be nested into radio, checkbox or select - tag! (useful
+ * only in conjunction with radio, checkbox or select - tag)
  *
- * external data to be nested into radio, checkbox or select - tag!
- * (useful only in conjunction with radio, checkbox or select - tag)
+ * <p>
+ * this tag provides data to radio, checkbox or select - tags. it may be used
+ * for cross-references to other tables.
+ * </p>
  *
- * <tagclass>org.dbforms.taglib.QueryData</tagclass>
- * <bodycontent>empty</bodycontent>
+ * <p>
+ * this tag provides similar functionlaity to "TabData", but as it allows to
+ * formulate free querys including all SQL statements your RDBMS supports you
+ * have much more flexibility using this tag.
+ * </p>
  *
+ * <p>
+ * query building convention: first column is the "key" column for the
+ * radio/check/select elements, all other colums are just "data" columns
+ * visible to the user  example: SELECT DISTINCT customer.id, customer.name,
+ * customer.adress, debitors.debit FROM customer INNER JOIN id ON  (SELECT id
+ * FROM debitors WHERE debit>100000) ORDER BY debit DESC
+ * </p>
+ * - "id" will be threaten as key-value in select box, "name and address will
+ * be shown in select box
  *
- * <p>this tag provides data to radio, checkbox or select - tags. it may be used for
- * cross-references to other tables.</p>
- *
- * <p>this tag provides similar functionlaity to "TabData", but as it allows to
- * formulate free querys including all SQL statements your RDBMS supports you have much
- * more flexibility using this tag.</p>
- *
- * <p>query building convention: first column is the "key" column for the radio/check/select
- * elements, all other colums are just "data" columns visible to the user
- * <br/>example: SELECT DISTINCT customer.id, customer.name, customer.adress, debitors.debit FROM customer INNER JOIN id ON  (SELECT id FROM debitors WHERE debit>100000) ORDER BY debit DESC</p>
- * - "id" will be threaten as key-value in select box, "name and address will be shown in select box
- *
- *
- * @author Joachim Peer <j.peer@gmx.net>
+ * @author Joachim Peer
  */
-public class QueryData extends EmbeddedData implements javax.servlet.jsp.tagext.TryCatchFinally {
-	private static Category logCat = Category.getInstance(QueryData.class.getName());
+public class QueryData extends EmbeddedData
+   implements javax.servlet.jsp.tagext.TryCatchFinally {
+   private static Log logCat = LogFactory.getLog(QueryData.class.getName());
 
-	// logging category for this class
-	private String query;
+   // logging category for this class
+   private String query;
 
-	public void doFinally() {
-		query = null;
-		super.doFinally();
-	}
+   /**
+    * DOCUMENT ME!
+    *
+    * @param query DOCUMENT ME!
+    */
+   public void setQuery(String query) {
+      this.query = query;
+   }
 
-	/**
-	 * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
-	 */
-	public void doCatch(Throwable t) throws Throwable {
-		throw t;
-	}
 
-	/**
-	 * DOCUMENT ME!
-	 *
-	 * @param query DOCUMENT ME!
-	 */
-	public void setQuery(String query) {
-		this.query = query;
-	}
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String getQuery() {
+      return query;
+   }
 
-	/**
-	 * DOCUMENT ME!
-	 *
-	 * @return DOCUMENT ME!
-	 */
-	public String getQuery() {
-		return query;
-	}
 
-	/**
-	 * returns Hashtable with data. Its keys represent the "value"-fields for the DataContainer-Tag, its values
-	 * represent the visible fields for the Multitags.
-	 * (DataContainer are: select, radio, checkbox and a special flavour of Label).
-	 */
-	protected List fetchData(Connection con) throws SQLException {
-		logCat.info("about to execute user defined query:" + query);
-		ResultSetVector rsv = null;
-		PreparedStatement ps = con.prepareStatement(query);
-		try {
-			rsv = new ResultSetVector(getEscaper(), ps.executeQuery());
-		} finally {
-			ps.close(); // #JP Jun 27, 2001
-		}
-		return formatEmbeddedResultRows(rsv);
-	}
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable {
+      throw t;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    */
+   public void doFinally() {
+      query = null;
+      super.doFinally();
+   }
+
+
+   /**
+    * returns Hashtable with data. Its keys represent the "value"-fields for
+    * the DataContainer-Tag, its values represent the visible fields for the
+    * Multitags. (DataContainer are: select, radio, checkbox and a special
+    * flavour of Label).
+    *
+    * @param con DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   protected List fetchData(Connection con) throws SQLException {
+      logCat.info("about to execute user defined query:" + query);
+
+      ResultSetVector   rsv = null;
+      PreparedStatement ps = con.prepareStatement(query);
+
+      try {
+         rsv = new ResultSetVector(getEscaper(), ps.executeQuery());
+      } finally {
+         ps.close(); // #JP Jun 27, 2001
+      }
+
+      return formatEmbeddedResultRows(rsv);
+   }
 }

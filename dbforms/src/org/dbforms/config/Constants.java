@@ -20,35 +20,48 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.config;
 
+
 /**
- *
  * New class to hold all the different constant values spread around dbForms!
  *
  * @author hkk
  */
 public interface Constants {
+   /** DOCUMENT ME! */
    public static final int DATE_STYLE_DEFAULT = java.text.DateFormat.MEDIUM;
+
+   /** DOCUMENT ME! */
    public static final int TIME_STYLE_DEFAULT = java.text.DateFormat.SHORT;
-   
+
+   /** DOCUMENT ME! */
    public static final String FIELDNAME_PREFIX = "f_";
 
+   /** DOCUMENT ME! */
    public static final String FIELDNAME_OLDVALUETAG = "o";
 
+   /** DOCUMENT ME! */
    public static final String FIELDNAME_PATTERNTAG = "p";
 
    /** DOCUMENT ME! */
    public static final String FIELDNAME_INSERTPREFIX = "ins";
-   
+
+   /** DOCUMENT ME! */
    public static final String FIELDNAME_OVERRIDEFIELDTEST = "overridefieldcheck_";
 
-   public static final String FIELDNAME_SORT       = "sort_";
-   public static final String FIELDNAME_SEARCH     = "search_";
+   /** DOCUMENT ME! */
+   public static final String FIELDNAME_SORT = "sort_";
+
+   /** DOCUMENT ME! */
+   public static final String FIELDNAME_SEARCH = "search_";
+
+   /** DOCUMENT ME! */
    public static final String FIELDNAME_SEARCHALGO = "searchalgo_";
+
+   /** DOCUMENT ME! */
    public static final String FIELDNAME_SEARCHMODE = "searchmode_";
-   
+
    /** DOCUMENT ME! */
    public static final int COMPARE_NONE = 0;
 

@@ -21,40 +21,36 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.taglib;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.dbforms.util.*;
+
 import java.util.*;
+
 import javax.servlet.http.*;
 import javax.servlet.jsp.*;
 
-import org.dbforms.util.*;
-import org.apache.log4j.Category;
 
 
-
-/****
+/**
+ * this tag renders a dabase-datadriven LABEL, which is apassive element (it
+ * can't be changed by the user) - it is predestinated for use with read-only
+ * data (i.e. primary keys you don't want the user to change, etc)
  *
- * this tag renders a dabase-datadriven LABEL, which is apassive element (it can't be changed by
- * the user) - it is predestinated for use with read-only data (i.e. primary keys you don't want
- * the user to change, etc)
- *
- * @author Joachim Peer <j.peer@gmx.net>
+ * @author Joachim Peer
  */
 public class DbSortTag extends DbBaseHandlerTag
-      implements javax.servlet.jsp.tagext.TryCatchFinally
-{
-   private Category   logCat     = Category.getInstance(this.getClass().getName()); // logging category for this class
+   implements javax.servlet.jsp.tagext.TryCatchFinally {
+   private static Log logCat = LogFactory.getLog(DbSortTag.class); // logging category for this class
 
-	public void doFinally()
-	{
-		super.doFinally();
-	}
    /**
     * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
     */
-   public void doCatch(Throwable t) throws Throwable
-   {
+   public void doCatch(Throwable t) throws Throwable {
       throw t;
    }
-
 
 
    /**
@@ -65,82 +61,79 @@ public class DbSortTag extends DbBaseHandlerTag
     * @throws javax.servlet.jsp.JspException DOCUMENT ME!
     * @throws JspException DOCUMENT ME!
     */
-   public int doEndTag() throws javax.servlet.jsp.JspException
-   {
-      try
-      {
-
-         if (!getField().hasIsKeySet() && !getField().hasSortableSet())
-         {
+   public int doEndTag() throws javax.servlet.jsp.JspException {
+      try {
+         if (!getField()
+                       .hasIsKeySet() && !getField()
+                                                   .hasSortableSet()) {
             logCat.warn("you should declare " + getField().getName()
-               + " as key or as sortable in your config file, if you use it as ordering field!");
+                        + " as key or as sortable in your config file, if you use it as ordering field!");
          }
 
          HttpServletRequest request = (HttpServletRequest) pageContext
-            .getRequest();
+                                      .getRequest();
 
-         String       oldValue = ParseUtil.getParameter(request, getField().getSortFieldName());
+         String             oldValue = ParseUtil.getParameter(request,
+                                                              getField().getSortFieldName());
 
          StringBuffer tagBuf = new StringBuffer();
          tagBuf.append("<select name=\"");
          tagBuf.append(getField().getSortFieldName());
-         tagBuf.append(
-            "\" size=\"0\" onChange=\"javascript:document.dbform.submit()\" >");
+         tagBuf.append("\" size=\"0\" onChange=\"javascript:document.dbform.submit()\" >");
 
          String strAsc  = "Ascending";
          String strDesc = "Descending";
          String strNone = "None";
 
          // Internationalization			
-         if (getParentForm().hasCaptionResourceSet())
-         {
+         if (getParentForm()
+                      .hasCaptionResourceSet()) {
             Locale reqLocale = MessageResources.getLocale(request);
 
             // get message resource or if null take the default (english)
-            strAsc     = MessageResources.getMessage("dbforms.select.sort.ascending",
-                  reqLocale, "Ascending");
-            strDesc    = MessageResources.getMessage("dbforms.select.sort.descending",
-                  reqLocale, "Descending");
-            strNone    = MessageResources.getMessage("dbforms.select.sort.none",
-                  reqLocale, "None");
+            strAsc = MessageResources.getMessage("dbforms.select.sort.ascending",
+                                                 reqLocale, "Ascending");
+            strDesc = MessageResources.getMessage("dbforms.select.sort.descending",
+                                                  reqLocale, "Descending");
+            strNone = MessageResources.getMessage("dbforms.select.sort.none",
+                                                  reqLocale, "None");
          }
 
          // ---- ascending ----
          tagBuf.append("<option value=\"asc\"");
 
-         if ("asc".equalsIgnoreCase(oldValue))
-         {
+         if ("asc".equalsIgnoreCase(oldValue)) {
             tagBuf.append(" selected ");
          }
 
-         tagBuf.append(">").append(strAsc);
+         tagBuf.append(">")
+               .append(strAsc);
 
          // ---- descending ----
          tagBuf.append("<option value=\"desc\"");
 
-         if ("desc".equalsIgnoreCase(oldValue))
-         {
+         if ("desc".equalsIgnoreCase(oldValue)) {
             tagBuf.append(" selected ");
          }
 
-         tagBuf.append(">").append(strDesc);
+         tagBuf.append(">")
+               .append(strDesc);
 
          // ---- no sorting ----
          tagBuf.append("<option value=\"none\" ");
 
-         if ((oldValue == null) || "none".equals(oldValue))
-         {
+         if ((oldValue == null) || "none".equals(oldValue)) {
             tagBuf.append(" selected ");
          }
 
-         tagBuf.append(">").append(strNone);
+         tagBuf.append(">")
+               .append(strNone);
 
          tagBuf.append("</select>");
 
-         pageContext.getOut().write(tagBuf.toString());
-      }
-      catch (java.io.IOException ioe)
-      {
+         pageContext.getOut()
+                    .write(tagBuf.toString());
+      } catch (java.io.IOException ioe) {
          throw new JspException("IO Error: " + ioe.getMessage());
       }
 
@@ -148,4 +141,10 @@ public class DbSortTag extends DbBaseHandlerTag
    }
 
 
+   /**
+    * DOCUMENT ME!
+    */
+   public void doFinally() {
+      super.doFinally();
+   }
 }

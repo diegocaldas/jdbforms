@@ -21,84 +21,123 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.taglib;
+
 import javax.servlet.http.*;
 import javax.servlet.jsp.*;
+
 
 
 /**
  * #fixme docu to come
  *
- * @author  Joe Peer
- * @created  06 August 2002
+ * @author Joe Peer
+ *
  */
 public class DbBlobURLTag extends DbBaseHandlerTag
-      implements javax.servlet.jsp.tagext.TryCatchFinally
-{
+   implements javax.servlet.jsp.tagext.TryCatchFinally {
+   /** DOCUMENT ME! */
+   protected String nameField;
 
-		protected String nameField;
-	
+   /**
+    * DOCUMENT ME!
+    *
+    * @param nameField DOCUMENT ME!
+    */
+   public void setNameField(String nameField) {
+      this.nameField = nameField;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String getNameField() {
+      return nameField;
+   }
+
+
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable {
+      throw t;
+   }
+
+
    // --------------------------------------------------------- Public Methods
    // DbForms specific
 
    /**
-    *  Description of the Method
+    * Description of the Method
     *
-    * @return  Description of the Return Value
-    * @exception  javax.servlet.jsp.JspException Description of the Exception
+    * @return Description of the Return Value
+    *
+    * @exception javax.servlet.jsp.JspException Description of the Exception
     */
-   public int doEndTag() throws javax.servlet.jsp.JspException
-   {
-      try
-      {
+   public int doEndTag() throws javax.servlet.jsp.JspException {
+      try {
          StringBuffer tagBuf = new StringBuffer(((HttpServletRequest) pageContext
-               .getRequest()).getContextPath());
+                                                 .getRequest()).getContextPath());
 
-         tagBuf.append("/servlet/file?tf=").append(getTableFieldCode())
-               .append("&keyval=").append(getKeyVal());
-					
-				// JPEer 03/2004
-				 if(this.nameField != null) {
-					 tagBuf.append("&nf=");
-					 tagBuf.append(nameField);
-				 }							 
+         tagBuf.append("/servlet/file?tf=")
+               .append(getTableFieldCode())
+               .append("&keyval=")
+               .append(getKeyVal());
+
+         // JPEer 03/2004
+         if (this.nameField != null) {
+            tagBuf.append("&nf=");
+            tagBuf.append(nameField);
+         }
 
          // append the defaultValue parameter;
-         if (getDefaultValue() != null)
-         {
+         if (getDefaultValue() != null) {
             tagBuf.append("&defaultValue=" + getDefaultValue());
 
             //logCat.info("::doEndTag - defaultValue set to [" + defaultValue + "]");
          }
 
-         pageContext.getOut().write(tagBuf.toString());
-      }
-      catch (java.io.IOException ioe)
-      {
+         pageContext.getOut()
+                    .write(tagBuf.toString());
+      } catch (java.io.IOException ioe) {
          throw new JspException("IO Error: " + ioe.getMessage());
       }
 
       return EVAL_PAGE;
    }
 
-	 public void setNameField(String nameField) {
-		 this.nameField = nameField;
-	 }
-	 
-	 public String getNameField() {
-		 return nameField;
-	 }
-	 
-	 
+
+   /**
+    * DOCUMENT ME!
+    */
+   public void doFinally() {
+      super.doFinally();
+   }
+
+
+   /**
+    * Gets the keyVal attribute of the DbBlobURLTag object
+    *
+    * @return The keyVal value
+    */
+   protected String getKeyVal() {
+      return getParentForm()
+                .getTable()
+                .getKeyPositionString(getParentForm().getResultSetVector());
+   }
+
+
    // ------------------------------------------------------ Protected Methods
    // DbForms specific
 
    /**
-    *  Generates the decoded name.
+    * Generates the decoded name.
     *
-    * @return  The tableFieldCode value
+    * @return The tableFieldCode value
     */
-   private String getTableFieldCode()
-   {
+   private String getTableFieldCode() {
       StringBuffer buf = new StringBuffer();
 
       buf.append(getParentForm().getTable().getId());
@@ -107,31 +146,4 @@ public class DbBlobURLTag extends DbBaseHandlerTag
 
       return buf.toString();
    }
-
-
-   /**
-    *  Gets the keyVal attribute of the DbBlobURLTag object
-    *
-    * @return  The keyVal value
-    */
-   protected String getKeyVal()
-   {
-      return getParentForm().getTable().getKeyPositionString(getParentForm().getResultSetVector());
-   }
-	/**
-	 * DOCUMENT ME!
-	 */
-	public void doFinally()
-	{
-		super.doFinally();
-	}
-
-   /**
-    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
-    */
-   public void doCatch(Throwable t) throws Throwable
-   {
-      throw t;
-   }
-
 }

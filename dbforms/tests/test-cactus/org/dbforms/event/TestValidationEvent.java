@@ -81,6 +81,7 @@ public class TestValidationEvent extends JspTestCase
    public void setUp() throws Exception
    {
 
+	super.setUp();	
 		DbFormsConfigRegistry.instance().register(null);
       config.setInitParameter("dbformsConfig", "/WEB-INF/dbforms-config.xml");
       config.setInitParameter("log4j.configuration", 

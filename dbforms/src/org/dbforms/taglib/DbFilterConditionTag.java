@@ -20,83 +20,183 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.taglib;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.dbforms.config.FieldValue;
+
+import org.dbforms.util.ParseUtil;
+import org.dbforms.util.Util;
+
 import java.util.ArrayList;
 import java.util.Iterator;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.TryCatchFinally;
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Category;
-import org.dbforms.config.FieldValue;
-import org.dbforms.util.ParseUtil;
-import org.dbforms.util.Util;
 
 
 
 /**
- * Holds an sql condition that has to be nested inside a DbFilterTag.
- * A condition is specified as sql code in the body of the tag.
- * The character ? is a placeholder for user's input substitution.
- * Every char ? found in sql code is replaced with value evalutated from
- * corresponding filterValue tag nested. So there must be as ? as filterValue tags.
- * 
- * @author Sergio Moretti <s.moretti@nsi-mail.it>
- * 
+ * Holds an sql condition that has to be nested inside a DbFilterTag. A
+ * condition is specified as sql code in the body of the tag. The character ?
+ * is a placeholder for user's input substitution. Every char ? found in sql
+ * code is replaced with value evalutated from corresponding filterValue tag
+ * nested. So there must be as ? as filterValue tags.
+ *
+ * @author Sergio Moretti
  * @version $Revision$
  */
 public class DbFilterConditionTag extends TagSupportWithScriptHandler
-   implements TryCatchFinally
-{
+   implements TryCatchFinally {
+   /** DOCUMENT ME! */
+   private static Log logCat = LogFactory.getLog(DbFilterConditionTag.class);
+
+   /** object containing tag's state */
+   private State state;
+
    /**
-    * tag's state holder.
-    * Used a separate class to hold tag's state to workaround to Tag pooling, in which
-    * an tag object is reused, but we have the need to store informations about all 
-    * child tags in the parent, so we store the state, and apply it to a dummy tag when needed. 
-    * 
-    * @author Sergio Moretti
-    */
-   protected static class State
-   {
-      /**
-       * identifier of condition
-       */
-      protected int conditionId = -1;
-
-      /**
-       * raw filter condition
-       */
-      protected String filterCondition = null;
-
-      /**
-       * condition's label, appear as an option in html select element  
-       */
-      protected String label = null;
-
-      /**
-       * list of value object's state contained in this condition
-       */
-      protected ArrayList values = null;
+                                                                                        *
+                                                                                        */
+   public DbFilterConditionTag() {
+      super();
+      state = new State();
    }
 
-   /** DOCUMENT ME! */
-   protected static final Category logCat = Category.getInstance(
-                                               DbFilterConditionTag.class.getName());
+   /**
+    * DOCUMENT ME!
+    *
+    * @param string
+    */
+   public void setLabel(String string) {
+      state.label = string;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return
+    */
+   public String getLabel() {
+      return state.label;
+   }
+
+
+   /**
+    * read filterCondition from body
+    *
+    * @see javax.servlet.jsp.tagext.IterationTag#doAfterBody()
+    */
+   public int doAfterBody() throws JspException {
+      if (this.bodyContent != null) {
+         state.filterCondition = bodyContent.getString()
+                                            .trim();
+      }
+
+      return SKIP_BODY;
+   }
+
+
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable {
+      throw t;
+   }
+
+
+   /**
+    * reset tag state
+    *
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doFinally()
+    */
+   public void doFinally() {
+      state = new State();
+   }
+
+
+   /**
+    * initialize environment and process body only if this condition is the
+    * currently selected.
+    *
+    * @see javax.servlet.jsp.tagext.Tag#doStartTag()
+    */
+   public int doStartTag() throws JspException {
+      init();
+
+      String sel = ParseUtil.getParameter((HttpServletRequest) pageContext
+                                          .getRequest(),
+                                          ((DbFilterTag) getParent())
+                                          .getFilterName()
+                                          + DbFilterTag.FLT_SEL);
+
+      // process body only if this condition is active
+      if (sel != null) {
+         int selId = Integer.parseInt(sel);
+
+         if (selId == state.conditionId) {
+            return EVAL_BODY_BUFFERED;
+         }
+      }
+
+      return SKIP_BODY;
+   }
+
+
+   /**
+    * comparison using conditionId field
+    *
+    * @see java.lang.Object#equals(java.lang.Object)
+    */
+   public boolean equals(Object obj) {
+      return (obj instanceof DbFilterConditionTag)
+             && (state.conditionId == ((DbFilterConditionTag) obj).state.conditionId);
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public int hashCode() {
+      return state.conditionId;
+   }
+
+
+   /**
+    * condition prefix for request parameter
+    *
+    * @param tableId
+    * @param conditionId
+    *
+    * @return
+    */
+   protected static String getConditionName(int tableId,
+                                            int conditionId) {
+      return DbFilterTag.getFilterName(tableId) + DbFilterTag.FLT_COND
+             + conditionId;
+   }
+
 
    /**
     * generate condition from request. Called from nested DbFilterTag object
-    * 
+    *
     * @param request
     * @param tableId
     * @param conditionId
+    *
     * @return string containing sql condition code
     */
-   protected static String getSqlFilter(HttpServletRequest request, int tableId, 
-                                        int conditionId)
-   {
-      return ParseUtil.getParameter(request, 
+   protected static String getSqlFilter(HttpServletRequest request,
+                                        int                tableId,
+                                        int                conditionId) {
+      return ParseUtil.getParameter(request,
                                     DbFilterTag.getFilterName(tableId)
                                     + DbFilterTag.FLT_COND + conditionId);
    }
@@ -104,65 +204,65 @@ public class DbFilterConditionTag extends TagSupportWithScriptHandler
 
    /**
     * generate condition from request. Called from nested DbFilterTag object
-    * 
+    *
     * @param request
     * @param tableId
     * @param conditionId
+    *
     * @return string containing sql condition code
     */
-   protected static FieldValue[] getSqlFilterParams(HttpServletRequest request, 
-                                                    int tableId, 
-                                                    int conditionId)
-   {
-      return DbFilterValueTag.readValuesFromRequest(request, tableId, conditionId);
+   protected static FieldValue[] getSqlFilterParams(HttpServletRequest request,
+                                                    int                tableId,
+                                                    int                conditionId) {
+      return DbFilterValueTag.readValuesFromRequest(request, tableId,
+                                                    conditionId);
    }
 
 
    /**
     * generate condition from request. Called from nested DbFilterTag object
-    * 
+    *
     * @param request
     * @param tableId
     * @param conditionId
+    *
     * @return string containing sql condition code
-    * @deprecated code is moved into the DataSource classes so that XML data can be handled too
+    *
+    * @deprecated code is moved into the DataSource classes so that XML data
+    *             can be handled too
     */
-   protected static String generateFilterCondition(HttpServletRequest request, 
-                                                   int tableId, int conditionId)
-   {
+   protected static String generateFilterCondition(HttpServletRequest request,
+                                                   int                tableId,
+                                                   int                conditionId) {
       // read raw condition from request
       String filterCondition = getSqlFilter(request, tableId, conditionId);
 
-      if (Util.isNull(filterCondition))
-      {
+      if (Util.isNull(filterCondition)) {
          return null;
       }
 
-      int cnt = StringUtils.split(filterCondition, '?').length; 
+      int cnt = StringUtils.split(filterCondition, '?').length;
+
       // build up the list of the values of the nested filterValue's parameters 
-      FieldValue[] values = DbFilterValueTag.readValuesFromRequest(request, 
-                                                                   tableId, 
+      FieldValue[] values = DbFilterValueTag.readValuesFromRequest(request,
+                                                                   tableId,
                                                                    conditionId);
 
       logCat.debug("init parse filterCondition : " + filterCondition
                    + ", values : " + FieldValue.toString(values));
 
-      /**
-       * substitute ? with corresponding value in list 
-       */
+      /** substitute ? with corresponding value in list */
       int          p1  = 0;
       int          p2  = filterCondition.indexOf('?', p1);
       StringBuffer buf = new StringBuffer();
       cnt = 0;
 
-      while (p2 > -1)
-      {
+      while (p2 > -1) {
          // add the string before the next ?
          buf.append(filterCondition.substring(p1, p2));
 
          // if values are exausted, then abort
-         if (cnt >= values.length)
-         {
+         if (cnt >= values.length) {
             logCat.error("reference to a missing filterValue in "
                          + filterCondition);
 
@@ -172,22 +272,18 @@ public class DbFilterConditionTag extends TagSupportWithScriptHandler
          // retrieve value
          String value = values[cnt].getFieldValue();
 
-         if (value == null)
-         {
+         if (value == null) {
             value = "";
          }
 
-
          // add value to string gbuffer
          buf.append(value);
-
 
          // restart search from next char after ? 
          p1 = p2 + 1;
          p2 = filterCondition.indexOf('?', p1);
          cnt++;
       }
-
 
       // add remaining part of string
       buf.append(filterCondition.substring(p1));
@@ -199,40 +295,51 @@ public class DbFilterConditionTag extends TagSupportWithScriptHandler
 
 
    /**
-    * condition prefix for request parameter
-    * 
-    * @param tableId
-    * @param conditionId
+    * condition prefix for request parameters
+    *
     * @return
     */
-   protected static String getConditionName(int tableId, int conditionId)
-   {
-      return DbFilterTag.getFilterName(tableId) + DbFilterTag.FLT_COND
-             + conditionId;
+   protected String getConditionName() {
+      return getConditionName(((DbFilterTag) getParent()).getTableId(),
+                              state.conditionId);
    }
 
-   /**
-    * object containing tag's state
-    */
-   private State state;
 
    /**
-    * 
+    * DOCUMENT ME!
+    *
+    * @param pg DOCUMENT ME!
+    * @param parent DOCUMENT ME!
+    * @param state
     */
-   public DbFilterConditionTag()
-   {
-      super();
-      state = new State();
+   protected void setState(PageContext pg,
+                           DbFilterTag parent,
+                           State       state) {
+      setParent(parent);
+      setPageContext(pg);
+      this.state = state;
    }
 
+
    /**
-    * add a value to the value's list. called from nested DbFilterValueTag objs.
-    * 
+    * DOCUMENT ME!
+    *
+    * @return
+    */
+   protected State getState() {
+      return state;
+   }
+
+
+   /**
+    * add a value to the value's list. called from nested DbFilterValueTag
+    * objs.
+    *
     * @param value
+    *
     * @return index of the newly added object
     */
-   protected int addValue(DbFilterValueTag value)
-   {
+   protected int addValue(DbFilterValueTag value) {
       state.values.add(value.getState());
 
       return state.values.size() - 1;
@@ -240,124 +347,11 @@ public class DbFilterConditionTag extends TagSupportWithScriptHandler
 
 
    /**
-    * read filterCondition from body
-    * 
-    * @see javax.servlet.jsp.tagext.IterationTag#doAfterBody()
-    */
-   public int doAfterBody() throws JspException
-   {
-      if (this.bodyContent != null)
-      {
-         state.filterCondition = bodyContent.getString().trim();
-      }
-
-      return SKIP_BODY;
-   }
-
-
-   /**
-    * initialize environment and process body only if this condition is the currently selected.
-    * 
-    * @see javax.servlet.jsp.tagext.Tag#doStartTag()
-    */
-   public int doStartTag() throws JspException
-   {
-      init();
-
-      String sel = ParseUtil.getParameter(
-                            (HttpServletRequest) pageContext.getRequest(), 
-                            ((DbFilterTag) getParent()).getFilterName()
-                            + DbFilterTag.FLT_SEL);
-
-      // process body only if this condition is active
-      if (sel != null)
-      {
-         int selId = Integer.parseInt(sel);
-
-         if (selId == state.conditionId)
-         {
-            return EVAL_BODY_BUFFERED;
-         }
-      }
-
-      return SKIP_BODY;
-   }
-
-
-   /**
-    * comparison using conditionId field
-    * 
-    * @see java.lang.Object#equals(java.lang.Object)
-    */
-   public boolean equals(Object obj)
-   {
-      return (obj instanceof DbFilterConditionTag)
-             && (state.conditionId == ((DbFilterConditionTag) obj).state.conditionId);
-   }
-
-	public int hashCode()
-	{
- 		return state.conditionId;
-	}
-
-
-   /**
-    * condition prefix for request parameters
-    * 
-    * @return
-    */
-   protected String getConditionName()
-   {
-      return getConditionName(((DbFilterTag) getParent()).getTableId(), 
-                              state.conditionId);
-   }
-
-
-   /**
-    * @return
-    */
-   public String getLabel()
-   {
-      return state.label;
-   }
-
-
-   /**
-    * @return
-    */
-   protected State getState()
-   {
-      return state;
-   }
-
-
-   /**
-    * initialize class's attributes
-    */
-   private void init()
-   {
-      // state object is createad in constructor (for the first use) and in doEndTag next times
-      state.values = new ArrayList();
-
-
-      //state.parentFilter = (DbFilterTag) getParent();
-      state.conditionId     = ((DbFilterTag) getParent()).addCondition(this);
-      state.filterCondition = null;
-
-      if (state.label == null)
-      {
-         state.label = Integer.toString(state.conditionId);
-      }
-   }
-
-
-   /**
     * render output, called from parent DbFilterCondition obj.
-    * 
+    *
     * @return string containing html code for this obj
     */
-   protected StringBuffer render() throws JspException
-   {
+   protected StringBuffer render() throws JspException {
       StringBuffer buf = new StringBuffer();
       buf.append("<input type=\"hidden\" name=\""
                  + ((DbFilterTag) getParent()).getFilterName()
@@ -366,9 +360,8 @@ public class DbFilterConditionTag extends TagSupportWithScriptHandler
 
       DbFilterValueTag value = new DbFilterValueTag();
 
-      for (Iterator i = state.values.iterator(); i.hasNext();)
-      {
-         value.setState(this.pageContext, this, 
+      for (Iterator i = state.values.iterator(); i.hasNext();) {
+         value.setState(this.pageContext, this,
                         (DbFilterValueTag.State) i.next());
          buf.append(value.render());
       }
@@ -378,41 +371,40 @@ public class DbFilterConditionTag extends TagSupportWithScriptHandler
 
 
    /**
-    * @param string
+    * initialize class's attributes
     */
-   public void setLabel(String string)
-   {
-      state.label = string;
+   private void init() {
+      // state object is createad in constructor (for the first use) and in doEndTag next times
+      state.values = new ArrayList();
+
+      //state.parentFilter = (DbFilterTag) getParent();
+      state.conditionId     = ((DbFilterTag) getParent()).addCondition(this);
+      state.filterCondition = null;
+
+      if (state.label == null) {
+         state.label = Integer.toString(state.conditionId);
+      }
    }
 
-
    /**
-    * @param state
+    * tag's state holder. Used a separate class to hold tag's state to
+    * workaround to Tag pooling, in which an tag object is reused, but we have
+    * the need to store informations about all  child tags in the parent, so
+    * we store the state, and apply it to a dummy tag when needed.
+    *
+    * @author Sergio Moretti
     */
-   protected void setState(PageContext pg, DbFilterTag parent, State state)
-   {
-      setParent(parent);
-      setPageContext(pg);
-      this.state = state;
-   }
+   protected static class State {
+      /** list of value object's state contained in this condition */
+      protected ArrayList values = null;
 
+      /** raw filter condition */
+      protected String filterCondition = null;
 
-   /**
-    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
-    */
-   public void doCatch(Throwable t) throws Throwable
-   {
-      throw t;
-   }
+      /** condition's label, appear as an option in html select element */
+      protected String label = null;
 
-
-   /**
-    * reset tag state
-    * 
-    * @see javax.servlet.jsp.tagext.TryCatchFinally#doFinally()
-    */
-   public void doFinally()
-   {
-      state = new State();
+      /** identifier of condition */
+      protected int conditionId = -1;
    }
 }

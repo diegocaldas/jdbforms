@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.devgui;
+
 import java.io.*;
 
 
@@ -28,11 +29,10 @@ import java.io.*;
 /**
  * DOCUMENT ME!
  *
- * @version $Revision$
  * @author $author$
+ * @version $Revision$
  */
-public class FileUtility
-{
+public class FileUtility {
    /**
     * DOCUMENT ME!
     *
@@ -43,14 +43,11 @@ public class FileUtility
     *
     * @throws IOException DOCUMENT ME!
     */
-   public static String[] getFileNamesInDirectory(File dir, String[] extensions)
-   {
-      if (extensions == null)
-      {
+   public static String[] getFileNamesInDirectory(File     dir,
+                                                  String[] extensions) {
+      if (extensions == null) {
          return dir.list();
-      }
-      else
-      {
+      } else {
          return dir.list(new ExtensionFilter(extensions));
       }
    }
@@ -66,14 +63,11 @@ public class FileUtility
     *
     * @throws IOException DOCUMENT ME!
     */
-   public static File[] getFilesInDirectory(File dir, String[] extensions)
-   {
-      if (extensions == null)
-      {
+   public static File[] getFilesInDirectory(File     dir,
+                                            String[] extensions) {
+      if (extensions == null) {
          return dir.listFiles();
-      }
-      else
-      {
+      } else {
          return dir.listFiles(new ExtensionFilter(extensions));
       }
    }

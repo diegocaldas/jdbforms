@@ -22,169 +22,190 @@
  */
 package org.dbforms.taglib;
 
-import java.util.Vector;
-import java.util.List;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.dbforms.config.ResultSetVector;
+
+import org.dbforms.util.ParseUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import org.dbforms.config.ResultSetVector;
-import org.dbforms.util.ParseUtil;
+import java.util.List;
+import java.util.Vector;
 
-import org.apache.log4j.Category;
 
-/****
+
+/**
+ * external data to be nested into radio, checkbox or select - tag! (useful
+ * only in conjunction with radio, checkbox or select - tag)
  *
- * external data to be nested into radio, checkbox or select - tag!
- * (useful only in conjunction with radio, checkbox or select - tag)
+ * <p>
+ * this tag provides data to radio, checkbox or select - tags. it may be used
+ * for cross-references to other tables.
+ * </p>
  *
- * <tagclass>org.dbforms.taglib.TableData</tagclass>
- * <bodycontent>empty</bodycontent>
- *
- *
- * <p>this tag provides data to radio, checkbox or select - tags. it may be used for
- * cross-references to other tables.</p>
- *
- * @author Joachim Peer <j.peer@gmx.net>
+ * @author Joachim Peer
  */
-public class TableData extends EmbeddedData implements javax.servlet.jsp.tagext.TryCatchFinally {
-	private static Category logCat = Category.getInstance(TableData.class.getName());
+public class TableData extends EmbeddedData
+   implements javax.servlet.jsp.tagext.TryCatchFinally {
+   private static Log logCat = LogFactory.getLog(TableData.class.getName());
 
-	// logging category for this class
-	private String foreignTable;
-	private String visibleFields;
-	private String storeField;
-	private String orderBy;
+   // logging category for this class
+   private String foreignTable;
+   private String orderBy;
+   private String storeField;
+   private String visibleFields;
 
-	public void doFinally() {
-		foreignTable = null;
-		visibleFields = null;
-		storeField = null;
-		orderBy = null;
-		super.doFinally();
-	}
+   /**
+    * DOCUMENT ME!
+    *
+    * @param foreignTable DOCUMENT ME!
+    */
+   public void setForeignTable(String foreignTable) {
+      this.foreignTable = foreignTable;
+   }
 
-	/**
-	 * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
-	 */
-	public void doCatch(Throwable t) throws Throwable {
-		throw t;
-	}
 
-	/**
-	 * DOCUMENT ME!
-	 *
-	 * @param foreignTable DOCUMENT ME!
-	 */
-	public void setForeignTable(String foreignTable) {
-		this.foreignTable = foreignTable;
-	}
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String getForeignTable() {
+      return foreignTable;
+   }
 
-	/**
-	 * DOCUMENT ME!
-	 *
-	 * @return DOCUMENT ME!
-	 */
-	public String getForeignTable() {
-		return foreignTable;
-	}
 
-	/**
-	 * DOCUMENT ME!
-	 *
-	 * @param visibleFields DOCUMENT ME!
-	 */
-	public void setVisibleFields(String visibleFields) {
-		this.visibleFields = visibleFields;
-	}
+   /**
+    * DOCUMENT ME!
+    *
+    * @param orderBy DOCUMENT ME!
+    */
+   public void setOrderBy(String orderBy) {
+      this.orderBy = orderBy;
+      logCat.info("setOrderBy(\"" + orderBy + "\")");
+   }
 
-	/**
-	 * DOCUMENT ME!
-	 *
-	 * @return DOCUMENT ME!
-	 */
-	public String getVisibleFields() {
-		return visibleFields;
-	}
 
-	/**
-	 * DOCUMENT ME!
-	 *
-	 * @param storeField DOCUMENT ME!
-	 */
-	public void setStoreField(String storeField) {
-		this.storeField = storeField;
-	}
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String getOrderBy() {
+      return orderBy;
+   }
 
-	/**
-	 * DOCUMENT ME!
-	 *
-	 * @return DOCUMENT ME!
-	 */
-	public String getStoreField() {
-		return storeField;
-	}
 
-	/**
-	 * DOCUMENT ME!
-	 *
-	 * @param orderBy DOCUMENT ME!
-	 */
-	public void setOrderBy(String orderBy) {
-		this.orderBy = orderBy;
-		logCat.info("setOrderBy(\"" + orderBy + "\")");
-	}
+   /**
+    * DOCUMENT ME!
+    *
+    * @param storeField DOCUMENT ME!
+    */
+   public void setStoreField(String storeField) {
+      this.storeField = storeField;
+   }
 
-	/**
-	 * DOCUMENT ME!
-	 *
-	 * @return DOCUMENT ME!
-	 */
-	public String getOrderBy() {
-		return orderBy;
-	}
 
-	/**
-	returns Hashtable with data. Its keys represent the "value"-fields for the DataContainer-Tag, its values
-	represent the visible fields for the Multitags.
-	(DataContainer are: select, radio, checkbox and a special flavour of Label).
-	*/
-	protected List fetchData(Connection con) throws SQLException {
-		Vector vf = ParseUtil.splitString(visibleFields, ",;~");
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String getStoreField() {
+      return storeField;
+   }
 
-		StringBuffer queryBuf = new StringBuffer();
 
-		queryBuf.append("SELECT ");
-		queryBuf.append(storeField);
-		queryBuf.append(", ");
+   /**
+    * DOCUMENT ME!
+    *
+    * @param visibleFields DOCUMENT ME!
+    */
+   public void setVisibleFields(String visibleFields) {
+      this.visibleFields = visibleFields;
+   }
 
-		for (int i = 0; i < vf.size(); i++) {
-			queryBuf.append((String) vf.elementAt(i));
 
-			if (i < (vf.size() - 1)) {
-				queryBuf.append(", ");
-			}
-		}
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String getVisibleFields() {
+      return visibleFields;
+   }
 
-		queryBuf.append(" FROM ");
-		queryBuf.append(foreignTable);
 
-		if (orderBy != null) {
-			queryBuf.append(" ORDER BY ");
-			queryBuf.append(orderBy);
-		}
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable {
+      throw t;
+   }
 
-		logCat.info("about to execute:" + queryBuf.toString());
 
-		PreparedStatement ps = con.prepareStatement(queryBuf.toString());
-		ResultSetVector rsv = null;
-		try {
-			rsv = new ResultSetVector(getEscaper(), ps.executeQuery());
-		} finally {
-			ps.close(); // #JP Jun 27, 2001
-		}
+   /**
+    * DOCUMENT ME!
+    */
+   public void doFinally() {
+      foreignTable  = null;
+      visibleFields = null;
+      storeField    = null;
+      orderBy       = null;
+      super.doFinally();
+   }
 
-		return formatEmbeddedResultRows(rsv);
-	}
+
+   /**
+    * returns Hashtable with data. Its keys represent the "value"-fields for
+    * the DataContainer-Tag, its values     represent the visible fields for
+    * the Multitags.     (DataContainer are: select, radio, checkbox and a
+    * special flavour of Label).
+    *
+    * @param con DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   protected List fetchData(Connection con) throws SQLException {
+      Vector       vf = ParseUtil.splitString(visibleFields, ",;~");
+
+      StringBuffer queryBuf = new StringBuffer();
+
+      queryBuf.append("SELECT ");
+      queryBuf.append(storeField);
+      queryBuf.append(", ");
+
+      for (int i = 0; i < vf.size(); i++) {
+         queryBuf.append((String) vf.elementAt(i));
+
+         if (i < (vf.size() - 1)) {
+            queryBuf.append(", ");
+         }
+      }
+
+      queryBuf.append(" FROM ");
+      queryBuf.append(foreignTable);
+
+      if (orderBy != null) {
+         queryBuf.append(" ORDER BY ");
+         queryBuf.append(orderBy);
+      }
+
+      logCat.info("about to execute:" + queryBuf.toString());
+
+      PreparedStatement ps  = con.prepareStatement(queryBuf.toString());
+      ResultSetVector   rsv = null;
+
+      try {
+         rsv = new ResultSetVector(getEscaper(), ps.executeQuery());
+      } finally {
+         ps.close(); // #JP Jun 27, 2001
+      }
+
+      return formatEmbeddedResultRows(rsv);
+   }
 }

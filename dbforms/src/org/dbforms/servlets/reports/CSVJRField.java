@@ -20,72 +20,85 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.servlets.reports;
 
 import dori.jasper.engine.JRField;
 
+
+
 /**
- * @author Neal Katz
+ * DOCUMENT ME!
  *
+ * @author Neal Katz
  */
 public class CSVJRField implements JRField {
-	private Class valueClass;
-	String name = null;
-	String description = null;
+   String        description = null;
+   String        name       = null;
+   private Class valueClass;
 
-	/**
-	 * @param n
-	 * @param d
-	 */
-	public CSVJRField(String n, String d) {
-		this(n, d, String.class);
-	}
-	
-	/**
-	 * @param n
-	 * @param d
-	 * @param c
-	 */
-	CSVJRField(String n, String d, Class c) {
-		name = n;
-		description = d;
-		valueClass = c;
-	}
+   /**
+    * DOCUMENT ME!
+    *
+    * @param n
+    * @param d
+    */
+   public CSVJRField(String n,
+                     String d) {
+      this(n, d, String.class);
+   }
 
-	/* (non-Javadoc)
-	 * @see dori.jasper.engine.JRField#getName()
-	 */
-	public String getName() {
-		return name;
-	}
 
-	/* (non-Javadoc)
-	 * @see dori.jasper.engine.JRField#getDescription()
-	 */
-	public String getDescription() {
-		return description;
-	}
+   /**
+    * DOCUMENT ME!
+    *
+    * @param n
+    * @param d
+    * @param c
+    */
+   CSVJRField(String n,
+              String d,
+              Class  c) {
+      name        = n;
+      description = d;
+      valueClass  = c;
+   }
 
-	/* (non-Javadoc)
-	 * @see dori.jasper.engine.JRField#setDescription(java.lang.String)
-	 */
-	public void setDescription(String arg0) {
-		description = arg0;
-	}
+   /* (non-Javadoc)
+    * @see dori.jasper.engine.JRField#setDescription(java.lang.String)
+    */
+   public void setDescription(String arg0) {
+      description = arg0;
+   }
 
-	/* (non-Javadoc)
-	 * @see dori.jasper.engine.JRField#getValueClass()
-	 */
-	public Class getValueClass() {
-		return valueClass;
-	}
 
-	/* (non-Javadoc)
-	 * @see dori.jasper.engine.JRField#getValueClassName()
-	 */
-	public String getValueClassName() {
-		return valueClass.getName();
-	}
+   /* (non-Javadoc)
+    * @see dori.jasper.engine.JRField#getDescription()
+    */
+   public String getDescription() {
+      return description;
+   }
 
+
+   /* (non-Javadoc)
+    * @see dori.jasper.engine.JRField#getName()
+    */
+   public String getName() {
+      return name;
+   }
+
+
+   /* (non-Javadoc)
+    * @see dori.jasper.engine.JRField#getValueClass()
+    */
+   public Class getValueClass() {
+      return valueClass;
+   }
+
+
+   /* (non-Javadoc)
+    * @see dori.jasper.engine.JRField#getValueClassName()
+    */
+   public String getValueClassName() {
+      return valueClass.getName();
+   }
 }

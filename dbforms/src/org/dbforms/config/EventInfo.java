@@ -22,152 +22,147 @@
  */
 package org.dbforms.config;
 
-import java.util.Properties;
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.dbforms.util.Util;
+
+import java.util.Properties;
 
 
 
 /**
- *  Event information class
+ * Event information class
  *
- * @author  Luca Fossato
- * @created  20 novembre 2002
+ * @author Luca Fossato
+ *
  */
-public class EventInfo
-{
+public class EventInfo {
    /** logging category */
-   private Category logCat = Category.getInstance(this.getClass().getName());
-   private String            id         = null;
-   private String            className  = null;
-   private String            type       = null;
-   private Properties        properties = null;
+   private Log        logCat     = LogFactory.getLog(this.getClass().getName());
+   private Properties properties = null;
+   private String     className  = null;
+   private String     id         = null;
+   private String     type       = null;
 
    /**
-    *   Default constructor.
+    * Default constructor.
     */
-   public EventInfo()
-   {
+   public EventInfo() {
       properties = new Properties();
    }
 
 
    /**
-    *  Constructor.
+    * Constructor.
     *
-    * @param  type the event type
-    * @param  className the full qualified bname of the event class
+    * @param type the event type
+    * @param className the full qualified bname of the event class
     */
-   public EventInfo(String type, String className)
-   {
+   public EventInfo(String type,
+                    String className) {
       this();
-      this.type         = type;
-      this.className    = className;
+      this.type      = type;
+      this.className = className;
    }
 
    /**
-    *  Gets the id attribute of the EventInfo object
+    * Sets the className attribute of the EventInfo object
     *
-    * @return  The id value
+    * @param className The new className value
     */
-   public String getId()
-   {
-      //return id;
-      return (!Util.isNull(id)) ? id : type;
-   }
-
-
-   /**
-    *  Gets the type attribute of the EventInfo object
-    *
-    * @return  The type value
-    */
-   public String getType()
-   {
-      return type;
-   }
-
-
-   /**
-    *  Gets the className attribute of the EventInfo object
-    *
-    * @return  The className value
-    */
-   public String getClassName()
-   {
-      return className;
-   }
-
-
-   /**
-    *  Sets the id attribute of the EventInfo object
-    *
-    * @param  id The new id value
-    */
-   public void setId(String id)
-   {
-      this.id = id;
-   }
-
-
-   /**
-    *  Sets the type attribute of the EventInfo object
-    *
-    * @param  type The new type value
-    */
-   public void setType(String type)
-   {
-      this.type = type;
-   }
-
-
-   /**
-    *  Sets the className attribute of the EventInfo object
-    *
-    * @param  className The new className value
-    */
-   public void setClassName(String className)
-   {
+   public void setClassName(String className) {
       this.className = className;
    }
 
 
    /**
-    *  Adds a new property to this EventInfo object.
+    * Gets the className attribute of the EventInfo object
     *
-    * @param  property The feature to be added to the Property attribute
+    * @return The className value
     */
-   public void addProperty(DbConnectionProperty property)
-   {
-      String name  = property.getName();
-      String value = property.getValue();
-      properties.put(name, value);
-      logCat.info("::addProperty - added the property [" + name + ", " + value
-         + "] to event [" + getId() + "]");
+   public String getClassName() {
+      return className;
    }
 
 
    /**
-    *  Gets the properties attribute of the EventInfo object
+    * Sets the id attribute of the EventInfo object
     *
-    * @return  The properties value
+    * @param id The new id value
     */
-   public Properties getProperties()
-   {
+   public void setId(String id) {
+      this.id = id;
+   }
+
+
+   /**
+    * Gets the id attribute of the EventInfo object
+    *
+    * @return The id value
+    */
+   public String getId() {
+      //return id;
+      return (!Util.isNull(id)) ? id
+                                : type;
+   }
+
+
+   /**
+    * Gets the properties attribute of the EventInfo object
+    *
+    * @return The properties value
+    */
+   public Properties getProperties() {
       return properties;
    }
 
 
    /**
-    *  Return the String representation of this object.
+    * Sets the type attribute of the EventInfo object
     *
-    * @return  the String representation of this object
+    * @param type The new type value
     */
-   public String toString()
-   {
-      return new StringBuffer("event: id = ").append(getId()).append("; type = ")
+   public void setType(String type) {
+      this.type = type;
+   }
+
+
+   /**
+    * Gets the type attribute of the EventInfo object
+    *
+    * @return The type value
+    */
+   public String getType() {
+      return type;
+   }
+
+
+   /**
+    * Adds a new property to this EventInfo object.
+    *
+    * @param property The feature to be added to the Property attribute
+    */
+   public void addProperty(DbConnectionProperty property) {
+      String name  = property.getName();
+      String value = property.getValue();
+      properties.put(name, value);
+      logCat.info("::addProperty - added the property [" + name + ", " + value
+                  + "] to event [" + getId() + "]");
+   }
+
+
+   /**
+    * Return the String representation of this object.
+    *
+    * @return the String representation of this object
+    */
+   public String toString() {
+      return new StringBuffer("event: id = ").append(getId())
+                                             .append("; type = ")
                                              .append(type)
                                              .append("; className = ")
-                                             .append(className).toString();
+                                             .append(className)
+                                             .toString();
    }
 }

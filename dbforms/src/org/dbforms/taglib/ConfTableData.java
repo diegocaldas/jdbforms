@@ -22,46 +22,67 @@
  */
 package org.dbforms.taglib;
 
-import java.util.List;
+import org.dbforms.config.DbFormsConfig;
+import org.dbforms.config.DbFormsConfigRegistry;
+import org.dbforms.config.FieldValue;
+import org.dbforms.config.ResultSetVector;
+import org.dbforms.config.Table;
+
+import org.dbforms.event.datalist.dao.DataSourceFactory;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import org.dbforms.config.FieldValue;
-import org.dbforms.config.ResultSetVector;
-import org.dbforms.config.Table;
-import org.dbforms.config.DbFormsConfig;
-import org.dbforms.config.DbFormsConfigRegistry;
+import java.util.List;
 
-import org.dbforms.event.datalist.dao.DataSourceFactory;
 
-/****
+
+/**
+ * external data to be nested into radio, checkbox or select - tag! (useful
+ * only in conjunction with radio, checkbox or select - tag)
  *
- * external data to be nested into radio, checkbox or select - tag!
- * (useful only in conjunction with radio, checkbox or select - tag)
- *
- * <tagclass>org.dbforms.taglib.ConfTableData</tagclass>
- * <bodycontent>empty</bodycontent>
- *
- *
- * <p>this tag provides data to radio, checkbox or select - tags. it may be used for
- * cross-references to other tables.</p>
+ * <p>
+ * this tag provides data to radio, checkbox or select - tags. it may be used
+ * for cross-references to other tables.
+ * </p>
  *
  * <p>
  * this tag provides similar functionality to "TabData", but as it allows to
- * use the table data given in the conf file and use a filter clause like in dbform tag
+ * use the table data given in the conf file and use a filter clause like in
+ * dbform tag
  * </p>
  *
  * @author Henner Kollmann
  */
-public class ConfTableData extends EmbeddedData implements javax.servlet.jsp.tagext.TryCatchFinally {
+public class ConfTableData extends EmbeddedData
+   implements javax.servlet.jsp.tagext.TryCatchFinally {
+   private String filter;
 
    // logging category for this class
    private String foreignTable;
-   private String visibleFields;
-   private String storeField;
-   private String filter;
    private String orderBy;
+   private String storeField;
+   private String visibleFields;
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param string
+    */
+   public void setFilter(String string) {
+      filter = string;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return the filter
+    */
+   public String getFilter() {
+      return filter;
+   }
+
 
    /**
     * DOCUMENT ME!
@@ -72,6 +93,7 @@ public class ConfTableData extends EmbeddedData implements javax.servlet.jsp.tag
       this.foreignTable = foreignTable;
    }
 
+
    /**
     * DOCUMENT ME!
     *
@@ -81,41 +103,6 @@ public class ConfTableData extends EmbeddedData implements javax.servlet.jsp.tag
       return foreignTable;
    }
 
-   /**
-    * DOCUMENT ME!
-    *
-    * @param visibleFields DOCUMENT ME!
-    */
-   public void setVisibleFields(String visibleFields) {
-      this.visibleFields = visibleFields;
-   }
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    */
-   public String getVisibleFields() {
-      return visibleFields;
-   }
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param storeField DOCUMENT ME!
-    */
-   public void setStoreField(String storeField) {
-      this.storeField = storeField;
-   }
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    */
-   public String getStoreField() {
-      return storeField;
-   }
 
    /**
     * DOCUMENT ME!
@@ -126,6 +113,7 @@ public class ConfTableData extends EmbeddedData implements javax.servlet.jsp.tag
       this.orderBy = orderBy;
    }
 
+
    /**
     * DOCUMENT ME!
     *
@@ -135,41 +123,46 @@ public class ConfTableData extends EmbeddedData implements javax.servlet.jsp.tag
       return orderBy;
    }
 
+
    /**
-    * @return the filter
+    * DOCUMENT ME!
+    *
+    * @param storeField DOCUMENT ME!
     */
-   public String getFilter() {
-      return filter;
+   public void setStoreField(String storeField) {
+      this.storeField = storeField;
    }
 
+
    /**
-    * @param string
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
     */
-   public void setFilter(String string) {
-      filter = string;
+   public String getStoreField() {
+      return storeField;
    }
+
 
    /**
-   returns Hashtable with data. Its keys represent the "value"-fields for the DataContainer-Tag, its values
-   represent the visible fields for the Multitags.
-   (DataContainer are: select, radio, checkbox and a special flavour of Label).
-   */
-   protected List fetchData(Connection con) throws SQLException {
-      try {
-         DbFormsConfig config = DbFormsConfigRegistry.instance().lookup();
-         Table table = config.getTableByName(getForeignTable());
-         FieldValue[] orderConstraint = table.createOrderFieldValues(getOrderBy(), null, false);
-         FieldValue[] childFieldValues = table.getFilterFieldArray(getFilter(), getParentForm().getLocale());
-         DataSourceFactory qry = new DataSourceFactory(null, con, table);
-         qry.setSelect(childFieldValues, orderConstraint, null, null);
-         ResultSetVector rsv = qry.getCurrent(null, 0);
-         qry.close();
-         return formatEmbeddedResultRows(rsv);
-      } catch (Exception e) {
-         throw new SQLException(e.getMessage());
-      }
-
+    * DOCUMENT ME!
+    *
+    * @param visibleFields DOCUMENT ME!
+    */
+   public void setVisibleFields(String visibleFields) {
+      this.visibleFields = visibleFields;
    }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String getVisibleFields() {
+      return visibleFields;
+   }
+
 
    /**
     * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
@@ -178,4 +171,36 @@ public class ConfTableData extends EmbeddedData implements javax.servlet.jsp.tag
       throw t;
    }
 
+
+   /**
+    * returns Hashtable with data. Its keys represent the "value"-fields for
+    * the DataContainer-Tag, its values represent the visible fields for the
+    * Multitags. (DataContainer are: select, radio, checkbox and a special
+    * flavour of Label).
+    *
+    * @param con DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   protected List fetchData(Connection con) throws SQLException {
+      try {
+         DbFormsConfig config = DbFormsConfigRegistry.instance()
+                                                     .lookup();
+         Table         table           = config.getTableByName(getForeignTable());
+         FieldValue[]  orderConstraint = table.createOrderFieldValues(getOrderBy(),
+                                                                      null,
+                                                                      false);
+         FieldValue[]      childFieldValues = table.getFilterFieldArray(getFilter(),
+                                                                        getParentForm().getLocale());
+         DataSourceFactory qry = new DataSourceFactory(null, con, table);
+         qry.setSelect(childFieldValues, orderConstraint, null, null);
+
+         ResultSetVector rsv = qry.getCurrent(null, 0);
+         qry.close();
+
+         return formatEmbeddedResultRows(rsv);
+      } catch (Exception e) {
+         throw new SQLException(e.getMessage());
+      }
+   }
 }

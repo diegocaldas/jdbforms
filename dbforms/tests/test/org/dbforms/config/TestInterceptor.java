@@ -20,8 +20,8 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.config;
+
 import org.dbforms.util.AbstractTestCase;
 
 
@@ -32,17 +32,16 @@ import org.dbforms.util.AbstractTestCase;
  * @author     epugh
  * @created    May 3, 2002
  */
-public class TestInterceptor extends AbstractTestCase
-{
-    /**
-     * DOCUMENT ME!
-     *
-     * @throws Exception DOCUMENT ME!
-     */
-    public void testGetSetClassName() throws Exception
-    {
-        Interceptor i = new Interceptor();
-        i.setClassName("java.util.List");
-        assertTrue("Class name should be java.util.List", i.getClassName().equals("java.util.List"));
-    }
+public class TestInterceptor extends AbstractTestCase {
+   /**
+    * DOCUMENT ME!
+    *
+    * @throws Exception DOCUMENT ME!
+    */
+   public void testGetSetClassName() throws Exception {
+      Interceptor i = new Interceptor();
+      i.setClassName("java.util.List");
+      assertTrue("Class name should be java.util.List",
+                 i.getClassName().equals("java.util.List"));
+   }
 }

@@ -34,6 +34,7 @@ public class BookstoreInsertDataInterceptor extends DbEventInterceptorSupport {
             ResultSet rs = stmt.executeQuery(qry);
             rs.next();
             new_id = rs.getLong(1);
+            stmt.close();
          } catch (SQLException e) {
             e.printStackTrace();
          }

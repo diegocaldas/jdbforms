@@ -24,14 +24,18 @@
  * the idea for this class was taken from the class ErrorsTag-class of the Apache Struts Project
  */
 package org.dbforms.taglib;
+
+import org.dbforms.util.MessageResources;
+
 import java.io.IOException;
-import java.util.Vector;
+
 import java.util.Enumeration;
+import java.util.Vector;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
-import javax.servlet.http.HttpServletRequest;
-import org.dbforms.util.MessageResources;
 
 
 
@@ -39,40 +43,58 @@ import org.dbforms.util.MessageResources;
  * Custom tag that renders error messages if an appropriate request attribute
  * has been created.
  *
- * <p>This idea for this class came from a - much more powerful - class done
- * by Craig R. McClanahan for the Apache struts framework.</p>
+ * <p>
+ * This idea for this class came from a - much more powerful - class done by
+ * Craig R. McClanahan for the Apache struts framework.
+ * </p>
  *
  * @author Joe Peer
  */
 public class ErrorsTag extends TagSupportWithScriptHandler
-			implements javax.servlet.jsp.tagext.TryCatchFinally
-{
-
+   implements javax.servlet.jsp.tagext.TryCatchFinally {
+   private String caption       = "Error:";
    private String messagePrefix;
    private String name = "errors";
-   private String caption = "Error:";
 
-	public void doFinally()
-	{
-		messagePrefix = null;
-		name  = "errors";
-		caption = "Error:";
-	}
+   /**
+    * DOCUMENT ME!
+    *
+    * @param caption DOCUMENT ME!
+    */
+   public void setCaption(String caption) {
+      this.caption = caption;
+   }
 
-	public void doCatch(Throwable t) throws Throwable
-	{
-		throw t;
-	}
 
-   
    /**
     * DOCUMENT ME!
     *
     * @return DOCUMENT ME!
     */
-   public String getName()
-   {
-      return (this.name);
+   public String getCaption() {
+      return (this.caption);
+   }
+
+
+   /**
+    * Insert the method's description here. Creation date: (2001-05-10
+    * 12:57:08)
+    *
+    * @param newMessagePrefix java.lang.String
+    */
+   public void setMessagePrefix(java.lang.String newMessagePrefix) {
+      messagePrefix = newMessagePrefix;
+   }
+
+
+   /**
+    * Insert the method's description here. Creation date: (2001-05-10
+    * 12:57:08)
+    *
+    * @return java.lang.String
+    */
+   public java.lang.String getMessagePrefix() {
+      return messagePrefix;
    }
 
 
@@ -81,8 +103,7 @@ public class ErrorsTag extends TagSupportWithScriptHandler
     *
     * @param name DOCUMENT ME!
     */
-   public void setName(String name)
-   {
+   public void setName(String name) {
       this.name = name;
    }
 
@@ -92,20 +113,30 @@ public class ErrorsTag extends TagSupportWithScriptHandler
     *
     * @return DOCUMENT ME!
     */
-   public String getCaption()
-   {
-      return (this.caption);
+   public String getName() {
+      return (this.name);
    }
 
 
    /**
     * DOCUMENT ME!
     *
-    * @param caption DOCUMENT ME!
+    * @param t DOCUMENT ME!
+    *
+    * @throws Throwable DOCUMENT ME!
     */
-   public void setCaption(String caption)
-   {
-      this.caption = caption;
+   public void doCatch(Throwable t) throws Throwable {
+      throw t;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    */
+   public void doFinally() {
+      messagePrefix = null;
+      name          = "errors";
+      caption       = "Error:";
    }
 
 
@@ -114,15 +145,16 @@ public class ErrorsTag extends TagSupportWithScriptHandler
    /**
     * Render the specified error messages if there are any.
     *
+    * @return DOCUMENT ME!
+    *
     * @exception JspException if a JSP exception has occurred
     */
-   public int doStartTag() throws JspException
-   {
-      Vector             originalErrors = (Vector) pageContext.getAttribute(getName(),  PageContext.REQUEST_SCOPE);
+   public int doStartTag() throws JspException {
+      Vector             originalErrors = (Vector) pageContext.getAttribute(getName(),
+                                                                            PageContext.REQUEST_SCOPE);
       HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
 
-      if ((originalErrors != null) && (originalErrors.size() > 0))
-      {
+      if ((originalErrors != null) && (originalErrors.size() > 0)) {
          // Extract out only user defined text
          Vector       errors = this.extractUserDefinedErrors(originalErrors);
 
@@ -131,10 +163,11 @@ public class ErrorsTag extends TagSupportWithScriptHandler
 
          results.append("<ul>");
 
-         for (int i = 0; i < errors.size(); i++)
-         {
+         for (int i = 0; i < errors.size(); i++) {
             results.append("<li>");
-            results.append(MessageResources.getMessage(request, (String) errors.elementAt(i)));
+            results.append(MessageResources.getMessage(request,
+                                                       (String) errors
+                                                       .elementAt(i)));
             results.append("</li>");
          }
 
@@ -143,12 +176,9 @@ public class ErrorsTag extends TagSupportWithScriptHandler
          // Print the results to our output writer
          JspWriter writer = pageContext.getOut();
 
-         try
-         {
+         try {
             writer.print(results.toString());
-         }
-         catch (IOException e)
-         {
+         } catch (IOException e) {
             throw new JspException(e.toString());
          }
       }
@@ -157,14 +187,16 @@ public class ErrorsTag extends TagSupportWithScriptHandler
       return EVAL_BODY_INCLUDE;
    }
 
+
    /**
-    * philip.grunikiewicz@hydro.qc.ca
-    * 2001-05-10
+    * philip.grunikiewicz 2001-05-10 Iterate through the errors and extract
+    * only user-specified text
     *
-    * Iterate through the errors and extract only user-specified text
+    * @param errors DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
     */
-   public Vector extractUserDefinedErrors(Vector errors)
-   {
+   public Vector extractUserDefinedErrors(Vector errors) {
       Vector newErrors = new Vector();
       String message = null;
       int    index   = 0;
@@ -172,18 +204,15 @@ public class ErrorsTag extends TagSupportWithScriptHandler
       //Get user defined delimiter from messagePrefix attribute
       String delimiter = this.getMessagePrefix();
 
-      if (errors != null)
-      {
+      if (errors != null) {
          Enumeration enum = errors.elements();
 
-         while (enum.hasMoreElements())
-         {
+         while (enum.hasMoreElements()) {
             message = ((Exception) enum.nextElement()).getMessage();
 
             //Check for delimiter
             if ((delimiter != null)
-                     && ((index = message.indexOf(delimiter)) != -1))
-            {
+                      && ((index = message.indexOf(delimiter)) != -1)) {
                // Add only what is needed
                message = message.substring(index + delimiter.length());
             }
@@ -193,27 +222,5 @@ public class ErrorsTag extends TagSupportWithScriptHandler
       }
 
       return newErrors;
-   }
-
-
-   /**
-    * Insert the method's description here.
-    * Creation date: (2001-05-10 12:57:08)
-    * @return java.lang.String
-    */
-   public java.lang.String getMessagePrefix()
-   {
-      return messagePrefix;
-   }
-
-
-   /**
-    * Insert the method's description here.
-    * Creation date: (2001-05-10 12:57:08)
-    * @param newMessagePrefix java.lang.String
-    */
-   public void setMessagePrefix(java.lang.String newMessagePrefix)
-   {
-      messagePrefix = newMessagePrefix;
    }
 }

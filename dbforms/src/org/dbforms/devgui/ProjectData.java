@@ -26,30 +26,26 @@
  *  Created on 26. April 2001, 15:14
  */
 package org.dbforms.devgui;
+
 import java.io.*;
+
 import java.util.*;
 
 
 
 /**
- * @author     Joe Peer
+ * DOCUMENT ME!
  *
- * Changes:
- * - 2002-03-4: usage of default property and constant string values
- *                   via new Interface Propertynames (dikr)
- * @created    October 18, 2002
+ * @author Joe Peer Changes: - 2002-03-4: usage of default property and
+ *         constant string values via new Interface Propertynames (dikr)
+ *
  */
-public class ProjectData implements Serializable, PropertyNames
-{
-   private File              file;
-   private boolean           unsavedChanges = false;
-   private Properties        props;
+public class ProjectData implements Serializable, PropertyNames {
    private static Properties defaultProps;
 
    // contains default values for properties
    // set default property values:
-   static
-   {
+   static {
       defaultProps = new Properties();
 
       defaultProps.setProperty(INCLUDE_SCHEMANAME, FALSESTRING);
@@ -75,19 +71,23 @@ public class ProjectData implements Serializable, PropertyNames
       defaultProps.setProperty(FOREIGNKEY_DETECTION, USE_GETIMPORTEDKEYS);
    }
 
-   /** Creates new Project */
-   public ProjectData()
-   {
+   private File       file;
+   private Properties props;
+   private boolean    unsavedChanges = false;
+
+   /**
+    * Creates new Project
+    */
+   public ProjectData() {
       this.props = new Properties(defaultProps);
 
       String dbFormsHomeStr = System.getProperty("DBFORMS_HOME");
 
-      if (dbFormsHomeStr != null)
-      {
+      if (dbFormsHomeStr != null) {
          setProperty(STYLESHEET_DIR,
-            dbFormsHomeStr
-            + System.getProperties().getProperty("file.separator")
-            + "xsl-stylesheets");
+                     dbFormsHomeStr
+                     + System.getProperties().getProperty("file.separator")
+                     + "xsl-stylesheets");
       }
 
       unsavedChanges = false;
@@ -95,29 +95,26 @@ public class ProjectData implements Serializable, PropertyNames
 
 
    /**
-   *Constructor for the ProjectData object
-   *
-   * @param  props  Description of the Parameter
-   */
-   public ProjectData(Properties props)
-   {
-      this.props    = props;
+    * Constructor for the ProjectData object
+    *
+    * @param props Description of the Parameter
+    */
+   public ProjectData(Properties props) {
+      this.props = props;
 
       unsavedChanges = false;
 
       // If a user hasn't specified a STYLESHEET_DIR, then guess at one!
       String dbFormsHomeStr = props.getProperty(STYLESHEET_DIR);
 
-      if ("".equals(dbFormsHomeStr))
-      {
+      if ("".equals(dbFormsHomeStr)) {
          dbFormsHomeStr = System.getProperty("DBFORMS_HOME");
 
-         if (dbFormsHomeStr != null)
-         {
+         if (dbFormsHomeStr != null) {
             setProperty(STYLESHEET_DIR,
-               dbFormsHomeStr
-               + System.getProperties().getProperty("file.separator")
-               + "xsl-stylesheets");
+                        dbFormsHomeStr
+                        + System.getProperties().getProperty("file.separator")
+                        + "xsl-stylesheets");
 
             unsavedChanges = true;
          }
@@ -125,31 +122,36 @@ public class ProjectData implements Serializable, PropertyNames
    }
 
    /**
-   *  Gets the property attribute of the ProjectData object
-   *
-   * @param  prop  Description of the Parameter
-   * @return       The property value
-   */
-   public String getProperty(String prop)
-   {
-      return props.getProperty(prop, "");
-
-      // return default value "" instead of null if not found
+    * Sets the file attribute of the ProjectData object
+    *
+    * @param file The new file value
+    */
+   public void setFile(File file) {
+      this.file = file;
    }
 
 
    /**
-   *  Sets the property attribute of the ProjectData object
-   *
-   * @param  key    The new property value
-   * @param  value  The new property value
-   */
-   public void setProperty(String key, String value)
-   {
+    * Gets the file attribute of the ProjectData object
+    *
+    * @return The file value
+    */
+   public File getFile() {
+      return file;
+   }
+
+
+   /**
+    * Sets the property attribute of the ProjectData object
+    *
+    * @param key The new property value
+    * @param value The new property value
+    */
+   public void setProperty(String key,
+                           String value) {
       String oldValue = getProperty(key);
 
-      if (!oldValue.equals(value))
-      {
+      if (!oldValue.equals(value)) {
          props.setProperty(key, value);
 
          this.unsavedChanges = true;
@@ -160,47 +162,39 @@ public class ProjectData implements Serializable, PropertyNames
 
 
    /**
-   *  Gets the unsaved attribute of the ProjectData object
-   *
-   * @return    The unsaved value
-   */
-   public boolean isUnsaved()
-   {
+    * Gets the property attribute of the ProjectData object
+    *
+    * @param prop Description of the Parameter
+    *
+    * @return The property value
+    */
+   public String getProperty(String prop) {
+      return props.getProperty(prop, "");
+
+      // return default value "" instead of null if not found
+   }
+
+
+   /**
+    * Gets the unsaved attribute of the ProjectData object
+    *
+    * @return The unsaved value
+    */
+   public boolean isUnsaved() {
       return unsavedChanges;
    }
 
 
    /**
-   *  Sets the file attribute of the ProjectData object
-   *
-   * @param  file  The new file value
-   */
-   public void setFile(File file)
-   {
-      this.file = file;
-   }
-
-
-   /**
-   *  Gets the file attribute of the ProjectData object
-   *
-   * @return    The file value
-   */
-   public File getFile()
-   {
-      return file;
-   }
-
-
-   /**
-   *  Description of the Method
-   *
-   * @param  f                Description of the Parameter
-   * @return                  Description of the Return Value
-   * @exception  IOException  Description of the Exception
-   */
-   public static ProjectData loadFromDisc(File f) throws IOException
-   {
+    * Description of the Method
+    *
+    * @param f Description of the Parameter
+    *
+    * @return Description of the Return Value
+    *
+    * @exception IOException Description of the Exception
+    */
+   public static ProjectData loadFromDisc(File f) throws IOException {
       Properties l_props = new Properties(defaultProps);
 
       l_props.load(new FileInputStream(f));
@@ -214,42 +208,37 @@ public class ProjectData implements Serializable, PropertyNames
 
 
    /**
-   *  Description of the Method
-   *
-   * @param  f                Description of the Parameter
-   * @exception  IOException  Description of the Exception
-   */
-   public void storeToDisc(File f) throws IOException
-   {
+    * Description of the Method
+    *
+    * @param f Description of the Parameter
+    *
+    * @exception IOException Description of the Exception
+    */
+   public void storeToDisc(File f) throws IOException {
       this.props.store(new FileOutputStream(f), "DbForms DevGUI Property File");
 
-      this.file    = f;
+      this.file = f;
 
       this.unsavedChanges = false;
    }
 
 
    /**
-   *  Description of the Method
-   *
-   * @return    Description of the Return Value
-   */
-   public String toString()
-   {
+    * Description of the Method
+    *
+    * @return Description of the Return Value
+    */
+   public String toString() {
       StringBuffer buf = new StringBuffer();
 
       Enumeration  enum = props.propertyNames();
 
       boolean      first = true;
 
-      while (enum.hasMoreElements())
-      {
-         if (first)
-         {
+      while (enum.hasMoreElements()) {
+         if (first) {
             first = false;
-         }
-         else
-         {
+         } else {
             buf.append(", ");
          }
 

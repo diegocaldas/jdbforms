@@ -22,96 +22,113 @@
  */
 package org.dbforms.taglib;
 
+import org.dbforms.config.ResultSetVector;
+
+import org.dbforms.event.eventtype.EventType;
+
+import org.dbforms.util.Util;
+
 import javax.servlet.jsp.JspException;
 
-import org.dbforms.config.ResultSetVector;
-import org.dbforms.event.eventtype.EventType;
-import org.dbforms.util.Util;
 
 
 /**
- * <p>this tag renders an "copy"-button.
+ * this tag renders an "copy"-button.
  *
- * @author Stefano Borghi <s.borghi@nsi-mail.it>
- * 
+ * @author Stefano Borghi
  * @version $Revision$
- * 
  */
 public class DbNavCopyButtonTag extends DbBaseButtonTag
-      implements javax.servlet.jsp.tagext.TryCatchFinally
- {
-	
+   implements javax.servlet.jsp.tagext.TryCatchFinally {
+   /** Holds value of property showAlwaysInFooter. */
+   private String showAlwaysInFooter = "true";
 
-	/** Holds value of property showAlwaysInFooter. */
-	private String showAlwaysInFooter = "true";
+   /**
+    * DOCUMENT ME!
+    *
+    * @param string
+    */
+   public void setShowAlwaysInFooter(String string) {
+      showAlwaysInFooter = string;
+   }
 
-	public void doFinally()
-	{
-		showAlwaysInFooter = "true";
-		super.doFinally();
-	}
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return
+    */
+   public String getShowAlwaysInFooter() {
+      return showAlwaysInFooter;
+   }
+
 
    /**
     * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
     */
-   public void doCatch(Throwable t) throws Throwable
-   {
+   public void doCatch(Throwable t) throws Throwable {
       throw t;
    }
 
-	public int doStartTag() throws javax.servlet.jsp.JspException {
 
+   /**
+    * DOCUMENT ME!
+    */
+   public void doFinally() {
+      showAlwaysInFooter = "true";
+      super.doFinally();
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws javax.servlet.jsp.JspException DOCUMENT ME!
+    * @throws JspException DOCUMENT ME!
+    */
+   public int doStartTag() throws javax.servlet.jsp.JspException {
       super.doStartTag();
 
-		if (getParentForm().getFooterReached()
-					&& ResultSetVector.isNull(getParentForm().getResultSetVector())
-					&& !Util.getTrue(showAlwaysInFooter))
-		{
-			// 20030521 HKK: Bug fixing, thanks to Michael Slack! 
-			return SKIP_BODY;
-		}
+      if (getParentForm()
+                   .getFooterReached()
+                && ResultSetVector.isNull(getParentForm().getResultSetVector())
+                && !Util.getTrue(showAlwaysInFooter)) {
+         // 20030521 HKK: Bug fixing, thanks to Michael Slack! 
+         return SKIP_BODY;
+      }
 
-		try {
-			StringBuffer tagBuf = new StringBuffer();
-			String tagName = EventType.EVENT_NAVIGATION_TRANSFER_COPY + getTable().getId() + "_" + Integer.toString(getUniqueID());
-			if (getFollowUp() != null) {
-				tagBuf.append(getDataTag(tagName, "fu", getFollowUp()));
-			}
-			if (getFollowUpOnError() != null) {
-				tagBuf.append(getDataTag(tagName, "fue", getFollowUpOnError()));
-			}
-			tagBuf.append(getButtonBegin());
-			tagBuf.append(" name=\"");
-			tagBuf.append(tagName);
-			tagBuf.append(getButtonEnd());
+      try {
+         StringBuffer tagBuf  = new StringBuffer();
+         String       tagName = EventType.EVENT_NAVIGATION_TRANSFER_COPY
+                                + getTable()
+                                     .getId() + "_"
+                                + Integer.toString(getUniqueID());
 
-			pageContext.getOut().write(tagBuf.toString());
-		} catch (java.io.IOException ioe) {
-			throw new JspException("IO Error: " + ioe.getMessage());
-		}
+         if (getFollowUp() != null) {
+            tagBuf.append(getDataTag(tagName, "fu", getFollowUp()));
+         }
 
-		if (getChoosenFlavor() == FLAVOR_MODERN)
-			return EVAL_BODY_BUFFERED;
-		else
-			return SKIP_BODY;
-	}
+         if (getFollowUpOnError() != null) {
+            tagBuf.append(getDataTag(tagName, "fue", getFollowUpOnError()));
+         }
 
+         tagBuf.append(getButtonBegin());
+         tagBuf.append(" name=\"");
+         tagBuf.append(tagName);
+         tagBuf.append(getButtonEnd());
 
+         pageContext.getOut()
+                    .write(tagBuf.toString());
+      } catch (java.io.IOException ioe) {
+         throw new JspException("IO Error: " + ioe.getMessage());
+      }
 
-	/**
-	 * @return
-	 */
-	public String getShowAlwaysInFooter()
-	{
-		return showAlwaysInFooter;
-	}
-
-	/**
-	 * @param string
-	 */
-	public void setShowAlwaysInFooter(String string)
-	{
-		showAlwaysInFooter = string;
-	}
-
+      if (getChoosenFlavor() == FLAVOR_MODERN) {
+         return EVAL_BODY_BUFFERED;
+      } else {
+         return SKIP_BODY;
+      }
+   }
 }

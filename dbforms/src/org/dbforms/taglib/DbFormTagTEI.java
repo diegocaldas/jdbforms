@@ -21,127 +21,124 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.taglib;
-import javax.servlet.jsp.tagext.*;
-import org.apache.log4j.Category;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.dbforms.util.Util;
+
+import javax.servlet.jsp.tagext.*;
+
+
+
 /**
  * DOCUMENT ME!
  *
- * @version $Revision$
  * @author $author$
+ * @version $Revision$
  */
 public class DbFormTagTEI extends TagExtraInfo {
-	// logging category for this class
-	static Category logCat = Category.getInstance(DbFormTagTEI.class.getName());
+   // logging category for this class
+   static Log logCat = LogFactory.getLog(DbFormTagTEI.class.getName());
 
-	/**
-	 * DOCUMENT ME!
-	 *
-	 * @param data DOCUMENT ME!
-	 *
-	 * @return DOCUMENT ME!
-	 */
-	public VariableInfo[] getVariableInfo(TagData data) {
-		StringBuffer[] varNames =
-			{
-				new StringBuffer("currentRow"),
-				new StringBuffer("position"),
-				new StringBuffer("searchFieldNames"),
-				new StringBuffer("searchFieldModeNames"),
-				new StringBuffer("searchFieldAlgorithmNames"),
-				new StringBuffer("rsv")};
+   /**
+    * DOCUMENT ME!
+    *
+    * @param data DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public VariableInfo[] getVariableInfo(TagData data) {
+      StringBuffer[] varNames = {
+                                   new StringBuffer("currentRow"),
+                                   new StringBuffer("position"),
+                                   new StringBuffer("searchFieldNames"),
+                                   new StringBuffer("searchFieldModeNames"),
+                                   new StringBuffer("searchFieldAlgorithmNames"),
+                                   new StringBuffer("rsv")
+                                };
 
-		// convention for DbFroms TEI-provided variables: varName "_" tableName
-		// this is necessary to prevent JSP compiler errors if forms are nested
-		String table = null;
-		try {
-			table = data.getAttributeString("tableName");
-		} catch (Exception e) {
-			table = null;
-		}
-		String parentField = null;
-		try {
-			parentField = data.getAttributeString("parentField");
-		} catch (Exception e) {
-			parentField = null;
-		}
-		String childField = null;
-		try {
-			childField = data.getAttributeString("childField");
-		} catch (Exception e) {
-			childField = null;
-		}
+      // convention for DbFroms TEI-provided variables: varName "_" tableName
+      // this is necessary to prevent JSP compiler errors if forms are nested
+      String table = null;
 
-		if (table != null) {
-			for (int i = 0; i < varNames.length; i++) {
-				varNames[i].append("_");
-				varNames[i].append(table.replace('.', '_')); // # jp 27-06-2001
-			}
-		}
+      try {
+         table = data.getAttributeString("tableName");
+      } catch (Exception e) {
+         table = null;
+      }
 
-		logCat.info("*** TEI CLASS IN ACTION ***");
-		logCat.info("table=" + table);
-		logCat.info("varNames[0]=" + varNames[0].toString());
+      String parentField = null;
 
-		int count = 0;
-		if (!Util.isNull(table)) {
-			count = count + 6;
-		}
-		if (Util.isNull(parentField) && Util.isNull(childField)) {
-			count = count + 1;
-		}
-		VariableInfo[] info = null;
-		if (count > 0) {
-			info = new VariableInfo[count];
-			int i = 0;
-			if (!Util.isNull(table)) {
-				info[i++] =
-					new VariableInfo(
-						varNames[0].toString(),
-						"java.util.Map",
-						true,
-						VariableInfo.NESTED);
-				info[i++] =
-					new VariableInfo(
-						varNames[1].toString(),
-						"java.lang.String",
-						true,
-						VariableInfo.NESTED);
-				info[i++] =
-					new VariableInfo(
-						varNames[2].toString(),
-						"java.util.Map",
-						true,
-						VariableInfo.NESTED);
-				info[i++] =
-					new VariableInfo(
-						varNames[3].toString(),
-						"java.util.Map",
-						true,
-						VariableInfo.NESTED);
-				info[i++] =
-					new VariableInfo(
-						varNames[4].toString(),
-						"java.util.Map",
-						true,
-						VariableInfo.NESTED);
-				info[i++] =
-					new VariableInfo(
-						varNames[5].toString(),
-						"org.dbforms.config.ResultSetVector",
-						true,
-						VariableInfo.NESTED);
+      try {
+         parentField = data.getAttributeString("parentField");
+      } catch (Exception e) {
+         parentField = null;
+      }
 
-			}
-			if (Util.isNull(parentField) && Util.isNull(childField)) {
-				info[i++] =
-					new VariableInfo(
-						"dbforms",
-						"java.util.Map",
-						true,
-						VariableInfo.NESTED);
-			}
-		}
-		return info;
-	}
+      String childField = null;
+
+      try {
+         childField = data.getAttributeString("childField");
+      } catch (Exception e) {
+         childField = null;
+      }
+
+      if (table != null) {
+         for (int i = 0; i < varNames.length; i++) {
+            varNames[i].append("_");
+            varNames[i].append(table.replace('.', '_')); // # jp 27-06-2001
+         }
+      }
+
+      logCat.info("*** TEI CLASS IN ACTION ***");
+      logCat.info("table=" + table);
+      logCat.info("varNames[0]=" + varNames[0].toString());
+
+      int count = 0;
+
+      if (!Util.isNull(table)) {
+         count = count + 6;
+      }
+
+      if (Util.isNull(parentField) && Util.isNull(childField)) {
+         count = count + 1;
+      }
+
+      VariableInfo[] info = null;
+
+      if (count > 0) {
+         info = new VariableInfo[count];
+
+         int i = 0;
+
+         if (!Util.isNull(table)) {
+            info[i++] = new VariableInfo(varNames[0].toString(),
+                                         "java.util.Map", true,
+                                         VariableInfo.NESTED);
+            info[i++] = new VariableInfo(varNames[1].toString(),
+                                         "java.lang.String", true,
+                                         VariableInfo.NESTED);
+            info[i++] = new VariableInfo(varNames[2].toString(),
+                                         "java.util.Map", true,
+                                         VariableInfo.NESTED);
+            info[i++] = new VariableInfo(varNames[3].toString(),
+                                         "java.util.Map", true,
+                                         VariableInfo.NESTED);
+            info[i++] = new VariableInfo(varNames[4].toString(),
+                                         "java.util.Map", true,
+                                         VariableInfo.NESTED);
+            info[i++] = new VariableInfo(varNames[5].toString(),
+                                         "org.dbforms.config.ResultSetVector",
+                                         true, VariableInfo.NESTED);
+         }
+
+         if (Util.isNull(parentField) && Util.isNull(childField)) {
+            info[i++] = new VariableInfo("dbforms", "java.util.Map", true,
+                                         VariableInfo.NESTED);
+         }
+      }
+
+      return info;
+   }
 }

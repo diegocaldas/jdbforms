@@ -22,54 +22,52 @@
  */
 package org.dbforms.config;
 
+
 /**
- *
  * Adds property support to DbConnection
  *
- *
- * @author Henner Kollmann (Henner.Kollmann@gmx.de)
+ * @author Henner Kollmann
  */
-public class DbConnectionProperty
-{
+public class DbConnectionProperty {
    private String name;
    private String value;
 
    /**
-    * Returns the name.
-    * @return String
-    */
-   public String getName()
-   {
-      return name;
-   }
-
-
-   /**
-    * Returns the value.
-    * @return String
-    */
-   public String getValue()
-   {
-      return value;
-   }
-
-
-   /**
     * Sets the name.
+    *
     * @param name The name to set
     */
-   public void setName(String name)
-   {
+   public void setName(String name) {
       this.name = name;
    }
 
 
    /**
+    * Returns the name.
+    *
+    * @return String
+    */
+   public String getName() {
+      return name;
+   }
+
+
+   /**
     * Sets the value.
+    *
     * @param value The value to set
     */
-   public void setValue(String value)
-   {
+   public void setValue(String value) {
       this.value = value;
+   }
+
+
+   /**
+    * Returns the value.
+    *
+    * @return String
+    */
+   public String getValue() {
+      return value;
    }
 }

@@ -22,111 +22,120 @@
  */
 package org.dbforms.taglib;
 
+import org.dbforms.util.SqlUtil;
+
 import java.sql.Connection;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 
-import org.dbforms.util.SqlUtil;
 
-/*************************************************************
- * Grunikiewicz.philip@hydro.qc.ca
- * 2001-12-18
- *
- * Obtain a connection (from the connection pool) using same settings defined
- * in dbForms-config.xml file
- *
- * ***************************************************************/
+
+/**
+ * Grunikiewicz.philip 2001-12-18 Obtain a connection (from the connection
+ * pool) using same settings defined in dbForms-config.xml file
+ */
 public class DbGetConnection extends TagSupportWithScriptHandler
-	implements javax.servlet.jsp.tagext.TryCatchFinally {
+   implements javax.servlet.jsp.tagext.TryCatchFinally {
+   private transient Connection conn;
+   private String               dbConnectionName;
 
-	private String dbConnectionName;
-	private Connection conn;
+   /**
+    * DOCUMENT ME!
+    *
+    * @param connection
+    */
+   public void setConn(Connection connection) {
+      conn = connection;
+   }
 
-	/**
-	 * DOCUMENT ME!
-	 *
-	 * @return DOCUMENT ME!
-	 *
-	 * @throws JspException DOCUMENT ME!
-	 * @throws IllegalArgumentException DOCUMENT ME!
-	 */
-	public int doStartTag() throws JspException {
-		try {
-			// get the connection and place it in attribute;
-			this.setConn(getConfig().getConnection(dbConnectionName));
-			pageContext.setAttribute(getId(), this.getConn(), PageContext.PAGE_SCOPE);
-		} catch (Exception e) {
-			throw new JspException("Connection error" + e.getMessage());
-		}
-		return EVAL_BODY_INCLUDE;
-	}
-	
-	/**
-	  * DOCUMENT ME!
-	  *
-	  * @return DOCUMENT ME!
-	  *
-	  * @throws javax.servlet.jsp.JspException DOCUMENT ME!
-	  * @throws JspException DOCUMENT ME!
-	  */
-	 public int doEndTag() throws javax.servlet.jsp.JspException
-	 {
-		try {
-					// get the connection and place it in attribute;
-					SqlUtil.closeConnection(this.getConn());
-					this.setConn(null);
-					pageContext.removeAttribute(getId(), PageContext.PAGE_SCOPE);
-				} catch (Exception e) {
-					throw new JspException("Connection error" + e.getMessage());
-				}	 	
-		return EVAL_PAGE;
-	 }	
 
-	/**
-	* DOCUMENT ME!
-	*
-	* @param name DOCUMENT ME!
-	*/
-	public void setDbConnectionName(String name) {
-		dbConnectionName = name;
-	}
+   /**
+    * DOCUMENT ME!
+    *
+    * @return
+    */
+   public Connection getConn() {
+      return conn;
+   }
 
-	/**
-	* DOCUMENT ME!
-	*
-	* @return DOCUMENT ME!
-	*/
-	public String getDbConnectionName() {
-		return dbConnectionName;
-	}
 
-	/**
-	* DOCUMENT ME!
-	*/
-	public void doFinally() {
-		dbConnectionName = null;
-	}
+   /**
+    * DOCUMENT ME!
+    *
+    * @param name DOCUMENT ME!
+    */
+   public void setDbConnectionName(String name) {
+      dbConnectionName = name;
+   }
 
-	/**
-	 * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
-	 */
-	public void doCatch(Throwable t) throws Throwable {
-		throw t;
-	}
 
-	/**
-	 * @return
-	 */
-	public Connection getConn() {
-		return conn;
-	}
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String getDbConnectionName() {
+      return dbConnectionName;
+   }
 
-	/**
-	 * @param connection
-	 */
-	public void setConn(Connection connection) {
-		conn = connection;
-	}
 
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable {
+      throw t;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws javax.servlet.jsp.JspException DOCUMENT ME!
+    * @throws JspException DOCUMENT ME!
+    */
+   public int doEndTag() throws javax.servlet.jsp.JspException {
+      try {
+         // get the connection and place it in attribute;
+         SqlUtil.closeConnection(this.getConn());
+         this.setConn(null);
+         pageContext.removeAttribute(getId(), PageContext.PAGE_SCOPE);
+      } catch (Exception e) {
+         throw new JspException("Connection error" + e.getMessage());
+      }
+
+      return EVAL_PAGE;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    */
+   public void doFinally() {
+      dbConnectionName = null;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws JspException DOCUMENT ME!
+    * @throws IllegalArgumentException DOCUMENT ME!
+    */
+   public int doStartTag() throws JspException {
+      try {
+         // get the connection and place it in attribute;
+         this.setConn(getConfig().getConnection(dbConnectionName));
+         pageContext.setAttribute(getId(), this.getConn(),
+                                  PageContext.PAGE_SCOPE);
+      } catch (Exception e) {
+         throw new JspException("Connection error" + e.getMessage());
+      }
+
+      return EVAL_BODY_INCLUDE;
+   }
 }

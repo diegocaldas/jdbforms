@@ -23,42 +23,29 @@
 package org.dbforms.taglib;
 
 import org.dbforms.util.MessageResources;
+
 import java.util.Locale;
 import java.util.StringTokenizer;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 
 
 
-/*****
-    2002-09-23 HKK: Extented to support parameters
- ****/
+/**
+ * 2002-09-23 HKK: Extented to support parameters
+ */
 public class MessageTag extends TagSupportWithScriptHandler
- 		implements javax.servlet.jsp.tagext.TryCatchFinally
-
-{
-   private String                  key   = null;
-   private String                  param = null;
-
- 
-	public void doFinally()
-	{
-		key   = null;
-		param = null;
-	}
-
-	public void doCatch(Throwable t) throws Throwable
-	{
-		throw t;
-	}
+   implements javax.servlet.jsp.tagext.TryCatchFinally {
+   private String key   = null;
+   private String param = null;
 
    /**
     * DOCUMENT ME!
     *
     * @param newKey DOCUMENT ME!
     */
-   public void setKey(String newKey)
-   {
+   public void setKey(String newKey) {
       key = newKey;
    }
 
@@ -68,8 +55,7 @@ public class MessageTag extends TagSupportWithScriptHandler
     *
     * @return DOCUMENT ME!
     */
-   public String getKey()
-   {
+   public String getKey() {
       return key;
    }
 
@@ -79,8 +65,7 @@ public class MessageTag extends TagSupportWithScriptHandler
     *
     * @param newParam DOCUMENT ME!
     */
-   public void setParam(String newParam)
-   {
+   public void setParam(String newParam) {
       param = newParam;
    }
 
@@ -90,8 +75,7 @@ public class MessageTag extends TagSupportWithScriptHandler
     *
     * @return DOCUMENT ME!
     */
-   public String getParam()
-   {
+   public String getParam() {
       return param;
    }
 
@@ -99,13 +83,12 @@ public class MessageTag extends TagSupportWithScriptHandler
    /**
     * DOCUMENT ME!
     *
-    * @return DOCUMENT ME!
+    * @param t DOCUMENT ME!
     *
-    * @throws javax.servlet.jsp.JspException DOCUMENT ME!
+    * @throws Throwable DOCUMENT ME!
     */
-   public int doStartTag() throws javax.servlet.jsp.JspException
-   {
-      return SKIP_BODY;
+   public void doCatch(Throwable t) throws Throwable {
+      throw t;
    }
 
 
@@ -116,43 +99,35 @@ public class MessageTag extends TagSupportWithScriptHandler
     *
     * @throws JspException DOCUMENT ME!
     */
-   public int doEndTag() throws JspException
-   {
-      if (getKey() != null)
-      {
-         Locale locale  = MessageResources.getLocale((HttpServletRequest) pageContext
-               .getRequest());
+   public int doEndTag() throws JspException {
+      if (getKey() != null) {
+         Locale locale = MessageResources.getLocale((HttpServletRequest) pageContext
+                                                    .getRequest());
          String message;
 
-         if ((param == null) || (param.length() == 0))
-         {
+         if ((param == null) || (param.length() == 0)) {
             message = MessageResources.getMessage(getKey(), locale);
-         }
-         else
-         {
+         } else {
             message = MessageResources.getMessage(getKey(), locale,
-                  splitString(param, ","));
+                                                  splitString(param, ","));
          }
 
-         try
-         {
-            if (message != null)
-            {
-               pageContext.getOut().write(message);
-            }
-            else
-            {
-               pageContext.getOut().write(getKey());
+         try {
+            if (message != null) {
+               pageContext.getOut()
+                          .write(message);
+            } else {
+               pageContext.getOut()
+                          .write(getKey());
 
-               if (param != null)
-               {
-                  pageContext.getOut().write("&nbsp;");
-                  pageContext.getOut().write(param);
+               if (param != null) {
+                  pageContext.getOut()
+                             .write("&nbsp;");
+                  pageContext.getOut()
+                             .write(param);
                }
             }
-         }
-         catch (java.io.IOException ioe)
-         {
+         } catch (java.io.IOException ioe) {
             throw new JspException("IO Error: " + ioe.getMessage());
          }
       }
@@ -161,14 +136,34 @@ public class MessageTag extends TagSupportWithScriptHandler
    }
 
 
-   private String[] splitString(String str, String delimeter)
-   {
+   /**
+    * DOCUMENT ME!
+    */
+   public void doFinally() {
+      key   = null;
+      param = null;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws javax.servlet.jsp.JspException DOCUMENT ME!
+    */
+   public int doStartTag() throws javax.servlet.jsp.JspException {
+      return SKIP_BODY;
+   }
+
+
+   private String[] splitString(String str,
+                                String delimeter) {
       StringTokenizer st     = new StringTokenizer(str, delimeter);
       int             i      = 0;
       String[]        result = new String[st.countTokens()];
 
-      while (st.hasMoreTokens())
-      {
+      while (st.hasMoreTokens()) {
          result[i] = st.nextToken();
          i++;
       }

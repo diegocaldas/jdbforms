@@ -21,70 +21,82 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.taglib;
-import javax.servlet.jsp.*;
 
 import org.dbforms.config.*;
 
+import javax.servlet.jsp.*;
+
+
+
 /**
- *
  * to be embedded inside a linkURL-element, as shown in example below:
- *
- * <linkURL href="customer.jsp" table="customer" />
- *   <position fieldName="id" value="103" />
- *   <position fieldName="cust_lang" value="2" />
- * </link>
- *
+ * &lt;linkURL href="customer.jsp" table="customer" /&gt; &lt;position
+ * fieldName="id" value="103" /&gt; &lt;position fieldName="cust_lang"
+ * value="2" /&gt; &lt;/link&gt;
  */
-public class DbLinkPositionItemTag
-   extends DbBaseHandlerTag
+public class DbLinkPositionItemTag extends DbBaseHandlerTag
    implements javax.servlet.jsp.tagext.TryCatchFinally {
-
    String value;
-   /**
-    * Set up the tag with parent tag's table and link to the field.  Then add the data to the
-    * enclosing linkURL tag.
-    *
-    * @return DOCUMENT ME!
-    *
-    * @throws JspException  thrown when error occurs in processing the body of
-    *                       this method
-    */
-   public int doStartTag() throws JspException {
-      DbLinkURLTag parentTag = null;
-      try {
-         parentTag = (DbLinkURLTag) this.getParent();
-      } catch (Exception e) {
-        throw new JspException("DbLinkPositionItem-element must be placed inside a DbLinkURL-element!");
-      }
-      Table table = parentTag.getTable();
-      Field field = table.getFieldByName(getName());
-      parentTag.addPositionPart(field, getValue());
-
-      return EVAL_BODY_INCLUDE;
-   }
-   /**
-    * @return
-    */
-   public String getValue() {
-      return value;
-   }
 
    /**
+    * DOCUMENT ME!
+    *
     * @param string
     */
    public void setValue(String string) {
       value = string;
    }
 
-   public void doFinally() {
-      value = null;
-      super.doFinally();
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return
+    */
+   public String getValue() {
+      return value;
    }
+
 
    /**
     * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
     */
    public void doCatch(Throwable t) throws Throwable {
       throw t;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    */
+   public void doFinally() {
+      value = null;
+      super.doFinally();
+   }
+
+
+   /**
+    * Set up the tag with parent tag's table and link to the field.  Then add
+    * the data to the enclosing linkURL tag.
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws JspException thrown when error occurs in processing the body of
+    *         this method
+    */
+   public int doStartTag() throws JspException {
+      DbLinkURLTag parentTag = null;
+
+      try {
+         parentTag = (DbLinkURLTag) this.getParent();
+      } catch (Exception e) {
+         throw new JspException("DbLinkPositionItem-element must be placed inside a DbLinkURL-element!");
+      }
+
+      Table table = parentTag.getTable();
+      Field field = table.getFieldByName(getName());
+      parentTag.addPositionPart(field, getValue());
+
+      return EVAL_BODY_INCLUDE;
    }
 }

@@ -20,58 +20,54 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.event.eventtype;
+
 import java.util.ArrayList;
 
 
 
-//import org.apache.log4j.Category;
+//import org.apache.commons.logging.Log;\nimport org.apache.commons.logging.LogFactory; 
 
 /**
  * Abstract composite EventTypeStrategy class.
- * 
+ *
  * @author Luca Fossato
- * @created 28 novembre 2002
+ *
  */
-public abstract class CompositeEventTypeStrategy implements EventTypeStrategy
-{
+public abstract class CompositeEventTypeStrategy implements EventTypeStrategy {
    /** the list of EventTypeStrategy objects */
    protected ArrayList strategyList = new ArrayList();
 
    /**
+    * Gets the child EventTypeStrategy having the input index
+    *
+    * @param index DOCUMENT ME!
+    *
+    * @return the child EventTypeStrategy having the input index
+    */
+   public EventTypeStrategy getChild(int index) {
+      return (EventTypeStrategy) strategyList.get(index);
+   }
+
+
+   /**
     * Adds an EventTypeStrategy object to the Strategy list
-    * 
+    *
     * @param strategy the EventTypeStrategy object to add to
     */
-   public void add(EventTypeStrategy strategy)
-   {
+   public void add(EventTypeStrategy strategy) {
       strategyList.add(strategy);
    }
 
 
    /**
     * Remove an EventTypeStrategy object to the Strategy list
-    * 
+    *
     * @param strategy the EventTypeStrategy object to remove to
-    * 
+    *
     * @return true if the object had removed from the list; false otherwise
     */
-   public boolean remove(EventTypeStrategy strategy)
-   {
+   public boolean remove(EventTypeStrategy strategy) {
       return strategyList.remove(strategy);
-   }
-
-
-   /**
-    * Gets the child EventTypeStrategy having the input index
-    * 
-    * @param index DOCUMENT ME!
-    * 
-    * @return the child EventTypeStrategy having the input index
-    */
-   public EventTypeStrategy getChild(int index)
-   {
-      return (EventTypeStrategy) strategyList.get(index);
    }
 }

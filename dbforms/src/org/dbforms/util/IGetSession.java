@@ -20,22 +20,20 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 /**
  * Simple interface for Objects that can have an accessible session
- * 
- * @author Neal Katz
- *
  */
-
 package org.dbforms.util;
 
 import javax.servlet.http.HttpSession;
 
+
+
 /**
- * @author Neal Katz
+ * DOCUMENT ME!
  *
+ * @author Neal Katz
  */
 public interface IGetSession {
-	HttpSession getSession();
+   HttpSession getSession();
 }

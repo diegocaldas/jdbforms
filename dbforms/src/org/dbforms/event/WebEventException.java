@@ -22,21 +22,20 @@
  */
 package org.dbforms.event;
 
+
 /**
  * DOCUMENT ME!
  *
- * @version $Revision$
  * @author $author$
+ * @version $Revision$
  */
-public class WebEventException extends Exception
-{
+public class WebEventException extends Exception {
    /**
     * Creates a new WebEventException object.
     *
     * @param message DOCUMENT ME!
     */
-   public WebEventException(String message)
-   {
+   public WebEventException(String message) {
       super(message);
    }
 }

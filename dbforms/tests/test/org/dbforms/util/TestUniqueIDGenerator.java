@@ -20,7 +20,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.util;
 
 
@@ -30,19 +29,18 @@ package org.dbforms.util;
  * @author     epugh
  * @created    May 3, 2002
  */
-public class TestUniqueIDGenerator extends AbstractTestCase
-{
-    /**
-     * DOCUMENT ME!
-     *
-     * @throws Exception DOCUMENT ME!
-     */
-    public void testGetUniqueID() throws Exception
-    {
-        String id1 = UniqueIDGenerator.getUniqueID();
-        assertTrue("Make sure we got a unique id.", id1 != null);
+public class TestUniqueIDGenerator extends AbstractTestCase {
+   /**
+    * DOCUMENT ME!
+    *
+    * @throws Exception DOCUMENT ME!
+    */
+   public void testGetUniqueID() throws Exception {
+      String id1 = UniqueIDGenerator.getUniqueID();
+      assertTrue("Make sure we got a unique id.", id1 != null);
 
-        String id2 = UniqueIDGenerator.getUniqueID();
-        assertTrue("Make sure both id's are different.  id1:" + id1 + ", id2:" + id2, !id1.equals(id2));
-    }
+      String id2 = UniqueIDGenerator.getUniqueID();
+      assertTrue("Make sure both id's are different.  id1:" + id1 + ", id2:"
+                 + id2, !id1.equals(id2));
+   }
 }

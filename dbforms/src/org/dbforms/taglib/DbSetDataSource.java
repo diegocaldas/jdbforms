@@ -22,81 +22,99 @@
  */
 package org.dbforms.taglib;
 
-import javax.sql.DataSource;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 
-public class DbSetDataSource
-	extends DbBaseHandlerTag
-	implements javax.servlet.jsp.tagext.TryCatchFinally {
+import javax.sql.DataSource;
 
-	private String dbConnectionName;
-	private String dataSource;
 
-	/**
-	 * DOCUMENT ME!
-	 *
-	 * @return DOCUMENT ME!
-	 *
-	 * @throws JspException DOCUMENT ME!
-	 * @throws IllegalArgumentException DOCUMENT ME!
-	 */
-	public int doStartTag() throws JspException {
-		try {
-			// get the connection and place it in attribute;
-			DataSource ds = getConfig().getDataSource(dbConnectionName);
-			pageContext.setAttribute(getDataSource(), ds, PageContext.PAGE_SCOPE);
-		} catch (Exception e) {
-			throw new JspException("Database error" + e.getMessage());
-		}
-		return SKIP_BODY;
-	}
 
-	/**
-	* DOCUMENT ME!
-	*
-	* @param name DOCUMENT ME!
-	*/
-	public void setDbConnectionName(String name) {
-		dbConnectionName = name;
-	}
+/**
+ * DOCUMENT ME!
+ *
+ * @author $author$
+ * @version $Revision$
+ */
+public class DbSetDataSource extends DbBaseHandlerTag
+   implements javax.servlet.jsp.tagext.TryCatchFinally {
+   private String dataSource;
+   private String dbConnectionName;
 
-	/**
-	* DOCUMENT ME!
-	*
-	* @return DOCUMENT ME!
-	*/
-	public String getDbConnectionName() {
-		return dbConnectionName;
-	}
+   /**
+    * DOCUMENT ME!
+    *
+    * @param string
+    */
+   public void setDataSource(String string) {
+      dataSource = string;
+   }
 
-	/**
-	* DOCUMENT ME!
-	*/
-	public void doFinally() {
-		dbConnectionName = null;
-		super.doFinally();
-	}
 
-	/**
-	 * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
-	 */
-	public void doCatch(Throwable t) throws Throwable {
-		throw t;
-	}
+   /**
+    * DOCUMENT ME!
+    *
+    * @return
+    */
+   public String getDataSource() {
+      return dataSource;
+   }
 
-	/**
-	 * @return
-	 */
-	public String getDataSource() {
-		return dataSource;
-	}
 
-	/**
-	 * @param string
-	 */
-	public void setDataSource(String string) {
-		dataSource = string;
-	}
+   /**
+    * DOCUMENT ME!
+    *
+    * @param name DOCUMENT ME!
+    */
+   public void setDbConnectionName(String name) {
+      dbConnectionName = name;
+   }
 
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String getDbConnectionName() {
+      return dbConnectionName;
+   }
+
+
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable {
+      throw t;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    */
+   public void doFinally() {
+      dbConnectionName = null;
+      super.doFinally();
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws JspException DOCUMENT ME!
+    * @throws IllegalArgumentException DOCUMENT ME!
+    */
+   public int doStartTag() throws JspException {
+      try {
+         // get the connection and place it in attribute;
+         DataSource ds = getConfig()
+                            .getDataSource(dbConnectionName);
+         pageContext.setAttribute(getDataSource(), ds, PageContext.PAGE_SCOPE);
+      } catch (Exception e) {
+         throw new JspException("Database error" + e.getMessage());
+      }
+
+      return SKIP_BODY;
+   }
 }

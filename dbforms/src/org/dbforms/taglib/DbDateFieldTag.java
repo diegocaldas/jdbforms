@@ -26,43 +26,69 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 
 
-/****
+
+/**
+ * <p>
+ * This tag renders a HTML TextArea - Element
+ * </p>
+ * this tag renders a dabase-datadriven textArea, which is an active element -
+ * the user can change data
  *
- * <p>This tag renders a HTML TextArea - Element</p>
- *
- * this tag renders a dabase-datadriven textArea, which is an active element - the user
- * can change data
- *
- * @author Joachim Peer <j.peer@gmx.net>
+ * @author Joachim Peer
  */
 public class DbDateFieldTag extends DbBaseInputTag
-      implements javax.servlet.jsp.tagext.TryCatchFinally
-{
+   implements javax.servlet.jsp.tagext.TryCatchFinally {
+   /** Holds value of property jsCalendarDateFormat. */
+   private String jsCalendarDateFormat;
 
-	public void doFinally()
-	{
-		super.doFinally();
-	}
-   
+   /** Holds value of property useJsCalendar. */
+   private String useJsCalendar;
+
+   /**
+    * Setter for property jsCalendarDateFormat.
+    *
+    * @param jsCalendarDateFormat New value of property jsCalendarDateFormat.
+    */
+   public void setJsCalendarDateFormat(String jsCalendarDateFormat) {
+      this.jsCalendarDateFormat = jsCalendarDateFormat;
+   }
+
+
+   /**
+    * Getter for property jsCalendarDateFormat.
+    *
+    * @return Value of property jsCalendarDateFormat.
+    */
+   public String getJsCalendarDateFormat() {
+      return jsCalendarDateFormat;
+   }
+
+
+   /**
+    * Setter for property useJsCalendar.
+    *
+    * @param useJsCalendar New value of property useJsCalendar.
+    */
+   public void setUseJsCalendar(String useJsCalendar) {
+      this.useJsCalendar = useJsCalendar;
+   }
+
+
+   /**
+    * Getter for property useJsCalendar.
+    *
+    * @return Value of property useJsCalendar.
+    */
+   public String getUseJsCalendar() {
+      return useJsCalendar;
+   }
+
+
    /**
     * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
     */
-   public void doCatch(Throwable t) throws Throwable
-   {
+   public void doCatch(Throwable t) throws Throwable {
       throw t;
-   }
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    *
-    * @throws javax.servlet.jsp.JspException DOCUMENT ME!
-    */
-   public int doStartTag() throws JspException
-   {
-      super.doStartTag();
-      return SKIP_BODY;
    }
 
 
@@ -74,12 +100,11 @@ public class DbDateFieldTag extends DbBaseInputTag
     * @throws javax.servlet.jsp.JspException DOCUMENT ME!
     * @throws JspException DOCUMENT ME!
     */
-   public int doEndTag() throws JspException
-   {
+   public int doEndTag() throws JspException {
       HttpServletRequest request = (HttpServletRequest) this.pageContext
-         .getRequest();
-      try
-      {
+                                   .getRequest();
+
+      try {
          StringBuffer tagBuf = new StringBuffer("<input ");
          tagBuf.append(prepareType());
          tagBuf.append(prepareName());
@@ -93,98 +118,79 @@ public class DbDateFieldTag extends DbBaseInputTag
          // if property useJSCalendar is set to 'true' we will now add a little
          // image that can be clicked to popup a small JavaScript Calendar
          // written by Robert W. Husted to edit the field:
-         if (!hasHiddenSet() && ("true".equals(this.getUseJsCalendar())))
-         {
-            tagBuf.append(" <a href=\"javascript:doNothing()\" ").append(" onclick=\"");
+         if (!hasHiddenSet() && ("true".equals(this.getUseJsCalendar()))) {
+            tagBuf.append(" <a href=\"javascript:doNothing()\" ")
+                  .append(" onclick=\"");
 
             // if date format is not explicitely set for this calendar,
             // use date format for this form field. 
             if ((jsCalendarDateFormat == null)
-                     && (getFormatter() instanceof java.text.SimpleDateFormat))
-            {
+                      && (getFormatter() instanceof java.text.SimpleDateFormat)) {
                java.text.SimpleDateFormat mysdf = (java.text.SimpleDateFormat) getFormatter();
                jsCalendarDateFormat = mysdf.toPattern();
 
                // 2 digit date format pattern is 'dd' in Java, 'DD' in
                // JavaScript calendar
-               if (jsCalendarDateFormat.indexOf("dd") >= 0)
-               {
+               if (jsCalendarDateFormat.indexOf("dd") >= 0) {
                   jsCalendarDateFormat = jsCalendarDateFormat.replace('d', 'D');
                }
             }
 
             if (jsCalendarDateFormat != null) // JS Date Format set ?
-            {
+             {
                tagBuf.append("calDateFormat='" + jsCalendarDateFormat + "';");
             }
 
             tagBuf.append("setDateField(document.dbform['")
-                  .append(getFormFieldName()).append("']);")
+                  .append(getFormFieldName())
+                  .append("']);")
                   .append(" top.newWin = window.open('")
                   .append(request.getContextPath())
                   .append("/dbformslib/jscal/calendar.html','cal','width=270,height=280')\">")
-                  .append("<img src=\"").append(request.getContextPath())
+                  .append("<img src=\"")
+                  .append(request.getContextPath())
                   .append("/dbformslib/jscal/calendar.gif\"  ") //width=\"16\" height=\"16\"
+
                   .append(" border=\"0\"  alt=\"Click on the Calendar to activate the Pop-Up Calendar Window.\">")
-				  .append("</img>")
+                  .append("</img>")
                   .append("</a>");
          }
 
          // For generation Javascript Validation.  Need all original and modified fields name
-			getParentForm().addChildName(getName(), getFormFieldName());
+         getParentForm()
+            .addChildName(getName(), getFormFieldName());
 
-         pageContext.getOut().write(tagBuf.toString());
+         pageContext.getOut()
+                    .write(tagBuf.toString());
 
-			// Writes out the old field value
+         // Writes out the old field value
          writeOutSpecialValues();
-
-      }
-      catch (java.io.IOException ioe)
-      {
+      } catch (java.io.IOException ioe) {
          throw new JspException("IO Error: " + ioe.getMessage());
       }
 
       return EVAL_PAGE;
    }
 
-   /** Holds value of property useJsCalendar. */
-   private String useJsCalendar;
 
-   /** Holds value of property jsCalendarDateFormat. */
-   private String jsCalendarDateFormat;
-
-   /** Getter for property useJsCalendar.
-    * @return Value of property useJsCalendar.
+   /**
+    * DOCUMENT ME!
     */
-   public String getUseJsCalendar()
-   {
-      return useJsCalendar;
+   public void doFinally() {
+      super.doFinally();
    }
 
 
-   /** Setter for property useJsCalendar.
-    * @param useJsCalendar New value of property useJsCalendar.
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws javax.servlet.jsp.JspException DOCUMENT ME!
     */
-   public void setUseJsCalendar(String useJsCalendar)
-   {
-      this.useJsCalendar = useJsCalendar;
-   }
+   public int doStartTag() throws JspException {
+      super.doStartTag();
 
-
-   /** Getter for property jsCalendarDateFormat.
-    * @return Value of property jsCalendarDateFormat.
-    */
-   public String getJsCalendarDateFormat()
-   {
-      return jsCalendarDateFormat;
-   }
-
-
-   /** Setter for property jsCalendarDateFormat.
-    * @param jsCalendarDateFormat New value of property jsCalendarDateFormat.
-    */
-   public void setJsCalendarDateFormat(String jsCalendarDateFormat)
-   {
-      this.jsCalendarDateFormat = jsCalendarDateFormat;
+      return SKIP_BODY;
    }
 }

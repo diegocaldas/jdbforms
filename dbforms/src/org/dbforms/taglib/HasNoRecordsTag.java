@@ -22,6 +22,10 @@
  */
 package org.dbforms.taglib;
 
+import org.dbforms.config.DbFormsErrors;
+import org.dbforms.config.ResultSetVector;
+
+import org.dbforms.util.Util;
 
 import java.io.IOException;
 
@@ -29,60 +33,55 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 
 
-import org.dbforms.config.DbFormsErrors;
-import org.dbforms.config.ResultSetVector;
-import org.dbforms.util.Util;
 
-
-
-/**********************************************************
+/**
+ * DOCUMENT ME!
  *
- * Grunikiewicz.philip@hydro.qc.ca
- * 2001-12-18
- *
- * Display a custom message if the developer has set a limit on the
- * number of rows to display
- *
- ***********************************************************/
+ * @author $author$
+ * @version $Revision$
+ */
 public class HasNoRecordsTag extends DbBaseHandlerTag
-      implements javax.servlet.jsp.tagext.TryCatchFinally
-{
-   private String        message = null;
-   private DbFormsErrors errors;
+   implements javax.servlet.jsp.tagext.TryCatchFinally {
+   private transient DbFormsErrors errors;
+   private String                  message = null;
 
-
-	public void doFinally()
-	{
-		message = null;
-		errors = null;
-		super.doFinally();
-	}
-   
-   
    /**
-    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    * Sets the message
+    *
+    * @param message The message to set
     */
-   public void doCatch(Throwable t) throws Throwable
-   {
-      throw t;
+   public void setMessage(String message) {
+      this.message = message;
    }
 
 
    /**
-    * Render the specified error messages if there are any.
+    * Gets the message
     *
-    * @exception JspException if a JSP exception has occurred
+    * @return Returns a String
     */
-   public int doStartTag() throws JspException
-   {
-      if (ResultSetVector.isNull(getParentForm().getResultSetVector()))
-      {
-         return EVAL_BODY_BUFFERED;
-      }
-      else
-      {
-         return SKIP_BODY;
-      }
+   public String getMessage() {
+      return message;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param pageContext DOCUMENT ME!
+    */
+   public void setPageContext(final javax.servlet.jsp.PageContext pageContext) {
+      super.setPageContext(pageContext);
+      this.errors = (DbFormsErrors) pageContext.getServletContext()
+                                               .getAttribute(DbFormsErrors.ERRORS);
+   }
+
+
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable {
+      throw t;
    }
 
 
@@ -94,41 +93,35 @@ public class HasNoRecordsTag extends DbBaseHandlerTag
     * @throws javax.servlet.jsp.JspException DOCUMENT ME!
     * @throws JspException DOCUMENT ME!
     */
-   public int doEndTag() throws javax.servlet.jsp.JspException
-   {
+   public int doEndTag() throws javax.servlet.jsp.JspException {
       // Get result set vector from parent and calculate size
-      try
-      {
-         int rsvSize = getParentForm().getResultSetVector().size();
+      try {
+         int rsvSize = getParentForm()
+                          .getResultSetVector()
+                          .size();
 
-         if (rsvSize == 0)
-         {
-            if (bodyContent != null)
-            {
+         if (rsvSize == 0) {
+            if (bodyContent != null) {
                bodyContent.writeOut(bodyContent.getEnclosingWriter());
                bodyContent.clearBody();
             }
 
-			String message = (errors != null)? errors.getXMLErrorMessage(getMessage()): getMessage();
+            String message = (errors != null)
+                             ? errors.getXMLErrorMessage(getMessage())
+                             : getMessage();
 
-            if (!Util.isNull(message))
-            {
+            if (!Util.isNull(message)) {
                // Print the results to our output writer
                JspWriter writer = pageContext.getOut();
 
-               try
-               {
+               try {
                   writer.print(message);
-               }
-               catch (IOException e)
-               {
+               } catch (IOException e) {
                   throw new JspException(e.toString());
                }
             }
          }
-      }
-      catch (java.io.IOException e)
-      {
+      } catch (java.io.IOException e) {
          throw new JspException("IO Error: " + e.getMessage());
       }
 
@@ -137,34 +130,27 @@ public class HasNoRecordsTag extends DbBaseHandlerTag
 
 
    /**
-    * Gets the message
-    * @return Returns a String
-    */
-   public String getMessage()
-   {
-      return message;
-   }
-
-
-   /**
-    * Sets the message
-    * @param message The message to set
-    */
-   public void setMessage(String message)
-   {
-      this.message = message;
-   }
-
-
-   /**
     * DOCUMENT ME!
-    *
-    * @param pageContext DOCUMENT ME!
     */
-   public void setPageContext(final javax.servlet.jsp.PageContext pageContext) 
-   {
-      super.setPageContext(pageContext);
-      this.errors = (DbFormsErrors) pageContext.getServletContext()
-                                               .getAttribute(DbFormsErrors.ERRORS);
+   public void doFinally() {
+      message = null;
+      errors  = null;
+      super.doFinally();
+   }
+
+
+   /**
+    * Render the specified error messages if there are any.
+    *
+    * @return DOCUMENT ME!
+    *
+    * @exception JspException if a JSP exception has occurred
+    */
+   public int doStartTag() throws JspException {
+      if (ResultSetVector.isNull(getParentForm().getResultSetVector())) {
+         return EVAL_BODY_BUFFERED;
+      } else {
+         return SKIP_BODY;
+      }
    }
 }

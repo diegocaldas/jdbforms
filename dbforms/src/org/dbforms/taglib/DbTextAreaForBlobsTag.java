@@ -21,47 +21,31 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.taglib;
+
 import javax.servlet.jsp.*;
 
 
 
-/****
+/**
+ * <p>
+ * This tag renders a HTML TextArea - Element
+ * </p>
+ * this tag renders a dabase-datadriven textArea, which is an active element -
+ * the user can change data
  *
- * <p>This tag renders a HTML TextArea - Element</p>
- *
- * this tag renders a dabase-datadriven textArea, which is an active element - the user
- * can change data
- *
- * @author Joachim Peer <j.peer@gmx.net>
+ * @author Joachim Peer
  */
 public class DbTextAreaForBlobsTag extends DbTextAreaTag
-      implements javax.servlet.jsp.tagext.TryCatchFinally
-{
+   implements javax.servlet.jsp.tagext.TryCatchFinally {
    // logging category for this class
    private String suffix;
-
-	public void doFinally()
-	{
-		suffix = null;
-		super.doFinally();
-	}
-
-   /**
-    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
-    */
-   public void doCatch(Throwable t) throws Throwable
-   {
-      throw t;
-   }
-
 
    /**
     * DOCUMENT ME!
     *
     * @param suffix DOCUMENT ME!
     */
-   public void setSuffix(String suffix)
-   {
+   public void setSuffix(String suffix) {
       this.suffix = suffix;
    }
 
@@ -71,24 +55,16 @@ public class DbTextAreaForBlobsTag extends DbTextAreaTag
     *
     * @return DOCUMENT ME!
     */
-   public String getSuffix()
-   {
+   public String getSuffix() {
       return suffix;
    }
 
 
    /**
-    * DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    *
-    * @throws javax.servlet.jsp.JspException DOCUMENT ME!
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
     */
-   public int doStartTag() throws javax.servlet.jsp.JspException
-   {
-      super.doStartTag();
-
-      return EVAL_BODY_BUFFERED;
+   public void doCatch(Throwable t) throws Throwable {
+      throw t;
    }
 
 
@@ -100,35 +76,54 @@ public class DbTextAreaForBlobsTag extends DbTextAreaTag
     * @throws javax.servlet.jsp.JspException DOCUMENT ME!
     * @throws JspException DOCUMENT ME!
     */
-   public int doEndTag() throws javax.servlet.jsp.JspException
-   {
-      try
-      {
-        super.doEndTag(); 
+   public int doEndTag() throws javax.servlet.jsp.JspException {
+      try {
+         super.doEndTag();
 
-         StringBuffer suffixBuf = new StringBuffer(
-               "<input type=\"hidden\" name=\"");
+         StringBuffer suffixBuf = new StringBuffer("<input type=\"hidden\" name=\"");
          suffixBuf.append("suffix_" + getFormFieldName());
          suffixBuf.append("\" value=\"");
          suffixBuf.append(suffix);
          suffixBuf.append("\"/>");
 
-         pageContext.getOut().write(suffixBuf.toString());
+         pageContext.getOut()
+                    .write(suffixBuf.toString());
 
-         StringBuffer fileNameBuf = new StringBuffer(
-               "<input type=\"hidden\" name=\"");
+         StringBuffer fileNameBuf = new StringBuffer("<input type=\"hidden\" name=\"");
          fileNameBuf.append("fn_" + getFormFieldName());
          fileNameBuf.append("\" value=\"");
          fileNameBuf.append(getFormFieldValue());
          fileNameBuf.append("\"/>");
 
-         pageContext.getOut().write(fileNameBuf.toString());
-      }
-      catch (java.io.IOException e)
-      {
+         pageContext.getOut()
+                    .write(fileNameBuf.toString());
+      } catch (java.io.IOException e) {
          throw new JspException("IO Error: " + e.getMessage());
       }
 
       return EVAL_PAGE;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    */
+   public void doFinally() {
+      suffix = null;
+      super.doFinally();
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws javax.servlet.jsp.JspException DOCUMENT ME!
+    */
+   public int doStartTag() throws javax.servlet.jsp.JspException {
+      super.doStartTag();
+
+      return EVAL_BODY_BUFFERED;
    }
 }

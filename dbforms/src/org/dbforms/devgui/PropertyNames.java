@@ -22,14 +22,14 @@
  */
 package org.dbforms.devgui;
 
+
 /**
  * DOCUMENT ME!
  *
- * @version $Revision$
  * @author $author$
+ * @version $Revision$
  */
-public interface PropertyNames
-{
+public interface PropertyNames {
    // set some constant Strings to avoid typos....
    static final String ALL         = "all";
    static final String SELECTION   = "selection";
@@ -56,6 +56,7 @@ public interface PropertyNames
    static final String USE_GETCROSSREFERENCES  = "useGetCrossReferences";
    static final String DEACTIVATED             = "deactivated";
    static final String CONFIG_FILE             = "configFile";
-   static final String STYLESHEET_DIR          = "stylesheetDir";   static final String XSLT_ENCODING           = "xsltEncoding";
+   static final String STYLESHEET_DIR          = "stylesheetDir";
+   static final String XSLT_ENCODING           = "xsltEncoding";
    static final String DATE_FORMAT             = "dateFormat";
 }

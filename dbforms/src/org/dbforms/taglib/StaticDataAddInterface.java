@@ -24,12 +24,13 @@ package org.dbforms.taglib;
 
 import org.dbforms.util.KeyValuePair;
 
+
+
 /**
- * 
  * Interfaced used by StaticDataItem
- * 
+ *
  * @author hkk
  */
 public interface StaticDataAddInterface {
-	void addElement(KeyValuePair pair);
+   void addElement(KeyValuePair pair);
 }

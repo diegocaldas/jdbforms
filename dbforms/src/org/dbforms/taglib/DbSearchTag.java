@@ -21,64 +21,35 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.taglib;
+
+import org.dbforms.config.*;
+
+import org.dbforms.util.*;
+
 import javax.servlet.http.*;
 import javax.servlet.jsp.*;
 
-import org.dbforms.util.*;
-import org.dbforms.config.*;
+
 
 /**
- * <p>renders a input field for searching with special default search modes.</p>
- * <p>example:</p>
-        &lt;input type="hidden" name="searchalgo_0_1" value="weakEnd"/&gt;<br/>
-        &lt;input type="hidden" name="searchmode_0_1" value="AND"/&gt;<br/>
-        &lt;input type="input" name="search_0_1"/&gt;<br/>
+ * <p>
+ * renders a input field for searching with special default search modes.
+ * </p>
  *
- *  searchalgo and searchmode are set by parameter.
+ * <p>
+ * example:
+ * </p>
+ * &lt;input type="hidden" name="searchalgo_0_1" value="weakEnd"/&gt; &lt;input
+ * type="hidden" name="searchmode_0_1" value="AND"/&gt; &lt;input type="input"
+ * name="search_0_1"/&gt; searchalgo and searchmode are set by parameter.
  *
- * @author Henner Kollmann  (Henner.Kollmann@gmx.de)
+ * @author Henner Kollmann
  */
-public class DbSearchTag extends DbBaseHandlerTag implements javax.servlet.jsp.tagext.TryCatchFinally {
-
+public class DbSearchTag extends DbBaseHandlerTag
+   implements javax.servlet.jsp.tagext.TryCatchFinally {
+   private String defaultValue = null;
    private String searchAlgo = "sharp";
    private String searchMode = "and";
-   private String defaultValue = null;
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param searchAlgo DOCUMENT ME!
-    */
-   public void setSearchAlgo(String searchAlgo) {
-      this.searchAlgo = searchAlgo;
-   }
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    */
-   public String getSearchAlgo() {
-      return searchAlgo;
-   }
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param searchMode DOCUMENT ME!
-    */
-   public void setSearchMode(String searchMode) {
-      this.searchMode = searchMode;
-   }
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    */
-   public String getSearchMode() {
-      return searchMode;
-   }
 
    /**
     * DOCUMENT ME!
@@ -89,6 +60,7 @@ public class DbSearchTag extends DbBaseHandlerTag implements javax.servlet.jsp.t
       this.defaultValue = value;
    }
 
+
    /**
     * DOCUMENT ME!
     *
@@ -98,34 +70,54 @@ public class DbSearchTag extends DbBaseHandlerTag implements javax.servlet.jsp.t
       return defaultValue;
    }
 
+
    /**
     * DOCUMENT ME!
     *
-    * @param tableId DOCUMENT ME!
-    * @param fieldId DOCUMENT ME!
+    * @param searchAlgo DOCUMENT ME!
+    */
+   public void setSearchAlgo(String searchAlgo) {
+      this.searchAlgo = searchAlgo;
+   }
+
+
+   /**
+    * DOCUMENT ME!
     *
     * @return DOCUMENT ME!
     */
-   protected String RenderHiddenFields(Field f) {
-      StringBuffer tagBuf = new StringBuffer();
-      StringBuffer paramNameBufA = new StringBuffer();
-      paramNameBufA.append(f.getSearchAlgoName());
-      tagBuf.append("<input type=\"hidden\" name=\"");
-      tagBuf.append(paramNameBufA.toString());
-      tagBuf.append("\" value=\"");
-      tagBuf.append(getSearchAlgo());
-      tagBuf.append("\"/>\n");
-
-      StringBuffer paramNameBufB = new StringBuffer();
-      paramNameBufB.append(f.getSearchModeName());
-      tagBuf.append("<input type=\"hidden\" name=\"");
-      tagBuf.append(paramNameBufB.toString());
-      tagBuf.append("\" value=\"");
-      tagBuf.append(getSearchMode());
-      tagBuf.append("\"/>\n");
-
-      return tagBuf.toString();
+   public String getSearchAlgo() {
+      return searchAlgo;
    }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param searchMode DOCUMENT ME!
+    */
+   public void setSearchMode(String searchMode) {
+      this.searchMode = searchMode;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String getSearchMode() {
+      return searchMode;
+   }
+
+
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable {
+      throw t;
+   }
+
 
    /**
     * DOCUMENT ME!
@@ -144,13 +136,15 @@ public class DbSearchTag extends DbBaseHandlerTag implements javax.servlet.jsp.t
                             <input type="hidden" name="searchmode_0_1" value="AND"/>
                             <input type="input" name="search_0_1"/>
          */
-         HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
-         StringBuffer tagBuf = new StringBuffer();
+         HttpServletRequest request = (HttpServletRequest) pageContext
+                                      .getRequest();
+         StringBuffer       tagBuf = new StringBuffer();
 
-         StringBuffer paramNameBuf = new StringBuffer();
+         StringBuffer       paramNameBuf = new StringBuffer();
          paramNameBuf.append(field.getSearchFieldName());
 
-         String oldValue = ParseUtil.getParameter(request, paramNameBuf.toString());
+         String oldValue = ParseUtil.getParameter(request,
+                                                  paramNameBuf.toString());
          tagBuf.append("<input type=\"input\" name=\"");
          tagBuf.append(paramNameBuf.toString());
          tagBuf.append("\" ");
@@ -168,9 +162,12 @@ public class DbSearchTag extends DbBaseHandlerTag implements javax.servlet.jsp.t
          tagBuf.append(prepareEventHandlers());
          tagBuf.append("/>\n");
 
- 		 pageContext.getOut().write(renderPatternHtmlInputField());
-         pageContext.getOut().write(RenderHiddenFields(field));
-         pageContext.getOut().write(tagBuf.toString());
+         pageContext.getOut()
+                    .write(renderPatternHtmlInputField());
+         pageContext.getOut()
+                    .write(RenderHiddenFields(field));
+         pageContext.getOut()
+                    .write(tagBuf.toString());
       } catch (java.io.IOException ioe) {
          throw new JspException("IO Error: " + ioe.getMessage());
       }
@@ -178,18 +175,43 @@ public class DbSearchTag extends DbBaseHandlerTag implements javax.servlet.jsp.t
       return EVAL_PAGE;
    }
 
+
+   /**
+    * DOCUMENT ME!
+    */
    public void doFinally() {
-      searchAlgo = "sharp";
-      searchMode = "and";
+      searchAlgo   = "sharp";
+      searchMode   = "and";
       defaultValue = null;
       super.doFinally();
    }
 
-   /**
-    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
-    */
-   public void doCatch(Throwable t) throws Throwable {
-      throw t;
-   }
 
+   /**
+    * DOCUMENT ME!
+    *
+    * @param f DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   protected String RenderHiddenFields(Field f) {
+      StringBuffer tagBuf        = new StringBuffer();
+      StringBuffer paramNameBufA = new StringBuffer();
+      paramNameBufA.append(f.getSearchAlgoName());
+      tagBuf.append("<input type=\"hidden\" name=\"");
+      tagBuf.append(paramNameBufA.toString());
+      tagBuf.append("\" value=\"");
+      tagBuf.append(getSearchAlgo());
+      tagBuf.append("\"/>\n");
+
+      StringBuffer paramNameBufB = new StringBuffer();
+      paramNameBufB.append(f.getSearchModeName());
+      tagBuf.append("<input type=\"hidden\" name=\"");
+      tagBuf.append(paramNameBufB.toString());
+      tagBuf.append("\" value=\"");
+      tagBuf.append(getSearchMode());
+      tagBuf.append("\"/>\n");
+
+      return tagBuf.toString();
+   }
 }

@@ -21,25 +21,38 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.taglib;
-import javax.servlet.jsp.JspException;
-import org.apache.log4j.Category;
-import org.dbforms.util.Util;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.dbforms.util.KeyValuePair;
 import org.dbforms.util.MessageResources;
+import org.dbforms.util.Util;
+
+import javax.servlet.jsp.JspException;
+
 
 
 /**
  * DOCUMENT ME!
  *
- * @version $Revision$
  * @author $author$
+ * @version $Revision$
  */
-public class StaticDataItem extends DbBaseHandlerTag 
-      implements javax.servlet.jsp.tagext.TryCatchFinally
-{
-   private static Category logCat = Category.getInstance(StaticDataItem.class.getName()); // logging category for this class
-   private String  key;
-   private String value;
+public class StaticDataItem extends DbBaseHandlerTag
+   implements javax.servlet.jsp.tagext.TryCatchFinally {
+   private static Log logCat = LogFactory.getLog(StaticDataItem.class.getName()); // logging category for this class
+   private String     key;
+   private String     value;
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param key DOCUMENT ME!
+    */
+   public void setKey(String key) {
+      this.key = key;
+   }
 
 
    /**
@@ -47,8 +60,7 @@ public class StaticDataItem extends DbBaseHandlerTag
     *
     * @return DOCUMENT ME!
     */
-   public String getKey()
-   {
+   public String getKey() {
       return key;
    }
 
@@ -56,13 +68,59 @@ public class StaticDataItem extends DbBaseHandlerTag
    /**
     * DOCUMENT ME!
     *
-    * @param key DOCUMENT ME!
+    * @param string
     */
-   public void setKey(String key)
-   {
-      this.key = key;
+   public void setValue(String string) {
+      value = string;
    }
 
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String getValue() {
+      String message = null;
+
+      if ((value != null)
+                && (getParent() instanceof StaticData
+                && getParent()
+                            .getParent() instanceof DbBaseHandlerTag
+                && getParentForm()
+                            .hasCaptionResourceSet())) {
+         try {
+            message = MessageResources.getMessage(value, getLocale());
+
+            if (!Util.isNull(message)) {
+               value = message;
+            }
+         } catch (Exception e) {
+            logCat.debug("getValue(" + value + ") Exception : "
+                         + e.getMessage());
+         }
+      }
+
+      return value;
+   }
+
+
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable {
+      throw t;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    */
+   public void doFinally() {
+      key   = null;
+      value = null;
+      super.doFinally();
+   }
 
 
    /**
@@ -72,75 +130,15 @@ public class StaticDataItem extends DbBaseHandlerTag
     *
     * @throws JspException DOCUMENT ME!
     */
-   public int doStartTag() throws JspException
-   {
-      if ((getParent() != null) && getParent() instanceof StaticDataAddInterface)
-      {
-         ((StaticDataAddInterface) getParent()).addElement(new KeyValuePair(key, getValue()));
-      }
-      else
-      {
-         throw new JspException(
-            "StaticDataItem element must be placed inside a AddStaticData element!");
+   public int doStartTag() throws JspException {
+      if ((getParent() != null)
+                && getParent() instanceof StaticDataAddInterface) {
+         ((StaticDataAddInterface) getParent()).addElement(new KeyValuePair(key,
+                                                                            getValue()));
+      } else {
+         throw new JspException("StaticDataItem element must be placed inside a AddStaticData element!");
       }
 
       return EVAL_BODY_INCLUDE;
    }
-
-	public void doFinally()
-	{
-		key = null;
-		value = null;
-		super.doFinally();
-	}
-
-   /**
-    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
-    */
-   public void doCatch(Throwable t) throws Throwable
-   {
-      throw t;
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    */
-   public String getValue()
-   {
-      String message = null;
-      if ((value != null)
-               && (getParent() instanceof StaticData
-               && getParent().getParent() instanceof DbBaseHandlerTag
-               && getParentForm().hasCaptionResourceSet()))
-      {
-         try
-         {
-            message = MessageResources.getMessage(value,  getLocale());
-            if (!Util.isNull(message))
-            {
-               value = message;
-            }
-         }
-         catch (Exception e)
-         {
-            logCat.debug("getValue(" + value + ") Exception : "
-               + e.getMessage());
-         }
-      }
-      return value;
-   }
-
-
-
-
-   /**
-    * @param string
-    */
-   public void setValue(String string) {
-      value = string;
-   }
-
 }

@@ -56,7 +56,7 @@
             <blockquote>
               <para>Provides connection objects using the Protomatter Connection Pool library</para>
               <para>
-                <emphasis role="bold">http://protomatter.sourceforge.net/</emphasis>
+                <emphasis role="bold"> http://protomatter.sourceforge.net/ </emphasis>
               </para>
               <para>
                 <computeroutput>class name: org.dbforms.conprovider.ProtomatterConnectionProvider</computeroutput>
@@ -70,7 +70,7 @@
             <blockquote>
               <para>Provides connection objects using the Jakarta commons-dbcp ConnectionPool library</para>
               <para>
-                <emphasis role="bold">http://jakarta.apache.org/commons/index.html</emphasis>
+                <emphasis role="bold"> http://jakarta.apache.org/commons/index.html </emphasis>
               </para>
               <para>
               class name: 
@@ -318,8 +318,8 @@
       </blockquote>
       <para/>
       <para>
-        For further details:
-        http://protomatter.sourceforge.net/1.1.8-pre5/javadoc/com/protomatter/jdbc/pool/JdbcConnectionPool.html</para>
+        For further details: <code>http://protomatter.sourceforge.net/1.1.8/javadoc/com/protomatter/jdbc/pool/JdbcConnectionPool.html</code>
+      </para>
     </sect2>
     <sect2>
       <title>Protomatter ConnectionProvider configuration example</title>

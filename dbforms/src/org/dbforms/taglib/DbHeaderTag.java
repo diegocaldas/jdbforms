@@ -21,40 +21,20 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.taglib;
+
 import javax.servlet.jsp.*;
 
 
 
-
-/****
+/**
+ * this tag renders a Header-tag. it is supposed to be nested within a
+ * DbFormTag. because this tag is nested within a DbFormTag it is invoked
+ * every time the parent dbFormTag gets evaluated, but it gets only rendered
+ * at the FIRST evalation-loop.
  *
- * this tag renders a Header-tag. it is supposed to be nested within a DbFormTag.
- * because this tag is nested within a DbFormTag it is invoked every time the parent dbFormTag gets
- * evaluated, but it gets only rendered at the FIRST evalation-loop.
- *
- * @author Joachim Peer <j.peer@gmx.net>
+ * @author Joachim Peer
  */
-public class DbHeaderTag extends DbBaseHandlerTag
-{
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    */
-   public int doStartTag()
-   {
-      if (getParentForm().getCurrentCount() == 0)
-      {
-         return EVAL_BODY_BUFFERED;
-      }
-      else
-      {
-         return SKIP_BODY;
-      }
-   }
-
-
+public class DbHeaderTag extends DbBaseHandlerTag {
    /**
     * DOCUMENT ME!
     *
@@ -62,8 +42,7 @@ public class DbHeaderTag extends DbBaseHandlerTag
     *
     * @throws JspException DOCUMENT ME!
     */
-   public int doAfterBody() throws JspException
-   {
+   public int doAfterBody() throws JspException {
       return SKIP_BODY;
    }
 
@@ -75,21 +54,31 @@ public class DbHeaderTag extends DbBaseHandlerTag
     *
     * @throws JspException DOCUMENT ME!
     */
-   public int doEndTag() throws JspException
-   {
-      try
-      {
-         if (bodyContent != null)
-         {
+   public int doEndTag() throws JspException {
+      try {
+         if (bodyContent != null) {
             bodyContent.writeOut(bodyContent.getEnclosingWriter());
             bodyContent.clearBody(); // 2002116-HKK: workaround for duplicate rows in Tomcat 4.1
          }
-      }
-      catch (java.io.IOException e)
-      {
+      } catch (java.io.IOException e) {
          throw new JspException("IO Error: " + e.getMessage());
       }
 
       return EVAL_PAGE;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public int doStartTag() {
+      if (getParentForm()
+                   .getCurrentCount() == 0) {
+         return EVAL_BODY_BUFFERED;
+      } else {
+         return SKIP_BODY;
+      }
    }
 }

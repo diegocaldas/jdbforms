@@ -51,7 +51,8 @@ public class TestUpdateEvent extends JspTestCase
     */
    public void setUp() throws Exception
    {
-		DbFormsConfigRegistry.instance().register(null);
+	super.setUp();	
+	DbFormsConfigRegistry.instance().register(null);
       config.setInitParameter("dbformsConfig", "/WEB-INF/dbforms-config.xml");
       config.setInitParameter("log4j.configuration", 
                               "/WEB-INF/log4j.properties");

@@ -22,30 +22,33 @@
  */
 package org.dbforms.config;
 
-/****
+import java.sql.Connection;
+
+import java.util.Map;
+
+/**
  * <p>
  * This interface intercepts Database Operations DbForms is about to perform
  * </p>
  *
- *    <p>As the names indicate </p>
- *    <li>the preXxx() methods get called before the respective database operation is performed,
- *    <li>the postXxx() methods get called after the operation was finished.
- *
- * @author Joe Peer <j.peer@gmx.net>
+ * <p>
+ * As the names indicate
+ * </p>
+ * - the preXxx() methods get called before the respective database operation
+ * is performed, - the postXxx() methods get called after the operation was
+ * finished.
  */
 import javax.servlet.http.HttpServletRequest;
-import java.sql.Connection;
-import java.util.Map;
+
 
 
 /**
  * DOCUMENT ME!
  *
- * @version $Revision$
  * @author $author$
+ * @version $Revision$
  */
-public interface DbEventInterceptor
-{
+public interface DbEventInterceptor {
    /** DOCUMENT ME! */
    public static final int PRE_INSERT = 0;
 
@@ -82,14 +85,75 @@ public interface DbEventInterceptor
     */
    public static final int IGNORE_OPERATION = 2;
 
-	 
-	 public void setParams(Map params);
-	 public Map getParams();	 
-	 
+   /**
+    * DOCUMENT ME!
+    *
+    * @param params DOCUMENT ME!
+    */
+   public void setParams(Map params);
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public Map getParams();
+
+
    /**
     * DOCUMENT ME!
     *
     * @param request DOCUMENT ME!
+    * @param config DOCUMENT ME!
+    * @param con DOCUMENT ME!
+    */
+   void postDelete(HttpServletRequest request,
+                   DbFormsConfig      config,
+                   Connection         con);
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param request DOCUMENT ME!
+    * @param config DOCUMENT ME!
+    * @param con DOCUMENT ME!
+    */
+   void postInsert(HttpServletRequest request,
+                   DbFormsConfig      config,
+                   Connection         con);
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param request DOCUMENT ME!
+    * @param config DOCUMENT ME!
+    * @param con DOCUMENT ME!
+    */
+   void postSelect(HttpServletRequest request,
+                   DbFormsConfig      config,
+                   Connection         con);
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param request DOCUMENT ME!
+    * @param config DOCUMENT ME!
+    * @param con DOCUMENT ME!
+    */
+   void postUpdate(HttpServletRequest request,
+                   DbFormsConfig      config,
+                   Connection         con);
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param request DOCUMENT ME!
+    * @param table DOCUMENT ME!
     * @param fieldValues DOCUMENT ME!
     * @param config DOCUMENT ME!
     * @param con DOCUMENT ME!
@@ -98,25 +162,19 @@ public interface DbEventInterceptor
     *
     * @throws ValidationException DOCUMENT ME!
     */
-   int preInsert(HttpServletRequest request, Table table, FieldValues fieldValues,
-      DbFormsConfig config, Connection con) throws ValidationException, MultipleValidationException;
+   int preDelete(HttpServletRequest request,
+                 Table              table,
+                 FieldValues        fieldValues,
+                 DbFormsConfig      config,
+                 Connection         con)
+          throws ValidationException, MultipleValidationException;
 
 
    /**
     * DOCUMENT ME!
     *
     * @param request DOCUMENT ME!
-    * @param config DOCUMENT ME!
-    * @param con DOCUMENT ME!
-    */
-   void postInsert(HttpServletRequest request, DbFormsConfig config,
-      Connection con);
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param request DOCUMENT ME!
+    * @param table DOCUMENT ME!
     * @param fieldValues DOCUMENT ME!
     * @param config DOCUMENT ME!
     * @param con DOCUMENT ME!
@@ -125,10 +183,13 @@ public interface DbEventInterceptor
     *
     * @throws ValidationException DOCUMENT ME!
     */
-   int preUpdate(HttpServletRequest request,  Table table, 
-         FieldValues fieldValues, DbFormsConfig config, Connection con)
-      throws ValidationException, MultipleValidationException;
-   ;
+   int preInsert(HttpServletRequest request,
+                 Table              table,
+                 FieldValues        fieldValues,
+                 DbFormsConfig      config,
+                 Connection         con)
+          throws ValidationException, MultipleValidationException;
+
 
    /**
     * DOCUMENT ME!
@@ -136,15 +197,22 @@ public interface DbEventInterceptor
     * @param request DOCUMENT ME!
     * @param config DOCUMENT ME!
     * @param con DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws ValidationException DOCUMENT ME!
     */
-   void postUpdate(HttpServletRequest request, DbFormsConfig config,
-      Connection con);
+   int preSelect(HttpServletRequest request,
+                 DbFormsConfig      config,
+                 Connection         con)
+          throws ValidationException, MultipleValidationException;
 
 
    /**
     * DOCUMENT ME!
     *
     * @param request DOCUMENT ME!
+    * @param table DOCUMENT ME!
     * @param fieldValues DOCUMENT ME!
     * @param config DOCUMENT ME!
     * @param con DOCUMENT ME!
@@ -153,43 +221,10 @@ public interface DbEventInterceptor
     *
     * @throws ValidationException DOCUMENT ME!
     */
-   int preDelete(HttpServletRequest request,  Table table, FieldValues fieldValues,
-      DbFormsConfig config, Connection con) throws ValidationException, MultipleValidationException;
-   ;
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param request DOCUMENT ME!
-    * @param config DOCUMENT ME!
-    * @param con DOCUMENT ME!
-    */
-   void postDelete(HttpServletRequest request, DbFormsConfig config,
-      Connection con);
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param request DOCUMENT ME!
-    * @param config DOCUMENT ME!
-    * @param con DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    *
-    * @throws ValidationException DOCUMENT ME!
-    */
-   int preSelect(HttpServletRequest request, DbFormsConfig config,
-      Connection con) throws ValidationException, MultipleValidationException;
-   ;
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param request DOCUMENT ME!
-    * @param config DOCUMENT ME!
-    * @param con DOCUMENT ME!
-    */
-   void postSelect(HttpServletRequest request, DbFormsConfig config,
-      Connection con);
+   int preUpdate(HttpServletRequest request,
+                 Table              table,
+                 FieldValues        fieldValues,
+                 DbFormsConfig      config,
+                 Connection         con)
+          throws ValidationException, MultipleValidationException;
 }

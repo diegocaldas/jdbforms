@@ -20,31 +20,36 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.event.classic;
-import java.io.*;
-import java.util.*;
-import java.sql.*;
-import javax.servlet.http.*;
-import org.dbforms.util.*;
-import org.apache.log4j.Category;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.dbforms.config.*;
+
 import org.dbforms.event.*;
 
+import org.dbforms.util.*;
+
+import java.io.*;
+
+import java.sql.*;
+
+import java.util.*;
+
+import javax.servlet.http.*;
 
 
-/****
- *
- * @deprecated
- *
- *
- * <p>This event prepares and performs a SQL-Update operation</p>
+
+/**
+ * DOCUMENT ME!
  *
  * @author Joe Peer
+ *
+ * @deprecated <p>
  */
-public class UpdateEvent extends ValidationEvent
-{
-   static Category logCat = Category.getInstance(UpdateEvent.class.getName()); // logging category for this class
+public class UpdateEvent extends ValidationEvent {
+   static Log logCat = LogFactory.getLog(UpdateEvent.class.getName()); // logging category for this class
 
    /**
     * Creates a new UpdateEvent object.
@@ -54,9 +59,10 @@ public class UpdateEvent extends ValidationEvent
     * @param request DOCUMENT ME!
     * @param config DOCUMENT ME!
     */
-   public UpdateEvent(Integer tableId, String keyId, HttpServletRequest request, 
-                      DbFormsConfig config)
-   {
+   public UpdateEvent(Integer            tableId,
+                      String             keyId,
+                      HttpServletRequest request,
+                      DbFormsConfig      config) {
       super(tableId.intValue(), keyId, request, config);
    }
 
@@ -68,10 +74,10 @@ public class UpdateEvent extends ValidationEvent
     * @param request DOCUMENT ME!
     * @param config DOCUMENT ME!
     */
-   public UpdateEvent(String action, HttpServletRequest request, 
-                      DbFormsConfig config)
-   {
-      super(ParseUtil.getEmbeddedStringAsInteger(action, 2, '_'), 
+   public UpdateEvent(String             action,
+                      HttpServletRequest request,
+                      DbFormsConfig      config) {
+      super(ParseUtil.getEmbeddedStringAsInteger(action, 2, '_'),
             ParseUtil.getEmbeddedString(action, 3, '_'), request, config);
    }
 
@@ -80,10 +86,12 @@ public class UpdateEvent extends ValidationEvent
     *
     * @return DOCUMENT ME!
     */
-   public FieldValues getFieldValues()
-   {
-      String s = ParseUtil.getParameter(getRequest(), Constants.FIELDNAME_OVERRIDEFIELDTEST + getTable().getId());
+   public FieldValues getFieldValues() {
+      String s = ParseUtil.getParameter(getRequest(),
+                                        Constants.FIELDNAME_OVERRIDEFIELDTEST
+                                        + getTable().getId());
       boolean flag = "true".equalsIgnoreCase(s);
+
       return getFieldValues(flag);
    }
 
@@ -97,39 +105,35 @@ public class UpdateEvent extends ValidationEvent
     * @throws MultipleValidationException DOCUMENT ME!
     * @throws IllegalArgumentException DOCUMENT ME!
     */
-   public void processEvent(Connection con) throws SQLException
-   {
+   public void processEvent(Connection con) throws SQLException {
       // Apply given security contraints (as defined in dbforms-config.xml)
-      if (!hasUserPrivileg(GrantedPrivileges.PRIVILEG_UPDATE))
-      {
-         String s = MessageResourcesInternal.getMessage(
-                             "dbforms.events.update.nogrant", 
-                             getRequest().getLocale(), 
-                             new String[] 
-         {
-            getTable().getName()
-         });
+      if (!hasUserPrivileg(GrantedPrivileges.PRIVILEG_UPDATE)) {
+         String s = MessageResourcesInternal.getMessage("dbforms.events.update.nogrant",
+                                                        getRequest().getLocale(),
+                                                        new String[] {
+                                                           getTable()
+                                                              .getName()
+                                                        });
          throw new SQLException(s);
       }
 
       // which values do we find in request
       FieldValues fieldValues = getFieldValues();
 
-      if (fieldValues.size() == 0)
-      {
+      if (fieldValues.size() == 0) {
          logCat.info("no parameters to update found");
 
          return;
       }
 
-
       // process the interceptors associated to this table
-      int operation = getTable().processInterceptors(DbEventInterceptor.PRE_UPDATE, getRequest(), 
-                              fieldValues, getConfig(), con);
+      int operation = getTable()
+                         .processInterceptors(DbEventInterceptor.PRE_UPDATE,
+                                              getRequest(), fieldValues,
+                                              getConfig(), con);
 
       if ((operation == DbEventInterceptor.GRANT_OPERATION)
-                && (fieldValues.size() > 0))
-      {
+                && (fieldValues.size() > 0)) {
          // End of interceptor processing
          // in order to process an update, we need the key of the dataset to update
          //
@@ -141,81 +145,71 @@ public class UpdateEvent extends ValidationEvent
          // example: value of field 1=12, value of field 3=1992, then we'll get "1:2:12-3:4:1992"
          String keyValuesStr = getKeyValues();
 
-         if ((keyValuesStr == null) || (keyValuesStr.trim().length() == 0))
-         {
-            logCat.error(
-                     "At least one key is required per table, check your dbforms-config.xml");
+         if ((keyValuesStr == null) || (keyValuesStr.trim()
+                                                          .length() == 0)) {
+            logCat.error("At least one key is required per table, check your dbforms-config.xml");
 
             return;
          }
 
          // now we start building the UPDATE statement
          // 20021031-HKK: Moved into table
-         PreparedStatement ps = con.prepareStatement(getTable()
-                                                        .getUpdateStatement(fieldValues));
+         PreparedStatement ps = con.prepareStatement(getTable().getUpdateStatement(fieldValues));
 
          // now we provide the values
          // first, we provide the "new" values for fields
          Iterator enum = fieldValues.elements();
          int      col = 1;
 
-         while (enum.hasNext())
-         {
+         while (enum.hasNext()) {
             FieldValue fv = (FieldValue) enum.next();
 
-            if (fv != null)
-            {
+            if (fv != null) {
                Field  curField  = fv.getField();
                int    fieldType = curField.getType();
                Object value     = null;
 
-               if (fieldType == FieldTypes.BLOB)
-               {
+               if (fieldType == FieldTypes.BLOB) {
                   // in case of a BLOB we supply the FileHolder object to SqlUtils for further operations
                   logCat.info("we are looking for fileholder with name: f_"
                               + getTable().getId() + "_" + getKeyId() + "_"
                               + curField.getId());
                   value = fv.getFileHolder();
                   logCat.info("and found a value=" + value);
-               }
-               else if (fieldType == FieldTypes.DISKBLOB)
-               {
+               } else if (fieldType == FieldTypes.DISKBLOB) {
                   FileHolder fileHolder = fv.getFileHolder();
                   String     fileName = fileHolder.getFileName();
 
                   // check if we need to store it encoded or not
-                  if (curField.hasEncodedSet())
-                  {
+                  if (curField.hasEncodedSet()) {
                      // encode fileName
                      int    dotIndex = fileName.lastIndexOf('.');
                      String suffix = (dotIndex != -1)
-                                        ? fileName.substring(dotIndex) : "";
+                                     ? fileName.substring(dotIndex)
+                                     : "";
                      fileHolder.setFileName(UniqueIDGenerator.getUniqueID()
                                             + suffix);
 
-
                      // a diskblob gets stored to db as an ordinary string (it's only the reference!)
                      value = fileHolder.getFileName();
-                  }
-                  else
-                  {
+                  } else {
                      // a diskblob gets stored to db as an ordinary string	 (it's only the reference!)
                      value = fileName;
                   }
-               }
-               else
-               {
+               } else {
                   // in case of simple db types we just supply a string representing the value of the fields
                   value = fv.getFieldValueAsObject();
                }
 
-               JDBCDataHelper.fillWithData(ps, fv.getField().getEscaper(), col, value, fieldType, getTable().getBlobHandlingStrategy());
+               JDBCDataHelper.fillWithData(ps, fv.getField().getEscaper(), col,
+                                           value, fieldType,
+                                           getTable().getBlobHandlingStrategy());
                col++;
             }
          }
 
-         getTable().populateWhereClauseWithKeyFields(keyValuesStr, ps, col);
-
+         getTable()
+            .populateWhereClauseWithKeyFields(keyValuesStr, ps, col);
 
          // we are now ready to execute the query
          ps.executeUpdate();
@@ -223,84 +217,67 @@ public class UpdateEvent extends ValidationEvent
 
          enum = fieldValues.keys();
 
-         while (enum.hasNext())
-         {
+         while (enum.hasNext()) {
             String fieldName = (String) enum.next();
-            Field  curField = getTable().getFieldByName(fieldName);
+            Field  curField = getTable()
+                                 .getFieldByName(fieldName);
 
-            if (curField != null)
-            {
+            if (curField != null) {
                int    fieldType = curField.getType();
 
                String directory = null;
 
-               try
-               {
-                  directory = Util.replaceRealPath(curField.getDirectory(), 
-                                                   DbFormsConfigRegistry.instance()
-                                                                        .lookup()
-                                                                        .getRealPath());
-               }
-               catch (Exception e)
-               {
+               try {
+                  directory = Util.replaceRealPath(curField.getDirectory(),
+                                                   DbFormsConfigRegistry.instance().lookup().getRealPath());
+               } catch (Exception e) {
                   throw new SQLException(e.getMessage());
                }
 
-               if (fieldType == FieldTypes.DISKBLOB)
-               {
+               if (fieldType == FieldTypes.DISKBLOB) {
                   // check if directory-attribute was provided
-                  if (directory == null)
-                  {
-                     throw new IllegalArgumentException(
-                              "directory-attribute needed for fields of type DISKBLOB");
+                  if (directory == null) {
+                     throw new IllegalArgumentException("directory-attribute needed for fields of type DISKBLOB");
                   }
 
                   // instanciate file object for that dir
                   File dir = new File(directory);
 
                   // Check saveDirectory is truly a directory
-                  if (!dir.isDirectory())
-                  {
+                  if (!dir.isDirectory()) {
                      throw new IllegalArgumentException("Not a directory: "
                                                         + directory);
                   }
 
                   // Check saveDirectory is writable
-                  if (!dir.canWrite())
-                  {
+                  if (!dir.canWrite()) {
                      throw new IllegalArgumentException("Not writable: "
                                                         + directory);
                   }
 
                   // dir is ok so lets store the filepart
-                  FileHolder fileHolder = ParseUtil.getFileHolder(getRequest(), 
+                  FileHolder fileHolder = ParseUtil.getFileHolder(getRequest(),
                                                                   "f_"
-                                                                  + getTable()
-                                                                       .getId()
-                                                                  + "_" + getKeyId()
+                                                                  + getTable().getId()
                                                                   + "_"
-                                                                  + curField.getId());
+                                                                  + getKeyId()
+                                                                  + "_"
+                                                                  + curField
+                                                                    .getId());
 
-                  if (fileHolder != null)
-                  {
-                     try
-                     {
+                  if (fileHolder != null) {
+                     try {
                         fileHolder.writeBufferToFile(dir);
-
 
                         //filePart.getInputStream().close();
                         logCat.info("fin + closedy");
-                     }
-                     catch (IOException ioe)
-                     {
+                     } catch (IOException ioe) {
                         //#checkme: this would be a good place for rollback in database!!
                         throw new SQLException("could not store file '"
                                                + fileHolder.getFileName()
                                                + "' to dir '" + directory + "'");
                      }
-                  }
-                  else
-                  {
+                  } else {
                      logCat.info("uh! empty fileHolder");
                   }
                }
@@ -310,10 +287,9 @@ public class UpdateEvent extends ValidationEvent
          // finally, we process interceptor again (post-update)
          // process the interceptors associated to this table
          getTable()
-            .processInterceptors(DbEventInterceptor.POST_UPDATE, getRequest(), fieldValues, 
-                              getConfig(), con);
+            .processInterceptors(DbEventInterceptor.POST_UPDATE, getRequest(),
+                                 fieldValues, getConfig(), con);
       }
-
 
       // End of interceptor processing
    }

@@ -24,159 +24,107 @@ package org.dbforms.event.eventtype;
 
 
 /**
- *  EventType context class.
- *  Uses strategy to select the event type value from an input
- *  string.
+ * EventType context class. Uses strategy to select the event type value from
+ * an input string.
  *
- * @author  Luca Fossato
- * @created  28 novembre 2002
+ * @author Luca Fossato
+ *
  */
-public class EventType
-{
+public class EventType {
    /** value of the database event */
    public static final int EVENT_GROUP_DATABASE = 0;
 
    /** value of the navigation event */
    public static final int EVENT_GROUP_NAVIGATION = 1;
 
-   /**  value of the navigation goto event */
+   /** value of the navigation goto event */
    public static final int EVENT_UNDEFINED = -1;
 
-   /**  value of the database insert event */
+   /** value of the database insert event */
    public static final String EVENT_DATABASE_INSERT = "insert";
 
-   /**  value of the database update event */
+   /** value of the database update event */
    public static final String EVENT_DATABASE_UPDATE = "update";
 
-   /**  value of the database delete event */
+   /** value of the database delete event */
    public static final String EVENT_DATABASE_DELETE = "delete";
 
-
-   /**  value of the navigation first event */
+   /** value of the navigation first event */
    public static final String EVENT_NAVIGATION_FIRST = "navFirst";
 
-   /**  value of the navigation previous event */
+   /** value of the navigation previous event */
    public static final String EVENT_NAVIGATION_PREV = "navPrev";
 
-   /**  value of the navigation next event */
+   /** value of the navigation next event */
    public static final String EVENT_NAVIGATION_NEXT = "navNext";
 
-   /**  value of the navigation last event */
+   /** value of the navigation last event */
    public static final String EVENT_NAVIGATION_LAST = "navLast";
 
-   /**  value of the navigation new event */
+   /** value of the navigation new event */
    public static final String EVENT_NAVIGATION_NEW = "navNew";
 
-   /**  value of the navigation new event */
+   /** value of the navigation new event */
    public static final String EVENT_NAVIGATION_COPY = "navCopy";
 
-   /**  value of the navigation goto event */
+   /** value of the navigation goto event */
    public static final String EVENT_NAVIGATION_GOTO = "navGoto";
 
-	/**  value of the navigation reload event */
-	public static final String EVENT_NAVIGATION_RELOAD = "navReload";
+   /** value of the navigation reload event */
+   public static final String EVENT_NAVIGATION_RELOAD = "navReload";
 
-   /**  value of the navigation force reload event */
+   /** value of the navigation force reload event */
    public static final String EVENT_NAVIGATION_FORCERELOAD = "navForceReload";
-	
-	
-	/**  transfer value of the navigation first event */
-	public static final String EVENT_NAVIGATION_TRANSFER_FIRST = "ac_first_";
 
-	/**  transfer value of the navigation previous event */
-	public static final String EVENT_NAVIGATION_TRANSFER_PREV = "ac_prev_";
+   /** transfer value of the navigation first event */
+   public static final String EVENT_NAVIGATION_TRANSFER_FIRST = "ac_first_";
 
-	/**  transfer value of the navigation next event */
-	public static final String EVENT_NAVIGATION_TRANSFER_NEXT = "ac_next_";
+   /** transfer value of the navigation previous event */
+   public static final String EVENT_NAVIGATION_TRANSFER_PREV = "ac_prev_";
 
-	/**  transfer value of the navigation last event */
-	public static final String EVENT_NAVIGATION_TRANSFER_LAST = "ac_last_";
+   /** transfer value of the navigation next event */
+   public static final String EVENT_NAVIGATION_TRANSFER_NEXT = "ac_next_";
 
-	/**  transfer value of the navigation new event */
-	public static final String EVENT_NAVIGATION_TRANSFER_NEW = "ac_new_";
+   /** transfer value of the navigation last event */
+   public static final String EVENT_NAVIGATION_TRANSFER_LAST = "ac_last_";
 
-	/**  transfer value of the navigation new event */
-	public static final String EVENT_NAVIGATION_TRANSFER_COPY = "ac_copy_";
+   /** transfer value of the navigation new event */
+   public static final String EVENT_NAVIGATION_TRANSFER_NEW = "ac_new_";
 
-	/**  transfer value of the navigation goto event */
-	public static final String EVENT_NAVIGATION_TRANSFER_GOTO = "ac_goto_";
+   /** transfer value of the navigation new event */
+   public static final String EVENT_NAVIGATION_TRANSFER_COPY = "ac_copy_";
 
-	/**  transfer value of the navigation reload event */
-	public static final String EVENT_NAVIGATION_TRANSFER_RELOAD = "ac_reload_";
+   /** transfer value of the navigation goto event */
+   public static final String EVENT_NAVIGATION_TRANSFER_GOTO = "ac_goto_";
 
-
-   /** the string that identifies the event type */
-   private String eventString = null;
+   /** transfer value of the navigation reload event */
+   public static final String EVENT_NAVIGATION_TRANSFER_RELOAD = "ac_reload_";
 
    /** eventType strategy class */
    private EventTypeStrategy eventTypeStrategy = null;
 
+   /** the string that identifies the event type */
+   private String eventString = null;
+
    /**
-    *  Constructor; set the input EventTypeStrategy object as
-    *  the default strategy.
+    * Constructor; set the input EventTypeStrategy object as the default
+    * strategy.
     *
-    * @param  eventTypeStrategy an EventTypeStrategy object
+    * @param eventTypeStrategy an EventTypeStrategy object
     */
-   public EventType(EventTypeStrategy eventTypeStrategy)
-   {
+   public EventType(EventTypeStrategy eventTypeStrategy) {
       this.eventTypeStrategy = eventTypeStrategy;
    }
 
    /**
-    *  Gets the eventString attribute of the EventType object
+    * Gets the event group value
     *
-    * @return  The eventString value
+    * @return The event group value
     */
-   public String getEventString()
-   {
-      return eventString;
-   }
-
-
-   /**
-    *  Sets the eventString attribute of the EventType object
-    *
-    * @param  eventString The new eventString value
-    */
-   public void setEventString(String eventString)
-   {
-      this.eventString = eventString;
-   }
-
-
-   /**
-    *  Gets the eventTypeStrategy attribute of the EventType object
-    *
-    * @return  The eventTypeStrategy value
-    */
-   public EventTypeStrategy getEventTypeStrategy()
-   {
-      return eventTypeStrategy;
-   }
-
-
-   /**
-    *  Sets the eventTypeStrategy attribute of the EventType object
-    *
-    * @param  eventTypeStrategy The new eventTypeStrategy value
-    */
-   public void setEventTypeStrategy(EventTypeStrategy eventTypeStrategy)
-   {
-      this.eventTypeStrategy = eventTypeStrategy;
-   }
-
-
-   /**
-    *  Gets the event group value
-    *
-    * @return  The event group value
-    */
-   public int getEventGroup()
-   {
+   public int getEventGroup() {
       int eventGroup = EVENT_UNDEFINED;
 
-      if (eventTypeStrategy != null)
-      {
+      if (eventTypeStrategy != null) {
          eventGroup = eventTypeStrategy.getEventGroup(eventString);
       }
 
@@ -185,19 +133,57 @@ public class EventType
 
 
    /**
-    *  Gets the event type value
+    * Sets the eventString attribute of the EventType object
     *
-    * @return  The event type value
+    * @param eventString The new eventString value
     */
-   public String getEventType()
-   {
+   public void setEventString(String eventString) {
+      this.eventString = eventString;
+   }
+
+
+   /**
+    * Gets the eventString attribute of the EventType object
+    *
+    * @return The eventString value
+    */
+   public String getEventString() {
+      return eventString;
+   }
+
+
+   /**
+    * Gets the event type value
+    *
+    * @return The event type value
+    */
+   public String getEventType() {
       String eventValue = String.valueOf(EVENT_UNDEFINED);
 
-      if (eventTypeStrategy != null)
-      {
+      if (eventTypeStrategy != null) {
          eventValue = eventTypeStrategy.getEventType(eventString);
       }
 
       return eventValue;
+   }
+
+
+   /**
+    * Sets the eventTypeStrategy attribute of the EventType object
+    *
+    * @param eventTypeStrategy The new eventTypeStrategy value
+    */
+   public void setEventTypeStrategy(EventTypeStrategy eventTypeStrategy) {
+      this.eventTypeStrategy = eventTypeStrategy;
+   }
+
+
+   /**
+    * Gets the eventTypeStrategy attribute of the EventType object
+    *
+    * @return The eventTypeStrategy value
+    */
+   public EventTypeStrategy getEventTypeStrategy() {
+      return eventTypeStrategy;
    }
 }

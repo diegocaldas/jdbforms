@@ -20,31 +20,22 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.event.eventtype;
+
 
 /**
  * EventTypeStrategy interface. Defines the strategy to identify an event group
  * or type value from an input event string.
- * 
+ *
  * @author Luca Fossato
- * @created 28 novembre 2002
+ *
  */
-public interface EventTypeStrategy
-{
-   /**
-    * Gets the EventTypeStrategy identifier.
-    * 
-    * @return the EventTypeStrategy identifier
-    */
-   String getId();
-
-
+public interface EventTypeStrategy {
    /**
     * Gets the event group value.
-    * 
+    *
     * @param eventString the string that identifies an event type
-    * 
+    *
     * @return The event group value, or <code>EventType.EVENT_UNDEFINED</code>
     */
    int getEventGroup(String eventString);
@@ -52,10 +43,18 @@ public interface EventTypeStrategy
 
    /**
     * Gets the event type value
-    * 
+    *
     * @param eventString the string that identifies an event type
-    * 
+    *
     * @return The event type value, or <code>EventType.EVENT_UNDEFINED</code>
     */
    String getEventType(String eventString);
+
+
+   /**
+    * Gets the EventTypeStrategy identifier.
+    *
+    * @return the EventTypeStrategy identifier
+    */
+   String getId();
 }

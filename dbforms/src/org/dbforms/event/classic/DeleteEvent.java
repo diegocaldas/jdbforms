@@ -20,27 +20,37 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.event.classic;
-import java.io.*;
-import java.util.*;
-import java.sql.*;
-import javax.servlet.http.*;
-import org.dbforms.util.*;
-import org.apache.log4j.Category;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.dbforms.config.*;
+
 import org.dbforms.event.DatabaseEvent;
 
-/****
- * @deprecated
- *
- * <p>This event prepares and performs a SQL-Delete operation</p>
+import org.dbforms.util.*;
+
+import java.io.*;
+
+import java.sql.*;
+
+import java.util.*;
+
+import javax.servlet.http.*;
+
+
+
+/**
+ * DOCUMENT ME!
  *
  * @author Joe Peer
+ *
+ * @deprecated <p>
  */
 public class DeleteEvent extends DatabaseEvent {
    // logging category for this class
-   static Category logCat = Category.getInstance(DeleteEvent.class.getName());
+   static Log logCat = LogFactory.getLog(DeleteEvent.class.getName());
 
    /**
     * Creates a new DeleteEvent object.
@@ -50,13 +60,13 @@ public class DeleteEvent extends DatabaseEvent {
     * @param request DOCUMENT ME!
     * @param config DOCUMENT ME!
     */
-   public DeleteEvent(
-      Integer tableId,
-      String keyId,
-      HttpServletRequest request,
-      DbFormsConfig config) {
+   public DeleteEvent(Integer            tableId,
+                      String             keyId,
+                      HttpServletRequest request,
+                      DbFormsConfig      config) {
       super(tableId.intValue(), keyId, request, config);
    }
+
 
    /**
     * Creates a new DeleteEvent object.
@@ -65,15 +75,11 @@ public class DeleteEvent extends DatabaseEvent {
     * @param request DOCUMENT ME!
     * @param config DOCUMENT ME!
     */
-   public DeleteEvent(
-      String action,
-      HttpServletRequest request,
-      DbFormsConfig config) {
-      super(
-         ParseUtil.getEmbeddedStringAsInteger(action, 2, '_'),
-         ParseUtil.getEmbeddedString(action, 3, '_'),
-         request,
-         config);
+   public DeleteEvent(String             action,
+                      HttpServletRequest request,
+                      DbFormsConfig      config) {
+      super(ParseUtil.getEmbeddedStringAsInteger(action, 2, '_'),
+            ParseUtil.getEmbeddedString(action, 3, '_'), request, config);
    }
 
    /**
@@ -84,6 +90,7 @@ public class DeleteEvent extends DatabaseEvent {
    public FieldValues getFieldValues() {
       return getFieldValues(true);
    }
+
 
    /**
     * DOCUMENT ME!
@@ -104,20 +111,21 @@ public class DeleteEvent extends DatabaseEvent {
       // example: value of field 1=12, value of field 3=1992, then we'll get "1:2:12-3:4:1992"
       String keyValuesStr = getKeyValues();
 
-      if ((keyValuesStr == null) || (keyValuesStr.trim().length() == 0)) {
-         logCat.error(
-            "At least one key is required per table, check your dbforms-config.xml");
+      if ((keyValuesStr == null) || (keyValuesStr.trim()
+                                                       .length() == 0)) {
+         logCat.error("At least one key is required per table, check your dbforms-config.xml");
 
          return;
       }
 
       // Apply given security contraints (as defined in dbforms-config.xml)
       if (!hasUserPrivileg(GrantedPrivileges.PRIVILEG_DELETE)) {
-         String s =
-            MessageResourcesInternal.getMessage(
-               "dbforms.events.delete.nogrant",
-               getRequest().getLocale(),
-               new String[] { getTable().getName()});
+         String s = MessageResourcesInternal.getMessage("dbforms.events.delete.nogrant",
+                                                        getRequest().getLocale(),
+                                                        new String[] {
+                                                           getTable()
+                                                              .getName()
+                                                        });
          throw new SQLException(s);
       }
 
@@ -125,13 +133,10 @@ public class DeleteEvent extends DatabaseEvent {
       FieldValues fieldValues = getFieldValues();
 
       // part 2b: process the interceptors associated to this table
-      int operation =
-         getTable().processInterceptors(
-            DbEventInterceptor.PRE_DELETE,
-            getRequest(),
-            fieldValues,
-            getConfig(),
-            con);
+      int operation = getTable()
+                         .processInterceptors(DbEventInterceptor.PRE_DELETE,
+                                              getRequest(), fieldValues,
+                                              getConfig(), con);
 
       // End of interceptor processing
       if (operation == DbEventInterceptor.GRANT_OPERATION) {
@@ -140,29 +145,28 @@ public class DeleteEvent extends DatabaseEvent {
          // if so, we have to select the filename+dirs from the db before we can delete
          ResultSet diskblobs = null;
 
-         if (getTable().containsDiskblob()) {
+         if (getTable()
+                      .containsDiskblob()) {
             StringBuffer queryBuf = new StringBuffer();
             queryBuf.append(getTable().getDisblobSelectStatement());
             queryBuf.append(" WHERE ");
             queryBuf.append(getTable().getWhereClauseForKeyFields());
 
-            PreparedStatement diskblobsPs =
-               con.prepareStatement(queryBuf.toString());
-            getTable().populateWhereClauseWithKeyFields(
-               keyValuesStr,
-               diskblobsPs,
-               1);
+            PreparedStatement diskblobsPs = con.prepareStatement(queryBuf
+                                                                 .toString());
+            getTable()
+               .populateWhereClauseWithKeyFields(keyValuesStr, diskblobsPs, 1);
             diskblobs = diskblobsPs.executeQuery();
             diskblobsPs.close();
          }
 
          // 20021031-HKK: build in table!!
-         PreparedStatement ps =
-            con.prepareStatement(getTable().getDeleteStatement());
+         PreparedStatement ps = con.prepareStatement(getTable().getDeleteStatement());
 
          // now we provide the values
          // of the key-fields, so that the WHERE clause matches the right dataset!
-         getTable().populateWhereClauseWithKeyFields(keyValuesStr, ps, 1);
+         getTable()
+            .populateWhereClauseWithKeyFields(keyValuesStr, ps, 1);
 
          // finally execute the query
          ps.executeUpdate();
@@ -174,14 +178,15 @@ public class DeleteEvent extends DatabaseEvent {
 
             if (diskblobs.next()) {
                // if a row in the resultset exists (can be only 1 row !)
-               Vector diskblobFields = getTable().getDiskblobs();
+               Vector diskblobFields = getTable()
+                                          .getDiskblobs();
 
                // get fields we're interested in
                for (int i = 0; i < diskblobFields.size(); i++) {
-                  Field aField = (Field) diskblobFields.elementAt(i);
+                  Field  aField   = (Field) diskblobFields.elementAt(i);
                   String fileName = diskblobs.getString(i + 1);
-                  // get a filename
 
+                  // get a filename
                   if (fileName != null) {
                      // may be SQL NULL, in that case we'll skip it
                      fileName = fileName.trim(); // remove whitespace
@@ -190,13 +195,8 @@ public class DeleteEvent extends DatabaseEvent {
                         String directory = null;
 
                         try {
-                           directory =
-                              Util.replaceRealPath(
-                                 aField.getDirectory(),
-                                 DbFormsConfigRegistry
-                                    .instance()
-                                    .lookup()
-                                    .getRealPath());
+                           directory = Util.replaceRealPath(aField.getDirectory(),
+                                                            DbFormsConfigRegistry.instance().lookup().getRealPath());
                         } catch (Exception e) {
                            throw new SQLException(e.getMessage());
                         }
@@ -206,18 +206,12 @@ public class DeleteEvent extends DatabaseEvent {
 
                         if (file.exists()) {
                            file.delete();
-                           logCat.info(
-                              "deleted file "
-                                 + fileName
-                                 + " from dir "
-                                 + directory);
+                           logCat.info("deleted file " + fileName
+                                       + " from dir " + directory);
                         } else {
-                           logCat.info(
-                              "delete of file "
-                                 + fileName
-                                 + " from dir "
-                                 + directory
-                                 + " failed because file not found");
+                           logCat.info("delete of file " + fileName
+                                       + " from dir " + directory
+                                       + " failed because file not found");
                         }
                      }
                   }
@@ -227,12 +221,9 @@ public class DeleteEvent extends DatabaseEvent {
 
          // finally, we process interceptor again (post-delete)
          // process the interceptors associated to this table
-         getTable().processInterceptors(
-            DbEventInterceptor.POST_DELETE,
-            getRequest(),
-            fieldValues,
-            getConfig(),
-            con);
+         getTable()
+            .processInterceptors(DbEventInterceptor.POST_DELETE, getRequest(),
+                                 fieldValues, getConfig(), con);
       }
 
       // End of interceptor processing

@@ -24,39 +24,72 @@ package org.dbforms.taglib;
 
 import javax.servlet.jsp.JspException;
 
-/****
+
+
+/**
+ * <p>
+ * This tag renders a HTML TextArea - Element
+ * </p>
+ * this tag renders a dabase-datadriven textArea, which is an active element -
+ * the user can change data
  *
- * <p>This tag renders a HTML TextArea - Element</p>
- *
- * this tag renders a dabase-datadriven textArea, which is an active element - the user
- * can change data
- *
- * @author Joachim Peer <j.peer@gmx.net>
+ * @author Joachim Peer
  */
 public class DbTextAreaTag extends DbBaseInputTag
-      implements javax.servlet.jsp.tagext.TryCatchFinally
-{
- 
-   /** DOCUMENT ME! */
-   protected String wrap;
-
+   implements javax.servlet.jsp.tagext.TryCatchFinally {
    /** DOCUMENT ME! */
    protected String renderBody;
 
-	public void doFinally()
-	{
-		wrap = null;
-		renderBody = null;
-		super.doFinally();
-	}
+   /** DOCUMENT ME! */
+   protected String wrap;
+
+   /**
+    * Sets the renderBody
+    *
+    * @param renderBody The renderBody to set
+    */
+   public void setRenderBody(String renderBody) {
+      this.renderBody = renderBody;
+   }
+
+
+   /**
+    * Gets the renderBody
+    *
+    * @return Returns a String
+    */
+   public String getRenderBody() {
+      return renderBody;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param wrap DOCUMENT ME!
+    */
+   public void setWrap(String wrap) {
+      this.wrap = wrap;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String getWrap() {
+      return wrap;
+   }
+
 
    /**
     * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
     */
-   public void doCatch(Throwable t) throws Throwable
-   {
+   public void doCatch(Throwable t) throws Throwable {
       throw t;
    }
+
 
    /**
     * DOCUMENT ME!
@@ -66,28 +99,68 @@ public class DbTextAreaTag extends DbBaseInputTag
     * @throws javax.servlet.jsp.JspException DOCUMENT ME!
     * @throws JspException DOCUMENT ME!
     */
-   public int doStartTag() throws javax.servlet.jsp.JspException
-   {
+   public int doEndTag() throws javax.servlet.jsp.JspException {
+      try {
+         if ("true".equals(renderBody) && (bodyContent != null)) {
+            bodyContent.writeOut(bodyContent.getEnclosingWriter());
+            bodyContent.clearBody(); // workaround for duplicate rows in JRun 3.1
+         }
+
+         pageContext.getOut()
+                    .write("</textArea>");
+
+         // Writes out the old field value
+         writeOutSpecialValues();
+
+         // For generation Javascript Validation.  Need all original and modified fields name
+         getParentForm()
+            .addChildName(getName(), getFormFieldName());
+      } catch (java.io.IOException ioe) {
+         throw new JspException("IO Error: " + ioe.getMessage());
+      }
+
+      return EVAL_PAGE;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    */
+   public void doFinally() {
+      wrap       = null;
+      renderBody = null;
+      super.doFinally();
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws javax.servlet.jsp.JspException DOCUMENT ME!
+    * @throws JspException DOCUMENT ME!
+    */
+   public int doStartTag() throws javax.servlet.jsp.JspException {
       super.doStartTag();
 
-
-      StringBuffer       tagBuf = new StringBuffer("<textarea ");
+      StringBuffer tagBuf = new StringBuffer("<textarea ");
 
       tagBuf.append(prepareName());
-      if (wrap != null)
-      {
+
+      if (wrap != null) {
          tagBuf.append(" wrap=\"");
          tagBuf.append(wrap);
          tagBuf.append("\"");
       }
-      if (getCols() != null)
-      {
+
+      if (getCols() != null) {
          tagBuf.append(" cols=\"");
-         tagBuf.append(getCols() );
+         tagBuf.append(getCols());
          tagBuf.append("\"");
       }
-      if (getRows() != null)
-      {
+
+      if (getRows() != null) {
          tagBuf.append(" rows=\"");
          tagBuf.append(getRows());
          tagBuf.append("\"");
@@ -101,104 +174,21 @@ public class DbTextAreaTag extends DbBaseInputTag
       /* If the overrideValue attribute has been set, use its value instead of the one
       retrieved from the database.  This mechanism can be used to set an initial default
       value for a given field. */
-      if (!"true".equals(renderBody))
-      {
-			tagBuf.append(escapeHtml(getFormFieldValue()));
+      if (!"true".equals(renderBody)) {
+         tagBuf.append(escapeHTML(getFormFieldValue()));
       }
 
-      try
-      {
-         pageContext.getOut().write(tagBuf.toString());
-      }
-      catch (java.io.IOException e)
-      {
+      try {
+         pageContext.getOut()
+                    .write(tagBuf.toString());
+      } catch (java.io.IOException e) {
          throw new JspException("IO Error: " + e.getMessage());
       }
 
-      if (!"true".equals(renderBody))
-      {
+      if (!"true".equals(renderBody)) {
          return EVAL_BODY_BUFFERED;
-      }
-      else
-      {
+      } else {
          return SKIP_BODY;
       }
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    *
-    * @throws javax.servlet.jsp.JspException DOCUMENT ME!
-    * @throws JspException DOCUMENT ME!
-    */
-   public int doEndTag() throws javax.servlet.jsp.JspException
-   {
-      try
-      {
-         if ("true".equals(renderBody) && (bodyContent != null))
-         {
-            bodyContent.writeOut(bodyContent.getEnclosingWriter());
-            bodyContent.clearBody(); // workaround for duplicate rows in JRun 3.1
-         }
-
-         pageContext.getOut().write("</textArea>");
-
-			// Writes out the old field value
-         writeOutSpecialValues();
-
-         // For generation Javascript Validation.  Need all original and modified fields name
-			getParentForm().addChildName(getName(), getFormFieldName());
-      }
-      catch (java.io.IOException ioe)
-      {
-         throw new JspException("IO Error: " + ioe.getMessage());
-      }
-
-      return EVAL_PAGE;
-   }
-
-
-   /**
-    * Gets the renderBody
-    * @return Returns a String
-    */
-   public String getRenderBody()
-   {
-      return renderBody;
-   }
-
-
-   /**
-    * Sets the renderBody
-    * @param renderBody The renderBody to set
-    */
-   public void setRenderBody(String renderBody)
-   {
-      this.renderBody = renderBody;
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param wrap DOCUMENT ME!
-    */
-   public void setWrap(String wrap)
-   {
-      this.wrap = wrap;
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    */
-   public String getWrap()
-   {
-      return wrap;
    }
 }

@@ -21,35 +21,34 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.event;
-import java.util.Vector;
-import java.util.Locale;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.validator.ValidatorResources;
 import org.apache.commons.validator.Validator;
+import org.apache.commons.validator.ValidatorResources;
+
+import org.dbforms.config.DbFormsConfig;
+import org.dbforms.config.DbFormsErrors;
+import org.dbforms.config.FieldValues;
+import org.dbforms.config.MultipleValidationException;
+
+import org.dbforms.util.MessageResources;
 
 import org.dbforms.validation.ValidatorConstants;
 
-import org.dbforms.config.DbFormsErrors;
-import org.dbforms.config.MultipleValidationException;
-import org.dbforms.config.DbFormsConfig;
-import org.dbforms.config.FieldValues;
-import org.dbforms.util.MessageResources;
+import java.util.Locale;
+import java.util.Vector;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 
 
 
 /**
- * 
- *
- * abstract base class for all database operations which need validation, e.g. InsertEvent and UpdateEvent
- *
+ * abstract base class for all database operations which need validation, e.g.
+ * InsertEvent and UpdateEvent
  *
  * @author hkk
- * 
  */
-public abstract class ValidationEvent extends DatabaseEvent
-{
+public abstract class ValidationEvent extends DatabaseEvent {
    /**
     * Creates a new ValidationEvent object.
     *
@@ -58,36 +57,36 @@ public abstract class ValidationEvent extends DatabaseEvent
     * @param request DOCUMENT ME!
     * @param config DOCUMENT ME!
     */
-   public ValidationEvent(int tableId, String keyId,
-      HttpServletRequest request, DbFormsConfig config)
-   {
+   public ValidationEvent(int                tableId,
+                          String             keyId,
+                          HttpServletRequest request,
+                          DbFormsConfig      config) {
       super(tableId, keyId, request, config);
    }
 
-
    /**
-    *  DO the validation of <FORM> with Commons-Validator.
+    * DO the validation of the form with Commons-Validator.
     *
-    * @param  formValidatorName The form name to retreive in validation.xml
-    * @param  request The servlet request we are processing
-    * @param  e the web event
-    * @exception  MultipleValidationException The Vector of errors throwed with this exception
+    * @param formValidatorName The form name to retreive in validation.xml
+    * @param context The servlet request we are processing
+    *
+    * @exception MultipleValidationException The Vector of errors throwed with
+    *            this exception
     */
-   public void doValidation(String formValidatorName, ServletContext context) throws MultipleValidationException
-   {
+   public void doValidation(String         formValidatorName,
+                            ServletContext context)
+                     throws MultipleValidationException {
       FieldValues fieldValues = getFieldValues();
 
       // If no data to validate, return
-      if (fieldValues.size() == 0)
-      {
+      if (fieldValues.size() == 0) {
          return;
       }
 
       // Retreive ValidatorResources from Application context (loaded with ConfigServlet)
       ValidatorResources vr = (ValidatorResources) context.getAttribute(ValidatorConstants.VALIDATOR);
 
-      if (vr == null)
-      {
+      if (vr == null) {
          return;
       }
 
@@ -106,19 +105,15 @@ public abstract class ValidationEvent extends DatabaseEvent
       // Vector of errors to populate
       validator.addResource("org.dbforms.config.DbFormsErrors", dbFormErrors);
 
-      try
-      {
+      try {
          validator.validate();
-      }
-      catch (Exception ex)
-      {
+      } catch (Exception ex) {
          logCat.error("\n!!! doValidation error for : " + formValidatorName
-            + "  !!!\n" + ex);
+                      + "  !!!\n" + ex);
       }
 
       // If error(s) found, throw Exception
-      if (errors.size() > 0)
-      {
+      if (errors.size() > 0) {
          throw new MultipleValidationException(errors);
       }
    }

@@ -23,19 +23,14 @@
 package org.dbforms.config;
 
 
-
-
-/****
+/**
  * <p>
  * This class represents a Message tag in dbforms-error.xml
  * </p>
- * 
- * @author unknown
  *
+ * @author unknown
  */
-public class Message
-{
-   
+public class Message {
    //------------------------ Properties ---------------------------------------------------------
    private String language; // Code used to specify a language for this message
 
@@ -45,32 +40,9 @@ public class Message
    /**
     * DOCUMENT ME!
     *
-    * @param message DOCUMENT ME!
-    */
-   public void setMessage(String message)
-   {
-      this.message = message;
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    */
-   public String getMessage()
-   {
-      return message;
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
     * @param language DOCUMENT ME!
     */
-   public void setLanguage(String language)
-   {
+   public void setLanguage(String language) {
       this.language = language;
    }
 
@@ -80,9 +52,18 @@ public class Message
     *
     * @return DOCUMENT ME!
     */
-   public String getLanguage()
-   {
+   public String getLanguage() {
       return language;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param message DOCUMENT ME!
+    */
+   public void setMessage(String message) {
+      this.message = message;
    }
 
 
@@ -91,8 +72,17 @@ public class Message
     *
     * @return DOCUMENT ME!
     */
-   public String toString()
-   {
+   public String getMessage() {
+      return message;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String toString() {
       StringBuffer buf = new StringBuffer();
       buf.append("language=");
       buf.append(language);

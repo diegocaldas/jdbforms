@@ -43,6 +43,7 @@ public class BookstoreWithInterceptorTest extends DbEventInterceptorSupport {
             rs = stmt.executeQuery(strSql);
             rs.next();
             new_id = rs.getLong(1) + 1;
+            stmt.close();
          } catch (SQLException e) {
             e.printStackTrace();
          }

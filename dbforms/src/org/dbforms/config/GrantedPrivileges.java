@@ -22,25 +22,27 @@
  */
 package org.dbforms.config;
 
-import java.util.Vector;
-import javax.servlet.http.HttpServletRequest;
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.dbforms.util.ParseUtil;
 
+import java.util.Vector;
+
+import javax.servlet.http.HttpServletRequest;
 
 
-/****
+
+/**
  * <p>
  * This class represents a "granted-privileges"-tag in dbforms-config.xml
  * </p>
  *
- * @author Joachim Peer <joepeer@wap-force.net>
+ * @author Joachim Peer
  */
-public class GrantedPrivileges
-{
-   private static Category logCat = Category.getInstance(GrantedPrivileges.class
-         .getName()); // logging category for this class
+public class GrantedPrivileges {
+   private static Log logCat = LogFactory.getLog(GrantedPrivileges.class
+                                                 .getName()); // logging category for this class
 
    /** DOCUMENT ME! */
    public static final int PRIVILEG_SELECT = 0;
@@ -58,8 +60,7 @@ public class GrantedPrivileges
    /**
     * Creates a new GrantedPrivileges object.
     */
-   public GrantedPrivileges()
-   {
+   public GrantedPrivileges() {
       grantedRoles = new Vector[4];
 
       //conditions = new Hashtable();
@@ -68,12 +69,11 @@ public class GrantedPrivileges
    /**
     * DOCUMENT ME!
     *
-    * @param select DOCUMENT ME!
+    * @param delete DOCUMENT ME!
     */
-   public void setSelect(String select)
-   {
-      logCat.info("select");
-      grantedRoles[PRIVILEG_SELECT] = ParseUtil.splitString(select, ",;~");
+   public void setDelete(String delete) {
+      logCat.info("delete");
+      grantedRoles[PRIVILEG_DELETE] = ParseUtil.splitString(delete, ",;~");
    }
 
 
@@ -82,8 +82,7 @@ public class GrantedPrivileges
     *
     * @param insert DOCUMENT ME!
     */
-   public void setInsert(String insert)
-   {
+   public void setInsert(String insert) {
       logCat.info("insert");
       grantedRoles[PRIVILEG_INSERT] = ParseUtil.splitString(insert, ",;~");
    }
@@ -92,24 +91,22 @@ public class GrantedPrivileges
    /**
     * DOCUMENT ME!
     *
-    * @param update DOCUMENT ME!
+    * @param select DOCUMENT ME!
     */
-   public void setUpdate(String update)
-   {
-      logCat.info("update");
-      grantedRoles[PRIVILEG_UPDATE] = ParseUtil.splitString(update, ",;~");
+   public void setSelect(String select) {
+      logCat.info("select");
+      grantedRoles[PRIVILEG_SELECT] = ParseUtil.splitString(select, ",;~");
    }
 
 
    /**
     * DOCUMENT ME!
     *
-    * @param delete DOCUMENT ME!
+    * @param update DOCUMENT ME!
     */
-   public void setDelete(String delete)
-   {
-      logCat.info("delete");
-      grantedRoles[PRIVILEG_DELETE] = ParseUtil.splitString(delete, ",;~");
+   public void setUpdate(String update) {
+      logCat.info("update");
+      grantedRoles[PRIVILEG_UPDATE] = ParseUtil.splitString(update, ",;~");
    }
 
 
@@ -121,19 +118,16 @@ public class GrantedPrivileges
     *
     * @return DOCUMENT ME!
     */
-   public boolean hasUserPrivileg(HttpServletRequest request, int privileg)
-   {
-      if (grantedRoles[privileg] == null)
-      {
+   public boolean hasUserPrivileg(HttpServletRequest request,
+                                  int                privileg) {
+      if (grantedRoles[privileg] == null) {
          return true; // if no constraints specified -> wildcard access ;-)
       }
 
-      for (int i = 0; i < grantedRoles[privileg].size(); i++)
-      {
+      for (int i = 0; i < grantedRoles[privileg].size(); i++) {
          String aGrantedRole = (String) grantedRoles[privileg].elementAt(i);
 
-         if (request.isUserInRole(aGrantedRole))
-         {
+         if (request.isUserInRole(aGrantedRole)) {
             return true; // if the user is InRole(aGrantedRole) then let him go on :=)
          }
       }

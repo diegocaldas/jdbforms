@@ -22,13 +22,13 @@
  */
 package org.dbforms.util;
 
+import java.io.IOException;
+
 /**
  * Implementation of a JspWriter which do not write anything
- *
  */
 import javax.servlet.ServletResponse;
 import javax.servlet.jsp.JspWriter;
-import java.io.IOException;
 
 
 
@@ -38,20 +38,9 @@ import java.io.IOException;
  * @author $author$
  * @version $Revision$
  */
-public class JspWriterBuffer extends JspWriter
-{
+public class JspWriterBuffer extends JspWriter {
    private StringBuffer buf = new StringBuffer();
 
-   public StringBuffer getBuffer() 
-   {
-      return buf;
-   }
-   
-   public String getResult() 
-   {
-      return buf.toString();
-   }
-   
    /**
     * Creates a new JspWriterDummy object.
     *
@@ -59,11 +48,100 @@ public class JspWriterBuffer extends JspWriter
     * @param autoFlush DOCUMENT ME!
     * @param response DOCUMENT ME!
     */
-   protected JspWriterBuffer(int bufferSize, boolean autoFlush,
-      ServletResponse response)
-   {
+   protected JspWriterBuffer(int             bufferSize,
+                             boolean         autoFlush,
+                             ServletResponse response) {
       super(bufferSize, autoFlush);
    }
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public StringBuffer getBuffer() {
+      return buf;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public int getRemaining() {
+      return 0;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String getResult() {
+      return buf.toString();
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @throws IOException DOCUMENT ME!
+    */
+   public void clear() throws IOException {
+      clearBuffer();
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @throws IOException DOCUMENT ME!
+    */
+   public void clearBuffer() throws IOException {
+      buf = new StringBuffer();
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @throws IOException DOCUMENT ME!
+    */
+   public void close() throws IOException {
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @throws IOException DOCUMENT ME!
+    */
+   public void flush() throws IOException {
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @throws IOException DOCUMENT ME!
+    */
+   public void newLine() throws IOException {
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param b DOCUMENT ME!
+    *
+    * @throws IOException DOCUMENT ME!
+    */
+   public void print(boolean b) throws IOException {
+      buf.append(b);
+   }
+
 
    /**
     * DOCUMENT ME!
@@ -72,8 +150,230 @@ public class JspWriterBuffer extends JspWriter
     *
     * @throws IOException DOCUMENT ME!
     */
-   public void write(int c) throws IOException
-   {
+   public void print(char c) throws IOException {
+      buf.append(c);
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param s DOCUMENT ME!
+    *
+    * @throws IOException DOCUMENT ME!
+    */
+   public void print(char[] s) throws IOException {
+      buf.append(s);
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param i DOCUMENT ME!
+    *
+    * @throws IOException DOCUMENT ME!
+    */
+   public void print(int i) throws IOException {
+      buf.append(i);
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param l DOCUMENT ME!
+    *
+    * @throws IOException DOCUMENT ME!
+    */
+   public void print(long l) throws IOException {
+      buf.append(l);
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param f DOCUMENT ME!
+    *
+    * @throws IOException DOCUMENT ME!
+    */
+   public void print(float f) throws IOException {
+      buf.append(f);
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param d DOCUMENT ME!
+    *
+    * @throws IOException DOCUMENT ME!
+    */
+   public void print(double d) throws IOException {
+      buf.append(d);
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param s DOCUMENT ME!
+    *
+    * @throws IOException DOCUMENT ME!
+    */
+   public void print(String s) throws IOException {
+      buf.append(s);
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param obj DOCUMENT ME!
+    *
+    * @throws IOException DOCUMENT ME!
+    */
+   public void print(Object obj) throws IOException {
+      buf.append(obj);
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @throws IOException DOCUMENT ME!
+    */
+   public void println() throws IOException {
+      buf.append('\n');
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param x DOCUMENT ME!
+    *
+    * @throws IOException DOCUMENT ME!
+    */
+   public void println(boolean x) throws IOException {
+      print(x);
+      println();
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param x DOCUMENT ME!
+    *
+    * @throws IOException DOCUMENT ME!
+    */
+   public void println(char x) throws IOException {
+      print(x);
+      println();
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param x DOCUMENT ME!
+    *
+    * @throws IOException DOCUMENT ME!
+    */
+   public void println(int x) throws IOException {
+      print(x);
+      println();
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param x DOCUMENT ME!
+    *
+    * @throws IOException DOCUMENT ME!
+    */
+   public void println(long x) throws IOException {
+      print(x);
+      println();
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param x DOCUMENT ME!
+    *
+    * @throws IOException DOCUMENT ME!
+    */
+   public void println(float x) throws IOException {
+      print(x);
+      println();
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param x DOCUMENT ME!
+    *
+    * @throws IOException DOCUMENT ME!
+    */
+   public void println(double x) throws IOException {
+      print(x);
+      println();
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param x DOCUMENT ME!
+    *
+    * @throws IOException DOCUMENT ME!
+    */
+   public void println(char[] x) throws IOException {
+      print(x);
+      println();
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param x DOCUMENT ME!
+    *
+    * @throws IOException DOCUMENT ME!
+    */
+   public void println(String x) throws IOException {
+      print(x);
+      println();
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param x DOCUMENT ME!
+    *
+    * @throws IOException DOCUMENT ME!
+    */
+   public void println(Object x) throws IOException {
+      print(x);
+      println();
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param c DOCUMENT ME!
+    *
+    * @throws IOException DOCUMENT ME!
+    */
+   public void write(int c) throws IOException {
       buf.append(c);
    }
 
@@ -87,9 +387,10 @@ public class JspWriterBuffer extends JspWriter
     *
     * @throws IOException DOCUMENT ME!
     */
-   public void write(char[] cbuf, int off, int len) throws IOException
-   {
-   	buf.append(cbuf, off, len);
+   public void write(char[] cbuf,
+                     int    off,
+                     int    len) throws IOException {
+      buf.append(cbuf, off, len);
    }
 
 
@@ -102,325 +403,9 @@ public class JspWriterBuffer extends JspWriter
     *
     * @throws IOException DOCUMENT ME!
     */
-   public void write(String str, int off, int len) throws IOException
-   {
-   	write(str.toCharArray(), off, len);
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @throws IOException DOCUMENT ME!
-    */
-   public void clear() throws IOException
-   {
-      clearBuffer();
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @throws IOException DOCUMENT ME!
-    */
-   public void clearBuffer() throws IOException
-   {
-      buf = new StringBuffer();
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @throws IOException DOCUMENT ME!
-    */
-   public void close() throws IOException
-   {
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @throws IOException DOCUMENT ME!
-    */
-   public void flush() throws IOException
-   {
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    */
-   public int getRemaining()
-   {
-      return 0;
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @throws IOException DOCUMENT ME!
-    */
-   public void newLine() throws IOException
-   {
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param b DOCUMENT ME!
-    *
-    * @throws IOException DOCUMENT ME!
-    */
-   public void print(boolean b) throws IOException
-   {
-   	buf.append(b);
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param c DOCUMENT ME!
-    *
-    * @throws IOException DOCUMENT ME!
-    */
-   public void print(char c) throws IOException
-   {
-		buf.append(c);
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param s DOCUMENT ME!
-    *
-    * @throws IOException DOCUMENT ME!
-    */
-   public void print(char[] s) throws IOException
-   {
-		buf.append(s);
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param i DOCUMENT ME!
-    *
-    * @throws IOException DOCUMENT ME!
-    */
-   public void print(int i) throws IOException
-   {
-		buf.append(i);
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param l DOCUMENT ME!
-    *
-    * @throws IOException DOCUMENT ME!
-    */
-   public void print(long l) throws IOException
-   {
-		buf.append(l);
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param f DOCUMENT ME!
-    *
-    * @throws IOException DOCUMENT ME!
-    */
-   public void print(float f) throws IOException
-   {
-		buf.append(f);
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param d DOCUMENT ME!
-    *
-    * @throws IOException DOCUMENT ME!
-    */
-   public void print(double d) throws IOException
-   {
-		buf.append(d);
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param s DOCUMENT ME!
-    *
-    * @throws IOException DOCUMENT ME!
-    */
-   public void print(String s) throws IOException
-   {
-		buf.append(s);
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param obj DOCUMENT ME!
-    *
-    * @throws IOException DOCUMENT ME!
-    */
-   public void print(Object obj) throws IOException
-   {
-		buf.append(obj);
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @throws IOException DOCUMENT ME!
-    */
-   public void println() throws IOException
-   {
-		buf.append('\n');
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param x DOCUMENT ME!
-    *
-    * @throws IOException DOCUMENT ME!
-    */
-   public void println(boolean x) throws IOException
-   {
-      print(x);
-      println();
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param x DOCUMENT ME!
-    *
-    * @throws IOException DOCUMENT ME!
-    */
-   public void println(char x) throws IOException
-   {
-		print(x);
-		println();
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param x DOCUMENT ME!
-    *
-    * @throws IOException DOCUMENT ME!
-    */
-   public void println(int x) throws IOException
-   {
-		print(x);
-		println();
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param x DOCUMENT ME!
-    *
-    * @throws IOException DOCUMENT ME!
-    */
-   public void println(long x) throws IOException
-   {
-		print(x);
-		println();
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param x DOCUMENT ME!
-    *
-    * @throws IOException DOCUMENT ME!
-    */
-   public void println(float x) throws IOException
-   {
-		print(x);
-		println();
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param x DOCUMENT ME!
-    *
-    * @throws IOException DOCUMENT ME!
-    */
-   public void println(double x) throws IOException
-   {
-		print(x);
-		println();
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param x DOCUMENT ME!
-    *
-    * @throws IOException DOCUMENT ME!
-    */
-   public void println(char[] x) throws IOException
-   {
-		print(x);
-		println();
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param x DOCUMENT ME!
-    *
-    * @throws IOException DOCUMENT ME!
-    */
-   public void println(String x) throws IOException
-   {
-		print(x);
-		println();
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param x DOCUMENT ME!
-    *
-    * @throws IOException DOCUMENT ME!
-    */
-   public void println(Object x) throws IOException
-   {
-		print(x);
-		println();
+   public void write(String str,
+                     int    off,
+                     int    len) throws IOException {
+      write(str.toCharArray(), off, len);
    }
 }

@@ -24,9 +24,10 @@ package org.dbforms.util;
 
 import org.dbforms.util.external.PrintfFormat;
 
+
+
 /**
  * DefaultFormatter based in PrintfFormat
- * 
  */
 public class DefaultFormatterImpl extends PrintfFormat implements Formatter {
 }

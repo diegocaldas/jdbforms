@@ -114,7 +114,7 @@
                 <interface>2</interface>
                 <lastImport>3</lastImport>
                 <method>2</method>
-                <package>0</package>
+                <package>1</package>
             </after>
             <before>
                 <block>1</block>
@@ -198,7 +198,7 @@
                 <singleline>false</singleline>
             </remove>
             <separator>
-                <fillCharacter>�</fillCharacter>
+                <fillCharacter>=</fillCharacter>
                 <insert>false</insert>
                 <insertRecursive>false</insertRecursive>
                 <text>
@@ -246,7 +246,7 @@
             <firstColumnComments>true</firstColumnComments>
             <label>false</label>
             <policy>
-                <deep>false</deep>
+                <deep>true</deep>
             </policy>
             <sizes>
                 <braceCuddled>1</braceCuddled>
@@ -334,10 +334,10 @@
                     <extendsTypes>false</extendsTypes>
                     <implementsTypes>false</implementsTypes>
                     <label>true</label>
-                    <methodCallChained>false</methodCallChained>
+                    <methodCallChained>true</methodCallChained>
                     <ternaryOperator>
                         <first>false</first>
-                        <second>false</second>
+                        <second>true</second>
                     </ternaryOperator>
                     <throwsTypes>false</throwsTypes>
                 </after>
@@ -350,7 +350,7 @@
                 <parameter>
                     <methodCall>false</methodCall>
                     <methodCallNested>false</methodCallNested>
-                    <methodDeclaration>false</methodDeclaration>
+                    <methodDeclaration>true</methodDeclaration>
                 </parameter>
             </always>
             <general>
@@ -362,7 +362,7 @@
                 <after>
                     <assignment>false</assignment>
                     <leftParenthesis>false</leftParenthesis>
-                    <parameter>false</parameter>
+                    <parameter>true</parameter>
                     <types>
                         <extends>false</extends>
                         <implements>false</implements>

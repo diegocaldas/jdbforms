@@ -22,61 +22,68 @@
  */
 package org.dbforms.taglib;
 
-import javax.servlet.jsp.JspException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.dbforms.config.ResultSetVector;
-import org.apache.log4j.Category;
-import org.dbforms.validation.ValidatorConstants;
+
 import org.dbforms.util.Util;
 
+import org.dbforms.validation.ValidatorConstants;
+
+import javax.servlet.jsp.JspException;
 
 
-/****
+
+/**
+ * <p>
+ * this tag renders an "Insert"-button. #fixme - define abstract base class
+ * [should be fixed in release 0.6]
+ * </p>
  *
- * <p>this tag renders an "Insert"-button.
- *
- * #fixme - define abstract base class [should be fixed in release 0.6]
- *
- * @author Joachim Peer <j.peer@gmx.net>
+ * @author Joachim Peer
  */
 public class DbInsertButtonTag extends DbBaseButtonTag
-      implements javax.servlet.jsp.tagext.TryCatchFinally
-{
-   private static Category logCat = Category.getInstance(DbInsertButtonTag.class
-         .getName());
+   implements javax.servlet.jsp.tagext.TryCatchFinally {
+   private static Log logCat = LogFactory.getLog(DbInsertButtonTag.class
+                                                 .getName());
+   private String     showAlways = "false";
+
+   /**
+    * Sets the showAlways.
+    *
+    * @param showAlways The showAlways to set
+    */
+   public void setShowAlways(String showAlways) {
+      this.showAlways = showAlways;
+   }
 
 
-   private String showAlways = "false";
-	
-	public void doFinally()
-	{
-		showAlways = "false";
-		super.doFinally();
-	}
+   /**
+    * Returns the showAlways.
+    *
+    * @return String
+    */
+   public String getShowAlways() {
+      return showAlways;
+   }
+
 
    /**
     * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
     */
-   public void doCatch(Throwable t) throws Throwable
-   {
+   public void doCatch(Throwable t) throws Throwable {
       throw t;
    }
 
-	/**
-	 * returns the JavaScript validation flags.
-	 * Will be put into the onClick event of the main form
-	 * Must be overloaded by update and delete button
-	 *
-	 * @return the java script validation vars.
-	 */
-	protected String JsValidation()
-	{
-		return  (ValidatorConstants.JS_CANCEL_VALIDATION	
-		       + "=true;" 
-		       + ValidatorConstants.JS_UPDATE_VALIDATION_MODE
-			   + "=false;");
-	}
 
+   /**
+    * DOCUMENT ME!
+    */
+   public void doFinally() {
+      showAlways = "false";
+      super.doFinally();
+   }
 
 
    /**
@@ -87,17 +94,15 @@ public class DbInsertButtonTag extends DbBaseButtonTag
     * @throws javax.servlet.jsp.JspException DOCUMENT ME!
     * @throws JspException DOCUMENT ME!
     */
-   public int doStartTag() throws javax.servlet.jsp.JspException
-   {
+   public int doStartTag() throws javax.servlet.jsp.JspException {
+      super.doStartTag();
 
-		super.doStartTag();
-		
       logCat.info("pos DbInsertButtonTag 1");
 
       if (!Util.getTrue(showAlways)
-               && !(getParentForm().getFooterReached()
-               && ResultSetVector.isNull(getParentForm().getResultSetVector())))
-      {
+                && !(getParentForm()
+                              .getFooterReached()
+                && ResultSetVector.isNull(getParentForm().getResultSetVector()))) {
          // 20030521 HKK: Bug fixing, thanks to Michael Slack! 
          return SKIP_BODY;
       }
@@ -108,8 +113,7 @@ public class DbInsertButtonTag extends DbBaseButtonTag
       */
       logCat.info("pos DbInsertButtonTag 2");
 
-      try
-      {
+      try {
          logCat.info("pos DbInsertButtonTag 3");
 
          StringBuffer tagBuf     = new StringBuffer();
@@ -126,13 +130,11 @@ public class DbInsertButtonTag extends DbBaseButtonTag
 
          String tagName = tagNameBuf.toString();
 
-         if (getFollowUp() != null)
-         {
+         if (getFollowUp() != null) {
             tagBuf.append(getDataTag(tagName, "fu", getFollowUp()));
          }
 
-         if (getFollowUpOnError() != null)
-         {
+         if (getFollowUpOnError() != null) {
             tagBuf.append(getDataTag(tagName, "fue", getFollowUpOnError()));
          }
 
@@ -140,42 +142,30 @@ public class DbInsertButtonTag extends DbBaseButtonTag
          tagBuf.append(getButtonBegin());
          tagBuf.append(" name=\"");
          tagBuf.append(tagName);
-			tagBuf.append(getButtonEnd());
+         tagBuf.append(getButtonEnd());
 
-         pageContext.getOut().write(tagBuf.toString());
-      }
-      catch (java.io.IOException ioe)
-      {
+         pageContext.getOut()
+                    .write(tagBuf.toString());
+      } catch (java.io.IOException ioe) {
          throw new JspException("IO Error: " + ioe.getMessage());
       }
 
-      if (getChoosenFlavor() == FLAVOR_MODERN)
-      {
+      if (getChoosenFlavor() == FLAVOR_MODERN) {
          return EVAL_BODY_BUFFERED;
-      }
-      else
-      {
+      } else {
          return SKIP_BODY;
       }
    }
 
 
    /**
-    * Returns the showAlways.
-    * @return String
+    * returns the JavaScript validation flags. Will be put into the onClick
+    * event of the main form Must be overloaded by update and delete button
+    *
+    * @return the java script validation vars.
     */
-   public String getShowAlways()
-   {
-      return showAlways;
-   }
-
-
-   /**
-    * Sets the showAlways.
-    * @param showAlways The showAlways to set
-    */
-   public void setShowAlways(String showAlways)
-   {
-      this.showAlways = showAlways;
+   protected String JsValidation() {
+      return (ValidatorConstants.JS_CANCEL_VALIDATION + "=true;"
+             + ValidatorConstants.JS_UPDATE_VALIDATION_MODE + "=false;");
    }
 }

@@ -21,13 +21,6 @@ public class TestUnboundField extends HttpTestCase {
       }
    }
 
-   public void setUp() {
-      //add setup code here if needed 
-   }
-
-   public void tearDown() {
-      //add teardown code here if needed 
-   }
 
    // Test method generated from the MaxQ Java generator
    public void testUnbounded() throws Exception {

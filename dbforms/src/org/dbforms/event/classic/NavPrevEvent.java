@@ -20,116 +20,120 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.event.classic;
-import javax.servlet.http.*;
-import java.sql.*;
-import org.apache.log4j.Category;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.dbforms.config.*;
+
 import org.dbforms.event.*;
+
+import java.sql.*;
+
+import javax.servlet.http.*;
 
 
 
 /**
+ * DOCUMENT ME!
  *
- * @deprecated
+ * @author Joe Peer, John Peterson
  *
- *  This event scrolls the current ResultSet to the previous row of data.
- *  <br>
- *  Provides bounded navigation.
- *
- * @author  Joe Peer <j.peer@gmx.net>, John Peterson <>
+ * @deprecated This event scrolls the current ResultSet to the previous row of
+ *             data. <br>
+ *             Provides bounded navigation.
  */
-public class NavPrevEvent extends NavigationEvent
-{
-   private static Category logCat = Category.getInstance(
-                                             NavPrevEvent.class.getName()); // logging category for this class
+public class NavPrevEvent extends NavigationEvent {
+   private static Log logCat = LogFactory.getLog(NavPrevEvent.class.getName()); // logging category for this class
 
    /**
-    *  Constructor.
+    * Constructor.
     *
-    * @param  action  the action string
-    * @param  request the request object
-    * @param  config  the config object
+    * @param action the action string
+    * @param request the request object
+    * @param config the config object
     */
-   public NavPrevEvent(String action, HttpServletRequest request, 
-                       DbFormsConfig config)
-   {
+   public NavPrevEvent(String             action,
+                       HttpServletRequest request,
+                       DbFormsConfig      config) {
       super(action, request, config);
    }
 
 
    /**
-    *  Constructor used for call from localevents.
+    * Constructor used for call from localevents.
     *
-    * @param  table the Table object
-    * @param  config the config object
+    * @param table the Table object
+    * @param request DOCUMENT ME!
+    * @param config the config object
     */
-   public NavPrevEvent(Table table, HttpServletRequest request, 
-                       DbFormsConfig config)
-   {
+   public NavPrevEvent(Table              table,
+                       HttpServletRequest request,
+                       DbFormsConfig      config) {
       super(table, request, config);
    }
 
    /**
     * Process the current event.
     *
-    * @param filterFieldValues    FieldValue array used to restrict a set of data
-    * @param orderConstraint    FieldValue array used to build a cumulation of
-    *                       rules for ordering (sorting) and restricting fields
-    *                      to the actual block of data
-    * @param count              record count
-    * @param firstPost         a string identifying the first resultset position
-    * @param lastPos          a string identifying the last resultset position
-    * @param dbConnectionName   name of the used db connection. Can be used to
-    *                           get an own db connection, e.g. to hold it during the
-    *                           session (see DataSourceJDBC for example!)
-    * @param con                the JDBC Connection object
+    * @param childFieldValues FieldValue array used to restrict a set of data
+    * @param orderConstraint FieldValue array used to build a cumulation of
+    *        rules for ordering (sorting) and restricting fields to the actual
+    *        block of data
+    * @param firstPosition DOCUMENT ME!
+    * @param sqlFilterParams a string identifying the last resultset position
+    * @param count record count
+    * @param firstPosition a string identifying the first resultset position
+    * @param lastPosition DOCUMENT ME!
+    * @param dbConnectionName name of the used db connection. Can be used to
+    *        get an own db connection, e.g. to hold it during the session (see
+    *        DataSourceJDBC for example!)
+    * @param con the JDBC Connection object
     *
     * @return a ResultSetVector object
     *
     * @exception SQLException if any error occurs
     */
-   public ResultSetVector processEvent(FieldValue[] childFieldValues, 
-                                       FieldValue[] orderConstraint, 
-                                       String sqlFilter, 
-                                       FieldValue[] sqlFilterParams, int count, 
-                                       String firstPosition, 
-                                       String lastPosition, 
-                                       String dbConnectionName, Connection con)
-                                throws SQLException
-   {
+   public ResultSetVector processEvent(FieldValue[] childFieldValues,
+                                       FieldValue[] orderConstraint,
+                                       String       sqlFilter,
+                                       FieldValue[] sqlFilterParams,
+                                       int          count,
+                                       String       firstPosition,
+                                       String       lastPosition,
+                                       String       dbConnectionName,
+                                       Connection   con)
+                                throws SQLException {
       logCat.info("==>NavPrevEvent");
 
-
       // select in inverted order everyting thats greater than firstpos
-      getTable().fillWithValues(orderConstraint, firstPosition);
+      getTable()
+         .fillWithValues(orderConstraint, firstPosition);
       FieldValue.invert(orderConstraint);
 
       ResultSetVector resultSetVector = getTable()
-                                           .doConstrainedSelect(getTable()
-                                                                   .getFields(), 
-                                                                childFieldValues, 
-                                                                orderConstraint, 
-                                                                sqlFilter, 
-                                                                sqlFilterParams, 
-                                                                Constants.COMPARE_EXCLUSIVE, 
+                                           .doConstrainedSelect(getTable().getFields(),
+                                                                childFieldValues,
+                                                                orderConstraint,
+                                                                sqlFilter,
+                                                                sqlFilterParams,
+                                                                Constants.COMPARE_EXCLUSIVE,
                                                                 count, con);
 
       FieldValue.invert(orderConstraint);
       resultSetVector.flip();
 
       // change behavior to navFirst if navPrev finds no data
-      if (resultSetVector.size() == 0)
-      {
+      if (resultSetVector.size() == 0) {
          // just select from table in given order
          logCat.info("==>NavPrevFirstEvent");
          resultSetVector = getTable()
-                              .doConstrainedSelect(getTable().getFields(), 
-                                                   childFieldValues, 
-                                                   orderConstraint, sqlFilter, 
-                                                   sqlFilterParams, 
-                                                   Constants.COMPARE_NONE, 
+                              .doConstrainedSelect(getTable().getFields(),
+                                                   childFieldValues,
+                                                   orderConstraint, sqlFilter,
+                                                   sqlFilterParams,
+                                                   Constants.COMPARE_NONE,
                                                    count, con);
       }
 

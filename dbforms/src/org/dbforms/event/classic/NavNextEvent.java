@@ -20,72 +20,76 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.event.classic;
-import javax.servlet.http.*;
-import java.sql.*;
-import org.apache.log4j.Category;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.dbforms.config.*;
+
 import org.dbforms.event.*;
+
+import java.sql.*;
+
+import javax.servlet.http.*;
 
 
 
 /**
+ * DOCUMENT ME!
  *
- *  @deprecated
+ * @author Joe Peer, John Peterson
  *
- *
- * This event scrolls the current ResultSet to the next row of data.
- * <br>
- * Provides bounded navigation.
- *
- * @author  Joe Peer <j.peer@gmx.net>, John Peterson <>
+ * @deprecated This event scrolls the current ResultSet to the next row of
+ *             data. <br>
+ *             Provides bounded navigation.
  */
-public class NavNextEvent extends NavigationEvent
-{
-   private static Category logCat = Category.getInstance(
-                                             NavNextEvent.class.getName()); // logging category for this class
+public class NavNextEvent extends NavigationEvent {
+   private static Log logCat = LogFactory.getLog(NavNextEvent.class.getName()); // logging category for this class
 
    /**
-    *  Constructor.
+    * Constructor.
     *
-    * @param  action  the action string
-    * @param  request the request object
-    * @param  config  the config object
+    * @param action the action string
+    * @param request the request object
+    * @param config the config object
     */
-   public NavNextEvent(String action, HttpServletRequest request, 
-                       DbFormsConfig config)
-   {
+   public NavNextEvent(String             action,
+                       HttpServletRequest request,
+                       DbFormsConfig      config) {
       super(action, request, config);
    }
 
 
    /**
-    *  Constructor used for call from localevent.
+    * Constructor used for call from localevent.
     *
-    * @param  table the Table object
-    * @param  config the config object
+    * @param table the Table object
+    * @param request DOCUMENT ME!
+    * @param config the config object
     */
-   public NavNextEvent(Table table, HttpServletRequest request, 
-                       DbFormsConfig config)
-   {
+   public NavNextEvent(Table              table,
+                       HttpServletRequest request,
+                       DbFormsConfig      config) {
       super(table, request, config);
    }
 
    /**
     * Process the current event.
     *
-    * @param filterFieldValues    FieldValue array used to restrict a set of data
-    * @param orderConstraint    FieldValue array used to build a cumulation of
-    *                       rules for ordering (sorting) and restricting fields
-    *                      to the actual block of data
-    * @param count              record count
-    * @param firstPost         a string identifying the first resultset position
-    * @param lastPos          a string identifying the last resultset position
-    * @param dbConnectionName   name of the used db connection. Can be used to
-    *                           get an own db connection, e.g. to hold it during the
-    *                           session (see DataSourceJDBC for example!)
-    * @param con                the JDBC Connection object
+    * @param childFieldValues FieldValue array used to restrict a set of data
+    * @param orderConstraint FieldValue array used to build a cumulation of
+    *        rules for ordering (sorting) and restricting fields to the actual
+    *        block of data
+    * @param firstPosition DOCUMENT ME!
+    * @param sqlFilterParams a string identifying the last resultset position
+    * @param count record count
+    * @param firstPosition a string identifying the first resultset position
+    * @param lastPosition DOCUMENT ME!
+    * @param dbConnectionName name of the used db connection. Can be used to
+    *        get an own db connection, e.g. to hold it during the session (see
+    *        DataSourceJDBC for example!)
+    * @param con the JDBC Connection object
     *
     * @return a ResultSetVector object
     *
@@ -93,36 +97,37 @@ public class NavNextEvent extends NavigationEvent
     *
     * @todo make a option to allow original "navNew" behavior if desired
     */
-   public ResultSetVector processEvent(FieldValue[] childFieldValues, 
-                                       FieldValue[] orderConstraint, 
-                                       String sqlFilter, 
-                                       FieldValue[] sqlFilterParams, int count, 
-                                       String firstPosition, 
-                                       String lastPosition, 
-                                       String dbConnectionName, Connection con)
-                                throws SQLException
-   {
+   public ResultSetVector processEvent(FieldValue[] childFieldValues,
+                                       FieldValue[] orderConstraint,
+                                       String       sqlFilter,
+                                       FieldValue[] sqlFilterParams,
+                                       int          count,
+                                       String       firstPosition,
+                                       String       lastPosition,
+                                       String       dbConnectionName,
+                                       Connection   con)
+                                throws SQLException {
       ResultSetVector rsv;
 
       logCat.info("==>NavNextEvent");
 
-
       // select in given order everyting thats greater than lastpos
-      getTable().fillWithValues(orderConstraint, lastPosition);
+      getTable()
+         .fillWithValues(orderConstraint, lastPosition);
       rsv = getTable()
-               .doConstrainedSelect(getTable().getFields(), childFieldValues, 
-                                    orderConstraint, sqlFilter, sqlFilterParams, 
+               .doConstrainedSelect(getTable().getFields(), childFieldValues,
+                                    orderConstraint, sqlFilter,
+                                    sqlFilterParams,
                                     Constants.COMPARE_EXCLUSIVE, count, con);
 
-      if (rsv.size() == 0)
-      {
+      if (rsv.size() == 0) {
          logCat.info("==>NavNextLastEvent");
          FieldValue.invert(orderConstraint);
          rsv = getTable()
-                  .doConstrainedSelect(getTable().getFields(), childFieldValues, 
-                                       orderConstraint, sqlFilter, 
-                                       sqlFilterParams, Constants.COMPARE_NONE, 
-                                       count, con);
+                  .doConstrainedSelect(getTable().getFields(),
+                                       childFieldValues, orderConstraint,
+                                       sqlFilter, sqlFilterParams,
+                                       Constants.COMPARE_NONE, count, con);
          FieldValue.invert(orderConstraint);
          rsv.flip();
       }

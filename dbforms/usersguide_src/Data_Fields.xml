@@ -4,7 +4,7 @@
   <title>Description of fields send to/retrieved from html page
 </title>
   <para>
-      <table>
+      <table width="100%">
       <title>description of internally used data fields</title>
       <tgroup cols="3">
         <thead>

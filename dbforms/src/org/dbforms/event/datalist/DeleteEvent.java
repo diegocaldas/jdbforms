@@ -20,54 +20,68 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.event.datalist;
-import javax.servlet.http.HttpServletRequest;
-import java.sql.Connection;
-import java.sql.SQLException;
-import org.apache.log4j.Category;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.dbforms.config.DbEventInterceptor;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.FieldValues;
 import org.dbforms.config.GrantedPrivileges;
+
 import org.dbforms.event.DatabaseEvent;
-import org.dbforms.event.datalist.dao.DataSourceList;
 import org.dbforms.event.datalist.dao.DataSourceFactory;
+import org.dbforms.event.datalist.dao.DataSourceList;
+
+import org.dbforms.util.MessageResourcesInternal;
 import org.dbforms.util.ParseUtil;
 import org.dbforms.util.Util;
-import org.dbforms.util.MessageResourcesInternal;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+
+import javax.servlet.http.HttpServletRequest;
+
+
 
 /**
- * This event prepares and performs a SQL-Delete operation.
- * <br>
+ * This event prepares and performs a SQL-Delete operation. <br>
  * Works with new factory classes.
  *
- * @author Henner Kollmann <Henner.Kollmann@gmx.de>
+ * @author Henner Kollmann
  */
 public class DeleteEvent extends DatabaseEvent {
-   private static Category logCat = Category.getInstance(DeleteEvent.class.getName());
+   private static Log logCat = LogFactory.getLog(DeleteEvent.class.getName());
 
    /**
     * Creates a new DeleteEvent object.
     *
     * @param tableId the table id
-    * @param keyId   the key id
+    * @param keyId the key id
     * @param request the request object
-    * @param config  the configuration object
+    * @param config the configuration object
     */
-   public DeleteEvent(Integer tableId, String keyId, HttpServletRequest request, DbFormsConfig config) {
+   public DeleteEvent(Integer            tableId,
+                      String             keyId,
+                      HttpServletRequest request,
+                      DbFormsConfig      config) {
       super(tableId.intValue(), keyId, request, config);
    }
+
 
    /**
     * Creates a new DeleteEvent object.
     *
-    * @param action  the action string
+    * @param action the action string
     * @param request the request object
-    * @param config  the configuration object
+    * @param config the configuration object
     */
-   public DeleteEvent(String action, HttpServletRequest request, DbFormsConfig config) {
-      super(ParseUtil.getEmbeddedStringAsInteger(action, 2, '_'), ParseUtil.getEmbeddedString(action, 3, '_'), request, config);
+   public DeleteEvent(String             action,
+                      HttpServletRequest request,
+                      DbFormsConfig      config) {
+      super(ParseUtil.getEmbeddedStringAsInteger(action, 2, '_'),
+            ParseUtil.getEmbeddedString(action, 3, '_'), request, config);
    }
 
    /**
@@ -79,22 +93,24 @@ public class DeleteEvent extends DatabaseEvent {
       return getFieldValues(true);
    }
 
+
    /**
     * Process this event.
     *
     * @param con the connection object
     *
-    * @throws SQLException  if any SQL error occurs
+    * @throws SQLException if any SQL error occurs
     * @throws MultipleValidationException if any validation error occurs
     */
    public void processEvent(Connection con) throws SQLException {
       // Apply given security contraints (as defined in dbforms-config.xml)
       if (!hasUserPrivileg(GrantedPrivileges.PRIVILEG_DELETE)) {
-         String s =
-            MessageResourcesInternal.getMessage(
-               "dbforms.events.delete.nogrant",
-               getRequest().getLocale(),
-               new String[] { getTable().getName()});
+         String s = MessageResourcesInternal.getMessage("dbforms.events.delete.nogrant",
+                                                        getRequest().getLocale(),
+                                                        new String[] {
+                                                           getTable()
+                                                              .getName()
+                                                        });
          throw new SQLException(s);
       }
 
@@ -104,7 +120,10 @@ public class DeleteEvent extends DatabaseEvent {
       // part 2: check if there are interceptors to be processed (as definied by
       // "interceptor" element embedded in table element in dbforms-config xml file)
       // process the interceptors associated to this table
-      int operation = getTable().processInterceptors(DbEventInterceptor.PRE_DELETE, getRequest(), fieldValues, getConfig(), con);
+      int operation = getTable()
+                         .processInterceptors(DbEventInterceptor.PRE_DELETE,
+                                              getRequest(), fieldValues,
+                                              getConfig(), con);
 
       if (operation == DbEventInterceptor.GRANT_OPERATION) {
          // in order to process an update, we need the key of the dataset to update;
@@ -117,22 +136,28 @@ public class DeleteEvent extends DatabaseEvent {
          }
 
          // DELETE operation;
-         DataSourceList ds = DataSourceList.getInstance(getRequest());
+         DataSourceList    ds  = DataSourceList.getInstance(getRequest());
          DataSourceFactory qry = ds.get(getTable(), getRequest());
-         boolean own = false;
+         boolean           own = false;
+
          if (qry == null) {
             qry = new DataSourceFactory(getTable());
             own = true;
          }
+
          qry.doDelete(con, keyValuesStr);
-         if (own) 
+
+         if (own) {
             qry.close();
-         else
+         } else {
             ds.remove(getTable(), getRequest());
+         }
 
          // finally, we process interceptor again (post-delete)
          // process the interceptors associated to this table
-         getTable().processInterceptors(DbEventInterceptor.POST_DELETE, getRequest(), fieldValues, getConfig(), con);
+         getTable()
+            .processInterceptors(DbEventInterceptor.POST_DELETE, getRequest(),
+                                 fieldValues, getConfig(), con);
       }
 
       // End of interceptor processing

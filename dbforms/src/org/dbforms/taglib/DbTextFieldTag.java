@@ -22,37 +22,30 @@
  */
 package org.dbforms.taglib;
 
-
 import javax.servlet.jsp.JspException;
 
 
 
-/****
- *
- * <p>This tag renders a HTML TextArea - Element</p>
- *
- * this tag renders a dabase-datadriven textArea, which is an active element - the user
- * can change data
+/**
+ * <p>
+ * This tag renders a HTML TextArea - Element
+ * </p>
+ * this tag renders a dabase-datadriven textArea, which is an active element -
+ * the user can change data
  *
  * @author Joachim Peer
  */
 public class DbTextFieldTag extends DbBaseInputTag
-      implements javax.servlet.jsp.tagext.TryCatchFinally
-{
-	private java.lang.String password      = "false";
-
-	public void doFinally()
-	{
-		password      = "false";
-		super.doFinally();
-	}
+   implements javax.servlet.jsp.tagext.TryCatchFinally {
+   private java.lang.String password = "false";
 
    /**
-    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    * Determines if the text field should be a password text field (display '')
+    *
+    * @param pwd DOCUMENT ME!
     */
-   public void doCatch(Throwable t) throws Throwable
-   {
-      throw t;
+   public void setPassword(String pwd) {
+      this.password = pwd;
    }
 
 
@@ -60,14 +53,17 @@ public class DbTextFieldTag extends DbBaseInputTag
     * DOCUMENT ME!
     *
     * @return DOCUMENT ME!
-    *
-    * @throws javax.servlet.jsp.JspException DOCUMENT ME!
     */
-   public int doStartTag() throws JspException
-   {
-      super.doStartTag();
+   public String getPassword() {
+      return this.password;
+   }
 
-      return SKIP_BODY;
+
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable {
+      throw t;
    }
 
 
@@ -79,17 +75,17 @@ public class DbTextFieldTag extends DbBaseInputTag
     * @throws javax.servlet.jsp.JspException DOCUMENT ME!
     * @throws JspException DOCUMENT ME!
     */
-   public int doEndTag() throws JspException
-   {
-
-      try
-      {
+   public int doEndTag() throws JspException {
+      try {
          /* Does the developer require the field to be hidden, displayed or displayed as password? */
          StringBuffer tagBuf = new StringBuffer("<input ");
-         if ("true".equals(this.getPassword()))
+
+         if ("true".equals(this.getPassword())) {
             tagBuf.append("type=\"password\" ");
-         else
+         } else {
             tagBuf.append(prepareType());
+         }
+
          tagBuf.append(prepareName());
          tagBuf.append(prepareValue());
          tagBuf.append(prepareSize());
@@ -98,16 +94,16 @@ public class DbTextFieldTag extends DbBaseInputTag
          tagBuf.append(prepareEventHandlers());
          tagBuf.append("/>");
 
-         pageContext.getOut().write(tagBuf.toString());
-         
-			// Writes out the old field value
+         pageContext.getOut()
+                    .write(tagBuf.toString());
+
+         // Writes out the old field value
          writeOutSpecialValues();
 
          // For generation Javascript Validation.  Need all original and modified fields name
-		 getParentForm().addChildName(getName(), getFormFieldName());
-      }
-      catch (java.io.IOException ioe)
-      {
+         getParentForm()
+            .addChildName(getName(), getFormFieldName());
+      } catch (java.io.IOException ioe) {
          throw new JspException("IO Error: " + ioe.getMessage());
       }
 
@@ -115,13 +111,12 @@ public class DbTextFieldTag extends DbBaseInputTag
    }
 
 
-
    /**
-    *  Determines if the text field should be a password text field (display '****')
+    * DOCUMENT ME!
     */
-   public void setPassword(String pwd)
-   {
-      this.password = pwd;
+   public void doFinally() {
+      password = "false";
+      super.doFinally();
    }
 
 
@@ -129,9 +124,12 @@ public class DbTextFieldTag extends DbBaseInputTag
     * DOCUMENT ME!
     *
     * @return DOCUMENT ME!
+    *
+    * @throws javax.servlet.jsp.JspException DOCUMENT ME!
     */
-   public String getPassword()
-   {
-      return this.password;
+   public int doStartTag() throws JspException {
+      super.doStartTag();
+
+      return SKIP_BODY;
    }
 }

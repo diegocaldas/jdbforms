@@ -21,59 +21,43 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.taglib;
-import java.util.List;
-import java.util.StringTokenizer;
-import javax.servlet.jsp.*;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.dbforms.util.*;
-import org.apache.log4j.Category;
+
+import java.util.List;
+import java.util.StringTokenizer;
+
+import javax.servlet.jsp.*;
 
 
 
-/****
- *
- * <p>This tag renders a javascript array with Embeded data.  Only Value is generated. </p>
+/**
+ * <p>
+ * This tag renders a javascript array with Embeded data.  Only Value is
+ * generated.
+ * </p>
  *
  * @author Eric Beaumier
  */
-public class JavascriptArrayTag extends TagSupportWithScriptHandler implements DataContainer, 
-			javax.servlet.jsp.tagext.TryCatchFinally
-{
-   private static Category logCat       = Category.getInstance(JavascriptArrayTag.class
-         .getName()); // logging category for this class
-   private List  embeddedData = null;
-   private String  name         = null;
-
-	public void doFinally()
-	{
-		name  = null;
-		embeddedData = null;
-	}
-
-	public void doCatch(Throwable t) throws Throwable
-	{
-		throw t;
-	}
+public class JavascriptArrayTag extends TagSupportWithScriptHandler
+   implements DataContainer, javax.servlet.jsp.tagext.TryCatchFinally {
+   private static Log logCat = LogFactory.getLog(JavascriptArrayTag.class
+                                                 .getName()); // logging category for this class
+   private List       embeddedData = null;
+   private String     name         = null;
 
    /**
-    * DOCUMENT ME!
+    * This method is a "hookup" for EmbeddedData - Tags which can assign the
+    * lines of data they loaded (by querying a database, or by rendering
+    * data-subelements, etc. etc.) and make the data available to this tag.
+    * [this method is defined in Interface DataContainer]
     *
-    * @param name DOCUMENT ME!
+    * @param embeddedData DOCUMENT ME!
     */
-   public void setName(String name)
-   {
-      this.name = name;
-   }
-
-
-   /**
-   This method is a "hookup" for EmbeddedData - Tags which can assign the lines of data they loaded
-   (by querying a database, or by rendering data-subelements, etc. etc.) and make the data
-   available to this tag.
-   [this method is defined in Interface DataContainer]
-   */
-   public void setEmbeddedData(List embeddedData)
-   {
+   public void setEmbeddedData(List embeddedData) {
       this.embeddedData = embeddedData;
    }
 
@@ -82,12 +66,32 @@ public class JavascriptArrayTag extends TagSupportWithScriptHandler implements D
     * DOCUMENT ME!
     *
     * @return DOCUMENT ME!
-    *
-    * @throws javax.servlet.jsp.JspException DOCUMENT ME!
     */
-   public int doStartTag() throws javax.servlet.jsp.JspException
-   {
-      return EVAL_BODY_BUFFERED;
+   public Escaper getEscaper() {
+      return getConfig()
+                .getEscaper();
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param name DOCUMENT ME!
+    */
+   public void setName(String name) {
+      this.name = name;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param t DOCUMENT ME!
+    *
+    * @throws Throwable DOCUMENT ME!
+    */
+   public void doCatch(Throwable t) throws Throwable {
+      throw t;
    }
 
 
@@ -99,36 +103,39 @@ public class JavascriptArrayTag extends TagSupportWithScriptHandler implements D
     * @throws javax.servlet.jsp.JspException DOCUMENT ME!
     * @throws JspException DOCUMENT ME!
     */
-   public int doEndTag() throws javax.servlet.jsp.JspException
-   {
-      StringBuffer       tagBuf = new StringBuffer();
-      if (embeddedData == null)
-      { // no embedded data is nested in this tag
+   public int doEndTag() throws javax.servlet.jsp.JspException {
+      StringBuffer tagBuf = new StringBuffer();
+
+      if (embeddedData == null) { // no embedded data is nested in this tag
          logCat.warn("No EmbeddedData provide for javascriptArray TagLib "
-            + name);
+                     + name);
 
          return EVAL_PAGE;
-      }
-      else
-      {
+      } else {
          tagBuf.append("\n<script language=\"javascript\">\n");
          tagBuf.append("   var " + name + " = new Array();\n");
 
          int embeddedDataSize = embeddedData.size();
 
-         for (int i = 0; i < embeddedDataSize; i++)
-         {
+         for (int i = 0; i < embeddedDataSize; i++) {
             KeyValuePair aKeyValuePair = (KeyValuePair) embeddedData.get(i);
             String       aKey = aKeyValuePair.getKey();
-            tagBuf.append("   ").append(name).append("[").append(i)
-                  .append("] = new Array('").append(aKey).append("'");
+            tagBuf.append("   ")
+                  .append(name)
+                  .append("[")
+                  .append(i)
+                  .append("] = new Array('")
+                  .append(aKey)
+                  .append("'");
 
             String          aValue = aKeyValuePair.getValue();
 
             StringTokenizer st = new StringTokenizer(aValue, ",");
 
             while (st.hasMoreTokens())
-               tagBuf.append(",'").append(st.nextToken()).append("'");
+               tagBuf.append(",'")
+                     .append(st.nextToken())
+                     .append("'");
 
             tagBuf.append(");\n");
          }
@@ -136,18 +143,34 @@ public class JavascriptArrayTag extends TagSupportWithScriptHandler implements D
          tagBuf.append("</script>\n");
       }
 
-      try
-      {
-         pageContext.getOut().write(tagBuf.toString());
-      }
-      catch (java.io.IOException ioe)
-      {
+      try {
+         pageContext.getOut()
+                    .write(tagBuf.toString());
+      } catch (java.io.IOException ioe) {
          throw new JspException("IO Error: " + ioe.getMessage());
       }
 
       return EVAL_PAGE;
    }
-   public Escaper getEscaper() {
-      return getConfig().getEscaper();
+
+
+   /**
+    * DOCUMENT ME!
+    */
+   public void doFinally() {
+      name         = null;
+      embeddedData = null;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws javax.servlet.jsp.JspException DOCUMENT ME!
+    */
+   public int doStartTag() throws javax.servlet.jsp.JspException {
+      return EVAL_BODY_BUFFERED;
    }
 }

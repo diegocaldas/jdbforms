@@ -20,29 +20,30 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.event;
-import javax.servlet.http.HttpServletRequest;
+
 import org.dbforms.config.DbFormsConfig;
+
+import javax.servlet.http.HttpServletRequest;
 
 
 
 /**
  * DOCUMENT ME!
- * 
+ *
  * @author Joe Peer
  */
-public class NoopEvent extends WebEvent
-{
+public class NoopEvent extends WebEvent {
    /**
     * Creates a new NoopEvent object.
+    *
     * @param tableId DOCUMENT ME!
     * @param request DOCUMENT ME!
     * @param config DOCUMENT ME!
     */
-   public NoopEvent(int tableId, HttpServletRequest request, 
-                    DbFormsConfig config)
-   {
+   public NoopEvent(int                tableId,
+                    HttpServletRequest request,
+                    DbFormsConfig      config) {
       super(tableId, request, config);
    }
 }

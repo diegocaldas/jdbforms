@@ -22,14 +22,14 @@
  */
 package org.dbforms.config;
 
+
 /**
  * DOCUMENT ME!
  *
- * @version $Revision$
  * @author $author$
+ * @version $Revision$
  */
-public class FieldTypes
-{
+public class FieldTypes {
    /** DOCUMENT ME! */
    public static final int INTEGER = java.sql.Types.INTEGER;
 

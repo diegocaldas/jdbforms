@@ -31,57 +31,55 @@
  */
 package org.dbforms.taglib;
 
+import org.dbforms.config.DbFormsErrors;
+
+import java.io.IOException;
+
 import java.util.Enumeration;
 import java.util.Vector;
 
-import java.io.IOException;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
-
-import org.dbforms.config.DbFormsErrors;
 
 
 
 /**
  * DOCUMENT ME!
  *
- * @version $Revision$
  * @author $author$
+ * @version $Revision$
  */
-public class DbXmlErrorsTag extends TagSupportWithScriptHandler  
-		implements javax.servlet.jsp.tagext.TryCatchFinally
-{
+public class DbXmlErrorsTag extends TagSupportWithScriptHandler
+   implements javax.servlet.jsp.tagext.TryCatchFinally {
+   private transient DbFormsErrors errors;
+   private String                  caption = "Error:";
+
    // ----------------------------------------------------------- Properties
 
    /**
-    * Name of the request scope attribute containing our error messages,
-    * if any.
+    * Name of the request scope attribute containing our error messages, if
+    * any.
     */
    private String name = "errors";
-   private String      caption = "Error:";
-   private DbFormsErrors errors;
 
-	public void doFinally()
-	{
-		name  = "errors";
-		caption = "Error:";
-		errors = null;
-	}
+   /**
+    * DOCUMENT ME!
+    *
+    * @param caption DOCUMENT ME!
+    */
+   public void setCaption(String caption) {
+      this.caption = caption;
+   }
 
-	public void doCatch(Throwable t) throws Throwable
-	{
-		throw t;
-	}
 
    /**
     * DOCUMENT ME!
     *
     * @return DOCUMENT ME!
     */
-   public String getName()
-   {
-      return (this.name);
+   public String getCaption() {
+      return (this.caption);
    }
 
 
@@ -90,8 +88,7 @@ public class DbXmlErrorsTag extends TagSupportWithScriptHandler
     *
     * @param name DOCUMENT ME!
     */
-   public void setName(String name)
-   {
+   public void setName(String name) {
       this.name = name;
    }
 
@@ -101,20 +98,42 @@ public class DbXmlErrorsTag extends TagSupportWithScriptHandler
     *
     * @return DOCUMENT ME!
     */
-   public String getCaption()
-   {
-      return (this.caption);
+   public String getName() {
+      return (this.name);
    }
 
 
    /**
     * DOCUMENT ME!
     *
-    * @param caption DOCUMENT ME!
+    * @param pageContext DOCUMENT ME!
     */
-   public void setCaption(String caption)
-   {
-      this.caption = caption;
+   public void setPageContext(final javax.servlet.jsp.PageContext pageContext) {
+      super.setPageContext(pageContext);
+      this.errors = (DbFormsErrors) pageContext.getServletContext()
+                                               .getAttribute(DbFormsErrors.ERRORS);
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param t DOCUMENT ME!
+    *
+    * @throws Throwable DOCUMENT ME!
+    */
+   public void doCatch(Throwable t) throws Throwable {
+      throw t;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    */
+   public void doFinally() {
+      name    = "errors";
+      caption = "Error:";
+      errors  = null;
    }
 
 
@@ -123,34 +142,30 @@ public class DbXmlErrorsTag extends TagSupportWithScriptHandler
    /**
     * Render the specified error messages if there are any.
     *
+    * @return DOCUMENT ME!
+    *
     * @exception JspException if a JSP exception has occurred
     */
-   public int doStartTag() throws JspException
-   {
+   public int doStartTag() throws JspException {
       Vector transformedErrors = new Vector();
 
       Vector originalErrors = (Vector) pageContext.getAttribute(name,
-            PageContext.REQUEST_SCOPE);
+                                                                PageContext.REQUEST_SCOPE);
 
-      if (errors == null)
-      {
-         throw new JspException(
-            "XML error handler is disabled, please supply xml error file on startup or use error tag instead!");
+      if (errors == null) {
+         throw new JspException("XML error handler is disabled, please supply xml error file on startup or use error tag instead!");
       }
 
-      if ((originalErrors != null) && (originalErrors.size() > 0))
-      {
+      if ((originalErrors != null) && (originalErrors.size() > 0)) {
          Enumeration enum = originalErrors.elements();
 
-         while (enum.hasMoreElements())
-         {
+         while (enum.hasMoreElements()) {
             Exception ex = (Exception) enum.nextElement();
 
             String    result = errors.getXMLErrorMessage(ex.getMessage());
 
             // ignore empty messages
-            if (result != null)
-            {
+            if (result != null) {
                transformedErrors.add(result);
             }
          }
@@ -159,8 +174,7 @@ public class DbXmlErrorsTag extends TagSupportWithScriptHandler
          results.append(caption);
          results.append("<ul>");
 
-         for (int i = 0; i < transformedErrors.size(); i++)
-         {
+         for (int i = 0; i < transformedErrors.size(); i++) {
             results.append("<li>");
             results.append(transformedErrors.elementAt(i));
             results.append("</li>");
@@ -171,30 +185,14 @@ public class DbXmlErrorsTag extends TagSupportWithScriptHandler
          // Print the results to our output writer
          JspWriter writer = pageContext.getOut();
 
-         try
-         {
+         try {
             writer.print(results.toString());
-         }
-         catch (IOException e)
-         {
+         } catch (IOException e) {
             throw new JspException(e.toString());
          }
       }
 
       // Continue processing this page
       return EVAL_BODY_INCLUDE;
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param pageContext DOCUMENT ME!
-    */
-   public void setPageContext(final javax.servlet.jsp.PageContext pageContext)
-   {
-      super.setPageContext(pageContext);
-      this.errors = (DbFormsErrors) pageContext.getServletContext()
-                                               .getAttribute(DbFormsErrors.ERRORS);
    }
 }

@@ -22,45 +22,89 @@
  */
 package org.dbforms.taglib;
 
+import org.dbforms.config.Field;
+
 import java.util.Locale;
 
-import org.dbforms.config.Field;
+
 
 /**
  * Special class for TextFormatting
- * 
+ *
  * @author hkk
  */
 public class TextFormatter extends DbBaseInputTag {
-	private Object obj;
-	private Locale locale;
+   private Locale locale;
+   private Object obj;
 
-	public TextFormatter(Field field, Locale locale, String pattern, Object obj) {
-		this.obj = obj;
-		this.locale = locale;
-		setPattern(pattern);
-		setField(field);
-	}
+   /**
+    * Creates a new TextFormatter object.
+    *
+    * @param field DOCUMENT ME!
+    * @param locale DOCUMENT ME!
+    * @param pattern DOCUMENT ME!
+    * @param obj DOCUMENT ME!
+    */
+   public TextFormatter(Field  field,
+                        Locale locale,
+                        String pattern,
+                        Object obj) {
+      this.obj    = obj;
+      this.locale = locale;
+      setPattern(pattern);
+      setField(field);
+   }
 
-	protected Locale getLocale() {
-		return locale;
-	}
+   /**
+    * DOCUMENT ME!
+    *
+    * @param parentForm DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String getFormFieldName(DbFormTag parentForm) {
+      setParent(parentForm);
 
-	protected Object getFieldObject() {
-		return obj;
-	}
-	
-	public String getFormattedFieldValue() {
-		return super.getFormattedFieldValue();
-	}
+      return super.getFormFieldName();
+   }
 
-	public String renderPatternHtmlInputField() {
-		return super.renderPatternHtmlInputField();
-	}
-	
-	public String getFormFieldName(DbFormTag parentForm) {
-		setParent(parentForm);
-		return super.getFormFieldName();
-	
-	}
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String getFormattedFieldValue() {
+      return super.getFormattedFieldValue();
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String renderPatternHtmlInputField() {
+      return super.renderPatternHtmlInputField();
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   protected Object getFieldObject() {
+      return obj;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   protected Locale getLocale() {
+      return locale;
+   }
 }

@@ -117,7 +117,7 @@ group by type having sumValue &gt; ?
       <title>Use within dbforms-config.xml</title>
       <para>The following example is taken from <computeroutput>src\org\dbforms\resources\dbforms-config.xsd</computeroutput> It has been changed here from schema style to DTD sytle for those more familiar with the latter.  However, no DTD for dbforms.xml actually exists.</para>
       <para>
-        <table>
+        <table width="100%">
           <title>Excerpts in DTD style of dbforms-config.xml</title>
           <tgroup cols="2">
             <tbody>

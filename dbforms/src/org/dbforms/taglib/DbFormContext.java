@@ -22,89 +22,121 @@
  */
 package org.dbforms.taglib;
 
-import java.util.Map;
 import org.dbforms.config.ResultSetVector;
 
+import java.util.Map;
+
+
+
 /**
- * This is the context of the dbform tag. Used as TEI class element.
- * In the pagecontext is holded a map named dbform with name of form as 
- * key and this context as object.
+ * This is the context of the dbform tag. Used as TEI class element. In the
+ * pagecontext is holded a map named dbform with name of form as  key and this
+ * context as object.
  *
- * @author  Henner Kollmann
+ * @author Henner Kollmann
  */
 public class DbFormContext {
-	Map currentRow;
-	String position;
-	Map searchFieldNames;
-	Map searchFieldModeNames;
-	Map searchFieldAlgorithmNames;
-	ResultSetVector rsv;
+   Map             currentRow;
+   Map             searchFieldAlgorithmNames;
+   Map             searchFieldModeNames;
+   Map             searchFieldNames;
+   ResultSetVector rsv;
+   String          position;
 
-	public DbFormContext(
-		Map searchFieldNames,
-		Map searchFieldModeNames,
-		Map searchFieldAlgorithmNames,
-		ResultSetVector rsv) {
-		this.searchFieldNames = searchFieldNames;
-		this.searchFieldModeNames = searchFieldModeNames;
-		this.searchFieldAlgorithmNames = searchFieldAlgorithmNames;
-		this.rsv = rsv;
-	}
+   /**
+    * Creates a new DbFormContext object.
+    *
+    * @param searchFieldNames DOCUMENT ME!
+    * @param searchFieldModeNames DOCUMENT ME!
+    * @param searchFieldAlgorithmNames DOCUMENT ME!
+    * @param rsv DOCUMENT ME!
+    */
+   public DbFormContext(Map             searchFieldNames,
+                        Map             searchFieldModeNames,
+                        Map             searchFieldAlgorithmNames,
+                        ResultSetVector rsv) {
+      this.searchFieldNames          = searchFieldNames;
+      this.searchFieldModeNames      = searchFieldModeNames;
+      this.searchFieldAlgorithmNames = searchFieldAlgorithmNames;
+      this.rsv                       = rsv;
+   }
 
-	/**
-	 * @return
-	 */
-	public String getPosition() {
-		return position;
-	}
+   /**
+    * DOCUMENT ME!
+    *
+    * @param map
+    */
+   public void setCurrentRow(Map map) {
+      currentRow = map;
+   }
 
-	/**
-	 * @return
-	 */
-	public ResultSetVector getRsv() {
-		return rsv;
-	}
 
-	/**
-	 * @return
-	 */
-	public Map getSearchFieldAlgorithmNames() {
-		return searchFieldAlgorithmNames;
-	}
+   /**
+    * DOCUMENT ME!
+    *
+    * @return
+    */
+   public Map getCurrentRow() {
+      return currentRow;
+   }
 
-	/**
-	 * @return
-	 */
-	public Map getSearchFieldModeNames() {
-		return searchFieldModeNames;
-	}
 
-	/**
-	 * @return
-	 */
-	public Map getSearchFieldNames() {
-		return searchFieldNames;
-	}
+   /**
+    * DOCUMENT ME!
+    *
+    * @param string
+    */
+   public void setPosition(String string) {
+      position = string;
+   }
 
-	/**
-	 * @return
-	 */
-	public Map getCurrentRow() {
-		return currentRow;
-	}
 
-	/**
-	 * @param map
-	 */
-	public void setCurrentRow(Map map) {
-		currentRow = map;
-	}
+   /**
+    * DOCUMENT ME!
+    *
+    * @return
+    */
+   public String getPosition() {
+      return position;
+   }
 
-	/**
-	 * @param string
-	 */
-	public void setPosition(String string) {
-		position = string;
-	}
 
+   /**
+    * DOCUMENT ME!
+    *
+    * @return
+    */
+   public ResultSetVector getRsv() {
+      return rsv;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return
+    */
+   public Map getSearchFieldAlgorithmNames() {
+      return searchFieldAlgorithmNames;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return
+    */
+   public Map getSearchFieldModeNames() {
+      return searchFieldModeNames;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return
+    */
+   public Map getSearchFieldNames() {
+      return searchFieldNames;
+   }
 }

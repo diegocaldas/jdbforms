@@ -20,128 +20,100 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.event.datalist.dao;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.dbforms.config.FieldValue;
 import org.dbforms.config.FieldValues;
 import org.dbforms.config.ResultSetVector;
 import org.dbforms.config.Table;
+
 import org.dbforms.util.ReflectionUtil;
 import org.dbforms.util.Util;
+
+import java.sql.Connection;
+import java.sql.SQLException;
 
 
 
 /**
- * Factory class to generate different DataSources.
- * datasource is attribute of table class and can be changed in dbforms-config.
- * Default class is
+ * Factory class to generate different DataSources. datasource is attribute of
+ * table class and can be changed in dbforms-config. Default class is
  *
  * @author hkk
  */
-public class DataSourceFactory
-{
+public class DataSourceFactory {
+   // logging category for this class;
+   private static Log logCat = LogFactory.getLog(DataSourceFactory.class
+                                                 .getName());
    private DataSource dataHandler;
 
-   // logging category for this class;
-   private static Category logCat = Category.getInstance(
-                                             DataSourceFactory.class.getName());
-
-
    /**
-    * Creates a new DataSourceFactory object.
-    * <br>
-    * Set its DataSource object as dataHandler, using the dataAccess class name
-    * for the given table. 
+    * Creates a new DataSourceFactory object. <br>
+    * Set its DataSource object as dataHandler, using the dataAccess class
+    * name for the given table.
     *
+    * @param table DOCUMENT ME!
     */
-   public DataSourceFactory(Table table)
-   {
+   public DataSourceFactory(Table table) {
       String dataAccessClass = table.getDataAccessClass();
 
-      if (Util.isNull(dataAccessClass))
-      {
+      if (Util.isNull(dataAccessClass)) {
          dataAccessClass = "org.dbforms.event.datalist.dao.DataSourceJDBC";
       }
 
-      try
-      {
-         Object[] constructorArgs = new Object[] 
-         {
-            table
-         };
-         Class[]  constructorArgsTypes = new Class[] 
-         {
-            Table.class
-         };
-         dataHandler = (DataSource) ReflectionUtil.newInstance(dataAccessClass, 
-                                                               constructorArgsTypes, 
+      try {
+         Object[] constructorArgs = new Object[] {
+                                       table
+                                    };
+         Class[]  constructorArgsTypes = new Class[] {
+                                            Table.class
+                                         };
+         dataHandler = (DataSource) ReflectionUtil.newInstance(dataAccessClass,
+                                                               constructorArgsTypes,
                                                                constructorArgs);
-      }
-      catch (Exception e)
-      {
+      } catch (Exception e) {
          logCat.error(e);
       }
    }
 
 
-    /**
+   /**
     * Creates a new DataSourceFactory object.
     *
-    * @param dbConnectionName   name of the used db connection. Can be used to
-    *                           get an own db connection, e.g. to hold it during the 
-    *                           session (see DataSourceJDBC for example!) 
-    * @param con                the JDBC Connection object
-    * @param table            the input table
+    * @param dbConnectionName name of the used db connection. Can be used to
+    *        get an own db connection, e.g. to hold it during the  session
+    *        (see DataSourceJDBC for example!)
+    * @param con the JDBC Connection object
+    * @param table the input table
     *
     * @throws SQLException if any error occurs
     */
-   public DataSourceFactory(String dbConnectionName, Connection con, Table table)
-                     throws SQLException
-   {
+   public DataSourceFactory(String     dbConnectionName,
+                            Connection con,
+                            Table      table) throws SQLException {
       this(table);
       dataHandler.setConnection(con, dbConnectionName);
    }
 
-
-	/**
-	 * Sets the select data for this dataSource for free form selects. default
-	 * methods just raises an exception
-	 * 
-	 * @param tableList      the list of tables involved into the query
-	 * @param whereClause    free-form whereClause to be appended to query
-	 * 
-	 * @throws SQLException
-	 */
-	public void setSelect(String tableList, String whereClause)
-						throws SQLException
-	{
-		dataHandler.setSelect(tableList, whereClause);
-	}
-
-
-	/**
-	 * Sets the select data for this dataSource
-	 * 
-	 * @param filterConstraint FieldValue array used to restrict a set in a
-	 *        resultset
-	 * @param orderConstraint FieldValue array used to build a cumulation of
-	 *        rules for ordering (sorting)
-	 * @param sqlFilter       sql condition to add to where clause
-	 */
-	public void setSelect(FieldValue[] filterConstraint, 
-											 FieldValue[] orderConstraint, 
-											 String sqlFilter,
-											 FieldValue[] sqlFilterParams)
-   {											 
-		dataHandler.setSelect(filterConstraint, orderConstraint, sqlFilter, sqlFilterParams);
+   /**
+    * Return a resultSetVector object containing <i>count</i> records starting
+    * from the input position
+    *
+    * @param position the current table position
+    * @param count number of records to fetch
+    *
+    * @return a resultSetVector object containing the current <i>count</i>
+    *         records starting from the input position
+    *
+    * @throws SQLException if any error occurs
+    */
+   public ResultSetVector getCurrent(String position,
+                                     int    count) throws SQLException {
+      return dataHandler.getCurrent(position, count);
    }
-
 
 
    /**
@@ -149,18 +121,38 @@ public class DataSourceFactory
     *
     * @return the DataSource element
     */
-   public DataSource getDataHandler()
-   {
+   public DataSource getDataHandler() {
       return dataHandler;
    }
 
 
    /**
-    *  Close the underlying dataHandler.
+    * Return a resultSetVector object containing the first <i>count</i>
+    * records.
+    *
+    * @param count number of records to fetch
+    *
+    * @return a resultSetVector object containing the first <i>count</i>
+    *         records
+    *
+    * @throws SQLException if any error occurs
     */
-   public void close()
-   {
-      dataHandler.close();
+   public ResultSetVector getFirst(int count) throws SQLException {
+      return dataHandler.getFirst(count);
+   }
+
+
+   /**
+    * Return a resultSetVector object containing the last <i>count</i> records.
+    *
+    * @param count number of records to fetch
+    *
+    * @return a resultSetVector object containing the last <i>count</i> records
+    *
+    * @throws SQLException if any error occurs
+    */
+   public ResultSetVector getLast(int count) throws SQLException {
+      return dataHandler.getLast(count);
    }
 
 
@@ -176,90 +168,96 @@ public class DataSourceFactory
     *
     * @throws SQLException if any error occurs
     */
-   public ResultSetVector getNext(String position, int count)
-                           throws SQLException
-   {
+   public ResultSetVector getNext(String position,
+                                  int    count) throws SQLException {
       return dataHandler.getNext(position, count);
    }
 
 
    /**
-    * Return a resultSetVector object containing the previous <i>count</i> records
-    * starting from the input position + <i>count</i> records.
+    * Return a resultSetVector object containing the previous <i>count</i>
+    * records starting from the input position + <i>count</i> records.
     *
     * @param position the current table position
     * @param count number of records to fetch
     *
-    * @return a resultSetVector object containing the previous <i>count</i> records
-    *         starting from the input position
+    * @return a resultSetVector object containing the previous <i>count</i>
+    *         records starting from the input position
     *
     * @throws SQLException if any error occurs
     */
-   public ResultSetVector getPrev(String position, int count)
-                           throws SQLException
-   {
+   public ResultSetVector getPrev(String position,
+                                  int    count) throws SQLException {
       return dataHandler.getPrev(position, count);
    }
 
 
    /**
-   * Return a resultSetVector object containing the first <i>count</i> records.
-   *
-   * @param count number of records to fetch
-   *
-   * @return a resultSetVector object containing the first <i>count</i> records
-   *
-   * @throws SQLException if any error occurs
-   */
-   public ResultSetVector getFirst(int count) throws SQLException
-   {
-      return dataHandler.getFirst(count);
+    * Sets the select data for this dataSource
+    *
+    * @param filterConstraint FieldValue array used to restrict a set in a
+    *        resultset
+    * @param orderConstraint FieldValue array used to build a cumulation of
+    *        rules for ordering (sorting)
+    * @param sqlFilter sql condition to add to where clause
+    * @param sqlFilterParams DOCUMENT ME!
+    */
+   public void setSelect(FieldValue[] filterConstraint,
+                         FieldValue[] orderConstraint,
+                         String       sqlFilter,
+                         FieldValue[] sqlFilterParams) {
+      dataHandler.setSelect(filterConstraint, orderConstraint, sqlFilter,
+                            sqlFilterParams);
    }
 
 
    /**
-   * Return a resultSetVector object containing the last <i>count</i> records.
-   *
-   * @param count number of records to fetch
-   *
-   * @return a resultSetVector object containing the last <i>count</i> records
-   *
-   * @throws SQLException if any error occurs
-   */
-   public ResultSetVector getLast(int count) throws SQLException
-   {
-      return dataHandler.getLast(count);
+    * Sets the select data for this dataSource for free form selects. default
+    * methods just raises an exception
+    *
+    * @param tableList the list of tables involved into the query
+    * @param whereClause free-form whereClause to be appended to query
+    *
+    * @throws SQLException
+    */
+   public void setSelect(String tableList,
+                         String whereClause) throws SQLException {
+      dataHandler.setSelect(tableList, whereClause);
    }
 
 
    /**
-    * Return a resultSetVector object containing <i>count</i> records
-    * starting from the input position
+    * Close the underlying dataHandler.
+    */
+   public void close() {
+      dataHandler.close();
+   }
+
+
+   /**
+    * Perform a delete operation into the underlying dataSource.
     *
-    * @param position the current table position
-    * @param count number of records to fetch
-    *
-    * @return a resultSetVector object containing the current <i>count</i> records
-    *         starting from the input position
+    * @param con DOCUMENT ME!
+    * @param keyValuesStr the key value identifying the record to delete
     *
     * @throws SQLException if any error occurs
     */
-   public ResultSetVector getCurrent(String position, int count)
-                              throws SQLException
-   {
-      return dataHandler.getCurrent(position, count);
+   public void doDelete(Connection con,
+                        String     keyValuesStr) throws SQLException {
+      dataHandler.doDelete(con, keyValuesStr);
    }
 
 
    /**
     * Perform an insert operation into the underlying dataSource.
     *
+    * @param con DOCUMENT ME!
     * @param fieldValues the field values to insert
     *
     * @throws SQLException if any error occurs
     */
-   public void doInsert(Connection con, FieldValues fieldValues) throws SQLException
-   {
+   public void doInsert(Connection  con,
+                        FieldValues fieldValues) throws SQLException {
       dataHandler.doInsert(con, fieldValues);
    }
 
@@ -267,27 +265,15 @@ public class DataSourceFactory
    /**
     * Perform an update operation into the underlying dataSource.
     *
+    * @param con DOCUMENT ME!
     * @param fieldValues the field values to update
     * @param keyValuesStr the key value identifying the record to update
     *
     * @throws SQLException if any error occurs
     */
-   public void doUpdate(Connection con, FieldValues fieldValues, String keyValuesStr)
-                 throws SQLException
-   {
+   public void doUpdate(Connection  con,
+                        FieldValues fieldValues,
+                        String      keyValuesStr) throws SQLException {
       dataHandler.doUpdate(con, fieldValues, keyValuesStr);
-   }
-
-
-   /**
-    * Perform a delete operation into the underlying dataSource.
-    *
-    * @param keyValuesStr the key value identifying the record to delete
-    *
-    * @throws SQLException if any error occurs
-    */
-   public void doDelete(Connection con, String keyValuesStr) throws SQLException
-   {
-      dataHandler.doDelete(con, keyValuesStr);
    }
 }

@@ -20,10 +20,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.config;
-
-
 
 
 /**
@@ -32,32 +29,28 @@ package org.dbforms.config;
  * @author     epugh
  * @created    May 3, 2002
  */
-public class TestMessage extends  org.dbforms.util.AbstractTestCase
-
-{
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @throws Exception DOCUMENT ME!
-     */
-    public void testGetSetMessage() throws Exception
-    {
-        Message m = new Message();
-        m.setMessage("This is a Message");
-        assertTrue("This is a Message shoud be message", m.getMessage().equals("This is a Message"));
-    }
+public class TestMessage extends org.dbforms.util.AbstractTestCase {
+   /**
+    * DOCUMENT ME!
+    *
+    * @throws Exception DOCUMENT ME!
+    */
+   public void testGetSetLanguage() throws Exception {
+      Message m = new Message();
+      m.setLanguage("EN");
+      assertTrue("EN should be returned", m.getLanguage().equals("EN"));
+   }
 
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @throws Exception DOCUMENT ME!
-     */
-    public void testGetSetLanguage() throws Exception
-    {
-        Message m = new Message();
-        m.setLanguage("EN");
-        assertTrue("EN should be returned", m.getLanguage().equals("EN"));
-    }
+   /**
+    * DOCUMENT ME!
+    *
+    * @throws Exception DOCUMENT ME!
+    */
+   public void testGetSetMessage() throws Exception {
+      Message m = new Message();
+      m.setMessage("This is a Message");
+      assertTrue("This is a Message shoud be message",
+                 m.getMessage().equals("This is a Message"));
+   }
 }

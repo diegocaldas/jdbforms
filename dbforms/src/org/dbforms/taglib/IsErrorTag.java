@@ -24,50 +24,50 @@
  * the idea for this class was taken from the class ErrorsTag-class of the Apache Struts Project
  */
 package org.dbforms.taglib;
+
+import org.dbforms.util.Util;
+
 import java.util.Vector;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.BodyTagSupport;
-import org.dbforms.util.Util;
 
 
 
 /**
  * Custom tag that evaluates its body if an Error has occured.
  *
- * <p>Based on ErrorTag and IsWebEvent tag, allows for conditional coding if an error event occured.</p>
+ * <p>
+ * Based on ErrorTag and IsWebEvent tag, allows for conditional coding if an
+ * error event occured.
+ * </p>
  *
  * @author Neal Katz
  */
 public class IsErrorTag extends BodyTagSupport
-			implements javax.servlet.jsp.tagext.TryCatchFinally
-{
-
-//   private String messagePrefix;
-   private String name = "errors";
+   implements javax.servlet.jsp.tagext.TryCatchFinally {
+   //   private String messagePrefix;
+   private String name  = "errors";
    private String value = "true";
 
-	public void doFinally()
-	{
-		name  = "errors";
-		value = "true";
-	}
+   /**
+    * DOCUMENT ME!
+    *
+    * @param name DOCUMENT ME!
+    */
+   public void setName(String name) {
+      this.name = name;
+   }
 
-	public void doCatch(Throwable t) throws Throwable
-	{
-		throw t;
-	}
 
-   
    /**
     * DOCUMENT ME!
     *
     * @return DOCUMENT ME!
     */
-   public String getName()
-   {
+   public String getName() {
       return (this.name);
    }
 
@@ -75,14 +75,42 @@ public class IsErrorTag extends BodyTagSupport
    /**
     * DOCUMENT ME!
     *
-    * @param name DOCUMENT ME!
+    * @param string
     */
-   public void setName(String name)
-   {
-      this.name = name;
+   public void setValue(String string) {
+      value = string;
    }
 
 
+   /**
+    * DOCUMENT ME!
+    *
+    * @return
+    */
+   public String getValue() {
+      return value;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param t DOCUMENT ME!
+    *
+    * @throws Throwable DOCUMENT ME!
+    */
+   public void doCatch(Throwable t) throws Throwable {
+      throw t;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    */
+   public void doFinally() {
+      name  = "errors";
+      value = "true";
+   }
 
 
    // ------------------------------------------------------- Public Methods
@@ -90,34 +118,19 @@ public class IsErrorTag extends BodyTagSupport
    /**
     * Render the specified error messages if there are any.
     *
+    * @return DOCUMENT ME!
+    *
     * @exception JspException if a JSP exception has occurred
     */
-   public int doStartTag() throws JspException
-   {
-		
-      Vector             originalErrors = (Vector) pageContext.getAttribute(getName(),  PageContext.REQUEST_SCOPE);
+   public int doStartTag() throws JspException {
+      Vector             originalErrors = (Vector) pageContext.getAttribute(getName(),
+                                                                            PageContext.REQUEST_SCOPE);
       HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
-      boolean haveError = false;
+      boolean            haveError = false;
 
-	haveError = ( ((originalErrors != null) && (originalErrors.size() > 0)));
-	return (Util.getTrue(value)==haveError)
-		? EVAL_BODY_INCLUDE
-		: SKIP_BODY;
+      haveError = (((originalErrors != null) && (originalErrors.size() > 0)));
 
+      return (Util.getTrue(value) == haveError) ? EVAL_BODY_INCLUDE
+                                                : SKIP_BODY;
    }
-   /**
-	* @return
-	*/
-   public String getValue() {
-	   return value;
-   }
-
-   /**
-	* @param string
-	*/
-   public void setValue(String string) {
-	   value = string;
-   }
-
-
 }

@@ -45,7 +45,8 @@ public class TestTableQuery extends org.apache.cactus.JspTestCase
     */
    public void setUp() throws Exception
    {
-      config.setInitParameter("dbformsConfig", "/WEB-INF/dbforms-config.xml");
+    super.setUp();  
+   	config.setInitParameter("dbformsConfig", "/WEB-INF/dbforms-config.xml");
 
       DbFormsConfig dbFormsConfig = null;
 

@@ -22,64 +22,59 @@
  */
 package org.dbforms.event;
 
+
 /**
- *  KeyInfo class.
+ * KeyInfo class.
  *
- * @author  Luca Fossato
- * @created  23 novembre 2002
+ * @author Luca Fossato
+ *
  */
-public class KeyInfo
-{
-   private int    tableId;
+public class KeyInfo {
    private String keyId;
+   private int    tableId;
 
    /**
-    *   Constructor for the KeyInfo object
+    * Constructor for the KeyInfo object
     */
-   public KeyInfo()
-   {
+   public KeyInfo() {
    }
 
    /**
-    *  Gets the tableId attribute of the KeyInfo object
+    * Sets the keyId attribute of the KeyInfo object
     *
-    * @return  The tableId value
+    * @param keyId The new keyId value
     */
-   public int getTableId()
-   {
-      return tableId;
-   }
-
-
-   /**
-    *  Sets the tableId attribute of the KeyInfo object
-    *
-    * @param  tableId The new tableId value
-    */
-   public void setTableId(int tableId)
-   {
-      this.tableId = tableId;
-   }
-
-
-   /**
-    *  Sets the keyId attribute of the KeyInfo object
-    *
-    * @param  keyId The new keyId value
-    */
-   public void setKeyId(String keyId)
-   {
+   public void setKeyId(String keyId) {
       this.keyId = keyId;
    }
 
 
    /**
-    *  Gets the keyId attribute of the KeyInfo object
+    * Gets the keyId attribute of the KeyInfo object
     *
-    * @return  The keyId value
+    * @return The keyId value
     */
-   public String getKeyId()
-   {
+   public String getKeyId() {
       return keyId;
+   }
+
+
+   /**
+    * Sets the tableId attribute of the KeyInfo object
+    *
+    * @param tableId The new tableId value
+    */
+   public void setTableId(int tableId) {
+      this.tableId = tableId;
+   }
+
+
+   /**
+    * Gets the tableId attribute of the KeyInfo object
+    *
+    * @return The tableId value
+    */
+   public int getTableId() {
+      return tableId;
    }
 }

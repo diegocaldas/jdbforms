@@ -22,44 +22,45 @@
  */
 package org.dbforms.conprovider;
 
-import java.util.Properties;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import java.util.Properties;
+
+
+
 /**
- *  Single Connection provider.
- *  <br>
- *  provides one connection for all
- * 
+ * Single Connection provider. <br> provides one connection for all
+ *
  * @author Henner Kollmann
- * 
  */
 public class SingleConnectionProvider extends ConnectionProvider {
-   
    private static Connection con;
-   
+
    /**
-    *  Default constructor.
+    * Default constructor.
     *
-    * @exception  Exception Description of the Exception
-    * @throws  Exception because of the <code>throws Exception</code> clause
-    *          of the  <code>init</code> method.
+    * @exception Exception Description of the Exception
+    * @throws Exception because of the <code>throws Exception</code> clause of
+    *         the  <code>init</code> method.
     */
    public SingleConnectionProvider() throws Exception {
       super();
    }
 
    /**
-    *  Get a JDBC Connection
+    * Get a JDBC Connection
     *
-    * @return  a JDBC Connection
-    * @exception  SQLException Description of the Exception
+    * @return a JDBC Connection
+    *
+    * @exception SQLException Description of the Exception
     */
    protected synchronized Connection getConnection() throws SQLException {
       if (con == null) {
-         Properties props = getPrefs().getProperties();
+         Properties props = getPrefs()
+                               .getProperties();
+
          // uses custom jdbc properties;
          if ((props != null) && !props.isEmpty()) {
             props.put("user", getPrefs().getUser());
@@ -68,19 +69,23 @@ public class SingleConnectionProvider extends ConnectionProvider {
          }
          // "plain" flavour;
          else {
-            con = DriverManager.getConnection(getPrefs().getJdbcURL(), getPrefs().getUser(), getPrefs().getPassword());
+            con = DriverManager.getConnection(getPrefs().getJdbcURL(),
+                                              getPrefs().getUser(),
+                                              getPrefs().getPassword());
          }
       }
+
       return new SingleConnectionWrapper(con);
    }
 
+
    /**
-    *  Initialize the ConnectionProvider.
+    * Initialize the ConnectionProvider.
     *
-    * @throws  Exception if any error occurs
+    * @throws Exception if any error occurs
     */
    protected void init() throws Exception {
-      Class.forName(getPrefs().getJdbcDriver()).newInstance();
+      Class.forName(getPrefs().getJdbcDriver())
+           .newInstance();
    }
-
 }

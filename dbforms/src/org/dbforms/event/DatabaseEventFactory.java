@@ -22,40 +22,47 @@
  */
 package org.dbforms.event;
 
+import org.dbforms.config.DbFormsConfig;
+
 import javax.servlet.http.HttpServletRequest;
 
-import org.dbforms.config.DbFormsConfig;
 
 
 /**
- * DatabaseEventFactory class.
- * Create DatabaseEvent objects.
+ * DatabaseEventFactory class. Create DatabaseEvent objects.
  *
- * @author  Luca Fossato
- * @created  20 novembre 2002
+ * @author Luca Fossato
+ *
  */
-public abstract class DatabaseEventFactory extends EventFactory
-{
+public abstract class DatabaseEventFactory extends EventFactory {
    /**
-    *  Create and return a new UpdateEvent as secondary event.
+    * Create and return a new InsertEvent as secondary event.
     *
-    * @param  tableId the table identifier
-    * @param  keyId   the key   identifier
-    * @param  request the HttpServletRequest object
-    * @param  config  the DbForms config object
-    * @return  The updateEvent object
+    * @param tableId the table identifier
+    * @param keyId DOCUMENT ME!
+    * @param request the HttpServletRequest object
+    * @param config the DbForms config object
+    *
+    * @return The updateEvent object
     */
-   public abstract DatabaseEvent createUpdateEvent(int tableId, String keyId,
-      HttpServletRequest request, DbFormsConfig config);
+   public abstract DatabaseEvent createInsertEvent(int                tableId,
+                                                   String             keyId,
+                                                   HttpServletRequest request,
+                                                   DbFormsConfig      config);
+
 
    /**
-    *  Create and return a new InsertEvent as secondary event.
+    * Create and return a new UpdateEvent as secondary event.
     *
-    * @param  tableId the table identifier
-    * @param  request the HttpServletRequest object
-    * @param  config  the DbForms config object
-    * @return  The updateEvent object
+    * @param tableId the table identifier
+    * @param keyId the key   identifier
+    * @param request the HttpServletRequest object
+    * @param config the DbForms config object
+    *
+    * @return The updateEvent object
     */
-   public abstract DatabaseEvent createInsertEvent(int tableId, String keyId,
-      HttpServletRequest request, DbFormsConfig config);
+   public abstract DatabaseEvent createUpdateEvent(int                tableId,
+                                                   String             keyId,
+                                                   HttpServletRequest request,
+                                                   DbFormsConfig      config);
 }

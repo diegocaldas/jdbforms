@@ -21,7 +21,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.taglib;
+
 import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
@@ -29,26 +31,24 @@ import javax.servlet.jsp.JspWriter;
 
 
 /**
- * Renders an HTML <base> element with an href
- * attribute pointing to the absolute location of the enclosing JSP page. The presence
- * of this tag allows the browser to resolve relative URL's to images,
- * CSS stylesheets  and other resources in a manner independent of the URL
- * used to call the ControllerServlet.  There are no attributes associated with
- * this tag.
+ * Renders an HTML base element with an href attribute pointing to the absolute
+ * location of the enclosing JSP page. The presence of this tag allows the
+ * browser to resolve relative URL's to images, CSS stylesheets  and other
+ * resources in a manner independent of the URL used to call the
+ * ControllerServlet.  There are no attributes associated with this tag.
  *
- * author Luis Arias <luis@elysia.com>
- * @author Joe Peer <joepeer@wap-force.net> (changed class for use in DbForms-Framework)
+ * @author Luis Arias
+ * @author Joe Peer (changed class for use in DbForms-Framework)
  */
-public class BaseTag extends TagSupportWithScriptHandler
-{
-
+public class BaseTag extends TagSupportWithScriptHandler {
    /**
     * Process the start of this tag.
     *
+    * @return DOCUMENT ME!
+    *
     * @exception JspException if a JSP exception has occurred
     */
-   public int doStartTag() throws JspException
-   {
+   public int doStartTag() throws JspException {
       HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
       StringBuffer       buf = new StringBuffer("<base href=\"");
       buf.append(request.getScheme());
@@ -57,10 +57,9 @@ public class BaseTag extends TagSupportWithScriptHandler
 
       int port = request.getServerPort();
 
-      if ((port != 80)  && (port !=443))
-      {
+      if ((port != 80) && (port != 443)) {
          buf.append(":");
-		 buf.append(String.valueOf(port));
+         buf.append(String.valueOf(port));
       }
 
       buf.append(request.getRequestURI());
@@ -68,15 +67,12 @@ public class BaseTag extends TagSupportWithScriptHandler
 
       JspWriter out = pageContext.getOut();
 
-      try
-      {
+      try {
          out.write(buf.toString());
-      }
-      catch (IOException e)
-      {
+      } catch (IOException e) {
          throw new JspException(e.toString());
       }
+
       return EVAL_BODY_INCLUDE;
    }
-   
 }

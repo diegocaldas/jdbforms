@@ -22,49 +22,44 @@
  */
 package org.dbforms.conprovider;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import org.apache.log4j.Category;
 
 
 /**
- *  ConnectionFactory class.
- *  <br>
- *  Provides SQL Connection objects using the
- *  underlying ConnectionProvider instance.
- * 
+ * ConnectionFactory class. <br>
+ * Provides SQL Connection objects using the underlying ConnectionProvider
+ * instance.
+ *
  * @author Luca Fossato
- * 
  */
-public class ConnectionFactory
-{
-   /** Log4j category */
-   private Category cat = Category.getInstance(this.getClass());
-
+public class ConnectionFactory {
    /** an handle to the unique ConnectionFactory instance. */
    private static ConnectionFactory instance = null;
 
    /** default ConnectionProvider instance */
    private ConnectionProvider provider = null;
 
+   /** Log4j category */
+   private Log cat = LogFactory.getLog(this.getClass());
+
    /**
-    *   Constructor for the ConnectionFactory object
+    * Constructor for the ConnectionFactory object
     */
-   private ConnectionFactory()
-   {
+   private ConnectionFactory() {
    }
 
    /**
-    *  Get the unique instance of ConnectionFactory class.
+    * Get the unique instance of ConnectionFactory class.
     *
-    * @return  the instance of ConnectionFactory class
+    * @return the instance of ConnectionFactory class
     */
-   public static synchronized ConnectionFactory instance()
-   {
-      if (instance == null)
-      {
+   public static synchronized ConnectionFactory instance() {
+      if (instance == null) {
          instance = new ConnectionFactory();
       }
 
@@ -73,47 +68,51 @@ public class ConnectionFactory
 
 
    /**
-    *  Set the ConnectionProvider object
+    * Get a connection object from the underlying ConnectionProvider object.
     *
-    * @param  prefs     the connection provider preferences object
-    * @throws Exception if any error occurs
-    */
-   public void setProvider(ConnectionProviderPrefs prefs)
-      throws Exception
-   {
-      String providerClass = prefs.getConnectionProviderClass();
-      provider = (ConnectionProvider) Class.forName(providerClass).newInstance();
-      provider.setPrefs(prefs);
-      provider.init();
-
-      cat.info("::setProvider - ConnectionProvider [" + providerClass
-               + "] successfully set and initialized");
-   }
-
-
-   /**
-    *  Get a connection object from the underlying ConnectionProvider object.
+    * @return the connection object from the underlying ConnectionProvider
+    *         object
     *
-    * @return  the connection object from the underlying ConnectionProvider object
-    * @throws  SQLException if any error occurs
+    * @throws SQLException if any error occurs
     */
-   public Connection getConnection() throws SQLException
-   {
+   public Connection getConnection() throws SQLException {
       return provider.getConnection();
    }
 
 
    /**
-    *  Get a "transactional" JDBC connection from the underlying default ConnectionProvider.
+    * Get a "transactional" JDBC connection from the underlying default
+    * ConnectionProvider.
     *
-    * @param  isolationLevel the isolation level to set the connection to
-    * @return  the new "transactional" connection object
-    *         from the underlying default ConnectionProvider
-    * @throws  SQLException if any error occurs
+    * @param isolationLevel the isolation level to set the connection to
+    *
+    * @return the new "transactional" connection object from the underlying
+    *         default ConnectionProvider
+    *
+    * @throws SQLException if any error occurs
     */
    public Connection getConnection(int isolationLevel)
-      throws SQLException
-   {
+                            throws SQLException {
       return provider.getConnection(isolationLevel);
+   }
+
+
+   /**
+    * Set the ConnectionProvider object
+    *
+    * @param prefs the connection provider preferences object
+    *
+    * @throws Exception if any error occurs
+    */
+   public void setProvider(ConnectionProviderPrefs prefs)
+                    throws Exception {
+      String providerClass = prefs.getConnectionProviderClass();
+      provider = (ConnectionProvider) Class.forName(providerClass)
+                                           .newInstance();
+      provider.setPrefs(prefs);
+      provider.init();
+
+      cat.info("::setProvider - ConnectionProvider [" + providerClass
+               + "] successfully set and initialized");
    }
 }

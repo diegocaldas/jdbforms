@@ -21,12 +21,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.devgui;
+
 import java.io.*;
 
 
 
-class ExtensionFilter implements FilenameFilter
-{
+class ExtensionFilter implements FilenameFilter {
    String[] extensions;
 
    /**
@@ -34,8 +34,7 @@ class ExtensionFilter implements FilenameFilter
     *
     * @param extensions DOCUMENT ME!
     */
-   public ExtensionFilter(String[] extensions)
-   {
+   public ExtensionFilter(String[] extensions) {
       this.extensions = extensions;
    }
 
@@ -47,14 +46,12 @@ class ExtensionFilter implements FilenameFilter
     *
     * @return DOCUMENT ME!
     */
-   public boolean accept(File dir, String name)
-   {
-      for (int i = 0; i < extensions.length; i++)
-      {
+   public boolean accept(File   dir,
+                         String name) {
+      for (int i = 0; i < extensions.length; i++) {
          String anExtension = extensions[i];
 
-         if ("*".equals(anExtension) || name.endsWith(anExtension))
-         {
+         if ("*".equals(anExtension) || name.endsWith(anExtension)) {
             return true;
          }
       }

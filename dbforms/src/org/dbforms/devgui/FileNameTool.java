@@ -22,14 +22,14 @@
  */
 package org.dbforms.devgui;
 
+
 /**
  * DOCUMENT ME!
  *
- * @version $Revision$
  * @author $author$
+ * @version $Revision$
  */
-public class FileNameTool
-{
+public class FileNameTool {
    /**
     * DOCUMENT ME!
     *
@@ -37,17 +37,14 @@ public class FileNameTool
     *
     * @return DOCUMENT ME!
     */
-   public static String normalize(String filePath)
-   {
-      String fileSeparator = System.getProperties().getProperty("file.separator");
+   public static String normalize(String filePath) {
+      String fileSeparator = System.getProperties()
+                                   .getProperty("file.separator");
       filePath = filePath.trim();
 
-      if (filePath.endsWith(fileSeparator))
-      {
+      if (filePath.endsWith(fileSeparator)) {
          return filePath;
-      }
-      else
-      {
+      } else {
          return filePath + fileSeparator;
       }
    }

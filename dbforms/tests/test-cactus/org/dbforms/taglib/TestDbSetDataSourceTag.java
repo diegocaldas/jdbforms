@@ -45,6 +45,8 @@ public class TestDbSetDataSourceTag extends JspTestCase {
 	 * it, this method creates a BodyContent object and passes it to the tag.
 	 */
 	public void setUp()  throws Exception {
+    	super.setUp();	
+
 		DbFormsConfigRegistry.instance().register(null);
 		config.setInitParameter("dbformsConfig", "/WEB-INF/dbforms-config.xml");
 		config.setInitParameter("log4j.configuration", "/WEB-INF/log4j.properties");

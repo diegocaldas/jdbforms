@@ -20,25 +20,32 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.taglib;
-import java.util.Locale;
-import javax.servlet.jsp.JspException;
-import javax.servlet.http.HttpServletRequest;
-import org.apache.log4j.Category;
 
-import org.dbforms.validation.ValidatorConstants;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.dbforms.config.Table;
+
 import org.dbforms.util.MessageResources;
 import org.dbforms.util.Util;
 
+import org.dbforms.validation.ValidatorConstants;
+
+import java.util.Locale;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.jsp.JspException;
+
+
+
 /**
  * abstract base class for buttons supports 3 types of Buttons: #fixme - docu
- * 
+ *
  * @author Joachim Peer
  */
 public abstract class DbBaseButtonTag extends DbBaseHandlerTag {
-   private static Category logCat = Category.getInstance(DbBaseButtonTag.class.getName()); // logging category for this class
+   private static Log logCat = LogFactory.getLog(DbBaseButtonTag.class.getName()); // logging category for this class
 
    /** DOCUMENT ME! */
    protected static final int FLAVOR_STANDARD = 0;
@@ -51,63 +58,313 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag {
 
    // logging category for this class
    private static int uniqueID = 0;
+   private String     alt; // used if flavor is "image"
+   private String     border; // used to set html border attribute"
+   private String     caption; // used if flavor is "standard"
 
-   private String followUp;
-   private String followUpOnError;
-   private Table table;
-   private int choosenFlavor = 0; // default = standard
-   private String caption; // used if flavor is "standard"
-   private String src; // used if flavor is "image"
-   private String alt; // used if flavor is "image"
    //20040225 JFM
    private String disabledBehaviour;
-   private String disabledImageSrc;
    private String disabledImageAlt;
-   private String disabledImageWidth;
    private String disabledImageHeight;
-   private String border; // used to set html border attribute"
+   private String disabledImageSrc;
+   private String disabledImageWidth;
+   private String followUp;
+   private String followUpOnError;
+   private String src; // used if flavor is "image"
+   private Table  table;
+   private int    choosenFlavor = 0; // default = standard
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param src DOCUMENT ME!
+    */
+   public void setAlt(String src) {
+      this.alt = src;
+   }
+
 
    /**
     * DOCUMENT ME!
     *
     * @return DOCUMENT ME!
     */
-   protected synchronized static int getUniqueID() {
-      uniqueID++;
-      return uniqueID;
+   public String getAlt() {
+      return alt;
    }
 
+
    /**
-    * returns the JavaScript validation flags.
-    * Will be put into the onClick event of the main form
-    * Must be overloaded by update and delete button
+    * Sets the border
     *
-    * @return the java script validation vars.
+    * @param border The border to set
     */
-   protected String JsValidation() {
-      return ValidatorConstants.JS_CANCEL_VALIDATION + "=false;";
+   public void setBorder(String border) {
+      this.border = border;
    }
+
+
+   /**
+    * Gets the border
+    *
+    * @return Returns a String
+    */
+   public String getBorder() {
+      return border;
+   }
+
 
    /**
     * DOCUMENT ME!
     *
-    * @return DOCUMENT ME!
-    *
-    * @throws javax.servlet.jsp.JspException DOCUMENT ME!
+    * @param caption DOCUMENT ME!
     */
-   public int doStartTag() throws javax.servlet.jsp.JspException {
-      if ((getParentForm().getFormValidatorName() != null) && (getParentForm().getFormValidatorName().length() > 0) && getParentForm().hasJavascriptValidationSet()) {
-         String onclick = (getOnClick() != null) ? getOnClick() : "";
+   public void setCaption(String caption) {
+      String message = null;
 
-         if (onclick.lastIndexOf(";") != (onclick.length() - 1)) {
-            onclick += ";"; // be sure javascript end with ";"
+      this.caption = caption;
+
+      // If the caption is not null and the resources="true" attribut
+      if ((caption != null) && getParentForm()
+                                        .hasCaptionResourceSet()) {
+         try {
+            Locale locale = MessageResources.getLocale((HttpServletRequest) pageContext
+                                                       .getRequest());
+
+            message = MessageResources.getMessage(caption, locale);
+
+            if (message != null) {
+               this.caption = message;
+            }
+         } catch (Exception e) {
+            logCat.debug("setCaption(" + caption + ") Exception : "
+                         + e.getMessage());
          }
-
-         setOnClick(onclick + JsValidation());
       }
-
-      return SKIP_BODY;
    }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String getCaption() {
+      return caption;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return
+    */
+   public int getChoosenFlavor() {
+      return choosenFlavor;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param disabledBehaviour - possible values: "nohtml", "altimage",
+    *        "disabled"
+    */
+   public void setDisabledBehaviour(String disabledBehaviour) {
+      this.disabledBehaviour = disabledBehaviour;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return
+    */
+   public String getDisabledBehaviour() {
+      return disabledBehaviour;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param disabledImageAlt - alternative image if button is disabled and
+    *        flavor 'image'
+    */
+   public void setDisabledImageAlt(String disabledImageAlt) {
+      this.disabledImageAlt = disabledImageAlt;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return alternative image alt text if button is disabled and flavor
+    *         'image'
+    */
+   public String getDisabledImageAlt() {
+      return disabledImageAlt;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param disabledImageHeight - the height of disabledImageSrc
+    */
+   public void setDisabledImageHeight(String disabledImageHeight) {
+      this.disabledImageHeight = disabledImageHeight;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return
+    */
+   public String getDisabledImageHeight() {
+      return disabledImageHeight;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param disabledImageSrc - alternative image alt text if button is
+    *        disabled and flavor 'image'
+    */
+   public void setDisabledImageSrc(String disabledImageSrc) {
+      this.disabledImageSrc = disabledImageSrc;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return alternative image src if button is disabled and flavor 'image'
+    */
+   public String getDisabledImageSrc() {
+      return disabledImageSrc;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param disabledImageWidth - the width of disabledImageSrc
+    */
+   public void setDisabledImageWidth(String disabledImageWidth) {
+      this.disabledImageWidth = disabledImageWidth;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return
+    */
+   public String getDisabledImageWidth() {
+      return disabledImageWidth;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param flavor DOCUMENT ME!
+    */
+   public void setFlavor(String flavor) {
+      if ("image".equals(flavor)) {
+         choosenFlavor = FLAVOR_IMAGE;
+      } else if ("modern".equals(flavor)) {
+         choosenFlavor = FLAVOR_MODERN;
+      } else {
+         choosenFlavor = FLAVOR_STANDARD;
+      }
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param followUp DOCUMENT ME!
+    */
+   public void setFollowUp(String followUp) {
+      this.followUp = followUp;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String getFollowUp() {
+      return followUp;
+   }
+
+
+   /**
+    * Sets the followUpOnError
+    *
+    * @param followUpOnError The followUpOnError to set
+    */
+   public void setFollowUpOnError(String followUpOnError) {
+      this.followUpOnError = followUpOnError;
+   }
+
+
+   /**
+    * Gets the followUpOnError
+    *
+    * @return Returns a String
+    */
+   public String getFollowUpOnError() {
+      return followUpOnError;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param parent DOCUMENT ME!
+    */
+   public void setParent(final javax.servlet.jsp.tagext.Tag parent) {
+      super.setParent(parent);
+      table = getParentForm()
+                 .getTable();
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param src DOCUMENT ME!
+    */
+   public void setSrc(String src) {
+      this.src = src;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String getSrc() {
+      return src;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return
+    */
+   public Table getTable() {
+      return table;
+   }
+
 
    /**
     * DOCUMENT ME!
@@ -124,7 +381,8 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag {
                bodyContent.writeOut(bodyContent.getEnclosingWriter());
             }
 
-            pageContext.getOut().write("</button>");
+            pageContext.getOut()
+                       .write("</button>");
          } catch (java.io.IOException ioe) {
             throw new JspException("IO Error: " + ioe.getMessage());
          }
@@ -133,130 +391,75 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag {
       return EVAL_PAGE;
    }
 
+
    /**
     * DOCUMENT ME!
-    * 
-    * @param parent DOCUMENT ME!
     */
-   public void setParent(final javax.servlet.jsp.tagext.Tag parent) {
-      super.setParent(parent);
-      table = getParentForm().getTable();
+   public void doFinally() {
+      followUp        = null;
+      followUpOnError = null;
+      table           = null;
+      choosenFlavor   = 0;
+      caption         = null;
+      src             = null;
+      alt             = null;
+      border          = null;
+      super.doFinally();
    }
 
-   /**
-    * DOCUMENT ME!
-    * 
-    * @param flavor DOCUMENT ME!
-    */
-   public void setFlavor(String flavor) {
-      if ("image".equals(flavor)) {
-         choosenFlavor = FLAVOR_IMAGE;
-      } else if ("modern".equals(flavor)) {
-         choosenFlavor = FLAVOR_MODERN;
-      } else {
-         choosenFlavor = FLAVOR_STANDARD;
-      }
-   }
 
    /**
     * DOCUMENT ME!
-    * 
-    * @param caption DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws javax.servlet.jsp.JspException DOCUMENT ME!
     */
-   public void setCaption(String caption) {
-      String message = null;
+   public int doStartTag() throws javax.servlet.jsp.JspException {
+      if ((getParentForm()
+                    .getFormValidatorName() != null)
+                && (getParentForm()
+                             .getFormValidatorName()
+                             .length() > 0)
+                && getParentForm()
+                            .hasJavascriptValidationSet()) {
+         String onclick = (getOnClick() != null) ? getOnClick()
+                                                 : "";
 
-      this.caption = caption;
-
-      // If the caption is not null and the resources="true" attribut
-      if ((caption != null) && getParentForm().hasCaptionResourceSet()) {
-         try {
-            Locale locale = MessageResources.getLocale((HttpServletRequest) pageContext.getRequest());
-
-            message = MessageResources.getMessage(caption, locale);
-
-            if (message != null) {
-               this.caption = message;
-            }
-         } catch (Exception e) {
-            logCat.debug("setCaption(" + caption + ") Exception : " + e.getMessage());
+         if (onclick.lastIndexOf(";") != (onclick.length() - 1)) {
+            onclick += ";"; // be sure javascript end with ";"
          }
+
+         setOnClick(onclick + JsValidation());
       }
+
+      return SKIP_BODY;
    }
+
 
    /**
     * DOCUMENT ME!
-    * 
+    *
     * @return DOCUMENT ME!
     */
-   public String getCaption() {
-      return caption;
+   protected static synchronized int getUniqueID() {
+      uniqueID++;
+
+      return uniqueID;
    }
 
-   /**
-    * DOCUMENT ME!
-    * 
-    * @param src DOCUMENT ME!
-    */
-   public void setSrc(String src) {
-      this.src = src;
-   }
-
-   /**
-    * DOCUMENT ME!
-    * 
-    * @return DOCUMENT ME!
-    */
-   public String getSrc() {
-      return src;
-   }
-
-   /**
-    * DOCUMENT ME!
-    * 
-    * @param src DOCUMENT ME!
-    */
-   public void setAlt(String src) {
-      this.alt = src;
-   }
-
-   /**
-    * DOCUMENT ME!
-    * 
-    * @return DOCUMENT ME!
-    */
-   public String getAlt() {
-      return alt;
-   }
-
-   /**
-    * DOCUMENT ME!
-    * 
-    * @param followUp DOCUMENT ME!
-    */
-   public void setFollowUp(String followUp) {
-      this.followUp = followUp;
-   }
-
-   /**
-    * DOCUMENT ME!
-    * 
-    * @return DOCUMENT ME!
-    */
-   public String getFollowUp() {
-      return followUp;
-   }
 
    /**
     * returns beginnings of tags with attributes defining type/value/[src/alt -
     * if image]
+    *
     * @return DOCUMENT ME!
     */
    protected String getButtonBegin() {
       StringBuffer buf = new StringBuffer();
 
       switch (choosenFlavor) {
-         case FLAVOR_IMAGE :
+         case FLAVOR_IMAGE:
             buf.append("<input type=\"image\" ");
 
             if (src != null) {
@@ -273,7 +476,7 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag {
 
             break;
 
-         case FLAVOR_MODERN :
+         case FLAVOR_MODERN:
             buf.append("<button type=\"submit\" ");
 
             if (caption != null) {
@@ -284,7 +487,7 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag {
 
             break;
 
-         default : // FLAVOR_STANDARD
+         default: // FLAVOR_STANDARD
             buf.append("<input type=\"submit\" ");
 
             if (caption != null) {
@@ -299,77 +502,44 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag {
 
       return buf.toString();
    }
-   
-   //20040225 JFM: added
-   /**
-    * 
-    * @return HTML code for the disabled Image
-    */
-   protected String getDisabledImage() {
-   		StringBuffer imgBuf  = new StringBuffer();
-   		// image src
-      	imgBuf.append("<img src=\"");
-      	imgBuf.append(getDisabledImageSrc());
-      	imgBuf.append("\"");
-      	
-      	// image alt
-      	imgBuf.append(" alt=\"");
-      	imgBuf.append(getDisabledImageAlt());
-      	imgBuf.append("\"");
-      	
-      	// image style
-      	imgBuf.append(prepareStyles());
-      	
-      	// image events: 
-        //imgBuf.append(prepareEventHandlers());
-        
-        // image width and height
-        if (!Util.isNull(getDisabledImageWidth())) {
-        	imgBuf.append(" width=\"");
-        	imgBuf.append(getDisabledImageWidth());
-        	imgBuf.append("\"");
-        }
-        if (!Util.isNull(getDisabledImageHeight())) {
-        	imgBuf.append(" height=\"");
-        	imgBuf.append(getDisabledImageHeight());
-        	imgBuf.append("\"");
-        }
-      	imgBuf.append(" />");
-      	
-      	return imgBuf.toString();
-   }
+
 
    /**
     * returns beginnings of tags with attributes defining type/value/[src/alt -
     * if image]
+    *
     * @return DOCUMENT ME!
     */
    protected String getButtonEnd() {
       switch (choosenFlavor) {
-         case FLAVOR_IMAGE :
+         case FLAVOR_IMAGE:
             return "\"/>";
 
-         case FLAVOR_MODERN :
+         case FLAVOR_MODERN:
             return "\">";
 
-         default : // FLAVOR_STANDARD
+         default: // FLAVOR_STANDARD
 
             return "\"/>";
       }
    }
 
+
    /**
     * renders tag containing additional information about that button: ie
     * followUp, associatedRadio, etc.
+    *
     * @param primaryTagName DOCUMENT ME!
     * @param dataKey DOCUMENT ME!
     * @param dataValue DOCUMENT ME!
-    * 
+    *
     * @return DOCUMENT ME!
     */
-   protected String getDataTag(String primaryTagName, String dataKey, String dataValue) {
-
+   protected String getDataTag(String primaryTagName,
+                               String dataKey,
+                               String dataValue) {
       String s = "";
+
       if (!Util.isNull(dataValue)) {
          StringBuffer tagBuf = new StringBuffer();
          tagBuf.append("<input type=\"hidden\" name=\"data");
@@ -381,12 +551,69 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag {
          tagBuf.append("\"/>");
          s = tagBuf.toString();
       }
+
       return s;
    }
 
+
+   //20040225 JFM: added
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return HTML code for the disabled Image
+    */
+   protected String getDisabledImage() {
+      StringBuffer imgBuf = new StringBuffer();
+
+      // image src
+      imgBuf.append("<img src=\"");
+      imgBuf.append(getDisabledImageSrc());
+      imgBuf.append("\"");
+
+      // image alt
+      imgBuf.append(" alt=\"");
+      imgBuf.append(getDisabledImageAlt());
+      imgBuf.append("\"");
+
+      // image style
+      imgBuf.append(prepareStyles());
+
+      // image events: 
+      //imgBuf.append(prepareEventHandlers());
+      // image width and height
+      if (!Util.isNull(getDisabledImageWidth())) {
+         imgBuf.append(" width=\"");
+         imgBuf.append(getDisabledImageWidth());
+         imgBuf.append("\"");
+      }
+
+      if (!Util.isNull(getDisabledImageHeight())) {
+         imgBuf.append(" height=\"");
+         imgBuf.append(getDisabledImageHeight());
+         imgBuf.append("\"");
+      }
+
+      imgBuf.append(" />");
+
+      return imgBuf.toString();
+   }
+
+
+   /**
+    * returns the JavaScript validation flags. Will be put into the onClick
+    * event of the main form Must be overloaded by update and delete button
+    *
+    * @return the java script validation vars.
+    */
+   protected String JsValidation() {
+      return ValidatorConstants.JS_CANCEL_VALIDATION + "=false;";
+   }
+
+
    /**
     * Prepares the style attributes for inclusion in the component's HTML tag.
-    * 
+    *
     * @return The prepared String for inclusion in the HTML tag.
     */
    protected String prepareStyles() {
@@ -400,145 +627,4 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag {
 
       return styles.toString();
    }
-
-   /**
-    * Gets the border
-    * 
-    * @return Returns a String
-    */
-   public String getBorder() {
-      return border;
-   }
-
-   /**
-    * Sets the border
-    * 
-    * @param border The border to set
-    */
-   public void setBorder(String border) {
-      this.border = border;
-   }
-
-   /**
-    * Gets the followUpOnError
-    * 
-    * @return Returns a String
-    */
-   public String getFollowUpOnError() {
-      return followUpOnError;
-   }
-
-   /**
-    * Sets the followUpOnError
-    * 
-    * @param followUpOnError The followUpOnError to set
-    */
-   public void setFollowUpOnError(String followUpOnError) {
-      this.followUpOnError = followUpOnError;
-   }
-   
-   /**
-    * @return
-    */
-   public Table getTable() {
-      return table;
-   }
-
-   /**
-    * @return
-    */
-   public int getChoosenFlavor() {
-      return choosenFlavor;
-   }
-
-	/**
-	 * @return alternative image alt text if button is disabled and flavor 'image'
-	 */
-	public String getDisabledImageAlt() {
-		return disabledImageAlt;
-	}
-	
-	/**
-	 * 
-	 * @return alternative image src if button is disabled and flavor 'image'
-	 */
-	public String getDisabledImageSrc() {
-		return disabledImageSrc;
-	}
-	
-	/**
-	 * @param disabledImageAlt - alternative image if button is disabled and flavor 'image'
-	 */
-	public void setDisabledImageAlt(String disabledImageAlt) {
-		this.disabledImageAlt = disabledImageAlt;
-	}
-	
-	/**
-	 * @param disabledImageSrc - alternative image alt text if button is disabled and flavor 'image'
-	 */
-	public void setDisabledImageSrc(String disabledImageSrc) {
-		this.disabledImageSrc = disabledImageSrc;
-	}
-
-	/**
-	 * @return
-	 */
-	public String getDisabledBehaviour() {
-		return disabledBehaviour;
-	}
-	
-	/**
-	 * @param disabledBehaviour - possible values: "nohtml", "altimage", "disabled"
-	 */
-	public void setDisabledBehaviour(String disabledBehaviour) {
-		this.disabledBehaviour = disabledBehaviour;
-	}
-
-	/**
-	 * 
-	 * @return
-	 */
-	public String getDisabledImageHeight() {
-		return disabledImageHeight;
-	}
-	
-	/**
-	 * 
-	 * @return
-	 */
-	public String getDisabledImageWidth() {
-		return disabledImageWidth;
-	}
-	
-	/**
-	 * @param disabledImageHeight - the height of disabledImageSrc
-	 */
-	public void setDisabledImageHeight(String disabledImageHeight) {
-		this.disabledImageHeight = disabledImageHeight;
-	}
-	
-	/**
-	 * @param disabledImageWidth - the width of disabledImageSrc
-	 */
-	public void setDisabledImageWidth(String disabledImageWidth) {
-		this.disabledImageWidth = disabledImageWidth;
-	}
-
-
-   /**
-    * DOCUMENT ME!
-    */
-   public void doFinally() {
-      followUp = null;
-      followUpOnError = null;
-      table = null;
-      choosenFlavor = 0;
-      caption = null;
-      src = null;
-      alt = null;
-      border = null;
-      super.doFinally();
-   }
-
-
 }

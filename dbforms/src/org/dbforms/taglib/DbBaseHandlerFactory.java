@@ -20,58 +20,53 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.taglib;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.dbforms.util.PageContextBuffer;
+
 import javax.servlet.Servlet;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 import javax.servlet.jsp.tagext.Tag;
-import org.apache.log4j.Category;
 
 
 
 /**
- * 
- * Factory class to render buttons.
- * Can be used to include a button into another tag. 
- * see DbFilterTag for example 
- * 
- * @author Henner Kollmann <Henner.Kollmann@gmx.de>
+ * Factory class to render buttons. Can be used to include a button into
+ * another tag.  see DbFilterTag for example
+ *
+ * @author Henner Kollmann
  */
-public class DbBaseHandlerFactory
-{
-   private DbBaseHandlerTag   tag;
+public class DbBaseHandlerFactory {
+   private static Log        logCat      = LogFactory.getLog(DbBaseHandlerFactory.class);
+   private DbBaseHandlerTag  tag;
    private PageContextBuffer pageContext;
-   static Category           logCat = Category.getInstance(
-                                               DbBaseHandlerFactory.class.getName());
 
    /**
     * Creates a new DbBaseButtonFactory object.
     *
     * @param parentContext parentContext to send to new tag
-    * @param parent        parent tag to send to new tag
-    * @param clazz         the button class to generate 
+    * @param parent parent tag to send to new tag
+    * @param clazz the button class to generate
     *
     * @throws JspException exception
     */
-   public DbBaseHandlerFactory(PageContext parentContext, BodyTagSupport parent, 
-                              Class clazz) throws JspException
-   {
-      try
-      {
+   public DbBaseHandlerFactory(PageContext    parentContext,
+                               BodyTagSupport parent,
+                               Class          clazz) throws JspException {
+      try {
          tag         = (DbBaseHandlerTag) clazz.newInstance();
          pageContext = new PageContextBuffer();
-         pageContext.initialize((Servlet) parentContext.getPage(), 
-                                parentContext.getRequest(), 
-                                parentContext.getResponse(), null, true, 0, 
-                                true);
+         pageContext.initialize((Servlet) parentContext.getPage(),
+                                parentContext.getRequest(),
+                                parentContext.getResponse(), null, true, 0, true);
          tag.setPageContext(pageContext);
          tag.setParent(parent);
-      }
-      catch (Exception e)
-      {
+      } catch (Exception e) {
          throw new JspException(e);
       }
    }
@@ -81,8 +76,7 @@ public class DbBaseHandlerFactory
     *
     * @return the button tag
     */
-   public DbBaseHandlerTag getTag()
-   {
+   public DbBaseHandlerTag getTag() {
       return tag;
    }
 
@@ -94,12 +88,11 @@ public class DbBaseHandlerFactory
     *
     * @throws JspException thrown exception
     */
-   public StringBuffer render() throws JspException
-   {
-      if (tag.doStartTag() != Tag.SKIP_BODY)
-      {
+   public StringBuffer render() throws JspException {
+      if (tag.doStartTag() != Tag.SKIP_BODY) {
          tag.doEndTag();
       }
+
       return pageContext.getBuffer();
    }
 }
