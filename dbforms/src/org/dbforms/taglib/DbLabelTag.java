@@ -26,7 +26,6 @@ import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.tagext.TagSupport;
 
 import org.apache.log4j.Category;
 import org.dbforms.config.DbFormsConfig;
@@ -42,7 +41,7 @@ import org.dbforms.util.MessageResources;
  * @author  Joachim Peer <j.peer@gmx.net>
  * @created  29 agosto 2002
  */
-public class DbLabelTag extends TagSupport
+public class DbLabelTag extends TagSupportWithScriptHandler
 {
     // logging category for this class
     static Category logCat = Category.getInstance(DbLabelTag.class.getName());
