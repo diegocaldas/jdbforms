@@ -27,6 +27,15 @@ Deploy the .war files to your Servlet 2.2+ compatible servlet container!
 If you are not using mysql -> you have to edit the dbforms-config.xml file to set up the database connection
 properly.
 
+Remarks:
+
+ - target 'generate_taglib_pdfdocs' uses Apache Formatting Objects Processor
+   (FOP) that can be found at http://xml.apache.org/fop/index.html.
+   I used Version FOP-0.20.4, older versions may make some problems
+   because some attributes seem to be renamed. After installing FOP
+   and before calling 'ant generate_taglib_pdfdocs' you have to
+   set environment variable FOP_HOME to location of FOP installation.
+   
 Happy coding!
 ~~ DbForms team ~~
 
@@ -44,7 +53,8 @@ Happy coding!
     <property name="dist.dir" value="${cvs.workingdir}/dist"/>
     <property name="dependend.dir" value="${cvs.workingdir}/dependend"/>
     <property name="htmldoc.dir" value="${cvs.workingdir}/doc/html"/>
-
+    <property name="doc.dir" value="${cvs.workingdir}/doc"/>
+    <property environment="env"/>
 
     <!-- Indentify Classpath -->
     <path id="classpath">
@@ -104,15 +114,32 @@ Happy coding!
     </target>
 
     <!-- generate PDF reference documentation from taglib-docu using XSL transformation and FOP -->
-    <target name="generate_taglib_pdfdocs" 
-                    description="--> Generate  PDF reference documentation from taglib-docu.xml" >
+    <target name="generate_taglib_pdfdocs"
+            description="--> Generate PDF reference documentation from taglib-docu.xml (FOP_HOME must be set)" >
+ 
         <echo message="begin xsl translation to generate xsl-fo   "/>
-        <style style="${etc.dir}/tldoc2xsl-fo.xsl" in="${etc.dir}/taglib_docu.xml" out="${etc.dir}/DbFormsTags.xsl-fo"/>
+        <style style="${etc.dir}/tldoc2xsl-fo.xsl" 
+               in="${etc.dir}/taglib_docu.xml" 
+               out="${etc.dir}/DbFormsTags.xsl-fo"/>
         <echo message="end of xsl translation "/>
-        <echo message="Warning: transformation process not complete."/>
-        <echo message="TODO: transform  DbFormsTags.xsl-fo to PDF"/>
-    </target>
-    
+
+        <echo message="starting generation of ${doc.dir}/DbFormsTags.pdf using Apache FOP (FOP_HOME must be set)"/>
+        <path id="fopclasspath">      <!-- set classpath according to FOP_HOME -->
+           <fileset dir="${env.FOP_HOME}/lib/">
+               <include name="*.jar"/>
+           </fileset>
+           <fileset dir="${env.FOP_HOME}/build/">
+               <include name="*.jar"/>
+           </fileset>
+        </path>
+
+        <java classname="org.apache.fop.apps.Fop" 
+           fork="true" jvm="${java.home}/bin/java" >
+           <arg line=" ${etc.dir}/DbFormsTags.xsl-fo ${doc.dir}/DbFormsTags.pdf"/>
+           <classpath refid="fopclasspath"/>
+        </java>
+        <echo message="end of PDF generation, output file is ${doc.dir}/DbFormsTags.pdf"/>
+     </target>
     
     <!-- make an example app -->
 
