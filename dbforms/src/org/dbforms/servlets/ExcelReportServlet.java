@@ -29,7 +29,7 @@ import org.dbforms.servlets.reports.LineReportServletAbstract;
 import org.dbforms.util.ParseUtil;
 import org.dbforms.util.MessageResourcesInternal;
 import org.dbforms.util.MessageResources;
-import java.io.PrintWriter;
+import java.io.OutputStream;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -81,19 +81,26 @@ public class ExcelReportServlet extends LineReportServletAbstract {
 		return "csv";
 	}
 
-	protected void writeHeader(PrintWriter pw, String[] header) {
+	protected void openStream(OutputStream out)  throws Exception  {
+	}
+
+	protected void closeStream(OutputStream out) throws Exception {
+		wb.write(out);
+	}
+
+	
+	protected void writeHeader(String[] header) throws Exception {
 		HSSFRow row = sheet.createRow(rowCnt++);
-		for (int i = 0; i != header.length; i++) {
+		for (int i = 0; i < header.length; i++) {
 			HSSFCell cell = row.createCell((short) i);
 			cell.setEncoding(HSSFCell.ENCODING_UTF_16);
 			cell.setCellValue(header[i]);
 		}
 	}
 
-	protected void writeData(PrintWriter pw, Object[] data) {
+	protected void writeData(Object[] data) throws Exception {
 		HSSFRow row = sheet.createRow( rowCnt++);
-		for (int i = 0; i != data.length; i++) {
-
+		for (int i = 0; i < data.length; i++) {
 			if (data[i] != null) {
 				// for null values we just skip the cell
 				HSSFCell cell = row.createCell((short) i);
@@ -113,12 +120,12 @@ public class ExcelReportServlet extends LineReportServletAbstract {
 
 	protected void process(HttpServletRequest request,
 			HttpServletResponse response) {
-		super.process(request, response);
 		String sheetname = ParseUtil.getParameter(request, SHEETNAMEPARAM,
 				MessageResourcesInternal.getMessage("dbforms.new_worksheet",
 						MessageResources.getLocale(request)));
 		wb = new HSSFWorkbook();
 		sheet = wb.createSheet(sheetname);
+		super.process(request, response);
 	}
 
 }

@@ -38,9 +38,7 @@ import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
+import java.io.OutputStream;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -85,7 +83,9 @@ public abstract class LineReportServletAbstract extends ReportServletAbstract {
 
 	protected abstract String getFileExtension();
 
-	protected abstract void writeData(PrintWriter pw, Object[] data);
+	protected abstract void writeData(Object[] data) throws Exception;
+	protected abstract void openStream(OutputStream out) throws Exception;
+	protected abstract void closeStream(OutputStream out) throws Exception;
 
 	private static final String REPORTMIMETYPEPARAM = "reportMimeType";
 
@@ -102,11 +102,11 @@ public abstract class LineReportServletAbstract extends ReportServletAbstract {
 	}
 
 	protected String getReportFileExtension() {
-		return "cr";
+		return "xr";
 	}
 
-	protected void writeHeader(PrintWriter pw, String[] header) {
-		writeData(pw, header);
+	protected void writeHeader(String[] header) throws Exception {
+		writeData(header);
 	}
 
 	private Object getFieldValue(HttpServletRequest request,
@@ -206,27 +206,18 @@ public abstract class LineReportServletAbstract extends ReportServletAbstract {
 		res.mimeType = mimeType;
 		res.data = new ByteArrayOutputStream();
 		res.fileName = getFileExtension();
-		PrintWriter pw = null;
-		try {
-			OutputStreamWriter osw = new OutputStreamWriter(res.data, "UTF8");
-			pw = new PrintWriter(osw);
-			writeData(pw, header);
-		} catch (UnsupportedEncodingException e) {
-			logCat.error(e);
-			pw = new PrintWriter(res.data);
-		}
+		openStream(res.data);
+		writeHeader(header);
 		// Write out the data
-		Object[] data = new Object[] {};
+		Object[] data = new Object[fields.length];
 		while (dataSource.next()) {
 			rownum++;
-			for (int i = 0; i != fields.length; i++) {
+			for (int i = 0; i < fields.length; i++) {
 				data[i] = getFieldValue(request, dataSource, fields[i]);
 			}
-			writeData(pw, data);
+			writeData(data);
 		}
-
-		pw.flush();
-		pw.close();
+		closeStream(res.data);
 		return res;
 	}
 

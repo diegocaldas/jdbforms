@@ -224,9 +224,7 @@ public abstract class ReportServletAbstract extends HttpServlet {
 						}
 					}
 				}
-			} else {
-				handleNoReport(request, response);
-			}
+			} 
 		} catch (Exception e) {
 			logCat.error("process", e);
 			handleException(request, response, e);
@@ -270,9 +268,8 @@ public abstract class ReportServletAbstract extends HttpServlet {
 			boolean found = false;
 			for (int i = 0; i < reportdirs.length; i++) {
 				reportFile = context
-						.getRealPath(reportdirs[i] + reportFileName);
-				if (FileUtil.fileExists(reportFile + "."
-						+ getReportFileExtension())) {
+						.getRealPath(reportdirs[i] + reportFileName) + "." + getReportFileExtension();
+				if (FileUtil.fileExists(reportFile )) {
 					found = true;
 					break;
 				}

@@ -24,8 +24,10 @@
 package org.dbforms.servlets;
 
 import org.dbforms.servlets.reports.LineReportServletAbstract;
-import java.io.PrintWriter;
 
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 
 /**
  * This servlet generates a comma separated values file (CSV). Data is read from
@@ -59,6 +61,7 @@ import java.io.PrintWriter;
 public class CSVReportServlet extends LineReportServletAbstract {
 
 	private static final char Q = '\"';
+
 	private static final String DEFAULTMIMETYPE = "text/comma-separated-values;charset=ASCII";
 
 	private String clean(String s) {
@@ -66,24 +69,43 @@ public class CSVReportServlet extends LineReportServletAbstract {
 		return s;
 	}
 
-    protected String getMimeType() {
-    	return DEFAULTMIMETYPE;
-    }
-    protected String getFileExtension() {
-    	return "csv";
-    }
-
-	protected void writeData(PrintWriter pw, Object[] data) {
-		if (data.length > 0) {
-			for (int i = 0; i < data.length; i++) {
-				if (i > 0) {
-					pw.print(',');
-				}
-				pw.print(Q + clean(data[i].toString()) + Q);
-			}
-			pw.println();
-		}
+	protected String getMimeType() {
+		return DEFAULTMIMETYPE;
 	}
 
+	protected String getFileExtension() {
+		return "csv";
+	}
+
+	private PrintWriter pw;
+
+	protected void openStream(OutputStream out)  throws Exception {
+		OutputStreamWriter osw;
+		try {
+			osw = new OutputStreamWriter(out, "UTF8");
+		} catch (Exception e) {
+			osw = new OutputStreamWriter(out);
+		}
+		pw = new PrintWriter(osw);
+	}
+
+	protected void closeStream(OutputStream out)  throws Exception {
+		pw.flush();
+		pw.close();
+	}
+
+	protected void writeData(Object[] data) throws Exception {
+		for (int i = 0; i < data.length; i++) {
+			if (i > 0) {
+				pw.print(',');
+			}
+			if (data[i] != null) {
+				pw.print(Q + clean(data[i].toString()) + Q);
+			} else {
+				pw.print(Q + "" + Q);
+			}
+		}
+		pw.println();
+	}
 
 }
