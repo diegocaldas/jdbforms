@@ -128,10 +128,12 @@ functions if your database supports it. (you could use the stateful session bean
  	...
  }//BasicTestInterceptor
  
+ </screen>
+<sect3><title>NumericValidationLocal</title>
+<screen>
  package com.atser.sejb.math;
  
- 
- 
+
  public interface NumericValidationLocal 
  	extends javax.ejb.EJBLocalObject
  {
@@ -160,7 +162,10 @@ functions if your database supports it. (you could use the stateful session bean
  
  
  }//NumericValidationLocal
- 
+ </screen>
+ </sect3>
+ <sect3><title>NumericValidationLocalHome</title>
+ <screen>
  package com.atser.sejb.math;
  
  
@@ -171,8 +176,10 @@ functions if your database supports it. (you could use the stateful session bean
  	NumericValidationLocal create() throws javax.ejb.CreateException;
  
  }//NumericValidationLocal
- 
- 
+ </screen>
+ </sect3>
+ <sect3><title>NumericValidationStatelessBean</title>
+ <screen>
  import javax.ejb.*;//SessionContext
  import org.apache.log4j.*;//Category
  
@@ -254,6 +261,7 @@ functions if your database supports it. (you could use the stateful session bean
    	
  }//NumericValidationStatefulBean
  </screen>
+ </sect3>
  </sect2>
  <sect2><title>jboss.xml</title>
  <screen>
