@@ -34,9 +34,18 @@
 					<info>indicate which dbconnection object to user.</info>
 				</attribute>
 				<attribute>
-					<name>tableName</name>
+					<name>name</name>
 					<required>false</required>
 					<rtexprvalue>false</rtexprvalue>
+					<info>
+						<p>the name of this dbform tag</p>
+						<p>needed to reference the tag if tableName attribute is calculated at runtime</p>
+					</info>
+				</attribute>
+				<attribute>
+					<name>tableName</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
 					<info>
 						<p>the name of the table/view referenced by the dbform</p>
 						<p>not required if form is empty!</p>
