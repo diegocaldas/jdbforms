@@ -204,6 +204,15 @@ or tweak the build.xml to include where your JDBC drivers are.
 			<sect2>
 				<title>Web Application Tab
 </title>
+
+<mediaobject  id="Web_Application_Tab">  
+  <imageobject  role="html">
+    <imagedata  format="PNG"  fileref="images/figures/devgui1.png"/>
+  </imageobject>
+  <imageobject  role="fo">
+    <imagedata  format="PNG"  fileref="../images/figures/devgui1.png"/>
+  </imageobject>
+</mediaobject>
 				<para/>
                                 <itemizedlist mark="closedcircle">
 <listitem>
@@ -223,6 +232,14 @@ or tweak the build.xml to include where your JDBC drivers are.
 				<title>Database Tab
 </title>
 				<para/>
+<mediaobject  id="Database_Tab">  
+  <imageobject  role="html">
+    <imagedata  format="PNG"  fileref="images/figures/devgui2.png"/>
+  </imageobject>
+  <imageobject  role="fo">
+    <imagedata  format="PNG"  fileref="../images/figures/devgui2.png"/>
+  </imageobject>
+</mediaobject>                                
 <itemizedlist mark="closedcircle">
 <listitem><para>
 <emphasis role="bold">JDBC Driver Class: </emphasis>name of java class which implements java.sql.Driver and which will be used to connect to the database
@@ -290,6 +307,14 @@ or tweak the build.xml to include where your JDBC drivers are.
 				<title>XML Config Tab
 </title>
 				<para/>
+    <mediaobject  id="XML_Config_Tab">  
+  <imageobject  role="html">
+    <imagedata  format="PNG"  fileref="images/figures/devgui3.png"/>
+  </imageobject>
+  <imageobject  role="fo">
+    <imagedata  format="PNG"  fileref="../images/figures/devgui3.png"/>
+  </imageobject>
+</mediaobject>                             
  <itemizedlist mark="opencircle">
 <listitem>
 <para>
@@ -417,7 +442,15 @@ or tweak the build.xml to include where your JDBC drivers are.
 				<title>XSL Transformation
 </title>
 				<para/>
-				<para>This tab can be used to automatically generate Java Server Pages that use DbForms taglib by applying XSL stylesheets to dbforms config file. To do that, you must have generated (or loaded) a dbforms config file, then you mark the name of a style sheet and select button 'start transformation'.
+	<mediaobject  id="XSL_Transformation">  
+  <imageobject  role="html">
+    <imagedata  format="PNG"  fileref="images/figures/devgui4.png"/>
+  </imageobject>
+  <imageobject  role="fo">
+    <imagedata  format="PNG"  fileref="../images/figures/devgui4.png"/>
+  </imageobject>
+</mediaobject> 			
+                                <para>This tab can be used to automatically generate Java Server Pages that use DbForms taglib by applying XSL stylesheets to dbforms config file. To do that, you must have generated (or loaded) a dbforms config file, then you mark the name of a style sheet and select button 'start transformation'.
 </para>
 <itemizedlist mark="closedcircle">
 <listitem>

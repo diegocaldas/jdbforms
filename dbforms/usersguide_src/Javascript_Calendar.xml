@@ -77,9 +77,26 @@
 </screen>
 <para>When running the application, a small calendar icon will be shown after the date field:
 </para>
-			 
+
+<mediaobject  id="js_cal1">  
+  <imageobject  role="html">
+    <imagedata  format="PNG"  fileref="images/figures/js_cal1.png"/>
+  </imageobject>
+  <imageobject  role="fo">
+    <imagedata  format="PNG"  fileref="../images/figures/js_cal1.png"/>
+  </imageobject>
+</mediaobject>			 
 <para>If user clicks on the icon (and has JavaScript activated), a popup window appears showing a calendar. User can navigate to the desired month and then simply click on the date. That selected date will be written into the form field.
 </para>
+
+<mediaobject  id="js_cal2">  
+  <imageobject  role="html">
+    <imagedata  format="PNG"  fileref="images/figures/js_cal2.png"/>
+  </imageobject>
+  <imageobject  role="fo">
+    <imagedata  format="PNG"  fileref="../images/figures/js_cal2.png"/>
+  </imageobject>
+</mediaobject>
 </blockquote>
 </para>
 </listitem>

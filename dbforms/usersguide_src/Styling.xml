@@ -30,8 +30,17 @@
 </para>
 			<para/>
 			<example>
-				<title>Listing 13  instantiating a standard button
+				<title>Instantiating a standard button
 </title>
+
+<mediaobject  id="standard_button">  
+  <imageobject  role="html">
+    <imagedata  format="PNG"  fileref="images/figures/standard_button.png"/>
+  </imageobject>
+  <imageobject  role="fo">
+    <imagedata  format="PNG"  fileref="../images/figures/standard_button.png"/>
+  </imageobject>
+</mediaobject>
 				<programlisting>
 <emphasis role="bold">&lt;db:gotoButton</emphasis> caption="Edit bears" destination="/bears.jsp" <emphasis role="bold">/&gt;</emphasis>
 				</programlisting>
@@ -47,8 +56,17 @@
 				</tgroup>
 			</table>
 			<example>
-				<title>Listing 14  instantiating an image button
+				<title>Instantiating an image button
 </title>
+
+<mediaobject  id="image_button">  
+  <imageobject  role="html">
+    <imagedata  format="PNG"  fileref="images/figures/image_button.png"/>
+  </imageobject>
+  <imageobject  role="fo">
+    <imagedata  format="PNG"  fileref="../images/figures/image_button.png"/>
+  </imageobject>
+</mediaobject>
 				<programlisting>
 <emphasis role="bold">&lt;db:gotoButton</emphasis> destination="/bears.jsp" <emphasis role="bold">flavor="image"</emphasis> src="bear.gif" alt="click to edit bears"<emphasis role="bold">/&gt;</emphasis> 
 		</programlisting>
@@ -65,8 +83,17 @@
 			</table>
 			<para/>
 			<example>
-				<title>Listing 15  instantiating a HTML4  button
+				<title>Instantiating a HTML4  button
 </title>
+
+<mediaobject  id="html4_button">  
+  <imageobject  role="html">
+    <imagedata  format="PNG"  fileref="images/figures/html4_button"/>
+  </imageobject>
+  <imageobject  role="fo">
+    <imagedata  format="PNG"  fileref="../images/figures/html4_button"/>
+  </imageobject>
+</mediaobject>
 				<programlisting>
             <emphasis role="bold">
             &lt;db:gotoButton </emphasis>destination="/bears.jsp"<emphasis role="bold"> flavor="modern" </emphasis>style="width:220"<emphasis role="bold">&gt;</emphasis> 
@@ -215,17 +242,35 @@
 				<para/>
 				<para>
 					<figure>
-						<title>Figure 17 - the login box without styling templates
+						<title>The login box without styling templates
 </title>
-						<graphic fileref="17" format="GIF"/>
+
+<mediaobject  id="login_without_styling_templates">  
+  <imageobject  role="html">
+    <imagedata  format="PNG"  fileref="images/figures/login_without_styling_templates.png"/>
+  </imageobject>
+  <imageobject  role="fo">
+    <imagedata  format="PNG"  fileref="../images/figures/login_without_styling_templates.png"/>
+  </imageobject>
+</mediaobject>
+						 
 					</figure>
 				</para>
 				<para/>
 				<para>
 					<figure>
-						<title>Figure 18 - the same login box using 2 styling templates
+						<title>The same login box using 2 styling templates
 </title>
-						<graphic fileref="18" format="GIF"/>
+
+<mediaobject  id="login_using_styling_templates">  
+  <imageobject  role="html">
+    <imagedata  format="PNG"  fileref="images/figures/login_using_styling_templates.png"/>
+  </imageobject>
+  <imageobject  role="fo">
+    <imagedata  format="PNG"  fileref="../images/figures/login_using_styling_templates.png"/>
+  </imageobject>
+</mediaobject>
+						 
 					</figure>
 				</para>
 			</sect2>

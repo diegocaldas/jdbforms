@@ -14,9 +14,17 @@
 			<para>DbForms implements the concepts of the Model - View - Controller design pattern [Gamma] which leads to the development of  3-tiered web-applications.</para>
 			<para/>
 			<para>
-				<figure>
-					<title>Figure 1 - architecture of DbForms</title>
-					<graphic fileref="1" format="GIF"/>
+				<figure id="Architecture_of_DbForms">
+					<title>Architecture of DbForms</title>
+					<mediaobject  >  
+  <imageobject  role="html">
+    <imagedata  format="PNG"  fileref="images/figures/Architecture_of_DbForms.png"/>
+  </imageobject>
+  <imageobject  role="fo">
+    <imagedata  format="PNG"  fileref="../images/figures/Architecture_of_DbForms.png"/>
+  </imageobject>
+</mediaobject>
+                                        
 				</figure>
 			</para>
 			<para>Just like most applications and application frameworks, DbForms does not completely separate these three components. For instance, the <emphasis role="bold">Controller Servlet</emphasis> is declared to be the Controller Component of DbForms, however, consider the use of a hyperlink rendered by the users web browser: clicking on it will trigger some operation  hence controller functionality.  It is not my intention to set off into an in-depth discussion of the MVC-paradigm, but rather to use its concepts as a useful metaphor for explaining the components of DbForms.</para>
@@ -156,8 +164,16 @@
 					<para/>
 					<para>
 						<figure>
-							<title>Figure 2- overall structure of a simple DbForms  View</title>
-							<graphic fileref="2" format="GIF"/>
+							<title>Overall structure of a simple DbForms  View</title>
+							<mediaobject  id="overall_structure_simple_view">  
+  <imageobject  role="html">
+    <imagedata  format="PNG"  fileref="images/figures/overall_structure_simple_view.png"/>
+  </imageobject>
+  <imageobject  role="fo">
+    <imagedata  format="PNG"  fileref="../images/figures/overall_structure_simple_view.png"/>
+  </imageobject>
+</mediaobject>
+                                                        
 						</figure>
 					</para>
 				</sect4>
@@ -177,8 +193,16 @@
 					<para/>
 					<para>
 						<figure>
-							<title>Figure 3 - example of a nested form</title>
-							<graphic fileref="3" format="GIF"/>
+							<title>Example of a nested form</title>
+                                                        <mediaobject  id="example_of_a_nested_form">  
+  <imageobject  role="html">
+    <imagedata  format="PNG"  fileref="images/figures/example_of_a_nested_form.png"/>
+  </imageobject>
+  <imageobject  role="fo">
+    <imagedata  format="PNG"  fileref="../images/figures/example_of_a_nested_form.png"/>
+  </imageobject>
+</mediaobject>
+							 
 						</figure>
 					</para>
 					<para>The orders form is nested within the body-element of the customer-form, as shown in Figure 3. The user will see <emphasis role="italic">one</emphasis> customer per page (because maxRows is set to 1) and <emphasis role="italic">all</emphasis> the orders (because maxRows = *!) the customer has pending. The user may navigate through the list of customers by clicking the navigation buttons.</para>

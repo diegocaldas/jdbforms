@@ -87,9 +87,16 @@ The postXxx() methods get called <emphasis role="bold">after</emphasis> the oper
 			<para/>
 			<para>
 				<figure>
-					<title>Figure 21  UML diagram of the DbEventInterceptor interface and some of its implementations
-</title>
-					<graphic fileref="21" format="GIF"/>
+					<title>UML diagram of the DbEventInterceptor interface and some of its implementations
+</title><mediaobject  id="UML_diagram_of_DbEventInterceptor_interface">  
+  <imageobject  role="html">
+    <imagedata  format="PNG"  fileref="images/figures/UML_diagram_of_DbEventInterceptor_interface.png"/>
+  </imageobject>
+  <imageobject  role="fo">
+    <imagedata  format="PNG"  fileref="../images/figures/UML_diagram_of_DbEventInterceptor_interface.png"/>
+  </imageobject>
+</mediaobject>
+					 
 				</figure>
 			</para>
 			<para>As you can see, there exists an interface <computeroutput>DbEventInterceptor</computeroutput> as described above. Additionally there exists a built-in implementation class <computeroutput>DbEventInterceptorSupport</computeroutput> of this interface. This is a convenience class which allows the developer to override just the methods he/she is interested in. There is no other difference between these two entities.

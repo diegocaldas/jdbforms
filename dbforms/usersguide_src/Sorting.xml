@@ -11,9 +11,17 @@
 			<para/>
 			<para>
 				<figure>
-					<title>Figure 19  DbForms built in sorting mechanism in action
+					<title>DbForms built in sorting mechanism in action
 </title>
-					<graphic fileref="19" format="GIF"/>
+
+<mediaobject  id="sorting_mechanism">  
+  <imageobject  role="html">
+    <imagedata  format="PNG"  fileref="images/figures/sorting_mechanism.png"/>
+  </imageobject>
+  <imageobject  role="fo">
+    <imagedata  format="PNG"  fileref="../images/figures/sorting_mechanism.png"/>
+  </imageobject>
+</mediaobject> 
 				</figure>
 			</para>
 			<para>The user is able to define the sorting of the table by choosing a value Ascending, Descending or None from the sorting-select-boxes below <emphasis role="bold">ID</emphasis> or below <emphasis role="bold">NAME</emphasis>
@@ -27,7 +35,7 @@
 			<para>The custom tag enabling this functionality is very easy to use:
 </para>
 			<example>
-				<title>Listing 22  instantiating a sort - tag
+				<title>Instantiating a sort - tag
 </title>
 				<programlisting>
             &lt;db:sort fieldName="id" /&gt;</programlisting>
@@ -35,7 +43,7 @@
 			<para>Basically, this is all you need to write! This functionality even works within nested forms. But there is one important configuration issue you should be aware of: <emphasis role="bold">all non-key-fields</emphasis> you want to be sortable should be declared sortable in the XML-config file:
 </para>
 			<example>
-				<title>Listing 23  preparing tables for sorting: define sortable fields
+				<title>Preparing tables for sorting: define sortable fields
 </title>
 				<programlisting>
                                 
@@ -272,19 +280,19 @@ Future versions of DbForms may be expected to provide more on sorting.</para>
 								<entry>searchFieldNames_tableName</entry>
 								<entry>Contains the encoded names used for selecting the search criteria fields (firstname, lastname, etc.)
 Example:
-searchFieldNames_cust.get(firstname);</entry>
+searchFieldNames_cust.get(&quot;firstname&quot;);</entry>
 							</row>
 							<row>
 								<entry>searchFieldModeNames_tableName</entry>
 								<entry>Contains the encoded names used for specifying the search modes (and, or) of each search criteria
 Example:
-searchFieldModeNames_cust.get(firstname)</entry>
+searchFieldModeNames_cust.get(&quot;firstname&quot;)</entry>
 							</row>
 							<row>
 								<entry>searchFieldAgorithmNames_tableName</entry>
 								<entry>Contains the encoded names used for specifying the algorithm type (weak, sharp) of each search criteria
 Example:
-searchFieldAlgorithmNames_cust.get(firstname)</entry>
+searchFieldAlgorithmNames_cust.get(&quot;firstname&quot;)</entry>
 							</row>
 						</tbody>
 					</tgroup>
@@ -731,7 +739,7 @@ Where + followAfterWhere + where_from_dbforms</entry>
 							<row>
 								<entry>    expression       CDATA #IMPLIED</entry>
 								<entry>Expression of field. Results in
-expression +  AS  + name </entry>
+expression + AS + name </entry>
 							</row>
 							<row>
 								<entry>  &gt;</entry>
@@ -756,7 +764,7 @@ If the query has a groupBy statement, these fields will be used in the where par
 							<row>
 								<entry>    expression       CDATA #IMPLIED</entry>
 								<entry>Expression of field. Results in
-expression +  AS  + name </entry>
+expression + AS + name </entry>
 							</row>
 							<row>
 								<entry>  &gt;</entry>

@@ -52,10 +52,17 @@
 </title>
 				<para/>
 				<para>
-					<figure>
-						<title>Figure 4 - a conceptual diagram of the database we are planning
-</title>
-						<graphic fileref="4" format="GIF"/>
+					<figure  id="conceptual_diagram_database">
+						<title>A conceptual diagram of the database we are planning
+</title><mediaobject>  
+  <imageobject role="html">
+    <imagedata  format="PNG"  fileref="images/figures/conceptual_diagram_database.png"/>
+  </imageobject>
+  <imageobject role ="fo">
+    <imagedata  format="PNG"  fileref="../images/figures/conceptual_diagram_database.png"/>
+  </imageobject>
+</mediaobject>
+						 
 					</figure>
 				</para>
 				<para>This database model will be used during the tutorial.
@@ -245,10 +252,17 @@
 				</tgroup>
 			</table>
 			<para>
-				<figure>
+				<figure id="screen_flow">
 					<title>Figure 5 - screen flow of our application
-</title>
-					<graphic fileref="5" format="GIF"/>
+</title><mediaobject>  
+  <imageobject  role="html">
+    <imagedata  format="PNG"  fileref="images/figures/screen_flow.png"/>
+  </imageobject>
+  <imageobject  role="fo">
+    <imagedata  format="PNG"  fileref="../images/figures/screen_flow.png"/>
+  </imageobject>
+</mediaobject>
+					 
 				</figure>
 			</para>
 		</sect1>
@@ -341,9 +355,18 @@
 				</para>
 				<para>
 					<figure>
-						<title>Figure 6 - main menu (menu.jsp)
+						<title>Main menu (menu.jsp)
 </title>
-						<graphic fileref="6" format="GIF"/>
+
+<mediaobject  id="main_menu">  
+  <imageobject  role="html">
+    <imagedata  format="PNG"  fileref="images/figures/main_menu.png"/>
+  </imageobject>
+  <imageobject  role="fo">
+    <imagedata  format="PNG"  fileref="../images/figures/main_menu.png"/>
+  </imageobject>
+</mediaobject>
+						 
 					</figure>
 				</para>
 			</sect2>
@@ -453,10 +476,19 @@
 </para>
 				<para/>
 				<para>
-					<figure>
-						<title>Figure 7 - managing services (service.jsp)
+					<figure  id="Managing_services">
+						<title>Managing services (service.jsp)
 </title>
-						<graphic fileref="7" format="GIF"/>
+
+<mediaobject >  
+  <imageobject  role="html">
+    <imagedata  format="PNG"  fileref="images/figures/managing_services.png"/>
+  </imageobject>
+  <imageobject  role="fo">
+    <imagedata  format="PNG"  fileref="../images/figures/managing_services.png"/>
+  </imageobject>
+</mediaobject>
+						 
 					</figure>
 				</para>
 				<para>
@@ -540,10 +572,19 @@
 					<computeroutput/>
 				</para>
 				<para>
-					<figure>
-						<title>Figure 8 - defining and editing priority levels
+					<figure id="Defining_and_editing_priority_levels">
+						<title>Defining and editing priority levels
 </title>
-						<graphic fileref="8" format="GIF"/>
+
+
+<mediaobject  >  
+  <imageobject  role="html">
+    <imagedata  format="PNG"  fileref="images/figures/priority_levels.png"/>
+  </imageobject>
+  <imageobject  role="fo">
+    <imagedata  format="PNG"  fileref="../images/figures/priority_levels.png"/>
+  </imageobject>
+</mediaobject>						 
 					</figure>
 				</para>
 				<para>
@@ -638,10 +679,19 @@ The user should be able to delete existing customers, as well.
 				</example>
 				<para/>
 				<para>
-					<figure>
-						<title>Figure 9 - list of existing customers
+					<figure id="List_of_existing_customers">
+						<title>List of existing customers
 </title>
-						<graphic fileref="9" format="GIF"/>
+
+<mediaobject>  
+  <imageobject  role="html">
+    <imagedata  format="PNG"  fileref="images/figures/existing_customers.png"/>
+  </imageobject>
+  <imageobject  role="fo">
+    <imagedata  format="PNG"  fileref="../images/figures/existing_customers.png"/>
+  </imageobject>
+</mediaobject>
+						 
 					</figure>
 				</para>
 				<para>
@@ -666,10 +716,19 @@ The user should be able to delete existing customers, as well.
 </para>
 				<para/>
 				<para>
-					<figure>
-						<title>Figure 10 - underlying data for customer_order.jsp
+					<figure id="Underlying_data_for_customer_order.jsp">
+						<title>Underlying data for customer_order.jsp
 </title>
-						<graphic fileref="10" format="GIF"/>
+
+<mediaobject >  
+  <imageobject  role="html">
+    <imagedata  format="PNG"  fileref="images/figures/customer_order.png"/>
+  </imageobject>
+  <imageobject  role="fo">
+    <imagedata  format="PNG"  fileref="../images/figures/customer_order.png"/>
+  </imageobject>
+</mediaobject>
+						 
 					</figure>
 				</para>
 				<para>
@@ -870,10 +929,19 @@ The user should be able to delete existing customers, as well.
 					<computeroutput/>
 				</para>
 				<para>
-					<figure>
-						<title>Figure 11 - managing orders and customers with one single page
+					<figure id="Managing_orders_and_customers_with_one_single_page">
+						<title>Managing orders and customers with one single page
 </title>
-						<graphic fileref="11" format="GIF"/>
+
+<mediaobject >  
+  <imageobject  role="html">
+    <imagedata  format="PNG"  fileref="images/figures/managing_orders_and_customers_single.png"/>
+  </imageobject>
+  <imageobject  role="fo">
+    <imagedata  format="PNG"  fileref="../images/figures/managing_orders_and_customers_single.png"/>
+  </imageobject>
+</mediaobject>
+						 
 					</figure>
 				</para>
 			</sect2>
@@ -886,10 +954,19 @@ The user should be able to delete existing customers, as well.
 </para>
 				<para/>
 				<para>
-					<figure>
-						<title>Figure 12 - underlying data for customer_order.jsp
+					<figure id="Underlying_data_for_customer_order">
+						<title>Underlying data for customer_order.jsp
 </title>
-						<graphic fileref="12" format="GIF"/>
+
+<mediaobject >  
+  <imageobject  role="html">
+    <imagedata  format="PNG"  fileref="images/figures/customer_order_(priority).png"/>
+  </imageobject>
+  <imageobject  role="fo">
+    <imagedata  format="PNG"  fileref="../images/figures/customer_order_(priority).png"/>
+  </imageobject>
+</mediaobject>
+						 
 					</figure>
 				</para>
 				<example>
@@ -1105,10 +1182,19 @@ The user should be able to delete existing customers, as well.
 				 
 				 
 				<para>
-					<figure>
-						<title>Figure 13 - managing customers and their complaints with one single page
+					<figure  id="Managing_customers_and_their_complaints_with_one_single_page">
+						<title>Managing customers and their complaints with one single page
 </title>
-						<graphic fileref="13" format="GIF"/>
+
+<mediaobject >  
+  <imageobject  role="html">
+    <imagedata  format="PNG"  fileref="images/figures/managing_customers_complaints.png"/>
+  </imageobject>
+  <imageobject  role="fo">
+    <imagedata  format="PNG"  fileref="../images/figures/managing_customers_complaints.png"/>
+  </imageobject>
+</mediaobject>
+						 
 					</figure>
 				</para>
 			</sect2>

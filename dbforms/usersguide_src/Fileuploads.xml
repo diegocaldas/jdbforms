@@ -59,7 +59,7 @@
 				<para>After defining our BLOB-powered table, we want to manage the BLOB fields. Of course data-input elements like textField or select cannot be applied to BLOBs. For this purpose a new Data-Element is introduced:
 </para>
 				<example>
-					<title>Listing 7  Implementing a file tag
+					<title>Implementing a file tag
 </title>
 					<programlisting>
 <emphasis role="bold">&lt;db:file</emphasis><emphasis role="bold">fieldName</emphasis>=portrait_pic&gt;</programlisting>
@@ -69,15 +69,22 @@
 				<para>This Custom Tag gets rendered as an HTML &lt;file&gt; - tag, as shown in Figure 14
 </para>
 				<example>
-					<title>Listing 8 implementing a blobURL
+					<title>Implementing a blobURL
 </title>
 					<programlisting/>
 				</example>
 				<para>
 					<figure>
-						<title>Figure 14  the result visible to the user
-</title>
-						<graphic fileref="14" format="GIF"/>
+						<title>The result visible to the user
+</title><mediaobject  id="result_visible_to_user">  
+  <imageobject  role="html">
+    <imagedata  format="PNG"  fileref="images/figures/result_visible_to_user.png"/>
+  </imageobject>
+  <imageobject  role="fo">
+    <imagedata  format="PNG"  fileref="../images/figures/result_visible_to_user.png"/>
+  </imageobject>
+</mediaobject>
+						 
 					</figure>
 				</para>
 				<para>This HTML-element enables multipart-enabled browsers to submit files to the server. Be aware that not all browsers support this functionality.
@@ -231,9 +238,16 @@ b) must be writeable by the web-server </entry>
 				<para/>
 				<para>
 					<figure>
-						<title>Figure 15  physical representation of our example
-</title>
-						<graphic fileref="15" format="GIF"/>
+						<title>Physical representation of our example
+</title><mediaobject  id="MousePicture">  
+  <imageobject  role="html">
+    <imagedata  format="PNG"  fileref="images/figures/physical_representation.png"/>
+  </imageobject>
+  <imageobject  role="fo">
+    <imagedata  format="PNG"  fileref="../images/figures/physical_representation.png"/>
+  </imageobject>
+</mediaobject>
+						 
 					</figure>
 				</para>
 				<para>Both files are stored in their respective directories (c:\upload\pets  x:\stories). The directory names are not included in the references for two reasons (please email me any arguments to the contrary):
@@ -385,9 +399,15 @@ b) must be writeable by the web-server </entry>
 			<para/>
 			<para>
 				<figure>
-					<title>Figure 16  our little BLOB-App in action
-</title>
-					<graphic fileref="16" format="GIF"/>
+					<title>our little BLOB-App in action
+</title><mediaobject  id="BLOB-App_in_action.png">  
+  <imageobject  role="html">
+    <imagedata  format="PNG"  fileref="images/figures/BLOB-App_in_action.png"/>
+  </imageobject>
+  <imageobject  role="fo">
+    <imagedata  format="PNG"  fileref="../images/figures/BLOB-App_in_action.png"/>
+  </imageobject>
+</mediaobject> 
 				</figure>
 			</para>
 		</sect1>
