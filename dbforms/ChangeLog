@@ -3,7 +3,12 @@
 	new tag confTableData:
 		external data source like tableData. 
 		Can be used with all tables configured in the config file, xml data included!
-
+2003-08-23
+(s.moretti@nsi-mail.it)
+   - added attribute to DbFormTag "sqlFilter": this is a plain piece of sql code that is inserted in the where clause
+   - added tag DbFilterTag: main tag that represent a list of filter condition, one of them could be enabled at a time
+   - added tag DbFilterConditionTag: tag to represent a filter condition in a DbFilterTag structure
+   - added tag DbFilterValueTag: tag to represent a user input in a DbFilterConditionTag
 2003-08-08
 (Henner.Kollmann@gmx.de)
    - added a tabselector example to bookstore/howto
