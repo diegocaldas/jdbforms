@@ -1007,14 +1007,6 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
 
                 tagBuf.append("\"");
 
-                // 20020703-HKK: Check if developer has set onSubmit
-                if ((this.getonSubmit() != null) && (this.getonSubmit().trim().length() > 0))
-                {
-                    tagBuf.append("onSubmit=\"");
-                    tagBuf.append(getonSubmit());
-                    tagBuf.append("\" ");
-                }
-
                 if (target != null)
                 {
                     tagBuf.append(" target=\"");
@@ -1029,13 +1021,38 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
                     tagBuf.append(" enctype=\"multipart/form-data\"");
                 }
 
+					 String validationFct = null;
                 if (getJavascriptValidation().equals("true"))
                 {
-                    String validationFct = getFormValidatorName();
-
+                    validationFct = getFormValidatorName();
                     validationFct = Character.toUpperCase(validationFct.charAt(0)) + validationFct.substring(1, validationFct.length());
-                    tagBuf.append(" onsubmit=\"return validate" + validationFct + "(this);\" ");
+						  validationFct = "validate" + validationFct + "(this);";
                 }
+
+                if (!Util.isNull(validationFct) && !Util.isNull(getOnSubmit()) ) {
+                   String s = getOnSubmit();
+                   if (s.startsWith("return") )
+                      s = s.substring(7);
+                   if (s.endsWith(";"))
+                   	 s = s.substring(0, s.length() - 1);
+                   tagBuf.append(" onSubmit=\"");
+                   tagBuf.append("return ");
+						 tagBuf.append(s);
+						 tagBuf.append(" && ");
+						 tagBuf.append(validationFct);
+                   tagBuf.append("\" ");
+                } else if (!Util.isNull(validationFct)) {
+                    tagBuf.append(" onSubmit=\"");
+                    tagBuf.append("return " + validationFct);
+                    tagBuf.append("\" ");
+                } else if (!Util.isNull(getOnSubmit()) ) {
+                    tagBuf.append(" onSubmit=\"");
+                    tagBuf.append(getOnSubmit());
+                    tagBuf.append("\" ");
+                }
+
+
+
 
                 tagBuf.append(">");
 
@@ -1764,9 +1781,8 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
         }
     }
 
-
     /** DOCUMENT ME! */
-    public void initChildFieldValues()
+    private void initChildFieldValues()
     {
         // if parent form has no data, we can not render a subform!
         if (ResultSetVector.isEmptyOrNull(parentForm.getResultSetVector()))
@@ -1776,7 +1792,14 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
             // childFieldValues remains null
             return;
         }
-
+         
+         String aPosition = parentForm.getTable().getPositionString(parentForm.getResultSetVector());
+         
+			childFieldValues = getTable().mapChildFieldValues(parentForm.getTable(), 
+																			  parentField, 
+																			  childField, 
+																			  aPosition);
+/**** 20021120-HKK: Split in new function FieldValue.mapChildFieldValues 
         // 1 to n fields may be mapped
         Vector childFieldNames = ParseUtil.splitString(childField, ",;~");
         Vector parentFieldNames = ParseUtil.splitString(parentField, ",;~");
@@ -1811,14 +1834,14 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
             {
                 currentParentFieldValue = parentForm.getResultSetVector().getField(parentField.getId());
             }
-
             childFieldValues[i] = new FieldValue(childField, currentParentFieldValue, true);
         }
+****/        
     }
 
 
     /** DOCUMENT ME! */
-    public void initFilterFieldValues()
+    private void initFilterFieldValues()
     {
         // 1 to n fields may be mapped
         Vector keyValPairs = ParseUtil.splitString(filter, ",;");
@@ -1936,7 +1959,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
      *
      * @return  DOCUMENT ME!
      */
-    public FieldValue[] initSearchFieldValues()
+    private FieldValue[] initSearchFieldValues()
     {
         FieldValue[] fieldValues;
         HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
@@ -2419,7 +2442,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
      *
      * @return  java.lang.String
      */
-    public java.lang.String getonSubmit()
+    public java.lang.String getOnSubmit()
     {
         return onSubmit;
     }
@@ -2430,7 +2453,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
      *
      * @param  newonSubmit DOCUMENT ME!
      */
-    public void setonSubmit(java.lang.String newonSubmit)
+    public void setOnSubmit(java.lang.String newonSubmit)
     {
         onSubmit = newonSubmit;
     }
