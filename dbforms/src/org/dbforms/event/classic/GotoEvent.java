@@ -192,6 +192,7 @@ public class GotoEvent extends NavigationEvent
    {
       if (Util.isNull(whereClause))
       {
+		 position = Util.decode(position);
          // Standard way  
          int compMode = (!Util.isNull(position)) ? Constants.COMPARE_INCLUSIVE
                                                  : Constants.COMPARE_NONE;
@@ -199,12 +200,12 @@ public class GotoEvent extends NavigationEvent
          if (!Util.isNull(position) && (srcTable != null)
                   && !Util.isNull(childField) && !Util.isNull(parentField))
          {
-            FieldValue[] fv = table.mapChildFieldValues(srcTable, parentField,
+            FieldValues fv = table.mapChildFieldValues(srcTable, parentField,
                   childField, position);
 
             if (fv != null)
             {
-               childFieldValues    = fv;
+               childFieldValues    = fv.toArr();
                compMode            = Constants.COMPARE_NONE;
             }
          }

@@ -38,6 +38,7 @@ import org.dbforms.event.datalist.dao.DataSourceFactory;
 import org.dbforms.util.ResultSetVector;
 import org.dbforms.util.ParseUtil;
 import org.dbforms.util.FieldValue;
+import org.dbforms.util.FieldValues;
 import org.dbforms.util.Util;
 
 
@@ -203,20 +204,20 @@ public class GotoEvent extends NavigationEvent
    {
       // get the DataSourceList from the session
       logCat.info("==> GotoEvent.processEvent");
-
+  	  position = Util.decode(position);
       if (!Util.isNull(position) && (srcTable != null)
                && !Util.isNull(childField) && !Util.isNull(parentField))
       {
-         FieldValue[] fv = table.mapChildFieldValues(srcTable, parentField,
+         FieldValues fv = table.mapChildFieldValues(srcTable, parentField,
                childField, position);
          position = table.getKeyPositionString(fv);
+         if (fv != null) 
+            childFieldValues = fv.toArr();
       }
 
       DataSourceList ds = DataSourceList.getInstance(request);
       ds.remove(table, request);
-
       DataSourceFactory qry;
-
       if (Util.isNull(whereClause))
       {
          qry = new DataSourceFactory(config, dbConnectionName, table,
@@ -229,7 +230,6 @@ public class GotoEvent extends NavigationEvent
       }
 
       ds.put(table, request, qry);
-
       return qry.getCurrent(position, count);
    }
 }

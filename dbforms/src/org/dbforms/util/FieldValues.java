@@ -20,20 +20,18 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
+
 package org.dbforms.util;
 import java.util.Hashtable;
 import java.util.Enumeration;
 
 
 
-
 /**
- *
- * New class to deal with a list of FieldValues. Delagate pattern: Delegate everything to an Hashtable
- * Do the necessary type transformations.
- *
+ * New class to deal with a list of FieldValues. Delagate pattern: Delegate
+ * everything to an Hashtable Do the necessary type transformations.
+ * 
  * @author hkk
- *
  */
 public class FieldValues
 {
@@ -49,9 +47,9 @@ public class FieldValues
 
    /**
     * DOCUMENT ME!
-    *
+    * 
     * @param key DOCUMENT ME!
-    *
+    * 
     * @return DOCUMENT ME!
     */
    public FieldValue get(String key)
@@ -62,7 +60,7 @@ public class FieldValues
 
    /**
     * DOCUMENT ME!
-    *
+    * 
     * @param key DOCUMENT ME!
     * @param value DOCUMENT ME!
     */
@@ -83,7 +81,7 @@ public class FieldValues
 
    /**
     * DOCUMENT ME!
-    *
+    * 
     * @return DOCUMENT ME!
     */
    public Enumeration keys()
@@ -94,11 +92,30 @@ public class FieldValues
 
    /**
     * DOCUMENT ME!
-    *
+    * 
     * @return DOCUMENT ME!
     */
    public int size()
    {
       return ht.size();
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public FieldValue[] toArr()
+   {
+      FieldValue[] result = new FieldValue[size()];
+      Enumeration  enum = ht.elements();
+      int          cnt  = 0;
+      while (enum.hasMoreElements())
+      {
+         result[cnt] = (FieldValue) enum.nextElement();
+         cnt++;
+      }
+      return result;
    }
 }

@@ -1236,46 +1236,6 @@ public class Table
       }
    }
 
-
-   /**
-    * Get key position from the input hash table array
-    *
-    * @param  fvHT has field as key and FieldValue as value!
-    *
-    * @return the key position string
-    */
-   public String getKeyPositionString(FieldValue[] fvAr)
-   {
-      if (fvAr != null)
-      {
-         StringBuffer buf = new StringBuffer();
-
-         for (int i = 0; i < fvAr.length; i++)
-         {
-            Field f = fvAr[i].getField();
-
-            if (f.isKey())
-            {
-               String value = fvAr[i].getFieldValue();
-
-               if (value == null)
-               {
-                  throw new IllegalArgumentException("wrong fields provided");
-               }
-
-               buf.append(createToken(f, value));
-            }
-         }
-
-         return buf.toString();
-      }
-      else
-      {
-         return null;
-      }
-   }
-
-
    /**
     *  Builds a "position- string" representing the values of the current row in the given
     *  ResultSetVector.
@@ -2118,7 +2078,7 @@ public class Table
     *
     * @return FieldValue[] with result
     */
-   public FieldValue[] mapChildFieldValues(Table parentTable,
+   public FieldValues mapChildFieldValues(Table parentTable,
       String parentFieldString, String childFieldString, String aPosition)
    {
       // 1 to n fields may be mapped
@@ -2136,14 +2096,12 @@ public class Table
 
       // 2003-03-29 HKK: Change from Hashtable to FieldValueTable 
       FieldValues ht = parentTable.getFieldValues(aPosition);
-
       if (ht == null)
       {
          return null;
       }
 
-      FieldValue[] childFieldValues = new FieldValue[len];
-
+      FieldValues childFieldValues = new FieldValues();
       for (int i = 0; i < len; i++)
       {
          String     parentFieldName = (String) parentFieldNames.elementAt(i);
@@ -2161,10 +2119,9 @@ public class Table
          }
 
          String currentParentFieldValue = aFieldValue.getFieldValue();
-         childFieldValues[i] = new FieldValue(childField,
-               currentParentFieldValue);
+         childFieldValues.put(childField.getName(), new FieldValue(childField,
+               currentParentFieldValue));
       }
-
       return childFieldValues;
    }
 }
