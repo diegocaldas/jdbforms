@@ -1,41 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="dbforms" default="default" basedir=".">
-  <!-- 
 
-$Header$
-$Revision$
-$Date$
+<!-- 
 
-ANT BUILD.XML FOR DbForms
-=========================
+    $Header$
+    $Revision$
+    $Date$
 
-Ant is a very handy tool that uses a build file written in XML
-(this file) as building instructions. For more information refer to
-"http://jakarta.apache.org/ant/".
+    ANT BUILD.XML FOR DbForms
+    =========================
 
-To build DbForms using ant, perform the following steps:
-*) install jakarte-ant properly (tested with ant Version 1.3)
-*) set environment variable JAVA_HOME pointing to your Java Installation
-*) cd to the directory containing this build.xml file
-*) type in "ant" - this should do it!!
+    Ant is a very handy tool that uses a build file written in XML
+    (this file) as building instructions. For more information refer to
+    "http://jakarta.apache.org/ant/".
 
-Results:
-*) a .jar file containing the DbForms library
-*) a .war file for each sample app in directory /dist
+    To build DbForms using ant, perform the following steps:
+    *) install jakarte-ant properly (tested with ant Version 1.3)
+    *) set environment variable JAVA_HOME pointing to your Java Installation
+    *) cd to the directory containing this build.xml file
+    *) type in "ant" - this should do it!!
 
-Deploy the .war files to your Servlet 2.2+ compatible servlet container!
-If you are not using mysql -> you have to edit the dbforms-config.xml file to set up the database connection
-properly.
+    Results:
+    *) a .jar file containing the DbForms library
+    *) a .war file for each sample app in directory /dist
 
-Remarks:
+    Deploy the .war files to your Servlet 2.2+ compatible servlet container!
+    If you are not using mysql -> you have to edit the dbforms-config.xml file to set up the database connection
+    properly.
 
-- build-docs target in docs.xml should be run before creating the release file to include documentation
- 
-   
-Happy coding!
-~~ DbForms team ~~
+    Remarks:
+
+    - build-docs target in docs.xml should be run before creating the release file to include documentation
+
+
+    Happy coding!
+    ~~ DbForms team ~~
 
 -->
+<project name="dbforms" default="default" basedir=".">
+
   <property name="dbforms.version" value="v1_1_x" />
   <property name="cvs.workingdir" value="." />
   <property name="javasrc.dir" value="${cvs.workingdir}/src" />
@@ -51,23 +53,33 @@ Happy coding!
   <property name="taglibdoc.dir" value="${doc.dir}/taglib" />
   <property name="bin.dir" value="${cvs.workingdir}/bin" />
   <property environment="env" />
+
   <!-- Indentify Classpath -->
   <path id="classpath">
     <fileset dir="${dependend.dir}">
       <include name="*.jar" />
     </fileset>
   </path>
+
+
   <target name="clearWorkspace">
     <delete dir="${build.dir}" />
     <mkdir dir="${build.dir}" />
   </target>
+
+
   <target name="cleanWorkspace">
     <delete dir="${build.dir}" />
   </target>
+
+
   <target name="prepare" depends="clearWorkspace">
     <delete dir="${dist.dir}" />
     <mkdir dir="${dist.dir}" />
+    <mkdir dir="${dist.dir}/bin" />
   </target>
+
+
   <target name="onPath">
     <condition property="path.ok">
       <and>
@@ -75,21 +87,25 @@ Happy coding!
           <classpath refid="classpath" />
         </available>
         <!-- 
-                   - javax.sql.DataSource is included into jdk1.4.x
-                   - or into the jdbc2_0-stdext.jar optional package
-                   - (for previous jdk versions)
-                   -->
+           - javax.sql.DataSource is included into jdk1.4.x
+           - or into the jdbc2_0-stdext.jar optional package
+           - (for previous jdk versions)
+           -->
         <!--
-                    <available classname="javax.sql.DataSource">
-                        <classpath refid="classpath"/>
-                    </available>
-                -->
+           <available classname="javax.sql.DataSource">
+             <classpath refid="classpath"/>
+           </available>
+        -->
       </and>
     </condition>
   </target>
+
+
   <target name="failIfBadPath" depends="onPath" unless="path.ok">
     <fail message="servlet.jar is missing from the classpath.  Please put this jar (usually provided by your servlet container) into your classpath or into the /dbforms/dependend directory." />
   </target>
+
+
   <!-- compile dbforms core sources -->
   <target name="compile" depends="prepare,failIfBadPath">
     <!-- Required when building in eclipse (WSAD) -->
@@ -98,16 +114,22 @@ Happy coding!
       <classpath refid="classpath" />
     </javac>
   </target>
+
+
   <!-- generate dbforms_x.jar library -->
   <target name="jar_classes" depends="prepare,compile" description="--&gt; Build Dbforms jar">
     <jar jarfile="${dist.dir}/dbforms${dbforms.version}.jar" manifest="${etc.dir}/dbforms_manifest" basedir="${build.dir}" />
   </target>
+
+
   <!-- generate taglib descriptors from taglib-docu using XSL transformation -->
   <target name="generate_taglib" depends="jar_classes" description="--&gt; Generate the taglib dbforms.tld from taglib_docu.xml">
     <echo message="begin xsl translation" />
     <style style="${etc.dir}/tld.xsl" in="${etc.dir}/taglib_docu.xml" out="${dist.dir}/dbforms.tld" />
     <echo message="end of xsl translation " />
   </target>
+
+
   <!--
      -  JAVADOC TARGET
      -
@@ -124,8 +146,10 @@ Happy coding!
       <link href="http://xml.apache.org/xalan-j/apidocs/" />
     </javadoc>
   </target>
-  <target name="generate_taglib_htmldocs">
-    <!-- Generate  HTML reference documentation within doc/html from taglib-docu.xml -->
+
+
+  <!-- Generate  HTML reference documentation within doc/html from taglib-docu.xml -->
+  <target name="generate_taglib_htmldocs">    
     <echo message="begin xsl translation to generate HTML documentation  " />
     <delete file="{dist.dir}/taglib/DbFormsTags.html" />
     <echo message="style 1" />
@@ -140,7 +164,11 @@ Happy coding!
     </style>
     <echo message="end of xsl translation " />
   </target>
+
+
   <target name="default" depends="generate_taglib, javadoc, generate_taglib_htmldocs" />
+
+
   <!-- make an example app -->
   <target name="createExample">
     <tstamp />
@@ -179,6 +207,8 @@ Happy coding!
     <!-- creating WAR file for this example -->
     <jar jarfile="${dist.dir}/${example.name}_${dbforms.releaseName}.war" basedir="${build.dir}/${example.name}" includes="*/**" />
   </target>
+
+
   <target name="createAllExamples" depends="generate_taglib" description="--&gt; Create all the examples">
     <antcall target="createExample">
       <param name="example.name" value="bugtracker" />
@@ -192,6 +222,8 @@ Happy coding!
     <!-- clean up temporary directories -->
     <antcall target="cleanWorkspace" />
   </target>
+
+
   <target name="devgui" description="--&gt; Run DevGUI tool">
     <java classname="org.dbforms.devgui.DevGui" fork="true">
       <sysproperty key="DBFORMS_HOME" value="${basedir}" />
@@ -201,6 +233,8 @@ Happy coding!
       </classpath>
     </java>
   </target>
+
+
   <target name="style" description="--&gt; Run a stylesheet, passing in -Dstyle=mystyle.xsl" if="style">
     <style style="${xslsrc.dir}/${style}" in="${basedir}/dbforms-config.xml" out="${basedir}/temp/temp_result.xhtml" />
     <echo message="End of xsl translation " />
@@ -213,12 +247,17 @@ Happy coding!
     </java>
     <echo message="End of file splitting " />
   </target>
+
   <target name="copy-devgui">
-    <copy file="${bin.dir}/devgui.sh" tofile="${dist.dir}/bin/devgui.sh" overwrite="true" />
+    <!--
+    <copy    file="${bin.dir}/devgui.sh" tofile="${dist.dir}/bin/devgui.sh" overwrite="true" />
     <replace file="${dist.dir}/bin/devgui.sh" token="dbforms_CURRENT_VERSION.jar" value="dbforms${dbforms.version}.jar" />
-    <copy file="${bin.dir}/devgui.bat" tofile="${dist.dir}/bin/devgui.bat" overwrite="true" />
+    <copy    file="${bin.dir}/devgui.bat" tofile="${dist.dir}/bin/devgui.bat" overwrite="true" />
     <replace file="${dist.dir}/bin/devgui.bat" token="dbforms_CURRENT_VERSION.jar" value="dbforms${dbforms.version}.jar" />
+    -->
   </target>
+
+
   <!-- create dbforms-releasefile -->
   <target name="createReleaseFile" depends="createAllExamples,copy-devgui">
     <tstamp />
@@ -237,6 +276,8 @@ Happy coding!
       <zipfileset dir="." prefix="dbforms${dbforms.releaseName}" includes="misc/**/*.gif  misc/**/*.png  misc/**/*.js   misc/**/*.txt misc/*.css misc/**/*.html" />
     </zip>
   </target>
+
+
   <!-- create dbforms-releasefiles, one zip file with dos/win lineends, one tgz file with *nix lineends: -->
   <target name="createReleaseFiles" depends="createAllExamples,copy-devgui" description="--&gt; Create zip and tgz release files">
     <tstamp />
@@ -292,10 +333,14 @@ Happy coding!
     <gzip zipfile="${dbforms.tgzfilename}" src="${dbforms.tarfilename}" />
     <delete file="${dbforms.tarfilename}" />
   </target>
+
+
   <target name="forcedos">
     <echo message="forcedos for all java files" />
     <fixcrlf srcDir="${javasrc.dir}" eol="crlf" includes="**/*.java" />
   </target>
+
+
   <!-- =================================================================== -->
   <!-- Maven integration: generate project documentation and copy it into  -->
   <!-- the target directory                                                -->
@@ -303,11 +348,12 @@ Happy coding!
   <!-- called by Maven's "dist" goal                                        -->
   <!-- =================================================================== -->
   <target name="maven-build-release"   depends="createReleaseFiles" />
+
+
   <target name="maven-build-bookstore" depends="generate_taglib" >
     <antcall target="createExample">
       <param name="example.name" value="bookstore" />
     </antcall>
   </target>
-	
+    
 </project>
-
