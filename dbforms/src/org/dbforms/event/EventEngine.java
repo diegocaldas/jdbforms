@@ -131,7 +131,8 @@ public class EventEngine
 
       if ((action == null) && (customEvent != null))
       {
-         action = customEvent;
+         // 2003-07-21-HKK: fixing NS 4.79 bug! (From bug list) 
+         action = customEvent.trim();
       }
 
       // NOOP EVENT
