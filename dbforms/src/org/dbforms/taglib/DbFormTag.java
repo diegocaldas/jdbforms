@@ -1509,15 +1509,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
                         if (!Util.isNull(getWhereClause()))
                         {
                             logCat.info("Free form Select about to be executed");
-                            //logCat.info("Free form Select: tableList is null ? [" +  Util.isNull(getTableList()) + "]");  // DEBUG ONLY (fossato)
-
-                            // if tableList is null, use the tableName attribute (fossato@pow2.com [2002.11.16])
-                            String myTables = tableList;
-                            if (Util.isNull(myTables))
-                                myTables = tableName;
-
-                            //resultSetVector = table.doFreeFormSelect(table.getFields(), this.getWhereClause(), this.getTableList(), count, con);
-                            resultSetVector = table.doFreeFormSelect(table.getFields(), whereClause, myTables, count, con);
+                            resultSetVector = table.doFreeFormSelect(table.getFields(), whereClause, this.getTableList(), count, con);
                         }
                         else
                         {
@@ -1624,7 +1616,6 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
 
             return SKIP_BODY;
         }
-
         return EVAL_BODY_TAG;
     }
 
@@ -1670,6 +1661,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
             if (bodyContent != null)
             {
                 bodyContent.writeOut(bodyContent.getEnclosingWriter());
+                
             }
 
             logCat.debug("pageContext.getOut()=" + pageContext.getOut());
@@ -2506,7 +2498,11 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
      */
     public String getTableList()
     {
-        return tableList;
+        // if tableList is null, use the tableName attribute (fossato@pow2.com [2002.11.16] HKK 2002.11.16)
+	    String myTables = tableList;
+        if (Util.isNull(myTables))
+    	    myTables = tableName;
+        return myTables;
     }
 
 
