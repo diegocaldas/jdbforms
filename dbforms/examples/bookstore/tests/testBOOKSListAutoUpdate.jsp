@@ -24,11 +24,7 @@
 			<db:footer>
 				<tr>
 					<td colspan="4" align="center">
-						<db:gotoButton 
-							destination="/tests/testBOOKSListAutoUpdate.jsp"
-	                   		destTable="BOOK"
-
-						/>
+						<db:updateButton />
 					</td>
 				</tr>
 				</table>
