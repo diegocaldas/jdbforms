@@ -216,7 +216,7 @@ public class Table {
 	}
 
 	/**
-	 * this method generated a datastructure holding sorting information from "orderBy".clause in XML-config
+	 * this method generates a datastructure holding sorting information from "orderBy".clause in XML-config
 	 */
 	public void initDefaultOrder() {
 
@@ -292,7 +292,10 @@ public class Table {
    *	we set some place holders for correct mapping
    *
    *	@param fieldsToSelect - vector of fields to be selected
-   *	@param childFieldValues - horziontal selection: filetering rows according to the value definitions in childFieldValues. If childFieldValues is null, no horizontal selection is made.
+   *	@param fvEqual - fieldValues representing values we are looking for
+   *    @param fvOrder - fieldValues representing needs for order clauses
+   *    @param compareMode - and / or
+   *
    */
   private String getSelectQuery(Vector fieldsToSelect, FieldValue[] fvEqual, FieldValue[] fvOrder, int compareMode) {
 	  StringBuffer buf = new StringBuffer();

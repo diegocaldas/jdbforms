@@ -183,8 +183,8 @@ public class InsertEvent extends DatabaseEvent {
 		// list the place-holders for the fields to include
 		queryBuf.append(") VALUES (");
 		for(int i=0; i<fieldValues.size(); i++) {
+			if(i!=0) queryBuf.append(",");
 			queryBuf.append("?");
-			if(i < fieldValues.size()-1) queryBuf.append(",");
 		}
 		queryBuf.append(")");
 

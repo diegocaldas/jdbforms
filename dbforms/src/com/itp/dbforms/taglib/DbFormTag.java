@@ -617,7 +617,7 @@ public class DbFormTag extends BodyTagSupport {
 			// a local event defined on the jsp
 
 			// #fixme!
-			// Interimistic soltion
+			// Interimistic solution
 			// must be more flexible in final version
 
 			if(webEvent==null && localWebEvent != null) {

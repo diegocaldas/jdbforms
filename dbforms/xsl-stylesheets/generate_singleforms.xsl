@@ -5,11 +5,20 @@
 <xsl:output indent="yes"/>
 
 <!--
+**
+**   STYLESHEET FOR GENERATION OF JSP VIEWS FOR DBFORMS
+** 
+**   This stylesheet will make JSP views that list content of 1 table row.
+**   (== a dataset). Data can be updated. 
+**
+**  
+-->
+
+<!--
 definition of variables
 choose appropriate values that fit your needs
 -->
 
-<xsl:variable name="maxRows">*</xsl:variable>
 <xsl:variable name="pageBgColor">99CCFF</xsl:variable>
 
 
@@ -18,7 +27,7 @@ choose appropriate values that fit your needs
 //--file "<xsl:value-of select="@name"/>_single.jsp" ------------------------------------------------
 
 <xsl:text disable-output-escaping="yes">
-&lt;%@ taglib uri="/WEB-INF/taglib.tld" prefix="db" %&gt;
+&lt;%@ taglib uri="/WEB-INF/dbforms.tld" prefix="db" %&gt;
 </xsl:text>
 
   <html>
@@ -42,6 +51,9 @@ choose appropriate values that fit your needs
 	   </table>
 	   </td></tr>	 		   
 	</table>
+
+
+
 
      <db:dbform tableName="{@name}" maxRows="1" followUp="/{@name}_single.jsp" autoUpdate="false">
        <db:header>	
@@ -98,10 +110,10 @@ choose appropriate values that fit your needs
                  <xsl:when test="@fieldType='numeric'  or @fieldType='number'">
                    <db:textField fieldName="{@name}" size="{@size}" />
                  </xsl:when>
-                 <xsl:when test="@fieldType='blob' or @fieldType='image'">
+                 <xsl:when test="@fieldType='blob' or @fieldType='image'">                   
                    <db:file fieldName="{@name}" />
                  </xsl:when>
-                 <xsl:when test="@fieldType='diskblob'">
+                 <xsl:when test="@fieldType='diskblob'">                  
                    <db:file fieldName="{@name}" />
                  </xsl:when>
                  <xsl:otherwise>

@@ -3,6 +3,15 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0" xmlns:db="http://www.wap-force.com/dbforms">
 
 <!--
+**
+**   STYLESHEET FOR GENERATION OF JSP VIEWS FOR DBFORMS
+** 
+**   This stylesheet will make JSP views that list table content. The
+**   data in the list can not be updated ("read only")
+**  
+-->
+
+<!--
 definition of variables
 choose appropriate values that fit your needs
 -->
@@ -13,7 +22,7 @@ choose appropriate values that fit your needs
   <xsl:template match="table">
 //--file "<xsl:value-of select="@name"/>_list.jsp" -------------------------------------------
   <xsl:text disable-output-escaping="yes">
-    &lt;%@ taglib uri="/WEB-INF/taglib.tld" prefix="db" %&gt;
+    &lt;%@ taglib uri="/WEB-INF/dbforms.tld" prefix="db" %&gt;
 
     &lt;html&gt;
       &lt;head&gt;
@@ -56,7 +65,7 @@ choose appropriate values that fit your needs
    </xsl:text>
 
    <xsl:for-each select="field">
-     <xsl:text disable-output-escaping="yes">        &lt;td&gt;</xsl:text>
+     <xsl:text disable-output-escaping="yes">&lt;td&gt;</xsl:text>
      <xsl:value-of select="@name"/>
      <xsl:text disable-output-escaping="yes">&lt;/td&gt;
      </xsl:text>

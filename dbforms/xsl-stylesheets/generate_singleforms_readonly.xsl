@@ -5,11 +5,21 @@
 <xsl:output indent="yes"/>
 
 <!--
+**
+**   STYLESHEET FOR GENERATION OF JSP VIEWS FOR DBFORMS
+** 
+**   This stylesheet will make JSP views that list content of 1 table row.
+**   (== a dataset). Data can not be updated ("read only")
+**
+**  
+-->
+
+
+<!--
 definition of variables
 choose appropriate values that fit your needs
 -->
 
-<xsl:variable name="maxRows">*</xsl:variable>
 <xsl:variable name="pageBgColor">99CCFF</xsl:variable>
 
 
@@ -18,7 +28,7 @@ choose appropriate values that fit your needs
 //--file "<xsl:value-of select="@name"/>_single_ro.jsp" ------------------------------------------------
 
 <xsl:text disable-output-escaping="yes">
-&lt;%@ taglib uri="/WEB-INF/taglib.tld" prefix="db" %&gt;
+&lt;%@ taglib uri="/WEB-INF/dbforms.tld" prefix="db" %&gt;
 </xsl:text>
 
   <html>
@@ -99,10 +109,10 @@ choose appropriate values that fit your needs
                    <db:label fieldName="{@name}" />
                  </xsl:when>
                  <xsl:when test="@fieldType='blob' or @fieldType='image'">
-                   <a href="&lt;db:blobURL fieldName=&quot;{@name}&quot; /&gt;">[view]</a>
+                   <xsl:text disable-output-escaping="yes">&lt;a href="&lt;db:blobURL fieldName=&quot;</xsl:text><xsl:value-of select="@name"/><xsl:text disable-output-escaping="yes">&quot; /&gt;" target="_blank" &gt;[view]&lt;/a&gt;</xsl:text>
                  </xsl:when>
                  <xsl:when test="@fieldType='diskblob'">
-                   <a href="&lt;db:blobURL fieldName=&quot;{@name}&quot; /&gt;">[view]</a>
+                   <xsl:text disable-output-escaping="yes">&lt;a href="&lt;db:blobURL fieldName=&quot;</xsl:text><xsl:value-of select="@name"/><xsl:text disable-output-escaping="yes">&quot; /&gt;" target="_blank" &gt;[view]&lt;/a&gt;</xsl:text>
                  </xsl:when>
                  <xsl:otherwise>
                  *** error - fieldtype <xsl:value-of select="@fieldType"/> is currently not supported. please send an e-mail to joepeer@wap-force.net ! ***

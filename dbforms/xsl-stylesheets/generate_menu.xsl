@@ -14,7 +14,7 @@ choose appropriate values that fit your needs
 
 <xsl:template match="/">
 //--file "menu.jsp" -------------------------------------------
-<xsl:text disable-output-escaping="yes">&lt;%@ taglib uri="/WEB-INF/taglib.tld" prefix="db" %&gt;</xsl:text>
+<xsl:text disable-output-escaping="yes">&lt;%@ taglib uri="/WEB-INF/dbforms.tld" prefix="db" %&gt;</xsl:text>
 <html>
 <head>
   <db:base/>

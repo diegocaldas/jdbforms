@@ -28,6 +28,9 @@ package com.itp.dbforms;
  *  This helper-class was originally used to maintain the mapped values
  *  between Main-Form and Sub-Form in the taglib package. in meantime
  *  it is used as holder of data in many places.
+ *
+ *  it also performs operations that involve "fields" and associated "values"
+ *  (i.e. building blocks of SQL SELECT statements, etc)
  * </p>
  *
  *
@@ -65,12 +68,12 @@ public class FieldValue implements Cloneable {
   //--------- properties ------------------------------------------------------------
 
 	private Field field;
-	private String fieldValue;
-	private boolean sortDirection;
-	private boolean renderHiddenHtmlTag;
-	private int searchMode;
-	private int searchAlgorithm;
-	private int operator;
+	private String fieldValue; // a value a field is associated with
+	private boolean sortDirection; // Field.ORDER_ASCENDING or Field.ORDER_DESCENDING
+	private boolean renderHiddenHtmlTag; // if FieldValue is used in a "childFieldValue", it signalizes if it should be rendered as hidden tag or not (if "stroke out")
+	private int searchMode; // if used in an argument for searching: AND || OR!
+	private int searchAlgorithm; // if used in an argument for searching: SHARP || WEAK!
+	private int operator; // if used in a filter argument: the type of filter comparison operator (see FILTER_* definitions above)
 
 	//--------- contructors -----------------------------------------------------------
 

@@ -5,6 +5,22 @@
 <xsl:output indent="yes"/>
 
 <!--
+**
+**   STYLESHEET FOR GENERATION OF JSP VIEWS FOR DBFORMS
+** 
+**   This stylesheet will make JSP views that list table content. The
+**   data in the list can be updated. The list will show a radio button
+**   for each row. The user needs to select the radio button before 
+**   he/she can update or delete a row. This way the amount of buttons
+**   to be rendered by the browser is minimized.
+**  
+**   (note: you can switch "autoupdate" to "true" in this stylesheet 
+**   and the users of the resulting JSPs will be able to update multiple
+**   rows at once !)
+**  
+-->
+
+<!--
 definition of variables
 choose appropriate values that fit your needs
 -->
@@ -19,7 +35,7 @@ choose appropriate values that fit your needs
 
 
 <xsl:text disable-output-escaping="yes">
-&lt;%@ taglib uri="/WEB-INF/taglib.tld" prefix="db" %&gt;
+&lt;%@ taglib uri="/WEB-INF/dbforms.tld" prefix="db" %&gt;
 &lt;%int i=0; %&gt;
 </xsl:text>
 
@@ -125,9 +141,11 @@ choose appropriate values that fit your needs
                    <db:textField fieldName="{@name}" size="{@size}" />
                  </xsl:when>
                  <xsl:when test="@fieldType='blob' or @fieldType='image'">
+                   <xsl:text disable-output-escaping="yes">&lt;a href="&lt;db:blobURL fieldName=&quot;</xsl:text><xsl:value-of select="@name"/><xsl:text disable-output-escaping="yes">&quot; /&gt;" target="_blank" &gt;[view]&lt;/a&gt;</xsl:text><br/>
                    <db:file fieldName="{@name}" />
                  </xsl:when>
                  <xsl:when test="@fieldType='diskblob'">
+                   <xsl:text disable-output-escaping="yes">&lt;a href="&lt;db:blobURL fieldName=&quot;</xsl:text><xsl:value-of select="@name"/><xsl:text disable-output-escaping="yes">&quot; /&gt;" target="_blank" &gt;[view]&lt;/a&gt;</xsl:text><br/>
                    <db:file fieldName="{@name}" />
                  </xsl:when>
                  <xsl:otherwise>

@@ -1,5 +1,17 @@
 <?xml version='1.0'?>
 
+<!--
+**
+**   STYLESHEET FOR GENERATION OF JSP VIEWS FOR DBFORMS
+** 
+**   This stylesheet will make JSP views that list table content. The
+**   data in the list can be updated.
+**  
+**   (note: you can switch "autoupdate" to "true" in this stylesheet 
+**   and the users of the resulting JSPs will be able to update multiple
+**   rows at once !)
+-->
+
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0" xmlns:db="http://www.wap-force.net/dbforms">
 
 <xsl:output indent="yes"/>
@@ -18,7 +30,7 @@ choose appropriate values that fit your needs
 
 
 <xsl:text disable-output-escaping="yes">
-&lt;%@ taglib uri="/WEB-INF/taglib.tld" prefix="db" %&gt;
+&lt;%@ taglib uri="/WEB-INF/dbforms.tld" prefix="db" %&gt;
 &lt;%int i=0; %&gt;
 </xsl:text>
 
@@ -69,6 +81,7 @@ choose appropriate values that fit your needs
              
             
            </xsl:for-each>
+           <td colspan="2">action</td>
            </tr>
         
         

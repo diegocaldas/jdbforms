@@ -1,5 +1,14 @@
 <?xml version='1.0'?>
 
+<!--
+**
+**   STYLESHEET FOR GENERATION OF JSP VIEWS FOR DBFORMS
+** 
+**   This stylesheet will make JSP views that list table content and 
+**   provide input fields for adding new data.
+**  
+-->
+
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0" xmlns:db="http://www.wap-force.net/dbforms">
 
 <xsl:output indent="yes"/>
@@ -17,7 +26,7 @@ choose appropriate values that fit your needs
 //--file "<xsl:value-of select="@name"/>_list_and_single.jsp" ------------------------------------------------
 
 <xsl:text disable-output-escaping="yes">
-&lt;%@ taglib uri="/WEB-INF/taglib.tld" prefix="db" %&gt;
+&lt;%@ taglib uri="/WEB-INF/dbforms.tld" prefix="db" %&gt;
 &lt;%int i=0; %&gt;
 </xsl:text>
 
@@ -43,6 +52,8 @@ choose appropriate values that fit your needs
 	   </table>
 	   </td></tr>	 		   
 	</table>
+
+
 
      <db:dbform tableName="{@name}" maxRows="*" followUp="/{@name}_list_and_single.jsp" autoUpdate="false">
        <db:header>
@@ -121,9 +132,11 @@ choose appropriate values that fit your needs
                    <db:textField fieldName="{@name}" size="{@size}" />
                  </xsl:when>
                  <xsl:when test="@fieldType='blob' or @fieldType='image'">
+                   <xsl:text disable-output-escaping="yes">&lt;a href="&lt;db:blobURL fieldName=&quot;</xsl:text><xsl:value-of select="@name"/><xsl:text disable-output-escaping="yes">&quot; /&gt;" target="_blank" &gt;[view]&lt;/a&gt;</xsl:text><br/>
                    <db:file fieldName="{@name}" />
                  </xsl:when>
                  <xsl:when test="@fieldType='diskblob'">
+                   <xsl:text disable-output-escaping="yes">&lt;a href="&lt;db:blobURL fieldName=&quot;</xsl:text><xsl:value-of select="@name"/><xsl:text disable-output-escaping="yes">&quot; /&gt;" target="_blank" &gt;[view]&lt;/a&gt;</xsl:text><br/>
                    <db:file fieldName="{@name}" />
                  </xsl:when>
                  <xsl:otherwise>
