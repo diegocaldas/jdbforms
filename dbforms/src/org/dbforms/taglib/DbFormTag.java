@@ -1499,9 +1499,14 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
             } else {
                String myPosition = null;
                if ((webEvent != null) && 
-                   (EventType.EVENT_DATABASE_UPDATE.equals(webEvent.getType()) ||
-                    EventType.EVENT_DATABASE_DELETE.equals(webEvent.getType()) ||
-                    EventType.EVENT_DATABASE_INSERT.equals(webEvent.getType()))
+                     ( 
+                        // we have one of the update events...
+                        EventType.EVENT_DATABASE_UPDATE.equals(webEvent.getType()) ||
+                        EventType.EVENT_DATABASE_DELETE.equals(webEvent.getType()) ||
+                        EventType.EVENT_DATABASE_INSERT.equals(webEvent.getType()) ||
+                        // we do navigation in a sub form
+                        webEvent instanceof NavigationEvent  
+                     )
                    ) {                  
                	myPosition = firstPosition;
                }
