@@ -239,10 +239,12 @@
        -  the varios javax.xml classes like Streamer and TransformationFactory.
        -  It is not needed by the webapp, and can be commented out.
        -->    
+<!-- removed from project. is included in jdk!
     <dependency>
       <id>j2ee</id>      
       <jar>j2ee.jar</jar>
     </dependency>
+-->    
 
 
     <!-- 
