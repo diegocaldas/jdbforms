@@ -1,3 +1,26 @@
+2002-11-4 (dikr):
+
+Added Files:
+  DbFormsTags_Frame.html:
+        Frame version of taglib reference doc
+  etc/tldoc2html_toc.xsl
+        new xsl stylesheet to generate navigation
+        page for taglib html reference
+
+Modified Files: build.xml
+
+Task 'generate_taglib_htmldocs' has been extended
+to generate two more HTML pages:
+
+ - one navigation page containing all tags
+   in same order as within source file
+   (semantic order)
+ - one navigation page containing all
+   tags in alphabetical order
+
+The new pages will be embedded within new frame version
+of taglib reference doc/html/DbFormsTags_Frame.html.
+
 Wednesday, October 30, 2002:
 (Henner.Kollmann@aucos.de):
         - taglib_docu.xml:
@@ -17,6 +40,54 @@ Wednesday, October 30, 2002:
 		New tag to simplify search fields with combos
 	
 
+2002-10-22, 2002-10-23 (dikr):
+
+Added Files:
+
+tldoc2html.xsl:
+  Initial release of XSL stylesheet to
+  generate HTML reference documentation
+  from taglib_docu.xml.
+tldoc2xsl-fo.xsl:
+  Initial release of XSL stylesheet to generate a
+  XSL Formatting Objects document from taglib_docu.xml.
+  The result of this transformation
+  can be converted by a Formatting Objects Processor like
+  Apache FOP (http://xml.apache.org/fop) to PDF, PS and
+  lots of other formats.
+
+Modified Files:
+build.xml
+
+ - Added ant task 'generate_taglib_htmldocs' to generate
+   HTML reference documentation from taglib_docu.xml using
+   new stylesheet etc/tldoc2html.xsl.
+
+   Simply do a
+
+      ant generate_taglib_htmldocs
+
+   and you will (hopefully) find the result as file
+   doc/html/DbFormsTags.html.
+   
+ - Added ant task 'generate_taglib_pdfdocs' to generate
+   PDF reference documentation from taglib_docu.xml using
+   new stylesheet etc/tldoc2xsl-fo.xsl. This task
+   first generates the xsl-fo document, then Apache Formatting
+   Objects Processor FOP (http://xml.apache.org/fop/index.html)
+   is used to create a PDF file out of the xsl-fo file.
+   I used Version FOP-0.20.4, older versions may make some problems
+   because some attributes seem to be renamed. After installing FOP
+   and before calling 'ant generate_taglib_pdfdocs' you have to
+   set environment variable FOP_HOME to location of FOP installation
+
+taglib_docu.xml:
+
+   Some minor changes within summary and info
+   attributes (containing comments) to make the
+   result of the transformation of this file
+   to HTML and PDF look better.
+
 Tuesday, October 22, 2002:
 (Henner.Kollmann@aucos.de):
 
@@ -30,6 +101,20 @@ Tuesday, October 22, 2002:
 		new searching
 	- DBFormTag.java
 		new searching
+                          
+2002-10-16 (dikr):
+
+viewTable.xsl :
+
+patch to eliminate nullpointer exception
+in case of empty result sets when searching
+
+2002-10-14 (dikr):
+
+2 patches contributed by Carlos Anjos for devgui.sh:
+
+- figure out automaticaly the DBFORMS_HOME if not already set
+- change of the dir where the jar is ("dist" and not "lib")
 
 Sunday, October 13, 2002:
 (Henner.Kollmann@aucos.de):
@@ -63,6 +148,12 @@ Sunday, October 13, 2002:
  		set checked=true for the first row
  	- GotoEvent.java 
  		correct processEvent: postion maybe of size == 0
+                
+2002-10-8 (dikr):
+
+Modified Files: DbFormTag.java DbGetConnection.java
+
+removed ; after return statement (compilation errors with jdk14)
 
 
 Thursday, September 19, 2002:
