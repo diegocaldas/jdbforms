@@ -20,9 +20,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.conprovider;
-
 import java.lang.reflect.*;
 import java.util.*;
 import java.sql.*;
@@ -39,77 +37,80 @@ import org.dbforms.conprovider.*;
  */
 public class ConnectionFactory
 {
-    /** Log4j category */
-    private Category cat = Category.getInstance(this.getClass());
+   /** Log4j category */
+   private Category cat = Category.getInstance(this.getClass());
 
-    /** an handle to the unique ConnectionFactory instance. */
-    private static ConnectionFactory instance = null;
+   /** an handle to the unique ConnectionFactory instance. */
+   private static ConnectionFactory instance = null;
 
-    /** default ConnectionProvider instance */
-    private ConnectionProvider provider = null;
+   /** default ConnectionProvider instance */
+   private ConnectionProvider provider = null;
 
-    /**
-     *   Constructor for the ConnectionFactory object
-     */
-    private ConnectionFactory()
-    {
-    }
+   /**
+    *   Constructor for the ConnectionFactory object
+    */
+   private ConnectionFactory()
+   {
+   }
 
-    /**
-     *  Get the unique instance of ConnectionFactory class.
-     *
-     * @return  the instance of ConnectionFactory class
-     */
-    public static synchronized ConnectionFactory instance()
-    {
-        if (instance == null)
-        {
-            instance = new ConnectionFactory();
-        }
+   /**
+    *  Get the unique instance of ConnectionFactory class.
+    *
+    * @return  the instance of ConnectionFactory class
+    */
+   public static synchronized ConnectionFactory instance()
+   {
+      if (instance == null)
+      {
+         instance = new ConnectionFactory();
+      }
 
-        return instance;
-    }
-
-
-    /**
-     *  Set the ConnectionProvider object
-     *
-     * @param  prefs     the connection provider preferences object
-     * @throws Exception if any error occurs
-     */
-    public synchronized void setProvider(ConnectionProviderPrefs prefs) throws Exception
-    {
-        String providerClass = prefs.getConnectionProviderClass();
-        provider = (ConnectionProvider) Class.forName(providerClass).newInstance();
-        provider.setPrefs(prefs);
-        provider.init();
-
-        cat.info("::setProvider - ConnectionProvider [" + providerClass + "] successfully set and initialized");
-    }
+      return instance;
+   }
 
 
-    /**
-     *  Get a connection object from the underlying ConnectionProvider object.
-     *
-     * @return  the connection object from the underlying ConnectionProvider object
-     * @throws  SQLException if any error occurs
-     */
-    public Connection getConnection() throws SQLException
-    {
-        return provider.getConnection();
-    }
+   /**
+    *  Set the ConnectionProvider object
+    *
+    * @param  prefs     the connection provider preferences object
+    * @throws Exception if any error occurs
+    */
+   public synchronized void setProvider(ConnectionProviderPrefs prefs)
+      throws Exception
+   {
+      String providerClass = prefs.getConnectionProviderClass();
+      provider = (ConnectionProvider) Class.forName(providerClass).newInstance();
+      provider.setPrefs(prefs);
+      provider.init();
+
+      cat.info("::setProvider - ConnectionProvider [" + providerClass
+         + "] successfully set and initialized");
+   }
 
 
-    /**
-     *  Get a "transactional" JDBC connection from the underlying default ConnectionProvider.
-     *
-     * @param  isolationLevel the isolation level to set the connection to
-     * @return  the new "transactional" connection object
-     *         from the underlying default ConnectionProvider
-     * @throws  SQLException if any error occurs
-     */
-    public Connection getConnection(int isolationLevel) throws SQLException
-    {
-        return provider.getConnection(isolationLevel);
-    }
+   /**
+    *  Get a connection object from the underlying ConnectionProvider object.
+    *
+    * @return  the connection object from the underlying ConnectionProvider object
+    * @throws  SQLException if any error occurs
+    */
+   public Connection getConnection() throws SQLException
+   {
+      return provider.getConnection();
+   }
+
+
+   /**
+    *  Get a "transactional" JDBC connection from the underlying default ConnectionProvider.
+    *
+    * @param  isolationLevel the isolation level to set the connection to
+    * @return  the new "transactional" connection object
+    *         from the underlying default ConnectionProvider
+    * @throws  SQLException if any error occurs
+    */
+   public Connection getConnection(int isolationLevel)
+      throws SQLException
+   {
+      return provider.getConnection(isolationLevel);
+   }
 }

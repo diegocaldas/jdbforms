@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.event.datalist.dao;
-
 import java.sql.*;
 import java.util.*;
 import java.io.*;
@@ -39,304 +38,486 @@ import org.dbforms.util.FileHolder;
 import org.dbforms.util.UniqueIDGenerator;
 import org.dbforms.util.Util;
 
+
+
 /**
- * 
+ *
  * Special implementation of DataSource. This is the default class and deals with JDBC Connections.
- * 
- * 
+ *
+ *
  * @author hkk
  */
-public class DataSourceJDBC extends DataSource {
-   private String query;
-   private Connection con;
-   private boolean ownCon = false;
-   private ResultSet rs;
-   private Statement stmt;
-   private Vector data;
-   private Vector keys;
-   private int colCount;
-   private String whereClause;
-   private String dbConnectionName;
-   private String tableList;
-   private FieldValue[] filterConstraint;
-   private FieldValue[] orderConstraint;
+public class DataSourceJDBC extends DataSource
+{
+   private String        query;
+   private Connection    con;
+   private boolean       ownCon           = false;
+   private ResultSet     rs;
+   private Statement     stmt;
+   private Vector        data;
+   private Vector        keys;
+   private int           colCount;
+   private String        whereClause;
+   private String        dbConnectionName;
+   private String        tableList;
+   private FieldValue[]  filterConstraint;
+   private FieldValue[]  orderConstraint;
    private DbFormsConfig config;
-   private boolean endReached;
+   private boolean       endReached;
+
    // To overcome a bug in firebird driver: next after lastStatement will restart!
-
-   public DataSourceJDBC(Table table) {
+   public DataSourceJDBC(Table table)
+   {
       super(table);
-      data = new Vector();
-      keys = new Vector();
+      data    = new Vector();
+      keys    = new Vector();
    }
 
-   public void setConnection(DbFormsConfig config, String dbConnectionName) {
-      try {
+   /**
+    * DOCUMENT ME!
+    *
+    * @param config DOCUMENT ME!
+    * @param dbConnectionName DOCUMENT ME!
+    */
+   public void setConnection(DbFormsConfig config, String dbConnectionName)
+   {
+      try
+      {
          close();
-      } catch (SQLException e) {
+      }
+      catch (SQLException e)
+      {
          SqlUtil.logSqlException(e);
       }
-      this.config = config;
-      this.dbConnectionName = dbConnectionName;
+
+      this.config              = config;
+      this.dbConnectionName    = dbConnectionName;
    }
 
-   public void setConnection(Connection con) {
-      try {
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param con DOCUMENT ME!
+    */
+   public void setConnection(Connection con)
+   {
+      try
+      {
          close();
-      } catch (SQLException e) {
+      }
+      catch (SQLException e)
+      {
          SqlUtil.logSqlException(e);
       }
+
       this.con = con;
    }
 
-   public void setSelect(String tableList, String whereClause) {
-      this.tableList = tableList;
-      this.whereClause = whereClause;
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param tableList DOCUMENT ME!
+    * @param whereClause DOCUMENT ME!
+    */
+   public void setSelect(String tableList, String whereClause)
+   {
+      this.tableList      = tableList;
+      this.whereClause    = whereClause;
    }
 
-   public void setSelect(
-      FieldValue[] filterConstraint,
-      FieldValue[] orderConstraint) {
-      this.filterConstraint = filterConstraint;
-      this.orderConstraint = orderConstraint;
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param filterConstraint DOCUMENT ME!
+    * @param orderConstraint DOCUMENT ME!
+    */
+   public void setSelect(FieldValue[] filterConstraint,
+      FieldValue[] orderConstraint)
+   {
+      this.filterConstraint    = filterConstraint;
+      this.orderConstraint     = orderConstraint;
    }
 
-   public void close() throws SQLException {
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @throws SQLException DOCUMENT ME!
+    */
+   public void close() throws SQLException
+   {
       if (data != null)
+      {
          data.clear();
+      }
+
       if (keys != null)
+      {
          keys.clear();
-      if (rs != null) {
+      }
+
+      if (rs != null)
+      {
          rs.close();
          rs = null;
       }
-      if (stmt != null) {
+
+      if (stmt != null)
+      {
          stmt.close();
          stmt = null;
       }
-      if (ownCon) {
+
+      if (ownCon)
+      {
          con.close();
          con = null;
       }
+
       ownCon = false;
    }
 
-   protected void open() throws SQLException {
-      if (rs == null) {
-         ownCon = true;
-         con = SqlUtil.getConnection(config, dbConnectionName);
-         if (Util.isNull(whereClause)) {
-            query =
-               getTable().getSelectQuery(
-                  getTable().getFields(),
-                  filterConstraint,
-                  orderConstraint,
-                  Constants.COMPARE_NONE);
-            stmt = con.prepareStatement(query);
-            rs =
-               getTable().getDoSelectResultSet(
-                  filterConstraint,
-                  orderConstraint,
-                  Constants.COMPARE_NONE,
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @throws SQLException DOCUMENT ME!
+    */
+   protected void open() throws SQLException
+   {
+      if (rs == null)
+      {
+         ownCon      = true;
+         con         = SqlUtil.getConnection(config, dbConnectionName);
+
+         if (Util.isNull(whereClause))
+         {
+            query    = getTable().getSelectQuery(getTable().getFields(),
+                  filterConstraint, orderConstraint, Constants.COMPARE_NONE);
+            stmt    = con.prepareStatement(query);
+            rs      = getTable().getDoSelectResultSet(filterConstraint,
+                  orderConstraint, Constants.COMPARE_NONE,
                   (PreparedStatement) stmt);
-         } else {
-            query =
-               getTable().getFreeFormSelectQuery(
-                  getTable().getFields(),
-                  whereClause,
-                  tableList);
-            stmt = con.createStatement();
-            rs = stmt.executeQuery(query);
          }
+         else
+         {
+            query    = getTable().getFreeFormSelectQuery(getTable().getFields(),
+                  whereClause, tableList);
+            stmt    = con.createStatement();
+            rs      = stmt.executeQuery(query);
+         }
+
          ResultSetMetaData rsmd = rs.getMetaData();
          colCount = rsmd.getColumnCount();
       }
    }
 
-   private Object[] getCurrentRowAsObject() throws SQLException {
+
+   private Object[] getCurrentRowAsObject() throws SQLException
+   {
       Object[] objectRow = new Object[colCount];
-      for (int i = 0; i < colCount; i++) {
+
+      for (int i = 0; i < colCount; i++)
+      {
          Object obj = rs.getObject(i + 1);
          objectRow[i] = obj;
       }
+
       return objectRow;
    }
 
-   private String[] getCurrentRow() throws SQLException {
+
+   private String[] getCurrentRow() throws SQLException
+   {
       String[] objectRow = new String[colCount];
+
       for (int i = 0; i < colCount; i++)
          objectRow[i] = rs.getString(i + 1);
+
       return objectRow;
    }
 
-   protected int findStartRow(String startRow) throws SQLException {
-      int result = 0;
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param startRow DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws SQLException DOCUMENT ME!
+    */
+   protected int findStartRow(String startRow) throws SQLException
+   {
+      int    result = 0;
       String s;
-      if (startRow != null) {
-         for (int i = 0; i < keys.size(); i++) {
-            if (startRow.equals((String) keys.elementAt(i))) {
+
+      if (startRow != null)
+      {
+         for (int i = 0; i < keys.size(); i++)
+         {
+            if (startRow.equals((String) keys.elementAt(i)))
+            {
                result = i;
+
                break;
             }
          }
-         if (result == 0) {
-            while (rs.next()) {
+
+         if (result == 0)
+         {
+            while (rs.next())
+            {
                data.add(getCurrentRowAsObject());
                s = getTable().getKeyPositionString(getCurrentRow());
                keys.add(s);
-               if (startRow.equals(s)) {
+
+               if (startRow.equals(s))
+               {
                   result = data.size() - 1;
+
                   break;
                }
             }
          }
       }
+
       return result;
    }
 
-   protected final Object[] getRow(int i) throws SQLException {
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param i DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws SQLException DOCUMENT ME!
+    */
+   protected final Object[] getRow(int i) throws SQLException
+   {
       Object[] result = null;
-      if (i >= 0) {
-         if (i < data.size()) {
+
+      if (i >= 0)
+      {
+         if (i < data.size())
+         {
             result = (Object[]) data.elementAt(i);
-         } else {
-            while (rs.next()) {
+         }
+         else
+         {
+            while (rs.next())
+            {
                result = getCurrentRowAsObject();
                data.add(result);
                keys.add(getTable().getKeyPositionString(getCurrentRow()));
-               if (i < data.size()) {
+
+               if (i < data.size())
+               {
                   break;
                }
             }
          }
       }
+
       return result;
    }
 
-   protected int size() throws SQLException {
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws SQLException DOCUMENT ME!
+    */
+   protected int size() throws SQLException
+   {
       // Workaround for bug in firebird driver: After reaching next the next call to next will start at the beginning of the resultset.
       // rs.next will return true, fetching data will get an NullPointerException. Catch this error and do an break!   
-      while (rs.next()) {
-         try {
+      while (rs.next())
+      {
+         try
+         {
             data.add(getCurrentRowAsObject());
             keys.add(getTable().getKeyPositionString(getCurrentRow()));
-         } catch (Exception e) {
+         }
+         catch (Exception e)
+         {
             logCat.error(e.getMessage());
+
             break;
          }
       }
+
       return data.size();
    }
 
+
    //------------------------------ DAO methods ---------------------------------
    private int fillWithData(PreparedStatement ps, FieldValues fieldValues)
-      throws SQLException {
+      throws SQLException
+   {
       // now we provide the values;
       // every key is the parameter name from of the form page;
       Enumeration enum = fieldValues.keys();
-      int col = 1;
-      while (enum.hasMoreElements()) {
+      int         col = 1;
+
+      while (enum.hasMoreElements())
+      {
          String fieldName = (String) enum.nextElement();
-         Field curField = getTable().getFieldByName(fieldName);
-         if (curField != null) {
+         Field  curField = getTable().getFieldByName(fieldName);
+
+         if (curField != null)
+         {
             FieldValue fv = fieldValues.get(fieldName);
+
             //logCat.debug("Retrieved curField:" + curField.getName() + " type:" + curField.getFieldType());
-            int fieldType = curField.getType();
+            int    fieldType = curField.getType();
             Object value = null;
-            if (fieldType == FieldTypes.BLOB) {
+
+            if (fieldType == FieldTypes.BLOB)
+            {
                // in case of a BLOB we supply the FileHolder object to SqlUtils for further operations
                value = fv.getFileHolder();
-            } else if (fieldType == FieldTypes.DISKBLOB) {
+            }
+            else if (fieldType == FieldTypes.DISKBLOB)
+            {
                // check if we need to store it encoded or not
-               if ("true".equals(curField.getEncoding())) {
+               if ("true".equals(curField.getEncoding()))
+               {
                   FileHolder fileHolder = fv.getFileHolder();
+
                   // encode fileName
                   String fileName = fileHolder.getFileName();
-                  int dotIndex = fileName.lastIndexOf('.');
-                  String suffix =
-                     (dotIndex != -1) ? fileName.substring(dotIndex) : "";
-                  fileHolder.setFileName(
-                     UniqueIDGenerator.getUniqueID() + suffix);
+                  int    dotIndex = fileName.lastIndexOf('.');
+                  String suffix   = (dotIndex != -1)
+                     ? fileName.substring(dotIndex) : "";
+                  fileHolder.setFileName(UniqueIDGenerator.getUniqueID()
+                     + suffix);
+
                   // a diskblob gets stored to db as an ordinary string (it's only the reference!)
                   value = fileHolder.getFileName();
-               } else {
+               }
+               else
+               {
                   // a diskblob gets stored to db as an ordinary string	 (it's only the reference!)
                   value = fv.getFieldValue();
                }
-            } else {
+            }
+            else
+            {
                // in case of simple db types we just supply a string representing the value of the fields
                value = fv.getFieldValue();
             }
-            logCat.info(
-               "field="
-                  + curField.getName()
-                  + " col="
-                  + col
-                  + " value="
-                  + value
-                  + " type="
-                  + fieldType);
+
+            logCat.info("field=" + curField.getName() + " col=" + col
+               + " value=" + value + " type=" + fieldType);
             SqlUtil.fillPreparedStatement(ps, col, value, fieldType);
             col++;
          }
       }
+
       return col;
    }
 
-   public void doInsert(FieldValues fieldValues) throws SQLException {
-      PreparedStatement ps =
-         con.prepareStatement(getTable().getInsertStatement(fieldValues));
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param fieldValues DOCUMENT ME!
+    *
+    * @throws SQLException DOCUMENT ME!
+    */
+   public void doInsert(FieldValues fieldValues) throws SQLException
+   {
+      PreparedStatement ps = con.prepareStatement(getTable().getInsertStatement(fieldValues));
+
       // execute the query & throws an exception if something goes wrong
       fillWithData(ps, fieldValues);
       ps.executeUpdate();
       ps.close();
+
       // now handle blob files
       saveBlobFilesToDisk(fieldValues);
    }
 
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param fieldValues DOCUMENT ME!
+    * @param keyValuesStr DOCUMENT ME!
+    *
+    * @throws SQLException DOCUMENT ME!
+    */
    public void doUpdate(FieldValues fieldValues, String keyValuesStr)
-      throws SQLException {
-      PreparedStatement ps =
-         con.prepareStatement(getTable().getUpdateStatement(fieldValues));
-      int col = fillWithData(ps, fieldValues);
+      throws SQLException
+   {
+      PreparedStatement ps = con.prepareStatement(getTable().getUpdateStatement(fieldValues));
+      int               col = fillWithData(ps, fieldValues);
       getTable().populateWhereClauseForPS(keyValuesStr, ps, col);
+
       // we are now ready to execute the query
       ps.executeUpdate();
       ps.close();
+
       // now handle blob files
       saveBlobFilesToDisk(fieldValues);
    }
 
-   public void doDelete(String keyValuesStr) throws SQLException {
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param keyValuesStr DOCUMENT ME!
+    *
+    * @throws SQLException DOCUMENT ME!
+    */
+   public void doDelete(String keyValuesStr) throws SQLException
+   {
       FieldValues fieldValues = null;
+
       // get current blob files from database
-      if (getTable().containsDiskblob()) {
-         ResultSet diskblobs = null;
+      if (getTable().containsDiskblob())
+      {
+         ResultSet    diskblobs = null;
          StringBuffer queryBuf = new StringBuffer();
          queryBuf.append(getTable().getDisblobSelectStatement());
          queryBuf.append(" WHERE ");
          queryBuf.append(getTable().getWhereClauseForPS());
-         PreparedStatement diskblobsPs =
-            con.prepareStatement(queryBuf.toString());
+
+         PreparedStatement diskblobsPs = con.prepareStatement(queryBuf.toString());
          getTable().populateWhereClauseForPS(keyValuesStr, diskblobsPs, 1);
          diskblobs = diskblobsPs.executeQuery();
-         ResultSetVector rsv =
-            new ResultSetVector(getTable().getDiskblobs(), diskblobs);
-         if (!Util.isNull(rsv)) {
+
+         ResultSetVector rsv = new ResultSetVector(getTable().getDiskblobs(),
+               diskblobs);
+
+         if (!Util.isNull(rsv))
+         {
             rsv.setPointer(0);
             fieldValues = rsv.getCurrentRowAsFieldValues();
          }
       }
+
       // 20021031-HKK: Build in table!!
-      PreparedStatement ps =
-         con.prepareStatement(getTable().getDeleteStatement());
+      PreparedStatement ps = con.prepareStatement(getTable().getDeleteStatement());
+
       // now we provide the values
       // of the key-fields, so that the WHERE clause matches the right dataset!
       getTable().populateWhereClauseForPS(keyValuesStr, ps, 1);
+
       // finally execute the query
       ps.executeUpdate();
-      if (fieldValues != null)
-         deleteBlobFilesFromDisk(fieldValues);
-   }
 
+      if (fieldValues != null)
+      {
+         deleteBlobFilesFromDisk(fieldValues);
+      }
+   }
 }

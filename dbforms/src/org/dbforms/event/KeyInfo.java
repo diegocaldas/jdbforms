@@ -20,9 +20,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.event;
-
 
 /**
  *  KeyInfo class.
@@ -32,56 +30,56 @@ package org.dbforms.event;
  */
 public class KeyInfo
 {
-    private int tableId;
-    private String keyId;
+   private int    tableId;
+   private String keyId;
 
-    /**
-     *   Constructor for the KeyInfo object
-     */
-    public KeyInfo()
-    {
-    }
+   /**
+    *   Constructor for the KeyInfo object
+    */
+   public KeyInfo()
+   {
+   }
 
-    /**
-     *  Gets the tableId attribute of the KeyInfo object
-     *
-     * @return  The tableId value
-     */
-    public int getTableId()
-    {
-        return tableId;
-    }
-
-
-    /**
-     *  Sets the tableId attribute of the KeyInfo object
-     *
-     * @param  tableId The new tableId value
-     */
-    public void setTableId(int tableId)
-    {
-        this.tableId = tableId;
-    }
+   /**
+    *  Gets the tableId attribute of the KeyInfo object
+    *
+    * @return  The tableId value
+    */
+   public int getTableId()
+   {
+      return tableId;
+   }
 
 
-    /**
-     *  Sets the keyId attribute of the KeyInfo object
-     *
-     * @param  keyId The new keyId value
-     */
-    public void setKeyId(String keyId)
-    {
-        this.keyId = keyId;
-    }
+   /**
+    *  Sets the tableId attribute of the KeyInfo object
+    *
+    * @param  tableId The new tableId value
+    */
+   public void setTableId(int tableId)
+   {
+      this.tableId = tableId;
+   }
 
 
-    /**
-     *  Gets the keyId attribute of the KeyInfo object
-     *
-     * @return  The keyId value
-     */
-    public String getKeyId()
-    {
-        return keyId;
-    }
+   /**
+    *  Sets the keyId attribute of the KeyInfo object
+    *
+    * @param  keyId The new keyId value
+    */
+   public void setKeyId(String keyId)
+   {
+      this.keyId = keyId;
+   }
+
+
+   /**
+    *  Gets the keyId attribute of the KeyInfo object
+    *
+    * @return  The keyId value
+    */
+   public String getKeyId()
+   {
+      return keyId;
+   }
 }

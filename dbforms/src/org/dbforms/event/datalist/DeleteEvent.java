@@ -20,9 +20,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.event.datalist;
-
 import java.io.*;
 import java.util.*;
 import java.sql.*;
@@ -33,15 +31,18 @@ import org.apache.log4j.Category;
 import org.dbforms.event.*;
 import org.dbforms.event.datalist.dao.*;
 
+
+
 /****
  *
  * <p>This event prepares and performs a SQL-Delete operation</p>
- * 
+ *
  * <p>Works with new factory classes</p>
  *
  * @author Henner Kollmann <Henner.Kollmann@gmx.de>
  */
-public class DeleteEvent extends DatabaseEvent {
+public class DeleteEvent extends DatabaseEvent
+{
    static Category logCat = Category.getInstance(DeleteEvent.class.getName());
 
    /**
@@ -52,9 +53,12 @@ public class DeleteEvent extends DatabaseEvent {
     * @param request DOCUMENT ME!
     * @param config DOCUMENT ME!
     */
-   public DeleteEvent(Integer tableId, String keyId, HttpServletRequest request, DbFormsConfig config) {
+   public DeleteEvent(Integer tableId, String keyId,
+      HttpServletRequest request, DbFormsConfig config)
+   {
       super(tableId.intValue(), keyId, request, config);
    }
+
 
    /**
     * Creates a new DeleteEvent object.
@@ -63,13 +67,23 @@ public class DeleteEvent extends DatabaseEvent {
     * @param request DOCUMENT ME!
     * @param config DOCUMENT ME!
     */
-   public DeleteEvent(String action, HttpServletRequest request, DbFormsConfig config) {
-      super(ParseUtil.getEmbeddedStringAsInteger(action, 2, '_'), ParseUtil.getEmbeddedString(action, 3, '_'), request, config);
+   public DeleteEvent(String action, HttpServletRequest request,
+      DbFormsConfig config)
+   {
+      super(ParseUtil.getEmbeddedStringAsInteger(action, 2, '_'),
+         ParseUtil.getEmbeddedString(action, 3, '_'), request, config);
    }
 
-   public FieldValues getFieldValues() {
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public FieldValues getFieldValues()
+   {
       return getFieldValues(false);
    }
+
 
    /**
     * DOCUMENT ME!
@@ -79,30 +93,47 @@ public class DeleteEvent extends DatabaseEvent {
     * @throws SQLException DOCUMENT ME!
     * @throws MultipleValidationException DOCUMENT ME!
     */
-   public void processEvent(Connection con) throws SQLException, MultipleValidationException {
+   public void processEvent(Connection con)
+      throws SQLException, MultipleValidationException
+   {
       // Apply given security contraints (as defined in dbforms-config.xml)
-      if (!hasUserPrivileg(GrantedPrivileges.PRIVILEG_DELETE)) {
-         throw new SQLException("Sorry, deleting data from table " + table.getName() + " is not granted for this session.");
+      if (!hasUserPrivileg(GrantedPrivileges.PRIVILEG_DELETE))
+      {
+         throw new SQLException("Sorry, deleting data from table "
+            + table.getName() + " is not granted for this session.");
       }
+
       // which values do we find in request
       FieldValues fieldValues = getFieldValues();
-      if (fieldValues.size() == 0) {
+
+      if (fieldValues.size() == 0)
+      {
          return;
       }
+
       // part 2: check if there are interceptors to be processed (as definied by
       // "interceptor" element embedded in table element in dbforms-config xml file)
-      if (table.hasInterceptors()) {
-         try {
+      if (table.hasInterceptors())
+      {
+         try
+         {
             Hashtable associativeArray = getAssociativeFieldValues(fieldValues);
+
             // process the interceptors associated to this table
-            table.processInterceptors(DbEventInterceptor.PRE_DELETE, request, associativeArray, config, con);
+            table.processInterceptors(DbEventInterceptor.PRE_DELETE, request,
+               associativeArray, config, con);
+
             // synchronize data which may be changed by interceptor:
             table.synchronizeData(fieldValues, associativeArray);
-         } catch (SQLException sqle) {
+         }
+         catch (SQLException sqle)
+         {
             // PG = 2001-12-04
             // No need to add extra comments, just re-throw exceptions as SqlExceptions
             throw new SQLException(sqle.getMessage());
-         } catch (MultipleValidationException mve) {
+         }
+         catch (MultipleValidationException mve)
+         {
             // PG, 2001-12-14
             // Support for multiple error messages in one interceptor
             throw new MultipleValidationException(mve.getMessages());
@@ -112,20 +143,30 @@ public class DeleteEvent extends DatabaseEvent {
       // in order to process an update, we need the key of the dataset to update
       //
       String keyValuesStr = getKeyValues();
-      if (Util.isNull(keyValuesStr)) {
-         logCat.error("At least one key is required per table, check your dbforms-config.xml");
+
+      if (Util.isNull(keyValuesStr))
+      {
+         logCat.error(
+            "At least one key is required per table, check your dbforms-config.xml");
+
          return;
       }
+
       DataSourceFactory qry = new DataSourceFactory(con, table);
       qry.doDelete(keyValuesStr);
       qry.close();
 
       // finally, we process interceptor again (post-delete)
-      if (table.hasInterceptors()) {
-         try {
+      if (table.hasInterceptors())
+      {
+         try
+         {
             // process the interceptors associated to this table
-            table.processInterceptors(DbEventInterceptor.POST_DELETE, request, null, config, con);
-         } catch (SQLException sqle) {
+            table.processInterceptors(DbEventInterceptor.POST_DELETE, request,
+               null, config, con);
+         }
+         catch (SQLException sqle)
+         {
             // PG = 2001-12-04
             // No need to add extra comments, just re-throw exceptions as SqlExceptions
             throw new SQLException(sqle.getMessage());

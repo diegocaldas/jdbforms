@@ -20,9 +20,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.conprovider;
-
 import java.sql.*;
 import org.apache.log4j.Category;
 
@@ -37,90 +35,89 @@ import org.apache.log4j.Category;
  */
 public abstract class ConnectionProvider
 {
-    /** Log4j category */
-    protected Category cat = Category.getInstance(this.getClass());
+   /** Log4j category */
+   protected Category cat = Category.getInstance(this.getClass());
 
-    /** ConnectionProvider preferences */
-    protected ConnectionProviderPrefs prefs = null;
+   /** ConnectionProvider preferences */
+   protected ConnectionProviderPrefs prefs = null;
 
+   /**
+    *  Constructor for the ConnectionProvider object.
+    *
+    * @exception  Exception Description of the Exception
+    */
+   public ConnectionProvider() throws Exception
+   {
+   }
 
-    /**
-     *  Constructor for the ConnectionProvider object.
-     *
-     * @exception  Exception Description of the Exception
-     */
-    public ConnectionProvider() throws Exception
-    {
-    }
-
-
-    /**
-     *  Gets the prefs attribute of the ConnectionProvider object
-     *
-     * @return  The prefs value
-     */
-    public ConnectionProviderPrefs getPrefs()
-    {
-        return prefs;
-    }
+   /**
+    *  Gets the prefs attribute of the ConnectionProvider object
+    *
+    * @return  The prefs value
+    */
+   public ConnectionProviderPrefs getPrefs()
+   {
+      return prefs;
+   }
 
 
-    /**
-     *  Sets the prefs attribute of the ConnectionProvider object
-     *
-     * @param  prefs The new prefs value
-     */
-    public void setPrefs(ConnectionProviderPrefs prefs)
-    {
-        this.prefs = prefs;
-    }
+   /**
+    *  Sets the prefs attribute of the ConnectionProvider object
+    *
+    * @param  prefs The new prefs value
+    */
+   public void setPrefs(ConnectionProviderPrefs prefs)
+   {
+      this.prefs = prefs;
+   }
 
 
-    /**
-     *  Initialize the connection pool provider.
-     *
-     * @exception  Exception Description of the Exception
-     */
-    protected abstract void init() throws Exception;
+   /**
+    *  Initialize the connection pool provider.
+    *
+    * @exception  Exception Description of the Exception
+    */
+   protected abstract void init() throws Exception;
 
 
-    /**
-     *  Get a JDBC Connection.
-     *
-     * @return  a JDBC Connection
-     * @exception  SQLException Description of the Exception
-     */
-    protected abstract Connection getConnection() throws SQLException;
+   /**
+    *  Get a JDBC Connection.
+    *
+    * @return  a JDBC Connection
+    * @exception  SQLException Description of the Exception
+    */
+   protected abstract Connection getConnection() throws SQLException;
 
 
-    /**
-     *  Get a "transactional" JDBC connection.
-     *
-     * @param  isolationLevel the isolation level to set the connection to
-     * @return  the new "transactional" connection object
-     * @throws  SQLException if any error occurs
-     */
-    protected Connection getConnection(int isolationLevel) throws SQLException
-    {
-        Connection con = getConnection();
-        con.setTransactionIsolation(isolationLevel);
-        con.setAutoCommit(false);
+   /**
+    *  Get a "transactional" JDBC connection.
+    *
+    * @param  isolationLevel the isolation level to set the connection to
+    * @return  the new "transactional" connection object
+    * @throws  SQLException if any error occurs
+    */
+   protected Connection getConnection(int isolationLevel)
+      throws SQLException
+   {
+      Connection con = getConnection();
+      con.setTransactionIsolation(isolationLevel);
+      con.setAutoCommit(false);
 
-        return con;
-    }
+      return con;
+   }
 
 
-    /**
-     *  Get the last token from the input string.
-     *
-     * @param  str the string containing the token
-     * @param  tokenSeparator the token separator string (i.e.: "'", ":", etc)
-     * @return  the last token from the input string
-     */
-    protected String getLastToken(String str, String tokenSeparator)
-    {
-        str.trim();
+   /**
+    *  Get the last token from the input string.
+    *
+    * @param  str the string containing the token
+    * @param  tokenSeparator the token separator string (i.e.: "'", ":", etc)
+    * @return  the last token from the input string
+    */
+   protected String getLastToken(String str, String tokenSeparator)
+   {
+      str.trim();
 
-        return str.substring(str.lastIndexOf(tokenSeparator) + 1, str.length());
-    }
+      return str.substring(str.lastIndexOf(tokenSeparator) + 1, str.length());
+   }
 }

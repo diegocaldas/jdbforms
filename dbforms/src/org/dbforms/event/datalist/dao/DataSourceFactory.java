@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.event.datalist.dao;
-
 import java.sql.*;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Category;
@@ -33,89 +32,246 @@ import org.dbforms.util.ReflectionUtil;
 import org.dbforms.util.FieldValues;
 import org.dbforms.util.Util;
 
+
+
 /**
- * 
- * Factory class to generate different DataSources. 
+ *
+ * Factory class to generate different DataSources.
  * datasource is attribute of table class and can be changed in dbforms-config.
- * Default class is 
- * 
+ * Default class is
+ *
  * @author hkk
  */
-public class DataSourceFactory  {
+public class DataSourceFactory
+{
+   private DataSource dataHandler;
 
-	private DataSource dataHandler;
-	// logging category for this class;
-	static Category logCat = Category.getInstance(DataSourceFactory.class.getName());
+   // logging category for this class;
+   static Category logCat = Category.getInstance(DataSourceFactory.class
+         .getName());
+
+   /**
+    * Creates a new DataSourceFactory object.
+    *
+    * @param table DOCUMENT ME!
+    *
+    * @throws SQLException DOCUMENT ME!
+    */
+   public DataSourceFactory(Table table) throws SQLException
+   {
+      String dataAccessClass = table.getDataAccessClass();
+
+      if (Util.isNull(dataAccessClass))
+      {
+         dataAccessClass = "org.dbforms.event.datalist.dao.DataSourceJDBC";
+      }
+
+      try
+      {
+         Object[] constructorArgs      = new Object[]
+            {
+               table
+            };
+         Class[]  constructorArgsTypes = new Class[]
+            {
+               Table.class
+            };
+         dataHandler = (DataSource) ReflectionUtil.newInstance(dataAccessClass,
+               constructorArgsTypes, constructorArgs);
+      }
+      catch (Exception e)
+      {
+         logCat.error(e);
+      }
+   }
 
 
-	public DataSourceFactory(Table table)  throws SQLException {
-		
-		String dataAccessClass = table.getDataAccessClass();
-		if (Util.isNull(dataAccessClass))
-		   dataAccessClass =  "org.dbforms.event.datalist.dao.DataSourceJDBC";
-		try {
-			Object[] constructorArgs      = new Object[] {table};
-			Class [] constructorArgsTypes = new Class [] {Table.class};
-			dataHandler = (DataSource) ReflectionUtil.newInstance(dataAccessClass,
-																  constructorArgsTypes,
-																  constructorArgs);
-		} catch (Exception e) {
-			logCat.error(e);
-		}
-	}
-		
-	public DataSourceFactory(Connection con, Table table)  throws SQLException {
-		this(table);
-		dataHandler.setConnection(con);
-	}
+   /**
+    * Creates a new DataSourceFactory object.
+    *
+    * @param con DOCUMENT ME!
+    * @param table DOCUMENT ME!
+    *
+    * @throws SQLException DOCUMENT ME!
+    */
+   public DataSourceFactory(Connection con, Table table)
+      throws SQLException
+   {
+      this(table);
+      dataHandler.setConnection(con);
+   }
 
-	public DataSourceFactory(DbFormsConfig config, String dbConnectionName, Table table, FieldValue[] filterConstraint, FieldValue[] orderConstraint)  throws SQLException {
-		this(table);
-		dataHandler.setConnection(config, dbConnectionName);
-		dataHandler.setSelect(filterConstraint, orderConstraint);
-	}
 
-	public DataSourceFactory(DbFormsConfig config, String dbConnectionName, Table table, String tableList, String whereClause) throws SQLException {
-		this(table);
-		dataHandler.setConnection(config, dbConnectionName);
-		dataHandler.setSelect(tableList, whereClause);
+   /**
+    * Creates a new DataSourceFactory object.
+    *
+    * @param config DOCUMENT ME!
+    * @param dbConnectionName DOCUMENT ME!
+    * @param table DOCUMENT ME!
+    * @param filterConstraint DOCUMENT ME!
+    * @param orderConstraint DOCUMENT ME!
+    *
+    * @throws SQLException DOCUMENT ME!
+    */
+   public DataSourceFactory(DbFormsConfig config, String dbConnectionName,
+      Table table, FieldValue[] filterConstraint, FieldValue[] orderConstraint)
+      throws SQLException
+   {
+      this(table);
+      dataHandler.setConnection(config, dbConnectionName);
+      dataHandler.setSelect(filterConstraint, orderConstraint);
+   }
 
-	}
 
-	public void close() throws SQLException {
-		dataHandler.close();
-	}
+   /**
+    * Creates a new DataSourceFactory object.
+    *
+    * @param config DOCUMENT ME!
+    * @param dbConnectionName DOCUMENT ME!
+    * @param table DOCUMENT ME!
+    * @param tableList DOCUMENT ME!
+    * @param whereClause DOCUMENT ME!
+    *
+    * @throws SQLException DOCUMENT ME!
+    */
+   public DataSourceFactory(DbFormsConfig config, String dbConnectionName,
+      Table table, String tableList, String whereClause)
+      throws SQLException
+   {
+      this(table);
+      dataHandler.setConnection(config, dbConnectionName);
+      dataHandler.setSelect(tableList, whereClause);
+   }
 
-	public ResultSetVector getNext(String position, int count) throws SQLException {
-		return dataHandler.getNext(position, count);
-	}
+   /**
+    * DOCUMENT ME!
+    *
+    * @throws SQLException DOCUMENT ME!
+    */
+   public void close() throws SQLException
+   {
+      dataHandler.close();
+   }
 
-	public ResultSetVector getPrev(String position, int count) throws SQLException{
-		return dataHandler.getPrev(position, count);
-	}
 
-	public ResultSetVector getFirst(int count) throws SQLException {
-		return dataHandler.getFirst(count);
-	}
+   /**
+    * DOCUMENT ME!
+    *
+    * @param position DOCUMENT ME!
+    * @param count DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws SQLException DOCUMENT ME!
+    */
+   public ResultSetVector getNext(String position, int count)
+      throws SQLException
+   {
+      return dataHandler.getNext(position, count);
+   }
 
-	public ResultSetVector getLast(int count) throws SQLException {
-		return dataHandler.getLast(count);
-	}
 
-	public ResultSetVector getCurrent(String position, int count) throws SQLException {
-		return dataHandler.getCurrent(position, count);
-	}
+   /**
+    * DOCUMENT ME!
+    *
+    * @param position DOCUMENT ME!
+    * @param count DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws SQLException DOCUMENT ME!
+    */
+   public ResultSetVector getPrev(String position, int count)
+      throws SQLException
+   {
+      return dataHandler.getPrev(position, count);
+   }
 
-	public void doInsert(FieldValues fieldValues)  throws SQLException {
-		dataHandler.doInsert(fieldValues);
-	}
 
-	public void doUpdate(FieldValues fieldValues, String keyValuesStr)  throws SQLException {
-		dataHandler.doUpdate(fieldValues, keyValuesStr);
-	}
+   /**
+    * DOCUMENT ME!
+    *
+    * @param count DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws SQLException DOCUMENT ME!
+    */
+   public ResultSetVector getFirst(int count) throws SQLException
+   {
+      return dataHandler.getFirst(count);
+   }
 
-	public void doDelete(String keyValuesStr)  throws SQLException {
-		dataHandler.doDelete(keyValuesStr);
-	}
 
+   /**
+    * DOCUMENT ME!
+    *
+    * @param count DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws SQLException DOCUMENT ME!
+    */
+   public ResultSetVector getLast(int count) throws SQLException
+   {
+      return dataHandler.getLast(count);
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param position DOCUMENT ME!
+    * @param count DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws SQLException DOCUMENT ME!
+    */
+   public ResultSetVector getCurrent(String position, int count)
+      throws SQLException
+   {
+      return dataHandler.getCurrent(position, count);
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param fieldValues DOCUMENT ME!
+    *
+    * @throws SQLException DOCUMENT ME!
+    */
+   public void doInsert(FieldValues fieldValues) throws SQLException
+   {
+      dataHandler.doInsert(fieldValues);
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param fieldValues DOCUMENT ME!
+    * @param keyValuesStr DOCUMENT ME!
+    *
+    * @throws SQLException DOCUMENT ME!
+    */
+   public void doUpdate(FieldValues fieldValues, String keyValuesStr)
+      throws SQLException
+   {
+      dataHandler.doUpdate(fieldValues, keyValuesStr);
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param keyValuesStr DOCUMENT ME!
+    *
+    * @throws SQLException DOCUMENT ME!
+    */
+   public void doDelete(String keyValuesStr) throws SQLException
+   {
+      dataHandler.doDelete(keyValuesStr);
+   }
 }

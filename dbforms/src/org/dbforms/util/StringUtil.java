@@ -23,28 +23,36 @@
 package org.dbforms.util;
 
 /**
- * 
+ *
  * Some String helpers.
- * 
- * 
+ *
+ *
  * @author hkk
  *
  */
 import org.dbforms.util.PrintfFormat;
 
-public class StringUtil {
-   
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author $author$
+ * @version $Revision$
+ */
+public class StringUtil
+{
    /**
     * returns a formated string
-    * 
+    *
     * @param f
     * @param s
     * @return String
     */
-   public static String sprintf(String format, Object[] o) {
+   public static String sprintf(String format, Object[] o)
+   {
       PrintfFormat printfFormat = new PrintfFormat(format); // create instance of PrintfFormat class
-      return printfFormat.sprintf(o); 
+
+      return printfFormat.sprintf(o);
    }
-
-
 }

@@ -21,42 +21,84 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.util;
-
 import java.util.Hashtable;
 import java.util.Enumeration;
 import org.dbforms.FieldValue;
+
+
+
 /**
- * 
+ *
  * New class to deal with a list of FieldValues. Delagate pattern: Delegate everything to an Hashtable
  * Do the necessary type transformations.
- * 
+ *
  * @author hkk
  *
  */
-public class FieldValues {
+public class FieldValues
+{
    private Hashtable ht;
 
-   public FieldValues() {
+   /**
+    * Creates a new FieldValues object.
+    */
+   public FieldValues()
+   {
       ht = new Hashtable();
    }
 
-   public FieldValue get(String key) {
+   /**
+    * DOCUMENT ME!
+    *
+    * @param key DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public FieldValue get(String key)
+   {
       return (FieldValue) ht.get(key);
    }
 
-   public void put(String key, FieldValue value) {
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param key DOCUMENT ME!
+    * @param value DOCUMENT ME!
+    */
+   public void put(String key, FieldValue value)
+   {
       ht.put(key, value);
    }
 
-   public void clear() {
+
+   /**
+    * DOCUMENT ME!
+    */
+   public void clear()
+   {
       ht.clear();
    }
 
-   public Enumeration keys() {
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public Enumeration keys()
+   {
       return ht.keys();
    }
 
-   public int size() {
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public int size()
+   {
       return ht.size();
    }
 }
