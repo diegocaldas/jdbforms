@@ -96,7 +96,11 @@ public int doEndTag() throws javax.servlet.jsp.JspException {
 		StringBuffer tagBuf = new StringBuffer(value);
 		tagBuf.append(getFormFieldName());
 		tagBuf.append("\" value=\"");
-
+		
+		
+		// For generation Javascript Validation.  Need all original and modified fields name
+		parentForm.addChildName(getFieldName(), getFormFieldName());
+		
 		/* If the overrideValue attribute has been set, use its value instead of the one
 			retrieved from the database.  This mechanism can be used to set an initial default
 			value for a given field. */
@@ -151,9 +155,6 @@ public int doEndTag() throws javax.servlet.jsp.JspException {
 		tagBuf.append(prepareEventHandlers());
 		tagBuf.append("/>");
 		
-		//Setup validation parameters
-		tagBuf.append(prepareValidation());
-
 		pageContext.getOut().write(tagBuf.toString());
 	} catch (java.io.IOException ioe) {
 		throw new JspException("IO Error: " + ioe.getMessage());

@@ -32,7 +32,7 @@ import javax.servlet.jsp.tagext.*;
 
 import org.dbforms.*;
 import org.dbforms.util.*;
-
+import org.dbforms.validation.ValidatorConstants;
 import org.apache.log4j.Category;
 
 /****
@@ -105,6 +105,13 @@ public class DbGotoButtonTag extends DbBaseButtonTag  {
   public int doStartTag() throws javax.servlet.jsp.JspException {
 
 		DbGotoButtonTag.uniqueID++; // make sure that we don't mix up buttons
+		
+		// ValidatorConstants.JS_CANCEL_SUBMIT is the javascript variable boolean to verify
+		// if we do the javascript validation before submit <FORM>
+		if( parentForm.getFormValidatorName()!=null && 
+			parentForm.getFormValidatorName().length() > 0 &&
+			parentForm.getJavascriptValidation().equalsIgnoreCase("true") ) 
+				setOnClick(  getOnClick() + ValidatorConstants.JS_CANCEL_VALIDATION+"=true;" );
 
 		try {
 

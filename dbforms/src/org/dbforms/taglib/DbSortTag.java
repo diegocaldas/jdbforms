@@ -91,32 +91,47 @@ public class DbSortTag extends TagSupport  {
 			paramNameBuf.append(fieldId);
 			String paramName = paramNameBuf.toString();
 			String oldValue = ParseUtil.getParameter(request, paramName);
-
+			
+			
 			StringBuffer tagBuf = new StringBuffer();
 			tagBuf.append("<select name=\"");
 			tagBuf.append(paramName);
 			tagBuf.append("\" size=\"0\" onChange=\"javascript:document.dbform.submit()\" >");
 
+			String strAsc = "Ascending", strDesc = "Descending", strNone ="None";
+			
+			// Internationalization			
+			if( parentForm.getCaptionResource().equalsIgnoreCase("true") ) {
+		 		Locale reqLocale = request.getLocale();
+				// get message resource or if null take the default (english)
+				strAsc = MessageResources.getMessage("dbforms.select.sort.ascending", reqLocale, "Ascending");
+				strDesc = MessageResources.getMessage("dbforms.select.sort.descending", reqLocale, "Descending");
+				strNone = MessageResources.getMessage("dbforms.select.sort.none", reqLocale, "None");
+			}			
+			
 			// ---- ascending ----
 			tagBuf.append("<option value=\"asc\"");
 			if("asc".equals(oldValue)) {
 				tagBuf.append(" selected ");
 			}
-			tagBuf.append(">Ascending");
+			
+			tagBuf.append(">").append( strAsc );
 
 			// ---- descending ----
 			tagBuf.append("<option value=\"desc\"");
 			if("desc".equals(oldValue)) {
 				tagBuf.append(" selected ");
 			}
-			tagBuf.append(">Descending");
+
+			tagBuf.append(">").append( strDesc );
 
 			// ---- no sorting ----
 			tagBuf.append("<option value=\"none\" ");
 			if(oldValue==null || "none".equals(oldValue)) {
 				tagBuf.append(" selected ");
 			}
-			tagBuf.append(">None");
+
+			tagBuf.append(">").append( strNone );
 
 			tagBuf.append("</select>");
 

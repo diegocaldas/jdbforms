@@ -154,6 +154,9 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer  {
 
 		}
 
+		// For generation Javascript Validation.  Need all original and modified fields name
+		parentForm.addChildName(getFieldName(), getFormFieldName());
+
 		try {
 		  pageContext.getOut().write(tagBuf.toString());
 		} catch(java.io.IOException ioe) {

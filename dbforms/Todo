@@ -3,18 +3,15 @@ $Revision$
 $Date$
 
 
-				DbForms v.1.0
+				DbForms v.1.1
 				=============
 
 TO DO
 ------
 
-
-* Integration of validation infrastructure.	(Assigned to Eric Beaumier)
-
 * Rendering of read-only html widgets (isReadOnly attribute in input tags)
 
-* Possibility of selecting several items from a select box (multipleSelection attribute in Select tag)
+* Possibility of selecting several items from a select box (Assigned to Eric Beaumier)
 
 * Limit the select list (in query)to fields used in the body tag (useFieldsInBody attribute in form tag)
 

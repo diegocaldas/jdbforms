@@ -111,9 +111,6 @@ public class DbFileTag extends DbBaseInputTag {
 			tagBuf.append(prepareEventHandlers());
 			tagBuf.append("/>");
 
-			//Setup validation parameters
-			tagBuf.append(prepareValidation());
-
 			pageContext.getOut().write(tagBuf.toString());
 		} catch (java.io.IOException ioe) {
 			throw new JspException("IO Error: " + ioe.getMessage());

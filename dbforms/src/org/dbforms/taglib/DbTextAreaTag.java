@@ -140,8 +140,8 @@ public class DbTextAreaTag extends DbBaseInputTag {
 
 			pageContext.getOut().write("</textArea>");
 
-			//Setup validation parameters
-			pageContext.getOut().write(prepareValidation().toString());
+			// For generation Javascript Validation.  Need all original and modified fields name
+			parentForm.addChildName(getFieldName(), getFormFieldName());
 
 		} catch (java.io.IOException ioe) {
 			throw new JspException("IO Error: " + ioe.getMessage());

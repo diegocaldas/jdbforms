@@ -32,6 +32,12 @@ import org.dbforms.util.*;
 import org.dbforms.event.*;
 import org.apache.log4j.Category;
 
+import org.apache.commons.validator.ValidatorResources;
+import org.apache.commons.validator.Validator;
+import org.apache.commons.validator.ValidatorResults;
+import org.dbforms.validation.ValidatorConstants;
+
+ 
 /****
  * <p>
  * This servlets is the Controller component in the Model-View-Controller - architecture
@@ -111,6 +117,8 @@ public class Controller extends HttpServlet {
 		// #fixme taglib needed for convenient access to ParseUtil wrapper methods
 
 		String contentType = request.getContentType();
+		String formValidatorName = request.getParameter(ValidatorConstants.FORM_VALIDATOR_NAME);
+
 		if (contentType != null && contentType.startsWith("multipart")) {
 			try {
 				logCat.debug("before new multipartRequest");
@@ -142,6 +150,12 @@ public class Controller extends HttpServlet {
 
 			if (e instanceof DatabaseEvent) {
 				try {
+					// if hidden formValidatorName exist and it's an Update or Insert event,
+					// doValidation with Commons-Validator
+					if(	formValidatorName!=null && (e instanceof UpdateEvent || e instanceof InsertEvent)) {
+						 doValidation(formValidatorName, e, request);
+					}
+
 					((DatabaseEvent) e).processEvent(con);
 				} catch (SQLException sqle) {
 					sqle.printStackTrace();
@@ -179,7 +193,15 @@ public class Controller extends HttpServlet {
 					Enumeration eventEnum = engine.generateSecundaryEvents(e);
 					while (eventEnum.hasMoreElements()) {
 						DatabaseEvent dbE = (DatabaseEvent) eventEnum.nextElement();
+		
 						try {
+							// if hidden formValidatorName exist and it's an Update or Insert event, 
+							// doValidation with Commons-Validator
+							if(	formValidatorName!=null && 
+								(dbE instanceof UpdateEvent || dbE instanceof InsertEvent)) {
+								 doValidation(formValidatorName, dbE, request);
+							}	
+
 							dbE.processEvent(con);
 						} catch (SQLException sqle2) {
 							errors.addElement(sqle2);
@@ -267,5 +289,66 @@ public class Controller extends HttpServlet {
 		}
 	}	
 	
+	
+	
+	
+	/**
+	 *  DO the validation of <FORM> with Commons-Validator.
+	 *
+	 * @param formValidatorName  The form name to retreive in validation.xml
+	 * @param WebEvent The data (Hashtable) to perform validation
+	 * @param request The servlet request we are processing
+	 *
+	 * @exception MultipleValidationException The Vector of errors throwed with this exception
+	 *
+	 */
+	private void doValidation(	String formValidatorName, 
+								WebEvent e,
+								HttpServletRequest request) throws MultipleValidationException {
+	
+		Hashtable fieldValues = null;
+		
+		if(e instanceof UpdateEvent){
+			UpdateEvent ue = (UpdateEvent) e;
+			fieldValues = ue.getAssociativeFieldValues(ue.getFieldValues());
+		} else {
+			InsertEvent ie = (InsertEvent) e;
+			fieldValues = ie.getAssociativeFieldValues(ie.getFieldValues());
+		}				
+			
+			// If no data to validate, return
+			if(fieldValues.size()==0) return;
+			
+			// Retreive ValidatorResources from Application context (loaded with ConfigServlet)
+			ValidatorResources vr = (ValidatorResources) getServletContext().getAttribute(ValidatorConstants.VALIDATOR);
+			
+			if(vr==null) 
+				return;
+			
+			Validator validator = new Validator( vr, formValidatorName.trim());
+			Vector errors = new Vector();
+			DbFormsErrors dbFormErrors = (DbFormsErrors) getServletContext().getAttribute(DbFormsErrors.ERRORS);
+			
+			// Add these resources to perform validation
+			validator.addResource(Validator.BEAN_KEY, fieldValues);  			// The values
+		    validator.addResource("java.util.Vector", errors);	
+		    validator.addResource(Validator.LOCALE_KEY, request.getLocale());	// Vector of errors to populate
+		    validator.addResource("org.dbforms.DbFormsErrors", dbFormErrors);	// Applicatiob context
+			
+			
+			ValidatorResults hResults = null;
+		     try {
+			 	 hResults = validator.validate(); 
+			 } catch (Exception ex) { 
+			 	logCat.error("\n!!! doValidation error for : "+formValidatorName+"  !!!\n" + ex);
+			 }	 
+			
+			// If error(s) found, throw Exception		  
+			if(errors.size()>0) 
+				throw new MultipleValidationException(errors);
+		
+	}
+					
+					
 
 }

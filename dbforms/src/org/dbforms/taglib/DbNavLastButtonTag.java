@@ -32,6 +32,7 @@ import javax.servlet.jsp.tagext.*;
 
 import org.dbforms.*;
 import org.dbforms.util.*;
+import org.dbforms.validation.ValidatorConstants;
 
 import org.apache.log4j.Category;
 
@@ -49,6 +50,13 @@ public class DbNavLastButtonTag extends DbBaseButtonTag  {
 
   public int doStartTag() throws javax.servlet.jsp.JspException {
 
+	// ValidatorConstants.JS_CANCEL_SUBMIT is the javascript variable boolean to verify 
+	// if we do the javascript validation before submit <FORM>
+	if( parentForm.getFormValidatorName()!=null && 
+		parentForm.getFormValidatorName().length() > 0 &&
+		parentForm.getJavascriptValidation().equalsIgnoreCase("true") ) 
+			setOnClick(  getOnClick() + ValidatorConstants.JS_CANCEL_VALIDATION+"=true;" );	
+		
 	if(parentForm.getFooterReached() && ResultSetVector.isEmptyOrNull(parentForm.getResultSetVector()) ) return EVAL_PAGE;
 
 		try {

@@ -34,6 +34,9 @@ import javax.servlet.jsp.tagext.*;
 import org.dbforms.*;
 import org.dbforms.util.*;
 import org.dbforms.event.*;
+import org.dbforms.validation.ValidatorConstants;
+import org.dbforms.validation.DbFormsValidatorUtil;
+import org.apache.commons.validator.ValidatorResources;
 
 import org.apache.log4j.Category;
 
@@ -108,6 +111,20 @@ public class DbFormTag extends BodyTagSupport {
 
 	private String whereClause; // Free-form select query
 	private String tableList; // Supply table name list
+
+	private String formValidatorName; // the form name to map with valdation.xml form name.
+
+	private String captionResource = "false"; // support caption name resolution with ApplicationResources.
+
+	private String javascriptValidation = "false"; // support caption name resolution with ApplicationResources.
+
+	private String javascriptValidationSrcFile ; // File of validation javascript for include <SCRIPT src="..."></SCRIPT>
+											 // For better performance.  Else it's the webserver will generate it each time.
+
+	private String javascriptFieldsArray = "false"; // support caption name resolution with ApplicationResources.
+
+	private Hashtable childFieldNames = new Hashtable();    // List of all child field name with assosciate
+															// generated name. Ex:  "champ1" : "f_0_3@root_3"
 	//----------------- Property Getters and Setters ----------------------------------------------
 
 	// (most of them get called by the JSP container)
@@ -309,6 +326,57 @@ public class DbFormTag extends BodyTagSupport {
 		return whereClause;
 	}
 
+
+	public void setFormValidatorName(String fv) {
+		this.formValidatorName = fv;
+	}
+
+	public String getFormValidatorName() {
+		return formValidatorName;
+	}
+	
+	public void setCaptionResource(String res) {
+		this.captionResource = res;
+	}
+
+	public String getCaptionResource() {
+		return captionResource;
+	}	
+
+	public void setJavascriptValidation(String jsv) {
+		this.javascriptValidation = jsv;
+	}
+
+	public String getJavascriptValidation() {
+		return javascriptValidation;
+	}	
+	
+	public void setJavascriptFieldsArray(String jfa) {
+		this.javascriptFieldsArray = jfa;
+	}
+
+	public String getJavascriptFieldsArray() {
+		return javascriptFieldsArray;
+	}	
+	
+	public void setJavascriptValidationSrcFile(String jsvs) {
+		this.javascriptValidationSrcFile = jsvs;
+	}
+
+	public String getJavascriptValidationSrcFile() {
+		return javascriptValidationSrcFile;
+	}	
+	
+	
+	// This function is call from children (ex: DbTextFieldTag, DbSelectTag, ... ) 
+	// Add real name and DbForm generate name in hashtable
+	public void addChildName(String tableFieldName, String dbFormGeneratedName){
+			childFieldNames.put(tableFieldName, dbFormGeneratedName);
+	}
+
+
+	
+	
 	// this method is called by child elements (i.e. <db:body>, etc.) to append some tags
 	// the cumulated string gets written at DbFormTag:doEndTag()
 	public void appendToChildElementOutput(String str) {
@@ -416,7 +484,7 @@ public class DbFormTag extends BodyTagSupport {
 					out.println(
 						"Sorry, viewing data from table "
 							+ table.getName()
-							+ " would violate a condition.");
+							+ " would violate a condition.<BR><BR>"+sqle.getMessage());
 					return SKIP_BODY;
 				}
 			}
@@ -467,6 +535,9 @@ public class DbFormTag extends BodyTagSupport {
 
 				if (_isMultipart)
 					tagBuf.append(" enctype=\"multipart/form-data\"");
+
+				if (getJavascriptValidation().equalsIgnoreCase("true"))
+					tagBuf.append(" onsubmit=\"return validate"+getFormValidatorName()+"(this);\" ");
 
 				tagBuf.append(">");
 				// supports RFC 1867 - multipart upload, if some database-fields represent filedata
@@ -522,6 +593,16 @@ public class DbFormTag extends BodyTagSupport {
 					+ getFollowUpOnError()
 					+ "\">");
 			}	
+
+
+			// write out the formValidatorName 
+			if (getFormValidatorName() != null && getFormValidatorName().trim().length() > 0)
+			{
+			tagBuf.append(
+				"<input type=\"hidden\" name=\""+ValidatorConstants.FORM_VALIDATOR_NAME+"\" value=\""+ getFormValidatorName()+"\">");
+			}	
+			
+
 					
 			// write out source-tag
 			tagBuf.append(
@@ -1013,6 +1094,9 @@ public class DbFormTag extends BodyTagSupport {
 		}
 	}
 
+	/*******************************************************************************
+	 *   D O    E N D T A G	
+	 *******************************************************************************/
 	public int doEndTag() throws JspException {
 		try {
 			if (bodyContent != null)
@@ -1024,6 +1108,24 @@ public class DbFormTag extends BodyTagSupport {
 				pageContext.getOut().println(childElementOutput.toString());
 			if (parentForm == null)
 				pageContext.getOut().println("</form>");
+			
+			/***
+			 * Generate Javascript validation methods & calls
+			 */
+			if(getFormValidatorName()!=null 	&& 	getFormValidatorName().length()>0 	&& 
+				getJavascriptValidation()!=null && 	getJavascriptValidation().equalsIgnoreCase("true"))
+					pageContext.getOut().println(generateJavascriptValidation());
+			
+			/**
+			 *  Generate Javascript array of fields.  
+			 *  To help developper to work with DbForms fields name.
+			 * 
+			 *  Ex: champ1 => f_0_1@root_4
+			 */
+			 if(getJavascriptFieldsArray()!=null && getJavascriptFieldsArray().equalsIgnoreCase("true"))
+					pageContext.getOut().println(generateJavascriptFieldsArray());
+			
+			
 		} catch (IOException ioe) {
 			logCat.error(ioe);
 		}
@@ -1565,5 +1667,48 @@ public class DbFormTag extends BodyTagSupport {
 	public void setFollowUpOnError(String followUpOnError) {
 		this.followUpOnError = followUpOnError;
 	}
-
+
+	/****************************************************************************
+	 * Generate Javascript Array of Original field name et DbForm generated name
+	 ****************************************************************************/
+	private StringBuffer generateJavascriptFieldsArray(){
+		
+		StringBuffer result = new StringBuffer();
+		String key = null, val = null;
+		
+		result.append("<SCRIPT language=\"javascript\">\n");
+		result.append("<!-- \n\n");
+		result.append("   var dbFormFields = new Array();\n");
+
+		Enumeration enum = childFieldNames.keys();
+		while(enum.hasMoreElements()){
+			key = (String) enum.nextElement();
+			val = (String) childFieldNames.get(key);
+			result.append(" 	dbFormFields[\"").append(key).append("\"] = \"").append(val).append("\";\n");		
+		}
+		result.append("\n    function getDbFormFieldName(name){ \n");		
+		result.append(" 	    return dbFormFields[name]; \n");		
+		result.append(" 	}\n");		
+		result.append("--></SCRIPT> \n");
+
+		return result;	
+	}
+	/****************************************************************************
+	 * Generate  the Javascript of Validation fields
+	 ****************************************************************************/
+
+	private StringBuffer generateJavascriptValidation(){
+ 
+		ValidatorResources vr = (ValidatorResources) pageContext.getServletContext().getAttribute(ValidatorConstants.VALIDATOR);
+		
+		DbFormsErrors errors = (DbFormsErrors) pageContext.getServletContext().getAttribute(DbFormsErrors.ERRORS);
+		
+		return DbFormsValidatorUtil.getJavascript( 	getFormValidatorName(), 
+													pageContext.getRequest().getLocale(),
+													childFieldNames,
+													vr,
+													getJavascriptValidationSrcFile(),
+													errors);
+	}
+
 }

@@ -30,6 +30,8 @@ import java.io.*;
 import javax.servlet.jsp.*;
 import javax.servlet.jsp.tagext.*;
 
+import org.dbforms.validation.ValidatorConstants;
+
 import org.dbforms.*;
 
 import org.apache.log4j.Category;
@@ -57,6 +59,13 @@ public class DbInsertButtonTag extends DbBaseButtonTag {
 
 	public int doStartTag() throws javax.servlet.jsp.JspException {
 
+		// ValidatorConstants.JS_CANCEL_SUBMIT is the javascript variable boolean to verify 
+		// if we do the javascript validation before submit <FORM>
+		if( parentForm.getFormValidatorName()!=null && 
+			parentForm.getFormValidatorName().length() > 0 &&
+			parentForm.getJavascriptValidation().equalsIgnoreCase("true") ) 
+				setOnClick( getOnClick() + ValidatorConstants.JS_CANCEL_VALIDATION+"=false;");
+			
 		DbInsertButtonTag.uniqueID++; // make sure that we don't mix up buttons
 
 		logCat.info("pos DbInsertButtonTag 1");

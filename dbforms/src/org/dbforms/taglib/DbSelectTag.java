@@ -208,6 +208,10 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer  {
 
 		tagBuf.append("</select>");
 
+		// For generation Javascript Validation.  Need original and modified fields name
+		parentForm.addChildName(getFieldName(), getFormFieldName());
+
+
 		try {
 		  pageContext.getOut().write(tagBuf.toString());
 		} catch(java.io.IOException ioe) {

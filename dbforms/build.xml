@@ -32,7 +32,7 @@ Happy coding!
 
 -->
 
-    <property name="dbforms.version" value="_v1_07"/>
+    <property name="dbforms.version" value="_v1_1"/>
 
     <property name="cvs.workingdir" value="."/>
 
@@ -131,13 +131,13 @@ Happy coding!
 
 
     <target name="createAllExamples" depends="generate_taglib">
-        <antcall target="createExample">
+        <!--antcall target="createExample">
             <param name="example.name" value="bugtracker"/>
         </antcall>
 
         <antcall target="createExample">
             <param name="example.name" value="testsuite"/>
-        </antcall>
+        </antcall-->
 
         <!-- clean up temporary directories -->
         <antcall target="cleanWorkspace"/>

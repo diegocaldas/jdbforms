@@ -32,7 +32,7 @@ import javax.servlet.jsp.tagext.*;
 
 import org.dbforms.*;
 import org.dbforms.util.*;
-
+import org.dbforms.validation.ValidatorConstants;
 import org.apache.log4j.Category;
 
 /****
@@ -71,9 +71,17 @@ public class DbDeleteButtonTag extends DbBaseButtonTag  {
   public int doStartTag() throws javax.servlet.jsp.JspException {
   	
   	DbDeleteButtonTag.uniqueID++; // make sure that we don't mix up buttons
+	
+	// ValidatorConstants.JS_CANCEL_SUBMIT is the javascript variable boolean to verify 
+	// if we do the javascript validation before subMit <FORM>
+	if( parentForm.getFormValidatorName()!=null && 
+		parentForm.getFormValidatorName().length() > 0 &&
+		parentForm.getJavascriptValidation().equalsIgnoreCase("true") ) 
+			setOnClick( getOnClick() + ValidatorConstants.JS_CANCEL_VALIDATION+"=true;" );
 
 	if(parentForm.getFooterReached() && ResultSetVector.isEmptyOrNull(parentForm.getResultSetVector()) ) return EVAL_PAGE;
 
+		
 		try {
 
 				// first, determinate the name of the button tag

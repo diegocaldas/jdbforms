@@ -149,9 +149,8 @@ public class DbDateFieldTag extends DbBaseInputTag {
 			tagBuf.append(prepareEventHandlers());
 			tagBuf.append("/>");
 			
-			//Setup validation parameters
-			tagBuf.append(prepareValidation());
-
+			// For generation Javascript Validation.  Need all original and modified fields name
+			parentForm.addChildName(getFieldName(), getFormFieldName());
 
 			pageContext.getOut().write(tagBuf.toString());
 		} catch (java.io.IOException ioe) {

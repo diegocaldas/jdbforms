@@ -142,6 +142,9 @@ public class DbCheckboxTag extends DbBaseHandlerTag implements DataContainer  {
 
 				tagBuf.append(generateTagString(aKey, aValue, isSelected));
 
+				// For generation Javascript Validation.  Need all original and modified fields name
+				parentForm.addChildName(getFieldName(), getFormFieldName());
+
 				// how should the input-tags be separeted
 				if(i<embeddedDataSize-1) {
 					if("vertical".equals(growDirection)) {

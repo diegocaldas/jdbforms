@@ -29,17 +29,21 @@ import java.sql.*;
 import java.util.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
-import org.apache.struts.digester.Digester;
+//import org.apache.struts.digester.Digester;
+import org.apache.commons.digester.Digester;
+
 //import org.apache.struts.taglib.form.Constants;
-import org.apache.struts.util.BeanUtils;
-import org.apache.struts.util.GenericDataSource;
-import org.apache.struts.util.MessageResources;
+
 import org.xml.sax.SAXException;
 
 import org.apache.log4j.Category;
 import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.BasicConfigurator;
 
+import org.apache.commons.validator.ValidatorResources;
+import org.apache.commons.validator.ValidatorResourcesInitializer;
+import org.dbforms.validation.ValidatorConstants;
+import org.dbforms.util.MessageResources;
 
 
 /****
@@ -66,6 +70,8 @@ public class ConfigServlet extends HttpServlet {
 	 */
 	protected String config = "/WEB-INF/dbforms-config.xml";
 	protected String errors = "/WEB-INF/dbforms-errors.xml";
+	protected String validation = "/WEB-INF/validation.xml";
+	protected String validator_rules = "/WEB-INF/validator-rules.xml";
 
 
 	// ---------------------------------------------------- HttpServlet Methods
@@ -89,7 +95,7 @@ public class ConfigServlet extends HttpServlet {
 	 * @exception ServletException if we cannot configure ourselves correctly
 	 */
 	public void init() throws ServletException {
-		
+		 
 		try {
 			initLogging();
 			
@@ -105,6 +111,8 @@ public class ConfigServlet extends HttpServlet {
 				
 			initXMLConfig(digesterDebugLevel);
 			initXMLErrors(digesterDebugLevel);
+			initXMLValidator();
+			initApplicationResources();
 		} catch(IOException ioe) {
 			ioe.printStackTrace();
 		} catch(Exception e) {
@@ -225,10 +233,10 @@ public class ConfigServlet extends HttpServlet {
 	 */
 	protected Digester initDigester(int detail, DbFormsConfig dbFormsConfig) {
 		
-
 	// Initialize a new Digester instance
 	Digester digester = new Digester();
 	digester.push(dbFormsConfig);
+	digester.setNamespaceAware(true);
 	digester.setDebug(detail);
 	digester.setValidating(false);
 
@@ -402,6 +410,116 @@ public class ConfigServlet extends HttpServlet {
 		    throw new ServletException(e.toString());
 		}
 
+
+
+	}
+
+
+
+	/**
+	 * Initialize the ValidatorResources information for this application.
+	 *
+	 * @exception IOException if an input/output error is encountered
+	 * @exception ServletException if we cannot initialize these resources
+	 */
+	protected void initXMLValidator() throws IOException, ServletException {
+
+		// Map the commons-logging used by commons-validator to Log4J logger
+		System.setProperty("org.apache.commons.logging.Log","org.apache.commons.logging.impl.Log4JCategoryLog");
+		
+		ValidatorResources resources = new ValidatorResources();
+		
+	    logCat.info("initialize XML Validator.");
+
+		String value = getServletConfig().getInitParameter(ValidatorConstants.VALIDATION);
+		if(value!=null)
+			validation = value;
+		
+		value = getServletConfig().getInitParameter(ValidatorConstants.VALIDATOR_RULES);
+		if(value!=null)
+			validator_rules = value;
+			
+		
+		//
+		// LOAD Validation & Validator_rules files
+		//
+		
+		// Acquire an input stream validation
+		InputStream inputValidation = getServletContext().getResourceAsStream(validation);
+		if (inputValidation == null)
+		{
+			// File not available, log warning
+		    logCat.warn("XML Validation file not found, XML Validator handler disabled!");
+		    return;
+		}
+
+		// Acquire an input stream validator_rules
+		InputStream inputValidatorRules = getServletContext().getResourceAsStream(validator_rules);
+		if (inputValidatorRules == null)
+		{
+			// File not available, log warning
+		    logCat.warn("XML Validator rule file not found, XML Validator handler disabled!");
+		    return;
+		}
+
+		//
+		// Initialize ValidatorResources
+		//
+		
+	    try {
+	         ValidatorResourcesInitializer.initialize(resources, inputValidatorRules, false);
+	      } catch (IOException e) {
+  		    logCat.warn("XML Validator Exception ValidatorResourcesInitializer.initialize  : "+e.getMessage());
+
+	         throw new ServletException(e.toString());
+	      } finally {
+	         if (inputValidatorRules != null) try { inputValidatorRules.close(); } catch (Exception e) {}
+	      }
+		
+		 //
+		 try {
+	         ValidatorResourcesInitializer.initialize(resources, inputValidation, true);
+	      } catch (IOException e) {
+ 		    logCat.warn("XML Validator Exception ValidatorResourcesInitializer.initialize  : "+e.getMessage());
+	         throw new ServletException(e.toString());
+	      } finally {
+	         if (inputValidation != null) try { inputValidation.close(); } catch (Exception e) {}	
+	      }
+
+		// store this errors object in the servlet context ("application")
+		getServletContext().setAttribute(ValidatorConstants.VALIDATOR, resources);
+
+		logCat.info(" DbForms Validator : Loaded ");
+
+
+	}
+
+
+
+
+
+	/**
+	 * Initialize the SubClass information use by the ResourceBundle for this application.
+	 *
+	 * ATTENTION: Here the "application" it's use as Class name, not like path/file coordonnates. (see java.util.ResourceBundle)
+	 *
+	 * @exception IOException if an input/output error is encountered
+	 * @exception ServletException if we cannot initialize these resources
+	 */
+	protected void initApplicationResources() throws IOException, ServletException {
+
+	    logCat.info("initialize Application Resources.");
+      
+		String value = getServletConfig().getInitParameter(ValidatorConstants.RESOURCE_BUNDLE);
+
+        if(value == null) {
+		    logCat.warn(" Application Resources file not setted in Web.xml, ApplicationResources handler disabled!");
+            return;
+        }
+            
+        MessageResources.setSubClass(value);
+
+		logCat.info(" DbForms Application Resources : SubClass initialized ");
 
 
 	}

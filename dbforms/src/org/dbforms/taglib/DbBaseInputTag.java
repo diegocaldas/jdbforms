@@ -64,14 +64,6 @@ public abstract class DbBaseInputTag extends DbBaseHandlerTag {
 	 */
 	protected String rows = null;
 
-	// Can be used to override settings in dbForms-config.xml file
-	// Used to specify validation type
-	protected String validationType = null;
-
-	// Can be used to override settings in dbForms-config.xml file
-	// used to specify a reference to the field being validated
-	protected String validationReference = null;
-
 	// ------------------------------------------------------------- Properties
 
 	/**
@@ -154,36 +146,6 @@ public abstract class DbBaseInputTag extends DbBaseHandlerTag {
 
 	}
 
-	/**
-	 * Gets the validationType
-	 * @return Returns a String
-	 */
-	public String getValidationType() {
-		return validationType;
-	}
-	/**
-	 * Sets the validationType
-	 * @param validationType The validationType to set
-	 */
-	public void setValidationType(String validationType) {
-		this.validationType = validationType;
-	}
-
-	/**
-	 * Gets the validationReference
-	 * @return Returns a String
-	 */
-	public String getValidationReference() {
-		return validationReference;
-	}
-	/**
-	 * Sets the validationReference
-	 * @param validationReference The validationReference to set
-	 */
-	public void setValidationReference(String validationReference) {
-		this.validationReference = validationReference;
-	}
-
 	// --------------------------------------------------------- Public Methods
 
 	/**
@@ -217,39 +179,6 @@ public abstract class DbBaseInputTag extends DbBaseHandlerTag {
 		cols = null;
 		maxlength = null;
 		rows = null;
-		validationType = null;
-		validationReference = null;
-	}
-
-	protected String prepareValidation() {
-		StringBuffer buf = new StringBuffer();
-
-		if (validationType != null) {
-
-			//validationType
-			buf.append("<input type=\"hidden\" name=\"_validationType_");
-			buf.append(parentForm.getTable().getId());
-			buf.append("_");
-			buf.append(field.getId());
-			buf.append("\" value=\"");
-			buf.append(validationType);
-			buf.append("\">");
-
-		}
-
-		if (validationReference != null) {
-
-			//validationReference
-			buf.append("<input type=\"hidden\" name=\"_validationReference_");
-			buf.append(parentForm.getTable().getId());
-			buf.append("_");
-			buf.append(field.getId());
-			buf.append("\" value=\"");
-			buf.append(validationReference);
-			buf.append("\">");
-		}
-
-		return buf.toString();
 	}
 
 }

@@ -6,7 +6,36 @@
 __________________________________________________________________________________________________
 __________________________________________________________________________________________________
 
-Friday, March , 2002
+Friday, April 19, 2002
+DbForms version 1.1
+Grunikiewicz.philip@hydro.qc.ca
+
+New features
+---------------------------------
+
+
+Introduced support for Internationalization (i18n). (Contrib. E.Beaumier)
+
+Incorporated Apache's Commons-Validator framework for server-side and client-side validations. (Contrib. E.Beaumier)
+
+Upgraded struts digester to Commons digester. (Contrib. E.Beaumier)
+
+Reworked Bugtracker application - incorporated i18n and Validation examples.
+
+Reviewed dbForms User Guide v1.1
+
+*** NOTE ***
+
+Version 1.1 of DbForms has been upgraded to use the Apache commons framework.  
+This framework required Java XML Parser (JAXP) v1.1.  Older Web containers 
+(such as Tomcat v3.2.x) are still using JAXP v1.0 technology and are therefore 
+incompatible.
+
+
+__________________________________________________________________________________________________
+__________________________________________________________________________________________________
+
+Friday, April 5, 2002
 DbForms version 1.07
 Grunikiewicz.philip@hydro.qc.ca
 
@@ -20,7 +49,7 @@ Better handling of timestamp, date and null values in creation of prepared state
 
 Removed attribute 'disableCache' from StaticData tag (in dbforms.tld).
 
-Corrected html link in DevGui hekp file.
+Corrected html link in DevGui help file.
 
 
 ------------------------------------------------------------------------------------

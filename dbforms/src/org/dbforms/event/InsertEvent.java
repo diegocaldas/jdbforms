@@ -74,7 +74,7 @@ public class InsertEvent extends DatabaseEvent {
 		logCat.info("idStr=" + idStr); // ie. "root", "1@root"
 	}
 
-	private Hashtable getFieldValues() {
+	public Hashtable getFieldValues() {
 		Hashtable result = new Hashtable();
 
 		String paramStub = "f_" + tableId + "_ins" + idStr + "_";
@@ -97,7 +97,7 @@ public class InsertEvent extends DatabaseEvent {
 	for use in ConditionChecker only
 	"associative" -> this hashtable works like "associative arrays" in PERL or PHP
 	*/
-	private Hashtable getAssociativeFieldValues(Hashtable scalarFieldValues) {
+	public Hashtable getAssociativeFieldValues(Hashtable scalarFieldValues) {
 
 		Hashtable result = new Hashtable();
 

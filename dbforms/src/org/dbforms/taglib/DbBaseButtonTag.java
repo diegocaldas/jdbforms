@@ -29,6 +29,10 @@ import java.io.*;
 
 import javax.servlet.jsp.*;
 import javax.servlet.jsp.tagext.*;
+import org.dbforms.util.MessageResources;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.ServletContext;
+
 
 import org.dbforms.*;
 
@@ -66,6 +70,7 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag  {
   protected String alt;			// used if flavor is "image"
   protected String border;		// used to set html border attribute"
 
+
   public void setFlavor(String flavor) {
 	this.flavor=flavor;
 
@@ -86,7 +91,26 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag  {
 
 
   public void setCaption(String caption) {
-	this.caption=caption;
+	String message =null;
+ 	
+ 	this.caption=caption;
+
+ 	// If the caption is not null and the resources="true" attribut
+  	if(caption!=null && parentForm.getCaptionResource().equalsIgnoreCase("true") ){
+		
+		try{	
+			HttpServletRequest request = (HttpServletRequest)pageContext.getRequest();
+			
+			message = MessageResources.getMessage(caption, request.getLocale());
+		
+			if(message!=null) this.caption=message;
+			
+		}catch(Exception e){
+			logCat.debug("setCaption("+caption+") Exception : "+e.getMessage());
+		}
+				
+	}	
+	
    }   
 
   public String getCaption() {

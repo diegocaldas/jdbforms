@@ -15,7 +15,7 @@
             <shortname>st</shortname>
             <display-name>DbForm Construction Tags</display-name>
             <uri>dbformstags</uri>
-            <info>version 0.9</info>
+            <info>version 1.1</info>
 
 			<!-- **************************** dbform tag ***********************************-->			
 			
@@ -97,6 +97,52 @@
                     <info>
                         <p>Disables navigation - optimizes queries</p>
                         <p>Caution: use this setting only if you do not intend on using dbforms navigation.</p>						
+                    </info>
+                </attribute>
+
+                <attribute>
+                    <name>formValidatorName</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>this attribute contains the name of the form which is used for validation (defined in the validation.xml file).
+                    </info>
+                </attribute>
+
+                <attribute>
+                    <name>captionResource</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>this attribute is to be used in conjunction with the internationalization support in dbForms v1.1+. It 
+                    allows the developer to specify if the 'caption' attribute values, found in embedded button tags, should be 
+                    looked up in the associated resource bundles.  By default, this attribute is set to 'false'.
+                    </info>
+                </attribute>
+
+                <attribute>
+                    <name>javascriptValidation</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>this attribute is used to specify if client-side validation (javascript) should be executed.   By default, 
+                    this attribute is set to 'false'.  Default javascripts are defined in the validator-rules.xml file.
+                    </info>
+                </attribute>
+                
+                <attribute>
+                    <name>javascriptValidationSrcFile</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>this attribute allows a developer to specify a javascript file (.js) to be used for client-side validation.  
+                    Default javascripts are defined in the validator-rules.xml file.
+                    </info>
+                </attribute>
+                
+                <attribute>
+                    <name>javascriptFieldsArray</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>this attribute is used to specify if dbForms should generate a javascript method which can be used 
+                    by (javascript) developers for referencing dbform-generated field names .  By default, this attribute is 
+                    set to 'false'.
                     </info>
                 </attribute>
 
@@ -479,19 +525,7 @@
                     <info>Determines if the text field should be hidden or displayed.</info>
                 </attribute>
                 
-				<attribute>
-                    <name>validationType</name>
-                    <required>false</required>
-                    <rtexprvalue>true</rtexprvalue>
-                    <info>Used to specify validation type</info>
-                </attribute>                
-
-				<attribute>
-                    <name>validationReference</name>
-                    <required>false</required>
-                    <rtexprvalue>true</rtexprvalue>
-                    <info>used to specify a reference to the field being validated</info>
-                </attribute>                
+             
                 
                 <attribute>
                     <name>overrideValue</name>
@@ -707,20 +741,6 @@
                     </info>
                 </attribute>
                 
-				<attribute>
-                    <name>validationType</name>
-                    <required>false</required>
-                    <rtexprvalue>true</rtexprvalue>
-                    <info>Used to specify validation type</info>
-                </attribute>                
-
-				<attribute>
-                    <name>validationReference</name>
-                    <required>false</required>
-                    <rtexprvalue>true</rtexprvalue>
-                    <info>used to specify a reference to the field being validated</info>
-                </attribute>                
-
                 <attribute>
                     <name>overrideValue</name>
                     <required>false</required>
@@ -941,20 +961,6 @@
                     </info>
                 </attribute>
 
-				<attribute>
-                    <name>validationType</name>
-                    <required>false</required>
-                    <rtexprvalue>true</rtexprvalue>
-                    <info>Used to specify validation type</info>
-                </attribute>                
-
-				<attribute>
-                    <name>validationReference</name>
-                    <required>false</required>
-                    <rtexprvalue>true</rtexprvalue>
-                    <info>used to specify a reference to the field being validated</info>
-                </attribute>                
-
                 <attribute>
                     <name>renderBody</name>
                     <required>false</required>
@@ -1151,20 +1157,6 @@
                         <p>Defines the textarea's default value. When this attribute is set,the value retrieved from the database is ignored.</p>
                     </info>
                 </attribute>
-
-				<attribute>
-                    <name>validationType</name>
-                    <required>false</required>
-                    <rtexprvalue>true</rtexprvalue>
-                    <info>Used to specify validation type</info>
-                </attribute>                
-
-				<attribute>
-                    <name>validationReference</name>
-                    <required>false</required>
-                    <rtexprvalue>true</rtexprvalue>
-                    <info>used to specify a reference to the field being validated</info>
-                </attribute>                
 
                 <attribute>
                     <name>renderBody</name>
@@ -1547,20 +1539,6 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>Maximum length of the string to be entered</info>
                 </attribute>
-
-				<attribute>
-                    <name>validationType</name>
-                    <required>false</required>
-                    <rtexprvalue>true</rtexprvalue>
-                    <info>Used to specify validation type</info>
-                </attribute>                
-
-				<attribute>
-                    <name>validationReference</name>
-                    <required>false</required>
-                    <rtexprvalue>true</rtexprvalue>
-                    <info>used to specify a reference to the field being validated</info>
-                </attribute>                
 
                 <attribute>
                     <name>onBlur</name>
@@ -4635,6 +4613,24 @@
                     </p>
                 </info>
             </tag>
+			
+			<!-- **************************** message tag ***********************************-->									
+
+            <tag>
+                <name>message</name>
+                <summary>this tag renders a read-only text label.  The data displayed is retrieved via a resource bundle and is locale-specific.</summary>
+                <tagclass>org.dbforms.taglib.MessageTag</tagclass>
+                <bodycontent>empty</bodycontent>
+
+                <attribute>
+                    <name>key</name>
+                    <required>true</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>name of the key-field.
+                    </info>
+                </attribute>
+            </tag>
+			
 
         </taglib>
 
