@@ -390,7 +390,6 @@ public class DataSourceJDBC extends DataSource
 							break;
 						}
 					}
-
 					checkResultSetEnd();
 				}
 			}
@@ -411,7 +410,7 @@ public class DataSourceJDBC extends DataSource
 				keys.add(getTable().getKeyPositionString(getCurrentRow()));
 			}
 		}
-		if ((rs.getRow() == 0))
+		if ((rs.getRow() == 0) || rs.isLast())
 		{
 			fetchedAll = true;
 			closeConnection();
