@@ -13,8 +13,8 @@
       >
          <db:header>
 	         <h1 align="center">Edit Authors</h1>
+	         <db:errors/>
          </db:header>
-         <db:errors/>
          <db:body>
             <table class="fixed" align="center">
                <tr class="even">
@@ -94,14 +94,13 @@
 		         </db:footer>
 				</db:dbform>	
 			</td></tr>
-		 </db:footer>
          </db:body>
          <db:footer>
            </table>
          </db:footer>
       </db:dbform>
 
-<%@ include file="httpSnooper.html" %> 
+<%@ include file="httpSnooper.html" %>
 
    </body>
 </html>

@@ -13,8 +13,8 @@
       >
          <db:header>
 	         <h1 align="center">Edit Authors</h1>
+	         <db:errors/>
          </db:header>
-         <db:errors/>
          <db:body>
             <table class="fixed" align="center">
                <tr class="even">
@@ -56,7 +56,7 @@
 		    <tr><td colspan="2" style="text-align:center">
 			    <db:dbform 
 		      		autoUpdate="false" 
-		      		followUp="/tests/testAuthorBooksSub.jsp"   
+		      		followUp="/tests/testAuthorBooksSubForm.jsp"   
 		      		maxRows="*" 
 		      		tableName="BOOK"
 		     		parentField="AUTHOR_ID"
@@ -94,7 +94,6 @@
 		         </db:footer>
 				</db:dbform>	
 			</td></tr>
-		 </db:footer>
          </db:body>
          <db:footer>
            </table>

@@ -5,7 +5,6 @@
 	</head>
 	<body>
 		<db:dbform 
-			multipart="false" 
 			autoUpdate="false" 
 			followUp="/tests/testBOOKSSingle.jsp" 
 			maxRows="1" tableName="BOOK">
@@ -28,12 +27,13 @@
 						<td><db:navPrevButton  caption="previous"/></td>
 						<td><db:navNextButton  caption="next"/></td>
 						<td><db:navLastButton  caption="last"/></td>
+						<td><db:navReloadButton  caption="reload"/></td>
 					</tr>
 				</table>
 			</db:footer>
 		</db:dbform>
 
-<%@ include file="httpSnooper.html" %> 
+<%@ include file="httpSnooper.html" %>
 
 	</body>
 </html>    
