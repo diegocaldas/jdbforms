@@ -105,8 +105,7 @@ public class DeleteEvent extends DatabaseEvent
       //
       // if the key consists of more than one fields, the key values are seperated through "-"
       // example: value of field 1=12, value of field 3=1992, then we'll get "1:2:12-3:4:1992"
-      String keyValuesStr = (String) ParseUtil.getParameter(request,
-            "k_" + tableId + "_" + keyId);
+      String keyValuesStr = getKeyValues();
 
       if ((keyValuesStr == null) || (keyValuesStr.trim().length() == 0))
       {
