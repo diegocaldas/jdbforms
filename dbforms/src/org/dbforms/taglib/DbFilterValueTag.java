@@ -34,6 +34,7 @@ import java.util.Vector;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 import javax.servlet.jsp.tagext.TryCatchFinally;
 
@@ -648,8 +649,9 @@ public class DbFilterValueTag extends BodyTagSupport implements DataContainer, T
     /**
      * @param state
      */
-    protected void setState(DbFilterConditionTag parent, State state)
+    protected void setState(PageContext pg, DbFilterConditionTag parent, State state)
     {
+        setPageContext(pg);
         setParent(parent);
         this.state = state;
     }

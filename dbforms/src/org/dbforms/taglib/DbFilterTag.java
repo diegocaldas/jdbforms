@@ -270,6 +270,7 @@ public class DbFilterTag extends BodyTagSupport implements TryCatchFinally
             currentCond = new DbFilterConditionTag();
             // read the object's state stored in array and apply it in newly created object 
             currentCond.setState(
+                pageContext,
                 this,
                 (DbFilterConditionTag.State) conds.get(currentCondId));
         }
@@ -394,7 +395,10 @@ public class DbFilterTag extends BodyTagSupport implements TryCatchFinally
         for (Iterator i = conds.iterator(); i.hasNext();)
         {
             // read DbFilterConditionTag object's state stored in array and apply to cond object
-            cond.setState(this, (DbFilterConditionTag.State) i.next());
+            cond.setState(
+                this.pageContext,
+                this,
+                (DbFilterConditionTag.State) i.next());
             // select the currently active condition 
             String selected =
                 currentCond != null

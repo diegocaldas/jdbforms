@@ -28,6 +28,7 @@ import java.util.Iterator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 import javax.servlet.jsp.tagext.TryCatchFinally;
 
@@ -307,7 +308,7 @@ public class DbFilterConditionTag extends BodyTagSupport implements TryCatchFina
         DbFilterValueTag value = new DbFilterValueTag();
         for (Iterator i = state.values.iterator(); i.hasNext();)
         {
-            value.setState(this, (DbFilterValueTag.State) i.next());
+            value.setState(this.pageContext, this, (DbFilterValueTag.State) i.next());
             buf.append(value.render());
         }
         return buf;
@@ -324,9 +325,10 @@ public class DbFilterConditionTag extends BodyTagSupport implements TryCatchFina
     /**
      * @param state
      */
-    protected void setState(DbFilterTag parent, State state)
+    protected void setState(PageContext pg, DbFilterTag parent, State state)
     {
         setParent(parent);
+        setPageContext(pg);
         this.state = state;
     }
 
@@ -346,6 +348,7 @@ public class DbFilterConditionTag extends BodyTagSupport implements TryCatchFina
      */
     public void doFinally()
     {
+        //logCat.debug("doFinally called");
         state = new State();
     }
 
