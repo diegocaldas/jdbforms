@@ -17,9 +17,9 @@
   <body>
     <menu name="Project">
       <item name="Overview"                href="/index.html"/>
-      <item name="Feature List"            href="/featurelist.html"/>
-      <item name="Summary Page at SF.net"  href="http://sourceforge.net/projects/jdbforms"/>
+      <item name="Features List"           href="/featurelist.html"/>
       <item name="Related work"            href="/related.html"/>
+      <item name="Summary Page at SF.net"  href="http://sourceforge.net/projects/jdbforms"/>
     </menu>
 
     <menu name="Documentation">
