@@ -21,6 +21,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.event.datalist;
+
+
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -51,9 +53,10 @@ import org.dbforms.util.FieldValue;
  */
 public class NavNextEvent extends NavigationEvent
 {
-   private static Category logCat    = Category.getInstance(NavNextEvent.class
-         .getName()); // logging category for this class
+   // logging category for this class
+   private static Category logCat    = Category.getInstance(NavNextEvent.class.getName());
    private int             stepWidth = 1;
+
 
    /**
     *  Constructor.
@@ -67,8 +70,7 @@ public class NavNextEvent extends NavigationEvent
    {
       super(action, request, config);
 
-      String stepWidthStr = ParseUtil.getParameter(request,
-            "data" + action + "_sw");
+      String stepWidthStr = ParseUtil.getParameter(request, "data" + action + "_sw");
 
       if (stepWidthStr != null)
       {
@@ -83,11 +85,11 @@ public class NavNextEvent extends NavigationEvent
     * @param  table the Table object
     * @param  config the config object
     */
-   public NavNextEvent(Table table, HttpServletRequest request,
-      DbFormsConfig config)
+   public NavNextEvent(Table table, HttpServletRequest request, DbFormsConfig config)
    {
       super(table, request, config);
    }
+
 
    /**
     *  Process the current event.
@@ -105,16 +107,19 @@ public class NavNextEvent extends NavigationEvent
     * @exception  SQLException if any error occurs
     */
    public ResultSetVector processEvent(FieldValue[] childFieldValues,
-      FieldValue[] orderConstraint, int count, String firstPosition,
-      String lastPosition, Connection con, String dbConnectionName)
+      								   FieldValue[] orderConstraint, 
+      								   int          count, 
+      								   String       firstPosition,
+      								   String 		lastPosition, 
+      								   Connection   con, 
+      								   String       dbConnectionName)
       throws SQLException
    {
       logCat.info("==>NavNextEvent.processEvent");
 
       DataSourceList    ds       = DataSourceList.getInstance(request);
       DataSourceFactory qry      = ds.get(table, request);
-      String            position = table.getKeyPositionString(table
-            .getFieldValues(lastPosition));
+      String            position = table.getKeyPositionString(table.getFieldValues(lastPosition));
       ResultSetVector   res      = qry.getNext(position, count);
 
       // change behavior to navLast if navNext finds no data
