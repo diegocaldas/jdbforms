@@ -42,6 +42,7 @@ import org.dbforms.event.datalist.dao.DataSourceFactory;
 import org.dbforms.util.ParseUtil;
 import org.dbforms.util.FieldValues;
 import org.dbforms.util.Util;
+import org.dbforms.util.SqlUtil;
 
 
 /**
@@ -149,7 +150,7 @@ public class DeleteEvent extends DatabaseEvent
          }
          catch (SQLException sqle)
          {
-            logCat.error("::processEvent - SQL exception during PRE_DELETE interceptors procession", sqle);
+			SqlUtil.logSqlException(sqle, "SQL exception during PRE_DELETE interceptors procession");
 			throw sqle;
          }
          catch (MultipleValidationException mve)
@@ -184,7 +185,7 @@ public class DeleteEvent extends DatabaseEvent
          }
          catch (SQLException sqle)
          {
-			logCat.error("::processEvent - SQL exception during POST_DELETE interceptors procession", sqle);
+			SqlUtil.logSqlException(sqle, "SQL exception during POST_DELETE interceptors procession");
 			throw sqle;
          }
       }
