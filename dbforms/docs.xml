@@ -77,6 +77,9 @@
   <!-- Output Properties: Output directory -->
   <property name="out.dir" value="doc/UsersGuide"/>
 
+  <!-- Output Properties: Output directory -->
+  <property name="out.docfile" value="DbForms_UsersGuide.pdf"/>
+
   <!-- all files -->
   <!-- output file for layout styling -->
   <property name="fo.outfile" value="UsersGuide.fo"/>
@@ -335,11 +338,11 @@
     </path>
 
     <java classname="org.apache.fop.apps.Fop" fork="true" jvm="${java.home}/bin/java">
-      <arg line="${build.dir}/${fo.outfile} ${out.dir}/pdf/DbForms_UsersGuide.pdf"/>
+      <arg line="${build.dir}/${fo.outfile} ${out.dir}/pdf/${out.docfile}"/>
       <classpath refid="fopclasspath"/>
     </java>
 
-    <echo message="end of PDF generation, output file is ${out.dir}/pdf/DbForms_UsersGuide.pdf"/>
+    <echo message="end of PDF generation, output file is ${out.dir}/pdf/${out.docfile}"/>
     <antcall target="cleanWorkspace"/>
   </target>
 
