@@ -22,6 +22,26 @@
 					<td><%= currentRow_BOOK.get("ISBN") %>&nbsp;</td>
 					<td><%= currentRow_BOOK.get("AUTHOR_ID") %>&nbsp;</td>
 					<td><%= currentRow_BOOK.get("TITLE") %>&nbsp;</td>
+					<td>				
+					    <a
+			           		href="<db:linkURL 
+			           					href="/tests/testAuthorBooksSubForm.jsp" 
+			           					tableName="AUTHOR"	
+        		   						singleRow="YES">
+    	       	         					<db:position 
+    	       	         							fieldName="AUTHOR_ID" 
+    	       	         							value="<%=(String)currentRow_BOOK.get("AUTHOR_ID")%>"/>
+						   	       </db:linkURL>"
+						>
+				        	<db:dataLabel fieldName="AUTHOR_ID">
+				        		<db:tableData 
+				        			name="data_author" 
+				        			foreignTable="AUTHOR" 
+				        			visibleFields="NAME" 
+				        			storeField="AUTHOR_ID"/> 
+				        		</db:dataLabel>
+			           </a>
+			        </td>					
 				</tr>
 			</db:body>
 			<db:footer>
