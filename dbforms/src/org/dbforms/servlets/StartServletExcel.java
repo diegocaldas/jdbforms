@@ -231,15 +231,20 @@ public class StartServletExcel extends HttpServlet {
       File f = new File(reportFileFullName);
 
       try {
-         BufferedReader in    = new BufferedReader(new FileReader(f));
-         String         line1 = in.readLine();
-         String         line2 = in.readLine();
+         BufferedReader in = new BufferedReader(new FileReader(f));
 
-         if ((line2 == null) || (line2.length() == 0)) {
-            fields = line1;
-         } else {
-            headers = line1;
-            fields  = line2;
+         try {
+            String line1 = in.readLine();
+            String line2 = in.readLine();
+
+            if ((line2 == null) || (line2.length() == 0)) {
+               fields = line1;
+            } else {
+               headers = line1;
+               fields  = line2;
+            }
+         } finally {
+            in.close();
          }
       } catch (FileNotFoundException e1) {
          logCat.error(e1);

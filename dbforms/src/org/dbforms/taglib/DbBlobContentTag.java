@@ -144,15 +144,17 @@ public class DbBlobContentTag extends DbBaseHandlerTag
                }
 
                if (is != null) {
-                  BufferedReader br   = new BufferedReader(new InputStreamReader(is));
-                  char[]         c    = new char[1024];
-                  int            read;
+                  try {
+                     BufferedReader br   = new BufferedReader(new InputStreamReader(is));
+                     char[]         c    = new char[1024];
+                     int            read;
 
-                  while ((read = br.read(c)) != -1) {
-                     contentBuf.append(c, 0, read);
+                     while ((read = br.read(c)) != -1) {
+                        contentBuf.append(c, 0, read);
+                     }
+                  } finally {
+                     is.close();
                   }
-
-                  is.close();
                }
             } else {
                logCat.info("fs- we have got no result" + queryBuf);

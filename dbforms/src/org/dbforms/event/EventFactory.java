@@ -57,7 +57,7 @@ public abstract class EventFactory {
    private static Log logCat = LogFactory.getLog(EventFactory.class);
 
    /** classes used as "non keyInfo" constructor arguments types */
-   protected static final Class[] constructorArgsTypes = new Class[] {
+   static final Class[] constructorArgsTypes = new Class[] {
                                                             String.class,
                                                             HttpServletRequest.class,
                                                             DbFormsConfig.class

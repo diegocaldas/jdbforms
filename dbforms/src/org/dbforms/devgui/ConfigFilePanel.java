@@ -249,7 +249,7 @@ public class ConfigFilePanel extends PropertyPanel implements ActionListener {
                                                                   true);
 
                FileOutputStream os = new FileOutputStream(f);
-               ByteArrayInputStream is = new ByteArrayInputStream(result.toString().getBytes());
+               ByteArrayInputStream is = new ByteArrayInputStream(result.getBytes());
 
                byte[] b    = new byte[1024];
                int    read;

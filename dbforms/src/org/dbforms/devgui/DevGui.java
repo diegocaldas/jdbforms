@@ -364,7 +364,7 @@ public class DevGui extends javax.swing.JFrame implements ActionListener {
                System.exit(1);
             }
          } else if (args[i].equalsIgnoreCase("createconfigfile")) {
-            argsMap.put(ARG_CREATE_CONFIG, new Boolean(true));
+            argsMap.put(ARG_CREATE_CONFIG, Boolean.valueOf(true));
 
             if (argsMap.get(ARG_PROPERTY_FILE_NAME) == null) {
                if (i < args.length) {

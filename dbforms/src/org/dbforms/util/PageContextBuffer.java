@@ -590,10 +590,14 @@ public class PageContextBuffer extends PageContext {
 
          BufferedReader in = new BufferedReader(new InputStreamReader(is));
 
-         int            c;
+         try {
+            int c;
 
-         while ((c = in.read()) > 0) {
-            out.write(c);
+            while ((c = in.read()) > 0) {
+               out.write(c);
+            }
+         } finally {
+            in.close();
          }
       } else {
          HttpServletRequest httpReq = (HttpServletRequest) request;

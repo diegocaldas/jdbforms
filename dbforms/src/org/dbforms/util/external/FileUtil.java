@@ -721,15 +721,17 @@ public class FileUtil {
 
       FileInputStream in = new FileInputStream(fileName);
 
-      int             count;
-      byte[]          b  = new byte[512];
+      try {
+         int    count;
+         byte[] b = new byte[512];
 
-      while ((count = in.read(b)) > 0) // blocking read
-       {
-         buf.append(new String(b, 0, count));
+         while ((count = in.read(b)) > 0) // blocking read
+          {
+            buf.append(new String(b, 0, count));
+         }
+      } finally {
+         in.close();
       }
-
-      in.close();
 
       return buf.toString();
    }
@@ -746,8 +748,12 @@ public class FileUtil {
    public static void fileWrite(String fileName,
                                 String data) throws Exception {
       FileOutputStream out = new FileOutputStream(fileName);
-      out.write(data.getBytes());
-      out.close();
+
+      try {
+         out.write(data.getBytes());
+      } finally {
+         out.close();
+      }
    }
 
 

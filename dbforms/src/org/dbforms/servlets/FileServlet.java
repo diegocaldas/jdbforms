@@ -60,7 +60,6 @@ import javax.servlet.http.HttpServletResponse;
 public class FileServlet extends HttpServlet {
    // logging category for this class
    private static Log    logCat = LogFactory.getLog(FileServlet.class.getName());
-   private DbFormsConfig config;
 
    /**
     * Process the HTTP Get request
@@ -74,8 +73,21 @@ public class FileServlet extends HttpServlet {
    public void doGet(HttpServletRequest  request,
                      HttpServletResponse response)
               throws ServletException, IOException {
-      try {
-         String tf           = request.getParameter("tf");
+
+    // take Config-Object from application context - this object should have
+    // been
+    // initalized by Config-Servlet on Webapp/server-startup!
+    DbFormsConfig config = null;
+   	try {
+       config = DbFormsConfigRegistry.instance()
+                                     .lookup();
+    } catch (Exception e) {
+       logCat.error(e);
+       throw new ServletException(e);
+    }
+
+   	try {
+      	String tf           = request.getParameter("tf");
          String keyValuesStr = request.getParameter("keyval");
          int    tableId      = Integer.parseInt(ParseUtil.getEmbeddedString(tf,
                                                                             0,
@@ -163,24 +175,6 @@ public class FileServlet extends HttpServlet {
       doGet(request, response);
    }
 
-
-   /**
-    * Initialize this servlet.
-    *
-    * @exception ServletException Description of the Exception
-    */
-   public void init() throws ServletException {
-      // take Config-Object from application context - this object should have
-      // been
-      // initalized by Config-Servlet on Webapp/server-startup!
-      try {
-         config = DbFormsConfigRegistry.instance()
-                                       .lookup();
-      } catch (Exception e) {
-         logCat.error(e);
-         throw new ServletException(e);
-      }
-   }
 
 
    /**

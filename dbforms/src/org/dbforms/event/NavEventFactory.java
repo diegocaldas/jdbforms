@@ -38,14 +38,14 @@ import javax.servlet.http.HttpServletRequest;
  */
 public abstract class NavEventFactory extends EventFactory {
    /** classes used as constructor arguments types */
-   protected static final Class[] actionConstructorArgsTypes = new Class[] {
+   static final Class[] actionConstructorArgsTypes = new Class[] {
                                                                   Table.class,
                                                                   HttpServletRequest.class,
                                                                   DbFormsConfig.class
                                                                };
 
    /** classes used as constructor arguments types */
-   protected static final Class[] goToConstructorArgsTypes = new Class[] {
+   static final Class[] goToConstructorArgsTypes = new Class[] {
                                                                 Table.class,
                                                                 HttpServletRequest.class,
                                                                 DbFormsConfig.class,
@@ -53,7 +53,7 @@ public abstract class NavEventFactory extends EventFactory {
                                                              };
 
    /** classes used as constructor arguments types */
-   protected static final Class[] goToConstructorArgsTypes2 = new Class[] {
+   static final Class[] goToConstructorArgsTypes2 = new Class[] {
                                                                  Table.class,
                                                                  HttpServletRequest.class,
                                                                  DbFormsConfig.class,

@@ -148,8 +148,7 @@ public class XSLTransformPanel extends PropertyPanel implements ActionListener,
 
             StringBuffer webAppURL = new StringBuffer(webAppURLStr);
 
-            if (!webAppURLStr.toString()
-                                   .endsWith("/")) {
+            if (!webAppURLStr.endsWith("/")) {
                webAppURL.append("/");
             }
 

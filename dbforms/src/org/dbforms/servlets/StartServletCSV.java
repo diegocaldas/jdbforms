@@ -304,7 +304,14 @@ public class StartServletCSV extends HttpServlet {
       }
 
       String[] reportFields = fields.split(",");
-      String[] headerFields = headers.split(",");
+
+      String[] headerFields;
+
+      if (headers != null) {
+         headerFields = headers.split(",");
+      } else {
+         headerFields = new String[] {  };
+      }
 
       if (reportFields.length != headerFields.length) {
          logCat.error("reportFields.length != headerFields.length");

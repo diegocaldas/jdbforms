@@ -180,8 +180,8 @@ public class DataSourceJDBC extends DataSource {
             getTable()
                .populateWhereClauseWithKeyFields(keyValuesStr, diskblobsPs, 1);
 
+            diskblobs = diskblobsPs.executeQuery();
             try {
-               diskblobs = diskblobsPs.executeQuery();
 
                ResultSetVector rsv = new ResultSetVector(getTable().getDiskblobs(),
                                                          diskblobs);

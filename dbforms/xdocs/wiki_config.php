@@ -25,7 +25,7 @@ if (!$ok) {
 define("EWIKI_NAME", 'DbFormsWiki');
 define("EWIKI_PAGE_INDEX",   'WiKi');
 define("EWIKI_SCRIPT", "http://jdbforms.sourceforge.net/wiki.php?page=");
-define("EWIKI_LOGFILE", '/home/groups/j/jd/jdbforms/htdocs/log/ewiki.txt');
+define("EWIKI_LOGFILE", '/home/groups/j/jd/jdbforms/htdocs/_log/ewiki.txt');
 #define("EWIKI_TMP", "/home/groups/j/jd/jdbforms/htdocs/tmp");
 define("EWIKI_TMP", "/tmp");
 define("EWIKI_LOGLEVEL", '3');

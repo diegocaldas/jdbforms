@@ -58,7 +58,7 @@ public class DbFilterConditionTag extends TagSupportWithScriptHandler
    private static Log logCat = LogFactory.getLog(DbFilterConditionTag.class);
 
    /** object containing tag's state */
-   private State state;
+   private transient State state;
 
    /**
                                                                                         *

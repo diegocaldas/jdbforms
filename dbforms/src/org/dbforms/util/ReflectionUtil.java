@@ -357,46 +357,48 @@ public class ReflectionUtil {
                                           Object      o,
                                           boolean     dumpValues)
                                    throws Exception {
-      Class   c      = o.getClass();
-      Field[] fields = c.getDeclaredFields();
+      if (o != null) {
+         Class   c      = o.getClass();
+         Field[] fields = c.getDeclaredFields();
 
-      for (int i = 0; i < fields.length; i++) {
-         if (i == 0) {
-            pw.println("  // Variables");
-         }
-
-         // Only take those that belong to this class
-         pw.print("  " + Modifier.toString(fields[i].getModifiers()) + " "
-                  + getTypeName(fields[i].getType()) + " "
-                  + fields[i].getName()); //+ ";");
-
-         // try to get the field value;
-         if ((o != null) && dumpValues) {
-            Field  f      = fields[i];
-            String fValue = null;
-
-            if (f.isAccessible()) {
-               fValue = f.get(o)
-                         .toString();
-            } else {
-               try {
-                  f.setAccessible(true);
-                  fValue = f.get(o)
-                            .toString();
-                  f.setAccessible(false);
-               } catch (Exception e) {
-                  fValue = "NOT ACCESSIBLE";
-               }
+         for (int i = 0; i < fields.length; i++) {
+            if (i == 0) {
+               pw.println("  // Variables");
             }
 
-            pw.print(" = [ " + fValue + " ]");
+            // Only take those that belong to this class
+            pw.print("  " + Modifier.toString(fields[i].getModifiers()) + " "
+                     + getTypeName(fields[i].getType()) + " "
+                     + fields[i].getName()); //+ ";");
+
+            // try to get the field value;
+            if (dumpValues) {
+               Field  f      = fields[i];
+               String fValue = null;
+
+               if (f.isAccessible()) {
+                  fValue = f.get(o)
+                            .toString();
+               } else {
+                  try {
+                     f.setAccessible(true);
+                     fValue = f.get(o)
+                               .toString();
+                     f.setAccessible(false);
+                  } catch (Exception e) {
+                     fValue = "NOT ACCESSIBLE";
+                  }
+               }
+
+               pw.print(" = [ " + fValue + " ]");
+            }
+
+            pw.println(";");
          }
 
-         pw.println(";");
-      }
-
-      if (fields.length > 0) {
-         pw.println();
+         if (fields.length > 0) {
+            pw.println();
+         }
       }
    }
 

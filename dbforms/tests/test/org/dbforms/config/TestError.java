@@ -70,7 +70,7 @@ public class TestError extends AbstractTestCase {
     *
     * @throws Exception DOCUMENT ME!
     */
-   public void testGetSetID() throws Exception {
+   public void testGetSetId() throws Exception {
       e.setId("ERR_01");
       assertTrue("ID should be ERR_01", e.getId().equals("ERR_01"));
    }

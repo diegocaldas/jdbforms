@@ -243,7 +243,7 @@ public class DbFormTag extends TagSupportWithScriptHandler
    private StringBuffer childElementOutput;
 
    /** the underlying table */
-   private Table  table;
+   private transient Table  table;
    private Vector overrulingOrderFields;
 
    /** holds the list of sub forms to validate (2003-02-04 HKK) */

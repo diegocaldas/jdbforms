@@ -52,7 +52,7 @@ public class DbDataContainerLabelTag extends DbBaseHandlerTag
    implements DataContainer, javax.servlet.jsp.tagext.TryCatchFinally {
    // logging category for this class
    private List   embeddedData = null;
-   private Log    logCat = LogFactory.getLog(this.getClass().getName());
+   private static Log    logCat = LogFactory.getLog(DbDataContainerLabelTag.class);
    private String strict = "false";
 
    /**

@@ -76,7 +76,7 @@ public class DbFilterValueTag extends DbBaseHandlerTag implements DataContainer,
                                                     .getName());
 
    /** contain the state of this tag object */
-   private State state;
+   private transient State state;
 
    /**
                                                                                   *
