@@ -49,7 +49,8 @@ public class DbSearchComboTag extends DbSearchTag implements DataContainer, java
 	private String selectedIndex;
 	private String customEntry;
 	private String size = "1";
-
+	private String compareWith = "key";
+    
 	/**
 	 * Creates a new DbSearchComboTag object.
 	 */
@@ -65,6 +66,7 @@ public class DbSearchComboTag extends DbSearchTag implements DataContainer, java
 		selectedIndex = null;
 		customEntry = null;
 		size = "1";
+		compareWith = "key";
 		super.doFinally();
 	}
 
@@ -230,7 +232,12 @@ public class DbSearchComboTag extends DbSearchTag implements DataContainer, java
 				if (Util.isNull(selectedIndex) && !isSelected) {
 					isSelected = i == 0;
 				} else {
-					isSelected = aKey.equals(selectedIndex);
+					if ("value".equalsIgnoreCase(getCompareWith())) {
+						isSelected = aValue.equals(selectedIndex);
+					if ("list".equalsIgnoreCase(getCompareWith())) {
+					} else { 
+						isSelected = aKey.equals(selectedIndex);
+					}
 				}
 
 				tagBuf.append(generateTagString(aKey, aValue, isSelected));
@@ -263,6 +270,20 @@ public class DbSearchComboTag extends DbSearchTag implements DataContainer, java
 	 */
 	public void setSize(String string) {
 		size = string;
+	}
+
+	/**
+	 * @return
+	 */
+	public String getCompareWith() {
+		return compareWith;
+	}
+
+	/**
+	 * @param string
+	 */
+	public void setCompareWith(String string) {
+		compareWith = string;
 	}
 
 }
