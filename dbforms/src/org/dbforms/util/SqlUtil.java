@@ -54,16 +54,12 @@ public class SqlUtil {
     if (value == null) {
       return null;
     }
-
     String valueStr = ((String) value).trim();
-
     if (valueStr.length() == 0) {
       return null;
     }
-
     SimpleDateFormat sdf = DbFormsConfig.getDateFormatter();
     Date result = null;
-
     try {
       result =
         new Date(
@@ -71,7 +67,6 @@ public class SqlUtil {
     } catch (Exception exc) {
       result = null;
     }
-
     if (result == null) {
       // Maybe date has been returned as a timestamp?
       try {
@@ -80,7 +75,6 @@ public class SqlUtil {
         result = java.sql.Date.valueOf(valueStr);
       }
     }
-
     return result;
   }
 
@@ -90,13 +84,10 @@ public class SqlUtil {
     if (value == null) {
       return null;
     }
-
     String valueStr = ((String) value).trim();
-
     if (valueStr.length() == 0) {
       return null;
     }
-
     SimpleDateFormat sdf = DbFormsConfig.getDateFormatter();
     Timestamp result = null;
     try {
@@ -106,12 +97,10 @@ public class SqlUtil {
     } catch (Exception exc) {
       result = null;
     }
-
     if (result == null) {
       // Maybe date has been returned as a timestamp?
       result = java.sql.Timestamp.valueOf(valueStr);
     }
-
     return result;
   }
 
@@ -123,13 +112,10 @@ public class SqlUtil {
     if (value == null) {
       return null;
     }
-
     String valueStr = ((String) value).trim();
-
     if (valueStr.length() == 0) {
       return null;
     }
-
     return new java.math.BigDecimal(valueStr);
   }
 
@@ -205,22 +191,16 @@ public class SqlUtil {
           case FieldTypes.BLOB :
             FileHolder fileHolder = (FileHolder) value;
             try {
-              ByteArrayOutputStream byteOut =
-                new ByteArrayOutputStream();
-              ObjectOutputStream out =
-                new ObjectOutputStream(byteOut);
+              ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
+              ObjectOutputStream out =  new ObjectOutputStream(byteOut);
               out.writeObject(fileHolder);
               out.flush();
-
               byte[] buf = byteOut.toByteArray();
               byteOut.close();
               out.close();
-
-              ByteArrayInputStream bytein =
-                new ByteArrayInputStream(buf);
+              ByteArrayInputStream bytein = new ByteArrayInputStream(buf);
               int byteLength = buf.length;
               ps.setBinaryStream(col, bytein, byteLength);
-
               // store fileHolder as a whole (this way we don't lose file meta-info!)
             } catch (IOException ioe) {
               ioe.printStackTrace();
@@ -315,9 +295,7 @@ public class SqlUtil {
         con.close();
         logCat.debug("Connection closed");
       } catch (SQLException e) {
-        logCat.error(
-          "::closeConnection - cannot close the input connection",
-          e);
+        logCat.error("::closeConnection - cannot close the input connection", e);
       }
     }
   }
@@ -331,9 +309,7 @@ public class SqlUtil {
    * @return a JDBC connection object
    * @throws IllegalArgumentException if any error occurs
    */
-  public static final Connection getConnection(
-    DbFormsConfig config,
-    String dbConnectionName)
+  public static final Connection getConnection(DbFormsConfig config, String dbConnectionName)
     throws IllegalArgumentException {
     DbConnection dbConnection = null;
     Connection con = null;
@@ -344,13 +320,11 @@ public class SqlUtil {
         "No DbConnection object configured with name '"
           + dbConnectionName
           + "'");
-
     // now try to get the JDBC connection from the retrieved DbConnection object;
     if ((con = dbConnection.getConnection()) == null)
       throw new IllegalArgumentException(
         "JDBC-Troubles:  was not able to create connection from "
           + dbConnection);
-
     return con;
   }
 
@@ -360,9 +334,7 @@ public class SqlUtil {
    */
   public static final void logSqlException(SQLException e) {
     int i = 0;
-
     logCat.error("::logSqlExceptionSQL - exception", e);
-
     while ((e = e.getNextException()) != null)
       logCat.error(
         "::logSqlException - nested SQLException (" + (i++) + ")",
