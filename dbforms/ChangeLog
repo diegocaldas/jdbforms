@@ -2,7 +2,7 @@
 (Henner.Kollmann@gmx.de)
   - added country support for locale, thanks to christianrechner@freenet.de
   -.added the possibility to use an already existing DataSource-Object from
-    servlet-context-scpe (e.g. from struts-config.xml):
+    servlet-context-scope (e.g. from struts-config.xml):
     you just have to add a "contextDataSource" property to dbforms-config.xml 
     with the name of the scoped-Variable,
     thanks to christianrechner@freenet.de
