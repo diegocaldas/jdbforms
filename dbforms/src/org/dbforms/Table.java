@@ -748,7 +748,10 @@ public class Table
         buf.append("SELECT ");
         buf.append(getQuerySelect(fieldsToSelect));
         buf.append(" FROM ");
-        buf.append(tableList);
+        if (Util.isNull(tableList))
+        	buf.append(getQueryFrom());
+        else
+	        buf.append(tableList);
         buf.append(" ");
         buf.append(whereClause);
         logCat.info("doFreeFromSelect:" + buf.toString());
