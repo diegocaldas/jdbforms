@@ -24,6 +24,7 @@
 package org.dbforms.config;
 import java.util.Locale;
 import java.util.Vector;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
@@ -236,11 +237,25 @@ public class Table {
 	}
 
 	/**
+	 *  Get all the ForeignKey objects related to this table.
+	 *
+	 * @return a vector containing all the ForeignKey objects
+	 *         related to this table.
+	 */
+	public Collection getForeignKeys() {
+		return foreignKeys;
+	}
+
+	/**
 	 *  Returns the Field-Objet with specified id.
 	 *
-	 * @param fieldId The id of the field to be returned
-	 * @return the Field object having the input id
-	 */
+	
+	/**
+	*  Returns the Field-Objet with specified id.
+	*
+	* @param fieldId The id of the field to be returned
+	* @return the Field object having the input id
+	*/
 	public Field getField(int fieldId) {
 		return (Field) fields.elementAt(fieldId);
 	}
