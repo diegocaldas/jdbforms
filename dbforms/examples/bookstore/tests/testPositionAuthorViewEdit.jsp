@@ -12,7 +12,7 @@
                  
       >
          <db:header>
-	         <h1 align="center">Edit Authors</h1>
+	         <h1 align="center">Edit Authors View</h1>
          </db:header>
          <db:errors/>
          <db:body>
