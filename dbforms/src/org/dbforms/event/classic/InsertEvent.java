@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.event.classic;
+
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
@@ -32,6 +33,7 @@ import java.util.Vector;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Category;
+
 import org.dbforms.util.FieldTypes;
 import org.dbforms.util.FieldValue;
 import org.dbforms.util.FileHolder;
@@ -41,6 +43,8 @@ import org.dbforms.util.SqlUtil;
 import org.dbforms.util.UniqueIDGenerator;
 import org.dbforms.util.FieldValues;
 import org.dbforms.util.Constants;
+import org.dbforms.util.MessageResourcesInternal;
+
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.Field;
 import org.dbforms.config.GrantedPrivileges;
@@ -112,9 +116,11 @@ public class InsertEvent extends ValidationEvent
       // part 1: check if requested privilge is granted for role
       if (!hasUserPrivileg(GrantedPrivileges.PRIVILEG_INSERT))
       {
-		 //TODO: Change to resource
-         throw new SQLException("Sorry, adding data to table "
-            + table.getName() + " is not granted for this session.");
+		 String s = MessageResourcesInternal.getMessage("dbforms.events.insert.nogrant", 
+																		request.getLocale(),
+																		new String[]{table.getName()} 
+																		);
+		 throw new SQLException(s);
       }
 
       FieldValues fieldValues = getFieldValues();

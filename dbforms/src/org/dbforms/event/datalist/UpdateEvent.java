@@ -31,6 +31,7 @@ import org.dbforms.util.Util;
 import org.dbforms.util.ParseUtil;
 import org.dbforms.util.FieldValues;
 import org.dbforms.util.SqlUtil;
+import org.dbforms.util.MessageResourcesInternal;
 
 import org.dbforms.config.GrantedPrivileges;
 import org.dbforms.config.DbFormsConfig;
@@ -117,10 +118,11 @@ public class UpdateEvent extends DatabaseEvent
       // Apply given security contraints (as defined in dbforms-config.xml)
       if (!hasUserPrivileg(GrantedPrivileges.PRIVILEG_UPDATE))
       {
-			// TODO: Change to resource
-         throw new SQLException("Sorry, updating table " 
-                                + table.getName()
-                                + " is not granted for this session.");
+			String s = MessageResourcesInternal.getMessage("dbforms.events.update.nogrant", 
+																		  request.getLocale(),
+																		  new String[]{table.getName()} 
+																		  );
+			throw new SQLException(s);
       }
 
       // which values do we find in request

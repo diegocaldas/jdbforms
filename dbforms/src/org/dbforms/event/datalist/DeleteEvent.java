@@ -43,6 +43,7 @@ import org.dbforms.util.ParseUtil;
 import org.dbforms.util.FieldValues;
 import org.dbforms.util.Util;
 import org.dbforms.util.SqlUtil;
+import org.dbforms.util.MessageResourcesInternal;
 
 
 /**
@@ -117,10 +118,11 @@ public class DeleteEvent extends DatabaseEvent
       // Apply given security contraints (as defined in dbforms-config.xml)
       if (!hasUserPrivileg(GrantedPrivileges.PRIVILEG_DELETE))
       {
-         // TODO: Change to resource
-         throw new SQLException(":: processEvent - sorry, deleting data from table "
-                                + table.getName() 
-                                + " is not granted for this session.");
+			String s = MessageResourcesInternal.getMessage("dbforms.events.delete.nogrant", 
+																		  request.getLocale(),
+																		  new String[]{table.getName()} 
+																		  );
+			throw new SQLException(s);
       }
 
       // which values do we find in request
