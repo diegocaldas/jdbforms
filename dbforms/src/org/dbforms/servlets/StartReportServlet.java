@@ -24,6 +24,8 @@ package org.dbforms.servlets;
 
 import org.apache.log4j.Category;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
@@ -128,6 +130,24 @@ public class StartReportServlet extends HttpServlet
 
    /** DOCUMENT ME! */
    public static String REPORTTYPEPARAM = "reporttype";
+
+   public static String REPORTCONFIGDIR = "reportdirs";
+   
+   private String[] reportdirs;
+	/**
+	 * Initialize this servlet.
+	 *
+	 * @exception ServletException if we cannot configure ourselves correctly
+	 */
+	public void init() throws ServletException 
+	{
+		String value = getServletConfig().getInitParameter(REPORTCONFIGDIR);
+		if (value == null)
+		{
+			value = "WEB-INF/reports/";
+		}
+		reportdirs = StringUtils.split(value, ",");
+	}
 
    /**
     * Basic servlet method, answers requests from the browser.
@@ -306,30 +326,22 @@ public class StartReportServlet extends HttpServlet
     *
     * @return DOCUMENT ME!
     */
-   public static String getReportFileFullName(String reportFileName,
+   public  String getReportFileFullName(String reportFileName,
       ServletContext context, HttpServletRequest request,
       HttpServletResponse response)
    {
       String reportFile = null;
-
       try
       {
          boolean found = false;
-         reportFile = context.getRealPath("WEB-INF/custom/reports/"
-               + reportFileName);
-
-         if (FileUtil.fileExists(reportFile + ".xml"))
-         {
-            found = true;
+         for (int i = 0; i < reportdirs.length; i++) {
+			reportFile = context.getRealPath(reportdirs[i] + reportFileName);
+			if (FileUtil.fileExists(reportFile + ".xml"))
+			{
+				found = true;
+				break;
+			}
          }
-
-         reportFile = context.getRealPath("WEB-INF/reports/" + reportFileName);
-
-         if (FileUtil.fileExists(reportFile + ".xml"))
-         {
-            found = true;
-         }
-
          if (found)
          {
             checkIfNeedToCompile(context, reportFile);
