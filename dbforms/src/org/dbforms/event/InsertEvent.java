@@ -56,15 +56,21 @@ public class InsertEvent extends DatabaseEvent {
   public InsertEvent(String str, HttpServletRequest request, DbFormsConfig config) {
 		this.request = request;
 		this.config = config;
-
+logCat.debug ("InsertEvent str=" + str);
 		int firstUnderscore = str.indexOf('_');
 		int secondUnderscore = str.indexOf('_', firstUnderscore+1);
 		int thirdUnderscore = str.indexOf('_', secondUnderscore+1);
+		int trailingdot = str.indexOf('.', thirdUnderscore+1);
+		
 		String tableName = str.substring(secondUnderscore+1, thirdUnderscore);
 		this.tableId = Integer.parseInt(tableName);
 		this.table = config.getTable(tableId);
 
-		this.idStr = str.substring(thirdUnderscore+1);
+		if (trailingdot == -1) {
+			this.idStr = str.substring(thirdUnderscore+1);
+		} else {
+			this.idStr = str.substring(thirdUnderscore+1,trailingdot);
+		}
 
 		logCat.info("parsing insertevent");
 		logCat.info("tableName="+tableName);
