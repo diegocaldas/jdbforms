@@ -17,8 +17,8 @@
                     if (form[oRequired[x][0]] != null) {
                         var value = form[oRequired[x][0]].value;
    	                	var oldValue = form["o" + oRequired[x][0]].value;                                                                                                    
-						if ( (form[oRequired[x][0]].type == 'text' || form[oRequired[x][0]].type == 'textarea' || form[oRequired[x][0]].type == 'select-one' || form[oRequired[x][0]].type == 'radio' || form[oRequired[x][0]].type == 'password')
-							&& (value != oldValue) ) {   
+						if ( (form[oRequired[x][0]].type == 'text' || form[oRequired[x][0]].type == 'textarea' || form[oRequired[x][0]].type == 'select-one' || form[oRequired[x][0]].type == 'radio' || form[oRequired[x][0]].type == 'password') 
+						   ) {   
 							if ( (value == null) || (value.length == 0) || (value == '') ) {
 							   if (i == 0)
 								  focusField = form[oRequired[x][0]]; 
@@ -322,6 +322,7 @@
       </validator>
       <validator name="float"
                  classname="org.dbforms.validation.DbFormsValidator"
+                 methodParams="java.lang.Object,org.apache.commons.validator.ValidatorAction,org.apache.commons.validator.Field,java.util.Vector,java.util.Locale,org.dbforms.config.DbFormsErrors" 
                  method="validateFloat"
                  msg="dbforms.error.float"
                  jsFunctionName="FloatValidations">
