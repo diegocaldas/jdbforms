@@ -157,11 +157,11 @@ public class Field
         {
             type = FieldTypes.TIMESTAMP;
         }
-        else if (fieldType.startsWith("double"))
+        else if (fieldType.startsWith("double") || fieldType.startsWith("float"))
         {
             type = FieldTypes.DOUBLE;
         }
-        else if (fieldType.startsWith("float") || fieldType.startsWith("real"))
+        else if ( fieldType.startsWith("real"))
         {
             type = FieldTypes.FLOAT;
         }
