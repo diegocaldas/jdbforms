@@ -20,12 +20,10 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
+
 package org.dbforms.servlets.reports;
 
 /**
- *
- *
- * @author hkk
  */
 import dori.jasper.engine.JRDataSource;
 import dori.jasper.engine.JRException;
@@ -35,11 +33,12 @@ import org.dbforms.util.Util;
 import org.dbforms.util.ReflectionUtil;
 
 
+
 /**
  * DOCUMENT ME!
- *
- * @author $author$
+ * 
  * @version $Revision$
+ * @author $author$
  */
 public class JRDataSourceRSV implements JRDataSource
 {
@@ -47,6 +46,7 @@ public class JRDataSourceRSV implements JRDataSource
 
    /**
     * Constructor for JRDataSourceRSV.
+    * @param rsv DOCUMENT ME!
     */
    public JRDataSourceRSV(ResultSetVector rsv)
    {
@@ -78,7 +78,7 @@ public class JRDataSourceRSV implements JRDataSource
    {
       Object o;
       o = getFieldValue(field.getName());
-      
+
       if (o == null)
       {
          o = getFieldValue(field.getName().toUpperCase());
@@ -88,18 +88,30 @@ public class JRDataSourceRSV implements JRDataSource
       {
          o = getFieldValue(field.getName().toLowerCase());
       }
+
       // Try class conversation if the classes do not match!
-      if ((o != null) && (o.getClass() != field.getValueClass())) 
+      if ((o != null) && (o.getClass() != field.getValueClass()))
       {
-			try {
-				Object[] constructorArgs      = new Object[] {o.toString()};
-				Class[]  constructorArgsTypes = new Class[]  { String.class };
-				o = ReflectionUtil.newInstance(field.getValueClass(),
-												constructorArgsTypes, 
-												 constructorArgs);
-			} catch (Exception e) {
-			}
+         try
+         {
+            Object[] constructorArgs      = new Object[] 
+            {
+               o.toString()
+            };
+            Class[]  constructorArgsTypes = new Class[] 
+            {
+               String.class
+            };
+            o = ReflectionUtil.newInstance(field.getValueClass(), 
+                                           constructorArgsTypes, 
+                                           constructorArgs);
+         }
+         catch (Exception e)
+         {
+            ;
+         }
       }
+
       return o;
    }
 

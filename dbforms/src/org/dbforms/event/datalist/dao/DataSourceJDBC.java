@@ -632,8 +632,8 @@ public class DataSourceJDBC extends DataSource
       }
 
       // 20021031-HKK: Build in table!!
-      PreparedStatement ps = con.prepareStatement(
-                                      getTable().getDeleteStatement());
+      PreparedStatement ps = con.prepareStatement(getTable()
+                                                     .getDeleteStatement());
 
 
       // now we provide the values

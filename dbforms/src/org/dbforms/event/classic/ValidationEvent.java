@@ -40,6 +40,8 @@ import org.dbforms.util.MessageResources;
 
 
 /**
+ * 
+ * @deprecated
  *
  * abstract base class for all database operations which need validation, e.g. InsertEvent and UpdateEvent
  *

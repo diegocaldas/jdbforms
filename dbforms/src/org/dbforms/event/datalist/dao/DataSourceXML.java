@@ -56,15 +56,14 @@ import org.dbforms.util.Util;
  */
 public class DataSourceXML extends DataSource
 {
-   private Category                      logCat = 
-            Category.getInstance(this.getClass().getName());
-   private static DocumentBuilderFactory dfactory         = null;
-   private static DocumentBuilder        builder          = null;
-   private FieldValue[]                  filterConstraint;
-   private FieldValue[]                  orderConstraint;
-   private XMLDataResult                 data;
-   private String[]                      keys;
-   private Object[][]                    dataObject;
+   private Category logCat = Category.getInstance(this.getClass().getName());
+   private static DocumentBuilderFactory dfactory = null;
+   private static DocumentBuilder builder         = null;
+   private FieldValue[] filterConstraint;
+   private FieldValue[] orderConstraint;
+   private XMLDataResult data;
+   private String[] keys;
+   private Object[][] dataObject;
 
    /**
     * Contructor
@@ -182,8 +181,7 @@ public class DataSourceXML extends DataSource
     * 
     * @throws SQLException DOCUMENT ME!
     */
-   protected final int findStartRow(String startRow)
-                             throws SQLException
+   protected final int findStartRow(String startRow) throws SQLException
    {
       for (int i = 0; i < size(); i++)
       {

@@ -34,6 +34,7 @@ import org.dbforms.util.*;
 
 
 /****
+ * @deprecated
  *
  *  This event forces the controller to forward the current request
  *  to a Request-Dispatcher specified by the Application-Developer

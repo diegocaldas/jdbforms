@@ -34,6 +34,9 @@ import org.dbforms.event.*;
 
 
 /****
+ * 
+ * @deprecated
+ * 
  *
  * <p>This event prepares and performs a SQL-Update operation</p>
  *

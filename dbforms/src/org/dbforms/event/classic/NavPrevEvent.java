@@ -33,6 +33,9 @@ import org.dbforms.util.*;
 
 
 /**
+ * 
+ * @deprecated
+ * 
  *  This event scrolls the current ResultSet to the previous row of data.
  *  <br>
  *  Provides bounded navigation.

@@ -21,15 +21,35 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.servlets;
-import javax.servlet.*;
-import javax.servlet.http.*;
-import java.io.*;
-import java.util.*;
-import java.sql.*;
+
+import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
+
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import java.io.InputStream;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.File;
+
+import java.sql.Blob;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+
 import java.net.FileNameMap;
 import java.net.URLConnection;
 
-import org.dbforms.config.*;
+import org.dbforms.config.DbFormsConfig;
+import org.dbforms.config.Field;
+import org.dbforms.config.Table;
+
 import org.dbforms.util.FieldTypes;
 import org.dbforms.util.FileHolder;
 import org.dbforms.util.ParseUtil;
@@ -40,11 +60,14 @@ import org.apache.log4j.Category;
 
 /**
  *#fixme - add appropriate exception-handling..
+ *
+ * @author joe peer
+ *
  */
 public class FileServlet extends HttpServlet
 {
    // logging category for this class
-   static Category       logCat      = Category.getInstance(FileServlet.class
+   private static Category       logCat      = Category.getInstance(FileServlet.class
          .getName());
    private DbFormsConfig config;
    private FileNameMap   fileNameMap;

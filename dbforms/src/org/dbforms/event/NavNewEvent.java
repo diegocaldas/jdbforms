@@ -27,7 +27,6 @@ import java.sql.Connection;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.Table;
 import org.dbforms.util.FieldValue;
-import org.dbforms.util.ParseUtil;
 import org.dbforms.util.ResultSetVector;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Category;
@@ -45,7 +44,7 @@ import org.apache.log4j.Category;
  */
 public class NavNewEvent extends NavigationEvent
 {
-   static Category logCat = Category.getInstance(NavNewEvent.class.getName()); // logging category for this class
+   private static Category logCat = Category.getInstance(NavNewEvent.class.getName()); // logging category for this class
 
    /**
     * Creates a new NavNewEvent object.

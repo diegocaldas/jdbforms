@@ -36,6 +36,7 @@ import org.dbforms.event.DbEventInterceptor;
 
 
 /****
+ * @deprecated
  *
  * <p>This event prepares and performs a SQL-Delete operation</p>
  *

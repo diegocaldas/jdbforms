@@ -50,6 +50,9 @@ import org.dbforms.event.*;
 
 
 /****
+ * 
+ * @deprecated
+ * 
  *  This event prepares and performs a SQL-Insert operation.
  *
  * @author Joe Peer <j.peer@gmx.net>

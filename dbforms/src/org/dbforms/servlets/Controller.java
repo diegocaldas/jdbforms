@@ -60,7 +60,7 @@ import org.dbforms.validation.ValidatorConstants;
 public class Controller extends HttpServlet
 {
    /** logging category for this class */
-   static Category logCat = Category.getInstance(Controller.class.getName());
+   private static Category logCat = Category.getInstance(Controller.class.getName());
 
    /** config object */
    private DbFormsConfig config;

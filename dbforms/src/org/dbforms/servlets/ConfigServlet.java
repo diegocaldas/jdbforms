@@ -33,7 +33,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.digester.Digester;
-import org.apache.commons.digester.AbstractObjectCreationFactory;
 import org.xml.sax.SAXException;
 import org.apache.log4j.Category;
 import org.apache.log4j.PropertyConfigurator;
@@ -231,6 +230,7 @@ public class ConfigServlet extends HttpServlet
    /**
     * Construct and return a digester that uses the new configuration file
     * format.
+    * 
     * @param detail DOCUMENT ME!
     * @param dbFormsConfig DOCUMENT ME!
     * 
@@ -465,6 +465,7 @@ public class ConfigServlet extends HttpServlet
 
    /**
     * Construct and return a digester that uses the new errors file format.
+    * 
     * @param detail DOCUMENT ME!
     * @param dbFormsErrors DOCUMENT ME!
     * 
@@ -624,6 +625,7 @@ public class ConfigServlet extends HttpServlet
       }
       catch (Exception e)
       {
+         ;
       }
 
       if (dbFormsConfig == null)

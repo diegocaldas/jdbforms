@@ -33,6 +33,8 @@ import org.apache.log4j.Category;
 
 
 /****
+ * 
+ * @deprecated
  *
  * <p>This event scrolls the current ResultSet to its last row of data</p>
  *
