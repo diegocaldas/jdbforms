@@ -134,7 +134,7 @@ public class EventEngine
 		if (action.equals(""))
 		{
 			logCat.info("##### N O O P   ELEMENT ######");
-			e = new NoopEvent(ParseUtil.getEmbeddedStringAsInteger(action, 2, '_'), request, config);
+			e = new NoopEvent(-1, request, config);
 			initializeWebEvent(e);
 			return e;
 		}
