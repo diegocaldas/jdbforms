@@ -97,7 +97,7 @@
 			<field name="KEY_2" fieldType="varchar" size="10" isKey="true"/>
 			<field name="KEY_3" fieldType="varchar" size="10" isKey="true"/>
 			<field name="KEY_4" fieldType="int"               isKey="true"/>
-	</table>
+		</table>
 
 	<!-- ========== Connection =================================== -->
 	    <dbconnection
