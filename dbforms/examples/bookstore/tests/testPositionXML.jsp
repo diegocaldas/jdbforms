@@ -18,12 +18,16 @@
 			</db:header>
 	
 			<db:body allowNew="false">
-                <db:label fieldName="AUTHOR"/><br/>
-                <%=(String)currentRow_XMLBOOKS.get("AUTHOR")%><br/>
-                <db:linkURL href="/tests/testPositionAuthorEdit.jsp" tableName="AUTHORVIEW">
+                <db:label fieldName="TITLE"/><br/>
+                <db:label fieldName="AUTHOR_NAME"/><br/>
+                <%=(String)currentRow_XMLBOOKS.get("AUTHOR_ID")%><br/>
+                <a href="<db:linkURL href="/tests/testPositionAuthorViewEdit.jsp" tableName="AUTHORVIEW">
 						<!-- Attention: field to reference must be a key field in the target table! -->
-   	                    <db:position fieldName="AUTHOR_ID" value='<%=(String)currentRow_XMLBOOKS.get("AUTHOR_ID")%>'/>
-        	      </db:linkURL>
+   	            	        <db:position fieldName="AUTHOR_ID" value='<%=(String)currentRow_XMLBOOKS.get("AUTHOR_ID")%>'/>
+	        	      </db:linkURL>"
+				>
+					  Edit Author
+				</a>
 			</db:body>
 			<db:footer>
 	       </db:footer>
