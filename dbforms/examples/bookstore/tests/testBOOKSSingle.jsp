@@ -7,7 +7,10 @@
 		<db:dbform 
 			autoUpdate="false" 
 			followUp="/tests/testBOOKSSingle.jsp" 
-			maxRows="1" tableName="BOOK">
+			maxRows="1" 
+			tableName="BOOK"
+			gotoPrefix="fv_"
+		>
 			<db:header>
 				<db:errors/>
 				<table>
