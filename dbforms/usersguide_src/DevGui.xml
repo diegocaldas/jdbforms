@@ -228,7 +228,7 @@ or tweak the build.xml to include where your JDBC drivers are.
 				
 				
 			</sect2>
-			<sect2>
+			<sect2 id="dbtab">
 				<title>Database Tab
 </title>
 				<para/>
