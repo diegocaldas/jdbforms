@@ -64,6 +64,13 @@ public class DbEventInterceptorSupport implements DbEventInterceptor {
       return params;
    }
 
+   /* (non-Javadoc)
+    * @see org.dbforms.config.DbEventInterceptor#getParameterMap()
+    */
+   public String getParameter(String key) {
+      return (String)params.get(key);
+   }
+
 
    /* (non-Javadoc)
     * @see org.dbforms.config.DbEventInterceptor#postAddRow(org.dbforms.config.DbEventInterceptorData)
