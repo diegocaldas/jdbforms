@@ -30,9 +30,14 @@ import java.sql.PreparedStatement;
 import java.sql.Connection;
 import java.sql.Types;
 import java.sql.Clob;
+
+import java.util.List;
 import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.Iterator;
+
+
 import org.dbforms.config.Constants;
 import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.Field;
@@ -55,7 +60,7 @@ import org.dbforms.util.SqlUtil;
  * 
  * @author hkk
  */
-public class DataSourceJDBC extends DataSource
+public class DataSourceJDBC extends DataSource 
 {
    private String       query;
    private Connection   con;
@@ -63,7 +68,7 @@ public class DataSourceJDBC extends DataSource
    private ResultSet    rs;
    private Statement    stmt;
    private ArrayList    data;
-   private Hashtable    keys;
+   private Map          keys;
    private int          colCount;
    private String       whereClause;
    private String       tableList;
@@ -82,24 +87,8 @@ public class DataSourceJDBC extends DataSource
    {
       super(table);
       data = new ArrayList();
-      keys = new Hashtable();
+      keys = new HashMap();
    }
-
-   /**
-    * Finalize this object.
-    * 
-    * @throws Throwable in any error occurs
-    */
-   protected void finalize() throws Throwable
-   {
-      getLogCat().debug("finalize called");
-      // For firebird: rs and stmt will be closed if connection is closed!
-      // closing in finalize will bring an error everytime!
-      rs = null;
-      stmt = null;
-      close();
-   }
-
 
    /**
     * set the connection parameter for the DataSouce. virtual method, if you
