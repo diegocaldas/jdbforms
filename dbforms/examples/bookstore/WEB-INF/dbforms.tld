@@ -189,7 +189,7 @@
 </attribute>
 <attribute>
 <name>followUp</name>
-<required>true</required>
+<required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>site to be invoked after actionNote that buttons can override followUp (and followUpOnError) settings defined  in the dbform tag</description>
 </attribute>
