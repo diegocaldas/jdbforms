@@ -1229,12 +1229,12 @@ public class DbFormTag
          tagBuf.append(
             "<input type=\"hidden\" name=\"lang"
                + "\" value=\""
-               + locale.getLanguage().toString()
+               + locale.getLanguage()
                + "\"/>");
          tagBuf.append(
             "<imput type=\"hidden\" name=\"country"
                + "\" value=\""
-               + locale.getCountry().toString()
+               + locale.getCountry()
                + "\"/>");
 
          // write out the followupOnError-default for this table

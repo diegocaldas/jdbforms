@@ -418,7 +418,7 @@ public class Controller extends HttpServlet {
       if (!Util.isNull(lang) && !Util.isNull(country)) {
          locale = new Locale(lang, country);
       } else if (!Util.isNull(lang)) {
-         locale = new Locale(lang, country);
+         locale = new Locale(lang);
       } else if (MessageResources.getLocale(request) == null) {
          MessageResources.setLocale(request, request.getLocale());
       }
