@@ -300,5 +300,20 @@ will ensure that the value smith be stored in the lastname field in the data
 			</para>
 			<para/>
 		</sect1>
+                   <sect1> <title>Changing Key Values in an Interceptor</title>
+      
+     <para>Although you could try and do it via a pluggableEvent, as it currently stands this can not be done.</para>
+     
+     <para>Apparently if a field is marked with isKey=&quot;true&quot; in the config file,
+the preDelete and preUpdate methods disregard any changes to it.</para>
+<para>Carlos Anjos pointed out:</para><para>I had a situation where I did some processing in the preDelete method
+and then I wanted to allow the operation, but on a different row.
+So I changed the values in the fieldValues hashtable, but still the
+orginal row got deleted.</para>
+<para>After banging my head for where in my code the error was, I finally
+understood that dbforms was ignoring the change to that attribute.
+A friend of mine went through dbforms deleteEvent code and confirmed
+that.</para>
+ </sect1>
 	</chapter>
  
