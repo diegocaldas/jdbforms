@@ -25,7 +25,6 @@ package org.dbforms.util;
 import java.util.ResourceBundle;
 import java.util.Locale;
 import java.util.HashMap;
-import org.apache.log4j.Category;
 
 /**
  * base class for handling message resources
@@ -34,7 +33,6 @@ import org.apache.log4j.Category;
  */
 public class MessageResource {
 
-   private static Category logCat = Category.getInstance(MessageResource.class.getName());
 
    /*********************************************************************************************
     *  Use of HashMap for allowing null value (ReourceBundle)
