@@ -186,6 +186,7 @@
 						<xs:attribute name="username" type="xs:string" use="optional"/>
 						<xs:attribute name="password" type="xs:string" use="optional"/>
 						<xs:attribute name="orderBy" type="xs:string" use="optional"/>
+						<xs:attribute name="contextDataSource" type="xs:string" use="optional"/>
 					</xs:complexType>
 				</xs:element>
 				<xs:element name="DOMFactoryClass" type="xs:string" minOccurs="0"/>
