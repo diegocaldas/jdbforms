@@ -110,7 +110,7 @@ public class TestBaseTag extends JspTestCase
     public void tearDown()
     {
         //necessary for tag to output anything on most servlet engines.
-        this.pageContext.popBody();
+//        this.pageContext.popBody();
     }
 
 
