@@ -29,8 +29,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.validator.ValidatorResources;
 import org.apache.commons.validator.Validator;
-import org.apache.commons.validator.ValidatorResults;
+
 import org.dbforms.validation.ValidatorConstants;
+
 import org.dbforms.config.MultipleValidationException;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.error.DbFormsErrors;
@@ -105,14 +106,11 @@ public abstract class ValidationEvent extends DatabaseEvent
       validator.addResource(Validator.LOCALE_KEY, locale);
 
       // Vector of errors to populate
-      validator.addResource("org.dbforms.DbFormsErrors", dbFormErrors);
-
-      // Applicatiob context
-      ValidatorResults hResults = null;
+      validator.addResource("org.dbforms.config.error.DbFormsErrors", dbFormErrors);
 
       try
       {
-         hResults = validator.validate();
+         validator.validate();
       }
       catch (Exception ex)
       {
