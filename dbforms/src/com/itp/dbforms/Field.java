@@ -106,7 +106,7 @@ public class Field {
     aType = aType.toLowerCase();
     if(aType.startsWith("int") || aType.startsWith("smallint") || aType.startsWith("tinyint")) type = FieldTypes.INTEGER;
     else if(aType.startsWith("char") || aType.startsWith("varchar") || aType.startsWith("nvarchar") || aType.startsWith("longchar")) type = FieldTypes.CHAR;
-    else if(aType.startsWith("numeric")) type = FieldTypes.NUMERIC;
+    else if(aType.startsWith("numeric") || aType.startsWith("number")) type = FieldTypes.NUMERIC;
     else if(aType.startsWith("date")) type = FieldTypes.DATE;
     else if(aType.startsWith("timestamp")) type = FieldTypes.TIMESTAMP;
 	else if(aType.startsWith("double")) type = FieldTypes.DOUBLE;

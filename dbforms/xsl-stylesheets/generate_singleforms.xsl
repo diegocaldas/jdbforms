@@ -65,7 +65,7 @@
                  <xsl:when test="@fieldType='int' or @fieldType='smallint'  or @fieldType='tinyint'">
                    <db:textField fieldName="{@name}" size="{@size}" />
                  </xsl:when>
-                 <xsl:when test="@fieldType='char' or @fieldType='varchar'  or @fieldType='nvarchar'  or @fieldType='longvarchar'">
+                 <xsl:when test="@fieldType='char' or @fieldType='varchar' or @fieldType='varchar2'  or @fieldType='nvarchar'  or @fieldType='longvarchar'">
                    <xsl:choose>
                      <xsl:when test="@size>80">
                         <db:textArea fieldName="{@name}" cols="40" rows="3" wrap="virtual" />
@@ -87,7 +87,7 @@
                  <xsl:when test="@fieldType='float' or @fieldType='real'">
                    <db:textField fieldName="{@name}" size="{@size}" />
                  </xsl:when>
-                 <xsl:when test="@fieldType='numeric'">
+                 <xsl:when test="@fieldType='numeric'  or @fieldType='number'">
                    <db:textField fieldName="{@name}" size="{@size}" />
                  </xsl:when>
                  <xsl:when test="@fieldType='blob' or @fieldType='image'">
