@@ -320,7 +320,7 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer,
       return EVAL_PAGE;
    }
 
-   protected String getFormattedFieldValue() {
+   public String getFormattedFieldValue() {
       return getFieldValue();
    }
 
@@ -332,14 +332,12 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer,
    protected String typicalDefaultValue()
    {
       String val;
-
       // Lets check if the selectedIndex parameter has been input
       if (((val = this.getSelectedIndex()) != null)
                 && (val.trim().length() != 0))
       {
          return val;
       }
-
       // No selectedIndex - business as usual...
       return (super.typicalDefaultValue());
    }

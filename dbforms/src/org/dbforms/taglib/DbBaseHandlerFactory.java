@@ -40,12 +40,12 @@ import org.apache.log4j.Category;
  * 
  * @author Henner Kollmann <Henner.Kollmann@gmx.de>
  */
-public class DbBaseButtonFactory
+public class DbBaseHandlerFactory
 {
-   private DbBaseButtonTag   btn;
+   private DbBaseHandlerTag   tag;
    private PageContextBuffer pageContext;
    static Category           logCat = Category.getInstance(
-                                               DbBaseButtonFactory.class.getName());
+                                               DbBaseHandlerFactory.class.getName());
 
    /**
     * Creates a new DbBaseButtonFactory object.
@@ -56,19 +56,19 @@ public class DbBaseButtonFactory
     *
     * @throws JspException exception
     */
-   public DbBaseButtonFactory(PageContext parentContext, BodyTagSupport parent, 
+   public DbBaseHandlerFactory(PageContext parentContext, BodyTagSupport parent, 
                               Class clazz) throws JspException
    {
       try
       {
-         btn         = (DbBaseButtonTag) clazz.newInstance();
+         tag         = (DbBaseHandlerTag) clazz.newInstance();
          pageContext = new PageContextBuffer();
          pageContext.initialize((Servlet) parentContext.getPage(), 
                                 parentContext.getRequest(), 
                                 parentContext.getResponse(), null, true, 0, 
                                 true);
-         btn.setPageContext(pageContext);
-         btn.setParent(parent);
+         tag.setPageContext(pageContext);
+         tag.setParent(parent);
       }
       catch (Exception e)
       {
@@ -81,9 +81,9 @@ public class DbBaseButtonFactory
     *
     * @return the button tag
     */
-   public DbBaseButtonTag getButton()
+   public DbBaseHandlerTag getTag()
    {
-      return btn;
+      return tag;
    }
 
 
@@ -96,11 +96,10 @@ public class DbBaseButtonFactory
     */
    public StringBuffer render() throws JspException
    {
-      if (btn.doStartTag() != Tag.SKIP_BODY)
+      if (tag.doStartTag() != Tag.SKIP_BODY)
       {
-         btn.doEndTag();
+         tag.doEndTag();
       }
-
       return pageContext.getBuffer();
    }
 }

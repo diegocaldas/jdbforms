@@ -178,30 +178,25 @@ public class DbBodyTag
 			//
 			// now the key of the current dataset is printed out (always)
 			// this key will be used by actions such as delete or update.
-			String curKeyString =
-				Util.encode(
-					myParent.getTable().getKeyPositionString(
-						myParent.getResultSetVector()),
-					pageContext.getRequest().getCharacterEncoding());
-
-			myParent.appendToChildElementOutput(
-				"<input type=\"hidden\" name=\"k_"
-					+ myParent.getTable().getId()
-					+ "_"
-					+ myParent.getPositionPath()
-					+ "\" value=\""
-					+ curKeyString
-					+ "\"/>");
+			String curKeyString = myParent.getTable().getKeyPositionString(myParent.getResultSetVector());
+			if (!Util.isNull(curKeyString)) {
+				curKeyString = Util.encode(curKeyString,pageContext.getRequest().getCharacterEncoding());
+				myParent.appendToChildElementOutput(
+					"<input type=\"hidden\" name=\"k_"
+						+ myParent.getTable().getId()
+						+ "_"
+						+ myParent.getPositionPath()
+						+ "\" value=\""
+						+ curKeyString
+						+ "\"/>");
+			}
 		} catch (UnsupportedEncodingException uee) {
 			throw new JspException(uee.toString());
 		}
-
 		myParent.increaseCurrentCount();
-
 		if (!ResultSetVector.isNull(myParent.getResultSetVector())) {
 			myParent.getResultSetVector().increasePointer();
 		}
-
 		return SKIP_BODY;
 	}
 

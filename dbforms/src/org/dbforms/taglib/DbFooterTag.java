@@ -112,7 +112,6 @@ public class DbFooterTag extends BodyTagSupport
          {
             myParent.appendToChildElementOutput(myParent.produceLinkedTags()); // print hidden-fields for missing insert-fields we can determinated
          }
-
          if (bodyContent != null)
          {
             bodyContent.writeOut(bodyContent.getEnclosingWriter());

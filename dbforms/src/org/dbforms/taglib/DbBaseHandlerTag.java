@@ -125,7 +125,6 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
       } else {
          setField(null);
       }
-
       if (getParentForm().isSubForm() && (this.field != null)) {
          // tell parent that _this_ class will generate the html tag, not DbBodyTag!
          getParentForm().strikeOut(this.field);
@@ -183,7 +182,7 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
     */
    public Format getFormat() {
       if ((format == null) && (getField() != null)) {
-         format = getField().getFormat(pattern, getLocale());
+         this.format = getField().getFormat(pattern, getLocale());
       }
       return this.format;
    }
@@ -273,7 +272,7 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
     *
     * @return the field value
     */
-   protected String getFormattedFieldValue() {
+   public String getFormattedFieldValue() {
       Object fieldValueObj = getFieldObject();
       String res;
 
@@ -398,7 +397,7 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
    /**
       generates the decoded name for the html-widget.
     */
-   protected String getFormFieldName() {
+   public String getFormFieldName() {
       StringBuffer buf = new StringBuffer();
 
       if ((getParentForm().getTable() != null) && (getField() != null)) {
@@ -522,14 +521,17 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
     * writes out all hidden fields for the input fields
     */
    protected void writeOutSpecialValues() throws JspException {
-      writeOutOldValue();
+      try {
+         pageContext.getOut().write(getOldValueInputField());
+      } catch (java.io.IOException ioe) {
+         throw new JspException("IO Error: " + ioe.getMessage());
+      }
    }
 
    /**
     * writes out the field value in hidden field _old
     */
-   private void writeOutOldValue() throws JspException {
-      try {
+   public String getOldValueInputField(){
          StringBuffer tagBuf = new StringBuffer();
          tagBuf.append("<input type=\"hidden\" name=\"");
          tagBuf.append(Constants.FIELDNAME_OLDVALUETAG + getFormFieldName());
@@ -540,10 +542,7 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
             tagBuf.append(getFormFieldDefaultValue());
          }
          tagBuf.append("\" />");
-         pageContext.getOut().write(tagBuf.toString());
-      } catch (java.io.IOException ioe) {
-         throw new JspException("IO Error: " + ioe.getMessage());
-      }
+         return tagBuf.toString();
    }
 
    /**

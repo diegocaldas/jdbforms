@@ -450,20 +450,20 @@ public class DbFilterTag extends DbBaseHandlerTag
 
          if (!Util.isNull(setCaption))
          {
-            DbBaseButtonFactory btn = new DbBaseButtonFactory(this.pageContext, 
+            DbBaseHandlerFactory btn = new DbBaseHandlerFactory(this.pageContext, 
                                                               this, 
                                                               DbNavReloadButtonTag.class);
-            btn.getButton().setCaption(setCaption);
+            ((DbBaseButtonTag)btn.getTag()).setCaption(setCaption);
             buf.append(btn.render());
          }
 
          if (!Util.isNull(unsetCaption))
          {
-            DbBaseButtonFactory btn = new DbBaseButtonFactory(this.pageContext, 
+            DbBaseHandlerFactory btn = new DbBaseHandlerFactory(this.pageContext, 
                                                               this, 
                                                               DbNavReloadButtonTag.class);
-            btn.getButton().setCaption(unsetCaption);
-            btn.getButton()
+            ((DbBaseButtonTag)btn.getTag()).setCaption(unsetCaption);
+            ((DbBaseButtonTag)btn.getTag())
                .setOnClick("document.dbform." + filterName + FLT_SEL
                            + ".selectedIndex = -1;");
             buf.append(btn.render());
