@@ -18,7 +18,7 @@
             <table class="fixed" align="center">
 	         <db:errors/>
          </db:header>
-         <db:body>
+         <db:body allowNew="false">
                <tr class="even">
                      <td style="width:300px">ID</td>
 			         <td style="width:100px"><db:label fieldName="AUTHOR_ID"/>&nbsp;</td>
@@ -117,8 +117,8 @@
  			   main form form filter:&nbsp;							
 	         <db:filter>
 	         	<db:filterCondition label="author name like">
-	         		NAME LIKE '%?%'
-	         		<db:filterValue/>
+	         		NAME LIKE ?
+	         		<db:filterValue />
 	         	</db:filterCondition>
 	         	<db:filterCondition label="ID >= V1 AND ID <= V2">
 	         		AUTHOR_ID >= ? AND AUTHOR_ID <= ?
@@ -126,7 +126,7 @@
 	         		<db:filterValue label="V2" type="numeric"/>
 	         	</db:filterCondition>
 	         	<db:filterCondition label="author is">
-	         		NAME = '?'
+	         		NAME = ?
 	         		<db:filterValue type="select">
 	         			<db:queryData name="q1" query="select distinct name as n1, name as n2 from author where AUTHOR_ID < 100 order by name"/>
 	         		</db:filterValue>
