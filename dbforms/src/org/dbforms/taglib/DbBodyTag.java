@@ -37,9 +37,7 @@ import java.util.Map;
  *
  * @author Joachim Peer <j.peer@gmx.net>
  */
-public class DbBodyTag
-	extends BodyTagSupport
-	implements javax.servlet.jsp.tagext.TryCatchFinally {
+public class DbBodyTag extends BodyTagSupport implements javax.servlet.jsp.tagext.TryCatchFinally {
 	private String allowNew = "true";
 	// by default this is "true" - if so, the body is rendered at least 1 time, even if there are no data rows in the table. this enables the user to insert a new data row. - to disable this feature, allowNew has to be set to "false"
 
@@ -87,8 +85,7 @@ public class DbBodyTag
 	public int doStartTag() throws javax.servlet.jsp.JspException {
 		//DbFormTag myParent = (DbFormTag) getParent(); // parent Tag in which this tag is embedded in
 		// between this form and its parent lies a DbHeader/Body/Footer-Tag and maybe other tags (styling, logic, etc.)
-		DbFormTag myParent =
-			(DbFormTag) findAncestorWithClass(this, DbFormTag.class);
+		DbFormTag myParent = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
 
 		// the body may be rendered under the following circumstances:
 		// - resultSetVector > 0 => render a row
@@ -114,17 +111,14 @@ public class DbBodyTag
 
 			Map dbforms = (Map) pageContext.getAttribute("dbforms");
 			if (dbforms != null) {
-				DbFormContext dbContext =
-					(DbFormContext) dbforms.get(myParent.getName());
+				DbFormContext dbContext = (DbFormContext) dbforms.get(myParent.getName());
 				if (dbContext != null) {
 					dbContext.setCurrentRow(rsv.getCurrentRowAsMap());
 					try {
 						dbContext.setPosition(
 							Util.encode(
 								myParent.getTable().getPositionString(rsv),
-								pageContext
-									.getRequest()
-									.getCharacterEncoding()));
+								pageContext.getRequest().getCharacterEncoding()));
 					} catch (Exception e) {
 						throw new JspException(e.getMessage());
 					}
@@ -138,9 +132,7 @@ public class DbBodyTag
 				// that the current body contains the currentRow of rsv(i - 1)
 
 				// # jp 27-06-2001: replacing "." by "_", so that SCHEMATA can be used
-				pageContext.setAttribute(
-					"currentRow_" + myParent.getTableName().replace('.', '_'),
-					rsv.getCurrentRowAsMap());
+				pageContext.setAttribute("currentRow_" + myParent.getTableName().replace('.', '_'), rsv.getCurrentRowAsMap());
 
 				try {
 					pageContext.setAttribute(
@@ -168,8 +160,7 @@ public class DbBodyTag
 	 */
 	public int doAfterBody() throws JspException {
 		//DbFormTag myParent = (DbFormTag) getParent(); // parent Tag in which this tag is embedded in
-		DbFormTag myParent =
-			(DbFormTag) findAncestorWithClass(this, DbFormTag.class);
+		DbFormTag myParent = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
 
 		try {
 			// each rendering loop represents one row of data.
@@ -178,17 +169,19 @@ public class DbBodyTag
 			//
 			// now the key of the current dataset is printed out (always)
 			// this key will be used by actions such as delete or update.
-			String curKeyString = myParent.getTable().getKeyPositionString(myParent.getResultSetVector());
-			if (!Util.isNull(curKeyString)) {
-				curKeyString = Util.encode(curKeyString,pageContext.getRequest().getCharacterEncoding());
-				myParent.appendToChildElementOutput(
-					"<input type=\"hidden\" name=\"k_"
-						+ myParent.getTable().getId()
-						+ "_"
-						+ myParent.getPositionPath()
-						+ "\" value=\""
-						+ curKeyString
-						+ "\"/>");
+			if (myParent.getTable() != null) {
+				String curKeyString = myParent.getTable().getKeyPositionString(myParent.getResultSetVector());
+				if (!Util.isNull(curKeyString)) {
+					curKeyString = Util.encode(curKeyString, pageContext.getRequest().getCharacterEncoding());
+					myParent.appendToChildElementOutput(
+						"<input type=\"hidden\" name=\"k_"
+							+ myParent.getTable().getId()
+							+ "_"
+							+ myParent.getPositionPath()
+							+ "\" value=\""
+							+ curKeyString
+							+ "\"/>");
+				}
 			}
 		} catch (UnsupportedEncodingException uee) {
 			throw new JspException(uee.toString());

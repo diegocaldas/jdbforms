@@ -376,11 +376,12 @@ public class EventEngine
       if (followUp == null)
       {
          followUp = ParseUtil.getParameter(request, 
-                                           "fu_" + ((e.getTable() == null)? -1:e.getTable().getId()));
+                                           "fu_" + ((e == null) || (e.getTable() == null)? -1:e.getTable().getId()));
       }
 
       logCat.info("setting follow up to:" + followUp);
-      e.setFollowUp(followUp);
+      if (e != null)
+      	e.setFollowUp(followUp);
 
       String followUpOnError = ParseUtil.getParameter(request, 
                                                       "data" + action + "_fue");
@@ -390,7 +391,7 @@ public class EventEngine
       if (followUpOnError == null)
       {
          followUpOnError = ParseUtil.getParameter(request, 
-                                                  "fue_" + ((e.getTable() == null)? -1:e.getTable().getId()));
+                                                  "fue_" + ((e == null) || (e.getTable() == null)? -1:e.getTable().getId()));
       }
 
       // Still no followup on error - use general followup
@@ -400,6 +401,7 @@ public class EventEngine
       }
 
       logCat.info("setting follow up on Error to:" + followUpOnError);
-      e.setFollowUpOnError(followUpOnError);
+      if (e != null)
+      	e.setFollowUpOnError(followUpOnError);
    }
 }

@@ -207,7 +207,7 @@ public class Controller extends HttpServlet
             request.setAttribute("webEvent", e);
          }
 
-         con = getConnection(request, (e.getTable() == null)? -1:e.getTable().getId(), connections);
+         con = getConnection(request, ((e == null) || (e.getTable() == null))? -1:e.getTable().getId(), connections);
 
          // primary event can be any kind of event (database, navigation...)
          if (e instanceof DatabaseEvent)

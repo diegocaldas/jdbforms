@@ -199,8 +199,6 @@ public abstract class EventFactory
             event = (WebEvent) ReflectionUtil.newInstance(einfo.getClassName(), 
                                                           constructorArgsTypes, 
                                                           constructorArgs);
-
-
             // set a new Properties object into the event;
             event.setProperties(new Properties(einfo.getProperties()));
             event.setType(einfo.getType());
@@ -273,9 +271,14 @@ public abstract class EventFactory
             table = config.getTable(tableId);
          }
 
-         if (!Util.isNull(eventType))
+         if (!Util.isNull(eventType) )
          {
-            TableEvents tableEvents = table.getTableEvents();
+			TableEvents tableEvents;
+            if (table != null) {
+			   tableEvents= table.getTableEvents();
+            } else {
+				tableEvents = new TableEvents();
+            }
             eventId = tableEvents.getEventId(eventType);
          }
       }

@@ -85,7 +85,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
 	private DbFormsConfig config;
 
 	/** the id of the underlying table */
-	private int tableId;
+	private int tableId = -1;
 
 	/** the underlying table */
 	private Table table;
@@ -1160,6 +1160,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
 				// supports RFC 1867 - multipart upload, if some database-fields represent filedata
 				if (tableName == null) {
 					appendSource(request, tagBuf);
+					tagBuf.append("<input type=\"hidden\" name=\"fu_" + tableId + "\" value=\"" + strFollowUp + "\"/>");
 
 					// if form is an emptyform -> we've fineshed yet - cancel all further activities!
 					out.println(tagBuf.toString());
