@@ -64,8 +64,8 @@ public class ResultSetVector {
    private Vector stringVector;
    private Vector objectVector;
    
-   private boolean firstPage = true;
-	private boolean lastPage = true;
+   private boolean firstPage = false;
+	private boolean lastPage = false;
 
    /**
     * Creates a new ResultSetVector object.
@@ -443,7 +443,7 @@ public class ResultSetVector {
       for (int i = 0; i < selectFields.size(); i++) {
          Field f = (Field) selectFields.elementAt(i);
          FieldValue fv = new FieldValue(f, getCurrentRow()[i]);
-         fvHT.put(f.getName(), fv);
+         fvHT.put(fv);
       }
 
       return fvHT;
