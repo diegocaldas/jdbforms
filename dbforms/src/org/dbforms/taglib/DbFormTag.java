@@ -1993,55 +1993,57 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
                 int algorithm = FieldValue.SEARCH_ALGO_SHARP;
                 int operator = FieldValue.FILTER_EQUAL;
 
-                if (aSearchAlgorithm.startsWith("sharpLT"))
-                {
-                    operator = FieldValue.FILTER_SMALLER_THEN;
-                }
-                else if (aSearchAlgorithm.startsWith("sharpLE"))
-                {
-                    operator = FieldValue.FILTER_SMALLER_THEN_EQUAL;
-                }
-                else if (aSearchAlgorithm.startsWith("sharpGT"))
-                {
-                    operator = FieldValue.FILTER_GREATER_THEN;
-                }
-                else if (aSearchAlgorithm.startsWith("sharpGE"))
-                {
-                    operator = FieldValue.FILTER_GREATER_THEN_EQUAL;
-                }
-                else if (aSearchAlgorithm.startsWith("sharpNE"))
-                {
-                    operator = FieldValue.FILTER_NOT_EQUAL;
-                }
-                else if (aSearchAlgorithm.startsWith("sharpNULL"))
-                {
-                    operator = FieldValue.FILTER_NULL;
-                }
-                else if (aSearchAlgorithm.startsWith("sharpNOTNULL"))
-                {
-                    operator = FieldValue.FILTER_NOT_NULL;
-                }
-                else if (aSearchAlgorithm.startsWith("weakStartEnd"))
-                {
-                    algorithm = FieldValue.SEARCH_ALGO_WEAK_END;
-                    operator = FieldValue.FILTER_LIKE;
-                }
-                else if (aSearchAlgorithm.startsWith("weakStart"))
-                {
-                    algorithm = FieldValue.SEARCH_ALGO_WEAK_START;
-                    operator = FieldValue.FILTER_LIKE;
-                }
-                else if (aSearchAlgorithm.startsWith("weakEnd"))
-                {
-                    algorithm = FieldValue.SEARCH_ALGO_WEAK_END;
-                    operator = FieldValue.FILTER_LIKE;
-                }
-                else if (aSearchAlgorithm.startsWith("weak"))
-                {
-                    algorithm = FieldValue.SEARCH_ALGO_WEAK;
-                    operator = FieldValue.FILTER_LIKE;
-                }
-
+                if (!Util.isNull(aSearchAlgorithm)) {
+	                if (aSearchAlgorithm.startsWith("sharpLT"))
+	                {
+	                    operator = FieldValue.FILTER_SMALLER_THEN;
+	                }
+	                else if (aSearchAlgorithm.startsWith("sharpLE"))
+	                {
+	                    operator = FieldValue.FILTER_SMALLER_THEN_EQUAL;
+	                }
+	                else if (aSearchAlgorithm.startsWith("sharpGT"))
+	                {
+	                    operator = FieldValue.FILTER_GREATER_THEN;
+	                }
+	                else if (aSearchAlgorithm.startsWith("sharpGE"))
+	                {
+	                    operator = FieldValue.FILTER_GREATER_THEN_EQUAL;
+	                }
+	                else if (aSearchAlgorithm.startsWith("sharpNE"))
+	                {
+	                    operator = FieldValue.FILTER_NOT_EQUAL;
+	                }
+	                else if (aSearchAlgorithm.startsWith("sharpNULL"))
+	                {
+	                    operator = FieldValue.FILTER_NULL;
+	                }
+	                else if (aSearchAlgorithm.startsWith("sharpNOTNULL"))
+	                {
+	                    operator = FieldValue.FILTER_NOT_NULL;
+	                }
+	                else if (aSearchAlgorithm.startsWith("weakStartEnd"))
+	                {
+	                    algorithm = FieldValue.SEARCH_ALGO_WEAK_END;
+	                    operator = FieldValue.FILTER_LIKE;
+	                }
+	                else if (aSearchAlgorithm.startsWith("weakStart"))
+	                {
+	                    algorithm = FieldValue.SEARCH_ALGO_WEAK_START;
+	                    operator = FieldValue.FILTER_LIKE;
+	                }
+	                else if (aSearchAlgorithm.startsWith("weakEnd"))
+	                {
+	                    algorithm = FieldValue.SEARCH_ALGO_WEAK_END;
+	                    operator = FieldValue.FILTER_LIKE;
+	                }
+	                else if (aSearchAlgorithm.startsWith("weak"))
+	                {
+	                    algorithm = FieldValue.SEARCH_ALGO_WEAK;
+	                    operator = FieldValue.FILTER_LIKE;
+	                }
+                }  
+                
                 if ((aSearchAlgorithm == null) || (aSearchAlgorithm.toLowerCase().indexOf("extended") == -1))
                 {
                     // Extended not found, only append field
@@ -2078,17 +2080,14 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
                             {
                                 case 1:
                                     operator = FieldValue.FILTER_GREATER_THEN_EQUAL;
-
                                     break;
 
                                 case 2:
                                     operator = FieldValue.FILTER_SMALLER_THEN_EQUAL;
-
                                     break;
 
                                 default:
                                     operator = -1;
-
                                     break;
                             }
 
