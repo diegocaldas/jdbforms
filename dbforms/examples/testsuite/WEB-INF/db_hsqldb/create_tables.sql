@@ -9,7 +9,7 @@
 --
 -- DROP TABLE  customer;
 CREATE TABLE customer (
-  id int DEFAULT '0' NOT NULL,
+  id int IDENTITY,
   firstname char(50),
   lastname char(50),
   address char(30),
@@ -48,7 +48,7 @@ INSERT INTO orders (customer_id,service_id,orderdate) VALUES (1,203,'2001-11-11'
 --
 -- DROP TABLE  complaint;
 CREATE TABLE complaint (
-  complaint_id int  NOT NULL IDENTITY,
+  complaint_id int IDENTITY,
   customer_id int  DEFAULT '0' NOT NULL,
   usermessage char(255),
   incomingdate datetime,
