@@ -63,7 +63,7 @@ public class HasMoreRecordsTag extends DbBaseHandlerTag
 
         if (rsvSize >= getCountAsInt())
         {
-            return EVAL_BODY_TAG;
+            return EVAL_BODY_BUFFERED;
         }
         else
         {
