@@ -61,6 +61,7 @@ public class ConfigServlet extends HttpServlet
 {
    /** DOCUMENT ME! */
    private Logger logCat;
+   private Logger digesterLogger;
 
    // ----------------------------------------------------- Instance Variables
 
@@ -169,6 +170,7 @@ public class ConfigServlet extends HttpServlet
          logCat.info(
                   "### You can use init-parameter \"log4j.configuration\" in web.xml for defining individual properties, if you want. Check DbForms manual!");
       }
+	  digesterLogger = Logger.getLogger(Digester.class.getName());
 
    }
 
@@ -222,7 +224,7 @@ public class ConfigServlet extends HttpServlet
       // Initialize a new Digester instance
       Digester digester = new Digester();
       digester.setLogger(
-               new org.apache.commons.logging.impl.Log4JLogger(logCat));
+               new org.apache.commons.logging.impl.Log4JLogger(digesterLogger));
       digester.push(dbFormsConfig);
       digester.setNamespaceAware(true);
       digester.setValidating(false);
@@ -460,7 +462,7 @@ public class ConfigServlet extends HttpServlet
 
       Digester digester = new Digester();
       digester.setLogger(
-               new org.apache.commons.logging.impl.Log4JLogger(logCat));
+               new org.apache.commons.logging.impl.Log4JLogger(digesterLogger));
       digester.push(dbFormsErrors);
       digester.setValidating(false);
 
