@@ -1,3 +1,15 @@
+
+
+2004-11-15
+(Henner.Kollmann@gmx.de)
+make searching smarter.
+If there is a field in the new table with same name and type as in the old one then 
+take searchvalues from that field
+
+2004-11-12
+(Henner.Kollmann@gmx.de)
+   - added setter for resultsetvector
+
 2004-10-23
 (Henner.Kollmann@gmx.de)
    - added support for charting using cewolf and jfree chart. 

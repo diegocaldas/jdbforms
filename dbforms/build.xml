@@ -54,6 +54,8 @@
   <property name="taglib.dir" value="${dist.dir}/taglib" />
   <property name="bin.dir" value="${cvs.workingdir}/bin" />
   <property name="textfiles.patterns" value="**/*.html,**/*.xml,**/*.java,**/*.txt,**/*.properties,**/*.xsd,**/*.xsl,**/*.bat,**/*.sh,**/*.php,**/*.properties,Readme,ReleaseNotes*,Change*,CommonMistakes,Todo" />
+  <property name="javac.jvm" value="1.4"/>
+  <property name="javac.deprecation" value="off"/>
 
 
   <property environment="env" />
@@ -121,7 +123,9 @@
     	destdir="${build.dir}" 
     	debug="on" 
     	optimize="off" 
-    	deprecation="off">
+    	deprecation="${javac.deprecation}"
+      source="${javac.jvm}"
+      target="${javac.jvm}">
       <classpath refid="classpath" />
     </javac>
     <copy todir="${build.dir}/org/dbforms/resources">
@@ -184,7 +188,13 @@
     <!-- compile example-specific Java code -->
     <echo message="compiling example specific code" />
     <mkdir dir="${build.dir}/${example.name}/WEB-INF/classes" />
-    <javac srcdir="${build.dir}/${example.name}/WEB-INF/src" destdir="${build.dir}/${example.name}/WEB-INF/classes" debug="on" optimize="off" deprecation="off">
+    <javac srcdir="${build.dir}/${example.name}/WEB-INF/src" 
+           destdir="${build.dir}/${example.name}/WEB-INF/classes" 
+           debug="on" 
+           optimize="off" 
+           deprecation="${javac.deprecation}"
+           source="${javac.jvm}"
+           target="${javac.jvm}">
       <classpath>
         <path refid="classpath" />
         <pathelement location="${dist.dir}/dbforms${dbforms.version}.jar" />
