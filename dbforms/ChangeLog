@@ -2,6 +2,8 @@
 (Henner.Kollmann@gmx.de)
    - Clean up and simplify reporting/export stuff
      Added test code to test this
+   - Translate alt text in image button if necessary  
+   
 
 2004-10-12
 (Henner.Kollmann@gmx.de)

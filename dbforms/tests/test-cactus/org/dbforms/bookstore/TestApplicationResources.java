@@ -48,5 +48,9 @@ public class TestApplicationResources extends HttpTestCase {
       assertTrue("test.books.dbforms", responseContains("test.books.dbforms"));
       assertTrue("test.author.hk", responseContains("test.author.hk"));
       assertTrue("test.author.jm", responseContains("test.author.jm"));
+      assertTrue("return confirm('test.msg.confirmDelete');", responseContains("return confirm('test.msg.confirmDelete');"));
+      assertTrue("test.button.delete", responseContains("test.button.delete"));
+
+      
    }
 }
