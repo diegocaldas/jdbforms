@@ -1,3 +1,11 @@
+2002-11-14
+(Henner.Kollmann@gmx.de)
+   extended build.xml with new target dist: will build a whole distribution with
+      - javadoc, taglib doc, devgui doc
+      - devgui.bat, devgui.sh for the current version
+      - jar and tld file
+
+
 2002-11-09
 (fossato@pow2.com)
         Multiple Connection support and connectionPool factory:

@@ -54,6 +54,7 @@ Happy coding!
     <property name="dependend.dir" value="${cvs.workingdir}/dependend"/>
     <property name="htmldoc.dir" value="${cvs.workingdir}/doc/html"/>
     <property name="doc.dir" value="${cvs.workingdir}/doc"/>
+    <property name="bin.dir" value="${cvs.workingdir}/bin"/>
     <property environment="env"/>
 
     <!-- Indentify Classpath -->
@@ -109,11 +110,47 @@ Happy coding!
     <target name="generate_taglib_htmldocs" 
                     description="--> Generate  HTML reference documentation within doc/html from taglib-docu.xml" >
         <echo message="begin xsl translation to generate HTML documentation  "/>
+        <delete file="${htmldoc.dir}/DbFormsTags.html"/>
         <style style="${etc.dir}/tldoc2html.xsl" in="${etc.dir}/taglib_docu.xml" out="${htmldoc.dir}/DbFormsTags.html"/>
         <style style="${etc.dir}/tldoc2html_toc.xsl" in="${etc.dir}/taglib_docu.xml" 
                out="${htmldoc.dir}/DbFormsTags_TocSem.html"/>
         <style style="${etc.dir}/tldoc2html_toc.xsl" in="${etc.dir}/taglib_docu.xml" 
                out="${htmldoc.dir}/DbFormsTags_TocAlph.html">
+            <param name="sortTagsAlphabetically" expression="true"/>
+        </style>
+        <echo message="end of xsl translation "/>
+    </target>
+
+    <!-- generate HTML reference documentation from taglib-docu using XSL transformation in dist dir -->
+    <target name="generate_taglib_doc" 
+                    description="--> Generate  HTML reference documentation within doc/html from taglib-docu.xml" >
+        <echo message="begin xsl translation to generate HTML documentation  "/>
+        
+        <copy 
+        	file="${htmldoc.dir}/DbFormsTags_Frame.html" 
+        	tofile="${dist.dir}/doc/taglib/DbFormsTags_Frame.html" 
+        	overwrite="true"
+        />
+        <copy 
+        	file="${htmldoc.dir}/dbforms_logo.png" 
+        	tofile="${dist.dir}/doc/taglib/dbforms_logo.png" 
+        	overwrite="true"
+        />
+        <style 
+        	style="${etc.dir}/tldoc2html.xsl" 
+        	in="${etc.dir}/taglib_docu.xml" 
+        	out="${dist.dir}/doc/taglib/DbFormsTags.html"
+        />
+        <style 
+        	style="${etc.dir}/tldoc2html_toc.xsl" 
+        	in="${etc.dir}/taglib_docu.xml" 
+               	out="${dist.dir}/doc/taglib/DbFormsTags_TocSem.html"
+        />
+        <style 
+        	style="${etc.dir}/tldoc2html_toc.xsl" 
+        	in="${etc.dir}/taglib_docu.xml" 
+               	out="${dist.dir}/doc/taglib/DbFormsTags_TocAlph.html"
+        >
             <param name="sortTagsAlphabetically" expression="true"/>
         </style>
         <echo message="end of xsl translation "/>
@@ -220,5 +257,96 @@ Happy coding!
         <echo message="End of file splitting "/>
     </target>   
 
+  <target name="copy-devgui">
+      <copy file="${bin.dir}/devgui.sh" 
+            tofile="${dist.dir}/bin/devgui.sh" overwrite="true"/>
+      <replace file="${dist.dir}/bin/devgui.sh"
+          token="dbforms_CURRENT_VERSION.jar" 
+          value="dbforms${dbforms.version}.jar" />
+      <copy file="${bin.dir}/devgui.bat" 
+            tofile="${dist.dir}/bin/devgui.bat" overwrite="true"/>
+      <replace file="${dist.dir}/bin/devgui.bat"
+          token="dbforms_CURRENT_VERSION.jar"
+          value="dbforms${dbforms.version}.jar"/>
+   </target>	
+
+
+    <target name="generate_devgui_doc" 
+                    description="--> Generate  HTML reference documentation within doc/html from taglib-docu.xml" >
+        <copy 
+        	file="${htmldoc.dir}/devgui.html" 
+        	tofile="${dist.dir}/doc/devgui/devgui.html" 
+        	overwrite="true"
+        />
+        <copy todir="${dist.dir}/doc/devgui">
+            <fileset dir="${htmldoc.dir}">
+            	<include name="devgui*.png" />
+            </fileset>
+        </copy>
+    </target>
+
+  <!--
+    -  JAVADOC TARGET
+    -
+    -  Build the API javadoc documentation.
+    -->
+  <target name="javadoc">
+    <javadoc packagenames = "org.dbforms.*"
+             sourcepath   = "${javasrc.dir}"
+             destdir      = "${dist.dir}/doc/api"
+             author       = "true"
+             version      = "true"
+             use          = "true"
+             windowtitle  = "DbForms API"
+             doctitle     = "DbForms API"
+             bottom       = "DbForms API"
+             private      = "false">
+
+      <classpath refid="classpath"/>
+
+      <!-- external links to the javadocs api -->
+      <link href="http://java.sun.com/j2se/1.3/docs/api/"                   />
+      <link href="http://java.sun.com/products/jdbc/jdbc20.stdext.javadoc/" />
+      <link href="http://java.sun.com/products/servlet/2.2/javadoc/"        />
+      <link href="http://xml.apache.org/xerces2-j/javadocs/api/"            />
+      <link href="http://xml.apache.org/xalan-j/apidocs/"                   />
+    </javadoc>
+  </target>
+ 
+  <target name="dist_doc"
+  	  depends="javadoc, generate_taglib_doc,generate_devgui_doc"
+  />
+
+  <target name="dist_bin"
+  	depends="compile,jar_classes, generate_taglib, copy-devgui"
+  />
+
+  <target name="dist_main">
+      <copy file="${cvs.workingdir}/Changes_v1_1" 
+            tofile="${dist.dir}/Changes_v1_1" 
+            overwrite="true"/>
+      <copy file="${cvs.workingdir}/CommonMistakes" 
+            tofile="${dist.dir}/CommonMistakes" 
+            overwrite="true"/>
+      <copy file="${cvs.workingdir}/License" 
+            tofile="${dist.dir}/License" 
+            overwrite="true"/>
+      <copy file="${cvs.workingdir}/Readme" 
+            tofile="${dist.dir}/Readme" 
+            overwrite="true"/>
+      <copy file="${cvs.workingdir}/Readme_DevGui" 
+            tofile="${dist.dir}/Readme_DevGui" 
+            overwrite="true"/>
+      <copy file="${cvs.workingdir}/Todo" 
+            tofile="${dist.dir}/Todo" 
+            overwrite="true"/>
+  </target>
+	
+  <!--
+     -  DIST TARGET
+     -->
+  <target depends="prepare, dist_bin, dist_doc, dist_main, cleanWorkspace" 
+  	  name="dist"
+  />
 
 </project>
