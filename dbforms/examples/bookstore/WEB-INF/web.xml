@@ -30,7 +30,12 @@
   <servlet>
     <servlet-name>config</servlet-name>
     <servlet-class>org.dbforms.servlets.ConfigServlet</servlet-class>
-
+<!--- remove comment to enable classic navigation
+    <init-param>
+        <param-name>dbformsConfig</param-name>
+        <param-value>/WEB-INF/dbforms-config.xml,/WEB-INF/dbforms-config-classic.xml</param-value>
+    </init-param>
+ -->
     <init-param>
         <param-name>log4j.configuration</param-name>
         <param-value>/WEB-INF/log4j.properties</param-value>
@@ -45,10 +50,10 @@
     </init-param>
     <init-param>
         <param-name>resourceBundle</param-name>
-	<param-value>resources</param-value>
+		<param-value>resources</param-value>
     </init-param>  
     <init-param>
-	<param-name>digesterDebugLevel</param-name>
+		<param-name>digesterDebugLevel</param-name>
 	<param-value>0</param-value>
     </init-param>  
     <load-on-startup>1</load-on-startup>
