@@ -46,8 +46,8 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer,
    private String  customEntry;
    private String  size;
    private String ifEmptyItem = null;
-   private boolean ifEmptyDontDraw = false;
-   private boolean overrideReadOnly = false;
+   private String ifEmptyDontDraw = "false";
+   private String overrideReadOnly = "false";
 
    /**
     * DOCUMENT ME!
@@ -399,9 +399,9 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer,
       selectedIndex = null;
       customEntry   = null;
       size          = null;
-      ifEmptyDontDraw = false;
+      ifEmptyDontDraw = "false";
       ifEmptyItem = null;
-      overrideReadOnly = false;
+      overrideReadOnly = "false";
       super.doFinally();
    }
    
@@ -415,7 +415,7 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer,
 	/**
 	 * @param b
 	 */
-	public void setIfEmptyDontDraw(boolean b) {
+	public void setIfEmptyDontDraw(String b) {
 		ifEmptyDontDraw = b;
 	}
 
@@ -429,7 +429,7 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer,
 	/**
 	 * @param b
 	 */
-	public void setOverrideReadOnly(boolean b) {
+	public void setOverrideReadOnly(String b) {
 		overrideReadOnly = b;
 	}
 
@@ -437,7 +437,7 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer,
 	 * @return
 	 */
 	public boolean isIfEmptyDontDraw() {
-		return ifEmptyDontDraw;
+		return ifEmptyDontDraw.equalsIgnoreCase("true");
 	}
 
 	/**
@@ -451,7 +451,6 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer,
 	 * @return
 	 */
 	public boolean hasOverrideReadOnlySet() {
-		return overrideReadOnly;
+		return overrideReadOnly.equalsIgnoreCase("true");
 	}
-
 }
