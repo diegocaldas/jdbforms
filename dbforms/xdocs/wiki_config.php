@@ -29,7 +29,7 @@ define("EWIKI_LOGFILE", '/home/groups/j/jd/jdbforms/htdocs/log/ewiki.txt');
 define("EWIKI_LOGLEVEL", '3');
 define("EWIKI_EDIT_REDIRECT", 0);
 define("EWIKI_NOTIFY_WITH_DIFF", 1);
-define("EWIKI_NOTIFY_DIFF_PARAMS", " --ignore-case  --ignore-space-change");
+define("EWIKI_NOTIFY_DIFF_PARAMS", "  -B -u -U 50 --ignore-case  --ignore-space-change");
 define("EWIKI_PROTECTED_MODE", 1);
 #define("EWIKI_PROTECTED_MODE_HIDING", 1);
 define("EWIKI_AUTO_LOGIN", 1);
@@ -46,8 +46,8 @@ include("plugins/lib/mime_magic.php");
 include("plugins/email_protect.php");
 #include("plugins/spages.php");
 include("plugins/jump.php");
-#include("plugins/notify.php");
 include("../notify.php");
+#include("plugins/notify.php");
 include("plugins/patchsaving.php");
 
 include("plugins/feature/appendonly.php");
@@ -66,9 +66,12 @@ include("plugins/page/wordindex.php");
 include("plugins/page/textupload.php");
 include("plugins/page/recentchanges.php");
 include("plugins/page/wikinews.php");
+include("plugins/page/sitemap.php");
 #include("plugins/page/wikiuserlogin.php");
 
 include("plugins/action/diff.php");
+include("plugins/action/diff_gnu.php");
+include("plugins/action/info_qdiff.php");
 
 include("plugins/aview/downloads.php");
 include("plugins/module/downloads.php");
@@ -94,6 +97,7 @@ include("../wiki_userdb_userregistry.php");
 
 include("plugins/admin/control.php");
 
+$_SERVER["HTTP_ACCEPT_LANGUAGE"] = "en";
          
 
 #-- load ewiki 'lib'
@@ -101,9 +105,6 @@ include("ewiki.php");
 
 error_reporting(E_NONE);
 
-# remove all languages
-unset($ewiki_t["languages"]);
-$ewiki_t["languages"][] = "en";
 
 
 # admin account 
