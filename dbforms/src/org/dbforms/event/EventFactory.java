@@ -190,28 +190,40 @@ public abstract class EventFactory
      */
     protected String getEventIdFromDestinationTable(HttpServletRequest request, String action)
     {
-        DbFormsConfig config    = DbFormsConfig.getInstance();
+        DbFormsConfig config    = null;
         String        eventType = EventTypeUtil.getEventType(action).getEventType();
         Table         table     = null;
         String        eventId   = null;
 
-        // get the table object from the input action string;
-        // must use different methods, depending on the request mode (GET | POST)
-        if (request.getMethod().equals("GET"))
+        try
         {
-            String tableName = EventUtil.getDestinationTableName(request, action);
-            table = config.getTableByName(tableName);
+            config = DbFormsConfigRegistry.instance().lookup();
         }
-        else
+        catch(Exception e)
         {
-            int tableId = EventUtil.getTableId(action);
-            table = config.getTable(tableId);
+            logCat.error("::getEventIdFromDestinationTable - cannot get the config object from the bFormsConfigRegistry");
         }
 
-        if (!Util.isNull(eventType))
+        if (config != null)
         {
-            TableEvents tableEvents = table.getTableEvents();
-            eventId = tableEvents.getEventId(eventType);
+            // get the table object from the input action string;
+            // must use different methods, depending on the request mode (GET | POST)
+            if (request.getMethod().equals("GET"))
+            {
+                String tableName = EventUtil.getDestinationTableName(request, action);
+                table = config.getTableByName(tableName);
+            }
+            else
+            {
+                int tableId = EventUtil.getTableId(action);
+                table = config.getTable(tableId);
+            }
+
+            if (!Util.isNull(eventType))
+            {
+                TableEvents tableEvents = table.getTableEvents();
+                eventId = tableEvents.getEventId(eventType);
+            }
         }
 
         logCat.info("::getEventIdFromDestinationTable - eventId = [" + eventId + "]");
@@ -231,16 +243,9 @@ public abstract class EventFactory
      */
     protected String getEventIdFromDestinationTable(Table table, String action)
     {
-        DbFormsConfig config = DbFormsConfig.getInstance();
-        String eventId = null;
-
-        if (config != null)
-        {
-            TableEvents tableEvents = table.getTableEvents();
-            String eventType = EventTypeUtil.getEventType(action).getEventType();
-
-            eventId = tableEvents.getEventId(eventType);
-        }
+        TableEvents tableEvents = table.getTableEvents();
+        String      eventType   = EventTypeUtil.getEventType(action).getEventType();
+        String      eventId     = tableEvents.getEventId(eventType);
 
         logCat.info("::getEventIdFromDestinationTable - eventId = [" + eventId + "]");
 
