@@ -53,6 +53,9 @@ public class ConnectionProviderPrefs
     /** Holds jdbc properties * */
     private Properties properties;
 
+    /** Holds connection pool custom properties * */
+    private Properties poolProperties;
+
 
     /**
      *  Gets the connectionProviderClass attribute of the ConnectionProviderPrefs object
@@ -205,5 +208,27 @@ public class ConnectionProviderPrefs
     public void setProperties(Properties properties)
     {
         this.properties = properties;
+    }
+
+
+    /**
+     * Returns the connection pool custom properties.
+     *
+     * @return  Properties
+     */
+    public Properties getPoolProperties()
+    {
+        return poolProperties;
+    }
+
+
+    /**
+     * Sets the connection pool custom properties.
+     *
+     * @param  poolProperties The pool properties to set
+     */
+    public void setPoolProperties(Properties poolProperties)
+    {
+        this.poolProperties = poolProperties;
     }
 }

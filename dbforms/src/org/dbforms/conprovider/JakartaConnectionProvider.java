@@ -26,6 +26,7 @@ package org.dbforms.conprovider;
 import java.util.*;
 import java.sql.*;
 import org.apache.commons.dbcp.BasicDataSource;
+import org.dbforms.util.Util;
 
 
 
@@ -37,6 +38,13 @@ import org.apache.commons.dbcp.BasicDataSource;
  */
 public class JakartaConnectionProvider extends ConnectionProvider
 {
+    protected final static String PROPS_VALIDATION_QUERY = "validationQuery";
+    protected final static String PROPS_MAX_ACTIVE       = "maxActive";
+    protected final static String PROPS_MAX_IDLE         = "maxIdle";
+    protected final static String PROPS_MAX_WAIT         = "maxWait";
+    protected final static String PROPS_USE_LOG          = "useLog";
+
+
     /** Commons-dbcp dataSource * */
     private BasicDataSource dataSource = null;
 
@@ -91,9 +99,26 @@ public class JakartaConnectionProvider extends ConnectionProvider
             }
         }
 
-        dataSource.setValidationQuery(null);
-        dataSource.setMaxActive(20);
-        dataSource.setMaxIdle(5);
-        dataSource.setMaxWait(-1);
+        // now set the connection pool custom properties;
+        // if the connectionPool properties object is null,
+        // instance a new properties object anyway, to use default values;
+        if ((props = prefs.getPoolProperties()) == null)
+            props = new Properties();
+
+        String validationQuery = props.getProperty(PROPS_VALIDATION_QUERY, null);
+        if (!Util.isNull(validationQuery))
+          dataSource.setValidationQuery(validationQuery.trim());
+
+        dataSource.setMaxActive (Integer.parseInt(props.getProperty(PROPS_MAX_ACTIVE, "20")));
+        dataSource.setMaxIdle   (Integer.parseInt(props.getProperty(PROPS_MAX_IDLE,   "5")));
+        dataSource.setMaxWait   (Long.parseLong  (props.getProperty(PROPS_MAX_WAIT,   "-1")));
+
+        // if PROPS_LOG == true, use log4j category to log the datasource info;
+        String useLog = props.getProperty(PROPS_USE_LOG, "false");
+        if (!Util.isNull(useLog) && "true".equals(useLog.trim()))
+        {
+            cat.info("::init - dataSource log activated");
+            dataSource.setLogWriter(new Log4jPrintWriter(cat, cat.getPriority()));
+        }
     }
 }
