@@ -65,6 +65,14 @@
       <roles>
         <role>Java Developer</role>
       </roles>
+    <developer>
+      <name>Henner Kollmann</name>
+      <id>hkollmann</id>
+      <email>Henner.Kollmann@gmx.de</email>
+      <organization/>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
     </developer>
   </developers>
 
