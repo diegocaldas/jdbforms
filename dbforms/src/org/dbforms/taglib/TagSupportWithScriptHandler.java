@@ -769,5 +769,6 @@ public abstract class TagSupportWithScriptHandler extends BodyTagSupport
       onFocus     = null;
       style       = null;
       styleClass  = null;
+      title       = null;
    }
 }
