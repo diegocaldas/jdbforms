@@ -416,7 +416,17 @@ public class DataSourceJDBC extends DataSource
 
    private void checkResultSetEnd() throws SQLException
    {
-      if ((rs.getRow() == 0) || rs.isLast())
+	  if ((rs.getRow() != 0))
+	  {
+		// test if next record is avaiable...
+		// rs.isLast is not allowed in all circumstances! 
+		if (rs.next())
+		{
+  		   data.add(getCurrentRowAsObject());
+		   keys.add(getTable().getKeyPositionString(getCurrentRow()));
+		}
+	  }
+      if ((rs.getRow() == 0))
       {
          fetchedAll = true;
          closeConnection();
