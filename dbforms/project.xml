@@ -278,12 +278,28 @@
     </dependency>        
 
     <dependency>
+      <id>commons-pool</id>
+      <version>1.0.1</version>
+      <properties>
+         <war.bundle.jar>true</war.bundle.jar>
+       </properties>
+    </dependency>        
+
+    <dependency>
       <id>commons-beanutils</id>      
       <version>1.4</version>
       <properties>
          <war.bundle.jar>true</war.bundle.jar>
        </properties>
     </dependency>        
+
+    <dependency>
+      <id>commons-validator</id>
+      <version>1.0</version>
+      <properties>
+         <war.bundle.jar>true</war.bundle.jar>
+       </properties>
+    </dependency>          
 
     <dependency>
       <id>xerces</id>      
@@ -316,14 +332,6 @@
          <war.bundle.jar>true</war.bundle.jar>
        </properties>
     </dependency>       
-
-    <dependency>
-      <id>commons-validator</id>
-      <version>1.0</version>
-      <properties>
-         <war.bundle.jar>true</war.bundle.jar>
-       </properties>
-    </dependency>          
 
 
     <dependency>
