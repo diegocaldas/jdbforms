@@ -21,10 +21,16 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.event;
-import java.sql.*;
-import java.util.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
+
+import java.sql.SQLException;
+import java.sql.Connection;
+
+import java.util.Hashtable;
+import java.util.Vector;
+import java.util.Enumeration;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.Field;
@@ -33,7 +39,7 @@ import org.dbforms.util.ParseUtil;
 import org.dbforms.util.Constants;
 import org.dbforms.util.FieldValues;
 import org.dbforms.util.FieldTypes;
-
+import org.dbforms.util.Util;
 
 
 /**
@@ -185,7 +191,7 @@ public abstract class DatabaseEvent extends WebEvent
     */
    protected String getKeyValues()
    {
-      return ParseUtil.getParameter(request, "k_" + tableId + "_" + keyId);
+      return Util.decode(ParseUtil.getParameter(request, "k_" + tableId + "_" + keyId));
    }
 
 
