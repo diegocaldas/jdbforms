@@ -327,14 +327,12 @@ public class Query extends Table
       }
 
       FieldValue[] fvHaving = new FieldValue[mode_having.size()];
-
       for (int i = 0; i < mode_having.size(); i++)
       {
          fvHaving[i] = (FieldValue) mode_having.elementAt(i);
       }
 
       FieldValue[] fvWhere = new FieldValue[mode_where.size()];
-
       for (int i = 0; i < mode_where.size(); i++)
       {
          fvWhere[i] = (FieldValue) mode_where.elementAt(i);
@@ -407,7 +405,6 @@ public class Query extends Table
             }
 
 
-            /// @TODO Missing and???
             buf.append(" AND ( ");
          }
 

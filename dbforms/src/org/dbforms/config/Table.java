@@ -962,6 +962,24 @@ public class Table
       return buf.toString();
    }
 
+	/**
+	 * situation: we have built a query (involving the getWhereEqualsClause() method)
+	 * and now we want to prepare the statemtent - provide actual values for the
+	 * the '?' placeholders
+	 *
+	 * @param  fv the array of FieldValue objects
+	 * @param  ps the PreparedStatement object
+	 * @param  curCol the current PreparedStatement column; points to a
+	 *                PreparedStatement xxx value
+	 * @return  the current column value
+	 * @exception  SQLException if any error occurs
+	 */
+	protected static int populateWhereEqualsClause(FieldValue[] fv,
+		PreparedStatement ps, int curCol) throws SQLException
+	{
+		return FieldValue.populateWhereEqualsClause(fv, ps, curCol);
+	}
+
 
    /**
     *  Get the SQL ResultSet from the query builded using the input data.
@@ -991,7 +1009,7 @@ public class Table
       if ((fvEqual != null) && (fvEqual.length > 0))
       {
          logCat.debug("###getDoSelectResultSet pos2");
-         curCol = FieldValue.populateWhereEqualsClause(fvEqual, ps, curCol);
+         curCol = populateWhereEqualsClause(fvEqual, ps, curCol);
          logCat.debug("###getDoSelectResultSet pos3");
       }
 

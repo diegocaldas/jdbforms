@@ -13,6 +13,16 @@
 	        <field name="AUTHOR_ID" fieldType="int" isKey="true" />
 	        <field name="TITLE" fieldType="varchar" isKey="true" />
 	    </table>   
+
+		<query 	name="BOOKLISTPERAUTHOR" 
+		  distinct="true"
+		  from="BOOK LEFT JOIN AUTHOR ON BOOK.AUTHOR_ID = AUTHOR.AUTHOR_ID"
+		>
+		  <field name="BOOK_ID" fieldType="int"	isKey="true" autoInc="true"/>
+		  <field name="ISBN" fieldType="varchar"/>
+		  <field name="TITLE" fieldType="varchar"/>
+		  <search name="AUTHOR_ID"/>
+		</query>
             
         <query name="BOOK_QUERY" from="BOOK">
             <field name="BOOK_ID" fieldType="int" isKey="true" autoInc="true"/>
