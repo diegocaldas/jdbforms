@@ -4,7 +4,7 @@
 	   <db:base />
 	   <target="_top">
 	</head>
-   <body >
+   <body>
       <db:dbform autoUpdate="false" 
                  followUp="/tests/testAuthorBooksSubForm.jsp" 
                  maxRows="1" 
@@ -43,12 +43,18 @@
                  <db:navPrevButton  style="width:100" caption="<  Previous"/>
                  <db:navNextButton  style="width:100" caption=">  Next"/>
                  <db:navLastButton  style="width:100" caption=">> Last"/>
-                 <db:navNewButton   style="width:100" caption="New"/>
-                 <db:navCopyButton  style="width:100" caption="Copy"/>
+                 <db:navNewButton   style="width:100" caption="New"  showAlwaysInFooter="false"/>
+                 <db:navCopyButton  style="width:100" caption="Copy" showAlwaysInFooter="false"/>
                  &nbsp;
                </td>
             </tr>
-		    <db:dbform 
+		    <tr>
+				<td colspan="2" style="text-align:center">
+					<h2>sub form</h2>
+				</td>
+			</tr>
+		    <tr><td colspan="2" style="text-align:center">
+			    <db:dbform 
 		      		autoUpdate="false" 
 		      		followUp="/tests/testAuthorBooksSubForm.jsp"   
 		      		maxRows="*" 
@@ -56,8 +62,9 @@
 		     		parentField="AUTHOR_ID"
 		     		childField="AUTHOR_ID"	 			
 			      	orderBy="ISBN" 
-		    >
+			    >
 		         <db:header>
+					<table>
 				 </db:header>
 		         <db:body allowNew="true">
     	           <tr>
@@ -72,19 +79,22 @@
 	               </tr>			              		 				
 				 </db:body>
 		         <db:footer>
-					<tr class="button">
-					   <td colspan="2" style="text-align:center">
-						 <db:navFirstButton style="width:100" caption="<< First"/>
-						 <db:navPrevButton  style="width:100" caption="<  Previous"/>
-						 <db:navNextButton  style="width:100" caption=">  Next"/>
-						 <db:navLastButton  style="width:100" caption=">> Last"/>
-						 <db:navNewButton   style="width:100" caption="New"/>
-		                 <db:navCopyButton  style="width:100" caption="Copy"/>
-						 &nbsp;
-					   </td>
-					</tr>
-				 </db:footer>
-			</db:dbform>	
+					  <tr class="button">
+					   	<td colspan="4" style="text-align:center">
+						 	<db:navFirstButton style="width:100" caption="<< First"/>
+					   		<db:navPrevButton  style="width:100" caption="<  Previous"/>
+							<db:navNextButton  style="width:100" caption=">  Next"/>
+						 	<db:navLastButton  style="width:100" caption=">> Last"/>
+						 	<db:navNewButton   style="width:100" caption="New"/>
+		                 	<db:navCopyButton  style="width:100" caption="Copy"/>
+						 	&nbsp;
+					   	</td>
+					  </tr>
+					<table>
+		         </db:footer>
+				</db:dbform>	
+			</td></tr>
+		 </db:footer>
          </db:body>
          <db:footer>
            </table>

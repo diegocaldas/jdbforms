@@ -26,7 +26,7 @@ import javax.servlet.jsp.JspException;
 
 import org.apache.log4j.Category;
 import org.dbforms.validation.ValidatorConstants;
-
+import org.dbforms.util.Util;
 /**
  * <p>this tag renders an "copy"-button.
  *
@@ -36,11 +36,16 @@ import org.dbforms.validation.ValidatorConstants;
  * 
  */
 public class DbNavCopyButtonTag extends DbBaseButtonTag {
-	static Category logCat =
+	
+	private static Category logCat =
 		Category.getInstance(DbNavCopyButtonTag.class.getName());
 	// logging category for this class
 
+	/** Holds value of property showAlwaysInFooter. */
+	private String showAlwaysInFooter = "true";
+
 	public int doStartTag() throws javax.servlet.jsp.JspException {
+
 
 		// ValidatorConstants.JS_CANCEL_SUBMIT is the javascript variable boolean to verify
 		// if we do the javascript validation before submit <FORM>
@@ -54,7 +59,13 @@ public class DbNavCopyButtonTag extends DbBaseButtonTag {
 				onclick + ValidatorConstants.JS_CANCEL_VALIDATION + "=true;");
 		}
 
-		// if(parentForm.getFooterReached() && ResultSetVector.isEmptyOrNull(parentForm.getResultSetVector()) ) return EVAL_PAGE;
+		if (parentForm.getFooterReached()
+					&& Util.isNull(parentForm.getResultSetVector())
+					&& "false".equalsIgnoreCase(showAlwaysInFooter))
+		{
+			// 20030521 HKK: Bug fixing, thanks to Michael Slack! 
+			return SKIP_BODY;
+		}
 
 		try {
 			StringBuffer tagBuf = new StringBuffer();
@@ -93,6 +104,23 @@ public class DbNavCopyButtonTag extends DbBaseButtonTag {
 			}
 		}
 		return EVAL_PAGE;
+	}
+
+
+	/**
+	 * @return
+	 */
+	public String getShowAlwaysInFooter()
+	{
+		return showAlwaysInFooter;
+	}
+
+	/**
+	 * @param string
+	 */
+	public void setShowAlwaysInFooter(String string)
+	{
+		showAlwaysInFooter = string;
 	}
 
 }
