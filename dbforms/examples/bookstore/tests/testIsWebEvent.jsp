@@ -34,6 +34,13 @@
 					  </db:isWebEvent>
 					</td>
 				</tr>
+				<tr>
+					<td colspan="4">
+					  <db:isWebEvent event="navFirst" >
+					    this should not be printed
+					  </db:isWebEvent>
+					</td>
+				</tr>
 			</db:body>
 			<db:footer>
 				</table>
