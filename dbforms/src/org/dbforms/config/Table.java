@@ -1395,7 +1395,7 @@ public class Table {
             String token = st.nextToken().trim();
             logCat.info("token = " + token);
 
-            boolean sortDirection = Constants.ORDER_ASCENDING;
+            int sortDirection = Constants.ORDER_ASCENDING;
 
             // we propose the default
             //Separate field from command
@@ -1461,7 +1461,7 @@ public class Table {
          logCat.info("### sortState=" + sortState);
 
          if (sortState.equalsIgnoreCase("asc") || sortState.equalsIgnoreCase("desc")) {
-            boolean sortDirection = sortState.equalsIgnoreCase("asc") ? Constants.ORDER_ASCENDING : Constants.ORDER_DESCENDING;
+            int sortDirection = sortState.equalsIgnoreCase("asc") ? Constants.ORDER_ASCENDING : Constants.ORDER_DESCENDING;
             FieldValue fv = FieldValue.createFieldValueForSorting(getField(fieldId), sortDirection);
             result.addElement(fv);
          }

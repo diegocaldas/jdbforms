@@ -72,7 +72,7 @@ public class FieldValue implements Cloneable {
     * Field sor direction. Can be Field.ORDER_ASCENDING or
     * Field.ORDER_DESCENDING.
     */
-   private boolean sortDirection = Constants.ORDER_ASCENDING;
+   private int sortDirection = Constants.ORDER_NONE;
 
    /**
     * If FieldValue is used in a "childFieldValue", it signalizes if it should
@@ -104,7 +104,7 @@ public class FieldValue implements Cloneable {
    /** holds the format object */
    private String pattern;
 
-   public static FieldValue createFieldValueForSorting(Field field, boolean sortDirection) {
+   public static FieldValue createFieldValueForSorting(Field field, int sortDirection) {
       FieldValue fv = new FieldValue(field);
       fv.setSortDirection(sortDirection);
       return fv;
@@ -201,7 +201,7 @@ public class FieldValue implements Cloneable {
     * 
     * @param sortDirection The new sortDirection value
     */
-   private void setSortDirection(boolean sortDirection) {
+   private void setSortDirection(int sortDirection) {
       this.sortDirection = sortDirection;
    }
 
@@ -210,7 +210,7 @@ public class FieldValue implements Cloneable {
     * 
     * @return The sortDirection value
     */
-   public boolean getSortDirection() {
+   public int getSortDirection() {
       return sortDirection;
    }
 
@@ -621,8 +621,16 @@ public class FieldValue implements Cloneable {
     * @param fv the array of FieldValue objects
     */
    public static void invert(FieldValue[] fv) {
-      for (int i = 0; i < fv.length; i++)
-         fv[i].setSortDirection(!fv[i].getSortDirection());
+      for (int i = 0; i < fv.length; i++) {
+         switch (fv[i].getSortDirection()) {
+            case Constants.ORDER_ASCENDING :
+               fv[i].setSortDirection(Constants.ORDER_DESCENDING);
+               break;
+            case Constants.ORDER_DESCENDING :
+               fv[i].setSortDirection(Constants.ORDER_ASCENDING);
+               break;
+         }
+      }
    }
 
    /**

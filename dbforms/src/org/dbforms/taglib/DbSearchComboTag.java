@@ -218,23 +218,22 @@ public class DbSearchComboTag extends DbSearchTag implements DataContainer,
 
       String oldValue = ParseUtil.getParameter(request, paramNameBuf.toString());
 
-      if ((oldValue != null) && (oldValue.trim().length() > 0))
+      if (!Util.isNull(oldValue))
       {
          selectedIndex = oldValue;
       }
-
+		boolean isSelected = false;
       if (embeddedData != null)
       { // no embedded data is nested in this tag
 
-         if ((customEntry != null) && (customEntry.trim().length() > 0))
+         if (!Util.isNull(customEntry))
          {
             String  aKey       = org.dbforms.util.ParseUtil
                .getEmbeddedStringWithoutDots(customEntry, 0, ',');
             String  aValue     = org.dbforms.util.ParseUtil
                .getEmbeddedStringWithoutDots(customEntry, 1, ',');
-            boolean isSelected = false;
 
-            if ((selectedIndex == null) || (selectedIndex.trim().length() == 0))
+            if (Util.isNull(selectedIndex))
             {
                isSelected = "true".equals(org.dbforms.util.ParseUtil
                      .getEmbeddedStringWithoutDots(customEntry, 2, ','));
@@ -252,7 +251,10 @@ public class DbSearchComboTag extends DbSearchTag implements DataContainer,
             String       aValue = aKeyValuePair.getValue();
 
             // select, if datadriven and data matches with current value OR if explicitly set by user
-            boolean isSelected = aKey.equals(selectedIndex);
+			if (Util.isNull(selectedIndex) && !isSelected)
+			   isSelected = i == 0;
+			else 
+               isSelected = aKey.equals(selectedIndex);
             tagBuf.append(generateTagString(aKey, aValue, isSelected));
          }
       }

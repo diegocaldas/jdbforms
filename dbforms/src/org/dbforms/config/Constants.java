@@ -29,13 +29,12 @@ package org.dbforms.config;
  *
  * @author hkk
  */
-public class Constants
-{
+public class Constants {
    public static final String FIELDNAME_PREFIX = "f_";
 
    public static final String FIELDNAME_OLDVALUETAG = "o";
 
-   public static final String FIELDNAME_PATTERNTAG  = "p";
+   public static final String FIELDNAME_PATTERNTAG = "p";
 
    /** DOCUMENT ME! */
    public static final String FIELDNAME_INSERTPREFIX = "ins";
@@ -110,8 +109,11 @@ public class Constants
    public static final int FILTER_NOT_EMPTY = 10;
 
    /** DOCUMENT ME! */
-   public static final boolean ORDER_ASCENDING = false;
+   public static final int ORDER_NONE = -1;
 
    /** DOCUMENT ME! */
-   public static final boolean ORDER_DESCENDING = true;
+   public static final int ORDER_ASCENDING = 0;
+
+   /** DOCUMENT ME! */
+   public static final int ORDER_DESCENDING = 1;
 }

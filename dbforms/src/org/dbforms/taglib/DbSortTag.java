@@ -116,7 +116,7 @@ public class DbSortTag extends DbBaseHandlerTag
          // ---- ascending ----
          tagBuf.append("<option value=\"asc\"");
 
-         if ("asc".equals(oldValue))
+         if ("asc".equalsIgnoreCase(oldValue))
          {
             tagBuf.append(" selected ");
          }
@@ -126,7 +126,7 @@ public class DbSortTag extends DbBaseHandlerTag
          // ---- descending ----
          tagBuf.append("<option value=\"desc\"");
 
-         if ("desc".equals(oldValue))
+         if ("desc".equalsIgnoreCase(oldValue))
          {
             tagBuf.append(" selected ");
          }
