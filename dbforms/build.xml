@@ -53,6 +53,9 @@
   <property name="taglibdoc.dir" value="${doc.dir}/taglib" />
   <property name="taglib.dir" value="${dist.dir}/taglib" />
   <property name="bin.dir" value="${cvs.workingdir}/bin" />
+  <property name="textfiles.patterns" value="**/*.html,**/*.xml,**/*.java,**/*.txt,**/*.properties,**/*.xsd,**/*.xsl,**/*.bat,**/*.sh,**/*.php,**/*.properties,Readme,ReleaseNotes*,Change*,CommonMistakes,Todo" />
+
+
   <property environment="env" />
 
   <!-- Indentify Classpath -->
@@ -309,7 +312,6 @@
       <fileset dir="${dist.dir}" includes="*.tld,*.jar" />
     </copy>
     <!-- modify all text files to have dos/win lineends -->
-    <property name="textfiles.patterns" value="**/*.html,**/*.xml,**/*.java,**/*.txt,**/*.properties,**/*.xsd,**/*.xsl,**/*.bat,**/*.sh, Change*,CommonMistakes,Todo" />
     <echo message="modifying temporary files to contain dos/win lineends" />
     <fixcrlf srcDir="${dbforms.releaseDir}" eol="crlf" includes="${textfiles.patterns}" />
     <!-- create zip release: -->
@@ -339,8 +341,8 @@
 
 
   <target name="forcedos">
-    <echo message="forcedos for all java files" />
-    <fixcrlf srcDir="${javasrc.dir}" eol="crlf" includes="**/*.java" />
+    <echo message="forcedos for all text files" />
+    <fixcrlf srcDir="${cvs.workingdir}" eol="crlf" includes="${textfiles.patterns}" />
   </target>
 
 

@@ -167,7 +167,9 @@
                 <check>
                     <innerclass>false</innerclass>
                     <tags>false</tags>
+                    <throwsTags>false</throwsTags>
                 </check>
+                <fieldsShort>true</fieldsShort>
                 <generate>
                     <class>5</class>
                     <constructor>5</constructor>
@@ -233,7 +235,7 @@
                 <packages>java:2|gnu:2|javax:2</packages>
             </grouping>
             <policy>disabled</policy>
-            <sort>false</sort>
+            <sort>true</sort>
         </imports>
         <indentation>
             <caseFromSwitch>true</caseFromSwitch>
@@ -267,20 +269,22 @@
             </tabs>
         </indentation>
         <misc>
-            <forceFormatting>false</forceFormatting>
+            <arrayBracketsAfterIdent>false</arrayBracketsAfterIdent>
+            <forceFormatting>true</forceFormatting>
             <insertExpressionParentheses>true</insertExpressionParentheses>
             <insertLoggingConditional>false</insertLoggingConditional>
+            <insertTrailingNewline>true</insertTrailingNewline>
             <insertUID>false</insertUID>
         </misc>
         <sorting>
             <declaration>
-                <class>false</class>
-                <constructor>false</constructor>
-                <enable>false</enable>
-                <interface>false</interface>
-                <method>false</method>
+                <class>true</class>
+                <constructor>true</constructor>
+                <enable>true</enable>
+                <interface>true</interface>
+                <method>true</method>
                 <order>static|field|initializer|constructor|method|interface|class</order>
-                <variable>false</variable>
+                <variable>true</variable>
             </declaration>
             <modifier>
                 <enable>true</enable>
