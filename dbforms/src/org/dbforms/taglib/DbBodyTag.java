@@ -21,13 +21,14 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.taglib;
-import java.util.*;
-import java.sql.*;
-import java.io.*;
-import javax.servlet.jsp.*;
-import javax.servlet.jsp.tagext.*;
 
-import org.dbforms.util.*;
+import javax.servlet.jsp.JspWriter;
+import javax.servlet.jsp.JspException;
+
+import javax.servlet.jsp.tagext.BodyTagSupport;
+
+import org.dbforms.util.ResultSetVector;
+import org.dbforms.util.Util;
 import org.apache.log4j.Category;
 
 
@@ -146,8 +147,8 @@ public class DbBodyTag extends BodyTagSupport
       //
       // now the key of the current dataset is printed out (always)
       // this key will be used by actions such as delete or update.
-      String curKeyString = myParent.getTable().getKeyPositionString(myParent
-            .getResultSetVector());
+      String curKeyString = Util.encode(myParent.getTable().getKeyPositionString(myParent
+            .getResultSetVector()));
 
       myParent.appendToChildElementOutput("<input type=\"hidden\" name=\"k_"
          + myParent.getTable().getId() + "_" + myParent.getPositionPath()

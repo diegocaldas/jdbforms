@@ -46,7 +46,7 @@ import org.dbforms.config.*;
 public abstract class WebEvent
 {
    /** logging category for this class */
-   static Category logCat = Category.getInstance(WebEvent.class.getName());
+	protected static  Category logCat = Category.getInstance(WebEvent.class.getName());
 
    /** the  HttpServletRequest object */
    protected HttpServletRequest request;
