@@ -85,7 +85,7 @@ public abstract class EventFactory
      * @param  einfo the EventInfo object to add to
      * @exception  Exception Description of the Exception
      */
-    public void addEventInfo(EventInfo einfo) throws Exception
+    public void addEventInfo(EventInfo einfo)
     {
         if (eventInfoMap != null)
         {
@@ -93,14 +93,31 @@ public abstract class EventFactory
             // or their type value (if the id is null or empty).
             String id = einfo.getId();
 
-/**** 20021219-HKK: Remove this exception so that events could be overloaded
+            // event info override;
             if (eventInfoMap.containsKey(id))
             {
-                throw new Exception("a database event information having id [" + id + "] is already registered into the factory");
+                EventInfo prevEinfo = (EventInfo)eventInfoMap.get(id);
+
+                if (prevEinfo != null)
+                {
+                  String prevClassName = prevEinfo.getClassName();
+
+                  logCat.warn(new StringBuffer("::addEventInfo - the event information having id, class [")
+                              .append(id).append(", ")
+                              .append(einfo.getClass())
+                              .append("] overrides the event class [")
+                              .append(prevClassName).append("]")
+                              .toString());
+                }
             }
-****/
+
+            // event info registration;
             eventInfoMap.put(id, einfo);
-            logCat.info(new StringBuffer("::addEventInfo - event info having id, type, class [").append(id).append(", ").append(einfo.getType()).append(", ").append(einfo.getClassName()).append("] registered"));
+
+            logCat.info(new StringBuffer("::addEventInfo - event info having id, type, class [")
+                            .append(id).append(", ").append(einfo.getType())
+                            .append(", ").append(einfo.getClassName())
+                            .append("] registered"));
         }
     }
 
