@@ -13,6 +13,7 @@
 				<table>
 			</db:header>
 			<db:body>
+                <input type="hidden" name="currentRow" value="<db:pos/>" />
 				<tr>
 					<td><db:textField fieldName="BOOK_ID"/></a>&nbsp;</td>
 					<td><db:textField fieldName="ISBN"/>&nbsp;</td>
@@ -38,6 +39,13 @@
 							<db:navLastButton  caption="last"/>
 							<db:navReloadButton  caption="reload"/>
 		                	<db:navNewButton   caption="New" showAlwaysInFooter="false" />
+                            <db:gotoButton     
+                               caption="goto same record" 
+                               keyToKeyToDestPos="currentRow" 
+                               destTable="BOOK" 
+                               destination="/tests/testBOOKSSingle2.jsp" 
+                               singleRow="true"
+                             />
 		                </td>
 					</tr>
 				</table>
