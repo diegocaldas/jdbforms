@@ -1470,7 +1470,7 @@ public class DbFormTag extends TagSupportWithScriptHandler
          // write out the locale
          tagBuf.append("<input type=\"hidden\" name=\"lang" + "\" value=\""
             + locale.getLanguage() + "\"/>");
-         tagBuf.append("<imput type=\"hidden\" name=\"country" + "\" value=\""
+         tagBuf.append("<input type=\"hidden\" name=\"country" + "\" value=\""
             + locale.getCountry() + "\"/>");
 
          // write out the followupOnError-default for this table
