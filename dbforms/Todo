@@ -3,8 +3,8 @@ $Revision$
 $Date$
 
 
-				DbForms v.1.1
-				=============
+				DbForms v.1.1.3
+				===============
 
 TO DO
 ------
@@ -17,8 +17,6 @@ TO DO
 
 * Make the resultSetVector class more accessible.  Allow it to be cached and manipulated.
 
-* Allow access to multiple databases.
-
 * Generate DTD files for dbForms-config.xml and dbForms-errors.xml.
 
 * Include support for DBCS. 
@@ -26,7 +24,6 @@ TO DO
 * Allow free-form queries (whereClause attribute in dbform tag) to be used in conjunction with DbForms navigation.
 
 * On multiple-row updates, update only the rows for which fields have been modified.
-
 
 
 If you wish to participate in the development of any of the above tasks, or have your own dbForms wish list.
