@@ -297,14 +297,14 @@ public class TimeUtil
     */
    private static class ISO8601
    {
-      public int    year;
-      public int    month;
-      public int    day;
-      public int    hour;
-      public int    min;
-      public int    sec;
-      public int    frac;
-      public String tz;
+      private int    year;
+		private int    month;
+		private int    day;
+		private int    hour;
+		private int    min;
+		private int    sec;
+		private int    frac;
+		private String tz;
    }
 
    private static String reISO8601 = "(\\d\\d\\d\\d)(-(\\d\\d)(-(\\d\\d))?)?"

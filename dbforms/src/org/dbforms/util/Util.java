@@ -20,17 +20,19 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-package org.dbforms.util;
 
+package org.dbforms.util;
 import java.net.URLEncoder;
 import java.net.URLDecoder;
-
 import org.dbforms.config.DbFormsConfig;
+
+
 
 /**
  * Simple general utility class
  */
-public class Util {
+public class Util
+{
    private static final String REALPATH = "$(SERVLETCONTEXT_REALPATH)";
 
    /**
@@ -39,9 +41,11 @@ public class Util {
     * @param s the string value to test
     * @return true if the input string is null or empty, false otherwise
     */
-   public static final boolean isNull(String s) {
+   public static final boolean isNull(String s)
+   {
       return ((s == null) || (s.trim().length() == 0));
    }
+
 
    /**
     * DOCUMENT ME!
@@ -50,9 +54,11 @@ public class Util {
     *
     * @return DOCUMENT ME!
     */
-   public static final boolean isNull(ResultSetVector rsv) {
+   public static final boolean isNull(ResultSetVector rsv)
+   {
       return ((rsv == null) || (rsv.size() == 0));
    }
+
 
    /**
     *  Replaces the occurens from REALPATH in s with realpath.
@@ -62,13 +68,20 @@ public class Util {
     * @return the input string, with the REALPATH token replaced with the
     *         realpath value
     */
-   public static final String replaceRealPath(String s, String realpath) {
-      if (!isNull(realpath)) {
+   public static final String replaceRealPath(String s, String realpath)
+   {
+      if (!isNull(realpath))
+      {
          // 20030604-HKK: Bugfixing for different engine, e.g. cactus. Path maybe without trailing '/'!!!
          if (realpath.charAt(realpath.length() - 1) != '/')
+         {
             realpath = realpath + '/';
+         }
+
          int i = s.indexOf(REALPATH);
-         if (i >= 0) {
+
+         if (i >= 0)
+         {
             StringBuffer buf = new StringBuffer();
             buf.append(s.substring(0, i));
             buf.append(realpath);
@@ -80,6 +93,7 @@ public class Util {
       return s;
    }
 
+
    /**
     *  Replaces the occurens from REALPATH in s with config.getRealPath().
     *
@@ -88,9 +102,11 @@ public class Util {
     * @return the input string, with the REALPATH token replaced with the
     *         realpath value taken from the config object
     */
-   public static final String replaceRealPath(String s, DbFormsConfig config) {
+   public static final String replaceRealPath(String s, DbFormsConfig config)
+   {
       return replaceRealPath(s, config.getRealPath());
    }
+
 
    /**
     * Encodes a string with "ISO8859-1". This is the default
@@ -99,12 +115,16 @@ public class Util {
     * @param s the string to encode
     * @return the encoded string
     */
-   public static final String encode(String s) {
-      if (!Util.isNull(s)) {
+   public static final String encode(String s)
+   {
+      if (!Util.isNull(s))
+      {
          s = URLEncoder.encode(s);
       }
+
       return s;
    }
+
 
    /**
     * Decodes a string with "ISO8859-1". This is the default
@@ -113,12 +133,16 @@ public class Util {
     * @param s the string to encode
     * @return the encoded string
     */
-   public static final String decode(String s) {
-      if (!Util.isNull(s)) {
+   public static final String decode(String s)
+   {
+      if (!Util.isNull(s))
+      {
          s = URLDecoder.decode(s);
       }
+
       return s;
    }
+
 
    /**
     *  Dump the fieldValue objects contained into the input FieldValue array.
@@ -127,17 +151,19 @@ public class Util {
     * @return the String object containing the dumped data,
     *         or null if the input array is null
     */
-   public static final String dumpFieldValueArray(FieldValue[] fv) {
+   public static final String dumpFieldValueArray(FieldValue[] fv)
+   {
       String s = null;
 
-      if (fv != null) {
+      if (fv != null)
+      {
          StringBuffer sb = new StringBuffer();
 
-         for (int i = 0; i < fv.length; i++) {
+         for (int i = 0; i < fv.length; i++)
+         {
             FieldValue f = fv[i];
-            sb.append("  fv[").append(i).append("] = {").append(
-               f.toString()).append(
-               "}\n");
+            sb.append("  fv[").append(i).append("] = {").append(f.toString())
+              .append("}\n");
          }
 
          s = sb.toString();
