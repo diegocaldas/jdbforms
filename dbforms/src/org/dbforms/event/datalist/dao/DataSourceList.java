@@ -115,7 +115,6 @@ public class DataSourceList
     * @throws SQLException DOCUMENT ME!
     */
    public DataSourceFactory remove(Table table, HttpServletRequest request)
-      throws SQLException
    {
       DataSourceFactory result = (DataSourceFactory) ht.remove(getKey(
                table, request));

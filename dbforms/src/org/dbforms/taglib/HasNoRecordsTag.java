@@ -22,15 +22,18 @@
  */
 package org.dbforms.taglib;
 
-import org.dbforms.util.*;
+
 import java.io.IOException;
-import javax.servlet.http.*;
+
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.TagSupport;
+
 import org.apache.log4j.Category;
-import java.util.*;
+
+import org.dbforms.util.Util;
+import org.dbforms.util.DbFormsErrors;
 
 
 
@@ -58,9 +61,7 @@ public class HasNoRecordsTag extends DbBaseHandlerTag
     */
    public int doStartTag() throws JspException
    {
-      int rsvSize = parentForm.getResultSetVector().size();
-
-      if (rsvSize == 0)
+      if (Util.isNull(parentForm.getResultSetVector()))
       {
          return EVAL_BODY_BUFFERED;
       }

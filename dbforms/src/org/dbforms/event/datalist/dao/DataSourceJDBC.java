@@ -20,6 +20,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
+
 package org.dbforms.event.datalist.dao;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -27,10 +28,10 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.PreparedStatement;
 import java.sql.Connection;
-
+import java.sql.Types;
+import java.sql.Clob;
 import java.util.Vector;
 import java.util.Enumeration;
-
 import org.apache.log4j.Category;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.Field;
@@ -48,10 +49,9 @@ import org.dbforms.util.Util;
 
 
 /**
- *
- * Special implementation of DataSource. This is the default class and deals with JDBC Connections.
- *
- *
+ * Special implementation of DataSource. This is the default class and deals
+ * with JDBC Connections.
+ * 
  * @author hkk
  */
 public class DataSourceJDBC extends DataSource
@@ -70,91 +70,88 @@ public class DataSourceJDBC extends DataSource
    private FieldValue[]  filterConstraint;
    private FieldValue[]  orderConstraint;
    private DbFormsConfig config;
-   private boolean       endReached;
 
-   // To overcome a bug in firebird driver: next after lastStatement will restart!
+   /**
+    * Creates a new DataSourceJDBC object.
+    *
+    * @param table DOCUMENT ME!
+    */
    public DataSourceJDBC(Table table)
    {
       super(table);
-      data    = new Vector();
-      keys    = new Vector();
+      data = new Vector();
+      keys = new Vector();
    }
 
    /**
     * DOCUMENT ME!
     *
+    * @throws Throwable DOCUMENT ME!
+    */
+   protected void finalize() throws Throwable
+   {
+      close();
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    * 
     * @param config DOCUMENT ME!
     * @param dbConnectionName DOCUMENT ME!
     */
    public void setConnection(DbFormsConfig config, String dbConnectionName)
    {
-      try
-      {
-         close();
-      }
-      catch (SQLException e)
-      {
-         SqlUtil.logSqlException(e);
-      }
-
-      this.config              = config;
-      this.dbConnectionName    = dbConnectionName;
+      close();
+      this.config           = config;
+      this.dbConnectionName = dbConnectionName;
    }
 
 
    /**
     * DOCUMENT ME!
-    *
+    * 
     * @param con DOCUMENT ME!
     */
    public void setConnection(Connection con)
    {
-      try
-      {
-         close();
-      }
-      catch (SQLException e)
-      {
-         SqlUtil.logSqlException(e);
-      }
-
+      close();
       this.con = con;
    }
 
 
    /**
     * DOCUMENT ME!
-    *
+    * 
     * @param tableList DOCUMENT ME!
     * @param whereClause DOCUMENT ME!
     */
    public void setSelect(String tableList, String whereClause)
    {
-      this.tableList      = tableList;
-      this.whereClause    = whereClause;
+      this.tableList   = tableList;
+      this.whereClause = whereClause;
    }
 
 
    /**
     * DOCUMENT ME!
-    *
+    * 
     * @param filterConstraint DOCUMENT ME!
     * @param orderConstraint DOCUMENT ME!
     */
-   public void setSelect(FieldValue[] filterConstraint,
-      FieldValue[] orderConstraint)
+   public void setSelect(FieldValue[] filterConstraint, 
+                         FieldValue[] orderConstraint)
    {
-      this.filterConstraint    = filterConstraint;
-      this.orderConstraint     = orderConstraint;
+      this.filterConstraint = filterConstraint;
+      this.orderConstraint  = orderConstraint;
    }
 
 
    /**
     * DOCUMENT ME!
-    *
-    * @throws SQLException DOCUMENT ME!
+    * 
     */
-   public void close() throws SQLException
+   public void close()
    {
       if (data != null)
       {
@@ -168,19 +165,42 @@ public class DataSourceJDBC extends DataSource
 
       if (rs != null)
       {
-         rs.close();
+         try
+         {
+            rs.close();
+         }
+         catch (SQLException e)
+         {
+				SqlUtil.logSqlException(e);
+         }
+
          rs = null;
       }
 
       if (stmt != null)
       {
-         stmt.close();
+         try
+         {
+            stmt.close();
+         }
+         catch (SQLException e)
+         {
+				SqlUtil.logSqlException(e);
+         }
+
          stmt = null;
       }
 
       if (ownCon)
       {
-         con.close();
+         try
+         {
+            con.close();
+         }
+         catch (SQLException e)
+         {
+				SqlUtil.logSqlException(e);
+         }
          con = null;
       }
 
@@ -190,31 +210,34 @@ public class DataSourceJDBC extends DataSource
 
    /**
     * DOCUMENT ME!
-    *
+    * 
     * @throws SQLException DOCUMENT ME!
     */
    protected void open() throws SQLException
    {
       if (rs == null)
       {
-         ownCon      = true;
-         con         = SqlUtil.getConnection(config, dbConnectionName);
+         ownCon = true;
+         con    = SqlUtil.getConnection(config, dbConnectionName);
 
          if (Util.isNull(whereClause))
          {
-            query    = getTable().getSelectQuery(getTable().getFields(),
-                  filterConstraint, orderConstraint, Constants.COMPARE_NONE);
-            stmt    = con.prepareStatement(query);
-            rs      = getTable().getDoSelectResultSet(filterConstraint,
-                  orderConstraint, Constants.COMPARE_NONE,
-                  (PreparedStatement) stmt);
+            query = getTable()
+                       .getSelectQuery(getTable().getFields(), filterConstraint, 
+                                       orderConstraint, Constants.COMPARE_NONE);
+            stmt = con.prepareStatement(query);
+            rs   = getTable()
+                      .getDoSelectResultSet(filterConstraint, orderConstraint, 
+                                            Constants.COMPARE_NONE, 
+                                            (PreparedStatement) stmt);
          }
          else
          {
-            query    = getTable().getFreeFormSelectQuery(getTable().getFields(),
-                  whereClause, tableList);
-            stmt    = con.createStatement();
-            rs      = stmt.executeQuery(query);
+            query = getTable()
+                       .getFreeFormSelectQuery(getTable().getFields(), 
+                                               whereClause, tableList);
+            stmt = con.createStatement();
+            rs   = stmt.executeQuery(query);
          }
 
          ResultSetMetaData rsmd = rs.getMetaData();
@@ -229,8 +252,16 @@ public class DataSourceJDBC extends DataSource
 
       for (int i = 0; i < colCount; i++)
       {
-         Object obj = rs.getObject(i + 1);
-         objectRow[i] = obj;
+         if (rs.getMetaData().getColumnType(i + 1) == Types.CLOB)
+         {
+            Clob tmpObj = (Clob) rs.getObject(i + 1);
+            objectRow[i] = tmpObj.getSubString((long) 1, (int) tmpObj.length());
+         }
+         else
+         {
+            Object tmpObj = rs.getObject(i + 1);
+            objectRow[i] = tmpObj;
+         }
       }
 
       return objectRow;
@@ -242,7 +273,15 @@ public class DataSourceJDBC extends DataSource
       String[] objectRow = new String[colCount];
 
       for (int i = 0; i < colCount; i++)
-         objectRow[i] = rs.getString(i + 1);
+         if (rs.getMetaData().getColumnType(i + 1) == Types.CLOB)
+         {
+            Clob tmpObj = (Clob) rs.getObject(i + 1);
+            objectRow[i] = tmpObj.getSubString((long) 1, (int) tmpObj.length());
+         }
+         else
+         {
+            objectRow[i] = rs.getString(i + 1);
+         }
 
       return objectRow;
    }
@@ -250,11 +289,11 @@ public class DataSourceJDBC extends DataSource
 
    /**
     * DOCUMENT ME!
-    *
+    * 
     * @param startRow DOCUMENT ME!
-    *
+    * 
     * @return DOCUMENT ME!
-    *
+    * 
     * @throws SQLException DOCUMENT ME!
     */
    protected int findStartRow(String startRow) throws SQLException
@@ -298,11 +337,11 @@ public class DataSourceJDBC extends DataSource
 
    /**
     * DOCUMENT ME!
-    *
+    * 
     * @param i DOCUMENT ME!
-    *
+    * 
     * @return DOCUMENT ME!
-    *
+    * 
     * @throws SQLException DOCUMENT ME!
     */
    protected final Object[] getRow(int i) throws SQLException
@@ -337,9 +376,9 @@ public class DataSourceJDBC extends DataSource
 
    /**
     * DOCUMENT ME!
-    *
+    * 
     * @return DOCUMENT ME!
-    *
+    * 
     * @throws SQLException DOCUMENT ME!
     */
    protected int size() throws SQLException
@@ -367,7 +406,7 @@ public class DataSourceJDBC extends DataSource
 
    //------------------------------ DAO methods ---------------------------------
    private int fillWithData(PreparedStatement ps, FieldValues fieldValues)
-      throws SQLException
+                     throws SQLException
    {
       // now we provide the values;
       // every key is the parameter name from of the form page;
@@ -383,7 +422,9 @@ public class DataSourceJDBC extends DataSource
          {
             FieldValue fv = fieldValues.get(fieldName);
 
-            logCat.debug("Retrieved curField:" + curField.getName() + " type:" + curField.getType());
+            logCat.debug("Retrieved curField:" + curField.getName() + " type:"
+                         + curField.getType());
+
             int    fieldType = curField.getType();
             Object value = null;
 
@@ -403,9 +444,10 @@ public class DataSourceJDBC extends DataSource
                   String fileName = fileHolder.getFileName();
                   int    dotIndex = fileName.lastIndexOf('.');
                   String suffix   = (dotIndex != -1)
-                     ? fileName.substring(dotIndex) : "";
+                                       ? fileName.substring(dotIndex) : "";
                   fileHolder.setFileName(UniqueIDGenerator.getUniqueID()
-                     + suffix);
+                                         + suffix);
+
 
                   // a diskblob gets stored to db as an ordinary string (it's only the reference!)
                   value = fileHolder.getFileName();
@@ -423,7 +465,7 @@ public class DataSourceJDBC extends DataSource
             }
 
             logCat.info("field=" + curField.getName() + " col=" + col
-               + " value=" + value + " type=" + fieldType);
+                        + " value=" + value + " type=" + fieldType);
             SqlUtil.fillPreparedStatement(ps, col, value, fieldType);
             col++;
          }
@@ -435,20 +477,23 @@ public class DataSourceJDBC extends DataSource
 
    /**
     * DOCUMENT ME!
-    *
+    * 
     * @param fieldValues DOCUMENT ME!
-    *
+    * 
     * @throws SQLException DOCUMENT ME!
     */
    public void doInsert(FieldValues fieldValues) throws SQLException
    {
-      PreparedStatement ps = con.prepareStatement(getTable().getInsertStatement(fieldValues));
+      PreparedStatement ps = con.prepareStatement(getTable()
+                                                     .getInsertStatement(fieldValues));
+
 
       // execute the query & throws an exception if something goes wrong
       fillWithData(ps, fieldValues);
       ps.executeUpdate();
       ps.close();
 
+
       // now handle blob files
       saveBlobFilesToDisk(fieldValues);
    }
@@ -456,23 +501,27 @@ public class DataSourceJDBC extends DataSource
 
    /**
     * DOCUMENT ME!
-    *
+    * 
     * @param fieldValues DOCUMENT ME!
     * @param keyValuesStr DOCUMENT ME!
-    *
+    * 
     * @throws SQLException DOCUMENT ME!
     */
    public void doUpdate(FieldValues fieldValues, String keyValuesStr)
-      throws SQLException
+                 throws SQLException
    {
-      PreparedStatement ps = con.prepareStatement(getTable().getUpdateStatement(fieldValues));
+      PreparedStatement ps  = con.prepareStatement(
+                                       getTable()
+                                          .getUpdateStatement(fieldValues));
       int               col = fillWithData(ps, fieldValues);
       getTable().populateWhereClauseForPS(keyValuesStr, ps, col);
+
 
       // we are now ready to execute the query
       ps.executeUpdate();
       ps.close();
 
+
       // now handle blob files
       saveBlobFilesToDisk(fieldValues);
    }
@@ -480,9 +529,9 @@ public class DataSourceJDBC extends DataSource
 
    /**
     * DOCUMENT ME!
-    *
+    * 
     * @param keyValuesStr DOCUMENT ME!
-    *
+    * 
     * @throws SQLException DOCUMENT ME!
     */
    public void doDelete(String keyValuesStr) throws SQLException
@@ -498,12 +547,13 @@ public class DataSourceJDBC extends DataSource
          queryBuf.append(" WHERE ");
          queryBuf.append(getTable().getWhereClauseForPS());
 
-         PreparedStatement diskblobsPs = con.prepareStatement(queryBuf.toString());
+         PreparedStatement diskblobsPs = con.prepareStatement(
+                                                  queryBuf.toString());
          getTable().populateWhereClauseForPS(keyValuesStr, diskblobsPs, 1);
          diskblobs = diskblobsPs.executeQuery();
 
-         ResultSetVector rsv = new ResultSetVector(getTable().getDiskblobs(),
-               diskblobs);
+         ResultSetVector rsv = new ResultSetVector(getTable().getDiskblobs(), 
+                                                   diskblobs);
 
          if (!Util.isNull(rsv))
          {
@@ -513,11 +563,14 @@ public class DataSourceJDBC extends DataSource
       }
 
       // 20021031-HKK: Build in table!!
-      PreparedStatement ps = con.prepareStatement(getTable().getDeleteStatement());
+      PreparedStatement ps = con.prepareStatement(
+                                      getTable().getDeleteStatement());
+
 
       // now we provide the values
       // of the key-fields, so that the WHERE clause matches the right dataset!
       getTable().populateWhereClauseForPS(keyValuesStr, ps, 1);
+
 
       // finally execute the query
       ps.executeUpdate();

@@ -20,13 +20,13 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
+
 package org.dbforms.event.datalist.dao;
 import java.io.File;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.sql.Connection;
 import java.sql.SQLException;
-
 import org.apache.log4j.Category;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.Field;
@@ -42,10 +42,8 @@ import org.dbforms.util.Util;
 
 
 /**
- *
  * Abstract base class for DataSource.
- *
- *
+ * 
  * @author hkk
  */
 public abstract class DataSource
@@ -56,7 +54,7 @@ public abstract class DataSource
 
    /**
     * Creates a new DataSource object.
-    *
+    * 
     * @param table table for the DataSource
     */
    public DataSource(Table table)
@@ -66,9 +64,9 @@ public abstract class DataSource
 
    /**
     * gets the Table for the DataSource
-    *
+    * 
     * @return Table
-       */
+    */
    public Table getTable()
    {
       return table;
@@ -76,10 +74,9 @@ public abstract class DataSource
 
 
    /**
-    * set the connection parameter for the DataSouce
-    * virtual method, if you need connection data you must override the
-    * method
-    *
+    * set the connection parameter for the DataSouce virtual method, if you
+    * need connection data you must override the method
+    * 
     * @param config             DbFormConfig object
     * @param dbConnectionName    name of the connection to use
     */
@@ -89,10 +86,9 @@ public abstract class DataSource
 
 
    /**
-    * set the connection parameter for the DataSouce
-    * virtual method, if you need connection data you must override the
-    * method
-    *
+    * set the connection parameter for the DataSouce virtual method, if you
+    * need connection data you must override the method
+    * 
     * @param con this costructor gets an SQL Connection object
     */
    public void setConnection(Connection con)
@@ -101,16 +97,16 @@ public abstract class DataSource
 
 
    /**
-    * Sets the select data for this dataSource for free form selects.
-    * default methods just raises an exception
-    *
-    *  @param tableList      the list of tables involved into the query
-    *  @param whereClause    free-form whereClause to be appended to query
-    *
+    * Sets the select data for this dataSource for free form selects. default
+    * methods just raises an exception
+    * 
+    * @param tableList      the list of tables involved into the query
+    * @param whereClause    free-form whereClause to be appended to query
+    * 
     * @throws SQLException
     */
    public void setSelect(String tableList, String whereClause)
-      throws SQLException
+                  throws SQLException
    {
       throw new SQLException("Free form select not implemented");
    }
@@ -118,20 +114,22 @@ public abstract class DataSource
 
    /**
     * Sets the select data for this dataSource
-    *
-    * @param filterConstraint FieldValue array used to restrict a set in a resultset
-    * @param orderConstraint FieldValue array used to build a cumulation of rules for ordering
-    *                         (sorting)
+    * 
+    * @param filterConstraint FieldValue array used to restrict a set in a
+    *        resultset
+    * @param orderConstraint FieldValue array used to build a cumulation of
+    *        rules for ordering (sorting)
+    * @param maxRows        max rows to fetcht
     */
-   public abstract void setSelect(FieldValue[] filterConstraint,
-      FieldValue[] orderConstraint);
+   public abstract void setSelect(FieldValue[] filterConstraint, 
+                                  FieldValue[] orderConstraint);
 
 
    /**
     * performs an insert into the DataSource
-    *
+    * 
     * @param fieldValues FieldValues to insert
-    *
+    * 
     * @throws SQLException
     */
    public void doInsert(FieldValues fieldValues) throws SQLException
@@ -141,32 +139,33 @@ public abstract class DataSource
 
    /**
     * performs an update into the DataSource
-    *
+    * 
     * @param fieldValues    FieldValues to update
-    * @param keyValuesStr   keyValueStr to the row to update
-    *                        key format: FieldID ":" Length ":" Value
-    *                        example: if key id = 121 and field id=2 then keyValueStr contains "2:3:121"
-    *
-    *                        if the key consists of more than one fields, the key values are seperated through "-"
-    *                        example: value of field 1=12, value of field 3=1992, then we'll get "1:2:12-3:4:1992"
-    *
+    * @param keyValuesStr   keyValueStr to the row to update key format:
+    *        FieldID ":" Length ":" Value example: if key id = 121 and field
+    *        id=2 then keyValueStr contains "2:3:121" if the key consists of
+    *        more than one fields, the key values are seperated through "-"
+    *        example: value of field 1=12, value of field 3=1992, then we'll
+    *        get "1:2:12-3:4:1992"
+    * 
     * @throws SQLException
     */
    public void doUpdate(FieldValues fieldValues, String keyValuesStr)
-      throws SQLException
+                 throws SQLException
    {
    }
 
 
    /**
     * performs an delete in the DataSource
-    *
-    * @param keyValuesStr   keyValueStr to the row to update
-    *                        key format: FieldID ":" Length ":" Value
-    *                        example: if key id = 121 and field id=2 then keyValueStr contains "2:3:121"
-    *                        if the key consists of more than one fields, the key values are seperated through "-"
-    *                        example: value of field 1=12, value of field 3=1992, then we'll get "1:2:12-3:4:1992"
-    *
+    * 
+    * @param keyValuesStr   keyValueStr to the row to update key format:
+    *        FieldID ":" Length ":" Value example: if key id = 121 and field
+    *        id=2 then keyValueStr contains "2:3:121" if the key consists of
+    *        more than one fields, the key values are seperated through "-"
+    *        example: value of field 1=12, value of field 3=1992, then we'll
+    *        get "1:2:12-3:4:1992"
+    * 
     * @throws SQLException
     */
    public void doDelete(String keyValuesStr) throws SQLException
@@ -175,28 +174,26 @@ public abstract class DataSource
 
 
    /**
-   * should close all open datasets
-   *
-   * @throws SQLException
-   */
-   public void close() throws SQLException
+    * should close all open datasets
+    */
+   public void close()
    {
    }
 
 
    /**
-   * Will be called to open all datasets
-   *
-   * @throws SQLException
-   */
+    * Will be called to open all datasets
+    * 
+    * @throws SQLException
+    */
    protected abstract void open() throws SQLException;
 
 
    /**
     * Must return the size of the whole resultset with all data fetch
-    *
+    * 
     * @return size of whole resultset
-    *
+    * 
     * @throws SQLException
     */
    protected abstract int size() throws SQLException;
@@ -204,11 +201,11 @@ public abstract class DataSource
 
    /**
     * should retrieve the row at an special index as an Object[]
-    *
+    * 
     * @param i index of row to fetch
-    *
+    * 
     * @return Object[] of the fetched row
-    *
+    * 
     * @throws SQLException
     */
    protected abstract Object[] getRow(int i) throws SQLException;
@@ -216,37 +213,39 @@ public abstract class DataSource
 
    /**
     * maps the startRow to the internal index
-    *
-    * @param startRow       keyValueStr to the row
-    *                        key format: FieldID ":" Length ":" Value
-    *                        example: if key id = 121 and field id=2 then keyValueStr contains "2:3:121"
-    *                        if the key consists of more than one fields, the key values are seperated through "-"
-    *                        example: value of field 1=12, value of field 3=1992, then we'll get "1:2:12-3:4:1992"
-    *
+    * 
+    * @param startRow       keyValueStr to the row key format: FieldID ":"
+    *        Length ":" Value example: if key id = 121 and field id=2 then
+    *        keyValueStr contains "2:3:121" if the key consists of more than
+    *        one fields, the key values are seperated through "-" example:
+    *        value of field 1=12, value of field 3=1992, then we'll get
+    *        "1:2:12-3:4:1992"
+    * 
     * @return the index of the row, 0 as first row if not found
-    *
+    * 
     * @throws SQLException
     */
    protected abstract int findStartRow(String startRow)
-      throws SQLException;
+                                throws SQLException;
 
 
    /**
     * get count next rows from position
-    *
-    * @param position       keyValueStr to the row
-    *                        key format: FieldID ":" Length ":" Value
-    *                        example: if key id = 121 and field id=2 then keyValueStr contains "2:3:121"
-    *                        if the key consists of more than one fields, the key values are seperated through "-"
-    *                        example: value of field 1=12, value of field 3=1992, then we'll get "1:2:12-3:4:1992"
+    * 
+    * @param position       keyValueStr to the row key format: FieldID ":"
+    *        Length ":" Value example: if key id = 121 and field id=2 then
+    *        keyValueStr contains "2:3:121" if the key consists of more than
+    *        one fields, the key values are seperated through "-" example:
+    *        value of field 1=12, value of field 3=1992, then we'll get
+    *        "1:2:12-3:4:1992"
     * @param count          count of rows to fetch
-    *
+    * 
     * @return the fetched ResultSetVector
-    *
+    * 
     * @throws SQLException
     */
    public ResultSetVector getNext(String position, int count)
-      throws SQLException
+                           throws SQLException
    {
       open();
 
@@ -263,20 +262,21 @@ public abstract class DataSource
 
    /**
     * get count rows backwards from position
-    *
-    * @param position       keyValueStr to the row
-    *                        key format: FieldID ":" Length ":" Value
-    *                        example: if key id = 121 and field id=2 then keyValueStr contains "2:3:121"
-    *                        if the key consists of more than one fields, the key values are seperated through "-"
-    *                        example: value of field 1=12, value of field 3=1992, then we'll get "1:2:12-3:4:1992"
+    * 
+    * @param position       keyValueStr to the row key format: FieldID ":"
+    *        Length ":" Value example: if key id = 121 and field id=2 then
+    *        keyValueStr contains "2:3:121" if the key consists of more than
+    *        one fields, the key values are seperated through "-" example:
+    *        value of field 1=12, value of field 3=1992, then we'll get
+    *        "1:2:12-3:4:1992"
     * @param count          count of rows to fetch
-    *
+    * 
     * @return the fetched ResultSetVector
-    *
+    * 
     * @throws SQLException
     */
    public ResultSetVector getPrev(String position, int count)
-      throws SQLException
+                           throws SQLException
    {
       open();
 
@@ -293,11 +293,11 @@ public abstract class DataSource
 
    /**
     * get count rows from first row
-    *
+    * 
     * @param count          count of rows to fetch
-    *
+    * 
     * @return the fetched ResultSetVector
-    *
+    * 
     * @throws SQLException
     */
    public ResultSetVector getFirst(int count) throws SQLException
@@ -315,42 +315,37 @@ public abstract class DataSource
 
    /**
     * get count rows from last row
-    *
-    * @param position       keyValueStr to the row to update
-    *                        key format: FieldID ":" Length ":" Value
-    *                        example: if key id = 121 and field id=2 then keyValueStr contains "2:3:121"
-    *                        if the key consists of more than one fields, the key values are seperated through "-"
-    *                        example: value of field 1=12, value of field 3=1992, then we'll get "1:2:12-3:4:1992"
+    * 
     * @param count          count of rows to fetch
-    *
+    * 
     * @return the fetched ResultSetVector
-    *
+    * 
     * @throws SQLException
     */
    public ResultSetVector getLast(int count) throws SQLException
    {
       open();
-
       return getResultSetVector(size() - 1, -count);
    }
 
 
    /**
     * get count rows from position
-    *
-    * @param position       keyValueStr to the row
-    *                        key format: FieldID ":" Length ":" Value
-    *                        example: if key id = 121 and field id=2 then keyValueStr contains "2:3:121"
-    *                        if the key consists of more than one fields, the key values are seperated through "-"
-    *                        example: value of field 1=12, value of field 3=1992, then we'll get "1:2:12-3:4:1992"
+    * 
+    * @param position       keyValueStr to the row key format: FieldID ":"
+    *        Length ":" Value example: if key id = 121 and field id=2 then
+    *        keyValueStr contains "2:3:121" if the key consists of more than
+    *        one fields, the key values are seperated through "-" example:
+    *        value of field 1=12, value of field 3=1992, then we'll get
+    *        "1:2:12-3:4:1992"
     * @param count          count of rows to fetch
-    *
+    * 
     * @return the fetched ResultSetVector
-    *
+    * 
     * @throws SQLException
     */
    public ResultSetVector getCurrent(String position, int count)
-      throws SQLException
+                              throws SQLException
    {
       open();
 
@@ -366,58 +361,63 @@ public abstract class DataSource
 
 
    private ResultSetVector getResultSetVector(int startRow, int count)
-      throws SQLException
+                                       throws SQLException
    {
       ResultSetVector result = null;
-      if (size() > 0)
-      {
-         result = new ResultSetVector(table.getFields());
-         Object[] row;
-         if (count > 0)
-         {
-            for (int i = startRow; i < (startRow + count); i++)
-            {
-               row = getRow(i);
-               if (row == null)
-               {
-                  break;
-               }
-               result.addRow(row);
-            }
-         }
-         else if (count < 0)
-         {
-            int begin = startRow + count + 1;
-            if (begin < 0)
-            {
-               begin = 0;
-            }
-            for (int i = begin; i <= startRow; i++)
-            {
-               row = getRow(i);
-               if (row == null)
-               {
-                  break;
-               }
+      result = new ResultSetVector(table.getFields());
 
-               result.addRow(row);
+      Object[] row;
+
+      if (count > 0)
+      {
+         for (int i = startRow; i < (startRow + count); i++)
+         {
+            row = getRow(i);
+
+            if (row == null)
+            {
+               break;
             }
+
+            result.addRow(row);
          }
       }
+      else if (count < 0)
+      {
+         int begin = startRow + count + 1;
+
+         if (begin < 0)
+         {
+            begin = 0;
+         }
+
+         for (int i = begin; i <= startRow; i++)
+         {
+            row = getRow(i);
+
+            if (row == null)
+            {
+               break;
+            }
+
+            result.addRow(row);
+         }
+      }
+
       return result;
    }
 
 
    /**
     * save the blob files to disk
-    *
+    * 
     * @param fieldValues    FieldValues to update
-    *
+    * 
     * @throws SQLException
     * @throws IllegalArgumentException
     */
    protected void saveBlobFilesToDisk(FieldValues fieldValues)
-      throws SQLException
+                               throws SQLException
    {
       Enumeration enum = fieldValues.keys();
 
@@ -437,7 +437,7 @@ public abstract class DataSource
                if (directory == null)
                {
                   throw new IllegalArgumentException(
-                     "directory-attribute needed for fields of type DISKBLOB");
+                           "directory-attribute needed for fields of type DISKBLOB");
                }
 
                // instanciate file object for that dir
@@ -447,24 +447,26 @@ public abstract class DataSource
                if (!dir.isDirectory())
                {
                   throw new IllegalArgumentException("Not a directory: "
-                     + directory);
+                                                     + directory);
                }
 
                // Check saveDirectory is writable
                if (!dir.canWrite())
                {
                   throw new IllegalArgumentException("Not writable: "
-                     + directory);
+                                                     + directory);
                }
 
                // dir is ok so lets store the filepart
-               FileHolder fileHolder = fieldValues.get(fieldName).getFileHolder();
+               FileHolder fileHolder = fieldValues.get(fieldName)
+                                                  .getFileHolder();
 
                if (fileHolder != null)
                {
                   try
                   {
                      fileHolder.writeBufferToFile(dir);
+
 
                      //filePart.getInputStream().close();
                      logCat.info("fin + closedy");
@@ -473,8 +475,8 @@ public abstract class DataSource
                   {
                      //#checkme: this would be a good place for rollback in database!!
                      throw new SQLException("could not store file '"
-                        + fileHolder.getFileName() + "' to dir '" + directory
-                        + "'");
+                                            + fileHolder.getFileName()
+                                            + "' to dir '" + directory + "'");
                   }
                }
                else
@@ -489,14 +491,13 @@ public abstract class DataSource
 
    /**
     * save the blob files to disk
-    *
+    * 
     * @param fieldValues    FieldValues to delete, called by
-    *
+    * 
     * @throws SQLException
-    * @throws IllegalArgumentException
     */
    protected void deleteBlobFilesFromDisk(FieldValues fieldValues)
-      throws SQLException
+                                   throws SQLException
    {
       Enumeration enum = fieldValues.keys();
 
@@ -528,12 +529,12 @@ public abstract class DataSource
                   {
                      file.delete();
                      logCat.info("deleted file " + fileName + " from dir "
-                        + dir);
+                                 + dir);
                   }
                   else
                   {
                      logCat.info("delete of file " + fileName + " from dir "
-                        + dir + " failed because file not found");
+                                 + dir + " failed because file not found");
                   }
                }
             }

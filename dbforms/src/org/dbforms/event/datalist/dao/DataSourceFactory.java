@@ -147,9 +147,8 @@ public class DataSourceFactory
    /**
     * DOCUMENT ME!
     *
-    * @throws SQLException DOCUMENT ME!
     */
-   public void close() throws SQLException
+   public void close()
    {
       dataHandler.close();
    }
