@@ -20,15 +20,13 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
+
 package org.dbforms.servlets.reports;
 
 /**
- *
  * Helper class send as parameter to JasperReports. So it is not neccesary to
  * send all the stuff in different parameters
- *
- * @author hkk
- *
+ * 
  */
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Connection;
@@ -39,9 +37,9 @@ import org.dbforms.util.ParseUtil;
 
 /**
  * DOCUMENT ME!
- *
- * @author $author$
+ * 
  * @version $Revision$
+ * @author $author$
  */
 public class ReportParameter
 {
@@ -51,21 +49,24 @@ public class ReportParameter
 
    /**
     * Creates a new ReportParameter object.
-    *
+    * 
     * @param request DOCUMENT ME!
     * @param connection DOCUMENT ME!
     * @param reportPath DOCUMENT ME!
     */
-   public ReportParameter(HttpServletRequest request, Connection connection,
-      String reportPath)
+   public ReportParameter(HttpServletRequest request, Connection connection, 
+                          String reportPath)
    {
-      this.request       = request;
-      this.connection    = connection;
-      this.reportPath    = reportPath;
+      this.request    = request;
+      this.connection = connection;
+      this.reportPath = reportPath;
    }
 
    /**
     * Returns a message
+    * 
+    * @param msg DOCUMENT ME!
+    * 
     * @return String
     */
    public String getMessage(String msg)
@@ -76,6 +77,9 @@ public class ReportParameter
 
    /**
     * Returns a request parameter
+    * 
+    * @param param DOCUMENT ME!
+    * 
     * @return String
     */
    public String getParameter(String param)
@@ -86,6 +90,7 @@ public class ReportParameter
 
    /**
     * Returns the connection.
+    * 
     * @return Connection
     */
    public Connection getConnection()
@@ -96,6 +101,7 @@ public class ReportParameter
 
    /**
     * Returns the reportPath.
+    * 
     * @return String
     */
    public String getReportPath()

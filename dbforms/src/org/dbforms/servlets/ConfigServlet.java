@@ -187,7 +187,7 @@ public class ConfigServlet extends HttpServlet
          // logging category for this class
          logCat.info("### LOGGING INITALIZED, USING BASIC CONFIGURATION.");
          logCat.info(
-                  "### You can use init-parameter \"log4j.configuration\" in web.xml for defining individual properties, if you want. Check DbForms manual!");
+          "### You can use init-parameter \"log4j.configuration\" in web.xml for defining individual properties, if you want. Check DbForms manual!");
       }
    }
 
@@ -598,7 +598,6 @@ public class ConfigServlet extends HttpServlet
     * 
     * @throws IOException DOCUMENT ME!
     * @throws ServletException DOCUMENT ME!
-    * @throws UnavailableException DOCUMENT ME!
     */
    protected void initXMLConfigFile(String config, int digesterDebugLevel)
                              throws IOException, ServletException
