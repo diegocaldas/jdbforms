@@ -421,7 +421,7 @@ public class TimeUtil {
    }
 
 
-   private static void splitDate(final String format,
+   public static void splitDate(final String format,
                                  StringBuffer sDate,
                                  StringBuffer sTime) {
       sDate.setLength(0);

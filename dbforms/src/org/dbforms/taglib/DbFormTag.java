@@ -2521,6 +2521,9 @@ public class DbFormTag extends TagSupportWithScriptHandler
                            + aSearchFieldValue + " ", "-");
                      int             tokenCounter = 0;
 
+                     StringBuffer merkeDate = new StringBuffer();
+                     StringBuffer merkeTime = new StringBuffer();
+                     
                      while (st.hasMoreTokens()) {
                         aSearchFieldValue = st.nextToken().trim();
                         tokenCounter++;
@@ -2529,11 +2532,20 @@ public class DbFormTag extends TagSupportWithScriptHandler
                            switch (tokenCounter) {
                               case 1:
                                  operator = Constants.FILTER_GREATER_THEN_EQUAL;
-
+                                 TimeUtil.splitDate(aSearchFieldValue, merkeDate, merkeTime);
                                  break;
 
                               case 2:
                                  operator = Constants.FILTER_SMALLER_THEN_EQUAL;
+                                 StringBuffer mDate = new StringBuffer();
+                                 StringBuffer mTime = new StringBuffer();
+                                 TimeUtil.splitDate(aSearchFieldValue, mDate, mTime);
+                                 if (mDate.length() == 0) {
+                                 	mDate.append(merkeDate);
+                                 }
+                                 mDate.append(" ");
+                                 mDate.append(mTime);
+                                 aSearchFieldValue = mDate.toString();
 
                                  break;
 
