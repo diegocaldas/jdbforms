@@ -37,6 +37,7 @@
    <xsl:attribute name="content"><xsl:value-of select="author"/></xsl:attribute> 
    </meta>
    <title><xsl:value-of select="title"/></title>
+   <link rel="stylesheet" href="taglib-stylesheet.css" type="text/css"/>
   </xsl:template>
 
   <!-- =========================================================== -->

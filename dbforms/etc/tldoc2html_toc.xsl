@@ -20,6 +20,7 @@
   <xsl:template match="document">
      <html>
      <head>
+     <link rel="stylesheet" href="taglib-stylesheet.css" type="text/css"/>
      </head> 
      <body vlink="#023264" alink="#023264" link="#023264"
            text="#000000" bgcolor="#ffffff">
