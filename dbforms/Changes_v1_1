@@ -1,3 +1,34 @@
+2002-11-07
+(Henner.Kollmann@gmx.de):
+	dbforms/ConfigServlet.java
+		Extended with query syntax, cleaned up connection stuff
+	dbforms/DbFormsConfig.java
+		Added query stuff
+	dbforms/Field.java
+		New property expression, needed for query stuff
+	dbforms/FieldValue.java
+		form filter will work with null, not null now
+		use expression in getWhereClause and getWhereEqualsSearchClause
+		moved getOrderClause to table
+	dbforms/Query.java
+		New class, derived form Table to support query syntax in dbforms-config.
+	dbforms/Table.java
+		Insert query stuff
+	dbforms/event/DeleteEvent.java
+		Insert query stuff
+	dbforms/event/InsertEvent.java
+		Insert query stuff
+	dbforms/event/UpdateEvent.java
+		Insert query stuff
+	dbforms/taglib/DbFormTag.java
+		form filter will work with null, notIsNull now
+		SYNTAX: fieldname ISNULL
+			fieldname NOTISNULL
+	dbforms/util/MessageResources.java
+		added public static String getMessage(HttpServletRequest request, String msg)
+	dbforms/util/ParseUtil.java
+		added public static boolean hasSearchFields(ServletRequest request)
+
 2002-11-5 (dikr):
 
 New classes to model foreign key references:
