@@ -100,7 +100,7 @@ Happy coding!
 
 
     <!-- compile dbforms core sources -->
-    <target name="compile" depends="prepare,failIfBadPath" unless="path.ok">
+    <target name="compile" depends="prepare,failIfBadPath">
 
 
         <!-- Required when building in eclipse (WSAD) -->
@@ -201,13 +201,18 @@ Happy coding!
         
         <!-- xerces.jar, xalan.jar might be neccessary for other tasks, but are disturbing with tomcat 4 -->
         <!-- FIXME: must be documented what do do with other servers.... -->
-       <delete file="${build.dir}/${example.name}/WEB-INF/lib/xerces.jar"/>
-       <delete file="${build.dir}/${example.name}/WEB-INF/lib/xalan.jar"/>
+        <delete file="${build.dir}/${example.name}/WEB-INF/lib/xerces.jar"/>
+        <delete file="${build.dir}/${example.name}/WEB-INF/lib/xalan.jar"/>
        
         <!-- compile example-specific Java code -->
         <echo message="compiling example specific code"/>
         <mkdir dir="${build.dir}/${example.name}/WEB-INF/classes"/>
-        <javac srcdir="${build.dir}/${example.name}/src" destdir="${build.dir}/${example.name}/WEB-INF/classes" debug="on" optimize="off" deprecation="off" classpath="${dist.dir}/dbforms${dbforms.version}.jar"/>
+        <javac srcdir="${build.dir}/${example.name}/src" destdir="${build.dir}/${example.name}/WEB-INF/classes" debug="on" optimize="off" deprecation="off">
+            <classpath>
+                <path refid="classpath"/>
+                <pathelement location="${dist.dir}/dbforms${dbforms.version}.jar"/>
+            </classpath>
+        </javac>
         <echo message="finished compiling example specific code"/>
 
         <!-- creating WAR file for this example -->
