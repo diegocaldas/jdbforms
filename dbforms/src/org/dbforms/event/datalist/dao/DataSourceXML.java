@@ -22,31 +22,27 @@
  */
 
 package org.dbforms.event.datalist.dao;
+
 import org.apache.log4j.Category;
+
 import java.util.Vector;
-import java.sql.SQLException;
+import java.util.Hashtable;
 
 import java.net.URI;
-import java.net.URLConnection;
-import java.io.InputStream;
-import java.io.OutputStream;
+
+import java.sql.SQLException;
+import java.sql.Connection;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.ls.DOMWriter;
 
-import org.apache.xpath.domapi.XPathEvaluatorImpl;
-import org.xml.sax.InputSource;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
-
-
+import org.dbforms.dom.DOMFactory;
 import org.dbforms.config.Constants;
 import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.Field;
 import org.dbforms.config.FieldValue;
+import org.dbforms.config.FieldValues;
 import org.dbforms.config.Table;
+
 import org.dbforms.util.Util;
 
 /**
@@ -61,13 +57,8 @@ public class DataSourceXML extends DataSource {
    private FieldValue[] sqlFilterParams;
    private String sqlFilter;
    private XMLDataResult data;
-   private String[] keys;
-   private Object[][] dataObject;
-
-	private static DocumentBuilderFactory dfactory         = null;
-	private static DocumentBuilder        builder          = null;
-	private static XPathEvaluatorImpl     evaluator        = null;  
-	private static DOMWriter 			  writer           = null;
+   private Hashtable keys;
+   private Object[][] dataObject = null;
 
    /**
     * Contructor
@@ -76,20 +67,6 @@ public class DataSourceXML extends DataSource {
     */
    public DataSourceXML(Table table) {
       super(table);
-      if (dfactory == null) {
-         try {
-            dfactory = DocumentBuilderFactory.newInstance();
-            dfactory.setValidating(false);
-            dfactory.setNamespaceAware(false);
-            builder = dfactory.newDocumentBuilder();
-            evaluator = new XPathEvaluatorImpl();
-		    writer = new org.apache.xml.serialize.DOMWriterImpl();
-			writer.setEncoding("ISO-8859-1");
-			writer.setNewLine("CR-LF");
-         } catch (Exception e) {
-            logCat.error(e);
-         }
-      }
    }
 
    /**
@@ -115,60 +92,56 @@ public class DataSourceXML extends DataSource {
    }
 
    /**
+    * performs an update into the DataSource
+    * 
+    * @param fieldValues  FieldValues to update
+    * @param keyValuesStr keyValueStr to the row to update<br>
+    *        key format: FieldID ":" Length ":" Value<br>
+    *        example: if key id = 121 and field id=2 then keyValueStr contains "2:3:121"<br>
+    *        If the key consists of more than one fields, the key values are
+    *        seperated through "-"<br>
+    *        example: value of field 1=12, value of field 3=1992, then we'll
+    *        get "1:2:12-3:4:1992"
+    * 
+    * @throws SQLException if any error occurs
+    */
+   public void doUpdate(Connection con, FieldValues fieldValues, String keyValuesStr) throws SQLException {
+      //      int start = findStartRow(keyValuesStr);
+   }
+
+   /**
     * Will be called to open all datasets
     * 
     * @throws SQLException
     */
    protected final void open() throws SQLException {
-      try {
-         URI url = getURI();
-         data =
-            new XMLDataResult(evaluator, read(url), url.getQuery());
-      } catch (Exception e) {
-         logCat.error(e);
+      if (dataObject == null) {
+         try {
+            URI url = getURI();
+            data = new XMLDataResult(DOMFactory.instance().newXPathEvaluator(), read(url), url.getQuery());
+         } catch (Exception e) {
+            logCat.error(e);
+            throw new SQLException(e.getMessage());
+         }
+         keys = new Hashtable();
+         dataObject = new Object[size()][];
       }
-      keys = new String[size()];
-      dataObject = new Object[size()][];
    }
 
    /**
     * should close all open datasets
     */
    protected final void close() {
-      if (data.hasChanged()) {
+      if ((data != null) && data.hasChanged()) {
          try {
-			URI url = getURI();
-            write(url, data.getDocument());
+            write(getURI(), data.getDocument());
          } catch (Exception e) {
             logCat.error(e);
          }
       }
-   }
-
-   private URI getURI() throws Exception {
-      return getURI(getXPath());
-   }   	
-   
-   private URI getURI(String qry) {
-      URI url = null;
-
-      // Check if we got a full URI
-      try {
-         url = new URI(qry);
-      } catch (Exception e) {
-         logCat.error(e);
-      }
-
-      // No valid URI given, put query into to query part of the 
-      // URI object
-      if (url == null) {
-         try {
-            url = new URI(null, null, null, qry, null);
-         } catch (Exception e) {
-            logCat.error(e);
-         }
-      }
-      return url;
+      if (keys != null)
+         keys.clear();
+      dataObject = null;
    }
 
    /**
@@ -179,13 +152,7 @@ public class DataSourceXML extends DataSource {
     * @throws SQLException
     */
    protected final int size() throws SQLException {
-      int res = 0;
-
-      if (data != null) {
-         res = data.size();
-      }
-
-      return res;
+      return (data != null) ? data.size() : 0;
    }
 
    /**
@@ -219,13 +186,10 @@ public class DataSourceXML extends DataSource {
     * @throws SQLException
     */
    protected final int findStartRow(String startRow) throws SQLException {
-      for (int i = 0; i < size(); i++) {
-         if (getKey(i).equals(startRow)) {
-            return i;
-         }
-      }
-
-      return 0;
+      Integer res = null;
+      if (!Util.isNull(startRow))
+         res = (Integer) keys.get(startRow);
+      return (res != null) ? res.intValue() : 0;
    }
 
    /**
@@ -238,7 +202,27 @@ public class DataSourceXML extends DataSource {
     * @throws SQLException
     */
    protected final Object[] getRow(int currRow) throws SQLException {
-      return getValuesAsObject(currRow);
+      if ((currRow < 0) || (currRow >= dataObject.length)) {
+         return null;
+      }
+
+      if (dataObject[currRow] == null) {
+         Vector fields = getTable().getFields();
+         Object[] objectRow = new Object[fields.size()];
+         String[] stringRow = new String[fields.size()];
+
+         for (int i = 0; i < fields.size(); i++) {
+            Field f = (Field) fields.elementAt(i);
+            objectRow[i] =
+               data.getItemValue(currRow, Util.isNull(f.getExpression()) ? f.getName() : f.getExpression(), f.getType());
+            stringRow[i] = (objectRow[i] != null) ? objectRow[i].toString() : null;
+         }
+         String key = getTable().getKeyPositionString(stringRow);
+         keys.put(key, new Integer(currRow));
+         dataObject[currRow] = objectRow;
+      }
+
+      return dataObject[currRow];
    }
 
    /**
@@ -250,30 +234,18 @@ public class DataSourceXML extends DataSource {
     * 
     * @throws Exception Exception during processing IO
     */
-	protected Document read(URI uri) throws Exception
-	{
-		URLConnection con = uri.toURL().openConnection();
-		con.connect();
-		InputStream in  = con.getInputStream();
-		InputSource src = new InputSource(in);
-		Document    doc = builder.parse(src);
-		return doc;
-	}
-
+   protected Document read(URI url) throws Exception {
+      return DOMFactory.instance().read(url.getPath());
+   }
 
    /**
     * saves the document to the remote system.
     * 
     * @throws Exception Exception during processing IO
     */
-	protected void write(URI uri, Document doc) throws Exception
-	{
-		URLConnection con = uri.toURL().openConnection();
-		con.connect();
-		OutputStream out  = con.getOutputStream();
-		writer.writeNode(out, doc);
-	}
-
+   protected void write(URI url, Document doc) throws Exception {
+      DOMFactory.instance().write(url.getPath(), doc);
+   }
 
    private String insertParamsInSqlFilter() {
       /** substitute ? with corresponding value in list */
@@ -329,10 +301,7 @@ public class DataSourceXML extends DataSource {
             }
 
             Field f = filterConstraint[i].getField();
-            buf.append(
-               Util.isNull(f.getExpression())
-                  ? f.getName()
-                  : f.getExpression());
+            buf.append(Util.isNull(f.getExpression()) ? f.getName() : f.getExpression());
 
             // Check what type of operator is required
             switch (filterConstraint[i].getOperator()) {
@@ -376,16 +345,34 @@ public class DataSourceXML extends DataSource {
       return buf.toString();
    }
 
-   private String getFilePath() throws Exception {
-      return Util.replaceRealPath(
-         getTable().getAlias(),
-         DbFormsConfigRegistry.instance().lookup().getRealPath());
+   private URI getURI() throws Exception {
+      URI url = null;
+      String qry = getFilePath() + getQuery();
+      // Check if we got a full URI
+      try {
+         url = new URI(qry);
+      } catch (Exception e) {
+         logCat.error(e);
+      }
+
+      // No valid URI given, put query into to query part of the 
+      // URI object
+      if (url == null) {
+         try {
+            url = new URI(null, null, null, qry, null);
+         } catch (Exception e) {
+            logCat.error(e);
+         }
+      }
+      return url;
    }
 
-   private String getXPath() throws Exception {
-      StringBuffer buf = new StringBuffer();
-      buf.append(getFilePath());
+   private String getFilePath() throws Exception {
+      return Util.replaceRealPath(getTable().getAlias(), DbFormsConfigRegistry.instance().lookup().getRealPath());
+   }
 
+   private String getQuery() throws Exception {
+      StringBuffer buf = new StringBuffer();
       String filter = parseFilterConstraint();
       String sqlFilter = insertParamsInSqlFilter();
 
@@ -400,55 +387,7 @@ public class DataSourceXML extends DataSource {
          buf.append(sqlFilter);
          buf.append("]");
       }
-
       return buf.toString();
    }
 
-   private String getKey(int index) throws SQLException {
-      if (keys[index] == null) {
-         Vector fields = getTable().getFields();
-         String[] objectRow = new String[fields.size()];
-
-         for (int i = 0; i < fields.size(); i++) {
-            Field f = (Field) fields.elementAt(i);
-            objectRow[i] =
-               data.getString(
-                  index,
-                  Util.isNull(f.getExpression())
-                     ? f.getName()
-                     : f.getExpression(),
-                  f.getType());
-         }
-
-         keys[index] = getTable().getKeyPositionString(objectRow);
-      }
-
-      return keys[index];
-   }
-
-   private Object[] getValuesAsObject(int index) throws SQLException {
-      if ((index < 0) || (index >= dataObject.length)) {
-         return null;
-      }
-
-      if (dataObject[index] == null) {
-         Vector fields = getTable().getFields();
-         Object[] objectRow = new Object[fields.size()];
-
-         for (int i = 0; i < fields.size(); i++) {
-            Field f = (Field) fields.elementAt(i);
-            objectRow[i] =
-               data.getItemValue(
-                  index,
-                  Util.isNull(f.getExpression())
-                     ? f.getName()
-                     : f.getExpression(),
-                  f.getType());
-         }
-
-         dataObject[index] = objectRow;
-      }
-
-      return dataObject[index];
-   }
 }
