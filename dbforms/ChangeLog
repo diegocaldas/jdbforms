@@ -1,3 +1,34 @@
+2004-06-03
+(Henner.Kollmann@gmx.de)
+new attribute compareWith for SearchCombo:
+      if set to "index" the index value will be used to compare against the selected value.
+      if set to "value" the value value will be used to compare against the selected value.
+      if set to "list" the index of the list will be used to compare against the selected value
+      default is "index".
+
+2004-06-01
+(Henner.Kollmann@gmx.de)
+renamed the seldom used format attribute (which returns a java.Text.Format) to formatter
+because of a naming conflict with format attribute in embedded data classes
+
+2004-05-12
+(Henner.Kollmann@gmx.de)
+added country support to locales.
+
+2004-05-30
+(javajunkie@users.sourceforge.net)
+Changed autoupdate:
+	if "true", at every action (navigation, insert, update, etc.) all input fields of ALL currently rendered rowsets are parsed and updated. 
+	if "OnUpdateOnly", updates are only performed if an explicite "update"- action is launched 
+	(normally by hitting the updateAction-button)
+
+2004-05-30
+(krabatz@gmx.net)
+if the autocomplete value is specified then the attribute is inserted in the form tag. 
+if the value is "off" and if the browser has autocompletion ability, it can be disabled with this tag. 
+Any value will be accepted for autocomplete. e.g. autocomplete="any", 
+the generated HTML code is: <form name="dbforms" ... autocomplete="any" ... >
+
 2004-05-12
 (Henner.Kollmann@gmx.de)
   - added country support for locale, thanks to christianrechner@freenet.de
