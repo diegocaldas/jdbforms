@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <project 
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
       xsi:noNamespaceSchemaLocation="http://maven.apache.org/xsd/maven-project-3.0.0.xsd"
@@ -400,7 +400,8 @@
             <war.bundle>false</war.bundle>
          </properties>
       </dependency>
-<!-- testing only -->
+      
+      <!-- testing only -->
       <dependency>
          <id>httpunit</id>
          <version>1.5.4</version>
@@ -417,13 +418,14 @@
       </dependency>
       <dependency>
          <id>cactus</id>
-         <version>13-1.6</version>
+         <version>13-1.7dev20041109</version>
          <properties>
             <war.bundle>false</war.bundle>
          </properties>
       </dependency>
-      <!-- for building with servletapi 2.3
--->
+
+      <!-- for building against servletapi 2.3
+       -->
       <dependency>
          <id>servletapi</id>
          <version>2.3</version>
@@ -440,7 +442,7 @@
          </properties>
       </dependency>
 
-<!-- for building with servletapi 2.4
+<!-- for building against servletapi 2.4
     <dependency>
       <id>servletapi</id>
       <version>2.4-20040521</version>
@@ -458,13 +460,12 @@
        </properties>
     </dependency>         
 -->
-      <!-- used for the taglib report! -->
+      <!-- plugins used for maven reports! -->
       <dependency>
          <groupId>cactus</groupId>
          <artifactId>cactus-maven</artifactId>
-         <version>1.6</version>
+         <version>1.7dev20041109</version>
          <type>plugin</type>
-         <url>http://jakarta.apache.org/cactus/integration/maven/</url>
          <properties>
             <war.bundle>false</war.bundle>
          </properties>
