@@ -47,7 +47,7 @@ public class TestBooksSingleXML extends AbstractTestBase
 		assertTrue(responseContains("Das Foucaltsche Pendel"));
 
 		list = new ArrayList();
-		list.add(new NVPair("invtable", "1"));
+		list.add(new NVPair("invtable", "7"));
 		list.add(new NVPair("invname_7", "null"));
 		list.add(new NVPair("autoupdate_7", "false"));
 		list.add(new NVPair("fu_7", "/tests/testBOOKSSingleXML.jsp"));
@@ -67,7 +67,7 @@ public class TestBooksSingleXML extends AbstractTestBase
 		assertTrue(responseContains("Hijacking through the Galaxy 1"));
 
 		list = new ArrayList();
-		list.add(new NVPair("invtable", "1"));
+		list.add(new NVPair("invtable", "7"));
 		list.add(new NVPair("invname_7", "null"));
 		list.add(new NVPair("autoupdate_7", "false"));
 		list.add(new NVPair("fu_7", "/tests/testBOOKSSingleXML.jsp"));
@@ -87,7 +87,7 @@ public class TestBooksSingleXML extends AbstractTestBase
 		assertTrue(responseContains("Hijacking through the Galaxy 2"));
 
 		list = new ArrayList();
-		list.add(new NVPair("invtable", "1"));
+		list.add(new NVPair("invtable", "7"));
 		list.add(new NVPair("invname_7", "null"));
 		list.add(new NVPair("autoupdate_7", "false"));
 		list.add(new NVPair("fu_7", "/tests/testBOOKSSingleXML.jsp"));
@@ -107,7 +107,7 @@ public class TestBooksSingleXML extends AbstractTestBase
 		assertTrue(responseContains("Hijacking through the Galaxy 3"));
 
 		list = new ArrayList();
-		list.add(new NVPair("invtable", "1"));
+		list.add(new NVPair("invtable", "7"));
 		list.add(new NVPair("invname_7", "null"));
 		list.add(new NVPair("autoupdate_7", "false"));
 		list.add(new NVPair("fu_7", "/tests/testBOOKSSingleXML.jsp"));
@@ -127,7 +127,7 @@ public class TestBooksSingleXML extends AbstractTestBase
 		assertTrue(responseContains("Hijacking through the Galaxy 4"));
 
 		list = new ArrayList();
-		list.add(new NVPair("invtable", "1"));
+		list.add(new NVPair("invtable", "7"));
 		list.add(new NVPair("invname_7", "null"));
 		list.add(new NVPair("autoupdate_7", "false"));
 		list.add(new NVPair("fu_7", "/tests/testBOOKSSingleXML.jsp"));
@@ -147,7 +147,7 @@ public class TestBooksSingleXML extends AbstractTestBase
 		assertTrue(responseContains("Test null value"));
 
 		list = new ArrayList();
-		list.add(new NVPair("invtable", "1"));
+		list.add(new NVPair("invtable", "7"));
 		list.add(new NVPair("invname_7", "null"));
 		list.add(new NVPair("autoupdate_7", "false"));
 		list.add(new NVPair("fu_7", "/tests/testBOOKSSingleXML.jsp"));
@@ -167,7 +167,7 @@ public class TestBooksSingleXML extends AbstractTestBase
 		assertTrue(responseContains("Luca's favorite thing to eat is  \"delicious Italian pasta\""));
 
 		list = new ArrayList();
-		list.add(new NVPair("invtable", "1"));
+		list.add(new NVPair("invtable", "7"));
 		list.add(new NVPair("invname_7", "null"));
 		list.add(new NVPair("autoupdate_7", "false"));
 		list.add(new NVPair("fu_7", "/tests/testBOOKSSingleXML.jsp"));
@@ -196,7 +196,7 @@ public class TestBooksSingleXML extends AbstractTestBase
 		assertTrue(responseContains("Hijacking through the Galaxy 6"));
 
 		list = new ArrayList();
-		list.add(new NVPair("invtable", "1"));
+		list.add(new NVPair("invtable", "7"));
 		list.add(new NVPair("invname_7", "null"));
 		list.add(new NVPair("autoupdate_7", "false"));
 		list.add(new NVPair("fu_7", "/tests/testBOOKSSingleXML.jsp"));
@@ -216,7 +216,7 @@ public class TestBooksSingleXML extends AbstractTestBase
 		assertTrue(responseContains("Hijacking through the Galaxy 6"));
 
 		list = new ArrayList();
-		list.add(new NVPair("invtable", "1"));
+		list.add(new NVPair("invtable", "7"));
 		list.add(new NVPair("invname_7", "null"));
 		list.add(new NVPair("autoupdate_7", "false"));
 		list.add(new NVPair("fu_7", "/tests/testBOOKSSingleXML.jsp"));
@@ -236,7 +236,7 @@ public class TestBooksSingleXML extends AbstractTestBase
 		assertTrue(responseContains("Die Insel des vorigen Tages"));
 
 		list = new ArrayList();
-		list.add(new NVPair("invtable", "1"));
+		list.add(new NVPair("invtable", "7"));
 		list.add(new NVPair("invname_7", "null"));
 		list.add(new NVPair("autoupdate_7", "false"));
 		list.add(new NVPair("fu_7", "/tests/testBOOKSSingleXML.jsp"));
