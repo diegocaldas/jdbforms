@@ -1,8 +1,10 @@
 package com.foo.bar;
 
-import java.util.*;
-import java.sql.*;
-import org.dbforms.DbFormsConfig;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.Hashtable;
+import java.sql.Connection;
+import org.dbforms.config.DbFormsConfig;
 import org.dbforms.event.DbEventInterceptorSupport;
 import org.dbforms.event.ValidationException;
 
