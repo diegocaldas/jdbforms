@@ -1476,7 +1476,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
    		   SqlUtil.closeConnection(con);
 		}
 
-		return EVAL_BODY_TAG;
+		return EVAL_BODY_BUFFERED;
 	}
 
 	/**
@@ -1492,7 +1492,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
 
 		// rsv may be null in empty-forms (where not tableName attribute is provided)
 		if (!footerReached) {
-			return EVAL_BODY_TAG;
+			return EVAL_BODY_BUFFERED;
 		} else {
 			return SKIP_BODY;
 		}
