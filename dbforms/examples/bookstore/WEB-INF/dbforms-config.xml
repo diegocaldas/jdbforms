@@ -108,14 +108,15 @@
 		</table>
 
 		<table name="BLOBTEST">
+			<field name="NAME" fieldType="varchar" isKey="true" />
 			<field 
 				name="FILE" 
 				fieldType="DISKBLOB"  
 				directory="c:/temp"
 			    encoding="true"
 			    size="1200"
-				isKey="true"
 			/>
+            <interceptor className = "interceptors.BLOBTESTEventInterceptor"/>                
 		</table>
 
         <query name="BOOK_QUERY_WHERE" from="BOOK" where="BOOK_ID=1">
