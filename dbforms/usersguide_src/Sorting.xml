@@ -469,8 +469,15 @@ Searching is done with:</emphasis></entry>
 </sect2>
 <sect2><title>Search Example</title><para>This is a fully functional search panel. It is included in the example application included in the DbForms distribution.
 You may also test it on the running live samples at the DbForms Website.</para>
-<para>Figure 20 Example for dynamic filtering
-</para>
+ 
+<mediaobject  id="dynamic_filtering">  
+  <imageobject  role="html">
+    <imagedata  format="PNG"  fileref="images/figures/dynamic_filtering.png"/>
+  </imageobject>
+  <imageobject  role="fo">
+    <imagedata  format="PNG"  fileref="../images/figures/dynamic_filtering.png"/>
+  </imageobject>
+</mediaobject>
 <para>This is the code responsible for creating the panel above. In the context of this example, the use of the hashtable should be clear.  As mentioned above, this mechanism may be applied on any other database fields, using any html widgets for data input.
 </para>
 <screen>
