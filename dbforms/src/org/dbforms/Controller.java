@@ -133,7 +133,6 @@ public class Controller extends HttpServlet
 
         Hashtable connections = new Hashtable();
         String contentType = request.getContentType();
-        String formValidatorName = request.getParameter(ValidatorConstants.FORM_VALIDATOR_NAME);
 
         processLocale(request);
 
@@ -178,6 +177,7 @@ public class Controller extends HttpServlet
                 {
                     // if hidden formValidatorName exist and it's an Update or Insert event,
                     // doValidation with Commons-Validator
+                	  String formValidatorName = request.getParameter(ValidatorConstants.FORM_VALIDATOR_NAME + "_" + e.getTableId());
                     if ((formValidatorName != null) &&
                         (e instanceof UpdateEvent || e instanceof InsertEvent))
                     {
@@ -233,40 +233,40 @@ public class Controller extends HttpServlet
                     while (eventEnum.hasMoreElements())
                     {
                         DatabaseEvent dbE = (DatabaseEvent) eventEnum.nextElement();
-                        con = getConnection(request, dbE.getTableId(), connections);
-
-                        try
-                        {
-                            // if hidden formValidatorName exist and it's an Update or Insert event,
-                            // doValidation with Commons-Validator
-                            if ((formValidatorName != null) && (dbE instanceof UpdateEvent || dbE instanceof InsertEvent))
-                            {
-                                doValidation(formValidatorName, dbE, request);
-                            }
-
-                            dbE.processEvent(con);
-                        }
-                        catch (SQLException sqle2)
-                        {
-                            errors.addElement(sqle2);
-                            cleanUpConnectionAfterException(con);
-                        }
-                        catch (MultipleValidationException mve)
-                        {
-                            java.util.Vector v = null;
-
-                            if ((v = mve.getMessages()) != null)
-                            {
-                                Enumeration enum = v.elements();
-
-                                while (enum.hasMoreElements())
-                                {
-                                    errors.addElement(enum.nextElement());
-                                }
-                            }
-
-                            cleanUpConnectionAfterException(con);
-                        }
+                    	   // 2003-02-03 HKK: do not do the work twice - without this every event would be generated for each table and event
+                    	   if (t.getId() == dbE.getTableId()) {
+	                        con = getConnection(request, dbE.getTableId(), connections);
+                    	   	// 2003-02-03 HKK: do not do the work twice!!!
+	                    	   String formValidatorName = request.getParameter(ValidatorConstants.FORM_VALIDATOR_NAME + "_" + dbE.getTableId());
+	                        try
+	                        {
+	                            // if hidden formValidatorName exist and it's an Update or Insert event,
+	                            // doValidation with Commons-Validator
+	                            if ((formValidatorName != null) && (dbE instanceof UpdateEvent || dbE instanceof InsertEvent))
+	                            {
+	                                doValidation(formValidatorName, dbE, request);
+	                            }
+	                            dbE.processEvent(con);
+	                        }
+	                        catch (SQLException sqle2)
+	                        {
+	                            errors.addElement(sqle2);
+	                            cleanUpConnectionAfterException(con);
+	                        }
+	                        catch (MultipleValidationException mve)
+	                        {
+	                            java.util.Vector v = null;
+		                            if ((v = mve.getMessages()) != null)
+	                            {
+	                                Enumeration enum = v.elements();
+		                                while (enum.hasMoreElements())
+	                                {
+	                                    errors.addElement(enum.nextElement());
+	                                }
+	                            }
+		                         cleanUpConnectionAfterException(con);
+	                         }
+                    	   }
                     }
                 }
             }

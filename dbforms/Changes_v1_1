@@ -1,3 +1,10 @@
+2003-02-04
+(Henner.Kollmann@gmx.de)
+    Controller.java,DbFormTag.java, DbFormsValidatorUtil.java
+   	refactor validation so that subforms will be validated too.
+    	Works for javascript and server based validation.
+	refactor javascriptFieldsArray so that fields in subform will be generated too.
+
 2003-02-03
 (Henner.Kollmann@gmx.de)
     ConfigServlet.java

@@ -209,7 +209,31 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
     /** form's action attribute */
     private String action;
 
+    /** holds the list of forms to validate (2003-02-04 HKK) */
+    private Vector validationForms;
+    private Hashtable validationFields;
+    
+	/** holds the list of forms to get FieldNames array (2003-02-04 HKK) */
+	 private Hashtable fieldNames;
+    
 
+    /* Adds a form to validate */
+    public void addValidationForm(String formName, Hashtable childFields) {
+       if (validationForms == null)
+          validationForms = new Vector();
+       validationForms.add(formName);
+       if (validationFields == null) 
+          validationFields = new Hashtable();
+       validationFields.putAll(childFields);
+    }
+    	
+ 	 /* Adds a form to validate */
+	 public void addFieldNames(Hashtable fields) {
+		if (fieldNames == null)
+		   fieldNames = new Hashtable();
+		fieldNames.putAll(fields);
+	 } 
+    /** 
     /**
      *  Sets the tableName attribute of the DbFormTag object
      *
@@ -903,7 +927,6 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
      */
     public void addChildName(String tableFieldName, String dbFormGeneratedName)
     {
-        //	childFieldNames.put(tableFieldName, dbFormGeneratedName);
         childFieldNames.put(dbFormGeneratedName, tableFieldName);
     }
 
@@ -1298,15 +1321,15 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
             tagBuf.append("<input type=\"hidden\" name=\"fu_" + tableId + "\" value=\"" + followUp + "\">");
 
             // write out the followupOnError-default for this table
-            if ((getFollowUpOnError() != null) && (getFollowUpOnError().trim().length() > 0))
+            if (!Util.isNull(getFollowUpOnError()))
             {
                 tagBuf.append("<input type=\"hidden\" name=\"fue_" + tableId + "\" value=\"" + getFollowUpOnError() + "\">");
             }
 
             // write out the formValidatorName
-            if ((getFormValidatorName() != null) && (getFormValidatorName().trim().length() > 0))
+            if (!Util.isNull(getFormValidatorName()))
             {
-                tagBuf.append("<input type=\"hidden\" name=\"" + ValidatorConstants.FORM_VALIDATOR_NAME + "\" value=\"" + getFormValidatorName() + "\">");
+                tagBuf.append("<input type=\"hidden\" name=\"" + ValidatorConstants.FORM_VALIDATOR_NAME + "_" + tableId + "\" value=\"" + getFormValidatorName() + "\">");
             }
 
             tagBuf.append("<input type=\"hidden\" name=\"source\" value=\"");
@@ -1843,7 +1866,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
                 (getJavascriptValidation() != null)   &&
                  getJavascriptValidation().equals("true"))
             {
-                jspOut.println(generateJavascriptValidation());
+               jspOut.println(generateJavascriptValidation());
             }
 
             /**
@@ -2561,9 +2584,6 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
         String tmp = null;
         String values = "";
 
-        result.append("<SCRIPT language=\"javascript\">\n");
-        result.append("<!-- \n\n");
-        result.append("    var dbFormFields = new Array();\n");
 
         Hashtable fields = new Hashtable();
         Enumeration enum = childFieldNames.keys();
@@ -2585,52 +2605,60 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
             fields.put(val, values + ";" + key);
         }
 
-        enum = fields.keys();
+        if (isSubForm()) {
+        	  parentForm.addFieldNames(fields);
+        } else {
+        	fields.putAll(fieldNames);
 
-        //
-        // Loop for each fieldname and generate text for javascript Array
-        //
-        // Ex: dbFormFields["DESCRIPTIONDEMANDE"] = new Array("f_0_0@root_4", "f_0_1@root_4", "f_0_insroot_4");
-        //
-        while (enum.hasMoreElements())
-        {
-            key = (String) enum.nextElement();
-            val = (String) fields.get(key);
-            result.append("    dbFormFields[\"").append(key).append("\"] = new Array(");
+        	result.append("<SCRIPT language=\"javascript\">\n");
+        	result.append("<!-- \n\n");
+        	result.append("    var dbFormFields = new Array();\n");
+        	enum = fields.keys();
 
-            // Sort the delimited string and return an ArrayList of it.
-            ArrayList arrValues = sortFields(val);
+        	//
+        	// Loop for each fieldname and generate text for javascript Array
+        	//
+        	// Ex: dbFormFields["DESCRIPTIONDEMANDE"] = new Array("f_0_0@root_4", "f_0_1@root_4", "f_0_insroot_4");
+        	//
+        	while (enum.hasMoreElements())
+        	{
+        		 key = (String) enum.nextElement();
+        		 val = (String) fields.get(key);
+        		 result.append("    dbFormFields[\"").append(key).append("\"] = new Array(");
 
-            if (arrValues.size() == 1)
-            {
-                result.append("\"").append((String) arrValues.get(0)).append("\"");
-            }
-            else
-            {
-                for (int i = 0; i <= (arrValues.size() - 1); i++)
-                {
-                    result.append("\"").append((String) arrValues.get(i)).append("\"");
+        		 // Sort the delimited string and return an ArrayList of it.
+        		 ArrayList arrValues = sortFields(val);
 
-                    if (i != (arrValues.size() - 1))
-                    {
-                        result.append(", ");
-                    }
-                }
-            }
+        		 if (arrValues.size() == 1)
+        		 {
+        			  result.append("\"").append((String) arrValues.get(0)).append("\"");
+        		 }
+        		 else
+        		 {
+        			  for (int i = 0; i <= (arrValues.size() - 1); i++)
+        			  {
+        					result.append("\"").append((String) arrValues.get(i)).append("\"");
 
-            result.append(");\n");
-        }
+        					if (i != (arrValues.size() - 1))
+        					{
+        						 result.append(", ");
+        					}
+        			  }
+        		 }
 
-        result.append("\n    function getDbFormFieldName(name){ \n");
-        result.append("      return getDbFormFieldName(name,null); \n");
-        result.append("    }\n\n");
-        result.append("\n    function getDbFormFieldName(name,pos){ \n");
-        result.append("      var result = dbFormFields[name]; \n");
-        result.append("      if(pos==null) return result[result.length-1]; \n");
-        result.append("      return result[pos]; \n");
-        result.append("    }\n");
-        result.append("--></SCRIPT> \n");
+        		 result.append(");\n");
+        	}
 
+        	result.append("\n    function getDbFormFieldName(name){ \n");
+        	result.append("      return getDbFormFieldName(name,null); \n");
+        	result.append("    }\n\n");
+        	result.append("\n    function getDbFormFieldName(name,pos){ \n");
+        	result.append("      var result = dbFormFields[name]; \n");
+        	result.append("      if(pos==null) return result[result.length-1]; \n");
+        	result.append("      return result[pos]; \n");
+        	result.append("    }\n");
+        	result.append("--></SCRIPT> \n");
+        }  
         return result;
     }
 
@@ -2642,10 +2670,15 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
      */
     private StringBuffer generateJavascriptValidation()
     {
-        ValidatorResources vr = (ValidatorResources) pageContext.getServletContext().getAttribute(ValidatorConstants.VALIDATOR);
-        DbFormsErrors errors = (DbFormsErrors) pageContext.getServletContext().getAttribute(DbFormsErrors.ERRORS);
-
-        return DbFormsValidatorUtil.getJavascript(getFormValidatorName(), MessageResources.getLocale((HttpServletRequest) pageContext.getRequest()), childFieldNames, vr, getJavascriptValidationSrcFile(), errors);
+     if (isSubForm()) { 
+     		parentForm.addValidationForm(getFormValidatorName(), childFieldNames);
+     		return new StringBuffer();
+     } else {
+     	ValidatorResources vr = (ValidatorResources) pageContext.getServletContext().getAttribute(ValidatorConstants.VALIDATOR);
+     	DbFormsErrors errors = (DbFormsErrors) pageContext.getServletContext().getAttribute(DbFormsErrors.ERRORS);
+     	addValidationForm(getFormValidatorName(), childFieldNames);
+     	return DbFormsValidatorUtil.getJavascript(validationForms, MessageResources.getLocale((HttpServletRequest) pageContext.getRequest()), validationFields, vr, getJavascriptValidationSrcFile(), errors);
+    	}
     }
 
 
@@ -2803,6 +2836,12 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
     public void doFinally()
     {
         logCat.info("doFinally called");
+    	  if (validationForms != null)
+    	     validationForms.clear(); 
+    	  if (validationFields != null)
+    	     validationFields.clear();
+    	  if (fieldNames != null)
+    	     fieldNames.clear();
         SqlUtil.closeConnection(con);
     }
 
