@@ -59,7 +59,7 @@ import org.dbforms.event.NavEventFactoryImpl;
  * dbforms-config.xml, populates a DbFormsConfig - Object and stores it in application
  * context.
  *
- * @author Joe Peer <joepeer@excite.com>
+ *   @author Joe Peer
  */
 public class ConfigServlet extends HttpServlet {
    /** DOCUMENT ME! */
