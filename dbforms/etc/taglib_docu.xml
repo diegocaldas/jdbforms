@@ -1765,6 +1765,12 @@ hanlder executed when the user selects some text</info>
 				<info>i/o textarea for character diskblobs. use it if you want users to edit files 
 using textareas</info>
 				<attribute>
+					<name>id</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>expose id, enables interaction with JavaScript</info>
+				</attribute>
+				<attribute>
 					<name>fieldName</name>
 					<required>true</required>
 					<rtexprvalue>true</rtexprvalue>
