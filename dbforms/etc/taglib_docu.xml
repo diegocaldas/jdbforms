@@ -2614,6 +2614,13 @@ if(request.getParameter("goto")!=null) {
                 </attribute>
 
                 <attribute>
+                    <name>showAlways</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>if false input button will be rendered only in insert mode!</info>
+                </attribute>
+
+                <attribute>
                     <name>caption</name>
                     <required>false</required>
                     <rtexprvalue>true</rtexprvalue>

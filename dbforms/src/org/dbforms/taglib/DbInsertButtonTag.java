@@ -48,12 +48,13 @@ public class DbInsertButtonTag extends DbBaseButtonTag
 
     // logging category for this class
     private static int uniqueID;
-
     static
     {
         uniqueID = 1;
     }
 
+	private String showAlways = "true";
+	
     /**
      * DOCUMENT ME!
      *
@@ -82,7 +83,7 @@ public class DbInsertButtonTag extends DbBaseButtonTag
 
         logCat.info("pos DbInsertButtonTag 1");
 
-        if (!(parentForm.getFooterReached() && ResultSetVector.isEmptyOrNull(parentForm.getResultSetVector())))
+        if ( !"true".equals(showAlways) && !(parentForm.getFooterReached() && ResultSetVector.isEmptyOrNull(parentForm.getResultSetVector())) )
         {
             return EVAL_PAGE;
         }
@@ -182,4 +183,20 @@ public class DbInsertButtonTag extends DbBaseButtonTag
 
         return EVAL_PAGE;
     }
+	/**
+	 * Returns the showAlways.
+	 * @return String
+	 */
+	public String getShowAlways() {
+		return showAlways;
+	}
+
+	/**
+	 * Sets the showAlways.
+	 * @param showAlways The showAlways to set
+	 */
+	public void setShowAlways(String showAlways) {
+		this.showAlways = showAlways;
+	}
+
 }
