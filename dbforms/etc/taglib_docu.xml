@@ -7056,7 +7056,7 @@ error manager</summary>
 					   Hides the searchfieldName stuff from the 
                   			 JSP developer.</p>
 				</summary>
-				<tagclass>org.dbforms.taglib.DbSearchCeckBoxTag</tagclass>
+				<tagclass>org.dbforms.taglib.DbSearchCheckBoxTag</tagclass>
 				<bodycontent>empty</bodycontent>
 				<info>
 					<p>example of result:</p>
