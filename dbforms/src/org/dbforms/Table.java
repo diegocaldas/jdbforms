@@ -1113,62 +1113,67 @@ public class Table
 
         // trailing blanks are significant for CHAR database fields
         //	position = position.trim();
+		  // 20021128-HKK: catch errors!	
         Hashtable result = new Hashtable();
+        try {
+	        int startIndex = 0;
+	        boolean endOfString = false;
+	
+	        // looping through the string
+	        while (!endOfString)
+	        {
+	            int firstColon = position.indexOf(':', startIndex);
+	            int secondColon = position.indexOf(':', firstColon + 1);
+					if ( (firstColon == -1)  && (secondColon == -1))
+					   return null; 
+	            String fieldIdStr = position.substring(startIndex, firstColon);
+	            int fieldId = Integer.parseInt(fieldIdStr);
+	
+	            String valueLengthStr = position.substring(firstColon + 1, secondColon);
+	            int valueLength = Integer.parseInt(valueLengthStr);
+	
+	            int controlIndex = secondColon + 1 + valueLength;
+	
+	            // make already be trimmed ... avoid substring exception
+	            String valueStr = (controlIndex < position.length()) ? position.substring(secondColon + 1, controlIndex) : position.substring(secondColon + 1);
+	
+	            FieldValue fv = new FieldValue();
+	            fv.setField(getField(fieldId));
+	            fv.setFieldValue(valueStr);
+	
+	            result.put(new Integer(fieldId), fv);
+	
+	            if (controlIndex == position.length())
+	            {
+	                endOfString = true;
+	            }
+	            else if (controlIndex > position.length())
+	            {
+	                logCat.warn("Controlbyte wrong but continuing execution");
+	                endOfString = true;
+	            }
+	            else
+	            {
+	                char controlByte = position.charAt(controlIndex);
+	
+	                if (controlByte != '-')
+	                {
+	                    logCat.error("Controlbyte wrong, abandon execution");
+	                    throw new IllegalArgumentException();
+	                }
+	
+	                startIndex = controlIndex + 1;
+	
+	                if (position.length() == startIndex)
+	                {
+	                    endOfString = true;
+	                }
+	            }
+	        }
 
-        int startIndex = 0;
-        boolean endOfString = false;
-
-        // looping through the string
-        while (!endOfString)
-        {
-            int firstColon = position.indexOf(':', startIndex);
-            int secondColon = position.indexOf(':', firstColon + 1);
-
-            String fieldIdStr = position.substring(startIndex, firstColon);
-            int fieldId = Integer.parseInt(fieldIdStr);
-
-            String valueLengthStr = position.substring(firstColon + 1, secondColon);
-            int valueLength = Integer.parseInt(valueLengthStr);
-
-            int controlIndex = secondColon + 1 + valueLength;
-
-            // make already be trimmed ... avoid substring exception
-            String valueStr = (controlIndex < position.length()) ? position.substring(secondColon + 1, controlIndex) : position.substring(secondColon + 1);
-
-            FieldValue fv = new FieldValue();
-            fv.setField(getField(fieldId));
-            fv.setFieldValue(valueStr);
-
-            result.put(new Integer(fieldId), fv);
-
-            if (controlIndex == position.length())
-            {
-                endOfString = true;
-            }
-            else if (controlIndex > position.length())
-            {
-                logCat.warn("Controlbyte wrong but continuing execution");
-                endOfString = true;
-            }
-            else
-            {
-                char controlByte = position.charAt(controlIndex);
-
-                if (controlByte != '-')
-                {
-                    logCat.error("Controlbyte wrong, abandon execution");
-                    throw new IllegalArgumentException();
-                }
-
-                startIndex = controlIndex + 1;
-
-                if (position.length() == startIndex)
-                {
-                    endOfString = true;
-                }
-            }
-        }
-
+        } catch (Exception e) {
+           result = null;	 
+        } 
         return result;
     }
 
@@ -1756,7 +1761,9 @@ public class Table
             return null;
         }
 
-        Hashtable ht = parentTable.getFieldValuesFromPositionAsHt(aPosition);
+	Hashtable ht = parentTable.getFieldValuesFromPositionAsHt(aPosition);
+	if (ht == null) 
+		return null;
         FieldValue[] childFieldValues = new FieldValue[len];
 
         for (int i = 0; i < len; i++)
