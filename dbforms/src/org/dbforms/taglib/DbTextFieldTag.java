@@ -20,7 +20,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.taglib;
 import java.util.*;
 import java.sql.*;
@@ -47,220 +46,223 @@ import javax.servlet.http.*;
  */
 public class DbTextFieldTag extends DbBaseInputTag
 {
-    static Category logCat = Category.getInstance(DbTextFieldTag.class.getName()); // logging category for this class
+   static Category logCat = Category.getInstance(DbTextFieldTag.class.getName()); // logging category for this class
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     *
-     * @throws javax.servlet.jsp.JspException DOCUMENT ME!
-     */
-    public int doStartTag() throws javax.servlet.jsp.JspException
-    {
-        super.doStartTag();
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws javax.servlet.jsp.JspException DOCUMENT ME!
+    */
+   public int doStartTag() throws javax.servlet.jsp.JspException
+   {
+      super.doStartTag();
 
-        return SKIP_BODY;
-    }
+      return SKIP_BODY;
+   }
 
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     *
-     * @throws javax.servlet.jsp.JspException DOCUMENT ME!
-     * @throws JspException DOCUMENT ME!
-     */
-    public int doEndTag() throws javax.servlet.jsp.JspException
-    {
-        HttpServletRequest request = (HttpServletRequest) this.pageContext.getRequest();
-        Vector errors = (Vector) request.getAttribute("errors");
-        WebEvent we = (WebEvent) request.getAttribute("webEvent");
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws javax.servlet.jsp.JspException DOCUMENT ME!
+    * @throws JspException DOCUMENT ME!
+    */
+   public int doEndTag() throws javax.servlet.jsp.JspException
+   {
+      HttpServletRequest request = (HttpServletRequest) this.pageContext
+         .getRequest();
+      Vector             errors = (Vector) request.getAttribute("errors");
+      WebEvent           we     = (WebEvent) request.getAttribute("webEvent");
 
-        try
-        {
-            /* Does the developer require the field to be hidden, displayed or displayed as password? */
-            String value = null;
+      try
+      {
+         /* Does the developer require the field to be hidden, displayed or displayed as password? */
+         String value = null;
 
-            if ("true".equals(this.getHidden()))
+         if ("true".equals(this.getHidden()))
+         {
+            value = "<input type=\"hidden\" name=\"";
+         }
+         else if ("true".equals(this.getPassword()))
+         {
+            value = "<input type=\"password\" name=\"";
+         }
+         else
+         {
+            value = "<input type=\"text\" name=\"";
+         }
+
+         StringBuffer tagBuf = new StringBuffer(value);
+         tagBuf.append(getFormFieldName());
+         tagBuf.append("\" value=\"");
+
+         /* If the overrideValue attribute has been set, use its value instead of the one
+         retrieved from the database.  This mechanism can be used to set an initial default
+         value for a given field. */
+         if (this.getOverrideValue() != null)
+         {
+            //If the redisplayFieldsOnError attribute is set and we are in error mode, forget override!
+            if (("true".equals(parentForm.getRedisplayFieldsOnError())
+                     && (errors != null) && (errors.size() > 0))
+                     || (we instanceof ReloadEvent))
             {
-                value = "<input type=\"hidden\" name=\"";
-            }
-            else if ("true".equals(this.getPassword()))
-            {
-                value = "<input type=\"password\" name=\"";
-            }
-            else
-            {
-                value = "<input type=\"text\" name=\"";
-            }
-
-            StringBuffer tagBuf = new StringBuffer(value);
-            tagBuf.append(getFormFieldName());
-            tagBuf.append("\" value=\"");
-
-            /* If the overrideValue attribute has been set, use its value instead of the one
-            retrieved from the database.  This mechanism can be used to set an initial default
-            value for a given field. */
-            if (this.getOverrideValue() != null)
-            {
-                //If the redisplayFieldsOnError attribute is set and we are in error mode, forget override!
-                if (("true".equals(parentForm.getRedisplayFieldsOnError()) && (errors != null) && errors.size() > 0) || (we instanceof ReloadEvent))
-                {
-                    tagBuf.append(getFormFieldValue());
-                }
-                else
-                {
-                    tagBuf.append(this.getOverrideValue());
-                }
+               tagBuf.append(getFormFieldValue());
             }
             else
             {
-                if (we instanceof ReloadEvent)
-                {
-                    String oldValue = ParseUtil.getParameter(request, getFormFieldName());
-
-                    if (oldValue != null)
-                    {
-                        tagBuf.append(oldValue);
-                    }
-                    else
-                    {
-                        tagBuf.append(getFormFieldValue());
-                    }
-                }
-                else
-                {
-                    tagBuf.append(getFormFieldValue());
-                }
+               tagBuf.append(this.getOverrideValue());
             }
-
-            tagBuf.append("\" ");
-
-            if (accessKey != null)
+         }
+         else
+         {
+            if (we instanceof ReloadEvent)
             {
-                tagBuf.append(" accesskey=\"");
-                tagBuf.append(accessKey);
-                tagBuf.append("\"");
-            }
+               String oldValue = ParseUtil.getParameter(request,
+                     getFormFieldName());
 
-            if (maxlength != null)
+               if (oldValue != null)
+               {
+                  tagBuf.append(oldValue);
+               }
+               else
+               {
+                  tagBuf.append(getFormFieldValue());
+               }
+            }
+            else
             {
-                tagBuf.append(" maxlength=\"");
-                tagBuf.append(maxlength);
-                tagBuf.append("\"");
+               tagBuf.append(getFormFieldValue());
             }
+         }
 
-            if (cols != null)
-            {
-                tagBuf.append(" size=\"");
-                tagBuf.append(cols);
-                tagBuf.append("\"");
-            }
+         tagBuf.append("\" ");
 
-            if (tabIndex != null)
-            {
-                tagBuf.append(" tabindex=\"");
-                tagBuf.append(tabIndex);
-                tagBuf.append("\"");
-            }
+         if (accessKey != null)
+         {
+            tagBuf.append(" accesskey=\"");
+            tagBuf.append(accessKey);
+            tagBuf.append("\"");
+         }
 
-            tagBuf.append(prepareStyles());
-            tagBuf.append(prepareEventHandlers());
-            tagBuf.append("/>");
+         if (maxlength != null)
+         {
+            tagBuf.append(" maxlength=\"");
+            tagBuf.append(maxlength);
+            tagBuf.append("\"");
+         }
 
-            pageContext.getOut().write(tagBuf.toString());
+         if (cols != null)
+         {
+            tagBuf.append(" size=\"");
+            tagBuf.append(cols);
+            tagBuf.append("\"");
+         }
 
+         if (tabIndex != null)
+         {
+            tagBuf.append(" tabindex=\"");
+            tagBuf.append(tabIndex);
+            tagBuf.append("\"");
+         }
 
-            // For generation Javascript Validation.  Need all original and modified fields name
-            parentForm.addChildName(getFieldName(), getFormFieldName());
-        }
-        catch (java.io.IOException ioe)
-        {
-            throw new JspException("IO Error: " + ioe.getMessage());
-        }
+         tagBuf.append(prepareStyles());
+         tagBuf.append(prepareEventHandlers());
+         tagBuf.append("/>");
 
-        return EVAL_PAGE;
-    }
+         pageContext.getOut().write(tagBuf.toString());
 
-    private java.lang.String hidden = "false";
-    private java.lang.String overrideValue = null;
-    private java.lang.String password = "false";
+         // For generation Javascript Validation.  Need all original and modified fields name
+         parentForm.addChildName(getFieldName(), getFormFieldName());
+      }
+      catch (java.io.IOException ioe)
+      {
+         throw new JspException("IO Error: " + ioe.getMessage());
+      }
 
-    /**
-     * grunikiewicz.philip@hydro.qc.ca
-     * 2001-05-23
-     * @param newHidden java.lang.String
-     *
-     * Determines if the text field should be hidden or displayed
-     * @return java.lang.String
-     */
-    public java.lang.String getHidden()
-    {
-        return hidden;
-    }
+      return EVAL_PAGE;
+   }
 
+   private java.lang.String hidden        = "false";
+   private java.lang.String overrideValue = null;
+   private java.lang.String password      = "false";
 
-    /**
-     * grunikiewicz.philip@hydro.qc.ca
-     * 2001-05-23
-     *
-     * Defines the text field's default value. When this attribute is set, the value retrieved
-     * from the database is ignored.
-     *
-     * @return java.lang.String
-     */
-    public java.lang.String getOverrideValue()
-    {
-        return overrideValue;
-    }
-
-
-    /**
-     * grunikiewicz.philip@hydro.qc.ca
-     * 2001-05-23
-     * @param newHidden java.lang.String
-     *
-     * Determines if the text field should be hidden or displayed
-     */
-    public void setHidden(java.lang.String newHidden)
-    {
-        hidden = newHidden;
-    }
+   /**
+    * grunikiewicz.philip@hydro.qc.ca
+    * 2001-05-23
+    * @param newHidden java.lang.String
+    *
+    * Determines if the text field should be hidden or displayed
+    * @return java.lang.String
+    */
+   public java.lang.String getHidden()
+   {
+      return hidden;
+   }
 
 
-    /**
-     * grunikiewicz.philip@hydro.qc.ca
-     * 2001-05-23
-     *
-     * Defines the text field's default value. When this attribute is set, the value retrieved
-     * from the database is ignored.
-     *
-     * @param newOverrideValue java.lang.String
-     */
-    public void setOverrideValue(java.lang.String newOverrideValue)
-    {
-        overrideValue = newOverrideValue;
-    }
+   /**
+    * grunikiewicz.philip@hydro.qc.ca
+    * 2001-05-23
+    *
+    * Defines the text field's default value. When this attribute is set, the value retrieved
+    * from the database is ignored.
+    *
+    * @return java.lang.String
+    */
+   public java.lang.String getOverrideValue()
+   {
+      return overrideValue;
+   }
 
 
-    /**
-     *  Determines if the text field should be a password text field (display '****')
-     */
-    public void setPassword(String pwd)
-    {
-        this.password = pwd;
-    }
+   /**
+    * grunikiewicz.philip@hydro.qc.ca
+    * 2001-05-23
+    * @param newHidden java.lang.String
+    *
+    * Determines if the text field should be hidden or displayed
+    */
+   public void setHidden(java.lang.String newHidden)
+   {
+      hidden = newHidden;
+   }
 
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
-    public String getPassword()
-    {
-        return this.password;
-    }
+   /**
+    * grunikiewicz.philip@hydro.qc.ca
+    * 2001-05-23
+    *
+    * Defines the text field's default value. When this attribute is set, the value retrieved
+    * from the database is ignored.
+    *
+    * @param newOverrideValue java.lang.String
+    */
+   public void setOverrideValue(java.lang.String newOverrideValue)
+   {
+      overrideValue = newOverrideValue;
+   }
+
+
+   /**
+    *  Determines if the text field should be a password text field (display '****')
+    */
+   public void setPassword(String pwd)
+   {
+      this.password = pwd;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String getPassword()
+   {
+      return this.password;
+   }
 }

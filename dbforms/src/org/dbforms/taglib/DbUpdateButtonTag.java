@@ -20,7 +20,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.taglib;
 import java.util.*;
 import java.sql.*;
@@ -44,169 +43,173 @@ import org.apache.log4j.Category;
  */
 public class DbUpdateButtonTag extends DbBaseButtonTag
 {
-    static Category logCat = Category.getInstance(DbUpdateButtonTag.class.getName()); // logging category for this class
-    private static int uniqueID;
+   static Category    logCat   = Category.getInstance(DbUpdateButtonTag.class
+         .getName()); // logging category for this class
+   private static int uniqueID;
 
-    static
-    {
-        uniqueID = 1;
-    }
+   static
+   {
+      uniqueID = 1;
+   }
 
-    private String associatedRadio;
+   private String associatedRadio;
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param associatedRadio DOCUMENT ME!
-     */
-    public void setAssociatedRadio(String associatedRadio)
-    {
-        this.associatedRadio = associatedRadio;
-    }
-
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
-    public String getAssociatedRadio()
-    {
-        return associatedRadio;
-    }
+   /**
+    * DOCUMENT ME!
+    *
+    * @param associatedRadio DOCUMENT ME!
+    */
+   public void setAssociatedRadio(String associatedRadio)
+   {
+      this.associatedRadio = associatedRadio;
+   }
 
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     *
-     * @throws javax.servlet.jsp.JspException DOCUMENT ME!
-     * @throws JspException DOCUMENT ME!
-     */
-    public int doStartTag() throws javax.servlet.jsp.JspException
-    {
-        DbUpdateButtonTag.uniqueID++; // make sure that we don't mix up buttons
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String getAssociatedRadio()
+   {
+      return associatedRadio;
+   }
 
-        // ValidatorConstants.JS_CANCEL_SUBMIT is the javascript variable boolean to verify 
-        // if we do the javascript validation before submit <FORM>
-        if ((parentForm.getFormValidatorName() != null) && (parentForm.getFormValidatorName().length() > 0) && parentForm.getJavascriptValidation().equals("true"))
-        {
-            String onclick = (getOnClick() != null) ? getOnClick() : "";
 
-            if (onclick.lastIndexOf(";") != (onclick.length() - 1))
-            {
-                onclick += ";"; // be sure javascript end with ";"
-            }
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws javax.servlet.jsp.JspException DOCUMENT ME!
+    * @throws JspException DOCUMENT ME!
+    */
+   public int doStartTag() throws javax.servlet.jsp.JspException
+   {
+      DbUpdateButtonTag.uniqueID++; // make sure that we don't mix up buttons
 
-            setOnClick(onclick + ValidatorConstants.JS_CANCEL_VALIDATION + "=true;" + ValidatorConstants.JS_UPDATE_VALIDATION_MODE + "=true;");
-        }
+      if ((parentForm.getFormValidatorName() != null)
+               && (parentForm.getFormValidatorName().length() > 0)
+               && parentForm.getJavascriptValidation().equals("true"))
+      {
+         String onclick = (getOnClick() != null) ? getOnClick() : "";
 
-        if (parentForm.getFooterReached() && Util.isNull(parentForm.getResultSetVector()))
-        {
-			// 20030521 HKK: Bug fixing, thanks to Michael Slack! 
-			return SKIP_BODY;
-        }
+         if (onclick.lastIndexOf(";") != (onclick.length() - 1))
+         {
+            onclick += ";"; // be sure javascript end with ";"
+         }
 
-        try
-        {
-            // first, determinate the name of the button tag
-            StringBuffer tagNameBuf = new StringBuffer("ac_update");
+         setOnClick(onclick + ValidatorConstants.JS_CANCEL_VALIDATION
+            + "=true;" + ValidatorConstants.JS_UPDATE_VALIDATION_MODE
+            + "=true;");
+      }
 
-            if (associatedRadio != null)
-            {
-                tagNameBuf.append("ar");
-            }
+      if (parentForm.getFooterReached()
+               && Util.isNull(parentForm.getResultSetVector()))
+      {
+         // 20030521 HKK: Bug fixing, thanks to Michael Slack! 
+         return SKIP_BODY;
+      }
 
+      try
+      {
+         // first, determinate the name of the button tag
+         StringBuffer tagNameBuf = new StringBuffer("ac_update");
+
+         if (associatedRadio != null)
+         {
+            tagNameBuf.append("ar");
+         }
+
+         tagNameBuf.append("_");
+         tagNameBuf.append(table.getId());
+
+         if (associatedRadio == null)
+         {
             tagNameBuf.append("_");
-            tagNameBuf.append(table.getId());
+            tagNameBuf.append(parentForm.getPositionPath());
+         }
 
-            if (associatedRadio == null)
+         // PG - Render the name unique
+         tagNameBuf.append("_");
+         tagNameBuf.append(uniqueID);
+
+         String tagName = tagNameBuf.toString();
+
+         // then render it and its associtated data-tags
+         StringBuffer tagBuf = new StringBuffer();
+
+         if (associatedRadio != null)
+         {
+            tagBuf.append(getDataTag(tagName, "arname", associatedRadio));
+         }
+
+         if (followUp != null)
+         {
+            tagBuf.append(getDataTag(tagName, "fu", followUp));
+         }
+
+         if (followUpOnError != null)
+         {
+            tagBuf.append(getDataTag(tagName, "fue", followUpOnError));
+         }
+
+         tagBuf.append(getButtonBegin());
+         tagBuf.append(" name=\"");
+         tagBuf.append(tagName);
+         tagBuf.append("\">");
+
+         pageContext.getOut().write(tagBuf.toString());
+      }
+      catch (java.io.IOException ioe)
+      {
+         throw new JspException("IO Error: " + ioe.getMessage());
+      }
+
+      if (choosenFlavor == FLAVOR_MODERN)
+      {
+         return EVAL_BODY_BUFFERED;
+      }
+      else
+      {
+         return SKIP_BODY;
+      }
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws javax.servlet.jsp.JspException DOCUMENT ME!
+    * @throws JspException DOCUMENT ME!
+    */
+   public int doEndTag() throws javax.servlet.jsp.JspException
+   {
+      if (choosenFlavor == FLAVOR_MODERN)
+      {
+         if (parentForm.getFooterReached()
+                  && Util.isNull(parentForm.getResultSetVector()))
+         {
+            return EVAL_PAGE;
+         }
+
+         try
+         {
+            if (bodyContent != null)
             {
-                tagNameBuf.append("_");
-                tagNameBuf.append(parentForm.getPositionPath());
+               bodyContent.writeOut(bodyContent.getEnclosingWriter());
             }
 
-
-            // PG - Render the name unique
-            tagNameBuf.append("_");
-            tagNameBuf.append(uniqueID);
-
-            String tagName = tagNameBuf.toString();
-
-            // then render it and its associtated data-tags
-            StringBuffer tagBuf = new StringBuffer();
-
-            if (associatedRadio != null)
-            {
-                tagBuf.append(getDataTag(tagName, "arname", associatedRadio));
-            }
-
-            if (followUp != null)
-            {
-                tagBuf.append(getDataTag(tagName, "fu", followUp));
-            }
-
-            if (followUpOnError != null)
-            {
-                tagBuf.append(getDataTag(tagName, "fue", followUpOnError));
-            }
-
-            tagBuf.append(getButtonBegin());
-            tagBuf.append(" name=\"");
-            tagBuf.append(tagName);
-            tagBuf.append("\">");
-
-            pageContext.getOut().write(tagBuf.toString());
-        }
-        catch (java.io.IOException ioe)
-        {
+            pageContext.getOut().write("</button>");
+         }
+         catch (java.io.IOException ioe)
+         {
             throw new JspException("IO Error: " + ioe.getMessage());
-        }
+         }
+      }
 
-        if (choosenFlavor == FLAVOR_MODERN)
-        {
-            return EVAL_BODY_BUFFERED;
-        }
-        else
-        {
-            return SKIP_BODY;
-        }
-    }
-
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     *
-     * @throws javax.servlet.jsp.JspException DOCUMENT ME!
-     * @throws JspException DOCUMENT ME!
-     */
-    public int doEndTag() throws javax.servlet.jsp.JspException
-    {
-        if (choosenFlavor == FLAVOR_MODERN)
-        {
-            if (parentForm.getFooterReached() && Util.isNull(parentForm.getResultSetVector()))
-            {
-                return EVAL_PAGE;
-            }
-
-            try
-            {
-                if (bodyContent != null)
-                {
-                    bodyContent.writeOut(bodyContent.getEnclosingWriter());
-                }
-
-                pageContext.getOut().write("</button>");
-            }
-            catch (java.io.IOException ioe)
-            {
-                throw new JspException("IO Error: " + ioe.getMessage());
-            }
-        }
-
-        return EVAL_PAGE;
-    }
+      return EVAL_PAGE;
+   }
 }
