@@ -312,6 +312,8 @@ public class FieldValue implements Cloneable
 
       if ((fv != null) && (fv.length > 0))
       {
+          // SM 2003-08-08: added brackets for each and-ed condition
+          buf.append(" ( ");
          for (int i = 0; i < fv.length; i++)
          {
             // depending on the value of isLogicalOR in FieldValue,
@@ -325,7 +327,7 @@ public class FieldValue implements Cloneable
                }
                else
                {
-                  buf.append(" AND ");
+                  buf.append(" ) AND ( ");
                }
             }
 
@@ -397,8 +399,8 @@ public class FieldValue implements Cloneable
                   break;
             }
          }
+         buf.append(" ) ");
       }
-
       return buf.toString();
    }
 
