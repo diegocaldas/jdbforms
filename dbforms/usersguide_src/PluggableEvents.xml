@@ -1,458 +1,402 @@
-<?xml version="1.0" encoding="UTF-8"?> 
+<?xml version="1.0" encoding="UTF-8"?>
 
 <chapter lang="en-US">
-    <title>
-Pluggable events 
-    </title>
-    <sect1>
-      <title>Introduction</title>
-     <para>
+  <title>Pluggable events</title>
+  <sect1>
+    <title>Introduction</title>
+    <para>
      DbForms uses a declarative event configuration system that provides the following features:
      </para>
-     <itemizedlist mark="opencircle">
-<listitem>
-<para>
-event classes registration
-</para>
-</listitem>
-<listitem>
-<para>
-event classes override on a table-by-table basis
-</para>
-</listitem>
-<listitem>
-<para>
-event classes configuration on a table-by-table basis
-</para>
-</listitem>
-</itemizedlist>
-     </sect1>
+    <itemizedlist mark="opencircle">
+      <listitem>
+        <para>event classes registration</para>
+      </listitem>
+      <listitem>
+        <para>event classes override on a table-by-table basis</para>
+      </listitem>
+      <listitem>
+        <para>event classes configuration on a table-by-table basis</para>
+      </listitem>
+    </itemizedlist>
+  </sect1>
   <sect1>
     <title>Default events</title>
-
     <para>Dbforms supports and uses by default the following event types and the related event classes:</para>
-
     <para/>
     <sect2>
-    <title>Database Events</title>
-<informaltable frame="all">
-<tgroup cols="3" align="left" colsep="1" rowsep="1">
-<colspec colname="c1"/>
-<colspec colname="c2"/>
-<colspec colname="c3"/>
-
-<thead>
-<row>
-<entry>Event Type</entry>
-  <entry namest="c2" nameend="c3" align="center">Event Class</entry>
-</row>
-</thead>
- 
-<tbody>
-<row>
-  <entry>insert</entry>
- <entry namest="c2" nameend="c3" align="center">org.dbforms.event.InsertEvent
-</entry>
-   
-</row>
-<row>
-  <entry>update</entry>
- <entry namest="c2" nameend="c3" align="center">org.dbforms.event.UpdateEvent</entry>
-   
-</row>
-<row>
-  <entry>delete</entry>
- <entry namest="c2" nameend="c3" align="center">org.dbforms.event.DeleteEvent</entry>
-   
-</row>
-</tbody>
-</tgroup>
-</informaltable>
-     <para/>
- </sect2>
-
- <sect2>
-    <title>Navigation events</title>
-
-  
-   
-
-   <informaltable frame="all">
-<tgroup cols="3" align="left" colsep="1" rowsep="1">
-<colspec colname="c1"/>
-<colspec colname="c2"/>
-<colspec colname="c3"/>
-
-<thead>
-<row>
-<entry>Event Type</entry>
-  <entry namest="c2" nameend="c3" align="center">Event Class</entry>
-</row>
-</thead>
-
-
-<tbody>
-<row>
-  <entry> navFirst</entry>
- <entry namest="c2" nameend="c3" align="center">org.dbforms.event.NavFirstEvent  
-</entry>
-   
-</row>
-<row>
-  <entry>navPrev</entry>
- <entry namest="c2" nameend="c3" align="center">org.dbforms.event.BoundedNavPrevEventImpl</entry>
-   
-</row>
-<row>
-  <entry>navNext</entry>
- <entry namest="c2" nameend="c3" align="center">org.dbforms.event.BoundedNavNextEventImpl</entry>
-   
-</row>
-<row>
-  <entry>navLast</entry>
- <entry namest="c2" nameend="c3" align="center">org.dbforms.event.NavLastEvent</entry>
-   
-</row>
-<row>
-  <entry>navNew</entry>
- <entry namest="c2" nameend="c3" align="center">org.dbforms.event.NavNewEvent</entry>
-   
-</row>
-<row>
-  <entry>navGoto</entry>
- <entry namest="c2" nameend="c3" align="center">org.dbforms.event.GotoEvent</entry>
-   
-</row>
-
-</tbody>
-</tgroup>
-</informaltable> 
-</sect2>
-</sect1>
-<sect1>
-<title id="regi">
-Registration of the event classes
-</title>
-    <para>Database and Navigation event factories automatically register the default event classes into the system.  Developers can register additional event classes by declaring and configuring elements into the dbforms-config file, as shown in the example below:</para>
- <informalexample>
-    <screen>
-   
-    <emphasis role="bold">&lt;dbforms-config&gt;</emphasis>
-
-        &lt;!-- dbforms config stuff here... --&gt;
-
-            &lt;!-- define custom events --&gt;
-            <emphasis role="bold">&lt;events&gt;</emphasis>
-        
-               &lt;!-- define database custom events here --&gt;
-               <emphasis role="bold">&lt;database-events&gt;</emphasis><co id="db-event"/>
-                  &lt;database-event id=&quot;insert2&quot; type=&quot;insert&quot; className=&quot;org.foo.bar.MyInsertEvent&quot; /&gt; 
-                  &lt;database-event id=&quot;update2&quot; type=&quot;update&quot; className=&quot;org.foo.bar.MyUpdateEvent&quot; /&gt; 
-               <emphasis role="bold">&lt;/database-events&gt;</emphasis>
-
-               &lt;!-- define navigation custom events here --&gt;
-                  <emphasis role="bold">&lt;navigation-events&gt;</emphasis> <co id="nav-event"/>  
-                  &lt;navigation-event id=&quot;new2&quot; type=&quot;navNew&quot;   className=&quot;org.foo.bar.MyNavNewEvent&quot; /&gt;
-               <emphasis role="bold">&lt;/navigation-events&gt;</emphasis>
-    
-            &lt;/events&gt;
-  
-    &lt;/dbforms-config&gt;
-
-    </screen>
-  
- <calloutlist>
-<callout arearefs="db-event">
-    <para>To add database custom events, a developer must:
-    <itemizedlist mark="opencircle">
-<listitem>
-<para>
-add a new <computeroutput>/dbforms-config/events/database-events</computeroutput> element, if it does not exist yet 
-</para>
-</listitem>
-<listitem>
-<para>
-add a new <computeroutput>/dbforms-config/events/database-events/database-event</computeroutput> element for every database custom event to register into the system
-</para> 
-</listitem>
- 
-</itemizedlist>
-</para>
-</callout>  
-<callout arearefs="nav-event">
- 
-
-    <para>To add navigation custom events, a developer must: 
- <itemizedlist mark="opencircle">
-<listitem>
-<para>
-add a new <computeroutput>/dbforms-config/events/navigation-events</computeroutput> element, if it does not exist yet 
-</para>
-</listitem>
-<listitem>
-<para>
-add a new <computeroutput>/dbforms-config/events/navigation-events/navigation-event</computeroutput> element for every navigation custom event to register into the system 
-</para>
-</listitem>
- 
-</itemizedlist>
-</para>
-</callout>
- </calloutlist>
-</informalexample> 
- 
-   <sect2><title>Event attributes</title>
-
-    <para>Every database-event element and navigation-event element uses the following mandatory attributes: </para>
-
-    <informaltable frame="all">
-<tgroup cols="3" align="left" colsep="1" rowsep="1">
-<colspec colname="c1"/>
-<colspec colname="c2"/>
-<colspec colname="c3"/>
-
-<thead>
-<row>
-<entry>attribute name</entry>
-  <entry namest="c2" nameend="c3" align="center">description</entry>
-</row>
-</thead>
- 
-<tbody>
-<row>
-  <entry>id</entry>
- <entry namest="c2" nameend="c3" align="center">the event identifier. Must be unique.
-</entry>
-   
-</row>
-<row>
-  <entry>type</entry>
- <entry namest="c2" nameend="c3" align="center">the event type. Must be a supported type value.</entry>
-   
-</row>
-<row>
-  <entry>className</entry>
- <entry namest="c2" nameend="c3" align="center">the full qualified class name of the event class.
-</entry>
-   
-</row>
-</tbody>
-</tgroup>
-</informaltable>
-    
-    </sect2>
-</sect1>
-
-<sect1>
-<title>Override the default event classes </title>
- 
-
-<para>The declarative event configuration system let developers change the default event classes 
-with custom ones.  In this manner, every table element uses those event classes instead of the default ones.</para>
-<sect2><title>global overriding </title>
-<para>To override a default event class in a global way, it is sufficient to:</para>
-
-<itemizedlist mark="opencircle">
-<listitem>
-<para>
-declare a new <computeroutput>database-event</computeroutput> or <computeroutput>navigation-event</computeroutput> element
-</para>
-</listitem>
-<listitem>
-<para>
-set the value of its type attribute with a suppored event type value
-</para>
-</listitem>
-<listitem>
-<para>
-set the value of its className attribute with the full qualified class name of your custom event class
-</para>
-</listitem>
-</itemizedlist>
- 
-
-<para>Example:</para>
-<informalexample>
- <programlisting>
- <!--
-    -  Events configuration
-    -->
-    <emphasis role="bold">&lt;events&gt;</emphasis>
-        <emphasis role="bold">&lt;database-events&gt;</emphasis>
-            <emphasis role="bold">&lt;database-event</emphasis> <emphasis role="bold">type</emphasis>=&quot;update&quot; <emphasis role="bold">className</emphasis>=&quot;org.foo.bar.MyUpdateEvent&quot; /&gt;
-        <emphasis role="bold">&lt;/database-events&gt;</emphasis>
-    <emphasis role="bold">&lt;/events&gt;</emphasis>
-
- </programlisting>
- </informalexample>
- 
-<para>This configuration overrides the default update event class with the custom
-org.foo.bar.MyUpdateEvent one.</para>
-
-<para>All the table elements will use the custom org.foo.bar.MyUpdateEvent class instead of the default one 
-(org.dbforms.event.UpdateEvent).</para>
-</sect2>
-
-<sect2><title>Log information about event override</title>
-
-<para>DbForms logs any information regarding the event class override procedure.</para>
-<para>Here's an example log statement that shows that the custom "org.foo.bar.MyUpdateEvent" update event class
-overrides the default "org.dbforms.event.UpdateEvent" one.</para>
-
-<para>
-<screen>
-        ::addEventInfo - the event information having id, class [update, org.foo.bar.MyUpdateEvent] overrides the event class [org.dbforms.event.UpdateEvent]
-
-</screen></para>
-</sect2>
-
-</sect1>
-
-
-
-     <sect1 id="tbyt">
-     
-     <title>Override the event classes on a table-by-table basis </title>
-     
-     <para>Every table object specified by a <computeroutput>/dbforms-config/table</computeroutput> element uses by default the standard event configuration. A developer can choose to override the event class associated to a certain event type, by adding and configuring the events element in the dbforms-config file as shown below:</para>
-    
-<informalexample>
- <screen>
-   <emphasis role="bold"> &lt;dbforms-config&gt;</emphasis>
-
-        ...
-
-        <emphasis role="bold">&lt;table</emphasis> name=&quot;MYTABLE&quot;&gt;
-
-                &lt;field name=&quot;TABLEID&quot;  fieldType=&quot;varchar&quot; size=&quot;10&quot; isKey=&quot;true&quot;/&gt;
-                &lt;field name=&quot;NAME&quot;     fieldType=&quot;varchar&quot; size=&quot;16&quot;/&gt;
-                ...
-
-                &lt;interceptor className=&quot;foo.bar.MyInterceptor&quot;/&gt;
-
-                &lt;!--
-                -  Here you can specify custom event classes that override the default ones.
-                -  Event properties can be configured using &quot;property&quot; elements.
-                --&gt;
-                <emphasis role="bold">&lt;events&gt;</emphasis><co id="events"/>
-                    &lt;event type=&quot;insert&quot; id=&quot;insert2&quot;&gt;
-  
-                        &lt;!-- event properties configuration --&gt;
-                        &lt;property name=&quot;sourceView&quot;  value=&quot;VIEW_USER&quot; /&gt;
-                        &lt;property name=&quot;targetTable&quot; value=&quot;USER&quot; /&gt;
-                    &lt;/event&gt;
-                <emphasis role="bold">&lt;/events&gt;</emphasis>
-
-        <emphasis role="bold">&lt;/table&gt;</emphasis>
-
-        ...
-
-    <emphasis role="bold">&lt;/dbforms-config&gt;</emphasis>
-
-</screen>
-<calloutlist>
-<callout arearefs="events">
-  <para>To override the event classes associated to the event types, a developer must: 
- 
-     <itemizedlist mark="opencircle">
-<listitem>
-<para>
-add a new <computeroutput>/dbforms-config/table/events</computeroutput> element, if it does not exist yet
-</para>
-</listitem>
-<listitem>
-<para>
-add a new <computeroutput>/dbforms-config/table/events/event</computeroutput> element for every event class to override
-</para>
-</listitem>
-</itemizedlist>
-</para>
-</callout>
-</calloutlist>
- 
-</informalexample>
-    
-
-<sect2><title>Event attributes</title>
-
-    <para>Every <computeroutput>/dbforms-config/table/events/event</computeroutput> element uses the following mandatory attributes:</para>
-
-    <informaltable frame="all">
-<tgroup cols="3" align="left" colsep="1" rowsep="1">
-<colspec colname="c1"/>
-<colspec colname="c2"/>
-<colspec colname="c3"/>
-
-<thead>
-<row>
-<entry>attribute name</entry>
-  <entry namest="c2" nameend="c3" align="center">description</entry>
-</row>
-</thead>
- 
-<tbody>
-<row>
-  <entry>type</entry>
- <entry namest="c2" nameend="c3" align="center">the event type. Must be a supported type value.
-</entry>
-   
-</row>
-<row>
-  <entry>id</entry>
- <entry namest="c2" nameend="c3" align="center">the event identifier. Must be equal to the identifier attribute of an event specified by a <computeroutput>/dbforms-config/events/database-events/database-event</computeroutput> or <computeroutput>/dbforms-config/events/navigation-events/navigation-event element.</computeroutput></entry>
-   
-</row>
- 
-</tbody>
-</tgroup>
-</informaltable>
-    
+      <title>Database Events</title>
+      <informaltable frame="all">
+        <tgroup cols="3" align="left" colsep="1" rowsep="1">
+          <colspec colname="c1"/>
+          <colspec colname="c2"/>
+          <colspec colname="c3"/>
+          <thead>
+            <row>
+              <entry>Event Type</entry>
+              <entry namest="c2" nameend="c3" align="left">Event Class</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>insert</entry>
+              <entry namest="c2" nameend="c3" align="left">org.dbforms.event.InsertEvent</entry>
+            </row>
+            <row>
+              <entry>update</entry>
+              <entry namest="c2" nameend="c3">org.dbforms.event.UpdateEvent</entry>
+            </row>
+            <row>
+              <entry>delete</entry>
+              <entry namest="c2" nameend="c3">org.dbforms.event.DeleteEvent</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </informaltable>
+      <para/>
     </sect2>
     <sect2>
-    
-    <title>Event properties configuration</title>
-
-    <para>Every <computeroutput>/dbforms-config/table/events/event</computeroutput> can be configured using a set of properties (obviously, those properties are useful only if the event class support them). To declare the properties, the developer must add to the  element a set of children  elements and configure their attributes.</para>
-
-     </sect2>
-     
-     <sect2>
-    <title>Properties attributes</title>
-
-    <para>Every <computeroutput>/dbforms-config/table/events/event</computeroutput> element uses the following mandatory attributes: </para>
-
-    
-	 
-     <informaltable frame="all">
-<tgroup cols="3" align="left" colsep="1" rowsep="1">
-<colspec colname="c1"/>
-<colspec colname="c2"/>
-<colspec colname="c3"/>
-
-<thead>
-<row>
-<entry>attribute name</entry>
-  <entry namest="c2" nameend="c3" align="center">description</entry>
-</row>
-</thead>
- 
-<tbody>
-<row>
-  <entry>name</entry>
- <entry namest="c2" nameend="c3" align="center">the name of the event property.
-</entry>
-   
-</row>
-<row>
-  <entry>value</entry>
- <entry namest="c2" nameend="c3" align="center">the value of the event property.</entry>
-   
-</row>
- 
-</tbody>
-</tgroup>
-</informaltable>
-       </sect2>
+      <title>Navigation events</title>
+      <informaltable frame="all">
+        <tgroup cols="3" align="left" colsep="1" rowsep="1">
+          <colspec colname="c1"/>
+          <colspec colname="c2"/>
+          <colspec colname="c3"/>
+          <thead>
+            <row>
+              <entry>Event Type</entry>
+              <entry namest="c2" nameend="c3">Event Class</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry> navFirst</entry>
+              <entry namest="c2" nameend="c3">org.dbforms.event.NavFirstEvent</entry>
+            </row>
+            <row>
+              <entry>navPrev</entry>
+              <entry namest="c2" nameend="c3">org.dbforms.event.BoundedNavPrevEventImpl</entry>
+            </row>
+            <row>
+              <entry>navNext</entry>
+              <entry namest="c2" nameend="c3">org.dbforms.event.BoundedNavNextEventImpl</entry>
+            </row>
+            <row>
+              <entry>navLast</entry>
+              <entry namest="c2" nameend="c3">org.dbforms.event.NavLastEvent</entry>
+            </row>
+            <row>
+              <entry>navNew</entry>
+              <entry namest="c2" nameend="c3">org.dbforms.event.NavNewEvent</entry>
+            </row>
+            <row>
+              <entry>navGoto</entry>
+              <entry namest="c2" nameend="c3">org.dbforms.event.GotoEvent</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </informaltable>
+    </sect2>
   </sect1>
- 
+  <sect1>
+    <title id="regi">Registration of the event classes</title>
+    <para>
+      Database and Navigation event factories automatically register the default event classes into the system.  
+      Developers can register additional event classes by declaring and configuring elements into the 
+      dbforms-config file, as shown in the example below:
+    </para>
+    <informalexample>
+      <screen>
+  <emphasis role="bold">&lt;dbforms-config&gt;</emphasis>
+
+    &lt;!-- dbforms config stuff here... --&gt;
+    &lt;!-- define custom events --&gt;            
+
+    <emphasis role="bold">&lt;events&gt;</emphasis>        
+
+      &lt;!-- define database custom events here --&gt;               
+      <emphasis role="bold">&lt;database-events&gt;</emphasis><co id="db-event"/>
+        &lt;database-event id="insert2" type="insert" className="org.foo.bar.MyInsertEvent" /&gt; 
+        &lt;database-event id="update2" type="update" className="org.foo.bar.MyUpdateEvent" /&gt; 
+      <emphasis role="bold">&lt;/database-events&gt;</emphasis>
+
+      &lt;!-- define navigation custom events here --&gt;
+      <emphasis role="bold">&lt;navigation-events&gt;</emphasis><co id="nav-event"/>  
+        &lt;navigation-event id="new2" type="navNew"   className="org.foo.bar.MyNavNewEvent" /&gt;
+      <emphasis role="bold">&lt;/navigation-events&gt;</emphasis>
+
+    &lt;/events&gt;  
+  &lt;/dbforms-config&gt;    
+      </screen>
+      <calloutlist>
+        <callout arearefs="db-event">
+          <para>To add database custom events, a developer must:    
+            <itemizedlist mark="opencircle">
+              <listitem>
+                <para>
+                  add a new 
+                  <computeroutput>/dbforms-config/events/database-events</computeroutput> 
+                  element, if it does not exist yet 
+                </para>
+              </listitem>
+              <listitem>
+                <para>
+                  add a new 
+                  <computeroutput>/dbforms-config/events/database-events/database-event</computeroutput> 
+                  element for every database custom event to register into the system
+                </para>
+              </listitem>
+            </itemizedlist>
+          </para>
+        </callout>
+        <callout arearefs="nav-event">
+          <para>
+            To add navigation custom events, a developer must:  
+            <itemizedlist mark="opencircle">
+              <listitem>
+                <para>
+                  add a new 
+                  <computeroutput>/dbforms-config/events/navigation-events</computeroutput> 
+                  element, if it does not exist yet 
+                </para>
+              </listitem>
+              <listitem>
+                <para>
+                  add a new 
+                  <computeroutput>/dbforms-config/events/navigation-events/navigation-event</computeroutput> 
+                  element for every navigation custom event to register into the system 
+                </para>
+              </listitem>
+            </itemizedlist>
+          </para>
+        </callout>
+      </calloutlist>
+    </informalexample>
+    <sect2>
+      <title>Event attributes</title>
+      <para>Every database-event element and navigation-event element uses the following mandatory attributes:</para>
+      <informaltable frame="all">
+        <tgroup cols="3" align="left" colsep="1" rowsep="1">
+          <colspec colname="c1"/>
+          <colspec colname="c2"/>
+          <colspec colname="c3"/>
+          <thead>
+            <row>
+              <entry>attribute name</entry>
+              <entry namest="c2" nameend="c3">description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>id</entry>
+              <entry namest="c2" nameend="c3">the event identifier. Must be unique.</entry>
+            </row>
+            <row>
+              <entry>type</entry>
+              <entry namest="c2" nameend="c3">the event type. Must be a supported type value.</entry>
+            </row>
+            <row>
+              <entry>className</entry>
+              <entry namest="c2" nameend="c3">the full qualified class name of the event class.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </informaltable>
+    </sect2>
+  </sect1>
+  <sect1>
+    <title>Override the default event classes </title>
+    <para>
+      The declarative event configuration system let developers change the default event classes 
+      with custom ones.  In this manner, every table element uses those event classes instead of the default ones.
+    </para>
+    <sect2>
+      <title>global overriding </title>
+      <para>To override a default event class in a global way, it is sufficient to:</para>
+      <itemizedlist mark="opencircle">
+        <listitem>
+          <para>
+            declare a new 
+            <computeroutput>database-event</computeroutput> or 
+            <computeroutput>navigation-event</computeroutput> element
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            set the value of its type attribute with a suppored event type value
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            set the value of its className attribute with the full qualified class name of your custom event class
+          </para>
+        </listitem>
+      </itemizedlist>
+      <para>Example:</para>
+      <informalexample>
+        <screen>
+  <!--
+    -  Events configuration
+    -->
+  &lt;events&gt;
+    &lt;database-events&gt;
+      &lt;database-event type="update" className="org.foo.bar.MyUpdateEvent"/&gt; 
+    &lt;/database-events&gt;
+  &lt;/events&gt;
+        </screen>
+      </informalexample>
+      <para>
+        This configuration overrides the default update event class with the custom
+        org.foo.bar.MyUpdateEvent one.
+      </para>
+      <para>
+        All the table elements will use the custom org.foo.bar.MyUpdateEvent class instead of the default one 
+        (org.dbforms.event.UpdateEvent).
+      </para>
+    </sect2>
+    <sect2>
+      <title>Log information about event override</title>
+      <para>DbForms logs any information regarding the event class override procedure.</para>
+      <para>
+        Here's an example log statement that shows that the custom "org.foo.bar.MyUpdateEvent" update event class
+        overrides the default "org.dbforms.event.UpdateEvent" one.
+      </para>
+      <para>
+        <screen>
+  ::addEventInfo - the event information having id, class [update, org.foo.bar.MyUpdateEvent] 
+                   overrides the event class [org.dbforms.event.UpdateEvent]
+        </screen>
+      </para>
+    </sect2>
+  </sect1>
+
+  <sect1 id="tbyt">
+    <title>Override the event classes on a table-by-table basis </title>
+    <para>Every table object specified by a 
+      <computeroutput>/dbforms-config/table</computeroutput> element uses by default the standard 
+      event configuration. A developer can choose to override the event class associated 
+      to a certain event type, by adding and configuring the events element in the dbforms-config file as shown below:
+    </para>
+    <informalexample>
+      <screen>
+  <emphasis role="bold"> &lt;dbforms-config&gt;</emphasis>
+    ...
+    <emphasis role="bold">&lt;table</emphasis> name="MYTABLE"&gt;
+      &lt;field name="TABLEID"  fieldType="varchar" size="10" isKey="true"/&gt;
+      &lt;field name="NAME"     fieldType="varchar" size="16"/&gt;
+      ...
+
+      &lt;interceptor className="foo.bar.MyInterceptor"/&gt;
+
+      &lt;!--
+        -  Here you can specify custom event classes that override the default ones.
+        -  Event properties can be configured using "property" elements.
+        --&gt;                
+      <emphasis role="bold">&lt;events&gt;</emphasis><co id="events"/>
+        &lt;event type="insert" id="insert2"&gt;
+
+          &lt;!-- event properties configuration --&gt;
+          &lt;property name="sourceView"  value="VIEW_USER" /&gt;
+          &lt;property name="targetTable" value="USER" /&gt;
+        &lt;/event&gt;                
+      <emphasis role="bold">&lt;/events&gt;</emphasis>
+
+    <emphasis role="bold">&lt;/table&gt;</emphasis>
+
+    ...
+
+  <emphasis role="bold">&lt;/dbforms-config&gt;</emphasis>
+      </screen>
+      <calloutlist>
+        <callout arearefs="events">
+          <para>To override the event classes associated to the event types, a developer must:      
+            <itemizedlist mark="opencircle">
+              <listitem>
+                <para>
+                  add a new 
+                  <computeroutput>/dbforms-config/table/events</computeroutput> element, if it does not exist yet
+                </para>
+              </listitem>
+              <listitem>
+                <para>
+                  add a new 
+                  <computeroutput>/dbforms-config/table/events/event</computeroutput> 
+                  element for every event class to override
+                </para>
+              </listitem>
+            </itemizedlist>
+          </para>
+        </callout>
+      </calloutlist>
+    </informalexample>
+    <sect2>
+      <title>Event attributes</title>
+      <para>
+        Every 
+        <computeroutput>/dbforms-config/table/events/event</computeroutput> 
+        element uses the following mandatory attributes:
+      </para>
+      <informaltable frame="all">
+        <tgroup cols="3" align="left" colsep="1" rowsep="1">
+          <colspec colname="c1"/>
+          <colspec colname="c2"/>
+          <colspec colname="c3"/>
+          <thead>
+            <row>
+              <entry>attribute name</entry>
+              <entry namest="c2" nameend="c3">description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>type</entry>
+              <entry namest="c2" nameend="c3">the event type. Must be a supported type value.</entry>
+            </row>
+            <row>
+              <entry>id</entry>
+              <entry namest="c2" nameend="c3">
+                the event identifier. Must be equal to the identifier attribute of an event specified by a 
+                <computeroutput>/dbforms-config/events/database-events/database-event</computeroutput> or 
+                <computeroutput>/dbforms-config/events/navigation-events/navigation-event element.</computeroutput>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </informaltable>
+    </sect2>
+    <sect2>
+      <title>Event properties configuration</title>
+      <para>Every 
+        <computeroutput>/dbforms-config/table/events/event</computeroutput> can be configured using a set of properties (obviously, those properties are useful only if the event class support them). To declare the properties, the developer must add to the  element a set of children  elements and configure their attributes.
+      </para>
+    </sect2>
+    <sect2>
+      <title>Properties attributes</title>
+      <para>Every 
+        <computeroutput>/dbforms-config/table/events/event</computeroutput> element uses the following mandatory attributes: 
+      </para>
+      <informaltable frame="all">
+        <tgroup cols="3" align="left" colsep="1" rowsep="1">
+          <colspec colname="c1"/>
+          <colspec colname="c2"/>
+          <colspec colname="c3"/>
+          <thead>
+            <row>
+              <entry>attribute name</entry>
+              <entry namest="c2" nameend="c3">description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>name</entry>
+              <entry namest="c2" nameend="c3">the name of the event property.</entry>
+            </row>
+            <row>
+              <entry>value</entry>
+              <entry namest="c2" nameend="c3">the value of the event property.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </informaltable>
+    </sect2>
+  </sect1>
 </chapter>
