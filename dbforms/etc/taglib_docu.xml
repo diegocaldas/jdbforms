@@ -7046,9 +7046,143 @@ error manager</summary>
 					<rtexprvalue>true</rtexprvalue>
 				</attribute>
 			</tag>
+			<!-- **************************** 20030615-HKK: search checkbox tag ***********************************-->
+			<tag>
+				<name>searchCheckBox</name>
+				<summary>
+					<p>Renders a CheckBox for searching. The field value wich is searched for is the value of the 
+					   value attribute.
+						Renders all the needed fields for searching. 
+					   Hides the searchfieldName stuff from the 
+                  			 JSP developer.</p>
+				</summary>
+				<tagclass>org.dbforms.taglib.DbSearchCeckBoxTag</tagclass>
+				<bodycontent>empty</bodycontent>
+				<info>
+					<p>example of result:</p>
+					<p>
+						<ul>
+							<li>&lt;input type="hidden" name="searchalgo_0_1" value="weakEnd"/&gt;</li>
+							<li>&lt;input type="hidden" name="searchmode_0_1" value="AND"/&gt;</li>
+							<li>&lt;input type="input" name="search_0_1"/&gt;</li>
+						</ul>
+					</p>
+				</info>
+				<attribute>
+					<name>fieldName</name>
+					<required>true</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>Name of the field in the table for which the searching should be done</info>
+				</attribute>
+				<attribute>
+					<name>searchAlgo</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>The search algorithm. Default: sharp</info>
+				</attribute>
+				<attribute>
+					<name>searchMode</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>The search mode. Default: and</info>
+				</attribute>
+				<attribute>
+					<name>value</name>
+					<required>true</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>The value to search for</info>
+				</attribute>
+				<attribute>
+					<name>checked</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>If set to true the ceckbox will be checked during rendering</info>
+				</attribute>
+				<attribute>
+					<name>id</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>Renders HTML id field</info>
+				</attribute>
+				<attribute>
+					<name>onBlur</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+				</attribute>
+				<attribute>
+					<name>onChange</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+				</attribute>
+				<attribute>
+					<name>onClick</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+				</attribute>
+				<attribute>
+					<name>onDblClick</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+				</attribute>
+				<attribute>
+					<name>onFocus</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+				</attribute>
+				<attribute>
+					<name>onKeyDown</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+				</attribute>
+				<attribute>
+					<name>onKeyPress</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+				</attribute>
+				<attribute>
+					<name>onKeyUp</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+				</attribute>
+				<attribute>
+					<name>onMouseDown</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+				</attribute>
+				<attribute>
+					<name>onMouseMove</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+				</attribute>
+				<attribute>
+					<name>onMouseOut</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+				</attribute>
+				<attribute>
+					<name>onMouseOver</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+				</attribute>
+				<attribute>
+					<name>onMouseUp</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+				</attribute>
+				<attribute>
+					<name>onSelect</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+				</attribute>
+				<attribute>
+					<name>style</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+				</attribute>
+			</tag>
 			<tag>
 				<summary>
-Create a set of sql filter conditions, letting user select which one will be applied. 
+					Create a set of sql filter conditions, letting user select which one will be applied. 
 				</summary>
 				<name>filter</name>
 				<tagclass>org.dbforms.taglib.DbFilterTag</tagclass>
