@@ -206,9 +206,9 @@ public abstract class EventFactory
     protected String getEventIdFromDestinationTable(HttpServletRequest request, String action)
     {
         DbFormsConfig config    = null;
-        String        eventType = EventTypeUtil.getEventType(action).getEventType();
         Table         table     = null;
         String        eventId   = null;
+        String        eventType = EventTypeUtil.getEventType(action).getEventType();
 
         try
         {
@@ -219,6 +219,7 @@ public abstract class EventFactory
             logCat.error("::getEventIdFromDestinationTable - cannot get the config object from the DbFormsConfigRegistry");
         }
 
+
         if (config != null)
         {
             // try to retrieve a valid  target table name from the request;
@@ -228,6 +229,19 @@ public abstract class EventFactory
             if (!Util.isNull(tableName))
             {
                 table = config.getTableByName(tableName);
+            }
+
+            // if a gotoButton tag like:
+            //
+            //   <db:gotoButton caption="users" destination="/dispatcher.do?fwd=userListBO" />
+            //
+            // does not specify its destTable attribute (ie: destTable="APP_USER"),
+            // the factory cannot override the goto event class; so it returns
+            // the default EventType.EVENT_NAVIGATION_GOTO event id.
+            else if (eventType.equals(EventType.EVENT_NAVIGATION_GOTO))
+            {
+              //logCat.warn("::getEventIdFromDestinationTable - got an EVENT_NAVIGATION_GOTO");
+              return EventType.EVENT_NAVIGATION_GOTO;
             }
             else
             {
