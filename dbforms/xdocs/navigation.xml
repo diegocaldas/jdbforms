@@ -15,7 +15,10 @@
   -->
 
   <body>
-    <menu>
+    <menu  type="footer">
+      <item/>
+    </menu>
+    <menu type="footer">
        <item  
             href="http://sourceforge.net/projects/jdbforms"
             img="http://sourceforge.net/sflogo.php?group_id=17608&amp;type=1" 
