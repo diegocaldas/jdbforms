@@ -1,85 +1,85 @@
 2003-01-30
 (fossato@pow2.com)
     start the "Mavenization" process for the the current DbForms web site.
-	See http://jakarta.apache.org/turbine/maven/ for further informations about the
+    See http://jakarta.apache.org/turbine/maven/ for further informations about the
     Jakarta Turbine-Maven project.
  
-	- started the porting of the actual web site documentation to the xdoc format;
-	- added the "site.xml" ant build file that can be used to build a preview of the
+    - started the porting of the actual web site documentation to the xdoc format;
+    - added the "site.xml" ant build file that can be used to build a preview of the
       "xdoc documentation" - Maven "site:generate" target is quite an heavy beast !! ;^)
 
-	SITE PREVIEW:
+    SITE PREVIEW:
     To generate a *preview* of the web site documentation, follow those steps:
 
     > cd $DBFORMS_HOME
     $DBFORMS_HOME > ant -buildfile site.xml
 
     Ant will build the $DBFORMS_HOME/xdocs_target directory; it will contains 
-	the new html documentation that uses the "jakarta-site2" look
-	http://jakarta.apache.org/site/jakarta-site2.html
+    the new html documentation that uses the "jakarta-site2" look
+    http://jakarta.apache.org/site/jakarta-site2.html
 
     MAVEN SITE GENERATION
-	a) get and install the latest Turbine-Maven distribuition
-	   http://jakarta.apache.org/turbine/maven/
+    a) get and install the latest Turbine-Maven distribuition
+       http://jakarta.apache.org/turbine/maven/
 
-	b.0) put $MAVEN_HOME/bin directory into your system PATH;
-	b.1) put your cvs.exe client program into your system PATH;
+    b.0) put $MAVEN_HOME/bin directory into your system PATH;
+    b.1) put your cvs.exe client program into your system PATH;
 
     c) > cd $DBFORMS_HOME
-	   $DBFORMS_HOME > maven site:generate
+       $DBFORMS_HOME > maven site:generate
 
     d) wait a bit... ;^)
 
     A successfull Maven build process creates the $DBFORMS_HOME/target/docs directory;
-	to view the new site load the $DBFORMS_HOME/target/docs/index.html file into your web browser.
-	
+    to view the new site load the $DBFORMS_HOME/target/docs/index.html file into your web browser.
+    
 
 2003-01-31
 (Henner.Kollmann@gmx.de)
-   	ConfigServlet.java
-   	    added events to query
-	    rearranged initXMLValidator code
+    ConfigServlet.java
+        added events to query
+        rearranged initXMLValidator code
 
-====================== v1_1_3_pr2 was released ==============================================		
+====================== v1_1_3_pr2 was released ==============================================       
 
 2003-01-28
 (Henner.Kollmann@gmx.de)
-	2 more helper classes:
-   		StringUtil.java: dealing with strings
-   		TimeUtil.java  : dealing with parsing/converting of Dates
-   	SqlUtil.java:
-   		changed parsing of timestamp to make it more fault tolerant. Now it's possible to
-   		enter something like 12.12  and the value will be expanded to 12.12.2003 (current year).
-   		Same for 12. will be expanded to 12.<current month>.<current year>
-   	DbFormTag.java:
-   		Extend extending searching and time fields. If you input a single time value like 12.01.2003 12:30 you
-   		will get the range up to the end of the day: 12.01.2003 12:00 - 13.01.2003 0:00
+    2 more helper classes:
+        StringUtil.java: dealing with strings
+        TimeUtil.java  : dealing with parsing/converting of Dates
+    SqlUtil.java:
+        changed parsing of timestamp to make it more fault tolerant. Now it's possible to
+        enter something like 12.12  and the value will be expanded to 12.12.2003 (current year).
+        Same for 12. will be expanded to 12.<current month>.<current year>
+    DbFormTag.java:
+        Extend extending searching and time fields. If you input a single time value like 12.01.2003 12:30 you
+        will get the range up to the end of the day: 12.01.2003 12:00 - 13.01.2003 0:00
    
 
 2003-01-27
 (Henner.Kollmann@gmx.de)
-	FieldValues.java:
-	   corrected bug with navigation and NOTISNULL
+    FieldValues.java:
+       corrected bug with navigation and NOTISNULL
 2003-01-24
 (Henner.Kollmann@gmx.de)
-	taglib_docu.xml:
-	   added formatClass to tableData and queryData
-	EmbeddedData.java
-	   added formatClass attribute. Class given in formatClass attribute will be loaded through reflection and will be
-	   used for formatting the output. Must be derived from org.dbforms.util.PrintfFormat. 
-	   Default is org.dbforms.util.PrintfFormat.
+    taglib_docu.xml:
+       added formatClass to tableData and queryData
+    EmbeddedData.java
+       added formatClass attribute. Class given in formatClass attribute will be loaded through reflection and will be
+       used for formatting the output. Must be derived from org.dbforms.util.PrintfFormat. 
+       Default is org.dbforms.util.PrintfFormat.
 
 2003-01-23
 (Henner.Kollmann@gmx.de)
-	taglib_docu.xml:
-	    added new field novalue to checkbox and radio tag
-	DbCheckboxTag, DbRadioTag:
-	    corrected problem with storing of values if checkbox is unchecked.
-	    Will add a hidden input field with value set to the novalue attribute and the same name as the checkbox field
-	    This value will be stored if checkbox is unchecked.
-	ParseUtil:
-	    Corrected comment of getParameter. The first value will be used if the parameter has multiple values.    
-	    
+    taglib_docu.xml:
+        added new field novalue to checkbox and radio tag
+    DbCheckboxTag, DbRadioTag:
+        corrected problem with storing of values if checkbox is unchecked.
+        Will add a hidden input field with value set to the novalue attribute and the same name as the checkbox field
+        This value will be stored if checkbox is unchecked.
+    ParseUtil:
+        Corrected comment of getParameter. The first value will be used if the parameter has multiple values.    
+        
 
 2002-11-27
 (fossato@pow2.com)
@@ -90,30 +90,30 @@
 
 2002-11-26
 (Henner.Kollmann@gmx.de)
-	taglib_docu.xml:
-		added descriptions extensions to filter attribute in form
-		Cleaned up description of destPos, keyToDestPos, keyToKeyToDestPos
-		added new tag hasNoRecords
-		extended dblink tag
-	ConfigServlet.java, DbFormsConfig.java:
-		Added SERVLETCONTEXT_REALPATH
-	Table.java:
-	 	Added new method getPositionString
-	 DbForm.java:
-	 	Use Table.getPositionString
-	 HasMoreRecords.java
-	 	Will now render body if true!
-	 HasNoRecords.java
-	 	New tag. Same as HasMoreRecords. But with recCount = 0
-	 DbLinkURL.java
-	 	Added Child, parent stuff, corrected char encoding
-	 EventEngine.java, GotoEvent.java
-	 	Added Child, parent stuff for DbLinkURL
-	 Util.java:
-	 	Some more helpers.
-		
-====================== v1_1_3_pr1 was released ==============================================		
-	
+    taglib_docu.xml:
+        added descriptions extensions to filter attribute in form
+        Cleaned up description of destPos, keyToDestPos, keyToKeyToDestPos
+        added new tag hasNoRecords
+        extended dblink tag
+    ConfigServlet.java, DbFormsConfig.java:
+        Added SERVLETCONTEXT_REALPATH
+    Table.java:
+        Added new method getPositionString
+     DbForm.java:
+        Use Table.getPositionString
+     HasMoreRecords.java
+        Will now render body if true!
+     HasNoRecords.java
+        New tag. Same as HasMoreRecords. But with recCount = 0
+     DbLinkURL.java
+        Added Child, parent stuff, corrected char encoding
+     EventEngine.java, GotoEvent.java
+        Added Child, parent stuff for DbLinkURL
+     Util.java:
+        Some more helpers.
+        
+====================== v1_1_3_pr1 was released ==============================================       
+    
 2002-11-18
 (fossato@pow2.com)
         connectionProviders' connection pool configuration
@@ -124,10 +124,10 @@
 
 2002-11-18
 (Henner.Kollmann@gmx.de)
-	some minor bug fixes
-	new attribute in for query: distinct. If true query will build select distinct ....
+    some minor bug fixes
+    new attribute in for query: distinct. If true query will build select distinct ....
 
-	
+    
 2002-11-15
 (fossato@pow2.com)
         connectionFactory sources integration
