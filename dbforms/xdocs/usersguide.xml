@@ -16,7 +16,7 @@
 
 	  <table width="500" border="1" cellspacing="0" cellpadding="2">
 	  <tr> 
-	    <th>file type</th>
+	    <th width="200">file type</th>
 		<th>file size</th>
 		<th>date</th>
 		<th>download</th>
@@ -57,7 +57,7 @@
     <p>
 	  <table width="500" border="1" cellspacing="0" cellpadding="2">
 	  <tr> 
-	    <th>file type</th>
+	    <th width="200">file type</th>
 		<th>file size</th>
 		<th>date</th>
 		<th>download</th>
@@ -78,6 +78,32 @@
   </subsection>
 
   <subsection name="Guide v1.1">
+    <p>
+	  <table width="500" border="1" cellspacing="0" cellpadding="2">
+	  <tr width="200"> 
+	    <th>file type</th>
+		<th>file size</th>
+		<th>date</th>
+		<th>download</th>
+      </tr>
+	  <tr>
+		<td>Microsoft Word</td>
+		<td>2.95 Mbytes</td>
+		<td>19-Apr-2002</td>
+		<td>
+          <a href="http://jdbforms.sourceforge.net/non-cvs/docs/usersguide/word/DbForms_UserGuide_v1_1.doc">download</a>
+        </td>
+	  </tr>
+	  <tr>
+		<td>Adobe PDF</td>
+		<td>0.63 Mbytes</td>
+		<td></td>
+		<td>
+		  <a href="http://jdbforms.sourceforge.net/non-cvs/docs/usersguide/pdf/dbforms_guide_1_1.pdf">download</a>
+		</td>
+	  </tr>
+	  </table>
+	</p>
   </subsection>
 
 </section>
