@@ -61,7 +61,7 @@ public class BaseTag extends TagSupport
 
       int port = request.getServerPort();
 
-      if (port != 80)
+      if ((port != 80)  && (port !=443))
       {
          buf.append(":");
          buf.append(port);
