@@ -1,10 +1,14 @@
-
+2005-02-18
+(Henner.Kollmann@gmx.de)
+   - make searching smarter:
+     filter 12.10.2004 18:00-19:00 will result in 12.10.2004 18:00 - 12.10.2004 19:00
+   - moved to new cewolf version
 
 2004-11-15
 (Henner.Kollmann@gmx.de)
-make searching smarter.
-If there is a field in the new table with same name and type as in the old one then 
-take searchvalues from that field
+   - make searching smarter.
+     If there is a field in the new table with same name and type as in the old one then 
+     take searchvalues from that field
 
 2004-11-12
 (Henner.Kollmann@gmx.de)
