@@ -35,15 +35,15 @@ import org.apache.log4j.Category;
 
 /****
  *
- * <p>the 3 examles below produce all the same result</p>
+ * <p>the 3 examples below produce all the same result</p>
  *
  * <p><linkURL href="customer.jsp" table="customer" position="1:2:12-3:4:1992" /></p>
  *
  * <p><linkURL href="customer.jsp" table="customer" position="<%= currentKey %>" /></p>
  *
  * <p><linkURL href="customer.jsp" table="customer" />
- * <ul>  <position field="id" value="103" /><br/>
- *   <position field="cust_lang" value="2" /></ul>
+ * <ul>  <position fieldName="id" value="103" /><br/>
+ *   <position fieldName="cust_lang" value="2" /></ul>
  * </link>
  * </p>
  *
@@ -82,19 +82,19 @@ public class DbLinkURLTag extends BodyTagSupport implements TryCatchFinally
     private String keyToDestPos;
     private String keyToKeyToDestPos;
 
-    /** 
-     * used if parentTable is different to tableName:  
-     * field(s) in the main form that is/are linked to this form 
+    /**
+     * used if parentTable is different to tableName:
+     * field(s) in the main form that is/are linked to this form
      **/
     private String parentField;
 
-    /** 
-     * used if parentTable is different to tableName:  
-     * field(s) in this forme that is/are linked to the parent form 
+    /**
+     * used if parentTable is different to tableName:
+     * field(s) in this forme that is/are linked to the parent form
      **/
     private String childField;
-    
-	 
+
+
     /**
      * DOCUMENT ME!
      *
@@ -190,11 +190,14 @@ public class DbLinkURLTag extends BodyTagSupport implements TryCatchFinally
      *
      * @return DOCUMENT ME!
      *
-     * @throws javax.servlet.jsp.JspException DOCUMENT ME!
-     * @throws IllegalArgumentException DOCUMENT ME!
+     * @throws JspException  thrown when error occurs in processing the body of
+     *                       this method
+
+     * @throws IllegalArgumentException thrown when some parameters are missing.
      */
     public int doStartTag() throws javax.servlet.jsp.JspException
     {
+
         // determinate table
         if (this.tableName != null)
         {
@@ -225,7 +228,8 @@ public class DbLinkURLTag extends BodyTagSupport implements TryCatchFinally
      *
      * @return DOCUMENT ME!
      *
-     * @throws javax.servlet.jsp.JspException DOCUMENT ME!
+     * @throws JspException  thrown when error occurs in processing the body of
+     *                       this method
      */
     public int doBodyEndTag() throws javax.servlet.jsp.JspException
     {
@@ -236,18 +240,18 @@ public class DbLinkURLTag extends BodyTagSupport implements TryCatchFinally
 
     private String getDataTag(String primaryTagName, String dataKey, String dataValue)
     {
-		  String s = "";	
-		  if (!Util.isNull(dataValue)) {	
-	        StringBuffer tagBuf = new StringBuffer();
-   	     tagBuf.append(primaryTagName);
-      	  tagBuf.append("_");
-	        tagBuf.append(dataKey);
-   	     tagBuf.append("=");
-      	  tagBuf.append(dataValue);
-	        tagBuf.append("&");
-   	     s = tagBuf.toString();
-		  }
-		  return s;
+      String s = "";
+      if (!Util.isNull(dataValue)) {
+          StringBuffer tagBuf = new StringBuffer();
+         tagBuf.append(primaryTagName);
+          tagBuf.append("_");
+          tagBuf.append(dataKey);
+         tagBuf.append("=");
+          tagBuf.append(dataValue);
+          tagBuf.append("&");
+         s = tagBuf.toString();
+      }
+      return s;
     }
 
 
@@ -256,8 +260,8 @@ public class DbLinkURLTag extends BodyTagSupport implements TryCatchFinally
      *
      * @return DOCUMENT ME!
      *
-     * @throws javax.servlet.jsp.JspException DOCUMENT ME!
-     * @throws JspException DOCUMENT ME!
+     * @throws JspException  thrown when error occurs in processing the body of
+     *                       this method
      */
     public int doEndTag() throws javax.servlet.jsp.JspException
     {
@@ -289,29 +293,29 @@ public class DbLinkURLTag extends BodyTagSupport implements TryCatchFinally
             String tagName = "ac_goto";
             tagBuf.append(getDataTag(tagName, "x", "t"));
 
-				tagName = "data" + tagName + "_x";
+        tagName = "data" + tagName + "_x";
             tagBuf.append(getDataTag(tagName, "fu", href));
 
-				// table is required. we force to define a valid table. 
-				// because we do not want the developer to use this tag instead of 
-				// normal <a href="">-tags to arbitrary (static) ressources, as this would slow down the application.
-            tagBuf.append(getDataTag(tagName, "destTable", table.getName())); 
+        // table is required. we force to define a valid table.
+        // because we do not want the developer to use this tag instead of
+        // normal <a href="">-tags to arbitrary (static) ressources, as this would slow down the application.
+            tagBuf.append(getDataTag(tagName, "destTable", table.getName()));
 
-            // position within table is not required. 
+            // position within table is not required.
             // if no position was provided/determinated, dbForm will navigate to the first row
-				
-				// 2002-11-20 HKK: Fixed encoding bug!
+
+        // 2002-11-20 HKK: Fixed encoding bug!
             tagBuf.append(getDataTag(tagName, "destPos", Util.encode(position)));
 
-				// 2002-11-21 HKK: Allow same keys as in dbgotobutton
+        // 2002-11-21 HKK: Allow same keys as in dbgotobutton
             tagBuf.append(getDataTag(tagName, "keyToDestPos", Util.encode(keyToDestPos)));
             tagBuf.append(getDataTag(tagName, "keyToKeyDestPos", Util.encode(keyToKeyToDestPos)));
 
             // 2002-11-21 HKK: New: send parent table name as parameter if it is different to table
             if (table != parentForm.getTable()) {
-	            tagBuf.append(getDataTag(tagName, "srcTable", parentForm.getTable().getName())); 
-	            tagBuf.append(getDataTag(tagName, "childField", Util.encode(childField))); 
-	            tagBuf.append(getDataTag(tagName, "parentField", Util.encode(parentField))); 
+              tagBuf.append(getDataTag(tagName, "srcTable", parentForm.getTable().getName()));
+              tagBuf.append(getDataTag(tagName, "childField", Util.encode(childField)));
+              tagBuf.append(getDataTag(tagName, "parentField", Util.encode(parentField)));
             }
 
             HttpServletResponse response = (HttpServletResponse) pageContext.getResponse();
@@ -441,26 +445,28 @@ public class DbLinkURLTag extends BodyTagSupport implements TryCatchFinally
       this.parentField = parentField;
    }
 
-	public void doFinally()
-	{
-		logCat.info("doFinally called");
-		position = null;
-		if (positionFv != null)
-		   positionFv.clear();
-		positionFv = null;
-	}
+
+  public void doFinally()
+  {
+    logCat.info("doFinally called");
+    position = null;
+    if (positionFv != null)
+       positionFv.clear();
+    positionFv = null;
+  }
 
 
-	/**
-	 * DOCUMENT ME!
-	 *
-	 * @param  t DOCUMENT ME!
-	 * @throws  Throwable DOCUMENT ME!
-	 */
-	public void doCatch(Throwable t) throws Throwable
-	{
-		logCat.info("doCatch called - " + t.toString());
-		throw t;
-	}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  t DOCUMENT ME!
+   * @throws  Throwable DOCUMENT ME!
+   */
+  public void doCatch(Throwable t) throws Throwable
+  {
+    logCat.info("doCatch called - " + t.toString());
+    throw t;
+  }
+
 
 }
