@@ -101,7 +101,7 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag  {
     return src;
   }
 
-  public void setAlt(String src) {
+  public void setAlt(String alt) {
     this.alt=alt;
   }
 
