@@ -1,0 +1,142 @@
+Release Notes for DbForms Version 1.1.4,  2004-01-24
+
+Contents:
+1)   About this release
+2)   Compatibility Warning
+2-1) Changed interceptor interfaces
+2-2) Changed filter value interface
+2-3) Moved validationException classes
+3)   Details about enhancements and changes
+3-0) Code cleanup
+3-1) New navigation system
+3-2) XML Datasource
+3-3) New bookstore example
+3-4) New field type TIME
+3-5) Changed writing of text fields
+3-6) Changed parsing of text fields
+3-7) Remove dependency from config date-format
+3-8) Add junit testing of client side code
+3-9) Added attribute searchAlgo to filterValue
+
+1) About this release
+----------------------
+
+DbForms 1.1.4 is the second release to be labelled production/stable.
+It is the result of 1.1.4dev and 1.1.4pr2 developer releases.  Changes made in those releases are included below.
+
+Please report any problems or comments to the mailing list of
+the project
+
+    jdbforms-interest@lists.sourceforge.net
+
+This documents summarizes the changes since last official release 1.1.3,
+that are of interest to end users. There have also been several internal 
+enhancements which are not mentioned here.
+
+2) Compatibility Warnings
+-------------------------
+2-1) Changed interceptor interfaces
+-----------------------------------
+To have better control of the fields written to the datebase we changed the interceptor interface of the 
+preUpdate/preInsert/preDelete events to
+         public int preXXXXXX(HttpServletRequest request,  Table table, FieldValues fieldValues,
+							  DbFormsConfig config, Connection con) throws ValidationException
+Now you have full control over the fields written to the datbase, you can remove, change and add fields.
+
+ATTENTION: You must change the interfaces in your old interceptor code. Changing the code should'nt be necessary because the 
+           interface of the FieldValues class is nearly the same as the old used hashtable.
+
+2-2) Changed filter value interface
+-----------------------------------
+Changed filters to use the resultset setter methods. So string and numeric value handling is done automatically.
+You must change your filter values for string to not use the ''! This is done automatically.
+So 
+	name like '?' 
+	must be 
+	changed to name like ? 
+!
+
+2-3) Moved validationException classes
+---------------------------------------
+To break cyclic references the classes 
+	org/dbforms/event/ValidationException and 
+	org/dbforms/event/MultipleValidationException
+are moved to
+	org/dbforms/config/ValidationException
+	org/dbforms/config/MultipleValidationException
+
+
+
+
+3-0) Code cleanup
+----------------------
+A big code cleanup has been done to change the navigation system and to remove duplicated code inside the tag libraries.
+This cleanup should not change any interface, but a lot of classes have been touched. So please report all irregular changes
+to the list!
+
+3-1) New navigation system
+--------------------------
+A new event system has been built that DOES NOT re-execute the search query every time the client requests a subset of the hits (as the original did). 
+Also, with this system it is possible to use navigation even with free form select as navigation has been made independent of filtering.
+See the UsersGuide and bookstore example for details, and how to configure it in dbforms-config.xml (the original system is the default).
+
+
+3-2) XML Datasource
+----------------------
+To show the posibilities of the new event system a datasource to read xml data has been built. 
+See the UsersGuide and bookstore example for details.
+
+3-3) New bookstore example
+--------------------------
+Added a new example named bookstore to show some special features to dbforms. This project is real handmade and should 
+show and test the features of DbForms. 
+This example contains some helpfull todos and test pages. This test pages are used 
+
+Another idea is to have an test platform and database to test DbForms with all developers. One could build an example 
+page in the bookstore example to verify the bug an another developer has an working enviroment to reproduce the bug.
+
+3-4) New field type TIME
+------------------------
+We no support the sql type time!
+
+
+3-5) Changed writing of text fields
+------------------------------------
+Writing text to the html page has changed dramatically. All text based fields no knows an pattern attribute wich is used construct a format. 
+To do this the pattern is passed to tho format.applyPattern method. 
+The format is constructed with the locale setted in the current request. 
+So numeric and date values are written with the right locale.
+Another change is that no null fields read from the database and default values are different.
+You can set the null field value with the null field attribute and the default value with the default attribute.
+
+ATTENTION: The format attribute should be deprecated - using the pattern is much easier and could be parsed back!
+
+Pattern and format are only used in case of numeric or date fields. So you have less errors if you use the wrong format.
+
+3-6) Changed parsing of text fields
+-------------------------------------
+Parsing text is no done according the setted locale and format pattern. To do so the used format to write out the field is written as hidden field
+into the page.
+During parsing it's read back and used to construct a format for parsing.
+So numeric and date values could be parsed with the right locale.
+
+
+3-7) Remove dependency from config date-format
+---------------------------------------------
+During the changes the writing and parsing the  date-format attribute becomes obsolete and is not longer used.
+
+
+3-8) Add junit testing of client side code
+------------------------------------------
+Integrated httpclient and maxq into the package. So it is possible to run the maxq recorder, generate junit test files for the client side and test the results 
+during the unit test.
+Added some general test for diplaying and editing data. Hope that we become more and more.
+
+3-9) Added attribute searchAlgo to filterValue
+-----------------------------------------------
+Added the searchAlgo attribute to filterValue tag with values of
+	sharp 			this is the default behavior, do nothing.
+	weakStart		like, % is added in front of value
+	weakEnd			like, % is appended to value
+	weakStartEnd		like, % is added in front of value and % is appended to value
+For details see documentation of searching.
