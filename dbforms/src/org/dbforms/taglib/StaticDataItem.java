@@ -21,11 +21,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.taglib;
-import java.util.*;
-import javax.servlet.http.*;
-import javax.servlet.jsp.*;
+import javax.servlet.jsp.JspException;
 import org.apache.log4j.Category;
-import org.dbforms.util.*;
+import org.dbforms.util.Util;
+import org.dbforms.util.KeyValuePair;
+import org.dbforms.util.MessageResources;
 
 
 /**
@@ -61,43 +61,6 @@ public class StaticDataItem extends DbBaseHandlerTag
    public void setKey(String key)
    {
       this.key = key;
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    */
-   public String getDefaultValue()
-   {
-      String message = null;
-
-      String value = super.getDefaultValue();
-
-      if ((value != null)
-               && (getParent() instanceof StaticData
-               && getParent().getParent() instanceof DbBaseHandlerTag
-               && getParentForm().hasCaptionResourceSet()))
-      {
-         try
-         {
-            Locale locale = MessageResources.getLocale((HttpServletRequest) pageContext
-                  .getRequest());
-            message = MessageResources.getMessage(value, locale);
-
-            if (!Util.isNull(message))
-            {
-               value = message;
-            }
-         }
-         catch (Exception e)
-         {
-            logCat.debug("setValue(" + value + ") Exception : "
-               + e.getMessage());
-         }
-      }
-      return value;
    }
 
 
@@ -141,11 +104,37 @@ public class StaticDataItem extends DbBaseHandlerTag
 
 
    /**
-    * @return
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
     */
-   public String getValue() {
+   public String getValue()
+   {
+      String message = null;
+      if ((value != null)
+               && (getParent() instanceof StaticData
+               && getParent().getParent() instanceof DbBaseHandlerTag
+               && getParentForm().hasCaptionResourceSet()))
+      {
+         try
+         {
+            message = MessageResources.getMessage(value,  getLocale());
+            if (!Util.isNull(message))
+            {
+               value = message;
+            }
+         }
+         catch (Exception e)
+         {
+            logCat.debug("getValue(" + value + ") Exception : "
+               + e.getMessage());
+         }
+      }
       return value;
    }
+
+
+
 
    /**
     * @param string

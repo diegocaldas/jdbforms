@@ -25,7 +25,6 @@
       	<url-pattern>/*</url-pattern>
     </filter-mapping>
 
-
   <!--=========== DbForms Configuration Servlet ===========-->
   <servlet>
     <servlet-name>config</servlet-name>
@@ -48,10 +47,17 @@
         <param-name>validator-rules</param-name>
         <param-value>/WEB-INF/validator-rules.xml</param-value>
     </init-param>
+	<!--
     <init-param>
         <param-name>resourceBundle</param-name>
-		<param-value>resources</param-value>
-    </init-param>  
+	<param-value>resources</param-value>
+    </init-param>
+	-->
+		<init-param>
+		      <param-name>resourceBundle</param-name>
+		      <param-value>ApplicationResources</param-value>
+	    </init-param> 
+
     <init-param>
 		<param-name>digesterDebugLevel</param-name>
 	<param-value>0</param-value>
