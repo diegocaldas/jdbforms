@@ -124,6 +124,9 @@ public class DbFilterTag extends DbBaseHandlerTag
 
    /** DOCUMENT ME! */
    protected static String FLT_VALUETYPE = "_valuetype_";
+
+   protected static String FLT_SEARCHALGO = "_searchalgo_";
+
    static Category         logCat = Category.getInstance(
                                              DbFilterTag.class.getName());
 
