@@ -59,63 +59,87 @@ public class DbTextAreaTag extends DbBaseInputTag  {
 	}
 
   public int doStartTag() throws javax.servlet.jsp.JspException {
-    return SKIP_BODY;
+	return SKIP_BODY;
   }
 
-  public int doEndTag() throws javax.servlet.jsp.JspException {
+public int doEndTag() throws javax.servlet.jsp.JspException {
 
+	try {
 
-		try {
+		StringBuffer tagBuf = new StringBuffer("<textarea name=\"");
+		tagBuf.append(getFormFieldName());
+		tagBuf.append("\" ");
 
-      StringBuffer tagBuf = new StringBuffer("<textarea name=\"");
-      tagBuf.append(getFormFieldName());
-      tagBuf.append("\" ");
-
-			if (cols != null) {
-		    tagBuf.append(" cols=\"");
-		    tagBuf.append(cols);
-		    tagBuf.append("\"");
-			}
-
-			if (wrap != null) {
-		    tagBuf.append(" wrap=\"");
-		    tagBuf.append(wrap);
-		    tagBuf.append("\"");
-			}
-
-			if (rows != null) {
-	    	tagBuf.append(" rows=\"");
-	    	tagBuf.append(rows);
-	    	tagBuf.append("\"");
-			}
-
-			if (accessKey != null) {
-			    tagBuf.append(" accesskey=\"");
-			    tagBuf.append(accessKey);
-			    tagBuf.append("\"");
-			}
-
-			if (tabIndex != null) {
-		    tagBuf.append(" tabindex=\"");
-		    tagBuf.append(tabIndex);
-		    tagBuf.append("\"");
-			}
-
-      tagBuf.append(prepareStyles());
-      tagBuf.append(prepareEventHandlers());
-      tagBuf.append(">");
-
-			tagBuf.append(getFormFieldValue());
-      tagBuf.append("</textarea>");
-
-		  pageContext.getOut().write(tagBuf.toString());
-		} catch(java.io.IOException ioe) {
-			throw new JspException("IO Error: "+ioe.getMessage());
+		if (cols != null) {
+			tagBuf.append(" cols=\"");
+			tagBuf.append(cols);
+			tagBuf.append("\"");
 		}
 
-		return EVAL_PAGE;
-  }
+		if (wrap != null) {
+			tagBuf.append(" wrap=\"");
+			tagBuf.append(wrap);
+			tagBuf.append("\"");
+		}
 
+		if (rows != null) {
+			tagBuf.append(" rows=\"");
+			tagBuf.append(rows);
+			tagBuf.append("\"");
+		}
+
+		if (accessKey != null) {
+			tagBuf.append(" accesskey=\"");
+			tagBuf.append(accessKey);
+			tagBuf.append("\"");
+		}
+
+		if (tabIndex != null) {
+			tagBuf.append(" tabindex=\"");
+			tagBuf.append(tabIndex);
+			tagBuf.append("\"");
+		}
+
+		tagBuf.append(prepareStyles());
+		tagBuf.append(prepareEventHandlers());
+		tagBuf.append(">");
+
+		/* If the overrideValue attribute has been set, use its value instead of the one
+		retrieved from the database.  This mechanism can be used to set an initial default
+		value for a given field. */
+
+		if (this.getOverrideValue() != null) {
+			tagBuf.append(this.getOverrideValue());
+		} else {
+			tagBuf.append(getFormFieldValue());
+		}
+		tagBuf.append("</textarea>");
+
+		pageContext.getOut().write(tagBuf.toString());
+	} catch (java.io.IOException ioe) {
+		throw new JspException("IO Error: " + ioe.getMessage());
+	}
+
+	return EVAL_PAGE;
 }
 
+	private java.lang.String overrideValue;
 
+/**
+ * Insert the method's description here.
+ * Creation date: (2001-06-27 17:44:16)
+ * @return java.lang.String
+ */
+public java.lang.String getOverrideValue() {
+	return overrideValue;
+}
+
+/**
+ * Insert the method's description here.
+ * Creation date: (2001-06-27 17:44:16)
+ * @param newOverrideValue java.lang.String
+ */
+public void setOverrideValue(java.lang.String newOverrideValue) {
+	overrideValue = newOverrideValue;
+}
+}

@@ -353,6 +353,12 @@ public class Table {
 		return buf.toString();
   }
 
+
+
+
+
+
+
   /**
    *	Prepares SELECT-Statement
    *	if the statement is for a sub-form (=> doConstrainedSelect),
@@ -361,7 +367,7 @@ public class Table {
    *	!!@param fieldsToSelect - vector of fields to be selected
    *	1!@param childFieldValues - horziontal selection: filetering rows according to the value definitions in childFieldValues. If childFieldValues is null, no horizontal selection is made.
    *  @param connection - the active db connection to use
-   */
+
   public ResultSet getDoSelectResultSet(Vector fieldsToSelect, FieldValue[] fvEqual, FieldValue[] fvOrder, int compareMode, int maxRows, Connection con)
   throws SQLException {
 
@@ -385,6 +391,34 @@ public class Table {
 		return ps.executeQuery();
   }
 
+   */
+
+// this version by Martin van Wijk
+  public ResultSet getDoSelectResultSet(Vector fieldsToSelect, FieldValue[] fvEqual, FieldValue[] fvOrder, int compareMode, int maxRows,  PreparedStatement ps)
+  throws SQLException {
+
+
+                int curCol = 1;
+                logCat.debug("###getDoSelectResultSet pos1");
+                if(fvEqual != null && fvEqual.length > 0) {
+                                        logCat.debug("###getDoSelectResultSet pos2");
+                        curCol = FieldValue.populateWhereEqualsClause(fvEqual, ps, curCol);
+                                        logCat.debug("###getDoSelectResultSet pos3");
+                }
+                logCat.debug("###getDoSelectResultSet pos4");
+                if(compareMode!=FieldValue.COMPARE_NONE && fvOrder != null && fvOrder.length > 0) {
+                                        logCat.debug("###getDoSelectResultSet pos5");
+                        FieldValue.populateWhereAfterClause(fvOrder, ps, curCol);
+                                        logCat.debug("###getDoSelectResultSet pos6");
+                }
+                logCat.debug("###getDoSelectResultSet pos7");
+
+
+                return ps.executeQuery();
+  }
+
+
+
 
 	/**
  	 *	perform select query
@@ -394,13 +428,26 @@ public class Table {
    *  @param maxRows - how many rows should be stored in the resultSet (zero means unlimited)
    *  @param conditionAttribute - this attribute gets applied only if childFieldValues not null; "0" means normal (query rows with EQUAL fields), "1" means quering rows with EQUAL-OR-GREATER logic
    *  @param connection - the active db connection to use
-   */
+
 	public ResultSetVector doConstrainedSelect(Vector fieldsToSelect, FieldValue[] fvEqual, FieldValue[] vfOrder, int compareMode, int maxRows, Connection con)
 	throws SQLException {
 		ResultSetVector result = new ResultSetVector(fieldsToSelect, getDoSelectResultSet(fieldsToSelect, fvEqual, vfOrder, compareMode, maxRows, con) );
 		logCat.info("rsv size="+result.size());
 		return result;
 	}
+   */
+
+// this version by Martin van Wijk
+        public ResultSetVector doConstrainedSelect(Vector fieldsToSelect, FieldValue[] fvEqual, FieldValue[] vfOrder, int compareMode, int maxRows, Connection con)
+        throws SQLException {
+                PreparedStatement ps = con.prepareStatement(getSelectQuery(fieldsToSelect, fvEqual, vfOrder, compareMode));
+                ps.setMaxRows(maxRows); // important when quering huge tables
+        ResultSetVector result = new ResultSetVector(fieldsToSelect, getDoSelectResultSet(fieldsToSelect, fvEqual, vfOrder, compareMode, maxRows,  ps) );
+        ps.close();
+                logCat.info("rsv size="+result.size());
+                return result;
+        }
+
 
 
   private String createToken(Field field, String fieldValue) {

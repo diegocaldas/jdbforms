@@ -958,6 +958,17 @@ version 0.9
       </info>
     </attribute>
 
+
+  <attribute>
+      <name>overrideValue</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <info><p>
+	Defines the textarea's default value. When this attribute is set, 
+	the value retrieved from the database is ignored.            
+      </p></info>
+  </attribute>
+
         <attribute>
           <name>accessKey</name>
           <required>false</required>
