@@ -163,7 +163,8 @@
                 &lt;body&gt;
                     &lt;db:style template="center" part="begin" /&gt;
                     
-                    &lt;db:style template="sourceforge" paramList="width='300' bg='steel3.jpg'" part="begin"/&gt;
+                    &lt;db:style template="sourceforge" paramList="width='300' 
+                    bg='steel3.jpg'" part="begin"/&gt;
 				
                         &lt;form method="POST"&gt;
 				
@@ -339,7 +340,8 @@
                                               
 &lt;%@ taglib uri="/WEB-INF/taglib.tld" prefix="db" %&gt;[...]
  
-    &lt;table cellpadding="0" cellspacing="0" border="0" width<emphasis role="bold">="&lt;db:templateParam name="width" defaultValue="99%" /&gt;</emphasis>"&gt; 
+    &lt;table cellpadding="0" cellspacing="0" border="0" 
+    width<emphasis role="bold">="&lt;db:templateParam name="width" defaultValue="99%" /&gt;</emphasis>"&gt; 
      [...]
  
         &lt;td background<emphasis role="bold">="&lt;db:templateBasedir/&gt;</emphasis>images/tbar1.png" width="1%" height="17"&gt; 

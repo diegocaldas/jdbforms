@@ -24,21 +24,24 @@
 				<title>Listing 26  methods defined in interface DbEventInterceptor
 </title>
 				<programlisting>
-    public int preInsert(HttpServletRequest request, Hashtable fieldValues, DbFormsConfig config, <emphasis role="bold">Connection</emphasis> con)
+    public int preInsert(HttpServletRequest request, Hashtable fieldValues,
+       DbFormsConfig config, <emphasis role="bold">Connection</emphasis> con)
                 throws ValidationException;
  
 
     public void postInsert(HttpServletRequest request, DbFormsConfig config, Connection con);
  
 
-    public int <emphasis role="bold">preUpdate</emphasis>(HttpServletRequest request, <emphasis role="bold">Hashtable</emphasis> fieldValues, <emphasis role="bold">DbFormsConfig</emphasis> config, <emphasis role="bold">Connection</emphasis> con)
+    public int <emphasis role="bold">preUpdate</emphasis>(HttpServletRequest request, 
+       <emphasis role="bold">Hashtable</emphasis> fieldValues, <emphasis role="bold">DbFormsConfig</emphasis> config, <emphasis role="bold">Connection</emphasis> con)
 		throws ValidationException;;
  
 
     public void postUpdate(HttpServletRequest request, DbFormsConfig config, Connection con);
  
 
-    public int preDelete(HttpServletRequest request, Hashtable fieldValues,DbFormsConfig config, <emphasis role="bold">Connection</emphasis> con)
+    public int preDelete(HttpServletRequest request, 
+       Hashtable fieldValues,DbFormsConfig config, <emphasis role="bold">Connection</emphasis> con)
                 throws ValidationException;;
  
 
@@ -212,7 +215,8 @@ will ensure that the value smith be stored in the lastname field in the data
             }
 
 
-        public int preInsert(HttpServletRequest request, Hashtable fieldValues, DbFormsConfig config, Connection con)
+        public int preInsert(HttpServletRequest request, Hashtable fieldValues, 
+          DbFormsConfig config, Connection con)
             throws ValidationException {
 
                 return checkCustomer(fieldValues);
@@ -220,7 +224,8 @@ will ensure that the value smith be stored in the lastname field in the data
             }
 
 
-        public int preUpdate(HttpServletRequest request, Hashtable fieldValues, DbFormsConfig config, Connection con)
+        public int preUpdate(HttpServletRequest request, Hashtable fieldValues, 
+          DbFormsConfig config, Connection con)
             throws ValidationException {
 
                 return checkCustomer(fieldValues);
@@ -240,7 +245,8 @@ will ensure that the value smith be stored in the lastname field in the data
 				<computeroutput>Example:</computeroutput>
 			</para>
 			<screen>
-    public int preUpdate(HttpServletRequest req, Hashtable fieldValues, DbformsConfig conf, Connection con)
+    public int preUpdate(HttpServletRequest req, Hashtable fieldValues, DbformsConfig conf, 
+      Connection con)
         throws ValidationException{
 			
             Vector errors = new Vector();

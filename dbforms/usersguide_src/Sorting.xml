@@ -48,13 +48,11 @@
 			</example>
 			<para>The default sorting behavior is false. You should use <emphasis role="bold">sortable=true</emphasis> sparingly, especially fields with big field size should not be declared as sortable if it's not really necessary. The reason for this is the amount of data to be transferred for enabling sorting. The more sortable fields, the more data traffic!
 </para>
-			<example>
-				<title/>
-				<programlisting>Please note: sorting is one of those issues which are still under development. The sorting-boxes described in this tag are already very powerful, but they are still only a beginning. A limitation of the current implementation is the melting of view and controller for the search widgets.
-Future versions of DbForms may be expected to provide more on sorting.
- 
-		</programlisting>
-			</example>
+		
+<para>Please note: sorting is one of those issues which are still under development. The sorting-boxes described in this tag are already very powerful, but they are still only a beginning. A limitation of the current implementation is the melting of view and controller for the search widgets.
+Future versions of DbForms may be expected to provide more on sorting.</para>
+
+
 			<para/>
 		</sect2>
                 
@@ -80,10 +78,11 @@ Future versions of DbForms may be expected to provide more on sorting.
 				<title>Listing 24  An example for static filtering
 </title>
 				<programlisting>
-            <emphasis role="bold">&lt;db:dbform</emphasis> tableName="employee" maxRows="*" followUp="/employees.jsp" autoUpdate="false" <emphasis role="bold">filter</emphasis>="deptno=101,salary&gt;=30000,name~Peter%"
-                ...
+    <emphasis role="bold">&lt;db:dbform</emphasis> tableName="employee" maxRows="*" followUp="/employees.jsp"
+     autoUpdate="false" <emphasis role="bold">filter</emphasis>="deptno=101,salary&gt;=30000,name~Peter%"&gt;
+      ...
  
-            &lt;/db: dbform&gt; 
+    &lt;/db: dbform&gt; 
 		</programlisting>
 			</example>
 			<para>The example above restricts the result set to employees of department 101 with salaries higher or equal 30000 and a name <emphasis role="italic">like</emphasis> Peter (i.e. Peter Berger, Peter Smith, ...)
@@ -155,21 +154,22 @@ Future versions of DbForms may be expected to provide more on sorting.
 				<title>Listing 25 Example for dynamic filtering
 </title>
 				<programlisting>
-            &lt;%
-                // scriptlet determines filter
+    &lt;%
+    // scriptlet determines filter
  
-		StringBuffer myFilter = new StringBuffer();
+    StringBuffer myFilter = new StringBuffer();
  
-		myFilter.append("aField=");
+    myFilter.append("aField=");
+
+    myFilter.append(request.getParameter("SomeVal"));
  
-		myFilter.append(request.getParameter("SomeVal"));
- 
-            %&gt; 
+    %&gt; 
 		
-            <emphasis role="bold">&lt;db:dbform</emphasis> tableName="employee" maxRows="*" followUp="/employees.jsp" autoUpdate="false" <emphasis role="bold">filter</emphasis>="&lt;%= myFilter.toString() %&gt;"<emphasis role="bold">&gt;</emphasis> 
-                ...
+    <emphasis role="bold">&lt;db:dbform</emphasis> tableName="employee" maxRows="*" 
+    followUp="/employees.jsp" autoUpdate="false" <emphasis role="bold">filter</emphasis>="&lt;%= myFilter.toString() %&gt;"<emphasis role="bold">&gt;</emphasis> 
+    ...
  
-            &lt;/db: dbform&gt; 
+    &lt;/db: dbform&gt; 
 		</programlisting>
 			</example>
 		</sect2>

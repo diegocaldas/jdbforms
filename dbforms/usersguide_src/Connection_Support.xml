@@ -712,25 +712,25 @@ Every connection pool package uses its own configuration system; here's the exam
     // if the connectionPool properties object is null,
     // instance a new properties object anyway, to use default values;
 
-        if ((props = prefs.getPoolProperties()) == null)
+     if ((props = prefs.getPoolProperties()) == null)
             props = new Properties();
 
-        String validationQuery = props.getProperty(CP_PROPS_VALIDATION_QUERY, null);
+     String validationQuery = props.getProperty(CP_PROPS_VALIDATION_QUERY, null);
 
-        if (!Util.isNull(validationQuery))
+     if (!Util.isNull(validationQuery))
             dataSource.setValidationQuery(validationQuery.trim());
 
-        dataSource.setMaxActive (Integer.parseInt(props.getProperty(CP_PROPS_MAX_ACTIVE, "20")));
+     dataSource.setMaxActive (Integer.parseInt(props.getProperty(CP_PROPS_MAX_ACTIVE,"20")));
 
-        dataSource.setMaxIdle   (Integer.parseInt(props.getProperty(CP_PROPS_MAX_IDLE,   "5")));
+     dataSource.setMaxIdle   (Integer.parseInt(props.getProperty(CP_PROPS_MAX_IDLE,"5")));
 
-        dataSource.setMaxWait   (Long.parseLong  (props.getProperty(CP_PROPS_MAX_WAIT,   "-1")));
+     dataSource.setMaxWait   (Long.parseLong  (props.getProperty(CP_PROPS_MAX_WAIT,"-1")));
 
     // if PROPS_LOG == true, use log4j category to log the datasource info;
 
-        String useLog = props.getProperty(CP_PROPS_USE_LOG, "false");
+     String useLog = props.getProperty(CP_PROPS_USE_LOG, "false");
 
-            if (!Util.isNull(useLog)  "true".equals(useLog.trim()))
+     if (!Util.isNull(useLog)  "true".equals(useLog.trim()))
                 {
                 cat.info("::init - dataSource log activated");
                 dataSource.setLogWriter(new Log4jPrintWriter(cat, cat.getPriority()));

@@ -281,26 +281,32 @@
     &lt;h1&gt;Menu&lt;/h1&gt; 
     &lt;db:dbform followUp="/menu.jsp"&gt;
  
-        &lt;center&gt;
+    &lt;center&gt;
      
-        &lt;p&gt;
-            &lt;db:gotoButton caption="Edit services" destination="/service.jsp" destTable="services"/&gt;
-        &lt;/p&gt; 
-        &lt;p&gt;
-            &lt;db:gotoButton caption="Customer-List" destination="/customerlist.jsp" destTable="customer" /&gt;
-        &lt;/p&gt; 
-        &lt;p&gt;
-            &lt;db:gotoButton caption="Edit Orders" destination="/customer_orders.jsp" destTable="customer"/&gt;
-        &lt;/p&gt; 
-        &lt;p&gt;
-            &lt;db:gotoButton caption="Edit Complaints" destination="/customer_complaints.jsp" destTable="customer"/&gt;
-        &lt;/p&gt; 
-        &lt;p&gt;
-            &lt;db:gotoButton caption="View all customer info" destination="/customer_all.jsp" destTable="customer"/&gt;
-        &lt;/p&gt; 
-        &lt;p&gt;
-            &lt;db:gotoButton caption="Edit priority-table" destination="/priorities.jsp" destTable="priorities" /&gt;
-        &lt;/p&gt; 
+    &lt;p&gt;
+     &lt;db:gotoButton caption="Edit services" destination="/service.jsp" 
+     destTable="services"/&gt;
+    &lt;/p&gt; 
+    &lt;p&gt;
+        &lt;db:gotoButton caption="Customer-List" destination="/customerlist.jsp" 
+        destTable="customer" /&gt;
+    &lt;/p&gt; 
+    &lt;p&gt;
+        &lt;db:gotoButton caption="Edit Orders" destination="/customer_orders.jsp" 
+        destTable="customer"/&gt;
+    &lt;/p&gt; 
+    &lt;p&gt;
+        &lt;db:gotoButton caption="Edit Complaints" destination="/customer_complaints.jsp" 
+        destTable="customer"/&gt;
+    &lt;/p&gt; 
+    &lt;p&gt;
+        &lt;db:gotoButton caption="View all customer info" destination="/customer_all.jsp" 
+        destTable="customer"/&gt;
+    &lt;/p&gt; 
+    &lt;p&gt;
+        &lt;db:gotoButton caption="Edit priority-table" destination="/priorities.jsp" 
+        destTable="priorities" /&gt;
+    &lt;/p&gt; 
 
         &lt;/center&gt;
         
@@ -388,10 +394,12 @@
                                     &lt;db:textField fieldName="id" size="5"/&gt;
                                 &lt;/td&gt; 
                                 &lt;td&gt;
-                                    &lt;db:textField fieldName="name" size="20" maxlength="30"/&gt;
+                                    &lt;db:textField fieldName="name" size="20" 
+                                    maxlength="30"/&gt;
                                 &lt;/td&gt; 
                                 &lt;td&gt;
-                                    &lt;db:textField fieldName="description" size="24" maxlength="255"/&gt;
+                                    &lt;db:textField fieldName="description" size="24" 
+                                    maxlength="255"/&gt;
                                 &lt;/td&gt; 
                                 &lt;td&gt;
                                     &lt;db:updateButton caption="Update"/&gt;
@@ -603,12 +611,15 @@ The user should be able to delete existing customers, as well.
                                 
                                 Show
                             
-                                &lt;db:gotoButton caption="orders" destination="/customer_orders.jsp"
-                                destTable = "customer" keyToKeyToDestPos="r_customerkey"
+                                &lt;db:gotoButton caption="orders" 
+                                destination="/customer_orders.jsp" destTable = "customer" 
+                                keyToKeyToDestPos="r_customerkey"
                                 /&gt;
                              
-                                &lt;db:gotoButton caption=" complaints " destination="/customer_complaints.jsp"
-                                destTable = "customer" keyToKeyToDestPos="r_customerkey"
+                                &lt;db:gotoButton caption=" complaints " 
+                                destination="/customer_complaints.jsp"
+                                destTable = "customer" 
+                                keyToKeyToDestPos="r_customerkey"
                                 /&gt; 
 		 
                                 &lt;db:gotoButton caption=" all information "
@@ -764,10 +775,12 @@ The user should be able to delete existing customers, as well.
                                     &lt;tr&gt; 
                                         &lt;td width="40"&gt;&lt;/td&gt; 
                                         &lt;td<emphasis role="bold">&gt;
-                                            &lt;db:updateButton caption="Update Order" associatedRadio="radio_order"/&gt;</emphasis>
+                                            &lt;db:updateButton caption="Update Order"
+                                            associatedRadio="radio_order"/&gt;</emphasis>
                                         &lt;/td&gt; 
                                         &lt;td<emphasis role="bold">&gt;
-                                            &lt;db:deleteButton caption="Delete Order" associatedRadio="radio_order"/&gt;</emphasis>
+                                            &lt;db:deleteButton caption="Delete Order"
+                                            associatedRadio="radio_order"/&gt;</emphasis>
                                         &lt;/td&gt; 
                                     &lt;/tr&gt; 
                                 &lt;/table&gt;
@@ -891,7 +904,8 @@ The user should be able to delete existing customers, as well.
     &lt;!-- show eventually occurred errors --&gt; 
     &lt;db:errors/&gt; 
     
-    &lt;db:dbform tableName="customer" maxRows="1" followUp="/customer_complaints.jsp" autoUpdate="false"&gt; 
+    &lt;db:dbform tableName="customer" maxRows="1" 
+    followUp="/customer_complaints.jsp" autoUpdate="false"&gt; 
 
     &lt;db:header&gt; 
         &lt;db:gotoButton caption="Menu" destination="/menu.jsp" /&gt; 
@@ -934,8 +948,9 @@ The user should be able to delete existing customers, as well.
                     &lt;center&gt;&lt;p&gt;&lt;b&gt;Complaints&lt;/b&gt;&lt;/p&gt;&lt;/center&gt; 
                     
                     &lt;!-------- sub form begin -------&gt; 
-                    &lt;db:dbform tableName="complaint" maxRows="3" parentField="id" childField="customer_id" 
-                    followUp="/customer_complaints.jsp" autoUpdate="false"&gt;
+                    &lt;db:dbform tableName="complaint" maxRows="3" parentField="id" 
+                    childField="customer_id" followUp="/customer_complaints.jsp" 
+                    autoUpdate="false"&gt;
                      
                     &lt;db:header&gt; 
                     
@@ -977,10 +992,12 @@ The user should be able to delete existing customers, as well.
                             &lt;tr&gt; 
                                 &lt;td width="40"&gt;&lt;/td&gt; 
                                 &lt;td&gt; 
-                                    &lt;db:updateButton caption="Update Complaint" associatedRadio="radio_complaint"/&gt; 
+                                    &lt;db:updateButton caption="Update Complaint" 
+                                    associatedRadio="radio_complaint"/&gt; 
                                 &lt;/td&gt; 
                                 &lt;td&gt; 
-                                    &lt;db:deleteButton caption="Delete Complaint" associatedRadio="radio_complaint "/&gt; 
+                                    &lt;db:deleteButton caption="Delete Complaint" 
+                                    associatedRadio="radio_complaint "/&gt; 
                                 &lt;/td&gt; 
                             &lt;/tr&gt; 
                         &lt;/table&gt;
@@ -995,7 +1012,8 @@ The user should be able to delete existing customers, as well.
                             &lt;/tr&gt; 
                             &lt;tr&gt; 
                                 &lt;td&gt;
-                                    &lt;db:textArea wrap="virtual" cols="20" rows="6" fieldName="usermessage"/&gt;
+                                    &lt;db:textArea wrap="virtual" cols="20" rows="6" 
+                                    fieldName="usermessage"/&gt;
                                 &lt;/td&gt; 
                                 &lt;td&gt; 
                                     &lt;db:radio fieldName="priority" growDirection="vertical"&gt; 
