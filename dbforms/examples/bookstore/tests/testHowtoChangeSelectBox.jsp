@@ -8,7 +8,7 @@
 	    </h1>
 	      <db:dbform  
 	      		maxRows="*" 
-	         	followUp="/howto/howtoChangeSelectBox.jsp" 
+	         	followUp="/tests/howtoChangeSelectBox.jsp" 
     	     	autoUpdate="false" tableName="BOOKLISTPERAUTHOR"
 	      		>
          		   <!--- To force an reload event.
@@ -21,9 +21,11 @@
          		   
           		   <input type="hidden" name="customEvent" value="re_0_0"/>
                             -->
+               <db:header/>
+               <db:body>                          
 					<db:select
 						fieldName="books"
-						onChange="this.form.submit();"
+                        onChange="this.form.submit();"
 					>
 						<db:tableData
 						   name="books"
@@ -47,6 +49,8 @@
 								   %>'
 						/>
 				   </db:select>
+              </db:body>
+               <db:footer/>
 		</db:dbform>
    </body>
 </html>
