@@ -4,7 +4,7 @@
       <validator name="required"
                  classname="org.dbforms.validation.DbFormsValidator"
                  method="validateRequired"
-                 msg="errors.required"
+                 msg="dbforms.error.required"
                  methodParams="java.lang.Object,org.apache.commons.validator.ValidatorAction,org.apache.commons.validator.Field,java.util.Vector,java.util.Locale,org.dbforms.config.DbFormsErrors" >
          <javascript><![CDATA[
             function validateRequired(form) {                                                                       
@@ -14,12 +14,19 @@
                 var fields = new Array();                                                                           
                 oRequired = new required();                                                                         
                 for (x in oRequired) {                                                                              
-                    if ((form[oRequired[x][0]] != null) && (form[oRequired[x][0]].type == 'text' || form[oRequired[x][0]].type == 'textarea' || form[oRequired[x][0]].type == 'select-one' || form[oRequired[x][0]].type == 'radio' || form[oRequired[x][0]].type == 'password') && form[oRequired[x][0]].value == '') {
-                       if (i == 0)
-                          focusField = form[oRequired[x][0]]; 
-                       fields[i++] = oRequired[x][1];
-                       bValid = false;                                                                             
-                    }                                                                                               
+                    if (form[oRequired[x][0]] != null) {
+                        var value = form[oRequired[x][0]].value;
+   	                	var oldValue = form["o" + oRequired[x][0]].value;                                                                                                    
+						if ( (form[oRequired[x][0]].type == 'text' || form[oRequired[x][0]].type == 'textarea' || form[oRequired[x][0]].type == 'select-one' || form[oRequired[x][0]].type == 'radio' || form[oRequired[x][0]].type == 'password')
+							&& (value != oldValue) ) {   
+							if ( (value == null) || (value.length == 0) || (value == '') ) {
+							   if (i == 0)
+								  focusField = form[oRequired[x][0]]; 
+							   fields[i++] = oRequired[x][1];
+							   bValid = false;                                                                             
+							}
+						}                                                                                               
+                    }  						
                 }                                                                                                   
                 if (fields.length > 0) {
                    focusField.focus();
@@ -34,7 +41,7 @@
                  classname="org.dbforms.validation.DbFormsValidator"
                  methodParams="java.lang.Object,org.apache.commons.validator.ValidatorAction,org.apache.commons.validator.Field,java.util.Vector,java.util.Locale,org.dbforms.config.DbFormsErrors" 
                  method="validateMinLength"
-                 msg="errors.minlength">
+                 msg="dbforms.error.minlength">
          <javascript><![CDATA[
             function validateMinLength(form) {                                                                                                    
                 var bValid = true;
@@ -43,15 +50,22 @@
                 var fields = new Array();                                                                                                     
                 oMinLength = new minlength();                                                                                                        
                 for (x in oMinLength) {                                                                                                          
-                    if ((form[oMinLength[x][0]] != null) && form[oMinLength[x][0]].type == 'text' || form[oMinLength[x][0]].type == 'textarea') {   
-                       var iMin = parseInt(oMinLength[x][2]("minlength"));
-                       if (!(form[oMinLength[x][0]].value.length >= iMin)) {
-                          if (i == 0)
-                             focusField = form[oMinLength[x][0]]; 
-                          fields[i++] = oMinLength[x][1];
-                          bValid = false;                                                                                                     
-                       }                                                                                                                      
-                    }                                                                                                                         
+                    var value = form[oMinLength[x][0]].value;
+   	                var oldValue = form["o" + oMinLength[x][0]].value;                                                                                                    
+                    if (form[oMinLength[x][0]] != null) {
+						if ( (form[oMinLength[x][0]].type == 'text' || form[oMinLength[x][0]].type == 'textarea') 
+								&& (value != null) 
+								&& (value.length > 0) 
+								&& (value != oldValue) ) {   
+						   var iMin = parseInt(oMinLength[x][2]("minlength"));
+						   if (!(value.length >= iMin)) {
+							  if (i == 0)
+								 focusField = form[oMinLength[x][0]]; 
+							  fields[i++] = oMinLength[x][1];
+							  bValid = false;                                                                                                     
+						   }                                                                                                                      
+						}   
+					}                                                                                                                      
                 }                                                                                                                             
                 if (fields.length > 0) {
                    focusField.focus();
@@ -66,7 +80,7 @@
                  classname="org.dbforms.validation.DbFormsValidator"
                  methodParams="java.lang.Object,org.apache.commons.validator.ValidatorAction,org.apache.commons.validator.Field,java.util.Vector,java.util.Locale,org.dbforms.config.DbFormsErrors" 
                  method="validateMaxLength"
-                 msg="errors.maxlength">
+                 msg="dbforms.error.maxlength">
          <javascript><![CDATA[
             function validateMaxLength(form) {                                                                                                    
                 var bValid = true;
@@ -75,15 +89,22 @@
                 var fields = new Array();                                                                                                     
                 oMaxLength = new maxlength();                                                                                                        
                 for (x in oMaxLength) {                                                                                                          
-                    if ((form[oMaxLength[x][0]] != null) && form[oMaxLength[x][0]].type == 'text' || form[oMaxLength[x][0]].type == 'textarea') {   
-                       var iMax = parseInt(oMaxLength[x][2]("maxlength"));
-                       if (!(form[oMaxLength[x][0]].value.length <= iMax)) {
-                          if (i == 0)
-                             focusField = form[oMaxLength[x][0]]; 
-                          fields[i++] = oMaxLength[x][1];
-                          bValid = false;                                                                                                     
-                       }                                                                                                                      
-                    }                                                                                                                         
+                    if (form[oMaxLength[x][0]] != null) {
+	                    var value = form[oMaxLength[x][0]].value;
+     	                var oldValue = form["o" + oMaxLength[x][0]].value;                                                                                                    
+						if ( (form[oMaxLength[x][0]].type == 'text' || form[oMaxLength[x][0]].type == 'textarea') 
+								&& (value != null) 
+								&& (value.length > 0) 
+								&& (value != oldValue) ) {   
+						   var iMax = parseInt(oMaxLength[x][2]("maxlength"));
+						   if (!(value.length <= iMax)) {
+							  if (i == 0)
+								 focusField = form[oMaxLength[x][0]]; 
+							  fields[i++] = oMaxLength[x][1];
+							  bValid = false;                                                                                                     
+						   }                                                                                                                      
+						}     
+					}                                                                                                                    
                 }                                                                                                                             
                 if (fields.length > 0) {
                    focusField.focus();
@@ -98,7 +119,7 @@
                  classname="org.dbforms.validation.DbFormsValidator"
                  method="validateMask"
                  methodParams="java.lang.Object,org.apache.commons.validator.ValidatorAction,org.apache.commons.validator.Field,java.util.Vector,java.util.Locale,org.dbforms.config.DbFormsErrors" 
-                 msg="errors.invalid">
+                 msg="dbforms.error.invalid">
          <javascript><![CDATA[
             function validateMask(form) {                                                                                                    
                 var bValid = true;
@@ -107,14 +128,21 @@
                 var fields = new Array();                                                                                                     
                 oMasked = new mask();                                                                                                                                                                                                                                                     
                 for (x in oMasked) {                                                                                                          
-                    if ((form[oMasked[x][0]] != null) && (form[oMasked[x][0]].type == 'text' || form[oMasked[x][0]].type == 'textarea' || form[oMasked[x][0]].type == 'password') && form[oMasked[x][0]].value.length > 0) {   
-                       if (!matchPattern(form[oMasked[x][0]].value, oMasked[x][2]("mask"))) {
-                          if (i == 0)
-                             focusField = form[oMasked[x][0]]; 
-                          fields[i++] = oMasked[x][1];
-                          bValid = false;                                                                                                     
-                       }                                                                                                                      
-                    }                                                                                                                         
+                    if (form[oMasked[x][0]] != null) {
+	                    var value = form[oMasked[x][0]].value;
+     	                var oldValue = form["o" + oMasked[x][0]].value;                                                                                                    
+					 	if ( (form[oMasked[x][0]].type == 'text' || form[oMasked[x][0]].type == 'textarea' || form[oMasked[x][0]].type == 'password') 
+								&& (value != null) 
+								&& (value.length > 0) 
+								&& (value != oldValue ) ) {   
+						   if (!matchPattern(value, oMasked[x][2]("mask"))) {
+							  if (i == 0)
+								 focusField = form[oMasked[x][0]]; 
+							  fields[i++] = oMasked[x][1];
+							  bValid = false;                                                                                                     
+						   }                                                                                                                      
+						} 
+					}                                                                                                                        
                 }                                                                                                                             
                 if (fields.length > 0) {
                    focusField.focus();
@@ -137,7 +165,7 @@
                  classname="org.dbforms.validation.DbFormsValidator"
                  methodParams="java.lang.Object,org.apache.commons.validator.ValidatorAction,org.apache.commons.validator.Field,java.util.Vector,java.util.Locale,org.dbforms.config.DbFormsErrors" 
                  method="validateByte"
-                 msg="errors.byte"
+                 msg="dbforms.error.byte"
                  jsFunctionName="ByteValidations">
          <javascript><![CDATA[
             function validateByte(form) {
@@ -147,15 +175,22 @@
                 var fields = new Array();                                                                           
                 oByte = new ByteValidations();                                                                         
                 for (x in oByte) {                                                                              
-                    if (((form[oByte[x][0]] != null) && form[oByte[x][0]].type == 'text' || form[oByte[x][0]].type == 'textarea' || form[oByte[x][0]].type == 'select-one' || form[oByte[x][0]].type == 'radio') && form[oByte[x][0]].value.length > 0) {   
-                       var iValue = parseInt(form[oByte[x][0]].value);
-                       if ((iValue == "NaN") || !(iValue >= -128 && iValue <= 127)) {
-                          if (i == 0)
-                             focusField = form[oByte[x][0]]; 
-                          fields[i++] = oByte[x][1];
-                          bValid = false;
-                       }
-                    }                                                                                               
+                    if (form[oByte[x][0]] != null) { 
+	                    var value = form[oByte[x][0]].value;
+    	                var oldValue = form["o" + oByte[x][0]].value;                                                                                                    
+						if ( (form[oByte[x][0]].type == 'text' || form[oByte[x][0]].type == 'textarea' || form[oByte[x][0]].type == 'select-one' || form[oByte[x][0]].type == 'radio') 
+								&& (value != null) 
+								&& (value.length > 0) 
+								&& (value != oldValue) ) {   
+						   var iValue = parseInt(value);
+						   if (isNaN(iValue) || !(iValue >= -128 && iValue <= 127)) {
+							  if (i == 0)
+								 focusField = form[oByte[x][0]]; 
+							  fields[i++] = oByte[x][1];
+							  bValid = false;
+						   }
+						}
+					}                                                                                               
                 }                                                                                                   
                 if (fields.length > 0) {
                    focusField.focus();
@@ -170,7 +205,7 @@
                  classname="org.dbforms.validation.DbFormsValidator"
                  methodParams="java.lang.Object,org.apache.commons.validator.ValidatorAction,org.apache.commons.validator.Field,java.util.Vector,java.util.Locale,org.dbforms.config.DbFormsErrors" 
                  method="validateShort"
-                 msg="errors.short"
+                 msg="dbforms.error.short"
                  jsFunctionName="ShortValidations">
          <javascript><![CDATA[
             function validateShort(form) {
@@ -180,14 +215,21 @@
                 var fields = new Array();                                                                           
                 oShort = new ShortValidations();                                                                         
                 for (x in oShort) {                                                                              
-                    if ((form[oShort[x][0]] != null) && (form[oShort[x][0]].type == 'text' || form[oShort[x][0]].type == 'textarea' || form[oShort[x][0]].type == 'select-one' || form[oShort[x][0]].type == 'radio') && form[oShort[x][0]].value.length > 0) {   
-                       var iValue = parseInt(form[oShort[x][0]].value);
-                       if ((iValue == "NaN") || !(iValue >= -32768 && iValue <= 32767)) {
-                          if (i == 0)
-                             focusField = form[oShort[x][0]]; 
-                          fields[i++] = oShort[x][1];
-                          bValid = false;
-                       }
+                    if (form[oShort[x][0]] != null) {
+	                    var value = form[oShort[x][0]].value;
+    	                var oldValue = form["o" + oShort[x][0]].value;                                                                                                    
+                    	if ( (form[oShort[x][0]].type == 'text' || form[oShort[x][0]].type == 'textarea' || form[oShort[x][0]].type == 'select-one' || form[oShort[x][0]].type == 'radio') 
+								&& (value != null) 
+								&& (value.length > 0) 
+								&& (value != oldValue) ) {   
+						   var iValue = parseInt(value);
+						   if (isNaN(iValue) || !(iValue >= -32768 && iValue <= 32767)) {
+							  if (i == 0)
+								 focusField = form[oShort[x][0]]; 
+							  fields[i++] = oShort[x][1];
+							  bValid = false;
+						   }
+						}
                     }                                                                                               
                 }                                                                                                   
                 if (fields.length > 0) {
@@ -203,7 +245,7 @@
                  classname="org.dbforms.validation.DbFormsValidator"
                  methodParams="java.lang.Object,org.apache.commons.validator.ValidatorAction,org.apache.commons.validator.Field,java.util.Vector,java.util.Locale,org.dbforms.config.DbFormsErrors" 
                  method="validateInteger"
-                 msg="errors.integer"
+                 msg="dbforms.error.integer"
                  jsFunctionName="IntegerValidations">
          <javascript><![CDATA[
             function validateInteger(form) {
@@ -213,14 +255,21 @@
                 var fields = new Array();                                                                           
                 oInteger = new IntegerValidations();                                                                         
                 for (x in oInteger) {                                                                              
-                    if ((form[oInteger[x][0]] != null) && (form[oInteger[x][0]].type == 'text' || form[oInteger[x][0]].type == 'textarea' || form[oInteger[x][0]].type == 'select-one' || form[oInteger[x][0]].type == 'radio') && form[oInteger[x][0]].value.length > 0) {   
-                       var iValue = parseInt(form[oInteger[x][0]].value);
-                       if ((iValue == "NaN") || !(iValue >= -2147483648 && iValue <= 2147483647)) {
-                          if (i == 0)
-                             focusField = form[oInteger[x][0]]; 
-                          fields[i++] = oInteger[x][1];
-                          bValid = false;
-                       }
+                    if (form[oInteger[x][0]] != null) {
+	                    var value = form[oInteger[x][0]].value;
+    	                var oldValue = form["o" + oInteger[x][0]].value;                                                                                                    
+                    	if ( (form[oInteger[x][0]].type == 'text' || form[oInteger[x][0]].type == 'textarea' || form[oInteger[x][0]].type == 'select-one' || form[oInteger[x][0]].type == 'radio') 
+	                    	&& (value != null) 
+    	                	&& (value.length > 0) 
+							&& (value != oldValue) ) {   
+						   var iValue = parseInt(value);
+						   if (isNaN(iValue) || !(iValue >= -2147483648 && iValue <= 2147483647)) {
+							  if (i == 0)
+								 focusField = form[oInteger[x][0]]; 
+							  fields[i++] = oInteger[x][1];
+							  bValid = false;
+						   }
+						}
                     }                                                                                               
                 }                                                                                                   
                 if (fields.length > 0) {
@@ -236,7 +285,7 @@
                  classname="org.dbforms.validation.DbFormsValidator"
                  methodParams="java.lang.Object,org.apache.commons.validator.ValidatorAction,org.apache.commons.validator.Field,java.util.Vector,java.util.Locale,org.dbforms.config.DbFormsErrors" 
                  method="validateLong"
-                 msg="errors.long"
+                 msg="dbforms.error.long"
                  jsFunctionName="longValidations">
          <javascript><![CDATA[
             function validateLong(form) {
@@ -246,14 +295,21 @@
                 var fields = new Array();                                                                           
                 oLong = new LongValidations();                                                                         
                 for (x in oLong) {                                                                              
-                    if ((form[oLong[x][0]] != null) && (form[oLong[x][0]].type == 'text' || form[oLong[x][0]].type == 'textarea' || form[oLong[x][0]].type == 'select-one' || form[oLong[x][0]].type == 'radio') && form[oLong[x][0]].value.length > 0) {   
-                       var iValue = parseInt(form[oLong[x][0]].value);
-                       if ((iValue == "NaN") || !(iValue >= -2147483648 && iValue <= 2147483647)) {
-                          if (i == 0)
-                             focusField = form[oInteger[x][0]]; 
-                          fields[i++] = oInteger[x][1];
-                          bValid = false;
-                       }
+                    if (form[oLong[x][0]] != null) {
+	                    var value = form[oLong[x][0]].value;
+    	                var oldValue = form["o" + oLong[x][0]].value;                                                                                                    
+                    	if ( (form[oLong[x][0]].type == 'text' || form[oLong[x][0]].type == 'textarea' || form[oLong[x][0]].type == 'select-one' || form[oLong[x][0]].type == 'radio') 
+	                    	&& (value != null) 
+    	                	&& (value.length > 0) 
+							&& (value != oldValue) ) {   
+						   var iValue = parseInt(value);
+						   if (isNaN(iValue) || !(iValue >= -2147483648 && iValue <= 2147483647)) {
+							  if (i == 0)
+								 focusField = form[oInteger[x][0]]; 
+							  fields[i++] = oInteger[x][1];
+							  bValid = false;
+						   }
+						}
                     }                                                                                               
                 }                                                                                                   
                 if (fields.length > 0) {
@@ -267,7 +323,7 @@
       <validator name="float"
                  classname="org.dbforms.validation.DbFormsValidator"
                  method="validateFloat"
-                 msg="errors.float"
+                 msg="dbforms.error.float"
                  jsFunctionName="FloatValidations">
          <javascript><![CDATA[
             function validateFloat(form) {
@@ -277,15 +333,22 @@
                 var fields = new Array();                                                                           
                 oFloat = new FloatValidations();                                                                         
                 for (x in oFloat) {                                                                              
-                    if ((form[oFloat[x][0]] != null) && (form[oFloat[x][0]].type == 'text' || form[oFloat[x][0]].type == 'textarea' || form[oFloat[x][0]].type == 'select-one' || form[oFloat[x][0]].type == 'radio') && form[oFloat[x][0]].value.length > 0) {   
-                       var iValue = parseFloat(form[oFloat[x][0]].value);
-                       if (iValue == "NaN") {
-                          if (i == 0)
-                             focusField = form[oFloat[x][0]]; 
-                          fields[i++] = oFloat[x][1];
-                          bValid = false;
-                       }
-                    }                                                                                               
+                    if (form[oFloat[x][0]] != null) {
+	                   var value = form[oFloat[x][0]].value;
+    	               var oldValue = form["o" + oFloat[x][0]].value;                                                                                                    
+					   if ( (form[oFloat[x][0]].type == 'text' || form[oFloat[x][0]].type == 'textarea' || form[oFloat[x][0]].type == 'select-one' || form[oFloat[x][0]].type == 'radio') 
+								&& (value != null) 
+								&& (value.length > 0) 
+								&& (value != oldValue) ) {   
+						   var iValue = parseFloat(value);
+						   if (isNaN(iValue)) {
+							  if (i == 0)
+								 focusField = form[oFloat[x][0]]; 
+							  fields[i++] = oFloat[x][1];
+							  bValid = false;
+						   }
+					   }                                                                                               
+				    } 		
                 }                                                                                                   
                 if (fields.length > 0) {
                    focusField.focus();
@@ -300,30 +363,37 @@
                  classname="org.dbforms.validation.DbFormsValidator"
                  methodParams="java.lang.Object,org.apache.commons.validator.ValidatorAction,org.apache.commons.validator.Field,java.util.Vector,java.util.Locale,org.dbforms.config.DbFormsErrors" 
                  method="validateDouble"
-                 msg="errors.double"
-                 jsFunctionName="doubleValidations">
+                 msg="dbforms.error.double"
+                 jsFunctionName="DoubleValidations">
          <javascript><![CDATA[
             function validateDouble(form) {
                 var bValid = true;
                 var focusField = null;
                 var i = 0;                                                                                          
                 var fields = new Array();                                                                           
-                oFloat = new FloatValidations();                                                                         
-                for (x in oDouble) {                                                                              
-                    if ((form[oDouble[x][0]] != null) && (form[oDouble[x][0]].type == 'text' || form[oDouble[x][0]].type == 'textarea' || form[oDouble[x][0]].type == 'select-one' || form[oDouble[x][0]].type == 'radio') && form[oDouble[x][0]].value.length > 0) {   
-                       var iValue = parseFloat(form[oDouble[x][0]].value);
-                       if (iValue == "NaN") {
-                          if (i == 0)
-                             focusField = form[oDouble[x][0]]; 
-                          fields[i++] = oDouble[x][1];
-                          bValid = false;
-                       }
+                oDouble = new DoubleValidations();                                                                         
+                for (x in oDouble) { 
+                    if (form[oDouble[x][0]] != null) {
+	                    var value = form[oDouble[x][0]].value;
+    	                var oldValue = form["o" + oDouble[x][0]].value;                                                                                                    
+                    	if ( (form[oDouble[x][0]].type == 'text' || form[oDouble[x][0]].type == 'textarea' || form[oDouble[x][0]].type == 'select-one' || form[oDouble[x][0]].type == 'radio') 
+							&& (value != null) 
+							&& (value.length > 0) 
+							&& (value != oldValue ) ) {   
+						   var iValue = parseFloat(value);
+						   if (isNaN(iValue)) {
+							  if (i == 0)
+								 focusField = form[oDouble[x][0]]; 
+							  fields[i++] = oDouble[x][1];
+							  bValid = false;
+						   }
+					   }
                     }                                                                                               
                 }                                                                                                   
                 if (fields.length > 0) {
                    focusField.focus();
                    alert(fields.join('\n'));                                                                      
-                }                                                                                                   
+                }   
                 return bValid;                                                                                      
             }]]>
          </javascript>
@@ -333,7 +403,7 @@
                  classname="org.dbforms.validation.DbFormsValidator"
                  methodParams="java.lang.Object,org.apache.commons.validator.ValidatorAction,org.apache.commons.validator.Field,java.util.Vector,java.util.Locale,org.dbforms.config.DbFormsErrors" 
                  method="validateDate"
-                 msg="errors.date"
+                 msg="dbforms.error.date"
                  jsFunctionName="DateValidations">
          <javascript><![CDATA[
             function validateDate(form) {                                                                                                                             
@@ -343,114 +413,120 @@
                var fields = new Array();                                                                                                                              
                oDate = new DateValidations();                                                                                                                                                                                                                                                                                        
                for (x in oDate) { 
-                  var value = form[oDate[x][0]].value;
                   var datePattern = oDate[x][2]("datePatternStrict");
-                  if ((form[oDate[x][0]] != null) && (form[oDate[x][0]].type == 'text' || form[oDate[x][0]].type == 'textarea') && value.length > 0 && datePattern.length > 0) {
-                     var MONTH = "MM";
-                     var DAY = "dd";
-                     var YEAR = "yyyy";
-                     var orderMonth = datePattern.indexOf(MONTH);
-                     var orderDay = datePattern.indexOf(DAY);
-                     var orderYear = datePattern.indexOf(YEAR);
-                     if ((orderDay < orderYear && orderDay > orderMonth)) {
-                        var iDelim1 = orderMonth + MONTH.length;
-                        var iDelim2 = orderDay + DAY.length;
-                        var delim1 = datePattern.substring(iDelim1, iDelim1 + 1);
-                        var delim2 = datePattern.substring(iDelim2, iDelim2 + 1);
-                        if (iDelim1 == orderDay && iDelim2 == orderYear) {
-                           dateRegexp = new RegExp("^(\\d{2})(\\d{2})(\\d{4})$");
-                        } else if (iDelim1 == orderDay) {
-                           dateRegexp = new RegExp("^(\\d{2})(\\d{2})[" + delim2 + "](\\d{4})$");
-                        } else if (iDelim2 == orderYear) {   
-                           dateRegexp = new RegExp("^(\\d{2})[" + delim1 + "](\\d{2})(\\d{4})$");
-                        } else {
-                           dateRegexp = new RegExp("^(\\d{2})[" + delim1 + "](\\d{2})[" + delim2 + "](\\d{4})$");
-                        }
-                        var matched = dateRegexp.exec(value);
-                        if(matched != null) { 
-                           if (!isValidDate(matched[2], matched[1], matched[3])) {
-                              if (i == 0)
-                                 focusField = form[oDate[x][0]]; 
-                                 
-                              fields[i++] = oDate[x][1];
-                              bValid =  false;
-                           }
-                        } else {
-                           if (i == 0)
-                              focusField = form[oDate[x][0]]; 
-                           fields[i++] = oDate[x][1];
-                           bValid =  false;
-                        }
-                     } else if ((orderMonth < orderYear && orderMonth > orderDay)) {
-                        var iDelim1 = orderDay + DAY.length;
-                        var iDelim2 = orderMonth + MONTH.length;
-                        var delim1 = datePattern.substring(iDelim1, iDelim1 + 1);
-                        var delim2 = datePattern.substring(iDelim2, iDelim2 + 1);
-                        if (iDelim1 == orderMonth && iDelim2 == orderYear) {
-                           dateRegexp = new RegExp("^(\\d{2})(\\d{2})(\\d{4})$");
-                        } else if (iDelim1 == orderMonth) {
-                           dateRegexp = new RegExp("^(\\d{2})(\\d{2})[" + delim2 + "](\\d{4})$");
-                        } else if (iDelim2 == orderYear) {   
-                           dateRegexp = new RegExp("^(\\d{2})[" + delim1 + "](\\d{2})(\\d{4})$");
-                        } else {
-                           dateRegexp = new RegExp("^(\\d{2})[" + delim1 + "](\\d{2})[" + delim2 + "](\\d{4})$");
-                        }
-                        var matched = dateRegexp.exec(value);
-                        if(matched != null) { 
-                           if (!isValidDate(matched[1], matched[2], matched[3])) {
-                              if (i == 0)
-                                 focusField = form[oDate[x][0]]; 
-                              fields[i++] = oDate[x][1];
-                              bValid =  false;
-                           }
-                        } else {
-                           if (i == 0)
-                              focusField = form[oDate[x][0]]; 
-                           fields[i++] = oDate[x][1];
-                           bValid =  false;
-                        }
-                     } else if ((orderMonth > orderYear && orderMonth < orderDay)) {
-                        var iDelim1 = orderYear + YEAR.length;
-                        var iDelim2 = orderMonth + MONTH.length;
-                        var delim1 = datePattern.substring(iDelim1, iDelim1 + 1);
-                        var delim2 = datePattern.substring(iDelim2, iDelim2 + 1);
-            
-                        if (iDelim1 == orderMonth && iDelim2 == orderDay) {
-                           dateRegexp = new RegExp("^(\\d{4})(\\d{2})(\\d{2})$");
-                        } else if (iDelim1 == orderMonth) {
-                           dateRegexp = new RegExp("^(\\d{4})(\\d{2})[" + delim2 + "](\\d{2})$");
-                        } else if (iDelim2 == orderDay) {   
-                           dateRegexp = new RegExp("^(\\d{4})[" + delim1 + "](\\d{2})(\\d{2})$");
-                        } else {
-                           dateRegexp = new RegExp("^(\\d{4})[" + delim1 + "](\\d{2})[" + delim2 + "](\\d{2})$");
-                        }
-            
-                        var matched = dateRegexp.exec(value);
-            
-                        if(matched != null) { 
-            
-                           if (!isValidDate(matched[3], matched[2], matched[1])) {
-                              if (i == 0)
-                                 focusField = form[oDate[x][0]]; 
-            
-                              fields[i++] = oDate[x][1];
-                              bValid =  false;
-                           }
-                        } else {
-                           if (i == 0)
-                              focusField = form[oDate[x][0]]; 
-            
-                           fields[i++] = oDate[x][1];
-                           bValid =  false;
-                        }
-                     } else {
-                        if (i == 0)
-                           focusField = form[oDate[x][0]]; 
-            
-                        fields[i++] = oDate[x][1];
-                        bValid =  false;
-                     }
-            
+                  if (form[oDate[x][0]] != null) {
+				     var value = form[oDate[x][0]].value;
+					 var oldValue = form["o" + oDate[x][0]].value;
+					 if ( (form[oDate[x][0]].type == 'text' || form[oDate[x][0]].type == 'textarea') 
+							&& (value != null) && (value.length > 0) 
+							&& (value != oldValue) 
+							&& (datePattern != null) 
+							&& (datePattern.length > 0)  ) {
+						 var MONTH = "MM";
+						 var DAY = "dd";
+						 var YEAR = "yyyy";
+						 var orderMonth = datePattern.indexOf(MONTH);
+						 var orderDay = datePattern.indexOf(DAY);
+						 var orderYear = datePattern.indexOf(YEAR);
+						 if ((orderDay < orderYear && orderDay > orderMonth)) {
+							var iDelim1 = orderMonth + MONTH.length;
+							var iDelim2 = orderDay + DAY.length;
+							var delim1 = datePattern.substring(iDelim1, iDelim1 + 1);
+							var delim2 = datePattern.substring(iDelim2, iDelim2 + 1);
+							if (iDelim1 == orderDay && iDelim2 == orderYear) {
+							   dateRegexp = new RegExp("^(\\d{2})(\\d{2})(\\d{4})$");
+							} else if (iDelim1 == orderDay) {
+							   dateRegexp = new RegExp("^(\\d{2})(\\d{2})[" + delim2 + "](\\d{4})$");
+							} else if (iDelim2 == orderYear) {   
+							   dateRegexp = new RegExp("^(\\d{2})[" + delim1 + "](\\d{2})(\\d{4})$");
+							} else {
+							   dateRegexp = new RegExp("^(\\d{2})[" + delim1 + "](\\d{2})[" + delim2 + "](\\d{4})$");
+							}
+							var matched = dateRegexp.exec(value);
+							if(matched != null) { 
+							   if (!isValidDate(matched[2], matched[1], matched[3])) {
+								  if (i == 0)
+									 focusField = form[oDate[x][0]]; 
+									 
+								  fields[i++] = oDate[x][1];
+								  bValid =  false;
+							   }
+							} else {
+							   if (i == 0)
+								  focusField = form[oDate[x][0]]; 
+							   fields[i++] = oDate[x][1];
+							   bValid =  false;
+							}
+						 } else if ((orderMonth < orderYear && orderMonth > orderDay)) {
+							var iDelim1 = orderDay + DAY.length;
+							var iDelim2 = orderMonth + MONTH.length;
+							var delim1 = datePattern.substring(iDelim1, iDelim1 + 1);
+							var delim2 = datePattern.substring(iDelim2, iDelim2 + 1);
+							if (iDelim1 == orderMonth && iDelim2 == orderYear) {
+							   dateRegexp = new RegExp("^(\\d{2})(\\d{2})(\\d{4})$");
+							} else if (iDelim1 == orderMonth) {
+							   dateRegexp = new RegExp("^(\\d{2})(\\d{2})[" + delim2 + "](\\d{4})$");
+							} else if (iDelim2 == orderYear) {   
+							   dateRegexp = new RegExp("^(\\d{2})[" + delim1 + "](\\d{2})(\\d{4})$");
+							} else {
+							   dateRegexp = new RegExp("^(\\d{2})[" + delim1 + "](\\d{2})[" + delim2 + "](\\d{4})$");
+							}
+							var matched = dateRegexp.exec(value);
+							if(matched != null) { 
+							   if (!isValidDate(matched[1], matched[2], matched[3])) {
+								  if (i == 0)
+									 focusField = form[oDate[x][0]]; 
+								  fields[i++] = oDate[x][1];
+								  bValid =  false;
+							   }
+							} else {
+							   if (i == 0)
+								  focusField = form[oDate[x][0]]; 
+							   fields[i++] = oDate[x][1];
+							   bValid =  false;
+							}
+						 } else if ((orderMonth > orderYear && orderMonth < orderDay)) {
+							var iDelim1 = orderYear + YEAR.length;
+							var iDelim2 = orderMonth + MONTH.length;
+							var delim1 = datePattern.substring(iDelim1, iDelim1 + 1);
+							var delim2 = datePattern.substring(iDelim2, iDelim2 + 1);
+				
+							if (iDelim1 == orderMonth && iDelim2 == orderDay) {
+							   dateRegexp = new RegExp("^(\\d{4})(\\d{2})(\\d{2})$");
+							} else if (iDelim1 == orderMonth) {
+							   dateRegexp = new RegExp("^(\\d{4})(\\d{2})[" + delim2 + "](\\d{2})$");
+							} else if (iDelim2 == orderDay) {   
+							   dateRegexp = new RegExp("^(\\d{4})[" + delim1 + "](\\d{2})(\\d{2})$");
+							} else {
+							   dateRegexp = new RegExp("^(\\d{4})[" + delim1 + "](\\d{2})[" + delim2 + "](\\d{2})$");
+							}
+				
+							var matched = dateRegexp.exec(value);
+				
+							if(matched != null) { 
+				
+							   if (!isValidDate(matched[3], matched[2], matched[1])) {
+								  if (i == 0)
+									 focusField = form[oDate[x][0]]; 
+				
+								  fields[i++] = oDate[x][1];
+								  bValid =  false;
+							   }
+							} else {
+							   if (i == 0)
+								  focusField = form[oDate[x][0]]; 
+				
+							   fields[i++] = oDate[x][1];
+							   bValid =  false;
+							}
+						 } else {
+							if (i == 0)
+							   focusField = form[oDate[x][0]]; 
+				
+							fields[i++] = oDate[x][1];
+							bValid =  false;
+						 }
+					 }	            
                   }                                                                                                                                                  
                }                                                                                                                                                                                                                                                                                                             
                
@@ -487,8 +563,7 @@
                  classname="org.dbforms.validation.DbFormsValidator"
                   methodParams="java.lang.Object,org.apache.commons.validator.ValidatorAction,org.apache.commons.validator.Field,java.util.Vector,java.util.Locale,org.dbforms.config.DbFormsErrors" 
                  method="validateRange"
-                 depends="integer"
-                 msg="errors.range">
+                 msg="dbforms.error.range">
          <javascript><![CDATA[
             function validateRange(form) {                                                                                                    
                 var bValid = true;
@@ -498,22 +573,25 @@
                 oRange = new range();                                                                                                        
                                                                                                                                               
                 for (x in oRange) {                                                                                                          
-                    if ((form[oRange[x][0]].type == 'text' || form[oRange[x][0]].type == 'textarea') && form[oRange[x][0]].value.length > 0) {   
-                       var iMin = parseInt(oRange[x][2]("min"));
-                       var iMax = parseInt(oRange[x][2]("max"));
-                       var iValue = parseInt(form[oRange[x][0]].value);
-            
-                       if (!(iValue >= iMin && iValue <= iMax)) {
-                          if (i == 0)
-                             focusField = form[oRange[x][0]]; 
-            
-                          fields[i++] = oRange[x][1];
-            
-                          bValid = false;                                                                                                     
-                       }                                                                                                                      
-                    }                                                                                                                         
-                }                                                                                                                             
-                                                                                                                                              
+                  if (form[oRange[x][0]] != null) {
+				        var value = form[oRange[x][0]].value;
+					    var oldValue = form["o" + oRange[x][0]].value;
+						if ((form[oRange[x][0]].type == 'text' || form[oRange[x][0]].type == 'textarea') 
+							&& (value != null) 
+							&& (value.length > 0) 
+							&& (value != oldValue) ) {   
+						   var iMin = parseFloat(oRange[x][2]("min"));
+						   var iMax = parseFloat(oRange[x][2]("max"));
+						   var iValue = parseFloat(value);
+						   if (!(iValue >= iMin && iValue <= iMax)) {
+							  if (i == 0)
+								 focusField = form[oRange[x][0]]; 
+							  fields[i++] = oRange[x][1];
+							  bValid = false;                                                                                                     
+						   }                                                                                                                      
+						}                                                                                                                         
+					}                                                                                                                             
+				}                                                                                                                                              
                 if (fields.length > 0) {
                    focusField.focus();
                    alert(fields.join('\n'));                                                                                                  
@@ -529,7 +607,7 @@
                  methodParams="java.lang.Object,org.apache.commons.validator.ValidatorAction,org.apache.commons.validator.Field,java.util.Vector,java.util.Locale,org.dbforms.config.DbFormsErrors" 
                  method="validateCreditCard"
                  depends="required"
-                 msg="errors.creditcard">
+                 msg="dbforms.error.creditcard">
          <javascript><![CDATA[
             function validateCreditCard(form) {                                                                                                    
                 var bValid = true;
@@ -543,19 +621,15 @@
                        if (!luhnCheck(form[oCreditCard[x][0]].value)) {
                           if (i == 0)
                              focusField = form[oCreditCard[x][0]]; 
-            
                           fields[i++] = oCreditCard[x][1];
-            
                           bValid = false;                                                                                                     
                        }                                                                                                                      
                     }                                                                                                                         
                 }                                                                                                                             
-                                                                                                                                              
                 if (fields.length > 0) {
                    focusField.focus();
                    alert(fields.join('\n'));                                                                                                  
                 }                                                                                                                             
-                                                                                                                                              
                 return bValid;                                                                                                                
             }      
             
@@ -598,7 +672,7 @@
                  classname="org.dbforms.validation.DbFormsValidator"
                   methodParams="java.lang.Object,org.apache.commons.validator.ValidatorAction,org.apache.commons.validator.Field,java.util.Vector,java.util.Locale,org.dbforms.config.DbFormsErrors" 
                  method="validateEmail"
-                 msg="errors.email">
+                 msg="dbforms.error.email">
          <javascript><![CDATA[
             function validateEmail(form) {                                                                                                    
                 var bValid = true;
@@ -606,25 +680,20 @@
                 var i = 0;                                                                                                                    
                 var fields = new Array();                                                                                                     
                 oEmail = new email();                                                                                                        
-                                                                                                                                              
                 for (x in oEmail) {                                                                                                          
                     if ((form[oEmail[x][0]].type == 'text' || form[oEmail[x][0]].type == 'textarea') && form[oEmail[x][0]].value.length > 0) {   
                        if (!checkEmail(form[oEmail[x][0]].value)) {
                           if (i == 0)
                              focusField = form[oEmail[x][0]]; 
-            
                           fields[i++] = oEmail[x][1];
-            
                           bValid = false;                                                                                                     
                        }                                                                                                                      
                     }                                                                                                                         
                 }                                                                                                                             
-                                                                                                                                              
                 if (fields.length > 0) {
                    focusField.focus();
                    alert(fields.join('\n'));                                                                                                  
                 }                                                                                                                             
-                                                                                                                                              
                 return bValid;                                                                                                                
             }      
             
