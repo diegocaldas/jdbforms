@@ -60,7 +60,6 @@ public class DataSourceXML extends DataSource {
    private static DocumentBuilderFactory dfactory = null;
    private static DocumentBuilder builder = null;
 
-   private Category logCat = Category.getInstance(this.getClass().getName());
    private FieldValue[] filterConstraint;
    private FieldValue[] orderConstraint;
    private XMLDataResult data;
@@ -163,8 +162,8 @@ public class DataSourceXML extends DataSource {
    protected Node getResultNode(URI uri) throws Exception {
       URLConnection con = uri.toURL().openConnection();
       con.connect();
-      InputStream is = con.getInputStream();
-      InputSource src = new InputSource(is);
+      InputStream in = con.getInputStream();
+      InputSource src = new InputSource(in);
       Document doc = builder.parse(src);
       return doc;
    }

@@ -47,8 +47,7 @@ import org.dbforms.util.Util;
  * @author hkk
  */
 public abstract class DataSource {
-   private static Category logCat =
-      Category.getInstance(DataSourceJDBC.class.getName());
+   protected Category logCat = Category.getInstance(this.getClass().getName());
    private Table table;
 
    /**

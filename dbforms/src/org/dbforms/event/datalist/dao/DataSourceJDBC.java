@@ -47,10 +47,6 @@ import org.dbforms.util.Util;
  * @author hkk
  */
 public class DataSourceJDBC extends DataSource {
-   static Category logCat =
-      Category.getInstance(DataSourceJDBC.class.getName());
-   // logging category for this class
-
    private String query;
    private Connection con;
    private boolean ownCon = false;
