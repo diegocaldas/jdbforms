@@ -1,50 +1,49 @@
 <?xml version="1.0"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	targetNamespace="http://www.w3schools.com"
-	xmlns="http://www.w3schools.com"
-	elementFormDefault="qualified">
-
+<!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by LEGO (LEGO) -->
+<xs:schema targetNamespace="http://www.w3schools.com" xmlns="http://www.w3schools.com" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
 	<xs:element name="dbforms-config">
 		<xs:complexType>
 			<xs:all>
-		
-				<xs:element name="date-format" type="xs:string" minOccurs="0" maxOccurs="1"/>
-			
-				<xs:element name="table" minOccurs="1" maxOccurs="unbounded">
+				<xs:element name="date-format" type="xs:string" minOccurs="0"/>
+				<xs:element name="table" maxOccurs="unbounded">
 					<xs:complexType>
 						<xs:all>
-							<xs:element name="field" type="xs:string" minOccurs="1" maxOccurs="unbounded">
-								<xs:attribute name="name" type="xs:string" use="required"/>
-								<xs:attribute name="fieldType" type="xs:string" use="required"/>
-								<xs:attribute name="size" type="xs:string" use="optional"/>
-								<xs:attribute name="isKey" type="xs:string" use="optional"/>
-								<xs:attribute name="sortable" type="xs:string" use="optional"/>
-								<xs:attribute name="autoInc" type="xs:string" use="optional"/>
-								<xs:attribute name="directory" type="xs:string" use="optional"/>
+							<xs:element name="field" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:attribute name="name" type="xs:string" use="required"/>
+									<xs:attribute name="fieldType" type="xs:string" use="required"/>
+									<xs:attribute name="size" type="xs:string" use="optional"/>
+									<xs:attribute name="isKey" type="xs:string" use="optional"/>
+									<xs:attribute name="sortable" type="xs:string" use="optional"/>
+									<xs:attribute name="autoInc" type="xs:string" use="optional"/>
+									<xs:attribute name="directory" type="xs:string" use="optional"/>
+								</xs:complexType>
 							</xs:element>
-			
-							<xs:element name="foreign-key" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+							<xs:element name="foreign-key" minOccurs="0">
 								<xs:complexType>
 									<xs:all>
-										<xs:element name="reference" type="xs:string" minOccurs="1" maxOccurs="unbounded">
-											<xs:attribute name="local" type="xs:string" use="required"/>
-											<xs:attribute name="foreign" type="xs:string" use="required"/>
+										<xs:element name="reference" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:attribute name="local" type="xs:string" use="required"/>
+												<xs:attribute name="foreign" type="xs:string" use="required"/>
+											</xs:complexType>
 										</xs:element>
 									</xs:all>
 									<xs:attribute name="foreignTable" type="xs:string" use="required"/>
 									<xs:attribute name="name" type="xs:string" use="required"/>
 								</xs:complexType>
 							</xs:element>
-			
-							<xs:element name="events" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+							<xs:element name="events" minOccurs="0">
 								<xs:complexType>
 									<xs:all>
-										<xs:element name="event" type="xs:string" minOccurs="1" maxOccurs="unbounded">
+										<xs:element name="event">
 											<xs:complexType>
 												<xs:all>
-													<xs:element name="param" type="xs:string" minOccurs="0" maxOccurs="unbounded">
-														<xs:attribute name="name" type="xs:string" use="required"/>
-														<xs:attribute name="value" type="xs:string" use="required"/>
+													<xs:element name="param" minOccurs="0" maxOccurs="unbounded">
+														<xs:complexType>
+															<xs:attribute name="name" type="xs:string" use="required"/>
+															<xs:attribute name="value" type="xs:string" use="required"/>
+														</xs:complexType>
 													</xs:element>
 												</xs:all>
 												<xs:attribute name="type" type="xs:string" use="required"/>
@@ -54,52 +53,55 @@
 									</xs:all>
 								</xs:complexType>
 							</xs:element>
-			
-							<xs:element name="interceptor" type="xs:string" minOccurs="0" maxOccurs="unbounded">
-								<xs:attribute name="className" type="xs:string" use="required"/>
+							<xs:element name="interceptor" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:attribute name="className" type="xs:string" use="required"/>
+								</xs:complexType>
 							</xs:element>
-			
-							<xs:element name="granted-privileges" type="xs:string" minOccurs="0" maxOccurs="unbounded">
-								<xs:attribute name="select" type="xs:string" use="optional"/>
-								<xs:attribute name="insert" type="xs:string" use="optional"/>
-								<xs:attribute name="update" type="xs:string" use="optional"/>
-								<xs:attribute name="delete" type="xs:string" use="optional"/>
+							<xs:element name="granted-privileges" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:attribute name="select" type="xs:string" use="optional"/>
+									<xs:attribute name="insert" type="xs:string" use="optional"/>
+									<xs:attribute name="update" type="xs:string" use="optional"/>
+									<xs:attribute name="delete" type="xs:string" use="optional"/>
+								</xs:complexType>
 							</xs:element>
-			
 						</xs:all>
-						<xs:attribute name="name" 	 type="xs:string" use="required"/>
+						<xs:attribute name="name" type="xs:string" use="required"/>
 						<xs:attribute name="orderBy" type="xs:string" use="optional"/>
-			
 					</xs:complexType>
 				</xs:element>
-				<!--END "table" -->
-			
-				<xs:element name="query" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="query" minOccurs="0" maxOccurs="unbounded">
 					<xs:complexType>
 						<xs:all>
-							<xs:element name="field" type="xs:string" minOccurs="0" maxOccurs="unbounded">
-								<xs:attribute name="name" type="xs:string" use="optional"/>
-								<xs:attribute name="fieldType" type="xs:string" use="optional"/>
-								<xs:attribute name="autoInc" type="xs:string" use="optional"/>
-								<xs:attribute name="sortable" type="xs:string" use="optional"/>
-								<xs:attribute name="expression" type="xs:string" use="optional"/>
+							<xs:element name="field" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:attribute name="name" type="xs:string" use="optional"/>
+									<xs:attribute name="fieldType" type="xs:string" use="optional"/>
+									<xs:attribute name="autoInc" type="xs:string" use="optional"/>
+									<xs:attribute name="sortable" type="xs:string" use="optional"/>
+									<xs:attribute name="expression" type="xs:string" use="optional"/>
+								</xs:complexType>
 							</xs:element>
-			
-							<xs:element name="search" type="xs:string" minOccurs="0" maxOccurs="unbounded">
-								<xs:attribute name="name" type="xs:string" use="optional"/>
-								<xs:attribute name="type" type="xs:string" use="optional"/>
-								<xs:attribute name="expression" type="xs:string" use="optional"/>
+							<xs:element name="search" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:attribute name="name" type="xs:string" use="optional"/>
+									<xs:attribute name="type" type="xs:string" use="optional"/>
+									<xs:attribute name="expression" type="xs:string" use="optional"/>
+								</xs:complexType>
 							</xs:element>
-			
-							<xs:element name="interceptor" type="xs:string" minOccurs="0" maxOccurs="unbounded">
-								<xs:attribute name="className" type="xs:string" use="required"/>
+							<xs:element name="interceptor" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:attribute name="className" type="xs:string" use="required"/>
+								</xs:complexType>
 							</xs:element>
-			
-							<xs:element name="granted-privileges" type="xs:string" minOccurs="0" maxOccurs="unbounded">
-								<xs:attribute name="select" type="xs:string" use="optional"/>
-								<xs:attribute name="insert" type="xs:string" use="optional"/>
-								<xs:attribute name="update" type="xs:string" use="optional"/>
-								<xs:attribute name="delete" type="xs:string" use="optional"/>
+							<xs:element name="granted-privileges" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:attribute name="select" type="xs:string" use="optional"/>
+									<xs:attribute name="insert" type="xs:string" use="optional"/>
+									<xs:attribute name="update" type="xs:string" use="optional"/>
+									<xs:attribute name="delete" type="xs:string" use="optional"/>
+								</xs:complexType>
 							</xs:element>
 						</xs:all>
 						<xs:attribute name="name" type="xs:string" use="required"/>
@@ -111,27 +113,29 @@
 						<xs:attribute name="distinct" type="xs:string" use="optional"/>
 					</xs:complexType>
 				</xs:element>
-			
-				<xs:element name="events" type="xs:string" minOccurs="1" maxOccurs="unbounded">
+				<xs:element name="events" maxOccurs="unbounded">
 					<xs:complexType>
 						<xs:all>
-							<xs:element name="database-events" type="xs:string" minOccurs="1" maxOccurs="unbounded">
+							<xs:element name="database-events" maxOccurs="unbounded">
 								<xs:complexType>
 									<xs:all>
-										<xs:element name="database-event" type="xs:string" minOccurs="1" maxOccurs="unbounded">
-											<xs:attribute name="type" type="xs:string" use="required"/>
-											<xs:attribute name="className" type="xs:string" use="requird"/>
+										<xs:element name="database-event" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:attribute name="type" type="xs:string" use="required"/>
+												<xs:attribute name="className" type="xs:string" use="requird"/>
+											</xs:complexType>
 										</xs:element>
 									</xs:all>
 								</xs:complexType>
 							</xs:element>
-			
-							<xs:element name="navigation-events" type="xs:string" minOccurs="1" maxOccurs="unbounded">
+							<xs:element name="navigation-events" maxOccurs="unbounded">
 								<xs:complexType>
 									<xs:all>
-										<xs:element name="navigation-event" type="xs:string" minOccurs="1" maxOccurs="unbounded"/>
-											<xs:attribute name="type" type="xs:string" use="required"/>
-											<xs:attribute name="className" type="xs:string" use="requird"/>
+										<xs:element name="navigation-event" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:attribute name="type" type="xs:string" use="required"/>
+												<xs:attribute name="className" type="xs:string" use="requird"/>
+											</xs:complexType>
 										</xs:element>
 									</xs:all>
 								</xs:complexType>
@@ -139,18 +143,20 @@
 						</xs:all>
 					</xs:complexType>
 				</xs:element>
-			
-			
-				<xs:element name="dbconnection" type="xs:string" minOccurs="1" maxOccurs="unbounded">
-				    <xs:complexType>
-				    	<xs:all>
-							<xs:element name="property" type="xs:string" minOccurs="0" maxOccurs="unbounded">
-								<xs:attribute name="name" type="xs:string" use="required"/>
-								<xs:attribute name="value" type="xs:string" use="required"/>
+				<xs:element name="dbconnection" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="property" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:attribute name="name" type="xs:string" use="required"/>
+									<xs:attribute name="value" type="xs:string" use="required"/>
+								</xs:complexType>
 							</xs:element>
-							<xs:element name="pool-property" type="xs:string" minOccurs="0" maxOccurs="unbounded">
-								<xs:attribute name="name" type="xs:string" use="required"/>
-								<xs:attribute name="value" type="xs:string" use="required"/>
+							<xs:element name="pool-property" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:attribute name="name" type="xs:string" use="required"/>
+									<xs:attribute name="value" type="xs:string" use="required"/>
+								</xs:complexType>
 							</xs:element>
 						</xs:all>
 						<xs:attribute name="id" type="xs:string" use="optional"/>
@@ -167,13 +173,10 @@
 						<xs:attribute name="orderBy" type="xs:string" use="optional"/>
 					</xs:complexType>
 				</xs:element>
-			
+				<!--END "table" -->
 				<!--END "dbconnection" -->
-		
 			</xs:all>
 		</xs:complexType>
 	</xs:element>
 	<!--END "dbforms-config" -->
-
 </xs:schema>
-
