@@ -111,7 +111,7 @@ public class DbAssociatedRadioTag extends DbBaseHandlerTag
             tagBuf.append(" checked=\"true\"");
          }
 
-         tagBuf.append(">");
+         tagBuf.append("/>");
          pageContext.getOut().write(tagBuf.toString());
       }
       catch (java.io.IOException ioe)
