@@ -55,8 +55,15 @@ public class FieldValue implements Cloneable {
 	public static int COMPARE_INCLUSIVE  = 1;
 	public static int COMPARE_EXCLUSIVE  = 2;
 
-	public static int SEARCH_ALGO_SHARP = 0;
-	public static int SEARCH_ALGO_WEAK = 1;
+	// 20020703-HKK: Make const public static final to use it outside this class!
+	public static final int SEARCH_ALGO_SHARP = 0;
+	public static final int SEARCH_ALGO_WEAK = 1;
+
+	// 20020703-HKK: Extending search algorithm with WEAK_START, WEAK_END, WEAK_START_END
+        //               results in like '%search', 'search%', '%search%'
+        public static final int SEARCH_ALGO_WEAK_START = 2;
+        public static final int SEARCH_ALGO_WEAK_END = 3;
+        public static final int SEARCH_ALGO_WEAK_START_END = 4;
 
 	public static final int FILTER_EQUAL  = 0;
 	public static final int FILTER_GREATER_THEN  = 1;
@@ -300,7 +307,10 @@ public class FieldValue implements Cloneable {
 
 				// §2, i.e "A = 'smith'" or "X LIKE 'jose%'"
 				buf.append(fv[i].getField().getName());
-				buf.append(fv[i].getSearchAlgorithm() == SEARCH_ALGO_WEAK ? " LIKE " : " = ");
+	// 20020703-HKK: Extending search algorithm with WEAK_START, WEAK_END, WEAK_START_END
+        //               results in like '%search', 'search%', '%search%'
+        //               look for SEARCH_ALGO_SHARP instead of SEARCH_ALGO_WEAK!                                
+				buf.append(fv[i].getSearchAlgorithm() == SEARCH_ALGO_SHARP ? " = " : " LIKE ");
 				buf.append(" ? ");
 
 				if(i < fv.length-1 && fv[i+1].getSearchMode()==mode)
@@ -490,8 +500,21 @@ public class FieldValue implements Cloneable {
 		String valueStr = cur.getFieldValue();
 
 		logCat.info("setting "+cur.getField().getName()+" to value "+valueStr+" of type "+curField.getType());
-
-		SqlUtil.fillPreparedStatement(ps, curCol, valueStr, curField.getType());
+       
+	// 20020703-HKK: Extending search algorithm with WEAK_START, WEAK_END, WEAK_START_END
+        //               results in like '%search', 'search%', '%search%'
+                switch (cur.getSearchAlgorithm()) {
+                    case FieldValue.SEARCH_ALGO_WEAK_START:
+                        valueStr = '%' + valueStr;
+                        break;
+                    case FieldValue.SEARCH_ALGO_WEAK_END:
+                        valueStr = valueStr + '%';
+                        break;
+                    case FieldValue.SEARCH_ALGO_WEAK_START_END:
+                        valueStr = '%' + valueStr + '%';
+                        break;
+                }
+                SqlUtil.fillPreparedStatement(ps, curCol, valueStr, curField.getType());
 	}
 
 
