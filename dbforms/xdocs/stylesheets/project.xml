@@ -21,8 +21,8 @@
       <item name="Related work"            href="/related.html"/>
       <!--
         <item name="Contributions"           href="/contributed.html"/>
-        <item name="Powered by"              href="/powered.html"/>
       -->
+        <item name="Powered by"              href="/poweredby.html"/>
       <item name="SourceForge's Summary Page"  href="http://sourceforge.net/projects/jdbforms"/>
     </menu>
 
