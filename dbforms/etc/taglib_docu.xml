@@ -5574,7 +5574,7 @@ is released.</info>
 				<bodycontent>JSP</bodycontent>
 				<info>
 					<p>navigation button to scroll to a copy of an existent dataset</p>
-                                        <p>It works with elements such as textField and textArea (even when hidden) but not with dataLabel.
+                                        <p>It works with elements such as textField and textArea (even when hidden) but not with dataLabel. </p>
 				</info>
 				<attribute>
 					<name>id</name>
