@@ -9,6 +9,8 @@ Added New report systems to create Excel Spreadsheet and Comma Seperated Values 
 Modified JRDataSourceRSV session variables can now be accessed in addition to field data
 Added JRDataSourceIter data can now be retrieved from a collection, instead of a RSV.
 
+====================== v2.4 was released  ==============================================         
+
 2004-08-01
 (Henner.Kollmann@gmx.de)
 Support added for servletapi 2.4

@@ -1,0 +1,9 @@
+Release Notes for DbForms Version 2.5,  xxxx-xx-xx
+
+Contents:
+1)    About this release
+2)    Details about enhancements and changes
+
+1) About this release
+----------------------
+
