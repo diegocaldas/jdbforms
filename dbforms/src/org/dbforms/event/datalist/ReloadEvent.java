@@ -32,7 +32,7 @@ import org.dbforms.config.DbFormsConfig;
 import org.dbforms.event.NavigationEvent;
 import org.dbforms.event.datalist.dao.DataSourceList;
 import org.dbforms.event.datalist.dao.DataSourceFactory;
-
+import org.dbforms.event.eventtype.EventType;
 /**
  *
  * This event reloads the current dataset and moves to the first row of data
@@ -45,6 +45,7 @@ import org.dbforms.event.datalist.dao.DataSourceFactory;
 public class ReloadEvent extends NavigationEvent {
 
    private boolean isInsert = false;
+   private boolean isForce = false;
    /**
     * Creates a new ReloadEvent object.
     *
@@ -52,9 +53,13 @@ public class ReloadEvent extends NavigationEvent {
     * @param request the request object
     * @param config  the configuration object
     */
-   public ReloadEvent(String action, HttpServletRequest request, DbFormsConfig config) {
+   public ReloadEvent(
+      String action,
+      HttpServletRequest request,
+      DbFormsConfig config) {
       super(action, request, config);
-      isInsert = action.indexOf("_ins_") > 0;
+      isForce = action.indexOf("_force_") > 0;
+      isInsert = !isForce && action.indexOf("_ins_") > 0;
    }
 
    /**
@@ -64,7 +69,10 @@ public class ReloadEvent extends NavigationEvent {
     * @param request the request object
     * @param config the configuration object
     */
-   public ReloadEvent(Table table, HttpServletRequest request, DbFormsConfig config) {
+   public ReloadEvent(
+      Table table,
+      HttpServletRequest request,
+      DbFormsConfig config) {
       super(table, request, config);
    }
 
@@ -103,13 +111,28 @@ public class ReloadEvent extends NavigationEvent {
       else {
          logCat.info("==>NavCurrentEvent.processEvent");
          DataSourceList ds = DataSourceList.getInstance(request);
-         DataSourceFactory qry = ds.get(getTable(), request);
+         DataSourceFactory qry = null;
+         String position = null;
+         if (isForce) {
+            setType(EventType.EVENT_NAVIGATION_FORCERELOAD);
+            ds.remove(getTable(), request);
+         } else {
+            qry = ds.get(getTable(), request);
+         }
          if (qry == null) {
             qry = new DataSourceFactory(dbConnectionName, con, getTable());
-            qry.setSelect(filterFieldValues, orderConstraint, sqlFilter, sqlFilterParams);
+            qry.setSelect(
+               filterFieldValues,
+               orderConstraint,
+               sqlFilter,
+               sqlFilterParams);
             ds.put(getTable(), request, qry);
          }
-         String position = getTable().getKeyPositionString(getTable().getFieldValues(lastPosition));
+         position =
+            (count == 0)
+               ? null
+               : getTable().getKeyPositionString(
+                  getTable().getFieldValues(lastPosition));
          ResultSetVector res = qry.getCurrent(position, count);
          if (ResultSetVector.isNull(res)) {
             res = qry.getLast(count);
