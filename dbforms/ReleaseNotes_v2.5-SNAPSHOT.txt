@@ -5,55 +5,61 @@ Contents:
 2)      Details about enhancements and changes
 2-1)    New features
 2-1-1)  Support for charting
-2-1-2)  add support for calc fields
-2-1-3)  add support for boolean fields
+2-1-2)  Support for calc fields
+2-1-3)  Support for boolean fields
 2-2)    Changes to the tag library
-2-2-1)  new tag: hasError 
-2-2-2)  new tag: setCustomFormatter
+2-2-1)  New tag: hasError 
+2-2-2)  New tag: setCustomFormatter
 2-2-3)  Added new custom formatter attribute to rendering tags
 2-2-4)  Deprecate the formatter attribute
-2-2-5)  new tag: redirectUrl
-2-2-6)  add new option to handle empty data sets in DbSelectTag
-2-2-7)  add new option to force state to checked in DbCheckboxTag
-2-2-8)  enable editing of blob columns in textarea tag
-2-3)    changed interceptor interface
-2-4)    changes in BLOB handling
-2-5)    added new report systems to create excel spreadsheet and comma seperated values reports
+2-2-5)  New tag: redirectUrl
+2-2-6)  New option to handle empty data sets in DbSelectTag
+2-2-7)  New option to force state to checked in DbCheckboxTag
+2-2-8)  Enable editing of blob columns in textarea tag
+2-3)    Changed interceptor interface
+2-4)    Changes in BLOB handling
+2-5)    New report systems to create excel spreadsheet and comma 
+        separated values reports
 2-6)    Others
 2-6-1) Make searching smarter
 2-6-2) Changed logging system
-2-6-3) Makes dbforms jdk 1.5 compliant
+2-6-3) Make dbforms jdk 1.5 compliant
 
 
 1) About this release
-----------------------
+---------------------
 
-DbForms 2.5 is the next release to be labelled production/stable. It is the result of the further development of 
-the 2.5-SNAPSHOT releases. Changes made in those releases are included and described below.
+DbForms 2.5 is the next release to be labelled production/stable. It
+is the result of further development of the 2.5-SNAPSHOT
+releases. Changes made in those releases are included and described
+below.
 
 Please report any problems or comments to the DbForms mailing list:
 
     jdbforms-interest@lists.sourceforge.net
 
-This document summarizes the changes since release 2.4, which are of interest to end users. Note that their have 
-also been several internal enhancements to DbForms which are documented uniquely within the source code(i.e.: code 
-cleanup, improved algorithms).
+This document summarizes the changes since release 2.4 that are of
+interest to end users. Note that there have also been several internal
+enhancements to DbForms which are documented only within the
+source code (e.g. code cleanup, improved algorithms).
+
 
 2)    Details about enhancements and changes
----------------------------------------------
+--------------------------------------------
 
 2-1)    New features
 --------------------
 
 2-1-1)  Support for charting
------------------------------
+----------------------------
 We added support for charting using cewolf and jfree chart. 
-First we support pie data only
+In this first release, we support pie data only.
 Reference: 
    cewolf.sourceforge.net
    www.jfree.org/jfreechart
 
-Do generate a pie chart you only must add the <db:pieData> tag inside a <db:dbform> to your page:
+To generate a pie chart, add the <db:pieData> tag inside a <db:dbform>
+to your page:
 	
 	<cewolf:chart 
 		id="pieChart" 
@@ -67,131 +73,140 @@ Do generate a pie chart you only must add the <db:pieData> tag inside a <db:dbfo
 	        />
 	    </cewolf:data>
 	</cewolf:chart>
-	<cewolf:img chartid="pieChart" renderer="/cewolf" width="800" height="400"/>
+	<cewolf:img chartid="pieChart" renderer="/cewolf" 
+                width="800" height="400"/>
   
-  This will generate a pie chart with the categoryField taken form the NAME field of your dbforms resultset and 
-  the dataField from the field C.
+This will generate a pie chart with the categoryField taken from the
+NAME field of your dbforms resultset and the dataField from the
+field C.
   
-  See howto/howtoMakeaPieChart.jsp for an working example!
+See howto/howtoMakeaPieChart.jsp for a working example!
 
 
-2-1-2)  add support for calc fields
------------------------------------
-Added support for calculated fields. This field are defined in the config file and should/could 
- be calculated in the preAddRow, postAddRow or postSelect interceptor. See bookstore 
- tests/testSearchAndCalcFields.jsp and BookstoreCalcFieldAndSearchInterceptor.java for an example 
- how to use the calc fields.
+2-1-2) Support for calc fields 
+------------------------------
 
-In this example you can also see how you can calc a rownum for the current resultset. This coud be 
-helpfull to show recno/countofrecord in your pages.
+Added support for calculated fields. These fields are defined in the
+config file and should/could be calculated in the preAddRow, postAddRow,
+or postSelect interceptor. See bookstore tests/testSearchAndCalcFields.jsp and
+BookstoreCalcFieldAndSearchInterceptor.java for an example of how to use
+the calc fields.  This example also showa how to calculate a rownum for the current resultset to all a display of recno/countofrecord in your pages.
 
 
-2-1-3)  add support for boolean fields
---------------------------------------
-It's now possible to use boolean fields inside your dbforms-config table definition. 
-So sql boolean type will be reflected correctly.
-
-usage: FieldType="bool"
+2-1-3)  Support for boolean fields
+----------------------------------
+It is now possible to use boolean fields within a dbforms-config table 
+definition to correspond with an SQL column of boolean type.  Usage is 
+FieldType="bool".
 
 
 2-2)    Changes to the tag library
 ----------------------------------
 
-2-2-1)  new tag: hasError 
+2-2-1)  New tag: hasError 
 -------------------------
-This tag renders it's body if an error during dbfroms processing has occured
+This tag renders its body when an error occurs during dbfroms processing.
 
 
-2-2-2)  new tag: setCustomFormatter
+2-2-2)  New tag: setCustomFormatter
 -----------------------------------
-Registers a Custom Formatter for later use.
-The registered class must implement the
-org.dbforms.util.Formatter interface. A new
-instance of the object will be instantiated and
-initialized with the 'arg' value, this instance
-will be given the name 'name'. The name exists
-in the session space. Other tags that utilize
-the custom formatter will use the attribute
-customFormatter='xyz', where 'xyz' is the name
-registered. Multiple instances of the same
-object can exist with different names and
-initial values for arg.
+Registers a Custom Formatter for later use.  The registered class must
+implement the org.dbforms.util.Formatter interface. when a new instance
+of the object is instantiated, it is initialized with an 'arg' value and
+given a name such as 'xyz'. The name exists in the session space. Other
+tags that utilize the custom formatter use the attribute
+customFormatter='xyz', where 'xyz' is the registered name.  Multiple
+instances of the same object can exist with different names and initial
+values for arg.
 
-At runtime the class's setLocale() method will
-be called. Then the sprintf(Object[] data)
-method will be called, data will be an array of
-3 values. data[0] = string of text (i.e. what
-would normally be displayed), data[1] is the
-current field of type Field, and data[2] is the
-invoking tag of type Tag. The methods should
-check for null values in the input.
+At runtime the setLocale() method of the class will be called. 
+Subsequently, the sprintf(Object[] data) method will be called,
+where data is an array of 3 values. Element data[0] is a string of text
+(i.e. what would normally be displayed), data[1] is the current field of
+type Field, and data[2] is the invoking tag of type Tag. Methods should
+be sure to check for null values in the input.
 
 See bookstore/howto/howtoUseTheCustomFormatter.jsp for an example!
 
+
 2-2-3)  Added new custom formatter attribute to rendering tags
 --------------------------------------------------------------
-To all output tags the customFormatter tag is added. 
-This holds the name of a formatting instance registered	previously by 
-using the setCustomFormatter tag. This will be used to do custom formatting.
+The customFormatter attribute has been added to all output tags.  This
+attribute is set to the name of a formatting instance registered
+previously in the setCustomFormatter tag.  The attribute will cause
+custom formatting to occur.
 
-See setCustomFormatter and bookstore/howto/howtoUseTheCustomFormatter.jsp for an example!
+See setCustomFormatter and bookstore/howto/howtoUseTheCustomFormatter.jsp 
+for an example!
 
 
 2-2-4)  Deprecate the formatter attribute
 -----------------------------------------
-The formatter attribute is deprecated in this version and will be removed in the next (2.6) release.
-It's substituded by the format attribute and the customFormatter system which have more control 
-over the formatting. 
+The formatter attribute is deprecated in this version and will be
+removed in the next (2.6) release.  It is superceded by the
+customFormatter tag and attribute which gives more control over
+formatting.
 
-2-2-5)  new tag: redirectUrl
+
+2-2-5)  New tag: redirectUrl
 ----------------------------
-This tag forces a redirect to a DbForms view. 
-This tags works like the linkURL tag - same attributes. Instead of generating a href link this 
-tag performs an hard response.sendRedirect().
+This tag forces a redirect to a DbForms view.  This tag is similar to
+the linkURL tag--the attributes are the same-- but, instead of
+generating a href link that must be clicked to be activated, this tag
+performs an immediate response.sendRedirect().
 
 
-2-2-6)  add new option to handle empty data sets in DbSelectTag
----------------------------------------------------------------
+2-2-6)  New option to handle empty data sets in DbSelectTag
+-----------------------------------------------------------
    - ifEmptyItem: 
-		Item to be used if there is no embedded data
-	    Arguments to this tag are as follows: Key,Description
+        Item to be used if there is no embedded data
+        Arguments to this tag are as follows: Key,Description
    - ifEmptyDontDraw
         Do not draw the Select box if there is no data
 
-2-2-7)  add new option to force state to checked in DbCheckboxTag
------------------------------------------------------------------
+
+2-2-7)  New option to force state to checked in DbCheckboxTag
+-------------------------------------------------------------
    - force:
-       If set to TRUE then the state of the checkbox will be set if checked is set to TRUE,
-       regardless if we are in insert state or not.
-       Otherwise attribute checked will pay attention to only if we are in insert mode.
+        If set to TRUE, the state of the checkbox will be set if the checked 
+        attribute is also set to TRUE, whether in insert state or not.
+        Otherwise, the attribute checked is only used when in insert mode.
+
         
-2-2-8)  enable editing of blob columns in textarea tag
+2-2-8)  Enable editing of blob columns in textarea tag
 ------------------------------------------------------
-It is now possible to EDIT blob columns from within textarea form tag. Here is the simple example:
+It is now possible to EDIT blob columns from within textarea form tag. 
+Here is a simple example:
 	<db:textAreaForBlobs fieldName="BODY" renderBody="true">
 		<db:blobContent fieldName="BODY"/>
 	</db:textAreaForBlobs>
-  Currently the text will be inserted into the database using system 
-  default character set, which generally depends on your locale settings.
+Currently the text will be inserted into the database using the system 
+default character set, which generally depends on your locale settings.
 
-2-3)    changed interceptor interface
+
+2-3)    Changed interceptor interface
 -------------------------------------
-We changed the interceptor interfaces again - this time without breaking backwards compatibility (I hope!)
-Now we can transport all sort of data with the inceptors.
+The interceptor interfaces have been changed again, this time without
+breaking backwards compatibility (I hope!), to be able to pass arbitrary
+amounts of data to the interceptors.
 
-Signature for all interceptors is just a simple public int interceptor(DbEventInterceptorData data)
+The signature for all interceptors is now just
 
-DbEventInterceptorData object will be consistent between the call from pre/post Interceptors. So it's now 
-possible to transport data between the two calls with a simple data.setAttribute and data.getAttribute
-call.
-This is much easier then storing the data in the request object as you must do before.
+    public int interceptor(DbEventInterceptorData data)
 
-There are some standard attributes that will be filled from dbforms before the calls:
+The DbEventInterceptorData object will be consistent between the call
+from pre/post Interceptors. So it is now possible to transport data
+between the two calls using simple data.setAttribute and
+data.getAttribute calls.  This is much easier than storing the data in
+the request object as was previously required.
 
-	/** filled with FieldValues array during insert, delete and update events */
+There are some standard attributes that will be filled from dbforms
+before an interceptor is called:
+
+   /** filled with FieldValues array during insert, delete and update events */
    public static final String FIELDVALUES = "fieldValues";
 
-	/** filled with KeyValues string during delete and update events */
+   /** filled with KeyValues string during delete and update events */
    public static final String KEYVALUES = "keyValues";
 
    /** filled with current ResultsetVector during AddRow and Select events */
@@ -206,17 +221,19 @@ There are some standard attributes that will be filled from dbforms before the c
    /** filled with the pageContext during select events */
    public static final String PAGECONTEXT = "pageContext";
 
+There are two new interceptors called during filling of the ResultSetVector:
 
-And we have to new interceptors called during filling of the ResultSetVector:
-   public int preAddRow(DbEventInterceptorData data) throws ValidationException, MultipleValidationException;
+   public int preAddRow(DbEventInterceptorData data) 
+          throws ValidationException, MultipleValidationException;
+
    public void postAddRow(DbEventInterceptorData data);
 
-2-4)    changes in BLOB handling
+
+2-4)    Changes in BLOB handling
 --------------------------------
-BlobInterceptor (src/org/dbforms/event/BlobInterceptor.java) now can 
-  optionaly save the mime type and file size of an uploaded file if 
-  additional parameters are provided to dbforms-config.xml. It could look 
-  like this:
+BlobInterceptor (src/org/dbforms/event/BlobInterceptor.java) can now
+optionaly save the mime type and file size of an uploaded file if
+additional parameters are provided in dbforms-config.xml as shown below.
 
 	<interceptor className="org.dbforms.event.BlobInterceptor">
 		<param name="blob-column" value="BODY"/>
@@ -226,13 +243,17 @@ BlobInterceptor (src/org/dbforms/event/BlobInterceptor.java) now can
 	</interceptor>
 
 
-2-5)    added new report systems to create excel spreadsheet and comma seperated values reports
------------------------------------------------------------------------------------------------
-We have two new reporting servlets: One to generate excel spreadsheets without the need to define
-a jasperreport and to generate simple comma seperated csv files.
-Both need definition file with list of fields which should be exported, 
-e.g. BOOK_ID,ISBN,AUTHOR_ID,TITLE 
-See bookstore example books.xr and howto\howtoPrintaExcelReport.jsp for details.
+2-5)    New report systems to create excel spreadsheet and comma separated 
+        values reports
+--------------------------------------------------------------------------
+There are two new reporting servlets: one to generate excel spreadsheets
+without the need to define a jasperreport and another to generate simple
+comma separated csv files.  Both need a definition file containing a
+list of fields that are to be exported.  For example, a list of fields
+looks like BOOK_ID,ISBN,AUTHOR_ID,TITLE.
+
+See bookstore example books.xr and howto/howtoPrintaExcelReport.jsp for
+details.
 
 
 2-6)    Others
@@ -240,20 +261,24 @@ See bookstore example books.xr and howto\howtoPrintaExcelReport.jsp for details.
 
 2-6-1) Make searching smarter
 -----------------------------
-make searching smarter:
-   * If there is a field in the new table with same name and type as in the old one then 
-     take searchvalues from that field
-   * filter 12.10.2004 18:00-19:00 will result in 12.10.2004 18:00 - 12.10.2004 19:00
+If there is a field in the new table with the same name and type as in
+the old one then take searchvalues from that field.  For example, filter
+12.10.2004 18:00-19:00 means 12.10.2004 18:00 - 12.10.2004 19:00 rather
+than 12.10.2004 18:00 - <current date> 19:00 as in the past.
 
 
 2-6-2) Changed logging system
-------------------------------
-We moved the logging system from the log4j logging to the more general apache common logging classes.
-This change is more compatible with tomcat - they use the common logging system too.
-So if you do not define your own logging settings - see log4j.configuration parameter in config servlet - the 
-settings from the tomcat container will be used.
+-----------------------------
+The logging system has been changed from the log4j logging to the more
+general apache common logging classes.  This change is more compatible
+with tomcat which also uses the common logging system. Therefore, if you
+do not define your own logging settings (see log4j.configuration
+parameter in config servlet) the settings from the tomcat container
+will be used.
 
-2-6-3) Makes dbforms jdk 1.5 compliant
----------------------------------------
-Beginning with this version we fully support jdk 1.5. 
-This version is build with jdk 1.5. Please report unregular problems to the mailing list.
+
+2-6-3) Make dbforms jdk 1.5 compliant
+-------------------------------------
+Beginning with this version DBForms fully supports jdk 1.5.  This
+version is built with jdk 1.5. Please report jdk-related problems to the
+mailing list.
