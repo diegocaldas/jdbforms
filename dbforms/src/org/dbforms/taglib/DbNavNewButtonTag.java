@@ -61,7 +61,8 @@ public class DbNavNewButtonTag extends DbBaseButtonTag {
 	}
 	
 	
-   // if(parentForm.getFooterReached() && ResultSetVector.isEmptyOrNull(parentForm.getResultSetVector()) ) return EVAL_PAGE;
+      if(parentForm.getFooterReached() && ResultSetVector.isEmptyOrNull(parentForm.getResultSetVector()) ) 
+         return EVAL_PAGE;
 
 		try {
 
