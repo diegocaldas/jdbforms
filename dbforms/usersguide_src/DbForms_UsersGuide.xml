@@ -47,6 +47,7 @@
 </part>
 <part><title>Installation </title>
 &inst;
+&devg;
 &depl;
 &jsms;
 </part>
@@ -64,7 +65,6 @@
 &sear;
 &scri;
 &hook;
-&devg;
 &inte;
 &vali;
 &jscr;
