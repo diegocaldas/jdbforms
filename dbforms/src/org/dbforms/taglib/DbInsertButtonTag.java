@@ -33,6 +33,7 @@ import javax.servlet.jsp.tagext.*;
 import org.dbforms.validation.ValidatorConstants;
 
 import org.dbforms.*;
+import org.dbforms.util.*;
 
 import org.apache.log4j.Category;
 
@@ -47,8 +48,7 @@ import org.apache.log4j.Category;
 
 public class DbInsertButtonTag extends DbBaseButtonTag {
 
-	static Category logCat =
-		Category.getInstance(DbInsertButtonTag.class.getName());
+	static Category logCat = Category.getInstance(DbInsertButtonTag.class.getName());
 	// logging category for this class
 
 	private static int uniqueID;
@@ -61,21 +61,30 @@ public class DbInsertButtonTag extends DbBaseButtonTag {
 
 		// ValidatorConstants.JS_CANCEL_SUBMIT is the javascript variable boolean to verify 
 		// if we do the javascript validation before submit <FORM>
-		if( parentForm.getFormValidatorName()!=null && 
-			parentForm.getFormValidatorName().length() > 0 &&
-			parentForm.getJavascriptValidation().equals("true") ){
-				String onclick = (getOnClick()!=null)? getOnClick():"";
-				if(onclick.lastIndexOf(";")!=onclick.length()-1) onclick+=";"; // be sure javascript end with ";"
-				setOnClick( onclick + ValidatorConstants.JS_CANCEL_VALIDATION+"=true;" + ValidatorConstants.JS_UPDATE_VALIDATION_MODE + "=false;");
+		if (parentForm.getFormValidatorName() != null
+			&& parentForm.getFormValidatorName().length() > 0
+			&& parentForm.getJavascriptValidation().equals("true")) {
+			String onclick = (getOnClick() != null) ? getOnClick() : "";
+			if (onclick.lastIndexOf(";") != onclick.length() - 1)
+				onclick += ";"; // be sure javascript end with ";"
+			setOnClick(
+				onclick
+					+ ValidatorConstants.JS_CANCEL_VALIDATION
+					+ "=true;"
+					+ ValidatorConstants.JS_UPDATE_VALIDATION_MODE
+					+ "=false;");
 		}
-		
+
 		DbInsertButtonTag.uniqueID++; // make sure that we don't mix up buttons
 
 		logCat.info("pos DbInsertButtonTag 1");
 
+      if (!(parentForm.getFooterReached() && ResultSetVector.isEmptyOrNull(parentForm.getResultSetVector())))
+         return EVAL_PAGE;
+/*
 		if (!parentForm.getFooterReached())
 			return SKIP_BODY; //  contrary to dbUpdate and dbDelete buttons!
-
+*/
 		logCat.info("pos DbInsertButtonTag 2");
 
 		try {
