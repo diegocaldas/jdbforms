@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.servlets;
-import org.CVS.*;
 import org.apache.log4j.Category;
 import java.io.*;
 import java.util.*;
@@ -29,7 +28,7 @@ import java.sql.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.jsp.*;
-import org.dbforms.*;
+
 import org.dbforms.util.*;
 import org.dbforms.util.external.*;
 import org.dbforms.servlets.reports.*;
