@@ -36,7 +36,7 @@ import org.dbforms.event.eventtype.EventType;
  * Implementation of a Navigation Event Factory.
  * 
  * @author Luca Fossato
- * @deprecated 25 novembre 2002
+ * @created 25 novembre 2002
  */
 public class NavEventFactoryImpl extends NavEventFactory
 {

@@ -44,7 +44,7 @@ import org.dbforms.event.eventtype.EventTypeUtil;
  * (see NavEventFactory and DatabaseEventFactory).
  * 
  * @author Luca Fossato
- * @deprecated 20 novembre 2002
+ * @created 20 novembre 2002
  */
 public abstract class EventFactory
 {
