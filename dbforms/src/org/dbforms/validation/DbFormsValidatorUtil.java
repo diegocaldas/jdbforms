@@ -72,7 +72,8 @@ public class DbFormsValidatorUtil
         String result = null;
         String[] arg = getArgs(va.getName(), locale, field);
         String msg = ((field.getMsg(va.getName()) != null) ? field.getMsg(va.getName()) : va.getMsg());
-
+        if (msg == null)
+           msg = "errors." + va.getName(); 
 
         //**************************************************
         // Try to resolve message with Application Resource
@@ -97,7 +98,8 @@ public class DbFormsValidatorUtil
                 result += (arg[i] + ",");
             }
         }
-
+        // 2003-01-30 HKK: Removed trailing ,
+        result = result.substring(0, result.length() - 1);
         // 2002-09-12 HKK: Catch errors while getXMLErrorMessage!
         try
         {
@@ -402,14 +404,14 @@ public class DbFormsValidatorUtil
 
                 results.append("	 } \n\n");
             }
+            // 2003-01-30 HKK: if form not found do not generte trailing script code!!!        
+        		if (!bJavascriptSrcFile)
+        		{
+        			results.append(jsFunctions.toString());
+        		}
+        		results.append(getJavascriptEnd());
         }
 
-        if (!bJavascriptSrcFile)
-        {
-            results.append(jsFunctions.toString());
-        }
-
-        results.append(getJavascriptEnd());
 
         if (bJavascriptSrcFile)
         {

@@ -576,16 +576,8 @@ public class DbFormsValidator implements Serializable
     ********************************************************************************************/
     private static String DbFormsErrorMessage(String type, ValidatorAction va, Field field, Locale locale, DbFormsErrors dbFormsErrors)
     {
-        String result = field.getMsg(type);
-
-        // Retrieve ResourceBundle error format  or  "DbForms-Erorrs.xml" format
+        //2003-01-31 HKK: Removed field.getMsg. It's handled in DbFormsValidatorUtil.getMessage
         String message = DbFormsValidatorUtil.getMessage(type, va, locale, field, dbFormsErrors);
-
-        if ((message != null) && !result.equals(message))
-        {
-            return message;
-        }
-
-        return result;
+     	  return message;
     }
 }
