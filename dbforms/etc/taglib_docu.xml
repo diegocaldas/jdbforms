@@ -647,29 +647,38 @@ etc)</summary>
 				<name>dataLabel</name>
 				<summary>
 					<p>label - a tag for data PRESENTATION, NOT data EDITING (=> can never be used 
-  as input field)</p>
+  					   as input field)
+  					 </p>
 				</summary>
 				<tagclass>org.dbforms.taglib.DbDataContainerLabelTag</tagclass>
 				<bodycontent>JSP</bodycontent>
 				<info>
-					<p>this tag renders a dabase-datadriven LABEL, which is a passive element (it 
-  can't be changed bythe user) - it is predestinated for use with read-only data 
-  (i.e. primary keys you don't wantthe user to change, etc)</p>
-					<p>so far it is equivalent to DbLabelTag. <i>But this tag may have a body containing 
-  any kind ofEmbeddedData - tag!</i> this feature was put into a seperate class 
-  for performance reasons (we do not want the overheadof pushing and poping the 
-  jsp writer to and off the stack)</p>
-					<p>The dataLabel tag contains an EmbeddedData tag (TableData, QueryData, or StaticData) 
-  The fieldName (defined in dataLabel) is used as a lookup for an element in the 
-  embeddedData collection.</p>
+					<p>
+						this tag renders a dabase-datadriven LABEL, which is a passive element (it 
+  						can't be changed bythe user) - it is predestinated for use with read-only data 
+  						(i.e. primary keys you don't wantthe user to change, etc)
+  					</p>
+					<p>
+						so far it is equivalent to DbLabelTag. <i>But this tag may have a body containing 
+  						any kind ofEmbeddedData - tag!</i> this feature was put into a seperate class 
+  						for performance reasons (we do not want the overheadof pushing and poping the 
+  						jsp writer to and off the stack)
+  					</p>
+					<p>
+						The dataLabel tag contains an EmbeddedData tag (TableData, QueryData, or StaticData) 
+  						The fieldName (defined in dataLabel) is used as a lookup for an element in the 
+  						embeddedData collection.
+  					</p>
 					<p>Example:<span style="font-size:8.0pt;font-family:Courier;   "></span></p>
-					<p>&lt;!We have an ID, we want to display the Description -look it
-  up in the Priorities table --&gt;<br/>
-  &lt;db:dataLabel fieldname=&quot;ID_Priority&quot;&gt; <br/>
-   &lt;db:queryData  
-   name=&quot;aQuery&quot; 
-   query=&quot;SELECT ID_Priority, Description from Priorities&quot;/&gt;<br/>
-  &lt;/db:dataLabel&gt;</p>
+					<p>
+						&lt;!We have an ID, we want to display the Description -look it
+  						up in the Priorities table --&gt;<br/>
+  						&lt;db:dataLabel fieldname=&quot;ID_Priority&quot;&gt; <br/>
+   						&lt;db:queryData  
+   						name=&quot;aQuery&quot; 
+   						query=&quot;SELECT ID_Priority, Description from Priorities&quot;/&gt;<br/>
+  						&lt;/db:dataLabel&gt;
+  					</p>
 				</info>
 				<attribute>
 					<name>fieldName</name>
@@ -1594,12 +1603,12 @@ hanlder executed when the user selects some text</info>
 			<tag>
 				<name>tableData</name>
 				<summary>external data to be nested into radio, checkbox 
-or select - tag!(useful only in conjunction with radio, checkbox or select - tag)</summary>
+					or select - tag!(useful only in conjunction with radio, checkbox or select - tag)</summary>
 				<tagclass>org.dbforms.taglib.TableData</tagclass>
 				<bodycontent>empty</bodycontent>
 				<info>
 					<p>this tag provides data to radio, checkbox or select - tags. It may be 
-        used for cross references to other tables.</p>
+        					used for cross references to other tables.</p>
 					<p>Example:<span style="font-size:8.0pt;font-family:Courier;   "></span></p>
 					 <p>&lt;We want to display a drop down list with data from the Cities table,<br/>use the city_reference value for the default list selection--&gt;<br/>&lt;db:select fieldname=&quot;city_reference&quot;&gt;<br/>&lt;db:tableData <br/>name=&quot;aQuery&quot;<br/>foreignTable=&quot;Cities&quot;<br/>visibleFields=&quot;city_name, city_state&quot;<br/>storeField=&quot;city_id&quot;/&gt;<br/>&lt;/db:select&gt;</p>
 				</info>
@@ -1607,9 +1616,11 @@ or select - tag!(useful only in conjunction with radio, checkbox or select - tag
 					<name>name</name>
 					<required>true</required>
 					<rtexprvalue>true</rtexprvalue>
-					<info>an arbitrary id declared by the user - this id is useful, if the same data 
-should be used more than once at one jsp page. using this unique name the system 
-is able to chache the data</info>
+					<info>
+						an arbitrary id declared by the user - this id is useful, if the same data 
+						should be used more than once at one jsp page. using this unique name the system 
+						is able to chache the data
+					</info>
 				</attribute>
 				<attribute>
 					<name>dbConnectionName</name>
@@ -1622,25 +1633,38 @@ is able to chache the data</info>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
 					<info>
-						<p style="text-autospace:none">specify a format to be used in concatenating 
-              several display fields. <br/> When more then one (1) field is shown, 
-              the fields are, by default, separated by a comma.</p>
+						<p style="text-autospace:none">
+							specify a format to be used in concatenating 
+              						several display fields. <br/> When more then one (1) field is shown, 
+              						the fields are, by default, separated by a comma.</p>
 						<p style="text-autospace:none">
 							 The format attribute was strengthened to make it
-similar to the Unix sprintf utility.<br/> <b>  There is now a need to be type specific
-with the attribute.</b> </p>
-
-<p>For example,<br/>format=&quot;%s is about %.2f&quot; would be where your float (ie%.2f) would be truncated to two decimals.<br/>
-<b>ONLY THE DISPLAY VALUE WILL BE TRUNCATED</b>
-For more info, please see the Unix man page <br/>
-or http://developer.java.sun.com/developer/technicalArticles/Programming/sprintf/<br/>
-or the javadocs<br/></p><p>Example:</p><p>&lt;db:tableData name=&quot;aQuery&quot; 
-               foreignTable=&quot;Cities&quot; visibleFields=&quot;city_id, city_name, city_state&quot;<br/>format = &quot;%i, %s / %s&quot; storeField=&quot;city_id&quot;/&gt; 
-               <br/>
-               Can be used when city_id is an integer, city_name and city_state are strings in your database.</p>
-						
-               <p>Result -&gt; 014, Naples / Florida</p>
-                                                
+							 similar to the Unix sprintf utility.<br/> <b>  There is now a need to be type specific
+							 with the attribute.</b>
+						</p>
+						 <p>For example,<br/>format=&quot;%s is about %.2f&quot; would be where your float (ie%.2f) would be truncated to two decimals.<br/>
+						    <b>ONLY THE DISPLAY VALUE WILL BE TRUNCATED</b>
+						    For more info, please see the Unix man page <br/>
+						   or http://developer.java.sun.com/developer/technicalArticles/Programming/sprintf/<br/>
+						   or the javadocs<br/></p>
+						 <p>Example:</p>
+						 <p>
+						 	&lt;db:tableData name=&quot;aQuery&quot; 
+               						foreignTable=&quot;Cities&quot; visibleFields=&quot;city_id, city_name, city_state&quot;<br/>format = &quot;%i, %s / %s&quot; storeField=&quot;city_id&quot;/&gt; 
+               						<br/>
+               						Can be used when city_id is an integer, city_name and city_state are strings in your database.</p>
+					               <p>Result -&gt; 014, Naples / Florida</p>
+					</info>
+				</attribute>
+				<attribute>
+					<name>formatClass</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						class to use for special formatting.<br/>
+						This class must be derivide from org.dbforms.util.PrintfFormat.<br/>
+					        This class will be loaded through reflection api and will be used to format the output.<br/>
+					        Default is org.dbforms.util.PrintfFormat
 					</info>
 				</attribute>
 				<attribute>
@@ -1676,32 +1700,39 @@ clause for the query</info>
 			<!-- **************************** queryData tag ***********************************-->
 			<tag>
 				<name>queryData</name>
-				<summary>external data to be nested into radio, checkbox 
-or select - tag!(useful only in conjunction with radio, checkbox or select - tag)</summary>
+				<summary>
+					external data to be nested into radio, checkbox 
+					 or select - tag!(useful only in conjunction with radio, checkbox or select - tag)
+				</summary>
 				<tagclass>org.dbforms.taglib.QueryData</tagclass>
 				<bodycontent>empty</bodycontent>
 				<info>
-					<p>this tag provides data (provided by query result) to radio, checkbox or select 
-  - tags.</p>
-					<p>this tag provides similar functionlaity like &quot;TableData&quot;, but as 
-  it allows toformulate <i>free querys</i> including all SQL statements your RDBMS 
-  supports, you have muchmore flexibility using this tag than using TableData 
-  (which is easier to use, on the other hand)</p>
-					<p>&lt;!We want to display a drop down list with data from the Cities table,<br/>
-        use the city_reference value for the default list selection --&gt;<br/>
-        &lt;db:select fieldname=&quot;city_reference&quot;&gt;<br/>
-         &lt;db:queryData 
-         name=&quot;aQuery&quot;<br/>
-         query=&quot;Select city_id, city_name, city_state from Cities&quot;/&gt;<br/>
-        &lt;/db:select&gt;<br/><br/></p>
+					<p>this tag provides data (provided by query result) to radio, checkbox or select - tags.</p>
+					<p>
+						this tag provides similar functionlaity like &quot;TableData&quot;, but as 
+  						it allows toformulate <i>free querys</i> including all SQL statements your RDBMS 
+  						supports, you have muchmore flexibility using this tag than using TableData 
+  						(which is easier to use, on the other hand)
+  					</p>
+					<p>
+						&lt;!We want to display a drop down list with data from the Cities table,<br/>
+        					use the city_reference value for the default list selection --&gt;<br/>
+        					&lt;db:select fieldname=&quot;city_reference&quot;&gt;<br/>
+         					&lt;db:queryData 
+         					name=&quot;aQuery&quot;<br/>
+         					query=&quot;Select city_id, city_name, city_state from Cities&quot;/&gt;<br/>
+        					&lt;/db:select&gt;<br/><br/>
+        				</p>
 				</info>
 				<attribute>
 					<name>name</name>
 					<required>true</required>
 					<rtexprvalue>true</rtexprvalue>
-					<info>an arbitrary id declared by the user - this id is useful, if the same data 
-should be used more than once at one jsp page. using this unique name the system 
-is able to chache the data</info>
+					<info>
+						an arbitrary id declared by the user - this id is useful, if the same data 
+						should be used more than once at one jsp page. using this unique name the system 
+						is able to chache the data
+					</info>
 				</attribute>
 				<attribute>
 					<name>dbConnectionName</name>
@@ -1709,35 +1740,43 @@ is able to chache the data</info>
 					<rtexprvalue>true</rtexprvalue>
 					<info>indicate which dbconnection object to user.</info>
 				</attribute>
-
-
 				<attribute>
 					<name>format</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
 					<info>
-						<p style="text-autospace:none">specify a format to be used in concatenating 
-              several display fields. <br/> When more then one (1) field is shown, 
-              the fields are, by default, separated by a comma.</p>
+						<p style="text-autospace:none">
+							specify a format to be used in concatenating 
+              						several display fields. <br/> When more then one (1) field is shown, 
+              						the fields are, by default, separated by a comma.</p>
 						<p style="text-autospace:none">
 							 The format attribute was strengthened to make it
-similar to the Unix sprintf utility.<br/> <b>  There is now a need to be type specific
-with the attribute.</b> </p>
-
-<p>For example,<br/> format=&quot;%s is about %.2f&quot; would be where your float (ie%.2f) would be truncated to two decimals.<br/>
-<b>ONLY THE DISPLAY VALUE WILL BE TRUNCATED</b>
-For more info, please see the Unix man page <br/>
-or http://developer.java.sun.com/developer/technicalArticles/Programming/sprintf/<br/>
-or the javadocs<br/></p>
-
-						<p>Example:</p>
-						<p>&lt;db:tableData name=&quot;aQuery&quot; 
-               foreignTable=&quot;Cities&quot; visibleFields=&quot;city_id, city_name, city_state&quot;<br/>format = &quot;%i, %s / %s&quot; storeField=&quot;city_id&quot;/&gt; 
-               <br/>
-               Can be used when city_id is an integer, city_name and city_state are strings in your database.</p>
-						
-               <p>Result -&gt; 014, Naples / Florida</p>
-                                                
+							 similar to the Unix sprintf utility.<br/> <b>  There is now a need to be type specific
+							 with the attribute.</b>
+						</p>
+						 <p>For example,<br/>format=&quot;%s is about %.2f&quot; would be where your float (ie%.2f) would be truncated to two decimals.<br/>
+						    <b>ONLY THE DISPLAY VALUE WILL BE TRUNCATED</b>
+						    For more info, please see the Unix man page <br/>
+						   or http://developer.java.sun.com/developer/technicalArticles/Programming/sprintf/<br/>
+						   or the javadocs<br/></p>
+						 <p>Example:</p>
+						 <p>
+						 	&lt;db:tableData name=&quot;aQuery&quot; 
+               						foreignTable=&quot;Cities&quot; visibleFields=&quot;city_id, city_name, city_state&quot;<br/>format = &quot;%i, %s / %s&quot; storeField=&quot;city_id&quot;/&gt; 
+               						<br/>
+               						Can be used when city_id is an integer, city_name and city_state are strings in your database.</p>
+					               <p>Result -&gt; 014, Naples / Florida</p>
+					</info>
+				</attribute>
+				<attribute>
+					<name>formatClass</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						class to use for special formatting.<br/>
+						This class must be derivide from org.dbforms.util.PrintfFormat.							<br/>
+					        This class will be loaded through reflection api and will be used to format the output.<br/>
+					        Default is org.dbforms.util.PrintfFormat
 					</info>
 				</attribute>
 				<attribute>
@@ -1748,12 +1787,13 @@ or the javadocs<br/></p>
 						<p>the query used to retrieve the data</p>
 						<p>
 							<b>query building convention:</b>first column is the &quot;key&quot; column 
-  for the radio/check/selectelements, all other colums are just &quot;data&quot; 
-  columns visible to the user <br/> example: SELECT DISTINCT customer.id, customer.name, 
-  customer.adress, debitors.debit FROM customer INNER JOIN id ON (SELECT id FROM 
-  debitors WHERE debit&gt;100000) ORDER BY debit DESC <br/> - &quot;id&quot; will 
-  be threaten as key-value in select box, &quot;name and address will be shown 
-  in select box</p>
+  							for the radio/check/selectelements, all other colums are just &quot;data&quot; 
+  							columns visible to the user <br/> example: SELECT DISTINCT customer.id, customer.name, 
+  							customer.adress, debitors.debit FROM customer INNER JOIN id ON (SELECT id FROM 
+  							debitors WHERE debit&gt;100000) ORDER BY debit DESC <br/> - &quot;id&quot; will 
+  							be threaten as key-value in select box, &quot;name and address will be shown 
+  							in select box
+  						</p>
 					</info>
 				</attribute>
 				<attribute>
