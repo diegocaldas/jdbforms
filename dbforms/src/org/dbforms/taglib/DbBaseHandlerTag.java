@@ -284,7 +284,16 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
                case FieldTypes.DATE :
                case FieldTypes.TIME :
                case FieldTypes.TIMESTAMP :
-                  res = getFormat().format(fieldValueObj);
+                  try {
+                     res = getFormat().format(fieldValueObj);
+                  } catch (Exception e) {
+                     logCat.error(
+								  "field type: " + getField().getType() + "\n" 
+								+ "object type: " + fieldValueObj.getClass().getName() + "\n"
+								+ e.getMessage()
+                           );
+                     res = fieldValueObj.toString();
+                  }
 
                   break;
 
