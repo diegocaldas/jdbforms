@@ -458,9 +458,19 @@ public class DbFormsValidator implements Serializable {
             // Field not found in fieldvector -> so it's not on current page.
             // So we will not check it!
             return null;
-         if (f.getFieldValue().equals(f.getOldValue()))
+            
+		/********************************************
+		* Grunikiewicz.philip@hydro.qc.ca
+		* 2003-12-04
+		* 
+		* When inserting new data, it can happen that a default value is assigned.
+		* Hence the old value and new value are identical.
+		* Does this mean that we should not validate it!  I don't think so...
+		*/            
+//         if (f.getFieldValue().equals(f.getOldValue()))
             // Check only if new value != old value!
-            return null;
+//            return null;
+
          String value = null;
          Object obj = f.getFieldValueAsObject();
          if (obj != null)
