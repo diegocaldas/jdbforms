@@ -86,8 +86,8 @@ public class NavCopyEvent extends NavigationEvent
 	 *        					rules for ordering (sorting) and restricting fields
 	 * 							to the actual block of data 
 	 * @param count           	record count
-	 * @param firstPost   		a string identifying the first resultset position
-	 * @param lastPos    		a string identifying the last resultset position
+	 * @param firstPosition   		a string identifying the first resultset position
+	 * @param lastPosition    		a string identifying the last resultset position
 	 * @param dbConnectionName   name of the used db connection. Can be used to
 	 *                           get an own db connection, e.g. to hold it during the 
 	 *                           session (see DataSourceJDBC for example!) 
@@ -97,10 +97,10 @@ public class NavCopyEvent extends NavigationEvent
 	 * 
 	 * @exception SQLException if any error occurs
 	 */
-   public ResultSetVector processEvent(FieldValue[] childFieldValues, 
+   public ResultSetVector processEvent(FieldValue[] filterFieldValues, 
                                        FieldValue[] orderConstraint, 
                                        String sqlFilter, int count, 
-                                       String firstPost, String lastPos,
+                                       String firstPosition, String lastPosition,
 									   String dbConnectionName,
                                        Connection con)
                                 throws SQLException

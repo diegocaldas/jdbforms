@@ -67,8 +67,8 @@ public class MessageResource
     *  Retrieve message from ResourceBundle.  If the ResourceBundle is not yet cached,
     *  cache it and retreive message.
     *
-    *         @param  <code>String</code> : Message key to lookup.
-    *         @param  <code>Locale</code> : Locale object to map message with good ResourceBundle.
+    *         @param  <code>msg</code> : Message key to lookup.
+    *         @param  <code>loc</code> : Locale object to map message with good ResourceBundle.
     *
     *         @return        <code>String</code> : Message resolve, null if not found.
     ********************************************************************************************/
@@ -128,9 +128,9 @@ public class MessageResource
    /*********************************************************************************************
     *  Retrieve message from ResourceBundle and replace parameter "{x}" with values in parms array.
     *
-    *         @param  <code>String</code> : Message key to lookup.
-    *         @param  <code>Locale</code> : Locale object to map message with good ResourceBundle.
-    *         @param  <code>String[]</code> : Parameters to replace "{x}" in message .
+    *         @param  <code>msg</code> : Message key to lookup.
+    *         @param  <code>loc</code> : Locale object to map message with good ResourceBundle.
+    *         @param  <code>parms[]</code> : Parameters to replace "{x}" in message .
     *
     *         @return        <code>String</code> : Message resolve with parameter replaced, null if message key not found.
     ********************************************************************************************/
@@ -158,9 +158,9 @@ public class MessageResource
    /*********************************************************************************************
    *  Replace all expression {...} by the appropriate string.
    *
-   * @param  <code>String</code> : Original string.
-   * @param  <code>String</code> : Expression to search.
-   * @param  <code>String</code> : Replacement string.
+   * @param  <code>str</code> : Original string.
+   * @param  <code>search</code> : Expression to search.
+   * @param  <code>replace</code> : Replacement string.
    *
    * @return        <code>String</code> : The string with all expression replaced.
    ********************************************************************************************/

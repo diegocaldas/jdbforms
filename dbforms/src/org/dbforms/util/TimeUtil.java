@@ -47,13 +47,13 @@ import org.apache.log4j.Category;
  */
 public class TimeUtil
 {
-   static Category  logCat     = Category.getInstance(TimeUtil.class.getName());
+   private static Category  logCat     = Category.getInstance(TimeUtil.class.getName());
    static final int SECSPERDAY = 24 * 60 * 60;
 
    /**
     * Reformats seconds to time string with format: dd:hh:mm:ss
     * 
-    * @param seconds
+    * @param seconds string to format
     * 
     * @return String
     */
@@ -73,7 +73,7 @@ public class TimeUtil
    /**
     * Reformats seconds to time string with format: dd:hh:mm:ss
     * 
-    * @param seconds
+    * @param seconds Integer to format
     * 
     * @return String
     */
@@ -85,7 +85,7 @@ public class TimeUtil
 	/**
 	 * Reformats seconds to time string with format: dd:hh:mm:ss
 	 * 
-	 * @param seconds
+	 * @param seconds string to format
 	 * 
 	 * @return String
 	 */
@@ -97,7 +97,7 @@ public class TimeUtil
    /**
     * Reformats seconds to time string with format: dd:hh:mm:ss
     * 
-    * @param seconds
+    * @param seconds string to format
     * 
     * @return String
     */

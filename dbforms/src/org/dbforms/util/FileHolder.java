@@ -165,7 +165,6 @@ public class FileHolder implements Serializable
     * 
     * @return DOCUMENT ME!
     * 
-    * @throws IllegalArgumentException DOCUMENT ME!
     */
    public InputStream getInputStreamFromBuffer()
    {
@@ -199,8 +198,6 @@ public class FileHolder implements Serializable
     *        it is a directory, you must provide a file already.
     * 
     * @throws IOException Thrown if there are rpoblems writing the file.
-    * @throws IllegalArgumentException Throw in you attempt to load a file to
-    *         disk, not to memory.
     */
    public void writeBufferToFile(File fileOrDirectory)
                           throws IOException

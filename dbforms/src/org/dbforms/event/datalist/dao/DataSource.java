@@ -28,7 +28,6 @@ import java.util.Enumeration;
 import java.sql.Connection;
 import java.sql.SQLException;
 import org.apache.log4j.Category;
-
 import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.Field;
 import org.dbforms.config.Table;
@@ -72,29 +71,31 @@ public abstract class DataSource
       return table;
    }
 
-	/**
-	 * set the connection parameter for the DataSouce.
-	 * virtual method, if you
-	 * need the connection data you must override the method
-	 * 
-     * @param con             	the JDBC Connection object
-	 */
-	public void setConnection(Connection con)
-	{
-	}
 
-	/**
-	 * set the connection parameter for the DataSouce.
-	 * virtual method, if you
-	 * need the connection data you must override the method
-	 * 
-	  * @param dbConnectionName   name of the used db connection. Can be used to
-	  *                           get an own db connection, e.g. to hold it during the 
-	  *                           session (see DataSourceJDBC for example!) 
-	 */
-	public void setConnectionName(String dbConnectionName)
-	{
-	}
+   /**
+    * set the connection parameter for the DataSouce.
+    * virtual method, if you
+    * need the connection data you must override the method
+    * 
+   * @param con                     the JDBC Connection object
+    */
+   public void setConnection(Connection con)
+   {
+   }
+
+
+   /**
+    * set the connection parameter for the DataSouce.
+    * virtual method, if you
+    * need the connection data you must override the method
+    * 
+     * @param dbConnectionName   name of the used db connection. Can be used to
+     *                           get an own db connection, e.g. to hold it during the 
+     *                           session (see DataSourceJDBC for example!) 
+    */
+   public void setConnectionName(String dbConnectionName)
+   {
+   }
 
 
    /**
@@ -120,9 +121,11 @@ public abstract class DataSource
     *        resultset
     * @param orderConstraint FieldValue array used to build a cumulation of
     *        rules for ordering (sorting)
+    * @param sqlFilter       sql condition to add to where clause
     */
    public abstract void setSelect(FieldValue[] filterConstraint, 
-                                  FieldValue[] orderConstraint, String sqlFilter);
+                                  FieldValue[] orderConstraint, 
+                                  String sqlFilter);
 
 
    /**
@@ -200,16 +203,18 @@ public abstract class DataSource
     */
    protected abstract int size() throws SQLException;
 
-	/**
-	 * return true if there are more records to fetch then the given record number
-	 *
-	 * @param i index of last fetched row.
-	 *  
-	 * @return true if there are more records to fetch then the given record number
-	 * 
-	 * @throws SQLException
-	 */
-	protected abstract boolean hasMore(int i) throws SQLException;
+
+   /**
+    * return true if there are more records to fetch then the given record number
+    *
+    * @param i index of last fetched row.
+    *  
+    * @return true if there are more records to fetch then the given record number
+    * 
+    * @throws SQLException
+    */
+   protected abstract boolean hasMore(int i) throws SQLException;
+
 
    /**
     * should retrieve the row at an special index as an Object[]
@@ -392,14 +397,16 @@ public abstract class DataSource
    {
       ResultSetVector result = null;
       result = new ResultSetVector(table.getFields());
-      int begin = 0;
-      int ende  = 0;
-            
+
+      int      begin = 0;
+      int      ende = 0;
+
       Object[] row;
 
       if (count > 0)
       {
          begin = startRow;
+
          for (ende = begin; ende < (startRow + count); ende++)
          {
             row = getRow(ende);
@@ -433,9 +440,10 @@ public abstract class DataSource
             result.addRow(row);
          }
       }
-      
+
       result.setFirstPage(!(begin > 0));
       result.setLastPage(!hasMore(ende));
+
       return result;
    }
 
@@ -463,12 +471,17 @@ public abstract class DataSource
             int    fieldType = curField.getType();
 
             String directory = null;
-				try {
-					directory = Util.replaceRealPath(curField.getDirectory(), 
-																  DbFormsConfigRegistry.instance().lookup());
-				} catch (Exception e) {
-					throw new SQLException(e.getMessage());
-				}
+
+            try
+            {
+               directory = Util.replaceRealPath(curField.getDirectory(), 
+                                                DbFormsConfigRegistry.instance()
+                                                                     .lookup());
+            }
+            catch (Exception e)
+            {
+               throw new SQLException(e.getMessage());
+            }
 
             if (fieldType == FieldTypes.DISKBLOB)
             {
@@ -549,14 +562,19 @@ public abstract class DataSource
          {
             int    fieldType = curField.getType();
 
-				String directory = null;
-            try {
-					directory = Util.replaceRealPath(curField.getDirectory(), 
-																  DbFormsConfigRegistry.instance().lookup());
-            } catch (Exception e) {
+            String directory = null;
+
+            try
+            {
+               directory = Util.replaceRealPath(curField.getDirectory(), 
+                                                DbFormsConfigRegistry.instance()
+                                                                     .lookup());
+            }
+            catch (Exception e)
+            {
                throw new SQLException(e.getMessage());
             }
-           																  
+
             if (fieldType == FieldTypes.DISKBLOB)
             {
                String fileName = fieldValues.get(fieldName).getFieldValue()
@@ -565,7 +583,6 @@ public abstract class DataSource
                // get a filename
                if (!Util.isNull(fileName))
                {
-
                   // remember: every field may have its own storing dir!
                   File file = new File(directory, fileName);
 

@@ -360,6 +360,7 @@ public class Query extends Table
     * @param fieldsToSelect - vector of fields to be selected
     * @param fvEqual - fieldValues representing values we are looking for
     * @param fvOrder - fieldValues representing needs for order clauses
+    * @param sqlFilter       sql condition to add to where clause
     * @param compareMode - and / or
     * 
     * @return generated sql query
@@ -687,10 +688,10 @@ public class Query extends Table
    /**
     * DOCUMENT ME!
     * 
-    * @param string
+    * @param value the value to set
     */
-   public void setHaving(String string)
+   public void setHaving(String value)
    {
-      having = string;
+      having = value;
    }
 }

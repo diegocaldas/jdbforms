@@ -62,7 +62,7 @@ import org.apache.log4j.Category;
  */
 public class ResultSetVector
 {
-   static Category logCat = Category.getInstance(
+   private static Category logCat = Category.getInstance(
                                      ResultSetVector.class.getName());
 
    // logging category for this class
@@ -519,7 +519,6 @@ public class ResultSetVector
     * DOCUMENT ME!
     * 
     * @return DOCUMENT ME!
-    * @throws IllegalArgumentException DOCUMENT ME!
     */
    public Hashtable getCurrentRowAsHashtable()
    {
@@ -545,7 +544,6 @@ public class ResultSetVector
     * DOCUMENT ME!
     * 
     * @return DOCUMENT ME!
-    * @throws IllegalArgumentException DOCUMENT ME!
     */
    public FieldValues getCurrentRowAsFieldValues()
    {
@@ -593,7 +591,7 @@ public class ResultSetVector
    /**
     * DOCUMENT ME!
     * 
-    * @param b
+    * @param b value to set
     */
    public void setFirstPage(boolean b)
    {
@@ -604,7 +602,7 @@ public class ResultSetVector
    /**
     * DOCUMENT ME!
     * 
-    * @param b
+    * @param b value to set
     */
    public void setLastPage(boolean b)
    {

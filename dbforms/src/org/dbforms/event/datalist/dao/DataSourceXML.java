@@ -24,7 +24,6 @@
 package org.dbforms.event.datalist.dao;
 import org.apache.log4j.Category;
 import java.util.Vector;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.net.URI;
 import java.net.URLConnection;
@@ -69,7 +68,7 @@ public class DataSourceXML extends DataSource
    /**
     * Contructor
     * 
-    * @param table
+    * @param table to set
     */
    public DataSourceXML(Table table)
    {
@@ -92,10 +91,14 @@ public class DataSourceXML extends DataSource
    }
 
    /**
-    * DOCUMENT ME!
+    * Set the filterConstraint and orderConstraint used to build the SQL Select
+    * condition.
     * 
-    * @param filterConstraint DOCUMENT ME!
-    * @param orderConstraint DOCUMENT ME!
+    * @param filterConstraint FieldValue array used to build a cumulation of
+    *        rules for filtering fields.
+    * @param orderConstraint  FieldValue array used to build a cumulation of
+    *        rules for ordering (sorting) and restricting fields.
+    * @param sqlFilter       sql condition to add to where clause
     */
    public void setSelect(FieldValue[] filterConstraint, 
                          FieldValue[] orderConstraint,

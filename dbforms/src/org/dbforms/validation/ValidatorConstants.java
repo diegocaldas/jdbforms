@@ -21,11 +21,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.validation;
-import java.util.*;
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
-import org.apache.commons.validator.ValidatorResources;
-import org.apache.log4j.Category;
 
 
 

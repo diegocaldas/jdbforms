@@ -188,8 +188,8 @@ public class Util
    /**
     * returns a formated string
     * 
-    * @param format
-    * @param o
+    * @param format  format string
+    * @param o       objects to use to format 
     * 
     * @return String
     */

@@ -70,30 +70,31 @@ public abstract class NavigationEvent extends WebEvent
       super(table.getId(), request, config);
    }
 
-   /**
-    * Process the current event.
-    * 
-    * @param filterFieldValues 	FieldValue array used to restrict a set of data
-    * @param orderConstraint 	FieldValue array used to build a cumulation of
-    *        					rules for ordering (sorting) and restricting fields
-    * 							to the actual block of data 
-    * @param count           	record count
-    * @param firstPost   		a string identifying the first resultset position
-    * @param lastPos    		a string identifying the last resultset position
-    * @param dbConnectionName   name of the used db connection. Can be used to
-    *                           get an own db connection, e.g. to hold it during the 
-    *                           session (see DataSourceJDBC for example!) 
-    * @param con             	the JDBC Connection object
-    * 
-    * @return a ResultSetVector object
-    * 
-    * @exception SQLException if any error occurs
-    */
+	/**
+	 * Process the current event.
+	 * 
+	 * @param filterFieldValues 	FieldValue array used to restrict a set of data
+	 * @param orderConstraint 	FieldValue array used to build a cumulation of
+	 *        					rules for ordering (sorting) and restricting fields
+	 * 							to the actual block of data 
+	 * @param count           	record count
+	 * @param firstPosition   		a string identifying the first resultset position
+	 * @param lastPosition    		a string identifying the last resultset position
+	 * @param dbConnectionName   name of the used db connection. Can be used to
+	 *                           get an own db connection, e.g. to hold it during the 
+	 *                           session (see DataSourceJDBC for example!) 
+	 * @param con             	the JDBC Connection object
+	 * 
+	 * @return a ResultSetVector object
+	 * 
+	 * @exception SQLException if any error occurs
+	 */
    public abstract ResultSetVector processEvent(FieldValue[] filterFieldValues, 
                                                 FieldValue[] orderConstraint,
                                                 String sqlFilter, 
-                                                int count, String firstPost, 
-                                                String lastPos, 
+                                                int count, 
+                                                String firstPosition, 
+                                                String lastPosition, 
                                                 String dbConnectionName,
                                                 Connection con)
                                          throws SQLException;

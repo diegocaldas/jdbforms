@@ -1403,7 +1403,6 @@ public class FileUtil
     * 
     * @return size of directory in bytes.
     * 
-    * @throws IllegalArgumentException DOCUMENT ME!
     */
    public static long sizeOfDirectory(final File directory)
    {

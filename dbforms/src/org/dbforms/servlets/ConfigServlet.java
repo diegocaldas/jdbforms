@@ -43,7 +43,6 @@ import org.apache.commons.lang.StringUtils;
 import org.dbforms.validation.ValidatorConstants;
 import org.dbforms.util.DbFormsErrors;
 import org.dbforms.util.MessageResources;
-import org.dbforms.util.MessageResourcesInternal;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.event.DatabaseEventFactoryImpl;

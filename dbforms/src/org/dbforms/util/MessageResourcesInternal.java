@@ -24,8 +24,6 @@ package org.dbforms.util;
 
 
 import java.util.Locale;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * handling of internal messages
