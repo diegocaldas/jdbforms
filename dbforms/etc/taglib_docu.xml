@@ -304,14 +304,6 @@
 					</info>
 				</attribute>
 				<attribute>
-					<name>source</name>
-					<required>false</required>
-					<rtexprvalue>true</rtexprvalue>
-					<info>
-						<p>normally this info is automatically derived during runtime, may be overriden if necessary. </p>
-					</info>
-				</attribute>
-				<attribute>
 					<name>autoUpdate</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>

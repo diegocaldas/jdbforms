@@ -1513,7 +1513,7 @@ public class Table {
       if (request != null) {
          String paramStub = "sort_" + this.getId();
          Vector sortFields = ParseUtil.getParametersStartingWith(request, paramStub);
-
+				 
          if (sortFields.size() > 0) {
             result = createOrderFVFromRequest(request, paramStub, sortFields);
          }
