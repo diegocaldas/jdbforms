@@ -254,7 +254,7 @@
 		  Location of the directory that contains your stylesheets that you wish to use.
 		  <br/>
 		  Defaults to:
-		  <code>&gt;DBFORMS_HOME&lt;/xsl-stylesheets/</code>
+		  <code>&lt;DBFORMS_HOME&gt;/xsl-stylesheets/</code>
 		</td>
 	  </tr>
       <tr> 
