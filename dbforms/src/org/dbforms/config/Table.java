@@ -861,12 +861,21 @@ public class Table implements Serializable {
     *         table.
     */
    public Vector getInterceptors() {
-    Vector res = interceptors;  
-   	if ((getConfig() != null) && getConfig().hasInterceptors()) {
-         res = new Vector(interceptors);
-         res.addAll(getConfig().getInterceptors());
-         res.addAll(interceptors);
-      }
+     
+     // [20050228 - fossato@pow2.com] changed this code to avoid duplicated inserts of table's interceptors;          
+     Vector res = null;
+     
+     // has the system got any global interceptor ?
+   	 if ((getConfig() != null) && getConfig().hasInterceptors()) {
+   	   
+   	     // insert the table's interceptors (if any) and then the global interceptor(s);
+   	     res = new Vector(interceptors);
+         res.addAll(getConfig().getInterceptors());        
+     }
+   	 else {
+   	   res = interceptors;
+   	 }
+   	  
    	 return res;
    }
 
@@ -1944,10 +1953,14 @@ public class Table implements Serializable {
    /**
     * Process the interceptor objects related to this table.
     *
-    * @param action DOCUMENT ME!
-    * @param data the request object
+    * @param action the DbEventInterceptor identifier. See the DbEventInterceptor class for the real values.
+    *               Example: <code>DbEventInterceptor.PRE_UPDATE</code>
+    * @param data the DbEventInterceptorData object
     *
-    * @return DOCUMENT ME!
+    * @return the value that identifies if an operation should be granted, denied or ignored.
+    *         See <code>DbEventInterceptor.GRANT_OPERATION</code>,
+    *         <code>DbEventInterceptor.DENY_OPERATION</code>,
+    *         <code>DbEventInterceptor.IGNORE_OPERATION</code>
     *
     * @throws SQLException if any error occurs
     */
