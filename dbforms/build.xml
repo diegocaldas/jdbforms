@@ -249,12 +249,10 @@
   </target>
 
   <target name="copy-devgui">
-    <!--
     <copy    file="${bin.dir}/devgui.sh" tofile="${dist.dir}/bin/devgui.sh" overwrite="true" />
     <replace file="${dist.dir}/bin/devgui.sh" token="dbforms_CURRENT_VERSION.jar" value="dbforms${dbforms.version}.jar" />
     <copy    file="${bin.dir}/devgui.bat" tofile="${dist.dir}/bin/devgui.bat" overwrite="true" />
     <replace file="${dist.dir}/bin/devgui.bat" token="dbforms_CURRENT_VERSION.jar" value="dbforms${dbforms.version}.jar" />
-    -->
   </target>
 
 
