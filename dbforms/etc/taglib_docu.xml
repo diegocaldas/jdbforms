@@ -70,6 +70,7 @@
 					<rtexprvalue>true</rtexprvalue>
 					<info>
 						<p>Rendering of read-only html widgets</p>
+                                                <p>WARNING:  This is not terribly secure as it becomes editable if javascript is disabled in the browser.  A More secure option is not placing an update button on your form.</p>
 					</info>
 				</attribute>
 				<attribute>
@@ -1052,6 +1053,7 @@ When this attribute is set,the value retrieved from the database is ignored.</in
 					<rtexprvalue>true</rtexprvalue>
 					<info>
 						<p>Rendering of read-only html widgets</p>
+                                                <p>WARNING:  This is not terribly secure as it becomes editable if javascript is disabled in the browser.  A More secure option is not placing an update button on your form.</p>
 					</info>
 				</attribute>
 				<attribute>
@@ -1342,6 +1344,7 @@ of the string to be entered</info>
 					<rtexprvalue>true</rtexprvalue>
 					<info>
 						<p>Rendering of read-only html widgets</p>
+                                                <p>WARNING:  This is not terribly secure as it becomes editable if javascript is disabled in the browser.  A More secure option is not placing an update button on your form.</p>
 					</info>
 				</attribute>
 				<attribute>
@@ -1625,6 +1628,7 @@ should be rendered or if the value of the associated field should be shown inste
 					<rtexprvalue>true</rtexprvalue>
 					<info>
 						<p>Rendering of read-only html widgets</p>
+                                                <p>WARNING:  This is not terribly secure as it becomes editable if javascript is disabled in the browser.  A More secure option is not placing an update button on your form.</p>
 					</info>
 				</attribute>
 				<attribute>
@@ -1889,6 +1893,7 @@ character used to move focus immediately to thiselement.</info>
 					<rtexprvalue>true</rtexprvalue>
 					<info>
 						<p>Rendering of read-only html widgets</p>
+                                                <p>WARNING:  This is not terribly secure as it becomes editable if javascript is disabled in the browser.  A More secure option is not placing an update button on your form.</p>
 					</info>
 				</attribute>
 				<attribute>
@@ -2549,6 +2554,7 @@ of the string to be entered</info>
 					<rtexprvalue>true</rtexprvalue>
 					<info>
 						<p>Rendering of read-only html widgets</p>
+                                                <p>WARNING:  This is not terribly secure as it becomes editable if javascript is disabled in the browser.  A More secure option is not placing an update button on your form.</p>
 					</info>
 				</attribute>
 				<attribute>
@@ -2775,6 +2781,7 @@ character used to move focus immediately to thiselement.</info>
 					<rtexprvalue>true</rtexprvalue>
 					<info>
 						<p>Rendering of read-only html widgets</p>
+                                                <p>WARNING:  This is not terribly secure as it becomes editable if javascript is disabled in the browser.  A More secure option is not placing an update button on your form.</p>
 					</info>
 				</attribute>
 				<attribute>
@@ -2996,6 +3003,7 @@ character used to move focus immediately to thiselement.</info>
 					<rtexprvalue>true</rtexprvalue>
 					<info>
 						<p>Rendering of read-only html widgets</p>
+                                                <p>WARNING:  This is not terribly secure as it becomes editable if javascript is disabled in the browser.  A More secure option is not placing an update button on your form.</p>
 					</info>
 				</attribute>
 				<attribute>
@@ -3212,6 +3220,7 @@ character used to move focus immediately to thiselement.</info>
 					<rtexprvalue>true</rtexprvalue>
 					<info>
 						<p>Rendering of read-only html widgets</p>
+                                                <p>WARNING:  This is not terribly secure as it becomes editable if javascript is disabled in the browser.  A More secure option is not placing an update button on your form.</p>
 					</info>
 				</attribute>
 				<attribute>
@@ -5560,11 +5569,12 @@ is released.</info>
 			<!-- **************************** navCopyButton tag ***********************************-->
 			<tag>
 				<name>navCopyButton</name>
-				<summary>this tag renders a navigation button for creating a copy of a row of data</summary>
+				<summary>this tag renders a navigation button for creating a copy of a row of data that you can then modify and insert</summary>
 				<tagclass>org.dbforms.taglib.DbNavCopyButtonTag</tagclass>
 				<bodycontent>JSP</bodycontent>
 				<info>
 					<p>navigation button to scroll to a copy of an existent dataset</p>
+                                        <p>It works with elements such as textField and textArea (even when hidden) but not with dataLabel.
 				</info>
 				<attribute>
 					<name>id</name>
