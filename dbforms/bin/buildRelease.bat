@@ -7,7 +7,7 @@ call maven dbforms:deploy
 cd doc
 plink -i "%SF_PRIVKEY%" %SF_USER%@shell.sourceforge.net rm -f /home/groups/j/jd/jdbforms/htdocs/weekly/*
 pscp  -i "%SF_PRIVKEY%" -r *.* %SF_USER%@shell.sourceforge.net:/home/groups/j/jd/jdbforms/htdocs
-plink -i "%SF_PRIVKEY%" %SF_USER%@shell.sourceforge.net chmod -R g+r /home/groups/j/jd/jdbforms/htdocs
+plink -i "%SF_PRIVKEY%" %SF_USER%@shell.sourceforge.net chmod -R g+w /home/groups/j/jd/jdbforms/htdocs
 goto ENDE
 :NO_PRIVKEY
 echo enviroment variable SF_PRIVKEY not set, set it to your SourceForge private key file first!
