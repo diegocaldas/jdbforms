@@ -121,7 +121,7 @@ public class UpdateEvent extends DatabaseEvent {
       }
 
       DataSourceFactory qry = new DataSourceFactory(con, table);
-      qry.doInsert(fieldValues);
+      qry.doUpdate(fieldValues, keyValuesStr);
       qry.close();
 
       // finally, we process interceptor again (post-update)
