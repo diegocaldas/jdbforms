@@ -190,6 +190,8 @@ FieldValues which gives access to the fields contained in the current (selected)
     </para>
     <para>This information is provided in the dbForms XML configuration file. Similar to the granted-privileges security-constraint, (described in the security chapter) the XML tag which defines an Interceptor has to be placed inside a &lt;table&gt; element.
 </para>
+<sect2>
+<title>Table by Table Configuration</title>
     <example>
       <title>interceptor in dbforms-config.xml</title>
       <programlisting>
@@ -222,6 +224,24 @@ FieldValues which gives access to the fields contained in the current (selected)
       <computeroutput>customer and call the appropriate methods on those objects</computeroutput>
       <emphasis role="italic"/>
     </para>
+    </sect2>
+    <sect2>
+    <title>Global Configuration</title>
+    <para>Interceptors can also be configured in <computeroutput>dbforms-config.xml</computeroutput> globally.</para>
+    <para>
+    <screen>
+    &lt;dbforms-config&gt;
+	&lt;interceptors&gt;
+	   &lt;interceptor className = "com.foo.bar.CustomerValidatonChecker"/&gt;
+       	&lt;/interceptors&gt;
+&lt;/dbforms-config&gt;
+    </screen></para>
+    
+    </sect2>
+    <sect2>
+    <title>Both Table by Table and Global Configured</title>
+    <para>If both ways are used, then the<emphasis role="italic">Table by Table interceptor</emphasis> will be processed first, and the <emphasis role="italic"> Global interceptor</emphasis> will be processed after that.  This means of course that changes to your <computeroutput>FieldValues</computeroutput> in the <emphasis role="italic">Table by Table interceptor</emphasis> get passed to the <emphasis role="italic"> Global interceptor</emphasis>. </para>
+    </sect2>
   </sect1>
   <sect1>
     <title>Example
