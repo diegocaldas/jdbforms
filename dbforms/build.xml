@@ -307,7 +307,6 @@
     <mkdir dir="${dbforms.releaseDir}" />
     <!-- copy all files needed to release directory -->
     <copy todir="${dbforms.releaseDir}">
-      <fileset dir="." includes="dbforms*.jar dbforms*.tld" />
       <fileset dir="." includes="ChangeLog Changes_v1_0  Changes_v1_1  CommonMistakes  license.txt" />
       <fileset dir="." includes="Readme  Todo  build.xml ReleaseNotes*.txt" />
       <fileset dir="." includes="doc/**/*.html,doc/**/*.png,doc/**/*.gif,doc/**/*.jpg,doc/**/*.txt,doc/**/*.pdf,doc/**/*.css" />
