@@ -25,6 +25,7 @@ package org.dbforms.event;
 import org.apache.log4j.Category;
 import javax.servlet.http.*;
 import org.dbforms.util.*;
+import org.dbforms.*;
 
 
 
@@ -39,15 +40,15 @@ import org.dbforms.util.*;
  *
  * @author Eric Beaumier
  */
-public class ReloadEvent extends WebEvent
-{
+public class ReloadEvent extends WebEvent {
     static Category logCat = Category.getInstance(ReloadEvent.class.getName()); // logging category for this class
 
     /**
      * Creates a new ReloadEvent object.
      */
-    public ReloadEvent()
+    public ReloadEvent(int tableId, HttpServletRequest request, DbFormsConfig config)
     {
-        //tableId = -1;
-    }
-}
+		super(tableId, request, config);	
+	}
+
+}	
