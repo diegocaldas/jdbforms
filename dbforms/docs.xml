@@ -140,8 +140,7 @@
   <!-- generate taglib descriptors from taglib-docu using XSL transformation -->
   <target name="generate_taglib">
     <echo message="begin xsl translation" />
-    <style style="${etc.dir}/tld.xsl" in="${etc.dir}/taglib_docu.xml" out="temp/dbforms.tld" />
-    <style style="${etc.dir}/pretty-printing.xsl" in="temp/dbforms.tld" out="${dist.dir}/dbforms.tld" />
+    <style style="${etc.dir}/tld.xsl" in="${etc.dir}/taglib_docu.xml" out="${dist.dir}/dbforms.tld" />
     <echo message="end of xsl translation " />
   </target>
 

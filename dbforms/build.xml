@@ -135,8 +135,7 @@
   <!-- generate taglib descriptors from taglib-docu using XSL transformation -->
   <target name="generate_taglib" depends="jar_classes" description="--&gt; Generate the taglib dbforms.tld from taglib_docu.xml">
     <echo message="begin xsl translation" />
-    <style style="${etc.dir}/tld.xsl" in="${etc.dir}/taglib_docu.xml" out="temp/dbforms.tld" />
-    <style style="${etc.dir}/pretty-printing.xsl" in="temp/dbforms.tld" out="${dist.dir}/dbforms.tld" />
+    <style style="${etc.dir}/tld.xsl" in="${etc.dir}/taglib_docu.xml" out="${dist.dir}/dbforms.tld" />
     <echo message="end of xsl translation " />
   </target>
 
@@ -199,7 +198,7 @@
     <!-- copy dbforms - jar to WEB-INF/lib -->
     <copy file="${dist.dir}/dbforms${dbforms.version}.jar" todir="${build.dir}/${example.name}/WEB-INF/lib" />
     <!-- copy taglib-descriptor to WEB-INF -->
-    <copy file="${dist.dir}/dbforms.tld" todir="${build.dir}/${example.name}/WEB-INF" />
+    <copy file="${dist.dir}/dbforms.tld" todir="${build.dir}/${example.name}/WEB-INF" overwrite="true" />
     <!-- copy libraries dbforms depends on to WEB-INF/lib -->
     <copy todir="${build.dir}/${example.name}/WEB-INF/lib">
       <fileset dir="${dependend.dir}" excludes="**/tools.jar" />
