@@ -79,44 +79,12 @@ public class DbDateFieldTag extends DbBaseInputTag
          .getRequest();
       try
       {
-         /* Does the developer require the field to be hidden or displayed? */
-         String       value = ("true".equals(this.getHidden()))
-            ? "<input type=\"hidden\" name=\"" : "<input type=\"text\" name=\"";
-
-         StringBuffer tagBuf = new StringBuffer(value);
-         tagBuf.append(getFormFieldName());
-         tagBuf.append("\" value=\"");
-			tagBuf.append(getFormFieldValue());
-         tagBuf.append("\" ");
-
-         if (getAccessKey() != null)
-         {
-            tagBuf.append(" accesskey=\"");
-            tagBuf.append(getAccessKey());
-            tagBuf.append("\"");
-         }
-
-         if (maxlength != null)
-         {
-            tagBuf.append(" maxlength=\"");
-            tagBuf.append(maxlength);
-            tagBuf.append("\"");
-         }
-
-         if (cols != null)
-         {
-            tagBuf.append(" size=\"");
-            tagBuf.append(cols);
-            tagBuf.append("\"");
-         }
-
-         if (getTabIndex() != null)
-         {
-            tagBuf.append(" tabindex=\"");
-            tagBuf.append(getTabIndex());
-            tagBuf.append("\"");
-         }
-
+         StringBuffer tagBuf = new StringBuffer("<input ");
+         tagBuf.append(prepareType());
+         tagBuf.append(prepareName());
+         tagBuf.append(prepareValue());
+         tagBuf.append(prepareSize());
+         tagBuf.append(prepareKeys());
          tagBuf.append(prepareStyles());
          tagBuf.append(prepareEventHandlers());
          tagBuf.append("/>");

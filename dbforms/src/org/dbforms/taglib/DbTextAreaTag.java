@@ -55,45 +55,29 @@ public class DbTextAreaTag extends DbBaseInputTag
       super.doStartTag();
 
 
-      StringBuffer       tagBuf = new StringBuffer("<textarea name=\"");
-      tagBuf.append(getFormFieldName());
-      tagBuf.append("\" ");
+      StringBuffer       tagBuf = new StringBuffer("<textarea ");
 
-      if (cols != null)
-      {
-         tagBuf.append(" cols=\"");
-         tagBuf.append(cols);
-         tagBuf.append("\"");
-      }
-
+      tagBuf.append(prepareName());
       if (wrap != null)
       {
          tagBuf.append(" wrap=\"");
          tagBuf.append(wrap);
          tagBuf.append("\"");
       }
-
-      if (rows != null)
+      if (getCols() != null)
+      {
+         tagBuf.append(" cols=\"");
+         tagBuf.append(getCols() );
+         tagBuf.append("\"");
+      }
+      if (getRows() != null)
       {
          tagBuf.append(" rows=\"");
-         tagBuf.append(rows);
+         tagBuf.append(getRows());
          tagBuf.append("\"");
       }
 
-      if (getAccessKey() != null)
-      {
-         tagBuf.append(" accesskey=\"");
-         tagBuf.append(getAccessKey());
-         tagBuf.append("\"");
-      }
-
-      if (getTabIndex() != null)
-      {
-         tagBuf.append(" tabindex=\"");
-         tagBuf.append(getTabIndex());
-         tagBuf.append("\"");
-      }
-
+      tagBuf.append(prepareKeys());
       tagBuf.append(prepareStyles());
       tagBuf.append(prepareEventHandlers());
       tagBuf.append(">");

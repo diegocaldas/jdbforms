@@ -46,13 +46,13 @@ public abstract class DbBaseInputTag extends DbBaseHandlerTag
    /**
     * The number of character columns for this field, or negative for no limit.
     */
-   protected String cols = null;
+   private String cols = null;
 
    /** The maximum number of characters allowed, or negative for no limit. */
-   protected String maxlength = null;
+   private String maxlength = null;
 
    /** The number of rows for this field, or negative for no limit. */
-   protected String rows = null;
+   private String rows = null;
 
    // ------------------------------------------------------------- Properties
 
@@ -185,7 +185,7 @@ public abstract class DbBaseInputTag extends DbBaseHandlerTag
    }
 
    /** DOCUMENT ME! */
-   protected java.lang.String overrideValue;
+   private java.lang.String overrideValue;
 
    /**
     * Insert the method's description here. Creation date: (2001-06-27
@@ -211,7 +211,7 @@ public abstract class DbBaseInputTag extends DbBaseHandlerTag
    }
 
    /** DOCUMENT ME! */
-   protected java.lang.String hidden = "false";
+   private java.lang.String hidden = "false";
 
    /**
     * Insert the method's description here. Creation date: (2001-06-26
@@ -324,5 +324,68 @@ public abstract class DbBaseInputTag extends DbBaseHandlerTag
 			throw new JspException("IO Error: " + ioe.getMessage());
 		}
 
+   }
+
+   protected String prepareSize() 
+   {
+      StringBuffer tagBuf=new StringBuffer();
+      if (getMaxlength() != null)
+      {
+         tagBuf.append(" maxlength=\"");
+         tagBuf.append(getMaxlength());
+         tagBuf.append("\"");
+      }
+
+      if (getCols() != null)
+      {
+         tagBuf.append(" size=\"");
+         tagBuf.append(getCols());
+         tagBuf.append("\"");
+      }
+      return tagBuf.toString();
+   }    
+
+   protected String prepareKeys() 
+   {
+      StringBuffer tagBuf=new StringBuffer();    
+      if (getAccessKey() != null)
+      {
+         tagBuf.append(" accesskey=\"");
+         tagBuf.append(getAccessKey());
+         tagBuf.append("\"");
+      }
+   
+      if (getTabIndex() != null)
+      {
+         tagBuf.append(" tabindex=\"");
+         tagBuf.append(getTabIndex());
+         tagBuf.append("\"");
+      }
+      return tagBuf.toString();
+   }
+
+   protected String prepareType() 
+   {
+      return ("true".equals(this.getHidden()))
+         ? "type=\"hidden\" " : "type=\"text\" ";
+
+   }
+   
+   protected String prepareName()
+   { 
+      StringBuffer tagBuf=new StringBuffer();    
+      tagBuf.append("name=\"");
+      tagBuf.append(getFormFieldName());
+      tagBuf.append("\"");
+      return tagBuf.toString(); 
+   }
+
+   protected String prepareValue()
+   { 
+      StringBuffer tagBuf=new StringBuffer();    
+      tagBuf.append(" value=\"");
+      tagBuf.append(getFormFieldValue());
+      tagBuf.append("\" ");
+      return tagBuf.toString(); 
    }
 }

@@ -68,55 +68,15 @@ public class DbTextFieldTag extends DbBaseInputTag
       try
       {
          /* Does the developer require the field to be hidden, displayed or displayed as password? */
-         String value = null;
-
-         if ("true".equals(this.getHidden()))
-         {
-            value = "<input type=\"hidden\" name=\"";
-         }
-         else if ("true".equals(this.getPassword()))
-         {
-            value = "<input type=\"password\" name=\"";
-         }
+         StringBuffer tagBuf = new StringBuffer("<input ");
+         if ("true".equals(this.getPassword()))
+            tagBuf.append("type=\"password\" ");
          else
-         {
-            value = "<input type=\"text\" name=\"";
-         }
-
-         StringBuffer tagBuf = new StringBuffer(value);
-         tagBuf.append(getFormFieldName());
-         tagBuf.append("\" value=\"");
-			tagBuf.append(getFormFieldValue());
-         tagBuf.append("\" ");
-
-         if (getAccessKey() != null)
-         {
-            tagBuf.append(" accesskey=\"");
-            tagBuf.append(getAccessKey());
-            tagBuf.append("\"");
-         }
-
-         if (maxlength != null)
-         {
-            tagBuf.append(" maxlength=\"");
-            tagBuf.append(maxlength);
-            tagBuf.append("\"");
-         }
-
-         if (cols != null)
-         {
-            tagBuf.append(" size=\"");
-            tagBuf.append(cols);
-            tagBuf.append("\"");
-         }
-
-         if (getTabIndex() != null)
-         {
-            tagBuf.append(" tabindex=\"");
-            tagBuf.append(getTabIndex());
-            tagBuf.append("\"");
-         }
-
+            tagBuf.append(prepareType());
+         tagBuf.append(prepareName());
+         tagBuf.append(prepareValue());
+         tagBuf.append(prepareSize());
+         tagBuf.append(prepareKeys());
          tagBuf.append(prepareStyles());
          tagBuf.append(prepareEventHandlers());
          tagBuf.append("/>");

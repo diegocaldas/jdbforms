@@ -107,15 +107,14 @@ public class DbFileTag extends DbBaseInputTag
                   || getParentForm().getReadOnly().equals("true"))
          {
             // if read-only, remove the browse button (for netscape problem)
-            tagBuf.append("<input type=\"text\" name=\"");
+            tagBuf.append("<input type=\"text\"");
          }
          else
          {
-            tagBuf.append("<input type=\"file\" name=\"");
+            tagBuf.append("<input type=\"file\"");
          }
 
-         tagBuf.append(getFormFieldName());
-         tagBuf.append("\" ");
+         tagBuf.append(prepareName());
 
          if (accept != null)
          {
@@ -124,34 +123,8 @@ public class DbFileTag extends DbBaseInputTag
             tagBuf.append("\"");
          }
 
-         if (getAccessKey() != null)
-         {
-            tagBuf.append(" accesskey=\"");
-            tagBuf.append(getAccessKey());
-            tagBuf.append("\"");
-         }
-
-         if (maxlength != null)
-         {
-            tagBuf.append(" maxlength=\"");
-            tagBuf.append(maxlength);
-            tagBuf.append("\"");
-         }
-
-         if (cols != null)
-         {
-            tagBuf.append(" size=\"");
-            tagBuf.append(cols);
-            tagBuf.append("\"");
-         }
-
-         if (getTabIndex() != null)
-         {
-            tagBuf.append(" tabindex=\"");
-            tagBuf.append(getTabIndex());
-            tagBuf.append("\"");
-         }
-
+         tagBuf.append(prepareSize());
+         tagBuf.append(prepareKeys());
          tagBuf.append(prepareStyles());
          tagBuf.append(prepareEventHandlers());
          tagBuf.append("/>");
