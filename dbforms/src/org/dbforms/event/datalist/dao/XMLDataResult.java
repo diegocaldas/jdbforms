@@ -26,8 +26,9 @@ import org.w3c.dom.Node;
 import org.w3c.dom.xpath.XPathResult;
 import org.w3c.dom.xpath.XPathEvaluator;
 import org.w3c.dom.xpath.XPathNSResolver;
-import org.apache.xpath.domapi.XPathEvaluatorImpl;
+
 import org.dbforms.config.FieldTypes;
+
 import org.dbforms.util.TimeUtil;
 
 
@@ -50,15 +51,11 @@ public class XMLDataResult
     * @param root xml dom object
     * @param qry xpath string to query
     */
-   public XMLDataResult(Node root, String qry)
+   public XMLDataResult(XPathEvaluator evaluator, Node root, String qry)
    {
-      // Create an XPath evaluator and pass in the document.
-      evaluator = new XPathEvaluatorImpl();
+      this.evaluator = evaluator;
       resolver  = evaluator.createNSResolver(root);
-
-
       // Evaluate the xpath expression. 
-      // Is eventally done twice here, but we need the result as an XPathResult!
       data = (XPathResult) evaluator.evaluate(qry, root, resolver, 
                                               XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, 
                                               null);
@@ -86,9 +83,9 @@ public class XMLDataResult
     * 
     * @return value as string
     */
-   public String itemValue(int i, String expression)
+   public String getItemValue(int i, String expression)
    {
-      return (String) itemValue(i, expression, FieldTypes.CHAR);
+      return (String) getItemValue(i, expression, FieldTypes.CHAR);
    }
 
 
@@ -102,65 +99,46 @@ public class XMLDataResult
     * 
     * @return value as Object of selected type
     */
-   public Object itemValue(int i, String expression, int objectType)
+   public Object getItemValue(int i, String expression, int objectType)
    {
-      short  type   = XPathResult.STRING_TYPE;
       Object result = null;
-
-      switch (objectType)
-      {
-         case FieldTypes.CHAR:
-         case FieldTypes.DATE:
-         case FieldTypes.TIMESTAMP:
-            type = XPathResult.STRING_TYPE;
-
-            break;
-
-         case FieldTypes.FLOAT:
-         case FieldTypes.NUMERIC:
-         case FieldTypes.INTEGER:
-            type = XPathResult.NUMBER_TYPE;
-
-            break;
-         default:
-            break;
-      }
-
       XPathResult data = (XPathResult) evaluator.evaluate(expression, item(i), 
-                                                          resolver, type, null);
+                                                           resolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
 
+    
       if (data != null)
       {
-         switch (objectType)
+         Node n = data.getSingleNodeValue();
+         if (n != null) 
          {
-            case FieldTypes.CHAR:
-               result = data.getStringValue();
-
-               break;
-
-            case FieldTypes.FLOAT:
-            case FieldTypes.NUMERIC:
-               result = new Double(data.getNumberValue());
-
-               break;
-
-            case FieldTypes.INTEGER:
-
-               Double d = new Double(data.getNumberValue());
-               result = new Integer(d.intValue());
-
-               break;
-
-            case FieldTypes.DATE:
-            case FieldTypes.TIMESTAMP:
-               result = TimeUtil.parseISO8601Date(data.getStringValue());
-
-               break;
-
-            default:
-               result = data.getStringValue();
-
-               break;
+            switch (objectType)
+            {
+               case FieldTypes.CHAR:
+                  result = n.getNodeValue();
+                  break;
+   
+               case FieldTypes.FLOAT:
+               case FieldTypes.NUMERIC:
+                  result = new Double(n.getNodeValue());
+   
+                  break;
+   
+               case FieldTypes.INTEGER:
+                  result = new Integer(n.getNodeValue());
+   
+                  break;
+   
+               case FieldTypes.DATE:
+               case FieldTypes.TIMESTAMP:
+                  result = TimeUtil.parseISO8601Date(n.getNodeValue());
+   
+                  break;
+   
+               default:
+                  result = data.getStringValue();
+   
+                  break;
+            }
          }
       }
 

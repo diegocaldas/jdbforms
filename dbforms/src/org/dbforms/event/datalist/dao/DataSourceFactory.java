@@ -56,7 +56,7 @@ public class DataSourceFactory
     * for the given table. 
     *
     */
-   private DataSourceFactory(Table table)
+   public DataSourceFactory(Table table)
    {
       String dataAccessClass = table.getDataAccessClass();
 
@@ -86,19 +86,7 @@ public class DataSourceFactory
    }
 
 
-   /**
-    * Creates a new DataSourceFactory object.
-    *
-    * @param con              the JDBC Connection object
-    * @param table            the input table
-    */
-   public DataSourceFactory(Connection con, Table table)
-   {
-      this(table);
-      dataHandler.setConnection(con);
-   }
-
-   /**
+    /**
     * Creates a new DataSourceFactory object.
     *
     * @param dbConnectionName   name of the used db connection. Can be used to
@@ -112,8 +100,8 @@ public class DataSourceFactory
    public DataSourceFactory(String dbConnectionName, Connection con, Table table)
                      throws SQLException
    {
-      this(con, table);
-      dataHandler.setConnectionName(dbConnectionName);
+      this(table);
+      dataHandler.setConnection(con, dbConnectionName);
    }
 
 
@@ -266,9 +254,9 @@ public class DataSourceFactory
     *
     * @throws SQLException if any error occurs
     */
-   public void doInsert(FieldValues fieldValues) throws SQLException
+   public void doInsert(Connection con, FieldValues fieldValues) throws SQLException
    {
-      dataHandler.doInsert(fieldValues);
+      dataHandler.doInsert(con, fieldValues);
    }
 
 
@@ -280,10 +268,10 @@ public class DataSourceFactory
     *
     * @throws SQLException if any error occurs
     */
-   public void doUpdate(FieldValues fieldValues, String keyValuesStr)
+   public void doUpdate(Connection con, FieldValues fieldValues, String keyValuesStr)
                  throws SQLException
    {
-      dataHandler.doUpdate(fieldValues, keyValuesStr);
+      dataHandler.doUpdate(con, fieldValues, keyValuesStr);
    }
 
 
@@ -294,8 +282,8 @@ public class DataSourceFactory
     *
     * @throws SQLException if any error occurs
     */
-   public void doDelete(String keyValuesStr) throws SQLException
+   public void doDelete(Connection con, String keyValuesStr) throws SQLException
    {
-      dataHandler.doDelete(keyValuesStr);
+      dataHandler.doDelete(con, keyValuesStr);
    }
 }

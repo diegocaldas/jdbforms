@@ -41,6 +41,7 @@ import org.dbforms.config.SqlUtil;
 import org.apache.log4j.Category;
 
 import org.dbforms.event.ValidationEvent;
+import org.dbforms.event.datalist.dao.DataSourceList;
 import org.dbforms.event.datalist.dao.DataSourceFactory;
 
 
@@ -178,9 +179,17 @@ public class UpdateEvent extends ValidationEvent
       }
 
       // UPDATE operation;
-      DataSourceFactory qry = new DataSourceFactory(con, table);
-      qry.doUpdate(fieldValues, keyValuesStr);
-      qry.close();
+      boolean mustClose = false;
+      DataSourceList    ds       = DataSourceList.getInstance(request);
+      DataSourceFactory qry      = ds.get(table, request);
+      if (qry == null)
+      {
+         qry = new DataSourceFactory(table);
+         mustClose = true;
+      }      
+      qry.doUpdate(con, fieldValues, keyValuesStr);
+      if (mustClose)
+         qry.close();
 
       // finally, we process interceptor again (post-update)
       if (table.hasInterceptors())

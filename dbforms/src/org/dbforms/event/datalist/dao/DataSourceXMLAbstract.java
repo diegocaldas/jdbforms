@@ -26,20 +26,8 @@ import org.apache.log4j.Category;
 import java.util.Vector;
 import java.sql.SQLException;
 import java.net.URI;
-import java.net.URLConnection;
-import java.io.InputStream;
-
-//	Imported JAVA API for XML Parsing 1.0 classes
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import org.xml.sax.InputSource;
-
-//	Imported dom classes
 import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-
-// apache logging
-//import org.apache.log4j.Category;
+import org.w3c.dom.xpath.XPathEvaluator;
 import org.dbforms.config.Constants;
 import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.Field;
@@ -54,42 +42,26 @@ import org.dbforms.util.Util;
  * 
  * @author hkk
  */
-public class DataSourceXML extends DataSource
+public abstract class DataSourceXMLAbstract extends DataSource
 {
-   private Category logCat = Category.getInstance(this.getClass().getName());
-   private static DocumentBuilderFactory dfactory = null;
-   private static DocumentBuilder builder         = null;
-   private FieldValue[] filterConstraint;
-   private FieldValue[] orderConstraint;
+   private Category      logCat           = Category.getInstance(
+                                                     this.getClass().getName());
+   private FieldValue[]  filterConstraint;
+   private FieldValue[]  orderConstraint;
    private FieldValue[]  sqlFilterParams;
    private String        sqlFilter;
    private XMLDataResult data;
-   private String[] keys;
-   private Object[][] dataObject;
+   private String[]      keys;
+   private Object[][]    dataObject;
 
    /**
     * Contructor
     * 
     * @param table to set
     */
-   public DataSourceXML(Table table)
+   public DataSourceXMLAbstract(Table table)
    {
       super(table);
-
-      if (dfactory == null)
-      {
-         try
-         {
-            dfactory = DocumentBuilderFactory.newInstance();
-            dfactory.setValidating(false);
-            dfactory.setNamespaceAware(false);
-            builder = dfactory.newDocumentBuilder();
-         }
-         catch (Exception e)
-         {
-            logCat.error(e);
-         }
-      }
    }
 
    /**
@@ -101,11 +73,11 @@ public class DataSourceXML extends DataSource
     * @param orderConstraint  FieldValue array used to build a cumulation of
     *        rules for ordering (sorting) and restricting fields.
     * @param sqlFilter       sql condition to add to where clause
+    * @param sqlFilterParams list of FieldValues to fill the sqlFilter with
     */
    public void setSelect(FieldValue[] filterConstraint, 
-                         FieldValue[] orderConstraint,
-                         String sqlFilter,
-								 FieldValue[] sqlFilterParams)
+                         FieldValue[] orderConstraint, String sqlFilter, 
+                         FieldValue[] sqlFilterParams)
    {
       this.filterConstraint = filterConstraint;
       this.orderConstraint  = orderConstraint;
@@ -115,9 +87,9 @@ public class DataSourceXML extends DataSource
 
 
    /**
-    * DOCUMENT ME!
+    * Will be called to open all datasets
     * 
-    * @throws SQLException DOCUMENT ME!
+    * @throws SQLException
     */
    protected final void open() throws SQLException
    {
@@ -136,7 +108,7 @@ public class DataSourceXML extends DataSource
             logCat.error(e);
          }
 
-         // No valid URI given, put query into to qeury part of the 
+         // No valid URI given, put query into to query part of the 
          // URI object
          if (url == null)
          {
@@ -150,7 +122,8 @@ public class DataSourceXML extends DataSource
             }
          }
 
-         data = new XMLDataResult(getResultNode(url), url.getQuery());
+         data = new XMLDataResult(getXPathEvaluator(), read(url), 
+                                  url.getQuery());
       }
       catch (Exception e)
       {
@@ -163,11 +136,11 @@ public class DataSourceXML extends DataSource
 
 
    /**
-    * DOCUMENT ME!
+    * Must return the size of the whole resultset with all data fetch
     * 
-    * @return DOCUMENT ME!
+    * @return size of whole resultset
     * 
-    * @throws SQLException DOCUMENT ME!
+    * @throws SQLException
     */
    protected final int size() throws SQLException
    {
@@ -181,30 +154,41 @@ public class DataSourceXML extends DataSource
       return res;
    }
 
-	/**
-	 * return true if there are more records to fetch then the given record number
-	 *
-	 * @param i index of last fetched row.
-	 *  
-	 * @return true if there are more records to fetch then the given record number
-	 * 
-	 * @throws SQLException
-	 */
-	protected boolean hasMore(int i) throws SQLException 
-	{
-		return (i < size());
-	}
 
    /**
-    * DOCUMENT ME!
+    * return true if there are more records to fetch then the given record
+    * number
     * 
-    * @param startRow DOCUMENT ME!
+    * @param i index of last fetched row.
     * 
-    * @return DOCUMENT ME!
+    * @return true if there are more records to fetch then the given record
+    *         number
     * 
-    * @throws SQLException DOCUMENT ME!
+    * @throws SQLException
     */
-   protected final int findStartRow(String startRow) throws SQLException
+   protected boolean hasMore(int i) throws SQLException
+   {
+      return (i < size());
+   }
+
+
+   /**
+    * maps the startRow to the internal index
+    * 
+    * @param startRow  keyValueStr to the row<br>
+    *        key format: FieldID ":" Length ":" Value<br>
+    *        example: if key id = 121 and field id=2 then keyValueStr contains "2:3:121"<br>
+    *        If the key consists of more than one fields, the key values  are
+    *        seperated through "-"<br>
+    *        example: value of field 1=12, value of field 3=1992, then we'll
+    *        get "1:2:12-3:4:1992"
+    * 
+    * @return the index of the row, 0 as first row if not found
+    * 
+    * @throws SQLException
+    */
+   protected final int findStartRow(String startRow)
+                             throws SQLException
    {
       for (int i = 0; i < size(); i++)
       {
@@ -219,13 +203,13 @@ public class DataSourceXML extends DataSource
 
 
    /**
-    * DOCUMENT ME!
+    * should retrieve the row at an special index as an Object[]
     * 
-    * @param currRow DOCUMENT ME!
+    * @param currRow index of row to fetch
     * 
-    * @return DOCUMENT ME!
+    * @return Object[] of the fetched row
     * 
-    * @throws SQLException DOCUMENT ME!
+    * @throws SQLException
     */
    protected final Object[] getRow(int currRow) throws SQLException
    {
@@ -234,25 +218,34 @@ public class DataSourceXML extends DataSource
 
 
    /**
-    * DOCUMENT ME!
+    * gets the document from the remote system.
     * 
-    * @param uri DOCUMENT ME!
+    * @param uri the uri to query
     * 
-    * @return DOCUMENT ME!
+    * @return NODE the result
     * 
-    * @throws Exception DOCUMENT ME!
+    * @throws Exception Exception during processing IO
     */
-   protected Node getResultNode(URI uri) throws Exception
+   protected abstract Document read(URI uri) throws Exception;
+
+
+   /**
+    * saves the document to the remote system.
+    * 
+    * @throws Exception Exception during processing IO
+    */
+   protected void write() throws Exception
    {
-      URLConnection con = uri.toURL().openConnection();
-      con.connect();
-
-      InputStream in  = con.getInputStream();
-      InputSource src = new InputSource(in);
-      Document    doc = builder.parse(src);
-
-      return doc;
    }
+
+
+   /**
+    * creates a new XPathEvaluator to use inside the XMLDataResult
+    * 
+    * @return a new DOM XPathEvaluator
+    */
+   protected abstract XPathEvaluator getXPathEvaluator();
+
 
    private String insertParamsInSqlFilter()
    {
@@ -373,7 +366,8 @@ public class DataSourceXML extends DataSource
    {
       StringBuffer buf = new StringBuffer();
       buf.append(Util.replaceRealPath(getTable().getAlias(), 
-                                      DbFormsConfigRegistry.instance().lookup().getRealPath()));
+                                      DbFormsConfigRegistry.instance().lookup()
+                                                           .getRealPath()));
 
       String filter    = parseFilterConstraint();
       String sqlFilter = insertParamsInSqlFilter();
@@ -406,9 +400,9 @@ public class DataSourceXML extends DataSource
          for (int i = 0; i < fields.size(); i++)
          {
             Field f = (Field) fields.elementAt(i);
-            objectRow[i] = data.itemValue(index, 
-                                          Util.isNull(f.getExpression())
-                                             ? f.getName() : f.getExpression());
+            objectRow[i] = data.getItemValue(index, 
+                                             Util.isNull(f.getExpression())
+                                                ? f.getName() : f.getExpression());
          }
 
          keys[index] = getTable().getKeyPositionString(objectRow);
@@ -433,10 +427,10 @@ public class DataSourceXML extends DataSource
          for (int i = 0; i < fields.size(); i++)
          {
             Field f = (Field) fields.elementAt(i);
-            objectRow[i] = data.itemValue(index, 
-                                          Util.isNull(f.getExpression())
-                                             ? f.getName() : f.getExpression(), 
-                                          f.getType());
+            objectRow[i] = data.getItemValue(index, 
+                                             Util.isNull(f.getExpression())
+                                                ? f.getName() : f.getExpression(), 
+                                             f.getType());
          }
 
          dataObject[index] = objectRow;

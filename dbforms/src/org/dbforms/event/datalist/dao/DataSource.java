@@ -77,21 +77,11 @@ public abstract class DataSource
     * need the connection data you must override the method
     * 
     * @param con                     the JDBC Connection object
-    */
-   public void setConnection(Connection con)
-   {
-   }
-
-
-   /**
-    * set the connection parameter for the DataSouce. virtual method, if you
-    * need the connection data you must override the method
-    * 
     * @param dbConnectionName   name of the used db connection. Can be used to
     *        get an own db connection, e.g. to hold it during the  session
     *        (see DataSourceJDBC for example!)
     */
-   public void setConnectionName(String dbConnectionName)
+   public void setConnection(Connection con, String dbConnectionName)
    {
    }
 
@@ -135,7 +125,7 @@ public abstract class DataSource
     * 
     * @throws SQLException
     */
-   public void doInsert(FieldValues fieldValues) throws SQLException
+   public void doInsert(Connection con, FieldValues fieldValues) throws SQLException
    {
    }
 
@@ -154,7 +144,7 @@ public abstract class DataSource
     * 
     * @throws SQLException if any error occurs
     */
-   public void doUpdate(FieldValues fieldValues, String keyValuesStr)
+   public void doUpdate(Connection con, FieldValues fieldValues, String keyValuesStr)
                  throws SQLException
    {
    }
@@ -173,7 +163,7 @@ public abstract class DataSource
     * 
     * @throws SQLException if any error occurs
     */
-   public void doDelete(String keyValuesStr) throws SQLException
+   public void doDelete(Connection con, String keyValuesStr) throws SQLException
    {
    }
 

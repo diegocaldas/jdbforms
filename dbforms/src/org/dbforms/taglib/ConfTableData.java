@@ -185,7 +185,7 @@ public class ConfTableData extends EmbeddedData
 			Table table = config.getTableByName(getForeignTable());
 			FieldValue[] orderConstraint = table.createOrderFieldValues(getOrderBy(), null, false);
 			FieldValue[] childFieldValues = FieldValue.getFilterFieldArray(table, getFilter());
-			DataSourceFactory qry = new DataSourceFactory(con, table);
+			DataSourceFactory qry = new DataSourceFactory(null, con, table);
 			qry.setSelect(childFieldValues, orderConstraint, null, null);
 			ResultSetVector rsv = qry.getCurrent(null, 0);
 			return formatEmbeddedResultRows(rsv);

@@ -39,6 +39,7 @@ import org.dbforms.config.SqlUtil;
 
 import org.dbforms.event.DatabaseEvent;
 
+import org.dbforms.event.datalist.dao.DataSourceList;
 import org.dbforms.event.datalist.dao.DataSourceFactory;
 
 import org.dbforms.util.ParseUtil;
@@ -174,9 +175,17 @@ public class DeleteEvent extends DatabaseEvent
       }
 
       // DELETE operation;
-      DataSourceFactory qry = new DataSourceFactory(con, table);
-      qry.doDelete(keyValuesStr);
-      qry.close();
+      boolean mustClose = false;
+      DataSourceList    ds       = DataSourceList.getInstance(request);
+      DataSourceFactory qry      = ds.get(table, request);
+      if (qry == null)
+      {
+         qry = new DataSourceFactory(table);
+         mustClose = true;
+      }      
+      qry.doDelete(con, keyValuesStr);
+      if (mustClose)
+         qry.close();
 
       // finally, we process interceptor again (post-delete)
       if (table.hasInterceptors())

@@ -42,6 +42,7 @@ import org.dbforms.config.MultipleValidationException;
 import org.dbforms.config.SqlUtil;
 
 import org.dbforms.event.ValidationEvent;
+import org.dbforms.event.datalist.dao.DataSourceList;
 import org.dbforms.event.datalist.dao.DataSourceFactory;
 
 import org.dbforms.util.MessageResourcesInternal;
@@ -160,9 +161,18 @@ public class InsertEvent extends ValidationEvent
     }
 
     // INSERT operation;
-    DataSourceFactory dsFactory = new DataSourceFactory(con, table);
-    dsFactory.doInsert(fieldValues);
-    dsFactory.close();
+    boolean mustClose = false;
+    DataSourceList    ds       = DataSourceList.getInstance(request);
+    DataSourceFactory qry      = ds.get(table, request);
+    if (qry == null)
+    {
+       qry = new DataSourceFactory(table);
+       mustClose = true;
+    }      
+    qry.doInsert(con, fieldValues);
+    if (mustClose)
+       qry.close();
+
 
     // Show the last record inserted
     String firstPosition = table.getPositionString(fieldValues);

@@ -26,6 +26,8 @@ import java.util.Hashtable;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
 import org.dbforms.config.Table;
+import org.dbforms.util.ParseUtil;
+import org.dbforms.util.Util;
 
 
 
@@ -148,7 +150,9 @@ public class DataSourceList
     */
    private String getKey(Table table, HttpServletRequest request)
    {
-      String refSource = request.getRequestURI();
+      String refSource = ParseUtil.getParameter(request, "source");
+      if (Util.isNull(refSource))
+         refSource = request.getRequestURI();
       refSource = refSource + "?" + table.getName();
 
       return refSource;

@@ -96,35 +96,18 @@ public class DataSourceJDBC extends DataSource
 
 
    /**
-    * Set the connection object.
-    * 
-    * @param con the connection object
-    */
-   public void setConnection(Connection con)
-   {
-      if (con != null)
-      {
-         close();
-         connectionName = null;
-         this.con       = con;
-      }
-   }
-
-
-   /**
     * set the connection parameter for the DataSouce. virtual method, if you
     * need the connection data you must override the method  In this special
     * case we need our own connection to save it in the session.
     * 
+    * @param con                     the JDBC Connection object
     * @param dbConnectionName   name of the used db connection. Can be used to
     *        get an own db connection, e.g. to hold it during the  session
     *        (see DataSourceJDBC for example!)
     */
-   public void setConnectionName(String dbConnectionName)
+   public void setConnection(Connection con, String dbConnectionName)
    {
       close();
-      con = null;
-
 
       // To prevent empty connection name. We always need our own connection!
       connectionName = Util.isNull(dbConnectionName)
@@ -200,11 +183,12 @@ public class DataSourceJDBC extends DataSource
       stmt = null;
       }
       */
-      if ((con != null) && !Util.isNull(connectionName))
+      if (con != null) 
       {
          try
          {
-            con.close();
+            if (!con.isClosed())
+               con.close();
          }
          catch (SQLException e)
          {
@@ -250,7 +234,7 @@ public class DataSourceJDBC extends DataSource
    {
       if (!fetchedAll && (rs == null))
       {
-         if (((con == null) || con.isClosed()) && !Util.isNull(connectionName))
+         if ((con == null) || con.isClosed())
          {
             try
             {
@@ -609,7 +593,7 @@ public class DataSourceJDBC extends DataSource
     * 
     * @throws SQLException
     */
-   public void doInsert(FieldValues fieldValues) throws SQLException
+   public void doInsert(Connection con, FieldValues fieldValues) throws SQLException
    {
       PreparedStatement ps = con.prepareStatement(getTable()
                                                      .getInsertStatement(fieldValues));
@@ -623,7 +607,6 @@ public class DataSourceJDBC extends DataSource
 
       // now handle blob files
       saveBlobFilesToDisk(fieldValues);
-      closeConnection();
    }
 
 
@@ -641,7 +624,7 @@ public class DataSourceJDBC extends DataSource
     * 
     * @throws SQLException
     */
-   public void doUpdate(FieldValues fieldValues, String keyValuesStr)
+   public void doUpdate(Connection con, FieldValues fieldValues, String keyValuesStr)
                  throws SQLException
    {
       PreparedStatement ps = con.prepareStatement(getTable()
@@ -657,7 +640,6 @@ public class DataSourceJDBC extends DataSource
 
       // now handle blob files
       saveBlobFilesToDisk(fieldValues);
-      closeConnection();
    }
 
 
@@ -674,7 +656,7 @@ public class DataSourceJDBC extends DataSource
     * 
     * @throws SQLException
     */
-   public void doDelete(String keyValuesStr) throws SQLException
+   public void doDelete(Connection con, String keyValuesStr) throws SQLException
    {
       FieldValues fieldValues = null;
 
@@ -724,6 +706,5 @@ public class DataSourceJDBC extends DataSource
       }
 
       ps.close();
-      closeConnection();
    }
 }
