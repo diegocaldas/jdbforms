@@ -148,7 +148,7 @@
     <delete file = "${taglibdoc.dir}/DbFormsTags.html"/>
     <echo message="style 1"/>
     <style 
-    	   style = "${etc.dir}/tldoc2html.xsl" 
+           style = "${etc.dir}/tldoc2html.xsl" 
            in    = "${etc.dir}/taglib_docu.xml" 
            out   = "${taglibdoc.dir}/DbFormsTags.html"
      >
@@ -194,7 +194,7 @@
     <!--Generate PDF reference documentation from taglib-docu.xml (FOP_HOME must be set)" -->
     <echo message="begin xsl translation to generate xsl-fo   "/>
     <style style = "${etc.dir}/tldoc2xsl-fo.xsl" 
-	   in    = "${etc.dir}/taglib_docu.xml" 
+       in    = "${etc.dir}/taglib_docu.xml" 
            out   = "${etc.dir}/DbFormsTags.xsl-fo"/>
     <echo message="end of xsl translation "/>
     <echo message="starting generation of ${doc.dir}/taglib/DbFormsTags.pdf using Apache FOP (FOP_HOME must be set)"/>
@@ -273,6 +273,27 @@
   <!-- ================================================ -->
   <target name    = "build-doc" 
           depends = "javadoc, generate_taglib_htmldocs, generate_taglib_pdfdocs, prepare, create_HTML, create_PDF, run-j"/>
+
+
+  <!-- 
+     -  Pretty Print for XML documents
+     -
+     -  this task "pretty prints" the xml documents that are used
+     -  to build the docbooki user's guide (excepts for the ones 
+     -  listed into the 'excludes' attribute of the syle element).
+     -
+     -  The resulting pretty printed exml files are saved into the
+     -  the user's guide build directory.
+     -->
+  <target name="docbook_pretty-printing">
+
+    <style style     = "${etc.dir}/pretty-printing.xsl" 
+           basedir   = "${UsersGuide.dir}"
+           destdir   = "${build.dir}"
+           includes  = "*.xml"
+           extension = ".xml"
+           excludes  = "DbForms_UsersGuide.xml, Recent_Changes.xml"/>
+  </target>
 
 
   <!-- ==================================================== -->
@@ -358,9 +379,9 @@
      <delete dir="${doc.dir}/xref"/>
      <delete dir="${doc.dir}/xref-test"/>
      <delete>
-	      <fileset dir="${doc.dir}">
-        	<include name="*"/>
-	      </fileset>
+          <fileset dir="${doc.dir}">
+            <include name="*"/>
+          </fileset>
      </delete>
      <delete file="${doc.dir}/taglib/DbFormsTags_TocSem.html"/>
      <delete file="${doc.dir}/taglib/DbFormsTags_TocAlph.html"/>
@@ -368,7 +389,7 @@
      <delete file="${doc.dir}/taglib/DbFormsTags.pdf"/>
      <delete dir="${basedir}/dist"/>
   </target>
-  	
+    
   <!-- Fill these in if you want to view files post build -->
   <target name="run-j">
     <tstamp>
