@@ -130,7 +130,7 @@ event classes configuration on a table-by-table basis
 </sect2>
 </sect1>
 <sect1>
-<title>
+<title id="regi">
 Registration of the event classes
 </title>
     <para>Database and Navigation event factories automatically register the default event classes into the system.  Developers can register additional event classes by declaring and configuring elements into the dbforms-config file, as shown in the example below:</para>
@@ -310,7 +310,7 @@ overrides the default "org.dbforms.event.UpdateEvent" one.</para>
 
 
 
-     <sect1>
+     <sect1 id="tbyt">
      
      <title>Override the event classes on a table-by-table basis </title>
      
