@@ -40,6 +40,10 @@
       <item name="Latest builds"           href="http://sourceforge.net/project/showfiles.php?group_id=17608"/>
     </menu>
 
+    <menu name="Misc">
+      <item name="Tasks"           href="/tasks.html"/>
+    </menu>
+
     <menu name="Demo">
       <item name="Online demos"            href="/demo.html" target="_top"/>
     </menu>
