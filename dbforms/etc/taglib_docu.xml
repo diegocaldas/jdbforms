@@ -10881,7 +10881,8 @@
 				</summary>
 				<tagclass>org.dbforms.taglib.TextFormatTag</tagclass>
 				<bodycontent>empty</bodycontent>
-				<info>either var or type and value must be setted!</info>
+				<info>either the contextVar -OR- type and value must be set!  This allows you to calculate a value in your jsp, store this into the
+pageContext or pass in a value directly and then use the textFormat tag to format it with the settings used in dbforms - with locale support.</info>
 				<attribute>
 					<name>type</name>
 					<required>false</required>
@@ -10898,7 +10899,7 @@
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
 					<info>
-						<p>The value wich should be formatted</p>
+						<p>The value which should be formatted</p>
 					</info>
 				</attribute>
 				<attribute>
