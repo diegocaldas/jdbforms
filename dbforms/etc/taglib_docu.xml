@@ -6603,6 +6603,12 @@ error manager</summary>
 					<info>Name of the field in the table for which the searching should be done</info>
 				</attribute>
 				<attribute>
+					<name>id</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>expose id, enables interaction with JavaScript (not supported by all browsers!)</info>
+				</attribute>
+				<attribute>
 					<name>searchAlgo</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
@@ -6725,6 +6731,12 @@ error manager</summary>
 					<required>true</required>
 					<rtexprvalue>true</rtexprvalue>
 					<info>Name of the field in the table for which the searching should be done</info>
+				</attribute>
+				<attribute>
+					<name>id</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>expose id, enables interaction with JavaScript (not supported by all browsers!)</info>
 				</attribute>
 				<attribute>
 					<name>searchAlgo</name>
