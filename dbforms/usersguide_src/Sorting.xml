@@ -268,7 +268,7 @@ Future versions of DbForms may be expected to provide more on sorting.</para>
 			<para/>
 			<para>
 				<table>
-					<title>search naming system
+					<title>search naming system</title>
 					<tgroup cols="2">
 						<tbody>
 							<row>
@@ -307,7 +307,7 @@ searchFieldAlgorithmNames_cust.get(&quot;firstname&quot;)</entry>
 			<para/>
 			<para>
 				<table>
-					<title>search behavior selection
+					<title>search behavior selection</title>
 					<tgroup cols="2">
 						<tbody>
 							<row>
@@ -403,7 +403,7 @@ Searching is done with:</emphasis></entry>
 		 </para>
 			<para>
 				<table>
-					<title>extended mode searches
+					<title>extended mode searches</title>
 					<tgroup cols="2">
 						<tbody>
 							<row>
