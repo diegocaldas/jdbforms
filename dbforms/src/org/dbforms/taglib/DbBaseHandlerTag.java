@@ -285,12 +285,7 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
                   try {
                      res = getFormat().format(fieldValueObj);
                   } catch (Exception e) {
-                     logCat.error(
-								  "field type: " + getField().getType() + "\n" 
-								+ "object type: " + fieldValueObj.getClass().getName() + "\n"
-								+ "pattern: " + getPattern() + "\n" 
-								+ e.getMessage()
-                           );
+                     logCat.error("field type: " + getField().getType() + "\n" + "object type: " + fieldValueObj.getClass().getName() + "\n" + "pattern: " + getPattern() + "\n" + e.getMessage());
                      res = fieldValueObj.toString();
                   }
 
@@ -438,14 +433,15 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
          res = MessageResources.getMessage(res, getLocale());
       }
 
-	/*******************************************
-	 * Grunikiewicz.philip@hydro.qc.cq
-	 * 2003-12-04
-	 * 
-	 * The data being return has a value of null.  The developer has not specified a substitute. So
-	 * instead of crashing, lets display an empty string! 
-	 */
-	if (res == null) res = "";
+      /*******************************************
+       * Grunikiewicz.philip@hydro.qc.cq
+       * 2003-12-04
+       * 
+       * The data being return has a value of null.  The developer has not specified a substitute. So
+       * instead of crashing, lets display an empty string! 
+       */
+      if (res == null)
+         res = "";
 
       return res;
    }
@@ -503,7 +499,9 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
          tagBuf.append("<input type=\"hidden\" name=\"");
          tagBuf.append(Constants.FIELDNAME_OLDVALUETAG + getFormFieldName());
          tagBuf.append("\" value=\"");
-         tagBuf.append(getFormFieldValue());
+         if (!getParentForm().getFooterReached()) {
+            tagBuf.append(getFormFieldValue());
+         }
          tagBuf.append("\" />");
          pageContext.getOut().write(tagBuf.toString());
       } catch (java.io.IOException ioe) {

@@ -466,10 +466,17 @@ public class DbFormsValidator implements Serializable {
 		* When inserting new data, it can happen that a default value is assigned.
 		* Hence the old value and new value are identical.
 		* Does this mean that we should not validate it!  I don't think so...
+		* 
+		* Henner.Kollmann@gmx.de
+		* 2003-12-05
+		* 
+		* in isertmode oldvalue is alway empty now, so that check will be true!
+		* if you do not do this compare all values on form will be validated. This
+		* may leed to unexpected validation if the values in the database are wrong 
 		*/            
-//         if (f.getFieldValue().equals(f.getOldValue()))
+         if (f.getFieldValue().equals(f.getOldValue()))
             // Check only if new value != old value!
-//            return null;
+            return null;
 
          String value = null;
          Object obj = f.getFieldValueAsObject();
