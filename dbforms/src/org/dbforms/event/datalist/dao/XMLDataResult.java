@@ -32,6 +32,7 @@ import org.w3c.dom.xpath.XPathNSResolver;
 import org.dbforms.config.FieldTypes;
 
 import org.dbforms.util.TimeUtil;
+import org.dbforms.util.Util;
 
 
 
@@ -100,20 +101,22 @@ public class XMLDataResult
 
    }
 
-   /**
-    * returns the field value of a special node as String. Node is decribed by
-    * an xpath string
-    * 
-    * @param i      node of result to return
-    * @param expression xpath string which discribes the field to return
-    * @param objectType field type to return
-    * 
-    * @return value as Object of selected type
-    */
-   public String getString(int i, String expression, int objectType) {
-      return getItemValue(i, expression, objectType).toString();
-   }
    
+   private String toString(Node element) {
+      String result = null;
+      if (element != null) {
+         if (element.getNodeType() == Node.TEXT_NODE) { 
+            result = element.getNodeValue();
+         } else {
+            for (Node tx = element.getFirstChild(); tx != null; tx = tx.getNextSibling()) {
+               result = toString(tx);
+               if (!Util.isNull(result))
+                  break;
+            }
+         }
+      }
+      return result;
+   }
 
    /**
     * returns the field value of a special node as Object. Node is decribed by
@@ -140,28 +143,28 @@ public class XMLDataResult
             switch (objectType)
             {
                case FieldTypes.CHAR:
-                  result = n.getNodeValue();
+                  result = toString(n);
                   break;
    
                case FieldTypes.FLOAT:
                case FieldTypes.NUMERIC:
-                  result = new Double(n.getNodeValue());
+                  result = new Double(toString(n));
    
                   break;
    
                case FieldTypes.INTEGER:
-                  result = new Integer(n.getNodeValue());
+                  result = new Integer(toString(n));
    
                   break;
    
                case FieldTypes.DATE:
                case FieldTypes.TIMESTAMP:
-                  result = TimeUtil.parseISO8601Date(n.getNodeValue());
+                  result = TimeUtil.parseISO8601Date(toString(n));
    
                   break;
    
                default:
-                  result = data.getStringValue();
+                  result = toString(n);
    
                   break;
             }
