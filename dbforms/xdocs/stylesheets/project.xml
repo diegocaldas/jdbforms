@@ -24,8 +24,7 @@
 
     <menu name="Documentation">
       <item name="User's guide"            href="/usersguide.html"/>
-      <item name="API docs"                href="/doc/api/index.html"/>
-      <item name="Tag Library"             href="/doc/taglib/DbFormsTags_Frame.html"/>
+      <item name="Tag Library"             href="/docs/taglib/DbFormsTags_Frame.html"/>
       <item name="Devgui"                  href="/devgui.html"/>
     </menu>
 
