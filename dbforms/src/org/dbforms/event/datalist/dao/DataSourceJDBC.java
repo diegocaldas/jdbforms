@@ -30,8 +30,9 @@ import java.sql.PreparedStatement;
 import java.sql.Connection;
 import java.sql.Types;
 import java.sql.Clob;
-import java.util.Vector;
-import java.util.Enumeration;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.Iterator;
 import org.dbforms.config.Constants;
 import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.Field;
@@ -60,8 +61,8 @@ public class DataSourceJDBC extends DataSource
    private String       connectionName;
    private ResultSet    rs;
    private Statement    stmt;
-   private Vector       data;
-   private Vector       keys;
+   private ArrayList    data;
+   private Hashtable    keys;
    private int          colCount;
    private String       whereClause;
    private String       tableList;
@@ -79,8 +80,8 @@ public class DataSourceJDBC extends DataSource
    public DataSourceJDBC(Table table)
    {
       super(table);
-      data = new Vector();
-      keys = new Vector();
+      data = new ArrayList();
+      keys = new Hashtable();
    }
 
    /**
@@ -354,32 +355,25 @@ public class DataSourceJDBC extends DataSource
    {
       int     result = 0;
       boolean found = false;
-      String  s;
 
       if (startRow != null)
       {
-         for (int i = 0; i < keys.size(); i++)
-         {
-            s = (String) keys.elementAt(i);
-
-            if (startRow.equals(s))
-            {
-               result = i;
-               found  = true;
-
-               break;
-            }
+         Integer i = (Integer) keys.get(startRow);
+         if (i != null) {
+            result = i.intValue();
+            found  = true;
          }
 
          if (!found && !fetchedAll)
          {
             while (rs.next())
             {
+               Integer j = new Integer(data.size());
                data.add(getCurrentRowAsObject());
-               s = getTable().getKeyPositionString(getCurrentRow());
-               keys.add(s);
+               String key = getTable().getKeyPositionString(getCurrentRow());
+               keys.put(key, j);
 
-               if (startRow.equals(s))
+               if (startRow.equals(key))
                {
                   result = data.size() - 1;
 
@@ -412,7 +406,7 @@ public class DataSourceJDBC extends DataSource
       {
          if (i < data.size())
          {
-            result = (Object[]) data.elementAt(i);
+            result = (Object[]) data.get(i);
          }
          else
          {
@@ -421,8 +415,9 @@ public class DataSourceJDBC extends DataSource
                while (rs.next())
                {
                   result = getCurrentRowAsObject();
+                  Integer j = new Integer(data.size());
                   data.add(result);
-                  keys.add(getTable().getKeyPositionString(getCurrentRow()));
+                  keys.put(getTable().getKeyPositionString(getCurrentRow()),j);
 
                   if (i < data.size())
                   {
@@ -447,8 +442,9 @@ public class DataSourceJDBC extends DataSource
          // rs.isLast is not allowed in all circumstances! 
          if (rs.next())
          {
+            Integer j = new Integer(data.size());
             data.add(getCurrentRowAsObject());
-            keys.add(getTable().getKeyPositionString(getCurrentRow()));
+            keys.put(getTable().getKeyPositionString(getCurrentRow()), j);
          }
       }
 
@@ -478,8 +474,9 @@ public class DataSourceJDBC extends DataSource
          {
             try
             {
+               Integer j = new Integer(data.size());
                data.add(getCurrentRowAsObject());
-               keys.add(getTable().getKeyPositionString(getCurrentRow()));
+               keys.put(getTable().getKeyPositionString(getCurrentRow()), j);
             }
             catch (Exception e)
             {
@@ -519,12 +516,12 @@ public class DataSourceJDBC extends DataSource
    {
       // now we provide the values;
       // every key is the parameter name from of the form page;
-      Enumeration enum = fieldValues.keys();
+      Iterator enum = fieldValues.keys();
       int         col = 1;
 
-      while (enum.hasMoreElements())
+      while (enum.hasNext())
       {
-         String fieldName = (String) enum.nextElement();
+         String fieldName = (String) enum.next();
          Field  curField = getTable().getFieldByName(fieldName);
 
          if (curField != null)
