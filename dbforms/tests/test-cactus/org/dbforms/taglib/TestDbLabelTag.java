@@ -23,156 +23,196 @@
 
 package org.dbforms.taglib;
 
-import org.apache.cactus.JspTestCase;
 import com.meterware.httpunit.WebResponse;
 
-import javax.servlet.jsp.tagext.BodyTag;
+import org.apache.cactus.JspTestCase;
+
+import org.dbforms.config.DbFormsConfigRegistry;
+
+import org.dbforms.servlets.ConfigServlet;
+
+import org.dbforms.util.MessageResources;
 
 import java.util.Locale;
 
-import org.dbforms.config.DbFormsConfigRegistry;
-import org.dbforms.servlets.ConfigServlet;
-import org.dbforms.util.MessageResources;
+import javax.servlet.jsp.tagext.BodyTag;
+
+
 
 /**
  * Tests of the <code>DbLabelTag</code> class.
- * 
+ *
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh </a>
- *  
+ *
  */
 public class TestDbLabelTag extends JspTestCase {
-	private DbLabelTag doubleTag;
+   private DbFormTag  form;
+   private DbLabelTag doubleTag;
+   private DbLabelTag nullTag;
+   private DbLabelTag nullTagWithNoData;
+   private DbLabelTag timeTag;
 
-	private DbLabelTag timeTag;
+   /**
+    * In addition to creating the tag instance and adding the pageContext to
+    * it, this method creates a BodyContent object and passes it to the tag.
+    */
+   public void setUp() throws Exception {
+      super.setUp();
 
-	private DbLabelTag nullTag;
+      DbFormsConfigRegistry.instance()
+                           .register(null);
+      config.setInitParameter("dbformsConfig", "/WEB-INF/dbforms-config.xml");
+      config.setInitParameter("log4j.configuration", "/WEB-INF/log4j.properties");
 
-	private DbLabelTag nullTagWithNoData;
+      ConfigServlet configServlet = new ConfigServlet();
+      configServlet.init(config);
 
-	private DbFormTag form;
+      form = new DbFormTag();
+      form.setPageContext(this.pageContext);
+      form.setTableName("TIMEPLAN");
+      form.setMaxRows("*");
 
-	/**
-	 * In addition to creating the tag instance and adding the pageContext to
-	 * it, this method creates a BodyContent object and passes it to the tag.
-	 */
-	public void setUp() throws Exception {
-		super.setUp();
+      doubleTag = new DbLabelTag();
+      doubleTag.setPageContext(this.pageContext);
+      doubleTag.setParent(form);
+      doubleTag.setFieldName("D");
 
-		DbFormsConfigRegistry.instance().register(null);
-		config.setInitParameter("dbformsConfig", "/WEB-INF/dbforms-config.xml");
-		config.setInitParameter("log4j.configuration",
-				"/WEB-INF/log4j.properties");
-		ConfigServlet configServlet = new ConfigServlet();
-		configServlet.init(config);
+      timeTag = new DbLabelTag();
+      timeTag.setPageContext(this.pageContext);
+      timeTag.setParent(form);
+      timeTag.setFieldName("TIME");
 
-		form = new DbFormTag();
-		form.setPageContext(this.pageContext);
-		form.setTableName("TIMEPLAN");
-		form.setMaxRows("*");
+      nullTag = new DbLabelTag();
+      nullTag.setPageContext(this.pageContext);
+      nullTag.setParent(form);
+      nullTag.setFieldName("REMARK");
+      nullTag.setNullFieldValue("[]");
 
-		doubleTag = new DbLabelTag();
-		doubleTag.setPageContext(this.pageContext);
-		doubleTag.setParent(form);
-		doubleTag.setFieldName("D");
+      nullTagWithNoData = new DbLabelTag();
+      nullTagWithNoData.setPageContext(this.pageContext);
+      nullTagWithNoData.setParent(form);
+      nullTagWithNoData.setFieldName("REMARK");
+   }
 
-		timeTag = new DbLabelTag();
-		timeTag.setPageContext(this.pageContext);
-		timeTag.setParent(form);
-		timeTag.setFieldName("TIME");
 
-		nullTag = new DbLabelTag();
-		nullTag.setPageContext(this.pageContext);
-		nullTag.setParent(form);
-		nullTag.setFieldName("REMARK");
-		nullTag.setNullFieldValue("[]");
+   /**
+    * DOCUMENT ME!
+    *
+    * @param theResponse DOCUMENT ME!
+    *
+    * @throws Exception DOCUMENT ME!
+    */
+   public void endOutputDE(WebResponse theResponse) throws Exception {
+      String  s   = theResponse.getText();
+      boolean res = s.indexOf("2,3") > -1;
+      assertTrue("wrong number", res);
+      res = s.indexOf("01.01.1900") > -1;
+      assertTrue("wrong date", res);
+      res = s.indexOf("[]") > -1;
+      assertTrue("wrong setted null field", res);
+      res = s.indexOf("[NULL]") > -1;
+      assertTrue("wrong null field", res);
+   }
 
-		nullTagWithNoData = new DbLabelTag();
-		nullTagWithNoData.setPageContext(this.pageContext);
-		nullTagWithNoData.setParent(form);
-		nullTagWithNoData.setFieldName("REMARK");
-	}
 
-	//-------------------------------------------------------------------------
+   /**
+    * DOCUMENT ME!
+    *
+    * @param theResponse DOCUMENT ME!
+    *
+    * @throws Exception DOCUMENT ME!
+    */
+   public void endOutputEN(WebResponse theResponse) throws Exception {
+      String  s   = theResponse.getText();
+      boolean res = s.indexOf("2.3") > -1;
+      assertTrue("wrong number", res);
+      res = s.indexOf("Jan 1, 1900") > -1;
+      assertTrue("wrong date", res);
+      res = s.indexOf("[]") > -1;
+      assertTrue("wrong setted null field", res);
+      res = s.indexOf("[No Data]") > -1;
+      assertTrue("wrong null field", res);
+   }
 
-	public void testOutputDE() throws Exception {
-		MessageResources.setLocale(request, Locale.GERMAN);
-		form.doStartTag();
-		int result = doubleTag.doEndTag();
-		assertEquals(BodyTag.EVAL_PAGE, result);
-		result = timeTag.doEndTag();
-		assertEquals(BodyTag.EVAL_PAGE, result);
-		result = nullTag.doEndTag();
-		assertEquals(BodyTag.EVAL_PAGE, result);
-		result = nullTagWithNoData.doEndTag();
-		assertEquals(BodyTag.EVAL_PAGE, result);
-		form.doEndTag();
 
-	}
+   /**
+    * DOCUMENT ME!
+    *
+    * @param theResponse DOCUMENT ME!
+    *
+    * @throws Exception DOCUMENT ME!
+    */
+   public void endOutputJPN(WebResponse theResponse) throws Exception {
+      String  s   = theResponse.getText();
+      boolean res = s.indexOf("2.3") > -1;
+      assertTrue("wrong number", res);
+      res = s.indexOf("1900/01/01") > -1;
+      assertTrue("wrong date", res);
+      res = s.indexOf("[]") > -1;
+      assertTrue("wrong setted null field", res);
 
-	public void endOutputDE(WebResponse theResponse) throws Exception {
-		String s = theResponse.getText();
-		boolean res = s.indexOf("2,3") > -1;
-		assertTrue("wrong number", res);
-		res = s.indexOf("01.01.1900") > -1;
-		assertTrue("wrong date", res);
-		res = s.indexOf("[]") > -1;
-		assertTrue("wrong setted null field", res);
-		res = s.indexOf("[NULL]") > -1;
-		assertTrue("wrong null field", res);
-	}
+      /*
+       * can not be tested! We have no japanese resource bundle! res =
+       * s.indexOf("[No Data]") > -1; assertTrue("wrong null field", res);
+       */
+   }
 
-	public void testOutputEN() throws Exception {
-		MessageResources.setLocale(request, Locale.ENGLISH);
-		form.doStartTag();
-		int result = doubleTag.doEndTag();
-		assertEquals(BodyTag.EVAL_PAGE, result);
-		result = timeTag.doEndTag();
-		assertEquals(BodyTag.EVAL_PAGE, result);
-		result = nullTag.doEndTag();
-		assertEquals(BodyTag.EVAL_PAGE, result);
-		result = nullTagWithNoData.doEndTag();
-		assertEquals(BodyTag.EVAL_PAGE, result);
-		form.doEndTag();
-	}
 
-	public void endOutputEN(WebResponse theResponse) throws Exception {
-		String s = theResponse.getText();
-		boolean res = s.indexOf("2.3") > -1;
-		assertTrue("wrong number", res);
-		res = s.indexOf("Jan 1, 1900") > -1;
-		assertTrue("wrong date", res);
-		res = s.indexOf("[]") > -1;
-		assertTrue("wrong setted null field", res);
-		res = s.indexOf("[No Data]") > -1;
-		assertTrue("wrong null field", res);
-	}
+   //-------------------------------------------------------------------------
+   public void testOutputDE() throws Exception {
+      MessageResources.setLocale(request, Locale.GERMAN);
+      form.doStartTag();
 
-	public void testOutputJPN() throws Exception {
-		MessageResources.setLocale(request, Locale.JAPANESE);
-		form.doStartTag();
-		int result = doubleTag.doEndTag();
-		assertEquals(BodyTag.EVAL_PAGE, result);
-		result = timeTag.doEndTag();
-		assertEquals(BodyTag.EVAL_PAGE, result);
-		result = nullTag.doEndTag();
-		assertEquals(BodyTag.EVAL_PAGE, result);
-		result = nullTagWithNoData.doEndTag();
-		assertEquals(BodyTag.EVAL_PAGE, result);
-		form.doEndTag();
+      int result = doubleTag.doEndTag();
+      assertEquals(BodyTag.EVAL_PAGE, result);
+      result = timeTag.doEndTag();
+      assertEquals(BodyTag.EVAL_PAGE, result);
+      result = nullTag.doEndTag();
+      assertEquals(BodyTag.EVAL_PAGE, result);
+      result = nullTagWithNoData.doEndTag();
+      assertEquals(BodyTag.EVAL_PAGE, result);
+      form.doEndTag();
+   }
 
-	}
 
-	public void endOutputJPN(WebResponse theResponse) throws Exception {
-		String s = theResponse.getText();
-		boolean res = s.indexOf("2.3") > -1;
-		assertTrue("wrong number", res);
-		res = s.indexOf("1900/01/01") > -1;
-		assertTrue("wrong date", res);
-		res = s.indexOf("[]") > -1;
-		assertTrue("wrong setted null field", res);
-		/*
-		 * can not be tested! We have no japanese resource bundle! res =
-		 * s.indexOf("[No Data]") > -1; assertTrue("wrong null field", res);
-		 */
-	}
+   /**
+    * DOCUMENT ME!
+    *
+    * @throws Exception DOCUMENT ME!
+    */
+   public void testOutputEN() throws Exception {
+      MessageResources.setLocale(request, Locale.ENGLISH);
+      form.doStartTag();
+
+      int result = doubleTag.doEndTag();
+      assertEquals(BodyTag.EVAL_PAGE, result);
+      result = timeTag.doEndTag();
+      assertEquals(BodyTag.EVAL_PAGE, result);
+      result = nullTag.doEndTag();
+      assertEquals(BodyTag.EVAL_PAGE, result);
+      result = nullTagWithNoData.doEndTag();
+      assertEquals(BodyTag.EVAL_PAGE, result);
+      form.doEndTag();
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @throws Exception DOCUMENT ME!
+    */
+   public void testOutputJPN() throws Exception {
+      MessageResources.setLocale(request, Locale.JAPANESE);
+      form.doStartTag();
+
+      int result = doubleTag.doEndTag();
+      assertEquals(BodyTag.EVAL_PAGE, result);
+      result = timeTag.doEndTag();
+      assertEquals(BodyTag.EVAL_PAGE, result);
+      result = nullTag.doEndTag();
+      assertEquals(BodyTag.EVAL_PAGE, result);
+      result = nullTagWithNoData.doEndTag();
+      assertEquals(BodyTag.EVAL_PAGE, result);
+      form.doEndTag();
+   }
 }

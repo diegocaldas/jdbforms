@@ -25,67 +25,69 @@ package org.dbforms.config;
 
 import org.apache.cactus.ServletTestCase;
 
+
+
 /**
  * Tests of the <code>GrantedPrivileges</code> class.
- * 
+ *
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh </a>
- *  
+ *
  */
 public class TestGrantedPrivileges extends ServletTestCase {
+   /**
+    * Note: this only tests unauthenticated users.. To get a positive result,
+    * you must log in first, which this does not do!
+    */
+   public void testNoAccessAvailable() throws Exception {
+      GrantedPrivileges gp = new GrantedPrivileges();
+      gp.setSelect("bug_admin,bob_owens");
+      gp.setInsert("bug_admin,bob_owens");
+      gp.setUpdate("bug_admin,bob_owens");
+      gp.setDelete("bug_admin,bob_owens");
+      assertTrue("Should be closed",
+                 !gp.hasUserPrivileg(request, GrantedPrivileges.PRIVILEG_SELECT));
+      assertTrue("Should be closed",
+                 !gp.hasUserPrivileg(request, GrantedPrivileges.PRIVILEG_INSERT));
+      assertTrue("Should be closed",
+                 !gp.hasUserPrivileg(request, GrantedPrivileges.PRIVILEG_UPDATE));
+      assertTrue("Should be closed",
+                 !gp.hasUserPrivileg(request, GrantedPrivileges.PRIVILEG_DELETE));
+   }
 
-	/**
-	 * DOCUMENT ME!
-	 * 
-	 * @throws Exception
-	 *             DOCUMENT ME!
-	 */
-	public void testOpenAccess() throws Exception {
-		GrantedPrivileges gp = new GrantedPrivileges();
-		assertTrue("Should be wideopen", gp.hasUserPrivileg(request,
-				GrantedPrivileges.PRIVILEG_SELECT));
-		assertTrue("Should be wideopen", gp.hasUserPrivileg(request,
-				GrantedPrivileges.PRIVILEG_INSERT));
-		assertTrue("Should be wideopen", gp.hasUserPrivileg(request,
-				GrantedPrivileges.PRIVILEG_UPDATE));
-		assertTrue("Should be wideopen", gp.hasUserPrivileg(request,
-				GrantedPrivileges.PRIVILEG_DELETE));
-	}
 
-	/**
-	 * Note: this only tests unauthenticated users.. To get a positive result,
-	 * you must log in first, which this does not do!
-	 */
-	public void testOnlySelectAccessRestricted() throws Exception {
-		GrantedPrivileges gp = new GrantedPrivileges();
-		gp.setSelect("bug_admin,bob_owens");
-		assertTrue("Should be closed", !gp.hasUserPrivileg(request,
-				GrantedPrivileges.PRIVILEG_SELECT));
-		assertTrue("Should be wideopen", gp.hasUserPrivileg(request,
-				GrantedPrivileges.PRIVILEG_INSERT));
-		assertTrue("Should be wideopen", gp.hasUserPrivileg(request,
-				GrantedPrivileges.PRIVILEG_UPDATE));
-		assertTrue("Should be wideopen", gp.hasUserPrivileg(request,
-				GrantedPrivileges.PRIVILEG_DELETE));
-	}
+   /**
+    * Note: this only tests unauthenticated users.. To get a positive result,
+    * you must log in first, which this does not do!
+    */
+   public void testOnlySelectAccessRestricted() throws Exception {
+      GrantedPrivileges gp = new GrantedPrivileges();
+      gp.setSelect("bug_admin,bob_owens");
+      assertTrue("Should be closed",
+                 !gp.hasUserPrivileg(request, GrantedPrivileges.PRIVILEG_SELECT));
+      assertTrue("Should be wideopen",
+                 gp.hasUserPrivileg(request, GrantedPrivileges.PRIVILEG_INSERT));
+      assertTrue("Should be wideopen",
+                 gp.hasUserPrivileg(request, GrantedPrivileges.PRIVILEG_UPDATE));
+      assertTrue("Should be wideopen",
+                 gp.hasUserPrivileg(request, GrantedPrivileges.PRIVILEG_DELETE));
+   }
 
-	/**
-	 * Note: this only tests unauthenticated users.. To get a positive result,
-	 * you must log in first, which this does not do!
-	 */
-	public void testNoAccessAvailable() throws Exception {
-		GrantedPrivileges gp = new GrantedPrivileges();
-		gp.setSelect("bug_admin,bob_owens");
-		gp.setInsert("bug_admin,bob_owens");
-		gp.setUpdate("bug_admin,bob_owens");
-		gp.setDelete("bug_admin,bob_owens");
-		assertTrue("Should be closed", !gp.hasUserPrivileg(request,
-				GrantedPrivileges.PRIVILEG_SELECT));
-		assertTrue("Should be closed", !gp.hasUserPrivileg(request,
-				GrantedPrivileges.PRIVILEG_INSERT));
-		assertTrue("Should be closed", !gp.hasUserPrivileg(request,
-				GrantedPrivileges.PRIVILEG_UPDATE));
-		assertTrue("Should be closed", !gp.hasUserPrivileg(request,
-				GrantedPrivileges.PRIVILEG_DELETE));
-	}
 
+   /**
+    * DOCUMENT ME!
+    *
+    * @throws Exception
+    *             DOCUMENT ME!
+    */
+   public void testOpenAccess() throws Exception {
+      GrantedPrivileges gp = new GrantedPrivileges();
+      assertTrue("Should be wideopen",
+                 gp.hasUserPrivileg(request, GrantedPrivileges.PRIVILEG_SELECT));
+      assertTrue("Should be wideopen",
+                 gp.hasUserPrivileg(request, GrantedPrivileges.PRIVILEG_INSERT));
+      assertTrue("Should be wideopen",
+                 gp.hasUserPrivileg(request, GrantedPrivileges.PRIVILEG_UPDATE));
+      assertTrue("Should be wideopen",
+                 gp.hasUserPrivileg(request, GrantedPrivileges.PRIVILEG_DELETE));
+   }
 }

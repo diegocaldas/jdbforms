@@ -23,57 +23,62 @@
 
 package org.dbforms.taglib;
 
-import javax.servlet.jsp.tagext.BodyTag;
 import org.apache.cactus.JspTestCase;
+
+import org.dbforms.config.DbFormsConfigRegistry;
+
+import org.dbforms.servlets.ConfigServlet;
 
 import java.sql.Connection;
 
-import org.dbforms.config.DbFormsConfigRegistry;
-import org.dbforms.servlets.ConfigServlet;
+import javax.servlet.jsp.tagext.BodyTag;
+
+
 
 /**
  * Tests of the <code>BaseTag</code> class.
- * 
+ *
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh </a>
- *  
+ *
  */
 public class TestDbGetConnectionTag extends JspTestCase {
-	private DbGetConnection tag;
+   private DbGetConnection tag;
 
-	/**
-	 * In addition to creating the tag instance and adding the pageContext to
-	 * it, this method creates a BodyContent object and passes it to the tag.
-	 */
-	public void setUp() throws Exception {
-		super.setUp();
+   /**
+    * In addition to creating the tag instance and adding the pageContext to
+    * it, this method creates a BodyContent object and passes it to the tag.
+    */
+   public void setUp() throws Exception {
+      super.setUp();
 
-		DbFormsConfigRegistry.instance().register(null);
+      DbFormsConfigRegistry.instance()
+                           .register(null);
 
-		config.setInitParameter("dbformsConfig", "/WEB-INF/dbforms-config.xml");
-		config.setInitParameter("log4j.configuration",
-				"/WEB-INF/log4j.properties");
-		ConfigServlet configServlet = new ConfigServlet();
-		configServlet.init(config);
-		tag = new DbGetConnection();
-		tag.setId("con");
-		tag.setPageContext(this.pageContext);
-	}
+      config.setInitParameter("dbformsConfig", "/WEB-INF/dbforms-config.xml");
+      config.setInitParameter("log4j.configuration", "/WEB-INF/log4j.properties");
 
-	//-------------------------------------------------------------------------
+      ConfigServlet configServlet = new ConfigServlet();
+      configServlet.init(config);
+      tag = new DbGetConnection();
+      tag.setId("con");
+      tag.setPageContext(this.pageContext);
+   }
 
-	public void testDbConnectionTag() throws Exception {
-		//none of the other life cycle methods need to be implemented, so they
-		//do not need to be called.
-		int result = this.tag.doStartTag();
-		assertEquals(BodyTag.EVAL_BODY_INCLUDE, result);
-		Connection con = (Connection) this.pageContext.getAttribute("con");
-		assertTrue("con != null", con != null);
-		assertTrue("con is opened", !con.isClosed());
-		result = this.tag.doEndTag();
-		assertEquals(BodyTag.EVAL_PAGE, result);
-		assertTrue("con is closed", con.isClosed());
-		con = (Connection) this.pageContext.getAttribute("con");
-		assertTrue("con == null", con == null);
-	}
 
+   //-------------------------------------------------------------------------
+   public void testDbConnectionTag() throws Exception {
+      //none of the other life cycle methods need to be implemented, so they
+      //do not need to be called.
+      int result = this.tag.doStartTag();
+      assertEquals(BodyTag.EVAL_BODY_INCLUDE, result);
+
+      Connection con = (Connection) this.pageContext.getAttribute("con");
+      assertTrue("con != null", con != null);
+      assertTrue("con is opened", !con.isClosed());
+      result = this.tag.doEndTag();
+      assertEquals(BodyTag.EVAL_PAGE, result);
+      assertTrue("con is closed", con.isClosed());
+      con = (Connection) this.pageContext.getAttribute("con");
+      assertTrue("con == null", con == null);
+   }
 }

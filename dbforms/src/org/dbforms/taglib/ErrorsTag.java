@@ -20,6 +20,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
+
 /*
  * the idea for this class was taken from the class ErrorsTag-class of the Apache Struts Project
  */

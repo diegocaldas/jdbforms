@@ -24,77 +24,88 @@
 package org.dbforms.config;
 
 import org.dbforms.servlets.ConfigServlet;
+
 import org.dbforms.taglib.DbFormTag;
+
+
 
 /**
  * Tests of the <code>DbFormsConfig</code> class.
- * 
+ *
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh </a>
  */
 public class TestTableQuery extends org.apache.cactus.JspTestCase {
-	private DbFormTag tag;
+   private DbFormTag tag;
 
-	/**
-	 * In addition to creating the tag instance and adding the pageContext to
-	 * it, this method creates a BodyContent object and passes it to the tag.
-	 * 
-	 * @throws Exception
-	 *             DOCUMENT ME!
-	 */
-	public void setUp() throws Exception {
-		super.setUp();
-		config.setInitParameter("dbformsConfig", "/WEB-INF/dbforms-config.xml");
+   /**
+    * In addition to creating the tag instance and adding the pageContext to
+    * it, this method creates a BodyContent object and passes it to the tag.
+    *
+    * @throws Exception
+    *             DOCUMENT ME!
+    */
+   public void setUp() throws Exception {
+      super.setUp();
+      config.setInitParameter("dbformsConfig", "/WEB-INF/dbforms-config.xml");
 
-		DbFormsConfig dbFormsConfig = null;
+      DbFormsConfig dbFormsConfig = null;
 
-		try {
-			dbFormsConfig = DbFormsConfigRegistry.instance().lookup();
-		} catch (Exception e) {
-		}
+      try {
+         dbFormsConfig = DbFormsConfigRegistry.instance()
+                                              .lookup();
+      } catch (Exception e) {
+         ;
+      }
 
-		if (dbFormsConfig == null) {
-			config.setInitParameter("dbformsConfig",
-					"/WEB-INF/dbforms-config.xml");
+      if (dbFormsConfig == null) {
+         config.setInitParameter("dbformsConfig", "/WEB-INF/dbforms-config.xml");
 
-			ConfigServlet configServlet = new ConfigServlet();
-			configServlet.init(config);
-		}
+         ConfigServlet configServlet = new ConfigServlet();
+         configServlet.init(config);
+      }
 
-		this.tag = new DbFormTag();
-		this.tag.setPageContext(this.pageContext);
-	}
+      this.tag = new DbFormTag();
+      this.tag.setPageContext(this.pageContext);
+   }
 
-	/**
-	 * DOCUMENT ME!
-	 * 
-	 * @throws Exception
-	 *             DOCUMENT ME!
-	 */
-	public void testTable() throws Exception {
-		this.tag.setTableName("BOOK");
-		this.tag.setFilter("BOOK_ID=5,AUTHOR_ID=2");
-		this.tag.doStartTag();
-		assertEquals(1, this.tag.getResultSetVector().size());
-	}
 
-	/**
-	 * DOCUMENT ME!
-	 * 
-	 * @throws Exception
-	 *             DOCUMENT ME!
-	 */
-	public void testQuery() throws Exception {
-		this.tag.setTableName("BOOKLISTPERAUTHOR");
-		this.tag.setFilter("BOOK_ID=5,AUTHOR_ID=2");
-		this.tag.doStartTag();
-		assertEquals(1, this.tag.getResultSetVector().size());
-	}
+   /**
+    * DOCUMENT ME!
+    *
+    * @throws Exception
+    *             DOCUMENT ME!
+    */
+   public void testQuery() throws Exception {
+      this.tag.setTableName("BOOKLISTPERAUTHOR");
+      this.tag.setFilter("BOOK_ID=5,AUTHOR_ID=2");
+      this.tag.doStartTag();
+      assertEquals(1, this.tag.getResultSetVector().size());
+   }
 
-	public void testQuery2() throws Exception {
-		this.tag.setTableName("BOOK_QUERY_WHERE");
-		this.tag.setFilter("BOOK_ID=1");
-		this.tag.doStartTag();
-		assertEquals(1, this.tag.getResultSetVector().size());
-	}
 
+   /**
+    * DOCUMENT ME!
+    *
+    * @throws Exception DOCUMENT ME!
+    */
+   public void testQuery2() throws Exception {
+      this.tag.setTableName("BOOK_QUERY_WHERE");
+      this.tag.setFilter("BOOK_ID=1");
+      this.tag.doStartTag();
+      assertEquals(1, this.tag.getResultSetVector().size());
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @throws Exception
+    *             DOCUMENT ME!
+    */
+   public void testTable() throws Exception {
+      this.tag.setTableName("BOOK");
+      this.tag.setFilter("BOOK_ID=5,AUTHOR_ID=2");
+      this.tag.doStartTag();
+      assertEquals(1, this.tag.getResultSetVector().size());
+   }
 }

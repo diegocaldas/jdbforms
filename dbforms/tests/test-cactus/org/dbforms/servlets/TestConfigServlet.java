@@ -25,65 +25,71 @@ package org.dbforms.servlets;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
+
 import org.apache.cactus.ServletTestCase;
+
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.Table;
 
+
+
 /**
  * Tests of the <code>DbFormTag</code> class.
- * 
+ *
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh </a>
- *  
+ *
  */
 public class TestConfigServlet extends ServletTestCase {
-	/**
-	 * Defines the testcase name for JUnit.
-	 * 
-	 * @param theName
-	 *            the testcase's name.
-	 */
-	public TestConfigServlet(String theName) {
-		super(theName);
-	}
+   /**
+    * Defines the testcase name for JUnit.
+    *
+    * @param theName
+    *            the testcase's name.
+    */
+   public TestConfigServlet(String theName) {
+      super(theName);
+   }
 
-	/**
-	 * Start the tests.
-	 * 
-	 * @param theArgs
-	 *            the arguments. Not used
-	 */
-	public static void main(String[] theArgs) {
-		junit.swingui.TestRunner.main(new String[] { TestConfigServlet.class
-				.getName() });
-	}
+   /**
+    * Start the tests.
+    *
+    * @param theArgs
+    *            the arguments. Not used
+    */
+   public static void main(String[] theArgs) {
+      junit.swingui.TestRunner.main(new String[] {
+                                       TestConfigServlet.class.getName()
+                                    });
+   }
 
-	/**
-	 * @return a test suite (<code>TestSuite</code>) that includes all
-	 *         methods starting with "test"
-	 */
-	public static Test suite() {
-		// All methods starting with "test" will be executed in the test suite.
-		return new TestSuite(TestConfigServlet.class);
-	}
 
-	/**
-	 * DOCUMENT ME!
-	 * 
-	 * @throws Exception
-	 *             DOCUMENT ME!
-	 */
-	public void testInitConfigServlet() throws Exception {
-		config.setInitParameter("dbformsConfig", "/WEB-INF/dbforms-config.xml");
+   /**
+    * @return a test suite (<code>TestSuite</code>) that includes all
+    *         methods starting with "test"
+    */
+   public static Test suite() {
+      // All methods starting with "test" will be executed in the test suite.
+      return new TestSuite(TestConfigServlet.class);
+   }
 
-		ConfigServlet configServlet = new ConfigServlet();
-		configServlet.init(config);
 
-		DbFormsConfig config = DbFormsConfigRegistry.instance().lookup();
+   /**
+    * DOCUMENT ME!
+    *
+    * @throws Exception
+    *             DOCUMENT ME!
+    */
+   public void testInitConfigServlet() throws Exception {
+      config.setInitParameter("dbformsConfig", "/WEB-INF/dbforms-config.xml");
 
-		Table tblAuthor = config.getTableByName("AUTHOR");
-		assertTrue("Found tblAuthor", tblAuthor.getName().equals("AUTHOR"));
+      ConfigServlet configServlet = new ConfigServlet();
+      configServlet.init(config);
 
-	}
+      DbFormsConfig config = DbFormsConfigRegistry.instance()
+                                                  .lookup();
 
+      Table         tblAuthor = config.getTableByName("AUTHOR");
+      assertTrue("Found tblAuthor", tblAuthor.getName().equals("AUTHOR"));
+   }
 }

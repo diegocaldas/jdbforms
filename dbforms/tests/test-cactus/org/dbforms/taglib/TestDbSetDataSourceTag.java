@@ -23,54 +23,59 @@
 
 package org.dbforms.taglib;
 
-import javax.servlet.jsp.tagext.BodyTag;
 import org.apache.cactus.JspTestCase;
+
+import org.dbforms.config.DbFormsConfigRegistry;
+
+import org.dbforms.servlets.ConfigServlet;
+
+import javax.servlet.jsp.tagext.BodyTag;
 
 import javax.sql.DataSource;
 
-import org.dbforms.config.DbFormsConfigRegistry;
-import org.dbforms.servlets.ConfigServlet;
+
 
 /**
  * Tests of the <code>BaseTag</code> class.
- * 
+ *
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh </a>
- *  
+ *
  */
 public class TestDbSetDataSourceTag extends JspTestCase {
-	private DbSetDataSource tag;
+   private DbSetDataSource tag;
 
-	/**
-	 * In addition to creating the tag instance and adding the pageContext to
-	 * it, this method creates a BodyContent object and passes it to the tag.
-	 */
-	public void setUp() throws Exception {
-		super.setUp();
+   /**
+    * In addition to creating the tag instance and adding the pageContext to
+    * it, this method creates a BodyContent object and passes it to the tag.
+    */
+   public void setUp() throws Exception {
+      super.setUp();
 
-		DbFormsConfigRegistry.instance().register(null);
-		config.setInitParameter("dbformsConfig", "/WEB-INF/dbforms-config.xml");
-		config.setInitParameter("log4j.configuration",
-				"/WEB-INF/log4j.properties");
-		ConfigServlet configServlet = new ConfigServlet();
-		configServlet.init(config);
-		tag = new DbSetDataSource();
-		tag.setDataSource("con");
-		tag.setPageContext(this.pageContext);
-	}
+      DbFormsConfigRegistry.instance()
+                           .register(null);
+      config.setInitParameter("dbformsConfig", "/WEB-INF/dbforms-config.xml");
+      config.setInitParameter("log4j.configuration", "/WEB-INF/log4j.properties");
 
-	//-------------------------------------------------------------------------
+      ConfigServlet configServlet = new ConfigServlet();
+      configServlet.init(config);
+      tag = new DbSetDataSource();
+      tag.setDataSource("con");
+      tag.setPageContext(this.pageContext);
+   }
 
-	public void testDbSetDataSourceTag() throws Exception {
-		//none of the other life cycle methods need to be implemented, so they
-		//do not need to be called.
-		int result = this.tag.doStartTag();
-		assertEquals(BodyTag.SKIP_BODY, result);
-		DataSource con = (DataSource) this.pageContext.getAttribute("con");
-		assertTrue("con != null", con != null);
-		result = this.tag.doEndTag();
-		assertEquals(BodyTag.EVAL_PAGE, result);
-		con = (DataSource) this.pageContext.getAttribute("con");
-		assertTrue("con != null", con != null);
-	}
 
+   //-------------------------------------------------------------------------
+   public void testDbSetDataSourceTag() throws Exception {
+      //none of the other life cycle methods need to be implemented, so they
+      //do not need to be called.
+      int result = this.tag.doStartTag();
+      assertEquals(BodyTag.SKIP_BODY, result);
+
+      DataSource con = (DataSource) this.pageContext.getAttribute("con");
+      assertTrue("con != null", con != null);
+      result = this.tag.doEndTag();
+      assertEquals(BodyTag.EVAL_PAGE, result);
+      con = (DataSource) this.pageContext.getAttribute("con");
+      assertTrue("con != null", con != null);
+   }
 }
