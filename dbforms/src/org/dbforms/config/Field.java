@@ -174,7 +174,10 @@ public class Field
 		}
    }
 
-	public void setType(Class clazz) {
+	public void setTypeByObject(Object obj) {
+		if (obj == null)
+		   return;
+		Class clazz = obj.getClass();
 		if (clazz.isAssignableFrom(java.lang.Integer.class))
 			type = FieldTypes.INTEGER;
 		else if (clazz.isAssignableFrom(java.lang.Long.class))

@@ -72,19 +72,18 @@ public class DbFormsValidator implements Serializable {
     ********************************************************************************************/
    public static boolean validateRequired(Object bean, ValidatorAction va, Field field, Vector errors, Locale locale, DbFormsErrors dbFormsErrors) {
       FieldValues hash = (FieldValues) bean;
-      String value = null;
-      try {
-         if (!Util.isNull(field.getProperty())) {
-            FieldValue f = hash.get(field.getProperty());
-            if (f == null)
-               // Field not found in fieldvector -> so it's not on current page.
-               // So we will not check it!
-               return true;
-            value = f.getFieldValueAsObject().toString();
-         }
-      } catch (Exception e) {
-         logCat.error(e);
-      }
+      if (Util.isNull(field.getProperty()))
+         return true;
+      FieldValue f = hash.get(field.getProperty());
+      if (f == null)
+         // Field not found in fieldvector -> so it's not on current page.
+         // So we will not check it!
+         return true;
+      if (f.getFieldValue().equals(f.getOldValue()))
+         // Check only if new value != old value!
+         return true;
+
+      String value = f.getFieldValueAsObject().toString();
       if (GenericValidator.isBlankOrNull(value)) {
          errors.add(new ValidationException(dbFormsErrorMessage(REQUIRED, va, field, locale, dbFormsErrors)));
          return false;
@@ -104,20 +103,7 @@ public class DbFormsValidator implements Serializable {
          * @param   dbFormsErrors  DbForms Error class to retrieve error message in DbForm-Errors.xml format.
     ********************************************************************************************/
    public static boolean validateMask(Object bean, ValidatorAction va, Field field, Vector errors, Locale locale, DbFormsErrors dbFormsErrors) {
-      FieldValues hash = (FieldValues) bean;
-      String value = null;
-      try {
-         if (!Util.isNull(field.getProperty())) {
-            FieldValue f = hash.get(field.getProperty());
-            if (f == null)
-               // Field not found in fieldvector -> so it's not on current page.
-               // So we will not check it!
-               return true;
-            value = f.getFieldValueAsObject().toString();
-         }
-      } catch (Exception e) {
-         logCat.error(e);
-      }
+      String value = getValue(bean, field);
       if (!Util.isNull(value)) {
          String mask = field.getVarValue("mask");
          if (!GenericValidator.isBlankOrNull(value) && !GenericValidator.matchRegexp(value, mask)) {
@@ -141,20 +127,7 @@ public class DbFormsValidator implements Serializable {
          * @param   dbFormsErrors  DbForms Error class to retrieve error message in DbForm-Errors.xml format.
     ********************************************************************************************/
    public static boolean validateByte(Object bean, ValidatorAction va, Field field, Vector errors, Locale locale, DbFormsErrors dbFormsErrors) {
-      FieldValues hash = (FieldValues) bean;
-      String value = null;
-      try {
-         if (!Util.isNull(field.getProperty())) {
-            FieldValue f = hash.get(field.getProperty());
-            if (f == null)
-               // Field not found in fieldvector -> so it's not on current page.
-               // So we will not check it!
-               return true;
-            value = f.getFieldValueAsObject().toString();
-         }
-      } catch (Exception e) {
-         logCat.error(e);
-      }
+      String value = getValue(bean, field);
       if (!Util.isNull(value)) {
          if (!GenericValidator.isByte(value)) {
             errors.add(new ValidationException(dbFormsErrorMessage(BYTE, va, field, locale, dbFormsErrors)));
@@ -178,20 +151,7 @@ public class DbFormsValidator implements Serializable {
          * @param   dbFormsErrors  DbForms Error class to retrieve error message in DbForm-Errors.xml format.
     ********************************************************************************************/
    public static boolean validateShort(Object bean, ValidatorAction va, Field field, Vector errors, Locale locale, DbFormsErrors dbFormsErrors) {
-      FieldValues hash = (FieldValues) bean;
-      String value = null;
-      try {
-         if (!Util.isNull(field.getProperty())) {
-            FieldValue f = hash.get(field.getProperty());
-            if (f == null)
-               // Field not found in fieldvector -> so it's not on current page.
-               // So we will not check it!
-               return true;
-            value = f.getFieldValueAsObject().toString();
-         }
-      } catch (Exception e) {
-         logCat.error(e);
-      }
+      String value = getValue(bean, field);
       if (!Util.isNull(value)) {
          if (!GenericValidator.isShort(value)) {
             errors.add(new ValidationException(dbFormsErrorMessage(SHORT, va, field, locale, dbFormsErrors)));
@@ -215,20 +175,7 @@ public class DbFormsValidator implements Serializable {
          * @param   dbFormsErrors  DbForms Error class to retrieve error message in DbForm-Errors.xml format.
     ********************************************************************************************/
    public static boolean validateInteger(Object bean, ValidatorAction va, Field field, Vector errors, Locale locale, DbFormsErrors dbFormsErrors) {
-      FieldValues hash = (FieldValues) bean;
-      String value = null;
-      try {
-         if (!Util.isNull(field.getProperty())) {
-            FieldValue f = hash.get(field.getProperty());
-            if (f == null)
-               // Field not found in fieldvector -> so it's not on current page.
-               // So we will not check it!
-               return true;
-            value = f.getFieldValueAsObject().toString();
-         }
-      } catch (Exception e) {
-         logCat.error(e);
-      }
+      String value = getValue(bean, field);
       if (!Util.isNull(value)) {
          if (!GenericValidator.isInt(value)) {
             errors.add(new ValidationException(dbFormsErrorMessage(INTEGER, va, field, locale, dbFormsErrors)));
@@ -252,20 +199,7 @@ public class DbFormsValidator implements Serializable {
          * @param   dbFormsErrors  DbForms Error class to retrieve error message in DbForm-Errors.xml format.
     ********************************************************************************************/
    public static boolean validateLong(Object bean, ValidatorAction va, Field field, Vector errors, Locale locale, DbFormsErrors dbFormsErrors) {
-      FieldValues hash = (FieldValues) bean;
-      String value = null;
-      try {
-         if (!Util.isNull(field.getProperty())) {
-            FieldValue f = hash.get(field.getProperty());
-            if (f == null)
-               // Field not found in fieldvector -> so it's not on current page.
-               // So we will not check it!
-               return true;
-            value = f.getFieldValueAsObject().toString();
-         }
-      } catch (Exception e) {
-         logCat.error(e);
-      }
+      String value = getValue(bean, field);
       if (!Util.isNull(value)) {
          if (!GenericValidator.isLong(value)) {
             errors.add(new ValidationException(dbFormsErrorMessage(LONG, va, field, locale, dbFormsErrors)));
@@ -289,20 +223,7 @@ public class DbFormsValidator implements Serializable {
          * @param   dbFormsErrors  DbForms Error class to retrieve error message in DbForm-Errors.xml format.
     ********************************************************************************************/
    public static boolean validateFloat(Object bean, ValidatorAction va, Field field, Vector errors, Locale locale, DbFormsErrors dbFormsErrors) {
-      FieldValues hash = (FieldValues) bean;
-      String value = null;
-      try {
-         if (!Util.isNull(field.getProperty())) {
-            FieldValue f = hash.get(field.getProperty());
-            if (f == null)
-               // Field not found in fieldvector -> so it's not on current page.
-               // So we will not check it!
-               return true;
-            value = f.getFieldValueAsObject().toString();
-         }
-      } catch (Exception e) {
-         logCat.error(e);
-      }
+      String value = getValue(bean, field);
       if (!Util.isNull(value)) {
          if (!GenericValidator.isFloat(value)) {
             errors.add(new ValidationException(dbFormsErrorMessage(FLOAT, va, field, locale, dbFormsErrors)));
@@ -325,20 +246,7 @@ public class DbFormsValidator implements Serializable {
          * @param   dbFormsErrors  DbForms Error class to retrieve error message in DbForm-Errors.xml format.
     ********************************************************************************************/
    public static boolean validateDouble(Object bean, ValidatorAction va, Field field, Vector errors, Locale locale, DbFormsErrors dbFormsErrors) {
-      FieldValues hash = (FieldValues) bean;
-      String value = null;
-      try {
-         if (!Util.isNull(field.getProperty())) {
-            FieldValue f = hash.get(field.getProperty());
-            if (f == null)
-               // Field not found in fieldvector -> so it's not on current page.
-               // So we will not check it!
-               return true;
-            value = f.getFieldValueAsObject().toString();
-         }
-      } catch (Exception e) {
-         logCat.error(e);
-      }
+      String value = getValue(bean, field);
       if (!Util.isNull(value)) {
          if (!GenericValidator.isDouble(value)) {
             errors.add(new ValidationException(dbFormsErrorMessage(DOUBLE, va, field, locale, dbFormsErrors)));
@@ -370,20 +278,7 @@ public class DbFormsValidator implements Serializable {
     ********************************************************************************************/
    public static boolean validateDate(Object bean, ValidatorAction va, Field field, Vector errors, Locale locale, DbFormsErrors dbFormsErrors) {
       boolean bValid = true;
-      FieldValues hash = (FieldValues) bean;
-      String value = null;
-      try {
-         if (!Util.isNull(field.getProperty())) {
-            FieldValue f = hash.get(field.getProperty());
-            if (f == null)
-               // Field not found in fieldvector -> so it's not on current page.
-               // So we will not check it!
-               return true;
-            value = f.getFieldValueAsObject().toString();
-         }
-      } catch (Exception e) {
-         logCat.error(e);
-      }
+      String value = getValue(bean, field);
       if (!Util.isNull(value)) {
          String datePattern = field.getVarValue("datePattern");
          String datePatternStrict = field.getVarValue("datePatternStrict");
@@ -420,20 +315,7 @@ public class DbFormsValidator implements Serializable {
          * @param   dbFormsErrors  DbForms Error class to retrieve error message in DbForm-Errors.xml format.
     ********************************************************************************************/
    public static boolean validateRange(Object bean, ValidatorAction va, Field field, Vector errors, Locale locale, DbFormsErrors dbFormsErrors) {
-      FieldValues hash = (FieldValues) bean;
-      String value = null;
-      try {
-         if (!Util.isNull(field.getProperty())) {
-            FieldValue f = hash.get(field.getProperty());
-            if (f == null)
-               // Field not found in fieldvector -> so it's not on current page.
-               // So we will not check it!
-               return true;
-            value = f.getFieldValueAsObject().toString();
-         }
-      } catch (Exception e) {
-         logCat.error(e);
-      }
+      String value = getValue(bean, field);
       if (!Util.isNull(value)) {
 
          String sMin = field.getVarValue("min");
@@ -463,20 +345,7 @@ public class DbFormsValidator implements Serializable {
          * @param   dbFormsErrors  DbForms Error class to retrieve error message in DbForm-Errors.xml format.
     ********************************************************************************************/
    public static boolean validateCreditCard(Object bean, ValidatorAction va, Field field, Vector errors, Locale locale, DbFormsErrors dbFormsErrors) {
-      FieldValues hash = (FieldValues) bean;
-      String value = null;
-      try {
-         if (!Util.isNull(field.getProperty())) {
-            FieldValue f = hash.get(field.getProperty());
-            if (f == null)
-               // Field not found in fieldvector -> so it's not on current page.
-               // So we will not check it!
-               return true;
-            value = f.getFieldValueAsObject().toString();
-         }
-      } catch (Exception e) {
-         logCat.error(e);
-      }
+      String value = getValue(bean, field);
       if (!Util.isNull(value)) {
          if (!GenericValidator.isCreditCard(value)) {
             errors.add(new ValidationException(dbFormsErrorMessage(CREDITCARD, va, field, locale, dbFormsErrors)));
@@ -499,20 +368,7 @@ public class DbFormsValidator implements Serializable {
          * @param   dbFormsErrors  DbForms Error class to retrieve error message in DbForm-Errors.xml format.
     ********************************************************************************************/
    public static boolean validateEmail(Object bean, ValidatorAction va, Field field, Vector errors, Locale locale, DbFormsErrors dbFormsErrors) {
-      FieldValues hash = (FieldValues) bean;
-      String value = null;
-      try {
-         if (!Util.isNull(field.getProperty())) {
-            FieldValue f = hash.get(field.getProperty());
-            if (f == null)
-               // Field not found in fieldvector -> so it's not on current page.
-               // So we will not check it!
-               return true;
-            value = f.getFieldValueAsObject().toString();
-         }
-      } catch (Exception e) {
-         logCat.error(e);
-      }
+      String value = getValue(bean, field);
       if (!Util.isNull(value)) {
          if (!GenericValidator.isEmail(value)) {
             errors.add(new ValidationException(dbFormsErrorMessage(EMAIL, va, field, locale, dbFormsErrors)));
@@ -533,20 +389,7 @@ public class DbFormsValidator implements Serializable {
          * @param   dbFormsErrors  DbForms Error class to retrieve error message in DbForm-Errors.xml format.
     ********************************************************************************************/
    public static boolean validateMaxLength(Object bean, ValidatorAction va, Field field, Vector errors, Locale locale, DbFormsErrors dbFormsErrors) {
-      FieldValues hash = (FieldValues) bean;
-      String value = null;
-      try {
-         if (!Util.isNull(field.getProperty())) {
-            FieldValue f = hash.get(field.getProperty());
-            if (f == null)
-               // Field not found in fieldvector -> so it's not on current page.
-               // So we will not check it!
-               return true;
-            value = f.getFieldValueAsObject().toString();
-         }
-      } catch (Exception e) {
-         logCat.error(e);
-      }
+      String value = getValue(bean, field);
       if (!Util.isNull(value)) {
          String sMaxLength = field.getVarValue("maxlength");
          int max = Integer.parseInt(sMaxLength);
@@ -572,20 +415,7 @@ public class DbFormsValidator implements Serializable {
          * @param   dbFormsErrors  DbForms Error class to retrieve error message in DbForm-Errors.xml format.
     ********************************************************************************************/
    public static boolean validateMinLength(Object bean, ValidatorAction va, Field field, Vector errors, Locale locale, DbFormsErrors dbFormsErrors) {
-      FieldValues hash = (FieldValues) bean;
-      String value = null;
-      try {
-         if (!Util.isNull(field.getProperty())) {
-            FieldValue f = hash.get(field.getProperty());
-            if (f == null)
-               // Field not found in fieldvector -> so it's not on current page.
-               // So we will not check it!
-               return true;
-            value = f.getFieldValueAsObject().toString();
-         }
-      } catch (Exception e) {
-         logCat.error(e);
-      }
+      String value = getValue(bean, field);
       if (!Util.isNull(value)) {
          String sMinLength = field.getVarValue("minlength");
 
@@ -604,6 +434,26 @@ public class DbFormsValidator implements Serializable {
    //*** P R I V A T E 	
    //***************************************************************************************************
 
+   private static String getValue(Object bean, Field field) {
+      try {
+         FieldValues hash = (FieldValues) bean;
+         if (Util.isNull(field.getProperty()))
+            return null;
+         FieldValue f = hash.get(field.getProperty());
+         if (f == null)
+            // Field not found in fieldvector -> so it's not on current page.
+            // So we will not check it!
+            return null;
+         if (f.getFieldValue().equals(f.getOldValue()))
+            // Check only if new value != old value!
+            return null;
+         String value = f.getFieldValueAsObject().toString();
+         return value;
+      } catch (Exception e) {
+         logCat.error(e);
+         return null;
+      }
+   }
    /********************************************************************************************
    * <p>Generate error message with the ResourceBundle error format if enable or
    * DBForms error standard format (dbforms_error.xml).

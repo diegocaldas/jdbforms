@@ -127,7 +127,7 @@ public class Error
     *
     * @param t DOCUMENT ME!
     */
-   public void setType(String t)
+   public void setTypeByObject(String t)
    {
       this.type = t;
    }

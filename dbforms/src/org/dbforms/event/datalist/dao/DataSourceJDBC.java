@@ -92,7 +92,7 @@ public class DataSourceJDBC extends DataSource
     */
    protected void finalize() throws Throwable
    {
-      getLogCat().info("finalize called");
+      getLogCat().debug("finalize called");
       // For firebird: rs and stmt will be closed if connection is closed!
       // closing in finalize will bring an error everytime!
       rs = null;
@@ -159,6 +159,7 @@ public class DataSourceJDBC extends DataSource
 
    private void closeConnection()
    {
+	  getLogCat().debug("closeConnection  called");
       fetchedAll = true;
 
       if (rs != null)
@@ -212,6 +213,8 @@ public class DataSourceJDBC extends DataSource
     */
    public void close()
    {
+	  getLogCat().debug("close called");
+
       if (data != null)
       {
          data.clear();

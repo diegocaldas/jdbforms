@@ -203,7 +203,7 @@ public abstract class EventFactory
 
             // set a new Properties object into the event;
             event.setProperties(new Properties(einfo.getProperties()));
-            event.setType(einfo.getType());
+            event.setTypeByObject(einfo.getType());
          }
          catch (Exception e)
          {

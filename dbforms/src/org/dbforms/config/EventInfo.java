@@ -115,7 +115,7 @@ public class EventInfo
     *
     * @param  type The new type value
     */
-   public void setType(String type)
+   public void setTypeByObject(String type)
    {
       this.type = type;
    }

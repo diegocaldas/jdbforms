@@ -156,7 +156,7 @@ public class TableEvents
    private void addEventInfo(String eventType) throws Exception
    {
       EventInfo einfo = new EventInfo();
-      einfo.setType(eventType);
+      einfo.setTypeByObject(eventType);
       einfo.setId(eventType);
       addEventInfo(einfo);
    }
