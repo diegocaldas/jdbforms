@@ -212,6 +212,8 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer
 
         // current Value from Database; or if no data: explicitly set by user; or ""
         String currentValue = getFormFieldValue();
+        if (Util.isNull(currentValue))
+           currentValue = value; 
 
         if (embeddedData == null)
         { // no embedded data is nested in this tag
@@ -220,11 +222,11 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer
             boolean isSelected = ((!parentForm.getFooterReached() || we instanceof ReloadEvent) && (value != null) && value.equals(currentValue)) ||  (parentForm.getFooterReached() && "true".equals(checked));
 
             tagBuf.append(generateTagString(value, "", isSelected));
-        	if (!Util.isNull(getNovalue())) {
+        	if (!Util.isNull(getNoValue())) {
         		tagBuf.append("<input type=\"hidden\" name=\"");
         		tagBuf.append(getFormFieldName());
         		tagBuf.append("\" value =\"");
-        		tagBuf.append(getNovalue());
+        		tagBuf.append(getNoValue());
         		tagBuf.append("\" ");
         		tagBuf.append("/>");
         	}
@@ -312,7 +314,7 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer
 	 * Returns the noValue.
 	 * @return String
 	 */
-	public String getNovalue() {
+	public String getNoValue() {
 		return noValue;
 	}
 
@@ -320,7 +322,7 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer
 	 * Sets the noValue.
 	 * @param noValue The noValue to set
 	 */
-	public void setNovalue(String noValue) {
+	public void setNoValue(String noValue) {
 		this.noValue = noValue;
 	}
 }
