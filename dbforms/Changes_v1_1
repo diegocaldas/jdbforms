@@ -1,3 +1,36 @@
+Sunday, October 13, 2002:
+(Henner.Kollmann@aucos.de):
+
+        - taglib_docu.xml:
+		added new tag DbPos
+		added onSubmit for dbForms
+ 	
+ 	- DbPosTag.java:
+		renders a position to use with keyToDestPos.
+ 		This is the same string wich would be used as 
+ 		value in the DbassociatedRadioTag.
+	- FieldValue.java:
+ 		extend search algorithm with 
+       		WEAK_START, WEAK_END, WEAK_START_END
+       		results in like '%search', 'search%', '%search%'
+	- dbForms.java:
+ 		added onSubmit support
+ 		extend search algorithm with 
+       		WEAK_START, WEAK_END, WEAK_START_END
+       		results in like '%search', 'search%', '%search%'
+ 	- DbFormsValidatorUtil.java 
+ 		Catch errors while getXMLErrorMessage
+ 	- Table.java 
+ 		getFieldValuesFromPositionAsHt: position.length() maybe 0
+ 		createOrderFieldValues        : use the default order if result.size == 0, 
+ 						not only if result == null 
+						This could happens if  all parameters 
+						with sort_  are set to none
+ 	- DbAssociatedRadioTag.java 
+ 		set checked=true for the first row
+ 	- GotoEvent.java 
+ 		correct processEvent: postion maybe of size == 0
+
 
 Thursday, September 19, 2002:
 (kraemer@rz.uni-kiel.de):
