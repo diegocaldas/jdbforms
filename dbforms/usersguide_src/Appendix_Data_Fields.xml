@@ -7,12 +7,12 @@
       <table>
       <title>description of internally used data fields</title>
       <tgroup cols="3">
-        <theader>
+        <theader><b>
           <row>
             		<entry>name</entry>
             		<entry>value</entry>
             		<entry>description</entry>
-          </row>
+          </row></b>
         </theader>
         <tbody>
           <row>
@@ -21,27 +21,27 @@
             <entry>table</entry>
           </row>
           <row>
-            <entry>invname_x</entry>
+            <entry>invname_[tableId]</entry>
             <entry>conectioname</entry>
-            <entry>involved dbconnection for table x</entry>
+            <entry>involved dbconnection for given table</entry>
           </row>
           <row>
-            <entry>autoupdate_x</entry>
+            <entry>autoupdate_[tableId]</entry>
             <entry>true/false</entry>
-            <entry>autoupdate for table x</entry>
+            <entry>autoupdate setted for given table</entry>
           </row>
           <row>
-            <entry>fu_x</entry>
+            <entry>fu_[tableId]</entry>
             <entry></entry>
-            <entry>follow up page for table x</entry>
+            <entry>follow up page for for given table</entry>
           </row>
           <row>
-            <entry>fue_x</entry>
+            <entry>fue_[tableId]</entry>
             <entry></entry>
-            <entry>follow up error page for table x</entry>
+            <entry>follow up error page for given table</entry>
           </row>
           <row>
-            <entry>formValidatorName_x</entry>
+            <entry>formValidatorName_[tableId]</entry>
             <entry></entry>
             <entry>name of validator</entry>
           </row>
@@ -51,173 +51,259 @@
             <entry>empty field to transport custom events</entry>
           </row>
           <row>
-            <entry>firstpos_x</entry>
+            <entry>firstpos_[tableId]</entry>
             <entry></entry>
-            <entry>first position on current form for table x</entry>
+            <entry>first position on current form for given table</entry>
           </row>
           <row>
-            <entry>lastpos_x</entry>
+            <entry>lastpos_[tableId]</entry>
             <entry></entry>
-            <entry>last position on current form for table x</entry>
+            <entry>last position on current form for given table</entry>
+          </row>
+          <row/>
+          <row>
+            <entry>f_[tableId]_[rowNo]@root_[fieldId]</entry>
+            <entry></entry>
+            <entry>value of field in table at row given row </entry>
           </row>
           <row>
-            <entry>f_x_y@root_z</entry>
+            <entry>of_[tableId]_[rowNo]@root_[fieldId]</entry>
             <entry></entry>
-            <entry>value of field z of table x at row y </entry>
+            <entry>old value of field in table at given row</entry>
           </row>
           <row>
-            <entry>of_x_y@root_z</entry>
+            <entry>k_[tableId]_[rowNo]@root</entry>
             <entry></entry>
-            <entry>old value of field z of table x at row y</entry>
+            <entry>key value of table and row</entry>
           </row>
           <row>
-            <entry>k_x_y@root</entry>
+            <entry>f_[tableId]_insroot_[fieldId]</entry>
             <entry></entry>
-            <entry>key value of table x and row y</entry>
+            <entry>value of field to insert in table</entry>
           </row>
           <row>
-            <entry>f_x_insroot_z</entry>
-            <entry></entry>
-            <entry>value of field z to insert in table x</entry>
-          </row>
-          <row>
-            <entry>of_x_insroot_z</entry>
+            <entry>of_[tableId]_insroot_[fieldId]</entry>
             <entry>null</entry>
-            <entry>old value of field z to insert in table x</entry>
+            <entry>old value of field to insert in table</entry>
+          </row>
+          <row/>
+          <row>
+            <entry>search_[tableId]_[fieldId]</entry>
+            <entry></entry>
+            <entry>search text for field in table</entry>
           </row>
           <row>
-            <entry>ac_update_x_y@root_z</entry>
+            <entry>searchalgo_[tableId]_[fieldId]</entry>
             <entry></entry>
-            <entry>update event for table x at row y, z is the button id</entry>
+            <entry>search algorithm for field in table</entry>
           </row>
           <row>
-            <entry>ac_update_x_y@root_z_arname</entry>
+            <entry>searchmode_[tableId]_[fieldId]</entry>
             <entry></entry>
-            <entry></entry>
+            <entry>search mode for field in table</entry>
           </row>
           <row>
-            <entry>ac_update_x_y@root_z_fu</entry>
+            <entry>sort_[tableId]_[fieldId]</entry>
+            <entry>none, desc, asc</entry>
+            <entry>sort mode for field  in table</entry>
+          </row>
+          <row/>
+          <row>
+            <entry>ac_update_[tableId]_[rowNo]@root_[buttonId]</entry>
             <entry></entry>
-            <entry></entry>
+            <entry>update event for table at given row</entry>
           </row>
           <row>
-            <entry>ac_update_x_y@root_z_fue</entry>
-            <entry></entry>
-            <entry></entry>
-          </row>
-          <row>
-            <entry>ac_updatear_x_z</entry>
-            <entry></entry>
-            <entry></entry>
-          </row>
-          <row>
-            <entry>ac_updatear_x_z_arname</entry>
+            <entry>ac_update_[tableId]_[rowNo]@root_[buttonId]_arname</entry>
             <entry></entry>
             <entry>name of associated radio button</entry>
           </row>
           <row>
-            <entry>ac_updatear_x_z_fu</entry>
+            <entry>ac_update_[tableId]_[rowNo]@root_[buttonId]_fu</entry>
             <entry></entry>
             <entry>follow up page</entry>
           </row>
           <row>
-            <entry>ac_updatear_x_z_fue</entry>
+            <entry>ac_update_[tableId]_[rowNo]@root_[buttonId]_fue</entry>
             <entry></entry>
             <entry>follow up error page</entry>
           </row>
           <row>
-            <entry>ac_delete_x_y@root_z</entry>
-            <entry></entry>
-            <entry>delete event for table x at row y, z is the button id</entry>
-          </row>
-          <row>
-            <entry>ac_delete_x_y@root_z_arname</entry>
+            <entry>ac_updatear_[tableId]_[buttonId]</entry>
             <entry></entry>
             <entry></entry>
           </row>
           <row>
-            <entry>ac_delete_x_y@root_z_fu</entry>
+            <entry>ac_updatear_[tableId]_[buttonId]_arname</entry>
+            <entry></entry>
+            <entry>name of associated radio button</entry>
+          </row>
+          <row>
+            <entry>ac_updatear_[tableId]_[buttonId]_fu</entry>
+            <entry></entry>
+            <entry>follow up page</entry>
+          </row>
+          <row>
+            <entry>ac_updatear_[tableId]_[buttonId]_fue</entry>
+            <entry></entry>
+            <entry>follow up error page</entry>
+          </row>
+          <row/>
+          <row>
+            <entry>ac_delete_[tableId]_[rowNo]@root_[buttonId]</entry>
+            <entry></entry>
+            <entry>delete event for table at given row</entry>
+          </row>
+          <row>
+            <entry>ac_delete_[tableId]_[rowNo]@root_[buttonId]_arname</entry>
             <entry></entry>
             <entry></entry>
           </row>
           <row>
-            <entry>ac_delete_x_y@root_z_fue</entry>
+            <entry>ac_delete_[tableId]_[rowNo]@root_[buttonId]_fu</entry>
             <entry></entry>
             <entry></entry>
           </row>
           <row>
-            <entry>ac_deletear_x_z</entry>
+            <entry>ac_delete_[tableId]_[rowNo]@root_[buttonId]_fue</entry>
             <entry></entry>
             <entry></entry>
           </row>
           <row>
-            <entry>ac_deletear_x_z_arname</entry>
+            <entry>ac_deletear_[tableId]_[buttonId]</entry>
             <entry></entry>
             <entry></entry>
           </row>
           <row>
-            <entry>ac_deletear_x_z_fu</entry>
+            <entry>ac_deletear_[tableId]_[buttonId]_arname</entry>
             <entry></entry>
             <entry></entry>
           </row>
           <row>
-            <entry>ac_deletear_x_z_fue</entry>
+            <entry>ac_deletear_[tableId]_[buttonId]_fu</entry>
             <entry></entry>
             <entry></entry>
           </row>
           <row>
-            <entry>ac_insert_x_root_z</entry>
-            <entry></entry>
-            <entry>insert event for table x, z is the button id</entry>
-          </row>
-          <row>
-            <entry>ac_insert_x_root_z_fu</entry>
+            <entry>ac_deletear_[tableId]_[buttonId]_fue</entry>
             <entry></entry>
             <entry></entry>
           </row>
+          <row/>
           <row>
-            <entry>ac_insert_x_root_z_fue</entry>
+            <entry>ac_insert_[tableId]_root_[buttonId]</entry>
             <entry></entry>
-            <entry></entry>
+            <entry>insert event for table</entry>
           </row>
           <row>
-            <entry>ac_first_x_z</entry>
-            <entry></entry>
-            <entry>navigation event for table x, z is the button id</entry>
-          </row>
-          <row>
-            <entry>ac_first_x_z_fu</entry>
+            <entry>ac_insert_[tableId]_root_[buttonId]_fu</entry>
             <entry></entry>
             <entry></entry>
           </row>
           <row>
-            <entry>ac_first_x_z_fue</entry>
+            <entry>ac_insert_[tableId]_root_[buttonId]_fue</entry>
+            <entry></entry>
+            <entry></entry>
+          </row>
+          <row/>
+          <row>
+            <entry>ac_first_[tableId]_[buttonId]</entry>
+            <entry></entry>
+            <entry>navigation event for table x</entry>
+          </row>
+          <row>
+            <entry>ac_first_[tableId]_[buttonId]_fu</entry>
             <entry></entry>
             <entry></entry>
           </row>
           <row>
-            <entry>ac_prev_x_z</entry>
+            <entry>ac_first_[tableId]_[buttonId]_fue</entry>
             <entry></entry>
             <entry></entry>
           </row>
           <row>
-            <entry>navigation event for table x, z is the button id</entry>
+            <entry>ac_prev_[tableId]_[buttonId]</entry>
             <entry></entry>
             <entry></entry>
           </row>
           <row>
-            <entry>ac_prev_x_z_fu</entry>
+            <entry>navigation event for table</entry>
             <entry></entry>
             <entry></entry>
           </row>
           <row>
-            <entry>ac_prev_x_z_fue</entry>
+            <entry>ac_prev_[tableId]_[buttonId]_fu</entry>
             <entry></entry>
             <entry></entry>
+          </row>
+          <row>
+            <entry>ac_prev_[tableId]_[buttonId]_fue</entry>
+            <entry></entry>
+            <entry></entry>
+          </row>
+          <row>
+            <entry>ac_next_[tableId]_[buttonId]</entry>
+            <entry></entry>
+            <entry>navigation event for table</entry>
+          </row>
+          <row>
+            <entry>ac_next_[tableId]_[buttonId]_fu</entry>
+            <entry></entry>
+            <entry></entry>
+          </row>
+          <row>
+            <entry>ac_next_[tableId]_[buttonId]_fue</entry>
+            <entry></entry>
+            <entry></entry>
+          </row>
+          <row>
+            <entry>ac_last_[tableId]_[buttonId]</entry>
+            <entry></entry>
+            <entry></entry>
+          </row>
+          <row>
+            <entry>navigation event for table</entry>
+            <entry></entry>
+            <entry></entry>
+          </row>
+          <row>
+            <entry>ac_last_[tableId]_[buttonId]_fu</entry>
+            <entry></entry>
+            <entry></entry>
+          </row>
+          <row>
+            <entry>ac_last_[tableId]_[buttonId]_fue</entry>
+            <entry></entry>
+            <entry></entry>
+          </row>
+          <row/>
+          <row>
+            <entry>filter_[tableId]</entry>
+            <entry></entry>
+            <entry>prefix that all the parameters created by this tag have</entry>
+          </row>
+          <row>
+            <entry>filter_[tableId]_sel</entry>
+            <entry></entry>
+            <entry>index of the currently selected condition</entry>
+          </row>
+          <row>
+            <entry>filter_[tableId]_cond_[condId]</entry>
+            <entry></entry>
+            <entry>text of the currently selected condition</entry>
+          </row>
+          <row>
+            <entry>filter_[tableId]_cond_[condId]_value_[valueId]</entry>
+            <entry></entry>
+            <entry>current value of the input tag corresponding to the filterValue tag identified by [valueId]</entry>
+          </row>
+          <row>
+            <entry>filter_[tableId]_cond_[condId]_valuetype_[valueId]</entry>
+            <entry></entry>
+            <entry>type of the value identified by [valueId] </entry>
           </row>
         </tbody>
       </tgroup>
     </table>
-
   </para>
 </appendix>
