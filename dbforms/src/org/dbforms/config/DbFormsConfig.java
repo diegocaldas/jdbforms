@@ -194,7 +194,7 @@ public class DbFormsConfig
       }
       catch (Exception ex)
       {
-         logCat.error("getDbConnection", ex);
+// wanted!        logCat.error("getDbConnection", ex);
       }
       if (connection != null)
       {
@@ -342,7 +342,10 @@ public class DbFormsConfig
     */
    public void setRealPath(String realPath)
    {
-      this.realPath = realPath.replace('\\', '/');
+      if (!Util.isNull(realPath)) {
+		realPath = realPath.replace('\\', '/');
+      }
+      this.realPath = realPath;
    }
 
 
