@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Document   : client_side_unit_testing.xml
+    Created on : July 29, 2003, 12:26 PM
+    Author     : javajunkie
+    Description:
+        Purpose of the document follows.
+-->
+
+<chapter>
+<title>Client Side Unit Testing</title>
+<para> 
+Client side unit testing has been introduced into dbforms! Now it is possible to
+test client side http responses during unit tests.</para>
+ 
+<para>How it works:</para>
+ <itemizedlist mark="opencircle">
+<listitem>
+<para>before starting unit tests, tomcat as application server is started with the bookstore application deployed.
+</para>
+</listitem>
+<listitem>
+<para>
+The unit tests uses <ulink url="http://maxq.tigris.org"><citetitle>maxq</citetitle></ulink> and the HTTPClient package to test the responses of the server. 
+</para>
+</listitem> 
+</itemizedlist>
+<para><emphasis role="bold">See </emphasis><computeroutput>test/test/dbforms/org/bookstore</computeroutput><emphasis role="bold"> for
+three example test cases.</emphasis></para>
+
+<para>To generate own unit tests you can use the new maven task <computeroutput>maxq</computeroutput>. This task
+first starts tomcat as application server and second starts maxq as recorder
+of your web pages. Only thing you must do to use the recorder is to set your
+<computeroutput>proxyport</computeroutput> to <computeroutput>localhost:8090</computeroutput> so that all request can be proxied by maxq.
+For detail information see the link above.</para>
+</chapter>
