@@ -50,7 +50,7 @@ public class TextFormatterUtil extends DbBaseHandlerTag {
     * @param pattern DOCUMENT ME!
     * @param obj DOCUMENT ME!
     */
-   public TextFormatterUtil(Field  field,
+   protected TextFormatterUtil(Field  field,
                             Locale locale,
                             String pattern,
                             Object obj) {

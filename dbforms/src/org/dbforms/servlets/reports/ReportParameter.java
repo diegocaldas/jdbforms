@@ -163,8 +163,7 @@ public class ReportParameter {
       try {
          Field field = new Field();
          field.setTypeByObject(obj);
-         TextFormatterUtil f = new TextFormatterUtil(field, locale, pattern, obj);
-         return f.getFormattedFieldValue();
+         return TextFormatterUtil.FormatText(field, locale, pattern, obj); 
       } catch (Exception e) {
          logCat.error(e);
 
