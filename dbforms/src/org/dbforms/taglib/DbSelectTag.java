@@ -176,7 +176,7 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer,
 
       if (selected)
       {
-         tagBuf.append(" selected");
+         tagBuf.append(" selected=\"selected\" ");
       }
 
 

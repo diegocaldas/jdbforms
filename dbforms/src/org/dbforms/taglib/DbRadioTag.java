@@ -137,7 +137,7 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer,
 
       if (selected)
       {
-         tagBuf.append(" checked ");
+         tagBuf.append(" checked=\"checked\" ");
       }
 
       if (getAccessKey() != null)

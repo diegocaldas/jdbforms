@@ -164,7 +164,7 @@ public class DbCheckboxTag extends DbBaseHandlerTag implements DataContainer,
       tagBuf.append("\" ");
 
       if (selected) {
-         tagBuf.append(" checked ");
+         tagBuf.append(" checked=\"checked\" ");
       }
 
       if (getAccessKey() != null) {
