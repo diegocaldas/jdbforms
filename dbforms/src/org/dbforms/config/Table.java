@@ -1516,7 +1516,9 @@ public class Table
    public void synchronizeData(FieldValues fv, Hashtable assocFv)
    {
       Enumeration enum = assocFv.keys();
-
+      // 20031016-HKK: Bug fix: clear fv before refilling:. 
+      //                        Making the fieldValues.remove("something_I_dont_want_updated") work? It gets ignored now.   
+      fv.clear();
       while (enum.hasMoreElements())
       {
          String aFieldName = (String) enum.nextElement();
