@@ -693,6 +693,14 @@ etc)</summary>
 					</info>
 				</attribute>
 				<attribute>
+					<name>customFormatter</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						<p>The name of a formatting instance registered previously by using the setCustomFormatter tag</p>
+					</info>
+				</attribute>
+				<attribute>
 					<name>styleClass</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
@@ -788,6 +796,14 @@ SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd&quot;);
 	                                
 	    (examples taken from Java API doc)
 						</pre>
+					</info>
+				</attribute>
+				<attribute>
+					<name>customFormatter</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						<p>The name of a formatting instance registered previously by using the setCustomFormatter tag</p>
 					</info>
 				</attribute>
 				<attribute>
@@ -984,6 +1000,14 @@ interaction with JavaScript<p style="text-autospace:none">Identification which c
   to force DbForms to print out the field's value using a certain formatting style.this 
   is done internally by invoking method &quot;format(Object)&quot; of the providedFormat 
   object</p>
+					</info>
+				</attribute>
+				<attribute>
+					<name>customFormatter</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						<p>The name of a formatting instance registered previously by using the setCustomFormatter tag</p>
 					</info>
 				</attribute>
 				<attribute>
@@ -1262,6 +1286,14 @@ SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd&quot;);
 					</info>
 				</attribute>
 				<attribute>
+					<name>customFormatter</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						<p>The name of a formatting instance registered previously by using the setCustomFormatter tag</p>
+					</info>
+				</attribute>
+				<attribute>
 					<name>hidden</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
@@ -1536,6 +1568,14 @@ of the input field</info>
 					</info>
 				</attribute>
 				<attribute>
+					<name>customFormatter</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						<p>The name of a formatting instance registered previously by using the setCustomFormatter tag</p>
+					</info>
+				</attribute>
+				<attribute>
 					<name>rows</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
@@ -1776,6 +1816,14 @@ using textareas</info>
   to force DbForms to print out the field's value using a certain formatting style.this 
   is done internally by invoking method &quot;format(Object)&quot; of the providedFormat 
   object</p>
+					</info>
+				</attribute>
+				<attribute>
+					<name>customFormatter</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						<p>The name of a formatting instance registered previously by using the setCustomFormatter tag</p>
 					</info>
 				</attribute>
 				<attribute>
@@ -2908,6 +2956,14 @@ group of them</summary>
 					</info>
 				</attribute>
 				<attribute>
+					<name>force</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						<p>If true value of checked attribute is always used.</p>
+					</info>
+				</attribute>
+				<attribute>
 					<name>growDirection</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
@@ -3164,6 +3220,30 @@ character used to move focus immediately to thiselement.</info>
 						Useful in select if you have a 4 digit lookup value and want to avoid it being reformatted
 						with the default locale as #,###. Use pattern="#" to avoid this. 
 					</info> 
+				</attribute>				
+				<attribute>
+					<name>ifEmptyItem</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>Item to be used if there is no embedded data</info>
+				</attribute>
+				<attribute>
+					<name>ifEmptyDontDraw</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>Do not draw the Select box if there is no data</info>
+				</attribute>
+				<attribute>
+					<name>overrideFormFieldName</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>override the generated name for the html widget</info>
+				</attribute>
+				<attribute>
+					<name>overrideReadOnly</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>[EXPERIMENTAL] override the read only attribute of the parent form</info>
 				</attribute>
 				<attribute>
 					<name>onBlur</name>
@@ -7388,6 +7468,238 @@ This structure will be rendered as a html select element to select the condition
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
 					<info>this defines the "title" attribute for the HTML4 tag.</info>
+				</attribute>
+			</tag>
+
+			<tag>
+				<name>redirectURL</name>
+				<summary>force a redirect to a DbForms View			
+				</summary>
+				<tagclass>org.dbforms.taglib.DbRedirectURLTag</tagclass>
+				<bodycontent>JSP</bodycontent>
+				<info>generates a link to a DbForms View
+				</info>
+				<attribute>
+					<name>href</name>
+					<required>true</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>the url of the JSP file representing the view</info>
+				</attribute>
+				<attribute>
+					<name>tableName</name>
+					<required>true</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						the url of the table the view represents
+					</info>
+				</attribute>
+				<attribute>
+					<name>position</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+            optional: the position to navigate to within table &quot;tableName&quot;
+                <p>for backwards compatibility is the same as destPos!</p>
+					</info>
+				</attribute>
+				<attribute>
+					<name>parentField</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						<p>
+              used if parentTable is different to tableName: 
+              field(s) in the main form that is/are linked to this form
+            </p>
+					</info>
+				</attribute>
+				<attribute>
+					<name>childField</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						<p>
+              used if parentTable is different to tableName:
+              field(s) in this form that is/are linked to the parent form
+             </p>
+					</info>
+				</attribute>
+				<attribute>
+					<name>destPos</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						<p> 
+            a value indicating the row to navigate to.
+            Position strings are used as request parameters 
+            allowing the framework to keep track 
+                  of the position the user comes from or goes to.  This string is 
+            structured as follows:
+            </p>
+						<p>fieldId : fieldValueLength : fieldValue</p>
+						<p>It is important to note that if multiple keys exist in the definition 
+                     of the table, your position string must includes values for each 
+                           key. (separated by dashes (-))
+                        </p>
+						<p>Example:</p>
+						<p>&lt;! Jump to another JSP, specify position using multiple keys--&gt;<br/>
+                           &lt;db:gotoButton caption=&quot;View Sample Details&quot;
+                           destination=&quot;/viewSample.jsp&quot;<br/>
+                           destTable=&quot;Sample&quot; destPos=&quot;1:6:widget-3:2:23&quot;/&gt;
+                        </p>
+					</info>
+				</attribute>
+				<attribute>
+					<name>keyToDestPos</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						<p>
+            a key indicating the row to navigate to. 
+             </p>
+						<p>Example:</p>
+						<p>
+                                                   &lt;! Jump to another JSP, specify position through a key --&gt;<br/>
+                        &lt;db:gotoButton  
+                                                caption=&quot;View Sample Details&quot;  
+                                                destination=&quot;/viewSample.jsp&quot;<br/>
+                        destTable=&quot;Sample&quot; 
+                        keyToDestPos="k_1_1@root"/&gt;
+                             </p>
+					</info>
+				</attribute>
+				<attribute>
+					<name>keyToKeyToDestPos</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						<p>
+            a key to the key indicating the row to navigate to. 
+            For each record in the result-set, 
+            the associatedRadio  tag generates a key reference 
+                        which can be used to retrieve a position string.
+                       </p>
+						<p>Example:</p>
+						<p>&lt;!for each record, generate a key to the position string --&gt;<br/>
+                     &lt;db:body&gt;&lt;db:associatedRadio name=&quot;test&quot;/&gt;&lt;/db:body&gt;<br/>
+							<br/>
+                           &lt;db:footer&gt;<br/>
+                                                   &lt;! Jump to another JSP, specify position 
+                                                   (get second record using appropriate key!)--&gt;<br/>
+                        &lt;db:gotoButton  
+                                                caption=&quot;View Sample Details&quot;  
+                                                destination=&quot;/viewSample.jsp&quot;<br/>
+                        destTable=&quot;Sample&quot; 
+                        keyToKeyDestPos=&quot;test&quot;/&gt;</p>
+                        Check "customerlist.jsp" in example!
+                     </info>
+				</attribute>
+				<attribute>
+					<name>singleRow</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						if set to true, only one row of data will be fetched.
+						default is false, so that all rows of data will be fetched and 
+						the requested record will be set as actual record.
+					</info>
+				</attribute>
+			</tag>
+			<tag>
+				<name>setCustomFormatter</name>
+				<summary>Register a Custom Formatter for later use				
+				</summary>
+				<tagclass>org.dbforms.taglib.SetCustomFormatterTag</tagclass>
+				<bodycontent>JSP</bodycontent>
+				<info>
+					<p>The registered class must implement the org.dbforms.util.Formatter interface.
+					A new instance of the object will be instantiated and initialized with the 'arg' value,
+					this instance will be given the name 'name'. The name exists in the session space.
+					Other tags that utilize the custom formatter will use the attribute customFormatter='xyz',
+					where 'xyz' is the name registered. Multiple instances of the same object can exist with different
+					names and initial values for arg.
+					</p>
+					<p>
+					At runtime the class's setLocale() method will be called. Then the sprintf(Object[] data) method will be called, 
+					data will be an array of 3 values. 
+					data[0] = string of text (i.e. what would normally be displayed), data[1] is the current 
+					field of type Field, and data[2] is the invoking tag of type Tag.
+					The methods should check for null values in the input.
+					</p>
+				</info>
+				<attribute>
+					<name>name</name>
+					<required>true</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>name to use, other tags will use this as the value for the customFormatter attribute</info>
+				</attribute>
+				<attribute>
+					<name>className</name>
+					<required>true</required>
+					<rtexprvalue>true</rtexprvalue>
+					<type>org.dbforms.util.Formatter</type>
+					<info>FQ ClassName to load</info>
+				</attribute>
+				<attribute>
+					<name>arg</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>optional: arg passed to instance</info>
+				</attribute>
+				<attribute>
+					<name>arg</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>optional: arg passed to instance</info>
+				</attribute>
+			</tag>
+			<tag>
+				<name>customFormat</name>
+				<summary>Format input by using a registered CustomFormatter			
+				</summary>
+				<tagclass></tagclass>
+				<bodycontent>JSP</bodycontent>
+				<info>
+						<p>format input by using a register CustomFormatter</p>
+						<p>example:</p>
+						<pre>
+&lt;db:customFormat customFormatter="stid"&gt;1234567812345678&lt;/db:customFormat&gt;
+&lt;db:customFormat customFormatter="ostid" value="87654321" /&gt;
+						</pre>
+				</info>
+				<attribute>
+					<name>customFormatter</name>
+					<required>true</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>name of the registered custom formatter. see setCustomFormatter</info>
+				</attribute>
+				<attribute>
+					<name>value</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>input text</info>
+				</attribute>
+			</tag>
+			<tag>
+				<name>isError</name>
+				<summary>Allows a developer to detect if an error has been reported.				
+				</summary>
+				<tagclass>org.dbforms.taglib.IsErrorTag</tagclass>
+				<bodycontent>JSP</bodycontent>
+				<info>Allows a developer to detect if an error has been reported.
+				   Example &lt;isError value="false"&gt;No Errors Occurred&lt;/isError&gt;
+				</info>
+				<attribute>
+					<name>name</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>the name that should be used for retrieving the error-data from the session. Default = "errors"</info>
+				</attribute>
+				<attribute>
+					<name>value</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>Body is evaluated if errorstate matches value. Default is set to true.</info>
 				</attribute>
 			</tag>
 		</taglib>
