@@ -647,6 +647,11 @@ etc)</summary>
 			<!-- **************************** dateLabel tag ***********************************-->
 			<tag>
 				<name>dateLabel</name>
+				<summary>
+					<p>label - a tag for date data PRESENTATION, NOT data EDITING (=> can never be used 
+               			as input field)
+		             </p>
+				</summary>
 				<tagclass>org.dbforms.taglib.DbDateLabelTag</tagclass>
 				<bodycontent>empty</bodycontent>
 				<attribute>
@@ -2879,7 +2884,9 @@ hanlder executed when the user selects an item</info>
 					<name>tableName</name>
 					<required>true</required>
 					<rtexprvalue>true</rtexprvalue>
-					<info>the url of the table the view represents</info>
+					<info>
+						the url of the table the view represents
+					</info>
 				</attribute>
 				<attribute>
 					<name>position</name>
@@ -2981,6 +2988,16 @@ hanlder executed when the user selects an item</info>
                         keyToKeyDestPos=&quot;test&quot;/&gt;</p>
                         Check "customerlist.jsp" in example!
                      </info>
+				</attribute>
+				<attribute>
+					<name>singleRow</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						if set to true, only one row of data will be fetched.
+						default is false, so that all rows of data will be fetched and 
+						the requested record will be set as actual record.
+					</info>
 				</attribute>
 			</tag>
 			<!-- **************************** position tag ***********************************-->
@@ -5156,6 +5173,16 @@ the toplevel form to jump to [may be deprecated soon]</info>
                         keyToKeyDestPos=&quot;test&quot;/&gt;</p>
                         Check "customerlist.jsp" in example!
                      </info>
+				</attribute>
+				<attribute>
+					<name>singleRow</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						if set to true, only one row of data will be fetched.
+						default is false, so that all rows of data will be fetched and 
+						the requested record will be set as actual record.
+					</info>
 				</attribute>
 				<attribute>
 					<name>accessKey</name>

@@ -327,7 +327,7 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag
       tagBuf.append(dataKey);
       tagBuf.append("\" value =\"");
       tagBuf.append(dataValue);
-      tagBuf.append("\">");
+      tagBuf.append("\"/>");
 
       return tagBuf.toString();
    }

@@ -21,14 +21,23 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.taglib;
-import java.util.*;
-import java.io.*;
-import javax.servlet.http.*;
-import javax.servlet.jsp.*;
-import javax.servlet.jsp.tagext.*;
 
-import org.dbforms.config.*;
-import org.dbforms.util.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import javax.servlet.jsp.JspException;
+
+import javax.servlet.jsp.tagext.BodyTagSupport;
+import javax.servlet.jsp.tagext.TryCatchFinally;
+
+import org.dbforms.config.DbFormsConfig;
+import org.dbforms.config.Field;
+import org.dbforms.config.Table;
+
+import org.dbforms.util.FieldValue;
+import org.dbforms.util.FieldValues;
+import org.dbforms.util.Util;
+
 import org.apache.log4j.Category;
 
 
@@ -79,7 +88,8 @@ public class DbLinkURLTag extends BodyTagSupport implements TryCatchFinally
    private DbFormTag parentForm;
    private String    keyToDestPos;
    private String    keyToKeyToDestPos;
-
+   private String    singleRow = "false";
+   
    /**
     * used if parentTable is different to tableName:
     * field(s) in the main form that is/are linked to this form
@@ -313,9 +323,11 @@ public class DbLinkURLTag extends BodyTagSupport implements TryCatchFinally
 
          // 2002-11-21 HKK: Allow same keys as in dbgotobutton
          tagBuf.append(getDataTag(tagName, "keyToDestPos",
-               Util.encode(keyToDestPos,request.getCharacterEncoding ())));
+         Util.encode(keyToDestPos,request.getCharacterEncoding ())));
          tagBuf.append(getDataTag(tagName, "keyToKeyDestPos",
-               Util.encode(keyToKeyToDestPos,request.getCharacterEncoding ())));
+         Util.encode(keyToKeyToDestPos, request.getCharacterEncoding ())));
+
+
 
          // 2002-11-21 HKK: New: send parent table name as parameter if it is different to table
          if (table != parentForm.getTable())
@@ -328,6 +340,8 @@ public class DbLinkURLTag extends BodyTagSupport implements TryCatchFinally
                   Util.encode(parentField, null)));
          }
 
+			tagBuf.append(getDataTag(tagName, "singleRow", getSingleRow()));
+		
          HttpServletResponse response = (HttpServletResponse) pageContext
             .getResponse();
          String              s = tagBuf.toString();
@@ -503,4 +517,21 @@ public class DbLinkURLTag extends BodyTagSupport implements TryCatchFinally
       logCat.info("doCatch called - " + t.toString());
       throw t;
    }
+
+	/**
+	 * @return the attribute
+	 */
+	public String getSingleRow()
+	{
+		return singleRow;
+	}
+
+	/**
+	 * @param string 
+	 */
+	public void setSingleRow(String string)
+	{
+		singleRow = string;
+	}
+
 }

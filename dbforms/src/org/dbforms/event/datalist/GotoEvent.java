@@ -59,6 +59,8 @@ public class GotoEvent extends NavigationEvent
    private String parentField;
    private String whereClause = null;
    private String tableList   = null;
+   private boolean singleRow = false;
+
 
    /**
     * Constructor - parses the event details. <br>
@@ -76,7 +78,8 @@ public class GotoEvent extends NavigationEvent
       // create dummy action so that tableId will be parsed to -1!
       // table and tableId will be parsed here!
       super("data_data_-1", request, config);
-
+      
+      
       String destTable = ParseUtil.getParameter(request, 
                                                 "data" + action + "_destTable");
 
@@ -103,6 +106,9 @@ public class GotoEvent extends NavigationEvent
       String srcTable = ParseUtil.getParameter(request, 
                                                "data" + action + "_srcTable");
 
+      singleRow = "true".equals(ParseUtil.getParameter(request, 
+                                         "data" + action + "_singleRow"));
+
       if (srcTable != null)
       {
          this.srcTable = config.getTableByName(srcTable);
@@ -112,8 +118,8 @@ public class GotoEvent extends NavigationEvent
             this.srcTable = config.getTable(Integer.parseInt(srcTable));
          }
 
-         childField  = ParseUtil.getParameter(request, 
-                                              "data" + action + "_childField");
+         childField = ParseUtil.getParameter(request, 
+                                             "data" + action + "_childField");
          parentField = ParseUtil.getParameter(request, 
                                               "data" + action + "_parentField");
       }
@@ -225,23 +231,18 @@ public class GotoEvent extends NavigationEvent
    {
       // get the DataSourceList from the session
       logCat.info("==> GotoEvent.processEvent");
-      
+
       position = Util.decode(position);
-	  FieldValues fv;
+
+      FieldValues fv;
+
       if (!Util.isNull(position))
       {
-
          if ((srcTable != null) && !Util.isNull(childField)
                    && !Util.isNull(parentField))
          {
             fv = table.mapChildFieldValues(srcTable, parentField, childField, 
                                            position);
-			// You must set the childFieldValues in this case! 
-			// Old given childFieldValues do not match table!
-			if (fv != null)
-			{
-				childFieldValues = fv.toArr();
-			}
          }
          else
          {
@@ -249,7 +250,12 @@ public class GotoEvent extends NavigationEvent
          }
 
          position = table.getKeyPositionString(fv);
-      } 
+
+			if (singleRow && (fv != null))
+			{
+				childFieldValues = fv.toArr();
+			}
+      }
 
       DataSourceList ds = DataSourceList.getInstance(request);
       ds.remove(table, request);

@@ -21,14 +21,25 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.taglib;
-import java.util.*;
-import java.sql.*;
-import java.io.*;
-import javax.servlet.jsp.*;
-import javax.servlet.jsp.tagext.*;
 
-import org.dbforms.util.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import javax.servlet.jsp.JspException;
+
+import javax.servlet.jsp.tagext.BodyTagSupport;
+import javax.servlet.jsp.tagext.TryCatchFinally;
+
+import org.dbforms.config.DbFormsConfig;
+import org.dbforms.config.Field;
+import org.dbforms.config.Table;
+
+import org.dbforms.util.FieldValue;
+import org.dbforms.util.FieldValues;
+import org.dbforms.util.Util;
+
 import org.dbforms.validation.ValidatorConstants;
+
 import org.apache.log4j.Category;
 
 
@@ -37,7 +48,7 @@ import org.apache.log4j.Category;
  *
  * <p>this tag renders a Goto-button.
  *
- * @author Joachim Peer <j.peer@gmx.net>
+ * @author Joachim Peer 
  */
 public class DbGotoButtonTag extends DbBaseButtonTag
 {
@@ -48,12 +59,10 @@ public class DbGotoButtonTag extends DbBaseButtonTag
    private String     destPos;
    private String     keyToDestPos;
    private String     keyToKeyToDestPos;
-   private static int uniqueID;
+	private String     singleRow = "false";
 
-   static
-   {
-      uniqueID = 1;
-   }
+   private static int uniqueID = 1;
+
 
    /**
     * DOCUMENT ME!
@@ -227,6 +236,9 @@ public class DbGotoButtonTag extends DbBaseButtonTag
                   keyToKeyToDestPos));
          }
 
+			tagBuf.append(getDataTag(tagName, "singleRow", getSingleRow()));
+
+
          tagBuf.append(getButtonBegin());
          tagBuf.append(" name=\"");
          tagBuf.append(tagName);
@@ -285,4 +297,21 @@ public class DbGotoButtonTag extends DbBaseButtonTag
 
       return EVAL_PAGE;
    }
+
+	/**
+	 * @return the attribute
+	 */
+	public String getSingleRow()
+	{
+		return singleRow;
+	}
+
+	/**
+	 * @param string
+	 */
+	public void setSingleRow(String string)
+	{
+		singleRow = string;
+	}
+
 }
