@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <author email="j.peer@gmx.net">J Peer</author>
+    <title>DbForms Powered By - course administration backend</title>
+  </properties>
+
+<body>
+
+<section name="Powered By - J Peer's Shopping Site Backend">
+
+  <subsection name="Description">
+    <p>
+      The following screenshots are the backend for a course adminstration site.
+    </p>
+  </subsection>
+
+  <subsection name="Screenshots">
+    <center>
+    <p>
+      <img src="../images/poweredby/j_peer_2/pic1.png" border="0"/>
+      <br/>
+      <br/>&amp;nbsp;
+    </p>
+    <p>
+      <img src="../images/poweredby/j_peer_2/pic2.png" border="0"/>
+      <br/>
+      <br/>&amp;nbsp;
+    </p>
+    <p>
+      <img src="../images/poweredby/j_peer_2/pic3.png" border="0"/>
+      <br/>
+      <br/>&amp;nbsp;
+    </p>
+    <p>
+      <img src="../images/poweredby/j_peer_2/pic4.png" border="0"/>
+      <br/>
+      <br/>&amp;nbsp;
+    </p>
+    <p>
+      <img src="../images/poweredby/j_peer_2/pic5.png" border="0"/>
+      <br/>
+      <br/>&amp;nbsp;
+    </p>
+    <p>
+      <img src="../images/poweredby/j_peer_2/pic6.png" border="0"/>
+      <br/>
+      <br/>&amp;nbsp;
+    </p>
+    </center>
+  </subsection>
+
+</section>
+
+</body>
+</document>
