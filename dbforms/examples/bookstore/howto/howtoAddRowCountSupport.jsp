@@ -7,7 +7,7 @@
 	<db:dbform 
 			multipart="false" 
 			autoUpdate="false" 
-			followUp="/howto/howtoUseTheCustomFormatter.jsp" 
+			followUp="/howto/howtoAddRowCountSupport.jsp" 
 			maxRows="*" tableName="BOOK">
 			<db:header>
 				<db:errors/>  

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!-- ATTENTION: New tables only at the end otherwise the junit tests will not run!!!!!  -->
-<dbforms-config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="D:\projekte\webapps\dbforms\dbforms\src\org\dbforms\resources\dbforms-config.xsd">
+<dbforms-config 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:noNamespaceSchemaLocation="../../../../src/org/dbforms/resources/dbforms-config.xsd"
+>
 	    <table name="AUTHOR">
 	        <field name="AUTHOR_ID" fieldType="int" isKey="true" autoInc="true"/>
 	        <field name="NAME" fieldType="varchar"  sortable="true"/>

@@ -52,6 +52,17 @@
          	       </a>
                  </td>
 				 <td>
+					<db:gotoButton
+ 	                   		    caption="gotoBooks"        
+                   				destination="/tests/testBOOKSList.jsp" 
+                            	destTable="BOOK"
+                            	parentField="AUTHOR_ID"
+                            	childField="AUTHOR_ID"
+		                   		destPos='<%= position_AUTHOR_VIEW%>'
+		                   		singleRow="true"
+                   	/>
+				 </td>	
+				 <td>
 					position: <%= position_AUTHOR_VIEW %>
 				 </td>	
               </tr>
