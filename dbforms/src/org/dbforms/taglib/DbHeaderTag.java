@@ -91,6 +91,8 @@ public class DbHeaderTag extends BodyTagSupport
             if (bodyContent != null)
             {
                 bodyContent.writeOut(bodyContent.getEnclosingWriter());
+                bodyContent.clearBody(); // 2002116-HKK: workaround for duplicate rows in Tomcat 4.1
+
             }
         }
         catch (java.io.IOException e)

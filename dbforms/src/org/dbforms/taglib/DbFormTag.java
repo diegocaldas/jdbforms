@@ -1630,7 +1630,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
             if (bodyContent != null)
             {
                 bodyContent.writeOut(bodyContent.getEnclosingWriter());
-
+                bodyContent.clearBody(); // 2002116-HKK: workaround for duplicate rows in Tomcat 4.1
             }
 
             logCat.debug("pageContext.getOut()=" + pageContext.getOut());
@@ -2468,13 +2468,20 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
     public String getTableList()
     {
         // if tableList is null, use the tableName attribute (fossato@pow2.com [2002.11.16] HKK 2002.11.16)
+        /*
         String myTables = tableList;
         if (Util.isNull(myTables))
             myTables = tableName;
         return myTables;
-
+        */
         // or we could rewite as:
         // return Util.isNull(myTables) ? tableName : tableList;
+
+        // or we could rewite as:
+        // return Util.isNull(tableList) ? tableName : tableList;
+        
+       // nevertheless moved the whole stuff to table.getFreeFormSelectQuery so using query tag will work!
+       return tableList;
     }
 
 
