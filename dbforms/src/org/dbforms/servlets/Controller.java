@@ -228,19 +228,7 @@ public class Controller extends HttpServlet
             }
             catch (MultipleValidationException mve)
             {
-               java.util.Vector v = null;
-
-               if ((v = mve.getMessages()) != null)
-               {
-                  Enumeration enum = v.elements();
-
-                  while (enum.hasMoreElements())
-                  {
-                     errors.addElement(enum.nextElement());
-                  }
-               }
-
-               cleanUpConnectionAfterException(con);
+			   processMultipleValidationException(con, errors, mve);
             }
          }
          
@@ -301,19 +289,7 @@ public class Controller extends HttpServlet
                      }
                      catch (MultipleValidationException mve)
                      {
-                        java.util.Vector v = null;
-
-                        if ((v = mve.getMessages()) != null)
-                        {
-                           Enumeration enum = v.elements();
-
-                           while (enum.hasMoreElements())
-                           {
-                              errors.addElement(enum.nextElement());
-                           }
-                        }
-
-                        cleanUpConnectionAfterException(con);
+						processMultipleValidationException(con, errors, mve);
                      }
                   }
                }
@@ -346,6 +322,40 @@ public class Controller extends HttpServlet
    }
 
 
+ 
+ 
+   /**
+	 * PRIVATE METHODS here
+	 */
+   
+   
+   /**
+    *  Process the input MultipleValidationException object.
+    * 
+    * @param con    the connection object to close
+    * @param errors the errors vector to fill
+    * @param mve    the MultipleValidationException to process
+    */
+   private void processMultipleValidationException(Connection con,
+	    										   Vector     errors,
+	                                               MultipleValidationException mve) 
+   {
+     java.util.Vector v = null;
+	
+	 if ((v = mve.getMessages()) != null)
+	 {
+	    Enumeration enum = v.elements();
+	
+	    while (enum.hasMoreElements())
+	    {
+	       errors.addElement(enum.nextElement());
+	    }
+	 }
+	
+	 cleanUpConnectionAfterException(con);
+   }
+
+  
    /**
     * Send error messages to the servlet's output stream
     * 
@@ -372,23 +382,18 @@ public class Controller extends HttpServlet
    }
 
 
-
-
    /**
-    * PRIVATE METHODS here
-    */
-   
-   
-   /**
-    * Grunikiewicz.philip&at;hydro.qc.ca 2001-10-29 In our development, we
-    * sometimes set the connection object to autoCommit = false in the
-    * interceptor (Pre... methods). This allows us to have dbForms do part of
+    * In our development, we sometimes set the connection object to 
+    * autoCommit = false in the interceptor (Pre... methods). 
+    * This allows us to have dbForms do part of
     * the required transaction (other parts are done via jdbc calls). If the
     * database throws an exception, then we need to make sure that the
     * connection is reinitialized (rollbacked) before it is sent back into the
     * connection pool.
     * 
-    * @param con Description of the Parameter
+    * Grunikiewicz.philip&at;hydro.qc.ca 2001-10-29 
+    * 
+    * @param con the connection object
     */
    private void cleanUpConnectionAfterException(Connection con)
    {
