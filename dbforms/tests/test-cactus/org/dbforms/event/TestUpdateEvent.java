@@ -82,7 +82,7 @@ public class TestUpdateEvent extends JspTestCase
             .createUpdateEvent(
                   0, 
                   "0@root", 
-                  (HttpServletRequest)request, 
+                  request, 
                   DbFormsConfigRegistry.instance().lookup());
       Connection con = DbFormsConfigRegistry.instance().lookup().getConnection();
       evt.processEvent(con);            

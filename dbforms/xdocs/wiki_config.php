@@ -1,4 +1,7 @@
 <?php
+ 
+#-- change timezone to GMT
+putenv ("TZ=GMT"); 
 
 #-- change dir to where this config script is located
 chdir(dirname(__FILE__)."/ewiki");
@@ -115,7 +118,7 @@ include("plugins/admin/control.php");
 #-- load ewiki 'lib'
 include("ewiki.php");
 
-
+error_reporting(E_NONE);
 
 # remove all languages
 unset($ewiki_t["languages"]);
