@@ -14,12 +14,12 @@
 	    	</tr>
 	      	<tr>
 	      		<td>merge the 1_1_4dev developers branch back into the main trunk</td>
-	      		<td>Henner Kollmann</td>
+	      		<td>Henner Kollmann (Henner.Kollmann@gmx.de)</td>
 	      		<td>open</td>
 	      	</tr>
 	      	<tr>
 	      		<td>Make the new navigation system to the default system</td>
-	      		<td>Henner Kollmann</td>
+	      		<td>Henner Kollmann (Henner.Kollmann@gmx.de)</td>
 	      		<td>open</td>
 	      	</tr>
 	      	<tr>
@@ -42,11 +42,36 @@
 	      	</tr>
 	      	<tr>
 	      		<td>
-				Kepp textField empty when numeric field in database is null
+				Kepp textField empty when numeric field in database is null<p>
 	      		</td>
 	      		<td>unassigned</td>
 	      		<td>open</td>
 	      	</tr>
+	      	<tr>
+	      		<td>
+				make JasperReport directories configurable
+				Is it possible to have the configuration of 
+				StartReportServlet done by user the way it's done for 
+				ConfigServlet instead of limiting reports to be placed in 
+				WEB-INF/custom/reports, or WEB-INF/reports? I have 
+				used JasperReports for some time and have placed 
+				report definitions in sub-directories of WEB- 
+				INF/templates/reports. I would like to keep this 
+				configuration.
+				
+	      		</td>
+	      		<td>Henner Kollmann (Henner.Kollmann@gmx.de)</td>
+	      		<td>open</td>
+	      	</tr>
+	      	<tr>
+	      		<td>
+				Making the fieldValues.remove("something_I_dont_want_updated") work?
+				It gets ignored now.
+	      		</td>
+	      		<td>unassigned</td>
+	      		<td>open</td>
+	      	</tr>
+	    </table>
 	  </p>
   	
   	</section>
