@@ -1689,7 +1689,7 @@ public class Table
             // Blank space used between field and command
             if (index != -1) // Do we have a command, if not assume ASC order
             {
-               String command = token.substring(index);
+               String command = token.substring(index).toUpperCase();
                int    pos = command.indexOf("ASC");
 
                if (pos == -1) // ASC not found, try descending
