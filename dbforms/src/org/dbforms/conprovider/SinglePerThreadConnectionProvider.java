@@ -24,22 +24,20 @@ package org.dbforms.conprovider;
 
 import java.util.Properties;
 
-import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
- *  Single Connection provider.
+ *  Single Connection per thread provider.
  *  <br>
  *  provides one connection for all
  * 
  * @author Henner Kollmann
  * 
  */
-public class SingleConnectionProvider extends ConnectionProvider {
-   
-   private static SingleConnectionWrapper _con;
-   
+public class SinglePerThreadConnectionProvider extends ConnectionProvider {
+   private final static ThreadLocal singlePerThread = new ThreadLocal();
    /**
     *  Default constructor.
     *
@@ -47,7 +45,7 @@ public class SingleConnectionProvider extends ConnectionProvider {
     * @throws  Exception because of the <code>throws Exception</code> clause
     *          of the  <code>init</code> method.
     */
-   public SingleConnectionProvider() throws Exception {
+   public SinglePerThreadConnectionProvider() throws Exception {
       super();
    }
 
@@ -58,6 +56,7 @@ public class SingleConnectionProvider extends ConnectionProvider {
     * @exception  SQLException Description of the Exception
     */
    protected synchronized Connection getConnection() throws SQLException {
+      Connection _con = (Connection) singlePerThread.get();
       if (_con == null) {
          Properties props = getPrefs().getProperties();
          Connection con = null;
@@ -75,6 +74,7 @@ public class SingleConnectionProvider extends ConnectionProvider {
          }
 
          _con = new SingleConnectionWrapper(con);
+         singlePerThread.set(_con);
       }
       return _con;
    }
@@ -87,5 +87,6 @@ public class SingleConnectionProvider extends ConnectionProvider {
    protected void init() throws Exception {
       Class.forName(getPrefs().getJdbcDriver()).newInstance();
    }
+
 
 }
