@@ -6,7 +6,7 @@
 	</head>
    <body>
       <db:dbform autoUpdate="false" 
-                 followUp="/tests/testAuthorBooksSub.jsp" 
+                 followUp="/tests/testAuthorBooksSubForm.jsp" 
                  maxRows="1" 
                  tableName="AUTHOR"
                  
