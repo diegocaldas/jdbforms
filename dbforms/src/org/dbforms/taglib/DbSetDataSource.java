@@ -44,7 +44,7 @@ public class DbSetDataSource
 	public int doStartTag() throws JspException {
 		try {
 			// get the connection and place it in attribute;
-			DataSource ds = getConfig().getDbConnection(dbConnectionName);
+			DataSource ds = getConfig().getDataSource(dbConnectionName);
 			pageContext.setAttribute(getDataSource(), ds, PageContext.PAGE_SCOPE);
 		} catch (Exception e) {
 			throw new JspException("Database error" + e.getMessage());

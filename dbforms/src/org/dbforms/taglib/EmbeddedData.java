@@ -279,12 +279,12 @@ public abstract class EmbeddedData
 				logCat.error(e);
 				throw new JspException(e);
 			}
-			Connection con = config.getConnection(dbConnectionName);
-
-			if (con == null) {
-				throw new JspException("EmbeddedData has got no database connection!");
-			}
-
+         Connection con = null;
+         try {
+            con = config.getConnection(dbConnectionName);
+   		} catch (Exception e) {
+            throw new JspException(e);
+   		}
 			try {
 				data = fetchData(con);
 				// Always store data in pageContext - Maybe we need it later.

@@ -37,6 +37,8 @@ import org.dbforms.util.ReflectionUtil;
 import org.dbforms.dom.DOMFactory;
 
 import java.sql.Connection;
+import java.sql.SQLException;
+import javax.sql.DataSource;
 
 /****
  * <p>
@@ -143,7 +145,6 @@ public class DbFormsConfig {
       if (!Util.isNull(dbConnection.getId())) {
          dbConnectionsHash.put(dbConnection.getId(), dbConnection);
       }
-
       // if a default connection does not exist yet,
       // use the input connection as the default one;
       if ((dbConnection.isDefaultConnection()
@@ -153,7 +154,6 @@ public class DbFormsConfig {
          defaultDbConnection = dbConnection;
          dbConnection.setDefaultConnection(true);
       }
-
       logCat.info(
          "::addDbConnection - added the dbConnection [" + dbConnection + "]");
    }
@@ -165,30 +165,29 @@ public class DbFormsConfig {
     *
     * @return DOCUMENT ME!
     */
-   public DbConnection getDbConnection(String dbConnectionName) {
+   public DataSource getDataSource(String dbConnectionName) {
       DbConnection connection = null;
-
-      if (Util.isNull(dbConnectionName)) {
-         return defaultDbConnection;
+      if (!Util.isNull(dbConnectionName)) {
+         try {
+            connection =
+               (DbConnection) dbConnectionsList.get(
+                  Integer.parseInt(dbConnectionName));
+         } catch (Exception ex) {
+            // wanted! logCat.error("getDbConnection", ex);
+         }
+         if (connection == null) {
+            connection = (DbConnection) dbConnectionsHash.get(dbConnectionName);
+         }
       }
-
-      try {
-         connection =
-            (DbConnection) dbConnectionsList.get(
-               Integer.parseInt(dbConnectionName));
-      } catch (Exception ex) {
-         // wanted! logCat.error("getDbConnection", ex);
-      }
-      if (connection != null) {
-         return connection;
-      }
-
-      connection = (DbConnection) dbConnectionsHash.get(dbConnectionName);
-
       if (connection == null) {
          connection = defaultDbConnection;
       }
-
+      if ((connection != null) && !Util.isNull(connection.getContextDataSource())) {
+         DataSource ds = (DataSource) getServletContext().getAttribute(connection.getContextDataSource());
+         if (ds != null) {  
+            return ds;
+         }
+      }
       return connection;
    }
 
@@ -200,7 +199,8 @@ public class DbFormsConfig {
     * 
     * @throws IllegalArgumentException if any error occurs
     */
-   public Connection getConnection() throws IllegalArgumentException {
+   public Connection getConnection()
+      throws IllegalArgumentException, SQLException {
       return getConnection(null);
    }
 
@@ -215,11 +215,11 @@ public class DbFormsConfig {
     * @throws IllegalArgumentException if any error occurs
     */
    public Connection getConnection(String dbConnectionName)
-      throws IllegalArgumentException {
-      DbConnection dbConnection = null;
+      throws IllegalArgumentException, SQLException {
+      DataSource dbConnection = null;
       Connection con = null;
       //  get the DbConnection object having the input name;
-      if ((dbConnection = getDbConnection(dbConnectionName)) == null) {
+      if ((dbConnection = getDataSource(dbConnectionName)) == null) {
          throw new IllegalArgumentException(
             "No DbConnection object configured with name '"
                + dbConnectionName
@@ -232,7 +232,6 @@ public class DbFormsConfig {
             "JDBC-Troubles:  was not able to create connection from "
                + dbConnection);
       }
-
       return con;
    }
 

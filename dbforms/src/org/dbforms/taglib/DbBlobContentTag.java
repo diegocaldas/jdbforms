@@ -33,20 +33,16 @@ import org.dbforms.config.FieldTypes;
 import org.dbforms.util.SqlUtil;
 import org.apache.log4j.Category;
 
-
-
 /**
  * #fixme docu to come
  *
  * @author Joe Peer
  */
-public class DbBlobContentTag extends DbBaseHandlerTag
-      implements javax.servlet.jsp.tagext.TryCatchFinally
-{
+public class DbBlobContentTag
+   extends DbBaseHandlerTag
+   implements javax.servlet.jsp.tagext.TryCatchFinally {
    private Category logCat = Category.getInstance(this.getClass().getName());
    private String dbConnectionName;
-   
-   
 
    /**
    * DOCUMENT ME!
@@ -57,12 +53,9 @@ public class DbBlobContentTag extends DbBaseHandlerTag
    * @throws IllegalArgumentException DOCUMENT ME!
    * @throws JspException DOCUMENT ME!
    */
-   public int doEndTag() throws javax.servlet.jsp.JspException
-   {
-      try
-      {
-         if (getParentForm().getFooterReached())
-         {
+   public int doEndTag() throws javax.servlet.jsp.JspException {
+      try {
+         if (getParentForm().getFooterReached()) {
             return EVAL_PAGE; // nothing to do when no data available..
          }
 
@@ -72,96 +65,83 @@ public class DbBlobContentTag extends DbBaseHandlerTag
          queryBuf.append(" FROM ");
          queryBuf.append(getParentForm().getTable().getName());
          queryBuf.append(" WHERE ");
-         queryBuf.append(getParentForm().getTable().getWhereClauseForKeyFields());
+         queryBuf.append(
+            getParentForm().getTable().getWhereClauseForKeyFields());
          logCat.info("blobcontent query- " + queryBuf.toString());
 
          StringBuffer contentBuf = new StringBuffer();
-         Connection   con = getConfig().getConnection(dbConnectionName);
 
-         try
-         {
+         try {
+            Connection con = getConfig().getConnection(dbConnectionName);
             PreparedStatement ps = con.prepareStatement(queryBuf.toString());
-            getParentForm().getTable().populateWhereClauseWithKeyFields(getKeyVal(), ps, 1);
+            getParentForm().getTable().populateWhereClauseWithKeyFields(
+               getKeyVal(),
+               ps,
+               1);
 
             ResultSet rs = ps.executeQuery();
 
-            if (rs.next())
-            {
-               if (getField().getType() == FieldTypes.DISKBLOB)
-               {
+            if (rs.next()) {
+               if (getField().getType() == FieldTypes.DISKBLOB) {
                   String fileName = rs.getString(1);
 
-                  if (fileName != null)
-                  {
+                  if (fileName != null) {
                      fileName = fileName.trim();
                   }
 
-                  logCat.info("READING DISKBLOB field.getDirectory()="
-                     + getField().getDirectory() + " " + "fileName=" + fileName);
+                  logCat.info(
+                     "READING DISKBLOB field.getDirectory()="
+                        + getField().getDirectory()
+                        + " "
+                        + "fileName="
+                        + fileName);
 
-                  if ((fileName == null) || (getField().getDirectory() == null)
-                           || (fileName.length() == 0)
-                           || (getField().getDirectory().length() == 0))
-                  {
+                  if ((fileName == null)
+                     || (getField().getDirectory() == null)
+                     || (fileName.length() == 0)
+                     || (getField().getDirectory().length() == 0)) {
                      return EVAL_PAGE;
                   }
 
                   File file = new File(getField().getDirectory(), fileName);
 
-                  if (file.exists())
-                  {
+                  if (file.exists()) {
                      logCat.info("fs- file found " + file.getName());
 
-                     FileInputStream fis  = new FileInputStream(file);
-                     BufferedReader  br   = new BufferedReader(new InputStreamReader(
-                              fis));
-                     char[]          c    = new char[1024];
-                     int             read;
+                     FileInputStream fis = new FileInputStream(file);
+                     BufferedReader br =
+                        new BufferedReader(new InputStreamReader(fis));
+                     char[] c = new char[1024];
+                     int read;
 
-                     while ((read = br.read(c)) != -1)
-                     {
+                     while ((read = br.read(c)) != -1) {
                         contentBuf.append(c, 0, read);
                      }
 
                      fis.close();
-                  }
-                  else
-                  {
+                  } else {
                      logCat.info("fs- file not found");
                   }
+               } else {
+                  throw new IllegalArgumentException("DbBlobContentTag is currently only for DISKBLOBS - feel free to copy code from FileServlet.java to this place to bring this limitation to an end :=)");
                }
-               else
-               {
-                  throw new IllegalArgumentException(
-                     "DbBlobContentTag is currently only for DISKBLOBS - feel free to copy code from FileServlet.java to this place to bring this limitation to an end :=)");
-               }
-            }
-            else
-            {
+            } else {
                logCat.info("fs- we have got no result" + queryBuf);
             }
-         }
-         catch (SQLException sqle)
-         {
-            sqle.printStackTrace();
-         }
-         finally
-         {
             SqlUtil.closeConnection(con);
+         } catch (SQLException sqle) {
+            sqle.printStackTrace();
          }
 
          pageContext.getOut().write(contentBuf.toString());
-      }
-      catch (java.io.IOException ioe)
-      {
+      } catch (java.io.IOException ioe) {
          throw new JspException("IO Error: " + ioe.getMessage());
       }
 
       return EVAL_PAGE;
    }
 
-   public void doFinally()
-   {
+   public void doFinally() {
       dbConnectionName = null;
       super.doFinally();
    }
@@ -169,24 +149,21 @@ public class DbBlobContentTag extends DbBaseHandlerTag
    /**
     * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
     */
-   public void doCatch(Throwable t) throws Throwable
-   {
+   public void doCatch(Throwable t) throws Throwable {
       throw t;
    }
 
-
    // ------------------------------------------------------ Protected Methods
    // DbForms specific
-
 
    /**
    * DOCUMENT ME!
    *
    * @return DOCUMENT ME!
    */
-   private String getKeyVal()
-   {
-      return getParentForm().getTable().getKeyPositionString(getParentForm().getResultSetVector());
+   private String getKeyVal() {
+      return getParentForm().getTable().getKeyPositionString(
+         getParentForm().getResultSetVector());
    }
    /**
     * @return
