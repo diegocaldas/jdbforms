@@ -36,6 +36,9 @@ win32 platforms, you could:
 
 - set your default settings to your sourceforge accout!
 
+- special Windows: set your path so that maven can find the cvs command! For WinCVS 1.2 it's the WinCVS dir, for WinCVS 1.3 it's
+                   the WinCVS/CVSNT dir!
+                   
 That's all !
 
 
