@@ -1465,12 +1465,20 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
          if (navEvent == null) {
             Vector errors = (Vector) request.getAttribute("errors");
 
-            if ((count != 0) && (webEvent != null) && EventType.EVENT_DATABASE_INSERT.equals(webEvent.getType()) && (errors != null) && (errors.size() > 0)) {
-               // error in insert event, nothing to do!
-               navEvent = null;
-               resultSetVector = null;
-               setFooterReached(true);
-            } else if (!Util.isNull(getWhereClause())) {
+// grunikiewicz.philip@hydro.qc.ca
+// 2003-12-16
+// Commented code to fix the following problem:
+// Insert invoked in sub-form, validation error, suppose to re-populate all fields (parent and child)
+// Commented code changes all field names to INSERT type - making repopulate impossible! 
+
+//            if ((count != 0) && (webEvent != null) && EventType.EVENT_DATABASE_INSERT.equals(webEvent.getType()) && (errors != null) && (errors.size() > 0)) {
+//               // error in insert event, nothing to do!
+//               navEvent = null;
+//               resultSetVector = null;
+//               setFooterReached(true);
+//            } else 
+            
+            if (!Util.isNull(getWhereClause())) {
                // We should do a free form select
                navEvent = navEventFactory.createGotoEvent(table, request, config, whereClause, getTableList());
             } else {
