@@ -30,7 +30,8 @@
         		   						singleRow="YES">
     	       	         					<db:position 
     	       	         							fieldName="AUTHOR_ID" 
-    	       	         							value="<%=(String)currentRow_BOOK.get("AUTHOR_ID")%>"/>
+    	       	         							value='<%=(String)currentRow_BOOK.get("AUTHOR_ID") %>'
+    	       	         					/>
 						   	       </db:linkURL>"
 						>
 				        	<db:dataLabel fieldName="AUTHOR_ID">
