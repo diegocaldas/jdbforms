@@ -62,8 +62,12 @@ public class BookstoreWithInterceptorTest extends DbEventInterceptorSupport {
 
    public int preUpdate(HttpServletRequest request, Table table, FieldValues fieldValues, DbFormsConfig config, Connection con) throws ValidationException {
       logCat.info("preUpdate called");
-      fieldValues.remove("ISBN");
-      return GRANT_OPERATION;
+      if ("42".equals(fieldValues.get("ISBN").getFieldValue())) {
+         return IGNORE_OPERATION;
+      } else {
+         fieldValues.remove("ISBN");
+         return GRANT_OPERATION;
+      }
    }
 
    public int preSelect(HttpServletRequest request, DbFormsConfig config, Connection con) {
