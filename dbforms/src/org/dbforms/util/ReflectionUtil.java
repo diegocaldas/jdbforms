@@ -64,11 +64,26 @@ public class ReflectionUtil
       throws Exception
    {
       Class       myClass       = Class.forName(className);
-      Constructor myConstructor = myClass.getConstructor(constructorArgsTypes);
-
-      return myConstructor.newInstance(constructorArgs);
+      return newInstance(myClass, constructorArgsTypes, constructorArgs);
    }
 
+	/**
+	 * Return the object having the input class name, instanced with the
+	 * constructor having the <code>constructorArgsTypes</code> arguments.
+	 *
+	 * @param className              the object class name
+	 * @param constructorArgsTypes   the object constructor arguments classes
+	 * @param constructorArgs        the object constructor arguments values
+	 * @return                       the instanced object
+	 * @exception Exception if any error occurs
+	 */
+	public static Object newInstance(Class clazz,
+		Class[] constructorArgsTypes, Object[] constructorArgs)
+		throws Exception
+	{
+		Constructor myConstructor = clazz.getConstructor(constructorArgsTypes);
+		return myConstructor.newInstance(constructorArgs);
+	}
 
    /**
     *  Invokes the underlying method represented by this Method object,
