@@ -37,13 +37,13 @@
       <name>DbForms Interest</name>
       <subscribe>http://lists.sourceforge.net/lists/listinfo/jdbforms-interest</subscribe>
       <unsubscribe>http://lists.sourceforge.net/lists/listinfo/jdbforms-interest</unsubscribe>
-      <archive></archive>
+      <archive>http://sourceforge.net/mailarchive/forum.php?forum_id=2497</archive>
     </mailingList>
     <mailingList>
       <name>DbForms Developers</name>
       <subscribe>http://lists.sourceforge.net/lists/listinfo/jdbforms-developers</subscribe>
       <unsubscribe>http://lists.sourceforge.net/lists/listinfo/jdbforms-developers</unsubscribe>
-      <archive></archive>
+      <archive>http://sourceforge.net/mailarchive/forum.php?forum_id=1896</archive>
     </mailingList>    
   </mailingLists>
 
