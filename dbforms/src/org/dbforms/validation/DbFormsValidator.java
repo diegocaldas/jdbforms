@@ -27,10 +27,10 @@ import org.apache.commons.validator.Field;
 import org.apache.commons.validator.GenericValidator;
 import org.apache.commons.validator.ValidatorAction;
 import javax.servlet.ServletContext;
-import org.dbforms.DbFormsErrors;
 import java.util.Vector;
 import java.util.Hashtable;
 import org.dbforms.event.ValidationException;
+import org.dbforms.util.DbFormsErrors;
 import org.apache.log4j.Category;
 
 
