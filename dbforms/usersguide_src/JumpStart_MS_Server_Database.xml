@@ -79,13 +79,6 @@ dbforms installation.
 
 - Microsoft JDBC driver for Microsoft SQL Server.
 	- downloadable from http://www.microsoft.com/sql/downloads
-
-- Struts v. 1.0.2
-	- downloadable from http://jakarta.apache.org, Struts project
-            Currently, click the &quot;Resources&quot; link under &quot;Download&quot; part of the
-            Commons project at jakarta.apache.org.)<footnote><para>I don't know the difference between a &quot;version&quot; and an
-            &quot;implementation version&quot;, as in the case of log4j.jar. Anyone who knows,
-            please let me know.</para> </footnote>
              
 - commons-beanutils.jar
 	- ver. 1.0
@@ -106,7 +99,7 @@ dbforms installation.
 	- downloadable from http://jakarta.apache.org, Commons project
         
 - commons-lang.jar
-        -	ver. ?
+        -	ver. 1.0
 	- downloadable from http://jdbforms.sourceforge.net, click &quot;Resources&quot;
 		under &quot;Download&quot;
 	-	downloadable from http://jakarta.apache.org, Commons project
@@ -118,7 +111,7 @@ dbforms installation.
 	-	downloadable from http://jakarta.apache.org, Commons project
       
 - commons-validator.jar
-	- ver. ? (manifest file doesn't list version.)
+	- ver. 1.0  
 	- downloadable from http://jdbforms.sourceforge.net, click &quot;Resources&quot;
 		under &quot;Download&quot;
 	- downloadable from http://jakarta.apache.org, Commons project
@@ -364,7 +357,6 @@ Copy required jars
 	-	commons-digester.jar
 	-	commons-logging.jar
 	-	commons-validator.jar
-        -       commons-util.jar
         -       commons-lang.jar
 	-	cos.jar
 	-	jakarta-oro-2.0.6.jar
@@ -378,8 +370,7 @@ Copy required jars
 
 - Copy %DBFORMS_HOME%\dist\dbforms_v1_1_3pr1.jar into WEB-INF\lib
 
--	From the struts zip file that you downloaded, extract only the
-	struts.jar file, and put it into WEB-INF\lib.
+ 
 </screen>
 
 </para>

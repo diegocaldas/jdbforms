@@ -4,13 +4,15 @@
 
 <chapter><title>Installation</title>
 <para>You can utilize a binary distribution of DbForms in your own web applications
-by following these steps.</para>
+by following the steps in the subsequent sections.</para>
 <para>Users of MS SQL Server should refer instead to <link linkend='mssql'>JumpStart MS Server Database(click here)</link></para>
 <para>If you have questions, please drop a line to our <ulink url="http://lists.sourceforge.net/lists/listinfo/jdbforms-interest"><citetitle>mailing list</citetitle></ulink></para>
 <sect1><title id="prereqs">Prerequisites</title>
 <orderedlist numeration="upperroman">
 <note>
 <para>the following resources (except for Sun's JDK/SDK) are hosted at our site and <ulink url="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/jdbforms/dbforms/dependend/">you can<citetitle>download the JARs</citetitle></ulink> from there or you can download the latest releases from their respective sites: 
+</para>
+<para>Also, these prerequisites specifically pertain to the 1.1.2pr2 and after releases.  If you are interested in starting off by running the examples, you should go to the next section as they are earlier [1.07 (test suite) and 1.1 (bugtracker)] versions with different dependencies that are included in thier war files.
 </para>
 </note>
 <listitem>
@@ -30,9 +32,7 @@ incompatible.</para><para>Another JAXP-compatible parser is <ulink url="http://x
 <listitem>
 <para>Download <ulink url="http://www.oreilly.com"><citetitle>Jason Hunters multipart servlet</citetitle></ulink> classes from O'Reilly (cos.jar)</para>
 </listitem>
-<listitem>
-<para>Download <ulink url="http://jakarta.apache.org/struts"><citetitle>the struts framework</citetitle></ulink> (struts.jar)</para>
-</listitem>
+
 <listitem>
 <para>Download <ulink url="http://jakarta.apache.org"><citetitle>these jars</citetitle></ulink> which are all in the Commons project</para>
 <itemizedlist mark="opencircle">
@@ -131,7 +131,7 @@ NOTE: the file "dbforms.tld" was named "taglib.tld" in some prior versions. this
 </listitem>
 <listitem>
 <para>Copy the jars (listed in <link linkend='prereqs'>prerequisites (click)</link> section) into the
-  "<computeroutput>WEB-INF/lib</computeroutput>" directory of your web application.</para><para>Note: only <computeroutput>stuts.jar</computeroutput> is needed and not the whole Struts distribution</para>
+  "<computeroutput>WEB-INF/lib</computeroutput>" directory of your web application.</para> 
 </listitem>
 <listitem>
 <para>Modify your "<computeroutput>WEB-INF/web.xml</computeroutput>" file to include:</para>
