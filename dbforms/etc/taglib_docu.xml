@@ -643,6 +643,12 @@ etc)</summary>
 						<p>java.text.Format object used to format the tag value</p>
 					</info>
 				</attribute>
+				<attribute>
+					<name>styleClass</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>CSS stylesheet class to be applied. This is done adding a SPAN element that contains the text.</info>
+				</attribute>
 			</tag>
 			<!-- **************************** dateLabel tag ***********************************-->
 			<tag>
@@ -718,6 +724,12 @@ etc)</summary>
 						</p>
 					</info>
 				</attribute>
+				<attribute>
+					<name>styleClass</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>CSS stylesheet class to be applied. This is done adding a SPAN element that contains the text.</info>
+				</attribute>
 			</tag>
 			<!-- **************************** dataLabel tag ***********************************-->
 			<tag>
@@ -791,6 +803,12 @@ etc)</summary>
   the text to display by a custom value. May be used in conjunction with dbForm's 
   I18N support.</p>
 					</info>
+				</attribute>
+				<attribute>
+					<name>styleClass</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>CSS stylesheet class to be applied. This is done adding a SPAN element that contains the text.</info>
 				</attribute>
 			</tag>
 			<!-- **************************** textField tag ***********************************-->

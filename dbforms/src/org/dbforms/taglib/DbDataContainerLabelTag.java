@@ -21,18 +21,19 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.taglib;
-import java.util.*;
-import java.sql.*;
-import java.io.*;
-import javax.servlet.jsp.*;
-import javax.servlet.jsp.tagext.*;
-import javax.servlet.http.*;
+import java.util.Locale;
+import java.util.Vector;
 
-import org.dbforms.config.*;
-import org.dbforms.util.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.tagext.BodyTagSupport;
+
 import org.apache.log4j.Category;
-
-
+import org.dbforms.config.DbFormsConfig;
+import org.dbforms.config.Field;
+import org.dbforms.util.KeyValuePair;
+import org.dbforms.util.MessageResources;
+import org.dbforms.util.Util;
 
 /****
  *
@@ -47,231 +48,272 @@ import org.apache.log4j.Category;
  *
  * @author Joachim Peer <j.peer@gmx.net>
  */
-public class DbDataContainerLabelTag extends BodyTagSupport
-   implements DataContainer
+public class DbDataContainerLabelTag
+    extends BodyTagSupport
+    implements DataContainer
 {
-   static Category logCat = Category.getInstance(DbDataContainerLabelTag.class
-         .getName());
+    static Category logCat =
+        Category.getInstance(DbDataContainerLabelTag.class.getName());
 
-   // logging category for this class
-   private Vector        embeddedData   = null;
-   private DbFormsConfig config;
-   private String        fieldName;
-   private Field         field;
-   private DbFormTag     parentForm;
-   private String        nullFieldValue = null;
+    // logging category for this class
+    private Vector embeddedData = null;
+    private DbFormsConfig config;
+    private String fieldName;
+    private Field field;
+    private DbFormTag parentForm;
+    private String nullFieldValue = null;
 
-   /**
-   * PG, 2001-12-14
-   * The maximum number of characters to be displayed.
-   */
-   private String maxlength = null;
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param fieldName DOCUMENT ME!
+    /**
+    * PG, 2001-12-14
+    * The maximum number of characters to be displayed.
     */
-   public void setFieldName(String fieldName)
-   {
-      this.fieldName    = fieldName;
-      this.field        = parentForm.getTable().getFieldByName(fieldName);
-   }
+    private String maxlength = null;
 
+    /** style to apply to element, with an added span surrounding it */
+    private String styleClass = null;
 
-   /**
-    * DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
+    /**
+     * DOCUMENT ME!
+     *
+     * @param fieldName DOCUMENT ME!
+     */
+    public void setFieldName(String fieldName)
+    {
+        this.fieldName = fieldName;
+        this.field = parentForm.getTable().getFieldByName(fieldName);
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public String getFieldName()
+    {
+        return fieldName;
+    }
+
+    /**
+    This method is a "hookup" for EmbeddedData - Tags which can assign the lines of data they loaded
+    (by querying a database, or by rendering data-subelements, etc. etc.) and make the data
+    available to this tag.
+    [this method is defined in Interface DataContainer]
     */
-   public String getFieldName()
-   {
-      return fieldName;
-   }
+    public void setEmbeddedData(Vector embeddedData)
+    {
+        this.embeddedData = embeddedData;
+    }
 
+    /**
+     * DOCUMENT ME!
+     *
+     * @param nullFieldValue DOCUMENT ME!
+     */
+    public void setNullFieldValue(String nullFieldValue)
+    {
+        this.nullFieldValue = nullFieldValue;
 
-   /**
-   This method is a "hookup" for EmbeddedData - Tags which can assign the lines of data they loaded
-   (by querying a database, or by rendering data-subelements, etc. etc.) and make the data
-   available to this tag.
-   [this method is defined in Interface DataContainer]
-   */
-   public void setEmbeddedData(Vector embeddedData)
-   {
-      this.embeddedData = embeddedData;
-   }
+        // Resolve message if captionResource=true in the Form Tag
+        if (parentForm.getCaptionResource().equals("true"))
+        {
+            Locale locale =
+                MessageResources.getLocale(
+                    (HttpServletRequest) pageContext.getRequest());
+            this.nullFieldValue =
+                MessageResources.getMessage(
+                    nullFieldValue,
+                    locale,
+                    nullFieldValue);
+        }
+    }
 
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public String getNullFieldValue()
+    {
+        return nullFieldValue;
+    }
 
-   /**
-    * DOCUMENT ME!
-    *
-    * @param nullFieldValue DOCUMENT ME!
-    */
-   public void setNullFieldValue(String nullFieldValue)
-   {
-      this.nullFieldValue = nullFieldValue;
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     *
+     * @throws javax.servlet.jsp.JspException DOCUMENT ME!
+     * @throws JspException DOCUMENT ME!
+     */
+    public int doEndTag() throws javax.servlet.jsp.JspException
+    {
+        try
+        {
+            String fieldValue = "[no data]";
 
-      // Resolve message if captionResource=true in the Form Tag
-      if (parentForm.getCaptionResource().equals("true"))
-      {
-         Locale locale = MessageResources.getLocale((HttpServletRequest) pageContext
-               .getRequest());
-         this.nullFieldValue = MessageResources.getMessage(nullFieldValue,
-               locale, nullFieldValue);
-      }
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    */
-   public String getNullFieldValue()
-   {
-      return nullFieldValue;
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    *
-    * @throws javax.servlet.jsp.JspException DOCUMENT ME!
-    * @throws JspException DOCUMENT ME!
-    */
-   public int doEndTag() throws javax.servlet.jsp.JspException
-   {
-      try
-      {
-         String fieldValue = "[no data]";
-
-         // "fieldValue" is the variable actually printed out
-         if (!Util.isNull(parentForm.getResultSetVector()))
-         {
-            //String[] currentRow = parentForm.getResultSetVector().getCurrentRow();
-            //fieldValue = currentRow[field.getId()];
-            Object fieldValueObj = parentForm.getResultSetVector()
-                                             .getCurrentRowAsObjects()[field
-               .getId()];
-
-            if (fieldValueObj == null)
+            // "fieldValue" is the variable actually printed out
+            if (!Util.isNull(parentForm.getResultSetVector()))
             {
-               fieldValue = (nullFieldValue != null) ? nullFieldValue : "";
+                //String[] currentRow = parentForm.getResultSetVector().getCurrentRow();
+                //fieldValue = currentRow[field.getId()];
+                Object fieldValueObj =
+                    parentForm
+                        .getResultSetVector()
+                        .getCurrentRowAsObjects()[field
+                        .getId()];
+
+                if (fieldValueObj == null)
+                {
+                    fieldValue = (nullFieldValue != null) ? nullFieldValue : "";
+                }
+                else
+                {
+                    fieldValue = fieldValueObj.toString();
+                }
+
+                if (embeddedData != null)
+                { //  embedded data is nested in this tag
+
+                    boolean found = false;
+                    int embeddedDataSize = embeddedData.size();
+                    int i = 0;
+                    String embeddedDataValue = null;
+
+                    while (!found && (i < embeddedDataSize))
+                    {
+                        KeyValuePair aKeyValuePair =
+                            (KeyValuePair) embeddedData.elementAt(i);
+
+                        if (aKeyValuePair.getKey().equals(fieldValue))
+                        {
+                            embeddedDataValue = aKeyValuePair.getValue();
+                            found = true;
+                        }
+
+                        i++;
+                    }
+
+                    if (embeddedDataValue != null)
+                    {
+                        fieldValue = embeddedDataValue;
+
+                        // we'll print out embedded value associated with the current value
+                    }
+                }
+            }
+
+            // PG, 2001-12-14
+            // If maxlength was input, trim display
+            String size = null;
+
+            if (((size = this.getMaxlength()) != null)
+                && (size.trim().length() > 0))
+            {
+                //convert to int
+                int count = Integer.parseInt(size);
+
+                // Trim and add trim indicator (...)
+                if (count < fieldValue.length())
+                {
+                    fieldValue = fieldValue.substring(0, count);
+                    fieldValue += "...";
+                }
+            }
+
+            // SM 2003-08-05
+            // if styleClass is present, render a SPAN with text included
+            if (styleClass == null)
+            {
+                pageContext.getOut().write(fieldValue);
             }
             else
             {
-               fieldValue = fieldValueObj.toString();
+                pageContext.getOut().write(
+                    "<span class=\""
+                        + styleClass
+                        + "\">"
+                        + fieldValue
+                        + "</span>");
             }
+        }
+        catch (java.io.IOException ioe)
+        {
+            logCat.error(ioe);
+            throw new JspException("IO Error: " + ioe.getMessage());
+        }
+        catch (Exception e)
+        {
+            logCat.error(e);
+            throw new JspException("Error: " + e.getMessage());
+        }
 
-            if (embeddedData != null)
-            { //  embedded data is nested in this tag
+        return EVAL_PAGE;
+    }
 
-               boolean found             = false;
-               int     embeddedDataSize  = embeddedData.size();
-               int     i                 = 0;
-               String  embeddedDataValue = null;
+    /**
+     * DOCUMENT ME!
+     *
+     * @param pageContext DOCUMENT ME!
+     */
+    public void setPageContext(final javax.servlet.jsp.PageContext pageContext)
+    {
+        super.setPageContext(pageContext);
+        this.config =
+            (DbFormsConfig) pageContext.getServletContext().getAttribute(
+                DbFormsConfig.CONFIG);
+    }
 
-               while (!found && (i < embeddedDataSize))
-               {
-                  KeyValuePair aKeyValuePair = (KeyValuePair) embeddedData
-                     .elementAt(i);
+    /**
+     * DOCUMENT ME!
+     *
+     * @param parent DOCUMENT ME!
+     */
+    public void setParent(final javax.servlet.jsp.tagext.Tag parent)
+    {
+        super.setParent(parent);
+        this.parentForm =
+            (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
+    }
 
-                  if (aKeyValuePair.getKey().equals(fieldValue))
-                  {
-                     embeddedDataValue    = aKeyValuePair.getValue();
-                     found                = true;
-                  }
+    /**
+     * Gets the maxlength
+     * @return Returns a String
+     */
+    public String getMaxlength()
+    {
+        return maxlength;
+    }
 
-                  i++;
-               }
+    /**
+     * Sets the maxlength
+     * @param maxlength The maxlength to set
+     */
+    public void setMaxlength(String maxlength)
+    {
+        this.maxlength = maxlength;
+    }
 
-               if (embeddedDataValue != null)
-               {
-                  fieldValue = embeddedDataValue;
+    /**
+     * Gets the style to apply to element
+     * 
+     * @return
+     */
+    public String getStyleClass()
+    {
+        return styleClass;
+    }
 
-                  // we'll print out embedded value associated with the current value
-               }
-            }
-         }
+    /**
+     * Set the style to apply to element.
+     * 
+     * If the styleClass attribute is not set, a label element is rendered as it is, but 
+     * if the attribute is present, a SPAN element surrounding text is used to apply the style to the text.
+     * 
+     * @param string
+     */
+    public void setStyleClass(String string)
+    {
+        styleClass = string;
+    }
 
-         // PG, 2001-12-14
-         // If maxlength was input, trim display
-         String size = null;
-
-         if (((size = this.getMaxlength()) != null)
-                  && (size.trim().length() > 0))
-         {
-            //convert to int
-            int count = Integer.parseInt(size);
-
-            // Trim and add trim indicator (...)
-            if (count < fieldValue.length())
-            {
-               fieldValue = fieldValue.substring(0, count);
-               fieldValue += "...";
-            }
-         }
-
-         pageContext.getOut().write(fieldValue);
-      }
-      catch (java.io.IOException ioe)
-      {
-         logCat.error(ioe);
-         throw new JspException("IO Error: " + ioe.getMessage());
-      }
-      catch (Exception e)
-      {
-         logCat.error(e);
-         throw new JspException("Error: " + e.getMessage());
-      }
-
-      return EVAL_PAGE;
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param pageContext DOCUMENT ME!
-    */
-   public void setPageContext(final javax.servlet.jsp.PageContext pageContext)
-   {
-      super.setPageContext(pageContext);
-      this.config = (DbFormsConfig) pageContext.getServletContext()
-                                               .getAttribute(DbFormsConfig.CONFIG);
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param parent DOCUMENT ME!
-    */
-   public void setParent(final javax.servlet.jsp.tagext.Tag parent)
-   {
-      super.setParent(parent);
-      this.parentForm = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
-   }
-
-
-   /**
-    * Gets the maxlength
-    * @return Returns a String
-    */
-   public String getMaxlength()
-   {
-      return maxlength;
-   }
-
-
-   /**
-    * Sets the maxlength
-    * @param maxlength The maxlength to set
-    */
-   public void setMaxlength(String maxlength)
-   {
-      this.maxlength = maxlength;
-   }
 }

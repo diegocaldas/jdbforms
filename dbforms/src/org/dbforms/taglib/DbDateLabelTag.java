@@ -21,17 +21,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.taglib;
-import java.util.*;
-import java.sql.*;
-import java.io.*;
-import javax.servlet.jsp.*;
-import javax.servlet.jsp.tagext.*;
+import javax.servlet.jsp.JspException;
 
-import org.dbforms.config.*;
-import org.dbforms.util.*;
 import org.apache.log4j.Category;
-
-
+import org.dbforms.config.DbFormsConfigRegistry;
+import org.dbforms.util.Util;
 
 /****
  *
@@ -46,65 +40,86 @@ import org.apache.log4j.Category;
  */
 public class DbDateLabelTag extends DbLabelTag
 {
-   static Category logCat = Category.getInstance(DbDateLabelTag.class.getName());
+    static Category logCat =
+        Category.getInstance(DbDateLabelTag.class.getName());
 
-   /**
-   grunikiewicz.philip@hydro.qc.ca
-   2001-05-14
+    /**
+    grunikiewicz.philip@hydro.qc.ca
+    2001-05-14
+    
+    If user has specified a date format - use it!
+    
+    */
+    public int doEndTag() throws javax.servlet.jsp.JspException
+    {
+        try
+        {
+            Object fieldValue = NO_DATA;
 
-   If user has specified a date format - use it!
-
-   */
-   public int doEndTag() throws javax.servlet.jsp.JspException
-   {
-      try
-      {
-         Object fieldValue = NO_DATA;
-
-         if (!Util.isNull(parentForm.getResultSetVector()))
-         {
-            Object[] currentRow = parentForm.getResultSetVector()
-                                            .getCurrentRowAsObjects();
-
-            // fetch database row as java objects
-            Object currentValue = currentRow[field.getId()];
-
-            // Format date if the retrieved currentValue is not null
-            if (currentValue != null)
+            if (!Util.isNull(parentForm.getResultSetVector()))
             {
-               // if the format object is not set, retrieve the default 
-               // date formatter from the prefs; <fossato@pow2.com> [2002.11.09]
-               if (format == null)
-               {
-                  try {
-							format = DbFormsConfigRegistry.instance().lookup().getDateFormatter();
-                  } catch (Exception e) {
-                  }
-                  
-               }
+                Object[] currentRow =
+                    parentForm.getResultSetVector().getCurrentRowAsObjects();
 
-               // anyway, a format object must exist !
-               fieldValue = (format != null) ? format.format(currentValue)
-                                             : currentValue;
+                // fetch database row as java objects
+                Object currentValue = currentRow[field.getId()];
+
+                // Format date if the retrieved currentValue is not null
+                if (currentValue != null)
+                {
+                    // if the format object is not set, retrieve the default 
+                    // date formatter from the prefs; <fossato@pow2.com> [2002.11.09]
+                    if (format == null)
+                    {
+                        try
+                        {
+                            format =
+                                DbFormsConfigRegistry
+                                    .instance()
+                                    .lookup()
+                                    .getDateFormatter();
+                        }
+                        catch (Exception e)
+                        {}
+
+                    }
+
+                    // anyway, a format object must exist !
+                    fieldValue =
+                        (format != null)
+                            ? format.format(currentValue)
+                            : currentValue;
+                }
+                else
+                {
+                    fieldValue = ""; // null == empty string
+                }
+            }
+
+            if (styleClass == null)
+            {
+                pageContext.getOut().write(fieldValue.toString());
             }
             else
             {
-               fieldValue = ""; // null == empty string
+                pageContext.getOut().write(
+                    "<span class=\""
+                        + styleClass
+                        + "\">"
+                        + fieldValue
+                        + "</span>");
             }
-         }
+        }
+        catch (java.io.IOException ioe)
+        {
+            throw new JspException("IO Error: " + ioe.getMessage());
+        }
+        catch (Exception e)
+        {
+            throw new JspException("Error: " + e.getMessage());
+        }
 
-         pageContext.getOut().write(fieldValue.toString());
-      }
-      catch (java.io.IOException ioe)
-      {
-         throw new JspException("IO Error: " + ioe.getMessage());
-      }
-      catch (Exception e)
-      {
-         throw new JspException("Error: " + e.getMessage());
-      }
-
-      return EVAL_PAGE;
-   }
+        return EVAL_PAGE;
+    }
 
 }
