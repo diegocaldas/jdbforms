@@ -254,6 +254,8 @@ public class Field {
          type = FieldTypes.BLOB;
       } else if (fieldType.startsWith("diskblob")) {
          type = FieldTypes.DISKBLOB;
+      } else if (fieldType.startsWith("bool")) {
+        type = FieldTypes.BOOLEAN;
       }
    }
 
@@ -498,6 +500,8 @@ public class Field {
          type = FieldTypes.DOUBLE;
       } else if (clazz.isAssignableFrom(java.lang.Float.class)) {
          type = FieldTypes.FLOAT;
+      } else if (clazz.isAssignableFrom(java.lang.Boolean.class)) {
+        type = FieldTypes.BOOLEAN;
       }
    }
 

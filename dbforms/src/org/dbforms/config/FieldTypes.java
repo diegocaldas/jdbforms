@@ -60,4 +60,7 @@ public class FieldTypes {
 
    /** DOCUMENT ME! */
    public static final int NUMERIC = java.sql.Types.NUMERIC;
+
+   /** DOCUMENT ME! */
+   public static final int BOOLEAN = java.sql.Types.BOOLEAN;
 }
