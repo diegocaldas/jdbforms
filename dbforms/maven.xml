@@ -31,7 +31,7 @@ ${systemScope.setProperty('javax.xml.transform.TransformerFactory','org.apache.x
   </goal>
 
   <goal name="dbforms:dependend">
-    <deploy:copy-deps todir="dist/dependend" excludes="servletapi" />
+    <deploy:copy-deps todir="target/dependend" excludes="servletapi" />
   </goal>
 
   <goal name="dbforms:deploy" description="do the whole deployment: generates site, generates doc, generates distribution">
