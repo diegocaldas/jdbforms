@@ -601,7 +601,8 @@ public class Table {
   public Hashtable getFieldValuesFromPositionAsHt(String position) {
 
 	if(position==null) return null;
-	position = position.trim();
+// trailing blanks are significant for CHAR database fields 	
+//	position = position.trim();
 
     Hashtable result = new Hashtable();
 
@@ -622,8 +623,11 @@ public class Table {
 
 		int controlIndex = secondColon+1+valueLength;
 
-    	String valueStr = position.substring(secondColon+1, controlIndex);
-
+		// make already be trimmed ... avoid substring exception
+		String valueStr = (controlIndex < position.length()) ?
+						  position.substring(secondColon+1, controlIndex) :
+						  position.substring(secondColon+1);
+		
     	FieldValue fv = new FieldValue();
     	fv.setField( getField(fieldId) );
     	fv.setFieldValue(valueStr);
