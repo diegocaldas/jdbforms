@@ -1,22 +1,23 @@
 Release Notes for DbForms Version 2.0,  2004-01-24
 
 Contents:
-1)   About this release
-2)   Compatibility Issues
-2-1) Interceptor interface
-2-2) FilterCondition Tag
-2-3) ValidationException classes
-3)   Details about enhancements and changes
-3-0) Code cleanup
-3-1) New navigation system
-3-2) XML Data source
-3-3) Bookstore example application
-3-4) New field type TIME
-3-5) Text field output
-3-6) Text field parsing
-3-7) Deprecated: date-format attribute in dbforms-config.xml 
-3-8) jUnit testing of client side code
-3-9) Added attribute searchAlgo to filterValue
+1)    About this release
+2)    Compatibility Issues
+2-1)  Interceptor interface
+2-2)  FilterCondition Tag
+2-3)  ValidationException classes
+3)    Details about enhancements and changes
+3-0)  Code cleanup
+3-1)  New navigation system
+3-2)  XML Data source
+3-3)  Bookstore example application
+3-4)  New field type TIME
+3-5)  Text field output
+3-6)  Text field parsing
+3-7)  Deprecated: date-format attribute in dbforms-config.xml 
+3-8)  jUnit testing of client side code
+3-9)  Added attribute searchAlgo to filterValue
+3-10) Added the possibility to use StaticDataItem - Tags inside TableData, QueryData and ConfTableData
 
 1) About this release
 ----------------------
@@ -176,3 +177,8 @@ Added the searchAlgo attribute to the filterValue tag with values of
 	weakStartEnd	like, % is added in front of value and % is appended to value
 
 For more details see documentation.
+
+3-10) Added the possibility to use StaticDataItem - Tags inside TableData, QueryData and ConfTableData
+-------------------------------------------------------------------------------------------------------
+Now you can add StaticDataItem - Tags inside TableData, QueryData and ConfTableData. So it's possible to
+add fixed values to your list of dynamic values.
