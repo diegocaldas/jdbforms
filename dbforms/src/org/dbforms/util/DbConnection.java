@@ -20,7 +20,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.util;
 
 import java.util.*;
@@ -30,12 +29,10 @@ import javax.naming.*;
 
 import org.apache.log4j.Category;
 
-/* POW2 FUNCTIONALITY
 import com.pow2.dao.ConnectionFactory;
 import com.pow2.dao.ConnectionProviderPrefs;
-POW2 FUNCTIONALITY */
 
-/****
+/**
  * <p>
  * this class represents datastructures like to following examples:
  * </p>
@@ -65,232 +62,368 @@ POW2 FUNCTIONALITY */
  *	a task of the underlying applicationserver/jsp-engine!
  * </p>
  *
- *
- * @author Joe Peer <j.peer@gmx.net>
- *
- * @version 0.5
- * @version 0.8.3 Kevin Dangoor <kdangoor@webelite.com> added Username and Passwort properties
- *
+ * @author  Joe Peer <j.peer@gmx.net>
+ * @created  25 agosto 2002
+ * @version  0.5
+ * @version  0.8.3 Kevin Dangoor <kdangoor@webelite.com> added Username and Passwort properties
  */
 
-public class DbConnection {
+public class DbConnection
+{
+  private static final String CONNECTION_FACTORY_CLASS = "com.pow2.dao.ConnectionFactory";
 
-   static Category logCat = Category.getInstance(DbConnection.class.getName()); // logging category for this class
+  static  Category          logCat            = Category.getInstance(DbConnection.class.getName());
+  private ConnectionFactory connectionFactory = ConnectionFactory.instance();
 
-	private String id;
-	private String name;
-	private String isJndi = "false";
-	private boolean jndi = false;
-	private boolean defaultConnection = false;
-	private String conClass;
-	private String username;
-	private String password;
-	private Properties properties;
-	private boolean useProp = false;
-
-
-	private static final String CONNECTION_FACTORY_CLASS 
-		= "com.pow2.dao.ConnectionFactory";
-/* POW2 FUNCTIONALITY
-        private ConnectionFactory connectionFactory 
-		= ConnectionFactory.instance();
-POW2 FUNCTIONALITY */
-	private String connectionProviderClass;
-	private String connectionPoolURL;
-	private String isPow2 = "false";
-	private boolean pow2 = false;
-	private boolean isFactorySetup = false;
-	
-	public DbConnection() {
-		properties = new java.util.Properties();
-	}
-	
-	public void addProperty(DbConnectionProperty prop) {
-		properties.put(prop.getName(), prop.getValue());
-		useProp = true;
-	}
-		
-
-	public void setConnectionProviderClass(String cpc) {
-		connectionProviderClass = cpc;
-	}
-
-	public String getConnectionProviderClass() {
-		return connectionProviderClass;
-	}
-
-	public void setConnectionPoolURL(String url) {
-		connectionPoolURL = url;
-	}
-
-	public String getConnectionPoolURL() {
-		return connectionPoolURL;
-	}
-
-	public void setIsPow2(String isPow2) {
-		this.isPow2 = isPow2;
-
-		pow2 = new Boolean(isPow2).booleanValue();
-	}
+  private String  id;
+  private String  name;
+  private String  isJndi             = "false";
+  private boolean jndi               = false;
+  private boolean defaultConnection  = false;
+  private String  conClass;
+  private String  username;
+  private String  password;
+  private String  connectionProviderClass;
+  private String  connectionPoolURL;
+  private String  isPow2              = "false";
+  private boolean pow2                = false;
+  private boolean isFactorySetup      = false;
 
 
-	public void setId(String id) {
-		this.id = id;
-	}
+  /**
+   *  Sets the connectionProviderClass attribute of the DbConnection object
+   *
+   * @param  cpc The new connectionProviderClass value
+   */
+  public void setConnectionProviderClass(String cpc)
+  {
+    connectionProviderClass = cpc;
+  }
 
-	public String getId() {
-		return id;
-	}
 
-	public void setDefaultConnection(String defaultConnection) {
-		this.defaultConnection = new Boolean(defaultConnection).booleanValue();
-	}
+  /**
+   *  Sets the defaultConnection attribute of the DbConnection object
+   *
+   * @param  defaultConnection The new defaultConnection value
+   */
+  public void setDefaultConnection(boolean defaultConnection)
+  {
+    this.defaultConnection = defaultConnection;
+  }
 
-	public boolean isDefaultConnection() {
-		return defaultConnection;
-	}
-    
-    public String getDefaultConnection() {
-        return new Boolean(defaultConnection).toString();
+
+  /**
+   *  Gets the connectionProviderClass attribute of the DbConnection object
+   *
+   * @return  The connectionProviderClass value
+   */
+  public String getConnectionProviderClass()
+  {
+    return connectionProviderClass;
+  }
+
+
+  /**
+   *  Sets the connectionPoolURL attribute of the DbConnection object
+   *
+   * @param  url The new connectionPoolURL value
+   */
+  public void setConnectionPoolURL(String url)
+  {
+    connectionPoolURL = url;
+  }
+
+
+  /**
+   *  Gets the connectionPoolURL attribute of the DbConnection object
+   *
+   * @return  The connectionPoolURL value
+   */
+  public String getConnectionPoolURL()
+  {
+    return connectionPoolURL;
+  }
+
+
+  /**
+   *  Sets the isPow2 attribute of the DbConnection object
+   *
+   * @param  isPow2 The new isPow2 value
+   */
+  public void setIsPow2(String isPow2)
+  {
+    this.isPow2 = isPow2;
+
+    pow2 = new Boolean(isPow2).booleanValue();
+  }
+
+
+  /**
+   *  Sets the id attribute of the DbConnection object
+   *
+   * @param  id The new id value
+   */
+  public void setId(String id)
+  {
+    this.id = id;
+  }
+
+
+  /**
+   *  Gets the id attribute of the DbConnection object
+   *
+   * @return  The id value
+   */
+  public String getId()
+  {
+    return id;
+  }
+
+
+  /**
+   *  Gets the defaultConnection attribute of the DbConnection object
+   *
+   * @return  The defaultConnection value
+   */
+  public boolean isDefaultConnection()
+  {
+    return defaultConnection;
+  }
+
+
+  /**
+   *  Sets the name attribute of the DbConnection object
+   *
+   * @param  name The new name value
+   */
+  public void setName(String name)
+  {
+    this.name = name;
+  }
+
+
+  /**
+   *  Gets the name attribute of the DbConnection object
+   *
+   * @return  The name value
+   */
+  public String getName()
+  {
+    return name;
+  }
+
+
+  /**
+   *  Sets the isJndi attribute of the DbConnection object
+   *
+   * @param  isJndi The new isJndi value
+   */
+  public void setIsJndi(String isJndi)
+  {
+    this.isJndi = isJndi;
+    jndi = "true".equalsIgnoreCase(isJndi);
+  }
+
+
+  /**
+   *  Description of the Method
+   *
+   * @return  Description of the Return Value
+   */
+  public String getisJndi()
+  {
+    return isJndi;
+  }
+
+
+  /**
+   *  Sets the conClass attribute of the DbConnection object
+   *
+   * @param  conClass The new conClass value
+   */
+  public void setConClass(String conClass)
+  {
+    this.conClass = conClass;
+  }
+
+
+  /**
+   *  Gets the conClass attribute of the DbConnection object
+   *
+   * @return  The conClass value
+   */
+  public String getConClass()
+  {
+    return conClass;
+  }
+
+
+  /**
+   *  Gets the username attribute of the DbConnection object
+   *
+   * @return  The username value
+   */
+  public String getUsername()
+  {
+    return username;
+  }
+
+
+  /**
+   *  Sets the username attribute of the DbConnection object
+   *
+   * @param  newuser The new username value
+   */
+  public void setUsername(String newuser)
+  {
+    this.username = newuser;
+  }
+
+
+  /**
+   *  Gets the password attribute of the DbConnection object
+   *
+   * @return  The password value
+   */
+  public String getPassword()
+  {
+    return password;
+  }
+
+
+  /**
+   *  Sets the password attribute of the DbConnection object
+   *
+   * @param  newpass The new password value
+   */
+  public void setPassword(String newpass)
+  {
+    this.password = newpass;
+  }
+
+
+  /**
+   *  Gets the connection attribute of the DbConnection object
+   *
+   * @return  The connection value
+   */
+  public Connection getConnection()
+  {
+    Connection con  = null;
+
+    logCat.debug("returning a connection:" + this.toString());
+
+    // access Connection via Application Server's JNDI table
+    if (jndi)
+    {
+
+      try
+      {
+        Context ctx    = new InitialContext();
+        DataSource ds  = (DataSource) ctx.lookup(name);
+
+        con = ds.getConnection();
+      }
+      catch (NamingException ne)
+      {
+        ne.printStackTrace();
+        return null;
+      }
+      catch (Exception e)
+      {
+        e.printStackTrace();
+        return null;
+      }
+
+      // access the connection using the pow2 library by Luca Fossato.
+    }
+    else if (pow2)
+    {
+      try
+      {
+        if (!isFactorySetup)
+        {
+          setupConnectionFactory();
+        }
+        con = connectionFactory.getConnection();
+      }
+      catch (Exception se)
+      {
+        logCat.error("::getConnection - cannot retrieve "
+            + "a connection from the "
+            + "connectionFactory", se);
+        return null;
+      }
+
+    // access connection directly from db or from a connectionpool-manager like "Poolman"
+    }
+    else
+    {
+      try
+      {
+        Class.forName(conClass).newInstance();
+        if (username != null)
+        {
+          return DriverManager.getConnection(name, username, password);
+        }
+        con = DriverManager.getConnection(name);
+      }
+      catch (Exception e)
+      {
+        e.printStackTrace();
+        return null;
+      }
     }
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setIsJndi(String isJndi) {
-		this.isJndi = isJndi;
-		jndi = "true".equalsIgnoreCase(isJndi);
-	}
-
-	public String getisJndi() {
-		return isJndi;
-	}
-
-	public void setConClass(String conClass) {
-		this.conClass = conClass;
-	}
-
-	public String getConClass() {
-		return conClass;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String newuser) {
-		this.username = newuser;
-		properties.put("user", newuser);
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String newpass) {
-		this.password = newpass;
-		properties.put("password", newpass);
-	}
-
-	public Connection getConnection() {
-		Connection con = null;
-
-		logCat.debug("returning a connection:"+this.toString());
+    return con;
+  }
 
 
-		// access Connection via Application Server's JNDI table
-		if(jndi) {
+  /**
+   *  Set up the ConnectionFactory
+   *
+   * @exception  Exception Description of the Exception
+   */
+  public void setupConnectionFactory() throws Exception
+  {
+    ConnectionProviderPrefs prefs  = new ConnectionProviderPrefs();
 
-			try {
-				Context ctx = new InitialContext();
-				DataSource ds = (DataSource) ctx.lookup(name);
-				con = ds.getConnection();
-			} catch(NamingException ne) {
-				ne.printStackTrace();
-				return null;
-	  		} catch(Exception e) {
-				e.printStackTrace();
-   	    			return null;
-	  		}
+    prefs.setConnectionProviderClass(connectionProviderClass);
+    prefs.setConnectionPoolURL(connectionPoolURL);
+    prefs.setJdbcDriver(conClass);
+    prefs.setJdbcURL(name);
+    prefs.setUser(username);
+    prefs.setPassword(password);
+
+    connectionFactory.setProvider(prefs);
+
+    isFactorySetup = true;
+  }
 
 
-		// access the connection using the pow2 library by Luca Fossato.
-/* POW2 FUNCTIONALITY
-                } else if (pow2) {
-			try {
-				if (!isFactorySetup) {
-					setupConnectionFactory();
-				}
-				con = connectionFactory.getConnection();
-			} catch (Exception se) {
-				logCat.error("::getConnection - cannot retrieve "
-					     + "a connection from the "
-					     + "connectionFactory", se);
-				return null;
-			}
-POW2 FUNCTIONALITY */
+  /**
+   *  Description of the Method
+   *
+   * @return  Description of the Return Value
+   */
+  public String toString()
+  {
+    StringBuffer buf  = new StringBuffer("DbConnection = ");
 
-		// access connection directly from db or from a connectionpool-manager like "Poolman"
-		} else {
-			try {
- 	  			Class.forName(conClass).newInstance();
-				if (useProp) {
-               con = DriverManager.getConnection(name, properties);
-				} else if (username != null) {
-					con = DriverManager.getConnection(name, username, password);
-				} else {
-			  		con = DriverManager.getConnection(name);
-				}
-				return con;
-	  		} catch(Exception e) {
-				e.printStackTrace();
-   	    	return null;
-	  		}
+    buf.append("id=" + id);
+    buf.append(",name=" + name);
+    buf.append(",jndi=" + isJndi);
+    buf.append(",conClass=" + conClass);
+    buf.append(",username=" + username);
+    buf.append(",default=" + defaultConnection);
 
-		}
+    if (pow2)
+    {
+      buf.append(",connectionProviderClass" + connectionProviderClass);
+      buf.append(",connectionPoolURL" + connectionPoolURL);
+    }
 
-		return con;
-	}
-
-/* POW2 FUNCTIONALITY
-  	public void setupConnectionFactory() throws Exception {
-		ConnectionProviderPrefs prefs = new ConnectionProviderPrefs();
-
-		prefs.setConnectionProviderClass(connectionProviderClass);
-		prefs.setConnectionPoolURL(connectionPoolURL);
-		prefs.setJdbcDriver(conClass);
-		prefs.setJdbcURL(name);
-		prefs.setUser(username);
-		prefs.setPassword(password);
-
-		connectionFactory.setProvider(prefs);
-
-		isFactorySetup = true;
-  	}
-POW2 FUNCTIONALITY */
-
-  public String toString() {
-	 StringBuffer buf = new StringBuffer("DbConnection = ");
-	 buf.append("id="+id);
-	 buf.append(",name="+name);
-	 buf.append(",jndi="+isJndi);
-	 buf.append(",conClass="+conClass);
-	 buf.append(",username="+username);
-	 buf.append(",default="+defaultConnection);
-
-	 if (pow2) {
-		buf.append(",connectionProviderClass"+connectionProviderClass);
-		buf.append(",connectionPoolURL"+connectionPoolURL);
-	 }
-	 buf.append(",properties="+properties.toString());
-
-	 //buf.append(",password="+password);  Not such a good idea!
-	 return buf.toString();
-
-  }  
+    //buf.append(",password="+password);  Not such a good idea!
+    return buf.toString();
+  }
 }
