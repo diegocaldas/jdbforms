@@ -120,6 +120,10 @@ public class MessageResources
             return null;
         }
 
+        if (loc == null) {
+        	return null;
+        }
+        
         ResourceBundle rb = null;
 
         // Faster than String (immuable) concatenation
@@ -248,6 +252,9 @@ public class MessageResources
      */
     public static Locale getLocale(HttpServletRequest request)
     {
+        if (request == null)
+           return null;
+           
         HttpSession session = request.getSession();
 
         if (session.getAttribute(MessageResources.LOCALE_KEY) == null)
