@@ -95,7 +95,7 @@ public class StartReportServlet extends HttpServlet {
    public static final String REPORTCONFIGDIR = "reportdirs";
 
    private String[] reportdirs;
-   
+
    /**
     * Initialize this servlet.
     * 
@@ -164,12 +164,12 @@ public class StartReportServlet extends HttpServlet {
             JRDataSource dataSource =
                getDataFromForm(getServletContext(), request, response);
             if (!response.isCommitted())
-				processReport(
-					reportFile,
-					dataSource,
-					getServletContext(),
-					request,
-					response);
+               processReport(
+                  reportFile,
+                  dataSource,
+                  getServletContext(),
+                  request,
+                  response);
          }
       } catch (Exception e) {
          logCat.error(e);
@@ -355,10 +355,10 @@ public class StartReportServlet extends HttpServlet {
       sendErrorMessage(
          request,
          response,
-		 MessageResourcesInternal.getMessage("dbforms.reports.exception", 
-																		  request.getLocale(),
-																		  new String[]{e.toString()}) 
-	                  );
+         MessageResourcesInternal.getMessage(
+            "dbforms.reports.exception",
+            request.getLocale(),
+            new String[] { e.toString()}));
    }
 
    /**
@@ -370,7 +370,28 @@ public class StartReportServlet extends HttpServlet {
    public static void handleNoData(
       HttpServletRequest request,
       HttpServletResponse response) {
-      sendErrorMessage(request, response, MessageResourcesInternal.getMessage("dbforms.reports.nodata", request.getLocale()));
+      sendErrorMessage(
+         request,
+         response,
+         MessageResourcesInternal.getMessage(
+            "dbforms.reports.nodata",
+            request.getLocale()));
+   }
+   private static void sendErrorMessageText(
+      HttpServletRequest request,
+      HttpServletResponse response,
+      String message) {
+      try {
+         PrintWriter out = response.getWriter();
+         response.setContentType("text/html");
+         out.println("<html><body><h1>ERROR</h1><p>");
+         out.println(message);
+         out.println("</p></body></html>");
+         out.flush();
+         out.close();
+      } catch (IOException ioe2) {
+         logCat.error("!!!senderror message crashed!!!" + ioe2.getMessage());
+      }
    }
 
    private static void sendErrorMessage(
@@ -383,38 +404,36 @@ public class StartReportServlet extends HttpServlet {
          String fue = ParseUtil.getParameter(request, "source");
          String contextPath = request.getContextPath();
          fue = fue.substring(contextPath.length());
-         request.getRequestDispatcher(fue).forward(request, response);
+         if (Util.isNull(fue))
+            sendErrorMessageText(request, response, message);
+         else
+            request.getRequestDispatcher(fue).forward(request, response);
       } catch (Exception ex) {
-         try {
-            PrintWriter out = response.getWriter();
-            response.setContentType("text/html");
-            out.println("<html><body><h1>ERROR</h1><p>");
-            out.println(message);
-            out.println("</p></body></html>");
-			out.flush();
-			out.close();
-         } catch (IOException ioe2) {
-            logCat.error("!!!senderror message crashed!!!" + ioe2.getMessage());
-         }
+         sendErrorMessageText(request, response, message);
       }
    }
 
    private static void handleNoReport(
       HttpServletRequest request,
       HttpServletResponse response) {
-			sendErrorMessage(
-				request,
-				response,
-			 MessageResourcesInternal.getMessage("dbforms.reports.noreport", 
-																			  request.getLocale(),
-																			  new String[]{request.getPathInfo()}) 
-								);
+      sendErrorMessage(
+         request,
+         response,
+         MessageResourcesInternal.getMessage(
+            "dbforms.reports.noreport",
+            request.getLocale(),
+            new String[] { request.getPathInfo()}));
    }
 
    private static void handleEmptyResponse(
       HttpServletRequest request,
       HttpServletResponse response) {
-	  sendErrorMessage(request, response, MessageResourcesInternal.getMessage("dbforms.reports.nooutput", request.getLocale()));
+      sendErrorMessage(
+         request,
+         response,
+         MessageResourcesInternal.getMessage(
+            "dbforms.reports.nooutput",
+            request.getLocale()));
    }
 
    private static byte[] exportToPDF(JasperPrint jasperPrint)
