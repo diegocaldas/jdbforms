@@ -124,7 +124,11 @@ Happy coding!
     <!-- generate taglib descriptors from taglib-docu using XSL transformation -->
     <target name="generate_taglib" depends="jar_classes" description="--> Generate the taglib dbforms.tld from taglib_docu.xml">
         <echo message="begin xsl translation"/>
-        <style style="${etc.dir}/tld.xsl" in="${etc.dir}/taglib_docu.xml" out="${dist.dir}/dbforms.tld"/>
+        <style 
+		style="${etc.dir}/tld.xsl" 
+        	in="${etc.dir}/taglib_docu.xml" 
+        	out="${dist.dir}/dbforms.tld"
+        />
         <echo message="end of xsl translation "/>
     </target>
 
@@ -201,7 +205,11 @@ Happy coding!
    </target>    
    
    <target name="style" description="--> Run a stylesheet, passing in -Dstyle=mystyle.xsl" if="style">
-        <style style="${xslsrc.dir}/${style}" in="${basedir}/dbforms-config.xml" out="${basedir}/temp/temp_result.xhtml"/>
+        <style 
+        	style="${xslsrc.dir}/${style}" 
+        	in="${basedir}/dbforms-config.xml" 
+        	out="${basedir}/temp/temp_result.xhtml"
+        />
         <echo message="End of xsl translation "/>
 
         <java classname="org.dbforms.xmldb.FileSplitter" fork="false" >
