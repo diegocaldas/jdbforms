@@ -3,6 +3,7 @@
                     "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd"
 [<!ENTITY pref SYSTEM "Preface.xml">
 <!ENTITY intr SYSTEM "Introduction.xml">
+<!ENTITY comp SYSTEM "Compatibility.xml">
 <!ENTITY inst SYSTEM "Installation.xml">
 <!ENTITY jsms SYSTEM "JumpStart_MS_Server_Database.xml">
 <!ENTITY tuto SYSTEM "Tutorial.xml">
@@ -35,6 +36,7 @@
 <title>DataBaseForms UsersGuide</title>
  
 <part><title>Installation </title>
+&comp;
 &inst;
 &devg;
 &jsms;

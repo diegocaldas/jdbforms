@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Document   : compatibility.xml
+    Created on : April 6, 2003, 11:04 PM
+    Author     : javauser
+    Description:
+        Purpose of the document follows.
+-->
+ <chapter>
+ <title>Compatibility notes:</title>
+ <para>The <computeroutput>format</computeroutput> attributes of tags <computeroutput>queryData</computeroutput> and <computeroutput>tableData</computeroutput> have different
+sementics now that are not 100% backwards compatible to the 1.1.2 and earlier releases.</para>
+<para>See the <ulink url="../../taglib/DbFormsTags_Frame.html"><citetitle>Tag Library </citetitle></ulink> from more info.</para>
+<para>Also, the insert button on previously generated list_and_single.jsp pages
+will not appear unless the attribute <computeroutput>showAlways="true"</computeroutput> is added to the 
+<computeroutput>insertButtonTag</computeroutput>. Otherwise, it will only appear in insert mode such as through a NavNewEvent.
+ </para>
+ 
+ </chapter>
