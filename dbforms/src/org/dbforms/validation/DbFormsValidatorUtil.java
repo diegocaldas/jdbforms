@@ -314,16 +314,11 @@ public class DbFormsValidatorUtil {
 						// Skip indexed fields for now until there is 
 						// a good way to handle error messages (and the length of the list (could retrieve from scope?))
 						if (!field.isIndexed() && field.isDependency(va.getName())) {
-							//String message = DbFormsValidatorUtil.getMessage(messages, locale, va, field);
-							//message = (message != null ? message : "");
-							//jscriptVar = getNextVar(jscriptVar);
 							String message = getMessage(functionName, va, locale, field, errors);
 							Enumeration enum = fieldsName.keys();
-
 							while (enum.hasMoreElements()) {
 								String fieldName = (String) enum.nextElement();
 								String val = (String) fieldsName.get(fieldName);
-
 								if (field.getKey().equals(val)) {
 									jscriptVar = getNextVar(jscriptVar);
 
@@ -345,7 +340,7 @@ public class DbFormsValidatorUtil {
 									}
 
 									results.append(
-										" this." + jscriptVar + " = new Array(\"" + fieldName + "\", \"" + message + "\", ");
+										" this.dbforms_" + jscriptVar + " = new Array(\"" + fieldName + "\", \"" + message + "\", ");
 									results.append("new Function (\"varName\", \"");
 
 									Map hVars = field.getVars();
