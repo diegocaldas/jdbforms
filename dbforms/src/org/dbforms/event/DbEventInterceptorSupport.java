@@ -20,56 +20,97 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-package org.dbforms.event;
+package org.dbforms.config;
+
+/****
+ * <p>
+ * This interface intercepts Database Operations DbForms is about to perform
+ * </p>
+ *
+ *    <p>As the names indicate </p>
+ *    <li>the preXxx() methods get called before the respective database operation is performed,
+ *    <li>the postXxx() methods get called after the operation was finished.
+ *
+ * @author Joe Peer <j.peer@gmx.net>
+ */
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Connection;
 import java.util.Map;
 
-import org.dbforms.config.DbEventInterceptor;
-import org.dbforms.config.ValidationException;
-import org.dbforms.config.DbFormsConfig;
-import org.dbforms.config.FieldValues;
-import org.dbforms.config.FieldValue;
-import org.dbforms.config.Field;
-import org.dbforms.config.Table;
 
 /**
-* convenience class
-* 
-* @author Joe Peer
-*/
-public class DbEventInterceptorSupport implements DbEventInterceptor
+ * DOCUMENT ME!
+ *
+ * @version $Revision$
+ * @author $author$
+ */
+public interface DbEventInterceptor
 {
+   /** DOCUMENT ME! */
+   public static final int PRE_INSERT = 0;
 
-	protected Map params;
-	
-	public void setParams(Map params) {
-		this.params = params;
-	}
+   /** DOCUMENT ME! */
+   public static final int POST_INSERT = 1;
 
-	public Map getParams() {
-		return params;
-	}	 	
-	
-	/**
-	 * adds or replace a value in the fieldValues
-	 * @param table wich should be used to lookup for the fieldName
-	 * @param fieldValues to add/replace value to
-	 * @param fieldName to add/replace value
-	 * @param value to add/replace
-	 */
-	protected void setValue(Table table, FieldValues fieldValues, String fieldName, String value) {
-		FieldValue fv = fieldValues.get(fieldName);
-		Field f = table.getFieldByName(fieldName);
-		if (f != null) {
-			if (fv == null) {
-				fv = new FieldValue(f, value);
-				fieldValues.put(fv);
-			} else {
-				fv.setFieldValue(value);
-			}
-		}
-	}
+   /** DOCUMENT ME! */
+   public static final int PRE_UPDATE = 2;
+
+   /** DOCUMENT ME! */
+   public static final int POST_UPDATE = 3;
+
+   /** DOCUMENT ME! */
+   public static final int PRE_DELETE = 4;
+
+   /** DOCUMENT ME! */
+   public static final int POST_DELETE = 5;
+
+   /** DOCUMENT ME! */
+   public static final int PRE_SELECT = 6;
+
+   /** DOCUMENT ME! */
+   public static final int POST_SELECT = 7;
+
+   /** DOCUMENT ME! */
+   public static final int GRANT_OPERATION = 0;
+
+   /** DOCUMENT ME! */
+   public static final int DENY_OPERATION = 1;
+
+   /**
+    * The constant defined for ignoring an operation after processing
+    * interceptors.
+    */
+   public static final int IGNORE_OPERATION = 2;
+
+	 
+	 public void setParams(Map params);
+	 public Map getParams();	 
+	 
+   /**
+    * DOCUMENT ME!
+    *
+    * @param request DOCUMENT ME!
+    * @param fieldValues DOCUMENT ME!
+    * @param config DOCUMENT ME!
+    * @param con DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws ValidationException DOCUMENT ME!
+    */
+   int preInsert(HttpServletRequest request, Table table, FieldValues fieldValues,
+      DbFormsConfig config, Connection con) throws ValidationException, MultipleValidationException;
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param request DOCUMENT ME!
+    * @param config DOCUMENT ME!
+    * @param con DOCUMENT ME!
+    */
+   void postInsert(HttpServletRequest request, DbFormsConfig config,
+      Connection con);
 
 
    /**
@@ -84,45 +125,10 @@ public class DbEventInterceptorSupport implements DbEventInterceptor
     *
     * @throws ValidationException DOCUMENT ME!
     */
-   public int preInsert(HttpServletRequest request,  Table table, FieldValues fieldValues,
-      DbFormsConfig config, Connection con) throws ValidationException
-   {
-      return GRANT_OPERATION;
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param request DOCUMENT ME!
-    * @param config DOCUMENT ME!
-    * @param con DOCUMENT ME!
-    */
-   public void postInsert(HttpServletRequest request, DbFormsConfig config,
-      Connection con)
-   {
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param request DOCUMENT ME!
-    * @param fieldValues DOCUMENT ME!
-    * @param config DOCUMENT ME!
-    * @param con DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    *
-    * @throws ValidationException DOCUMENT ME!
-    */
-   public int preUpdate(HttpServletRequest request, Table table, 
+   int preUpdate(HttpServletRequest request,  Table table, 
          FieldValues fieldValues, DbFormsConfig config, Connection con)
-      throws ValidationException
-   {
-      return GRANT_OPERATION;
-   }
-
+      throws ValidationException, MultipleValidationException;
+   ;
 
    /**
     * DOCUMENT ME!
@@ -131,10 +137,8 @@ public class DbEventInterceptorSupport implements DbEventInterceptor
     * @param config DOCUMENT ME!
     * @param con DOCUMENT ME!
     */
-   public void postUpdate(HttpServletRequest request, DbFormsConfig config,
-      Connection con)
-   {
-   }
+   void postUpdate(HttpServletRequest request, DbFormsConfig config,
+      Connection con);
 
 
    /**
@@ -149,12 +153,9 @@ public class DbEventInterceptorSupport implements DbEventInterceptor
     *
     * @throws ValidationException DOCUMENT ME!
     */
-   public int preDelete(HttpServletRequest request,  Table table, FieldValues fieldValues,
-      DbFormsConfig config, Connection con) throws ValidationException
-   {
-      return GRANT_OPERATION;
-   }
-
+   int preDelete(HttpServletRequest request,  Table table, FieldValues fieldValues,
+      DbFormsConfig config, Connection con) throws ValidationException, MultipleValidationException;
+   ;
 
    /**
     * DOCUMENT ME!
@@ -163,10 +164,8 @@ public class DbEventInterceptorSupport implements DbEventInterceptor
     * @param config DOCUMENT ME!
     * @param con DOCUMENT ME!
     */
-   public void postDelete(HttpServletRequest request, DbFormsConfig config,
-      Connection con)
-   {
-   }
+   void postDelete(HttpServletRequest request, DbFormsConfig config,
+      Connection con);
 
 
    /**
@@ -180,12 +179,9 @@ public class DbEventInterceptorSupport implements DbEventInterceptor
     *
     * @throws ValidationException DOCUMENT ME!
     */
-   public int preSelect(HttpServletRequest request, DbFormsConfig config,
-      Connection con) throws ValidationException
-   {
-      return GRANT_OPERATION;
-   }
-
+   int preSelect(HttpServletRequest request, DbFormsConfig config,
+      Connection con) throws ValidationException, MultipleValidationException;
+   ;
 
    /**
     * DOCUMENT ME!
@@ -194,8 +190,6 @@ public class DbEventInterceptorSupport implements DbEventInterceptor
     * @param config DOCUMENT ME!
     * @param con DOCUMENT ME!
     */
-   public void postSelect(HttpServletRequest request, DbFormsConfig config,
-      Connection con)
-   {
-   }
+   void postSelect(HttpServletRequest request, DbFormsConfig config,
+      Connection con);
 }
