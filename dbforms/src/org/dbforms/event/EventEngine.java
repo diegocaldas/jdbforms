@@ -100,6 +100,7 @@ public class EventEngine {
 		WebEvent e = null;
 
 		String action = ParseUtil.getFirstParameterStartingWith(request, "ac_");
+
 		if(action==null) {
 			logCat.info("##### N O O P   ELEMENT ######");
 			e = new NoopEvent();
@@ -120,6 +121,19 @@ public class EventEngine {
 			return e;
 		}
 
+		// image buttons submit different parameters than submit buttons 
+		// for submit the browser sends one value
+		//		parameter:ac_insert_0_root=Submit this bug!
+		// for image buttons, the browser returns two values, showing the x and y
+		// position of the mouse
+		//		parameter ac_insert_0_root.y=24
+		//		parameter ac_insert_0_root.x=34
+
+		// make the image button data look like a submit button
+		if(action.endsWith(".y") || action.endsWith(".x")) {
+			logCat.debug("image action = "+action);
+			action = action.substring(0,action.length()-2);
+		}
 
 		logCat.info("*** action = "+action+" ***");
 
