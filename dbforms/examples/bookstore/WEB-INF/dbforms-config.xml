@@ -30,7 +30,7 @@
 	    </query>    
 	    
 
-	    <query name="AUTHORVIEW" from="AUTHOR" >
+	    <query name="AUTHOR_VIEW" from="AUTHOR" >
 	    </query>
 	    
 	    <query 	name="BOOKSPERAUTHOR" 

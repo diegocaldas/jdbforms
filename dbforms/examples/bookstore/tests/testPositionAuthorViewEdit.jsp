@@ -8,7 +8,7 @@
       <db:dbform autoUpdate="false" 
                  followUp="/tests/testPositionAuthorViewEdit.jsp" 
                  maxRows="1" 
-                 tableName="AUTHORVIEW"
+                 tableName="AUTHOR_VIEW"
                  
       >
          <db:header>

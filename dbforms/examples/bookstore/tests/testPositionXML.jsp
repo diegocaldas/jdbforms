@@ -21,7 +21,7 @@
                 <db:label fieldName="TITLE"/><br/>
                 <db:label fieldName="AUTHOR_NAME"/><br/>
                 <%=(String)currentRow_XMLBOOKS.get("AUTHOR_ID")%><br/>
-                <a href="<db:linkURL href="/tests/testPositionAuthorViewEdit.jsp" tableName="AUTHORVIEW">
+                <a href="<db:linkURL href="/tests/testPositionAuthorViewEdit.jsp" tableName="AUTHOR_VIEW">
 						<!-- Attention: field to reference must be a key field in the target table! -->
    	            	        <db:position fieldName="AUTHOR_ID" value='<%=(String)currentRow_XMLBOOKS.get("AUTHOR_ID")%>'/>
 	        	      </db:linkURL>"
