@@ -22,27 +22,33 @@
  */
 
 package org.dbforms.event;
-import org.dbforms.*;
-import org.dbforms.util.*;
+
 import javax.servlet.http.*;
 import java.sql.*;
 import java.util.*;
+
 import org.apache.log4j.Category;
+
+import org.dbforms.*;
+import org.dbforms.util.*;
 
 
 
 /****
  *
- * <p>This event forces the controller to forward the current request to a Request-Dispatcher
- * specified by the Application-Developer in a "org.dbforms.taglib.DbGotoButton".</p>
- *
+ *  This event forces the controller to forward the current request
+ *  to a Request-Dispatcher specified by the Application-Developer
+ *  in a "org.dbforms.taglib.DbGotoButton".
  *
  * @author Joe Peer <j.peer@gmx.net>
  */
 public class GotoEvent extends NavigationEvent
 {
-    static Category logCat = Category.getInstance(GotoEvent.class.getName()); // logging category for this class
-    private String position; // where to go in associated table
+    // logging category for this class;
+    static Category logCat = Category.getInstance(GotoEvent.class.getName());
+
+    // where to go in associated table
+    private String position;
     private Table table;
     private Table srcTable;
     private String childField;
@@ -59,11 +65,11 @@ public class GotoEvent extends NavigationEvent
     {
         this.config = config;
 
-	    /* 2002-11-20 HKK: doubled in EventEngine! 
-	    this.followUp = ParseUtil.getParameter(request, "data" + action + "_fu");
+        /* 2002-11-20 HKK: doubled in EventEngine!
+        this.followUp = ParseUtil.getParameter(request, "data" + action + "_fu");
         logCat.info("gotoevent's followup = " + followUp);
-		*/  
-        
+        */
+
         String destTable = ParseUtil.getParameter(request, "data" + action + "_destTable");
 
         if (destTable == null)
@@ -86,10 +92,10 @@ public class GotoEvent extends NavigationEvent
 
         String srcTable = ParseUtil.getParameter(request, "data" + action + "_srcTable");
         if (srcTable != null) {
-			   this.srcTable = config.getTableByName(srcTable);
+               this.srcTable = config.getTableByName(srcTable);
             if (this.srcTable == null) {
-            	this.srcTable = config.getTable(Integer.parseInt(srcTable));
-            } 			   
+                this.srcTable = config.getTable(Integer.parseInt(srcTable));
+            }
             childField  = ParseUtil.getParameter(request, "data" + action + "_childField");
             parentField = ParseUtil.getParameter(request, "data" + action + "_parentField");
         }
@@ -133,15 +139,16 @@ public class GotoEvent extends NavigationEvent
 
 
     /**
-    this constructer is not called by the controller but, actually, BY THE VIEW
-    for example if the FormTag "gotoPrefix" attribute is set an a GotoEvent needs to be
-    instanciated
-    */
+     * this constructer is not called by the controller but, actually, BY THE VIEW
+     * for example if the FormTag "gotoPrefix" attribute is set an a GotoEvent needs to be
+     *  instanciated
+     */
     public GotoEvent(String position, Table table)
     {
         this.table = table;
         this.position = position;
     }
+
 
     /**
      * DOCUMENT ME!
@@ -161,12 +168,12 @@ public class GotoEvent extends NavigationEvent
     {
         int compMode = !Util.isNull(position) ? FieldValue.COMPARE_INCLUSIVE : FieldValue.COMPARE_NONE;
         if ( !Util.isNull(position) && (srcTable != null) && !Util.isNull(childField) && !Util.isNull(parentField) ) {
-				FieldValue[] fv = table.mapChildFieldValues(srcTable, 
-																		parentField,
-																		childField, 
-																		position);
-				childFieldValues = fv;
-				compMode = FieldValue.COMPARE_NONE;
+                FieldValue[] fv = table.mapChildFieldValues(srcTable,
+                                                                        parentField,
+                                                                        childField,
+                                                                        position);
+                childFieldValues = fv;
+                compMode = FieldValue.COMPARE_NONE;
         } else if (!Util.isNull(position) ) {
             table.fillWithValues(orderConstraint, position);
         }

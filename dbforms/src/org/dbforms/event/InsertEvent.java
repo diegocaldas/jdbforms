@@ -50,7 +50,7 @@ public class InsertEvent extends DatabaseEvent
     /**
     insert actionbutton-strings is as follows: ac_insert_12_root_3
     which is equivalent to:
-                
+
             ac_insert         : insert action event
             12                         : table id
             root                : key

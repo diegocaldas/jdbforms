@@ -32,10 +32,10 @@ import org.dbforms.util.*;
  *
  * <p>ReloadEvent is used to reload the current page with data from Request object.
  *    When you want to do action on different field when one of them change.
- *    
+ *
  *    Use for field manipulation server side.
- * 
- *    Exemple: Select child change when Select parent change. 
+ *
+ *    Exemple: Select child change when Select parent change.
  *
  * @author Eric Beaumier
  */

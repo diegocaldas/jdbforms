@@ -38,6 +38,13 @@ import org.apache.log4j.Category;
  */
 public abstract class NavEventFactory extends EventFactory
 {
+    /** classes used as GotoEvent constructor arguments types */
+    public static Class[] gotoConstructorArgsTypes = new Class[]
+    {
+        String.class, Table.class
+    };
+
+
     /**
      *  Create and return a new navigation event.
      *

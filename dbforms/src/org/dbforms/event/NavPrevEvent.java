@@ -22,6 +22,7 @@
  */
 
 package org.dbforms.event;
+
 import org.dbforms.*;
 import org.dbforms.util.*;
 import javax.servlet.http.*;
@@ -68,6 +69,7 @@ public abstract class NavPrevEvent extends NavigationEvent
         this.tableId = table.getId();
         this.config = config;
     }
+
 
     /**
      *  subclasses must implement this method.

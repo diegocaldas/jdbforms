@@ -41,7 +41,7 @@ import org.dbforms.*;
 public abstract class DatabaseEventFactory extends EventFactory
 {
     /** classes used as "keyInfo" constructor arguments types */
-    protected static Class[] keyInfoConstructorArgsTypes = new Class[]
+    public static Class[] keyInfoConstructorArgsTypes = new Class[]
     {
         Integer.class, String.class, HttpServletRequest.class,  DbFormsConfig.class
     };
@@ -58,13 +58,4 @@ public abstract class DatabaseEventFactory extends EventFactory
     public abstract DatabaseEvent createEvent(String             action,
                                               HttpServletRequest request,
                                               DbFormsConfig      config);
-
-
-    /**
-     *
-     * @param positionString the
-     * @param table          the table object
-     * @return               the goto event
-     */
-    //public abstract GotoEvent createGotoEvent(String positionString, Table table);
 }
