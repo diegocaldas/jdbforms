@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!-- example dbforms-config-overlay file by Mark Dimon -->
+
+<dbforms-config>
+
+<!-- 
+	you must give the same table name as the devgui generated table name 
+	note that *no* additional attributes in the table tag are merged   	
+-->
+
+	<table name="mytable">
+
+		<!-- here we add a password attribute -->            
+            <field name="PASSWORD" password="true"/>
+            
+		<!-- here we add an additional key -->            
+            <field name="USERNAME" isKey="true"/>
+
+		<field name="MYDATA">
+
+				<!-- all tags here are added to the generated config file , this will conflict if devgui ever add node here!! -->
+
+				<mytag>
+					<xyz/>
+				</mytag>
+		</field>            
+
+		<!-- all tags here added to generated table -->		
+		<interceptor className="com.markdimon.dbforms.SystemInterceptor"/>
+
+	</table>
+
+	<!-- table names not in the devgui generated config will be **ignored** at the moment -->
+
+	<table name="my-madeup-table">
+		<!-- this will be ignored !! -->
+	</table>
+
+
+	<!-- note the 'connections' tag will not work here !!!! -->
+
+
+	<!-- first connection will overwrite the devgui generated connection data -->
+	<dbconnection 	
+		name   = "jdbc/myconnection"
+		isJndi = "true"
+		conClass  = ""
+		username = ""
+		password  = ""
+	/>
+
+	<!-- these connection's will be appended -->
+	<dbconnection 	
+		name   = "jdbc/myconnecton2"
+		isJndi = "true"
+		conClass  = ""
+		username = ""
+		password  = ""
+	/>
+
+	<dbconnection 	
+		name   = "jdbc/myconnection3"
+		isJndi = "true"
+		conClass  = ""
+		username = ""
+		password  = ""
+	/>
+
+</dbforms-config>

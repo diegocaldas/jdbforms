@@ -1,0 +1,69 @@
+<html>
+<head>
+<title>Contrib: DbForms config Overlay</title>
+</head>
+<body bgcolor="white">
+
+<h3>Contributed by Mark Dimon (<a href="mailto:mark.dimon@btinternet.com">mark.dimon@btinternet.com</a>):</h3>
+(2002-11-11)
+<hr>
+<pre>
+Hi *
+
+I have a xsl stylesheet that performs a merge with the generated config file
+with a similar overaly file , this way you can force certain fields to be
+set , ie usfull for isKey in mysql and any other attributes / elements which
+are needed in the config but not actually generated.
+
+So at the moment , when the database changes I use devgui to generate a new
+temp-xml-config.xml then run it and dbforms-config-overlay.xml through a
+xslt to generate the final dbforms-config.xml
+
+This is an ant task and xsl file will rebuild the dbforms-config.xsl and
+merge a similar dbforms-config-overlay.xml to allow you to keep hand coded
+changed to the config.
+
+It works by generating a tempoary config file and then overlaying
+dbforms-config-overlay.xml to produce the final dbforms-config.xml
+
+You hand edit the dbforms-config-overlay file.
+
+It does not handle all the new features yet , but will handle the new devgui
+output ok.
+
+So Quick Start,
+
+    [a] copy dbforms-config-overlay.xml  to /bin
+
+    [b] copy overlay.xsl  to /xsl-stylesheets
+
+    [c] save the properties file from devgui to /bin/dbex.props
+
+    [d] add the ant task to build.xml
+
+    [e] look at dbforms-config-overlay.xml  
+        for instructions and edit for your needs
+
+    [f] run ant update-config
+
+    [g] if all goes well, your dbforms-config.xml will be in /temp
+
+    [h] hack the ant task for your project needs
+
+Mark.
+
+(hope thats it , prob forgotten something :)
+
+</pre>
+
+<h3>Files:</h3>
+<ul>
+
+<li><a href="dbforms-config-overlay.xml">dbforms-config-overlay.xml</a>
+
+<li><a href="overlay.xsl">overlay.xsl</a>
+
+<li><a href="overlay_ant_task.xml">overlay_ant_task.xml</a>
+</ul>
+</body></html>
+
