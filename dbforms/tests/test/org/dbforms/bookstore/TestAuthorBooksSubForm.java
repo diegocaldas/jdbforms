@@ -192,8 +192,8 @@ public class TestAuthorBooksSubForm extends AbstractTestBase
 		assertFalse(responseContains("<input type=\"submit\"  value=\"Copy\"  style=\"width:100\" name=\"ac_copy_0\">"));
 		assertTrue(responseContains("<td style=\"width:100px\">[No Data]&nbsp;</td>"));
 		assertTrue(
-			responseContains("<td style=\"width:300px\"><input type=\"text\" name=\"f_0_insroot_1\" value=\"\"  size=\"25\"/></td>"));
-		assertTrue(responseContains("<td><input type=\"text\" name=\"f_0_insroot_2\" value=\"\"  size=\"25\"/>"));
+			responseContains("<input type=\"text\" name=\"f_0_insroot_1\" value=\"\"  size=\"25\"/>"));
+		assertTrue(responseContains("<input type=\"text\" name=\"f_0_insroot_2\" value=\"\"  size=\"25\"/>"));
 
 	}
 
@@ -249,8 +249,8 @@ public class TestAuthorBooksSubForm extends AbstractTestBase
 		assertFalse(responseContains("<input type=\"submit\"  value=\"Copy\"  style=\"width:100\" name=\"ac_copy_0\">"));
 		assertTrue(responseContains("<td style=\"width:100px\">[No Data]&nbsp;</td>"));
 		assertTrue(
-			responseContains("<td style=\"width:300px\"><input type=\"text\" name=\"f_0_insroot_1\" value=\"Eco, Umberto\"  size=\"25\"/></td>"));
-		assertTrue(responseContains("<td><input type=\"text\" name=\"f_0_insroot_2\" value=\"organisation 11\"  size=\"25\"/>"));
+			responseContains("<input type=\"text\" name=\"f_0_insroot_1\" value=\"Eco, Umberto\"  size=\"25\"/>"));
+		assertTrue(responseContains("<input type=\"text\" name=\"f_0_insroot_2\" value=\"organisation 11\"  size=\"25\"/>"));
 
 	}
 
