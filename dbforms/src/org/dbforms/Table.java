@@ -217,12 +217,12 @@ public class Table
         // if the field is (part of) the key
         if (field.isKey())
         {
-            logCat.info("wow - field " + field.getName() + " is a key");
+            logCat.info("wow - field " + getName() + "." + field.getName() + " is a key");
             key.addElement(field);
         }
         else
         {
-            logCat.info("field " + field.getName() + " is NO key");
+            logCat.info("field " +  getName() + "." + field.getName() + " is NO key");
         }
 
         // for quicker lookup by name:
