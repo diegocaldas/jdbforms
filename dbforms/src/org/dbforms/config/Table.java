@@ -1068,8 +1068,14 @@ public class Table {
 	 * 
 	 * <pre>
 	 * 
-	 *     field.id : field.length : field.value
+	 *  
 	 *   
+	 *    
+	 *        field.id : field.length : field.value
+	 *      
+	 *    
+	 *   
+	 *  
 	 * </pre>
 	 * 
 	 * @param field
@@ -1638,9 +1644,6 @@ public class Table {
 	public FieldValue[] createOrderFieldValues(String order,
 			HttpServletRequest request, boolean includeKeys) {
 
-		if (!includeKeys) {
-			return null; // then we've got definitely no over
-		}
 		Vector result = null;
 		if (request != null) {
 			String paramStub = Constants.FIELDNAME_SORT + this.getId();
@@ -1653,7 +1656,7 @@ public class Table {
 		}
 
 		// 20020703-HKK: use the default order if result.size == 0, not only if
-		// result == null
+		//               result == null
 		//               This happens if all parameters with sort_ are set to none
 		if (((result == null) || result.isEmpty())) {
 			// 20021104-HKK: use default order from table if form has no order!
@@ -1668,27 +1671,25 @@ public class Table {
 			}
 		}
 
-
-		// scroll through keys and append to order criteria, if not already
-		// included
-		for (int i = 0; i < this.getKey().size(); i++) {
-			Field keyField = (Field) getKey().elementAt(i);
-			boolean found = false;
-			int j = 0;
-
-			while (!found && (j < result.size())) {
-				FieldValue fv = (FieldValue) result.elementAt(j);
-
-				if (fv.getField() == keyField) {
-					found = true;
+		if (includeKeys) {
+			// scroll through keys and append to order criteria, if not already
+			// included
+			for (int i = 0; i < this.getKey().size(); i++) {
+				Field keyField = (Field) getKey().elementAt(i);
+				boolean found = false;
+				int j = 0;
+				while (!found && (j < result.size())) {
+					FieldValue fv = (FieldValue) result.elementAt(j);
+					if (fv.getField() == keyField) {
+						found = true;
+					}
+					j++;
 				}
 
-				j++;
-			}
-
-			if (!found) {
-				result.addElement(FieldValue.createFieldValueForSorting(
-						keyField, Constants.ORDER_ASCENDING));
+				if (!found) {
+					result.addElement(FieldValue.createFieldValueForSorting(
+							keyField, Constants.ORDER_ASCENDING));
+				}
 			}
 		}
 
@@ -2002,16 +2003,22 @@ public class Table {
 	 * 
 	 * <pre>
 	 * 
-	 *  convention:    index 0-n =&gt; AND
-	 *                 index (n+1)-m =&gt; OR
-	 *  examples
-	 *             (A = 'meier' AND X = 'joseph') AND (AGE = '10')
-	 *             (A = 'meier' ) AND (X = 'joseph' OR AGE = '10')
-	 *             (X = 'joseph' OR AGE = '10')
-	 *             (A = 'meier' AND X = 'joseph')
-	 *  for comparing to code:
-	 *    §1     §2        §3      §2          §4    §5   §6      §2      §7
-	 *    (   A = 'smith' AND   X LIKE 'jose%' )    AND    (  AGE = '10'   )
+	 *  
+	 *   
+	 *    
+	 *     convention:    index 0-n =&gt; AND
+	 *                    index (n+1)-m =&gt; OR
+	 *     examples
+	 *                (A = 'meier' AND X = 'joseph') AND (AGE = '10')
+	 *                (A = 'meier' ) AND (X = 'joseph' OR AGE = '10')
+	 *                (X = 'joseph' OR AGE = '10')
+	 *                (A = 'meier' AND X = 'joseph')
+	 *     for comparing to code:
+	 *       §1     §2        §3      §2          §4    §5   §6      §2      §7
+	 *       (   A = 'smith' AND   X LIKE 'jose%' )    AND    (  AGE = '10'   )
+	 *     
+	 *    
+	 *   
 	 *  
 	 * </pre>
 	 * 
@@ -2106,11 +2113,17 @@ public class Table {
 	 * 
 	 * <pre>
 	 * 
-	 *  +--------------------------------------------------------------------------------------------------+
-	 *  |  RULE = R1 AND R2 AND ... AND Rn                                                                 |
-	 *  |  Ri = fi OpA(i) fi* OR  f(i-1) OpB(i-1) f(i-1)* OR f(i-2) OpB(i-2) f(i-2)* OR ... OR f1 OpB f1*  |
-	 *  +--------------------------------------------------------------------------------------------------+
-	 *  For background info email joepeer@wap-force.net
+	 *  
+	 *   
+	 *    
+	 *     +--------------------------------------------------------------------------------------------------+
+	 *     |  RULE = R1 AND R2 AND ... AND Rn                                                                 |
+	 *     |  Ri = fi OpA(i) fi* OR  f(i-1) OpB(i-1) f(i-1)* OR f(i-2) OpB(i-2) f(i-2)* OR ... OR f1 OpB f1*  |
+	 *     +--------------------------------------------------------------------------------------------------+
+	 *     For background info email joepeer@wap-force.net
+	 *     
+	 *    
+	 *   
 	 *  
 	 * </pre>
 	 * 

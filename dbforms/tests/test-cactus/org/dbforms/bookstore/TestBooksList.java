@@ -38,8 +38,17 @@ public class TestBooksList extends HttpTestCase
 		assertTrue(responseContains("Hijacking through the Galaxy 3"));
 		assertTrue(responseContains("Hijacking through the Galaxy 4"));
 		assertTrue(responseContains("Test null value"));
-      assertTrue(responseContains("Luca's favorite thing to eat is  &quot;delicious Italian pasta&quot;"));
+        assertTrue(responseContains("Luca's favorite thing to eat is  &quot;delicious Italian pasta&quot;"));
 		assertTrue(responseContains("Hijacking through the Galaxy 6"));
+		assertTrue("order by do not work!", responseContains("<td>0-9&nbsp;</td>"));
+		assertTrue("order by do not work!", responseContains("<td>1-8&nbsp;</td>"));
+		assertTrue("order by do not work!", responseContains("<td>2-7&nbsp;</td>"));
+		assertTrue("order by do not work!", responseContains("<td>3-6&nbsp;</td>"));
+		assertTrue("order by do not work!", responseContains("<td>4-5&nbsp;</td>"));
+		assertTrue("order by do not work!", responseContains("<td>5-4&nbsp;</td>"));
+		assertTrue("order by do not work!", responseContains("<td>6-3&nbsp;</td>"));
+		assertTrue("order by do not work!", responseContains("<td>7-2&nbsp;</td>"));
+		assertTrue("order by do not work!", responseContains("<td>8-1&nbsp;</td>"));
 	}
 
 }

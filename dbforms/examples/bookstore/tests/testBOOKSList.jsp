@@ -4,11 +4,15 @@
 		<db:base/>
 	</head>
 	<body>
+		<%int i = 0;%>
 		<db:dbform 
 			multipart="false" 
 			autoUpdate="false" 
 			followUp="/tests/testBOOKSList.jsp" 
-			maxRows="*" tableName="BOOK">
+			maxRows="*" 
+		    tableName="BOOK"
+		    orderBy="BOOK_ID DESC"
+		>
 			<db:header>
 				<db:errors/>  
 				<table>
@@ -21,7 +25,7 @@
 			</db:header>
 			<db:body allowNew="false">
 				<tr>
-					<td><db:label fieldName="BOOK_ID"/></a>&nbsp;</td>
+					<td><%=String.valueOf(i++)%>-<db:label fieldName="BOOK_ID"/>&nbsp;</td>
 					<td><db:label fieldName="ISBN"/>&nbsp;</td>
 					<td><db:label fieldName="AUTHOR_ID"/>&nbsp;</td>
 					<td><db:label fieldName="TITLE"/>&nbsp;</td>
