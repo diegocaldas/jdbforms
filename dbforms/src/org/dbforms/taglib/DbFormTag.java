@@ -26,6 +26,7 @@ package org.dbforms.taglib;
 import java.util.*;
 import java.sql.*;
 import java.io.*;
+import java.text.*;
 import javax.servlet.http.*;
 import javax.servlet.jsp.*;
 import javax.servlet.jsp.tagext.*;
@@ -2233,10 +2234,8 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
                             if (operator != -1)
                             {
                                 FieldValue fv = new FieldValue(f, aSearchFieldValue, true, operator);
-
                                 fv.setSearchMode(mode);
                                 fv.setSearchAlgorithm(algorithm);
-
                                 if (mode == DbBaseHandlerTag.SEARCHMODE_AND)
                                 {
                                     mode_and.addElement(fv);
@@ -2332,19 +2331,46 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
                         aSearchFieldValue = aSearchFieldValue.substring(jump).trim();
                     }
 
-                    FieldValue fv = new FieldValue(f, aSearchFieldValue, true, operator);
+                	  if ( (operator == FieldValue.FILTER_EQUAL) && (jump == 0) && (f.getType() == FieldTypes.TIMESTAMP)) {
+                	     // found a single timestamp value. Extend it to >value and <end of day of value
+           	  			  FieldValue fv;
+           	  			  operator = FieldValue.FILTER_GREATER_THEN_EQUAL;
+	               	  fv = new FieldValue(f, aSearchFieldValue, true, operator);
+                	  	  fv.setSearchMode(mode);
+                	  	  fv.setSearchAlgorithm(algorithm);
+                	  	  if (mode == DbBaseHandlerTag.SEARCHMODE_AND) {
+                	  	     mode_and.addElement(fv);
+                	  	  } else {
+                	  	     mode_or.addElement(fv);
+                	  	  }
+           	  			  
+           	  			  operator = FieldValue.FILTER_SMALLER_THEN_EQUAL;
+                 	  	  SimpleDateFormat sdf = DbFormsConfig.getDateFormatter();
+           	  			  java.util.Date d = TimeUtil.parseDate(sdf.toPattern(), aSearchFieldValue);
+           	  			  d = TimeUtil.findEndOfDay(d);
+           	  			  aSearchFieldValue = sdf.format(d);
+                	  	  fv = new FieldValue(f, aSearchFieldValue, true, operator);
+                	  	  fv.setSearchMode(mode);
+                	  	  fv.setSearchAlgorithm(algorithm);
+                	  	  if (mode == DbBaseHandlerTag.SEARCHMODE_AND) {
+                	  	     mode_and.addElement(fv);
+                	  	  } else {
+                	  	     mode_or.addElement(fv);
+                	  	  }
+                	  } else {	
+                 	  	  FieldValue fv = new FieldValue(f, aSearchFieldValue, true, operator);
+                       fv.setSearchMode(mode);
+                       fv.setSearchAlgorithm(algorithm);
 
-                    fv.setSearchMode(mode);
-                    fv.setSearchAlgorithm(algorithm);
-
-                    if (mode == DbBaseHandlerTag.SEARCHMODE_AND)
-                    {
-                        mode_and.addElement(fv);
-                    }
-                    else
-                    {
-                        mode_or.addElement(fv);
-                    }
+                       if (mode == DbBaseHandlerTag.SEARCHMODE_AND)
+                       {
+                          mode_and.addElement(fv);
+                       }
+                       else
+                       {
+                           mode_or.addElement(fv);
+                       }
+                	  }
                 }
             }
         }

@@ -1,3 +1,17 @@
+2003-01-28
+(Henner.Kollmann@gmx.de)
+	2 more helper classes:
+   		StringUtil.java: dealing with strings
+   		TimeUtil.java  : dealing with parsing/converting of Dates
+   	SqlUtil.java:
+   		changed parsing of timestamp to make it more fault tolerant. Now it's possible to
+   		enter something like 12.12  and the value will be expanded to 12.12.2003 (current year).
+   		Same for 12. will be expanded to 12.<current month>.<current year>
+   	DbFormTag.java:
+   		Extend extending searching and time fields. If you input a single time value like 12.01.2003 12:30 you
+   		will get the range up to the end of the day: 12.01.2003 12:00 - 13.01.2003 0:00
+   
+
 2003-01-27
 (Henner.Kollmann@gmx.de)
 	FieldValues.java:
