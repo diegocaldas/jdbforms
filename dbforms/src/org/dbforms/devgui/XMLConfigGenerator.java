@@ -80,38 +80,75 @@ static private final int DBMS_IBMDB2 = 2;
     public static HashMap getForeignKeyInformation(DatabaseMetaData dbmd,
                           boolean includeCatalog, String catalogSeparator,
                           boolean includeSchema,String schemaSeparator,
-                          Vector knownTables) throws SQLException  {
+                          Vector knownTables,Vector catalogNames, Vector schemaNames, Vector tableNames)   {
       HashMap hm = new HashMap();
+      
+      try {
                                    // following method accepts no pattern, so we just pass nulls and read all
                                    // available information:
-      ResultSet rsk = dbmd.getCrossReference(null, null, null, null,null,null ) ;
+        ResultSet rsk = dbmd.getCrossReference(null, null, null, null,null,null ) ;
       
-      while (rsk.next()) {
+        while (rsk.next()) {
+          addSingleReference(hm,rsk, knownTables,
+            includeCatalog,  catalogSeparator,
+            includeSchema, schemaSeparator);
+        }       
+      
+      } catch (SQLException ex) {
+         System.out.println("using getImportedKeys() method to get foreign key information...");
+         hm.clear();
+         try {
+           for (int i = 0; i < tableNames.size();i++ ) {
+                   
+              String catalogName    =  (String)catalogNames.get(i);
+              String schemaName     =  (String)schemaNames.get(i);
+              String tableName      =  (String)tableNames.get(i);
+              ResultSet rsk = dbmd.getImportedKeys(catalogName, schemaName, tableName );
+              while (rsk.next()) { 
+                 addSingleReference(hm,rsk, knownTables,
+                 includeCatalog,  catalogSeparator,
+                 includeSchema, schemaSeparator); 
+              }
+           }
+         } catch (SQLException ex2) {
+             ex2.printStackTrace();
+         }
+         
+      }
+      return hm;      
+  }
+    
+    
+    
+  private static void addSingleReference(HashMap hm, ResultSet rsk, Vector knownTables,
+            boolean includeCatalog, String catalogSeparator,
+            boolean includeSchema,String schemaSeparator) throws SQLException {
+         
           String pCatalog = rsk.getString(1);
           String pSchema = rsk.getString(2);
           String pTable= rsk.getString(3);
-          if ( ! knownTables.contains("" + pCatalog + "\t" + pSchema + "\t" + pTable)) continue; 
-         
+          if ( ! knownTables.contains(""  + emptyIfNull(pSchema) + "\t" + emptyIfNull(pTable))) return; 
+          
           String pColName = rsk.getString(4);
           
           String fCatalog = rsk.getString(5);
           String fSchema = rsk.getString(6);
           String fTable=rsk.getString(7);
-          if ( ! knownTables.contains("" + fCatalog + "\t" + fSchema + "\t" + fTable)) continue;
+          if ( ! knownTables.contains(""  + emptyIfNull(fSchema) + "\t" + emptyIfNull(fTable))) return;
           
           String fColName = rsk.getString(8);
           
           String fkName = rsk.getString(12);
- 
+               
           if (fkName == null)   // foreign key name not set, construct one....
-              fkName = pCatalog + "::" + pSchema + "::" + pTable;  
+              fkName = pCatalog + "::" + pSchema + "::" + pTable;      
           
-          String hashKey = fCatalog + "\t" + fSchema + "\t" + fTable;
+          String hashKey = /*fCatalog + "\t" + */ emptyIfNull(fSchema) + "\t" + fTable;
           
           HashMap tabForKeys = (HashMap)hm.get(hashKey);  // Hash with foreign key information for referencing table
           if (tabForKeys == null) {
               tabForKeys = new HashMap();
-              hm.put(hashKey, tabForKeys);
+              hm.put(hashKey, tabForKeys); 
           }
           ForeignKey fki = (ForeignKey)tabForKeys.get(fkName);
           if (fki == null) {
@@ -125,12 +162,11 @@ static private final int DBMS_IBMDB2 = 2;
                fki.setName(fkName);              
           }
           fki.addReference(new Reference(fColName, pColName));
-      }       
-      return hm;      
+                         
   }
   
   public static String getForeignKeyTags(HashMap hm, String catalog,String schema,String table ) {
-       String hashKey = catalog + "\t" +schema + "\t" + table;
+       String hashKey = /* catalog + "\t" + */ emptyIfNull(schema) + "\t" + table;
        HashMap keyInfo = (HashMap)hm.get(hashKey);
        if (keyInfo == null) return "";
        
@@ -226,8 +262,7 @@ static private final int DBMS_IBMDB2 = 2;
 	Connection con = null;
 	try {
 
-		con = createConnection(jdbcDriver, jdbcURL, username, password);
-                 
+		con = createConnection(jdbcDriver, jdbcURL, username, password);              
                
 		result.append("<?xml version=\"1.0\" encoding=\"ISO-8859-1\" ?>\n\n<dbforms-config>\n");
 
@@ -339,7 +374,8 @@ static private final int DBMS_IBMDB2 = 2;
                        catalogNames.add(tablesRS.getString(1));
                        schemaNames.add(tablesRS.getString(2));
                        tableNames.add(tablesRS.getString(3));
-                       knownTables.add("" + tablesRS.getString(1) + "\t" + tablesRS.getString(2) + "\t" + tablesRS.getString(3));                      
+                       knownTables.add("" + emptyIfNull(tablesRS.getString(2)) + 
+                                 "\t" + emptyIfNull(tablesRS.getString(3)));                      
                     }
                     tablesRS.close();
                 
@@ -357,7 +393,8 @@ static private final int DBMS_IBMDB2 = 2;
                 if (! useAutoCommitMode) con.commit();
                 
                 HashMap forKeys = getForeignKeyInformation(dbmd, includeCatalog, catalogSeparator,
-                                                     includeSchema,schemaSeparator,knownTables) ;
+                                                     includeSchema,schemaSeparator,knownTables, 
+                                                     catalogNames, schemaNames, tableNames ) ;
                 
                 if (! useAutoCommitMode) con.commit();
                 
@@ -609,5 +646,9 @@ static private final int DBMS_IBMDB2 = 2;
 
 	return result.toString();
   }  
+  
+  private static String emptyIfNull(String s) {
+      return s == null ? "" : s;
+  }
 
 }
