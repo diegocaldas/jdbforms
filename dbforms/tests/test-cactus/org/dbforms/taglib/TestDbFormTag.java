@@ -274,12 +274,12 @@ public class TestDbFormTag extends JspTestCase
 		AssertUtils.assertContains("<form name=\"dbform\"", content);
 		AssertUtils.assertContains("method=\"post\"", content);
 		AssertUtils.assertContains(
-					"<input type=\"hidden\" name=\"invtable\" value=\"1\">", content);
+					"<input type=\"hidden\" name=\"invtable\" value=\"1\"/>", content);
 		AssertUtils.assertContains(
-					"<input type=\"hidden\" name=\"autoupdate_1\" value=\"true\">", 
+					"<input type=\"hidden\" name=\"autoupdate_1\" value=\"true\"/>", 
 					content);
 		AssertUtils.assertContains(
-					"<input type=\"hidden\" name=\"fu_1\" value=\"null\">", content);
+					"<input type=\"hidden\" name=\"fu_1\" value=\"null\"/>", content);
 	}
 
 
@@ -323,9 +323,9 @@ public class TestDbFormTag extends JspTestCase
 		AssertUtils.assertContains("name=\"autoupdate_0\" value=\"true\"", 
 											content);
 		AssertUtils.assertContains(
-					"<input type=\"hidden\" name=\"fu_0\" value=\"/AUTHOR_poweruser_list.jsp\">", 
+					"<input type=\"hidden\" name=\"fu_0\" value=\"/AUTHOR_poweruser_list.jsp\"/>", 
 					content);
-		AssertUtils.assertContains("<input type=\"hidden\" name=\"customEvent\">", 
+		AssertUtils.assertContains("<input type=\"hidden\" name=\"customEvent\"/>", 
 											content);
 	}
 
