@@ -38,60 +38,41 @@
         <example id="sampConfig">
           <title>Defining the model</title>
           <screen>
-                &lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;
-                &lt;!DOCTYPE dbforms-config PUBLIC "http://www.dbforms.org/dtd/dbf_conf.dtd"&gt; 
+  &lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;
+  &lt;!DOCTYPE dbforms-config PUBLIC "http://www.dbforms.org/dtd/dbf_conf.dtd"&gt; 
     
-                 &lt;
-            <emphasis role="bold">dbforms-config</emphasis>&gt; 
-                    
-                    &lt;
-            <emphasis role="bold">table</emphasis> name="customer"&gt;  
-            <co id="table"/>
-                        &lt;
-            <emphasis role="bold">field</emphasis> name="id" fieldType="int" isKey="true" /&gt;
-            <co id="field"/> 
-                        &lt;field name="firstname" fieldType="char" /&gt; 
-                        &lt;field name="lastname" fieldType="char" /&gt; 
-                        &lt;field name="address" fieldType="char" /&gt; 
-                   
-            <emphasis role="bold">&lt;/table&gt;</emphasis> 
-        
-                    &lt;
-            <emphasis role="bold">table</emphasis> name="orders"&gt; 
-            <co id="table2"/>
-                        &lt;
-            <emphasis role="bold">field</emphasis> name="orderid" fieldType="int" isKey="true" /&gt;
-            <co id="field2"/> 
-                        &lt;field name="customerid" fieldType="int" isKey="true" autoInc="true" /&gt; 
-                        &lt;field name="date" fieldType="char" /&gt; 
-                        &lt;field name="annotation" fieldType="char" /&gt; 
-                        &lt;field name="amount" fieldType="int" /&gt; 
-                    
-            <emphasis role="bold">&lt;/table&gt;</emphasis>
-            <emphasis role="bold">&lt;dbconnection</emphasis>
+  &lt;<emphasis role="bold">dbforms-config</emphasis>&gt; 
+    &lt;<emphasis role="bold">table</emphasis> name="customer"&gt; <co id="table"/>
+      &lt;<emphasis role="bold">field</emphasis> name="id" fieldType="int" isKey="true" /&gt; <co id="field"/> 
+      &lt;field name="firstname" fieldType="char" /&gt; 
+      &lt;field name="lastname"  fieldType="char" /&gt; 
+      &lt;field name="address"   fieldType="char" /&gt;                    
+    <emphasis role="bold">&lt;/table&gt;</emphasis> 
+
+    &lt;<emphasis role="bold">table</emphasis> name="orders"&gt; <co id="table2"/>
+      &lt;<emphasis role="bold">field</emphasis> name="orderid" fieldType="int" isKey="true" /&gt; <co id="field2"/> 
+      &lt;field name="customerid" fieldType="int" isKey="true" autoInc="true" /&gt; 
+      &lt;field name="date"       fieldType="char" /&gt; 
+      &lt;field name="annotation" fieldType="char" /&gt; 
+      &lt;field name="amount"     fieldType="int" /&gt; 
+    <emphasis role="bold">&lt;/table&gt;</emphasis>
  
-                        name = "jdbc/dbformstest"
- 
-                        isJndi = "true"
- 
-                    
-            <emphasis role="bold">/&gt;</emphasis>
-            <emphasis role="bold">&lt;/dbforms-config&gt;</emphasis>
-          </screen>
+    <emphasis role="bold">&lt;dbconnection</emphasis> name="jdbc/dbformstest" isJndi="true"<emphasis role="bold">/&gt;</emphasis>
+  <emphasis role="bold">&lt;/dbforms-config&gt;</emphasis>
+            </screen>
           <calloutlist>
             <callout arearefs="table table2">
               <para>
-As shown, every table or view to be accessed by DbForms has to be declared inside a 
+                As shown, every table or view to be accessed by DbForms has to be declared inside a 
                 <computeroutput>&lt;table&gt;</computeroutput> tag.
-
               </para>
             </callout>
             <callout arearefs="field field2">
               <para>
-All relevant table fields need to be declared inside a 
-                <computeroutput>&lt;field&gt;</computeroutput> tag nested in their respective table-tag. (There exists a tool for generating this XML-data. It reads and processes database-metadata, see 
+                All relevant table fields need to be declared inside a 
+                <computeroutput>&lt;field&gt;</computeroutput> tag nested in their respective table-tag. 
+                (There exists a tool for generating this XML-data. It reads and processes database-metadata, see 
                 <link linkend="devgui">DEVGUI</link>)
-
               </para>
             </callout>
           </calloutlist>
@@ -112,21 +93,13 @@ All relevant table fields need to be declared inside a
             <link linkend="multdbcon">See Multiple Database Connections</link> for more info on that.
           </para>
           <sect5>
-            <title>Accessing the Application Servers connection pool via JNDI 
-                                        </title>
+            <title>Accessing the Application Servers connection pool via JNDI</title>
             <example>
               <title>Defining the database connection (1)</title>
-              <programlisting>
-                                                
-                        &lt;
-                <emphasis role="bold">dbconnection</emphasis>
-                        
-                            name   = "jdbc/dbformstest"
- 
-                            isJndi = "true"
- 
-                        
-                <emphasis role="bold">/&gt;</emphasis>
+              <programlisting>                                                
+  &lt;<emphasis role="bold">dbconnection</emphasis> 
+    name   = "jdbc/dbformstest" 
+    isJndi = "true"<emphasis role="bold">/&gt;</emphasis>
               </programlisting>
             </example>
             <para>In the example above DbForms assumes that the JNDI-entry "jdbc/dbformstest" is configured correctly in the Application-Server's database configuration [i.e. data-sources.xml]) and takes all the connections it needs from that JNDI-entry.</para>
@@ -137,17 +110,10 @@ All relevant table fields need to be declared inside a
             <example>
               <title>Defining the database connection (2)</title>
               <programlisting>
-                        &lt;
-                <emphasis role="bold">dbconnection</emphasis>
-                        
-                            name   = "jdbc:poolman://dbformstest"
- 
-                            isJndi = "false"
- 
-                            class  = "com.codestudio.sql.PoolMan"
- 
-                        
-                <emphasis role="bold">/&gt;</emphasis>
+  &lt;<emphasis role="bold">dbconnection</emphasis>
+    name   = "jdbc:poolman://dbformstest"
+    isJndi = "false"
+    class  = "com.codestudio.sql.PoolMan"<emphasis role="bold">/&gt;</emphasis>
               </programlisting>
             </example>
             <para>In the example above DbForms assumes that the connection pool-entry called "jdbc:poolman://dbformstest" is correctly configured in the associated connection pool managers properties file and takes all the connections it needs from that connection pool.</para>
@@ -164,27 +130,17 @@ All relevant table fields need to be declared inside a
             <example>
               <title>Defining the database connection (3)</title>
               <programlisting>
-                        &lt;
-                <emphasis role="bold">dbconnection</emphasis>
-
-                            name   = "jdbc:mysql://localhost/fashion"
- 
-                            isJndi = "false"
- 
-                            conClass  = "org.gjt.mm.mysql.Driver"
- 
-                            username = "scott"
- 
-                            password = "tiger"
- 
-                        
-                <emphasis role="bold">/&gt;</emphasis>
+  &lt;<emphasis role="bold">dbconnection</emphasis>
+    name     = "jdbc:mysql://localhost/fashion"
+    isJndi   = "false"
+    conClass = "org.gjt.mm.mysql.Driver"
+    username = "scott"
+    password = "tiger"<emphasis role="bold">/&gt;</emphasis>
               </programlisting>
               <blockquote>
                 <para>Note:  Many drivers pass in JDBC properties using the URL such as:</para>
                 <screen>
-                        &lt;
-                  <emphasis role="bold">dbconnection</emphasis>
+  &lt;<emphasis role="bold">dbconnection</emphasis>
 
                             name   = "jdbc:mysql://localhost/fashion
                   <emphasis role="bold">?charSet=ISO-8859-1</emphasis>"
