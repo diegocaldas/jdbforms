@@ -1,6 +1,6 @@
 <?php
  
-#-- change timezone to GMT
+#--- change timezone to GMT
 putenv ("TZ=GMT"); 
 
 #-- change dir to where this config script is located
