@@ -481,12 +481,7 @@ public class FieldValue implements Cloneable
             }
         }
 
-        String s = buf.toString();
-
-        logCat.info("::getWhereClause ----------- return [" + s + "]");
-
-        // fxt, DEBUG !!
-        return s;
+        return buf.toString();
     }
 
 
@@ -628,13 +623,7 @@ public class FieldValue implements Cloneable
             }
         }
 
-        //return buf.toString();
-        String s = buf.toString();
-
-        logCat.info("::getWhereEqualsSearchClause ----------- return [" + s + "]");
-
-        // fxt, DEBUG !!
-        return s;
+        return buf.toString();
     }
 
 
@@ -834,8 +823,8 @@ public class FieldValue implements Cloneable
     {
         Field  curField = cur.getField();
         String valueStr = cur.getFieldValue();
-		
-        logCat.info("setting col " + curCol + 
+
+        logCat.info("setting col " + curCol +
                     " with name "  + cur.getField().getName()
                     + " to value " + valueStr + " of type " + curField.getType()
                     + " operator " + cur.getOperator()) ;
@@ -867,7 +856,7 @@ public class FieldValue implements Cloneable
 
             default:
                 SqlUtil.fillPreparedStatement(ps, curCol, valueStr, curField.getType());
-        	    curCol++;
+                curCol++;
         }
         return curCol;
     }
