@@ -1,24 +1,24 @@
-/**
- *  The contents of this file are subject to the Mozilla Public
- *  License Version 1.1 (the "License"); you may not use this file
- *  except in compliance with the License. You may obtain a copy of
- *  the License at http://www.mozilla.org/MPL/
+/*
+ * $Header$
+ * $Revision$
+ * $Date$
  *
- *  Software distributed under the License is distributed on an "AS
- *  IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
- *  implied. See the License for the specific language governing
- *  rights and limitations under the License.
+ * DbForms - a Rapid Application Development Framework
+ * Copyright (C) 2001 Joachim Peer <joepeer@excite.com>
  *
- *  The Original Code is pow2toolkit library.
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
  *
- *  The Initial Owner of the Original Code is
- *  Power Of Two S.R.L. (www.pow2.com)
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
  *
- *  Portions created by Power Of Two S.R.L. are
- *  Copyright (C) Power Of Two S.R.L.
- *  All Rights Reserved.
- *
- * Contributor(s):
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.util.external;
 
