@@ -6,10 +6,6 @@ putenv ("TZ=GMT");
 #-- change dir to where this config script is located
 chdir(dirname(__FILE__)."/ewiki");
 
-#-- database connection/plugins
-// MySQL support is built-in, we only open the connection
-define("EWIKI_DB_TABLE_NAME", "ewiki");
-define("EWIKI_SCRIPT", "http://jdbforms.sourceforge.net/wiki.php?page=");
 
 
 #-- OPEN DATABASE for ewiki
@@ -27,31 +23,15 @@ if (function_exists("mysql_connect")) {
 
 #-- constants
 define("EWIKI_NAME", 'DbFormsWiki');
-define("EWIKI_PAGE_INDEX",       'WiKi');
-define("EWIKI_PAGE_UPDATES",     'UpdatedPages');
-define("EWIKI_PAGE_NEWEST",      'NewestPages');
-define("EWIKI_PAGE_SEARCH",      'SearchPages');
-define("EWIKI_PAGE_POWERSEARCH", 'PowerSearch');
-define("EWIKI_SCRIPT", '?id=');
-define("EWIKI_EMAILPROT_UNLOCK", 1);
-define("EWIKI_AUTO_EDIT", 1);
-define("EWIKI_EDIT_REDIRECT", 0);
-define("EWIKI_HIT_COUNTING", 1);
-define("EWIKI_RESOLVE_DNS", 1);
-define("EWIKI_HTTP_HEADERS", 1);
-define("EWIKI_ENGAGE_BINARY", 1);
-define("EWIKI_CACHE_IMAGES", 1);
-define("EWIKI_IMAGE_MAXSIZE", 65536);
+define("EWIKI_SCRIPT", "http://jdbforms.sourceforge.net/wiki.php?page=");
 define("EWIKI_LOGFILE", '/home/groups/j/jd/jdbforms/htdocs/log/ewiki.txt');
 define("EWIKI_LOGLEVEL", '3');
-define("EWIKI_TMP", '/tmp');
-define("EWIKI_CASE_INSENSITIVE", 1);
-define("EWIKI_PRINT_TITLE", 1);
-define("EWIKI_CONTROL_LINE", 1);
-define("EWIKI_LIST_LIMIT", 20);
 define("EWIKI_EDIT_REDIRECT", 0);
 define("EWIKI_NOTIFY_WITH_DIFF", 1);
 define("EWIKI_NOTIFY_DIFF_PARAMS", " --ignore-case  --ignore-space-change");
+define("EWIKI_PROTECTED_MODE", 1);
+#define("EWIKI_PROTECTED_MODE_HIDING", 1);
+define("EWIKI_AUTO_LOGIN", 1);
 
 
 #-- set a few configuration variables*
@@ -104,10 +84,7 @@ include("plugins/filter/search_highlight.php");
 include("plugins/linking/link_css.php");
 include("plugins/linking/linkexcerpts.php");
 
-
-define("EWIKI_PROTECTED_MODE", 1);
-#define("EWIKI_PROTECTED_MODE_HIDING", 1);
-define("EWIKI_AUTO_LOGIN", 1);
+#-- security
 include("plugins/auth/auth_perm_ring.php");
 include("plugins/auth/userdb_array.php");
 
