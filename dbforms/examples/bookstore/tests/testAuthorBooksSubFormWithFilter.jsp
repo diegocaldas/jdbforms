@@ -74,7 +74,7 @@
 							<db:filter>
 								<db:filterCondition label="title like">
 									TITLE LIKE ?
-									<db:filterValue/>
+									<db:filterValue searchAlgo="weakEnd"/>
 								</db:filterCondition>
 								<db:filterCondition label="title not unique">
 									(SELECT COUNT(*) FROM BOOK B1 WHERE B1.TITLE = BOOK.TITLE) > 1
