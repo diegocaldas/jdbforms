@@ -24,6 +24,7 @@
 package org.dbforms;
 import junit.framework.*;
 import org.dbforms.util.FieldTypes;
+import org.dbforms.util.Constants;
 
 
 
@@ -66,9 +67,9 @@ public class TestFieldValue extends TestCase
         fBookId = new Field();
         fBookId.setName("BOOK_ID");
 
-        fvLogicalOR = new FieldValue(fAuthorId, "10", false, FieldValue.FILTER_EQUAL, true);
-        fvNotLogicalOR = new FieldValue(fBookId, "10", false, FieldValue.FILTER_EQUAL, false);
-        fvLogicalORLikeFilter = new FieldValue(fAuthorId, "10", false, FieldValue.FILTER_LIKE, true);
+        fvLogicalOR = new FieldValue(fAuthorId, "10", Constants.FILTER_EQUAL, true);
+        fvNotLogicalOR = new FieldValue(fBookId, "10", Constants.FILTER_EQUAL, false);
+        fvLogicalORLikeFilter = new FieldValue(fAuthorId, "10", Constants.FILTER_LIKE, true);
     }
 
 
@@ -90,7 +91,7 @@ public class TestFieldValue extends TestCase
      */
     public void testCon() throws Exception
     {
-        FieldValue fv = new FieldValue(fAuthorId, "10", false);
+        FieldValue fv = new FieldValue(fAuthorId, "10");
         assertTrue("make sure we get our field back.", fv.getField().equals(fAuthorId));
         assertTrue("make sure we get our field value.", fv.getFieldValue().equals("10"));
     }
@@ -103,7 +104,7 @@ public class TestFieldValue extends TestCase
      */
     public void testLogicalOr() throws Exception
     {
-        FieldValue fv = new FieldValue(fAuthorId, "10", false);
+        FieldValue fv = new FieldValue(fAuthorId, "10");
         assertTrue("Make sure this is not a logical OR.", !fv.isLogicalOR());
         fv.setLogicalOR(true);
         assertTrue("make sure this is a logical OR.", fv.isLogicalOR());
@@ -135,7 +136,7 @@ public class TestFieldValue extends TestCase
      */
     public void testClose() throws Exception
     {
-        FieldValue fv = new FieldValue(fAuthorId, "10", false);
+        FieldValue fv = new FieldValue(fAuthorId, "10");
 
         FieldValue fvClone = (FieldValue) fv.clone();
         assertTrue("Make sure toStrings match", fv.toString().equals(fvClone.toString()));
