@@ -84,24 +84,25 @@ public class DbAssociatedRadioTag extends TagSupport  {
 
 
   public int doEndTag() throws javax.servlet.jsp.JspException {
+       try {
 
-		try {
+          StringBuffer tagBuf = new StringBuffer("<input type=\"radio\" name=\"");
+          tagBuf.append(name);
+          tagBuf.append("\" value=\"");
+          tagBuf.append(parentForm.getTable().getId());
+          tagBuf.append("_");
+          tagBuf.append(parentForm.getPositionPath());
+          // 20020705-HKK: Set checked=true for first row!  
+          if ( parentForm.getCurrentCount() == 0 )
+            tagBuf.append(" checked=\"true\"");
+          tagBuf.append("\">");
 
-	  StringBuffer tagBuf = new StringBuffer("<input type=\"radio\" name=\"");
-	  tagBuf.append(name);
-	  tagBuf.append("\" value=\"");
-	  tagBuf.append(parentForm.getTable().getId());
-	  tagBuf.append("_");
-			tagBuf.append(parentForm.getPositionPath());
-	  tagBuf.append("\">");
-
-		  pageContext.getOut().write(tagBuf.toString());
-		} catch(java.io.IOException ioe) {
-	  throw new JspException("IO Error: "+ioe.getMessage());
-		}
-
-		return EVAL_PAGE;
-  }  
+          pageContext.getOut().write(tagBuf.toString());
+       } catch(java.io.IOException ioe) {
+            throw new JspException("IO Error: "+ioe.getMessage());
+       }
+       return EVAL_PAGE;
+}  
 
 
   public void setParent(final javax.servlet.jsp.tagext.Tag parent) {
