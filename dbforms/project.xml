@@ -34,13 +34,13 @@
 
   <mailingLists>
     <mailingList>
-      <name>DbForms Interest</name>
+      <name>DbForms Interest - use to ask questions, discuss problems, and make suggestions</name>
       <subscribe>http://lists.sourceforge.net/lists/listinfo/jdbforms-interest</subscribe>
       <unsubscribe>http://lists.sourceforge.net/lists/listinfo/jdbforms-interest</unsubscribe>
       <archive>http://sourceforge.net/mailarchive/forum.php?forum_id=2497</archive>
     </mailingList>
     <mailingList>
-      <name>DbForms Developers</name>
+      <name>DbForms Developers - record of cvs changes</name>
       <subscribe>http://lists.sourceforge.net/lists/listinfo/jdbforms-developers</subscribe>
       <unsubscribe>http://lists.sourceforge.net/lists/listinfo/jdbforms-developers</unsubscribe>
       <archive>http://sourceforge.net/mailarchive/forum.php?forum_id=1896</archive>
