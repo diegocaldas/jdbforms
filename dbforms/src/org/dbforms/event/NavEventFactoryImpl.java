@@ -49,11 +49,6 @@ public class NavEventFactoryImpl extends NavEventFactory
     /** an handle to the unique NavigationEventFactory instance */
     private static NavEventFactory instance = null;
 
-    /** classes used as constructor arguments types */
-    private static Class[] goToConstructorArgsTypes = new Class[]
-    {
-        String.class, Table.class
-    };
 
 
     /**
@@ -88,53 +83,80 @@ public class NavEventFactoryImpl extends NavEventFactory
      * @param  config the DbForms config object
      * @return  a new navigation event
      */
-    public NavigationEvent createEvent(String action, HttpServletRequest request, DbFormsConfig config)
+    public WebEvent createEvent(String action, HttpServletRequest request, DbFormsConfig config)
     {
         Object[]  constructorArgs = new Object[] { action, request, config };
         String    eventId = getEventIdFromDestinationTable(request, action);
         EventInfo einfo   = getEventInfo(eventId);
-
         // debug
         logCat.info("::createEvent - got event [" + einfo + "] from action [" + action + "]");
-
-        return (NavigationEvent) getEvent(einfo, constructorArgsTypes, constructorArgs);
+        return getEvent(einfo, constructorArgsTypes, constructorArgs);
     }
 
 
     /**
-     *  create and return a new navigation event
+     *  create and return a new navigation event. Called from local web event in DbForms!
      *
      * @param  action the action string that identifies the web event
      * @param  table the Table object
      * @param  config the DbForms config object
      * @return  a new navigation event
      */
-    public NavigationEvent createEvent(String action, Table table, DbFormsConfig config)
+    public NavigationEvent createEvent(String action, HttpServletRequest request, DbFormsConfig config, Table table)
     {
-        Object[] constructorArgs = new Object[] { table, config };
+        Object[] constructorArgs = new Object[] {table, request, config};
         String    eventId = getEventIdFromDestinationTable(table, action);
         EventInfo einfo   = getEventInfo(eventId);
-
         // debug
         logCat.info("::createEvent - got event [" + einfo + "] from action [" + action + "]");
-
-        return (NavigationEvent) getEvent(einfo, goToConstructorArgsTypes, constructorArgs);
+        return (NavigationEvent) getEvent(einfo, actionConstructorArgsTypes, constructorArgs);
     }
 
 
     /**
      *  Create and return a new navGoto event.
+     *  Used by the view to create a gotoEvent
      *
      * @param  positionString the position string object
      * @param  table the Table object
      * @return a new navGoto event
      */
-    public GotoEvent createGotoEvent(String positionString, Table table)
+    public NavigationEvent createGotoEvent(Table table, HttpServletRequest request, DbFormsConfig config, String positionString)
     {
         String    eventId = table.getTableEvents().getEventId(EventType.EVENT_NAVIGATION_GOTO);
         EventInfo einfo   = getEventInfo(eventId);
-        Object[] constructorArgs = new Object[] { positionString, table };
-
-        return (GotoEvent) getEvent(einfo, goToConstructorArgsTypes, constructorArgs);
+        Object[] constructorArgs = new Object[] {table, request, config, positionString };
+        return (NavigationEvent) getEvent(einfo, goToConstructorArgsTypes, constructorArgs);
     }
+
+	/**
+	 *  Create and return a new navGoto event.
+     *  Used by the view to create a gotoEvent
+	 *
+	 * @param  positionString the position string object
+	 * @param  table the Table object
+	 * @return a new navGoto event
+	 */
+	public NavigationEvent createGotoEvent(Table table, HttpServletRequest request, DbFormsConfig config, String whereClause, String tableList) {
+		String    eventId = table.getTableEvents().getEventId(EventType.EVENT_NAVIGATION_GOTO);
+		EventInfo einfo   = getEventInfo(eventId);
+		Object[] constructorArgs = new Object[] {table, request, config, whereClause, tableList};
+		return (NavigationEvent) getEvent(einfo, goToConstructorArgsTypes2, constructorArgs);
+	}
+
+	/**
+	 *  Initialize the default events.
+	 *
+	 * @exception Exception if any error occurs
+	 */
+	protected void initializeEvents() throws Exception
+	{
+		 addEventInfo(new EventInfo(EventType.EVENT_NAVIGATION_NEW,   "org.dbforms.event.NavNewEvent"));
+		 addEventInfo(new EventInfo(EventType.EVENT_NAVIGATION_GOTO,  "org.dbforms.event.classic.GotoEvent"));
+		 addEventInfo(new EventInfo(EventType.EVENT_NAVIGATION_FIRST, "org.dbforms.event.classic.NavFirstEvent"));
+		 addEventInfo(new EventInfo(EventType.EVENT_NAVIGATION_LAST,  "org.dbforms.event.classic.NavLastEvent"));
+		 addEventInfo(new EventInfo(EventType.EVENT_NAVIGATION_NEXT,  "org.dbforms.event.classic.NavNextEvent"));
+		 addEventInfo(new EventInfo(EventType.EVENT_NAVIGATION_PREV,  "org.dbforms.event.classic.NavPrevEvent"));
+	}
+
 }

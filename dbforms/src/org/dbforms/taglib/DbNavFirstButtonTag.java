@@ -69,7 +69,7 @@ public class DbNavFirstButtonTag extends DbBaseButtonTag
             setOnClick(onclick + ValidatorConstants.JS_CANCEL_VALIDATION + "=false;");
         }
 
-        if (parentForm.getFooterReached() && ResultSetVector.isEmptyOrNull(parentForm.getResultSetVector()))
+        if (parentForm.getFooterReached() && Util.isNull(parentForm.getResultSetVector()))
         {
             return EVAL_PAGE;
         }

@@ -185,7 +185,6 @@ public class TableData extends EmbeddedData
         PreparedStatement ps = con.prepareStatement(queryBuf.toString());
         ResultSetVector rsv = new ResultSetVector(ps.executeQuery());
         ps.close(); // #JP Jun 27, 2001
-
         return formatEmbeddedResultRows(rsv);
     }
 }

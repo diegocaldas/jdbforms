@@ -260,7 +260,7 @@ public class DbGotoButtonTag extends DbBaseButtonTag
     {
         if (choosenFlavor == FLAVOR_MODERN)
         {
-            if (parentForm.getFooterReached() && ResultSetVector.isEmptyOrNull(parentForm.getResultSetVector()))
+            if (parentForm.getFooterReached() && Util.isNull(parentForm.getResultSetVector()))
             {
                 return EVAL_PAGE;
             }

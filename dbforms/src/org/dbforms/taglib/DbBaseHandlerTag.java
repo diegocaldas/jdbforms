@@ -54,14 +54,6 @@ public abstract class DbBaseHandlerTag extends BodyTagSupport
 {
     static Category logCat = Category.getInstance(DbBaseHandlerTag.class.getName());
 
-    /** DOCUMENT ME! */
-    public static final int SEARCHMODE_NONE = 0;
-
-    /** DOCUMENT ME! */
-    public static final int SEARCHMODE_AND = 1;
-
-    /** DOCUMENT ME! */
-    public static final int SEARCHMODE_OR = 2;
 
     /** DOCUMENT ME! */
     protected DbFormsConfig config;
@@ -167,7 +159,6 @@ public abstract class DbBaseHandlerTag extends BodyTagSupport
     {
         this.fieldName = fieldName;
         this.field = parentForm.getTable().getFieldByName(fieldName);
-
         if (parentForm.isSubForm())
         {
             // tell parent that _this_ class will generate the html tag, not DbBodyTag!
