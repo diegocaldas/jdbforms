@@ -46,7 +46,7 @@ import org.dbforms.event.datalist.dao.DataSourceFactory;
 public class ReloadEvent extends NavigationEvent
 {
 	/**
-		 * Creates a new NavFirstEvent object.
+		 * Creates a new ReloadEvent object.
 		 * 
 		 * @param action  the action string
 		 * @param request the request object
@@ -60,10 +60,10 @@ public class ReloadEvent extends NavigationEvent
 
 
 		/**
-		 * Creates a new NavFirstEvent object.
+		 * Creates a new ReloadEvent object.
 		 * 
 		 * @param table the input table object
-		 * @param request DOCUMENT ME!
+		 * @param request the request object
 		 * @param config the configuration object
 		 */
 		public ReloadEvent(Table table, HttpServletRequest request, 
@@ -105,11 +105,12 @@ public class ReloadEvent extends NavigationEvent
 		   DataSourceFactory qry = ds.get(table, request);
 			if (qry == null)
 			{
-			   qry = new DataSourceFactory(dbConnectionName, con, table, filterFieldValues, orderConstraint, sqlFilter);
+			   qry = new DataSourceFactory(dbConnectionName, con, table);
 			   ds.put(table, request, qry);
 			} else {
 			   qry.close();
 			}
+			qry.setSelect(filterFieldValues, orderConstraint, sqlFilter);
 			return qry.getCurrent(null, count);
 		}
 }

@@ -264,15 +264,14 @@ public class GotoEvent extends NavigationEvent
       DataSourceList ds = DataSourceList.getInstance(request);
       ds.remove(table, request);
 
-      DataSourceFactory qry;
-      
+      DataSourceFactory qry = new DataSourceFactory(dbConnectionName, con, table);
       if (Util.isNull(whereClause))
       {
-         qry = new DataSourceFactory(dbConnectionName, con, table, childFieldValues, orderConstraint, sqlFilter);
+         qry.setSelect(childFieldValues, orderConstraint, sqlFilter);
       }
       else
       {
-         qry = new DataSourceFactory(dbConnectionName, con, table, tableList, whereClause);
+         qry.setSelect(tableList, whereClause);
       }
 
       ds.put(table, request, qry);

@@ -77,7 +77,7 @@ public class NavNextEvent extends NavigationEvent
     * Constructor used for call from localevent.
     * 
     * @param table the Table object
-    * @param request DOCUMENT ME!
+    * @param request the request object
     * @param config the config object
     */
    public NavNextEvent(Table table, HttpServletRequest request, 
@@ -125,7 +125,8 @@ public class NavNextEvent extends NavigationEvent
       DataSourceFactory qry      = ds.get(table, request);
       if (qry == null)
       {
-          qry = new DataSourceFactory(dbConnectionName, con, table, filterFieldValues, orderConstraint, sqlFilter);
+          qry = new DataSourceFactory(dbConnectionName, con, table);
+          qry.setSelect(filterFieldValues, orderConstraint, sqlFilter);
           ds.put(table, request, qry);
       }      
       String            position = table.getKeyPositionString(

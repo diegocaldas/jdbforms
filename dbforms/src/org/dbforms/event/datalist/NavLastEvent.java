@@ -110,7 +110,8 @@ public class NavLastEvent extends NavigationEvent
       DataSourceFactory qry = ds.get(table, request);
       if (qry == null)
       {
-          qry = new DataSourceFactory(dbConnectionName, con, table, filterFieldValues, orderConstraint, sqlFilter);
+          qry = new DataSourceFactory(dbConnectionName, con, table);
+          qry.setSelect(filterFieldValues, orderConstraint, sqlFilter);
           ds.put(table, request, qry);
       }
 

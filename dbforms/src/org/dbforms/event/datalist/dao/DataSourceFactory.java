@@ -67,7 +67,7 @@ public class DataSourceFactory
 
       try
       {
-         Object[] constructorArgs      = new Object[] 
+         Object[] constructorArgs = new Object[] 
          {
             table
          };
@@ -98,7 +98,6 @@ public class DataSourceFactory
       dataHandler.setConnection(con);
    }
 
-
    /**
     * Creates a new DataSourceFactory object.
     *
@@ -107,44 +106,61 @@ public class DataSourceFactory
     *                           session (see DataSourceJDBC for example!) 
     * @param con                the JDBC Connection object
     * @param table            the input table
-    * @param filterConstraint the filter constraint
-    * @param orderConstraint  the order constraint
-    * @param sqlFilter        sql condition to add to where clause
     *
     * @throws SQLException if any error occurs
     */
-   public DataSourceFactory(String dbConnectionName, Connection con, 
-                            Table table, FieldValue[] filterConstraint, 
-                            FieldValue[] orderConstraint, String sqlFilter)
+   public DataSourceFactory(String dbConnectionName, Connection con, Table table)
                      throws SQLException
    {
       this(con, table);
       dataHandler.setConnectionName(dbConnectionName);
-      dataHandler.setSelect(filterConstraint, orderConstraint, sqlFilter);
    }
+
+
+	/**
+	 * Sets the select data for this dataSource for free form selects. default
+	 * methods just raises an exception
+	 * 
+	 * @param tableList      the list of tables involved into the query
+	 * @param whereClause    free-form whereClause to be appended to query
+	 * 
+	 * @throws SQLException
+	 */
+	public void setSelect(String tableList, String whereClause)
+						throws SQLException
+	{
+		dataHandler.setSelect(tableList, whereClause);
+	}
+
+
+	/**
+	 * Sets the select data for this dataSource
+	 * 
+	 * @param filterConstraint FieldValue array used to restrict a set in a
+	 *        resultset
+	 * @param orderConstraint FieldValue array used to build a cumulation of
+	 *        rules for ordering (sorting)
+	 * @param sqlFilter       sql condition to add to where clause
+	 */
+	public void setSelect(FieldValue[] filterConstraint, 
+											 FieldValue[] orderConstraint, 
+											 String sqlFilter)
+   {											 
+		dataHandler.setSelect(filterConstraint, orderConstraint, sqlFilter);
+   }
+
 
 
    /**
-    * Creates a new DataSourceFactory object.
+    * returns the internal DataSource element
     *
-    * @param dbConnectionName   name of the used db connection. Can be used to
-    *                           get an own db connection, e.g. to hold it during the 
-    *                           session (see DataSourceJDBC for example!) 
-    * @param con                the JDBC Connection object
-    * @param table            the input table
-    * @param tableList        the list of tables
-    * @param whereClause      the SQL where clause
-    *
-    * @throws SQLException if any error occurs
+    * @return the DataSource element
     */
-   public DataSourceFactory(String dbConnectionName, Connection con, 
-                            Table table, String tableList, String whereClause)
-                     throws SQLException
+   public DataSource getDataHandler()
    {
-      this(con, table);
-      dataHandler.setConnectionName(dbConnectionName);
-      dataHandler.setSelect(tableList, whereClause);
+      return dataHandler;
    }
+
 
    /**
     *  Close the underlying dataHandler.
