@@ -22,6 +22,8 @@
  */
 
 package org.dbforms.taglib;
+import java.io.UnsupportedEncodingException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.JspException;
@@ -254,87 +256,17 @@ public class DbLinkURLTag extends DbBaseHandlerTag
     */
    public int doEndTag() throws javax.servlet.jsp.JspException
    {
-      try
-      {
-         // determinate position inside table (key)
-         if (this.position == null)
-         { // not explic. def. by attribute
+    try
+    {
+		HttpServletResponse response =
+		   (HttpServletResponse) pageContext.getResponse();
 
-            if (positionFv != null)
-            { // but (maybe) defined by sub-elements (DbLinkPositionItem)
-               position = getTable().getKeyPositionString(positionFv);
-            }
-         }
+		               String s = makeUrl();
+	                  s = response.encodeURL(s);
+	                  pageContext.getOut().write(s);
+      pageContext.getOut().write(s);
+    }
 
-         // build tag
-         StringBuffer       tagBuf  = new StringBuffer(200);
-         HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
-         String             contextPath = request.getContextPath();
-         tagBuf.append(contextPath);
-
-         // 2002-01-17 Fix contributed by Dirk Kraemer and Bertram Gong//
-         if (!contextPath.endsWith("/"))
-         {
-            tagBuf.append("/");
-         }
-
-         tagBuf.append("servlet/control?");
-
-         String tagName = "ac_goto";
-         tagBuf.append(getDataTag(tagName, "x", "t"));
-
-         tagName = "data" + tagName + "_x";
-         tagBuf.append(getDataTag(tagName, "fu", href));
-
-
-         // table is required. we force to define a valid table.
-         // because we do not want the developer to use this tag instead of
-         // normal <a href="">-tags to arbitrary (static) ressources, as this would slow down the application.
-         tagBuf.append(getDataTag(tagName, "destTable", getTable().getName()));
-
-
-         // position within table is not required.
-         // if no position was provided/determinated, dbForm will navigate to the first row
-         // 2002-11-20 HKK: Fixed encoding bug!
-         tagBuf.append(getDataTag(tagName, "destPos", 
-                                  Util.encode(position, 
-                                              pageContext.getRequest()
-                                                         .getCharacterEncoding())));
-
-
-         // 2002-11-21 HKK: Allow same keys as in dbgotobutton
-         tagBuf.append(getDataTag(tagName, "keyToDestPos", 
-                                  Util.encode(keyToDestPos, 
-                                              pageContext.getRequest()
-                                                         .getCharacterEncoding())));
-         tagBuf.append(getDataTag(tagName, "keyToKeyDestPos", 
-                                  Util.encode(keyToKeyToDestPos, 
-                                              pageContext.getRequest()
-                                                         .getCharacterEncoding())));
-
-         // 2002-11-21 HKK: New: send parent table name as parameter if it is different to table
-         if (getTable() != getParentForm().getTable())
-         {
-            tagBuf.append(getDataTag(tagName, "srcTable", 
-                                     getParentForm().getTable().getName()));
-            tagBuf.append(getDataTag(tagName, "childField", 
-                                     Util.encode(childField, 
-                                                 pageContext.getRequest()
-                                                            .getCharacterEncoding())));
-            tagBuf.append(getDataTag(tagName, "parentField", 
-                                     Util.encode(parentField, 
-                                                 pageContext.getRequest()
-                                                            .getCharacterEncoding())));
-         }
-
-         tagBuf.append(getDataTag(tagName, "singleRow", getSingleRow()));
-
-         HttpServletResponse response = (HttpServletResponse) pageContext.getResponse();
-         String              s = tagBuf.toString();
-         s = s.substring(0, s.length() - 1);
-         s = response.encodeURL(s);
-         pageContext.getOut().write(s);
-      }
       catch (java.io.IOException ioe)
       {
          throw new JspException("IO Error: " + ioe.getMessage());
@@ -346,6 +278,88 @@ public class DbLinkURLTag extends DbBaseHandlerTag
 
       return EVAL_PAGE;
    }
+   
+   protected String makeUrl() throws UnsupportedEncodingException {
+    // determinate position inside table (key)
+    if (this.position == null)
+    { // not explic. def. by attribute
+
+       if (positionFv != null)
+       { // but (maybe) defined by sub-elements (DbLinkPositionItem)
+          position = getTable().getKeyPositionString(positionFv);
+       }
+    }
+
+    // build tag
+    StringBuffer       tagBuf  = new StringBuffer(200);
+    HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
+    String             contextPath = request.getContextPath();
+    tagBuf.append(contextPath);
+
+    // 2002-01-17 Fix contributed by Dirk Kraemer and Bertram Gong//
+    if (!contextPath.endsWith("/"))
+    {
+       tagBuf.append("/");
+    }
+
+    tagBuf.append("servlet/control?");
+
+    String tagName = "ac_goto";
+    tagBuf.append(getDataTag(tagName, "x", "t"));
+
+    tagName = "data" + tagName + "_x";
+    tagBuf.append(getDataTag(tagName, "fu", href));
+
+
+    // table is required. we force to define a valid table.
+    // because we do not want the developer to use this tag instead of
+    // normal <a href="">-tags to arbitrary (static) ressources, as this would slow down the application.
+    tagBuf.append(getDataTag(tagName, "destTable", getTable().getName()));
+
+
+    // position within table is not required.
+    // if no position was provided/determinated, dbForm will navigate to the first row
+    // 2002-11-20 HKK: Fixed encoding bug!
+    tagBuf.append(getDataTag(tagName, "destPos", 
+                             Util.encode(position, 
+                                         pageContext.getRequest()
+                                                    .getCharacterEncoding())));
+
+
+    // 2002-11-21 HKK: Allow same keys as in dbgotobutton
+    tagBuf.append(getDataTag(tagName, "keyToDestPos", 
+                             Util.encode(keyToDestPos, 
+                                         pageContext.getRequest()
+                                                    .getCharacterEncoding())));
+    tagBuf.append(getDataTag(tagName, "keyToKeyDestPos", 
+                             Util.encode(keyToKeyToDestPos, 
+                                         pageContext.getRequest()
+                                                    .getCharacterEncoding())));
+
+    // 2002-11-21 HKK: New: send parent table name as parameter if it is different to table
+    if (getTable() != getParentForm().getTable())
+    {
+       tagBuf.append(getDataTag(tagName, "srcTable", 
+                                getParentForm().getTable().getName()));
+       tagBuf.append(getDataTag(tagName, "childField", 
+                                Util.encode(childField, 
+                                            pageContext.getRequest()
+                                                       .getCharacterEncoding())));
+       tagBuf.append(getDataTag(tagName, "parentField", 
+                                Util.encode(parentField, 
+                                            pageContext.getRequest()
+                                                       .getCharacterEncoding())));
+    }
+
+    tagBuf.append(getDataTag(tagName, "singleRow", getSingleRow()));
+
+    HttpServletResponse response = (HttpServletResponse) pageContext.getResponse();
+    String              s = tagBuf.toString();
+    s = s.substring(0, s.length() - 1);
+    s = response.encodeURL(s);
+    return s;
+   }
+
 
 
    /**
