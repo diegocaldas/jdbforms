@@ -1,29 +1,62 @@
-<project default = ""
-	 xmlns:deploy="deploy"
-	 xmlns:doc="doc" 
-	 >
-
-<echo message="Hack to use xalan transformer!"/>
-${systemScope.setProperty('javax.xml.transform.TransformerFactory','org.apache.xalan.processor.TransformerFactoryImpl')}
-<property environment="env"/>
-
-
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:ant="jelly:ant" xmlns:deploy="deploy" xmlns:doc="doc" xmlns:u="jelly:util" xmlns:j="jelly:core" default="">
+  <ant:echo message="Hack to use xalan transformer!" />
+  ${systemScope.setProperty('javax.xml.transform.TransformerFactory','org.apache.xalan.processor.TransformerFactoryImpl')}
+  <ant:property environment="env" />
   <!--
      -  Build the additional DbForms documentation:
      -    tag library
      -    docbook guide 
      -->
+  <goal name="maxq:run">
+     <attainGoal name="dbforms:startweb" />
+      <ant:java  classname="com.bitmechanic.maxq.Main" fork="yes">
+        <ant:classpath>
+          <ant:pathelement path="dependend/maxq-0.94x.jar"/>
+	      <ant:pathelement path="${pom.getDependencyClasspath()}"/>
+        </ant:classpath>
+        <ant:sysproperty key="generator.properties.file" value="${basedir}/maxq.properties" />
+      </ant:java>
+      <attainGoal name="appserver:stop" />
+  </goal>	
+
+  <goal name="maxq">
+     <attainGoal name="maxq:run" />
+  </goal>	
+
+  <goal name="dbforms:startweb">
+    <attainGoal name="dbforms:bookstore" />
+    <attainGoal name="appserver:install" />
+     <j:thread>
+        <attainGoal name="appserver:start" />
+     </j:thread>
+  </goal>
+
+  <goal name="dbforms:bookstore">
+     <ant:ant antfile="build.xml" target="maven-build-bookstore" >
+      <ant:property name="dbforms.version" value="${pom.currentVersion}" />
+     </ant:ant> 
+  </goal>
+
+  <goal name="dbforms:getrelease" description="generate a new release from SF">
+    <ant:echo message="generate a new release from SF" />
+    <ant:delete dir="temp/release"/>
+    <u:tokenize var="scmTokens" delim=":">${pom.repository.connection}</u:tokenize>
+    <ant:cvspass cvsroot=":${scmTokens[2]}:${scmTokens[3]}:${scmTokens[4]}" password="" />
+    <ant:cvs cvsRoot=":${scmTokens[2]}:${scmTokens[3]}:${scmTokens[4]}" command="co" package="${scmTokens[5]}" dest="temp/release" />
+  </goal>
+
   <goal name="dbforms:doc" description="generate dbforms documentation: taglib docu and manual">
-      <echo message="building the DbForms documentation user guide and jsp tag library"/>
-      <ant antfile="docs.xml" target="maven-build-doc"/>
+    <ant:echo message="building the DbForms documentation user guide and jsp tag library" />
+    <ant:ant antfile="docs.xml" target="maven-build-doc" />
   </goal>
 
   <goal name="dbforms:dist" description="generates the distribution via build.xml">
-     <echo message="building the distribution using ant "/>
-     <echo message="generate version ${pom.currentVersion}"/>
-     <ant antfile="build.xml" target="maven-build-release">
-     	<property name="dbforms.version" value="${pom.currentVersion}" />
-     </ant>
+    <ant:echo message="building the distribution using ant " />
+    <ant:echo message="generate version ${pom.currentVersion}" />
+    <ant:ant antfile="build.xml" target="maven-build-release">
+      <ant:property name="dbforms.version" value="${pom.currentVersion}" />
+    </ant:ant>
   </goal>
 
   <goal name="dbforms:dependend">
@@ -31,59 +64,69 @@ ${systemScope.setProperty('javax.xml.transform.TransformerFactory','org.apache.x
   </goal>
 
   <goal name="dbforms:deploy" description="do the whole deployment: generates site, generates doc, generates distribution">
-     <echo message="starting deploying site"/>
-     <echo message="0. cleanup"/>
-     <attainGoal name="clean"/>
-     <echo message="1. generate whole site"/>
-     <attainGoal name="site:generate"/>
-     <echo message="2. generate dbforms documentation via docs.xml"/>
-     <attainGoal name="dbforms:doc"/>
-     <echo message="3. copy depended"/>
-     <attainGoal name="dbforms:dependend"/>
-     <echo message="4. build the distribution via build.xml"/>
-     <attainGoal name="dbforms:dist"/>
+    <ant:echo message="starting deploying site" />
+    <ant:echo message="0. cleanup" />
+    <attainGoal name="clean" />
+    <ant:echo message="1. generate whole site" />
+    <attainGoal name="site:generate" />
+    <ant:echo message="2. generate dbforms documentation via docs.xml" />
+    <attainGoal name="dbforms:doc" />
+    <ant:echo message="3. copy depended" />
+    <attainGoal name="dbforms:dependend" />
+    <ant:echo message="4. build the distribution via build.xml" />
+    <attainGoal name="dbforms:dist" />
   </goal>
 
-  
   <preGoal name="jalopy:format">
-      <echo message="fixcrlf"/>
-     <ant antfile="build.xml" target="forcedos"/>
+    <ant:echo message="fixcrlf" />
+    <ant:ant antfile="build.xml" target="forcedos" />
   </preGoal>
 
   <postGoal name="maven-changes-plugin:report">
-      <echo message="build changes.xml"/>
-     <doc:text-xdoc  title="Changes"
-	    section="CHANGES"
-            output="target/generated-xdocs/changes-report.xml"
-            inputFile="ChangeLog"/>
+    <ant:echo message="build changes.xml" />
+    <doc:text-xdoc title="Changes" section="CHANGES" output="target/generated-xdocs/changes-report.xml" inputFile="ChangeLog" />
   </postGoal>
 
   <preGoal name="xdoc:jelly-transform">
-     <attainGoal name="cactus:test"/>
-     <attainGoal name="cactus:report"/>
-     <copy file="${maven.build.dir}/generated-xdocs/cactus-report.xml" 
-     	   tofile="${maven.build.dir}/generated-xdocs/junit-report.xml" 
-     	   overwrite="true" 
-     />
-     <delete file="${maven.build.dir}/generated-xdocs/cactus-report.xml"  />
+    <attainGoal name="cactus:test" />
+    <attainGoal name="cactus:report" />
+    <ant:copy file="${maven.build.dir}/generated-xdocs/cactus-report.xml" tofile="${maven.build.dir}/generated-xdocs/junit-report.xml" overwrite="true" />
+    <ant:delete file="${maven.build.dir}/generated-xdocs/cactus-report.xml" />
   </preGoal>
-
   <!--
      -  Move the $DBFORMS_HOME/target/docs/* stuff into the 
      -  $DBFORMS_HOME/doc directory
      -->
+
   <postGoal name="site:generate">
-      <echo message="moving the Maven docs stuff into the main DbForms doc directory"/>
-      <ant antfile="docs.xml" target="maven-move-doc"/>
+    <ant:echo message="moving the Maven docs stuff into the main DbForms doc directory" />
+    <ant:ant antfile="docs.xml" target="maven-move-doc" />
   </postGoal>
 
   <!--
       clean doc dir too
      -->
   <postGoal name="clean">
-      <echo message="clean docs too"/>
-      <ant antfile="docs.xml" target="cleanUp"/>
+    <ant:echo message="clean docs too" />
+    <ant:ant antfile="docs.xml" target="cleanUp" />
   </postGoal>
 
+  <postGoal name="appserver:install">
+    <ant:copy file="${maven.conf.dir}/${maven.appserver.fullname}/web.xml" tofile="${maven.appserver.dir}/conf/web.xml" overwrite="true"/>
+    <ant:copy tofile="${maven.appserver.dir}/webapps/bookstore.war" overwrite="true">
+    	<ant:fileset dir="dist">
+           <ant:include name="bookstore*.war" />    		
+    	</ant:fileset>
+    </ant:copy>
+  </postGoal>
 
+  <preGoal name="test:test">
+     <attainGoal name="dbforms:startweb" />
+     <ant:sleep seconds="30" />
+  </preGoal>
+
+  <postGoal name="test:test">
+     <attainGoal name="appserver:stop" />
+  </postGoal>
 </project>
+

@@ -203,11 +203,6 @@
 
   <dependencies>       
 
-    <dependency>
-      <id>cos</id>
-      <jar>cos.jar</jar>
-      <war.bundle.jar>true</war.bundle.jar>
-    </dependency>        
 
     <dependency>
       <id>log4j</id>      
@@ -215,26 +210,6 @@
       <war.bundle.jar>true</war.bundle.jar>
     </dependency>      
 
-    <dependency>
-      <id>jasperreports</id>      
-      <version>0.4.5</version>
-      <war.bundle.jar>true</war.bundle.jar>
-    </dependency>       
-
-    <!-- 
-       -  jdbc2_0-stdext.jar is used to compile JakartaConnectionProvider class
-       -  (it uses a Datasource object instead of DriverManager).
-       -  J2SE JDK1.4.x includes this class into its core libraries;
-       -  J2SE JDK1.3.x no.
-       -
-       -  http://java.sun.com/products/jdbc/download.html#binary
-       -  I think the name in Maven land has changed to just jdbc. - DEP
-       -->
-    <dependency>
-      <id>jdbc</id>
-      <version>2.0</version>
-      <war.bundle.jar>true</war.bundle.jar>
-    </dependency>
 
     <!-- Apache Jakarta commons here, pliz ! -->
     <dependency>
@@ -334,6 +309,7 @@
     </dependency>       
 
 
+    <!-- self hosted -->
     <dependency>
       <id>protomatter</id>
       <version>1.1.8-pre5</version>
@@ -341,6 +317,33 @@
          <war.bundle.jar>true</war.bundle.jar>
        </properties>
     </dependency>
+
+    <dependency>
+      <id>cos</id>
+      <jar>cos.jar</jar>
+      <war.bundle.jar>true</war.bundle.jar>
+    </dependency>        
+
+    <!-- 
+       -  jdbc2_0-stdext.jar is used to compile JakartaConnectionProvider class
+       -  (it uses a Datasource object instead of DriverManager).
+       -  J2SE JDK1.4.x includes this class into its core libraries;
+       -  J2SE JDK1.3.x no.
+       -
+       -  http://java.sun.com/products/jdbc/download.html#binary
+       -  I think the name in Maven land has changed to just jdbc. - DEP
+       -->
+    <dependency>
+      <id>jdbc</id>
+      <version>2.0</version>
+      <war.bundle.jar>true</war.bundle.jar>
+    </dependency>
+
+    <dependency>
+      <id>jasperreports</id>      
+      <version>0.4.5</version>
+      <war.bundle.jar>true</war.bundle.jar>
+    </dependency>       
 
     <!-- testing only -->
     <dependency>
@@ -351,13 +354,30 @@
        </properties>
     </dependency>  
 
-<!--
     <dependency>
-      <id>commons-util</id>
-      <version>final</version>
-    </dependency>
--->
+      <id>HTTPClient</id>
+      <version>0.3-3</version>
+      <properties>
+         <war.bundle.jar>false</war.bundle.jar>
+       </properties>
+    </dependency>  
 
+    <dependency>
+      <id>maxq</id>
+      <version>0.94</version>
+      <properties>
+         <war.bundle.jar>false</war.bundle.jar>
+       </properties>
+    </dependency>  
+
+    <dependency>
+      <id>junit</id>
+      <version>3.8.1</version>
+      <properties>
+         <war.bundle.jar>false</war.bundle.jar>
+       </properties>
+    </dependency>  
+    <!-- just for compiling! -->
     <!-- 
        -  must use at least servlet 2.3 now;
        -  some tag classes implements TryCatchFinally ... 
@@ -375,7 +395,7 @@
     <sourceDirectory>src</sourceDirectory>
     <unitTestSourceDirectory>tests/test</unitTestSourceDirectory>
     <aspectSourceDirectory></aspectSourceDirectory>
-    
+    <integrationUnitTestSourceDirectory>tests/test-bookstore</integrationUnitTestSourceDirectory>
     <unitTest>
       <includes>
         <include>**/*Test.java</include>
