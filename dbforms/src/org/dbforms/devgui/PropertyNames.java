@@ -20,37 +20,38 @@
 package org.dbforms.devgui;
 
 public interface PropertyNames {
-  
-                                          // set some constant Strings to avoid typos.... 
-    
+
+                                          // set some constant Strings to avoid typos....
+
         static final String ALL                   = "all";
         static final String SELECTION             = "selection";
         static final String TRUESTRING            = "true";
         static final String FALSESTRING           = "false";
-        
+
                                           // following are property names:
-        
+
         static final String CATALOG_SELECTION     = "catalogSelection";
         static final String SCHEMA_SELECTION      = "schemaSelection";
         static final String TABLE_SELECTION       =  "tableSelection";
-        
+
         static final String INCLUDE_CATALOGNAME   = "includeCatalogName";
         static final String INCLUDE_SCHEMANAME    = "includeSchemaName";
-        
+
         static final String AUTOCOMMIT_MODE       = "autoCommitMode";
-        
+
         static final String EXAMINE_TABLES        = "examineTables";
         static final String EXAMINE_VIEWS         = "examineViews";
         static final String EXAMINE_SYSTABS       =  "examineSysTabs";
-        
+
         static final String CATALOG               = "catalog";
         static final String SCHEMA                = "schema";
         static final String TABLE_NAME_PATTERN    = "tableNamePattern";
-        
+
         static final String WRITE_STD_TYPENAMES = "writeStdTypeNames";
         static final String USE_JAVASCRIPT_CALENDAR
         = "useJavaScriptCalendar";
-        
+
         static final String CONFIG_FILE           = "configFile";
+        static final String STYLESHEET_DIR        = "stylesheetDir";
         static final String DATE_FORMAT       = "dateFormat";
 }
