@@ -4988,7 +4988,7 @@ if(request.getParameter("goto")!=null) {
 	        <attribute>
 	            <name>searchAlgo</name>
 	            <required>false</required>
-	            <rtexprvalue>false</rtexprvalue>
+	            <rtexprvalue>true</rtexprvalue>
                     <info>
                        The search algorithm. Default: sharp
                     </info>
@@ -4996,7 +4996,7 @@ if(request.getParameter("goto")!=null) {
 	        <attribute>
 	            <name>searchMode</name>
 	            <required>false</required>
-	            <rtexprvalue>false</rtexprvalue>
+	            <rtexprvalue>true</rtexprvalue>
                     <info>
                        The search mode. Default: and
                     </info>
@@ -5004,7 +5004,7 @@ if(request.getParameter("goto")!=null) {
 	        <attribute>
 	            <name>default</name>
 	            <required>false</required>
-	            <rtexprvalue>false</rtexprvalue>
+	            <rtexprvalue>true</rtexprvalue>
                     <info>
                        Default value for the field. This will be used at the first time the form is rendered
                     </info>
@@ -5116,7 +5116,7 @@ if(request.getParameter("goto")!=null) {
 	        <attribute>
 	            <name>searchAlgo</name>
 	            <required>false</required>
-	            <rtexprvalue>false</rtexprvalue>
+	            <rtexprvalue>true</rtexprvalue>
                     <info>
                        The search algorithm. Default: sharp
                     </info>
@@ -5124,7 +5124,7 @@ if(request.getParameter("goto")!=null) {
 	        <attribute>
 	            <name>searchMode</name>
 	            <required>false</required>
-	            <rtexprvalue>false</rtexprvalue>
+	            <rtexprvalue>true</rtexprvalue>
                     <info>
                        The search mode. Default: and
                     </info>
@@ -5132,13 +5132,13 @@ if(request.getParameter("goto")!=null) {
 	        <attribute>
 	            <name>customEntry</name>
 	            <required>false</required>
-	            <rtexprvalue>false</rtexprvalue>
+	            <rtexprvalue>true</rtexprvalue>
 	            <info>Allows an additional (independant) entry into the select list</info>
                 </attribute>
 	        <attribute>
 	            <name>selectedIndex</name>
 	            <required>false</required>
-	            <rtexprvalue>false</rtexprvalue>
+	            <rtexprvalue>true</rtexprvalue>
 	            <info>Index that should be selected as default when form redered the first time</info>
 		</attribute>
 	        <attribute>
