@@ -38,13 +38,16 @@
 <!ENTITY uml-seq SYSTEM "UMLDiagrams-seq.xml">
 <!ENTITY unit-test SYSTEM "Client_Side_Unit_Testing.xml">
 <!ENTITY how_to SYSTEM "How_To.xml">
+<!ENTITY query_supp SYSTEM "Query_Support.xml">
+<!ENTITY filt_tag SYSTEM "Filter_Tag.xml">
 ]>
 <book>
 <title>DataBaseForms UsersGuide</title>
 <part><title>Major New features</title> 
 &navi;
-&unit-test;
+&filt_tag;
 &how_to;
+&unit-test;
 </part>
 
 <part><title>Installation </title>
@@ -69,6 +72,7 @@
 &uplo;
 &styl;
 &sort;
+&query_supp;
 &scri;
 &hook;
 &inte;

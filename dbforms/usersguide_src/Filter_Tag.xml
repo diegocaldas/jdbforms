@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter>
+ <title>Filter Tag (from 1.1.4pr1) </title>
+    
+    <para>There now exist three main ways to filter information</para>
+    <orderedlist numeration="lowerroman">
+      <listitem>
+        <para><link linkend='filter_tag'>Filter tag </link>(from 1.1.4pr1)</para>
+        <para>The filter tag can be thought of as the next generation filtering method and can effectively replace the following <computeroutput>filter</computeroutput> 
+ and <computeroutput>whereClause</computeroutput> attributes, as well as providing an improved alternative to variable <link linkend='searching'>searchFields</link>.</para>
+        <para>It has these advantages:</para>
+        <itemizedlist mark="opencircle">
+          <listitem>
+            <para>
+Allows for more complex sql conditions than the <computeroutput>filter</computeroutput> attribute allows  
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+Navigation works with both <computeroutput>classic</computeroutput> and <computeroutput>dataList</computeroutput> navigation sytems (navigation with a <computeroutput>whereClause</computeroutput> only works with <computeroutput>dataList</computeroutput>).
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+Simplifies searching. 
+            </para>
+          </listitem>
+ 
+        </itemizedlist>
+      </listitem>
+      <listitem>
+        <para><link linkend='filter'><computeroutput>filter</computeroutput></link> attribute in dbforms tag</para>
+      </listitem>
+      <listitem>
+        <para><link linkend='whereClause'><computeroutput>whereClause</computeroutput></link> attribute in dbforms tag</para>
+      </listitem>
+     
+ 
+   </orderedlist>
+   <sect1 id='filter_tag'>
+      <title>The Filter Tag in Use</title>
+      <para>The <computeroutput>filter</computeroutput> tag allows for easy use of user's input as well as fixed sql conditions.</para>
+      <para>It will render a select box for the user to choose which filter they would like to use.  Once they have chosen, it will (if desired) render a way to input condition values.  Finally buttons to "set" or "unset" the filter will be generated.  This can be seen twice in the following example (bookstore/tests/testAuthorBooksSubFormWithFilter.jsp).</para> 
+      <mediaobject  id="filter_tag_example">  
+        <imageobject  role="html">
+          <imagedata  format="PNG"  fileref="images/figures/filter_tag_example.png"/>
+        </imageobject>
+        <imageobject  role="fo">
+          <imagedata  format="PNG"  fileref="../images/figures/filter_tag_example.png"/>
+        </imageobject>
+      </mediaobject>
+      <para>In the first filter [for the parent form -- here placed in its footer], the user chooses from a select box populated with data obtained via a <computeroutput>queryData</computeroutput> tag.  Here it is used to select which author is to be viewed.</para>
+      <screen>
+&lt;db:filter&gt;
+
+  &lt;db:filterCondition label=&quot;author is&quot;&gt;
+    NAME = '?'
+    &lt;db:filterValue type=&quot;select&quot;&gt;
+      &lt;db:queryData name=&quot;q1&quot; query=&quot;select distinct name as n1, name as n2 from author where AUTHOR_ID &lt; 100 order by name&quot;/&gt;
+    &lt;/db:filterValue&gt;
+  &lt;/db:filterCondition&gt;
+  
+  ...(other filterConditions can be included for the user to select from)...
+&lt;/db:filter&gt;
+      </screen>
+      <para>In the second filter [for the subform -- here placed in its the header], the user inputs filter critera into a text box.  Here it is used to select titles from the author chosen in the first filter.</para>
+      <screen>
+&lt;db:filter&gt;
+  &lt;db:filterCondition label=&quot;title like&quot;&gt;
+    TITLE LIKE '%?%'
+     &lt;db:filterValue/&gt;
+  &lt;/db:filterCondition&gt;
+  
+  ...(other filterConditions can be included for the user to select from)...
+&lt;/db:filter&gt;      
+      </screen>
+      
+      <para>See the 
+        <ulink url="../../taglib/DbFormsTags_Frame.html">
+          <citetitle><computeroutput>filter</computeroutput></citetitle>
+        </ulink>tag for more information and usage details.
+      </para> 
+    </sect1>
+    
+   
+</chapter>
