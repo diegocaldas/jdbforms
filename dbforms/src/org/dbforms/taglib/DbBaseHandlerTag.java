@@ -65,7 +65,7 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
    private String fieldName;
    private String defaultValue;
    private String pattern;
-   private Format format;
+   private Format formatter;
    private String nullFieldValue;
    private String maxlength = null;
    private DbFormTag parentForm;
@@ -183,15 +183,15 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
    /**
       formatting a value
     */
-   public void setFormat(Format format) {
-      this.format = format;
+   public void setFormatter(Format formatter) {
+      this.formatter = formatter;
    }
    /**
       formatting a value
     */
    public Format getFormat() {
-      Format res = format;
-      if (getField() != null) {
+      Format res = formatter;
+      if ((res == null) && (getField() != null)) {
          res = getField().getFormat(pattern, getLocale());
       }
       return res;
@@ -586,7 +586,7 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
     * DOCUMENT ME!
    */
    public void doFinally() {
-      format = null;
+      formatter = null;
       field = null;
       defaultValue = null;
       pattern = null;
