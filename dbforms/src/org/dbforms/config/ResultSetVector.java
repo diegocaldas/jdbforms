@@ -494,7 +494,17 @@ public class ResultSetVector
       }
    }
 
-
+   public Field getFieldDescription(String fieldName) {
+		if (isPointerLegal(pointer))
+		{
+			return (Field) selectFieldsHashtable.get(fieldName);
+		}
+		else
+		{
+			return null;
+		}
+   
+   }
    /**
     * DOCUMENT ME!
     */
