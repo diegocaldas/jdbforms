@@ -407,6 +407,27 @@ version 0.9
     </info>
   </attribute>
 
+
+        <attribute>
+            <name>hidden</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <info>Determines if the text field should be hidden or displayed.</info>
+        </attribute>
+        
+        
+        
+        <attribute>
+            <name>overrideValue</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <info>
+            Defines the text field's default value. When this attribute is set,
+            the value retrieved from the database is ignored.
+            </info>
+        </attribute>
+
+
     <attribute>
       <name>accessKey</name>
       <required>false</required>

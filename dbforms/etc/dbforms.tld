@@ -153,6 +153,16 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
+            <name>hidden</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>overrideValue</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
             <name>accessKey</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
