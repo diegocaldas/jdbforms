@@ -1703,9 +1703,9 @@ public class DbFormTag
          Map dbforms = (Map) pageContext.getAttribute("dbforms");
          DbFormContext dbContext =
             new DbFormContext(
-               table.getNamesHashtable("search"),
-               table.getNamesHashtable("searchmode"),
-               table.getNamesHashtable("searchalgo"),
+               table.getNamesHashtable(Constants.FIELDNAME_SEARCH),
+               table.getNamesHashtable(Constants.FIELDNAME_SEARCHMODE),
+               table.getNamesHashtable(Constants.FIELDNAME_SEARCHALGO),
                resultSetVector);
          if (!ResultSetVector.isNull(resultSetVector)) {
             dbContext.setCurrentRow(resultSetVector.getCurrentRowAsMap());
@@ -1720,13 +1720,13 @@ public class DbFormTag
          // # jp 27-06-2001: replacing "." by "_", so that SCHEMATA can be used
          pageContext.setAttribute(
             "searchFieldNames_" + tableName.replace('.', '_'),
-            table.getNamesHashtable("search"));
+            table.getNamesHashtable(Constants.FIELDNAME_SEARCH));
          pageContext.setAttribute(
             "searchFieldModeNames_" + tableName.replace('.', '_'),
-            table.getNamesHashtable("searchmode"));
+            table.getNamesHashtable(Constants.FIELDNAME_SEARCHMODE));
          pageContext.setAttribute(
             "searchFieldAlgorithmNames_" + tableName.replace('.', '_'),
-            table.getNamesHashtable("searchalgo"));
+            table.getNamesHashtable(Constants.FIELDNAME_SEARCHALGO));
 
          // #fixme:
          // this is a weired crazy workaround [this code is also used in DbBodyTag!!]
