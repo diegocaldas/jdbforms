@@ -38,7 +38,7 @@ import java.sql.SQLException;
  */
 public class SingleConnectionProvider extends ConnectionProvider {
    
-   private static SingleConnectionWrapper _con;
+   private static Connection con;
    
    /**
     *  Default constructor.
@@ -58,10 +58,8 @@ public class SingleConnectionProvider extends ConnectionProvider {
     * @exception  SQLException Description of the Exception
     */
    protected synchronized Connection getConnection() throws SQLException {
-      if (_con == null) {
+      if (con == null) {
          Properties props = getPrefs().getProperties();
-         Connection con = null;
-
          // uses custom jdbc properties;
          if ((props != null) && !props.isEmpty()) {
             props.put("user", getPrefs().getUser());
@@ -73,10 +71,8 @@ public class SingleConnectionProvider extends ConnectionProvider {
          else {
             con = DriverManager.getConnection(getPrefs().getJdbcURL(), getPrefs().getUser(), getPrefs().getPassword());
          }
-
-         _con = new SingleConnectionWrapper(con);
       }
-      return _con;
+      return new SingleConnectionWrapper(con);
    }
 
    /**

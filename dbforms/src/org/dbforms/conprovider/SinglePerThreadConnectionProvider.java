@@ -56,10 +56,9 @@ public class SinglePerThreadConnectionProvider extends ConnectionProvider {
     * @exception  SQLException Description of the Exception
     */
    protected synchronized Connection getConnection() throws SQLException {
-      Connection _con = (Connection) singlePerThread.get();
-      if (_con == null) {
+      Connection con = (Connection) singlePerThread.get();
+      if (con == null) {
          Properties props = getPrefs().getProperties();
-         Connection con = null;
 
          // uses custom jdbc properties;
          if ((props != null) && !props.isEmpty()) {
@@ -72,11 +71,9 @@ public class SinglePerThreadConnectionProvider extends ConnectionProvider {
          else {
             con = DriverManager.getConnection(getPrefs().getJdbcURL(), getPrefs().getUser(), getPrefs().getPassword());
          }
-
-         _con = new SingleConnectionWrapper(con);
-         singlePerThread.set(_con);
+         singlePerThread.set(con);
       }
-      return _con;
+      return new SingleConnectionWrapper(con);
    }
 
    /**

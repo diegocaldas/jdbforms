@@ -27,6 +27,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.log4j.Category;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.CallableStatement;
@@ -35,7 +37,10 @@ import java.sql.PreparedStatement;
 import java.sql.SQLWarning;
 import java.sql.Statement;
 
+import org.dbforms.util.SqlUtil;
+
 public class SingleConnectionWrapper implements Connection {
+   private static Category logCat = Category.getInstance(SingleConnectionWrapper.class.getName());
 
    private Connection _conn;
    private List list = new ArrayList();
@@ -53,7 +58,8 @@ public class SingleConnectionWrapper implements Connection {
 
    /**
     * 
-    * Close only staments of this connection!
+    * Close only statements of this connection!
+    * do not close the connection!
     * 
     */
    public void close() throws SQLException {
@@ -61,7 +67,13 @@ public class SingleConnectionWrapper implements Connection {
          Iterator iter = list.iterator();
          while (iter.hasNext()) {
             Statement stmt = (Statement) iter.next();
-            stmt.close();
+            try {
+               stmt.close();
+            } catch (SQLException e) {
+               SqlUtil.logSqlException(e);
+            } catch (Exception e) {
+               logCat.error(e);
+            }
          }
       }
    }
