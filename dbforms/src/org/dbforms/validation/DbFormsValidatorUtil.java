@@ -55,10 +55,8 @@ public class DbFormsValidatorUtil {
                                    		DbFormsErrors errors) {
 	  
 	  	String result = null;
-      	String arg[] = getArgs(va.getName(), locale, field);
-      	
-
-      	String msg = (field.getMsg(va.getName()) != null ? field.getMsg(va.getName()) : va.getMsg());
+	      	String arg[] = getArgs(va.getName(), locale, field);
+	      	String msg = (field.getMsg(va.getName()) != null ? field.getMsg(va.getName()) : va.getMsg());
  
  		//**************************************************
   		// Try to resolve message with Application Resource
@@ -77,10 +75,13 @@ public class DbFormsValidatorUtil {
 			if(arg[i]!=null) result +=arg[i]+",";
 		}
 		
-		result = org.dbforms.util.XMLErrorsUtil.getXMLErrorMessage(result, errors);
-
-      	return result;
-      	
+	        // 2002-09-12 HKK: Catch errors while getXMLErrorMessage!
+	        try {
+	            result = org.dbforms.util.XMLErrorsUtil.getXMLErrorMessage(result, errors);
+	       	} catch (Exception e) {
+		   //Not in proper format - do not try to convert!
+		}
+	      	return result;
    	}
 	
 
