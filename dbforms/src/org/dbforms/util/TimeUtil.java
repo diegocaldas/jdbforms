@@ -166,6 +166,15 @@ public class TimeUtil {
 		return new Date(dDate + dTime);
 	}
 
+	public static Date findEndOfDay(Date d) {
+	   Calendar cal = Calendar.getInstance();
+	   cal.setTime(d);
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.add(Calendar.DAY_OF_MONTH, 1);
+	   return cal.getTime();
+	}
 
    public static void main(String args[]) {
       int k;
@@ -181,6 +190,7 @@ public class TimeUtil {
    	System.out.println(parseDate(format, "12.").toLocaleString());
    	System.out.println(parseDate(format, "12.06").toLocaleString());
    	System.out.println(parseDate(format, "12. 12:").toLocaleString());
+   	System.out.println(findEndOfDay(parseDate(format, "12. 12:")).toLocaleString());
    }
 
 }
