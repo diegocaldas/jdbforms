@@ -213,13 +213,6 @@ And we have to new interceptors called during filling of the ResultSetVector:
 
 2-4)    changes in BLOB handling
 --------------------------------
-It is now possible to EDIT blob columns from within textarea form tag. Here is the simple example:
-	<db:textAreaForBlobs fieldName="BODY" renderBody="true">
-		<db:blobContent fieldName="BODY"/>
-	</db:textAreaForBlobs>
-  Currently the text will be inserted into the database using system 
-  default character set, which generally depends on your locale settings.
-
 BlobInterceptor (src/org/dbforms/event/BlobInterceptor.java) now can 
   optionaly save the mime type and file size of an uploaded file if 
   additional parameters are provided to dbforms-config.xml. It could look 
