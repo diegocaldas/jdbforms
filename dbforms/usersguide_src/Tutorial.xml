@@ -377,7 +377,7 @@
       &lt;tr&gt; 
         &lt;td&gt;Id&lt;/td&gt; 
         &lt;td&gt;
-            <emphasis role="bold">&lt;db:textField</emphasis> size="5" fieldName="id"/&gt;
+          <emphasis role="bold">&lt;db:textField</emphasis> size="5" fieldName="id"/&gt;
         &lt;/td&gt; 
       &lt;/tr&gt; 
       &lt;tr&gt; 
@@ -446,91 +446,73 @@
       <example>
         <title>priorities.jsp code</title>
         <programlisting>
-            &lt;html&gt;
-                &lt;head&gt; 
-                    
-          <emphasis role="bold">&lt;db:base/&gt;</emphasis> 
-    &lt;/head&gt; 
+  &lt;html&gt;
+  &lt;head&gt; 
+    <emphasis role="bold">&lt;db:base/&gt;</emphasis> 
+  &lt;/head&gt; 
     
-                &lt;body&gt; 
+  &lt;body&gt; 
                     
-          <emphasis role="bold">&lt;db:errors/&gt;</emphasis> 
-                    
-          <emphasis role="bold">&lt;db:dbform</emphasis> tableName="priority" maxRows="*" 
-                    followUp="/priorities.jsp" autoUpdate="true"&gt; 
+  <emphasis role="bold">&lt;db:errors/&gt;</emphasis> 
+                   
+  <emphasis role="bold">&lt;db:dbform</emphasis> tableName="priority" maxRows="*" 
+    followUp="/priorities.jsp" autoUpdate="true"&gt; 
                         
-          <emphasis role="bold">&lt;db:header&gt;</emphasis>
-                         
-                            
-          <emphasis role="bold">&lt;db:gotoButton</emphasis> caption="Menu" destination="/menu.jsp" /&gt; 
-                            &lt;h1&gt;Priority Definitions&lt;/h1&gt; 
-                            &lt;center&gt;&lt;h3&gt;Existing Priority Definitions:&lt;/h3&gt;&lt;/center&gt; 
-                                &lt;table border="5" width="60%" align="CENTER"&gt; 
-                                    &lt;tr&gt; 
-                                        &lt;th&gt;Id&lt;/th&gt; 
-                                        &lt;th&gt;Short Name&lt;/th&gt; 
-                                        &lt;th&gt;Description&lt;/th&gt; 
-                                        &lt;th&gt;Actions&lt;/th&gt; 
-                                    &lt;/tr&gt; 
+  <emphasis role="bold">&lt;db:header&gt;</emphasis>                            
+    <emphasis role="bold">&lt;db:gotoButton</emphasis> caption="Menu" destination="/menu.jsp" /&gt; 
+    &lt;h1&gt;Priority Definitions&lt;/h1&gt; 
+    &lt;center&gt;&lt;h3&gt;Existing Priority Definitions:&lt;/h3&gt;&lt;/center&gt; 
+    &lt;table border="5" width="60%" align="CENTER"&gt; 
+    &lt;tr&gt; 
+      &lt;th&gt;Id&lt;/th&gt; 
+      &lt;th&gt;Short Name&lt;/th&gt; 
+      &lt;th&gt;Description&lt;/th&gt; 
+      &lt;th&gt;Actions&lt;/th&gt; 
+    &lt;/tr&gt; 
                         
-          <emphasis role="bold">&lt;/db:header&gt;</emphasis>
-                         
+  <emphasis role="bold">&lt;/db:header&gt;</emphasis>
+
+  <emphasis role="bold">&lt;db:body&gt;</emphasis> 
+    &lt;tr&gt; 
+      &lt;td&gt;<emphasis role="bold">&lt;db:label</emphasis> fieldName="id"/&gt;&lt;/td&gt; 
+      &lt;td&gt;<emphasis role="bold">&lt;db:textField</emphasis> fieldName="shortname"/&gt;&lt;/td&gt; 
+      &lt;td&gt;<emphasis role="bold">&lt;db:textField</emphasis> fieldName="description"/&gt;&lt;/td&gt; 
+      &lt;td&gt;
+        <emphasis role="bold">&lt;db:updateButton</emphasis> caption="update"/&gt; 
+        <emphasis role="bold">&lt;db:deleteButton</emphasis> caption="delete"/&gt; 
+      &lt;/td&gt; 
+    &lt;/tr&gt; 
+  <emphasis role="bold">&lt;/db:body&gt;</emphasis>
+
+  <emphasis role="bold">&lt;db:footer&gt;</emphasis> 
+    &lt;/table&gt; 
+
+    &lt;center&gt;&lt;h3&gt;Enter new Priority Definitions:&lt;/h3&gt;&lt;/center&gt; 
+
+    &lt;table border="3" align="center"&gt; 
+    &lt;tr&gt; 
+      &lt;td&gt;Id&lt;/td&gt; 
+      &lt;td&gt;<emphasis role="bold">&lt;db:textField</emphasis> size="3" fieldName="id"/&gt;&lt;/td&gt;
+    &lt;/tr&gt; 
+    &lt;tr&gt; 
+      &lt;td&gt;Short-Name&lt;/td&gt;
+      &lt;td&gt;<emphasis role="bold">&lt;db:textField</emphasis> fieldName="shortname"/&gt;&lt;/td&gt; 
+    &lt;/tr&gt; 
+    &lt;tr&gt; 
+      &lt;td&gt;Description&lt;/td&gt;
+      &lt;td&gt;<emphasis role="bold">&lt;db:textArea</emphasis> rows="3" cols="20" fieldName="description"/&gt;&lt;/td&gt; 
+    &lt;/tr&gt; 
+    &lt;/table&gt; 
+
+    &lt;br&gt;
+    &lt;center&gt;                                    
+      <emphasis role="bold">&lt;db:insertButton</emphasis> caption="Insert new Priority Definition"/&gt;
+    &lt;/center&gt; 
                         
-          <emphasis role="bold">&lt;db:body&gt;</emphasis> 
-                                    &lt;tr&gt; 
-                                        &lt;td&gt;
-          <emphasis role="bold">&lt;db:label</emphasis> fieldName="id"/&gt;&lt;/td&gt; 
-                                        &lt;td&gt;
-          <emphasis role="bold">&lt;db:textField</emphasis> fieldName="shortname"/&gt;&lt;/td&gt; 
-                                        &lt;td&gt;
-                                            
-          <emphasis role="bold">&lt;db:textField</emphasis> fieldName="description"/&gt;
-                                        &lt;/td&gt; 
-                                        &lt;td&gt; 
-                                             
-          <emphasis role="bold">&lt;db:updateButton</emphasis> caption="update"/&gt; 
-                                             
-          <emphasis role="bold">&lt;db:deleteButton</emphasis> caption="delete"/&gt; 
-                                        &lt;/td&gt; 
-                                    &lt;/tr&gt; 
-                        
-          <emphasis role="bold">&lt;/db:body&gt;</emphasis>
-                         
-                        
-          <emphasis role="bold">&lt;db:footer&gt;</emphasis> 
-                                &lt;/table&gt; 
-                                &lt;center&gt;&lt;h3&gt;Enter new Priority Definitions:&lt;/h3&gt;&lt;/center&gt; 
-                                &lt;table border="3" align="center"&gt; 
-                                    &lt;tr&gt; 
-                                        &lt;td&gt;Id&lt;/td&gt; 
-                                        &lt;td&gt;
-          <emphasis role="bold">&lt;db:textField</emphasis> size="3" fieldName="id"/&gt;&lt;/td&gt; 
-                                    &lt;/tr&gt; 
-                                    &lt;tr&gt; 
-                                        &lt;td&gt;Short-Name&lt;/td&gt; 
-                                        &lt;td&gt;
-          <emphasis role="bold">&lt;db:textField</emphasis> fieldName="shortname"/&gt;&lt;/td&gt; 
-                                    &lt;/tr&gt; 
-                                    &lt;tr&gt; 
-                                        &lt;td&gt;Description&lt;/td&gt; 
-                                        &lt;td&gt;
-                                            
-          <emphasis role="bold">&lt;db:textArea</emphasis> rows="3" cols="20" fieldName="description"/&gt;
-                                        &lt;/td&gt; 
-                                    &lt;tr&gt; 
-                                &lt;/table&gt; 
-                                &lt;br&gt;
-                                 
-                                &lt;center&gt;
-                                    
-          <emphasis role="bold">&lt;db:insertButton</emphasis> caption="Insert new Priority Definition"/&gt;
-                                &lt;/center&gt; 
-                        
-          <emphasis role="bold">&lt;/db:footer&gt;</emphasis>
-          <emphasis role="bold">&lt;/db:dbform&gt;</emphasis> 
-    &lt;/body&gt; 
-            &lt;/html&gt; 
-    
+  <emphasis role="bold">&lt;/db:footer&gt;</emphasis>
+  <emphasis role="bold">&lt;/db:dbform&gt;</emphasis> 
+  &lt;/body&gt; 
+  &lt;/html&gt;     
         </programlisting>
       </example>
       <para>
@@ -538,8 +520,7 @@
       </para>
       <para>
         <figure id="Defining_and_editing_priority_levels">
-          <title>Defining and editing priority levels
-</title>
+          <title>Defining and editing priority levels</title>
           <mediaobject>
             <imageobject role="html">
               <imagedata format="PNG" fileref="images/figures/priority_levels.png"/>
@@ -554,26 +535,29 @@
         <emphasis role="bold">Remarks</emphasis>
       </para>
       <para>As you may have noticed, we have used the same pattern for this page as we have used for services.jsp</para>
-      <para>The only real difference can be found in the 
+      <para>
+        The only real difference can be found in the 
         <emphasis role="bold">autoUpdate</emphasis> attribute, which is set to 
         <emphasis role="bold">true</emphasis> in priorities.jsp. This means, that all rows will be updated if their text-fields (and other data-sensitive elements) have been edited by the user.Example:
-
       </para>
-      <para>If the user edits data in priorities number 1, 2 and 3 and then clicks update, (or any other action button) 
+      <para>
+        If the user edits data in priorities number 1, 2 and 3 and then clicks update, (or any other action button) 
         <emphasis role="bold">all</emphasis> changes will be stored 
         <emphasis role="bold">automatically</emphasis> in the database! (These automatically triggered events are called 
         <emphasis role="italic">implicit</emphasis>, or 
         <emphasis role="italic">secondary</emphasis> events)
-
       </para>
       <para/>
     </sect2>
     <sect2>
       <title>Customer list</title>
       <para/>
-      <para>This convenience page provides the user with a listing of all agency customers. The user is able to select a customer from the list and perform a given operation (edit orders,  view complaints submitted by the customer)
-The user should be able to delete existing customers, as well.
-        </para>
+      <para>
+        This convenience page provides the user with a listing of all agency customers. 
+        The user is able to select a customer from the list and perform a given operation 
+        (edit orders,  view complaints submitted by the customer)
+        The user should be able to delete existing customers, as well.
+      </para>
       <example>
         <title>customerlist.jsp code</title>
         <programlisting>
