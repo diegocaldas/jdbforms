@@ -268,11 +268,21 @@ public class ConfigServlet extends HttpServlet
         digester.addSetNext("dbforms-config/table/granted-privileges", "setGrantedPrivileges", "org.dbforms.GrantedPrivileges");
 
 
-        // parse "Condition" - object + add it to parent (which is "Table")
+        // parse "Interceptor" - object + add it to parent (which is "Table")
         digester.addObjectCreate("dbforms-config/table/interceptor", "org.dbforms.Interceptor");
         digester.addSetProperties("dbforms-config/table/interceptor");
         digester.addSetNext("dbforms-config/table/interceptor", "addInterceptor", "org.dbforms.Interceptor");
 
+        // register custom database or navigation events (parent is "Table");
+        // 1) for every "events" element, instance a new TableEvents object;
+        // 2) set the TableEvents reference into the Table object
+        // 3) for every "event" element, instance a new EventInfo object and set its properties ("type" and "id")
+        // 4) register the EventInfo object into the TableEvents \via TableEvents.addEventInfo()
+        digester.addObjectCreate ("dbforms-config/table/events", "org.dbforms.TableEvents");
+        digester.addSetNext      ("dbforms-config/table/events", "setTableEvents", "org.dbforms.TableEvents");
+        digester.addObjectCreate ("dbforms-config/table/events/event", "org.dbforms.event.EventInfo");
+        digester.addSetProperties("dbforms-config/table/events/event");
+        digester.addSetNext      ("dbforms-config/table/events/event", "addEventInfo", "org.dbforms.event.EventInfo");
 
         // parse "Query" - object + add it to parent
         digester.addObjectCreate("dbforms-config/query", "org.dbforms.Query");
@@ -469,7 +479,7 @@ public class ConfigServlet extends HttpServlet
 
         // Build a digester to process our configuration resource
         String realPath = getServletContext().getRealPath("/");
-        
+
         DbFormsConfig dbFormsConfig = new DbFormsConfig(realPath);
         Digester digester = null;
         digester = initDigester(digesterDebugLevel, dbFormsConfig);
@@ -481,6 +491,9 @@ public class ConfigServlet extends HttpServlet
 
         // store this config object in servlet context ("application")
         getServletContext().setAttribute(DbFormsConfig.CONFIG, dbFormsConfig);
+
+        // fossato, 2002.11.30
+        DbFormsConfig.setInstance(dbFormsConfig);
 
         // Parse the input stream to configure our mappings
         try
