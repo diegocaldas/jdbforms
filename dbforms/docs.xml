@@ -102,6 +102,7 @@ Modified by SAB.
 <mkdir dir="${out.dir}/html"/>
 <mkdir dir="${out.dir}/pdf"/>
 <mkdir dir="${out.dir}/html/images/callouts"/>
+<mkdir dir="${out.dir}/html/images/figures"/>
     </target>
 
     <!-- ================================================ -->
@@ -139,6 +140,9 @@ Modified by SAB.
     	</java>
      <copy todir="${out.dir}/html/images/callouts">
      <fileset dir="${in.dir}/images/callouts" includes="*.png"/>
+    </copy>
+    <copy todir="${out.dir}/html/images/figures">
+     <fileset dir="${in.dir}/images/figures" includes="*.png"/>
     </copy>
      </target>
     
