@@ -271,46 +271,43 @@
 				<example>
 					<title/>
 					<programlisting>
-                                        
-        &lt;%@ taglib uri="/WEB-INF/dbForms.tld" prefix="db" %&gt;
-            &lt;html&gt;
-             
-                &lt;head&gt; 
-                    &lt;db:base/&gt; 
-                &lt;/head&gt;
-             
-                 &lt;body&gt; 
-                    &lt;h1&gt;Menu&lt;/h1&gt; 
-                        &lt;db:dbform followUp="/menu.jsp"&gt;
-                         
-                            &lt;center&gt;
-                     
-                            &lt;p&gt;
-                                &lt;db:gotoButton caption="Edit services" destination="/service.jsp" destTable="services"/&gt;
-                            &lt;/p&gt; 
-                            &lt;p&gt;
-                                &lt;db:gotoButton caption="Customer-List" destination="/customerlist.jsp" destTable="customer" /&gt;
-                            &lt;/p&gt; 
-                            &lt;p&gt;
-                                &lt;db:gotoButton caption="Edit Orders" destination="/customer_orders.jsp" destTable="customer"/&gt;
-                            &lt;/p&gt; 
-                            &lt;p&gt;
-                                &lt;db:gotoButton caption="Edit Complaints" destination="/customer_complaints.jsp" destTable="customer"/&gt;
-                            &lt;/p&gt; 
-                            &lt;p&gt;
-                                &lt;db:gotoButton caption="View all customer info" destination="/customer_all.jsp" destTable="customer"/&gt;
-                            &lt;/p&gt; 
-                            &lt;p&gt;
-                                &lt;db:gotoButton caption="Edit priority-table" destination="/priorities.jsp" destTable="priorities" /&gt;
-                            &lt;/p&gt; 
+&lt;%@ taglib uri="/WEB-INF/dbForms.tld" prefix="db" %&gt;
+ &lt;html&gt;
+  &lt;head&gt;
+    &lt;db:base/&gt; 
+  &lt;/head&gt;
+     
+  &lt;body&gt; 
+    &lt;h1&gt;Menu&lt;/h1&gt; 
+    &lt;db:dbform followUp="/menu.jsp"&gt;
+ 
+        &lt;center&gt;
+     
+        &lt;p&gt;
+            &lt;db:gotoButton caption="Edit services" destination="/service.jsp" destTable="services"/&gt;
+        &lt;/p&gt; 
+        &lt;p&gt;
+            &lt;db:gotoButton caption="Customer-List" destination="/customerlist.jsp" destTable="customer" /&gt;
+        &lt;/p&gt; 
+        &lt;p&gt;
+            &lt;db:gotoButton caption="Edit Orders" destination="/customer_orders.jsp" destTable="customer"/&gt;
+        &lt;/p&gt; 
+        &lt;p&gt;
+            &lt;db:gotoButton caption="Edit Complaints" destination="/customer_complaints.jsp" destTable="customer"/&gt;
+        &lt;/p&gt; 
+        &lt;p&gt;
+            &lt;db:gotoButton caption="View all customer info" destination="/customer_all.jsp" destTable="customer"/&gt;
+        &lt;/p&gt; 
+        &lt;p&gt;
+            &lt;db:gotoButton caption="Edit priority-table" destination="/priorities.jsp" destTable="priorities" /&gt;
+        &lt;/p&gt; 
 
-                            &lt;/center&gt;
-                
-                        &lt;/db:dbform&gt;
-                         
-		&lt;/body&gt;
-                 
-            &lt;/html&gt; 
+        &lt;/center&gt;
+        
+    &lt;/db:dbform&gt;
+
+  &lt;/body&gt;
+ &lt;/html&gt; 
 		</programlisting>
 				</example>
 				<para>
@@ -348,30 +345,8 @@
 				<title>Services (service.jsp)
 </title>
 				<para/>
-				<para>
-					<table>
-						<title/>
-						<tgroup cols="2">
-							<tbody>
-								<row>
-									<entry>This page enables the user(s) to administer the services the agency sells to its customers. The user should get a list of all the existing services along with text fields and buttons to update and delete rows. Finally an empty input mask for inserting new services is also presented.
-</entry>
-								</row>
-							</tbody>
-						</tgroup>
-					</table>
-				</para>
-				<table>
-					<title/>
-					<tgroup cols="2">
-						<tbody>
-							<row>
-								<entry>This page enables the user(s) to administer the services the agency sells to its customers. The user should get a list of all the existing services along with text fields and buttons to update and delete rows. Finally an empty input mask for inserting new services is also presented.
-</entry>
-							</row>
-						</tbody>
-					</tgroup>
-				</table>
+				<para>This page enables the user(s) to administer the services the agency sells to its customers. The user should get a list of all the existing services along with text fields and buttons to update and delete rows. Finally an empty input mask for inserting new services is also presented.
+ </para>
 				<example>
 					<title/>
 					<programlisting>
@@ -409,10 +384,19 @@
                         &lt;db:body&gt;
                  
                             &lt;tr&gt; 
-                                &lt;td&gt;&lt;db:textField fieldName="id" size="5"/&gt;&lt;/td&gt; 
-                                &lt;td&gt;&lt;db:textField fieldName="name" size="20" maxlength="30"/&gt;&lt;/td&gt; 
-                                &lt;td&gt;&lt;db:textField fieldName="description" size="24" maxlength="255"/&gt;&lt;/td&gt; 
-                                &lt;td&gt;&lt;db:updateButton caption="Update"/&gt;&lt;db:deleteButton caption="Delete"/&gt;&lt;/td&gt; 
+                                &lt;td&gt;
+                                    &lt;db:textField fieldName="id" size="5"/&gt;
+                                &lt;/td&gt; 
+                                &lt;td&gt;
+                                    &lt;db:textField fieldName="name" size="20" maxlength="30"/&gt;
+                                &lt;/td&gt; 
+                                &lt;td&gt;
+                                    &lt;db:textField fieldName="description" size="24" maxlength="255"/&gt;
+                                &lt;/td&gt; 
+                                &lt;td&gt;
+                                    &lt;db:updateButton caption="Update"/&gt;
+                                    &lt;db:deleteButton caption="Delete"/&gt;
+                                &lt;/td&gt; 
                             &lt;/tr&gt;
                  
                         &lt;/db:body&gt;
@@ -434,7 +418,10 @@
                             &lt;/tr&gt; 
                             &lt;tr&gt; 
                                 &lt;td&gt;Description&lt;/td&gt; 
-                                &lt;td&gt;&lt;db:textArea rows="4" cols="20" wrap="virtual" fieldName="description"/&gt;&lt;/td&gt; 
+                                &lt;td&gt;
+                                    &lt;db:textArea rows="4" cols="20" wrap="virtual"
+                                    fieldName="description"/&gt;
+                                &lt;/td&gt; 
                             &lt;tr&gt; 
                         &lt;/table&gt;&lt;br&gt;
                         
@@ -468,32 +455,9 @@
 					<emphasis role="bold">Priorities (priorities.jsp)</emphasis>
 				</para>
 				<para/>
-				<para>
-					<table>
-						<title/>
-						<tgroup cols="2">
-							<tbody>
-								<row>
-									<entry>
-This page enables the user to manage a list of priorities  we will use this data later in the complaints page where we will prompt the user to select the appropriate priority for a user's complaint. This setting could be used to help prioritize a to-do- lists or something similar  (however, that functionality is not included in the sample application)
-</entry>
-								</row>
-							</tbody>
-						</tgroup>
-					</table>
-				</para>
-				<table>
-					<title/>
-					<tgroup cols="2">
-						<tbody>
-							<row>
-								<entry>
-This page enables the user to manage a list of priorities  we will use this data later in the complaints page where we will prompt the user to select the appropriate priority for a user's complaint. This setting could be used to help prioritize a to-do- lists or something similar  (however, that functionality is not included in the sample application)
-</entry>
-							</row>
-						</tbody>
-					</tgroup>
-				</table>
+				<para>This page enables the user to manage a list of priorities we will use this data later in the <computeroutput>complaints</computeroutput> page where we will prompt the user to select the appropriate priority for a user's complaint. This setting could be used to help prioritize a to-do list or something similar  (however, that functionality is not included in the sample application)
+</para>
+								 
 				<example>
 					<title/>
 					<programlisting>
@@ -504,7 +468,8 @@ This page enables the user to manage a list of priorities  we will use thi
 		
                 &lt;body&gt; 
                     &lt;db:errors/&gt; 
-                    &lt;db:dbform tableName="priority" maxRows="*" followUp="/priorities.jsp" autoUpdate="true"&gt; 
+                    &lt;db:dbform tableName="priority" maxRows="*" 
+                    followUp="/priorities.jsp" autoUpdate="true"&gt; 
                         &lt;db:header&gt;
                          
                             &lt;db:gotoButton caption="Menu" destination="/menu.jsp" /&gt; 
@@ -523,7 +488,9 @@ This page enables the user to manage a list of priorities  we will use thi
                                     &lt;tr&gt; 
                                         &lt;td&gt;&lt;db:label fieldName="id"/&gt;&lt;/td&gt; 
                                         &lt;td&gt;&lt;db:textField fieldName="shortname"/&gt;&lt;/td&gt; 
-                                        &lt;td&gt;&lt;db:textField fieldName="description"/&gt;&lt;/td&gt; 
+                                        &lt;td&gt;
+                                            &lt;db:textField fieldName="description"/&gt;
+                                        &lt;/td&gt; 
                                         &lt;td&gt; 
                                              &lt;db:updateButton caption="update"/&gt; 
                                              &lt;db:deleteButton caption="delete"/&gt; 
@@ -545,12 +512,16 @@ This page enables the user to manage a list of priorities  we will use thi
                                     &lt;/tr&gt; 
                                     &lt;tr&gt; 
                                         &lt;td&gt;Description&lt;/td&gt; 
-                                        &lt;td&gt;&lt;db:textArea rows="3" cols="20" fieldName="description"/&gt;&lt;/td&gt; 
+                                        &lt;td&gt;
+                                            &lt;db:textArea rows="3" cols="20" fieldName="description"/&gt;
+                                        &lt;/td&gt; 
                                     &lt;tr&gt; 
                                 &lt;/table&gt; 
                                 &lt;br&gt;
                                  
-                                &lt;center&gt;&lt;db:insertButton caption="Insert new Priority Definition"/&gt;&lt;/center&gt; 
+                                &lt;center&gt;
+                                    &lt;db:insertButton caption="Insert new Priority Definition"/&gt;
+                                &lt;/center&gt; 
                         &lt;/db:footer&gt; 
                     &lt;/db:dbform&gt; 
 		&lt;/body&gt; 
@@ -580,32 +551,10 @@ This page enables the user to manage a list of priorities  we will use thi
 				<title>Customer list (customerlist.jsp)
 </title>
 				<para/>
-				<para>
-					<table>
-						<title/>
-						<tgroup cols="2">
-							<tbody>
-								<row>
-									<entry>This convenience  page provides the user with a listing of all agency customers. The user is able to select a customer from the list and perform a given operation (edit orders,  view complaints submitted by the customer)
+				<para>This convenience page provides the user with a listing of all agency customers. The user is able to select a customer from the list and perform a given operation (edit orders,  view complaints submitted by the customer)
 The user should be able to delete existing customers, as well.
-</entry>
-								</row>
-							</tbody>
-						</tgroup>
-					</table>
 				</para>
-				<table>
-					<title/>
-					<tgroup cols="2">
-						<tbody>
-							<row>
-								<entry>This convenience  page provides the user with a listing of all agency customers. The user is able to select a customer from the list and perform a given operation (edit orders,  view complaints submitted by the customer)
-The user should be able to delete existing customers, as well.
-</entry>
-							</row>
-						</tbody>
-					</tgroup>
-				</table>
+				 
 				<example>
 					<title/>
 					<programlisting>
@@ -615,8 +564,11 @@ The user should be able to delete existing customers, as well.
 		&lt;/head&gt;
                  
 		&lt;body&gt; 
-                    &lt;db:errors/&gt; 
-                    &lt;db:dbform tableName="customer" maxRows="*" followUp="/customerlist.jsp" autoUpdate="false" allowNew=false&gt; 
+                    &lt;db:errors/&gt;
+                     
+                    &lt;db:dbform tableName="customer" maxRows="*" followUp="/customerlist.jsp"
+                    autoUpdate="false" allowNew=false&gt; 
+                        
                         &lt;db:header&gt; 
                             &lt;db:gotoButton caption="Menu" destination="/menu.jsp" /&gt; 
                             &lt;h1&gt;Customer-list&lt;/h1&gt; 
@@ -646,42 +598,27 @@ The user should be able to delete existing customers, as well.
                          
                         &lt;db:footer&gt; 
                                 &lt;/table&gt; 
-                            &lt;p&gt;&lt;center&gt;Show
+                            &lt;p&gt;
+                            &lt;center&gt;
+                                
+                                Show
                             
-                                &lt;db:gotoButton
-                                caption=" orders "
-                
-                                destination="/customer_orders.jsp"
- 
-                                destTable = "customer"
- 
-                                keyToKeyToDestPos="r_customerkey"
- 
-                                /&gt;
+                                &lt;db:gotoButton caption="orders" destination="/customer_orders.jsp"
+                                destTable = "customer" keyToKeyToDestPos="r_customerkey"
+                                /&gt;
                              
-                                &lt;db:gotoButton
- 
-                                caption=" complaints "
- 
-                                destination="/customer_complaints.jsp"
- 
-                                destTable = "customer"
- 
-                                keyToKeyToDestPos="r_customerkey"/&gt; 
+                                &lt;db:gotoButton caption=" complaints " destination="/customer_complaints.jsp"
+                                destTable = "customer" keyToKeyToDestPos="r_customerkey"
+                                /&gt; 
 		 
-                                &lt;db:gotoButton
- 
-                                caption=" all information "
- 
-                                destination="/customer_all.jsp"
- 
-                                destTable = "customer"
- 
+                                &lt;db:gotoButton caption=" all information "
+                                destination="/customer_all.jsp" destTable = "customer"
                                 keyToKeyToDestPos="r_customerkey"/&gt;
                                  
                                 of the selected customer!
  
-                            &lt;/center&gt;&lt;/p&gt;
+                            &lt;/center&gt;
+                            &lt;/p&gt;
                         &lt;/db:footer&gt; 
                     &lt;/db:dbform&gt; 
                 &lt;/body&gt;
@@ -730,145 +667,175 @@ The user should be able to delete existing customers, as well.
 				<example>
 					<title/>
 					<programlisting>
-            &lt;html&gt;
-                &lt;head&gt; 
-                    <emphasis role="bold">&lt;db:base/&gt;</emphasis> 
-		&lt;/head&gt;
-                 
-		&lt;body&gt; 
-                    &lt;!-- show eventually occurred errors --&gt; 
-                    <emphasis role="bold">&lt;db:errors/&gt;</emphasis>
-                    <emphasis role="bold">&lt;db:dbform tableName="customer" maxRows="1" followUp="/customer_orders.jsp" autoUpdate="false"&gt;</emphasis> 
-                        
-                        <emphasis role="bold">&lt;db:header&gt;</emphasis> 
-                            <emphasis role="bold">&lt;db:gotoButton caption="Menu" destination="/menu.jsp" /&gt;</emphasis> 
-                            &lt;h1&gt;Customer&lt;/h1&gt; 
-                        <emphasis role="bold">&lt;/db:header&gt;</emphasis>
-                         
-                        <emphasis role="bold">&lt;db:body&gt;</emphasis> 
-                            &lt;table align="center"&gt; 
-                                &lt;tr&gt; 
-                                    &lt;td&gt;Id &lt;/td&gt; 
-                                    &lt;td&gt;<emphasis role="bold">&lt;db:textField fieldName="id" size="4"/&gt;&lt;/</emphasis>td&gt; 
-                                &lt;/tr&gt; 
-                                &lt;tr&gt; 
-                                    &lt;td&gt;First Name&lt;/td&gt; 
-                                    &lt;td&gt;<emphasis role="bold">&lt;db:textField fieldName="firstname" size="18"/&gt;&lt;/</emphasis>td&gt; 
-                                &lt;/tr&gt; 
-                                &lt;tr&gt; 
-                                    &lt;td&gt;Last Name&lt;/td&gt; 
-                                    &lt;td&gt;<emphasis role="bold">&lt;db:textField fieldName="lastname" size="18"/&gt;&lt;/</emphasis>td&gt; 
-                                &lt;/tr&gt; 
-                                &lt;tr&gt; 
-                                    &lt;td&gt;Address:&lt;/td&gt; 
-                                    &lt;td<emphasis role="bold">&gt;&lt;db:textField fieldName="address" size="25" /&gt;</emphasis>&lt;/td&gt; 
-                                &lt;/tr&gt; 
-                                &lt;tr&gt; 
-                                    &lt;td&gt;Postal code/City&lt;/td&gt; 
-                                    &lt;td<emphasis role="bold">&gt;&lt;db:textField fieldName="pcode" size="6"/&gt;</emphasis> -
+&lt;html&gt;
+ &lt;head&gt; 
+    <emphasis role="bold">&lt;db:base/&gt;</emphasis> 
+ &lt;/head&gt;
  
-                                    <emphasis role="bold">&lt;db:textField fieldName="city" size="16"/&gt;</emphasis>&lt;/td&gt; 
-                                &lt;/tr&gt; 
-                            &lt;/table&gt; 
-                            &lt;br&gt; 
-                            &lt;!-- table embedding the sub form --&gt; 
-                            &lt;table align="center" border="1"&gt; 
-                                &lt;tr&gt; 
-                                    &lt;td&gt; 
-                                        &lt;center&gt;&lt;p&gt;&lt;b&gt;Orders&lt;/b&gt;&lt;/p&gt;&lt;/center&gt; 
-                                        &lt;!-------- sub form begin -------&gt; 
-                                        <emphasis role="bold">&lt;db:dbform tableName="orders" maxRows="3" parentField="id" childField="customer_id"</emphasis> 
-                                        <emphasis role="bold">followUp="/customer_orders.jsp" autoUpdate="false"&gt;</emphasis> 
-                                        
-                                        <emphasis role="bold">&lt;db:header&gt;</emphasis> 
-                                            &lt;!-- code for showing existing orders of services for that customer --&gt; 
-                                            &lt;table&gt; 
-                                                &lt;tr&gt; 
-                                                    &lt;td width="40"&gt;&lt;/td&gt; 
-                                                    &lt;td&gt;service&lt;/td&gt; 
-                                                    &lt;td&gt;orderdate&lt;/td&gt; 
-                                                &lt;/tr&gt; 
-                                        <emphasis role="bold">&lt;/db:header&gt;</emphasis>
-                                         
-                                        <emphasis role="bold">&lt;db:body allowNew="false"&gt;</emphasis> 
-                                                &lt;tr&gt; 
-                                                    &lt;td width="40<emphasis role="bold">"&gt;&lt;db:associatedRadio name="radio_order" /&gt;</emphasis>&lt;/td&gt; 
-                                                    &lt;td&gt; 
-                                                    <emphasis role="bold">&lt;db:select fieldName="service_id"&gt;</emphasis> 
-                                                    <emphasis role="bold">&lt;db:tableData</emphasis> 
+ &lt;body&gt; 
+    &lt;!-- show eventually occurred errors --&gt; 
+    <emphasis role="bold">&lt;db:errors/&gt;</emphasis>
+    <emphasis role="bold">&lt;db:dbform tableName="customer" maxRows="1" followUp="/customer_orders.jsp" autoUpdate="false"&gt;</emphasis> 
+
+        <emphasis role="bold">&lt;db:header&gt;</emphasis> 
+            <emphasis role="bold">&lt;db:gotoButton caption="Menu" destination="/menu.jsp" /&gt;</emphasis> 
+            &lt;h1&gt;Customer&lt;/h1&gt; 
+        <emphasis role="bold">&lt;/db:header&gt;</emphasis>
+ 
+        <emphasis role="bold">&lt;db:body&gt;</emphasis>
+         
+            &lt;table align="center"&gt; 
+                &lt;tr&gt; 
+                    &lt;td&gt;Id &lt;/td&gt; 
+                        &lt;td&gt;
+                            <emphasis role="bold">&lt;db:textField fieldName="id" size="4"/&gt;
+                        </emphasis>&lt;/td&gt; 
+                &lt;/tr&gt; 
+                &lt;tr&gt; 
+                    &lt;td&gt;First Name&lt;/td&gt; 
+                    &lt;td&gt;
+                        <emphasis role="bold">&lt;db:textField fieldName="firstname" size="18"/&gt;
+                    </emphasis>&lt;/td&gt; 
+                &lt;/tr&gt; 
+                &lt;tr&gt; 
+                    &lt;td&gt;Last Name&lt;/td&gt; 
+                    &lt;td&gt;
+                        <emphasis role="bold">&lt;db:textField fieldName="lastname" size="18"/&gt;
+                    </emphasis>&lt;/td&gt; 
+                &lt;/tr&gt; 
+                &lt;tr&gt; 
+                    &lt;td&gt;Address:&lt;/td&gt; 
+                    &lt;td&gt;
+                        <emphasis role="bold">&lt;db:textField fieldName="address" size="25" /&gt;
+                    </emphasis>&lt;/td&gt; 
+                &lt;/tr&gt; 
+                &lt;tr&gt; 
+                    &lt;td&gt;Postal code/City&lt;/td&gt; 
+                    &lt;td&gt;
+                        <emphasis role="bold">&lt;db:textField fieldName="pcode" size="6"/&gt;</emphasis> -
+                        <emphasis role="bold">&lt;db:textField fieldName="city" size="16"/&gt;</emphasis>
+                    &lt;/td&gt; 
+                &lt;/tr&gt; 
+            &lt;/table&gt; 
+            &lt;br&gt;
+             
+            &lt;!-- table embedding the sub form --&gt; 
+            &lt;table align="center" border="1"&gt; 
+                &lt;tr&gt; 
+                    &lt;td&gt; 
+                        &lt;center&gt;&lt;p&gt;&lt;b&gt;Orders&lt;/b&gt;&lt;/p&gt;&lt;/center&gt; 
+                        
+                        &lt;!-------- sub form begin -------&gt; 
+                        <emphasis role="bold">&lt;db:dbform tableName="orders" maxRows="3" parentField="id" </emphasis> 
+                        <emphasis role="bold">childField="customer_id" followUp="/customer_orders.jsp" autoUpdate="false"&gt;</emphasis> 
+
+                            <emphasis role="bold">&lt;db:header&gt;</emphasis> 
+                            &lt;!-- code for showing existing orders of services for that customer --&gt; 
+                                &lt;table&gt; 
+                                    &lt;tr&gt; 
+                                        &lt;td width="40"&gt;&lt;/td&gt; 
+                                        &lt;td&gt;service&lt;/td&gt; 
+                                        &lt;td&gt;orderdate&lt;/td&gt; 
+                                    &lt;/tr&gt; 
+                            <emphasis role="bold">&lt;/db:header&gt;</emphasis>
+ 
+                            <emphasis role="bold">&lt;db:body allowNew="false"&gt;</emphasis> 
+                                    &lt;tr&gt; 
+                                        &lt;td width="40<emphasis role="bold">"&gt;
+                                            &lt;db:associatedRadio name="radio_order"/&gt;</emphasis>
+                                        &lt;/td&gt; 
+                                        &lt;td&gt; 
+                                            <emphasis role="bold">&lt;db:select fieldName="service_id"&gt;</emphasis> 
+                                                <emphasis role="bold">&lt;db:tableData</emphasis> 
                                                     <emphasis role="bold">name = "our_services"</emphasis> 
                                                     <emphasis role="bold">foreignTable = "service"</emphasis> 
                                                     <emphasis role="bold">visibleFields = "name"</emphasis> 
                                                     <emphasis role="bold">storeField = "id"</emphasis> 
-                                                    <emphasis role="bold">/&gt;</emphasis> 
-                                                    <emphasis role="bold">&lt;/db:select&gt;</emphasis> 
-                                                    &lt;/td&gt; 
-                                                    &lt;td<emphasis role="bold">&gt;&lt;db:textField fieldName="orderdate" size="14"/&gt;</emphasis>&lt;/td&gt; 
-                                                &lt;/tr&gt; 
-                                        <emphasis role="bold">&lt;/db:body&gt;</emphasis>
-                                         
-                                        <emphasis role="bold">&lt;db:footer&gt;</emphasis> 
-                                                &lt;tr&gt; 
-                                                    &lt;td width="40"&gt;&lt;/td&gt; 
-                                                    &lt;td<emphasis role="bold">&gt;&lt;db:updateButton caption="Update Order" associatedRadio="radio_order"/&gt;</emphasis>&lt;/td&gt; 
-                                                    &lt;td<emphasis role="bold">&gt;&lt;db:deleteButton caption="Delete Order" associatedRadio="radio_order"/&gt;</emphasis>&lt;/td&gt; 
-                                                &lt;/tr&gt; 
-                                            &lt;/table&gt; 
-                                        &lt;!-- code for entering new orders and services --&gt; 
-                                        &lt;br&gt;&lt;hr&gt; 
-                                            &lt;table&gt; 
-                                                &lt;tr&gt; 
-                                                    &lt;td&gt;service&lt;/td&gt; 
-                                                    &lt;td&gt;date&lt;/td&gt; 
-                                                    &lt;td&gt;&lt;/td&gt; 
-                                                &lt;/tr&gt; 
-                                                &lt;tr&gt; 
-                                                    &lt;td&gt; 
-                                                    <emphasis role="bold">&lt;db:select fieldName="service_id"&gt;</emphasis> 
-                                                    <emphasis role="bold">&lt;db:tableData</emphasis> 
-                                                    <emphasis role="bold">name = "our_services"</emphasis> 
-                                                    <emphasis role="bold">foreignTable = "service"</emphasis> 
-                                                    <emphasis role="bold">visibleFields = "name"</emphasis> 
-                                                    <emphasis role="bold">storeField = "id"</emphasis>
-                                                    <emphasis role="bold">/&gt;</emphasis> 
-                                                    <emphasis role="bold">&lt;/db:select&gt;</emphasis> 
-                                                    &lt;/td&gt; 
-                                                    &lt;td<emphasis role="bold">&gt;&lt;db:textField fieldName="orderdate" size="10" /&gt;</emphasis>&lt;/td&gt; 
-                                                    &lt;td<emphasis role="bold">&gt;&lt;db:insertButton caption="insert order" /&gt;</emphasis>&lt;/td&gt; 
-                                                &lt;/tr&gt; 
-                                            &lt;/table&gt; 
-                                        &lt;center&gt; 
-                                            <emphasis role="bold">&lt;db:navFirstButton caption="lt;lt; First" /&gt;</emphasis> 
-                                            <emphasis role="bold">&lt;db:navPrevButton caption="lt; Previous" /&gt;</emphasis> 
-                                            <emphasis role="bold">&lt;db:navNextButton caption="Next gt;" /&gt;</emphasis> 
-                                            <emphasis role="bold">&lt;db:navLastButton caption="Last gt;gt;" /&gt;</emphasis> 
-                                        &lt;/center&gt; 
-                                        <emphasis role="bold">&lt;/db:footer&gt;</emphasis> 
-                                        <emphasis role="bold">&lt;/db:dbform&gt;</emphasis> 
-                                        &lt;!-------- sub form end --------&gt; 
-                                    &lt;/td&gt; 
-                                &lt;/tr&gt; 
-                            &lt;/table&gt; 
-                            &lt;!-- end of table embedding the sub form --&gt; 
-                            &lt;br&gt;&lt;center&gt; 
-                                <emphasis role="bold">&lt;db:insertButton caption="Store this new Customer!"  /&gt;</emphasis> 
-                                <emphasis role="bold">&lt;db:updateButton caption="Update Customer"  /&gt;</emphasis> 
-                                <emphasis role="bold">&lt;db:deleteButton caption="Delete Customer"  /&gt;</emphasis> 
-                            &lt;/center&gt; 
-                        &lt;/db:body&gt;
-                         
-                        <emphasis role="bold">&lt;db:footer&gt;</emphasis> 
-                            &lt;br&gt;&lt;center&gt; 
+                                                <emphasis role="bold">/&gt;</emphasis> 
+                                            <emphasis role="bold">&lt;/db:select&gt;</emphasis> 
+                                        &lt;/td&gt; 
+                                        &lt;td<emphasis role="bold">&gt;
+                                            &lt;db:textField fieldName="orderdate" size="14"/&gt;</emphasis>
+                                        &lt;/td&gt; 
+                                    &lt;/tr&gt; 
+                            <emphasis role="bold">&lt;/db:body&gt;</emphasis>
+ 
+                            <emphasis role="bold">&lt;db:footer&gt;</emphasis> 
+                                    &lt;tr&gt; 
+                                        &lt;td width="40"&gt;&lt;/td&gt; 
+                                        &lt;td<emphasis role="bold">&gt;
+                                            &lt;db:updateButton caption="Update Order" associatedRadio="radio_order"/&gt;</emphasis>
+                                        &lt;/td&gt; 
+                                        &lt;td<emphasis role="bold">&gt;
+                                            &lt;db:deleteButton caption="Delete Order" associatedRadio="radio_order"/&gt;</emphasis>
+                                        &lt;/td&gt; 
+                                    &lt;/tr&gt; 
+                                &lt;/table&gt;
+                                 
+                                &lt;!-- code for entering new orders and services --&gt; 
+                                
+                                &lt;br&gt;&lt;hr&gt; 
+                                &lt;table&gt; 
+                                    &lt;tr&gt; 
+                                        &lt;td&gt;service&lt;/td&gt; 
+                                        &lt;td&gt;date&lt;/td&gt; 
+                                        &lt;td&gt;&lt;/td&gt; 
+                                    &lt;/tr&gt; 
+                                    &lt;tr&gt; 
+                                        &lt;td&gt; 
+                                        <emphasis role="bold">&lt;db:select fieldName="service_id"&gt;</emphasis> 
+                                            <emphasis role="bold">&lt;db:tableData</emphasis> 
+                                            <emphasis role="bold">name = "our_services"</emphasis> 
+                                            <emphasis role="bold">foreignTable = "service"</emphasis> 
+                                            <emphasis role="bold">visibleFields = "name"</emphasis> 
+                                            <emphasis role="bold">storeField = "id"</emphasis>
+                                            <emphasis role="bold">/&gt;</emphasis> 
+                                        <emphasis role="bold">&lt;/db:select&gt;</emphasis> 
+                                        &lt;/td&gt; 
+                                        &lt;td<emphasis role="bold">&gt;
+                                            &lt;db:textField fieldName="orderdate" size="10" /&gt;</emphasis>
+                                        &lt;/td&gt; 
+                                        &lt;td<emphasis role="bold">&gt;
+                                            &lt;db:insertButton caption="insert order" /&gt;</emphasis>
+                                        &lt;/td&gt; 
+                                    &lt;/tr&gt; 
+                                &lt;/table&gt;
+                                 
+                                &lt;center&gt; 
                                 <emphasis role="bold">&lt;db:navFirstButton caption="lt;lt; First" /&gt;</emphasis> 
                                 <emphasis role="bold">&lt;db:navPrevButton caption="lt; Previous" /&gt;</emphasis> 
-                                <emphasis role="bold">&lt;db:navNextButton caption="Next gt;"  /&gt;</emphasis> 
+                                <emphasis role="bold">&lt;db:navNextButton caption="Next gt;" /&gt;</emphasis> 
                                 <emphasis role="bold">&lt;db:navLastButton caption="Last gt;gt;" /&gt;</emphasis> 
-                                <emphasis role="bold">&lt;db:navNewButton caption="nbsp;nbsp;*nbsp;nbsp;"/&gt;</emphasis> 
-                            &lt;/center&gt; 
-                        <emphasis role="bold">&lt;/db:footer&gt;</emphasis> 
-                    <emphasis role="bold">&lt;/db:dbform&gt;</emphasis> 
-		&lt;/body&gt; 
-            &lt;/html&gt; 
+                                &lt;/center&gt; 
+                            <emphasis role="bold">&lt;/db:footer&gt;</emphasis> 
+                        <emphasis role="bold">&lt;/db:dbform&gt;</emphasis> 
+                        &lt;!-------- sub form end --------&gt; 
+                    &lt;/td&gt; 
+                &lt;/tr&gt; 
+            &lt;/table&gt; 
+            &lt;!-- end of table embedding the sub form --&gt; 
+            
+            &lt;br&gt;
+            &lt;center&gt; 
+             <emphasis role="bold">&lt;db:insertButton caption="Store this new Customer!"  /&gt;</emphasis> 
+             <emphasis role="bold">&lt;db:updateButton caption="Update Customer"  /&gt;</emphasis> 
+             <emphasis role="bold">&lt;db:deleteButton caption="Delete Customer"  /&gt;</emphasis> 
+            &lt;/center&gt; 
+        &lt;/db:body&gt;
+         
+        <emphasis role="bold">&lt;db:footer&gt;</emphasis> 
+            &lt;br&gt;
+            &lt;center&gt; 
+            <emphasis role="bold">&lt;db:navFirstButton caption="lt;lt; First" /&gt;</emphasis> 
+            <emphasis role="bold">&lt;db:navPrevButton caption="lt; Previous" /&gt;</emphasis> 
+            <emphasis role="bold">&lt;db:navNextButton caption="Next gt;"  /&gt;</emphasis> 
+            <emphasis role="bold">&lt;db:navLastButton caption="Last gt;gt;" /&gt;</emphasis> 
+            <emphasis role="bold">&lt;db:navNewButton caption="nbsp;nbsp;*nbsp;nbsp;"/&gt;</emphasis> 
+            &lt;/center&gt; 
+        <emphasis role="bold">&lt;/db:footer&gt;</emphasis> 
+    <emphasis role="bold">&lt;/db:dbform&gt;</emphasis>
+  &lt;/body&gt; 
+ &lt;/html&gt;
 		</programlisting>
 				</example>
 				<para>
@@ -878,7 +845,7 @@ The user should be able to delete existing customers, as well.
 </para>
 				<para>Nested Forms: The structure of this page is similar to the structure shown in Figure 3  a main form has a sub-form in its body. The sub-form is linked to its parent by the equality of data-fields [if there is more than one field to define for correct mapping, a <emphasis role="bold">field-list</emphasis> may be provided, with each field separated from the other by commas or semicolons (<emphasis role="bold">,</emphasis> or <emphasis role="bold">;</emphasis>)] defined in the child - forms <emphasis role="bold">parentField</emphasis> and <emphasis role="bold">childField</emphasis> attributes.
 </para>
-				<para>Navigation-Buttons: Because only <emphasis role="italic">one</emphasis> customer is visible at once, the user needs a means of navigating between records. This functionality is provided by <emphasis role="bold">navFi</emphasis>r<emphasis role="bold">stButton, navLastButton, navPrevButton, navNextButton</emphasis> tags.
+				<para>Navigation-Buttons: Because only <emphasis role="italic">one</emphasis> customer is visible at once, the user needs a means of navigating between records. This functionality is provided by <emphasis role="bold">navFirst</emphasis><emphasis role="bold">Button, navLastButton, navPrevButton, navNextButton</emphasis> tags.
 </para>
 				<para>Insert-Button: the <emphasis role="bold">navNewButton</emphasis> tag navigates the user to an empty form.
 </para>
@@ -913,165 +880,186 @@ The user should be able to delete existing customers, as well.
 					</figure>
 				</para>
 				<example>
-					<title/>
-					<programlisting>
-            &lt;%@ taglib uri="/WEB-INF/dbForms.tld" prefix="db" %&gt;&lt;html&gt; 
-		&lt;head&gt; 
-                    &lt;db:base/&gt; 
-		&lt;/head&gt;
-                 
-		&lt;body&gt; 
-                    &lt;!-- show eventually occurred errors --&gt; 
-                    &lt;db:errors/&gt; 
-                    &lt;db:dbform tableName="customer" maxRows="1" followUp="/customer_complaints.jsp" autoUpdate="false"&gt; 
-                        
-                        &lt;db:header&gt; 
-                            &lt;db:gotoButton caption="Menu" destination="/menu.jsp" /&gt; 
-                            &lt;h1&gt;Customer&lt;/h1&gt; 
-                        &lt;/db:header&gt;
+    					<title/><programlisting>
+&lt;%@ taglib uri="/WEB-INF/dbForms.tld" prefix="db" %&gt;
+ &lt;html&gt; 
+  &lt;head&gt; 
+    &lt;db:base/&gt; 
+  &lt;/head&gt;
+   
+  &lt;body&gt; 
+    &lt;!-- show eventually occurred errors --&gt; 
+    &lt;db:errors/&gt; 
+    
+    &lt;db:dbform tableName="customer" maxRows="1" followUp="/customer_complaints.jsp" autoUpdate="false"&gt; 
+
+    &lt;db:header&gt; 
+        &lt;db:gotoButton caption="Menu" destination="/menu.jsp" /&gt; 
+        &lt;h1&gt;Customer&lt;/h1&gt; 
+    &lt;/db:header&gt;
+	     
+    &lt;db:body&gt; 
+        &lt;table align="center"&gt; 
+            &lt;tr&gt; 
+                &lt;td&gt;Id &lt;/td&gt; 
+                &lt;td&gt;&lt;db:textField fieldName="id" size="4"/&gt;&lt;/td&gt; 
+            &lt;/tr&gt; 
+            &lt;tr&gt; 
+                &lt;td&gt;First Name&lt;/td&gt; 
+                &lt;td&gt;&lt;db:textField fieldName="firstname" size="18"/&gt;&lt;/td&gt; 
+            &lt;/tr&gt; 
+            &lt;tr&gt; 
+                &lt;td&gt;Last Name&lt;/td&gt; 
+                &lt;td&gt;&lt;db:textField fieldName="lastname" size="18"/&gt;&lt;/td&gt; 
+            &lt;/tr&gt; 
+            &lt;tr&gt; 
+                &lt;td&gt;Address:&lt;/td&gt; 
+                &lt;td&gt;&lt;db:textField fieldName="address" size="25" /&gt;&lt;/td&gt; 
+            &lt;/tr&gt; 
+            &lt;tr&gt; 
+                &lt;td&gt;Postal code/City&lt;/td&gt; 
+                &lt;td&gt; 
+                    &lt;db:textField fieldName="pcode" size="6"/&gt; -
+                    &lt;db:textField fieldName="city" size="16"/&gt; 
+                &lt;/td&gt; 
+            &lt;/tr&gt; 
+        &lt;/table&gt; 
+        &lt;br&gt;
+         
+        &lt;!-- table embedding the sub form --&gt;
+         
+        &lt;table align="center" border="1"&gt; 
+            &lt;tr&gt; 
+                &lt;td&gt; 
+                    &lt;center&gt;&lt;p&gt;&lt;b&gt;Complaints&lt;/b&gt;&lt;/p&gt;&lt;/center&gt; 
+                    
+                    &lt;!-------- sub form begin -------&gt; 
+                    &lt;db:dbform tableName="complaint" maxRows="3" parentField="id" childField="customer_id" 
+                    followUp="/customer_complaints.jsp" autoUpdate="false"&gt;
+                     
+                    &lt;db:header&gt; 
+                    
+                    &lt;!-- code for showing existing complaints of the customer --&gt; 
+                        &lt;table&gt; 
+                            &lt;tr&gt; 
+                                &lt;td width="40"&gt;&lt;/td&gt; 
+                                &lt;td&gt;users' message&lt;/td&gt; 
+                                &lt;td&gt;priority&lt;/td&gt; 
+                                &lt;td&gt;incoming date&lt;/td&gt; 
+                            &lt;/tr&gt; 
+                    &lt;/db:header&gt;
+    
+                    &lt;db:body allowNew="false"&gt; 
+                            &lt;tr&gt; 
+                                &lt;td width="40"&gt;
+                                    &lt;db:associatedRadio name="radio_complaint" /&gt;
+                                &lt;/td&gt; 
+                                &lt;td&gt;
+                                    &lt;db:textField fieldName="usermessage" size="14"/&gt;
+                                &lt;/td&gt; 
+                                &lt;td&gt; 
+                                    &lt;db:select fieldName="priority"&gt; 
+                                        &lt;db:tableData
+                                            name = "some_priorities"
+                                            foreignTable = "priority"
+                                            visibleFields = "shortname"
+                                            storeField = "id"
+                                        /&gt; 
+                                    &lt;/db:select&gt; 
+                                &lt;/td&gt; 
+                                &lt;td&gt;
+                                    &lt;db:textField fieldName="incomingdate" size="14"/&gt;
+                                &lt;/td&gt; 
+                            &lt;/tr&gt; 
+                    &lt;/db:body&gt;
+    
+                    &lt;db:footer&gt; 
+                            &lt;tr&gt; 
+                                &lt;td width="40"&gt;&lt;/td&gt; 
+                                &lt;td&gt; 
+                                    &lt;db:updateButton caption="Update Complaint" associatedRadio="radio_complaint"/&gt; 
+                                &lt;/td&gt; 
+                                &lt;td&gt; 
+                                    &lt;db:deleteButton caption="Delete Complaint" associatedRadio="radio_complaint "/&gt; 
+                                &lt;/td&gt; 
+                            &lt;/tr&gt; 
+                        &lt;/table&gt;
                          
-                        &lt;db:body&gt; 
-                            &lt;table align="center"&gt; 
-                                &lt;tr&gt; 
-                                    &lt;td&gt;Id &lt;/td&gt; 
-                                    &lt;td&gt;&lt;db:textField fieldName="id" size="4"/&gt;&lt;/td&gt; 
-                                &lt;/tr&gt; 
-                                &lt;tr&gt; 
-                                    &lt;td&gt;First Name&lt;/td&gt; 
-                                    &lt;td&gt;&lt;db:textField fieldName="firstname" size="18"/&gt;&lt;/td&gt; 
-                                &lt;/tr&gt; 
-                                &lt;tr&gt; 
-                                    &lt;td&gt;Last Name&lt;/td&gt; 
-                                    &lt;td&gt;&lt;db:textField fieldName="lastname" size="18"/&gt;&lt;/td&gt; 
-                                &lt;/tr&gt; 
-                                &lt;tr&gt; 
-                                    &lt;td&gt;Address:&lt;/td&gt; 
-                                    &lt;td&gt;&lt;db:textField fieldName="address" size="25" /&gt;&lt;/td&gt; 
-                                &lt;/tr&gt; 
-                                &lt;tr&gt; 
-                                    &lt;td&gt;Postal code/City&lt;/td&gt; 
-                                    &lt;td&gt; 
-                                        &lt;db:textField fieldName="pcode" size="6"/&gt; -
-                                        &lt;db:textField fieldName="city" size="16"/&gt; 
-                                    &lt;/td&gt; 
-                                &lt;/tr&gt; 
-                            &lt;/table&gt; 
-                            &lt;br&gt; 
-                            &lt;!-- table embedding the sub form --&gt; 
-                            &lt;table align="center" border="1"&gt; 
-                                &lt;tr&gt; 
-                                    &lt;td&gt; 
-                                        &lt;center&gt;&lt;p&gt;&lt;b&gt;Complaints&lt;/b&gt;&lt;/p&gt;&lt;/center&gt; 
-                                        &lt;!-------- sub form begin -------&gt; 
-                                            &lt;db:dbform tableName="complaint" maxRows="3" parentField="id" childField="customer_id" 
-                                            followUp="/customer_complaints.jsp" autoUpdate="false"&gt; 
-                                                &lt;db:header&gt; 
-                                                &lt;!-- code for showing existing complaints of the customer --&gt; 
-                                                    &lt;table&gt; 
-                                                        &lt;tr&gt; 
-                                                            &lt;td width="40"&gt;&lt;/td&gt; 
-                                                            &lt;td&gt;users' message&lt;/td&gt; 
-                                                            &lt;td&gt;priority&lt;/td&gt; 
-                                                            &lt;td&gt;incoming date&lt;/td&gt; 
-                                                        &lt;/tr&gt; 
-                                                &lt;/db:header&gt;
-                                                 
-                                                &lt;db:body allowNew="false"&gt; 
-                                                        &lt;tr&gt; 
-                                                            &lt;td width="40"&gt;&lt;db:associatedRadio name="radio_complaint" /&gt;&lt;/td&gt; 
-                                                            &lt;td&gt;&lt;db:textField fieldName="usermessage" size="14"/&gt;&lt;/td&gt; 
-                                                            &lt;td&gt; 
-                                                                &lt;db:select fieldName="priority"&gt; 
-                                                                    &lt;db:tableData
- 
-                                                                    name = "some_priorities"
- 
-                                                                    foreignTable = "priority"
- 
-                                                                    visibleFields = "shortname"
- 
-                                                                    storeField = "id"
- 
-                                                                    /&gt; 
-                                                                &lt;/db:select&gt; 
-                                                            &lt;/td&gt; 
-                                                            &lt;td&gt;&lt;db:textField fieldName="incomingdate" size="14"/&gt;&lt;/td&gt; 
-                                                        &lt;/tr&gt; 
-                                                &lt;/db:body&gt;
-                                                 
-                                                &lt;db:footer&gt; 
-                                                        &lt;tr&gt; 
-                                                            &lt;td width="40"&gt;&lt;/td&gt; 
-                                                            &lt;td&gt; 
-                                                                &lt;db:updateButton caption="Update Complaint" associatedRadio="radio_complaint"/&gt; 
-                                                            &lt;/td&gt; 
-                                                            &lt;td&gt; 
-                                                                &lt;db:deleteButton caption="Delete Complaint" associatedRadio="radio_complaint "/&gt; 
-                                                            &lt;/td&gt; 
-                                                        &lt;/tr&gt; 
-                                                    &lt;/table&gt; 
-                                                &lt;!-- code for entering new complaints --&gt; 
-                                                &lt;br&gt;&lt;hr&gt; 
-                                                    &lt;table align="center"&gt; 
-                                                        &lt;tr&gt; 
-                                                            &lt;td&gt;user's message&lt;/td&gt; 
-                                                            &lt;td&gt;priority&lt;/td&gt; 
-                                                            &lt;td&gt;date&lt;/td&gt; 
-                                                        &lt;/tr&gt; 
-                                                        &lt;tr&gt; 
-                                                            &lt;td&gt;&lt;db:textArea wrap="virtual" cols="20" rows="6" fieldName="usermessage"/&gt;&lt;/td&gt; 
-                                                            &lt;td&gt; 
-                                                                &lt;db:radio fieldName="priority" growDirection="vertical"&gt; 
-                                                                    &lt;db:tableData
- 
-                                                                        name = "some_priorities"
- 
-                                                                        foreignTable = "priority"
- 
-                                                                        visibleFields = "shortname"
- 
-                                                                        storeField = "id"
- 
-                                                                        /&gt; 
-                                                                &lt;/db:radio&gt; 
-                                                            &lt;/td&gt; 
-                                                            &lt;td valign="top"&gt;&lt;db:textField fieldName="incomingdate" size="14" /&gt;&lt;/td&gt; 
-                                                        &lt;/tr&gt; 
-                                                    &lt;/table&gt;
-                                                     
-                                                    &lt;p&gt;&lt;center&gt;&lt;db:insertButton caption="insert new complaint" /&gt;&lt;/center&gt;&lt;/p&gt; 
-                                                    &lt;p&gt;&lt;center&gt; 
-                                                        &lt;db:navFirstButton caption="lt;lt; First" /&gt; 
-                                                        &lt;db:navPrevButton caption="lt; Previous" /&gt; 
-                                                        &lt;db:navNextButton caption="Next gt;" /&gt; 
-                                                        &lt;db:navLastButton caption="Last gt;gt;" /&gt; 
-                                                    &lt;/center&gt;&lt;/p&gt; 
-                                                &lt;/db:footer&gt; 
-                                            &lt;/db:dbform&gt; 
-                                        &lt;!-------- sub form end --------&gt; 
-                                    &lt;/td&gt; 
-                                &lt;/tr&gt; 
-                            &lt;/table&gt; 
-                            &lt;!-- end of table embedding the sub form --&gt; 
-                            &lt;br&gt;&lt;center&gt; 
-                                &lt;db:insertButton caption="Store this new Customer!"  /&gt; 
-                                &lt;db:updateButton caption="Update Customer"  /&gt; 
-                                &lt;db:deleteButton caption="Delete Customer"  /&gt; 
-                            &lt;/center&gt; 
-                        &lt;/db:body&gt;
-                         
-                        &lt;db:footer&gt; 
-                            &lt;br&gt;&lt;center&gt; 
-                                &lt;db:navFirstButton caption="lt;lt; First" /&gt; 
-                                &lt;db:navPrevButton caption="lt; Previous" /&gt; 
-                                &lt;db:navNextButton caption="Next gt;"  /&gt; 
-                                &lt;db:navLastButton caption="Last gt;gt;" /&gt; 
-                                &lt;db:navNewButton caption="nbsp;nbsp;*nbsp;nbsp;"/&gt; 
-                            &lt;/center&gt; 
-                        &lt;/db:footer&gt; 
+                        &lt;!-- code for entering new complaints --&gt; 
+                        &lt;br&gt;&lt;hr&gt; 
+                        &lt;table align="center"&gt; 
+                            &lt;tr&gt; 
+                                &lt;td&gt;user's message&lt;/td&gt; 
+                                &lt;td&gt;priority&lt;/td&gt; 
+                                &lt;td&gt;date&lt;/td&gt; 
+                            &lt;/tr&gt; 
+                            &lt;tr&gt; 
+                                &lt;td&gt;
+                                    &lt;db:textArea wrap="virtual" cols="20" rows="6" fieldName="usermessage"/&gt;
+                                &lt;/td&gt; 
+                                &lt;td&gt; 
+                                    &lt;db:radio fieldName="priority" growDirection="vertical"&gt; 
+                                        &lt;db:tableData
+                                            name = "some_priorities"
+                                            foreignTable = "priority"
+                                            visibleFields = "shortname"
+                                            storeField = "id"
+                                        /&gt; 
+                                    &lt;/db:radio&gt; 
+                                &lt;/td&gt; 
+                                &lt;td valign="top"&gt;
+                                    &lt;db:textField fieldName="incomingdate" size="14" /&gt;
+                                &lt;/td&gt; 
+                            &lt;/tr&gt; 
+                        &lt;/table&gt;
+   
+                        &lt;p&gt;
+                        &lt;center&gt;
+                            &lt;db:insertButton caption="insert new complaint" /&gt;
+                        &lt;/center&gt;
+                        &lt;/p&gt; 
+                        &lt;p&gt;
+                        &lt;center&gt; 
+                            &lt;db:navFirstButton caption="lt;lt; First" /&gt; 
+                            &lt;db:navPrevButton caption="lt; Previous" /&gt; 
+                            &lt;db:navNextButton caption="Next gt;" /&gt; 
+                        &lt;db:navLastButton caption="Last gt;gt;" /&gt; 
+                        &lt;/center&gt;
+                        &lt;/p&gt; 
+                    &lt;/db:footer&gt;
+                     
                     &lt;/db:dbform&gt; 
-		&lt;/body&gt; 
-            &lt;/html&gt; 
+                    &lt;!-------- sub form end --------&gt;
+                     
+                &lt;/td&gt; 
+            &lt;/tr&gt; 
+        &lt;/table&gt; 
+        &lt;!-- end of table embedding the sub form --&gt;
+         
+        &lt;br&gt;
+        &lt;center&gt; 
+            &lt;db:insertButton caption="Store this new Customer!"  /&gt; 
+            &lt;db:updateButton caption="Update Customer"  /&gt; 
+            &lt;db:deleteButton caption="Delete Customer"  /&gt; 
+        &lt;/center&gt; 
+    &lt;/db:body&gt;
+     
+    &lt;db:footer&gt; 
+        &lt;br&gt;
+        &lt;center&gt; 
+          &lt;db:navFirstButton caption="lt;lt; First" /&gt; 
+          &lt;db:navPrevButton caption="lt; Previous" /&gt; 
+          &lt;db:navNextButton caption="Next gt;"  /&gt; 
+          &lt;db:navLastButton caption="Last gt;gt;" /&gt; 
+          &lt;db:navNewButton caption="nbsp;nbsp;*nbsp;nbsp;"/&gt; 
+        &lt;/center&gt; 
+    &lt;/db:footer&gt;
+     
+    &lt;/db:dbform&gt;
+     
+  &lt;/body&gt; 
+ &lt;/html&gt; 					
+
 		</programlisting>
 				</example>
 				<para>
