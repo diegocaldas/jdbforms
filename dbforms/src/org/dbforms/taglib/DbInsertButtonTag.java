@@ -25,7 +25,6 @@ package org.dbforms.taglib;
 import javax.servlet.jsp.JspException;
 import org.dbforms.util.Util;
 import org.apache.log4j.Category;
-import org.dbforms.event.eventtype.EventType;
 
 
 

@@ -25,7 +25,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Hashtable;
 import java.sql.Connection;
 
-import org.apache.log4j.Category;
 import org.dbforms.config.DbFormsConfig;
 
 
@@ -37,9 +36,6 @@ import org.dbforms.config.DbFormsConfig;
 */
 public class DbEventInterceptorSupport implements DbEventInterceptor
 {
-   private static Category logCat = Category.getInstance(DbEventInterceptorSupport.class
-         .getName()); // logging category for this class
-
    /**
     * DOCUMENT ME!
     *

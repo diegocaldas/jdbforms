@@ -415,7 +415,6 @@ public class PageContextBuffer extends PageContext
     */
    public Enumeration getAttributeNamesInScope(int scope)
    {
-      int i;
 
       switch (scope)
       {

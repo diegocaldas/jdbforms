@@ -58,8 +58,6 @@ public class DevGui extends javax.swing.JFrame implements ActionListener
    // Gui Variables declaration
    private javax.swing.JMenuBar    jMenuBar1;
    private javax.swing.JMenu       jMenu1;
-   private javax.swing.JMenu       jMenu2;
-   private javax.swing.JMenu       JMenu3;
    private javax.swing.JMenuItem   metalMenuItem;
    private javax.swing.JMenuItem   motifMenuItem;
    private javax.swing.JMenuItem   windowsMenuItem;

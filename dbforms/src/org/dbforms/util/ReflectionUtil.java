@@ -361,7 +361,6 @@ public class ReflectionUtil
     */
    private static void listClassConstructors(PrintWriter pw, Class c)
    {
-      String        name         = c.getName();
       Constructor[] constructors = c.getDeclaredConstructors();
 
       for (int i = 0; i < constructors.length; i++)
@@ -393,7 +392,6 @@ public class ReflectionUtil
     */
    private static void listClassMethods(PrintWriter pw, Class c)
    {
-      String   name    = c.getName();
       Method[] methods = c.getDeclaredMethods();
 
       for (int i = 0; i < methods.length; i++)
@@ -427,7 +425,6 @@ public class ReflectionUtil
                                    throws Exception
    {
       Class   c      = o.getClass();
-      String  name   = c.getName();
       Field[] fields = c.getDeclaredFields();
 
       for (int i = 0; i < fields.length; i++)

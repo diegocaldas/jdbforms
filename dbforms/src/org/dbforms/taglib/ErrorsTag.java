@@ -25,9 +25,8 @@
  */
 package org.dbforms.taglib;
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.Locale;
 import java.util.Vector;
+import java.util.Enumeration;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
@@ -35,7 +34,6 @@ import javax.servlet.jsp.tagext.TagSupport;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Category;
 import org.dbforms.util.MessageResources;
-import java.util.*;
 
 
 

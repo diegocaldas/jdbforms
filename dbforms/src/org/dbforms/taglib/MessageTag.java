@@ -21,15 +21,13 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.taglib;
+
 import org.dbforms.util.MessageResources;
-import org.dbforms.util.ParseUtil;
-import java.util.*;
+import java.util.Locale;
+import java.util.StringTokenizer;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.JspWriter;
-import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.TagSupport;
-import javax.servlet.ServletContext;
 
 
 
@@ -38,7 +36,6 @@ import javax.servlet.ServletContext;
  ****/
 public class MessageTag extends TagSupport
 {
-   private static MessageResources messages = null;
    private String                  key   = null;
    private String                  param = null;
 

@@ -80,7 +80,9 @@ public class DbDateLabelTag extends DbLabelTag
                                     .getDateFormatter();
                         }
                         catch (Exception e)
-                        {}
+                        {
+                        	 logCat.error(e);
+                        }
 
                     }
 

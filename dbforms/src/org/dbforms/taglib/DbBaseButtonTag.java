@@ -27,7 +27,6 @@ import org.dbforms.config.Table;
 import org.dbforms.util.MessageResources;
 import javax.servlet.jsp.JspException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.ServletContext;
 
 import org.dbforms.validation.ValidatorConstants;
 import org.apache.log4j.Category;

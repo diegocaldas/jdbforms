@@ -66,7 +66,6 @@ public class XMLConfigGenerator implements PropertyNames
    static boolean fieldTypeIsKnown(String s)
    {
       int    i;
-      String sLower = s.toLowerCase();
 
       for (i = 0; i < knownFieldTypes.length; i++)
          if (s.startsWith(knownFieldTypes[i]))
@@ -203,7 +202,6 @@ public class XMLConfigGenerator implements PropertyNames
 
       String pColName = rsk.getString(4);
 
-      String fCatalog = rsk.getString(5);
       String fSchema  = rsk.getString(6);
       String fTable   = rsk.getString(7);
 
@@ -757,10 +755,8 @@ public class XMLConfigGenerator implements PropertyNames
             while (rsFields.next())
             {
                String columnName = rsFields.getString(4);
-               short  dataType   = rsFields.getShort(5);
                String typeName   = rsFields.getString(6);
                int    columnSize = rsFields.getInt(7);
-               String isNullable = rsFields.getString(18);
                int    typeCode   = rsFields.getInt(5);
 
                // if we want to check for autoincremented

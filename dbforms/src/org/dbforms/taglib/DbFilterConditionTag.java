@@ -248,6 +248,7 @@ public class DbFilterConditionTag extends BodyTagSupport implements TryCatchFina
                 == ((DbFilterConditionTag) obj).state.conditionId);
     }
 
+    
     /**
      * condition prefix for request parameters
      * 

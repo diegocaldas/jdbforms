@@ -25,7 +25,6 @@ package org.dbforms.taglib;
 
 import javax.servlet.jsp.JspException;
 import org.dbforms.util.Util;
-import org.apache.log4j.Category;
 import org.dbforms.event.eventtype.EventType;
 
 
@@ -40,8 +39,6 @@ import org.dbforms.event.eventtype.EventType;
  */
 public class DbNavNextButtonTag extends DbBaseButtonTag
 {
-   private static Category logCat    = Category.getInstance(DbNavNextButtonTag.class
-         .getName()); // logging category for this class
    private String  stepWidth;
 
    /**

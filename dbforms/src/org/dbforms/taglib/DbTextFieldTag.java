@@ -22,18 +22,8 @@
  */
 package org.dbforms.taglib;
 
-import java.util.Vector;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.dbforms.util.ParseUtil;
-import org.dbforms.event.ReloadEvent;
-import org.dbforms.event.WebEvent;
-import org.apache.log4j.Category;
 
 import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.PageContext;
-import javax.servlet.jsp.tagext.TagSupport;
 
 
 
@@ -56,7 +46,7 @@ public class DbTextFieldTag extends DbBaseInputTag
     *
     * @throws javax.servlet.jsp.JspException DOCUMENT ME!
     */
-   public int doStartTag() throws javax.servlet.jsp.JspException
+   public int doStartTag() throws JspException
    {
       super.doStartTag();
 
@@ -72,7 +62,7 @@ public class DbTextFieldTag extends DbBaseInputTag
     * @throws javax.servlet.jsp.JspException DOCUMENT ME!
     * @throws JspException DOCUMENT ME!
     */
-   public int doEndTag() throws javax.servlet.jsp.JspException
+   public int doEndTag() throws JspException
    {
 
       try

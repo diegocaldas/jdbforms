@@ -111,7 +111,7 @@ public class DatabaseEventFactoryImpl extends DatabaseEventFactory
       // instance "keyInfo" database events;
       else
       {
-         KeyInfo kInfo = getKeyInfo(action, request, config);
+         KeyInfo kInfo = getKeyInfo(action, request);
 
          // args are: tableId, keyId, request, config
          constructorArgs    = new Object[]
@@ -195,8 +195,7 @@ public class DatabaseEventFactoryImpl extends DatabaseEventFactory
     *         the tableId and the keyId taken from the input action string,
     *         or null if any error occurs
     */
-   private KeyInfo getKeyInfo(String action, HttpServletRequest request,
-      DbFormsConfig config)
+   private KeyInfo getKeyInfo(String action, HttpServletRequest request)
    {
       KeyInfo keyInfo             = null;
       String  associatedRadioName = ParseUtil.getParameter(request,

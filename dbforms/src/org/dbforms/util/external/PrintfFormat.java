@@ -637,7 +637,6 @@ public class PrintfFormat
     */
    private String nonControl(String s, int start)
    {
-      String ret = "";
       cPos = s.indexOf("%", start);
 
       if (cPos == -1)
@@ -1590,7 +1589,6 @@ public class PrintfFormat
          String sx;
 
          // int defaultDigits=6;
-         String  sxOut;
          int     i;
          int     j;
          int     k;
@@ -2065,7 +2063,6 @@ public class PrintfFormat
          String sx;
 
          // int defaultDigits=6;
-         String  sxOut;
          int     i;
          int     j;
          int     k;

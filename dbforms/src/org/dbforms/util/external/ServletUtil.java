@@ -26,7 +26,6 @@ import java.io.*;
 import java.util.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
-import javax.servlet.http.HttpUtils;
 
 import org.apache.log4j.Category;
 
@@ -194,7 +193,6 @@ public class ServletUtil
         Enumeration keys = ht.keys();
 		int maxKeyNameLength = getElementNameMaxLength(ht.keys());
 		
-		int aa = 0;
         while (keys.hasMoreElements())
         {  
             String   key    = (String)   keys.nextElement();

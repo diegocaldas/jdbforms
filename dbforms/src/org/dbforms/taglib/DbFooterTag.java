@@ -106,7 +106,6 @@ public class DbFooterTag extends BodyTagSupport
       DbFormTag myParent = (DbFormTag) findAncestorWithClass(this,
             DbFormTag.class);
 
-      JspWriter out = pageContext.getOut();
 
       // field values that have not been rendered by html tags but that is determinated by field
       // mapping between main- and subform are rendered now:

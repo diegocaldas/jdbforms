@@ -126,10 +126,8 @@ public class DbTool
             while (rsFields.next())
             {
                String columnName = rsFields.getString(4);
-               short  dataType   = rsFields.getShort(5);
                String typeName   = rsFields.getString(6);
                int    columnSize = rsFields.getInt(7);
-               String isNullable = rsFields.getString(18);
 
                result.append("\t\t<field name=\"");
                result.append(columnName);

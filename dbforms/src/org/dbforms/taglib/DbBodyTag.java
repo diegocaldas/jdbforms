@@ -22,7 +22,6 @@
  */
 package org.dbforms.taglib;
 
-import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.JspException;
 
 import javax.servlet.jsp.tagext.BodyTagSupport;
@@ -136,8 +135,6 @@ public class DbBodyTag extends BodyTagSupport
       //DbFormTag myParent = (DbFormTag) getParent(); // parent Tag in which this tag is embedded in
       DbFormTag myParent = (DbFormTag) findAncestorWithClass(this,
             DbFormTag.class);
-
-      JspWriter out = pageContext.getOut();
 
      try {
       // each rendering loop represents one row of data.

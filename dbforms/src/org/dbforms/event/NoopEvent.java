@@ -24,7 +24,6 @@
 package org.dbforms.event;
 import javax.servlet.http.HttpServletRequest;
 import org.dbforms.config.DbFormsConfig;
-import org.apache.log4j.Category;
 
 
 
@@ -35,9 +34,6 @@ import org.apache.log4j.Category;
  */
 public class NoopEvent extends WebEvent
 {
-   private static Category logCat = Category.getInstance(
-                                             NoopEvent.class.getName()); // logging category for this class
-
    /**
     * Creates a new NoopEvent object.
     * @param tableId DOCUMENT ME!

@@ -27,7 +27,6 @@ import java.util.Locale;
 import org.apache.commons.validator.Field;
 import org.apache.commons.validator.GenericValidator;
 import org.apache.commons.validator.ValidatorAction;
-import javax.servlet.ServletContext;
 import java.util.Vector;
 import java.util.Hashtable;
 import org.dbforms.event.ValidationException;

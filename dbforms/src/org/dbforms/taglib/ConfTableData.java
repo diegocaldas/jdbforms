@@ -25,13 +25,11 @@ package org.dbforms.taglib;
 import java.util.Vector;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import org.dbforms.util.ResultSetVector;
 import org.dbforms.util.ParseUtil;
 import org.dbforms.util.FieldValue;
-import org.dbforms.util.SqlUtil;
 
 import org.dbforms.config.Table;
 import org.dbforms.config.DbFormsConfig;
@@ -183,7 +181,6 @@ public class ConfTableData extends EmbeddedData
 	*/
 	protected Vector fetchData(Connection con) throws SQLException
 	{
-		Vector       vf = ParseUtil.splitString(visibleFields, ",;~");
 		try {
 			DbFormsConfig config = DbFormsConfigRegistry.instance().lookup();
 			Table table = config.getTableByName(getForeignTable());

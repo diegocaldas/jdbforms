@@ -29,7 +29,6 @@ import java.util.Enumeration;
 import java.sql.SQLException;
 import java.sql.Connection;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
@@ -45,7 +44,6 @@ import org.apache.commons.validator.ValidatorResources;
 import org.apache.log4j.Category;
 
 import org.dbforms.util.Util;
-import org.dbforms.util.TimeUtil;
 import org.dbforms.util.SqlUtil;
 import org.dbforms.util.ParseUtil;
 import org.dbforms.util.FieldValue;
@@ -60,7 +58,6 @@ import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.Table;
 import org.dbforms.config.Field;
 import org.dbforms.config.GrantedPrivileges;
-import org.dbforms.config.DbFormsConfigRegistry;
 
 
 import org.dbforms.event.WebEvent;
@@ -2339,12 +2336,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
                   operator = Constants.FILTER_GREATER_THEN_EQUAL;
                   java.util.Date d = SqlUtil.createAppropriateTimeStamp(aSearchFieldValue);
  				  if (d != null) {
-	 				  try {
-						SimpleDateFormat sdf  = DbFormsConfigRegistry.instance().lookup().getDateFormatter();
-	 				  } catch (Exception e) {
-	 				     throw new IOException(e.getMessage());
-	 				  }
-    	              fv                   = new FieldValue(f, aSearchFieldValue, operator);
+    	              fv = new FieldValue(f, aSearchFieldValue, operator);
         	          fv.setSearchMode(mode);
             	      fv.setSearchAlgorithm(algorithm);
 
@@ -2547,7 +2539,6 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
       StringBuffer result = new StringBuffer();
       String       key    = null;
       String       val    = null;
-      String       tmp    = null;
       String       values = "";
 
       Hashtable    fields = new Hashtable();

@@ -117,7 +117,9 @@ public class XMLErrorsUtil
       }
       catch (Exception e)
       {
-         //Not in proper format - do not try to convert!
+         //
+         logCat.error("Not in proper format - do not try to convert!");
+         ;
       }
 
       // Reference to listing of predefined errors (xml file)

@@ -62,11 +62,6 @@ public class DbPosTag extends TagSupport
    {
       try
       {
-         HttpServletRequest request = (HttpServletRequest) pageContext
-            .getRequest();
-         int                tableId = parentForm.getTable().getId();
-         Vector             v       = parentForm.getTable().getFields();
-
          StringBuffer       tagBuf = new StringBuffer();
          tagBuf.append(parentForm.getTable().getId());
          tagBuf.append("_");

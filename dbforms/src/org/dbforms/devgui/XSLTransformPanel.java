@@ -51,9 +51,7 @@ public class XSLTransformPanel extends PropertyPanel implements ActionListener,
    private JButton                b_start;
    private JButton                b_refresh;
    private JButton                b_openInBrowser;
-   private JButton                b_save;
    private JButton                b_refreshJSPs;
-   private JTextArea              ta_editor;
    private EditorPanel            panel_editor;
    private JCheckBox              cb_useJsCalendar;
    private javax.swing.JPanel     jPanel2;

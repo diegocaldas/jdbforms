@@ -92,9 +92,6 @@ public class JavascriptArrayTag extends BodyTagSupport implements DataContainer
     */
    public int doEndTag() throws javax.servlet.jsp.JspException
    {
-      HttpServletRequest request = (HttpServletRequest) this.pageContext
-         .getRequest();
-
       StringBuffer       tagBuf = new StringBuffer();
 
       if (embeddedData == null)

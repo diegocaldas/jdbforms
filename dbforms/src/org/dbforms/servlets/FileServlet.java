@@ -20,36 +20,29 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-package org.dbforms.servlets;
 
+package org.dbforms.servlets;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
-
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import java.io.InputStream;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.File;
-
 import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-
 import java.net.FileNameMap;
 import java.net.URLConnection;
-
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.Field;
 import org.dbforms.config.Table;
-
 import org.dbforms.util.FieldTypes;
 import org.dbforms.util.FileHolder;
 import org.dbforms.util.ParseUtil;
@@ -67,10 +60,10 @@ import org.apache.log4j.Category;
 public class FileServlet extends HttpServlet
 {
    // logging category for this class
-   private static Category       logCat      = Category.getInstance(FileServlet.class
-         .getName());
-   private DbFormsConfig config;
-   private FileNameMap   fileNameMap;
+   private static Category logCat = Category.getInstance(
+                                             FileServlet.class.getName());
+   private DbFormsConfig   config;
+   private FileNameMap     fileNameMap;
 
    /**
     * Initialize this servlet.
@@ -81,8 +74,9 @@ public class FileServlet extends HttpServlet
    {
       // take Config-Object from application context - this object should have been
       // initalized by Config-Servlet on Webapp/server-startup!
-      config         = (DbFormsConfig) getServletContext().getAttribute(DbFormsConfig.CONFIG);
-      fileNameMap    = URLConnection.getFileNameMap();
+      config      = (DbFormsConfig) getServletContext()
+                                       .getAttribute(DbFormsConfig.CONFIG);
+      fileNameMap = URLConnection.getFileNameMap();
    }
 
 
@@ -95,7 +89,7 @@ public class FileServlet extends HttpServlet
     * @exception  IOException Description of the Exception
     */
    public void doPost(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException
+               throws ServletException, IOException
    {
       doGet(request, response);
    }
@@ -110,21 +104,21 @@ public class FileServlet extends HttpServlet
     * @exception  IOException Description of the Exception
     */
    public void doGet(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException
+              throws ServletException, IOException
    {
       String       tf           = request.getParameter("tf");
       String       keyValuesStr = request.getParameter("keyval");
       int          tableId      = Integer.parseInt(ParseUtil.getEmbeddedString(
-               tf, 0, '_'));
-      Table        table        = config.getTable(tableId);
-      int          fieldId      = Integer.parseInt(ParseUtil.getEmbeddedString(
-               tf, 1, '_'));
-      Field        field        = table.getField(fieldId);
+                                                            tf, 0, '_'));
+      Table        table   = config.getTable(tableId);
+      int          fieldId = Integer.parseInt(ParseUtil.getEmbeddedString(tf, 1, 
+                                                                          '_'));
+      Field        field = table.getField(fieldId);
 
       StringBuffer queryBuf         = new StringBuffer();
       String       dbConnectionName = request.getParameter("invname_" + tableId);
-      Connection   con              = SqlUtil.getConnection(config,
-            dbConnectionName);
+      Connection   con              = SqlUtil.getConnection(config, 
+                                                            dbConnectionName);
 
       queryBuf.append("SELECT ");
       queryBuf.append(field.getName());
@@ -132,6 +126,7 @@ public class FileServlet extends HttpServlet
       queryBuf.append(table.getName());
       queryBuf.append(" WHERE ");
       queryBuf.append(table.getWhereClauseForPS());
+
 
       // example: SELECT imageNameField FROM myTable WHERE myTable.key = ?
       logCat.info("::doGet - query is [" + queryBuf + "]");
@@ -148,20 +143,20 @@ public class FileServlet extends HttpServlet
             // use the filesystem;
             if (field.getType() == FieldTypes.DISKBLOB)
             {
-               readDiskBlob(rs.getString(1), field.getDirectory(), request,
-                  response);
+               readDiskBlob(rs.getString(1), field.getDirectory(), request, 
+                            response);
             }
 
             // use the rdbms;
             else if (field.getType() == FieldTypes.BLOB)
             {
-               readDbFieldBlob(rs, request, response);
+               readDbFieldBlob(rs, response);
             }
          }
          else
          {
             logCat.info("::doGet - we have got no result using query "
-               + queryBuf);
+                        + queryBuf);
          }
       }
       catch (SQLException sqle)
@@ -188,8 +183,8 @@ public class FileServlet extends HttpServlet
     * @exception  IOException Description of the Exception
     * @exception  SQLException Description of the Exception
     */
-   private void readDbFieldBlob(ResultSet rs, HttpServletRequest request,
-      HttpServletResponse response) throws IOException, SQLException
+   private void readDbFieldBlob(ResultSet rs, HttpServletResponse response)
+                         throws IOException, SQLException
    {
       logCat.info("READING BLOB");
 
@@ -205,11 +200,11 @@ public class FileServlet extends HttpServlet
             if (o instanceof java.sql.Blob)
             {
                Blob              blob = rs.getBlob(1);
-               ObjectInputStream ois = new ObjectInputStream(blob
-                     .getBinaryStream());
-               FileHolder        fh  = (FileHolder) ois.readObject();
-               writeToClient(response, fh.getFileName(),
-                  fh.getInputStreamFromBuffer());
+               ObjectInputStream ois = new ObjectInputStream(
+                                                blob.getBinaryStream());
+               FileHolder        fh = (FileHolder) ois.readObject();
+               writeToClient(response, fh.getFileName(), 
+                             fh.getInputStreamFromBuffer());
             }
 
             /*
@@ -228,8 +223,8 @@ public class FileServlet extends HttpServlet
                InputStream       blobIS = rs.getBinaryStream(1);
                ObjectInputStream ois = new ObjectInputStream(blobIS);
                FileHolder        fh  = (FileHolder) ois.readObject();
-               writeToClient(response, fh.getFileName(),
-                  fh.getInputStreamFromBuffer());
+               writeToClient(response, fh.getFileName(), 
+                             fh.getInputStreamFromBuffer());
             }
          }
          else
@@ -255,24 +250,28 @@ public class FileServlet extends HttpServlet
     * @exception  FileNotFoundException Description of the Exception
     * @exception  IOException Description of the Exception
     */
-   private void readDiskBlob(String fileName, String directory,
-      HttpServletRequest request, HttpServletResponse response)
-      throws FileNotFoundException, IOException
+   private void readDiskBlob(String fileName, String directory, 
+                             HttpServletRequest request, 
+                             HttpServletResponse response)
+                      throws FileNotFoundException, IOException
    {
       logCat.info(new StringBuffer("READING DISKBLOB\n  directory = [").append(
-            directory).append("]\n").append("  fileName = [").append(fileName)
+                           directory).append("]\n").append("  fileName = [")
+                                                                       .append(fileName)
                                                                        .append("]\n")
                                                                        .append("  defaultValue = [")
-                                                                       .append(request
-            .getParameter("defaultValue")).append("]\n").toString());
+                                                                       .append(request.getParameter(
+                                                                                        "defaultValue"))
+                                                                       .append("]\n")
+                                                                       .toString());
 
       if ((fileName == null) || (fileName.trim().length() == 0))
       {
          if ((fileName = request.getParameter("defaultValue")) != null)
          {
             logCat.info(
-               "::readDiskBlob - database data is null; use the default value ["
-               + fileName + "]");
+                     "::readDiskBlob - database data is null; use the default value ["
+                     + fileName + "]");
          }
       }
 
@@ -287,7 +286,7 @@ public class FileServlet extends HttpServlet
          if (file.exists())
          {
             logCat.info("::readDiskBlob - file found ["
-               + file.getAbsoluteFile() + "]");
+                        + file.getAbsoluteFile() + "]");
 
             FileInputStream fis = new FileInputStream(file);
             writeToClient(response, fileName, fis);
@@ -295,7 +294,7 @@ public class FileServlet extends HttpServlet
          else
          {
             logCat.error("::readDiskBlob - file ["
-               + (directory + "/" + fileName) + "] not found");
+                         + (directory + "/" + fileName) + "] not found");
          }
       }
       else
@@ -313,12 +312,12 @@ public class FileServlet extends HttpServlet
     * @param  is Description of the Parameter
     * @exception  IOException Description of the Exception
     */
-   private void writeToClient(HttpServletResponse response, String fileName,
-      InputStream is) throws IOException
+   private void writeToClient(HttpServletResponse response, String fileName, 
+                              InputStream is) throws IOException
    {
       String contentType = fileNameMap.getContentTypeFor(fileName);
       logCat.info("::writeToClient- writing to client:" + fileName + " ct="
-         + contentType);
+                  + contentType);
       response.setContentType(contentType);
 
       ServletOutputStream out  = response.getOutputStream();

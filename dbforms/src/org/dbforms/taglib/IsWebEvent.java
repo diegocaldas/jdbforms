@@ -21,12 +21,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.taglib;
-import org.dbforms.event.*;
-import java.util.StringTokenizer;
-import javax.servlet.http.HttpServletRequest;
+
+import org.dbforms.event.WebEvent;
 import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.PageContext;
-import javax.servlet.jsp.tagext.Tag;
 import javax.servlet.jsp.tagext.TagSupport;
 
 //import javax.servlet.jsp.tagext.BodyTagSupport;

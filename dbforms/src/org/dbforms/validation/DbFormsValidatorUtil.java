@@ -41,7 +41,6 @@ import org.apache.commons.validator.Form;
 import org.apache.commons.validator.ValidatorAction;
 import org.apache.commons.validator.ValidatorResources;
 import org.apache.commons.validator.ValidatorUtil;
-import org.apache.commons.validator.Validator;
 import org.apache.log4j.Category;
 
 
@@ -115,7 +114,7 @@ public class DbFormsValidatorUtil
       }
       catch (Exception e)
       {
-         //Not in proper format - do not try to convert!
+         logCat.error("Not in proper format - do not try to convert!");
       }
 
       return result;

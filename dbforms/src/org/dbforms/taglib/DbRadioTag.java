@@ -258,7 +258,6 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer
                KeyValuePair aKeyValuePair = (KeyValuePair) embeddedData
                   .elementAt(i);
                String       aKey   = aKeyValuePair.getKey();
-               String       aValue = aKeyValuePair.getValue();
 
                if (aKey.equals(currentValue))
                {

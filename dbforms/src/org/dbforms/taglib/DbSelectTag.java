@@ -218,6 +218,7 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer
 
       if (embeddedData == null)
       {
+         ;
          // no embedded data is nested in this tag
 
          /*

@@ -75,7 +75,6 @@ public class MultipartRequest
 {
    private static Category          logCat                = Category.getInstance(MultipartRequest.class
          .getName()); // logging category for this class
-   private static final int DEFAULT_MAX_POST_SIZE = 1024 * 1024; // 1 Meg
 
    //private File dir;
    private Hashtable       parameters = new Hashtable(); // name - Vector of values

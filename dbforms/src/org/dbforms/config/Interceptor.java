@@ -22,7 +22,6 @@
  */
 package org.dbforms.config;
 
-import org.apache.log4j.Category;
 
 
 
@@ -36,8 +35,6 @@ import org.apache.log4j.Category;
  */
 public class Interceptor
 {
-   private static Category logCat    = Category.getInstance(Interceptor.class.getName()); 
-                                         // logging category for this class
    private String  className;
 
    /**

@@ -22,20 +22,8 @@
  */
 package org.dbforms.taglib;
 
-import java.util.Vector;
-
 import javax.servlet.http.HttpServletRequest;
-
-import org.dbforms.util.ParseUtil;
-import org.dbforms.event.ReloadEvent;
-import org.dbforms.event.WebEvent;
-import org.apache.log4j.Category;
-
 import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.PageContext;
-import javax.servlet.jsp.tagext.TagSupport;
-
-import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.DbFormsConfigRegistry;
 
 
@@ -89,9 +77,6 @@ public class DbDateFieldTag extends DbBaseInputTag
    {
       HttpServletRequest request = (HttpServletRequest) this.pageContext
          .getRequest();
-      Vector             errors = (Vector) request.getAttribute("errors");
-      WebEvent           we     = (WebEvent) request.getAttribute("webEvent");
-
       try
       {
          /* Does the developer require the field to be hidden or displayed? */

@@ -22,9 +22,6 @@
  */
 
 package org.dbforms.util;
-import org.apache.log4j.Category;
-
-
 
 /**
  * DOCUMENT ME!
@@ -34,8 +31,6 @@ import org.apache.log4j.Category;
  */
 public class UniqueIDGenerator
 {
-   private static Category logCat = Category.getInstance(
-                                             UniqueIDGenerator.class.getName()); // logging category for this class
 
    /**
     * may be optimized in future versions

@@ -267,15 +267,15 @@ public class Query extends Table
    private FieldValue[] getFieldValueHaving(FieldValue[] fvEqual)
    {
       Vector mode_having = new Vector();
-      Vector mode_where = new Vector();
-
+      
       // Split fields in where and having part
       if (fvEqual != null)
       {
          for (int i = 0; i < fvEqual.length; i++)
          {
-            if ((fvEqual[i].getField().getId() >= WHEREIDSTART))
+            if (!(fvEqual[i].getField().getId() >= WHEREIDSTART))
             {
+            	;
             }
             else
             {
@@ -297,7 +297,6 @@ public class Query extends Table
 
    private FieldValue[] getFieldValueWhere(FieldValue[] fvEqual)
    {
-      Vector mode_having = new Vector();
       Vector mode_where = new Vector();
 
       // Split fields in where and having part

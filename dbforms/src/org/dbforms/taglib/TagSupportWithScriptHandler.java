@@ -23,7 +23,6 @@
 package org.dbforms.taglib;
 
 import javax.servlet.jsp.tagext.BodyTagSupport;
-import org.apache.log4j.Category;
 
 
 

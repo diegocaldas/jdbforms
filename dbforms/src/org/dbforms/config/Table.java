@@ -665,9 +665,9 @@ public class Table
       queryBuf.append(" SET ");
 
       // list the names of fields and the place holder for their new values
-      // important: these are the fields which are sent throug the current request;
-      // this list may be only a subset of the field list, it is not necessarily the complete field list of a table!
-      Vector      fields      = getFields();
+      // important: these are the fields which are sent through the current request;
+      // this list may be only a subset of the field list, 
+      //  it is not necessarily the complete field list of a table!
       Enumeration enum        = fieldValues.keys();
       boolean     kommaNeeded = false;
 
@@ -710,7 +710,6 @@ public class Table
       queryBuf.append(" (");
 
       // list the names of fields we'll include into the insert operation
-      Vector      fields = getFields();
       Enumeration enum = fieldValues.keys();
 
       while (enum.hasMoreElements())

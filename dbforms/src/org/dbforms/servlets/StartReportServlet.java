@@ -423,8 +423,7 @@ public class StartReportServlet extends HttpServlet
    }
 
 
-   private static void sendErrorMessageText(HttpServletRequest request, 
-                                            HttpServletResponse response, 
+   private static void sendErrorMessageText(HttpServletResponse response, 
                                             String message)
    {
       try
@@ -459,7 +458,7 @@ public class StartReportServlet extends HttpServlet
 
          if (Util.isNull(fue))
          {
-            sendErrorMessageText(request, response, message);
+            sendErrorMessageText(response, message);
          }
          else
          {
@@ -468,7 +467,7 @@ public class StartReportServlet extends HttpServlet
       }
       catch (Exception ex)
       {
-         sendErrorMessageText(request, response, message);
+         sendErrorMessageText(response, message);
       }
    }
 

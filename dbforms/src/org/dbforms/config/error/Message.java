@@ -22,7 +22,6 @@
  */
 package org.dbforms.config.error;
 
-import org.apache.log4j.Category;
 
 
 
@@ -36,8 +35,7 @@ import org.apache.log4j.Category;
  */
 public class Message
 {
-   private static Category logCat = Category.getInstance(Message.class.getName()); // logging category for this class
-
+   
    //------------------------ Properties ---------------------------------------------------------
    private String language; // Code used to specify a language for this message
 

@@ -22,7 +22,6 @@
  */
 package org.dbforms.event.eventtype;
 
-import org.apache.log4j.Category;
 
 
 /**
@@ -34,9 +33,6 @@ import org.apache.log4j.Category;
  */
 public class NavigationEventTypeStrategy implements EventTypeStrategy
 {
-   /** logging category */
-   private static Category logCat = Category.getInstance(NavigationEventTypeStrategy.class
-         .getName());
 
    /**
     *  Gets the EventTypeStrategy identifier.

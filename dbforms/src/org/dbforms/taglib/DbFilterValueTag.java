@@ -174,6 +174,7 @@ public class DbFilterValueTag extends BodyTagSupport implements DataContainer, T
             || FLT_VALUETYPE_TEXT.equalsIgnoreCase(type)
             || FLT_VALUETYPE_SELECT.equalsIgnoreCase(type))
         {
+        	;
         }
         // if type is numeric, check if value is a valid number
         else if (FLT_VALUETYPE_NUMERIC.equalsIgnoreCase(type))

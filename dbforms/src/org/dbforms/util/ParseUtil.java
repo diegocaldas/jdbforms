@@ -84,7 +84,6 @@ public class ParseUtil
                                     String             name,
                                     String             def)
   {
-    String t = request.getQueryString();
     String s = getParameter(request, name);
 
     if (Util.isNull(s))

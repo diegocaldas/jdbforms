@@ -82,7 +82,6 @@ public class DumperUtil
     {
       String key = (String) keys.nextElement();
       FieldValue fValue = fValues.get(key);
-      String fieldName;
       sb.append(dumpFieldValue(fValue));
     }
 

@@ -24,7 +24,6 @@ package org.dbforms.taglib;
 
 import javax.servlet.jsp.JspException;
 import org.dbforms.util.Util;
-import org.apache.log4j.Category;
 import org.dbforms.event.eventtype.EventType;
 
 
@@ -39,8 +38,6 @@ import org.dbforms.event.eventtype.EventType;
  */
 public class DbNavNewButtonTag extends DbBaseButtonTag
 {
-   static Category logCat    = Category.getInstance(DbNavNewButtonTag.class
-         .getName()); // logging category for this class
    private String  destTable;
 
    /** Holds value of property showAlwaysInFooter. */

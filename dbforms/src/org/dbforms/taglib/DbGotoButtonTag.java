@@ -22,13 +22,8 @@
  */
 package org.dbforms.taglib;
 
-
 import javax.servlet.jsp.JspException;
-import org.dbforms.util.Util;
-import org.apache.log4j.Category;
 import org.dbforms.event.eventtype.EventType;
-
-
 
 /****
  *
@@ -38,8 +33,6 @@ import org.dbforms.event.eventtype.EventType;
  */
 public class DbGotoButtonTag extends DbBaseButtonTag
 {
-   private static Category    logCat            = Category.getInstance(DbGotoButtonTag.class
-         .getName()); // logging category for this class
    private String     destination;
    private String     destTable;
    private String     destPos;
