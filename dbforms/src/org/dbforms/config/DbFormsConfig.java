@@ -143,7 +143,6 @@ public class DbFormsConfig
       dbConnection.setName(Util.replaceRealPath(dbConnection.getName(), realPath));
       dbConnectionsList.add(dbConnection);
 
-      //if ((dbConnection.getId() != null) && (dbConnection.getId().trim().length() > 0))
       if (!Util.isNull(dbConnection.getId()))
       {
          dbConnectionsHash.put(dbConnection.getId(), dbConnection);

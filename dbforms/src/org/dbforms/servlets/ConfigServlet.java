@@ -36,11 +36,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-//import org.apache.struts.digester.Digester;
 import org.apache.commons.digester.Digester;
 import org.apache.commons.digester.AbstractObjectCreationFactory;
 
-//import org.apache.struts.taglib.form.Constants;
 import org.xml.sax.SAXException;
 import org.apache.log4j.Category;
 import org.apache.log4j.PropertyConfigurator;
@@ -567,28 +565,22 @@ public class ConfigServlet extends HttpServlet
       }
 
 
-      DbFormsConfig dbFormsConfig = (DbFormsConfig) getServletContext()
-                                                       .getAttribute(DbFormsConfig.CONFIG);
+      DbFormsConfig dbFormsConfig = new DbFormsConfig(realPath);
 
-      if (dbFormsConfig == null)
-      {
-         dbFormsConfig = new DbFormsConfig(realPath);
+      // store a reference to ServletConfig (for interoperation with other parts of the Web-App!)
+      dbFormsConfig.setServletConfig(getServletConfig());
 
-         // store a reference to ServletConfig (for interoperation with other parts of the Web-App!)
-         dbFormsConfig.setServletConfig(getServletConfig());
+      // store this config object in servlet context ("application")
+      getServletContext().setAttribute(DbFormsConfig.CONFIG, dbFormsConfig);
 
-         // store this config object in servlet context ("application")
-         getServletContext().setAttribute(DbFormsConfig.CONFIG, dbFormsConfig);
+      // ---------------------------------------------------------------
+      // register the config object into the DbFormsConfigRegistry
+      // as the default config (fossato, 2002.12.02)
+      DbFormsConfigRegistry registry = DbFormsConfigRegistry.instance();
+      registry.setServletContext(getServletContext());
+      registry.register(dbFormsConfig);
 
-         // ---------------------------------------------------------------
-         // register the config object into the DbFormsConfigRegistry
-         // as the default config (fossato, 2002.12.02)
-         DbFormsConfigRegistry registry = DbFormsConfigRegistry.instance();
-         registry.setServletContext(getServletContext());
-         registry.register(dbFormsConfig);
-
-         // ---------------------------------------------------------------
-      }
+      // ---------------------------------------------------------------
 
       Digester digester = initDigester(digesterDebugLevel, dbFormsConfig);
 

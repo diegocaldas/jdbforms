@@ -21,9 +21,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.config;
-import java.util.*;
+import java.util.Vector;
 import javax.servlet.http.HttpServletRequest;
-import org.dbforms.util.*;
+import org.dbforms.util.ParseUtil;
 import org.apache.log4j.Category;
 
 

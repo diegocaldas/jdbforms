@@ -21,17 +21,30 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.servlets;
-import java.io.*;
-import java.util.*;
-import java.sql.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Hashtable;
+import java.util.Enumeration;
+import java.util.Vector;
+import java.sql.Connection;
+import java.sql.SQLException;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Category;
-import org.dbforms.util.*;
-import org.dbforms.config.*;
+import org.dbforms.util.SqlUtil;
+import org.dbforms.util.MultipartRequest;
+import org.dbforms.util.MessageResources;
+import org.dbforms.config.DbFormsConfig;
+import org.dbforms.config.DbConnection;
 import org.dbforms.config.Table;
-import org.dbforms.event.*;
+import org.dbforms.event.EventEngine;
+import org.dbforms.event.DatabaseEvent;
+import org.dbforms.event.WebEvent;
+import org.dbforms.event.MultipleValidationException;
 import org.dbforms.validation.ValidatorConstants;
 
 
