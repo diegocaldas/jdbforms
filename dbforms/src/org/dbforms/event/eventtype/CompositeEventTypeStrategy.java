@@ -21,10 +21,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.event.eventtype;
-import java.util.ArrayList;
-import org.apache.log4j.Category;
-import org.dbforms.event.*;
 
+import java.util.ArrayList;
+//import org.apache.log4j.Category;
 
 
 /**
