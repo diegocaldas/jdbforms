@@ -21,6 +21,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.event.datalist;
+
+
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -42,8 +44,7 @@ import org.dbforms.util.FieldValues;
 import org.dbforms.util.Util;
 
 
-/****
- *
+/**
  *  This event forces the controller to forward the current request
  *  to a Request-Dispatcher specified by the Application-Developer
  *  in a "org.dbforms.taglib.DbGotoButton".
@@ -65,31 +66,36 @@ public class GotoEvent extends NavigationEvent
    private String whereClause = null;
    private String tableList   = null;
 
+
    /**
-   * <p>constructor - parses the event details</p>
-   * <p>Depending on the way the attributes where provided by the developer,  different
-   * ways are used for resolving the dispatcher the user wants to get called and the position
-   * he wants the ResultSet to be scrolled to.
-   * </p>
-   */
-   public GotoEvent(String action, HttpServletRequest request,
-      DbFormsConfig config)
+    * Constructor - parses the event details.
+    * <br>
+    * Depending on the way the attributes where provided by the developer,  different
+    * ways are used for resolving the dispatcher the user wants to get called and the position
+    * he wants the ResultSet to be scrolled to.
+    * 
+    * @param  action  the action string
+    * @param  request the request object
+    * @param  config  the config object
+    */
+   public GotoEvent(String action, HttpServletRequest request, DbFormsConfig config)
    {
       // create dummy action so that tableId will be parsed to -1!
       // table and tableId will be parsed here!
       super("data_data_-1", request, config);
 
-      String destTable = ParseUtil.getParameter(request,
-            "data" + action + "_destTable");
+      String destTable = ParseUtil.getParameter(request, "data" + action + "_destTable");
 
+      // if the user wants a simple, dumb link and we want no form to be navigated through
       if (destTable == null)
       {
          this.tableId = -1;
 
-         return; // if the user wants a simple, dumb link and we want no form to be navigated through
+         return; 
       }
 
-      //# fixme: decision for *1* of the 2 approaches should be met soon!! (either id- OR name-based lookup)
+      // # fixme: decision for *1* of the 2 approaches 
+      //          should be met soon!! (either id- OR name-based lookup)
       this.table = config.getTableByName(destTable);
 
       if (table == null)
@@ -97,10 +103,8 @@ public class GotoEvent extends NavigationEvent
          this.table = config.getTable(Integer.parseInt(destTable));
       }
 
-      this.tableId = table.getId();
-
-      String srcTable = ParseUtil.getParameter(request,
-            "data" + action + "_srcTable");
+      this.tableId    = table.getId();
+      String srcTable = ParseUtil.getParameter(request, "data" + action + "_srcTable");
 
       if (srcTable != null)
       {
@@ -111,16 +115,13 @@ public class GotoEvent extends NavigationEvent
             this.srcTable = config.getTable(Integer.parseInt(srcTable));
          }
 
-         childField     = ParseUtil.getParameter(request,
-               "data" + action + "_childField");
-         parentField    = ParseUtil.getParameter(request,
-               "data" + action + "_parentField");
+         childField  = ParseUtil.getParameter(request, "data" + action + "_childField");
+         parentField = ParseUtil.getParameter(request, "data" + action + "_parentField");
       }
 
-      // the position to go to within the destination-jsp's-table	can be given
+      // the position to go to within the destination-jsp's-table can be given
       // more or less directly
-      String destPos = ParseUtil.getParameter(request,
-            "data" + action + "_destPos");
+      String destPos = ParseUtil.getParameter(request, "data" + action + "_destPos");
 
       // the direct way - i.e. "1:5:value"
       if (destPos != null)
@@ -129,8 +130,7 @@ public class GotoEvent extends NavigationEvent
       }
       else
       {
-         String keyToDestPos = ParseUtil.getParameter(request,
-               "data" + action + "_keyToDestPos");
+         String keyToDestPos = ParseUtil.getParameter(request, "data" + action + "_keyToDestPos");
 
          // the 1-leveled indirect way: i.e. "k_1_1" whereby k_1_1 leads to "1:2:23"
          if (keyToDestPos != null)
@@ -140,16 +140,14 @@ public class GotoEvent extends NavigationEvent
          else
          {
             String keyToKeyToDestPos = ParseUtil.getParameter(request,
-                  "data" + action + "_keyToKeyToDestPos");
+                                          "data" + action + "_keyToKeyToDestPos");
 
             // the 2-leveled indirect way: i.e. "my_sel" wherby "mysel" leads to "1_1",
             // which leads to "1:2:23"
             if (keyToKeyToDestPos != null)
             {
-               String widgetValue = ParseUtil.getParameter(request,
-                     keyToKeyToDestPos); // i.e. "1_1"
-               this.position = (String) ParseUtil.getParameter(request,
-                     "k_" + widgetValue); // i.e. 1:2:23
+               String widgetValue = ParseUtil.getParameter(request, keyToKeyToDestPos);  // i.e. "1_1"
+               this.position      = ParseUtil.getParameter(request, "k_" + widgetValue); // i.e. "1:2:23"
             }
          }
       }
@@ -159,12 +157,19 @@ public class GotoEvent extends NavigationEvent
 
 
    /**
-    * this constructer is not called by the controller but, actually, BY THE VIEW
+    * This constructor is not called by the controller but, actually, BY THE VIEW
     * for example if the FormTag "gotoPrefix" attribute is set an a GotoEvent needs to be
-    *  instanciated
+    * instanciated.
+    * 
+    * @param  table    the input table
+    * @param  request  request the request object
+    * @param  config   the config object
+    * @param  position the position string
     */
-   public GotoEvent(Table table, HttpServletRequest request,
-      DbFormsConfig config, String position)
+   public GotoEvent(Table              table, 
+                    HttpServletRequest request,
+                    DbFormsConfig      config, 
+                    String             position)
    {
       super(table, request, config);
       this.position = table.getKeyPositionString(table.getFieldValues(position));
@@ -172,61 +177,86 @@ public class GotoEvent extends NavigationEvent
 
 
    /**
-    * this constructer is not called by the controller but, actually, BY THE VIEW
-    * for example if the FormTag needs a free form select, this constructor is called
+    * This constructer is not called by the controller but, actually, BY THE VIEW
+    * for example if the FormTag needs a free form select, this constructor is called.
+    * 
+    * @param  table       the input table
+    * @param  request     request the request object
+    * @param  config      the config object
+    * @param  whereClause the SQL where clause
+    * @param  tableList   the table list
     */
-   public GotoEvent(Table table, HttpServletRequest request,
-      DbFormsConfig config, String whereClause, String tableList)
+   public GotoEvent(Table              table, 
+                    HttpServletRequest request,
+                    DbFormsConfig      config, 
+                    String             whereClause, 
+                    String             tableList)
    {
       super(table, request, config);
       this.whereClause    = whereClause;
       this.tableList      = tableList;
    }
 
+
    /**
-    * DOCUMENT ME!
-    *
-    * @param childFieldValues DOCUMENT ME!
-    * @param orderConstraint DOCUMENT ME!
-    * @param count DOCUMENT ME!
-    * @param firstPosition DOCUMENT ME!
-    * @param lastPosition DOCUMENT ME!
-    * @param con DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    *
-    * @throws SQLException DOCUMENT ME!
-    */
+	*  Process the current event.
+	*
+	* @param  childFieldValues FieldValue array used to restrict a set in a subform where
+	*                          all "childFields" in the  resultset match their respective
+	*                          "parentFields" in main form
+	* @param  orderConstraint FieldValue array used to build a cumulation of rules for ordering
+	*                         (sorting) and restricting fields
+	* @param  count           record count
+	* @param  firstPosition   a string identifying the first resultset position
+	* @param  lastPosition    a string identifying the last resultset position
+	* @param  con             the JDBC Connection object
+	* @return  a ResultSetVector object
+	* @exception  SQLException if any error occurs
+	*/
    public ResultSetVector processEvent(FieldValue[] childFieldValues,
-      FieldValue[] orderConstraint, int count, String firstPosition,
-      String lastPosition, Connection con, String dbConnectionName)
+                                       FieldValue[] orderConstraint, 
+                                       int          count, 
+                                       String       firstPosition,
+                                       String       lastPosition, 
+                                       Connection   con, 
+                                       String       dbConnectionName)
       throws SQLException
    {
       // get the DataSourceList from the session
       logCat.info("==> GotoEvent.processEvent");
+      
   	  position = Util.decode(position);
-      if (!Util.isNull(position) && (srcTable != null)
-               && !Util.isNull(childField) && !Util.isNull(parentField))
+      if (!Util.isNull(position) 
+           && (srcTable != null)
+           && !Util.isNull(childField) 
+           && !Util.isNull(parentField))
       {
-         FieldValues fv = table.mapChildFieldValues(srcTable, parentField,
-               childField, position);
+         FieldValues fv = table.mapChildFieldValues(srcTable, parentField, childField, position);
          position = table.getKeyPositionString(fv);
          if (fv != null) 
             childFieldValues = fv.toArr();
       }
 
+      // REMOVE operation;
       DataSourceList ds = DataSourceList.getInstance(request);
       ds.remove(table, request);
       DataSourceFactory qry;
+      
       if (Util.isNull(whereClause))
       {
-         qry = new DataSourceFactory(config, dbConnectionName, table,
-               childFieldValues, orderConstraint);
+         qry = new DataSourceFactory(config, 
+                                     dbConnectionName, 
+                                     table,
+                                     childFieldValues, 
+                                     orderConstraint);
       }
       else
       {
-         qry = new DataSourceFactory(config, dbConnectionName, table,
-               tableList, whereClause);
+         qry = new DataSourceFactory(config, 
+                                     dbConnectionName, 
+                                     table,
+                                     tableList, 
+                                     whereClause);
       }
 
       ds.put(table, request, qry);
