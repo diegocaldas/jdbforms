@@ -28,7 +28,6 @@
   <goal name="dbforms:startweb">
     <ant:echo message="start tomcat" />
     <attainGoal name="dbforms:bookstore" />
-    <attainGoal name="appserver:install" />
      <j:thread>
         <attainGoal name="appserver:start" />
      </j:thread>
@@ -47,12 +46,18 @@
     <ant:cvspass cvsroot=":${scmTokens[2]}:${scmTokens[3]}:${scmTokens[4]}" password="" />
     <ant:cvs
      	cvsRoot=":${scmTokens[2]}:${scmTokens[3]}:${scmTokens[4]}" 
-     	command="--lf co -P" 
+     	command="co -P" 
      	compression="true" 
      	package="${scmTokens[5]}" 
      	dest="temp/release" 
      />
     <ant:cvs command="logout"  />
+    <ant:property 
+    	name="textfiles.patterns" 
+    	value="**/*.html,**/*.xml,**/*.java,**/*.txt,**/*.xsl,**/*.bat,**/*.sh, Change*,CommonMistakes,Todo" 
+    />
+    <ant:fixcrlf 
+    	srcDir="temp/release" eol="lf" includes="${textfiles.patterns}" />
   </goal>
 
   <goal name="dbforms:doc" description="generate dbforms documentation: taglib docu and manual">
@@ -110,6 +115,8 @@
   </postGoal>
 
   <preGoal name="xdoc:jelly-transform">
+    <j:set var="maven.test.failure.ignore" value="true"/>
+    <j:set var="maven.test.skip"  value="true"/>
     <attainGoal name="cactus:test" />
     <attainGoal name="cactus:report" />
     <ant:copy file="${maven.build.dir}/generated-xdocs/cactus-report.xml" tofile="${maven.build.dir}/generated-xdocs/junit-report.xml" overwrite="true" />
@@ -134,15 +141,17 @@
     <ant:delete dir="build"/>
   </postGoal>
 
-  <postGoal name="appserver:install">
-    <ant:copy file="${maven.conf.dir}/${maven.appserver.fullname}/web.xml" tofile="${maven.appserver.dir}/conf/web.xml" overwrite="true"/>
-    <ant:copy tofile="${maven.appserver.dir}/webapps/bookstore.war" overwrite="true">
+  <preGoal name="appserver:init">
+     <ant:copy todir="${maven.appserver.conf.dir}/conf/" overwrite="true">
+    	<ant:fileset dir="${maven.conf.dir}/${maven.appserver.name}-${maven.appserver.version}" />
+    </ant:copy>
+    <ant:copy tofile="${maven.appserver.conf.dir}/webapps/bookstore.war" overwrite="true">
     	<ant:fileset dir="dist">
            <ant:include name="bookstore*.war" />    		
     	</ant:fileset>
     </ant:copy>
-    <ant:copy file="${maven.conf.dir}/root/index.html" todir="${maven.appserver.dir}/webapps/ROOT" overwrite="true"/>
-  </postGoal>
+    <ant:copy file="${maven.conf.dir}/root/index.html" todir="${maven.appserver.conf.dir}/webapps/ROOT" overwrite="true"/>
+  </preGoal>
 
   <preGoal name="test:test">
      <attainGoal name="dbforms:startweb" />

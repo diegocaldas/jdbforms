@@ -43,6 +43,7 @@ import org.apache.commons.lang.StringUtils;
 import org.dbforms.validation.ValidatorConstants;
 import org.dbforms.util.DbFormsErrors;
 import org.dbforms.util.MessageResources;
+import org.dbforms.util.MessageResourcesInternal;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.event.DatabaseEventFactoryImpl;
@@ -845,6 +846,7 @@ public class ConfigServlet extends HttpServlet
       }
 
       MessageResources.setSubClass(value);
+		MessageResourcesInternal.setSubClass("org.dbforms.resources.messages");
 
       logCat.info(" DbForms Application Resources : SubClass initialized ");
    }
