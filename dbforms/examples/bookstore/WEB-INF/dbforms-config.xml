@@ -160,6 +160,22 @@
             </navigation-events>
         </events>
 
+	    <table name="LIBRARY">
+	        <field name="LIBRARY_ID" fieldType="int" isKey="true" autoInc="true"/>
+	        <field name="COMPANYNAME" fieldType="varchar"  sortable="true"/>
+	    </table>    
+
+	    <table name="CUSTOMER">
+	        <field name="CUSTOMER_ID" fieldType="int" isKey="true" autoInc="true"/>
+	        <field name="NAME" fieldType="varchar"  sortable="true"/>
+	    </table>    
+
+	    <table name="CUSTOMER_LIBRARY">
+	        <field name="LIBRARY_ID" fieldType="int" isKey="true" />
+	        <field name="CUSTOMER_ID" fieldType="int" isKey="true" />
+	    </table>    
+
+
 	<!-- ========== Connection =================================== -->
 	    <dbconnection
 		    isPow2		   			= "true"
