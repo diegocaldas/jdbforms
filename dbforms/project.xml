@@ -365,6 +365,11 @@
       <version>2.3</version>
     </dependency>         
 
+    <dependency>
+      <id>jakarta-regexp</id>
+      <version>1.2</version>
+    </dependency>         
+
     <!-- testing only -->
     <dependency>
       <id>hsqldb</id>
