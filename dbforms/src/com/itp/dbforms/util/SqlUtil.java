@@ -40,17 +40,23 @@ public class SqlUtil {
 
 
   private static java.sql.Date createAppropriateDate(Object value) {
-	logCat.debug("createAppropriateDate...");
 	if(value==null) return null;
-logCat.debug("pos1...");
 	String valueStr = ((String) value).trim();
-logCat.debug("pos2..."+valueStr);
+
 	if(valueStr.length() == 0) return null;
 
 	Date result = java.sql.Date.valueOf(valueStr);
-
-logCat.debug("pos3..."+result.toString());
 	return result;
+  }
+
+  private static java.math.BigDecimal createAppropriateNumeric(Object value) {
+
+	if(value==null) return null;
+	String valueStr = ((String) value).trim();
+
+	if(valueStr.length() == 0) return null;
+
+	return new java.math.BigDecimal(valueStr);
   }
 
   /**
@@ -68,7 +74,7 @@ logCat.debug("pos3..."+result.toString());
 
 			switch(fieldType) {
 				case FieldTypes.INTEGER: ps.setInt(col, Integer.parseInt((String)value)); break;
-				case FieldTypes.NUMERIC: ps.setBigDecimal(col, new java.math.BigDecimal((String) value)); break;
+				case FieldTypes.NUMERIC: ps.setBigDecimal(col, createAppropriateNumeric(value)); break;
 				case FieldTypes.CHAR: ps.setString(col, (String)value); break;
 				case FieldTypes.DATE: ps.setDate(col, createAppropriateDate(value)); break; //#checkme
 				case FieldTypes.TIMESTAMP: ps.setTimestamp(col, java.sql.Timestamp.valueOf((String)value)); break;
