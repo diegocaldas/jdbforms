@@ -236,7 +236,14 @@
   <!-- Generate output (select as needed)               -->
   <!-- ================================================ -->
   <target name    = "build-doc" 
-          depends = "javadoc, generate_taglib_htmldocs, generate_taglib_pdfdocs, prepare,create_HTML,create_PDF,run-j"/>
+          depends = "javadoc, generate_taglib_htmldocs, generate_taglib_pdfdocs, prepare, create_HTML, create_PDF, run-j"/>
+
+
+  <!-- ======================================================================== -->
+  <!-- Maven integration: generate output and copy it into the target directory -->
+  <!-- ======================================================================== -->
+  <target name    = "maven-build-doc" 
+          depends = "generate_taglib_htmldocs, generate_taglib_pdfdocs, prepare, create_HTML, create_PDF, run-j"/>
 
 
   <!-- ==================================================== -->
