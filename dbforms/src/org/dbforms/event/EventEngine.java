@@ -56,32 +56,45 @@ public class EventEngine
    private static Category logCat = Category.getInstance(EventEngine.class.getName());
 
    /** instance of DatabaseEventFactory */
-   private DatabaseEventFactory dbEventFactory = DatabaseEventFactoryImpl
-      .instance();
+   private DatabaseEventFactory dbEventFactory = 
+   	         DatabaseEventFactoryImpl.instance();
 
    /** instance of NavigationEventFactory */
    private NavEventFactory    navEventFactory = NavEventFactoryImpl.instance();
    private HttpServletRequest request;
    private DbFormsConfig      config;
-   private Vector                     involvedTables;
+   
+   /**
+    * this vector will contain which tables where on the jsp page:
+    * one jsp file may contain multiple dbforms, and each forms could contain many
+    * subforms nested inside
+    */
+   private Vector involvedTables;
+
 
    /**
-    * @param  request Description of the Parameter
-    * @param  config Description of the Parameter
+    *  Constructor.
+    * 
+    * @param  request the request object
+    * @param  config the configuration object
     */
    public EventEngine(HttpServletRequest request, DbFormsConfig config)
    {
-      this.request      = request;
-      this.config       = config;
-      involvedTables    = parseInvolvedTables();
+      this.request = request;
+      this.config  = config;
+      
+	  // find out which tables where on the jsp
+      involvedTables = parseInvolvedTables();
    }
+
 
    /**
     * Find out which tables where on the jsp
     * (one jsp file may contain multiple dbforms, and each forms could contain many
     * subforms nested inside!)
     *
-    * @return  Description of the Return Value
+    * @return  the vector object containing the Table objects involved with the
+    * 	       main table
     */
    private Vector parseInvolvedTables()
    {
@@ -119,21 +132,16 @@ public class EventEngine
 
 
    /**
-    * result of this method depends on which Database- or Navigation - button was clicked
-    * and should reflect the users' intention (is that to pathetic? ;=)
-    * <br>
-    * this is alpha code. the goal for version 1.0 is to make it more flexible and open it
-    * for new code - it would be great to add new Web-Events without even compiling this class.
+    * Generate the primary event object, depending on the data contained into the 
+    * incoming http request object.
     *
-    * if you have a hint for me on this topics please mail me: <j.peer@gmx.net>
-    *
-    * @return  Description of the Return Value
+    * @return a new WebEvent object
     */
    public WebEvent generatePrimaryEvent()
    {
       WebEvent e           = null;
-      String   action      = ParseUtil.getFirstParameterStartingWith(request,
-            "ac_");
+      String   action      = ParseUtil.getFirstParameterStartingWith(request, 
+                             "ac_");
       String   customEvent = request.getParameter("customEvent");
 
       if ((action == null) && (customEvent != null))
@@ -214,16 +222,16 @@ public class EventEngine
 
 
    /**
-    * DOCUMENT ME!
+    * Generate secundary events (update events)
     *
-    * @param  exclude DOCUMENT ME!
+    * @param  exclude  the parent web event (related to the main form)
     * @return  DOCUMENT ME!
     */
    public Enumeration generateSecundaryEvents(WebEvent exclude)
    {
       Vector  result           = new Vector();
       Vector  vAc              = ParseUtil.getParametersStartingWith(request,
-            "autoupdate_");
+                                 "autoupdate_");
       int     excludeTableId   = -1;
       String  excludeKeyId     = null;
       boolean collissionDanger = false;
@@ -231,9 +239,9 @@ public class EventEngine
       // first of all, we check if there is some real potential for collisions in the "to exclude"-event
       if (exclude instanceof DatabaseEvent)
       {
-         collissionDanger    = true;
-         excludeTableId      = exclude.getTableId();
-         excludeKeyId        = ((DatabaseEvent) exclude).getKeyId();
+         collissionDanger = true;
+         excludeTableId   = exclude.getTableId();
+         excludeKeyId     = ((DatabaseEvent) exclude).getKeyId();
       }
 
       for (int i = 0; i < vAc.size(); i++)
@@ -245,12 +253,12 @@ public class EventEngine
          {
             // let's find the id of the next table we may update
             int tableId = Integer.parseInt(param.substring(
-                     "autoupdate_".length()));
+                                  "autoupdate_".length()));
 
             // we can only update existing rowsets. so we just look for key-values
             String      paramStub          = "k_" + tableId + "_";
             Enumeration keysOfCurrentTable = ParseUtil.getParametersStartingWith(request,
-                  paramStub).elements();
+                                               paramStub).elements();
 
             while (keysOfCurrentTable.hasMoreElements())
             {
@@ -261,10 +269,10 @@ public class EventEngine
                   + " excludeKeyId=" + excludeKeyId);
 
                if (!collissionDanger || (excludeTableId != tableId)
-                        || !keyId.equals(excludeKeyId))
+                                     || !keyId.equals(excludeKeyId))
                {
                   DatabaseEvent e = dbEventFactory.createUpdateEvent(tableId,
-                        keyId, request, config);
+                                                   keyId, request, config);
                   result.addElement(e);
                }
             }
