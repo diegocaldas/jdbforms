@@ -154,7 +154,7 @@ public class JakartaConnectionProvider extends ConnectionProvider
       if (!Util.isNull(useLog) && "true".equals(useLog.trim()))
       {
          getLog4JCategory().info("::init - dataSource log activated");
-         dataSource.setLogWriter(new Log4jPrintWriter(getLog4JCategory(), getLog4JCategory().getPriority()));
+         dataSource.setLogWriter(new Log4jPrintWriter(getLog4JCategory(), getLog4JCategory().getLevel()));
       }
    }
 }
