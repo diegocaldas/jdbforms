@@ -76,7 +76,7 @@ public class TestFileSplitter extends TestCase
      */
     public void testSplitFile() throws Exception
     {
-        File srcFile = new File(TestFileSplitter.class.getResource("fileA.txt").getPath());
+        File srcFile = new File(FileSplitter.class.getResource("fileA.txt").getPath());
         File destDir = srcFile.getParentFile();
 
         assertTrue("File Must Exist:" + srcFile, srcFile.exists());
@@ -86,10 +86,10 @@ public class TestFileSplitter extends TestCase
         FileSplitter fp = new FileSplitter(srcFile, destDir);
         fp.splitFile();
 
-        File fileSplitterResultA = new File(destDir.toString() + "\\FileSplitterResultA.txt");
+        File fileSplitterResultA = new File(destDir,"FileSplitterResultA.txt");
         assertTrue("File Must Exist:" + fileSplitterResultA, fileSplitterResultA.exists());
 
-        File fileSplitterResultB = new File(destDir.toString() + "\\FileSplitterResultB.xml");
+        File fileSplitterResultB = new File(destDir,"FileSplitterResultB.txt");
         assertTrue("File Must Exist:" + fileSplitterResultB, fileSplitterResultB.exists());
     }
 
