@@ -480,6 +480,7 @@ public abstract class DataSource
             }
             catch (Exception e)
             {
+			   logCat.error(e);	
                throw new SQLException(e.getMessage());
             }
 
@@ -526,6 +527,7 @@ public abstract class DataSource
                   catch (IOException ioe)
                   {
                      //#checkme: this would be a good place for rollback in database!!
+					 logCat.error(ioe);	
                      throw new SQLException("could not store file '"
                                             + fileHolder.getFileName()
                                             + "' to dir '" + directory + "'");
@@ -572,6 +574,7 @@ public abstract class DataSource
             }
             catch (Exception e)
             {
+               logCat.error(e);	
                throw new SQLException(e.getMessage());
             }
 
