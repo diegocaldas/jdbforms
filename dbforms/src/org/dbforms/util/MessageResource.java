@@ -27,41 +27,34 @@ import java.util.Locale;
 import java.util.HashMap;
 import org.apache.log4j.Category;
 
-
 /**
  * base class for handling message resources
  *
  * @author Henner Kollmann
  */
-public class MessageResource
-{
+public class MessageResource {
 
-   private static Category      logCat = Category.getInstance(MessageResource.class
-         .getName());
+   private static Category logCat = Category.getInstance(MessageResource.class.getName());
 
    /*********************************************************************************************
     *  Use of HashMap for allowing null value (ReourceBundle)
     *  and avoiding to call getBundle each time if resources file is not present.
     ********************************************************************************************/
    private HashMap hashResources = new HashMap();
-   private String  subClass = null;
+   private String subClass = null;
 
-   public MessageResource(String subClass)
-   {
+   public MessageResource(String subClass) {
       this.subClass = subClass;
    }
-
 
    /**
     * DOCUMENT ME!
     *
     * @return DOCUMENT ME!
     */
-   public String getSubClass()
-   {
+   public String getSubClass() {
       return subClass;
    }
-
 
    /********************************************************************************************
     *  Retrieve message from ResourceBundle.  If the ResourceBundle is not yet cached,
@@ -72,58 +65,46 @@ public class MessageResource
     *
     *         @return        <code>String</code> : Message resolve, null if not found.
     ********************************************************************************************/
-   public String getMessage(String msg, Locale loc)
-   {
-      if (subClass == null)
-      {
+   public String getMessage(String msg, Locale loc) {
+      if (subClass == null) {
          return null;
       }
-
-      if (loc == null)
-      {
+      if (loc == null) {
          return null;
       }
 
       ResourceBundle rb = null;
-
       // Faster than String (immuable) concatenation
-      String key = new StringBuffer().append(loc.getLanguage()).append("_")
-                                     .append(loc.getCountry()).append("_")
-                                     .append(loc.getVariant()).toString();
+      String key =
+         new StringBuffer()
+            .append(loc.getLanguage())
+            .append("_")
+            .append(loc.getCountry())
+            .append("_")
+            .append(loc.getVariant())
+            .toString();
 
-      if (hashResources.containsKey(key))
-      {
+      if (hashResources.containsKey(key)) {
          rb = (ResourceBundle) hashResources.get(key);
-      }
-      else
-      {
-         try
-         {
+      } else {
+         try {
             rb = ResourceBundle.getBundle(subClass, loc);
-         }
-         catch (Exception e)
-         {
+         } catch (Exception e) {
             logCat.error("getMessage", e);
          }
-
          // Put the ResourceBundle or null value in HashMap with the key
          hashResources.put(key, rb);
       }
-
-      try
-      {
-         String s = rb.getString(msg);
-
-         return s;
-      }
-      catch (Exception e)
-      {
-         logCat.debug("not found: " + msg);
-
-         return null;
-      }
+      String s = null;
+      if (rb != null) {
+         try {
+            s = rb.getString(msg);
+         } catch (Exception e) {
+            logCat.error("not found: " + msg, e);
+         }
+      } 
+      return s;
    }
-
 
    /*********************************************************************************************
     *  Retrieve message from ResourceBundle and replace parameter "{x}" with values in parms array.
@@ -134,26 +115,22 @@ public class MessageResource
     *
     *         @return        <code>String</code> : Message resolve with parameter replaced, null if message key not found.
     ********************************************************************************************/
-   public String getMessage(String msg, Locale loc, String[] parms)
-   {
+   public String getMessage(String msg, Locale loc, String[] parms) {
       String result = getMessage(msg, loc);
 
-      if (result == null)
-      {
+      if (result == null) {
          return null;
       }
 
       String search = null;
 
-      for (int i = 0; i < parms.length; i++)
-      {
-         search    = "{" + i + "}";
-         result    = replaceAll(result, search, parms[i]);
+      for (int i = 0; i < parms.length; i++) {
+         search = "{" + i + "}";
+         result = replaceAll(result, search, parms[i]);
       }
 
       return result;
    }
-
 
    /*********************************************************************************************
    *  Replace all expression {...} by the appropriate string.
@@ -164,22 +141,18 @@ public class MessageResource
    *
    * @return        <code>String</code> : The string with all expression replaced.
    ********************************************************************************************/
-   private String replaceAll(String str, String search, String replace)
-   {
+   private String replaceAll(String str, String search, String replace) {
       StringBuffer result = null;
-      int          oldpos = 0;
+      int oldpos = 0;
 
-      do
-      {
+      do {
          int pos = str.indexOf(search, oldpos);
 
-         if (pos < 0)
-         {
+         if (pos < 0) {
             break;
          }
 
-         if (result == null)
-         {
+         if (result == null) {
             result = new StringBuffer();
          }
 
@@ -189,20 +162,15 @@ public class MessageResource
 
          pos += search.length();
          oldpos = pos;
-      }
-      while (true);
+      } while (true);
 
-      if (oldpos == 0)
-      {
+      if (oldpos == 0) {
          return str;
-      }
-      else
-      {
+      } else {
          result.append(str.substring(oldpos));
 
          return new String(result);
       }
    }
-
 
 }
