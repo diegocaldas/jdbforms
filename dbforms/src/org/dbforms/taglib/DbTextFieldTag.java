@@ -186,66 +186,7 @@ public class DbTextFieldTag extends DbBaseInputTag
       return EVAL_PAGE;
    }
 
-   private java.lang.String hidden        = "false";
-   private java.lang.String overrideValue = null;
    private java.lang.String password      = "false";
-
-   /**
-    * grunikiewicz.philip@hydro.qc.ca
-    * 2001-05-23
-    * @param newHidden java.lang.String
-    *
-    * Determines if the text field should be hidden or displayed
-    * @return java.lang.String
-    */
-   public java.lang.String getHidden()
-   {
-      return hidden;
-   }
-
-
-   /**
-    * grunikiewicz.philip@hydro.qc.ca
-    * 2001-05-23
-    *
-    * Defines the text field's default value. When this attribute is set, the value retrieved
-    * from the database is ignored.
-    *
-    * @return java.lang.String
-    */
-   public java.lang.String getOverrideValue()
-   {
-      return overrideValue;
-   }
-
-
-   /**
-    * grunikiewicz.philip@hydro.qc.ca
-    * 2001-05-23
-    * @param newHidden java.lang.String
-    *
-    * Determines if the text field should be hidden or displayed
-    */
-   public void setHidden(java.lang.String newHidden)
-   {
-      hidden = newHidden;
-   }
-
-
-   /**
-    * grunikiewicz.philip@hydro.qc.ca
-    * 2001-05-23
-    *
-    * Defines the text field's default value. When this attribute is set, the value retrieved
-    * from the database is ignored.
-    *
-    * @param newOverrideValue java.lang.String
-    */
-   public void setOverrideValue(java.lang.String newOverrideValue)
-   {
-      overrideValue = newOverrideValue;
-   }
-
 
    /**
     *  Determines if the text field should be a password text field (display '****')

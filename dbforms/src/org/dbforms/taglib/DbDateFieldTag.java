@@ -227,58 +227,11 @@ public class DbDateFieldTag extends DbBaseInputTag
       return EVAL_PAGE;
    }
 
-   private java.lang.String hidden        = "false";
-   private java.lang.String overrideValue;
-
    /** Holds value of property useJsCalendar. */
    private String useJsCalendar;
 
    /** Holds value of property jsCalendarDateFormat. */
    private String jsCalendarDateFormat;
-
-   /**
-    * Insert the method's description here.
-    * Creation date: (2001-06-26 16:19:01)
-    * @return java.lang.String
-    */
-   public java.lang.String getHidden()
-   {
-      return hidden;
-   }
-
-
-   /**
-    * Insert the method's description here.
-    * Creation date: (2001-06-26 16:19:25)
-    * @return java.lang.String
-    */
-   public java.lang.String getOverrideValue()
-   {
-      return overrideValue;
-   }
-
-
-   /**
-    * Insert the method's description here.
-    * Creation date: (2001-06-26 16:19:01)
-    * @param newHidden java.lang.String
-    */
-   public void setHidden(java.lang.String newHidden)
-   {
-      hidden = newHidden;
-   }
-
-
-   /**
-    * Insert the method's description here.
-    * Creation date: (2001-06-26 16:19:25)
-    * @param newOverrideValue java.lang.String
-    */
-   public void setOverrideValue(java.lang.String newOverrideValue)
-   {
-      overrideValue = newOverrideValue;
-   }
-
 
    /** Getter for property useJsCalendar.
     * @return Value of property useJsCalendar.

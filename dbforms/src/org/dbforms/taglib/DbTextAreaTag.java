@@ -54,9 +54,6 @@ public class DbTextAreaTag extends DbBaseInputTag
    /** DOCUMENT ME! */
    protected String renderBody;
 
-   /** DOCUMENT ME! */
-   protected java.lang.String overrideValue;
-
    /**
     * DOCUMENT ME!
     *
@@ -208,28 +205,6 @@ public class DbTextAreaTag extends DbBaseInputTag
       }
 
       return EVAL_PAGE;
-   }
-
-
-   /**
-    * Insert the method's description here.
-    * Creation date: (2001-06-27 17:44:16)
-    * @return java.lang.String
-    */
-   public java.lang.String getOverrideValue()
-   {
-      return overrideValue;
-   }
-
-
-   /**
-    * Insert the method's description here.
-    * Creation date: (2001-06-27 17:44:16)
-    * @param newOverrideValue java.lang.String
-    */
-   public void setOverrideValue(java.lang.String newOverrideValue)
-   {
-      overrideValue = newOverrideValue;
    }
 
 

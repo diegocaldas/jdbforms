@@ -176,4 +176,53 @@ public abstract class DbBaseInputTag extends DbBaseHandlerTag
    {
       return EVAL_PAGE;
    }
+
+
+	/** DOCUMENT ME! */
+	protected java.lang.String overrideValue;
+
+	/**
+	    * Insert the method's description here.
+	    * Creation date: (2001-06-27 17:44:16)
+	    * @return java.lang.String
+	    */
+	public java.lang.String getOverrideValue()
+	{
+	   return overrideValue;
+	}
+
+
+	/**
+	    * Insert the method's description here.
+	    * Creation date: (2001-06-27 17:44:16)
+	    * @param newOverrideValue java.lang.String
+	    */
+	public void setOverrideValue(java.lang.String newOverrideValue)
+	{
+	   overrideValue = newOverrideValue;
+	}
+
+
+	protected java.lang.String hidden = "false";
+
+	/**
+	    * Insert the method's description here.
+	    * Creation date: (2001-06-26 16:19:01)
+	    * @return java.lang.String
+	    */
+	public java.lang.String getHidden()
+	{
+	   return hidden;
+	}
+
+
+	/**
+	    * Insert the method's description here.
+	    * Creation date: (2001-06-26 16:19:01)
+	    * @param newHidden java.lang.String
+	    */
+	public void setHidden(java.lang.String newHidden)
+	{
+	   hidden = newHidden;
+	}
 }

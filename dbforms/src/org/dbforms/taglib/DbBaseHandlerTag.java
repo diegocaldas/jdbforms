@@ -609,7 +609,7 @@ public abstract class DbBaseHandlerTag extends BodyTagSupport
     * (instead of refreshing the fields from the DB) Currently dbforms implements this functionality with INSERT fields only.
     * The following describes the changes I've implemented:
     *
-    *        - I've added a new attribute in the Form tag which sets the functionality (redisplayFieldsOnError=true/false)
+    *  - I've added a new attribute in the Form tag which sets the functionality (redisplayFieldsOnError=true/false)
     *  - I've modified the code below to handle the redisplay of previously posted information
     *
     ******************************************************************************/
