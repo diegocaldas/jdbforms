@@ -461,6 +461,15 @@ if(request.getParameter("goto")!=null) {
                         <p>If the value (retrieved from the database) is null, allow the user to replace the text to display by a custom value.  May be used in conjunction with dbForm's I18N support.</p>
                     </info>
                 </attribute>
+                
+                <attribute>
+                    <name>format</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>
+                      <p>java.text.Format object used to format the tag value</p>
+                    </info>
+                </attribute>
 
             </tag>
 
@@ -481,6 +490,9 @@ if(request.getParameter("goto")!=null) {
                     <name>format</name>
                     <required>false</required>
                     <rtexprvalue>true</rtexprvalue>
+                    <info>
+                      <p>java.text.DateFormat object used to format the tag value</p>
+                    </info>
                 </attribute>
 
                 <attribute>
