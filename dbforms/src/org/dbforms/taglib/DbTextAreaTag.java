@@ -103,7 +103,7 @@ public class DbTextAreaTag extends DbBaseInputTag
       value for a given field. */
       if (!"true".equals(renderBody))
       {
-			tagBuf.append(getFormFieldValue());
+			tagBuf.append(escapeHtml(getFormFieldValue()));
       }
 
       try

@@ -28,7 +28,6 @@ import java.util.Locale;
  * 
  */
 public interface Formatter {
-
    public Locale getLocale();
    public void setLocale(Locale locale);
    public void setFormat(String fmtArg) throws IllegalArgumentException;

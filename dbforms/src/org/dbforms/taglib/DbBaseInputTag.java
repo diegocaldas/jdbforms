@@ -308,7 +308,7 @@ public abstract class DbBaseInputTag extends DbBaseHandlerTag {
    protected String prepareValue() {
       StringBuffer tagBuf = new StringBuffer();
       tagBuf.append(" value=\"");
-      tagBuf.append(getFormFieldValue());
+      tagBuf.append(escapeHtml(getFormFieldValue()));
       tagBuf.append("\" ");
 
       return tagBuf.toString();

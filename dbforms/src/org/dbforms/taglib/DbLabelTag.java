@@ -88,10 +88,10 @@ public class DbLabelTag extends DbBaseHandlerTag
          // SM 2003-08-05
          // if styleClass is present, render a SPAN with text included
          String s = prepareStyles();
-
+         fieldValue = escapeHtml(fieldValue); 
          if (Util.isNull(s))
          {
-            pageContext.getOut().write(fieldValue.toString());
+            pageContext.getOut().write(fieldValue);
          }
          else
          {

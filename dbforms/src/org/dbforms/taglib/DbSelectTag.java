@@ -171,7 +171,7 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer,
    {
       StringBuffer tagBuf = new StringBuffer();
       tagBuf.append("<option value=\"");
-      tagBuf.append(value);
+      tagBuf.append(escapeHtml(value));
       tagBuf.append("\"");
 
       if (selected)
@@ -182,7 +182,7 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer,
 
       //20021203-HKK: Removed unneeded blank
       tagBuf.append(">");
-      tagBuf.append(description);
+      tagBuf.append(escapeHtml(description));
 
 
       // 20021025-HKK: Appended </option>

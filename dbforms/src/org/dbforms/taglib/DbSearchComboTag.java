@@ -28,8 +28,6 @@ import javax.servlet.http.*;
 import org.dbforms.config.*;
 import org.dbforms.util.*;
 
-
-
 /**
  * <p>
  * renders a select field for searching with special default search modes.
@@ -46,264 +44,225 @@ import org.dbforms.util.*;
  * 
  * @author Henner Kollmann
  */
-public class DbSearchComboTag extends DbSearchTag
-   implements DataContainer, javax.servlet.jsp.tagext.TryCatchFinally
-{
-   private List embeddedData  = null;
-   private String selectedIndex;
-   private String customEntry;
-   private String size = "1";
+public class DbSearchComboTag extends DbSearchTag implements DataContainer, javax.servlet.jsp.tagext.TryCatchFinally {
+	private List embeddedData = null;
+	private String selectedIndex;
+	private String customEntry;
+	private String size = "1";
 
-   /**
-    * Creates a new DbSearchComboTag object.
-    */
-   public DbSearchComboTag()
-   {
-      setSearchAlgo("sharp");
-   }
+	/**
+	 * Creates a new DbSearchComboTag object.
+	 */
+	public DbSearchComboTag() {
+		setSearchAlgo("sharp");
+	}
 
-   /**
-    * DOCUMENT ME!
-    */
-   public void doFinally()
-   {
-      embeddedData  = null;
-      selectedIndex = null;
-      customEntry   = null;
-      size          = "1";
-      super.doFinally();
-   }
+	/**
+	 * DOCUMENT ME!
+	 */
+	public void doFinally() {
+		embeddedData = null;
+		selectedIndex = null;
+		customEntry = null;
+		size = "1";
+		super.doFinally();
+	}
 
+	/**
+	 * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+	 */
+	public void doCatch(Throwable t) throws Throwable {
+		throw t;
+	}
 
-   /**
-    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
-    */
-   public void doCatch(Throwable t) throws Throwable
-   {
-      throw t;
-   }
+	/**
+	 * DOCUMENT ME!
+	 * 
+	 * @param selectedIndex DOCUMENT ME!
+	 */
+	public void setSelectedIndex(String selectedIndex) {
+		this.selectedIndex = selectedIndex;
+	}
 
+	/**
+	 * DOCUMENT ME!
+	 * 
+	 * @return DOCUMENT ME!
+	 */
+	public String getSelectedIndex() {
+		return selectedIndex;
+	}
 
-   /**
-    * DOCUMENT ME!
-    * 
-    * @param selectedIndex DOCUMENT ME!
-    */
-   public void setSelectedIndex(String selectedIndex)
-   {
-      this.selectedIndex = selectedIndex;
-   }
+	/**
+	 * DOCUMENT ME!
+	 * 
+	 * @return DOCUMENT ME!
+	 */
+	public String getCustomEntry() {
+		return customEntry;
+	}
 
+	/**
+	 * DOCUMENT ME!
+	 * 
+	 * @param customEntry DOCUMENT ME!
+	 */
+	public void setCustomEntry(String customEntry) {
+		this.customEntry = customEntry;
+	}
 
-   /**
-    * DOCUMENT ME!
-    * 
-    * @return DOCUMENT ME!
-    */
-   public String getSelectedIndex()
-   {
-      return selectedIndex;
-   }
+	/**
+	 * This method is a "hookup" for EmbeddedData - Tags which can assign the
+	 * lines of data they loaded (by querying a database, or by rendering
+	 * data-subelements, etc. etc.) and make the data available to this tag.
+	 * [this method is defined in Interface DataContainer]
+	 * @param embeddedData DOCUMENT ME!
+	 */
+	public void setEmbeddedData(List embeddedData) {
+		this.embeddedData = embeddedData;
+	}
 
+	/**
+	 * DOCUMENT ME!
+	 * 
+	 * @return DOCUMENT ME!
+	 * 
+	 * @throws javax.servlet.jsp.JspException DOCUMENT ME!
+	 */
+	public int doStartTag() throws javax.servlet.jsp.JspException {
+		return EVAL_BODY_INCLUDE;
+	}
 
-   /**
-    * DOCUMENT ME!
-    * 
-    * @return DOCUMENT ME!
-    */
-   public String getCustomEntry()
-   {
-      return customEntry;
-   }
+	private String generateSelectHeader(int tableId, int fieldId) throws javax.servlet.jsp.JspException {
+		// This method have been 
+		StringBuffer tagBuf = new StringBuffer();
+		tagBuf.append("<select name=\"");
+		tagBuf.append("search_");
+		tagBuf.append(tableId);
+		tagBuf.append("_");
+		tagBuf.append(fieldId);
+		tagBuf.append("\"");
 
+		if (size != null) {
+			tagBuf.append(" size=\"");
+			tagBuf.append(size);
+			tagBuf.append("\"");
+		}
 
-   /**
-    * DOCUMENT ME!
-    * 
-    * @param customEntry DOCUMENT ME!
-    */
-   public void setCustomEntry(String customEntry)
-   {
-      this.customEntry = customEntry;
-   }
+		tagBuf.append(prepareStyles());
+		tagBuf.append(prepareEventHandlers());
+		tagBuf.append(">");
 
+		return tagBuf.toString();
+	}
 
-   /**
-    * This method is a "hookup" for EmbeddedData - Tags which can assign the
-    * lines of data they loaded (by querying a database, or by rendering
-    * data-subelements, etc. etc.) and make the data available to this tag.
-    * [this method is defined in Interface DataContainer]
-    * @param embeddedData DOCUMENT ME!
-    */
-   public void setEmbeddedData(List embeddedData)
-   {
-      this.embeddedData = embeddedData;
-   }
+	private String generateTagString(String value, String description, boolean selected) {
+		StringBuffer tagBuf = new StringBuffer();
+		tagBuf.append("<option value=\"");
+		tagBuf.append(value);
+		tagBuf.append("\"");
 
+		if (selected) {
+			tagBuf.append(" selected=\"selected\"");
+		}
 
-   /**
-    * DOCUMENT ME!
-    * 
-    * @return DOCUMENT ME!
-    * 
-    * @throws javax.servlet.jsp.JspException DOCUMENT ME!
-    */
-   public int doStartTag() throws javax.servlet.jsp.JspException
-   {
-      return EVAL_BODY_INCLUDE;
-   }
+		tagBuf.append(">");
+		tagBuf.append(description.trim());
+		tagBuf.append("</option>");
 
+		return tagBuf.toString();
+	}
 
-   private String generateSelectHeader(int tableId, int fieldId)
-                                throws javax.servlet.jsp.JspException
-   {
-      // This method have been 
-      StringBuffer tagBuf = new StringBuffer();
-      tagBuf.append("<select name=\"");
-      tagBuf.append("search_");
-      tagBuf.append(tableId);
-      tagBuf.append("_");
-      tagBuf.append(fieldId);
-      tagBuf.append("\"");
+	/**
+	 * DOCUMENT ME!
+	 * 
+	 * @return DOCUMENT ME!
+	 * 
+	 * @throws javax.servlet.jsp.JspException DOCUMENT ME!
+	 * @throws JspException DOCUMENT ME!
+	 */
+	public int doEndTag() throws javax.servlet.jsp.JspException {
+		HttpServletRequest request = (HttpServletRequest) this.pageContext.getRequest();
 
-      if (size != null)
-      {
-         tagBuf.append(" size=\"");
-         tagBuf.append(size);
-         tagBuf.append("\"");
-      }
+		int tableId = getParentForm().getTable().getId();
+		Field field = getField();
+		int fieldId = -1;
+		if (field != null)
+			fieldId = field.getId();
 
-      tagBuf.append(prepareStyles());
-      tagBuf.append(prepareEventHandlers());
-      tagBuf.append(">");
+		StringBuffer tagBuf = new StringBuffer();
+		StringBuffer paramNameBuf = new StringBuffer();
+		paramNameBuf.append("search_");
+		paramNameBuf.append(tableId);
+		paramNameBuf.append("_");
+		paramNameBuf.append(fieldId);
 
-      return tagBuf.toString();
-   }
+		String oldValue = ParseUtil.getParameter(request, paramNameBuf.toString());
+		if (!Util.isNull(oldValue)) {
+			selectedIndex = oldValue;
+		}
 
+		boolean isSelected = false;
 
-   private String generateTagString(String value, String description, 
-                                    boolean selected)
-   {
-      StringBuffer tagBuf = new StringBuffer();
-      tagBuf.append("<option value=\"");
-      tagBuf.append(value);
-      tagBuf.append("\"");
+		if (embeddedData != null) { // no embedded data is nested in this tag
 
-      if (selected)
-      {
-         tagBuf.append(" selected=\"selected\"");
-      }
+			if (!Util.isNull(customEntry)) {
+				String aKey = org.dbforms.util.ParseUtil.getEmbeddedStringWithoutDots(customEntry, 0, ',');
+				String aValue = org.dbforms.util.ParseUtil.getEmbeddedStringWithoutDots(customEntry, 1, ',');
 
-      tagBuf.append(">");
-      tagBuf.append(description.trim());
-      tagBuf.append("</option>");
+				if (Util.isNull(selectedIndex)) {
+					isSelected =
+						"true".equalsIgnoreCase(
+							org.dbforms.util.ParseUtil.getEmbeddedStringWithoutDots(customEntry, 2, ',').trim());
+				}
 
-      return tagBuf.toString();
-   }
+				tagBuf.append(generateTagString(aKey, aValue, isSelected));
+			}
 
+			int embeddedDataSize = embeddedData.size();
 
-   /**
-    * DOCUMENT ME!
-    * 
-    * @return DOCUMENT ME!
-    * 
-    * @throws javax.servlet.jsp.JspException DOCUMENT ME!
-    * @throws JspException DOCUMENT ME!
-    */
-   public int doEndTag() throws javax.servlet.jsp.JspException
-   {
-      HttpServletRequest request = (HttpServletRequest) this.pageContext.getRequest();
+			for (int i = 0; i < embeddedDataSize; i++) {
+				KeyValuePair aKeyValuePair = (KeyValuePair) embeddedData.get(i);
+				String aKey = aKeyValuePair.getKey();
+				String aValue = aKeyValuePair.getValue();
 
-      int                tableId = getParentForm().getTable().getId();
-      Field              field   = getField();
-      int                fieldId = field.getId();
+				// select, if datadriven and data matches with current value OR if explicitly set by user
+				if (Util.isNull(selectedIndex) && !isSelected) {
+					isSelected = i == 0;
+				} else {
+					isSelected = aKey.equals(selectedIndex);
+				}
 
-      StringBuffer       tagBuf       = new StringBuffer();
-      StringBuffer       paramNameBuf = new StringBuffer();
-      paramNameBuf.append("search_");
-      paramNameBuf.append(tableId);
-      paramNameBuf.append("_");
-      paramNameBuf.append(fieldId);
+				tagBuf.append(generateTagString(aKey, aValue, isSelected));
+			}
+		}
 
-      String oldValue = ParseUtil.getParameter(request, paramNameBuf.toString());
-      if (!Util.isNull(oldValue))
-      {
-         selectedIndex = oldValue;
-      }
+		tagBuf.append("</select>");
 
-      boolean isSelected = false;
+		try {
+			pageContext.getOut().write(RenderHiddenFields(tableId, fieldId));
+			pageContext.getOut().write(generateSelectHeader(tableId, fieldId));
+			pageContext.getOut().write(tagBuf.toString());
+		} catch (java.io.IOException ioe) {
+			throw new JspException("IO Error: " + ioe.getMessage());
+		}
 
-      if (embeddedData != null)
-      { // no embedded data is nested in this tag
+		return EVAL_PAGE;
+	}
 
-         if (!Util.isNull(customEntry))
-         {
-            String aKey = org.dbforms.util.ParseUtil.getEmbeddedStringWithoutDots(
-                                   customEntry, 0, ',');
-            String aValue = org.dbforms.util.ParseUtil.getEmbeddedStringWithoutDots(
-                                     customEntry, 1, ',');
+	// ------------------------------------------------------ Protected Methods
+	/**
+	 * @return
+	 */
+	public String getSize() {
+		return size;
+	}
 
-            if (Util.isNull(selectedIndex))
-            {
-               isSelected = "true".equalsIgnoreCase(
-                                     org.dbforms.util.ParseUtil.getEmbeddedStringWithoutDots(
-                                              customEntry, 2, ',').trim());
-            }
-
-            tagBuf.append(generateTagString(aKey, aValue, isSelected));
-         }
-
-         int embeddedDataSize = embeddedData.size();
-
-         for (int i = 0; i < embeddedDataSize; i++)
-         {
-            KeyValuePair aKeyValuePair = (KeyValuePair) embeddedData.get(i);
-            String       aKey   = aKeyValuePair.getKey();
-            String       aValue = aKeyValuePair.getValue();
-
-            // select, if datadriven and data matches with current value OR if explicitly set by user
-            if (Util.isNull(selectedIndex) && !isSelected)
-            {
-               isSelected = i == 0;
-            }
-            else
-            {
-               isSelected = aKey.equals(selectedIndex);
-            }
-
-            tagBuf.append(generateTagString(aKey, aValue, isSelected));
-         }
-      }
-
-      tagBuf.append("</select>");
-
-      try
-      {
-         pageContext.getOut().write(RenderHiddenFields(tableId, fieldId));
-         pageContext.getOut().write(generateSelectHeader(tableId, fieldId));
-         pageContext.getOut().write(tagBuf.toString());
-      }
-      catch (java.io.IOException ioe)
-      {
-         throw new JspException("IO Error: " + ioe.getMessage());
-      }
-
-      return EVAL_PAGE;
-   }
-
-   // ------------------------------------------------------ Protected Methods
-   /**
-    * @return
-    */
-   public String getSize() {
-      return size;
-   }
-
-   /**
-    * @param string
-    */
-   public void setSize(String string) {
-      size = string;
-   }
+	/**
+	 * @param string
+	 */
+	public void setSize(String string) {
+		size = string;
+	}
 
 }

@@ -42,6 +42,7 @@ import org.dbforms.util.MessageResources;
 import org.dbforms.util.MessageResourcesInternal;
 import org.dbforms.util.Util;
 import org.apache.log4j.Category;
+import org.apache.commons.lang.StringEscapeUtils;
 
 /**
  * <p>Base class for db-tags that render form data-elements capable of including JavaScript
@@ -330,7 +331,7 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
          }
       }
 
-      return res.trim();
+      return res;
    }
 
    /**
@@ -535,14 +536,18 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
          tagBuf.append(Constants.FIELDNAME_OLDVALUETAG + getFormFieldName());
          tagBuf.append("\" value=\"");
          if (!getParentForm().getFooterReached()) {
-            tagBuf.append(getFormattedFieldValue());
+            tagBuf.append(StringEscapeUtils.escapeHtml(getFormattedFieldValue()));
          } else {
-            tagBuf.append(getFormFieldDefaultValue());
+            tagBuf.append(StringEscapeUtils.escapeHtml(getFormFieldDefaultValue()));
          }
          tagBuf.append("\" />");
          return tagBuf.toString();
    }
 
+   protected String escapeHtml(String html) {
+      return html;
+   }
+   
    /**
     * DOCUMENT ME!
     */

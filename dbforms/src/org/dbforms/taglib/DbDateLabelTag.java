@@ -68,6 +68,7 @@ public class DbDateLabelTag extends DbLabelTag
              String fieldValue = getFormattedFieldValue();
              // SM 2003-08-05
              // if styleClass is present, render a SPAN with text included
+		fieldValue = escapeHtml(fieldValue); 
 
          String s = prepareStyles();
 

@@ -24,10 +24,10 @@ package org.dbforms.taglib.defaults;
 
 import org.dbforms.util.external.PrintfFormat;
 import org.dbforms.taglib.interfaces.Formatter;
+
 /**
  * DefaultFormatter based in PrintfFormat
  * 
  */
 public class DefaultFormatter extends PrintfFormat implements Formatter {
-
 }
