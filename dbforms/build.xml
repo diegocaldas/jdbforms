@@ -43,6 +43,7 @@ Happy coding!
     <property name="build.dir" value="${cvs.workingdir}/build"/>
     <property name="dist.dir" value="${cvs.workingdir}/dist"/>
     <property name="dependend.dir" value="${cvs.workingdir}/dependend"/>
+    <property name="htmldoc.dir" value="${cvs.workingdir}/doc/html"/>
 
 
     <!-- Indentify Classpath -->
@@ -94,6 +95,13 @@ Happy coding!
         <echo message="end of xsl translation "/>
     </target>
 
+    <!-- generate HTM reference documentaion from taglib-docu using XSL transformation -->
+    <target name="generate_taglib_htmldocs" 
+                    description="--> Generate  HTML reference documentation within doc/html from taglib-docu.xml" >
+        <echo message="begin xsl translation to generate HTML documentation  "/>
+        <style style="${etc.dir}/tldoc2html.xsl" in="${etc.dir}/taglib_docu.xml" out="${htmldoc.dir}/DbFormsTags.html"/>
+        <echo message="end of xsl translation "/>
+    </target>
 
     <!-- make an example app -->
 
