@@ -23,6 +23,7 @@
 package org.dbforms.taglib;
 
 import javax.servlet.jsp.tagext.BodyTagSupport;
+import javax.servlet.jsp.tagext.TryCatchFinally;
 
 
 
@@ -36,7 +37,7 @@ import javax.servlet.jsp.tagext.BodyTagSupport;
  *
  * @author Henner Kollmann  (Henner.Kollmann@gmx.de)
  */
-public abstract class TagSupportWithScriptHandler extends BodyTagSupport
+public abstract class TagSupportWithScriptHandler extends BodyTagSupport implements TryCatchFinally
 {
 
 	/** DOCUMENT ME! */
@@ -626,4 +627,43 @@ public abstract class TagSupportWithScriptHandler extends BodyTagSupport
 			handlers.append("\"");
 		}
 	}
+
+	/**
+	 * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+	 */
+	public void doCatch(Throwable t) throws Throwable
+	{
+		throw t;
+	}
+
+
+	/**
+	 * reset tag state
+	 * 
+	 * @see javax.servlet.jsp.tagext.TryCatchFinally#doFinally()
+	 */
+	public void doFinally()
+	{
+		  accessKey = null;
+		  tabIndex = null;
+		  onClick = null;
+		  onDblClick = null;
+		  onMouseOver = null;
+		  onMouseOut = null;
+		  onMouseMove = null;
+		  onMouseDown = null;
+		  onMouseUp = null;
+		  onKeyDown = null;
+		  onKeyUp = null;
+		  onKeyPress = null;
+		  onSelect = null;
+		  onChange = null;
+		  onBlur = null;
+		  onFocus = null;
+		  style = null;
+		  styleClass = null;
+		  readOnlyStyleClass = null;
+		  readOnly = "false";
+	}
+
 }

@@ -28,7 +28,6 @@ import java.util.Iterator;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
-import javax.servlet.jsp.tagext.TryCatchFinally;
 import org.apache.log4j.Category;
 import org.dbforms.config.FieldValue;
 import org.dbforms.util.ParseUtil;
@@ -106,7 +105,6 @@ import org.dbforms.util.Util;
  * @version $Revision$
  */
 public class DbFilterTag extends TagSupportWithScriptHandler
-   implements TryCatchFinally
 {
    /** DOCUMENT ME! */
    protected static String FLT_COND = "_cond_";
@@ -371,16 +369,6 @@ public class DbFilterTag extends TagSupportWithScriptHandler
 
 
    /**
-    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
-    */
-   public void doCatch(Throwable t) throws Throwable
-   {
-      logCat.error("doCatch called - " + t.toString());
-      throw t;
-   }
-
-
-   /**
     * reset tag state
     * 
     * @see javax.servlet.jsp.tagext.TryCatchFinally#doFinally()
@@ -393,6 +381,7 @@ public class DbFilterTag extends TagSupportWithScriptHandler
       setCaption      = null;
       size            = null;
       unsetCaption    = null;
+      super.doFinally();
    }
 
 
