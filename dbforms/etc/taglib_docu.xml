@@ -35,6 +35,13 @@
                 </attribute>
 
                 <attribute>
+                    <name>dbConnectionName</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>indicate which dbconnection object to user.</info>
+                </attribute>
+
+                <attribute>
                     <name>tableName</name>
                     <required>false</required>
                     <rtexprvalue>true</rtexprvalue>
@@ -1474,6 +1481,13 @@ if(request.getParameter("goto")!=null) {
                 </attribute>
 
                 <attribute>
+                    <name>dbConnectionName</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>indicate which dbconnection object to user.</info>
+                </attribute>
+
+                <attribute>
                     <name>format</name>
                     <required>false</required>
                     <rtexprvalue>true</rtexprvalue>
@@ -1538,6 +1552,13 @@ if(request.getParameter("goto")!=null) {
                     <required>true</required>
                     <rtexprvalue>true</rtexprvalue>
                     <info>an arbitrary id declared by the user - this id is useful, if the same data should be used more than once at one jsp page. using this unique name the system is able to chache the data</info>
+                </attribute>
+
+                <attribute>
+                    <name>dbConnectionName</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>indicate which dbconnection object to user.</info>
                 </attribute>
 
                 <attribute>
@@ -1630,6 +1651,13 @@ if(request.getParameter("goto")!=null) {
                     <required>true</required>
                     <rtexprvalue>true</rtexprvalue>
                     <info>Attribute in page that will be used to reference the connection object</info>
+                </attribute>
+                
+                <attribute>
+                    <name>dbConnectionName</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>indicate which dbconnection object to user.</info>
                 </attribute>
 				
             </tag>
@@ -4745,6 +4773,13 @@ if(request.getParameter("goto")!=null) {
                     <info>
                         <p>name of the field this tag references to</p>
                     </info>
+                </attribute>
+                
+                <attribute>
+                    <name>dbConnectionName</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>indicate which dbconnection object to user.</info>
                 </attribute>
             </tag>
 
