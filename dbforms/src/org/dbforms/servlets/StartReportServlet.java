@@ -413,9 +413,11 @@ public class StartReportServlet extends HttpServlet
                                 "dbforms.reports.exception", 
                                 request.getLocale(), 
                                 new String[] 
-      {
-         e.toString()
-      }));
+                                 {
+                                    e.getMessage()
+                                 }
+                       )
+      );
    }
 
 
