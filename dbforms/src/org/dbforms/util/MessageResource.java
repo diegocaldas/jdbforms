@@ -100,7 +100,7 @@ public class MessageResource {
          try {
             s = rb.getString(msg);
          } catch (Exception e) {
-            logCat.error("not found: " + msg, e);
+//            logCat.error("not found: " + msg, e);
          }
       } 
       return s;

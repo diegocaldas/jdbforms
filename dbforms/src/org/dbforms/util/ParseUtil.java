@@ -273,12 +273,9 @@ public class ParseUtil
                                    String delimeter)
   {
     Vector result = new Vector();
-
     StringTokenizer st = new StringTokenizer(str, delimeter);
-
     while (st.hasMoreTokens())
       result.addElement(st.nextToken());
-
     return result;
   }
 

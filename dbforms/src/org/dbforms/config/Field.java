@@ -25,8 +25,10 @@ package org.dbforms.config;
 import java.text.Format;
 import java.text.DateFormat;
 import java.util.Locale;
+import java.util.Vector;
 import org.dbforms.util.Util;
 import org.dbforms.util.MessageResourcesInternal;
+import org.dbforms.util.ParseUtil;
 /**
  * This class represents a field tag in dbforms-config.xml.
  * 
@@ -124,13 +126,12 @@ public class Field {
 	 */
 	public void setFieldType(String aFieldType) {
 		this.fieldType = aFieldType.toLowerCase();
-		if (
-			fieldType.startsWith("char")
-				|| fieldType.startsWith("varchar")
-				|| fieldType.startsWith("nvarchar")
-				|| fieldType.startsWith("longchar")
-				|| fieldType.startsWith("long varchar")
-				|| fieldType.startsWith("text")) {
+		if (fieldType.startsWith("char")
+			|| fieldType.startsWith("varchar")
+			|| fieldType.startsWith("nvarchar")
+			|| fieldType.startsWith("longchar")
+			|| fieldType.startsWith("long varchar")
+			|| fieldType.startsWith("text")) {
 			type = FieldTypes.CHAR;
 		} else if (
 			fieldType.startsWith("int")
@@ -150,14 +151,12 @@ public class Field {
 		} else if (fieldType.startsWith("time")) {
 			type = FieldTypes.TIME;
 		} else if (
-			fieldType.startsWith("double") 
-				|| fieldType.startsWith("float")) {
+			fieldType.startsWith("double") || fieldType.startsWith("float")) {
 			type = FieldTypes.DOUBLE;
 		} else if (fieldType.startsWith("real")) {
 			type = FieldTypes.FLOAT;
 		} else if (
-			fieldType.startsWith("blob") 
-				|| fieldType.startsWith("image")) {
+			fieldType.startsWith("blob") || fieldType.startsWith("image")) {
 			type = FieldTypes.BLOB;
 		} else if (fieldType.startsWith("diskblob")) {
 			type = FieldTypes.DISKBLOB;
@@ -174,7 +173,8 @@ public class Field {
 			return;
 		}
 		Class clazz = obj.getClass();
-		fieldType = clazz.getName().toLowerCase();
+		Vector v = ParseUtil.splitString(clazz.getName().toLowerCase(), ".");
+		fieldType = (String) v.lastElement();
 		if (clazz.isAssignableFrom(java.lang.Integer.class)) {
 			type = FieldTypes.INTEGER;
 		} else if (clazz.isAssignableFrom(java.lang.Long.class)) {
@@ -330,6 +330,18 @@ public class Field {
 	 * @return DOCUMENT ME!
 	 */
 	public Format getFormat(String pattern, Locale locale) {
+		switch (getType()) {
+			case FieldTypes.INTEGER :
+			case FieldTypes.NUMERIC :
+			case FieldTypes.DOUBLE :
+			case FieldTypes.FLOAT :
+			case FieldTypes.DATE :
+			case FieldTypes.TIME :
+			case FieldTypes.TIMESTAMP :
+				break;
+			default :
+				return null;
+		}
 		Format res = null;
 		int dateStyle = Constants.DATE_STYLE_DEFAULT;
 		int timeStyle = Constants.TIME_STYLE_DEFAULT;
