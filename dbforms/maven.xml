@@ -134,6 +134,11 @@
      <ant:sleep seconds="30" />
   </preGoal>
 
+  <postGoal name="test:test">
+     <attainGoal name="appserver:stop" />
+     <ant:sleep seconds="30" />
+  </postGoal>
+
   <!-- We have our own ChangeLog file! -->
   <postGoal name="changes:report">
     <ant:echo message="build changes.xml" />
