@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!-- ATTENTION: New tables only at the end otherwise the junit tests will not run!!!!!  -->
-<dbforms-config>
+<dbforms-config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="D:\projekte\webapps\dbforms\dbforms\src\org\dbforms\resources\dbforms-config.xsd">
 	    <table name="AUTHOR">
 	        <field name="AUTHOR_ID" fieldType="int" isKey="true" autoInc="true"/>
 	        <field name="NAME" fieldType="varchar"  sortable="true"/>
@@ -13,7 +13,7 @@
 	        <field name="BOOK_ID" fieldType="int" isKey="true" />
 	        <field name="ISBN" fieldType="varchar" />
 	        <field name="AUTHOR_ID" fieldType="int" isKey="true" />
-	        <field name="TITLE" fieldType="varchar" />
+	        <field name="TITLE" fieldType ="varchar" />
             <interceptor className = "interceptors.BookstoreInsertDataInterceptor"/>      
 	    </table>   
 
@@ -24,10 +24,10 @@
 		  <field name="BOOK_ID" fieldType="int"	isKey="true" autoInc="true"/>
 		  <field name="ISBN" fieldType="varchar"/>
 		  <field name="TITLE" fieldType="varchar"/>
-		  <search name="AUTHOR_ID" fieldType="int" isKey="true" />
 		  <calc name="ISBN_TITLE" fieldType="varchar" />
 		  <calc name="ROW_NUM" fieldType="int" />
           <interceptor className = "interceptors.BookstoreCalcFieldAndSearchInterceptor"/>                
+		  <search name="AUTHOR_ID" fieldType="int"  />
 		</query>
             
         <query name="BOOK_QUERY" from="BOOK">
