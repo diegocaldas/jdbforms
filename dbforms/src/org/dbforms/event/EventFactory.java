@@ -148,14 +148,14 @@ public abstract class EventFactory {
     * @return the event object, or null if any problem occurs
     */
    protected WebEvent getEvent(EventInfo einfo,
-                               Class[]   constructorArgsTypes,
+                               Class[]   aconstructorArgsTypes,
                                Object[]  constructorArgs) {
       WebEvent event = null;
 
       if (einfo != null) {
          try {
             event = (WebEvent) ReflectionUtil.newInstance(einfo.getClassName(),
-                                                          constructorArgsTypes,
+                                                          aconstructorArgsTypes,
                                                           constructorArgs);
 
             // set a new Properties object into the event;

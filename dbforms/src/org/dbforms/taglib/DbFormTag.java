@@ -2159,16 +2159,16 @@ public class DbFormTag extends TagSupportWithScriptHandler
     *
     * @throws IllegalArgumentException DOCUMENT ME!
     */
-   private boolean checkLinkage(FieldValue[] childFieldValues, String aPosition) {
+   private boolean checkLinkage(FieldValue[] achildFieldValues, String aPosition) {
       // at first build a hashtable of the provided values
       // 2003-03-29 HKK: Change from Hashtable to FieldValueTable
       FieldValues ht = getTable().getFieldValues(aPosition);
 
-      for (int i = 0; i < childFieldValues.length; i++) {
-         String actualValue = childFieldValues[i].getFieldValue();
+      for (int i = 0; i < achildFieldValues.length; i++) {
+         String actualValue = achildFieldValues[i].getFieldValue();
          logCat.debug("actualValue=" + actualValue);
 
-         Field f = childFieldValues[i].getField();
+         Field f = achildFieldValues[i].getField();
          logCat.debug("f.getName=" + f.getName());
          logCat.debug("f.getId=" + f.getId());
 
@@ -2426,13 +2426,13 @@ public class DbFormTag extends TagSupportWithScriptHandler
             int firstUnderscore  = searchFieldName.indexOf('_');
             int secondUnderscore = searchFieldName.indexOf('_',
                   firstUnderscore + 1);
-            int tableId = Integer.parseInt(searchFieldName.substring(firstUnderscore
+            int ptableId = Integer.parseInt(searchFieldName.substring(firstUnderscore
                      + 1, secondUnderscore));
             int fieldId = Integer.parseInt(searchFieldName.substring(secondUnderscore
                      + 1));
 
-            Table table = getConfig().getTable(tableId);
-            Field f = table.getField(fieldId);
+            Table ptable = getConfig().getTable(ptableId);
+            Field f = ptable.getField(fieldId);
 
             if (f != null) {
                String aSearchMode = ParseUtil.getParameter(request,
@@ -2442,7 +2442,7 @@ public class DbFormTag extends TagSupportWithScriptHandler
                String aSearchAlgorithm = ParseUtil.getParameter(request,
                      f.getSearchAlgoName());
 
-               if (table.getId() != getTable().getId()) {
+               if (ptable.getId() != getTable().getId()) {
                   // Table from request is different to table of form
                   // Try to find field in the current table
                   Field fTest = f;

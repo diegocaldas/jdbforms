@@ -353,7 +353,7 @@ public class DbCheckboxTag extends DbBaseHandlerTag implements DataContainer,
    }
 
 
-   private String generateTagString(String  value,
+   private String generateTagString(String  avalue,
                                     String  description,
                                     boolean selected) {
       StringBuffer tagBuf = new StringBuffer();
@@ -361,7 +361,7 @@ public class DbCheckboxTag extends DbBaseHandlerTag implements DataContainer,
       tagBuf.append("<input type=\"checkbox\" name=\"");
       tagBuf.append(getFormFieldName());
       tagBuf.append("\" value =\"");
-      tagBuf.append(value);
+      tagBuf.append(avalue);
       tagBuf.append("\" ");
 
       if (selected) {

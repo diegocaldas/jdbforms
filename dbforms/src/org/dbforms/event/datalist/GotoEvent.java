@@ -100,17 +100,17 @@ public class GotoEvent extends NavigationEvent {
          setTable(config.getTable(Integer.parseInt(destTable)));
       }
 
-      String srcTable = ParseUtil.getParameter(request,
+      String psrcTable = ParseUtil.getParameter(request,
             "data" + action + "_srcTable");
 
       singleRow = "true".equals(ParseUtil.getParameter(request,
                "data" + action + "_singleRow"));
 
-      if (srcTable != null) {
-         this.srcTable = config.getTableByName(srcTable);
+      if (psrcTable != null) {
+         this.srcTable = config.getTableByName(psrcTable);
 
          if (this.srcTable == null) {
-            this.srcTable = config.getTable(Integer.parseInt(srcTable));
+            this.srcTable = config.getTable(Integer.parseInt(psrcTable));
          }
 
          childField    = ParseUtil.getParameter(request,

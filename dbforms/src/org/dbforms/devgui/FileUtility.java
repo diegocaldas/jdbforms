@@ -46,11 +46,13 @@ public class FileUtility {
     */
    public static String[] getFileNamesInDirectory(File     dir,
                                                   String[] extensions) {
-      if (extensions == null) {
-         return dir.list();
+      String [] res;
+   	  if (extensions == null) {
+         res = dir.list();
       } else {
-         return dir.list(new ExtensionFilter(extensions));
+         res = dir.list(new ExtensionFilter(extensions));
       }
+   	  return res;
    }
 
 
@@ -66,10 +68,12 @@ public class FileUtility {
     */
    public static File[] getFilesInDirectory(File     dir,
                                             String[] extensions) {
-      if (extensions == null) {
-         return dir.listFiles();
+      File[] res;
+   	  if (extensions == null) {
+         res = dir.listFiles();
       } else {
-         return dir.listFiles(new ExtensionFilter(extensions));
+         res = dir.listFiles(new ExtensionFilter(extensions));
       }
+   	  return res;
    }
 }

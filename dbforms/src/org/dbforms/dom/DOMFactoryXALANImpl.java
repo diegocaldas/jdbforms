@@ -170,32 +170,32 @@ public class DOMFactoryXALANImpl extends DOMFactory {
 
 
    private DocumentBuilder createDOMBuilder() {
-      DocumentBuilder builder = null;
+      DocumentBuilder res = null;
 
       try {
          // Init DOM
          DocumentBuilderFactory dfactory = DocumentBuilderFactory.newInstance();
          dfactory.setValidating(false);
          dfactory.setNamespaceAware(false);
-         builder = dfactory.newDocumentBuilder();
+         res = dfactory.newDocumentBuilder();
       } catch (Exception e) {
          logCat.error(e);
       }
 
-      return builder;
+      return res;
    }
 
 
    private Transformer createDOMWriter() {
-      Transformer transformer = null;
+      Transformer res = null;
 
       try {
          TransformerFactory transFactory = TransformerFactory.newInstance();
-         transformer = transFactory.newTransformer();
+         res = transFactory.newTransformer();
       } catch (Exception e) {
          logCat.error("createDOMWriter", e);
       }
 
-      return transformer;
+      return res;
    }
 }

@@ -39,14 +39,16 @@ public class FileNameTool {
     * @return DOCUMENT ME!
     */
    public static String normalize(String filePath) {
-      String fileSeparator = System.getProperties()
+      String res; 
+   	  String fileSeparator = System.getProperties()
                                    .getProperty("file.separator");
       filePath = filePath.trim();
 
       if (filePath.endsWith(fileSeparator)) {
-         return filePath;
+         res = filePath;
       } else {
-         return filePath + fileSeparator;
+         res = filePath + fileSeparator;
       }
+      return res;
    }
 }

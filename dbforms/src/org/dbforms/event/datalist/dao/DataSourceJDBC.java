@@ -485,37 +485,37 @@ public class DataSourceJDBC extends DataSource {
             Vector v = new Vector();
             v.add(f);
 //            v.addAll(getTable().getFields());
-         	ResultSet rs = null;
+         	ResultSet prs = null;
             if (Util.isNull(whereClause)) {
-                String query = getTable()
+                String pquery = getTable()
                            .getSelectQuery(v,
                                            filterConstraint, orderConstraint,
                                            sqlFilter, Constants.COMPARE_NONE);
-                Statement stmt = connection.prepareStatement(query);
+                PreparedStatement pstmt = connection.prepareStatement(pquery);
 
-                if (stmt == null) {
-                   throw new SQLException("no statement: " + query);
+                if (pstmt == null) {
+                   throw new SQLException("no statement: " + pquery);
                 }
 
-                rs = getTable()
+                prs = getTable()
                         .getDoSelectResultSet(filterConstraint, orderConstraint,
                                               sqlFilterParams,
                                               Constants.COMPARE_NONE,
-                                              (PreparedStatement) stmt);
+                                              pstmt);
              } else {
-                String query = getTable()
+                String pquery = getTable()
                            .getFreeFormSelectQuery(v,
                                                    whereClause, tableList);
-                Statement stmt = connection.createStatement();
+                Statement pstmt = connection.createStatement();
 
-                if (stmt == null) {
+                if (pstmt == null) {
                    throw new SQLException("no statement");
                 }
 
-                rs = stmt.executeQuery(query);
+                prs = pstmt.executeQuery(pquery);
              }
-            rs.next(); 
-            rowCount = rs.getInt(rs.findColumn("cnt"));           	
+            prs.next(); 
+            rowCount = prs.getInt(prs.findColumn("cnt"));           	
          }
       }
    }

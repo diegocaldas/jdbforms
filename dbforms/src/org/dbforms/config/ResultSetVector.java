@@ -255,11 +255,11 @@ public class ResultSetVector implements java.io.Serializable {
 	 * @return DOCUMENT ME!
 	 */
 	public Object[] getCurrentRowAsObjects() {
+		Object[] res = null;
 		if (isPointerLegal(pointer)) {
-			return (Object[]) objectVector.elementAt(pointer);
-		} else {
-			return null;
-		}
+			res = (Object[]) objectVector.elementAt(pointer);
+		} 
+		return res;
 	}
 
 	/**
@@ -317,15 +317,15 @@ public class ResultSetVector implements java.io.Serializable {
 	 * @return the object
 	 */
 	public Object getFieldAsObject(int row, int i) {
+		Object res = null;
 		if (isPointerLegal(row)) {
 			try {
-				return ((Object[]) objectVector.elementAt(row))[i];
+				res = ((Object[]) objectVector.elementAt(row))[i];
 			} catch (Exception e) {
-				return null;
+				logCat.error("getFieldAsObject", e);
 			}
-		} else {
-			return null;
-		}
+		} 
+		return res;
 	}
 
 	/**

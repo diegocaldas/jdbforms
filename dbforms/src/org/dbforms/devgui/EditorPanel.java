@@ -160,11 +160,11 @@ public class EditorPanel extends JPanel implements ActionListener,
    }
 
 
-   private String readFile(File file) {
+   private String readFile(File afile) {
       StringBuffer result = new StringBuffer();
 
       try {
-         BufferedReader reader = new BufferedReader(new FileReader(file));
+         BufferedReader reader = new BufferedReader(new FileReader(afile));
 
          String         s = null;
 
@@ -182,9 +182,9 @@ public class EditorPanel extends JPanel implements ActionListener,
    }
 
 
-   private void saveFile(File file) {
+   private void saveFile(File afile) {
       try {
-         FileWriter fw = new FileWriter(file);
+         FileWriter fw = new FileWriter(afile);
          fw.write(ta_editor.getText());
          fw.flush();
          fw.close();

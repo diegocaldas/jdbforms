@@ -39,7 +39,7 @@ import java.util.List;
 import java.util.Vector;
 
 import javax.servlet.http.HttpServletRequest;
-
+import org.dbforms.util.external.FileUtil;
 
 
 /**
@@ -145,17 +145,9 @@ public class MultipartRequest {
 
                if (!Util.isNull(fileName)) {
                   File f = new File(fileName);
-                  fileName = f.getName();
                   // 2004-08-05-HKK/Dziugas Baltrunas: 
                   // FileItem always returns the full pathname!
-                  if ((fileName.indexOf('/') >= 0)
-                            || (fileName.indexOf('\\') >= 0)) {
-                     int pos = (fileName.lastIndexOf('/') >= fileName
-                                                             .lastIndexOf('\\'))
-                               ? fileName.lastIndexOf('/')
-                               : fileName.lastIndexOf('\\');
-                     fileName = fileName.substring(pos + 1);
-                  }
+                  fileName = FileUtil.filename(f.getName());
 
                   // The part actually contained a file
                   // #changes by joe peer:

@@ -317,14 +317,14 @@ public class DataSourceXML extends DataSource {
    private String getQuery() throws SQLException {
       StringBuffer buf = new StringBuffer();
 
-      String       filter    = getWhereClause();
-      String       sqlFilter = getSQLFilter();
+      String       filter     = getWhereClause();
+      String       psqlFilter = getSQLFilter();
 
       if (!Util.isNull(filter) || !Util.isNull(sqlFilter)) {
          buf.append("[");
          buf.append(filter);
 
-         if (!Util.isNull(sqlFilter)) {
+         if (!Util.isNull(psqlFilter)) {
             if (!Util.isNull(filter)) {
                buf.append(" and ");
             }

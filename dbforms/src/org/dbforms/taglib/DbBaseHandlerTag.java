@@ -767,9 +767,9 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
 	 */
 	protected String renderPatternHtmlInputField() {
 		StringBuffer tagBuf = new StringBuffer();
-		String pattern = getPattern();
+		String ppattern = getPattern();
 
-		if (!Util.isNull(pattern)) {
+		if (!Util.isNull(ppattern)) {
 			tagBuf.append("<input type=\"hidden\" name=\"");
 			tagBuf.append(Constants.FIELDNAME_PATTERNTAG + getFormFieldName());
 			tagBuf.append("\" value=\"");

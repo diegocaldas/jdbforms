@@ -284,11 +284,13 @@ public class Query extends Table {
     * @return sql from
     */
    public String getQueryFrom() {
-      if (!Util.isNull(from)) {
-         return from;
+      String res;
+   	  if (!Util.isNull(from)) {
+         res = from;
       } else {
-         return super.getQueryFrom();
+         res = super.getQueryFrom();
       }
+   	  return res;
    }
 
 
@@ -566,8 +568,9 @@ public class Query extends Table {
     * @return sql order by
     */
    protected String getQueryOrderBy(FieldValue[] fvOrder) {
-      if (!needOrderWithPos()) {
-         return super.getQueryOrderBy(fvOrder);
+      String res;
+   	  if (!needOrderWithPos()) {
+         res = super.getQueryOrderBy(fvOrder);
       } else {
          StringBuffer buf = new StringBuffer();
 
@@ -584,9 +587,9 @@ public class Query extends Table {
                }
             }
          }
-
-         return buf.toString();
+         res =  buf.toString();
       }
+   	  return res;
    }
 
 

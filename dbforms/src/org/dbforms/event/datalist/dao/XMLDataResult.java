@@ -109,13 +109,13 @@ public class XMLDataResult {
          Node n = item(i);
 
          if (n != null) {
-            XPathResult data = (XPathResult) evaluator.evaluate(expression, n,
+            XPathResult pdata = (XPathResult) evaluator.evaluate(expression, n,
                                                                 resolver,
                                                                 XPathResult.FIRST_ORDERED_NODE_TYPE,
                                                                 null);
 
-            if (data != null) {
-               n = data.getSingleNodeValue();
+            if (pdata != null) {
+               n = pdata.getSingleNodeValue();
 
                if (n != null) {
                   switch (objectType) {

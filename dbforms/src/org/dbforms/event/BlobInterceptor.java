@@ -30,7 +30,6 @@ import org.dbforms.config.Table;
 import org.dbforms.config.ValidationException;
 
 import org.dbforms.util.FileHolder;
-
 import java.sql.Connection;
 
 import java.util.HashMap;

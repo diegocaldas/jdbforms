@@ -36,22 +36,23 @@ import javax.servlet.http.HttpServletRequest;
  * @author hkk
  */
 public class DbEventInterceptorData {
-   /** DOCUMENT ME! */
+   
+	/** filled with FieldValues array during insert, delete and update events */
    public static final String FIELDVALUES = "fieldValues";
 
-   /** DOCUMENT ME! */
+	/** filled with KeyValues string during delete and update events */
    public static final String KEYVALUES = "keyValues";
 
-   /** DOCUMENT ME! */
+   /** filled with current ResultsetVector during AddRow and Select events */
    public static final String RESULTSET = "ResultSetVector";
 
-   /** DOCUMENT ME! */
+   /** filled with objectrow which should be added during AddRow events */
    public static final String OBJECTROW = "ObjectRow";
 
-   /** DOCUMENT ME! */
+   /** filled with the currently used connection name in all events */
    public static final String CONNECTIONNAME = "connectionName";
 
-   /** DOCUMENT ME! */
+   /** filled with the pageContext during select events */
    public static final String PAGECONTEXT = "pageContext";
 
    

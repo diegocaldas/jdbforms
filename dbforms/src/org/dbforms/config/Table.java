@@ -490,13 +490,11 @@ public class Table implements Serializable {
     *
     * @return Filed object having the input name
     */
-   public Field getFieldByName(String name) {
-      Field f = (Field) fieldNameHash.get(name);
-
+   public Field getFieldByName(String aname) {
+      Field f = (Field) fieldNameHash.get(aname);
       if (f == null) {
-         f = (Field) calcFieldsNameHash.get(name);
+         f = (Field) calcFieldsNameHash.get(aname);
       }
-
       return f;
    }
 
@@ -863,15 +861,13 @@ public class Table implements Serializable {
     *         table.
     */
    public Vector getInterceptors() {
-      if ((getConfig() != null) && getConfig().hasInterceptors()) {
-         Vector tmp = new Vector(interceptors);
-         tmp.addAll(getConfig().getInterceptors());
-         tmp.addAll(interceptors);
-
-         return tmp;
-      } else {
-         return interceptors;
+    Vector res = interceptors;  
+   	if ((getConfig() != null) && getConfig().hasInterceptors()) {
+         res = new Vector(interceptors);
+         res.addAll(getConfig().getInterceptors());
+         res.addAll(interceptors);
       }
+   	 return res;
    }
 
 
@@ -1163,7 +1159,8 @@ public class Table implements Serializable {
     * @throws IllegalArgumentException DOCUMENT ME!
     */
    public String getPositionString(FieldValues fvHT) {
-      if (fvHT != null) {
+      String res = null;
+   	  if (fvHT != null) {
          StringBuffer buf = new StringBuffer();
          int          cnt = 0;
          Iterator     e   = fvHT.keys();
@@ -1189,10 +1186,9 @@ public class Table implements Serializable {
             }
          }
 
-         return buf.toString();
-      } else {
-         return null;
-      }
+         res = buf.toString();
+      } 
+   	  return res;
    }
 
 
@@ -2178,9 +2174,8 @@ public class Table implements Serializable {
     * @return DOCUMENT ME!
     */
    protected boolean checkFieldId(int type,
-                                  int id) {
-      int i = id / MAXFIELDS;
-
+                                  int aid) {
+      int i = aid / MAXFIELDS;
       return i == type;
    }
 
@@ -2194,8 +2189,8 @@ public class Table implements Serializable {
     * @return DOCUMENT ME!
     */
    protected int decodeFieldId(int type,
-                               int id) {
-      return id - (type * MAXFIELDS);
+                               int aid) {
+      return aid - (type * MAXFIELDS);
    }
 
 
@@ -2208,8 +2203,8 @@ public class Table implements Serializable {
     * @return DOCUMENT ME!
     */
    protected int encodeFieldId(int type,
-                               int id) {
-      return (type * MAXFIELDS) + id;
+                               int aid) {
+      return (type * MAXFIELDS) + aid;
    }
 
 

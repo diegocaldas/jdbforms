@@ -179,10 +179,10 @@ public class SetCharacterEncodingFilter implements Filter {
                  throws IOException, ServletException {
       // Conditionally select and set the character encoding to be used
       if (ignore || (request.getCharacterEncoding() == null)) {
-         String encoding = selectEncoding(request);
+         String pencoding = selectEncoding(request);
 
-         if (encoding != null) {
-            request.setCharacterEncoding(encoding);
+         if (pencoding != null) {
+            request.setCharacterEncoding(pencoding);
          }
       }
 
@@ -196,8 +196,8 @@ public class SetCharacterEncodingFilter implements Filter {
     *
     * @param filterConfig The filter configuration object
     */
-   public void init(FilterConfig filterConfig) throws ServletException {
-      this.filterConfig = filterConfig;
+   public void init(FilterConfig afilterConfig) throws ServletException {
+      this.filterConfig = afilterConfig;
       this.encoding     = filterConfig.getInitParameter("encoding");
 
       String value      = filterConfig.getInitParameter("ignore");

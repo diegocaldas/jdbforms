@@ -135,16 +135,16 @@ public class HasMoreRecordsTag extends DbBaseHandlerTag
                bodyContent.clearBody();
             }
 
-            String message = (errors != null)
+            String pmessage = (errors != null)
                              ? errors.getXMLErrorMessage(getMessage())
                              : getMessage();
 
-            if (!Util.isNull(message)) {
+            if (!Util.isNull(pmessage)) {
                // Print the results to our output writer
                JspWriter writer = pageContext.getOut();
 
                try {
-                  writer.print(message);
+                  writer.print(pmessage);
                } catch (IOException e) {
                   throw new JspException(e.toString());
                }

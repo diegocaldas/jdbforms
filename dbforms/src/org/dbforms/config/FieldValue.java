@@ -621,11 +621,13 @@ public class FieldValue implements Cloneable, Serializable {
 
 
    private String parseCHAR(String value) {
-      if ("[NULL]".equals(value)) {
-         return null;
+      String res;
+   	  if ("[NULL]".equals(value)) {
+         res = null;
       } else {
-         return value;
+         res = value;
       }
+   	  return res;
    }
 
 
