@@ -15,12 +15,6 @@
   <!-- Process an entire tag library -->
   <xsl:template match="taglib">
     <taglib>
-      <xsl:if test="info">
-        <description><xsl:value-of select="info"/></description>
-      </xsl:if>
-      <xsl:if test="display-name">
-        <display-name><xsl:value-of select="display-name"/></display-name>
-      </xsl:if>
       <xsl:if test="tlibversion">
         <tlib-version><xsl:value-of select="tlibversion"/></tlib-version>
       </xsl:if>
@@ -32,6 +26,12 @@
       </xsl:if>
       <xsl:if test="uri">
         <uri><xsl:value-of select="uri"/></uri>
+      </xsl:if>
+      <xsl:if test="display-name">
+        <display-name><xsl:value-of select="display-name"/></display-name>
+      </xsl:if>
+      <xsl:if test="info">
+        <description><xsl:value-of select="info"/></description>
       </xsl:if>
       <xsl:apply-templates select="tag"/>
     </taglib>
@@ -48,9 +48,6 @@
       <xsl:if test="name">
         <name><xsl:value-of select="name"/></name>
       </xsl:if>
-      <xsl:if test="summary">
-        <description><xsl:value-of select="summary"/></description>
-      </xsl:if>
       <xsl:if test="tagclass">
         <tag-class><xsl:value-of select="tagclass"/></tag-class>
       </xsl:if>
@@ -59,6 +56,9 @@
       </xsl:if>
       <xsl:if test="bodycontent">
         <body-content><xsl:value-of select="bodycontent"/></body-content>
+      </xsl:if>
+      <xsl:if test="summary">
+        <description><xsl:value-of select="summary"/></description>
       </xsl:if>
       <xsl:apply-templates select="attribute"/>
       <xsl:if test="info">
