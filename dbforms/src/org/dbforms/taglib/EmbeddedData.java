@@ -31,10 +31,10 @@ import org.dbforms.util.MessageResources;
 import org.dbforms.util.ReflectionUtil;
 import org.dbforms.util.Util;
 import org.dbforms.util.SqlUtil;
-import org.dbforms.util.external.PrintfFormat;
+
+import org.dbforms.taglib.interfaces.Formatter;
 
 import java.util.List;
-import java.util.Locale;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -61,7 +61,7 @@ public abstract class EmbeddedData extends BodyTagSupport implements javax.servl
    private String name;
    private String dbConnectionName;
    private String format;
-   private PrintfFormat printfFormat;
+   private Formatter printfFormat;
    private String formatClass;
    private List data;
 
@@ -211,7 +211,7 @@ public abstract class EmbeddedData extends BodyTagSupport implements javax.servl
 
       if (!Util.isNull(getFormat()) || !Util.isNull(getFormatClass())) {
          if (Util.isNull(getFormatClass())) {
-            setFormatClass("org.dbforms.util.external.PrintfFormat");
+            setFormatClass("org.dbforms.taglib.defaults.DefaultFormatter");
          }
 
          if (Util.isNull(getFormat())) {
@@ -233,11 +233,10 @@ public abstract class EmbeddedData extends BodyTagSupport implements javax.servl
             format = newFormat.toString(); // was 's bla bla s -- s' is now '%s blabla %s -- %s'
          }
 
-         Class[] constructorArgsTypes = new Class[] { Locale.class, String.class };
-         Object[] constructorArgs = new Object[] { MessageResources.getLocale((HttpServletRequest) pageContext.getRequest()), format };
-
          try {
-            printfFormat = (PrintfFormat) ReflectionUtil.newInstance(getFormatClass(), constructorArgsTypes, constructorArgs);
+            printfFormat = (Formatter) ReflectionUtil.newInstance(getFormatClass());
+            printfFormat.setLocale(MessageResources.getLocale((HttpServletRequest) pageContext.getRequest()));
+            printfFormat.setFormat(format);
          } catch (Exception e) {
             logCat.error("cannot create the new printfFormat [" + getFormatClass() + "]", e);
          }
