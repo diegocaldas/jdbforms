@@ -73,7 +73,6 @@ public class DataSourceJDBC extends DataSource
    private FieldValue[]  filterConstraint;
    private FieldValue[]  orderConstraint;
    private DbFormsConfig config;
-   private boolean calledFromFinalize = false;
 
    /**
     * Creates a new DataSourceJDBC object.
@@ -96,11 +95,6 @@ public class DataSourceJDBC extends DataSource
    protected void finalize() throws Throwable
    {
 	  getLogCat().info("finalize called");
-	  // 20030725-HKK:
-	  // To overcome a bug in the firebird jdbc driver. 
-	  // This drivers makes an error if you call stmt.close in finalize.
-	  // After this error no more connections are possible!
-	  calledFromFinalize = true;      
       close();
    }
 
@@ -197,7 +191,6 @@ public class DataSourceJDBC extends DataSource
       {
          try
          {
-            if (!calledFromFinalize) 
                stmt.close();
          }
          catch (SQLException e)
