@@ -43,12 +43,9 @@ public class SingleConnectionWrapper implements Connection {
    private Connection _conn;
    private List list = new ArrayList();
    private boolean open = true;
-   private static int counter = 0;
    
 
    public SingleConnectionWrapper(Connection con) {
-//      logCat.warn("createConnection: connection count: " + String.valueOf(counter));
-      counter++;
       _conn = con;
    }
 
@@ -73,15 +70,13 @@ public class SingleConnectionWrapper implements Connection {
             try {
                stmt.close();
             } catch (SQLException e) {
-//               logCat.warn(e);
+//               logCat.warn("close", e);
             } catch (Exception e) {
                logCat.error(e);
             }
          }
          list.clear();
-         counter--;
          open = false;
-//         logCat.warn("closeConnection: connection count: " + String.valueOf(counter));
       }
    }
 
