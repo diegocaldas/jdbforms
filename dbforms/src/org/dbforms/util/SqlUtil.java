@@ -170,10 +170,10 @@ public class SqlUtil
                 value = val;
             }
 
-				// 20021128-hKK:Check for empty string!
-				if ( (fieldType != FieldTypes.BLOB) && Util.isNull((String) value))
-				    value = null;
-				
+                // 20021128-hKK:Check for empty string!
+                if ( (fieldType != FieldTypes.BLOB) && Util.isNull((String) value))
+                    value = null;
+
             if (value != null)
             {
                 switch (fieldType)
@@ -192,7 +192,7 @@ public class SqlUtil
 
                     case FieldTypes.DATE:
                         ps.setDate(col, createAppropriateDate(value));
-                        break; 
+                        break;
 
                     //2002/10/01-HKK: Do the same for timestamp!
                     case FieldTypes.TIMESTAMP:
@@ -328,25 +328,26 @@ public class SqlUtil
      *  specified into the xml configuration file.
      *
      * @param config            the DbFormsConfig object
-     * @param dbConnectionName  the connection name
-     * @return a connection object
+     * @param dbConnectionName  the name of the DbConnection element
+     * @return a JDBC connection object
+     * @throws IllegalArgumentException if any error occurs
      */
-    public static final Connection getConnection(DbFormsConfig config, String dbConnectionName) throws IllegalArgumentException
+    public static final Connection getConnection(DbFormsConfig config, String dbConnectionName)
+      throws IllegalArgumentException
     {
-        DbConnection aDbConnection = null;
-        Connection con = null;
+        DbConnection dbConnection = null;
+        Connection   con          = null;
 
-        logCat.debug("About to get connection - " + dbConnectionName);
-        if ((aDbConnection = config.getDbConnection(dbConnectionName)) == null)
-        {
-            throw new IllegalArgumentException("DbConnection named [" + dbConnectionName + "] is not configured properly.");
-        }
+        //  get the DbConnection object having the input name;
+        if ((dbConnection = config.getDbConnection(dbConnectionName)) == null)
+          throw new IllegalArgumentException("No DbConnection object configured with name '"
+                                             + dbConnectionName + "'");
 
-        if ((con = aDbConnection.getConnection()) == null)
-        {
-            throw new IllegalArgumentException("JDBC-Troubles:  was not able to create connection using the following dbconnection: " + aDbConnection);
-        }
-        logCat.debug("got connection - " + con);
+        // now try to get the JDBC connection from the retrieved DbConnection object;
+        if ((con = dbConnection.getConnection()) == null)
+          throw new IllegalArgumentException("JDBC-Troubles:  was not able to create connection from "
+                                              + dbConnection);
+
         return con;
     }
 
