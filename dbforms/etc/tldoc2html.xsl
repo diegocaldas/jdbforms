@@ -155,5 +155,5 @@
   <xsl:template match="ul"><ul><xsl:apply-templates/></ul></xsl:template>
   <xsl:template match="li"><li><xsl:apply-templates/></li></xsl:template>
   <xsl:template match="br"><br><xsl:apply-templates/></br></xsl:template>
-
+  <xsl:template match="b"><b><xsl:apply-templates/></b></xsl:template>
 </xsl:stylesheet>
