@@ -324,7 +324,7 @@
       <fileset dir="." includes="dist/*.tld  dist/*.jar" />
       <fileset dir="." includes="etc/*.xml etc/*.xsl" />
       <fileset dir="." includes="examples/**/*" excludes="**/tools.jar" />
-      <fileset dir="." includes="src/org/**/*.java" />
+      <fileset dir="." includes="src/org/**/*.java,src/org/**/*.properties,src/org/**/*.xsd,src/org/**/*.xml" />
       <fileset dir="." includes="temp/*.txt" />
       <fileset dir="." includes="xsl-stylesheets/*.xsl" />
       <fileset dir="." includes="misc/**/*.gif  misc/**/*.png  misc/**/*.js   misc/**/*.txt misc/*.css misc/**/*.html" />
@@ -339,7 +339,7 @@
       <fileset dir="${dist.dir}" includes="*.tld,*.jar" />
     </copy>
     <!-- modify all text files to have dos/win lineends -->
-    <property name="textfiles.patterns" value="**/*.html,**/*.xml,**/*.java,**/*.txt,**/*.xsl,**/*.bat,**/*.sh, Change*,CommonMistakes,Todo" />
+    <property name="textfiles.patterns" value="**/*.html,**/*.xml,**/*.java,**/*.txt,**/*.properties,**/*.xsd,**/*.xsl,**/*.bat,**/*.sh, Change*,CommonMistakes,Todo" />
     <echo message="modifying temporary files to contain dos/win lineends" />
     <fixcrlf srcDir="${dbforms.releaseDir}" eol="crlf" includes="${textfiles.patterns}" />
     <!-- create zip release: -->
