@@ -34,7 +34,8 @@ import org.dbforms.util.AbstractTestCase;
  * @created    May 3, 2002
  */
 public class TestInterceptor extends AbstractTestCase {
-   /**
+
+	/**
     * DOCUMENT ME!
     *
     * @throws Exception DOCUMENT ME!
@@ -45,4 +46,6 @@ public class TestInterceptor extends AbstractTestCase {
       assertTrue("Class name should be java.util.List",
                  i.getClassName().equals("java.util.List"));
    }
+   
+   
 }
