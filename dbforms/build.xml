@@ -333,10 +333,10 @@ Happy coding!
           
       <tstamp/>
       <property name="dbforms.releaseName" value="${dbforms.version}_${DSTAMP}"/>
-      <property name="dbforms.releaseDir" value="${dist.dir}/dbforms${dbforms.releaseName}"/>
-      <property name="dbforms.zipfilename" value="${dist.dir}/dbforms${dbforms.releaseName}.zip"/>
-      <property name="dbforms.tarfilename" value="${dist.dir}/dbforms${dbforms.releaseName}.tar"/>
-      <property name="dbforms.tgzfilename" value="${dist.dir}/dbforms${dbforms.releaseName}.tgz"/>
+      <property name="dbforms.releaseDir" value="${dist.dir}/dbforms_${dbforms.releaseName}"/>
+      <property name="dbforms.zipfilename" value="${dist.dir}/dbforms_${dbforms.releaseName}.zip"/>
+      <property name="dbforms.tarfilename" value="${dist.dir}/dbforms_${dbforms.releaseName}.tar"/>
+      <property name="dbforms.tgzfilename" value="${dist.dir}/dbforms_${dbforms.releaseName}.tgz"/>
 
               <!-- temporary directory for release files: -->
       <delete dir="${dbforms.releaseDir}"/>
