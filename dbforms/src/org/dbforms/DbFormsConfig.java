@@ -24,12 +24,14 @@
 package org.dbforms;
 
 import java.util.*;
+import java.text.SimpleDateFormat;
 import javax.servlet.*;
 import javax.servlet.http.*;
-import org.dbforms.util.Util;
-import org.dbforms.util.DbConnection;
+
 import org.apache.log4j.Category;
-import java.text.SimpleDateFormat;
+
+import org.dbforms.util.DbConnection;
+import org.dbforms.util.Util;
 
 
 
@@ -52,8 +54,14 @@ public class DbFormsConfig
     public static final String CONFIG = "dbformsConfig";
     private static SimpleDateFormat sdf;
     private Vector tables;
-    private Hashtable tableNameHash; // for quicker lookup by name
+
+    /** for quicker lookup by name */
+    private Hashtable tableNameHash;
+
+    /** the default db connection */
     private DbConnection defaultDbConnection;
+
+    /** contains connection put by addDbConnection */
     private ArrayList dbConnectionsList;
     private Hashtable dbConnectionsHash;
     private String realPath;
@@ -122,21 +130,27 @@ public class DbFormsConfig
      */
     public void addDbConnection(DbConnection dbConnection)
     {
-    	dbConnection.setName(Util.replaceRealPath(dbConnection.getName(), realPath));	
+        dbConnection.setName(Util.replaceRealPath(dbConnection.getName(), realPath));
         dbConnectionsList.add(dbConnection);
 
-        if ((dbConnection.getId() != null) && (dbConnection.getId().trim().length() > 0))
+        //if ((dbConnection.getId() != null) && (dbConnection.getId().trim().length() > 0))
+        if (!Util.isNull(dbConnection.getId()))
         {
             dbConnectionsHash.put(dbConnection.getId(), dbConnection);
         }
 
-        if ((dbConnection.isDefaultConnection() && ((defaultDbConnection == null) || !defaultDbConnection.isDefaultConnection())) || (defaultDbConnection == null))
+        // if a default connection does not exist yet,
+        // use the input connection as the default one;
+        if ((dbConnection.isDefaultConnection()           &&
+            ((defaultDbConnection == null)                ||
+             !defaultDbConnection.isDefaultConnection())) ||
+             (defaultDbConnection == null))
         {
             defaultDbConnection = dbConnection;
+            dbConnection.setDefaultConnection(true);
         }
 
-        logCat.info("***** DbConnection Added *****");
-        logCat.info(dbConnection.toString());
+        logCat.info("::addDbConnection - added the dbConnection [" + dbConnection + "]");
     }
 
 
@@ -274,20 +288,22 @@ public class DbFormsConfig
 
         return buf.toString();
     }
-	/**
-	 * Returns the realPath.
-	 * @return String
-	 */
-	public String getRealPath() {
-		return realPath;
-	}
 
-	/**
-	 * Sets the realPath.
-	 * @param realPath The realPath to set
-	 */
-	public void setRealPath(String realPath) {
-		this.realPath = realPath;
-	}
 
+    /**
+     * Returns the realPath.
+     * @return String
+     */
+    public String getRealPath() {
+        return realPath;
+    }
+
+
+    /**
+     * Sets the realPath.
+     * @param realPath The realPath to set
+     */
+    public void setRealPath(String realPath) {
+        this.realPath = realPath;
+    }
 }
