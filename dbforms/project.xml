@@ -358,7 +358,7 @@
 
     <dependency>
       <id>jasperreports</id>      
-      <version>0.4.5</version>
+      <version>0.5.0</version>
       <properties>
 	      <war.bundle>true</war.bundle>
       </properties>
