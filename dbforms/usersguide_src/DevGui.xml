@@ -9,147 +9,165 @@
 			<para>Tools for <emphasis role="bold">automatic generation of DbForms configuration XML file</emphasis> (dbforms-config.xml) and for <emphasis role="bold">automatic generation of JSP views</emphasis>, are available using a convenient SWING based application interface that can:
 
 </para>
-			<para>automatically create a first dbforms-config.xml for your database by reading the meta data about tables and columns inside your database
-
+<itemizedlist mark="opencircle">
+<listitem>
+<para>automatically create a first dbforms-config.xml for your database by reading the meta data about tables and columns inside your database
 </para>
-			<para>create JSPs that use the dbforms taglib by applying XSL transformations to the config file. So you have a running web application for your database without having written a single line of code.
+</listitem>
+<listitem>
+<para>create JSPs that use the dbforms taglib by applying XSL transformations to the config file. So you have a running web application for your database without having written a single line of code.
 </para>
+</listitem>
+</itemizedlist>			
+			
 			<para/>
 		</sect1>
 		<sect1>
 			<title>Installation
 </title>
-			<para> prerequisites:
+			<para><emphasis role="bold">Prerequisites:</emphasis>
 
 </para>
-			<para>
-				<computeroutput>Download and install a Java2 (version 1.2 or later) Java Development Kit implementation for your operating system platform.  Define an environment variable JAVA_HOME that points at the base directory of your JDK installation, and add the directory "$JAVA_HOME/bin" to your PATH variable.
+<orderedlist numeration="lowerroman">
+<listitem>
+<para>Download and install a Java2 (version 1.2 or later) Java Development Kit implementation for your operating system platform.  Define an environment variable JAVA_HOME that points at the base directory of your JDK installation, and add the directory "$JAVA_HOME/bin" to your PATH variable.
 
-</computeroutput>
+ 
 			</para>
-			<para>
-				<computeroutput>Extract the DbForms distribution to a directory.
-</computeroutput>
-			</para>
-			<para>Forexample:</para>
-			<para>"h:\dbforms" on a Win32 system or /home/user123/dbforms on a *nix system.
-</para>
-			<para>you should have a (similiar) directory structure as follows:
-</para>
-			<para>   h:\dbforms\bin\
-</para>
-			<para/>
-			<para>   h:\dbforms\etc\
+</listitem>
+<listitem>
+ <para>Extract the DbForms distribution to a directory.</para>
+                                <para>For example:</para>
+                                <para>Given <computeroutput>h:\dbforms</computeroutput> on a Win32 system or <computeroutput>/home/user123/dbforms</computeroutput> on a *nix system. You should have a (similiar) directory structure as follows:</para>
 
-</para>
-			<para>   h:\dbforms\example\
+                                <screen>
 
-</para>
-			<para>   h:\dbforms\dist\
-</para>
-			<para>   h:\dbforms\misc\
-</para>
-			<para>   h:\dbforms\src\
+    
+        h:\dbforms\bin\
 
-</para>
-			<para>   h:\dbforms\temp\
+        h:\dbforms\etc\
 
-</para>
-			<para>   h:\dbforms\xsl-stysheets\
-</para>
-			<para>
-				<computeroutput/>
-			</para>
-			<para>
-				<computeroutput>Set an environment variable named "DBFORMS_HOME" which points to
+        h:\dbforms\example\
+
+        h:\dbforms\dist\
+
+        h:\dbforms\misc\
+
+        h:\dbforms\src\
+
+        h:\dbforms\temp\
+
+        h:\dbforms\xsl-stysheets\
+
+</screen>
+			  
+</listitem>
+<listitem>
+<para>Set an environment variable named "DBFORMS_HOME" which points to
  the directory containing the dbforms distribution:
-</computeroutput>
-			</para>
-			<para>
-				<computeroutput/>
-			</para>
-			<para>   DBFORMS_HOME=h:\dbforms
+</para><blockquote>
+<para><computeroutput>DBFORMS_HOME=h:\dbforms</computeroutput></para></blockquote>
 
-</para>
 			<para>   the exact command to use depends on your operation system:
 
 </para>
-			<para>   - on Win32, you can type: SET DBFORMS_HOME=h:\dbforms or you can use the system configuration panel.
+<itemizedlist mark="opencircle">
+<listitem>
+<para>
+on Win32, you can type: SET DBFORMS_HOME=h:\dbforms or you can use the system configuration panel.
 </para>
-			<para/>
-			<para> - on Unix, you can use the SETENV or EXPORT command, depending on your shell:
-
+</listitem>
+<listitem>
+<para>
+on Unix, you can use the SETENV or EXPORT command, depending on your shell:
 </para>
-			<para/>
-			<para>     csh,tcsh:  setenv DBFORMS_HOME /home/user123/dbforms (csh,tcsh)
-
+<itemizedlist mark="closedcircle">
+<listitem>
+<para>
+csh,tcsh:  setenv DBFORMS_HOME /home/user123/dbforms (csh,tcsh) 
 </para>
-			<para/>
-			<para>     sh      :  DBFORMS_HOME=/home/user123/dbforms
+</listitem>
+<listitem>
+<para>
+ sh:  DBFORMS_HOME=/home/user123/dbforms
 </para>
-			<para>                export DBFORMS_HOME
-
+			<para>export DBFORMS_HOME 
 </para>
-			<para/>
-			<para>     bash,ksh:  export DBFORMS_HOME=/home/user123/dbforms
+</listitem>
+<listitem>
+<para>
+bash,ksh:  export DBFORMS_HOME=/home/user123/dbforms
 </para>
-			<para>
-				<computeroutput/>
-			</para>
-			<para>
-				<computeroutput>Required additional libraries:
-</computeroutput>
-			</para>
+</listitem>
+</itemizedlist>
+</listitem>
+ 
+</itemizedlist>
+</listitem>
+ 
+</orderedlist>
+			
+			
+		 
+			
+<para><emphasis role="bold">	 Required additional libraries:</emphasis></para>
+ 
+			 
 			<para>DevGui is a simple Swing application, not a Web Application, so you do not need a Servlet or JSP container like tomcat to run it. These containers are later needed to run a dbforms web application that is generated in parts by DevGui. So you just need:
 </para>
 			<para>
-				<computeroutput/>
-			</para>
-			<para>  a  JDBC driver for your DBMS in your CLASSPATH.
+	<orderedlist numeration="loweralpha">
+<listitem>
+<para>  a  JDBC driver for your DBMS in your CLASSPATH.
 
 </para>
-			<para>You will later also need this driver inside the running web application.
+			<blockquote><para>You will later also need this driver inside the running web application.
+</para></blockquote>
+</listitem>
+<listitem>
+<para>libraries for Xalan-Java XSLT processor and a XML parser like Xerxes.
 </para>
-			<para>  libraries for Xalan-Java XSLT processor and a XML parser like Xerxes.
+<blockquote><para>Please download simply a binary xalan distribution from 
+<computeroutput>http://xml.apache.org/xalan-j/</computeroutput> and include xalan.jar and xercesImpl.jar (both included) in your CLASSPATH.
 </para>
-			<para>Please download simply a binary xalan distribution from 
-<computeroutput>http://xml.apache.org/xalan-j/</computeroutput>
-			</para>
-			<para>and include xalan.jar and xercesImpl.jar (both included) in your CLASSPATH.
-</para>
-			<para>example(win):</para>
-			<para>     set CLASSPATH=%CLASSPATH%;x:\where\ever\it\is\my_jdbc_driver.jar
+<para>example(win):</para>
+<screen>
+ set CLASSPATH=%CLASSPATH%;x:\where\ever\it\is\my_jdbc_driver.jar
 
-</para>
-			<para>     set XALANLIBDIR=x:\javastuff\xalan-j_2_3_1\bin
+ set XALANLIBDIR=x:\javastuff\xalan-j_2_3_1\bin
 
-</para>
-			<para>     set CLASSPATH=%CLASSPATH%;%XALANLIBDIR%\xalan.jar;%XALANLIBDIR%\xercesImpl.jar
-</para>
-			<para>example(bash):</para>
-			<para>     export CLASSPATH=$CLASSPATH:/where/ever/it/is/my_jdbc_driver.jar
-
-</para>
-			<para>     export XALANLIBDIR=/home/user123/xalan-j_2_3_1/bin
-
-</para>
-			<para>     export CLASSPATH=$CLASSPATH:$XALANLIBDIR/xalan.jar:$XALANLIBDIR/xercesImpl.jar
-</para>
-			<para/>
-			<para>
+ set CLASSPATH=%CLASSPATH%;%XALANLIBDIR%\xalan.jar;%XALANLIBDIR%\xercesImpl.jar
+ </screen>
+ <para/>
+ <para>example(bash):</para>
+ <screen>
+ export CLASSPATH=$CLASSPATH:/where/ever/it/is/my_jdbc_driver.jar
+ 
+ export XALANLIBDIR=/home/user123/xalan-j_2_3_1/bin
+ 
+ export CLASSPATH=$CLASSPATH:$XALANLIBDIR/xalan.jar:$XALANLIBDIR/xercesImpl.jar
+ </screen>
+ <para>
 				<emphasis role="bold">You must include these libs in CLASSPATH, it helps not having it in your 
 web-applications classpath, because DevGui runs outside the Servlet container!</emphasis>
-			</para>
-			<para>start the shell script in $DBFORMS_HOME/dbforms/bin:
-</para>
-			<para>    devgui.bat (win32)
-</para>
-			<para>    devgui.sh  (unix,linux)
-</para>
+			</para></blockquote>
+</listitem>
+
+</orderedlist>			 
+			</para>	
+<para><emphasis role="bold">Running:</emphasis></para>			
+			<para>start the shell script in $DBFORMS_HOME/dbforms/bin:</para>
+<blockquote>
+<screen>
+    devgui.bat (win32)
+
+    devgui.sh  (unix,linux)
+    </screen></blockquote>
+
 			<para>the SWING-based GUI should appear now. (enjoy!)
 
 </para>
-			<para>documentation about using DevGui can be found in the next section 1<computeroutput>2.3. Us</computeroutput>e
+			<para>documentation about using DevGui can be found in the next section
 
 </para>
 			<para> Before using the generated application, you have to copy
@@ -171,8 +189,11 @@ web-applications classpath, because DevGui runs outside the Servlet container!</
 or tweak the build.xml to include where your JDBC drivers are.
 
 </para>
-				<para>ant &lt;jar_classes&gt;</para>
-				<para>ant &lt;devgui&gt;</para>
+<blockquote>
+<screen>			 
+
+    ant &lt;jar_classes&gt;
+    ant &lt;devgui&gt; </screen></blockquote>
 			</sect2>
 		</sect1>
 		<sect1>
@@ -182,109 +203,213 @@ or tweak the build.xml to include where your JDBC drivers are.
 				<title>Web Application Tab
 </title>
 				<para/>
-				<para>
-					<emphasis role="bold">Location of Webapp:</emphasis> The JSP files generated by DevGui's XSL transformations will be written into this directory.
+                                <itemizedlist mark="closedcircle">
+<listitem>
+<para><emphasis role="bold">Location of Webapp:</emphasis> The JSP files generated by DevGui's XSL transformations will be written into this directory.
 </para>
-				<para>
-					<emphasis role="bold">Web-URL of Webapp:</emphasis> URL which can be used to access the application.
+</listitem>
+<listitem>
+<para><emphasis role="bold">Web-URL of Webapp:</emphasis> URL which can be used to access the application.
 </para>
+</listitem>
+ 
+</itemizedlist>
+				
+				
 			</sect2>
 			<sect2>
 				<title>Database Tab
 </title>
 				<para/>
-				<para>
-					<emphasis role="bold">JDBC Driver Class: </emphasis>name of java class which implements java.sql.Driver and which will be used to connect to the database
+<itemizedlist mark="closedcircle">
+<listitem><para>
+<emphasis role="bold">JDBC Driver Class: </emphasis>name of java class which implements java.sql.Driver and which will be used to connect to the database
 </para>
-				<para>Examples:</para>
-				<para>com.databasename.jdbc.Driver
+ 
+<para>Examples:</para>
+    <itemizedlist mark="opencircle">
+    <listitem>
+    <para>com.databasename.jdbc.Driver
 </para>
-				<para>org.freedb.jdbc.type4driver.MainDriver
+    </listitem>
+    <listitem>
+    <para>org.freedb.jdbc.type4driver.MainDriver
 </para>
-				<para>See your driver's documentation.
+    </listitem>
+
+    </itemizedlist>
+  <para>See your driver's documentation.
+</para>  
+</listitem>
+<listitem>
+<para>
+<emphasis role="bold">JDBC URL: </emphasis>URL to connect to database. Refer to driver documentation. Examples:</para>
+    <itemizedlist mark="opencircle">
+    <listitem>
+   <para>jdbc:foo:bar://host123:876/myveryimportantdb
 </para>
-				<para>
-					<emphasis role="bold">JDBC URL: </emphasis>URL to connect to database. Refer to driver documentation. Examples:</para>
-				<para>jdbc:foo:bar://host123:876/myveryimportantdb
+    </listitem>
+    <listitem>
+   <para>jdbc:abcd://host2.dom1.dom2.dom3/database=db3;option1=yes
 </para>
-				<para>jdbc:abcd://host2.dom1.dom2.dom3/database=db3;option1=yes
-</para>
-				<para>
+    </listitem>
+     
+    </itemizedlist>
+</listitem>
+<listitem>
+<para>
 					<emphasis role="bold">Username: </emphasis>Username for DB connection
 </para>
-				<para>
+</listitem>
+<listitem>
+<para>
 					<emphasis role="bold">Password: </emphasis>Password for DB connection
 </para>
-				<para>
+</listitem>
+<listitem>
+<para>
 					<emphasis role="bold">Test Connection button: </emphasis>Can (and should) be used to check if above entries are ok.
 </para>
+</listitem>
+</itemizedlist>
+			 
+					
+				
+				
+				
+				
+				
+				
+				
+				
+				
 			</sect2>
 			<sect2>
 				<title>XML Config Tab
 </title>
 				<para/>
-				<para>
+ <itemizedlist mark="opencircle">
+<listitem>
+<para>
 					<emphasis role="bold">DbForms-Config File: </emphasis>Name of XML file which contains config for dbforms. An initial version of this file can be automatically generated by DevGui by reading meta data from the database. This file is also used as input for XSL transfortations in tab 'XSL Transformation'.
 </para>
-				<para>Filename should be something like:
+<para>Filename should be something like:
 </para>
-				<para>&lt;location-of-webapp&gt;/WEB-INF/dbforms-config.xml
+				<screen>&lt;location-of-webapp&gt;/WEB-INF/dbforms-config.xml
+</screen>
+</listitem>
+<listitem><para>
+<emphasis role="bold">Examine tables, views, system tables checkboxes: </emphasis>Allows to select for which table types, table descriptions should be generated into config file.
 </para>
-				<para>
-					<emphasis role="bold">Examine tables, views, system tables checkboxes: </emphasis>Allows to select for which table types, table descriptions should be generated into config file.
-</para>
-				<para>
+</listitem>
+<listitem>
+<para>
 					<emphasis role="bold">Catalog name filter:</emphasis> It depends on the database system, whether it supports catalogs and how it maps this general term to a database specific term. Often a catalog is mapped to a 'database'.
 </para>
 				<para>The easiest thing is always to select 'all catalogs', but if needed, you may try to restrict the set of examined tables by entering a catalog name and selecting the corresponding radio button.
 </para>
 				<para>Be aware that several database systems that map 'catalog' to 'database' do not allow to read information about tables in another database than that one you are currently connected to.
 </para>
-				<para>
+</listitem>
+<listitem>
+<para>
 					<emphasis role="bold">Schema filter</emphasis>: It depends on the database system, whether it supports schemas and how it maps this general terms to a specific term. Often a schema is mapped to 'table owner'.
 </para>
-				<para>The easiest thing is always to select radio button 'all schemas', but if needed, you may try to restrict the set of examined tables by entering a schema name pattern and selectiong the corresponding radio button.
+<para>The easiest thing is always to select radio button 'all schemas', but if needed, you may try to restrict the set of examined tables by entering a schema name pattern and selectiong the corresponding radio button.
 </para>
 				<para>While you always have to enter a complete catalog name into combo box for catalog name, field for schema name may contain a schema pattern with '%' as pattern for an arbitrary (maybe empty) string.
 </para>
 				<para>Examples:</para>
-				<para>'foo%' would select all tables in a schema with a name that begins with substring 'foo'.
+                                <itemizedlist mark="opencircle">
+<listitem>
+<para>'foo%' would select all tables in a schema with a name that begins with substring 'foo'.
 </para>
-				<para>'%nix%' would select all tables in a schema with a name that contains a substring 'nix'.
+</listitem>
+<listitem>
+<para>'%nix%' would select all tables in a schema with a name that contains a substring 'nix'.
 </para>
-				<para>
+</listitem>
+ 
+</itemizedlist>
+				
+				
+</listitem>
+<listitem>
+<para>
 					<emphasis role="bold">'Load' button: </emphasis>You can try to load the set of available catalog and schema names into the corresponding combo boxes by clicking the 'Load' button. You must have the database tab completed before.
 </para>
-				<para>
+</listitem>
+<listitem>
+<para>
 					<emphasis role="bold">Table name filter: </emphasis>Via radio buttons and textfield you can select tables with arbitrary names or with a name that matches a certain name pattern. See comments about patterns above.
 </para>
-				<para>
+</listitem>
+<listitem>
+<para>
 					<emphasis role="bold">Use autocommit mode: </emphasis>Should normally be checked, was inserted as a workaround for a bug of a special driver.
 </para>
-				<para>
+</listitem>
+<listitem>
+<para>
 					<emphasis role="bold">Write standard type names for unknown field types:</emphasis> If not checked, DevGui will write the names for column types exactly as it gets them from the database. Sometimes this may lead to problems, if the DBMS uses a type that could be handled by dbforms but is has an unknown specific name. E.g. there are a lot of different names for various 'integer' types. If this option is checked, DevGui will try to write standard name for all unknown types into the generated dbforms config file.
 </para>
-				<para>
+</listitem>
+<listitem>
+<para>
 					<emphasis role="bold">Foreign key detection:</emphasis> Devgui can use meta data methods to determine foreign key relationships between tables and write corresponding tags into the generated config file. This can surely only work if the used database system as well as the JDBC driver supports this feature. You have two alternative method available:
+</para><itemizedlist mark="opencircle">
+<listitem>
+<para>Using method getImportedKeys() within a loopThis should always work and is default
 </para>
-				<para>Using method getImportedKeys() within a loopThis should always work and is default
+</listitem>
+<listitem>
+<para>using method getCrossReferences() onceThis might not work with all databases, but if it does, it will probably be much faster than the first method above. Simply try it out!
 </para>
-				<para>using method getCrossReferences() onceThis might not work with all databases, but if it does, it will probably be much faster than the first method above. Simply try it out!
-</para>
+</listitem>
+ 
+</itemizedlist>
+				
+				
 				<para>You can also deactivate foreign key detection.
 </para>
-				<para>
+</listitem>
+<listitem>
+<para>
 					<emphasis role="bold">Include catalog or table name: If checked, DevGui tries to include catalog and/or schema name in generated xml file like 'admin.table1' instead of just 'table1'.</emphasis>
 				</para>
-				<para>
+</listitem>
+<listitem>
+<para>
 					<emphasis role="bold">Set date format to: </emphasis>Here you may select or enter a date pattern that then will be set as default date format within dbforms config file using tag date-format.
 </para>
-				<para>
+</listitem>
+<listitem>
+<para>
 					<emphasis role="bold">Generate XML button: </emphasis>DevGui tries to read database meta data and generated a dbforms config in XML format. Result is shown in editor pane.
 </para>
-				<para>
+</listitem>
+<listitem>
+<para>
 					<emphasis role="bold">Save File: </emphasis>Save config in editor pane to dbforms config file.
 </para>
+</listitem>
+</itemizedlist>                               
+				
+				
+				 
+					
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
 			</sect2>
 			<sect2>
 				<title>XSL Transformation
@@ -292,21 +417,33 @@ or tweak the build.xml to include where your JDBC drivers are.
 				<para/>
 				<para>This tab can be used to automatically generate Java Server Pages that use DbForms taglib by applying XSL stylesheets to dbforms config file. To do that, you must have generated (or loaded) a dbforms config file, then you mark the name of a style sheet and select button 'start transformation'.
 </para>
-				<para>
+<itemizedlist mark="closedcircle">
+<listitem>
+<para>
 					<emphasis role="bold">Stylesheet Directory: </emphasis>Location of the directory that contains your stylesheets that you wish to use.
 </para>
-				<para>Defaults to:&lt;DBFORMS_HOME&gt;/xsl-stylesheets/
+				<para>Defaults to:</para>
+<screen>&lt;DBFORMS_HOME&gt;/xsl-stylesheets/</screen>
+ 
+</listitem>
+<listitem>
+<para>
+					<emphasis role="bold">Use JavaScript Calendar: </emphasis>If checked, the generated pages will include a JavaScript calendar for editing of date fields.
 </para>
-				<para>
-					<emphasis role="bold">Use JavaScript Calendar: </emphasis>If checked, the generated pages will include a JavaScript calendar written by Robert W. Husted for editing of date fields. Calendar is included in dbforms with friendly permission of author.
-</para>
-				<para>
-					<emphasis role="bold">See </emphasis>h<computeroutput>ttp://developer.iplanet.com/viewsource/husted_calendar/husted_calendar.htm</computeroutput>l for more information about this tool. The calendar is now developed as open source project 'jscal' with homepage at h<computeroutput>ttp://jscal.sourceforge.net</computeroutput>/.
+</listitem>
+<listitem>
+<para>
+					<emphasis role="bold">See the <link linkend='js_cal'>Javascript_Calendar</link> chapter for more info.</emphasis>
 </para>
 				<para>Unfortunately this calendar only seems to work with Internet Explorer, so by default this option is not checked.
 </para>
-				<para>Generated pages are written to the web application directory.h<computeroutput>ttp://www.dbforms.org/docs/articles/XSL_DbForms.pd</computeroutput>f
-</para>
+				
+</listitem>
+</itemizedlist>
+<para>Generated pages are written to the web application directory.<computeroutput>http://www.dbforms.org/docs/articles/XSL_DbForms.pdf</computeroutput>
+</para>				
+				
+				
 			</sect2>
 		</sect1>
 		<sect1>
@@ -314,55 +451,55 @@ or tweak the build.xml to include where your JDBC drivers are.
 </title>
 			<para>DevGui can now be startet without Gui to regenerate a dbforms config file.  This can be done from command line as well as from a running Java program.  To do so, you have to:
 </para>
-			<para>create a property file containing connection information etc.
+<orderedlist numeration="lowerroman">
+<listitem>
+<para>create a property file containing connection information etc.
 </para>
 			<para>This may be done in a standard gui session of DevGui
 </para>
-			<para>call it via:
+</listitem>
+<listitem>
+	<para>call it via:
 </para>
-			<para>       java org.dbforms.devgui.DevGui createconfigfile &lt;propertyfilename&gt;</para>
-			<para>       or
-</para>
-			<para>       java org.dbforms.devgui.DevGui createconfigfile &lt;propertyfilename&gt;&lt;outputfilename&gt;</para>
-			<para>
+<screen>
+        java org.dbforms.devgui.DevGui createconfigfile &lt;propertyfilename&gt;
+</screen>			<para>  -or-</para>
+<screen>
+        java org.dbforms.devgui.DevGui createconfigfile &lt;propertyfilename&gt;&lt;outputfilename&gt;
+</screen>
+<para>
 				<emphasis role="bold">Here is an example:</emphasis>
 			</para>
-			<para>     $ java org.dbforms.devgui.DevGui createconfigfile /home/sweethome/dbex.props outout.xml
+<screen>
+        $ java org.dbforms.devgui.DevGui createconfigfile /home/sweethome/dbex.props outout.xml
+</screen>
+<para>   If the outputfilename is not set on command line, it will be taken from the property file. Normally the property file should be once generated in a gui session. It can later be used in command line sessions to regenerate the dbforms-config.xml file after changes to database.
 </para>
-			<para>   If the outputfilename is not set on command line, it will be taken from
+			<para>   It is also possible to call the main() method of class DevGui from within a running java program like in
 </para>
-			<para>   property file. Normally the property file should be once generated in
+<screen>
+        String[] pars = {"createconfigfile","/home/sweethome/dbex.props"};
+        org.dbforms.devgui.DevGui.main(pars);</screen>
+ 
+			<para>The other DevGui functionality (XSL transformation) can currently not be called via command line, maybe later.
 </para>
-			<para>   a gui session. It can later be used in command line sessions to regenerate
-</para>
-			<para>   the dbforms-config.xml file after changes to database.
-</para>
-			<para>   It is also possible to call the main() method of class DevGui from
-</para>
-			<para>   within a running java program like in
-</para>
-			<para>       String[] pars = {"createconfigfile","/home/sweethome/dbex.props"};
-</para>
-			<para>       org.dbforms.devgui.DevGui.main(pars);
-</para>
-			<para>   The other DevGui functionality (XSL transformation) can currently not be called
-</para>
-			<para>   via command line, maybe later.
-</para>
-			<example>
-				<title/>
-				<programlisting>More documentation about DevGui can be found in
-
+</listitem>
+</orderedlist>
+			 
+		
+			
+			
+<para>More documentation about DevGui can be found in:</para>
+<para>
 <computeroutput>http://www.dbforms.org/docs/articles/DbForms_DevGui.pdf
-</computeroutput> 
-		    h<computeroutput>ttp://www.dbforms.org/docs/articles/XSL_DbForms.pd</computeroutput>f
- 
-		</programlisting>
-			</example>
+</computeroutput></para>
+	<para>	    <computeroutput>http://www.dbforms.org/docs/articles/XSL_DbForms.pdf</computeroutput>
+ </para>
+		 
 			<para>Both PDF articles are still worth reading, because they descibe ideas and principles behind DevGui. Included information about needed libraries or user interface is partially out of date, so please read on this file about how to install and run the application and next section on use.
 
 </para>
-			<para/>
+			 
 		</sect1>
 	</chapter>
  
