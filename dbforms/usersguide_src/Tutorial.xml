@@ -249,50 +249,30 @@
      
   &lt;body&gt; 
     &lt;h1&gt;Menu&lt;/h1&gt; 
-    
-          <emphasis role="bold">&lt;db:dbform</emphasis> followUp="/menu.jsp"&gt;
- 
-    &lt;center&gt;
-     
+    <emphasis role="bold">&lt;db:dbform</emphasis> followUp="/menu.jsp"&gt; 
+    &lt;center&gt;     
     &lt;p&gt;
-     
-          <emphasis role="bold">&lt;db:gotoButton</emphasis> caption="Edit services" destination="/service.jsp" 
-     destTable="services"/&gt;
+      <emphasis role="bold">&lt;db:gotoButton</emphasis> caption="Edit services" destination="/service.jsp" destTable="services"/&gt;
     &lt;/p&gt; 
-    &lt;p&gt;
-        
-          <emphasis role="bold">&lt;db:gotoButton</emphasis> caption="Customer-List" destination="/customerlist.jsp" 
-        destTable="customer" /&gt;
+    &lt;p&gt;        
+      <emphasis role="bold">&lt;db:gotoButton</emphasis> caption="Customer-List" destination="/customerlist.jsp" destTable="customer" /&gt;
     &lt;/p&gt; 
-    &lt;p&gt;
-        
-          <emphasis role="bold">&lt;db:gotoButton</emphasis> caption="Edit Orders" destination="/customer_orders.jsp" 
-        destTable="customer"/&gt;
+    &lt;p&gt;        
+      <emphasis role="bold">&lt;db:gotoButton</emphasis> caption="Edit Orders" destination="/customer_orders.jsp" destTable="customer"/&gt;
     &lt;/p&gt; 
-    &lt;p&gt;
-        
-          <emphasis role="bold">&lt;db:gotoButton</emphasis> caption="Edit Complaints" destination="/customer_complaints.jsp" 
-        destTable="customer"/&gt;
+    &lt;p&gt;        
+      <emphasis role="bold">&lt;db:gotoButton</emphasis> caption="Edit Complaints" destination="/customer_complaints.jsp" destTable="customer"/&gt;
     &lt;/p&gt; 
-    &lt;p&gt;
-        
-          <emphasis role="bold">&lt;db:gotoButton</emphasis> caption="View all customer info" destination="/customer_all.jsp" 
-        destTable="customer"/&gt;
+    &lt;p&gt;        
+      <emphasis role="bold">&lt;db:gotoButton</emphasis> caption="View all customer info" destination="/customer_all.jsp" destTable="customer"/&gt;
     &lt;/p&gt; 
-    &lt;p&gt;
-        
-          <emphasis role="bold">&lt;db:gotoButton</emphasis> caption="Edit priority-table" destination="/priorities.jsp" 
-        destTable="priorities" /&gt;
+    &lt;p&gt;        
+      <emphasis role="bold">&lt;db:gotoButton</emphasis> caption="Edit priority-table" destination="/priorities.jsp" destTable="priorities" /&gt;
     &lt;/p&gt; 
-
-        &lt;/center&gt;
-        
-    
-          <emphasis role="bold">&lt;/db:dbform&gt;</emphasis>
-
+    &lt;/center&gt;
+    <emphasis role="bold">&lt;/db:dbform&gt;</emphasis>
   &lt;/body&gt;
- &lt;/html&gt; 
-    
+  &lt;/html&gt;     
         </programlisting>
       </example>
       <para>
@@ -301,36 +281,32 @@
       <para>The 
         <emphasis role="bold">&lt;%@ taglib uri="/WEB-INF/dbForms.tld" prefix="db" %&gt; - </emphasis>element refers to the Taglib Descriptor (tld) of DbForms and defines the prefix used to identify the elements of the tag library (in our sample application we are using 
         <emphasis role="bold">db</emphasis>, but you could use any other namespace as well)
-
       </para>
       <para>We used the following attributes of  
         <emphasis role="bold">gotoButton :</emphasis>
       </para>
       <para>
         <emphasis role="bold">caption</emphasis>: the caption of the button
-
       </para>
       <para>
         <emphasis role="bold">destination</emphasis>: the URL of the view to jump to
-
       </para>
       <para>
         <emphasis role="bold">destTable</emphasis>: the table of the top-level form to jump to
-
       </para>
-      <para>Please note: destTable was introduced as a workaround during transition from 0.6 to 0.7. It's very likely that this (a little bit annoying) attribute will be removed again!
-</para>
-      <para>The 
+      <para>
+        Please note: destTable was introduced as a workaround during transition from 0.6 to 0.7. It's very likely that this (a little bit annoying) attribute will be removed again!
+      </para>
+      <para>
+        The 
         <emphasis role="bold">&lt;db:base/&gt;</emphasis>- tag should be included in every JSP-view containing DbForms-elements. It ensures that images, Cascade Style-Sheets and relative links to other pages are found.
-
       </para>
       <para>
         <computeroutput/>
       </para>
       <para>
         <figure>
-          <title>Main menu (menu.jsp)
-</title>
+          <title>Main menu (menu.jsp)</title>
           <mediaobject id="main_menu">
             <imageobject role="html">
               <imagedata format="PNG" fileref="images/figures/main_menu.png"/>
@@ -344,142 +320,110 @@
       <para/>
     </sect2>
     <sect2>
-      <title>Services
-</title>
+      <title>Services</title>
       <para/>
-      <para>This page enables the user(s) to administer the services the agency sells to its customers. The user should get a list of all the existing services along with text fields and buttons to update and delete rows. Finally an empty input mask for inserting new services is also presented.
- </para>
+      <para>This page enables the user(s) to administer the services the agency sells to its customers. The user should get a list of all the existing services along with text fields and buttons to update and delete rows. Finally an empty input mask for inserting new services is also presented. </para>
       <example>
         <title>service.jsp code</title>
         <programlisting>
-        &lt;%@ taglib uri="/WEB-INF/dbForms.tld" prefix="db" %&gt;
-            &lt;html&gt;
-             
-    &lt;head&gt; 
-                    
-          <emphasis role="bold">&lt;db:base/&gt;</emphasis> 
-    &lt;/head&gt;
+  &lt;%@ taglib uri="/WEB-INF/dbForms.tld" prefix="db" %&gt;
+  &lt;html&gt;             
+  &lt;head&gt; 
+    <emphasis role="bold">&lt;db:base/&gt;</emphasis> 
+  &lt;/head&gt;
                  
-    &lt;body&gt;
-                 
-                    
-          <emphasis role="bold">&lt;db:errors/&gt;</emphasis>
-                                         
-                    
-          <emphasis role="bold">&lt;db:dbform</emphasis> tableName="service" maxRows="*" followUp="/service.jsp"&gt; 
-                        
-          <emphasis role="bold">&lt;db:header&gt;</emphasis> 
-                        
-          <emphasis role="bold">&lt;db:gotoButton</emphasis> caption="Menu" destination="/menu.jsp" /&gt; 
-                        
-                        &lt;h1&gt;Services we provide&lt;/h1&gt; 
-                        
-                        &lt;center&gt;
-                            &lt;h3&gt;Our existing services&lt;/h3&gt;
-                        &lt;/center&gt;
+  &lt;body&gt;
+    <emphasis role="bold">&lt;db:errors/&gt;</emphasis>                                                             
+
+    <emphasis role="bold">&lt;db:dbform</emphasis> tableName="service" maxRows="*" followUp="/service.jsp"&gt; 
+      <emphasis role="bold">&lt;db:header&gt;</emphasis>                         
+      <emphasis role="bold">&lt;db:gotoButton</emphasis> caption="Menu" destination="/menu.jsp" /&gt; 
+      &lt;h1&gt;Services we provide&lt;/h1&gt; 
+      &lt;center&gt;
+        &lt;h3&gt;Our existing services&lt;/h3&gt;
+      &lt;/center&gt;
                          
-                        &lt;table border="5" width="60%" align="CENTER"&gt; 
-                            &lt;tr&gt; 
-                                &lt;th&gt;ID&lt;/th&gt; 
-                                &lt;th&gt;Name&lt;/th&gt; 
-                                &lt;th&gt;Description&lt;/th&gt; 
-                                &lt;th&gt;Actions&lt;/th&gt; 
-                            &lt;/tr&gt;
-                             
-                       
-          <emphasis role="bold">&lt;/db:header&gt;</emphasis>
-                         
-                        
-          <emphasis role="bold">&lt;db:body&gt;</emphasis>
-                 
-                            &lt;tr&gt; 
-                                &lt;td&gt;
-                                    
+      &lt;table border="5" width="60%" align="CENTER"&gt; 
+      &lt;tr&gt; 
+        &lt;th&gt;ID&lt;/th&gt; 
+        &lt;th&gt;Name&lt;/th&gt; 
+        &lt;th&gt;Description&lt;/th&gt; 
+        &lt;th&gt;Actions&lt;/th&gt; 
+      &lt;/tr&gt;                                                    
+      <emphasis role="bold">&lt;/db:header&gt;</emphasis>
+      <emphasis role="bold">&lt;db:body&gt;</emphasis>
+      &lt;tr&gt; 
+        &lt;td&gt;
           <emphasis role="bold">&lt;db:textField</emphasis> fieldName="id" size="5"/&gt;
-                                &lt;/td&gt; 
-                                &lt;td&gt;
-                                    
-          <emphasis role="bold">&lt;db:textField</emphasis> fieldName="name" size="20" 
-                                    maxlength="30"/&gt;
-                                &lt;/td&gt; 
-                                &lt;td&gt;
-                                    
-          <emphasis role="bold">&lt;db:textField</emphasis> fieldName="description" size="24" 
-                                    maxlength="255"/&gt;
-                                &lt;/td&gt; 
-                                &lt;td&gt;
-                                    
-          <emphasis role="bold">&lt;db:updateButton</emphasis> caption="Update"/&gt;
-                                    
+        &lt;/td&gt; 
+        &lt;td&gt;
+          <emphasis role="bold">&lt;db:textField</emphasis> fieldName="name" size="20" maxlength="30"/&gt;
+        &lt;/td&gt; 
+        &lt;td&gt;
+          <emphasis role="bold">&lt;db:textField</emphasis> fieldName="description" size="24" maxlength="255"/&gt;
+        &lt;/td&gt; 
+        &lt;td&gt;                                    
+          <emphasis role="bold">&lt;db:updateButton</emphasis> caption="Update"/&gt;                                    
           <emphasis role="bold">&lt;db:deleteButton</emphasis> caption="Delete"/&gt;
-                                &lt;/td&gt; 
-                            &lt;/tr&gt;
-                 
-                        
-          <emphasis role="bold">&lt;/db:body&gt;</emphasis>
-                 
-                        
-          <emphasis role="bold">&lt;db:footer&gt;</emphasis>
-                 
-                        &lt;/table&gt;
-                         
-                        &lt;center&gt;&lt;h3&gt;Enter new service:&lt;/h3&gt;&lt;/center&gt;
+        &lt;/td&gt; 
+      &lt;/tr&gt;
+      <emphasis role="bold">&lt;/db:body&gt;</emphasis>
+      <emphasis role="bold">&lt;db:footer&gt;</emphasis>
+      &lt;/table&gt;
+
+      &lt;center&gt;&lt;h3&gt;Enter new service:&lt;/h3&gt;&lt;/center&gt;
                      
-                        &lt;table align="center" border="3"&gt;     
-                            &lt;tr&gt; 
-                                &lt;td&gt;Id&lt;/td&gt; 
-                                &lt;td&gt;
-          <emphasis role="bold">&lt;db:textField</emphasis> size="5" fieldName="id"/&gt;&lt;/td&gt; 
-                            &lt;/tr&gt; 
-                            &lt;tr&gt; 
-                                &lt;td&gt;Name&lt;/td&gt; 
-                                &lt;td&gt;
-          <emphasis role="bold">&lt;db:textField</emphasis> size="20" maxlength="30" fieldName="name"/&gt;&lt;/td&gt; 
-                            &lt;/tr&gt; 
-                            &lt;tr&gt; 
-                                &lt;td&gt;Description&lt;/td&gt; 
-                                &lt;td&gt;
-                                    
-          <emphasis role="bold">&lt;db:textArea</emphasis> rows="4" cols="20" wrap="virtual"
-                                    fieldName="description"/&gt;
-                                &lt;/td&gt; 
-                            &lt;tr&gt; 
-                        &lt;/table&gt;&lt;br&gt;
+      &lt;table align="center" border="3"&gt;     
+      &lt;tr&gt; 
+        &lt;td&gt;Id&lt;/td&gt; 
+        &lt;td&gt;
+            <emphasis role="bold">&lt;db:textField</emphasis> size="5" fieldName="id"/&gt;
+        &lt;/td&gt; 
+      &lt;/tr&gt; 
+      &lt;tr&gt; 
+        &lt;td&gt;Name&lt;/td&gt; 
+        &lt;td&gt;
+          <emphasis role="bold">&lt;db:textField</emphasis> size="20" maxlength="30" fieldName="name"/&gt;
+        &lt;/td&gt; 
+      &lt;/tr&gt; 
+      &lt;tr&gt; 
+        &lt;td&gt;Description&lt;/td&gt; 
+        &lt;td&gt;         
+          <emphasis role="bold">&lt;db:textArea</emphasis> rows="4" cols="20" wrap="virtual" fieldName="description"/&gt;
+        &lt;/td&gt; 
+      &lt;tr&gt; 
+      &lt;/table&gt;&lt;br&gt;
                         
-                            &lt;center&gt;
-          <emphasis role="bold">&lt;db:insertButton</emphasis> caption="Insert new service!"/&gt;&lt;/center&gt; 
-                        
-          <emphasis role="bold">&lt;/db:footer&gt;</emphasis> 
-                    
-          <emphasis role="bold">&lt;/db:dbform&gt;</emphasis>
-                &lt;/body&gt; 
-            &lt;/html&gt; 
-    
+      &lt;center&gt;
+      <emphasis role="bold">&lt;db:insertButton</emphasis> caption="Insert new service!"/&gt;&lt;/center&gt; 
+      <emphasis role="bold">&lt;/db:footer&gt;</emphasis> 
+      <emphasis role="bold">&lt;/db:dbform&gt;</emphasis>
+    &lt;/body&gt; 
+    &lt;/html&gt;     
         </programlisting>
       </example>
       <para>
         <emphasis role="bold">Remarks</emphasis>
       </para>
-      <para>We have set 
+      <para>
+        We have set 
         <emphasis role="bold">maxRows</emphasis> to 
         <emphasis role="bold">*</emphasis> which is equivalent to 'get all rows'. If the data requested contains a great number of rows, we might consider setting 
         <emphasis role="bold">maxRows</emphasis> to 10, 20 or another limited number.  In this situation, we would instantiate navigation  buttons for scrolling between the pages. We will use that pattern later on.
-
       </para>
-      <para>The 
+      <para>
+        The 
         <emphasis role="bold">&lt;errors/&gt;</emphasis> tag shows a list of errors, if any occurred (i.e. duplicate key error, etc.)
-
       </para>
-      <para>The 
+      <para>
+        The 
         <emphasis role="bold">&lt;db:updateButton&gt;</emphasis>and
         <emphasis role="bold">&lt;db:deleteButton&gt;</emphasis> - tags are placed in the body and are therefore rendered for each row.
-
       </para>
       <para/>
       <para>
         <figure id="Managing_services">
-          <title>Managing services (service.jsp)
-</title>
+          <title>Managing services (service.jsp)</title>
           <mediaobject>
             <imageobject role="html">
               <imagedata format="PNG" fileref="images/figures/managing_services.png"/>
@@ -495,9 +439,9 @@
     <sect2>
       <title> Priorities</title>
       <para/>
-      <para>This page enables the user to manage a list of priorities we will use this data later in the 
+      <para>
+        This page enables the user to manage a list of priorities we will use this data later in the 
         <computeroutput>complaints</computeroutput> page where we will prompt the user to select the appropriate priority for a user's complaint. This setting could be used to help prioritize a to-do list or something similar  (however, that functionality is not included in the sample application)
-
       </para>
       <example>
         <title>priorities.jsp code</title>
