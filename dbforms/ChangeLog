@@ -1,4 +1,38 @@
-2003-10-xx
+====================== v2.0 was released  ==============================================         
+2004-01-21
+(Henner.Kollmann@gmx.de)
+Now you can change the tableName at runtime. So it's possible to change the table and reuse the form.
+One consequence of this is that in the case you use this features the well known dbforms variables, 
+e.g. currentRow_tablename will not work. So i added a new variable named dbforms as hashtable. 
+This hashtable holds a list of all known dbforms and subforms in the page. 
+Key of the map is the new db:dbforms attribute name. 
+Objects of this list are of the type DbFormContext, 
+which will give the access to all of the known fields:
+
+Public class DbFormsContext {
+	public String getPosition();
+	public ResultSetVector getRsv();
+	public Map getSearchFieldAlgorithmNames();
+	public Map getSearchFieldModeNames();
+	public Map getSearchFieldNames();
+	public Map getCurrentRow();
+	public void setCurrentRow(Map map);
+	public void setPosition(String string);
+}
+2004-01-18
+Added the searchAlgo attribute to the filterValue tag with values of
+	sharp 			this is the default behaviour, do nothing.
+	weakStart		like, % is added in front of value
+	weakEnd			like, % is appended to value
+	weakStartEnd	like, % is added in front of value and % is appended to value
+
+added child field support for gotoButton like childField linkUrl! 
+
+2004-01-14
+(Grunikiewicz.philip@hydro.qc.ca)
+Re-worked code to resolve IE problem with PDF files. 
+
+2003-10-31
 (Henner.Kollmann@gmx.de)
    - Worked on the task:
       "Make it possible to have the configurations as attributes in the <db:dateField> tag instead 

@@ -18,6 +18,7 @@ Contents:
 3-8)  jUnit testing of client side code
 3-9)  Added attribute searchAlgo to filterValue
 3-10) Added the possibility to use StaticDataItem - Tags inside TableData, QueryData and ConfTableData
+3-11) Change tableName at runtime
 
 1) About this release
 ----------------------
@@ -182,3 +183,24 @@ For more details see documentation.
 -------------------------------------------------------------------------------------------------------
 Now you can add StaticDataItem - Tags inside TableData, QueryData and ConfTableData. So it's possible to
 add fixed values to your list of dynamic values.
+
+3-11) Change tableName at runtime
+----------------------------------
+Now you can change the tableName at runtime. So it's possible to change the table and reuse the form.
+One consequence of this is that in the case you use this features the well known dbforms variables, 
+e.g. currentRow_tablename will not work. So i added a new variable named dbforms as hashtable. 
+This hashtable holds a list of all known dbforms and subforms in the page. 
+Key of the map is the new db:dbforms attribute name. 
+Objects of this list are of the type DbFormContext, 
+which will give the access to all of the known fields:
+
+Public class DbFormsContext {
+	public String getPosition();
+	public ResultSetVector getRsv();
+	public Map getSearchFieldAlgorithmNames();
+	public Map getSearchFieldModeNames();
+	public Map getSearchFieldNames();
+	public Map getCurrentRow();
+	public void setCurrentRow(Map map);
+	public void setPosition(String string);
+}
