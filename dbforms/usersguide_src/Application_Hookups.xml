@@ -26,7 +26,7 @@
 </title>
       <programlisting>
     public int 
-        <emphasis role="bold">preInsert</emphasis>(HttpServletRequest request, FieldValues fieldValues,
+        <emphasis role="bold">preInsert</emphasis>(HttpServletRequest request, Table table, FieldValues fieldValues,
        DbFormsConfig config, Connection con)
                 throws ValidationException;
  
@@ -36,8 +36,8 @@
  
 
     public int 
-        <emphasis role="bold">preUpdate</emphasis>(HttpServletRequest request, 
-        FieldValues fieldValues, DbFormsConfig config, Connection con)
+        <emphasis role="bold">preUpdate</emphasis>(HttpServletRequest request, Table table, FieldValues fieldValues,
+       DbFormsConfig config, Connection con)
     throws ValidationException;;
  
 
@@ -46,8 +46,8 @@
  
 
     public int 
-        <emphasis role="bold">preDelete</emphasis>(HttpServletRequest request, 
-       FieldValues fieldValues,DbFormsConfig config, Connection  con)
+        <emphasis role="bold">preDelete</emphasis>(HttpServletRequest request, Table table, FieldValues fieldValues,
+       DbFormsConfig config, Connection  con)
                 throws ValidationException;;
  
 
@@ -89,6 +89,22 @@ The
         </para>
       </listitem>
     </itemizedlist>
+    <para>
+    If <computeroutput>DENY_OPERATION</computeroutput> is given back by the interceptor, a SQL exception is raised
+and the transaction is rolled back if set to <computeroutput>autoCommit = false</computeroutput></para>
+ <para>
+If <computeroutput>IGNORE_OPERATION</computeroutput> or <computeroutput>GRANT_OPERATION</computeroutput> is given back by the interceptor, the
+transaction is committed if <computeroutput>autoCommit = false</computeroutput>. In case of <computeroutput>IGNORE_OPERATION</computeroutput>
+the following update of the event is not done.</para>
+<para> 
+If the Interceptor raises a <computeroutput>ValidationException</computeroutput> the transaction is rolled
+back too.</para>
+<para> 
+So if you have an exception inside your interceptor you have two
+possibilities:
+ 
+Return <computeroutput>DENY_OPERATION</computeroutput> which generates <computeroutput>SQLException</computeroutput> with an NOGRANT message
+or throw a <computeroutput>ValidationExeception</computeroutput> with your own error text.</para>
   </sect1>
   <sect1>
     <title>Class Diagram
@@ -150,14 +166,14 @@ gives access to various types of information, including the current user&#146;s 
             <row>
               <entry>FieldValues fieldValues:
 </entry>
-              <entry>in the preInsert(), preUpdate() and preDelete()-methods:
+              <entry><para>in the preInsert(), preUpdate() and preDelete()-methods:
 FieldValues which gives access to the fields contained in the current (selected) row.
-As the example below will demonstrate:
-(String) fieldValues.get("lastname");
-will return the field value of the field &#147;lastName&#148; of the row DbForm's is about to insert, to update or to delete.
-In preInsert() and preUpdate() any changes to this FieldValues are automatically reflected in the database. This means that the expression:
-fieldValues.put("lastname", &#147;smith&#148;);
-will ensure that the value &#147;smith&#148; be stored in the lastname field in the database. (column lastname must exist!)
+As the examples below will demonstrate:</para><para>
+<computeroutput>(String) fieldValues.get("lastname").getFieldValueAsObject();</computeroutput> -or- <computeroutput>fieldValues.get("lastname").getFieldValue();</computeroutput>
+will return the field value of the field &#147;lastName&#148; of the row DbForm's is about to insert, to update or to delete.  Note: <computeroutput>...getFieldValue();</computeroutput> always returns a String.</para>
+<para>In preInsert() and preUpdate() any changes to this FieldValues are automatically reflected in the database. This means that the expression:</para>
+<para><computeroutput>fieldValues.put("lastname", &#147;smith&#148;);</computeroutput>
+will ensure that the value &#147;smith&#148; be stored in the lastname field in the database. (column lastname must exist!)</para>
 </entry>
             </row>
           </tbody>
@@ -229,11 +245,11 @@ import javax.servlet.http.*;
         <emphasis role="bold">checkCustomer</emphasis>(FieldValue fieldValues) // method invented by developer    
             throws ValidationException {
 
-                String lastName = (String) fieldValues.get("lastname");
+                String lastName = (String) fieldValues.get("lastname").getFieldValue();
 
-                String pCode = (String) fieldValues.get("pcode");
+                String pCode = (String) fieldValues.get("pcode").getFieldValue();
                 
-                String city = (String) fieldValues.get("city");
+                String city = (String) fieldValues.get("city").getFieldValue();
                 
                 // perform form-validation
                 if (lastName == null || lastName.trim().length()==0 ||   
@@ -249,7 +265,7 @@ import javax.servlet.http.*;
 
         public int 
         <emphasis role="bold">preInsert</emphasis>(HttpServletRequest request, FieldValues fieldValues, 
-          DbFormsConfig config, Connection con)
+          Table table, DbFormsConfig config, Connection con)
             throws ValidationException {
 
                 
@@ -260,11 +276,11 @@ import javax.servlet.http.*;
 
         public int 
         <emphasis role="bold">preUpdate</emphasis>(HttpServletRequest request, FieldValues fieldValues, 
-          DbFormsConfig config, Connection con)
+          Table table, DbFormsConfig config, Connection con)
             throws ValidationException {
 
-                r
-        <emphasis role="bold">eturn checkCustomer(fieldValues);</emphasis>
+                
+        <emphasis role="bold">return checkCustomer(fieldValues);</emphasis>
             }
 
 
