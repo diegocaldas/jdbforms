@@ -37,6 +37,7 @@
     </menu>
 
     <menu name="Download">
+      <item name="Weekly builds"           href="/weekly/"/>
       <item name="Latest builds"           href="http://sourceforge.net/project/showfiles.php?group_id=17608"/>
     </menu>
 

@@ -43,7 +43,14 @@
     <ant:delete dir="temp/release"/>
     <u:tokenize var="scmTokens" delim=":">${pom.repository.connection}</u:tokenize>
     <ant:cvspass cvsroot=":${scmTokens[2]}:${scmTokens[3]}:${scmTokens[4]}" password="" />
-    <ant:cvs cvsRoot=":${scmTokens[2]}:${scmTokens[3]}:${scmTokens[4]}" command="co" package="${scmTokens[5]}" dest="temp/release" />
+    <ant:cvs
+     	cvsRoot=":${scmTokens[2]}:${scmTokens[3]}:${scmTokens[4]}" 
+     	command="co" 
+     	compression="true" 
+     	package="${scmTokens[5]}" 
+     	dest="temp/release" 
+     />
+    <ant:cvs command="logout"  />
   </goal>
 
   <goal name="dbforms:doc" description="generate dbforms documentation: taglib docu and manual">
@@ -62,7 +69,18 @@
   <goal name="dbforms:dependend">
     <deploy:copy-deps todir="target/dependend" />
   </goal>
-
+  
+  <goal name="dbforms:weekly">
+     <ant:mkdir dir="doc/weekly"/>
+     <ant:copy todir="doc/weekly" overwrite="true">
+    	<ant:fileset dir="dist">
+           <ant:include name="*.zip" />    		
+           <ant:include name="*.tgz" />    		
+           <ant:include name="*.war" />    		
+    	</ant:fileset>
+    </ant:copy>
+  </goal>	
+  
   <goal name="dbforms:deploy" description="do the whole deployment: generates site, generates doc, generates distribution">
     <ant:echo message="starting deploying site" />
     <ant:echo message="0. cleanup" />
@@ -75,6 +93,8 @@
     <attainGoal name="dbforms:dependend" />
     <ant:echo message="4. build the distribution via build.xml" />
     <attainGoal name="dbforms:dist" />
+    <ant:echo message="5. copy weekly build" />
+    <attainGoal name="dbforms:weekly" />
   </goal>
 
   <preGoal name="jalopy:format">
@@ -109,6 +129,7 @@
   <postGoal name="clean">
     <ant:echo message="clean docs too" />
     <ant:ant antfile="docs.xml" target="cleanUp" />
+    <ant:delete file="etc/DbFormsTags.xsl-fo"/>
   </postGoal>
 
   <postGoal name="appserver:install">

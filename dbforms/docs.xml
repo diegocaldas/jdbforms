@@ -380,6 +380,7 @@
      <delete dir="${doc.dir}/UsersGuide"/>
      <delete dir="${doc.dir}/xref"/>
      <delete dir="${doc.dir}/xref-test"/>
+     <delete dir="${doc.dir}/weekly"/>
      <delete>
           <fileset dir="${doc.dir}">
             <include name="*"/>
@@ -389,6 +390,7 @@
      <delete file="${doc.dir}/taglib/DbFormsTags_TocAlph.html"/>
      <delete file="${doc.dir}/taglib/DbFormsTags.html"/>
      <delete file="${doc.dir}/taglib/DbFormsTags.pdf"/>
+     <delete file="${etc.dir}/DbFormsTags.xsl-fo"/>
      <delete dir="${basedir}/dist"/>
   </target>
     
