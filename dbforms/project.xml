@@ -6,7 +6,7 @@
    <pomVersion>3</pomVersion>
    <id>dbforms</id>
    <name>DbForms</name>
-   <currentVersion>2.4rc3</currentVersion>
+   <currentVersion>2.4</currentVersion>
    <organization>
       <name>DbForms</name>
       <url>http://jdbforms.sourceforge.net</url>
@@ -407,7 +407,29 @@
             <war.bundle>false</war.bundle>
          </properties>
       </dependency>
+      <dependency>
+         <groupId>maven-plugins</groupId>
+         <artifactId>maven-findbugs-plugin</artifactId>
+         <version>1.0-SNAPSHOT</version>
+         <type>plugin</type>
+         <url>http://maven-plugins.sourceforge.net</url>
+         <properties>
+            <war.bundle>false</war.bundle>
+         </properties>
+      </dependency>
+      <dependency>
+         <groupId>maven-plugins</groupId>
+         <artifactId>maven-sourceforge-plugin</artifactId>
+         <version>1.2-HKK</version>
+         <type>plugin</type>
+         <url>http://maven-plugins.sourceforge.net</url>
+         <properties>
+            <war.bundle>false</war.bundle>
+         </properties>
+      </dependency>
    </dependencies>
+
+
    <build>
       <nagEmailAddress/>
       <sourceDirectory>src</sourceDirectory>

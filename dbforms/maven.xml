@@ -135,9 +135,11 @@
   <goal name="dbforms:release" description="creates a new SF release">
     <attainGoal name="sourceforge:changes"/>
     <attainGoal name="dbforms:fileset:dbforms"/>
+    <j:set var="maven.sourceforge.project.packageName" value="dbforms" />
     <attainGoal name="sourceforge:upload"/>
     <attainGoal name="sourceforge:release"/>
     <attainGoal name="dbforms:fileset:examples"/>
+    <j:set var="maven.sourceforge.project.packageName" value="dbforms-examples" />
     <attainGoal name="sourceforge:upload"/>
     <attainGoal name="sourceforge:release"/>
   </goal>
