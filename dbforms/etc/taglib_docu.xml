@@ -272,9 +272,10 @@
                             <li>filter="id=2"</li>
                             <li>filter="id=2;name=Hugo Berger"</li>
                             <li>filter="deptno=101,salery>=30000,name~Peter"</li>
+                         </ul>
                             <p>since version 0.9, you can use &lt;, &gt; &lt;= and &gt;= operators, too!</p>
                             <p>the ~ symbol is an aquivalant to the SQL keyword "LIKE" used in SELECT statements!</p>
-                        </ul>
+                        
                     </info>
                 </attribute>
 
@@ -315,15 +316,18 @@
                         <p>
                             you could define a hashtable &quot;myGotoHash&quot; and apply it to the attribute
                             <pre>
-                                
-
-                                
-                                &lt;%Hashtable myGotoHash = null;if(request.getParameter("goto")!=null) {myGotoHash = new Hashtable();myGotoHash.put("id",request.getParameter("goto"));}%&gt;
-                                
+&lt;%
+Hashtable myGotoHash = null;
+if(request.getParameter("goto")!=null) {
+       myGotoHash = new Hashtable();
+       myGotoHash.put("id",request.getParameter("goto"));
+}
+%&gt;                          
                                 <br/>
-                                &lt;db:form table="customer" followUp="customer.jsp" goto="&lt;%= myGotoHash %&gt;" &gt;... some code ...&lt;/db:form&gt;
-                                
-                                
+&lt;db:form table="customer" followUp="customer.jsp" 
+         gotoHt="&lt;%= myGotoHash %&gt;" &gt;
+         ... some code ...
+&lt;/db:form&gt;
                             </pre>
                         </p>
                         <p>now, when a user calls aview.jsp?goto=234, then DbForms will navigate thetable to the row where id==234!</p>
@@ -783,20 +787,25 @@
                             the class java.text.DateFormat is a ready-to-use Date formatter.
                             <br/>
                             you can aquire an instance of DateFormat by writing:
-                            
+
                             <pre>DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT);</pre>
                         </p>
 
                         <p>
                             even more convenient to use is the class java.text.SimpleDateFormat:
                             <pre>
-                                SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd&quot;);
-                                
-                                Format Pattern Result-------------- -------&quot;yyyy.MM.dd G 'at' hh:mm:ss z&quot; 1996.07.10 AD at 15:08:56 PDT&quot;EEE, MMM d, ''yy&quot; Wed, July 10, '96&quot;h:mm a&quot; 12:08 PM&quot;hh 'o''clock' a, zzzz&quot; 12 o'clock PM, Pacific Daylight Time&quot;K:mm a, z&quot; 0:00 PM, PST&quot;yyyyy.MMMMM.dd GGG hh:mm aaa&quot; 1996.July.10 AD 12:08 PM
-                                
+ SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd&quot;);<br/>
+</pre>
+                                <br/>
+<ul>
+<li> &quot;yyyy.MM.dd G 'at' hh:mm:ss z&quot; => 1996.07.10 AD at 15:08:56 PDT</li>
+<li> &quot;EEE, MMM d, ''yy&quot;   => Wed, July 10, '96</li>
+<li> &quot;h:mm a&quot;  => 12:08 PM</li>
+<li> &quot;hh 'o''clock' a, zzzz&quot;  => 12 o'clock PM, Pacific Daylight Time</li>
+<li> &quot;K:mm a, z&quot; => 0:00 PM, PST</li>
+<li> &quot;yyyyy.MMMMM.dd GGG hh:mm aaa &quot; =>  1996.July.10 AD 12:08 PM</li>
+</ul>                             
                                 (examples taken from Java API doc)
-                                
-                            </pre>
                         </p>
 
                     </info>
@@ -2440,18 +2449,18 @@
                     </p>
 
 
-                    <p><linkURL href="customer.jsp" table="customer" position="103~2" /></p>
+                    <p>&lt;linkURL href="customer.jsp" table="customer" position="103~2" /&gt;</p>
 
-                    <p><linkURL href="customer.jsp" table="customer" position="&lt;%= currentKey %&gt;" /></p>
+                    <p>&lt;linkURL href="customer.jsp" table="customer" position="&lt;%= currentKey %&gt;" /&gt;</p>
 
                     <p>
-                        <linkURL href="customer.jsp" table="customer" >
+                        &lt;linkURL href="customer.jsp" table="customer" &gt;
                         <br/>
-                        <position field="id" value="103" />
+                        &lt;position field="id" value="103" /&gt;
                         <br/>
-                        <position field="cust_lang" value="2" />
+                        &lt;position field="cust_lang" value="2" /&gt;
                         <br/>
-                        </linkURL>
+                        &lt;/linkURL>
                     </p>
                 </info>
 				
@@ -2489,13 +2498,13 @@
                     example:
                     
                     <p>
-                        <linkURL href="customer.jsp" table="customer" >
+                        &lt;linkURL href="customer.jsp" table="customer" &gt;
                         <br/>
-                        <position field="id" value="103" />
+                        &lt;position field="id" value="103" /&gt;
                         <br/>
-                        <position field="cust_lang" value="2" />
+                        &lt;position field="cust_lang" value="2" /&gt;
                         <br/>
-                        </linkURL>
+                        &lt;/linkURL&gt;
                     </p>
                 </info>
 				
@@ -4659,6 +4668,7 @@
 
                     
                     in that case the application developer has to alternatives:
+                    <ul>
                     <li>
                         to put a "deleteButton" into the body -> this button gets rendered for every row
                         <br/>
@@ -4669,6 +4679,7 @@
                         <br/>
                         the radio element gets rendered for every row, the deleteButton just once. if the user wantsto delete a row, he/she has to select the radioButton (to mark the row he/she wants to be deleted)and then to press the deleteButton.
                     </li>
+                    </ul>
                     <p>the more buttons you have the better this method is!!</p>
                     <p>nota bene: you have to tell the delete (or insert, update...) - button that there exists an associatedradio button that marks the row the action should be applied to, by defining the &quot;associatedRadio&quot;attribute of that respective button.</p>
                 </info>
