@@ -40,10 +40,13 @@
 #
 # PLEASE REPORT COMMENTS, BUGs ENHANCEMENTS TO <jdbforms-developers@lists.sourceforge.net> !
 
+# if DBFORMS_HOME is not set, try to set it automatically
+# (contrib. by Carlos Anjos)
 
 if [ "$DBFORMS_HOME" = "" ] ; then
-    echo DBFORMS_HOME not set, you need to set it or install in a standard location
-    exit 1
+    cd `dirname $0`
+    DBFORMS_HOME=`pwd`/..
+    echo DBFORMS_HOME set to value $DBFORMS_HOME
 fi
 
 if [ -z "$JAVA_HOME" ] ;  then
@@ -82,7 +85,7 @@ fi
 
 
 
-CLASSPATH=${CLASSPATH}:${DBFORMS_HOME}/lib/dbforms_v1_1_2.jar;
+CLASSPATH=${CLASSPATH}:${DBFORMS_HOME}/dist/dbforms_v1_1_2.jar;
 
 export CLASSPATH
 
