@@ -48,7 +48,7 @@ public class DbFormsConfig
 
    /** DOCUMENT ME! */
    public static final String      CONFIG = "dbformsConfig";
-   private static SimpleDateFormat sdf;
+   private SimpleDateFormat sdf;
    private Vector                  tables;
 
    /** for quicker lookup by name */
@@ -244,7 +244,7 @@ public class DbFormsConfig
     *
     * @return DOCUMENT ME!
     */
-   public static SimpleDateFormat getDateFormatter()
+   public SimpleDateFormat getDateFormatter()
    {
       if (sdf == null)
       {
@@ -260,7 +260,7 @@ public class DbFormsConfig
     *
     * @param pattern DOCUMENT ME!
     */
-   public static void setDateFormatter(String pattern)
+   public void setDateFormatter(String pattern)
    {
       sdf = new SimpleDateFormat(pattern);
    }

@@ -34,10 +34,10 @@ import org.dbforms.config.Table;
 import org.dbforms.util.FieldValue;
 import org.dbforms.util.FieldTypes;
 import org.dbforms.util.FieldValues;
+import org.dbforms.util.FileHolder;
 import org.dbforms.util.ResultSetVector;
 import org.dbforms.util.FieldValues;
 import org.dbforms.util.Util;
-import org.dbforms.util.external.FileHolder;
 
 
 

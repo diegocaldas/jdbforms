@@ -555,6 +555,9 @@ public class ConfigServlet extends HttpServlet
    protected void initXMLConfigFile(String config, int digesterDebugLevel)
       throws IOException, ServletException
    {
+		// Build a digester to process our configuration resource
+		String        realPath = getServletContext().getRealPath("/");
+
       // Acquire an input stream to our configuration resource
       InputStream input = getServletContext().getResourceAsStream(config);
 
@@ -563,8 +566,6 @@ public class ConfigServlet extends HttpServlet
          throw new UnavailableException("configMissing");
       }
 
-      // Build a digester to process our configuration resource
-      String        realPath = getServletContext().getRealPath("/");
 
       DbFormsConfig dbFormsConfig = (DbFormsConfig) getServletContext()
                                                        .getAttribute(DbFormsConfig.CONFIG);

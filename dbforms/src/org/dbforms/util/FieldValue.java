@@ -25,7 +25,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import org.apache.log4j.Category;
-import org.dbforms.util.external.FileHolder;
 import org.dbforms.config.Field;
 import org.dbforms.taglib.DbBaseHandlerTag;
 

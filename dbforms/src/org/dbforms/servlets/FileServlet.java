@@ -31,9 +31,9 @@ import java.net.URLConnection;
 
 import org.dbforms.config.*;
 import org.dbforms.util.FieldTypes;
+import org.dbforms.util.FileHolder;
 import org.dbforms.util.ParseUtil;
 import org.dbforms.util.SqlUtil;
-import org.dbforms.util.external.FileHolder;
 import org.apache.log4j.Category;
 
 
