@@ -278,6 +278,9 @@
   <!-- p  -->
   <xsl:template match="p"><fo:block><xsl:apply-templates/></fo:block></xsl:template>
 
+  <!-- span -->
+  <xsl:template match="span"><fo:block><xsl:apply-templates/></fo:block></xsl:template>
+
   <!-- pre -->  
   <xsl:template match="pre">
     <fo:block  wrap-option="wrap" font-size="9pt" linefeed-treatment="preserve"
