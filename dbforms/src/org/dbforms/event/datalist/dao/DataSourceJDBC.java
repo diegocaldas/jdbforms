@@ -49,7 +49,6 @@ import org.dbforms.config.JDBCDataHelper;
 import org.dbforms.util.FileHolder;
 import org.dbforms.util.UniqueIDGenerator;
 import org.dbforms.util.Util;
-import org.dbforms.util.SqlUtil;
 
 /**
  * Special implementation of DataSource. This is the default class and deals
