@@ -130,7 +130,7 @@
 	<!-- ========== Connection =================================== -->
 	    <dbconnection
 		    isPow2		   			= "true"
-		    connectionProviderClass = "org.dbforms.conprovider.JakartaConnectionProvider"
+		    connectionProviderClass = "org.dbforms.conprovider.SingleConnectionProvider"
 			name   = "jdbc:hsqldb:$(SERVLETCONTEXT_REALPATH)/WEB-INF/db_hsqldb/bookstore"
 			isJndi = "false"
 			conClass  = "org.hsqldb.jdbcDriver"
