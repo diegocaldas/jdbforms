@@ -25,9 +25,8 @@ import java.util.HashMap;
 import java.util.Properties;
 import javax.servlet.http.*;
 
-import org.CVS.*;
 import org.apache.log4j.Category;
-import org.dbforms.*;
+
 import org.dbforms.util.Util;
 import org.dbforms.util.ReflectionUtil;
 import org.dbforms.config.*;

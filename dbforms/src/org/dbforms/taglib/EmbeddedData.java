@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.taglib;
-import org.dbforms.*;
+
 import org.dbforms.config.*;
 import org.dbforms.util.SqlUtil;
 import org.dbforms.util.KeyValuePair;
@@ -37,7 +37,6 @@ import javax.servlet.http.*;
 import javax.servlet.jsp.*;
 import javax.servlet.jsp.tagext.*;
 
-import org.CVS.*;
 import org.apache.log4j.Category;
 
 
