@@ -846,7 +846,6 @@ public class ConfigServlet extends HttpServlet
       }
 
       MessageResources.setSubClass(value);
-		MessageResourcesInternal.setSubClass("org.dbforms.resources.messages");
 
       logCat.info(" DbForms Application Resources : SubClass initialized ");
    }

@@ -22,12 +22,78 @@
  */
 package org.dbforms.util;
 
+
+import java.util.Locale;
+import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
+
 /**
- * handling of external messages
+ * handling of internal messages
  *
  * @author Henner Kollmann
  */
-public class MessageResourcesInternal extends MessageResources
+public class MessageResourcesInternal
 {
+	/** DOCUMENT ME! */
+
+    private static String RESOURCE =  "org.dbforms.resources.messages";
+
+	protected static MessageResource msgRes = null;
+
+	/*********************************************************************************************
+	 *  Get the message from ResourceBundle.  If not present, return the defaultMsg at
+	 *  the place of a null.  To avoid to doing this condition everywhere in the code ...
+	 *
+	 * @param  <code>String</code> : Message key to lookup.
+	 * @param  <code>Locale</code> : Locale object to map message with good ResourceBundle.
+	 * @param  <code>String</code> : String to return if the lookup message key is not found.
+	 *
+	* @return        <code>String</code> : Message resolve.
+	 ********************************************************************************************/
+	public static String getMessage(String msg, Locale locale, String defaultMsg)
+	{
+		String s = getMessage(msg, locale);
+		if (Util.isNull(s)) 
+			s = defaultMsg;
+		return s;
+	}
+
+
+	/********************************************************************************************
+	 *  Retrieve message from ResourceBundle.  If the ResourceBundle is not yet cached,
+	 *  cache it and retreive message.
+	 *
+	 *         @param  <code>String</code> : Message key to lookup.
+	 *         @param  <code>Locale</code> : Locale object to map message with good ResourceBundle.
+	 *
+	 *         @return        <code>String</code> : Message resolve, null if not found.
+	 ********************************************************************************************/
+	public static String getMessage(String msg, Locale loc)
+	{
+		init();
+		return msgRes.getMessage(msg, loc);
+	}
+
+
+	/*********************************************************************************************
+	 *  Retrieve message from ResourceBundle and replace parameter "{x}" with values in parms array.
+	 *
+	 *         @param  <code>String</code> : Message key to lookup.
+	 *         @param  <code>Locale</code> : Locale object to map message with good ResourceBundle.
+	 *         @param  <code>String[]</code> : Parameters to replace "{x}" in message .
+	 *
+	 *         @return        <code>String</code> : Message resolve with parameter replaced, null if message key not found.
+	 ********************************************************************************************/
+	public static String getMessage(String msg, Locale loc, String[] parms)
+	{
+		init();
+		return msgRes.getMessage(msg, loc, parms);
+	}
+	
+	private static void init()
+	{
+	   if (msgRes == null)
+	      msgRes = new MessageResource(RESOURCE);
+	}
 
 }
