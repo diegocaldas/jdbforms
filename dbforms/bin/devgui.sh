@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/bin/sh
 #
 # $Id$
 #
@@ -41,7 +41,8 @@
 # PLEASE REPORT COMMENTS, BUGs ENHANCEMENTS TO <jdbforms-developers@lists.sourceforge.net> !
 
 
-
+echo $PATH
+echo $DBFORMS_HOME
 if [ "$DBFORMS_HOME" = "" ] ; then
     echo DBFORMS_HOME not set, you need to set it or install in a standard location
     exit 1
@@ -63,7 +64,7 @@ if [ "$JAVACMD" = "" ] ; then
 fi
 
 oldCP=$CLASSPATH
-CLASSPATH=${CLASSPATH}:${DBFORMS_HOME}/lib/dbforms_v09d.jar;
+CLASSPATH=${CLASSPATH}:${DBFORMS_HOME}/lib/dbforms_v09d.jar
 
 export CLASSPATH
 
@@ -78,3 +79,6 @@ if [ "$oldCP" != "" ]; then
 else
     unset CLASSPATH
 fi
+
+
+
