@@ -290,9 +290,12 @@ public class StartReportServlet extends HttpServlet {
 				// Send the output stream to the client
 				response.setContentLength(baos.size());
 				ServletOutputStream outputStream = response.getOutputStream();
-				baos.writeTo(outputStream);
-				outputStream.flush();
-				outputStream.close();
+				try {
+					baos.writeTo(outputStream);
+					outputStream.flush();
+				} finally {
+					outputStream.close();
+				}
 			} else {
 				handleEmptyResponse(request, response);
 
