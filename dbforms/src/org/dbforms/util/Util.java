@@ -30,6 +30,9 @@ import org.dbforms.util.external.PrintfFormat;
 
 import org.dbforms.config.DbFormsConfig;
 
+import java.io.UnsupportedEncodingException;
+
+import java.lang.NoSuchMethodException;
 
 
 /**
@@ -129,7 +132,28 @@ public class Util
       return s;
    }
 
-
+    /**
+     *Encode a string with desired character encoding.  
+     *Works from java sdk 1.4, and calls encode(String s) if 1.3 is used
+     *@param s the string to encode
+     *@param enc the desired encoding
+     * @return the encoded string
+     */
+    public static final String encode (String s, String enc)
+    throws UnsupportedEncodingException
+    {  try
+       {
+           if (!Util.isNull (s))
+           {
+               s = URLEncoder.encode (s, enc);
+           }
+           
+       }catch (NoSuchMethodException nsme)
+        {
+            s = encode (s);
+        }
+       return s;
+    }
 	/**
 	 * returns a formated string
 	 *

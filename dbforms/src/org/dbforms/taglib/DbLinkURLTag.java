@@ -309,13 +309,13 @@ public class DbLinkURLTag extends BodyTagSupport implements TryCatchFinally
          // position within table is not required.
          // if no position was provided/determinated, dbForm will navigate to the first row
          // 2002-11-20 HKK: Fixed encoding bug!
-         tagBuf.append(getDataTag(tagName, "destPos", Util.encode(position)));
+         tagBuf.append(getDataTag(tagName, "destPos", Util.encode(position,request.getCharacterEncoding ())));
 
          // 2002-11-21 HKK: Allow same keys as in dbgotobutton
          tagBuf.append(getDataTag(tagName, "keyToDestPos",
-               Util.encode(keyToDestPos)));
+               Util.encode(keyToDestPos,request.getCharacterEncoding ())));
          tagBuf.append(getDataTag(tagName, "keyToKeyDestPos",
-               Util.encode(keyToKeyToDestPos)));
+               Util.encode(keyToKeyToDestPos,request.getCharacterEncoding ())));
 
          // 2002-11-21 HKK: New: send parent table name as parameter if it is different to table
          if (table != parentForm.getTable())
