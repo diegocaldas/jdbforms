@@ -3,10 +3,10 @@
   <title>Security
 </title>
   <sect1>
-    <title>Introduction
-</title>
-    <para>DbForm's security features are fully compliant with SUN's Java Servlet API Specifications, version 2.2.  Chapter 11 of the Java Servlet Specification 2.2 describes the mechanisms containers must provide in order to enable developers and deployers to ensure the following characteristics of security:
-</para>
+    <title>Introduction</title>
+    <para>
+      DbForm's security features are fully compliant with SUN's Java Servlet API Specifications, version 2.2.  Chapter 11 of the Java Servlet Specification 2.2 describes the mechanisms containers must provide in order to enable developers and deployers to ensure the following characteristics of security:
+    </para>
     <itemizedlist mark="opencircle">
       <listitem>
         <para>Authentication</para>
@@ -76,21 +76,21 @@
       concept:
     </para>
     <programlisting>
-      <emphasis role="bold">&lt;dbforms-config&gt;</emphasis>
-      <emphasis role="bold">&lt;table name="customer" &gt;</emphasis>
-                    &lt;field name="id" fieldType="int" isKey="true" /&gt;
-                    &lt;field name="firstname" fieldType="char" /&gt;
-                    &lt;field name="lastname" fieldType="char" /&gt;
-                    &lt;field name="address" fieldType="char" /&gt;
-                                
+  <emphasis role="bold">&lt;dbforms-config&gt;</emphasis>
+    <emphasis role="bold">&lt;table name="customer" &gt;</emphasis>
+      &lt;field name="id" fieldType="int" isKey="true" /&gt;
+      &lt;field name="firstname" fieldType="char" /&gt;
+      &lt;field name="lastname" fieldType="char" /&gt;
+      &lt;field name="address" fieldType="char" /&gt;                                
+
       <emphasis role="bold">&lt;granted-privileges</emphasis> 
-                        select = "A,B"
-                        insert = "A"
-                        update = "A,B"
-                        delete = "A" /&gt;
-                
-      <emphasis role="bold">&lt;/table&gt;</emphasis>
-      <emphasis role="bold">&lt;/dbforms-config&gt;</emphasis>
+        select = "A,B"
+        insert = "A"
+        update = "A,B"
+        delete = "A"
+      /&gt;                
+    <emphasis role="bold">&lt;/table&gt;</emphasis>
+  <emphasis role="bold">&lt;/dbforms-config&gt;</emphasis>
     </programlisting>
     <para>
       The attributes of the &lt;granted-privileges&gt; element tell DbForms:
