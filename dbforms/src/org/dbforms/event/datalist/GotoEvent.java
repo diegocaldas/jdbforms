@@ -236,6 +236,12 @@ public class GotoEvent extends NavigationEvent
          {
             fv = table.mapChildFieldValues(srcTable, parentField, childField, 
                                            position);
+			// You must set the childFieldValues in this case! 
+			// Old given childFieldValues do not match table!
+			if (fv != null)
+			{
+				childFieldValues = fv.toArr();
+			}
          }
          else
          {
@@ -243,12 +249,6 @@ public class GotoEvent extends NavigationEvent
          }
 
          position = table.getKeyPositionString(fv);
-/* 2003-08-01-HKK: Why this? Can't remember...
-         if (fv != null)
-         {
-            childFieldValues = fv.toArr();
-         }
-*/
       } 
 
       DataSourceList ds = DataSourceList.getInstance(request);
