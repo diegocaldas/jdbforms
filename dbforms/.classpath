@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-    <classpathentry kind="src" path=""/>
+    <classpathentry kind="src" path="src"/>
+    <classpathentry kind="src" path="tests/test"/>
     <classpathentry kind="var" path="JRE_LIB" rootpath="JRE_SRCROOT" sourcepath="JRE_SRC"/>
-    <classpathentry kind="output" path=""/>
+    <classpathentry kind="lib" path="dependend/commons-beanutils.jar"/>
+    <classpathentry kind="lib" path="dependend/commons-collections.jar"/>
+    <classpathentry kind="lib" path="dependend/commons-dbcp.jar"/>
+    <classpathentry kind="lib" path="dependend/commons-digester.jar"/>
+    <classpathentry kind="lib" path="dependend/commons-logging.jar"/>
+    <classpathentry kind="lib" path="dependend/commons-validator.jar"/>
+    <classpathentry kind="lib" path="dependend/cos.jar"/>
+    <classpathentry kind="lib" path="dependend/jakarta-oro-2.0.6.jar"/>
+    <classpathentry kind="lib" path="dependend/log4j.jar"/>
+    <classpathentry kind="lib" path="dependend/protomatter-1.1.8-pre5.jar"/>
+    <classpathentry kind="lib" path="dependend/request.jar"/>
+    <classpathentry kind="lib" path="dependend/xalan.jar"/>
+    <classpathentry kind="lib" path="dependend/xerces.jar"/>
+    <classpathentry kind="var" path="SERVLET_JAR"/>
+    <classpathentry kind="var" path="JUNIT_JAR"/>
+    <classpathentry kind="output" path="build"/>
 </classpath>
