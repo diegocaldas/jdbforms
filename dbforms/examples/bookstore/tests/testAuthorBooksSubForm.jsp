@@ -57,7 +57,7 @@
 			    <db:dbform 
 		      		autoUpdate="false" 
 		      		followUp="/tests/testAuthorBooksSubForm.jsp"   
-		      		maxRows="*" 
+		      		maxRows="1" 
 		      		tableName="BOOK"
 		     		parentField="AUTHOR_ID"
 		     		childField="AUTHOR_ID"	 			
