@@ -4,7 +4,7 @@
 putenv ("TZ=GMT"); 
 
 #-- change dir to where this config script is located
-chdir(dirname(__FILE__)."/ewiki");
+chdir(dirname(__FILE__)."/_ewiki");
 
 
 
@@ -15,10 +15,10 @@ if (function_exists("mysql_connect")) {
 }
 
 #-- or use the flat file database backend as fallback
-#if (!$ok) {
-#   // define("EWIKI_DBFILES_DIRECTORY", "/tmp");
-#   include("plugins/db/flat_files.php");
-#}
+if (!$ok) {
+   // define("EWIKI_DBFILES_DIRECTORY", "/tmp");
+   include("plugins/db/flat_files.php");
+}
 
 
 #-- constants
@@ -26,28 +26,26 @@ define("EWIKI_NAME", 'DbFormsWiki');
 define("EWIKI_PAGE_INDEX",   'WiKi');
 define("EWIKI_SCRIPT", "http://jdbforms.sourceforge.net/wiki.php?page=");
 define("EWIKI_LOGFILE", '/home/groups/j/jd/jdbforms/htdocs/log/ewiki.txt');
+#define("EWIKI_TMP", "/home/groups/j/jd/jdbforms/htdocs/tmp");
+define("EWIKI_TMP", "/tmp");
 define("EWIKI_LOGLEVEL", '3');
 define("EWIKI_EDIT_REDIRECT", 0);
 define("EWIKI_NOTIFY_WITH_DIFF", 1);
-define("EWIKI_NOTIFY_DIFF_PARAMS", "  -B -u -U 50 --ignore-case  --ignore-space-change");
 define("EWIKI_PROTECTED_MODE", 1);
 #define("EWIKI_PROTECTED_MODE_HIDING", 1);
 define("EWIKI_AUTO_LOGIN", 1);
 
 
-#-- set a few configuration variables*
+#-- set a few configuration variables
 $ewiki_config["edit_thank_you"] = 0;
-$ewiki_config["edit_box_size"] = '70x15';
 
 #-- load plugins
-
 include("plugins/lib/mime_magic.php");
 
 include("plugins/email_protect.php");
 #include("plugins/spages.php");
 include("plugins/jump.php");
-include("../notify.php");
-#include("plugins/notify.php");
+include("plugins/notify.php");
 include("plugins/patchsaving.php");
 
 include("plugins/feature/appendonly.php");
@@ -92,8 +90,9 @@ include("plugins/linking/linkexcerpts.php");
 include("plugins/auth/auth_perm_ring.php");
 include("plugins/auth/userdb_array.php");
 
-include("../wiki_auth_method_form.php");
-include("../wiki_userdb_userregistry.php");
+#-- own plugins, modified from original ewiki source
+include("plugins/auth/dbforms_auth_method_form.php");
+include("plugins/auth/dbforms_userdb_userregistry.php");
 
 include("plugins/admin/control.php");
 
