@@ -5477,7 +5477,11 @@ noop, goto, insert, update, delete</summary>
 					<name>customEntry</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
-					<info>Allows an additional (independant) entry into the select list</info>
+					<info>
+					     Allows an additional (independant) entry into the select list<br/>
+					     Arguments to this tag are as follows:<br/>
+							Key,Description,boolean (default selection?)
+					</info>
 				</attribute>
 				<attribute>
 					<name>selectedIndex</name>
