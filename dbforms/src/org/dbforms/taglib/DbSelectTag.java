@@ -45,6 +45,9 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer,
    private String  selectedIndex;
    private String  customEntry;
    private String  size;
+   private String ifEmptyItem = null;
+   private boolean ifEmptyDontDraw = false;
+   private boolean overrideReadOnly = false;
 
    /**
     * DOCUMENT ME!
@@ -193,6 +196,7 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer,
 
       StringBuffer       tagBuf          = new StringBuffer();
       StringBuffer       selectedOptions = new StringBuffer();
+      int embeddedDataSize = 0;
 
       String             currentValue = getFormFieldValue();
 
@@ -234,25 +238,58 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer,
             tagBuf.append(generateTagString(aKey, aValue, isSelected));
          }
 
-         int embeddedDataSize = embeddedData.size();
+			embeddedDataSize = embeddedData.size();
 
-         for (int i = 0; i < embeddedDataSize; i++)
-         {
-            KeyValuePair aKeyValuePair = (KeyValuePair) embeddedData.get(i);
-            String       aKey   = aKeyValuePair.getKey();
-            String       aValue = aKeyValuePair.getValue();
+			// check for special 'IfEmpty' processing. if used skip the datadriven loop 
+			boolean drawIt = true;
+			String me = null;
+			if (embeddedDataSize == 0) {
+				if (isIfEmptyDontDraw()) {
+					drawIt = false;
+				} else if ((me = getIfEmptyItem()) != null) {
+					drawIt = false;
+					String aKey =
+						org
+							.dbforms
+							.util
+							.ParseUtil
+							.getEmbeddedStringWithoutDots(
+							me,
+							0,
+							',');
+					String aValue =
+						org
+							.dbforms
+							.util
+							.ParseUtil
+							.getEmbeddedStringWithoutDots(
+							me,
+							1,
+							',');
+					// always selected, since no other items
+					selectedOptions.append("-").append(aKey);
+					tagBuf.append(generateTagString(aKey, aValue, true));
+				}
+			}
 
-            // select, if datadriven and data matches with current value OR if explicitly set by user
-            boolean isSelected = aKey.equals(currentValue);
+			if (drawIt) {
+				for (int i = 0; i < embeddedDataSize; i++) {
+					KeyValuePair aKeyValuePair =
+						(KeyValuePair) embeddedData.get(i);
+					String aKey = aKeyValuePair.getKey();
+					String aValue = aKeyValuePair.getValue();
 
-            if (isSelected)
-            {
-               selectedOptions.append("-").append(aKey);
-            }
+					// select, if datadriven and data matches with current value OR if explicitly set by user
+					boolean isSelected = aKey.equals(currentValue);
 
-            tagBuf.append(generateTagString(aKey, aValue, isSelected));
-         }
-      }
+					if (isSelected) {
+						selectedOptions.append("-").append(aKey);
+					}
+
+					tagBuf.append(generateTagString(aKey, aValue, isSelected));
+				}
+			}
+		}
 
       tagBuf.append("</select>");
 
@@ -261,7 +298,7 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer,
       // Reset to the default selected values (in case of multiselection)
       // using javascript function on client side.
       //
-      if (hasReadOnlySet() || getParentForm().hasReadOnlySet())
+      if ( (!hasOverrideReadOnlySet()) && hasReadOnlySet() || getParentForm().hasReadOnlySet())
       {
          selectedOptions.append("-");
 
@@ -293,9 +330,11 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer,
 
       try
       {
-         pageContext.getOut().write(generateSelectHeader());
-         pageContext.getOut().write(tagBuf.toString());
-         writeOutSpecialValues();
+         if ((embeddedDataSize > 0) || !isIfEmptyDontDraw()) {
+         	pageContext.getOut().write(generateSelectHeader());
+         	pageContext.getOut().write(tagBuf.toString());
+         	writeOutSpecialValues();
+         }
       }
       catch (java.io.IOException ioe)
       {
@@ -360,6 +399,9 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer,
       selectedIndex = null;
       customEntry   = null;
       size          = null;
+      ifEmptyDontDraw = false;
+      ifEmptyItem = null;
+      overrideReadOnly = false;
       super.doFinally();
    }
    
@@ -370,5 +412,46 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer,
    {
       throw t;
    }
+	/**
+	 * @param b
+	 */
+	public void setIfEmptyDontDraw(boolean b) {
+		ifEmptyDontDraw = b;
+	}
+
+	/**
+	 * @param string
+	 */
+	public void setIfEmptyItem(String string) {
+		ifEmptyItem = string;
+	}
+
+	/**
+	 * @param b
+	 */
+	public void setOverrideReadOnly(boolean b) {
+		overrideReadOnly = b;
+	}
+
+	/**
+	 * @return
+	 */
+	public boolean isIfEmptyDontDraw() {
+		return ifEmptyDontDraw;
+	}
+
+	/**
+	 * @return
+	 */
+	public String getIfEmptyItem() {
+		return ifEmptyItem;
+	}
+
+	/**
+	 * @return
+	 */
+	public boolean hasOverrideReadOnlySet() {
+		return overrideReadOnly;
+	}
 
 }
