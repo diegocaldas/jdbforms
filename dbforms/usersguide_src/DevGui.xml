@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
  
 	<chapter>
-		<title>DevGui
+		<title id ="devgui">DevGui
 </title>
 		<sect1>
 			<title>Introduction
@@ -128,8 +128,7 @@ bash,ksh:  export DBFORMS_HOME=/home/user123/dbforms
 <listitem>
 <para>libraries for Xalan-Java XSLT processor and a XML parser like Xerxes.
 </para>
-<blockquote><para>Please download simply a binary xalan distribution from 
-<computeroutput>http://xml.apache.org/xalan-j/</computeroutput> and include xalan.jar and xercesImpl.jar (both included) in your CLASSPATH.
+<blockquote><para>Please download simply a binary<ulink url="http://xml.apache.org/xalan-j/"><citetitle> xalan distribution</citetitle></ulink> and include xalan.jar and xercesImpl.jar (both included) in your CLASSPATH.
 </para>
 <para>example(win):</para>
 <screen>
