@@ -593,6 +593,10 @@ public class DbConnection
       prefs.setPassword(password);
       prefs.setProperties(properties);
       prefs.setPoolProperties(poolProperties);
+      try {
+         prefs.setServletContext(DbFormsConfigRegistry.instance().lookup().getServletConfig().getServletContext());
+      } catch (Exception e) {
+      }
       connectionFactory.setProvider(prefs);
       isFactorySetup = true;
    }

@@ -21,7 +21,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.conprovider;
+
 import java.util.Properties;
+import javax.servlet.ServletContext;
 
 
 
@@ -57,6 +59,9 @@ public class ConnectionProviderPrefs
 
    /** Holds connection pool custom properties * */
    private Properties poolProperties;
+   
+   private ServletContext servletContext;
+
 
    /**
     *  Gets the connectionProviderClass attribute of the ConnectionProviderPrefs object
@@ -232,4 +237,19 @@ public class ConnectionProviderPrefs
    {
       this.poolProperties = poolProperties;
    }
+
+   /**
+    * @return
+    */
+   public ServletContext getServletContext() {
+      return servletContext;
+   }
+
+   /**
+    * @param context
+    */
+   public void setServletContext(ServletContext context) {
+      servletContext = context;
+   }
+
 }
