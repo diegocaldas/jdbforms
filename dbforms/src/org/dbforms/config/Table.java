@@ -967,7 +967,7 @@ public class Table
 	 * and now we want to prepare the statemtent - provide actual values for the
 	 * the '?' placeholders
 	 *
-	 * @param  fv the array of FieldValue objects
+	 * @param  fvEqual the array of FieldValue objects
 	 * @param  ps the PreparedStatement object
 	 * @param  curCol the current PreparedStatement column; points to a
 	 *                PreparedStatement xxx value
@@ -1143,7 +1143,9 @@ public class Table
          buf.append(fieldValue.length());
          buf.append(":");
          buf.append(fieldValue);
-      } else {
+      } 
+      else 
+      {
 			buf.append(0);
 			buf.append(":");
       }

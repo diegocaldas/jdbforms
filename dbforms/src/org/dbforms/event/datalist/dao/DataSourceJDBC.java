@@ -186,7 +186,7 @@ public class DataSourceJDBC extends DataSource
          }
          rs = null;
       }
-
+/*
       if (stmt != null)
       {
          try
@@ -199,7 +199,7 @@ public class DataSourceJDBC extends DataSource
          }
          stmt = null;
       }
-
+*/
       if (ownCon)
       {
          try
