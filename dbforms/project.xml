@@ -332,6 +332,13 @@
          </properties>
       </dependency>
       <dependency>
+         <id>poi</id>
+         <version>2.0-final-20040126</version>
+         <properties>
+            <war.bundle>true</war.bundle>
+         </properties>
+      </dependency>
+      <dependency>
          <!-- This is self hosted! -->
          <id>maxq</id>
          <version>0.95dev</version>
