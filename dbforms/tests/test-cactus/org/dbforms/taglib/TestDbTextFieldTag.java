@@ -158,7 +158,7 @@ public class TestDbTextFieldTag extends JspTestCase {
       String s = theResponse.getText();
       boolean res = s.indexOf("value=\"2.3\"") > -1;
       assertTrue("not found: " + "value=\"2.3\"", res);
-      res = s.indexOf("value=\"1900\\01\\\"") > -1;
+      res = s.indexOf("value=\"1900/01/01\"") > -1;
       assertTrue("not found : " + "value=\"1900/01/01\"", res);
    }
 
