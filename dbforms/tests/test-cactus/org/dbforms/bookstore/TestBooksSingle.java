@@ -202,4 +202,10 @@ public class TestBooksSingle extends HttpTestCase
 
 	}
 
+	public void testGotoPrefix() throws Exception
+	{
+		get("http://localhost/bookstore/tests/testBOOKSSingle.jsp?fv_BOOK_ID=4&fv_AUTHOR_ID=2");
+		printResponse();
+		assertTrue(responseContains("Hijacking through the Galaxy 2"));
+	}
 }
