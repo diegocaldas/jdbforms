@@ -25,10 +25,10 @@ SourceForge's CVS server. If you are a developer with CVS access,
 probably you have got a SSH cvs access - and you want to use it ! ;^). To let Maven access to SourceForge's CVS using an SSH connection on 
 win32 platforms, you could:
 
-- use the Putty package
+- use the Putty package (only if you use WinCVS 1.2 not with WinCVS 1.3!):
    http://www.chiark.greenend.org.uk/~sgtatham/putty/
 
-- set the CVS_RSH env var to:
+- set the CVS_RSH env var to (only if you use WinCVS 1.2 not with WinCVS 1.3!):
    <my_path_to_putty_directory>\plink.exe
 
    Example:
@@ -36,8 +36,9 @@ win32 platforms, you could:
 
 - set your default settings to your sourceforge accout!
 
-- special Windows: set your path so that maven can find the cvs command! For WinCVS 1.2 it's the WinCVS dir, for WinCVS 1.3 it's
-                   the WinCVS/CVSNT dir!
+- set your path so that maven can find the cvs command! For WinCVS 1.2 this is the WinCVS dir, for WinCVS 1.3 it's
+  the WinCVS/CVSNT dir!
+
                    
 That's all !
 
