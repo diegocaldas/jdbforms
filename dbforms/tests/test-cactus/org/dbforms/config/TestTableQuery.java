@@ -24,11 +24,11 @@
 package org.dbforms.config;
 import junit.framework.Test;
 import junit.framework.TestSuite;
-import org.apache.cactus.ServletTestCase;
+import org.apache.cactus.JspTestCase;
 import org.apache.cactus.WebResponse;
 import java.text.SimpleDateFormat;
 import org.dbforms.servlets.ConfigServlet;
-
+import org.dbforms.taglib.DbFormTag;
 
 
 /**
@@ -36,16 +36,16 @@ import org.dbforms.servlets.ConfigServlet;
  * 
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
  */
-public class TestDbFormsConfig extends ServletTestCase
+public class TestTableQuery extends JspTestCase
 {
-   private DbFormsConfig dbFormsConfig = null;
+	private DbFormTag   tag;
 
    /**
     * Defines the testcase name for JUnit.
     * 
     * @param theName the testcase's name.
     */
-   public TestDbFormsConfig(String theName)
+   public TestTableQuery(String theName)
    {
       super(theName);
    }
@@ -60,7 +60,7 @@ public class TestDbFormsConfig extends ServletTestCase
       junit.swingui.TestRunner.main(
                new String[] 
       {
-         TestDbFormsConfig.class.getName()
+         TestTableQuery.class.getName()
       });
    }
 
@@ -74,7 +74,7 @@ public class TestDbFormsConfig extends ServletTestCase
    public static Test suite()
    {
       // All methods starting with "test" will be executed in the test suite.
-      return new TestSuite(TestDbFormsConfig.class);
+      return new TestSuite(TestTableQuery.class);
    }
 
 
@@ -86,14 +86,16 @@ public class TestDbFormsConfig extends ServletTestCase
    public void setUp() throws Exception
    {
       config.setInitParameter("dbformsConfig", "/WEB-INF/dbforms-config.xml");
-		dbFormsConfig = DbFormsConfigRegistry.instance().lookup();
+		DbFormsConfig dbFormsConfig = DbFormsConfigRegistry.instance().lookup();
 		if (dbFormsConfig == null)
 		{
 			config.setInitParameter("dbformsConfig", "/WEB-INF/dbforms-config.xml");
 			ConfigServlet configServlet = new ConfigServlet();
 			configServlet.init(config);
-			dbFormsConfig = DbFormsConfigRegistry.instance().lookup();
 		}
+		this.tag = new DbFormTag();
+		this.tag.setPageContext(this.pageContext);
+
    }
 
 
@@ -102,53 +104,22 @@ public class TestDbFormsConfig extends ServletTestCase
     * 
     * @throws Exception DOCUMENT ME!
     */
-   public void testStandardDbFormsConfig() throws Exception
+   public void testTable() throws Exception
    {
-      Table tblAuthor = dbFormsConfig.getTableByName("AUTHOR");
-      assertTrue("Found tblAuthor", tblAuthor.getName().equals("AUTHOR"));
-      assertTrue("Found tblBook", 
-                 dbFormsConfig.getTableByName("BOOK").getName().equals("BOOK"));
-      assertTrue("Make sure table names ARE casesensitve", 
-                 dbFormsConfig.getTableByName("book") == null);
+		this.tag.setTableName("BOOK");
+		this.tag.setFilter("BOOK_ID=5,AUTHOR_ID=2");
+		this.tag.doStartTag();
+		assertEquals(1, this.tag.getResultSetVector().size());
    }
 
 
-   /**
-    * DOCUMENT ME!
-    * 
-    * @throws Exception DOCUMENT ME!
-    */
-   public void testSimpleDateFormat() throws Exception
-   {
-      SimpleDateFormat sdf = dbFormsConfig.getDateFormatter();
-      assertTrue("Default SDF is not null", sdf != null);
-
-      dbFormsConfig.setDateFormatter("ddMMMyy");
-
-      SimpleDateFormat newSDF = new SimpleDateFormat("ddMMMyy");
-      assertTrue("New SDF doesn't match orginial:", 
-                 !sdf.equals(dbFormsConfig.getDateFormatter()));
-      assertTrue("New SDF does match format ddMMMyy:", 
-                 newSDF.equals(dbFormsConfig.getDateFormatter()));
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    * 
-    * @throws Exception DOCUMENT ME!
-    */
-   public void testAddTable() throws Exception
-   {
-      Table newTable = new Table();
-      newTable.setName("NEW_TABLE");
-      dbFormsConfig.addTable(newTable);
-
-      assertTrue("Found NEW_TABLE", 
-                 dbFormsConfig.getTableByName("NEW_TABLE").getName()
-                              .equals("NEW_TABLE"));
-   }
-
+	public void testQuery() throws Exception
+	{
+		this.tag.setTableName("BOOKLISTPERAUTHOR");
+		this.tag.setFilter("BOOK_ID=5,AUTHOR_ID=2");
+		this.tag.doStartTag();
+		assertEquals(1, this.tag.getResultSetVector().size());
+	}
 
    /**
     * DOCUMENT ME!

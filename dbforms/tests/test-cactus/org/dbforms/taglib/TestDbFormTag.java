@@ -36,324 +36,346 @@ import org.dbforms.util.AssertUtils;
 
 
 
-
 /**
  * Tests of the <code>DbFormTag</code> class.
- *
+ * 
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
- *
  */
 public class TestDbFormTag extends JspTestCase
 {
-    private DbFormTag tag;
-    private BodyContent tagContent;
-    private Table tblAuthor = null;
+   private DbFormTag   tag;
+   private BodyContent tagContent;
+   private Table       tblResult = null;
 
-    /**
-     * Defines the testcase name for JUnit.
-     *
-     * @param theName the testcase's name.
-     */
-    public TestDbFormTag(String theName)
-    {
-        super(theName);
-    }
+   /**
+    * Defines the testcase name for JUnit.
+    * 
+    * @param theName the testcase's name.
+    */
+   public TestDbFormTag(String theName)
+   {
+      super(theName);
+   }
 
-    /**
-     * Start the tests.
-     *
-     * @param theArgs the arguments. Not used
-     */
-    public static void main(String[] theArgs)
-    {
-        junit.swingui.TestRunner.main(new String[]
-        {
-            TestDbFormTag.class.getName()
-        });
-    }
-
-
-    /**
-     * @return a test suite (<code>TestSuite</code>) that includes all methods
-     *         starting with "test"
-     */
-    public static Test suite()
-    {
-        // All methods starting with "test" will be executed in the test suite.
-        return new TestSuite(TestDbFormTag.class);
-    }
+   /**
+    * Start the tests.
+    * 
+    * @param theArgs the arguments. Not used
+    */
+   public static void main(String[] theArgs)
+   {
+      junit.swingui.TestRunner.main(
+               new String[] 
+      {
+         TestDbFormTag.class.getName()
+      });
+   }
 
 
-    /**
-     * In addition to creating the tag instance and adding the pageContext to
-     * it, this method creates a BodyContent object and passes it to the tag.
-     */
-    public void setUp() throws Exception
-    {
-        DbFormsConfigRegistry.instance().register(null);
-        tblAuthor = null;
-        config.setInitParameter("dbformsConfig", "/WEB-INF/dbforms-config.xml");
-        config.setInitParameter("log4j.configuration", "/WEB-INF/log4j.properties");
-
-        ConfigServlet configServlet = new ConfigServlet();
-        configServlet.init(config);
-
-        DbFormsConfig dbFormsConfig = (DbFormsConfig) configServlet.getServletContext().getAttribute(DbFormsConfig.CONFIG);
-
-        this.tag = new DbFormTag();
-        this.tag.setPageContext(this.pageContext);
-
-        //create the BodyContent object and call the setter on the tag instance
-        //this.tagContent = this.pageContext.pushBody();
-        //this.tag.setBodyContent(this.tagContent);
-    }
+   /**
+    * DOCUMENT ME!
+    * 
+    * @return a test suite (<code>TestSuite</code>) that includes all methods
+    *         starting with "test"
+    */
+   public static Test suite()
+   {
+      // All methods starting with "test" will be executed in the test suite.
+      return new TestSuite(TestDbFormTag.class);
+   }
 
 
-    //-------------------------------------------------------------------------
+   /**
+    * In addition to creating the tag instance and adding the pageContext to
+    * it, this method creates a BodyContent object and passes it to the tag.
+    * @throws Exception DOCUMENT ME!
+    */
+   public void setUp() throws Exception
+   {
+      tblResult = null;
 
-    /**
-     * Sets the replacement target and replacement String on the tag, then calls
-     * doAfterBody(). Most of the assertion work is done in endReplacement().
-     */
-    public void testMaxRows() throws Exception
-    {
-        this.tag.setMaxRows("1");
-        assertEquals("1", this.tag.getMaxRows());
-        assertTrue("Should be 1", this.tag.getCount() == 1);
+      DbFormsConfig dbFormsConfig = DbFormsConfigRegistry.instance().lookup();
+      if (dbFormsConfig == null)
+      {
+         config.setInitParameter("dbformsConfig", "/WEB-INF/dbforms-config.xml");
+         config.setInitParameter("log4j.configuration", 
+                                 "/WEB-INF/log4j.properties");
 
-        this.tag.setMaxRows("0");
-        assertEquals("0", this.tag.getMaxRows());
-        assertTrue("should be 0", this.tag.getCount() == 0);
-    }
+         ConfigServlet configServlet = new ConfigServlet();
+         configServlet.init(config);
+      }
 
+      this.tag = new DbFormTag();
+      this.tag.setPageContext(this.pageContext);
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @throws Exception DOCUMENT ME!
-     */
-    public void testMaxRows2() throws Exception
-    {
-        this.tag.setMaxRows("*");
-        assertEquals("*", this.tag.getMaxRows());
-        assertTrue("should be 0", this.tag.getCount() == 0);
-    }
+      //create the BodyContent object and call the setter on the tag instance
+      //this.tagContent = this.pageContext.pushBody();
+      //this.tag.setBodyContent(this.tagContent);
+   }
 
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @throws Exception DOCUMENT ME!
-     */
-    public void testSetUpTagNoTable() throws Exception
-    {
-        // mimic
-        //<db:dbform redisplayFieldsOnError="true" autoUpdate="true" followUp="/AUTHOR_poweruser_list.jsp" maxRows="*">
-        this.tag.setMaxRows("*");
+   //-------------------------------------------------------------------------
 
-        this.tag.setRedisplayFieldsOnError("true");
-        this.tag.setAutoUpdate("true");
+   /**
+    * Sets the replacement target and replacement String on the tag, then calls
+    * doAfterBody(). Most of the assertion work is done in endReplacement().
+    * @throws Exception DOCUMENT ME!
+    */
+   public void testMaxRows() throws Exception
+   {
+      this.tag.setMaxRows("1");
+      assertEquals("1", this.tag.getMaxRows());
+      assertTrue("Should be 1", this.tag.getCount() == 1);
 
-        int result = this.tag.doStartTag();
-        assertEquals(BodyTag.EVAL_BODY_BUFFERED, result);
-    }
-
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @throws Exception DOCUMENT ME!
-     */
-    public void testSetUpTagForAuthor() throws Exception
-    {
-        // mimic
-        //<db:dbform redisplayFieldsOnError="true" autoUpdate="true" followUp="/AUTHOR_poweruser_list.jsp" maxRows="*" tableName="AUTHOR">
-        this.tag.setMaxRows("*");
-        this.tag.setTableName("AUTHOR");
-        tblAuthor = tag.getTable();
-        assertTrue("Make sure we get table name back", tag.getTableName().equals("AUTHOR"));
-        assertTrue("Make sure we get table with right name back", tag.getTable().getName().equals("AUTHOR"));
-
-        this.tag.setRedisplayFieldsOnError("true");
-        this.tag.setAutoUpdate("true");
-
-        int result = this.tag.doStartTag();
-        assertEquals(BodyTag.EVAL_BODY_BUFFERED, result);
-    }
+      this.tag.setMaxRows("0");
+      assertEquals("0", this.tag.getMaxRows());
+      assertTrue("should be 0", this.tag.getCount() == 0);
+   }
 
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @throws Exception DOCUMENT ME!
-     */
-    public void testSetUpTagForBook() throws Exception
-    {
-        // mimic
-        //<db:dbform redisplayFieldsOnError="true" autoUpdate="true" followUp="/BOOK_poweruser_list.jsp" maxRows="*" tableName="BOOK">
-        this.tag.setMaxRows("*");
-        this.tag.setTableName("BOOK");
-        tblAuthor = tag.getTable();
-        assertTrue("Make sure we get table name back", tag.getTableName().equals("BOOK"));
-        assertTrue("Make sure we get table with right name back", tag.getTable().getName().equals("BOOK"));
-
-        this.tag.setRedisplayFieldsOnError("true");
-        this.tag.setAutoUpdate("true");
-
-        int result = this.tag.doStartTag();
-        assertEquals(BodyTag.EVAL_BODY_BUFFERED, result);
-    }
+   /**
+    * DOCUMENT ME!
+    * 
+    * @throws Exception DOCUMENT ME!
+    */
+   public void testMaxRows2() throws Exception
+   {
+      this.tag.setMaxRows("*");
+      assertEquals("*", this.tag.getMaxRows());
+      assertTrue("should be 0", this.tag.getCount() == 0);
+   }
 
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @throws Exception DOCUMENT ME!
-     */
-    public void testSetUpTagForAuthorWithEverything() throws Exception
-    {
-        // mimic
-        //<db:dbform redisplayFieldsOnError="true" autoUpdate="true" followUp="/AUTHOR_poweruser_list.jsp" maxRows="*" tableName="AUTHOR">
-        this.tag.setMaxRows("*");
-        this.tag.setTableName("AUTHOR");
-        this.tag.setRedisplayFieldsOnError("true");
-        this.tag.setAutoUpdate("true");
-        this.tag.setTarget("_TOP");
-        this.tag.setFollowUp("/AUTHOR_poweruser_list.jsp");
-        this.tag.setOrderBy("NAME");
-        this.tag.setReadOnly("false");
+   /**
+    * DOCUMENT ME!
+    * 
+    * @throws Exception DOCUMENT ME!
+    */
+   public void testSetUpTagNoTable() throws Exception
+   {
+      // mimic
+      //<db:dbform redisplayFieldsOnError="true" autoUpdate="true" followUp="/AUTHOR_poweruser_list.jsp" maxRows="*">
+      this.tag.setMaxRows("*");
 
-        int result = this.tag.doStartTag();
-        assertEquals(BodyTag.EVAL_BODY_BUFFERED, result);
-    }
+      this.tag.setRedisplayFieldsOnError("true");
+      this.tag.setAutoUpdate("true");
+
+      int result = this.tag.doStartTag();
+      assertEquals(BodyTag.EVAL_BODY_BUFFERED, result);
+   }
 
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @throws Exception DOCUMENT ME!
-     */
-    public void testEndTagForAuthor() throws Exception
-    {
-        // mimic
-        //<db:dbform redisplayFieldsOnError="true" autoUpdate="true" followUp="/AUTHOR_poweruser_list.jsp" maxRows="*" tableName="AUTHOR">
-        this.tag.setMaxRows("*");
-        this.tag.setTableName("AUTHOR");
-        tblAuthor = tag.getTable();
-        assertTrue("Make sure we get table name back", tag.getTableName().equals("AUTHOR"));
-        assertTrue("Make sure we get table with right name back", tag.getTable().getName().equals("AUTHOR"));
+   /**
+    * DOCUMENT ME!
+    * 
+    * @throws Exception DOCUMENT ME!
+    */
+   public void testSetUpTagForAuthor() throws Exception
+   {
+      // mimic
+      //<db:dbform redisplayFieldsOnError="true" autoUpdate="true" followUp="/AUTHOR_poweruser_list.jsp" maxRows="*" tableName="AUTHOR">
+      this.tag.setMaxRows("*");
+      this.tag.setTableName("AUTHOR");
+      tblResult = tag.getTable();
+      assertTrue("Make sure we get table name back", 
+                 tag.getTableName().equals("AUTHOR"));
+      assertTrue("Make sure we get table with right name back", 
+                 tag.getTable().getName().equals("AUTHOR"));
 
-        this.tag.setRedisplayFieldsOnError("true");
-        this.tag.setAutoUpdate("true");
+      this.tag.setRedisplayFieldsOnError("true");
+      this.tag.setAutoUpdate("true");
 
-        int result = this.tag.doEndTag();
-        assertEquals(BodyTag.EVAL_PAGE, result);
-    }
-
-
-    /**
-     * Verifies that the target text is in the tag's
-     * body.
-     */
-    public void endSetUpTagNoTable(WebResponse theResponse)
-    {
-        String content = theResponse.getText();
-        AssertUtils.assertContains("<form name=\"dbform\"",content);
-        AssertUtils.assertContains("method=\"post\"",content);
-
-    }
+      int result = this.tag.doStartTag();
+      assertEquals(BodyTag.EVAL_BODY_BUFFERED, result);
+   }
 
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param theResponse DOCUMENT ME!
-     */
-    public void endSetUpTagForAuthor(WebResponse theResponse)
-    {
-        /* expected content:
-        <form name="dbform" action="/test/servlet/control;jsessionid=9056E6E9E4F59E13EF9DE8E371E2D5A3" method="post">
-        <input type="hidden" name="invtable" value="0"><input type="hidden" name="autoupdate_0" value="true">
-        <input type="hidden" name="fu_0" value="null"><input type="hidden" name="source" value="/test">
-        <input type="hidden" name="customEvent">
-        */
-        String content = theResponse.getText();
+   /**
+    * DOCUMENT ME!
+    * 
+    * @throws Exception DOCUMENT ME!
+    */
+   public void testSetUpTagForBook() throws Exception
+   {
+      // mimic
+      //<db:dbform redisplayFieldsOnError="true" autoUpdate="true" followUp="/BOOK_poweruser_list.jsp" maxRows="*" tableName="BOOK">
+      this.tag.setMaxRows("*");
+      this.tag.setTableName("BOOK");
+      tblResult = tag.getTable();
+      assertTrue("Make sure we get table name back", 
+                 tag.getTableName().equals("BOOK"));
+      assertTrue("Make sure we get table with right name back", 
+                 tag.getTable().getName().equals("BOOK"));
 
-        AssertUtils.assertContains("<form name=\"dbform\"",content);
-        AssertUtils.assertContains("method=\"post\"",content);
-        AssertUtils.assertContains("<input type=\"hidden\" name=\"invtable\" value=\"0\">",content);
-        AssertUtils.assertContains("<input type=\"hidden\" name=\"autoupdate_0\" value=\"true\">",content);
-        AssertUtils.assertContains("<input type=\"hidden\" name=\"fu_0\" value=\"null\">",content);
-    }
+      this.tag.setRedisplayFieldsOnError("true");
+      this.tag.setAutoUpdate("true");
 
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @param theResponse DOCUMENT ME!
-     */
-    public void endSetUpTagForBook(WebResponse theResponse)
-    {
-        /* expected content:
-        <form name="dbform" action="/test/servlet/control;jsessionid=9056E6E9E4F59E13EF9DE8E371E2D5A3" method="post">
-        <input type="hidden" name="invtable" value="1"><input type="hidden" name="autoupdate_1" value="true">
-        <input type="hidden" name="fu_1" value="null"><input type="hidden" name="source" value="/test">
-        <input type="hidden" name="customEvent">
-        */
-        String content = theResponse.getText();
-        AssertUtils.assertContains("<form name=\"dbform\"",content);
-        AssertUtils.assertContains("method=\"post\"",content);
-        AssertUtils.assertContains("<input type=\"hidden\" name=\"invtable\" value=\"1\">",content);
-        AssertUtils.assertContains("<input type=\"hidden\" name=\"autoupdate_1\" value=\"true\">",content);
-        AssertUtils.assertContains("<input type=\"hidden\" name=\"fu_1\" value=\"null\">",content);
-
-    }
+      int result = this.tag.doStartTag();
+      assertEquals(BodyTag.EVAL_BODY_BUFFERED, result);
+   }
 
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param theResponse DOCUMENT ME!
-     */
-    public void endSetUpTagForAuthorWithEverything(WebResponse theResponse)
-    {
-        String content = theResponse.getText();
+   /**
+    * DOCUMENT ME!
+    * 
+    * @throws Exception DOCUMENT ME!
+    */
+   public void testSetUpTagForAuthorWithEverything() throws Exception
+   {
+      // mimic
+      //<db:dbform redisplayFieldsOnError="true" autoUpdate="true" followUp="/AUTHOR_poweruser_list.jsp" maxRows="*" tableName="AUTHOR">
+      this.tag.setMaxRows("*");
+      this.tag.setTableName("AUTHOR");
+      this.tag.setRedisplayFieldsOnError("true");
+      this.tag.setAutoUpdate("true");
+      this.tag.setTarget("_TOP");
+      this.tag.setFollowUp("/AUTHOR_poweruser_list.jsp");
+      this.tag.setOrderBy("NAME");
+      this.tag.setReadOnly("false");
 
-        AssertUtils.assertContains("name=\"dbform\"",content);
-//        AssertUtils.assertContains("action=\"test/servlet/control",content);
-        AssertUtils.assertContains("target=\"_TOP\"",content);
-        AssertUtils.assertContains("method=\"post\"",content);
-        AssertUtils.assertContains("type=\"hidden\"",content);
-        AssertUtils.assertContains("name=\"invtable\"",content);
-        AssertUtils.assertContains("value=\"0\"",content);
-        AssertUtils.assertContains("name=\"autoupdate_0\" value=\"true\"",content);
-        AssertUtils.assertContains("<input type=\"hidden\" name=\"fu_0\" value=\"/AUTHOR_poweruser_list.jsp\">",content);
-        AssertUtils.assertContains("<input type=\"hidden\" name=\"customEvent\">",content);
-
-    }
-
-
-    /**
-     * Verifies that the target text is in the tag's
-     * body.
-     */
-    public void endEndTagForAuthor(WebResponse theResponse)
-    {
-        String content = theResponse.getText();
-        String expectedContentA = "</form>";
-
-        assertTrue("Make sure content matches expected content:" + expectedContentA, content.indexOf(expectedContentA) >= 0);
-    }
+      int result = this.tag.doStartTag();
+      assertEquals(BodyTag.EVAL_BODY_BUFFERED, result);
+   }
 
 
-    /**
-     * DOCUMENT ME!
-     */
-    public void tearDown()
-    {
-        //necessary for tag to output anything on most servlet engines.
-//        this.pageContext.popBody();
-    }
+   /**
+    * DOCUMENT ME!
+    * 
+    * @throws Exception DOCUMENT ME!
+    */
+   public void testEndTagForAuthor() throws Exception
+   {
+      // mimic
+      //<db:dbform redisplayFieldsOnError="true" autoUpdate="true" followUp="/AUTHOR_poweruser_list.jsp" maxRows="*" tableName="AUTHOR">
+      this.tag.setMaxRows("*");
+      this.tag.setTableName("AUTHOR");
+      tblResult = tag.getTable();
+      assertTrue("Make sure we get table name back", 
+                 tag.getTableName().equals("AUTHOR"));
+      assertTrue("Make sure we get table with right name back", 
+                 tag.getTable().getName().equals("AUTHOR"));
+
+      this.tag.setRedisplayFieldsOnError("true");
+      this.tag.setAutoUpdate("true");
+
+      int result = this.tag.doEndTag();
+      assertEquals(BodyTag.EVAL_PAGE, result);
+   }
 
 
+   /**
+    * Verifies that the target text is in the tag's body.
+    * @param theResponse DOCUMENT ME!
+    */
+   public void endSetUpTagNoTable(WebResponse theResponse)
+   {
+      String content = theResponse.getText();
+      AssertUtils.assertContains("<form name=\"dbform\"", content);
+      AssertUtils.assertContains("method=\"post\"", content);
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    * 
+    * @param theResponse DOCUMENT ME!
+    */
+   public void endSetUpTagForAuthor(WebResponse theResponse)
+   {
+      /* expected content:
+      <form name="dbform" action="/test/servlet/control;jsessionid=9056E6E9E4F59E13EF9DE8E371E2D5A3" method="post">
+      <input type="hidden" name="invtable" value="0"><input type="hidden" name="autoupdate_0" value="true">
+      <input type="hidden" name="fu_0" value="null"><input type="hidden" name="source" value="/test">
+      <input type="hidden" name="customEvent">
+      */
+      String content = theResponse.getText();
+
+      AssertUtils.assertContains("<form name=\"dbform\"", content);
+      AssertUtils.assertContains("method=\"post\"", content);
+      AssertUtils.assertContains(
+               "<input type=\"hidden\" name=\"invtable\" value=\"0\">", content);
+      AssertUtils.assertContains(
+               "<input type=\"hidden\" name=\"autoupdate_0\" value=\"true\">", 
+               content);
+      AssertUtils.assertContains(
+               "<input type=\"hidden\" name=\"fu_0\" value=\"null\">", content);
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    * 
+    * @param theResponse DOCUMENT ME!
+    */
+   public void endSetUpTagForBook(WebResponse theResponse)
+   {
+      /* expected content:
+      <form name="dbform" action="/test/servlet/control;jsessionid=9056E6E9E4F59E13EF9DE8E371E2D5A3" method="post">
+      <input type="hidden" name="invtable" value="1"><input type="hidden" name="autoupdate_1" value="true">
+      <input type="hidden" name="fu_1" value="null"><input type="hidden" name="source" value="/test">
+      <input type="hidden" name="customEvent">
+      */
+      String content = theResponse.getText();
+      AssertUtils.assertContains("<form name=\"dbform\"", content);
+      AssertUtils.assertContains("method=\"post\"", content);
+      AssertUtils.assertContains(
+               "<input type=\"hidden\" name=\"invtable\" value=\"1\">", content);
+      AssertUtils.assertContains(
+               "<input type=\"hidden\" name=\"autoupdate_1\" value=\"true\">", 
+               content);
+      AssertUtils.assertContains(
+               "<input type=\"hidden\" name=\"fu_1\" value=\"null\">", content);
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    * 
+    * @param theResponse DOCUMENT ME!
+    */
+   public void endSetUpTagForAuthorWithEverything(WebResponse theResponse)
+   {
+      String content = theResponse.getText();
+
+      AssertUtils.assertContains("name=\"dbform\"", content);
+
+
+      //        AssertUtils.assertContains("action=\"test/servlet/control",content);
+      AssertUtils.assertContains("target=\"_TOP\"", content);
+      AssertUtils.assertContains("method=\"post\"", content);
+      AssertUtils.assertContains("type=\"hidden\"", content);
+      AssertUtils.assertContains("name=\"invtable\"", content);
+      AssertUtils.assertContains("value=\"0\"", content);
+      AssertUtils.assertContains("name=\"autoupdate_0\" value=\"true\"", 
+                                 content);
+      AssertUtils.assertContains(
+               "<input type=\"hidden\" name=\"fu_0\" value=\"/AUTHOR_poweruser_list.jsp\">", 
+               content);
+      AssertUtils.assertContains("<input type=\"hidden\" name=\"customEvent\">", 
+                                 content);
+   }
+
+
+   /**
+    * Verifies that the target text is in the tag's body.
+    * @param theResponse DOCUMENT ME!
+    */
+   public void endEndTagForAuthor(WebResponse theResponse)
+   {
+      String content          = theResponse.getText();
+      String expectedContentA = "</form>";
+
+      assertTrue("Make sure content matches expected content:"
+                 + expectedContentA, content.indexOf(expectedContentA) >= 0);
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    */
+   public void tearDown()
+   {
+      //necessary for tag to output anything on most servlet engines.
+      //        this.pageContext.popBody();
+   }
 }

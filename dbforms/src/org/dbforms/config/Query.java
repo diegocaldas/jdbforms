@@ -27,6 +27,10 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
 
+import java.sql.SQLException;
+import java.sql.PreparedStatement;
+
+
 import org.apache.log4j.Category;
 
 import org.dbforms.util.Constants;
@@ -280,7 +284,77 @@ public class Query extends Table
       return buf.toString();
    }
 
+   private FieldValue[] getFieldValueHaving(FieldValue[] fvEqual) 
+   {
+		Vector       mode_having              = new Vector();
+		Vector       mode_where               = new Vector();
+		// Split fields in where and having part
+		if (fvEqual != null)
+		{
+			for (int i = 0; i < fvEqual.length; i++)
+			{
+				if ((fvEqual[i].getField().getId() >= WHEREIDSTART))
+				{
+				}
+				else
+				{
+					mode_having.add(fvEqual[i]);
+				}
+			}
+		}
+		FieldValue[] fvHaving = new FieldValue[mode_having.size()];
+		for (int i = 0; i < mode_having.size(); i++)
+		{
+			fvHaving[i] = (FieldValue) mode_having.elementAt(i);
+		}
+		return fvHaving;
+   }
 
+	private FieldValue[] getFieldValueWhere(FieldValue[] fvEqual) 
+	{
+		Vector       mode_having              = new Vector();
+		Vector       mode_where               = new Vector();
+		// Split fields in where and having part
+		if (fvEqual != null)
+		{
+			for (int i = 0; i < fvEqual.length; i++)
+			{
+				if (fvEqual[i].getField().getId() >= WHEREIDSTART)
+				{
+					mode_where.add(fvEqual[i]);
+				}
+			}
+		}
+		FieldValue[] fvWhere = new FieldValue[mode_where.size()];
+		for (int i = 0; i < mode_where.size(); i++)
+		{
+			fvWhere[i] = (FieldValue) mode_where.elementAt(i);
+		}
+      return fvWhere;   	
+	}
+
+	/**
+	 * situation: we have built a query (involving the getWhereEqualsClause() method)
+	 * and now we want to prepare the statemtent - provide actual values for the
+	 * the '?' placeholders
+	 *
+	 * @param  fv the array of FieldValue objects
+	 * @param  ps the PreparedStatement object
+	 * @param  curCol the current PreparedStatement column; points to a
+	 *                PreparedStatement xxx value
+	 * @return  the current column value
+	 * @exception  SQLException if any error occurs
+	 */
+	protected int populateWhereEqualsClause(FieldValue[] fvEqual,
+		PreparedStatement ps, int curCol) throws SQLException
+	{
+		curCol = FieldValue.populateWhereEqualsClause(getFieldValueWhere(fvEqual), ps, curCol);
+		curCol = FieldValue.populateWhereEqualsClause(getFieldValueHaving(fvEqual), ps, curCol);
+		return curCol;
+	}
+
+
+    
    /**
     * Prepares the Querystring for the select statement
     * if the statement is for a sub-form (=> doConstrainedSelect),
@@ -307,36 +381,8 @@ public class Query extends Table
       String       s;
       boolean      hatSchonWhere            = false;
       boolean      hatSchonFollowAfterWhere = false;
-      Vector       mode_having              = new Vector();
-      Vector       mode_where               = new Vector();
-
-      // Split fields in where and having part
-      if (fvEqual != null)
-      {
-         for (int i = 0; i < fvEqual.length; i++)
-         {
-            if (fvEqual[i].getField().getId() >= WHEREIDSTART)
-            {
-               mode_where.add(fvEqual[i]);
-            }
-            else
-            {
-               mode_having.add(fvEqual[i]);
-            }
-         }
-      }
-
-      FieldValue[] fvHaving = new FieldValue[mode_having.size()];
-      for (int i = 0; i < mode_having.size(); i++)
-      {
-         fvHaving[i] = (FieldValue) mode_having.elementAt(i);
-      }
-
-      FieldValue[] fvWhere = new FieldValue[mode_where.size()];
-      for (int i = 0; i < mode_where.size(); i++)
-      {
-         fvWhere[i] = (FieldValue) mode_where.elementAt(i);
-      }
+      FieldValue[] fvHaving = getFieldValueHaving(fvEqual);
+      FieldValue[] fvWhere  = getFieldValueWhere(fvEqual);
 
       buf.append("SELECT ");
 

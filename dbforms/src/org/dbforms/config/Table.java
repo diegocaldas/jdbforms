@@ -974,10 +974,10 @@ public class Table
 	 * @return  the current column value
 	 * @exception  SQLException if any error occurs
 	 */
-	protected static int populateWhereEqualsClause(FieldValue[] fv,
+	protected int populateWhereEqualsClause(FieldValue[] fvEqual,
 		PreparedStatement ps, int curCol) throws SQLException
 	{
-		return FieldValue.populateWhereEqualsClause(fv, ps, curCol);
+		return FieldValue.populateWhereEqualsClause(fvEqual, ps, curCol);
 	}
 
 

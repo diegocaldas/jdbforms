@@ -86,7 +86,7 @@ import org.dbforms.validation.DbFormsValidatorUtil;
 public class DbFormTag extends BodyTagSupport implements TryCatchFinally
 {
    /** logging category for this class */
-   static Category logCat = Category.getInstance(DbFormTag.class.getName());
+   private static Category logCat = Category.getInstance(DbFormTag.class.getName());
 
    /** access data defined in dbforms-config.xml */
    private DbFormsConfig config;
