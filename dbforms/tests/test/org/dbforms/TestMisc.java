@@ -23,7 +23,7 @@
 
 package org.dbforms;
 import junit.framework.*;
-
+import java.util.Calendar;
 
 /**
  *  This is a class to test elements of DbForms that don't have a class them selves.  For instance, jdk1.4 and 1.3 workarounds.
@@ -41,6 +41,7 @@ public class TestMisc extends TestCase
     public void testTimeInMillisApproximate() throws Exception
     {
         System.out.println("IF YOU ARE ON JDK1.4, PLEASE UNCOMMENT THE CONTENTS OF testJDK to TEST 1.4 versus 1.3 method.");
+        Calendar cal = Calendar.getInstance();
         long jdk14Method = cal.getTimeInMillis();
         long jdk13Method = cal.getTime().getTime();
         assertTrue("jdk14Method == jdk13Method", (jdk14Method == jdk13Method));
