@@ -22,40 +22,46 @@
  */
 
 package org.dbforms;
+
 import java.io.*;
 import java.util.*;
 import java.sql.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
-import org.dbforms.util.*;
-import org.dbforms.event.*;
-import org.apache.log4j.Category;
 import org.apache.commons.validator.ValidatorResources;
 import org.apache.commons.validator.Validator;
 import org.apache.commons.validator.ValidatorResults;
+import org.apache.log4j.Category;
+import org.dbforms.util.*;
+import org.dbforms.event.*;
 import org.dbforms.validation.ValidatorConstants;
 
 
 
-/****
- * <p>
+/**
  * This servlets is the Controller component in the Model-View-Controller - architecture
  * used by the dbforms-framework. Every request goes through this component and its event
  * dispatching facilities.
- * </p>
  *
- * @author Joe Peer <joepeer@excite.com>
+ * @author  Joe Peer <joepeer@excite.com>
+ * @created  23 dicembre 2002
  */
 public class Controller extends HttpServlet
 {
+    /** logging category for this class */
     static Category logCat = Category.getInstance(Controller.class.getName());
 
-    // logging category for this class
+    /** config object */
     private DbFormsConfig config;
-    private int maxUploadSize = 102400; // 100KB default upload size
+
+    /** 100KB default upload size */
+    private int maxUploadSize = 102400;
+
 
     /**
      * Initialize this servlet.
+     *
+     * @exception  ServletException if the initialization fails
      */
     public void init() throws ServletException
     {
@@ -84,11 +90,10 @@ public class Controller extends HttpServlet
     /**
      * Process an HTTP "GET" request.
      *
-     * @param request The servlet request we are processing
-     * @param response The servlet response we are creating
-     *
-     * @exception IOException if an input/output error occurs
-     * @exception ServletException if a servlet exception occurs
+     * @param  request The servlet request we are processing
+     * @param  response The servlet response we are creating
+     * @exception  IOException if an input/output error occurs
+     * @exception  ServletException if a servlet exception occurs
      */
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
@@ -99,11 +104,10 @@ public class Controller extends HttpServlet
     /**
      * Process an HTTP "POST" request.
      *
-     * @param request The servlet request we are processing
-     * @param response The servlet response we are creating
-     *
-     * @exception IOException if an input/output error occurs
-     * @exception ServletException if a servlet exception occurs
+     * @param  request The servlet request we are processing
+     * @param  response The servlet response we are creating
+     * @exception  IOException if an input/output error occurs
+     * @exception  ServletException if a servlet exception occurs
      */
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
@@ -111,6 +115,14 @@ public class Controller extends HttpServlet
     }
 
 
+    /**
+     *   Process the incoming requests.
+     *
+     * @param  request  the request object
+     * @param  response  the response object
+     * @throws  IOException
+     * @throws  ServletException
+     */
     private void process(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
         // create RFC-1867 data wrapper for the case the form was sent in multipart mode
@@ -124,9 +136,10 @@ public class Controller extends HttpServlet
         String contentType = request.getContentType();
         String formValidatorName = request.getParameter(ValidatorConstants.FORM_VALIDATOR_NAME);
 
-        processLocale(request); // Verify if Locale have been setted in session with "LOCALE_KEY"
-                                // if not, take the request.getLocale() as default and put it in session
+        processLocale(request);
 
+        // Verify if Locale have been setted in session with "LOCALE_KEY"
+        // if not, take the request.getLocale() as default and put it in session
         // Verify if Locale have been setted in session with "LOCALE_KEY"
         // if not, take the request.getLocale() as default and put it in session
         if ((contentType != null) && contentType.startsWith("multipart"))
@@ -136,6 +149,7 @@ public class Controller extends HttpServlet
                 logCat.debug("before new multipartRequest");
 
                 MultipartRequest multipartRequest = new MultipartRequest(request, maxUploadSize);
+
                 logCat.debug("after new multipartRequest");
                 request.setAttribute("multipartRequest", multipartRequest);
             }
@@ -148,35 +162,16 @@ public class Controller extends HttpServlet
             }
         }
 
-        // Bradley's multiple connection support [fossato <fossato@pow2.com> 2002/11/04]:
-        // moved the connection "initialization" into the try - catch block;
-        //
-        // previous code was:
-        // Connection con = config.getDbConnection().getConnection();
-        // logCat.debug("Created new connection - " + con);
         Connection con = null;
-		WebEvent e = null;
+        WebEvent e = null;
         Vector errors = new Vector();
 
         try
         {
             request.setAttribute("errors", errors);
-
             EventEngine engine = new EventEngine(request, config);
             e = engine.generatePrimaryEvent();
-
-            // ---- Bradley's multiple connection support [fossato <fossato@pow2.com> 2002/11/04] ---------
-            String dbConnectionName = request.getParameter("invname_" + e.getTableId());
-            con = SqlUtil.getConnection(config, dbConnectionName);
-
-            if (dbConnectionName == null)
-                dbConnectionName = "default";
-
-            logCat.debug("Adding Connection [" + dbConnectionName + "] to connection cache.");
-            connections.put(dbConnectionName, con);
-            logCat.debug("Created new connection - " + con);
-            // ---- Bradley's multiple connection support end ---------------------------------------------
-
+            con = getConnection(request, e.getTableId(), connections);
 
             // primary event can be any kind of event (database, navigation...)
             if (e instanceof DatabaseEvent)
@@ -189,11 +184,12 @@ public class Controller extends HttpServlet
                     {
                         doValidation(formValidatorName, e, request);
                     }
+
                     ((DatabaseEvent) e).processEvent(con);
                 }
                 catch (SQLException sqle)
                 {
-                    sqle.printStackTrace();
+                    logCat.error("::process - SQLException:", sqle);
                     errors.addElement(sqle);
                     cleanUpConnectionAfterException(con);
                 }
@@ -226,45 +222,19 @@ public class Controller extends HttpServlet
             // secondary Events are always database events
             // (in fact, they all are SQL UPDATEs)
             if (engine.getInvolvedTables() != null)
-            { // may be null if empty form!
-
+            {
+                // may be null if empty form!
                 Enumeration tableEnum = engine.getInvolvedTables().elements();
 
                 while (tableEnum.hasMoreElements())
                 {
                     Table t = (Table) tableEnum.nextElement();
-
                     Enumeration eventEnum = engine.generateSecundaryEvents(e);
 
                     while (eventEnum.hasMoreElements())
                     {
                         DatabaseEvent dbE = (DatabaseEvent) eventEnum.nextElement();
-
-
-                        // ---- Bradley's multiple connection support [fossato <fossato@pow2.com> 2002/11/04] ------------------------
-                        dbConnectionName = request.getParameter("invname_" + dbE.getTableId());
-                        DbConnection aDbConnection = config.getDbConnection(dbConnectionName);
-
-                        if (aDbConnection == null)
-                        {
-                            throw new IllegalArgumentException("No dbconnection configured with name '" + dbConnectionName + "'.");
-                        }
-
-                        if (dbConnectionName == null)
-                        {
-                            dbConnectionName = "default";
-                        }
-
-                        if (connections.get(dbConnectionName) == null)
-                        {
-                            con = aDbConnection.getConnection();
-                            connections.put(dbConnectionName, con);
-                        }
-                        else
-                        {
-                            con = (Connection) connections.get(dbConnectionName);
-                        }
-                        // ---- Bradley's multiple connection support end ---------------------------------- ------------------------
+                        con = getConnection(request, dbE.getTableId(), connections);
 
                         try
                         {
@@ -301,51 +271,48 @@ public class Controller extends HttpServlet
                     }
                 }
             }
-
-
         }
         finally
         {
-            // ---- Bradley's multiple connection support [fossato <fossato@pow2.com> 2002/11/04] start -----
-            //
-            // must close all the connections stored into the the connections HashTable;
-            Enumeration cons = connections.keys();
+            // close all the connections stored into the connections hash table;
+            closeConnections(connections);
 
-            while (cons.hasMoreElements())
+            if (e != null)
             {
-                String dbConnectionName = (String) cons.nextElement();
-                con = (Connection) connections.get(dbConnectionName);
-                SqlUtil.closeConnection(con);
-            }
+                // send as info to dbForms (=> Taglib)
+                //if(e instanceof NavigationEvent) {
+                request.setAttribute("webEvent", e);
 
-            if (e != null) {
-	            // ---- Bradley's multiple connection support end -----------------------------------------------
-	            // send as info to dbForms (=> Taglib)
-	            //if(e instanceof NavigationEvent) {
-	            request.setAttribute("webEvent", e);
-	
-	            //}
-	            // PG  - if form contained errors, use followupOnError (if available!)
-	            String fue = e.getFollowUpOnError();
-	
-	            if ((errors.size() != 0) && (fue != null) && (fue.trim().length() > 0))
-	            {
-	                request.getRequestDispatcher(fue).forward(request, response);
-	            }
-	            else
-	            {
-	                request.getRequestDispatcher(e.getFollowUp()).forward(request, response);
-	            }
+                //}
+                // PG  - if form contained errors, use followupOnError (if available!)
+                String fue = e.getFollowUpOnError();
+
+                if ((errors.size() != 0) && (fue != null) && (fue.trim().length() > 0))
+                {
+                    request.getRequestDispatcher(fue).forward(request, response);
+                }
+                else
+                {
+                    request.getRequestDispatcher(e.getFollowUp()).forward(request, response);
+                }
             }
         }
     }
 
 
+    /**
+     *  Send error messages to the servlet's output stream
+     *
+     * @param  message the message to display
+     * @param  request the request object
+     * @param  response the response object
+     */
     private void sendErrorMessage(String message, HttpServletRequest request, HttpServletResponse response)
     {
         try
         {
             PrintWriter out = response.getWriter();
+
             response.setContentType("text/html");
             out.println("<html><body><h1>ERROR:</h1><p>");
             out.println(message);
@@ -358,6 +325,13 @@ public class Controller extends HttpServlet
     }
 
 
+
+
+    /**
+     *  PRIVATE METHODS here
+     */
+
+
     /**
      * Grunikiewicz.philip@hydro.qc.ca
      * 2001-10-29
@@ -365,8 +339,10 @@ public class Controller extends HttpServlet
      * This allows us to have dbForms do part of the required transaction (other parts are done via jdbc calls).
      * If the database throws an exception, then we need to make sure that the connection is reinitialized (rollbacked) before it
      * is sent back into the connection pool.
+     *
+     * @param  con Description of the Parameter
      */
-    public void cleanUpConnectionAfterException(Connection con)
+    private void cleanUpConnectionAfterException(Connection con)
     {
         try
         {
@@ -387,14 +363,13 @@ public class Controller extends HttpServlet
     /**
      *  DO the validation of <FORM> with Commons-Validator.
      *
-     * @param formValidatorName  The form name to retreive in validation.xml
-     * @param WebEvent The data (Hashtable) to perform validation
-     * @param request The servlet request we are processing
-     *
-     * @exception MultipleValidationException The Vector of errors throwed with this exception
-     *
+     * @param  formValidatorName The form name to retreive in validation.xml
+     * @param  request The servlet request we are processing
+     * @param  e the web event
+     * @exception  MultipleValidationException The Vector of errors throwed with this exception
      */
-    private void doValidation(String formValidatorName, WebEvent e, HttpServletRequest request) throws MultipleValidationException
+    private void doValidation(String formValidatorName, WebEvent e, HttpServletRequest request)
+      throws MultipleValidationException
     {
         Hashtable fieldValues = null;
 
@@ -428,13 +403,17 @@ public class Controller extends HttpServlet
         DbFormsErrors dbFormErrors = (DbFormsErrors) getServletContext().getAttribute(DbFormsErrors.ERRORS);
         Locale locale = MessageResources.getLocale(request);
 
-
         // Add these resources to perform validation
-        validator.addResource(Validator.BEAN_KEY, fieldValues); // The values
-        validator.addResource("java.util.Vector", errors);
-        validator.addResource(Validator.LOCALE_KEY, locale); // Vector of errors to populate
-        validator.addResource("org.dbforms.DbFormsErrors", dbFormErrors); // Applicatiob context
+        validator.addResource(Validator.BEAN_KEY, fieldValues);
 
+        // The values
+        validator.addResource("java.util.Vector", errors);
+        validator.addResource(Validator.LOCALE_KEY, locale);
+
+        // Vector of errors to populate
+        validator.addResource("org.dbforms.DbFormsErrors", dbFormErrors);
+
+        // Applicatiob context
         ValidatorResults hResults = null;
 
         try
@@ -454,6 +433,11 @@ public class Controller extends HttpServlet
     }
 
 
+    /**
+     *  Set the default locale
+     *
+     * @param  request the request object
+     */
     private void processLocale(HttpServletRequest request)
     {
         HttpSession session = request.getSession();
@@ -461,6 +445,62 @@ public class Controller extends HttpServlet
         if (session.getAttribute(MessageResources.LOCALE_KEY) == null)
         {
             session.setAttribute(MessageResources.LOCALE_KEY, request.getLocale());
+        }
+    }
+
+
+    /**
+     *  Gets the connection object.
+     *
+     * @param  request     the request object
+     * @param  tableId     the table identifier
+     * @param  connections the connections hash table
+     * @return  The connection object
+     */
+    private Connection getConnection(HttpServletRequest request, int tableId, Hashtable connections)
+    {
+        String dbConnectionName = request.getParameter("invname_" + tableId);
+        DbConnection aDbConnection = config.getDbConnection(dbConnectionName);
+        Connection con = null;
+
+        if (aDbConnection == null)
+        {
+            throw new IllegalArgumentException("No dbconnection configured with name '" + dbConnectionName + "'.");
+        }
+
+        if (dbConnectionName == null)
+        {
+            dbConnectionName = "default";
+        }
+
+        if (connections.get(dbConnectionName) == null)
+        {
+            con = aDbConnection.getConnection();
+            connections.put(dbConnectionName, con);
+        }
+        else
+        {
+            con = (Connection) connections.get(dbConnectionName);
+        }
+
+        return con;
+    }
+
+
+    /**
+     *  Close all the connections stored into the the connections HashTable.
+     *
+     * @param  connections the connections HashTable
+     */
+    private void closeConnections(Hashtable connections)
+    {
+        Enumeration cons = connections.keys();
+
+        while (cons.hasMoreElements())
+        {
+            String dbConnectionName = (String) cons.nextElement();
+            Connection con = (Connection) connections.get(dbConnectionName);
+            SqlUtil.closeConnection(con);
         }
     }
 }
