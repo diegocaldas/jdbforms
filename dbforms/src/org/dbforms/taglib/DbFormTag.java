@@ -103,15 +103,15 @@ public class DbFormTag extends BodyTagSupport {
 		this.tableName = tableName;
 	this.table = config.getTableByName(tableName);
 	this.tableId = table.getId();
-  }
+  }  
 
   public String getTableName() {
 		return tableName;
-  }
+  }  
 
   public Table getTable() {
 		return table;
-  }
+  }  
 
   public void setMaxRows(String maxRows) {
 		this.maxRows = maxRows;
@@ -119,7 +119,7 @@ public class DbFormTag extends BodyTagSupport {
 		  this.count = 0;
 	else
 		  this.count = Integer.parseInt(maxRows);
-  }
+  }  
 
   public String getMaxRows() {
 		return maxRows;
@@ -129,15 +129,15 @@ public class DbFormTag extends BodyTagSupport {
 
   public int getCount() {
 	 	return count;
-  }
+  }  
 
   public int getCurrentCount() {
 	 	return currentCount;
-  }
+  }  
 
   public void increaseCurrentCount() {
 		  currentCount++;
-  }
+  }  
 
   // this method gets called at every body-evaluation in order to keep pos.path up-to-date
   public void updatePositionPath() {
@@ -146,18 +146,18 @@ public class DbFormTag extends BodyTagSupport {
 	positionPathBuf.append("@");
 	positionPathBuf.append(this.positionPathCore);
 	this.positionPath = positionPathBuf.toString(); // ie. "5" + "@" + "root", "5" + "@" + "123@35@root"
-  }
+  }  
 
 
   public String getPositionPath() {
 	   return positionPath;
-  }
+  }  
 
   public String getPositionPathCore() {
 
 	   return  positionPathCore; // ie.  "root",  "123@35@root"
 
-  }
+  }  
 
 
 
@@ -191,19 +191,19 @@ public class DbFormTag extends BodyTagSupport {
 
   public void setParentField(String parentField) {
 		this.parentField = parentField;
-  }
+  }  
 
   public String getParentField() {
 	return parentField;
-  }
+  }  
 
   public void setChildField(String childField) {
 	this.childField = childField;
-  }
+  }  
 
   public String getChildField() {
 	return childField;
-  }
+  }  
 
 
 
@@ -297,7 +297,7 @@ public class DbFormTag extends BodyTagSupport {
 
   public ResultSetVector getResultSetVector() {
 	return resultSetVector;
-  }
+  }  
 
 	public boolean isSubForm() {
 		return isSubForm;
@@ -306,13 +306,13 @@ public class DbFormTag extends BodyTagSupport {
 
    public StringBuffer getChildElementOutput() {
 	   return childElementOutput;
-   }
+   }   
 
    // this method is called by child elements (i.e. <db:body>, etc.) to append some tags
    // the cumulated string gets written at DbFormTag:doEndTag()
    public void appendToChildElementOutput(String str) {
 	  this.childElementOutput.append(str);
-   }
+   }   
 
 
 	//----------------- Taglib Lifecyle + infrastructural methods --------------------------------
@@ -350,7 +350,19 @@ public class DbFormTag extends BodyTagSupport {
 
 
 
-  public int doStartTag() {
+/***************************************************
+* Grunikiewicz.philip@hydro.qc.ca
+* 2001-08-17
+*
+* Added an attribute to allow developer to bypass navigation:
+*  	If we are not going to use navigation, eliminate the
+* 	creation of, and execution of "fancy!" queries.
+*
+****************************************************/
+
+
+
+public int doStartTag() {
 
   	try {
 
@@ -657,7 +669,21 @@ public class DbFormTag extends BodyTagSupport {
 					if(firstPosition!=null) {
 						table.fillWithValues(orderConstraint, firstPosition);
 					}
-					resultSetVector = table.doConstrainedSelect(table.getFields(), mergedFieldValues, orderConstraint, (firstPosition==null || count==0) ? FieldValue.COMPARE_NONE : FieldValue.COMPARE_INCLUSIVE , count, con); // if there is a navigation event but not for this table, then just navigate to a position (if it evists) or just select all data (if no pos or if endless form)
+
+					
+					// if there is a navigation event but not for this table, 
+					// then just navigate to a position (if it exists) or just select all data 
+					// (if no pos or if endless form)
+					// PG - Check if developer specified to bypass Navigation infrastructure
+					resultSetVector = table.doConstrainedSelect(
+											table.getFields(), 
+											mergedFieldValues, 
+											orderConstraint, 
+											(firstPosition==null || 
+												count==0 ||
+												("true".equals(getBypassNavigation()))) ? FieldValue.COMPARE_NONE : FieldValue.COMPARE_INCLUSIVE , 
+											count, 
+											con); 
 				}
 
 			}
@@ -711,10 +737,17 @@ public class DbFormTag extends BodyTagSupport {
 
 					logCat.info("§§§ B/I §§§");
 					table.fillWithValues(orderConstraint, firstPosition);
-					resultSetVector = table.doConstrainedSelect(table.getFields(), mergedFieldValues, orderConstraint, (count==0) ? FieldValue.COMPARE_NONE : FieldValue.COMPARE_INCLUSIVE, count, con); // in endless forms we never need to to compares
+					resultSetVector = table.doConstrainedSelect(
+						table.getFields(), 
+						mergedFieldValues, 
+						orderConstraint, 
+						(count==0 || 
+						("true".equals(getBypassNavigation()))) ? FieldValue.COMPARE_NONE : FieldValue.COMPARE_INCLUSIVE, 
+						count, 
+						con); // in endless forms we never need to to compares
 
 					logCat.info("we had someting to look for:"+firstPosition);
-				} else { // we have no navigation objekt and no position we are supposed to go. so let's go to the first row.
+				} else { // we have no navigation object and no position we are supposed to go. so let's go to the first row.
 
 					logCat.info("§§§ B/II §§§");
 
@@ -728,7 +761,14 @@ public class DbFormTag extends BodyTagSupport {
 
 					} else {
 						logCat.info("§§§ B/II/2 §§§");
-						resultSetVector = table.doConstrainedSelect(table.getFields(), mergedFieldValues, orderConstraint, (firstPosition==null) ? FieldValue.COMPARE_NONE : FieldValue.COMPARE_INCLUSIVE, count, con);
+						resultSetVector = table.doConstrainedSelect(
+							table.getFields(), 
+							mergedFieldValues, 
+							orderConstraint, 
+							(firstPosition==null ||
+							("true".equals(getBypassNavigation()))) ? FieldValue.COMPARE_NONE : FieldValue.COMPARE_INCLUSIVE, 
+							count, 
+							con);
 					}
 
 				}
@@ -819,7 +859,7 @@ public class DbFormTag extends BodyTagSupport {
 		}	else {
 			return SKIP_BODY;
 		}
-  }
+  }  
 
   public int doEndTag() throws JspException {
 	try {
@@ -841,7 +881,7 @@ public class DbFormTag extends BodyTagSupport {
 
 		logCat.info("end reached of "+tableName);
  		return EVAL_PAGE;
-  }
+  }  
 
   public void release() {
 		super.release();
@@ -1003,6 +1043,26 @@ ie:
 	aFieldVal~startWith%
 
 
+grunikiewicz.philip@hydro.qc.ca
+2001-09-11
+
+By default, all filter definitions are ANDed together.
+I added support for logical OR.  Developers may prefix their filter 
+definition with the '|' symbol.  This was a quick and simple way of adding support for OR!
+
+Exemple:
+
+	aFieldVal=3, |anotherField>3
+
+would produce the following:
+
+	... where aFieldVal=3 OR anotherField>3
+	
+
+The FieldValue constructor now contains an additional parameter to indicate 
+that the use of an OR is required
+
+	
 ========================================================*/
 
 public void initFilterFieldValues() {
@@ -1017,10 +1077,11 @@ public void initFilterFieldValues() {
 	for (int i = 0; i < len; i++) {
 
 		int operator = 0;
+		boolean isLogicalOR = false;
 		int jump = 1;
 		String aKeyValPair = (String) keyValPairs.elementAt(i); // i.e "id=2"
 
-        logCat.debug("initFilterFieldValues: aKeyValPair = "+aKeyValPair);
+		logCat.debug("initFilterFieldValues: aKeyValPair = "+aKeyValPair);
 
 		// Following code could be optimized, however I did not want to make too many changes...
 		int n;
@@ -1070,7 +1131,16 @@ public void initFilterFieldValues() {
 		//	(value = -1)...
 
 		String fieldName = aKeyValPair.substring(0, n); // i.e "id"
+
 		logCat.debug("Filter field=" + fieldName);
+
+		if (fieldName.charAt(0) == '|')
+		{
+			// This filter must be associated to a logical OR, clean out the indicator...
+			fieldName = fieldName.substring(1);
+			isLogicalOR = true;
+		}
+			
 		Field filterField = this.table.getFieldByName(fieldName);
 
 		// Increment by 1 or 2 depending on operator
@@ -1078,7 +1148,7 @@ public void initFilterFieldValues() {
 		logCat.debug("Filter value=" + value);
 
 		// Create a new instance of FieldValue and set the operator variable
-		filterFieldValues[i] = new FieldValue(filterField, value, false, operator);
+		filterFieldValues[i] = new FieldValue(filterField, value, false, operator, isLogicalOR);
 
 		logCat.debug("and fv is ="+filterFieldValues[i].toString());
 	}
@@ -1338,5 +1408,25 @@ public java.lang.String getRedisplayFieldsOnError() {
  */
 public void setRedisplayFieldsOnError(java.lang.String newRedisplayFieldsOnError) {
 	redisplayFieldsOnError = newRedisplayFieldsOnError;
+}
+
+	private java.lang.String bypassNavigation = "false";
+
+/**
+ * grunikiewicz.philip@hydro.qc.ca
+ * Creation date: (2001-08-17 10:25:56)
+ * @return java.lang.String
+ */
+public java.lang.String getBypassNavigation() {
+	return bypassNavigation;
+}
+
+/**
+ * grunikiewicz.philip@hydro.qc.ca
+ * Creation date: (2001-08-17 10:25:56)
+ * @param newBypassNavigation java.lang.String
+ */
+public void setBypassNavigation(java.lang.String newBypassNavigation) {
+	bypassNavigation = newBypassNavigation;
 }
 }

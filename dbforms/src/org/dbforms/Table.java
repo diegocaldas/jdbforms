@@ -1,4 +1,5 @@
 /*
+ * Table.java
  * $Header$
  * $Revision$
  * $Date$
@@ -29,7 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.dbforms.util.*;
 import org.dbforms.event.*;
-import org.dbforms.taglib.DbBaseHandlerTag; // for searchMode - constants #checke: how about a constants - class ?
+import org.dbforms.taglib.DbBaseHandlerTag;
 import org.apache.log4j.Category;
 
 /****
@@ -47,7 +48,7 @@ import org.apache.log4j.Category;
 
 public class Table {
 
-    static Category logCat = Category.getInstance(Table.class.getName()); // logging category for this class
+	static Category logCat = Category.getInstance(Table.class.getName()); // logging category for this class
 
 	public static int GET_EQUAL = 0;
 	public static int GET_EQUAL_OR_GREATER = 1;
@@ -166,7 +167,7 @@ public class Table {
 	 * (this method gets called from XML-digester)
 	 */
   public void setName(String name) {
-    this.name = name;
+	this.name = name;
   }
 
 	/**
@@ -398,23 +399,23 @@ public class Table {
   throws SQLException {
 
 
-                int curCol = 1;
-                logCat.debug("###getDoSelectResultSet pos1");
-                if(fvEqual != null && fvEqual.length > 0) {
-                                        logCat.debug("###getDoSelectResultSet pos2");
-                        curCol = FieldValue.populateWhereEqualsClause(fvEqual, ps, curCol);
-                                        logCat.debug("###getDoSelectResultSet pos3");
-                }
-                logCat.debug("###getDoSelectResultSet pos4");
-                if(compareMode!=FieldValue.COMPARE_NONE && fvOrder != null && fvOrder.length > 0) {
-                                        logCat.debug("###getDoSelectResultSet pos5");
-                        FieldValue.populateWhereAfterClause(fvOrder, ps, curCol);
-                                        logCat.debug("###getDoSelectResultSet pos6");
-                }
-                logCat.debug("###getDoSelectResultSet pos7");
+				int curCol = 1;
+				logCat.debug("###getDoSelectResultSet pos1");
+				if(fvEqual != null && fvEqual.length > 0) {
+										logCat.debug("###getDoSelectResultSet pos2");
+						curCol = FieldValue.populateWhereEqualsClause(fvEqual, ps, curCol);
+										logCat.debug("###getDoSelectResultSet pos3");
+				}
+				logCat.debug("###getDoSelectResultSet pos4");
+				if(compareMode!=FieldValue.COMPARE_NONE && fvOrder != null && fvOrder.length > 0) {
+										logCat.debug("###getDoSelectResultSet pos5");
+						FieldValue.populateWhereAfterClause(fvOrder, ps, curCol);
+										logCat.debug("###getDoSelectResultSet pos6");
+				}
+				logCat.debug("###getDoSelectResultSet pos7");
 
 
-                return ps.executeQuery();
+				return ps.executeQuery();
   }
 
 
@@ -438,15 +439,15 @@ public class Table {
    */
 
 // this version by Martin van Wijk
-        public ResultSetVector doConstrainedSelect(Vector fieldsToSelect, FieldValue[] fvEqual, FieldValue[] vfOrder, int compareMode, int maxRows, Connection con)
-        throws SQLException {
-                PreparedStatement ps = con.prepareStatement(getSelectQuery(fieldsToSelect, fvEqual, vfOrder, compareMode));
-                ps.setMaxRows(maxRows); // important when quering huge tables
-        ResultSetVector result = new ResultSetVector(fieldsToSelect, getDoSelectResultSet(fieldsToSelect, fvEqual, vfOrder, compareMode, maxRows,  ps) );
-        ps.close();
-                logCat.info("rsv size="+result.size());
-                return result;
-        }
+		public ResultSetVector doConstrainedSelect(Vector fieldsToSelect, FieldValue[] fvEqual, FieldValue[] vfOrder, int compareMode, int maxRows, Connection con)
+		throws SQLException {
+				PreparedStatement ps = con.prepareStatement(getSelectQuery(fieldsToSelect, fvEqual, vfOrder, compareMode));
+				ps.setMaxRows(maxRows); // important when quering huge tables
+		ResultSetVector result = new ResultSetVector(fieldsToSelect, getDoSelectResultSet(fieldsToSelect, fvEqual, vfOrder, compareMode, maxRows,  ps) );
+		ps.close();
+				logCat.info("rsv size="+result.size());
+				return result;
+		}
 
 
 
@@ -601,10 +602,10 @@ public class Table {
   public Hashtable getFieldValuesFromPositionAsHt(String position) {
 
 	if(position==null) return null;
-// trailing blanks are significant for CHAR database fields 	
+// trailing blanks are significant for CHAR database fields
 //	position = position.trim();
 
-    Hashtable result = new Hashtable();
+	Hashtable result = new Hashtable();
 
 	int startIndex = 0;
 	boolean endOfString = false;
@@ -623,11 +624,21 @@ public class Table {
 
 		int controlIndex = secondColon+1+valueLength;
 
+		String valueStr = position.substring(secondColon+1, controlIndex);
+
+/*
+		FieldValue fv = new FieldValue();
+		fv.setField( getField(fieldId) );
+		fv.setFieldValue(valueStr);
+
+resolving CVS conflict (joepeer, 27.9.2001)
+
+*/
 		// make already be trimmed ... avoid substring exception
 		String valueStr = (controlIndex < position.length()) ?
 						  position.substring(secondColon+1, controlIndex) :
 						  position.substring(secondColon+1);
-		
+
     	FieldValue fv = new FieldValue();
     	fv.setField( getField(fieldId) );
     	fv.setFieldValue(valueStr);
@@ -752,41 +763,66 @@ public class Table {
 
 
 
-	private Vector createOrderFVFromAttribute(String order) {
-		Vector result = new Vector();
+/**********************************************************
+ * Grunikiewicz.philip@hydro.qc.ca
+ * 2001-08-09
+ *
+ * The orderBy clause usually defaults to ASCending order.
+ * A user may add, if we/she wishes the keyword ASC (ascending)
+ * or DESC (descending) to specify a particular direction.
+ * Code in this method parses the orderBy clause and finds an occurence
+ * of either ASC or DESC.  Suppose your field name is DESCRIPTION!
+ * This name contains DESC therefore causing unexpected behaviour.
+ * This bug fix consists of fine-tunning the parsing function to take into
+ * consideration the sequence of parameters: 1-Field 2-Command
+ *
+ ***********************************************************/
 
-		StringTokenizer st = new StringTokenizer(order, ",");
-		while(st.hasMoreTokens()) {
+private Vector createOrderFVFromAttribute(String order) {
 
-			String token = st.nextToken();
-			logCat.info("token="+token);
+	Vector result = new Vector();
 
-			FieldValue fv = new FieldValue();
-			boolean sortDirection = Field.ORDER_ASCENDING; // we propose the default
+	StringTokenizer st = new StringTokenizer(order, ",");
+	while (st.hasMoreTokens()) {
 
-			int index = token.indexOf("ASC");
-			if(index == -1) {
-				index = token.indexOf("DESC"); // if not default...
-				if(index!=-1)
-				  sortDirection = Field.ORDER_DESCENDING; // ... we set desc.
+		String token = st.nextToken();
+		logCat.info("token=" + token);
+
+		FieldValue fv = new FieldValue();
+		boolean sortDirection = Field.ORDER_ASCENDING; // we propose the default
+
+		//Separate field from command
+		int index = token.indexOf(" "); // Blank space used between field and command
+
+		if (index != -1)	// Do we have a command, if not assume ASC order
+		{
+			String command = token.substring(index);
+			int pos = command.indexOf("ASC");
+			if (pos == -1) // ASC not found, try descending
+			{
+				pos = command.indexOf("DESC");
+				if (index != -1)
+					sortDirection = Field.ORDER_DESCENDING; // ... we set DESC.
 			}
-
-			String fieldName;
-			if(index == -1)  {
-				fieldName = token.trim();
-			} else {
-				fieldName =  token.substring(0, index).trim();
-			}
-
-			fv.setField(this.getFieldByName(fieldName));
-			fv.setSortDirection(sortDirection);
-
-			logCat.info("Field '"+fieldName+"' is ordered in mode:"+sortDirection);
-			result.addElement(fv);
 		}
 
-		return result;
+
+		String fieldName;
+		if (index == -1) {
+			fieldName = token.trim();
+		} else {
+			fieldName = token.substring(0, index).trim();
+		}
+
+		fv.setField(this.getFieldByName(fieldName));
+		fv.setSortDirection(sortDirection);
+
+		logCat.info("Field '" + fieldName + "' is ordered in mode:" + sortDirection);
+		result.addElement(fv);
 	}
+
+	return result;
+}
 
 
 	private Vector createOrderFVFromRequest(HttpServletRequest request, String paramStub, Vector sortFields) {
@@ -860,7 +896,7 @@ public class Table {
 
 		if(result==null && !includeKeys) return null; // then we've got definitely no over
 
-    // scroll through keys and append to order criteria, if not already included
+	// scroll through keys and append to order criteria, if not already included
 		for(int i=0; i<this.key.size(); i++) {
 			Field keyField = (Field) key.elementAt(i);
 
@@ -882,7 +918,7 @@ public class Table {
 				logCat.debug("fieldValue "+resultArray[i].toString());
 			}
 
-    return resultArray;
+	return resultArray;
 	}
 
 
@@ -892,15 +928,15 @@ public class Table {
 	 * for logging / debugging purposes only
 	 */
   public String traverse() {
-    StringBuffer buf = new StringBuffer();
-    buf.append("\nname=");
-    buf.append(name);
+	StringBuffer buf = new StringBuffer();
+	buf.append("\nname=");
+	buf.append(name);
 		buf.append(" ");
 
-    for(int i=0; i<fields.size(); i++) {
-      Field f = (Field) fields.elementAt(i);
-      buf.append("\nfield: ");
-      buf.append(f.toString());
+	for(int i=0; i<fields.size(); i++) {
+	  Field f = (Field) fields.elementAt(i);
+	  buf.append("\nfield: ");
+	  buf.append(f.toString());
 		}
 		return buf.toString();
   }

@@ -34,6 +34,8 @@ import org.dbforms.*;
 
 import org.apache.log4j.Category;
 
+import javax.servlet.http.*;
+
 /****
  *
  * <p>This tag renders a HTML TextArea - Element</p>
@@ -51,7 +53,7 @@ public class DbTextFieldTag extends DbBaseInputTag  {
 
   public int doStartTag() throws javax.servlet.jsp.JspException {
 	return SKIP_BODY;
-  }
+  }  
 
 /* ===========================================================================
  * grunikiewicz.philip@hydro.qc.ca
@@ -80,6 +82,9 @@ public class DbTextFieldTag extends DbBaseInputTag  {
 
 public int doEndTag() throws javax.servlet.jsp.JspException {
 
+	HttpServletRequest request = (HttpServletRequest) this.pageContext.getRequest();
+	Vector errors = (Vector) request.getAttribute("errors");
+
 	try {
 
 		/* Does the developer require the field to be hidden or displayed? */
@@ -89,24 +94,33 @@ public int doEndTag() throws javax.servlet.jsp.JspException {
 				: "<input type=\"text\" name=\"";
 
 		StringBuffer tagBuf = new StringBuffer(value);
-		//if(parsedSearchMode == DbBaseHandlerTag.SEARCHMODE_NONE) {
 		tagBuf.append(getFormFieldName());
-		//} else {
-		//tagBuf.append(getSearchFieldName());
-		//}
 		tagBuf.append("\" value=\"");
-		//if(parsedSearchMode == DbBaseHandlerTag.SEARCHMODE_NONE) {
 
 		/* If the overrideValue attribute has been set, use its value instead of the one
 			retrieved from the database.  This mechanism can be used to set an initial default
 			value for a given field. */
 
-		if (this.getOverrideValue() != null) {
-			tagBuf.append(this.getOverrideValue());
-		} else {
-			tagBuf.append(getFormFieldValue());
+		if (this.getOverrideValue() != null) 
+		{
+			//If the redisplayFieldsOnError attribute is set and we are in error mode, forget override!
+			if ("true".equals(parentForm.getRedisplayFieldsOnError()) && errors != null && errors.size() > 0) 
+			{
+				tagBuf.append(getFormFieldValue());
+
+			} 
+			else 
+			{
+				tagBuf.append(this.getOverrideValue());				
+
+			}
 		}
-		//}
+		else
+		{
+			tagBuf.append(getFormFieldValue());
+		} 
+		
+
 		tagBuf.append("\" ");
 
 		if (accessKey != null) {
@@ -136,10 +150,6 @@ public int doEndTag() throws javax.servlet.jsp.JspException {
 		tagBuf.append(prepareStyles());
 		tagBuf.append(prepareEventHandlers());
 		tagBuf.append(">");
-
-		//if(parsedSearchMode != DbBaseHandlerTag.SEARCHMODE_NONE) {
-		//tagBuf.append(getSearchModeTag());
-		//}
 
 		pageContext.getOut().write(tagBuf.toString());
 	} catch (java.io.IOException ioe) {

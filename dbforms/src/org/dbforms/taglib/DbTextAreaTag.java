@@ -34,6 +34,8 @@ import org.dbforms.*;
 
 import org.apache.log4j.Category;
 
+import javax.servlet.http.*;
+
 /****
  *
  * <p>This tag renders a HTML TextArea - Element</p>
@@ -60,9 +62,14 @@ public class DbTextAreaTag extends DbBaseInputTag  {
 
   public int doStartTag() throws javax.servlet.jsp.JspException {
 	return SKIP_BODY;
-  }
+  }  
 
 public int doEndTag() throws javax.servlet.jsp.JspException {
+
+
+	HttpServletRequest request = (HttpServletRequest) this.pageContext.getRequest();
+	Vector errors = (Vector) request.getAttribute("errors");
+	
 
 	try {
 
@@ -105,14 +112,27 @@ public int doEndTag() throws javax.servlet.jsp.JspException {
 		tagBuf.append(">");
 
 		/* If the overrideValue attribute has been set, use its value instead of the one
-		retrieved from the database.  This mechanism can be used to set an initial default
-		value for a given field. */
+			retrieved from the database.  This mechanism can be used to set an initial default
+			value for a given field. */
 
-		if (this.getOverrideValue() != null) {
-			tagBuf.append(this.getOverrideValue());
-		} else {
-			tagBuf.append(getFormFieldValue());
+		if (this.getOverrideValue() != null) 
+		{
+			//If the redisplayFieldsOnError attribute is set and we are in error mode, forget override!
+			if ("true".equals(parentForm.getRedisplayFieldsOnError()) && errors != null && errors.size() > 0) 
+			{
+				tagBuf.append(getFormFieldValue());
+
+			} 
+			else 
+			{
+				tagBuf.append(this.getOverrideValue());				
+
+			}
 		}
+		else
+		{
+			tagBuf.append(getFormFieldValue());
+		} 
 		tagBuf.append("</textarea>");
 
 		pageContext.getOut().write(tagBuf.toString());

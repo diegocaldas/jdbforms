@@ -219,6 +219,19 @@ public class FieldValue implements Cloneable {
 		if(fv != null && fv.length > 0) {
 
 			for(int i=0; i<fv.length; i++) {
+
+
+				// Depending on the value of isLogicalOR in FieldValue, prefix the filter definition
+				// with either OR or AND (Skip first entry!)
+				if(i != 0)
+				{
+					if(fv[i].isLogicalOR())
+						buf.append(" OR ");
+					else
+						buf.append(" AND ");					
+				}
+
+				
 				buf.append(fv[i].getField().getName());
 
 
@@ -235,8 +248,6 @@ public class FieldValue implements Cloneable {
 				}
 				buf.append(" ? ");
 
-				if(i < fv.length-1)
-					buf.append(" AND ");
 			}
 		}
 		return buf.toString();
@@ -439,7 +450,7 @@ public class FieldValue implements Cloneable {
 		}
 
 		return curCol;
- 	}
+ 	} 
 
   /**
    * inverts the sorting direction of all FieldValue objects in the given array
@@ -505,7 +516,7 @@ public class FieldValue implements Cloneable {
 	  // should not happen
 	}
 		return null;
-  }
+  }  
 
 
   public String toString() {
@@ -527,9 +538,44 @@ public class FieldValue implements Cloneable {
 	buf.append(searchAlgorithm);
 
 	return buf.toString();
-  }
+  }  
 
 
 
 	public static final int FILTER_LIKE  = 5;
+	private boolean logicalOR = false;
+
+  /**
+   * constructor
+   *
+   * @param field
+   * @param fieldValue
+   * @param renderHiddenHtmlTag
+   * @param operator
+   */
+	public FieldValue(Field field, String fieldValue, boolean renderHiddenHtmlTag, int operator, boolean isLogicalOR) {
+		this.field = field;
+		this.fieldValue = fieldValue;
+		this.renderHiddenHtmlTag = renderHiddenHtmlTag;
+		this.operator = operator;
+		this.logicalOR = isLogicalOR;
+	}
+
+/**
+ * Insert the method's description here.
+ * Creation date: (2001-09-11 15:39:36)
+ * @return boolean
+ */
+public boolean isLogicalOR() {
+	return logicalOR;
+}
+
+/**
+ * Insert the method's description here.
+ * Creation date: (2001-09-11 15:39:36)
+ * @param newLogicalOR boolean
+ */
+public void setLogicalOR(boolean newLogicalOR) {
+	logicalOR = newLogicalOR;
+}
 }

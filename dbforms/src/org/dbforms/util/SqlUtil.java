@@ -24,7 +24,7 @@
 package org.dbforms.util;
 
 import java.sql.*;
-import java.io.*; // mainly used for BLOB-Operations
+import java.io.*;
 import org.apache.log4j.Category;
 
 /****
@@ -47,7 +47,7 @@ public class SqlUtil {
 
 	Date result = java.sql.Date.valueOf(valueStr);
 	return result;
-  }
+  }  
 
   private static java.math.BigDecimal createAppropriateNumeric(Object value) {
 
@@ -57,21 +57,27 @@ public class SqlUtil {
 	if(valueStr.length() == 0) return null;
 
 	return new java.math.BigDecimal(valueStr);
-  }
+  }  
 
   /**
   this utility-method assigns a particular value to a place holder of a PreparedStatement
   it tries to find the determinate the correct setXxx() value, accoring to the field-type inforamtion
-  represented by "fieldType"
+  represented by "fieldType"0
 
   quality: this method is bloody alpha (as you migth see :=)
   */
-	public static void fillPreparedStatement(PreparedStatement ps, int col, Object value, int fieldType)
+	public static void fillPreparedStatement(PreparedStatement ps, int col, Object val, int fieldType)
 	throws SQLException {
 		try {
 
-			logCat.debug("fillPreparedStatement( ps, "+col+", "+value+", "+fieldType+")...");
+			logCat.debug("fillPreparedStatement( ps, "+col+", "+val+", "+fieldType+")...");
 
+			Object value=null;
+
+			//Check for hard-coded NULL
+			if (!("$null$".equals(val)))
+				value = val;
+			
 			switch(fieldType) {
 				case FieldTypes.INTEGER: ps.setInt(col, Integer.parseInt((String)value)); break;
 				case FieldTypes.NUMERIC: ps.setBigDecimal(col, createAppropriateNumeric(value)); break;
@@ -106,11 +112,11 @@ public class SqlUtil {
 					break;
 				case FieldTypes.DISKBLOB: ps.setString(col, (String)value); break;
 
-				default: ps.setObject(col, value); //#checkme
+				default: 	ps.setObject(col, value); //#checkme
 			}
 
 		} catch(Exception e) {
 			throw new SQLException("Field type seems to be incorrect - "+e.toString());
 		}
-  }
+  }              
 }
