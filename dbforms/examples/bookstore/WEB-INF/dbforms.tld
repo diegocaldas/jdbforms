@@ -9874,7 +9874,7 @@
 <name>value</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
-<description>The value wich should be formatted</description>
+<description>The value which should be formatted</description>
 </attribute>
 <attribute>
 <name>contextVar</name>
@@ -9921,26 +9921,42 @@
 							tag
 						</description>
 </attribute>
-<example>either var or type and value must be setted!</example>
+<example>either the contextVar -OR- type and value must be set!  This allows you to calculate a value in your jsp, store this into the
+pageContext or pass in a value directly and then use the textFormat tag to format it with the settings used in dbforms - with locale support.</example>
 </tag>
-			<tag>
-				<name>pieData</name>
-				<tagclass>org.dbforms.taglib.CewolfPieDataTag</tagclass>
-				<bodycontent>empty</bodycontent>
-				<attribute>
-					<name>categoryField</name>
-					<required>true</required>
-					<rtexprvalue>true</rtexprvalue>
-					<info>
-					</info>
-				</attribute>
-				<attribute>
-					<name>dataField</name>
-					<required>true</required>
-					<rtexprvalue>true</rtexprvalue>
-					<info>
-					</info>
-				</attribute>
-			</tag>
+<!--*******************************************************************-->
+
+<tag>
+<name>pieData</name>
+<tag-class>org.dbforms.taglib.CewolfPieDataTag</tag-class>
+<body-content>empty</body-content>
+<description>
+					This datatag generates a cewolf DatasetProducer with PieDataSet included.
+					Data is taken from the dbforms resultsetvector.
+				</description>
+<attribute>
+<name>categoryField</name>
+<required>true</required>
+<rtexprvalue>true</rtexprvalue>
+<description>
+					   Name of the field in the resultsetvector which should be 
+					   used as the key in the pie dataset.
+					</description>
+</attribute>
+<attribute>
+<name>dataField</name>
+<required>true</required>
+<rtexprvalue>true</rtexprvalue>
+<description>
+					   Name of the field in the resultsetvector which should be 
+					   used for getting the values for the pie dataset.
+					   This field must be a numeric value!
+					</description>
+</attribute>
+<example>
+				   You need to install batik jars to use this tag!
+				   You can copy them from the bookstore example!
+				</example>
+</tag>
 </taglib>
 	

@@ -10368,12 +10368,13 @@
 					<rtexprvalue>true</rtexprvalue>
 				</attribute>
 			</tag>
+			<!-- **************************** filter tag ***********************************-->
 			<tag>
+				<name>filter</name>
 				<summary>
 					Create a set of sql filter conditions, letting user
 					select which one will be applied.
 				</summary>
-				<name>filter</name>
 				<tagclass>org.dbforms.taglib.DbFilterTag</tagclass>
 				<bodycontent>JSP</bodycontent>
 				<info>
@@ -10961,6 +10962,10 @@ pageContext or pass in a value directly and then use the textFormat tag to forma
 				</summary>
 				<tagclass>org.dbforms.taglib.CewolfPieDataTag</tagclass>
 				<bodycontent>empty</bodycontent>
+				<info>
+				   You need to install batik jars to use this tag!
+				   You can copy them from the bookstore example!
+				</info>
 				<attribute>
 					<name>categoryField</name>
 					<required>true</required>

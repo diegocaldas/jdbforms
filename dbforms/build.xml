@@ -172,12 +172,6 @@
     <copy todir="${build.dir}/${example.name}/WEB-INF/lib">
       <fileset dir="${dependend.dir}" includes="*.jar" excludes="servletapi*.jar" />
     </copy>
-    <!-- xerces.jar, xalan.jar might be neccessary for other tasks, but are disturbing with tomcat 4 -->
-    <!-- FIXME: must be documented what do do with other servers.... -->
-    <!--- no problem to deliver them with the examples, so let them in the package!
-        <delete file="${build.dir}/${example.name}/WEB-INF/lib/xerces.jar"/>
-        <delete file="${build.dir}/${example.name}/WEB-INF/lib/xalan.jar"/>
-        -->
     <delete>
        <fileset dir="${build.dir}/${example.name}/WEB-INF/lib" includes="servletapi*.jar"/>
     </delete>
