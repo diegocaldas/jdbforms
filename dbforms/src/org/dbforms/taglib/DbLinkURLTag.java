@@ -71,7 +71,7 @@ public class DbLinkURLTag extends BodyTagSupport implements TryCatchFinally
     static Category logCat = Category.getInstance(DbLinkURLTag.class.getName()); // logging category for this class
     private DbFormsConfig config;
     private Table table;
-    private Hashtable positionFv; // fields and their values, provided by embedded DbLinkPositionItem-Elements
+    private FieldValues positionFv; // fields and their values, provided by embedded DbLinkPositionItem-Elements
 
     // -- properties
     private String href;
@@ -168,9 +168,11 @@ public class DbLinkURLTag extends BodyTagSupport implements TryCatchFinally
     {
         if (positionFv == null)
         {
-            positionFv = new Hashtable();
+            positionFv = new FieldValues();
         }
-        positionFv.put(field, value);
+  		  // 2003-03-29 HKK: Change from Hashtable to FieldValueTable
+  		  FieldValue fv = new FieldValue(field, value);
+        positionFv.put(field.getName(), fv);
     }
 
 
