@@ -27,6 +27,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.dbforms.util.Util;
+import org.dbforms.util.SqlUtil;
 
 
 
@@ -92,7 +93,12 @@ public class JakartaConnectionProvider extends ConnectionProvider
       getCat().debug("::getConnection - MaxActive = " + dataSource.getMaxActive());
       getCat().debug("::getConnection - NumActive = " + dataSource.getNumActive());
 	  getCat().debug("::getConnection - NumIdle   = " + dataSource.getNumIdle());
-      return dataSource.getConnection();
+      try {
+			return dataSource.getConnection();
+      } catch (SQLException e) {
+         SqlUtil.logSqlException(e);
+         throw e;
+      }
    }
 
 
@@ -106,13 +112,13 @@ public class JakartaConnectionProvider extends ConnectionProvider
       Properties props = null;
 
       dataSource = new BasicDataSource();
-      dataSource.setDriverClassName(prefs.getJdbcDriver());
-      dataSource.setUrl(prefs.getJdbcURL());
-      dataSource.setUsername(prefs.getUser());
-      dataSource.setPassword(prefs.getPassword());
+      dataSource.setDriverClassName(getPrefs().getJdbcDriver());
+      dataSource.setUrl(getPrefs().getJdbcURL());
+      dataSource.setUsername(getPrefs().getUser());
+      dataSource.setPassword(getPrefs().getPassword());
 
       // set the dataSource properties;
-      if ((props = prefs.getProperties()) != null)
+      if ((props = getPrefs().getProperties()) != null)
       {
          for (Enumeration e = props.propertyNames(); e.hasMoreElements();)
          {
@@ -126,7 +132,7 @@ public class JakartaConnectionProvider extends ConnectionProvider
       // now set the connection pool custom properties;
       // if the connectionPool properties object is null,
       // instance a new properties object anyway, to use default values;
-      if ((props = prefs.getPoolProperties()) == null)
+      if ((props = getPrefs().getPoolProperties()) == null)
       {
          props = new Properties();
       }

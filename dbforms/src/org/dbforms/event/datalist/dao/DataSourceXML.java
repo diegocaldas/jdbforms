@@ -22,6 +22,8 @@
  */
 package org.dbforms.event.datalist.dao;
 
+import org.apache.log4j.Category;
+
 import java.util.Vector;
 import java.sql.SQLException;
 import java.net.URI;
@@ -58,6 +60,7 @@ import org.dbforms.util.Util;
  */
 public class DataSourceXML extends DataSource
 {
+   private Category logCat = Category.getInstance(this.getClass().getName());
    private static DocumentBuilderFactory dfactory = null;
    private static DocumentBuilder        builder = null;
    private FieldValue[]                  filterConstraint;

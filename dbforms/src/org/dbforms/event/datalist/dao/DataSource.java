@@ -53,7 +53,7 @@ import org.dbforms.util.Util;
 public abstract class DataSource
 {
    /** log4j category class */
-   protected Category logCat = Category.getInstance(this.getClass().getName());
+   private Category logCat = Category.getInstance(this.getClass().getName());
    private Table      table;
 
 
@@ -557,4 +557,12 @@ public abstract class DataSource
          }
       }
    }
+
+   /**
+    * @return
+    */
+   protected Category getLogCat() {
+      return logCat;
+   }
+
 }

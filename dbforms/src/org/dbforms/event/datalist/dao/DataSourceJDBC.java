@@ -23,6 +23,7 @@
 
 package org.dbforms.event.datalist.dao;
 
+
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
@@ -94,6 +95,7 @@ public class DataSourceJDBC extends DataSource
     */
    protected void finalize() throws Throwable
    {
+	  getLogCat().info("finalize called");
 	  // To overcome a bug in the firebird jdbc driver. 
 	  // This drivers makes an error if you call stmt.close in finalize.
 	  // After this error no more connections are possible!
@@ -414,8 +416,7 @@ public class DataSourceJDBC extends DataSource
          }
          catch (Exception e)
          {
-            logCat.error(e.getMessage());
-
+			getLogCat().error(e.getMessage());
             break;
          }
       }
@@ -443,7 +444,7 @@ public class DataSourceJDBC extends DataSource
          {
             FieldValue fv = fieldValues.get(fieldName);
 
-            logCat.debug("Retrieved curField:" + curField.getName() + " type:"
+			getLogCat().debug("Retrieved curField:" + curField.getName() + " type:"
                          + curField.getType());
 
             int    fieldType = curField.getType();
@@ -485,7 +486,7 @@ public class DataSourceJDBC extends DataSource
                value = fv.getFieldValue();
             }
 
-            logCat.info("field=" + curField.getName() + " col=" + col
+			getLogCat().info("field=" + curField.getName() + " col=" + col
                         + " value=" + value + " type=" + fieldType);
             SqlUtil.fillPreparedStatement(ps, col, value, fieldType);
             col++;

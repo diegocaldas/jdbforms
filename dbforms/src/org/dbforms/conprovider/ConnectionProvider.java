@@ -40,7 +40,7 @@ public abstract class ConnectionProvider
    private Category cat = Category.getInstance(this.getClass());
 
    /** ConnectionProvider preferences */
-   protected ConnectionProviderPrefs prefs = null;
+   private ConnectionProviderPrefs prefs = null;
 
    /**
     *  Constructor for the ConnectionProvider object.

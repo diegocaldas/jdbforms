@@ -98,8 +98,8 @@ public class ProtomatterConnectionProvider extends ConnectionProvider
     */
    protected Connection getConnection() throws SQLException
    {
-      return DriverManager.getConnection(prefs.getConnectionPoolURL(),
-         prefs.getUser(), prefs.getPassword());
+      return DriverManager.getConnection(getPrefs().getConnectionPoolURL(),
+         getPrefs().getUser(), getPrefs().getPassword());
    }
 
 
@@ -116,18 +116,18 @@ public class ProtomatterConnectionProvider extends ConnectionProvider
       Hashtable args = new Hashtable();
 
       // the underlying driver
-      args.put("jdbc.driver", prefs.getJdbcDriver());
+      args.put("jdbc.driver", getPrefs().getJdbcDriver());
 
       // the URL to connect the underlyng driver with the server
-      args.put("jdbc.URL", prefs.getJdbcURL());
+      args.put("jdbc.URL", getPrefs().getJdbcURL());
 
       // these are properties that get passed to DriverManager.getConnection(...)
       Properties jdbcProperties = new Properties();
-      jdbcProperties.put("user", prefs.getUser());
-      jdbcProperties.put("password", prefs.getPassword());
+      jdbcProperties.put("user", getPrefs().getUser());
+      jdbcProperties.put("password", getPrefs().getPassword());
 
       // set the jdbc connection properties;
-      if ((props = prefs.getProperties()) != null)
+      if ((props = getPrefs().getProperties()) != null)
       {
          for (Enumeration e = props.propertyNames(); e.hasMoreElements();)
          {
@@ -143,7 +143,7 @@ public class ProtomatterConnectionProvider extends ConnectionProvider
       // now set the connection pool custom properties;
       // if the connectionPool properties object is null,
       // instance a new properties object anyway, to use default values;
-      if ((props = prefs.getPoolProperties()) == null)
+      if ((props = getPrefs().getPoolProperties()) == null)
       {
          props = new Properties();
       }
@@ -160,7 +160,7 @@ public class ProtomatterConnectionProvider extends ConnectionProvider
       // finally create the pool and we're ready to go!
       Class.forName(CP_DRIVER).newInstance();
       connectionPool = new JdbcConnectionPool(getLastToken(
-               prefs.getConnectionPoolURL(), ":"), args);
+               getPrefs().getConnectionPoolURL(), ":"), args);
    }
 
 

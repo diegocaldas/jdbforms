@@ -53,22 +53,22 @@ public class SimpleConnectionProvider extends ConnectionProvider
     */
    protected Connection getConnection() throws SQLException
    {
-      Properties props = prefs.getProperties();
+      Properties props = getPrefs().getProperties();
       Connection con = null;
 
       // uses custom jdbc properties;
       if ((props != null) && !props.isEmpty())
       {
-         props.put("user", prefs.getUser());
-         props.put("password", prefs.getPassword());
-         con = DriverManager.getConnection(prefs.getJdbcURL(), props);
+         props.put("user", getPrefs().getUser());
+         props.put("password", getPrefs().getPassword());
+         con = DriverManager.getConnection(getPrefs().getJdbcURL(), props);
       }
 
       // "plain" flavour;
       else
       {
-         con = DriverManager.getConnection(prefs.getJdbcURL(), prefs.getUser(),
-               prefs.getPassword());
+         con = DriverManager.getConnection(getPrefs().getJdbcURL(), getPrefs().getUser(),
+               getPrefs().getPassword());
       }
 
       return con;
@@ -82,6 +82,6 @@ public class SimpleConnectionProvider extends ConnectionProvider
     */
    protected void init() throws Exception
    {
-      Class.forName(prefs.getJdbcDriver()).newInstance();
+      Class.forName(getPrefs().getJdbcDriver()).newInstance();
    }
 }
