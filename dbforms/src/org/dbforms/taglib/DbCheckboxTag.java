@@ -160,7 +160,7 @@ public class DbCheckboxTag extends DbBaseHandlerTag implements DataContainer,
       tagBuf.append("<input type=\"checkbox\" name=\"");
       tagBuf.append(getFormFieldName());
       tagBuf.append("\" value =\"");
-      tagBuf.append(getValue());
+      tagBuf.append(value);
       tagBuf.append("\" ");
 
       if (selected) {

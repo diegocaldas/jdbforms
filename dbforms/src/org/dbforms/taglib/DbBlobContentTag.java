@@ -22,10 +22,12 @@
  */
 package org.dbforms.taglib;
 import java.io.*;
-import java.sql.*;
 import javax.servlet.jsp.*;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 import org.dbforms.config.FieldTypes;
 import org.dbforms.util.SqlUtil;
