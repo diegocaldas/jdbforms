@@ -64,9 +64,9 @@ public class ParseUtil
      * Returns the value of the named parameter as a String, or the default if
      * the parameter was not sent or was sent without a value.  The value
      * is guaranteed to be in its normal, decoded form.  If the parameter
-     * has multiple values, only the last one is returned (for backward
-     * compatibility).  For parameters with multiple values, it's possible
-     * the last "value" may be null.
+     * has multiple values, only the first (!!!!!) one is returned (for backward
+     * compatibility).  For parameters with multiple values, it's possible the
+     * first "value" may be null.
      *
      * @param name the parameter name.
      * @return the parameter value.
@@ -88,9 +88,9 @@ public class ParseUtil
      * Returns the value of the named parameter as a String, or null if
      * the parameter was not sent or was sent without a value.  The value
      * is guaranteed to be in its normal, decoded form.  If the parameter
-     * has multiple values, only the last one is returned (for backward
-     * compatibility).  For parameters with multiple values, it's possible
-     * the last "value" may be null.
+     * has multiple values, only the first (!!!) one is returned (for backward
+     * compatibility).  For parameters with multiple values, it's possible the
+     * first "value" may be null.
      *
      * @param name the parameter name.
      * @return the parameter value.
