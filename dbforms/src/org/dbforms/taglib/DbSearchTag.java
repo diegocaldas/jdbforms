@@ -54,7 +54,8 @@ public class DbSearchTag extends TagSupportWithScriptHandler
     private String searchAlgo = "sharp";
     private String searchMode = "and";
     private String defaultValue = null;
-
+    private String id = null;
+    
     /**
      * DOCUMENT ME!
      *
@@ -163,7 +164,7 @@ public class DbSearchTag extends TagSupportWithScriptHandler
         tagBuf.append(paramNameBufA.toString());
         tagBuf.append("\" value=\"");
         tagBuf.append(getSearchAlgo());
-        tagBuf.append("\">\n");
+        tagBuf.append("\"/>\n");
 
         StringBuffer paramNameBufB = new StringBuffer();
         paramNameBufB.append("searchmode_");
@@ -174,7 +175,7 @@ public class DbSearchTag extends TagSupportWithScriptHandler
         tagBuf.append(paramNameBufB.toString());
         tagBuf.append("\" value=\"");
         tagBuf.append(getSearchMode());
-        tagBuf.append("\">\n");
+        tagBuf.append("\"/>\n");
 
         return tagBuf.toString();
     }
@@ -213,7 +214,14 @@ public class DbSearchTag extends TagSupportWithScriptHandler
             String oldValue = ParseUtil.getParameter(request, paramNameBuf.toString());
             tagBuf.append("<input type=\"input\" name=\"");
             tagBuf.append(paramNameBuf.toString());
-            tagBuf.append("\" value=\"");
+            tagBuf.append("\" ");
+        	if (!Util.isNull(getId())) {
+        		tagBuf.append("id=\"");
+        		tagBuf.append(getId());
+        		tagBuf.append("\" ");
+        	}
+        	   
+        	tagBuf.append("value=\"");
 
             if (oldValue != null)
             {
@@ -227,7 +235,7 @@ public class DbSearchTag extends TagSupportWithScriptHandler
             tagBuf.append("\"");
             tagBuf.append(prepareStyles());
             tagBuf.append(prepareEventHandlers());
-            tagBuf.append(">\n");
+            tagBuf.append("/>\n");
 
             pageContext.getOut().write(RenderHiddenFields(tableId, fieldId));
             pageContext.getOut().write(tagBuf.toString());
@@ -251,4 +259,20 @@ public class DbSearchTag extends TagSupportWithScriptHandler
         super.setParent(parent);
         this.parentForm = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
     }
+	/**
+	 * Returns the id.
+	 * @return String
+	 */
+	public String getId() {
+		return id;
+	}
+
+	/**
+	 * Sets the id.
+	 * @param id The id to set
+	 */
+	public void setId(String id) {
+		this.id = id;
+	}
+
 }
