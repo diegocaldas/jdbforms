@@ -87,11 +87,6 @@ public class DbBlobURLTag extends BodyTagSupport
     {
         this.fieldName = fieldName;
         this.field = parentForm.getTable().getFieldByName(fieldName);
-
-        //if(parentForm.isSubForm()) {
-        // tell parent that _this_ class will generate the html tag, not DbBodyTag!
-        //  parentForm.strikeOut(this.field);
-        //}
     }
 
 
