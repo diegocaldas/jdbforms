@@ -79,8 +79,8 @@
 					<info>
 						<p>
 							Allows a user to specify a list of tables to select from<br/> 
-							Used in conjuction with the whereClause attribute<br/> 
-							 The value specified in the tableList attribute is used to specify the 'from' <br/> 
+							Used in conjuction with the whereClause attribute<br/>
+							 The value specified in the tableList attribute is used to specify the 'from'<br/>
 							 part of the Select query. Hence the name: table list.<br/>
 						</p>
 						<p style="text-autospace:none">
@@ -2308,7 +2308,7 @@ is able to chache the data</info>
 				<tagclass>org.dbforms.taglib.DbSetDataSource</tagclass>
 				<bodycontent>JSP</bodycontent>
 				<attribute>
-					<name>id</name>
+					<name>dataSource</name>
 					<required>true</required>
 					<rtexprvalue>true</rtexprvalue>
 					<info>
@@ -2318,7 +2318,7 @@ is able to chache the data</info>
         					to obtain a connection via the same settings as defined in dbForms
 	       				</p>
 						<p>Example: (using Jakarta dbTags)<br/>
-								&lt;db:setDataSource id=&quot;myDataSource&quot; /&gt;<br/>
+								&lt;db:setDataSource dataSource=&quot;myDataSource&quot; /&gt;<br/>
 								&lt;sql:query var="qry" dataSource="${myDataSource}"&gt;Select * from Table&lt;/sql:query&gt;<br/>
 								&lt;c:forEach var="row" items="${qry.rows}" &gt;<br/>
 								Value: &lt;c:out value="{row.field}" /&gt;<br/>
