@@ -23,21 +23,30 @@
 package org.dbforms.conprovider;
 
 import java.util.Properties;
+import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.CallableStatement;
+import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
+import java.sql.SQLWarning;
+import java.sql.Statement;
 
 /**
- *  Simple Connection provider.
+ *  Single Connection provider.
  *  <br>
- *  provides non-pooled connections.
+ *  provides one connection for all
  * 
- * @author Luca Fossato
+ * @author Henner Kollmann
  * 
  */
-public class SingleConnectionProvider extends ConnectionProvider
-{
-   private static ConnectionWrapper _con;
+public class SingleConnectionProvider extends ConnectionProvider {
+   private static SingleConnectionWrapper _con;
    /**
     *  Default constructor.
     *
@@ -45,8 +54,7 @@ public class SingleConnectionProvider extends ConnectionProvider
     * @throws  Exception because of the <code>throws Exception</code> clause
     *          of the  <code>init</code> method.
     */
-   public SingleConnectionProvider() throws Exception
-   {
+   public SingleConnectionProvider() throws Exception {
       super();
    }
 
@@ -56,40 +64,234 @@ public class SingleConnectionProvider extends ConnectionProvider
     * @return  a JDBC Connection
     * @exception  SQLException Description of the Exception
     */
-   protected synchronized Connection getConnection() throws SQLException
-   {
-      if (_con == null)  {
+   protected synchronized Connection getConnection() throws SQLException {
+      if (_con == null) {
          Properties props = getPrefs().getProperties();
          Connection con = null;
-   
+
          // uses custom jdbc properties;
-         if ((props != null) && !props.isEmpty())
-         {
+         if ((props != null) && !props.isEmpty()) {
             props.put("user", getPrefs().getUser());
             props.put("password", getPrefs().getPassword());
             con = DriverManager.getConnection(getPrefs().getJdbcURL(), props);
          }
-   
+
          // "plain" flavour;
-         else
-         {
-            con = DriverManager.getConnection(getPrefs().getJdbcURL(), getPrefs().getUser(),
-                  getPrefs().getPassword());
+         else {
+            con = DriverManager.getConnection(getPrefs().getJdbcURL(), getPrefs().getUser(), getPrefs().getPassword());
          }
-   
-         _con = new ConnectionWrapper(con); 
+
+         _con = new SingleConnectionWrapper(con);
       }
       return _con;
    }
-
 
    /**
     *  Initialize the ConnectionProvider.
     *
     * @throws  Exception if any error occurs
     */
-   protected void init() throws Exception
-   {
+   protected void init() throws Exception {
       Class.forName(getPrefs().getJdbcDriver()).newInstance();
    }
+
+   private class SingleConnectionWrapper implements Connection {
+
+      private Connection _conn;
+      private List list = new ArrayList();
+
+      public SingleConnectionWrapper(Connection con) {
+         _conn = con;
+      }
+
+      protected void closeReally() throws SQLException {
+         close();
+         _conn.close();
+      }
+
+      /**
+       * closes any Statements that were not explicitly closed.
+       */
+      public void close() throws SQLException {
+         /*
+               Iterator iter = list.iterator();
+               while (iter.hasNext()) {
+                  Statement stmt = (Statement) iter.next();
+                  stmt.close();
+               }
+         */
+      }
+
+      public Statement createStatement() throws SQLException {
+         Statement res = _conn.createStatement();
+         list.add(res);
+         return res;
+      }
+
+      public Statement createStatement(int resultSetType, int resultSetConcurrency) throws SQLException {
+         Statement res = _conn.createStatement(resultSetType, resultSetConcurrency);
+         list.add(res);
+         return res;
+      }
+
+      public PreparedStatement prepareStatement(String sql) throws SQLException {
+         PreparedStatement res = _conn.prepareStatement(sql);
+         list.add(res);
+         return res;
+      }
+
+      public PreparedStatement prepareStatement(String sql, int resultSetType, int resultSetConcurrency) throws SQLException {
+         PreparedStatement res = _conn.prepareStatement(sql, resultSetType, resultSetConcurrency);
+         list.add(res);
+         return res;
+      }
+
+      public CallableStatement prepareCall(String sql) throws SQLException {
+         CallableStatement res = _conn.prepareCall(sql);
+         list.add(res);
+         return res;
+      }
+
+      public CallableStatement prepareCall(String sql, int resultSetType, int resultSetConcurrency) throws SQLException {
+         CallableStatement res = _conn.prepareCall(sql, resultSetType, resultSetConcurrency);
+         list.add(res);
+         return res;
+      }
+
+      public void clearWarnings() throws SQLException {
+         _conn.clearWarnings();
+      }
+
+      public void commit() throws SQLException {
+         _conn.commit();
+      }
+
+      public boolean getAutoCommit() throws SQLException {
+         return _conn.getAutoCommit();
+      }
+
+      public String getCatalog() throws SQLException {
+         return _conn.getCatalog();
+      }
+
+      public DatabaseMetaData getMetaData() throws SQLException {
+         return _conn.getMetaData();
+      }
+
+      public int getTransactionIsolation() throws SQLException {
+         return _conn.getTransactionIsolation();
+      }
+
+      public Map getTypeMap() throws SQLException {
+         return _conn.getTypeMap();
+      }
+
+      public SQLWarning getWarnings() throws SQLException {
+         return _conn.getWarnings();
+      }
+
+      public boolean isClosed() throws SQLException {
+         return _conn.isClosed();
+      }
+
+      public boolean isReadOnly() throws SQLException {
+         return _conn.isReadOnly();
+      }
+
+      public String nativeSQL(String sql) throws SQLException {
+         return _conn.nativeSQL(sql);
+      }
+
+      public void rollback() throws SQLException {
+         _conn.rollback();
+      }
+
+      public void setAutoCommit(boolean autoCommit) throws SQLException {
+         _conn.setAutoCommit(autoCommit);
+      }
+
+      public void setCatalog(String catalog) throws SQLException {
+         _conn.setCatalog(catalog);
+      }
+
+      public void setReadOnly(boolean readOnly) throws SQLException {
+         _conn.setReadOnly(readOnly);
+      }
+
+      public void setTransactionIsolation(int level) throws SQLException {
+         _conn.setTransactionIsolation(level);
+      }
+
+      public void setTypeMap(Map map) throws SQLException {
+         _conn.setTypeMap(map);
+      }
+
+      public int getHoldability() throws SQLException {
+         return _conn.getHoldability();
+      }
+
+      public void setHoldability(int holdability) throws SQLException {
+         _conn.setHoldability(holdability);
+      }
+
+      public java.sql.Savepoint setSavepoint() throws SQLException {
+         return _conn.setSavepoint();
+      }
+
+      public java.sql.Savepoint setSavepoint(String name) throws SQLException {
+         return _conn.setSavepoint(name);
+      }
+
+      public void rollback(java.sql.Savepoint savepoint) throws SQLException {
+         _conn.rollback(savepoint);
+      }
+
+      public void releaseSavepoint(java.sql.Savepoint savepoint) throws SQLException {
+         _conn.releaseSavepoint(savepoint);
+      }
+
+      public Statement createStatement(int resultSetType, int resultSetConcurrency, int resultSetHoldability)
+         throws SQLException {
+         Statement res = _conn.createStatement(resultSetType, resultSetConcurrency, resultSetHoldability);
+         list.add(res);
+         return res;
+      }
+
+      public PreparedStatement prepareStatement(
+         String sql,
+         int resultSetType,
+         int resultSetConcurrency,
+         int resultSetHoldability)
+         throws SQLException {
+         PreparedStatement res = _conn.prepareStatement(sql, resultSetType, resultSetConcurrency, resultSetHoldability);
+         list.add(res);
+         return res;
+      }
+
+      public CallableStatement prepareCall(String sql, int resultSetType, int resultSetConcurrency, int resultSetHoldability)
+         throws SQLException {
+         CallableStatement res = _conn.prepareCall(sql, resultSetType, resultSetConcurrency, resultSetHoldability);
+         list.add(res);
+         return res;
+      }
+
+      public PreparedStatement prepareStatement(String sql, int autoGeneratedKeys) throws SQLException {
+         PreparedStatement res = _conn.prepareStatement(sql, autoGeneratedKeys);
+         list.add(res);
+         return res;
+      }
+
+      public PreparedStatement prepareStatement(String sql, int columnIndexes[]) throws SQLException {
+         PreparedStatement res = _conn.prepareStatement(sql, columnIndexes);
+         list.add(res);
+         return res;
+      }
+
+      public PreparedStatement prepareStatement(String sql, String columnNames[]) throws SQLException {
+         PreparedStatement res = _conn.prepareStatement(sql, columnNames);
+         list.add(res);
+         return res;
+      }
+   }
+
 }
