@@ -57,7 +57,7 @@ public class NavFirstEvent extends NavigationEvent {
 	 * @param table DOCUMENT ME!
 	 * @param config DOCUMENT ME!
 	 */
-	public NavFirstEvent(HttpServletRequest request, Table table, DbFormsConfig config) {
+	public NavFirstEvent(Table table, HttpServletRequest request, DbFormsConfig config) {
 		super(table, request, config);
 	}
 
