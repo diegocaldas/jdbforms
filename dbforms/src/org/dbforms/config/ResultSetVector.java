@@ -28,7 +28,6 @@ import java.sql.Types;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.Clob;
-
 import org.apache.log4j.Category;
 
 
@@ -38,7 +37,7 @@ import org.apache.log4j.Category;
  * In version 0.5, this class held the actual data of a ResultSet (SELECT from
  * a table). The main weakness of this class was that it used too much memory
  * and processor time:
- * 
+ *
  * <ul>
  * <li>
  * 1. every piece of data gots stored in an array (having a table with a
@@ -50,32 +49,32 @@ import org.apache.log4j.Category;
  * </li>
  * </ul>
  * </p>
- * 
+ *
  * <p>
  * since version 0.7 DbForms queries only those record from the database the
  * user really wants to see. this way you can query from a table with millions
  * of records and you will still have no memory problems, [exception: you
  * choose count="" in DbForms-tag :=) -> see org.dbforms.taglib.DbFormTag]
  * </p>
- * 
+ *
  * @author Joe Peer
  */
 public class ResultSetVector
 {
    private static Category logCat = Category.getInstance(
-                                     ResultSetVector.class.getName());
+                                             ResultSetVector.class.getName());
 
-	/**
-	 * Checks if the given ResultSetVector is null
-	 * 
-	 * @param rsv ResultSetVector to check
-	 * 
-	 * @return true if ResultSetVector is null
-	 */
-	public static final boolean isNull(ResultSetVector rsv)
-	{
-		return ((rsv == null) || (rsv.size() == 0));
-	}
+   /**
+    * Checks if the given ResultSetVector is null
+    *
+    * @param rsv ResultSetVector to check
+    *
+    * @return true if ResultSetVector is null
+    */
+   public static final boolean isNull(ResultSetVector rsv)
+   {
+      return ((rsv == null) || (rsv.size() == 0));
+   }
 
    // logging category for this class
    private int       pointer               = 0;
@@ -99,9 +98,9 @@ public class ResultSetVector
 
    /**
     * Creates a new ResultSetVector object.
-    * 
+    *
     * @param rs data to fill the ResutlSetVector with
-    * 
+    *
     * @throws java.sql.SQLException thrown exception
     */
    public ResultSetVector(ResultSet rs) throws java.sql.SQLException
@@ -153,11 +152,11 @@ public class ResultSetVector
 
    /**
     * Creates a new ResultSetVector object with the given FieldList
-    * 
+    *
     * @param selectFields The FieldList to use
-    * 
+    *
     */
-   public ResultSetVector(Vector selectFields) 
+   public ResultSetVector(Vector selectFields)
    {
       this();
       this.selectFields = selectFields;
@@ -167,10 +166,10 @@ public class ResultSetVector
 
    /**
     * Creates a new ResultSetVector object with the given FieldList and DataSet .
-    * 
+    *
     * @param selectFields The FieldList to use
     * @param rs data to fill the ResutlSetVector with
-    * 
+    *
     * @throws java.sql.SQLException thrown exception
     */
    public ResultSetVector(Vector selectFields, ResultSet rs)
@@ -202,7 +201,7 @@ public class ResultSetVector
 
    /**
     * adds a row to the ResultSetVector
-    * 
+    *
     * @param objectRow row to add
     */
    public void addRow(Object[] objectRow)
@@ -242,7 +241,7 @@ public class ResultSetVector
 
    /**
     * DOCUMENT ME!
-    * 
+    *
     * @param pointer DOCUMENT ME!
     */
    public void setPointer(int pointer)
@@ -253,7 +252,7 @@ public class ResultSetVector
 
    /**
     * DOCUMENT ME!
-    * 
+    *
     * @return DOCUMENT ME!
     */
    public int getPointer()
@@ -264,7 +263,7 @@ public class ResultSetVector
 
    /**
     * DOCUMENT ME!
-    * 
+    *
     * @return DOCUMENT ME!
     */
    public int increasePointer()
@@ -284,9 +283,9 @@ public class ResultSetVector
 
    /**
     * DOCUMENT ME!
-    * 
+    *
     * @param stepWidth DOCUMENT ME!
-    * 
+    *
     * @return DOCUMENT ME!
     */
    public int increasePointerBy(int stepWidth)
@@ -308,9 +307,9 @@ public class ResultSetVector
 
    /**
     * DOCUMENT ME!
-    * 
+    *
     * @param stepWidth DOCUMENT ME!
-    * 
+    *
     * @return DOCUMENT ME!
     */
    public int declinePointerBy(int stepWidth)
@@ -332,7 +331,7 @@ public class ResultSetVector
 
    /**
     * DOCUMENT ME!
-    * 
+    *
     * @return DOCUMENT ME!
     */
    public int declinePointer()
@@ -352,9 +351,9 @@ public class ResultSetVector
 
    /**
     * DOCUMENT ME!
-    * 
+    *
     * @param p DOCUMENT ME!
-    * 
+    *
     * @return DOCUMENT ME!
     */
    public boolean isPointerLegal(int p)
@@ -365,7 +364,7 @@ public class ResultSetVector
 
    /**
     * DOCUMENT ME!
-    * 
+    *
     * @return DOCUMENT ME!
     */
    public boolean isCurrentPointerLegal()
@@ -376,7 +375,7 @@ public class ResultSetVector
 
    /**
     * DOCUMENT ME!
-    * 
+    *
     * @return DOCUMENT ME!
     */
    public String[] getCurrentRow()
@@ -394,7 +393,7 @@ public class ResultSetVector
 
    /**
     * DOCUMENT ME!
-    * 
+    *
     * @return DOCUMENT ME!
     */
    public Object[] getCurrentRowAsObjects()
@@ -412,9 +411,9 @@ public class ResultSetVector
 
    /**
     * DOCUMENT ME!
-    * 
+    *
     * @param i DOCUMENT ME!
-    * 
+    *
     * @return DOCUMENT ME!
     */
    public String getField(int i)
@@ -432,9 +431,9 @@ public class ResultSetVector
 
    /**
     * DOCUMENT ME!
-    * 
+    *
     * @param fieldName DOCUMENT ME!
-    * 
+    *
     * @return DOCUMENT ME!
     */
    public String getField(String fieldName)
@@ -455,9 +454,9 @@ public class ResultSetVector
 
    /**
     * DOCUMENT ME!
-    * 
+    *
     * @param i DOCUMENT ME!
-    * 
+    *
     * @return DOCUMENT ME!
     */
    public Object getFieldAsObject(int i)
@@ -475,9 +474,9 @@ public class ResultSetVector
 
    /**
     * DOCUMENT ME!
-    * 
+    *
     * @param fieldName DOCUMENT ME!
-    * 
+    *
     * @return DOCUMENT ME!
     */
    public Object getFieldAsObject(String fieldName)
@@ -528,7 +527,7 @@ public class ResultSetVector
 
    /**
     * DOCUMENT ME!
-    * 
+    *
     * @return DOCUMENT ME!
     */
    public Hashtable getCurrentRowAsHashtable()
@@ -539,12 +538,19 @@ public class ResultSetVector
                   "no field vector was provided to this result");
       }
 
+      String[] rowData = getCurrentRow();
+
+      if (rowData == null)
+      {
+         return null;
+      }
+
       Hashtable ht = new Hashtable();
 
       for (int i = 0; i < selectFields.size(); i++)
       {
          Field f = (Field) selectFields.elementAt(i);
-         ht.put(f.getName(), getCurrentRow()[i]);
+         ht.put(f.getName(), rowData[i]);
       }
 
       return ht;
@@ -553,7 +559,7 @@ public class ResultSetVector
 
    /**
     * DOCUMENT ME!
-    * 
+    *
     * @return DOCUMENT ME!
     */
    public FieldValues getCurrentRowAsFieldValues()
@@ -564,12 +570,19 @@ public class ResultSetVector
                   "no field vector was provided to this result");
       }
 
+      String[] rowData = getCurrentRow();
+
+      if (rowData == null)
+      {
+         return null;
+      }
+
       FieldValues fvHT = new FieldValues();
 
       for (int i = 0; i < selectFields.size(); i++)
       {
          Field      f  = (Field) selectFields.elementAt(i);
-         FieldValue fv = new FieldValue(f, getCurrentRow()[i]);
+         FieldValue fv = new FieldValue(f, rowData[i]);
          fvHT.put(fv);
       }
 
@@ -601,7 +614,7 @@ public class ResultSetVector
 
    /**
     * DOCUMENT ME!
-    * 
+    *
     * @param b value to set
     */
    public void setFirstPage(boolean b)
@@ -612,12 +625,11 @@ public class ResultSetVector
 
    /**
     * DOCUMENT ME!
-    * 
+    *
     * @param b value to set
     */
    public void setLastPage(boolean b)
    {
       lastPage = b;
    }
-
 }
