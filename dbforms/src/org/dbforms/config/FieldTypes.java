@@ -43,17 +43,20 @@ public class FieldTypes
    public static final int TIMESTAMP = 4;
 
    /** DOCUMENT ME! */
-   public static final int DOUBLE = 5;
+   public static final int TIME = 5;
 
    /** DOCUMENT ME! */
-   public static final int FLOAT = 6;
+   public static final int DOUBLE = 6;
 
    /** DOCUMENT ME! */
-   public static final int BLOB = 7;
+   public static final int FLOAT = 7;
 
    /** DOCUMENT ME! */
-   public static final int DISKBLOB = 8;
+   public static final int BLOB = 8;
 
    /** DOCUMENT ME! */
-   public static final int NUMERIC = 9;
+   public static final int DISKBLOB = 9;
+
+   /** DOCUMENT ME! */
+   public static final int NUMERIC = 10;
 }

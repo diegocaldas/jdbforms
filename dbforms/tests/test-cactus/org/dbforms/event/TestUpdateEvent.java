@@ -34,7 +34,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.dbforms.config.DbFormsConfigRegistry;
 
 import org.dbforms.servlets.ConfigServlet;
-import org.dbforms.config.SqlUtil;
 
 
 /**
@@ -85,8 +84,7 @@ public class TestUpdateEvent extends JspTestCase
                   "0@root", 
                   (HttpServletRequest)request, 
                   DbFormsConfigRegistry.instance().lookup());
-      Connection con = SqlUtil.getConnection(DbFormsConfigRegistry.instance().lookup(), 
-                                                            "default");
+      Connection con = DbFormsConfigRegistry.instance().lookup().getConnection();
       evt.processEvent(con);            
    }
 

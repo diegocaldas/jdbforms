@@ -24,9 +24,7 @@ package org.dbforms.taglib;
 import java.util.*;
 import javax.servlet.http.*;
 import javax.servlet.jsp.*;
-import javax.servlet.jsp.tagext.*;
 
-import org.dbforms.config.*;
 import org.dbforms.util.*;
 import org.apache.log4j.Category;
 
@@ -40,36 +38,12 @@ import org.apache.log4j.Category;
  *
  * @author Joachim Peer <j.peer@gmx.net>
  */
-public class DbSortTag extends TagSupport
+public class DbSortTag extends DbBaseHandlerTag
 {
-   static Category       logCat     = Category.getInstance(DbSortTag.class
-         .getName()); // logging category for this class
-   private DbFormsConfig config;
-   private String        fieldName;
-   private Field         field;
-   private DbFormTag     parentForm;
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param fieldName DOCUMENT ME!
-    */
-   public void setFieldName(String fieldName)
-   {
-      this.fieldName    = fieldName;
-      this.field        = parentForm.getTable().getFieldByName(fieldName);
-   }
+   private Category   logCat     = Category.getInstance(this.getClass().getName()); // logging category for this class
 
 
-   /**
-    * DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    */
-   public String getFieldName()
-   {
-      return fieldName;
-   }
+
 
 
    /**
@@ -84,12 +58,12 @@ public class DbSortTag extends TagSupport
    {
       try
       {
-         int tableId = parentForm.getTable().getId();
-         int fieldId = field.getId();
+         int tableId = getParentForm().getTable().getId();
+         int fieldId = getField().getId();
 
-         if (!field.isKey() && !field.isFieldSortable())
+         if (!getField().getKey() && !getField().isSortable())
          {
-            logCat.warn("you should declare " + field.getName()
+            logCat.warn("you should declare " + getField().getName()
                + " as key or as sortable in your config file, if you use it as ordering field!");
          }
 
@@ -115,7 +89,7 @@ public class DbSortTag extends TagSupport
          String strNone = "None";
 
          // Internationalization			
-         if (parentForm.getCaptionResource().equals("true"))
+         if (getParentForm().isCaptionResource())
          {
             Locale reqLocale = MessageResources.getLocale(request);
 
@@ -171,27 +145,4 @@ public class DbSortTag extends TagSupport
    }
 
 
-   /**
-    * DOCUMENT ME!
-    *
-    * @param pageContext DOCUMENT ME!
-    */
-   public void setPageContext(final javax.servlet.jsp.PageContext pageContext)
-   {
-      super.setPageContext(pageContext);
-      this.config = (DbFormsConfig) pageContext.getServletContext()
-                                               .getAttribute(DbFormsConfig.CONFIG);
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param parent DOCUMENT ME!
-    */
-   public void setParent(final javax.servlet.jsp.tagext.Tag parent)
-   {
-      super.setParent(parent);
-      this.parentForm = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
-   }
 }

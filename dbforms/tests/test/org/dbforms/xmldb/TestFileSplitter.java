@@ -37,40 +37,6 @@ import org.dbforms.util.Util;
 public class TestFileSplitter extends TestCase
 {
     /**
-     * Creates a new TestFileSplitter object.
-     *
-     * @param name DOCUMENT ME!
-     *
-     * @throws Exception DOCUMENT ME!
-     */
-    public TestFileSplitter(String name) throws Exception
-    {
-        super(name);
-    }
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @throws Exception DOCUMENT ME!
-     */
-    public void setUp() throws Exception
-    {
-        super.setUp();
-    }
-
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @throws Exception DOCUMENT ME!
-     */
-    public void tearDown() throws Exception
-    {
-        super.tearDown();
-    }
-
-
-    /**
      * DOCUMENT ME!
      *
      * @throws Exception DOCUMENT ME!

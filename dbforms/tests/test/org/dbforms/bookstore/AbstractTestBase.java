@@ -5,7 +5,7 @@ import com.bitmechanic.maxq.HttpTestCase;
 import com.bitmechanic.maxq.EditorPane;
 
 // definition of test class
-public class AbstractTestBase extends HttpTestCase
+public abstract class AbstractTestBase extends HttpTestCase
 {
 	public AbstractTestBase(String name)
 	{

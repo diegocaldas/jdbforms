@@ -104,7 +104,7 @@ import org.dbforms.util.Util;
  * 
  * @version $Revision$
  */
-public class DbFilterTag extends TagSupportWithScriptHandler
+public class DbFilterTag extends DbBaseHandlerTag
 {
    /** DOCUMENT ME! */
    protected static String FLT_COND = "_cond_";
@@ -171,55 +171,7 @@ public class DbFilterTag extends TagSupportWithScriptHandler
    }
 
 
-   /**
-    * return the currently setted filter condition, reading it from request.
-    * Used in DbFormTag's doStartTag to set the value of the sqlFilter attribute. 
-    * 
-    * @param request
-    * @param tableId
-    * @param sqlFilter
-    * @return filter string
-    * @deprecated code is moved into the DataSource classes so that XML data can be handled too
-    */
-   public static String generateSqlFilter(HttpServletRequest request, 
-                                          int tableId, String sqlFilter)
-   {
-      // read from request the currently active condition
-      int    conditionId     = getCurrentCondition(request, tableId);
-      String filterCondition = null;
-
-      if (conditionId > -1)
-      {
-         // if there's an active condition, build up it from request
-         filterCondition = DbFilterConditionTag.generateFilterCondition(request, 
-                                                                        tableId, 
-                                                                        conditionId);
-      }
-
-      logCat.debug("filter condition from request : " + filterCondition);
-
-      String filter = "";
-
-      if (!Util.isNull(sqlFilter) && !Util.isNull(filterCondition))
-      {
-         filter = " ( " + sqlFilter + " ) AND ( " + filterCondition + " ) ";
-      }
-      else if (!Util.isNull(sqlFilter))
-      {
-         filter = sqlFilter;
-      }
-      else if (!Util.isNull(filterCondition))
-      {
-         filter = filterCondition;
-      }
-
-      logCat.debug("filter to apply : " + filter);
-
-      return filter;
-   }
-
-
-   /**
+    /**
     * retrieve the currently active condition from request
     * 
     * @param request

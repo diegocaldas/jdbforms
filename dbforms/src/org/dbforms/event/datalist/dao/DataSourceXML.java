@@ -117,7 +117,7 @@ public class DataSourceXML extends DataSource {
             data.setItemValue(r, 
                   Util.isNull(f.getExpression()) ? f.getName() : f.getExpression(), 
                   f.getType(), 
-                  fv.getFieldValue()
+                  fv.getFieldValueAsObject()
                );
          }
          dataObject[r] = null;
@@ -262,7 +262,7 @@ public class DataSourceXML extends DataSource {
       DOMFactory.instance().write(url.getPath(), doc);
    }
 
-   private String insertParamsInSqlFilter() {
+   private String getSQLFilter() {
       /** substitute ? with corresponding value in list */
       int p1 = 0;
       int p2 = sqlFilter.indexOf('?', p1);
@@ -302,7 +302,7 @@ public class DataSourceXML extends DataSource {
       return buf.toString();
    }
 
-   private String parseFilterConstraint() {
+   private String getWhereClause() throws SQLException {
       StringBuffer buf = new StringBuffer();
 
       if (!FieldValue.isNull(filterConstraint)) {
@@ -352,7 +352,7 @@ public class DataSourceXML extends DataSource {
             }
 
             buf.append("\"");
-            buf.append(filterConstraint[i].getFieldValue());
+            buf.append(filterConstraint[i].getFieldValueAsObject().toString());
             buf.append("\"");
          }
       }
@@ -386,10 +386,11 @@ public class DataSourceXML extends DataSource {
       return Util.replaceRealPath(getTable().getAlias(), DbFormsConfigRegistry.instance().lookup().getRealPath());
    }
 
-   private String getQuery() throws Exception {
+   private String getQuery() throws SQLException {
       StringBuffer buf = new StringBuffer();
-      String filter = parseFilterConstraint();
-      String sqlFilter = insertParamsInSqlFilter();
+      
+      String filter = getWhereClause();
+      String sqlFilter = getSQLFilter();
 
       if (!Util.isNull(filter) || !Util.isNull(sqlFilter)) {
          buf.append("[");

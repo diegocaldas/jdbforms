@@ -6,7 +6,6 @@
  */
 package org.dbforms.util;
 
-import junit.framework.TestCase;
 import java.util.Locale;
 
 /**
@@ -15,7 +14,7 @@ import java.util.Locale;
  * To change this generated comment go to 
  * Window>Preferences>Java>Code Generation>Code and Comments
  */
-public class TestMessageResourcesInternal extends TestCase
+public class TestMessageResourcesInternal extends AbstractTestCase
 {
 
 	public void testMessageResourceInternal() throws Exception

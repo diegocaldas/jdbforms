@@ -22,7 +22,6 @@
  */
 
 package org.dbforms.util;
-import junit.framework.*;
 import java.util.*;
 
 
@@ -33,42 +32,8 @@ import java.util.*;
  * @author     epugh
  * @created    May 3, 2002
  */
-public class TestParseUtil extends TestCase
+public class TestParseUtil extends AbstractTestCase
 {
-    /**
-     * Creates a new TestParseUtil object.
-     *
-     * @param name DOCUMENT ME!
-     *
-     * @throws Exception DOCUMENT ME!
-     */
-    public TestParseUtil(String name) throws Exception
-    {
-        super(name);
-    }
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @throws Exception DOCUMENT ME!
-     */
-    public void setUp() throws Exception
-    {
-        super.setUp();
-    }
-
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @throws Exception DOCUMENT ME!
-     */
-    public void tearDown() throws Exception
-    {
-        super.tearDown();
-    }
-
-
     /**
      * DOCUMENT ME!
      *

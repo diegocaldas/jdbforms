@@ -640,9 +640,32 @@ etc)</summary>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
 					<info>
-						<p>If the value (retrieved from the database) is null, allow the user to replace 
-  the text to display by a custom value. May be used in conjunction with dbForm's 
-  I18N support.</p>
+						<p>
+							If the value (retrieved from the database) is null, 
+							allow the user to replace 
+  							the text to display by a custom value. May be used in conjunction with dbForm's 
+  							I18N support.
+  						</p>
+					</info>
+				</attribute>
+				<attribute>
+					<name>pattern</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						When dealing with numeric or date/time values, you could use the Java API to format the
+						output of the text field expressions yourself using the format attribute. 
+						But there is a more convenient way to do it: by using the
+						pattern attribute.
+						The value you should supply to this attribute is the same that you would supply if it were for you to
+						format the value using either the java.text.DecimalFormat class or
+						java.text.SimpleDateFormat class, depending on the type of value to format.
+						In fact, what the engine does is to instantiate the java.text.DecimalFormat class if the text field
+						expression returns subclasses of the java.lang.Number class or to instantiate the
+						java.text.SimpleDataFormat if the text field expression return java.util.Date or
+						java.sql.Timestamp objects.
+						For more detail about the syntax of this pattern attribute, check the Java API documentation for those
+						two classes: java.text.DecimalFormat and java.text.SimpleDateFormat.
 					</info>
 				</attribute>
 				<attribute>
@@ -674,6 +697,31 @@ etc)</summary>
 					<name>fieldName</name>
 					<required>true</required>
 					<rtexprvalue>true</rtexprvalue>
+				</attribute>
+				<attribute>
+					<name>pattern</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						When dealing with numeric or date/time values, you could use the Java API to format the
+						output of the text field expressions yourself using the format attribute. 
+						But there is a more convenient way to do it: by using the
+						pattern attribute.
+						The value you should supply to this attribute is the same that you would supply if it were for you to
+						format the value using either the java.text.DecimalFormat class or
+						java.text.SimpleDateFormat class, depending on the type of value to format.
+						In fact, what the engine does is to instantiate the java.text.DecimalFormat class if the text field
+						expression returns subclasses of the java.lang.Number class or to instantiate the
+						java.text.SimpleDataFormat if the text field expression return java.util.Date or
+						java.sql.Timestamp objects.
+						For more detail about the syntax of this pattern attribute, check the Java API documentation for those
+						two classes: java.text.DecimalFormat and java.text.SimpleDateFormat.
+					</info>
+				</attribute>
+				<attribute>
+					<name>format</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
 					<info>
 						<p>
 							an instance of java.text.Format or any subclass of it. This instance is used 
@@ -681,8 +729,10 @@ etc)</summary>
 							  This is done internally by invoking method &quot;format(Object)&quot; of the 
 							  provided Format object.
   						</p>
-						<p>hint: the class java.text.DateFormat is a ready-to-use Date formatter.
-  you can aquire an instance of DateFormat by writing:</p>
+						<p>
+							hint: the class java.text.DateFormat is a ready-to-use Date formatter.
+  							you can aquire an instance of DateFormat by writing:
+  						</p>
 						<pre>
 							<span lang="DE" style="font-size:8.0pt;">DateFormat df = DateFormat.</span>
 						</pre>
@@ -691,36 +741,31 @@ etc)</summary>
 						</pre>
 						<p>even more convenient to use, is the class java.text.SimpleDateFormat:</p>
 						<pre>
-							SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd&quot;);
-                                
-											    Format Pattern Result 
-											    --------------------- 
-											    &quot;yyyy.MM.dd G 'at' hh:mm:ss z&quot;
-											    1996.07.10 AD at 15:08:56 PDT
-											    
-											    &quot;EEE, MMM d, ''yy&quot;
-											    Wed, July 10, '96
-											    
-											    &quot;h:mm a&quot;
-											    12:08 PM
-											     
-											    &quot;hh 'o''clock' a, zzzz&quot;
-											    12 o'clock PM, Pacific Daylight Time
-											    
-											    &quot;K:mm a, z&quot;
-											    0:00 PM, PST
-											    
-											    &quot;yyyyy.MMMMM.dd GGG hh:mm aaa&quot;
-											    1996.July.10 AD 12:08 PM 
-											                                
-											    (examples taken from Java API doc)
+SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd&quot;);
+
+	    Format Pattern Result 
+	    --------------------- 
+	    &quot;yyyy.MM.dd G 'at' hh:mm:ss z&quot;
+	    1996.07.10 AD at 15:08:56 PDT
+	    
+	    &quot;EEE, MMM d, ''yy&quot;
+	    Wed, July 10, '96
+	    
+	    &quot;h:mm a&quot;
+	    12:08 PM
+	     
+	    &quot;hh 'o''clock' a, zzzz&quot;
+	    12 o'clock PM, Pacific Daylight Time
+	    
+	    &quot;K:mm a, z&quot;
+	    0:00 PM, PST
+	    
+	    &quot;yyyyy.MMMMM.dd GGG hh:mm aaa&quot;
+	    1996.July.10 AD 12:08 PM 
+	                                
+	    (examples taken from Java API doc)
 						</pre>
 					</info>
-				</attribute>
-				<attribute>
-					<name>format</name>
-					<required>false</required>
-					<rtexprvalue>true</rtexprvalue>
 				</attribute>
 				<attribute>
 					<name>nullFieldValue</name>
@@ -860,6 +905,26 @@ interaction with JavaScript<p style="text-autospace:none">Identification which c
 					<rtexprvalue>true</rtexprvalue>
 					<info>
 						<p>visually encrypted input field</p>
+					</info>
+				</attribute>
+				<attribute>
+					<name>pattern</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						When dealing with numeric or date/time values, you could use the Java API to format the
+						output of the text field expressions yourself using the format attribute. 
+						But there is a more convenient way to do it: by using the
+						pattern attribute.
+						The value you should supply to this attribute is the same that you would supply if it were for you to
+						format the value using either the java.text.DecimalFormat class or
+						java.text.SimpleDateFormat class, depending on the type of value to format.
+						In fact, what the engine does is to instantiate the java.text.DecimalFormat class if the text field
+						expression returns subclasses of the java.lang.Number class or to instantiate the
+						java.text.SimpleDataFormat if the text field expression return java.util.Date or
+						java.sql.Timestamp objects.
+						For more detail about the syntax of this pattern attribute, check the Java API documentation for those
+						two classes: java.text.DecimalFormat and java.text.SimpleDateFormat.
 					</info>
 				</attribute>
 				<attribute>
@@ -1060,8 +1125,6 @@ but this class providesan extension to TextField: the additional attribute &quot
 					<p>To set the format that a date value is sent to the database in, add it to <b>dbforms-config.xml</b> file as follows (for example):<br/>
 						<pre>&lt;date-format&gt;yyyy-MM-dd&lt;/date-format&gt;</pre>
 					</p>
-					<p>To use a different format than a globally specified one, use the format attribute in the 
-dateField tag.</p>
 				</info>
 				<attribute>
 					<name>id</name>
@@ -1075,6 +1138,26 @@ dateField tag.</p>
 					<rtexprvalue>true</rtexprvalue>
 					<info>
 						<p>name of the field this tag references to</p>
+					</info>
+				</attribute>
+				<attribute>
+					<name>pattern</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						When dealing with numeric or date/time values, you could use the Java API to format the
+						output of the text field expressions yourself using the format attribute. 
+						But there is a more convenient way to do it: by using the
+						pattern attribute.
+						The value you should supply to this attribute is the same that you would supply if it were for you to
+						format the value using either the java.text.DecimalFormat class or
+						java.text.SimpleDateFormat class, depending on the type of value to format.
+						In fact, what the engine does is to instantiate the java.text.DecimalFormat class if the text field
+						expression returns subclasses of the java.lang.Number class or to instantiate the
+						java.text.SimpleDataFormat if the text field expression return java.util.Date or
+						java.sql.Timestamp objects.
+						For more detail about the syntax of this pattern attribute, check the Java API documentation for those
+						two classes: java.text.DecimalFormat and java.text.SimpleDateFormat.
 					</info>
 				</attribute>
 				<attribute>
@@ -1329,6 +1412,26 @@ of the input field</info>
 					</info>
 				</attribute>
 				<attribute>
+					<name>pattern</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						When dealing with numeric or date/time values, you could use the Java API to format the
+						output of the text field expressions yourself using the format attribute. 
+						But there is a more convenient way to do it: by using the
+						pattern attribute.
+						The value you should supply to this attribute is the same that you would supply if it were for you to
+						format the value using either the java.text.DecimalFormat class or
+						java.text.SimpleDateFormat class, depending on the type of value to format.
+						In fact, what the engine does is to instantiate the java.text.DecimalFormat class if the text field
+						expression returns subclasses of the java.lang.Number class or to instantiate the
+						java.text.SimpleDataFormat if the text field expression return java.util.Date or
+						java.sql.Timestamp objects.
+						For more detail about the syntax of this pattern attribute, check the Java API documentation for those
+						two classes: java.text.DecimalFormat and java.text.SimpleDateFormat.
+					</info>
+				</attribute>
+				<attribute>
 					<name>format</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
@@ -1542,6 +1645,26 @@ using textareas</info>
 						<p style="  text-autospace:none">Note:<br/>
        renderBody attribute must be set to true.<br/>
       fieldPath is of type DISKBLOB.</p>
+					</info>
+				</attribute>
+				<attribute>
+					<name>pattern</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						When dealing with numeric or date/time values, you could use the Java API to format the
+						output of the text field expressions yourself using the format attribute. 
+						But there is a more convenient way to do it: by using the
+						pattern attribute.
+						The value you should supply to this attribute is the same that you would supply if it were for you to
+						format the value using either the java.text.DecimalFormat class or
+						java.text.SimpleDateFormat class, depending on the type of value to format.
+						In fact, what the engine does is to instantiate the java.text.DecimalFormat class if the text field
+						expression returns subclasses of the java.lang.Number class or to instantiate the
+						java.text.SimpleDataFormat if the text field expression return java.util.Date or
+						java.sql.Timestamp objects.
+						For more detail about the syntax of this pattern attribute, check the Java API documentation for those
+						two classes: java.text.DecimalFormat and java.text.SimpleDateFormat.
 					</info>
 				</attribute>
 				<attribute>

@@ -72,6 +72,11 @@
             <entry>old value of field in table at given row</entry>
           </row>
           <row>
+            <entry>pf_[tableId]_[rowNo]@root_[fieldId]</entry>
+            <entry></entry>
+            <entry>formatting pattern for given field at given row</entry>
+          </row>
+          <row>
             <entry>k_[tableId]_[rowNo]@root</entry>
             <entry></entry>
             <entry>key value of table and row</entry>

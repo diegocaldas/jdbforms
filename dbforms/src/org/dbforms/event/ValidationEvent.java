@@ -24,6 +24,7 @@ package org.dbforms.event;
 import java.util.Hashtable;
 import java.util.Vector;
 import java.util.Locale;
+import java.util.Iterator;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
@@ -35,6 +36,7 @@ import org.dbforms.validation.ValidatorConstants;
 import org.dbforms.config.DbFormsErrors;
 import org.dbforms.config.MultipleValidationException;
 import org.dbforms.config.DbFormsConfig;
+import org.dbforms.config.FieldValues;
 import org.dbforms.util.MessageResources;
 
 
@@ -63,6 +65,41 @@ public abstract class ValidationEvent extends DatabaseEvent
    {
       super(tableId, keyId, request, config);
    }
+
+   /**
+    *  Get the hash table containing the field names and values
+    *  to insert into the specified database table.
+    *  <br>
+    *  This method is used in ConditionChecker only
+    *  (see: <code>Controller.doValidation()</code> )
+    *  <br>
+    *  Example of a hash table entry:<br>
+    *  <code>
+    *    key:   LAST_NAME
+    *    value: foo-bar
+    *  </code>
+    *
+    * @param scalarFieldValues the hash map containing the names and values
+    *                          taken from the request object
+    *                          (see: <code>getFieldValues()</code>
+    *
+    * @return hash table containing the field names and values
+    *            to insert into the specified database table.
+    */
+   private Hashtable getAssociativeFieldValues(FieldValues scalarFieldValues)
+   {
+     Hashtable result = new Hashtable();
+     Iterator scalars = scalarFieldValues.keys();
+
+     while (scalars.hasNext())
+     {
+       String fieldName = (String) scalars.next();
+       result.put(fieldName, scalarFieldValues.get(fieldName).getFieldValue());
+     }
+
+     return result;
+   }
+
 
    /**
     *  DO the validation of <FORM> with Commons-Validator.

@@ -103,8 +103,8 @@ public class DbFileTag extends DbBaseInputTag
       {
          StringBuffer tagBuf = new StringBuffer();
 
-         if (getReadOnly().equals("true")
-                  || getParentForm().getReadOnly().equals("true"))
+         if (isReadOnly()
+                  || getParentForm().isReadOnly())
          {
             // if read-only, remove the browse button (for netscape problem)
             tagBuf.append("<input type=\"text\"");

@@ -23,11 +23,6 @@
 package org.dbforms.taglib;
 import javax.servlet.http.*;
 import javax.servlet.jsp.*;
-import javax.servlet.jsp.tagext.*;
-
-import org.dbforms.config.*;
-import org.apache.log4j.Category;
-
 
 
 /**
@@ -36,99 +31,11 @@ import org.apache.log4j.Category;
  * @author  Joe Peer
  * @created  06 August 2002
  */
-public class DbBlobURLTag extends BodyTagSupport
+public class DbBlobURLTag extends DbBaseHandlerTag
 {
-   // logging category for this class
-   static Category logCat = Category.getInstance(DbBlobURLTag.class.getName());
-
-   /** DOCUMENT ME! */
-   protected DbFormsConfig config;
-
-   /** DOCUMENT ME! */
-   protected String fieldName;
-
-   /** DOCUMENT ME! */
-   protected String defaultValue;
-
-   /** DOCUMENT ME! */
-   protected Field field;
-
-   /** DOCUMENT ME! */
-   protected DbFormTag parentForm;
-
-   /**
-    *  Gets the defaultValue attribute of the DbBlobURLTag object
-    *
-    * @return  The defaultValue value
-    */
-   public String getDefaultValue()
-   {
-      return defaultValue;
-   }
-
-
-   /**
-    *  Sets the defaultValue attribute of the DbBlobURLTag object
-    *
-    * @param  defaultValue The new defaultValue value
-    */
-   public void setDefaultValue(String defaultValue)
-   {
-      this.defaultValue = defaultValue;
-   }
-
-
-   /**
-    *  Sets the fieldName attribute of the DbBlobURLTag object
-    *
-    * @param  fieldName The new fieldName value
-    */
-   public void setFieldName(String fieldName)
-   {
-      this.fieldName    = fieldName;
-      this.field        = parentForm.getTable().getFieldByName(fieldName);
-   }
-
-
-   /**
-    *  Gets the fieldName attribute of the DbBlobURLTag object
-    *
-    * @return  The fieldName value
-    */
-   public String getFieldName()
-   {
-      return fieldName;
-   }
-
 
    // --------------------------------------------------------- Public Methods
    // DbForms specific
-
-   /**
-    *  Sets the pageContext attribute of the DbBlobURLTag object
-    *
-    * @param  pageContext The new pageContext value
-    */
-   public void setPageContext(final javax.servlet.jsp.PageContext pageContext)
-   {
-      super.setPageContext(pageContext);
-      config = (DbFormsConfig) pageContext.getServletContext().getAttribute(DbFormsConfig.CONFIG);
-   }
-
-
-   /**
-    *  Sets the parent attribute of the DbBlobURLTag object
-    *
-    * @param  parent The new parent value
-    */
-   public void setParent(final javax.servlet.jsp.tagext.Tag parent)
-   {
-      super.setParent(parent);
-
-      //parentForm = (DbFormTag) getParent().getParent(); // between this form and its parent lies a DbHeader/Body/Footer-Tag!
-      parentForm = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
-   }
-
 
    /**
     *  Description of the Method
@@ -147,9 +54,9 @@ public class DbBlobURLTag extends BodyTagSupport
                .append("&keyval=").append(getKeyVal());
 
          // append the defaultValue parameter;
-         if (defaultValue != null)
+         if (getDefaultValue() != null)
          {
-            tagBuf.append("&defaultValue=" + defaultValue);
+            tagBuf.append("&defaultValue=" + getDefaultValue());
 
             //logCat.info("::doEndTag - defaultValue set to [" + defaultValue + "]");
          }
@@ -173,13 +80,13 @@ public class DbBlobURLTag extends BodyTagSupport
     *
     * @return  The tableFieldCode value
     */
-   protected String getTableFieldCode()
+   private String getTableFieldCode()
    {
       StringBuffer buf = new StringBuffer();
 
-      buf.append(parentForm.getTable().getId());
+      buf.append(getParentForm().getTable().getId());
       buf.append("_");
-      buf.append(field.getId());
+      buf.append(getField().getId());
 
       return buf.toString();
    }
@@ -192,7 +99,7 @@ public class DbBlobURLTag extends BodyTagSupport
     */
    protected String getKeyVal()
    {
-      return parentForm.getTable().getKeyPositionString(parentForm
-         .getResultSetVector());
+      return getParentForm().getTable().getKeyPositionString(getParentForm().getResultSetVector());
    }
+
 }

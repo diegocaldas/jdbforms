@@ -26,7 +26,6 @@ import javax.servlet.jsp.*;
 
 import org.dbforms.util.*;
 import org.dbforms.config.*;
-import org.apache.log4j.Category;
 
 
 
@@ -41,39 +40,12 @@ import org.apache.log4j.Category;
  *
  * @author Henner Kollmann  (Henner.Kollmann@gmx.de)
  */
-public class DbSearchTag extends TagSupportWithScriptHandler
+public class DbSearchTag extends DbBaseHandlerTag
 {
-   static Category     logCat       = Category.getInstance(DbSortTag.class
-         .getName()); // logging category for this class
 
-   /** DOCUMENT ME! */
-   protected DbFormTag parentForm;
-   private String      fieldName;
    private String      searchAlgo   = "sharp";
    private String      searchMode   = "and";
    private String      defaultValue = null;
-   private String      id           = null;
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param fieldName DOCUMENT ME!
-    */
-   public void setFieldName(String fieldName)
-   {
-      this.fieldName = fieldName;
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    */
-   public String getFieldName()
-   {
-      return fieldName;
-   }
 
 
    /**
@@ -191,8 +163,8 @@ public class DbSearchTag extends TagSupportWithScriptHandler
    {
       try
       {
-         int   tableId = parentForm.getTable().getId();
-         Field field   = parentForm.getTable().getFieldByName(fieldName);
+         int   tableId = getParentForm().getTable().getId();
+         Field field   = getField();
          int   fieldId = field.getId();
 
          /*
@@ -251,34 +223,12 @@ public class DbSearchTag extends TagSupportWithScriptHandler
    }
 
 
-   /**
-    * DOCUMENT ME!
-    *
-    * @param parent DOCUMENT ME!
-    */
-   public void setParent(final javax.servlet.jsp.tagext.Tag parent)
+   public void doFinally()
    {
-      super.setParent(parent);
-      this.parentForm = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
+      searchAlgo   = "sharp";
+      searchMode   = "and";
+      defaultValue = null;
+      super.doFinally();
    }
 
-
-   /**
-    * Returns the id.
-    * @return String
-    */
-   public String getId()
-   {
-      return id;
-   }
-
-
-   /**
-    * Sets the id.
-    * @param id The id to set
-    */
-   public void setId(String id)
-   {
-      this.id = id;
-   }
 }

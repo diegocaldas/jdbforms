@@ -30,7 +30,7 @@ import java.util.Enumeration;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
-import javax.servlet.jsp.tagext.TagSupport;
+import javax.servlet.jsp.tagext.BodyTagSupport;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Category;
 import org.dbforms.util.MessageResources;
@@ -46,7 +46,7 @@ import org.dbforms.util.MessageResources;
  *
  * @author Joe Peer
  */
-public class ErrorsTag extends TagSupport
+public class ErrorsTag extends BodyTagSupport
 {
    static Category logCat = Category.getInstance(ErrorsTag.class.getName()); // logging category for this class
 
@@ -109,8 +109,7 @@ public class ErrorsTag extends TagSupport
     */
    public int doStartTag() throws JspException
    {
-      Vector             originalErrors = (Vector) pageContext.getAttribute(name,
-            PageContext.REQUEST_SCOPE);
+      Vector             originalErrors = (Vector) pageContext.getAttribute(name,  PageContext.REQUEST_SCOPE);
       HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
 
       if ((originalErrors != null) && (originalErrors.size() > 0))

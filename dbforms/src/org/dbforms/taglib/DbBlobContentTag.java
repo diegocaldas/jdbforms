@@ -24,9 +24,11 @@ package org.dbforms.taglib;
 import java.io.*;
 import java.sql.*;
 import javax.servlet.jsp.*;
-import javax.servlet.jsp.tagext.*;
 
-import org.dbforms.config.*;
+import java.sql.Connection;
+
+import org.dbforms.config.FieldTypes;
+import org.dbforms.util.SqlUtil;
 import org.apache.log4j.Category;
 
 
@@ -36,93 +38,12 @@ import org.apache.log4j.Category;
  *
  * @author Joe Peer
  */
-public class DbBlobContentTag extends BodyTagSupport
+public class DbBlobContentTag extends DbBaseHandlerTag
 {
-   static Category logCat = Category.getInstance(DbBlobURLTag.class.getName());
-
-   /** DOCUMENT ME! */
-   protected DbFormsConfig config;
-
-   /** DOCUMENT ME! */
-   protected String fieldName;
-
-   /** DOCUMENT ME! */
-   protected Field field;
-
-   /** DOCUMENT ME! */
-   protected DbFormTag parentForm;
-
-   /** DOCUMENT ME! */
-   protected String dbConnectionName;
-
-   /**
-   * DOCUMENT ME!
-   *
-   * @param name DOCUMENT ME!
-   */
-   public void setDbConnectionName(String name)
-   {
-      dbConnectionName = name;
-   }
-
-
-   /**
-   * DOCUMENT ME!
-   *
-   * @return DOCUMENT ME!
-   */
-   public String getDbConnectionName()
-   {
-      return dbConnectionName;
-   }
-
-
-   /**
-   * DOCUMENT ME!
-   *
-   * @param fieldName DOCUMENT ME!
-   */
-   public void setFieldName(String fieldName)
-   {
-      this.fieldName    = fieldName;
-      this.field        = parentForm.getTable().getFieldByName(fieldName);
-   }
-
-
-   /**
-   * DOCUMENT ME!
-   *
-   * @return DOCUMENT ME!
-   */
-   public String getFieldName()
-   {
-      return fieldName;
-   }
-
-
-   /**
-   * DOCUMENT ME!
-   *
-   * @param pageContext DOCUMENT ME!
-   */
-   public void setPageContext(final javax.servlet.jsp.PageContext pageContext)
-   {
-      super.setPageContext(pageContext);
-      config = (DbFormsConfig) pageContext.getServletContext().getAttribute(DbFormsConfig.CONFIG);
-   }
-
-
-   /**
-   * DOCUMENT ME!
-   *
-   * @param parent DOCUMENT ME!
-   */
-   public void setParent(final javax.servlet.jsp.tagext.Tag parent)
-   {
-      super.setParent(parent);
-      parentForm = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
-   }
-
+   private Category logCat = Category.getInstance(this.getClass().getName());
+   private String dbConnectionName;
+   
+   
 
    /**
    * DOCUMENT ME!
@@ -137,33 +58,33 @@ public class DbBlobContentTag extends BodyTagSupport
    {
       try
       {
-         if (parentForm.getFooterReached())
+         if (getParentForm().getFooterReached())
          {
             return EVAL_PAGE; // nothing to do when no data available..
          }
 
          StringBuffer queryBuf = new StringBuffer();
          queryBuf.append("SELECT ");
-         queryBuf.append(fieldName);
+         queryBuf.append(getField().getName());
          queryBuf.append(" FROM ");
-         queryBuf.append(parentForm.getTable().getName());
+         queryBuf.append(getParentForm().getTable().getName());
          queryBuf.append(" WHERE ");
-         queryBuf.append(parentForm.getTable().getWhereClauseForPS());
+         queryBuf.append(getParentForm().getTable().getWhereClauseForPS());
          logCat.info("blobcontent query- " + queryBuf.toString());
 
          StringBuffer contentBuf = new StringBuffer();
-         Connection   con = SqlUtil.getConnection(config, dbConnectionName);
+         Connection   con = getConfig().getConnection(dbConnectionName);
 
          try
          {
             PreparedStatement ps = con.prepareStatement(queryBuf.toString());
-            parentForm.getTable().populateWhereClauseForPS(getKeyVal(), ps, 1);
+            getParentForm().getTable().populateWhereClauseWithKeyFields(getKeyVal(), ps, 1);
 
             ResultSet rs = ps.executeQuery();
 
             if (rs.next())
             {
-               if (field.getType() == FieldTypes.DISKBLOB)
+               if (getField().getType() == FieldTypes.DISKBLOB)
                {
                   String fileName = rs.getString(1);
 
@@ -173,16 +94,16 @@ public class DbBlobContentTag extends BodyTagSupport
                   }
 
                   logCat.info("READING DISKBLOB field.getDirectory()="
-                     + field.getDirectory() + " " + "fileName=" + fileName);
+                     + getField().getDirectory() + " " + "fileName=" + fileName);
 
-                  if ((fileName == null) || (field.getDirectory() == null)
+                  if ((fileName == null) || (getField().getDirectory() == null)
                            || (fileName.length() == 0)
-                           || (field.getDirectory().length() == 0))
+                           || (getField().getDirectory().length() == 0))
                   {
                      return EVAL_PAGE;
                   }
 
-                  File file = new File(field.getDirectory(), fileName);
+                  File file = new File(getField().getDirectory(), fileName);
 
                   if (file.exists())
                   {
@@ -236,22 +157,13 @@ public class DbBlobContentTag extends BodyTagSupport
       return EVAL_PAGE;
    }
 
-
+   public void doFinally()
+   {
+      dbConnectionName = null;
+      super.doFinally();
+   }
    // ------------------------------------------------------ Protected Methods
    // DbForms specific
-
-   /**
-   generates the decoded name .
-   */
-   protected String getTableFieldCode()
-   {
-      StringBuffer buf = new StringBuffer();
-      buf.append(parentForm.getTable().getId());
-      buf.append("_");
-      buf.append(field.getId());
-
-      return buf.toString();
-   }
 
 
    /**
@@ -259,9 +171,22 @@ public class DbBlobContentTag extends BodyTagSupport
    *
    * @return DOCUMENT ME!
    */
-   protected String getKeyVal()
+   private String getKeyVal()
    {
-      return parentForm.getTable().getKeyPositionString(parentForm
-         .getResultSetVector());
+      return getParentForm().getTable().getKeyPositionString(getParentForm().getResultSetVector());
    }
+   /**
+    * @return
+    */
+   public String getDbConnectionName() {
+      return dbConnectionName;
+   }
+
+   /**
+    * @param string
+    */
+   public void setDbConnectionName(String string) {
+      dbConnectionName = string;
+   }
+
 }

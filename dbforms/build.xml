@@ -163,7 +163,7 @@
     <echo message="begin xsl translation to generate HTML documentation  " />
     <delete file="{dist.dir}/taglib/DbFormsTags.html" />
     <echo message="style 1" />
-    <style style="${etc.dir}/tldoc2html.xsl" in="${etc.dir}/taglib_docu.xml" out="${dist.dir}/taglib/lDbFormsTags.html" />
+    <style style="${etc.dir}/tldoc2html.xsl" in="${etc.dir}/taglib_docu.xml" out="${dist.dir}/taglib/DbFormsTags.html" />
     <delete file="${taglibdoc.dir}/DbFormsTags_TocSem.html" />
     <echo message="style 2" />
     <style style="${etc.dir}/tldoc2html_toc.xsl" in="${etc.dir}/taglib_docu.xml" out="${dist.dir}/taglib/DbFormsTags_TocSem.html" />

@@ -2,10 +2,12 @@ package com.foo.bar;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.Hashtable;
 import java.sql.Connection;
+import javax.servlet.http.HttpServletRequest;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.ValidationException;
+import org.dbforms.config.Table;
+import org.dbforms.config.FieldValues;
 import org.dbforms.event.DbEventInterceptorSupport;
 
 
@@ -51,9 +53,9 @@ public class BugInterceptor extends DbEventInterceptorSupport {
   }
 */
 
-  public int preInsert(javax.servlet.http.HttpServletRequest request, Hashtable fieldValues, DbFormsConfig config, Connection con)
-  throws ValidationException {
-
+public int preInsert(HttpServletRequest request,  Table table, FieldValues fieldValues,
+   DbFormsConfig config, Connection con) throws ValidationException
+{
 
     Calendar calendar = new GregorianCalendar();
         java.util.Date date = new java.util.Date();
@@ -68,18 +70,20 @@ public class BugInterceptor extends DbEventInterceptorSupport {
         dateBuf.append(month);dateBuf.append("-");
         dateBuf.append(day);
 
-        fieldValues.put("indate", dateBuf.toString());
-        fieldValues.put("bugstate", new String("0"));
+        setValue(table, fieldValues, "indate", dateBuf.toString());
+        setValue(table, fieldValues, "bugstate", new String("0"));
 
         return GRANT_OPERATION;
   }
 
 
 
-  public int preUpdate(javax.servlet.http.HttpServletRequest request, java.util.Hashtable fieldValues, DbFormsConfig config, Connection con)
-  throws ValidationException {
+  public int preUpdate(HttpServletRequest request, Table table, 
+        FieldValues fieldValues, DbFormsConfig config, Connection con)
+     throws ValidationException
+  {
 
-        int newState = Integer.parseInt( (String) fieldValues.get("bugstate") );
+        int newState = Integer.parseInt( (String) fieldValues.get("bugstate").getFieldValue());
         if(newState == 2) {
 
         Calendar calendar = new GregorianCalendar();
@@ -95,7 +99,7 @@ public class BugInterceptor extends DbEventInterceptorSupport {
                 dateBuf.append(month);dateBuf.append("-");
                 dateBuf.append(day);
 
-                fieldValues.put("outdate", dateBuf.toString());
+                setValue(table, fieldValues, "outdate", dateBuf.toString());
         }
 
         return GRANT_OPERATION;

@@ -123,25 +123,8 @@ public class UpdateEvent extends ValidationEvent
       // "interceptor" element embedded in table element in dbforms-config xml file)
       int operation = DbEventInterceptor.GRANT_OPERATION;
 
-      try
-      {
-         Hashtable associativeArray = getAssociativeFieldValues(fieldValues);
-
-
-         // process the interceptors associated to this table
-         table.processInterceptors(DbEventInterceptor.PRE_UPDATE, request, 
-                                   associativeArray, config, con);
-
-
-         // synchronize data which may be changed by interceptor:
-         table.synchronizeData(fieldValues, associativeArray);
-      }
-      catch (SQLException sqle)
-      {
-         // PG = 2001-12-04
-         // No need to add extra comments, just re-throw exceptions as SqlExceptions
-         throw new SQLException(sqle.getMessage());
-      }
+      // process the interceptors associated to this table
+      table.processInterceptors(DbEventInterceptor.PRE_UPDATE, request, fieldValues, config, con);
 
       if ((operation != DbEventInterceptor.IGNORE_OPERATION)
                 && (fieldValues.size() > 0))
@@ -172,16 +155,16 @@ public class UpdateEvent extends ValidationEvent
 
          // now we provide the values
          // first, we provide the "new" values for fields
-         Iterator enum = fieldValues.keys();
+         Iterator enum = fieldValues.elements();
          int         col = 1;
 
          while (enum.hasNext())
          {
-            String fieldName = (String) enum.next();
-            Field  curField = table.getFieldByName(fieldName);
+            FieldValue fv = (FieldValue) enum.next();
 
-            if (curField != null)
+            if (fv != null)
             {
+               Field  curField = fv.getField();
                int    fieldType = curField.getType();
                Object value = null;
 
@@ -190,23 +173,16 @@ public class UpdateEvent extends ValidationEvent
                   // in case of a BLOB we supply the FileHolder object to SqlUtils for further operations
                   logCat.info("we are looking for fileholder with name: f_"
                               + tableId + "_" + keyId + "_" + curField.getId());
-                  value = ParseUtil.getFileHolder(request, 
-                                                  "f_" + tableId + "_" + keyId
-                                                  + "_" + curField.getId());
+                  value = fv.getFileHolder();
                   logCat.info("and found a value=" + value);
                }
                else if (fieldType == FieldTypes.DISKBLOB)
                {
-                  FileHolder fileHolder = ParseUtil.getFileHolder(request, 
-                                                                  "f_"
-                                                                  + tableId
-                                                                  + "_" + keyId
-                                                                  + "_"
-                                                                  + curField.getId());
+                  FileHolder fileHolder = fv.getFileHolder();
                   String     fileName = fileHolder.getFileName();
 
                   // check if we need to store it encoded or not
-                  if ("yes".equals(curField.getEncoding()))
+                  if (curField.isEncoded())
                   {
                      // encode fileName
                      int    dotIndex = fileName.lastIndexOf('.');
@@ -228,15 +204,14 @@ public class UpdateEvent extends ValidationEvent
                else
                {
                   // in case of simple db types we just supply a string representing the value of the fields
-                  value = fieldValues.get(curField.getName()).getFieldValue();
+                  value = fv.getFieldValueAsObject();
                }
-
-               SqlUtil.fillPreparedStatement(ps, col, value, curField.getType());
+               JDBCDataHelper.fillPreparedStatement(ps, col, value, fieldType);
                col++;
             }
          }
 
-         table.populateWhereClauseForPS(keyValuesStr, ps, col);
+         table.populateWhereClauseWithKeyFields(keyValuesStr, ps, col);
 
 
          // we are now ready to execute the query
@@ -330,18 +305,9 @@ public class UpdateEvent extends ValidationEvent
       }
 
       // finally, we process interceptor again (post-update)
-      try
-      {
-         // process the interceptors associated to this table
-         table.processInterceptors(DbEventInterceptor.POST_UPDATE, request, 
+     // process the interceptors associated to this table
+     table.processInterceptors(DbEventInterceptor.POST_UPDATE, request, 
                                    null, config, con);
-      }
-      catch (SQLException sqle)
-      {
-         // PG = 2001-12-04
-         // No need to add extra comments, just re-throw exceptions as SqlExceptions
-         throw new SQLException(sqle.getMessage());
-      }
 
       // End of interceptor processing
    }

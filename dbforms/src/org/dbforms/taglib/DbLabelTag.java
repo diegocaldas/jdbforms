@@ -20,12 +20,13 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
+
 package org.dbforms.taglib;
-
 import javax.servlet.jsp.JspException;
-
 import org.apache.log4j.Category;
 import org.dbforms.util.Util;
+
+
 
 /**
  * this tag renders a dabase-datadriven LABEL, which is apassive element (it can't be changed by
@@ -37,74 +38,66 @@ import org.dbforms.util.Util;
  */
 public class DbLabelTag extends DbBaseHandlerTag
 {
-    // logging category for this class
-    static Category logCat = Category.getInstance(DbLabelTag.class.getName());
+   // logging category for this class
+   static Category logCat = Category.getInstance(DbLabelTag.class.getName());
 
+   /**
+    *  Description of the Method
+    *
+    * @return  Description of the Return Value
+    * @exception  javax.servlet.jsp.JspException Description of the Exception
+    */
+   public int doEndTag() throws javax.servlet.jsp.JspException
+   {
+      try
+      {
+         String fieldValue = getFormattedFieldValue();
 
+         // PG, 2001-12-14
+         // If maxlength was input, trim display
+         String size = null;
 
+         if (((size = this.getMaxlength()) != null)
+                   && (size.trim().length() > 0))
+         {
+            //convert to int
+            int count = Integer.parseInt(size);
 
-    /**
-     *  Description of the Method
-     *
-     * @return  Description of the Return Value
-     * @exception  javax.servlet.jsp.JspException Description of the Exception
-     */
-    public int doEndTag() throws javax.servlet.jsp.JspException
-    {
-        try
-        {
-            String fieldValue = getFieldValue();
-            // PG, 2001-12-14
-            // If maxlength was input, trim display
-            String size = null;
-
-            if (((size = this.getMaxlength()) != null)
-                && (size.trim().length() > 0))
+            // Trim and add trim indicator (...)
+            if (count < fieldValue.length())
             {
-                //convert to int
-                int count = Integer.parseInt(size);
-
-                // Trim and add trim indicator (...)
-                if (count < fieldValue.length())
-                {
-                    fieldValue = fieldValue.substring(0, count);
-                    fieldValue += "...";
-                }
+               fieldValue = fieldValue.substring(0, count);
+               fieldValue += "...";
             }
+         }
 
-            // SM 2003-08-05
-            // if styleClass is present, render a SPAN with text included
-			String s = prepareStyles();
-			if (Util.isNull(s))
-			{
-				 pageContext.getOut().write(fieldValue.toString());
-			}
-			else
-			{
-				 pageContext.getOut().write(
-					  "<span "
-							+ s
-							+ "\">"
-							+ fieldValue
-							+ "</span>");
-			}
-        }
-        catch (java.io.IOException ioe)
-        {
-            // better to KNOW what happended !
-            logCat.error("::doEndTag - IO Error", ioe);
-            throw new JspException("IO Error: " + ioe.getMessage());
-        }
-        catch (Exception e)
-        {
-            // better to KNOW what happended !
-            logCat.error("::doEndTag - general exception", e);
-            throw new JspException("Error: " + e.getMessage());
-        }
+         // SM 2003-08-05
+         // if styleClass is present, render a SPAN with text included
+         String s = prepareStyles();
 
-        return EVAL_PAGE;
-    }
+         if (Util.isNull(s))
+         {
+            pageContext.getOut().write(fieldValue.toString());
+         }
+         else
+         {
+            pageContext.getOut()
+                       .write("<span " + s + "\">" + fieldValue + "</span>");
+         }
+      }
+      catch (java.io.IOException ioe)
+      {
+         // better to KNOW what happended !
+         logCat.error("::doEndTag - IO Error", ioe);
+         throw new JspException("IO Error: " + ioe.getMessage());
+      }
+      catch (Exception e)
+      {
+         // better to KNOW what happended !
+         logCat.error("::doEndTag - general exception", e);
+         throw new JspException("Error: " + e.getMessage());
+      }
 
-
-
+      return EVAL_PAGE;
+   }
 }

@@ -1,5 +1,4 @@
 package org.dbforms.util;
-import junit.framework.*;
 import java.io.*;
 /**
  *  Description of the Class
@@ -7,22 +6,7 @@ import java.io.*;
  * @author     epugh
  * @created    May 3, 2002
  */
-public class TestFileHolder extends TestCase {
-
-
-    public TestFileHolder( String name ) throws Exception{
-        super( name );
-
-    }
-    public void setUp() throws Exception {
-        super.setUp();
-
-    }
-
-    public void tearDown() throws Exception{
-        super.tearDown();
-
-    }
+public class TestFileHolder extends AbstractTestCase {
 
     public void testFileHolder() throws Exception{
 

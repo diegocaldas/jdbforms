@@ -23,7 +23,6 @@
 package org.dbforms.taglib;
 
 import javax.servlet.jsp.tagext.BodyTagSupport;
-import javax.servlet.jsp.tagext.TryCatchFinally;
 
 import org.dbforms.util.Util;
 
@@ -36,13 +35,9 @@ import org.dbforms.util.Util;
  * Apache Groups's Jakarta-Struts project.</p>
  *
  *
- * @author Henner Kollmann  (Henner.Kollmann@gmx.de)
  */
-public abstract class TagSupportWithScriptHandler extends BodyTagSupport implements TryCatchFinally
+public abstract class TagSupportWithScriptHandler extends BodyTagSupport
 {
-
-	/** DOCUMENT ME! */
-	private DbFormTag parentForm;
 
 	/** DOCUMENT ME! */
 	private String accessKey = null;
@@ -108,33 +103,11 @@ public abstract class TagSupportWithScriptHandler extends BodyTagSupport impleme
 	/** Named Style class associated with component. */
 	private String styleClass = null;
 
-	/** Named Style class associated with component for read-only mode. */
-	private String readOnlyStyleClass = null;
-
-	/** Read-only attribute. */
-	private String readOnly = "false";
 
 	/** Id attribute */
 	private String id = null; // Fossato, 20011008
 
 
-	/**
-	 * DOCUMENT ME!
-	 *
-	 * @param parent DOCUMENT ME!
-	 */
-	public void setParent(final javax.servlet.jsp.tagext.Tag parent)
-	{
-		super.setParent(parent);
-
-		// between this form and its parent lies a DbHeader/Body/Footer-Tag and maybe other tags (styling, logic, etc.)
-		parentForm = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
-	}
-
-	public DbFormTag getParentForm() 
-	{
-	   return parentForm;
-	}
 
 	//  Navigation Management
 
@@ -400,67 +373,21 @@ public abstract class TagSupportWithScriptHandler extends BodyTagSupport impleme
 	}
 
 
-	/** Sets the style class attribute for read-only mode. */
-	public void setReadOnlyStyleClass(String readOnlyStyleClass)
-	{
-		this.readOnlyStyleClass = readOnlyStyleClass;
-	}
-
-
-	/** Returns the style class attribute for read-only mode. */
-	public String getReadOnlyStyleClass()
-	{
-		return readOnlyStyleClass;
-	}
-
-
-	/** Sets the read-only attribute. */
-	public void setReadOnly(String readOnly)
-	{
-		this.readOnly = readOnly;
-	}
-
-
-	/** Returns the read-only attribute. */
-	public String getReadOnly()
-	{
-		return readOnly;
-	}
-
 	/**
 	 * Prepares the style attributes for inclusion in the component's HTML tag.
 	 * @return The prepared String for inclusion in the HTML tag.
 	 */
 	protected String prepareStyles()
 	{
-		StringBuffer styles   = new StringBuffer();
-		boolean      readonly = readOnly.equals("true")
-			|| parentForm.getReadOnly().equals("true");
+      StringBuffer styles   = new StringBuffer();
+      if (!Util.isNull(style))
+      {
+         styles.append(" style=\"");
+         styles.append(style);
+         styles.append("\"");
+      }
+      return styles.toString();
 
-		if (!Util.isNull(style))
-		{
-			styles.append(" style=\"");
-			styles.append(style);
-			styles.append("\"");
-		}
-
-		if ( (!Util.isNull(styleClass)) || (!Util.isNull(readOnlyStyleClass)))
-		{
-			if (!Util.isNull(readOnlyStyleClass) && readonly)
-			{
-				styles.append(" class=\"");
-				styles.append(readOnlyStyleClass);
-				styles.append("\"");
-			}
-			else if (!Util.isNull(styleClass))
-			{
-				styles.append(" class=\"");
-				styles.append(styleClass);
-				styles.append("\"");
-			}
-		}
-
-		return styles.toString();
 	}
 
 
@@ -662,7 +589,7 @@ public abstract class TagSupportWithScriptHandler extends BodyTagSupport impleme
 	 */
 	public void doFinally()
 	{
-		  accessKey = null;
+        accessKey = null;
 		  tabIndex = null;
 		  onClick = null;
 		  onDblClick = null;
@@ -680,8 +607,6 @@ public abstract class TagSupportWithScriptHandler extends BodyTagSupport impleme
 		  onFocus = null;
 		  style = null;
 		  styleClass = null;
-		  readOnlyStyleClass = null;
-		  readOnly = "false";
 	}
 
 }

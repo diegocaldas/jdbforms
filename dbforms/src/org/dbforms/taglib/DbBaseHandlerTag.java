@@ -20,24 +20,24 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-package org.dbforms.taglib;
 
+package org.dbforms.taglib;
 import javax.servlet.jsp.JspException;
 
 // these 3 we need for formfield auto-population
 import java.text.Format;
 import java.util.Vector;
+import javax.servlet.http.HttpServletRequest;
 import org.dbforms.config.DbFormsConfig;
+import org.dbforms.config.Constants;
 import org.dbforms.config.Field;
+import org.dbforms.config.FieldTypes;
 import org.dbforms.config.ResultSetVector;
-import org.dbforms.event.NavCopyEvent;
 import org.dbforms.event.WebEvent;
 import org.dbforms.event.eventtype.EventType;
 import org.dbforms.util.ParseUtil;
 import org.dbforms.util.MessageResources;
-import javax.servlet.http.HttpServletRequest;
 import org.dbforms.util.Util;
-
 
 
 
@@ -57,16 +57,70 @@ import org.dbforms.util.Util;
  */
 public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler
 {
-
    private DbFormsConfig config;
-   private String fieldName;
-   private Field field;
-   private String value;
-   private Format format;
-   private String nullFieldValue;
-   private String maxlength = null;
+   private Field         field;
+   private String        fieldName;
+   private String        defaultValue;
+   private Format        format;
+   private String        pattern;
+   private String        nullFieldValue;
+   private String        maxlength  = null;
+   private DbFormTag     parentForm;
+
+   /** Named Style class associated with component for read-only mode. */
+   private String readOnlyStyleClass = null;
+   private String readOnly = "false";
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param parent DOCUMENT ME!
+    */
+   public void setParent(final javax.servlet.jsp.tagext.Tag parent)
+   {
+      super.setParent(parent);
+      // between this form and its parent lies a DbHeader/Body/Footer-Tag and maybe other tags (styling, logic, etc.)
+      parentForm = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
+   }
 
 
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public DbFormTag getParentForm()
+   {
+      return parentForm;
+   }
+
+
+   /** Sets the style class attribute for read-only mode. */
+   public void setReadOnlyStyleClass(String readOnlyStyleClass)
+   {
+      this.readOnlyStyleClass = readOnlyStyleClass;
+   }
+
+
+   /** Returns the style class attribute for read-only mode. */
+   public String getReadOnlyStyleClass()
+   {
+      return readOnlyStyleClass;
+   }
+
+
+   /** Sets the read-only attribute. */
+   public void setReadOnly(String readOnly)
+   {
+      this.readOnly = readOnly;
+   }
+
+
+   /** Returns the read-only attribute. */
+   public boolean isReadOnly()
+   {
+      return "true".equalsIgnoreCase(readOnly);
+   }
 
 
    /**
@@ -77,7 +131,6 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler
    public void setFieldName(String fieldName)
    {
       this.fieldName = fieldName;
-
       if (getParentForm().getTable() != null)
       {
          this.field = getParentForm().getTable().getFieldByName(fieldName);
@@ -90,29 +143,18 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler
       if (getParentForm().isSubForm() && (this.field != null))
       {
          // tell parent that _this_ class will generate the html tag, not DbBodyTag!
-			getParentForm().strikeOut(this.field);
+         getParentForm().strikeOut(this.field);
       }
    }
 
 
    /**
-    * DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
+      "value" is only used if parent tag is in "insert-mode" (footer, etc.)
+              otherwise this tag takes the current value from the database result!
     */
-   public String getFieldName()
+   public String getDefaultValue()
    {
-      return fieldName;
-   }
-
-
-   /**
-   "value" is only used if parent tag is in "insert-mode" (footer, etc.)
-           otherwise this tag takes the current value from the database result!
-           */
-   public String getValue()
-   {
-      return value;
+      return defaultValue;
    }
 
 
@@ -121,56 +163,50 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler
     *
     * @param value DOCUMENT ME!
     */
-   public void setValue(String value)
+   public void setDefaultValue(String value)
    {
-      this.value = value;
+      this.defaultValue = value;
    }
-
-	/**
-	 * generates the decoded name for the old value of the html-widget.
-	 * 
-	 * @return String
-	 */
-	private String getFormFieldNameOld()
-	{
-		return "o" + getFormFieldName();
-	}
 
 
    /**
-    * writes out all hidden fields for the input fields
+    * @return
     */
-   protected void writeOutSpecialValues() throws JspException {
-      writeOutOldValue();
+   public String getPattern()
+   {
+      return pattern;
    }
-   
-	/**
-	 * writes out the field value in hidden field _old
-	 */
-	private void writeOutOldValue() throws JspException
-	{
-		try
-		{
-			StringBuffer tagBuf = new StringBuffer();
-			tagBuf.append("<input type=\"hidden\" name=\"");
-			tagBuf.append(getFormFieldNameOld());
-			tagBuf.append("\" value=\"");
-			tagBuf.append(getFormFieldValue());
-			tagBuf.append("\" />");
-			pageContext.getOut().write(tagBuf.toString());
-		}	
-		catch (java.io.IOException ioe)
-		{
-			throw new JspException("IO Error: " + ioe.getMessage());
-		}
 
+	/**
+	 * @return
+	 */
+	public String getName()
+	{
+		return (getField() != null)? getField().getName():fieldName;
 	}
 
+
+
    /**
-   formatting a value
-   */
+    * @param string
+    */
+   public void setPattern(String string)
+   {
+      pattern = string;
+   }
+
+
+   /**
+      formatting a value
+    */
    public Format getFormat()
    {
+      if (format == null)
+      {
+         format = getField()
+                     .getFormat(getPattern(), getParentForm().getLocale());
+      }
+
       return this.format;
    }
 
@@ -186,7 +222,6 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler
    }
 
 
-
    /**
     * DOCUMENT ME!
     *
@@ -195,110 +230,137 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler
    public void setPageContext(final javax.servlet.jsp.PageContext pageContext)
    {
       super.setPageContext(pageContext);
-      config = (DbFormsConfig) pageContext.getServletContext().getAttribute(DbFormsConfig.CONFIG);
+      config = (DbFormsConfig) pageContext.getServletContext()
+                                          .getAttribute(DbFormsConfig.CONFIG);
    }
 
 
-
-	/**
-	 * DOCUMENT ME!
-	 *
-	 * @return DOCUMENT ME!
-	 */
-	protected String typicalDefaultValue()
-	{
-		if (field != null)
-		{
-			switch (field.getType())
-			{
-				case org.dbforms.config.FieldTypes.INTEGER:
-					return "0";
-
-				case org.dbforms.config.FieldTypes.NUMERIC:
-					return "0";
-
-				case org.dbforms.config.FieldTypes.DOUBLE:
-					return "0.0";
-
-				case org.dbforms.config.FieldTypes.FLOAT:
-					return "0.0";
-
-				default:
-					return "";
-
-				// in all other cases we just leave the formfield empty
-			}
-		}
-		else
-		{
-			return "";
-		}
-	}
-
    /**
-    * return the object value from the database 
-    * @return the object
-    * 
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
     */
-   protected Object getFieldObject() {
-      Object fieldValueObj = null;
-      ResultSetVector res = getParentForm().getResultSetVector();
-      if (res != null) 
-        fieldValueObj =res.getCurrentRowAsObjects()[getField().getId()];
-      return fieldValueObj;   
+   protected String typicalDefaultValue()
+   {
+      if (getField() != null)
+      {
+         switch (field.getType())
+         {
+            case org.dbforms.config.FieldTypes.INTEGER:
+               return "0";
+
+            case org.dbforms.config.FieldTypes.NUMERIC:
+               return "0";
+
+            case org.dbforms.config.FieldTypes.DOUBLE:
+               return "0.0";
+
+            case org.dbforms.config.FieldTypes.FLOAT:
+               return "0.0";
+
+            default:
+               return "";
+
+            // in all other cases we just leave the formfield empty
+         }
+      }
+      else
+      {
+         return "";
+      }
    }
 
+
    /**
-    * 
-    * fetches the value from the database. if no value is given, contents of attribute 
+    * return the object value from the database
+    * @return the object
+    *
+    */
+   protected Object getFieldObject()
+   {
+      Object          fieldValueObj = null;
+      ResultSetVector res = getParentForm().getResultSetVector();
+
+      if ((res != null) && (getField() != null))
+      {
+         Object [] objectRow = res.getCurrentRowAsObjects(); 
+         if (objectRow != null)
+            fieldValueObj = objectRow[getField().getId()];
+      } else {
+		 // try to get old value if we have an unbounded field!
+		 fieldValueObj = ParseUtil.getParameter((HttpServletRequest)pageContext.getRequest(), getFormFieldName());
+      }
+      return fieldValueObj;
+   }
+
+
+   /**
+    *
+    * fetches the value from the database. if no value is given, contents of attribute
     * nullFieldValue is returned.
-    * 
+    *
     * @return the field value
     */
-   protected String getFieldValue() {
+   protected String getFormattedFieldValue()
+   {
+      Object fieldValueObj = getFieldObject();
 
-      String fieldValue = (getNullFieldValue()==null) ? typicalDefaultValue(): getNullFieldValue();
-      if (!ResultSetVector.isNull(getParentForm().getResultSetVector()))
+      if (fieldValueObj == null)
       {
-          Object fieldValueObj = getFieldObject();
-          if (fieldValueObj != null)
-          {
-              // Fossato, 20002-08-29
-              // uses the format class to format this tag's value;
-             if (getFormat() != null)
-             {
-                fieldValue = format.format(fieldValueObj);
-             }
-             else
-             {
-                // if column object returned by database is of type 
-                // 'array of byte: byte[]' (which can happen in case 
-                // of eg. LONGVARCHAR columns), method toString would 
-                // just return a sort of String representation
-                // of the array's address. So in this case it is 
-                // better to create a String using a corresponding
-                // String constructor:
-                if (fieldValue.getClass().isArray()
-                         && "byte".equals(fieldValueObj.getClass()
-                                                      .getComponentType()
-                                                      .toString()))
-                {
-                   fieldValue = new String((byte[]) fieldValueObj);
-                }
-                else
-                {
-                   fieldValue = fieldValueObj.toString();
-                }
-             }
-          }
+         return getNullFieldValue();
       }
-      return fieldValue.trim();
+
+      String res;
+
+      // if column object returned by database is of type 
+      // 'array of byte: byte[]' (which can happen in case 
+      // of eg. LONGVARCHAR columns), method toString would 
+      // just return a sort of String representation
+      // of the array's address. So in this case it is 
+      // better to create a String using a corresponding
+      // String constructor:
+      if (fieldValueObj.getClass().isArray()
+                && "byte".equals(fieldValueObj.getClass().getComponentType()
+                                              .toString()))
+      {
+         res = new String((byte[]) fieldValueObj);
+      }
+      else if (getField() != null)
+      {
+         switch (getField().getType())
+         {
+            case FieldTypes.INTEGER:
+            case FieldTypes.DOUBLE:
+            case FieldTypes.FLOAT:
+            case FieldTypes.NUMERIC:
+            case FieldTypes.DATE:
+            case FieldTypes.TIME:
+            case FieldTypes.TIMESTAMP:
+               res = getFormat().format(fieldValueObj);
+
+               break;
+
+            case FieldTypes.BLOB:
+            case FieldTypes.DISKBLOB:
+            case FieldTypes.CHAR:
+            default:
+               res = fieldValueObj.toString();
+
+               break;
+         }
+      } else
+      {
+		res = fieldValueObj.toString();
+      }
+
+      return res.trim();
    }
+
 
    /**
     * grunikiewicz.philip@hydro.qc.ca
     * 2001-05-31
-	 * determinates value of the html-widget.
+    * determinates value of the html-widget.
     *
     * In a jsp which contains many input fields, it may be desirable, in the event of an error, to redisplay input data.
     * (instead of refreshing the fields from the DB) Currently dbforms implements this functionality with INSERT fields only.
@@ -310,133 +372,116 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler
     */
    protected String getFormFieldValue()
    {
-      HttpServletRequest request = (HttpServletRequest) this.pageContext
-         .getRequest();
+      HttpServletRequest request = (HttpServletRequest) this.pageContext.getRequest();
       Vector             errors = (Vector) request.getAttribute("errors");
-      WebEvent           we     = (WebEvent) request.getAttribute("webEvent");
+      WebEvent           we     = getParentForm().getWebEvent();
 
       // Are we in Update mode
       if (!getParentForm().getFooterReached())
       {
          // Check if attribute 'redisplayFieldsOnError' has been set to true
          // and is this jsp displaying an error?
-         if (("true".equals(getParentForm().getRedisplayFieldsOnError())
-                  && (errors != null) && (errors.size() > 0))
-                  || ((we != null) && (we.getType() == EventType.EVENT_NAVIGATION_RELOAD)))
+         if (
+             (getParentForm().isRedisplayFieldsOnError() && (errors != null)
+                      && (errors.size() > 0))
+                   || ((we != null) && (we.getType() == EventType.EVENT_NAVIGATION_RELOAD))
+             )
          {
             // Yes - redisplay posted data
             String oldValue = ParseUtil.getParameter(request, getFormFieldName());
-            return Util.isNull(oldValue)?typicalDefaultValue():oldValue;
+            if (oldValue != null)
+               return oldValue;
          }
-         else
-         {
-            return getFieldValue();
-         }
+         return getFormattedFieldValue();
       }
       else
       {
-         if (we instanceof NavCopyEvent)
-         {
-		    String copyValue = ParseUtil.getParameter(request, getFormFieldNameForCopyEvent());
-            if (copyValue != null)
-                return copyValue;
-		   } 
-
          // the form field is in 'insert-mode'
-         if ((we != null) && (we.getType() == EventType.EVENT_NAVIGATION_RELOAD))
+         if (((we != null) && (we.getType() == EventType.EVENT_NAVIGATION_COPY)))
+         {
+            String copyValue = ParseUtil.getParameter(request, getFormFieldNameForCopyEvent());
+            if (copyValue != null)
+               return copyValue;
+         }
+
+         if (
+              (we != null)  && (we.getType() == EventType.EVENT_NAVIGATION_RELOAD) 
+               ||
+              (errors != null) && (errors.size() > 0)   
+            )
          {
             String oldValue = ParseUtil.getParameter(request, getFormFieldName());
-
             if (oldValue != null)
-            {
                return oldValue;
-            }
-
             // Patch to reload checkbox, because when unchecked checkbox is null
             // If unchecked, return anything different of typicalDefaultValue() ...
             if (this instanceof DbCheckboxTag)
-            {
                return typicalDefaultValue() + "_";
-            }
-         }
-
-         //JOACHIM! CAN THE FOLLOWING LINE BE REMOVED? IT SEEMS TO BE OBSOLETE...
-         if (value != null)
-         {
+         } 
+         if (defaultValue != null)
             // default value defined by jsp-developer (provided via the "value" attribute of the tag)
-            return value;
-         }
-         else
-         { //#fixme: perform jsp/form equality check to avoid confision in cross-jsp actions
+            return defaultValue;
 
-            if ((errors != null) && (errors.size() > 0))
-            {
-               // an insert error occured. this is the typical use case for automatic field-repopulation
-               String oldValue = ParseUtil.getParameter(request,
-                     getFormFieldName());
-
-               if (oldValue != null)
-               {
-                  return oldValue;
-               }
-            }
-             // fill out empty fields so that there are no plain field-syntax errors
-
-            // on database operations...
-            return typicalDefaultValue();
-         }
+         // fill out empty fields so that there are no plain field-syntax errors
+         // on database operations...
+         return typicalDefaultValue();
       }
    }
 
 
    /**
-   generates the decoded name for the html-widget.
-   */
+      generates the decoded name for the html-widget.
+    */
    protected String getFormFieldName()
    {
       StringBuffer buf = new StringBuffer();
 
-      if ((getParentForm().getTable() != null) && (field != null))
+      if ((getParentForm().getTable() != null) && (getField() != null))
       {
          String keyIndex = (getParentForm().getFooterReached())
-            ? ("ins" + getParentForm().getPositionPathCore())
-            : getParentForm().getPositionPath();
+                              ? (Constants.FIELDNAME_INSERTPREFIX
+                                + getParentForm().getPositionPathCore())
+                              : getParentForm().getPositionPath();
 
-         buf.append("f_");
+         buf.append(Constants.FIELDNAME_PREFIX);
          buf.append(getParentForm().getTable().getId());
          buf.append("_");
          buf.append(keyIndex);
          buf.append("_");
-         buf.append(field.getId());
+         buf.append(getField().getId());
       }
       else
       {
-         buf.append(getFieldName());
+         buf.append(fieldName);
       }
 
       return buf.toString();
    }
 
+
    /**
-    * generates the decoded name for the html-widget in the case of copy events. 
+    * generates the decoded name for the html-widget in the case of copy events.
     */
-   private String getFormFieldNameForCopyEvent() {
-       boolean footerReached = getParentForm().getFooterReached();
-		getParentForm().setFooterReached(false);
-       String name = getFormFieldName();
-		getParentForm().setFooterReached(footerReached);
-       return name;
+   private String getFormFieldNameForCopyEvent()
+   {
+      boolean footerReached = getParentForm().getFooterReached();
+      getParentForm().setFooterReached(false);
+
+      String name = getFormFieldName();
+      getParentForm().setFooterReached(footerReached);
+
+      return name;
    }
-
-
 
 
    /**
     * @return
     */
-   public DbFormsConfig getConfig() {
+   public DbFormsConfig getConfig()
+   {
       return config;
    }
+
 
    /**
     *  Sets the nullFieldValue attribute of the DbLabelTag object
@@ -445,8 +490,9 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler
     */
    public void setNullFieldValue(String nullFieldValue)
    {
-       this.nullFieldValue = nullFieldValue;
+      this.nullFieldValue = nullFieldValue;
    }
+
 
    /**
     *  Gets the nullFieldValue attribute of the DbLabelTag object
@@ -456,22 +502,27 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler
    public String getNullFieldValue()
    {
       String res = nullFieldValue;
-      if (Util.isNull(res)) 
+      if (res == null)
          res = "[No Data]";
       // Resolve message if captionResource=true in the Form Tag
-      if (getParentForm().getCaptionResource().equals("true"))
+      if (getParentForm().isCaptionResource())
       {
-          res = MessageResources.getMessage( (HttpServletRequest) pageContext.getRequest(), res);
+         res = MessageResources.getMessage(
+                        (HttpServletRequest) pageContext.getRequest(), res);
       }
-       return res;
+
+      return res;
    }
+
 
    /**
     * @return
     */
-   public Field getField() {
+   public Field getField()
+   {
       return field;
    }
+
 
    /**
     * Gets the maxlength
@@ -480,8 +531,9 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler
     */
    public String getMaxlength()
    {
-       return maxlength;
+      return maxlength;
    }
+
 
    /**
     * Sets the maxlength
@@ -490,7 +542,78 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler
     */
    public void setMaxlength(String maxlength)
    {
-       this.maxlength = maxlength;
+      this.maxlength = maxlength;
    }
 
+
+   /**
+    * Prepares the style attributes for inclusion in the component's HTML tag.
+    * @return The prepared String for inclusion in the HTML tag.
+    */
+   protected String prepareStyles()
+   {
+      boolean readonly = isReadOnly() || getParentForm().isReadOnly();
+
+      if (readonly && !Util.isNull(getReadOnlyStyleClass()))
+      {
+         StringBuffer styles = new StringBuffer();
+         styles.append(" class=\"");
+         styles.append(getReadOnlyStyleClass());
+         styles.append("\"");
+
+         return styles.toString();
+      }
+      else
+      {
+         return super.prepareStyles();
+      }
+   }
+
+
+   /**
+    * writes out all hidden fields for the input fields
+    */
+   protected void writeOutSpecialValues() throws JspException
+   {
+      writeOutOldValue();
+   }
+
+
+   /**
+    * writes out the field value in hidden field _old
+    */
+   private void writeOutOldValue() throws JspException
+   {
+      try
+      {
+         StringBuffer tagBuf = new StringBuffer();
+         tagBuf.append("<input type=\"hidden\" name=\"");
+         tagBuf.append(Constants.FIELDNAME_OLDVALUETAG + getFormFieldName());
+         tagBuf.append("\" value=\"");
+         tagBuf.append(getFormFieldValue());
+         tagBuf.append("\" />");
+         pageContext.getOut().write(tagBuf.toString());
+      }
+      catch (java.io.IOException ioe)
+      {
+         throw new JspException("IO Error: " + ioe.getMessage());
+      }
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    */
+   public void doFinally()
+   {
+      field              = null;
+      defaultValue       = null;
+      format             = null;
+      pattern            = null;
+      nullFieldValue     = null;
+      maxlength          = null;
+      readOnlyStyleClass = null;
+      readOnly           = "false";
+      super.doFinally();
+   }
 }

@@ -22,7 +22,7 @@
  */
 
 package org.dbforms.config;
-import junit.framework.*;
+import org.dbforms.util.AbstractTestCase;
 
 
 
@@ -32,42 +32,8 @@ import junit.framework.*;
  * @author     epugh
  * @created    May 3, 2002
  */
-public class TestField extends TestCase
+public class TestField extends AbstractTestCase
 {
-    /**
-     * Creates a new TestField object.
-     *
-     * @param name DOCUMENT ME!
-     *
-     * @throws Exception DOCUMENT ME!
-     */
-    public TestField(String name) throws Exception
-    {
-        super(name);
-    }
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @throws Exception DOCUMENT ME!
-     */
-    public void setUp() throws Exception
-    {
-        super.setUp();
-    }
-
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @throws Exception DOCUMENT ME!
-     */
-    public void tearDown() throws Exception
-    {
-        super.tearDown();
-    }
-
-
     /**
      * DOCUMENT ME!
      *
@@ -103,7 +69,7 @@ public class TestField extends TestCase
     {
         Field f = new Field();
         f.setAutoInc("true");
-        assertTrue("Field should be autoinc", f.getIsAutoInc());
+        assertTrue("Field should be autoinc", f.isAutoInc());
     }
 
 
@@ -116,7 +82,7 @@ public class TestField extends TestCase
     {
         Field f = new Field();
         f.setAutoInc("YES");
-        assertTrue("Field should be autoinc", f.getIsAutoInc());
+        assertTrue("Field should be autoinc", f.isAutoInc());
     }
 
 
@@ -129,15 +95,15 @@ public class TestField extends TestCase
     {
         Field f = new Field();
         f.setSortable("true");
-        assertTrue("Should be True", f.isFieldSortable());
+        assertTrue("Should be True", f.isSortable());
         f.setSortable("TRUE");
-        assertTrue("Should be True", f.isFieldSortable());
+        assertTrue("Should be True", f.isSortable());
         f.setSortable("yes");
-        assertTrue("Should be True", f.isFieldSortable());
+        assertTrue("Should be True", f.isSortable());
         f.setSortable("FALSE");
-        assertTrue("Should be false", !f.isFieldSortable());
+        assertTrue("Should be false", !f.isSortable());
         f.setSortable("NO");
-        assertTrue("Should be false", !f.isFieldSortable());
+        assertTrue("Should be false", !f.isSortable());
     }
 
 

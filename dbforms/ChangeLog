@@ -1,3 +1,25 @@
+2003-10-xx
+(Henner.Kollmann@gmx.de)
+   - Worked on the task:
+      "Make it possible to have the configurations as attributes in the <db:dateField> tag instead 
+      of putting them in web.xml. 
+      Some thing like: <db:dateField fieldName="birthdate" useJsCalendar="true" jsCalendarDateFormat="yyyy-mm-dd"/> 
+      If the attributes are not given then the tag takes the default values (current implementation)." (from task list)
+      This leeds to big restructering of internal/external classes. Most importand changes are:
+         - FieldValue class only holds FieldValue specific items. (internal)
+         - The whole bunch of retrieving/parsing the data objects moves into FieldValue (internal).
+         - The interceptor interfaces of preUpdate/preInsert/preDelete changed from Hashtable fieldValues to FieldValues fieldValues,
+            So they are easier to  handle and changes in the fieldValues will be reflect into the database.
+   - Cleaned up the taglibaries and removed a lot of duplicated code.
+   - New field type: TIME for time values only   
+   - "Keep textField empty when numeric field in database is null" (from task list!)
+   - Changed interceptor interfaces of preUpdate/preInsert/preDelete to 
+         public int preXXXXXX(HttpServletRequest request,  Table table, FieldValues fieldValues,
+							  DbFormsConfig config, Connection con) throws ValidationException
+     So the fieldVector can be changed during the interceptor events.
+   - create new protected helper method in DbEventInterceptorSupport to change/add field
+      
+====================== v1_1_4pr2 started ==============================================         
 2003-10-19
 (Henner.Kollmann@gmx.de)
    - start documentation of internally used fields in the generated html page

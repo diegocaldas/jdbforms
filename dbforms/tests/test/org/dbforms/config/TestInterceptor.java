@@ -22,7 +22,7 @@
  */
 
 package org.dbforms.config;
-import junit.framework.*;
+import org.dbforms.util.AbstractTestCase;
 
 
 
@@ -32,42 +32,8 @@ import junit.framework.*;
  * @author     epugh
  * @created    May 3, 2002
  */
-public class TestInterceptor extends TestCase
+public class TestInterceptor extends AbstractTestCase
 {
-    /**
-     * Creates a new TestInterceptor object.
-     *
-     * @param name DOCUMENT ME!
-     *
-     * @throws Exception DOCUMENT ME!
-     */
-    public TestInterceptor(String name) throws Exception
-    {
-        super(name);
-    }
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @throws Exception DOCUMENT ME!
-     */
-    public void setUp() throws Exception
-    {
-        super.setUp();
-    }
-
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @throws Exception DOCUMENT ME!
-     */
-    public void tearDown() throws Exception
-    {
-        super.tearDown();
-    }
-
-
     /**
      * DOCUMENT ME!
      *

@@ -26,7 +26,7 @@ import org.dbforms.util.PageContextBuffer;
 import javax.servlet.Servlet;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
-import javax.servlet.jsp.tagext.TagSupport;
+import javax.servlet.jsp.tagext.BodyTagSupport;
 import org.apache.log4j.Category;
 
 
@@ -55,7 +55,7 @@ public class DbBaseButtonFactory
     *
     * @throws JspException exception
     */
-   public DbBaseButtonFactory(PageContext parentContext, TagSupport parent, 
+   public DbBaseButtonFactory(PageContext parentContext, BodyTagSupport parent, 
                               Class clazz) throws JspException
    {
       try
@@ -95,7 +95,7 @@ public class DbBaseButtonFactory
     */
    public StringBuffer render() throws JspException
    {
-      if (btn.doStartTag() != TagSupport.SKIP_BODY)
+      if (btn.doStartTag() != BodyTagSupport.SKIP_BODY)
       {
          btn.doEndTag();
       }

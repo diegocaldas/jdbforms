@@ -25,13 +25,11 @@ package org.dbforms.event.datalist;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Hashtable;
 import org.apache.log4j.Category;
 import org.dbforms.config.DbEventInterceptor;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.FieldValues;
 import org.dbforms.config.GrantedPrivileges;
-import org.dbforms.config.SqlUtil;
 import org.dbforms.event.DatabaseEvent;
 import org.dbforms.event.datalist.dao.DataSourceList;
 import org.dbforms.event.datalist.dao.DataSourceFactory;
@@ -123,26 +121,10 @@ public class DeleteEvent extends DatabaseEvent
 
       // part 2: check if there are interceptors to be processed (as definied by
       // "interceptor" element embedded in table element in dbforms-config xml file)
-      try
-      {
-         Hashtable associativeArray = getAssociativeFieldValues(fieldValues);
-
-
-         // process the interceptors associated to this table
-         operation = table.processInterceptors(DbEventInterceptor.PRE_DELETE, 
-                                               request, associativeArray, 
+      // process the interceptors associated to this table
+      operation = table.processInterceptors(DbEventInterceptor.PRE_DELETE, 
+                                               request, fieldValues, 
                                                config, con);
-
-
-         // synchronize data which may be changed by interceptor:
-         table.synchronizeData(fieldValues, associativeArray);
-      }
-      catch (SQLException sqle)
-      {
-         SqlUtil.logSqlException(sqle, 
-                                 "::processEvent - SQL exception during PRE_DELETE interceptors procession");
-         throw sqle;
-      }
 
       if (operation != DbEventInterceptor.IGNORE_OPERATION)
       {
@@ -177,18 +159,9 @@ public class DeleteEvent extends DatabaseEvent
       }
 
       // finally, we process interceptor again (post-delete)
-      try
-      {
-         // process the interceptors associated to this table
-         table.processInterceptors(DbEventInterceptor.POST_DELETE, request, 
+      // process the interceptors associated to this table
+      table.processInterceptors(DbEventInterceptor.POST_DELETE, request, 
                                    null, config, con);
-      }
-      catch (SQLException sqle)
-      {
-         SqlUtil.logSqlException(sqle, 
-                                 "::processEvent - SQL exception during POST_DELETE interceptors procession");
-         throw sqle;
-      }
 
       // End of interceptor processing
    }

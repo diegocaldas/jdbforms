@@ -24,11 +24,11 @@
 package org.dbforms.taglib;
 import java.util.*;
 import javax.servlet.jsp.*;
-import javax.servlet.http.*;
 import org.dbforms.util.*;
 import org.dbforms.event.WebEvent;
 import org.dbforms.event.eventtype.EventType;
 import org.apache.log4j.Category;
+import javax.servlet.jsp.tagext.TryCatchFinally;
 
 
 
@@ -39,7 +39,7 @@ import org.apache.log4j.Category;
  * 
  * @author Joachim Peer
  */
-public class DbRadioTag extends DbBaseHandlerTag implements DataContainer
+public class DbRadioTag extends DbBaseHandlerTag implements DataContainer , TryCatchFinally
 {
    static Category logCat = Category.getInstance(DbRadioTag.class.getName()); // logging category for this class
    private Vector  embeddedData  = null;
@@ -47,6 +47,7 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer
    private String  growDirection; // only needed if we have a whole "group" of DbRadioTags; default = null == horizontal
    private String  growSize      = "0"; // limit the number of elements per row (growDirection="horizontal")
    private String  noValue;
+   private String  value;
 
    /**
     * DOCUMENT ME!
@@ -99,25 +100,7 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer
     */
    public void setGrowSize(String growSize)
    {
-      try
-      {
-         int grow = Integer.parseInt(growSize);
-
-         if (grow > 0)
-         {
-            this.growSize = growSize;
-         }
-         else
-         {
-            this.growSize = "0";
-         }
-      }
-      catch (NumberFormatException nfe)
-      {
-         logCat.warn(" setGrowSize(" + growSize + ") NumberFormatException : "
-                     + nfe.getMessage());
-         this.growSize = "0";
-      }
+	  this.growSize = growSize;
    }
 
 
@@ -126,9 +109,19 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer
     * 
     * @return DOCUMENT ME!
     */
-   public String getGrowSize()
+   private int growSize()
    {
-      return growSize;
+		int res = 0;
+		try
+		{
+		   res = Integer.parseInt(growSize);
+		}
+		catch (NumberFormatException nfe)
+		{
+			logCat.warn(" setGrowSize(" + growSize + ") NumberFormatException : "
+							+ nfe.getMessage());
+		}
+      return res;
    }
 
 
@@ -208,15 +201,14 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer
    public int doEndTag() throws javax.servlet.jsp.JspException
    {
       StringBuffer       tagBuf  = new StringBuffer();
-      HttpServletRequest request = (HttpServletRequest) this.pageContext.getRequest();
-      WebEvent           we = (WebEvent) request.getAttribute("webEvent");
+      WebEvent           we = getParentForm().getWebEvent();
 
       // current Value from Database; or if no data: explicitly set by user; or ""
       String currentValue = getFormFieldValue();
 
       if (Util.isNull(currentValue))
       {
-         currentValue = getValue();
+         currentValue = getDefaultValue();
       }
 
       if (embeddedData == null)
@@ -226,11 +218,11 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer
          // select, if datadriven and data matches with current value OR if explicitly set by user
          boolean isSelected = ((!getParentForm().getFooterReached()
                                  || ((we != null) && we.getType() == EventType.EVENT_NAVIGATION_RELOAD))
-                              && (getValue() != null) && getValue().equals(currentValue))
+                              && (getDefaultValue() != null) && getDefaultValue().equals(currentValue))
                               || (getParentForm().getFooterReached()
                               && "true".equals(checked));
 
-         tagBuf.append(generateTagString(getValue(), "", isSelected));
+         tagBuf.append(generateTagString(getDefaultValue(), "", isSelected));
       }
       else
       {
@@ -239,8 +231,8 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer
          // If radio is in read-only, retrieve selectedIndex and set the onclick of all radio with
          // "document.formName['radioName'][selectedIndex].checked=true"
          //
-         if (getReadOnly().equals("true")
-                   || getParentForm().getReadOnly().equals("true"))
+         if (isReadOnly()
+                   || getParentForm().isReadOnly())
          {
             // First pass to retreive radio selectedIndex, because in Javascript it use only this index (Netscape 4.x)
             for (int i = 0; i < embeddedDataSize; i++)
@@ -265,7 +257,7 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer
             }
          }
 
-         int maxSize = Integer.parseInt(getGrowSize());
+         int maxSize = growSize();
 
          tagBuf.append(
                   "<TABLE BORDER=0 cellspacing=0 cellpadding=0><TR valign=top>");
@@ -314,7 +306,7 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer
 		}
 
       // For generation Javascript Validation.  Need all original and modified fields name
-      getParentForm().addChildName(getFieldName(), getFormFieldName());
+      getParentForm().addChildName(getName(), getFormFieldName());
 
       try
       {
@@ -351,4 +343,30 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer
    {
       this.noValue = noValue;
    }
+   
+	public void doFinally()
+	{
+		embeddedData  = null;
+		checked = null;
+		growDirection = null;
+		growSize      = "0";
+		noValue = null;
+		value = null;
+		super.doFinally();
+	}
+
+   /**
+    * @return
+    */
+   public String getValue() {
+      return value;
+   }
+
+   /**
+    * @param string
+    */
+   public void setValue(String string) {
+      value = string;
+   }
+
 }

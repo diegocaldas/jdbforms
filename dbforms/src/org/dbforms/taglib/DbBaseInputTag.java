@@ -25,17 +25,17 @@ package org.dbforms.taglib;
 import java.util.Vector;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
-
 import org.dbforms.event.WebEvent;
 import org.dbforms.event.eventtype.EventType;
-import org.dbforms.util.ParseUtil;
+import org.dbforms.config.Constants;
+import org.dbforms.util.Util;
 
 
 
 /**
  * Abstract base class for the various input tags. original author Craig R.
  * McClanahan original author Don Clasen,
- * 
+ *
  * @author Joachim Peer (modified this class for DbForms-Project)
  */
 public abstract class DbBaseInputTag extends DbBaseHandlerTag
@@ -58,7 +58,7 @@ public abstract class DbBaseInputTag extends DbBaseHandlerTag
 
    /**
     * Return the number of columns for this field.
-    * 
+    *
     * @return DOCUMENT ME!
     */
    public String getCols()
@@ -69,7 +69,7 @@ public abstract class DbBaseInputTag extends DbBaseHandlerTag
 
    /**
     * Set the number of columns for this field.
-    * 
+    *
     * @param cols The new number of columns
     */
    public void setCols(String cols)
@@ -80,7 +80,7 @@ public abstract class DbBaseInputTag extends DbBaseHandlerTag
 
    /**
     * Return the maximum length allowed.
-    * 
+    *
     * @return DOCUMENT ME!
     */
    public String getMaxlength()
@@ -91,7 +91,7 @@ public abstract class DbBaseInputTag extends DbBaseHandlerTag
 
    /**
     * Set the maximum length allowed.
-    * 
+    *
     * @param maxlength The new maximum length
     */
    public void setMaxlength(String maxlength)
@@ -102,7 +102,7 @@ public abstract class DbBaseInputTag extends DbBaseHandlerTag
 
    /**
     * Return the number of rows for this field.
-    * 
+    *
     * @return DOCUMENT ME!
     */
    public String getRows()
@@ -113,7 +113,7 @@ public abstract class DbBaseInputTag extends DbBaseHandlerTag
 
    /**
     * Set the number of rows for this field.
-    * 
+    *
     * @param rows The new number of rows
     */
    public void setRows(String rows)
@@ -124,7 +124,7 @@ public abstract class DbBaseInputTag extends DbBaseHandlerTag
 
    /**
     * Return the size of this field (synonym for <code>getCols()</code>).
-    * 
+    *
     * @return DOCUMENT ME!
     */
    public String getSize()
@@ -135,7 +135,7 @@ public abstract class DbBaseInputTag extends DbBaseHandlerTag
 
    /**
     * Set the size of this field (synonym for <code>setCols()</code>).
-    * 
+    *
     * @param size The new size
     */
    public void setSize(String size)
@@ -148,15 +148,14 @@ public abstract class DbBaseInputTag extends DbBaseHandlerTag
 
    /**
     * Process the start of this tag.  The default implementation does nothing.
-    * 
+    *
     * @return DOCUMENT ME!
-    * 
+    *
     * @exception JspException if a JSP exception has occurred
     */
    public int doStartTag() throws JspException
    {
-      if (getReadOnly().equals("true")
-                || getParentForm().getReadOnly().equals("true"))
+      if (isReadOnly() || getParentForm().isReadOnly())
       {
          String onFocus = (getOnFocus() != null) ? getOnFocus() : "";
 
@@ -174,9 +173,9 @@ public abstract class DbBaseInputTag extends DbBaseHandlerTag
 
    /**
     * Process the end of this tag.  The default implementation does nothing.
-    * 
+    *
     * @return DOCUMENT ME!
-    * 
+    *
     * @exception JspException if a JSP exception has occurred
     */
    public int doEndTag() throws JspException
@@ -190,7 +189,7 @@ public abstract class DbBaseInputTag extends DbBaseHandlerTag
    /**
     * Insert the method's description here. Creation date: (2001-06-27
     * 17:44:16)
-    * 
+    *
     * @return java.lang.String
     */
    public java.lang.String getOverrideValue()
@@ -202,7 +201,7 @@ public abstract class DbBaseInputTag extends DbBaseHandlerTag
    /**
     * Insert the method's description here. Creation date: (2001-06-27
     * 17:44:16)
-    * 
+    *
     * @param newOverrideValue java.lang.String
     */
    public void setOverrideValue(java.lang.String newOverrideValue)
@@ -216,7 +215,7 @@ public abstract class DbBaseInputTag extends DbBaseHandlerTag
    /**
     * Insert the method's description here. Creation date: (2001-06-26
     * 16:19:01)
-    * 
+    *
     * @return java.lang.String
     */
    public java.lang.String getHidden()
@@ -228,7 +227,7 @@ public abstract class DbBaseInputTag extends DbBaseHandlerTag
    /**
     * Insert the method's description here. Creation date: (2001-06-26
     * 16:19:01)
-    * 
+    *
     * @param newHidden java.lang.String
     */
    public void setHidden(java.lang.String newHidden)
@@ -236,9 +235,10 @@ public abstract class DbBaseInputTag extends DbBaseHandlerTag
       hidden = newHidden;
    }
 
+
    /**
     * gets the formfield value
-    * 
+    *
     * @return String
     */
    protected String getFormFieldValue()
@@ -246,55 +246,40 @@ public abstract class DbBaseInputTag extends DbBaseHandlerTag
       String res;
 
       /* If the overrideValue attribute has been set, use its value instead of the one
-      retrieved from the database.  This mechanism can be used to set an initial default
-      value for a given field. */
+         retrieved from the database.  This mechanism can be used to set an initial default
+         value for a given field. */
       HttpServletRequest request = (HttpServletRequest) this.pageContext.getRequest();
       Vector             errors = (Vector) request.getAttribute("errors");
-      WebEvent           we     = (WebEvent) request.getAttribute("webEvent");
+      WebEvent           we     = getParentForm().getWebEvent();
 
-      if (this.getOverrideValue() != null)
+      if ( (this.getOverrideValue() != null) && 
+            !(
+               (getParentForm().isRedisplayFieldsOnError() && (errors != null) && (errors.size() > 0))
+              || ((we != null) && (we.getType() == EventType.EVENT_NAVIGATION_RELOAD))
+             )
+         )
       {
-         //If the redisplayFieldsOnError attribute is set and we are in error mode, forget override!
-         if (("true".equals(getParentForm().getRedisplayFieldsOnError())
-                      && (errors != null) && (errors.size() > 0))
-                   || ((we != null) && we.getType() == EventType.EVENT_NAVIGATION_RELOAD))
-         {
-            res = super.getFormFieldValue();
-         }
-         else
-         {
-            res = getOverrideValue();
-         }
+         res = getOverrideValue();
       }
       else
+      //If the redisplayFieldsOnError attribute is set and we are in error mode, forget override!
       {
-         if ((we != null) && (we.getType() == EventType.EVENT_NAVIGATION_RELOAD))
-         {
-            String oldValue = ParseUtil.getParameter(request, getFormFieldName());
-
-            if (oldValue != null)
-            {
-               res = oldValue;
-            }
-            else
-            {
-               res = super.getFormFieldValue();
-            }
-         }
-         else
-         {
-            res = super.getFormFieldValue();
-         }
+         res = super.getFormFieldValue();
       }
 
       return res;
    }
 
 
-
-   protected String prepareSize() 
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   protected String prepareSize()
    {
-      StringBuffer tagBuf=new StringBuffer();
+      StringBuffer tagBuf = new StringBuffer();
+
       if (getMaxlength() != null)
       {
          tagBuf.append(" maxlength=\"");
@@ -308,50 +293,126 @@ public abstract class DbBaseInputTag extends DbBaseHandlerTag
          tagBuf.append(getCols());
          tagBuf.append("\"");
       }
-      return tagBuf.toString();
-   }    
 
-   protected String prepareKeys() 
+      return tagBuf.toString();
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   protected String prepareKeys()
    {
-      StringBuffer tagBuf=new StringBuffer();    
+      StringBuffer tagBuf = new StringBuffer();
+
       if (getAccessKey() != null)
       {
          tagBuf.append(" accesskey=\"");
          tagBuf.append(getAccessKey());
          tagBuf.append("\"");
       }
-   
+
       if (getTabIndex() != null)
       {
          tagBuf.append(" tabindex=\"");
          tagBuf.append(getTabIndex());
          tagBuf.append("\"");
       }
+
       return tagBuf.toString();
    }
 
-   protected String prepareType() 
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   protected String prepareType()
    {
       return ("true".equals(this.getHidden()))
-         ? "type=\"hidden\" " : "type=\"text\" ";
-
+                ? "type=\"hidden\" " : "type=\"text\" ";
    }
-   
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
    protected String prepareName()
-   { 
-      StringBuffer tagBuf=new StringBuffer();    
+   {
+      StringBuffer tagBuf = new StringBuffer();
       tagBuf.append("name=\"");
       tagBuf.append(getFormFieldName());
       tagBuf.append("\"");
-      return tagBuf.toString(); 
+
+      return tagBuf.toString();
    }
 
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
    protected String prepareValue()
-   { 
-      StringBuffer tagBuf=new StringBuffer();    
+   {
+      StringBuffer tagBuf = new StringBuffer();
       tagBuf.append(" value=\"");
       tagBuf.append(getFormFieldValue());
       tagBuf.append("\" ");
-      return tagBuf.toString(); 
+
+      return tagBuf.toString();
+   }
+
+
+   /**
+    * writes out all hidden fields for the input fields
+    */
+   protected void writeOutSpecialValues() throws JspException
+   {
+      super.writeOutSpecialValues();
+      writeOutFormat();
+   }
+
+
+   /** 
+    * writes out the current used format to the page
+    * @throws JspException
+    */
+   private void writeOutFormat() throws JspException
+   {
+      if (!Util.isNull(getPattern()))
+      {
+         try
+         {
+            StringBuffer tagBuf = new StringBuffer();
+            tagBuf.append("<input type=\"hidden\" name=\"");
+            tagBuf.append(Constants.FIELDNAME_PATTERNTAG + getFormFieldName());
+            tagBuf.append("\" value=\"");
+            tagBuf.append(getPattern());
+            tagBuf.append("\" />");
+            pageContext.getOut().write(tagBuf.toString());
+         }
+         catch (java.io.IOException ioe)
+         {
+            throw new JspException("IO Error: " + ioe.getMessage());
+         }
+      }
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    */
+   public void doFinally()
+   {
+      cols      = null;
+      maxlength = null;
+      rows      = null;
+      super.doFinally();
    }
 }

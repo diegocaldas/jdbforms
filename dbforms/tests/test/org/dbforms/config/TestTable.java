@@ -22,7 +22,6 @@
  */
 
 package org.dbforms.config;
-import junit.framework.*;
 import org.dbforms.config.Field;
 import org.dbforms.config.Constants;
 import org.dbforms.config.FieldValue;
@@ -33,24 +32,13 @@ import org.dbforms.config.FieldValue;
  * @author     epugh
  * @created    May 3, 2002
  */
-public class TestTable extends TestCase {
+public class TestTable extends org.dbforms.util.AbstractTestCase {
    Field fAuthorId = null;
    Field fBookId = null;
    FieldValue fvLogicalOR = null;
    FieldValue fvNotLogicalOR = null;
    FieldValue fvLogicalORLikeFilter = null;
    Table table = null;
-
-   /**
-    * Creates a new TestFieldValue object.
-    *
-    * @param name DOCUMENT ME!
-    *
-    * @throws Exception DOCUMENT ME!
-    */
-   public TestTable(String name) throws Exception {
-      super(name);
-   }
 
    /**
     * DOCUMENT ME!
@@ -61,20 +49,25 @@ public class TestTable extends TestCase {
       super.setUp();
       fAuthorId = new Field();
       fAuthorId.setName("AUTHOR_ID");
+      fAuthorId.setFieldType("char");
+
       fBookId = new Field();
       fBookId.setName("BOOK_ID");
 
       fvLogicalOR = new FieldValue(fAuthorId, "10");
       fvLogicalOR.setOperator(Constants.FILTER_EQUAL);
       fvLogicalOR.setLogicalOR(true);
+      
       fvNotLogicalOR = new FieldValue(fBookId, "10");
       fvNotLogicalOR.setOperator(Constants.FILTER_EQUAL);
       fvNotLogicalOR.setLogicalOR(false);
+      
       fvLogicalORLikeFilter = new FieldValue(fAuthorId, "10");
       fvLogicalORLikeFilter.setOperator(Constants.FILTER_LIKE);
       fvLogicalORLikeFilter.setLogicalOR(true);
       
       table = new Table(); 
+      table.setName("td");
    }
 
    /**
@@ -82,9 +75,19 @@ public class TestTable extends TestCase {
     *
     * @throws Exception DOCUMENT ME!
     */
-   public void tearDown() throws Exception {
-      super.tearDown();
+   public void testGetSelectQuery() throws Exception {
+      FieldValue[] fvs = { fvLogicalOR, fvNotLogicalOR };
+      String s = table.getSelectQuery(null, null, null, "f1 >= ?", Constants.COMPARE_NONE);
+      assertTrue(
+         "Test fvs Where clause equals:" + s,
+         s.indexOf("SELECT * FROM td WHERE  ( f1 >= ? )") >= 0);
+
+      s = table.getSelectQuery(null, fvs, null, "f1 >= ?", Constants.COMPARE_NONE);
+      assertTrue(
+         "Test fvs Where clause equals:" + s,
+         s.indexOf("SELECT * FROM td WHERE  ( f1 >= ? )  AND  (  (  ( AUTHOR_ID =  ?  ) AND ( BOOK_ID =  ?  )  )  )") >= 0);
    }
+
 
    /**
     * DOCUMENT ME!
@@ -104,9 +107,9 @@ public class TestTable extends TestCase {
       table.getWhereClause(fvs2).indexOf("AUTHOR_ID =  ?  OR AUTHOR_ID =  ?") >= 0);
 
       FieldValue[] fvs3 = { fvLogicalORLikeFilter, fvLogicalOR };
-      assertTrue(
-         "Test fvs3 Where clause equals:" + table.getWhereClause(fvs3),
-      table.getWhereClause(fvs3).indexOf("AUTHOR_ID LIKE  ?  OR AUTHOR_ID =  ?") >= 0);
+      s = table.getWhereClause(fvs3);
+      assertTrue("Test fvs3 Where clause equals:" + s,
+                 s.indexOf("AUTHOR_ID LIKE  ?  OR AUTHOR_ID =  ?") >= 0);
    }
 
 

@@ -23,7 +23,7 @@
 package org.dbforms.taglib;
 import java.io.*;
 import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.tagext.TagSupport;
+import javax.servlet.jsp.tagext.BodyTagSupport;
 import org.apache.log4j.Category;
 
 
@@ -32,7 +32,7 @@ import org.apache.log4j.Category;
  * Renders an dbforms style tag
  * @author Joe Peer <joepeer@wap-force.net>
  */
-public class TemplateBasedirTag extends TagSupport
+public class TemplateBasedirTag extends BodyTagSupport
 {
    static Category logCat  = Category.getInstance(TemplateBasedirTag.class
          .getName()); // logging category for this class

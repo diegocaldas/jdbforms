@@ -24,9 +24,7 @@ package org.dbforms.taglib;
 
 import org.dbforms.event.WebEvent;
 import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.tagext.TagSupport;
 
-//import javax.servlet.jsp.tagext.BodyTagSupport;
 import org.apache.log4j.Category;
 
 
@@ -37,7 +35,7 @@ import org.apache.log4j.Category;
  * @version $Revision$
  * @author $author$
  */
-public class IsWebEvent extends TagSupport
+public class IsWebEvent extends DbBaseHandlerTag
 {
    // logging category for this class
    static Category logCat = Category.getInstance(IsWebEvent.class.getName());
@@ -62,17 +60,16 @@ public class IsWebEvent extends TagSupport
     */
    public int doStartTag() throws JspException
    {
-      WebEvent webEvent = (WebEvent) pageContext.getRequest().getAttribute("webEvent");
-
-      if ((webEvent == null) || (event == null) || (value == null))
+      WebEvent           we = getParentForm().getWebEvent();
+      if ((we == null) || (event == null) || (value == null))
       {
-         logCat.debug("Can't do IsWebEvent with  webEvent: " + webEvent
+         logCat.debug("Can't do IsWebEvent with  webEvent: " + we
             + "  event: " + event + "   value: " + value);
 
          return SKIP_BODY;
       }
 
-      String className = webEvent.getClass().getName();
+      String className = we.getClass().getName();
       className = className.substring("org.dbforms.event.".length(),
             className.length());
 
@@ -106,7 +103,7 @@ public class IsWebEvent extends TagSupport
     *
     * @param str DOCUMENT ME!
     */
-   public final void setValue(String str)
+   public final void setDefaultValue(String str)
    {
       value = new Boolean(str);
    }

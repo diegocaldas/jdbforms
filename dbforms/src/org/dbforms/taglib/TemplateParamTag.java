@@ -24,7 +24,7 @@ package org.dbforms.taglib;
 import java.io.*;
 import java.util.*;
 import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.tagext.TagSupport;
+import javax.servlet.jsp.tagext.BodyTagSupport;
 import org.apache.log4j.Category;
 
 
@@ -33,7 +33,7 @@ import org.apache.log4j.Category;
  * Renders an dbforms style tag
  * @author Joe Peer <joepeer@wap-force.net>
  */
-public class TemplateParamTag extends TagSupport
+public class TemplateParamTag extends BodyTagSupport
 {
    static Category   logCat       = Category.getInstance(TemplateParamTag.class
          .getName()); // logging category for this class

@@ -22,7 +22,7 @@
  */
 
 package org.dbforms.config;
-import junit.framework.*;
+import org.dbforms.util.AbstractTestCase;
 
 
 
@@ -33,21 +33,9 @@ import junit.framework.*;
  * @author     epugh
  * @created    May 3, 2002
  */
-public class TestError extends TestCase
+public class TestError extends AbstractTestCase
 {
     private Error e = null;
-
-    /**
-     * Creates a new TestError object.
-     *
-     * @param name DOCUMENT ME!
-     *
-     * @throws Exception DOCUMENT ME!
-     */
-    public TestError(String name) throws Exception
-    {
-        super(name);
-    }
 
     /**
      * DOCUMENT ME!
@@ -58,17 +46,6 @@ public class TestError extends TestCase
     {
         super.setUp();
         e = new Error();
-    }
-
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @throws Exception DOCUMENT ME!
-     */
-    public void tearDown() throws Exception
-    {
-        super.tearDown();
     }
 
 

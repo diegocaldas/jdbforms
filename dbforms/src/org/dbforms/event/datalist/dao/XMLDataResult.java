@@ -159,6 +159,7 @@ public class XMLDataResult
    
                case FieldTypes.DATE:
                case FieldTypes.TIMESTAMP:
+               case FieldTypes.TIME:
                   result = TimeUtil.parseISO8601Date(toString(n));
    
                   break;

@@ -38,7 +38,7 @@ import org.apache.log4j.Category;
  */
 public class JavascriptArrayTag extends BodyTagSupport implements DataContainer
 {
-   static Category logCat       = Category.getInstance(JavascriptArrayTag.class
+   private static Category logCat       = Category.getInstance(JavascriptArrayTag.class
          .getName()); // logging category for this class
    private Vector  embeddedData = null;
    private String  name         = null;

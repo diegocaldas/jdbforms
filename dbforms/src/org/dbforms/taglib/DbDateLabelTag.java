@@ -23,9 +23,7 @@
 
 package org.dbforms.taglib;
 import javax.servlet.jsp.JspException;
-import java.text.Format;
 import org.apache.log4j.Category;
-import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.util.Util;
 
 
@@ -54,29 +52,9 @@ public class DbDateLabelTag extends DbLabelTag
    {
       try
       {
-         Object currentValue = getFieldObject();
-
-         Format format = getFormat();
-         if (format == null)
-         {
-            try
-            {
-               format = DbFormsConfigRegistry.instance().lookup()
-                                             .getDateFormatter();
-            }
-            catch (Exception e)
-            {
-               logCat.error(e);
-            }
-         }
-
-         String fieldValue = Util.isNull(getNullFieldValue()) ? typicalDefaultValue(): getNullFieldValue();
-
-         // Format date if the retrieved currentValue is not null
-         if ((currentValue != null) && (format != null))
-         {
-            fieldValue = format.format(currentValue);
-         }
+             String fieldValue = getFormattedFieldValue();
+             // SM 2003-08-05
+             // if styleClass is present, render a SPAN with text included
 
          String s = prepareStyles();
 
@@ -89,10 +67,6 @@ public class DbDateLabelTag extends DbLabelTag
             pageContext.getOut()
                        .write("<span " + s + "\">" + fieldValue + "</span>");
          }
-      }
-      catch (java.io.IOException ioe)
-      {
-         throw new JspException("IO Error: " + ioe.getMessage());
       }
       catch (Exception e)
       {

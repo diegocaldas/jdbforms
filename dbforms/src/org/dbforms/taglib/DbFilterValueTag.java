@@ -22,28 +22,20 @@
  */
 
 package org.dbforms.taglib;
-import java.math.BigDecimal;
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Vector;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
-import javax.servlet.jsp.tagext.BodyTagSupport;
 import javax.servlet.jsp.tagext.TryCatchFinally;
 import org.apache.log4j.Category;
-import org.dbforms.config.DbFormsConfig;
-import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.Field;
 import org.dbforms.config.FieldValue;
 import org.dbforms.config.FieldValues;
 import org.dbforms.util.KeyValuePair;
 import org.dbforms.util.ParseUtil;
 import org.dbforms.util.Util;
-
+import org.dbforms.util.MessageResources;
 
 
 /**
@@ -55,7 +47,7 @@ import org.dbforms.util.Util;
  * 
  * @version $Revision$
  */
-public class DbFilterValueTag extends BodyTagSupport implements DataContainer,
+public class DbFilterValueTag extends DbBaseHandlerTag implements DataContainer,
                                                                 TryCatchFinally
 {
    /**
@@ -138,125 +130,9 @@ public class DbFilterValueTag extends BodyTagSupport implements DataContainer,
 
    /** DOCUMENT ME! */
    protected static String FLT_VALUETYPE_TIMESTAMP = "timestamp";
+
    static Category         logCat = Category.getInstance(
                                              DbFilterValueTag.class.getName());
-
-   /**
-    * retrieve the format object to use to convert date or timestamp to string
-    * @param type attribute of DbFilterValue object
-    * @return format object
-    * @todo better handling of  timestamp format
-    */
-   protected static DateFormat getDateFormat(String type)
-   {
-      DateFormat format = null;
-
-      if (FLT_VALUETYPE_DATE.equalsIgnoreCase(type))
-      {
-         // get date format from config
-         DbFormsConfig config;
-
-         try
-         {
-            config = DbFormsConfigRegistry.instance().lookup();
-            format = config.getDateFormatter();
-         }
-         catch (Exception e)
-         {
-            logCat.error(e);
-         }
-      }
-      else if (FLT_VALUETYPE_TIMESTAMP.equalsIgnoreCase(type))
-      {
-         format = new SimpleDateFormat();
-      }
-
-      return format;
-   }
-
-
-   /**
-    * check that value is conform to its type, if this is not true, return null.
-    * For date and timestamp, transform input parsed with appropriate format object to a standard date or timestap string:
-    * DATE'yyyy-MM-dd'
-    * TIMESTAMP'yyyy-MM-dd HH:mm:ss.S'
-    *   
-    * @param value from user input
-    * @param type of value object
-    * @return string containing value, maybe rewrited to a more suitable form
-    */
-   protected static String parseValue(String value, String type)
-   {
-      String retval = value;
-
-      // type is null or type is text, do nothing
-      if ((type == null) || FLT_VALUETYPE_TEXT.equalsIgnoreCase(type)
-                || FLT_VALUETYPE_SELECT.equalsIgnoreCase(type))
-      {
-         ;
-      }
-
-      // if type is numeric, check if value is a valid number
-      else if (FLT_VALUETYPE_NUMERIC.equalsIgnoreCase(type))
-      {
-
-         try
-         {
-            new BigDecimal(value);
-         }
-         catch (NumberFormatException e)
-         {
-            retval = null;
-         }
-      }
-
-      // if type is date or timestamp, transform user input in a sql temporal literal
-      else if (FLT_VALUETYPE_DATE.equalsIgnoreCase(type)
-                     || FLT_VALUETYPE_TIMESTAMP.equalsIgnoreCase(type))
-      {
-         // retrieve date or timestamp format object
-         DateFormat format = getDateFormat(type);
-
-         try
-         {
-            if (FLT_VALUETYPE_DATE.equalsIgnoreCase(type))
-            {
-               Date date = new Date(format.parse(value).getTime());
-
-
-               // use the java.sql.Date toString method to convert a date in the 
-               // standard format 'yyyy-MM-dd'
-               retval = "DATE'" + date.toString() + "'";
-            }
-            else
-            {
-               Timestamp tstamp = new Timestamp(format.parse(value).getTime());
-
-
-               // use the java.sql.Timestamp toString method to convert a timestamp
-               // in the standard format 'yyyy-MM-dd HH:mm:ss.S' 
-               retval = "TIMESTAMP'" + tstamp.toString() + "'";
-            }
-         }
-         catch (ParseException e)
-         {
-            logCat.warn(e);
-            retval = null;
-         }
-         catch (Exception e)
-         {
-            logCat.error(e);
-            retval = null;
-         }
-      }
-      else
-      {
-         // type unknown;
-         retval = null;
-      }
-
-      return retval;
-   }
 
 
    /**
@@ -290,25 +166,15 @@ public class DbFilterValueTag extends BodyTagSupport implements DataContainer,
 
          if (value != null)
          {
-            // check if value is a valid instance of type
-            String realvalue = parseValue(value, valueType);
-
-            if (Util.isNull(realvalue))
-            {
-               // error in parsing value, abort
-               logCat.debug("error in parsing filter type : " + valueType
-                            + ", value : " + value);
-
-               return null;
-            }
 
             // add value, possibly converted, to list
             Field f = new Field();
             f.setName(paramValue);
             f.setId(valueId);
             f.setFieldType(valueType);
-
-            values.put(new FieldValue(f, realvalue));
+            FieldValue fv = new FieldValue(f, value);
+            fv.setLocale(MessageResources.getLocale(request));    
+            values.put(fv);
          }
          else
          {
@@ -448,8 +314,7 @@ public class DbFilterValueTag extends BodyTagSupport implements DataContainer,
                                (HttpServletRequest) pageContext.getRequest(), 
                                getValueName());
 
-      if ((state.value == null)
-                || (parseValue(state.value, state.type) == null))
+      if (state.value == null)
       {
          state.value = "";
       }
@@ -520,8 +385,7 @@ public class DbFilterValueTag extends BodyTagSupport implements DataContainer,
          if (state.jsCalendarDateFormat == null)
          {
             // get date format from config
-            SimpleDateFormat format = (SimpleDateFormat) getDateFormat(
-                                               state.type);
+            SimpleDateFormat format = (java.text.SimpleDateFormat) getFormat();
 
             if (format != null)
             {
@@ -745,15 +609,6 @@ public class DbFilterValueTag extends BodyTagSupport implements DataContainer,
 
 
    /**
-    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
-    */
-   public void doCatch(Throwable t) throws Throwable
-   {
-      throw t;
-   }
-
-
-   /**
     * reset tag state
     * 
     * @see javax.servlet.jsp.tagext.TryCatchFinally#doFinally()
@@ -761,5 +616,6 @@ public class DbFilterValueTag extends BodyTagSupport implements DataContainer,
    public void doFinally()
    {
       state = new State();
+      super.doFinally();
    }
 }

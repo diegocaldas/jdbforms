@@ -29,18 +29,19 @@ package org.dbforms.util;
  * @version $Revision$
  * @author $author$
  */
-public class UniqueIDGenerator
+public  class  UniqueIDGenerator
 {
 
+   private static int counter = 0;  
    /**
     * may be optimized in future versions
     * @return DOCUMENT ME!
     */
-   public static String getUniqueID()
+   public  static synchronized String getUniqueID()
    {
       long first  = new java.util.Date().getTime();
       int  second = (int) (Math.random() * 100);
-
-      return Long.toString(first) + Integer.toString(second);
+      counter++;  
+      return Long.toString(first) + Integer.toString(second) + Integer.toString(counter);
    }
 }

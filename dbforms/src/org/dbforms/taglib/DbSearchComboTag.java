@@ -190,8 +190,8 @@ public class DbSearchComboTag extends DbSearchTag implements DataContainer
       HttpServletRequest request = (HttpServletRequest) this.pageContext
          .getRequest();
 
-      int                tableId = parentForm.getTable().getId();
-      Field              field   = parentForm.getTable().getFieldByName(getFieldName());
+      int                tableId = getParentForm().getTable().getId();
+      Field              field   = getField();
       int                fieldId = field.getId();
 
       StringBuffer       tagBuf       = new StringBuffer();

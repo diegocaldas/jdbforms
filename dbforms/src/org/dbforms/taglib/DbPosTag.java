@@ -21,14 +21,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.taglib;
-import javax.servlet.jsp.*;
-import javax.servlet.jsp.tagext.*;
 
-import org.dbforms.config.*;
 import org.dbforms.util.Util;
-import org.apache.log4j.Category;
-
-
 
 /****
  * <p>
@@ -36,15 +30,9 @@ import org.apache.log4j.Category;
  *  This is the same string wich would be used as value in the DbassociatedRadioTag.
  * </p>
  *
- * @author Henner Kollmann  (Henner.Kollmann@gmx.de)
  */
-public class DbPosTag extends TagSupport
+public class DbPosTag extends DbBaseHandlerTag
 {
-   static Category       logCat     = Category.getInstance(DbSortTag.class
-         .getName()); // logging category for this class
-   private DbFormsConfig config;
-   private DbFormTag     parentForm;
-
    /**
     * DOCUMENT ME!
     *
@@ -58,41 +46,18 @@ public class DbPosTag extends TagSupport
       try
       {
          StringBuffer       tagBuf = new StringBuffer();
-         tagBuf.append(parentForm.getTable().getId());
+         tagBuf.append(getParentForm().getTable().getId());
          tagBuf.append("_");
-         tagBuf.append(parentForm.getPositionPath());
-         pageContext.getOut().write(Util.decode(tagBuf.toString(), pageContext.getRequest().getCharacterEncoding()));
+         tagBuf.append(getParentForm().getPositionPath());
+         pageContext.getOut().write(Util.decode(tagBuf.toString()));
       }
       catch (java.io.IOException ioe)
       {
-         throw new JspException("IO Error: " + ioe.getMessage());
+         throw new javax.servlet.jsp.JspException("IO Error: " + ioe.getMessage());
       }
 
       return EVAL_PAGE;
    }
 
 
-   /**
-    * DOCUMENT ME!
-    *
-    * @param pageContext DOCUMENT ME!
-    */
-   public void setPageContext(final javax.servlet.jsp.PageContext pageContext)
-   {
-      super.setPageContext(pageContext);
-      this.config = (DbFormsConfig) pageContext.getServletContext()
-                                               .getAttribute(DbFormsConfig.CONFIG);
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param parent DOCUMENT ME!
-    */
-   public void setParent(final javax.servlet.jsp.tagext.Tag parent)
-   {
-      super.setParent(parent);
-      this.parentForm = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
-   }
 }

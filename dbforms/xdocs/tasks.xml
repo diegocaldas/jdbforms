@@ -42,10 +42,10 @@
 	      	</tr>
 	      	<tr>
 	      		<td>
-				Kepp textField empty when numeric field in database is null
+				Keep textField empty when numeric field in database is null
 	      		</td>
-	      		<td>unassigned</td>
-	      		<td>open</td>
+	      		<td>Henner Kollmann (Henner.Kollmann@gmx.de)</td>
+	      		<td>done</td>
 	      	</tr>
 	      	<tr>
 	      		<td>
@@ -84,8 +84,8 @@
 						jsCalendarImageSrc="&lt;%=imageFiles%&gt;"  /&gt;
 					If the attributes are not given then the tag takes the default values (current implementation).
 				</td>
-		     	<td>unassigned</td>
-	    	  	<td>open</td>
+		     	<td>Henner Kollmann (Henner.Kollmann@gmx.de)</td>
+	    	  	<td>done</td>
 	      	</tr>
 	      	<tr>
 	    	  	<td>

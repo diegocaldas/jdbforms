@@ -22,9 +22,6 @@
  */
 
 package org.dbforms.config;
-import junit.framework.Test;
-import junit.framework.TestSuite;
-import org.apache.cactus.JspTestCase;
 import org.dbforms.servlets.ConfigServlet;
 import org.dbforms.taglib.DbFormTag;
 
@@ -35,43 +32,9 @@ import org.dbforms.taglib.DbFormTag;
  * 
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
  */
-public class TestTableQuery extends JspTestCase
+public class TestTableQuery extends org.apache.cactus.JspTestCase
 {
    private DbFormTag tag;
-
-   /**
-    * Defines the testcase name for JUnit.
-    * 
-    * @param theName the testcase's name.
-    */
-   public TestTableQuery(String theName)
-   {
-      super(theName);
-   }
-
-   /**
-    * Start the tests.
-    * 
-    * @param theArgs the arguments. Not used
-    */
-   public static void main(String[] theArgs)
-   {
-      junit.swingui.TestRunner.main(
-               new String[] { TestTableQuery.class.getName() });
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    * 
-    * @return a test suite (<code>TestSuite</code>) that includes all methods
-    *         starting with "test"
-    */
-   public static Test suite()
-   {
-      // All methods starting with "test" will be executed in the test suite.
-      return new TestSuite(TestTableQuery.class);
-   }
 
 
    /**
@@ -135,10 +98,4 @@ public class TestTableQuery extends JspTestCase
    }
 
 
-   /**
-    * DOCUMENT ME!
-    */
-   public void tearDown()
-   {
-   }
 }

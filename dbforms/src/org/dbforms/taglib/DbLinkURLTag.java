@@ -27,10 +27,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import javax.servlet.jsp.JspException;
 
-import javax.servlet.jsp.tagext.BodyTagSupport;
 import javax.servlet.jsp.tagext.TryCatchFinally;
 
-import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.Field;
 import org.dbforms.config.FieldValue;
 import org.dbforms.config.FieldValues;
@@ -73,19 +71,16 @@ import org.apache.log4j.Category;
  *
  * @author Joachim Peer <j.peer@gmx.net>
  */
-public class DbLinkURLTag extends BodyTagSupport implements TryCatchFinally
+public class DbLinkURLTag extends DbBaseHandlerTag implements TryCatchFinally
 {
    static Category       logCat     = Category.getInstance(DbLinkURLTag.class
          .getName()); // logging category for this class
-   private DbFormsConfig config;
-   private Table         table;
-   private FieldValues   positionFv; // fields and their values, provided by embedded DbLinkPositionItem-Elements
 
+   private FieldValues   positionFv; // fields and their values, provided by embedded DbLinkPositionItem-Elements
    // -- properties
    private String    href;
    private String    tableName;
    private String    position;
-   private DbFormTag parentForm;
    private String    keyToDestPos;
    private String    keyToKeyToDestPos;
    private String    singleRow = "false";
@@ -121,17 +116,6 @@ public class DbLinkURLTag extends BodyTagSupport implements TryCatchFinally
    public void setHref(String href)
    {
       this.href = href;
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    */
-   public String getTableName()
-   {
-      return tableName;
    }
 
 
@@ -188,17 +172,6 @@ public class DbLinkURLTag extends BodyTagSupport implements TryCatchFinally
     * DOCUMENT ME!
     *
     * @return DOCUMENT ME!
-    */
-   public Table getTable()
-   {
-      return table;
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
     *
     * @throws JspException  thrown when error occurs in processing the body of
     *                       this method
@@ -207,22 +180,8 @@ public class DbLinkURLTag extends BodyTagSupport implements TryCatchFinally
     */
    public int doStartTag() throws javax.servlet.jsp.JspException
    {
-      // determinate table
-      if (this.tableName != null)
-      {
-         this.table = config.getTableByName(tableName);
-      }
-      else if (this.parentForm != null)
-      { // we must try if we get info from parentForm
-         this.table = parentForm.getTable();
-      }
-      else
-      {
-         throw new IllegalArgumentException(
-            "no table specified. either you define expliclty the attribute \"tableName\" or you put this tag inside a db:form!");
-      }
 
-      if (position == null) // if position was not set explicitly,
+      if (Util.isNull(getPosition())) // if position was not set explicitly,
       {
          return EVAL_BODY_BUFFERED; // we have to evaluate body and hopefully find DbLinkPositionItems there
       }
@@ -267,7 +226,21 @@ public class DbLinkURLTag extends BodyTagSupport implements TryCatchFinally
       return s;
    }
 
-
+   public Table getTable() {   
+      if (!Util.isNull(tableName))
+      {
+         return getConfig().getTableByName(tableName);
+      }
+      else if (getParentForm() != null)
+      { // we must try if we get info from parentForm
+         return getParentForm().getTable();
+      }
+      else
+      {
+         throw new IllegalArgumentException(
+            "no table specified. either you define expliclty the attribute \"tableName\" or you put this tag inside a db:form!");
+      }
+   }
    /**
     * DOCUMENT ME!
     *
@@ -286,7 +259,7 @@ public class DbLinkURLTag extends BodyTagSupport implements TryCatchFinally
 
             if (positionFv != null)
             { // but (maybe) defined by sub-elements (DbLinkPositionItem)
-               position = table.getKeyPositionString(positionFv);
+               position = getTable().getKeyPositionString(positionFv);
             }
          }
 
@@ -314,30 +287,30 @@ public class DbLinkURLTag extends BodyTagSupport implements TryCatchFinally
          // table is required. we force to define a valid table.
          // because we do not want the developer to use this tag instead of
          // normal <a href="">-tags to arbitrary (static) ressources, as this would slow down the application.
-         tagBuf.append(getDataTag(tagName, "destTable", table.getName()));
+         tagBuf.append(getDataTag(tagName, "destTable", getTable().getName()));
 
          // position within table is not required.
          // if no position was provided/determinated, dbForm will navigate to the first row
          // 2002-11-20 HKK: Fixed encoding bug!
-         tagBuf.append(getDataTag(tagName, "destPos", Util.encode(position,request.getCharacterEncoding ())));
+         tagBuf.append(getDataTag(tagName, "destPos", Util.encode(position)));
 
          // 2002-11-21 HKK: Allow same keys as in dbgotobutton
          tagBuf.append(getDataTag(tagName, "keyToDestPos",
-         Util.encode(keyToDestPos,request.getCharacterEncoding ())));
+         Util.encode(keyToDestPos)));
          tagBuf.append(getDataTag(tagName, "keyToKeyDestPos",
-         Util.encode(keyToKeyToDestPos, request.getCharacterEncoding ())));
+         Util.encode(keyToKeyToDestPos)));
 
 
 
          // 2002-11-21 HKK: New: send parent table name as parameter if it is different to table
-         if (table != parentForm.getTable())
+         if (getTable() != getParentForm().getTable())
          {
             tagBuf.append(getDataTag(tagName, "srcTable",
-                  parentForm.getTable().getName()));
+                  getParentForm().getTable().getName()));
             tagBuf.append(getDataTag(tagName, "childField",
-                  Util.encode(childField, null)));
+                  Util.encode(childField)));
             tagBuf.append(getDataTag(tagName, "parentField",
-                  Util.encode(parentField, null)));
+                  Util.encode(parentField)));
          }
 
 			tagBuf.append(getDataTag(tagName, "singleRow", getSingleRow()));
@@ -361,30 +334,6 @@ public class DbLinkURLTag extends BodyTagSupport implements TryCatchFinally
       return EVAL_PAGE;
    }
 
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param pageContext DOCUMENT ME!
-    */
-   public void setPageContext(final javax.servlet.jsp.PageContext pageContext)
-   {
-      super.setPageContext(pageContext);
-      this.config = (DbFormsConfig) pageContext.getServletContext()
-                                               .getAttribute(DbFormsConfig.CONFIG);
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param parent DOCUMENT ME!
-    */
-   public void setParent(final javax.servlet.jsp.tagext.Tag parent)
-   {
-      super.setParent(parent);
-      this.parentForm = (DbFormTag) findAncestorWithClass(this, DbFormTag.class); // may be null!
-   }
 
 
    /**
@@ -503,19 +452,17 @@ public class DbLinkURLTag extends BodyTagSupport implements TryCatchFinally
       }
 
       positionFv = null;
+      href = null;
+      tableName = null;
+      position = null;
+      keyToDestPos = null;
+      keyToKeyToDestPos = null;
+      singleRow = "false";
+      
+      super.doFinally();
    }
 
 
-   /**
-    * DOCUMENT ME!
-    *
-    * @param  t DOCUMENT ME!
-    * @throws  Throwable DOCUMENT ME!
-    */
-   public void doCatch(Throwable t) throws Throwable
-   {
-      throw t;
-   }
 
 	/**
 	 * @return the attribute

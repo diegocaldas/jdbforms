@@ -28,7 +28,6 @@ import java.util.Iterator;
 import org.dbforms.util.Util;
 
 
-
 /**
  * New class to deal with a list of FieldValues. 
  * <br>
@@ -42,7 +41,6 @@ public class FieldValues
 {
    private Hashtable ht;
 
-
    /**
     * Creates a new FieldValues object.
     */
@@ -50,7 +48,6 @@ public class FieldValues
    {
       ht = new Hashtable();
    }
-
 
    /**
     * Creates a new FieldValues object from an input array 
@@ -103,7 +100,7 @@ public class FieldValues
     */
    public FieldValue remove(String name)
    {
-      return (FieldValue)remove(name);
+      return (FieldValue)ht.remove(name);
    }
 
    /**
@@ -195,4 +192,6 @@ public class FieldValues
 	  }
 	  return sb.toString();
 	}
+
+
 }

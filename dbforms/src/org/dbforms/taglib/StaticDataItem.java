@@ -34,11 +34,11 @@ import org.dbforms.util.*;
  * @version $Revision$
  * @author $author$
  */
-public class StaticDataItem extends TagSupportWithScriptHandler
+public class StaticDataItem extends DbBaseHandlerTag implements javax.servlet.jsp.tagext.TryCatchFinally
 {
    static Category logCat = Category.getInstance(StaticDataItem.class.getName()); // logging category for this class
    private String  key;
-   private String  value;
+   private String value;
 
    /**
     * DOCUMENT ME!
@@ -67,27 +67,16 @@ public class StaticDataItem extends TagSupportWithScriptHandler
     *
     * @return DOCUMENT ME!
     */
-   public String getValue()
-   {
-      return value;
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param value DOCUMENT ME!
-    */
-   public void setValue(String value)
+   public String getDefaultValue()
    {
       String message = null;
 
-      this.value = value;
+      String value = super.getDefaultValue();
 
       if ((value != null)
                && (getParent() instanceof StaticData
                && getParent().getParent() instanceof DbBaseHandlerTag
-               && getParentForm().getCaptionResource().equals("true")))
+               && getParentForm().isCaptionResource()))
       {
          try
          {
@@ -95,9 +84,9 @@ public class StaticDataItem extends TagSupportWithScriptHandler
                   .getRequest());
             message = MessageResources.getMessage(value, locale);
 
-            if (message != null)
+            if (!Util.isNull(message))
             {
-               this.value = message;
+               value = message;
             }
          }
          catch (Exception e)
@@ -106,7 +95,9 @@ public class StaticDataItem extends TagSupportWithScriptHandler
                + e.getMessage());
          }
       }
+      return value;
    }
+
 
 
    /**
@@ -120,8 +111,7 @@ public class StaticDataItem extends TagSupportWithScriptHandler
    {
       if ((getParent() != null) && getParent() instanceof StaticData)
       {
-         ((StaticData) getParent()).getData().addElement(new KeyValuePair(key,
-               value));
+         ((StaticData) getParent()).getData().addElement(new KeyValuePair(key, getValue()));
       }
       else
       {
@@ -131,4 +121,25 @@ public class StaticDataItem extends TagSupportWithScriptHandler
 
       return EVAL_BODY_INCLUDE;
    }
+
+	public void doFinally()
+	{
+		value = null;
+		super.doFinally();
+	}
+
+   /**
+    * @return
+    */
+   public String getValue() {
+      return value;
+   }
+
+   /**
+    * @param string
+    */
+   public void setValue(String string) {
+      value = string;
+   }
+
 }

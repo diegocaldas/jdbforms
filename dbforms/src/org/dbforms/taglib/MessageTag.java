@@ -27,14 +27,14 @@ import java.util.Locale;
 import java.util.StringTokenizer;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.tagext.TagSupport;
+import javax.servlet.jsp.tagext.BodyTagSupport;
 
 
 
 /*****
     2002-09-23 HKK: Extented to support parameters
  ****/
-public class MessageTag extends TagSupport
+public class MessageTag extends BodyTagSupport
 {
    private String                  key   = null;
    private String                  param = null;

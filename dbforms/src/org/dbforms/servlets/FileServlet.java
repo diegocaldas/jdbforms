@@ -43,10 +43,10 @@ import java.net.URLConnection;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.Field;
 import org.dbforms.config.FieldTypes;
-import org.dbforms.config.SqlUtil;
 import org.dbforms.config.Table;
 import org.dbforms.util.FileHolder;
 import org.dbforms.util.ParseUtil;
+import org.dbforms.util.SqlUtil;
 import org.apache.log4j.Category;
 
 
@@ -117,8 +117,7 @@ public class FileServlet extends HttpServlet
 
       StringBuffer queryBuf         = new StringBuffer();
       String       dbConnectionName = request.getParameter("invname_" + tableId);
-      Connection   con              = SqlUtil.getConnection(config, 
-                                                            dbConnectionName);
+      Connection   con              = config.getConnection(dbConnectionName);
 
       queryBuf.append("SELECT ");
       queryBuf.append(field.getName());
@@ -134,7 +133,7 @@ public class FileServlet extends HttpServlet
       try
       {
          PreparedStatement ps = con.prepareStatement(queryBuf.toString());
-         table.populateWhereClauseForPS(keyValuesStr, ps, 1);
+         table.populateWhereClauseWithKeyFields(keyValuesStr, ps, 1);
 
          ResultSet rs = ps.executeQuery();
 

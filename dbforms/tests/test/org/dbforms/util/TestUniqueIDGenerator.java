@@ -22,8 +22,6 @@
  */
 
 package org.dbforms.util;
-import junit.framework.*;
-
 
 
 /**
@@ -32,42 +30,8 @@ import junit.framework.*;
  * @author     epugh
  * @created    May 3, 2002
  */
-public class TestUniqueIDGenerator extends TestCase
+public class TestUniqueIDGenerator extends AbstractTestCase
 {
-    /**
-     * Creates a new TestUniqueIDGenerator object.
-     *
-     * @param name DOCUMENT ME!
-     *
-     * @throws Exception DOCUMENT ME!
-     */
-    public TestUniqueIDGenerator(String name) throws Exception
-    {
-        super(name);
-    }
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @throws Exception DOCUMENT ME!
-     */
-    public void setUp() throws Exception
-    {
-        super.setUp();
-    }
-
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @throws Exception DOCUMENT ME!
-     */
-    public void tearDown() throws Exception
-    {
-        super.tearDown();
-    }
-
-
     /**
      * DOCUMENT ME!
      *

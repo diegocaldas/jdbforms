@@ -47,8 +47,7 @@ public class DbDataContainerLabelTag
     extends DbBaseHandlerTag
     implements DataContainer
 {
-    static Category logCat =
-        Category.getInstance(DbDataContainerLabelTag.class.getName());
+    private Category logCat =  Category.getInstance(this.getClass().getName());
 
     // logging category for this class
     private Vector embeddedData = null;
@@ -78,7 +77,7 @@ public class DbDataContainerLabelTag
     {
         try
         {
-            String fieldValue = getFieldValue();
+            String fieldValue = getFormattedFieldValue();
 
             // "fieldValue" is the variable actually printed out
             if (!ResultSetVector.isNull(getParentForm().getResultSetVector()))

@@ -20,15 +20,15 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
+
 package org.dbforms.taglib;
 import java.util.*;
 import javax.servlet.jsp.*;
-
 import org.dbforms.util.*;
 import org.dbforms.event.eventtype.EventType;
 import org.dbforms.event.WebEvent;
-import org.apache.log4j.Category;
 import javax.servlet.http.*;
+import javax.servlet.jsp.tagext.TryCatchFinally;
 
 
 
@@ -39,10 +39,8 @@ import javax.servlet.http.*;
  * @author Joachim Peer <j.peer@gmx.net>
  * @author Philip Grunikiewicz<grunikiewicz.philip@hydro.qc.ca>
  */
-public class DbSelectTag extends DbBaseHandlerTag implements DataContainer
+public class DbSelectTag extends DbBaseHandlerTag implements DataContainer, TryCatchFinally
 {
-   static Category logCat        = Category.getInstance(DbSelectTag.class
-         .getName()); // logging category for this class
    private Vector  embeddedData  = null;
    private String  selectedIndex;
    private String  customEntry;
@@ -71,8 +69,8 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer
 
 
    /**
-     * Return the size of this field (synonym for <code>getCols()</code>).
-     */
+    * Return the size of this field (synonym for <code>getCols()</code>).
+    */
    public String getSize()
    {
       return size;
@@ -90,11 +88,11 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer
 
 
    /**
-   This method is a "hookup" for EmbeddedData - Tags which can assign the lines of data they loaded
-   (by querying a database, or by rendering data-subelements, etc. etc.) and make the data
-   available to this tag.
-   [this method is defined in Interface DataContainer]
-   */
+      This method is a "hookup" for EmbeddedData - Tags which can assign the lines of data they loaded
+      (by querying a database, or by rendering data-subelements, etc. etc.) and make the data
+      available to this tag.
+      [this method is defined in Interface DataContainer]
+    */
    public void setEmbeddedData(Vector embeddedData)
    {
       this.embeddedData = embeddedData;
@@ -118,14 +116,13 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer
       // 
 
       /*if(getFieldName().indexOf("category")!=-1){
-      String p =        parentForm.getChildFieldValue("category");
-      String id =        parentForm.getChildFieldValue("id");
-
-      if(p!=null)
-      System.out.println("\n id : "+id+"   category : "+p);
-      else
-      System.out.println("\n id : "+id+"   category : is null");
-      }*/
+         String p =        parentForm.getChildFieldValue("category");
+         String id =        parentForm.getChildFieldValue("id");
+         if(p!=null)
+         System.out.println("\n id : "+id+"   category : "+p);
+         else
+         System.out.println("\n id : "+id+"   category : is null");
+         }*/
       return EVAL_BODY_BUFFERED;
    }
 
@@ -169,8 +166,8 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer
    }
 
 
-   private String generateTagString(String value, String description,
-      boolean selected)
+   private String generateTagString(String value, String description, 
+                                    boolean selected)
    {
       StringBuffer tagBuf = new StringBuffer();
       tagBuf.append("<option value=\"");
@@ -182,9 +179,11 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer
          tagBuf.append(" selected");
       }
 
+
       //20021203-HKK: Removed unneeded blank
       tagBuf.append(">");
       tagBuf.append(description);
+
 
       // 20021025-HKK: Appended </option>
       tagBuf.append("</option>");
@@ -203,10 +202,9 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer
     */
    public int doEndTag() throws javax.servlet.jsp.JspException
    {
-      HttpServletRequest request = (HttpServletRequest) this.pageContext
-         .getRequest();
+      HttpServletRequest request = (HttpServletRequest) this.pageContext.getRequest();
       Vector             errors = (Vector) request.getAttribute("errors");
-      WebEvent           we     = (WebEvent) request.getAttribute("webEvent");
+      WebEvent           we     = getParentForm().getWebEvent();
 
       StringBuffer       tagBuf          = new StringBuffer();
       StringBuffer       selectedOptions = new StringBuffer();
@@ -216,11 +214,12 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer
       if (embeddedData == null)
       {
          ;
+
          // no embedded data is nested in this tag
 
          /*
-         for that case we need to render option tags!
-         */
+            for that case we need to render option tags!
+          */
       }
       else
       {
@@ -231,23 +230,25 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer
          if (((ce = this.getCustomEntry()) != null) && (ce.trim().length() > 0))
          {
             boolean isSelected = false;
-            String  aKey   = org.dbforms.util.ParseUtil
-               .getEmbeddedStringWithoutDots(ce, 0, ',');
-            String  aValue = org.dbforms.util.ParseUtil
-               .getEmbeddedStringWithoutDots(ce, 1, ',');
+            String  aKey = org.dbforms.util.ParseUtil.getEmbeddedStringWithoutDots(
+                                    ce, 0, ',');
+            String  aValue = org.dbforms.util.ParseUtil.getEmbeddedStringWithoutDots(
+                                      ce, 1, ',');
 
             // Check if we are in redisplayFieldsOnError mode and errors have occured
             // If so, only set to selected if currentRow is equal to custom row.
-            if (("true".equals(getParentForm().getRedisplayFieldsOnError())
-                     && (errors != null) && (errors.size() > 0))
-                     || ((we != null) && (we.getType() == EventType.EVENT_NAVIGATION_RELOAD)))
+            if ((getParentForm().isRedisplayFieldsOnError() && (errors != null)
+                         && (errors.size() > 0))
+                      || ((we != null)
+                         && (we.getType() == EventType.EVENT_NAVIGATION_RELOAD)))
             {
                isSelected = (currentValue.equals(aKey));
             }
             else
             {
-               isSelected = "true".equals(org.dbforms.util.ParseUtil
-                     .getEmbeddedStringWithoutDots(ce, 2, ','));
+               isSelected = "true".equals(
+                                     org.dbforms.util.ParseUtil.getEmbeddedStringWithoutDots(
+                                              ce, 2, ','));
             }
 
             if (isSelected)
@@ -285,13 +286,12 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer
       // Reset to the default selected values (in case of multiselection)
       // using javascript function on client side.
       //
-      if (getReadOnly().equals("true")
-               || getParentForm().getReadOnly().equals("true"))
+      if (isReadOnly() || getParentForm().isReadOnly())
       {
          selectedOptions.append("-");
 
          String onChange = "resetSelect(this,'" + selectedOptions.toString()
-            + "');";
+                           + "');";
          setOnChange(onChange + ((getOnChange() != null) ? getOnChange() : ""));
 
          if (!getParentForm().existJavascriptFunction("resetSelect"))
@@ -308,12 +308,13 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer
             buf.append("   }\n");
             buf.append("}\n");
 
-				getParentForm().addJavascriptFunction("resetSelect", buf);
+            getParentForm().addJavascriptFunction("resetSelect", buf);
          }
       }
 
+
       // For generation Javascript Validation.  Need original and modified fields name
-		getParentForm().addChildName(getFieldName(), getFormFieldName());
+      getParentForm().addChildName(getName(), getFormFieldName());
 
       try
       {
@@ -341,7 +342,7 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer
 
       // Lets check if the selectedIndex parameter has been input
       if (((val = this.getSelectedIndex()) != null)
-               && (val.trim().length() != 0))
+                && (val.trim().length() != 0))
       {
          return val;
       }
@@ -368,5 +369,18 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer
    public void setCustomEntry(String customEntry)
    {
       this.customEntry = customEntry;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    */
+   public void doFinally()
+   {
+      embeddedData  = null;
+      selectedIndex = null;
+      customEntry   = null;
+      size          = null;
+      super.doFinally();
    }
 }

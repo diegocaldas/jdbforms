@@ -40,11 +40,12 @@ import org.dbforms.config.FieldTypes;
 import org.dbforms.config.FieldValue;
 import org.dbforms.config.FieldValues;
 import org.dbforms.config.ResultSetVector;
-import org.dbforms.config.SqlUtil;
 import org.dbforms.config.Table;
+import org.dbforms.config.JDBCDataHelper;
 import org.dbforms.util.FileHolder;
 import org.dbforms.util.UniqueIDGenerator;
 import org.dbforms.util.Util;
+import org.dbforms.util.SqlUtil;
 
 
 
@@ -92,6 +93,10 @@ public class DataSourceJDBC extends DataSource
    protected void finalize() throws Throwable
    {
       getLogCat().info("finalize called");
+      // For firebird: rs and stmt will be closed if connection is closed!
+      // closing in finalize will bring an error everytime!
+      rs = null;
+      stmt = null;
       close();
    }
 
@@ -156,7 +161,6 @@ public class DataSourceJDBC extends DataSource
    {
       fetchedAll = true;
 
-	 /* not for firebird. stmt is close automatically if con is closed!!!! 
       if (rs != null)
       {
          try
@@ -183,7 +187,7 @@ public class DataSourceJDBC extends DataSource
       }
       stmt = null;
       }
-      */
+
       if (con != null) 
       {
          try
@@ -239,9 +243,7 @@ public class DataSourceJDBC extends DataSource
          {
             try
             {
-               this.con = SqlUtil.getConnection(DbFormsConfigRegistry.instance()
-                                                                     .lookup(), 
-                                                connectionName);
+               this.con = DbFormsConfigRegistry.instance().lookup().getConnection(connectionName);
             }
             catch (Exception e)
             {
@@ -542,13 +544,12 @@ public class DataSourceJDBC extends DataSource
             }
             else if (fieldType == FieldTypes.DISKBLOB)
             {
+               FileHolder fileHolder = fv.getFileHolder();
+               // encode fileName
+               String fileName = fileHolder.getFileName();
                // check if we need to store it encoded or not
-               if ("true".equals(curField.getEncoding()))
+               if (curField.isEncoded())
                {
-                  FileHolder fileHolder = fv.getFileHolder();
-
-                  // encode fileName
-                  String fileName = fileHolder.getFileName();
                   int    dotIndex = fileName.lastIndexOf('.');
                   String suffix   = (dotIndex != -1)
                                        ? fileName.substring(dotIndex) : "";
@@ -562,19 +563,19 @@ public class DataSourceJDBC extends DataSource
                else
                {
                   // a diskblob gets stored to db as an ordinary string	 (it's only the reference!)
-                  value = fv.getFieldValue();
+                  value = fileName;
                }
             }
             else
             {
                // in case of simple db types we just supply a string representing the value of the fields
-               value = fv.getFieldValue();
+               value = fv.getFieldValueAsObject();
             }
 
             getLogCat()
                .info("field=" + curField.getName() + " col=" + col + " value="
                      + value + " type=" + fieldType);
-            SqlUtil.fillPreparedStatement(ps, col, value, fieldType);
+            JDBCDataHelper.fillPreparedStatement(ps, col, value, fieldType);
             col++;
          }
       }
@@ -627,7 +628,7 @@ public class DataSourceJDBC extends DataSource
       PreparedStatement ps = con.prepareStatement(getTable()
                                                      .getUpdateStatement(fieldValues));
       int               col = fillWithData(ps, fieldValues);
-      getTable().populateWhereClauseForPS(keyValuesStr, ps, col);
+      getTable().populateWhereClauseWithKeyFields(keyValuesStr, ps, col);
 
 
       // we are now ready to execute the query
@@ -668,7 +669,7 @@ public class DataSourceJDBC extends DataSource
 
          PreparedStatement diskblobsPs = con.prepareStatement(
                                                   queryBuf.toString());
-         getTable().populateWhereClauseForPS(keyValuesStr, diskblobsPs, 1);
+         getTable().populateWhereClauseWithKeyFields(keyValuesStr, diskblobsPs, 1);
          diskblobs = diskblobsPs.executeQuery();
 
          ResultSetVector rsv = new ResultSetVector(getTable().getDiskblobs(), 
@@ -691,7 +692,7 @@ public class DataSourceJDBC extends DataSource
 
       // now we provide the values
       // of the key-fields, so that the WHERE clause matches the right dataset!
-      getTable().populateWhereClauseForPS(keyValuesStr, ps, 1);
+      getTable().populateWhereClauseWithKeyFields(keyValuesStr, ps, 1);
 
 
       // finally execute the query

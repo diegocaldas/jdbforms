@@ -25,7 +25,7 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
-import javax.servlet.jsp.tagext.TagSupport;
+import javax.servlet.jsp.tagext.BodyTagSupport;
 import org.apache.log4j.Category;
 
 
@@ -41,7 +41,7 @@ import org.apache.log4j.Category;
  * author Luis Arias <luis@elysia.com>
  * @author Joe Peer <joepeer@wap-force.net> (changed class for use in DbForms-Framework)
  */
-public class BaseTag extends TagSupport
+public class BaseTag extends BodyTagSupport
 {
    static Category logCat = Category.getInstance(BaseTag.class.getName()); // logging category for this class
 

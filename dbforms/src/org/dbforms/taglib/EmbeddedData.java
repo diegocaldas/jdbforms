@@ -24,12 +24,12 @@ package org.dbforms.taglib;
 
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.ResultSetVector;
-import org.dbforms.config.SqlUtil;
 
 import org.dbforms.util.KeyValuePair;
 import org.dbforms.util.MessageResources;
 import org.dbforms.util.ReflectionUtil;
 import org.dbforms.util.Util;
+import org.dbforms.util.SqlUtil;
 import org.dbforms.util.external.PrintfFormat;
 
 import java.util.Hashtable;
@@ -44,7 +44,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 
-import javax.servlet.jsp.tagext.TagSupport;
+import javax.servlet.jsp.tagext.BodyTagSupport;
 
 import org.apache.log4j.Category;
 
@@ -56,9 +56,11 @@ import org.apache.log4j.Category;
  * @version $Revision$
  * @author $author$
  */
-public abstract class EmbeddedData extends TagSupport
+public abstract class EmbeddedData extends BodyTagSupport
 {
    static Category logCat = Category.getInstance(EmbeddedData.class.getName());
+
+   private DbFormTag     parentForm;
 
    /** DOCUMENT ME! */
    protected Hashtable data;
@@ -99,6 +101,17 @@ public abstract class EmbeddedData extends TagSupport
       return format;
    }
 
+   public void setParent(final javax.servlet.jsp.tagext.Tag parent)
+   {
+      super.setParent(parent);
+      // between this form and its parent lies a DbHeader/Body/Footer-Tag and maybe other tags (styling, logic, etc.)
+      parentForm = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
+   }
+
+   public DbFormTag getParentForm() 
+   {
+      return parentForm;
+   }
 
    /**
     * formatEmbeddedResultRows() formats a result set accornding to a eventually given format string.
@@ -298,7 +311,7 @@ public abstract class EmbeddedData extends TagSupport
          // initalized by Config-Servlet on Webapp/server-startup!
          DbFormsConfig config = (DbFormsConfig) pageContext.getServletContext()
                                                            .getAttribute(DbFormsConfig.CONFIG);
-         Connection    con = SqlUtil.getConnection(config, dbConnectionName);
+         Connection    con = config.getConnection(dbConnectionName);
 
          if (con == null)
          {

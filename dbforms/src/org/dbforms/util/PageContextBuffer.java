@@ -30,7 +30,11 @@ package org.dbforms.util;
 
 /**
  *
- * read only PageContext
+ * read only PageContext.
+ * 
+ * Used to generate a form via doStart internally to use the results.
+ * 
+ * See StartReportServlet.
  *
  */
 import javax.servlet.Servlet;

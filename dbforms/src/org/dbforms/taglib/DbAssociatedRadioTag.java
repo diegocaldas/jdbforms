@@ -60,11 +60,11 @@ import org.apache.log4j.Category;
  *
  * @author Joachim Peer <j.peer@gmx.net>
  */
-public class DbAssociatedRadioTag extends TagSupport
+public class DbAssociatedRadioTag extends DbBaseHandlerTag  implements TryCatchFinally
 {
    static Category   logCat     = Category.getInstance(DbAssociatedRadioTag.class
          .getName()); // logging category for this class
-   private DbFormTag parentForm;
+
    private String    name;
 
    /**
@@ -104,14 +104,14 @@ public class DbAssociatedRadioTag extends TagSupport
          StringBuffer tagBuf = new StringBuffer("<input type=\"radio\" name=\"");
          tagBuf.append(name);
          tagBuf.append("\" value=\"");
-         tagBuf.append(parentForm.getTable().getId());
+         tagBuf.append(getParentForm().getTable().getId());
          tagBuf.append("_");
-         tagBuf.append(parentForm.getPositionPath());
+         tagBuf.append(getParentForm().getPositionPath());
 
          // 20020705-HKK: Set defaultChecked for first row!  
          tagBuf.append("\"");
 
-         if (parentForm.getCurrentCount() == 0)
+         if (getParentForm().getCurrentCount() == 0)
          {
             tagBuf.append(" checked=\"true\"");
          }
@@ -127,15 +127,13 @@ public class DbAssociatedRadioTag extends TagSupport
       return EVAL_PAGE;
    }
 
-
    /**
     * DOCUMENT ME!
-    *
-    * @param parent DOCUMENT ME!
     */
-   public void setParent(final javax.servlet.jsp.tagext.Tag parent)
+   public void doFinally()
    {
-      super.setParent(parent);
-      parentForm = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
+      name  = null;
+      super.doFinally();
    }
+
 }

@@ -34,9 +34,9 @@ package org.dbforms.config;
  * @author Joe Peer <j.peer@gmx.net>
  */
 import javax.servlet.http.HttpServletRequest;
-import java.util.Hashtable;
 import java.sql.Connection;
-
+import org.dbforms.config.FieldValues;
+import org.dbforms.config.Table;
 
 
 
@@ -96,7 +96,7 @@ public interface DbEventInterceptor
     *
     * @throws ValidationException DOCUMENT ME!
     */
-   int preInsert(HttpServletRequest request, Hashtable fieldValues,
+   int preInsert(HttpServletRequest request, Table table, FieldValues fieldValues,
       DbFormsConfig config, Connection con) throws ValidationException;
 
 
@@ -123,8 +123,8 @@ public interface DbEventInterceptor
     *
     * @throws ValidationException DOCUMENT ME!
     */
-   int preUpdate(HttpServletRequest request,
-      java.util.Hashtable fieldValues, DbFormsConfig config, Connection con)
+   int preUpdate(HttpServletRequest request,  Table table, 
+         FieldValues fieldValues, DbFormsConfig config, Connection con)
       throws ValidationException;
    ;
 
@@ -151,7 +151,7 @@ public interface DbEventInterceptor
     *
     * @throws ValidationException DOCUMENT ME!
     */
-   int preDelete(HttpServletRequest request, Hashtable fieldValues,
+   int preDelete(HttpServletRequest request,  Table table, FieldValues fieldValues,
       DbFormsConfig config, Connection con) throws ValidationException;
    ;
 

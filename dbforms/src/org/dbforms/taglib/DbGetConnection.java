@@ -26,9 +26,7 @@ import java.sql.*;
 import javax.servlet.jsp.*;
 import javax.servlet.jsp.tagext.*;
 
-import org.dbforms.config.*;
-
-import org.apache.log4j.Category;
+import org.dbforms.util.SqlUtil;
 
 
 
@@ -40,15 +38,13 @@ import org.apache.log4j.Category;
  * in dbForms-config.xml file
  *
  * ***************************************************************/
-public class DbGetConnection extends BodyTagSupport implements TryCatchFinally
+public class DbGetConnection extends DbBaseHandlerTag implements TryCatchFinally
 {
-   static Category logCat = Category.getInstance(DbGetConnection.class.getName());
 
    // logging category for this class
    private String        id;
    private Connection    con;
    private String        dbConnectionName;
-   private DbFormsConfig config;
 
    /**
     * DOCUMENT ME!
@@ -63,7 +59,7 @@ public class DbGetConnection extends BodyTagSupport implements TryCatchFinally
       try
       {
          // get the connection and place it in attribute;
-         con = SqlUtil.getConnection(config, dbConnectionName);
+         con = getConfig().getConnection(dbConnectionName);
          pageContext.setAttribute(this.getId(), con, PageContext.PAGE_SCOPE);
       }
       catch (Exception e)
@@ -139,40 +135,12 @@ public class DbGetConnection extends BodyTagSupport implements TryCatchFinally
 
    /**
    * DOCUMENT ME!
-   *
-   * @param pc DOCUMENT ME!
-   */
-   public void setPageContext(PageContext pc)
-   {
-      super.setPageContext(pc);
-      config = (DbFormsConfig) pageContext.getServletContext().getAttribute(DbFormsConfig.CONFIG);
-
-      if (config == null)
-      {
-         throw new IllegalArgumentException(
-            "Troubles with DbForms config xml file: can not find CONFIG object in application context! check system configuration! check if application crashes on start-up!");
-      }
-   }
-
-
-   /**
-   * DOCUMENT ME!
    */
    public void doFinally()
    {
       SqlUtil.closeConnection(con);
+      super.doFinally();
    }
 
 
-   /**
-   * DOCUMENT ME!
-   *
-   * @param t DOCUMENT ME!
-   *
-   * @throws Throwable DOCUMENT ME!
-   */
-   public void doCatch(Throwable t) throws Throwable
-   {
-      throw t;
-   }
 }

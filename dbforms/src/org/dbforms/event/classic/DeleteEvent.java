@@ -132,66 +132,13 @@ public class DeleteEvent extends DatabaseEvent
 
       if (table.hasInterceptors())
       {
-         try
-         {
-            // part 2a: we need eventually information about the data to be deleted
-            //#checkme: this means performance overhead!
-            //can we go without this luxury? (=> USE CASES! where do we need info about data to delete?)
-            StringBuffer queryBuf = new StringBuffer();
-            queryBuf.append(table.getSelectStatement());
-            queryBuf.append(" WHERE ");
-            queryBuf.append(table.getWhereClauseForPS());
+         // which values do we find in request
+         FieldValues fieldValues = getFieldValues();
 
-            logCat.info("doing interceptor before delete:"
-                        + queryBuf.toString());
-
-            PreparedStatement ps = con.prepareStatement(queryBuf.toString());
-            table.populateWhereClauseForPS(keyValuesStr, ps, 1);
-
-            ResultSet rowToDelete      = ps.executeQuery();
-            Hashtable associativeArray = new Hashtable();
-
-            if (rowToDelete.next())
-            {
-               // yea, this code really sucks...
-               // but i do not want the jdbc driver to fetch the row name (-> what do we if a
-               // driver does not support column names...??-> this is the reason i do not to rely on this!)
-               for (int i = 0; i < table.getFields().size(); i++)
-               {
-                  Field f = (Field) table.getFields().elementAt(i);
-
-                  // get the name of the encoded key field
-                  String key   = f.getName();
-                  String value = rowToDelete.getString(i + 1);
-
-                  if (value != null)
-                  {
-                     associativeArray.put(key, value);
-                  }
-               }
-            }
-            else
-            {
-               throw new SQLException("Sorry, deleting data from table "
-                                      + table.getName()
-                                      + " is not granted this time. Your request could have been violating a condition or there is a weird database error. Contact system administrator if problem persists.");
-            }
-
-            rowToDelete.close();
-            ps.close(); // #JP Jun 27, 2001
-
-
-            // part 2b: process the interceptors associated to this table
-            operation = table.processInterceptors(DbEventInterceptor.PRE_DELETE, 
-                                                  request, associativeArray, 
+         // part 2b: process the interceptors associated to this table
+         operation = table.processInterceptors(DbEventInterceptor.PRE_DELETE, 
+                                                  request, fieldValues, 
                                                   config, con);
-         }
-         catch (SQLException sqle)
-         {
-            // PG, 2001-12-04
-            // No need to add extra comments, just re-throw exceptions as SqlExceptions
-            throw new SQLException(sqle.getMessage());
-         }
       }
 
       // End of interceptor processing
@@ -211,7 +158,7 @@ public class DeleteEvent extends DatabaseEvent
 
             PreparedStatement diskblobsPs = con.prepareStatement(
                                                      queryBuf.toString());
-            table.populateWhereClauseForPS(keyValuesStr, diskblobsPs, 1);
+            table.populateWhereClauseWithKeyFields(keyValuesStr, diskblobsPs, 1);
             diskblobs = diskblobsPs.executeQuery();
             diskblobsPs.close();
          }
@@ -222,7 +169,7 @@ public class DeleteEvent extends DatabaseEvent
 
          // now we provide the values
          // of the key-fields, so that the WHERE clause matches the right dataset!
-         table.populateWhereClauseForPS(keyValuesStr, ps, 1);
+         table.populateWhereClauseWithKeyFields(keyValuesStr, ps, 1);
 
 
          // finally execute the query
@@ -289,18 +236,9 @@ public class DeleteEvent extends DatabaseEvent
       }
 
       // finally, we process interceptor again (post-delete)
-      try
-      {
-         // process the interceptors associated to this table
-         table.processInterceptors(DbEventInterceptor.POST_DELETE, request, 
+      // process the interceptors associated to this table
+      table.processInterceptors(DbEventInterceptor.POST_DELETE, request, 
                                    null, config, con);
-      }
-      catch (SQLException sqle)
-      {
-         // PG = 2001-12-04
-         // No need to add extra comments, just re-throw exceptions as SqlExceptions
-         throw new SQLException(sqle.getMessage());
-      }
 
       // End of interceptor processing
    }

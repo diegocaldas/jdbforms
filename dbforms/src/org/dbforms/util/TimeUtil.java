@@ -29,7 +29,6 @@ package org.dbforms.util;
  */
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
-import java.util.Locale;
 import java.util.GregorianCalendar;
 import java.util.Date;
 import java.util.Calendar;
@@ -129,7 +128,7 @@ public class TimeUtil
    }
 
 
-   private static void splitDate(String format, StringBuffer sDate, 
+   private static void splitDate(final String format, StringBuffer sDate, 
                                  StringBuffer sTime)
    {
       sDate.setLength(0);
@@ -158,27 +157,24 @@ public class TimeUtil
    }
 
 
-   private static long saveParseDate(Locale loc, String format, String s)
+   private static Calendar saveParseDate(final SimpleDateFormat format, String formatString, String s)
    {
-      long d = 0;
-
-      if (!Util.isNull(format) && !Util.isNull(s))
+      Calendar cal;
+      Calendar now = Calendar.getInstance();
+      if (!Util.isNull(s))
       {
-         SimpleDateFormat sdf;
-         sdf = new SimpleDateFormat(format, loc);
-         sdf.setLenient(false);
-
+         if (!Util.isNull(formatString))
+            format.applyPattern(formatString);
          try
          {
-            sdf.parse(s);
+            format.parse(s);
          }
          catch (Exception e)
          {
-            ;
+            logCat.error(e);
          }
 
-         Calendar cal = sdf.getCalendar();
-         Calendar now = Calendar.getInstance();
+         cal = format.getCalendar();
 
          if (!cal.isSet(Calendar.DAY_OF_MONTH))
          {
@@ -203,45 +199,37 @@ public class TimeUtil
          {
             cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) + 1900);
          }
-
-         d = cal.getTime().getTime();
       }
       else
       {
-         Calendar now = Calendar.getInstance();
-         now.set(Calendar.HOUR_OF_DAY, 0);
-         now.set(Calendar.MINUTE, 0);
-         now.set(Calendar.SECOND, 0);
-         d = now.getTime().getTime();
+         cal = now;
       }
-
-      return d;
+      cal.set(Calendar.HOUR_OF_DAY, 0);
+      cal.set(Calendar.MINUTE, 0);
+      cal.set(Calendar.SECOND, 0);
+      return cal;
    }
 
 
-   private static long saveParseTime(Locale loc, String format, String s)
+   private static long saveParseTime(final SimpleDateFormat format, String formatString, String s)
    {
-      long d = 0;
-
-      if (!Util.isNull(format) && !Util.isNull(s))
+      if (!Util.isNull(s))
       {
-         SimpleDateFormat sdf;
-         sdf = new SimpleDateFormat(format, loc);
-         sdf.setLenient(false);
-
+         if (!Util.isNull(formatString)) {
+            format.applyPattern(formatString);
+         }
          try
          {
-            sdf.parse(s);
+            format.parse(s);
          }
          catch (Exception e)
          {
-            ;
+            logCat.error(e);
          }
 
-         Calendar cal = sdf.getCalendar();
+         Calendar cal = format.getCalendar();
 
-         if (!cal.isSet(Calendar.HOUR_OF_DAY)
-                   && !cal.isSet(Calendar.HOUR_OF_DAY))
+         if (!cal.isSet(Calendar.HOUR_OF_DAY))
          {
             cal.set(Calendar.HOUR_OF_DAY, 0);
          }
@@ -255,31 +243,16 @@ public class TimeUtil
          {
             cal.set(Calendar.SECOND, 0);
          }
-
-         d = cal.getTime().getTime() + cal.getTimeZone().getRawOffset();
-      }
-
-      return d;
+         return cal.getTime().getTime();
+      }  
+      return 0;
    }
 
 
-   /**
-    * Tries to parse a String into a Date value. String mustn't a full date,
-    * parts are enough. Parsing will set missing parts to default values
-    * 
-    * @param format   java format string for date/time
-    * @param s DOCUMENT ME!
-    * 
-    * @return the parsed date
-    */
-   public static Date parseDate(String format, String s)
-   {
-      return parseDate(Locale.getDefault(), format, s);
-   }
 
 
    /**
-    * Tries to parse a String into a Date value. String mustn't a full date,
+    * Tries to parse a String into a Calendar objectvalue. String mustn't a full date,
     * parts are enough. Parsing will set missing parts to default values
     * 
     * @param loc      locale to use
@@ -288,23 +261,30 @@ public class TimeUtil
     * 
     * @return the parsed date
     */
-   public static Date parseDate(Locale loc, String format, String s)
-   {
+   public static Calendar parseDate(final SimpleDateFormat format, String s) {
       StringBuffer sDate = new StringBuffer();
       StringBuffer sTime = new StringBuffer();
       StringBuffer fDate = new StringBuffer();
       StringBuffer fTime = new StringBuffer();
-      splitDate(s, sDate, sTime);
-      splitDate(format, fDate, fTime);
 
-      long dDate = saveParseDate(loc, fDate.toString(), sDate.toString());
-      long dTime = saveParseTime(loc, fTime.toString(), sTime.toString());
-      Date d     = new Date(dDate + dTime);
-      logCat.info("parsed " + s + " to " + d);
-
-      return d;
+      splitDate(s,                  sDate, sTime);
+      splitDate(format.toPattern(), fDate, fTime);
+      SimpleDateFormat f = (SimpleDateFormat) format.clone();
+      Calendar dDate = saveParseDate(f, fDate.toString(), sDate.toString());
+      long date = dDate.getTime().getTime();
+      f.setTimeZone(dDate.getTimeZone());
+      long time = saveParseTime(f, fTime.toString(), sTime.toString());
+      long offset = dDate.getTimeZone().getRawOffset();
+      if (!Util.isNull(sTime.toString()))
+         time = time +  offset;
+      date = date + time;
+      Calendar c = format.getCalendar();
+      c.setTimeInMillis(date);
+      logCat.info("parsed " + s + " to " + format.format(c.getTime()));
+      return c;
    }
 
+ 
    /**
     * Parses an ISO8601 date format string
     * 
@@ -442,7 +422,6 @@ public class TimeUtil
       cal.set(Calendar.MINUTE, 0);
       cal.set(Calendar.SECOND, 0);
       cal.add(Calendar.DAY_OF_MONTH, 1);
-
       return cal.getTime();
    }
 

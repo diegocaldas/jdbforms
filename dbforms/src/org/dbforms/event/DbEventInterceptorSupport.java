@@ -22,14 +22,15 @@
  */
 package org.dbforms.event;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Hashtable;
 import java.sql.Connection;
 
 import org.dbforms.config.DbEventInterceptor;
 import org.dbforms.config.ValidationException;
 import org.dbforms.config.DbFormsConfig;
-
-
+import org.dbforms.config.FieldValues;
+import org.dbforms.config.FieldValue;
+import org.dbforms.config.Field;
+import org.dbforms.config.Table;
 
 /**
 * convenience class
@@ -38,6 +39,28 @@ import org.dbforms.config.DbFormsConfig;
 */
 public class DbEventInterceptorSupport implements DbEventInterceptor
 {
+
+	/**
+	 * adds or replace a value in the fieldValues
+	 * @param table wich should be used to lookup for the fieldName
+	 * @param fieldValues to add/replace value to
+	 * @param fieldName to add/replace value
+	 * @param value to add/replace
+	 */
+	protected void setValue(Table table, FieldValues fieldValues, String fieldName, String value) {
+		FieldValue fv = fieldValues.get(fieldName);
+		if (fv == null) {
+			Field f = table.getFieldByName(fieldName);
+			if (f != null) {
+				fv = new FieldValue(f, value);
+				fieldValues.put(fv);
+			}
+		} else {
+			fv.setFieldValue(value);
+		}
+	}
+
+
    /**
     * DOCUMENT ME!
     *
@@ -50,7 +73,7 @@ public class DbEventInterceptorSupport implements DbEventInterceptor
     *
     * @throws ValidationException DOCUMENT ME!
     */
-   public int preInsert(HttpServletRequest request, Hashtable fieldValues,
+   public int preInsert(HttpServletRequest request,  Table table, FieldValues fieldValues,
       DbFormsConfig config, Connection con) throws ValidationException
    {
       return GRANT_OPERATION;
@@ -82,8 +105,8 @@ public class DbEventInterceptorSupport implements DbEventInterceptor
     *
     * @throws ValidationException DOCUMENT ME!
     */
-   public int preUpdate(HttpServletRequest request,
-      java.util.Hashtable fieldValues, DbFormsConfig config, Connection con)
+   public int preUpdate(HttpServletRequest request, Table table, 
+         FieldValues fieldValues, DbFormsConfig config, Connection con)
       throws ValidationException
    {
       return GRANT_OPERATION;
@@ -115,7 +138,7 @@ public class DbEventInterceptorSupport implements DbEventInterceptor
     *
     * @throws ValidationException DOCUMENT ME!
     */
-   public int preDelete(HttpServletRequest request, Hashtable fieldValues,
+   public int preDelete(HttpServletRequest request,  Table table, FieldValues fieldValues,
       DbFormsConfig config, Connection con) throws ValidationException
    {
       return GRANT_OPERATION;

@@ -35,6 +35,8 @@ import org.apache.log4j.Category;
 
 import org.dbforms.util.Util;
 
+import java.sql.Connection;
+
 
 
 /****
@@ -50,11 +52,11 @@ import org.dbforms.util.Util;
  */
 public class DbFormsConfig
 {
-   private static Category logCat = Category.getInstance(DbFormsConfig.class.getName());
+   private Category logCat = Category.getInstance(this.getClass().getName());
 
    /** DOCUMENT ME! */
    public static final String      CONFIG = "dbformsConfig";
-   private SimpleDateFormat sdf;
+   private SimpleDateFormat         sdf;
    private Vector                  tables;
 
    /** for quicker lookup by name */
@@ -179,7 +181,7 @@ public class DbFormsConfig
     *
     * @return DOCUMENT ME!
     */
-   public DbConnection getDbConnection(String dbConnectionName)
+   private DbConnection getDbConnection(String dbConnectionName)
    {
       DbConnection connection = null;
 
@@ -210,6 +212,55 @@ public class DbFormsConfig
       }
 
       return connection;
+   }
+
+	/**
+	 * 
+	 * Just returns the default connection
+	 * 
+	 * @return a JDBC connection object
+	 * 
+	 * @throws IllegalArgumentException if any error occurs
+	 */
+	public Connection getConnection()
+		 throws IllegalArgumentException
+	{
+	   return getConnection(null);
+	}
+	
+   /**
+    * Get a connection using the connection name specified into the xml
+    * configuration file.
+    * 
+    * @param dbConnectionName  the name of the DbConnection element
+    * 
+    * @return a JDBC connection object
+    * 
+    * @throws IllegalArgumentException if any error occurs
+    */
+   public Connection getConnection(String dbConnectionName)
+       throws IllegalArgumentException
+   {
+       DbConnection dbConnection = null;
+       Connection con = null;
+       //  get the DbConnection object having the input name;
+       if ((dbConnection = getDbConnection(dbConnectionName)) == null)
+       {
+           throw new IllegalArgumentException(
+               "No DbConnection object configured with name '"
+                   + dbConnectionName
+                   + "'");
+       }
+
+       // now try to get the JDBC connection from the retrieved DbConnection object;
+       if ((con = dbConnection.getConnection()) == null)
+       {
+           throw new IllegalArgumentException(
+               "JDBC-Troubles:  was not able to create connection from "
+                   + dbConnection);
+       }
+
+       return con;
    }
 
 
@@ -254,7 +305,8 @@ public class DbFormsConfig
     *
     * @return DOCUMENT ME!
     */
-   public SimpleDateFormat getDateFormatter()
+/*
+   private SimpleDateFormat getDateFormatter()
    {
       if (sdf == null)
       {
@@ -263,7 +315,7 @@ public class DbFormsConfig
 
       return sdf;
    }
-
+*/
 
    /**
     * DOCUMENT ME!

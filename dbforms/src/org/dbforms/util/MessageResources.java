@@ -123,13 +123,8 @@ public class MessageResources
       if (session.getAttribute(MessageResources.LOCALE_KEY) == null)
       {
          session.setAttribute(MessageResources.LOCALE_KEY, request.getLocale());
-
-         return request.getLocale();
       }
-      else
-      {
-         return (Locale) session.getAttribute(MessageResources.LOCALE_KEY);
-      }
+      return (Locale) session.getAttribute(MessageResources.LOCALE_KEY);
    }
 
 

@@ -88,7 +88,7 @@ public class DbTextFieldTag extends DbBaseInputTag
          writeOutSpecialValues();
 
          // For generation Javascript Validation.  Need all original and modified fields name
-			getParentForm().addChildName(getFieldName(), getFormFieldName());
+		 getParentForm().addChildName(getName(), getFormFieldName());
       }
       catch (java.io.IOException ioe)
       {

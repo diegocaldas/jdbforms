@@ -22,7 +22,6 @@
  */
 
 package org.dbforms.servlets;
-
 import org.apache.log4j.Category;
 import org.apache.commons.lang.StringUtils;
 import java.util.HashMap;
@@ -49,7 +48,6 @@ import org.dbforms.util.MessageResourcesInternal;
 import org.dbforms.util.external.FileUtil;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.ResultSetVector;
-import org.dbforms.config.SqlUtil;
 import org.dbforms.taglib.DbFormTag;
 import dori.jasper.engine.JasperCompileManager;
 import dori.jasper.engine.JasperFillManager;
@@ -219,8 +217,7 @@ public class StartReportServlet extends HttpServlet
          DbFormsConfig   config = (DbFormsConfig) context.getAttribute(
                                            DbFormsConfig.CONFIG);
          ReportParameter repParam = new ReportParameter(request, 
-                                                        SqlUtil.getConnection(
-                                                                 config, 
+                                                        config.getConnection(
                                                                  getConnectionName(
                                                                           request)), 
                                                         FileUtil.dirname(
@@ -454,8 +451,11 @@ public class StartReportServlet extends HttpServlet
 
          String fue         = ParseUtil.getParameter(request, "source");
          String contextPath = request.getContextPath();
+
          if (!Util.isNull(fue))
-         	fue = fue.substring(contextPath.length());
+         {
+            fue = fue.substring(contextPath.length());
+         }
 
          if (Util.isNull(fue))
          {
@@ -607,14 +607,17 @@ public class StartReportServlet extends HttpServlet
             // set the source attribute to the requestURI.
             // So the form will think that the source is equal to the target and will use order constraints
             // Source must be saved and restored - we need it e.g. in error processing again!
-            String saveSource = (String) request.getAttribute("source"); 
+            String saveSource = (String) request.getAttribute("source");
             String refSource = request.getRequestURI();
-			if (request.getQueryString() != null) {
-				refSource += ("?" + request.getQueryString());
-			}
+
+            if (request.getQueryString() != null)
+            {
+               refSource += ("?" + request.getQueryString());
+            }
+
             request.setAttribute("source", refSource);
             form.doStartTag();
-			request.setAttribute("source", saveSource);
+            request.setAttribute("source", saveSource);
 
             ResultSetVector rsv = form.getResultSetVector();
             logCat.info("get resultsetvector rsv= " + rsv.size());

@@ -29,7 +29,6 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.Serializable;
 
 
 
@@ -40,7 +39,7 @@ import java.io.Serializable;
  * 
  * @author Joe Peer
  */
-public class FileHolder implements Serializable
+public class FileHolder
 {
    private boolean         toMemory;
 

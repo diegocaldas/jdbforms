@@ -22,9 +22,6 @@
  */
 
 package org.dbforms.util;
-import junit.framework.Test;
-import junit.framework.TestSuite;
-import org.apache.cactus.ServletTestCase;
 import org.apache.cactus.*;
 import java.util.*;
 
@@ -36,50 +33,8 @@ import java.util.*;
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
  *
  */
-public class TestParseUtilCactus extends ServletTestCase
+public class TestParseUtilCactus extends org.apache.cactus.ServletTestCase
 {
-    /**
-     * Defines the testcase name for JUnit.
-     *
-     * @param theName the testcase's name.
-     */
-    public TestParseUtilCactus(String theName)
-    {
-        super(theName);
-    }
-
-    /**
-     * Start the tests.
-     *
-     * @param theArgs the arguments. Not used
-     */
-    public static void main(String[] theArgs)
-    {
-        junit.swingui.TestRunner.main(new String[] 
-        {
-            TestParseUtilCactus.class.getName()
-        });
-    }
-
-
-    /**
-     * @return a test suite (<code>TestSuite</code>) that includes all methods
-     *         starting with "test"
-     */
-    public static Test suite()
-    {
-        // All methods starting with "test" will be executed in the test suite.
-        return new TestSuite(TestParseUtilCactus.class);
-    }
-
-
-    /**
-     * In addition to creating the tag instance and adding the pageContext to
-     * it, this method creates a BodyContent object and passes it to the tag.
-     */
-    public void setUp() throws Exception
-    {
-    }
 
 
     /**

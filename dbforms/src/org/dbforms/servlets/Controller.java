@@ -39,9 +39,9 @@ import org.dbforms.util.MultipartRequest;
 import org.dbforms.util.MessageResources;
 import org.dbforms.util.ParseUtil;
 import org.dbforms.util.Util;
+import org.dbforms.util.SqlUtil;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.MultipleValidationException;
-import org.dbforms.config.SqlUtil;
 import org.dbforms.config.Table;
 import org.dbforms.event.EventEngine;
 import org.dbforms.event.DatabaseEvent;
@@ -473,7 +473,7 @@ public class Controller extends HttpServlet
       connectionName = Util.isNull(connectionName)?"default":connectionName; 
       if ((con = (Connection) connectionsTable.get(connectionName)) == null)
       {
-         con = SqlUtil.getConnection(config, connectionName);
+         con = config.getConnection(connectionName);
          connectionsTable.put(connectionName, con);
       }
 

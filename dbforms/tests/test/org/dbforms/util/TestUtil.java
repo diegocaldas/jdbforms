@@ -24,9 +24,6 @@
 package org.dbforms.util;
 
 
-import junit.framework.*;
-
-
 
 
 /**
@@ -36,7 +33,7 @@ import junit.framework.*;
  * @created    May 3, 2002
  */
 
-public class TestUtil extends TestCase {
+public class TestUtil extends AbstractTestCase {
 
 
     /**
@@ -71,6 +68,21 @@ public class TestUtil extends TestCase {
 
     }
 
+   public void testDecode()
+       throws Exception {
+
+       String SOURCE = "http://www.sun.com?some bogus=value";
+       String ENCODED = "http%3A%2F%2Fwww.sun.com%3Fsome+bogus%3Dvalue";
+
+       String s = ENCODED;
+       s = Util.decode(s);
+       assertTrue("Encoded String:" + s, s.equals(SOURCE));
+
+
+       s = null;
+       s = Util.encode(s);
+       assertTrue("S must be null", s == null);
+   }
 
 
     /**

@@ -23,8 +23,6 @@
 
 package org.dbforms.config;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
 import org.apache.cactus.ServletTestCase;
 
 
@@ -37,49 +35,6 @@ import org.apache.cactus.ServletTestCase;
  */
 public class TestGrantedPrivileges extends ServletTestCase
 {
-    /**
-     * Defines the testcase name for JUnit.
-     *
-     * @param theName the testcase's name.
-     */
-    public TestGrantedPrivileges(String theName)
-    {
-        super(theName);
-    }
-
-    /**
-     * Start the tests.
-     *
-     * @param theArgs the arguments. Not used
-     */
-    public static void main(String[] theArgs)
-    {
-        junit.swingui.TestRunner.main(new String[] 
-        {
-            TestGrantedPrivileges.class.getName()
-        });
-    }
-
-
-    /**
-     * @return a test suite (<code>TestSuite</code>) that includes all methods
-     *         starting with "test"
-     */
-    public static Test suite()
-    {
-        // All methods starting with "test" will be executed in the test suite.
-        return new TestSuite(TestGrantedPrivileges.class);
-    }
-
-
-    /**
-     * In addition to creating the tag instance and adding the pageContext to
-     * it, this method creates a BodyContent object and passes it to the tag.
-     */
-    public void setUp() throws Exception
-    {
-    }
-
 
     /**
      * DOCUMENT ME!
@@ -129,10 +84,4 @@ public class TestGrantedPrivileges extends ServletTestCase
     }
 
 
-    /**
-     * DOCUMENT ME!
-     */
-    public void tearDown()
-    {
-    }
 }

@@ -24,7 +24,6 @@
 package org.dbforms.taglib;
 import java.util.*;
 import javax.servlet.jsp.*;
-import javax.servlet.http.*;
 import org.dbforms.util.*;
 import org.dbforms.event.WebEvent;
 import org.dbforms.event.eventtype.EventType;
@@ -42,7 +41,7 @@ import org.apache.log4j.Category;
 public class DbCheckboxTag extends DbBaseHandlerTag
    implements DataContainer
 {
-   static Category logCat = Category.getInstance(DbCheckboxTag.class.getName()); // logging category for this class
+   private Category logCat = Category.getInstance(this.getClass().getName()); // logging category for this class
    private Vector  embeddedData  = null;
    private String  checked; // only needed if parentForm is in "insert-mode", otherwise the DbForms-Framework determinates whether a checkbox should be selected or not.
    private String  growDirection; // only needed if we habe a whole "group" of DbRadioTags; default = null == horizontal
@@ -210,8 +209,7 @@ public class DbCheckboxTag extends DbBaseHandlerTag
    public int doEndTag() throws javax.servlet.jsp.JspException
    {
       StringBuffer       tagBuf  = new StringBuffer();
-      HttpServletRequest request = (HttpServletRequest) this.pageContext.getRequest();
-      WebEvent           we = (WebEvent) request.getAttribute("webEvent");
+      WebEvent           we = getParentForm().getWebEvent();
 
       // current Value from Database; or if no data: explicitly set by user; or ""
       String currentValue = getFormFieldValue();
@@ -227,7 +225,7 @@ public class DbCheckboxTag extends DbBaseHandlerTag
 
 
       // For generation Javascript Validation.  Need all original and modified fields name
-      getParentForm().addChildName(getFieldName(), getFormFieldName());
+      getParentForm().addChildName(getName(), getFormFieldName());
 
       if (embeddedData == null)
       { // no embedded data is nested in this tag
@@ -235,17 +233,17 @@ public class DbCheckboxTag extends DbBaseHandlerTag
          // select, if datadriven and data matches with current value OR if explicitly set by user
          boolean isSelected = ((!getParentForm().getFooterReached()
                                  || ((we != null) && we.getType() == EventType.EVENT_NAVIGATION_RELOAD))
-                              && (getValue() != null) && getValue().equals(currentValue))
+                              && (getDefaultValue() != null) && getDefaultValue().equals(currentValue))
                               || (getParentForm().getFooterReached()
                               && "true".equals(checked));
 
-         if (getReadOnly().equals("true")
-                   || getParentForm().getReadOnly().equals("true"))
+         if (isReadOnly()
+                   || getParentForm().isReadOnly())
          {
             setOnClick("this.checked=" + isSelected + ";" + onclick);
          }
 
-         tagBuf.append(generateTagString(getValue(), "", isSelected));
+         tagBuf.append(generateTagString(getDefaultValue(), "", isSelected));
       }
       else
       {
@@ -264,8 +262,7 @@ public class DbCheckboxTag extends DbBaseHandlerTag
             // select, if datadriven and data matches with current value OR if explicitly set by user
             boolean isSelected = aKey.equals(currentValue);
 
-            if (getReadOnly().equals("true")
-                      || getParentForm().getReadOnly().equals("true"))
+            if (isReadOnly() || getParentForm().isReadOnly())
             {
                setOnClick("this.checked=" + isSelected + ";" + onclick);
             }

@@ -38,7 +38,7 @@ import java.io.IOException;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
-import javax.servlet.jsp.tagext.TagSupport;
+import javax.servlet.jsp.tagext.BodyTagSupport;
 
 import org.dbforms.config.DbFormsErrors;
 import org.apache.log4j.Category;
@@ -51,7 +51,7 @@ import org.apache.log4j.Category;
  * @version $Revision$
  * @author $author$
  */
-public class DbXmlErrorsTag extends TagSupport
+public class DbXmlErrorsTag extends BodyTagSupport
 {
    // logging category for this class
    static Category logCat = Category.getInstance(DbXmlErrorsTag.class.getName());

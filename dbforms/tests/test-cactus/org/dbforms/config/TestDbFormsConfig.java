@@ -22,10 +22,7 @@
  */
 
 package org.dbforms.config;
-import junit.framework.Test;
-import junit.framework.TestSuite;
 import org.apache.cactus.ServletTestCase;
-import java.text.SimpleDateFormat;
 import org.dbforms.servlets.ConfigServlet;
 
 
@@ -38,41 +35,6 @@ import org.dbforms.servlets.ConfigServlet;
 public class TestDbFormsConfig extends ServletTestCase
 {
    private DbFormsConfig dbFormsConfig = null;
-
-   /**
-    * Defines the testcase name for JUnit.
-    * 
-    * @param theName the testcase's name.
-    */
-   public TestDbFormsConfig(String theName)
-   {
-      super(theName);
-   }
-
-   /**
-    * Start the tests.
-    * 
-    * @param theArgs the arguments. Not used
-    */
-   public static void main(String[] theArgs)
-   {
-      junit.swingui.TestRunner.main(
-               new String[] { TestDbFormsConfig.class.getName() });
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    * 
-    * @return a test suite (<code>TestSuite</code>) that includes all methods
-    *         starting with "test"
-    */
-   public static Test suite()
-   {
-      // All methods starting with "test" will be executed in the test suite.
-      return new TestSuite(TestDbFormsConfig.class);
-   }
-
 
    /**
     * In addition to creating the tag instance and adding the pageContext to
@@ -116,25 +78,6 @@ public class TestDbFormsConfig extends ServletTestCase
                  dbFormsConfig.getTableByName("book") == null);
    }
 
-
-   /**
-    * DOCUMENT ME!
-    * 
-    * @throws Exception DOCUMENT ME!
-    */
-   public void testSimpleDateFormat() throws Exception
-   {
-      SimpleDateFormat sdf = dbFormsConfig.getDateFormatter();
-      assertTrue("Default SDF is not null", sdf != null);
-
-      dbFormsConfig.setDateFormatter("ddMMMyy");
-
-      SimpleDateFormat newSDF = new SimpleDateFormat("ddMMMyy");
-      assertTrue("New SDF doesn't match orginial:", 
-                 !sdf.equals(dbFormsConfig.getDateFormatter()));
-      assertTrue("New SDF does match format ddMMMyy:", 
-                 newSDF.equals(dbFormsConfig.getDateFormatter()));
-   }
 
 
    /**

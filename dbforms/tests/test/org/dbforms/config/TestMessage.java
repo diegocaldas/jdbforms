@@ -22,7 +22,6 @@
  */
 
 package org.dbforms.config;
-import junit.framework.*;
 
 
 
@@ -33,41 +32,9 @@ import junit.framework.*;
  * @author     epugh
  * @created    May 3, 2002
  */
-public class TestMessage extends TestCase
+public class TestMessage extends  org.dbforms.util.AbstractTestCase
+
 {
-    /**
-     * Creates a new TestMessage object.
-     *
-     * @param name DOCUMENT ME!
-     *
-     * @throws Exception DOCUMENT ME!
-     */
-    public TestMessage(String name) throws Exception
-    {
-        super(name);
-    }
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @throws Exception DOCUMENT ME!
-     */
-    public void setUp() throws Exception
-    {
-        super.setUp();
-    }
-
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @throws Exception DOCUMENT ME!
-     */
-    public void tearDown() throws Exception
-    {
-        super.tearDown();
-    }
-
 
     /**
      * DOCUMENT ME!

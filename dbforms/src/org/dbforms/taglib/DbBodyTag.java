@@ -28,7 +28,6 @@ import javax.servlet.jsp.tagext.BodyTagSupport;
 
 import org.dbforms.config.ResultSetVector;
 import org.dbforms.util.Util;
-import org.apache.log4j.Category;
 import java.io.UnsupportedEncodingException;
 
 
@@ -42,7 +41,6 @@ import java.io.UnsupportedEncodingException;
  */
 public class DbBodyTag extends BodyTagSupport
 {
-   static Category logCat   = Category.getInstance(DbBodyTag.class.getName()); // logging category for this class
    private String  allowNew = "true"; // by default this is "true" - if so, the body is rendered at least 1 time, even if there are no data rows in the table. this enables the user to insert a new data row. - to disable this feature, allowNew has to be set to "false"
 
    /**
@@ -115,7 +113,7 @@ public class DbBodyTag extends BodyTagSupport
             {
                pageContext.setAttribute("position_"
                   + myParent.getTableName().replace('.', '_'),
-                  Util.decode(myParent.getTable().getPositionString(rsv), pageContext.getRequest().getCharacterEncoding()));
+                  Util.decode(myParent.getTable().getPositionString(rsv)));
             } catch (Exception e) {
                throw new JspException(e.getMessage());
             }
@@ -148,8 +146,7 @@ public class DbBodyTag extends BodyTagSupport
       //
       // now the key of the current dataset is printed out (always)
       // this key will be used by actions such as delete or update.
-      String curKeyString = Util.encode(myParent.getTable().getKeyPositionString(myParent
-            .getResultSetVector()), null);
+      String curKeyString = Util.encode(myParent.getTable().getKeyPositionString(myParent.getResultSetVector()));
 
       myParent.appendToChildElementOutput("<input type=\"hidden\" name=\"k_"
          + myParent.getTable().getId() + "_" + myParent.getPositionPath()

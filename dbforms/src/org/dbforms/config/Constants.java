@@ -31,8 +31,14 @@ package org.dbforms.config;
  */
 public class Constants
 {
+   public static final String FIELDNAME_PREFIX = "f_";
+
+   public static final String FIELDNAME_OLDVALUETAG = "o";
+
+   public static final String FIELDNAME_PATTERNTAG  = "p";
+
    /** DOCUMENT ME! */
-   public static final String INSERTPREFIX = "ins";
+   public static final String FIELDNAME_INSERTPREFIX = "ins";
 
    /** DOCUMENT ME! */
    public static final int COMPARE_NONE = 0;

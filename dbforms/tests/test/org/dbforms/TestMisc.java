@@ -22,7 +22,6 @@
  */
 
 package org.dbforms;
-import junit.framework.*;
 import java.util.Calendar;
 
 /**
@@ -30,7 +29,7 @@ import java.util.Calendar;
  *
  * @author     epugh
  */
-public class TestMisc extends TestCase
+public class TestMisc extends org.dbforms.util.AbstractTestCase
 {
     /**
      * This is a testcase for checking if the jdk1.4 method

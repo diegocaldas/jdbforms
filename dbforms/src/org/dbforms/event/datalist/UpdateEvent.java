@@ -22,7 +22,6 @@
  */
 
 package org.dbforms.event.datalist;
-import java.util.Hashtable;
 import java.sql.SQLException;
 import java.sql.Connection;
 import javax.servlet.http.HttpServletRequest;
@@ -33,7 +32,6 @@ import org.dbforms.config.DbEventInterceptor;
 import org.dbforms.config.FieldValues;
 import org.dbforms.config.GrantedPrivileges;
 import org.dbforms.config.DbFormsConfig;
-import org.dbforms.config.SqlUtil;
 import org.apache.log4j.Category;
 import org.dbforms.event.ValidationEvent;
 import org.dbforms.event.datalist.dao.DataSourceList;
@@ -131,25 +129,8 @@ public class UpdateEvent extends ValidationEvent
       // "interceptor" element embedded in table element in dbforms-config xml file)
       int operation = DbEventInterceptor.GRANT_OPERATION;
 
-      try
-      {
-         Hashtable associativeArray = getAssociativeFieldValues(fieldValues);
-
-
-         // process the interceptors associated to this table
-         table.processInterceptors(DbEventInterceptor.PRE_UPDATE, request, 
-                                   associativeArray, config, con);
-
-
-         // synchronize data which may be changed by interceptor:
-         table.synchronizeData(fieldValues, associativeArray);
-      }
-      catch (SQLException sqle)
-      {
-         SqlUtil.logSqlException(sqle, 
-                                 "::processEvent - SQL exception during PRE_UPDATE interceptors procession");
-         throw sqle;
-      }
+      // process the interceptors associated to this table
+      table.processInterceptors(DbEventInterceptor.PRE_UPDATE, request, fieldValues, config, con);
 
       if ((operation != DbEventInterceptor.IGNORE_OPERATION)
                 && (fieldValues.size() > 0))
@@ -186,18 +167,9 @@ public class UpdateEvent extends ValidationEvent
       }
 
       // finally, we process interceptor again (post-update)
-      try
-      {
-         // process the interceptors associated to this table
-         table.processInterceptors(DbEventInterceptor.POST_UPDATE, request, 
+      // process the interceptors associated to this table
+      table.processInterceptors(DbEventInterceptor.POST_UPDATE, request, 
                                    null, config, con);
-      }
-      catch (SQLException sqle)
-      {
-         SqlUtil.logSqlException(sqle, 
-                                 "::processEvent - SQL exception during POST_UPDATE interceptors procession");
-         throw sqle;
-      }
 
       // End of interceptor processing
    }

@@ -22,12 +22,8 @@
  */
 package org.dbforms.taglib;
 import javax.servlet.jsp.*;
-import javax.servlet.jsp.tagext.*;
 
 import org.dbforms.config.*;
-import org.apache.log4j.Category;
-
-
 
 /**
  *
@@ -39,57 +35,10 @@ import org.apache.log4j.Category;
  * </link>
  *
  */
-public class DbLinkPositionItemTag extends TagSupport
+public class DbLinkPositionItemTag extends DbBaseHandlerTag implements javax.servlet.jsp.tagext.TryCatchFinally
 {
-   static Category logCat    = Category.getInstance(DbLinkPositionItemTag.class
-         .getName()); // logging category for this class
-   private String  fieldName;
-   private String  value;
-
-   /**
-    * Return the name of the field being linked to
-    *
-    * @return The field name
-    */
-   public String getFieldName()
-   {
-      return fieldName;
-   }
-
-
-   /**
-    * The name of the field being linked to
-    *
-    * @param fieldName The name of the Field
-    */
-   public void setFieldName(String fieldName)
-   {
-      this.fieldName = fieldName;
-   }
-
-
-   /**
-    * Return the value of the field being linked
-    *
-    * @return The value
-    */
-   public String getValue()
-   {
-      return value;
-   }
-
-
-   /**
-    * Set the value of the field being linked to
-    *
-    * @param value The value of the field being linked to
-    */
-   public void setValue(String value)
-   {
-      this.value = value;
-   }
-
-
+   
+   String value;
    /**
     * Set up the tag with parent tag's table and link to the field.  Then add the data to the
     * enclosing linkURL tag.
@@ -106,8 +55,8 @@ public class DbLinkPositionItemTag extends TagSupport
       if (parentTag != null)
       {
          Table table = parentTag.getTable();
-         Field field = table.getFieldByName(fieldName);
-         parentTag.addPositionPart(field, value);
+         Field field = table.getFieldByName(getName());
+         parentTag.addPositionPart(field, getValue());
       }
       else
       {
@@ -117,4 +66,24 @@ public class DbLinkPositionItemTag extends TagSupport
 
       return EVAL_BODY_INCLUDE;
    }
+   /**
+    * @return
+    */
+   public String getValue() {
+      return value;
+   }
+
+   /**
+    * @param string
+    */
+   public void setValue(String string) {
+      value = string;
+   }
+
+	public void doFinally()
+	{
+		value = null;
+		super.doFinally();
+	}
+
 }
