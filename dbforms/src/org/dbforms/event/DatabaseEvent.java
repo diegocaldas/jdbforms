@@ -29,6 +29,7 @@ import java.util.Vector;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import org.dbforms.event.eventtype.EventType;
 import org.dbforms.config.MultipleValidationException;
 import org.dbforms.config.Constants;
 import org.dbforms.config.DbFormsConfig;
@@ -118,7 +119,7 @@ public abstract class DatabaseEvent extends WebEvent {
          (Constants.FIELDNAME_PREFIX
             + getTable().getId()
             + "_"
-            + (insertMode ? Constants.FIELDNAME_INSERTPREFIX : "")
+            + (EventType.EVENT_DATABASE_INSERT.equals(getType()) ? Constants.FIELDNAME_INSERTPREFIX : "")
             + keyId
             + "_");
       Vector params =

@@ -2426,58 +2426,6 @@ public class DbFormTag extends TagSupportWithScriptHandler implements TryCatchFi
 		return arr;
 	}
 
-	/**
-	 *  This method allow to retreive value from resultsetVector
-	 *  from current Form, parentForm or from request.
-	 *
-	 * @param  name Description of the Parameter
-	 * @return  The childFieldValue value
-	 */
-	/*	
-		public String getChildFieldValue(String name) {
-			ResultSetVector result = null;
-			HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
-	
-			if ((webEvent != null) && (webEvent.getType().equals(EventType.EVENT_NAVIGATION_RELOAD))) {
-				Field field = getTable().getFieldByName(name);
-	
-				if (field == null) {
-					logCat.warn("Field name : " + name + " is not present in Table " + getTable().getName());
-				}
-	
-				String keyIndex =
-					(getFooterReached()) ? (Constants.FIELDNAME_INSERTPREFIX + getPositionPathCore()) : getPositionPath();
-				StringBuffer buf = new StringBuffer();
-	
-				buf.append(Constants.FIELDNAME_PREFIX);
-				buf.append(getTable().getId());
-				buf.append("_");
-				buf.append(keyIndex);
-				buf.append("_");
-				buf.append(field.getId());
-	
-				return ParseUtil.getParameter(request, buf.toString());
-			}
-	
-			if (name.indexOf(":") != -1) {
-				name = name.substring(name.indexOf("."), name.length());
-	
-				if (parentForm != null) {
-					result = parentForm.getResultSetVector();
-				} else {
-					result = getResultSetVector();
-				}
-			} else {
-				result = getResultSetVector();
-			}
-	
-			if (result != null) {
-				return result.getField(name);
-			} else {
-				return null;
-			}
-		}
-	*/
 	/** DOCUMENT ME! */
 	public void doFinally() {
 		logCat.info("doFinally called");
