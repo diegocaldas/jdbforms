@@ -31,7 +31,7 @@
     
     <!-- When using hsqldb from Cactus, it seems to need the full path.  Not sure why...-->
     <dbconnection
-        name   = "jdbc:hsqldb:C:/java/dbforms/target/cactus/tomcat4x/webapps/test/WEB-INF/hsqldb/hsqldb"
+        name   = "jdbc:hsqldb:$(SERVLETCONTEXT_REALPATH)/WEB-INF/hsqldb/hsqldb"
         isJndi = "false"
         conClass  = "org.hsqldb.jdbcDriver"
         username = "sa"
