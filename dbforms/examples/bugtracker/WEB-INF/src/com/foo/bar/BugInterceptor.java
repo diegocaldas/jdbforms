@@ -83,7 +83,7 @@ public int preInsert(HttpServletRequest request,  Table table, FieldValues field
      throws ValidationException
   {
 
-        int newState = Integer.parseInt( (String) fieldValues.get("bugstate").getFieldValue());
+        int newState = Integer.parseInt(fieldValues.get("bugstate").getFieldValue());
         if(newState == 2) {
 
         Calendar calendar = new GregorianCalendar();
