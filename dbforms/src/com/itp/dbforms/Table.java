@@ -76,6 +76,7 @@ public class Table {
 		interceptors = new Vector();
   }
 
+
 	/**
 	 * returns object containing info about rights mapped to user-roles. (context: this table object!)
    */
@@ -535,18 +536,6 @@ public class Table {
 
 		return buf.toString();
 	}
-
-/*
-  public FieldValue[]  getFieldValuesFromPosition(String position) {
-	 Hashtable ht = getFieldValuesFromPosition(position);
-
-	 Enumeration enum = ht.elements();
-	 for()  {
-
-     }
-
-  }
-*/
 
 
   /**
