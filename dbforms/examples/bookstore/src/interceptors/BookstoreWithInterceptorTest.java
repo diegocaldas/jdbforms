@@ -22,43 +22,46 @@ import org.dbforms.config.ValidationException;
  * Window>Preferences>Java>Code Generation>Code and Comments
  */
 public class BookstoreWithInterceptorTest extends DbEventInterceptorSupport {
-	public int preInsert(HttpServletRequest request, Hashtable fieldValues,
-							  DbFormsConfig config, Connection con)
-							  throws ValidationException {
+   public int preInsert(HttpServletRequest request, Hashtable fieldValues, DbFormsConfig config, Connection con)
+      throws ValidationException {
 
-		 Statement stmt;
-		 ResultSet rs=null;
-		 long new_id=0;
-		 String strSql="";     
-		 String strParentID="AUTHOR_ID";
-		 String strID="BOOK_ID";
-		 String strTbl="BOOK";
-		 if (fieldValues.get(strID)==null) {
-				try {
-					stmt = con.createStatement(); 
-					strSql = "select max("+strID+") from " + strTbl; 
-					if (fieldValues.get(strParentID) != null) {
-						strSql = strSql + " where " + strParentID + "=" + fieldValues.get(strParentID);
-					}
-					rs = stmt.executeQuery(strSql);  
-					rs.next();             
-					new_id = rs.getLong(1) + 1;
-			  }
-			  catch( SQLException e ) {
-					e.printStackTrace();
-			  }
-			  if (new_id==0)
-					throw new ValidationException("Error generating automatic IDs"); 
-			  else{
-					fieldValues.remove(strID);
-					fieldValues.put(strID, Long.toString(new_id));
-					fieldValues.put(strParentID, Long.toString(1));
-					return GRANT_OPERATION;          
-				}
-		  }
-		 else
-			  return GRANT_OPERATION;                
-	}
+      Statement stmt;
+      ResultSet rs = null;
+      long new_id = 0;
+      String strSql = "";
+      String strParentID = "AUTHOR_ID";
+      String strID = "BOOK_ID";
+      String strTbl = "BOOK";
+      if (fieldValues.get(strID) == null) {
+         try {
+            stmt = con.createStatement();
+            strSql = "select max(" + strID + ") from " + strTbl;
+            if (fieldValues.get(strParentID) != null) {
+               strSql = strSql + " where " + strParentID + "=" + fieldValues.get(strParentID);
+            }
+            rs = stmt.executeQuery(strSql);
+            rs.next();
+            new_id = rs.getLong(1) + 1;
+         } catch (SQLException e) {
+            e.printStackTrace();
+         }
+         if (new_id == 0)
+            throw new ValidationException("Error generating automatic IDs");
+         else {
+            fieldValues.remove(strID);
+            fieldValues.put(strID, Long.toString(new_id));
+            fieldValues.put(strParentID, Long.toString(1));
+            return GRANT_OPERATION;
+         }
+      } else
+         return GRANT_OPERATION;
+   }
 
+   public int preUpdate(HttpServletRequest request, Hashtable fieldValues, DbFormsConfig config, Connection con)
+      throws ValidationException {
+
+      fieldValues.remove("ISBN");
+      return GRANT_OPERATION;
+   }
 
 }
