@@ -1,7 +1,74 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-
-<!-- Created by Administrator on December 10, 2002, 2:54 PM -->
-
-<preface><title>Preface</title>
-<para>Will be added...in the future.</para>
-</preface>
+<?xml version="1.0" encoding="UTF-8"?>
+  
+	<chapter>
+		<title>Preface
+</title>
+		<sect1>
+			<title>About this document
+</title>
+			<para/>
+			<para>This document assumes that the reader has a general understanding of how web-applications are developed and deployed.  This should include exposure to java servlets, JSP's, HTML and Web-Application Archives files (WAR).  Also important, is a good working knowledge of relational databases.
+</para>
+			<para/>
+		</sect1>
+		<sect1>
+			<title>Related documents
+</title>
+			<para/>
+			<para>The following articles describe extensions to DbForms:
+</para>
+			<para/>
+			<para>DbFormsDevelopersGUI, J. Peer, Vienna, 2001http://www.dbforms.org/docs/articles/DbForms_DevGui.pdf
+</para>
+			<para>XSLPreprocessingLayerforDbForms, J. Peer, Vienna, 2001http://www.dbforms.org/docs/articles/XSL_DbForms.pdf
+</para>
+			<para/>
+		</sect1>
+		<sect1>
+			<title>About DbForms
+</title>
+			<sect2>
+				<title>What is it - a framework or a toolkit?
+</title>
+				<para/>
+				<para>There are many views of what a framework is. Academic researchers tend to centre their definition around the concept of abstract classes:
+</para>
+				<para/>
+                                <itemizedlist mark="opencircle">
+<listitem>
+<para>A framework is a reusable design expressed as a set of abstract classes and the way their instances collaborate. It is a reusable design for all or part of a software system  [Johnson]
+</para>
+</listitem>
+<listitem>
+<para>Implementations of concrete classes or other software components which may be assembled together to build an application are often sold to industry under the name framework as well, but should be called toolkit instead.
+</para>
+</listitem>
+ 
+</itemizedlist>
+				
+			 
+				
+				<para/>
+				<para>DbForms is designed to be both  a framework and a toolkit. Part I of this paper focuses mainly on the toolkit aspects of DbForms  it demonstrates to the reader how to rapidly build a database-driven web-based Application using DbForms components. Part II deals more with the framework aspects of this product.
+</para>
+				<para/>
+			</sect2>
+			<sect2>
+				<title>What are the benefits of using DbForms?
+</title>
+				<para/>
+				<para>DbForms enables developers to build sophisticated web-based database driven applications in very short time and with very little efforts. DbForms applications are built in a manner conceptually similar to RAD - database building tools such as Microsoft Access (for Windows-based applications) or Sybase PowerSite (for web-based applications). (Note: All named products are properties of their respective owners.)
+</para>
+				<para/>
+				<para>Rapid Application Development (RAD) tools in general, allow a user to place database components and action elements on templates which then get executed at runtime.  As you will soon discover, dbForms uses these same techniques for its own framework.
+</para>
+				<para/>
+				<para>An important benefit of using DbForms is its openness to other systems. You may use DbForms in conjunction with common JSP-pages, Struts-based pages, etc. This means that you are free to use DbForms where it brings you the most benefits (dramatically reduce development efforts, etc.) and to use other techniques if you think that they offer a better solution.  
+</para>
+				<para/>
+				<para/>
+				<para/>
+			</sect2>
+		</sect1>
+	</chapter>
+ 
