@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.taglib;
+
 import java.io.*;
 import javax.servlet.jsp.*;
 
@@ -28,6 +29,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Blob;
 
 import org.dbforms.config.FieldTypes;
 import org.dbforms.util.SqlUtil;
@@ -35,148 +37,169 @@ import org.apache.log4j.Category;
 
 /**
  * #fixme docu to come
- *
+ * 
  * @author Joe Peer
  */
-public class DbBlobContentTag
-   extends DbBaseHandlerTag
-   implements javax.servlet.jsp.tagext.TryCatchFinally {
-   private Category logCat = Category.getInstance(this.getClass().getName());
-   private String dbConnectionName;
+public class DbBlobContentTag extends DbBaseHandlerTag implements
+		javax.servlet.jsp.tagext.TryCatchFinally {
+	private Category logCat = Category.getInstance(this.getClass().getName());
 
-   /**
-   * DOCUMENT ME!
-   *
-   * @return DOCUMENT ME!
-   *
-   * @throws javax.servlet.jsp.JspException DOCUMENT ME!
-   * @throws IllegalArgumentException DOCUMENT ME!
-   * @throws JspException DOCUMENT ME!
-   */
-   public int doEndTag() throws javax.servlet.jsp.JspException {
-      try {
-         if (getParentForm().getFooterReached()) {
-            return EVAL_PAGE; // nothing to do when no data available..
-         }
+	private String dbConnectionName;
 
-         StringBuffer queryBuf = new StringBuffer();
-         queryBuf.append("SELECT ");
-         queryBuf.append(getField().getName());
-         queryBuf.append(" FROM ");
-         queryBuf.append(getParentForm().getTable().getName());
-         queryBuf.append(" WHERE ");
-         queryBuf.append(
-            getParentForm().getTable().getWhereClauseForKeyFields());
-         logCat.info("blobcontent query- " + queryBuf.toString());
+	/**
+	 * DOCUMENT ME!
+	 * 
+	 * @return DOCUMENT ME!
+	 * 
+	 * @throws javax.servlet.jsp.JspException
+	 *             DOCUMENT ME!
+	 * @throws IllegalArgumentException
+	 *             DOCUMENT ME!
+	 * @throws JspException
+	 *             DOCUMENT ME!
+	 */
+	public int doEndTag() throws javax.servlet.jsp.JspException {
+		try {
+			if (getParentForm().getFooterReached()) {
+				return EVAL_PAGE; // nothing to do when no data available..
+			}
 
-         StringBuffer contentBuf = new StringBuffer();
+			StringBuffer queryBuf = new StringBuffer();
+			queryBuf.append("SELECT ");
+			queryBuf.append(getField().getName());
+			queryBuf.append(" FROM ");
+			queryBuf.append(getParentForm().getTable().getName());
+			queryBuf.append(" WHERE ");
+			queryBuf.append(getParentForm().getTable()
+					.getWhereClauseForKeyFields());
+			logCat.info("blobcontent query- " + queryBuf.toString());
 
-         try {
-            Connection con = getConfig().getConnection(dbConnectionName);
-            PreparedStatement ps = con.prepareStatement(queryBuf.toString());
-            getParentForm().getTable().populateWhereClauseWithKeyFields(
-               getKeyVal(),
-               ps,
-               1);
+			StringBuffer contentBuf = new StringBuffer();
 
-            ResultSet rs = ps.executeQuery();
+			try {
+				Connection con = getConfig().getConnection(dbConnectionName);
+				PreparedStatement ps = con
+						.prepareStatement(queryBuf.toString());
+				getParentForm().getTable().populateWhereClauseWithKeyFields(
+						getKeyVal(), ps, 1);
 
-            if (rs.next()) {
-               if (getField().getType() == FieldTypes.DISKBLOB) {
-                  String fileName = rs.getString(1);
+				ResultSet rs = ps.executeQuery();
 
-                  if (fileName != null) {
-                     fileName = fileName.trim();
-                  }
+				if (rs.next()) {
+					if (getField().getType() == FieldTypes.DISKBLOB) {
+						String fileName = rs.getString(1);
 
-                  logCat.info(
-                     "READING DISKBLOB field.getDirectory()="
-                        + getField().getDirectory()
-                        + " "
-                        + "fileName="
-                        + fileName);
+						if (fileName != null) {
+							fileName = fileName.trim();
+						}
 
-                  if ((fileName == null)
-                     || (getField().getDirectory() == null)
-                     || (fileName.length() == 0)
-                     || (getField().getDirectory().length() == 0)) {
-                     return EVAL_PAGE;
-                  }
+						logCat.info("READING DISKBLOB field.getDirectory()="
+								+ getField().getDirectory() + " " + "fileName="
+								+ fileName);
 
-                  File file = new File(getField().getDirectory(), fileName);
+						if ((fileName == null)
+								|| (getField().getDirectory() == null)
+								|| (fileName.length() == 0)
+								|| (getField().getDirectory().length() == 0)) {
+							return EVAL_PAGE;
+						}
 
-                  if (file.exists()) {
-                     logCat.info("fs- file found " + file.getName());
+						File file = new File(getField().getDirectory(),
+								fileName);
 
-                     FileInputStream fis = new FileInputStream(file);
-                     BufferedReader br =
-                        new BufferedReader(new InputStreamReader(fis));
-                     char[] c = new char[1024];
-                     int read;
+						if (file.exists()) {
+							logCat.info("fs- file found " + file.getName());
 
-                     while ((read = br.read(c)) != -1) {
-                        contentBuf.append(c, 0, read);
-                     }
+							FileInputStream fis = new FileInputStream(file);
+							BufferedReader br = new BufferedReader(
+									new InputStreamReader(fis));
+							char[] c = new char[1024];
+							int read;
 
-                     fis.close();
-                  } else {
-                     logCat.info("fs- file not found");
-                  }
-               } else {
-                  throw new IllegalArgumentException("DbBlobContentTag is currently only for DISKBLOBS - feel free to copy code from FileServlet.java to this place to bring this limitation to an end :=)");
-               }
-            } else {
-               logCat.info("fs- we have got no result" + queryBuf);
-            }
-            SqlUtil.closeConnection(con);
-         } catch (SQLException sqle) {
-            sqle.printStackTrace();
-         }
+							while ((read = br.read(c)) != -1) {
+								contentBuf.append(c, 0, read);
+							}
 
-         pageContext.getOut().write(contentBuf.toString());
-      } catch (java.io.IOException ioe) {
-         throw new JspException("IO Error: " + ioe.getMessage());
-      }
+							fis.close();
+						} else {
+							logCat.info("fs- file not found");
+						}
+					} else {
+						//                  throw new IllegalArgumentException("DbBlobContentTag
+						// is currently only for
+						// DISKBLOBS - feel free to copy code from
+						// FileServlet.java to this place to
+						// bring this limitation to an end :=)");
+						try {
+							/*
+							 * TODO: we obviously need a classic mode blob
+							 * handling here as well
+							 */
+							Blob blob = rs.getBlob(1);
+							BufferedReader br = new BufferedReader(
+									new InputStreamReader(blob
+											.getBinaryStream()));
+							char[] c = new char[1024];
+							int read;
+							while ((read = br.read(c)) != -1)
+								contentBuf.append(c, 0, read);
+						} catch (NullPointerException e) {
+							// the blob field was empty
+						}
+					}
+				} else {
+					logCat.info("fs- we have got no result" + queryBuf);
+				}
+				SqlUtil.closeConnection(con);
+			} catch (SQLException sqle) {
+				sqle.printStackTrace();
+			}
 
-      return EVAL_PAGE;
-   }
+			pageContext.getOut().write(contentBuf.toString());
+		} catch (java.io.IOException ioe) {
+			throw new JspException("IO Error: " + ioe.getMessage());
+		}
 
-   public void doFinally() {
-      dbConnectionName = null;
-      super.doFinally();
-   }
+		return EVAL_PAGE;
+	}
 
-   /**
-    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
-    */
-   public void doCatch(Throwable t) throws Throwable {
-      throw t;
-   }
+	public void doFinally() {
+		dbConnectionName = null;
+		super.doFinally();
+	}
 
-   // ------------------------------------------------------ Protected Methods
-   // DbForms specific
+	/**
+	 * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+	 */
+	public void doCatch(Throwable t) throws Throwable {
+		throw t;
+	}
 
-   /**
-   * DOCUMENT ME!
-   *
-   * @return DOCUMENT ME!
-   */
-   private String getKeyVal() {
-      return getParentForm().getTable().getKeyPositionString(
-         getParentForm().getResultSetVector());
-   }
-   /**
-    * @return
-    */
-   public String getDbConnectionName() {
-      return dbConnectionName;
-   }
+	// ------------------------------------------------------ Protected Methods
+	// DbForms specific
 
-   /**
-    * @param string
-    */
-   public void setDbConnectionName(String string) {
-      dbConnectionName = string;
-   }
+	/**
+	 * DOCUMENT ME!
+	 * 
+	 * @return DOCUMENT ME!
+	 */
+	private String getKeyVal() {
+		return getParentForm().getTable().getKeyPositionString(
+				getParentForm().getResultSetVector());
+	}
+
+	/**
+	 * @return
+	 */
+	public String getDbConnectionName() {
+		return dbConnectionName;
+	}
+
+	/**
+	 * @param string
+	 */
+	public void setDbConnectionName(String string) {
+		dbConnectionName = string;
+	}
 
 }
