@@ -226,10 +226,10 @@ public class DatabaseEventFactoryImpl extends DatabaseEventFactory
    protected void initializeEvents() throws Exception
    {
       addEventInfo(new EventInfo(EventType.EVENT_DATABASE_DELETE,
-            "org.dbforms.event.classic.DeleteEvent"));
+            "org.dbforms.event.datalist.DeleteEvent"));
       addEventInfo(new EventInfo(EventType.EVENT_DATABASE_INSERT,
-            "org.dbforms.event.classic.InsertEvent"));
+            "org.dbforms.event.datalist.InsertEvent"));
       addEventInfo(new EventInfo(EventType.EVENT_DATABASE_UPDATE,
-            "org.dbforms.event.classic.UpdateEvent"));
+            "org.dbforms.event.datalist.UpdateEvent"));
    }
 }
