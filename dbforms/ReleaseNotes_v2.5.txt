@@ -1,4 +1,4 @@
-Release Notes for DbForms Version 2.5,  xxxx-xx-xx
+Release Notes for DbForms Version 2.5,  2004-02-26
 
 Contents:
 1)      About this release
