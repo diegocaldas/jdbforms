@@ -83,7 +83,7 @@ public class TestDbFormsConfig extends ServletTestCase
      */
     public void setUp() throws Exception
     {
-        config.setInitParameter("dbformsConfig", "/WEB-INF/conf/dbforms-config.xml");
+        config.setInitParameter("dbformsConfig", "/WEB-INF/dbforms-config.xml");
 
         ConfigServlet configServlet = new ConfigServlet();
         configServlet.init(config);
