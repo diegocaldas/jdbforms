@@ -48,16 +48,20 @@ public class MessageTag extends TagSupport {
 			ServletContext application = pageContext.getServletContext();
                         String message; 
 			if ((param == null) || (param.length() == 0)) {
-                           message = MessageResources.getMessage( getKey(), locale);
-                        } else {
-                            message = MessageResources.getMessage(getKey(), locale, splitString(param, ","));
-                        }
-			
+         	message = MessageResources.getMessage( getKey(), locale);
+         } else {
+            message = MessageResources.getMessage(getKey(), locale, splitString(param, ","));
+         }
+	
 			try{
 				if(message!=null) {
 					pageContext.getOut().write(message);
 				} else {
 					pageContext.getOut().write(getKey());
+					if (param != null) { 
+   					pageContext.getOut().write("&nbsp;");
+   					pageContext.getOut().write(param);
+					}
 				}
 			} catch (java.io.IOException ioe) {
 				throw new JspException("IO Error: " + ioe.getMessage());
