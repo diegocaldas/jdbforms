@@ -224,7 +224,6 @@
 
   <dependencies>       
 
-
     <dependency>
       <id>log4j</id>      
       <version>1.2.8</version>
@@ -351,12 +350,6 @@
     </dependency>       
 
     <dependency>
-      <id>oro</id>
-      <version>2.0.7</version>
-    </dependency>
-
-    <!-- testing only -->
-    <dependency>
       <id>hsqldb</id>
       <version>1.7.1</version>
       <properties>
@@ -365,14 +358,37 @@
     </dependency>  
 
     <dependency>
-      <id>httpunit</id>
-      <version>1.5.4</version>
+      <id>protomatter</id>   <!-- This is self hosted! -->
+      <version>1.1.8-pre5</version>
       <properties>
          <war.bundle>true</war.bundle>
        </properties>
+    </dependency>
+    
+    <dependency>
+      <id>jasperreports</id>      
+      <version>0.5.0</version>
+      <properties>
+         <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>       
+
+    <dependency>    <!-- This is self hosted! -->
+      <id>maxq</id>
+      <version>0.95dev</version>
+      <properties>
+         <war.bundle>false</war.bundle>
+       </properties>
     </dependency>  
 
-
+    <!-- testing only -->
+    <dependency>
+      <id>httpunit</id>
+      <version>1.5.4</version>
+      <properties>
+         <war.bundle>false</war.bundle>
+       </properties>
+    </dependency>  
 
     <dependency>
       <id>junit</id>
@@ -382,8 +398,17 @@
        </properties>
     </dependency>  
 
-    <!-- just for compiling! -->
-<!-- for using under servletapi 2.3
+    <dependency>
+      <id>cactus</id>
+      <version>13-1.6</version>
+      <properties>
+         <war.bundle>false</war.bundle>
+       </properties>
+    </dependency>  
+
+
+<!-- for building with servletapi 2.3
+-->
     <dependency>
       <id>servletapi</id>
       <version>2.3</version>
@@ -391,10 +416,16 @@
          <war.bundle>false</war.bundle>
        </properties>
     </dependency>         
--->
 
-<!-- for using under servletapi 2.4
--->
+    <dependency> <!-- This is self hosted! -->
+      <id>jsp-api-el</id>
+      <version>2.0</version>
+      <properties>
+         <war.bundle>true</war.bundle>
+       </properties>
+    </dependency>         
+
+<!-- for building with servletapi 2.4
     <dependency>
       <id>servletapi</id>
       <version>2.4-20040521</version>
@@ -411,39 +442,18 @@
          <war.bundle>false</war.bundle>
        </properties>
     </dependency>         
+-->
 
-    <!-- self hosted -->
-    <dependency>
-      <id>protomatter</id>
-      <version>1.1.8-pre5</version>
-      <properties>
-         <war.bundle>true</war.bundle>
-       </properties>
-    </dependency>
-
-    
-    <dependency>
-      <id>jasperreports</id>      
-      <version>0.5.0</version>
-      <properties>
-	      <war.bundle>true</war.bundle>
-      </properties>
-    </dependency>       
-
-    <dependency>
-      <id>maxq</id>
-      <version>0.95dev</version>
-      <properties>
-         <war.bundle>false</war.bundle>
-       </properties>
-    </dependency>  
-
+  <!-- used for the taglib report! -->	
 	<dependency>
-    		<groupId>maven-taglib</groupId>
-    		<artifactId>maven-taglib-plugin</artifactId>
-    		<version>1.1</version>
-    		<type>plugin</type>
-    		<url>http://maven-taglib.sourceforge.net</url>
+		<groupId>maven-taglib</groupId>
+		<artifactId>maven-taglib-plugin</artifactId>
+		<version>1.1</version>
+		<type>plugin</type>
+		<url>http://maven-taglib.sourceforge.net</url>
+	      <properties>
+	         <war.bundle>false</war.bundle>
+	       </properties>
 	</dependency>
 
 

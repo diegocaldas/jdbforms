@@ -104,9 +104,9 @@
      <ant:mkdir dir="target/docs/weekly"/>
      <ant:copy todir="target/docs/weekly" overwrite="true">
     	<ant:fileset dir="target/dist">
-           <ant:include name="*.zip" />    		
-           <ant:include name="*.tgz" />    		
-           <ant:include name="*.war" />    		
+           <ant:include name="*.zip" />
+           <ant:include name="*.tgz" />
+           <ant:include name="*.war" />
     	</ant:fileset>
     </ant:copy>
   </goal>	
@@ -126,14 +126,6 @@
     <ant:ant antfile="build.xml" target="forcedos" />
   </preGoal>
 
-
-  <!-- neccesary to get cactus report!!! -->
-<!-- not neccessary for maven 1.0.
-  <preGoal name="cactus:report">
-    	<ant:echo message="run cactus tests" />
-    	<attainGoal name="cactus:test"/>
-  </preGoal>
--->
 
   <!-- to init the appserver with bookstore example -->
   <preGoal name="appserver:init">

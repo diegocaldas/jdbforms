@@ -44,7 +44,7 @@
   <property name="xslsrc.dir" value="${cvs.workingdir}/xsl-stylesheets" />
   <property name="etc.dir" value="${cvs.workingdir}/etc" />
   <property name="examples.dir" value="${cvs.workingdir}/examples" />
-  <property name="build.dir" value="${cvs.workingdir}/build" />
+  <property name="build.dir" value="${cvs.workingdir}/target/build" />
   <property name="dist.dir" value="${cvs.workingdir}/target/dist" />
   <property name="dependend.dir" value="${cvs.workingdir}/dependend" />
   <property name="doc.dir" value="${cvs.workingdir}/doc" />
@@ -58,7 +58,7 @@
   <!-- Indentify Classpath -->
   <path id="classpath">
     <fileset dir="${dependend.dir}">
-      <include name="*.jar" />
+      <include name="**/*.jar" />
     </fileset>
   </path>
 
@@ -167,7 +167,7 @@
     <copy file="${dist.dir}/dbforms.tld" todir="${build.dir}/${example.name}/WEB-INF" overwrite="true" />
     <!-- copy libraries dbforms depends on to WEB-INF/lib -->
     <copy todir="${build.dir}/${example.name}/WEB-INF/lib">
-      <fileset dir="${dependend.dir}" excludes="**/tools.jar" />
+      <fileset dir="${dependend.dir}" includes="*.jar" excludes="servletapi*.jar" />
     </copy>
     <!-- xerces.jar, xalan.jar might be neccessary for other tasks, but are disturbing with tomcat 4 -->
     <!-- FIXME: must be documented what do do with other servers.... -->
@@ -175,7 +175,9 @@
         <delete file="${build.dir}/${example.name}/WEB-INF/lib/xerces.jar"/>
         <delete file="${build.dir}/${example.name}/WEB-INF/lib/xalan.jar"/>
         -->
-    <delete file="${build.dir}/${example.name}/WEB-INF/lib/servletapi-2.3.jar"/>
+    <delete>
+       <fileset dir="${build.dir}/${example.name}/WEB-INF/lib" includes="servletapi*.jar"/>
+    </delete>
     <!-- compile example-specific Java code -->
     <echo message="compiling example specific code" />
     <mkdir dir="${build.dir}/${example.name}/WEB-INF/classes" />
@@ -292,7 +294,11 @@
       <fileset dir="." includes="misc/**/*.gif  misc/**/*.png  misc/**/*.js   misc/**/*.txt misc/*.css misc/**/*.html" />
     </copy>
     <copy todir="${dbforms.releaseDir}/dependend">
-      <fileset dir="./target/dependend" includes="*.jar" />
+      <fileset dir="./dependend" includes="**/*.jar"/>
+    </copy>
+    <delete file="${dbforms.releaseDir}/dependend/*.jar"/>
+    <copy todir="${dbforms.releaseDir}/dependend">
+      <fileset dir="${dependend.dir}" includes="*.jar" excludes="servletapi*.jar jsp-api*.jar"/>
     </copy>
     <copy todir="${dbforms.releaseDir}/bin">
       <fileset dir="${dist.dir}/bin" includes="*" />

@@ -19,7 +19,8 @@ Contents:
 2-2-2) Added global interceptor to dbforms-config.xml
 
 2-3)   Others
-2-3-1) Support for html escaping
+2-3-1) Support for html/database escaping
+2-3-2) Fully supported servletapi 2.4 and jspapi 2.0
 
 
 
@@ -36,9 +37,11 @@ This documents summarizes the changes since last official release 2.3.
 
 
 
+2)     Details about enhancements and changes
+---------------------------------------------
+
 2-1)  Changes to the tag library
 ---------------------------------
-
 
 2-1-1) New attribute overrideFieldCheck for db:dbform tag
 ---------------------------------------------------------
@@ -111,7 +114,7 @@ table attribute!
 2-3)  Others
 --------------
 
-2-3-1) Support for html escaping
+2-3-1) Support for html/database escaping
 --------------------------------
 Escapers can be set for tables, fields in dbforms-config file, all output tags in the
 jsp page. 
@@ -121,3 +124,18 @@ Ranking is:
    3. Table
    4. default escaper
 See javadoc for details of escaper interface.
+
+2-3-2) Fully supported servletapi 2.4 and jspapi 2.0
+----------------------------------------------------
+Servletapi 2.4 with jspapi 2.0 is fully suported now.
+Nethertheless dbforms is compiled against servletapi 2.3 because compiling against servletapi 2.4
+and deploying to an servletapi 2.3 machine (e.g. tomcat 4) will lead to an wrong signature error.
+The missing interfaces from javax.servlet.jsp.el to compile with servletapi 2.3 there are included 
+in the file jsp-api-el-2.0.jar of the distribution.
+To compile against servletapi 2.3 you must include the files of the directory 
+dependend/servletapi2.3 in your classpath.
+To compile against servletapi 2.4 you must include the files of the directory 
+dependend/servletapi2.4 in your classpath.
+
+
+
