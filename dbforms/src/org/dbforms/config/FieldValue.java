@@ -402,7 +402,7 @@ public class FieldValue implements Cloneable {
 				break;
 
 			case FieldTypes.CHAR :
-				res = value;
+				res = parseCHAR(value);
 				break;
 
 			case FieldTypes.DATE :
@@ -430,6 +430,14 @@ public class FieldValue implements Cloneable {
 		}
 		return res;
 	}
+
+    private String parseCHAR(String value) {
+       if ("[NULL]".equals(value)) { 	
+          return null;
+       } else {
+       	  return value;
+       }
+    }
 
 	private BigDecimal parseNUMERIC(String value) {
 		String valueStr = value.trim();
