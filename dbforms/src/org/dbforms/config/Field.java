@@ -138,9 +138,11 @@ public class Field
       {
          type = FieldTypes.INTEGER;
       }
-      else if (fieldType.startsWith("char") || fieldType.startsWith("varchar")
-               || fieldType.startsWith("nvarchar")
-               || fieldType.startsWith("longchar"))
+      else if (		fieldType.startsWith("char") || fieldType.startsWith("varchar")
+               	|| fieldType.startsWith("nvarchar")
+               	|| fieldType.startsWith("longchar")
+						|| fieldType.startsWith("text")
+               )
       {
          type = FieldTypes.CHAR;
       }
