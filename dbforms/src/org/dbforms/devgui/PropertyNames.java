@@ -50,6 +50,11 @@ public interface PropertyNames {
         static final String WRITE_STD_TYPENAMES = "writeStdTypeNames";
         static final String USE_JAVASCRIPT_CALENDAR
         = "useJavaScriptCalendar";
+        
+        static final String FOREIGNKEY_DETECTION = "foreignKeyDetection";
+        static final String USE_GETIMPORTEDKEYS = "useGetImportedKeys";
+        static final String USE_GETCROSSREFERENCES = "useGetCrossReferences";
+        static final String DEACTIVATED = "deactivated";
 
         static final String CONFIG_FILE           = "configFile";
         static final String STYLESHEET_DIR        = "stylesheetDir";

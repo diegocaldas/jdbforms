@@ -77,6 +77,8 @@ public class ProjectData implements Serializable, PropertyNames {
         defaultProps.setProperty(EXAMINE_SYSTABS, FALSESTRING);
 
         defaultProps.setProperty(WRITE_STD_TYPENAMES, FALSESTRING);
+        
+        defaultProps.setProperty(FOREIGNKEY_DETECTION,USE_GETIMPORTEDKEYS);
 
     }
 

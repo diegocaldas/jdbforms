@@ -80,26 +80,34 @@ static private final int DBMS_IBMDB2 = 2;
     public static HashMap getForeignKeyInformation(DatabaseMetaData dbmd,
                           boolean includeCatalog, String catalogSeparator,
                           boolean includeSchema,String schemaSeparator,
-                          Vector knownTables,Vector catalogNames, Vector schemaNames, Vector tableNames)   {
-      HashMap hm = new HashMap();
+                          Vector knownTables,boolean foreignKeyTryGetCrossReferences,
+                          Vector catalogNames, Vector schemaNames, Vector tableNames)   {
+      HashMap hm = null;
       
-      try {
+      if (foreignKeyTryGetCrossReferences) {
+          try {
+             hm = new HashMap();
                                    // following method accepts no pattern, so we just pass nulls and read all
                                    // available information:
-        ResultSet rsk = dbmd.getCrossReference(null, null, null, null,null,null ) ;
+             ResultSet rsk = dbmd.getCrossReference(null, null, null, null,null,null ) ;
       
-        while (rsk.next()) {
-          addSingleReference(hm,rsk, knownTables,
-            includeCatalog,  catalogSeparator,
-            includeSchema, schemaSeparator);
-        }       
+             while (rsk.next()) {
+                addSingleReference(hm,rsk, knownTables,
+                    includeCatalog,  catalogSeparator,
+                    includeSchema, schemaSeparator);
+               }       
       
-      } catch (SQLException ex) {
-         System.out.println("using getImportedKeys() method to get foreign key information...");
-         hm.clear();
+           } catch (SQLException ex) {
+             ex.printStackTrace();
+             hm = null;           
+           }
+      }
+      
+      if (hm == null) { // above method not tried or failed
          try {
-           for (int i = 0; i < tableNames.size();i++ ) {
-                   
+           hm = new HashMap();
+             
+           for (int i = 0; i < tableNames.size();i++ ) {                   
               String catalogName    =  (String)catalogNames.get(i);
               String schemaName     =  (String)schemaNames.get(i);
               String tableName      =  (String)tableNames.get(i);
@@ -110,8 +118,8 @@ static private final int DBMS_IBMDB2 = 2;
                  includeSchema, schemaSeparator); 
               }
            }
-         } catch (SQLException ex2) {
-             ex2.printStackTrace();
+         } catch (SQLException ex) {
+             ex.printStackTrace();
          }
          
       }
@@ -210,6 +218,11 @@ static private final int DBMS_IBMDB2 = 2;
                                                             equalsIgnoreCase(TRUESTRING);
           boolean useStdTypeNames = projectData.getProperty(WRITE_STD_TYPENAMES).
                                                             equalsIgnoreCase(TRUESTRING);
+          
+          boolean foreignKeyDetectionActivated = ! DEACTIVATED.equalsIgnoreCase(
+                                                            projectData.getProperty(FOREIGNKEY_DETECTION));
+          boolean foreignKeyTryGetCrossReferences = USE_GETCROSSREFERENCES.equalsIgnoreCase(
+                                                            projectData.getProperty(FOREIGNKEY_DETECTION));
 
                                         // create array of  table types that have to be examined...
           
@@ -392,8 +405,11 @@ static private final int DBMS_IBMDB2 = 2;
                 
                 if (! useAutoCommitMode) con.commit();
                 
-                HashMap forKeys = getForeignKeyInformation(dbmd, includeCatalog, catalogSeparator,
-                                                     includeSchema,schemaSeparator,knownTables, 
+                HashMap forKeys = null;
+                if (foreignKeyDetectionActivated) 
+                    forKeys = getForeignKeyInformation(dbmd, includeCatalog, catalogSeparator,
+                                                     includeSchema,schemaSeparator,knownTables,
+                                                     foreignKeyTryGetCrossReferences,
                                                      catalogNames, schemaNames, tableNames ) ;
                 
                 if (! useAutoCommitMode) con.commit();
@@ -587,7 +603,8 @@ static private final int DBMS_IBMDB2 = 2;
 		  rsFields.close();
                   if (! useAutoCommitMode) con.commit();
                   
-                  result.append(getForeignKeyTags(forKeys,catalogName,schemaName, tableName) );
+                  if (foreignKeyDetectionActivated) 
+                      result.append(getForeignKeyTags(forKeys,catalogName,schemaName, tableName) );
  
 		  result.append("\n\t\t<!-- add \"granted-privileges\" element for security constraints -->\n\n\t</table>\n\n");
 		}
