@@ -61,7 +61,7 @@
 		      		tableName="BOOK"
 		     		parentField="AUTHOR_ID"
 		     		childField="AUTHOR_ID"	 			
-			      	orderBy="ISBN" 
+			      	orderBy="ISBN DESC" 
 			    >
 		         <db:header>
 					<table>

@@ -11,7 +11,7 @@
 			followUp="/tests/testBOOKSList.jsp" 
 			maxRows="*" 
 		    tableName="BOOK"
-		    orderBy="BOOK_ID DESC"
+		    orderBy="ISBN DESC"
 		>
 			<db:header>
 				<db:errors/>  
