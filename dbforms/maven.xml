@@ -43,7 +43,10 @@ ${systemScope.setProperty('javax.xml.transform.TransformerFactory','org.apache.x
      <attainGoal name="dbforms:dist"/>
   </goal>
 
-
+  <preGoal name="site:run-reports">
+     <attainGoal name="cactus"/>
+  </preGoal>
+  
   <preGoal name="jalopy:format">
       <echo message="fixcrlf"/>
      <ant antfile="build.xml" target="forcedos"/>
