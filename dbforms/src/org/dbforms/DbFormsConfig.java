@@ -75,7 +75,7 @@ public class DbFormsConfig
      */
     public DbFormsConfig(String realPath)
     {
-        this.realPath = realPath;
+        setRealPath(realPath);
         tables = new Vector();
         tableNameHash = new Hashtable();
         dbConnectionsHash = new Hashtable();
@@ -294,7 +294,7 @@ public class DbFormsConfig
      */
     public void setRealPath(String realPath)
     {
-        this.realPath = realPath;
+        this.realPath = realPath.replace('\\', '/');
     }
 
 
