@@ -160,7 +160,8 @@ public class GotoEvent extends NavigationEvent {
 			position = table.getKeyPositionString(fv);
 		}
 		DataSourceList ds = DataSourceList.getInstance(request);
-		DataSourceFactory qry = ds.remove(table, request);
+		ds.remove(table, request);
+		DataSourceFactory qry;
 		if (Util.isNull(whereClause)) {
 			qry = new DataSourceFactory(config, dbConnectionName, table, childFieldValues, orderConstraint);
 		} else {
