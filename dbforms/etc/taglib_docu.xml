@@ -1451,8 +1451,7 @@ in functionality and performance can be expected.
   <bodycontent>JSP</bodycontent>
   <info>
   <p>radio tag, may be a radio group as well and it may contain nested DbData-Tags
-  (currently only "tableData" is implemented, but an element called "queryData" can be excpected for on of the next releases: queryData
-  will let you define arbitrare and dynamic SQL-SELECT statements for retrieving data)
+  (like tableData, queryData, staticData, ...)
   </p>
   </info>
 
@@ -1655,8 +1654,7 @@ in functionality and performance can be expected.
   <bodycontent>JSP</bodycontent>
   <info>
   <p>radio tag, may be a radio group as well and it may contain nested DbData-Tags
-    (currently only "tableData" is implemented, but an element called "queryData" can be excpected for on of the next releases: queryData
-  will let you define arbitrare and dynamic SQL-SELECT statements for retrieving data)
+(like tableData, queryData, staticData, ...)
   </p>
   </info>
   <attribute>
@@ -1854,11 +1852,11 @@ in functionality and performance can be expected.
   <tagclass>com.itp.dbforms.taglib.DbSelectTag</tagclass>
   <bodycontent>JSP</bodycontent>
   <info>
-  <p>select tag, may contain nested "DbData"-Tags OR "dboption" tags</p>
+  <p>select tag, may contain nested "DbData"-Tags (OR "dboption" tags, which are not implemented yet)<br/>
+  examples for DbData-Tags are tableData, queryData, staticData</p>
   <p>info
   <ul>
     <li>"dboption"- tags are expected for the next release</li>
-    <li>the only implemented "dbData"- tags is currently "tableData"</li>
   </ul>
   </p>
 
