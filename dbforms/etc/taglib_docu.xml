@@ -4655,29 +4655,6 @@
 					</info>
 				</attribute>
 				<attribute>
-					<name>customEntry</name>
-					<required>false</required>
-					<rtexprvalue>true</rtexprvalue>
-					<info>
-						<p style="text-autospace:none">
-							Allows the possibility of adding an entry in
-							the select list which is independent of data
-							retrieved via tableData, queryData or
-						</p>
-						<p style="text-autospace:none">
-							staticData. Arguments to this tag are as
-							follows:
-						</p>
-						<p style="    text-autospace:none">
-							<span
-								style="font-size:8.0pt;font-family:Courier;     ">
-								Key,Description,boolean (default
-								selection?)
-							</span>
-						</p>
-					</info>
-				</attribute>
-				<attribute>
 					<name>fieldName</name>
 					<required>true</required>
 					<rtexprvalue>true</rtexprvalue>
@@ -4721,6 +4698,17 @@
 						</p>
 					</info>
 				</attribute>
+<!--
+				<attribute>
+					<name>overrideReadOnly</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						[EXPERIMENTAL] override the read only attribute
+						of the parent form
+					</info>
+				</attribute>
+-->
 				<attribute>
 					<name>pattern</name>
 					<required>false</required>
@@ -4738,11 +4726,41 @@
 					</info>
 				</attribute>
 				<attribute>
+					<name>customEntry</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						<p style="text-autospace:none">
+							Allows the possibility of adding an entry in
+							the select list which is independent of data
+							retrieved via tableData, queryData or
+						</p>
+						<p style="text-autospace:none">
+							staticData. Arguments to this tag are as
+							follows:
+						</p>
+						<p style="    text-autospace:none">
+							<span
+								style="font-size:8.0pt;font-family:Courier;     ">
+								Key,Description,boolean (default
+								selection?)
+							</span>
+						</p>
+					</info>
+				</attribute>
+				<attribute>
 					<name>ifEmptyItem</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
 					<info>
-						Item to be used if there is no embedded data
+						<p style="    text-autospace:none">
+							Item to be used if there is no embedded data
+							 Arguments to this tag are as follows:
+							<span
+								style="font-size:8.0pt;font-family:Courier;     ">
+								Key,Description
+							</span>					
+						</p>
 					</info>
 				</attribute>
 				<attribute>
@@ -4759,15 +4777,6 @@
 					<rtexprvalue>true</rtexprvalue>
 					<info>
 						override the generated name for the html widget
-					</info>
-				</attribute>
-				<attribute>
-					<name>overrideReadOnly</name>
-					<required>false</required>
-					<rtexprvalue>true</rtexprvalue>
-					<info>
-						[EXPERIMENTAL] override the read only attribute
-						of the parent form
 					</info>
 				</attribute>
 				<attribute>
@@ -9356,6 +9365,44 @@
 					</info>
 				</attribute>
 			</tag>
+			<!-- **************************** hasErrors tag ***********************************-->
+			<tag>
+				<name>hasError</name>
+				<summary>
+					This tag renders it's body if an error has occured
+				</summary>
+				<tagclass>org.dbforms.taglib.HasErrorTag</tagclass>
+				<bodycontent>JSP</bodycontent>
+				<info>renders errors stored in request</info>
+				<attribute>
+					<name>name</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						<p>
+							the name that should be used for retrieving
+							the error-data from the session
+						</p>
+						<p>default = "errors"</p>
+					</info>
+				</attribute>
+				<attribute>
+					<name>value</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						<p>
+						   if set to TRUE body will be rendered if an error as occured.
+						</p>
+						<p>
+						   if set to FALSE body will be rendered if no error has occured.
+						</p>
+						<p>
+						   Default: TRUE
+						</p>
+					</info>
+				</attribute>
+			</tag>
 			<!-- **************************** hasMoreRecords tag ***********************************-->
 			<tag>
 				<name>hasMoreRecords</name>
@@ -10655,7 +10702,7 @@
 					</info>
 				</attribute>
 			</tag>
-
+			<!-- **************************** redirectURL tag ***********************************-->
 			<tag>
 				<name>redirectURL</name>
 				<summary>force a redirect to a DbForms View</summary>

@@ -63,21 +63,21 @@ public class TestSearchAndCalcFields extends HttpTestCase {
       get("http://localhost/bookstore/tests/testSearchAndCalcFields.jsp");
       printResponse();
       assertTrue(responseContains(
-            "1&nbsp;1&nbsp;3-423-12445-4&nbsp;Die Insel des vorigen Tages&nbsp;" + nodata + "&nbsp;3-423-12445-4----Die Insel des vorigen Tages&nbsp;<br/>"));
+            "1&nbsp;1&nbsp;3-423-12445-4&nbsp;Die Insel des vorigen Tages&nbsp;" + nodata + "&nbsp;+-3-423-12445-4-CALC-Die Insel des vorigen Tages-+&nbsp;<br/>"));
       assertTrue(responseContains(
-            "2&nbsp;2&nbsp;3-423-12445-5&nbsp;Das Foucaltsche Pendel&nbsp;" + nodata + "&nbsp;3-423-12445-5----Das Foucaltsche Pendel&nbsp;<br/>"));
+            "2&nbsp;2&nbsp;3-423-12445-5&nbsp;Das Foucaltsche Pendel&nbsp;" + nodata + "&nbsp;+-3-423-12445-5-CALC-Das Foucaltsche Pendel-+&nbsp;<br/>"));
       assertTrue(responseContains(
-            "3&nbsp;3&nbsp;42-1&nbsp;Hijacking through the Galaxy 1&nbsp;" + nodata + "&nbsp;42-1----Hijacking through the Galaxy 1&nbsp;<br/>"));
+            "3&nbsp;3&nbsp;42-1&nbsp;Hijacking through the Galaxy 1&nbsp;" + nodata + "&nbsp;+-42-1-CALC-Hijacking through the Galaxy 1-+&nbsp;<br/>"));
       assertTrue(responseContains(
-            "4&nbsp;4&nbsp;42-2&nbsp;Hijacking through the Galaxy 2&nbsp;" + nodata + "&nbsp;42-2----Hijacking through the Galaxy 2&nbsp;<br/>"));
+            "4&nbsp;4&nbsp;42-2&nbsp;Hijacking through the Galaxy 2&nbsp;" + nodata + "&nbsp;+-42-2-CALC-Hijacking through the Galaxy 2-+&nbsp;<br/>"));
       assertTrue(responseContains(
-            "5&nbsp;5&nbsp;42-3&nbsp;Hijacking through the Galaxy 3&nbsp;" + nodata + "&nbsp;42-3----Hijacking through the Galaxy 3&nbsp;<br/>"));
+            "5&nbsp;5&nbsp;42-3&nbsp;Hijacking through the Galaxy 3&nbsp;" + nodata + "&nbsp;+-42-3-CALC-Hijacking through the Galaxy 3-+&nbsp;<br/>"));
       assertTrue(responseContains(
-            "6&nbsp;6&nbsp;42-4&nbsp;Hijacking through the Galaxy 4&nbsp;" + nodata + "&nbsp;42-4----Hijacking through the Galaxy 4&nbsp;<br/>"));
+            "6&nbsp;6&nbsp;42-4&nbsp;Hijacking through the Galaxy 4&nbsp;" + nodata + "&nbsp;+-42-4-CALC-Hijacking through the Galaxy 4-+&nbsp;<br/>"));
       assertTrue(responseContains(
-            "7&nbsp;8&nbsp;42-5&nbsp;Luca's favorite thing to eat is  &quot;delicious Italian pasta&quot;&nbsp;[NULL]&nbsp;42-5----Luca's favorite thing to eat is  &quot;delicious Italian pasta&quot;&nbsp;<br/>"));
+            "7&nbsp;8&nbsp;42-5&nbsp;Luca's favorite thing to eat is  &quot;delicious Italian pasta&quot;&nbsp;[NULL]&nbsp;+-42-5-CALC-Luca's favorite thing to eat is  &quot;delicious Italian pasta&quot;-+&nbsp;<br/>"));
       assertTrue(responseContains(
-            "8&nbsp;9&nbsp;42-6&nbsp;Hijacking through the Galaxy 6&nbsp;" + nodata + "&nbsp;42-6----Hijacking through the Galaxy 6&nbsp;<br/>"));
+            "8&nbsp;9&nbsp;42-6&nbsp;Hijacking through the Galaxy 6&nbsp;" + nodata + "&nbsp;+-42-6-CALC-Hijacking through the Galaxy 6-+&nbsp;<br/>"));
 
       list = new ArrayList();
       list.add(new KeyValuePair("invtable", "2"));
@@ -106,17 +106,17 @@ public class TestSearchAndCalcFields extends HttpTestCase {
       post("http://localhost/bookstore/servlet/control", list);
       printResponse();
       assertTrue(responseContains(
-            "1&nbsp;3&nbsp;42-1&nbsp;Hijacking through the Galaxy 1&nbsp;" + nodata + "&nbsp;42-1----Hijacking through the Galaxy 1&nbsp;<br/>"));
+            "1&nbsp;3&nbsp;42-1&nbsp;Hijacking through the Galaxy 1&nbsp;" + nodata + "&nbsp;+-42-1-CALC-Hijacking through the Galaxy 1-+&nbsp;<br/>"));
       assertTrue(responseContains(
-            "2&nbsp;4&nbsp;42-2&nbsp;Hijacking through the Galaxy 2&nbsp;" + nodata + "&nbsp;42-2----Hijacking through the Galaxy 2&nbsp;<br/>"));
+            "2&nbsp;4&nbsp;42-2&nbsp;Hijacking through the Galaxy 2&nbsp;" + nodata + "&nbsp;+-42-2-CALC-Hijacking through the Galaxy 2-+&nbsp;<br/>"));
       assertTrue(responseContains(
-            "3&nbsp;5&nbsp;42-3&nbsp;Hijacking through the Galaxy 3&nbsp;" + nodata + "&nbsp;42-3----Hijacking through the Galaxy 3&nbsp;<br/>"));
+            "3&nbsp;5&nbsp;42-3&nbsp;Hijacking through the Galaxy 3&nbsp;" + nodata + "&nbsp;+-42-3-CALC-Hijacking through the Galaxy 3-+&nbsp;<br/>"));
       assertTrue(responseContains(
-            "4&nbsp;6&nbsp;42-4&nbsp;Hijacking through the Galaxy 4&nbsp;" + nodata + "&nbsp;42-4----Hijacking through the Galaxy 4&nbsp;<br/>"));
+            "4&nbsp;6&nbsp;42-4&nbsp;Hijacking through the Galaxy 4&nbsp;" + nodata + "&nbsp;+-42-4-CALC-Hijacking through the Galaxy 4-+&nbsp;<br/>"));
       assertTrue(responseContains(
-            "5&nbsp;8&nbsp;42-5&nbsp;Luca's favorite thing to eat is  &quot;delicious Italian pasta&quot;&nbsp;" + nodata + "&nbsp;42-5----Luca's favorite thing to eat is  &quot;delicious Italian pasta&quot;&nbsp;<br/>"));
+            "5&nbsp;8&nbsp;42-5&nbsp;Luca's favorite thing to eat is  &quot;delicious Italian pasta&quot;&nbsp;" + nodata + "&nbsp;+-42-5-CALC-Luca's favorite thing to eat is  &quot;delicious Italian pasta&quot;-+&nbsp;<br/>"));
       assertTrue(responseContains(
-            "6&nbsp;9&nbsp;42-6&nbsp;Hijacking through the Galaxy 6&nbsp;" + nodata + "&nbsp;42-6----Hijacking through the Galaxy 6&nbsp;<br/>"));
+            "6&nbsp;9&nbsp;42-6&nbsp;Hijacking through the Galaxy 6&nbsp;" + nodata + "&nbsp;+-42-6-CALC-Hijacking through the Galaxy 6-+&nbsp;<br/>"));
 
       list = new ArrayList();
       list.add(new KeyValuePair("invtable", "2"));
@@ -142,9 +142,9 @@ public class TestSearchAndCalcFields extends HttpTestCase {
       post("http://localhost/bookstore/servlet/control", list);
       printResponse();
       assertTrue(responseContains(
-            "1&nbsp;1&nbsp;3-423-12445-4&nbsp;Die Insel des vorigen Tages&nbsp;" + nodata + "&nbsp;3-423-12445-4----Die Insel des vorigen Tages&nbsp;<br/>"));
+            "1&nbsp;1&nbsp;3-423-12445-4&nbsp;Die Insel des vorigen Tages&nbsp;" + nodata + "&nbsp;+-3-423-12445-4-CALC-Die Insel des vorigen Tages-+&nbsp;<br/>"));
       assertTrue(responseContains(
-            "2&nbsp;2&nbsp;3-423-12445-5&nbsp;Das Foucaltsche Pendel&nbsp;" + nodata + "&nbsp;3-423-12445-5----Das Foucaltsche Pendel&nbsp;<br/>"));
+            "2&nbsp;2&nbsp;3-423-12445-5&nbsp;Das Foucaltsche Pendel&nbsp;" + nodata + "&nbsp;+-3-423-12445-5-CALC-Das Foucaltsche Pendel-+&nbsp;<br/>"));
    }
 
    /** ************* */

@@ -6,7 +6,6 @@
 	<classpathentry output="examples/bookstore/WEB-INF/classes" kind="src" path="tests/test"/>
 	<classpathentry output="examples/bookstore/WEB-INF/classes" kind="src" path="tests/test-cactus"/>
 	<classpathentry kind="lib" path="dependend/cactus-13-1.7dev20041109.jar"/>
-	<classpathentry kind="lib" path="dependend/cewolf.jar"/>
 	<classpathentry kind="lib" path="dependend/commons-beanutils-1.6.jar"/>
 	<classpathentry kind="lib" path="dependend/commons-collections-2.1.jar"/>
 	<classpathentry kind="lib" path="dependend/commons-dbcp-1.1.jar"/>
@@ -21,9 +20,6 @@
 	<classpathentry kind="lib" path="dependend/hsqldb-1.7.1.jar"/>
 	<classpathentry kind="lib" path="dependend/httpunit-1.5.4.jar"/>
 	<classpathentry kind="lib" path="dependend/itext-1.01.jar"/>
-	<classpathentry kind="lib" path="dependend/jasperreports-0.6.1.jar"/>
-	<classpathentry kind="lib" path="dependend/jcommon-0.9.5.jar"/>
-	<classpathentry kind="lib" path="dependend/jfreechart-0.9.20.jar"/>
 	<classpathentry kind="lib" path="dependend/junit-3.8.1.jar"/>
 	<classpathentry kind="lib" path="dependend/log4j-1.2.8.jar"/>
 	<classpathentry kind="lib" path="dependend/maxq-0.95dev.jar"/>
@@ -41,14 +37,19 @@
 	<classpathentry kind="lib" path="examples/bookstore/WEB-INF/lib/batik-util.jar"/>
 	<classpathentry kind="lib" path="examples/bookstore/WEB-INF/lib/batik-xml.jar"/>
 	<classpathentry kind="lib" path="examples/bookstore/WEB-INF/lib/jstl.jar"/>
-	<classpathentry kind="lib" path="examples/bookstore/WEB-INF/lib/pow2toolkit-1.0.jar"/>
-	<classpathentry kind="lib" path="examples/bookstore/WEB-INF/lib/pow2webgui-1.0.jar"/>
 	<classpathentry kind="lib" path="examples/bookstore/WEB-INF/lib/standard.jar"/>
 	<classpathentry kind="lib" path="examples/bookstore/WEB-INF/lib/velocity-dep-1.3.1-rc2.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="examples/bugtracker/WEB-INF/lib/taglibs-request.jar"/>
 	<classpathentry kind="lib" path="dependend/rhino-1.5R4.1.jar"/>
-	<classpathentry kind="con" path="com.genuitec.eclipse.j2eedt.core.J2EE14_CONTAINER"/>
 	<classpathentry kind="lib" path="dependend/nekohtml-0.9.3.jar"/>
+	<classpathentry kind="var" path="TOMCAT_HOME/common/lib/servlet-api.jar"/>
+	<classpathentry kind="var" path="TOMCAT_HOME/common/lib/jasper-runtime.jar"/>
+	<classpathentry kind="var" path="TOMCAT_HOME/common/lib/jsp-api.jar"/>
+	<classpathentry kind="lib" path="dependend/jcommon-0.9.6.jar"/>
+	<classpathentry kind="lib" path="dependend/jfreechart-0.9.21.jar"/>
+	<classpathentry sourcepath="D:/Projekte/webapps/cewolf-0.10.1/src" kind="lib" path="dependend/cewolf-0.10.1.jar"/>
+	<classpathentry kind="lib" path="dependend/jasperreports-0.6.4.jar"/>
+	<classpathentry kind="lib" path="dependend/jdt-compiler.jar"/>
 	<classpathentry kind="output" path="examples/bookstore/WEB-INF/classes"/>
 </classpath>

@@ -46,7 +46,7 @@ import javax.servlet.jsp.tagext.BodyTagSupport;
  *
  * @author Neal Katz
  */
-public class IsErrorTag extends BodyTagSupport
+public class HasErrorTag extends BodyTagSupport
    implements javax.servlet.jsp.tagext.TryCatchFinally {
    //   private String messagePrefix;
    private String name  = "errors";

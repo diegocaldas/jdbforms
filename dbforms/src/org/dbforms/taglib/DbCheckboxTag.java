@@ -53,7 +53,7 @@ public class DbCheckboxTag extends DbBaseHandlerTag implements DataContainer,
    private String     growSize      = "0"; // only needed if we habe a whole "group" of DbRadioTags; default = 1
    private String     noValue;
    private String     value;
-   private boolean    force         = false;
+   private String    force         = "false";
 
    /**
     * DOCUMENT ME!
@@ -83,7 +83,7 @@ public class DbCheckboxTag extends DbBaseHandlerTag implements DataContainer,
     *
     * @param b
     */
-   public void setForce(boolean b) {
+   public void setForce(String b) {
       force = b;
    }
 
@@ -93,7 +93,7 @@ public class DbCheckboxTag extends DbBaseHandlerTag implements DataContainer,
     *
     * @return
     */
-   public boolean isForce() {
+   public String getForce() {
       return force;
    }
 
@@ -242,8 +242,8 @@ public class DbCheckboxTag extends DbBaseHandlerTag implements DataContainer,
                                      .isFooterReached() && hasCheckedSet());
 
          // nk, check if need to force it on. Useful w/ custom controller or javascript
-         if (isForce()) {
-            isSelected = this.checked.equals("true");
+         if (Util.getTrue(getForce())) {
+            isSelected = hasCheckedSet();
          }
 
          if (hasReadOnlySet() || getParentForm()
@@ -326,7 +326,7 @@ public class DbCheckboxTag extends DbBaseHandlerTag implements DataContainer,
       growSize      = "0";
       noValue       = null;
       value         = null;
-      force         = false;
+      force         = "false";
       super.doFinally();
    }
 
