@@ -113,7 +113,6 @@ public class StartReportServlet extends HttpServlet
       {
          value = "WEB-INF/reports/";
       }
-
       reportdirs = StringUtils.split(value, ",");
    }
 
@@ -165,16 +164,13 @@ public class StartReportServlet extends HttpServlet
          String reportFile = getReportFileFullName(request.getPathInfo(), 
                                                    getServletContext(), request, 
                                                    response);
-
          if (!Util.isNull(reportFile))
          {
             logCat.info("=== user dir " + FileUtil.dirname(reportFile));
             System.setProperty("user.dir", FileUtil.dirname(reportFile));
             checkIfNeedToCompile(getServletContext(), reportFile);
-
             JRDataSource dataSource = getDataFromForm(getServletContext(), 
                                                       request, response);
-
             if (!response.isCommitted())
             {
                processReport(reportFile, dataSource, getServletContext(), 
@@ -194,16 +190,12 @@ public class StartReportServlet extends HttpServlet
     * generates a report.
     *
     * @param reportFileFullName filename of report to process
-    *        reportHTTPServletRequest generated                by
-    *        getReportFile! getReportFile should be called before fetching
-    *        data, so that error handling of report not found e.g. could be
-    *        processed first!
     * @param dataSource data for the report
     * @param context ServletContext
     * @param request HTTPServletRequest
     * @param response HTTPServletResponse
     */
-   public static void processReport(String reportFileFullName, 
+   private void processReport(String reportFileFullName, 
                                     JRDataSource dataSource, 
                                     ServletContext context, 
                                     HttpServletRequest request, 
@@ -218,7 +210,6 @@ public class StartReportServlet extends HttpServlet
 
          // generate parameter map
          DbFormsConfig config = null;
-
          try
          {
             config = DbFormsConfigRegistry.instance().lookup();
@@ -228,9 +219,7 @@ public class StartReportServlet extends HttpServlet
             logCat.error(e);
             throw new ServletException(e);
          }
-
          byte[] bytes = null;
-
          try
          {
             // Fill the report with data
@@ -245,7 +234,6 @@ public class StartReportServlet extends HttpServlet
                                                               );
                Map             map = new HashMap();
                map.put("PARAM", repParam);
-
                if (dataSource == null)
                {
                   jPrint = JasperFillManager.fillReport(reportFileFullName
@@ -263,11 +251,9 @@ public class StartReportServlet extends HttpServlet
             {
                SqlUtil.closeConnection(con);
             }
-
             if ((jPrint == null) || (jPrint.getPages().size() == 0))
             {
                handleNoData(request, response);
-
                return;
             }
             else
@@ -275,13 +261,7 @@ public class StartReportServlet extends HttpServlet
                String outputFormat = ParseUtil.getParameter(request, 
                                                             StartReportServlet.REPORTTYPEPARAM, 
                                                             "PDF");
-
                // create the output stream
-			   response.setHeader("Expires", "Mon, 26 Jul 1997 05:00:00 GMT");
-			   response.setHeader("Last-Modified", "Tue, 15 Nov 1994 12:45:26 GMT");
-			   response.setHeader("Pragma", "no-cache");
-			   response.setHeader("Cache-Control", "no-cache");
-
                if ("PDF".equals(outputFormat))
                {
                   response.setContentType("application/pdf");
@@ -306,7 +286,6 @@ public class StartReportServlet extends HttpServlet
          {
             // Send the output stream to the client
             response.setContentLength(bytes.length);
-
             ServletOutputStream ouputStream = response.getOutputStream();
             ouputStream.write(bytes, 0, bytes.length);
             ouputStream.flush();
@@ -322,7 +301,6 @@ public class StartReportServlet extends HttpServlet
       catch (Exception e)
       {
          handleException(request, response, e);
-
          return;
       }
    }
@@ -344,23 +322,18 @@ public class StartReportServlet extends HttpServlet
                                        HttpServletResponse response)
    {
       String reportFile = null;
-
       try
       {
          boolean found = false;
-
          for (int i = 0; i < reportdirs.length; i++)
          {
             reportFile = context.getRealPath(reportdirs[i] + reportFileName);
-
             if (FileUtil.fileExists(reportFile + ".xml"))
             {
                found = true;
-
                break;
             }
          }
-
          if (!found)
          {
             handleNoReport(request, response);
@@ -371,7 +344,6 @@ public class StartReportServlet extends HttpServlet
       {
          handleException(request, response, e);
       }
-
       return reportFile;
    }
 
@@ -520,7 +492,6 @@ public class StartReportServlet extends HttpServlet
       exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
       exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, baos);
       exporter.exportReport();
-
       return baos.toByteArray();
    }
 
@@ -533,7 +504,6 @@ public class StartReportServlet extends HttpServlet
       exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
       exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, baos);
       exporter.exportReport();
-
       return baos.toByteArray();
    }
 
