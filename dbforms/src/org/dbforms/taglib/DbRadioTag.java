@@ -275,7 +275,9 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer
                     tagBuf.append("</TR><TR valign=top>");
                 }
 
-                tagBuf.append("<TD>").append(generateTagString(aKey, aValue, isSelected)).append("</TD>");
+                tagBuf.append("<TD ");
+  					 tagBuf.append(prepareStyles());
+                tagBuf.append(">").append(generateTagString(aKey, aValue, isSelected)).append("</TD>");
             }
 
             tagBuf.append("</TR></TABLE>");
