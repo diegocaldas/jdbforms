@@ -103,6 +103,9 @@ public class Table {
    /** Holds value of property defaultVisibleFields. */
    private String defaultVisibleFields;
 
+   /** Holds value of property defaultVisibleFieldsFormat. */
+   private String defaultVisibleFieldsFormat;
+
    /** reference to a TableEvents object */
    private TableEvents tableEvents = null;
 
@@ -1897,7 +1900,25 @@ public class Table {
    }
 
    /**
-    * maps chield fields to parent fields
+    * Getter for property defaultVisibleFieldsFormat.
+    *
+    * @return Value of property defaultVisibleFieldsFormat.
+    */
+   public String getDefaultVisibleFieldsFormat() {
+      return this.defaultVisibleFieldsFormat;
+   }
+
+   /**
+    * Setter for property defaultVisibleFieldsFormat.
+    *
+    * @param defaultVisibleFieldsFormat New value of property defaultVisibleFieldsFormat.
+    */
+   public void setDefaultVisibleFieldsFormat(String defaultVisibleFieldsFormat) {
+      this.defaultVisibleFieldsFormat = defaultVisibleFieldsFormat;
+   }
+
+   /**
+    * maps child fields to parent fields
     *
     * @param parentTable the parent table
     * @param parentFieldString field names in parent table
