@@ -87,15 +87,23 @@ Happy coding!
                 <available classname="javax.servlet.jsp.JspException" >
                     <classpath refid="classpath"/>
                 </available>
-                <available classname="javax.sql.DataSource">
-                    <classpath refid="classpath"/>
-                </available>
+
+                <!-- 
+                   - javax.sql.DataSource is included into jdk1.4.x
+                   - or into the jdbc2_0-stdext.jar optional package
+                   - (for previous jdk versions)
+                   -->
+                <!--
+                    <available classname="javax.sql.DataSource">
+                        <classpath refid="classpath"/>
+                    </available>
+                -->
             </and>
         </condition>
     </target>
     
     <target name="failIfBadPath" depends="onPath" unless="path.ok">
-        <fail message="J2EE support jars are missing from the classpath.  Put the j2ee.jar into your classpath or the /dbforms/dependend directory."/>
+        <fail message="servlet.jar is missing from the classpath.  Please put this jar (usually provided by your servlet container) into your classpath or into the /dbforms/dependend directory."/>
     </target>    
 
 
