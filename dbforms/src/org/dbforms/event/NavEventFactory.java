@@ -22,6 +22,7 @@
  */
 
 package org.dbforms.event;
+
 import org.dbforms.*;
 import org.dbforms.util.*;
 import javax.servlet.http.*;
@@ -33,51 +34,29 @@ import org.apache.log4j.Category;
 /**
  *  NavigationeEvent Factory.
  *
- *  @author Luca Fossato <fossato@pow2.com>
- * @stereotype AbstractFactory, Singleton
+ * @author Luca Fossato <fossato@pow2.com>
  */
-public abstract class NavEventFactory
+public abstract class NavEventFactory extends EventFactory
 {
-    /** logging category for this class */
-    static protected Category logCat = Category.getInstance(NavEventFactory.class.getName());
-
-    /** singleton instance; */
-    static protected NavEventFactory instance = null;
+    /**
+     *  Create and return a new navigation event.
+     *
+     * @param  action the action string that identifies the web event
+     * @param  request the HttpServletRequest object
+     * @config the DbForms config object
+     * @return  a new navigation event
+     */
+    public abstract NavigationEvent createEvent(String             action,
+                                                HttpServletRequest request,
+                                                DbFormsConfig      config);
 
     /**
-     *  Create the NavNextEvent object.
+     *  Create and return a new navigation event.
      *
-     *  @return the NavNextEvent object.
+     * @param  action the action string that identifies the web event
+     * @param  table the Table object
+     * @param  config the DbForms config object
+     * @return  a new navigation event
      */
-    public abstract NavNextEvent createNavNextEvent(String action, HttpServletRequest request, DbFormsConfig config);
-
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @param table DOCUMENT ME!
-     * @param config DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
-    public abstract NavNextEvent createNavNextEvent(Table table, DbFormsConfig config);
-
-
-    /**
-     *  Create the NavNextEvent object.
-     *
-     *  @return the NavNextEvent object.
-     */
-    public abstract NavPrevEvent createNavPrevEvent(String action, HttpServletRequest request, DbFormsConfig config);
-
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @param table DOCUMENT ME!
-     * @param config DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
-    public abstract NavPrevEvent createNavPrevEvent(Table table, DbFormsConfig config);
+    public abstract NavigationEvent createEvent(String action, Table table, DbFormsConfig config);
 }
