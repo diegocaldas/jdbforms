@@ -109,7 +109,8 @@ public abstract class EmbeddedData extends TagSupport
             {
                 for (int i = 0; i < rsv.size(); i++)
                 {
-                    String[] currentRow = (String[]) rsv.elementAt(i);
+                    rsv.setPointer(i);
+                    String[] currentRow = (String[]) rsv.getCurrentRow();
                     String htKey = currentRow[0];
                     rsv.setPointer(i);
 
@@ -155,8 +156,8 @@ public abstract class EmbeddedData extends TagSupport
         {
             for (int i = 0; i < rsv.size(); i++)
             {
-                String[] currentRow = (String[]) rsv.elementAt(i);
-
+                rsv.setPointer(i);
+                String[] currentRow = (String[]) rsv.getCurrentRow();
                 String htKey = currentRow[0];
                 StringBuffer htValueBuf = new StringBuffer();
 

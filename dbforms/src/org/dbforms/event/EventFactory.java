@@ -52,13 +52,11 @@ public abstract class EventFactory
     /** map of supported event */
     protected HashMap eventInfoMap = null;
 
-    /** classes used as "non keyInfo" constructor arguments types */
-    protected static Class[] constructorArgsTypes = new Class[]
-    {
-        String.class, HttpServletRequest.class, DbFormsConfig.class
-    };
-
-
+	/** classes used as "non keyInfo" constructor arguments types */
+	protected static Class[] constructorArgsTypes = new Class[]
+	{
+		String.class, HttpServletRequest.class, DbFormsConfig.class
+	};
     /**
      *  Creates a new EventFactory object.
      */
@@ -75,6 +73,18 @@ public abstract class EventFactory
            logCat.error("::EventFactory - cannot initialize the factory events", e);
         }
     }
+
+	/**
+	 *  Create and return a new event.
+	 *
+	 * @param  action the action string that identifies the web event
+	 * @param  request the HttpServletRequest object
+	 * @param  config the DbForms config object
+	 * @return  a new navigation event
+	 */
+	public abstract WebEvent createEvent(String             action,
+	 									HttpServletRequest request,
+										DbFormsConfig      config);
 
 
     /**
@@ -97,11 +107,9 @@ public abstract class EventFactory
             if (eventInfoMap.containsKey(id))
             {
                 EventInfo prevEinfo = (EventInfo)eventInfoMap.get(id);
-
                 if (prevEinfo != null)
                 {
                   String prevClassName = prevEinfo.getClassName();
-
                   logCat.warn(new StringBuffer("::addEventInfo - the event information having id, class [")
                               .append(id).append(", ")
                               .append(einfo.getClassName())
@@ -110,10 +118,8 @@ public abstract class EventFactory
                               .toString());
                 }
             }
-
             // event info registration;
             eventInfoMap.put(id, einfo);
-
             logCat.info(new StringBuffer("::addEventInfo - event info having id, type, class [")
                             .append(id).append(", ").append(einfo.getType())
                             .append(", ").append(einfo.getClassName())
@@ -172,7 +178,6 @@ public abstract class EventFactory
     protected WebEvent getEvent(EventInfo einfo, Class[] constructorArgsTypes, Object[] constructorArgs)
     {
         WebEvent event = null;
-
         if (einfo != null)
         {
             try
@@ -180,16 +185,15 @@ public abstract class EventFactory
                 event = (WebEvent) ReflectionUtil.newInstance(einfo.getClassName(),
                                                               constructorArgsTypes,
                                                               constructorArgs);
-
                 // set a new Properties object into the event;
                 event.setProperties(new Properties(einfo.getProperties()));
+                event.setType(einfo.getType());
             }
             catch (Exception e)
             {
                 logCat.error("::getEvent - cannot create the new event [" + einfo + "]", e);
             }
         }
-
         return event;
     }
 
@@ -209,7 +213,6 @@ public abstract class EventFactory
         Table         table     = null;
         String        eventId   = null;
         String        eventType = EventTypeUtil.getEventType(action).getEventType();
-
         try
         {
             config = DbFormsConfigRegistry.instance().lookup();
@@ -218,14 +221,11 @@ public abstract class EventFactory
         {
             logCat.error("::getEventIdFromDestinationTable - cannot get the config object from the DbFormsConfigRegistry");
         }
-
-
         if (config != null)
         {
             // try to retrieve a valid  target table name from the request;
             // if it's null, try to retrieve the table id from the action string.
             String tableName = EventUtil.getDestinationTableName(request, action);
-
             if (!Util.isNull(tableName))
             {
                 table = config.getTableByName(tableName);
