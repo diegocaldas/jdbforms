@@ -59,8 +59,6 @@ import dori.jasper.engine.JRExporter;
 import dori.jasper.engine.export.JRPdfExporter;
 import dori.jasper.engine.export.JRXlsExporter;
 
-
-
 /**
  * This servlet starts a JasperReport. Data is read from the current dbForm.
  * Servlet is looking for the report xml file in WEB-INF/custom/reports,
@@ -82,8 +80,7 @@ import dori.jasper.engine.export.JRXlsExporter;
  * 
  * @author Henner Kollmann
  */
-public class StartReportServlet extends HttpServlet
-{
+public class StartReportServlet extends HttpServlet {
    /** DOCUMENT ME! */
    private static Category logCat = Category.getInstance("StartReportServlet");
 
@@ -96,25 +93,22 @@ public class StartReportServlet extends HttpServlet
    /** DOCUMENT ME! */
    public static final String REPORTCONFIGDIR = "reportdirs";
 
-   private String[]     reportdirs;
+   private String[] reportdirs;
 
    /**
     * Initialize this servlet.
     * 
     * @exception ServletException if we cannot configure ourselves correctly
     */
-   public void init() throws ServletException
-   {
+   public void init() throws ServletException {
       String value = getServletConfig().getInitParameter(REPORTCONFIGDIR);
 
-      if (value == null)
-      {
+      if (value == null) {
          value = "WEB-INF/reports/";
       }
 
       reportdirs = StringUtils.split(value, ",");
    }
-
 
    /**
     * Basic servlet method, answers requests from the browser.
@@ -126,11 +120,9 @@ public class StartReportServlet extends HttpServlet
     * @throws IOException if there is an I/O problem.
     */
    public void doGet(HttpServletRequest request, HttpServletResponse response)
-              throws ServletException, IOException
-   {
+      throws ServletException, IOException {
       process(request, response);
    }
-
 
    /**
     * Basic servlet method, answers requests fromt the browser.
@@ -142,11 +134,9 @@ public class StartReportServlet extends HttpServlet
     * @throws IOException if there is an I/O problem.
     */
    public void doPost(HttpServletRequest request, HttpServletResponse response)
-               throws ServletException, IOException
-   {
+      throws ServletException, IOException {
       process(request, response);
    }
-
 
    /**
     * generates a report from request. Tries to get data from DbForms.
@@ -154,25 +144,36 @@ public class StartReportServlet extends HttpServlet
     * @param request HTTPServletRequest
     * @param response HTTPServletResponse
     */
-   private void process(HttpServletRequest request, 
-                        HttpServletResponse response)
-   {
+   private void process(
+      HttpServletRequest request,
+      HttpServletResponse response) {
       // create report name
-      try
-      {
-         String       reportFile = getReportFileFullName(request.getPathInfo(), 
-                                                         getServletContext(), 
-                                                         request, response);
-         JRDataSource dataSource = getDataFromForm(getServletContext(), request, 
-                                                   response);
-         process(reportFile, dataSource, getServletContext(), request, response);
-      }
-      catch (Exception e)
-      {
+      try {
+         String reportFile =
+            getReportFileFullName(
+               request.getPathInfo(),
+               getServletContext(),
+               request,
+               response);
+
+         if (!Util.isNull(reportFile)) {
+            logCat.info("=== user dir " + FileUtil.dirname(reportFile));
+            System.setProperty("user.dir", FileUtil.dirname(reportFile));
+            checkIfNeedToCompile(getServletContext(), reportFile);
+            JRDataSource dataSource =
+               getDataFromForm(getServletContext(), request, response);
+            processReport(
+               reportFile,
+               dataSource,
+               getServletContext(),
+               request,
+               response);
+         }
+      } catch (Exception e) {
          logCat.error(e);
+         handleException(request, response, e);
       }
    }
-
 
    /**
     * generates a report.
@@ -187,92 +188,79 @@ public class StartReportServlet extends HttpServlet
     * @param request HTTPServletRequest
     * @param response HTTPServletResponse
     */
-   public static void process(String reportFileFullName, 
-                              JRDataSource dataSource, ServletContext context, 
-                              HttpServletRequest request, 
-                              HttpServletResponse response)
-   {
-      try
-      {
-         if (Util.isNull(reportFileFullName))
-         {
+   public static void processReport(
+      String reportFileFullName,
+      JRDataSource dataSource,
+      ServletContext context,
+      HttpServletRequest request,
+      HttpServletResponse response) {
+      try {
+         if (Util.isNull(reportFileFullName)) {
             return;
          }
 
          // generate parameter map
-         DbFormsConfig   config   = (DbFormsConfig) context.getAttribute(
-                                             DbFormsConfig.CONFIG);
-         ReportParameter repParam = new ReportParameter(request, 
-                                                        SqlUtil.getConnection(
-                                                                 config, 
-                                                                 getConnectionName(
-                                                                          request)), 
-                                                        FileUtil.dirname(
-                                                                 reportFileFullName)
-                                                        + File.separator);
+         DbFormsConfig config =
+            (DbFormsConfig) context.getAttribute(DbFormsConfig.CONFIG);
+         ReportParameter repParam =
+            new ReportParameter(
+               request,
+               SqlUtil.getConnection(config, getConnectionName(request)),
+               FileUtil.dirname(reportFileFullName) + File.separator,
+               context.getRealPath("") + File.separator);
          Map map = new HashMap();
          map.put("PARAM", repParam);
 
          byte[] bytes = null;
 
-         try
-         {
+         try {
             // Fill the report with data
             JasperPrint jPrint;
-            try 
-            {   
-	            if (dataSource == null)
-	            {
-	               jPrint = JasperFillManager.fillReport(reportFileFullName
-	                                                     + ".jasper", map, 
-	                                                     repParam.getConnection());
-	            }
-	            else
-	            {
-	               jPrint = JasperFillManager.fillReport(reportFileFullName
-	                                                     + ".jasper", map, 
-	                                                     dataSource);
-	            }
-           } 
-           finally 
-           {  
-		     repParam.getConnection().close();
-           }
+            try {
+               if (dataSource == null) {
+                  jPrint =
+                     JasperFillManager.fillReport(
+                        reportFileFullName + ".jasper",
+                        map,
+                        repParam.getConnection());
+               } else {
+                  jPrint =
+                     JasperFillManager.fillReport(
+                        reportFileFullName + ".jasper",
+                        map,
+                        dataSource);
+               }
+            } finally {
+               repParam.getConnection().close();
+            }
 
-            if (jPrint.getPages().size() == 0)
-            {
+            if (jPrint.getPages().size() == 0) {
                handleNoData(request, response);
 
                return;
-            }
-            else
-            {
-               String outputFormat = ParseUtil.getParameter(request, 
-                                                            StartReportServlet.REPORTTYPEPARAM, 
-                                                            "PDF");
+            } else {
+               String outputFormat =
+                  ParseUtil.getParameter(
+                     request,
+                     StartReportServlet.REPORTTYPEPARAM,
+                     "PDF");
 
                // create the output stream
-               if ("PDF".equals(outputFormat))
-               {
+               if ("PDF".equals(outputFormat)) {
                   response.setContentType("application/pdf");
                   bytes = exportToPDF(jPrint);
-               }
-               else if ("XLS".equals(outputFormat))
-               {
+               } else if ("XLS".equals(outputFormat)) {
                   response.setContentType("application/msexcel");
                   bytes = exportToXLS(jPrint);
                }
             }
-         }
-         catch (JRException e)
-         {
+         } catch (JRException e) {
             logCat.error("jasper error: " + e.getMessage());
             handleException(request, response, e);
             return;
          }
 
-         if ((bytes != null) && (bytes.length > 0))
-         {
+         if ((bytes != null) && (bytes.length > 0)) {
             // Send the output stream to the client
             response.setContentLength(bytes.length);
 
@@ -280,22 +268,17 @@ public class StartReportServlet extends HttpServlet
             ouputStream.write(bytes, 0, bytes.length);
             ouputStream.flush();
             ouputStream.close();
-         }
-         else
-         {
+         } else {
             handleEmptyResponse(request, response);
 
             return;
          }
-      }
-      catch (Exception e)
-      {
+      } catch (Exception e) {
          handleException(request, response, e);
 
          return;
       }
    }
-
 
    /**
     * DOCUMENT ME!
@@ -307,46 +290,36 @@ public class StartReportServlet extends HttpServlet
     * 
     * @return DOCUMENT ME!
     */
-   public String getReportFileFullName(String reportFileName, 
-                                       ServletContext context, 
-                                       HttpServletRequest request, 
-                                       HttpServletResponse response)
-   {
+   public String getReportFileFullName(
+      String reportFileName,
+      ServletContext context,
+      HttpServletRequest request,
+      HttpServletResponse response) {
       String reportFile = null;
 
-      try
-      {
+      try {
          boolean found = false;
 
-         for (int i = 0; i < reportdirs.length; i++)
-         {
+         for (int i = 0; i < reportdirs.length; i++) {
             reportFile = context.getRealPath(reportdirs[i] + reportFileName);
 
-            if (FileUtil.fileExists(reportFile + ".xml"))
-            {
+            if (FileUtil.fileExists(reportFile + ".xml")) {
                found = true;
 
                break;
             }
          }
 
-         if (found)
-         {
-            checkIfNeedToCompile(context, reportFile);
-         }
-         else
-         {
+         if (!found) {
             handleNoReport(request, response);
+            reportFile = null;
          }
-      }
-      catch (Exception e)
-      {
+      } catch (Exception e) {
          handleException(request, response, e);
       }
 
       return reportFile;
    }
-
 
    /**
     * DOCUMENT ME!
@@ -355,20 +328,20 @@ public class StartReportServlet extends HttpServlet
     * 
     * @return DOCUMENT ME!
     */
-   public static String getConnectionName(HttpServletRequest request)
-   {
-      String   res      = SqlUtil.DEFAULT_CONNECTION;
+   public static String getConnectionName(HttpServletRequest request) {
+      String res = SqlUtil.DEFAULT_CONNECTION;
       WebEvent webEvent = (WebEvent) request.getAttribute("webEvent");
 
-      if ((webEvent != null) && (webEvent.getTableId() != -1))
-      {
-         res = ParseUtil.getParameter(request, 
-                                      "invname_" + webEvent.getTableId(), res);
+      if ((webEvent != null) && (webEvent.getTableId() != -1)) {
+         res =
+            ParseUtil.getParameter(
+               request,
+               "invname_" + webEvent.getTableId(),
+               res);
       }
 
       return res;
    }
-
 
    /**
     * DOCUMENT ME!
@@ -377,13 +350,15 @@ public class StartReportServlet extends HttpServlet
     * @param response DOCUMENT ME!
     * @param e DOCUMENT ME!
     */
-   public static void handleException(HttpServletRequest request, 
-                                      HttpServletResponse response, Exception e)
-   {
-      sendErrorMessage(request, response, 
-                       "JasperReport Error<BR>" + e.toString() + "<BR>");
+   public static void handleException(
+      HttpServletRequest request,
+      HttpServletResponse response,
+      Exception e) {
+      sendErrorMessage(
+         request,
+         response,
+         "JasperReport Error<BR>" + e.toString() + "<BR>");
    }
-
 
    /**
     * DOCUMENT ME!
@@ -391,79 +366,70 @@ public class StartReportServlet extends HttpServlet
     * @param request DOCUMENT ME!
     * @param response DOCUMENT ME!
     */
-   public static void handleNoData(HttpServletRequest request, 
-                                   HttpServletResponse response)
-   {
+   public static void handleNoData(
+      HttpServletRequest request,
+      HttpServletResponse response) {
       sendErrorMessage(request, response, "no data found to print");
    }
 
-
-   private static void sendErrorMessage(HttpServletRequest request, 
-                                        HttpServletResponse response, 
-                                        String message)
-   {
-      try
-      {
+   private static void sendErrorMessage(
+      HttpServletRequest request,
+      HttpServletResponse response,
+      String message) {
+      try {
          Vector errors = (Vector) request.getAttribute("errors");
          errors.add(new Exception(message));
 
-         String fue         = ParseUtil.getParameter(request, "source");
+         String fue = ParseUtil.getParameter(request, "source");
          String contextPath = request.getContextPath();
          fue = fue.substring(contextPath.length());
          request.getRequestDispatcher(fue).forward(request, response);
-      }
-      catch (Exception ex)
-      {
-         try
-         {
+      } catch (Exception ex) {
+         try {
             PrintWriter out = response.getWriter();
             response.setContentType("text/html");
             out.println("<html><body><h1>ERROR</h1><p>");
             out.println(message);
             out.println("</p></body></html>");
-         }
-         catch (IOException ioe2)
-         {
-            logCat.error("!!!senderror message crashed!!!" + ioe2);
+         } catch (IOException ioe2) {
+            logCat.error("!!!senderror message crashed!!!" + ioe2.getMessage());
          }
       }
    }
 
-
-   private static void handleNoReport(HttpServletRequest request, 
-                                      HttpServletResponse response)
-   {
-      sendErrorMessage(request, response, 
-                       "report " + request.getPathInfo() + " not found");
+   private static void handleNoReport(
+      HttpServletRequest request,
+      HttpServletResponse response) {
+      sendErrorMessage(
+         request,
+         response,
+         "report " + request.getPathInfo() + " not found");
    }
 
-
-   private static void handleEmptyResponse(HttpServletRequest request, 
-                                           HttpServletResponse response)
-   {
-      sendErrorMessage(request, response, 
-                       "JasperReport Error<BR>No output generated");
+   private static void handleEmptyResponse(
+      HttpServletRequest request,
+      HttpServletResponse response) {
+      sendErrorMessage(
+         request,
+         response,
+         "JasperReport Error<BR>No output generated");
    }
-
 
    private static byte[] exportToPDF(JasperPrint jasperPrint)
-                              throws JRException
-   {
-      ByteArrayOutputStream baos     = new ByteArrayOutputStream();
-      JRExporter            exporter = new JRPdfExporter();
+      throws JRException {
+      ByteArrayOutputStream baos = new ByteArrayOutputStream();
+      JRExporter exporter = new JRPdfExporter();
       exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
       exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, baos);
       exporter.exportReport();
 
       return baos.toByteArray();
    }
-
 
    private static byte[] exportToXLS(JasperPrint jasperPrint)
-                              throws JRException
-   {
-      ByteArrayOutputStream baos     = new ByteArrayOutputStream();
-      JRExporter            exporter = new JRXlsExporter();
+      throws JRException {
+      ByteArrayOutputStream baos = new ByteArrayOutputStream();
+      JRExporter exporter = new JRXlsExporter();
       exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
       exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, baos);
       exporter.exportReport();
@@ -471,79 +437,73 @@ public class StartReportServlet extends HttpServlet
       return baos.toByteArray();
    }
 
-
    private static void compileJasper(ServletContext context, String reportFile)
-                              throws JRException
-   {
-      logCat.debug("=== start to compile " + reportFile);
+      throws Exception {
+      logCat.info("=== start to compile " + reportFile);
 
       // Tomcat specific!! Other jsp engine may handle this different!!
-      String classpath = (String) context.getAttribute(
-                                  "org.apache.catalina.jsp_classpath");
-      logCat.debug("=== used classpath " + classpath);
+      String classpath =
+         (String) context.getAttribute("org.apache.catalina.jsp_classpath");
+      logCat.info("=== used classpath " + classpath);
       System.setProperty("jasper.reports.compile.class.path", classpath);
 
-      try
-      {
+      try {
          JasperCompileManager.compileReportToFile(reportFile);
-      }
-      catch (JRException e)
-      {
+      } catch (Exception e) {
          logCat.error("compile error " + e.getMessage());
          throw e;
       }
    }
 
-
-   private static void checkIfNeedToCompile(ServletContext context, 
-                                            String reportFile)
-                                     throws JRException
-   {
-      File   dir  = FileUtil.getFile(FileUtil.dirname(reportFile));
+   private static void checkIfNeedToCompile(
+      ServletContext context,
+      String reportFile)
+      throws Exception {
+      File dir = FileUtil.getFile(FileUtil.dirname(reportFile));
       File[] list = dir.listFiles();
 
-      for (int i = 0; i < list.length; i++)
-      {
-         String s   = FileUtil.removeExtension(list[i].getPath());
+      for (int i = 0; i < list.length; i++) {
+         String s = FileUtil.removeExtension(list[i].getPath());
          String ext = FileUtil.getExtension(list[i].getPath());
 
-         if (s.startsWith(reportFile) && (ext.equals("xml")))
-         {
-            File xmlFile    = list[i];
+         if (s.startsWith(reportFile) && (ext.equals("xml"))) {
+            File xmlFile = list[i];
             File jasperFile = FileUtil.getFile(s + ".jasper");
 
             if (!jasperFile.exists()
-                      || (xmlFile.lastModified() > jasperFile.lastModified()))
-            {
+               || (xmlFile.lastModified() > jasperFile.lastModified())) {
                compileJasper(context, xmlFile.getPath());
             }
          }
       }
    }
 
-
-   private JRDataSource getDataFromForm(ServletContext context, 
-                                        HttpServletRequest request, 
-                                        HttpServletResponse response)
-   {
+   private JRDataSource getDataFromForm(
+      ServletContext context,
+      HttpServletRequest request,
+      HttpServletResponse response) {
       JRDataSource dataSource = null;
 
       // Create form to get the resultsetvector
-      try
-      {
+      try {
          WebEvent webEvent = (WebEvent) request.getAttribute("webEvent");
 
-         if ((webEvent != null) && (webEvent.getTableId() != -1))
-         {
+         if ((webEvent != null) && (webEvent.getTableId() != -1)) {
             // Generate DataSource for JasperReports from call to DbForm
-            DbFormsConfig config    = (DbFormsConfig) context.getAttribute(
-                                               DbFormsConfig.CONFIG);
-            String        tableName = config.getTable(webEvent.getTableId())
-                                            .getName();
+            DbFormsConfig config =
+               (DbFormsConfig) context.getAttribute(DbFormsConfig.CONFIG);
+            String tableName = config.getTable(webEvent.getTableId()).getName();
 
             // Simulate call to DbFormTag to get resultsetvector
             PageContext pageContext = new PageContextDummy();
-            pageContext.initialize(this, request, response, null, true, 0, true);
+            pageContext.initialize(
+               this,
+               request,
+               response,
+               null,
+               true,
+               0,
+               true);
 
             DbFormTag form = new DbFormTag();
             form.setPageContext(pageContext);
@@ -564,20 +524,15 @@ public class StartReportServlet extends HttpServlet
             ResultSetVector rsv = form.getResultSetVector();
             logCat.info("get resultsetvector rsv= " + rsv.size());
 
-            if (rsv.size() == 0)
-            {
+            if (rsv.size() == 0) {
                handleNoData(request, response);
-            }
-            else
-            {
+            } else {
                dataSource = new JRDataSourceRSV(rsv);
             }
 
             form.doFinally();
          }
-      }
-      catch (Exception e)
-      {
+      } catch (Exception e) {
          logCat.error(e);
       }
 

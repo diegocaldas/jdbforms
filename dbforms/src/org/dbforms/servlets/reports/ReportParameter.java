@@ -46,20 +46,22 @@ public class ReportParameter
    private HttpServletRequest request;
    private Connection         connection;
    private String             reportPath;
+   private String             contextPath;
 
    /**
     * Creates a new ReportParameter object.
-    * 
+admin    * 
     * @param request DOCUMENT ME!
     * @param connection DOCUMENT ME!
     * @param reportPath DOCUMENT ME!
     */
    public ReportParameter(HttpServletRequest request, Connection connection, 
-                          String reportPath)
+                          String reportPath, String contextPath)
    {
       this.request    = request;
       this.connection = connection;
       this.reportPath = reportPath;
+      this.contextPath = contextPath;
    }
 
    /**
@@ -108,4 +110,11 @@ public class ReportParameter
    {
       return reportPath;
    }
+   /**
+    * @return String
+    */
+   public String getContextPath() {
+      return contextPath;
+   }
+
 }
