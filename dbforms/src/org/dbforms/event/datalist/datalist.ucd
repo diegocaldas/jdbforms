@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<editmodel:ClassDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" size="628,598" id="foxatfoxatdbforms769" metadata="nsuml-1.4" initialized="true" showWireOptions="1" zoom="0.75" scrolledX="207" scrolledY="126">
+  <children xsi:type="editmodel:ClassEditModel" location="1451,507" size="121,121" id="foxatfoxatdbforms1633" runTimeClassModel="foxatfoxatdbforms1649;foxatfoxatdbforms1639;foxatfoxatdbforms1637;foxatfoxatdbforms1644;foxatfoxatdbforms1655;foxatfoxatdbforms1634;foxatfoxatdbforms1642;foxatfoxatdbforms1640;foxatfoxatdbforms1638;foxatfoxatdbforms1636;foxatfoxatdbforms1662">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="98,72">
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms1649"/>
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms1644"/>
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms1655"/>
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms1662"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" id="foxatfoxatdbforms1702" connectionRouterKind="Manual" source="//@children.0" target="//@children.4/@sourceConnections.0" targetEnd="//@children.0/@sourceConnections.0/@children.1" sourceEnd="//@children.0/@sourceConnections.0/@children.0">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="60,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showPublicMethods="true" showPackageMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" location="973,507" size="128,103" id="foxatfoxatdbforms1067" runTimeClassModel="foxatfoxatdbforms1071;foxatfoxatdbforms1076;foxatfoxatdbforms1069;foxatfoxatdbforms1081">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="98,54">
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms1071"/>
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms1076"/>
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms1081"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" id="foxatfoxatdbforms1068" connectionRouterKind="Manual" source="//@children.1" target="//@children.4/@sourceConnections.0" targetEnd="//@children.1/@sourceConnections.0/@children.1" sourceEnd="//@children.1/@sourceConnections.0/@children.0">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="64,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showPublicMethods="true" showPackageMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" location="1292,507" size="129,103" id="foxatfoxatdbforms971" runTimeClassModel="foxatfoxatdbforms975;foxatfoxatdbforms973;foxatfoxatdbforms985;foxatfoxatdbforms980">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="98,54">
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms980"/>
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms975"/>
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms985"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" id="foxatfoxatdbforms972" connectionRouterKind="Manual" source="//@children.2" target="//@children.4/@sourceConnections.0" targetEnd="//@children.2/@sourceConnections.0/@children.1" sourceEnd="//@children.2/@sourceConnections.0/@children.0">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="64,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showPublicMethods="true" showPackageMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" location="481,510" size="125,121" id="foxatfoxatdbforms768" runTimeClassModel="foxatfoxatdbforms787;foxatfoxatdbforms785;foxatfoxatdbforms780;foxatfoxatdbforms771;foxatfoxatdbforms773">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="102,72">
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms780"/>
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms773"/>
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms785"/>
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms787"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" id="foxatfoxatdbforms770" connectionRouterKind="Manual" source="//@children.3" target="//@children.5/@sourceConnections.0" targetEnd="//@children.3/@sourceConnections.0/@children.1" sourceEnd="//@children.3/@sourceConnections.0/@children.0">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="62,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showPublicMethods="true" showPackageMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" location="812,507" size="131,103" id="foxatfoxatdbforms1313" runTimeClassModel="foxatfoxatdbforms1317;foxatfoxatdbforms1319;foxatfoxatdbforms1329;foxatfoxatdbforms1315;foxatfoxatdbforms1324">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="99,54">
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms1324"/>
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms1319"/>
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms1329"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" targetConnections="//@children.1/@sourceConnections.0 //@children.6/@sourceConnections.0 //@children.2/@sourceConnections.0 //@children.0/@sourceConnections.0" id="foxatfoxatdbforms1314" connectionRouterKind="GeneralizationManhattan" source="//@children.4" target="//@children.8" targetEnd="//@children.4/@sourceConnections.0/@children.1" sourceEnd="//@children.4/@sourceConnections.0/@children.0">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="65,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="138,103" anchorKind="FixedAtEdge"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showPublicMethods="true" showPackageMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" location="305,513" size="125,103" id="foxatfoxatdbforms876" runTimeClassModel="foxatfoxatdbforms878;foxatfoxatdbforms887;foxatfoxatdbforms880;foxatfoxatdbforms890;foxatfoxatdbforms885">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="102,54">
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms880"/>
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms885"/>
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms887"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" targetConnections="//@children.3/@sourceConnections.0 //@children.7/@sourceConnections.0 //@children.11/@sourceConnections.0" id="foxatfoxatdbforms877" connectionRouterKind="GeneralizationManhattan" source="//@children.5" target="//@children.10" targetEnd="//@children.5/@sourceConnections.0/@children.1" sourceEnd="//@children.5/@sourceConnections.0/@children.0">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="62,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="134,157" anchorKind="FixedAtEdge"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showPublicMethods="true" showPackageMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" location="1131,507" size="131,103" id="foxatfoxatdbforms1107" runTimeClassModel="foxatfoxatdbforms1111;foxatfoxatdbforms1113;foxatfoxatdbforms1123;foxatfoxatdbforms1118;foxatfoxatdbforms1109">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="99,54">
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms1113"/>
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms1118"/>
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms1123"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" id="foxatfoxatdbforms1108" connectionRouterKind="Manual" source="//@children.6" target="//@children.4/@sourceConnections.0" targetEnd="//@children.6/@sourceConnections.0/@children.1" sourceEnd="//@children.6/@sourceConnections.0/@children.0">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="65,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showPublicMethods="true" showPackageMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" location="636,510" size="125,121" id="foxatfoxatdbforms841" runTimeClassModel="foxatfoxatdbforms856;foxatfoxatdbforms858;foxatfoxatdbforms845;foxatfoxatdbforms851;foxatfoxatdbforms843">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="102,72">
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms845"/>
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms851"/>
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms856"/>
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms858"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" id="foxatfoxatdbforms842" connectionRouterKind="Manual" source="//@children.7" target="//@children.5/@sourceConnections.0" targetEnd="//@children.7/@sourceConnections.0/@children.1" sourceEnd="//@children.7/@sourceConnections.0/@children.0">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="62,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showPublicMethods="true" showPackageMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" location="1118,284" size="277,103" targetConnections="//@children.4/@sourceConnections.0" id="foxatfoxatdbforms354" runTimeClassModel="foxatfoxatdbforms355;foxatfoxatdbforms360;foxatfoxatdbforms365">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="108,54">
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms360"/>
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms355"/>
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms365"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" targetConnections="//@children.10/@sourceConnections.0" id="foxatfoxatdbforms1696" connectionRouterKind="GeneralizationManhattan" source="//@children.8" target="//@children.9" targetEnd="//@children.8/@sourceConnections.0/@children.1" sourceEnd="//@children.8/@sourceConnections.0/@children.0">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="138,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="119,283" anchorKind="FixedAtEdge"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showPublicMethods="true" showPackageMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" location="784,-81" size="238,283" targetConnections="//@children.8/@sourceConnections.0" id="foxatfoxatdbforms46" runTimeClassModel="foxatfoxatdbforms264;foxatfoxatdbforms242;foxatfoxatdbforms229;foxatfoxatdbforms253;foxatfoxatdbforms259;foxatfoxatdbforms248;foxatfoxatdbforms228;foxatfoxatdbforms233;foxatfoxatdbforms269;foxatfoxatdbforms244;foxatfoxatdbforms221;foxatfoxatdbforms226;foxatfoxatdbforms246;foxatfoxatdbforms225;foxatfoxatdbforms235;foxatfoxatdbforms224;foxatfoxatdbforms261;foxatfoxatdbforms256;foxatfoxatdbforms267;foxatfoxatdbforms251;foxatfoxatdbforms223;foxatfoxatdbforms240;foxatfoxatdbforms230">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="129,234">
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms235"/>
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms240"/>
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms242"/>
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms244"/>
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms259"/>
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms246"/>
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms251"/>
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms267"/>
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms253"/>
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms256"/>
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms261"/>
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms248"/>
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms269"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showPublicMethods="true" showPackageMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" location="411,282" size="268,157" targetConnections="//@children.5/@sourceConnections.0" id="foxatfoxatdbforms285" runTimeClassModel="foxatfoxatdbforms286;foxatfoxatdbforms293;foxatfoxatdbforms310;foxatfoxatdbforms295;foxatfoxatdbforms287;foxatfoxatdbforms315;foxatfoxatdbforms313;foxatfoxatdbforms299;foxatfoxatdbforms302">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="159,108">
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms287"/>
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms302"/>
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms299"/>
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms295"/>
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms293"/>
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms315"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" id="foxatfoxatdbforms1709" connectionRouterKind="Manual" source="//@children.10" target="//@children.8/@sourceConnections.0" targetEnd="//@children.10/@sourceConnections.0/@children.1" sourceEnd="//@children.10/@sourceConnections.0/@children.0">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="134,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showPublicMethods="true" showPackageMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" location="320,663" size="274,85" targetConnections="//@children.12/@sourceConnections.0" id="foxatfoxatdbforms333" runTimeClassModel="foxatfoxatdbforms340;foxatfoxatdbforms334">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="105,36">
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms334"/>
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms340"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" connectionRouterKind="Manual" source="//@children.11" target="//@children.5/@sourceConnections.0" targetEnd="//@children.11/@sourceConnections.0/@children.1" sourceEnd="//@children.11/@sourceConnections.0/@children.0">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="137,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showPublicMethods="true" showPackageMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" location="154,818" size="294,103" id="foxatfoxatdbforms906" runTimeClassModel="foxatfoxatdbforms920;foxatfoxatdbforms917;foxatfoxatdbforms908;foxatfoxatdbforms910;foxatfoxatdbforms915">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="102,54">
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms910"/>
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms915"/>
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms917"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" targetConnections="//@children.13/@sourceConnections.0" id="foxatfoxatdbforms907" connectionRouterKind="GeneralizationManhattan" source="//@children.12" target="//@children.11" targetEnd="//@children.12/@sourceConnections.0/@children.1" sourceEnd="//@children.12/@sourceConnections.0/@children.0">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="147,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="137,85" anchorKind="FixedAtEdge"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showPublicMethods="true" showPackageMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" location="478,818" size="304,121" id="foxatfoxatdbforms936" runTimeClassModel="foxatfoxatdbforms940;foxatfoxatdbforms951;foxatfoxatdbforms953;foxatfoxatdbforms938;foxatfoxatdbforms946">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="102,72">
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms946"/>
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms940"/>
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms951"/>
+      <children xsi:type="editmodel:MethodEditModel" id="foxatfoxatdbforms953"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" id="foxatfoxatdbforms937" connectionRouterKind="Manual" source="//@children.13" target="//@children.12/@sourceConnections.0" targetEnd="//@children.13/@sourceConnections.0/@children.1" sourceEnd="//@children.13/@sourceConnections.0/@children.0">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="152,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showPublicMethods="true" showPackageMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true"/>
+  </children>
+  <classDiagramPreferences xsi:type="editmodel:UMLClassDiagramPreference" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showPublicMethods="true" showPackageMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showInterfaceStereotype="true" showClassStereotype="true" showPackageStereotype="true"/>
+</editmodel:ClassDiagramEditModel>
