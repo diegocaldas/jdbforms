@@ -223,14 +223,17 @@ public class GotoEvent extends NavigationEvent
 	 * 
 	 * @exception SQLException if any error occurs
 	 */
-   public ResultSetVector processEvent(FieldValue[] childFieldValues, 
-                                       FieldValue[] orderConstraint,
-                                       String sqlFilter, 
-                                       int count, 
-                                       String firstPosition, 
-                                       String lastPosition, 
-									   			String dbConnectionName,
-                                       Connection con)
+   public ResultSetVector processEvent(
+					FieldValue[] childFieldValues,
+					FieldValue[] orderConstraint, 
+					String sqlFilter, 
+					FieldValue[] sqlFilterParams,
+					int count, 
+					String firstPosition,
+					String lastPosition, 
+					String dbConnectionName,
+					Connection con
+				)
                                 throws SQLException
    {
       // get the DataSourceList from the session
@@ -267,7 +270,7 @@ public class GotoEvent extends NavigationEvent
       DataSourceFactory qry = new DataSourceFactory(dbConnectionName, con, table);
       if (Util.isNull(whereClause))
       {
-         qry.setSelect(childFieldValues, orderConstraint, sqlFilter);
+         qry.setSelect(childFieldValues, orderConstraint, sqlFilter, sqlFilterParams);
       }
       else
       {

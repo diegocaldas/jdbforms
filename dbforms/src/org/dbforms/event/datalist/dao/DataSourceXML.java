@@ -102,7 +102,8 @@ public class DataSourceXML extends DataSource
     */
    public void setSelect(FieldValue[] filterConstraint, 
                          FieldValue[] orderConstraint,
-                         String sqlFilter)
+                         String sqlFilter,
+								 FieldValue[] sqlFilterParams)
    {
       this.filterConstraint = filterConstraint;
       this.orderConstraint  = orderConstraint;

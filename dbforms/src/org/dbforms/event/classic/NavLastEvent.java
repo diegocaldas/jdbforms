@@ -24,7 +24,6 @@ package org.dbforms.event.classic;
 
 import org.dbforms.config.*;
 import org.dbforms.event.NavigationEvent;
-import org.dbforms.util.*;
 import javax.servlet.http.*;
 import java.sql.*;
 
@@ -89,11 +88,17 @@ public class NavLastEvent extends NavigationEvent
 	 * 
 	 * @exception SQLException if any error occurs
 	 */
-   public ResultSetVector processEvent(FieldValue[] childFieldValues,
-      FieldValue[] orderConstraint, String sqlFilter, int count, String firstPosition,
-      String lastPosition, 
-	  String dbConnectionName,
-      Connection con)
+   public ResultSetVector processEvent(
+					FieldValue[] childFieldValues,
+					FieldValue[] orderConstraint, 
+					String sqlFilter, 
+					FieldValue[] sqlFilterParams,
+					int count, 
+					String firstPosition,
+					String lastPosition, 
+					String dbConnectionName,
+					Connection con
+				)
       throws SQLException
    {
       // select from table in inverted order
@@ -101,7 +106,7 @@ public class NavLastEvent extends NavigationEvent
       FieldValue.invert(orderConstraint);
 
       ResultSetVector resultSetVector = table.doConstrainedSelect(table
-            .getFields(), childFieldValues, orderConstraint, sqlFilter,
+            .getFields(), childFieldValues, orderConstraint, sqlFilter, sqlFilterParams,
             Constants.COMPARE_NONE, count, con);
       FieldValue.invert(orderConstraint);
       resultSetVector.flip();

@@ -22,9 +22,6 @@
  */
 package org.dbforms.taglib;
 import java.io.*;
-import java.util.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 import org.apache.log4j.Category;

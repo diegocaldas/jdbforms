@@ -68,6 +68,7 @@ public class DataSourceJDBC extends DataSource
    private String       tableList;
    private FieldValue[] filterConstraint;
    private FieldValue[] orderConstraint;
+	private FieldValue[] sqlFilterParams;
    private String       sqlFilter;
    private boolean      fetchedAll       = false;
 
@@ -156,11 +157,14 @@ public class DataSourceJDBC extends DataSource
     * @param sqlFilter       sql condition to add to where clause
     */
    public void setSelect(FieldValue[] filterConstraint, 
-                         FieldValue[] orderConstraint, String sqlFilter)
+                         FieldValue[] orderConstraint, 
+                         String sqlFilter,
+								 FieldValue[] sqlFilterParams)
    {
       this.filterConstraint = filterConstraint;
       this.orderConstraint  = orderConstraint;
       this.sqlFilter        = sqlFilter;
+		this.sqlFilterParams  = sqlFilterParams;
    }
 
 
@@ -270,7 +274,7 @@ public class DataSourceJDBC extends DataSource
 
             stmt = con.prepareStatement(query);
             rs   = getTable()
-                      .getDoSelectResultSet(filterConstraint, orderConstraint, 
+                      .getDoSelectResultSet(filterConstraint, orderConstraint, sqlFilterParams, 
                                             Constants.COMPARE_NONE, 
                                             (PreparedStatement) stmt);
          }

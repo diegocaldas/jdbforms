@@ -1967,7 +1967,6 @@ public class PrintfFormat
        */
       private String fFormatString(double x)
       {
-         boolean noDigits = false;
          char[]  ca6;
          char[]  ca7;
 
@@ -1993,7 +1992,6 @@ public class PrintfFormat
                ca6 = "-Inf".toCharArray();
             }
 
-            noDigits = true;
          }
          else if (Double.isNaN(x))
          {
@@ -2010,7 +2008,6 @@ public class PrintfFormat
                ca6 = "NaN".toCharArray();
             }
 
-            noDigits = true;
          }
          else
          {
@@ -2067,8 +2064,6 @@ public class PrintfFormat
          int     j;
          int     k;
          int     p;
-         int     n1In;
-         int     n2In;
          int     expon     = 0;
          int     ePos;
          int     rPos;
@@ -2104,34 +2099,6 @@ public class PrintfFormat
 
          rPos = sx.indexOf('.');
 
-         if (rPos != -1)
-         {
-            n1In = rPos;
-         }
-         else if (ePos != -1)
-         {
-            n1In = ePos;
-         }
-         else
-         {
-            n1In = sx.length();
-         }
-
-         if (rPos != -1)
-         {
-            if (ePos != -1)
-            {
-               n2In = ePos - rPos - 1;
-            }
-            else
-            {
-               n2In = sx.length() - rPos - 1;
-            }
-         }
-         else
-         {
-            n2In = 0;
-         }
 
          if (ePos != -1)
          {
@@ -2751,7 +2718,6 @@ public class PrintfFormat
        */
       private String eFormatString(double x, char eChar)
       {
-         boolean noDigits = false;
          char[]  ca4;
          char[]  ca5;
 
@@ -2777,7 +2743,6 @@ public class PrintfFormat
                ca4 = "-Inf".toCharArray();
             }
 
-            noDigits = true;
          }
          else if (Double.isNaN(x))
          {
@@ -2794,7 +2759,6 @@ public class PrintfFormat
                ca4 = "NaN".toCharArray();
             }
 
-            noDigits = true;
          }
          else
          {
@@ -2950,7 +2914,6 @@ public class PrintfFormat
          int     i;
          char[]  ca4;
          char[]  ca5;
-         boolean noDigits      = false;
 
          if (Double.isInfinite(x))
          {
@@ -2974,7 +2937,6 @@ public class PrintfFormat
                ca4 = "-Inf".toCharArray();
             }
 
-            noDigits = true;
          }
          else if (Double.isNaN(x))
          {
@@ -2991,7 +2953,6 @@ public class PrintfFormat
                ca4 = "NaN".toCharArray();
             }
 
-            noDigits = true;
          }
          else
          {

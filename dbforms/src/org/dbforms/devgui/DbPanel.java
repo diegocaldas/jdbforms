@@ -29,7 +29,6 @@ package org.dbforms.devgui;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
-import java.io.*;
 import javax.swing.*;
 
 

@@ -28,9 +28,9 @@ import java.util.Iterator;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
-import javax.servlet.jsp.tagext.TagSupport;
 import javax.servlet.jsp.tagext.TryCatchFinally;
 import org.apache.log4j.Category;
+import org.dbforms.config.FieldValue;
 import org.dbforms.util.ParseUtil;
 import org.dbforms.util.Util;
 
@@ -106,7 +106,8 @@ import org.dbforms.util.Util;
  * 
  * @version $Revision$
  */
-public class DbFilterTag extends TagSupportWithScriptHandler implements TryCatchFinally
+public class DbFilterTag extends TagSupportWithScriptHandler
+   implements TryCatchFinally
 {
    /** DOCUMENT ME! */
    protected static String FLT_COND = "_cond_";
@@ -130,6 +131,51 @@ public class DbFilterTag extends TagSupportWithScriptHandler implements TryCatch
 
    /**
     * return the currently setted filter condition, reading it from request.
+    * 
+    * @param request
+    * @param tableId
+    * @return filter string
+    */
+   public static String getSqlFilter(HttpServletRequest request, int tableId)
+   {
+      int conditionId = getCurrentCondition(request, tableId);
+
+      if (conditionId > -1)
+      {
+         // if there's an active condition, build up it from request
+         return DbFilterConditionTag.getSqlFilter(request, tableId, conditionId);
+      }
+
+      return null;
+   }
+
+
+   /**
+    * return the parametes of the currently setted filter condition, 
+    * reading it from request.
+    * 
+    * @param request
+    * @param tableId
+    * @return filter string
+    */
+   public static FieldValue[] getSqlFilterParams(HttpServletRequest request, 
+                                                 int tableId)
+   {
+      int conditionId = getCurrentCondition(request, tableId);
+
+      if (conditionId > -1)
+      {
+         // if there's an active condition, build up it from request
+         return DbFilterConditionTag.getSqlFilterParams(request, tableId, 
+                                                        conditionId);
+      }
+
+      return null;
+   }
+
+
+   /**
+    * return the currently setted filter condition, reading it from request.
     * Used in DbFormTag's doStartTag to set the value of the sqlFilter attribute. 
     * 
     * @param request
@@ -140,11 +186,9 @@ public class DbFilterTag extends TagSupportWithScriptHandler implements TryCatch
    public static String generateSqlFilter(HttpServletRequest request, 
                                           int tableId, String sqlFilter)
    {
-      String filter          = "";
-      String filterCondition = null;
-
       // read from request the currently active condition
-      int conditionId = getCurrentCondition(request, tableId);
+      int    conditionId     = getCurrentCondition(request, tableId);
+      String filterCondition = null;
 
       if (conditionId > -1)
       {
@@ -155,20 +199,24 @@ public class DbFilterTag extends TagSupportWithScriptHandler implements TryCatch
       }
 
       logCat.debug("filter condition from request : " + filterCondition);
+
+      String filter = "";
+
       if (!Util.isNull(sqlFilter) && !Util.isNull(filterCondition))
       {
-            filter = " ( " + sqlFilter + " ) AND ( " + filterCondition + " ) ";
+         filter = " ( " + sqlFilter + " ) AND ( " + filterCondition + " ) ";
       }
       else if (!Util.isNull(sqlFilter))
       {
-            filter = sqlFilter;
+         filter = sqlFilter;
       }
       else if (!Util.isNull(filterCondition))
       {
-         filter =  filterCondition;
+         filter = filterCondition;
       }
 
       logCat.debug("filter to apply : " + filter);
+
       return filter;
    }
 
@@ -180,8 +228,8 @@ public class DbFilterTag extends TagSupportWithScriptHandler implements TryCatch
     * @param tableId
     * @return the condition id
     */
-   protected static int getCurrentCondition(HttpServletRequest request, 
-                                            int tableId)
+   private static int getCurrentCondition(HttpServletRequest request, 
+                                          int tableId)
    {
       int curCondId = -1;
 
@@ -235,11 +283,6 @@ public class DbFilterTag extends TagSupportWithScriptHandler implements TryCatch
    private String filterName;
 
    /**
-    * reference to parent dbform
-    */
-   private DbFormTag parentForm;
-
-   /**
     * caption of the SET button
     */
    private String setCaption;
@@ -248,11 +291,6 @@ public class DbFilterTag extends TagSupportWithScriptHandler implements TryCatch
     * size attribute for select element 
     */
    private String size;
-
-   /** 
-    * class style to apply to select 
-    */
-   private String styleClass;
 
    /**
     * caption of the UNSET button
@@ -309,20 +347,22 @@ public class DbFilterTag extends TagSupportWithScriptHandler implements TryCatch
                               (DbFilterConditionTag.State) conds.get(
                                        currentCondId));
       }
+
       StringBuffer buf = render(currentCond);
+
       try
       {
-			// clear body content. 
-			// It's meaningless for filter tag and should not be rendered!
-/*
-			if (bodyContent != null)
-			{
-				bodyContent.clearBody();
-			}
-*/			
+         // clear body content. 
+         // It's meaningless for filter tag and should not be rendered!
+
+         /*
+                  if (bodyContent != null)
+                  {
+                     bodyContent.clearBody();
+                  }
+         */
          JspWriter out = pageContext.getOut();
          out.write(buf.toString());
-
       }
       catch (IOException e)
       {
@@ -353,10 +393,8 @@ public class DbFilterTag extends TagSupportWithScriptHandler implements TryCatch
       conds           = null;
       disabledCaption = null;
       filterName      = null;
-      parentForm      = null;
       setCaption      = null;
       size            = null;
-      styleClass      = null;
       unsetCaption    = null;
    }
 
@@ -378,7 +416,7 @@ public class DbFilterTag extends TagSupportWithScriptHandler implements TryCatch
     */
    protected int getTableId()
    {
-      return parentForm.getTable().getId();
+      return getParentForm().getTable().getId();
    }
 
 
@@ -388,13 +426,7 @@ public class DbFilterTag extends TagSupportWithScriptHandler implements TryCatch
    private void init()
    {
       conds      = new ArrayList();
-      parentForm = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
       filterName = getFilterName(getTableId());
-
-      if (styleClass == null)
-      {
-         styleClass = "";
-      }
 
       if (size == null)
       {
@@ -425,16 +457,15 @@ public class DbFilterTag extends TagSupportWithScriptHandler implements TryCatch
     * @return
     * @throws JspException
     */
-   protected StringBuffer render(DbFilterConditionTag currentCond)
-                          throws JspException
+   private StringBuffer render(DbFilterConditionTag currentCond)
+                        throws JspException
    {
-
       StringBuffer buf = new StringBuffer();
 
 
       // render main select
       buf.append("\n<select name=\"" + filterName + FLT_SEL + "\" class=\""
-                 + styleClass + "\" size=\"" + size
+                 + getStyleClass() + "\" size=\"" + size
                  + "\" onchange=\"document.dbform.submit()\" >\n");
 
       int cnt = 0;
@@ -488,6 +519,7 @@ public class DbFilterTag extends TagSupportWithScriptHandler implements TryCatch
             buf.append(btn.render());
          }
       }
+
       return buf;
    }
 
@@ -516,15 +548,6 @@ public class DbFilterTag extends TagSupportWithScriptHandler implements TryCatch
    public void setSize(String string)
    {
       size = string;
-   }
-
-
-   /**
-    * @param string
-    */
-   public void setStyleClass(String string)
-   {
-      styleClass = string;
    }
 
 

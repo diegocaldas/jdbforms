@@ -92,6 +92,7 @@ public abstract class NavigationEvent extends WebEvent
    public abstract ResultSetVector processEvent(FieldValue[] filterFieldValues, 
                                                 FieldValue[] orderConstraint,
                                                 String sqlFilter, 
+																FieldValue[] sqlFilterParams,
                                                 int count, 
                                                 String firstPosition, 
                                                 String lastPosition, 

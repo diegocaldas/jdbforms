@@ -25,7 +25,6 @@ package org.dbforms.taglib;
 import java.util.Vector;
 import java.sql.Connection;
 
-import javax.servlet.http.*;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.*;

@@ -97,12 +97,17 @@ public class NavCopyEvent extends NavigationEvent
 	 * 
 	 * @exception SQLException if any error occurs
 	 */
-   public ResultSetVector processEvent(FieldValue[] filterFieldValues, 
-                                       FieldValue[] orderConstraint, 
-                                       String sqlFilter, int count, 
-                                       String firstPosition, String lastPosition,
-									   String dbConnectionName,
-                                       Connection con)
+   public ResultSetVector processEvent(
+						FieldValue[] childFieldValues,
+						FieldValue[] orderConstraint, 
+						String sqlFilter, 
+						FieldValue[] sqlFilterParams,
+						int count, 
+						String firstPosition,
+						String lastPosition, 
+						String dbConnectionName,
+						Connection con
+					)
                                 throws SQLException
    {
       logCat.info("processed NavCopyEvent");

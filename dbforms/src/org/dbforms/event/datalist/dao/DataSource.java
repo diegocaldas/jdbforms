@@ -125,7 +125,8 @@ public abstract class DataSource
     */
    public abstract void setSelect(FieldValue[] filterConstraint, 
                                   FieldValue[] orderConstraint, 
-                                  String sqlFilter);
+                                  String sqlFilter,
+											 FieldValue[] sqlFilterParams);
 
 
    /**

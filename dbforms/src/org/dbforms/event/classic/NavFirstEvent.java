@@ -24,7 +24,6 @@ package org.dbforms.event.classic;
 
 import org.dbforms.config.*;
 import org.dbforms.event.NavigationEvent;
-import org.dbforms.util.*;
 import java.sql.*;
 import javax.servlet.http.*;
 
@@ -89,15 +88,21 @@ public class NavFirstEvent extends NavigationEvent
 	 * 
 	 * @exception SQLException if any error occurs
 	 */
-   public ResultSetVector processEvent(FieldValue[] childFieldValues,
-      FieldValue[] orderConstraint, String sqlFilter, int count, String firstPosition,
-      String lastPosition, 
-      String dbConnectionName,
-      Connection con)
+   public ResultSetVector processEvent(					
+				   FieldValue[] childFieldValues,
+					FieldValue[] orderConstraint, 
+					String sqlFilter, 
+					FieldValue[] sqlFilterParams,
+					int count, 
+					String firstPosition,
+					String lastPosition, 
+					String dbConnectionName,
+					Connection con
+				)
       throws SQLException
    {
       // just select from table in given order
       return table.doConstrainedSelect(table.getFields(), childFieldValues,
-         orderConstraint, sqlFilter, Constants.COMPARE_NONE, count, con);
+         orderConstraint, sqlFilter, sqlFilterParams, Constants.COMPARE_NONE, count, con);
    }
 }

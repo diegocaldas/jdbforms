@@ -22,10 +22,7 @@
  */
 package org.dbforms.taglib;
 import java.util.*;
-import java.sql.*;
-import java.io.*;
 import javax.servlet.jsp.*;
-import javax.servlet.jsp.tagext.*;
 import javax.servlet.http.*;
 
 import org.dbforms.util.*;

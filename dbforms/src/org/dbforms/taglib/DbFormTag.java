@@ -20,6 +20,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
+
 package org.dbforms.taglib;
 import java.util.Vector;
 import java.util.Hashtable;
@@ -31,22 +32,17 @@ import java.sql.Connection;
 import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletRequest;
-
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.JspException;
-
 import javax.servlet.jsp.tagext.BodyTagSupport;
 import javax.servlet.jsp.tagext.TryCatchFinally;
 import javax.servlet.jsp.tagext.Tag;
-
 import org.apache.commons.validator.ValidatorResources;
 import org.apache.log4j.Category;
-
 import org.dbforms.util.ParseUtil;
 import org.dbforms.util.Util;
 import org.dbforms.util.MessageResources;
-
 import org.dbforms.config.Constants;
 import org.dbforms.config.DbEventInterceptor;
 import org.dbforms.config.DbFormsConfig;
@@ -60,15 +56,11 @@ import org.dbforms.config.Table;
 import org.dbforms.config.Field;
 import org.dbforms.config.GrantedPrivileges;
 import org.dbforms.config.error.DbFormsErrors;
-
-
 import org.dbforms.event.WebEvent;
 import org.dbforms.event.ReloadEvent;
 import org.dbforms.event.NavigationEvent;
 import org.dbforms.event.NavEventFactory;
 import org.dbforms.event.NavEventFactoryImpl;
-
-
 import org.dbforms.event.eventtype.EventType;
 import org.dbforms.validation.ValidatorConstants;
 import org.dbforms.validation.DbFormsValidatorUtil;
@@ -83,7 +75,8 @@ import org.dbforms.validation.DbFormsValidatorUtil;
 public class DbFormTag extends BodyTagSupport implements TryCatchFinally
 {
    /** logging category for this class */
-   private static Category logCat = Category.getInstance(DbFormTag.class.getName());
+   private static Category logCat = Category.getInstance(
+                                             DbFormTag.class.getName());
 
    /** access data defined in dbforms-config.xml */
    private DbFormsConfig config;
@@ -161,7 +154,6 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
     */
    private FieldValue[] childFieldValues;
 
-
    /** subform flag */
    private boolean isSubForm = false;
 
@@ -170,9 +162,9 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
 
    /** filter string */
    private String filter;
-   /** SQL filter string */
-   private String sqlFilter = null;
 
+   /** SQL filter string */
+   private String sqlfilter = null;
    private String gotoPrefix;
 
    //private String gotoPos;
@@ -225,8 +217,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
    private WebEvent webEvent = null;
 
    /** NavigationEvent factory */
-   private static NavEventFactory navEventFactory = NavEventFactoryImpl
-      .instance();
+   private static NavEventFactory navEventFactory = NavEventFactoryImpl.instance();
 
    /** redisplayFieldsOnError flag */
    private String redisplayFieldsOnError = "false";
@@ -247,7 +238,12 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
    /** holds the list of forms to get FieldNames array (2003-02-04 HKK) */
    private Hashtable fieldNames;
 
-   /* Adds a form to validate */
+   /**
+    * DOCUMENT ME!
+    *
+    * @param formName DOCUMENT ME!
+    * @param childFields DOCUMENT ME!
+    */
    public void addValidationForm(String formName, Hashtable childFields)
    {
       if (validationForms == null)
@@ -266,7 +262,11 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
    }
 
 
-   /* Adds a form to validate */
+   /**
+    * DOCUMENT ME!
+    *
+    * @param fields DOCUMENT ME!
+    */
    public void addFieldNames(Hashtable fields)
    {
       if (fieldNames == null)
@@ -286,9 +286,9 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
     */
    public void setTableName(String tableName)
    {
-      this.tableName    = tableName;
-      this.table        = config.getTableByName(tableName);
-      this.tableId      = table.getId();
+      this.tableName = tableName;
+      this.table     = config.getTableByName(tableName);
+      this.tableId   = table.getId();
    }
 
 
@@ -583,19 +583,20 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
 
 
    /**
-	* @return
-	*/
+   * @return
+   */
    public String getSqlFilter()
    {
-	   return sqlFilter;
+      return sqlfilter;
    }
 
+
    /**
-	* @param string
-	*/
+   * @param string
+   */
    public void setSqlFilter(String string)
    {
-	   sqlFilter = string;
+      sqlfilter = string;
    }
 
 
@@ -652,8 +653,8 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
     */
    public void setMultipart(String multipart)
    {
-      this.multipart       = multipart;
-      this._isMultipart    = "true".equals(multipart);
+      this.multipart    = multipart;
+      this._isMultipart = "true".equals(multipart);
    }
 
 
@@ -1001,8 +1002,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
     *
     * @param  newRedisplayFieldsOnError the new redisplayFieldsOnError value
     */
-   public void setRedisplayFieldsOnError(
-      java.lang.String newRedisplayFieldsOnError)
+   public void setRedisplayFieldsOnError(java.lang.String newRedisplayFieldsOnError)
    {
       redisplayFieldsOnError = newRedisplayFieldsOnError;
    }
@@ -1129,12 +1129,13 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
    public void setPageContext(PageContext pc)
    {
       super.setPageContext(pc);
-      config = (DbFormsConfig) pageContext.getServletContext().getAttribute(DbFormsConfig.CONFIG);
+      config = (DbFormsConfig) pageContext.getServletContext()
+                                          .getAttribute(DbFormsConfig.CONFIG);
 
       if (config == null)
       {
          throw new IllegalArgumentException(
-            "Troubles with DbForms config xml file: can not find CONFIG object in application context! check system configuration! check if application crashes on start-up!");
+                  "Troubles with DbForms config xml file: can not find CONFIG object in application context! check system configuration! check if application crashes on start-up!");
       }
    }
 
@@ -1174,19 +1175,21 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
    public int doStartTag()
    {
       Connection con = SqlUtil.getConnection(config, dbConnectionName);
+
       try
       {
          // *************************************************************
          //  Part I - checking user access right, processing interceptor
          // *************************************************************
-         HttpServletRequest  request  = (HttpServletRequest)  pageContext.getRequest();
+         HttpServletRequest  request  = (HttpServletRequest) pageContext.getRequest();
          HttpServletResponse response = (HttpServletResponse) pageContext.getResponse();
 
          logCat.info("servlet path = " + request.getServletPath());
          logCat.info("servlet getPathInfo = " + request.getPathInfo());
-         
+
+
          // 20030604-HKK: Removed because of bug in current cactus enviroment! 
-  		 //               getPathTranslated() will get an null exception! 
+         //               getPathTranslated() will get an null exception! 
          //  logCat.info("servlet getPathTranslated = " + request.getPathTranslated());
          logCat.info("servlet getContextPath = " + request.getContextPath());
          logCat.debug("pos1");
@@ -1198,11 +1201,13 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
 
          // check user privilege
          if ((table != null)
-                  && !table.hasUserPrivileg(request, GrantedPrivileges.PRIVILEG_SELECT))
+                   && !table.hasUserPrivileg(request, 
+                                             GrantedPrivileges.PRIVILEG_SELECT))
          {
             logCat.debug("pos3");
+
             String str = ("Sorry, viewing data from table " + table.getName()
-                          + " is not granted for this session.");
+                         + " is not granted for this session.");
             logCat.warn(str);
             out.println(str + "<br><br>");
 
@@ -1217,16 +1222,18 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
             try
             {
                logCat.debug("pos5");
-               table.processInterceptors(DbEventInterceptor.PRE_SELECT, request, null, config, con);
+               table.processInterceptors(DbEventInterceptor.PRE_SELECT, request, 
+                                         null, config, con);
             }
             catch (Exception sqle)
-            {  
+            {
                logCat.error("pos6");
-               String str = ("Sorry, viewing data from table " + table.getName()
-                             + " would violate a condition: " 
-                             + sqle.getMessage());
-			   logCat.error(str, sqle);
-			   out.println(str + "<br><br>");
+
+               String str = ("Sorry, viewing data from table "
+                            + table.getName() + " would violate a condition: "
+                            + sqle.getMessage());
+               logCat.error(str, sqle);
+               out.println(str + "<br><br>");
 
                return SKIP_BODY;
             }
@@ -1241,14 +1248,15 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
          // *************************************************************
          StringBuffer tagBuf = new StringBuffer();
 
+
          // explicitly re-set all instance variables which get changed during evaluation loops
          // and which are not reset by the jsp container trough setXxx() methods and
          logCat.info("resetting values of tag");
-         currentCount          = 0;
-         position              = null;
-         footerReached         = false;
-         resultSetVector       = null;
-         childElementOutput    = new StringBuffer();
+         currentCount       = 0;
+         position           = null;
+         footerReached      = false;
+         resultSetVector    = null;
+         childElementOutput = new StringBuffer();
          logCat.debug("first steps finished");
 
          // if main form
@@ -1259,14 +1267,13 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
 
             //Check if developer has overriden action
             if ((this.getAction() != null)
-                     && (this.getAction().trim().length() > 0))
+                      && (this.getAction().trim().length() > 0))
             {
                tagBuf.append(this.getAction());
             }
             else
             {
-               tagBuf.append(response.encodeURL(request.getContextPath()
-                     + "/servlet/control"));
+               tagBuf.append(response.encodeURL(request.getContextPath() + "/servlet/control"));
             }
 
             tagBuf.append("\"");
@@ -1290,9 +1297,10 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
 
             if (getJavascriptValidation().equals("true"))
             {
-               validationFct    = getFormValidatorName();
-               validationFct    = Character.toUpperCase(validationFct.charAt(0))
-                  + validationFct.substring(1, validationFct.length());
+               validationFct = getFormValidatorName();
+               validationFct = Character.toUpperCase(validationFct.charAt(0))
+                               + validationFct.substring(1, 
+                                                         validationFct.length());
                validationFct = "validate" + validationFct + "(this);";
             }
 
@@ -1335,7 +1343,9 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
             // supports RFC 1867 - multipart upload, if some database-fields represent filedata
             if (tableName == null)
             {
-					appendSource(request, tagBuf);
+               appendSource(request, tagBuf);
+
+
                // if form is an emptyform -> we've fineshed yet - cancel all further activities!
                out.println(tagBuf.toString());
 
@@ -1347,13 +1357,13 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
          else
          {
             // if sub-form, we dont write out html tags; this has been done already by a parent form
-            this.isSubForm      = true;
-            positionPathCore    = parentForm.getPositionPath();
+            this.isSubForm   = true;
+            positionPathCore = parentForm.getPositionPath();
 
             // If whereClause is not supplied by developer
             // determine the value(s) of the linked field(s)
             if ((this.getWhereClause() == null)
-                     || (this.getWhereClause().trim().length() == 0))
+                      || (this.getWhereClause().trim().length() == 0))
             {
                initChildFieldValues();
 
@@ -1364,37 +1374,46 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
             }
          }
 
+
          // write out involved table
          tagBuf.append("<input type=\"hidden\" name=\"invtable\" value=\""
-            + tableId + "\"/>");
+                       + tableId + "\"/>");
+
 
          // write out the name of the involved dbconnection.
          tagBuf.append("<input type='hidden' name='invname_" + tableId
-            + "' value='" + (Util.isNull(dbConnectionName)?"":dbConnectionName) + "'/>");
+                       + "' value='"
+                       + (Util.isNull(dbConnectionName) ? "" : dbConnectionName)
+                       + "'/>");
+
 
          // write out the autoupdate-policy of this form
          tagBuf.append("<input type=\"hidden\" name=\"autoupdate_" + tableId
-            + "\" value=\"" + autoUpdate + "\"/>");
+                       + "\" value=\"" + autoUpdate + "\"/>");
+
 
          // write out the followup-default for this table
          tagBuf.append("<input type=\"hidden\" name=\"fu_" + tableId
-            + "\" value=\"" + followUp + "\"/>");
+                       + "\" value=\"" + followUp + "\"/>");
 
          // write out the followupOnError-default for this table
          if (!Util.isNull(getFollowUpOnError()))
          {
             tagBuf.append("<input type=\"hidden\" name=\"fue_" + tableId
-               + "\" value=\"" + getFollowUpOnError() + "\"/>");
+                          + "\" value=\"" + getFollowUpOnError() + "\"/>");
          }
 
          // write out the formValidatorName
          if (!Util.isNull(getFormValidatorName()))
          {
             tagBuf.append("<input type=\"hidden\" name=\""
-               + ValidatorConstants.FORM_VALIDATOR_NAME + "_" + tableId
-               + "\" value=\"" + getFormValidatorName() + "\"/>");
+                          + ValidatorConstants.FORM_VALIDATOR_NAME + "_"
+                          + tableId + "\" value=\"" + getFormValidatorName()
+                          + "\"/>");
          }
-			appendSource(request, tagBuf);
+
+         appendSource(request, tagBuf);
+
 
          // Allow to send action dynamicaly from javascript
          tagBuf.append("<input type=\"hidden\" name=\"customEvent\"/>");
@@ -1404,26 +1423,48 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
          //  Part III - fetching Data. This data is provided to all sub-
          //  elements of this form.
          // *************************************************************
+         // III/1:
+         // initialize all of the different filters
 
-         setSqlFilter(DbFilterTag.generateSqlFilter(request, this.getTable().getId(), this.sqlFilter));
+         setSqlFilter(DbFilterTag.generateSqlFilter(request, getTable().getId(), getSqlFilter()));
 
+         // retrieve sqlFilters 
+			String sqlFilterString = "";
+			String filter = DbFilterTag.getSqlFilter(request, this.getTable().getId());
+			FieldValue[] sqlFilterParams = null;
+			
+			if (!Util.isNull(getSqlFilter()) && !Util.isNull(filter))
+			{
+				sqlFilterString = " ( " + filter + " ) AND ( " + getSqlFilter() + " ) ";
+			}
+			else if (!Util.isNull(getSqlFilter()))
+			{
+				sqlFilterString = getSqlFilter();
+			}
+			else if (!Util.isNull(filter))
+			{
+				sqlFilterString = filter;
+			}
+			logCat.debug("filter to apply : " + sqlFilterString);
+
+         if (!Util.isNull(filter)) {
+            sqlFilterParams = DbFilterTag.getSqlFilterParams(request, this.getTable().getId());
+         }
+			
+			
          // overrules other default declarations eventually done in XML config;
          this.initOverrulingOrder(request);
 
          // III/1: first we must determinate the ORDER clause to apply to the query
          // the order may be specified in the dbforms-config.xml file or in the current JSP file.
-         boolean useDefaultOrder = true;
 
          // tells us which definintion of field order (global or local) to use
          FieldValue[] orderConstraint;
-         Vector       orderFields;
 
          // if developer provided orderBy - Attribute in <db:dbform> - tag
          if (this.overrulingOrder != null)
          {
-            orderConstraint    = overrulingOrder;
-            orderFields        = overrulingOrderFields;
-            useDefaultOrder    = false;
+            orderConstraint = overrulingOrder;
             logCat.info("using OverrulingOrder (dbform tag attribute)");
          }
 
@@ -1440,7 +1481,6 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
                orderConstraint[i] = (FieldValue) tmpOrderConstraint[i].clone();
             }
 
-            orderFields = table.getDefaultOrderFields();
             logCat.info("using DefaultOrder (from config file)");
          }
 
@@ -1448,15 +1488,52 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
          if (orderConstraint == null)
          {
             throw new IllegalArgumentException(
-               "OrderBy-Clause must be specified either in table-element in config.xml or in dbform-tag on jsp view");
+                     "OrderBy-Clause must be specified either in table-element in config.xml or in dbform-tag on jsp view");
+         }
+
+         FieldValue[] filterFieldValues = null;
+
+         if (!Util.isNull(filter))
+         {
+            filterFieldValues = FieldValue.getFilterFieldArray(table, filter);
+         }
+
+         FieldValue[] mergedFieldValues = null;
+
+         if (childFieldValues == null)
+         {
+            mergedFieldValues = filterFieldValues;
+         }
+         else if (filterFieldValues == null)
+         {
+            mergedFieldValues = childFieldValues;
+         }
+         else
+         {
+            mergedFieldValues = new FieldValue[childFieldValues.length
+                                + filterFieldValues.length];
+            System.arraycopy(childFieldValues, 0, mergedFieldValues, 0, 
+                             childFieldValues.length);
+            System.arraycopy(filterFieldValues, 0, mergedFieldValues, 
+                             childFieldValues.length, filterFieldValues.length);
+         }
+
+         // if we just habe a search request we do not need any other constraints
+         FieldValue[] searchFieldValues = initSearchFieldValues();
+
+         if (searchFieldValues != null)
+         {
+            mergedFieldValues = searchFieldValues;
          }
 
          // III/2:
          // is there a POSITION we are supposed to navigate to?
          // positions are key values: for example "2", oder "2~454"
          //String position = pageContext.getRequest().getParameter("pos_"+tableId);
-         String firstPosition = Util.decode(ParseUtil.getParameter(request, "firstpos_" + tableId));
-         String lastPosition = Util.decode(ParseUtil.getParameter(request, "lastpos_" + tableId));
+         String firstPosition = Util.decode(ParseUtil.getParameter(request, 
+                                                                   "firstpos_" + tableId));
+         String lastPosition = Util.decode(ParseUtil.getParameter(request, 
+                                                                  "lastpos_" + tableId));
 
          if (firstPosition == null)
          {
@@ -1479,86 +1556,54 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
             {
                // checking one of the 2 strings is sufficient
                // the position info is out of date. we dont use it.
-               firstPosition    = null;
-               lastPosition     = null;
+               firstPosition = null;
+               lastPosition  = null;
             }
          }
 
          logCat.info("firstposition " + firstPosition);
          logCat.info("lastPosition " + lastPosition);
 
-			FieldValue[] filterFieldValues = null;
-			 if (!Util.isNull(filter))
-			{
-				filterFieldValues = FieldValue.getFilterFieldArray(table, filter);
-			}
- 
-
-         FieldValue[] mergedFieldValues = null;
-
-         if (childFieldValues == null)
-         {
-            mergedFieldValues = filterFieldValues;
-         }
-         else if (filterFieldValues == null)
-         {
-            mergedFieldValues = childFieldValues;
-         }
-         else
-         {
-            mergedFieldValues = new FieldValue[childFieldValues.length + filterFieldValues.length];
-            System.arraycopy(childFieldValues, 0, mergedFieldValues, 0, childFieldValues.length);
-            System.arraycopy(filterFieldValues, 0, mergedFieldValues, 
-                             childFieldValues.length, filterFieldValues.length);
-         }
-
-         // if we just habe a search request we do not need any other constraints
-         FieldValue[] searchFieldValues = initSearchFieldValues();
-
-         if (searchFieldValues != null)
-         {
-            mergedFieldValues = searchFieldValues;
-         } 
 
          /*
              in the code above we examined lots of information which determinates  _which_ resultset
              gets retrieved and the way this operation will be done.
-
+         
              which are the "parameters" we have (eventually!) retrieved
              ============================================================
-
+         
              *)  WebEvent Object in request: if the jsp containing this tag was invoked by
              the controller, then there is a Event which has been processed (DatebasEvents)
              or which waits to be processed (NavigationEvents, including GotoEvent)
-
+         
              *)  firstPos, lastPos: Strings containing key-fieldValues and indicating a line
              to go to if we have no other information. this may happen if a subform gets
              navigated. the parentForm is not involved in the operation but must be able
              to "navigate" to its new old position.
              [#checkme: risk of wrong interpreation if jsp calls jsp - compare source tags?]
-
+         
              *)  mergedFieldValues: this is a cumulation of all rules which restrict the
              result set in any way. it is build of
-
+         
              -  childFieldValues: restricting a set in a subform that all "childFields" in the
              resultset match their respective "parentFields" in main form. (for instance
              if customerID == 100, we only want to select orders from orders-table
              involving customerID 100)
-
+         
              -  filterFieldValues: if a filter is applied to the resultset we always need
              to select the _filtered_ resultset
-
+         
              -  searchFieldValues: if a search is performed we just want to show fields
              belonging to the search result (naturally ;=)
-
+         
              *) orderConstraint: this is a cumulation of rules for ordering (sorting)
              and restricting fields.
-
+         
              one part of it is built either from
              a) orderBy - clause of dbform element
              b) orderbY - definition in xml config (XPath: dbform-config/table/field)
              this part tells dbforms which orderby-clause to create
-
+         
              but if we combine this "order constraint" with actual values (the keys
              of a row, for example through "firstPos") then we can build very powerful
              queries allowing us to select exectly what we need. the order plays an important
@@ -1567,14 +1612,13 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
              (compare the rather complex methods FieldValue.getWhereAfterClause(),
              FieldValue.populateWhereAfterClause() and FieldValue.fillWithValues() which
              are doing most of that stuff describe above)
-
-
+         
+         
              *)  count: this is a property of DbFormTag. Its relevance is that certain operations
              need to be performed differently if count==0, which means the form is an
              "endless form".
          */
-         
-         
+
          // III/3: fetching data (compare description above)
          // this code is still expermintal, pre alpha! We need to put this logic into
          // etter (more readable, maintainable) code  (evt. own method or class)!
@@ -1582,20 +1626,21 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
          // if so...
          webEvent = (WebEvent) request.getAttribute("webEvent");
 
-		// set actual request to webEvent. Otherwise webEvent will not reflect current requestURI!
+         // set actual request to webEvent. Otherwise webEvent will not reflect current requestURI!
          if (webEvent != null)
          {
             webEvent.setRequest(request);
          }
 
-		 // if there comes no web event from controller, 
-		 // then create a new NAVIGATION event;
-	     //
+         // if there comes no web event from controller, 
+         // then create a new NAVIGATION event;
+         //
          // # 2002.11.xx-fossato added an event factory 
          // # 20030320-HKK:      Rewrite to use navEvent only
          if ((webEvent == null) && (localWebEvent != null))
          {
-            webEvent = navEventFactory.createEvent(localWebEvent, request, config, table);
+            webEvent = navEventFactory.createEvent(localWebEvent, request, 
+                                                   config, table);
 
             // Setted with localWebEvent attribute.
             if (webEvent != null)
@@ -1607,9 +1652,8 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
          // will be used to cast the webEvent to a navigation event;
          NavigationEvent navEvent = null;
 
-
          //
-		 // 1. possibility: webEvent is a navigation event ?
+         // 1. possibility: webEvent is a navigation event ?
          //
          if ((webEvent != null) && webEvent instanceof NavigationEvent)
          {
@@ -1635,7 +1679,8 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
             {
                logCat.info("§§§§ NAV GOTO §§§§");
 
-               Vector v = ParseUtil.getParametersStartingWith(request, gotoPrefix);
+               Vector v = ParseUtil.getParametersStartingWith(request, 
+                                                              gotoPrefix);
                gotoHt = new Hashtable();
 
                for (int i = 0; i < v.size(); i++)
@@ -1658,67 +1703,67 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
             if ((gotoHt != null) && (gotoHt.size() > 0))
             {
                String positionString = table.getPositionString(gotoHt);
-               navEvent = navEventFactory.createGotoEvent(table, request, config, positionString);
+               navEvent = navEventFactory.createGotoEvent(table, request, 
+                                                          config, 
+                                                          positionString);
             }
          }
 
-  		 //
-  		 // 3. a) error in insert event ?
-  		 //    b) create a GOTO event using a whereClause (free form select)
-  		 //    c) create a GOTO event using.. another constructor ;^)
+         //
+         // 3. a) error in insert event ?
+         //    b) create a GOTO event using a whereClause (free form select)
+         //    c) create a GOTO event using.. another constructor ;^)
          //
          if (navEvent == null)
          {
             Vector errors = (Vector) request.getAttribute("errors");
 
-            if ((count != 0)        
-                && (webEvent != null)  
-                &&  EventType.EVENT_DATABASE_INSERT.equals(webEvent.getType()) 
-                && (errors != null)
-                && (errors.size() > 0))
+            if ((count != 0) && (webEvent != null)
+                      && EventType.EVENT_DATABASE_INSERT.equals(
+                                  webEvent.getType()) && (errors != null)
+                      && (errors.size() > 0))
             {
                // error in insert event, nothing to do!
-               navEvent           = null;
-               resultSetVector    = null;
+               navEvent        = null;
+               resultSetVector = null;
                setFooterReached(true);
             }
             else if (!Util.isNull(getWhereClause()))
             {
                // We should do a free form select
-               navEvent = navEventFactory
-                            .createGotoEvent(table, request, config, whereClause, getTableList());
+               navEvent = navEventFactory.createGotoEvent(table, request, 
+                                                          config, whereClause, 
+                                                          getTableList());
             }
             else
             {
- 			  String myPosition 
- 			  			    = (
- 			  			    	(
- 			  			    		(count == 0) 
- 			  						|| "true".equals(getBypassNavigation()) 
- 			  					)
-                            ? null : firstPosition);
-              navEvent = navEventFactory.createGotoEvent(table, request, config, myPosition);
+               String myPosition = (((count == 0)
+                                      || "true".equals(getBypassNavigation()))
+                                       ? null : firstPosition);
+               navEvent = navEventFactory.createGotoEvent(table, request, 
+                                                          config, myPosition);
             }
          }
 
 
          // Now we have a NAVIGATION event to process
-		logCat.info("§§§ NAV/I §§§");
+         logCat.info("§§§ NAV/I §§§");
 
          if (navEvent != null)
          {
-            logCat.info("about to process nav event:" + navEvent.getClass().getName());
-            resultSetVector = 
-              navEvent.processEvent(mergedFieldValues,
-                                    orderConstraint,
-                                    sqlFilter, 
-                                    count, 
-                                    firstPosition, 
-                                    lastPosition,
-												dbConnectionName, 
-                                    con);
-          
-			if (ResultSetVector.isNull(resultSetVector))
+            logCat.info("about to process nav event:"
+                        + navEvent.getClass().getName());
+            resultSetVector = navEvent.processEvent(mergedFieldValues, 
+                                                    orderConstraint, 
+                                                    sqlFilterString,
+                                                    sqlFilterParams, 
+                                                    count, 
+                                                    firstPosition, 
+                                                    lastPosition, 
+                                                    dbConnectionName, 
+                                                    con);
+
+            if (ResultSetVector.isNull(resultSetVector))
             {
                setFooterReached(true);
             }
@@ -1740,8 +1785,8 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
             // process the interceptors associated to this table
             try
             {
-               table.processInterceptors(DbEventInterceptor.POST_SELECT,
-                  request, null, config, con);
+               table.processInterceptors(DbEventInterceptor.POST_SELECT, 
+                                         request, null, config, con);
             }
             catch (SQLException sqle)
             {
@@ -1777,24 +1822,30 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
             if (firstPosition != null)
             {
                tagBuf.append("<input type=\"hidden\" name=\"firstpos_"
-                  + tableId + "\" value=\"" + Util.encode(firstPosition, null) + "\"/>");
+                             + tableId + "\" value=\""
+                             + Util.encode(firstPosition, null) + "\"/>");
             }
 
             if (lastPosition != null)
             {
                tagBuf.append("<input type=\"hidden\" name=\"lastpos_" + tableId
-                  + "\" value=\"" + Util.encode(lastPosition, null) + "\"/>");
+                             + "\" value=\"" + Util.encode(lastPosition, null)
+                             + "\"/>");
             }
          }
+
 
          // construct TEI variables for access from JSP
          // # jp 27-06-2001: replacing "." by "_", so that SCHEMATA can be used
          pageContext.setAttribute("searchFieldNames_"
-            + tableName.replace('.', '_'), table.getNamesHashtable("search"));
+                                  + tableName.replace('.', '_'), 
+                                  table.getNamesHashtable("search"));
          pageContext.setAttribute("searchFieldModeNames_"
-            + tableName.replace('.', '_'), table.getNamesHashtable("searchmode"));
+                                  + tableName.replace('.', '_'), 
+                                  table.getNamesHashtable("searchmode"));
          pageContext.setAttribute("searchFieldAlgorithmNames_"
-            + tableName.replace('.', '_'), table.getNamesHashtable("searchalgo"));
+                                  + tableName.replace('.', '_'), 
+                                  table.getNamesHashtable("searchalgo"));
 
          // #fixme:
          // this is a weired crazy workaround [this code is also used in DbBodyTag!!]
@@ -1802,13 +1853,13 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
          // #fixme: explaination! -> initBody, spec, jsp container synchronizing variables, etc.
          if (!ResultSetVector.isNull(resultSetVector))
          {
-            pageContext.setAttribute("rsv_" + tableName.replace('.', '_'),
-               resultSetVector);
+            pageContext.setAttribute("rsv_" + tableName.replace('.', '_'), 
+                                     resultSetVector);
             pageContext.setAttribute("currentRow_"
-               + tableName.replace('.', '_'),
-               resultSetVector.getCurrentRowAsHashtable());
-            pageContext.setAttribute("position_" + tableName.replace('.', '_'),
-               table.getPositionString(resultSetVector));
+                                     + tableName.replace('.', '_'), 
+                                     resultSetVector.getCurrentRowAsHashtable());
+            pageContext.setAttribute("position_" + tableName.replace('.', '_'), 
+                                     table.getPositionString(resultSetVector));
          }
 
          out.println(tagBuf.toString());
@@ -1840,18 +1891,20 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
    }
 
 
-	private void appendSource(HttpServletRequest request, StringBuffer tagBuf)
-	{
-	   tagBuf.append("<input type=\"hidden\" name=\"source\" value=\"");
-		tagBuf.append(request.getRequestURI());
+   private void appendSource(HttpServletRequest request, StringBuffer tagBuf)
+   {
+      tagBuf.append("<input type=\"hidden\" name=\"source\" value=\"");
+      tagBuf.append(request.getRequestURI());
 
-		if (request.getQueryString() != null)
-		{
-			tagBuf.append("?").append(request.getQueryString());
-		}
+      if (request.getQueryString() != null)
+      {
+         tagBuf.append("?").append(request.getQueryString());
+      }
 
-		tagBuf.append("\"/>");
-	}
+      tagBuf.append("\"/>");
+   }
+
+
    /**
     * DOCUMENT ME!
     *
@@ -1912,9 +1965,9 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
 
          /** Generate Javascript validation methods & calls */
          if ((getFormValidatorName() != null)
-                  && (getFormValidatorName().length() > 0)
-                  && (getJavascriptValidation() != null)
-                  && getJavascriptValidation().equals("true"))
+                   && (getFormValidatorName().length() > 0)
+                   && (getJavascriptValidation() != null)
+                   && getJavascriptValidation().equals("true"))
          {
             jspOut.println(generateJavascriptValidation());
          }
@@ -1926,7 +1979,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
           *  Ex: champ1 => f_0_1@root_4
           */
          if ((getJavascriptFieldsArray() != null)
-                  && getJavascriptFieldsArray().equals("true"))
+                   && getJavascriptFieldsArray().equals("true"))
          {
             jspOut.println(generateJavascriptFieldsArray());
          }
@@ -1941,8 +1994,8 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
             while (enum.hasMoreElements())
             {
                String       aKey       = (String) enum.nextElement();
-               StringBuffer sbFonction = (StringBuffer) javascriptDistinctFunctions
-                  .get(aKey);
+               StringBuffer sbFonction = (StringBuffer) javascriptDistinctFunctions.get(
+                                                  aKey);
 
                jspOut.println(sbFonction);
             }
@@ -2004,10 +2057,11 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
          return;
       }
 
+
       // otherwise we can:
-      overrulingOrder          = table.createOrderFieldValues(orderBy,
-            localRequest, false);
-      overrulingOrderFields    = new Vector();
+      overrulingOrder = table.createOrderFieldValues(orderBy, localRequest, 
+                                                     false);
+      overrulingOrderFields = new Vector();
 
       if (overrulingOrder != null)
       {
@@ -2031,10 +2085,12 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
          return;
       }
 
-      String aPosition = parentForm.getTable().getPositionString(parentForm
-            .getResultSetVector());
-      childFieldValues = getTable().mapChildFieldValues(parentForm.getTable(),
-            parentField, childField, aPosition).toArr();
+      String aPosition = parentForm.getTable()
+                                   .getPositionString(parentForm.getResultSetVector());
+      childFieldValues = getTable()
+                            .mapChildFieldValues(parentForm.getTable(), 
+                                                 parentField, childField, 
+                                                 aPosition).toArr();
    }
 
 
@@ -2048,10 +2104,10 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
    private FieldValue[] initSearchFieldValues() throws IOException
    {
       FieldValue[]       fieldValues;
-      HttpServletRequest request          = (HttpServletRequest) pageContext
-         .getRequest();
-      Vector             searchFieldNames = ParseUtil.getParametersStartingWith(request,
-            "search_" + this.tableId);
+      HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
+      Vector             searchFieldNames = ParseUtil.getParametersStartingWith(
+                                                     request, 
+                                                     "search_" + this.tableId);
 
       if ((searchFieldNames == null) || (searchFieldNames.size() == 0))
       {
@@ -2065,29 +2121,32 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
       {
          String searchFieldName = (String) searchFieldNames.elementAt(i);
 
-         String aSearchFieldValue = ParseUtil.getParameter(request,
-               searchFieldName);
+         String aSearchFieldValue = ParseUtil.getParameter(request, 
+                                                           searchFieldName);
 
          // ie. search_1_12 is mapped to "john"
          if ((aSearchFieldValue != null)
-                  && (aSearchFieldValue.trim().length() > 0))
+                   && (aSearchFieldValue.trim().length() > 0))
          {
             int firstUnderscore  = searchFieldName.indexOf('_');
-            int secondUnderscore = searchFieldName.indexOf('_',
-                  firstUnderscore + 1);
-            int tableId          = Integer.parseInt(searchFieldName.substring(firstUnderscore
-                     + 1, secondUnderscore));
+            int secondUnderscore = searchFieldName.indexOf('_', 
+                                                           firstUnderscore + 1);
+            int tableId = Integer.parseInt(searchFieldName.substring(firstUnderscore + 1, 
+                                                                     secondUnderscore));
 
             // is equal to tableid, off course
-            int    fieldId          = Integer.parseInt(searchFieldName
-                  .substring(secondUnderscore + 1));
-            Field  f                = table.getField(fieldId);
-            String aSearchMode      = ParseUtil.getParameter(request,
-                  "searchmode_" + tableId + "_" + fieldId);
-            int    mode             = ("and".equals(aSearchMode))
-               ? Constants.SEARCHMODE_AND : Constants.SEARCHMODE_OR;
-            String aSearchAlgorithm = ParseUtil.getParameter(request,
-                  "searchalgo_" + tableId + "_" + fieldId);
+            int    fieldId = Integer.parseInt(searchFieldName.substring(secondUnderscore + 1));
+            Field  f           = table.getField(fieldId);
+            String aSearchMode = ParseUtil.getParameter(request, 
+                                                        "searchmode_" + tableId
+                                                        + "_" + fieldId);
+            int    mode = ("and".equals(aSearchMode))
+                             ? Constants.SEARCHMODE_AND : Constants.SEARCHMODE_OR;
+            String aSearchAlgorithm = ParseUtil.getParameter(request, 
+                                                             "searchalgo_"
+                                                             + tableId + "_"
+                                                             + fieldId);
+
 
             // 20021019-HKK: new searching
             aSearchFieldValue = aSearchFieldValue.trim();
@@ -2128,28 +2187,28 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
                }
                else if (aSearchAlgorithm.startsWith("weakStartEnd"))
                {
-                  algorithm    = Constants.SEARCH_ALGO_WEAK_START_END;
-                  operator     = Constants.FILTER_LIKE;
+                  algorithm = Constants.SEARCH_ALGO_WEAK_START_END;
+                  operator  = Constants.FILTER_LIKE;
                }
                else if (aSearchAlgorithm.startsWith("weakStart"))
                {
-                  algorithm    = Constants.SEARCH_ALGO_WEAK_START;
-                  operator     = Constants.FILTER_LIKE;
+                  algorithm = Constants.SEARCH_ALGO_WEAK_START;
+                  operator  = Constants.FILTER_LIKE;
                }
                else if (aSearchAlgorithm.startsWith("weakEnd"))
                {
-                  algorithm    = Constants.SEARCH_ALGO_WEAK_END;
-                  operator     = Constants.FILTER_LIKE;
+                  algorithm = Constants.SEARCH_ALGO_WEAK_END;
+                  operator  = Constants.FILTER_LIKE;
                }
                else if (aSearchAlgorithm.startsWith("weak"))
                {
-                  algorithm    = Constants.SEARCH_ALGO_WEAK;
-                  operator     = Constants.FILTER_LIKE;
+                  algorithm = Constants.SEARCH_ALGO_WEAK;
+                  operator  = Constants.FILTER_LIKE;
                }
             }
 
             if ((aSearchAlgorithm == null)
-                     || (aSearchAlgorithm.toLowerCase().indexOf("extended") == -1))
+                      || (aSearchAlgorithm.toLowerCase().indexOf("extended") == -1))
             {
                // Extended not found, only append field
                FieldValue fv = new FieldValue(f, aSearchFieldValue, operator);
@@ -2171,8 +2230,8 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
                // delimiter found in SearchFieldValue, create something like
                algorithm = Constants.SEARCH_ALGO_EXTENDED;
 
-               StringTokenizer st           = new StringTokenizer(" "
-                     + aSearchFieldValue + " ", "-");
+               StringTokenizer st = new StringTokenizer(" " + aSearchFieldValue
+                                                        + " ", "-");
                int             tokenCounter = 0;
 
                while (st.hasMoreTokens())
@@ -2202,8 +2261,8 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
 
                      if (operator != -1)
                      {
-                        FieldValue fv = new FieldValue(f, aSearchFieldValue,
-                              operator);
+                        FieldValue fv = new FieldValue(f, aSearchFieldValue, 
+                                                       operator);
                         fv.setSearchMode(mode);
                         fv.setSearchAlgorithm(algorithm);
 
@@ -2227,87 +2286,87 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
                // Check for Not Equal
                if (aSearchFieldValue.startsWith("<>"))
                {
-                  algorithm    = Constants.SEARCH_ALGO_EXTENDED;
-                  operator     = Constants.FILTER_NOT_EQUAL;
-                  jump         = 2;
+                  algorithm = Constants.SEARCH_ALGO_EXTENDED;
+                  operator  = Constants.FILTER_NOT_EQUAL;
+                  jump      = 2;
 
                   // Check for not equal
                }
                else if (aSearchFieldValue.startsWith("!="))
                {
                   // GreaterThenEqual found! - Store the operation for use later on
-                  algorithm    = Constants.SEARCH_ALGO_EXTENDED;
-                  operator     = Constants.FILTER_NOT_EQUAL;
-                  jump         = 2;
+                  algorithm = Constants.SEARCH_ALGO_EXTENDED;
+                  operator  = Constants.FILTER_NOT_EQUAL;
+                  jump      = 2;
 
                   // Check for GreaterThanEqual
                }
                else if (aSearchFieldValue.startsWith(">="))
                {
                   // GreaterThenEqual found! - Store the operation for use later on
-                  algorithm    = Constants.SEARCH_ALGO_EXTENDED;
-                  operator     = Constants.FILTER_GREATER_THEN_EQUAL;
-                  jump         = 2;
+                  algorithm = Constants.SEARCH_ALGO_EXTENDED;
+                  operator  = Constants.FILTER_GREATER_THEN_EQUAL;
+                  jump      = 2;
 
                   // Check for GreaterThan
                }
                else if (aSearchFieldValue.startsWith(">"))
                {
                   // GreaterThen found! - Store the operation for use later on
-                  algorithm    = Constants.SEARCH_ALGO_EXTENDED;
-                  operator     = Constants.FILTER_GREATER_THEN;
+                  algorithm = Constants.SEARCH_ALGO_EXTENDED;
+                  operator  = Constants.FILTER_GREATER_THEN;
 
                   // Check for SmallerThenEqual
                }
                else if (aSearchFieldValue.startsWith("<="))
                {
                   // SmallerThenEqual found! - Store the operation for use later on
-                  algorithm    = Constants.SEARCH_ALGO_EXTENDED;
-                  operator     = Constants.FILTER_SMALLER_THEN_EQUAL;
-                  jump         = 2;
+                  algorithm = Constants.SEARCH_ALGO_EXTENDED;
+                  operator  = Constants.FILTER_SMALLER_THEN_EQUAL;
+                  jump      = 2;
 
                   // Check for SmallerThen
                }
                else if (aSearchFieldValue.startsWith("<"))
                {
                   // SmallerThen found! - Store the operation for use later on
-                  algorithm    = Constants.SEARCH_ALGO_EXTENDED;
-                  operator     = Constants.FILTER_SMALLER_THEN;
-                  jump         = 1;
+                  algorithm = Constants.SEARCH_ALGO_EXTENDED;
+                  operator  = Constants.FILTER_SMALLER_THEN;
+                  jump      = 1;
 
                   // Check for equal
                }
                else if (aSearchFieldValue.startsWith("="))
                {
                   // Equal found! - Store the operator for use later on
-                  algorithm    = Constants.SEARCH_ALGO_EXTENDED;
-                  operator     = Constants.FILTER_EQUAL;
-                  jump         = 1;
+                  algorithm = Constants.SEARCH_ALGO_EXTENDED;
+                  operator  = Constants.FILTER_EQUAL;
+                  jump      = 1;
                }
                else if (aSearchFieldValue.startsWith("[NULL]"))
                {
-                  algorithm    = Constants.SEARCH_ALGO_EXTENDED;
-                  operator     = Constants.FILTER_NULL;
-                  jump         = 0;
+                  algorithm = Constants.SEARCH_ALGO_EXTENDED;
+                  operator  = Constants.FILTER_NULL;
+                  jump      = 0;
                }
                else if (aSearchFieldValue.startsWith("[!NULL]"))
                {
-                  algorithm    = Constants.SEARCH_ALGO_EXTENDED;
-                  operator     = Constants.FILTER_NOT_NULL;
-                  jump         = 0;
+                  algorithm = Constants.SEARCH_ALGO_EXTENDED;
+                  operator  = Constants.FILTER_NOT_NULL;
+                  jump      = 0;
                }
-				else if (aSearchFieldValue.startsWith("[EMPTY]"))
-				{
-					algorithm    = Constants.SEARCH_ALGO_EXTENDED;
-					operator     = Constants.FILTER_EMPTY;
-					jump         = 0;
-				}
-				else if (aSearchFieldValue.startsWith("[!EMPTY]"))
-				{
-					algorithm    = Constants.SEARCH_ALGO_EXTENDED;
-					operator     = Constants.FILTER_NOT_EMPTY;
-					jump         = 0;
-				}
+               else if (aSearchFieldValue.startsWith("[EMPTY]"))
+               {
+                  algorithm = Constants.SEARCH_ALGO_EXTENDED;
+                  operator  = Constants.FILTER_EMPTY;
+                  jump      = 0;
+               }
+               else if (aSearchFieldValue.startsWith("[!EMPTY]"))
+               {
+                  algorithm = Constants.SEARCH_ALGO_EXTENDED;
+                  operator  = Constants.FILTER_NOT_EMPTY;
+                  jump      = 0;
+               }
 
                if (jump > 0)
                {
@@ -2315,12 +2374,12 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
                }
 
                if ((operator == Constants.FILTER_EQUAL) && (jump == 0)
-                        && (f.getType() == FieldTypes.TIMESTAMP))
+                         && (f.getType() == FieldTypes.TIMESTAMP))
                {
                   // found a single timestamp value. Extend it to >value and <end of day of value
                   FieldValue fv;
-                  operator    = Constants.FILTER_GREATER_THEN_EQUAL;
-                  fv          = new FieldValue(f, aSearchFieldValue, operator);
+                  operator = Constants.FILTER_GREATER_THEN_EQUAL;
+                  fv       = new FieldValue(f, aSearchFieldValue, operator);
                   fv.setSearchMode(mode);
                   fv.setSearchAlgorithm(algorithm);
 
@@ -2334,22 +2393,25 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
                   }
 
                   operator = Constants.FILTER_GREATER_THEN_EQUAL;
-                  java.util.Date d = SqlUtil.createAppropriateTimeStamp(aSearchFieldValue);
- 				  if (d != null) {
-    	              fv = new FieldValue(f, aSearchFieldValue, operator);
-        	          fv.setSearchMode(mode);
-            	      fv.setSearchAlgorithm(algorithm);
 
-                	  if (mode == Constants.SEARCHMODE_AND)
-                  	  {
-                     	mode_and.addElement(fv);
-                  		}
-                  		else
-                  		{
-                     		mode_or.addElement(fv);
-                  		}
-				  }
+                  java.util.Date d = SqlUtil.createAppropriateTimeStamp(
+                                              aSearchFieldValue);
 
+                  if (d != null)
+                  {
+                     fv = new FieldValue(f, aSearchFieldValue, operator);
+                     fv.setSearchMode(mode);
+                     fv.setSearchAlgorithm(algorithm);
+
+                     if (mode == Constants.SEARCHMODE_AND)
+                     {
+                        mode_and.addElement(fv);
+                     }
+                     else
+                     {
+                        mode_or.addElement(fv);
+                     }
+                  }
                }
                else
                {
@@ -2380,6 +2442,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
       {
          return null;
       }
+
 
       // now we construct the fieldValues array
       // we ensure that the searchmodes are not mixed up
@@ -2421,7 +2484,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
          for (int i = 0; i < childFieldValues.length; i++)
          {
             if ((f == childFieldValues[i].getField())
-                     && childFieldValues[i].getRenderHiddenHtmlTag())
+                      && childFieldValues[i].getRenderHiddenHtmlTag())
             {
                childFieldValues[i].setRenderHiddenHtmlTag(false);
                logCat.info("stroke out field:" + f.getName());
@@ -2503,8 +2566,10 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
          if (aFieldValue == null)
          {
             throw new IllegalArgumentException("ERROR: Make sure that field "
-               + f.getName() + " is a KEY of the table " + table.getName()
-               + "! Otherwise you can not use it as PARENT/CHILD LINK argument!");
+                                               + f.getName()
+                                               + " is a KEY of the table "
+                                               + table.getName()
+                                               + "! Otherwise you can not use it as PARENT/CHILD LINK argument!");
          }
 
          String valueInPos = aFieldValue.getFieldValue();
@@ -2549,9 +2614,9 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
       //
       while (enum.hasMoreElements())
       {
-         key       = (String) enum.nextElement();
-         val       = (String) childFieldNames.get(key);
-         values    = "";
+         key    = (String) enum.nextElement();
+         val    = (String) childFieldNames.get(key);
+         values = "";
 
          if (fields.containsKey(val))
          {
@@ -2584,22 +2649,25 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
          //
          while (enum.hasMoreElements())
          {
-            key    = (String) enum.nextElement();
-            val    = (String) fields.get(key);
-            result.append("    dbFormFields[\"").append(key).append("\"] = new Array(");
+            key = (String) enum.nextElement();
+            val = (String) fields.get(key);
+            result.append("    dbFormFields[\"").append(key)
+                  .append("\"] = new Array(");
 
             // Sort the delimited string and return an ArrayList of it.
             ArrayList arrValues = sortFields(val);
 
             if (arrValues.size() == 1)
             {
-               result.append("\"").append((String) arrValues.get(0)).append("\"");
+               result.append("\"").append((String) arrValues.get(0))
+                     .append("\"");
             }
             else
             {
                for (int i = 0; i <= (arrValues.size() - 1); i++)
                {
-                  result.append("\"").append((String) arrValues.get(i)).append("\"");
+                  result.append("\"").append((String) arrValues.get(i))
+                        .append("\"");
 
                   if (i != (arrValues.size() - 1))
                   {
@@ -2647,10 +2715,12 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
                                                                 .getAttribute(DbFormsErrors.ERRORS);
          addValidationForm(getFormValidatorName(), childFieldNames);
 
-         return DbFormsValidatorUtil.getJavascript(validationForms,
-            MessageResources.getLocale(
-               (HttpServletRequest) pageContext.getRequest()),
-            validationFields, vr, getJavascriptValidationSrcFile(), errors);
+         return DbFormsValidatorUtil.getJavascript(validationForms, 
+                                                   MessageResources.getLocale(
+                                                            (HttpServletRequest) pageContext.getRequest()), 
+                                                   validationFields, vr, 
+                                                   getJavascriptValidationSrcFile(), 
+                                                   errors);
       }
    }
 
@@ -2719,15 +2789,15 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
             {
                try
                {
-                  ident1    = Integer.parseInt(tmp1.substring(tmp1.indexOf(
-                              "_", 2) + 1, tmp1.indexOf("@")));
-                  ident2    = Integer.parseInt(tmp2.substring(tmp2.indexOf(
-                              "_", 2) + 1, tmp2.indexOf("@")));
+                  ident1 = Integer.parseInt(tmp1.substring(tmp1.indexOf("_", 2) + 1, 
+                                                           tmp1.indexOf("@")));
+                  ident2 = Integer.parseInt(tmp2.substring(tmp2.indexOf("_", 2) + 1, 
+                                                           tmp2.indexOf("@")));
                }
                catch (Exception e)
                {
-                  ident1    = -1;
-                  ident2    = -1;
+                  ident1 = -1;
+                  ident2 = -1;
                }
 
                if (ident2 < ident1)
@@ -2763,11 +2833,12 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
          if (field == null)
          {
             logCat.warn("Field name : " + name + " is not present in Table "
-               + getTable().getName());
+                        + getTable().getName());
          }
 
          String       keyIndex = (getFooterReached())
-            ? ("ins" + getPositionPathCore()) : getPositionPath();
+                                    ? ("ins" + getPositionPathCore())
+                                    : getPositionPath();
          StringBuffer buf = new StringBuffer();
 
          buf.append("f_");
@@ -2828,8 +2899,6 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
       {
          fieldNames.clear();
       }
-
-      sqlFilter = null;
    }
 
 

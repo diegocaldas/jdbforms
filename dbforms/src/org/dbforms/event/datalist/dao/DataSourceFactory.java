@@ -144,9 +144,10 @@ public class DataSourceFactory
 	 */
 	public void setSelect(FieldValue[] filterConstraint, 
 											 FieldValue[] orderConstraint, 
-											 String sqlFilter)
+											 String sqlFilter,
+											 FieldValue[] sqlFilterParams)
    {											 
-		dataHandler.setSelect(filterConstraint, orderConstraint, sqlFilter);
+		dataHandler.setSelect(filterConstraint, orderConstraint, sqlFilter, sqlFilterParams);
    }
 
 

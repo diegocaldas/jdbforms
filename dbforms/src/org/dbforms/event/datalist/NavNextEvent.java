@@ -109,14 +109,17 @@ public class NavNextEvent extends NavigationEvent
     * @todo make a option to allow original "navNew" behavior if desired
     * @todo change behavior to navFirst if navPrev finds no data
 	 */
-   public ResultSetVector processEvent(FieldValue[] filterFieldValues, 
-                                       FieldValue[] orderConstraint,
-                                       String sqlFilter, 
-                                       int count, 
-                                       String firstPosition, 
-                                       String lastPosition, 
-									   String dbConnectionName,
-                                       Connection con)
+   public ResultSetVector processEvent(
+							FieldValue[] filterFieldValues,
+							FieldValue[] orderConstraint, 
+							String sqlFilter, 
+							FieldValue[] sqlFilterParams,
+							int count, 
+							String firstPosition,
+							String lastPosition, 
+							String dbConnectionName,
+							Connection con
+						)
                                 throws SQLException
    {
       logCat.info("==>NavNextEvent.processEvent");
@@ -126,7 +129,7 @@ public class NavNextEvent extends NavigationEvent
       if (qry == null)
       {
           qry = new DataSourceFactory(dbConnectionName, con, table);
-          qry.setSelect(filterFieldValues, orderConstraint, sqlFilter);
+          qry.setSelect(filterFieldValues, orderConstraint, sqlFilter, sqlFilterParams);
           ds.put(table, request, qry);
       }      
       String            position = table.getKeyPositionString(

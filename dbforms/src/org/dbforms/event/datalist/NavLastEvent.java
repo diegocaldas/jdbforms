@@ -94,14 +94,17 @@ public class NavLastEvent extends NavigationEvent
 	 * 
 	 * @exception SQLException if any error occurs
 	 */
-   public ResultSetVector processEvent(FieldValue[] filterFieldValues, 
-                                       FieldValue[] orderConstraint,
-                                       String sqlFilter, 
-                                       int count, 
-                                       String firstPosition, 
-                                       String lastPosition, 
-									   			String dbConnectionName,
-                                       Connection con)
+   public ResultSetVector processEvent(
+						FieldValue[] filterFieldValues,
+						FieldValue[] orderConstraint, 
+						String sqlFilter, 
+						FieldValue[] sqlFilterParams,
+						int count, 
+						String firstPosition,
+						String lastPosition, 
+						String dbConnectionName,
+						Connection con
+					)
                                 throws SQLException
    {
       logCat.info("==>NavLastEvent.processEvent");
@@ -111,7 +114,7 @@ public class NavLastEvent extends NavigationEvent
       if (qry == null)
       {
           qry = new DataSourceFactory(dbConnectionName, con, table);
-          qry.setSelect(filterFieldValues, orderConstraint, sqlFilter);
+          qry.setSelect(filterFieldValues, orderConstraint, sqlFilter, sqlFilterParams);
           ds.put(table, request, qry);
       }
 

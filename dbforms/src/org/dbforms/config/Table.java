@@ -89,11 +89,6 @@ public class Table
    /** the order-by clause, as specified in dbforms-config.xml (optional!) */
    private FieldValue[] defaultOrder;
 
-   /**
-    * datastructure generated from "orderBy",
-    * contains Field-Objects which are referenced in the orderBy-string
-    */
-   private Vector defaultOrderFields;
 
    /**
     * access control list for this object (if null, then its open to all users
@@ -459,12 +454,6 @@ public class Table
       // build the datastructure, containing Fields, and infos about sort
       defaultOrder    = this.createOrderFieldValues(orderBy, null, true);
 
-      // building a list of the fields contained in the defaultOrder structure
-      defaultOrderFields = new Vector();
-
-      for (int i = 0; i < defaultOrder.length; i++)
-         defaultOrderFields.addElement(defaultOrder[i].getField());
-
       logCat.info("Table.initDefaultOrder done.");
    }
 
@@ -477,14 +466,12 @@ public class Table
    public void initDefaultOrderFromKeys()
    {
       defaultOrder          = new FieldValue[getKey().size()];
-      defaultOrderFields    = new Vector();
 
       for (int i = 0; i < this.getKey().size(); i++)
       {
          Field keyField = (Field) getKey().elementAt(i);
          defaultOrder[i] = new FieldValue();
          defaultOrder[i].setField(keyField);
-         defaultOrderFields.addElement(keyField);
       }
 
       logCat.info("Table.initDefaultOrderfromKey done.");
@@ -525,17 +512,6 @@ public class Table
    public FieldValue[] getDefaultOrder()
    {
       return defaultOrder;
-   }
-
-
-   /**
-    *  Return a list of the fields contained in the defaultOrder structure.
-    *
-    * @return a list of the fields contained in the defaultOrder structure
-    */
-   public Vector getDefaultOrderFields()
-   {
-      return defaultOrderFields;
    }
 
 
@@ -908,7 +884,10 @@ public class Table
       // where condition generated from searching / ordering
       if (!Util.isNull(s))
       {
-         buf.append(" ( ");
+			if (s.length() > 0)
+				buf.append(" AND ( ");
+			else
+				buf.append(" ( ");
          buf.append(s);
          buf.append(" ) ");
       }
@@ -1003,7 +982,7 @@ public class Table
     * @throws SQLException if any error occurs
     */
    public ResultSet getDoSelectResultSet(FieldValue[] fvEqual,
-      FieldValue[] fvOrder, int compareMode, PreparedStatement ps)
+      FieldValue[] fvOrder, FieldValue[] sqlFilterParams, int compareMode, PreparedStatement ps)
       throws SQLException
    {
       // the index of the first NOT POPULATED placeholder;
@@ -1068,7 +1047,8 @@ public class Table
     * @throws SQLException if any error occurs
     */
    public ResultSetVector doConstrainedSelect(Vector fieldsToSelect,
-      FieldValue[] fvEqual, FieldValue[] fvOrder, String sqlFilter, int compareMode, int maxRows,
+      FieldValue[] fvEqual, FieldValue[] fvOrder, String sqlFilter, FieldValue[] sqlFilterParams,
+      int compareMode, int maxRows,
       Connection con) throws SQLException
    {
       String            query = getSelectQuery(fieldsToSelect, fvEqual,
@@ -1076,8 +1056,7 @@ public class Table
       PreparedStatement ps = con.prepareStatement(query);
       ps.setMaxRows(maxRows); // important when quering huge tables
 
-      ResultSet       rs     = getDoSelectResultSet(fvEqual, fvOrder,
-            compareMode, ps);
+      ResultSet       rs     = getDoSelectResultSet(fvEqual, fvOrder, sqlFilterParams, compareMode, ps);
       ResultSetVector result = new ResultSetVector(fieldsToSelect, rs);
       ps.close();
       logCat.info("::doConstrainedSelect - rsv size = " + result.size());

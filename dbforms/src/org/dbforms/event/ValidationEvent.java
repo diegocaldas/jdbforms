@@ -45,6 +45,8 @@ import org.dbforms.util.MessageResources;
  *
  *
  * @author hkk
+ * 
+ * @todo ATTENTION: this class must be tested, seems not to work!!!!!!
  */
 public abstract class ValidationEvent extends DatabaseEvent
 {

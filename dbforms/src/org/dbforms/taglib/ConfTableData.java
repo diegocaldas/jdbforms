@@ -35,7 +35,6 @@ import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.DbFormsConfigRegistry;
 
 import org.dbforms.event.datalist.dao.DataSourceFactory;
-import org.dbforms.util.ParseUtil;
 
 import org.apache.log4j.Category;
 
@@ -187,7 +186,7 @@ public class ConfTableData extends EmbeddedData
 			FieldValue[] orderConstraint = table.createOrderFieldValues(getOrderBy(), null, false);
 			FieldValue[] childFieldValues = FieldValue.getFilterFieldArray(table, getFilter());
 			DataSourceFactory qry = new DataSourceFactory(con, table);
-			qry.setSelect(childFieldValues, orderConstraint, null);
+			qry.setSelect(childFieldValues, orderConstraint, null, null);
 			ResultSetVector rsv = qry.getCurrent(null, 0);
 			return formatEmbeddedResultRows(rsv);
 		} catch (Exception e) {

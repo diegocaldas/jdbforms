@@ -23,7 +23,6 @@
 package org.dbforms.event.classic;
 import javax.servlet.http.*;
 import java.sql.*;
-import java.util.*;
 
 import org.apache.log4j.Category;
 
@@ -191,11 +190,17 @@ public class GotoEvent extends NavigationEvent
 	 * 
 	 * @exception SQLException if any error occurs
 	 */
-   public ResultSetVector processEvent(FieldValue[] childFieldValues,
-      FieldValue[] orderConstraint, String sqlFilter, int count, String firstPosition,
-      String lastPosition, 
-      String dbConnectionName,
-      Connection con)
+   public ResultSetVector processEvent(
+   				 FieldValue[] childFieldValues,
+     				 FieldValue[] orderConstraint, 
+     				 String sqlFilter, 
+					 FieldValue[] sqlFilterParams,
+     				 int count, 
+     				 String firstPosition,
+      			 String lastPosition, 
+      			 String dbConnectionName,
+      			 Connection con
+      			 )
       throws SQLException
    {
       if (Util.isNull(whereClause))
@@ -225,7 +230,7 @@ public class GotoEvent extends NavigationEvent
          logCat.info("gotopos = " + position);
 
          return table.doConstrainedSelect(table.getFields(), childFieldValues,
-            orderConstraint, sqlFilter, compMode, count, con);
+            orderConstraint, sqlFilter, sqlFilterParams, compMode, count, con);
       }
       else
       {

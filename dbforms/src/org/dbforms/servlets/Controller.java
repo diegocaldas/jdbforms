@@ -477,17 +477,6 @@ public class Controller extends HttpServlet
          connectionsTable.put(connectionName, con);
       }
 
-      boolean b = false;
-
-      try
-      {
-         b = con.getAutoCommit();
-      }
-      catch (SQLException e)
-      {
-         ;
-      }
-
       return con;
    }
 
