@@ -302,9 +302,7 @@ public abstract class DbBaseInputTag extends DbBaseHandlerTag
     */
    protected String getFormFieldNameOld()
    {
-      String s = getFormFieldName();
-      s = "o" + s.substring(1);
-      return s;
+      return "o" + getFormFieldName();
    }
 
 
