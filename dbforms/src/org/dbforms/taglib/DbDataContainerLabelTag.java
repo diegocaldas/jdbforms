@@ -92,8 +92,8 @@ public class DbDataContainerLabelTag
     {
         try
         {
-            String fieldValue = getFormattedFieldValue();
-
+            String fieldValue = this.getFormattedFieldValue();
+            String compareValue = this.getFieldValue();
             // "fieldValue" is the variable actually printed out
             if (!ResultSetVector.isNull(getParentForm().getResultSetVector()))
             {
@@ -111,7 +111,7 @@ public class DbDataContainerLabelTag
                         KeyValuePair aKeyValuePair =
                             (KeyValuePair) embeddedData.get(i);
 
-                        if (aKeyValuePair.getKey().equals(fieldValue))
+                        if (aKeyValuePair.getKey().equals(compareValue))
                         {
                             embeddedDataValue = aKeyValuePair.getValue();
                             found = true;

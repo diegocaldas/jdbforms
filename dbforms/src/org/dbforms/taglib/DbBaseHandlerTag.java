@@ -248,6 +248,22 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
       return fieldValueObj;
    }
 
+	/**
+	 *
+	 * fetches the value from the database. if no value is given, contents of attribute
+	 * nullFieldValue is returned.
+	 *
+	 * @return the field value
+	 */
+	protected String getFieldValue() {
+		ResultSetVector rsv = getParentForm().getResultSetVector();
+		String res = null;
+		if ((rsv != null) && (getField() != null)) {
+			res = rsv.getCurrentRow()[getField().getId()];
+		}			
+	    return res;
+	}		
+
    /**
     *
     * fetches the value from the database. if no value is given, contents of attribute
