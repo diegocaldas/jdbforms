@@ -1,0 +1,12 @@
+Release Notes for DbForms Version 2.4,  2004-xx-xx
+
+Contents:
+1)    About this release
+2)    Details about enhancements and changes
+
+
+
+1)    About this release
+-------------------------
+Please have a look into the release notes of the older versions for more details!
+
