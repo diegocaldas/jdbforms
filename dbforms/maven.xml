@@ -163,7 +163,7 @@
   </goal>
 
   <goal name="dbforms:deploy" description="deploys to web and SF release system">
-    <attainGoal name="dbforms:site-deploy" />
+    <attainGoal name="dbforms:site:deploy" />
     <attainGoal name="dbforms:release" />
   </goal>
 
