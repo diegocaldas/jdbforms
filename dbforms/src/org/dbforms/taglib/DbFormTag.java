@@ -2086,7 +2086,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
             Field filterField = this.table.getFieldByName(fieldName);
 
             // Increment by 1 or 2 depending on operator
-            String value = aKeyValPair.substring(n + jump);
+            String value = aKeyValPair.substring(n + jump).trim();
 
             // i.e. "2"
             logCat.debug("Filter value=" + value);
