@@ -69,28 +69,10 @@ public class DataSourceList
       ht = new Hashtable();
    }
 
-   private String getPutKey(Table table, HttpServletRequest request)
+   private String getKey(Table table, HttpServletRequest request)
    {
       String refSource = request.getRequestURI();
       refSource = refSource + "?" + table.getName();
-
-      return refSource;
-   }
-
-
-   private String getGetKey(Table table, HttpServletRequest request)
-   {
-      String refSource = ParseUtil.getParameter(request, "source");
-
-      if (refSource == null)
-      {
-         refSource = getPutKey(table, request);
-      }
-      else
-      {
-         refSource = refSource + "?" + table.getName();
-      }
-
       return refSource;
    }
 
@@ -101,7 +83,7 @@ public class DataSourceList
    public void put(Table table, HttpServletRequest request, DataSourceFactory ds)
       throws SQLException
    {
-      ht.put(getPutKey(table, request), ds);
+      ht.put(getKey(table, request), ds);
    }
 
 
@@ -115,7 +97,7 @@ public class DataSourceList
     */
    public DataSourceFactory get(Table table, HttpServletRequest request)
    {
-      DataSourceFactory result = (DataSourceFactory) ht.get(getGetKey(table,
+      DataSourceFactory result = (DataSourceFactory) ht.get(getKey(table,
                request));
 
       return result;
@@ -135,7 +117,7 @@ public class DataSourceList
    public DataSourceFactory remove(Table table, HttpServletRequest request)
       throws SQLException
    {
-      DataSourceFactory result = (DataSourceFactory) ht.remove(getGetKey(
+      DataSourceFactory result = (DataSourceFactory) ht.remove(getKey(
                table, request));
 
       if (result != null)
