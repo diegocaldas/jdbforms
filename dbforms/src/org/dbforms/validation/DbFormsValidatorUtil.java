@@ -413,7 +413,12 @@ public class DbFormsValidatorUtil
                         {
                            jscriptVar = getNextVar(jscriptVar);
 
-                           if (fieldName.indexOf("insroot") != -1)
+						   /*
+						   		Grunikiewicz.philip@hydro.qc.ca
+								2004-01-22
+								To support subforms, needed to replace insroot by ins
+						   */
+                           if (fieldName.indexOf("ins") != -1)
                            {
                               // Valide only Insert Mode
                               results.append("\t    if(")
