@@ -22,28 +22,28 @@
  */
 
 package org.dbforms.event;
+
 import java.sql.*;
 import java.util.*;
+
 import org.dbforms.*;
 
 
 
-/****
- *
- * <p>abstract base class for all web-events related to database operations like inserts,
- * updates, deletes</p>
+/**
+ *  Abstract base class for all web-events related to database operations
+ *  like inserts, updates, deletes.
  *
  * @author Joe Peer <j.peer@gmx.net>
  */
 public abstract class DatabaseEvent extends WebEvent
 {
     /**
-     * DOCUMENT ME!
+     *  Process this event.
      *
-     * @param con DOCUMENT ME!
-     *
-     * @throws SQLException DOCUMENT ME!
-     * @throws MultipleValidationException DOCUMENT ME!
+     * @param con the jdbc connection object
+     * @throws SQLException if any data access error occurs
+     * @throws MultipleValidationException if any validation error occurs
      */
     public abstract void processEvent(Connection con) throws SQLException, MultipleValidationException;
 }
