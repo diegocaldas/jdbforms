@@ -1,20 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
- 
-	<appendix>
-		<title>Authors
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Luca (H3G) -->
+<appendix>
+  <title>Authors
 </title>
-		 
-			<para>appendix (through V. 0.9) -- holds a masters degree in Management Information Systems of Johannes Kepler University, Linz, Austria, with a focus in the fields of software engineering, multimedia application development and knowledge and process management. He is a Sun certified programmer for the Java 2 platform.
+  <para>appendix (through V. 0.9) -- holds a masters degree in Management Information Systems of Johannes Kepler University, Linz, Austria, with a focus in the fields of software engineering, multimedia application development and knowledge and process management. He is a Sun certified programmer for the Java 2 platform.
 </para>
-			<para/>
-                       
-			<para> Philip Grunikiewicz (through v 1.1)
+  <para/>
+  <para> Philip Grunikiewicz (through v 1.1)
 
-</para>  <para/>
-
-<para>Shawn Asamoto-Brown (from version 1.1.3pr1)</para>
-<para/>
-
-		 
-	</appendix>
- 
+</para>
+  <para/>
+  <para>Shawn Asamoto-Brown (from version 1.1.3pr1)</para>
+  <para/>
+</appendix>

@@ -20,7 +20,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.taglib;
 import java.io.*;
 import java.util.*;
@@ -40,55 +39,57 @@ import org.apache.log4j.Category;
  */
 public class TemplateBasedirTag extends TagSupport
 {
-    static Category logCat = Category.getInstance(TemplateBasedirTag.class.getName()); // logging category for this class
-    private String baseDir;
+   static Category logCat  = Category.getInstance(TemplateBasedirTag.class
+         .getName()); // logging category for this class
+   private String  baseDir;
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     *
-     * @throws JspException DOCUMENT ME!
-     */
-    public int doStartTag() throws JspException
-    {
-        return SKIP_BODY;
-    }
-
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     *
-     * @throws JspException DOCUMENT ME!
-     */
-    public int doEndTag() throws JspException
-    {
-        try
-        {
-            StringBuffer buf = new StringBuffer();
-            buf.append(baseDir);
-            pageContext.getOut().flush();
-            pageContext.getOut().write(buf.toString());
-        }
-        catch (IOException ioe)
-        {
-            throw new JspException("Problem including template end - " + ioe.toString());
-        }
-
-        return EVAL_PAGE;
-    }
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws JspException DOCUMENT ME!
+    */
+   public int doStartTag() throws JspException
+   {
+      return SKIP_BODY;
+   }
 
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param pageContext DOCUMENT ME!
-     */
-    public void setPageContext(final javax.servlet.jsp.PageContext pageContext)
-    {
-        super.setPageContext(pageContext);
-        this.baseDir = (String) pageContext.getRequest().getAttribute("baseDir");
-    }
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws JspException DOCUMENT ME!
+    */
+   public int doEndTag() throws JspException
+   {
+      try
+      {
+         StringBuffer buf = new StringBuffer();
+         buf.append(baseDir);
+         pageContext.getOut().flush();
+         pageContext.getOut().write(buf.toString());
+      }
+      catch (IOException ioe)
+      {
+         throw new JspException("Problem including template end - "
+            + ioe.toString());
+      }
+
+      return EVAL_PAGE;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param pageContext DOCUMENT ME!
+    */
+   public void setPageContext(final javax.servlet.jsp.PageContext pageContext)
+   {
+      super.setPageContext(pageContext);
+      this.baseDir = (String) pageContext.getRequest().getAttribute("baseDir");
+   }
 }

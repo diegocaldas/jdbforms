@@ -20,14 +20,13 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.taglib;
 import java.util.*;
 import java.sql.*;
 import java.io.*;
 import javax.servlet.jsp.*;
 import javax.servlet.jsp.tagext.*;
-import org.dbforms.*;
+
 import org.dbforms.util.*;
 import org.apache.log4j.Category;
 import javax.servlet.http.*;
@@ -42,101 +41,105 @@ import javax.servlet.http.*;
  */
 public class JavascriptArrayTag extends BodyTagSupport implements DataContainer
 {
-    static Category logCat = Category.getInstance(JavascriptArrayTag.class.getName()); // logging category for this class
-    private Vector embeddedData = null;
-    private String name = null;
+   static Category logCat       = Category.getInstance(JavascriptArrayTag.class
+         .getName()); // logging category for this class
+   private Vector  embeddedData = null;
+   private String  name         = null;
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param name DOCUMENT ME!
-     */
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-
-
-    /**
-    This method is a "hookup" for EmbeddedData - Tags which can assign the lines of data they loaded
-    (by querying a database, or by rendering data-subelements, etc. etc.) and make the data
-    available to this tag.
-    [this method is defined in Interface DataContainer]
+   /**
+    * DOCUMENT ME!
+    *
+    * @param name DOCUMENT ME!
     */
-    public void setEmbeddedData(Vector embeddedData)
-    {
-        this.embeddedData = embeddedData;
-    }
+   public void setName(String name)
+   {
+      this.name = name;
+   }
 
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     *
-     * @throws javax.servlet.jsp.JspException DOCUMENT ME!
-     */
-    public int doStartTag() throws javax.servlet.jsp.JspException
-    {
-        return EVAL_BODY_TAG;
-    }
+   /**
+   This method is a "hookup" for EmbeddedData - Tags which can assign the lines of data they loaded
+   (by querying a database, or by rendering data-subelements, etc. etc.) and make the data
+   available to this tag.
+   [this method is defined in Interface DataContainer]
+   */
+   public void setEmbeddedData(Vector embeddedData)
+   {
+      this.embeddedData = embeddedData;
+   }
 
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     *
-     * @throws javax.servlet.jsp.JspException DOCUMENT ME!
-     * @throws JspException DOCUMENT ME!
-     */
-    public int doEndTag() throws javax.servlet.jsp.JspException
-    {
-        HttpServletRequest request = (HttpServletRequest) this.pageContext.getRequest();
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws javax.servlet.jsp.JspException DOCUMENT ME!
+    */
+   public int doStartTag() throws javax.servlet.jsp.JspException
+   {
+      return EVAL_BODY_BUFFERED;
+   }
 
-        StringBuffer tagBuf = new StringBuffer();
 
-        if (embeddedData == null)
-        { // no embedded data is nested in this tag
-            logCat.warn("No EmbeddedData provide for javascriptArray TagLib " + name);
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws javax.servlet.jsp.JspException DOCUMENT ME!
+    * @throws JspException DOCUMENT ME!
+    */
+   public int doEndTag() throws javax.servlet.jsp.JspException
+   {
+      HttpServletRequest request = (HttpServletRequest) this.pageContext
+         .getRequest();
 
-            return EVAL_PAGE;
-        }
-        else
-        {
-            tagBuf.append("\n<SCRIPT language=\"javascript\">\n");
-            tagBuf.append("   var " + name + " = new Array();\n");
+      StringBuffer       tagBuf = new StringBuffer();
 
-            int embeddedDataSize = embeddedData.size();
+      if (embeddedData == null)
+      { // no embedded data is nested in this tag
+         logCat.warn("No EmbeddedData provide for javascriptArray TagLib "
+            + name);
 
-            for (int i = 0; i < embeddedDataSize; i++)
-            {
-                KeyValuePair aKeyValuePair = (KeyValuePair) embeddedData.elementAt(i);
-                String aKey = aKeyValuePair.getKey();
-                tagBuf.append("   ").append(name).append("[").append(i).append("] = new Array('").append(aKey).append("'");
+         return EVAL_PAGE;
+      }
+      else
+      {
+         tagBuf.append("\n<SCRIPT language=\"javascript\">\n");
+         tagBuf.append("   var " + name + " = new Array();\n");
 
-                String aValue = aKeyValuePair.getValue();
+         int embeddedDataSize = embeddedData.size();
 
-                StringTokenizer st = new StringTokenizer(aValue, ",");
+         for (int i = 0; i < embeddedDataSize; i++)
+         {
+            KeyValuePair aKeyValuePair = (KeyValuePair) embeddedData.elementAt(i);
+            String       aKey = aKeyValuePair.getKey();
+            tagBuf.append("   ").append(name).append("[").append(i)
+                  .append("] = new Array('").append(aKey).append("'");
 
-                while (st.hasMoreTokens())
-                    tagBuf.append(",'").append(st.nextToken()).append("'");
+            String          aValue = aKeyValuePair.getValue();
 
-                tagBuf.append(");\n");
-            }
+            StringTokenizer st = new StringTokenizer(aValue, ",");
 
-            tagBuf.append("</SCRIPT>\n");
-        }
+            while (st.hasMoreTokens())
+               tagBuf.append(",'").append(st.nextToken()).append("'");
 
-        try
-        {
-            pageContext.getOut().write(tagBuf.toString());
-        }
-        catch (java.io.IOException ioe)
-        {
-            throw new JspException("IO Error: " + ioe.getMessage());
-        }
+            tagBuf.append(");\n");
+         }
 
-        return EVAL_PAGE;
-    }
+         tagBuf.append("</SCRIPT>\n");
+      }
+
+      try
+      {
+         pageContext.getOut().write(tagBuf.toString());
+      }
+      catch (java.io.IOException ioe)
+      {
+         throw new JspException("IO Error: " + ioe.getMessage());
+      }
+
+      return EVAL_PAGE;
+   }
 }

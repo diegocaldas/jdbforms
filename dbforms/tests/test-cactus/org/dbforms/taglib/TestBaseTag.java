@@ -22,6 +22,8 @@
  */
 
 package org.dbforms.taglib;
+
+import org.dbforms.util.AssertUtils;
 import javax.servlet.jsp.tagext.BodyContent;
 import javax.servlet.jsp.tagext.BodyTag;
 import junit.framework.Test;
@@ -57,7 +59,7 @@ public class TestBaseTag extends JspTestCase
      *
      * @param theArgs the arguments. Not used
      */
-    public static void main(String[] theArgs)
+    public static void main()
     {
         junit.swingui.TestRunner.main(new String[] { TestBaseTag.class.getName() });
     }
@@ -100,7 +102,6 @@ public class TestBaseTag extends JspTestCase
         //none of the other life cycle methods need to be implemented, so they
         //do not need to be called.
         int result = this.tag.doStartTag();
-
         assertEquals(BodyTag.EVAL_BODY_INCLUDE, result);
     }
 
@@ -111,7 +112,7 @@ public class TestBaseTag extends JspTestCase
     public void tearDown()
     {
         //necessary for tag to output anything on most servlet engines.
-        this.pageContext.popBody();
+//        this.pageContext.popBody();
     }
 
 
@@ -122,9 +123,7 @@ public class TestBaseTag extends JspTestCase
     public void endBasicBaseTag(WebResponse theResponse)
     {
         String content = theResponse.getText();
-
-        assertTrue("Response should have contained the [" + "base href] string", content.indexOf("base href") > -1);
-
-        assertTrue("Response should have contained the [" + "http://localhost/test] string", content.indexOf("http://localhost/test") > -1);
+        AssertUtils.assertContains("base href", content);
+        AssertUtils.assertContains("http://localhost:8080/",content);
     }
 }

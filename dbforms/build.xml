@@ -36,7 +36,7 @@ Happy coding!
 ~~ DbForms team ~~
 
 -->
-    <property name="dbforms.version" value="_v1_1_x"/>
+    <property name="dbforms.version" value="v1_1_x"/>
 
     <property name="cvs.workingdir" value="."/>
 
@@ -53,6 +53,7 @@ Happy coding!
     <property name="taglibdoc.dir" value="${doc.dir}/taglib"/>
     <property name="bin.dir" value="${cvs.workingdir}/bin"/>
     <property environment="env"/>
+
 
     <!-- Indentify Classpath -->
     <path id="classpath">
@@ -140,7 +141,7 @@ Happy coding!
   <target name="javadoc" depends="jar_classes">
     <javadoc packagenames = "org.dbforms.*" 
              sourcepath   = "${javasrc.dir}" 
-             destdir      = "${dist.dir}/api" 
+             destdir      = "${dist.dir}/apidocs" 
              author       = "true" 
              version      = "true" 
              use          = "true" 
@@ -196,6 +197,8 @@ Happy coding!
     <!-- make an example app -->
 
     <target name="createExample">
+	<tstamp/>
+        <property name="dbforms.releaseName" value="${dbforms.version}_${DSTAMP}"/>
 
         <echo message="BUILDING EXAMPLE: ${example.name}"/>
 
@@ -220,8 +223,10 @@ Happy coding!
         
         <!-- xerces.jar, xalan.jar might be neccessary for other tasks, but are disturbing with tomcat 4 -->
         <!-- FIXME: must be documented what do do with other servers.... -->
+        <!--- no problem to deliver them with the examples, so let them in the package!
         <delete file="${build.dir}/${example.name}/WEB-INF/lib/xerces.jar"/>
         <delete file="${build.dir}/${example.name}/WEB-INF/lib/xalan.jar"/>
+        -->
        
         <!-- compile example-specific Java code -->
         <echo message="compiling example specific code"/>
@@ -235,7 +240,7 @@ Happy coding!
         <echo message="finished compiling example specific code"/>
 
         <!-- creating WAR file for this example -->
-        <jar jarfile="${dist.dir}/${example.name}.war" basedir="${build.dir}/${example.name}" includes="*/**"/>
+        <jar jarfile="${dist.dir}/${example.name}_${dbforms.releaseName}.war" basedir="${build.dir}/${example.name}" includes="*/**"/>
     </target>
 
 
@@ -246,6 +251,10 @@ Happy coding!
 
         <antcall target="createExample">
             <param name="example.name" value="testsuite"/>
+        </antcall>
+
+        <antcall target="createExample">
+            <param name="example.name" value="bookstore"/>
         </antcall>
 
         <!-- clean up temporary directories -->
@@ -301,12 +310,10 @@ Happy coding!
 
      <!-- create dbforms-releasefile -->
     <target name="createReleaseFile" depends="createAllExamples,copy-devgui"  >
-          
-        <tstamp/>
-        <property name="dbforms.releaseName" value="${dbforms.version}_${DSTAMP}"/>
-
+      <tstamp/>
+      <property name="dbforms.releaseName" value="${dbforms.version}_${DSTAMP}"/>
       <zip destfile="dbforms${dbforms.releaseName}.zip" >
-        <zipfileset dir="."          prefix="dbforms${dbforms.releaseName}"         includes="Changes_v1_0  Changes_v1_1  CommonMistakes license.txt Readme Todo build.xml ReleaseNotes*.txt"/>
+        <zipfileset dir="."          prefix="dbforms${dbforms.releaseName}"         includes="ChangeLog Changes_v1_0  Changes_v1_1  CommonMistakes license.txt Readme Todo build.xml ReleaseNotes*.txt"/>
         <zipfileset dir="."          prefix="dbforms${dbforms.releaseName}"         includes="doc/**/*.html,doc/**/*.png,doc/**/*.gif,doc/**/*.jpg,doc/**/*.txt,doc/**/*.pdf"/>
         <zipfileset dir="."          prefix="dbforms${dbforms.releaseName}"         includes="dist/*.tld  dist/*.jar"/>
         <zipfileset dir="./dist/bin" prefix="dbforms${dbforms.releaseName}/bin"     includes="devgui.bat devgui.sh"/>
@@ -326,10 +333,10 @@ Happy coding!
           
       <tstamp/>
       <property name="dbforms.releaseName" value="${dbforms.version}_${DSTAMP}"/>
-      <property name="dbforms.releaseDir" value="${dist.dir}/dbforms${dbforms.releaseName}"/>
-      <property name="dbforms.zipfilename" value="${dist.dir}/dbforms${dbforms.releaseName}.zip"/>
-      <property name="dbforms.tarfilename" value="${dist.dir}/dbforms${dbforms.releaseName}.tar"/>
-      <property name="dbforms.tgzfilename" value="${dist.dir}/dbforms${dbforms.releaseName}.tgz"/>
+      <property name="dbforms.releaseDir" value="${dist.dir}/dbforms_${dbforms.releaseName}"/>
+      <property name="dbforms.zipfilename" value="${dist.dir}/dbforms_${dbforms.releaseName}.zip"/>
+      <property name="dbforms.tarfilename" value="${dist.dir}/dbforms_${dbforms.releaseName}.tar"/>
+      <property name="dbforms.tgzfilename" value="${dist.dir}/dbforms_${dbforms.releaseName}.tgz"/>
 
               <!-- temporary directory for release files: -->
       <delete dir="${dbforms.releaseDir}"/>
@@ -337,24 +344,24 @@ Happy coding!
 
               <!-- copy all files needed to release directory -->
       <copy todir="${dbforms.releaseDir}" >
-        <fileset dir="." includes="Changes_v1_0  Changes_v1_1  CommonMistakes  license.txt"/>
+        <fileset dir="." includes="ChangeLog Changes_v1_0  Changes_v1_1  CommonMistakes  license.txt"/>
         <fileset dir="." includes="Readme  Todo  build.xml ReleaseNotes*.txt"/>
         <fileset dir="." includes="doc/**/*.html,doc/**/*.png,doc/**/*.gif,doc/**/*.jpg,doc/**/*.txt,doc/**/*.pdf,doc/**/*.css"/>
         <fileset dir="." includes="dist/*.tld  dist/*.jar"/>
         <fileset dir="." includes="etc/*.xml etc/*.xsl"/>
-        <fileset dir="." includes="examples/*.txt"/>
+        <fileset dir="." includes="examples/**/*"/>
         <fileset dir="." includes="src/org/**/*.java"/>
         <fileset dir="." includes="temp/*.txt"/>
         <fileset dir="." includes="xsl-stylesheets/*.xsl"/>
         <fileset dir="." includes="misc/**/*.gif  misc/**/*.png  misc/**/*.js   misc/**/*.txt misc/*.css misc/**/*.html"/>
      </copy>
 
-     <copy todir="${dbforms.releaseDir}/bin" >
-        <fileset dir="./dist/bin" includes="devgui.bat devgui.sh"/>
+      <copy todir="${dbforms.releaseDir}/dependend" >
+        <fileset dir="./target/dependend" includes="*.jar"/>
      </copy>
 
-     <copy todir="${dbforms.releaseDir}/examples">
-          <fileset dir="./dist"     includes="*.war"/>
+     <copy todir="${dbforms.releaseDir}/bin" >
+        <fileset dir="./dist/bin" includes="devgui.bat devgui.sh"/>
      </copy>
 
      <copy todir="${dbforms.releaseDir}/dist">
@@ -362,7 +369,7 @@ Happy coding!
      </copy>
 
              <!-- modify all text files to have dos/win lineends -->
-     <property name="textfiles.patterns" value="**/*.html,**/*.xml,**/*.java,**/*.txt,**/*.xsl,**/*.bat,**/*.sh,Changes*,CommonMistakes,Todo" />
+     <property name="textfiles.patterns" value="**/*.html,**/*.xml,**/*.java,**/*.txt,**/*.xsl,**/*.bat,**/*.sh, Change*,CommonMistakes,Todo" />
 
      <echo message="modifying temporary files to contain dos/win lineends"/>
      <fixcrlf srcDir="${dbforms.releaseDir}" eol="crlf" includes="${textfiles.patterns}" />
@@ -370,7 +377,7 @@ Happy coding!
              <!-- create zip release: -->
      <delete file="${dbforms.zipfilename}"/>
      <zip destfile="${dbforms.zipfilename}" >
-        <zipfileset dir="${dist.dir}"   includes="dbforms${dbforms.releaseName}/**"/>
+        <zipfileset dir="${dist.dir}"   includes="dbforms_${dbforms.releaseName}/**"/>
      </zip>
 
              <!-- modify all text files to have unix lineends -->
@@ -380,9 +387,9 @@ Happy coding!
              <!-- create tar release, make shell scripts executable: -->
      <delete file="${dbforms.tarfilename}"/>
      <tar destfile="${dbforms.tarfilename}" >
-        <tarfileset dir="${dist.dir}"   includes="dbforms${dbforms.releaseName}/**" 
-                                        excludes="dbforms${dbforms.releaseName}/**/*.sh" />
-        <tarfileset dir="${dist.dir}"   includes="dbforms${dbforms.releaseName}/**/*.sh" mode="755"/>
+        <tarfileset dir="${dist.dir}"   includes="dbforms_${dbforms.releaseName}/**" 
+                                        excludes="dbforms_${dbforms.releaseName}/**/*.sh" />
+        <tarfileset dir="${dist.dir}"   includes="dbforms_${dbforms.releaseName}/**/*.sh" mode="755"/>
      </tar>
 
              <!-- compress tarfile using gzip, delete intermediate tar file: -->
@@ -391,6 +398,12 @@ Happy coding!
 
     </target>
 
+  <target name="forcedos">	
+     <echo message="forcedos for all java files"/>
+     <fixcrlf srcDir="${javasrc.dir}" eol="crlf" includes="**/*.java" />
+  </target>
+	
+
   <!-- =================================================================== -->
   <!-- Maven integration: generate project documentation and copy it into  -->
   <!-- the target directory                                                -->
@@ -398,6 +411,6 @@ Happy coding!
   <!-- called by Maven's "dist" goal                                        -->
   <!-- =================================================================== -->
   <target name    = "maven-build-release"  depends = "createReleaseFiles" />
-	
+
     
 </project>

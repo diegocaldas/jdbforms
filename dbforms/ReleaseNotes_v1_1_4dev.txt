@@ -1,0 +1,49 @@
+Release Notes for DbForms Version 1.1.4dev,  2003-05-25
+
+Contents:
+1)   About this release
+2)   Details about enhancements and changes
+2-0) Code cleanup
+2-1) New navigation system
+2-2) XML Datasource
+2-3) New bookstore example
+
+
+
+1) About this release
+----------------------
+This is a developers release which you are encouraged to try out, especially the new navigation system. Be careful about using this release in an
+important production environment, as it is NOT recommended for that.  Please report any problems or comments to the mailing list of
+the project
+
+    jdbforms-interest@lists.sourceforge.net
+
+This documents summarizes the changes since last official release 1.1.3,
+that are of interest to end users. There have also been several internal 
+enhancements which are not mentioned here.
+
+2-0) Code cleanup
+----------------------
+A big code cleanup in the navigation system has been made to make it possible to exchange the navigation system.
+This cleanup should not change any interface, but a lot of classes are touched. So please report all irregular changes
+to the list!
+
+2-1) New navigation system
+--------------------------
+An new event system has been built that DOES NOT re-execute the search query every time the client requests a subset of the hits (as the original did). Also, with this system it is possible to use navigation even with free form select as navigation has been made independent of filtering.
+See the UsersGuide and bookstore example for details, and how to configure it in dbforms-config.xml (the original system is the default).
+
+
+2-2) XML Datasource
+----------------------
+To show the posibilities of the new event system a datasource to read xml data has been built. 
+See the UsersGuide and bookstore example for details.
+
+2-3) New bookstore example
+--------------------------
+Added a new example named bookstore to show some special features to dbforms. This project is real handmade and should 
+show and test the features of DbForms. Maybe we could write some cactus tests using this example?
+Another idea is to have an test platform and database to test DbForms with all developers. One could build an example 
+page in the bookstore example to verify the bug an another developer has an working enviroment to reproduce the bug.
+
+   

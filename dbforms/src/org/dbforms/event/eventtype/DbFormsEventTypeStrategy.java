@@ -20,9 +20,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.event.eventtype;
-
 import org.apache.log4j.Category;
 
 
@@ -37,77 +35,84 @@ import org.apache.log4j.Category;
  */
 public class DbFormsEventTypeStrategy extends CompositeEventTypeStrategy
 {
-    /** logging category */
-    protected static Category logCat = Category.getInstance(DbFormsEventTypeStrategy.class.getName());
+   /** logging category */
+   protected static Category logCat = Category.getInstance(DbFormsEventTypeStrategy.class
+         .getName());
+
+   /**
+    *  Default constructor.
+    *  <br>
+    *  Add the DatabaseEventTypeStrategy and the NavigationEventTypeStrategy
+    *  objects to the composite strategy list
+    */
+   public DbFormsEventTypeStrategy()
+   {
+      strategyList.add(new DatabaseEventTypeStrategy());
+      strategyList.add(new NavigationEventTypeStrategy());
+   }
+
+   /**
+    *  Gets the EventTypeStrategy identifier.
+    *
+    * @return  the EventTypeStrategy identifier
+    */
+   public String getId()
+   {
+      return "DbFormsEventTypeStrategy";
+   }
 
 
-    /**
-     *  Default constructor.
-     *  <br>
-     *  Add the DatabaseEventTypeStrategy and the NavigationEventTypeStrategy
-     *  objects to the composite strategy list
-     */
-     public DbFormsEventTypeStrategy()
-     {
-        strategyList.add(new DatabaseEventTypeStrategy());
-        strategyList.add(new NavigationEventTypeStrategy());
-     }
+   /**
+    *  Gets the event group value.
+    *
+    * @param  eventString the string that identifies an event type
+    * @return  The event group value, or <code>EventType.EVENT_UNDEFINED</code>
+    */
+   public int getEventGroup(String eventString)
+   {
+      int groupValue = EventType.EVENT_UNDEFINED;
+
+      for (int i = 0; i < strategyList.size(); i++)
+      {
+         logCat.info("::getEventGroup - using [" + getChild(i).getId()
+            + "] strategy");
+         groupValue = getChild(i).getEventGroup(eventString);
+
+         if (groupValue != EventType.EVENT_UNDEFINED)
+         {
+            break;
+         }
+      }
+
+      return groupValue;
+   }
 
 
-    /**
-     *  Gets the EventTypeStrategy identifier.
-     *
-     * @return  the EventTypeStrategy identifier
-     */
-    public String getId()
-    {
-       return "DbFormsEventTypeStrategy";
-    }
+   /**
+    *  Gets the event type value.
+    *
+    * @param  eventString the string that identifies an event type
+    * @return  The event type value, or <code>EventType.EVENT_UNDEFINED</code>
+    */
+   public String getEventType(String eventString)
+   {
+      String typeValue = String.valueOf(EventType.EVENT_UNDEFINED);
 
+      for (int i = 0; i < strategyList.size(); i++)
+      {
+         logCat.info("::getEventType - using [" + getChild(i).getId()
+            + "] strategy");
+         typeValue = getChild(i).getEventType(eventString);
 
-    /**
-     *  Gets the event group value.
-     *
-     * @param  eventString the string that identifies an event type
-     * @return  The event group value, or <code>EventType.EVENT_UNDEFINED</code>
-     */
-    public int getEventGroup(String eventString)
-    {
-        int groupValue = EventType.EVENT_UNDEFINED;
+         if (!typeValue.equals(String.valueOf(EventType.EVENT_UNDEFINED)))
+         {
+            break;
+         }
+      }
 
-        for (int i = 0; i < strategyList.size(); i++)
-        {
-            logCat.info("::getEventGroup - using [" + getChild(i).getId() + "] strategy");
-            groupValue = getChild(i).getEventGroup(eventString);
+      logCat.info("::getEventType - returned the event type [" + typeValue
+         + "] from [" + eventString + "]");
 
-            if (groupValue != EventType.EVENT_UNDEFINED)
-              break;
-        }
-
-        return groupValue;
-    }
-
-
-    /**
-     *  Gets the event type value.
-     *
-     * @param  eventString the string that identifies an event type
-     * @return  The event type value, or <code>EventType.EVENT_UNDEFINED</code>
-     */
-    public String getEventType(String eventString)
-    {
-        String typeValue = String.valueOf(EventType.EVENT_UNDEFINED);
-
-        for (int i = 0; i < strategyList.size(); i++)
-        {
-            logCat.info("::getEventType - using [" + getChild(i).getId() + "] strategy");
-            typeValue = getChild(i).getEventType(eventString);
-
-            if (!typeValue.equals(String.valueOf(EventType.EVENT_UNDEFINED)))
-              break;
-        }
-
-        logCat.info("::getEventType - returned the event type [" + typeValue + "] from [" + eventString + "]");
-        return typeValue;
-    }
+      return typeValue;
+   }
 }

@@ -1,35 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
- 
-	<chapter>
-		<title id="multdbcon">Multiple Database Connections
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Luca (H3G) -->
+<chapter>
+  <title id="multdbcon">Multiple Database Connections
 </title>
-		 
-			<para>This is still being tested and debugged but to use this feature:
-</para><orderedlist numeration="upperroman">
-<listitem>
-<para>specify multiple &lt;dbconnection&gt; elements in the dbforms-config.xml
+  <para>This is still being tested and debugged but to use this feature:
 </para>
-<para>It is allowed to have at most 1 connection without an id
+  <orderedlist numeration="upperroman">
+    <listitem>
+      <para>specify multiple &lt;dbconnection&gt; elements in the dbforms-config.xml</para>
+      <para>It is allowed to have at most 1 connection without an id
     within a config file. That will be the default connection.</para>
-
-			 
-</listitem>
-<listitem>
-<para>Specify the dbConnectionName to be the id of the dbconnection you wish to use in  relevant tags including: <emphasis role="bold">dbform, tableData, queryData, getConnection, blobContent</emphasis>
-			</para>
-                 <screen>
-<emphasis role="bold">&lt;db:select</emphasis> fieldName="tc"&gt;
-     
-    <emphasis role="bold">&lt;db:queryData</emphasis> name ="combinations" query="SELECT DISTINCT tc, tier, course FROM coursesORDER BY tc"
-    disableCache="true" <emphasis role="bold">dbConnectionName</emphasis>="simple"/&gt;
+    </listitem>
+    <listitem>
+      <para>Specify the dbConnectionName to be the id of the dbconnection you wish to use in  relevant tags including: 
+        <emphasis role="bold">dbform, tableData, queryData, getConnection, blobContent</emphasis>
+      </para>
+      <screen>
+        <emphasis role="bold">&lt;db:select</emphasis> fieldName="tc"&gt;         
+        <emphasis role="bold">&lt;db:queryData</emphasis> name ="combinations" query="SELECT DISTINCT tc, tier, course FROM coursesORDER BY tc"
+    disableCache="true" 
+        <emphasis role="bold">dbConnectionName</emphasis>="simple"/&gt;
            
-<emphasis role="bold">&lt;/db:select&gt;</emphasis> 
-</screen>
-  <para>would be used with a connection such as the following:
-</para>
-<screen>
-<emphasis role="bold">&lt;dbconnection</emphasis> 
-    <emphasis role="bold">id = "simple"</emphasis> &lt;&lt;&lt; this will be used for the connectionName (your arbitrary choice)
+        <emphasis role="bold">&lt;/db:select&gt;</emphasis>
+      </screen>
+      <para>would be used with a connection such as the following:</para>
+      <screen>
+        <emphasis role="bold">&lt;dbconnection</emphasis>
+        <emphasis role="bold">id = "simple"</emphasis> 
+    &lt;&lt;&lt; this will be used for the connectionName (your arbitrary choice)
     isJndi = "false"
     isPow2 = "true" 
     connectionProviderClass = "org.dbforms.conprovider.SimpleConnectionProvider" 
@@ -38,15 +36,8 @@
     name ="jdbc:postgresql://localhost/myDatabase?charSet=ISO-8859-1"
     username = "postgres" 
     password = ""
-<emphasis role="bold">/&gt;</emphasis>
-</screen>                     
-</listitem>
- 
-</orderedlist>
-			
-			
-			
-			 
-		 
-	</chapter>
- 
+        <emphasis role="bold">/&gt;</emphasis>
+      </screen>
+    </listitem>
+  </orderedlist>
+</chapter>

@@ -20,9 +20,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.conprovider;
-
 import java.util.*;
 import java.sql.*;
 
@@ -35,55 +33,55 @@ import java.sql.*;
  */
 public class SimpleConnectionProvider extends ConnectionProvider
 {
-    /**
-     *  Default constructor.
-     *
-     * @exception  Exception Description of the Exception
-     * @throws  Exception because of the <code>throws Exception</code> clause
-     *          of the  <code>init</code> method.
-     */
-    public SimpleConnectionProvider() throws Exception
-    {
-        super();
-    }
+   /**
+    *  Default constructor.
+    *
+    * @exception  Exception Description of the Exception
+    * @throws  Exception because of the <code>throws Exception</code> clause
+    *          of the  <code>init</code> method.
+    */
+   public SimpleConnectionProvider() throws Exception
+   {
+      super();
+   }
+
+   /**
+    *  Get a JDBC Connection
+    *
+    * @return  a JDBC Connection
+    * @exception  SQLException Description of the Exception
+    */
+   protected Connection getConnection() throws SQLException
+   {
+      Properties props = prefs.getProperties();
+      Connection con = null;
+
+      // uses custom jdbc properties;
+      if ((props != null) && !props.isEmpty())
+      {
+         props.put("user", prefs.getUser());
+         props.put("password", prefs.getPassword());
+         con = DriverManager.getConnection(prefs.getJdbcURL(), props);
+      }
+
+      // "plain" flavour;
+      else
+      {
+         con = DriverManager.getConnection(prefs.getJdbcURL(), prefs.getUser(),
+               prefs.getPassword());
+      }
+
+      return con;
+   }
 
 
-    /**
-     *  Get a JDBC Connection
-     *
-     * @return  a JDBC Connection
-     * @exception  SQLException Description of the Exception
-     */
-    protected Connection getConnection() throws SQLException
-    {
-        Properties props = prefs.getProperties();
-        Connection con = null;
-
-        // uses custom jdbc properties;
-        if ((props != null) && !props.isEmpty())
-        {
-            props.put("user", prefs.getUser());
-            props.put("password", prefs.getPassword());
-            con = DriverManager.getConnection(prefs.getJdbcURL(), props);
-        }
-
-        // "plain" flavour;
-        else
-        {
-            con = DriverManager.getConnection(prefs.getJdbcURL(), prefs.getUser(), prefs.getPassword());
-        }
-
-        return con;
-    }
-
-
-    /**
-     *  Initialize the ConnectionProvider.
-     *
-     * @throws  Exception if any error occurs
-     */
-    protected void init() throws Exception
-    {
-        Class.forName(prefs.getJdbcDriver()).newInstance();
-    }
+   /**
+    *  Initialize the ConnectionProvider.
+    *
+    * @throws  Exception if any error occurs
+    */
+   protected void init() throws Exception
+   {
+      Class.forName(prefs.getJdbcDriver()).newInstance();
+   }
 }

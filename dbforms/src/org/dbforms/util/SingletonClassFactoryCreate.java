@@ -20,13 +20,10 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.util;
-
 import org.apache.commons.digester.AbstractObjectCreationFactory;
 import org.xml.sax.Attributes;
 import org.apache.log4j.Category;
-
 
 
 
@@ -39,67 +36,67 @@ import org.apache.log4j.Category;
  */
 public class SingletonClassFactoryCreate extends AbstractObjectCreationFactory
 {
-    /** logging category */
-    protected static Category logCat = Category.getInstance(SingletonClassFactoryCreate.class.getName());
+   /** logging category */
+   protected static Category logCat = Category.getInstance(SingletonClassFactoryCreate.class
+         .getName());
 
-    /** full qualified name of the singleton class to instance */
-    private String className = null;
+   /** full qualified name of the singleton class to instance */
+   private String className = null;
 
+   /**
+    *  EventFactoryCreate constructor.
+    *
+    * @param  className the name of the singleton class to instance
+    */
+   public SingletonClassFactoryCreate(String className)
+   {
+      super();
+      setClassName(className);
+   }
 
-    /**
-     *  EventFactoryCreate constructor.
-     *
-     * @param  className the name of the singleton class to instance
-     */
-    public SingletonClassFactoryCreate(String className)
-    {
-        super();
-        setClassName(className);
-    }
-
-
-    /**
-     *  Gets the className attribute of the EventFactoryCreate object
-     *
-     * @return  The className value
-     */
-    public String getClassName()
-    {
-        return className;
-    }
-
-
-    /**
-     *  Sets the className attribute of the EventFactoryCreate object
-     *
-     * @param  className The new className value
-     */
-    public void setClassName(String className)
-    {
-        this.className = className;
-    }
+   /**
+    *  Gets the className attribute of the EventFactoryCreate object
+    *
+    * @return  The className value
+    */
+   public String getClassName()
+   {
+      return className;
+   }
 
 
-    /**
-     *  Get the unique instance of the Singleton class.
-     *
-     * @param  attributes not used
-     * @return  the unique instance of the singleton class
-     *         specified by the <code>className</code> member attribute
-     */
-    public Object createObject(Attributes attributes)
-    {
-        Object obj = null;
+   /**
+    *  Sets the className attribute of the EventFactoryCreate object
+    *
+    * @param  className The new className value
+    */
+   public void setClassName(String className)
+   {
+      this.className = className;
+   }
 
-        try
-        {
-            obj = ReflectionUtil.invoke(className, "instance", null, null);
-        }
-        catch (Exception e)
-        {
-            logCat.error("::createObject - cannot instance the class [" + className + "]", e);
-        }
 
-        return obj;
-    }
+   /**
+    *  Get the unique instance of the Singleton class.
+    *
+    * @param  attributes not used
+    * @return  the unique instance of the singleton class
+    *         specified by the <code>className</code> member attribute
+    */
+   public Object createObject(Attributes attributes)
+   {
+      Object obj = null;
+
+      try
+      {
+         obj = ReflectionUtil.invoke(className, "instance", null, null);
+      }
+      catch (Exception e)
+      {
+         logCat.error("::createObject - cannot instance the class ["
+            + className + "]", e);
+      }
+
+      return obj;
+   }
 }

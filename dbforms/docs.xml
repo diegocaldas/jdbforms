@@ -77,6 +77,9 @@
   <!-- Output Properties: Output directory -->
   <property name="out.dir" value="doc/UsersGuide"/>
 
+  <!-- Output Properties: Output directory -->
+  <property name="out.docfile" value="DbForms_UsersGuide.pdf"/>
+
   <!-- all files -->
   <!-- output file for layout styling -->
   <property name="fo.outfile" value="UsersGuide.fo"/>
@@ -144,12 +147,10 @@
 
     <delete file = "${taglibdoc.dir}/DbFormsTags.html"/>
     <echo message="style 1"/>
-    <style 
-    	   style = "${etc.dir}/tldoc2html.xsl" 
+    <style style = "${etc.dir}/tldoc2html.xsl" 
            in    = "${etc.dir}/taglib_docu.xml" 
-           out   = "${taglibdoc.dir}/DbFormsTags.html"
-     >
-     </style>
+           out   = "${taglibdoc.dir}/DbFormsTags.html">
+    </style>
 
     <delete file="${taglibdoc.dir}/DbFormsTags_TocSem.html"/>
     <echo message="style 2"/>
@@ -191,7 +192,7 @@
     <!--Generate PDF reference documentation from taglib-docu.xml (FOP_HOME must be set)" -->
     <echo message="begin xsl translation to generate xsl-fo   "/>
     <style style = "${etc.dir}/tldoc2xsl-fo.xsl" 
-	   in    = "${etc.dir}/taglib_docu.xml" 
+           in    = "${etc.dir}/taglib_docu.xml" 
            out   = "${etc.dir}/DbFormsTags.xsl-fo"/>
     <echo message="end of xsl translation "/>
     <echo message="starting generation of ${doc.dir}/taglib/DbFormsTags.pdf using Apache FOP (FOP_HOME must be set)"/>
@@ -222,7 +223,7 @@
   <target name="javadoc">
     <javadoc packagenames = "org.dbforms.*" 
              sourcepath   = "${javasrc.dir}" 
-             destdir      = "${doc.dir}/api" 
+             destdir      = "${doc.dir}/apidocs" 
              author       = "true" 
              version      = "true" 
              use          = "true" 
@@ -258,7 +259,7 @@
   <!--                                                                            -->
   <!-- called by Maven's "site:generate" postGoal                                 -->
   <!-- ========================================================================== -->
-  <target name="maven-move-doc">
+  <target name="maven-move-doc" depends="cleanUp">
     <copy todir="${doc.dir}">
       <fileset dir="${maven.docs}/" includes="**/*"/>
     </copy>
@@ -270,6 +271,31 @@
   <!-- ================================================ -->
   <target name    = "build-doc" 
           depends = "javadoc, generate_taglib_htmldocs, generate_taglib_pdfdocs, prepare, create_HTML, create_PDF, run-j"/>
+
+
+  <!-- 
+     -  Pretty Print for XML documents
+     -
+     -  this task "pretty prints" the xml documents that are used
+     -  to build the docbooki user's guide (excepts for the ones 
+     -  listed into the 'excludes' attribute of the syle element).
+     -
+     -  The resulting pretty printed xml files are saved into the
+     -  the user's guide build directory.
+     -
+     -  WARNING: you could loose the layout of the text 
+     -           enclosed into <screen> docbook elements.
+     -           Use at your own risk ;^)
+     -->
+  <target name="docbook_pretty-printing">
+
+    <style style     = "${etc.dir}/pretty-printing.xsl" 
+           basedir   = "${UsersGuide.dir}"
+           destdir   = "${build.dir}"
+           includes  = "*.xml"
+           extension = ".xml"
+           excludes  = "DbForms_UsersGuide.xml, Recent_Changes.xml"/>
+  </target>
 
 
   <!-- ==================================================== -->
@@ -298,7 +324,7 @@
       <fileset dir="${cvs.workingdir}/xdocs/stylesheets" includes="*.css"/>
     </copy>
     <copy todir="${out.dir}/html/images/figures">
-      <fileset dir="${in.dir}/images/figures" includes="*.png"/>
+      <fileset dir="${in.dir}/images/figures" includes="**/*.png"/>
     </copy>
   </target>
 
@@ -335,15 +361,37 @@
     </path>
 
     <java classname="org.apache.fop.apps.Fop" fork="true" jvm="${java.home}/bin/java">
-      <arg line="${build.dir}/${fo.outfile} ${out.dir}/pdf/DbForms_UsersGuide.pdf"/>
+      <arg line="${build.dir}/${fo.outfile} ${out.dir}/pdf/${out.docfile}"/>
       <classpath refid="fopclasspath"/>
     </java>
 
-    <echo message="end of PDF generation, output file is ${out.dir}/pdf/DbForms_UsersGuide.pdf"/>
+    <echo message="end of PDF generation, output file is ${out.dir}/pdf/${out.docfile}"/>
     <antcall target="cleanWorkspace"/>
   </target>
 
-
+  <target name="cleanUp">
+     <echo message="cleanUp ${doc.dir}"/>
+     <delete dir="${doc.dir}/api"/>
+     <delete dir="${doc.dir}/apidocs"/>
+     <delete dir="${doc.dir}/images"/>
+     <delete dir="${doc.dir}/poweredby"/>
+     <delete dir="${doc.dir}/style"/>
+     <delete dir="${doc.dir}/stylesheets"/>
+     <delete dir="${doc.dir}/UsersGuide"/>
+     <delete dir="${doc.dir}/xref"/>
+     <delete dir="${doc.dir}/xref-test"/>
+     <delete>
+          <fileset dir="${doc.dir}">
+            <include name="*"/>
+          </fileset>
+     </delete>
+     <delete file="${doc.dir}/taglib/DbFormsTags_TocSem.html"/>
+     <delete file="${doc.dir}/taglib/DbFormsTags_TocAlph.html"/>
+     <delete file="${doc.dir}/taglib/DbFormsTags.html"/>
+     <delete file="${doc.dir}/taglib/DbFormsTags.pdf"/>
+     <delete dir="${basedir}/dist"/>
+  </target>
+    
   <!-- Fill these in if you want to view files post build -->
   <target name="run-j">
     <tstamp>

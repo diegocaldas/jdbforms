@@ -20,7 +20,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.event;
 
 /**
@@ -31,13 +30,13 @@ package org.dbforms.event;
  */
 public class WebEventException extends Exception
 {
-    /**
-     * Creates a new WebEventException object.
-     *
-     * @param message DOCUMENT ME!
-     */
-    public WebEventException(String message)
-    {
-        super(message);
-    }
+   /**
+    * Creates a new WebEventException object.
+    *
+    * @param message DOCUMENT ME!
+    */
+   public WebEventException(String message)
+   {
+      super(message);
+   }
 }

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<books>
+   <book>
+   	<title>Hijacking through the Galaxy</title>
+   	<isbn>42</isbn>
+   	<author>
+   		<authorid>2</authorid>	
+   		<name>Douglas</name>
+   		<surname>Adman</surname>
+   	</author>
+   </book>	
+</books>

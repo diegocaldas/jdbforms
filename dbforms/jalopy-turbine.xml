@@ -45,6 +45,7 @@
                         <exception> * @throws $exceptionType$ DOCUMENT ME!</exception>
                         <top>/**| * DOCUMENT ME!</top>
                     </methods>
+                    <variables>/** DOCUMENT ME! */</variables>
                 </templates>
                 <tags>
                     <standard />
@@ -56,7 +57,6 @@
                 <addCtor>5</addCtor>
                 <checkInnerClass>false</checkInnerClass>
             </javadoc>
-            <removeMultiLine>false</removeMultiLine>
             <separator>
                 <instanceInit>Instance initializers</instanceInit>
                 <fillCharacter>·</fillCharacter>
@@ -67,6 +67,7 @@
                 <interface>Interfaces</interface>
                 <class>Classes</class>
             </separator>
+            <removeMultiLine>false</removeMultiLine>
             <formatMultiLine>false</formatMultiLine>
             <removeSingleLine>false</removeSingleLine>
             <insertSeparator>false</insertSeparator>
@@ -126,7 +127,7 @@
         <indentation>
             <braceCuddled>1</braceCuddled>
             <tabs>
-                <size>8</size>
+                <size>3</size>
                 <use>false</use>
             </tabs>
             <firstColumnComments>true</firstColumnComments>
@@ -139,28 +140,28 @@
             <parameter>-1</parameter>
             <braceLeft>0</braceLeft>
             <implements>-1</implements>
-            <continuation>4</continuation>
+            <continuation>6</continuation>
             <deep>55</deep>
             <label>false</label>
-            <useMethodCallParams>false</useMethodCallParams>
+            <useMethodCallParams>true</useMethodCallParams>
             <extends>-1</extends>
             <commentEndline>1</commentEndline>
-            <general>4</general>
-            <continationIfTernary>false</continationIfTernary>
+            <general>3</general>
+            <continationIfTernary>true</continationIfTernary>
         </indentation>
         <wrapping>
             <beforeImplements>false</beforeImplements>
-            <arrayElements>0</arrayElements>
+            <arrayElements>1</arrayElements>
             <afterImplementsTypes>false</afterImplementsTypes>
             <paramsMethodDef>false</paramsMethodDef>
-            <beforeOperator>false</beforeOperator>
+            <beforeOperator>true</beforeOperator>
             <paramsMethodCallIfCall>false</paramsMethodCallIfCall>
             <paramsMethodCall>false</paramsMethodCall>
             <afterThrowsTypes>false</afterThrowsTypes>
             <beforeExtends>false</beforeExtends>
             <afterChainedMethodCall>false</afterChainedMethodCall>
             <afterLabel>true</afterLabel>
-            <use>false</use>
+            <use>true</use>
             <lineLength>80</lineLength>
             <afterExtendsTypes>false</afterExtendsTypes>
             <beforeThrows>false</beforeThrows>
@@ -171,11 +172,11 @@
             <orderModifiers>public,protected,private,abstract,static,final,synchronized,transient,volatile,native,strictfp</orderModifiers>
             <use>false</use>
             <order>Static Variables/Initializers,Instance Variables,Instance Initializers,Constructors,Methods,Interfaces,Classes</order>
-            <class>false</class>
             <constructor>false</constructor>
+            <class>false</class>
             <interface>false</interface>
             <modifiers>
-                <use>false</use>
+                <use>true</use>
             </modifiers>
         </sorting>
         <braces>
@@ -186,9 +187,9 @@
             <insertBracesDoWhile>false</insertBracesDoWhile>
             <emptyCuddle>false</emptyCuddle>
             <treatMethodClassDifferent>false</treatMethodClassDifferent>
-            <removeBracesDoWhile>false</removeBracesDoWhile>
             <removeBracesBlock>true</removeBracesBlock>
-            <emptyInsertStatement>false</emptyInsertStatement>
+            <removeBracesDoWhile>false</removeBracesDoWhile>
+            <emptyInsertStatement>true</emptyInsertStatement>
             <removeBracesFor>false</removeBracesFor>
             <insertBracesWhile>false</insertBracesWhile>
             <insertBracesFor>false</insertBracesFor>
@@ -204,10 +205,10 @@
             <policy>History.Policy [disabled]</policy>
         </history>
         <alignment>
-            <ParamsMethodDef>false</ParamsMethodDef>
+            <ParamsMethodDef>true</ParamsMethodDef>
             <ternaryValue>false</ternaryValue>
-            <varIdents>false</varIdents>
-            <varAssigns>false</varAssigns>
+            <varIdents>true</varIdents>
+            <varAssigns>true</varAssigns>
             <ternaryExpresssion>false</ternaryExpresssion>
         </alignment>
         <environment />
@@ -230,9 +231,9 @@
         </misc>
     </transform>
     <general>
-        <styleName>Turbine</styleName>
+        <styleName>DbForms</styleName>
         <threadCount>1</threadCount>
-        <styleDescription>Jakarta Turbine Coding Convention</styleDescription>
+        <styleDescription>DbForms Coding Convention</styleDescription>
         <backupLevel>0</backupLevel>
         <sourceVersion>14</sourceVersion>
         <forceFormatting>false</forceFormatting>

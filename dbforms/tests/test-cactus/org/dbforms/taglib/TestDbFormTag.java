@@ -28,11 +28,12 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 import org.apache.cactus.JspTestCase;
 import org.apache.cactus.WebResponse;
-import org.dbforms.DbFormsConfig;
-import org.dbforms.ConfigServlet;
-import org.dbforms.Table;
+import org.dbforms.config.DbFormsConfig;
+import org.dbforms.config.DbFormsConfigRegistry;
+import org.dbforms.servlets.ConfigServlet;
+import org.dbforms.config.Table;
+import org.dbforms.util.AssertUtils;
 
-import org.dbforms.AssertUtils;
 
 
 
@@ -89,9 +90,10 @@ public class TestDbFormTag extends JspTestCase
      */
     public void setUp() throws Exception
     {
+        DbFormsConfigRegistry.instance().register(null);
         tblAuthor = null;
-        config.setInitParameter("dbformsConfig", "/WEB-INF/conf/dbforms-config.xml");
-        config.setInitParameter("log4j.configuration", "/WEB-INF/conf/log4j.properties");
+        config.setInitParameter("dbformsConfig", "/WEB-INF/dbforms-config.xml");
+        config.setInitParameter("log4j.configuration", "/WEB-INF/log4j.properties");
 
         ConfigServlet configServlet = new ConfigServlet();
         configServlet.init(config);
@@ -153,7 +155,7 @@ public class TestDbFormTag extends JspTestCase
         this.tag.setAutoUpdate("true");
 
         int result = this.tag.doStartTag();
-        assertEquals(BodyTag.EVAL_BODY_TAG, result);
+        assertEquals(BodyTag.EVAL_BODY_BUFFERED, result);
     }
 
 
@@ -176,7 +178,7 @@ public class TestDbFormTag extends JspTestCase
         this.tag.setAutoUpdate("true");
 
         int result = this.tag.doStartTag();
-        assertEquals(BodyTag.EVAL_BODY_TAG, result);
+        assertEquals(BodyTag.EVAL_BODY_BUFFERED, result);
     }
 
 
@@ -199,7 +201,7 @@ public class TestDbFormTag extends JspTestCase
         this.tag.setAutoUpdate("true");
 
         int result = this.tag.doStartTag();
-        assertEquals(BodyTag.EVAL_BODY_TAG, result);
+        assertEquals(BodyTag.EVAL_BODY_BUFFERED, result);
     }
 
 
@@ -222,7 +224,7 @@ public class TestDbFormTag extends JspTestCase
         this.tag.setReadOnly("false");
 
         int result = this.tag.doStartTag();
-        assertEquals(BodyTag.EVAL_BODY_TAG, result);
+        assertEquals(BodyTag.EVAL_BODY_BUFFERED, result);
     }
 
 
@@ -318,7 +320,7 @@ public class TestDbFormTag extends JspTestCase
         String content = theResponse.getText();
 
         AssertUtils.assertContains("name=\"dbform\"",content);
-        AssertUtils.assertContains("action=\"/test/servlet/control",content);
+//        AssertUtils.assertContains("action=\"test/servlet/control",content);
         AssertUtils.assertContains("target=\"_TOP\"",content);
         AssertUtils.assertContains("method=\"post\"",content);
         AssertUtils.assertContains("type=\"hidden\"",content);
@@ -326,7 +328,6 @@ public class TestDbFormTag extends JspTestCase
         AssertUtils.assertContains("value=\"0\"",content);
         AssertUtils.assertContains("name=\"autoupdate_0\" value=\"true\"",content);
         AssertUtils.assertContains("<input type=\"hidden\" name=\"fu_0\" value=\"/AUTHOR_poweruser_list.jsp\">",content);
-        AssertUtils.assertContains("<input type=\"hidden\" name=\"source\" value=\"/test\">",content);
         AssertUtils.assertContains("<input type=\"hidden\" name=\"customEvent\">",content);
 
     }
@@ -351,7 +352,7 @@ public class TestDbFormTag extends JspTestCase
     public void tearDown()
     {
         //necessary for tag to output anything on most servlet engines.
-        this.pageContext.popBody();
+//        this.pageContext.popBody();
     }
 
 

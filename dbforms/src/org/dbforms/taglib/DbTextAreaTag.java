@@ -20,14 +20,13 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.taglib;
 import java.util.*;
 import java.sql.*;
 import java.io.*;
 import javax.servlet.jsp.*;
 import javax.servlet.jsp.tagext.*;
-import org.dbforms.*;
+
 import org.dbforms.util.ParseUtil;
 import org.dbforms.event.ReloadEvent;
 import org.dbforms.event.WebEvent;
@@ -47,228 +46,231 @@ import javax.servlet.http.*;
  */
 public class DbTextAreaTag extends DbBaseInputTag
 {
-    static Category logCat = Category.getInstance(DbTextAreaTag.class.getName());
+   static Category logCat = Category.getInstance(DbTextAreaTag.class.getName());
 
-    /** DOCUMENT ME! */
-    protected String wrap;
+   /** DOCUMENT ME! */
+   protected String wrap;
 
-    /** DOCUMENT ME! */
-    protected String renderBody;
+   /** DOCUMENT ME! */
+   protected String renderBody;
 
-    /** DOCUMENT ME! */
-    protected java.lang.String overrideValue;
+   /** DOCUMENT ME! */
+   protected java.lang.String overrideValue;
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     *
-     * @throws javax.servlet.jsp.JspException DOCUMENT ME!
-     * @throws JspException DOCUMENT ME!
-     */
-    public int doStartTag() throws javax.servlet.jsp.JspException
-    {
-        super.doStartTag();
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws javax.servlet.jsp.JspException DOCUMENT ME!
+    * @throws JspException DOCUMENT ME!
+    */
+   public int doStartTag() throws javax.servlet.jsp.JspException
+   {
+      super.doStartTag();
 
-        HttpServletRequest request = (HttpServletRequest) this.pageContext.getRequest();
-        Vector errors = (Vector) request.getAttribute("errors");
-        WebEvent we = (WebEvent) request.getAttribute("webEvent");
+      HttpServletRequest request = (HttpServletRequest) this.pageContext
+         .getRequest();
+      Vector             errors = (Vector) request.getAttribute("errors");
+      WebEvent           we     = (WebEvent) request.getAttribute("webEvent");
 
-        StringBuffer tagBuf = new StringBuffer("<textarea name=\"");
-        tagBuf.append(getFormFieldName());
-        tagBuf.append("\" ");
+      StringBuffer       tagBuf = new StringBuffer("<textarea name=\"");
+      tagBuf.append(getFormFieldName());
+      tagBuf.append("\" ");
 
-        if (cols != null)
-        {
-            tagBuf.append(" cols=\"");
-            tagBuf.append(cols);
-            tagBuf.append("\"");
-        }
+      if (cols != null)
+      {
+         tagBuf.append(" cols=\"");
+         tagBuf.append(cols);
+         tagBuf.append("\"");
+      }
 
-        if (wrap != null)
-        {
-            tagBuf.append(" wrap=\"");
-            tagBuf.append(wrap);
-            tagBuf.append("\"");
-        }
+      if (wrap != null)
+      {
+         tagBuf.append(" wrap=\"");
+         tagBuf.append(wrap);
+         tagBuf.append("\"");
+      }
 
-        if (rows != null)
-        {
-            tagBuf.append(" rows=\"");
-            tagBuf.append(rows);
-            tagBuf.append("\"");
-        }
+      if (rows != null)
+      {
+         tagBuf.append(" rows=\"");
+         tagBuf.append(rows);
+         tagBuf.append("\"");
+      }
 
-        if (accessKey != null)
-        {
-            tagBuf.append(" accesskey=\"");
-            tagBuf.append(accessKey);
-            tagBuf.append("\"");
-        }
+      if (accessKey != null)
+      {
+         tagBuf.append(" accesskey=\"");
+         tagBuf.append(accessKey);
+         tagBuf.append("\"");
+      }
 
-        if (tabIndex != null)
-        {
-            tagBuf.append(" tabindex=\"");
-            tagBuf.append(tabIndex);
-            tagBuf.append("\"");
-        }
+      if (tabIndex != null)
+      {
+         tagBuf.append(" tabindex=\"");
+         tagBuf.append(tabIndex);
+         tagBuf.append("\"");
+      }
 
-        tagBuf.append(prepareStyles());
-        tagBuf.append(prepareEventHandlers());
-        tagBuf.append(">");
+      tagBuf.append(prepareStyles());
+      tagBuf.append(prepareEventHandlers());
+      tagBuf.append(">");
 
-        /* If the overrideValue attribute has been set, use its value instead of the one
-        retrieved from the database.  This mechanism can be used to set an initial default
-        value for a given field. */
-        if (!"true".equals(renderBody))
-        {
-            if (this.getOverrideValue() != null)
+      /* If the overrideValue attribute has been set, use its value instead of the one
+      retrieved from the database.  This mechanism can be used to set an initial default
+      value for a given field. */
+      if (!"true".equals(renderBody))
+      {
+         if (this.getOverrideValue() != null)
+         {
+            //If the redisplayFieldsOnError attribute is set and we are in error mode, forget override!
+            if (("true".equals(parentForm.getRedisplayFieldsOnError())
+                     && (errors != null) && (errors.size() > 0))
+                     || (we instanceof ReloadEvent))
             {
-                //If the redisplayFieldsOnError attribute is set and we are in error mode, forget override!
-                if (("true".equals(parentForm.getRedisplayFieldsOnError()) && (errors != null) && errors.size() > 0) || (we instanceof ReloadEvent))
-                {
-                    tagBuf.append(getFormFieldValue());
-                }
-                else
-                {
-                    tagBuf.append(this.getOverrideValue());
-                }
+               tagBuf.append(getFormFieldValue());
             }
             else
             {
-                if (we instanceof ReloadEvent)
-                {
-                    String oldValue = ParseUtil.getParameter(request, getFormFieldName());
-
-                    if (oldValue != null)
-                    {
-                        tagBuf.append(oldValue);
-                    }
-                    else
-                    {
-                        tagBuf.append(getFormFieldValue());
-                    }
-                }
-                else
-                {
-                    tagBuf.append(getFormFieldValue());
-                }
+               tagBuf.append(this.getOverrideValue());
             }
-        }
-
-        try
-        {
-            pageContext.getOut().write(tagBuf.toString());
-        }
-        catch (java.io.IOException e)
-        {
-            throw new JspException("IO Error: " + e.getMessage());
-        }
-
-        if (!"true".equals(renderBody))
-        {
-            return EVAL_BODY_TAG;
-        }
-        else
-        {
-            return SKIP_BODY;
-        }
-    }
-
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     *
-     * @throws javax.servlet.jsp.JspException DOCUMENT ME!
-     * @throws JspException DOCUMENT ME!
-     */
-    public int doEndTag() throws javax.servlet.jsp.JspException
-    {
-        try
-        {
-            if ("true".equals(renderBody) && (bodyContent != null))
+         }
+         else
+         {
+            if (we instanceof ReloadEvent)
             {
-                bodyContent.writeOut(bodyContent.getEnclosingWriter());
-                bodyContent.clearBody(); // workaround for duplicate rows in JRun 3.1
+               String oldValue = ParseUtil.getParameter(request,
+                     getFormFieldName());
+
+               if (oldValue != null)
+               {
+                  tagBuf.append(oldValue);
+               }
+               else
+               {
+                  tagBuf.append(getFormFieldValue());
+               }
             }
+            else
+            {
+               tagBuf.append(getFormFieldValue());
+            }
+         }
+      }
 
-            pageContext.getOut().write("</textArea>");
+      try
+      {
+         pageContext.getOut().write(tagBuf.toString());
+      }
+      catch (java.io.IOException e)
+      {
+         throw new JspException("IO Error: " + e.getMessage());
+      }
 
-
-            // For generation Javascript Validation.  Need all original and modified fields name
-            parentForm.addChildName(getFieldName(), getFormFieldName());
-        }
-        catch (java.io.IOException ioe)
-        {
-            throw new JspException("IO Error: " + ioe.getMessage());
-        }
-
-        return EVAL_PAGE;
-    }
-
-
-    /**
-     * Insert the method's description here.
-     * Creation date: (2001-06-27 17:44:16)
-     * @return java.lang.String
-     */
-    public java.lang.String getOverrideValue()
-    {
-        return overrideValue;
-    }
-
-
-    /**
-     * Insert the method's description here.
-     * Creation date: (2001-06-27 17:44:16)
-     * @param newOverrideValue java.lang.String
-     */
-    public void setOverrideValue(java.lang.String newOverrideValue)
-    {
-        overrideValue = newOverrideValue;
-    }
+      if (!"true".equals(renderBody))
+      {
+         return EVAL_BODY_BUFFERED;
+      }
+      else
+      {
+         return SKIP_BODY;
+      }
+   }
 
 
-    /**
-     * Gets the renderBody
-     * @return Returns a String
-     */
-    public String getRenderBody()
-    {
-        return renderBody;
-    }
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws javax.servlet.jsp.JspException DOCUMENT ME!
+    * @throws JspException DOCUMENT ME!
+    */
+   public int doEndTag() throws javax.servlet.jsp.JspException
+   {
+      try
+      {
+         if ("true".equals(renderBody) && (bodyContent != null))
+         {
+            bodyContent.writeOut(bodyContent.getEnclosingWriter());
+            bodyContent.clearBody(); // workaround for duplicate rows in JRun 3.1
+         }
+
+         pageContext.getOut().write("</textArea>");
+
+         // For generation Javascript Validation.  Need all original and modified fields name
+         parentForm.addChildName(getFieldName(), getFormFieldName());
+      }
+      catch (java.io.IOException ioe)
+      {
+         throw new JspException("IO Error: " + ioe.getMessage());
+      }
+
+      return EVAL_PAGE;
+   }
 
 
-    /**
-     * Sets the renderBody
-     * @param renderBody The renderBody to set
-     */
-    public void setRenderBody(String renderBody)
-    {
-        this.renderBody = renderBody;
-    }
+   /**
+    * Insert the method's description here.
+    * Creation date: (2001-06-27 17:44:16)
+    * @return java.lang.String
+    */
+   public java.lang.String getOverrideValue()
+   {
+      return overrideValue;
+   }
 
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param wrap DOCUMENT ME!
-     */
-    public void setWrap(String wrap)
-    {
-        this.wrap = wrap;
-    }
+   /**
+    * Insert the method's description here.
+    * Creation date: (2001-06-27 17:44:16)
+    * @param newOverrideValue java.lang.String
+    */
+   public void setOverrideValue(java.lang.String newOverrideValue)
+   {
+      overrideValue = newOverrideValue;
+   }
 
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
-    public String getWrap()
-    {
-        return wrap;
-    }
+   /**
+    * Gets the renderBody
+    * @return Returns a String
+    */
+   public String getRenderBody()
+   {
+      return renderBody;
+   }
+
+
+   /**
+    * Sets the renderBody
+    * @param renderBody The renderBody to set
+    */
+   public void setRenderBody(String renderBody)
+   {
+      this.renderBody = renderBody;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param wrap DOCUMENT ME!
+    */
+   public void setWrap(String wrap)
+   {
+      this.wrap = wrap;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String getWrap()
+   {
+      return wrap;
+   }
 }

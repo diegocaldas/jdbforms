@@ -20,7 +20,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.util;
 import org.apache.log4j.Category;
 
@@ -34,16 +33,17 @@ import org.apache.log4j.Category;
  */
 public class UniqueIDGenerator
 {
-    static Category logCat = Category.getInstance(UniqueIDGenerator.class.getName()); // logging category for this class
+   static Category logCat = Category.getInstance(UniqueIDGenerator.class
+         .getName()); // logging category for this class
 
-    /**
-    may be optimized in future versions
-    */
-    public static String getUniqueID()
-    {
-        long first = new java.util.Date().getTime();
-        int second = (int) (Math.random() * 100);
+   /**
+   may be optimized in future versions
+   */
+   public static String getUniqueID()
+   {
+      long first  = new java.util.Date().getTime();
+      int  second = (int) (Math.random() * 100);
 
-        return Long.toString(first) + Integer.toString(second);
-    }
+      return Long.toString(first) + Integer.toString(second);
+   }
 }

@@ -20,16 +20,14 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.event;
 
 import java.util.Properties;
-import java.sql.*;
 import javax.servlet.http.*;
 
 import org.apache.log4j.Category;
 
-import org.dbforms.*;
+import org.dbforms.config.*;
 
 
 
@@ -47,169 +45,187 @@ import org.dbforms.*;
  */
 public abstract class WebEvent
 {
-    /** logging category for this class */
-    static Category logCat = Category.getInstance(WebEvent.class.getName());
+   /** logging category for this class */
+	protected static  Category logCat = Category.getInstance(WebEvent.class.getName());
 
-    /** the  HttpServletRequest object */
-    protected HttpServletRequest request;
+   /** the  HttpServletRequest object */
+   protected HttpServletRequest request;
 
-    /** the configuration object */
-    protected DbFormsConfig config;
+   /** the configuration object */
+   protected DbFormsConfig config;
 
-    /** table identifier that tells on which table does the event operate on */
-    protected int tableId;
+   /** table identifier that tells on which table does the event operate on */
+   protected int tableId;
 
-    /** followUp URL string */
-    protected String followUp;
+   /** table  that tells on which table does the event operate on */
+   protected Table table;
 
-    /** followUp URL string used when an error occurs */
-    protected String followUpOnError;
+   /** followUp URL string */
+   protected String followUp;
 
-    /** event properties */
-    protected Properties properties = null;
+   /** followUp URL string used when an error occurs */
+   protected String followUpOnError;
 
+   /** event properties */
+   protected Properties properties = null;
 
-    /**
-     *  Gets the config attribute of the WebEvent object
-     *
-     * @return  The config value
-     */
-    public DbFormsConfig getConfig()
-    {
-        return config;
-    }
+   /** type of event */
+   private String type = "UNDEFINED";
 
+   /**
+    * Creates a new WebEvent object.
+    *
+    * @param tableId DOCUMENT ME!
+    * @param request DOCUMENT ME!
+    * @param config DOCUMENT ME!
+    */
+   public WebEvent(int tableId, HttpServletRequest request, DbFormsConfig config)
+   {
+      this.tableId    = tableId;
+      this.table      = config.getTable(tableId);
+      this.request    = request;
+      this.config     = config;
+   }
 
-    /**
-     *  Gets the followUp attribute of the WebEvent object
-     *
-     * @return  The followUp value
-     */
-    public String getFollowUp()
-    {
-        return followUp;
-    }
-
-
-    /**
-     *  Gets the followUpOnError attribute of the WebEvent object
-     *
-     * @return  The followUpOnError value
-     */
-    public String getFollowUpOnError()
-    {
-        return followUpOnError;
-    }
+   /**
+    *  Gets the config attribute of the WebEvent object
+    *
+    * @return  The config value
+    */
+   public DbFormsConfig getConfig()
+   {
+      return config;
+   }
 
 
-    /**
-     *  Gets the request attribute of the WebEvent object
-     *
-     * @return  The request value
-     */
-    public HttpServletRequest getRequest()
-    {
-        return request;
-    }
+   /**
+    *  Gets the followUp attribute of the WebEvent object
+    *
+    * @return  The followUp value
+    */
+   public String getFollowUp()
+   {
+      return followUp;
+   }
 
 
-    /**
-     *  Gets the tableId attribute of the WebEvent object
-     *
-     * @return  The tableId value
-     */
-    public int getTableId()
-    {
-        return tableId;
-    }
+   /**
+    *  Gets the followUpOnError attribute of the WebEvent object
+    *
+    * @return  The followUpOnError value
+    */
+   public String getFollowUpOnError()
+   {
+      return followUpOnError;
+   }
 
 
-    /**
-     *  Sets the config attribute of the WebEvent object
-     *
-     * @param  config The new config value
-     */
-    public void setConfig(DbFormsConfig config)
-    {
-        this.config = config;
-    }
+   /**
+    *  Gets the request attribute of the WebEvent object
+    *
+    * @return  The request value
+    */
+   public HttpServletRequest getRequest()
+   {
+      return request;
+   }
 
 
-    /**
-     *  Sets the followUp attribute of the WebEvent object
-     *
-     * @param  followUp The new followUp value
-     */
-    public void setFollowUp(String followUp)
-    {
-        this.followUp = followUp;
-    }
+   /**
+    *  sets the request attribute of the WebEvent object
+    *
+    *   @param  request The new request value
+    *
+    */
+   public void setRequest(HttpServletRequest request)
+   {
+      this.request = request;
+   }
 
 
-    /**
-     *  Sets the followUpOnError attribute of the WebEvent object
-     *
-     * @param  followUpOnError The new followUpOnError value
-     */
-    public void setFollowUpOnError(String followUpOnError)
-    {
-        this.followUpOnError = followUpOnError;
-    }
+   /**
+    *  Gets the tableId attribute of the WebEvent object
+    *
+    * @return  The tableId value
+    */
+   public int getTableId()
+   {
+      return tableId;
+   }
 
 
-    /**
-     *  Gets the properties attribute of the WebEvent object
-     *
-     * @return  The properties value
-     */
-    public Properties getProperties()
-    {
-        return properties;
-    }
+   /**
+    *  Sets the followUp attribute of the WebEvent object
+    *
+    * @param  followUp The new followUp value
+    */
+   public void setFollowUp(String followUp)
+   {
+      this.followUp = followUp;
+   }
 
 
-    /**
-     *  Sets the properties attribute of the WebEvent object
-     *
-     * @param  properties The new properties value
-     */
-    public void setProperties(Properties properties)
-    {
-        this.properties = properties;
-    }
+   /**
+    *  Sets the followUpOnError attribute of the WebEvent object
+    *
+    * @param  followUpOnError The new followUpOnError value
+    */
+   public void setFollowUpOnError(String followUpOnError)
+   {
+      this.followUpOnError = followUpOnError;
+   }
 
 
-    /**
-     *  Sets the request attribute of the WebEvent object
-     *
-     * @param  request The new request value
-     */
-    public void setRequest(HttpServletRequest request)
-    {
-        this.request = request;
-    }
+   /**
+    *  Gets the properties attribute of the WebEvent object
+    *
+    * @return  The properties value
+    */
+   public Properties getProperties()
+   {
+      return properties;
+   }
 
 
-    /**
-     *  Sets the tableId attribute of the WebEvent object
-     *
-     * @param  tableId The new tableId value
-     */
-    public void setTableId(int tableId)
-    {
-        this.tableId = tableId;
-    }
+   /**
+    *  Sets the properties attribute of the WebEvent object
+    *
+    * @param  properties The new properties value
+    */
+   public void setProperties(Properties properties)
+   {
+      this.properties = properties;
+   }
 
 
-    /**
-     * Check if the current user has got the input privilege
-     *
-     * @param  privileg the privilege value
-     * @return  true  if the current user has got the input privilege,
-     *         false otherwise
-     */
-    protected boolean hasUserPrivileg(int privileg)
-    {
-        return config.getTable(tableId).hasUserPrivileg(request, privileg);
-    }
+   /**
+    * Check if the current user has got the input privilege
+    *
+    * @param  privileg the privilege value
+    * @return  true  if the current user has got the input privilege,
+    *         false otherwise
+    */
+   protected boolean hasUserPrivileg(int privileg)
+   {
+      return config.getTable(tableId).hasUserPrivileg(request, privileg);
+   }
+
+
+   /**
+    * @return String
+    */
+   public String getType()
+   {
+      return type;
+   }
+
+
+   /**
+    * Sets the type.
+    * @param type The type to set
+    */
+   public void setType(String type)
+   {
+      this.type = type;
+   }
 }

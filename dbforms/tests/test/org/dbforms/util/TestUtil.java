@@ -129,20 +129,11 @@ public class TestUtil extends TestCase {
      */
     public void testIsNull()
         throws Exception {
-
-
-        boolean result = Util.isNull(null);
-
+        boolean result = Util.isNull((String)null);
         assertTrue("Must be null", result);
-
-
         result = Util.isNull("");
-
         assertTrue("Must be null", result);
-
-
         result = Util.isNull("not null");
-
         assertTrue("Must not be null", !result);
 
     }

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter>
+  <title>Sequence diagrams</title>
+  <para>
+    The following links points to the sequence diagrams pictures that show the interaction between
+    DbForms components (controller, view, data access objects, etc.).
+    <itemizedlist mark="opencircle">
+      <listitem>
+        <ulink url="./images/figures/">TagLib</ulink>
+      </listitem>
+      <listitem>
+      </listitem>
+    </itemizedlist>
+  </para>
+</chapter>

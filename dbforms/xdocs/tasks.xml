@@ -4,6 +4,101 @@
     <title>Tasks</title>
   </properties>
   <body>
+  	<section name="v1.1.4">
+	  <p>
+	    <table>
+	    	<tr>
+	    		<th>ToDo</th>
+	    		<th>Assigned to</th>
+	    		<th>State</th>
+	    	</tr>
+	      	<tr>
+	      		<td>merge the 1_1_4dev developers branch back into the main trunk</td>
+	      		<td>Henner Kollmann (Henner.Kollmann@gmx.de)</td>
+	      		<td>open</td>
+	      	</tr>
+	      	<tr>
+	      		<td>Make the new navigation system to the default system</td>
+	      		<td>Henner Kollmann (Henner.Kollmann@gmx.de)</td>
+	      		<td>done</td>
+	      	</tr>
+	      	<tr>
+	      		<td>Remove * imports so checkstyle will make less error</td>
+	      		<td>unassigned</td>
+	      		<td>open</td>
+	      	</tr>
+	      	<tr>
+	      		<td>Clean up tags to write out clean XHTML</td>
+	      		<td>unassigned</td>
+	      		<td>open</td>
+	      	</tr>
+	      	<tr>
+	      		<td>
+			   For the disabled:
+			   Write name attribute to each generated table cell with tablename_columnname_rownum
+	      		</td>
+	      		<td>unassigned</td>
+	      		<td>open</td>
+	      	</tr>
+	      	<tr>
+	      		<td>
+				Kepp textField empty when numeric field in database is null
+	      		</td>
+	      		<td>unassigned</td>
+	      		<td>open</td>
+	      	</tr>
+	      	<tr>
+	      		<td>
+				make JasperReport directories configurable
+				Is it possible to have the configuration of 
+				StartReportServlet done by user the way it's done for 
+				ConfigServlet instead of limiting reports to be placed in 
+				WEB-INF/custom/reports, or WEB-INF/reports? I have 
+				used JasperReports for some time and have placed 
+				report definitions in sub-directories of WEB- 
+				INF/templates/reports. I would like to keep this 
+				configuration.
+				
+	      		</td>
+	      		<td>Henner Kollmann (Henner.Kollmann@gmx.de)</td>
+	      		<td>open</td>
+	      	</tr>
+	      	<tr>
+	      		<td>
+				Making the fieldValues.remove("something_I_dont_want_updated") work?
+				It gets ignored now.
+	      		</td>
+	      		<td>unassigned</td>
+	      		<td>open</td>
+	      	</tr>
+	      	<tr>
+	      		<td>
+		      		Make it possible to have the configurations as attributes in the &lt;db:dateField&gt;
+		      		tag instead of putting them in web.xml. Some thing like:
+					&lt;db:dateField 
+						fieldName="birthdate"   
+						useJsCalendar="true"
+						jsCalendarDateFormat="yyyy-mm-dd" 
+						jsCalendarImageHeight="16" 
+						jsCalendarImageWidth="16"  
+						jsCalendarImageSrc="&lt;%=imageFiles%&gt;"  /&gt;
+					If the attributes are not given then the tag takes the default values (current implementation).
+				</td>
+		     	<td>unassigned</td>
+	    	  	<td>open</td>
+	      	</tr>
+	      	<tr>
+	    	  	<td>
+		      		Use information of config file i select/radio/searchcombo tags so that xml tables could be used.
+		      		Best would be to create a new tag.
+				</td>
+	      		<td>unassigned</td>
+	      		<td>open</td>
+	      	</tr>
+	    </table>
+	  </p>
+  	
+  	</section>
   </body>
 </document>
 

@@ -1,7 +1,9 @@
 <?xml version='1.0'?>
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
                     "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd"
-[<!ENTITY pref SYSTEM "Preface.xml">
+[
+ 
+<!ENTITY pref SYSTEM "Preface.xml">
 <!ENTITY intr SYSTEM "Introduction.xml">
 <!ENTITY comp SYSTEM "Compatibility.xml">
 <!ENTITY inst SYSTEM "Installation.xml">
@@ -30,11 +32,17 @@
 <!ENTITY refe SYSTEM "Appendix_References.xml">
 <!ENTITY ackn SYSTEM "Appendix_Acknowledgements.xml">
 <!ENTITY auth SYSTEM "Appendix_Author.xml">
- 
+<!ENTITY navi SYSTEM "Navigation.xml">
+<!ENTITY xml  SYSTEM "XMLDatasource.xml">
+<!ENTITY uml-cls SYSTEM "UMLDiagrams-cls.xml">
+<!ENTITY uml-seq SYSTEM "UMLDiagrams-seq.xml">
 ]>
 <book>
 <title>DataBaseForms UsersGuide</title>
- 
+<part><title>Major New features</title> 
+&navi;
+</part>
+
 <part><title>Installation </title>
 &comp;
 &inst;
@@ -45,6 +53,7 @@
 <part><title>Background</title>
 &pref;
 &intr;
+
 </part>
 
 <part><title>Basic Use Tutorial</title>
@@ -63,10 +72,16 @@
 &jscr;
 &fkey;
 &cons;
-&jasp; 
 &mult;
 &plug;
 &ejbs;
+&jasp;
+&xml;
+</part>
+
+<part><title>UML diagrams</title>
+&uml-cls;
+&uml-seq;
 </part>
 
 <part><title>Appendices</title>

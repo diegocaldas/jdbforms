@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.util;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -34,7 +33,11 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 
 import org.apache.log4j.Category;
-import org.dbforms.DbFormsConfig;
+import org.dbforms.config.DbFormsConfigRegistry;
+import org.dbforms.config.DbFormsConfig;
+import org.dbforms.config.DbConnection;
+
+
 
 /****
  *
@@ -43,330 +46,375 @@ import org.dbforms.DbFormsConfig;
  * @author Joe Peer <j.peer@gmx.net>
  * @author Eric Pugh <epugh@upstate.com>
  */
-public class SqlUtil {
-  // logging category for this class
-  static Category logCat = Category.getInstance(SqlUtil.class.getName());
+public class SqlUtil
+{
+   // logging category for this class
+   static Category logCat = Category.getInstance(SqlUtil.class.getName());
 
-  /**
-   *
-   */
-  private static java.sql.Date createAppropriateDate(Object value) {
-    if (value == null) {
-      return null;
-    }
-
-    String valueStr = ((String) value).trim();
-
-    if (valueStr.length() == 0) {
-      return null;
-    }
-
-    SimpleDateFormat sdf = DbFormsConfig.getDateFormatter();
-    Date result = null;
-
-    try {
-      result =
-        new Date(
-          TimeUtil.parseDate(sdf.toPattern(), valueStr).getTime());
-    } catch (Exception exc) {
-      result = null;
-    }
-
-    if (result == null) {
-      // Maybe date has been returned as a timestamp?
-      try {
-      } catch (java.lang.IllegalArgumentException ex) {
-        // Try date
-        result = java.sql.Date.valueOf(valueStr);
-      }
-    }
-
-    return result;
-  }
-
-
-  private static java.sql.Timestamp createAppropriateTimeStamp(
-    Object value) {
-    if (value == null) {
-      return null;
-    }
-
-    String valueStr = ((String) value).trim();
-
-    if (valueStr.length() == 0) {
-      return null;
-    }
-
-    SimpleDateFormat sdf = DbFormsConfig.getDateFormatter();
-    Timestamp result = null;
-    try {
-      result =
-        new Timestamp(
-          TimeUtil.parseDate(sdf.toPattern(), valueStr).getTime());
-    } catch (Exception exc) {
-      result = null;
-    }
-
-    if (result == null) {
-      // Maybe date has been returned as a timestamp?
-      result = java.sql.Timestamp.valueOf(valueStr);
-    }
-
-    return result;
-  }
-
-  /**
-   *
-   */
-  private static java.math.BigDecimal createAppropriateNumeric(
-    Object value) {
-    if (value == null) {
-      return null;
-    }
-
-    String valueStr = ((String) value).trim();
-
-    if (valueStr.length() == 0) {
-      return null;
-    }
-
-    return new java.math.BigDecimal(valueStr);
-  }
-
-  /**
-   *  this utility-method assigns a particular value to a place holder of a PreparedStatement.
-   *  it tries to find the correct setXxx() value, accoring to the field-type information
-   *  represented by "fieldType".
-   *
-   *  quality: this method is bloody alpha (as you might see :=)
-   */
-  public static void fillPreparedStatement(
-    PreparedStatement ps,
-    int col,
-    Object value,
-    int fieldType)
-    throws SQLException {
-    try {
-      logCat.debug(
-        "fillPreparedStatement( ps, "
-          + col
-          + ", "
-          + value
-          + ", "
-          + fieldType
-          + ")...");
-
-
-      //Check for hard-coded NULL
-      if ("$null$".equals(value)) {
-        value = null;
+   /**
+    *
+    */
+   private static java.sql.Date createAppropriateDate(Object value)
+   {
+      if (value == null)
+      {
+         return null;
       }
 
-      // the challenge with this is that sometimes we want a "" string to
-      // actually not be null, but to be "".  This fails!
-      if ((fieldType != FieldTypes.BLOB) && Util.isNull((String) value)){
-        value = null;
+      String valueStr = ((String) value).trim();
+
+      if (valueStr.length() == 0)
+      {
+         return null;
       }
-      if (value != null) {
-        switch (fieldType) {
-          case FieldTypes.INTEGER :
-            ps.setInt(col, Integer.parseInt((String) value));
-            break;
 
-          case FieldTypes.NUMERIC :
-            ps.setBigDecimal(col, createAppropriateNumeric(value));
-            break;
+		Date             result = null;
+      try
+      {
+			SimpleDateFormat sdf    = DbFormsConfigRegistry.instance().lookup().getDateFormatter();
+         result = new Date(TimeUtil.parseDate(sdf.toPattern(), valueStr)
+                                   .getTime());
+      }
+      catch (Exception exc)
+      {
+         result = null;
+      }
 
-          case FieldTypes.CHAR :
-            ps.setString(col, (String) value);
-            break;
+      if (result == null)
+      {
+         // Maybe date has been returned as a timestamp?
+				result = new Date(Timestamp.valueOf(valueStr).getTime());
+      }
+		String s = result.toString();
 
-          case FieldTypes.DATE :
-            ps.setDate(col, createAppropriateDate(value));
-            break;
+      return result;
+   }
 
-            //2002/10/01-HKK: Do the same for timestamp!
-          case FieldTypes.TIMESTAMP :
-            ps.setTimestamp(col, createAppropriateTimeStamp(value));
-            break;
 
-          case FieldTypes.DOUBLE :
-            ps.setDouble(
-              col,
-              Double.valueOf((String) value).doubleValue());
-            break;
+   private static java.sql.Timestamp createAppropriateTimeStamp(Object value)
+   {
+      if (value == null)
+      {
+         return null;
+      }
 
-          case FieldTypes.FLOAT :
-            ps.setFloat(
-              col,
-              Float.valueOf((String) value).floatValue());
-            break;
+      String valueStr = ((String) value).trim();
 
-          case FieldTypes.BLOB :
-            FileHolder fileHolder = (FileHolder) value;
-            try {
-              ByteArrayOutputStream byteOut =
-                new ByteArrayOutputStream();
-              ObjectOutputStream out =
-                new ObjectOutputStream(byteOut);
-              out.writeObject(fileHolder);
-              out.flush();
+      if (valueStr.length() == 0)
+      {
+         return null;
+      }
 
-              byte[] buf = byteOut.toByteArray();
-              byteOut.close();
-              out.close();
+      Timestamp        result = null;
 
-              ByteArrayInputStream bytein =
-                new ByteArrayInputStream(buf);
-              int byteLength = buf.length;
-              ps.setBinaryStream(col, bytein, byteLength);
+      try
+      {
+			SimpleDateFormat sdf    = DbFormsConfigRegistry.instance().lookup().getDateFormatter();
+         result = new Timestamp(TimeUtil.parseDate(sdf.toPattern(), valueStr)
+                                        .getTime());
+      }
+      catch (Exception exc)
+      {
+         result = null;
+      }
 
-              // store fileHolder as a whole (this way we don't lose file meta-info!)
-            } catch (IOException ioe) {
-              ioe.printStackTrace();
-              logCat.info(ioe.toString());
-              throw new SQLException(
-                "error storing BLOB in database - "
-                  + ioe.toString(),
-                null,
-                2);
+      if (result == null)
+      {
+         // Maybe date has been returned as a timestamp?
+         result = Timestamp.valueOf(valueStr);
+      }
+
+      return result;
+   }
+
+
+   /**
+    *
+    */
+   private static java.math.BigDecimal createAppropriateNumeric(Object value)
+   {
+      if (value == null)
+      {
+         return null;
+      }
+
+      String valueStr = ((String) value).trim();
+
+      if (valueStr.length() == 0)
+      {
+         return null;
+      }
+
+      return new java.math.BigDecimal(valueStr);
+   }
+
+
+   /**
+    *  this utility-method assigns a particular value to a place holder of a PreparedStatement.
+    *  it tries to find the correct setXxx() value, accoring to the field-type information
+    *  represented by "fieldType".
+    *
+    *  quality: this method is bloody alpha (as you might see :=)
+    */
+   public static void fillPreparedStatement(PreparedStatement ps, int col,
+      Object value, int fieldType) throws SQLException
+   {
+      try
+      {
+         logCat.debug("fillPreparedStatement( ps, " + col + ", " + value + ", "
+            + fieldType + ")...");
+
+         //Check for hard-coded NULL
+         if ("$null$".equals(value))
+         {
+            value = null;
+         }
+
+         // the challenge with this is that sometimes we want a "" string to
+         // actually not be null, but to be "".  This fails!
+         if ((fieldType != FieldTypes.BLOB) && Util.isNull((String) value))
+         {
+            value = null;
+         }
+
+         if (value != null)
+         {
+            switch (fieldType)
+            {
+               case FieldTypes.INTEGER:
+                  ps.setInt(col, Integer.parseInt((String) value));
+
+                  break;
+
+               case FieldTypes.NUMERIC:
+                  ps.setBigDecimal(col, createAppropriateNumeric(value));
+
+                  break;
+
+               case FieldTypes.CHAR:
+                  ps.setString(col, (String) value);
+
+                  break;
+
+               case FieldTypes.DATE:
+                  ps.setDate(col, createAppropriateDate(value));
+
+                  break;
+
+               //2002/10/01-HKK: Do the same for timestamp!
+               case FieldTypes.TIMESTAMP:
+                  ps.setTimestamp(col, createAppropriateTimeStamp(value));
+
+                  break;
+
+               case FieldTypes.DOUBLE:
+                  ps.setDouble(col, Double.valueOf((String) value).doubleValue());
+
+                  break;
+
+               case FieldTypes.FLOAT:
+                  ps.setFloat(col, Float.valueOf((String) value).floatValue());
+
+                  break;
+
+               case FieldTypes.BLOB:
+
+                  FileHolder fileHolder = (FileHolder) value;
+
+                  try
+                  {
+                     ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
+                     ObjectOutputStream    out = new ObjectOutputStream(byteOut);
+                     out.writeObject(fileHolder);
+                     out.flush();
+
+                     byte[] buf = byteOut.toByteArray();
+                     byteOut.close();
+                     out.close();
+
+                     ByteArrayInputStream bytein     = new ByteArrayInputStream(buf);
+                     int                  byteLength = buf.length;
+                     ps.setBinaryStream(col, bytein, byteLength);
+
+                     // store fileHolder as a whole (this way we don't lose file meta-info!)
+                  }
+                  catch (IOException ioe)
+                  {
+                     ioe.printStackTrace();
+                     logCat.info(ioe.toString());
+                     throw new SQLException("error storing BLOB in database - "
+                        + ioe.toString(), null, 2);
+                  }
+
+                  break;
+
+               case FieldTypes.DISKBLOB:
+                  ps.setString(col, (String) value);
+
+                  break;
+
+               default:
+                  ps.setObject(col, value); //#checkme
             }
+         }
+         else
+         {
+            switch (fieldType)
+            {
+               case FieldTypes.INTEGER:
+                  ps.setNull(col, java.sql.Types.INTEGER);
 
-            break;
+                  break;
 
-          case FieldTypes.DISKBLOB :
-            ps.setString(col, (String) value);
-            break;
+               case FieldTypes.NUMERIC:
+                  ps.setNull(col, java.sql.Types.NUMERIC);
 
-          default :
-            ps.setObject(col, value); //#checkme
-        }
-      } else {
-        switch (fieldType) {
-          case FieldTypes.INTEGER :
-            ps.setNull(col, java.sql.Types.INTEGER);
+                  break;
 
-            break;
+               case FieldTypes.CHAR:
+                  ps.setNull(col, java.sql.Types.CHAR);
 
-          case FieldTypes.NUMERIC :
-            ps.setNull(col, java.sql.Types.NUMERIC);
+                  break;
 
-            break;
+               case FieldTypes.DATE:
+                  ps.setNull(col, java.sql.Types.DATE);
 
-          case FieldTypes.CHAR :
-            ps.setNull(col, java.sql.Types.CHAR);
+                  break;
 
-            break;
+               case FieldTypes.TIMESTAMP:
+                  ps.setNull(col, java.sql.Types.TIMESTAMP);
 
-          case FieldTypes.DATE :
-            ps.setNull(col, java.sql.Types.DATE);
+                  break;
 
-            break;
+               case FieldTypes.DOUBLE:
+                  ps.setNull(col, java.sql.Types.DOUBLE);
 
-          case FieldTypes.TIMESTAMP :
-            ps.setNull(col, java.sql.Types.TIMESTAMP);
+                  break;
 
-            break;
+               case FieldTypes.FLOAT:
+                  ps.setNull(col, java.sql.Types.FLOAT);
 
-          case FieldTypes.DOUBLE :
-            ps.setNull(col, java.sql.Types.DOUBLE);
+                  break;
 
-            break;
+               case FieldTypes.BLOB:
+                  ps.setNull(col, java.sql.Types.BLOB);
 
-          case FieldTypes.FLOAT :
-            ps.setNull(col, java.sql.Types.FLOAT);
+               case FieldTypes.DISKBLOB:
+                  ps.setNull(col, java.sql.Types.CHAR);
 
-            break;
+               default:
+                  ps.setObject(col, value); //#checkme
 
-          case FieldTypes.BLOB :
-            ps.setNull(col, java.sql.Types.BLOB);
-
-          case FieldTypes.DISKBLOB :
-            ps.setNull(col, java.sql.Types.CHAR);
-
-          default :
-            ps.setObject(col, value); //#checkme
-            //ps.setNull(col, java.sql.Types.OTHER);
-
-        }
+               //ps.setNull(col, java.sql.Types.OTHER);
+            }
+         }
       }
-    } catch (Exception e) {
-      StringBuffer msgSB = new StringBuffer("Field type seems to be incorrect - " + e.toString());
-      if (fieldType==0){
-        msgSB.append(" Double check your dbforms-config.xml, as the field type was not populated.");
+      catch (Exception e)
+      {
+         StringBuffer msgSB = new StringBuffer(
+               "Field type seems to be incorrect - " + e.toString());
 
+         if (fieldType == 0)
+         {
+            msgSB.append(
+               " Double check your dbforms-config.xml, as the field type was not populated.");
+         }
+
+         throw new SQLException(msgSB.toString(), null, 1);
       }
-      throw new SQLException(
-        msgSB.toString(),
-        null,
-        1);
-    }
-  }
+   }
 
-  /**
-   * Close the input connection
-   *
-   * @param con the connection to close
-   */
-  public final static void closeConnection(Connection con) {
-    if (con != null) {
-      try {
-        logCat.debug("About to close connection - " + con);
-        con.close();
-        logCat.debug("Connection closed");
-      } catch (SQLException e) {
-        logCat.error(
-          "::closeConnection - cannot close the input connection",
-          e);
+
+   /**
+    * Close the input connection
+    *
+    * @param con the connection to close
+    */
+   public static final void closeConnection(Connection con)
+   {
+      if (con != null)
+      {
+         try
+         {
+            logCat.debug("About to close connection - " + con);
+            con.close();
+            logCat.debug("Connection closed");
+         }
+         catch (SQLException e)
+         {
+            logCat.error("::closeConnection - cannot close the input connection",
+               e);
+         }
       }
-    }
-  }
+   }
 
-  /**
-   *  Get a connection using the connection name
-   *  specified into the xml configuration file.
-   *
-   * @param config            the DbFormsConfig object
-   * @param dbConnectionName  the name of the DbConnection element
-   * @return a JDBC connection object
-   * @throws IllegalArgumentException if any error occurs
-   */
-  public static final Connection getConnection(
-    DbFormsConfig config,
-    String dbConnectionName)
-    throws IllegalArgumentException {
-    DbConnection dbConnection = null;
-    Connection con = null;
 
-    //  get the DbConnection object having the input name;
-    if ((dbConnection = config.getDbConnection(dbConnectionName)) == null)
-      throw new IllegalArgumentException(
-        "No DbConnection object configured with name '"
-          + dbConnectionName
-          + "'");
+   /**
+    *  Get a connection using the connection name
+    *  specified into the xml configuration file.
+    *
+    * @param config            the DbFormsConfig object
+    * @param dbConnectionName  the name of the DbConnection element
+    * @return a JDBC connection object
+    * @throws IllegalArgumentException if any error occurs
+    */
+   public static final Connection getConnection(DbFormsConfig config,
+      String dbConnectionName) throws IllegalArgumentException
+   {
+      DbConnection dbConnection = null;
+      Connection   con = null;
 
-    // now try to get the JDBC connection from the retrieved DbConnection object;
-    if ((con = dbConnection.getConnection()) == null)
-      throw new IllegalArgumentException(
-        "JDBC-Troubles:  was not able to create connection from "
-          + dbConnection);
+      //  get the DbConnection object having the input name;
+      if ((dbConnection = config.getDbConnection(dbConnectionName)) == null)
+      {
+         throw new IllegalArgumentException(
+            "No DbConnection object configured with name '" + dbConnectionName
+            + "'");
+      }
 
-    return con;
-  }
+      // now try to get the JDBC connection from the retrieved DbConnection object;
+      if ((con = dbConnection.getConnection()) == null)
+      {
+         throw new IllegalArgumentException(
+            "JDBC-Troubles:  was not able to create connection from "
+            + dbConnection);
+      }
 
-  /**
-   *  Log the SQLException stacktrace and do the same for all the
-   *  nested exceptions.
-   */
-  public static final void logSqlException(SQLException e) {
-    int i = 0;
+      return con;
+   }
 
-    logCat.error("::logSqlExceptionSQL - exception", e);
 
-    while ((e = e.getNextException()) != null)
-      logCat.error(
-        "::logSqlException - nested SQLException (" + (i++) + ")",
-        e);
-  }
+   /**
+    *  Log the SQLException stacktrace and do the same for all the
+    *  nested exceptions.
+    * 
+    * @param e  the SQL exception to log
+    */
+   public static final void logSqlException(SQLException e)
+   {
+	  logSqlException(e, null);
+   }
+   
 
+   /**
+	*  Log the SQLException stacktrace (adding the input description to 
+	*  the first log statement) and do the same for all the nested exceptions.
+	* 
+	* @param e    the SQL exception to log
+	* @param desc the exception description
+	*/
+   public static final void logSqlException(SQLException e, String desc)
+   {	    
+	  int i = 0;
+	  String excDesc = "::logSqlExceptionSQL - main SQL exception";
+	  
+	  // adding the input description to the main log statement;
+	  if (!Util.isNull(desc)) 
+	    excDesc += (" [" + desc + "]");
+	  
+	  logCat.error(excDesc, e);
+
+	  while ((e = e.getNextException()) != null)
+		 logCat.error("::logSqlException - nested SQLException (" + (i++) + ")", e);
+   }
 }

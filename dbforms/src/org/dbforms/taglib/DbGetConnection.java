@@ -20,17 +20,17 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.taglib;
-
 import java.io.*;
 import java.util.*;
 import java.sql.*;
 import javax.servlet.http.*;
 import javax.servlet.jsp.*;
 import javax.servlet.jsp.tagext.*;
+
+import org.dbforms.config.*;
 import org.dbforms.util.*;
-import org.dbforms.*;
+
 import org.apache.log4j.Category;
 
 
@@ -45,136 +45,137 @@ import org.apache.log4j.Category;
  * ***************************************************************/
 public class DbGetConnection extends BodyTagSupport implements TryCatchFinally
 {
-    static Category logCat = Category.getInstance(DbGetConnection.class.getName());
+   static Category logCat = Category.getInstance(DbGetConnection.class.getName());
 
-    // logging category for this class
-    private String id;
-    private Connection con;
-    private String dbConnectionName;
-    private DbFormsConfig config;
+   // logging category for this class
+   private String        id;
+   private Connection    con;
+   private String        dbConnectionName;
+   private DbFormsConfig config;
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     *
-     * @throws JspException DOCUMENT ME!
-     * @throws IllegalArgumentException DOCUMENT ME!
-     */
-    public int doStartTag() throws JspException
-    {
-        try
-        {
-            // get the connection and place it in attribute;
-            con = SqlUtil.getConnection(config, dbConnectionName);
-            pageContext.setAttribute(this.getId(), con, PageContext.PAGE_SCOPE);
-        }
-        catch (Exception e)
-        {
-            throw new JspException("Database error" + e.toString());
-        }
-
-        return EVAL_BODY_TAG;
-    }
-
-
-    /**
+   /**
     * DOCUMENT ME!
     *
     * @return DOCUMENT ME!
-    */
-    public int doAfterBody()
-    {
-        try
-        {
-            bodyContent.writeOut(bodyContent.getEnclosingWriter());
-        }
-        catch (IOException ioe)
-        {
-            ioe.printStackTrace();
-        }
-
-        return SKIP_BODY;
-    }
-
-
-    /**
-    * Gets the id
-    * @return Returns a String
-    */
-    public String getId()
-    {
-        return id;
-    }
-
-
-    /**
-    * Sets the id
-    * @param id The id to set
-    */
-    public void setId(String id)
-    {
-        this.id = id;
-    }
-
-
-    /**
-    * DOCUMENT ME!
     *
-    * @param name DOCUMENT ME!
+    * @throws JspException DOCUMENT ME!
+    * @throws IllegalArgumentException DOCUMENT ME!
     */
-    public void setDbConnectionName(String name)
-    {
-        dbConnectionName = name;
-    }
+   public int doStartTag() throws JspException
+   {
+      try
+      {
+         // get the connection and place it in attribute;
+         con = SqlUtil.getConnection(config, dbConnectionName);
+         pageContext.setAttribute(this.getId(), con, PageContext.PAGE_SCOPE);
+      }
+      catch (Exception e)
+      {
+         throw new JspException("Database error" + e.toString());
+      }
+
+      return EVAL_BODY_BUFFERED;
+   }
 
 
-    /**
-    * DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    */
-    public String getDbConnectionName()
-    {
-        return dbConnectionName;
-    }
+   /**
+   * DOCUMENT ME!
+   *
+   * @return DOCUMENT ME!
+   */
+   public int doAfterBody()
+   {
+      try
+      {
+         bodyContent.writeOut(bodyContent.getEnclosingWriter());
+      }
+      catch (IOException ioe)
+      {
+         ioe.printStackTrace();
+      }
+
+      return SKIP_BODY;
+   }
 
 
-    /**
-    * DOCUMENT ME!
-    *
-    * @param pc DOCUMENT ME!
-    */
-    public void setPageContext(PageContext pc)
-    {
-        super.setPageContext(pc);
-        config = (DbFormsConfig) pageContext.getServletContext().getAttribute(DbFormsConfig.CONFIG);
-
-        if (config == null)
-        {
-            throw new IllegalArgumentException("Troubles with DbForms config xml file: can not find CONFIG object in application context! check system configuration! check if application crashes on start-up!");
-        }
-    }
+   /**
+   * Gets the id
+   * @return Returns a String
+   */
+   public String getId()
+   {
+      return id;
+   }
 
 
-    /**
-    * DOCUMENT ME!
-    */
-    public void doFinally()
-    {
-        SqlUtil.closeConnection(con);
-    }
+   /**
+   * Sets the id
+   * @param id The id to set
+   */
+   public void setId(String id)
+   {
+      this.id = id;
+   }
 
 
-    /**
-    * DOCUMENT ME!
-    *
-    * @param t DOCUMENT ME!
-    *
-    * @throws Throwable DOCUMENT ME!
-    */
-    public void doCatch(Throwable t) throws Throwable
-    {
-        throw t;
-    }
+   /**
+   * DOCUMENT ME!
+   *
+   * @param name DOCUMENT ME!
+   */
+   public void setDbConnectionName(String name)
+   {
+      dbConnectionName = name;
+   }
+
+
+   /**
+   * DOCUMENT ME!
+   *
+   * @return DOCUMENT ME!
+   */
+   public String getDbConnectionName()
+   {
+      return dbConnectionName;
+   }
+
+
+   /**
+   * DOCUMENT ME!
+   *
+   * @param pc DOCUMENT ME!
+   */
+   public void setPageContext(PageContext pc)
+   {
+      super.setPageContext(pc);
+      config = (DbFormsConfig) pageContext.getServletContext().getAttribute(DbFormsConfig.CONFIG);
+
+      if (config == null)
+      {
+         throw new IllegalArgumentException(
+            "Troubles with DbForms config xml file: can not find CONFIG object in application context! check system configuration! check if application crashes on start-up!");
+      }
+   }
+
+
+   /**
+   * DOCUMENT ME!
+   */
+   public void doFinally()
+   {
+      SqlUtil.closeConnection(con);
+   }
+
+
+   /**
+   * DOCUMENT ME!
+   *
+   * @param t DOCUMENT ME!
+   *
+   * @throws Throwable DOCUMENT ME!
+   */
+   public void doCatch(Throwable t) throws Throwable
+   {
+      throw t;
+   }
 }

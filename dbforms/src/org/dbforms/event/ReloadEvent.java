@@ -20,11 +20,14 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.event;
+
 import org.apache.log4j.Category;
+
 import javax.servlet.http.*;
-import org.dbforms.util.*;
+
+import org.dbforms.config.*;
+
 
 
 
@@ -41,13 +44,14 @@ import org.dbforms.util.*;
  */
 public class ReloadEvent extends WebEvent
 {
-    static Category logCat = Category.getInstance(ReloadEvent.class.getName()); // logging category for this class
+   static Category logCat = Category.getInstance(ReloadEvent.class.getName()); // logging category for this class
 
-    /**
-     * Creates a new ReloadEvent object.
-     */
-    public ReloadEvent()
-    {
-        //tableId = -1;
-    }
+   /**
+    * Creates a new ReloadEvent object.
+    */
+   public ReloadEvent(int tableId, HttpServletRequest request,
+      DbFormsConfig config)
+   {
+      super(tableId, request, config);
+   }
 }

@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<chapter>
+  <title>Navigation</title>
+  <sect1>
+    <title>Introduction</title>
+    <para>Since version 1.1.4 DbForms contains two different navigation systems:</para>
+    <itemizedlist>
+      <listitem>
+        <para>A new one - in the datalist package - which implements a simplified data list pattern described by Claudio Fratarcangeli,Data List Handler: A Pattern for Large Search Result Sets, published on TheServerSide.com. THE NEW SYSTEM NEEDS TO BE CONFIGURED IN DBFORMS-CONFIG.XML, WORKS WITH A 
+          <computeroutput>whereClause</computeroutput>, AND DOES NOT RE-EXECUTE THE SEARCH QUERY EVERY TIME.
+        </para>
+      </listitem>
+      <listitem>
+        <para>The original one - in the classic package. The original code re-executes the search query every time the client requests a subset of the hits. THIS DOES NOT WORK WHEN A 
+          <computeroutput>whereClause</computeroutput> ATTRIBUTE IS USED IN THE 
+          <computeroutput>dbForm</computeroutput> TAG!
+        </para>
+        <para>See the 
+          <computeroutput>dbform</computeroutput>tag in 
+          <ulink url="../../taglib/DbFormsTags_Frame.html">
+            <citetitle>the TagLib </citetitle>
+          </ulink>for more information.
+        </para>
+      </listitem>
+    </itemizedlist>
+    <para>
+      <emphasis role="bold">The new dataList system is now used by default!</emphasis>
+    </para>
+  </sect1>
+  <sect1>
+    <title>Datalist navigation</title>
+    <para>The new datalist based navigation has following advantages:</para>
+    <itemizedlist>
+      <listitem>
+        <para>Data source is not only jdbc. It should be possible to write data source handlers for all other data, e.g.
+          <link linkend="xml_data">xml</link>.
+        </para>
+      </listitem>
+      <listitem>
+        <para>Navigation should be independent from filtering. Navigation should be possible with free form select, too --i.e. use of a 
+          <computeroutput>whereClause</computeroutput> should be ok.
+        </para>
+      </listitem>
+    </itemizedlist>
+    <para>
+      <figure>
+        <title>Class diagram of datalist navigation</title>
+        <mediaobject id="datalist_Navigation">
+          <imageobject role="html">
+            <imagedata fileref="images/figures/event.datalist.png" format="PNG"/>
+          </imageobject>
+          <imageobject role="fo">
+            <imagedata fileref="../images/figures/event.datalist_pdf.png" format="PNG"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+    </para>
+    <para>To perform this goals the following points are done:</para>
+    <sect2>
+      <title>navigation events</title>
+      <para>
+          On the contrary to the classic navigation, where each request will result in an new query to the database with special selections to 
+          get the next/previous/first and last data, the new navigation system makes an query to the database only if an GotoEvent happens. 
+            This query context represented by an DataSource object is stored in the session context an will be reused if one of the other 
+            navigation events happens.
+      </para>
+    </sect2>
+    <sect2>
+      <title>DataSourceFactory</title>
+      <para>All navigation and database events use the DataSourceFactory class to retrieve an concrete implementation of the abstract DataSource class. The DataSourceFactory class gets takes the DataAccessClass attribute of the table class uses reflection to instanciate a new concrete implementation. If no DataAccessClass is given in table the DataSourceJDBC class is used. DataSourceJDBC is an implementation wich uses jdbc database access to get the data.</para>
+      <para>You can override this behaviour if you set the DataAccessClass in dbforms to another class.</para>
+      <para>Example:</para>
+      <programlisting>
+      &lt;table name="line_flightbars" dataAccessClass="de.aucos.linedata.LineData" &gt; 
+          &lt;field name="flightbar_id" fieldType="integer" isKey="true" /&gt; 
+          &lt;field name="flightbartype" fieldType="char" /&gt; 
+          &lt;field name="flightbarstatus" fieldType="char" /&gt; 
+          &lt;field name="stationid" fieldType="integer" /&gt; 
+          &lt;field name="shuttleid" fieldType="integer" /&gt; 
+      &lt;/table&gt;</programlisting>
+    </sect2>
+    <sect2>
+      <title>abstract class DataSource</title>
+      <para>
+        The abstract class DataSource is the base class for all data access. Retrieving data is done by four abstract methods which must be overloaded by implementing class:</para>
+      <itemizedlist>
+        <listitem>
+          <para>protected abstract void open(): This method is called to open the resultset.</para>
+        </listitem>
+        <listitem>
+          <para>protected abstract int size(): This method must return the size of the whole resultset with all data fetch</para>
+        </listitem>
+        <listitem>
+          <para>protected abstract Object[] getRow(int i) This method must return the row at special index as an Object[]</para>
+        </listitem>
+        <listitem>
+          <para>protected abstract int findStartRow(String startRow) This method gets the index of an row given by the special DbForms startrow string, This string has the format FieldID ":" Length ":" Value example: if key id = 121 and field id=2 then keyValueStr contains "2:3:121" if the key consists of more than one fields, the key values are seperated through "-" example: value of field 1=12, value of field 3=1992, then we'll get "1:2:12-3:4:1992"</para>
+        </listitem>
+      </itemizedlist>
+      <para>This methods are called by the DataSource methods getCurrent, getFirst, getPrev, getNext and getLast. This datasource methods are called indirect by the DataSourceFactory during service of the navigation events.</para>
+      <para>To insert/update/delete data exists empty methods doInsert/doUpdate/doDelete which could be overloaded by the implementing classes. This method are called indirect by the DataSourceFactory which is called through the insert/update/delete events of the datalist events.</para>
+    </sect2>
+    <sect2>
+      <title>JDBC Access</title>
+      <para>
+        The class DataSourceJDBC is an implementation of the DataSource class which retrieves data from JDBC data sources. doInsert/doUpdate/doDelete are implemented and do there work via SQL statements for insert/update/delete. The interesting part is retrieving of the data. This is done by a simplified data list handler pattern:
+        
+        <itemizedlist>
+          <listitem>
+            <para>protected abstract void open():</para>
+            <para>This method just creates an java.SQL.Resultset and stores it in the class.</para>
+          </listitem>
+          <listitem>
+            <para>protected abstract int size():</para>
+            <para>This method first retrieves all data sets of the current java.SQL.Resultset, storing them in the internal data vector and returns then the size of the internal data vector.</para>
+          </listitem>
+          <listitem>
+            <para>protected abstract Object[] getRow(int i)</para>
+            <para>This method first tries to lookup the requested row in the data vector. This could be done, if the requested row is less then the current size of the data vector. If the requested row is outside the data vector the method will retrieve the next records from the java.SQL.Resultset up to the time, the size of the data vector is equal to the retrieved row or no more records are found.</para>
+          </listitem>
+          <listitem>
+            <para>protected abstract int findStartRow(String startRow)</para>
+            <para>To do the mapping of the DbForms key string a second vector is used. This vector stores all key value strings of each row from the java.SQL.Resultset. So searching for the mapping is done in two tasks: First the startRow is searched by an linear search in the keys vector. If found, the index of the key vector is return as result. If the startRow is not found in the keys vector, data from the java.SQL.Resultset is retrieved and stored up to the moment the key string of the just retrieved row is equal to the search row or nomore data is found.</para>
+          </listitem>
+        </itemizedlist>
+      </para>
+    </sect2>
+  </sect1>
+  <sect1>
+    <title>Classic navigation</title>
+    <para>Classic navigation is moved from package org.dbforms.event to package org.dbforms.event.classic in version 1.1.4. The whole navigation is simplified, unnessary classes are removed and the usage of "instanceof EventType" is removed from DbForms. The often used Hashtable of FieldValues is rebuilt with an deligator pattern to FieldValues to make the usage more fault proved (see API documentation).</para>
+    <para>Details of the class structure could be seen in the class diagram.</para>
+    <para>
+      <figure>
+        <title>Class diagram of classic navigation</title>
+        <mediaobject id="classic_Navigation">
+          <imageobject role="html">
+            <imagedata fileref="images/figures/event.classic.png" format="PNG"/>
+          </imageobject>
+          <imageobject role="fo">
+            <imagedata fileref="../images/figures/event.classic.png" format="PNG"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+    </para>
+    <sect2>
+      <title>HowTo use classic navigation</title>
+      <para>
+         To use classic navigation you must define custom events in your dbforms-config.xml:
+         
+        <programlisting>
+    &lt;!-- ========== custom events =================================== --&gt;
+    &lt;events&gt;
+      &lt;database-events&gt;
+        &lt;database-event type="insert" className="org.dbforms.event.classic.InsertEvent" /&gt;
+        &lt;database-event type="update" className="org.dbforms.event.classic.UpdateEvent" /&gt;
+        &lt;database-event type="delete" className="org.dbforms.event.classic.DeleteEvent" /&gt;
+      &lt;/database-events&gt;
+      &lt;navigation-events&gt;
+        &lt;navigation-event type="navGoto" className="org.dbforms.event.classic.GotoEvent" /&gt;
+        &lt;navigation-event type="navPrev" className="org.dbforms.event.classic.NavPrevEvent" /&gt;
+        &lt;navigation-event type="navNext" className="org.dbforms.event.classic.NavNextEvent" /&gt;
+        &lt;navigation-event type="navFirst" className="org.dbforms.event.classic.NavFirstEvent" /&gt;
+        &lt;navigation-event type="navLast" className="org.dbforms.event.classic.NavLastEvent" /&gt;
+      &lt;/navigation-events&gt;
+    &lt;/events&gt;
+         </programlisting>
+         This is is necessary starting after the 1.1.4dev release.  Classic navigation was the default up through 1.1.4dev
+      
+      </para>
+    </sect2>
+  </sect1>
+  <sect1>
+    <title>ToDo</title>
+    <para>There is a missing point in the new system:</para>
+    <itemizedlist>
+      <listitem>
+        <para>
+          Greate a thread that will throw away unused DataSources when the user navigate to another page.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+            What do you think?
+        </para>
+      </listitem>
+    </itemizedlist>
+  </sect1>
+  <sect1>
+    <title>Classic Configuration in Dbforms-config.xml</title>
+    <para>To use the classic navigation system, please add the following within dbforms-config.xml:</para>
+    <programlisting>
+  &lt;events&gt;
+    &lt;database-events&gt;
+      &lt;database-event type="insert" className="org.dbforms.event.classic.InsertEvent" /&gt;
+       &lt;database-event type="update" className="org.dbforms.event.classic.UpdateEvent" /&gt;
+       &lt;database-event type="delete" className="org.dbforms.event.classic.DeleteEvent" /&gt;
+     &lt;/database-events&gt;
+
+     &lt;navigation-events&gt;
+       &lt;navigation-event type="navGoto" className="org.dbforms.event.classic.GotoEvent" /&gt;
+       &lt;navigation-event type="navPrev" className="org.dbforms.event.classic.NavPrevEvent" /&gt;
+       &lt;navigation-event type="navNext" className="org.dbforms.event.classic.NavNextEvent" /&gt;
+       &lt;navigation-event type="navFirst" className="org.dbforms.event.classic.NavFirstEvent" /&gt;
+       &lt;navigation-event type="navLast" className="org.dbforms.event.classic.NavLastEvent" /&gt;
+     &lt;/navigation-events&gt;
+  &lt;/events&gt;
+  </programlisting>
+    <para>The new navigation system can also be enabled on a table by table basis by:</para>
+    <itemizedlist mark="opencircle">
+      <listitem>
+        <para>
+          <link linkend="regi">Registering new navigation classes</link>
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <link linkend="tbyt">Overriding on a table by table basis</link>
+        </para>
+      </listitem>
+    </itemizedlist>
+  </sect1>
+</chapter>

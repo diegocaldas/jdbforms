@@ -20,7 +20,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.taglib;
 import java.util.*;
 
@@ -34,10 +33,10 @@ import java.util.*;
  */
 public interface DataContainer
 {
-    /**
-     * DOCUMENT ME!
-     *
-     * @param embeddedData DOCUMENT ME!
-     */
-    public void setEmbeddedData(Vector embeddedData);
+   /**
+    * DOCUMENT ME!
+    *
+    * @param embeddedData DOCUMENT ME!
+    */
+   public void setEmbeddedData(Vector embeddedData);
 }

@@ -20,14 +20,13 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 /*
  * Grunikiewicz.philip@hydro.qc.ca
  * 2001-12-18
  *
  * Custom tag that renders error messages if an appropriate request attribute
  * has been created.
- * 
+ *
  * Error messages are retrieved via an xml file
  */
 package org.dbforms.taglib;
@@ -40,7 +39,8 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.TagSupport;
-import org.dbforms.*;
+
+import org.dbforms.util.*;
 import org.apache.log4j.Category;
 import java.util.*;
 
@@ -54,138 +54,142 @@ import java.util.*;
  */
 public class DbXmlErrorsTag extends TagSupport
 {
-    // logging category for this class
-    static Category logCat = Category.getInstance(DbXmlErrorsTag.class.getName());
+   // logging category for this class
+   static Category logCat = Category.getInstance(DbXmlErrorsTag.class.getName());
 
-    // ----------------------------------------------------------- Properties
+   // ----------------------------------------------------------- Properties
 
-    /**
-     * Name of the request scope attribute containing our error messages,
-     * if any.
-     */
-    protected String name = "errors";
+   /**
+    * Name of the request scope attribute containing our error messages,
+    * if any.
+    */
+   protected String name = "errors";
 
-    /** DOCUMENT ME! */
-    protected String caption = "Error:";
-    private DbFormsErrors errors;
+   /** DOCUMENT ME! */
+   protected String      caption = "Error:";
+   private DbFormsErrors errors;
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
-    public String getName()
-    {
-        return (this.name);
-    }
-
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @param name DOCUMENT ME!
-     */
-    public void setName(String name)
-    {
-        this.name = name;
-    }
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String getName()
+   {
+      return (this.name);
+   }
 
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
-    public String getCaption()
-    {
-        return (this.caption);
-    }
+   /**
+    * DOCUMENT ME!
+    *
+    * @param name DOCUMENT ME!
+    */
+   public void setName(String name)
+   {
+      this.name = name;
+   }
 
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param caption DOCUMENT ME!
-     */
-    public void setCaption(String caption)
-    {
-        this.caption = caption;
-    }
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String getCaption()
+   {
+      return (this.caption);
+   }
 
 
-    // ------------------------------------------------------- Public Methods
+   /**
+    * DOCUMENT ME!
+    *
+    * @param caption DOCUMENT ME!
+    */
+   public void setCaption(String caption)
+   {
+      this.caption = caption;
+   }
 
-    /**
-     * Render the specified error messages if there are any.
-     *
-     * @exception JspException if a JSP exception has occurred
-     */
-    public int doStartTag() throws JspException
-    {
-        Vector transformedErrors = new Vector();
 
-        Vector originalErrors = (Vector) pageContext.getAttribute(name, PageContext.REQUEST_SCOPE);
+   // ------------------------------------------------------- Public Methods
 
-        if (errors == null)
-        {
-            throw new JspException("XML error handler is disabled, please supply xml error file on startup or use error tag instead!");
-        }
+   /**
+    * Render the specified error messages if there are any.
+    *
+    * @exception JspException if a JSP exception has occurred
+    */
+   public int doStartTag() throws JspException
+   {
+      Vector transformedErrors = new Vector();
 
-        if ((originalErrors != null) && (originalErrors.size() > 0))
-        {
-            Enumeration enum = originalErrors.elements();
+      Vector originalErrors = (Vector) pageContext.getAttribute(name,
+            PageContext.REQUEST_SCOPE);
 
-            while (enum.hasMoreElements())
+      if (errors == null)
+      {
+         throw new JspException(
+            "XML error handler is disabled, please supply xml error file on startup or use error tag instead!");
+      }
+
+      if ((originalErrors != null) && (originalErrors.size() > 0))
+      {
+         Enumeration enum = originalErrors.elements();
+
+         while (enum.hasMoreElements())
+         {
+            Exception ex = (Exception) enum.nextElement();
+
+            String    result = org.dbforms.util.XMLErrorsUtil
+               .getXMLErrorMessage(ex.getMessage(), errors);
+
+            // ignore empty messages
+            if (result != null)
             {
-                Exception ex = (Exception) enum.nextElement();
-
-                String result = org.dbforms.util.XMLErrorsUtil.getXMLErrorMessage(ex.getMessage(), errors);
-
-                // ignore empty messages
-                if (result != null)
-                {
-                    transformedErrors.add(result);
-                }
+               transformedErrors.add(result);
             }
+         }
 
-            StringBuffer results = new StringBuffer();
-            results.append(caption);
-            results.append("<ul>");
+         StringBuffer results = new StringBuffer();
+         results.append(caption);
+         results.append("<ul>");
 
-            for (int i = 0; i < transformedErrors.size(); i++)
-            {
-                results.append("<li>");
-                results.append(transformedErrors.elementAt(i));
-            }
+         for (int i = 0; i < transformedErrors.size(); i++)
+         {
+            results.append("<li>");
+            results.append(transformedErrors.elementAt(i));
+         }
 
-            results.append("</ul>");
+         results.append("</ul>");
 
-            // Print the results to our output writer
-            JspWriter writer = pageContext.getOut();
+         // Print the results to our output writer
+         JspWriter writer = pageContext.getOut();
 
-            try
-            {
-                writer.print(results.toString());
-            }
-            catch (IOException e)
-            {
-                throw new JspException(e.toString());
-            }
-        }
+         try
+         {
+            writer.print(results.toString());
+         }
+         catch (IOException e)
+         {
+            throw new JspException(e.toString());
+         }
+      }
 
-        // Continue processing this page
-        return EVAL_BODY_INCLUDE;
-    }
+      // Continue processing this page
+      return EVAL_BODY_INCLUDE;
+   }
 
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param pageContext DOCUMENT ME!
-     */
-    public void setPageContext(final javax.servlet.jsp.PageContext pageContext)
-    {
-        super.setPageContext(pageContext);
-        this.errors = (DbFormsErrors) pageContext.getServletContext().getAttribute(DbFormsErrors.ERRORS);
-    }
+   /**
+    * DOCUMENT ME!
+    *
+    * @param pageContext DOCUMENT ME!
+    */
+   public void setPageContext(final javax.servlet.jsp.PageContext pageContext)
+   {
+      super.setPageContext(pageContext);
+      this.errors = (DbFormsErrors) pageContext.getServletContext()
+                                               .getAttribute(DbFormsErrors.ERRORS);
+   }
 }

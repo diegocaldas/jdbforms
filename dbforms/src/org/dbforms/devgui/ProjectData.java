@@ -20,7 +20,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 /*
  *  Project.java
  *
@@ -42,221 +41,227 @@ import java.util.*;
  */
 public class ProjectData implements Serializable, PropertyNames
 {
-    private File file;
-    private boolean unsavedChanges = false;
-    private Properties props;
-    private static Properties defaultProps;
+   private File              file;
+   private boolean           unsavedChanges = false;
+   private Properties        props;
+   private static Properties defaultProps;
 
-    // contains default values for properties
-    // set default property values:
-    static
-    {
-        defaultProps = new Properties();
+   // contains default values for properties
+   // set default property values:
+   static
+   {
+      defaultProps = new Properties();
 
-        defaultProps.setProperty(INCLUDE_SCHEMANAME, FALSESTRING);
+      defaultProps.setProperty(INCLUDE_SCHEMANAME, FALSESTRING);
 
-        defaultProps.setProperty(INCLUDE_CATALOGNAME, FALSESTRING);
+      defaultProps.setProperty(INCLUDE_CATALOGNAME, FALSESTRING);
 
-        defaultProps.setProperty(AUTOCOMMIT_MODE, TRUESTRING);
+      defaultProps.setProperty(AUTOCOMMIT_MODE, TRUESTRING);
 
-        defaultProps.setProperty(CATALOG_SELECTION, ALL);
+      defaultProps.setProperty(CATALOG_SELECTION, ALL);
 
-        defaultProps.setProperty(SCHEMA_SELECTION, ALL);
+      defaultProps.setProperty(SCHEMA_SELECTION, ALL);
 
-        defaultProps.setProperty(TABLE_SELECTION, ALL);
+      defaultProps.setProperty(TABLE_SELECTION, ALL);
 
-        defaultProps.setProperty(EXAMINE_TABLES, TRUESTRING);
+      defaultProps.setProperty(EXAMINE_TABLES, TRUESTRING);
 
-        defaultProps.setProperty(EXAMINE_VIEWS, TRUESTRING);
+      defaultProps.setProperty(EXAMINE_VIEWS, TRUESTRING);
 
-        defaultProps.setProperty(EXAMINE_SYSTABS, FALSESTRING);
+      defaultProps.setProperty(EXAMINE_SYSTABS, FALSESTRING);
 
-        defaultProps.setProperty(WRITE_STD_TYPENAMES, FALSESTRING);
+      defaultProps.setProperty(WRITE_STD_TYPENAMES, FALSESTRING);
 
-        defaultProps.setProperty(FOREIGNKEY_DETECTION, USE_GETIMPORTEDKEYS);
-    }
+      defaultProps.setProperty(FOREIGNKEY_DETECTION, USE_GETIMPORTEDKEYS);
+   }
 
-    /** Creates new Project */
-    public ProjectData()
-    {
-        this.props = new Properties(defaultProps);
+   /** Creates new Project */
+   public ProjectData()
+   {
+      this.props = new Properties(defaultProps);
 
-        String dbFormsHomeStr = System.getProperty("DBFORMS_HOME");
+      String dbFormsHomeStr = System.getProperty("DBFORMS_HOME");
 
-        if (dbFormsHomeStr != null)
-        {
-            setProperty(STYLESHEET_DIR, dbFormsHomeStr + System.getProperties().getProperty("file.separator") + "xsl-stylesheets");
-        }
+      if (dbFormsHomeStr != null)
+      {
+         setProperty(STYLESHEET_DIR,
+            dbFormsHomeStr
+            + System.getProperties().getProperty("file.separator")
+            + "xsl-stylesheets");
+      }
 
-        unsavedChanges = false;
-    }
-
-
-    /**
- *Constructor for the ProjectData object
- *
- * @param  props  Description of the Parameter
- */
-    public ProjectData(Properties props)
-    {
-        this.props = props;
-
-        unsavedChanges = false;
-
-        // If a user hasn't specified a STYLESHEET_DIR, then guess at one!
-        String dbFormsHomeStr = props.getProperty(STYLESHEET_DIR);
-
-        if ("".equals(dbFormsHomeStr))
-        {
-            dbFormsHomeStr = System.getProperty("DBFORMS_HOME");
-
-            if (dbFormsHomeStr != null)
-            {
-                setProperty(STYLESHEET_DIR, dbFormsHomeStr + System.getProperties().getProperty("file.separator") + "xsl-stylesheets");
-
-                unsavedChanges = true;
-            }
-        }
-    }
-
-    /**
- *  Gets the property attribute of the ProjectData object
- *
- * @param  prop  Description of the Parameter
- * @return       The property value
- */
-    public String getProperty(String prop)
-    {
-        return props.getProperty(prop, "");
-
-        // return default value "" instead of null if not found
-    }
+      unsavedChanges = false;
+   }
 
 
-    /**
- *  Sets the property attribute of the ProjectData object
- *
- * @param  key    The new property value
- * @param  value  The new property value
- */
-    public void setProperty(String key, String value)
-    {
-        String oldValue = getProperty(key);
+   /**
+   *Constructor for the ProjectData object
+   *
+   * @param  props  Description of the Parameter
+   */
+   public ProjectData(Properties props)
+   {
+      this.props    = props;
 
-        if (!oldValue.equals(value))
-        {
-            props.setProperty(key, value);
+      unsavedChanges = false;
 
-            this.unsavedChanges = true;
+      // If a user hasn't specified a STYLESHEET_DIR, then guess at one!
+      String dbFormsHomeStr = props.getProperty(STYLESHEET_DIR);
 
-            System.out.println("unsaved state look like this:" + this.toString());
-        }
-    }
+      if ("".equals(dbFormsHomeStr))
+      {
+         dbFormsHomeStr = System.getProperty("DBFORMS_HOME");
 
+         if (dbFormsHomeStr != null)
+         {
+            setProperty(STYLESHEET_DIR,
+               dbFormsHomeStr
+               + System.getProperties().getProperty("file.separator")
+               + "xsl-stylesheets");
 
-    /**
- *  Gets the unsaved attribute of the ProjectData object
- *
- * @return    The unsaved value
- */
-    public boolean isUnsaved()
-    {
-        return unsavedChanges;
-    }
+            unsavedChanges = true;
+         }
+      }
+   }
 
+   /**
+   *  Gets the property attribute of the ProjectData object
+   *
+   * @param  prop  Description of the Parameter
+   * @return       The property value
+   */
+   public String getProperty(String prop)
+   {
+      return props.getProperty(prop, "");
 
-    /**
- *  Sets the file attribute of the ProjectData object
- *
- * @param  file  The new file value
- */
-    public void setFile(File file)
-    {
-        this.file = file;
-    }
-
-
-    /**
- *  Gets the file attribute of the ProjectData object
- *
- * @return    The file value
- */
-    public File getFile()
-    {
-        return file;
-    }
+      // return default value "" instead of null if not found
+   }
 
 
-    /**
- *  Description of the Method
- *
- * @param  f                Description of the Parameter
- * @return                  Description of the Return Value
- * @exception  IOException  Description of the Exception
- */
-    public static ProjectData loadFromDisc(File f) throws IOException
-    {
-        Properties l_props = new Properties(defaultProps);
+   /**
+   *  Sets the property attribute of the ProjectData object
+   *
+   * @param  key    The new property value
+   * @param  value  The new property value
+   */
+   public void setProperty(String key, String value)
+   {
+      String oldValue = getProperty(key);
 
-        l_props.load(new FileInputStream(f));
+      if (!oldValue.equals(value))
+      {
+         props.setProperty(key, value);
 
-        ProjectData pd = new ProjectData(l_props);
+         this.unsavedChanges = true;
 
-        pd.setFile(f);
-
-        return pd;
-    }
-
-
-    /**
- *  Description of the Method
- *
- * @param  f                Description of the Parameter
- * @exception  IOException  Description of the Exception
- */
-    public void storeToDisc(File f) throws IOException
-    {
-        this.props.store(new FileOutputStream(f), "DbForms DevGUI Property File");
-
-        this.file = f;
-
-        this.unsavedChanges = false;
-    }
+         System.out.println("unsaved state look like this:" + this.toString());
+      }
+   }
 
 
-    /**
- *  Description of the Method
- *
- * @return    Description of the Return Value
- */
-    public String toString()
-    {
-        StringBuffer buf = new StringBuffer();
+   /**
+   *  Gets the unsaved attribute of the ProjectData object
+   *
+   * @return    The unsaved value
+   */
+   public boolean isUnsaved()
+   {
+      return unsavedChanges;
+   }
 
-        Enumeration enum = props.propertyNames();
 
-        boolean first = true;
+   /**
+   *  Sets the file attribute of the ProjectData object
+   *
+   * @param  file  The new file value
+   */
+   public void setFile(File file)
+   {
+      this.file = file;
+   }
 
-        while (enum.hasMoreElements())
-        {
-            if (first)
-            {
-                first = false;
-            }
-            else
-            {
-                buf.append(", ");
-            }
 
-            String aPropsName = (String) enum.nextElement();
+   /**
+   *  Gets the file attribute of the ProjectData object
+   *
+   * @return    The file value
+   */
+   public File getFile()
+   {
+      return file;
+   }
 
-            buf.append(aPropsName);
 
-            buf.append("=");
+   /**
+   *  Description of the Method
+   *
+   * @param  f                Description of the Parameter
+   * @return                  Description of the Return Value
+   * @exception  IOException  Description of the Exception
+   */
+   public static ProjectData loadFromDisc(File f) throws IOException
+   {
+      Properties l_props = new Properties(defaultProps);
 
-            buf.append(this.getProperty(aPropsName));
-        }
+      l_props.load(new FileInputStream(f));
 
-        return buf.toString();
-    }
+      ProjectData pd = new ProjectData(l_props);
+
+      pd.setFile(f);
+
+      return pd;
+   }
+
+
+   /**
+   *  Description of the Method
+   *
+   * @param  f                Description of the Parameter
+   * @exception  IOException  Description of the Exception
+   */
+   public void storeToDisc(File f) throws IOException
+   {
+      this.props.store(new FileOutputStream(f), "DbForms DevGUI Property File");
+
+      this.file    = f;
+
+      this.unsavedChanges = false;
+   }
+
+
+   /**
+   *  Description of the Method
+   *
+   * @return    Description of the Return Value
+   */
+   public String toString()
+   {
+      StringBuffer buf = new StringBuffer();
+
+      Enumeration  enum = props.propertyNames();
+
+      boolean      first = true;
+
+      while (enum.hasMoreElements())
+      {
+         if (first)
+         {
+            first = false;
+         }
+         else
+         {
+            buf.append(", ");
+         }
+
+         String aPropsName = (String) enum.nextElement();
+
+         buf.append(aPropsName);
+
+         buf.append("=");
+
+         buf.append(this.getProperty(aPropsName));
+      }
+
+      return buf.toString();
+   }
 }

@@ -20,7 +20,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.devgui;
 
 /**
@@ -31,25 +30,25 @@ package org.dbforms.devgui;
  */
 public class FileNameTool
 {
-    /**
-     * DOCUMENT ME!
-     *
-     * @param filePath DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
-    public static String normalize(String filePath)
-    {
-        String fileSeparator = System.getProperties().getProperty("file.separator");
-        filePath = filePath.trim();
+   /**
+    * DOCUMENT ME!
+    *
+    * @param filePath DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public static String normalize(String filePath)
+   {
+      String fileSeparator = System.getProperties().getProperty("file.separator");
+      filePath = filePath.trim();
 
-        if (filePath.endsWith(fileSeparator))
-        {
-            return filePath;
-        }
-        else
-        {
-            return filePath + fileSeparator;
-        }
-    }
+      if (filePath.endsWith(fileSeparator))
+      {
+         return filePath;
+      }
+      else
+      {
+         return filePath + fileSeparator;
+      }
+   }
 }

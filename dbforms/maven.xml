@@ -1,11 +1,11 @@
 <project default = ""
-         xmlns:m = "maven"
-         xmlns:j = "jelly:core"
-         xmlns:u = "jelly:util"
+	 xmlns:deploy="deploy"
+	 xmlns:doc="doc" 
 	 >
 
 <echo message="Hack to use xalan transformer!"/>
 ${systemScope.setProperty('javax.xml.transform.TransformerFactory','org.apache.xalan.processor.TransformerFactoryImpl')}
+<property environment="env"/>
 
 
   <!--
@@ -14,10 +14,8 @@ ${systemScope.setProperty('javax.xml.transform.TransformerFactory','org.apache.x
      -    docbook guide 
      -->
   <goal name="dbforms:doc" description="generate dbforms documentation: taglib docu and manual">
-    <j:jelly xmlns:j="jelly:core" xmlns="jelly:ant">
       <echo message="building the DbForms documentation user guide and jsp tag library"/>
       <ant antfile="docs.xml" target="maven-build-doc"/>
-    </j:jelly>
   </goal>
 
   <goal name="dbforms:dist" description="generates the distribution via build.xml">
@@ -28,25 +26,64 @@ ${systemScope.setProperty('javax.xml.transform.TransformerFactory','org.apache.x
      </ant>
   </goal>
 
+  <goal name="dbforms:dependend">
+    <deploy:copy-deps todir="target/dependend" />
+  </goal>
+
   <goal name="dbforms:deploy" description="do the whole deployment: generates site, generates doc, generates distribution">
      <echo message="starting deploying site"/>
+     <echo message="0. cleanup"/>
+     <attainGoal name="clean"/>
      <echo message="1. generate whole site"/>
      <attainGoal name="site:generate"/>
      <echo message="2. generate dbforms documentation via docs.xml"/>
      <attainGoal name="dbforms:doc"/>
-     <echo message="3. build the distribution via build.xml"/>
+     <echo message="3. copy depended"/>
+     <attainGoal name="dbforms:dependend"/>
+     <echo message="4. build the distribution via build.xml"/>
      <attainGoal name="dbforms:dist"/>
   </goal>
+
+  
+  <preGoal name="jalopy:format">
+      <echo message="fixcrlf"/>
+     <ant antfile="build.xml" target="forcedos"/>
+  </preGoal>
+
+  <postGoal name="maven-changes-plugin:report">
+      <echo message="build changes.xml"/>
+     <doc:text-xdoc  title="Changes"
+	    section="CHANGES"
+            output="target/generated-xdocs/changes-report.xml"
+            inputFile="ChangeLog"/>
+  </postGoal>
+
+  <preGoal name="xdoc:jelly-transform">
+     <attainGoal name="cactus:test"/>
+     <attainGoal name="cactus:report"/>
+     <copy file="${maven.build.dir}/generated-xdocs/cactus-report.xml" 
+     	   tofile="${maven.build.dir}/generated-xdocs/junit-report.xml" 
+     	   overwrite="true" 
+     />
+     <delete file="${maven.build.dir}/generated-xdocs/cactus-report.xml"  />
+  </preGoal>
 
   <!--
      -  Move the $DBFORMS_HOME/target/docs/* stuff into the 
      -  $DBFORMS_HOME/doc directory
      -->
   <postGoal name="site:generate">
-    <j:jelly xmlns:j="jelly:core" xmlns="jelly:ant">
       <echo message="moving the Maven docs stuff into the main DbForms doc directory"/>
       <ant antfile="docs.xml" target="maven-move-doc"/>
-    </j:jelly>
   </postGoal>
+
+  <!--
+      clean doc dir too
+     -->
+  <postGoal name="clean">
+      <echo message="clean docs too"/>
+      <ant antfile="docs.xml" target="cleanUp"/>
+  </postGoal>
+
 
 </project>

@@ -20,7 +20,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.taglib;
 import java.io.*;
 import java.util.*;
@@ -59,47 +58,47 @@ import org.apache.log4j.Category;
  */
 public class QueryData extends EmbeddedData
 {
-    static Category logCat = Category.getInstance(QueryData.class.getName());
+   static Category logCat = Category.getInstance(QueryData.class.getName());
 
-    // logging category for this class
-    private String query;
+   // logging category for this class
+   private String query;
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param query DOCUMENT ME!
-     */
-    public void setQuery(String query)
-    {
-        this.query = query;
-    }
-
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
-    public String getQuery()
-    {
-        return query;
-    }
+   /**
+    * DOCUMENT ME!
+    *
+    * @param query DOCUMENT ME!
+    */
+   public void setQuery(String query)
+   {
+      this.query = query;
+   }
 
 
-    /**
-     * returns Hashtable with data. Its keys represent the "value"-fields for the DataContainer-Tag, its values
-     * represent the visible fields for the Multitags.
-     * (DataContainer are: select, radio, checkbox and a special flavour of Label).
-     */
-    protected Vector fetchData(Connection con) throws SQLException
-    {
-        logCat.info("about to execute user defined query:" + query);
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String getQuery()
+   {
+      return query;
+   }
 
-        PreparedStatement ps = con.prepareStatement(query);
 
-        ResultSetVector rsv = new ResultSetVector(ps.executeQuery());
-        ps.close(); // #JP Jun 27, 2001
+   /**
+    * returns Hashtable with data. Its keys represent the "value"-fields for the DataContainer-Tag, its values
+    * represent the visible fields for the Multitags.
+    * (DataContainer are: select, radio, checkbox and a special flavour of Label).
+    */
+   protected Vector fetchData(Connection con) throws SQLException
+   {
+      logCat.info("about to execute user defined query:" + query);
 
-        return formatEmbeddedResultRows(rsv);
-    }
+      PreparedStatement ps = con.prepareStatement(query);
+
+      ResultSetVector   rsv = new ResultSetVector(ps.executeQuery());
+      ps.close(); // #JP Jun 27, 2001
+
+      return formatEmbeddedResultRows(rsv);
+   }
 }

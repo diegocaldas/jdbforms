@@ -20,17 +20,12 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.event;
 
-import java.util.HashMap;
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Category;
-
-import org.dbforms.*;
-import org.dbforms.event.eventtype.EventType;
-
+//import org.apache.log4j.Category;
+import org.dbforms.config.DbFormsConfig;
 
 
 /**
@@ -42,50 +37,15 @@ import org.dbforms.event.eventtype.EventType;
  */
 public abstract class DatabaseEventFactory extends EventFactory
 {
-    /** classes used as "keyInfo" constructor arguments types */
-    protected static Class[] keyInfoConstructorArgsTypes = new Class[]
-    {
-        Integer.class, String.class, HttpServletRequest.class,  DbFormsConfig.class
-    };
-
-
-    /**
-     *  Create and return a new database event
-     *
-     * @param  action the action string that identifies the web event
-     * @param  request the HttpServletRequest object
-     * @param  config the DbForms config object
-     * @return  a new database event
-     */
-    public abstract DatabaseEvent createEvent(String             action,
-                                              HttpServletRequest request,
-                                              DbFormsConfig      config);
-
-
-    /**
-     *  Create and return a new UpdateEvent as secondary event.
-     *
-     * @param  tableId the table identifier
-     * @param  keyId   the key   identifier
-     * @param  request the HttpServletRequest object
-     * @param  config  the DbForms config object
-     * @return  The updateEvent object
-     */
-    public abstract UpdateEvent createUpdateEvent(int                tableId,
-                                                  String             keyId,
-                                                  HttpServletRequest request,
-                                                  DbFormsConfig      config);
-
-
-    /**
-     *  Initialize the default events.
-     *
-     * @exception Exception if any error occurs
-     */
-    protected void initializeEvents() throws Exception
-    {
-        addEventInfo(new EventInfo(EventType.EVENT_DATABASE_DELETE,  "org.dbforms.event.DeleteEvent"));
-        addEventInfo(new EventInfo(EventType.EVENT_DATABASE_INSERT,  "org.dbforms.event.InsertEvent"));
-        addEventInfo(new EventInfo(EventType.EVENT_DATABASE_UPDATE,  "org.dbforms.event.UpdateEvent"));
-    }
+   /**
+    *  Create and return a new UpdateEvent as secondary event.
+    *
+    * @param  tableId the table identifier
+    * @param  keyId   the key   identifier
+    * @param  request the HttpServletRequest object
+    * @param  config  the DbForms config object
+    * @return  The updateEvent object
+    */
+   public abstract DatabaseEvent createUpdateEvent(int tableId, String keyId,
+      HttpServletRequest request, DbFormsConfig config);
 }

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<dbforms-config>
+	    <table name="AUTHOR">
+	        <field name="AUTHOR_ID" fieldType="int" isKey="true" autoInc="true"/>
+	        <field name="NAME" fieldType="varchar"  sortable="true"/>
+	        <field name="ORGANISATION" fieldType="varchar"  sortable="true"/>
+	    </table>    
+	    
+	    <table name="BOOK">
+	        <field name="BOOK_ID" fieldType="int" isKey="true" autoInc="true"/>
+	        <field name="ISBN" fieldType="varchar" />
+	        <field name="AUTHOR_ID" fieldType="int" isKey="true" />
+	        <field name="TITLE" fieldType="varchar" isKey="true" />
+	    </table>   
+            
+        <query name="BOOK_QUERY" from="BOOK">
+            <field name="BOOK_ID" fieldType="int" isKey="true" autoInc="true"/>
+	        <field name="ISBN" fieldType="varchar" />
+	        <field name="AUTHOR_ID" fieldType="int" isKey="true" />
+	        <field name="TITLE" fieldType="varchar" isKey="true" />
+        </query> 
+
+	    <query name="BOOKWITHINTERCEPTOR" from="BOOK">
+	        <field name="BOOK_ID" fieldType="int" isKey="true"/>
+	        <field name="ISBN" fieldType="varchar" />
+	        <field name="AUTHOR_ID" fieldType="int" isKey="true"/>
+	        <field name="TITLE" fieldType="varchar"/>
+            <interceptor className = "interceptors.BookstoreWithInterceptorTest"/>                
+	    </query>    
+	    
+
+	    <query name="AUTHORVIEW" from="AUTHOR" >
+	    </query>
+	    
+	    <query 	name="BOOKSPERAUTHOR" 
+		    	from="AUTHOR, BOOK"
+		    	where="BOOK.AUTHOR_ID = AUTHOR.AUTHOR_ID" >
+	        <field name="AUTHOR_ID" fieldType="int" isKey="true" autoInc="true"/>
+	        <field name="NAME" fieldType="varchar" />
+	        <field name="ORGANISATION" fieldType="varchar" />
+	        <field name="BOOK_ID" fieldType="int" isKey="true" autoInc="true"/>
+	        <field name="ISBN" fieldType="varchar"/>
+	        <field name="TITLE" fieldType="varchar"/>
+	    </query>
+	    
+	    <table 
+	    	name="XMLBOOKS"
+		   dataAccessClass="org.dbforms.event.datalist.dao.DataSourceXML" 
+		   alias="file:///$(SERVLETCONTEXT_REALPATH)/WEB-INF/db_xml/books.xml?/books/book"
+	    >	
+	        <field 
+	        	name="TITLE" 
+	        	fieldType="varchar"
+			expression="title"
+	        />
+	        <field 
+	        	name="ISBN" 
+	        	fieldType="varchar" 
+			expression="isbn"
+	        />
+	        <field 
+	        	name="AUTHOR_NAME" 
+	        	fieldType="varchar" 
+			expression="author/name"
+	        />
+	        <field 
+	        	name="AUTHOR_SURNAME" 
+	        	fieldType="varchar" 
+			expression="author/surname"
+	        />
+	        <field 
+	        	name="AUTHOR_ID" 
+	        	fieldType="int" 
+			expression="author/authorid"
+	        />
+	    </table>
+
+	    <table name="TIMEPLAN">
+	        <field name="TIME" fieldType="DATE" isKey="true"/>
+	        <field name="REMARK" fieldType="varchar" />
+	    </table>    
+
+		<table name="KEYTEST"
+	        defaultVisibleFields="key1,key2,key3,key4" >
+			<field name="KEY_1" fieldType="varchar" size="10" isKey="true"/>
+			<field name="KEY_2" fieldType="varchar" size="10" isKey="true"/>
+			<field name="KEY_3" fieldType="varchar" size="10" isKey="true"/>
+			<field name="KEY_4" fieldType="int"               isKey="true"/>
+	</table>
+
+	<!-- ========== Connection =================================== -->
+	    <dbconnection
+		    isPow2		   			= "true"
+		    connectionProviderClass = "org.dbforms.conprovider.JakartaConnectionProvider"
+			name   = "jdbc:hsqldb:$(SERVLETCONTEXT_REALPATH)/WEB-INF/db_hsqldb/bookstore"
+			isJndi = "false"
+			conClass  = "org.hsqldb.jdbcDriver"
+			username = "sa"
+			password  = ""
+		/>
+	<date-format>dd.MM.yyyy</date-format>
+</dbforms-config>

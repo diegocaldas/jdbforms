@@ -6,35 +6,10 @@
 
 <web-app>
 
-    <filter>
-        <filter-name>FilterRedirector</filter-name>
-        <filter-class>org.apache.cactus.server.FilterTestRedirector</filter-class>
-    </filter>
-
-    <filter-mapping>
-        <filter-name>FilterRedirector</filter-name>
-        <url-pattern>/FilterRedirector</url-pattern>
-    </filter-mapping>
-
-    <servlet>
-        <servlet-name>ServletRedirector</servlet-name>
-        <servlet-class>org.apache.cactus.server.ServletTestRedirector</servlet-class>
-    </servlet>
-
-    <servlet>
-        <servlet-name>ServletRedirectorSecure</servlet-name>
-        <servlet-class>org.apache.cactus.server.ServletTestRedirector</servlet-class>
-    </servlet>
-
-    <servlet>
-        <servlet-name>JspRedirector</servlet-name>
-        <jsp-file>/jspRedirector.jsp</jsp-file>
-    </servlet>
-    
 <!--=========== DbForms Configuration Servlet ===========-->
     <servlet>
-        <servlet-name>org.dbforms.ConfigServlet</servlet-name>
-        <servlet-class>org.dbforms.ConfigServlet</servlet-class>
+        <servlet-name>config</servlet-name>
+        <servlet-class>org.dbforms.config.ConfigServlet</servlet-class>
 
         <!-- Uncomment to enable log4j configuration -->
         <init-param>
