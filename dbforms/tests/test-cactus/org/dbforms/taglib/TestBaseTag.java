@@ -24,7 +24,6 @@
 package org.dbforms.taglib;
 
 import org.dbforms.util.AssertUtils;
-import javax.servlet.jsp.tagext.BodyContent;
 import javax.servlet.jsp.tagext.BodyTag;
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -42,7 +41,6 @@ import org.apache.cactus.WebResponse;
 public class TestBaseTag extends JspTestCase
 {
     private BaseTag tag;
-    private BodyContent tagContent;
 
     /**
      * Defines the testcase name for JUnit.

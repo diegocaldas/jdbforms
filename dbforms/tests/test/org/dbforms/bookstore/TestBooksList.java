@@ -3,10 +3,6 @@
 package org.dbforms.bookstore;
 
 // imports
-import junit.framework.Test;
-import junit.framework.TestSuite;
-import com.bitmechanic.maxq.HttpTestCase;
-import com.bitmechanic.maxq.EditorPane;
 
 // definition of test class
 public class TestBooksList extends AbstractTestBase

@@ -23,8 +23,6 @@
 
 package org.dbforms;
 import junit.framework.*;
-import java.text.*;
-import java.util.*;
 
 
 /**
@@ -73,7 +71,6 @@ public class TestMisc extends TestCase
      */
     public void testTimeInMillisApproximate() throws Exception
     {
-        Calendar cal = Calendar.getInstance();
         System.out.println("IF YOU ARE ON JDK1.4, PLEASE UNCOMMENT THE CONTENTS OF testJDK to TEST 1.4 versus 1.3 method.");
         //long jdk14Method = cal.getTimeInMillis();
         //long jdk13Method = cal.getTime().getTime();

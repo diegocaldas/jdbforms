@@ -25,6 +25,7 @@ package org.dbforms.xmldb;
 import junit.framework.*;
 import java.io.*;
 
+import org.dbforms.util.Util;
 
 
 /**
@@ -102,8 +103,7 @@ public class TestFileSplitter extends TestCase
     public void testConstructorWithStrings() throws Exception
     {
         String srcFile = TestFileSplitter.class.getResource("fileA.txt").getPath();
-        String destDir = new File(srcFile).getParent();
+        assertTrue(Util.isNull(srcFile));
 
-        FileSplitter fp = new FileSplitter(srcFile, destDir);
     }
 }

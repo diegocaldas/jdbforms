@@ -23,7 +23,6 @@
 
 package org.dbforms.util;
 
-import java.util.*;
 
 import junit.framework.*;
 

@@ -3,11 +3,8 @@
 package org.dbforms.bookstore;
 // imports
 import java.util.ArrayList;
-import java.io.File;
 import java.util.List;
 import HTTPClient.NVPair;
-import com.bitmechanic.maxq.HttpTestCase;
-import com.bitmechanic.maxq.EditorPane;
 
 // definition of test class
 public class TestBooksSingle extends AbstractTestBase

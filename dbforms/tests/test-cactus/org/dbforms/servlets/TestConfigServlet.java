@@ -26,7 +26,6 @@ package org.dbforms.servlets;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import org.apache.cactus.ServletTestCase;
-import org.apache.cactus.WebResponse;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.Table;
 

@@ -2,8 +2,6 @@ package org.dbforms.bookstore;
 
 // imports
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
 
 // definition of test class
 public class TestTest extends AbstractTestBase

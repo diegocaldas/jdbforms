@@ -22,13 +22,11 @@
  */
 
 package org.dbforms.taglib;
-import javax.servlet.jsp.tagext.BodyContent;
 import javax.servlet.jsp.tagext.BodyTag;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import org.apache.cactus.JspTestCase;
 import org.apache.cactus.WebResponse;
-import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.servlets.ConfigServlet;
 import org.dbforms.config.Table;
@@ -43,7 +41,6 @@ import org.dbforms.util.AssertUtils;
 public class TestDbFormTag extends JspTestCase
 {
    private DbFormTag   tag;
-   private BodyContent tagContent;
    private Table       tblResult = null;
 
    private void println(String s) {

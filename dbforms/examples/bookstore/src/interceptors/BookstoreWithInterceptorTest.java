@@ -6,7 +6,6 @@
  */
 package interceptors;
 import java.util.Hashtable;
-import java.util.Vector;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Connection;
 import java.sql.Statement;
@@ -27,7 +26,6 @@ public class BookstoreWithInterceptorTest extends DbEventInterceptorSupport {
 							  DbFormsConfig config, Connection con)
 							  throws ValidationException {
 
-		 Vector ret;
 		 Statement stmt;
 		 ResultSet rs=null;
 		 long new_id=0;

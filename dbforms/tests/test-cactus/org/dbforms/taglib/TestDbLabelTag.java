@@ -22,8 +22,6 @@
  */
 
 package org.dbforms.taglib;
-import javax.servlet.jsp.tagext.BodyContent;
-import javax.servlet.jsp.tagext.BodyTag;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import org.apache.cactus.JspTestCase;
@@ -40,7 +38,6 @@ import org.apache.cactus.WebResponse;
 public class TestDbLabelTag extends JspTestCase
 {
     private DbLabelTag tag;
-    private BodyContent tagContent;
 
     /**
      * Defines the testcase name for JUnit.
@@ -122,7 +119,6 @@ public class TestDbLabelTag extends JspTestCase
      */
     public void endReplacement(WebResponse theResponse)
     {
-        String content = theResponse.getText();
         assertTrue("This is always true!", true);
 
         /*   assertTrue("Response should have contained the ["

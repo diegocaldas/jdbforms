@@ -24,7 +24,6 @@
 package org.dbforms.config.error;
 import junit.framework.*;
 
-import org.dbforms.config.FieldTypes;
 
 
 

@@ -3,7 +3,6 @@
 package org.dbforms.bookstore;
 
 // imports
-import java.io.File;
 import java.util.List;
 import java.util.ArrayList;
 import HTTPClient.NVPair;
@@ -20,9 +19,6 @@ public class TestBooksSingle2 extends AbstractTestBase
 	public void testBooksSingle() throws Exception
 	{
 		List list;
-		String rsp;
-		String filename;
-		File htmlFile;
 		System.out.println("Testing URL: " + replaceURL("http://localhost/bookstore/tests/testBOOKSSingle2.jsp"));
 		get("http://localhost/bookstore/tests/testBOOKSSingle2.jsp");
 		System.out.println("Response code: " + getResponse().getStatusCode());

@@ -80,7 +80,6 @@ public class XSLTransformer
       {
          transformer.setParameter("useCalendar", "true");
       }
-
       // Use the Transformer to apply the associated Templates object to an XML document
       // (foo.xml) and write the output to a file (foo.out).
       transformer.transform(new StreamSource(xmlFile),

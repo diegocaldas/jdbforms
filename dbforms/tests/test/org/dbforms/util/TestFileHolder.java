@@ -1,7 +1,6 @@
 package org.dbforms.util;
 import junit.framework.*;
 import java.io.*;
-import java.util.*;
 /**
  *  Description of the Class
  *
