@@ -216,7 +216,7 @@ public class DbLinkURLTag extends BodyTagSupport implements TryCatchFinally
 
         if (position == null) // if position was not set explicitly,
         {
-            return EVAL_BODY_TAG; // we have to evaluate body and hopefully find DbLinkPositionItems there
+            return EVAL_BODY_BUFFERED; // we have to evaluate body and hopefully find DbLinkPositionItems there
         }
         else
         {
