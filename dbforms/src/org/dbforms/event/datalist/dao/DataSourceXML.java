@@ -133,7 +133,7 @@ public class DataSourceXML extends DataSource {
       if (dataObject == null) {
          try {
             URI url = getURI();
-            data = new XMLDataResult(DOMFactory.instance().newXPathEvaluator(), read(url), url.getQuery());
+            data = new XMLDataResult(read(url), url.getQuery());
          } catch (Exception e) {
             logCat.error(e);
             throw new SQLException(e.getMessage());

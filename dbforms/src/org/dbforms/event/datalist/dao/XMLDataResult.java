@@ -31,6 +31,7 @@ import org.w3c.dom.xpath.XPathNSResolver;
 
 import org.dbforms.config.FieldTypes;
 
+import org.dbforms.dom.DOMFactory;
 import org.dbforms.util.TimeUtil;
 import org.dbforms.util.Util;
 
@@ -55,10 +56,10 @@ public class XMLDataResult
     * @param root xml dom object
     * @param qry xpath string to query
     */
-   public XMLDataResult(XPathEvaluator evaluator, Document root, String qry)
+   public XMLDataResult(Document root, String qry)
    {
       this.doc = root;
-      this.evaluator = evaluator;
+      this.evaluator = DOMFactory.instance().newXPathEvaluator();
       resolver  = evaluator.createNSResolver(root);
       // Evaluate the xpath expression. 
       data = (XPathResult) evaluator.evaluate(qry, doc, resolver, 
