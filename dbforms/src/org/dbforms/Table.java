@@ -89,6 +89,8 @@ public class Table {
 		fieldNameHash = new Hashtable();
 		diskblobs = new Vector();
 		interceptors = new Vector();
+                foreignKeys = new Vector();
+                foreignKeyNameHash = new Hashtable();
 	}
 
 	/**
@@ -156,7 +158,7 @@ public class Table {
 	 * and puts it into othere datastructure for further references
 	 * (this method gets called from DbFormsConfig)
 	 */
-	public void addForeignKey(ForeignKey fk) {           
+	public void addForeignKey(ForeignKey fk) {            
                 fk.setId(foreignKeys.size());
             
                 // add to vector containing all foreign keys:
