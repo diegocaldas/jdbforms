@@ -26,7 +26,7 @@ The unit tests uses <ulink url="http://maxq.tigris.org"><citetitle>maxq</citetit
 </para>
 </listitem> 
 </itemizedlist>
-<para><emphasis role="bold">See </emphasis><computeroutput>test/test/dbforms/org/bookstore</computeroutput><emphasis role="bold"> for
+<para><emphasis role="bold">See </emphasis><computeroutput>tests/test/dbforms/org/bookstore</computeroutput><emphasis role="bold"> for
 three example test cases.</emphasis></para>
 
 <para>To generate own unit tests you can use the new maven task <computeroutput>maxq</computeroutput>. This task
