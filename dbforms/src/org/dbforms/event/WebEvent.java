@@ -76,16 +76,16 @@ public abstract class WebEvent
    /**
     * Creates a new WebEvent object.
     *
-    * @param tableId DOCUMENT ME!
-    * @param request DOCUMENT ME!
-    * @param config DOCUMENT ME!
+    * @param tableId the table id
+    * @param request the request object
+    * @param config  the configuration object
     */
    public WebEvent(int tableId, HttpServletRequest request, DbFormsConfig config)
    {
-      this.tableId    = tableId;
-      this.table      = config.getTable(tableId);
-      this.request    = request;
-      this.config     = config;
+      this.tableId = tableId;
+      this.table   = config.getTable(tableId);
+      this.request = request;
+      this.config  = config;
    }
 
    /**
@@ -213,7 +213,9 @@ public abstract class WebEvent
 
 
    /**
-    * @return String
+    *  Get the string that defines the current event type 
+    * 
+    * @return the string that defines the current event type 
     */
    public String getType()
    {
@@ -222,7 +224,8 @@ public abstract class WebEvent
 
 
    /**
-    * Sets the type.
+    * Sets the event type
+    * 
     * @param type The type to set
     */
    public void setType(String type)
