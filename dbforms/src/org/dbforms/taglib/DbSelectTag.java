@@ -34,13 +34,14 @@ import org.dbforms.*;
 import org.dbforms.util.*;
 
 import org.apache.log4j.Category;
+import javax.servlet.http.*;
 
 /****
  *
  * <p>This tag renders a html SELECT element including embedding OPTION elements.</p>
  *
  * @author Joachim Peer <j.peer@gmx.net>
- * @author Philip Grunikiewicz<grunikiewicz.philip@hydro.qc.ca> (-> did first bugfix)
+ * @author Philip Grunikiewicz<grunikiewicz.philip@hydro.qc.ca>
  */
 
 public class DbSelectTag extends DbBaseHandlerTag implements DataContainer  {
@@ -147,12 +148,17 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer  {
 
 
   public int doEndTag() throws javax.servlet.jsp.JspException {
+  	
+  	
+		HttpServletRequest request = (HttpServletRequest) this.pageContext.getRequest();
+		Vector errors = (Vector) request.getAttribute("errors");
+  	
 
 		StringBuffer tagBuf = new StringBuffer();
 
 		// current Value from Database; or if no data: explicitly set by user; or ""
 		String currentValue = getFormFieldValue();
-
+		
 		if(embeddedData==null) { // no embedded data is nested in this tag
 
 			/*
@@ -161,16 +167,26 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer  {
 
 		} else {
 			
-			
-			
 			// PG, 2001-12-14
 			// Is their a custom entry? Display first...
 			String ce = null;
 			if((ce = this.getCustomEntry()) != null && ce.trim().length()>0)
 			{
+				boolean isSelected = false;				
 				String aKey = org.dbforms.util.ParseUtil.getEmbeddedString(ce,0,',');
-				String aValue = org.dbforms.util.ParseUtil.getEmbeddedString(ce,1,',');				
-				boolean isSelected = "true".equals(org.dbforms.util.ParseUtil.getEmbeddedString(ce,2,','));								
+				String aValue = org.dbforms.util.ParseUtil.getEmbeddedString(ce,1,',');	
+				
+				
+				// Check if we are in redisplayFieldsOnError mode and errors have occured
+				// If so, only set to selected if currentRow is equal to custom row.
+				if ("true".equals(parentForm.getRedisplayFieldsOnError()) && errors != null && errors.size() > 0)
+				{
+					isSelected = (currentValue.equals(aKey));													
+				}
+				else
+				{
+					isSelected = "true".equals(org.dbforms.util.ParseUtil.getEmbeddedString(ce,2,','));
+				}
 				tagBuf.append(generateTagString(aKey, aValue, isSelected));				
 			}
 			

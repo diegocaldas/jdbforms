@@ -51,67 +51,58 @@ public class DbDateLabelTag extends DbLabelTag {
 
 	static Category logCat = Category.getInstance(DbDateLabelTag.class.getName());
 
+	protected java.text.Format format = DbFormsConfig.getDateFormatter();
 
+	/**
+	grunikiewicz.philip@hydro.qc.ca
+	2001-05-14
+	
+	If user has specified a date format - use it!
+	
+	*/
 
-/**
-grunikiewicz.philip@hydro.qc.ca
-2001-05-14
+	public int doEndTag() throws javax.servlet.jsp.JspException {
+		try {
 
-If user has specified a date format - use it!
+			Object fieldValue = NO_DATA;
+			if (!ResultSetVector.isEmptyOrNull(parentForm.getResultSetVector())) {
+				Object[] currentRow = parentForm.getResultSetVector().getCurrentRowAsObjects();
+				// fetch database row as java objects
+				Object currentValue = currentRow[field.getId()];
 
-*/
+				// Format date if not null
+				if (currentValue != null)
+					fieldValue = format.format(currentValue);
+				else
+					fieldValue = ""; // null == empty string
+			}
 
-public int doEndTag() throws javax.servlet.jsp.JspException {
-	try {
+			pageContext.getOut().write(fieldValue.toString());
 
-		Object fieldValue = NO_DATA;
-		if (!ResultSetVector.isEmptyOrNull(parentForm.getResultSetVector())) {
-			Object[] currentRow = parentForm.getResultSetVector().getCurrentRowAsObjects();
-			// fetch database row as java objects
-			Object currentValue = currentRow[field.getId()];
-
-			// Format date if not null
-			if (currentValue != null)
-				fieldValue = format.format(currentValue);
-			else
-				fieldValue = "";	// null == empty string
+		} catch (java.io.IOException ioe) {
+			throw new JspException("IO Error: " + ioe.getMessage());
+		} catch (Exception e) {
+			throw new JspException("Error: " + e.getMessage());
 		}
 
-		pageContext.getOut().write(fieldValue.toString());
-
-	} catch (java.io.IOException ioe) {
-		throw new JspException("IO Error: " + ioe.getMessage());
-	} catch (Exception e) {
-		throw new JspException("Error: " + e.getMessage());
+		return EVAL_PAGE;
 	}
 
-	return EVAL_PAGE;
-}
+	/**
+	 * Insert the method's description here.
+	 * Creation date: (2001-05-14 15:28:11)
+	 * @return java.text.Format
+	 */
+	public java.text.Format getFormat() {
+		return format;
+	}
 
-
-
-
-
-
-
-	protected java.text.Format format =
-		new java.text.SimpleDateFormat("yyyy-MM-dd");
-
-/**
- * Insert the method's description here.
- * Creation date: (2001-05-14 15:28:11)
- * @return java.text.Format
- */
-public java.text.Format getFormat() {
-	return format;
-}
-
-/**
- * Insert the method's description here.
- * Creation date: (2001-05-14 15:28:11)
- * @param newFormat java.text.Format
- */
-public void setFormat(java.text.Format newFormat) {
-	format = newFormat;
-}
+	/**
+	 * Insert the method's description here.
+	 * Creation date: (2001-05-14 15:28:11)
+	 * @param newFormat java.text.Format
+	 */
+	public void setFormat(java.text.Format newFormat) {
+		format = newFormat;
+	}
 }

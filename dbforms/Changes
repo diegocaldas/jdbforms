@@ -3,6 +3,54 @@
 * $Date$
 
 
+__________________________________________________________________________________________________
+__________________________________________________________________________________________________
+
+Friday, March , 2002
+DbForms version 1.06
+Grunikiewicz.philip@hydro.qc.ca
+
+Bug Fixes and General Maintenance
+---------------------------------
+
+Corrected problem with sorting - a JSP which contains a sort tag may have had problems finding
+it's defined source path. (Contrib. D.Kraemer)
+
+The diskblob encoding attribute (in config file) was not correctly being interpreted.
+
+Tags dateLabel and dateField now take their default (date) format from the 
+config file (dbforms-config.xml).  (Contrib. S.Borghi)
+
+Depending on the JDBC drivers being used, dates may be returned as timestamps.  
+Code has been adapted appropriately.  (Contrib. S.Borghi)
+
+Modification to allow dbForms, after an insert operation, to navigate to the
+last record inserted.  (Contrib. S.Borghi)
+
+Corrected problem with custom entry in Select tag when in redisplayFieldsOnError mode.
+
+
+DevGui Enhancements  (Contrib. D.Kraemer)
+-----------------------------------------
+
+- new config file panel with more options:
+
+  - radio buttons enables a user to select [all] catalogs, [all] schemas, and/or [all] table 
+    name pattern.
+  - combo boxes can be loaded with available catalog and schema names. Still possible
+    to manually enter values.
+  - meta data may be set to be read in transaction mode as opposed to autocommit mode (workaround Ingres II) 
+  - catalog and schema names may be optionally included in table name. 
+
+- tab placement is now in the upper-left region, needed more room for new options.
+
+- display a warning message when trying to exit program without saving changes.
+
+- display a warning message when trying to generate an (xml) config file without having first 
+  defined the output file name.
+
+- added a generalized help view.
+
 
 __________________________________________________________________________________________________
 __________________________________________________________________________________________________
@@ -22,6 +70,9 @@ Added unique identifiers in Button tags to allow for multiple buttons of the sam
 to co-exist - resolves followUp mix up.
 
 Corrected a problem in dispatching to followUpOnError, if this attribute is not specified. (Contrib. D.Kraemer)
+
+Removed the 'dependend' directory from the distribution packages in order minimize required disk space.
+The required jar files can be found on the dbforms website.
 
 
 

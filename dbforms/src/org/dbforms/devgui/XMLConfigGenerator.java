@@ -30,8 +30,17 @@ import java.util.*;
 
 
 
-public class XMLConfigGenerator {
+public class XMLConfigGenerator implements PropertyNames  {
 
+/* changes 2002-03-04 dikr:
+ * - 
+ * - changed big loop while reading meta data into two smaller ones
+ * - fixed bug that could make problems if several tables in different
+ *    schemas have same name
+ * - added several options the user now has in ConfigFilePanel (see comments
+ *    there)
+ */
+    
   protected static Connection createConnection(String jdbcDriver, String jdbcURL ,String  username,String  password)
   throws SQLException, ClassNotFoundException, InstantiationException, IOException, IllegalAccessException {
 
@@ -48,19 +57,42 @@ public class XMLConfigGenerator {
 	  String username = projectData.getProperty("username");
 	  String password = projectData.getProperty("password");
 
-	  String catalog = projectData.getProperty("catalog");
-	  String schemaPattern = projectData.getProperty("schemaPattern");
-	  String tableNamePattern = projectData.getProperty("tableNamePattern");
+          
+                                         // create boolean variables out of String properties:
+          
+          boolean includeCatalog = projectData.getProperty(INCLUDE_CATALOGNAME).
+                                                            equalsIgnoreCase(TRUESTRING);
+          boolean includeSchema = projectData.getProperty(INCLUDE_SCHEMANAME).
+                                                            equalsIgnoreCase(TRUESTRING);          
+          boolean useAutoCommitMode = projectData.getProperty(AUTOCOMMIT_MODE).
+                                                            equalsIgnoreCase(TRUESTRING);
 
-	  if(catalog != null && catalog.trim().equalsIgnoreCase("$null"))
-	  	catalog = null;
+                                        // create array of  table types that have to be examined...
+          
+          Vector typesVec = new Vector();
+          if (projectData.getProperty(EXAMINE_TABLES).equalsIgnoreCase(TRUESTRING))
+               typesVec.add("TABLE");
+          if (projectData.getProperty(EXAMINE_VIEWS).equalsIgnoreCase(TRUESTRING))
+               typesVec.add("VIEW");
+          if (projectData.getProperty(EXAMINE_SYSTABS).equalsIgnoreCase(TRUESTRING))
+               typesVec.add("SYSTEM TABLE");  
+          String[] types = new String[typesVec.size()];
+          for (int jj=0;jj < typesVec.size();jj++) {
+               types[jj] = (String)typesVec.get(jj);
+          }
 
-	  if(schemaPattern != null && schemaPattern.trim().equalsIgnoreCase("$null"))
-	  	schemaPattern = null;
-
-	  if(tableNamePattern != null && tableNamePattern.trim().equalsIgnoreCase("$null"))
-	  	tableNamePattern = null;
-
+                            // set values for catalog, schema and table name according to properties:
+          
+          String catalog = projectData.getProperty(CATALOG_SELECTION).equalsIgnoreCase(ALL) ?
+                                            null : projectData.getProperty(CATALOG);
+                         
+          String schemaPattern = projectData.getProperty(SCHEMA_SELECTION).equalsIgnoreCase(ALL) ?
+                                            null : projectData.getProperty(SCHEMA);
+                                 
+          String tableNamePattern  = projectData.getProperty(TABLE_SELECTION).equalsIgnoreCase(ALL) ?
+                                            null : projectData.getProperty(TABLE_NAME_PATTERN);
+                
+ 
 	  System.out.println(": Retrieving metadata using the following properties ");
 	  System.out.println("-----------------------------------------------------");
 	  System.out.println("jdbcDriver="+jdbcDriver);
@@ -69,38 +101,151 @@ public class XMLConfigGenerator {
 	  System.out.println("password="+password);
 	  System.out.println("catalog="+catalog);
 	  System.out.println("schemaPattern="+schemaPattern);
-	  System.out.println("tableNamePattern="+schemaPattern);
+	  System.out.println("tableNamePattern="+tableNamePattern);
 
-	StringBuffer result = new StringBuffer();
+          
+          
+        StringBuffer result = new StringBuffer();
 
+        boolean showWarning                = false;
+        int            catalogNameFailure   = 0;
+        int            schemaNameFailure   = 0;
+        StringBuffer warningMessage    = new StringBuffer("<html><ul>");
+        
 	Connection con = null;
 	try {
 
 		con = createConnection(jdbcDriver, jdbcURL, username, password);
-
+                
+               
 		result.append("<?xml version=\"1.0\" encoding=\"ISO-8859-1\" ?>\n\n<dbforms-config>\n");
 
-		if(con==null) {System.exit(1);}
-
 		DatabaseMetaData dbmd = con.getMetaData();
-		String[] types = {"TABLE", "VIEW"};
-		ResultSet tablesRS = dbmd.getTables(catalog, schemaPattern, tableNamePattern, types);
+                
+                                                        // if user wants to include catalog names in table names,
+                                                        // try to check if DBMS supports this feature:
+                if (includeCatalog) {
+                    boolean supportsCatalogInDML = false;
+                    try {                      // this is not mission critical, so own try block 
+                        supportsCatalogInDML = dbmd.supportsCatalogsInDataManipulation();
+                    } catch (Exception ignored){}
+                    if (! supportsCatalogInDML) {
+                        showWarning = true;
+                        warningMessage.append("<li>Your database system does not seem to support use of  <br>" +
+                                                                         "  catalog names in data manipulation statements. You should<br> " +
+                                                                         "  better not include catalog names in table names.");
+                    }
+                }
 
-		while(tablesRS.next()) {
+                                                        // if user wants to includeschema names in table names,
+                                                        // try to check if DBMS supports this feature:
+                if (includeSchema) { 
+                    boolean supportsSchemaInDML = false;
+                    try {                      // this is not mission critical, so own try block 
+                        supportsSchemaInDML = dbmd.supportsSchemasInDataManipulation();
+                    } catch (Exception ignored){}
+                    if (! supportsSchemaInDML) {
+                        showWarning = true;
+                        warningMessage.append("<li>Your database system does not seem to support use of <br>" +
+                                                                         "  schema names in data manipulation statements. You should <br>" +
+                                                                         "  better not include schema names in table names.");
+                    }
+                }                
+                                   // user wants transaction mode, but it is not supported by 
+                                   // dbms => warning and reset to autocommit mode:
+                if ( (! useAutoCommitMode ) && (! dbmd.supportsTransactions())) {
+                    showWarning = true;
+                    warningMessage.append("<li>Transaction mode not supported by DBMS, connection is <br>" +
+                                                                     "    automatically set to autocommit mode.");
+                    useAutoCommitMode = true;
+                }
+                                  // select transaction mode if desired by user and supported:
+                if (! useAutoCommitMode) con.setAutoCommit(false);
 
-		  String tableName = tablesRS.getString(3);
+                                   // try to read catalog separator from DBMS, if needed:
+                String catalogSeparator = ".";   // just in case reading value from DB fails
+                if (includeCatalog) {
+                    try {
+                      catalogSeparator = dbmd.getCatalogSeparator();
+                    } catch (SQLException ex) {
+                       showWarning = true;
+                       warningMessage.append("<li>Error reading catalog separator from database:   <br>" +
+                                                                           ex.getMessage() + "<br>" +
+                                                                      "  Using default '" + catalogSeparator + "' instead.");
+                    }
+                }
+                
+                String schemaSeparator= ".";    // isn't that default ? 
+                
+
+                                                                            // read table, catalog and schema names into vectors
+                                                                            // to avoid big nested loop...
+                Vector tableNames      = new Vector();
+                Vector catalogNames  = new Vector();
+                Vector schemaNames = new Vector();
+              
+                try {
+                    ResultSet tablesRS = dbmd.getTables(catalog, schemaPattern, tableNamePattern, types);               
+
+		    while(tablesRS.next()) {
+                       catalogNames.add(tablesRS.getString(1));
+                       schemaNames.add(tablesRS.getString(2));
+                       tableNames.add(tablesRS.getString(3));
+                    }
+                    tablesRS.close();
+                
+                } catch (SQLException ex) {
+                       showWarning = true;
+                       warningMessage.append("<li>Error while trying to read table names with <br>" +
+                                                                            "  catalog=" + catalog +
+                                                                            ",<br>   schemapattern=" + schemaPattern +
+                                                                            ",<br>   tableNamePattern=" + tableNamePattern + 
+                                                                             "<br> from database.   <br>Error message:" +
+                                                                           ex.getMessage() + "<br>");
+                }
+                
+                
+                if (! useAutoCommitMode) con.commit();
+                
+                if (tableNames.size() == 0) {
+                    showWarning = true;
+                    warningMessage.append("<li> No tables of type <br>(");
+                    for (int i=0 ; i < types.length;i++) warningMessage.append("'").append(types[i]).append("' ");
+                    warningMessage.append(") <br>found with catalog='" + catalog +"', schemapattern='" +
+                                                                     schemaPattern + "',<br>tablename pattern='" + tableNamePattern +"'");
+                }
+                
+                for (int i = 0; i < tableNames.size();i++ ) {
+                   
+                    String catalogName  =  (String)catalogNames.get(i);
+                    String schemaName =  (String)schemaNames.get(i);
+                    String tableName      =  (String)tableNames.get(i);
 
 		  result.append("\t<table name=\"");
+                  
+                  
+                                                        // prepend catalog and schema names to table names
+                                                        // if desired by user and not empty:
+                  if ( includeCatalog && (catalogName != null) && ( ! catalogName.equalsIgnoreCase("")) ) 
+                       result.append(catalogName.trim()).append(catalogSeparator);
+                  if (includeCatalog && ((catalogName == null) || catalogName.equalsIgnoreCase(""))) 
+                       catalogNameFailure++;
+                       
+                  if (includeSchema && (schemaName != null) && ( ! schemaName.equalsIgnoreCase("")) )
+                      result.append(schemaName.trim()).append(schemaSeparator);
+                  if (includeSchema && ((schemaName == null) || schemaName.equalsIgnoreCase("")) )
+                      schemaNameFailure++;
+                  
 		  result.append(tableName);
 		  result.append("\">\n");
 
-		  ResultSet rsKeys = dbmd.getPrimaryKeys(catalog, schemaPattern, tableName);
+		  ResultSet rsKeys = dbmd.getPrimaryKeys(catalogName, schemaName, tableName);
 		  Vector keys = new Vector();
 		  while(rsKeys.next()) {
 		      String columnName = rsKeys.getString(4);
-			  keys.addElement(columnName);
+		      keys.addElement(columnName);
 		  }
-		  //rsKeys.close();
+		  rsKeys.close();
 
 		  ResultSet rsFields = dbmd.getColumns(catalog, schemaPattern, tableName, null);
 		  while(rsFields.next()) {
@@ -123,12 +268,23 @@ public class XMLConfigGenerator {
 			  }
 			  result.append("/>\n");
 		  }
-		  //rsFields.close();
-
+		  rsFields.close();
+                  if (! useAutoCommitMode) con.commit();
 		  result.append("\n\t\t<!-- add \"granted-privileges\" element for security constraints -->\n\n\t</table>\n\n");
 		}
-		tablesRS.close();
+		
+               if (catalogNameFailure > 0) {
+                      showWarning = true;
+                      warningMessage.append("<li> " + catalogNameFailure + " empty catalog names not " +
+                                                                               "included in table name.");
+                }
 
+                if (schemaNameFailure > 0) {
+                      showWarning = true;
+                      warningMessage.append("<li> " + schemaNameFailure + " empty schema names not " +
+                                                                               "included in table name.");
+                }   
+                  
 		result.append("\t<!-- ========== Connection =================================== -->\n");
 		result.append("\t<!--\n");
 		result.append("\tuncomment this if you have access to JNDI of an application server (see users guide for more info)\n");
@@ -148,12 +304,17 @@ public class XMLConfigGenerator {
 		result.append("</dbforms-config>");
 
 		System.out.println("finished");
-
+                warningMessage.append("</ul></html>");
 	} catch(Exception e) {
 		e.printStackTrace();
 		throw new Exception(e.getMessage()+" in XMLConfigGenerator");
 	} finally {
 		try {
+
+                        if (showWarning)
+                          javax.swing.JOptionPane.showMessageDialog(null, warningMessage,"Warning", 
+                                                                                                          javax.swing.JOptionPane.WARNING_MESSAGE);
+	               
 			if(con!=null) con.close();
 		}	catch(SQLException sqle) {
 			throw new SQLException("could not close Connection - " + sqle.getMessage());

@@ -58,7 +58,8 @@ public class SqlUtil {
 		result = null;}
 		
 	if (result==null)	
-		result = java.sql.Date.valueOf(valueStr);
+	// Maybe date has been returned as a timestamp?
+		result = new java.sql.Date(java.sql.Timestamp.valueOf(valueStr).getTime());
 	return result;
   }    
 

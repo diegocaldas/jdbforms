@@ -36,7 +36,7 @@ import javax.swing.*;
  * @author  Joachim Peer <j.peer@gmx.net>
  * @version
  */
-public abstract class PropertyPanel extends javax.swing.JPanel {
+public abstract class PropertyPanel extends javax.swing.JPanel implements  PropertyNames  {
 
 	protected ProjectData projectData;
 

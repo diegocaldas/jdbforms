@@ -37,17 +37,37 @@ import java.util.*;
  *
  * @author  Joe Peer
  *
+ * Changes: 
+ * - 2002-03-4: usage of default property and constant string values
+ *                   via new Interface Propertynames (dikr)
  */
-public class ProjectData implements Serializable{
+public class ProjectData implements Serializable , PropertyNames {
 
 	private File file;
 
 	private boolean unsavedChanges = false;
 	private Properties props;
+      
+      
+        private static Properties defaultProps;             // contains default values for properties
+        
+                                                                                            // set default property values:
+        static {
+          defaultProps = new Properties();
+          defaultProps.setProperty(INCLUDE_SCHEMANAME,   FALSESTRING);
+          defaultProps.setProperty(INCLUDE_CATALOGNAME,  FALSESTRING);
+          defaultProps.setProperty(AUTOCOMMIT_MODE,         TRUESTRING);  
+          defaultProps.setProperty(CATALOG_SELECTION,          ALL);
+          defaultProps.setProperty(SCHEMA_SELECTION,           ALL);
+          defaultProps.setProperty(TABLE_SELECTION,                ALL);
+          defaultProps.setProperty(EXAMINE_TABLES,                 TRUESTRING); 
+          defaultProps.setProperty(EXAMINE_VIEWS,                   TRUESTRING); 
+          defaultProps.setProperty(EXAMINE_SYSTABS,               FALSESTRING);           
+        }
 
 	/** Creates new Project */
 	public ProjectData() {
-	  this.props = new Properties();
+	  this.props = new Properties(defaultProps);
 	  unsavedChanges = false;
 	}
 
@@ -91,7 +111,7 @@ public class ProjectData implements Serializable{
 
 	public static ProjectData loadFromDisc(File f) throws IOException {
 
-			Properties l_props = new Properties();
+                        Properties l_props = new Properties(defaultProps);
 			l_props.load(new FileInputStream(f));
 			ProjectData pd = new ProjectData(l_props);
 			pd.setFile(f);

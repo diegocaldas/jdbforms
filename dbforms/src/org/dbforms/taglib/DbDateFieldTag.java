@@ -54,12 +54,9 @@ public class DbDateFieldTag extends DbBaseInputTag {
 
 	public int doStartTag() throws javax.servlet.jsp.JspException {
 
-		// a data format default to yyyy-MM-dd, if no other stlye is applied!
-		// the string to use could be made configurable using web.xml
-		// will be done if there's demand for it.
-
+		// Use format defined in config file
 		if (this.format == null) {
-			this.format = new SimpleDateFormat("yyyy-MM-dd");
+			this.format = DbFormsConfig.getDateFormatter();
 		}
 
 		return SKIP_BODY;

@@ -18,7 +18,7 @@ TO DO
 
 * Limit the select list (in query)to fields used in the body tag (useFieldsInBody attribute in form tag)
 
-* Allow to specify a display format for items in the select, checkbox and radio tags (format attribute)
+* Allow to specify a display format for items in the select, checkbox and radio tags (format attribute) (Assigned to Shawn: javajunkie@koyuru.com)
 
 * Devise a technique (tag?) for 'populating' (without going to the server) a child select box, given a selection in the parent select box.
 
@@ -26,12 +26,13 @@ TO DO
 
 * Allow access to multiple databases.
 
-* Redesign of the DevGui application. (Assigned to Dirk Kraemer)
-
 * Generate DTD files for dbForms-config.xml and dbForms-errors.xml.
 
 * Include support for DBCS. 
 
+* Allow free-form queries (whereClause attribute in dbform tag) to be used in conjunction with DbForms navigation.
+
+* On multiple-row updates, update only the rows for which fields have been modified.
 
 
 

@@ -109,15 +109,19 @@ public class EventEngine {
 			logCat.info("##### N O O P   ELEMENT ######");
 			e = new NoopEvent();
 
-			//#fixme
+			String contextPath = request.getContextPath();
 			String sourcePath = ParseUtil.getParameter(request, "source");
 
-			int firstSlash = sourcePath.indexOf('/');
-			if (firstSlash != -1) {
-				int secondSlash = sourcePath.indexOf('/', firstSlash + 1);
-				if (secondSlash != -1) {
-					sourcePath = sourcePath.substring(secondSlash);
-				}
+			logCat.info("sourcePath = " + sourcePath);
+
+			/* If length of context Path is greater then zero (not root context)
+			   and sourcePath begins with context Path, then remove context path from
+			   sourcePath */
+			if ((contextPath.length() > 0) && sourcePath.startsWith(contextPath)) {
+				if (contextPath.endsWith("/")) // shouldn't! just make sure!
+					sourcePath = sourcePath.substring(contextPath.length() - 1);
+				else
+					sourcePath = sourcePath.substring(contextPath.length());
 			}
 
 			e.setFollowUp(sourcePath);
@@ -132,7 +136,6 @@ public class EventEngine {
 		// position of the mouse
 		//    parameter ac_insert_0_root.y=24
 		//    parameter ac_insert_0_root.x=34
-
 		// make the image button data look like a submit button
 		if (action.endsWith(".y") || action.endsWith(".x")) {
 			logCat.debug("image action = " + action);
@@ -140,18 +143,15 @@ public class EventEngine {
 		}
 
 		logCat.info("*** action = " + action + " ***");
-
 		if (action.startsWith("ac_insert")) {
 
 			logCat.info("about to instanciate InsertEvent");
 			e = new InsertEvent(action, request, config);
-
 		} else
 			if (action.startsWith("ac_update_")) {
 
 				logCat.info("about to instanciate UpdateEvent");
 				e = new UpdateEvent(action, request, config);
-
 			} else
 				if (action.startsWith("ac_updatear_")) {
 
@@ -160,7 +160,6 @@ public class EventEngine {
 					String associatedRadioName =
 						ParseUtil.getParameter(request, "data" + action + "_arname");
 					String keyString = ParseUtil.getParameter(request, associatedRadioName);
-
 					if (keyString != null) {
 						int tableId = ParseUtil.getEmbeddedStringAsInteger(keyString, 0, '_');
 						String keyId = ParseUtil.getEmbeddedString(keyString, 1, '_');
@@ -178,7 +177,6 @@ public class EventEngine {
 
 						logCat.info("about to instanciate DeleteEvent");
 						e = new DeleteEvent(action, request, config);
-
 					} else
 						if (action.startsWith("ac_deletear_")) {
 
@@ -187,7 +185,6 @@ public class EventEngine {
 							String associatedRadioName =
 								ParseUtil.getParameter(request, "data" + action + "_arname");
 							String keyString = ParseUtil.getParameter(request, associatedRadioName);
-
 							if (keyString != null) {
 								int tableId = ParseUtil.getEmbeddedStringAsInteger(keyString, 0, '_');
 								String keyId = ParseUtil.getEmbeddedString(keyString, 1, '_');
@@ -205,7 +202,6 @@ public class EventEngine {
 
 								logCat.info("about to instanciate NavFirstEvent");
 								e = new NavFirstEvent(action, request, config);
-
 							} else
 								if (action.startsWith("ac_prev_")) {
 
@@ -213,7 +209,6 @@ public class EventEngine {
 									//e = new NavPrevEvent(action, request, config);
 									e = nef.createNavPrevEvent(action, request, config);
 									// [Fossato <fossato@pow2.com>, 2001/11/08]
-
 								} else
 									if (action.startsWith("ac_next_")) {
 
@@ -221,36 +216,29 @@ public class EventEngine {
 										//e = new NavNextEvent(action, request, config);
 										e = nef.createNavNextEvent(action, request, config);
 										// [Fossato <fossato@pow2.com>, 2001/11/08]
-
 									} else
 										if (action.startsWith("ac_last_")) {
 
 											logCat.info("about to instanciate NavLastEvent");
 											e = new NavLastEvent(action, request, config);
-
 										} else
 											if (action.startsWith("ac_new_")) {
 
 												logCat.info("about to instanciate NavNewEvent");
 												e = new NavNewEvent(action, request, config);
-
 											} else
 												if (action.startsWith("ac_goto_")) {
 
 													logCat.info("about to instanciate GotoEvent");
 													e = new GotoEvent(action, request, config);
-
-												}
-		// now we have to find the followup-site the app-developer wants us to display.
+												} // now we have to find the followup-site the app-developer wants us to display.
 		// there are 2 possibilities
 		// §1 the submitted action button has a "follow-up"  - attribute.
 		// §2 the submitted <dbforms:form> has set a follow-up attribute
 		// §1 overrules §2
 		// by the way: follow ups will not be determined for secundary events!
 		// check if §1-followup exists:
-
 		// PG - added the concept of a different followup for handling errors which occured in a page
-
 		String followUp = ParseUtil.getParameter(request, "data" + action + "_fu");
 		if (followUp == null) { // if not...
 			// ...then check if §2-followup exists (should always exist!)
@@ -258,29 +246,21 @@ public class EventEngine {
 		}
 
 		logCat.info("setting follow up to:" + followUp);
-
 		e.setFollowUp(followUp);
-
 		String followUpOnError =
 			ParseUtil.getParameter(request, "data" + action + "_fue");
 		if (followUpOnError == null) { // if not...
 			// ...then check if §2-followup exists 
 			followUpOnError = ParseUtil.getParameter(request, "fue_" + e.getTableId());
-		}
-
-		// Still no followup on error - use general followup
+		} // Still no followup on error - use general followup
 		if (followUpOnError == null) {
 			followUpOnError = followUp;
 		}
 
 		logCat.info("setting follow up on Error to:" + followUpOnError);
-
 		e.setFollowUpOnError(followUpOnError);
-
 		return e;
-	}
-
-	/**
+	} /**
 	<p>independet of the primary - Action there may be some data to update
 	accoring to some changes in the input-widgets! in fact, all secunary events
 	are (sql-) UPDATES!</p>
@@ -297,16 +277,13 @@ public class EventEngine {
 
 		Vector result = new Vector();
 		Vector vAc = ParseUtil.getParametersStartingWith(request, "autoupdate_");
-
 		int excludeTableId = -1;
 		String excludeKeyId = null;
 		boolean collissionDanger = false;
-
 		// first of all, we check if there is some real potential for collisions in the "to exclude"-event
 		if (exclude instanceof UpdateEvent || exclude instanceof DeleteEvent) {
 			collissionDanger = true;
 			excludeTableId = exclude.getTableId();
-
 			//#checkme - this style of OOP doesn't look not very well
 			if (exclude instanceof UpdateEvent)
 				excludeKeyId = ((UpdateEvent) exclude).getKeyId();
@@ -316,33 +293,25 @@ public class EventEngine {
 
 		for (int i = 0; i < vAc.size(); i++) {
 			String param = (String) vAc.elementAt(i);
-
 			// auto-updating may be disabled, so we have to check:
 			if (ParseUtil.getParameter(request, param).equalsIgnoreCase("true")) {
-
 				// let's find the id of the next table we may update
 				int tableId = Integer.parseInt(param.substring("autoupdate_".length()));
-
 				// we can only update existing rowsets. so we just look for key-values
-
 				String paramStub = "k_" + tableId + "_";
 				Enumeration keysOfCurrentTable =
 					ParseUtil.getParametersStartingWith(request, paramStub).elements();
-
 				while (keysOfCurrentTable.hasMoreElements()) {
 					String aKeyParam = (String) keysOfCurrentTable.nextElement();
 					String keyId = aKeyParam.substring(paramStub.length());
-
 					logCat.info(
 						"autoaupdate debug info: keyId=" + keyId + " excludeKeyId=" + excludeKeyId);
-
 					if (!collissionDanger
 						|| excludeTableId != tableId
 						|| !keyId.equals(excludeKeyId)) {
 
 						UpdateEvent e = new UpdateEvent(tableId, keyId, request, config);
 						result.addElement(e);
-
 					}
 				}
 
@@ -350,6 +319,5 @@ public class EventEngine {
 		}
 
 		return result.elements();
-
 	}
 }
