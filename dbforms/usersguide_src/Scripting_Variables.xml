@@ -20,14 +20,14 @@
 	 
 			<para>
 				<table>
-					<title/>
+					<title>List of scripting variables</title>
 					<tgroup cols="3">
 						<tbody>
 							<row>
-								<entry>Scripting variables
+								<entry><emphasis role="bold">Scripting variables</emphasis>
 </entry>
-								<entry>Type</entry>
-								<entry>Description</entry>
+								<entry><emphasis role="bold">Type</emphasis></entry>
+								<entry><emphasis role="bold">Description</emphasis></entry>
 							</row>
 							<row>
 								<entry>searchFieldNames_tableName</entry>
@@ -52,7 +52,7 @@ Scope: inside the respective DbForms-element</entry>
 								<entry>currentRow_tableName
 </entry>
 								<entry>java.util.Hashtable</entry>
-								<entry>Contains the field-values of the current row. This construct is similar to associated Arrays used in many Perl/PHP modules
+								<entry>Contains the field-values of the current row. This construct is similar to associated Arrays used in many Perl/PHP modules
 Example:
 String email = (String) currentRow_customers.get(&quot;email&quot;);
 Scope: inside the respective &lt;body&gt;-tag</entry>
