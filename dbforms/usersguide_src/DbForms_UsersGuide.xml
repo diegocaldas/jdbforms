@@ -33,7 +33,9 @@
 <!ENTITY ackn SYSTEM "Appendix_Acknowledgements.xml">
 <!ENTITY auth SYSTEM "Appendix_Author.xml">
 <!ENTITY navi SYSTEM "Navigation.xml">
-<!ENTITY xml SYSTEM "XMLDatasource.xml">
+<!ENTITY xml  SYSTEM "XMLDatasource.xml">
+<!ENTITY uml-cls SYSTEM "UMLDiagrams-cls.xml">
+<!ENTITY uml-seq SYSTEM "UMLDiagrams-seq.xml">
 ]>
 <book>
 <title>DataBaseForms UsersGuide</title>
@@ -75,6 +77,11 @@
 &ejbs;
 &jasp;
 &xml;
+</part>
+
+<part><title>UML diagrams</title>
+&uml-cls;
+&uml-seq;
 </part>
 
 <part><title>Appendices</title>
