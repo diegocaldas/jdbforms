@@ -47,6 +47,7 @@ import org.dbforms.Table;
 import org.dbforms.Field;
 import org.dbforms.util.Constants;
 import org.dbforms.util.Util;
+import org.dbforms.DbFormsConfigRegistry;
 
 /**
  * 
@@ -99,24 +100,24 @@ public class DataSourceXML extends DataSource {
     * @see org.dbforms.event.datalist.dao.DataSource#open()
     */
    protected final void open() throws SQLException {
-      String qry = getXPath();
-      URI url = null;
-      // Check if we got a full URI
       try {
-         url = new URI(qry);
-      } catch (Exception e) {
-         logCat.error(e);
-      }
-      // No valid URI given, put query into to qeury part of the 
-      // URI object
-      if (url == null) {
+         String qry = getXPath();
+         URI url = null;
+         // Check if we got a full URI
          try {
-            url = new URI(null, null, null, qry, null);
+            url = new URI(qry);
          } catch (Exception e) {
             logCat.error(e);
          }
-      }
-      try {
+         // No valid URI given, put query into to qeury part of the 
+         // URI object
+         if (url == null) {
+            try {
+               url = new URI(null, null, null, qry, null);
+            } catch (Exception e) {
+               logCat.error(e);
+            }
+         }
          data = new XMLDataResult(getResultNode(url), url.getQuery());
       } catch (Exception e) {
          logCat.error(e);
@@ -168,9 +169,12 @@ public class DataSourceXML extends DataSource {
       return doc;
    }
 
-   private String getXPath() {
+   private String getXPath() throws Exception {
       StringBuffer buf = new StringBuffer();
-      buf.append(getTable().getAlias());
+      buf.append(
+         Util.replaceRealPath(
+            getTable().getAlias(),
+            DbFormsConfigRegistry.instance().lookup()));
       if (filterConstraint != null) {
          buf.append("[");
          for (int i = 0; i < filterConstraint.length; i++) {
