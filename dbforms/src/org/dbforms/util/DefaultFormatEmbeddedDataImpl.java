@@ -23,46 +23,12 @@
 
 package org.dbforms.util;
 
-import java.util.Locale;
+import org.dbforms.util.external.PrintfFormat;
 
 
 
 /**
- * Interface describing an formatter used in EmbeddedData
+ * DefaultFormatter based in PrintfFormat
  */
-public interface Formatter {
-   /**
-    * DOCUMENT ME!
-    *
-    * @param fmtArg DOCUMENT ME!
-    *
-    * @throws IllegalArgumentException DOCUMENT ME!
-    */
-   public void setFormat(String fmtArg) throws IllegalArgumentException;
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param locale DOCUMENT ME!
-    */
-   public void setLocale(Locale locale);
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    */
-   public Locale getLocale();
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param o DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    */
-   public String sprintf(Object[] o);
+public class DefaultFormatEmbeddedDataImpl extends PrintfFormat implements IFormatEmbeddedData {
 }

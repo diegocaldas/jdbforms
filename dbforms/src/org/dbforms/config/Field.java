@@ -26,7 +26,7 @@ package org.dbforms.config;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.dbforms.util.Escaper;
+import org.dbforms.util.IEscaper;
 import org.dbforms.util.MessageResourcesInternal;
 import org.dbforms.util.ParseUtil;
 import org.dbforms.util.ReflectionUtil;
@@ -47,7 +47,7 @@ import java.util.Vector;
  */
 public class Field {
    private static Log logCat  = LogFactory.getLog(Field.class.getName());
-   private Escaper    escaper = null;
+   private IEscaper    escaper = null;
 
    /**
     * used only for DISKBLOB: holds the directory uploaded files should be
@@ -132,13 +132,13 @@ public class Field {
     *
     * @return DOCUMENT ME!
     */
-   public Escaper getEscaper() {
+   public IEscaper getEscaper() {
       if (escaper == null) {
          String s = getEscaperClass();
 
          if (!Util.isNull(s)) {
             try {
-               escaper = (Escaper) ReflectionUtil.newInstance(s);
+               escaper = (IEscaper) ReflectionUtil.newInstance(s);
             } catch (Exception e) {
                logCat.error("cannot create the new escaper [" + s + "]", e);
             }

@@ -23,12 +23,50 @@
 
 package org.dbforms.util;
 
-import org.dbforms.util.external.PrintfFormat;
-
-
 
 /**
- * DefaultFormatter based in PrintfFormat
+ * DOCUMENT ME!
+ *
+ * @author $author$
+ * @version $Revision$
  */
-public class DefaultFormatterImpl extends PrintfFormat implements Formatter {
+public interface IEscaper {
+   /**
+    * DOCUMENT ME!
+    *
+    * @param s DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String escapeHTML(String s);
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param s DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String escapeJDBC(String s);
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param s DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String unescapeHTML(String s);
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param s DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String unescapeJDBC(String s);
 }

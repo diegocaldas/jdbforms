@@ -26,7 +26,7 @@ package org.dbforms.config;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.dbforms.util.Escaper;
+import org.dbforms.util.IEscaper;
 import org.dbforms.util.Util;
 
 import java.sql.ResultSet;
@@ -103,7 +103,7 @@ public class ResultSetVector {
     *
     * @throws SQLException DOCUMENT ME!
     */
-   public ResultSetVector(Escaper   escaper,
+   public ResultSetVector(IEscaper   escaper,
                           ResultSet rs) throws SQLException {
       setupData(escaper, rs);
    }
@@ -540,7 +540,7 @@ public class ResultSetVector {
    }
 
 
-   private void setupData(Escaper   escaper,
+   private void setupData(IEscaper   escaper,
                           ResultSet rs) throws SQLException {
       ResultSetMetaData rsmd    = rs.getMetaData();
       int               columns = rsmd.getColumnCount();

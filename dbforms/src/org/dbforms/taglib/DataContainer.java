@@ -23,7 +23,7 @@
 
 package org.dbforms.taglib;
 
-import org.dbforms.util.Escaper;
+import org.dbforms.util.IEscaper;
 
 import java.util.*;
 
@@ -49,5 +49,5 @@ public interface DataContainer {
     *
     * @return DOCUMENT ME!
     */
-   public Escaper getEscaper();
+   public IEscaper getEscaper();
 }

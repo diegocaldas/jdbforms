@@ -23,14 +23,14 @@
 
 package org.dbforms.taglib;
 
-import org.dbforms.util.Formatter;
+import org.dbforms.util.ICustomFormat;
 
 import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspException;
 
-
+import org.dbforms.util.ReflectionUtil;
 
 /**
  * DOCUMENT ME!
@@ -40,7 +40,9 @@ import javax.servlet.jsp.JspException;
  */
 public class SetCustomFormatterTag extends TagSupportWithScriptHandler
    implements javax.servlet.jsp.tagext.TryCatchFinally {
+   
    static final String sessionKey = "Tag.CustomFormatter.map";
+   
    Object              arg       = null;
    String              className = null;
    String              name      = null;
@@ -93,34 +95,21 @@ public class SetCustomFormatterTag extends TagSupportWithScriptHandler
       if ((name != null) && (name.length() > 0)) {
          HttpSession session = pageContext.getSession();
          HashMap     hm = (HashMap) session.getAttribute(sessionKey);
-
          if (hm == null) {
             hm = new HashMap();
             session.setAttribute(sessionKey, hm);
          }
-
          try {
-            Formatter cf = null;
-
-            // see if it is already loaded
-            cf = (Formatter) hm.get(name);
-
+            ICustomFormat cf = (ICustomFormat) hm.get(name);
             if (cf == null) {
-               //load it
-               Class cl = Class.forName(className);
-               cf = (Formatter) cl.newInstance();
-               cf.setFormat(arg.toString());
+               cf = (ICustomFormat) ReflectionUtil.newInstance(className);
+               cf.setArg(arg.toString());
                hm.put(name, cf);
             }
-         } catch (ClassNotFoundException e) {
-            throw new JspException(e.getLocalizedMessage());
-         } catch (InstantiationException e) {
-            throw new JspException(e.getLocalizedMessage());
-         } catch (IllegalAccessException e) {
+         } catch (Exception e) {
             throw new JspException(e.getLocalizedMessage());
          }
       }
-
       return EVAL_PAGE;
    }
 

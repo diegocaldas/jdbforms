@@ -7653,7 +7653,7 @@ This structure will be rendered as a html select element to select the condition
 					<name>className</name>
 					<required>true</required>
 					<rtexprvalue>true</rtexprvalue>
-					<type>org.dbforms.util.Formatter</type>
+					<type>org.dbforms.util.ICustomFormat</type>
 					<info>FQ ClassName to load</info>
 				</attribute>
 				<attribute>

@@ -68,7 +68,7 @@ public class JavascriptArrayTag extends TagSupportWithScriptHandler
     *
     * @return DOCUMENT ME!
     */
-   public Escaper getEscaper() {
+   public IEscaper getEscaper() {
       return getConfig()
                 .getEscaper();
    }

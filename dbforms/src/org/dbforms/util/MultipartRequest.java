@@ -157,8 +157,6 @@ public class MultipartRequest {
                      fileName = fileName.substring(pos + 1);
                   }
 
-                  String contentType = item.getContentType();
-
                   // The part actually contained a file
                   // #changes by joe peer:
                   // we must delay storing the file-inputstream (into

@@ -28,7 +28,7 @@ package org.dbforms.util;
  * DefaultEscaper
  *
  */
-public class DefaultEscaperImpl implements Escaper {
+public class DefaultEscaperImpl implements IEscaper {
    /**
     * DOCUMENT ME!
     *

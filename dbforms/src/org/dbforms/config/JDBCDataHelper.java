@@ -26,7 +26,7 @@ package org.dbforms.config;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.dbforms.util.Escaper;
+import org.dbforms.util.IEscaper;
 import org.dbforms.util.FileHolder;
 
 import java.io.ByteArrayInputStream;
@@ -68,7 +68,7 @@ public class JDBCDataHelper {
      * @throws SQLException
      *             DOCUMENT ME!
      */
-    public static Object getData(ResultSet rs, Escaper escaper, int col)
+    public static Object getData(ResultSet rs, IEscaper escaper, int col)
             throws SQLException {
         Object res = null;
 
@@ -130,7 +130,7 @@ public class JDBCDataHelper {
      * @throws SQLException
      *             DOCUMENT ME!
      */
-    public static void fillWithData(PreparedStatement ps, Escaper escaper,
+    public static void fillWithData(PreparedStatement ps, IEscaper escaper,
             int col, Object value, int fieldType, int blobStrategy)
             throws SQLException {
         logCat.debug("fillPreparedStatement( ps, " + col + ", " + value + ", "

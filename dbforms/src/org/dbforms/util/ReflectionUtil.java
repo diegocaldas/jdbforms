@@ -95,7 +95,6 @@ public class ReflectionUtil {
     */
    public static Object newInstance(String className) throws Exception {
       Class myClass = Class.forName(className);
-
       return myClass.newInstance();
    }
 

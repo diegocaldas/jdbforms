@@ -26,7 +26,7 @@ package org.dbforms.config;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.dbforms.util.Escaper;
+import org.dbforms.util.IEscaper;
 import org.dbforms.util.MessageResourcesInternal;
 import org.dbforms.util.ParseUtil;
 import org.dbforms.util.ReflectionUtil;
@@ -67,7 +67,7 @@ public class Table {
 
    /** config object */
    protected DbFormsConfig config;
-   private Escaper         escaper = null;
+   private IEscaper         escaper = null;
 
    /**
     * access control list for this object (if null, then its open to all users
@@ -403,13 +403,13 @@ public class Table {
     *
     * @return DOCUMENT ME!
     */
-   public Escaper getEscaper() {
+   public IEscaper getEscaper() {
       if (escaper == null) {
          String s = getEscaperClass();
 
          if (!Util.isNull(s)) {
             try {
-               escaper = (Escaper) ReflectionUtil.newInstance(s);
+               escaper = (IEscaper) ReflectionUtil.newInstance(s);
             } catch (Exception e) {
                logCat.error("cannot create the new escaper [" + s + "]", e);
             }

@@ -5,7 +5,7 @@
 	</head>
 	<body>
 	<!-- create a custom formatter instance called 'dash' that will change xxx to x_x_x -->
-	<db:setCustomFormatter name="dash" className="customFormatters.Dashify" arg="_" />
+	<db:setCustomFormatter name="dash" className="customFormatters.DashifyFormatter" arg="_" />
 	<db:dbform 
 			multipart="false" 
 			autoUpdate="false" 

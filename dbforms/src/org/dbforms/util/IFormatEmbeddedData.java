@@ -21,60 +21,48 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 
-/*
- * Created on Jul 4, 2004
- *
- * Test per bean
- */
-package net.myPackage;
+package org.dbforms.util;
+
+import java.util.Locale;
+
 
 
 /**
- * @author ivan.codarin@amm.uniud.it
- *
- * Simple class to create background color.
+ * Interface describing an formatter used in EmbeddedData
  */
-public class IvanBackgroudColor {
-   private String BG_DARK;
-   private String BG_LIGHT;
-   private String bgColor;
-   private int    idNumber;
-
+public interface IFormatEmbeddedData {
    /**
-    * @param ID_Number
+    * DOCUMENT ME!
+    *
+    * @param fmtArg DOCUMENT ME!
+    *
+    * @throws IllegalArgumentException DOCUMENT ME!
     */
-   public IvanBackgroudColor() {
-      BG_LIGHT = "#EEEEEE";
-      BG_DARK  = "#666666";
-   }
-
-   /**
-    * @return Returns the bgColor.
-    */
-   public String getBgColor() {
-      if ((this.idNumber % 2) == 1) {
-         this.bgColor = BG_DARK;
-      } else {
-         this.bgColor = BG_LIGHT;
-      }
-
-      return bgColor;
-   }
+   public void setFormat(String fmtArg) throws IllegalArgumentException;
 
 
    /**
-    * @param idNumber
-    *            The idNumber to set.
+    * DOCUMENT ME!
+    *
+    * @param locale DOCUMENT ME!
     */
-   public void setIdNumber(int idNumber) {
-      this.idNumber = idNumber;
-   }
+   public void setLocale(Locale locale);
 
 
    /**
-    * @return Returns the idNumber.
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
     */
-   public int getIdNumber() {
-      return idNumber;
-   }
+   public Locale getLocale();
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param o DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String sprintf(Object[] o);
 }

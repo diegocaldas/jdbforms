@@ -4,12 +4,12 @@
 	
 		<!DOCTYPE taglib PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN" "http://java.sun.com/dtd/web-jsptaglibrary_1_2.dtd">
 <taglib>
-<tlib-version>2.2</tlib-version>
+<tlib-version>2.5-SNAPSHOT</tlib-version>
 <jsp-version>1.2</jsp-version>
 <short-name>dbforms</short-name>
 <uri>dbforms.tld</uri>
 <display-name>DbForm Construction Tags</display-name>
-<description>version 2.2</description>
+<description>version 2.5-SNAPSHOT</description>
 <!--*******************************************************************-->
 
 <tag>
@@ -54,7 +54,7 @@
 <name>readOnly</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
-<description>Rendering of read-only html widgets</description>
+<description>Rendering of read-only html widgetsWARNING:  This is not terribly secure as it becomes editable if javascript is disabled in the browser.  A More secure option is not placing an update button on your form.</description>
 </attribute>
 <attribute>
 <name>tableList</name>
@@ -263,7 +263,7 @@
 <name>orderBy</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
-<description>a SQL orderBy-CLAUSE (without the keyword "ORDER BY")example:"id, name desc"id"id asc"firstname asc, lastname desc"important:if you use a non-primary key, you MUST specify sortable="true" within your dbforms-config.xml file for the key you want to sort by
+<description>a SQL orderBy-CLAUSE (without the keyword "ORDER BY")example:"id, name desc""id""id asc""firstname asc, lastname desc"important:if you use a non-primary key, you MUST specify sortable="true" within your dbforms-config.xml file for the key you want to sort by
                                                 
 								if you do not specify it here, you may define it globally in your dbforms-config.xml 
 								file. If you do not specify any information, DbForms automatically takes the 
@@ -770,7 +770,7 @@ When this attribute is set,the value retrieved from the database is ignored.</de
 <name>readOnly</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
-<description>Rendering of read-only html widgets</description>
+<description>Rendering of read-only html widgetsWARNING:  This is not terribly secure as it becomes editable if javascript is disabled in the browser.  A More secure option is not placing an update button on your form.</description>
 </attribute>
 <attribute>
 <name>onBlur</name>
@@ -1031,7 +1031,7 @@ of the string to be entered</description>
 <name>readOnly</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
-<description>Rendering of read-only html widgets</description>
+<description>Rendering of read-only html widgetsWARNING:  This is not terribly secure as it becomes editable if javascript is disabled in the browser.  A More secure option is not placing an update button on your form.</description>
 </attribute>
 <attribute>
 <name>onBlur</name>
@@ -1303,7 +1303,7 @@ should be rendered or if the value of the associated field should be shown inste
 <name>readOnly</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
-<description>Rendering of read-only html widgets</description>
+<description>Rendering of read-only html widgetsWARNING:  This is not terribly secure as it becomes editable if javascript is disabled in the browser.  A More secure option is not placing an update button on your form.</description>
 </attribute>
 <attribute>
 <name>onBlur</name>
@@ -1443,6 +1443,12 @@ hanlder executed when the user selects some text</description>
 <body-content>JSP</body-content>
 <description>renders a HTML TEXTAREA element</description>
 <attribute>
+<name>id</name>
+<required>false</required>
+<rtexprvalue>true</rtexprvalue>
+<description>expose id, enables interaction with JavaScript</description>
+</attribute>
+<attribute>
 <name>fieldName</name>
 <required>true</required>
 <rtexprvalue>true</rtexprvalue>
@@ -1542,7 +1548,7 @@ character used to move focus immediately to thiselement.</description>
 <name>readOnly</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
-<description>Rendering of read-only html widgets</description>
+<description>Rendering of read-only html widgetsWARNING:  This is not terribly secure as it becomes editable if javascript is disabled in the browser.  A More secure option is not placing an update button on your form.</description>
 </attribute>
 <attribute>
 <name>onBlur</name>
@@ -2126,7 +2132,7 @@ of the string to be entered</description>
 <name>readOnly</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
-<description>Rendering of read-only html widgets</description>
+<description>Rendering of read-only html widgetsWARNING:  This is not terribly secure as it becomes editable if javascript is disabled in the browser.  A More secure option is not placing an update button on your form.</description>
 </attribute>
 <attribute>
 <name>onBlur</name>
@@ -2323,7 +2329,7 @@ character used to move focus immediately to thiselement.</description>
 <name>readOnly</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
-<description>Rendering of read-only html widgets</description>
+<description>Rendering of read-only html widgetsWARNING:  This is not terribly secure as it becomes editable if javascript is disabled in the browser.  A More secure option is not placing an update button on your form.</description>
 </attribute>
 <attribute>
 <name>onBlur</name>
@@ -2533,7 +2539,7 @@ character used to move focus immediately to thiselement.</description>
 <name>readOnly</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
-<description>Rendering of read-only html widgets</description>
+<description>Rendering of read-only html widgetsWARNING:  This is not terribly secure as it becomes editable if javascript is disabled in the browser.  A More secure option is not placing an update button on your form.</description>
 </attribute>
 <attribute>
 <name>onBlur</name>
@@ -2714,7 +2720,7 @@ character used to move focus immediately to thiselement.</description>
 <name>readOnly</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
-<description>Rendering of read-only html widgets</description>
+<description>Rendering of read-only html widgetsWARNING:  This is not terribly secure as it becomes editable if javascript is disabled in the browser.  A More secure option is not placing an update button on your form.</description>
 </attribute>
 <attribute>
 <name>pattern</name>
@@ -4871,7 +4877,7 @@ is released.</description>
 <name>navCopyButton</name>
 <tag-class>org.dbforms.taglib.DbNavCopyButtonTag</tag-class>
 <body-content>JSP</body-content>
-<description>this tag renders a navigation button for creating a copy of a row of data</description>
+<description>this tag renders a navigation button for creating a copy of a row of data that you can then modify and insert</description>
 <attribute>
 <name>id</name>
 <required>false</required>
@@ -5056,7 +5062,7 @@ is released.</description>
 <rtexprvalue>true</rtexprvalue>
 <description>The tab order (ascending positive integers) for this element.</description>
 </attribute>
-<example>navigation button to scroll to a copy of an existent dataset</example>
+<example>navigation button to scroll to a copy of an existent datasetIt works with elements such as textField and textArea (even when hidden) but not with dataLabel. </example>
 </tag>
 <!--*******************************************************************-->
 
@@ -5762,8 +5768,8 @@ error manager</description>
 							"nameField" argument.
 						</description>
 </attribute>
-<example>use cases:rendering an image: &lt;img src="&lt;db:diskblob fieldName="pic"/&gt;" 
-    alt="a picture"&gt;rendering a (download-)hyperlink: &lt;a href="&lt;db:diskblob fieldName="pic"/&gt;"&gt;download!&lt;/a&gt;</example>
+<example>use cases:rendering an image: &lt;img src="&lt;db:diskblob fieldName="pic""/&gt;" 
+    alt="a picture"&gt;rendering a (download-)hyperlink: &lt;a href="&lt;db:diskblob fieldName="pic""/&gt;"&gt;download!&lt;/a&gt;</example>
 </tag>
 <!--*******************************************************************-->
 
@@ -6678,7 +6684,7 @@ This structure will be rendered as a html select element to select the condition
 <name>className</name>
 <required>true</required>
 <rtexprvalue>true</rtexprvalue>
-<type>org.dbforms.util.Formatter</type>
+<type>org.dbforms.util.ICustomFormat</type>
 <description>FQ ClassName to load</description>
 </attribute>
 <attribute>
@@ -6711,7 +6717,7 @@ This structure will be rendered as a html select element to select the condition
 
 <tag>
 <name>customFormat</name>
-<tag-class/>
+<tag-class>org.dbforms.taglib.CustomFormatTag</tag-class>
 <body-content>JSP</body-content>
 <description>Format input by using a registered CustomFormatter			
 				</description>
@@ -6727,7 +6733,7 @@ This structure will be rendered as a html select element to select the condition
 <rtexprvalue>true</rtexprvalue>
 <description>input text</description>
 </attribute>
-<example>format input by using a register CustomFormatterexample:
+<example>Format an arbitray string with a register Custom Formatterexample:
 &lt;db:customFormat customFormatter="stid"&gt;1234567812345678&lt;/db:customFormat&gt;
 &lt;db:customFormat customFormatter="ostid" value="87654321" /&gt;
 						</example>

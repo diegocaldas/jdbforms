@@ -28,7 +28,7 @@ import org.apache.commons.logging.LogFactory;
 
 import org.dbforms.dom.DOMFactory;
 
-import org.dbforms.util.Escaper;
+import org.dbforms.util.IEscaper;
 import org.dbforms.util.ReflectionUtil;
 import org.dbforms.util.Util;
 
@@ -67,7 +67,7 @@ public class DbFormsConfig {
 
    /** the default db connection */
    private DbConnection defaultDbConnection;
-   private Escaper      escaper           = null;
+   private IEscaper      escaper           = null;
    private Hashtable    dbConnectionsHash = new Hashtable();
 
    /** for quicker lookup by name */
@@ -75,7 +75,7 @@ public class DbFormsConfig {
    private Log           logCat                = LogFactory.getLog(this.getClass().getName());
    private ServletConfig servletConfig;
    private String        defaultEscaperClass   = "org.dbforms.util.DefaultEscaperImpl";
-   private String        defaultFormatterClass = "org.dbforms.util.DefaultFormatterImpl";
+   private String        defaultFormatterClass = "org.dbforms.util.DefaultFormatEmbeddedDataImpl";
    private String        realPath;
 
    /** global application hookups */
@@ -232,13 +232,13 @@ public class DbFormsConfig {
     *
     * @return DOCUMENT ME!
     */
-   public Escaper getEscaper() {
+   public IEscaper getEscaper() {
       if (escaper == null) {
          String s = getDefaultEscaperClass();
 
          if (!Util.isNull(s)) {
             try {
-               escaper = (Escaper) ReflectionUtil.newInstance(s);
+               escaper = (IEscaper) ReflectionUtil.newInstance(s);
             } catch (Exception e) {
                logCat.error("cannot create the new escaper [" + s + "]", e);
             }

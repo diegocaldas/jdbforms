@@ -30,8 +30,8 @@ import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.ResultSetVector;
 
-import org.dbforms.util.Escaper;
-import org.dbforms.util.Formatter;
+import org.dbforms.util.IEscaper;
+import org.dbforms.util.IFormatEmbeddedData;
 import org.dbforms.util.KeyValuePair;
 import org.dbforms.util.MessageResources;
 import org.dbforms.util.ReflectionUtil;
@@ -58,7 +58,7 @@ import javax.servlet.jsp.PageContext;
 public abstract class EmbeddedData extends DbBaseHandlerTag
    implements javax.servlet.jsp.tagext.TryCatchFinally, StaticDataAddInterface {
    private static Log logCat = LogFactory.getLog(EmbeddedData.class.getName());
-   private Formatter  printfFormat;
+   private IFormatEmbeddedData  printfFormat;
    private List       data;
    private String     dbConnectionName;
    private String     disableCache = "false";
@@ -113,9 +113,9 @@ public abstract class EmbeddedData extends DbBaseHandlerTag
     *
     * @return DOCUMENT ME!
     */
-   public Escaper getEscaper() {
+   public IEscaper getEscaper() {
       DataContainer parent = ((DataContainer) getParent());
-      Escaper       res = parent.getEscaper();
+      IEscaper       res = parent.getEscaper();
 
       return res;
    }
@@ -252,7 +252,7 @@ public abstract class EmbeddedData extends DbBaseHandlerTag
          }
 
          try {
-            printfFormat = (Formatter) ReflectionUtil.newInstance(getFormatClass());
+            printfFormat = (IFormatEmbeddedData) ReflectionUtil.newInstance(getFormatClass());
             printfFormat.setLocale(MessageResources.getLocale((HttpServletRequest) pageContext
                                                               .getRequest()));
             printfFormat.setFormat(format);
