@@ -398,5 +398,37 @@
         </tgroup>
       </informaltable>
     </sect2>
+    <sect2>
+      <title>Example</title>
+      <para>The following example shows how to override an update event in an alias of a table.</para>
+      <informalexample>
+        <screen>
+&lt;dbforms-config&gt;
+
+	&lt;table name=&quot;explanations&quot; ...&gt;
+		...
+	&lt;/table&gt;
+
+	&lt;query name=&quot;explanations_with_custom_update&quot; from=&quot;explanations&quot;&gt;
+    	        &lt;interceptor className=&quot;your.package.dbi.interceptor_class_name&quot;/&gt;
+		&lt;events&gt;
+			&lt;event type=&quot;update&quot; id=&quot;update2&quot;/&gt;
+		&lt;/events&gt;
+	&lt;/query&gt;
+
+
+
+	&lt;events&gt;
+   	        &lt;!-- define database custom events here --&gt;
+		&lt;database-events&gt;
+			&lt;database-event id=&quot;update2&quot; type=&quot;update&quot; className=&quot;your.package.pluggableEvents.MyUpdateEvent&quot;/&gt;
+		&lt;/database-events&gt;
+
+	&lt;/events&gt;
+
+&lt;/dbforms-config&gt;        
+        </screen>
+      </informalexample>
+    </sect2>  
   </sect1>
 </chapter>
