@@ -22,6 +22,7 @@
  */
 
 package org.dbforms.taglib;
+
 import java.io.*;
 import java.util.*;
 import java.sql.*;
@@ -37,10 +38,10 @@ import org.apache.log4j.Category;
 /*************************************************************
  * Grunikiewicz.philip@hydro.qc.ca
  * 2001-12-18
- * 
- * Obtain a connection (from the connection pool) using same settings defined 
+ *
+ * Obtain a connection (from the connection pool) using same settings defined
  * in dbForms-config.xml file
- * 
+ *
  * ***************************************************************/
 public class DbGetConnection extends BodyTagSupport implements TryCatchFinally
 {
@@ -49,42 +50,23 @@ public class DbGetConnection extends BodyTagSupport implements TryCatchFinally
     // logging category for this class
     private String id;
     private Connection con;
-
-    // Bradley's multiple connection stuff [fossato <fossato@pow2.com> [20021105]
     private String dbConnectionName;
     private DbFormsConfig config;
 
     /**
- * DOCUMENT ME!
- *
- * @return DOCUMENT ME!
- *
- * @throws JspException DOCUMENT ME!
- * @throws IllegalArgumentException DOCUMENT ME!
- */
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     *
+     * @throws JspException DOCUMENT ME!
+     * @throws IllegalArgumentException DOCUMENT ME!
+     */
     public int doStartTag() throws JspException
     {
         try
         {
-            // ---- Bradley's multiple connection [fossato <fossato@pow2.com> [20021105] ----
-            DbConnection aDbConnection = config.getDbConnection(dbConnectionName);
-
-            if (aDbConnection == null)
-            {
-                throw new IllegalArgumentException("Troubles in your DbForms config xml file: " + "DbConnection '" + dbConnectionName + "' " + "not properly included - check manual!");
-            }
-
-            con = aDbConnection.getConnection();
-            logCat.debug("Created new connection - " + con);
-
-            if (con == null)
-            {
-                throw new IllegalArgumentException("JDBC-Troubles: was not able to create " + "connection, using the following DbConnection " + "- " + aDbConnection);
-            }
-
-
-            // ---- Bradley's multiple connection stuff end ---------------------------------
-            // Place connection in attribute
+            // get the connection and place it in attribute;
+            con = SqlUtil.getConnection(config, dbConnectionName);
             pageContext.setAttribute(this.getId(), con, PageContext.PAGE_SCOPE);
         }
         catch (Exception e)
@@ -97,10 +79,10 @@ public class DbGetConnection extends BodyTagSupport implements TryCatchFinally
 
 
     /**
- * DOCUMENT ME!
- *
- * @return DOCUMENT ME!
- */
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
     public int doAfterBody()
     {
         try
@@ -117,9 +99,9 @@ public class DbGetConnection extends BodyTagSupport implements TryCatchFinally
 
 
     /**
- * Gets the id
- * @return Returns a String
- */
+    * Gets the id
+    * @return Returns a String
+    */
     public String getId()
     {
         return id;
@@ -127,9 +109,9 @@ public class DbGetConnection extends BodyTagSupport implements TryCatchFinally
 
 
     /**
- * Sets the id
- * @param id The id to set
- */
+    * Sets the id
+    * @param id The id to set
+    */
     public void setId(String id)
     {
         this.id = id;
@@ -137,10 +119,10 @@ public class DbGetConnection extends BodyTagSupport implements TryCatchFinally
 
 
     /**
- * DOCUMENT ME!
- *
- * @param name DOCUMENT ME!
- */
+    * DOCUMENT ME!
+    *
+    * @param name DOCUMENT ME!
+    */
     public void setDbConnectionName(String name)
     {
         dbConnectionName = name;
@@ -148,10 +130,10 @@ public class DbGetConnection extends BodyTagSupport implements TryCatchFinally
 
 
     /**
- * DOCUMENT ME!
- *
- * @return DOCUMENT ME!
- */
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
     public String getDbConnectionName()
     {
         return dbConnectionName;
@@ -159,10 +141,10 @@ public class DbGetConnection extends BodyTagSupport implements TryCatchFinally
 
 
     /**
- * DOCUMENT ME!
- *
- * @param pc DOCUMENT ME!
- */
+    * DOCUMENT ME!
+    *
+    * @param pc DOCUMENT ME!
+    */
     public void setPageContext(PageContext pc)
     {
         super.setPageContext(pc);
@@ -176,8 +158,8 @@ public class DbGetConnection extends BodyTagSupport implements TryCatchFinally
 
 
     /**
- * DOCUMENT ME!
- */
+    * DOCUMENT ME!
+    */
     public void doFinally()
     {
         SqlUtil.closeConnection(con);
@@ -185,12 +167,12 @@ public class DbGetConnection extends BodyTagSupport implements TryCatchFinally
 
 
     /**
- * DOCUMENT ME!
- *
- * @param t DOCUMENT ME!
- *
- * @throws Throwable DOCUMENT ME!
- */
+    * DOCUMENT ME!
+    *
+    * @param t DOCUMENT ME!
+    *
+    * @throws Throwable DOCUMENT ME!
+    */
     public void doCatch(Throwable t) throws Throwable
     {
         throw t;

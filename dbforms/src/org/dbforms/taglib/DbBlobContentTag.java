@@ -156,20 +156,8 @@ public class DbBlobContentTag extends BodyTagSupport
             logCat.info("blobcontent query- " + queryBuf.toString());
 
             StringBuffer contentBuf = new StringBuffer();
+            Connection   con        = SqlUtil.getConnection(config, dbConnectionName);
 
-            //Connection con = config.getDbConnection().getConnection();
-            // ---- Bradley's multiple connection support [fossato <fossato@pow2.com> 2002/11/05] ----
-            DbConnection aDbConnection = config.getDbConnection(dbConnectionName);
-
-            if (aDbConnection == null)
-            {
-                throw new IllegalArgumentException("Troubles in your DbForms config xml file: " + "DbConnection '" + dbConnectionName + "' " + "not properly configured - check manual!");
-            }
-
-            Connection con = aDbConnection.getConnection();
-            logCat.debug("Created new connection - " + con);
-
-            // ----  Bradley's multiple connection support end ---------------------------------------
             try
             {
                 PreparedStatement ps = con.prepareStatement(queryBuf.toString());

@@ -88,31 +88,17 @@ public class FileServlet extends HttpServlet
         Table table = config.getTable(tableId);
         int fieldId = Integer.parseInt(ParseUtil.getEmbeddedString(tf, 1, '_'));
         Field field = table.getField(fieldId);
-        StringBuffer queryBuf = new StringBuffer();
 
-        //Connection con = config.getDbConnection().getConnection();                // original
-        //Connection con = config.getDbConnection(null).getConnection();            // fossato - adapted for cpoolFactory
-        // ---- Bradley's multiple connection support [fossato <fossato@pow2.com> 2002/11/04] ------
-        String dbConnectionName = request.getParameter("invname_" + tableId);
-        DbConnection aDbConnection = config.getDbConnection(dbConnectionName);
+        StringBuffer queryBuf         = new StringBuffer();
+        String       dbConnectionName = request.getParameter("invname_" + tableId);
+        Connection   con              = SqlUtil.getConnection(config, dbConnectionName);
 
-        if (aDbConnection == null)
-        {
-            throw new IllegalArgumentException("Troubles in your DbForms config xml file: DbConnection " + "'" + dbConnectionName + "' not properly include - " + "check manual!");
-        }
-
-        Connection con = aDbConnection.getConnection();
-        logCat.debug("::doGet - created new connection - " + con);
-
-
-        // ---- Bradley's multiple connection support end ------------------------------------------
         queryBuf.append("SELECT ");
         queryBuf.append(field.getName());
         queryBuf.append(" FROM ");
         queryBuf.append(table.getName());
         queryBuf.append(" WHERE ");
         queryBuf.append(table.getWhereClauseForPS());
-
 
         // example: SELECT imageNameField FROM myTable WHERE myTable.key = ?
         logCat.info("::doGet - query is [" + queryBuf + "]");
@@ -153,7 +139,7 @@ public class FileServlet extends HttpServlet
         // Hint: check out your pool manager's performance!
         finally
         {
-            closeConnection(con);
+            SqlUtil.closeConnection(con);
         }
     }
 
@@ -191,11 +177,11 @@ public class FileServlet extends HttpServlet
                 /*
                   else if(o instanceof java.sql.Clob)
                   {
-                Clob clob = rs.getClob(1);
-                ObjectInputStream ois = new ObjectInputStream(clob.getAsciiStream());
-                FileHolder fh = (FileHolder) ois.readObject();
-                writeToClient(response, fh.getFileName(), fh.getInputStreamFromBuffer());
-                }
+                    Clob clob = rs.getClob(1);
+                    ObjectInputStream ois = new ObjectInputStream(clob.getAsciiStream());
+                    FileHolder fh = (FileHolder) ois.readObject();
+                    writeToClient(response, fh.getFileName(), fh.getInputStreamFromBuffer());
+                  }
                 */
 
                 // otherwise we are aquiring the stream directly:
@@ -291,30 +277,5 @@ public class FileServlet extends HttpServlet
             out.write(b, 0, read);
 
         out.close();
-    }
-
-
-    /**
-     *  Close the input SQL connection.
-     *
-     * @param  con the SQL connection to close
-     */
-    private void closeConnection(Connection con)
-    {
-        if (con != null)
-        {
-            try
-            {
-                logCat.debug("::doGet - about to close connection - " + con);
-                con.close();
-                logCat.debug("::doGet - connection closed");
-            }
-            catch (SQLException sqle2)
-            {
-                logCat.error("::doGet - cannot close the SQL connection", sqle2);
-
-                //sqle2.printStackTrace();
-            }
-        }
     }
 }

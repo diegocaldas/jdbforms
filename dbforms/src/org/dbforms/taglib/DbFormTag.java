@@ -134,8 +134,6 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
     private Vector overrulingOrderFields;
     private String localWebEvent;
     private String dbConnectionName;
-
-    /** Bradley's multiple connection stuff [fossato <fossato@pow2.com> 20021105] */
     private Connection con;
 
     /** #fixme: description */
@@ -886,18 +884,6 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
         {
             throw new IllegalArgumentException("Troubles with DbForms config xml file: can not find CONFIG object in application context! check system configuration! check if application crashes on start-up!");
         }
-
-        // Bradley's version doesn't have this code... [fossato <fossato@pow2.com> 20021105]
-        //                DbConnection aDbConnection = config.getDbConnection();
-        //		if (aDbConnection == null)
-        //			throw new IllegalArgumentException("Troubles in your DbForms config xml file: DbConnection not properly included - check manual!");
-        //		con = aDbConnection.getConnection();
-        //		logCat.debug("Created new connection - " + con);
-        //
-        //		if (con == null)
-        //			throw new IllegalArgumentException(
-        //				"JDBC-Troubles: was not able to create connection, using the following DbConnection:"
-        //					+ aDbConnection.toString());
     }
 
 
@@ -937,23 +923,8 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
     {
         try
         {
-            // ---- Bradley's multiple connection stuff [fossato <fossato@pow2.com> [20021105] ----
-            DbConnection aDbConnection = config.getDbConnection(dbConnectionName);
+            con = SqlUtil.getConnection(config, dbConnectionName);
 
-            if (aDbConnection == null)
-            {
-                throw new IllegalArgumentException("DbConnection named '" + dbConnectionName + "' is not configured properly.");
-            }
-
-            con = aDbConnection.getConnection();
-            logCat.debug("Created new connection - " + con);
-
-            if (con == null)
-            {
-                throw new IllegalArgumentException("JDBC-Troubles:  was not able to create " + "connection, using the following " + "dbconnection - " + aDbConnection);
-            }
-
-            // ---- Bradley's multiple connection stuff end ---------------------------------------
             // *************************************************************
             //  Part I - checking user access right, processing interceptor
             // *************************************************************
@@ -1101,11 +1072,9 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
             // write out involved table
             tagBuf.append("<input type=\"hidden\" name=\"invtable\" value=\"" + tableId + "\">");
 
-            // ---- Bradley's multiple connection stuff [fossato <fossato@pow2.com> 20021105] ----
             // write out the name of the involved dbconnection.
             tagBuf.append("<input type='hidden' name='invname_" + tableId + "' value='" + dbConnectionName + "'>");
 
-            // ---- Bradley's multiple connection stuff end ---------------------------------------
             // write out the autoupdate-policy of this form
             tagBuf.append("<input type=\"hidden\" name=\"autoupdate_" + tableId + "\" value=\"" + autoUpdate + "\">");
 
@@ -1661,7 +1630,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
             if (bodyContent != null)
             {
                 bodyContent.writeOut(bodyContent.getEnclosingWriter());
-                
+
             }
 
             logCat.debug("pageContext.getOut()=" + pageContext.getOut());
@@ -2499,10 +2468,13 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
     public String getTableList()
     {
         // if tableList is null, use the tableName attribute (fossato@pow2.com [2002.11.16] HKK 2002.11.16)
-	    String myTables = tableList;
+        String myTables = tableList;
         if (Util.isNull(myTables))
-    	    myTables = tableName;
+            myTables = tableName;
         return myTables;
+
+        // or we could rewite as:
+        // return Util.isNull(myTables) ? tableName : tableList;
     }
 
 

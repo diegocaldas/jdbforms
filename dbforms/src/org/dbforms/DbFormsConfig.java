@@ -22,6 +22,7 @@
  */
 
 package org.dbforms;
+
 import java.util.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -51,8 +52,6 @@ public class DbFormsConfig
     private static SimpleDateFormat sdf;
     private Vector tables;
     private Hashtable tableNameHash; // for quicker lookup by name
-
-    // Bradley's multiple connection support [fossato <fossato@pow2.com> 2002/11/04]
     private DbConnection defaultDbConnection;
     private ArrayList dbConnectionsList;
     private Hashtable dbConnectionsHash;
@@ -67,9 +66,6 @@ public class DbFormsConfig
     {
         tables = new Vector();
         tableNameHash = new Hashtable();
-
-
-        // Bradley's multiple connection support [fossato <fossato@pow2.com> 2002/11/04]
         dbConnectionsHash = new Hashtable();
         dbConnectionsList = new ArrayList();
     }
