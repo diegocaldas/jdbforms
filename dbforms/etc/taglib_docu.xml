@@ -357,6 +357,17 @@
                     </info>
                 </attribute>
 
+		<!--- 20020703-HKK: appended onSubmit -->
+                <attribute>
+                    <name>onSubmit</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>
+                        <p>JavaScript event handler executed before the form is submited. If the event handler returns FALSE,
+                           the form will not be submitted. When the result is TRUE, the form will be submitted</p>
+                    </info>
+                </attribute>
+
             </tag>
 
 			<!-- **************************** header tag ***********************************-->			
@@ -4904,6 +4915,18 @@
                     </info>
                 </attribute>
 
+            </tag>
+
+  		<!-- **************************** 20021012-HKK: pos tag ***********************************-->									
+
+            <tag>
+                <name>pos</name>
+                <summary>
+			Renders a position to use with keyToDestPos.
+  			This is the same string wich would be used as value in the DbassociatedRadioTag.
+                </summary>
+	        <tagclass>org.dbforms.taglib.ext.DbPosTag</tagclass>
+                <bodycontent>empty</bodycontent>
             </tag>
 
         </taglib>
