@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.util;
+import java.io.File;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Hashtable;
@@ -121,8 +122,10 @@ public class MultipartRequest {
 
             } else {
                String fileName = item.getName();
-               String contentType = item.getContentType();
-               if (fileName != null) {
+               if (!Util.isNull(fileName)) {
+                  File f = new File(fileName);
+                  fileName = f.getName();
+                  String contentType = item.getContentType();
                   // The part actually contained a file
                   // #changes by joe peer:
                   // we must delay storing the file-inputstream (into database, filesystem or whatever)
