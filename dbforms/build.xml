@@ -129,41 +129,6 @@ Happy coding!
         <echo message="end of xsl translation "/>
     </target>
 
-    <!-- generate HTML reference documentation from taglib-docu using XSL transformation in dist dir -->
-    <target name="generate_taglib_doc" 
-                    description="--> Generate  HTML reference documentation within doc/html from taglib-docu.xml" >
-        <echo message="begin xsl translation to generate HTML documentation  "/>
-        
-        <copy 
-        	file="${htmldoc.dir}/DbFormsTags_Frame.html" 
-        	tofile="${dist.dir}/docs/taglib/DbFormsTags_Frame.html" 
-        	overwrite="true"
-        />
-        <copy 
-        	file="${htmldoc.dir}/dbforms_logo.png" 
-        	tofile="${dist.dir}/docs/taglib/dbforms_logo.png" 
-        	overwrite="true"
-        />
-        <style 
-        	style="${etc.dir}/tldoc2html.xsl" 
-        	in="${etc.dir}/taglib_docu.xml" 
-        	out="${dist.dir}/docs/taglib/DbFormsTags.html"
-        />
-        <style 
-        	style="${etc.dir}/tldoc2html_toc.xsl" 
-        	in="${etc.dir}/taglib_docu.xml" 
-               	out="${dist.dir}/docs/taglib/DbFormsTags_TocSem.html"
-        />
-        <style 
-        	style="${etc.dir}/tldoc2html_toc.xsl" 
-        	in="${etc.dir}/taglib_docu.xml" 
-               	out="${dist.dir}/docs/taglib/DbFormsTags_TocAlph.html"
-        >
-            <param name="sortTagsAlphabetically" expression="true"/>
-        </style>
-        <echo message="end of xsl translation "/>
-    </target>
-
     <!-- generate PDF reference documentation from taglib-docu using XSL transformation and FOP -->
     <target name="generate_taglib_pdfdocs"
             description="--> Generate PDF reference documentation from taglib-docu.xml (FOP_HOME must be set)" >
@@ -224,6 +189,7 @@ Happy coding!
        
         <!-- compile example-specific Java code -->
         <echo message="compiling example specific code"/>
+        <mkdir dir="${build.dir}/${example.name}/WEB-INF/classes"/>
         <javac srcdir="${build.dir}/${example.name}/src" destdir="${build.dir}/${example.name}/WEB-INF/classes" debug="on" optimize="off" deprecation="off" classpath="${dist.dir}/dbforms${dbforms.version}.jar"/>
         <echo message="finished compiling example specific code"/>
 
@@ -284,20 +250,6 @@ Happy coding!
    </target>	
 
 
-    <target name="generate_devgui_doc" 
-                    description="--> Generate  HTML reference documentation within doc/html from taglib-docu.xml" >
-        <copy 
-        	file="${htmldoc.dir}/devgui.html" 
-        	tofile="${dist.dir}/docs/devgui/devgui.html" 
-        	overwrite="true"
-        />
-        <copy todir="${dist.dir}/docs/devgui">
-            <fileset dir="${htmldoc.dir}">
-            	<include name="devgui*.png" />
-            </fileset>
-        </copy>
-    </target>
-
   <!--
     -  JAVADOC TARGET
     -
@@ -306,7 +258,7 @@ Happy coding!
   <target name="javadoc">
     <javadoc packagenames = "org.dbforms.*"
              sourcepath   = "${javasrc.dir}"
-             destdir      = "${dist.dir}/docs/api"
+             destdir      = "${doc.dir}/api"
              author       = "true"
              version      = "true"
              use          = "true"
@@ -326,60 +278,28 @@ Happy coding!
     </javadoc>
   </target>
  
-  <target name="dist_doc"
-  	  depends="javadoc, generate_taglib_doc, generate_devgui_doc"
-  />
-
-  <target name="dist_bin"
-  	depends="compile,jar_classes, generate_taglib, copy-devgui"
-  />
-
-  <target name="dist_main">
-      <copy file="${cvs.workingdir}/Changes_v1_1" 
-            tofile="${dist.dir}/Changes_v1_1" 
-            overwrite="true"/>
-      <copy file="${cvs.workingdir}/CommonMistakes" 
-            tofile="${dist.dir}/CommonMistakes" 
-            overwrite="true"/>
-      <copy file="${cvs.workingdir}/License" 
-            tofile="${dist.dir}/License" 
-            overwrite="true"/>
-      <copy file="${cvs.workingdir}/Readme" 
-            tofile="${dist.dir}/Readme" 
-            overwrite="true"/>
-      <copy file="${cvs.workingdir}/Readme_DevGui" 
-            tofile="${dist.dir}/Readme_DevGui" 
-            overwrite="true"/>
-      <copy file="${cvs.workingdir}/Todo" 
-            tofile="${dist.dir}/Todo" 
-            overwrite="true"/>
-  </target>
-	
-  <!--
-     -  DIST TARGET
-     -->
-  <target depends="prepare, dist_bin, dist_doc, dist_main, cleanWorkspace" 
-  	  name="dist"
+  <target name="build-doc"
+  	  depends="javadoc, generate_taglib_htmldocs"
   />
 
      <!-- create dbforms-releasefile -->
-    <target name="createReleaseFile" depends="createAllExamples,copy-devgui"  > <!-- depends="createAllExamples"--> 
+    <target name="createReleaseFile" depends="createAllExamples,copy-devgui, build-doc"  >
           
         <tstamp/>
         <property name="dbforms.releaseName" value="${dbforms.version}_${DSTAMP}"/>
 
       <zip destfile="dbforms${dbforms.releaseName}.zip" >
-        <zipfileset dir="." prefix="dbforms${dbforms.releaseName}" includes="Changes_v1_0  Changes_v1_1  CommonMistakes  License  Readme  Readme_DevGui  Todo  build.xml"/>
-        <zipfileset dir="." prefix="dbforms${dbforms.releaseName}" includes="doc/**/*.html,doc/**/*.png,doc/**/*.txt,doc/**/*.pdf"/>
-        <zipfileset dir="." prefix="dbforms${dbforms.releaseName}" includes="dist/*.tld  dist/*.jar"/>
-        <zipfileset dir="./dist/bin" prefix="dbforms${dbforms.releaseName}/bin" includes="devgui.bat devgui.sh"/>
-        <zipfileset dir="." prefix="dbforms${dbforms.releaseName}" includes="etc/*.xml etc/*.xsl"/>
-        <zipfileset dir="./dist" prefix="dbforms${dbforms.releaseName}/examples" includes="*.war"/>
-        <zipfileset dir="." prefix="dbforms${dbforms.releaseName}" includes="examples/*.txt"/>
-        <zipfileset dir="." prefix="dbforms${dbforms.releaseName}" includes="src/org/**/*.java"/>
-        <zipfileset dir="." prefix="dbforms${dbforms.releaseName}" includes="temp/*.txt"/>
-        <zipfileset dir="." prefix="dbforms${dbforms.releaseName}" includes="xsl-stylesheets/*.xsl"/>
-        <zipfileset dir="." prefix="dbforms${dbforms.releaseName}" includes="misc/**/*.gif  misc/**/*.png  misc/**/*.js   misc/**/*.txt misc/*.css misc/**/*.html"/>                     
+        <zipfileset dir="."          prefix="dbforms${dbforms.releaseName}" 		includes="Changes_v1_0  Changes_v1_1  CommonMistakes  License  Readme  Readme_DevGui  Todo  build.xml"/>
+        <zipfileset dir="."          prefix="dbforms${dbforms.releaseName}" 		includes="doc/**/*.html,doc/**/*.png,doc/**/*.txt,doc/**/*.pdf"/>
+        <zipfileset dir="."          prefix="dbforms${dbforms.releaseName}" 		includes="dist/*.tld  dist/*.jar"/>
+        <zipfileset dir="./dist/bin" prefix="dbforms${dbforms.releaseName}/bin" 	includes="devgui.bat devgui.sh"/>
+        <zipfileset dir="."          prefix="dbforms${dbforms.releaseName}" 		includes="etc/*.xml etc/*.xsl"/>
+        <zipfileset dir="./dist"     prefix="dbforms${dbforms.releaseName}/examples" 	includes="*.war"/>
+        <zipfileset dir="."          prefix="dbforms${dbforms.releaseName}" 		includes="examples/*.txt"/>
+        <zipfileset dir="."          prefix="dbforms${dbforms.releaseName}" 		includes="src/org/**/*.java"/>
+        <zipfileset dir="." 	     prefix="dbforms${dbforms.releaseName}" 		includes="temp/*.txt"/>
+        <zipfileset dir="."          prefix="dbforms${dbforms.releaseName}" 		includes="xsl-stylesheets/*.xsl"/>
+        <zipfileset dir="."          prefix="dbforms${dbforms.releaseName}" 		includes="misc/**/*.gif  misc/**/*.png  misc/**/*.js   misc/**/*.txt misc/*.css misc/**/*.html"/>                     
        </zip>
     </target>
 
