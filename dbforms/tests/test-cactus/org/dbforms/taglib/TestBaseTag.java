@@ -57,7 +57,7 @@ public class TestBaseTag extends JspTestCase
      *
      * @param theArgs the arguments. Not used
      */
-    public static void main(String[] theArgs)
+    public static void main()
     {
         junit.swingui.TestRunner.main(new String[] { TestBaseTag.class.getName() });
     }

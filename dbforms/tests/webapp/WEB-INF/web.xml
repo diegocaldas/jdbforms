@@ -33,8 +33,8 @@
     
 <!--=========== DbForms Configuration Servlet ===========-->
     <servlet>
-        <servlet-name>org.dbforms.ConfigServlet</servlet-name>
-        <servlet-class>org.dbforms.ConfigServlet</servlet-class>
+        <servlet-name>config</servlet-name>
+        <servlet-class>org.dbforms.config.ConfigServlet</servlet-class>
 
         <!-- Uncomment to enable log4j configuration -->
         <init-param>
