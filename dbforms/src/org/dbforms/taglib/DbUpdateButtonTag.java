@@ -25,7 +25,6 @@ package org.dbforms.taglib;
 import javax.servlet.jsp.JspException;
 
 import org.dbforms.config.ResultSetVector;
-import org.apache.log4j.Category;
 import org.dbforms.validation.ValidatorConstants;
 
 
@@ -39,19 +38,26 @@ import org.dbforms.validation.ValidatorConstants;
  * @author Joachim Peer <j.peer@gmx.net>
  */
 public class DbUpdateButtonTag extends DbBaseButtonTag
+      implements javax.servlet.jsp.tagext.TryCatchFinally
 {
-   static Category    logCat   = Category.getInstance(DbUpdateButtonTag.class
-         .getName()); // logging category for this class
-   private static int uniqueID;
 
-   static
+	private String associatedRadio;
+	private String showAlways = "false";
+
+	public void doFinally()
+	{
+		associatedRadio = null;
+		showAlways = "false";
+		super.doFinally();
+	}
+
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable
    {
-      uniqueID = 1;
+      throw t;
    }
-
-   private String associatedRadio;
-
-   private String showAlways = "false";
 
    /**
     * DOCUMENT ME!
@@ -101,9 +107,7 @@ public class DbUpdateButtonTag extends DbBaseButtonTag
    {
 
 		super.doStartTag();
-		
-		DbUpdateButtonTag.uniqueID++; // make sure that we don't mix up buttons
-
+	
 
       if (!"true".equalsIgnoreCase(showAlways) 
       		&& getParentForm().getFooterReached()

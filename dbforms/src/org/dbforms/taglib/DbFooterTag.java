@@ -38,7 +38,7 @@ import org.apache.log4j.Category;
  */
 public class DbFooterTag extends BodyTagSupport
 {
-   static Category logCat = Category.getInstance(DbFooterTag.class.getName()); // logging category for this class
+   private static Category logCat = Category.getInstance(DbFooterTag.class.getName()); // logging category for this class
 
    /**
     * DOCUMENT ME!

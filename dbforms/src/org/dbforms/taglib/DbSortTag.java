@@ -39,10 +39,21 @@ import org.apache.log4j.Category;
  * @author Joachim Peer <j.peer@gmx.net>
  */
 public class DbSortTag extends DbBaseHandlerTag
+      implements javax.servlet.jsp.tagext.TryCatchFinally
 {
    private Category   logCat     = Category.getInstance(this.getClass().getName()); // logging category for this class
 
-
+	public void doFinally()
+	{
+		super.doFinally();
+	}
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable
+   {
+      throw t;
+   }
 
 
 

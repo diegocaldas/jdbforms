@@ -22,9 +22,6 @@
  */
 package org.dbforms.taglib;
 import javax.servlet.jsp.*;
-import javax.servlet.jsp.tagext.*;
-
-import org.apache.log4j.Category;
 
 
 
@@ -60,11 +57,9 @@ import org.apache.log4j.Category;
  *
  * @author Joachim Peer <j.peer@gmx.net>
  */
-public class DbAssociatedRadioTag extends DbBaseHandlerTag  implements TryCatchFinally
+public class DbAssociatedRadioTag extends DbBaseHandlerTag
+      implements javax.servlet.jsp.tagext.TryCatchFinally
 {
-   static Category   logCat     = Category.getInstance(DbAssociatedRadioTag.class
-         .getName()); // logging category for this class
-
    private String    name;
 
    /**
@@ -134,6 +129,14 @@ public class DbAssociatedRadioTag extends DbBaseHandlerTag  implements TryCatchF
    {
       name  = null;
       super.doFinally();
+   }
+
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable
+   {
+      throw t;
    }
 
 }

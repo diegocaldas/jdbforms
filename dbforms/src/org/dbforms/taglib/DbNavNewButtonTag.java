@@ -38,11 +38,27 @@ import org.dbforms.event.eventtype.EventType;
  * @author Joachim Peer <j.peer@gmx.net>
  */
 public class DbNavNewButtonTag extends DbBaseButtonTag
+      implements javax.servlet.jsp.tagext.TryCatchFinally
 {
    private String  destTable;
 
    /** Holds value of property showAlwaysInFooter. */
    private String showAlwaysInFooter = "true";
+
+	public void doFinally()
+	{
+		destTable = null;
+		showAlwaysInFooter = "true";
+		super.doFinally();
+	}
+
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable
+   {
+      throw t;
+   }
 
    /**
     * DOCUMENT ME!

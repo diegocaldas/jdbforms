@@ -32,7 +32,23 @@ import org.dbforms.util.Util;
  *
  */
 public class DbPosTag extends DbBaseHandlerTag
+      implements javax.servlet.jsp.tagext.TryCatchFinally
 {
+
+	public void doFinally()
+	{
+		super.doFinally();
+	}
+
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable
+   {
+      throw t;
+   }
+
+
    /**
     * DOCUMENT ME!
     *

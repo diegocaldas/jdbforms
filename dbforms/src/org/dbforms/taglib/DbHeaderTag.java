@@ -24,7 +24,6 @@ package org.dbforms.taglib;
 import javax.servlet.jsp.*;
 import javax.servlet.jsp.tagext.*;
 
-import org.apache.log4j.Category;
 
 
 
@@ -38,7 +37,6 @@ import org.apache.log4j.Category;
  */
 public class DbHeaderTag extends BodyTagSupport
 {
-   static Category logCat = Category.getInstance(DbHeaderTag.class.getName()); // logging category for this class
 
    /**
     * DOCUMENT ME!

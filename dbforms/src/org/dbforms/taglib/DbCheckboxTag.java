@@ -36,7 +36,9 @@ import org.apache.log4j.Category;
  * 
  * @author Joachim Peer
  */
-public class DbCheckboxTag extends DbBaseHandlerTag implements DataContainer {
+public class DbCheckboxTag extends DbBaseHandlerTag implements DataContainer, 
+       javax.servlet.jsp.tagext.TryCatchFinally
+{
    private Category logCat = Category.getInstance(this.getClass().getName()); // logging category for this class
    private Vector embeddedData = null;
    private String checked; // only needed if parentForm is in "insert-mode", otherwise the DbForms-Framework determinates whether a checkbox should be selected or not.
@@ -44,6 +46,26 @@ public class DbCheckboxTag extends DbBaseHandlerTag implements DataContainer {
    private String growSize = "0"; // only needed if we habe a whole "group" of DbRadioTags; default = 1
    private String noValue;
    private String value;
+
+
+	public void doFinally()
+	{
+		embeddedData = null;
+		checked = null; 
+		growDirection = null; 
+		growSize = "0"; 
+		noValue = null;
+		value = null;
+		super.doFinally();
+	}
+
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable
+   {
+      throw t;
+   }
 
    /**
     * DOCUMENT ME!

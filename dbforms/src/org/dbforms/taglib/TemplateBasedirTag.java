@@ -24,7 +24,6 @@ package org.dbforms.taglib;
 import java.io.*;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.BodyTagSupport;
-import org.apache.log4j.Category;
 
 
 
@@ -33,10 +32,21 @@ import org.apache.log4j.Category;
  * @author Joe Peer <joepeer@wap-force.net>
  */
 public class TemplateBasedirTag extends BodyTagSupport
+		implements javax.servlet.jsp.tagext.TryCatchFinally
+
 {
-   static Category logCat  = Category.getInstance(TemplateBasedirTag.class
-         .getName()); // logging category for this class
    private String  baseDir;
+
+	public void doFinally()
+	{
+		baseDir = null;
+	}
+
+	public void doCatch(Throwable t) throws Throwable
+	{
+		throw t;
+	}
+
 
    /**
     * DOCUMENT ME!

@@ -45,12 +45,27 @@ import org.dbforms.util.Util;
  */
 public class DbDataContainerLabelTag
     extends DbBaseHandlerTag
-    implements DataContainer
+    implements DataContainer, javax.servlet.jsp.tagext.TryCatchFinally
+
 {
     private Category logCat =  Category.getInstance(this.getClass().getName());
 
     // logging category for this class
     private Vector embeddedData = null;
+
+	public void doFinally()
+	{
+		embeddedData = null;
+		super.doFinally();
+	}
+
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable
+   {
+      throw t;
+   }
 
     /**
     This method is a "hookup" for EmbeddedData - Tags which can assign the lines of data they loaded

@@ -174,7 +174,15 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler
     */
    public String getPattern()
    {
-      return pattern;
+	  Format f = getFormat();
+	  if (f == null) 
+	     return null;
+	  if (f instanceof java.text.DecimalFormat)
+	     return  ((java.text.DecimalFormat) f).toPattern();
+	  else if (f instanceof java.text.SimpleDateFormat) 
+	  return  ((java.text.SimpleDateFormat) f).toPattern();
+	  else
+	     return null;
    }
 
 	/**
@@ -184,8 +192,6 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler
 	{
 		return (getField() != null)? getField().getName():fieldName;
 	}
-
-
 
    /**
     * @param string
@@ -204,7 +210,7 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler
       if (format == null)
       {
          format = getField()
-                     .getFormat(getPattern(), getParentForm().getLocale());
+                     .getFormat(pattern, getParentForm().getLocale());
       }
 
       return this.format;

@@ -27,7 +27,6 @@ import java.util.Vector;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
-import javax.servlet.jsp.tagext.TryCatchFinally;
 import org.apache.log4j.Category;
 import org.dbforms.config.Field;
 import org.dbforms.config.FieldValue;
@@ -48,8 +47,8 @@ import org.dbforms.util.MessageResources;
  * @version $Revision$
  */
 public class DbFilterValueTag extends DbBaseHandlerTag implements DataContainer,
-                                                                TryCatchFinally
-{
+      javax.servlet.jsp.tagext.TryCatchFinally
+{                                                                
    /**
     * tag's state holder.
     * Used a separate class to hold tag's state to workaround to Tag pooling, in which
@@ -618,4 +617,13 @@ public class DbFilterValueTag extends DbBaseHandlerTag implements DataContainer,
       state = new State();
       super.doFinally();
    }
+   
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable
+   {
+      throw t;
+   }
+
 }

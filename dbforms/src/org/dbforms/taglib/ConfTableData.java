@@ -36,7 +36,6 @@ import org.dbforms.config.DbFormsConfigRegistry;
 
 import org.dbforms.event.datalist.dao.DataSourceFactory;
 
-import org.apache.log4j.Category;
 
 
 
@@ -60,8 +59,9 @@ import org.apache.log4j.Category;
  * @author Henner Kollmann
  */
 public class ConfTableData extends EmbeddedData
+      implements javax.servlet.jsp.tagext.TryCatchFinally
+
 {
-   static Category logCat = Category.getInstance(ConfTableData.class.getName());
 
 	// logging category for this class
 	private String foreignTable;
@@ -194,6 +194,14 @@ public class ConfTableData extends EmbeddedData
 		}
 		
 	}
+
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable
+   {
+      throw t;
+   }
 
 
 }

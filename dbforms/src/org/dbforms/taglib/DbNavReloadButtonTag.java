@@ -37,7 +37,22 @@ import org.dbforms.event.eventtype.EventType;
  * @author Henner Kollmann <Henner.Kollmann@gmx.de>
  */
 public class DbNavReloadButtonTag extends DbBaseButtonTag
+      implements javax.servlet.jsp.tagext.TryCatchFinally
 {
+
+	public void doFinally()
+	{
+		super.doFinally();
+	}
+
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable
+   {
+      throw t;
+   }
+
 
    /**
     * DOCUMENT ME!

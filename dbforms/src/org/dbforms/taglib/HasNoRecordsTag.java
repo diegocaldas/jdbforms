@@ -28,7 +28,6 @@ import java.io.IOException;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 
-import org.apache.log4j.Category;
 
 import org.dbforms.config.DbFormsErrors;
 import org.dbforms.config.ResultSetVector;
@@ -46,12 +45,28 @@ import org.dbforms.util.Util;
  *
  ***********************************************************/
 public class HasNoRecordsTag extends DbBaseHandlerTag
+      implements javax.servlet.jsp.tagext.TryCatchFinally
 {
-   // logging category for this class
-   static Category       logCat  = Category.getInstance(HasNoRecordsTag.class
-         .getName());
    private String        message = null;
    private DbFormsErrors errors;
+
+
+	public void doFinally()
+	{
+		message = null;
+		errors = null;
+		super.doFinally();
+	}
+   
+   
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable
+   {
+      throw t;
+   }
+
 
    /**
     * Render the specified error messages if there are any.

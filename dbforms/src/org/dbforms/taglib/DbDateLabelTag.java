@@ -23,7 +23,6 @@
 
 package org.dbforms.taglib;
 import javax.servlet.jsp.JspException;
-import org.apache.log4j.Category;
 import org.dbforms.util.Util;
 
 
@@ -38,8 +37,22 @@ import org.dbforms.util.Util;
  *
  */
 public class DbDateLabelTag extends DbLabelTag
+   implements javax.servlet.jsp.tagext.TryCatchFinally
 {
-   static Category logCat = Category.getInstance(DbDateLabelTag.class.getName());
+
+	public void doFinally()
+	{
+		super.doFinally();
+	}
+
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable
+   {
+      throw t;
+   }
+
 
    /**
    grunikiewicz.philip@hydro.qc.ca

@@ -39,18 +39,35 @@ import javax.servlet.http.HttpServletRequest;
  * @author Joachim Peer <j.peer@gmx.net>
  */
 public class DbDeleteButtonTag extends DbBaseButtonTag
+   implements javax.servlet.jsp.tagext.TryCatchFinally
 {
-   static Category    logCat         = Category.getInstance(DbDeleteButtonTag.class
+   private static Category    logCat         = Category.getInstance(DbDeleteButtonTag.class
          .getName()); // logging category for this class
    private static int uniqueID;
    private String     confirmMessage = null;
+   private String associatedRadio;
 
    static
    {
       uniqueID = 1;
    }
 
-   private String associatedRadio;
+
+	public void doFinally()
+	{
+		confirmMessage = null;
+		associatedRadio = null;
+		super.doFinally();
+	}
+
+
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable
+   {
+      throw t;
+   }
 
    /**
     * DOCUMENT ME!

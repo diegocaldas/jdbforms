@@ -32,6 +32,7 @@ import javax.servlet.jsp.*;
  * @created  06 August 2002
  */
 public class DbBlobURLTag extends DbBaseHandlerTag
+      implements javax.servlet.jsp.tagext.TryCatchFinally
 {
 
    // --------------------------------------------------------- Public Methods
@@ -100,6 +101,21 @@ public class DbBlobURLTag extends DbBaseHandlerTag
    protected String getKeyVal()
    {
       return getParentForm().getTable().getKeyPositionString(getParentForm().getResultSetVector());
+   }
+	/**
+	 * DOCUMENT ME!
+	 */
+	public void doFinally()
+	{
+		super.doFinally();
+	}
+
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable
+   {
+      throw t;
    }
 
 }

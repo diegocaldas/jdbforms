@@ -335,21 +335,23 @@ public class Field
    public Format getFormat(String pattern, Locale locale)
    {
       Format res   = null;
-      int    style = DateFormat.MEDIUM;
+      int    dateStyle = DateFormat.MEDIUM;
+	  int    timeStyle = DateFormat.SHORT;
 
+      
       if (!Util.isNull(pattern))
       {
          if ("short".startsWith(pattern.toLowerCase()))
          {
-            style = DateFormat.SHORT;
+			dateStyle = DateFormat.SHORT;
          }
          else if ("long".startsWith(pattern.toLowerCase()))
          {
-            style = DateFormat.LONG;
+			dateStyle = DateFormat.LONG;
          }
          else if ("full".startsWith(pattern.toLowerCase()))
          {
-            style = DateFormat.FULL;
+			dateStyle = DateFormat.FULL;
          }
       }
 
@@ -378,7 +380,7 @@ public class Field
             break;
 
          case FieldTypes.DATE:
-            res = java.text.DateFormat.getDateInstance(style, locale);
+            res = java.text.DateFormat.getDateInstance(dateStyle, locale);
 
             if (!Util.isNull(pattern))
             {
@@ -388,7 +390,7 @@ public class Field
             break;
 
          case FieldTypes.TIME:
-            res = java.text.DateFormat.getTimeInstance(style, locale);
+            res = java.text.DateFormat.getTimeInstance(timeStyle, locale);
 
             if (!Util.isNull(pattern))
             {
@@ -398,7 +400,7 @@ public class Field
             break;
 
          case FieldTypes.TIMESTAMP:
-            res = java.text.DateFormat.getDateTimeInstance(style, style, locale);
+            res = java.text.DateFormat.getDateTimeInstance(dateStyle, timeStyle, locale);
 
             if (!Util.isNull(pattern))
             {

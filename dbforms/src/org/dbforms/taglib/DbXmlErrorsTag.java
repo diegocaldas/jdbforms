@@ -41,7 +41,6 @@ import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 
 import org.dbforms.config.DbFormsErrors;
-import org.apache.log4j.Category;
 
 
 
@@ -51,22 +50,30 @@ import org.apache.log4j.Category;
  * @version $Revision$
  * @author $author$
  */
-public class DbXmlErrorsTag extends BodyTagSupport
+public class DbXmlErrorsTag extends BodyTagSupport  
+		implements javax.servlet.jsp.tagext.TryCatchFinally
 {
-   // logging category for this class
-   static Category logCat = Category.getInstance(DbXmlErrorsTag.class.getName());
-
    // ----------------------------------------------------------- Properties
 
    /**
     * Name of the request scope attribute containing our error messages,
     * if any.
     */
-   protected String name = "errors";
-
-   /** DOCUMENT ME! */
-   protected String      caption = "Error:";
+   private String name = "errors";
+   private String      caption = "Error:";
    private DbFormsErrors errors;
+
+	public void doFinally()
+	{
+		name  = "errors";
+		caption = "Error:";
+		errors = null;
+	}
+
+	public void doCatch(Throwable t) throws Throwable
+	{
+		throw t;
+	}
 
    /**
     * DOCUMENT ME!

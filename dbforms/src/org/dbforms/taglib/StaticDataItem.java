@@ -34,11 +34,13 @@ import org.dbforms.util.*;
  * @version $Revision$
  * @author $author$
  */
-public class StaticDataItem extends DbBaseHandlerTag implements javax.servlet.jsp.tagext.TryCatchFinally
+public class StaticDataItem extends DbBaseHandlerTag 
+      implements javax.servlet.jsp.tagext.TryCatchFinally
 {
-   static Category logCat = Category.getInstance(StaticDataItem.class.getName()); // logging category for this class
+   private static Category logCat = Category.getInstance(StaticDataItem.class.getName()); // logging category for this class
    private String  key;
    private String value;
+
 
    /**
     * DOCUMENT ME!
@@ -124,9 +126,19 @@ public class StaticDataItem extends DbBaseHandlerTag implements javax.servlet.js
 
 	public void doFinally()
 	{
+		key = null;
 		value = null;
 		super.doFinally();
 	}
+
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable
+   {
+      throw t;
+   }
+
 
    /**
     * @return

@@ -32,7 +32,6 @@ import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 import javax.servlet.http.HttpServletRequest;
-import org.apache.log4j.Category;
 import org.dbforms.util.MessageResources;
 
 
@@ -47,15 +46,26 @@ import org.dbforms.util.MessageResources;
  * @author Joe Peer
  */
 public class ErrorsTag extends BodyTagSupport
+			implements javax.servlet.jsp.tagext.TryCatchFinally
 {
-   static Category logCat = Category.getInstance(ErrorsTag.class.getName()); // logging category for this class
 
-   /** DOCUMENT ME! */
-   protected String name = "errors";
+   private String messagePrefix;
+   private String name = "errors";
+   private String caption = "Error:";
 
-   /** DOCUMENT ME! */
-   protected String caption = "Error:";
+	public void doFinally()
+	{
+		messagePrefix = null;
+		name  = "errors";
+		caption = "Error:";
+	}
 
+	public void doCatch(Throwable t) throws Throwable
+	{
+		throw t;
+	}
+
+   
    /**
     * DOCUMENT ME!
     *
@@ -125,8 +135,7 @@ public class ErrorsTag extends BodyTagSupport
          for (int i = 0; i < errors.size(); i++)
          {
             results.append("<li>");
-            results.append(MessageResources.getMessage(request,
-                  (String) errors.elementAt(i)));
+            results.append(MessageResources.getMessage(request, (String) errors.elementAt(i)));
          }
 
          results.append("</ul>");
@@ -147,9 +156,6 @@ public class ErrorsTag extends BodyTagSupport
       // Continue processing this page
       return EVAL_BODY_INCLUDE;
    }
-
-   /** DOCUMENT ME! */
-   public java.lang.String messagePrefix;
 
    /**
     * philip.grunikiewicz@hydro.qc.ca

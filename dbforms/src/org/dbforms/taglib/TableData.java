@@ -52,14 +52,33 @@ import org.apache.log4j.Category;
  * @author Joachim Peer <j.peer@gmx.net>
  */
 public class TableData extends EmbeddedData
+      implements javax.servlet.jsp.tagext.TryCatchFinally
 {
-   static Category logCat = Category.getInstance(TableData.class.getName());
+   private static Category logCat = Category.getInstance(TableData.class.getName());
 
    // logging category for this class
    private String foreignTable;
    private String visibleFields;
    private String storeField;
    private String orderBy;
+
+	public void doFinally()
+	{	
+		foreignTable = null;
+		visibleFields = null;
+		storeField = null;
+		orderBy = null;
+		super.doFinally();
+	}
+   
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable
+   {
+      throw t;
+   }
+
 
    /**
     * DOCUMENT ME!

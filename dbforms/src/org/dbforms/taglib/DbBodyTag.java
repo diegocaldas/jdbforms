@@ -40,8 +40,21 @@ import java.io.UnsupportedEncodingException;
  * @author Joachim Peer <j.peer@gmx.net>
  */
 public class DbBodyTag extends BodyTagSupport
+   implements javax.servlet.jsp.tagext.TryCatchFinally
+
 {
    private String  allowNew = "true"; // by default this is "true" - if so, the body is rendered at least 1 time, even if there are no data rows in the table. this enables the user to insert a new data row. - to disable this feature, allowNew has to be set to "false"
+
+   public void doFinally()
+   {
+      allowNew = "true";
+   }
+
+   public void doCatch(Throwable t) throws Throwable
+   {
+      throw t;
+   }
+
 
    /**
     * DOCUMENT ME!

@@ -35,9 +35,23 @@ import javax.servlet.jsp.tagext.BodyTagSupport;
     2002-09-23 HKK: Extented to support parameters
  ****/
 public class MessageTag extends BodyTagSupport
+ 		implements javax.servlet.jsp.tagext.TryCatchFinally
+
 {
    private String                  key   = null;
    private String                  param = null;
+
+ 
+	public void doFinally()
+	{
+		key   = null;
+		param = null;
+	}
+
+	public void doCatch(Throwable t) throws Throwable
+	{
+		throw t;
+	}
 
    /**
     * DOCUMENT ME!

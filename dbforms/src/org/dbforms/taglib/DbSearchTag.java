@@ -41,12 +41,12 @@ import org.dbforms.config.*;
  * @author Henner Kollmann  (Henner.Kollmann@gmx.de)
  */
 public class DbSearchTag extends DbBaseHandlerTag
+      implements javax.servlet.jsp.tagext.TryCatchFinally
 {
 
    private String      searchAlgo   = "sharp";
    private String      searchMode   = "and";
    private String      defaultValue = null;
-
 
    /**
     * DOCUMENT ME!
@@ -229,6 +229,14 @@ public class DbSearchTag extends DbBaseHandlerTag
       searchMode   = "and";
       defaultValue = null;
       super.doFinally();
+   }
+
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable
+   {
+      throw t;
    }
 
 }

@@ -37,7 +37,24 @@ import javax.servlet.jsp.JspException;
  * @author Joachim Peer
  */
 public class DbTextFieldTag extends DbBaseInputTag
+      implements javax.servlet.jsp.tagext.TryCatchFinally
 {
+	private java.lang.String password      = "false";
+
+	public void doFinally()
+	{
+		password      = "false";
+		super.doFinally();
+	}
+
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable
+   {
+      throw t;
+   }
+
 
    /**
     * DOCUMENT ME!
@@ -99,7 +116,6 @@ public class DbTextFieldTag extends DbBaseInputTag
    }
 
 
-	private java.lang.String password      = "false";
 
    /**
     *  Determines if the text field should be a password text field (display '****')

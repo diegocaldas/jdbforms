@@ -494,4 +494,22 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag
    {
       this.followUpOnError = followUpOnError;
    }
+   
+	/**
+	 * DOCUMENT ME!
+	 */
+	public void doFinally()
+	{
+		followUp = null;
+		followUpOnError = null;
+		table = null;
+		flavor = null;
+		choosenFlavor = 0;
+		caption = null;
+		src = null;
+		alt = null;
+		border = null;
+		super.doFinally();
+	}
+
 }

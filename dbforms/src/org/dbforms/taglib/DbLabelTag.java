@@ -37,9 +37,23 @@ import org.dbforms.util.Util;
  * @created  29 agosto 2002
  */
 public class DbLabelTag extends DbBaseHandlerTag
+      implements javax.servlet.jsp.tagext.TryCatchFinally
 {
    // logging category for this class
    static Category logCat = Category.getInstance(DbLabelTag.class.getName());
+
+	public void doFinally()
+	{
+		super.doFinally();
+	}
+
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable
+   {
+      throw t;
+   }
 
    /**
     *  Description of the Method

@@ -36,7 +36,21 @@ import javax.servlet.jsp.JspException;
  * @author Joachim Peer <j.peer@gmx.net>
  */
 public class DbDateFieldTag extends DbBaseInputTag
+      implements javax.servlet.jsp.tagext.TryCatchFinally
 {
+
+	public void doFinally()
+	{
+		super.doFinally();
+	}
+   
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable
+   {
+      throw t;
+   }
 
    /**
     * DOCUMENT ME!

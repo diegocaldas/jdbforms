@@ -36,11 +36,27 @@ import org.dbforms.event.eventtype.EventType;
  * @version $Revision$
  * 
  */
-public class DbNavCopyButtonTag extends DbBaseButtonTag {
+public class DbNavCopyButtonTag extends DbBaseButtonTag
+      implements javax.servlet.jsp.tagext.TryCatchFinally
+ {
 	
 
 	/** Holds value of property showAlwaysInFooter. */
 	private String showAlwaysInFooter = "true";
+
+	public void doFinally()
+	{
+		showAlwaysInFooter = "true";
+		super.doFinally();
+	}
+
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable
+   {
+      throw t;
+   }
 
 	public int doStartTag() throws javax.servlet.jsp.JspException {
 

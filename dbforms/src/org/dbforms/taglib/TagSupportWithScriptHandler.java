@@ -39,7 +39,7 @@ import org.dbforms.util.Util;
  * </p>
  */
 public abstract class TagSupportWithScriptHandler
-   extends BodyTagSupport
+   extends BodyTagSupport 
 {
    /** DOCUMENT ME! */
    private String accessKey = null;
@@ -699,14 +699,6 @@ public abstract class TagSupportWithScriptHandler
       }
    }
 
-
-   /**
-    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
-    */
-   public void doCatch(Throwable t) throws Throwable
-   {
-      throw t;
-   }
 
 
    /**

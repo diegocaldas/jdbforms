@@ -28,7 +28,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.BodyTagSupport;
-import org.apache.log4j.Category;
 
 
 
@@ -37,8 +36,9 @@ import org.apache.log4j.Category;
  * @author Joe Peer <joepeer@wap-force.net>
  */
 public class StyleTag extends BodyTagSupport
+		implements javax.servlet.jsp.tagext.TryCatchFinally
+
 {
-   static Category   logCat = Category.getInstance(StyleTag.class.getName()); // logging category for this class
    private Hashtable params;
 
    //private String templateBegin, templateEnd;
@@ -49,6 +49,21 @@ public class StyleTag extends BodyTagSupport
    private String template;
    private String paramList;
    private String part;
+
+	public void doFinally()
+	{
+		params = null;
+		templateBase = null;
+		templateBaseDir = null;
+		template = null;
+		paramList = null;
+		part = null;
+	}
+
+	public void doCatch(Throwable t) throws Throwable
+	{
+		throw t;
+	}
 
    /**
     * DOCUMENT ME!

@@ -105,6 +105,7 @@ import org.dbforms.util.Util;
  * @version $Revision$
  */
 public class DbFilterTag extends DbBaseHandlerTag
+      implements javax.servlet.jsp.tagext.TryCatchFinally
 {
    /** DOCUMENT ME! */
    protected static String FLT_COND = "_cond_";
@@ -334,6 +335,14 @@ public class DbFilterTag extends DbBaseHandlerTag
       size            = null;
       unsetCaption    = null;
       super.doFinally();
+   }
+
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable
+   {
+      throw t;
    }
 
 

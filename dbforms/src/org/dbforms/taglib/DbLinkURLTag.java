@@ -27,8 +27,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import javax.servlet.jsp.JspException;
 
-import javax.servlet.jsp.tagext.TryCatchFinally;
-
 import org.dbforms.config.Field;
 import org.dbforms.config.FieldValue;
 import org.dbforms.config.FieldValues;
@@ -71,9 +69,10 @@ import org.apache.log4j.Category;
  *
  * @author Joachim Peer <j.peer@gmx.net>
  */
-public class DbLinkURLTag extends DbBaseHandlerTag implements TryCatchFinally
+public class DbLinkURLTag extends DbBaseHandlerTag
+      implements javax.servlet.jsp.tagext.TryCatchFinally
 {
-   static Category       logCat     = Category.getInstance(DbLinkURLTag.class
+   private static Category       logCat     = Category.getInstance(DbLinkURLTag.class
          .getName()); // logging category for this class
 
    private FieldValues   positionFv; // fields and their values, provided by embedded DbLinkPositionItem-Elements
@@ -462,6 +461,13 @@ public class DbLinkURLTag extends DbBaseHandlerTag implements TryCatchFinally
       super.doFinally();
    }
 
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable
+   {
+      throw t;
+   }
 
 
 	/**

@@ -39,6 +39,7 @@ import org.apache.log4j.Category;
  * @author Joe Peer
  */
 public class DbBlobContentTag extends DbBaseHandlerTag
+      implements javax.servlet.jsp.tagext.TryCatchFinally
 {
    private Category logCat = Category.getInstance(this.getClass().getName());
    private String dbConnectionName;
@@ -162,6 +163,16 @@ public class DbBlobContentTag extends DbBaseHandlerTag
       dbConnectionName = null;
       super.doFinally();
    }
+
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable
+   {
+      throw t;
+   }
+
+
    // ------------------------------------------------------ Protected Methods
    // DbForms specific
 

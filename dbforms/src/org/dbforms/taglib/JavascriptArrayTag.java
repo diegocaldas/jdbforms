@@ -36,12 +36,24 @@ import org.apache.log4j.Category;
  *
  * @author Eric Beaumier
  */
-public class JavascriptArrayTag extends BodyTagSupport implements DataContainer
+public class JavascriptArrayTag extends BodyTagSupport implements DataContainer, 
+			javax.servlet.jsp.tagext.TryCatchFinally
 {
    private static Category logCat       = Category.getInstance(JavascriptArrayTag.class
          .getName()); // logging category for this class
    private Vector  embeddedData = null;
    private String  name         = null;
+
+	public void doFinally()
+	{
+		name  = null;
+		embeddedData = null;
+	}
+
+	public void doCatch(Throwable t) throws Throwable
+	{
+		throw t;
+	}
 
    /**
     * DOCUMENT ME!

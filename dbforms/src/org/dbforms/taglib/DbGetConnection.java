@@ -24,7 +24,6 @@ package org.dbforms.taglib;
 import java.io.*;
 import java.sql.*;
 import javax.servlet.jsp.*;
-import javax.servlet.jsp.tagext.*;
 
 import org.dbforms.util.SqlUtil;
 
@@ -38,7 +37,8 @@ import org.dbforms.util.SqlUtil;
  * in dbForms-config.xml file
  *
  * ***************************************************************/
-public class DbGetConnection extends DbBaseHandlerTag implements TryCatchFinally
+public class DbGetConnection extends DbBaseHandlerTag
+      implements javax.servlet.jsp.tagext.TryCatchFinally
 {
 
    // logging category for this class
@@ -138,8 +138,19 @@ public class DbGetConnection extends DbBaseHandlerTag implements TryCatchFinally
    */
    public void doFinally()
    {
-      SqlUtil.closeConnection(con);
+     SqlUtil.closeConnection(con);
+	  id = null;
+	  con = null;
+	  dbConnectionName = null;
       super.doFinally();
+   }
+
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable
+   {
+      throw t;
    }
 
 

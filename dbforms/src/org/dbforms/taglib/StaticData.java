@@ -28,7 +28,6 @@ import java.sql.Connection;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.*;
-import org.apache.log4j.Category;
 
 
 
@@ -39,14 +38,23 @@ import org.apache.log4j.Category;
  * @author $author$
  */
 public class StaticData extends BodyTagSupport
+		implements javax.servlet.jsp.tagext.TryCatchFinally
 {
-   static Category logCat = Category.getInstance(StaticData.class.getName()); // logging category for this class
 
-   /** DOCUMENT ME! */
-   protected Vector data;
+   private Vector data;
+   private String name;
 
-   /** DOCUMENT ME! */
-   protected String name;
+
+	public void doFinally()
+	{
+		name  = null;
+		data = null;
+	}
+
+	public void doCatch(Throwable t) throws Throwable
+	{
+		throw t;
+	}
 
    /**
     * DOCUMENT ME!

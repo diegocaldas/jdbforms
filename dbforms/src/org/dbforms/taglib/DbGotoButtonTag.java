@@ -32,6 +32,7 @@ import org.dbforms.event.eventtype.EventType;
  * @author Joachim Peer 
  */
 public class DbGotoButtonTag extends DbBaseButtonTag
+      implements javax.servlet.jsp.tagext.TryCatchFinally
 {
    private String     destination;
    private String     destTable;
@@ -40,6 +41,25 @@ public class DbGotoButtonTag extends DbBaseButtonTag
    private String     keyToKeyToDestPos;
 	private String     singleRow = "false";
 
+
+	public void doFinally()
+	{
+		destination = null;
+		destTable = null;
+		destPos = null;
+		keyToDestPos = null;
+		keyToKeyToDestPos = null;
+		singleRow = "false";
+		super.doFinally();
+	}
+
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable
+   {
+      throw t;
+   }
 
    /**
     * DOCUMENT ME!

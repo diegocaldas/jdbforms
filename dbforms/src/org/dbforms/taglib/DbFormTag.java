@@ -1107,20 +1107,24 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
             }
 
             if (!Util.isNull(validationFct) && !Util.isNull(getOnSubmit())) {
+               boolean found = false;	
                String s = getOnSubmit();
                String[] cmds = s.split(";");
                for (int i = 0; i < cmds.length; i++) {
                   if (cmds[i].startsWith("return")) {
                      cmds[i] = cmds[i].substring("return".length());
+					 cmds[i] = "return " + validationFct + " && " + cmds[i];
+					 found = true;
+					 break;
                   }
-                  cmds[i] = "return " + validationFct + " && " + cmds[i];
-                  break;
                }
-
                s = "";
                for (int i = 0; i < cmds.length; i++) {
                   s = s + cmds[i] + ";";
                }
+			   if (!found) {
+                  s = s + "return " + validationFct + ";";   
+			   }
 
                tagBuf.append(" onSubmit=\"");
                tagBuf.append(s);

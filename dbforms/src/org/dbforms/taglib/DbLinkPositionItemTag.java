@@ -35,7 +35,8 @@ import org.dbforms.config.*;
  * </link>
  *
  */
-public class DbLinkPositionItemTag extends DbBaseHandlerTag implements javax.servlet.jsp.tagext.TryCatchFinally
+public class DbLinkPositionItemTag extends DbBaseHandlerTag
+      implements javax.servlet.jsp.tagext.TryCatchFinally
 {
    
    String value;
@@ -86,4 +87,11 @@ public class DbLinkPositionItemTag extends DbBaseHandlerTag implements javax.ser
 		super.doFinally();
 	}
 
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable
+   {
+      throw t;
+   }
 }

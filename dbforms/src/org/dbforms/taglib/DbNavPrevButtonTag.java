@@ -36,8 +36,24 @@ import org.dbforms.event.eventtype.EventType;
  * @author Joachim Peer <j.peer@gmx.net>
  */
 public class DbNavPrevButtonTag extends DbBaseButtonTag
+      implements javax.servlet.jsp.tagext.TryCatchFinally
 {
    private String  stepWidth;
+
+	public void doFinally()
+	{
+		stepWidth = null;
+		super.doFinally();
+	}
+
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable
+   {
+      throw t;
+   }
+
 
    /**
     * DOCUMENT ME!

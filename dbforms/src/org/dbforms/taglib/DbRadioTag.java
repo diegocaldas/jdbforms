@@ -28,7 +28,6 @@ import org.dbforms.util.*;
 import org.dbforms.event.WebEvent;
 import org.dbforms.event.eventtype.EventType;
 import org.apache.log4j.Category;
-import javax.servlet.jsp.tagext.TryCatchFinally;
 
 
 
@@ -39,9 +38,10 @@ import javax.servlet.jsp.tagext.TryCatchFinally;
  * 
  * @author Joachim Peer
  */
-public class DbRadioTag extends DbBaseHandlerTag implements DataContainer , TryCatchFinally
+public class DbRadioTag extends DbBaseHandlerTag implements DataContainer,
+      javax.servlet.jsp.tagext.TryCatchFinally
 {
-   static Category logCat = Category.getInstance(DbRadioTag.class.getName()); // logging category for this class
+   private static Category logCat = Category.getInstance(DbRadioTag.class.getName()); // logging category for this class
    private Vector  embeddedData  = null;
    private String  checked; // only needed if parentForm is in "insert-mode", otherwise the DbForms-Framework determinates whether a radio should be selected or not.
    private String  growDirection; // only needed if we have a whole "group" of DbRadioTags; default = null == horizontal
@@ -354,6 +354,14 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer , TryC
 		value = null;
 		super.doFinally();
 	}
+
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable
+   {
+      throw t;
+   }
 
    /**
     * @return

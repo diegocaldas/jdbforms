@@ -27,7 +27,6 @@ import javax.servlet.http.*;
 
 import org.dbforms.config.*;
 import org.dbforms.util.*;
-import org.apache.log4j.Category;
 
 
 
@@ -43,14 +42,30 @@ import org.apache.log4j.Category;
  *
  * @author Henner Kollmann  (Henner.Kollmann@gmx.de)
  */
-public class DbSearchComboTag extends DbSearchTag implements DataContainer
+public class DbSearchComboTag extends DbSearchTag implements DataContainer,
+   javax.servlet.jsp.tagext.TryCatchFinally
 {
-   static Category logCat        = Category.getInstance(DbSearchComboTag.class
-         .getName()); // logging category for this class
    private Vector  embeddedData  = null;
    private String  selectedIndex;
    private String  customEntry;
    private String  size          = "1";
+
+	public void doFinally()
+	{
+		embeddedData  = null;
+		selectedIndex  = null;
+		customEntry  = null;
+		size          = "1";
+		super.doFinally();
+	}
+
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable
+   {
+      throw t;
+   }
 
    /**
     * Creates a new DbSearchComboTag object.

@@ -37,11 +37,25 @@ import org.apache.log4j.Category;
  * @author Joachim Peer <j.peer@gmx.net>
  */
 public class DbFileTag extends DbBaseInputTag
+   implements javax.servlet.jsp.tagext.TryCatchFinally
 {
-   static Category logCat = Category.getInstance(DbFileTag.class.getName());
+   private static Category logCat = Category.getInstance(DbFileTag.class.getName());
 
-   // logging category for this class
    private String accept;
+
+	public void doFinally()
+	{
+		accept = null;
+		super.doFinally();
+	}
+
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable
+   {
+      throw t;
+   }
 
    /**
     * DOCUMENT ME!

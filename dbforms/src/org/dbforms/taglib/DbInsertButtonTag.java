@@ -39,12 +39,27 @@ import org.dbforms.validation.ValidatorConstants;
  * @author Joachim Peer <j.peer@gmx.net>
  */
 public class DbInsertButtonTag extends DbBaseButtonTag
+      implements javax.servlet.jsp.tagext.TryCatchFinally
 {
    private static Category logCat = Category.getInstance(DbInsertButtonTag.class
          .getName());
 
 
    private String showAlways = "false";
+	
+	public void doFinally()
+	{
+		showAlways = "false";
+		super.doFinally();
+	}
+
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable
+   {
+      throw t;
+   }
 
 	/**
 	 * returns the JavaScript validation flags.

@@ -32,7 +32,6 @@ import org.dbforms.util.Util;
 import org.dbforms.util.SqlUtil;
 import org.dbforms.util.external.PrintfFormat;
 
-import java.util.Hashtable;
 import java.util.Vector;
 import java.util.Locale;
 
@@ -57,28 +56,35 @@ import org.apache.log4j.Category;
  * @author $author$
  */
 public abstract class EmbeddedData extends BodyTagSupport
+      implements javax.servlet.jsp.tagext.TryCatchFinally
+
 {
-   static Category logCat = Category.getInstance(EmbeddedData.class.getName());
+   private static Category logCat = Category.getInstance(EmbeddedData.class.getName());
 
-   private DbFormTag     parentForm;
+    private DbFormTag     parentForm;
+	private String name;
+	private String dbConnectionName;
+	private String format;
+	private PrintfFormat printfFormat;
+	private String formatClass;
 
-   /** DOCUMENT ME! */
-   protected Hashtable data;
+	public void doFinally()
+	{
+		name  = null;
+		parentForm = null;
+		dbConnectionName = null;
+		format = null;
+		printfFormat = null;
+		formatClass = null;
+	}
 
-   /** DOCUMENT ME! */
-   protected String name;
-
-   /** name of the connection */
-   protected String dbConnectionName;
-
-   /** DOCUMENT ME! */
-   protected java.lang.String format;
-
-   /** instance of helper class to create formatted output: **/
-   protected PrintfFormat printfFormat;
-
-   /** DOCUMENT ME! */
-   protected String formatClass;
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable
+   {
+      throw t;
+   }
 
    /**
    * DOCUMENT ME!

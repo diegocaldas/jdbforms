@@ -25,7 +25,6 @@ import java.io.*;
 import java.util.*;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.BodyTagSupport;
-import org.apache.log4j.Category;
 
 
 
@@ -34,15 +33,30 @@ import org.apache.log4j.Category;
  * @author Joe Peer <joepeer@wap-force.net>
  */
 public class TemplateParamTag extends BodyTagSupport
+	implements javax.servlet.jsp.tagext.TryCatchFinally
 {
-   static Category   logCat       = Category.getInstance(TemplateParamTag.class
-         .getName()); // logging category for this class
    private String    name; // properties set by JSP container
    private String    defaultValue; // properties set by JSP container
    private String    dir; // properties set by JSP container
    private String    baseDir;
    private Hashtable sp;
 
+	public void doFinally()
+	{
+		name = null;
+		defaultValue = null; 
+		dir = null; 
+		baseDir = null;
+		sp = null;
+	}
+
+	public void doCatch(Throwable t) throws Throwable
+	{
+		throw t;
+	}
+
+   
+   
    /**
     * DOCUMENT ME!
     *

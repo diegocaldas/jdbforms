@@ -36,11 +36,28 @@ import org.apache.log4j.Category;
  * @author $author$
  */
 public class IsWebEvent extends DbBaseHandlerTag
+      implements javax.servlet.jsp.tagext.TryCatchFinally
 {
    // logging category for this class
-   static Category logCat = Category.getInstance(IsWebEvent.class.getName());
+   private static Category logCat = Category.getInstance(IsWebEvent.class.getName());
    private Boolean value;
    private String  event;
+
+	public void doFinally()
+	{
+		value    = new Boolean("true");
+		event = null;
+		super.doFinally();
+	}
+
+
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable
+   {
+      throw t;
+   }
 
    /**
     * Creates a new IsWebEvent object.

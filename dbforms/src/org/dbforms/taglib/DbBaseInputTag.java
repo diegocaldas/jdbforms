@@ -40,8 +40,6 @@ import org.dbforms.util.Util;
  */
 public abstract class DbBaseInputTag extends DbBaseHandlerTag
 {
-   // logging category for this class
-   // ----------------------------------------------------- Instance Variables
 
    /**
     * The number of character columns for this field, or negative for no limit.
@@ -384,7 +382,8 @@ public abstract class DbBaseInputTag extends DbBaseHandlerTag
     */
    private void writeOutFormat() throws JspException
    {
-      if (!Util.isNull(getPattern()))
+      String pattern = getPattern();
+      if (!Util.isNull(pattern))
       {
          try
          {
@@ -392,7 +391,7 @@ public abstract class DbBaseInputTag extends DbBaseHandlerTag
             tagBuf.append("<input type=\"hidden\" name=\"");
             tagBuf.append(Constants.FIELDNAME_PATTERNTAG + getFormFieldName());
             tagBuf.append("\" value=\"");
-            tagBuf.append(getPattern());
+            tagBuf.append(pattern);
             tagBuf.append("\" />");
             pageContext.getOut().write(tagBuf.toString());
          }

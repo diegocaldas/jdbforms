@@ -34,7 +34,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.digester.Digester;
 import org.xml.sax.SAXException;
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.commons.validator.ValidatorResources;
@@ -61,7 +61,7 @@ import org.dbforms.event.NavEventFactoryImpl;
 public class ConfigServlet extends HttpServlet
 {
    /** DOCUMENT ME! */
-   private Category logCat;
+   private Logger logCat;
 
    // ----------------------------------------------------- Instance Variables
 
@@ -160,7 +160,7 @@ public class ConfigServlet extends HttpServlet
             usingURL = false;
          }
 
-         logCat = Category.getInstance(ConfigServlet.class.getName());
+         logCat = Logger.getLogger(ConfigServlet.class.getName());
 
 
          // logging category for this class
@@ -169,7 +169,7 @@ public class ConfigServlet extends HttpServlet
       else
       {
          BasicConfigurator.configure();
-         logCat = Category.getInstance(ConfigServlet.class.getName());
+         logCat = Logger.getLogger(ConfigServlet.class.getName());
 
 
          // logging category for this class
@@ -228,6 +228,7 @@ public class ConfigServlet extends HttpServlet
    {
       // Initialize a new Digester instance
       Digester digester = new Digester();
+      digester.setLogger(new org.apache.commons.logging.impl.Log4JLogger(logCat));
       digester.push(dbFormsConfig);
       digester.setNamespaceAware(true);
       digester.setValidating(false);
@@ -464,6 +465,7 @@ public class ConfigServlet extends HttpServlet
       logCat.info("initialize Errors Digester.");
 
       Digester digester = new Digester();
+	  digester.setLogger(new org.apache.commons.logging.impl.Log4JLogger(logCat));
       digester.push(dbFormsErrors);
       digester.setValidating(false);
 

@@ -26,7 +26,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.BodyTagSupport;
-import org.apache.log4j.Category;
 
 
 
@@ -43,7 +42,6 @@ import org.apache.log4j.Category;
  */
 public class BaseTag extends BodyTagSupport
 {
-   static Category logCat = Category.getInstance(BaseTag.class.getName()); // logging category for this class
 
    /**
     * Process the start of this tag.

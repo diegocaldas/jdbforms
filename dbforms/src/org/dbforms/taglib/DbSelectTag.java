@@ -28,7 +28,6 @@ import org.dbforms.util.*;
 import org.dbforms.event.eventtype.EventType;
 import org.dbforms.event.WebEvent;
 import javax.servlet.http.*;
-import javax.servlet.jsp.tagext.TryCatchFinally;
 
 
 
@@ -39,7 +38,8 @@ import javax.servlet.jsp.tagext.TryCatchFinally;
  * @author Joachim Peer <j.peer@gmx.net>
  * @author Philip Grunikiewicz<grunikiewicz.philip@hydro.qc.ca>
  */
-public class DbSelectTag extends DbBaseHandlerTag implements DataContainer, TryCatchFinally
+public class DbSelectTag extends DbBaseHandlerTag implements DataContainer,
+      javax.servlet.jsp.tagext.TryCatchFinally
 {
    private Vector  embeddedData  = null;
    private String  selectedIndex;
@@ -383,4 +383,13 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer, TryC
       size          = null;
       super.doFinally();
    }
+   
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable
+   {
+      throw t;
+   }
+
 }
