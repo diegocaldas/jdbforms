@@ -45,7 +45,6 @@ public class UpdateEvent extends DatabaseEvent {
   private Table table;
   private String keyId;
 
-
   /**
 
   */

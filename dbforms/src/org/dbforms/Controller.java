@@ -204,9 +204,10 @@ public class Controller extends HttpServlet {
 			//}
 			
 			
-			// PG  - if form contained errors, use followupOnError
-			if (errors.size() != 0)
-				request.getRequestDispatcher(e.getFollowUpOnError()).forward(request, response);
+			// PG  - if form contained errors, use followupOnError (if available!)
+			String fue = e.getFollowUpOnError();
+			if (errors.size() != 0 && fue != null && fue.trim().length()>0)
+				request.getRequestDispatcher(fue).forward(request, response);
 			else
 				request.getRequestDispatcher(e.getFollowUp()).forward(request, response);			
 

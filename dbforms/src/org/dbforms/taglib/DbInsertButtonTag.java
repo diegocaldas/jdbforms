@@ -43,72 +43,92 @@ import org.apache.log4j.Category;
  * @author Joachim Peer <j.peer@gmx.net>
  */
 
-public class DbInsertButtonTag extends DbBaseButtonTag  {
+public class DbInsertButtonTag extends DbBaseButtonTag {
 
-  static Category logCat = Category.getInstance(DbInsertButtonTag.class.getName()); // logging category for this class
+	static Category logCat =
+		Category.getInstance(DbInsertButtonTag.class.getName());
+	// logging category for this class
 
-  public int doStartTag() throws javax.servlet.jsp.JspException {
+	private static int uniqueID;
 
-logCat.info("pos DbInsertButtonTag 1");
+	static {
+		uniqueID = 1;
+	}
 
-		if(!parentForm.getFooterReached()) return SKIP_BODY; //  contrary to dbUpdate and dbDelete buttons!
+	public int doStartTag() throws javax.servlet.jsp.JspException {
 
-logCat.info("pos DbInsertButtonTag 2");
+		DbInsertButtonTag.uniqueID++; // make sure that we don't mix up buttons
+
+		logCat.info("pos DbInsertButtonTag 1");
+
+		if (!parentForm.getFooterReached())
+			return SKIP_BODY; //  contrary to dbUpdate and dbDelete buttons!
+
+		logCat.info("pos DbInsertButtonTag 2");
 
 		try {
 
-logCat.info("pos DbInsertButtonTag 3");
+			logCat.info("pos DbInsertButtonTag 3");
 
-		  StringBuffer tagBuf = new StringBuffer();
-				String tagName = "ac_insert_"+table.getId()+"_"+parentForm.getPositionPathCore();
+			StringBuffer tagBuf = new StringBuffer();
+			StringBuffer tagNameBuf = new StringBuffer();
 
-				if(followUp != null) {
-					tagBuf.append( getDataTag(tagName, "fu", followUp) );
-				}
-				
-				if(followUpOnError != null) {
-					tagBuf.append( getDataTag(tagName, "fue", followUpOnError) );
-				}
-	
+			tagNameBuf.append("ac_insert_");
+			tagNameBuf.append(table.getId());
+			tagNameBuf.append("_");
+			tagNameBuf.append(parentForm.getPositionPathCore());
 
-				//tagBuf.append( getDataTag(tagName, "id", Integer.toString(parentForm.getFrozenCumulatedCount())) );
+			// PG - Render the name unique
+			tagNameBuf.append("_");
+			tagNameBuf.append(uniqueID);
 
-				tagBuf.append(getButtonBegin());
-		  tagBuf.append(" name=\"");
-		  tagBuf.append(tagName);
-		  tagBuf.append("\">");
+			String tagName = tagNameBuf.toString();
 
- 	  	  pageContext.getOut().write(tagBuf.toString());
+			if (followUp != null) {
+				tagBuf.append(getDataTag(tagName, "fu", followUp));
+			}
 
-		} catch(java.io.IOException ioe) {
-			throw new JspException("IO Error: "+ioe.getMessage());
+			if (followUpOnError != null) {
+				tagBuf.append(getDataTag(tagName, "fue", followUpOnError));
+			}
+
+			//tagBuf.append( getDataTag(tagName, "id", Integer.toString(parentForm.getFrozenCumulatedCount())) );
+
+			tagBuf.append(getButtonBegin());
+			tagBuf.append(" name=\"");
+			tagBuf.append(tagName);
+			tagBuf.append("\">");
+
+			pageContext.getOut().write(tagBuf.toString());
+
+		} catch (java.io.IOException ioe) {
+			throw new JspException("IO Error: " + ioe.getMessage());
 		}
 
-		if(choosenFlavor == FLAVOR_MODERN)
+		if (choosenFlavor == FLAVOR_MODERN)
 			return EVAL_BODY_TAG;
 		else
-		return SKIP_BODY;
-  }  
+			return SKIP_BODY;
+	}
 
+	public int doEndTag() throws javax.servlet.jsp.JspException {
 
-  public int doEndTag() throws javax.servlet.jsp.JspException {
+		if (!parentForm.getFooterReached())
+			return EVAL_PAGE;
 
-		if(!parentForm.getFooterReached()) return EVAL_PAGE;
-
-		if(choosenFlavor == FLAVOR_MODERN) {
+		if (choosenFlavor == FLAVOR_MODERN) {
 
 			try {
-				if(bodyContent != null)
+				if (bodyContent != null)
 					bodyContent.writeOut(bodyContent.getEnclosingWriter());
-			  pageContext.getOut().write( "</button>" );
+				pageContext.getOut().write("</button>");
 
-			} catch(java.io.IOException ioe) {
-				throw new JspException("IO Error: "+ioe.getMessage());
+			} catch (java.io.IOException ioe) {
+				throw new JspException("IO Error: " + ioe.getMessage());
 			}
 		}
 
 		return EVAL_PAGE;
-  }  
-
+	}
 
 }

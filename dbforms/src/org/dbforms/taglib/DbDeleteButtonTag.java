@@ -48,6 +48,12 @@ import org.apache.log4j.Category;
 public class DbDeleteButtonTag extends DbBaseButtonTag  {
 
   static Category logCat = Category.getInstance(DbDeleteButtonTag.class.getName()); // logging category for this class
+  
+  	private static int uniqueID;
+
+	static {
+		uniqueID=1;
+	}
 
   private String associatedRadio;
 
@@ -63,6 +69,8 @@ public class DbDeleteButtonTag extends DbBaseButtonTag  {
 
 
   public int doStartTag() throws javax.servlet.jsp.JspException {
+  	
+  	DbDeleteButtonTag.uniqueID++; // make sure that we don't mix up buttons
 
 	if(parentForm.getFooterReached() && ResultSetVector.isEmptyOrNull(parentForm.getResultSetVector()) ) return EVAL_PAGE;
 
@@ -79,6 +87,11 @@ public class DbDeleteButtonTag extends DbBaseButtonTag  {
 		  	tagNameBuf.append("_");
 		  	tagNameBuf.append(parentForm.getPositionPath());
 				}
+				
+				// PG - Render the name unique
+				tagNameBuf.append("_");
+				tagNameBuf.append(uniqueID);				
+				
 				String tagName = tagNameBuf.toString();
 
 

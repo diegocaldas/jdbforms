@@ -420,7 +420,7 @@ public abstract class DbBaseHandlerTag extends BodyTagSupport {
 	 */
 	public void release() {
 		super.release();
-		id=null; // Luca Fossato		
+		id = null; // Luca Fossato		
 		accessKey = null;
 		tabIndex = null;
 		onClick = null;
@@ -516,8 +516,20 @@ public abstract class DbBaseHandlerTag extends BodyTagSupport {
 					if (curVal != null) {
 						if (this.format != null)
 							curStr = format.format(curVal);
-						else
-							curStr = curVal.toString();
+						else {
+							// if column object returned by database is of type 
+							// 'array of byte: byte[]' (which can happen in case 
+							// of eg. LONGVARCHAR columns), method toString would 
+							// just return a sort of String representation
+							// of the array's address. So in this case it is 
+							// better to create a String using a corresponding
+							// String constructor:
+							if (curVal.getClass().isArray()
+								&& "byte".equals(curVal.getClass().getComponentType().toString()))
+								curStr = new String((byte[]) curVal);
+							else
+								curStr = curVal.toString();
+						}
 					}
 
 					if (curStr != null)
@@ -625,7 +637,7 @@ public abstract class DbBaseHandlerTag extends BodyTagSupport {
 	 */
 	protected String prepareEventHandlers() {
 		StringBuffer handlers = new StringBuffer();
-		prepareIdEvents(handlers);                        // Fossato, 20011008		
+		prepareIdEvents(handlers); // Fossato, 20011008		
 		prepareMouseEvents(handlers);
 		prepareKeyEvents(handlers);
 		prepareTextEvents(handlers);
@@ -635,18 +647,16 @@ public abstract class DbBaseHandlerTag extends BodyTagSupport {
 
 	// -------------------------------------------------------- Private Methods
 
-
-
-    /**
-     * Prepares the id handlers, appending them to the the given
-     * StringBuffer.
-     * @param handlers The StringBuffer that output will be appended to.
-     */
-    private void prepareIdEvents(StringBuffer handlers) {               // Fossato, 20011008
-        if (id != null) {
-            handlers.append(" id=\"").append(id).append("\"");
-        }
-    }
+	/**
+	 * Prepares the id handlers, appending them to the the given
+	 * StringBuffer.
+	 * @param handlers The StringBuffer that output will be appended to.
+	 */
+	private void prepareIdEvents(StringBuffer handlers) { // Fossato, 20011008
+		if (id != null) {
+			handlers.append(" id=\"").append(id).append("\"");
+		}
+	}
 
 	/**
 	 * Prepares the mouse event handlers, appending them to the the given

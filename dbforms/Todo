@@ -9,7 +9,8 @@ $Date$
 TO DO
 ------
 
-* Integration of validation infrastructure.
+
+* Integration of validation infrastructure.	(Assigned to Eric Beaumier)
 
 * Rendering of read-only html widgets (isReadOnly attribute in input tags)
 
@@ -19,12 +20,17 @@ TO DO
 
 * Allow to specify a display format for items in the select, checkbox and radio tags (format attribute)
 
-* Devise a technique (tag?) for 'populating' (without going to the server) a child select box, given a 
-  selection in the parent select box.
+* Devise a technique (tag?) for 'populating' (without going to the server) a child select box, given a selection in the parent select box.
 
 * Make the resultSetVector class more accessible.  Allow it to be cached and manipulated.
 
-* Allow access to multiple databases
+* Allow access to multiple databases.
+
+* Redesign of the DevGui application. (Assigned to Dirk Kraemer)
+
+* Generate DTD files for dbForms-config.xml and dbForms-errors.xml.
+
+* Include support for DBCS. 
 
 
 

@@ -81,7 +81,7 @@ public class GotoEvent extends NavigationEvent {
 
 		String destPos = ParseUtil.getParameter(request,"data"+action+"_destPos");
 
-		// the direct way - i.e. "1~23"
+		// the direct way - i.e. "1:5:value"
 		if(destPos!=null) {
 
 			this.position = destPos;
@@ -103,7 +103,7 @@ public class GotoEvent extends NavigationEvent {
 
 					String widgetValue = ParseUtil.getParameter(request,keyToKeyToDestPos); // i.e. "1_1"
 
-					this.position = (String) ParseUtil.getParameter(request,"k_"+widgetValue); // i.e. 1~23
+					this.position = (String) ParseUtil.getParameter(request,"k_"+widgetValue); // i.e. 1:2:23
 
 					logCat.info("--->pos="+position);
 

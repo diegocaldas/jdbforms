@@ -48,26 +48,27 @@ public class InsertEvent extends DatabaseEvent {
 
 
   /**
-  insert actionbutton-strings looks like that: ac_insert_12
-  this means "table 12 will be affected by an insert event"
+  insert actionbutton-strings is as follows: ac_insert_12_root_3
+  which is equivalent to:
+  
+  	ac_insert 	: insert action event
+  	12 			: table id
+  	root		: key
+  	3			: button count used to identify individual insert buttons
   */
 
 
   public InsertEvent(String str, HttpServletRequest request, DbFormsConfig config) {
 		this.request = request;
 		this.config = config;
-
-		int firstUnderscore = str.indexOf('_');
-		int secondUnderscore = str.indexOf('_', firstUnderscore+1);
-		int thirdUnderscore = str.indexOf('_', secondUnderscore+1);
-		String tableName = str.substring(secondUnderscore+1, thirdUnderscore);
-		this.tableId = Integer.parseInt(tableName);
-		this.table = config.getTable(tableId);
-
-		this.idStr = str.substring(thirdUnderscore+1);
+		
+		
+		this.tableId = ParseUtil.getEmbeddedStringAsInteger(str, 2, '_');
+		this.table =config.getTable(tableId);
+		this.idStr = ParseUtil.getEmbeddedString(str, 3, '_');		
 
 		logCat.info("parsing insertevent");
-		logCat.info("tableName="+tableName);
+		logCat.info("tableName="+ table.getName());
 		logCat.info("tableId="+tableId);
 		logCat.info("idStr="+idStr); // ie. "root", "1@root"
 	}

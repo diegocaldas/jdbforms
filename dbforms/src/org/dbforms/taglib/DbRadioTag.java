@@ -49,7 +49,7 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer  {
 	private Vector embeddedData=null;
 
 	private String checked; // only needed if parentForm is in "insert-mode", otherwise the DbForms-Framework determinates whether a radio should be selected or not.
-	private String growDirection; // only needed if we habe a whole "group" of DbRadioTags; default = null == horizontal
+	private String growDirection; // only needed if we have a whole "group" of DbRadioTags; default = null == horizontal
 
 	public void setChecked(String checked) {
 		this.checked = checked;
@@ -141,11 +141,11 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer  {
 
 				tagBuf.append(generateTagString(aKey, aValue, isSelected));
 
-				// how should the input-tags be separeted
+				// how should the input-tags be separated
 				if(i<embeddedDataSize-1) {
 					if("vertical".equals(growDirection)) {
 						tagBuf.append("<br>");
-					} else if("horziontal ".equals(growDirection)) {
+					} else if("horizontal".equals(growDirection)) {
 						tagBuf.append("&nbsp;");
 					}
 				}

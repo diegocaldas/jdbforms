@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <document url="./taglib_docu.xml">
 
-
     <properties>
         <author>Joachim Peer, Philip Grunikiewicz et al.</author>
         <title>DbForms Custom Tag Library</title>
@@ -32,7 +31,7 @@
                     <name>id</name>
                     <required>false</required>
                     <rtexprvalue>true</rtexprvalue>
-                    <info>expose id, enables interaction with JavaScript</info>
+                    <info>expose id, enables interaction with JavaScript (not supported by all browsers!)</info>
                 </attribute>
 
                 <attribute>
@@ -41,7 +40,7 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>
                         <p>the name of the table/view referenced by the dbform</p>
-                        <p>not needed if form is empty!</p>
+                        <p>not required if form is empty!</p>
                     </info>
                 </attribute>
 
@@ -50,7 +49,8 @@
                     <required>false</required>
                     <rtexprvalue>true</rtexprvalue>
                     <info>
-                        <p>Override the servlet to which the (dbForms's) form should be submitted</p>
+                        <p>Override the servlet to which the dbform should be submitted</p>
+                        <p>Default is the org.dbforms.Controller servlet</p>						
                     </info>
                 </attribute>
 
@@ -69,14 +69,14 @@
                     <required>false</required>
                     <rtexprvalue>true</rtexprvalue>
                     <info>
-                        <p>Determinates how many times the body tag and its sub-elements get executed (evaluated and rendered):</p>
+                        <p>Determines how many times the body tag and its sub-elements get executed (evaluated and rendered):</p>
                         <p>
                             <ul>
                                 <li>maxRows = n => body gets executed n times (with n elementOF N)</li>
                                 <li>maxRows = "*" => body gets executed for every row in the table (=> "endless" form)</li>
                             </ul>
                         </p>
-                        <p>not needed if empty form</p>
+                        <p>not required if form is empty!</p>
                     </info>
                 </attribute>
 
@@ -96,6 +96,7 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>
                         <p>Disables navigation - optimizes queries</p>
+                        <p>Caution: use this setting only if you do not intend on using dbforms navigation.</p>						
                     </info>
                 </attribute>
 
@@ -103,7 +104,11 @@
                     <name>redisplayFieldsOnError</name>
                     <required>false</required>
                     <rtexprvalue>true</rtexprvalue>
-                    <info>In a jsp which contains many input fields, it may be desirable, in the event of an error, to redisplay input data.(instead of refreshing the fields from the DB) DbForms implements this functionality by default with INSERT fields only.if you choose to set this attribute redisplayFieldsOnError to &quot;true&quot; then DbForms will redisplay entered valueseven with UPDATES.</info>
+                    <info>In a jsp which contains many input fields, it may be desirable, in the 
+					event of an error, to redisplay input data.(instead of refreshing the fields from 
+					the DB) DbForms implements this functionality by default with INSERT fields only. 
+					If you choose to set this attribute to &quot;true&quot; then DbForms will redisplay 
+					entered values even with UPDATES.</info>
                 </attribute>
 
                 <attribute>

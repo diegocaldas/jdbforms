@@ -3,6 +3,28 @@
 * $Date$
 
 
+
+__________________________________________________________________________________________________
+__________________________________________________________________________________________________
+
+Friday, February 22, 2002
+DbForms version 1.05
+Grunikiewicz.philip@hydro.qc.ca
+
+Bug Fixes and General Maintenance
+---------------------------------
+
+Fixed spelling mistake in DbRadio tag when interpreting growDirection values.
+
+Corrected formating error in in DbBaseHandlerTag to support byte arrays (Contrib. D.Kraemer)
+
+Added unique identifiers in Button tags to allow for multiple buttons of the same type
+to co-exist - resolves followUp mix up.
+
+Corrected a problem in dispatching to followUpOnError, if this attribute is not specified. (Contrib. D.Kraemer)
+
+
+
 __________________________________________________________________________________________________
 __________________________________________________________________________________________________
 
