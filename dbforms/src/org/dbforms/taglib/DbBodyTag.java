@@ -120,7 +120,7 @@ public class DbBodyTag
 					dbContext.setCurrentRow(rsv.getCurrentRowAsMap());
 					try {
 						dbContext.setPosition(
-							Util.decode(
+							Util.encode(
 								myParent.getTable().getPositionString(rsv),
 								pageContext
 									.getRequest()
@@ -145,7 +145,7 @@ public class DbBodyTag
 				try {
 					pageContext.setAttribute(
 						"position_" + myParent.getTableName().replace('.', '_'),
-						Util.decode(
+						Util.encode(
 							myParent.getTable().getPositionString(rsv),
 							pageContext.getRequest().getCharacterEncoding()));
 				} catch (Exception e) {

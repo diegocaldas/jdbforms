@@ -1699,7 +1699,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
 			if (!ResultSetVector.isNull(resultSetVector)) {
 				dbContext.setCurrentRow(resultSetVector.getCurrentRowAsMap());
 				dbContext.setPosition(
-					Util.decode(
+					Util.encode(
 						table.getPositionString(resultSetVector),
 						pageContext.getRequest().getCharacterEncoding()));
 			}
@@ -1730,7 +1730,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
 					resultSetVector.getCurrentRowAsMap());
 				pageContext.setAttribute(
 					"position_" + tableName.replace('.', '_'),
-					Util.decode(
+					Util.encode(
 						table.getPositionString(resultSetVector),
 						pageContext.getRequest().getCharacterEncoding()));
 			}
