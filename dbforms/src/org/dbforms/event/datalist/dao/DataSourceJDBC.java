@@ -133,7 +133,6 @@ public class DataSourceJDBC extends DataSource {
    }
 
    private void closeConnection() {
-      getLogCat().debug("closeConnection  called");
       fetchedAll = true;
       if (con != null) {
          try {
@@ -154,18 +153,13 @@ public class DataSourceJDBC extends DataSource {
     * resultSet, statement and connection objects.
     */
    protected final void close() {
-      getLogCat().debug("close called");
-
       if (data != null) {
          data.clear();
       }
-
       if (keys != null) {
          keys.clear();
       }
-
       closeConnection();
-
       // reset fetched all flag. So DataSource can be reopened after close!
       fetchedAll = false;
    }
