@@ -93,11 +93,12 @@ public abstract class EventFactory
             // or their type value (if the id is null or empty).
             String id = einfo.getId();
 
+/**** 20021219-HKK: Remove this exception so that events could be overloaded
             if (eventInfoMap.containsKey(id))
             {
                 throw new Exception("a database event information having id [" + id + "] is already registered into the factory");
             }
-
+****/
             eventInfoMap.put(id, einfo);
             logCat.info(new StringBuffer("::addEventInfo - event info having id, type, class [").append(id).append(", ").append(einfo.getType()).append(", ").append(einfo.getClassName()).append("] registered"));
         }
