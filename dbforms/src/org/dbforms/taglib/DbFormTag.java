@@ -2447,8 +2447,7 @@ public class DbFormTag extends TagSupportWithScriptHandler implements
                             if (f != null) {
                                 // There is a field with the same name - now
                                 // check fieldtype!
-                                if (!fTest.getFieldType().equals(
-                                        f.getFieldType())) {
+                                if (fTest.getType() != f.getType()) {
                                     f = null;
                                 } else {
                                     // put the value into the request so that
