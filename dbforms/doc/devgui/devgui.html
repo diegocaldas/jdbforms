@@ -140,6 +140,19 @@ can be found at</p>
        names for various 'integer' types. If this option is checked, DevGui
        will try to write standard name for all unknown types into the
        generated dbforms config file.
+<p><li> <strong>Foreign key detection:</strong> Devgui can use meta data 
+methods to determine foreign key relationships between tables and write
+corresponding tags into the generated config file. This can surely only work if the
+used database system as well as the JDBC driver supports this feature. You have
+two alternative method available:
+<ul>
+<li> Using method getImportedKeys() within a loop<br>
+    This should always work and is default
+<li> using method getCrossReferences() once<br>
+    This might not work with all databases, but if it does, it will probably
+     be much faster than the first method above. Simply try it out!
+</ul>
+You can also deactivate foreign key detection. 
 <p><li> <strong>Include catalog or table name: </strong> If checked, DevGui
       tries to include catalog and/or schema name in generated
       xml file like 'admin.table1' instead of just 'table1'.
