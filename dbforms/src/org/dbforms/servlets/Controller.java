@@ -425,7 +425,7 @@ public class Controller extends HttpServlet
       }
       catch (java.sql.SQLException e)
       {
-         e.printStackTrace(System.out);
+         SqlUtil.logSqlException(e);
       }
    }
 
@@ -473,7 +473,11 @@ public class Controller extends HttpServlet
          con = SqlUtil.getConnection(config, connectionName);
          connectionsTable.put(connectionName, con);
       }
-
+      boolean b = false;
+      try { 
+        b = con.getAutoCommit();
+   	} catch (SQLException e) {
+   	}
       return con;
    }
 
@@ -491,6 +495,20 @@ public class Controller extends HttpServlet
       {
          String     dbConnectionName = (String) cons.nextElement();
          Connection con = (Connection) connectionsTable.get(dbConnectionName);
+			try
+			{
+				// Do only if autoCommit is disabled
+				if ((con != null) && (!con.getAutoCommit()))
+				{
+					con.commit();
+					con.setAutoCommit(true);
+				}
+			}
+			catch (java.sql.SQLException e)
+			{
+				SqlUtil.logSqlException(e);
+			}
+       
          SqlUtil.closeConnection(con);
       }
    }
