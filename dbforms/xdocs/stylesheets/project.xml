@@ -16,21 +16,21 @@
 
   <body>
     <menu name="Project">
-      <item name="Overview"                href="/index.html"/>
-      <item name="Features List"           href="/featurelist.html"/>
-      <item name="Related work"            href="/related.html"/>
-      <!--
-        <item name="Contributions"           href="/contributed.html"/>
+      <item name="Overview"                     href="/index.html"/>
+      <item name="Features List"                href="/featurelist.html"/>
+
+	  <!--
+        <item name="Related work"                 href="/related.html"/>
       -->
-        <item name="Powered by &amp; screenshots"  href="/poweredby.html"/>
-      <item name="SourceForge's Summary Page"  href="http://sourceforge.net/projects/jdbforms"/>
+
+      <item name="Powered by &amp; screenshots" href="/poweredby.html"/>
+      <item name="SourceForge's Summary Page"   href="http://sourceforge.net/projects/jdbforms"/>
     </menu>
 
     <menu name="Documentation">
-      <item name="User's guide"            href="/usersguide.html"/>
-      <item name="Tag Library"             href="/non-cvs/docs/taglib/DbFormsTags_Frame.html"/>
-      <item name="Devgui"                  href="/devgui.html"/>
-      <item name="CVS client setup"        href="/cvssetup.html"/>
+      <item name="Project guides"   href="/projectguides.html"/>
+      <item name="Devgui"           href="/devgui.html"/>
+      <item name="CVS client setup" href="/cvssetup.html"/>
       <!-- 
         <item name="Maven setup"             href="/mavensetup.html"/> 
       -->
@@ -41,7 +41,7 @@
     </menu>
 
     <menu name="Demo">
-      <item name="Online demos"            href="/demo.html"/>
+      <item name="Online demos"            href="/demo.html" target="_top"/>
     </menu>
 
   </body>
