@@ -29,21 +29,20 @@
 <!ENTITY refe SYSTEM "Appendix_References.xml">
 <!ENTITY ackn SYSTEM "Appendix_Acknowledgements.xml">
 <!ENTITY auth SYSTEM "Appendix_Author.xml">
-<!--ENTITY lics SYSTEM "Appendix_License.xml"-->
+ 
 ]>
 <book>
 <title>DataBaseForms UsersGuide</title>
  
-
-<part><title>Background</title>
-&pref;
-&intr;
-</part>
-
 <part><title>Installation </title>
 &inst;
 &devg;
 &jsms;
+</part>
+
+<part><title>Background</title>
+&pref;
+&intr;
 </part>
 
 <part><title>Basic Use Tutorial</title>
