@@ -22,66 +22,79 @@
  */
 
 package org.dbforms.event;
+
 import java.io.*;
 import java.util.*;
 import java.sql.*;
 import javax.servlet.http.*;
+
+import org.apache.log4j.Category;
+import com.oreilly.servlet.multipart.*;
+
 import org.dbforms.*;
 import org.dbforms.util.*;
-import com.oreilly.servlet.multipart.*;
-import org.apache.log4j.Category;
+
 
 
 
 /****
- *
- * <p>This event prepares and performs a SQL-Insert operation</p>
+ *  This event prepares and performs a SQL-Insert operation.
  *
  * @author Joe Peer <j.peer@gmx.net>
  */
 public class InsertEvent extends DatabaseEvent
 {
+    /** logging category for this class */
     static Category logCat = Category.getInstance(InsertEvent.class.getName());
 
-    // logging category for this class
     private Table table;
     private String idStr;
 
-    /**
-    insert actionbutton-strings is as follows: ac_insert_12_root_3
-    which is equivalent to:
 
-            ac_insert         : insert action event
-            12                         : table id
-            root                : key
-            3                        : button count used to identify individual insert buttons
-    */
+    /**
+     *  Insert actionbutton-strings is as follows: ac_insert_12_root_3
+     *  which is equivalent to:
+     *
+     *       ac_insert  : insert action event
+     *       12         : table id
+     *       root       : key
+     *       3          : button count used to identify individual insert buttons
+     */
     public InsertEvent(String str, HttpServletRequest request, DbFormsConfig config)
     {
         this.request = request;
-        this.config = config;
+        this.config  = config;
 
         this.tableId = ParseUtil.getEmbeddedStringAsInteger(str, 2, '_');
-        this.table = config.getTable(tableId);
-        this.idStr = ParseUtil.getEmbeddedString(str, 3, '_');
+        this.table   = config.getTable(tableId);
+        this.idStr   = ParseUtil.getEmbeddedString(str, 3, '_');
 
         logCat.info("parsing insertevent");
         logCat.info("tableName=" + table.getName());
         logCat.info("tableId=" + tableId);
-        logCat.info("idStr=" + idStr); // ie. "root", "1@root"
+        logCat.info("idStr=" + idStr);                   // ie. "root", "1@root"
     }
 
+
     /**
-     * DOCUMENT ME!
+     *  Get the hash table containing the form field names and values taken
+     *  from the request object.
+     *  <br>
+     *  Example of a request parameter:<br>
+     *  <code>
+     *    name  = f_0_insroot_6
+     *    value = foo-bar
+     *  </code>
      *
-     * @return DOCUMENT ME!
+     * @return the hash map containing the names and values taken from
+     *         the request object
      */
     public Hashtable getFieldValues()
     {
         Hashtable result = new Hashtable();
 
         String paramStub = "f_" + tableId + "_ins" + idStr + "_";
-        Vector params = ParseUtil.getParametersStartingWith(request, paramStub);
+        Vector params    = ParseUtil.getParametersStartingWith(request, paramStub);
         Enumeration enum = params.elements();
 
         while (enum.hasMoreElements())
@@ -89,7 +102,7 @@ public class InsertEvent extends DatabaseEvent
             String param = (String) enum.nextElement();
             String value = ParseUtil.getParameter(request, param);
 
-            logCat.info("insertevent::getFieldValues - param=" + param + " value=" + value);
+            logCat.info("::getFieldValues - param=" + param + " value=" + value);
 
             Integer iiFieldId = new Integer(param.substring(paramStub.length()));
             result.put(iiFieldId, value);
@@ -100,68 +113,44 @@ public class InsertEvent extends DatabaseEvent
 
 
     /**
-    for use in ConditionChecker only
-    "associative" -> this hashtable works like "associative arrays" in PERL or PHP
-    */
+     *  Get the hash table containing the field names and values
+     *  to insert into the specified database table.
+     *  <br>
+     *  This method is used in ConditionChecker only
+     *  (see: <code>Controller.doValidation()</code> )
+     *  <br>
+     *  Example of a hash table entry:<br>
+     *  <code>
+     *    key:   LAST_NAME
+     *    value: foo-bar
+     *  </code>
+     *
+     * @param scalarFieldValues the hash map containing the names and values
+     *                          taken from the request object
+     *                          (see: <code>getFieldValues()</code>
+     */
     public Hashtable getAssociativeFieldValues(Hashtable scalarFieldValues)
     {
-        Hashtable result = new Hashtable();
-
+        Hashtable   result  = new Hashtable();
         Enumeration scalars = scalarFieldValues.keys();
 
         while (scalars.hasMoreElements())
         {
             Integer fieldIndex = (Integer) scalars.nextElement();
-            String fieldName = table.getField(fieldIndex.intValue()).getName();
-
+            String  fieldName  = table.getField(fieldIndex.intValue()).getName();
             result.put(fieldName, scalarFieldValues.get(fieldIndex));
-
-            // building "associative array"
         }
 
         return result;
     }
 
 
-    private boolean checkSufficentValues(Hashtable fieldValues) throws SQLException
-    {
-        Vector fields = table.getFields();
-
-        for (int i = 0; i < fields.size(); i++)
-        {
-            Field field = (Field) fields.elementAt(i);
-
-            // if a field is a key and if it is NOT automatically generated, then it should be provided by the user
-            if (!field.getIsAutoInc() && field.isKey())
-            {
-                if (fieldValues.get(new Integer(i)) == null)
-                {
-                    throw new SQLException("Field " + field.getName() + " is missing");
-                }
-            }
-
-            // in opposite, if a field is automatically generated by the RDBMS, we need to
-            else if (field.getIsAutoInc())
-            {
-                if (fieldValues.get(new Integer(i)) != null)
-                {
-                    throw new SQLException("Field " + field.getName() + " should be calculated by RDBMS, remove it from the form");
-                }
-            } // in future we could do some other checks like NOT-NULL conditions,etc.
-        }
-
-        return true;
-    }
-
-
     /**
-     * DOCUMENT ME!
+     *  Process this event.
      *
-     * @param con DOCUMENT ME!
-     *
-     * @throws SQLException DOCUMENT ME!
-     * @throws MultipleValidationException DOCUMENT ME!
-     * @throws IllegalArgumentException DOCUMENT ME!
+     * @param con the jdbc connection object
+     * @throws SQLException if any data access error occurs
+     * @throws MultipleValidationException if any validation error occurs
      */
     public void processEvent(Connection con) throws SQLException, MultipleValidationException
     {
@@ -187,25 +176,27 @@ public class InsertEvent extends DatabaseEvent
             {
                 Hashtable associativeArray = getAssociativeFieldValues(fieldValues);
 
-
                 // process the interceptors associated to this table
                 table.processInterceptors(DbEventInterceptor.PRE_INSERT, request, associativeArray, config, con);
-
 
                 // synchronize data which may be changed by interceptor:
                 table.synchronizeData(fieldValues, associativeArray);
             }
+
+            // better to log exceptions generated by method errors (fossato, 2002.12.04);
             catch (SQLException sqle)
             {
                 // PG = 2001-12-04
-                // No need to add extra comments, just re-throw exceptions as SqlExceptions
-                throw new SQLException(sqle.getMessage());
+                // No need to add extra comments, just re-throw exception
+                SqlUtil.logSqlException(sqle);
+                throw sqle;
             }
             catch (MultipleValidationException mve)
             {
                 // PG, 2001-12-14
                 // Support for multiple error messages in one interceptor
-                throw new MultipleValidationException(mve.getMessages());
+                logCat.error("::processEvent - MultipleValidationException", mve);
+                throw mve;
             }
         }
 
@@ -218,14 +209,15 @@ public class InsertEvent extends DatabaseEvent
         // 20021031-HKK: table.getInsertStatement()
         PreparedStatement ps = con.prepareStatement(table.getInsertStatement(fieldValues));
 
-        // now we provide the values
+        // now we provide the values;
+        // every key is the parameter name from of the form page;
         Enumeration enum = fieldValues.keys();
         int col = 1;
 
         while (enum.hasMoreElements())
         {
             Integer iiFieldId = (Integer) enum.nextElement();
-            Field curField = (Field) table.getFields().elementAt(iiFieldId.intValue());
+            Field curField    = (Field) table.getFields().elementAt(iiFieldId.intValue());
 
             if (curField != null)
             {
@@ -250,7 +242,6 @@ public class InsertEvent extends DatabaseEvent
                         String suffix = (dotIndex != -1) ? fileName.substring(dotIndex) : "";
                         fileHolder.setFileName(UniqueIDGenerator.getUniqueID() + suffix);
 
-
                         // a diskblob gets stored to db as an ordinary string (it's only the reference!)
                         value = fileHolder.getFileName();
                     }
@@ -272,18 +263,10 @@ public class InsertEvent extends DatabaseEvent
             }
         }
 
-
         // execute the query & throws an exception if something goes wrong
         ps.executeUpdate();
         ps.close(); // #JP Jun 27, 2001
 
-
-        // if something went wrong we do not reach this piece of code:
-        // the story may continue for DISKBLOBs:
-        // #checkme: we need some kind of ROLLBACK-mechanism:
-        //  for the case that file upload physically failed we should rollback the logical db entry!
-        //  but this depends on the capabilities of the system's database / jdbc-driver
-        // #checkme: ho to find out if rollback possible, how to behave if not possible?
         enum = fieldValues.keys();
 
         while (enum.hasMoreElements())
@@ -328,7 +311,6 @@ public class InsertEvent extends DatabaseEvent
                         try
                         {
                             fileHolder.writeBufferToFile(dir);
-
 
                             //filePart.getInputStream().close();
                             logCat.info("fin + closedy");
@@ -387,7 +369,49 @@ public class InsertEvent extends DatabaseEvent
                 throw new SQLException(sqle.getMessage());
             }
         }
+    }
 
-        // End of interceptor processing
+
+
+
+    /**
+     *  Check if the input hash table has got sufficent parameters.
+     *
+     * @param fieldValues the hash map containing the names and values taken from
+     *                    the request object
+     * @return true  if the hash table has got sufficent parameters,
+     *         false otherwise
+     * @throws SQLException  if any data access error occurs
+     */
+    private boolean checkSufficentValues(Hashtable fieldValues) throws SQLException
+    {
+        Vector fields = table.getFields();
+
+        for (int i = 0; i < fields.size(); i++)
+        {
+            Field field = (Field) fields.elementAt(i);
+
+            // if a field is a key and if it is NOT automatically generated,
+            // then it should be provided by the user
+            if (!field.getIsAutoInc() && field.isKey())
+            {
+                if (fieldValues.get(new Integer(i)) == null)
+                {
+                    throw new SQLException("Field " + field.getName() + " is missing");
+                }
+            }
+
+            // in opposite, if a field is automatically generated by the RDBMS, we need to
+            else if (field.getIsAutoInc())
+            {
+                if (fieldValues.get(new Integer(i)) != null)
+                {
+                    throw new SQLException("Field " + field.getName() + " should be calculated by RDBMS, remove it from the form");
+                }
+            }
+             // in future we could do some other checks like NOT-NULL conditions,etc.
+        }
+
+        return true;
     }
 }
