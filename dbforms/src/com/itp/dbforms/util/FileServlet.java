@@ -137,14 +137,35 @@ public class FileServlet extends HttpServlet {
 
 								try {
 
-									InputStream blobIS = rs.getBinaryStream(1);
+									Object o = rs.getObject(1);
 
-									if(blobIS != null) {
+									// if the object the JDBC driver returns to us implements
+									// the java.sql.Blob interface, then we use the BLOB object
+									// which wraps the binary stream of our FileHolder:
+									if(o!=null) {
 
-										ObjectInputStream ois = new ObjectInputStream(blobIS);
-										FileHolder fh = (FileHolder) ois.readObject();
-										writeToClient(response, fh.getFileName(), fh.getInputStreamFromBuffer());
+										if(o instanceof java.sql.Blob) {
+
+										   Blob blob = rs.getBlob(1);
+										   ObjectInputStream ois = new ObjectInputStream(blob.getBinaryStream());
+										   FileHolder fh = (FileHolder) ois.readObject();
+										   writeToClient(response, fh.getFileName(), fh.getInputStreamFromBuffer());
+
+										}
+
+										// otherwise we are aquiring the stream directly:
+										else {
+
+											InputStream blobIS = rs.getBinaryStream(1);
+
+											ObjectInputStream ois = new ObjectInputStream(blobIS);
+											FileHolder fh = (FileHolder) ois.readObject();
+											writeToClient(response, fh.getFileName(), fh.getInputStreamFromBuffer());
+
+										}
+
 									} else logCat.warn("blob null, no response sent");
+
 
 								} catch(ClassNotFoundException cnfe) {
 									throw new IOException("error:"+cnfe.toString());
