@@ -63,7 +63,7 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag  {
   protected String caption; // used if flavor is "standard"
   protected String src; 		// used if flavor is "image"
   protected String alt;			// used if flavor is "image"
-
+  protected String border;		// used to set html border attribute"
 
   public void setFlavor(String flavor) {
 	this.flavor=flavor;
@@ -133,6 +133,7 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag  {
 	caption = null;
 	src = null;
 	alt = null;
+	border = null;
 	}
 
   public void setPageContext(final javax.servlet.jsp.PageContext pageContext)  {
@@ -208,6 +209,38 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag  {
 	  tagBuf.append("\">");
 	  return tagBuf.toString();
 	}
+	
+	
+	
+	/**
+	 * Prepares the style attributes for inclusion in the component's HTML tag.
+	 * @return The prepared String for inclusion in the HTML tag.
+	 */
+	protected String prepareStyles() {
+		
+		StringBuffer styles = new StringBuffer(super.prepareStyles());
+		if (border != null) {
+			styles.append(" border=\"");
+			styles.append(border);
+			styles.append("\"");
+		}
+		return styles.toString();
+	}
+	
 
-
+	/**
+	 * Gets the border
+	 * @return Returns a String
+	 */
+	public String getBorder() {
+		return border;
+	}
+	/**
+	 * Sets the border
+	 * @param border The border to set
+	 */
+	public void setBorder(String border) {
+		this.border = border;
+	}
+
 }

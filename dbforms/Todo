@@ -2,15 +2,34 @@ $Header$
 $Revision$
 $Date$
 
-				DbForms v.09
-				============
 
+				DbForms v.1.0
+				=============
 
 TO DO
 ------
 
-* devgui.sh for unix shell users (DONE!)
+* Rendering of read-only html widgets (isReadOnly attribute in input tags)
 
-* database.sql script for databases like ms sql, sybase ase, etc. (DONE!)
+* Possibility of selecting several items from a select box (multipleSelection attribute in Select tag)
 
-* create solution/fixes for various navigation/linking problems -> needed before going BETA
+* Limit the select list (in query)to fields used in the body tag (useFieldsInBody attribute in form tag)
+
+* Allow to specify a display format for items in the select, checkbox and radio tags (format attribute)
+
+* Support an upgrade to Poolman 2+ (Connection Pool Manager)
+
+* Devise a technique (tag?) for 'populating' (without going to the server) a child select box, given a 
+  selection in the parent select box.
+
+* Make the resultSetVector class more accessible.  Allow it to be cached and manipulated.
+
+* Allow access to multiple databases
+
+
+
+
+If you wish to participate in the development of any of the above tasks, or have your own dbForms wish list.
+Please contact me...
+
+Grunikiewicz.philip@hydro.qc.ca

@@ -3,7 +3,7 @@
 
 
     <properties>
-        <author>Joachim Peer et al.</author>
+        <author>Joachim Peer, Philip Grunikiewicz et al.</author>
         <title>DbForms Custom Tag Library</title>
     </properties>
 
@@ -18,6 +18,8 @@
             <uri>dbformstags</uri>
             <info>version 0.9</info>
 
+			<!-- **************************** dbform tag ***********************************-->			
+			
             <tag>
                 <name>dbform</name>
                 <summary>a database application form (root element of a JSP view)</summary>
@@ -88,7 +90,6 @@
                     </info>
                 </attribute>
 
-
                 <attribute>
                     <name>bypassNavigation</name>
                     <required>false</required>
@@ -104,7 +105,6 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>In a jsp which contains many input fields, it may be desirable, in the event of an error, to redisplay input data.(instead of refreshing the fields from the DB) DbForms implements this functionality by default with INSERT fields only.if you choose to set this attribute redisplayFieldsOnError to &quot;true&quot; then DbForms will redisplay entered valueseven with UPDATES.</info>
                 </attribute>
-
 
                 <attribute>
                     <name>followUp</name>
@@ -246,7 +246,8 @@
                         <p>
                             you could define a hashtable &quot;myGotoHash&quot; and apply it to the attribute
                             <pre>
-                                
+                                
+
                                 
                                 &lt;%Hashtable myGotoHash = null;if(request.getParameter("goto")!=null) {myGotoHash = new Hashtable();myGotoHash.put("id",request.getParameter("goto"));}%&gt;
                                 
@@ -289,7 +290,8 @@
 
             </tag>
 
-
+			<!-- **************************** header tag ***********************************-->			
+			
             <tag>
                 <name>header</name>
                 <summary>this tag renders a Header-tag. It should be nested within a dbform-tag</summary>
@@ -300,6 +302,8 @@
                 </info>
             </tag>
 
+			<!-- **************************** body tag ***********************************-->						
+			
             <tag>
                 <name>body</name>
                 <summary>this tag renders a Body-tag. It should to be nested within a dbform-tag.</summary>
@@ -316,8 +320,11 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>by default this is &quot;true&quot; - if so, the body is rendered at least 1 time, even if there are no data rows in the table. this enables the user to insert a new data row. - to disable this feature, allowNew has to be set to &quot;false&quot;</info>
                 </attribute>
+				
             </tag>
 
+			<!-- **************************** footer tag ***********************************-->						
+			
             <tag>
                 <name>footer</name>
                 <summary>the footer grouping tag. it is supposed to be nested within a dbform-tag</summary>
@@ -328,6 +335,7 @@
                 </info>
             </tag>
 
+			<!-- **************************** label tag ***********************************-->						
 
             <tag>
                 <name>label</name>
@@ -356,23 +364,29 @@
 
             </tag>
 
+			<!-- **************************** dateLabel tag ***********************************-->						
 
             <tag>
                 <name>dateLabel</name>
                 <tagclass>org.dbforms.taglib.DbDateLabelTag</tagclass>
                 <bodycontent>empty</bodycontent>
+				
                 <attribute>
                     <name>fieldName</name>
                     <required>true</required>
                     <rtexprvalue>true</rtexprvalue>
                 </attribute>
+				
                 <attribute>
                     <name>format</name>
                     <required>false</required>
                     <rtexprvalue>true</rtexprvalue>
                 </attribute>
+				
             </tag>
 
+			<!-- **************************** dataLabel tag ***********************************-->						
+			
             <tag>
                 <name>dataLabel</name>
                 <summary>
@@ -410,7 +424,8 @@
 
             </tag>
 
-
+			<!-- **************************** textField tag ***********************************-->			
+			
             <tag>
                 <name>textField</name>
                 <summary>this tag renders a dabase-datadriven TEXTFIELD, which is an active element - the usercan change data</summary>
@@ -443,7 +458,6 @@
                     </info>
                 </attribute>
 
-
                 <attribute>
                     <name>hidden</name>
                     <required>false</required>
@@ -457,7 +471,6 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>Defines the text field's default value. When this attribute is set,the value retrieved from the database is ignored.</info>
                 </attribute>
-
 
                 <attribute>
                     <name>accessKey</name>
@@ -500,6 +513,7 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>JavaScript event handler executed when this element receives amouse double click.</info>
                 </attribute>
+				
                 <attribute>
                     <name>onFocus</name>
                     <required>false</required>
@@ -541,6 +555,7 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>JavaScript event handler executed when this element is under themouse pointer and the pointer is moved.</info>
                 </attribute>
+				
                 <attribute>
                     <name>onMouseOut</name>
                     <required>false</required>
@@ -596,9 +611,10 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>The tab order (ascending positive integers) for this element.</info>
                 </attribute>
+				
             </tag>
 
-
+			<!-- **************************** dateField tag ***********************************-->			
 
             <tag>
                 <name>dateField</name>
@@ -622,7 +638,6 @@
                         <p>name of the field this tag references to</p>
                     </info>
                 </attribute>
-
 
                 <attribute>
                     <name>format</name>
@@ -655,7 +670,6 @@
                     </info>
                 </attribute>
 
-
                 <attribute>
                     <name>hidden</name>
                     <required>false</required>
@@ -665,7 +679,6 @@
                     </info>
                 </attribute>
 
-
                 <attribute>
                     <name>overrideValue</name>
                     <required>false</required>
@@ -674,7 +687,6 @@
                         <p>Defines the text field's default value. When this attribute is set,the value retrieved from the database is ignored.</p>
                     </info>
                 </attribute>
-
 
                 <attribute>
                     <name>accessKey</name>
@@ -717,6 +729,7 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>JavaScript event handler executed when this element receives amouse double click.</info>
                 </attribute>
+				
                 <attribute>
                     <name>onFocus</name>
                     <required>false</required>
@@ -758,6 +771,7 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>JavaScript event handler executed when this element is under themouse pointer and the pointer is moved.</info>
                 </attribute>
+				
                 <attribute>
                     <name>onMouseOut</name>
                     <required>false</required>
@@ -815,11 +829,7 @@
                 </attribute>
             </tag>
 
-
-
-
-
-
+			<!-- **************************** textArea tag ***********************************-->			
 
             <tag>
                 <name>textArea</name>
@@ -880,7 +890,6 @@
                     </info>
                 </attribute>
 
-
                 <attribute>
                     <name>overrideValue</name>
                     <required>false</required>
@@ -897,14 +906,12 @@
                     <info>if the content inside the body of this tag should be rendered or if the value of the associated field should be shown instead</info>
                 </attribute>
 
-
                 <attribute>
                     <name>accessKey</name>
                     <required>false</required>
                     <rtexprvalue>true</rtexprvalue>
                     <info>The keyboard character used to move focus immediately to thiselement.</info>
                 </attribute>
-
 
                 <attribute>
                     <name>onBlur</name>
@@ -933,6 +940,7 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>JavaScript event handler executed when this element receives amouse double click.</info>
                 </attribute>
+				
                 <attribute>
                     <name>onFocus</name>
                     <required>false</required>
@@ -974,6 +982,7 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>JavaScript event handler executed when this element is under themouse pointer and the pointer is moved.</info>
                 </attribute>
+				
                 <attribute>
                     <name>onMouseOut</name>
                     <required>false</required>
@@ -994,6 +1003,7 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>JavaScript event handler executed when this element is under themouse pointer and a mouse button is released.</info>
                 </attribute>
+				
                 <attribute>
                     <name>onSelect</name>
                     <required>false</required>
@@ -1023,7 +1033,7 @@
                 </attribute>
             </tag>
 
-
+			<!-- **************************** textAreaForBlobs tag ***********************************-->			
 
             <tag>
                 <name>textAreaForBlobs</name>
@@ -1077,7 +1087,6 @@
                     </info>
                 </attribute>
 
-
                 <attribute>
                     <name>overrideValue</name>
                     <required>false</required>
@@ -1101,14 +1110,12 @@
                     <info>suffix, e.g. jsp, xml, etc.</info>
                 </attribute>
 
-
                 <attribute>
                     <name>accessKey</name>
                     <required>false</required>
                     <rtexprvalue>true</rtexprvalue>
                     <info>The keyboard character used to move focus immediately to thiselement.</info>
                 </attribute>
-
 
                 <attribute>
                     <name>onBlur</name>
@@ -1137,6 +1144,7 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>JavaScript event handler executed when this element receives amouse double click.</info>
                 </attribute>
+				
                 <attribute>
                     <name>onFocus</name>
                     <required>false</required>
@@ -1178,6 +1186,7 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>JavaScript event handler executed when this element is under themouse pointer and the pointer is moved.</info>
                 </attribute>
+				
                 <attribute>
                     <name>onMouseOut</name>
                     <required>false</required>
@@ -1198,6 +1207,7 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>JavaScript event handler executed when this element is under themouse pointer and a mouse button is released.</info>
                 </attribute>
+				
                 <attribute>
                     <name>onSelect</name>
                     <required>false</required>
@@ -1227,15 +1237,7 @@
                 </attribute>
             </tag>
 
-
-
-
-
-
-
-
-
-
+			<!-- **************************** tableData tag ***********************************-->			
 
             <tag>
                 <name>tableData</name>
@@ -1249,18 +1251,21 @@
                     <p>see examples!</p>
 
                 </info>
+				
                 <attribute>
                     <name>name</name>
                     <required>true</required>
                     <rtexprvalue>true</rtexprvalue>
                     <info>an arbitrary id declared by the user - this id is useful, if the same data should be used more than once at one jsp page. using this unique name the system is able to chache the data</info>
                 </attribute>
+				
                 <attribute>
                     <name>foreignTable</name>
                     <required>true</required>
                     <rtexprvalue>true</rtexprvalue>
                     <info>the name of the table whre</info>
                 </attribute>
+				
                 <attribute>
                     <name>visibleFields</name>
                     <required>true</required>
@@ -1288,7 +1293,8 @@
                 </attribute>
             </tag>
 
-
+			<!-- **************************** queryData tag ***********************************-->			
+			
             <tag>
                 <name>queryData</name>
                 <summary>external data to be nested into radio, checkbox or select - tag!(useful only in conjunction with radio, checkbox or select - tag)</summary>
@@ -1304,14 +1310,15 @@
                         including all SQL statements your RDBMS supports, you have muchmore flexibility using this tag than using TableData (which is easier to use, on the other hand)
                     </p>
                     <p>see examples!</p>
-
                 </info>
+				
                 <attribute>
                     <name>name</name>
                     <required>true</required>
                     <rtexprvalue>true</rtexprvalue>
                     <info>an arbitrary id declared by the user - this id is useful, if the same data should be used more than once at one jsp page. using this unique name the system is able to chache the data</info>
                 </attribute>
+				
                 <attribute>
                     <name>query</name>
                     <required>true</required>
@@ -1336,10 +1343,10 @@
                     <info>Each query is executed independently</info>
                 </attribute>
 
-
             </tag>
 
-
+			<!-- **************************** staticData tag ***********************************-->			
+			
             <tag>
                 <name>staticData</name>
                 <summary>external data to be nested into radio, checkbox or select - tag!(useful only in conjunction with radio, checkbox or select - tag)</summary>
@@ -1351,8 +1358,8 @@
 
                     <p>this tag provides similar functionlaity like &quot;TableData&quot; or &quot;QueryData&quot; but as the namessuggest, the values of TableData and QueryData come from a database, the data in in StaticDataItem comes from the jsp page (from &quot;StaticDataItem&quot;-elements)</p>
                     <p>see examples!</p>
-
                 </info>
+				
                 <attribute>
                     <name>name</name>
                     <required>true</required>
@@ -1369,7 +1376,8 @@
 
             </tag>
 
-
+			<!-- **************************** staticDataItem tag ***********************************-->			
+			
             <tag>
                 <name>staticDataItem</name>
                 <summary>data to be nested into staticData element! (see description of staticData for further details)</summary>
@@ -1389,6 +1397,8 @@
                 </attribute>
             </tag>
 
+			<!-- **************************** getConnection tag ***********************************-->						
+			
             <tag>
                 <name>getConnection</name>
                 <summary>Allows other tags (or scriptlets) to obtain a database connection object using the same settings found in dbForms-config.xml</summary>
@@ -1401,9 +1411,11 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>Attribute in page that will be used to reference the connection object</info>
                 </attribute>
+				
             </tag>
 
-
+			<!-- **************************** file tag ***********************************-->			
+			
             <tag>
                 <name>file</name>
                 <summary>
@@ -1487,6 +1499,7 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>JavaScript event handler executed when this element receives amouse double click.</info>
                 </attribute>
+				
                 <attribute>
                     <name>onFocus</name>
                     <required>false</required>
@@ -1528,6 +1541,7 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>JavaScript event handler executed when this element is under themouse pointer and the pointer is moved.</info>
                 </attribute>
+				
                 <attribute>
                     <name>onMouseOut</name>
                     <required>false</required>
@@ -1583,25 +1597,10 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>The tab order (ascending positive integers) for this element.</info>
                 </attribute>
+				
             </tag>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+			<!-- **************************** radio tag ***********************************-->			
 
             <tag>
                 <name>radio</name>
@@ -1661,6 +1660,7 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>The keyboard character used to move focus immediately to thiselement.</info>
                 </attribute>
+				
                 <attribute>
                     <name>onBlur</name>
                     <required>false</required>
@@ -1688,6 +1688,7 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>JavaScript event handler executed when this element receives amouse double click.</info>
                 </attribute>
+				
                 <attribute>
                     <name>onFocus</name>
                     <required>false</required>
@@ -1729,6 +1730,7 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>JavaScript event handler executed when this element is under themouse pointer and the pointer is moved.</info>
                 </attribute>
+				
                 <attribute>
                     <name>onMouseOut</name>
                     <required>false</required>
@@ -1765,9 +1767,7 @@
                 </attribute>
             </tag>
 
-
-
-
+			<!-- **************************** checkbox tag ***********************************-->			
 
             <tag>
                 <name>checkbox</name>
@@ -1793,6 +1793,7 @@
                         <p>name of the field this tag references to</p>
                     </info>
                 </attribute>
+				
                 <attribute>
                     <name>value</name>
                     <required>false</required>
@@ -1803,6 +1804,7 @@
 
                     </info>
                 </attribute>
+				
                 <attribute>
                     <name>checked</name>
                     <required>false</required>
@@ -1826,6 +1828,7 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>The keyboard character used to move focus immediately to thiselement.</info>
                 </attribute>
+				
                 <attribute>
                     <name>onBlur</name>
                     <required>false</required>
@@ -1853,6 +1856,7 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>JavaScript event handler executed when this element receives amouse double click.</info>
                 </attribute>
+				
                 <attribute>
                     <name>onFocus</name>
                     <required>false</required>
@@ -1894,6 +1898,7 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>JavaScript event handler executed when this element is under themouse pointer and the pointer is moved.</info>
                 </attribute>
+				
                 <attribute>
                     <name>onMouseOut</name>
                     <required>false</required>
@@ -1914,6 +1919,7 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>JavaScript event handler executed when this element is under themouse pointer and a mouse button is released.</info>
                 </attribute>
+				
                 <attribute>
                     <name>onSelect</name>
                     <required>false</required>
@@ -1929,11 +1935,9 @@
                 </attribute>
             </tag>
 
-
+			<!-- **************************** select tag ***********************************-->			
+			
             <tag>
-
-
-
                 <name>select</name>
                 <summary>This tag renders a html SELECT element including embedded OPTION elements.</summary>
                 <tagclass>org.dbforms.taglib.DbSelectTag</tagclass>
@@ -1950,7 +1954,6 @@
                             <li>"dboption"- tags are expected for the next release</li>
                         </ul>
                     </p>
-
                 </info>
 
                 <attribute>
@@ -1995,7 +1998,6 @@
                     <rtexprvalue>true</rtexprvalue>
                 </attribute>
 
-
                 <attribute>
                     <name>accessKey</name>
                     <required>false</required>
@@ -2030,6 +2032,7 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>JavaScript event handler executed when this element receives amouse double click.</info>
                 </attribute>
+				
                 <attribute>
                     <name>onFocus</name>
                     <required>false</required>
@@ -2071,6 +2074,7 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>JavaScript event handler executed when this element is under themouse pointer and the pointer is moved.</info>
                 </attribute>
+				
                 <attribute>
                     <name>onMouseOut</name>
                     <required>false</required>
@@ -2091,6 +2095,7 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>JavaScript event handler executed when this element is under themouse pointer and a mouse button is released.</info>
                 </attribute>
+				
                 <attribute>
                     <name>onSelect</name>
                     <required>false</required>
@@ -2106,10 +2111,7 @@
                 </attribute>
             </tag>
 
-
-
-
-
+			<!-- **************************** linkURL tag ***********************************-->			
 
             <tag>
                 <name>linkURL</name>
@@ -2138,8 +2140,8 @@
                         <br/>
                         </linkURL>
                     </p>
-
                 </info>
+				
                 <attribute>
                     <name>href</name>
                     <required>true</required>
@@ -2160,8 +2162,10 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>optional: the position to navigate to within table &quot;tableName&quot;</info>
                 </attribute>
+				
             </tag>
 
+			<!-- **************************** position tag ***********************************-->						
 
             <tag>
                 <name>position</name>
@@ -2169,8 +2173,6 @@
                 <tagclass>org.dbforms.taglib.DbLinkPositionItemTag</tagclass>
                 <bodycontent>empty</bodycontent>
                 <info>
-                    
-                    
                     example:
                     
                     <p>
@@ -2182,8 +2184,8 @@
                         <br/>
                         </linkURL>
                     </p>
-
                 </info>
+				
                 <attribute>
                     <name>fieldName</name>
                     <required>true</required>
@@ -2195,15 +2197,13 @@
                     <name>value</name>
                     <required>true</required>
                     <rtexprvalue>true</rtexprvalue>
-                    value of the key field
-                    <info></info>
+                    <info>value of the key field</info>
                 </attribute>
+				
             </tag>
 
-
-
-
-
+			<!-- **************************** insertButton tag ***********************************-->						
+						
             <tag>
                 <name>insertButton</name>
                 <summary>this tag renders an INSERT-button</summary>
@@ -2267,6 +2267,13 @@
                 </attribute>
 
                 <attribute>
+                    <name>border</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>set html border attribute</info>
+                </attribute>
+				
+                <attribute>
                     <name>followUp</name>
                     <info>
                         <p>site to be invoked after this button has been clicked and the associated actions are done</p>
@@ -2304,7 +2311,6 @@
                     <info>JavaScipt event hanlder executed when the user selects some text</info>
                 </attribute>
 
-
                 <attribute>
                     <name>onClick</name>
                     <required>false</required>
@@ -2318,6 +2324,7 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>JavaScript event handler executed when this element receives amouse double click.</info>
                 </attribute>
+				
                 <attribute>
                     <name>onFocus</name>
                     <required>false</required>
@@ -2359,6 +2366,7 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>JavaScript event handler executed when this element is under themouse pointer and the pointer is moved.</info>
                 </attribute>
+				
                 <attribute>
                     <name>onMouseOut</name>
                     <required>false</required>
@@ -2403,7 +2411,8 @@
 
             </tag>
 
-
+			<!-- **************************** deleteButton tag ***********************************-->						
+			
             <tag>
                 <name>deleteButton</name>
                 <summary>this tag renders a DELETE-button</summary>
@@ -2467,6 +2476,13 @@
                 </attribute>
 
                 <attribute>
+                    <name>border</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>set html border attribute</info>
+                </attribute>
+
+                <attribute>
                     <name>followUp</name>
                     <info>
                         <p>site to be invoked after this button has been clicked and the associated actions are done</p>
@@ -2515,7 +2531,6 @@
                     <info>JavaScipt event hanlder executed when the user selects some text</info>
                 </attribute>
 
-
                 <attribute>
                     <name>onClick</name>
                     <required>false</required>
@@ -2529,6 +2544,7 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>JavaScript event handler executed when this element receives amouse double click.</info>
                 </attribute>
+				
                 <attribute>
                     <name>onFocus</name>
                     <required>false</required>
@@ -2570,6 +2586,7 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>JavaScript event handler executed when this element is under themouse pointer and the pointer is moved.</info>
                 </attribute>
+				
                 <attribute>
                     <name>onMouseOut</name>
                     <required>false</required>
@@ -2614,6 +2631,8 @@
 
             </tag>
 
+			<!-- **************************** updateButton tag ***********************************-->									
+			
             <tag>
                 <name>updateButton</name>
                 <summary>this tag renders an UPDATE-button</summary>
@@ -2677,6 +2696,13 @@
                 </attribute>
 
                 <attribute>
+                    <name>border</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>set html border attribute</info>
+                </attribute>
+
+                <attribute>
                     <name>followUp</name>
                     <info>
                         <p>site to be invoked after this button has been clicked and the associated actions are done</p>
@@ -2725,7 +2751,6 @@
                     <info>JavaScipt event hanlder executed when the user selects some text</info>
                 </attribute>
 
-
                 <attribute>
                     <name>onClick</name>
                     <required>false</required>
@@ -2739,6 +2764,7 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>JavaScript event handler executed when this element receives amouse double click.</info>
                 </attribute>
+				
                 <attribute>
                     <name>onFocus</name>
                     <required>false</required>
@@ -2780,6 +2806,7 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>JavaScript event handler executed when this element is under themouse pointer and the pointer is moved.</info>
                 </attribute>
+				
                 <attribute>
                     <name>onMouseOut</name>
                     <required>false</required>
@@ -2823,6 +2850,8 @@
                 </attribute>
             </tag>
 
+			<!-- **************************** navPrevButton tag ***********************************-->						
+						
             <tag>
                 <name>navPrevButton</name>
                 <summary>this tag renders a navigation button for scrolling to previous row(s) of the current table</summary>
@@ -2883,6 +2912,13 @@
                 </attribute>
 
                 <attribute>
+                    <name>border</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>set html border attribute</info>
+                </attribute>
+
+                <attribute>
                     <name>stepWidth</name>
                     <required>false</required>
                     <rtexprvalue>true</rtexprvalue>
@@ -2927,7 +2963,6 @@
                     <info>JavaScipt event hanlder executed when the user selects some text</info>
                 </attribute>
 
-
                 <attribute>
                     <name>onClick</name>
                     <required>false</required>
@@ -2941,6 +2976,7 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>JavaScript event handler executed when this element receives amouse double click.</info>
                 </attribute>
+				
                 <attribute>
                     <name>onFocus</name>
                     <required>false</required>
@@ -2982,6 +3018,7 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>JavaScript event handler executed when this element is under themouse pointer and the pointer is moved.</info>
                 </attribute>
+				
                 <attribute>
                     <name>onMouseOut</name>
                     <required>false</required>
@@ -3023,8 +3060,11 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>The tab order (ascending positive integers) for this element.</info>
                 </attribute>
+				
             </tag>
 
+			<!-- **************************** navNextButton tag ***********************************-->									
+			
             <tag>
                 <name>navNextButton</name>
                 <summary>this tag renders a navigation button for scrolling to next row(s) of the current table</summary>
@@ -3085,6 +3125,13 @@
                 </attribute>
 
                 <attribute>
+                    <name>border</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>set html border attribute</info>
+                </attribute>
+
+                <attribute>
                     <name>stepWidth</name>
                     <required>false</required>
                     <rtexprvalue>true</rtexprvalue>
@@ -3129,7 +3176,6 @@
                     <info>JavaScipt event hanlder executed when the user selects some text</info>
                 </attribute>
 
-
                 <attribute>
                     <name>onClick</name>
                     <required>false</required>
@@ -3143,6 +3189,7 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>JavaScript event handler executed when this element receives amouse double click.</info>
                 </attribute>
+				
                 <attribute>
                     <name>onFocus</name>
                     <required>false</required>
@@ -3184,6 +3231,7 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>JavaScript event handler executed when this element is under themouse pointer and the pointer is moved.</info>
                 </attribute>
+				
                 <attribute>
                     <name>onMouseOut</name>
                     <required>false</required>
@@ -3225,8 +3273,10 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>The tab order (ascending positive integers) for this element.</info>
                 </attribute>
+				
             </tag>
 
+			<!-- **************************** navFirstButton tag ***********************************-->									
 
             <tag>
                 <name>navFirstButton</name>
@@ -3288,6 +3338,13 @@
                 </attribute>
 
                 <attribute>
+                    <name>border</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>set html border attribute</info>
+                </attribute>
+
+                <attribute>
                     <name>followUp</name>
                     <info>
                         <p>site to be invoked after this button has been clicked and the associated actions are done</p>
@@ -3325,7 +3382,6 @@
                     <info>JavaScipt event hanlder executed when the user selects some text</info>
                 </attribute>
 
-
                 <attribute>
                     <name>onClick</name>
                     <required>false</required>
@@ -3339,6 +3395,7 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>JavaScript event handler executed when this element receives amouse double click.</info>
                 </attribute>
+				
                 <attribute>
                     <name>onFocus</name>
                     <required>false</required>
@@ -3380,6 +3437,7 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>JavaScript event handler executed when this element is under themouse pointer and the pointer is moved.</info>
                 </attribute>
+				
                 <attribute>
                     <name>onMouseOut</name>
                     <required>false</required>
@@ -3424,7 +3482,8 @@
 
             </tag>
 
-
+			<!-- **************************** navLastButton tag ***********************************-->						
+			
             <tag>
                 <name>navLastButton</name>
                 <summary>this tag renders a navigation button for scrolling to the last row(s) of the current table</summary>
@@ -3485,6 +3544,13 @@
                 </attribute>
 
                 <attribute>
+                    <name>border</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>set html border attribute</info>
+                </attribute>
+
+                <attribute>
                     <name>followUp</name>
                     <info>
                         <p>site to be invoked after this button has been clicked and the associated actions are done</p>
@@ -3522,7 +3588,6 @@
                     <info>JavaScipt event hanlder executed when the user selects some text</info>
                 </attribute>
 
-
                 <attribute>
                     <name>onClick</name>
                     <required>false</required>
@@ -3536,6 +3601,7 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>JavaScript event handler executed when this element receives amouse double click.</info>
                 </attribute>
+				
                 <attribute>
                     <name>onFocus</name>
                     <required>false</required>
@@ -3577,6 +3643,7 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>JavaScript event handler executed when this element is under themouse pointer and the pointer is moved.</info>
                 </attribute>
+				
                 <attribute>
                     <name>onMouseOut</name>
                     <required>false</required>
@@ -3620,7 +3687,8 @@
                 </attribute>
             </tag>
 
-
+			<!-- **************************** navNewButton tag ***********************************-->						
+			
             <tag>
                 <name>navNewButton</name>
                 <summary>this tag renders a navigation button for creating a new row of data</summary>
@@ -3684,6 +3752,13 @@
                 </attribute>
 
                 <attribute>
+                    <name>border</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>set html border attribute</info>
+                </attribute>
+
+                <attribute>
                     <name>followUp</name>
                     <info>
                         <p>site to be invoked after this button has been clicked and the associated actions are done</p>
@@ -3721,7 +3796,6 @@
                     <info>JavaScipt event hanlder executed when the user selects some text</info>
                 </attribute>
 
-
                 <attribute>
                     <name>onClick</name>
                     <required>false</required>
@@ -3735,6 +3809,7 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>JavaScript event handler executed when this element receives amouse double click.</info>
                 </attribute>
+				
                 <attribute>
                     <name>onFocus</name>
                     <required>false</required>
@@ -3776,6 +3851,7 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>JavaScript event handler executed when this element is under themouse pointer and the pointer is moved.</info>
                 </attribute>
+				
                 <attribute>
                     <name>onMouseOut</name>
                     <required>false</required>
@@ -3819,7 +3895,8 @@
                 </attribute>
             </tag>
 
-
+			<!-- **************************** gotoButton tag ***********************************-->						
+			
             <tag>
                 <name>gotoButton</name>
                 <summary>button for jumping to other jsp</summary>
@@ -3877,6 +3954,13 @@
                     <required>false</required>
                     <rtexprvalue>true</rtexprvalue>
                     <info>alternative to image (use it if the coosen flavor is "image")</info>
+                </attribute>
+
+                <attribute>
+                    <name>border</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>set html border attribute</info>
                 </attribute>
 
                 <attribute>
@@ -3942,7 +4026,6 @@
                     <info>JavaScipt event hanlder executed when the user selects some text</info>
                 </attribute>
 
-
                 <attribute>
                     <name>onClick</name>
                     <required>false</required>
@@ -3956,6 +4039,7 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>JavaScript event handler executed when this element receives amouse double click.</info>
                 </attribute>
+				
                 <attribute>
                     <name>onFocus</name>
                     <required>false</required>
@@ -3997,6 +4081,7 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>JavaScript event handler executed when this element is under themouse pointer and the pointer is moved.</info>
                 </attribute>
+				
                 <attribute>
                     <name>onMouseOut</name>
                     <required>false</required>
@@ -4041,14 +4126,7 @@
 
             </tag>
 
-
-
-
-
-
-
-
-
+			<!-- **************************** base tag ***********************************-->						
 
             <tag>
                 <name>base</name>
@@ -4061,7 +4139,7 @@
                 </info>
             </tag>
 
-
+			<!-- **************************** errors tag ***********************************-->						
 
             <tag>
                 <name>errors</name>
@@ -4099,6 +4177,8 @@
 
             </tag>
 
+			<!-- **************************** xmlErrors tag ***********************************-->									
+			
             <tag>
                 <name>xmlErrors</name>
                 <summary>Custom tag that renders error messages if an appropriate request attributehas been created. Used in conjuction with xml error manager</summary>
@@ -4128,12 +4208,13 @@
 
             </tag>
 
+			<!-- **************************** hasNoErrors tag ***********************************-->									
+			
             <tag>
                 <name>hasNoErrors</name>
                 <summary>Redirects to requested page if no error has occured</summary>
                 <tagclass>org.dbforms.taglib.HasNoErrorsTag</tagclass>
                 <bodycontent>empty</bodycontent>
-
 
                 <attribute>
                     <name>name</name>
@@ -4156,12 +4237,13 @@
 
             </tag>
 
+			<!-- **************************** hasMoreRecords tag ***********************************-->									
+			
             <tag>
                 <name>hasMoreRecords</name>
                 <summary>Verifies if the number of records in the result set is larger then the number specified</summary>
                 <tagclass>org.dbforms.taglib.HasMoreRecordsTag</tagclass>
                 <bodycontent>empty</bodycontent>
-
 
                 <attribute>
                     <name>count</name>
@@ -4183,6 +4265,8 @@
 
             </tag>
 
+			<!-- **************************** associatedRadio tag ***********************************-->						
+
             <tag>
                 <name>associatedRadio</name>
                 <summary>
@@ -4192,7 +4276,8 @@
                 <bodycontent>empty</bodycontent>
                 <info>
                     <p>example: imagine a table &quot;customer&quot;. The rows of this table should be listed. The user shouldbe able to delete a customer.</p>
-                    
+                    
+
                     
                     in that case the application developer has to alternatives:
                     <li>
@@ -4219,8 +4304,10 @@
 
                     </info>
                 </attribute>
+				
             </tag>
 
+			<!-- **************************** blobURL tag ***********************************-->									
 
             <tag>
                 <name>blobURL</name>
@@ -4247,13 +4334,13 @@
                 </attribute>
             </tag>
 
+			<!-- **************************** blobContent tag ***********************************-->									
 
             <tag>
                 <name>blobContent</name>
                 <summary></summary>
                 <tagclass>org.dbforms.taglib.DbBlobContentTag</tagclass>
                 <bodycontent>empty</bodycontent>
-                <info></info>
 
                 <attribute>
                     <name>fieldName</name>
@@ -4265,7 +4352,8 @@
                 </attribute>
             </tag>
 
-
+			<!-- **************************** sort tag ***********************************-->						
+			
             <tag>
                 <name>sort</name>
                 <summary>
@@ -4285,6 +4373,7 @@
                 </attribute>
             </tag>
 
+			<!-- **************************** style tag ***********************************-->									
 
             <tag>
                 <name>style</name>
@@ -4320,6 +4409,8 @@
                 </attribute>
             </tag>
 
+			<!-- **************************** templateParam tag ***********************************-->									
+			
             <tag>
                 <name>templateParam</name>
                 <summary>param name</summary>
@@ -4347,7 +4438,6 @@
                     </info>
                 </attribute>
 
-
                 <attribute>
                     <name>dir</name>
                     <required>false</required>
@@ -4373,6 +4463,7 @@
                 </attribute>
             </tag>
 
+			<!-- **************************** templateBasedir tag ***********************************-->									
 
             <tag>
                 <name>templateBasedir</name>

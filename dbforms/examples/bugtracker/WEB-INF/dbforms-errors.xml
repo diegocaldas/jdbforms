@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<dbforms-errors>
+
+    <error id="001" type="WARN">
+        <message language="Français">% - Champ est obligatoire %</message>
+        <message language="English">% - is mandatory %</message>
+    </error>
+
+    <error id="002" type="WARN">
+        <message language="Français">Le résultat de votre requête contient trop d'éléments! Voici les % premiers</message>
+
+    </error>
+
+    <error id="003" type="WARN">
+        <message language="English">% - is mandatory %</message>
+    </error>
+
+    <error id="00001" type="WARN">
+        <message language="ORA">Oracle error: %</message>
+    </error>
+    
+</dbforms-errors>

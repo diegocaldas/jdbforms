@@ -3,8 +3,8 @@
 * $Date$
 
 __________________________________________________________________________________________________
-Friday, January 11th, 2002
-DbForms version 0.9E
+Tuesday, January 15th, 2002
+DbForms version 1.0
 Grunikiewicz.philip@hydro.qc.ca
 
 
@@ -183,6 +183,17 @@ EXAMPLE
       <db:dataLabel fieldName="ABC" maxlength="10">
                   …
       </db:dataLabel>
+
+ ------------------------------------------------------------------------------------
+
+updateButton, deleteButton, insertButton, gotoButton, NavigationButtons - tags
+border - attribute
+
+Allows a developer to set the html border attribute.
+
+EXAMPLE
+
+      <db:updateButton caption="Update" border="1"/>
 
  ------------------------------------------------------------------------------------
 

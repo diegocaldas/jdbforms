@@ -1,6 +1,5 @@
 package com.foo.bar;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.sql.*;
 import org.dbforms.DbFormsConfig;
@@ -50,7 +49,7 @@ public class BugInterceptor extends DbEventInterceptorSupport {
   }
 */
 
-  public int preInsert(HttpServletRequest request, Hashtable fieldValues, DbFormsConfig config, Connection con)
+  public int preInsert(javax.servlet.http.HttpServletRequest request, Hashtable fieldValues, DbFormsConfig config, Connection con)
   throws ValidationException {
 
 
@@ -75,7 +74,7 @@ public class BugInterceptor extends DbEventInterceptorSupport {
 
 
 
-  public int preUpdate(HttpServletRequest request, java.util.Hashtable fieldValues, DbFormsConfig config, Connection con)
+  public int preUpdate(javax.servlet.http.HttpServletRequest request, java.util.Hashtable fieldValues, DbFormsConfig config, Connection con)
   throws ValidationException {
 
 	int newState = Integer.parseInt( (String) fieldValues.get("bugstate") );

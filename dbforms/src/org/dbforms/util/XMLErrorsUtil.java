@@ -109,9 +109,9 @@ public class XMLErrorsUtil {
 		return xmlMessage;
 
 	} else {
+		// An error has occured, 
+		// however a custom error messages is not available		
 		StringBuffer defaultStr = new StringBuffer();
-		defaultStr.append(
-			"An error has occured, however a custom error messages is not available:");
 		defaultStr.append(message);
 		return defaultStr.toString();
 	}

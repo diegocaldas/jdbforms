@@ -47,7 +47,7 @@
         <bodycontent><xsl:value-of select="bodycontent"/></bodycontent>
       </xsl:if>
       <xsl:apply-templates select="attribute"/>
-    </tag>
+    </tag> 
   </xsl:template>
 
   <!-- Process an individual tag attribute -->
