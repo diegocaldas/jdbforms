@@ -1495,17 +1495,17 @@ public class DbFormTag extends BodyTagSupport {
                  } else if ("weak".equals(aSearchAlgorithm)) {
                     algorithm = FieldValue.SEARCH_ALGO_WEAK;
                     operator = FieldValue.FILTER_LIKE;
-		 } else if ("weakStart".equals(aSearchAlgorithm)) {
-                    algorithm = FieldValue.SEARCH_ALGO_WEAK_START;
-                    operator = FieldValue.FILTER_LIKE;
-	         } else if ("weakEnd".equals(aSearchAlgorithm)) {
-                    algorithm = FieldValue.SEARCH_ALGO_WEAK_END;
-                    operator = FieldValue.FILTER_LIKE;
-	         } else if ("weakStartEnd".equals(aSearchAlgorithm)) {
-                    algorithm = FieldValue.SEARCH_ALGO_WEAK_END;
-                    operator = FieldValue.FILTER_LIKE;
-		 }   
-                 if (aSearchAlgorithm.toLowerCase().indexOf("extended") == -1) {
+					  } else if ("weakStart".equals(aSearchAlgorithm)) {
+	                 algorithm = FieldValue.SEARCH_ALGO_WEAK_START;
+	                 operator = FieldValue.FILTER_LIKE;
+  		           } else if ("weakEnd".equals(aSearchAlgorithm)) {
+	              	  algorithm = FieldValue.SEARCH_ALGO_WEAK_END;
+	                 operator = FieldValue.FILTER_LIKE;
+		           } else if ("weakStartEnd".equals(aSearchAlgorithm)) {
+	                 algorithm = FieldValue.SEARCH_ALGO_WEAK_END;
+	                 operator = FieldValue.FILTER_LIKE;
+					  }   
+                 if ((aSearchAlgorithm == null) || (aSearchAlgorithm.toLowerCase().indexOf("extended") == -1)) {
 	                 // Extended not found, only append field 	
 	                 FieldValue fv = new FieldValue(f, aSearchFieldValue, true, operator);
 	                 fv.setSearchMode(mode);
@@ -1514,7 +1514,7 @@ public class DbFormTag extends BodyTagSupport {
 	                         mode_and.addElement(fv);
 	                 else
 	                         mode_or.addElement(fv);
-                } else if (aSearchFieldValue.indexOf("-") != -1) {
+                 } else if (aSearchFieldValue.indexOf("-") != -1) {
                    // delimiter found in SearchFieldValue, create something like
                     StringTokenizer st = new StringTokenizer(" " + aSearchFieldValue + " ", "-");
                     int tokenCounter = 0;
