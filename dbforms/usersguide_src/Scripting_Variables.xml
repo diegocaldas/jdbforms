@@ -14,6 +14,7 @@
     <para>The list of scripting values is still growing and some names may be changed in the near future.</para>
   </blockquote>
   <para/>
+  <sect1><title>tableName known at compile time</title>
   <para>
     <table>
       <title>List of scripting variables</title>
@@ -94,5 +95,48 @@
       </tgroup>
     </table>
   </para>
-  <para/>
+  </sect1>
+  <sect1><title>tableName determined at runtime</title>
+  <para>
+  If the tableName is determined at runtime, the well known dbforms variables, e.g. 
+ <computeroutput>currentRow_tablename</computeroutput> will not work. So there is a new variable 
+ named <computeroutput>dbforms</computeroutput> which is a hashtable that holds a list of 
+ all known dbforms and subforms in the page. Key of the map is 
+ the new <computeroutput>db:dbforms</computeroutput> attribute <computeroutput>name</computeroutput>. Objects of this list are 
+ of the type <computeroutput>DbFormContext</computeroutput>, which will give the access to all 
+ of the known fields:</para>
+ <para>
+ <screen> 
+ Public class DbFormsContext {
+    public String getPosition();
+    public ResultSetVector getRsv();
+    public Map getSearchFieldAlgorithmNames();
+    public Map getSearchFieldModeNames();
+    public Map getSearchFieldNames();
+    public Map getCurrentRow();
+    public void setCurrentRow(Map map);
+    public void setPosition(String string);
+ }</screen>
+ 
+ Any form with a subform on it would be ok too.</para>
+<para> 
+See <computeroutput>DbFormTagTEI</computeroutput> class and the test case (in the bookstore example)<computeroutput> testAuthorBooksSubFormWithContextVar.jsp </computeroutput> for details!
+ </para>
+ <para>
+ For example:
+ <screen>
+ &lt;db:dbform   ...
+                 tableName='&lt;%=determined_at_runtime%&gt;'
+                 name=&quot;AUTHOR&quot;
+      &gt;
+...
+ &lt;db:body&gt;
+...
+    &lt;%=((DbFormContext)dbforms.get(&quot;AUTHOR&quot;)).getCurrentRow().get(&quot;AUTHOR_ID&quot;)%&gt;
+...
+   &lt;/db:dbform 
+    </screen>
+    </para>
+ </sect1> 
+ 
 </chapter>
