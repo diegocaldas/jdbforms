@@ -28,14 +28,18 @@ import java.util.Enumeration;
 
 
 /**
- * New class to deal with a list of FieldValues. Delagate pattern: Delegate
- * everything to an Hashtable Do the necessary type transformations.
+ * New class to deal with a list of FieldValues. 
+ * <br>
+ * This class uses a delegate pattern: it delegates
+ * everything to an Hashtable to do the necessary 
+ * type transformations.
  * 
  * @author hkk
  */
 public class FieldValues
 {
    private Hashtable ht;
+
 
    /**
     * Creates a new FieldValues object.
@@ -47,8 +51,10 @@ public class FieldValues
 
 
    /**
-    * Creates a new FieldValues object.
-    * @param valueArr DOCUMENT ME!
+    * Creates a new FieldValues object from an input array 
+    * of FieldValue objects.
+    * 
+    * @param valueArr an array of FieldValue objects
     */
    public FieldValues(FieldValue[] valueArr)
    {
@@ -63,12 +69,12 @@ public class FieldValues
       }
    }
 
+
    /**
-    * DOCUMENT ME!
+    * Get the FieldValue object having the input name.
     * 
-    * @param name DOCUMENT ME!
-    * 
-    * @return DOCUMENT ME!
+    * @param name Dthe name of the FieldValue object to retrieve
+    * @return the FieldValue object having the input name
     */
    public FieldValue get(String name)
    {
@@ -77,9 +83,10 @@ public class FieldValues
 
 
    /**
-    * DOCUMENT ME!
+    * Put the input FieldName object into the
+    * internal hash table.
     * 
-    * @param value DOCUMENT ME!
+    * @param value the FieldValue object to store
     */
    public void put(FieldValue value)
    {
@@ -88,7 +95,7 @@ public class FieldValues
 
 
    /**
-    * DOCUMENT ME!
+    *  Clear the internal hash table.
     */
    public void clear()
    {
@@ -97,9 +104,9 @@ public class FieldValues
 
 
    /**
-    * DOCUMENT ME!
+    * Get the Enumeration of the hash table keys.
     * 
-    * @return DOCUMENT ME!
+    * @return the Enumeration of the hash table keys
     */
    public Enumeration keys()
    {
@@ -108,9 +115,9 @@ public class FieldValues
 
 
    /**
-    * DOCUMENT ME!
+    * Get the size of the internal hash table.
     * 
-    * @return DOCUMENT ME!
+    * @return the size of the internal hash table
     */
    public int size()
    {
@@ -119,9 +126,9 @@ public class FieldValues
 
 
    /**
-    * DOCUMENT ME!
+    *  Transform this object into a FieldValue array.
     * 
-    * @return DOCUMENT ME!
+    * @return the FieldValue array representation of this object
     */
    public FieldValue[] toArr()
    {

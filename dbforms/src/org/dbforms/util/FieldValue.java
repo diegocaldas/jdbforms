@@ -42,16 +42,15 @@ import org.dbforms.config.Field;
 public class FieldValue implements Cloneable
 {
    /** logging category for this class */
-   private static Category logCat = Category.getInstance(
-                                             FieldValue.class.getName());
-
-   /** DOCUMENT ME! */
+   private static Category logCat = Category.getInstance(FieldValue.class.getName());
+                                             
    /** field object */
    private Field field;
 
    /** a value a field is associated with */
    private String fieldValue;
 
+   /** old value */
    private String oldValue;
    
    /**
@@ -95,11 +94,12 @@ public class FieldValue implements Cloneable
    /**
     * Creates a new FieldValue object.
     * 
-    * @param field DOCUMENT ME!
-    * @param fieldValue DOCUMENT ME!
+    * @param field      the name of the field
+    * @param fieldValue the string representation of the value of the field
     */
    public FieldValue(Field field, String fieldValue)
    {
+   	  this();
       this.field      = field;
       this.fieldValue = fieldValue;
    }
@@ -122,17 +122,20 @@ public class FieldValue implements Cloneable
    /**
     * Constructor
     * 
-    * @param field the field object
-    * @param fieldValue the field value
-    * @param operator the type of filter comparison operator
-    * @param isLogicalOR specifies whether to OR all values or AND them
+    * @param field        the field object
+    * @param fieldValue   the field value
+    * @param operator     the type of filter comparison operator
+    * @param isLogicalOR  specifies whether to OR all values or AND them
     */
-   public FieldValue(Field field, String fieldValue, int operator, 
+   public FieldValue(Field   field, 
+                     String  fieldValue, 
+                     int     operator, 
                      boolean isLogicalOR)
    {
       this(field, fieldValue, operator);
       this.logicalOR = isLogicalOR;
    }
+
 
    /**
     * Gets the operator attribute of the FieldValue object
@@ -842,9 +845,9 @@ public class FieldValue implements Cloneable
 
 
    /**
-    * DOCUMENT ME!
+    *  Return the fileHolder object for this field.
     * 
-    * @return FileHolder
+    * @return  the fileHolder object of this field
     */
    public FileHolder getFileHolder()
    {
@@ -861,20 +864,26 @@ public class FieldValue implements Cloneable
    {
       this.fileHolder = fileHolder;
    }
-	/**
-	 * @return
-	 */
-	public String getOldValue()
-	{
-		return oldValue;
-	}
+    
+    
+   /**
+    *  Get the oldValue of this Field object.
+    * 
+	* @return the oldValue of this Field object
+	*/
+   public String getOldValue()
+   {
+	 return oldValue;
+   }
 
-	/**
-	 * @param string
-	 */
-	public void setOldValue(String string)
-	{
-		oldValue = string;
-	}
 
+   /**
+    *  Set the oldValue for this Field object.
+	* 
+    * @param string the oldValue for this Field object
+    */
+   public void setOldValue(String string)
+   {
+      oldValue = string;
+   }
 }
