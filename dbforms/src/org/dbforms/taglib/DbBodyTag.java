@@ -110,33 +110,32 @@ public class DbBodyTag
 		//
 		ResultSetVector rsv = myParent.getResultSetVector();
 
+		if (!ResultSetVector.isNull(rsv)) {
 
-		Map dbforms = (Map) pageContext.getAttribute("dbforms");
-		if (dbforms != null) {
-			DbFormContext dbContext =
-				(DbFormContext) dbforms.get(myParent.getName());
-			if (dbContext != null) {
-				dbContext.setCurrentRow(rsv.getCurrentRowAsMap());
-				try {
-					dbContext.setPosition(
-						Util.decode(
-							myParent.getTable().getPositionString(rsv),
-							pageContext
-								.getRequest()
-								.getCharacterEncoding()));
-				} catch (Exception e) {
-					throw new JspException(e.getMessage());
+			Map dbforms = (Map) pageContext.getAttribute("dbforms");
+			if (dbforms != null) {
+				DbFormContext dbContext =
+					(DbFormContext) dbforms.get(myParent.getName());
+				if (dbContext != null) {
+					dbContext.setCurrentRow(rsv.getCurrentRowAsMap());
+					try {
+						dbContext.setPosition(
+							Util.decode(
+								myParent.getTable().getPositionString(rsv),
+								pageContext
+									.getRequest()
+									.getCharacterEncoding()));
+					} catch (Exception e) {
+						throw new JspException(e.getMessage());
+					}
 				}
 			}
-		}
 
-
-		if (!ResultSetVector.isNull(rsv)) {
 			if (rsv.getPointer() < (rsv.size() - 1)) {
-				rsv.increasePointer();  // teleport us to future...
-										// This must be done because currentRow_xxx is reread from 
-										// the pagecontext after(!) the body of the tag. This means 
-										// that the current body contains the currentRow of rsv(i - 1)
+				rsv.increasePointer(); // teleport us to future...
+				// This must be done because currentRow_xxx is reread from 
+				// the pagecontext after(!) the body of the tag. This means 
+				// that the current body contains the currentRow of rsv(i - 1)
 
 				// # jp 27-06-2001: replacing "." by "_", so that SCHEMATA can be used
 				pageContext.setAttribute(
