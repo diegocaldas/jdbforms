@@ -18,7 +18,7 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+ * Foundation, Inc., 59 TemplePlace, Suite 330, Boston, MA  02111-1307 USA
  */
 
 package interceptors;
@@ -69,7 +69,9 @@ public class BookstoreInsertDataInterceptor extends DbEventInterceptorSupport {
       long       new_id    = 0;
       String     fieldName = table.getName() + "_ID";
       FieldValue fv        = fieldValues.get(fieldName);
-      new_id = ((Integer) fv.getFieldValueAsObject()).intValue();
+      if (fv != null) {
+         new_id = ((Integer) fv.getFieldValueAsObject()).intValue();
+      }
 
       if (new_id == 0) {
          String qry = "select max(" + fieldName + ") from " + table.getName();

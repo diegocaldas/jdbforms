@@ -15,7 +15,7 @@
 	         <h1 align="center">Edit Authors</h1>
 	         <db:errors/>
          </db:header>
-         <db:body>
+         <db:body allowNew="true">
             <table class="fixed" align="center">
                <tr class="even">
                      <td style="width:300px">ID</td>
@@ -90,7 +90,6 @@
 						 	&nbsp;
 					   	</td>
 					  </tr>
-					<table>
 		         </db:footer>
 				</db:dbform>	
 			</td></tr>

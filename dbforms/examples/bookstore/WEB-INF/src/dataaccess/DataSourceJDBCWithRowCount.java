@@ -31,13 +31,6 @@ import org.dbforms.event.datalist.dao.DataSourceJDBC;
 import java.sql.SQLException;
 
 
-
-/**
- * DOCUMENT ME!
- *
- * @author hkk TODO To change the template for this generated type comment go
- *         to Window - Preferences - Java - Code Style - Code Templates
- */
 public class DataSourceJDBCWithRowCount extends DataSourceJDBC {
 
    

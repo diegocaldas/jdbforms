@@ -54,14 +54,7 @@ public class DbFooterTag extends DbBaseHandlerTag {
     * @throws JspException DOCUMENT ME!
     */
    public int doEndTag() throws JspException {
-      DbFormTag myParent = getParentForm();
-      // field values that have not been rendered by html tags but that is determinated by field
-      // mapping between main- and subform are rendered now:
       try {
-         if (myParent.isSubForm() && myParent.isFooterReached()) {
-            myParent.appendToChildElementOutput(myParent.produceLinkedTags()); // print hidden-fields for missing insert-fields we can determinated
-         }
-
          if (bodyContent != null) {
             bodyContent.writeOut(bodyContent.getEnclosingWriter());
             bodyContent.clearBody(); // 2002116-HKK: workaround for duplicate rows in Tomcat 4.1

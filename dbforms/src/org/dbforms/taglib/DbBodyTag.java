@@ -105,6 +105,12 @@ public class DbBodyTag extends DbBaseHandlerTag
       } catch (UnsupportedEncodingException uee) {
          throw new JspException(uee.toString());
       }
+      // field values that have not been rendered by html tags but that is determinated by field
+      // mapping between main- and subform are rendered now:
+      if (myParent.isSubForm() && myParent.isFooterReached() && Util.getTrue(getAllowNew())) {
+         myParent.appendToChildElementOutput(myParent.produceLinkedTags()); // print hidden-fields for missing insert-fields we can determinated
+      }
+
 
       return SKIP_BODY;
    }
