@@ -1,7 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <chapter>
-  <title>Internationalization (i18n) Support
+  <title>Internationalization and i18n Support
 </title>
+   <sect1>
+    <title>Specifying a charset</title>
+    <para>
+    To specify a specific charset, do the following [note this example will use Shift_JIS (Japanese) and MYSQL]:
+    </para>
+     <itemizedlist mark="opencircle">
+      <listitem>
+       <para>Set the charset in your .jsp page:
+       </para>
+       <screen>
+       &lt;%@page contentType=&quot;text/html;charset=Shift_JIS&quot;%&gt;
+       </screen>
+      </listitem>
+      <listitem>
+      <para>Adjust your driver's URL
+      </para>
+      <screen>
+      &lt;dbconnection
+        id=&quot;edict&quot;
+		name   = &quot;jdbc:mysql://localhost/edict?useUnicode=true&amp;amp;characterEncoding=Shift_JIS&quot;
+		isJndi = &quot;false&quot;
+		conClass  = &quot;org.gjt.mm.mysql.Driver&quot;
+		username = &quot;whoever&quot;
+		password  = &quot;whatever&quot;
+	/&gt;
+      </screen>
+      
+      <para>Note: to use UTF-8 with MYSQL, you need to use:
+      </para>
+      <screen>
+      jdbc:mysql://localhost/edict?useUnicode=true&amp;amp;characterEncoding=UTF-8&amp;amp;autoReconnect=true&amp;amp;mysqlEncoding=utf8
+      </screen>
+      </listitem>
+      <listitem>
+      <para>
+      Add a filter to <computeroutput>web.xml</computeroutput>
+      </para>
+      <screen>
+      &lt;filter&gt;
+ 
+         &lt;filter-name&gt;Set Character Encoding&lt;/filter-name&gt;
+ 
+         &lt;filter-class&gt;org.dbforms.util.external.SetCharacterEncodingFilter&lt;/filter-class&gt;
+ 
+         &lt;init-param&gt;
+ 
+            &lt;param-name&gt;encoding&lt;/param-name&gt;
+ 
+            &lt;param-value&gt;Shift_JIS&lt;/param-value&gt;
+ 
+         &lt;/init-param&gt;
+ 
+      &lt;/filter&gt;
+      
+      
+ 
+      &lt;filter-mapping&gt;
+ 
+         &lt;filter-name&gt;Set Character Encoding&lt;/filter-name&gt;
+ 
+         &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+ 
+      &lt;/filter-mapping&gt;
+      </screen>
+      </listitem>
+       
+      </itemizedlist>
+    </sect1>
   <sect1 id="intern">
     <title>Defining Resource Bundles
 </title>
