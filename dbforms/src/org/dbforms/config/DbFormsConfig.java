@@ -174,6 +174,7 @@ public class DbFormsConfig {
                   Integer.parseInt(dbConnectionName));
          } catch (Exception ex) {
             // wanted! logCat.error("getDbConnection", ex);
+         	connection = null;
          }
          if (connection == null) {
             connection = (DbConnection) dbConnectionsHash.get(dbConnectionName);

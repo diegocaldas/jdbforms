@@ -88,7 +88,7 @@ public class MessageResource {
          try {
             rb = ResourceBundle.getBundle(subClass, loc);
          } catch (Exception e) {
-// wanted exception            logCat.error("getMessage", e);
+         	rb = null;
          }
          // Put the ResourceBundle or null value in HashMap with the key
          hashResources.put(key, rb);
@@ -98,7 +98,7 @@ public class MessageResource {
          try {
             s = rb.getString(msg);
          } catch (Exception e) {
-//            logCat.error("not found: " + msg, e);
+         	s = null;
          }
       } 
       return s;

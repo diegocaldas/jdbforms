@@ -54,14 +54,11 @@ public class DbLinkPositionItemTag
       try {
          parentTag = (DbLinkURLTag) this.getParent();
       } catch (Exception e) {
+        throw new JspException("DbLinkPositionItem-element must be placed inside a DbLinkURL-element!");
       }
-      if (parentTag != null) {
-         Table table = parentTag.getTable();
-         Field field = table.getFieldByName(getName());
-         parentTag.addPositionPart(field, getValue());
-      } else {
-         throw new JspException("DbLinkPositionItem-element must be placed inside a DbLinkURL-element!");
-      }
+      Table table = parentTag.getTable();
+      Field field = table.getFieldByName(getName());
+      parentTag.addPositionPart(field, getValue());
 
       return EVAL_BODY_INCLUDE;
    }

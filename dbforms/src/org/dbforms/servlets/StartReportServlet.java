@@ -167,7 +167,7 @@ public class StartReportServlet extends HttpServlet {
 				checkIfNeedToCompile(getServletContext(), reportFile);
 
 				JRDataSource dataSource =
-					getDataFromForm(getServletContext(), request, response);
+					getDataFromForm(request, response);
 
 				if (!response.isCommitted()) {
 					processReport(
@@ -514,7 +514,6 @@ public class StartReportServlet extends HttpServlet {
 	}
 
 	private JRDataSource getDataFromForm(
-		ServletContext context,
 		HttpServletRequest request,
 		HttpServletResponse response) {
 		JRDataSource dataSource = null;

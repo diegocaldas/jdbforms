@@ -214,6 +214,7 @@ public class DbSearchComboTag extends DbSearchTag implements DataContainer, java
          try {
             selectedIndexList = Integer.parseInt(selectedIndex);
          } catch (Exception e) { 
+         	selectedIndexList = 0;
          }
 			for (int i = 0; i < embeddedDataSize; i++) {
 				KeyValuePair aKeyValuePair = (KeyValuePair) embeddedData.get(i);

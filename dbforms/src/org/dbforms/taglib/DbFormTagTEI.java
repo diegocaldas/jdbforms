@@ -57,16 +57,19 @@ public class DbFormTagTEI extends TagExtraInfo {
 		try {
 			table = data.getAttributeString("tableName");
 		} catch (Exception e) {
+			table = null;
 		}
 		String parentField = null;
 		try {
 			parentField = data.getAttributeString("parentField");
 		} catch (Exception e) {
+			parentField = null;
 		}
 		String childField = null;
 		try {
 			childField = data.getAttributeString("childField");
 		} catch (Exception e) {
+			childField = null;
 		}
 
 		if (table != null) {

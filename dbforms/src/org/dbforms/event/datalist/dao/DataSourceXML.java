@@ -138,6 +138,7 @@ public class DataSourceXML extends DataSource {
 				URL u = new URL(url);
 				qry = u.getQuery();
 			} catch (Exception e) {
+	            logCat.info("open", e);
 			}
             Document doc = read(url);
             if (doc != null) {

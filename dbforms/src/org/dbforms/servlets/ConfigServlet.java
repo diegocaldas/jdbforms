@@ -283,7 +283,7 @@ public class ConfigServlet extends HttpServlet {
          try {
             dbFormsConfig = registry.lookup();
          } catch (Exception e) {
-            //         logCat.error("initXMLConfigFile", e);
+            dbFormsConfig = null;
          }
 
          if (dbFormsConfig == null) {

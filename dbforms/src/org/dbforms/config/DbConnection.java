@@ -507,15 +507,12 @@ public class DbConnection implements javax.sql.DataSource {
       prefs.setPassword(password);
       prefs.setProperties(properties);
       prefs.setPoolProperties(poolProperties);
-      try {
-         prefs.setServletContext(
+      prefs.setServletContext(
             DbFormsConfigRegistry
                .instance()
                .lookup()
                .getServletConfig()
                .getServletContext());
-      } catch (Exception e) {
-      }
       connectionFactory.setProvider(prefs);
       isFactorySetup = true;
    }

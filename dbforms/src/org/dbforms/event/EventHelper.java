@@ -55,6 +55,7 @@ public class EventHelper {
 		try {
 			res = ParseUtil.getEmbeddedStringAsInteger(action, 2, '_');
 		} catch (Exception e) {
+			res = -1;
 		}
 		return res;
 	}
