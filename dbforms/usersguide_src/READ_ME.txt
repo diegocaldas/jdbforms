@@ -33,7 +33,7 @@ To build it, you will need to do three things:
 
     OR
 
-        b) obtain JAI from http://developer.java.sun.com/developer/earlyAccess/jai/index.html and follow the installation instructions for a JRE install there.
+        b) obtain JAI from http://java.sun.com/products/java-media/jai/current.html and follow the installation instructions for a JRE install there.
             
             (much faster, but not available for all platforms)
 
