@@ -129,7 +129,8 @@ public class DatabaseEventFactoryImpl extends DatabaseEventFactory
 
         Table       table       = config.getTable(tableId);
         TableEvents tableEvents = table.getTableEvents();
-        EventInfo   einfo       = tableEvents.getEventInfo(EventType.EVENT_DATABASE_UPDATE);
+        String      eventId     = tableEvents.getEventId(EventType.EVENT_DATABASE_UPDATE);
+        EventInfo   einfo       = getEventInfo(eventId);
 
         event = (UpdateEvent)getEvent(einfo, keyInfoConstructorArgsTypes, constructorArgs);
 
