@@ -30,10 +30,10 @@ package org.dbforms.util;
 public class Util
 {
     /**
-     * Test if the input string is null
+     * Test if the input string is null or empty (does not contain any character)
      *
      * @param s the string value to test
-     * @return true if the input string is null (or empty), false otherwise
+     * @return true if the input string is null or empty, false otherwise
      */
     public final static boolean isNull(String s)
     {
