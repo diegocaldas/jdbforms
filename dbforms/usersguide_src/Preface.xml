@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <chapter>
-  <title>Preface
-</title>
+  <title>Preface</title>
   <sect1>
-    <title>About this document
-</title>
+    <title>About this document</title>
     <para/>
-    <para>This document assumes that the reader has a general understanding of how web-applications are developed and deployed.  This should include exposure to java servlets, JSP's, HTML and Web-Application Archives files (WAR).  Also important, is a good working knowledge of relational databases.
-</para>
+    <para>This document assumes that the reader has a general understanding of how web-applications are developed and deployed.  This should include exposure to java servlets, JSP's, HTML and Web-Application Archives files (WAR).  Also important, is a good working knowledge of relational databases.</para>
     <para/>
   </sect1>
   <sect1>
