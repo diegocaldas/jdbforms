@@ -188,6 +188,21 @@
     />
   </postGoal>
 
+   <postGoal name="war:webapp"> 
+    <ant:echo message="compile interceptors" />
+    <ant:javac 
+    	srcdir="${maven.war.webapp.dir}/WEB-INF/src"
+    	destdir="${maven.war.webapp.dir}/WEB-INF/classes" 
+    	debug="on"
+    	optimize="off"
+    	deprecation="off"
+    >
+      <ant:classpath>
+	      <ant:pathelement path="${pom.getDependencyClasspath()}"/>
+      </ant:classpath>
+    </ant:javac>
+   </postGoal> 
+
 
 </project>
 

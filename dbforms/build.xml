@@ -223,7 +223,7 @@
     <!-- compile example-specific Java code -->
     <echo message="compiling example specific code" />
     <mkdir dir="${build.dir}/${example.name}/WEB-INF/classes" />
-    <javac srcdir="${build.dir}/${example.name}/src" destdir="${build.dir}/${example.name}/WEB-INF/classes" debug="on" optimize="off" deprecation="off">
+    <javac srcdir="${build.dir}/${example.name}/WEB-INF/src" destdir="${build.dir}/${example.name}/WEB-INF/classes" debug="on" optimize="off" deprecation="off">
       <classpath>
         <path refid="classpath" />
         <pathelement location="${dist.dir}/dbforms${dbforms.version}.jar" />

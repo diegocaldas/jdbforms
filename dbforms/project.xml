@@ -436,7 +436,6 @@
     <sourceDirectory>src</sourceDirectory>
     <unitTestSourceDirectory>tests/test</unitTestSourceDirectory>
     <aspectSourceDirectory></aspectSourceDirectory>
-    <integrationUnitTestSourceDirectory>tests/test-bookstore</integrationUnitTestSourceDirectory>
 
     <unitTest>
       <includes>
