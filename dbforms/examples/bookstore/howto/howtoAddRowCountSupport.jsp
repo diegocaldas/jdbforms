@@ -4,8 +4,6 @@
 		<db:base/>
 	</head>
 	<body>
-	<!-- create a custom formatter instance called 'dash' that will change xxx to x_x_x -->
-	<db:setCustomFormatter name="dash" className="customFormatters.DashifyFormatter" arg="_" />
 	<db:dbform 
 			multipart="false" 
 			autoUpdate="false" 
@@ -26,7 +24,7 @@
 					<td><db:label fieldName="BOOK_ID"/></a>&nbsp;</td>
 					<td><db:label fieldName="ISBN"/>&nbsp;</td>
 					<td><db:label fieldName="AUTHOR_ID"/>&nbsp;</td>
-					<td><db:label customFormatter="dash" fieldName="TITLE"/>&nbsp;</td>
+					<td><db:label fieldName="TITLE"/>&nbsp;</td>
 				</tr>
 			</db:body>
 			<db:footer>
