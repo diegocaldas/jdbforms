@@ -203,6 +203,13 @@
      <attainGoal name="dbforms:doc" />
   </preGoal>
 
+  <preGoal name="site:sshdeploy">
+     <ant:echo message="delete old weekly build" />
+    <exec dir="." executable="${maven.ssh.executable}">
+      <arg line="${maven.ssh.args} -l ${maven.username} ${pom.siteAddress} 'rm -f ${maven.homepage}/weekly/*'"/>
+    </exec>
+  </preGoal>
+
   <postGoal name="site:run-reports">
     <ant:echo message="generate releasenotes" />
     <ant:mkdir dir="target/generated-xdocs" />
