@@ -66,6 +66,9 @@ public class Field {
 	 */
 	private boolean encoded;
 
+	/** the field-size */
+	private int size = -1;
+
 	/** */
 	private String expression;
 
@@ -139,10 +142,7 @@ public class Field {
 				|| fieldType.startsWith("long")
 				|| fieldType.startsWith("tinyint")) {
 			type = FieldTypes.INTEGER;
-		} else if (
-			fieldType.startsWith("numeric")
-				|| fieldType.startsWith("number")
-				|| fieldType.startsWith("decimal")) {
+		} else if (fieldType.startsWith("numeric") || fieldType.startsWith("number") || fieldType.startsWith("decimal")) {
 			type = FieldTypes.NUMERIC;
 		} else if (fieldType.startsWith("date")) {
 			type = FieldTypes.DATE;
@@ -150,13 +150,11 @@ public class Field {
 			type = FieldTypes.TIMESTAMP;
 		} else if (fieldType.startsWith("time")) {
 			type = FieldTypes.TIME;
-		} else if (
-			fieldType.startsWith("double") || fieldType.startsWith("float")) {
+		} else if (fieldType.startsWith("double") || fieldType.startsWith("float")) {
 			type = FieldTypes.DOUBLE;
 		} else if (fieldType.startsWith("real")) {
 			type = FieldTypes.FLOAT;
-		} else if (
-			fieldType.startsWith("blob") || fieldType.startsWith("image")) {
+		} else if (fieldType.startsWith("blob") || fieldType.startsWith("image")) {
 			type = FieldTypes.BLOB;
 		} else if (fieldType.startsWith("diskblob")) {
 			type = FieldTypes.DISKBLOB;
@@ -213,8 +211,7 @@ public class Field {
 	 * @param autoInc The new autoInc value
 	 */
 	public void setAutoInc(String autoInc) {
-		this.isAutoInc =
-			autoInc.equalsIgnoreCase("true") || autoInc.equalsIgnoreCase("yes");
+		this.isAutoInc = autoInc.equalsIgnoreCase("true") || autoInc.equalsIgnoreCase("yes");
 	}
 
 	/**
@@ -232,8 +229,7 @@ public class Field {
 	 * @param isKey The new isKey value
 	 */
 	public void setIsKey(String isKey) {
-		this.key =
-			isKey.equalsIgnoreCase("true") || isKey.equalsIgnoreCase("yes");
+		this.key = isKey.equalsIgnoreCase("true") || isKey.equalsIgnoreCase("yes");
 	}
 
 	/**
@@ -269,9 +265,7 @@ public class Field {
 	 * @param encoding The new encoding value
 	 */
 	public void setEncoding(String encoding) {
-		this.encoded =
-			encoding.equalsIgnoreCase("true")
-				|| encoding.equalsIgnoreCase("yes");
+		this.encoded = encoding.equalsIgnoreCase("true") || encoding.equalsIgnoreCase("yes");
 	}
 
 	/**
@@ -289,9 +283,7 @@ public class Field {
 	 * @param sortable The new sortable value
 	 */
 	public void setSortable(String sortable) {
-		this.isSortable =
-			sortable.equalsIgnoreCase("true")
-				|| sortable.equalsIgnoreCase("yes");
+		this.isSortable = sortable.equalsIgnoreCase("true") || sortable.equalsIgnoreCase("yes");
 	}
 
 	/**
@@ -346,10 +338,7 @@ public class Field {
 		int dateStyle = Constants.DATE_STYLE_DEFAULT;
 		int timeStyle = Constants.TIME_STYLE_DEFAULT;
 		if (Util.isNull(pattern)) {
-			pattern =
-				MessageResourcesInternal.getMessage(
-					"dbforms.pattern." + getFieldType(),
-					locale);
+			pattern = MessageResourcesInternal.getMessage("dbforms.pattern." + getFieldType(), locale);
 		}
 		if (!Util.isNull(pattern)) {
 			if ("short".startsWith(pattern.toLowerCase())) {
@@ -400,11 +389,7 @@ public class Field {
 				break;
 
 			case FieldTypes.TIMESTAMP :
-				res =
-					java.text.DateFormat.getDateTimeInstance(
-						dateStyle,
-						timeStyle,
-						locale);
+				res = java.text.DateFormat.getDateTimeInstance(dateStyle, timeStyle, locale);
 				if (!Util.isNull(pattern)) {
 					((java.text.SimpleDateFormat) res).applyPattern(pattern);
 				}
@@ -459,15 +444,27 @@ public class Field {
 
 			for (int i = 0; i < fv.length; i++) {
 				FieldValue f = fv[i];
-				sb.append("  fv[").append(i).append("] = {").append(
-					f.toString()).append(
-					"}\n");
+				sb.append("  fv[").append(i).append("] = {").append(f.toString()).append("}\n");
 			}
 
 			s = sb.toString();
 		}
 
 		return s;
+	}
+
+	/**
+	 * Sets the size attribute of the Field object
+	 */
+	public void setSize(int size) {
+		this.size = size;
+	}
+
+	/**
+	 * Gets the size attribute of the Field object
+	 */
+	public int getSize() {
+		return size;
 	}
 
 }
