@@ -127,6 +127,12 @@
     <copy todir="${build.dir}/org/dbforms/resources">
       <fileset dir="${javasrc.dir}/org/dbforms/resources" />
     </copy>
+     <copy todir="${cvs.workingdir}/target/dist">
+      <fileset dir="${javasrc.dir}" />
+    </copy>
+    <copy todir="${cvs.workingdir}/target/dist">
+      <fileset dir="${build.dir}" />
+    </copy>
   </target>
 
 
