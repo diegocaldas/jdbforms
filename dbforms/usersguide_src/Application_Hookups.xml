@@ -247,6 +247,8 @@ will ensure that the value smith be stored in the lastname field in the data
 </para>
 			<para>There is an Exception ValidationException which may be thrown to signal a message to the end-user. In fact, returning the integer constant <computeroutput>DENY_OPERATION</computeroutput> defined in <computeroutput>DbEventInterceptor</computeroutput> leads to similar results (but with an unspecific error message and no generic message)
 </para>
+</sect1>
+<sect1><title>Accumulating error messages</title>
 			<para>It is now possible to accumulate error messages while validating a form in a dbForms interceptor class.  This is useful in situations where many fields are validated and you wish to return several errors instead of just the first occurrence. In the validation process, when an error occurs, simply instantiate a new exception object and store it into a vector.  Do not throw this exception!  Once the validation process has completed, throw an instance of the MultipleValidationException class and pass the vector as an argument to its constructor.  Note that this functionality is dependant on using the xmlError tag. (refer to the section: DbForms Custom Tag Library for more information on using the xmlError  tag)
 </para>
 			<example><title>accumlating error messages</title> 
