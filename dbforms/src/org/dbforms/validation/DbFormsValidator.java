@@ -481,6 +481,8 @@ public class DbFormsValidator implements Serializable {
          Object obj = f.getFieldValueAsObject();
          if (obj != null)
             value = obj.toString();
+         else 
+            value = f.getFieldValue();
          return value;
       } catch (Exception e) {
          logCat.error(e);
