@@ -392,25 +392,37 @@ public class Query extends Table
          hatSchonWhere = true;
          buf.append(" WHERE ");
 
+         // where condition part from config
          if (!Util.isNull(where))
          {
+            buf.append("( ");
             buf.append(where);
+            buf.append(" ) ");
          }
 
+         // where condition part generated from searching / ordering
          if (!Util.isNull(s))
          {
-            buf.append(" ");
-
             if (!Util.isNull(where))
             {
                hatSchonFollowAfterWhere = true;
                buf.append(getFollowAfterWhere());
             }
-
-            buf.append(" ");
-            buf.append("(");
+            // parents are inserted in getQueryWhere method 
             buf.append(s);
-            buf.append(")");
+         }
+
+         // where condition part from DbFormTag's sqlFilter attribute
+         if (!Util.isNull(sqlFilter))
+         {
+            if (!Util.isNull(where) || !Util.isNull(s))
+            {
+               hatSchonFollowAfterWhere = true;
+               buf.append(getFollowAfterWhere());
+            }
+            buf.append(" ( ");
+            buf.append(sqlFilter);
+            buf.append(" ) ");
          }
       }
 
