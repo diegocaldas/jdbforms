@@ -99,6 +99,8 @@
 	        <field name="REMARK" fieldType="varchar" />
 	    </table>    
 
+		<query name="TIMEPLAN1" from="TIMEPLAN" />
+
 		<table name="KEYTEST"
 	        defaultVisibleFields="key1,key2,key3,key4" >
 			<field name="KEY_1" fieldType="varchar" size="10" isKey="true"/>
@@ -124,7 +126,6 @@
 	        <field name="ISBN" fieldType="varchar" />
 	        <field name="AUTHOR_ID" fieldType="int" isKey="true" />
 	        <field name="TITLE" fieldType="varchar" isKey="true" />
-	        
         </query> 
 
 
