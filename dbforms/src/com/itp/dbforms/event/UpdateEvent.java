@@ -139,15 +139,15 @@ public class UpdateEvent extends DatabaseEvent {
     // this list may be only a subset of the field list, it is not necessarily the complete field list of a table!
 		Vector fields = table.getFields();
 		Enumeration enum = fieldValues.keys();
+		boolean kommaNeeded = false;
 		while(enum.hasMoreElements()) {
 			Integer iiFieldId = (Integer) enum.nextElement();
 			String fieldName = ((Field) fields.elementAt(iiFieldId.intValue())).getName();
 
-			//if( ((Field) fields.elementAt(iiFieldId.intValue())).getType() != FieldTypes.DISKBLOB ) {	// we ignore DISKBLOB updates right now.
-				queryBuf.append(fieldName);
-				queryBuf.append("= ?");
-				if(enum.hasMoreElements()) queryBuf.append(", ");
-			//}
+			if(kommaNeeded) queryBuf.append(", "); else kommaNeeded=true;
+			queryBuf.append(fieldName);
+			queryBuf.append("= ?");
+
 		}
 		queryBuf.append(" WHERE ");
 		queryBuf.append(table.getWhereClauseForPS());

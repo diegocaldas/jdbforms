@@ -30,16 +30,19 @@ import org.apache.log4j.Category;
 
 /****
  *
- * <p>In version 0.5, this class holds the actual data of a ResultSet (SELECT from a table).
- * the goal for the release 1.0 is to abstract these methods into an _interface_ which can
- * be implemented by various - more efficient - classes. </p>
- *
- * <p>The main weakness of this class is that it uses too much memory and processor time:
+ * <p>In version 0.5, this class held the actual data of a ResultSet (SELECT from a table).
+ * The main weakness of this class was that it used too much memory and processor time:
  * <ul>
- * <li>1. every piece of data gets stored in an array (having a table with a million datasets
+ * <li>1. every piece of data gots stored in an array (having a table with a million datasets
  * will mean running into trouble because all the memory gets allocated at one time.)
- * <li>2. every piece of data gets converted into a String and trim()ed
+ * <li>2. every piece of data gots converted into a String and trim()ed
  * </ul>
+ * </p>
+ * <p>
+ * since version 0.7 DbForms queries only those record from the database the user really
+ * wants to see. this way you can query from a table with millions of records and you will
+ * still have no memory problems, [exception: you choose count="*" in DbForms-tag :=) -> see
+ * com.itp.dbforms.taglib.DbFormTag]
  * </p>
  *
  * @author Joe Peer <joepeer@excite.com>
@@ -52,25 +55,40 @@ public class ResultSetVector extends Vector {
   private int pointer=0;
   private Vector selectFields;
 
+  Vector objectVector;
+
   public ResultSetVector() {
     super();
+    objectVector = new Vector();
   }
 
   public ResultSetVector(ResultSet rs) throws java.sql.SQLException {
+    this();
 
     ResultSetMetaData rsmd = rs.getMetaData();
     int columns = rsmd.getColumnCount();
 
     while(rs.next()) {
 
-    	String[] tmpString = new String[columns];
+    	Object[] objectRow = new Object[columns];
+    	String[] stringRow = new String[columns];
+
     	for(int i=0; i<columns; i++) {
-		  String tmp = rs.getString(i+1);
-    	  if(tmp!=null) tmpString[i] = tmp.trim();
-    	  else tmpString[i] = "";
+		  Object tmpObj = rs.getObject(i+1);
+
+		  logCat.debug("col="+(i+1)+", tmpObj="+tmpObj);
+
+    	  if(tmpObj!=null) {
+			 objectRow[i] = tmpObj;
+			 stringRow[i] = tmpObj.toString();
+    	  } else {
+			 objectRow[i] = null; // #checkme: really necessary?
+			 stringRow[i] = "";
+		 }
     	}
 
-    	this.addElement(tmpString);
+    	this.addElement(stringRow);
+    	objectVector.addElement(objectRow);
     }
 
   }
@@ -99,27 +117,6 @@ public class ResultSetVector extends Vector {
 	else
 	  return -1;
   }
-/*
-  public int increasePointerBy(int stepWidth) {
-	pointer += stepWidth;
-	if(pointer < this.size()) {
-
-		return pointer;
-	}
-	else
-	  return -1;
-  }
-
-  public int declinePointerBy(int stepWidth) {
-		pointer -= stepWidth;
-
-		if(pointer >= 0) {
-			 return pointer;
-		}
-		else
-		   return -1;
-  }
-*/
 
   public int increasePointerBy(int stepWidth) {
 		pointer += stepWidth;
@@ -161,9 +158,19 @@ public class ResultSetVector extends Vector {
     return (pointer>=0 && pointer<size());
   }
 
+
   public String[] getCurrentRow() {
-		if(isPointerLegal(pointer))
+		if(isPointerLegal(pointer)) {
 			return (String[]) elementAt(pointer);
+		}
+		else
+			return null;
+  }
+
+  public Object[] getCurrentRowAsObjects() {
+		if(isPointerLegal(pointer)) {
+			return (Object[]) objectVector.elementAt(pointer);
+		}
 		else
 			return null;
   }
@@ -171,6 +178,14 @@ public class ResultSetVector extends Vector {
   public String getField(int i) {
 		if(isPointerLegal(pointer))
 			return ((String[]) elementAt(pointer))[i];
+		else
+			return null;
+  }
+
+
+  public Object getFieldAsObject(int i) {
+		if(isPointerLegal(pointer))
+			return ((Object[]) elementAt(pointer))[i];
 		else
 			return null;
   }

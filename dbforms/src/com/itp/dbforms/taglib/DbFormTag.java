@@ -365,27 +365,37 @@ public class DbFormTag extends BodyTagSupport {
 			logCat.info("servlet getContextPath = "+request.getContextPath());
 
 
+			logCat.debug("pos1");
 			// part I/a - security
 
 			JspWriter out = pageContext.getOut();
+
+			logCat.debug("pos2");
+
 			// check user privilege
 			if(table!=null && !table.hasUserPrivileg(request, GrantedPrivileges.PRIVILEG_SELECT)) {
+			logCat.debug("pos3");
 				out.println("Sorry, viewing data from table "+table.getName()+" is not granted for this session.");
 				return SKIP_BODY;
 			}
+
+			logCat.debug("pos4");
 
 			// part II/b - processing interceptors
 
 
 			if(table!=null && table.hasInterceptors()) {
 			  try {
+				  logCat.debug("pos5");
 				table.processInterceptors(DbEventInterceptor.PRE_SELECT, request, null, config, con);
 		  	  } catch(SQLException sqle) {
+				  logCat.debug("pos6");
 					out.println("Sorry, viewing data from table "+table.getName()+" would violate a condition.");
 					return SKIP_BODY;
 			  }
 			}
 
+	        logCat.debug("pos7");
 
 			// *************************************************************
 			//  Part II - WebEvent infrastructural stuff ----
@@ -404,6 +414,7 @@ public class DbFormTag extends BodyTagSupport {
 			resultSetVector = null;
 			childElementOutput = new StringBuffer();
 
+			logCat.debug("first steps finished");
 
 			// if main form
 			// we write out the form-tag which points to the controller-servlet
@@ -810,6 +821,9 @@ public class DbFormTag extends BodyTagSupport {
     try {
 	  	if(bodyContent != null)
 	  	  bodyContent.writeOut(bodyContent.getEnclosingWriter());
+
+			logCat.debug("pageContext.getOut()="+pageContext.getOut());
+			logCat.debug("childElementOutput="+childElementOutput);
 
            // hidden fields and other stuff coming from child elements get written out
            pageContext.getOut().println(childElementOutput.toString());
