@@ -69,6 +69,10 @@ public class DbFormsConfig
     //private DbConnection dbConnection;
     private ServletConfig servletConfig;
 
+    /** instance */
+    private static DbFormsConfig instance = null;
+
+
     /**
      * Creates a new DbFormsConfig object.
      */
@@ -80,6 +84,7 @@ public class DbFormsConfig
         dbConnectionsHash = new Hashtable();
         dbConnectionsList = new ArrayList();
     }
+
 
     /**
      * DOCUMENT ME!
@@ -141,10 +146,7 @@ public class DbFormsConfig
 
         // if a default connection does not exist yet,
         // use the input connection as the default one;
-        if ((dbConnection.isDefaultConnection()           &&
-            ((defaultDbConnection == null)                ||
-             !defaultDbConnection.isDefaultConnection())) ||
-             (defaultDbConnection == null))
+        if ((dbConnection.isDefaultConnection() && ((defaultDbConnection == null) || !defaultDbConnection.isDefaultConnection())) || (defaultDbConnection == null))
         {
             defaultDbConnection = dbConnection;
             dbConnection.setDefaultConnection(true);
@@ -217,9 +219,9 @@ public class DbFormsConfig
 
 
     /**
-    get access to servlet context in order to interoperate with
-    other components of the web application
-    */
+     *  Get access to servlet context in order to interoperate with
+     *  other components of the web application
+     */
     public ServletContext getServletContext()
     {
         return servletConfig.getServletContext();
@@ -227,7 +229,7 @@ public class DbFormsConfig
 
 
     /**
-     * DOCUMENT ME!
+     *  DOCUMENT ME!
      *
      * @return DOCUMENT ME!
      */
@@ -235,7 +237,6 @@ public class DbFormsConfig
     {
         if (sdf == null)
         {
-            /* init */
             sdf = new SimpleDateFormat();
         }
 
@@ -271,6 +272,50 @@ public class DbFormsConfig
 
 
     /**
+     *  Returns the realPath.
+     *
+     * @return the realPath
+     */
+    public String getRealPath()
+    {
+        return realPath;
+    }
+
+
+    /**
+     *  Sets the realPath.
+     *
+     * @param realPath The realPath to set
+     */
+    public void setRealPath(String realPath)
+    {
+        this.realPath = realPath;
+    }
+
+
+    /**
+     *  set the instance of this class
+     *
+     * @param instance the instance of this class
+     */
+    public static void setInstance(DbFormsConfig config)
+    {
+        instance = config;
+    }
+
+
+    /**
+     *  Get the instance of this class
+     *
+     * @return the instance of this class
+     */
+    public static DbFormsConfig getInstance()
+    {
+        return instance;
+    }
+
+
+    /**
      * DOCUMENT ME!
      *
      * @return DOCUMENT ME!
@@ -287,23 +332,5 @@ public class DbFormsConfig
         }
 
         return buf.toString();
-    }
-
-
-    /**
-     * Returns the realPath.
-     * @return String
-     */
-    public String getRealPath() {
-        return realPath;
-    }
-
-
-    /**
-     * Sets the realPath.
-     * @param realPath The realPath to set
-     */
-    public void setRealPath(String realPath) {
-        this.realPath = realPath;
     }
 }
