@@ -225,7 +225,7 @@
   <target name="javadoc">
     <javadoc packagenames = "org.dbforms.*" 
              sourcepath   = "${javasrc.dir}" 
-             destdir      = "${doc.dir}/api" 
+             destdir      = "${doc.dir}/apidocs" 
              author       = "true" 
              version      = "true" 
              use          = "true" 
@@ -261,7 +261,7 @@
   <!--                                                                            -->
   <!-- called by Maven's "site:generate" postGoal                                 -->
   <!-- ========================================================================== -->
-  <target name="maven-move-doc">
+  <target name="maven-move-doc" depends="cleanUp">
     <copy todir="${doc.dir}">
       <fileset dir="${maven.docs}/" includes="**/*"/>
     </copy>
@@ -346,7 +346,28 @@
     <antcall target="cleanWorkspace"/>
   </target>
 
-
+  <target name="cleanUp">
+     <echo message="cleanUp ${doc.dir}"/>
+     <delete dir="${doc.dir}/api"/>
+     <delete dir="${doc.dir}/apidocs"/>
+     <delete dir="${doc.dir}/images"/>
+     <delete dir="${doc.dir}/poweredby"/>
+     <delete dir="${doc.dir}/style"/>
+     <delete dir="${doc.dir}/stylesheets"/>
+     <delete dir="${doc.dir}/UsersGuide"/>
+     <delete dir="${doc.dir}/xref"/>
+     <delete dir="${doc.dir}/xref-test"/>
+     <delete>
+	      <fileset dir="${doc.dir}">
+        	<include name="*"/>
+	      </fileset>
+     </delete>
+     <delete file="${doc.dir}/taglib/DbFormsTags_TocSem.html"/>
+     <delete file="${doc.dir}/taglib/DbFormsTags_TocAlph.html"/>
+     <delete file="${doc.dir}/taglib/DbFormsTags.html"/>
+     <delete file="${doc.dir}/taglib/DbFormsTags.pdf"/>
+  </target>
+  	
   <!-- Fill these in if you want to view files post build -->
   <target name="run-j">
     <tstamp>
