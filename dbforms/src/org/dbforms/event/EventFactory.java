@@ -104,7 +104,7 @@ public abstract class EventFactory
 
                   logCat.warn(new StringBuffer("::addEventInfo - the event information having id, class [")
                               .append(id).append(", ")
-                              .append(einfo.getClass())
+                              .append(einfo.getClassName())
                               .append("] overrides the event class [")
                               .append(prevClassName).append("]")
                               .toString());
