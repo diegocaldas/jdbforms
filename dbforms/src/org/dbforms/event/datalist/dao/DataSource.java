@@ -587,7 +587,7 @@ public abstract class DataSource
 
 
    /**
-    * save the blob files to disk
+    * deletes the blob files on disk
     * 
     * @param fieldValues    FieldValues to delete, called by
     * 
