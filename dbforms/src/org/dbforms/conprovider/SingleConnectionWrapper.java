@@ -37,14 +37,16 @@ import java.sql.PreparedStatement;
 import java.sql.SQLWarning;
 import java.sql.Statement;
 
-
 public class SingleConnectionWrapper implements Connection {
    private static Category logCat = Category.getInstance(SingleConnectionWrapper.class.getName());
 
    private Connection _conn;
    private List list = new ArrayList();
+   private static int counter = 0;
 
    public SingleConnectionWrapper(Connection con) {
+      logCat.warn("createConnection: connection count: " + String.valueOf(counter));
+      counter++;
       _conn = con;
    }
 
@@ -74,6 +76,8 @@ public class SingleConnectionWrapper implements Connection {
                logCat.error(e);
             }
          }
+         counter--;
+         logCat.warn("closeConnection: connection count: " + String.valueOf(counter));
       }
    }
 

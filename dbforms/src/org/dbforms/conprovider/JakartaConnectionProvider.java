@@ -28,6 +28,10 @@ import java.sql.SQLException;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.dbforms.util.Util;
 
+import java.io.PrintWriter;
+import org.apache.log4j.Category;
+import org.apache.log4j.Priority;
+
 
 
 /**
@@ -92,9 +96,9 @@ public class JakartaConnectionProvider extends ConnectionProvider
     */
    protected Connection getConnection() throws SQLException
    {
-      getLog4JCategory().debug("::getConnection - MaxActive = " + dataSource.getMaxActive());
-      getLog4JCategory().debug("::getConnection - NumActive = " + dataSource.getNumActive());
-	  getLog4JCategory().debug("::getConnection - NumIdle   = " + dataSource.getNumIdle());
+      getLogCat().debug("::getConnection - MaxActive = " + dataSource.getMaxActive());
+      getLogCat().debug("::getConnection - NumActive = " + dataSource.getNumActive());
+	  getLogCat().debug("::getConnection - NumIdle   = " + dataSource.getNumIdle());
 	  return dataSource.getConnection();
    }
 
@@ -121,7 +125,7 @@ public class JakartaConnectionProvider extends ConnectionProvider
          {
             String key = (String) e.nextElement();
             dataSource.addConnectionProperty(key, props.getProperty(key));
-            getLog4JCategory().info("::init - dataSource property [" + key + "] = ["
+            getLogCat().info("::init - dataSource property [" + key + "] = ["
                + props.getProperty(key) + "]");
          }
       }
@@ -153,8 +157,281 @@ public class JakartaConnectionProvider extends ConnectionProvider
 
       if (!Util.isNull(useLog) && "true".equals(useLog.trim()))
       {
-         getLog4JCategory().info("::init - dataSource log activated");
-         dataSource.setLogWriter(new Log4jPrintWriter(getLog4JCategory(), getLog4JCategory().getLevel()));
+         getLogCat().info("::init - dataSource log activated");
+         dataSource.setLogWriter(new Log4jPrintWriter(getLogCat(), getLogCat().getLevel()));
       }
    }
+
+	private class Log4jPrintWriter extends PrintWriter
+	{
+		private Priority     level;
+		private Category     cat;
+		private StringBuffer text = new StringBuffer("");
+
+		/**
+		 * Creates a new Log4jPrintWriter object.
+		 *
+		 * @param cat DOCUMENT ME!
+		 * @param level DOCUMENT ME!
+		 */
+		public Log4jPrintWriter(org.apache.log4j.Category cat,
+			org.apache.log4j.Priority level)
+		{
+			super(System.err); // PrintWriter doesn't have default constructor.
+			this.level    = level;
+			this.cat      = cat;
+		}
+
+		/**
+		 *  overrides all the print and println methods
+		 *  for 'print' it to the constructor's Category
+		 */
+		public void close()
+		{
+			flush();
+		}
+
+
+		/**
+		 * DOCUMENT ME!
+		 */
+		public void flush()
+		{
+			if (!text.toString().equals(""))
+			{
+				cat.log(level, text.toString());
+				text.setLength(0);
+			}
+		}
+
+
+		/**
+		 * DOCUMENT ME!
+		 *
+		 * @param b DOCUMENT ME!
+		 */
+		public void print(boolean b)
+		{
+			text.append(b);
+		}
+
+
+		/**
+		 * DOCUMENT ME!
+		 *
+		 * @param c DOCUMENT ME!
+		 */
+		public void print(char c)
+		{
+			text.append(c);
+		}
+
+
+		/**
+		 * DOCUMENT ME!
+		 *
+		 * @param s DOCUMENT ME!
+		 */
+		public void print(char[] s)
+		{
+			text.append(s);
+		}
+
+
+		/**
+		 * DOCUMENT ME!
+		 *
+		 * @param d DOCUMENT ME!
+		 */
+		public void print(double d)
+		{
+			text.append(d);
+		}
+
+
+		/**
+		 * DOCUMENT ME!
+		 *
+		 * @param f DOCUMENT ME!
+		 */
+		public void print(float f)
+		{
+			text.append(f);
+		}
+
+
+		/**
+		 * DOCUMENT ME!
+		 *
+		 * @param i DOCUMENT ME!
+		 */
+		public void print(int i)
+		{
+			text.append(i);
+		}
+
+
+		/**
+		 * DOCUMENT ME!
+		 *
+		 * @param l DOCUMENT ME!
+		 */
+		public void print(long l)
+		{
+			text.append(l);
+		}
+
+
+		/**
+		 * DOCUMENT ME!
+		 *
+		 * @param obj DOCUMENT ME!
+		 */
+		public void print(Object obj)
+		{
+			text.append(obj);
+		}
+
+
+		/**
+		 * DOCUMENT ME!
+		 *
+		 * @param s DOCUMENT ME!
+		 */
+		public void print(String s)
+		{
+			text.append(s);
+		}
+
+
+		/**
+		 * DOCUMENT ME!
+		 */
+		public void println()
+		{
+			if (!text.toString().equals(""))
+			{
+				cat.log(level, text.toString());
+				text.setLength(0);
+			}
+		}
+
+
+		/**
+		 * DOCUMENT ME!
+		 *
+		 * @param x DOCUMENT ME!
+		 */
+		public void println(boolean x)
+		{
+			text.append(x);
+			cat.log(level, text.toString());
+			text.setLength(0);
+		}
+
+
+		/**
+		 * DOCUMENT ME!
+		 *
+		 * @param x DOCUMENT ME!
+		 */
+		public void println(char x)
+		{
+			text.append(x);
+			cat.log(level, text.toString());
+			text.setLength(0);
+		}
+
+
+		/**
+		 * DOCUMENT ME!
+		 *
+		 * @param x DOCUMENT ME!
+		 */
+		public void println(char[] x)
+		{
+			text.append(x);
+			cat.log(level, text.toString());
+			text.setLength(0);
+		}
+
+
+		/**
+		 * DOCUMENT ME!
+		 *
+		 * @param x DOCUMENT ME!
+		 */
+		public void println(double x)
+		{
+			text.append(x);
+			cat.log(level, text.toString());
+			text.setLength(0);
+		}
+
+
+		/**
+		 * DOCUMENT ME!
+		 *
+		 * @param x DOCUMENT ME!
+		 */
+		public void println(float x)
+		{
+			text.append(x);
+			cat.log(level, text.toString());
+			text.setLength(0);
+		}
+
+
+		/**
+		 * DOCUMENT ME!
+		 *
+		 * @param x DOCUMENT ME!
+		 */
+		public void println(int x)
+		{
+			text.append(x);
+			cat.log(level, text.toString());
+			text.setLength(0);
+		}
+
+
+		/**
+		 * DOCUMENT ME!
+		 *
+		 * @param x DOCUMENT ME!
+		 */
+		public void println(long x)
+		{
+			text.append(x);
+			cat.log(level, text.toString());
+			text.setLength(0);
+		}
+
+
+		/**
+		 * DOCUMENT ME!
+		 *
+		 * @param x DOCUMENT ME!
+		 */
+		public void println(Object x)
+		{
+			text.append(x);
+			cat.log(level, text.toString());
+			text.setLength(0);
+		}
+
+
+		/**
+		 * DOCUMENT ME!
+		 *
+		 * @param x DOCUMENT ME!
+		 */
+		public void println(String x)
+		{
+			text.append(x);
+			cat.log(level, text.toString());
+			text.setLength(0);
+		}
+	}
+
 }

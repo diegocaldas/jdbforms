@@ -38,6 +38,7 @@ import java.sql.SQLException;
  */
 public class SinglePerThreadConnectionProvider extends ConnectionProvider {
    private final static ThreadLocal singlePerThread = new ThreadLocal();
+
    /**
     *  Default constructor.
     *
@@ -84,6 +85,5 @@ public class SinglePerThreadConnectionProvider extends ConnectionProvider {
    protected void init() throws Exception {
       Class.forName(getPrefs().getJdbcDriver()).newInstance();
    }
-
 
 }

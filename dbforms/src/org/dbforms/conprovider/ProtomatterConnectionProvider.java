@@ -143,7 +143,7 @@ public class ProtomatterConnectionProvider extends ConnectionProvider
          {
             String key = (String) e.nextElement();
             jdbcProperties.put(key, props.getProperty(key));
-            getLog4JCategory().info("::init - JDBC property [" + key + "] = ["
+            getLogCat().info("::init - JDBC property [" + key + "] = ["
                + props.getProperty(key) + "]");
          }
       }
@@ -192,7 +192,7 @@ public class ProtomatterConnectionProvider extends ConnectionProvider
       if (!Util.isNull(value))
       {
          args.put(key, new Integer(value));
-         getLog4JCategory().info("::setIntegerArg - [" + key + "] = [" + value + "]");
+         getLogCat().info("::setIntegerArg - [" + key + "] = [" + value + "]");
       }
    }
 
@@ -215,7 +215,7 @@ public class ProtomatterConnectionProvider extends ConnectionProvider
       if (!Util.isNull(value))
       {
          args.put(key, value);
-         getLog4JCategory().info("::setArg - [" + key + "] = [" + value + "]");
+         getLogCat().info("::setArg - [" + key + "] = [" + value + "]");
       }
    }
 }

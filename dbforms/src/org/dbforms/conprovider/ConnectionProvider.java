@@ -131,7 +131,7 @@ public abstract class ConnectionProvider
     * 
     * @return the Log4J Category object
     */
-   protected Category getLog4JCategory() 
+   protected Category getLogCat() 
    {
       return cat;
    }
