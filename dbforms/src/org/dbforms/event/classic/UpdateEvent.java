@@ -171,12 +171,12 @@ public class UpdateEvent extends ValidationEvent
 
          // now we provide the values
          // first, we provide the "new" values for fields
-         Enumeration enum = fieldValues.keys();
+         Iterator enum = fieldValues.keys();
          int         col = 1;
 
-         while (enum.hasMoreElements())
+         while (enum.hasNext())
          {
-            String fieldName = (String) enum.nextElement();
+            String fieldName = (String) enum.next();
             Field  curField = table.getFieldByName(fieldName);
 
             if (curField != null)
@@ -244,9 +244,9 @@ public class UpdateEvent extends ValidationEvent
 
          enum = fieldValues.keys();
 
-         while (enum.hasMoreElements())
+         while (enum.hasNext())
          {
-            String fieldName = (String) enum.nextElement();
+            String fieldName = (String) enum.next();
             Field  curField = table.getFieldByName(fieldName);
 
             if (curField != null)

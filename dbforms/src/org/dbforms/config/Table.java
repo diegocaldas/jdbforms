@@ -22,7 +22,7 @@
  */
 package org.dbforms.config;
 import java.util.Vector;
-import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
 import java.sql.Connection;
@@ -638,12 +638,12 @@ public class Table
       // important: these are the fields which are sent through the current request;
       // this list may be only a subset of the field list, 
       //  it is not necessarily the complete field list of a table!
-      Enumeration enum        = fieldValues.keys();
+      Iterator enum        = fieldValues.keys();
       boolean     kommaNeeded = false;
 
-      while (enum.hasMoreElements())
+      while (enum.hasNext())
       {
-         String fieldName = (String) enum.nextElement();
+         String fieldName = (String) enum.next();
 
          if (kommaNeeded)
          {
@@ -680,14 +680,14 @@ public class Table
       queryBuf.append(" (");
 
       // list the names of fields we'll include into the insert operation
-      Enumeration enum = fieldValues.keys();
+      Iterator enum = fieldValues.keys();
 
-      while (enum.hasMoreElements())
+      while (enum.hasNext())
       {
-         String fieldName = (String) enum.nextElement();
+         String fieldName = (String) enum.next();
          queryBuf.append(fieldName);
 
-         if (enum.hasMoreElements())
+         if (enum.hasNext())
          {
             queryBuf.append(",");
          }
@@ -1332,11 +1332,11 @@ public class Table
    {
       StringBuffer buf  = new StringBuffer();
       int          cnt  = 0;
-      Enumeration  enum = ht.keys();
+      Iterator  enum = ht.keySet().iterator();
 
-      while (enum.hasMoreElements())
+      while (enum.hasNext())
       {
-         String fieldName = (String) enum.nextElement();
+         String fieldName = (String) enum.next();
          Field  aField = getFieldByName(fieldName);
 
          if ((aField != null) && (aField.isKey() || aField.isFieldSortable()))
@@ -1374,11 +1374,11 @@ public class Table
       {
          StringBuffer buf  = new StringBuffer();
          int          cnt  = 0;
-         Enumeration  enum = fvHT.keys();
+         Iterator  enum = fvHT.keys();
 
-         while (enum.hasMoreElements())
+         while (enum.hasNext())
          {
-            String     fieldName = (String) enum.nextElement();
+            String     fieldName = (String) enum.next();
             FieldValue fv = fvHT.get(fieldName);
             Field      f  = fv.getField();
 
@@ -1516,13 +1516,13 @@ public class Table
     */
    public void synchronizeData(FieldValues fv, Hashtable assocFv)
    {
-      Enumeration enum = assocFv.keys();
+      Iterator enum = assocFv.keySet().iterator();
       // 20031016-HKK: Bug fix: clear fv before refilling:. 
       //                        Making the fieldValues.remove("something_I_dont_want_updated") work? It gets ignored now.   
       fv.clear();
-      while (enum.hasMoreElements())
+      while (enum.hasNext())
       {
-         String aFieldName = (String) enum.nextElement();
+         String aFieldName = (String) enum.next();
          Field  f = this.getFieldByName(aFieldName);
 
          if (f != null)
@@ -2059,11 +2059,11 @@ public class Table
    public Hashtable getNamesHashtable(String core)
    {
       Hashtable   result = new Hashtable();
-      Enumeration enum = getFields().elements();
+      Iterator enum = getFields().iterator();
 
-      while (enum.hasMoreElements())
+      while (enum.hasNext())
       {
-         Field        f         = (Field) enum.nextElement();
+         Field        f         = (Field) enum.next();
          String       fieldName = f.getName();
          int          fieldId   = f.getId();
          StringBuffer sb        = new StringBuffer(core);

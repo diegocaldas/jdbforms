@@ -23,7 +23,7 @@
 
 package org.dbforms.config;
 import java.util.Hashtable;
-import java.util.Enumeration;
+import java.util.Iterator;
 
 import org.dbforms.util.Util;
 
@@ -110,9 +110,19 @@ public class FieldValues
     * 
     * @return the Enumeration of the hash table keys
     */
-   public Enumeration keys()
+   public Iterator keys()
    {
-      return ht.keys();
+      return ht.keySet().iterator();
+   }
+
+   /**
+    * Get the Enumeration of the hash table keys.
+    * 
+    * @return the Enumeration of the hash table keys
+    */
+   public Iterator elements()
+   {
+      return ht.values().iterator();
    }
 
 
@@ -134,17 +144,7 @@ public class FieldValues
     */
    public FieldValue[] toArr()
    {
-      FieldValue[] result = new FieldValue[size()];
-      Enumeration  enum = ht.elements();
-      int          cnt  = 0;
-
-      while (enum.hasMoreElements())
-      {
-         result[cnt] = (FieldValue) enum.nextElement();
-         cnt++;
-      }
-
-      return result;
+      return (FieldValue[]) ht.values().toArray();
    }
    
 	/**
@@ -160,13 +160,15 @@ public class FieldValues
 		 .append(size())
 		 .append("; elements are:\n");
 
-	  Enumeration keys = keys();
-
-	  while (keys.hasMoreElements())
+	  Iterator keys = keys();
+	  while (keys.hasNext())
 	  {
-		 String key = (String) keys.nextElement();
+		 String key = (String) keys.next();
 		 FieldValue fValue = get(key);
-		 sb.append(fValue.toString());
+       sb.append(key);
+       sb.append(" - ");
+       sb.append(fValue.toString());
+       sb.append("\n");
 	  }
 	  return sb.toString();
 	}

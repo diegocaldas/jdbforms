@@ -24,7 +24,7 @@
 package org.dbforms.event.datalist.dao;
 import java.io.File;
 import java.io.IOException;
-import java.util.Enumeration;
+import java.util.Iterator;
 import java.sql.Connection;
 import java.sql.SQLException;
 import org.apache.log4j.Category;
@@ -449,11 +449,11 @@ public abstract class DataSource
    protected void saveBlobFilesToDisk(FieldValues fieldValues)
                                throws SQLException
    {
-      Enumeration enum = fieldValues.keys();
+      Iterator enum = fieldValues.keys();
 
-      while (enum.hasMoreElements())
+      while (enum.hasNext())
       {
-         String fieldName = (String) enum.nextElement();
+         String fieldName = (String) enum.next();
          Field  curField = table.getFieldByName(fieldName);
 
          if (curField != null)
@@ -544,11 +544,11 @@ public abstract class DataSource
    protected void deleteBlobFilesFromDisk(FieldValues fieldValues)
                                    throws SQLException
    {
-      Enumeration enum = fieldValues.keys();
+      Iterator enum = fieldValues.keys();
 
-      while (enum.hasMoreElements())
+      while (enum.hasNext())
       {
-         String fieldName = (String) enum.nextElement();
+         String fieldName = (String) enum.next();
          Field  curField = table.getFieldByName(fieldName);
 
          if (curField != null)

@@ -27,7 +27,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.Hashtable;
 import java.util.Vector;
 import javax.servlet.http.HttpServletRequest;
@@ -174,12 +174,12 @@ public class InsertEvent extends ValidationEvent
 
          // now we provide the values;
          // every key is the parameter name from of the form page;
-         Enumeration enum = fieldValues.keys();
+         Iterator enum = fieldValues.keys();
          int         col = 1;
 
-         while (enum.hasMoreElements())
+         while (enum.hasNext())
          {
-            String fieldName = (String) enum.nextElement();
+            String fieldName = (String) enum.next();
             Field  curField = table.getFieldByName(fieldName);
 
             if (curField != null)
@@ -247,9 +247,9 @@ public class InsertEvent extends ValidationEvent
          ps.close(); // #JP Jun 27, 2001
          enum = fieldValues.keys();
 
-         while (enum.hasMoreElements())
+         while (enum.hasNext())
          {
-            String fieldName = (String) enum.nextElement();
+            String fieldName = (String) enum.next();
             Field  curField = table.getFieldByName(fieldName);
 
             if (curField != null)
