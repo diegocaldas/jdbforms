@@ -25,7 +25,7 @@
      not written to the resultsetvector. So custom filter could be build.
    - Added support for calculated fields. This field are defined in the config file and should/could 
      be calculated in the preAddRow, postAddRow or postSelect interceptor. See bookstore for an example.
-    
+   - add support for boolean fields 
        
 2004-10-17
 (Henner.Kollmann@gmx.de)
@@ -99,9 +99,6 @@ Moved the filename patch from BlobInterceptor to MultiPartRequest class!
 * The FileServlet servlet now adds "Cache-control: private" header as 
   according to my tests, without this MSIE gives an error while trying to 
   "Open" the file. "Save" works ok.
-
-
-
 
 2004-08-01
 (nkdbf@nechsi.com)
