@@ -33,6 +33,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.xml.sax.SAXException;
 import org.apache.log4j.Logger;
+import org.apache.log4j.LogManager;
 import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.commons.validator.ValidatorResources;
@@ -44,7 +45,7 @@ import org.dbforms.config.ConfigLoader;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.DbFormsErrors;
-
+import org.dbforms.util.Util;
 /**
  * This Servlet runs at application startup and reads the XML configuration in
  * dbforms-config.xml, populates a DbFormsConfig - Object and stores it in
@@ -112,8 +113,9 @@ public class ConfigServlet extends HttpServlet {
       String configurationStr =
          this.getServletConfig().getInitParameter("log4j.configuration");
       boolean usingURL = true;
-
-      if (configurationStr != null) {
+      
+      LogManager.resetConfiguration();
+      if (!Util.isNull(configurationStr)) {
          try {
             //Works fine with Tomcat 4.1.27 and Weblogic
             InputStream fis =
