@@ -99,7 +99,7 @@ public class MultipartRequest {
       DiskFileUpload upload = new DiskFileUpload();
       //    Set upload parameters
       upload.setSizeMax(maxPostSize);
-      upload.setSizeThreshold(1000000);
+ 
       String tmpDir = System.getProperty("java.io.tmpdir");
       upload.setRepositoryPath(tmpDir);
       //    Parse the request
