@@ -11,10 +11,9 @@
       <Realm className="org.apache.catalina.realm.MemoryRealm" />
       <Logger className="org.apache.catalina.logger.FileLogger"
              prefix="dbforms-cactus." suffix=".log"  timestamp="true"/>
-
       <Host name="localhost" debug="1" appBase="webapps" unpackWARs="true">
+          <Context path="" docBase="ROOT" debug="0"/>
       </Host>
-
     </Engine>
 
   </Service>
