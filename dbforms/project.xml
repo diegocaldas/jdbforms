@@ -165,9 +165,14 @@
       <properties>        
         <war.bundle.jar>true</war.bundle.jar>
       </properties>
-    </dependency>    
-  
-   
+    </dependency>  
+   <dependency>
+      <id>junit</id>
+      <version>3.7</version>
+      <properties>        
+        <war.bundle.jar>true</war.bundle.jar>
+      </properties>
+    </dependency>      
   </dependencies>
   
 
@@ -180,6 +185,7 @@
     <sourceModifications>
       <sourceModification>
         <excludes>
+            <exclude>com/**/*.*</exclude>
         </excludes>
       </sourceModification>
     </sourceModifications>
