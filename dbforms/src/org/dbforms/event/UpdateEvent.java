@@ -211,6 +211,7 @@ public class UpdateEvent extends DatabaseEvent {
 
 		// we are now ready to execute the query
 		ps.executeUpdate();
+		ps.close(); // #JP Jun 27, 2001
 
 
 		// if something went wrong we do not reach this piece of code:

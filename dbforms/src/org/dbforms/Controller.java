@@ -125,7 +125,10 @@ public class Controller extends HttpServlet {
 		}
 
 		Connection con = config.getDbConnection().getConnection();
-		try {
+		request.setAttribute("connection",con);
+
+
+		//try {
 
 			Vector errors = new Vector();
 			request.setAttribute("errors", errors);
@@ -176,6 +179,11 @@ public class Controller extends HttpServlet {
 
 			request.getRequestDispatcher(e.getFollowUp()).forward(request, response);
 
+		/* #(JP) 27-06-2001
+		   as sugessted by Martin van Wijk, we forward the connection to the VIEW and
+		   therefore we do NOT close it
+
+
 		} finally {
 			try {
 			  con.close();
@@ -183,6 +191,8 @@ public class Controller extends HttpServlet {
 				sqle3.printStackTrace();
 			}
 		}
+
+		*/
   }
 
   private void sendErrorMessage(String message, HttpServletRequest request, HttpServletResponse response) {

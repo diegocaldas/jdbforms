@@ -69,28 +69,34 @@ public class ResultSetVector extends Vector {
     ResultSetMetaData rsmd = rs.getMetaData();
     int columns = rsmd.getColumnCount();
 
-    while(rs.next()) {
+	try { // #JP Jun 27, 2001
 
-    	Object[] objectRow = new Object[columns];
-    	String[] stringRow = new String[columns];
+   		while(rs.next()) {
 
-    	for(int i=0; i<columns; i++) {
-		  Object tmpObj = rs.getObject(i+1);
+    		Object[] objectRow = new Object[columns];
+    		String[] stringRow = new String[columns];
 
-		  logCat.debug("col="+(i+1)+", tmpObj="+tmpObj);
+    		for(int i=0; i<columns; i++) {
+			  Object tmpObj = rs.getObject(i+1);
 
-    	  if(tmpObj!=null) {
-			 objectRow[i] = tmpObj;
-			 stringRow[i] = tmpObj.toString();
-    	  } else {
-			 objectRow[i] = null; // #checkme: really necessary?
-			 stringRow[i] = "";
-		 }
+			  logCat.debug("col="+(i+1)+", tmpObj="+tmpObj);
+
+    		  if(tmpObj!=null) {
+				 objectRow[i] = tmpObj;
+				 stringRow[i] = tmpObj.toString();
+    		  } else {
+				 objectRow[i] = null; // #checkme: really necessary?
+				 stringRow[i] = "";
+			 }
+    		}
+
+    		this.addElement(stringRow);
+    		objectVector.addElement(objectRow);
     	}
 
-    	this.addElement(stringRow);
-    	objectVector.addElement(objectRow);
-    }
+	} finally {
+		rs.close();
+	}
 
   }
 

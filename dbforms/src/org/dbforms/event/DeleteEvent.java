@@ -141,6 +141,7 @@ public class DeleteEvent extends DatabaseEvent {
 			} else throw new SQLException("Sorry, deleting data from table "+table.getName()+" is not granted this time. Your request could have been violating a condition or there is a weird database error. Contact system administrator if problem persists.");
 
 			rowToDelete.close();
+			ps.close(); // #JP Jun 27, 2001
 
 			// part 2b: process the interceptors associated to this table
 			table.processInterceptors(DbEventInterceptor.PRE_DELETE, request, associativeArray, config, con);

@@ -89,6 +89,7 @@ public class QueryData extends EmbeddedData {
 	  PreparedStatement ps = con.prepareStatement(query);
 
 	  ResultSetVector rsv = new ResultSetVector(ps.executeQuery());
+	  ps.close(); // #JP Jun 27, 2001
 
 		Vector result = new Vector();
 

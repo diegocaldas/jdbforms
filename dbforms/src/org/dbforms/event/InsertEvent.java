@@ -242,6 +242,7 @@ public class InsertEvent extends DatabaseEvent {
 
 		// execute the query & throws an exception if something goes wrong
 		ps.executeUpdate();
+		ps.close(); // #JP Jun 27, 2001
 
 		// if something went wrong we do not reach this piece of code:
 		// the story may continue for DISKBLOBs:
