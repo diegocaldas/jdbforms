@@ -1,6 +1,11 @@
 list of common mistakes of DbForms-based development
 ========================================================
+* using whereClause with filter and/or orderBy in dbform tag.  Filter and orderBy attributes will
+  be ignored if whereClause used.  Either use a whereClause or use a Filter with (if necessary) orderBy.
 
+* using whereClause in dbform tag and expecting navigation to work.  Although the navigation
+  buttons will be rendered(should the be included on your jsp page) if you use a whereClause,
+  Navigation will be unpredictable and so should not be used.  (Expected to change in the 1.4 release) 
 
 * forget to set isKey="true". every table needs at least 1 key, even if it's not defined in the 
   database
