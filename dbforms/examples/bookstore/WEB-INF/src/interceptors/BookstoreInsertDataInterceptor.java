@@ -11,6 +11,7 @@ import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.ValidationException;
 import org.dbforms.config.Table;
 import org.dbforms.config.FieldValues;
+import org.dbforms.config.FieldValue;
 
 /**
  * @author hkk
@@ -24,17 +25,21 @@ public class BookstoreInsertDataInterceptor extends DbEventInterceptorSupport {
       throws ValidationException {
       long new_id = 0;
       String fieldName = table.getName() + "_ID";
-      String qry = "select max(" + fieldName  + ") from " + table.getName();
-      try {
-         Statement stmt = con.createStatement();
-         ResultSet rs = stmt.executeQuery(qry);
-         rs.next();
-         new_id = rs.getLong(1);
-      } catch (SQLException e) {
-         e.printStackTrace();
+      FieldValue fv = fieldValues.get(fieldName);
+      new_id = ((Integer) fv.getFieldValueAsObject()).intValue();
+      if (new_id == 0) {
+         String qry = "select max(" + fieldName + ") from " + table.getName();
+         try {
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(qry);
+            rs.next();
+            new_id = rs.getLong(1);
+         } catch (SQLException e) {
+            e.printStackTrace();
+         }
+         new_id++;
+         setValue(table, fieldValues, fieldName, String.valueOf(new_id));
       }
-      new_id++;
-      setValue(table, fieldValues, fieldName, String.valueOf(new_id));
       return GRANT_OPERATION;
    }
 
