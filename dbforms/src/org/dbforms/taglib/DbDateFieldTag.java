@@ -123,9 +123,10 @@ public class DbDateFieldTag extends DbBaseInputTag
                   .append(" top.newWin = window.open('")
                   .append(request.getContextPath())
                   .append("/dbformslib/jscal/calendar.html','cal','width=270,height=280')\">")
-                  .append("<img SRC=\"").append(request.getContextPath())
+                  .append("<img src=\"").append(request.getContextPath())
                   .append("/dbformslib/jscal/calendar.gif\" width=\"32\" height=\"32\" ")
                   .append(" border=\"0\"  alt=\"Click on the Calendar to activate the Pop-Up Calendar Window.\">")
+				  .append("</img>")
                   .append("</a>");
          }
 

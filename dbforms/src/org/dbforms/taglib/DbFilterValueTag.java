@@ -401,11 +401,12 @@ public class DbFilterValueTag extends DbBaseHandlerTag implements DataContainer,
          buf.append("setDateField(document.dbform['").append(getValueName())
             .append("']);").append(" top.newWin = window.open('")
             .append(((HttpServletRequest) pageContext.getRequest()).getContextPath())
-            .append("/jscal/calendar.html','cal','WIDTH=270,HEIGHT=280')\">")
-            .append("<IMG SRC=\"")
+            .append("/jscal/calendar.html','cal','width=270,height=280')\">")
+            .append("<img src=\"")
             .append(((HttpServletRequest) pageContext.getRequest()).getContextPath())
-            .append("/jscal/calendar.gif\" WIDTH=\"32\" HEIGHT=\"32\" ")
-            .append(" BORDER=0  alt=\"Click on the Calendar to activate the Pop-Up Calendar Window.\">")
+            .append("/jscal/calendar.gif\" width=\"32\" height=\"32\" ")
+            .append(" border=0  alt=\"Click on the Calendar to activate the Pop-Up Calendar Window.\">")
+			.append("</img>")
             .append("</a>");
       }
    }
