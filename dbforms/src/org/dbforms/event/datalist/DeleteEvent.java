@@ -101,12 +101,10 @@ public class DeleteEvent extends DatabaseEvent {
       // which values do we find in request
       FieldValues fieldValues = getFieldValues();
 
-      int operation = DbEventInterceptor.GRANT_OPERATION;
-
       // part 2: check if there are interceptors to be processed (as definied by
       // "interceptor" element embedded in table element in dbforms-config xml file)
       // process the interceptors associated to this table
-      operation = getTable().processInterceptors(DbEventInterceptor.PRE_DELETE, getRequest(), fieldValues, getConfig(), con);
+      int operation = getTable().processInterceptors(DbEventInterceptor.PRE_DELETE, getRequest(), fieldValues, getConfig(), con);
 
       if (operation == DbEventInterceptor.GRANT_OPERATION) {
          // in order to process an update, we need the key of the dataset to update;

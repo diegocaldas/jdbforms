@@ -129,13 +129,8 @@ public class InsertEvent extends ValidationEvent
          throw new SQLException("no parameters");
       }
 
-      // part 2: check if there are interceptors to be processed (as definied by
-      // "interceptor" element embedded in table element in dbforms-config xml file)
-      int operation = DbEventInterceptor.GRANT_OPERATION;
-
-
       // process the interceptors associated to this table
-      operation = getTable().processInterceptors(DbEventInterceptor.PRE_INSERT, 
+      int operation = getTable().processInterceptors(DbEventInterceptor.PRE_INSERT, 
                                             getRequest(), fieldValues, getConfig(), 
                                             con);
 
