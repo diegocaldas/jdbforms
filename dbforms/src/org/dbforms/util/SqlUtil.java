@@ -20,13 +20,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.util;
 
 import java.sql.*;
 import java.io.*;
 import java.text.*;
-import java.util.Calendar;
 import org.apache.log4j.Category;
 import org.dbforms.DbFormsConfig;
 
@@ -365,41 +363,4 @@ public class SqlUtil
             logCat.error("::logSqlException - nested SQLException (" + (i++) + ")", e);
     }
 
-
-	/**
-	 *  save parsing of a string to date value.
-	 * 
-	 *  will set missing fields to default values:
-	 *      missing year becomes current year
-	 *      missing month becomes current month
-	 *      missing day becomes current day
-	 *      missing time becomes 00:00:00 
-	 *
-	 * @param sdf  DateFormat to use
-	 *         s    String to parse
-	 * @return the Date
-	 */
-	public final static java.util.Date saveStringToDate(SimpleDateFormat sdf, String s) {
-		java.util.Date d = null;
-		try {
-			d = sdf.parse(s);
-		} catch (ParseException e) {
-			Calendar cal = sdf.getCalendar();
-			Calendar now = Calendar.getInstance();
-			if (!cal.isSet(Calendar.DAY_OF_MONTH))
-				cal.set(Calendar.DAY_OF_MONTH, now.get(Calendar.DAY_OF_MONTH));
-			if (!cal.isSet(Calendar.MONTH))
-			   cal.set(Calendar.MONTH, now.get(Calendar.MONTH));
-			if (!cal.isSet(Calendar.YEAR))
-			   cal.set(Calendar.YEAR, now.get(Calendar.YEAR));
-			if (!cal.isSet(Calendar.HOUR))
-				cal.set(Calendar.HOUR, 0);
-			if (!cal.isSet(Calendar.MINUTE))
-				cal.set(Calendar.MINUTE, 0);
-			if (!cal.isSet(Calendar.SECOND))
-				cal.set(Calendar.SECOND, 0);
-			d = cal.getTime();
-		}
-		return d;
-	}
 }
