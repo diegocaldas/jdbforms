@@ -170,16 +170,22 @@ public class Table {
     *         related to this table.
     */
    public Vector getInterceptors() {
-      return interceptors;
+      if (config.hasInterceptors()) {
+         Vector tmp = new Vector(interceptors);
+         tmp.addAll(config.getInterceptors());
+         return tmp;
+      } else {
+         return interceptors;
+      }
    }
-
    /**
     * Check if this table has got interceptors.
     *
     * @return true if the table contains interceptors, false otherwise
     */
    public boolean hasInterceptors() {
-      return (interceptors != null) && (interceptors.size() > 0);
+      return config.hasInterceptors()
+         || ((interceptors != null) && (interceptors.size() > 0));
    }
 
    /**
@@ -1498,7 +1504,8 @@ public class Table {
             int index = token.indexOf(" ");
 
             // Blank space used between field and command
-            if (index != -1) // Do we have a command, if not assume ASC order
+            if (index != -1)
+               // Do we have a command, if not assume ASC order
                {
                String command = token.substring(index).toUpperCase();
                int pos = command.indexOf("ASC");

@@ -175,8 +175,27 @@
 						<xs:attribute name="orderBy" type="xs:string" use="optional"/>
 					</xs:complexType>
 				</xs:element>
-				<xs:element name="DOMFactoryClass" type="xs:string" minOccurs="0" maxOccurs="1" />
-				<xs:element name="DefaultEscaperClass" type="xs:string" minOccurs="0" maxOccurs="1" />
+				<xs:element name="DOMFactoryClass" type="xs:string" minOccurs="0"/>
+				<xs:element name="DefaultEscaperClass" type="xs:string" minOccurs="0"/>
+				<xs:element name="interceptors" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence minOccurs="0" maxOccurs="unbounded">
+							<xs:element name="interceptor">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="param" minOccurs="0" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:attribute name="name" type="xs:string" use="required"/>
+												<xs:attribute name="value" type="xs:string" use="required"/>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+									<xs:attribute name="className" type="xs:string" use="required"/>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>

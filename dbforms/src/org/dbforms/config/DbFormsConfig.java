@@ -34,7 +34,7 @@ import org.apache.log4j.Category;
 import org.dbforms.util.Util;
 import org.dbforms.util.Escaper;
 import org.dbforms.util.ReflectionUtil;
-import org.dbforms.dom.DOMFactory; 
+import org.dbforms.dom.DOMFactory;
 
 import java.sql.Connection;
 
@@ -50,270 +50,264 @@ import java.sql.Connection;
  * @author Joe Peer <joepeer@excite.com>
  */
 public class DbFormsConfig {
-	private Category logCat = Category.getInstance(this.getClass().getName());
+   private Category logCat = Category.getInstance(this.getClass().getName());
 
-	/** DOCUMENT ME! */
-	public static final String CONFIG = "dbformsConfig";
-	private Vector tables;
+   /** DOCUMENT ME! */
+   public static final String CONFIG = "dbformsConfig";
+   private Vector tables = new Vector();
 
-	/** for quicker lookup by name */
-	private Hashtable tableNameHash;
+   /** for quicker lookup by name */
+   private Hashtable tableNameHash = new Hashtable();
 
-	/** the default db connection */
-	private DbConnection defaultDbConnection;
+   /** the default db connection */
+   private DbConnection defaultDbConnection;
 
-	/** contains connection put by addDbConnection */
-	private ArrayList dbConnectionsList;
-	private Hashtable dbConnectionsHash;
-	private String realPath;
+   /** contains connection put by addDbConnection */
+   private ArrayList dbConnectionsList = new ArrayList();
+   private Hashtable dbConnectionsHash = new Hashtable();
+   private String realPath;
 
-	private ServletConfig servletConfig;
+   private ServletConfig servletConfig;
 
+   private String defaultFormatterClass =
+      "org.dbforms.util.DefaultFormatterImpl";
+   private String defaultEscaperClass = "org.dbforms.util.DefaultEscaperImpl";
+   private Escaper escaper = null;
 
-   private String defaultFormatterClass   = "org.dbforms.util.DefaultFormatterImpl";
-   private String defaultEscaperClass     = "org.dbforms.util.DefaultEscaperImpl";
-   private Escaper escaper = null;   
-   
-	/**
-	 * Creates a new DbFormsConfig object.
-	 * 
-	 * @param realPath local path to the application on local server
-	 */
-	public DbFormsConfig(String realPath) {
-		setRealPath(realPath);
-		tables = new Vector();
-		tableNameHash = new Hashtable();
-		dbConnectionsHash = new Hashtable();
-		dbConnectionsList = new ArrayList();
-	}
+   private Vector interceptors = new Vector();
+   /**
+    * Creates a new DbFormsConfig object.
+    * 
+    * @param realPath local path to the application on local server
+    */
+   public DbFormsConfig(String realPath) {
+      setRealPath(realPath);
+   }
 
-	/**
-	 * DOCUMENT ME!
-	 *
-	 * @param table DOCUMENT ME!
-	 */
-	public void addTable(Table table) {
-		logCat.info("add table called");
-		table.setId(tables.size());
-		table.setConfig(this);
-		table.initDefaultOrder();
-		tables.addElement(table);
-		tableNameHash.put(table.getName(), table);
-	}
+   /**
+    * DOCUMENT ME!
+    *
+    * @param table DOCUMENT ME!
+    */
+   public void addTable(Table table) {
+      logCat.info("add table called");
+      table.setId(tables.size());
+      table.setConfig(this);
+      table.initDefaultOrder();
+      tables.addElement(table);
+      tableNameHash.put(table.getName(), table);
+   }
 
-	/**
-	 * DOCUMENT ME!
-	 *
-	 * @param index DOCUMENT ME!
-	 *
-	 * @return DOCUMENT ME!
-	 */
-	public Table getTable(int index) {
-		try {
-			return (Table) tables.elementAt(index);
-		} catch (Exception e) {
-			return null;
-		}
-	}
+   /**
+    * DOCUMENT ME!
+    *
+    * @param index DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public Table getTable(int index) {
+      try {
+         return (Table) tables.elementAt(index);
+      } catch (Exception e) {
+         return null;
+      }
+   }
 
-	/**
-	 * DOCUMENT ME!
-	 *
-	 * @param name DOCUMENT ME!
-	 *
-	 * @return DOCUMENT ME!
-	 */
-	public Table getTableByName(String name) {
-		try {
-			return (Table) tableNameHash.get(name);
-		} catch (Exception e) {
-			return null;
-		}
-	}
+   /**
+    * DOCUMENT ME!
+    *
+    * @param name DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public Table getTableByName(String name) {
+      try {
+         return (Table) tableNameHash.get(name);
+      } catch (Exception e) {
+         return null;
+      }
+   }
 
-	/**
-	 * DOCUMENT ME!
-	 *
-	 * @param dbConnection DOCUMENT ME!
-	 */
-	public void addDbConnection(DbConnection dbConnection) {
-		dbConnection.setName(
-			Util.replaceRealPath(dbConnection.getName(), realPath));
-		dbConnectionsList.add(dbConnection);
+   /**
+    * DOCUMENT ME!
+    *
+    * @param dbConnection DOCUMENT ME!
+    */
+   public void addDbConnection(DbConnection dbConnection) {
+      dbConnection.setName(
+         Util.replaceRealPath(dbConnection.getName(), realPath));
+      dbConnectionsList.add(dbConnection);
 
-		if (!Util.isNull(dbConnection.getId())) {
-			dbConnectionsHash.put(dbConnection.getId(), dbConnection);
-		}
+      if (!Util.isNull(dbConnection.getId())) {
+         dbConnectionsHash.put(dbConnection.getId(), dbConnection);
+      }
 
-		// if a default connection does not exist yet,
-		// use the input connection as the default one;
-		if ((dbConnection.isDefaultConnection()
-			&& ((defaultDbConnection == null)
-				|| !defaultDbConnection.isDefaultConnection()))
-			|| (defaultDbConnection == null)) {
-			defaultDbConnection = dbConnection;
-			dbConnection.setDefaultConnection(true);
-		}
+      // if a default connection does not exist yet,
+      // use the input connection as the default one;
+      if ((dbConnection.isDefaultConnection()
+         && ((defaultDbConnection == null)
+            || !defaultDbConnection.isDefaultConnection()))
+         || (defaultDbConnection == null)) {
+         defaultDbConnection = dbConnection;
+         dbConnection.setDefaultConnection(true);
+      }
 
-		logCat.info(
-			"::addDbConnection - added the dbConnection ["
-				+ dbConnection
-				+ "]");
-	}
+      logCat.info(
+         "::addDbConnection - added the dbConnection [" + dbConnection + "]");
+   }
 
-	/**
-	 * DOCUMENT ME!
-	 *
-	 * @param dbConnectionName DOCUMENT ME!
-	 *
-	 * @return DOCUMENT ME!
-	 */
-	public DbConnection getDbConnection(String dbConnectionName) {
-		DbConnection connection = null;
+   /**
+    * DOCUMENT ME!
+    *
+    * @param dbConnectionName DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public DbConnection getDbConnection(String dbConnectionName) {
+      DbConnection connection = null;
 
-		if (Util.isNull(dbConnectionName)) {
-			return defaultDbConnection;
-		}
+      if (Util.isNull(dbConnectionName)) {
+         return defaultDbConnection;
+      }
 
-		try {
-			connection =
-				(DbConnection) dbConnectionsList.get(
-					Integer.parseInt(dbConnectionName));
-		} catch (Exception ex) {
-			// wanted! logCat.error("getDbConnection", ex);
-		}
-		if (connection != null) {
-			return connection;
-		}
+      try {
+         connection =
+            (DbConnection) dbConnectionsList.get(
+               Integer.parseInt(dbConnectionName));
+      } catch (Exception ex) {
+         // wanted! logCat.error("getDbConnection", ex);
+      }
+      if (connection != null) {
+         return connection;
+      }
 
-		connection = (DbConnection) dbConnectionsHash.get(dbConnectionName);
+      connection = (DbConnection) dbConnectionsHash.get(dbConnectionName);
 
-		if (connection == null) {
-			connection = defaultDbConnection;
-		}
+      if (connection == null) {
+         connection = defaultDbConnection;
+      }
 
-		return connection;
-	}
+      return connection;
+   }
 
-	/**
-	 * 
-	 * Just returns the default connection
-	 * 
-	 * @return a JDBC connection object
-	 * 
-	 * @throws IllegalArgumentException if any error occurs
-	 */
-	public Connection getConnection() throws IllegalArgumentException {
-		return getConnection(null);
-	}
+   /**
+    * 
+    * Just returns the default connection
+    * 
+    * @return a JDBC connection object
+    * 
+    * @throws IllegalArgumentException if any error occurs
+    */
+   public Connection getConnection() throws IllegalArgumentException {
+      return getConnection(null);
+   }
 
-	/**
-	 * Get a connection using the connection name specified into the xml
-	 * configuration file.
-	 * 
-	 * @param dbConnectionName  the name of the DbConnection element
-	 * 
-	 * @return a JDBC connection object
-	 * 
-	 * @throws IllegalArgumentException if any error occurs
-	 */
-	public Connection getConnection(String dbConnectionName)
-		throws IllegalArgumentException {
-		DbConnection dbConnection = null;
-		Connection con = null;
-		//  get the DbConnection object having the input name;
-		if ((dbConnection = getDbConnection(dbConnectionName)) == null) {
-			throw new IllegalArgumentException(
-				"No DbConnection object configured with name '"
-					+ dbConnectionName
-					+ "'");
-		}
+   /**
+    * Get a connection using the connection name specified into the xml
+    * configuration file.
+    * 
+    * @param dbConnectionName  the name of the DbConnection element
+    * 
+    * @return a JDBC connection object
+    * 
+    * @throws IllegalArgumentException if any error occurs
+    */
+   public Connection getConnection(String dbConnectionName)
+      throws IllegalArgumentException {
+      DbConnection dbConnection = null;
+      Connection con = null;
+      //  get the DbConnection object having the input name;
+      if ((dbConnection = getDbConnection(dbConnectionName)) == null) {
+         throw new IllegalArgumentException(
+            "No DbConnection object configured with name '"
+               + dbConnectionName
+               + "'");
+      }
 
-		// now try to get the JDBC connection from the retrieved DbConnection object;
-		if ((con = dbConnection.getConnection()) == null) {
-			throw new IllegalArgumentException(
-				"JDBC-Troubles:  was not able to create connection from "
-					+ dbConnection);
-		}
+      // now try to get the JDBC connection from the retrieved DbConnection object;
+      if ((con = dbConnection.getConnection()) == null) {
+         throw new IllegalArgumentException(
+            "JDBC-Troubles:  was not able to create connection from "
+               + dbConnection);
+      }
 
-		return con;
-	}
+      return con;
+   }
 
-	/**
-	 * DOCUMENT ME!
-	 *
-	 * @param servletConfig DOCUMENT ME!
-	 */
-	public void setServletConfig(ServletConfig servletConfig) {
-		this.servletConfig = servletConfig;
-	}
+   /**
+    * DOCUMENT ME!
+    *
+    * @param servletConfig DOCUMENT ME!
+    */
+   public void setServletConfig(ServletConfig servletConfig) {
+      this.servletConfig = servletConfig;
+   }
 
-	/**
-	*   get access to configuration of config servlet
-	* 
-	*  @return the store config 
-	* 
-	*/
-	public ServletConfig getServletConfig() {
-		return servletConfig;
-	}
+   /**
+   *   get access to configuration of config servlet
+   * 
+   *  @return the store config 
+   * 
+   */
+   public ServletConfig getServletConfig() {
+      return servletConfig;
+   }
 
-	/**
-	 *  Get access to servlet context in order to interoperate with
-	 *  other components of the web application
-	 * 
-	 * @return the stored context
-	 * 
-	 */
-	public ServletContext getServletContext() {
-		return servletConfig.getServletContext();
-	}
+   /**
+    *  Get access to servlet context in order to interoperate with
+    *  other components of the web application
+    * 
+    * @return the stored context
+    * 
+    */
+   public ServletContext getServletContext() {
+      return servletConfig.getServletContext();
+   }
 
-	/**
-	 *  Returns the realPath.
-	 *
-	 * @return the realPath
-	 */
-	public String getRealPath() {
-		return realPath;
-	}
+   /**
+    *  Returns the realPath.
+    *
+    * @return the realPath
+    */
+   public String getRealPath() {
+      return realPath;
+   }
 
-	/**
-	 *  Sets the realPath.
-	 *
-	 * @param realPath The realPath to set
-	 */
-	public void setRealPath(String realPath) {
-		if (!Util.isNull(realPath)) {
-			realPath = realPath.replace('\\', '/');
-		}
-		this.realPath = realPath;
-	}
+   /**
+    *  Sets the realPath.
+    *
+    * @param realPath The realPath to set
+    */
+   public void setRealPath(String realPath) {
+      if (!Util.isNull(realPath)) {
+         realPath = realPath.replace('\\', '/');
+      }
+      this.realPath = realPath;
+   }
 
-	/**
-	 * DOCUMENT ME!
-	 *
-	 * @return DOCUMENT ME!
-	 */
-	public String toString() {
-		StringBuffer buf = new StringBuffer();
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String toString() {
+      StringBuffer buf = new StringBuffer();
 
-		for (int i = 0; i < tables.size(); i++) {
-			Table t = (Table) tables.elementAt(i);
-			buf.append("table:\n");
-			buf.append(t.toString());
-		}
+      for (int i = 0; i < tables.size(); i++) {
+         Table t = (Table) tables.elementAt(i);
+         buf.append("table:\n");
+         buf.append(t.toString());
+      }
 
-		return buf.toString();
-	}
-	/**
-	 * @param string
-	 */
-	public void setDOMFactoryClass(String string) {
-		DOMFactory.setFactoryClass(string);
-	}
+      return buf.toString();
+   }
+   /**
+    * @param string
+    */
+   public void setDOMFactoryClass(String string) {
+      DOMFactory.setFactoryClass(string);
+   }
 
-   
    /**
     * @return
     */
@@ -327,7 +321,6 @@ public class DbFormsConfig {
    public void setDefaultFormatterClass(String string) {
       defaultFormatterClass = string;
    }
-
 
    /**
     * @return
@@ -350,13 +343,38 @@ public class DbFormsConfig {
             try {
                escaper = (Escaper) ReflectionUtil.newInstance(s);
             } catch (Exception e) {
-               logCat.error(
-                  "cannot create the new escaper [" + s + "]",
-                  e);
+               logCat.error("cannot create the new escaper [" + s + "]", e);
             }
          }
       }
       return escaper;
+   }
+
+   /**
+    *  Add an global interceptor 
+    *
+    * @param interceptor the interceptor to add
+    */
+   public void addInterceptor(Interceptor interceptor) {
+      interceptors.addElement(interceptor);
+   }
+
+   /**
+    *  Get all the global interceptor objects 
+    *
+    * @return a vector containing all the interceptor objects
+    */
+   public Vector getInterceptors() {
+      return interceptors;
+   }
+
+   /**
+    * Check if this table has got interceptors.
+    *
+    * @return true if the table contains interceptors, false otherwise
+    */
+   public boolean hasInterceptors() {
+      return (interceptors != null) && (interceptors.size() > 0);
    }
 
 }
