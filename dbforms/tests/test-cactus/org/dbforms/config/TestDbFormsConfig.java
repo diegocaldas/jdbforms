@@ -90,7 +90,7 @@ public class TestDbFormsConfig extends ServletTestCase
 		assertTrue("Found field AUTHOR_ID", field != null);
 		assertTrue("Make sure field names names ARE casesensitve", 
 					  dbFormsConfig.getTableByName("author_id") == null);
-		assertTrue("field is key field", field.getKey());
+		assertTrue("field is key field", field.hasIsKeySet());
 		assertTrue("field is autoinc", field.hasAutoIncSet());
 		field = tbl.getFieldByName("NAME");
 		assertTrue("Found field NAME", field != null);
