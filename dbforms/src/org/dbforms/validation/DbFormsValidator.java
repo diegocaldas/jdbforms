@@ -83,7 +83,10 @@ public class DbFormsValidator implements Serializable {
          // Check only if new value != old value!
          return true;
 
-      String value = f.getFieldValueAsObject().toString();
+      String value = null;
+      Object obj = f.getFieldValueAsObject();
+      if (obj != null)
+         value = obj.toString();
       if (GenericValidator.isBlankOrNull(value)) {
          errors.add(new ValidationException(dbFormsErrorMessage(REQUIRED, va, field, locale, dbFormsErrors)));
          return false;
@@ -280,7 +283,7 @@ public class DbFormsValidator implements Serializable {
       boolean bValid = true;
       String value = getValue(bean, field);
       if (!Util.isNull(value)) {
-		 value = ((FieldValues) bean).get(field.getProperty()).getFieldValue();   
+         value = ((FieldValues) bean).get(field.getProperty()).getFieldValue();
          String datePattern = field.getVarValue("datePattern");
          String datePatternStrict = field.getVarValue("datePatternStrict");
          if (!GenericValidator.isBlankOrNull(value)) {
@@ -448,7 +451,10 @@ public class DbFormsValidator implements Serializable {
          if (f.getFieldValue().equals(f.getOldValue()))
             // Check only if new value != old value!
             return null;
-         String value = f.getFieldValueAsObject().toString();
+         String value = null;
+         Object obj = f.getFieldValueAsObject();
+         if (obj != null)
+            value = obj.toString();
          return value;
       } catch (Exception e) {
          logCat.error(e);
