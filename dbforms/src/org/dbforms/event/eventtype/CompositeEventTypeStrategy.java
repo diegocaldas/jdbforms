@@ -32,7 +32,7 @@ import java.util.ArrayList;
  * Abstract composite EventTypeStrategy class.
  * 
  * @author Luca Fossato
- * @deprecated 28 novembre 2002
+ * @created 28 novembre 2002
  */
 public abstract class CompositeEventTypeStrategy implements EventTypeStrategy
 {

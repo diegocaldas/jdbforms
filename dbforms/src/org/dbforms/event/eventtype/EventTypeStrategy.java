@@ -28,7 +28,7 @@ package org.dbforms.event.eventtype;
  * or type value from an input event string.
  * 
  * @author Luca Fossato
- * @deprecated 28 novembre 2002
+ * @created 28 novembre 2002
  */
 public interface EventTypeStrategy
 {

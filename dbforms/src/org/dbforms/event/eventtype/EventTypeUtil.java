@@ -27,7 +27,7 @@ package org.dbforms.event.eventtype;
  * EventType utility class
  * 
  * @author Luca Fossato
- * @deprecated 28 novembre 2002
+ * @created 28 novembre 2002
  */
 public class EventTypeUtil
 {
