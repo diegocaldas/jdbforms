@@ -10961,8 +10961,6 @@ pageContext or pass in a value directly and then use the textFormat tag to forma
 				</summary>
 				<tagclass>org.dbforms.taglib.CewolfPieDataTag</tagclass>
 				<bodycontent>empty</bodycontent>
-				<info>
-				</info>
 				<attribute>
 					<name>categoryField</name>
 					<required>true</required>
