@@ -22,13 +22,14 @@
  */
 
 package org.dbforms.util;
+
 import java.util.*;
 import java.sql.*;
 import javax.sql.*;
 import javax.naming.*;
 import org.apache.log4j.Category;
-import com.pow2.dao.ConnectionFactory;
-import com.pow2.dao.ConnectionProviderPrefs;
+import org.dbforms.conprovider.ConnectionFactory;
+import org.dbforms.conprovider.ConnectionProviderPrefs;
 
 
 
@@ -39,8 +40,8 @@ import com.pow2.dao.ConnectionProviderPrefs;
  * <pre>
  *
  *  &lt;dbconnection
- *           name = "jdbc/dbformstest"
- *                isJndi = "true"
+ *           name   = "jdbc/dbformstest"
+ *           isJndi = "true"
  *  /&gt;
  *  </pre>
  *<p>(in the example above dbforms asumes that the jndi-entry "jdbc/dbformstest" is correctly configured in
@@ -49,9 +50,9 @@ import com.pow2.dao.ConnectionProviderPrefs;
  * <p> or:</p>
  * <pre>
  *  &lt;dbconnection
- *          name = "jdbc:poolman://dbformstest"
- *                isJndi = "false"
- *          class = "com.codestudio.sql.PoolMan"
+ *          name   = "jdbc:poolman://dbformstest"
+ *          isJndi = "false"
+ *          class  = "com.codestudio.sql.PoolMan"
  *  /&gt;
  *</pre>
  *<p>
@@ -69,7 +70,6 @@ import com.pow2.dao.ConnectionProviderPrefs;
  */
 public class DbConnection
 {
-    private static final String CONNECTION_FACTORY_CLASS = "com.pow2.dao.ConnectionFactory";
     static Category logCat = Category.getInstance(DbConnection.class.getName());
     private ConnectionFactory connectionFactory = ConnectionFactory.instance();
     private String id;
@@ -88,6 +88,7 @@ public class DbConnection
     private boolean pow2 = false;
     private boolean isFactorySetup = false;
 
+
     /**
      * Creates a new DbConnection object.
      */
@@ -95,6 +96,7 @@ public class DbConnection
     {
         properties = new java.util.Properties();
     }
+
 
     /**
      *  Adds a new proptery - used while parsing XML file
@@ -339,8 +341,7 @@ public class DbConnection
             }
             catch (NamingException ne)
             {
-                ne.printStackTrace();
-
+                logCat.error("::getConnection - cannot retrieve a connection from JNDI", ne);
                 return null;
             }
             catch (Exception e)
@@ -349,9 +350,9 @@ public class DbConnection
 
                 return null;
             }
-
-            // access the connection using the pow2 library by Luca Fossato.
         }
+
+        // access the connection using the pow2 library by Luca Fossato <fossato@pow2.com>
         else if (pow2)
         {
             try
@@ -365,13 +366,12 @@ public class DbConnection
             }
             catch (Exception se)
             {
-                logCat.error("::getConnection - cannot retrieve " + "a connection from the " + "connectionFactory", se);
-
+                logCat.error("::getConnection - cannot retrieve a connection from the connectionFactory", se);
                 return null;
             }
-
-            // access connection directly from db or from a connectionpool-manager like "Poolman"
         }
+
+        // access connection directly from db or from a connectionpool-manager like "Poolman"
         else
         {
             try
@@ -400,8 +400,7 @@ public class DbConnection
             }
             catch (Exception e)
             {
-                e.printStackTrace();
-
+                logCat.error("::getConnection - cannot retrieve a connection from DriverManager", e);
                 return null;
             }
         }
