@@ -48,7 +48,7 @@
  &lt;servlet&gt;
     &lt;servlet-name&gt;startreport&lt;/servlet-name&gt;
     &lt;display-name&gt;startreport&lt;/display-name&gt;
-     &lt;servlet-class&gt;org.dbforms.StartReportServlet&lt;/servlet-class&gt;
+     &lt;servlet-class&gt;org.dbforms.servlets.StartReportServlet&lt;/servlet-class&gt;
  &lt;/servlet&gt;
     
  &lt;servlet-mapping&gt;
