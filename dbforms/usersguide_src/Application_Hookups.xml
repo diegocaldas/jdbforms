@@ -232,7 +232,7 @@ will ensure that the value &#147;smith&#148; be stored in the lastname field in 
     <example>
       <title>Validation checking in interceptor</title>
       <screen>
-import org.dbforms.*;
+import org.dbforms.config.*;
 import org.dbforms.event.*;
 import java.sql.*;
 import java.util.*;
@@ -242,7 +242,7 @@ import javax.servlet.http.*;
         <emphasis role="bold">extends DbEventInterceptorSupport</emphasis> {
 
         private int 
-        <emphasis role="bold">checkCustomer</emphasis>(FieldValue fieldValues) // method invented by developer    
+        <emphasis role="bold">checkCustomer</emphasis>(FieldValues fieldValues) // method invented by developer    
             throws ValidationException {
 
                 String lastName = (String) fieldValues.get("lastname").getFieldValue();

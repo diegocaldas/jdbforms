@@ -150,4 +150,6 @@ must be changed to
     </para>
     </sect2>
   </sect1>
+  <sect2><title>2.0</title>
+  <para>To upgrade to 2.0 please see the sections on 1.1.4pr1 and 1.1.4pr2 as they were the basis for this release</para>
 </chapter>
