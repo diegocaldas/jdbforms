@@ -43,23 +43,21 @@ import org.dbforms.event.eventtype.EventTypeUtil;
  * class and to keep the framework open for implementations of new Event-classes)
  *
  * @author  Joe Peer <j.peer@gmx.net>
+ * @created  30 novembre 2002
  */
 public class EventEngine
 {
     /** logging category for this class */
     static Category logCat = Category.getInstance(EventEngine.class.getName());
 
-
     /** instance of DatabaseEventFactory */
     private DatabaseEventFactory dbEventFactory = DatabaseEventFactoryImpl.instance();
 
     /** instance of NavigationEventFactory */
     private NavEventFactory navEventFactory = NavEventFactoryImpl.instance();
-
     private HttpServletRequest request;
     private DbFormsConfig config;
-    Vector  involvedTables;
-
+    Vector involvedTables;
 
     /**
      * @param  request Description of the Parameter
@@ -177,6 +175,7 @@ public class EventEngine
             {
                 logCat.info("::generatePrimaryEvent - generating a database event");
                 e = dbEventFactory.createEvent(action, request, config);
+
                 break;
             }
 
@@ -184,12 +183,14 @@ public class EventEngine
             {
                 logCat.info("::generatePrimaryEvent - generating a navigation event");
                 e = navEventFactory.createEvent(action, request, config);
+
                 break;
             }
 
             default:
             {
                 logCat.error("::generatePrimaryEvent - WARNING: generating NO event. Why ?");
+
                 break;
             }
         }
@@ -255,17 +256,7 @@ public class EventEngine
 
                     if (!collissionDanger || (excludeTableId != tableId) || !keyId.equals(excludeKeyId))
                     {
-                        // Test the following event creation: the commented statement below shows the
-                        // original direct instantiation. Must use the database event factory, now !
-                        //UpdateEvent e = new UpdateEvent(new Integer(tableId), keyId, request, config);
-
-                        // // get the event from the factory;
-                        EventInfo einfo                = dbEventFactory.getEventInfo(EventType.EVENT_DATABASE_UPDATE);
-                        Class[]   constructorArgsTypes = dbEventFactory.keyInfoConstructorArgsTypes;
-                        Object[]  constructorArgs      = new Object[]{new Integer(tableId), keyId, request, config};
-
-                        UpdateEvent e = (UpdateEvent)dbEventFactory.getEvent(einfo, constructorArgsTypes, constructorArgs);
-
+                        UpdateEvent e = getUpdateEvent(tableId, keyId);
                         result.addElement(e);
                     }
                 }
@@ -358,7 +349,7 @@ public class EventEngine
      *  Sets the eventFollowUp and followUpOnError attributes
      *  of the input Event object
      *
-     * @param  e      the event object
+     * @param  e the event object
      * @param  action the action string
      */
     private void setEventFollowUp(WebEvent e, String action)
@@ -393,5 +384,29 @@ public class EventEngine
 
         logCat.info("setting follow up on Error to:" + followUpOnError);
         e.setFollowUpOnError(followUpOnError);
+    }
+
+
+    /**
+     *  Gets the updateEvent as secondary event
+     *
+     * @param  tableId the table identifier
+     * @param  keyId   the key identifier
+     * @return  The updateEvent object
+     */
+    private UpdateEvent getUpdateEvent(int tableId, String keyId)
+    {
+        UpdateEvent e = null;
+        Class[]  constructorArgsTypes = dbEventFactory.keyInfoConstructorArgsTypes;
+        Object[] constructorArgs      = new Object[]
+        {
+            new Integer(tableId), keyId, request, config
+        };
+
+        e = (UpdateEvent) dbEventFactory.getEvent(EventType.EVENT_DATABASE_UPDATE,
+                                                  constructorArgsTypes,
+                                                  constructorArgs);
+
+        return e;
     }
 }
