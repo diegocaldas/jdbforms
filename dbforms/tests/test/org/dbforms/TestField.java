@@ -150,30 +150,30 @@ public class TestField extends TestCase
     public void testType() throws Exception
     {
         Field f = new Field();
-        f.setType("int");
-        assertTrue("Should be FieldTypes.INTEGER", f.getType() == FieldTypes.INTEGER);
-        f.setType("smallint");
-        assertTrue("Should be FieldTypes.INTEGER", f.getType() == FieldTypes.INTEGER);
-        f.setType("tinyint");
-        assertTrue("Should be FieldTypes.INTEGER", f.getType() == FieldTypes.INTEGER);
-        f.setType("TINYINT");
-        assertTrue("Should be FieldTypes.INTEGER", f.getType() == FieldTypes.INTEGER);
+        f.setFieldType("int");
+        assertTrue("Should be FieldTypes.INTEGER", f.getFieldType() == FieldTypes.INTEGER);
+        f.setFieldType("smallint");
+        assertTrue("Should be FieldTypes.INTEGER", f.getFieldType() == FieldTypes.INTEGER);
+        f.setFieldType("tinyint");
+        assertTrue("Should be FieldTypes.INTEGER", f.getFieldType() == FieldTypes.INTEGER);
+        f.setFieldType("TINYINT");
+        assertTrue("Should be FieldTypes.INTEGER", f.getFieldType() == FieldTypes.INTEGER);
 
-        f.setType("NUMERIC");
-        assertTrue("Should be FieldTypes.NUMERIC", f.getType() == FieldTypes.NUMERIC);
-        f.setType("NUMBER");
-        assertTrue("Should be FieldTypes.NUMERIC", f.getType() == FieldTypes.NUMERIC);
+        f.setFieldType("NUMERIC");
+        assertTrue("Should be FieldTypes.NUMERIC", f.getFieldType() == FieldTypes.NUMERIC);
+        f.setFieldType("NUMBER");
+        assertTrue("Should be FieldTypes.NUMERIC", f.getFieldType() == FieldTypes.NUMERIC);
 
-        f.setType("char");
-        assertTrue("Should be FieldTypes.CHAR", f.getType() == FieldTypes.CHAR);
-        f.setType("varchar");
-        assertTrue("Should be FieldTypes.CHAR", f.getType() == FieldTypes.CHAR);
-        f.setType("nvarchar");
-        assertTrue("Should be FieldTypes.CHAR", f.getType() == FieldTypes.CHAR);
-        f.setType("longchar");
-        assertTrue("Should be FieldTypes.CHAR", f.getType() == FieldTypes.CHAR);
+        f.setFieldType("char");
+        assertTrue("Should be FieldTypes.CHAR", f.getFieldType() == FieldTypes.CHAR);
+        f.setFieldType("varchar");
+        assertTrue("Should be FieldTypes.CHAR", f.getFieldType() == FieldTypes.CHAR);
+        f.setFieldType("nvarchar");
+        assertTrue("Should be FieldTypes.CHAR", f.getFieldType() == FieldTypes.CHAR);
+        f.setFieldType("longchar");
+        assertTrue("Should be FieldTypes.CHAR", f.getFieldType() == FieldTypes.CHAR);
 
-        f.setType("diskblob");
-        assertTrue("Should be FieldTypes.DISKBLOB", f.getType() == FieldTypes.DISKBLOB);
+        f.setFieldType("diskblob");
+        assertTrue("Should be FieldTypes.DISKBLOB", f.getFieldType() == FieldTypes.DISKBLOB);
     }
 }
