@@ -357,16 +357,19 @@
             <war.bundle>true</war.bundle>
          </properties>
       </dependency>
+<!--
       <dependency>
-         <id>jcommon</id>
-         <version>0.9.6</version>
+         <id>jasper-compiler-jdt</id>
+         <version>5.5.7</version>
+         <groupId>tomcat</groupId>
          <properties>
             <war.bundle>true</war.bundle>
          </properties>
       </dependency>
+-->
       <dependency>
-         <id>jfreechart</id>
-         <version>0.9.21</version>
+         <id>itext</id>
+         <version>1.01</version>
          <properties>
             <war.bundle>true</war.bundle>
          </properties>
@@ -379,8 +382,15 @@
          </properties>
       </dependency>
       <dependency>
-         <id>itext</id>
-         <version>1.01</version>
+         <id>jfreechart</id>
+         <version>0.9.21</version>
+         <properties>
+            <war.bundle>true</war.bundle>
+         </properties>
+      </dependency>
+      <dependency>
+         <id>jcommon</id>
+         <version>0.9.6</version>
          <properties>
             <war.bundle>true</war.bundle>
          </properties>
