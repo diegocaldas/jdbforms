@@ -377,7 +377,7 @@ public class DataSourceJDBC extends DataSource
          {
             FieldValue fv = fieldValues.get(fieldName);
 
-            //logCat.debug("Retrieved curField:" + curField.getName() + " type:" + curField.getFieldType());
+            logCat.debug("Retrieved curField:" + curField.getName() + " type:" + curField.getType());
             int    fieldType = curField.getType();
             Object value = null;
 
