@@ -23,9 +23,11 @@
 
 package org.dbforms.util;
 
-import org.dbforms.DbFormsConfig;
 import java.io.*;
 import java.net.URLEncoder;
+
+import org.dbforms.DbFormsConfig;
+import org.dbforms.FieldValue;
 
 
 
@@ -103,6 +105,34 @@ public class Util
         if (!Util.isNull(s))
         {
             s = URLEncoder.encode(s);
+        }
+
+        return s;
+    }
+
+
+    /**
+     *  Dump the fieldValue objects contained into the input FieldValue array.
+     *
+     * @param fv the FieldValue array to dump
+     * @return the String object containing the dumped data,
+     *         or null if the input array is null
+     */
+    public final static String dumpFieldValueArray(FieldValue[] fv)
+    {
+        String s = null;
+
+        if (fv != null)
+        {
+          StringBuffer sb = new StringBuffer();
+
+          for (int i = 0; i < fv.length; i++)
+          {
+            FieldValue f = fv[i];
+            sb.append("  fv[").append(i).append("] = {").append(f.toString()).append("}\n");
+          }
+
+          s = sb.toString();
         }
 
         return s;
