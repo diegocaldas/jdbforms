@@ -160,7 +160,7 @@ choose appropriate values that fit your needs
 		</xsl:for-each>
 	</table>
 	<br/>
-		<center><db:insertButton caption="Commit data into {@name}" styleClass="clsButtonStyle"/></center>
+		<center><db:insertButton caption="Commit data into {@name}" styleClass="clsButtonStyle" showAlways="false" /></center>
 	</db:body>
 	<db:footer>
 		<table align="center" border="0">
