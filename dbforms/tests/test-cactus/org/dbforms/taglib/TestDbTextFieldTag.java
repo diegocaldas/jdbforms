@@ -36,6 +36,7 @@ import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.FieldValues;
 import org.dbforms.config.FieldValue;
+import org.dbforms.config.Table;
 import org.dbforms.event.eventtype.EventType;
 import org.dbforms.event.DatabaseEvent;
 import org.dbforms.event.datalist.DeleteEvent;
@@ -66,14 +67,16 @@ public class TestDbTextFieldTag extends JspTestCase {
     * it, this method creates a BodyContent object and passes it to the tag.
     */
    public void setUp() throws Exception {
-      DbFormsConfigRegistry.instance().register(null);
-      config.setInitParameter("dbformsConfig", "/WEB-INF/dbforms-config.xml");
-      config.setInitParameter("log4j.configuration", "/WEB-INF/log4j.properties");
-      ConfigServlet configServlet = new ConfigServlet();
-      configServlet.init(config);
-      dbconfig = DbFormsConfigRegistry.instance().lookup();
-      if (dbconfig == null)
-         throw new NullPointerException("not able to create dbconfig object!");
+      if (dbconfig == null) {
+         DbFormsConfigRegistry.instance().register(null);
+         config.setInitParameter("dbformsConfig", "/WEB-INF/dbforms-config.xml");
+         config.setInitParameter("log4j.configuration", "/WEB-INF/log4j.properties");
+         ConfigServlet configServlet = new ConfigServlet();
+         configServlet.init(config);
+         dbconfig = DbFormsConfigRegistry.instance().lookup();
+         if (dbconfig == null)
+            throw new NullPointerException("not able to create dbconfig object!");
+      }
 
       form = new DbFormTag();
       form.setPageContext(this.pageContext);
@@ -105,7 +108,8 @@ public class TestDbTextFieldTag extends JspTestCase {
       assertEquals(BodyTag.EVAL_PAGE, result);
       merkeDate = (Date) timeTag.getFieldObject();
       form.doEndTag();
-
+      form.doEndTag();
+      form.doFinally();
    }
 
    public void endOutputDE(WebResponse theResponse) throws Exception {
@@ -114,15 +118,16 @@ public class TestDbTextFieldTag extends JspTestCase {
       assertTrue("not found: " + "value=\"2,3\"", res);
       res = s.indexOf("value=\"01.01.1900\"") > -1;
       assertTrue("not found: " + "value=\"01.01.1900\"", res);
-      
+
       HttpServletRequest request = new WebFormWrapper(theResponse.getFormWithName("dbform"), Locale.GERMAN);
-      
-      System.out.println("test dbconfig");
-      assertTrue("no config!", dbconfig == null);
-      System.out.println("test table");
-      assertTrue("no table found!", dbconfig.getTableByName("TIMEPLAN") == null);
-      
-      DatabaseEvent dbEvent = new DeleteEvent(new Integer(dbconfig.getTableByName("TIMEPLAN").getId()), "null", request, dbconfig);
+
+      DbFormsConfig pdbconfig = DbFormsConfigRegistry.instance().lookup();
+      assertTrue("no config!", pdbconfig != null);
+      Table table = dbconfig.getTableByName("TIMEPLAN");
+      assertTrue("no table found!",  table != null);
+
+      DatabaseEvent dbEvent =
+         new DeleteEvent(new Integer(table.getId()), "null", request, dbconfig);
       // Set type to delete so that all fieldvalues will be parsed!!
       dbEvent.setType(EventType.EVENT_DATABASE_DELETE);
       FieldValues fv = dbEvent.getFieldValues();
@@ -150,7 +155,8 @@ public class TestDbTextFieldTag extends JspTestCase {
       assertEquals(BodyTag.EVAL_PAGE, result);
       merkeDate = (Date) timeTag.getFieldObject();
       form.doEndTag();
-
+      form.doEndTag();
+      form.doFinally();
    }
 
    public void endOutputEN(WebResponse theResponse) throws Exception {
@@ -161,13 +167,13 @@ public class TestDbTextFieldTag extends JspTestCase {
       assertTrue("not found : " + "value=\"Jan 1, 1900\"", res);
 
       HttpServletRequest request = new WebFormWrapper(theResponse.getFormWithName("dbform"), Locale.ENGLISH);
-      
-      System.out.println("test dbconfig");
-      assertTrue("no config!", dbconfig == null);
-      System.out.println("test table");
-      assertTrue("no table found!", dbconfig.getTableByName("TIMEPLAN") == null);
-      
-      DatabaseEvent dbEvent = new DeleteEvent(new Integer(dbconfig.getTableByName("TIMEPLAN").getId()), "null", request, dbconfig);
+
+      assertTrue("no config!", dbconfig != null);
+      Table table = dbconfig.getTableByName("TIMEPLAN");
+      assertTrue("no table found!",  table != null);
+
+      DatabaseEvent dbEvent =
+         new DeleteEvent(new Integer(table.getId()), "null", request, dbconfig);
       // Set type to delete so that all fieldvalues will be parsed!!
       dbEvent.setType(EventType.EVENT_DATABASE_DELETE);
       FieldValues fv = dbEvent.getFieldValues();

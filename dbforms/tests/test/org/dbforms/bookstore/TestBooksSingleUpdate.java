@@ -51,6 +51,34 @@ public class TestBooksSingleUpdate extends AbstractTestBase
       printResponse();
       assertTrue(responseContains("<input type=\"text\" name=\"f_1_0@root_1\" value=\"42-42-42\" />"));
 
+      list = new ArrayList();
+      list.add(new NVPair("invtable", "1"));
+      list.add(new NVPair("invname_1", ""));
+      list.add(new NVPair("autoupdate_1", "false"));
+      list.add(new NVPair("fu_1", "/tests/testBOOKSSingle.jsp"));
+      list.add(new NVPair("source", "/bookstore/tests/testBOOKSSingle.jsp"));
+      list.add(new NVPair("customEvent", ""));
+      list.add(new NVPair("firstpos_1", "0%3A1%3A1-2%3A1%3A1-3%3A27%3ADie+Insel+des+vorigen+Tages"));
+      list.add(new NVPair("lastpos_1", "0%3A1%3A1-2%3A1%3A1-3%3A27%3ADie+Insel+des+vorigen+Tages"));
+      list.add(new NVPair("f_1_0@root_0", "1"));
+      list.add(new NVPair("of_1_0@root_0", "1"));
+      list.add(new NVPair("f_1_0@root_1", "3-423-12445-4"));
+      list.add(new NVPair("of_1_0@root_1", "42-42-42"));
+      list.add(new NVPair("f_1_0@root_2", "1"));
+      list.add(new NVPair("of_1_0@root_2", "1"));
+      list.add(new NVPair("f_1_0@root_3", "Die Insel des vorigen Tages"));
+      list.add(new NVPair("of_1_0@root_3", "Die Insel des vorigen Tages"));
+      list.add(new NVPair("ac_update_1_0@root_1", "Save"));
+      list.add(new NVPair("k_1_0@root", "0%3A1%3A1-2%3A1%3A1-3%3A27%3ADie+Insel+des+vorigen+Tages"));
+      System.out.println(
+         "Testing URL: "
+            + replaceURL("http://localhost/bookstore/servlet/control;jsessionid=2911D29F8DBDDAC2420A02EA92936B56?invtable=1&invname_1=&autoupdate_1=false&fu_1=/tests/testBOOKSSingle.jsp&source=/bookstore/tests/testBOOKSSingle.jsp&customEvent=&firstpos_1=0%3A1%3A1-2%3A1%3A1-3%3A27%3ADie+Insel+des+vorigen+Tages&lastpos_1=0%3A1%3A1-2%3A1%3A1-3%3A27%3ADie+Insel+des+vorigen+Tages&f_1_0@root_0=1&of_1_0@root_0=1&f_1_0@root_1=42-42-42&of_1_0@root_1=3-423-12445-4&f_1_0@root_3=Die Insel des vorigen Tages&of_1_0@root_3=Die Insel des vorigen Tages&ac_update_1_0@root_1=Save&k_1_0@root=0%3A1%3A1-2%3A1%3A1-3%3A27%3ADie+Insel+des+vorigen+Tages"));
+      post("http://localhost/bookstore/servlet/control;jsessionid=2911D29F8DBDDAC2420A02EA92936B56", list);
+      System.out.println("Response code: " + getResponse().getStatusCode());
+      assertEquals("Assert number 3 failed", 200, getResponse().getStatusCode());
+      printResponse();
+      assertTrue(responseContains("<input type=\"text\" name=\"f_1_0@root_1\" value=\"3-423-12445-4\" />"));
+
    }
 
    public void testBooksSingleInsert() throws Exception {
@@ -110,6 +138,34 @@ public class TestBooksSingleUpdate extends AbstractTestBase
       assertEquals("Assert number 6 failed", 200, getResponse().getStatusCode());
       assertTrue(responseContains("<input type=\"text\" name=\"f_1_0@root_1\" value=\"4711\" />"));
 
+      list = new ArrayList();
+      list.add(new NVPair("invtable", "1"));
+      list.add(new NVPair("invname_1", ""));
+      list.add(new NVPair("autoupdate_1", "false"));
+      list.add(new NVPair("fu_1", "/tests/testBOOKSSingle.jsp"));
+      list.add(new NVPair("source", "/bookstore/tests/testBOOKSSingle.jsp"));
+      list.add(new NVPair("customEvent", ""));
+      list.add(new NVPair("firstpos_1", "0%3A1%3A0-2%3A1%3A1"));
+      list.add(new NVPair("lastpos_1", "0%3A1%3A0-2%3A1%3A1"));
+      list.add(new NVPair("f_1_0@root_0", "0"));
+      list.add(new NVPair("of_1_0@root_0", "0"));
+      list.add(new NVPair("pf_1_0@root_0", "#,##0"));
+      list.add(new NVPair("f_1_0@root_1", "4711"));
+      list.add(new NVPair("of_1_0@root_1", "4711"));
+      list.add(new NVPair("f_1_0@root_2", "1"));
+      list.add(new NVPair("of_1_0@root_2", "1"));
+      list.add(new NVPair("pf_1_0@root_2", "#,##0"));
+      list.add(new NVPair("f_1_0@root_3", "test"));
+      list.add(new NVPair("of_1_0@root_3", "test"));
+      list.add(new NVPair("ac_delete_1_0@root_8", "Delete"));
+      list.add(new NVPair("k_1_0@root", "0%3A1%3A0-2%3A1%3A1"));
+      System.out.println("Testing URL: " +replaceURL("http://localhost/bookstore/servlet/control?invtable=1&invname_1=&autoupdate_1=false&fu_1=/tests/testBOOKSSingle.jsp&source=/bookstore/tests/testBOOKSSingle.jsp&customEvent=&firstpos_1=0%3A1%3A0-2%3A1%3A1&lastpos_1=0%3A1%3A0-2%3A1%3A1&f_1_0@root_0=0&of_1_0@root_0=0&pf_1_0@root_0=#,##0&f_1_0@root_1=4711&of_1_0@root_1=4711&f_1_0@root_2=1&of_1_0@root_2=1&pf_1_0@root_2=#,##0&f_1_0@root_3=test&of_1_0@root_3=test&ac_delete_1_0@root_8=Delete&k_1_0@root=0%3A1%3A0-2%3A1%3A1"));
+      post("http://localhost/bookstore/servlet/control", list);
+      System.out.println("Response code: " + getResponse().getStatusCode());
+      assertEquals("Assert number 7 failed", 200, getResponse().getStatusCode());
+      assertTrue(responseContains("<input type=\"text\" name=\"f_1_0@root_1\" value=\"3-423-12445-4\" />"));
+      assertTrue(responseContains("<input type=\"text\" name=\"f_1_0@root_3\" value=\"Die Insel des vorigen Tages\" />"));
+      
    }
 
 
