@@ -25,7 +25,6 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
-import javax.servlet.jsp.tagext.BodyTagSupport;
 
 
 
@@ -40,7 +39,7 @@ import javax.servlet.jsp.tagext.BodyTagSupport;
  * author Luis Arias <luis@elysia.com>
  * @author Joe Peer <joepeer@wap-force.net> (changed class for use in DbForms-Framework)
  */
-public class BaseTag extends BodyTagSupport
+public class BaseTag extends TagSupportWithScriptHandler
 {
 
    /**

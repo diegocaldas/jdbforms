@@ -237,8 +237,7 @@ public class Query extends Table {
       // Split fields in where and having part
       if (fvEqual != null) {
          for (int i = 0; i < fvEqual.length; i++) {
-            if ((fvEqual[i].getField().getId() >= WHEREIDSTART)) {
-            } else {
+            if (!(fvEqual[i].getField().getId() >= WHEREIDSTART)) {
                mode_having.add(fvEqual[i]);
             }
          }
@@ -400,7 +399,7 @@ public class Query extends Table {
          buf.append(")");
       }
 
-      if (!Util.isNull(groupBy) && !Util.isNull(having)) {
+      if (!Util.isNull(groupBy) && !Util.isNull(getHaving())) {
          if (!hatSchonHaving) {
             buf.append(" HAVING ");
          } else {
@@ -408,7 +407,7 @@ public class Query extends Table {
          }
 
          buf.append("(");
-         buf.append(having);
+         buf.append(getHaving());
          buf.append(") ");
       }
 
@@ -582,6 +581,11 @@ public class Query extends Table {
    public void setHaving(String value) {
       having = value;
    }
+
+   public String getHaving() {
+	  return having;
+   }
+
 
    /**
     * DOCUMENT ME!

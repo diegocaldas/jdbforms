@@ -27,7 +27,6 @@ import java.util.Iterator;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
-import javax.servlet.jsp.tagext.BodyTagSupport;
 import javax.servlet.jsp.tagext.TryCatchFinally;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Category;
@@ -48,7 +47,7 @@ import org.dbforms.util.Util;
  * 
  * @version $Revision$
  */
-public class DbFilterConditionTag extends BodyTagSupport
+public class DbFilterConditionTag extends TagSupportWithScriptHandler
    implements TryCatchFinally
 {
    /**

@@ -22,15 +22,12 @@
  */
 
 package org.dbforms.taglib;
-import javax.servlet.jsp.JspException;
 
-// these 3 we need for formfield auto-population
+import javax.servlet.jsp.JspException;
 import java.text.Format;
 import java.util.Vector;
 import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
-import org.dbforms.config.DbFormsConfig;
-import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.Constants;
 import org.dbforms.config.Field;
 import org.dbforms.config.FieldTypes;
@@ -40,7 +37,9 @@ import org.dbforms.event.eventtype.EventType;
 import org.dbforms.util.ParseUtil;
 import org.dbforms.util.MessageResources;
 import org.dbforms.util.MessageResourcesInternal;
+import org.dbforms.util.Escaper;
 import org.dbforms.util.Util;
+import org.dbforms.util.ReflectionUtil;
 import org.apache.log4j.Category;
 import org.apache.commons.lang.StringEscapeUtils;
 
@@ -59,12 +58,12 @@ import org.apache.commons.lang.StringEscapeUtils;
  * @author Joe Peer (modified and extended this class for use in DbForms-Project)
  */
 public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
-   private static Category logCat = Category.getInstance(DbBaseHandlerTag.class.getName());
+   private static Category logCat =
+      Category.getInstance(DbBaseHandlerTag.class.getName());
 
    private Field field;
    private String fieldName;
    private String defaultValue;
-   private Format format;
    private String pattern;
    private String nullFieldValue;
    private String maxlength = null;
@@ -73,6 +72,8 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
    /** Named Style class associated with component for read-only mode. */
    private String readOnlyStyleClass = null;
    private String readOnly = "false";
+   private String escaperClass = null;
+   private Escaper escaper = null;
 
    /**
     * DOCUMENT ME!
@@ -153,7 +154,7 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
     * @return
     */
    public String getPattern() {
-      Format f = getFormat();
+      Format f = getFieldFormat();
       if (f == null)
          return null;
       if (f instanceof java.text.DecimalFormat)
@@ -181,24 +182,16 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
    /**
       formatting a value
     */
-   public Format getFormat() {
-      if ((format == null) && (getField() != null)) {
-         this.format = getField().getFormat(pattern, getLocale());
+   public Format getFieldFormat() {
+      Format res = null;
+      if (getField() != null) {
+         res = getField().getFormat(pattern, getLocale());
       }
-      return this.format;
+      return res;
    }
 
    protected Locale getLocale() {
       return getParentForm().getLocale();
-   }
-   
-   /**
-    * DOCUMENT ME!
-    *
-    * @param format DOCUMENT ME!
-    */
-   public void setFormat(Format format) {
-      this.format = format;
    }
 
    /**
@@ -217,7 +210,7 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
             case org.dbforms.config.FieldTypes.DOUBLE :
             case org.dbforms.config.FieldTypes.FLOAT :
                try {
-                  res = getFormat().format(new Double(0));
+                  res = getFieldFormat().format(new Double(0));
                } catch (Exception e) {
                   res = "0";
                }
@@ -240,10 +233,19 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
          fieldValueObj = res.getFieldAsObject(getField().getId());
       } else {
          // try to get old value if we have an unbounded field!
-         fieldValueObj = ParseUtil.getParameter((HttpServletRequest) pageContext.getRequest(), getFormFieldName());
-         if (fieldValueObj == null)
+         fieldValueObj =
+            ParseUtil.getParameter(
+               (HttpServletRequest) pageContext.getRequest(),
+               getFormFieldName());
+         if (fieldValueObj == null) {
             // if we have an unbounded field and no old value then use default!
             fieldValueObj = getDefaultValue();
+         } else {
+            fieldValueObj =
+               (getEscaper() == null)
+                  ? fieldValueObj
+                  : getEscaper().unescapeHTML((String) fieldValueObj);
+         }
       }
       return fieldValueObj;
    }
@@ -288,7 +290,9 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
          // of the array's address. So in this case it is 
          // better to create a String using a corresponding
          // String constructor:
-         if (fieldValueObj.getClass().isArray() && "byte".equals(fieldValueObj.getClass().getComponentType().toString())) {
+         if (fieldValueObj.getClass().isArray()
+            && "byte".equals(
+               fieldValueObj.getClass().getComponentType().toString())) {
             res = new String((byte[]) fieldValueObj);
          } else if (getField() != null) {
             switch (getField().getType()) {
@@ -300,7 +304,7 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
                case FieldTypes.TIME :
                case FieldTypes.TIMESTAMP :
                   try {
-                     res = getFormat().format(fieldValueObj);
+                     res = getFieldFormat().format(fieldValueObj);
                   } catch (Exception e) {
                      logCat.error(
                         "field type: "
@@ -348,7 +352,8 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
     *
     */
    protected String getFormFieldValue() {
-      HttpServletRequest request = (HttpServletRequest) this.pageContext.getRequest();
+      HttpServletRequest request =
+         (HttpServletRequest) this.pageContext.getRequest();
       Vector errors = (Vector) request.getAttribute("errors");
       WebEvent we = getParentForm().getWebEvent();
 
@@ -356,25 +361,33 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
       if (!getParentForm().getFooterReached()) {
          // Check if attribute 'redisplayFieldsOnError' has been set to true
          // and is this jsp displaying an error?
-         if ((getParentForm().hasRedisplayFieldsOnErrorSet() && (errors != null) && (errors.size() > 0))
-            || ((we != null) && EventType.EVENT_NAVIGATION_RELOAD.equals(we.getType()))) {
+         if ((getParentForm().hasRedisplayFieldsOnErrorSet()
+            && (errors != null)
+            && (errors.size() > 0))
+            || ((we != null)
+               && EventType.EVENT_NAVIGATION_RELOAD.equals(we.getType()))) {
             // Yes - redisplay posted data
-            String oldValue = ParseUtil.getParameter(request, getFormFieldName());
+            String oldValue =
+               ParseUtil.getParameter(request, getFormFieldName());
             if (oldValue != null)
                return oldValue;
          }
          return getFormattedFieldValue();
       } else {
          // the form field is in 'insert-mode'
-         if (((we != null) && (EventType.EVENT_NAVIGATION_COPY.equals(we.getType())))) {
-            String copyValue = ParseUtil.getParameter(request, getFormFieldNameForCopyEvent());
+         if (((we != null)
+            && (EventType.EVENT_NAVIGATION_COPY.equals(we.getType())))) {
+            String copyValue =
+               ParseUtil.getParameter(request, getFormFieldNameForCopyEvent());
             if (copyValue != null)
                return copyValue;
          }
 
-         if (((we != null) && EventType.EVENT_NAVIGATION_RELOAD.equals(we.getType()))
+         if (((we != null)
+            && EventType.EVENT_NAVIGATION_RELOAD.equals(we.getType()))
             || ((errors != null) && (errors.size() > 0))) {
-            String oldValue = ParseUtil.getParameter(request, getFormFieldName());
+            String oldValue =
+               ParseUtil.getParameter(request, getFormFieldName());
             if (oldValue != null)
                return oldValue;
             // Patch to reload checkbox, because when unchecked checkbox is null
@@ -404,7 +417,8 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
       if ((getParentForm().getTable() != null) && (getField() != null)) {
          String keyIndex =
             (getParentForm().getFooterReached())
-               ? (Constants.FIELDNAME_INSERTPREFIX + getParentForm().getPositionPathCore())
+               ? (Constants.FIELDNAME_INSERTPREFIX
+                  + getParentForm().getPositionPathCore())
                : getParentForm().getPositionPath();
          buf.append(Constants.FIELDNAME_PREFIX);
          buf.append(getParentForm().getTable().getId());
@@ -432,18 +446,6 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
    }
 
    /**
-    * @return
-    */
-   public DbFormsConfig getConfig() {
-      try {
-         return DbFormsConfigRegistry.instance().lookup();
-      } catch (Exception e) {
-         logCat.error(e);
-         return null;
-      }
-   }
-
-   /**
     *  Sets the nullFieldValue attribute of the DbLabelTag object
     *
     * @param  nullFieldValue The new nullFieldValue value
@@ -460,9 +462,11 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
    private String getNullFieldValue() {
       String res = nullFieldValue;
       if (res == null)
-         res = MessageResourcesInternal.getMessage("dbforms.nodata", getLocale());
+         res =
+            MessageResourcesInternal.getMessage("dbforms.nodata", getLocale());
       // Resolve message if captionResource=true in the Form Tag
-      if ((getParentForm() != null) && getParentForm().hasCaptionResourceSet()) {
+      if ((getParentForm() != null)
+         && getParentForm().hasCaptionResourceSet()) {
          res = MessageResources.getMessage(res, getLocale());
       }
 
@@ -530,36 +534,71 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
    /**
     * writes out the field value in hidden field _old
     */
-   protected String renderOldValueHtmlInputField(){
-         StringBuffer tagBuf = new StringBuffer();
-         tagBuf.append("<input type=\"hidden\" name=\"");
-         tagBuf.append(Constants.FIELDNAME_OLDVALUETAG + getFormFieldName());
-         tagBuf.append("\" value=\"");
-         if (!getParentForm().getFooterReached()) {
-            tagBuf.append(StringEscapeUtils.escapeHtml(getFormattedFieldValue()));
-         } else {
-            tagBuf.append(StringEscapeUtils.escapeHtml(getFormFieldDefaultValue()));
+   protected String renderOldValueHtmlInputField() {
+      StringBuffer tagBuf = new StringBuffer();
+      tagBuf.append("<input type=\"hidden\" name=\"");
+      tagBuf.append(Constants.FIELDNAME_OLDVALUETAG + getFormFieldName());
+      tagBuf.append("\" value=\"");
+      if (!getParentForm().getFooterReached()) {
+         tagBuf.append(StringEscapeUtils.escapeHtml(getFormattedFieldValue()));
+      } else {
+         tagBuf.append(
+            StringEscapeUtils.escapeHtml(getFormFieldDefaultValue()));
+      }
+      tagBuf.append("\" />");
+      return tagBuf.toString();
+   }
+
+   public Escaper getEscaper() {
+      if (escaper == null) {
+         String s = getEscaperClass();
+         if (!Util.isNull(s)) {
+            try {
+               escaper = (Escaper) ReflectionUtil.newInstance(s);
+            } catch (Exception e) {
+               logCat.error(
+                  "cannot create the new escaper [" + s + "]",
+                  e);
+            }
          }
-         tagBuf.append("\" />");
-         return tagBuf.toString();
+         if ((escaper == null) && (getField() != null)) {
+            escaper = getField().getEscaper();
+         }
+         if ((escaper == null)) {
+            escaper = getConfig().getEscaper();
+         }
+      }
+      return escaper;
    }
 
    protected String escapeHtml(String html) {
-      return html;
+      return (getEscaper() == null) ? html : getEscaper().escapeHTML(html);
    }
-   
+
    /**
     * DOCUMENT ME!
-    */
+   */
    public void doFinally() {
       field = null;
       defaultValue = null;
-      format = null;
       pattern = null;
       nullFieldValue = null;
       maxlength = null;
       readOnlyStyleClass = null;
       readOnly = "false";
+      escaperClass = null;
+      escaper = null;
       super.doFinally();
+   } /**
+             * @return
+             */
+   public String getEscaperClass() {
+      return escaperClass;
+   } /**
+             * @param string
+             */
+   public void setEscaperClass(String string) {
+      escaperClass = string;
    }
+
 }

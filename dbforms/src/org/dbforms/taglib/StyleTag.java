@@ -25,7 +25,6 @@ import java.util.Hashtable;
 import java.util.StringTokenizer;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.tagext.BodyTagSupport;
 
 
 
@@ -33,7 +32,7 @@ import javax.servlet.jsp.tagext.BodyTagSupport;
  * Renders an dbforms style tag
  * @author Joe Peer <joepeer@wap-force.net>
  */
-public class StyleTag extends BodyTagSupport
+public class StyleTag extends TagSupportWithScriptHandler
 		implements javax.servlet.jsp.tagext.TryCatchFinally
 
 {

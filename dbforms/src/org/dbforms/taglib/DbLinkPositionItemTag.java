@@ -35,10 +35,10 @@ import org.dbforms.config.*;
  * </link>
  *
  */
-public class DbLinkPositionItemTag extends DbBaseHandlerTag
-      implements javax.servlet.jsp.tagext.TryCatchFinally
-{
-   
+public class DbLinkPositionItemTag
+   extends DbBaseHandlerTag
+   implements javax.servlet.jsp.tagext.TryCatchFinally {
+
    String value;
    /**
     * Set up the tag with parent tag's table and link to the field.  Then add the data to the
@@ -49,20 +49,18 @@ public class DbLinkPositionItemTag extends DbBaseHandlerTag
     * @throws JspException  thrown when error occurs in processing the body of
     *                       this method
     */
-   public int doStartTag() throws JspException
-   {
-      DbLinkURLTag parentTag = (DbLinkURLTag) this.getParent();
-
-      if (parentTag != null)
-      {
+   public int doStartTag() throws JspException {
+      DbLinkURLTag parentTag = null;
+      try {
+         parentTag = (DbLinkURLTag) this.getParent();
+      } catch (Exception e) {
+      }
+      if (parentTag != null) {
          Table table = parentTag.getTable();
          Field field = table.getFieldByName(getName());
          parentTag.addPositionPart(field, getValue());
-      }
-      else
-      {
-         throw new JspException(
-            "DbLinkPositionItem-element must be placed inside a DbLinkURL-element!");
+      } else {
+         throw new JspException("DbLinkPositionItem-element must be placed inside a DbLinkURL-element!");
       }
 
       return EVAL_BODY_INCLUDE;
@@ -81,17 +79,15 @@ public class DbLinkPositionItemTag extends DbBaseHandlerTag
       value = string;
    }
 
-	public void doFinally()
-	{
-		value = null;
-		super.doFinally();
-	}
+   public void doFinally() {
+      value = null;
+      super.doFinally();
+   }
 
    /**
     * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
     */
-   public void doCatch(Throwable t) throws Throwable
-   {
+   public void doCatch(Throwable t) throws Throwable {
       throw t;
    }
 }

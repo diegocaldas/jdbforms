@@ -22,8 +22,12 @@
  */
 
 package org.dbforms.taglib;
-import javax.servlet.jsp.tagext.BodyTagSupport;
+
 import org.dbforms.util.Util;
+import org.dbforms.config.DbFormsConfig;
+import org.dbforms.config.DbFormsConfigRegistry;
+import javax.servlet.jsp.tagext.BodyTagSupport;
+import org.apache.log4j.Category;
 
 
 
@@ -38,9 +42,10 @@ import org.dbforms.util.Util;
  * Clasen for Apache Groups's Jakarta-Struts project.
  * </p>
  */
-public abstract class TagSupportWithScriptHandler
-   extends BodyTagSupport 
+public abstract class TagSupportWithScriptHandler extends BodyTagSupport 
 {
+   private static Category logCat = Category.getInstance(DbBaseHandlerTag.class.getName());
+
    /** DOCUMENT ME! */
    private String accessKey = null;
 
@@ -675,6 +680,14 @@ public abstract class TagSupportWithScriptHandler
       return (this.id);
    }
 
+   public DbFormsConfig getConfig() {
+      try {
+         return DbFormsConfigRegistry.instance().lookup();
+      } catch (Exception e) {
+         logCat.error("getConfig", e);
+         return null;
+      }
+   }
 
    /**
     * Prepares the focus event handlers, appending them to the the given

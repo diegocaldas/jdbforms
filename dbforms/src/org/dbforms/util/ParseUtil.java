@@ -104,19 +104,21 @@ public class ParseUtil
   public static String getParameter(HttpServletRequest request,
                                     String             name)
   {
+    String res;
     MultipartRequest multipartRequest = (MultipartRequest) request.getAttribute("multipartRequest");
 
     //patch by borghi
     if (request.getAttribute(name) != null)
     {
-      return request.getAttribute(name).toString();
+      res = request.getAttribute(name).toString();
     }
     else
     {
-      //end patch		
-      return (multipartRequest == null) ? request.getParameter(name)
-                                        : multipartRequest.getParameter(name);
+      //end patch
+      res = (multipartRequest == null) ? request.getParameter(name)
+	  										: multipartRequest.getParameter(name); 		
     }
+	return res;
   }
 
 

@@ -24,7 +24,6 @@ package org.dbforms.taglib;
 import java.io.*;
 import java.util.*;
 import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.tagext.BodyTagSupport;
 
 
 
@@ -32,7 +31,7 @@ import javax.servlet.jsp.tagext.BodyTagSupport;
  * Renders an dbforms style tag
  * @author Joe Peer <joepeer@wap-force.net>
  */
-public class TemplateParamTag extends BodyTagSupport
+public class TemplateParamTag extends TagSupportWithScriptHandler
 	implements javax.servlet.jsp.tagext.TryCatchFinally
 {
    private String    name; // properties set by JSP container

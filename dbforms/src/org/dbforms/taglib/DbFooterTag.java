@@ -22,7 +22,6 @@
  */
 package org.dbforms.taglib;
 import javax.servlet.jsp.*;
-import javax.servlet.jsp.tagext.*;
 
 import org.apache.log4j.Category;
 
@@ -36,7 +35,7 @@ import org.apache.log4j.Category;
  *
  * @author Joachim Peer <j.peer@gmx.net>
  */
-public class DbFooterTag extends BodyTagSupport
+public class DbFooterTag extends DbBaseHandlerTag
 {
    private static Category logCat = Category.getInstance(DbFooterTag.class.getName()); // logging category for this class
 
@@ -47,26 +46,23 @@ public class DbFooterTag extends BodyTagSupport
     */
    public int doStartTag()
    {
-      //DbFormTag parent = (DbFormTag) getParent(); // parent Tag in which this tag is embedded in
-      DbFormTag myParent = (DbFormTag) findAncestorWithClass(this,
-            DbFormTag.class);
-      int       pCount   = myParent.getCount(); // pCount==-1 => endless form, else max nr. of eval.loops is pCount
-      int       pCurrent = myParent.getCurrentCount(); // how many times renderd
+      int       pCount   = getParentForm().getCount(); // pCount==-1 => endless form, else max nr. of eval.loops is pCount
+      int       pCurrent = getParentForm().getCurrentCount(); // how many times renderd
 
-      logCat.info("we are talking about=" + myParent.getTableName());
+      logCat.info("we are talking about=" + getParentForm().getTableName());
       logCat.info("pcount=" + pCount);
       logCat.info("pcurrent=" + pCurrent);
 
       if (((pCount != -1) && (pCurrent == pCount)) // if the max-count is reached
-               || (myParent.getResultSetVector() == null)
-               || (pCurrent == myParent.getResultSetVector().size()) // or if end of resultsetvector is reached #checkme: can we dispose this condition?
-               || (myParent.getResultSetVector().size() == 0) // or if there is no resultSet data
-               || (myParent.getResultSetVector().size() == myParent.getResultSetVector()
+               || (getParentForm().getResultSetVector() == null)
+               || (pCurrent == getParentForm().getResultSetVector().size()) // or if end of resultsetvector is reached #checkme: can we dispose this condition?
+               || (getParentForm().getResultSetVector().size() == 0) // or if there is no resultSet data
+               || (getParentForm().getResultSetVector().size() == getParentForm().getResultSetVector()
                                                                          .getPointer()))
       {
          logCat.info("setting footerreached to true");
 
-         myParent.setFooterReached(true); // tell parent form that there are no more loops do go and the only thing remaining to be rendered is this footerTag and its subelements
+         getParentForm().setFooterReached(true); // tell parent form that there are no more loops do go and the only thing remaining to be rendered is this footerTag and its subelements
 
          return EVAL_BODY_BUFFERED;
       }

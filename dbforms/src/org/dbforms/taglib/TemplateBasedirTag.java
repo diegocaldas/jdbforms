@@ -23,7 +23,6 @@
 package org.dbforms.taglib;
 import java.io.*;
 import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.tagext.BodyTagSupport;
 
 
 
@@ -31,7 +30,7 @@ import javax.servlet.jsp.tagext.BodyTagSupport;
  * Renders an dbforms style tag
  * @author Joe Peer <joepeer@wap-force.net>
  */
-public class TemplateBasedirTag extends BodyTagSupport
+public class TemplateBasedirTag extends TagSupportWithScriptHandler
 		implements javax.servlet.jsp.tagext.TryCatchFinally
 
 {

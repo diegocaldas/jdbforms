@@ -37,10 +37,8 @@ import java.io.StringWriter;
 import java.io.PrintWriter;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.tagext.BodyTagSupport;
 import javax.servlet.jsp.tagext.TryCatchFinally;
 import javax.servlet.jsp.tagext.Tag;
 import org.apache.commons.validator.ValidatorResources;
@@ -54,8 +52,6 @@ import org.dbforms.util.MessageResourcesInternal;
 import org.dbforms.util.TimeUtil;
 import org.dbforms.config.Constants;
 import org.dbforms.config.DbEventInterceptor;
-import org.dbforms.config.DbFormsConfig;
-import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.DbFormsErrors;
 import org.dbforms.config.FieldTypes;
 import org.dbforms.config.FieldValue;
@@ -77,12 +73,9 @@ import org.dbforms.validation.DbFormsValidatorUtil;
  *
  * @author  Joachim Peer
  */
-public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
+public class DbFormTag extends TagSupportWithScriptHandler implements TryCatchFinally {
 	/** logging category for this class */
 	private static Category logCat = Category.getInstance(DbFormTag.class.getName());
-
-	/** access data defined in dbforms-config.xml */
-	private DbFormsConfig config;
 
 	/** the id of the underlying table */
 	private int tableId = -1;
@@ -297,7 +290,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
 	 */
 	public void setTableName(String tableName) {
 		this.tableName = tableName;
-		this.table = config.getTableByName(tableName);
+		this.table = getConfig().getTableByName(tableName);
 		this.tableId = table.getId();
 	}
 
@@ -937,20 +930,6 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
 		this.followUpOnError = followUpOnError;
 	}
 
-	/**
-	 *  Sets the pageContext attribute of the DbFormTag object
-	 *
-	 * @param  pc The new pageContext value
-	 */
-	public void setPageContext(PageContext pc) {
-		super.setPageContext(pc);
-
-		try {
-			config = DbFormsConfigRegistry.instance().lookup();
-		} catch (Exception e) {
-			logCat.error(e);
-		}
-	}
 
 	/**
 	 * Grunikiewicz.philip@hydro.qc.ca
@@ -985,7 +964,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
 	 * @return  Description of the Return Value
 	 */
 	public int doStartTag() {
-		Connection con = config.getConnection(dbConnectionName);
+		Connection con = getConfig().getConnection(dbConnectionName);
 
 		try {
 			// *************************************************************
@@ -1042,7 +1021,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
 			if ((table != null) && table.hasInterceptors()) {
 				try {
 					logCat.debug("pos5");
-					table.processInterceptors(DbEventInterceptor.PRE_SELECT, request, null, config, con);
+					table.processInterceptors(DbEventInterceptor.PRE_SELECT, request, null, getConfig(), con);
 				} catch (Exception sqle) {
 					logCat.error("pos6");
 					logCat.error(sqle.getMessage(), sqle);
@@ -1419,7 +1398,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
 			// # 2002.11.xx-fossato added an event factory 
 			// # 20030320-HKK:      Rewrite to use navEvent only
 			if ((webEvent == null) && (getLocalWebEvent() != null)) {
-				webEvent = navEventFactory.createEvent(localWebEvent, request, config, table);
+				webEvent = navEventFactory.createEvent(localWebEvent, request, getConfig(), table);
 
 				// Setted with localWebEvent attribute.
 				if (webEvent != null) {
@@ -1472,7 +1451,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
 				// try to create a new GOTO event
 				if ((gotoHt != null) && (gotoHt.size() > 0)) {
 					String positionString = table.getPositionString(gotoHt);
-					navEvent = navEventFactory.createGotoEvent(table, request, config, positionString);
+					navEvent = navEventFactory.createGotoEvent(table, request, getConfig(), positionString);
 				}
 			}
 
@@ -1504,14 +1483,14 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
 					setFooterReached(true);
 				} else if (!Util.isNull(getWhereClause())) {
 					// We should do a free form select
-					navEvent = navEventFactory.createGotoEvent(table, request, config, whereClause, getTableList());
+					navEvent = navEventFactory.createGotoEvent(table, request, getConfig(), whereClause, getTableList());
 				} else {
 					String myPosition = (count == 0) ? null : firstPosition;
 					if ((webEvent != null) //						&& (webEvent instanceof org.dbforms.event.DatabaseEvent)
 						&& (webEvent instanceof org.dbforms.event.NoopEvent)) {
 						myPosition = null;
 					}
-					navEvent = navEventFactory.createGotoEvent(table, request, config, myPosition);
+					navEvent = navEventFactory.createGotoEvent(table, request, getConfig(), myPosition);
 				}
 			}
 
@@ -1552,7 +1531,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
 			if ((table != null) && table.hasInterceptors()) {
 				// process the interceptors associated to this table
 				try {
-					table.processInterceptors(DbEventInterceptor.POST_SELECT, request, null, config, con);
+					table.processInterceptors(DbEventInterceptor.POST_SELECT, request, null, getConfig(), con);
 				} catch (SQLException sqle) {
 					// PG = 2001-12-04
 					// No need to add extra comments, just re-throw the exception

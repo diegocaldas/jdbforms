@@ -28,7 +28,6 @@ import java.sql.Connection;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
-import javax.servlet.jsp.tagext.*;
 
 import org.dbforms.util.KeyValuePair;
 
@@ -40,7 +39,7 @@ import org.dbforms.util.KeyValuePair;
  * @version $Revision$
  * @author $author$
  */
-public class StaticData extends BodyTagSupport
+public class StaticData extends TagSupportWithScriptHandler
 		implements javax.servlet.jsp.tagext.TryCatchFinally, StaticDataAddInterface
 {
 

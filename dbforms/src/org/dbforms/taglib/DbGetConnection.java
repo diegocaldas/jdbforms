@@ -37,8 +37,7 @@ import org.dbforms.util.SqlUtil;
  * in dbForms-config.xml file
  *
  * ***************************************************************/
-public class DbGetConnection
-	extends DbBaseHandlerTag
+public class DbGetConnection extends TagSupportWithScriptHandler
 	implements javax.servlet.jsp.tagext.TryCatchFinally {
 
 	private String dbConnectionName;
@@ -107,7 +106,6 @@ public class DbGetConnection
 	*/
 	public void doFinally() {
 		dbConnectionName = null;
-		super.doFinally();
 	}
 
 	/**

@@ -396,7 +396,7 @@ public class DbFilterValueTag
 
 			setPattern(state.jsCalendarDateFormat);
 			state.jsCalendarDateFormat =
-				((SimpleDateFormat) getFormat()).toPattern();
+				((SimpleDateFormat) getFieldFormat()).toPattern();
 
 			if (state.jsCalendarDateFormat != null) // JS Date Format set ?
 				{

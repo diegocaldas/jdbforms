@@ -24,7 +24,6 @@ package org.dbforms.taglib;
 import java.util.List;
 import java.util.StringTokenizer;
 import javax.servlet.jsp.*;
-import javax.servlet.jsp.tagext.*;
 
 import org.dbforms.util.*;
 import org.apache.log4j.Category;
@@ -37,7 +36,7 @@ import org.apache.log4j.Category;
  *
  * @author Eric Beaumier
  */
-public class JavascriptArrayTag extends BodyTagSupport implements DataContainer, 
+public class JavascriptArrayTag extends TagSupportWithScriptHandler implements DataContainer, 
 			javax.servlet.jsp.tagext.TryCatchFinally
 {
    private static Category logCat       = Category.getInstance(JavascriptArrayTag.class

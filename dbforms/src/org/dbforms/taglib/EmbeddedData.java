@@ -26,13 +26,13 @@ import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.ResultSetVector;
 
+import org.dbforms.util.Formatter;
 import org.dbforms.util.KeyValuePair;
 import org.dbforms.util.MessageResources;
 import org.dbforms.util.ReflectionUtil;
 import org.dbforms.util.Util;
 import org.dbforms.util.SqlUtil;
 
-import org.dbforms.taglib.interfaces.Formatter;
 
 import java.util.List;
 
@@ -44,8 +44,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 
-import javax.servlet.jsp.tagext.BodyTagSupport;
-
 import org.apache.log4j.Category;
 
 /**
@@ -54,10 +52,9 @@ import org.apache.log4j.Category;
  * @version $Revision$
  * @author $author$
  */
-public abstract class EmbeddedData extends BodyTagSupport implements javax.servlet.jsp.tagext.TryCatchFinally, StaticDataAddInterface {
+public abstract class EmbeddedData extends DbBaseHandlerTag implements javax.servlet.jsp.tagext.TryCatchFinally, StaticDataAddInterface {
    private static Category logCat = Category.getInstance(EmbeddedData.class.getName());
 
-   private DbFormTag parentForm;
    private String name;
    private String dbConnectionName;
    private String format;
@@ -67,7 +64,6 @@ public abstract class EmbeddedData extends BodyTagSupport implements javax.servl
 
    public void doFinally() {
       name = null;
-      parentForm = null;
       dbConnectionName = null;
       format = null;
       printfFormat = null;
@@ -97,16 +93,6 @@ public abstract class EmbeddedData extends BodyTagSupport implements javax.servl
    */
    public String getFormat() {
       return format;
-   }
-
-   public void setParent(final javax.servlet.jsp.tagext.Tag parent) {
-      super.setParent(parent);
-      // between this form and its parent lies a DbHeader/Body/Footer-Tag and maybe other tags (styling, logic, etc.)
-      parentForm = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
-   }
-
-   public DbFormTag getParentForm() {
-      return parentForm;
    }
 
    /**
@@ -211,7 +197,7 @@ public abstract class EmbeddedData extends BodyTagSupport implements javax.servl
 
       if (!Util.isNull(getFormat()) || !Util.isNull(getFormatClass())) {
          if (Util.isNull(getFormatClass())) {
-            setFormatClass("org.dbforms.taglib.defaults.DefaultFormatter");
+            setFormatClass(getConfig().getDefaultFormatterClass());
          }
 
          if (Util.isNull(getFormat())) {

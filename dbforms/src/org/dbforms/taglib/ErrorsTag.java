@@ -30,7 +30,6 @@ import java.util.Enumeration;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
-import javax.servlet.jsp.tagext.BodyTagSupport;
 import javax.servlet.http.HttpServletRequest;
 import org.dbforms.util.MessageResources;
 
@@ -45,7 +44,7 @@ import org.dbforms.util.MessageResources;
  *
  * @author Joe Peer
  */
-public class ErrorsTag extends BodyTagSupport
+public class ErrorsTag extends TagSupportWithScriptHandler
 			implements javax.servlet.jsp.tagext.TryCatchFinally
 {
 

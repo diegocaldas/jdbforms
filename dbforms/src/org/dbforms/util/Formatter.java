@@ -20,14 +20,17 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-package org.dbforms.taglib.defaults;
+package org.dbforms.util;
 
-import org.dbforms.util.external.PrintfFormat;
-import org.dbforms.taglib.interfaces.Formatter;
-
+import java.util.Locale;
 /**
- * DefaultFormatter based in PrintfFormat
+ * Interface describing an formatter used in EmbeddedData
  * 
  */
-public class DefaultFormatter extends PrintfFormat implements Formatter {
+public interface Formatter {
+   public Locale getLocale();
+   public void setLocale(Locale locale);
+   public void setFormat(String fmtArg) throws IllegalArgumentException;
+   public String sprintf(Object[] o);
+
 }

@@ -170,11 +170,11 @@ public abstract class DatabaseEvent extends WebEvent
                                                              paramStub.length()));
             Field      f = getTable().getField(iiFieldId);
 
-            String     value = ParseUtil.getParameter(request, param);
+            String     value = f.getEscaper().unescapeHTML(ParseUtil.getParameter(request, param));
             FieldValue fv    = new FieldValue(f, value);
 
-            fv.setOldValue(ParseUtil.getParameter(request, 
-                                                  Constants.FIELDNAME_OLDVALUETAG + param));
+            fv.setOldValue(f.getEscaper().unescapeHTML(ParseUtil.getParameter(request, 
+                                                  Constants.FIELDNAME_OLDVALUETAG + param)));
             fv.setPattern(ParseUtil.getParameter(request, 
                                                  Constants.FIELDNAME_PATTERNTAG + param));
             fv.setLocale(MessageResources.getLocale(request));

@@ -22,7 +22,6 @@
  */
 package org.dbforms.taglib;
 import javax.servlet.jsp.*;
-import javax.servlet.jsp.tagext.*;
 
 
 
@@ -35,7 +34,7 @@ import javax.servlet.jsp.tagext.*;
  *
  * @author Joachim Peer <j.peer@gmx.net>
  */
-public class DbHeaderTag extends BodyTagSupport
+public class DbHeaderTag extends DbBaseHandlerTag
 {
 
    /**
@@ -45,10 +44,7 @@ public class DbHeaderTag extends BodyTagSupport
     */
    public int doStartTag()
    {
-      DbFormTag myParent = (DbFormTag) findAncestorWithClass(this,
-            DbFormTag.class);
-
-      if (myParent.getCurrentCount() == 0)
+      if (getParentForm().getCurrentCount() == 0)
       {
          return EVAL_BODY_BUFFERED;
       }

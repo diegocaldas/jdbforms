@@ -32,6 +32,8 @@ import javax.servlet.ServletConfig;
 import org.apache.log4j.Category;
 
 import org.dbforms.util.Util;
+import org.dbforms.util.Escaper;
+import org.dbforms.util.ReflectionUtil;
 import org.dbforms.dom.DOMFactory; 
 
 import java.sql.Connection;
@@ -67,6 +69,11 @@ public class DbFormsConfig {
 
 	private ServletConfig servletConfig;
 
+
+   private String defaultFormatterClass   = "org.dbforms.util.DefaultFormatterImpl";
+   private String defaultEscaperClass     = "org.dbforms.util.DefaultEscaperImpl";
+   private Escaper escaper = null;   
+   
 	/**
 	 * Creates a new DbFormsConfig object.
 	 * 
@@ -305,5 +312,51 @@ public class DbFormsConfig {
 	public void setDOMFactoryClass(String string) {
 		DOMFactory.setFactoryClass(string);
 	}
+
+   
+   /**
+    * @return
+    */
+   public String getDefaultFormatterClass() {
+      return defaultFormatterClass;
+   }
+
+   /**
+    * @param string
+    */
+   public void setDefaultFormatterClass(String string) {
+      defaultFormatterClass = string;
+   }
+
+
+   /**
+    * @return
+    */
+   public String getDefaultEscaperClass() {
+      return defaultEscaperClass;
+   }
+
+   /**
+    * @param string
+    */
+   public void setDefaultEscaperClass(String string) {
+      defaultEscaperClass = string;
+   }
+
+   public Escaper getEscaper() {
+      if (escaper == null) {
+         String s = getDefaultEscaperClass();
+         if (!Util.isNull(s)) {
+            try {
+               escaper = (Escaper) ReflectionUtil.newInstance(s);
+            } catch (Exception e) {
+               logCat.error(
+                  "cannot create the new escaper [" + s + "]",
+                  e);
+            }
+         }
+      }
+      return escaper;
+   }
 
 }

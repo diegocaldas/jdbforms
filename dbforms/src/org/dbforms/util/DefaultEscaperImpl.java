@@ -20,17 +20,40 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-package org.dbforms.taglib.interfaces;
+package org.dbforms.util;
 
-import java.util.Locale;
 /**
- * Interface describing an formatter used in EmbeddedData
+ * DefaultEscaper
  * 
  */
-public interface Formatter {
-   public Locale getLocale();
-   public void setLocale(Locale locale);
-   public void setFormat(String fmtArg) throws IllegalArgumentException;
-   public String sprintf(Object[] o);
+public class DefaultEscaperImpl implements Escaper {
+   public String escapeHTML(String s) {
+      int i;
+      StringBuffer v = new StringBuffer("");
+      for (i = 0; i < s.length(); i++) {
+         switch (s.charAt(i)) {
+            case '"' :
+               v.append("&quot;");
+               break;
+            case '\'' :
+               v.append("&apos;");
+               break;
+            case '<' :
+               v.append("&lt;");
+               break;
+            case '>' :
+               v.append("&gt;");
+               break;
+            default :
+               v.append(s.charAt(i));
+               break;
+         }
+      }
+      return v.toString();
+   }
+
+   public String unescapeHTML(String s) {
+      return s;
+   }
 
 }

@@ -1,13 +1,15 @@
+<%@page contentType="text/html;charset=UTF-8"%>
 <html>
 	<head>
-		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 	</head>
   <body>
-  	Some chinese chars: &#25152;&#26377;&#32593;&#31449;
+  	<br/>Some chinese chars   : &#25152;&#26377;&#32593;&#31449;
+  	<br/>Some japanese chars  : &#12454;&#12455;&#12502;&#20840;&#20307;&#12363;&#12425;&#26908;&#32034;
+  	<br/>Some portuguese chars: Pesquisar p&aacute;ginas em portugu&ecirc;s &ccedil;
   	<br/>
 	<form method="post">
 		<%
-		   String s    = request.getParameter("f1");
+		   String s    = org.dbforms.util.ParseUtil.getParameter(request, "f1");
 		   if (s == null)
 		      s = "";
 		   String enc  = org.apache.commons.lang.StringEscapeUtils.escapeHtml(s);

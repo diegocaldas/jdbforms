@@ -23,7 +23,6 @@
 
 package org.dbforms.taglib;
 import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.tagext.BodyTagSupport;
 import org.dbforms.config.ResultSetVector;
 import org.dbforms.util.Util;
 import java.io.UnsupportedEncodingException;
@@ -37,7 +36,7 @@ import java.util.Map;
  *
  * @author Joachim Peer <j.peer@gmx.net>
  */
-public class DbBodyTag extends BodyTagSupport implements javax.servlet.jsp.tagext.TryCatchFinally {
+public class DbBodyTag extends TagSupportWithScriptHandler implements javax.servlet.jsp.tagext.TryCatchFinally {
 	private String allowNew = "true";
 	// by default this is "true" - if so, the body is rendered at least 1 time, even if there are no data rows in the table. this enables the user to insert a new data row. - to disable this feature, allowNew has to be set to "false"
 
