@@ -37,12 +37,14 @@
 <!ENTITY uml-cls SYSTEM "UMLDiagrams-cls.xml">
 <!ENTITY uml-seq SYSTEM "UMLDiagrams-seq.xml">
 <!ENTITY unit-test SYSTEM "Client_Side_Unit_Testing.xml">
+<!ENTITY how_to SYSTEM "How_To.xml">
 ]>
 <book>
 <title>DataBaseForms UsersGuide</title>
 <part><title>Major New features</title> 
 &navi;
 &unit-test;
+&how_to;
 </part>
 
 <part><title>Installation </title>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Document   : how_to_examples.xml
+    Created on : August 11, 2003, 10:20 AM
+    Author     : javauser
+    Description:
+        Purpose of the document follows.
+--> 
+
+<chapter>
+<title>How To ... Examples
+</title>
+<para>You can now find in the bookstore example under <computeroutput>http://localhost:8080/bookstore/howto/package.html</computeroutput> a list of how-to-do different things that are commonly asked.</para>
+<para>As of Aug/11/2003 we have:
+ <orderedlist numeration="lowerroman">
+<listitem>
+<para>An example to show how to change the values shown in a second select box based on the value chosen by a user in the first select box.</para>
+</listitem>
+<listitem>
+<para>An example to show how to "break up" a page using a tabSelector to allow for the input of one form over several pages</para>
+</listitem>
+ </orderedlist>
+ </para>
+<para><emphasis role="bold">Please have a look and also submit your own techniques for our bookstore How-To examples</emphasis></para> 
+
+</chapter>
