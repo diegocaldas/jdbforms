@@ -82,6 +82,13 @@ public class JakartaConnectionProvider extends ConnectionProvider
       super();
    }
 
+   private synchronized void sleep(int timetosleep) {
+   	   try {
+   	      wait(timetosleep);
+   	   } catch (Exception e)
+   	   {
+   	   }
+   }
    /**
     *  Get a JDBC Connection
     *
@@ -95,9 +102,15 @@ public class JakartaConnectionProvider extends ConnectionProvider
 	  getCat().debug("::getConnection - NumIdle   = " + dataSource.getNumIdle());
       try {
 			return dataSource.getConnection();
-      } catch (SQLException e) {
-         SqlUtil.logSqlException(e);
-         throw e;
+      } catch (NullPointerException e) {
+         getCat().error(e);
+ 		 // 20030725-HKK:
+		 // To overcome a bug in the firebird jdbc driver.
+		 // next call after a session timeout will do an null pointer exception.
+		 // in this case just try it again! 
+		 sleep(1000);
+         Connection con = dataSource.getConnection(); 
+         return con; 
       }
    }
 

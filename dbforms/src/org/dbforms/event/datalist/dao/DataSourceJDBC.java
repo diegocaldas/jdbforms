@@ -96,6 +96,7 @@ public class DataSourceJDBC extends DataSource
    protected void finalize() throws Throwable
    {
 	  getLogCat().info("finalize called");
+	  // 20030725-HKK:
 	  // To overcome a bug in the firebird jdbc driver. 
 	  // This drivers makes an error if you call stmt.close in finalize.
 	  // After this error no more connections are possible!
