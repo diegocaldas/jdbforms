@@ -1760,7 +1760,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
          String aSearchFieldValue = ParseUtil.getParameter(request, searchFieldName);
 
          // ie. search_1_12 is mapped to "john"
-         if ((aSearchFieldValue != null) && (aSearchFieldValue.trim().length() > 0)) {
+         if (!Util.isNull(aSearchFieldValue)) {
             int firstUnderscore = searchFieldName.indexOf('_');
             int secondUnderscore = searchFieldName.indexOf('_', firstUnderscore + 1);
             int tableId = Integer.parseInt(searchFieldName.substring(firstUnderscore + 1, secondUnderscore));
@@ -1778,7 +1778,6 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
             // Check for operator
             int algorithm = Constants.SEARCH_ALGO_SHARP;
             int operator = Constants.FILTER_EQUAL;
-
             if (!Util.isNull(aSearchAlgorithm)) {
                if (aSearchAlgorithm.startsWith("sharpLT")) {
                   operator = Constants.FILTER_SMALLER_THEN;
@@ -1812,7 +1811,6 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
             if ((aSearchAlgorithm == null) || (aSearchAlgorithm.toLowerCase().indexOf("extended") == -1)) {
                // Extended not found, only append field
                FieldValue fv = FieldValue.createFieldValueForSearching(f, aSearchFieldValue, getLocale(), operator, mode, algorithm, false);
-
                if (mode == Constants.SEARCHMODE_AND) {
                   mode_and.addElement(fv);
                } else {
@@ -1834,23 +1832,19 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
                      switch (tokenCounter) {
                         case 1 :
                            operator = Constants.FILTER_GREATER_THEN_EQUAL;
-
                            break;
 
                         case 2 :
                            operator = Constants.FILTER_SMALLER_THEN_EQUAL;
-
                            break;
 
                         default :
                            operator = -1;
-
                            break;
                      }
 
                      if (operator != -1) {
                         FieldValue fv = FieldValue.createFieldValueForSearching(f, aSearchFieldValue, getLocale(), operator, mode, algorithm, false);
-
                         if (mode == Constants.SEARCHMODE_AND) {
                            mode_and.addElement(fv);
                         } else {
@@ -1984,9 +1978,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
       int andBagSize = mode_and.size();
       int orBagSize = mode_or.size();
       int criteriaFieldCount = andBagSize + orBagSize;
-
       logCat.info("criteriaFieldCount=" + criteriaFieldCount);
-
       if (criteriaFieldCount == 0) {
          return null;
       }
@@ -1994,17 +1986,13 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
       // now we construct the fieldValues array
       // we ensure that the searchmodes are not mixed up
       fieldValues = new FieldValue[criteriaFieldCount];
-
       int i = 0;
-
       for (i = 0; i < andBagSize; i++) {
          fieldValues[i] = (FieldValue) mode_and.elementAt(i);
       }
-
       for (int j = 0; j < orBagSize; j++) {
          fieldValues[j + i] = (FieldValue) mode_or.elementAt(j);
       }
-
       return fieldValues;
    }
 
