@@ -1,3 +1,15 @@
+2003-01-23
+(Henner.Kollmann@gmx.de)
+	taglib_docu.xml:
+	    added new field novalue to checkbox and radio tag
+	DbCheckboxTag, DbRadioTag:
+	    corrected problem with storing of values if checkbox is unchecked.
+	    Will add a hidden input field with value set to the novalue attribute and the same name as the checkbox field
+	    This value will be stored if checkbox is unchecked.
+	ParseUtil:
+	    Corrected comment of getParameter. The first value will be used if the parameter has multiple values.    
+	    
+
 2002-11-27
 (fossato@pow2.com)
         pluggable events system
