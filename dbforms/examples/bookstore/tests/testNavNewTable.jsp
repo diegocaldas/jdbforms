@@ -30,6 +30,9 @@
 						followUp="/tests/testNavNewTableEdit.jsp" caption="Insert new ..."/>
 				</db:footer>
 		</db:dbform>
+
+<%@ include file="httpSnooper.html" %> 
+
 	</body>
 </html>    
 

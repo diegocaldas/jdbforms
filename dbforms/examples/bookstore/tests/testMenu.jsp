@@ -19,5 +19,8 @@
 			caption="testMenuPage2"
 		/>
 	</db:dbform>
+
+<%@ include file="httpSnooper.html" %> 
+
 </body>
 </html>

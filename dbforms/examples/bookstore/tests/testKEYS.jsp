@@ -32,6 +32,9 @@
 				</table>
 			</db:footer>
 		</db:dbform>
+
+<%@ include file="httpSnooper.html" %> 
+
 </body>
 </html>    
 

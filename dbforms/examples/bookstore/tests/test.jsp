@@ -3,5 +3,8 @@
 <html>
   <body>
     Hello !
+
+<%@ include file="httpSnooper.html" %> 
+
   </body>
 </html>

@@ -45,13 +45,16 @@
                  <db:navPrevButton  style="width:100" caption="<  Previous"/>
                  <db:navNextButton  style="width:100" caption=">  Next"/>
                  <db:navLastButton  style="width:100" caption=">> Last"/>
-                 <db:navNewButton   style="width:100" caption="New" showAlwaysInFooter="false" />
+                 <db:navNewButton   style="width:100" caption="New"/>
                  &nbsp;
                </td>
             </tr>
             </table>
          </db:footer>
       </db:dbform>
+
+<%@ include file="httpSnooper.html" %> 
+
    </body>
 </html>
 

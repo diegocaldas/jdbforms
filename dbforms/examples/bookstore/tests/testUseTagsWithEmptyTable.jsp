@@ -30,5 +30,8 @@
 					/>
 			</db:radio>
  	  </db:dbform> 
+
+<%@ include file="httpSnooper.html" %> 
+
     </body>
 </html>

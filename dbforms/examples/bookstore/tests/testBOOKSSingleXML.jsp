@@ -14,9 +14,9 @@
 			</db:header>
 			<db:body>
 				<tr>
-					<td><%=currentRow_XMLBOOKS.get("ISBN") %>&nbsp;</td>
-					<td><%=currentRow_XMLBOOKS.get("AUTHOR_ID") %>&nbsp;</td>
-					<td><%=currentRow_XMLBOOKS.get("TITLE") %>&nbsp;</td>
+					<td><%=currentRow_BOOK.get("ISBN") %>&nbsp;</td>
+					<td><%=currentRow_BOOK.get("AUTHOR_ID") %>&nbsp;</td>
+					<td><%=currentRow_BOOK.get("TITLE") %>&nbsp;</td>
 				</tr>
 			</db:body>
 			<db:footer>
@@ -31,6 +31,9 @@
 				</table>
 			</db:footer>
 		</db:dbform>
+
+<%@ include file="httpSnooper.html" %> 
+
 	</body>
 </html>    
 

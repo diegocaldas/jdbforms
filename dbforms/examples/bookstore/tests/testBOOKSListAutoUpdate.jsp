@@ -24,12 +24,15 @@
 			<db:footer>
 				<tr>
 					<td colspan="4" align="center">
-						<db:updateButton caption="update" />
+						<db:updateButton />
 					</td>
 				</tr>
 				</table>
 			</db:footer>
 		</db:dbform>
+
+<%@ include file="httpSnooper.html" %> 
+
 </body>
 </html>    
 
