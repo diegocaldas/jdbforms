@@ -286,7 +286,7 @@
                  methodParams="java.lang.Object,org.apache.commons.validator.ValidatorAction,org.apache.commons.validator.Field,java.util.Vector,java.util.Locale,org.dbforms.config.DbFormsErrors" 
                  method="validateLong"
                  msg="dbforms.error.long"
-                 jsFunctionName="longValidations">
+                 jsFunctionName="LongValidations">
          <javascript><![CDATA[
             function validateLong(form) {
                 var bValid = true;
@@ -305,8 +305,8 @@
 						   var iValue = parseInt(value);
 						   if (isNaN(iValue) || !(iValue >= -2147483648 && iValue <= 2147483647)) {
 							  if (i == 0)
-								 focusField = form[oInteger[x][0]]; 
-							  fields[i++] = oInteger[x][1];
+								 focusField = form[oLong[x][0]]; 
+							  fields[i++] = oLong[x][1];
 							  bValid = false;
 						   }
 						}
