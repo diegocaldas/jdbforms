@@ -485,6 +485,15 @@
          </properties>
       </dependency>
       <dependency>
+         <groupId>maven</groupId>
+         <artifactId>maven-war-plugin</artifactId>
+         <version>1.7-SNAPSHOT</version>
+         <type>plugin</type>
+         <properties>
+            <war.bundle>false</war.bundle>
+         </properties>
+      </dependency>
+      <dependency>
          <groupId>maven-taglib</groupId>
          <artifactId>maven-taglib-plugin</artifactId>
          <version>1.2</version>
