@@ -23,17 +23,13 @@
 	  Type the following to log-in:
     </p>
 	<p>
-	  <code>
-	    <pre>cvs -d:pserver:anonymous@cvs.jdbforms.sourceforge.net:/cvsroot/jdbforms login</pre>
-      </code>
+	  <source>cvs -d:pserver:anonymous@cvs.jdbforms.sourceforge.net:/cvsroot/jdbforms login</source>
 	</p>
 	<p>
 	  and then fetch the files:
 	</p>
 	<p>
-	  <code>
-	    <pre>cvs -z8 -d:pserver:anonymous@cvs.jdbforms.sourceforge.net:/cvsroot/jdbforms co dbforms</pre>
-      </code>
+	  <source>cvs -z8 -d:pserver:anonymous@cvs.jdbforms.sourceforge.net:/cvsroot/jdbforms co dbforms</source>
     </p>
 	<p>  
 	  Now you should retrieve all the DbForms source files and libraries.
