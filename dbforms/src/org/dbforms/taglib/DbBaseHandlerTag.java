@@ -438,6 +438,15 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
          res = MessageResources.getMessage(res, getLocale());
       }
 
+	/*******************************************
+	 * Grunikiewicz.philip@hydro.qc.cq
+	 * 2003-12-04
+	 * 
+	 * The data being return has a value of null.  The developer has not specified a substitute. So
+	 * instead of crashing, lets display an empty string! 
+	 */
+	if (res == null) res = "";
+
       return res;
    }
 
