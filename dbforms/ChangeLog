@@ -1,3 +1,34 @@
+2004-04-14
+(Henner.Kollmann@gmx.de, ivanfm@users.sourceforge.net)
+  - New attribute overrideFieldCheck for db:dbform tag:
+ 	If set to true the field values will not be checked if they are changed.
+ 	The database update will be done always.
+ 	 This could be usefull if you want to call your interceptor always to 
+ 	 check fields which are not part of the table.
+ 	 In your interceptor you can use return DbEventInterceptor.IGNORE_OPERATION 
+ 	 if you do not want the database update 
+  - change to dbforms-config.xml: added global interceptor
+         You can add an global interceptors now:
+         <dbforms-config>
+         	...
+         	<interceptors>
+         	   <interceptor>
+         	      <param/>
+         	   </interceptor>
+         	</interceptors>
+         </dbforms-config>
+         The interceptor tag has the same attributes as the interceptor tag inside the 
+         table attribute!
+   - DbForms now support html escaping.
+     Escaper can be set for tables, fields in dbforms-config file, all output tags in the
+     jsp page. 
+     Ranking is:
+        1. jsp tag
+        2. Field
+        3. Table
+        4. default escaper
+   - No are all fields of the config file published in the table class         
+
 ====================== v2.3 was released  ==============================================         
 2004-03-25
 (Henner.Kollmann@gmx.de)
