@@ -92,7 +92,8 @@ public class ProjectData implements Serializable, PropertyNames {
 
         if (dbFormsHomeStr != null) {
 
-            setProperty(STYLESHEET_DIR, dbFormsHomeStr + "/xsl-stylesheets");
+            setProperty(STYLESHEET_DIR, dbFormsHomeStr + 
+               System.getProperties().getProperty("file.separator") + "xsl-stylesheets");
 
         }
 
@@ -122,7 +123,8 @@ public class ProjectData implements Serializable, PropertyNames {
 
             if (dbFormsHomeStr != null) {
 
-                setProperty(STYLESHEET_DIR, dbFormsHomeStr + "/xsl-stylesheets");
+                setProperty(STYLESHEET_DIR, dbFormsHomeStr + 
+                      System.getProperties().getProperty("file.separator") + "xsl-stylesheets");
 
                 unsavedChanges = true;
 

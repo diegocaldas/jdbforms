@@ -201,6 +201,7 @@ public class XSLTransformPanel extends PropertyPanel implements ActionListener, 
         jLabel1 = new javax.swing.JLabel();
 
         tf_stylesheetDir = new javax.swing.JTextField();
+        tf_stylesheetDir.setText(projectData.getProperty(STYLESHEET_DIR));
 
         setLayout(new GridBagLayout());
 
@@ -560,8 +561,10 @@ public class XSLTransformPanel extends PropertyPanel implements ActionListener, 
             int returnVal = dlg_fileChooser.showOpenDialog(this);
 
             if (returnVal == JFileChooser.APPROVE_OPTION) {
-                tf_stylesheetDir.setText(dlg_fileChooser.getSelectedFile().getAbsolutePath());
-
+                String dirname = dlg_fileChooser.getSelectedFile().getAbsolutePath();
+                tf_stylesheetDir.setText(dirname);
+                projectData.setProperty(STYLESHEET_DIR,dirname);
+                refreshAvailableStylesheets();
                 tf_stylesheetDir.grabFocus();
 
             }
