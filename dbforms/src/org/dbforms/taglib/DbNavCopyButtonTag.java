@@ -26,6 +26,7 @@ import javax.servlet.jsp.JspException;
 
 import org.dbforms.config.ResultSetVector;
 import org.dbforms.event.eventtype.EventType;
+import org.dbforms.util.Util;
 
 
 /**
@@ -64,7 +65,7 @@ public class DbNavCopyButtonTag extends DbBaseButtonTag
 
 		if (getParentForm().getFooterReached()
 					&& ResultSetVector.isNull(getParentForm().getResultSetVector())
-					&& "false".equalsIgnoreCase(showAlwaysInFooter))
+					&& !Util.getTrue(showAlwaysInFooter))
 		{
 			// 20030521 HKK: Bug fixing, thanks to Michael Slack! 
 			return SKIP_BODY;

@@ -157,7 +157,7 @@ public class InsertEvent extends ValidationEvent {
 
          // if a field is a key and if it is NOT automatically generated,
          // then it should be provided by the user
-         if (!field.hasAutoIncSet() && field.getKey()) {
+         if (!field.hasAutoIncSet() && field.hasIsKeySet()) {
             if (fieldValues.get(field.getName()) == null) {
                throw new SQLException("Field " + field.getName() + " is missing");
             }

@@ -70,7 +70,7 @@ public class DbSortTag extends DbBaseHandlerTag
       try
       {
 
-         if (!getField().getKey() && !getField().hasSortableSet())
+         if (!getField().hasIsKeySet() && !getField().hasSortableSet())
          {
             logCat.warn("you should declare " + getField().getName()
                + " as key or as sortable in your config file, if you use it as ordering field!");

@@ -84,7 +84,7 @@ public class DbCheckboxTag extends DbBaseHandlerTag implements DataContainer,
     * @return DOCUMENT ME!
     */
    public boolean hasCheckedSet() {
-      return "true".equalsIgnoreCase(checked);
+      return Util.getTrue(checked);
    }
 
    /**

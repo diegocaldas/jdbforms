@@ -29,7 +29,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Blob;
 
 import org.dbforms.config.FieldTypes;
 import org.dbforms.config.Table;

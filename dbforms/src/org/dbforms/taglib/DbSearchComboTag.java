@@ -202,7 +202,7 @@ public class DbSearchComboTag extends DbSearchTag implements DataContainer, java
 
 				if (Util.isNull(selectedIndex)) {
 					isSelected =
-						"true".equalsIgnoreCase(
+						Util.getTrue(
 							org.dbforms.util.ParseUtil.getEmbeddedStringWithoutDots(customEntry, 2, ',').trim());
 				}
 

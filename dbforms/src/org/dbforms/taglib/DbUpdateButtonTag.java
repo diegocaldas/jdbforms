@@ -26,6 +26,7 @@ import javax.servlet.jsp.JspException;
 
 import org.dbforms.config.ResultSetVector;
 import org.dbforms.validation.ValidatorConstants;
+import org.dbforms.util.Util;
 
 
 
@@ -109,7 +110,7 @@ public class DbUpdateButtonTag extends DbBaseButtonTag
 		super.doStartTag();
 	
 
-      if (!"true".equalsIgnoreCase(showAlways) 
+      if (!Util.getTrue(showAlways) 
       		&& getParentForm().getFooterReached()
                && ResultSetVector.isNull(getParentForm().getResultSetVector()))
       {

@@ -30,6 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.BodyTagSupport;
+import org.dbforms.util.Util;
 
 
 
@@ -99,7 +100,7 @@ public class IsErrorTag extends BodyTagSupport
       boolean haveError = false;
 
 	haveError = ( ((originalErrors != null) && (originalErrors.size() > 0)));
-	return ("true".equalsIgnoreCase(value)==haveError)
+	return (Util.getTrue(value)==haveError)
 		? EVAL_BODY_INCLUDE
 		: SKIP_BODY;
 

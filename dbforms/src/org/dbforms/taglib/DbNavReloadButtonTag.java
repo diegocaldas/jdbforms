@@ -25,6 +25,7 @@ package org.dbforms.taglib;
 import javax.servlet.jsp.JspException;
 
 import org.dbforms.event.eventtype.EventType;
+import org.dbforms.util.Util;
 
 /****
  *
@@ -111,6 +112,6 @@ public class DbNavReloadButtonTag extends DbBaseButtonTag implements javax.servl
 	}
 
 	public boolean hasForceReloadSet() {
-		return "true".equalsIgnoreCase(forceReload);
+		return Util.getTrue(forceReload);
 	}
 }

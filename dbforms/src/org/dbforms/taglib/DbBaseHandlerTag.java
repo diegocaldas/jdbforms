@@ -128,7 +128,7 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
 
    /** Returns the read-only attribute. */
    public boolean hasReadOnlySet() {
-      return "true".equalsIgnoreCase(readOnly);
+      return Util.getTrue(readOnly);
    }
 
    /**

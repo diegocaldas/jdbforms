@@ -658,7 +658,7 @@ public class DbFormTag extends TagSupportWithScriptHandler implements
 	 * @return Description of the Return Value
 	 */
 	public boolean hasMultipartSet() {
-		return "true".equalsIgnoreCase(multipart);
+		return Util.getTrue(multipart);
 	}
 
 	/**
@@ -790,7 +790,7 @@ public class DbFormTag extends TagSupportWithScriptHandler implements
 	 * @return The captionResource value
 	 */
 	public boolean hasCaptionResourceSet() {
-		return "true".equalsIgnoreCase(captionResource);
+		return Util.getTrue(captionResource);
 	}
 
 	/**
@@ -809,7 +809,7 @@ public class DbFormTag extends TagSupportWithScriptHandler implements
 	 * @return The javascriptValidation value
 	 */
 	public boolean hasJavascriptValidationSet() {
-		return "true".equalsIgnoreCase(javascriptValidation);
+		return Util.getTrue(javascriptValidation);
 	}
 
 	/**
@@ -828,7 +828,7 @@ public class DbFormTag extends TagSupportWithScriptHandler implements
 	 * @return The javascriptFieldsArray value
 	 */
 	public boolean hasJavascriptFieldsArraySet() {
-		return "true".equalsIgnoreCase(javascriptFieldsArray);
+		return Util.getTrue(javascriptFieldsArray);
 	}
 
 	/**
@@ -866,7 +866,7 @@ public class DbFormTag extends TagSupportWithScriptHandler implements
 	 * @return The readOnly value
 	 */
 	public boolean hasReadOnlySet() {
-		return "true".equalsIgnoreCase(readOnly);
+		return Util.getTrue(readOnly);
 	}
 
 	/**
@@ -925,7 +925,7 @@ public class DbFormTag extends TagSupportWithScriptHandler implements
 	 * @return the redisplayFieldsOnError
 	 */
 	public boolean hasRedisplayFieldsOnErrorSet() {
-		return "true".equalsIgnoreCase(redisplayFieldsOnError);
+		return Util.getTrue(redisplayFieldsOnError);
 	}
 
 	/**

@@ -54,7 +54,7 @@ public class Field {
 	private boolean isAutoInc = false;
 
 	/** stores if the field is a KEY */
-	private boolean key = false;
+	private String key = "false";
 
 	/** stores if the field is sortable */
 	private boolean isSortable = false;
@@ -222,8 +222,7 @@ public class Field {
 	 * @param autoInc The new autoInc value
 	 */
 	public void setAutoInc(String autoInc) {
-		this.isAutoInc =
-			autoInc.equalsIgnoreCase("true") || autoInc.equalsIgnoreCase("yes");
+		this.isAutoInc = Util.getTrue(autoInc);
 	}
 
 	/**
@@ -240,9 +239,8 @@ public class Field {
 	 * 
 	 * @param isKey The new isKey value
 	 */
-	public void setIsKey(String isKey) {
-		this.key =
-			isKey.equalsIgnoreCase("true") || isKey.equalsIgnoreCase("yes");
+	public void setIsKey(String value) {
+		this.key = value;
 	}
 
 	/**
@@ -250,8 +248,8 @@ public class Field {
 	 * 
 	 * @return The key value
 	 */
-	public boolean getKey() {
-		return key;
+	public boolean hasIsKeySet() {
+		return Util.getTrue(key);
 	}
 
 	/**
@@ -278,8 +276,7 @@ public class Field {
 	 * @param encoding The new encoding value
 	 */
 	public void setEncoding(String encoding) {
-		this.encoded =
-			encoding.equalsIgnoreCase("true") || encoding.equalsIgnoreCase("yes");
+		this.encoded = Util.getTrue(encoding);
 	}
 
 	/**
@@ -297,8 +294,7 @@ public class Field {
 	 * @param sortable The new sortable value
 	 */
 	public void setSortable(String sortable) {
-		this.isSortable =
-			sortable.equalsIgnoreCase("true") || sortable.equalsIgnoreCase("yes");
+		this.isSortable = Util.getTrue(sortable);
 	}
 
 	/**

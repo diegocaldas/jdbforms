@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import org.dbforms.event.WebEvent;
 import org.dbforms.event.eventtype.EventType;
-
+import org.dbforms.util.Util;
 /**
  * Abstract base class for the various input tags. original author Craig R.
  * McClanahan original author Don Clasen,
@@ -188,7 +188,7 @@ public abstract class DbBaseInputTag extends DbBaseHandlerTag {
     * @return java.lang.String
     */
    public boolean hasHiddenSet() {
-      return "true".equalsIgnoreCase(hidden);
+      return Util.getTrue(hidden);
    }
 
    /**

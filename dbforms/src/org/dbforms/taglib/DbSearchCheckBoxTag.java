@@ -24,6 +24,7 @@ package org.dbforms.taglib;
 import javax.servlet.jsp.JspException;
 
 import org.dbforms.config.Field;
+import org.dbforms.util.Util;
 
 /**
  * <p>renders a input field for searching with special default search modes.</p>
@@ -100,7 +101,7 @@ public class DbSearchCheckBoxTag extends DbSearchTag
          tagBuf.append("\" ");
          tagBuf.append("value=\"");
          tagBuf.append(getValue());
-         if ("true".equalsIgnoreCase(getChecked())) {
+         if (Util.getTrue(getChecked())) {
             tagBuf.append(" checked=\"checked\" ");
          }
 

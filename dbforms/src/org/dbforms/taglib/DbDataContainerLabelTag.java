@@ -83,7 +83,7 @@ public class DbDataContainerLabelTag extends DbBaseHandlerTag implements DataCon
    public int doEndTag() throws javax.servlet.jsp.JspException {
       try {
          String fieldValue = "";
-         if (!"true".equalsIgnoreCase(strict)) {
+         if (!Util.getTrue(strict)) {
             fieldValue = this.getFormattedFieldValue();	   
          }
          String compareValue = this.getFieldValue();

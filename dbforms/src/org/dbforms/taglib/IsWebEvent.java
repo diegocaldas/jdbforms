@@ -26,6 +26,7 @@ import org.dbforms.event.WebEvent;
 import javax.servlet.jsp.JspException;
 
 import org.apache.log4j.Category;
+import org.dbforms.util.Util;
 
 /**
  * DOCUMENT ME!
@@ -101,7 +102,7 @@ public class IsWebEvent
 					+ value);
 		}
 
-		return ("true".equalsIgnoreCase(value) == eventNameMatch)
+		return (Util.getTrue(value) == eventNameMatch)
 			? EVAL_BODY_INCLUDE
 			: SKIP_BODY;
 	}

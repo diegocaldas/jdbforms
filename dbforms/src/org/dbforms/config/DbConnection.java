@@ -38,6 +38,7 @@ import javax.naming.NamingException;
 import org.apache.log4j.Logger;
 import org.dbforms.conprovider.ConnectionFactory;
 import org.dbforms.conprovider.ConnectionProviderPrefs;
+import org.dbforms.util.Util;
 
 /**
  * This class represents datastructures like to following examples:
@@ -218,7 +219,7 @@ public class DbConnection implements javax.sql.DataSource {
     * @param  isPow2 The new isPow2 value
     */
    public void setIsPow2(String isPow2) {
-      pow2 = "true".equalsIgnoreCase(isPow2);
+      pow2 = Util.getTrue(isPow2);
    }
 
    /**
@@ -273,7 +274,7 @@ public class DbConnection implements javax.sql.DataSource {
     */
    public void setIsJndi(String isJndi) {
       this.isJndi = isJndi;
-      jndi = "true".equalsIgnoreCase(isJndi);
+      jndi = Util.getTrue(isJndi);
    }
 
    /**

@@ -401,6 +401,6 @@ public abstract class EmbeddedData extends DbBaseHandlerTag implements
 	}
 
 	protected boolean useCache() {
-		return !("true".equalsIgnoreCase(this.getDisableCache()));
+		return !(Util.getTrue(this.getDisableCache()));
 	}
 }
