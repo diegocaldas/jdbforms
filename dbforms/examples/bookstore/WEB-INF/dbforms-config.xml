@@ -64,20 +64,6 @@
 	        <field name="REMARK" fieldType="varchar" />
 	    </table>    
 
-	  <events>
-	    <database-events>
-	      <database-event type="insert"   className="org.dbforms.event.datalist.InsertEvent" />
-	      <database-event type="update"   className="org.dbforms.event.datalist.UpdateEvent" />
-	      <database-event type="delete"   className="org.dbforms.event.datalist.DeleteEvent" />
-	    </database-events>
-	    <navigation-events>
-	      <navigation-event type="navGoto"   className="org.dbforms.event.datalist.GotoEvent" />
-	      <navigation-event type="navPrev"   className="org.dbforms.event.datalist.NavPrevEvent" />
-	      <navigation-event type="navNext"   className="org.dbforms.event.datalist.NavNextEvent" />
-	      <navigation-event type="navFirst"  className="org.dbforms.event.datalist.NavFirstEvent" />
-	      <navigation-event type="navLast"   className="org.dbforms.event.datalist.NavLastEvent" />
-	    </navigation-events>
-	  </events>
 	<!-- ========== Connection =================================== -->
 	    <dbconnection
 		    isPow2		   			= "true"

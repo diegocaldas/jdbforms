@@ -21,14 +21,17 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.event.datalist;
-import java.io.*;
-import java.util.*;
-import java.sql.*;
-import javax.servlet.http.*;
 
-import org.dbforms.util.*;
-import org.dbforms.config.*;
-import org.dbforms.event.*;
+import java.util.Hashtable;
+import java.sql.SQLException;
+import java.sql.Connection;
+import javax.servlet.http.HttpServletRequest;
+
+import org.dbforms.util.Util;
+import org.dbforms.util.ParseUtil;
+import org.dbforms.util.FieldValues;
+import org.dbforms.config.GrantedPrivileges;
+import org.dbforms.config.DbFormsConfig;
 import org.apache.log4j.Category;
 import org.dbforms.event.DatabaseEvent;
 import org.dbforms.event.MultipleValidationException;

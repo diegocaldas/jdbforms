@@ -20,7 +20,7 @@
 	      	<tr>
 	      		<td>Make the new navigation system to the default system</td>
 	      		<td>Henner Kollmann (Henner.Kollmann@gmx.de)</td>
-	      		<td>open</td>
+	      		<td>done</td>
 	      	</tr>
 	      	<tr>
 	      		<td>Remove * imports so checkstyle will make less error</td>
