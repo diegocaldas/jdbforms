@@ -26,6 +26,7 @@ import javax.servlet.jsp.JspException;
 
 import org.dbforms.config.ResultSetVector;
 import org.apache.log4j.Category;
+import org.dbforms.validation.ValidatorConstants;
 
 
 
@@ -73,6 +74,20 @@ public class DbUpdateButtonTag extends DbBaseButtonTag
       return associatedRadio;
    }
 
+	/**
+	 * returns the JavaScript validation flags.
+	 * Will be put into the onClick event of the main form
+	 * Must be overloaded by update and delete button
+	 *
+	 * @return the java script validation vars.
+	 */
+	protected String JsValidation()
+	{
+		return ( ValidatorConstants.JS_CANCEL_VALIDATION	
+				 + "=true;" 
+				 + ValidatorConstants.JS_UPDATE_VALIDATION_MODE
+				+ "=true;");
+	}
 
    /**
     * DOCUMENT ME!

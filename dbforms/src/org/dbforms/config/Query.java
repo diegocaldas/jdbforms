@@ -410,11 +410,7 @@ public class Query extends Table
                hatSchonFollowAfterWhere = true;
                buf.append(followAfterWhere);
             }
-            else
-            {
-               buf.append(" ( ");
-            }
-
+			buf.append(" ( ");
             buf.append(sqlFilter);
             buf.append(" ) ");
          }
@@ -424,20 +420,15 @@ public class Query extends Table
          {
             if (!Util.isNull(sqlFilter))
             {
-               buf.append(" AND ( ");
+               buf.append(" AND ");
             }
             else if (!Util.isNull(where))
             {
                hatSchonFollowAfterWhere = true;
                buf.append(followAfterWhere);
             }
-            else
-            {
-               buf.append(" ( ");
-            }
-
-
             // parents are inserted in getQueryWhere method 
+			buf.append(" ( ");
             buf.append(s);
             buf.append(" ) ");
          }

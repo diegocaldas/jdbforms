@@ -842,9 +842,8 @@ public class Table
       if (!Util.isNull(s))
       {
          if (!Util.isNull(sqlFilter))
-            buf.append(" AND ( ");
-         else
-            buf.append(" ( ");
+            buf.append(" AND ");
+         buf.append(" ( ");
          buf.append(s);
          buf.append(" ) ");
       }

@@ -115,7 +115,8 @@ public class UpdateEvent extends ValidationEvent
 
       if (fieldValues.size() == 0)
       {
-         throw new SQLException("no parameters");
+      	logCat.info("no parameters to update found");
+      	return;
       }
 
       // part 2: check if there are interceptors to be processed (as definied by

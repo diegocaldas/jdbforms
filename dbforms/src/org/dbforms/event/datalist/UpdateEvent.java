@@ -110,7 +110,8 @@ public class UpdateEvent extends ValidationEvent
 
       if (fieldValues.size() == 0)
       {
-         throw new SQLException("no parameters");
+ 		 logCat.info("no parameters to update found");
+         return;
       }
 
       // Apply given security contraints (as defined in dbforms-config.xml)

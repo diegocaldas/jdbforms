@@ -20,29 +20,27 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-package org.dbforms.taglib;
 
+package org.dbforms.taglib;
 import java.util.Locale;
 import org.dbforms.config.Table;
 import org.dbforms.util.MessageResources;
 import javax.servlet.jsp.JspException;
 import javax.servlet.http.HttpServletRequest;
-
 import org.dbforms.validation.ValidatorConstants;
 import org.apache.log4j.Category;
 
 
-/****
- *
- * abstract base class for buttons
- * supports 3 types of Buttons: #fixme - docu
- *
- *
- * @author Joachim Peer <j.peer@gmx.net>
+
+/**
+ * abstract base class for buttons supports 3 types of Buttons: #fixme - docu
+ * 
+ * @author Joachim Peer
  */
 public abstract class DbBaseButtonTag extends DbBaseHandlerTag
 {
-	private static Category logCat = Category.getInstance(DbBaseButtonTag.class.getName()); // logging category for this class
+   private static Category logCat = Category.getInstance(
+                                             DbBaseButtonTag.class.getName()); // logging category for this class
 
    /** DOCUMENT ME! */
    protected static final int FLAVOR_STANDARD = 0;
@@ -52,6 +50,9 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag
 
    /** DOCUMENT ME! */
    protected static final int FLAVOR_MODERN = 2;
+
+   // logging category for this class
+   private static int uniqueID = 0;
 
    /** DOCUMENT ME! */
    protected String followUp;
@@ -80,63 +81,105 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag
    /** DOCUMENT ME! */
    protected String border; // used to set html border attribute"
 
-	// logging category for this class
-	private static int uniqueID = 0;
-
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
    protected static int getUniqueID()
    {
-		uniqueID++;
-		return uniqueID; 
+      uniqueID++;
+
+      return uniqueID;
    }
 
-	public int doStartTag() throws javax.servlet.jsp.JspException 
-	{
-		if ((getParentForm().getFormValidatorName() != null)
-					&& (getParentForm().getFormValidatorName().length() > 0)
-					&& getParentForm().getJavascriptValidation().equals("true"))
-		{
-			String onclick = (getOnClick() != null) ? getOnClick() : "";
 
-			if (onclick.lastIndexOf(";") != (onclick.length() - 1))
-			{
-				onclick += ";"; // be sure javascript end with ";"
-			}
-
-			setOnClick(onclick + ValidatorConstants.JS_CANCEL_VALIDATION
-				+ "=false;");
-		}
-		return SKIP_BODY;
-	}
-	
-	public int doEndTag() throws javax.servlet.jsp.JspException {
-
-		if (choosenFlavor == FLAVOR_MODERN) {
-			try {
-				if (bodyContent != null)
-					bodyContent.writeOut(bodyContent.getEnclosingWriter());
-				pageContext.getOut().write("</button>");
-			} catch (java.io.IOException ioe) {
-				throw new JspException("IO Error: " + ioe.getMessage());
-			}
-		}
-		return EVAL_PAGE;
-	}
-
-	/**
-	 * DOCUMENT ME!
-	 *
-	 * @param parent DOCUMENT ME!
-	 */
-	public void setParent(final javax.servlet.jsp.tagext.Tag parent)
-	{
-		super.setParent(parent);
-		table = getParentForm().getTable();
-	}
+   /**
+    * returns the JavaScript validation flags.
+    * Will be put into the onClick event of the main form
+    * Must be overloaded by update and delete button
+    *
+    * @return the java script validation vars.
+    */
+   protected String JsValidation()
+   {
+      return ValidatorConstants.JS_CANCEL_VALIDATION + "=false;";
+   }
 
 
    /**
     * DOCUMENT ME!
     *
+    * @return DOCUMENT ME!
+    *
+    * @throws javax.servlet.jsp.JspException DOCUMENT ME!
+    */
+   public int doStartTag() throws javax.servlet.jsp.JspException
+   {
+      if ((getParentForm().getFormValidatorName() != null)
+                && (getParentForm().getFormValidatorName().length() > 0)
+                && getParentForm().getJavascriptValidation().equals("true"))
+      {
+         String onclick = (getOnClick() != null) ? getOnClick() : "";
+
+         if (onclick.lastIndexOf(";") != (onclick.length() - 1))
+         {
+            onclick += ";"; // be sure javascript end with ";"
+         }
+
+         setOnClick(onclick + JsValidation());
+      }
+
+      return SKIP_BODY;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws javax.servlet.jsp.JspException DOCUMENT ME!
+    * @throws JspException DOCUMENT ME!
+    */
+   public int doEndTag() throws javax.servlet.jsp.JspException
+   {
+      if (choosenFlavor == FLAVOR_MODERN)
+      {
+         try
+         {
+            if (bodyContent != null)
+            {
+               bodyContent.writeOut(bodyContent.getEnclosingWriter());
+            }
+
+            pageContext.getOut().write("</button>");
+         }
+         catch (java.io.IOException ioe)
+         {
+            throw new JspException("IO Error: " + ioe.getMessage());
+         }
+      }
+
+      return EVAL_PAGE;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    * 
+    * @param parent DOCUMENT ME!
+    */
+   public void setParent(final javax.servlet.jsp.tagext.Tag parent)
+   {
+      super.setParent(parent);
+      table = getParentForm().getTable();
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    * 
     * @param flavor DOCUMENT ME!
     */
    public void setFlavor(String flavor)
@@ -160,7 +203,7 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag
 
    /**
     * DOCUMENT ME!
-    *
+    * 
     * @return DOCUMENT ME!
     */
    public String getFlavor()
@@ -171,7 +214,7 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag
 
    /**
     * DOCUMENT ME!
-    *
+    * 
     * @param caption DOCUMENT ME!
     */
    public void setCaption(String caption)
@@ -181,12 +224,13 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag
       this.caption = caption;
 
       // If the caption is not null and the resources="true" attribut
-      if ((caption != null) && getParentForm().getCaptionResource().equals("true"))
+      if ((caption != null)
+                && getParentForm().getCaptionResource().equals("true"))
       {
          try
          {
-            Locale locale = MessageResources.getLocale((HttpServletRequest) pageContext
-                  .getRequest());
+            Locale locale = MessageResources.getLocale(
+                                     (HttpServletRequest) pageContext.getRequest());
 
             message = MessageResources.getMessage(caption, locale);
 
@@ -198,7 +242,7 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag
          catch (Exception e)
          {
             logCat.debug("setCaption(" + caption + ") Exception : "
-               + e.getMessage());
+                         + e.getMessage());
          }
       }
    }
@@ -206,7 +250,7 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag
 
    /**
     * DOCUMENT ME!
-    *
+    * 
     * @return DOCUMENT ME!
     */
    public String getCaption()
@@ -217,7 +261,7 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag
 
    /**
     * DOCUMENT ME!
-    *
+    * 
     * @param src DOCUMENT ME!
     */
    public void setSrc(String src)
@@ -228,7 +272,7 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag
 
    /**
     * DOCUMENT ME!
-    *
+    * 
     * @return DOCUMENT ME!
     */
    public String getSrc()
@@ -239,7 +283,7 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag
 
    /**
     * DOCUMENT ME!
-    *
+    * 
     * @param src DOCUMENT ME!
     */
    public void setAlt(String src)
@@ -250,7 +294,7 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag
 
    /**
     * DOCUMENT ME!
-    *
+    * 
     * @return DOCUMENT ME!
     */
    public String getAlt()
@@ -261,7 +305,7 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag
 
    /**
     * DOCUMENT ME!
-    *
+    * 
     * @param followUp DOCUMENT ME!
     */
    public void setFollowUp(String followUp)
@@ -272,7 +316,7 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag
 
    /**
     * DOCUMENT ME!
-    *
+    * 
     * @return DOCUMENT ME!
     */
    public String getFollowUp()
@@ -282,9 +326,10 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag
 
 
    /**
-   /**
-   returns beginnings of tags with attributes defining type/value/[src/alt - if image]
-   */
+    * returns beginnings of tags with attributes defining type/value/[src/alt -
+    * if image]
+    * @return DOCUMENT ME!
+    */
    protected String getButtonBegin()
    {
       StringBuffer buf = new StringBuffer();
@@ -333,38 +378,46 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag
             }
       }
 
-	  buf.append(prepareStyles());
+      buf.append(prepareStyles());
       buf.append(prepareEventHandlers());
-	  
+
       return buf.toString();
    }
 
-	/**
-	returns beginnings of tags with attributes defining type/value/[src/alt - if image]
-	*/
-	protected String getButtonEnd()
-	{
-
-		switch (choosenFlavor)
-		{
-			case FLAVOR_IMAGE:
-			   return "\"/>";
-
-			case FLAVOR_MODERN:
-				return "\">";
-
-			default: // FLAVOR_STANDARD
-				return "\"/>";
-			
-		}
-	}
 
    /**
-   renders tag containing additional information about that button:
-   ie followUp, associatedRadio, etc.
-   */
-   protected String getDataTag(String primaryTagName, String dataKey,
-      String dataValue)
+    * returns beginnings of tags with attributes defining type/value/[src/alt -
+    * if image]
+    * @return DOCUMENT ME!
+    */
+   protected String getButtonEnd()
+   {
+      switch (choosenFlavor)
+      {
+         case FLAVOR_IMAGE:
+            return "\"/>";
+
+         case FLAVOR_MODERN:
+            return "\">";
+
+         default: // FLAVOR_STANDARD
+
+            return "\"/>";
+      }
+   }
+
+
+   /**
+    * renders tag containing additional information about that button: ie
+    * followUp, associatedRadio, etc.
+    * @param primaryTagName DOCUMENT ME!
+    * @param dataKey DOCUMENT ME!
+    * @param dataValue DOCUMENT ME!
+    * 
+    * @return DOCUMENT ME!
+    */
+   protected String getDataTag(String primaryTagName, String dataKey, 
+                               String dataValue)
    {
       StringBuffer tagBuf = new StringBuffer();
       tagBuf.append("<input type=\"hidden\" name=\"data");
@@ -381,6 +434,7 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag
 
    /**
     * Prepares the style attributes for inclusion in the component's HTML tag.
+    * 
     * @return The prepared String for inclusion in the HTML tag.
     */
    protected String prepareStyles()
@@ -400,6 +454,7 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag
 
    /**
     * Gets the border
+    * 
     * @return Returns a String
     */
    public String getBorder()
@@ -410,6 +465,7 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag
 
    /**
     * Sets the border
+    * 
     * @param border The border to set
     */
    public void setBorder(String border)
@@ -420,6 +476,7 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag
 
    /**
     * Gets the followUpOnError
+    * 
     * @return Returns a String
     */
    public String getFollowUpOnError()
@@ -430,6 +487,7 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag
 
    /**
     * Sets the followUpOnError
+    * 
     * @param followUpOnError The followUpOnError to set
     */
    public void setFollowUpOnError(String followUpOnError)
