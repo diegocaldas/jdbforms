@@ -127,6 +127,8 @@ public class DbFormsValidatorUtil {
 		if (arg0 != null) {
 			if (arg0.getResource()) {
 				sArg0 = MessageResources.getMessage(arg0.getKey(), locale);
+				if (sArg0 == null)
+				   sArg0 = arg0.getKey();
 			} else {
 				sArg0 = arg0.getKey();
 			}
@@ -137,6 +139,8 @@ public class DbFormsValidatorUtil {
 		if (arg1 != null) {
 			if (arg1.getResource()) {
 				sArg1 = MessageResources.getMessage(arg1.getKey(), locale);
+				if (sArg1 == null)
+					sArg1 = arg1.getKey();
 			} else {
 				sArg1 = arg1.getKey();
 			}
@@ -145,6 +149,8 @@ public class DbFormsValidatorUtil {
 		if (arg2 != null) {
 			if (arg2.getResource()) {
 				sArg2 = MessageResources.getMessage(arg2.getKey(), locale);
+				if (sArg2 == null)
+					sArg2 = arg2.getKey();
 			} else {
 				sArg2 = arg2.getKey();
 			}
@@ -153,6 +159,8 @@ public class DbFormsValidatorUtil {
 		if (arg3 != null) {
 			if (arg3.getResource()) {
 				sArg3 = MessageResources.getMessage(arg3.getKey(), locale);
+				if (sArg3 == null)
+					sArg3 = arg3.getKey();
 			} else {
 				sArg3 = arg3.getKey();
 			}
@@ -276,6 +284,7 @@ public class DbFormsValidatorUtil {
 
 			if (!bJavascriptSrcFile) {
 				jsFunctions.append(va.getJavascript());
+				jsFunctions.append("\n\n");
 			}
 
 			results.append("	 function " + functionName + " () { \n");

@@ -552,7 +552,7 @@ public class ConfigServlet extends HttpServlet
 		// Initialize ValidatorResources
 		//
 		try {
-			ValidatorResourcesInitializer.initialize(resources, inputValidatorRules, false);
+			ValidatorResourcesInitializer.initialize(resources, inputValidatorRules);
 		} catch (IOException e) {
 			logCat.warn("XML Validator Exception ValidatorResourcesInitializer.initialize  : " + e.getMessage());
 			throw new ServletException(e.toString());
@@ -578,7 +578,7 @@ public class ConfigServlet extends HttpServlet
 			return;
 		}
 		try {
-			ValidatorResourcesInitializer.initialize(resources, inputValidation, true);
+			ValidatorResourcesInitializer.initialize(resources, inputValidation);
 		} catch (IOException e) {
 			logCat.warn("XML Validator Exception ValidatorResourcesInitializer.initialize  : " + e.getMessage());
 			throw new ServletException(e.toString());

@@ -2608,7 +2608,8 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
         if (isSubForm()) {
         	  parentForm.addFieldNames(fields);
         } else {
-        	fields.putAll(fieldNames);
+        	if (fieldNames != null)
+        		fields.putAll(fieldNames);
 
         	result.append("<SCRIPT language=\"javascript\">\n");
         	result.append("<!-- \n\n");
