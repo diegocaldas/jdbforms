@@ -71,7 +71,6 @@
 						<td colspan="4">
 							Subform filter:&nbsp;							
 							<db:filter>
-							    <db:navReloadButton  caption="reload"/>
 								<db:filterCondition label="title like">
 									TITLE LIKE '%?%'
 									<db:filterValue/>
