@@ -23,8 +23,6 @@
 
 package org.dbforms.taglib;
 import javax.servlet.jsp.tagext.BodyTag;
-import junit.framework.Test;
-import junit.framework.TestSuite;
 import org.apache.cactus.JspTestCase;
 import org.apache.cactus.WebResponse;
 import org.dbforms.config.DbFormsConfigRegistry;
@@ -56,44 +54,6 @@ public class TestDbFormTag extends JspTestCase
    }
    
    /**
-    * Defines the testcase name for JUnit.
-    * 
-    * @param theName the testcase's name.
-    */
-   public TestDbFormTag(String theName)
-   {
-      super(theName);
-   }
-
-   /**
-    * Start the tests.
-    * 
-    * @param theArgs the arguments. Not used
-    */
-   public static void main(String[] theArgs)
-   {
-      junit.swingui.TestRunner.main(
-               new String[] 
-      {
-         TestDbFormTag.class.getName()
-      });
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    * 
-    * @return a test suite (<code>TestSuite</code>) that includes all methods
-    *         starting with "test"
-    */
-   public static Test suite()
-   {
-      // All methods starting with "test" will be executed in the test suite.
-      return new TestSuite(TestDbFormTag.class);
-   }
-
-
-   /**
     * In addition to creating the tag instance and adding the pageContext to
     * it, this method creates a BodyContent object and passes it to the tag.
     * @throws Exception DOCUMENT ME!
@@ -105,9 +65,7 @@ public class TestDbFormTag extends JspTestCase
 		DbFormsConfigRegistry.instance().register(null);
       println("dbFormsConfig not found!");
       config.setInitParameter("dbformsConfig", "/WEB-INF/dbforms-config.xml");
-      config.setInitParameter("log4j.configuration", 
-                              "/WEB-INF/log4j.properties");
-
+      config.setInitParameter("log4j.configuration", "/WEB-INF/log4j.properties");
       ConfigServlet configServlet = new ConfigServlet();
       configServlet.init(config);
       this.tag = new DbFormTag();
@@ -365,12 +323,4 @@ public class TestDbFormTag extends JspTestCase
    }
 
 
-   /**
-    * DOCUMENT ME!
-    */
-   public void tearDown()
-   {
-      //necessary for tag to output anything on most servlet engines.
-      //        this.pageContext.popBody();
-   }
 }

@@ -22,8 +22,7 @@
  */
 
 package org.dbforms.taglib;
-import junit.framework.Test;
-import junit.framework.TestSuite;
+
 import org.apache.cactus.JspTestCase;
 import org.apache.cactus.WebResponse;
 
@@ -38,40 +37,6 @@ import org.apache.cactus.WebResponse;
 public class TestDbLabelTag extends JspTestCase
 {
     private DbLabelTag tag;
-
-    /**
-     * Defines the testcase name for JUnit.
-     *
-     * @param theName the testcase's name.
-     */
-    public TestDbLabelTag(String theName)
-    {
-        super(theName);
-    }
-
-    /**
-     * Start the tests.
-     *
-     * @param theArgs the arguments. Not used
-     */
-    public static void main(String[] theArgs)
-    {
-        junit.swingui.TestRunner.main(new String[] 
-        {
-            TestDbLabelTag.class.getName()
-        });
-    }
-
-
-    /**
-     * @return a test suite (<code>TestSuite</code>) that includes all methods
-     *         starting with "test"
-     */
-    public static Test suite()
-    {
-        // All methods starting with "test" will be executed in the test suite.
-        return new TestSuite(TestDbLabelTag.class);
-    }
 
 
     /**
@@ -100,16 +65,6 @@ public class TestDbLabelTag extends JspTestCase
         //set the target and the String to replace it with
         //this.tag.setFieldName("EMAIL_ID");
         assertTrue("This will always be true!", true);
-    }
-
-
-    /**
-     * DOCUMENT ME!
-     */
-    public void tearDown()
-    {
-        //necessary for tag to output anything on most servlet engines.
-//        this.pageContext.popBody();
     }
 
 

@@ -25,8 +25,6 @@ package org.dbforms.taglib;
 
 import org.dbforms.util.AssertUtils;
 import javax.servlet.jsp.tagext.BodyTag;
-import junit.framework.Test;
-import junit.framework.TestSuite;
 import org.apache.cactus.JspTestCase;
 import org.apache.cactus.WebResponse;
 
@@ -43,38 +41,6 @@ public class TestBaseTag extends JspTestCase
     private BaseTag tag;
 
     /**
-     * Defines the testcase name for JUnit.
-     *
-     * @param theName the testcase's name.
-     */
-    public TestBaseTag(String theName)
-    {
-        super(theName);
-    }
-
-    /**
-     * Start the tests.
-     *
-     * @param theArgs the arguments. Not used
-     */
-    public static void main()
-    {
-        junit.swingui.TestRunner.main(new String[] { TestBaseTag.class.getName() });
-    }
-
-
-    /**
-     * @return a test suite (<code>TestSuite</code>) that includes all methods
-     *         starting with "test"
-     */
-    public static Test suite()
-    {
-        // All methods starting with "test" will be executed in the test suite.
-        return new TestSuite(TestBaseTag.class);
-    }
-
-
-    /**
      * In addition to creating the tag instance and adding the pageContext to
      * it, this method creates a BodyContent object and passes it to the tag.
      */
@@ -82,10 +48,6 @@ public class TestBaseTag extends JspTestCase
     {
         this.tag = new BaseTag();
         this.tag.setPageContext(this.pageContext);
-
-        //create the BodyContent object and call the setter on the tag instance
-        //this.tagContent = this.pageContext.pushBody();
-        //this.tag.setBodyContent(this.tagContent);
     }
 
 
@@ -102,17 +64,6 @@ public class TestBaseTag extends JspTestCase
         int result = this.tag.doStartTag();
         assertEquals(BodyTag.EVAL_BODY_INCLUDE, result);
     }
-
-
-    /**
-     * DOCUMENT ME!
-     */
-    public void tearDown()
-    {
-        //necessary for tag to output anything on most servlet engines.
-//        this.pageContext.popBody();
-    }
-
 
     /**
      * Verifies that the target String has indeed been replaced in the tag's
