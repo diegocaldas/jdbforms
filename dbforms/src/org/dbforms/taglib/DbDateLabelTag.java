@@ -51,7 +51,12 @@ public class DbDateLabelTag extends DbLabelTag {
 
 	static Category logCat = Category.getInstance(DbDateLabelTag.class.getName());
 
-	protected java.text.Format format = DbFormsConfig.getDateFormatter();
+        // this property is moved into the supercalss (DbLabelTag)  
+        // please remove the commented attribute below after the release of
+        // the future 1.1.3 version !
+        //
+        // fossato <fossato@pow2.com> [2002.11.09]
+        //protected java.text.Format format = DbFormsConfig.getDateFormatter();
 
 	/**
 	grunikiewicz.philip@hydro.qc.ca
@@ -70,9 +75,18 @@ public class DbDateLabelTag extends DbLabelTag {
 				// fetch database row as java objects
 				Object currentValue = currentRow[field.getId()];
 
-				// Format date if not null
+				// Format date if the retrieved currentValue is not null
 				if (currentValue != null)
-					fieldValue = format.format(currentValue);
+                                {
+                                  // if the format object is not set, retrieve the default 
+                                  // date formatter from the prefs; <fossato@pow2.com> [2002.11.09]
+                                  if (format == null)
+                                    format = DbFormsConfig.getDateFormatter();
+                                  
+                                  // anyway, a format object must exist !
+                                  fieldValue = (format != null) ? 
+                                    format.format(currentValue) : currentValue;
+                                }
 				else
 					fieldValue = ""; // null == empty string
 			}
@@ -88,21 +102,26 @@ public class DbDateLabelTag extends DbLabelTag {
 		return EVAL_PAGE;
 	}
 
+        // Note on format accessors: they are moved into DbLabelTag;
+        // please remove the commented code below after the release of
+        // the future 1.1.3 version !
+        //
+        // fossato <fossato@pow2.com> [2002.11.09]
 	/**
 	 * Insert the method's description here.
 	 * Creation date: (2001-05-14 15:28:11)
 	 * @return java.text.Format
 	 */
-	public java.text.Format getFormat() {
-		return format;
-	}
+	//public java.text.Format getFormat() {
+	//	return format;
+	//}
 
 	/**
 	 * Insert the method's description here.
 	 * Creation date: (2001-05-14 15:28:11)
 	 * @param newFormat java.text.Format
 	 */
-	public void setFormat(java.text.Format newFormat) {
-		format = newFormat;
-	}
+	//public void setFormat(java.text.Format newFormat) {
+	//	format = newFormat;
+	//}
 }
