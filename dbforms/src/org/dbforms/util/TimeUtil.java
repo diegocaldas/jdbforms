@@ -283,11 +283,14 @@ public class TimeUtil
          time = time +  offset;
       date = date + time;
       Calendar c = format.getCalendar();
-      c.setTimeInMillis(date);
+      
+      //20040304 JFM: replaced Calendar.setTimeInMillis(long) 
+      Date dateAsDate = new Date(date);
+      c.setTime(dateAsDate);
+      
       logCat.info("parsed " + s + " to " + format.format(c.getTime()));
       return c;
    }
-
  
    /**
     * Parses an ISO8601 date format string
