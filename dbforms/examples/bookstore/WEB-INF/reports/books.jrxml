@@ -23,6 +23,7 @@
 	<field name="AUTHOR_ID" class="java.lang.Integer"/>
 	<field name="ISBN" class="java.lang.String"/>
 	<field name="TITLE" class="java.lang.String"/>
+	<field name="TITLE.param" class="java.lang.String"/>
 		<background>
 			<band height="0"  isSplitAllowed="true" >
 			</band>
@@ -170,7 +171,7 @@
 					<textElement textAlignment="Left" verticalAlignment="Top" lineSpacing="Single">
 						<font fontName="SansSerif" pdfFontName="Helvetica" size="12" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="CP1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{TITLE}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{TITLE.param}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None" >					<reportElement
 						mode="Opaque"
