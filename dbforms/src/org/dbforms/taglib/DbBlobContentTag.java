@@ -123,7 +123,7 @@ public class DbBlobContentTag extends DbBaseHandlerTag implements
 				sqle.printStackTrace();
 			}
 
-			pageContext.getOut().write(contentBuf.toString());
+			pageContext.getOut().write(escapeHtml(contentBuf.toString()));
 		} catch (java.io.IOException ioe) {
 			throw new JspException("IO Error: " + ioe.getMessage());
 		}
