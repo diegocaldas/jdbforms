@@ -398,6 +398,16 @@
 -->
       <!-- used for the taglib report! -->
       <dependency>
+         <groupId>cactus</groupId>
+         <artifactId>cactus-maven</artifactId>
+         <version>1.6</version>
+         <type>plugin</type>
+         <url>http://jakarta.apache.org/cactus/integration/maven/</url>
+         <properties>
+            <war.bundle>false</war.bundle>
+         </properties>
+      </dependency>
+      <dependency>
          <groupId>maven-taglib</groupId>
          <artifactId>maven-taglib-plugin</artifactId>
          <version>1.1</version>
