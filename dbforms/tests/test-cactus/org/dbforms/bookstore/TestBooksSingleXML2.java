@@ -113,7 +113,7 @@ public class TestBooksSingleXML2 extends HttpTestCase {
 		printResponse();
 		assertTrue(responseContains("Test null value"));
 		assertTrue(
-			responseContains("Luca's favorite thing to eat is  \"delicious Italian pasta\""));
+			responseContains("Luca's favorite thing to eat is  &quot;delicious Italian pasta&quot;"));
 
 		list = new ArrayList();
 		list.add(new KeyValuePair("invtable", "1"));
@@ -168,7 +168,7 @@ public class TestBooksSingleXML2 extends HttpTestCase {
 		post("http://localhost/bookstore/servlet/control", list);
 		printResponse();
 		assertTrue(
-			responseContains("Luca's favorite thing to eat is  \"delicious Italian pasta\""));
+			responseContains("Luca's favorite thing to eat is  &quot;delicious Italian pasta&quot;"));
 		assertTrue(responseContains("Hijacking through the Galaxy 6"));
 
 	}

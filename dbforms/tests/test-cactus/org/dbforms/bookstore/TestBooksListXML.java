@@ -38,7 +38,7 @@ public class TestBooksListXML extends HttpTestCase
 		assertTrue(responseContains("Hijacking through the Galaxy 3"));
 		assertTrue(responseContains("Hijacking through the Galaxy 4"));
 		assertTrue(responseContains("Test null value"));
-		assertTrue(responseContains("Luca's favorite thing to eat is  \"delicious Italian pasta\""));
+		assertTrue(responseContains("Luca's favorite thing to eat is  &quot;delicious Italian pasta&quot;"));
 		assertTrue(responseContains("Hijacking through the Galaxy 6"));
 	}
 

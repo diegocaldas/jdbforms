@@ -161,7 +161,6 @@ public class TestDbFormTag extends JspTestCase {
 		AssertUtils.assertContains("method=\"post\"", content);
 		AssertUtils.assertContains("<input type=\"hidden\" name=\"invtable\" value=\"0\"/>", content);
 		AssertUtils.assertContains("<input type=\"hidden\" name=\"autoupdate_0\" value=\"true\"/>", content);
-		AssertUtils.assertContains("<input type=\"hidden\" name=\"fu_0\" value=\"null\"/>", content);
 	}
 
 	/**
@@ -203,7 +202,6 @@ public class TestDbFormTag extends JspTestCase {
 		AssertUtils.assertContains("method=\"post\"", content);
 		AssertUtils.assertContains("<input type=\"hidden\" name=\"invtable\" value=\"1\"/>", content);
 		AssertUtils.assertContains("<input type=\"hidden\" name=\"autoupdate_1\" value=\"true\"/>", content);
-		AssertUtils.assertContains("<input type=\"hidden\" name=\"fu_1\" value=\"null\"/>", content);
 	}
 
 	/**

@@ -129,7 +129,7 @@ public class TestBooksSingle extends HttpTestCase
 		list.add(new KeyValuePair("k_1_0@root", "0%3A1%3A7-2%3A0%3A-3%3A15%3ATest+null+value"));
 		post("http://localhost/bookstore/servlet/control", list);
 		printResponse();
-		assertTrue(responseContains("Luca's favorite thing to eat is  \"delicious Italian pasta\""));
+		assertTrue(responseContains("Luca's favorite thing to eat is  &quot;delicious Italian pasta&quot;"));
 
 		list = new ArrayList();
 		list.add(new KeyValuePair("invtable", "1"));

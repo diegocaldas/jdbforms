@@ -73,7 +73,7 @@ public class TestBooksSingle2 extends HttpTestCase {
       post("http://localhost/bookstore/servlet/control", list);
       printResponse();
       assertTrue(responseContains("Test null value"));
-      assertTrue(responseContains("Luca's favorite thing to eat is  \"delicious Italian pasta\""));
+      assertTrue(responseContains("Luca's favorite thing to eat is  &quot;delicious Italian pasta&quot;"));
 
       list = new ArrayList();
       list.add(new KeyValuePair("invtable", "1"));
@@ -110,7 +110,7 @@ public class TestBooksSingle2 extends HttpTestCase {
       list.add(new KeyValuePair("k_1_0@root", "0%3A1%3A9-2%3A1%3A2-3%3A30%3AHijacking+through+the+Galaxy+6"));
       post("http://localhost/bookstore/servlet/control", list);
       printResponse();
-      assertTrue(responseContains("Luca's favorite thing to eat is  \"delicious Italian pasta\""));
+      assertTrue(responseContains("Luca's favorite thing to eat is  &quot;delicious Italian pasta&quot;"));
       assertTrue(responseContains("Hijacking through the Galaxy 6"));
 
    }
