@@ -33,6 +33,7 @@
 <!ENTITY ackn SYSTEM "Appendix_Acknowledgements.xml">
 <!ENTITY auth SYSTEM "Appendix_Author.xml">
 <!ENTITY navi SYSTEM "Navigation.xml">
+<!ENTITY xml SYSTEM "XMLDatasource.xml">
 ]>
 <book>
 <title>DataBaseForms UsersGuide</title>
@@ -50,6 +51,7 @@
 <part><title>Background</title>
 &pref;
 &intr;
+&navi;
 </part>
 
 <part><title>Basic Use Tutorial</title>
@@ -72,6 +74,7 @@
 &mult;
 &plug;
 &ejbs;
+&xml;
 </part>
 
 <part><title>Appendices</title>
