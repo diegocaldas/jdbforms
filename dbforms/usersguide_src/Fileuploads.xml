@@ -37,9 +37,7 @@
 </title>
 				<para>Managing BLOB Fields using DbForms is a trivial task. First, you have to tell DbForms about BLOB-Fields in the xml-configuration file:
 </para>
-				<example>
-					<title>Listing 6  defining fields of type BLOB</title>
-					<programlisting>
+				<screen>
             &lt;dbforms-config&gt;
                 &lt;table name="pets"&gt; 
                     &lt;field name="pet_id" fieldType="int" isKey="true" autoInc="true" /&gt; 
@@ -48,8 +46,7 @@
                     &lt;field name="story" <emphasis role="bold">fieldType ="blob"</emphasis> /&gt; 
 		&lt;/table&gt; 
             &lt;/dbforms-config&gt; 
-		</programlisting>
-				</example>
+		</screen>
 				<para>The configuration-code-snippet shown above in Listing 6 tells DbForms that the fields portrait_pic and story are of type BLOB. As you can see, DbForms allows more than one field defined in a table to be of type BLOB.
 </para>
 			</sect2>
@@ -58,25 +55,16 @@
 </title>
 				<para>After defining our BLOB-powered table, we want to manage the BLOB fields. Of course data-input elements like textField or select cannot be applied to BLOBs. For this purpose a new Data-Element is introduced:
 </para>
-				<example>
-					<title>Implementing a file tag
-</title>
-					<programlisting>
-<emphasis role="bold">&lt;db:file</emphasis><emphasis role="bold">fieldName</emphasis>=portrait_pic&gt;</programlisting>
-				</example>
+				<screen>
+        <emphasis role="bold">&lt;db:file</emphasis><emphasis role="bold">fieldName</emphasis>=portrait_pic&gt;
+				</screen>
 				<para>The attribute <computeroutput>fieldName</computeroutput> refers to the name of the field, the file needs to be uploaded into. There are additional attributes available for this element (accept, maxLength, etc.), please see chapter DbForms Custom Tag Library for additional information)
 </para>
-				<para>This Custom Tag gets rendered as an HTML &lt;file&gt; - tag, as shown in Figure 14
+				<para>This Custom Tag gets rendered as an HTML &lt;file&gt; - tag, as shown next:
 </para>
-				<example>
-					<title>Implementing a blobURL
-</title>
-					<programlisting/>
-				</example>
+				 
 				<para>
-					<figure>
-						<title>The result visible to the user
-</title><mediaobject  id="result_visible_to_user">  
+					 <mediaobject  id="result_visible_to_user">  
   <imageobject  role="html">
     <imagedata  format="PNG"  fileref="images/figures/result_visible_to_user.png"/>
   </imageobject>
@@ -85,7 +73,7 @@
   </imageobject>
 </mediaobject>
 						 
-					</figure>
+					 
 				</para>
 				<para>This HTML-element enables multipart-enabled browsers to submit files to the server. Be aware that not all browsers support this functionality.
 </para>
@@ -112,28 +100,25 @@
 </para>
 				<para>For retrieving a BLOB using DbForms BLOB-retrieving facility, you need to use the following tag:
 </para>
-				<example>
-					<title>Listing 8 implementing a blobURL
-</title>
-<programlisting>&lt;db:<emphasis role="bold">blobURL</emphasis> fieldName="portrait_pic"/&gt;</programlisting>
-				</example>
+				 
+<programlisting>
+        &lt;db:<emphasis role="bold">blobURL</emphasis> fieldName="portrait_pic"/&gt;</programlisting>
+				 
 				<para>This tag renders an URL pointing to a servlet built into DbForms. This servlet retrieves the specified field from the database, tries to figure out the MIME type of the file, assigns it to the response and finally returns a stream of bytes containing the data of the BLOB.
 </para>
 				<para>To retrieve and render an image, the following JSP-code would need to be specified:
 </para>
-				<example>
-					<title>Listing 9  rendering images using a blobURL
-</title>
-<programlisting>&lt;<emphasis role="bold">img</emphasis> src=&lt;db:<emphasis role="bold">blobURL</emphasis> fieldName="portrait_pic"/&gt;width=100 height=80 border=0&gt; 
+				 
+<programlisting>
+        &lt;<emphasis role="bold">img</emphasis> src=&lt;db:<emphasis role="bold">blobURL</emphasis> fieldName="portrait_pic"/&gt;width=100 height=80 border=0&gt; 
 		</programlisting>
-				</example>
+				 <para/>
 				<para>To establish a link to a BLOB (for example to a word or pdf document) you could write:
 </para>
-				<example>
-					<title>Listing 10  rendering a hyperlink using a blobURL
-</title>
-<programlisting>&lt;<emphasis role="bold">a</emphasis> href=&lt;db:<emphasis role="bold">blobURL</emphasis> fieldName="portrait_pic"/&gt;&gt;Click to download&lt;/<emphasis role="bold">a</emphasis>&gt;</programlisting>
-				</example>
+
+<programlisting>
+        &lt;<emphasis role="bold">a</emphasis> href=&lt;db:<emphasis role="bold">blobURL</emphasis> fieldName="portrait_pic"/&gt;&gt;Click to download&lt;/<emphasis role="bold">a</emphasis>&gt;</programlisting>
+
 				<para>Dependent of the installed plug-ins and other browser-and system properties, either the MIME-matching plug-in (or helper application) will be opened, a save-as dialog will pop up or a download manager like <emphasis role="italic">Gozilla!</emphasis> will be started.
 </para>
 				<para>It is important to mention that the &lt;blobURL&gt; element is valid only if embedded in a &lt;body&gt; - element. The &lt;file&gt; tag works in &lt;header&gt;, &lt;body&gt; and &lt;footer&gt; elements. Within the &lt;body&gt; element, both - inserts and updates - are possible, within the other tags, only inserts are possible.
@@ -150,9 +135,8 @@
 			<sect2>
 				<title>Defining DISKBLOBs in the model definition
 </title>
-				<example>
-					<title>Listing 11  defining a field of type DISKBLOB
-</title>
+<para>As the following example and table show/explain, there are additional attributes available for defining a diskblob-field:
+</para>				 
 <programlisting>
             &lt;dbforms-config&gt;
                 &lt;table name="pets"&gt; 
@@ -165,11 +149,10 @@
 		&lt;/table&gt;
             &lt;/dbforms-config&gt; 
 		</programlisting>
-				</example>
-				<para>As you may have noticed when analyzing Listing 11, there are additional attributes available for defining a diskblob-field:
-</para>
+				 
+				
 				<table>
-					<title>Listing 12 - define a table capable of Blobs (depends on SQL dialect implemented by RDBM vendor)</title>
+					<title>define a table capable of Blobs (depends on SQL dialect implemented by RDBM vendor)</title>
 					<tgroup cols="2">
 						<tbody>
 							<row>
@@ -188,7 +171,7 @@ b) must be writeable by the web-server </entry>
 					</tgroup>
 				</table>
 				<para/>
-				<para>With the definition shown in Listing 11, we can expect the following behavior:
+				<para>With the definition shown in the example preceeding the table, we can expect the following behavior:
 </para>
 				<para>If a portrait_pic (lets say dog.jpg) is uploaded, it will be stored in directory c:\upload\pets under a unique name like 34834893483_748734.jpg)
 </para>
@@ -203,38 +186,7 @@ b) must be writeable by the web-server </entry>
 				<para>Following our example, the pets table would now contain a row such as the one displayed below:
 </para>
 				<para/>
-				<table>
-					<title>Listing 12  define a table capable of Blobs (depends on SQL dialect implemented by RDBM vendor)
-</title>
-					<tgroup cols="4">
-						<tbody>
-							<row>
-								<entry>pet_id</entry>
-								<entry>name</entry>
-								<entry>portrait_pic</entry>
-								<entry>Story</entry>
-							</row>
-							<row>
-								<entry>... </entry>
-								<entry/>
-								<entry/>
-								<entry/>
-							</row>
-							<row>
-								<entry>101</entry>
-								<entry>Snoopy</entry>
-								<entry>34834893483_748734.jpg</entry>
-								<entry>dog.pdf</entry>
-							</row>
-							<row>
-								<entry>...</entry>
-								<entry/>
-								<entry/>
-								<entry/>
-							</row>
-						</tbody>
-					</tgroup>
-				</table>
+				 
 				<para/>
 				<para>
 					<figure>
@@ -261,19 +213,17 @@ b) must be writeable by the web-server </entry>
 		<sect1>
 			<title>A working demo
 </title>
-			<example>
-				<title>Listing 12  define a table capable of Blobs (depends on SQL dialect implemented by RDBM vendor)
-</title>
-				<programlisting>The following demo (and others) can be reviewed online at <emphasis role="italic">http://www.dbforms.org/demo.html</emphasis>
-				</programlisting>
-			</example>
+			 
+				 
+ 
+				 <para>The following demo (and others) can be viewed<ulink url="http://www.dbforms.org/demo.html"><citetitle> online here</citetitle></ulink>
+				</para>
+			 
 			<para>Let's imagine we want a little application for managing information about pets: their name, a portrait-pic and a funny story about them. We will use our example-table defined earlier in this chapter.
 </para>
 			<para>Using mySQL, this table could have been created as follows: (check your RDBMS-SQL-manual if you are not sure how your database handles auto incremental fields or BLOBs )
 </para>
-			<example>
-				<title>Listing 12  define a table capable of Blobs (depends on SQL dialect implemented by RDBM vendor)
-</title>
+			 
 				<programlisting>
                 CREATE TABLE pets (
 
@@ -288,7 +238,7 @@ b) must be writeable by the web-server </entry>
 		);
  
 		</programlisting>
-			</example>
+			 
 			<para>Here is the source code we need to create the application:
 </para>
 <programlisting>
