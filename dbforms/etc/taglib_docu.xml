@@ -1219,6 +1219,18 @@ SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd&quot;);
 						<p>Determines if the text field should be hidden or displayed.</p>
 					</info>
 				</attribute>
+                               <attribute>
+				<name>nullFieldValue</name>
+				<required>false</required>
+				<rtexprvalue>true</rtexprvalue>
+                                <info>
+                                	<p>
+                                        if the value (retrieved from the database) is null,
+					allow the user to replace the text to display by a custom value. 
+					May be used inconjunction with dbForm's I18N support.
+                                        </p>
+                                </info>
+                                </attribute>
 				<attribute>
 					<name>overrideValue</name>
 					<required>false</required>
