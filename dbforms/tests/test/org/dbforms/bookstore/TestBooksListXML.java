@@ -5,11 +5,11 @@ package org.dbforms.bookstore;
 // imports
 
 // definition of test class
-public class TestBooksList extends AbstractTestBase
+public class TestBooksListXML extends AbstractTestBase
 {
 
 	// Test method generated from the MaxQ Java generator
-	public TestBooksList(String name)
+	public TestBooksListXML(String name)
 	{
 		super(name);
 	}
@@ -21,14 +21,14 @@ public class TestBooksList extends AbstractTestBase
 	 */
 	public static void main(String[] theArgs)
 	{
-		junit.textui.TestRunner.main(new String[] { TestBooksList.class.getName()});
+		junit.textui.TestRunner.main(new String[] { TestBooksListXML.class.getName()});
 	}
 
 	public void testBooksList() throws Exception
 	{
 		System.out.println("testBooksList");
-		System.out.println("Testing URL: " + replaceURL("http://localhost/bookstore/tests/testBOOKSList.jsp"));
-		get("http://localhost/bookstore/tests/testBOOKSList.jsp");
+		System.out.println("Testing URL: " + replaceURL("http://localhost/bookstore/tests/testBOOKSListXML.jsp"));
+		get("http://localhost/bookstore/tests/testBOOKSListXML.jsp");
 		System.out.println("Response code: " + getResponse().getStatusCode());
 		assertEquals("Assert number 1 failed", 200, getResponse().getStatusCode());
 		printResponse();
