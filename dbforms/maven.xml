@@ -176,36 +176,35 @@
     <ant:copy file="ChangeLog" tofile="${maven.dist.dir}/CHANGES.txt" overwrite="true"/>
   </postGoal>
 
-  <postGoal name="site:generate">
+  <preGoal name="site">
+     <ant:delete dir="${maven.appserver.conf.dir}/webapps/bookstore" />
+     <ant:echo message="generate dbforms documentation" />
+     <attainGoal name="dbforms:doc" />
+  </preGoal>
+
+  <postGoal name="site">
     <ant:echo message="build the distribution via build.xml" />
     <attainGoal name="dbforms:dist" />
     <ant:echo message="copy weekly build" />
     <attainGoal name="dbforms:weekly" />
   </postGoal>
 
-  <preGoal name="site:run-reports">
-     <ant:delete dir="${maven.appserver.conf.dir}/webapps/bookstore" />
-     <ant:echo message="generate dbforms documentation" />
-     <attainGoal name="dbforms:doc" />
-  </preGoal>
-
   <preGoal name="site:sshdeploy">
      <ant:echo message="delete old weekly build" />
-    <exec dir="." executable="${maven.ssh.executable}">
-      <arg line="${maven.ssh.args} -l ${maven.username} ${pom.siteAddress} 'rm -f ${maven.homepage}/weekly/*'"/>
-    </exec>
-  </preGoal>
+     <exec dir="." executable="${maven.ssh.executable}">
+        <arg line="${maven.ssh.args} -l ${maven.username} ${pom.siteAddress} 'rm -f ${pom.siteDirectory}/weekly/*'"/>
+     </exec>
+   </preGoal>
 
-  <postGoal name="site:run-reports">
+  <preGoal name="xdoc:transform">
     <ant:echo message="generate releasenotes" />
-    <ant:mkdir dir="target/generated-xdocs" />
     <doc:text-xdoc
       title="Release Notes for ${pom.currentVersion}"
       section="Release Notes"
-      output="target/generated-xdocs/releasenotes.xml"
+      output="${maven.gen.docs}/releasenotes.xml"
       inputFile="ReleaseNotes_v${pom.currentVersion}.txt"
     />
-  </postGoal>
+  </preGoal>
 
    <postGoal name="war:webapp">
     <ant:echo message="compile interceptors" />
