@@ -43,8 +43,6 @@ import org.apache.log4j.Category;
  */
 public class ParseUtil
 {
-  /** logging category for this class */
-  private static Category logCat = Category.getInstance(ParseUtil.class.getName());
 
 
   /**

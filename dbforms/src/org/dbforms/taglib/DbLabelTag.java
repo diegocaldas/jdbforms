@@ -33,7 +33,6 @@ import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.Field;
 import org.dbforms.config.ResultSetVector;
 import org.dbforms.util.MessageResources;
-import org.dbforms.util.Util;
 
 /**
  * this tag renders a dabase-datadriven LABEL, which is apassive element (it can't be changed by
