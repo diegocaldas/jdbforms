@@ -97,6 +97,37 @@
 			<para>Another feature which has been added to dbForms is support for client-side javaScript validation.  When the attribute 'JavaScript Validation' is set to 'true', DbForms will generate methods to automatically validate client-side using the same rules found in Validation.xml.
 </para>
 		</sect1>
+                <sect1>
+                <title>Generating Validation.xml</title>
+                <para>generate_validation.xsl can now (included from dbforms 1.3) be used to generate the <computeroutput>validation.xml</computeroutput> file that dbforms uses for validation. (The source XML file is <computeroutput>dbforms-config.xml</computeroutput>.)</para>
+ <para>Please note that we added the attribute generate-jsp (true/false) to table tags because there were a few tables we wanted in the <computeroutput>dbforms-config.xml</computeroutput> file for foreign-key reasons but we didn't want tables to be generated. The line test="not(@generate-jsp='false')" returns true when (a) generate-jsp is set to some value other than false or (b) when it doesn't exist. (generate-jsp!='false' by comparison returns true only when generate-jsp is set to something other than false.) This way, its functionality is retained while making it an optional attribute as far as <computeroutput>DevGui is concerned.</computeroutput></para> 
+<para>Limitations: </para>
+<orderedlist numeration="lowerroman">
+<listitem>
+<para>Assumes that all foreign-keys are required and that the server will do its own testing for valid entry.</para>
+</listitem>
+<listitem>
+<para>Asserts that isKey'd columns that aren't also autoInc'd are</para>
+<itemizedlist mark="opencircle">
+<listitem>
+<para>
+required
+</para>
+</listitem>
+<listitem>
+<para>
+in need of maxlength validating 
+</para>
+</listitem>
+</itemizedlist>
+</listitem>
+<listitem>
+<para>the resulting validation.xml asserts that the database server will insure that there are no key column conflicts
+</para>
+</listitem>
+
+</orderedlist>
+     </sect1>       
 		<sect1>
 			<title> Validation.xml Tags
 </title>
@@ -207,7 +238,10 @@ name
 						</tbody>
 					</tgroup>
 				</table>
-			</para><para>Building the Validation.xml file</para>
+			</para>
+        </sect1>
+        <sect1>
+        <title>Validation.xml file</title>
 <para>In a previous section, we defined that our (dbform) form would be associated to an [entry] called 'bugs'.  The 'bugs' form contained a single textField entry (referring to 'title').  Let's take a look at the resulting <emphasis role="bold">Validation.xml</emphasis> file:
 </para>
 			<screen>
