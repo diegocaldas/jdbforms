@@ -16,14 +16,14 @@ public class TestApplicationResources extends HttpTestCase
 	}
 
 
-	public void testSimpleJSPPage() throws Exception
+	public void testApplicationResources() throws Exception
 	{
-		println("testTest");
+		println("testApplicationResources");
 		get("http://localhost/bookstore/tests/testApplicationResources.jsp");
       printResponse();
-      assertTrue(responseContains("test.books.struts"));
-      assertTrue(responseContains("test.books.dbforms"));
-      assertTrue(responseContains("test.author.hk"));
-      assertTrue(responseContains("test.author.jm"));
+      assertTrue("test.books.struts", responseContains("test.books.struts"));
+      assertTrue("test.books.dbforms", responseContains("test.books.dbforms"));
+      assertTrue("test.author.hk", responseContains("test.author.hk"));
+      assertTrue("test.author.jm", responseContains("test.author.jm"));
 	}
 }
