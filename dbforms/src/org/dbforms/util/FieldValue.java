@@ -334,16 +334,10 @@ public class FieldValue implements Cloneable
             }
 
             // 20021104-HKK: Ceckk for expression.
-            Field f = fv[i].getField();
-
-            if ((f.getExpression() != null) && (f.getExpression().length() > 0))
-            {
-               buf.append(f.getExpression());
-            }
-            else
-            {
-               buf.append(f.getName());
-            }
+            Field  f         = fv[i].getField();
+            String fieldName = Util.isNull(f.getExpression())
+                                  ? f.getName() : f.getExpression();
+            buf.append(fieldName);
 
             // Check what type of operator is required
             switch (fv[i].getOperator())
@@ -401,14 +395,26 @@ public class FieldValue implements Cloneable
                   break;
 
                case Constants.FILTER_EMPTY:
-                  if (fv[i].getField().getType() == FieldTypes.CHAR )
+
+                  if (fv[i].getField().getType() == FieldTypes.CHAR)
+                  {
                      buf.append(" = '' ");
+                     buf.append(" OR ");
+                     buf.append(fieldName);
+                     buf.append(" IS NULL ");
+                  }
 
                   break;
 
                case Constants.FILTER_NOT_EMPTY:
-	 			  if (fv[i].getField().getType() == FieldTypes.CHAR )
+
+                  if (fv[i].getField().getType() == FieldTypes.CHAR)
+                  {
                      buf.append(" <> '' ");
+                     buf.append(" OR ");
+                     buf.append(fieldName);
+                     buf.append(" IS NOT NULL ");
+                  }
 
                   break;
             }
@@ -465,16 +471,10 @@ public class FieldValue implements Cloneable
 
             // §2, i.e "A = 'smith'" or "X LIKE 'jose%'"
             // 20021104-HKK: Ceckk for expression.
-            Field f = fv[i].getField();
-
-            if ((f.getExpression() != null) && (f.getExpression().length() > 0))
-            {
-               buf.append(f.getExpression());
-            }
-            else
-            {
-               buf.append(f.getName());
-            }
+            Field  f         = fv[i].getField();
+            String fieldName = Util.isNull(f.getExpression())
+                                  ? f.getName() : f.getExpression();
+            buf.append(fieldName);
 
             // 20020927-HKK: Check what type of operator is required
             switch (fv[i].getOperator())
@@ -532,12 +532,26 @@ public class FieldValue implements Cloneable
                   break;
 
                case Constants.FILTER_EMPTY:
-                  buf.append(" = '' ");
+
+                  if (fv[i].getField().getType() == FieldTypes.CHAR)
+                  {
+                     buf.append(" = '' ");
+                     buf.append(" OR ");
+                     buf.append(fieldName);
+                     buf.append(" IS NULL ");
+                  }
 
                   break;
 
                case Constants.FILTER_NOT_EMPTY:
-                  buf.append(" <> '' ");
+
+                  if (fv[i].getField().getType() == FieldTypes.CHAR)
+                  {
+                     buf.append(" <> '' ");
+                     buf.append(" OR ");
+                     buf.append(fieldName);
+                     buf.append(" IS NOT NULL ");
+                  }
 
                   break;
             }
