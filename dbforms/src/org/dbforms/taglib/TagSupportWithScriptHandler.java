@@ -113,6 +113,9 @@ public abstract class TagSupportWithScriptHandler extends BodyTagSupport
    /** Id attribute */
    private String id = null; // Fossato, 20011008
 
+   /** Title (Tool Tip/Hint) attribute */
+   private String title = null;
+
    //  Navigation Management
 
    /**
@@ -486,6 +489,26 @@ public abstract class TagSupportWithScriptHandler extends BodyTagSupport
 
 
    /**
+    * Sets the title attribute.
+    * @param title DOCUMENT ME!
+    */
+   public void setTitle(String title)
+   {
+      this.title = title;
+   }
+
+
+   /**
+    * Returns the title attribute.
+    * @return DOCUMENT ME!
+    */
+   public String getTitle()
+   {
+      return title;
+   }
+
+
+   /**
     * Prepares the style attributes for inclusion in the component's HTML tag.
     * 
     * @return The prepared String for inclusion in the HTML tag.
@@ -505,6 +528,13 @@ public abstract class TagSupportWithScriptHandler extends BodyTagSupport
       {
          styles.append(" style=\"");
          styles.append(getStyle());
+         styles.append("\"");
+      }
+
+      if (!Util.isNull(getTitle()))
+      {
+         styles.append(" title=\"");
+         styles.append(getTitle());
          styles.append("\"");
       }
 

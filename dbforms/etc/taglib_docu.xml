@@ -694,6 +694,12 @@ etc)</summary>
 					<rtexprvalue>true</rtexprvalue>
 					<info>CSS stylesheet class to be applied. This is done adding a SPAN element that contains the text.</info>
 				</attribute>
+				<attribute>
+					<name>title</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>this defines the "title" attribute for the HTML4 tag.</info>
+				</attribute>
 			</tag>
 			<!-- **************************** dateLabel tag ***********************************-->
 			<tag>
@@ -797,6 +803,12 @@ SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd&quot;);
 					<rtexprvalue>true</rtexprvalue>
 					<info>CSS stylesheet class to be applied. This is done adding a SPAN element that contains the text.</info>
 				</attribute>
+				<attribute>
+					<name>title</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>this defines the "title" attribute for the HTML4 tag.</info>
+				</attribute>
 			</tag>
 			<!-- **************************** dataLabel tag ***********************************-->
 			<tag>
@@ -888,6 +900,12 @@ SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd&quot;);
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
 					<info>CSS stylesheet class to be applied. This is done adding a SPAN element that contains the text.</info>
+				</attribute>
+				<attribute>
+					<name>title</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>this defines the "title" attribute for the HTML4 tag.</info>
 				</attribute>
 			</tag>
 			<!-- **************************** textField tag ***********************************-->
@@ -1128,6 +1146,12 @@ of the input field</info>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
 					<info>CSS stylesheet class to be applied to this HTML element (read-only mode).</info>
+				</attribute>
+				<attribute>
+					<name>title</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>this defines the "title" attribute for the HTML4 tag.</info>
 				</attribute>
 				<attribute>
 					<name>tabIndex</name>
@@ -1399,6 +1423,12 @@ of the input field</info>
 					<info>CSS stylesheet class to be applied to this HTML element (read-only mode).</info>
 				</attribute>
 				<attribute>
+					<name>title</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>this defines the "title" attribute for the HTML4 tag.</info>
+				</attribute>
+				<attribute>
 					<name>tabIndex</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
@@ -1660,6 +1690,12 @@ hanlder executed when the user selects some text</info>
 					<info>CSS stylesheet class to be applied to this HTML element (read-only mode).</info>
 				</attribute>
 				<attribute>
+					<name>title</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>this defines the "title" attribute for the HTML4 tag.</info>
+				</attribute>
+				<attribute>
 					<name>tabIndex</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
@@ -1901,6 +1937,12 @@ hanlder executed when the user selects some text</info>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
 					<info>CSS stylesheet class to be applied to this HTML element (read-only mode).</info>
+				</attribute>
+				<attribute>
+					<name>title</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>this defines the "title" attribute for the HTML4 tag.</info>
 				</attribute>
 				<attribute>
 					<name>tabIndex</name>
@@ -2564,6 +2606,12 @@ of the input field</info>
 					<info>CSS stylesheet class to be applied to this HTML element (read-only mode).</info>
 				</attribute>
 				<attribute>
+					<name>title</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>this defines the "title" attribute for the HTML4 tag.</info>
+				</attribute>
+				<attribute>
 					<name>tabIndex</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
@@ -2771,6 +2819,12 @@ hanlder executed when the user selects some text</info>
 					<info>CSS stylesheet class to be applied to this HTML element (read-only mode).</info>
 				</attribute>
 				<attribute>
+					<name>title</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>this defines the "title" attribute for the HTML4 tag.</info>
+				</attribute>
+				<attribute>
 					<name>tabIndex</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
@@ -2976,6 +3030,12 @@ hanlder executed when the user selects some text</info>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
 					<info>CSS stylesheet class to be applied to this HTML element (read-only mode).</info>
+				</attribute>
+				<attribute>
+					<name>title</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>this defines the "title" attribute for the HTML4 tag.</info>
 				</attribute>
 				<attribute>
 					<name>tabIndex</name>
@@ -3205,6 +3265,12 @@ hanlder executed when the user selects an item</info>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
 					<info>CSS stylesheet class to be applied to this HTML element (read-only mode).</info>
+				</attribute>
+				<attribute>
+					<name>title</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>this defines the "title" attribute for the HTML4 tag.</info>
 				</attribute>
 				<attribute>
 					<name>tabIndex</name>
@@ -3607,6 +3673,12 @@ is released.</info>
 					<info>CSS stylesheet class to be applied to this HTML element.</info>
 				</attribute>
 				<attribute>
+					<name>title</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>this defines the "title" attribute for the HTML4 tag.</info>
+				</attribute>
+				<attribute>
 					<name>tabIndex</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
@@ -3835,6 +3907,12 @@ is released.</info>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
 					<info>CSS stylesheet class to be applied to this HTML element.</info>
+				</attribute>
+				<attribute>
+					<name>title</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>this defines the "title" attribute for the HTML4 tag.</info>
 				</attribute>
 				<attribute>
 					<name>tabIndex</name>
@@ -4069,6 +4147,12 @@ is released.</info>
 					<info>CSS stylesheet class to be applied to this HTML element.</info>
 				</attribute>
 				<attribute>
+					<name>title</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>this defines the "title" attribute for the HTML4 tag.</info>
+				</attribute>
+				<attribute>
 					<name>tabIndex</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
@@ -4282,6 +4366,12 @@ is released.</info>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
 					<info>CSS stylesheet class to be applied to this HTML element.</info>
+				</attribute>
+				<attribute>
+					<name>title</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>this defines the "title" attribute for the HTML4 tag.</info>
 				</attribute>
 				<attribute>
 					<name>tabIndex</name>
@@ -4545,6 +4635,12 @@ is released.</info>
 					<info>CSS stylesheet class to be applied to this HTML element.</info>
 				</attribute>
 				<attribute>
+					<name>title</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>this defines the "title" attribute for the HTML4 tag.</info>
+				</attribute>
+				<attribute>
 					<name>tabIndex</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
@@ -4800,6 +4896,12 @@ is released.</info>
 					<info>CSS stylesheet class to be applied to this HTML element.</info>
 				</attribute>
 				<attribute>
+					<name>title</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>this defines the "title" attribute for the HTML4 tag.</info>
+				</attribute>
+				<attribute>
 					<name>tabIndex</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
@@ -5053,6 +5155,12 @@ is released.</info>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
 					<info>CSS stylesheet class to be applied to this HTML element.</info>
+				</attribute>
+				<attribute>
+					<name>title</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>this defines the "title" attribute for the HTML4 tag.</info>
 				</attribute>
 				<attribute>
 					<name>tabIndex</name>
@@ -5336,6 +5444,12 @@ is released.</info>
 					<info>CSS stylesheet class to be applied to this HTML element.</info>
 				</attribute>
 				<attribute>
+					<name>title</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>this defines the "title" attribute for the HTML4 tag.</info>
+				</attribute>
+				<attribute>
 					<name>tabIndex</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
@@ -5539,6 +5653,12 @@ is released.</info>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
 					<info>CSS stylesheet class to be applied to this HTML element.</info>
+				</attribute>
+				<attribute>
+					<name>title</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>this defines the "title" attribute for the HTML4 tag.</info>
 				</attribute>
 				<attribute>
 					<name>tabIndex</name>
@@ -5747,6 +5867,12 @@ is released.</info>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
 					<info>CSS stylesheet class to be applied to this HTML element.</info>
+				</attribute>
+				<attribute>
+					<name>title</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>this defines the "title" attribute for the HTML4 tag.</info>
 				</attribute>
 				<attribute>
 					<name>tabIndex</name>
@@ -6070,6 +6196,12 @@ is released.</info>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
 					<info>CSS stylesheet class to be applied to this HTML element.</info>
+				</attribute>
+				<attribute>
+					<name>title</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>this defines the "title" attribute for the HTML4 tag.</info>
 				</attribute>
 				<attribute>
 					<name>tabIndex</name>
@@ -6953,6 +7085,12 @@ This structure will be rendered as a html select element to select the condition
 					<info>CSS stylesheet class to be applied. This is done adding a SPAN element that contains the text.</info>
 				</attribute>
 				<attribute>
+					<name>title</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>this defines the "title" attribute for the HTML4 tag.</info>
+				</attribute>
+				<attribute>
 					<name>size</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
@@ -7083,6 +7221,12 @@ This structure will be rendered as a html select element to select the condition
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
 					<info>CSS stylesheet class to be applied. This is done adding a SPAN element that contains the text.</info>
+				</attribute>
+				<attribute>
+					<name>title</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>this defines the "title" attribute for the HTML4 tag.</info>
 				</attribute>
 			</tag>
 		</taglib>
