@@ -12,9 +12,8 @@ Contents:
 
 1) About this release
 ----------------------
-This is a developers release, be careful to use this release in an
-important production environment, but you are encouraged to try out this
-release. Please report any problems or comments to the mailing list of
+This is a developers release which you are encouraged to try out, especially the new navigation system. Be careful about using this release in an
+important production environment, as it is NOT recommended for that.  Please report any problems or comments to the mailing list of
 the project
 
     jdbforms-interest@lists.sourceforge.net
@@ -31,14 +30,14 @@ to the list!
 
 2-1) New navigation system
 --------------------------
-An new event system has been build. With this system it is possible to use navigation even with free form select.
-See user doc and bookstore example for details.
+An new event system has been built that DOES NOT re-execute the search query every time the client requests a subset of the hits (as the original did). Also, with this system it is possible to use navigation even with free form select as navigation has been made independent of filtering.
+See the UsersGuide and bookstore example for details, and how to configure it in dbforms-config.xml (the original system is the default).
 
 
 2-2) XML Datasource
 ----------------------
-To show the posibilities of the new event system a datasource to read xml data has been build. 
-See user doc and bookstore example for details.
+To show the posibilities of the new event system a datasource to read xml data has been built. 
+See the UsersGuide and bookstore example for details.
 
 2-3) New bookstore example
 --------------------------
