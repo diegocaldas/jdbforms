@@ -179,7 +179,7 @@ public class Field
 	/**
 	 *  Gets the type attribute of the Field object as numeric value. 
 	 *  <br>
-	 *  It i read only because the field type is set by the digester during initialize!
+	 *  It's read only because the field type is set by the digester during initialize!
 	 *
 	 * @return  The type value
 	 */
