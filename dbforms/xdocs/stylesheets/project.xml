@@ -19,6 +19,10 @@
       <item name="Overview"                href="/index.html"/>
       <item name="Features List"           href="/featurelist.html"/>
       <item name="Related work"            href="/related.html"/>
+	  <!--
+	    <item name="Contributions"           href="/contributed.html"/>
+	    <item name="Powered by"              href="/powered.html"/>
+      -->
       <item name="Summary Page at SF.net"  href="http://sourceforge.net/projects/jdbforms"/>
     </menu>
 
@@ -31,7 +35,9 @@
     <menu name="Download">
       <item name="Latest builds"           href="http://sourceforge.net/project/showfiles.php?group_id=17608"/>
       <item name="Resources"               href="/depend/index.xml"/>
+	  <!--
       <item name="CVS"                     href="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/jdbforms/"/>
+	  -->
       <item name="CVS info"                href="/workwithcvs.html"/>
     </menu>
 
