@@ -68,8 +68,6 @@ public class Query extends Table
     {
         field.setId(WHEREIDSTART + searchfields.size());
         searchfields.addElement(field);
-
-
         // for quicker lookup by name:
         searchNameHash.put(field.getName(), field);
     }
