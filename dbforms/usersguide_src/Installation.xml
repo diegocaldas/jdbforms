@@ -19,57 +19,8 @@ by following the steps in the subsequent sections.</para>
 <para>Download and install a Java2 (version 1.2 or later) Java Development Kit implementation for your operating system platform.  Define an environment variable JAVA_HOME that points at the base directory of your JDK installation, and add the directory "$JAVA_HOME/bin" to your PATH variable.</para>
 </listitem>
 <listitem>
-<para>(If your JDK is 1.4.x or later, you can skip this step)</para>
-<para>Download and install an XML parser that is compatible with the Java API for XML Parsing (JAXP) specification.  A useful XML parser is the <ulink url="http://java.sun.com/xml"><citetitle>JAXP Reference Implementation</citetitle></ulink>, version 1.1 or later. Version 1.1 of DbForms has been upgraded to use the Apache commons framework.  
-This framework required Java XML Parser (JAXP) v1.1.  Older Web containers 
-(such as Tomcat v3.2.x) are still using JAXP v1.0 technology and are therefore 
-incompatible.</para><para>Another JAXP-compatible parser is <ulink url="http://xml.apache.org"><citetitle>Xerces</citetitle></ulink>, version 1.4.4 or later.</para><para>Be sure to add the "jaxp.jar" and "parser.jar" (or whatever JAR file comes with your parser) files to your CLASSPATH environment variable.</para>
-</listitem>
-<listitem>
-<para>Download <ulink url="http://jakarta.apache.org/log4j/docs/download.html"><citetitle> the log4j </citetitle></ulink> toolkit
-  (log4j.jar)</para>
-</listitem>
-<listitem>
-<para>Download <ulink url="http://www.oreilly.com"><citetitle>Jason Hunters multipart servlet</citetitle></ulink> classes from O'Reilly (cos.jar)</para>
-</listitem>
-
-<listitem>
-<para>Download <ulink url="http://jakarta.apache.org"><citetitle>these jars</citetitle></ulink> which are all in the Commons project</para>
-<itemizedlist mark="opencircle">
-<listitem>
-<para>
-commons-beanutils.jar 
-</para>
-</listitem>
-<listitem>
-<para>
-commons-collections.jar
-</para>
-</listitem>
-<listitem>
-<para>
-commons-digester.jar 
-</para>
-</listitem>
-<listitem>
-<para>
-commons-lang.jar
- </para>
- </listitem>
- <listitem>
-<para>
-commons-logging.jar
-</para>
-</listitem>
-<listitem>
-<para>
-commons-validator.jar 
-</para>
-</listitem>
-</itemizedlist>
-</listitem>
-<listitem>
-<para>Download <ulink url="http://jakarta.apache.org"><citetitle>jakarta-oro-2.0.6.jar </citetitle></ulink>which is in the ORO project </para>
+<para>Copy the jars in the <computeroutput>dbforms/dependend</computeroutput> dir to your application's <computeroutput>WEB-INF/lib</computeroutput> directory </para>
+<para>Note: for Tomcat, it is not necessary to copy <computeroutput>servlet.jar</computeroutput> as it is already included in Tomcat.  However, even if you do put it in your <computeroutput>lib</computeroutput> dir, the application will still function.</para>
 </listitem>
    
 <listitem>
