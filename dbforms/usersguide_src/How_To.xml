@@ -50,5 +50,16 @@
 changes you want in your config.</para>
 <para>It can be found in the <computeroutput>/dbforms/contrib/mark_dimon</computeroutput> directory</para>
 </sect1>
-
+<sect1>
+<title>HowtoUseWithJSTL
+</title>
+<para>See the <ulink url="http://localhost:8080/bookstore/contrib/ivan_codarin/HowtoUseWithJSTL/"><citetitle>HowTos</citetitle></ulink> if you have the bookstore example installed, or view it under <computeroutput>dbforms/examples/http://localhost:8080/bookstore/contrib/ivan_codarin/HowtoUseWithJSTL/</computeroutput></para>
+ 
+</sect1>
+<sect1>
+<title>howtoAddRowCountSupport 
+</title>
+<para>See the <ulink url="http://localhost:8080/bookstore/howto/index.html"><citetitle>HowTos</citetitle></ulink> if you have the bookstore example installed, or view it under <computeroutput>dbforms/examples/bookstore/howto/index.html</computeroutput></para>
+ 
+</sect1>
 </chapter>
