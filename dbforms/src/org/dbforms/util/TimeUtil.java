@@ -447,27 +447,4 @@ public class TimeUtil
    }
 
 
-   /**
-    * main test routine
-    * @param args DOCUMENT ME!
-    */
-   public static void main(String[] args)
-   {
-      int k;
-      k = 100024;
-      System.out.println(seconds2String(k));
-
-      String format = "dd.MM.yyyy HH:mm";
-      System.out.println(parseDate(format, "12.12.2002").toLocaleString());
-      System.out.println(parseDate(format, "12.12.2002 12:30").toLocaleString());
-      System.out.println(parseDate(format, "12:30").toLocaleString());
-      System.out.println(parseDate(format, "12. 12:30").toLocaleString());
-      System.out.println(parseDate(format, "12.06 12:30").toLocaleString());
-      System.out.println(parseDate(format, "12.").toLocaleString());
-      System.out.println(parseDate(format, "12.06").toLocaleString());
-      System.out.println(parseDate(format, "12.06.03").toLocaleString());
-      System.out.println(parseDate(format, "12. 12:").toLocaleString());
-      System.out.println(findEndOfDay(parseDate(format, "12. 12:"))
-                            .toLocaleString());
-   }
-}
+ }
