@@ -227,7 +227,7 @@
     <!-- Apache Jakarta commons here, pliz ! -->
     <dependency>
       <id>commons-collections</id>      
-      <version>2.0</version>
+      <version>2.1</version>
       <properties>
          <war.bundle>true</war.bundle>
       </properties>
@@ -235,7 +235,7 @@
 
     <dependency>
       <id>commons-dbcp</id>      
-      <version>1.0-dev-20020806</version>
+      <version>1.1</version>
       <properties>
          <war.bundle>true</war.bundle>
        </properties>
@@ -251,7 +251,7 @@
 
     <dependency>
       <id>commons-lang</id>      
-      <version>1.0</version>
+      <version>2.0</version>
       <properties>
          <war.bundle>true</war.bundle>
        </properties>
@@ -267,7 +267,7 @@
 
     <dependency>
       <id>commons-pool</id>
-      <version>1.0.1</version>
+      <version>1.1</version>
       <properties>
          <war.bundle>true</war.bundle>
        </properties>
@@ -275,7 +275,7 @@
 
     <dependency>
       <id>commons-beanutils</id>      
-      <version>1.4</version>
+      <version>1.6</version>
       <properties>
          <war.bundle>true</war.bundle>
        </properties>
@@ -291,7 +291,7 @@
 
     <dependency>
       <id>xerces</id>      
-      <version>2.3.0</version>
+      <version>2.4.0</version>
       <properties>
          <war.bundle>true</war.bundle>
        </properties>
@@ -299,7 +299,7 @@
 
     <dependency>
       <id>xml-apis</id>      
-      <version>1.0.b2</version>
+      <version>2.0.2</version>
       <properties>
          <war.bundle>true</war.bundle>
        </properties>
@@ -307,7 +307,7 @@
 
     <dependency>
       <id>xalan</id>
-      <version>2.4.1</version>
+      <version>2.5.1</version>
       <properties>
          <war.bundle>true</war.bundle>
        </properties>
@@ -319,49 +319,6 @@
       <properties>
          <war.bundle>true</war.bundle>
        </properties>
-    </dependency>       
-
-
-    <!-- self hosted -->
-    <dependency>
-      <id>protomatter</id>
-      <version>1.1.8-pre5</version>
-      <properties>
-         <war.bundle>true</war.bundle>
-       </properties>
-    </dependency>
-
-    <dependency>
-      <id>cos</id>
-      <jar>cos.jar</jar>
-      <properties>
-	      <war.bundle>true</war.bundle>
-      </properties>
-    </dependency>        
-
-    <!-- 
-       -  jdbc2_0-stdext.jar is used to compile JakartaConnectionProvider class
-       -  (it uses a Datasource object instead of DriverManager).
-       -  J2SE JDK1.4.x includes this class into its core libraries;
-       -  J2SE JDK1.3.x no.
-       -
-       -  http://java.sun.com/products/jdbc/download.html#binary
-       -  I think the name in Maven land has changed to just jdbc. - DEP
-       -->
-    <dependency>
-      <id>jdbc</id>
-      <version>2.0</version>
-      <properties>
-	      <war.bundle>true</war.bundle>
-      </properties>
-    </dependency>
-
-    <dependency>
-      <id>jasperreports</id>      
-      <version>0.5.0</version>
-      <properties>
-	      <war.bundle>true</war.bundle>
-      </properties>
     </dependency>       
 
     <!-- testing only -->
@@ -381,13 +338,6 @@
        </properties>
     </dependency>  
 
-    <dependency>
-      <id>HTTPClient</id>
-      <version>0.3-3</version>
-      <properties>
-         <war.bundle>false</war.bundle>
-       </properties>
-    </dependency>  
 
     <dependency>
       <id>maxq</id>
@@ -404,6 +354,7 @@
          <war.bundle>false</war.bundle>
        </properties>
     </dependency>  
+
     <!-- just for compiling! -->
     <!-- 
        -  must use at least servlet 2.3 now;
@@ -416,6 +367,61 @@
          <war.bundle>false</war.bundle>
        </properties>
     </dependency>         
+
+
+
+    <!-- self hosted -->
+    <dependency>
+      <id>protomatter</id>
+      <version>1.1.8-pre5</version>
+      <properties>
+         <war.bundle>true</war.bundle>
+       </properties>
+    </dependency>
+
+    <dependency>
+      <id>cos</id>
+      <jar>cos.jar</jar>
+      <properties>
+	      <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>        
+
+    <dependency>
+      <id>HTTPClient</id>
+      <version>0.3-3</version>
+      <properties>
+         <war.bundle>false</war.bundle>
+       </properties>
+    </dependency>  
+
+    <!-- 
+       -  jdbc2_0-stdext.jar is used to compile JakartaConnectionProvider class
+       -  (it uses a Datasource object instead of DriverManager).
+       -  J2SE JDK1.4.x includes this class into its core libraries;
+       -  J2SE JDK1.3.x no.
+       -
+       -  http://java.sun.com/products/jdbc/download.html#binary
+       -  I think the name in Maven land has changed to just jdbc. - DEP
+       -->
+<!--
+    <dependency>
+      <id>jdbc</id>
+      <version>2.0</version>
+      <properties>
+	      <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+-->
+    
+    <dependency>
+      <id>jasperreports</id>      
+      <version>0.5.0</version>
+      <properties>
+	      <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>       
+
 
   </dependencies>
  
