@@ -144,16 +144,16 @@ Registration of the event classes
             &lt;!-- define custom events --&gt;
             &lt;events&gt;
         
-                &lt;!-- define database custom events here --&gt;
-                &lt;database-events&gt;<co id="db-event"/>
-                    &lt;database-event id=&quot;insert2&quot; type=&quot;insert&quot; className=&quot;org.foo.bar.MyInsertEvent&quot; /&gt; 
-                    &lt;database-event id=&quot;update2&quot; type=&quot;update&quot; className=&quot;org.foo.bar.MyUpdateEvent&quot; /&gt; 
-                &lt;/database-events&gt;
+               &lt;!-- define database custom events here --&gt;
+               &lt;database-events&gt;<co id="db-event"/>
+                  &lt;database-event id=&quot;insert2&quot; type=&quot;insert&quot; className=&quot;org.foo.bar.MyInsertEvent&quot; /&gt; 
+                  &lt;database-event id=&quot;update2&quot; type=&quot;update&quot; className=&quot;org.foo.bar.MyUpdateEvent&quot; /&gt; 
+               &lt;/database-events&gt;
 
-                &lt;!-- define navigation custom events here --&gt;
-                &lt;navigation-events&gt; <co id="nav-event"/>  
-                    &lt;navigation-event id=&quot;new2&quot; type=&quot;navNew&quot;   className=&quot;org.foo.bar.MyNavNewEvent&quot; /&gt;
-                    &lt;/navigation-events&gt;
+               &lt;!-- define navigation custom events here --&gt;
+                  &lt;navigation-events&gt; <co id="nav-event"/>  
+                  &lt;navigation-event id=&quot;new2&quot; type=&quot;navNew&quot;   className=&quot;org.foo.bar.MyNavNewEvent&quot; /&gt;
+               &lt;/navigation-events&gt;
     
             &lt;/events&gt;
   
