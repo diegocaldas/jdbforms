@@ -82,7 +82,7 @@ choose appropriate values that fit your needs
 
 
                <xsl:choose>
-                 <xsl:when test="@fieldType='int' or @fieldType='smallint'  or @fieldType='tinyint'">
+                 <xsl:when test="@fieldType='int' or @fieldType='int identity' or @fieldType='smallint'  or @fieldType='tinyint'">
                    <db:textField fieldName="{@name}" size="{@size}" />
                  </xsl:when>
                  <xsl:when test="@fieldType='char' or @fieldType='varchar' or @fieldType='varchar2'  or @fieldType='nvarchar'  or @fieldType='longvarchar'">

@@ -41,7 +41,7 @@ goto cleanup
 
 :gotDbFormsHome
 
-%_RUNJAVA% -classpath %_CLASSPATH% -DDBFORMS_HOME=%DBFORMS_HOME% com.itp.dbforms.devgui.DevGui
+%_RUNJAVA% -classpath %_CLASSPATH% -DDBFORMS_HOME=%DBFORMS_HOME% org.dbforms.devgui.DevGui
 
 :cleanup
 set CLASSPATH=%_CLASSPATH%

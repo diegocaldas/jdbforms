@@ -70,7 +70,7 @@ export CLASSPATH
 # joepeer:
 # i do not know if classpath is needed as argument on unix shells
 
-$JAVACMD -DDBFORMS_HOME=${DBFORMS_HOME} com.itp.dbforms.devgui.DevGui
+$JAVACMD -DDBFORMS_HOME=${DBFORMS_HOME} org.dbforms.devgui.DevGui
 
 if [ "$oldCP" != "" ]; then
     CLASSPATH=${oldCP}
