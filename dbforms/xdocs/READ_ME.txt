@@ -51,7 +51,7 @@ Here's the plugin's doc: http://maven.apache.org/reference/index.html
 
 MAVEN dbforms goals
 --------------------
-We have integrated 3 special goals for dbforms:
+We have integrated some special goals for dbforms:
   - dbforms:doc
     generate dbforms documentation: taglib docu and manual
   - dbforms:dist
@@ -59,3 +59,15 @@ We have integrated 3 special goals for dbforms:
   - dbforms:deploy
     do the whole deployment: generates site, generates doc, generates distribution
 
+
+needed MAVEN plugins
+-----------------------
+You need to install newest cactus plugin:
+
+maven plugin:download -DartifactId=cactus-maven -DgroupId=cactus -Dversion=1.7
+
+see http://jakarta.apache.org/cactus/integration/maven/ for newes version!
+
+jdk 1.5
+--------------------------
+To run maven with jdk 1.5 you must copy the xalan-2.5.1.jar to ${MAVEN_HOME}/lib/endorsed!

@@ -475,10 +475,11 @@
     </dependency>         
 -->
       <!-- plugins used for maven reports! -->
+<!--
       <dependency>
          <groupId>cactus</groupId>
          <artifactId>cactus-maven</artifactId>
-         <version>1.7dev20041109</version>
+         <version>1.7</version>
          <type>plugin</type>
          <properties>
             <war.bundle>false</war.bundle>
@@ -487,12 +488,13 @@
       <dependency>
          <groupId>maven</groupId>
          <artifactId>maven-war-plugin</artifactId>
-         <version>1.7-SNAPSHOT</version>
+         <version>1.7</version>
          <type>plugin</type>
          <properties>
             <war.bundle>false</war.bundle>
          </properties>
       </dependency>
+-->
       <dependency>
          <groupId>maven-taglib</groupId>
          <artifactId>maven-taglib-plugin</artifactId>

@@ -1,8 +1,14 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:ant="jelly:ant" xmlns:deploy="deploy" xmlns:doc="doc" xmlns:u="jelly:util" xmlns:j="jelly:core" default="">
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:ant="jelly:ant" xmlns:deploy="deploy" xmlns:doc="doc" xmlns:u="jelly:util" xmlns:j="jelly:core" default="site:generate">
 
   <ant:echo message="Hack to use xalan transformer!" />
   ${systemScope.setProperty('javax.xml.transform.TransformerFactory','org.apache.xalan.processor.TransformerFactoryImpl')}
+  <j:set var="java_version" value="${systemScope.getProperty('java.version')}"/>
+  <ant:echo message="Java: ${java_version}" />
+  <j:if test="${java_version.startsWith('1.5')}">
+    <ant:echo message="set for java 1.5" />
+	  ${systemScope.setProperty('javax.xml.transform.TransformerFactory','com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl')}
+	</j:if>
   <ant:echo message="${systemScope.getProperty('javax.xml.transform.TransformerFactory')}" />
 
   <ant:echo message="set enviroment variable so that it can be used in property files" />
