@@ -88,7 +88,7 @@ public class JRDataSourceRSV implements JRDataSource
       {
          o = getFieldValue(field.getName().toLowerCase());
       }
-
+/*
       // Try class conversation if the classes do not match!
       if ((o != null) && (o.getClass() != field.getValueClass()))
       {
@@ -111,7 +111,7 @@ public class JRDataSourceRSV implements JRDataSource
             ;
          }
       }
-
+*/
       return o;
    }
 
