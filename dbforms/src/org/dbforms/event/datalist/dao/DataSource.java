@@ -28,7 +28,8 @@ import java.util.Enumeration;
 import java.sql.Connection;
 import java.sql.SQLException;
 import org.apache.log4j.Category;
-import org.dbforms.config.DbFormsConfig;
+
+import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.Field;
 import org.dbforms.config.Table;
 import org.dbforms.util.FieldValue;
@@ -460,7 +461,14 @@ public abstract class DataSource
          if (curField != null)
          {
             int    fieldType = curField.getType();
-            String directory = curField.getDirectory();
+
+            String directory = null;
+				try {
+					directory = Util.replaceRealPath(curField.getDirectory(), 
+																  DbFormsConfigRegistry.instance().lookup());
+				} catch (Exception e) {
+					throw new SQLException(e.getMessage());
+				}
 
             if (fieldType == FieldTypes.DISKBLOB)
             {
@@ -540,8 +548,15 @@ public abstract class DataSource
          if (curField != null)
          {
             int    fieldType = curField.getType();
-            String directory = curField.getDirectory();
 
+				String directory = null;
+            try {
+					directory = Util.replaceRealPath(curField.getDirectory(), 
+																  DbFormsConfigRegistry.instance().lookup());
+            } catch (Exception e) {
+               throw new SQLException(e.getMessage());
+            }
+           																  
             if (fieldType == FieldTypes.DISKBLOB)
             {
                String fileName = fieldValues.get(fieldName).getFieldValue()
@@ -550,22 +565,20 @@ public abstract class DataSource
                // get a filename
                if (!Util.isNull(fileName))
                {
-                  // may be SQL NULL, in that case we'll skip it
-                  String dir = curField.getDirectory();
 
                   // remember: every field may have its own storing dir!
-                  File file = new File(dir, fileName);
+                  File file = new File(directory, fileName);
 
                   if (file.exists())
                   {
                      file.delete();
                      logCat.info("deleted file " + fileName + " from dir "
-                                 + dir);
+                                 + directory);
                   }
                   else
                   {
                      logCat.info("delete of file " + fileName + " from dir "
-                                 + dir + " failed because file not found");
+                                 + directory + " failed because file not found");
                   }
                }
             }

@@ -40,12 +40,14 @@ import org.dbforms.util.FileHolder;
 import org.dbforms.util.ParseUtil;
 import org.dbforms.util.ResultSetVector;
 import org.dbforms.util.SqlUtil;
+import org.dbforms.util.Util;
 import org.dbforms.util.UniqueIDGenerator;
 import org.dbforms.util.FieldValues;
 import org.dbforms.util.Constants;
 import org.dbforms.util.MessageResourcesInternal;
 
 import org.dbforms.config.DbFormsConfig;
+import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.Field;
 import org.dbforms.config.GrantedPrivileges;
 
@@ -246,7 +248,14 @@ public class InsertEvent extends ValidationEvent
          if (curField != null)
          {
             int    fieldType = curField.getType();
-            String directory = curField.getDirectory();
+
+				String directory = null;
+				try {
+					directory = Util.replaceRealPath(curField.getDirectory(), 
+																  DbFormsConfigRegistry.instance().lookup());
+				} catch (Exception e) {
+					throw new SQLException(e.getMessage());
+				}
 
             if (fieldType == FieldTypes.DISKBLOB)
             {

@@ -245,7 +245,15 @@ public class UpdateEvent extends ValidationEvent
          if (curField != null)
          {
             int    fieldType = curField.getType();
-            String directory = curField.getDirectory();
+
+				String directory = null;
+				try {
+					directory = Util.replaceRealPath(curField.getDirectory(), 
+																  DbFormsConfigRegistry.instance().lookup());
+				} catch (Exception e) {
+					throw new SQLException(e.getMessage());
+				}
+
 
             if (fieldType == FieldTypes.DISKBLOB)
             {

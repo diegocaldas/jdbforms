@@ -248,21 +248,27 @@ public class DeleteEvent extends DatabaseEvent
 
                   if (fileName.length() > 0)
                   {
-                     String dir = aField.getDirectory();
+							String directory = null;
+							try {
+								directory = Util.replaceRealPath(aField.getDirectory(), 
+																			  DbFormsConfigRegistry.instance().lookup());
+							} catch (Exception e) {
+								throw new SQLException(e.getMessage());
+							}
 
                      // remember: every field may have its own storing dir!
-                     File file = new File(dir, fileName);
+                     File file = new File(directory, fileName);
 
                      if (file.exists())
                      {
                         file.delete();
                         logCat.info("deleted file " + fileName + " from dir "
-                           + dir);
+                           + directory);
                      }
                      else
                      {
                         logCat.info("delete of file " + fileName + " from dir "
-                           + dir + " failed because file not found");
+                           + directory + " failed because file not found");
                      }
                   }
                }
