@@ -7,35 +7,19 @@
     <title>Introduction</title>
     <para>Since version 1.1.4 DbForms contains two different navigation systems:</para>
     <itemizedlist>
+    <listitem>
+        <para>A new one - in the datalist package - which implements a simplified data list pattern described by Claudio Fratarcangeli,Data List Handler: A Pattern for Large Search Result Sets, published on TheServerSide.com. THE NEW SYSTEM NEEDS TO BE CONFIGURED IN DBFORMS-CONFIG.XML, WORKS WITH A <computeroutput>whereClause</computeroutput>, AND DOES NOT RE-EXECUTE THE SEARCH QUERY EVERY TIME.</para>
+      </listitem>
       <listitem>
         <para>The original one - in the classic package. The original code re-executes the search query every time the client requests a subset of the hits. THIS DOES NOT WORK WHEN A <computeroutput>whereClause</computeroutput> ATTRIBUTE IS USED IN THE <computeroutput>dbForm</computeroutput> TAG!</para>
         <para>See the <computeroutput>dbform</computeroutput>tag in <ulink url="../../taglib/DbFormsTags_Frame.html"><citetitle>the TagLib </citetitle></ulink>for more information.</para>
         
         </listitem>
-      <listitem>
-        <para>A new one - in the datalist package - which implements a simplified data list pattern described by Claudio Fratarcangeli,Data List Handler: A Pattern for Large Search Result Sets, published on TheServerSide.com. THE NEW SYSTEM NEEDS TO BE CONFIGURED IN DBFORMS-CONFIG.XML, WORKS WITH A <computeroutput>whereClause</computeroutput>, AND DOES NOT RE-EXECUTE THE SEARCH QUERY EVERY TIME.</para>
-      </listitem>
+      
     </itemizedlist>
-    <para>The new dataList system is destined to become the eventual default!</para> 
+    <para> <emphasis role="bold">The new dataList system is now used by default!</emphasis></para> 
   </sect1>
-  <sect1>
-    <title>Classic navigation</title>
-    <para>Classic navigation is moved from package org.dbforms.event to package org.dbforms.event.classic in version 1.1.4. The whole navigation is simplified, unnessary classes are removed and the usage of "instanceof EventType" is removed from DbForms. The often used Hashtable of FieldValues is rebuilt with an deligator pattern to FieldValues to make the usage more fault proved (see API documentation).</para>
-    <para>Details of the class structure could be seen in the class diagram.</para>
-    <para>
-      <figure>
-        <title>Class diagram of classic navigation</title>
-        <mediaobject  id="classic_Navigation">
-          <imageobject role="html">
-            <imagedata fileref="images/figures/event.classic.png" format="PNG" />
-          </imageobject>
-          <imageobject role="fo">
-            <imagedata fileref="../images/figures/event.classic.png" format="PNG" />
-          </imageobject>
-        </mediaobject>
-      </figure>
-    </para>
-  </sect1>
+  
   <sect1>
     <title>Datalist navigation</title>
     <para>The new datalist based navigation has following advantages:</para>
@@ -130,28 +114,47 @@
         </itemizedlist>
       </para>
     </sect2>
+    
+  </sect1>
+  <sect1>
+    <title>Classic navigation</title>
+    <para>Classic navigation is moved from package org.dbforms.event to package org.dbforms.event.classic in version 1.1.4. The whole navigation is simplified, unnessary classes are removed and the usage of "instanceof EventType" is removed from DbForms. The often used Hashtable of FieldValues is rebuilt with an deligator pattern to FieldValues to make the usage more fault proved (see API documentation).</para>
+    <para>Details of the class structure could be seen in the class diagram.</para>
+    <para>
+      <figure>
+        <title>Class diagram of classic navigation</title>
+        <mediaobject  id="classic_Navigation">
+          <imageobject role="html">
+            <imagedata fileref="images/figures/event.classic.png" format="PNG" />
+          </imageobject>
+          <imageobject role="fo">
+            <imagedata fileref="../images/figures/event.classic.png" format="PNG" />
+          </imageobject>
+        </mediaobject>
+      </figure>
+    </para>
     <sect2>
-      <title>HowTo use DataList navigation</title>
+      <title>HowTo use classic navigation</title>
       <para>
-         To use DataList navigation you must define custom events in your dbforms-config.xml:
+         To use classic navigation you must define custom events in your dbforms-config.xml:
          <programlisting>
           &lt;!-- ========== custom events =================================== --&gt;
 	  &lt;events&gt;
 	    &lt;database-events&gt;
-	      &lt;database-event type="insert" className="org.dbforms.event.datalist.InsertEvent" /&gt;
-	      &lt;database-event type="update" className="org.dbforms.event.datalist.UpdateEvent" /&gt;
-	      &lt;database-event type="delete" className="org.dbforms.event.datalist.DeleteEvent" /&gt;
+	      &lt;database-event type="insert" className="org.dbforms.event.classic.InsertEvent" /&gt;
+	      &lt;database-event type="update" className="org.dbforms.event.classic.UpdateEvent" /&gt;
+	      &lt;database-event type="delete" className="org.dbforms.event.classic.DeleteEvent" /&gt;
 	    &lt;/database-events&gt;
 	    &lt;navigation-events&gt;
-	      &lt;navigation-event type="navGoto" className="org.dbforms.event.datalist.GotoEvent" /&gt;
-	      &lt;navigation-event type="navPrev" className="org.dbforms.event.datalist.NavPrevEvent" /&gt;
-	      &lt;navigation-event type="navNext" className="org.dbforms.event.datalist.NavNextEvent" /&gt;
-	      &lt;navigation-event type="navFirst" className="org.dbforms.event.datalist.NavFirstEvent" /&gt;
-	      &lt;navigation-event type="navLast" className="org.dbforms.event.datalist.NavLastEvent" /&gt;
+	      &lt;navigation-event type="navGoto" className="org.dbforms.event.classic.GotoEvent" /&gt;
+	      &lt;navigation-event type="navPrev" className="org.dbforms.event.classic.NavPrevEvent" /&gt;
+	      &lt;navigation-event type="navNext" className="org.dbforms.event.classic.NavNextEvent" /&gt;
+	      &lt;navigation-event type="navFirst" className="org.dbforms.event.classic.NavFirstEvent" /&gt;
+	      &lt;navigation-event type="navLast" className="org.dbforms.event.classic.NavLastEvent" /&gt;
 	    &lt;/navigation-events&gt;
 	  &lt;/events&gt;
          </programlisting>
-         This will change in further versions, where datalist navigation will be uses as default.
+         This is is necessary starting after the 1.1.4dev release.  Classic navigation was the default up through 1.1.4dev
       </para>
     </sect2>
   </sect1>
@@ -172,22 +175,22 @@
       </listitem>
     </itemizedlist>
   </sect1>
-  <sect1><title>DataList Configuration in Dbforms-config.xml</title>
-  <para>To enable the new navigation system, please add the following within dbforms-config.xml:</para>
+  <sect1><title>Classic Configuration in Dbforms-config.xml</title>
+  <para>To use the classic navigation system, please add the following within dbforms-config.xml:</para>
   <programlisting>
 &lt;events&gt;
     &lt;database-events&gt;
-      &lt;database-event type=&quot;insert&quot; className=&quot;org.dbforms.event.datalist.InsertEvent&quot; /&gt;
-       &lt;database-event type=&quot;update&quot; className=&quot;org.dbforms.event.datalist.UpdateEvent&quot; /&gt;
-       &lt;database-event type=&quot;delete&quot; className=&quot;org.dbforms.event.datalist.DeleteEvent&quot; /&gt;
+      &lt;database-event type=&quot;insert&quot; className=&quot;org.dbforms.event.classic.InsertEvent&quot; /&gt;
+       &lt;database-event type=&quot;update&quot; className=&quot;org.dbforms.event.classic.UpdateEvent&quot; /&gt;
+       &lt;database-event type=&quot;delete&quot; className=&quot;org.dbforms.event.classic.DeleteEvent&quot; /&gt;
      &lt;/database-events&gt;
 
      &lt;navigation-events&gt;
-       &lt;navigation-event type=&quot;navGoto&quot; className=&quot;org.dbforms.event.datalist.GotoEvent&quot; /&gt;
-       &lt;navigation-event type=&quot;navPrev&quot; className=&quot;org.dbforms.event.datalist.NavPrevEvent&quot; /&gt;
-       &lt;navigation-event type=&quot;navNext&quot; className=&quot;org.dbforms.event.datalist.NavNextEvent&quot; /&gt;
-       &lt;navigation-event type=&quot;navFirst&quot; className=&quot;org.dbforms.event.datalist.NavFirstEvent&quot; /&gt;
-       &lt;navigation-event type=&quot;navLast&quot; className=&quot;org.dbforms.event.datalist.NavLastEvent&quot; /&gt;
+       &lt;navigation-event type=&quot;navGoto&quot; className=&quot;org.dbforms.event.classic.GotoEvent&quot; /&gt;
+       &lt;navigation-event type=&quot;navPrev&quot; className=&quot;org.dbforms.event.classic.NavPrevEvent&quot; /&gt;
+       &lt;navigation-event type=&quot;navNext&quot; className=&quot;org.dbforms.event.classic.NavNextEvent&quot; /&gt;
+       &lt;navigation-event type=&quot;navFirst&quot; className=&quot;org.dbforms.event.classic.NavFirstEvent&quot; /&gt;
+       &lt;navigation-event type=&quot;navLast&quot; className=&quot;org.dbforms.event.classic.NavLastEvent&quot; /&gt;
      &lt;/navigation-events&gt;
 &lt;/events&gt;
   </programlisting>
