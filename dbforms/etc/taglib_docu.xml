@@ -6195,20 +6195,27 @@ error manager</summary>
 			<tag>
 				<summary>
 Create a set of sql filter conditions, letting user select which one will be applied. 
+				</summary>
+				<name>filter</name>
+				<tagclass>org.dbforms.taglib.DbFilterTag</tagclass>
+				<bodycontent>JSP</bodycontent>
+				<info>
 A filter tag contains one or more filterCondition tag. Each filterCondition represent a sql condition and is identified by its label.
 In the body of the filterCondition tag there is the piece of SQL code that we want to insert in the where clause, the character ? act like a placeholder, so a ? in the sql code will be substituted with the some user input. To tell the system what type of user input we want, the last tag is used, the filterValue tag. Each ? found in body will be subsituted by its corresponding filterValue tag. With the "type" attribute of this tag you can select the input more. Selecting "text", a filterValue will render an html input tag, with "select" you'll have an html select, and so on.
 An example is like this:
+<p>
+<pre>
 &lt;db:filter>
 	&lt;db:filterCondition label="author name like">
 		NAME LIKE '%?%'
-		&lt;db:filterValue type="timestamp" useJsCalendar="true" />
+		&lt;db:filterValue/>
 	&lt;/db:filterCondition>
 	&lt;db:filterCondition label="ID > V1 AND ID &lt; V2">
 		AUTHOR_ID >= ? AND AUTHOR_ID &lt;= ?
 		&lt;db:filterValue label="V1" type="numeric"/>
 		&lt;db:filterValue label="V2" type="numeric"/>
 	&lt;/db:filterCondition>
-	&lt;db:filterCondition label="author = ">
+	&lt;db:filterCondition label="author equal to">
 		NAME = '?'
 		&lt;db:filterValue type="select">
 			&lt;db:queryData name="q1" query="select distinct name as n1, name as n2 from author where AUTHOR_ID &lt; 100 order by name"/>
@@ -6222,13 +6229,10 @@ An example is like this:
 		AUTHOR_ID > 10
 	&lt;/db:filterCondition>
 &lt;/db:filter>
-
-This structure will be rendered as a html select element to select the condition the you want to apply. On the onchange event there is a submit, so the page reload with the input elements of the condition that you have selected. After all input elements, there are two buttons, one to apply the condition, one to unset the current applied condition.
-				</summary>
-				<name>filter</name>
-				<tagclass>org.dbforms.taglib.DbFilterTag</tagclass>
-				<bodycontent>JSP</bodycontent>
-				<info/>
+</pre>
+</p>
+This structure will be rendered as a html select element to select the condition the you want to apply. On the onchange event there is a submit, so the page reload with the input elements of the condition that you have selected. After all input elements, there are two buttons, one to apply the condition, one to unset the current applied condition.				
+				</info>
 				<attribute>
 					<name>disabledCaption</name>
 					<required>false</required>
@@ -6263,15 +6267,16 @@ This structure will be rendered as a html select element to select the condition
 			<tag>
 				<summary>
 				Holds an sql condition that has to be nested inside a DbFilterTag.
-				A condition is specified as sql code in the body of the tag.
-				The character ? is a placeholder for user's input substitution.
-				Every char ? found in sql code is replaced with value evalutated from 
-				corresponding filterValue tag nested. So there must be as ? as filterValue tags.
 				</summary>
 				<name>filterCondition</name>
 				<tagclass>org.dbforms.taglib.DbFilterConditionTag</tagclass>
 				<bodycontent>JSP</bodycontent>
-				<info/>
+				<info>
+				A condition is specified as sql code in the body of the tag.
+				The character ? is a placeholder for user's input substitution.
+				Every char ? found in sql code is replaced with value evalutated from 
+				corresponding filterValue tag nested. So there must be as ? as filterValue tags.				
+				</info>
 				<attribute>
 					<name>label</name>
 					<required>true</required>
@@ -6298,18 +6303,18 @@ This structure will be rendered as a html select element to select the condition
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
 					<info>type of the input element that will be rendered, possible values are:
-					&lt;dl>
-					&lt;dt>text
-					&lt;dd>text input
-					&lt;dt>date
-					&lt;dd>input text for date type, a validation of the value will be done, and it supports the jscal object
-					&lt;dt>timestamp
-					&lt;dd>input text for timestamp type, a validation of the value will be done, and it supports the jscal object (it doesn't fit very well, anyway ...)
-					&lt;dt>numeric
-					&lt;dd>input text for number, a validation of the value will be done
-					&lt;dt>select
-					&lt;dd>render an html select element, filled with nested tags like queryData, staticData and so on.
-					&lt;/dl>
+					<dl>
+					<dt>text</dt>
+					<dd>text input</dd>
+					<dt>date</dt>
+					<dd>input text for date type, a validation of the value will be done, and it supports the jscal object</dd>
+					<dt>timestamp</dt>
+					<dd>input text for timestamp type, a validation of the value will be done, and it supports the jscal object (it doesn't fit very well, anyway ...)</dd>
+					<dt>numeric</dt>
+					<dd>input text for number, a validation of the value will be done</dd>
+					<dt>select</dt>
+					<dd>render an html select element, filled with nested tags like queryData, staticData and so on.</dd>
+					</dl>
 					</info>
 				</attribute>
 				<attribute>
