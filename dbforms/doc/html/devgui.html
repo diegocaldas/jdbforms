@@ -27,7 +27,7 @@ can be found at</p>
 <h3>Web Application Tab</h3>
 
 <div align="center">
-<img src="devgui1.png" width="369" height="232"  >
+<a href="devgui1.png"><img src="devgui1.png" width="369" height="232"  ></a>
 </div>
 
 <ul>
@@ -37,7 +37,7 @@ can be found at</p>
 <h3>Database Tab</h3>
 
 <div align="center">
-<img src="devgui2.png" width="369" height="232"  >
+<a href="devgui2.png"><img src="devgui2.png" width="369" height="232"  ></a>
 </div>
 
 
@@ -79,7 +79,7 @@ can be found at</p>
 <h3>XML Config Tab</h3>
 
 <div align="center">
-<img src="devgui3.png" width="369" height="232"  >
+<a href="devgui3.png"><img src="devgui3.png" width="369" height="232"  ></a>
 
 </div>
 
@@ -132,9 +132,20 @@ can be found at</p>
        about patterns above.
 <p><li> <strong>Use autocommit mode: </strong> Should normally be checked, was 
        inserted as a workaround for a bug of a special driver.
+<p><li> <strong>Write standard type names for unknown field types:</strong> 
+       If not checked, DevGui will write the names for column types
+       exactly as it gets them from the database. Sometimes this may lead
+       to problems, if the DBMS uses a type that could be handled by dbforms
+       but is has an unknown specific name. E.g. there are a lot of different
+       names for various 'integer' types. If this option is checked, DevGui
+       will try to write standard name for all unknown types into the
+       generated dbforms config file.
 <p><li> <strong>Include catalog or table name: </strong> If checked, DevGui 
       tries to include catalog and/or schema name in generated
       xml file like 'admin.table1' instead of just 'table1'.
+<p><li> <strong>Set date format to:  </strong>Here you may select or enter
+      a date pattern that then will be set as default date format within
+      dbforms config file using tag date-format. 
 <p><li> <strong>Generate XML button: </strong>DevGui tries to read database meta data
       and generated a dbforms config in XML format. Result is shown
       in editor pane.
@@ -145,18 +156,32 @@ can be found at</p>
 <h3>XSL Transformation</h3>
 
 <div align="center">
-<img src="devgui4.png" width="369" height="232"  >
+<a href="devgui4.png"><img src="devgui4.png" width="369" height="232"  ></a>
 
 </div>
-
-<ul><li>
-This tab can be used to automatically generate 
+This tab can be used to automatically generate
 Java Server Pages that use DbForms taglib by applying
 XSL stylesheets to dbforms config file. To do that,
 you must have generated (or loaded) a dbforms config file,
 then you mark the name of a style sheet and
-select button 'start transformation'. 
-<p><li>Generated pages are written to the web application directory.
+select button 'start transformation'.
+
+<ul>
+<li> <strong>Use JavaScript Calendar: </strong> If checked, the generated 
+   pages will include a JavaScript calendar written by Robert W. Husted for editing of
+   date fields. Calendar is included in dbforms with friendly permission of author.
+   See
+<a href="http://developer.iplanet.com/viewsource/husted_calendar/husted_calendar.html">http://developer.iplanet.com/viewsource/husted_calendar/husted_calendar.html</a>
+for more information about this tool. The calendar
+is now developed as open source project 'jscal' with
+homepage at <a href="http://jscal.sourceforge.net/">http://jscal.sourceforge.net/</a>.
+<p>
+Unfortunately this calendar
+   only seems to work with Internet Explorer, so by default this option
+   is not checked. 
+</ul>
+
+Generated pages are written to the web application directory.
 </ul>
 
 </body>
