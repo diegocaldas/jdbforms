@@ -592,7 +592,7 @@ public class DbFilterValueTag extends DbBaseHandlerTag implements DataContainer,
     * 
     * @param string
     */
-   public void setTypeByObject(String string)
+   public void setType(String string)
    {
       state.type = string;
    }
