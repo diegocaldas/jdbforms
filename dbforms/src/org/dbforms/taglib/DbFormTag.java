@@ -1515,7 +1515,7 @@ public class DbFormTag extends TagSupportWithScriptHandler
          FieldValue[] orderConstraint;
 
          // if developer provided orderBy - Attribute in <db:dbform> - tag
-         if (overrulingOrder != null) {
+         if (overrulingOrder != null && overrulingOrder.length > 0) {
             orderConstraint = overrulingOrder;
             logCat.info("using OverrulingOrder (dbform tag attribute)");
          }
@@ -1680,7 +1680,8 @@ public class DbFormTag extends TagSupportWithScriptHandler
          //
          // # 2002.11.xx-fossato added an event factory
          // # 20030320-HKK: Rewrite to use navEvent only
-         if ((webEvent == null) && (getLocalWebEvent() != null)) {
+         // 2004-06-14 moretti: local event take precedence over NOOP 
+         if ((webEvent == null || webEvent instanceof org.dbforms.event.NoopEvent) && (getLocalWebEvent() != null)) {
             webEvent = navEventFactory.createEvent(localWebEvent, request,
                                                    getConfig(), table);
 
