@@ -273,7 +273,7 @@ Happy coding!
       <copy todir="${dbforms.releaseDir}" >
         <fileset dir="." includes="Changes_v1_0  Changes_v1_1  CommonMistakes  license.txt"/>
         <fileset dir="." includes="Readme  Todo  build.xml ReleaseNotes*.txt"/>
-        <fileset dir="." includes="doc/**/*.html,doc/**/*.png,doc/**/*.gif,doc/**/*.jpg,doc/**/*.txt,doc/**/*.pdf"/>
+        <fileset dir="." includes="doc/**/*.html,doc/**/*.png,doc/**/*.gif,doc/**/*.jpg,doc/**/*.txt,doc/**/*.pdf,doc/**/*.css"/>
         <fileset dir="." includes="dist/*.tld  dist/*.jar"/>
         <fileset dir="." includes="etc/*.xml etc/*.xsl"/>
         <fileset dir="." includes="examples/*.txt"/>
