@@ -30,6 +30,10 @@ Contents:
 4-5-5: New api javadoc. Can be found within doc/api directory.
 4-6) Example Applications
 4-7) Bug fixes
+4-8) Tests Cases Added
+4-8-1: Running JUnit Tests
+4-8-2: Running Cactus Tests
+4-8-3: Use of Maven to generate project statistics
 
 
 1) About this release
@@ -312,5 +316,29 @@ It is still possible to other database systems.
 ---------------
 
 A lot of bug fixes have be done. See changes_1_1 for details.
+
+4-8): JUnit Tests supported via Maven
+---------------
+
+4-8-1: 9 JUnit test cases have been written to test some of the peripheral functions of DBForms. These
+			test cases allow developers to edit code, and if all the test cases pass, then to assume that
+			the code is reliable and working.  Over time, this will help increase the stability of the DBForms
+			codebase.  The test cases currently use the Maven (http://jakarta.apache.org/turbine/maven) build 
+			tool to provide the framework.  These testcases are ready to run out of the box.  If you have Maven
+			installed, then just type 
+				maven test
+			and the testcases will be run.
+4-8-2: 7 Cactus style incontainer test cases have been written.  These testcases test the more complex 
+			functionality in DbForms that requires the support of a servlet container like Tomcat.  These also
+			leverage maven for support and can be run by typing:
+				maven cactus:test-tomcat-4x
+4-8-3: Maven Support for Project Metrics.  Maven provides very comprehensive project statistics out of the 
+			box based on the included project.xml file.  Some of these metrics include javadocs, source code 
+			cross references, links to project tools, todo lists, test result reports, test coverage reports,
+			and code metrics.  Just type
+				maven site
+			and you will see the site documentation be produced.
+	
+
 
 
