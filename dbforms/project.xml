@@ -4,7 +4,7 @@
   <pomVersion>3</pomVersion>
   <id>dbforms</id>
   <name>DbForms</name>
-  <currentVersion>1.1.3-pr2</currentVersion>
+  <currentVersion>1.1.3</currentVersion>
   <organization>
     <name>DbForms</name>
     <url>http://jdbforms.sourceforge.net</url>

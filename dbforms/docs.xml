@@ -143,16 +143,22 @@
     <echo message="begin xsl translation to generate HTML documentation  "/>
 
     <delete file = "${taglibdoc.dir}/DbFormsTags.html"/>
-    <style style = "${etc.dir}/tldoc2html.xsl" 
+    <echo message="style 1"/>
+    <style 
+    	   style = "${etc.dir}/tldoc2html.xsl" 
            in    = "${etc.dir}/taglib_docu.xml" 
-           out   = "${taglibdoc.dir}/DbFormsTags.html"/>
+           out   = "${taglibdoc.dir}/DbFormsTags.html"
+     >
+     </style>
 
     <delete file="${taglibdoc.dir}/DbFormsTags_TocSem.html"/>
+    <echo message="style 2"/>
     <style style = "${etc.dir}/tldoc2html_toc.xsl" 
            in    = "${etc.dir}/taglib_docu.xml" 
            out   = "${taglibdoc.dir}/DbFormsTags_TocSem.html"/>
 
     <delete file = "${taglibdoc.dir}/DbFormsTags_TocAlph.html"/>
+    <echo message="style 3"/>
     <style style = "${etc.dir}/tldoc2html_toc.xsl" 
            in    = "${etc.dir}/taglib_docu.xml" 
            out   = "${taglibdoc.dir}/DbFormsTags_TocAlph.html">
@@ -185,7 +191,7 @@
     <!--Generate PDF reference documentation from taglib-docu.xml (FOP_HOME must be set)" -->
     <echo message="begin xsl translation to generate xsl-fo   "/>
     <style style = "${etc.dir}/tldoc2xsl-fo.xsl" 
-           in    = "${etc.dir}/taglib_docu.xml" 
+	   in    = "${etc.dir}/taglib_docu.xml" 
            out   = "${etc.dir}/DbFormsTags.xsl-fo"/>
     <echo message="end of xsl translation "/>
     <echo message="starting generation of ${doc.dir}/taglib/DbFormsTags.pdf using Apache FOP (FOP_HOME must be set)"/>
@@ -244,7 +250,7 @@
   <!-- called by Maven's "doc" goal                                        -->
   <!-- =================================================================== -->
   <target name    = "maven-build-doc"
-          depends = "generate_taglib_htmldocs, generate_taglib_pdfdocs, prepare, create_HTML, create_PDF, run-j" />
+          depends = "generate_taglib_htmldocs, generate_taglib_pdfdocs, prepare, create_HTML, create_PDF" />
 
 
   <!-- ========================================================================== -->

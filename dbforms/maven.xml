@@ -4,6 +4,9 @@
          xmlns:u = "jelly:util"
 	 >
 
+<echo message="Hack to use xalan transformer!"/>
+${systemScope.setProperty('javax.xml.transform.TransformerFactory','org.apache.xalan.processor.TransformerFactoryImpl')}
+
 
   <!--
      -  Build the additional DbForms documentation:
