@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Document   : figure.xml
+    Created on : March 9, 2003, 10:35 AM
+    Author     : javauser
+    Description:
+        Purpose of the document follows.
+-->
+
+<mediaobject  id="MousePicture">  
+  <imageobject  role="html">
+    <imagedata  format="PNG"  fileref="images/figures/mouse.png"/>
+  </imageobject>
+  <imageobject  role="fo">
+    <imagedata  format="PNG"  fileref="../images/figures/mouse.png"/>
+  </imageobject>
+</mediaobject>
+
+
