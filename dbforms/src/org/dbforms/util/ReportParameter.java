@@ -23,10 +23,10 @@
 package org.dbforms.util;
 
 /**
- * 
+ *
  * Helper class send as parameter to JasperReports. So it is not neccesary to
  * send all the stuff in different parameters
- * 
+ *
  * @author hkk
  *
  */
@@ -34,49 +34,71 @@ import javax.servlet.http.*;
 import java.sql.*;
 import org.dbforms.util.*;
 
-public class ReportParameter {
 
-	private HttpServletRequest request;
-	private Connection connection;
-	private String reportPath;
 
-	public ReportParameter(HttpServletRequest request, Connection connection, String reportPath) {
-		this.request = request;
-		this.connection = connection;
-		this.reportPath = reportPath;
-	}
+/**
+ * DOCUMENT ME!
+ *
+ * @author $author$
+ * @version $Revision$
+ */
+public class ReportParameter
+{
+   private HttpServletRequest request;
+   private Connection         connection;
+   private String             reportPath;
 
-	
-	/**
-	 * Returns a message
-	 * @return String
-	 */
-	public String getMessage(String msg) {
-		return MessageResources.getMessage(request, msg);
-	}
+   /**
+    * Creates a new ReportParameter object.
+    *
+    * @param request DOCUMENT ME!
+    * @param connection DOCUMENT ME!
+    * @param reportPath DOCUMENT ME!
+    */
+   public ReportParameter(HttpServletRequest request, Connection connection,
+      String reportPath)
+   {
+      this.request       = request;
+      this.connection    = connection;
+      this.reportPath    = reportPath;
+   }
 
-	/**
-	 * Returns a request parameter
-	 * @return String
-	 */
-	public String getParameter(String param) {
-		return ParseUtil.getParameter(request, param);
-	}
+   /**
+    * Returns a message
+    * @return String
+    */
+   public String getMessage(String msg)
+   {
+      return MessageResources.getMessage(request, msg);
+   }
 
-	/**
-	 * Returns the connection.
-	 * @return Connection
-	 */
-	public Connection getConnection() {
-		return connection;
-	}
 
-	/**
-	 * Returns the reportPath.
-	 * @return String
-	 */
-	public String getReportPath() {
-		return reportPath;
-	}
+   /**
+    * Returns a request parameter
+    * @return String
+    */
+   public String getParameter(String param)
+   {
+      return ParseUtil.getParameter(request, param);
+   }
 
+
+   /**
+    * Returns the connection.
+    * @return Connection
+    */
+   public Connection getConnection()
+   {
+      return connection;
+   }
+
+
+   /**
+    * Returns the reportPath.
+    * @return String
+    */
+   public String getReportPath()
+   {
+      return reportPath;
+   }
 }

@@ -20,12 +20,9 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.util;
-
 import javax.servlet.*;
 import javax.servlet.http.*;
-
 import org.dbforms.event.*;
 
 
@@ -38,27 +35,28 @@ import org.dbforms.event.*;
  */
 public class EventUtil
 {
-    /**
-     *  Gets the name of the destination table.
-     *
-     * @param  request the request object
-     * @param  action the action string
-     * @return  the destination table string
-     */
-    public final static String getDestinationTableName(HttpServletRequest request, String action)
-    {
-        return ParseUtil.getParameter(request, "data" + action + "_destTable");
-    }
+   /**
+    *  Gets the name of the destination table.
+    *
+    * @param  request the request object
+    * @param  action the action string
+    * @return  the destination table string
+    */
+   public static final String getDestinationTableName(
+      HttpServletRequest request, String action)
+   {
+      return ParseUtil.getParameter(request, "data" + action + "_destTable");
+   }
 
 
-    /**
-     *  Gets the table id value.
-     *
-     * @param action the action string
-     * @return the table id value
-     */
-    public final static int getTableId(String action)
-    {
-        return ParseUtil.getEmbeddedStringAsInteger(action, 2, '_');
-    }
+   /**
+    *  Gets the table id value.
+    *
+    * @param action the action string
+    * @return the table id value
+    */
+   public static final int getTableId(String action)
+   {
+      return ParseUtil.getEmbeddedStringAsInteger(action, 2, '_');
+   }
 }

@@ -20,7 +20,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms;
 import java.util.*;
 import org.dbforms.util.*;
@@ -36,71 +35,71 @@ import org.apache.log4j.Category;
  */
 public class Message
 {
-    static Category logCat = Category.getInstance(Message.class.getName()); // logging category for this class
+   static Category logCat = Category.getInstance(Message.class.getName()); // logging category for this class
 
-    //------------------------ Properties ---------------------------------------------------------
-    private String language; // Code used to specify a language for this message
+   //------------------------ Properties ---------------------------------------------------------
+   private String language; // Code used to specify a language for this message
 
-    // May be converted to a real Locale object if need be...
-    private String message; // the message-name, as provided in xml-error file
+   // May be converted to a real Locale object if need be...
+   private String message; // the message-name, as provided in xml-error file
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param message DOCUMENT ME!
-     */
-    public void setMessage(String message)
-    {
-        this.message = message;
-    }
-
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
-    public String getMessage()
-    {
-        return message;
-    }
+   /**
+    * DOCUMENT ME!
+    *
+    * @param message DOCUMENT ME!
+    */
+   public void setMessage(String message)
+   {
+      this.message = message;
+   }
 
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param language DOCUMENT ME!
-     */
-    public void setLanguage(String language)
-    {
-        this.language = language;
-    }
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String getMessage()
+   {
+      return message;
+   }
 
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
-    public String getLanguage()
-    {
-        return language;
-    }
+   /**
+    * DOCUMENT ME!
+    *
+    * @param language DOCUMENT ME!
+    */
+   public void setLanguage(String language)
+   {
+      this.language = language;
+   }
 
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
-    public String toString()
-    {
-        StringBuffer buf = new StringBuffer();
-        buf.append("language=");
-        buf.append(language);
-        buf.append(" message=");
-        buf.append(getMessage());
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String getLanguage()
+   {
+      return language;
+   }
 
-        return buf.toString();
-    }
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String toString()
+   {
+      StringBuffer buf = new StringBuffer();
+      buf.append("language=");
+      buf.append(language);
+      buf.append(" message=");
+      buf.append(getMessage());
+
+      return buf.toString();
+   }
 }

@@ -20,13 +20,9 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms;
-
 import java.util.HashMap;
-
 import org.apache.log4j.Category;
-
 import org.dbforms.event.EventInfo;
 import org.dbforms.event.eventtype.EventType;
 
@@ -40,143 +36,147 @@ import org.dbforms.event.eventtype.EventType;
  */
 public class TableEvents
 {
-    private static  Category logCat = Category.getInstance(TableEvents.class.getName());
-    private Table   table    = null;
-    private HashMap eventMap = null;
-    private boolean doLog    = false;
+   private static Category logCat   = Category.getInstance(TableEvents.class
+         .getName());
+   private Table           table    = null;
+   private HashMap         eventMap = null;
+   private boolean         doLog    = false;
 
-    /**
-     *  Default constructor.
-     */
-    public TableEvents()
-    {
-        eventMap = new HashMap();
+   /**
+    *  Default constructor.
+    */
+   public TableEvents()
+   {
+      eventMap = new HashMap();
 
-        try
-        {
-          // set the default database events;
-          addEventInfo(EventType.EVENT_DATABASE_DELETE);
-          addEventInfo(EventType.EVENT_DATABASE_INSERT);
-          addEventInfo(EventType.EVENT_DATABASE_UPDATE);
+      try
+      {
+         // set the default database events;
+         addEventInfo(EventType.EVENT_DATABASE_DELETE);
+         addEventInfo(EventType.EVENT_DATABASE_INSERT);
+         addEventInfo(EventType.EVENT_DATABASE_UPDATE);
 
-          // set the default navigation events;
-          addEventInfo(EventType.EVENT_NAVIGATION_FIRST);
-          addEventInfo(EventType.EVENT_NAVIGATION_GOTO);
-          addEventInfo(EventType.EVENT_NAVIGATION_LAST);
-          addEventInfo(EventType.EVENT_NAVIGATION_NEW);
-          addEventInfo(EventType.EVENT_NAVIGATION_NEXT);
-          addEventInfo(EventType.EVENT_NAVIGATION_PREV);
-        }
-        catch (Exception e)
-        {
-          logCat.error("::Table - cannot link a TableEvents object to this table", e);
-        }
+         // set the default navigation events;
+         addEventInfo(EventType.EVENT_NAVIGATION_FIRST);
+         addEventInfo(EventType.EVENT_NAVIGATION_GOTO);
+         addEventInfo(EventType.EVENT_NAVIGATION_LAST);
+         addEventInfo(EventType.EVENT_NAVIGATION_NEW);
+         addEventInfo(EventType.EVENT_NAVIGATION_NEXT);
+         addEventInfo(EventType.EVENT_NAVIGATION_PREV);
+      }
+      catch (Exception e)
+      {
+         logCat.error("::Table - cannot link a TableEvents object to this table",
+            e);
+      }
 
-        // enable log for digester;
-        doLog = true;
-    }
+      // enable log for digester;
+      doLog = true;
+   }
 
-
-    /**
-     *  Gets the table attribute of the TableEvent object
-     *
-     * @return  The table value
-     */
-    public Table getTable()
-    {
-        return table;
-    }
-
-
-    /**
-     *  Sets the table attribute of the TableEvent object
-     *
-     * @param  table The new table value
-     */
-    public void setTable(Table table)
-    {
-        this.table = table;
-    }
+   /**
+    *  Gets the table attribute of the TableEvent object
+    *
+    * @return  The table value
+    */
+   public Table getTable()
+   {
+      return table;
+   }
 
 
-    /**
-     *  Get the event id related to the input event type.
-     *
-     * @param eventType the event type
-     * @return the event id related to the input event type, or null if
-     *         the object does not exist
-     */
-    public String getEventId(String eventType)
-    {
-        String    id    = null;
-        EventInfo einfo = getEventInfo(eventType);
-
-        if (einfo != null)
-            id = einfo.getId();
-
-        return id;
-    }
+   /**
+    *  Sets the table attribute of the TableEvent object
+    *
+    * @param  table The new table value
+    */
+   public void setTable(Table table)
+   {
+      this.table = table;
+   }
 
 
-    /**
-     *  Set a new event for the linked Table.
-     *
-     * @param eventType  the event type
-     * @param id         the event id
-     */
-    public void addEventInfo(EventInfo einfo)
-    {
-        String eventType = einfo.getType();
+   /**
+    *  Get the event id related to the input event type.
+    *
+    * @param eventType the event type
+    * @return the event id related to the input event type, or null if
+    *         the object does not exist
+    */
+   public String getEventId(String eventType)
+   {
+      String    id    = null;
+      EventInfo einfo = getEventInfo(eventType);
 
-        // store the event info object using its event type as the map key;
-        if (eventMap.containsKey(eventType))
-            eventMap.remove(eventType);
+      if (einfo != null)
+      {
+         id = einfo.getId();
+      }
 
-        eventMap.put(eventType, einfo);
-
-        if (doLog)
-          logCat.info("::addEventInfo - set a new eventInfo with type, id [" + eventType + ", " + einfo.getId() + "]");
-    }
-
-
+      return id;
+   }
 
 
-    /**
-     *  PRIVATE methods here
-     */
+   /**
+    *  Set a new event for the linked Table.
+    *
+    * @param eventType  the event type
+    * @param id         the event id
+    */
+   public void addEventInfo(EventInfo einfo)
+   {
+      String eventType = einfo.getType();
+
+      // store the event info object using its event type as the map key;
+      if (eventMap.containsKey(eventType))
+      {
+         eventMap.remove(eventType);
+      }
+
+      eventMap.put(eventType, einfo);
+
+      if (doLog)
+      {
+         logCat.info("::addEventInfo - set a new eventInfo with type, id ["
+            + eventType + ", " + einfo.getId() + "]");
+      }
+   }
 
 
-    /**
-     *  Set a new event for the linked Table
-     *
-     * @param eventType  the event type string
-     * @throws Exception if the system try to register two events with the same type
-     */
-    private void addEventInfo(String eventType) throws Exception
-    {
-        EventInfo einfo = new EventInfo();
-        einfo.setType(eventType);
-        einfo.setId(eventType);
-        addEventInfo(einfo);
-    }
+   /**
+    *  PRIVATE methods here
+    */
+   /**
+    *  Set a new event for the linked Table
+    *
+    * @param eventType  the event type string
+    * @throws Exception if the system try to register two events with the same type
+    */
+   private void addEventInfo(String eventType) throws Exception
+   {
+      EventInfo einfo = new EventInfo();
+      einfo.setType(eventType);
+      einfo.setId(eventType);
+      addEventInfo(einfo);
+   }
 
 
-    /**
-     *  Get the eventInfo object related to the input event type.
-     *
-     * @param eventType the event type string
-     * @return the eventInfo object related to the input event type, or null if
-     *         the object does not exist
-     */
-    private EventInfo getEventInfo(String eventType)
-    {
-        EventInfo einfo = null;
+   /**
+    *  Get the eventInfo object related to the input event type.
+    *
+    * @param eventType the event type string
+    * @return the eventInfo object related to the input event type, or null if
+    *         the object does not exist
+    */
+   private EventInfo getEventInfo(String eventType)
+   {
+      EventInfo einfo = null;
 
-        if (eventMap.containsKey(eventType))
-        {
-            einfo = (EventInfo)eventMap.get(eventType);
-        }
+      if (eventMap.containsKey(eventType))
+      {
+         einfo = (EventInfo) eventMap.get(eventType);
+      }
 
-        return einfo;
-    }
+      return einfo;
+   }
 }

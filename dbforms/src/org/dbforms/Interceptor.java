@@ -20,7 +20,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms;
 import java.util.*;
 import javax.servlet.http.HttpServletRequest;
@@ -39,27 +38,27 @@ import org.apache.log4j.Category;
  */
 public class Interceptor
 {
-    static Category logCat = Category.getInstance(Interceptor.class.getName()); // logging category for this class
-    private String className;
+   static Category logCat    = Category.getInstance(Interceptor.class.getName()); // logging category for this class
+   private String  className;
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param className DOCUMENT ME!
-     */
-    public void setClassName(String className)
-    {
-        this.className = className;
-    }
+   /**
+    * DOCUMENT ME!
+    *
+    * @param className DOCUMENT ME!
+    */
+   public void setClassName(String className)
+   {
+      this.className = className;
+   }
 
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
-    public String getClassName()
-    {
-        return className;
-    }
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String getClassName()
+   {
+      return className;
+   }
 }

@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.event;
-
 import java.util.Hashtable;
 import java.util.Vector;
 import java.util.Locale;
@@ -35,6 +34,8 @@ import org.dbforms.DbFormsConfig;
 import org.dbforms.DbFormsErrors;
 import org.dbforms.util.MessageResources;
 
+
+
 /**
  *
  * abstract base class for all database operations which need validation, e.g. InsertEvent and UpdateEvent
@@ -42,61 +43,82 @@ import org.dbforms.util.MessageResources;
  *
  * @author hkk
  */
-public abstract class ValidationEvent extends DatabaseEvent {
+public abstract class ValidationEvent extends DatabaseEvent
+{
+   /**
+    * Creates a new ValidationEvent object.
+    *
+    * @param tableId DOCUMENT ME!
+    * @param keyId DOCUMENT ME!
+    * @param request DOCUMENT ME!
+    * @param config DOCUMENT ME!
+    */
+   public ValidationEvent(int tableId, String keyId,
+      HttpServletRequest request, DbFormsConfig config)
+   {
+      super(tableId, keyId, request, config);
+   }
 
-	public ValidationEvent(int tableId, String keyId, HttpServletRequest request, DbFormsConfig config) {
-		super(tableId, keyId, request, config);
-	}
+   /**
+    *  DO the validation of <FORM> with Commons-Validator.
+    *
+    * @param  formValidatorName The form name to retreive in validation.xml
+    * @param  request The servlet request we are processing
+    * @param  e the web event
+    * @exception  MultipleValidationException The Vector of errors throwed with this exception
+    */
+   public void doValidation(String formValidatorName, ServletContext context,
+      HttpServletRequest request) throws MultipleValidationException
+   {
+      Hashtable fieldValues = null;
+      fieldValues = getAssociativeFieldValues(getFieldValues());
 
-	/**
-	 *  DO the validation of <FORM> with Commons-Validator.
-	 *
-	 * @param  formValidatorName The form name to retreive in validation.xml
-	 * @param  request The servlet request we are processing
-	 * @param  e the web event
-	 * @exception  MultipleValidationException The Vector of errors throwed with this exception
-	 */
-	public void doValidation(String formValidatorName, ServletContext context,  HttpServletRequest request) throws MultipleValidationException
-	{
-		Hashtable fieldValues = null;
-		fieldValues = getAssociativeFieldValues(getFieldValues());
-		// If no data to validate, return
-		if (fieldValues.size() == 0)
-		{
-			return;
-		}
-		// Retreive ValidatorResources from Application context (loaded with ConfigServlet)
-		ValidatorResources vr = (ValidatorResources) context.getAttribute(ValidatorConstants.VALIDATOR);
-		if (vr == null)
-		{
-			return;
-		}
-		Validator validator = new Validator(vr, formValidatorName.trim());
-		Vector errors = new Vector();
-		DbFormsErrors dbFormErrors = (DbFormsErrors) context.getAttribute(DbFormsErrors.ERRORS);
-		Locale locale = MessageResources.getLocale(request);
-		// Add these resources to perform validation
-		validator.addResource(Validator.BEAN_KEY, fieldValues);
-		// The values
-		validator.addResource("java.util.Vector", errors);
-		validator.addResource(Validator.LOCALE_KEY, locale);
-		// Vector of errors to populate
-		validator.addResource("org.dbforms.DbFormsErrors", dbFormErrors);
-		// Applicatiob context
-		ValidatorResults hResults = null;
-		try
-		{
-			hResults = validator.validate();
-		}
-		catch (Exception ex)
-		{
-			logCat.error("\n!!! doValidation error for : " + formValidatorName + "  !!!\n" + ex);
-		}
-		// If error(s) found, throw Exception
-		if (errors.size() > 0)
-		{
-			throw new MultipleValidationException(errors);
-		}
-	}
+      // If no data to validate, return
+      if (fieldValues.size() == 0)
+      {
+         return;
+      }
 
+      // Retreive ValidatorResources from Application context (loaded with ConfigServlet)
+      ValidatorResources vr = (ValidatorResources) context.getAttribute(ValidatorConstants.VALIDATOR);
+
+      if (vr == null)
+      {
+         return;
+      }
+
+      Validator     validator    = new Validator(vr, formValidatorName.trim());
+      Vector        errors       = new Vector();
+      DbFormsErrors dbFormErrors = (DbFormsErrors) context.getAttribute(DbFormsErrors.ERRORS);
+      Locale        locale       = MessageResources.getLocale(request);
+
+      // Add these resources to perform validation
+      validator.addResource(Validator.BEAN_KEY, fieldValues);
+
+      // The values
+      validator.addResource("java.util.Vector", errors);
+      validator.addResource(Validator.LOCALE_KEY, locale);
+
+      // Vector of errors to populate
+      validator.addResource("org.dbforms.DbFormsErrors", dbFormErrors);
+
+      // Applicatiob context
+      ValidatorResults hResults = null;
+
+      try
+      {
+         hResults = validator.validate();
+      }
+      catch (Exception ex)
+      {
+         logCat.error("\n!!! doValidation error for : " + formValidatorName
+            + "  !!!\n" + ex);
+      }
+
+      // If error(s) found, throw Exception
+      if (errors.size() > 0)
+      {
+         throw new MultipleValidationException(errors);
+      }
+   }
 }

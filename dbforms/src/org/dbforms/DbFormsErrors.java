@@ -20,7 +20,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms;
 import java.util.*;
 import javax.servlet.*;
@@ -40,73 +39,73 @@ import org.apache.log4j.Category;
  */
 public class DbFormsErrors
 {
-    static Category logCat = Category.getInstance(DbFormsErrors.class.getName()); // logging category for this class
+   static Category logCat = Category.getInstance(DbFormsErrors.class.getName()); // logging category for this class
 
-    /** DOCUMENT ME! */
-    public static final String ERRORS = "dbformsErrors";
-    private Hashtable errorIDHash; // for quicker lookup by ID
-    private ServletConfig servletConfig;
+   /** DOCUMENT ME! */
+   public static final String ERRORS        = "dbformsErrors";
+   private Hashtable          errorIDHash; // for quicker lookup by ID
+   private ServletConfig      servletConfig;
 
-    /**
-     * Creates a new DbFormsErrors object.
-     */
-    public DbFormsErrors()
-    {
-        logCat.info("Create instance of DbFormsErrors");
-        errorIDHash = new Hashtable();
-    }
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @param error DOCUMENT ME!
-     */
-    public void addError(Error error)
-    {
-        logCat.info("error added: " + error);
-        errorIDHash.put(error.getId(), error);
-    }
-
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @param id DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
-    public Error getErrorById(String id)
-    {
-        return (Error) errorIDHash.get(id);
-    }
-
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @param servletConfig DOCUMENT ME!
-     */
-    public void setServletConfig(ServletConfig servletConfig)
-    {
-        this.servletConfig = servletConfig;
-    }
-
-
-    /**
-    get access to configuration of config servlet
+   /**
+    * Creates a new DbFormsErrors object.
     */
-    public ServletConfig getServletConfig()
-    {
-        return servletConfig;
-    }
+   public DbFormsErrors()
+   {
+      logCat.info("Create instance of DbFormsErrors");
+      errorIDHash = new Hashtable();
+   }
 
-
-    /**
-    get access to servlet context in order to interoperate with
-    other components of the web application
+   /**
+    * DOCUMENT ME!
+    *
+    * @param error DOCUMENT ME!
     */
-    public ServletContext getServletContext()
-    {
-        return servletConfig.getServletContext();
-    }
+   public void addError(Error error)
+   {
+      logCat.info("error added: " + error);
+      errorIDHash.put(error.getId(), error);
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param id DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public Error getErrorById(String id)
+   {
+      return (Error) errorIDHash.get(id);
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param servletConfig DOCUMENT ME!
+    */
+   public void setServletConfig(ServletConfig servletConfig)
+   {
+      this.servletConfig = servletConfig;
+   }
+
+
+   /**
+   get access to configuration of config servlet
+   */
+   public ServletConfig getServletConfig()
+   {
+      return servletConfig;
+   }
+
+
+   /**
+   get access to servlet context in order to interoperate with
+   other components of the web application
+   */
+   public ServletContext getServletContext()
+   {
+      return servletConfig.getServletContext();
+   }
 }

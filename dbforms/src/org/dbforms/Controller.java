@@ -20,9 +20,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms;
-
 import java.io.*;
 import java.util.*;
 import java.sql.*;
@@ -33,6 +31,8 @@ import org.dbforms.util.*;
 import org.dbforms.event.*;
 import org.dbforms.validation.ValidatorConstants;
 
+
+
 /**
  * This servlets is the Controller component in the Model-View-Controller - architecture
  * used by the dbforms-framework. Every request goes through this component and its event
@@ -41,7 +41,8 @@ import org.dbforms.validation.ValidatorConstants;
  * @author  Joe Peer <joepeer@excite.com>
  * @created  23 dicembre 2002
  */
-public class Controller extends HttpServlet {
+public class Controller extends HttpServlet
+{
    /** logging category for this class */
    static Category logCat = Category.getInstance(Controller.class.getName());
 
@@ -56,7 +57,8 @@ public class Controller extends HttpServlet {
     *
     * @exception  ServletException if the initialization fails
     */
-   public void init() throws ServletException {
+   public void init() throws ServletException
+   {
       // take Config-Object from application context - this object should have been
       // initalized by Config-Servlet on Webapp/server-startup!
       config = (DbFormsConfig) getServletContext().getAttribute(DbFormsConfig.CONFIG);
@@ -65,14 +67,19 @@ public class Controller extends HttpServlet {
       // big the http/multipart uploads may get
       String maxUploadSizeStr = this.getServletConfig().getInitParameter("maxUploadSize");
 
-      if (maxUploadSizeStr != null) {
-         try {
+      if (maxUploadSizeStr != null)
+      {
+         try
+         {
             this.maxUploadSize = Integer.parseInt(maxUploadSizeStr);
-         } catch (NumberFormatException nfe) {
+         }
+         catch (NumberFormatException nfe)
+         {
             logCat.error("maxUploadSize not a valid number => using default.");
          }
       }
    }
+
 
    /**
     * Process an HTTP "GET" request.
@@ -82,9 +89,12 @@ public class Controller extends HttpServlet {
     * @exception  IOException if an input/output error occurs
     * @exception  ServletException if a servlet exception occurs
     */
-   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+   public void doGet(HttpServletRequest request, HttpServletResponse response)
+      throws IOException, ServletException
+   {
       process(request, response);
    }
+
 
    /**
     * Process an HTTP "POST" request.
@@ -94,9 +104,12 @@ public class Controller extends HttpServlet {
     * @exception  IOException if an input/output error occurs
     * @exception  ServletException if a servlet exception occurs
     */
-   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+   public void doPost(HttpServletRequest request, HttpServletResponse response)
+      throws IOException, ServletException
+   {
       process(request, response);
    }
+
 
    /**
     *   Process the incoming requests.
@@ -106,66 +119,98 @@ public class Controller extends HttpServlet {
     * @throws  IOException
     * @throws  ServletException
     */
-   private void process(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+   private void process(HttpServletRequest request, HttpServletResponse response)
+      throws IOException, ServletException
+   {
       // create RFC-1867 data wrapper for the case the form was sent in multipart mode
       // this is needed because common HttpServletRequestImpl - classes do not support it
       // the whole application has to access Request via the "ParseUtil" class
       // this is also true for jsp files written by the user
       // #fixme taglib needed for convenient access to ParseUtil wrapper methods
-
       Hashtable connections = new Hashtable();
-      String contentType = request.getContentType();
+      String    contentType = request.getContentType();
       processLocale(request);
+
       // Verify if Locale have been setted in session with "LOCALE_KEY"
       // if not, take the request.getLocale() as default and put it in session
       // Verify if Locale have been setted in session with "LOCALE_KEY"
       // if not, take the request.getLocale() as default and put it in session
-      if ((contentType != null) && contentType.startsWith("multipart")) {
-         try {
+      if ((contentType != null) && contentType.startsWith("multipart"))
+      {
+         try
+         {
             logCat.debug("before new multipartRequest");
-            MultipartRequest multipartRequest = new MultipartRequest(request, maxUploadSize);
+
+            MultipartRequest multipartRequest = new MultipartRequest(request,
+                  maxUploadSize);
             logCat.debug("after new multipartRequest");
             request.setAttribute("multipartRequest", multipartRequest);
-         } catch (IOException ioe) {
+         }
+         catch (IOException ioe)
+         {
             logCat.debug("Check if uploaded file(s) exceeded allowed size.");
-            sendErrorMessage("Check if uploaded file(s) exceeded allowed size.", request, response);
+            sendErrorMessage("Check if uploaded file(s) exceeded allowed size.",
+               request, response);
+
             return;
          }
       }
 
-      Connection con = null;
-      WebEvent e = null;
-      Vector errors = new Vector();
-      try {
+      Connection con    = null;
+      WebEvent   e      = null;
+      Vector     errors = new Vector();
+
+      try
+      {
          request.setAttribute("errors", errors);
+
          EventEngine engine = new EventEngine(request, config);
-         e = engine.generatePrimaryEvent();
-         con = getConnection(request, e.getTableId(), connections);
+         e      = engine.generatePrimaryEvent();
+         con    = getConnection(request, e.getTableId(), connections);
+
          // primary event can be any kind of event (database, navigation...)
-         if (e instanceof DatabaseEvent) {
-            try {
+         if (e instanceof DatabaseEvent)
+         {
+            try
+            {
                // if hidden formValidatorName exist and it's an Update or Insert event,
                // doValidation with Commons-Validator
-               String formValidatorName = request.getParameter(ValidatorConstants.FORM_VALIDATOR_NAME + "_" + e.getTableId());
-               if (formValidatorName != null) {
-                  ((DatabaseEvent) e).doValidation(formValidatorName, getServletContext(), request);
+               String formValidatorName = request.getParameter(ValidatorConstants.FORM_VALIDATOR_NAME
+                     + "_" + e.getTableId());
+
+               if (formValidatorName != null)
+               {
+                  ((DatabaseEvent) e).doValidation(formValidatorName,
+                     getServletContext(), request);
                }
+
                ((DatabaseEvent) e).processEvent(con);
-            } catch (SQLException sqle) {
+            }
+            catch (SQLException sqle)
+            {
                logCat.error("::process - SQLException:", sqle);
                errors.addElement(sqle);
                cleanUpConnectionAfterException(con);
-            } catch (MultipleValidationException mve) {
+            }
+            catch (MultipleValidationException mve)
+            {
                java.util.Vector v = null;
-               if ((v = mve.getMessages()) != null) {
+
+               if ((v = mve.getMessages()) != null)
+               {
                   Enumeration enum = v.elements();
-                  while (enum.hasMoreElements()) {
+
+                  while (enum.hasMoreElements())
+                  {
                      errors.addElement(enum.nextElement());
                   }
                }
+
                cleanUpConnectionAfterException(con);
             }
-         } else {
+         }
+         else
+         {
             // currently, we support db events ONLY
             // but in future there may be events with processEvent() method which do not need a jdbc con!
             // (you may think: "what about navigation events?" - well they are created by the
@@ -175,63 +220,96 @@ public class Controller extends HttpServlet {
 
          // secondary Events are always database events
          // (in fact, they all are SQL UPDATEs)
-         if (engine.getInvolvedTables() != null) {
+         if (engine.getInvolvedTables() != null)
+         {
             // may be null if empty form!
             Enumeration tableEnum = engine.getInvolvedTables().elements();
-            while (tableEnum.hasMoreElements()) {
-               Table t = (Table) tableEnum.nextElement();
+
+            while (tableEnum.hasMoreElements())
+            {
+               Table       t         = (Table) tableEnum.nextElement();
                Enumeration eventEnum = engine.generateSecundaryEvents(e);
-               while (eventEnum.hasMoreElements()) {
+
+               while (eventEnum.hasMoreElements())
+               {
                   DatabaseEvent dbE = (DatabaseEvent) eventEnum.nextElement();
+
                   // 2003-02-03 HKK: do not do the work twice - without this every event would be generated for each table and event
-                  if (t.getId() == dbE.getTableId()) {
+                  if (t.getId() == dbE.getTableId())
+                  {
                      con = getConnection(request, dbE.getTableId(), connections);
+
                      // 2003-02-03 HKK: do not do the work twice!!!
-                     String formValidatorName =
-                        request.getParameter(ValidatorConstants.FORM_VALIDATOR_NAME + "_" + dbE.getTableId());
-                     try {
+                     String formValidatorName = request.getParameter(ValidatorConstants.FORM_VALIDATOR_NAME
+                           + "_" + dbE.getTableId());
+
+                     try
+                     {
                         // if hidden formValidatorName exist and it's an Update or Insert event,
                         // doValidation with Commons-Validator
-                        if (formValidatorName != null) {
-                           dbE.doValidation(formValidatorName, getServletContext(), request);
+                        if (formValidatorName != null)
+                        {
+                           dbE.doValidation(formValidatorName,
+                              getServletContext(), request);
                         }
+
                         dbE.processEvent(con);
-                     } catch (SQLException sqle2) {
+                     }
+                     catch (SQLException sqle2)
+                     {
                         errors.addElement(sqle2);
                         cleanUpConnectionAfterException(con);
-                     } catch (MultipleValidationException mve) {
+                     }
+                     catch (MultipleValidationException mve)
+                     {
                         java.util.Vector v = null;
-                        if ((v = mve.getMessages()) != null) {
+
+                        if ((v = mve.getMessages()) != null)
+                        {
                            Enumeration enum = v.elements();
-                           while (enum.hasMoreElements()) {
+
+                           while (enum.hasMoreElements())
+                           {
                               errors.addElement(enum.nextElement());
                            }
                         }
+
                         cleanUpConnectionAfterException(con);
                      }
                   }
                }
             }
          }
-      } finally {
+      }
+      finally
+      {
          // close all the connections stored into the connections hash table;
          closeConnections(connections);
-         if (e != null) {
+
+         if (e != null)
+         {
             // send as info to dbForms (=> Taglib)
             //if(e instanceof NavigationEvent) {
             request.setAttribute("webEvent", e);
+
             //}
             // PG  - if form contained errors, use followupOnError (if available!)
             String fue = e.getFollowUpOnError();
 
-            if ((errors.size() != 0) && (fue != null) && (fue.trim().length() > 0)) {
+            if ((errors.size() != 0) && (fue != null)
+                     && (fue.trim().length() > 0))
+            {
                request.getRequestDispatcher(fue).forward(request, response);
-            } else {
-               request.getRequestDispatcher(e.getFollowUp()).forward(request, response);
+            }
+            else
+            {
+               request.getRequestDispatcher(e.getFollowUp()).forward(request,
+                  response);
             }
          }
       }
    }
+
 
    /**
     *  Send error messages to the servlet's output stream
@@ -240,23 +318,28 @@ public class Controller extends HttpServlet {
     * @param  request the request object
     * @param  response the response object
     */
-   private void sendErrorMessage(String message, HttpServletRequest request, HttpServletResponse response) {
-      try {
+   private void sendErrorMessage(String message, HttpServletRequest request,
+      HttpServletResponse response)
+   {
+      try
+      {
          PrintWriter out = response.getWriter();
 
          response.setContentType("text/html");
          out.println("<html><body><h1>ERROR:</h1><p>");
          out.println(message);
          out.println("</p></body></html>");
-      } catch (IOException ioe) {
+      }
+      catch (IOException ioe)
+      {
          logCat.error("!!!senderror message crashed!!!" + ioe);
       }
    }
 
+
    /**
     *  PRIVATE METHODS here
     */
-
    /**
     * Grunikiewicz.philip@hydro.qc.ca
     * 2001-10-29
@@ -267,33 +350,43 @@ public class Controller extends HttpServlet {
     *
     * @param  con Description of the Parameter
     */
-   private void cleanUpConnectionAfterException(Connection con) {
-      try {
+   private void cleanUpConnectionAfterException(Connection con)
+   {
+      try
+      {
          // Do only if autoCommit is disabled
-         if ((con != null) && (!con.getAutoCommit())) {
+         if ((con != null) && (!con.getAutoCommit()))
+         {
             con.rollback();
             con.setAutoCommit(true);
          }
-      } catch (java.sql.SQLException e) {
+      }
+      catch (java.sql.SQLException e)
+      {
          e.printStackTrace(System.out);
       }
    }
+
 
    /**
     *  Set the default locale
     *
     * @param  request the request object
     */
-   private void processLocale(HttpServletRequest request) {
+   private void processLocale(HttpServletRequest request)
+   {
       HttpSession session = request.getSession();
-      if (session.getAttribute(MessageResources.LOCALE_KEY) == null) {
+
+      if (session.getAttribute(MessageResources.LOCALE_KEY) == null)
+      {
          session.setAttribute(MessageResources.LOCALE_KEY, request.getLocale());
       }
    }
 
+
    /**
-    *  Gets the connection object. 
-    * 
+    *  Gets the connection object.
+    *
     * Holds a list of all used connections. So they stay open between calls an can be reused
     *
     * @param  request          the request object
@@ -301,29 +394,41 @@ public class Controller extends HttpServlet {
     * @param  connectionsTable the connections hash table
     * @return  The connection object
     */
-   private Connection getConnection(HttpServletRequest request, int tableId, Hashtable connectionsTable) {
-      String connectionName = null;
+   private Connection getConnection(HttpServletRequest request, int tableId,
+      Hashtable connectionsTable)
+   {
+      String       connectionName = null;
       DbConnection dbConnection = null;
-      Connection con = null;
+      Connection   con          = null;
+
       // get the connection name from the request;
       if ((connectionName = request.getParameter("invname_" + tableId)) == null)
+      {
          connectionName = "default";
-      if ((con = (Connection) connectionsTable.get(connectionName)) == null) {
+      }
+
+      if ((con = (Connection) connectionsTable.get(connectionName)) == null)
+      {
          con = SqlUtil.getConnection(config, connectionName);
          connectionsTable.put(connectionName, con);
       }
+
       return con;
    }
+
 
    /**
     *  Close all the connections stored into the the connections HashTable.
     *
     * @param  connectionsTable the connections HashTable
     */
-   private void closeConnections(Hashtable connectionsTable) {
+   private void closeConnections(Hashtable connectionsTable)
+   {
       Enumeration cons = connectionsTable.keys();
-      while (cons.hasMoreElements()) {
-         String dbConnectionName = (String) cons.nextElement();
+
+      while (cons.hasMoreElements())
+      {
+         String     dbConnectionName = (String) cons.nextElement();
          Connection con = (Connection) connectionsTable.get(dbConnectionName);
          SqlUtil.closeConnection(con);
       }

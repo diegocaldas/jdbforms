@@ -20,7 +20,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms;
 import java.util.*;
 import org.dbforms.util.*;
@@ -35,138 +34,139 @@ import org.apache.log4j.Category;
  ************************************************************************/
 public class Error
 {
-    static Category logCat = Category.getInstance(Error.class.getName());
+   static Category logCat = Category.getInstance(Error.class.getName());
 
-    // logging category for this class
-    //------------------------ Properties ---------------------------------------------------------
-    private String id; // the id of this error
-    private String type; // the type of error
-    private Hashtable messages;
+   // logging category for this class
+   //------------------------ Properties ---------------------------------------------------------
+   private String    id; // the id of this error
+   private String    type; // the type of error
+   private Hashtable messages;
 
-    /**
-     * Creates a new Error object.
-     */
-    public Error()
-    {
-        messages = new Hashtable();
-    }
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @param id DOCUMENT ME!
-     */
-    public void setId(String id)
-    {
-        this.id = id;
-    }
-
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
-    public String getId()
-    {
-        return id;
-    }
-
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @param msgs DOCUMENT ME!
-     */
-    public void setMessages(Hashtable msgs)
-    {
-        this.messages = msgs;
-    }
-
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
-    public Hashtable getMessages()
-    {
-        return messages;
-    }
-
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @param language DOCUMENT ME!
-     * @param message DOCUMENT ME!
-     */
-    public void setMessage(String language, String message)
-    {
-        this.messages.put(language, message);
-    }
-
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @param language DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
-    public String getMessage(String language)
-    {
-        return (String) messages.get(language);
-    }
-
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @param t DOCUMENT ME!
-     */
-    public void setType(String t)
-    {
-        this.type = t;
-    }
-
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
-    public String getType()
-    {
-        return type;
-    }
-
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
-    public String toString()
-    {
-        StringBuffer buf = new StringBuffer();
-        buf.append("id=");
-        buf.append(this.getId());
-        buf.append(" type=");
-        buf.append(this.getType());
-
-        return buf.toString();
-    }
-
-
-    /**
-    * adds a Message-Object to this error
-    * and puts it into the datastructure for further references
-    * (this method gets called from DbFormsError)
+   /**
+    * Creates a new Error object.
     */
-    public void addMessage(Message message)
-    {
-        messages.put(message.getLanguage(), message.getMessage());
-        logCat.info("Language " + message.getLanguage() + " Message " + message.getMessage());
-    }
+   public Error()
+   {
+      messages = new Hashtable();
+   }
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param id DOCUMENT ME!
+    */
+   public void setId(String id)
+   {
+      this.id = id;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String getId()
+   {
+      return id;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param msgs DOCUMENT ME!
+    */
+   public void setMessages(Hashtable msgs)
+   {
+      this.messages = msgs;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public Hashtable getMessages()
+   {
+      return messages;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param language DOCUMENT ME!
+    * @param message DOCUMENT ME!
+    */
+   public void setMessage(String language, String message)
+   {
+      this.messages.put(language, message);
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param language DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String getMessage(String language)
+   {
+      return (String) messages.get(language);
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param t DOCUMENT ME!
+    */
+   public void setType(String t)
+   {
+      this.type = t;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String getType()
+   {
+      return type;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String toString()
+   {
+      StringBuffer buf = new StringBuffer();
+      buf.append("id=");
+      buf.append(this.getId());
+      buf.append(" type=");
+      buf.append(this.getType());
+
+      return buf.toString();
+   }
+
+
+   /**
+   * adds a Message-Object to this error
+   * and puts it into the datastructure for further references
+   * (this method gets called from DbFormsError)
+   */
+   public void addMessage(Message message)
+   {
+      messages.put(message.getLanguage(), message.getMessage());
+      logCat.info("Language " + message.getLanguage() + " Message "
+         + message.getMessage());
+   }
 }

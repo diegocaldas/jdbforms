@@ -20,9 +20,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms;
-
 import java.util.HashMap;
 import javax.servlet.ServletContext;
 
@@ -36,108 +34,107 @@ import javax.servlet.ServletContext;
  */
 public class DbFormsConfigRegistry
 {
-    /** servlet config */
-    private ServletContext servletContext = null;
+   /** servlet config */
+   private ServletContext servletContext = null;
 
-    /** unique instance for this class */
-    private static DbFormsConfigRegistry instance = null;
+   /** unique instance for this class */
+   private static DbFormsConfigRegistry instance = null;
 
+   /**
+    *  Protected constructor
+    */
+   protected DbFormsConfigRegistry()
+   {
+   }
 
-    /**
-     *  Protected constructor
-     */
-    protected DbFormsConfigRegistry()
-    {
-    }
+   /**
+    *  Get the instance of DatabaseEventFactory class.
+    *
+    * @return  the instance of DatabaseEventFactory class
+    */
+   public static synchronized DbFormsConfigRegistry instance()
+   {
+      if (instance == null)
+      {
+         instance = new DbFormsConfigRegistry();
+      }
 
-
-    /**
-     *  Get the instance of DatabaseEventFactory class.
-     *
-     * @return  the instance of DatabaseEventFactory class
-     */
-    public static synchronized DbFormsConfigRegistry instance()
-    {
-        if (instance == null)
-        {
-            instance = new DbFormsConfigRegistry();
-        }
-
-        return instance;
-    }
+      return instance;
+   }
 
 
-    /**
-     *  Sets the servletContext attribute of the DbFormsConfigRegistry object
-     *
-     * @param  servletConfig The new servletConfig value
-     */
-    public void setServletContext(ServletContext servletContext)
-    {
-        this.servletContext = servletContext;
-    }
+   /**
+    *  Sets the servletContext attribute of the DbFormsConfigRegistry object
+    *
+    * @param  servletConfig The new servletConfig value
+    */
+   public void setServletContext(ServletContext servletContext)
+   {
+      this.servletContext = servletContext;
+   }
 
 
-    /**
-     *  Register the input DbFormsConfig object into the registry
-     *  as the default config object.
-     *
-     * @param  config the DbFormsConfig object
-     */
-    public void register(DbFormsConfig config)
-    {
-        register(DbFormsConfig.CONFIG, config);
-    }
+   /**
+    *  Register the input DbFormsConfig object into the registry
+    *  as the default config object.
+    *
+    * @param  config the DbFormsConfig object
+    */
+   public void register(DbFormsConfig config)
+   {
+      register(DbFormsConfig.CONFIG, config);
+   }
 
 
-    /**
-     *  Register a DbFormsConfig object into the registry
-     *
-     * @param  name the DbFormsConfig name used as the registry key
-     * @param  config the DbFormsConfig object
-     */
-    public void register(String name, DbFormsConfig config)
-    {
-        if (servletContext != null)
-        {
-            servletContext.setAttribute(name, config);
-        }
-    }
+   /**
+    *  Register a DbFormsConfig object into the registry
+    *
+    * @param  name the DbFormsConfig name used as the registry key
+    * @param  config the DbFormsConfig object
+    */
+   public void register(String name, DbFormsConfig config)
+   {
+      if (servletContext != null)
+      {
+         servletContext.setAttribute(name, config);
+      }
+   }
 
 
-    /**
-     *  Look up the default DbFormsConfig object stored into the registry.
-     *
-     * @return  Description of the Return Value
-     * @exception  Exception if the lookup operation fails
-     */
-    public DbFormsConfig lookup() throws Exception
-    {
-        return lookup(DbFormsConfig.CONFIG);
-    }
+   /**
+    *  Look up the default DbFormsConfig object stored into the registry.
+    *
+    * @return  Description of the Return Value
+    * @exception  Exception if the lookup operation fails
+    */
+   public DbFormsConfig lookup() throws Exception
+   {
+      return lookup(DbFormsConfig.CONFIG);
+   }
 
 
-    /**
-     *  Look up a DbFormsConfig object stored into the registry.
-     *
-     * @param  name the DbFormsConfig name previously used to store the
-     *             config object into the registry.
-     * @return  Description of the Return Value
-     * @exception  Exception if the lookup operation fails
-     */
-    public DbFormsConfig lookup(String name) throws Exception
-    {
-        DbFormsConfig config = null;
+   /**
+    *  Look up a DbFormsConfig object stored into the registry.
+    *
+    * @param  name the DbFormsConfig name previously used to store the
+    *             config object into the registry.
+    * @return  Description of the Return Value
+    * @exception  Exception if the lookup operation fails
+    */
+   public DbFormsConfig lookup(String name) throws Exception
+   {
+      DbFormsConfig config = null;
 
-        if (servletContext != null)
-        {
-            config = (DbFormsConfig) servletContext.getAttribute(name);
-        }
-        else
-        {
-            throw new Exception("cannot lookup a config object with the name [" + name + "]");
-        }
+      if (servletContext != null)
+      {
+         config = (DbFormsConfig) servletContext.getAttribute(name);
+      }
+      else
+      {
+         throw new Exception("cannot lookup a config object with the name ["
+            + name + "]");
+      }
 
-        return config;
-    }
+      return config;
+   }
 }
