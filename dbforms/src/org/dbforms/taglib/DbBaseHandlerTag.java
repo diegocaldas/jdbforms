@@ -705,11 +705,12 @@ public abstract class DbBaseHandlerTag extends BodyTagSupport
       }
       else
       {
-         if (we instanceof NavCopyEvent){
+         if (we instanceof NavCopyEvent)
+         {
 		    String copyValue = ParseUtil.getParameter(request, getFormFieldNameForCopyEvent());
             if (copyValue != null)
                 return copyValue;
-		 } 
+		   } 
 
          // the form field is in 'insert-mode'
          if (we instanceof ReloadEvent)
@@ -798,30 +799,6 @@ public abstract class DbBaseHandlerTag extends BodyTagSupport
    }
 
 
-   /**
-   generates the decoded name for the html-SEARCH widget.
-
-           protected String getSearchFieldName() {
-                   StringBuffer buf = new StringBuffer();
-                   buf.append("search_");
-                   buf.append(parentForm.getTable().getId());
-                   buf.append("_");
-                   buf.append(field.getId());
-                   return buf.toString();
-           }
-
-           protected String getSearchModeTag() {
-                   StringBuffer buf = new StringBuffer();
-                   buf.append("<input type=\"hidden\" name=\"searchmode_");
-                   buf.append(parentForm.getTable().getId());
-                   buf.append("_");
-                   buf.append(field.getId());
-                   buf.append("\" value=\"");
-                   buf.append(searchMode);
-                   buf.append("\">");
-                   return buf.toString();
-           }
-   */
    /**
     * Prepares the style attributes for inclusion in the component's HTML tag.
     * @return The prepared String for inclusion in the HTML tag.

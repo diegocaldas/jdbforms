@@ -1359,25 +1359,25 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
 
          // write out involved table
          tagBuf.append("<input type=\"hidden\" name=\"invtable\" value=\""
-            + tableId + "\">");
+            + tableId + "\"/>");
 
          // write out the name of the involved dbconnection.
          tagBuf.append("<input type='hidden' name='invname_" + tableId
-            + "' value='" + dbConnectionName + "'>");
+            + "' value='" + dbConnectionName + "'/>");
 
          // write out the autoupdate-policy of this form
          tagBuf.append("<input type=\"hidden\" name=\"autoupdate_" + tableId
-            + "\" value=\"" + autoUpdate + "\">");
+            + "\" value=\"" + autoUpdate + "\"/>");
 
          // write out the followup-default for this table
          tagBuf.append("<input type=\"hidden\" name=\"fu_" + tableId
-            + "\" value=\"" + followUp + "\">");
+            + "\" value=\"" + followUp + "\"/>");
 
          // write out the followupOnError-default for this table
          if (!Util.isNull(getFollowUpOnError()))
          {
             tagBuf.append("<input type=\"hidden\" name=\"fue_" + tableId
-               + "\" value=\"" + getFollowUpOnError() + "\">");
+               + "\" value=\"" + getFollowUpOnError() + "\"/>");
          }
 
          // write out the formValidatorName
@@ -1385,12 +1385,12 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
          {
             tagBuf.append("<input type=\"hidden\" name=\""
                + ValidatorConstants.FORM_VALIDATOR_NAME + "_" + tableId
-               + "\" value=\"" + getFormValidatorName() + "\">");
+               + "\" value=\"" + getFormValidatorName() + "\"/>");
          }
 			appendSource(request, tagBuf);
 
          // Allow to send action dynamicaly from javascript
-         tagBuf.append("<input type=\"hidden\" name=\"customEvent\">");
+         tagBuf.append("<input type=\"hidden\" name=\"customEvent\"/>");
 
 
          // *************************************************************
@@ -1761,13 +1761,13 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
             if (firstPosition != null)
             {
                tagBuf.append("<input type=\"hidden\" name=\"firstpos_"
-                  + tableId + "\" value=\"" + Util.encode(firstPosition, null) + "\">");
+                  + tableId + "\" value=\"" + Util.encode(firstPosition, null) + "\"/>");
             }
 
             if (lastPosition != null)
             {
                tagBuf.append("<input type=\"hidden\" name=\"lastpos_" + tableId
-                  + "\" value=\"" + Util.encode(lastPosition, null) + "\">");
+                  + "\" value=\"" + Util.encode(lastPosition, null) + "\"/>");
             }
          }
 
@@ -1834,7 +1834,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
 			tagBuf.append("?").append(request.getQueryString());
 		}
 
-		tagBuf.append("\">");
+		tagBuf.append("\"/>");
 	}
    /**
     * DOCUMENT ME!

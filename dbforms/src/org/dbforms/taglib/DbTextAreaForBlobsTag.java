@@ -111,7 +111,7 @@ public class DbTextAreaForBlobsTag extends DbTextAreaTag
          suffixBuf.append("suffix_" + getFormFieldName());
          suffixBuf.append("\" value=\"");
          suffixBuf.append(suffix);
-         suffixBuf.append("\">");
+         suffixBuf.append("\"/>");
 
          pageContext.getOut().write(suffixBuf.toString());
 
@@ -120,7 +120,7 @@ public class DbTextAreaForBlobsTag extends DbTextAreaTag
          fileNameBuf.append("fn_" + getFormFieldName());
          fileNameBuf.append("\" value=\"");
          fileNameBuf.append(getFormFieldValue());
-         fileNameBuf.append("\">");
+         fileNameBuf.append("\"/>");
 
          pageContext.getOut().write(fileNameBuf.toString());
       }

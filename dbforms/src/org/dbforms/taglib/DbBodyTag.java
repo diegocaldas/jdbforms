@@ -151,7 +151,7 @@ public class DbBodyTag extends BodyTagSupport
 
       myParent.appendToChildElementOutput("<input type=\"hidden\" name=\"k_"
          + myParent.getTable().getId() + "_" + myParent.getPositionPath()
-         + "\" value=\"" + curKeyString + "\">");
+         + "\" value=\"" + curKeyString + "\"/>");
 
       } catch(UnsupportedEncodingException uee) {
       	throw new JspException(uee.toString());

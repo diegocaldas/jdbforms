@@ -21,17 +21,23 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.taglib;
-import java.util.*;
-import java.sql.*;
-import java.io.*;
-import javax.servlet.jsp.*;
-import javax.servlet.jsp.tagext.*;
+
+import java.util.Vector;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.dbforms.util.ParseUtil;
 import org.dbforms.event.ReloadEvent;
 import org.dbforms.event.WebEvent;
 import org.apache.log4j.Category;
-import javax.servlet.http.*;
+
+import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.PageContext;
+import javax.servlet.jsp.tagext.TagSupport;
+
+import org.dbforms.config.DbFormsConfig;
+import org.dbforms.config.DbFormsConfigRegistry;
+
 
 
 
@@ -46,8 +52,7 @@ import javax.servlet.http.*;
  */
 public class DbTextAreaTag extends DbBaseInputTag
 {
-   static Category logCat = Category.getInstance(DbTextAreaTag.class.getName());
-
+ 
    /** DOCUMENT ME! */
    protected String wrap;
 
@@ -119,41 +124,7 @@ public class DbTextAreaTag extends DbBaseInputTag
       value for a given field. */
       if (!"true".equals(renderBody))
       {
-         if (this.getOverrideValue() != null)
-         {
-            //If the redisplayFieldsOnError attribute is set and we are in error mode, forget override!
-            if (("true".equals(parentForm.getRedisplayFieldsOnError())
-                     && (errors != null) && (errors.size() > 0))
-                     || (we instanceof ReloadEvent))
-            {
-               tagBuf.append(getFormFieldValue());
-            }
-            else
-            {
-               tagBuf.append(this.getOverrideValue());
-            }
-         }
-         else
-         {
-            if (we instanceof ReloadEvent)
-            {
-               String oldValue = ParseUtil.getParameter(request,
-                     getFormFieldName());
-
-               if (oldValue != null)
-               {
-                  tagBuf.append(oldValue);
-               }
-               else
-               {
-                  tagBuf.append(getFormFieldValue());
-               }
-            }
-            else
-            {
-               tagBuf.append(getFormFieldValue());
-            }
-         }
+			tagBuf.append(getFormFieldValue());
       }
 
       try
@@ -195,6 +166,9 @@ public class DbTextAreaTag extends DbBaseInputTag
          }
 
          pageContext.getOut().write("</textArea>");
+
+			// Writes out the old field value
+			writeOutOldValue();
 
          // For generation Javascript Validation.  Need all original and modified fields name
          parentForm.addChildName(getFieldName(), getFormFieldName());

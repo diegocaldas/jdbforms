@@ -21,20 +21,22 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.taglib;
-import java.util.*;
-import java.sql.*;
-import java.io.*;
-import java.text.*;
-import javax.servlet.jsp.*;
-import javax.servlet.jsp.tagext.*;
+
+import java.util.Vector;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.dbforms.util.ParseUtil;
-import org.dbforms.config.*;
 import org.dbforms.event.ReloadEvent;
 import org.dbforms.event.WebEvent;
 import org.apache.log4j.Category;
-import javax.servlet.http.*;
 
+import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.PageContext;
+import javax.servlet.jsp.tagext.TagSupport;
+
+import org.dbforms.config.DbFormsConfig;
+import org.dbforms.config.DbFormsConfigRegistry;
 
 
 /****
@@ -48,7 +50,6 @@ import javax.servlet.http.*;
  */
 public class DbDateFieldTag extends DbBaseInputTag
 {
-   static Category logCat = Category.getInstance(DbDateFieldTag.class.getName());
 
    /**
     * DOCUMENT ME!
@@ -100,46 +101,7 @@ public class DbDateFieldTag extends DbBaseInputTag
          StringBuffer tagBuf = new StringBuffer(value);
          tagBuf.append(getFormFieldName());
          tagBuf.append("\" value=\"");
-
-         /* If the overrideValue attribute has been set, use its value instead of the one
-         retrieved from the database.  This mechanism can be used to set an initial default
-         value for a given field. */
-         if (this.getOverrideValue() != null)
-         {
-            //If the redisplayFieldsOnError attribute is set and we are in error mode, forget override!
-            if (("true".equals(parentForm.getRedisplayFieldsOnError())
-                     && (errors != null) && (errors.size() > 0))
-                     || (we instanceof ReloadEvent))
-            {
-               tagBuf.append(getFormFieldValue());
-            }
-            else
-            {
-               tagBuf.append(this.getOverrideValue());
-            }
-         }
-         else
-         {
-            if (we instanceof ReloadEvent)
-            {
-               String oldValue = ParseUtil.getParameter(request,
-                     getFormFieldName());
-
-               if (oldValue != null)
-               {
-                  tagBuf.append(oldValue);
-               }
-               else
-               {
-                  tagBuf.append(getFormFieldValue());
-               }
-            }
-            else
-            {
-               tagBuf.append(getFormFieldValue());
-            }
-         }
-
+			tagBuf.append(getFormFieldValue());
          tagBuf.append("\" ");
 
          if (accessKey != null)
@@ -218,6 +180,10 @@ public class DbDateFieldTag extends DbBaseInputTag
          parentForm.addChildName(getFieldName(), getFormFieldName());
 
          pageContext.getOut().write(tagBuf.toString());
+
+			// Writes out the old field value
+			writeOutOldValue();
+
       }
       catch (java.io.IOException ioe)
       {

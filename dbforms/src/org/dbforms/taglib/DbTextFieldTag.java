@@ -21,17 +21,19 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.taglib;
-import java.util.*;
-import java.sql.*;
-import java.io.*;
-import javax.servlet.jsp.*;
-import javax.servlet.jsp.tagext.*;
+
+import java.util.Vector;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.dbforms.util.ParseUtil;
 import org.dbforms.event.ReloadEvent;
 import org.dbforms.event.WebEvent;
 import org.apache.log4j.Category;
-import javax.servlet.http.*;
+
+import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.PageContext;
+import javax.servlet.jsp.tagext.TagSupport;
 
 
 
@@ -42,11 +44,10 @@ import javax.servlet.http.*;
  * this tag renders a dabase-datadriven textArea, which is an active element - the user
  * can change data
  *
- * @author Joachim Peer <j.peer@gmx.net>
+ * @author Joachim Peer
  */
 public class DbTextFieldTag extends DbBaseInputTag
 {
-   static Category logCat = Category.getInstance(DbTextFieldTag.class.getName()); // logging category for this class
 
    /**
     * DOCUMENT ME!
@@ -73,10 +74,6 @@ public class DbTextFieldTag extends DbBaseInputTag
     */
    public int doEndTag() throws javax.servlet.jsp.JspException
    {
-      HttpServletRequest request = (HttpServletRequest) this.pageContext
-         .getRequest();
-      Vector             errors = (Vector) request.getAttribute("errors");
-      WebEvent           we     = (WebEvent) request.getAttribute("webEvent");
 
       try
       {
@@ -99,46 +96,7 @@ public class DbTextFieldTag extends DbBaseInputTag
          StringBuffer tagBuf = new StringBuffer(value);
          tagBuf.append(getFormFieldName());
          tagBuf.append("\" value=\"");
-
-         /* If the overrideValue attribute has been set, use its value instead of the one
-         retrieved from the database.  This mechanism can be used to set an initial default
-         value for a given field. */
-         if (this.getOverrideValue() != null)
-         {
-            //If the redisplayFieldsOnError attribute is set and we are in error mode, forget override!
-            if (("true".equals(parentForm.getRedisplayFieldsOnError())
-                     && (errors != null) && (errors.size() > 0))
-                     || (we instanceof ReloadEvent))
-            {
-               tagBuf.append(getFormFieldValue());
-            }
-            else
-            {
-               tagBuf.append(this.getOverrideValue());
-            }
-         }
-         else
-         {
-            if (we instanceof ReloadEvent)
-            {
-               String oldValue = ParseUtil.getParameter(request,
-                     getFormFieldName());
-
-               if (oldValue != null)
-               {
-                  tagBuf.append(oldValue);
-               }
-               else
-               {
-                  tagBuf.append(getFormFieldValue());
-               }
-            }
-            else
-            {
-               tagBuf.append(getFormFieldValue());
-            }
-         }
-
+			tagBuf.append(getFormFieldValue());
          tagBuf.append("\" ");
 
          if (accessKey != null)
@@ -174,6 +132,9 @@ public class DbTextFieldTag extends DbBaseInputTag
          tagBuf.append("/>");
 
          pageContext.getOut().write(tagBuf.toString());
+         
+			// Writes out the old field value
+			writeOutOldValue();
 
          // For generation Javascript Validation.  Need all original and modified fields name
          parentForm.addChildName(getFieldName(), getFormFieldName());
@@ -186,7 +147,8 @@ public class DbTextFieldTag extends DbBaseInputTag
       return EVAL_PAGE;
    }
 
-   private java.lang.String password      = "false";
+
+	private java.lang.String password      = "false";
 
    /**
     *  Determines if the text field should be a password text field (display '****')
