@@ -1,3 +1,22 @@
+Wednesday, October 30, 2002:
+(Henner.Kollmann@aucos.de):
+        - taglib_docu.xml:
+		New tag search, searchCombo
+		extend doc for select tag
+	- DBMessageTag.java
+		Write parameter and text if text is not found in the resource file
+	- DBFormTag.java
+		correct bug if search algorithm field is not found!
+	- DBSelectTag.java
+		Changed behaviour if fieldName is not a valid field of the table. 
+		In this case the fieldName would be rendered. 
+		So it would be possible to create select's with free fieldNames!
+	- DBSearchTag.java
+		New tag to simplify search fields
+	- DBSearchTagCombo.java
+		New tag to simplify search fields with combos
+	
+
 Tuesday, October 22, 2002:
 (Henner.Kollmann@aucos.de):
 
