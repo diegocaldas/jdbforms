@@ -273,7 +273,7 @@ public class Query extends Table
       {
          for (int i = 0; i < fvEqual.length; i++)
          {
-            if (!(fvEqual[i].getField().getId() >= WHEREIDSTART))
+            if ((fvEqual[i].getField().getId() >= WHEREIDSTART))
             {
             	;
             }
