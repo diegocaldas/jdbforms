@@ -45,9 +45,7 @@
 			<gui:tabbedSelector name        = "ts1"
 			                    drawer      = "backoffice"
 			                    color       = "#f0f0f0"
-			                    followUp    = "<%= "howtoUseTabSelector.jsp?" + 
-													((rsv_AUTHOR == null)?"":"fv_AUTHOR_ID=" + rsv_AUTHOR.getField("AUTHOR_ID"))
-												%>"
+			                    followUp    = '<%= "howtoUseTabSelector.jsp?" + ((rsv_AUTHOR == null)?"":"fv_AUTHOR_ID=" + rsv_AUTHOR.getField("AUTHOR_ID")) %>'
 			                    selectedTab = "<%=selectedTab  %>"
 			                    width       ="400px" 
 			>
