@@ -28,7 +28,7 @@
 
     <menu name="Documentation">
       <item name="User's guide"            href="/usersguide.html"/>
-      <item name="Tag Library"             href="/non-cvs/docs/taglib/taglib_docu.html"/>
+      <item name="Tag Library"             href="/non-cvs/docs/taglib/DbFormsTags_Frame.html"/>
       <item name="Devgui"                  href="/devgui.html"/>
       <item name="CVS client setup"        href="/cvssetup.html"/>
       <!-- 
