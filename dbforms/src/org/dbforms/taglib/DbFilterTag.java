@@ -398,6 +398,8 @@ public class DbFilterTag
 
       // render an option for each nested condition
       DbFilterConditionTag cond = new DbFilterConditionTag();
+      Locale locale = MessageResources.getLocale(
+      		(HttpServletRequest) pageContext.getRequest());
 
       for (Iterator i = conds.iterator(); i.hasNext();) {
          // read DbFilterConditionTag object's state stored in array and apply to cond object
@@ -415,20 +417,9 @@ public class DbFilterTag
 		  // NAK  Added support for localization of option label         
 		  // If the caption is not null and the resources="true" attribute
 		  String label = cond.getLabel();
-			if ((label != null) && getParentForm().hasCaptionResourceSet()) {
+		  if ((label != null) && getParentForm().hasCaptionResourceSet()) {
 				try {
-					Locale locale = null;
-					Object obj = pageContext
-							.findAttribute("org.dbforms.LOCALE");
-					if ((obj != null) && (obj instanceof Locale)) {
-						locale = (Locale) obj;
-					} else {
-						locale = MessageResources
-								.getLocale((HttpServletRequest) pageContext
-										.getRequest());
-					}
 					String message = MessageResources.getMessage(label, locale);
-
 					if (message != null) {
 						label = message;
 					}
@@ -436,16 +427,11 @@ public class DbFilterTag
 					logCat.debug("setCaption(" + label + ") Exception : "
 							+ e.getMessage());
 				}
-			} // render option
-			buf.append(
-            "\t<option value=\""
-               + cnt
-               + "\" "
-               + selected
-               + ">"
-               + label
-               + "</option>\n");
-         cnt++;
+		  }
+		  // render option
+		  buf.append("\t<option value=\"" + cnt + "\" " + selected + ">"
+					+ label + "</option>\n");
+		  cnt++;
       }
 
       buf.append("</select>\n");
