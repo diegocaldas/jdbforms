@@ -90,8 +90,8 @@ public class TestDbFormTag extends JspTestCase
     public void setUp() throws Exception
     {
         tblAuthor = null;
-        config.setInitParameter("dbformsConfig", "/WEB-INF/conf/dbforms-config.xml");
-        config.setInitParameter("log4j.configuration", "/WEB-INF/conf/log4j.properties");
+        config.setInitParameter("dbformsConfig", "/WEB-INF/dbforms-config.xml");
+        config.setInitParameter("log4j.configuration", "/WEB-INF/log4j.properties");
 
         ConfigServlet configServlet = new ConfigServlet();
         configServlet.init(config);
