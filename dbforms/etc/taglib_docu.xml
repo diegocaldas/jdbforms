@@ -318,6 +318,14 @@
 							if &quot;false&quot;, updates are only performed if an explicite &quot;update&quot;- 
 							  action is launched(normally by hitting the updateAction-button). Up to 1 row may be affected.
 						</p>
+                                                <p>
+							if &quot;OnUpdateOnly&quot;, updates are only performed if an explicite &quot;update&quot;- 
+							  action is launched(normally by hitting the updateAction-button), all 
+							  input fields of ALL currentlyrendered rowsets are parsed and updated. Many rows 
+							  may be affected. This can be <b>very useful</b> if people need to change lots 
+							  of data, even multiple datarows, at once.  
+						</p>
+                                                
 					</info>
 				</attribute>
 				<attribute>
