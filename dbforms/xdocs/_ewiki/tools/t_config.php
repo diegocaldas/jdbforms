@@ -1,7 +1,7 @@
 <?php
 
 #-- open db connection, load 'lib'
-include("../../config.php");
+include("../../wiki_config.php");
 
 /*
    http user space authentication
