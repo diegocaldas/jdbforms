@@ -44,7 +44,7 @@ import org.dbforms.validation.ValidatorConstants;
 import org.dbforms.util.MessageResources;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.DbFormsConfigRegistry;
-import org.dbforms.config.error.DbFormsErrors;
+import org.dbforms.config.DbFormsErrors;
 import org.dbforms.event.DatabaseEventFactoryImpl;
 import org.dbforms.util.SingletonClassFactoryCreate;
 import org.dbforms.event.NavEventFactoryImpl;

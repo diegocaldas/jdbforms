@@ -31,7 +31,7 @@ import java.util.Comparator;
 import java.util.Collections;
 import java.util.Enumeration;
 
-import org.dbforms.config.error.DbFormsErrors;
+import org.dbforms.config.DbFormsErrors;
 import org.dbforms.util.MessageResources;
 import org.dbforms.util.Util;
 import org.apache.commons.validator.Arg;

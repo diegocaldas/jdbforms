@@ -40,7 +40,7 @@ import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.TagSupport;
 
-import org.dbforms.config.error.DbFormsErrors;
+import org.dbforms.config.DbFormsErrors;
 import org.apache.log4j.Category;
 
 

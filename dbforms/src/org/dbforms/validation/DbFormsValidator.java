@@ -30,8 +30,8 @@ import org.apache.commons.validator.ValidatorAction;
 import java.util.Vector;
 import java.util.Hashtable;
 
+import org.dbforms.config.DbFormsErrors;
 import org.dbforms.config.ValidationException;
-import org.dbforms.config.error.DbFormsErrors;
 import org.apache.log4j.Category;
 
 

@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 
-package org.dbforms.config.error;
+package org.dbforms.config;
 
 import java.util.Hashtable;
 import java.util.Vector;
@@ -102,7 +102,7 @@ public class DbFormsErrors
 		String                         language   = null;
 		String                         errorCode  = null;
 		String                         paramList  = null;
-		org.dbforms.config.error.Error anError    = null;
+		org.dbforms.config.Error anError    = null;
 		String                         xmlMessage = null;
 
 		// If message is empty, return immediately

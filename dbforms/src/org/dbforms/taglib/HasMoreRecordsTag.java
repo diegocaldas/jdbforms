@@ -22,7 +22,7 @@
  */
 package org.dbforms.taglib;
 
-import org.dbforms.config.error.DbFormsErrors;
+import org.dbforms.config.DbFormsErrors;
 import org.dbforms.util.Util;
 
 import java.io.IOException;

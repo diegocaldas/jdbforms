@@ -5,7 +5,7 @@
                  classname="org.dbforms.validation.DbFormsValidator"
                  method="validateRequired"
                  msg="errors.required"
-                 methodParams="java.lang.Object,org.apache.commons.validator.ValidatorAction,org.apache.commons.validator.Field,java.util.Vector,java.util.Locale,org.dbforms.DbFormsErrors" >
+                 methodParams="java.lang.Object,org.apache.commons.validator.ValidatorAction,org.apache.commons.validator.Field,java.util.Vector,java.util.Locale,org.dbforms.config.DbFormsErrors" >
          <javascript><![CDATA[
             function validateRequired(form) {                                                                       
                 var bValid = true;
@@ -32,7 +32,7 @@
 
       <validator name="minlength"
                  classname="org.dbforms.validation.DbFormsValidator"
-                 methodParams="java.lang.Object,org.apache.commons.validator.ValidatorAction,org.apache.commons.validator.Field,java.util.Vector,java.util.Locale,org.dbforms.DbFormsErrors" 
+                 methodParams="java.lang.Object,org.apache.commons.validator.ValidatorAction,org.apache.commons.validator.Field,java.util.Vector,java.util.Locale,org.dbforms.config.DbFormsErrors" 
                  method="validateMinLength"
                  msg="errors.minlength">
          <javascript><![CDATA[
@@ -64,7 +64,7 @@
 
       <validator name="maxlength"
                  classname="org.dbforms.validation.DbFormsValidator"
-                 methodParams="java.lang.Object,org.apache.commons.validator.ValidatorAction,org.apache.commons.validator.Field,java.util.Vector,java.util.Locale,org.dbforms.DbFormsErrors" 
+                 methodParams="java.lang.Object,org.apache.commons.validator.ValidatorAction,org.apache.commons.validator.Field,java.util.Vector,java.util.Locale,org.dbforms.config.DbFormsErrors" 
                  method="validateMaxLength"
                  msg="errors.maxlength">
          <javascript><![CDATA[
@@ -97,7 +97,7 @@
       <validator name="mask"
                  classname="org.dbforms.validation.DbFormsValidator"
                  method="validateMask"
-                 methodParams="java.lang.Object,org.apache.commons.validator.ValidatorAction,org.apache.commons.validator.Field,java.util.Vector,java.util.Locale,org.dbforms.DbFormsErrors" 
+                 methodParams="java.lang.Object,org.apache.commons.validator.ValidatorAction,org.apache.commons.validator.Field,java.util.Vector,java.util.Locale,org.dbforms.config.DbFormsErrors" 
                  msg="errors.invalid">
          <javascript><![CDATA[
             function validateMask(form) {                                                                                                    
@@ -135,7 +135,7 @@
 
       <validator name="byte"
                  classname="org.dbforms.validation.DbFormsValidator"
-                 methodParams="java.lang.Object,org.apache.commons.validator.ValidatorAction,org.apache.commons.validator.Field,java.util.Vector,java.util.Locale,org.dbforms.DbFormsErrors" 
+                 methodParams="java.lang.Object,org.apache.commons.validator.ValidatorAction,org.apache.commons.validator.Field,java.util.Vector,java.util.Locale,org.dbforms.config.DbFormsErrors" 
                  method="validateByte"
                  msg="errors.byte"
                  jsFunctionName="ByteValidations">
@@ -168,7 +168,7 @@
 
       <validator name="short"
                  classname="org.dbforms.validation.DbFormsValidator"
-                 methodParams="java.lang.Object,org.apache.commons.validator.ValidatorAction,org.apache.commons.validator.Field,java.util.Vector,java.util.Locale,org.dbforms.DbFormsErrors" 
+                 methodParams="java.lang.Object,org.apache.commons.validator.ValidatorAction,org.apache.commons.validator.Field,java.util.Vector,java.util.Locale,org.dbforms.config.DbFormsErrors" 
                  method="validateShort"
                  msg="errors.short"
                  jsFunctionName="ShortValidations">
@@ -201,7 +201,7 @@
 
       <validator name="integer"
                  classname="org.dbforms.validation.DbFormsValidator"
-                 methodParams="java.lang.Object,org.apache.commons.validator.ValidatorAction,org.apache.commons.validator.Field,java.util.Vector,java.util.Locale,org.dbforms.DbFormsErrors" 
+                 methodParams="java.lang.Object,org.apache.commons.validator.ValidatorAction,org.apache.commons.validator.Field,java.util.Vector,java.util.Locale,org.dbforms.config.DbFormsErrors" 
                  method="validateInteger"
                  msg="errors.integer"
                  jsFunctionName="IntegerValidations">
@@ -234,7 +234,7 @@
       
       <validator name="long"
                  classname="org.dbforms.validation.DbFormsValidator"
-                 methodParams="java.lang.Object,org.apache.commons.validator.ValidatorAction,org.apache.commons.validator.Field,java.util.Vector,java.util.Locale,org.dbforms.DbFormsErrors" 
+                 methodParams="java.lang.Object,org.apache.commons.validator.ValidatorAction,org.apache.commons.validator.Field,java.util.Vector,java.util.Locale,org.dbforms.config.DbFormsErrors" 
                  method="validateLong"
                  msg="errors.long"
                  jsFunctionName="longValidations">
@@ -298,7 +298,7 @@
 
       <validator name="double"
                  classname="org.dbforms.validation.DbFormsValidator"
-                 methodParams="java.lang.Object,org.apache.commons.validator.ValidatorAction,org.apache.commons.validator.Field,java.util.Vector,java.util.Locale,org.dbforms.DbFormsErrors" 
+                 methodParams="java.lang.Object,org.apache.commons.validator.ValidatorAction,org.apache.commons.validator.Field,java.util.Vector,java.util.Locale,org.dbforms.config.DbFormsErrors" 
                  method="validateDouble"
                  msg="errors.double"
                  jsFunctionName="doubleValidations">
@@ -331,7 +331,7 @@
 
       <validator name="date"
                  classname="org.dbforms.validation.DbFormsValidator"
-                 methodParams="java.lang.Object,org.apache.commons.validator.ValidatorAction,org.apache.commons.validator.Field,java.util.Vector,java.util.Locale,org.dbforms.DbFormsErrors" 
+                 methodParams="java.lang.Object,org.apache.commons.validator.ValidatorAction,org.apache.commons.validator.Field,java.util.Vector,java.util.Locale,org.dbforms.config.DbFormsErrors" 
                  method="validateDate"
                  msg="errors.date"
                  jsFunctionName="DateValidations">
@@ -485,7 +485,7 @@
 
       <validator name="range"
                  classname="org.dbforms.validation.DbFormsValidator"
-                  methodParams="java.lang.Object,org.apache.commons.validator.ValidatorAction,org.apache.commons.validator.Field,java.util.Vector,java.util.Locale,org.dbforms.DbFormsErrors" 
+                  methodParams="java.lang.Object,org.apache.commons.validator.ValidatorAction,org.apache.commons.validator.Field,java.util.Vector,java.util.Locale,org.dbforms.config.DbFormsErrors" 
                  method="validateRange"
                  depends="integer"
                  msg="errors.range">
@@ -526,7 +526,7 @@
 
       <validator name="creditCard"
                  classname="org.dbforms.validation.DbFormsValidator"
-                 methodParams="java.lang.Object,org.apache.commons.validator.ValidatorAction,org.apache.commons.validator.Field,java.util.Vector,java.util.Locale,org.dbforms.DbFormsErrors" 
+                 methodParams="java.lang.Object,org.apache.commons.validator.ValidatorAction,org.apache.commons.validator.Field,java.util.Vector,java.util.Locale,org.dbforms.config.DbFormsErrors" 
                  method="validateCreditCard"
                  depends="required"
                  msg="errors.creditcard">
@@ -596,7 +596,7 @@
 
       <validator name="email"
                  classname="org.dbforms.validation.DbFormsValidator"
-                  methodParams="java.lang.Object,org.apache.commons.validator.ValidatorAction,org.apache.commons.validator.Field,java.util.Vector,java.util.Locale,org.dbforms.DbFormsErrors" 
+                  methodParams="java.lang.Object,org.apache.commons.validator.ValidatorAction,org.apache.commons.validator.Field,java.util.Vector,java.util.Locale,org.dbforms.config.DbFormsErrors" 
                  method="validateEmail"
                  msg="errors.email">
          <javascript><![CDATA[

@@ -32,9 +32,9 @@ import org.apache.commons.validator.Validator;
 
 import org.dbforms.validation.ValidatorConstants;
 
+import org.dbforms.config.DbFormsErrors;
 import org.dbforms.config.MultipleValidationException;
 import org.dbforms.config.DbFormsConfig;
-import org.dbforms.config.error.DbFormsErrors;
 import org.dbforms.util.MessageResources;
 
 
@@ -106,7 +106,7 @@ public abstract class ValidationEvent extends DatabaseEvent
       validator.addResource(Validator.LOCALE_KEY, locale);
 
       // Vector of errors to populate
-      validator.addResource("org.dbforms.config.error.DbFormsErrors", dbFormErrors);
+      validator.addResource("org.dbforms.config.DbFormsErrors", dbFormErrors);
 
       try
       {

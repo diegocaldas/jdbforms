@@ -30,8 +30,8 @@ import javax.servlet.jsp.JspWriter;
 
 import org.apache.log4j.Category;
 
+import org.dbforms.config.DbFormsErrors;
 import org.dbforms.config.ResultSetVector;
-import org.dbforms.config.error.DbFormsErrors;
 import org.dbforms.util.Util;
 
 
