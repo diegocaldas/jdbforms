@@ -91,14 +91,6 @@ public abstract class EmbeddedData
 		this.format = format;
 	}
 
-	/**
-	* DOCUMENT ME!
-	*
-	* @return DOCUMENT ME!
-	*/
-	public String getFormat() {
-		return format;
-	}
 
 	/**
 	 * formatEmbeddedResultRows() formats a result set accornding to a eventually given format string.
@@ -217,12 +209,12 @@ public abstract class EmbeddedData
 		 ********************************************************************************/
 		printfFormat = null;
 
-		if (!Util.isNull(getFormat()) || !Util.isNull(getFormatClass())) {
+		if (!Util.isNull(format) || !Util.isNull(getFormatClass())) {
 			if (Util.isNull(getFormatClass())) {
 				setFormatClass(getConfig().getDefaultFormatterClass());
 			}
 
-			if (Util.isNull(getFormat())) {
+			if (Util.isNull(format)) {
 				setFormat("%s");
 			}
 

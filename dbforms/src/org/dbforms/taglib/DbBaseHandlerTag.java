@@ -65,6 +65,7 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
    private String fieldName;
    private String defaultValue;
    private String pattern;
+   private Format format;
    private String nullFieldValue;
    private String maxlength = null;
    private DbFormTag parentForm;
@@ -154,7 +155,7 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
     * @return
     */
    public String getPattern() {
-      Format f = getFieldFormat();
+      Format f = getFormat();
       if (f == null)
          return null;
       if (f instanceof java.text.DecimalFormat)
@@ -182,8 +183,14 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
    /**
       formatting a value
     */
-   public Format getFieldFormat() {
-      Format res = null;
+   public void setFormat(Format format) {
+      this.format = format;
+   }
+   /**
+      formatting a value
+    */
+   public Format getFormat() {
+      Format res = format;
       if (getField() != null) {
          res = getField().getFormat(pattern, getLocale());
       }
@@ -210,7 +217,7 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
             case org.dbforms.config.FieldTypes.DOUBLE :
             case org.dbforms.config.FieldTypes.FLOAT :
                try {
-                  res = getFieldFormat().format(new Double(0));
+                  res = getFormat().format(new Double(0));
                } catch (Exception e) {
                   res = "0";
                }
@@ -304,7 +311,7 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
                case FieldTypes.TIME :
                case FieldTypes.TIMESTAMP :
                   try {
-                     res = getFieldFormat().format(fieldValueObj);
+                     res = getFormat().format(fieldValueObj);
                   } catch (Exception e) {
                      logCat.error(
                         "field type: "
@@ -579,6 +586,7 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
     * DOCUMENT ME!
    */
    public void doFinally() {
+      format = null;
       field = null;
       defaultValue = null;
       pattern = null;
