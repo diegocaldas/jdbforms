@@ -39,6 +39,8 @@ import javax.servlet.jsp.tagext.TagSupport;
 
 import org.apache.log4j.Category;
 
+import java.util.*;
+
 /**
  * Custom tag that renders error messages if an appropriate request attribute
  * has been created.
@@ -51,65 +53,67 @@ import org.apache.log4j.Category;
 
 public class ErrorsTag extends TagSupport {
 
-    static Category logCat = Category.getInstance(ErrorsTag.class.getName()); // logging category for this class
+	static Category logCat = Category.getInstance(ErrorsTag.class.getName()); // logging category for this class
 
-    // ----------------------------------------------------------- Properties
-
-
-    /**
-     * The default locale on our server.
-     */
-    protected static Locale defaultLocale = Locale.getDefault();
+	// ----------------------------------------------------------- Properties
 
 
-    /**
-     * Name of the request scope attribute containing our error messages,
-     * if any.
-     */
-    protected String name = "errors";
-    protected String caption = "Error:";
+	/**
+	 * The default locale on our server.
+	 */
+	protected static Locale defaultLocale = Locale.getDefault();
 
-    public String getName() {
+
+	/**
+	 * Name of the request scope attribute containing our error messages,
+	 * if any.
+	 */
+	protected String name = "errors";
+	protected String caption = "Error:";
+
+	public String getName() {
 			return (this.name);
-    }
+	}
 
-    public void setName(String name) {
+	public void setName(String name) {
 			this.name = name;
-    }
+	}
 
-    public String getCaption() {
+	public String getCaption() {
 			return (this.caption);
-    }
+	}
 
-    public void setCaption(String caption) {
+	public void setCaption(String caption) {
 			this.caption = caption;
-    }
+	}
 
 
-    // ------------------------------------------------------- Public Methods
+	// ------------------------------------------------------- Public Methods
 
 
-    /**
-     * Render the specified error messages if there are any.
-     *
-     * @exception JspException if a JSP exception has occurred
-     */
-    public int doStartTag() throws JspException {
+	/**
+	 * Render the specified error messages if there are any.
+	 *
+	 * @exception JspException if a JSP exception has occurred
+	 */
+	public int doStartTag() throws JspException {
 
-	     Vector errors = (Vector) pageContext.getAttribute
-                (name, PageContext.REQUEST_SCOPE);
+	     Vector originalErrors = (Vector) pageContext.getAttribute
+				(name, PageContext.REQUEST_SCOPE);
 
 
-			if(errors!=null && errors.size()>0) {
+			if(originalErrors!=null && originalErrors.size()>0) {
+
+				// Extract out only user defined text
+				Vector errors = this.extractUserDefinedErrors(originalErrors);
 
 				StringBuffer results = new StringBuffer();
 				results.append(caption);
 
 				results.append("<ul>");
 				for(int i=0; i<errors.size(); i++) {
-					Exception anEx = (Exception) errors.elementAt(i);
-				  results.append("<li>");
-				  results.append(anEx.toString());
+					results.append("<li>");
+					results.append(errors.elementAt(i));
 				}
 				results.append("</ul>");
 
@@ -126,17 +130,68 @@ public class ErrorsTag extends TagSupport {
 			// Continue processing this page
 			return (EVAL_BODY_INCLUDE);
 
-    }
+	}
 
 
-    /**
-     * Release any acquired resources.
-     */
-    public void release() {
+	/**
+	 * Release any acquired resources.
+	 */
+	public void release() {
 
 	super.release();
 
-    }
+	}
 
 
+	public java.lang.String messagePrefix;
+
+/**
+ * philip.grunikiewicz@hydro.qc.ca
+ * 2001-05-10
+ *
+ * Iterate through the errors and extract only user-specified text
+ */
+public Vector extractUserDefinedErrors(Vector errors)
+{
+
+	Vector newErrors = new Vector();
+	String message = null;
+	int index = 0;
+
+	//Get user defined delimiter from messagePrefix attribute
+	String delimiter = this.getMessagePrefix();
+
+	if (errors != null) {
+		Enumeration enum = errors.elements();
+		while (enum.hasMoreElements()) {
+			message = ((Exception) enum.nextElement()).getMessage();
+
+			//Check for delimiter
+			if (delimiter != null && (index = message.indexOf(delimiter)) != -1) {
+				// Add only what is needed
+				message = message.substring(index + delimiter.length());
+			}
+			newErrors.add(message);
+		}
+	}
+	return newErrors;
+}
+
+/**
+ * Insert the method's description here.
+ * Creation date: (2001-05-10 12:57:08)
+ * @return java.lang.String
+ */
+public java.lang.String getMessagePrefix() {
+	return messagePrefix;
+}
+
+/**
+ * Insert the method's description here.
+ * Creation date: (2001-05-10 12:57:08)
+ * @param newMessagePrefix java.lang.String
+ */
+public void setMessagePrefix(java.lang.String newMessagePrefix) {
+	messagePrefix = newMessagePrefix;
+}
 }
