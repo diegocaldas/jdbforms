@@ -139,15 +139,38 @@ public abstract class EventFactory
     }
 
 
+
     /**
      *  Instance a new DatabaseEvent object
      *
-     * @param  einfo the EventInfo object. Warning: can be null.
+     * @param  id the Event(Info) identifier
      * @param  constructorArgsTypes array of constructor argument classes
      * @param  constructorArgs array of constructor argument objects
-     * @return  the event object, or null if any problem occurs
+     * @return the event object, or null if any problem occurs
      */
-    protected WebEvent getEvent(EventInfo einfo, Class[] constructorArgsTypes, Object[] constructorArgs)
+    public WebEvent getEvent(String id, Class[] constructorArgsTypes, Object[] constructorArgs)
+    {
+        WebEvent  event = null;
+        EventInfo einfo = null;
+
+        if ((einfo = getEventInfo(id)) != null)
+        {
+            event = getEvent(einfo, constructorArgsTypes, constructorArgs);
+        }
+
+        return event;
+    }
+
+
+    /**
+     *  Instance a new DatabaseEvent object
+     *
+     * @param  einfo the EventInfo object
+     * @param  constructorArgsTypes array of constructor argument classes
+     * @param  constructorArgs array of constructor argument objects
+     * @return the event object, or null if any problem occurs
+     */
+    public WebEvent getEvent(EventInfo einfo, Class[] constructorArgsTypes, Object[] constructorArgs)
     {
         WebEvent event = null;
 
