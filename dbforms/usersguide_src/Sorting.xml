@@ -664,12 +664,10 @@ group by type having sumValue &gt; ?
 		<sect2>
 			<title>Use within dbforms-config.xml
 </title>
-			<para>Here is an excerpt from the DTD:
-</para>
-			<para/>
+			 
 			<para>
 				<table>
-					<title/>
+					<title> excerpt from the DTD for dbforms-config.xml</title>
 					<tgroup cols="2">
 						<tbody>
 							<row>
