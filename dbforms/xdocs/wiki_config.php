@@ -23,6 +23,7 @@ if (function_exists("mysql_connect")) {
 
 #-- constants
 define("EWIKI_NAME", 'DbFormsWiki');
+define("EWIKI_PAGE_INDEX",   'WiKi');
 define("EWIKI_SCRIPT", "http://jdbforms.sourceforge.net/wiki.php?page=");
 define("EWIKI_LOGFILE", '/home/groups/j/jd/jdbforms/htdocs/log/ewiki.txt');
 define("EWIKI_LOGLEVEL", '3');
