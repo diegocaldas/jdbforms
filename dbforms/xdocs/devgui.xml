@@ -9,14 +9,14 @@
 <body>
 
 <section name="Devgui">
+<p>Devgui is a convenient SWING based application interface that can:
+<ul>
+    <li>Automatically create a first dbforms-config.xml for your database by reading the meta data about tables and columns inside your database</li>
+    <li>Create JSPs that use the dbforms taglib by applying XSL transformations to the config file, so you have a running web application for your database without having written a single line of code.</li>
+</ul>
+</p>
   <subsection name="documents">
-    <p>
-	  Printable documents describing the ideas and principles of (an earlier version of) DevGui
-	  can be found at:<br/>
-	  <ul>
-	    <li><a href="http://www.dbforms.org/docs/articles/DbForms_DevGui.pdf">DbForms DevGui</a></li>
-		<li><a href="http://www.dbforms.org/docs/articles/XSL_Dbforms.pdf">DevGui XSL stylesheets</a></li>
-	  </ul>
+    <p>Please see the DevGui chapter in the installation section of the UsersGuide for more complete information on installation and use.
     </p>
   </subsection>
 
