@@ -62,7 +62,7 @@ public class DataSourceJDBC extends DataSource {
    private String whereClause;
    private String dbConnectionName;
    private String tableList;
-   private FieldValue[] childFieldValues;
+   private FieldValue[] filterConstraint;
    private FieldValue[] orderConstraint;
    private DbFormsConfig config;
 
@@ -97,9 +97,9 @@ public class DataSourceJDBC extends DataSource {
    }
 
    public void setSelect(
-      FieldValue[] childFieldValues,
+      FieldValue[] filterConstraint,
       FieldValue[] orderConstraint) {
-      this.childFieldValues = childFieldValues;
+      this.filterConstraint = filterConstraint;
       this.orderConstraint = orderConstraint;
    }
 
@@ -123,28 +123,28 @@ public class DataSourceJDBC extends DataSource {
       ownCon = false;
    }
 
-   private void open() throws SQLException {
-      con = SqlUtil.getConnection(config, dbConnectionName);
-      ownCon = true;
+   protected void open() throws SQLException {
       if (rs == null) {
+ 		 ownCon = true;
+		 con = SqlUtil.getConnection(config, dbConnectionName);
          if (Util.isNull(whereClause)) {
             query =
-               table.getSelectQuery(
-                  table.getFields(),
-                  childFieldValues,
+               getTable().getSelectQuery(
+				getTable().getFields(),
+				  filterConstraint,
                   orderConstraint,
                   Constants.COMPARE_NONE);
             stmt = con.prepareStatement(query);
             rs =
-               table.getDoSelectResultSet(
-                  childFieldValues,
+				getTable().getDoSelectResultSet(
+				  filterConstraint,
                   orderConstraint,
                   Constants.COMPARE_NONE,
                   (PreparedStatement) stmt);
          } else {
             query =
-               table.getFreeFormSelectQuery(
-                  table.getFields(),
+				getTable().getFreeFormSelectQuery(
+				getTable().getFields(),
 				  whereClause,
 				  tableList
                   );
@@ -170,7 +170,7 @@ public class DataSourceJDBC extends DataSource {
       return objectRow;
    }
 
-   private int findStartRow(String startRow) throws SQLException {
+   protected int findStartRow(String startRow) throws SQLException {
       int result = 0;
       String s;
       if (startRow != null) {
@@ -183,7 +183,7 @@ public class DataSourceJDBC extends DataSource {
          if (result == 0) {
             while (rs.next()) {
                data.add(getCurrentRowAsObject());
-               s = table.getKeyPositionString(getCurrentRow());
+               s = getTable().getKeyPositionString(getCurrentRow());
                keys.add(s);
                if (startRow.equals(s)) {
                   result = data.size() - 1;
@@ -195,7 +195,7 @@ public class DataSourceJDBC extends DataSource {
       return result;
    }
 
-   private Object[] getRow(int i) throws SQLException {
+   protected final Object[] getRow(int i) throws SQLException {
       Object[] result = null;
       if (i >= 0) {
          if (i < data.size()) {
@@ -204,7 +204,7 @@ public class DataSourceJDBC extends DataSource {
             while (rs.next()) {
                result = getCurrentRowAsObject();
                data.add(result);
-               keys.add(table.getKeyPositionString(getCurrentRow()));
+               keys.add(getTable().getKeyPositionString(getCurrentRow()));
                if (i < data.size()) {
                   break;
                }
@@ -214,81 +214,14 @@ public class DataSourceJDBC extends DataSource {
       return result;
    }
 
-   private void retrieveAll() throws SQLException {
+   protected int size() throws SQLException {
       while (rs.next()) {
          data.add(getCurrentRowAsObject());
-         keys.add(table.getKeyPositionString(getCurrentRow()));
+         keys.add(getTable().getKeyPositionString(getCurrentRow()));
       }
+      return data.size();
    }
 
-   private ResultSetVector getResultSetVector(int startRow, int count)
-      throws SQLException {
-      ResultSetVector result = new ResultSetVector(table.getFields());
-	  Object[] row;
-      if (count > 0) {
-         for (int i = startRow; i < startRow + count; i++) {
-            row = getRow(i);
-            if (row == null)
-               break;
-            result.addRow(row);
-         }
-      } else if (count < 0) {
-         for (int i = startRow + count + 1; i <= startRow; i++) {
-			row = getRow(i);
-			if (row == null)
-				break;
-            result.addRow(row);
-         }
-      }
-      return result;
-   }
-
-   public ResultSetVector getNext(String position, int count)
-      throws SQLException {
-      open();
-      if (count == 0) {
-         retrieveAll();
-         count = data.size();
-      }
-      int start = findStartRow(position) + 1;
-      return getResultSetVector(start, count);
-   }
-
-   public ResultSetVector getPrev(String position, int count)
-      throws SQLException {
-      open();
-      int start = findStartRow(position) - 1;
-      if (count == 0) {
-         count = start;
-      }
-      return getResultSetVector(start, -count);
-   }
-
-   public ResultSetVector getFirst(int count) throws SQLException {
-      open();
-      if (count == 0) {
-         retrieveAll();
-         count = data.size();
-      }
-      return getResultSetVector(0, count);
-   }
-
-   public ResultSetVector getLast(int count) throws SQLException {
-      open();
-      retrieveAll();
-      return getResultSetVector(data.size() - 1, -count);
-   }
-
-   public ResultSetVector getCurrent(String position, int count)
-      throws SQLException {
-      open();
-      if (count == 0) {
-         retrieveAll();
-         count = data.size();
-      }
-      int start = findStartRow(position);
-      return getResultSetVector(start, count);
-   }
 
    //------------------------------ DAO methods ---------------------------------
    private int fillWithData(PreparedStatement ps, FieldValues fieldValues)
@@ -299,7 +232,7 @@ public class DataSourceJDBC extends DataSource {
       int col = 1;
       while (enum.hasMoreElements()) {
          String fieldName = (String) enum.nextElement();
-         Field curField = table.getFieldByName(fieldName);
+         Field curField = getTable().getFieldByName(fieldName);
          if (curField != null) {
             FieldValue fv = fieldValues.get(fieldName);
             //logCat.debug("Retrieved curField:" + curField.getName() + " type:" + curField.getFieldType());
@@ -347,7 +280,7 @@ public class DataSourceJDBC extends DataSource {
 
    public void doInsert(FieldValues fieldValues) throws SQLException {
       PreparedStatement ps =
-         con.prepareStatement(table.getInsertStatement(fieldValues));
+         con.prepareStatement(getTable().getInsertStatement(fieldValues));
       // execute the query & throws an exception if something goes wrong
       fillWithData(ps, fieldValues);
       ps.executeUpdate();
@@ -359,9 +292,9 @@ public class DataSourceJDBC extends DataSource {
    public void doUpdate(FieldValues fieldValues, String keyValuesStr)
       throws SQLException {
       PreparedStatement ps =
-         con.prepareStatement(table.getUpdateStatement(fieldValues));
+         con.prepareStatement(getTable().getUpdateStatement(fieldValues));
       int col = fillWithData(ps, fieldValues);
-      table.populateWhereClauseForPS(keyValuesStr, ps, col);
+		getTable().populateWhereClauseForPS(keyValuesStr, ps, col);
       // we are now ready to execute the query
       ps.executeUpdate();
       ps.close();
@@ -372,28 +305,28 @@ public class DataSourceJDBC extends DataSource {
    public void doDelete(String keyValuesStr) throws SQLException {
       FieldValues fieldValues = null;
       // get current blob files from database
-      if (table.containsDiskblob()) {
+      if (getTable().containsDiskblob()) {
          ResultSet diskblobs = null;
          StringBuffer queryBuf = new StringBuffer();
-         queryBuf.append(table.getDisblobSelectStatement());
+         queryBuf.append(getTable().getDisblobSelectStatement());
          queryBuf.append(" WHERE ");
-         queryBuf.append(table.getWhereClauseForPS());
+         queryBuf.append(getTable().getWhereClauseForPS());
          PreparedStatement diskblobsPs =
             con.prepareStatement(queryBuf.toString());
-         table.populateWhereClauseForPS(keyValuesStr, diskblobsPs, 1);
+			getTable().populateWhereClauseForPS(keyValuesStr, diskblobsPs, 1);
          diskblobs = diskblobsPs.executeQuery();
          ResultSetVector rsv =
-            new ResultSetVector(table.getDiskblobs(), diskblobs);
+            new ResultSetVector(getTable().getDiskblobs(), diskblobs);
          if (!Util.isNull(rsv)) {
             rsv.setPointer(0);
             fieldValues = rsv.getCurrentRowAsFieldValues();
          }
       }
       // 20021031-HKK: Build in table!!
-      PreparedStatement ps = con.prepareStatement(table.getDeleteStatement());
+      PreparedStatement ps = con.prepareStatement(getTable().getDeleteStatement());
       // now we provide the values
       // of the key-fields, so that the WHERE clause matches the right dataset!
-      table.populateWhereClauseForPS(keyValuesStr, ps, 1);
+		getTable().populateWhereClauseForPS(keyValuesStr, ps, 1);
       // finally execute the query
       ps.executeUpdate();
       if (fieldValues != null)

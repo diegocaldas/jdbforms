@@ -69,10 +69,10 @@ public class DataSourceFactory  {
 		dataHandler.setConnection(con);
 	}
 
-	public DataSourceFactory(DbFormsConfig config, String dbConnectionName, Table table, FieldValue[] childFieldValues, FieldValue[] orderConstraint)  throws SQLException {
+	public DataSourceFactory(DbFormsConfig config, String dbConnectionName, Table table, FieldValue[] filterConstraint, FieldValue[] orderConstraint)  throws SQLException {
 		this(table);
 		dataHandler.setConnection(config, dbConnectionName);
-		dataHandler.setSelect(childFieldValues, orderConstraint);
+		dataHandler.setSelect(filterConstraint, orderConstraint);
 	}
 
 	public DataSourceFactory(DbFormsConfig config, String dbConnectionName, Table table, String tableList, String whereClause) throws SQLException {

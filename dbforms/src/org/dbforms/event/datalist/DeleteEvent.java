@@ -52,7 +52,6 @@ public class DeleteEvent extends DatabaseEvent {
     * @param request DOCUMENT ME!
     * @param config DOCUMENT ME!
     */
-   //public DeleteEvent(int tableId, String keyId, HttpServletRequest request, DbFormsConfig config)
    public DeleteEvent(Integer tableId, String keyId, HttpServletRequest request, DbFormsConfig config) {
       super(tableId.intValue(), keyId, request, config);
    }
