@@ -157,7 +157,7 @@
 			
 			<para>In many cases, this would be sufficient, but to make things really secure and to prevent malicious users from emulating form request using telnet, etc. we need to define these rules in a more secure way.
 </para>
-			<para>This approach is described in the chapter on Application Hookups.
+			<para>This approach is described in the chapter on <link linkend='app_hooks'>Application Hookups</link>.
 </para>
 			<para/>
 		</sect1>

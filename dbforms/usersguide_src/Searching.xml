@@ -33,7 +33,7 @@
 </itemizedlist>			
 			
 			<para>The fields holding search-criteria, search-criteria-combing-mode and search-algorithms <emphasis role="bold">must follow a special naming convention</emphasis> (in order to allow searching in nested forms, etc). This makes the whole thing look a bit complicated, but it really isnt, as you will see below.
- This naming convention is prepared for you in hashtable objects accessible as scripting variables. (refer to chapter &gt;10.DbForm's Scripting Variables)
+ This naming convention is prepared for you in hashtable objects accessible as scripting variables. (refer to the chapter on <link linkend='scrip_var'>Scripting Variables</link>
 </para>
 			<para/>
 			<para>
@@ -42,9 +42,8 @@
 					<tgroup cols="2">
 						<tbody>
 							<row>
-								<entry>Name of scripting variable Hashtable
-</entry>
-								<entry>Description</entry>
+								<entry><emphasis role="bold">Name of scripting variable Hashtable</emphasis></entry>
+								<entry><emphasis role="bold">Description</emphasis></entry>
 							</row>
 							<row>
 								<entry>searchFieldNames_tableName</entry>
@@ -72,7 +71,7 @@ searchFieldAlgorithmNames_cust.get(firstname)</entry>
 </para>
 		</sect1>
 		<sect1>
-			<title>9.2.    Search Algorithms
+			<title>Search Algorithms
 </title>
 			<para>The behaviour of searching is selected by different algorithm types:
 </para>
@@ -83,10 +82,10 @@ searchFieldAlgorithmNames_cust.get(firstname)</entry>
 					<tgroup cols="2">
 						<tbody>
 							<row>
-								<entry>possible values of search field algorithm
+								<entry><emphasis role="bold">possible values of search field algorithm:</emphasis>
 </entry>
-								<entry>Description  -
-Searching is done with:</entry>
+								<entry><emphasis role="bold">Description  -
+Searching is done with:</emphasis></entry>
 							</row>
 							<row>
 								<entry>sharp</entry>
@@ -120,31 +119,29 @@ Searching is done with:</entry>
 								<entry>sharpNOTNULL</entry>
 								<entry> Not is null</entry>
 							</row>
+                                                               
+                                                        <row> <entry>sharpExtended</entry>
+                                                                <entry morerows='7' valign='middle'>In this mode the search value is parsed for special chars -- see list below. The default search operator is taken from the list above.</entry>
+                                                        </row>
+                                                        <row><entry>sharpLTExtended</entry>
+                                                        </row>
+                                                       
+                                                        <row><entry>sharpLEExtended</entry>
+                                                        </row>
+                                                        <row><entry>sharpGTExtended</entry>
+                                                        </row>
+                                                        <row><entry>sharpGEExtended</entry>
+                                                        </row>
+                                                        <row><entry>sharpNEExtended</entry>
+                                                        </row>
+                                                        <row><entry>sharpNULLExtended</entry>
+                                                        </row>
+                                                        <row><entry>sharpNOTNULLExtended</entry>
+                                                        </row>
 						</tbody>
 					</tgroup>
 				</table>
-			</para>
-			<para>In the modes below the search value is parsed for special chars -- see list of chars below. The default search operator is taken from the list above.
-</para>
-			<example>
-				<title/>
-				<programlisting>sharpExtended
-sharpLTExtended
- 
-		sharpLEExtended
- 
-		sharpGTExtended
- 
-		sharpGEExtended
- 
-		sharpNEExtended
- 
-		sharpNULLExtended
- 
-		sharpNOTNULLExtended
- 
-		</programlisting>
-			</example>
+			 </para>
 			<para>List of chars:
 </para>
 			<para>
@@ -172,13 +169,9 @@ sharpLTExtended
 					</tgroup>
 				</table>
 			</para>
-			<para/>
-			<example>
-				<title/>
-				<programlisting>If extended mode is set, the values will be parsed for special chars at the beginning:
- 
-		</programlisting>
-			</example>
+                        <para/>
+			<para>If extended mode is set, the values will be parsed for special chars at the beginning:
+		 </para>
 			<para>
 				<table>
 					<title/>
@@ -241,75 +234,83 @@ sharpLTExtended
 					</tgroup>
 				</table>
 			</para>
-			<para/>
+			 
 			<example>
-				<title/>
-				<programlisting>Example
-This is a fully functional search panel. It is included in the example application included in the DbForms distribution. You may also test it on the running live samples at the DbForms Website.
+				<title>Search Example</title>
+				<programlisting> 
+This is a fully functional search panel. It is included in the example application included in the DbForms distribution.
+You may also test it on the running live samples at the DbForms Website.
  
 		 
-		Figure 20  Example for dynamic filtering
+Figure 20 Example for dynamic filtering
  
-		This is the code responsible for creating the panel above. In the context of this example, the use of the hashtable should be clear. As mentioned above, this mechanism may be applied on any other database fields, using any html widgets for data input.
+    This is the code responsible for creating the panel above. In the context of this example, the use of the hashtable should be clear.
+    As mentioned above, this mechanism may be applied on any other database fields, using any html widgets for data input.
  
-		&lt;table cellspacing="0" cellpadding="1" width="550"&gt; 
-		&lt;tr bgcolor="#F7A629"&gt; 
+	&lt;table cellspacing="0" cellpadding="1" width="550"&gt; 
+            &lt;tr bgcolor="#F7A629"&gt; 
 		&lt;td bgcolor="#F7A629"&gt;&lt;b&gt;Search a customer&lt;/b&gt;&lt;/td&gt; 
 		&lt;td colspan="2" bgcolor="#F7A629"&gt;nbsp;&lt;/td&gt; 
-		&lt;td bgcolor="#F7A629"&gt;&lt;input value="Search!" type="button"
- 
-		onClick="javascript:document.dbform.submit()"&gt;&lt;/td&gt; 
-		&lt;/tr&gt; 
-		&lt;tr bgcolor="#CCBBCC"&gt; 
+		&lt;td bgcolor="#F7A629"&gt;
+                    &lt;input value="Search!" 
+                              type="button" 
+                              onClick="javascript:document.dbform.submit()"&gt;
+                &lt;/td&gt; 
+            &lt;/tr&gt; 
+            &lt;tr bgcolor="#CCBBCC"&gt; 
 		&lt;td&gt;Field&lt;/td&gt; 
 		&lt;td&gt;Value&lt;/td&gt; 
 		&lt;td&gt;Combining mode&lt;/td&gt; 
 		&lt;td&gt;Search Algorithm&lt;/td&gt; 
-		&lt;/tr&gt; 
-		&lt;tr bgcolor="#BBCCBB"&gt; 
+            &lt;/tr&gt; 
+            &lt;tr bgcolor="#BBCCBB"&gt; 
 		&lt;td&gt;First name&lt;/td&gt; 
-		&lt;td&gt;&lt;input type="text"
- 
-		name="&lt;%=searchFieldNames_customer.get("firstname") %&gt;" size="17"/&gt;&lt;/td&gt; 
+		&lt;td&gt;
+                    &lt;input type="text"
+                              name="&lt;%=searchFieldNames_customer.get("firstname") %&gt;" 
+                              size="17"
+                    /&gt;
+                &lt;/td&gt; 
 		&lt;td&gt; 
-		&lt;input type="radio" checked name="&lt;%= searchFieldModeNames_customer.get("firstname") %&gt;"
- 
-		value="and"&gt; AND
- 
-		&lt;input type="radio" name="&lt;%= searchFieldModeNames_customer.get("firstname") %&gt;"
- 
-		value="or"&gt; OR
- 
+                    &lt;input type="radio" checked
+                              name="&lt;%= searchFieldModeNames_customer.get("firstname") %&gt;"
+                              value="and"&gt; AND
+                    &lt;input type="radio" 
+                              name="&lt;%= searchFieldModeNames_customer.get("firstname") %&gt;
+                              value="or"&gt; OR
 		&lt;/td&gt; 
 		&lt;td&gt; 
-		&lt;input type="checkbox" name="&lt;%= searchFieldAlgorithmNames_customer.get("firstname") %&gt;"
- 
-		size="30" value="weak"&gt;Weak
- 
+                    &lt;input type="checkbox" 
+                              name="&lt;%= searchFieldAlgorithmNames_customer.get("firstname") %&gt;"
+                              size="30" 
+                              value="weak"&gt;Weak
 		&lt;/td&gt; 
-		&lt;/tr&gt; 
-		&lt;tr bgcolor="#BBCCBB"&gt; 
-		&lt;td&gt;Last name&lt;/td&gt; 
-		&lt;td&gt;&lt;input type="text"name="&lt;%= searchFieldNames_customer.get("lastname") %&gt;"
- 
-		size="17"/&gt;&lt;/td&gt; 
+            &lt;/tr&gt; 
+            &lt;tr bgcolor="#BBCCBB"&gt; 
+                &lt;td&gt;Last name&lt;/td&gt; 
+		&lt;td&gt;
+                &lt;input type="text"
+                          name="&lt;%= searchFieldNames_customer.get("lastname") %&gt;"
+                          size="17"/&gt;
+                &lt;/td&gt; 
+		&lt;td&gt;
+                    &lt;input type="radio" checked  
+                              name="&lt;%= searchFieldModeNames_customer.get("lastname") %&gt;"
+                              value="and"          
+                    &gt; AND
+                    &lt;input type="radio" 
+                              name="&lt;%= searchFieldModeNames_customer.get("lastname") %&gt;
+                              value="or"
+                    &gt; OR
+		&lt;/td&gt; 
 		&lt;td&gt; 
-		&lt;input type="radio" checked  name="&lt;%= searchFieldModeNames_customer.get("lastname") %&gt;"
- 
-		value="and"&gt; AND
- 
-		&lt;input type="radio" name="&lt;%= searchFieldModeNames_customer.get("lastname") %&gt;"
- 
-		value="or"&gt; OR
- 
+                    &lt;input type="checkbox" 
+                              name="&lt;%= searchFieldAlgorithmNames_customer.get("lastname") %&gt;"
+                              size="30"
+                              value="weak"
+                    &gt;Weak
 		&lt;/td&gt; 
-		&lt;td&gt; 
-		&lt;input type="checkbox" name="&lt;%= searchFieldAlgorithmNames_customer.get("lastname") %&gt;"
- 
-		size="30" value="weak"&gt;Weak
- 
-		&lt;/td&gt; 
-		&lt;/tr&gt; 
+            &lt;/tr&gt; 
 		 
 		</programlisting>
 			</example>

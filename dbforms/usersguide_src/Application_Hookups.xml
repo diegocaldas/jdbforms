@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
  
 	<chapter>
-		<title>Application hook-ups
+		<title id="app_hooks">Application hook-ups
 </title>
 		<sect1>
 			<title>Introduction
@@ -23,48 +23,60 @@
 			<example>
 				<title>Listing 26  methods defined in interface DbEventInterceptor
 </title>
-				<programlisting>public int preInsert(HttpServletRequest request, Hashtable fieldValues, DbFormsConfig
-config, <emphasis role="bold">Connection</emphasis> con)
+				<programlisting>
+    public int preInsert(HttpServletRequest request, Hashtable fieldValues, DbFormsConfig config, <emphasis role="bold">Connection</emphasis> con)
+                throws ValidationException;
  
-		throws ValidationException;
+
+    public void postInsert(HttpServletRequest request, DbFormsConfig config, Connection con);
  
-		public void postInsert(HttpServletRequest request, DbFormsConfig config, Connection con);
- 
-		public int <emphasis role="bold">preUpdate</emphasis>(HttpServletRequest request, <emphasis role="bold">Hashtable</emphasis> fieldValues, <emphasis role="bold">DbFormsConfig</emphasis> 
-		config, <emphasis role="bold">Connection</emphasis> con)
- 
+
+    public int <emphasis role="bold">preUpdate</emphasis>(HttpServletRequest request, <emphasis role="bold">Hashtable</emphasis> fieldValues, <emphasis role="bold">DbFormsConfig</emphasis> config, <emphasis role="bold">Connection</emphasis> con)
 		throws ValidationException;;
  
-		public void postUpdate(HttpServletRequest request, DbFormsConfig config, Connection con);
+
+    public void postUpdate(HttpServletRequest request, DbFormsConfig config, Connection con);
  
-		public int preDelete(HttpServletRequest request, Hashtable fieldValues,DbFormsConfig
+
+    public int preDelete(HttpServletRequest request, Hashtable fieldValues,DbFormsConfig config, <emphasis role="bold">Connection</emphasis> con)
+                throws ValidationException;;
  
-		config, <emphasis role="bold">Connection</emphasis> con)
- 
+
+    public void postDelete(HttpServletRequest request, DbFormsConfig config, Connection con);
+
+     
+    public int preSelect(HttpServletRequest request, DbFormsConfig config, Connection con)
 		throws ValidationException;;
  
-		public void postDelete(HttpServletRequest request, DbFormsConfig config, Connection con);
- 
-		public int preSelect(HttpServletRequest request, DbFormsConfig config, Connection con)
- 
-		throws ValidationException;;
- 
-		public void postSelect(HttpServletRequest request, DbFormsConfig config, Connection con);
+    public void postSelect(HttpServletRequest request, DbFormsConfig config, Connection con);
  
 		</programlisting>
 			</example>
-			<para>As the names indicate, the preXxx() methods get called <emphasis role="bold">before</emphasis> the respective database operation is performed, the postXxx() methods get called <emphasis role="bold">after</emphasis> the operation has finished.
+			<para>As the names indicate:</para>
+                        
+                        <itemizedlist mark="opencircle">
+<listitem>
+<para>
+The preXxx() methods get called <emphasis role="bold">before</emphasis> the respective database operation is performed, and <emphasis role="bold">return a value</emphasis> indicating if the operation should be performed or not
+<blockquote>
+ <para>DbEventInterceptor.GRANT_OPERATION</para>
+ <para>DbEventInterceptor.DENY_OPERATION</para>
+</blockquote>
 </para>
-			<para>preXxx methods return a value indicating if the operation should be performed or not
+</listitem>
+<listitem>
+<para>
+The postXxx() methods get called <emphasis role="bold">after</emphasis> the operation has finished, and <emphasis role="bold">do not return a value</emphasis>, as the operation has already completed.
 </para>
-			<para>
-				<computeroutput>DbEventInterceptor</computeroutput>.<computeroutput>GRANT</computeroutput>_<computeroutput>OPERATION</computeroutput>
-			</para>
-			<para>
-				<computeroutput>DbEventInterceptor</computeroutput>.<computeroutput>DENY_OPERATION</computeroutput>
-			</para>
-			<para>postXxx methods do not return a value, as the operation has already completed.
-</para>
+</listitem>
+ 
+</itemizedlist>
+                        
+                         
+ 
+			 
+				
+	 
 		</sect1>
 		<sect1>
 			<title>Class Diagram
@@ -142,23 +154,20 @@ will ensure that the value smith be stored in the lastname field in the data
 </para>
 			<example>
 				<title/>
-				<programlisting>&lt;table name="customer"&gt;&lt;field name="id" fieldType="int" isKey="true"/&gt; 
-		&lt;field name="firstname" fieldType="char" /&gt; 
-		&lt;field name="lastname" fieldType="char" /&gt; 
-		&lt;field name="address" fieldType="char" /&gt; 
-		&lt;field name="pcode" fieldType="char" /&gt; 
-		&lt;field name="city" fieldType="char" /&gt; 
-		&lt;interceptor
- 
-		className = "com.foo.bar.CustomerValidatonChecker"
- 
-		/&gt; 
-		&lt;interceptor
- 
-		className = "com.foo.bar.TransactionLogger"
- 
-		/&gt; 
-		&lt;/table&gt; 
+				<programlisting>
+    &lt;table name="customer"&gt;
+        &lt;field name="id" fieldType="int" isKey="true"/&gt; 
+	&lt;field name="firstname" fieldType="char" /&gt; 
+	&lt;field name="lastname" fieldType="char" /&gt; 
+	&lt;field name="address" fieldType="char" /&gt; 
+	&lt;field name="pcode" fieldType="char" /&gt; 
+	&lt;field name="city" fieldType="char" /&gt; 
+            
+            &lt;interceptor className = "com.foo.bar.CustomerValidatonChecker"/&gt; 
+		
+            &lt;interceptor className = "com.foo.bar.TransactionLogger"/&gt;
+             
+    &lt;/table&gt; 
 		</programlisting>
 			</example>
 			<para>The semantics of these declarations could be described as follows:
@@ -178,78 +187,49 @@ will ensure that the value smith be stored in the lastname field in the data
 </title>
 			<para>In this example, we override 2 methods (preInsert and preUpdate) to do some basic validation checking.
 </para>
-			<para>
-				<computeroutput>public class CheckCustomerData extends DbEventInterceptorSupport {</computeroutput>
-			</para>
-			<para>
-				<computeroutput>private int checkCustomer(Hashtable fieldValues) // method invented by developer</computeroutput>
-			</para>
-			<para>
-				<computeroutput>throws ValidationException {</computeroutput>
-			</para>
-			<para>
-				<computeroutput>String lastName = (String) fieldValues.get("lastname");</computeroutput>
-			</para>
-			<para>
-				<computeroutput>String pCode = (String) fieldValues.get("pcode");</computeroutput>
-			</para>
-			<para>
-				<computeroutput>String city = (String) fieldValues.get("city");</computeroutput>
-			</para>
-			<para>
-				<computeroutput>if(lastName == null || lastName.trim().length()==0 ||   // perform form-validation</computeroutput>
-			</para>
-			<para>
-				<computeroutput>pCode == null || pCode.trim().length()==0 ||</computeroutput>
-			</para>
-			<para>
-				<computeroutput>city == null || city.trim().length()==0)  {</computeroutput>
-			</para>
-			<para>
-				<computeroutput>throw new ValidationException("Please fill out the form completely!");</computeroutput>
-			</para>
-			<para>
-				<computeroutput>} else</computeroutput>
-			</para>
-			<para>
-				<computeroutput>return GRANT_OPERATION;</computeroutput>
-			</para>
-			<para>
-				<computeroutput>}</computeroutput>
-			</para>
-			<para>
-				<computeroutput>public int preInsert(HttpServletRequest request, Hashtable fieldValues, DbFormsConfig</computeroutput>
-			</para>
-			<para>
-				<computeroutput>config, Connection con)</computeroutput>
-			</para>
-			<para>
-				<computeroutput>throws ValidationException {</computeroutput>
-			</para>
-			<para>
-				<computeroutput>return checkCustomer(fieldValues);</computeroutput>
-			</para>
-			<para>
-				<computeroutput>}</computeroutput>
-			</para>
-			<para>
-				<computeroutput>public int preUpdate(HttpServletRequest request, Hashtable fieldValues, DbFormsConfig</computeroutput>
-			</para>
-			<para>
-				<computeroutput>config, Connection con)</computeroutput>
-			</para>
-			<para>
-				<computeroutput>throws ValidationException {</computeroutput>
-			</para>
-			<para>
-				<computeroutput>return checkCustomer(fieldValues);</computeroutput>
-			</para>
-			<para>
-				<computeroutput>}</computeroutput>
-			</para>
-			<para>
-				<computeroutput>}</computeroutput>
-			</para>
+<screen>
+
+    public class CheckCustomerData extends DbEventInterceptorSupport {
+
+        private int checkCustomer(Hashtable fieldValues) // method invented by developer    
+            throws ValidationException {
+
+                String lastName = (String) fieldValues.get("lastname");
+
+                String pCode = (String) fieldValues.get("pcode");
+                
+                String city = (String) fieldValues.get("city");
+                
+                // perform form-validation
+                if (lastName == null || lastName.trim().length()==0 ||   
+                    pCode == null || pCode.trim().length()==0 ||
+                    city == null || city.trim().length()==0)  {
+
+                        throw new ValidationException("Please fill out the form completely!"); } 
+                
+                else return GRANT_OPERATION;
+
+            }
+
+
+        public int preInsert(HttpServletRequest request, Hashtable fieldValues, DbFormsConfig config, Connection con)
+            throws ValidationException {
+
+                return checkCustomer(fieldValues);
+                
+            }
+
+
+        public int preUpdate(HttpServletRequest request, Hashtable fieldValues, DbFormsConfig config, Connection con)
+            throws ValidationException {
+
+                return checkCustomer(fieldValues);
+            }
+
+
+    }
+
+</screen>			
 			<para>Remarks:
 </para>
 			<para>There is an Exception ValidationException which may be thrown to signal a message to the end-user. In fact, returning the integer constant <computeroutput>DENY_OPERATION</computeroutput> defined in <computeroutput>DbEventInterceptor</computeroutput> leads to similar results (but with an unspecific error message and no generic message)
@@ -259,45 +239,26 @@ will ensure that the value smith be stored in the lastname field in the data
 			<para>
 				<computeroutput>Example:</computeroutput>
 			</para>
-			<para>
-				<computeroutput>public int preUpdate(HttpServletRequest req,</computeroutput>
-			</para>
-			<para>
-				<computeroutput>Hashtable fieldValues,</computeroutput>
-			</para>
-			<para>
-				<computeroutput>DbformsConfig conf,</computeroutput>
-			</para>
-			<para>
-				<computeroutput>Connection con) throws ValidationException</computeroutput>
-			</para>
-			<para>
-				<computeroutput>{</computeroutput>
-			</para>
-			<para>
-				<computeroutput>Vector errors = new Vector();</computeroutput>
-			</para>
-			<para>
-				<computeroutput>// Validate, if error</computeroutput>
-			</para>
-			<para>
-				<computeroutput>errors.add(new SQLException("English-001:param");</computeroutput>
-			</para>
-			<para>
-				<computeroutput>// More validations, errors!</computeroutput>
-			</para>
-			<para>
-				<computeroutput>errors.add(new SQLException("Franais-003:param,param");</computeroutput>
-			</para>
-			<para>
-				<computeroutput>if(!errors.isEmpty)</computeroutput>
-			</para>
-			<para>
-				<computeroutput>throw new MultipleValidationException(errors);</computeroutput>
-			</para>
-			<para>
-				<computeroutput>}</computeroutput>
-			</para>
+			<screen>
+    public int preUpdate(HttpServletRequest req, Hashtable fieldValues, DbformsConfig conf, Connection con)
+        throws ValidationException{
+			
+            Vector errors = new Vector();
+            
+             // Validate, if error		
+            errors.add(new SQLException("English-001:param");
+            
+            
+             // More validations, errors		
+            errors.add(new SQLException("Franais-003:param,param");
+			
+			
+            if(!errors.isEmpty) throw new MultipleValidationException(errors);
+			
+			
+        }                    
+                        
+                        </screen>
 			<para/>
 		</sect1>
                    <sect1> <title>Changing Key Values in an Interceptor</title>
