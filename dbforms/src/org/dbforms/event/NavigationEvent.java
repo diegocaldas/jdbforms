@@ -23,8 +23,7 @@
 package org.dbforms.event;
 import java.sql.*;
 
-import org.CVS.*;
-import org.dbforms.*;
+
 import org.dbforms.config.*;
 import org.dbforms.util.*;
 import javax.servlet.http.*;

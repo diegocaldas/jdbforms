@@ -25,9 +25,8 @@ import java.util.Properties;
 import java.sql.*;
 import javax.servlet.http.*;
 
-import org.CVS.*;
 import org.apache.log4j.Category;
-import org.dbforms.*;
+
 import org.dbforms.config.*;
 
 
