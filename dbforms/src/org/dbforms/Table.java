@@ -744,9 +744,12 @@ public class Table
     /**
      *  Returns the WHERE part of a query.
      *
-     * @param fvEqual
-     * @param fvOrder
-     * @param compareMode
+     * @param fvEqual     FieldValue array used to restrict a set in a subform where
+     *                    all "childFields" in the  resultset match their respective
+     *                    "parentFields" in main form
+     * @param fvOrder     FieldValue array used to build a cumulation of rules for ordering
+     *                    (sorting) and restricting fields
+     * @param compareMode compare mode value
      * @return the WHERE part of a query
      */
     protected String getQueryWhere(FieldValue[] fvEqual, FieldValue[] fvOrder, int compareMode)
@@ -760,15 +763,10 @@ public class Table
             // check if the fieldvalues contain _search_ information
             buf.append(" ( ");
 
-            // has the first field value got a search mode information ?
-            // if NOT, build the WHERE clause string using the input field values;
             if (fvEqual[0].getSearchMode() == DbBaseHandlerTag.SEARCHMODE_NONE)
             {
                 buf.append(FieldValue.getWhereClause(fvEqual));
             }
-
-            // else build a WHERE clause that should restrict the resultset
-            // in matching to the search fields;
             else
             {
                 buf.append(FieldValue.getWhereEqualsSearchClause(fvEqual));
@@ -809,8 +807,8 @@ public class Table
      *  if there are RDBMS which do not tolerate this please let me know;
      *  then i'll change it).
      *
-     * @param fvOrder the array of FieldValue objects used to build the
-     *                orderby-clause
+     * @param fvOrder FieldValue array used to build a cumulation of rules for
+     *                ordering (sorting) and restricting fields
      * @return the part of the orderby-clause represented by this
      *         FieldValue object
      */
@@ -923,16 +921,17 @@ public class Table
     /**
      *  Get the SQL ResultSet from the query builded using the input data.
      *
-     * @param fieldsToSelect   a vector containing all the fields to select
-     * @param fvEqual DOCUMENT ME!
-     * @param fvOrder DOCUMENT ME!
-     * @param compareMode DOCUMENT ME!
-     * @param maxRows DOCUMENT ME!
-     * @param ps DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     *
-     * @throws SQLException DOCUMENT ME!
+     * @param fieldsToSelect vector containing all the fields to select
+     * @param fvEqual     FieldValue array used to restrict a set in a subform where
+     *                    all "childFields" in the  resultset match their respective
+     *                    "parentFields" in main form
+     * @param vfOrder     FieldValue array used to build a cumulation of rules for ordering
+     *                    (sorting) and restricting fields
+     * @param compareMode the value of the compare mode
+     * @param maxRows     maximum number of rows to manager
+     * @param ps          the PreparedStatement object
+     * @return a ResultSet object
+     * @throws SQLException if any error occurs
      */
     protected ResultSet getDoSelectResultSet(Vector            fieldsToSelect,
                                              FieldValue[]      fvEqual,
@@ -977,11 +976,11 @@ public class Table
         catch (SQLException sqle)
         {
             SqlUtil.logSqlException(sqle);
-            throw new SQLException(sqle.getMessage());
+            throw sqle;
         }
         finally
         {
-            // close the prepared statement;
+            // close the prepared statement ?
             //if (ps != null)
             //   ps.close();
         }
@@ -1014,9 +1013,6 @@ public class Table
                                                Connection con)
      throws SQLException
     {
-        //logCat.info("::doConstrainedSelect ----> fvEqual: " + Util.dumpFieldValueArray(fvEqual));
-        //logCat.info("::doConstrainedSelect ----> vfOrder: " + Util.dumpFieldValueArray(vfOrder));
-
         String query = getSelectQuery(fieldsToSelect, fvEqual, vfOrder, compareMode);
         PreparedStatement ps = con.prepareStatement(query);
         ps.setMaxRows(maxRows); // important when quering huge tables
@@ -1204,10 +1200,9 @@ public class Table
 
 
     /**
-     * DOCUMENT ME!
+     * Get key position from the input hash table
      *
      * @param fvHT DOCUMENT ME!
-     *
      * @return DOCUMENT ME!
      */
     public String getKeyPositionString(Hashtable fvHT)
@@ -1299,7 +1294,8 @@ public class Table
         //	position = position.trim();
           // 20021128-HKK: catch errors!
         Hashtable result = new Hashtable();
-        try {
+        try
+        {
             int startIndex = 0;
             boolean endOfString = false;
 
@@ -1319,7 +1315,10 @@ public class Table
                 int controlIndex = secondColon + 1 + valueLength;
 
                 // make already be trimmed ... avoid substring exception
-                String valueStr = (controlIndex < position.length()) ? position.substring(secondColon + 1, controlIndex) : position.substring(secondColon + 1);
+                String valueStr =
+                  (controlIndex < position.length()) ?
+                     position.substring(secondColon + 1, controlIndex) :
+                     position.substring(secondColon + 1);
 
                 FieldValue fv = new FieldValue();
                 fv.setField(getField(fieldId));
@@ -1355,9 +1354,13 @@ public class Table
                 }
             }
 
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
+           logCat.error("::getFieldValuesFromPositionAsHt - exception:", e);
            result = null;
         }
+
         return result;
     }
 
@@ -1715,7 +1718,9 @@ public class Table
     }
 
 
-    // helper method used locally in this class
+    /**
+     *   helper method used locally in this class
+     */
     private void addFieldValue(Vector stub, Field f)
     {
         FieldValue fv = new FieldValue();
@@ -1978,7 +1983,10 @@ public class Table
      *
      * @return DOCUMENT ME!
      */
-    public FieldValue[] mapChildFieldValues(Table parentTable, String parentFieldString, String childFieldString, String aPosition)
+    public FieldValue[] mapChildFieldValues(Table  parentTable,
+                                            String parentFieldString,
+                                            String childFieldString,
+                                            String aPosition)
     {
         // 1 to n fields may be mapped
         Vector childFieldNames = ParseUtil.splitString(childFieldString, ",;~");
@@ -1993,9 +2001,10 @@ public class Table
             return null;
         }
 
-    Hashtable ht = parentTable.getFieldValuesFromPositionAsHt(aPosition);
-    if (ht == null)
-        return null;
+        Hashtable ht = parentTable.getFieldValuesFromPositionAsHt(aPosition);
+        if (ht == null)
+          return null;
+
         FieldValue[] childFieldValues = new FieldValue[len];
 
         for (int i = 0; i < len; i++)
