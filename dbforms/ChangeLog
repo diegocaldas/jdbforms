@@ -1,4 +1,15 @@
 2004-08-01
+(nkdbf@nechsi.com)
+Added New Tags: IsError , SetCustomFormatter, RedirectUrl
+Modified Tags to support Custom Formatter
+Modified DbSelectTag, added new options to handle empty data sets
+Modified DbFilterTag, added some more localization.
+Modified DbCheckboxTag, added option to force state to checked.
+Added New report systems to create Excel Spreadsheet and Comma Seperated Values reports
+Modified JRDataSourceRSV session variables can now be accessed in addition to field data
+Added JRDataSourceIter data can now be retrieved from a collection, instead of a RSV.
+
+2004-08-01
 (Henner.Kollmann@gmx.de)
 Support added for servletapi 2.4
 
