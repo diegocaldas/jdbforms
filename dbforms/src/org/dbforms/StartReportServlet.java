@@ -248,7 +248,8 @@ public class StartReportServlet extends HttpServlet {
 				DbFormTag form = new DbFormTag();
 				form.setPageContext(pageContext);
 				form.setTableName(tableName);
-				form.setMaxRows("*");
+			    String MaxRows = ParseUtil.getParameter(request, "MaxRows", "*");
+				form.setMaxRows(MaxRows);
 				form.setFollowUp("");
 				form.setAutoUpdate("false");
 				// set the source attribute to the requestURI. 
