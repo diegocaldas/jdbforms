@@ -29,10 +29,9 @@ import javax.servlet.http.*;
 import javax.servlet.jsp.*;
 import javax.servlet.jsp.tagext.*;
 
-import org.CVS.*;
 import org.apache.commons.validator.ValidatorResources;
 import org.apache.log4j.Category;
-import org.dbforms.*;
+
 import org.dbforms.util.*;
 import org.dbforms.config.*;
 import org.dbforms.event.*;
