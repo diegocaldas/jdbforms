@@ -64,28 +64,13 @@
 	</table>
 
 	<!-- ========== Connection =================================== -->
-	<!--
-	uncomment this if you have access to JNDI of an application server (see users guide for more info)
-	<dbconnection
-		name = "jdbc/dbformstest"
-		isJndi = "true"
-	/>
-	-->
-	<!--
-	<dbconnection
-		name   = "jdbc:poolman://oracle_emp"
-		isJndi = "false"
-		conClass  = "com.codestudio.sql.PoolMan"
-	/>
-	-->	
-
-	<dbconnection
-		name   = "jdbc:mysql://localhost/dbformstest"
-		isJndi = "false"
-		conClass  = "org.gjt.mm.mysql.Driver"
-		username = "sa"
-		password  = ""
-	/>
-
-
+	    <dbconnection
+		    isPow2		   			= "true"
+		    connectionProviderClass = "org.dbforms.conprovider.JakartaConnectionProvider"
+			name   					= "jdbc:hsqldb:$(SERVLETCONTEXT_REALPATH)/WEB-INF/db_hsqldb/testsuite"
+			isJndi 					= "false"
+			conClass 		 		= "org.hsqldb.jdbcDriver"
+			username 				= "sa"
+			password  				= ""
+	    />
 </dbforms-config>
