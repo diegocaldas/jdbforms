@@ -15,12 +15,12 @@
 			<title>Related documents
 </title>
 			<para/>
-			<para>The following articles describe extensions to DbForms:
+			<para>The following pdf articles describe extensions to DbForms:
 </para>
 			<para/>
-			<para>DbFormsDevelopersGUI, J. Peer, Vienna, 2001http://www.dbforms.org/docs/articles/DbForms_DevGui.pdf
+			<para><ulink url="http://www.dbforms.org/docs/articles/DbForms_DevGui.pdf"><citetitle>DbFormsDevelopersGUI</citetitle></ulink>, J. Peer, Vienna, 2001 
 </para>
-			<para>XSLPreprocessingLayerforDbForms, J. Peer, Vienna, 2001http://www.dbforms.org/docs/articles/XSL_DbForms.pdf
+<para><ulink url="http://www.dbforms.org/docs/articles/XSL_DbForms.pdf"><citetitle>XSLPreprocessingLayerforDbForms</citetitle></ulink>, J. Peer, Vienna, 2001
 </para>
 			<para/>
 		</sect1>
