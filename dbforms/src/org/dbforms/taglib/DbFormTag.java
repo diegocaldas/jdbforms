@@ -1001,19 +1001,19 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
 
 			logCat.info("servlet getContextPath = " + request.getContextPath());
 			logCat.info("servlet getRequestURI = " + request.getRequestURI());
-			
+
 			String strFollowUp = getFollowUp();
 			if (Util.isNull(strFollowUp)) {
-			   strFollowUp = request.getRequestURI();
-			   String contextPath = request.getContextPath();
-			   if (!Util.isNull(contextPath)) {
-			      strFollowUp = strFollowUp.substring(contextPath.length(), strFollowUp.length());	
-			   }
-			   if(!Util.isNull(request.getQueryString())) {
-			      strFollowUp += "?" + request.getQueryString();
-			   }
+				strFollowUp = request.getRequestURI();
+				String contextPath = request.getContextPath();
+				if (!Util.isNull(contextPath)) {
+					strFollowUp = strFollowUp.substring(contextPath.length(), strFollowUp.length());
+				}
+				if (!Util.isNull(request.getQueryString())) {
+					strFollowUp += "?" + request.getQueryString();
+				}
 			}
-			
+
 			logCat.debug("pos1");
 
 			// part I/a - security
@@ -1026,7 +1026,10 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
 				logCat.debug("pos3");
 
 				String str =
-					MessageResourcesInternal.getMessage("dbforms.events.view.nogrant", getLocale(), new String[] { table.getName()});
+					MessageResourcesInternal.getMessage(
+						"dbforms.events.view.nogrant",
+						getLocale(),
+						new String[] { table.getName()});
 				logCat.warn(str);
 				out.println(str);
 
@@ -1314,7 +1317,9 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
 					ParseUtil.getParameter(request, "firstpos_" + tableId),
 					pageContext.getRequest().getCharacterEncoding());
 			String lastPosition =
-				Util.decode(ParseUtil.getParameter(request, "lastpos_" + tableId), pageContext.getRequest().getCharacterEncoding());
+				Util.decode(
+					ParseUtil.getParameter(request, "lastpos_" + tableId),
+					pageContext.getRequest().getCharacterEncoding());
 
 			if (firstPosition == null) {
 				firstPosition = lastPosition;
@@ -1501,30 +1506,12 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
 					navEvent = navEventFactory.createGotoEvent(table, request, config, whereClause, getTableList());
 				} else {
 					String myPosition = (count == 0) ? null : firstPosition;
-					/*
-										String myPosition = null;
-										if ((webEvent != null)
-											&& (// we have one of the update events...
-										EventType
-												.EVENT_DATABASE_UPDATE
-												.equals(webEvent.getType())
-												|| EventType.EVENT_DATABASE_DELETE.equals(
-													webEvent.getType())
-												|| EventType.EVENT_DATABASE_INSERT.equals(
-													webEvent.getType())
-											|| // we do navigation in a sub form
-										webEvent
-												instanceof NavigationEvent)) {
-					
-											// JPeer 03-21-2004: if maxRow is set to "*" (i.e. count==0),
-											// then we do NOT want any other position than null.
-											// this should fix the problem of insert operations
-											// in endless forms
-											myPosition = (count == 0) ? null : firstPosition;
-										}
-					*/
+					if ((webEvent != null)
+//						&& (webEvent instanceof org.dbforms.event.DatabaseEvent)
+						&& (webEvent instanceof org.dbforms.event.NoopEvent)) {
+						myPosition = null;
+					}
 					navEvent = navEventFactory.createGotoEvent(table, request, config, myPosition);
-
 				}
 			}
 
@@ -1627,7 +1614,9 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
 			// construct TEI variables for access from JSP
 			// # jp 27-06-2001: replacing "." by "_", so that SCHEMATA can be used
 			pageContext.setAttribute("searchFieldNames_" + tableName.replace('.', '_'), table.getNamesHashtable("search"));
-			pageContext.setAttribute("searchFieldModeNames_" + tableName.replace('.', '_'), table.getNamesHashtable("searchmode"));
+			pageContext.setAttribute(
+				"searchFieldModeNames_" + tableName.replace('.', '_'),
+				table.getNamesHashtable("searchmode"));
 			pageContext.setAttribute(
 				"searchFieldAlgorithmNames_" + tableName.replace('.', '_'),
 				table.getNamesHashtable("searchalgo"));
@@ -1910,7 +1899,14 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
 				if ((aSearchAlgorithm == null) || (aSearchAlgorithm.toLowerCase().indexOf("extended") == -1)) {
 					// Extended not found, only append field
 					FieldValue fv =
-						FieldValue.createFieldValueForSearching(f, aSearchFieldValue, getLocale(), operator, mode, algorithm, false);
+						FieldValue.createFieldValueForSearching(
+							f,
+							aSearchFieldValue,
+							getLocale(),
+							operator,
+							mode,
+							algorithm,
+							false);
 					if (!Util.isNull(aSearchFieldPattern)) {
 						fv.setPattern(aSearchFieldPattern);
 					}
@@ -2062,7 +2058,8 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
 
 						if (d == null) {
 							errors.add(
-								new Exception(MessageResourcesInternal.getMessage("dbforms.error.filter.invalid.date", getLocale())));
+								new Exception(
+									MessageResourcesInternal.getMessage("dbforms.error.filter.invalid.date", getLocale())));
 						} else {
 							if (mode == Constants.SEARCHMODE_AND) {
 								mode_and.addElement(fv);
@@ -2111,7 +2108,8 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
 
 						if (obj == null) {
 							errors.add(
-								new Exception(MessageResourcesInternal.getMessage("dbforms.error.filter.invalid", getLocale())));
+								new Exception(
+									MessageResourcesInternal.getMessage("dbforms.error.filter.invalid", getLocale())));
 						} else {
 							if (mode == Constants.SEARCHMODE_AND) {
 								mode_and.addElement(fv);
@@ -2182,7 +2180,12 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
 		if (childFieldValues != null) {
 			for (int i = 0; i < childFieldValues.length; i++) {
 				if (childFieldValues[i].getRenderHiddenHtmlTag()) {
-					TextFormatter formatter = new TextFormatter(childFieldValues[i].getField(), getLocale(), null, childFieldValues[i].getFieldValueAsObject());
+					TextFormatter formatter =
+						new TextFormatter(
+							childFieldValues[i].getField(),
+							getLocale(),
+							null,
+							childFieldValues[i].getFieldValueAsObject());
 					buf.append("<input type=\"hidden\" name=\"");
 					buf.append(formatter.getFormFieldName(this));
 					buf.append("\" value=\"");
@@ -2437,51 +2440,51 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
 	 * @param  name Description of the Parameter
 	 * @return  The childFieldValue value
 	 */
-/*	
-	public String getChildFieldValue(String name) {
-		ResultSetVector result = null;
-		HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
-
-		if ((webEvent != null) && (webEvent.getType().equals(EventType.EVENT_NAVIGATION_RELOAD))) {
-			Field field = getTable().getFieldByName(name);
-
-			if (field == null) {
-				logCat.warn("Field name : " + name + " is not present in Table " + getTable().getName());
+	/*	
+		public String getChildFieldValue(String name) {
+			ResultSetVector result = null;
+			HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
+	
+			if ((webEvent != null) && (webEvent.getType().equals(EventType.EVENT_NAVIGATION_RELOAD))) {
+				Field field = getTable().getFieldByName(name);
+	
+				if (field == null) {
+					logCat.warn("Field name : " + name + " is not present in Table " + getTable().getName());
+				}
+	
+				String keyIndex =
+					(getFooterReached()) ? (Constants.FIELDNAME_INSERTPREFIX + getPositionPathCore()) : getPositionPath();
+				StringBuffer buf = new StringBuffer();
+	
+				buf.append(Constants.FIELDNAME_PREFIX);
+				buf.append(getTable().getId());
+				buf.append("_");
+				buf.append(keyIndex);
+				buf.append("_");
+				buf.append(field.getId());
+	
+				return ParseUtil.getParameter(request, buf.toString());
 			}
-
-			String keyIndex =
-				(getFooterReached()) ? (Constants.FIELDNAME_INSERTPREFIX + getPositionPathCore()) : getPositionPath();
-			StringBuffer buf = new StringBuffer();
-
-			buf.append(Constants.FIELDNAME_PREFIX);
-			buf.append(getTable().getId());
-			buf.append("_");
-			buf.append(keyIndex);
-			buf.append("_");
-			buf.append(field.getId());
-
-			return ParseUtil.getParameter(request, buf.toString());
-		}
-
-		if (name.indexOf(":") != -1) {
-			name = name.substring(name.indexOf("."), name.length());
-
-			if (parentForm != null) {
-				result = parentForm.getResultSetVector();
+	
+			if (name.indexOf(":") != -1) {
+				name = name.substring(name.indexOf("."), name.length());
+	
+				if (parentForm != null) {
+					result = parentForm.getResultSetVector();
+				} else {
+					result = getResultSetVector();
+				}
 			} else {
 				result = getResultSetVector();
 			}
-		} else {
-			result = getResultSetVector();
+	
+			if (result != null) {
+				return result.getField(name);
+			} else {
+				return null;
+			}
 		}
-
-		if (result != null) {
-			return result.getField(name);
-		} else {
-			return null;
-		}
-	}
-*/
+	*/
 	/** DOCUMENT ME! */
 	public void doFinally() {
 		logCat.info("doFinally called");
