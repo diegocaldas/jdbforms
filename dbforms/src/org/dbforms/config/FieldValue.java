@@ -634,7 +634,7 @@ public class FieldValue implements Cloneable {
 	}
 
 	private Timestamp parseTIMESTAMP(String value) {
-		String valueStr = getFieldValue().trim();
+		String valueStr = value.trim();
 		if (Util.isNull(valueStr)) {
 			return null;
 		}

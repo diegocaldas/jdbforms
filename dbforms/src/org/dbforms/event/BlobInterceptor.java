@@ -10,7 +10,6 @@ import org.dbforms.config.ValidationException;
 import org.dbforms.config.Table;
 import org.dbforms.config.FieldValue;
 import org.dbforms.config.FieldValues;
-import org.dbforms.event.DbEventInterceptorSupport;
 import org.dbforms.util.FileHolder;
 
 /**

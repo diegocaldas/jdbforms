@@ -295,6 +295,11 @@ public class DbFilterConditionTag extends TagSupportWithScriptHandler
              && (state.conditionId == ((DbFilterConditionTag) obj).state.conditionId);
    }
 
+	public int hashCode()
+	{
+ 		return state.conditionId;
+	}
+
 
    /**
     * condition prefix for request parameters
