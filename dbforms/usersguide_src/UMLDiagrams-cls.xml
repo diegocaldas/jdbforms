@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter>
+  <title>Class diagrams</title>
+  <sect1>
+    <title>DAO package</title>
+    <para>
+      The DAO (data access object) package provides the DataSource* classes
+      that manage the database operations (insert, update, delete).
+	</para>
+	<para>
+      Click here for the <ulink url="./images/figures/uml/class/dao.ucd.png">diagram</ulink> picture.
+	</para>
+	<sect2>
+	  <title>DataSourceList</title>
+	  <para> 
+        DataSourceList holds a list of DataSourceFactory objects in the session context.
+        It's needed by the navigation events to store the datasource by a per session mode.
+        So it is possible to reuse the data between different calls 
+        and it's not neccessary to refetch again.
+	  </para>
+	</sect2>
+	  <title>DataSourceFactory</title>
+	  <para>
+	    The DataSourceFactory class holds internally a DataSource object
+		as dataHandler. The dataSource object type is specified by 
+		the dataAccess class name * for the given table. 
+	  </para>
+	</sect2>
+<!--
+        </listitem>
+        <listitem>        
+          DataSourceFactory 
+        </listitem>
+        <listitem>
+          DataSource
+        </listitem>
+        <listitem>
+          DataSourceJDBC
+        </listitem>
+        <listitem>
+          DataSourceXML
+        </listitem>
+        <listitem>
+          org.dbforms.util.ResultSetVector
+        </listitem>
+      </itemizedlist>
+    </para>
+-->
+
+  </sect1>
+</chapter>
