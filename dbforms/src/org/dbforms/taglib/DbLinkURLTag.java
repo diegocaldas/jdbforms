@@ -69,8 +69,7 @@ import org.apache.log4j.Category;
  *
  * @author Joachim Peer <j.peer@gmx.net>
  */
-public class DbLinkURLTag extends DbBaseHandlerTag
-      implements javax.servlet.jsp.tagext.TryCatchFinally
+public class DbLinkURLTag extends DbBaseHandlerTag implements javax.servlet.jsp.tagext.TryCatchFinally
 {
    private static Category       logCat     = Category.getInstance(DbLinkURLTag.class
          .getName()); // logging category for this class
@@ -291,13 +290,13 @@ public class DbLinkURLTag extends DbBaseHandlerTag
          // position within table is not required.
          // if no position was provided/determinated, dbForm will navigate to the first row
          // 2002-11-20 HKK: Fixed encoding bug!
-         tagBuf.append(getDataTag(tagName, "destPos", Util.encode(position)));
+         tagBuf.append(getDataTag(tagName, "destPos", Util.encode(position,pageContext.getRequest().getCharacterEncoding())));
 
          // 2002-11-21 HKK: Allow same keys as in dbgotobutton
          tagBuf.append(getDataTag(tagName, "keyToDestPos",
-         Util.encode(keyToDestPos)));
+         Util.encode(keyToDestPos,pageContext.getRequest().getCharacterEncoding())));
          tagBuf.append(getDataTag(tagName, "keyToKeyDestPos",
-         Util.encode(keyToKeyToDestPos)));
+         Util.encode(keyToKeyToDestPos,pageContext.getRequest().getCharacterEncoding())));
 
 
 

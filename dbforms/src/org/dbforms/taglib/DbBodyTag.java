@@ -39,8 +39,7 @@ import java.io.UnsupportedEncodingException;
  *
  * @author Joachim Peer <j.peer@gmx.net>
  */
-public class DbBodyTag extends BodyTagSupport
-   implements javax.servlet.jsp.tagext.TryCatchFinally
+public class DbBodyTag extends BodyTagSupport implements javax.servlet.jsp.tagext.TryCatchFinally
 
 {
    private String  allowNew = "true"; // by default this is "true" - if so, the body is rendered at least 1 time, even if there are no data rows in the table. this enables the user to insert a new data row. - to disable this feature, allowNew has to be set to "false"
@@ -159,7 +158,8 @@ public class DbBodyTag extends BodyTagSupport
       //
       // now the key of the current dataset is printed out (always)
       // this key will be used by actions such as delete or update.
-      String curKeyString = Util.encode(myParent.getTable().getKeyPositionString(myParent.getResultSetVector()));
+      
+      String curKeyString = Util.encode(myParent.getTable().getKeyPositionString(myParent.getResultSetVector()),pageContext.getRequest().getCharacterEncoding());
 
       myParent.appendToChildElementOutput("<input type=\"hidden\" name=\"k_"
          + myParent.getTable().getId() + "_" + myParent.getPositionPath()
