@@ -466,7 +466,8 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
 	 */
 	public void setFilter(String filter) {
 		this.filter = filter;
-		initFilterFieldValues();
+		if (!Util.isNull(filter)) 
+		   initFilterFieldValues();
 	}
 
 	/**
