@@ -137,7 +137,7 @@ public class DbLabelTag extends TagSupport
     {
         try
         {
-            String fieldValue = NO_DATA;
+				String fieldValue = (nullFieldValue != null) ? nullFieldValue : NO_DATA;
 
             if (!ResultSetVector.isEmptyOrNull(parentForm.getResultSetVector()))
             {
