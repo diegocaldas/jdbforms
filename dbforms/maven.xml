@@ -48,6 +48,11 @@ ${systemScope.setProperty('javax.xml.transform.TransformerFactory','org.apache.x
   </goal>
 
 
+  <preGoal name="jalopy:format">
+      <echo message="fixcrlf"/>
+     <ant antfile="build.xml" target="forcedos"/>
+  </preGoal>
+
   <postGoal name="maven-changes-plugin:report">
       <echo message="build changes.xml"/>
      <doc:text-xdoc  title="Changes"
