@@ -56,9 +56,9 @@ import org.dbforms.util.FileHolder;
 
 public class BlobInterceptor extends DbEventInterceptorSupport {
 
-	protected HashMap blobFieldData;
-	protected final int BLOB_COL = 0;
-	protected final int NAME_COL = 1;		
+	private HashMap blobFieldData;
+	private final int BLOB_COL = 0;
+	private final int NAME_COL = 1;		
 	
 	/**
 	 * takes params, sorts/groups and stores for later use
@@ -93,7 +93,7 @@ public class BlobInterceptor extends DbEventInterceptorSupport {
 	/**
 	 * utility function 
 	 */
-	protected Integer getSuffixAsInteger(String value, String stub) {
+	private Integer getSuffixAsInteger(String value, String stub) {
 		String suffix = value.substring(stub.length());
 		if(suffix.length()==0) return new Integer(Integer.MIN_VALUE); 
 		else return new Integer(suffix);
@@ -104,7 +104,7 @@ public class BlobInterceptor extends DbEventInterceptorSupport {
 	 * info associated to the blob field BLOB_COLUMN is stored in the NAME_COLUMN 
 	 * field.
 	 */	
-	protected void assignBlobData(Table table, FieldValues fieldValues) {
+	private void assignBlobData(Table table, FieldValues fieldValues) {
 		for(Iterator iter = blobFieldData.values().iterator(); iter.hasNext(); ) {
 			String[] s = (String[]) iter.next();
 			FieldValue fv = fieldValues.get(s[BLOB_COL]);
