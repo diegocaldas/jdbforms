@@ -31,7 +31,7 @@
   <siteDirectory>/www/jdbforms.sourceforge.net/www/</siteDirectory> 
   <distributionDirectory></distributionDirectory> 
   <repository>
-    <connection>scm:cvs:pserver:anonymous@cvs.jdbforms.sourceforge.net:/cvsroot/jdbforms</connection> 
+    <connection>scm:cvs:pserver:anonymous@cvs.jdbforms.sourceforge.net:/cvsroot/jdbforms:dbforms</connection> 
     <url>http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/jdbforms</url> 
   </repository>
 
