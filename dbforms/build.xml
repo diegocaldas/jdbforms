@@ -45,7 +45,7 @@
   <property name="etc.dir" value="${cvs.workingdir}/etc" />
   <property name="examples.dir" value="${cvs.workingdir}/examples" />
   <property name="build.dir" value="${cvs.workingdir}/build" />
-  <property name="dist.dir" value="${cvs.workingdir}/dist" />
+  <property name="dist.dir" value="${cvs.workingdir}/target/dist" />
   <property name="dependend.dir" value="${cvs.workingdir}/dependend" />
   <property name="doc.dir" value="${cvs.workingdir}/doc" />
   <property name="htmldoc.dir" value="${doc.dir}/html" />
