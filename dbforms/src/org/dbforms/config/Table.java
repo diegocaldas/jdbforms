@@ -1859,7 +1859,7 @@ public class Table
     *
     * @return a string containing the Table name and field values
     */
-   public String traverse()
+   public String toString()
    {
       StringBuffer buf = new StringBuffer();
       buf.append("\nname=");

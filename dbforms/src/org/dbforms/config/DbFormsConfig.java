@@ -328,22 +328,6 @@ public class DbFormsConfig
 
 
    /**
-    * DOCUMENT ME!
-    *
-    * @param tableID DOCUMENT ME!
-    * @param fieldID DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    */
-   public String getFieldName(int tableID, int fieldID)
-   {
-      Table t = (Table) tables.elementAt(tableID);
-
-      return (t.getFieldName(fieldID));
-   }
-
-
-   /**
     *  Returns the realPath.
     *
     * @return the realPath
@@ -370,7 +354,7 @@ public class DbFormsConfig
     *
     * @return DOCUMENT ME!
     */
-   public String traverse()
+   public String toString()
    {
       StringBuffer buf = new StringBuffer();
 
@@ -378,7 +362,7 @@ public class DbFormsConfig
       {
          Table t = (Table) tables.elementAt(i);
          buf.append("table:\n");
-         buf.append(t.traverse());
+         buf.append(t.toString());
       }
 
       return buf.toString();

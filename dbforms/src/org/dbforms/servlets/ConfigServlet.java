@@ -877,7 +877,7 @@ public class ConfigServlet extends HttpServlet
       {
          DbFormsConfig dbFormsConfig = DbFormsConfigRegistry.instance()
                                                             .lookup();
-         out.println(dbFormsConfig.traverse());
+         out.println(dbFormsConfig.toString());
       }
       catch (Exception e)
       {
