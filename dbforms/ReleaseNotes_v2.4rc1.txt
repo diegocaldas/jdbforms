@@ -232,8 +232,8 @@ A new event framework has been built that DOES NOT re-execute a search query eve
 additional subset of data (as the original did). Also, with this framework, it is possible to use navigation in 
 conjunction with free form selects (as navigation has been made independent of filtering).
 
-Please refer to the Users Guide and bookstore example for details on how to use and configure this feature 
-(the original system remains the default).
+Please refer to the Users Guide for details on how to use and configure the previous "classic" system if desired 
+(the new navigation framework (dataList) is now the default).
 
 3-2) XML data source
 ----------------------
