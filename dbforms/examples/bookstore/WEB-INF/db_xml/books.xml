@@ -9,4 +9,13 @@
    		<surname>Adman</surname>
    	</author>
    </book>	
+   <book>
+   	<title>Der R‰uber Hotzenplotz</title>
+   	<isbn>42</isbn>
+   	<author>
+   		<authorid>3</authorid>	
+   		<name>Preuﬂler</name>
+   		<surname>Ottfried</surname>
+   	</author>
+   </book>	
 </books>
