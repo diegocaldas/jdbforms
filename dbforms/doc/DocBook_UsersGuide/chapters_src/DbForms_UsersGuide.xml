@@ -1,0 +1,31 @@
+<?xml version='1.0'?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+                    "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd"
+     [<!ENTITY ch1 SYSTEM "toDo.xml">
+    <!ENTITY ch2 SYSTEM "Intro.xml">
+    <!ENTITY ch3 SYSTEM "toDo.xml">
+<!ENTITY ch4 SYSTEM "toDo.xml">
+<!ENTITY ch5 SYSTEM "toDo.xml">
+<!ENTITY ch6 SYSTEM "toDo.xml">
+<!ENTITY ch5 SYSTEM "toDo.xml">
+<!ENTITY ch6 SYSTEM "toDo.xml">
+<!ENTITY ch7 SYSTEM "toDo.xml">
+<!ENTITY ch8 SYSTEM "toDo.xml">
+<!ENTITY ch9 SYSTEM "toDo.xml">
+<!ENTITY ch10 SYSTEM "toDo.xml">
+<!ENTITY ch11 SYSTEM "toDo.xml">
+<!ENTITY ch12 SYSTEM "toDo.xml">
+<!ENTITY ch13 SYSTEM "toDo.xml">
+<!ENTITY ch14 SYSTEM "toDo.xml">
+<!ENTITY ch15 SYSTEM "toDo.xml">
+<!ENTITY ch16 SYSTEM "toDo.xml">
+<!ENTITY ch17 SYSTEM "toDo.xml">
+<!ENTITY ch18 SYSTEM "toDo.xml">
+<!ENTITY ch19 SYSTEM "toDo.xml">
+<!ENTITY ch20 SYSTEM "pluggableEvents.xml">
+]>
+<book>
+<title>UsersGuide</title>
+&ch2;
+&ch20;
+</book>
