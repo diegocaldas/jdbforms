@@ -273,7 +273,7 @@
 </para>
 			<para>I highly suggest installing the dbForms example application and taking a detailed look at it  you will quickly find out how the elements behave and which pattern of combined DbForms-elements is used best for each purpose.
 </para>
-			<para>For more detailed information about each DbForms-Custom Tag, please refer to the <emphasis role="bold">DbForms Custom Tag Library</emphasis> chapter, which contains a complete description of all DbForms-Tags and their attributes.
+			<para>For more detailed information about each DbForms-Custom Tag, please refer to the See the <ulink url="../../taglib/DbFormsTags_Frame.html"><citetitle>DbForms Custom Tag Library</citetitle></ulink> chapter, which contains a complete description of all DbForms-Tags and their attributes.
 </para><para/>
 			<sect2>
 				<title>Main-Menu
