@@ -141,7 +141,8 @@ public class Field
          type = FieldTypes.CHAR;
       }
       else if (fieldType.startsWith("numeric")
-                     || fieldType.startsWith("number"))
+                     || fieldType.startsWith("number")
+                     || fieldType.startsWith("decimal"))
       {
          type = FieldTypes.NUMERIC;
       }
