@@ -2,18 +2,21 @@
 <chapter>
   <title>Navigation</title>
   <sect1>
+   
+  
     <title>Introduction</title>
     <para>Since version 1.1.4 DbForms contains two different navigation systems:</para>
     <itemizedlist>
       <listitem>
-        <para>The original one - in the classic package - and a new one in the datalist package. The original code re-execute the search query every time the client requests a subset of the hits. This works only with pages which do not use free form select!</para>
-        <para>This means that <emphasis role="bold">forms using a <computeroutput> whereClause </computeroutput> will use the new system.  Forms using <computeroutput>filters</computeroutput>, <computeroutput>orderBy</computeroutput> or nothing will use the "classic" system.</emphasis>  See the <computeroutput>dbform</computeroutput>tag in <ulink url="../../taglib/DbFormsTags_Frame.html"><citetitle>the TagLib </citetitle></ulink>for more information.</para>
+        <para>The original one - in the classic package. The original code re-executes the search query every time the client requests a subset of the hits. THIS DOES NOT WORK WHEN A <computeroutput>whereClause</computeroutput> ATTRIBUTE IS USED IN THE <computeroutput>dbForm</computeroutput> TAG!</para>
+        <para>See the <computeroutput>dbform</computeroutput>tag in <ulink url="../../taglib/DbFormsTags_Frame.html"><citetitle>the TagLib </citetitle></ulink>for more information.</para>
         
         </listitem>
       <listitem>
-        <para>A new one - in the datalist package - wich implements a simplified data list pattern described by Claudio Fratarcangeli, Data List Handler: A Pattern for Large Search Result Sets, published on TheServerSide.com.</para>
+        <para>A new one - in the datalist package - which implements a simplified data list pattern described by Claudio Fratarcangeli,Data List Handler: A Pattern for Large Search Result Sets, published on TheServerSide.com. THE NEW SYSTEM NEEDS TO BE CONFIGURED IN DBFORMS-CONFIG.XML, WORKS WITH A <computeroutput>whereClause</computeroutput>, AND DOES NOT RE-EXECUTE THE SEARCH QUERY EVERY TIME.</para>
       </listitem>
     </itemizedlist>
+    <para>The new system is destined to become the eventual default, so page developers using this version are encouraged to use the new system (and a <computeroutput>whereClause</computeroutput>attributes if necessary instead of <computeroutput>orderBy</computeroutput> and/or <computeroutput>filter </computeroutput> attributes.</para> 
   </sect1>
   <sect1>
     <title>Classic navigation</title>
@@ -41,7 +44,7 @@
         <para>Data source is not only jdbc. It should be possible to write data source handlers for all other data, e.g. xml.</para>
       </listitem>
       <listitem>
-        <para>Navigation should be independend from sort of filtering. Navigation should be possible with free form select, too.</para>
+        <para>Navigation should be independent from filtering. Navigation should be possible with free form select, too --i.e. use of a <computeroutput>whereClause</computeroutput> should be ok.</para>
       </listitem>
     </itemizedlist>
     <para>
@@ -141,6 +144,39 @@
         </para>
       </listitem>
     </itemizedlist>
+  </sect1>
+  <sect1><title>DataList Configuration in Dbforms-config.xml</title>
+  <para>To enable the new navigation system, please add the following within dbforms-config.xml:</para>
+  <screen>
+&lt;events&gt;
+    &lt;database-events&gt;
+      &lt;database-event type=&quot;insert&quot; className=&quot;org.dbforms.event.datalist.InsertEvent&quot; /&gt;
+       &lt;database-event type=&quot;update&quot; className=&quot;org.dbforms.event.datalist.UpdateEvent&quot; /&gt;
+       &lt;database-event type=&quot;delete&quot; className=&quot;org.dbforms.event.datalist.DeleteEvent&quot; /&gt;
+     &lt;/database-events&gt;
+
+     &lt;navigation-events&gt;
+       &lt;navigation-event type=&quot;navGoto&quot; className=&quot;org.dbforms.event.datalist.GotoEvent&quot; /&gt;
+       &lt;navigation-event type=&quot;navPrev&quot; className=&quot;org.dbforms.event.datalist.NavPrevEvent&quot; /&gt;
+       &lt;navigation-event type=&quot;navNext&quot; className=&quot;org.dbforms.event.datalist.NavNextEvent&quot; /&gt;
+       &lt;navigation-event type=&quot;navFirst&quot; className=&quot;org.dbforms.event.datalist.NavFirstEvent&quot; /&gt;
+       &lt;navigation-event type=&quot;navLast&quot; className=&quot;org.dbforms.event.datalist.NavLastEvent&quot; /&gt;
+     &lt;/navigation-events&gt;
+&lt;/events&gt;
+  </screen>
+  <para>The new navigation system can also be enabled on a table by table basis by:</para>
+  <itemizedlist mark="opencircle">
+ 
+<listitem>
+<para>
+ <link linkend='regi'>Registering new navigation classes</link></para>
+ 
+</listitem>
+<listitem><para>
+<link linkend='tbyt'>Overriding on a table by table basis</link></para>
+</listitem>
+</itemizedlist>
+  
   </sect1>
 </chapter>
 
