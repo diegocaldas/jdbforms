@@ -324,7 +324,7 @@ public class StartReportServlet extends HttpServlet
     */
    public static String getConnectionName(HttpServletRequest request)
    {
-      String   res      = "default";
+      String   res      = SqlUtil.DEFAULT_CONNECTION;
       WebEvent webEvent = (WebEvent) request.getAttribute("webEvent");
 
       if ((webEvent != null) && (webEvent.getTableId() != -1))

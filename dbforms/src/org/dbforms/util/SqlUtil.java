@@ -49,8 +49,9 @@ import org.dbforms.config.DbConnection;
 public class SqlUtil
 {
    // logging category for this class
-   static Category logCat = Category.getInstance(SqlUtil.class.getName());
+   private static Category logCat = Category.getInstance(SqlUtil.class.getName());
 
+   public static final String DEFAULT_CONNECTION = "default";
    /**
     *
     */

@@ -420,7 +420,7 @@ public class Controller extends HttpServlet
       // get the connection name from the request;
       if ((connectionName = request.getParameter("invname_" + tableId)) == null)
       {
-         connectionName = "default";
+         connectionName = SqlUtil.DEFAULT_CONNECTION;
       }
 
       if ((con = (Connection) connectionsTable.get(connectionName)) == null)
