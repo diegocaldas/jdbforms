@@ -1,7 +1,6 @@
+<%@ taglib uri="/WEB-INF/dbforms.tld" prefix="db" %>
+<%@page import="org.dbforms.taglib.DbFormContext"  %>
 <html>
-	<%@ taglib uri="/WEB-INF/dbforms.tld" prefix="db" %>
-    <%@page import="org.dbforms.taglib.DbFormContext"  %>
-   
 	<head>
 	   <db:base />
 	   <target="_top">

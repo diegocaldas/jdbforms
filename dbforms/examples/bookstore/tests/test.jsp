@@ -3,8 +3,6 @@
 <html>
   <body>
     Hello !
-
-<%@ include file="httpSnooper.jsp" %> 
-
+    <%@ include file="httpSnooper.jsp" %>
   </body>
 </html>

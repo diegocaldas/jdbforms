@@ -1,5 +1,4 @@
 <%@ taglib uri="/WEB-INF/dbforms.tld" prefix="db" %>
-
 <%@ page import="org.dbforms.taglib.DbFormContext" %>
 <%@ page import="org.dbforms.config.ResultSetVector" %>
 <%

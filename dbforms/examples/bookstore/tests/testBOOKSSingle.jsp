@@ -10,6 +10,8 @@
 			maxRows="1" 
 			tableName="BOOK"
 			gotoPrefix="fv_"
+			javascriptValidation="true"
+			javascriptFieldsArray="true"
 		>
 			<db:header>
 				<db:errors/>
