@@ -26,6 +26,8 @@ package org.dbforms.util;
 import java.sql.*;
 import java.io.*;
 import org.apache.log4j.Category;
+import java.text.*;
+import org.dbforms.DbFormsConfig;
 
 /****
  *
@@ -44,8 +46,19 @@ public class SqlUtil {
 	String valueStr = ((String) value).trim();
 
 	if(valueStr.length() == 0) return null;
+	SimpleDateFormat sdf = DbFormsConfig.getDateFormatter();
 
-	Date result = java.sql.Date.valueOf(valueStr);
+	//	Date result = java.sql.Date.valueOf(valueStr);
+	Date result = null;
+	try
+	{
+		result = new java.sql.Date(sdf.parse(valueStr).getTime());
+	}
+	catch (Exception exc) {
+		result = null;}
+		
+	if (result==null)	
+		result = java.sql.Date.valueOf(valueStr);
 	return result;
   }    
 
@@ -71,7 +84,6 @@ public class SqlUtil {
 		try {
 
 			logCat.debug("fillPreparedStatement( ps, "+col+", "+val+", "+fieldType+")...");
-
 			Object value=null;
 
 			//Check for hard-coded NULL

@@ -223,6 +223,10 @@ public class ConfigServlet extends HttpServlet {
 	// Configure the processing rules
 
 
+		// parse "DateFormatter" 
+
+		digester.addCallMethod("dbforms-config/date-format", "setDateFormatter", 0);
+
 		// parse "Table" - object + add it to parent
 
 		digester.addObjectCreate("dbforms-config/table","org.dbforms.Table");

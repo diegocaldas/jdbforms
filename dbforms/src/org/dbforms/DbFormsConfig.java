@@ -30,6 +30,7 @@ import javax.servlet.http.*;
 import org.dbforms.util.DbConnection;
 
 import org.apache.log4j.Category;
+import java.text.SimpleDateFormat;
 
 /****
  * <p>
@@ -49,6 +50,7 @@ public class DbFormsConfig {
 	// logging category for this class
 
 	public static final String CONFIG = "dbformsConfig";
+	private static SimpleDateFormat sdf;
 
 	private Vector tables;
 	private Hashtable tableNameHash; // for quicker lookup by name
@@ -102,6 +104,18 @@ public class DbFormsConfig {
 	*/
 	public ServletContext getServletContext() {
 		return servletConfig.getServletContext();
+	}
+
+	public static SimpleDateFormat getDateFormatter() {
+		if (sdf == null) {
+			/* init */
+			sdf = new SimpleDateFormat();
+		}
+		return sdf;
+	}
+
+	public static void setDateFormatter(String pattern) {
+		sdf = new SimpleDateFormat(pattern);
 	}
 
 	// We have the table and field ID - we need the field name  
