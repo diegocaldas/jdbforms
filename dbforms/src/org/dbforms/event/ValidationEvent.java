@@ -26,12 +26,13 @@ import java.util.Vector;
 import java.util.Locale;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.validator.ValidatorResources;
 import org.apache.commons.validator.Validator;
 import org.apache.commons.validator.ValidatorResults;
 import org.dbforms.validation.ValidatorConstants;
-import org.dbforms.DbFormsConfig;
-import org.dbforms.DbFormsErrors;
+import org.dbforms.config.DbFormsConfig;
+import org.dbforms.util.DbFormsErrors;
 import org.dbforms.util.MessageResources;
 
 

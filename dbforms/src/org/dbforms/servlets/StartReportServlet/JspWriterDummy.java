@@ -26,7 +26,7 @@
  * $Date$
  *
  */
-package org.dbforms.util;
+package org.dbforms.servlets.StartReportServlet;
 
 /**
  * Implementation of a JspWriter which do not write anything
