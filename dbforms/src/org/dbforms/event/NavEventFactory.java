@@ -22,9 +22,12 @@
  */
 package org.dbforms.event;
 import javax.servlet.http.HttpServletRequest;
+
+import org.CVS.*;
 import org.apache.log4j.Category;
 import org.dbforms.*;
 import org.dbforms.util.*;
+import org.dbforms.config.*;
 import org.dbforms.event.eventtype.EventType;
 
 
