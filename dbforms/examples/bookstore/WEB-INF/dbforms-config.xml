@@ -123,7 +123,7 @@
 			<field 
 				name="FILE" 
 				fieldType="DISKBLOB"  
-				directory="c:/temp"
+				directory="c:/tmp"
 			    encoding="true"
 			    size="1200"
 			/>

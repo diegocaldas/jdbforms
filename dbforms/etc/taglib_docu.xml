@@ -10953,7 +10953,7 @@ pageContext or pass in a value directly and then use the textFormat tag to forma
 					</info>
 				</attribute>
 			</tag>
-			<!-- **************************** CewolfPiData tag ***********************************-->
+			<!-- **************************** CewolfPieData tag ***********************************-->
 			<tag>
 				<name>pieData</name>
 				<summary>

@@ -5,5 +5,10 @@
  				<msg name="required" key="field name required"  resource="false"/>
 	     </field>   
       </form>
+     <form name="BOOK">
+         <field    property="TITLE" depends="required">
+ 				<msg name="required" key="field name required"  resource="false"/>
+	     </field>
+      </form>
    </formset>   
 </form-validation>

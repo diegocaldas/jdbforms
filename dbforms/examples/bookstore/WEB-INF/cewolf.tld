@@ -1185,5 +1185,18 @@
           The ID of the class which implements the appropriate com.jrefinery.chart.tooltips.ToolTipGenerator.
         </description>
     </attribute>
+	<attribute>
+		<name>useJFreeChartLinkGenerator</name>
+		<required>false</required>
+		<rtexprvalue>true</rtexprvalue>
+		<description>If the links provided by the JFreeChart renderer should be used.</description>
+	</attribute>
+	<attribute>
+		<name>useJFreeChartTooltipGenerator</name>
+		<required>false</required>
+		<rtexprvalue>true</rtexprvalue>
+		<description>If the tooltips provided by the JFreeChart renderer should be used.</description>		
+	</attribute>	
+	
 </tag>
 </taglib>

@@ -53,11 +53,13 @@ public class BookstoreCalcFieldAndSearchInterceptor
        ResultSetVector rsv          = (ResultSetVector) data.getAttribute(DbEventInterceptorData.RESULTSET);
        Object[]        row          = (Object[]) data.getAttribute(DbEventInterceptorData.OBJECTROW);
        int             colISBN      = rsv.getFieldIndex("ISBN");
+       int res;
        if (row[colISBN] == null) {
-       	  return IGNORE_OPERATION;
+       	  res = IGNORE_OPERATION;
        } else {
-    	   return GRANT_OPERATION;
+    	  res = GRANT_OPERATION;
        }
+       return res;
    }
 
 
@@ -75,7 +77,7 @@ public class BookstoreCalcFieldAndSearchInterceptor
       int             colISBN      = rsv.getFieldIndex("ISBN");
       int             colTITEL     = rsv.getFieldIndex("TITLE");
       int             colSBN_TITEL = rsv.getFieldIndex("ISBN_TITLE");
-      row[colSBN_TITEL] = row[colISBN] + "----" + row[colTITEL];
+      row[colSBN_TITEL] = "+-" + row[colISBN] + "-CALC-" + row[colTITEL] + "-+";
 
       int     colROWNUM = rsv.getFieldIndex("ROW_NUM");
       Integer oRowNum = (Integer) data.getAttribute("ROWNUM");

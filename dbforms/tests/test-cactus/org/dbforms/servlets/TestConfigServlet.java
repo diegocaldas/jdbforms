@@ -86,10 +86,10 @@ public class TestConfigServlet extends ServletTestCase {
       ConfigServlet configServlet = new ConfigServlet();
       configServlet.init(config);
 
-      DbFormsConfig config = DbFormsConfigRegistry.instance()
+      DbFormsConfig pconfig = DbFormsConfigRegistry.instance()
                                                   .lookup();
 
-      Table         tblAuthor = config.getTableByName("AUTHOR");
+      Table         tblAuthor = pconfig.getTableByName("AUTHOR");
       assertTrue("Found tblAuthor", tblAuthor.getName().equals("AUTHOR"));
    }
 }
