@@ -4,6 +4,52 @@
     <title>Tasks</title>
   </properties>
   <body>
+  	<section name="v1.1.4">
+	  <p>
+	    <table>
+	    	<tr>
+	    		<th>ToDo</th>
+	    		<th>Assigned to</th>
+	    		<th>State</th>
+	    	</tr>
+	      	<tr>
+	      		<td>merge the 1_1_4dev developers branch back into the main trunk</td>
+	      		<td>Henner Kollmann</td>
+	      		<td>open</td>
+	      	</tr>
+	      	<tr>
+	      		<td>Make the new navigation system to the default system</td>
+	      		<td>Henner Kollmann</td>
+	      		<td>open</td>
+	      	</tr>
+	      	<tr>
+	      		<td>Remove * imports so checkstyle will make less error</td>
+	      		<td>unassigned</td>
+	      		<td>open</td>
+	      	</tr>
+	      	<tr>
+	      		<td>Clean up tags to write out clean XHTML</td>
+	      		<td>unassigned</td>
+	      		<td>open</td>
+	      	</tr>
+	      	<tr>
+	      		<td>
+			   For the disabled:
+			   Write name attribute to each generated table cell with tablename_columnname_rownum
+	      		</td>
+	      		<td>unassigned</td>
+	      		<td>open</td>
+	      	</tr>
+	      	<tr>
+	      		<td>
+				Kepp textField empty when numeric field in database is null
+	      		</td>
+	      		<td>unassigned</td>
+	      		<td>open</td>
+	      	</tr>
+	  </p>
+  	
+  	</section>
   </body>
 </document>
 
