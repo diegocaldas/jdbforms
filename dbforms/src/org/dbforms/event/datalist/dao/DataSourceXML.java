@@ -61,6 +61,8 @@ public class DataSourceXML extends DataSource
    private static DocumentBuilder builder         = null;
    private FieldValue[] filterConstraint;
    private FieldValue[] orderConstraint;
+   private FieldValue[]  sqlFilterParams;
+   private String        sqlFilter;
    private XMLDataResult data;
    private String[] keys;
    private Object[][] dataObject;
@@ -107,7 +109,8 @@ public class DataSourceXML extends DataSource
    {
       this.filterConstraint = filterConstraint;
       this.orderConstraint  = orderConstraint;
-      // FIXME find a way to transform sqlFilter in a XPath query
+      this.sqlFilter        = sqlFilter;
+      this.sqlFilterParams  = sqlFilterParams;
    }
 
 
@@ -251,17 +254,59 @@ public class DataSourceXML extends DataSource
       return doc;
    }
 
+   private String insertParamsInSqlFilter()
+   {
+      /** substitute ? with corresponding value in list */
+      int          p1  = 0;
+      int          p2  = sqlFilter.indexOf('?', p1);
+      StringBuffer buf = new StringBuffer();
+      int          cnt = 0;
 
-   private String getXPath() throws Exception
+      while (p2 > -1)
+      {
+         // add the string before the next ?
+         buf.append(sqlFilter.substring(p1, p2));
+
+         // if values are exausted, then abort
+         if (cnt >= sqlFilterParams.length)
+         {
+            logCat.error("reference to a missing filterValue in " + sqlFilter);
+
+            return null;
+         }
+
+         // retrieve value
+         String value = (String) sqlFilterParams[cnt].getFieldValue();
+
+         if (!Util.isNull(value))
+         {
+            // add value to string gbuffer
+            buf.append("\"");
+            buf.append(value);
+            buf.append("\"");
+         }
+
+
+         // restart search from next char after ? 
+         p1 = p2 + 1;
+         p2 = sqlFilter.indexOf('?', p1);
+         cnt++;
+      }
+
+
+      // add remaining part of string
+      buf.append(sqlFilter.substring(p1));
+
+      return buf.toString();
+   }
+
+
+   private String parseFilterConstraint()
    {
       StringBuffer buf = new StringBuffer();
-      buf.append(Util.replaceRealPath(getTable().getAlias(), 
-                                      DbFormsConfigRegistry.instance().lookup().getRealPath()));
 
-      if (filterConstraint != null)
+      if (!FieldValue.isNull(filterConstraint))
       {
-         buf.append("[");
-
          for (int i = 0; i < filterConstraint.length; i++)
          {
             if (i != 0)
@@ -318,7 +363,32 @@ public class DataSourceXML extends DataSource
             buf.append(filterConstraint[i].getFieldValue());
             buf.append("\"");
          }
+      }
 
+      return buf.toString();
+   }
+
+
+   private String getXPath() throws Exception
+   {
+      StringBuffer buf = new StringBuffer();
+      buf.append(Util.replaceRealPath(getTable().getAlias(), 
+                                      DbFormsConfigRegistry.instance().lookup().getRealPath()));
+
+      String filter    = parseFilterConstraint();
+      String sqlFilter = insertParamsInSqlFilter();
+
+      if (!Util.isNull(filter) || !Util.isNull(sqlFilter))
+      {
+         buf.append("[");
+         buf.append(filter);
+
+         if (!Util.isNull(filter))
+         {
+            buf.append(" and ");
+         }
+
+         buf.append(sqlFilter);
          buf.append("]");
       }
 

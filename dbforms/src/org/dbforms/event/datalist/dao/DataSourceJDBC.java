@@ -32,7 +32,6 @@ import java.sql.Types;
 import java.sql.Clob;
 import java.util.Vector;
 import java.util.Enumeration;
-
 import org.dbforms.config.Constants;
 import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.Field;
@@ -68,9 +67,9 @@ public class DataSourceJDBC extends DataSource
    private String       tableList;
    private FieldValue[] filterConstraint;
    private FieldValue[] orderConstraint;
-	private FieldValue[] sqlFilterParams;
+   private FieldValue[] sqlFilterParams;
    private String       sqlFilter;
-   private boolean      fetchedAll       = false;
+   private boolean      fetchedAll = false;
 
    /**
     * Creates a new DataSourceJDBC object.
@@ -106,29 +105,30 @@ public class DataSourceJDBC extends DataSource
       if (con != null)
       {
          close();
-         connectionName = null; 
-         this.con = con;
+         connectionName = null;
+         this.con       = con;
       }
    }
 
 
    /**
-    * set the connection parameter for the DataSouce.
-    * virtual method, if you
-    * need the connection data you must override the method
-    * 
-    * In this special case we need our own connection to save it in the session.
+    * set the connection parameter for the DataSouce. virtual method, if you
+    * need the connection data you must override the method  In this special
+    * case we need our own connection to save it in the session.
     * 
     * @param dbConnectionName   name of the used db connection. Can be used to
-    *                            get an own db connection, e.g. to hold it during the 
-    *                            session (see DataSourceJDBC for example!) 
+    *        get an own db connection, e.g. to hold it during the  session
+    *        (see DataSourceJDBC for example!)
     */
    public void setConnectionName(String dbConnectionName)
    {
       close();
       con = null;
+
+
       // To prevent empty connection name. We always need our own connection!
-      connectionName = Util.isNull(dbConnectionName)?"default":dbConnectionName;
+      connectionName = Util.isNull(dbConnectionName)
+                          ? "default" : dbConnectionName;
    }
 
 
@@ -155,22 +155,22 @@ public class DataSourceJDBC extends DataSource
     * @param orderConstraint  FieldValue array used to build a cumulation of
     *        rules for ordering (sorting) and restricting fields.
     * @param sqlFilter       sql condition to add to where clause
+    * @param sqlFilterParams list of FieldValues to fill the sqlFilter with
     */
    public void setSelect(FieldValue[] filterConstraint, 
-                         FieldValue[] orderConstraint, 
-                         String sqlFilter,
-								 FieldValue[] sqlFilterParams)
+                         FieldValue[] orderConstraint, String sqlFilter, 
+                         FieldValue[] sqlFilterParams)
    {
       this.filterConstraint = filterConstraint;
       this.orderConstraint  = orderConstraint;
       this.sqlFilter        = sqlFilter;
-		this.sqlFilterParams  = sqlFilterParams;
+      this.sqlFilterParams  = sqlFilterParams;
    }
 
 
    private void closeConnection()
    {
-		fetchedAll = true;
+      fetchedAll = true;
 
       if (rs != null)
       {
@@ -234,6 +234,8 @@ public class DataSourceJDBC extends DataSource
       }
 
       closeConnection();
+
+
       // reset fetched all flag. So DataSource can be reopened after close!
       fetchedAll = false;
    }
@@ -247,24 +249,26 @@ public class DataSourceJDBC extends DataSource
    protected void open() throws SQLException
    {
       if (!fetchedAll && (rs == null))
-      { 
-			if (((con == null) || con.isClosed()) && !Util.isNull(connectionName)) 
-			{
-				try
-				{
-					this.con = SqlUtil.getConnection(DbFormsConfigRegistry.instance()
-																							.lookup(), 
-																connectionName);
-				}
-				catch (Exception e)
-				{
-					getLogCat().error(e);
-				}
-			}
+      {
+         if (((con == null) || con.isClosed()) && !Util.isNull(connectionName))
+         {
+            try
+            {
+               this.con = SqlUtil.getConnection(DbFormsConfigRegistry.instance()
+                                                                     .lookup(), 
+                                                connectionName);
+            }
+            catch (Exception e)
+            {
+               getLogCat().error(e);
+            }
+         }
 
          if (con == null)
-            throw new SQLException("no connection found!"); 
-            
+         {
+            throw new SQLException("no connection found!");
+         }
+
          if (Util.isNull(whereClause))
          {
             query = getTable()
@@ -274,7 +278,8 @@ public class DataSourceJDBC extends DataSource
 
             stmt = con.prepareStatement(query);
             rs   = getTable()
-                      .getDoSelectResultSet(filterConstraint, orderConstraint, sqlFilterParams, 
+                      .getDoSelectResultSet(filterConstraint, orderConstraint, 
+                                            sqlFilterParams, 
                                             Constants.COMPARE_NONE, 
                                             (PreparedStatement) stmt);
          }
@@ -288,7 +293,7 @@ public class DataSourceJDBC extends DataSource
          }
 
          ResultSetMetaData rsmd = rs.getMetaData();
-         colCount   = rsmd.getColumnCount();
+         colCount = rsmd.getColumnCount();
       }
    }
 
@@ -701,8 +706,8 @@ public class DataSourceJDBC extends DataSource
       }
 
       // 20021031-HKK: Build in table!!
-      PreparedStatement ps = con.prepareStatement(getTable()
-                                                     .getDeleteStatement());
+      PreparedStatement ps = con.prepareStatement(
+                                      getTable().getDeleteStatement());
 
 
       // now we provide the values

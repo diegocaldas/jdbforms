@@ -73,11 +73,10 @@ public abstract class DataSource
 
 
    /**
-    * set the connection parameter for the DataSouce.
-    * virtual method, if you
+    * set the connection parameter for the DataSouce. virtual method, if you
     * need the connection data you must override the method
     * 
-   * @param con                     the JDBC Connection object
+    * @param con                     the JDBC Connection object
     */
    public void setConnection(Connection con)
    {
@@ -85,13 +84,12 @@ public abstract class DataSource
 
 
    /**
-    * set the connection parameter for the DataSouce.
-    * virtual method, if you
+    * set the connection parameter for the DataSouce. virtual method, if you
     * need the connection data you must override the method
     * 
-     * @param dbConnectionName   name of the used db connection. Can be used to
-     *                           get an own db connection, e.g. to hold it during the 
-     *                           session (see DataSourceJDBC for example!) 
+    * @param dbConnectionName   name of the used db connection. Can be used to
+    *        get an own db connection, e.g. to hold it during the  session
+    *        (see DataSourceJDBC for example!)
     */
    public void setConnectionName(String dbConnectionName)
    {
@@ -122,11 +120,12 @@ public abstract class DataSource
     * @param orderConstraint FieldValue array used to build a cumulation of
     *        rules for ordering (sorting)
     * @param sqlFilter       sql condition to add to where clause
+    * @param sqlFilterParams list of FieldValues to fill the sqlFilter with
     */
    public abstract void setSelect(FieldValue[] filterConstraint, 
                                   FieldValue[] orderConstraint, 
-                                  String sqlFilter,
-											 FieldValue[] sqlFilterParams);
+                                  String sqlFilter, 
+                                  FieldValue[] sqlFilterParams);
 
 
    /**
@@ -206,11 +205,13 @@ public abstract class DataSource
 
 
    /**
-    * return true if there are more records to fetch then the given record number
-    *
+    * return true if there are more records to fetch then the given record
+    * number
+    * 
     * @param i index of last fetched row.
-    *  
-    * @return true if there are more records to fetch then the given record number
+    * 
+    * @return true if there are more records to fetch then the given record
+    *         number
     * 
     * @throws SQLException
     */
@@ -477,12 +478,13 @@ public abstract class DataSource
             {
                directory = Util.replaceRealPath(curField.getDirectory(), 
                                                 DbFormsConfigRegistry.instance()
-                                                                     .lookup().getRealPath());
+                                                                     .lookup()
+                                                                     .getRealPath());
             }
             catch (Exception e)
             {
-			   logCat.error(e.getMessage());	
-			   directory = curField.getDirectory();
+               logCat.error(e.getMessage());
+               directory = curField.getDirectory();
             }
 
             if (fieldType == FieldTypes.DISKBLOB)
@@ -528,7 +530,7 @@ public abstract class DataSource
                   catch (IOException ioe)
                   {
                      //#checkme: this would be a good place for rollback in database!!
-					 logCat.error(ioe);	
+                     logCat.error(ioe);
                      throw new SQLException("could not store file '"
                                             + fileHolder.getFileName()
                                             + "' to dir '" + directory + "'");
@@ -571,11 +573,12 @@ public abstract class DataSource
             {
                directory = Util.replaceRealPath(curField.getDirectory(), 
                                                 DbFormsConfigRegistry.instance()
-                                                                     .lookup().getRealPath());
+                                                                     .lookup()
+                                                                     .getRealPath());
             }
             catch (Exception e)
             {
-               logCat.error(e);	
+               logCat.error(e);
                throw new SQLException(e.getMessage());
             }
 
