@@ -170,8 +170,10 @@ public class GotoEvent extends NavigationEvent
         if (!Util.isNull(position) && (srcTable != null) && !Util.isNull(childField) && !Util.isNull(parentField))
         {
             FieldValue[] fv = table.mapChildFieldValues(srcTable, parentField, childField, position);
-            childFieldValues = fv;
-            compMode = FieldValue.COMPARE_NONE;
+  	    if (fv != null) {
+		childFieldValues = fv;
+		compMode = FieldValue.COMPARE_NONE;
+	    }
         }
         else if (!Util.isNull(position))
         {
