@@ -9,7 +9,6 @@
     <para>
       <screen>
 
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Jump-start Instructions for installing dbforms on Windows 2000 with a MS
 SQL Server Database
 
@@ -17,40 +16,49 @@ Authors:  Richard Bondi (rbondi@ergito.com)
           Matthew Stein (mstein@ergito.com)
 Created:  27 JAN 2003
 Version:  beta 1
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
 </screen>
     </para>
     <para> 
-This document was written to help you get dbforms up and running, no
-more; hence the "jump-start" in the title.</para>
-    <para>Dbforms can be thought of *essentially* as an open source add-on for
-the Tomcat servlet server that allows you to update, delete, insert,
-search, and browse database tables via jsp pages, without having to
-write these jsp pages. It is available at
-http://jdbforms.sourceforge.net.</para>
-    <para>This file contains instructions for creating a dbforms installation for
-MS SQL Server, for a single table that has no foreign keys, and an
-identity column. We wrote it because the existing instructions are
-spread out among different files, are missing for at least one important
-step, and do not cover problems specific to Microsoft SQL Server.</para>
-    <para>We use a pre-release version of dbforms because in separate document, we
-will describe how to use tables with foreign keys, and our solution only
-works with the pre-release version.</para>
-    <para>In a number of places in this document, we confess our ignorance with
-the disclaimer "but it works for us." We would be glad to be enlightened
-by future readers, and to improve this document accordingly.</para>
-    <para>Please email any comments or enhancements to Richard Bondi
-(rbondi@ergito.com).</para>
+      This document was written to help you get dbforms up and running, no
+      more; hence the "jump-start" in the title.
+    </para>
     <para>
-Richard Bondi
-Matthew Stein
-</para>
+      Dbforms can be thought of *essentially* as an open source add-on for
+      the   Tomcat servlet server that allows you to update, delete, insert,
+      search, and browse database tables via jsp pages, without having to
+      write these jsp pages. It is available at
+      http://jdbforms.sourceforge.net.
+    </para>
+    <para>
+      This file contains instructions for creating a dbforms installation for
+      MS SQL Server, for a single table that has no foreign keys, and an
+      identity column. We wrote it because the existing instructions are
+      spread out among different files, are missing for at least one important
+      step, and do not cover problems specific to Microsoft SQL Server.
+    </para>
+    <para>
+      We use a pre-release version of dbforms because in separate document, we
+      will describe how to use tables with foreign keys, and our solution only
+      works with the pre-release version.
+    </para>
+    <para>
+      In a number of places in this document, we confess our ignorance with
+      the disclaimer "but it works for us." We would be glad to be enlightened
+      by future readers, and to improve this document accordingly.
+    </para>
+    <para>
+      Please email any comments or enhancements to Richard Bondi (rbondi@ergito.com).
+    </para>
+    <para>
+      Richard Bondi
+      Matthew Stein
+    </para>
   </sect1>
   <sect1>
     <title>Requirements</title>
     <para>
       <screen>
-=============
 Download all of these files (many of them in zips) to a temporary
 location; you will be moving them to permanent locations as part of the
 dbforms installation.
@@ -71,30 +79,25 @@ dbforms installation.
              
 - commons-beanutils.jar
   - ver. 1.0
-  - downloadable from 
-        <ulink url="http://jdbforms.sourceforge.net">
-          <citetitle>http://jdbforms.sourceforge.net</citetitle>
-        </ulink>, click "Resources"
-    under "Download"
-  - downloadable from 
-        <ulink url="http://jakarta.apache.org">
-          <citetitle>http://jakarta.apache.org</citetitle>
-        </ulink>, Commons project
+  - downloadable from <ulink url="http://jdbforms.sourceforge.net"><citetitle>http://jdbforms.sourceforge.net</citetitle></ulink>, 
+    click "Resources" under "Download"
+  - downloadable from  <ulink url="http://jakarta.apache.org"><citetitle>http://jakarta.apache.org</citetitle></ulink>, 
+    Commons project
 
 -commons-collections.jar
   - ver. 1.0
-  - downloadable from http://jdbforms.sourceforge.net, click "Resources"
-                under "Download"
+  - downloadable from http://jdbforms.sourceforge.net, click "Resources" 
+    under "Download"
   - downloadable from http://jakarta.apache.org, Commons project
         
 - commons-digester.jar
   - ver. 1.0
-  - downloadable from http://jdbforms.sourceforge.net, click "Resources"
+  - downloadable from http://jdbforms.sourceforge.net, click "Resources" 
     under "Download"
   - downloadable from http://jakarta.apache.org, Commons project
         
 - commons-lang.jar
-        - ver. 1.0
+  - ver. 1.0
   - downloadable from http://jdbforms.sourceforge.net, click "Resources"
     under "Download"
   - downloadable from http://jakarta.apache.org, Commons project
@@ -131,9 +134,9 @@ dbforms installation.
       </screen>
     </para>
     <para>
-Finally, you should also have enough knowledge of XML not to go "huh?"
-when we write about "attributes", "elements" or "tags".
-</para>
+      Finally, you should also have enough knowledge of XML not to go "huh?"
+      when we write about "attributes", "elements" or "tags".
+    </para>
   </sect1>
   <sect1>
     <title>Installation</title>
@@ -142,36 +145,33 @@ when we write about "attributes", "elements" or "tags".
       <title>j2sdk 2.0 v1.4</title>
       <para>
         <screen>
-======================
 You must use this version for these dbforms instructions, because of its
 xml/xsl classes.
-</screen>
+        </screen>
       </para>
     </sect2>
     <sect2>
       <title>Install MS JDBC Driver</title>
       <para>
         <screen>
-======================
 Install the Microsoft JDBC driver for Microsoft SQL Server:
 
 - run the setup.exe.
 
   - Currently, when you run the install, it identifies itself as a
-        Service Pack 1. That's ok, it includes the original JDBC driver
-        too.
-</screen>
+    Service Pack 1. That's ok, it includes the original JDBC driver
+    too.
+        </screen>
       </para>
     </sect2>
     <sect2>
       <title>Install Tomcat and create "dbf" webapp</title>
       <para>
         <screen>
-======================================
 - Just run the friendly install program.
 
-  - Note: we couldn't get the NT service option to work: we could never
-    start the service, so we suggest you skip it.
+- Note: we couldn't get the NT service option to work: we could never
+  start the service, so we suggest you skip it.
 
 - Read and follow the RUNNING.txt file, included with the download,
   but also availabe at http://jakarta.apache.org under the Tomcat
@@ -179,9 +179,9 @@ Install the Microsoft JDBC driver for Microsoft SQL Server:
 
 - Edit the %CATALINA_HOME%\conf\server.xml file:
   - Find the first Context element
-  -       Add the following element:
+  - Add the following element:
 
-      &gt;Context path="/dbf" docBase="dbf" debug="0" reloadable="true"/&lt;
+    &gt;Context path="/dbf" docBase="dbf" debug="0" reloadable="true"/&lt;
 
     - "path" is a relative virtual path on the server (e.g. localhost/dbf)
     - "docBase" is the directory where the files are located; this is relative
@@ -189,26 +189,25 @@ Install the Microsoft JDBC driver for Microsoft SQL Server:
       as c:\mydir\here.
     - For more information, read the Tomcat docs.
 
--       Create the directory specified in the "docBase" above.
--       Create a sub-directory, WEB-INF
--       Create a sub-directory, WEB-INF\lib
-</screen>
+- Create the directory specified in the "docBase" above.
+- Create a sub-directory, WEB-INF
+- Create a sub-directory, WEB-INF\lib
+        </screen>
       </para>
     </sect2>
     <sect2>
       <title>Create dbforms web.xml file</title>
       <para>
         <screen>
- 
-===========================
 - Create a file called web.xml with the contents shown below, and put it
-  in the WEB-INF directory you just created. 
-          <footnote>
-            <para>Please note that you will not find this file's full contents in
-the documentation. Different parts of the dbforms documentation contain
-parts of, but not all of it;  an essential part is missing
-altogether and only in the mailing list archive.</para>
-          </footnote> 
+  in the WEB-INF directory you just created. <footnote>
+    <para>
+      Please note that you will not find this file's full contents in
+      the documentation. Different parts of the dbforms documentation contain
+      parts of, but not all of it;  an essential part is missing
+      altogether and only in the mailing list archive.
+    </para>
+  </footnote> 
 
 !! WARNING !!
 (You must manually remove any line breaks that occur in any
@@ -220,7 +219,7 @@ of the elements below. Formatting this file made them inevitable.)
 &lt;!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application
 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd"&gt;
 &lt;web-app&gt;
-  &lt;!--=========== DbForms Configuration Servlet ===========--&gt;
+  &lt;!-- =========== DbForms Configuration Servlet =========== --&gt;
   &lt;servlet&gt;
     &lt;servlet-name&gt;org.dbforms.ConfigServlet&lt;/servlet-name&gt;
     &lt;servlet-class&gt;org.dbforms.ConfigServlet&lt;/servlet-class&gt;
@@ -260,6 +259,7 @@ of the elements below. Formatting this file made them inevitable.)
     &lt;taglib-location&gt;/WEB-INF/dbforms.tld&lt;/taglib-location&gt;
   &lt;/taglib&gt;
 &lt;/web-app&gt;
+
 :::::::::::::::::::::::::::: snip :::::::::::::::::::::::::::::::::
 
 - Create a file index.html that contains simply "hello world" and put
@@ -271,46 +271,40 @@ of the elements below. Formatting this file made them inevitable.)
     http://localhost:8080/dbf/index.html
 
 - If there is a problem, it is a Tomcat problem. You'll have to solve
-        that on your own using all available Tomcat support resources. (Start
-        with the file RUNNING.txt.)
-
+  that on your own using all available Tomcat support resources. (Start
+  with the file RUNNING.txt.)
         </screen>
       </para>
     </sect2>
     <sect2>
-      <title>
-Get what web.xml needs</title>
+      <title>Get what web.xml needs</title>
       <para>
         <screen>
- 
-======================
-
 A number of files are referred to in web.xml. We list them here by their
 &lt;param-name&gt; names, and explain what to do about them.
 
 * &lt;param-name&gt;dbformsConfig&lt;/param-name&gt;
-We create this file below, with devgui.
+  We create this file below, with devgui.
 
 * &lt;param-name&gt;log4j.configuration&lt;/param-name&gt;
-Create a file called log4j.properties and put it into WEB-INF. It should
-have the following contents:
+  Create a file called log4j.properties and put it into WEB-INF. It should
+  have the following contents:
 
 !! WARNING !!
 (You must manually remove any line breaks that occur in any
 of the # comments below. Formatting this file made them inevitable.)
+
 :::::::::::::::::::::::::::: snip :::::::::::::::::::::::::::::::::
 
-#Log4j Configuation file
+# Log4j Configuation file
 # Created by Matthew Stein, 1/14/2003
 # Based out of text in
 # http://www.javaworld.com/jw-11-2000/jw-1122-log4j-p2.html
-
 
 # First, set the "rootCategory" so everything gets logged if necessary.
 
 # (For multiple logs beyond those specified here, use , name format.
 log4j.rootCategory=ALL, A2, A3
-
 
 
 # Define A2
@@ -335,20 +329,21 @@ log4j.appender.A3.layout.ConversionPattern=%d{DATE} %F %p: %C(%x) - %m%n
 
 * &lt;param-name&gt;validation&lt;/param-name&gt;,
   &lt;param-name&gt;validator-rules&lt;/param-name&gt;
-See the Validation_Framework chapter for more information on this.
+  See the Validation_Framework chapter for more information on this.
 
 * &lt;taglib-uri&gt;/WEB-INF/dbforms.tld&lt;/taglib-uri&gt;
-Put %DBFORMS_HOME%\dist\*.tld into WEB-INF
+  Put %DBFORMS_HOME%\dist\*.tld into WEB-INF
+
 
 Copy required jars
-===================
+
 - Copy these jars, downloaded previously, into WEB-INF\lib:
   - commons-beanutils.jar
   - commons-collections.jar
   - commons-digester.jar
   - commons-logging.jar
   - commons-validator.jar
-        -       commons-lang.jar
+  - commons-lang.jar
   - cos.jar
   - jakarta-oro-2.0.6.jar
   - log4j.jar
@@ -359,23 +354,20 @@ Copy required jars
   - msbase.jar
   - msutil.jar
 
-- Copy %DBFORMS_HOME%\dist\dbforms_v1_1_3pr1.jar into WEB-INF\lib
-
- 
-</screen>
+- Copy %DBFORMS_HOME%\dist\dbforms_v1_1_3pr1.jar into WEB-INF\lib 
+        </screen>
       </para>
     </sect2>
     <sect2>
       <title>Prepare MS SQL Server</title>
       <para>
         <screen>
-=====================
 In this document, we will assume the following names for MS SQL Server;
 just substitute those of your actual MS SQL Server installation:
 
-server name:  birdserver
+server name:    birdserver
 database name:  parrotDb
-table name:   PLUMAGE_TABLE
+table name:     PLUMAGE_TABLE
 
 The table PLUMAGE_TABLE has the following properties:
 - you are willing to modify its rows
@@ -384,40 +376,39 @@ The table PLUMAGE_TABLE has the following properties:
 
 (In a different document, we describe how to use dbforms with tables
 that have foreign keys.)
-</screen>
+        </screen>
       </para>
     </sect2>
     <sect2>
       <title>Create MS SQL Server user</title>
       <para>
         <screen>
-=========================
 In order for dbforms to point to parrotDb, and not some other default db
 like "master", we create a user to whom we assign parrotDb as the
-default. (This isn't strictly necessary, see footnote 
-          <footnote>
-            <para>There are two reasons why you might check this. -First, it is
-a way to ensure that you are referring to the db you want, in this case
-"parrotDb". In this example, we chose to do this by creating a Sql
-Server user whose default database we can specify; that way, when Java
-connects to the db via JDBC, we guarantee that "parrotDb" will be used.
-Instead, you could choose any user (with appropriate permissions), not
-specify its default db, and instead explicitly state the database and
-user by checking "Include Schema name in table name." Unfortunately, we
-are baffled by what a Schema name is -- the list of them in devgui
-doesn't make sense to us. But that's our problem, not devgui's or Sql
-Server's. Second, if you generate dbforms pages for more than one
-"catalog" (a MS SQL Server database), then of course you have to specify
-the catalog of each table. Otherwise neither JDBC nor SQL Server will
-know which db to look for the table in. We haven't tried this, and we
-hope never to have to!</para>
-          </footnote> ; but we
-chose to do it that way.)
+default. (This isn't strictly necessary, see footnote <footnote>
+    <para>
+      There are two reasons why you might check this. -First, it is
+      a way to ensure that you are referring to the db you want, in this case
+      "parrotDb". In this example, we chose to do this by creating a Sql
+      Server user whose default database we can specify; that way, when Java
+      connects to the db via JDBC, we guarantee that "parrotDb" will be used.
+      Instead, you could choose any user (with appropriate permissions), not
+      specify its default db, and instead explicitly state the database and
+      user by checking "Include Schema name in table name." Unfortunately, we
+      are baffled by what a Schema name is -- the list of them in devgui
+      doesn't make sense to us. But that's our problem, not devgui's or Sql
+      Server's. Second, if you generate dbforms pages for more than one
+      "catalog" (a MS SQL Server database), then of course you have to specify
+      the catalog of each table. Otherwise neither JDBC nor SQL Server will
+      know which db to look for the table in. We haven't tried this, and we
+      hope never to have to!
+    </para>
+  </footnote>; but we chose to do it that way.)
 
 We will create:
 
-user on parrotDb:               dbfuser
-password:     dbfpwd
+user on parrotDb:         dbfuser
+password:                 dbfpwd
 user's default database:  parrotDb
 
 - Open Sql Enterprise Manager (*ii*)
@@ -434,17 +425,13 @@ user's default database:  parrotDb
   - public (assigned automatically)
   - db_datareader
   - db_datawrite
-
         </screen>
       </para>
     </sect2>
     <sect2>
-      <title>
-Generate dbforms-config.xml</title>
+      <title>Generate dbforms-config.xml</title>
       <para>
         <screen>
- 
-===========================
 - (optional) When you installed the Microsoft JDBC driver above,  it
   installed 3 jars (in the \lib directory underneath the  installation
   directory). Copy the three Microsoft JDBC jars to a simple, top level
@@ -454,13 +441,14 @@ Generate dbforms-config.xml</title>
 - Put the three MS JDBC jars into your classpath
 
 - Set DBFORMS_HOME to the directory you installed dbforms to, e.g.
-  c:\java\dbforms or whatever. 
-          <footnote>
-            <para>Shortcut: Instead of right-clicking on My Computer and selecting
-Properties, hold down the Windows key and press the Break key. Don't
-forget that after making changes to environment variables only affect
-new "cmd" dos windows, not any that are already open.</para>
-          </footnote> 
+  c:\java\dbforms or whatever. <footnote>
+    <para>
+      Shortcut: Instead of right-clicking on My Computer and selecting
+      Properties, hold down the Windows key and press the Break key. Don't
+      forget that after making changes to environment variables only affect
+      new "cmd" dos windows, not any that are already open.
+    </para>
+  </footnote> 
 
 (These steps are described more generally in the Readme_DevGui (no
 extension) in the %DBFORMS_HOME% directory. I have left out the xml/xsl
@@ -480,37 +468,38 @@ the Project menu.)
 
 - Database tab:
     - JDBC driver class: this what is inside the Java call
-                    class.forName. You can find it inside the MS JDBC documentation. Itis: 
-                 
-                        com.microsoft.jdbc.sqlserver.SQLServerDriver
+      class.forName. You can find it inside the MS JDBC documentation. It is: 
+                
+      com.microsoft.jdbc.sqlserver.SQLServerDriver
                     
     - JDBC URL: Again, this is in the help file. It is a parameter of
-                    the Java JDBC DriverManager.getConnection call. It is:
+      the Java JDBC DriverManager.getConnection call. It is:
                     
-                        jdbc:microsoft:sqlserver://yourServerName:1433
+      jdbc:microsoft:sqlserver://yourServerName:1433
                     
-                    or in the example we are using:
+      or in the example we are using:
                     
       jdbc:microsoft:sqlserver://birdserver:1433
 
-(If your server is on another machine, you might want to use the full
-DNS name, e.g. birdserver.internal.pets4all.com, not just birdserver.)
+      (If your server is on another machine, you might want to use the full
+      DNS name, e.g. birdserver.internal.pets4all.com, not just birdserver.)
 
   - Username and password:
     In our example, these are "dbfuser" and "dbfpwd".
   
-        - Click Test connection.
+    - Click Test connection.
     - If unsuccessful, double-check the above values, and that the
       MS JDBC jars are really in your classpath.
 
 - XML Config tab
-  This tab is for creating the dbforms-config.xml. 
-          <footnote>
-            <para>You can actually call it whatever you want, since you specify the
-file's name in your web.xml file, in the &lt;param-name&gt;
-dbformsConfig&lt;/param-name&gt;.
-</para>
-          </footnote> 
+  This tab is for creating the dbforms-config.xml. <footnote>
+    <para>
+      You can actually call it whatever you want, since you specify the
+      file's name in your web.xml file, in the &lt;param-name&gt;
+      dbformsConfig&lt;/param-name&gt;.
+    </para>
+  </footnote>
+
   - DbForms config file:
     Specify the path and file name for the docBase you specified \WEB-
     INF\dbforms-config.xml If you don't have one yet (and you shouldn't,
@@ -576,12 +565,13 @@ dbformsConfig&lt;/param-name&gt;.
   In devgui, click the fourth tab, XSL Transformation. From this dialog,
   DevGui simply transforms the dbforms-config.xml file with each of the
   xsl style sheets listed. Each style sheet produces a different jsp or
-  set of jsps. 
-          <footnote>
-            <para>If you know xsl, feel free to edit them to your heart's delight,
-and store your edited ones in a different directory: just select that
-directory here before you start transforming.</para>
-          </footnote> 
+  set of jsps. <footnote>
+    <para>
+      If you know xsl, feel free to edit them to your heart's delight,
+      and store your edited ones in a different directory: just select that
+      directory here before you start transforming.
+    </para>
+  </footnote> 
   That's the beauty of dbforms: if you have 20 tables, you don't have to
   lose your mind generating custom jsps for each one; instead, you come
   to this dialog and generate them all.
@@ -599,7 +589,6 @@ directory here before you start transforming.</para>
 
   - Do *not* edit and/or save the xsl stylesheets displayed at the
     bottom of the dialog.
-
         </screen>
       </para>
     </sect2>
@@ -608,7 +597,6 @@ directory here before you start transforming.</para>
     <title>Use it</title>
     <para>
       <screen>
-======
 - Stop and start tomcat
 - Point your browser to:
 
@@ -630,20 +618,21 @@ directory here before you start transforming.</para>
 
 - Click all the buttons on menu.jsp; you should be able to figure out
   what they do from there.
-</screen>
+      </screen>
     </para>
   </sect1>
   <sect1>
     <title>Conclusion</title>
-    <para>==========</para>
     <para>
-This document was written to help you get dbforms up and running, no
-more; hence the "jump-start" in the title. For example,if you want to
-know how to display more rows at a time in Edit Range, we refer you to
-the dbforms documentation. Or to configure log4j to customize logging,
-see the log4j documentation.</para>
-    <para>Once again, please email all suggestions and improvements for this
-document to rbondi@ergito.com.
-</para>
+      This document was written to help you get dbforms up and running, no
+      more; hence the "jump-start" in the title. For example,if you want to
+      know how to display more rows at a time in Edit Range, we refer you to
+      the dbforms documentation. Or to configure log4j to customize logging,
+      see the log4j documentation.
+    </para>
+    <para>
+      Once again, please email all suggestions and improvements for this
+      document to rbondi@ergito.com.
+    </para>
   </sect1>
 </chapter>
