@@ -45,11 +45,15 @@ This documents summarizes the changes since last official release 1.1.2,
 that are of interest to end users. There have also been several internal 
 enhancements which are not mentioned here.
 
-2) Compatibility Warning
-------------------------
+2) Compatibility Warnings
+-------------------------
  The format attributes of tags queryData and tableData have  different
 sementics now that are not 100% backwards compatible. See section below
 for details.
+
+Also, the insert button on previously generated list_and_single.jsp pages
+will not appear unless the attribute showAlways="true" is added to the 
+insertButtonTag. Otherwise, it will only appear in insert mode such as through a NavNewEvent.
 
 3) Contributors
 ---------------
