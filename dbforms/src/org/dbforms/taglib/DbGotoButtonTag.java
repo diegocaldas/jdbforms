@@ -118,7 +118,7 @@ public class DbGotoButtonTag extends DbBaseButtonTag  {
 			if(destination!=null) {
 				tagBuf.append(getDataTag(tagName, "fu", destination));
 			}
-
+			
 			if(destTable!=null) {
 				tagBuf.append(getDataTag(tagName, "destTable", destTable));
 			}

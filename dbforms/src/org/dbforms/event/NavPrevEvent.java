@@ -36,40 +36,47 @@ import org.apache.log4j.Category;
  * @author Joe Peer <j.peer@gmx.net>
  */
 
-public class NavPrevEvent extends NavigationEvent {
+public abstract class NavPrevEvent extends NavigationEvent 
+{
+    static  Category logCat    = Category.getInstance(NavPrevEvent.class.getName()); // logging category for this class
+    private int      stepWidth = 1;
 
-	static Category logCat = Category.getInstance(NavPrevEvent.class.getName()); // logging category for this class
 
-	private int stepWidth = 1;
+    /**
+     *
+     */
+    public NavPrevEvent(String action, HttpServletRequest request, DbFormsConfig config) 
+    {
+        this.config = config;
+        tableId = ParseUtil.getEmbeddedStringAsInteger(action, 2, '_');
+        this.table = config.getTable(tableId);
+        
+        String stepWidthStr = ParseUtil.getParameter(request,"data"+action+"_sw");
+        if(stepWidthStr!=null)
+            stepWidth = Integer.parseInt(stepWidthStr);
+    }
 
-	public NavPrevEvent(String action, HttpServletRequest request, DbFormsConfig config) {
-		this.config = config;
-		tableId = ParseUtil.getEmbeddedStringAsInteger(action, 2, '_');
-		this.table = config.getTable(tableId);
 
-		String stepWidthStr = ParseUtil.getParameter(request,"data"+action+"_sw");
-		if(stepWidthStr!=null)
-			stepWidth = Integer.parseInt(stepWidthStr);
-	}
+    /**
+     *  for call from localevent
+     */
+    public NavPrevEvent(Table table, DbFormsConfig config) 
+    {
+        this.table   = table;
+        this.tableId = table.getId();
+        this.config  = config;
+    }
 
-	// for call from localevent
-	public NavPrevEvent(Table table, DbFormsConfig config) {
-	  this.table = table;
-	  this.tableId = table.getId();
-	  this.config = config;
-	}
 
-	public ResultSetVector processEvent(FieldValue[] childFieldValues, FieldValue[] orderConstraint, int count, String firstPosition, String lastPosition, Connection con)
-	throws SQLException {
-		logCat.info("==>NavPrevEvent");
 
-		// select in inverted order everyting thats greater than firstpos
-		table.fillWithValues(orderConstraint, firstPosition);
-		FieldValue.invert(orderConstraint);
-		ResultSetVector resultSetVector = table.doConstrainedSelect(table.getFields(), childFieldValues, orderConstraint, FieldValue.COMPARE_EXCLUSIVE, count, con);
-		FieldValue.invert(orderConstraint);
-		resultSetVector.flip();
-		return resultSetVector;
-	}
-
+    /**
+     *  subclasses must implement this method.
+     */
+    public abstract ResultSetVector processEvent(FieldValue[] childFieldValues, 
+                                                 FieldValue[] orderConstraint, 
+                                                 int          count, 
+                                                 String       firstPosition, 
+                                                 String       lastPosition, 
+                                                 Connection con)
+	throws java.sql.SQLException;
 }

@@ -59,6 +59,11 @@ public class DbNavNewButtonTag extends DbBaseButtonTag {
 				if(followUp != null) {
 					tagBuf.append( getDataTag(tagName, "fu", followUp) );
 				}
+				
+				if(followUpOnError != null) {
+					tagBuf.append( getDataTag(tagName, "fue", followUpOnError) );
+				}
+				
 
 				tagBuf.append(getButtonBegin());
 		  tagBuf.append(" name=\"");

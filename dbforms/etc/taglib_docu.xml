@@ -114,6 +114,15 @@
                         <p>site to be invoked after action - nota bene: this followUp may be overruled by &quot;followUp&quot;-attributes of actionButtons</p>
                     </info>
                 </attribute>
+                
+				<attribute>
+                    <name>followUpOnError</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>
+                        <p>site to be invoked after action, if error occured on page - nota bene: this followUp may be overruled by &quot;followUp&quot;-attributes of actionButtons</p>
+                    </info>
+                </attribute>                
 
                 <attribute>
                     <name>autoUpdate</name>
@@ -2348,7 +2357,17 @@
                     <required>false</required>
                     <rtexprvalue>true</rtexprvalue>
                 </attribute>
-
+                
+				<attribute>
+                    <name>followUpOnError</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>
+                        <p>site to be invoked after this button has been clicked and the associated actions are done</p>
+                        <p>this attribute over-rules the followUpOnError-attribute of the parent form(s)!</p>
+                    </info>
+                </attribute>                
+                
                 <attribute>
                     <name>accessKey</name>
                     <required>false</required>
@@ -2557,6 +2576,16 @@
                     <required>false</required>
                     <rtexprvalue>true</rtexprvalue>
                 </attribute>
+
+				<attribute>
+                    <name>followUpOnError</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>
+                        <p>site to be invoked after this button has been clicked and the associated actions are done</p>
+                        <p>this attribute over-rules the followUpOnError-attribute of the parent form(s)!</p>
+                    </info>
+                </attribute>                
 
                 <attribute>
                     <name>associatedRadio</name>
@@ -2777,6 +2806,16 @@
                     <required>false</required>
                     <rtexprvalue>true</rtexprvalue>
                 </attribute>
+
+				<attribute>
+                    <name>followUpOnError</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>
+                        <p>site to be invoked after this button has been clicked and the associated actions are done</p>
+                        <p>this attribute over-rules the followUpOnError-attribute of the parent form(s)!</p>
+                    </info>
+                </attribute>                
 
                 <attribute>
                     <name>associatedRadio</name>
@@ -3001,6 +3040,16 @@
                     <rtexprvalue>true</rtexprvalue>
                 </attribute>
 
+				<attribute>
+                    <name>followUpOnError</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>
+                        <p>site to be invoked after this button has been clicked and the associated actions are done</p>
+                        <p>this attribute over-rules the followUpOnError-attribute of the parent form(s)!</p>
+                    </info>
+                </attribute>                
+
                 <attribute>
                     <name>accessKey</name>
                     <required>false</required>
@@ -3214,6 +3263,16 @@
                     <rtexprvalue>true</rtexprvalue>
                 </attribute>
 
+				<attribute>
+                    <name>followUpOnError</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>
+                        <p>site to be invoked after this button has been clicked and the associated actions are done</p>
+                        <p>this attribute over-rules the followUpOnError-attribute of the parent form(s)!</p>
+                    </info>
+                </attribute>                
+
                 <attribute>
                     <name>accessKey</name>
                     <required>false</required>
@@ -3419,6 +3478,16 @@
                     <required>false</required>
                     <rtexprvalue>true</rtexprvalue>
                 </attribute>
+                
+				<attribute>
+                    <name>followUpOnError</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>
+                        <p>site to be invoked after this button has been clicked and the associated actions are done</p>
+                        <p>this attribute over-rules the followUpOnError-attribute of the parent form(s)!</p>
+                    </info>
+                </attribute>                
 
                 <attribute>
                     <name>accessKey</name>
@@ -3625,6 +3694,16 @@
                     <required>false</required>
                     <rtexprvalue>true</rtexprvalue>
                 </attribute>
+
+				<attribute>
+                    <name>followUpOnError</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>
+                        <p>site to be invoked after this button has been clicked and the associated actions are done</p>
+                        <p>this attribute over-rules the followUpOnError-attribute of the parent form(s)!</p>
+                    </info>
+                </attribute>                
 
                 <attribute>
                     <name>accessKey</name>
@@ -3834,11 +3913,21 @@
                     <rtexprvalue>true</rtexprvalue>
                 </attribute>
 
+				<attribute>
+                    <name>followUpOnError</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>
+                        <p>site to be invoked after this button has been clicked and the associated actions are done</p>
+                        <p>this attribute over-rules the followUpOnError-attribute of the parent form(s)!</p>
+                    </info>
+                </attribute>                
+
                 <attribute>
                     <name>accessKey</name>
                     <required>false</required>
                     <rtexprvalue>true</rtexprvalue>
-                    <info>The keyboard character used to move focus immediately to thiselement.</info>
+                    <info>The keyboard character used to move focus immediately to this element.</info>
                 </attribute>
 
                 <attribute>
@@ -4274,34 +4363,6 @@
 
             </tag>
 
-			<!-- **************************** hasNoErrors tag ***********************************-->									
-			
-            <tag>
-                <name>hasNoErrors</name>
-                <summary>Redirects to requested page if no error has occured</summary>
-                <tagclass>org.dbforms.taglib.HasNoErrorsTag</tagclass>
-                <bodycontent>empty</bodycontent>
-
-                <attribute>
-                    <name>name</name>
-                    <required>false</required>
-                    <rtexprvalue>true</rtexprvalue>
-                    <info>
-                        <p>the name that should be used for retrieving the error-data from the session</p>
-                        <p>default = "errors"</p>
-                    </info>
-                </attribute>
-
-                <attribute>
-                    <name>redirect</name>
-                    <required>true</required>
-                    <rtexprvalue>true</rtexprvalue>
-                    <info>
-                        <p>Page to redirect to</p>
-                    </info>
-                </attribute>
-
-            </tag>
 
 			<!-- **************************** hasMoreRecords tag ***********************************-->									
 			

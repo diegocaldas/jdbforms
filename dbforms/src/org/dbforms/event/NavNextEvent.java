@@ -36,36 +36,46 @@ import org.apache.log4j.Category;
  * @author Joe Peer <j.peer@gmx.net>
  */
 
-public class NavNextEvent extends NavigationEvent {
+public abstract class NavNextEvent extends NavigationEvent 
+{
+    static  Category logCat    = Category.getInstance(NavNextEvent.class.getName()); // logging category for this class
+    private int      stepWidth = 1;
 
-	static Category logCat = Category.getInstance(NavNextEvent.class.getName()); // logging category for this class
 
-	private int stepWidth = 1;
+    /**
+     *
+     */
+    public NavNextEvent(String action, HttpServletRequest request, DbFormsConfig config) 
+    {
+        this.config = config;
+        tableId = ParseUtil.getEmbeddedStringAsInteger(action, 2, '_');
+        this.table = config.getTable(tableId);
+        
+        String stepWidthStr = ParseUtil.getParameter(request,"data"+action+"_sw");
+        if(stepWidthStr!=null)
+            stepWidth = Integer.parseInt(stepWidthStr);
+    }
 
-	public NavNextEvent(String action, HttpServletRequest request, DbFormsConfig config) {
-		this.config = config;
-		tableId = ParseUtil.getEmbeddedStringAsInteger(action, 2, '_');
-		this.table = config.getTable(tableId);
 
-		String stepWidthStr = ParseUtil.getParameter(request,"data"+action+"_sw");
-		if(stepWidthStr!=null)
-			stepWidth = Integer.parseInt(stepWidthStr);
-	}
+    /**
+     *  for call from localevent
+     */
+    public NavNextEvent(Table table, DbFormsConfig config) 
+    {
+        this.table = table;
+        this.tableId = table.getId();
+        this.config = config;
+    }
 
-	// for call from localevent
-	public NavNextEvent(Table table, DbFormsConfig config) {
-	  this.table = table;
-	  this.tableId = table.getId();
-	  this.config = config;
-	}
 
-	public ResultSetVector processEvent(FieldValue[] childFieldValues, FieldValue[] orderConstraint, int count, String firstPosition, String lastPosition, Connection con)
-	throws SQLException {
-		logCat.info("==>NavNextEvent");
-
-		// select in given order everyting thats greater than lastpos
-		table.fillWithValues(orderConstraint, lastPosition);
-		return table.doConstrainedSelect(table.getFields(), childFieldValues, orderConstraint, FieldValue.COMPARE_EXCLUSIVE, count, con);
-	}
-
+    /**
+     *  subclasses must implement this method.
+     */
+    abstract public ResultSetVector processEvent(FieldValue[] childFieldValues, 
+                                                 FieldValue[] orderConstraint, 
+                                                 int          count, 
+                                                 String       firstPosition, 
+                                                 String       lastPosition, 
+                                                 Connection   con)
+	throws java.sql.SQLException;
 }

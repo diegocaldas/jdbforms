@@ -49,6 +49,7 @@ public abstract class WebEvent {
   protected DbFormsConfig config;
   protected int tableId; // which table does the event operate on?
   protected String followUp;
+  protected String followUpOnError;
 
 	public void setTableId(int tableId) {
 		this.tableId = tableId;
@@ -79,4 +80,19 @@ public abstract class WebEvent {
 	}
 
 
+	/**
+	 * Gets the followUpOnError
+	 * @return Returns a String
+	 */
+	public String getFollowUpOnError() {
+		return followUpOnError;
+	}
+	/**
+	 * Sets the followUpOnError
+	 * @param followUpOnError The followUpOnError to set
+	 */
+	public void setFollowUpOnError(String followUpOnError) {
+		this.followUpOnError = followUpOnError;
+	}
+
 }

@@ -9,7 +9,7 @@ $Date$
 TO DO
 ------
 
-* Integration of formProc infrastructure (formproc.sourceforge.net) for validation.
+* Integration of validation infrastructure.
 
 * Rendering of read-only html widgets (isReadOnly attribute in input tags)
 
@@ -18,8 +18,6 @@ TO DO
 * Limit the select list (in query)to fields used in the body tag (useFieldsInBody attribute in form tag)
 
 * Allow to specify a display format for items in the select, checkbox and radio tags (format attribute)
-
-* Support an upgrade to Poolman 2+ (Connection Pool Manager)
 
 * Devise a technique (tag?) for 'populating' (without going to the server) a child select box, given a 
   selection in the parent select box.

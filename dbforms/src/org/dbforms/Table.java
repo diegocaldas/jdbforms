@@ -711,7 +711,7 @@ public class Table {
 
 			int firstColon = position.indexOf(':', startIndex);
 			int secondColon = position.indexOf(':', firstColon + 1);
-
+			
 			String fieldIdStr = position.substring(startIndex, firstColon);
 			int fieldId = Integer.parseInt(fieldIdStr);
 
@@ -885,8 +885,10 @@ public class Table {
 		StringTokenizer st = new StringTokenizer(order, ",");
 		while (st.hasMoreTokens()) {
 
-			String token = st.nextToken();
-			logCat.info("token=" + token);
+			//Remove leading and trailing white space characters.
+			String token = st.nextToken().trim();
+
+			logCat.info("token = " + token);
 
 			FieldValue fv = new FieldValue();
 			boolean sortDirection = Field.ORDER_ASCENDING; // we propose the default
@@ -1183,49 +1185,21 @@ public class Table {
 		// No need to add extra comments, just re-throw exceptions as SqlExceptions
 			
 		} catch (ClassNotFoundException cnfe) {
-			cleanUpConnectionAfterException(con);
 			throw new SQLException(cnfe.getMessage());
 		} catch (InstantiationException ie) {
-			cleanUpConnectionAfterException(con);
 			throw new SQLException(ie.getMessage());
 		} catch (IllegalAccessException iae) {
-			cleanUpConnectionAfterException(con);
 			throw new SQLException(iae.getMessage());
 		} catch (SQLException sqle) {
-			cleanUpConnectionAfterException(con);
 			throw new SQLException(sqle.getMessage());
 		} catch (MultipleValidationException mve) {
-			cleanUpConnectionAfterException(con);
 			throw new MultipleValidationException(mve.getMessages());
 		} catch (ValidationException ve) {
-			cleanUpConnectionAfterException(con);
 			throw new SQLException(ve.getMessage());
 		}
 
 	}
 
-	/**
-	 Grunikiewicz.philip@hydro.qc.ca
-	 2001-10-29
-	 In our development, we sometimes set the connection object to autoCommit = false in the interceptor (Pre... methods).
-	 This allows us to have dbForms do part of the required transaction (other parts are done via jdbc calls).
-	 If the database throws an exception, then we need to make sure that the connection is reinitialized (rollbacked) before it
-	 is sent back into the connection pool.
-	 */
-
-	public void cleanUpConnectionAfterException(Connection con) {
-
-		try {
-			// Do only if autoCommit is disabled
-			if (!con.getAutoCommit()) {
-				con.rollback();
-				con.setAutoCommit(true);
-			}
-		} catch (java.sql.SQLException e) {
-			e.printStackTrace(System.out);
-		}
-	}
-	
 	
 	// We have the field ID - we need the field name  
   	public String getFieldName(int fieldID) 

@@ -146,6 +146,8 @@ public class Controller extends HttpServlet {
 				} catch (SQLException sqle) {
 					sqle.printStackTrace();
 					errors.addElement(sqle);
+					cleanUpConnectionAfterException(con);
+					
 				} catch (MultipleValidationException mve) {
 					java.util.Vector v = null;
 					if ((v = mve.getMessages()) != null) {
@@ -154,6 +156,7 @@ public class Controller extends HttpServlet {
 							errors.addElement(enum.nextElement());
 						}
 					}
+					cleanUpConnectionAfterException(con);
 				}
 
 			} else {
@@ -180,6 +183,7 @@ public class Controller extends HttpServlet {
 							dbE.processEvent(con);
 						} catch (SQLException sqle2) {
 							errors.addElement(sqle2);
+							cleanUpConnectionAfterException(con);
 						} catch (MultipleValidationException mve) {
 							java.util.Vector v = null;
 							if ((v = mve.getMessages()) != null) {
@@ -188,6 +192,7 @@ public class Controller extends HttpServlet {
 									errors.addElement(enum.nextElement());
 								}
 							}
+							cleanUpConnectionAfterException(con);
 						}
 					}
 				}
@@ -197,8 +202,13 @@ public class Controller extends HttpServlet {
 			//if(e instanceof NavigationEvent) {
 			request.setAttribute("webEvent", e);
 			//}
-
-			request.getRequestDispatcher(e.getFollowUp()).forward(request, response);
+			
+			
+			// PG  - if form contained errors, use followupOnError
+			if (errors.size() != 0)
+				request.getRequestDispatcher(e.getFollowUpOnError()).forward(request, response);
+			else
+				request.getRequestDispatcher(e.getFollowUp()).forward(request, response);			
 
 		} finally {
 			// The connection should not be null - If it is, then you might have an infrastructure problem!
@@ -232,5 +242,29 @@ public class Controller extends HttpServlet {
 			logCat.error("!!!senderror message crashed!!!" + ioe);
 		}
 	}
+	
+	
+	/**
+	 Grunikiewicz.philip@hydro.qc.ca
+	 2001-10-29
+	 In our development, we sometimes set the connection object to autoCommit = false in the interceptor (Pre... methods).
+	 This allows us to have dbForms do part of the required transaction (other parts are done via jdbc calls).
+	 If the database throws an exception, then we need to make sure that the connection is reinitialized (rollbacked) before it
+	 is sent back into the connection pool.
+	 */
+
+	public void cleanUpConnectionAfterException(Connection con) {
+
+		try {
+			// Do only if autoCommit is disabled
+			if (con != null && (!con.getAutoCommit())) {
+				con.rollback();
+				con.setAutoCommit(true);
+			}
+		} catch (java.sql.SQLException e) {
+			e.printStackTrace(System.out);
+		}
+	}	
+	
 
 }

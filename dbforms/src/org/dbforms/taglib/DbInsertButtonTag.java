@@ -65,7 +65,11 @@ logCat.info("pos DbInsertButtonTag 3");
 				if(followUp != null) {
 					tagBuf.append( getDataTag(tagName, "fu", followUp) );
 				}
-
+				
+				if(followUpOnError != null) {
+					tagBuf.append( getDataTag(tagName, "fue", followUpOnError) );
+				}
+	
 
 				//tagBuf.append( getDataTag(tagName, "id", Integer.toString(parentForm.getFrozenCumulatedCount())) );
 

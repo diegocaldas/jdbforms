@@ -53,6 +53,7 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag  {
 
   // framework-kernel related properties
   protected String followUp;
+  protected String followUpOnError;  
 	protected Table table;
 
   // styling & rendering properties
@@ -127,8 +128,8 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag  {
   public void release() {
   	config = null;
   	followUp = null;
+  	followUpOnError = null;  	
   	parentForm = null;
-  	followUp = null;
 	flavor = null;
 	caption = null;
 	src = null;
@@ -241,6 +242,21 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag  {
 	 */
 	public void setBorder(String border) {
 		this.border = border;
+	}
+
+	/**
+	 * Gets the followUpOnError
+	 * @return Returns a String
+	 */
+	public String getFollowUpOnError() {
+		return followUpOnError;
+	}
+	/**
+	 * Sets the followUpOnError
+	 * @param followUpOnError The followUpOnError to set
+	 */
+	public void setFollowUpOnError(String followUpOnError) {
+		this.followUpOnError = followUpOnError;
 	}
 
 }

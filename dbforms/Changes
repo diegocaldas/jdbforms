@@ -3,6 +3,44 @@
 * $Date$
 
 
+__________________________________________________________________________________________________
+__________________________________________________________________________________________________
+
+Friday, February 8, 2002
+DbForms version 1.04
+Grunikiewicz.philip@hydro.qc.ca
+
+Bug Fixes and General Maintenance
+---------------------------------
+
+nullPointerException in nested-forms using whereClause attributes. (Contrib. Dirk Kraemer)
+
+parsing error when specifying multiple OrderBy entries. (separated by commas)
+
+Table definitions must have a least one key defined, added an error message (log4j) to help 
+in debugging these types of errors.
+
+Support for bounded navigation (Contrib. Luca Fossato)
+
+Proper DB connection cleanup in Controller class. In our development, we sometimes set our 
+connection object to autoCommit=false. This allows us to create transactions (dbForms + our 
+own native JDBC code).  In case of an exception, we need to rollback and re-initialize the 
+connection object.
+
+Removed hasNoErrors tag. Bad design! Functionality now provided by followUpOnError attribute 
+in dbform and button tags.
+
+
+dbform, (Button) - tags
+followUpOnError - Attribute
+---------------------------
+
+dbForm (and button) tags can now specify two different followUp pages. If an error occurs in 
+processing the submitted form, the controller will display the page specified by the 
+followUpOnError attribute (optional attribute) else it will display the page defined in
+the followUp attribute.  Note that buttons can override followUp (and followUpOnError) settings 
+defined in the dbform tag.
+
 
 __________________________________________________________________________________________________
 __________________________________________________________________________________________________
@@ -93,8 +131,6 @@ Bug Fixes and General Maintenance
 Replaced all System.out and System.err method calls by equivalent log4j methods.
 Reviewed DbForm's database connection management and cleaned it up.
 Removed a reference to the login password in the connection's toString() method.
-Modified the ant build.xml file to enable its execution from within IBM's WSAD IDE
-
 
 
 Thanks to all who provide feedback and suggestions...
@@ -169,7 +205,7 @@ DbForms version 1.0
 Grunikiewicz.philip@hydro.qc.ca
 
 
-form - tag
+dbform - tag
 tableList - Attribute
 
 This attribute (in conjunction with the whereClause attribute) allows a developer to access fields from multiple tables.  
@@ -219,7 +255,7 @@ SELECT Table1.id, Table2.id,Table1.fieldName,Table2.otherField FROM Table1,Table
 
 ------------------------------------------------------------------------------------
 
-form - tag
+dbform - tag
 whereClause - attribute
 
 Replaces the filter attribute in situations where the where clause is more complex.  Allows a developer to specify a free 
@@ -232,30 +268,30 @@ EXAMPLE:
 whereClause.append("WHERE (FIELD1>'25' AND FIELD1<'50' ) OR FIELD2 NOT NULL ORDERBY FIELD7");
 %>
 
-db:form
+<db:dbform
 	table="TABLE1"
 	followUp="this.jsp"
-	whereClause = "<%whereClause.toString()%>"
+	whereClause = "<%whereClause.toString()%>">
 
 
 ------------------------------------------------------------------------------------
 
-form - tag
+dbform - tag
 action - attribute
 
-The action attribute in the form tag allows a developer to have a dbform submit to something other then the control servlet.  
+The action attribute in the dbform tag allows a developer to have a dbform submit to something other then the control servlet.  
 This can be useful when dbForms is used in read-only mode (such as a view)
 
 EXAMPLE
 
-db:form
+<db:dbform
 	table="TABLE1"
 	followUp="this.jsp"
-	action = "/exemplesWebi/servlet/ca.qc.hydro.myServlet"
+	action = "/exemplesWebi/servlet/ca.qc.hydro.myServlet">
 
 ------------------------------------------------------------------------------------
 
-form - tag
+dbform - tag
 filter - attribute
 
 Can now also handle the <> (notNull) operator.
@@ -267,15 +303,15 @@ EXAMPLE:
 	filter.append("FIELD1<>5");
 %>
 
-db:form
+<db:dbform
 	table="TABLE1"
 	followUp="this.jsp"
-	filter = "<%filter.toString()%>"
+	filter = "<%filter.toString()%>">
 
 
 
  ------------------------------------------------------------------------------------
-hasNoError - tag
+hasNoError - tag	[REMOVED - ref v1.04]
 
  
 Tag which is used to verify if an error has occurred.  In cases where there are no errors and the page is in re-display mode 
@@ -320,7 +356,7 @@ As with error messages, arguments may be passed to the message string via a comm
 
 EXAMPLE
 
- <db:form table="TABLE" 
+ <db:dbform table="TABLE" 
 maxRows="200" 
 followUp="next.jsp">
         <db:header>
@@ -330,7 +366,7 @@ followUp="next.jsp">
         </db:header>
 
 		…
- </db:form>
+ </db:dbform>
 
  ------------------------------------------------------------------------------------
 
@@ -497,7 +533,7 @@ Others changes
 <db:dbform tableName="test" maxRows="<%= max %>"
 
 
-·	Proper DB connection cleanup in Table class. In our development, we sometimes set our connection object to autoCommit=false. 
+Proper DB connection cleanup in Table class. In our development, we sometimes set our connection object to autoCommit=false. 
 This allows us to create transactions (dbForms + our own native JDBC code).  In case of an exception, we need to rollback and 
 re-initialize the connection object.
 

@@ -37,17 +37,14 @@ public class Error {
 
 	//------------------------ Properties ---------------------------------------------------------
 
-	private String id; 				// the id of this error
-	private String type; 			// the type of error
-	private Hashtable messages; 	// the error messages, as provided in xml-error file Key=Locale value=Message
+	private String id; // the id of this error
+	private String type; // the type of error
+	private Hashtable messages;
+	// the error messages, as provided in xml-error file Key=Locale value=Message
 
-
-	public Error()
-	{
+	public Error() {
 		messages = new Hashtable();
 	}
-
-
 
 	//------------------------ property access methods --------------------------------------------
 
@@ -66,16 +63,15 @@ public class Error {
 	public Hashtable getMessages() {
 		return messages;
 	}
-	
+
 	public void setMessage(String language, String message) {
-		this.messages.put(language,message);
+		this.messages.put(language, message);
 	}
 
 	public String getMessage(String language) {
 		return (String) messages.get(language);
 	}
-	
-	
+
 	public void setType(String t) {
 		this.type = t;
 	}
@@ -86,7 +82,6 @@ public class Error {
 
 	// --------------------- utility methods -------------------------------------------------------
 
-	
 	public String toString() {
 		StringBuffer buf = new StringBuffer();
 		buf.append("id=");
@@ -95,18 +90,18 @@ public class Error {
 		buf.append(this.getType());
 		return buf.toString();
 	}
-	
-	
-		/**
-	 * adds a Message-Object to this error
-	 * and puts it into the datastructure for further references
-	 * (this method gets called from DbFormsError)
-	 */
+
+	/**
+	* adds a Message-Object to this error
+	* and puts it into the datastructure for further references
+	* (this method gets called from DbFormsError)
+	*/
 	public void addMessage(Message message) {
 
 		messages.put(message.getLanguage(), message.getMessage());
-		logCat.info("Language " + message.getLanguage() + " Message " + message.getMessage());
+		logCat.info(
+			"Language " + message.getLanguage() + " Message " + message.getMessage());
 
 	}
-	
+
 }
