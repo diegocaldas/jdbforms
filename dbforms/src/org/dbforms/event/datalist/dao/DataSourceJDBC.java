@@ -232,7 +232,7 @@ public class DataSourceJDBC extends DataSource {
 					throw new SQLException("no statement: " + query);
 				}
 				// 20040730-HKK: To workaround a bug inside mysql driver
-                stmt.setFetchSize(Integer.MIN_VALUE); 
+//                stmt.setFetchSize(Integer.MIN_VALUE); 
 				rs = getTable().getDoSelectResultSet(filterConstraint,
 						orderConstraint, sqlFilterParams,
 						Constants.COMPARE_NONE, (PreparedStatement) stmt);
@@ -244,7 +244,7 @@ public class DataSourceJDBC extends DataSource {
 					throw new SQLException("no statement");
 				}
 				// 20040730-HKK: To workaround a bug inside mysql driver
-                stmt.setFetchSize(Integer.MIN_VALUE); 
+//                stmt.setFetchSize(Integer.MIN_VALUE); 
 				rs = stmt.executeQuery(query);
 			}
 
