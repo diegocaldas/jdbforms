@@ -5,7 +5,6 @@
 	        <field name="AUTHOR_ID" fieldType="int" isKey="true" autoInc="true"/>
 	        <field name="NAME" fieldType="varchar"  sortable="true"/>
 	        <field name="ORGANISATION" fieldType="varchar"  sortable="true"/>
-            <interceptor className = "interceptors.BookstoreInsertDataInterceptor"/>                
 	    </table>    
 	    
 	    <table name="BOOK">
