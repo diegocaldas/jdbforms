@@ -156,6 +156,7 @@ public class EventEngine
       {
          logCat.info("##### N O O P   ELEMENT ######");
          e = new NoopEvent(-1, request, config);
+         e.setType(EventType.EVENT_NAVIGATION_RELOAD);
          initializeWebEvent(e);
 
          return e;
@@ -175,6 +176,7 @@ public class EventEngine
          logCat.info("##### RELOAD  EVENT ######");
          e = new ReloadEvent(ParseUtil.getEmbeddedStringAsInteger(action, 2, '_'),
                request, config);
+         e.setType(EventType.EVENT_NAVIGATION_RELOAD);
          initializeWebEvent(e);
 
          return e;

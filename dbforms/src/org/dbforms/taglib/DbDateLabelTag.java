@@ -20,13 +20,15 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
+
 package org.dbforms.taglib;
 import javax.servlet.jsp.JspException;
-
+import java.text.Format;
 import org.apache.log4j.Category;
 import org.dbforms.config.DbFormsConfigRegistry;
-import org.dbforms.config.ResultSetVector;
 import org.dbforms.util.Util;
+
+
 
 /****
  *
@@ -34,96 +36,69 @@ import org.dbforms.util.Util;
  * 2001-05-14
  *
  * This class inherits from DbLabelTag.  It allows a developer to specify the displayed date format.
- * By default, the following format is used:
  *
- *        new SimpleDateFormat("yyyy-MM-dd")
  *
  */
 public class DbDateLabelTag extends DbLabelTag
 {
-    static Category logCat =
-        Category.getInstance(DbDateLabelTag.class.getName());
+   static Category logCat = Category.getInstance(DbDateLabelTag.class.getName());
 
-    /**
-    grunikiewicz.philip@hydro.qc.ca
-    2001-05-14
-    
-    If user has specified a date format - use it!
-    
-    */
-    public int doEndTag() throws javax.servlet.jsp.JspException
-    {
-        try
-        {
-            Object fieldValue = NO_DATA;
+   /**
+   grunikiewicz.philip@hydro.qc.ca
+   2001-05-14
+       
+   If user has specified a date format - use it!
+       
+   */
+   public int doEndTag() throws javax.servlet.jsp.JspException
+   {
+      try
+      {
+         Object currentValue = getFieldObject();
 
-            if (!ResultSetVector.isNull(parentForm.getResultSetVector()))
+         Format format = getFormat();
+         if (format == null)
+         {
+            try
             {
-                Object[] currentRow =
-                    parentForm.getResultSetVector().getCurrentRowAsObjects();
-
-                // fetch database row as java objects
-                Object currentValue = currentRow[field.getId()];
-
-                // Format date if the retrieved currentValue is not null
-                if (currentValue != null)
-                {
-                    // if the format object is not set, retrieve the default 
-                    // date formatter from the prefs; <fossato@pow2.com> [2002.11.09]
-                    if (format == null)
-                    {
-                        try
-                        {
-                            format =
-                                DbFormsConfigRegistry
-                                    .instance()
-                                    .lookup()
-                                    .getDateFormatter();
-                        }
-                        catch (Exception e)
-                        {
-                        	 logCat.error(e);
-                        }
-
-                    }
-
-                    // anyway, a format object must exist !
-                    fieldValue =
-                        (format != null)
-                            ? format.format(currentValue)
-                            : currentValue;
-                }
-                else
-                {
-                    fieldValue = ""; // null == empty string
-                }
+               format = DbFormsConfigRegistry.instance().lookup()
+                                             .getDateFormatter();
             }
-
-            String s = prepareStyles();
-            if (Util.isNull(s))
+            catch (Exception e)
             {
-                pageContext.getOut().write(fieldValue.toString());
+               logCat.error(e);
             }
-            else
-            {
-                pageContext.getOut().write(
-                    "<span "
-                        + s
-                        + "\">"
-                        + fieldValue
-                        + "</span>");
-            }
-        }
-        catch (java.io.IOException ioe)
-        {
-            throw new JspException("IO Error: " + ioe.getMessage());
-        }
-        catch (Exception e)
-        {
-            throw new JspException("Error: " + e.getMessage());
-        }
+         }
 
-        return EVAL_PAGE;
-    }
+         String fieldValue = Util.isNull(getNullFieldValue()) ? typicalDefaultValue(): getNullFieldValue();
 
+         // Format date if the retrieved currentValue is not null
+         if ((currentValue != null) && (format != null))
+         {
+            fieldValue = format.format(currentValue);
+         }
+
+         String s = prepareStyles();
+
+         if (Util.isNull(s))
+         {
+            pageContext.getOut().write(fieldValue);
+         }
+         else
+         {
+            pageContext.getOut()
+                       .write("<span " + s + "\">" + fieldValue + "</span>");
+         }
+      }
+      catch (java.io.IOException ioe)
+      {
+         throw new JspException("IO Error: " + ioe.getMessage());
+      }
+      catch (Exception e)
+      {
+         throw new JspException("Error: " + e.getMessage());
+      }
+
+      return EVAL_PAGE;
+   }
 }

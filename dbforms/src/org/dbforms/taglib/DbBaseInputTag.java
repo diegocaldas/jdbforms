@@ -26,8 +26,8 @@ import java.util.Vector;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 
-import org.dbforms.event.ReloadEvent;
 import org.dbforms.event.WebEvent;
+import org.dbforms.event.eventtype.EventType;
 import org.dbforms.util.ParseUtil;
 
 
@@ -236,7 +236,6 @@ public abstract class DbBaseInputTag extends DbBaseHandlerTag
       hidden = newHidden;
    }
 
-
    /**
     * gets the formfield value
     * 
@@ -258,7 +257,7 @@ public abstract class DbBaseInputTag extends DbBaseHandlerTag
          //If the redisplayFieldsOnError attribute is set and we are in error mode, forget override!
          if (("true".equals(getParentForm().getRedisplayFieldsOnError())
                       && (errors != null) && (errors.size() > 0))
-                   || (we instanceof ReloadEvent))
+                   || (we.getType() == EventType.EVENT_NAVIGATION_RELOAD))
          {
             res = super.getFormFieldValue();
          }
@@ -269,7 +268,7 @@ public abstract class DbBaseInputTag extends DbBaseHandlerTag
       }
       else
       {
-         if (we instanceof ReloadEvent)
+         if (we.getType() == EventType.EVENT_NAVIGATION_RELOAD)
          {
             String oldValue = ParseUtil.getParameter(request, 
                                                      getFormFieldName());

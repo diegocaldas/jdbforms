@@ -25,7 +25,7 @@ import java.util.*;
 import javax.servlet.jsp.*;
 
 import org.dbforms.util.*;
-import org.dbforms.event.ReloadEvent;
+import org.dbforms.event.eventtype.EventType;
 import org.dbforms.event.WebEvent;
 import org.apache.log4j.Category;
 import javax.servlet.http.*;
@@ -240,7 +240,7 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer
             // If so, only set to selected if currentRow is equal to custom row.
             if (("true".equals(getParentForm().getRedisplayFieldsOnError())
                      && (errors != null) && (errors.size() > 0))
-                     || (we instanceof ReloadEvent))
+                     || (we.getType() == EventType.EVENT_NAVIGATION_RELOAD))
             {
                isSelected = (currentValue.equals(aKey));
             }

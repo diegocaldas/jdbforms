@@ -24,7 +24,6 @@ package org.dbforms.taglib;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
-import org.dbforms.config.DbFormsConfigRegistry;
 
 
 /****
@@ -49,18 +48,6 @@ public class DbDateFieldTag extends DbBaseInputTag
    public int doStartTag() throws JspException
    {
       super.doStartTag();
-
-      // Use format defined in config file
-      if (this.format == null)
-      {
-         try {
-				this.format = DbFormsConfigRegistry.instance().lookup().getDateFormatter();
-         } catch (Exception e) {
-            throw new JspException(e.getMessage());
-         }
-         
-      }
-
       return SKIP_BODY;
    }
 
@@ -100,9 +87,9 @@ public class DbDateFieldTag extends DbBaseInputTag
             // if date format is not explicitely set for this calendar,
             // use date format for this form field. 
             if ((jsCalendarDateFormat == null)
-                     && (this.format instanceof java.text.SimpleDateFormat))
+                     && (getFormat() instanceof java.text.SimpleDateFormat))
             {
-               java.text.SimpleDateFormat mysdf = (java.text.SimpleDateFormat) format;
+               java.text.SimpleDateFormat mysdf = (java.text.SimpleDateFormat) getFormat();
                jsCalendarDateFormat = mysdf.toPattern();
 
                // 2 digit date format pattern is 'dd' in Java, 'DD' in

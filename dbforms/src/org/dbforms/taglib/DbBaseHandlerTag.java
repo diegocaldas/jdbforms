@@ -29,12 +29,14 @@ import java.text.Format;
 import java.util.Vector;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.Field;
-import org.dbforms.event.ReloadEvent;
+import org.dbforms.config.ResultSetVector;
 import org.dbforms.event.NavCopyEvent;
 import org.dbforms.event.WebEvent;
+import org.dbforms.event.eventtype.EventType;
 import org.dbforms.util.ParseUtil;
-
+import org.dbforms.util.MessageResources;
 import javax.servlet.http.HttpServletRequest;
+import org.dbforms.util.Util;
 
 
 
@@ -56,20 +58,14 @@ import javax.servlet.http.HttpServletRequest;
 public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler
 {
 
-   /** DOCUMENT ME! */
-   protected DbFormsConfig config;
+   private DbFormsConfig config;
+   private String fieldName;
+   private Field field;
+   private String value;
+   private Format format;
+   private String nullFieldValue;
+   private String maxlength = null;
 
-   /** DOCUMENT ME! */
-   protected String fieldName;
-
-   /** DOCUMENT ME! */
-   protected Field field;
-
-   /** DOCUMENT ME! */
-   protected String value;
-
-   /** DOCUMENT ME! */
-   protected Format format;
 
 
 
@@ -208,7 +204,6 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler
 		{
 			switch (field.getType())
 			{
-				//case org.dbforms.util.FieldTypes.DATE : return "0";
 				case org.dbforms.config.FieldTypes.INTEGER:
 					return "0";
 
@@ -233,8 +228,65 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler
 		}
 	}
 
+   /**
+    * return the object value from the database 
+    * @return the object
+    * 
+    */
+   protected Object getFieldObject() {
+      Object fieldValueObj = null;
+      ResultSetVector res = getParentForm().getResultSetVector();
+      if (res != null) 
+        fieldValueObj =res.getCurrentRowAsObjects()[getField().getId()];
+      return fieldValueObj;   
+   }
 
+   /**
+    * 
+    * fetches the value from the database. if no value is given, contents of attribute 
+    * nullFieldValue is returned.
+    * 
+    * @return the field value
+    */
+   protected String getFieldValue() {
 
+      String fieldValue = (getNullFieldValue()==null) ? typicalDefaultValue(): getNullFieldValue();
+      if (!ResultSetVector.isNull(getParentForm().getResultSetVector()))
+      {
+          Object fieldValueObj = getFieldObject();
+          if (fieldValueObj != null)
+          {
+              // Fossato, 20002-08-29
+              // uses the format class to format this tag's value;
+             if (getFormat() != null)
+             {
+                fieldValue = format.format(fieldValueObj);
+             }
+             else
+             {
+                // if column object returned by database is of type 
+                // 'array of byte: byte[]' (which can happen in case 
+                // of eg. LONGVARCHAR columns), method toString would 
+                // just return a sort of String representation
+                // of the array's address. So in this case it is 
+                // better to create a String using a corresponding
+                // String constructor:
+                if (fieldValue.getClass().isArray()
+                         && "byte".equals(fieldValueObj.getClass()
+                                                      .getComponentType()
+                                                      .toString()))
+                {
+                   fieldValue = new String((byte[]) fieldValueObj);
+                }
+                else
+                {
+                   fieldValue = fieldValueObj.toString();
+                }
+             }
+          }
+      }
+      return fieldValue.trim();
+   }
 
    /**
     * grunikiewicz.philip@hydro.qc.ca
@@ -263,80 +315,15 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler
          // and is this jsp displaying an error?
          if (("true".equals(getParentForm().getRedisplayFieldsOnError())
                   && (errors != null) && (errors.size() > 0))
-                  || (we instanceof ReloadEvent))
+                  || (we.getType() == EventType.EVENT_NAVIGATION_RELOAD))
          {
             // Yes - redisplay posted data
             String oldValue = ParseUtil.getParameter(request, getFormFieldName());
-
-            if (oldValue != null)
-            {
-               return oldValue;
-            }
-
-            // fill out empty fields so that there are no plain field-syntax errors
-            // on database operations...
-            return typicalDefaultValue();
+            return Util.isNull(oldValue)?typicalDefaultValue():oldValue;
          }
          else
          {
-            // Business as usual - get data from DB
-            Object[] currentRow = null;
-
-            if (getParentForm().getResultSetVector() != null)
-            {
-               currentRow = getParentForm().getResultSetVector()
-                                      .getCurrentRowAsObjects();
-            }
-
-            // fetch database row as java objects
-            if (currentRow == null)
-            {
-               return typicalDefaultValue();
-            }
-            else
-            {
- 			   Object curVal = null;
-               if (field != null)  
-                  curVal = currentRow[field.getId()];
-               String curStr = null;
-
-               if (curVal != null)
-               {
-                  if (this.format != null)
-                  {
-                     curStr = format.format(curVal);
-                  }
-                  else
-                  {
-                     // if column object returned by database is of type 
-                     // 'array of byte: byte[]' (which can happen in case 
-                     // of eg. LONGVARCHAR columns), method toString would 
-                     // just return a sort of String representation
-                     // of the array's address. So in this case it is 
-                     // better to create a String using a corresponding
-                     // String constructor:
-                     if (curVal.getClass().isArray()
-                              && "byte".equals(curVal.getClass()
-                                                           .getComponentType()
-                                                           .toString()))
-                     {
-                        curStr = new String((byte[]) curVal);
-                     }
-                     else
-                     {
-                        curStr = curVal.toString();
-                     }
-                  }
-               }
-
-               if (curStr != null)
-               {
-                  curStr = curStr.trim();
-               }
-
-               return ((curVal != null) && (curStr != null)
-               && (curStr.length() > 0)) ? curStr : typicalDefaultValue();
-            }
+            return getFieldValue();
          }
       }
       else
@@ -349,7 +336,7 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler
 		   } 
 
          // the form field is in 'insert-mode'
-         if (we instanceof ReloadEvent)
+         if (we.getType() == EventType.EVENT_NAVIGATION_RELOAD)
          {
             String oldValue = ParseUtil.getParameter(request, getFormFieldName());
 
@@ -436,5 +423,65 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler
 
 
 
+
+   /**
+    * @return
+    */
+   public DbFormsConfig getConfig() {
+      return config;
+   }
+
+   /**
+    *  Sets the nullFieldValue attribute of the DbLabelTag object
+    *
+    * @param  nullFieldValue The new nullFieldValue value
+    */
+   public void setNullFieldValue(String nullFieldValue)
+   {
+       this.nullFieldValue = nullFieldValue;
+   }
+
+   /**
+    *  Gets the nullFieldValue attribute of the DbLabelTag object
+    *
+    * @return  The nullFieldValue value
+    */
+   public String getNullFieldValue()
+   {
+      String res = nullFieldValue;
+      // Resolve message if captionResource=true in the Form Tag
+      if (getParentForm().getCaptionResource().equals("true"))
+      {
+          res = MessageResources.getMessage( (HttpServletRequest) pageContext.getRequest(), res);
+      }
+       return res;
+   }
+
+   /**
+    * @return
+    */
+   public Field getField() {
+      return field;
+   }
+
+   /**
+    * Gets the maxlength
+    *
+    * @return  Returns a String
+    */
+   public String getMaxlength()
+   {
+       return maxlength;
+   }
+
+   /**
+    * Sets the maxlength
+    *
+    * @param  maxlength The maxlength to set
+    */
+   public void setMaxlength(String maxlength)
+   {
+       this.maxlength = maxlength;
+   }
 
 }

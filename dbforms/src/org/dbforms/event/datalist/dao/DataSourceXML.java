@@ -27,6 +27,7 @@ import org.apache.log4j.Category;
 
 import java.util.Vector;
 import java.util.Hashtable;
+import java.util.Iterator;
 
 import java.net.URI;
 
@@ -106,7 +107,21 @@ public class DataSourceXML extends DataSource {
     * @throws SQLException if any error occurs
     */
    public void doUpdate(Connection con, FieldValues fieldValues, String keyValuesStr) throws SQLException {
-      //      int start = findStartRow(keyValuesStr);
+      Integer row = (Integer) keys.get(keyValuesStr);
+      if (row != null) {
+         int r = row.intValue();
+         Iterator iter = fieldValues.elements();
+         while (iter.hasNext()) {
+            FieldValue fv = (FieldValue) iter.next();
+            Field f = fv.getField();
+            data.setItemValue(r, 
+                  Util.isNull(f.getExpression()) ? f.getName() : f.getExpression(), 
+                  f.getType(), 
+                  fv.getFieldValue()
+               );
+         }
+         dataObject[r] = null;
+      }
    }
 
    /**

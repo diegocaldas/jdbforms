@@ -26,8 +26,8 @@ import java.util.*;
 import javax.servlet.jsp.*;
 import javax.servlet.http.*;
 import org.dbforms.util.*;
-import org.dbforms.event.ReloadEvent;
 import org.dbforms.event.WebEvent;
+import org.dbforms.event.eventtype.EventType;
 import org.apache.log4j.Category;
 
 
@@ -216,7 +216,7 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer
 
       if (Util.isNull(currentValue))
       {
-         currentValue = value;
+         currentValue = getValue();
       }
 
       if (embeddedData == null)
@@ -225,12 +225,12 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer
 
          // select, if datadriven and data matches with current value OR if explicitly set by user
          boolean isSelected = ((!getParentForm().getFooterReached()
-                                 || we instanceof ReloadEvent)
-                              && (value != null) && value.equals(currentValue))
+                                 || we.getType() == EventType.EVENT_NAVIGATION_RELOAD)
+                              && (getValue() != null) && getValue().equals(currentValue))
                               || (getParentForm().getFooterReached()
                               && "true".equals(checked));
 
-         tagBuf.append(generateTagString(value, "", isSelected));
+         tagBuf.append(generateTagString(getValue(), "", isSelected));
       }
       else
       {
