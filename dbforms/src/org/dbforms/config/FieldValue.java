@@ -28,8 +28,6 @@ import java.util.Calendar;
 import java.text.SimpleDateFormat;
 import java.text.DecimalFormat;
 
-import java.sql.SQLException;
-
 import org.apache.log4j.Category;
 
 import org.dbforms.util.UniqueIDGenerator;
@@ -360,12 +358,16 @@ public class FieldValue implements Cloneable {
     * @return Object of given type;
     * 
     */
-   public Object getFieldValueAsObject() throws SQLException {
+   public Object getFieldValueAsObject() {
       if (getField() == null) {
-         throw new SQLException("Field type seems to be incorrect");
+         return null;
       }
+      return getFieldValueAsObject(getField().getType());
+   }
+
+   public Object getFieldValueAsObject(int fieldType) {
       Object res = null;
-      switch (getField().getType()) {
+      switch (fieldType) {
 
          case FieldTypes.INTEGER :
             res = parseINTEGER();
@@ -418,11 +420,13 @@ public class FieldValue implements Cloneable {
       if (Util.isNull(valueStr)) {
          return null;
       }
-      try {
-         DecimalFormat f = (DecimalFormat) getField().getFormat(pattern, locale);
-         return new BigDecimal(f.parse(valueStr).doubleValue());
-      } catch (Exception e) {
-         logCat.error(e.getMessage() + " <" + valueStr + ">");
+      if (getLocale() != null) {
+         try {
+            DecimalFormat f = (DecimalFormat) getField().getFormat(pattern, getLocale());
+            return new BigDecimal(f.parse(valueStr).doubleValue());
+         } catch (Exception e) {
+            logCat.error(e.getMessage() + " <" + valueStr + "/" + pattern + ">");
+         }
       }
       try {
          return new BigDecimal(valueStr);
@@ -437,11 +441,13 @@ public class FieldValue implements Cloneable {
       if (Util.isNull(valueStr)) {
          return null;
       }
-      try {
-         DecimalFormat f = (DecimalFormat) getField().getFormat(pattern, locale);
-         return new Integer(f.parse(valueStr).intValue());
-      } catch (Exception e) {
-         logCat.error(e.getMessage() + " <" + valueStr + ">");
+      if (getLocale() != null) {
+         try {
+            DecimalFormat f = (DecimalFormat) getField().getFormat(pattern, getLocale());
+            return new Integer(f.parse(valueStr).intValue());
+         } catch (Exception e) {
+            logCat.error(e.getMessage() + " <" + valueStr + "/" + pattern + ">");
+         }
       }
       try {
          return new Integer(valueStr);
@@ -456,11 +462,13 @@ public class FieldValue implements Cloneable {
       if (Util.isNull(valueStr)) {
          return null;
       }
-      try {
-         DecimalFormat f = (DecimalFormat) getField().getFormat(pattern, locale);
-         return new Float(f.parse(valueStr).floatValue());
-      } catch (Exception e) {
-         logCat.error(e.getMessage() + " <" + valueStr + ">");
+      if (getLocale() != null) {
+         try {
+            DecimalFormat f = (DecimalFormat) getField().getFormat(pattern, getLocale());
+            return new Float(f.parse(valueStr).floatValue());
+         } catch (Exception e) {
+            logCat.error(e.getMessage() + " <" + valueStr + "/" + pattern + ">");
+         }
       }
       try {
          return new Float(valueStr);
@@ -475,11 +483,13 @@ public class FieldValue implements Cloneable {
       if (Util.isNull(valueStr)) {
          return null;
       }
-      try {
-         DecimalFormat f = (DecimalFormat) getField().getFormat(pattern, locale);
-         return new Double(f.parse(valueStr).doubleValue());
-      } catch (Exception e) {
-         logCat.error(e.getMessage() + " <" + valueStr + ">");
+      if (getLocale() != null) {
+         try {
+            DecimalFormat f = (DecimalFormat) getField().getFormat(pattern, getLocale());
+            return new Double(f.parse(valueStr).doubleValue());
+         } catch (Exception e) {
+            logCat.error(e.getMessage() + " <" + valueStr + "/" + pattern + ">");
+         }
       }
       try {
          return new Double(valueStr);
@@ -494,15 +504,17 @@ public class FieldValue implements Cloneable {
       if (Util.isNull(valueStr)) {
          return null;
       }
-      try {
-         SimpleDateFormat f = (SimpleDateFormat) getField().getFormat(pattern, locale);
-         Calendar result = TimeUtil.parseDate(f, valueStr);
-         result.set(Calendar.DAY_OF_MONTH, 0);
-         result.set(Calendar.MONTH, 0);
-         result.set(Calendar.YEAR, 0);
-         return new Time(result.getTime().getTime());
-      } catch (Exception e) {
-         logCat.error(e.getMessage() + " <" + valueStr + ">");
+      if (getLocale() != null) {
+         try {
+            SimpleDateFormat f = (SimpleDateFormat) getField().getFormat(pattern, getLocale());
+            Calendar result = TimeUtil.parseDate(f, valueStr);
+            result.set(Calendar.DAY_OF_MONTH, 0);
+            result.set(Calendar.MONTH, 0);
+            result.set(Calendar.YEAR, 0);
+            return new Time(result.getTime().getTime());
+         } catch (Exception e) {
+            logCat.error(e.getMessage() + " <" + valueStr + "/" + pattern + ">");
+         }
       }
       try {
          return Time.valueOf(valueStr);
@@ -517,15 +529,17 @@ public class FieldValue implements Cloneable {
       if (Util.isNull(valueStr)) {
          return null;
       }
-      try {
-         SimpleDateFormat f = (SimpleDateFormat) getField().getFormat(pattern, locale);
-         Calendar result = TimeUtil.parseDate(f, valueStr);
-         result.set(Calendar.HOUR_OF_DAY, 0);
-         result.set(Calendar.MINUTE, 0);
-         result.set(Calendar.SECOND, 0);
-         return new Date(result.getTime().getTime());
-      } catch (Exception e) {
-         logCat.error(e.getMessage() + " <" + valueStr + ">");
+      if (getLocale() != null) {
+         try {
+            SimpleDateFormat f = (SimpleDateFormat) getField().getFormat(pattern, getLocale());
+            Calendar result = TimeUtil.parseDate(f, valueStr);
+            result.set(Calendar.HOUR_OF_DAY, 0);
+            result.set(Calendar.MINUTE, 0);
+            result.set(Calendar.SECOND, 0);
+            return new Date(result.getTime().getTime());
+         } catch (Exception e) {
+            logCat.error(e.getMessage() + " <" + valueStr + "/" + pattern + ">");
+         }
       }
       try {
          return Date.valueOf(valueStr);
@@ -540,12 +554,14 @@ public class FieldValue implements Cloneable {
       if (Util.isNull(valueStr)) {
          return null;
       }
-      try {
-         SimpleDateFormat f = (SimpleDateFormat) getField().getFormat(pattern, locale);
-         Calendar result = TimeUtil.parseDate(f, valueStr);
-         return new Timestamp(result.getTime().getTime());
-      } catch (Exception e) {
-         logCat.error(e.getMessage() + " <" + valueStr + ">");
+      if (getLocale() != null) {
+         try {
+            SimpleDateFormat f = (SimpleDateFormat) getField().getFormat(pattern, getLocale());
+            Calendar result = TimeUtil.parseDate(f, valueStr);
+            return new Timestamp(result.getTime().getTime());
+         } catch (Exception e) {
+            logCat.error(e.getMessage() + " <" + valueStr + "/" + pattern + ">");
+         }
       }
       try {
          return Timestamp.valueOf(valueStr);

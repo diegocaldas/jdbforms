@@ -158,6 +158,7 @@ public class TimeUtil
 
 
    private static Calendar saveParseDate(final SimpleDateFormat format, String formatString, String s)
+      throws NumberFormatException
    {
       Calendar cal;
       Calendar now = Calendar.getInstance();
@@ -175,7 +176,8 @@ public class TimeUtil
          }
 
          cal = format.getCalendar();
-
+         if (!cal.isSet(Calendar.DAY_OF_MONTH) && !cal.isSet(Calendar.MONTH) && !cal.isSet(Calendar.YEAR))
+            throw new NumberFormatException("wrong date format"); 
          if (!cal.isSet(Calendar.DAY_OF_MONTH))
          {
             cal.set(Calendar.DAY_OF_MONTH, now.get(Calendar.DAY_OF_MONTH));
@@ -228,7 +230,9 @@ public class TimeUtil
          }
 
          Calendar cal = format.getCalendar();
-
+         if (!cal.isSet(Calendar.HOUR_OF_DAY) && !cal.isSet(Calendar.MINUTE) && !cal.isSet(Calendar.SECOND) ) 
+			throw new NumberFormatException("wrong time format"); 
+           
          if (!cal.isSet(Calendar.HOUR_OF_DAY))
          {
             cal.set(Calendar.HOUR_OF_DAY, 0);

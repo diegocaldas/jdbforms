@@ -154,7 +154,7 @@ public class DeleteEvent extends DatabaseEvent
             StringBuffer queryBuf = new StringBuffer();
             queryBuf.append(table.getDisblobSelectStatement());
             queryBuf.append(" WHERE ");
-            queryBuf.append(table.getWhereClauseForPS());
+            queryBuf.append(table.getWhereClauseForKeyFields());
 
             PreparedStatement diskblobsPs = con.prepareStatement(
                                                      queryBuf.toString());

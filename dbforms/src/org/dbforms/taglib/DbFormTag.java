@@ -1107,24 +1107,24 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
             }
 
             if (!Util.isNull(validationFct) && !Util.isNull(getOnSubmit())) {
-               boolean found = false;	
+               boolean found = false;
                String s = getOnSubmit();
                String[] cmds = s.split(";");
                for (int i = 0; i < cmds.length; i++) {
                   if (cmds[i].startsWith("return")) {
                      cmds[i] = cmds[i].substring("return".length());
-					 cmds[i] = "return " + validationFct + " && " + cmds[i];
-					 found = true;
-					 break;
+                     cmds[i] = "return " + validationFct + " && " + cmds[i];
+                     found = true;
+                     break;
                   }
                }
                s = "";
                for (int i = 0; i < cmds.length; i++) {
                   s = s + cmds[i] + ";";
                }
-			   if (!found) {
-                  s = s + "return " + validationFct + ";";   
-			   }
+               if (!found) {
+                  s = s + "return " + validationFct + ";";
+               }
 
                tagBuf.append(" onSubmit=\"");
                tagBuf.append(s);
@@ -1906,46 +1906,44 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
                   aSearchFieldValue = aSearchFieldValue.substring(jump).trim();
                }
 
+               Vector errors = (Vector) request.getAttribute("errors");
                if ((operator == Constants.FILTER_EQUAL) && (jump == 0) && (f.getType() == FieldTypes.TIMESTAMP)) {
                   // found a single timestamp value. Extend it to >value and <end of day of value
                   operator = Constants.FILTER_GREATER_THEN_EQUAL;
-
                   FieldValue fv = FieldValue.createFieldValueForSearching(f, aSearchFieldValue, getLocale(), operator, mode, algorithm, false);
-
-                  if (mode == Constants.SEARCHMODE_AND) {
-                     mode_and.addElement(fv);
+                  Date d = (Date) fv.getFieldValueAsObject();
+                  if (d == null) {
+                     errors.add(new Exception(MessageResourcesInternal.getMessage("dbforms.error.filter.invalidate.date", getLocale())));
                   } else {
-                     mode_or.addElement(fv);
-                  }
-
-                  operator = Constants.FILTER_SMALLER_THEN_EQUAL;
-
-                  Date d = null;
-
-                  try {
-                     d = (Date) fv.getFieldValueAsObject();
-                     d = TimeUtil.findEndOfDay(d);
-                     aSearchFieldValue = d.toString();
-                  } catch (Exception e) {
-                     throw new IOException(e.getMessage());
-                  }
-
-                  if (d != null) {
-                     fv = FieldValue.createFieldValueForSearching(f, aSearchFieldValue, getLocale(), operator, mode, algorithm, false);
-
                      if (mode == Constants.SEARCHMODE_AND) {
                         mode_and.addElement(fv);
                      } else {
                         mode_or.addElement(fv);
                      }
+
+                     operator = Constants.FILTER_SMALLER_THEN_EQUAL;
+                     d = TimeUtil.findEndOfDay(d);
+                     aSearchFieldValue = d.toString();
+                     if (d != null) {
+                        fv = FieldValue.createFieldValueForSearching(f, aSearchFieldValue, getLocale(), operator, mode, algorithm, false);
+                        if (mode == Constants.SEARCHMODE_AND) {
+                           mode_and.addElement(fv);
+                        } else {
+                           mode_or.addElement(fv);
+                        }
+                     }
                   }
                } else {
                   FieldValue fv = FieldValue.createFieldValueForSearching(f, aSearchFieldValue, getLocale(), operator, mode, algorithm, false);
-
-                  if (mode == Constants.SEARCHMODE_AND) {
-                     mode_and.addElement(fv);
+                  Object obj = fv.getFieldValueAsObject();
+                  if (obj == null) {
+                     errors.add(new Exception(MessageResourcesInternal.getMessage("dbforms.error.filter.invalidate", getLocale())));
                   } else {
-                     mode_or.addElement(fv);
+                     if (mode == Constants.SEARCHMODE_AND) {
+                        mode_and.addElement(fv);
+                     } else {
+                        mode_or.addElement(fv);
+                     }
                   }
                }
             }

@@ -70,7 +70,7 @@ public class DbBlobContentTag extends DbBaseHandlerTag
          queryBuf.append(" FROM ");
          queryBuf.append(getParentForm().getTable().getName());
          queryBuf.append(" WHERE ");
-         queryBuf.append(getParentForm().getTable().getWhereClauseForPS());
+         queryBuf.append(getParentForm().getTable().getWhereClauseForKeyFields());
          logCat.info("blobcontent query- " + queryBuf.toString());
 
          StringBuffer contentBuf = new StringBuffer();

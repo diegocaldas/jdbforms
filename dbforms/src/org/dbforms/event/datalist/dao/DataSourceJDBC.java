@@ -665,7 +665,7 @@ public class DataSourceJDBC extends DataSource
          StringBuffer queryBuf = new StringBuffer();
          queryBuf.append(getTable().getDisblobSelectStatement());
          queryBuf.append(" WHERE ");
-         queryBuf.append(getTable().getWhereClauseForPS());
+         queryBuf.append(getTable().getWhereClauseForKeyFields());
 
          PreparedStatement diskblobsPs = con.prepareStatement(
                                                   queryBuf.toString());

@@ -36,7 +36,7 @@ public class MessageResourcesInternal
 
     private static String RESOURCE =  "org.dbforms.resources.messages";
 
-	protected static MessageResource msgRes = null;
+	private static MessageResource msgRes = null;
 
 	/*********************************************************************************************
 	 *  Get the message from ResourceBundle.  If not present, return the defaultMsg at
@@ -69,7 +69,11 @@ public class MessageResourcesInternal
 	public static String getMessage(String msg, Locale loc)
 	{
 		init();
-		return msgRes.getMessage(msg, loc);
+		// first look in custom resources
+		String res = MessageResources.getMessage(msg, loc);
+		if (res == null)
+			res = msgRes.getMessage(msg, loc);
+		return res;
 	}
 
 
@@ -85,7 +89,11 @@ public class MessageResourcesInternal
 	public static String getMessage(String msg, Locale loc, String[] parms)
 	{
 		init();
-		return msgRes.getMessage(msg, loc, parms);
+		// first look in custom resources
+		String res = MessageResources.getMessage(msg, loc, parms);
+		if (res == null)
+		   res = msgRes.getMessage(msg, loc, parms);
+		return res;
 	}
 	
    

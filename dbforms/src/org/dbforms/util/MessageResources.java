@@ -37,7 +37,7 @@ public class MessageResources
    /** DOCUMENT ME! */
    public static String LOCALE_KEY = "org.dbforms.LOCALE";
 
-   protected static MessageResource msgRes = null;
+   private static MessageResource msgRes = null;
 
 	public static void setSubClass(String subClass)
 	{

@@ -26,15 +26,16 @@ package org.dbforms.servlets.reports;
 /**
  * Helper class send as parameter to JasperReports. So it is not neccesary to
  * send all the stuff in different parameters
- * 
  */
-import javax.servlet.http.HttpServletRequest;
 import java.sql.Connection;
-
+import java.util.Locale;
+import javax.servlet.http.HttpServletRequest;
 import org.dbforms.util.MessageResources;
 import org.dbforms.util.ParseUtil;
+import org.dbforms.config.Field;
+import org.dbforms.taglib.DbBaseHandlerTag;
 
-
+import org.apache.log4j.Logger;
 
 /**
  * DOCUMENT ME!
@@ -42,28 +43,61 @@ import org.dbforms.util.ParseUtil;
  * @version $Revision$
  * @author $author$
  */
-public class ReportParameter
-{
+public class ReportParameter {
    private HttpServletRequest request;
-   private Connection         connection;
-   private String             reportPath;
-   private String             contextPath;
+   private Connection connection;
+   private String reportPath;
+   private String contextPath;
+   private Locale locale;
+   private Logger logCat = Logger.getLogger(this.getClass().getName());
 
    /**
     * Creates a new ReportParameter object.
-   admin    * 
+    * 
     * @param request DOCUMENT ME!
     * @param connection DOCUMENT ME!
     * @param reportPath DOCUMENT ME!
     * @param contextPath DOCUMENT ME!
     */
-   public ReportParameter(HttpServletRequest request, Connection connection, 
-                          String reportPath, String contextPath)
-   {
-      this.request     = request;
-      this.connection  = connection;
-      this.reportPath  = reportPath;
+   public ReportParameter(HttpServletRequest request, Connection connection, String reportPath, String contextPath) {
+      this.request = request;
+      this.connection = connection;
+      this.reportPath = reportPath;
       this.contextPath = contextPath;
+      this.locale = MessageResources.getLocale(request);
+   }
+
+   /**
+    * Returns a formatted string with the same formatting as used inside
+    * dbforms
+    * 
+    * @param obj The object to format
+    * @param pattern to use as pattern for numeric and date fields
+    * 
+    * @return The string representation
+    */
+   public String getStringValue(Object obj, String pattern) {
+      try {
+         Field field = new Field();
+         field.setFieldType(obj);
+         TextFormatter f = new TextFormatter(field, locale, pattern, obj);
+         return f.getFormattedFieldValue();
+      } catch (Exception e) {
+         logCat.error(e);
+         return e.getMessage();
+      }
+   }
+
+   /**
+    * Returns a formatted string with the same formatting as used inside
+    * dbforms
+    * 
+    * @param obj The object to format
+    * 
+    * @return The string representation
+    */
+   public String getStringValue(Object obj) {
+      return getStringValue(obj, null);
    }
 
    /**
@@ -73,11 +107,9 @@ public class ReportParameter
     * 
     * @return String
     */
-   public String getMessage(String msg)
-   {
+   public String getMessage(String msg) {
       return MessageResources.getMessage(request, msg);
    }
-
 
    /**
     * Returns a request parameter
@@ -86,39 +118,59 @@ public class ReportParameter
     * 
     * @return String
     */
-   public String getParameter(String param)
-   {
+   public String getParameter(String param) {
       return ParseUtil.getParameter(request, param);
    }
-
 
    /**
     * Returns the connection.
     * 
     * @return Connection
     */
-   public Connection getConnection()
-   {
+   public Connection getConnection() {
       return connection;
    }
-
 
    /**
     * Returns the reportPath.
     * 
     * @return String
     */
-   public String getReportPath()
-   {
+   public String getReportPath() {
       return reportPath;
    }
 
-
    /**
+    * DOCUMENT ME!
+    * 
     * @return String
     */
-   public String getContextPath()
-   {
+   public String getContextPath() {
       return contextPath;
+   }
+
+   private class TextFormatter extends DbBaseHandlerTag {
+      private Object obj;
+      private Locale locale;
+
+      TextFormatter(Field field, Locale locale, String pattern, Object obj) {
+         this.obj = obj;
+         this.locale = locale;
+         setPattern(pattern);
+         setField(field);
+      }
+
+      protected Locale getLocale() {
+         return locale;
+      }
+
+      protected Object getFieldObject() {
+         return obj;
+      }
+
+      public String getFormattedFieldValue() {
+         return super.getFormattedFieldValue();
+      }
+
    }
 }

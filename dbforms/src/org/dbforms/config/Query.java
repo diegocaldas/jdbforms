@@ -169,7 +169,7 @@ public class Query extends Table
     *
     * @return sql from
     */
-   protected String getQueryFrom()
+   public String getQueryFrom()
    {
       if (!Util.isNull(from))
       {
@@ -235,7 +235,7 @@ public class Query extends Table
     *
     * @return sql select part
     */
-   protected String getQuerySelect(Vector fieldsToSelect)
+   public String getQuerySelect(Vector fieldsToSelect)
    {
       if (fieldsToSelect != null)
       {
@@ -341,7 +341,7 @@ public class Query extends Table
     *
     * @exception SQLException if any error occurs
     */
-   protected int populateWhereEqualsClause(FieldValue[] fvEqual, 
+   public int populateWhereEqualsClause(FieldValue[] fvEqual, 
                                            PreparedStatement ps, int curCol)
                                     throws SQLException
    {

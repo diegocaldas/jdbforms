@@ -27,6 +27,7 @@ import javax.servlet.jsp.JspException;
 // these 3 we need for formfield auto-population
 import java.text.Format;
 import java.util.Vector;
+import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.Constants;
@@ -90,7 +91,7 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler
     *
     * @return DOCUMENT ME!
     */
-   public DbFormTag getParentForm()
+   protected DbFormTag getParentForm()
    {
       return parentForm;
    }
@@ -134,11 +135,11 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler
       this.fieldName = fieldName;
       if (getParentForm().getTable() != null)
       {
-         this.field = getParentForm().getTable().getFieldByName(fieldName);
+         setField(getParentForm().getTable().getFieldByName(fieldName));
       }
       else
       {
-         this.field = null;
+         setField(null);
       }
 
       if (getParentForm().isSubForm() && (this.field != null))
@@ -147,7 +148,6 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler
          getParentForm().strikeOut(this.field);
       }
    }
-
 
    /**
       "value" is only used if parent tag is in "insert-mode" (footer, etc.)
@@ -210,14 +210,15 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler
    {
       if (format == null)
       {
-         format = getField()
-                     .getFormat(pattern, getParentForm().getLocale());
+         format = getField().getFormat(pattern, getLocale());
       }
 
       return this.format;
    }
 
-
+   protected Locale getLocale() {
+		return getParentForm().getLocale();
+   }
    /**
     * DOCUMENT ME!
     *
@@ -506,20 +507,24 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler
     *
     * @return  The nullFieldValue value
     */
-   public String getNullFieldValue()
+   private String getNullFieldValue()
    {
       String res = nullFieldValue;
       if (res == null)
-         res = MessageResourcesInternal.getMessage("dbforms.nodata", getParentForm().getLocale());
+         res = MessageResourcesInternal.getMessage("dbforms.nodata", getLocale());
       // Resolve message if captionResource=true in the Form Tag
-      if (getParentForm().hasCaptionResourceSet())
+      if ((getParentForm() != null) && getParentForm().hasCaptionResourceSet())
       {
-         res = MessageResources.getMessage(res, getParentForm().getLocale());
+         res = MessageResources.getMessage(res, getLocale());
       }
 
       return res;
    }
 
+   protected void setField(Field field) 
+   {
+		this.field = field;
+   }
 
    /**
     * @return

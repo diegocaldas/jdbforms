@@ -616,7 +616,7 @@ public class Table
       queryBuf.append("DELETE FROM ");
       queryBuf.append(getQueryToChange());
       queryBuf.append(" WHERE ");
-      queryBuf.append(getWhereClauseForPS());
+      queryBuf.append(getWhereClauseForKeyFields());
       logCat.info(queryBuf.toString());
 
       return queryBuf.toString();
@@ -661,7 +661,7 @@ public class Table
       }
 
       queryBuf.append(" WHERE ");
-      queryBuf.append(getWhereClauseForPS());
+      queryBuf.append(getWhereClauseForKeyFields());
       logCat.info(queryBuf.toString());
 
       return queryBuf.toString();
@@ -723,7 +723,7 @@ public class Table
     *                       used to build the elect part of the query
     * @return               the select part of a query
     */
-   protected String getQuerySelect(Vector fieldsToSelect)
+   public String getQuerySelect(Vector fieldsToSelect)
    {
       if (fieldsToSelect != null)
       {
@@ -754,7 +754,7 @@ public class Table
     *
     * @return the FROM part of a query
     */
-   protected String getQueryFrom()
+   public String getQueryFrom()
    {
       return name;
    }
@@ -810,14 +810,11 @@ public class Table
       // build the second term;
       // this SHOULD be the WHERE clause which restricts
       // the query to rows coming AFTER the row containing the actual data.
-      if (!FieldValue.isNull(fvOrder))
+      if (!FieldValue.isNull(fvOrder) && (compareMode != Constants.COMPARE_NONE))
       {
-         if (compareMode != Constants.COMPARE_NONE)
-         {
-            buf.append(firstTermExists ? " AND ( " : "");
-            buf.append(getWhereAfterClause(fvOrder, compareMode));
-            buf.append(firstTermExists ? " ) " : "");
-         }
+         buf.append(firstTermExists ? " AND ( " : "");
+         buf.append(getWhereAfterClause(fvOrder, compareMode));
+         buf.append(firstTermExists ? " ) " : "");
       }
 
       return buf.toString();
@@ -1571,7 +1568,7 @@ public class Table
     * @return  a part of the SQL where clause needed to select a distinguished
     *          row form the table
     */
-   public String getWhereClauseForPS()
+   public String getWhereClauseForKeyFields()
    {
       StringBuffer buf = new StringBuffer();
       int          cnt = this.getKey().size();
@@ -2185,7 +2182,7 @@ public class Table
     *
     * protected so that it can be tested
     */
-   protected String getWhereClause(FieldValue[] fv)
+   public String getWhereClause(FieldValue[] fv)
    {
       StringBuffer buf = new StringBuffer();
 
@@ -2312,7 +2309,7 @@ public class Table
     *
     * @exception SQLException if any error occurs
     */
-   protected int populateWhereEqualsClause(FieldValue[] fv, 
+   public int populateWhereEqualsClause(FieldValue[] fv, 
                                            PreparedStatement ps, int curCol)
                                     throws SQLException
    {

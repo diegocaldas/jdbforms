@@ -31,6 +31,7 @@ import java.util.Vector;
 
 import org.dbforms.config.DbFormsErrors;
 import org.dbforms.config.FieldValues;
+import org.dbforms.config.FieldValue;
 import org.dbforms.config.ValidationException;
 import org.dbforms.util.Util;
 import org.apache.log4j.Category;
@@ -74,7 +75,12 @@ public class DbFormsValidator implements Serializable {
       String value = null;
       try {
          if (!Util.isNull(field.getProperty())) {
-            value = hash.get(field.getProperty()).getFieldValueAsObject().toString();
+            FieldValue f = hash.get(field.getProperty());
+            if (f == null)
+               // Field not found in fieldvector -> so it's not on current page.
+               // So we will not check it!
+               return true;
+            value = f.getFieldValueAsObject().toString();
          }
       } catch (Exception e) {
          logCat.error(e);
@@ -102,7 +108,12 @@ public class DbFormsValidator implements Serializable {
       String value = null;
       try {
          if (!Util.isNull(field.getProperty())) {
-            value = hash.get(field.getProperty()).getFieldValueAsObject().toString();
+            FieldValue f = hash.get(field.getProperty());
+            if (f == null)
+               // Field not found in fieldvector -> so it's not on current page.
+               // So we will not check it!
+               return true;
+            value = f.getFieldValueAsObject().toString();
          }
       } catch (Exception e) {
          logCat.error(e);
@@ -134,7 +145,12 @@ public class DbFormsValidator implements Serializable {
       String value = null;
       try {
          if (!Util.isNull(field.getProperty())) {
-            value = hash.get(field.getProperty()).getFieldValueAsObject().toString();
+            FieldValue f = hash.get(field.getProperty());
+            if (f == null)
+               // Field not found in fieldvector -> so it's not on current page.
+               // So we will not check it!
+               return true;
+            value = f.getFieldValueAsObject().toString();
          }
       } catch (Exception e) {
          logCat.error(e);
@@ -166,7 +182,12 @@ public class DbFormsValidator implements Serializable {
       String value = null;
       try {
          if (!Util.isNull(field.getProperty())) {
-            value = hash.get(field.getProperty()).getFieldValueAsObject().toString();
+            FieldValue f = hash.get(field.getProperty());
+            if (f == null)
+               // Field not found in fieldvector -> so it's not on current page.
+               // So we will not check it!
+               return true;
+            value = f.getFieldValueAsObject().toString();
          }
       } catch (Exception e) {
          logCat.error(e);
@@ -198,7 +219,12 @@ public class DbFormsValidator implements Serializable {
       String value = null;
       try {
          if (!Util.isNull(field.getProperty())) {
-            value = hash.get(field.getProperty()).getFieldValueAsObject().toString();
+            FieldValue f = hash.get(field.getProperty());
+            if (f == null)
+               // Field not found in fieldvector -> so it's not on current page.
+               // So we will not check it!
+               return true;
+            value = f.getFieldValueAsObject().toString();
          }
       } catch (Exception e) {
          logCat.error(e);
@@ -230,7 +256,12 @@ public class DbFormsValidator implements Serializable {
       String value = null;
       try {
          if (!Util.isNull(field.getProperty())) {
-            value = hash.get(field.getProperty()).getFieldValueAsObject().toString();
+            FieldValue f = hash.get(field.getProperty());
+            if (f == null)
+               // Field not found in fieldvector -> so it's not on current page.
+               // So we will not check it!
+               return true;
+            value = f.getFieldValueAsObject().toString();
          }
       } catch (Exception e) {
          logCat.error(e);
@@ -262,7 +293,12 @@ public class DbFormsValidator implements Serializable {
       String value = null;
       try {
          if (!Util.isNull(field.getProperty())) {
-            value = hash.get(field.getProperty()).getFieldValueAsObject().toString();
+            FieldValue f = hash.get(field.getProperty());
+            if (f == null)
+               // Field not found in fieldvector -> so it's not on current page.
+               // So we will not check it!
+               return true;
+            value = f.getFieldValueAsObject().toString();
          }
       } catch (Exception e) {
          logCat.error(e);
@@ -293,7 +329,12 @@ public class DbFormsValidator implements Serializable {
       String value = null;
       try {
          if (!Util.isNull(field.getProperty())) {
-            value = hash.get(field.getProperty()).getFieldValueAsObject().toString();
+            FieldValue f = hash.get(field.getProperty());
+            if (f == null)
+               // Field not found in fieldvector -> so it's not on current page.
+               // So we will not check it!
+               return true;
+            value = f.getFieldValueAsObject().toString();
          }
       } catch (Exception e) {
          logCat.error(e);
@@ -333,7 +374,12 @@ public class DbFormsValidator implements Serializable {
       String value = null;
       try {
          if (!Util.isNull(field.getProperty())) {
-            value = hash.get(field.getProperty()).getFieldValue();
+            FieldValue f = hash.get(field.getProperty());
+            if (f == null)
+               // Field not found in fieldvector -> so it's not on current page.
+               // So we will not check it!
+               return true;
+            value = f.getFieldValueAsObject().toString();
          }
       } catch (Exception e) {
          logCat.error(e);
@@ -378,7 +424,12 @@ public class DbFormsValidator implements Serializable {
       String value = null;
       try {
          if (!Util.isNull(field.getProperty())) {
-            value = hash.get(field.getProperty()).getFieldValueAsObject().toString();
+            FieldValue f = hash.get(field.getProperty());
+            if (f == null)
+               // Field not found in fieldvector -> so it's not on current page.
+               // So we will not check it!
+               return true;
+            value = f.getFieldValueAsObject().toString();
          }
       } catch (Exception e) {
          logCat.error(e);
@@ -416,7 +467,12 @@ public class DbFormsValidator implements Serializable {
       String value = null;
       try {
          if (!Util.isNull(field.getProperty())) {
-            value = hash.get(field.getProperty()).getFieldValueAsObject().toString();
+            FieldValue f = hash.get(field.getProperty());
+            if (f == null)
+               // Field not found in fieldvector -> so it's not on current page.
+               // So we will not check it!
+               return true;
+            value = f.getFieldValueAsObject().toString();
          }
       } catch (Exception e) {
          logCat.error(e);
@@ -447,7 +503,12 @@ public class DbFormsValidator implements Serializable {
       String value = null;
       try {
          if (!Util.isNull(field.getProperty())) {
-            value = hash.get(field.getProperty()).getFieldValueAsObject().toString();
+            FieldValue f = hash.get(field.getProperty());
+            if (f == null)
+               // Field not found in fieldvector -> so it's not on current page.
+               // So we will not check it!
+               return true;
+            value = f.getFieldValueAsObject().toString();
          }
       } catch (Exception e) {
          logCat.error(e);
@@ -476,7 +537,12 @@ public class DbFormsValidator implements Serializable {
       String value = null;
       try {
          if (!Util.isNull(field.getProperty())) {
-            value = hash.get(field.getProperty()).getFieldValueAsObject().toString();
+            FieldValue f = hash.get(field.getProperty());
+            if (f == null)
+               // Field not found in fieldvector -> so it's not on current page.
+               // So we will not check it!
+               return true;
+            value = f.getFieldValueAsObject().toString();
          }
       } catch (Exception e) {
          logCat.error(e);
@@ -510,7 +576,12 @@ public class DbFormsValidator implements Serializable {
       String value = null;
       try {
          if (!Util.isNull(field.getProperty())) {
-            value = hash.get(field.getProperty()).getFieldValueAsObject().toString();
+            FieldValue f = hash.get(field.getProperty());
+            if (f == null)
+               // Field not found in fieldvector -> so it's not on current page.
+               // So we will not check it!
+               return true;
+            value = f.getFieldValueAsObject().toString();
          }
       } catch (Exception e) {
          logCat.error(e);

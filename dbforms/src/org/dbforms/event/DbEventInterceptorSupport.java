@@ -49,14 +49,14 @@ public class DbEventInterceptorSupport implements DbEventInterceptor
 	 */
 	protected void setValue(Table table, FieldValues fieldValues, String fieldName, String value) {
 		FieldValue fv = fieldValues.get(fieldName);
-		if (fv == null) {
-			Field f = table.getFieldByName(fieldName);
-			if (f != null) {
+		Field f = table.getFieldByName(fieldName);
+		if (f != null) {
+			if (fv == null) {
 				fv = new FieldValue(f, value);
 				fieldValues.put(fv);
+			} else {
+				fv.setFieldValue(value);
 			}
-		} else {
-			fv.setFieldValue(value);
 		}
 	}
 

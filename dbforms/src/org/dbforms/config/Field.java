@@ -126,55 +126,74 @@ public class Field
     */
    public void setFieldType(String fieldType)
    {
-      fieldType = fieldType.toLowerCase();
-
-      if (fieldType.startsWith("int") || fieldType.startsWith("smallint")
-                || fieldType.startsWith("tinyint"))
-      {
-         type = FieldTypes.INTEGER;
-      }
-      else if (fieldType.startsWith("char") || fieldType.startsWith("varchar")
-                     || fieldType.startsWith("nvarchar")
-                     || fieldType.startsWith("longchar")
-                     || fieldType.startsWith("text"))
-      {
-         type = FieldTypes.CHAR;
-      }
-      else if (fieldType.startsWith("numeric")
-                     || fieldType.startsWith("number"))
-      {
-         type = FieldTypes.NUMERIC;
-      }
-      else if (fieldType.startsWith("date"))
-      {
-         type = FieldTypes.DATE;
-      }
-      else if (fieldType.startsWith("timestamp"))
-      {
-         type = FieldTypes.TIMESTAMP;
-      }
-      else if (fieldType.startsWith("time"))
-      {
-         type = FieldTypes.TIME;
-      }
-      else if (fieldType.startsWith("double") || fieldType.startsWith("float"))
-      {
-         type = FieldTypes.DOUBLE;
-      }
-      else if (fieldType.startsWith("real"))
-      {
-         type = FieldTypes.FLOAT;
-      }
-      else if (fieldType.startsWith("blob") || fieldType.startsWith("image"))
-      {
-         type = FieldTypes.BLOB;
-      }
-      else if (fieldType.startsWith("diskblob"))
-      {
-         type = FieldTypes.DISKBLOB;
-      }
+		fieldType = fieldType.toLowerCase();
+		if (fieldType.startsWith("int") || fieldType.startsWith("smallint")
+					 || fieldType.startsWith("tinyint"))
+		{
+			type = FieldTypes.INTEGER;
+		}
+		else if (fieldType.startsWith("char") || fieldType.startsWith("varchar")
+							|| fieldType.startsWith("nvarchar")
+							|| fieldType.startsWith("longchar")
+							|| fieldType.startsWith("text"))
+		{
+			type = FieldTypes.CHAR;
+		}
+		else if (fieldType.startsWith("numeric")
+							|| fieldType.startsWith("number"))
+		{
+			type = FieldTypes.NUMERIC;
+		}
+		else if (fieldType.startsWith("date"))
+		{
+			type = FieldTypes.DATE;
+		}
+		else if (fieldType.startsWith("timestamp"))
+		{
+			type = FieldTypes.TIMESTAMP;
+		}
+		else if (fieldType.startsWith("time"))
+		{
+			type = FieldTypes.TIME;
+		}
+		else if (fieldType.startsWith("double") || fieldType.startsWith("float"))
+		{
+			type = FieldTypes.DOUBLE;
+		}
+		else if (fieldType.startsWith("real"))
+		{
+			type = FieldTypes.FLOAT;
+		}
+		else if (fieldType.startsWith("blob") || fieldType.startsWith("image"))
+		{
+			type = FieldTypes.BLOB;
+		}
+		else if (fieldType.startsWith("diskblob"))
+		{
+			type = FieldTypes.DISKBLOB;
+		}
    }
 
+	public void setFieldType(Object obj) {
+		if (obj instanceof java.lang.Integer)
+			type = FieldTypes.INTEGER;
+		else if (obj instanceof java.lang.Long)
+			type = FieldTypes.INTEGER;
+		else if (obj instanceof java.lang.String)
+			type = FieldTypes.CHAR;
+		else if (obj instanceof java.math.BigDecimal)
+			type = FieldTypes.NUMERIC;
+		else if (obj instanceof java.sql.Date)
+			type = FieldTypes.DATE;
+		else if (obj instanceof java.sql.Time)
+			type = FieldTypes.TIME;
+		else if (obj instanceof java.sql.Timestamp)
+			type = FieldTypes.TIMESTAMP;
+		else if (obj instanceof java.lang.Double)
+			type = FieldTypes.DOUBLE;
+		else if (obj instanceof java.lang.Float)
+			type = FieldTypes.FLOAT;
+	}
 
    /**
     * Gets the type attribute of the Field object as numeric value. <br>
@@ -337,8 +356,6 @@ public class Field
       Format res   = null;
       int    dateStyle = DateFormat.MEDIUM;
 	  int    timeStyle = DateFormat.SHORT;
-
-      
       if (!Util.isNull(pattern))
       {
          if ("short".startsWith(pattern.toLowerCase()))
@@ -416,7 +433,11 @@ public class Field
       return res;
    }
 
-
+   public static int parseFieldType(String fieldType) {
+		int type = 0;
+        return type;
+   }
+   
    /**
     * Get the String representation of this Field object.
     *
