@@ -1166,7 +1166,10 @@ public class DbFormTag extends TagSupportWithScriptHandler
       if (fieldNames != null) {
          fieldNames.clear();
       }
-
+      if (childFieldNames != null) {
+      	childFieldNames.clear();
+      }
+		
       sqlFilter          = null;
       orderFields        = null;
       overrideFieldCheck = null;
