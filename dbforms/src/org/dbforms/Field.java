@@ -23,9 +23,7 @@
 
 package org.dbforms;
 
-import java.util.*;
-import org.apache.log4j.Category;
-import org.dbforms.util.*;
+import org.apache.log4j.Category;import org.dbforms.util.FieldTypes;
 
 
 
@@ -124,10 +122,10 @@ public class Field
      *
      * @param  fieldType The new fieldType value
      */
-    public void setFieldType(String fieldType)
-    {
-        setType(fieldType);
-    }
+    //public void setFieldType(String fieldType)
+    //{
+      //  setType(fieldType);
+//    }
 
 
     /**
@@ -138,7 +136,7 @@ public class Field
      *
      * @param  aType the type string value (example: "int", "char", "numeric", etc)
      */
-    public void setType(String aType)
+    public void setFieldType(String aType)
     {
         aType = aType.toLowerCase();
 
@@ -186,10 +184,10 @@ public class Field
      *
      * @return  The type value
      */
-    public int getType()
+    public int getFieldType()
     {
         return type;
-    }
+    }	/**	 *  Gets the type attribute of the Field object	 *	 * @return  The type value	 * @deprecated Should use getFieldType()	 */    public int getType(){    	return getFieldType();    }
 
 
     /**
