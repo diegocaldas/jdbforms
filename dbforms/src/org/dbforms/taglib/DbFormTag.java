@@ -1328,6 +1328,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
             // supports RFC 1867 - multipart upload, if some database-fields represent filedata
             if (tableName == null)
             {
+					appendSource(request, tagBuf);
                // if form is an emptyform -> we've fineshed yet - cancel all further activities!
                out.println(tagBuf.toString());
 
@@ -1386,16 +1387,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
                + ValidatorConstants.FORM_VALIDATOR_NAME + "_" + tableId
                + "\" value=\"" + getFormValidatorName() + "\">");
          }
-
-         tagBuf.append("<input type=\"hidden\" name=\"source\" value=\"");
-         tagBuf.append(request.getRequestURI());
-
-         if (request.getQueryString() != null)
-         {
-            tagBuf.append("?").append(request.getQueryString());
-         }
-
-         tagBuf.append("\">");
+			appendSource(request, tagBuf);
 
          // Allow to send action dynamicaly from javascript
          tagBuf.append("<input type=\"hidden\" name=\"customEvent\">");
@@ -1828,6 +1820,18 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
    }
 
 
+	private void appendSource(HttpServletRequest request, StringBuffer tagBuf)
+	{
+	   tagBuf.append("<input type=\"hidden\" name=\"source\" value=\"");
+		tagBuf.append(request.getRequestURI());
+
+		if (request.getQueryString() != null)
+		{
+			tagBuf.append("?").append(request.getQueryString());
+		}
+
+		tagBuf.append("\">");
+	}
    /**
     * DOCUMENT ME!
     *
