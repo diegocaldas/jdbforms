@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE web-app
+  PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
+  "http://java.sun.com/j2ee/dtds/web-app_2_2.dtd">
+
+<web-app>
+
+  <!-- *************************************************  --> 	
+  <!-- **======= DbForms Standard web Config =========**  --> 
+  <!-- *************************************************  --> 	
+
+
+  <!--  ========= DbForms Configuration Servlet =========  -->
+  <servlet>
+    <servlet-name>com.itp.dbforms.ConfigServlet</servlet-name>
+    <servlet-class>com.itp.dbforms.ConfigServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+    
+    <!-- *** CHANGE TO YOUR CONFIG! -->    
+    <init-param>
+      <param-name>log4j.configuration</param-name>
+      <param-value>file:/jt32/conf/log4j.properties</param-value>
+    </init-param>      
+   
+  </servlet>
+ 
+  <!--=========== DbForms Controller Servlet ==============--> 
+  <servlet>
+    <servlet-name>control</servlet-name>
+    <servlet-class>com.itp.dbforms.Controller</servlet-class>
+  </servlet>
+
+  <!--=========== DbForms FileServlet =====================
+  ensure that "load-on-startup" is less than "load-on-startup" 
+  element of Configuration Servlet! because we need to access
+  information from Configuration Servlet and therefore we must 
+  start up AFTER Configuration Servlet..!
+  -->   
+  <servlet>
+    <servlet-name>file</servlet-name>
+    <servlet-class>com.itp.dbforms.util.FileServlet</servlet-class>
+    <load-on-startup>2</load-on-startup>
+  </servlet>
+
+  <!--=========== DbForms Tag Library Descriptor ==========--> 
+  <taglib>
+    <taglib-uri>/WEB-INF/taglib.tld</taglib-uri>
+    <taglib-location>/WEB-INF/taglib.tld</taglib-location>
+  </taglib>
+
+
+  <!--==*************************************************==--> 	
+  <!--==**=======  DBFORMS STYLING TEMPLATES  =========**==--> 
+  <!--==*************************************************==--> 	
+
+   <!-- uncomment this if you want your template directory 
+  	different to "/templates" (default)    -->          
+   <context-param>
+      <param-name>templateBase</param-name>
+      <param-value>templates</param-value>
+   </context-param>	   
+
+   
+  <!--==*************************************************==--> 	
+  <!--==**======= YOUR APPLICATION's SECURITY =========**==--> 
+  <!--==*************************************************==--> 	
+	
+
+  <!--=================== roles ===========================-->
+	
+ 
+	
+  <security-role>
+    <description>Registered users of this app. Can do stuff, others not.</description>
+    <role-name>bug_admin</role-name>
+  </security-role>  	
+  
+
+  
+  
+		
+  <!--=================== login config ====================--> 	
+
+<!--	
+  <login-config>
+    <auth-method>FORM</auth-method>
+    <realm-name>Form-Based Authentication Area</realm-name>
+    <form-login-config>
+      <form-login-page>/login.jsp</form-login-page>
+      <form-error-page>/login.jsp</form-error-page>
+    </form-login-config>
+   </login-config>
+-->
+
+    <login-config>
+      <auth-method>BASIC</auth-method>
+      <realm-name>DbForms Bug Tracking System</realm-name>
+    </login-config>
+
+  <!--=================== authentification   ==============-->
+  
+  <!-- 
+       we protect everything except login and logout.
+       
+       you could sepearate content into different directories
+       and use "/directoryname/*" as url-pattern
+       instead of the verbose url-pattern list below            
+       
+       however, be sure NOT to protect login.jsp/logout.jsp       
+       in many containers this would lead to endless recursion 
+       which ends with a crash of the virtual machine 
+       ("StackOverFlow")
+  -->
+
+   <security-constraint>
+     <web-resource-collection>
+       <web-resource-name>myapp</web-resource-name>
+       <url-pattern>/category_list.jsp</url-pattern>
+       <url-pattern>/category_single.jsp</url-pattern>
+       <url-pattern>/priority_list.jsp</url-pattern>
+       <url-pattern>/priority_single.jsp</url-pattern>
+       <url-pattern>/bugs_single.jsp</url-pattern>
+       <url-pattern>/admin_menu.jsp</url-pattern>
+     </web-resource-collection>
+     <auth-constraint>
+     	<role-name>bug_admin</role-name>
+     </auth-constraint>
+
+
+   </security-constraint>
+	
+	
+
+
+  <!--==*************************************************==--> 	
+  <!--==**======= Other configuration items, not=======**==--> 
+  <!--==**=======     directly related to DbForms======**==--> 
+  <!--==*************************************************==--> 	
+	
+  <!-- Session config -->
+  <session-config>
+    <session-timeout>30</session-timeout>
+  </session-config>
+  
+  <!-- The Welcome File List -->
+  <welcome-file-list>
+    <welcome-file>bugs_list.jsp</welcome-file>
+  </welcome-file-list>  
+	
+	
+
+</web-app>
