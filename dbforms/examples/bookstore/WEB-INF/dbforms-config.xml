@@ -12,7 +12,14 @@
 	        <field name="ISBN" fieldType="varchar" />
 	        <field name="AUTHOR_ID" fieldType="int" isKey="true" />
 	        <field name="TITLE" fieldType="varchar" isKey="true" />
-	    </table>    
+	    </table>   
+            
+            <query name="BOOK_NEW" from="BOOK">
+                <field name="BOOK_ID" fieldType="int" isKey="true" autoInc="true"/>
+	        <field name="ISBN" fieldType="varchar" />
+	        <field name="AUTHOR_ID" fieldType="int" isKey="true" />
+	        <field name="TITLE" fieldType="varchar" isKey="true" />
+            </query> 
 
 	    <query name="BOOKWITHINTERCEPTOR" from="BOOK">
 	        <field name="BOOK_ID" fieldType="int" isKey="true"/>
