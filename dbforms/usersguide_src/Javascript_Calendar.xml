@@ -1,159 +1,180 @@
 <?xml version="1.0" encoding="UTF-8"?>
- 
-	<chapter>
-		<title id="js_cal">JavaScript Calendar Application
+
+<chapter>
+  <title id="js_cal">JavaScript Calendar Application
 </title>
-		<sect1>
-			<title>What is it?
+  <sect1>
+    <title>What is it?
 </title>
-			<para>DbForms contains a <ulink url="http://developer.iplanet.com/viewsource/husted_calendar/husted_calendar.html"><citetitle>JavaScript Calendar application </citetitle> </ulink> written by Robert W. Husted (<emphasis role="bold">rhusted@requisite.com</emphasis>) with friendly permission of author.  The calendar is now developed as an open source project<ulink url="http://jscal.sourceforge.net/"><citetitle> 'jscal' </citetitle></ulink>
+    <para>DbForms contains a 
+      <ulink url="http://developer.iplanet.com/viewsource/husted_calendar/husted_calendar.html">
+        <citetitle>JavaScript Calendar application </citetitle>
+      </ulink> written by Robert W. Husted (
+      <emphasis role="bold">rhusted@requisite.com</emphasis>) with friendly permission of author.  The calendar is now developed as an open source project
+      <ulink url="http://jscal.sourceforge.net/">
+        <citetitle> 'jscal' </citetitle>
+      </ulink>
+    </para>
+    <para>The calendar can be used to edit values of date fields using a small calendar popup window.
 </para>
-			<para>The calendar can be used to edit values of date fields using a small calendar popup window.
-</para>
-		</sect1>
-		<sect1>
-			<title>How to use the calendar within dbforms
+  </sect1>
+  <sect1>
+    <title>How to use the calendar within dbforms
 </title>
-			<para>To use it, application developers have to do following steps:
+    <para>To use it, application developers have to do following steps:
 </para>
-<orderedlist numeration="lowerroman">
-<listitem>
-<para>Copy the directory <emphasis role="italic">dbformslib</emphasis> with all subdirectories into the root of the web application. This directory can be found within directory <emphasis role="italic">dist</emphasis> inside DbForms distribution.
-</para>
-</listitem>
-<listitem>
-<para>Set a global date format for your application by using tag <emphasis role="italic">date-format</emphasis> within dbforms-config.xml:
-<blockquote><screen>
+    <orderedlist numeration="lowerroman">
+      <listitem>
+        <para>Copy the directory 
+          <emphasis role="italic">dbformslib</emphasis> with all subdirectories into the root of the web application. This directory can be found within directory 
+          <emphasis role="italic">dist</emphasis> inside DbForms distribution.
+
+        </para>
+      </listitem>
+      <listitem>
+        <para>Set a global date format for your application by using tag 
+          <emphasis role="italic">date-format</emphasis> within dbforms-config.xml:
+
+          <blockquote>
+            <screen>
     &lt;date-format&gt;yyyy-MM-dd&lt;/date-format&gt;</screen>
-<para>See Javadoc for class <emphasis role="italic">java.text.SimpleDateFormat</emphasis> to find more information about supported formats and date patterns. Be aware that the pattern is case sensitive and that lowercase 'm' does not mean 'month' but 'minute'. The format handling inside the JavaScript calendar is separated from the handling inside dbforms Java code. And unfortunately the meaning of subpatterns is somtimes different in both worlds. E.g. 'mm' means 'minute' in Java patterns and '1 or 2 digit month' for the calendar. For the beginning it is recommended to build a pattern out of the following subpatterns:
+            <para>See Javadoc for class 
+              <emphasis role="italic">java.text.SimpleDateFormat</emphasis> to find more information about supported formats and date patterns. Be aware that the pattern is case sensitive and that lowercase 'm' does not mean 'month' but 'minute'. The format handling inside the JavaScript calendar is separated from the handling inside dbforms Java code. And unfortunately the meaning of subpatterns is somtimes different in both worlds. E.g. 'mm' means 'minute' in Java patterns and '1 or 2 digit month' for the calendar. For the beginning it is recommended to build a pattern out of the following subpatterns:
+
+            </para>
+            <para>
+              <itemizedlist mark="opencircle">
+                <listitem>
+                  <para>'dd': two digit day of month
 </para>
-<para>
-<itemizedlist mark="opencircle">
-<listitem>
-<para>'dd': two digit day of month
+                </listitem>
+                <listitem>
+                  <para>'MM': two digit month of year (uppercase!)
 </para>
-</listitem>
-<listitem>
-<para>'MM': two digit month of year (uppercase!)
+                </listitem>
+                <listitem>
+                  <para>'yyyy': 4 digit year
 </para>
-</listitem>
-<listitem>
-<para>'yyyy': 4 digit year
+                </listitem>
+              </itemizedlist>
+            </para>
+            <para>As separator you may use '.','-','_' or '/'. Examples of valid patterns are 'yyyy-MM-dd', 'dd.MM.yyyy', 'MM/dd/yyyy'. Such patterns should be understood and handled by the calendar and the dbforms Java code in the same way. See next subsection about how to add support for more date formats.
 </para>
-</listitem>
-</itemizedlist></para>
-<para>As separator you may use '.','-','_' or '/'. Examples of valid patterns are 'yyyy-MM-dd', 'dd.MM.yyyy', 'MM/dd/yyyy'. Such patterns should be understood and handled by the calendar and the dbforms Java code in the same way. See next subsection about how to add support for more date formats.
-</para></blockquote></para>
-</listitem>
-<listitem>
-<para>Include the JavaScript file <emphasis role="italic">calendar.js</emphasis> containing the calendar application in your JSPs:<computeroutput/>
-<blockquote><screen>
+          </blockquote>
+        </para>
+      </listitem>
+      <listitem>
+        <para>Include the JavaScript file 
+          <emphasis role="italic">calendar.js</emphasis> containing the calendar application in your JSPs:
+          <computeroutput/>
+          <blockquote>
+            <screen>
     &lt;script language="javascript" src="dbformslib/jscal/calendar.js\"&gt;
     &lt;/script&gt;
 </screen>
-<para>If you have JSPs within subdirectories, you can use an absolute path with your context path included in pathname:
+            <para>If you have JSPs within subdirectories, you can use an absolute path with your context path included in pathname:
 </para>
-<screen>
+            <screen>
     &lt;script language="javascript" src="/contextpath/dbformslib/jscal/calendar.js" &gt;
     &lt;/script&gt;
 </screen>
-<para>If you want to avoid to write context path into your pages and want pages still to work also within subdirectories, you may write instead the following version, which looks a bit more complicated, but will work whereever you copy your pages:
+            <para>If you want to avoid to write context path into your pages and want pages still to work also within subdirectories, you may write instead the following version, which looks a bit more complicated, but will work whereever you copy your pages:
 </para>
-<screen>
+            <screen>
     &lt;script language="javascript"
         src=&lt;%= "\"" +request.getContextPath() + "/dbformslib/jscal/calendar.js\""%&gt;
     &gt;
     &lt;/script&gt;
 </screen>
-</blockquote>
-</para>
-</listitem>
-<listitem>
-<para>To activate the calendar for a date field, all you have to do is to set the attribute <emphasis role="bold">useJsCalendar </emphasis>to <computeroutput>"true"</computeroutput>:
-<blockquote>
-<screen>
+          </blockquote>
+        </para>
+      </listitem>
+      <listitem>
+        <para>To activate the calendar for a date field, all you have to do is to set the attribute 
+          <emphasis role="bold">useJsCalendar </emphasis>to 
+          <computeroutput>"true"</computeroutput>:
+
+          <blockquote>
+            <screen>
     &lt;db:dateField fieldName="birthdate" useJsCalendar="true" /&gt;
 </screen>
-<para>When running the application, a small calendar icon will be shown after the date field:
+            <para>When running the application, a small calendar icon will be shown after the date field:
 </para>
-
-<mediaobject  id="js_cal1">  
-  <imageobject  role="html">
-    <imagedata  format="PNG"  fileref="images/figures/js_cal1.png"/>
-  </imageobject>
-  <imageobject  role="fo">
-    <imagedata  format="PNG"  fileref="../images/figures/js_cal1.png"/>
-  </imageobject>
-</mediaobject>			 
-<para>If user clicks on the icon (and has JavaScript activated), a popup window appears showing a calendar. User can navigate to the desired month and then simply click on the date. That selected date will be written into the form field.
+            <mediaobject id="js_cal1">
+              <imageobject role="html">
+                <imagedata format="PNG" fileref="images/figures/js_cal1.png"/>
+              </imageobject>
+              <imageobject role="fo">
+                <imagedata format="PNG" fileref="../images/figures/js_cal1.png"/>
+              </imageobject>
+            </mediaobject>
+            <para>If user clicks on the icon (and has JavaScript activated), a popup window appears showing a calendar. User can navigate to the desired month and then simply click on the date. That selected date will be written into the form field.
 </para>
-
-<mediaobject  id="js_cal2">  
-  <imageobject  role="html">
-    <imagedata  format="PNG"  fileref="images/figures/js_cal2.png"/>
-  </imageobject>
-  <imageobject  role="fo">
-    <imagedata  format="PNG"  fileref="../images/figures/js_cal2.png"/>
-  </imageobject>
-</mediaobject>
-</blockquote>
-</para>
-</listitem>
-</orderedlist>
-
-
- 		
-			
-			
-		</sect1>
-		<sect1>
-			<title>Support for more date formats
+            <mediaobject id="js_cal2">
+              <imageobject role="html">
+                <imagedata format="PNG" fileref="images/figures/js_cal2.png"/>
+              </imageobject>
+              <imageobject role="fo">
+                <imagedata format="PNG" fileref="../images/figures/js_cal2.png"/>
+              </imageobject>
+            </mediaobject>
+          </blockquote>
+        </para>
+      </listitem>
+    </orderedlist>
+  </sect1>
+  <sect1>
+    <title>Support for more date formats
 </title>
-			<para>If you need to use a date format that can not be expressed by the subpatterns mentioned above ('dd','MM','yyyy'), you have to some more work:
+    <para>If you need to use a date format that can not be expressed by the subpatterns mentioned above ('dd','MM','yyyy'), you have to some more work:
 </para>
-<orderedlist numeration="lowerroman">
-<listitem>
-<para>Construct a date pattern for your desired format using the possibilities documented in class java.text.SimpleDateFormat. Set this format as global date format inside dbforms config file.
+    <orderedlist numeration="lowerroman">
+      <listitem>
+        <para>Construct a date pattern for your desired format using the possibilities documented in class java.text.SimpleDateFormat. Set this format as global date format inside dbforms config file.
 </para>
-</listitem>
-<listitem>
-<para>Construct a date pattern for the same format using the calendar's date patterns. Have a look at the comments inside file <emphasis role="italic">calendar.js</emphasis> for details. This step can be neccessary, because some subpatterns have different meanings in both worlds. The new pattern for the calendar can be set by using the attribute <emphasis role="italic">jsCalendarDatePattern</emphasis> inside tag dateField:
-<blockquote>
-<para>
-<emphasis role="bold">Here is an example: </emphasis>
+      </listitem>
+      <listitem>
+        <para>Construct a date pattern for the same format using the calendar's date patterns. Have a look at the comments inside file 
+          <emphasis role="italic">calendar.js</emphasis> for details. This step can be neccessary, because some subpatterns have different meanings in both worlds. The new pattern for the calendar can be set by using the attribute 
+          <emphasis role="italic">jsCalendarDatePattern</emphasis> inside tag dateField:
+
+          <blockquote>
+            <para>
+              <emphasis role="bold">Here is an example: </emphasis>
+            </para>
+            <para>Inside dbforms-config.xml you have:
 </para>
-<para>Inside dbforms-config.xml you have:
-</para>
-<screen>
+            <screen>
     &lt;date-format&gt;yyyy-M-d&lt;/date-format&gt;
 </screen>
-<para>Inside the JSP you set the corresponding calendar format:
+            <para>Inside the JSP you set the corresponding calendar format:
 </para>
-<screen>
-    &lt;<computeroutput>db:dateField</computeroutput> fieldName="birthdate" jsCalendarDateFormat="yyyy-mm-dd" /&gt;>
-</screen>
-<para><emphasis role="bold">Another example:</emphasis></para>
-<para>Inside dbforms-config.xml you have:
+            <screen>
+    &lt;
+              <computeroutput>db:dateField</computeroutput> fieldName="birthdate" jsCalendarDateFormat="yyyy-mm-dd" /&gt;&gt;
+
+            </screen>
+            <para>
+              <emphasis role="bold">Another example:</emphasis>
+            </para>
+            <para>Inside dbforms-config.xml you have:
 </para>
-<screen>
+            <screen>
     &lt;date-format&gt;MMM dd',' yyyy&lt;/date-format&gt;</screen>
-<para>Then inside the JSP you set:
+            <para>Then inside the JSP you set:
 </para>
-<screen>
-    &lt;<computeroutput>db:dateField</computeroutput> fieldName="birthdate" 
-    jsCalendarDateFormat="Mon DD, yyyy" /&gt;</screen>
-</blockquote>
-</para>
-</listitem>
-<listitem>
-<para>The calendar has a build in parsing routine that is able to parse the simple patterns mentioned above. If the date pattern is different, it just uses the build in constructor for a JavaScript date object. If your date pattern is not understood by the calendar, you may experience that the calendar always starts up with the current date, not with with date that was set in the form field. It might then be neccessary to add some custom parsing code into the file calendar.js.</para>
-<para>Normally the JavaScript calendar trys to use the locale of the used browser for names of weekdays and months. But if that might lead to problems when you use patterns including textual representations of dates like in 'May 08, 2002'. A calendar running e.g. on a browser in Germany would set this date as 'Mai 08, 2002' and you would get an error when trying to save this value. That's why the calendar automatically will use English names if the date pattern is not a simple one, so that the result date given back to dbforms hopefully will be correctly understood and parsed. If the default locale of your server is not an English one, it would currently be the best to avoid date patterns containing textual representations of months.</para>
-</listitem>
- 
-</orderedlist>
- 
-		 
-			 
-		</sect1>
-	</chapter>
- 
+            <screen>
+    &lt;
+              <computeroutput>db:dateField</computeroutput> fieldName="birthdate" 
+    jsCalendarDateFormat="Mon DD, yyyy" /&gt;
+            </screen>
+          </blockquote>
+        </para>
+      </listitem>
+      <listitem>
+        <para>The calendar has a build in parsing routine that is able to parse the simple patterns mentioned above. If the date pattern is different, it just uses the build in constructor for a JavaScript date object. If your date pattern is not understood by the calendar, you may experience that the calendar always starts up with the current date, not with with date that was set in the form field. It might then be neccessary to add some custom parsing code into the file calendar.js.</para>
+        <para>Normally the JavaScript calendar trys to use the locale of the used browser for names of weekdays and months. But if that might lead to problems when you use patterns including textual representations of dates like in 'May 08, 2002'. A calendar running e.g. on a browser in Germany would set this date as 'Mai 08, 2002' and you would get an error when trying to save this value. That's why the calendar automatically will use English names if the date pattern is not a simple one, so that the result date given back to dbforms hopefully will be correctly understood and parsed. If the default locale of your server is not an English one, it would currently be the best to avoid date patterns containing textual representations of months.</para>
+      </listitem>
+    </orderedlist>
+  </sect1>
+</chapter>
