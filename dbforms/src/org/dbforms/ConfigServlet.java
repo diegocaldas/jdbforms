@@ -492,25 +492,22 @@ public class ConfigServlet extends HttpServlet
         // Build a digester to process our configuration resource
         String realPath = getServletContext().getRealPath("/");
 
-        DbFormsConfig dbFormsConfig = new DbFormsConfig(realPath);
-        Digester digester = null;
-        digester = initDigester(digesterDebugLevel, dbFormsConfig);
-
-
-        // store a reference to ServletConfig (for interoperation with other parts of the Web-App!)
-        dbFormsConfig.setServletConfig(getServletConfig());
-
-
-        // store this config object in servlet context ("application")
-        getServletContext().setAttribute(DbFormsConfig.CONFIG, dbFormsConfig);
-
-        // ---------------------------------------------------------------
-        // register the config object into the DbFormsConfigRegistry
-        // as the default config (fossato, 2002.12.02)
-        DbFormsConfigRegistry registry = DbFormsConfigRegistry.instance();
-        registry.setServletContext(getServletContext());
-        registry.register(dbFormsConfig);
-        // ---------------------------------------------------------------
+    	  DbFormsConfig dbFormsConfig = (DbFormsConfig) getServletContext().getAttribute(DbFormsConfig.CONFIG);
+        if (dbFormsConfig == null) {
+        		dbFormsConfig  = new DbFormsConfig(realPath);
+	        	// store a reference to ServletConfig (for interoperation with other parts of the Web-App!)
+	        	dbFormsConfig.setServletConfig(getServletConfig());
+	        	// store this config object in servlet context ("application")
+	        	getServletContext().setAttribute(DbFormsConfig.CONFIG, dbFormsConfig);
+	        	// ---------------------------------------------------------------
+	        	// register the config object into the DbFormsConfigRegistry
+	        	// as the default config (fossato, 2002.12.02)
+	        	DbFormsConfigRegistry registry = DbFormsConfigRegistry.instance();
+	        	registry.setServletContext(getServletContext());
+	        	registry.register(dbFormsConfig);
+	        	// ---------------------------------------------------------------
+        }
+        Digester digester = initDigester(digesterDebugLevel, dbFormsConfig);
 
         // Parse the input stream to configure our mappings
         try
