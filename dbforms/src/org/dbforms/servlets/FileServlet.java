@@ -354,6 +354,7 @@ public class FileServlet extends HttpServlet
       logCat.info("::writeToClient- writing to client:" + fileName + " ct="
                   + contentType);
       response.setContentType(contentType);
+			response.setHeader ("Content-Disposition", "attachment; fileName=\"" + fileName + "\"");			
 
       ServletOutputStream out  = response.getOutputStream();
       byte[]              b    = new byte[1024];
