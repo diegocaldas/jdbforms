@@ -38,7 +38,7 @@
 -->
 <project name="dbforms" default="default" basedir=".">
 
-  <property name="dbforms.version" value="v1_1_x" />
+  <property name="dbforms.version" value="v2.x" />
   <property name="cvs.workingdir" value="." />
   <property name="javasrc.dir" value="${cvs.workingdir}/src" />
   <property name="xslsrc.dir" value="${cvs.workingdir}/xsl-stylesheets" />
