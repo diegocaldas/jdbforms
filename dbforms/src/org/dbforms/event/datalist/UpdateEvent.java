@@ -40,28 +40,31 @@ import org.dbforms.event.datalist.dao.*;
 
 
 
-/****
- *
- * <p>This event prepares and performs a SQL-Update operation</p>
- *
- * <p>Works with new factory classes</p>
+/**
+ * This event prepares and performs a SQL-Update operation.
+ * <br>
+ * Works with new factory classes.
  *
  * @author Henner Kollmann <Henner.Kollmann@gmx.de>
  */
 public class UpdateEvent extends DatabaseEvent
 {
-   static Category logCat = Category.getInstance(UpdateEvent.class.getName()); // logging category for this class
+//	logging category for this class
+   static Category logCat = Category.getInstance(UpdateEvent.class.getName()); 
+
 
    /**
     * Creates a new UpdateEvent object.
     *
-    * @param tableId DOCUMENT ME!
-    * @param keyId DOCUMENT ME!
-    * @param request DOCUMENT ME!
-    * @param config DOCUMENT ME!
+    * @param tableId the table identifier
+    * @param keyId   the key 
+    * @param request the request object
+    * @param config  the configuration object
     */
-   public UpdateEvent(Integer tableId, String keyId,
-      HttpServletRequest request, DbFormsConfig config)
+   public UpdateEvent(Integer            tableId, 
+                      String             keyId,
+      				  HttpServletRequest request, 
+      				  DbFormsConfig      config)
    {
       super(tableId.intValue(), keyId, request, config);
    }
@@ -70,21 +73,25 @@ public class UpdateEvent extends DatabaseEvent
    /**
     * Creates a new UpdateEvent object.
     *
-    * @param action DOCUMENT ME!
-    * @param request DOCUMENT ME!
-    * @param config DOCUMENT ME!
+    * @param action  the action string
+    * @param request the request object
+    * @param config  the configuration object
     */
-   public UpdateEvent(String action, HttpServletRequest request,
-      DbFormsConfig config)
+   public UpdateEvent(String             action, 
+                      HttpServletRequest request,
+      				  DbFormsConfig      config)
    {
       super(ParseUtil.getEmbeddedStringAsInteger(action, 2, '_'),
-         ParseUtil.getEmbeddedString(action, 3, '_'), request, config);
+            ParseUtil.getEmbeddedString(action, 3, '_'), 
+            request, 
+            config);
    }
 
+
    /**
-    * DOCUMENT ME!
+    *  Get the FieldValues object.
     *
-    * @return DOCUMENT ME!
+    * @return the FieldValues object
     */
    public FieldValues getFieldValues()
    {
@@ -93,13 +100,12 @@ public class UpdateEvent extends DatabaseEvent
 
 
    /**
-    * DOCUMENT ME!
+    * Process this event.
     *
-    * @param con DOCUMENT ME!
+    * @param con the connection object
     *
-    * @throws SQLException DOCUMENT ME!
-    * @throws MultipleValidationException DOCUMENT ME!
-    * @throws IllegalArgumentException DOCUMENT ME!
+    * @throws SQLException                if any SQL error occurs
+    * @throws MultipleValidationException if any validation error occurs
     */
    public void processEvent(Connection con)
       throws SQLException, MultipleValidationException
@@ -108,7 +114,7 @@ public class UpdateEvent extends DatabaseEvent
       if (!hasUserPrivileg(GrantedPrivileges.PRIVILEG_UPDATE))
       {
          throw new SQLException("Sorry, updating table " + table.getName()
-            + " is not granted for this session.");
+                                + " is not granted for this session.");
       }
 
       // which values do we find in request
@@ -128,23 +134,32 @@ public class UpdateEvent extends DatabaseEvent
             Hashtable associativeArray = getAssociativeFieldValues(fieldValues);
 
             // process the interceptors associated to this table
-            table.processInterceptors(DbEventInterceptor.PRE_UPDATE, request,
-               associativeArray, config, con);
+            table.processInterceptors(DbEventInterceptor.PRE_UPDATE, 
+                                      request,
+               						  associativeArray, 
+               						  config, 
+               						  con);
 
             // synchronize data which may be changed by interceptor:
             table.synchronizeData(fieldValues, associativeArray);
          }
+         
+		 // [2003.07.10 - fossato] catch and throw without logging ? Is not useful...
+		 //                        can we delethe the try statement ??
+         //
          catch (SQLException sqle)
          {
             // PG = 2001-12-04
             // No need to add extra comments, just re-throw exceptions as SqlExceptions
-            throw new SQLException(sqle.getMessage());
+            //throw new SQLException(sqle.getMessage());
+            throw sqle;
          }
          catch (MultipleValidationException mve)
          {
             // PG, 2001-12-14
             // Support for multiple error messages in one interceptor
-            throw new MultipleValidationException(mve.getMessages());
+            //throw new MultipleValidationException(mve.getMessages());
+            throw mve;
          }
       }
 
@@ -154,12 +169,12 @@ public class UpdateEvent extends DatabaseEvent
 
       if (Util.isNull(keyValuesStr))
       {
-         logCat.error(
-            "At least one key is required per table, check your dbforms-config.xml");
-
+         logCat.error("At least one key is required per table, check your dbforms-config.xml");
+         
          return;
       }
 
+      // UPDATE operation;
       DataSourceFactory qry = new DataSourceFactory(con, table);
       qry.doUpdate(fieldValues, keyValuesStr);
       qry.close();
@@ -170,14 +185,14 @@ public class UpdateEvent extends DatabaseEvent
          try
          {
             // process the interceptors associated to this table
-            table.processInterceptors(DbEventInterceptor.POST_UPDATE, request,
-               null, config, con);
+            table.processInterceptors(DbEventInterceptor.POST_UPDATE, request, null, config, con);
          }
          catch (SQLException sqle)
          {
             // PG = 2001-12-04
             // No need to add extra comments, just re-throw exceptions as SqlExceptions
-            throw new SQLException(sqle.getMessage());
+            //throw new SQLException(sqle.getMessage());
+			throw sqle;
          }
       }
 
