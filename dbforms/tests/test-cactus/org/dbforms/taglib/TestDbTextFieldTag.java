@@ -28,7 +28,6 @@ import org.apache.cactus.WebRequest;
 
 import com.meterware.httpunit.WebResponse;
 
-
 import javax.servlet.jsp.tagext.BodyTag;
 
 import java.util.Locale;
@@ -83,9 +82,9 @@ public class TestDbTextFieldTag extends JspTestCase {
       timeTag.setPageContext(this.pageContext);
       timeTag.setParent(form);
       timeTag.setFieldName("TIME");
-      
+
       String s = ParseUtil.getParameter(request, "lang");
-      MessageResources.setLocale(request, new Locale(s));   
+      MessageResources.setLocale(request, new Locale(s));
 
    }
 
@@ -105,7 +104,7 @@ public class TestDbTextFieldTag extends JspTestCase {
       Locale locale = MessageResources.getLocale(request);
       assertTrue("no german locale", locale.equals(Locale.GERMAN));
       doTheTest();
-}
+   }
 
    public void endOutputDE(WebResponse theResponse) throws Exception {
       String s = theResponse.getText();
@@ -125,8 +124,7 @@ public class TestDbTextFieldTag extends JspTestCase {
       theRequest.addParameter("pf_8_null_0", "MMM d, yyyy");
    }
 
-
-   public void testOutputEN() throws Exception { 
+   public void testOutputEN() throws Exception {
       Locale locale = MessageResources.getLocale(request);
       assertTrue("no english locale", locale.equals(Locale.ENGLISH));
       doTheTest();
@@ -138,6 +136,30 @@ public class TestDbTextFieldTag extends JspTestCase {
       assertTrue("not found: " + "value=\"2.3\"", res);
       res = s.indexOf("value=\"Jan 1, 1900\"") > -1;
       assertTrue("not found : " + "value=\"Jan 1, 1900\"", res);
+   }
+
+   public void beginOutputJPN(WebRequest theRequest) throws Exception {
+      theRequest.addParameter("lang", Locale.JAPANESE.toString());
+      theRequest.addParameter("f_8_null_1", "2.3");
+      theRequest.addParameter("of_8_null_1", "2.3");
+      theRequest.addParameter("pf_8_null_1", "#,##0.###");
+      theRequest.addParameter("f_8_null_0", "1900/01/01");
+      theRequest.addParameter("of_8_null_0", "");
+      theRequest.addParameter("pf_8_null_0", "yyyy/MM/dd");
+   }
+
+   public void testOutputJPN() throws Exception {
+      Locale locale = MessageResources.getLocale(request);
+      assertTrue("no english locale", locale.equals(Locale.JAPANESE));
+      doTheTest();
+   }
+
+   public void endOutputJPN(WebResponse theResponse) throws Exception {
+      String s = theResponse.getText();
+      boolean res = s.indexOf("value=\"2.3\"") > -1;
+      assertTrue("not found: " + "value=\"2.3\"", res);
+      res = s.indexOf("value=\"1900\\01\\\"") > -1;
+      assertTrue("not found : " + "value=\"1900/01/01\"", res);
    }
 
    private void initConfig() throws Exception {
@@ -152,11 +174,10 @@ public class TestDbTextFieldTag extends JspTestCase {
             throw new NullPointerException("not able to create dbconfig object!");
       }
    }
-   
-   
+
    private void doTheTest() throws Exception {
       form.doStartTag();
-     Table table = dbconfig.getTableByName("TIMEPLAN");
+      Table table = dbconfig.getTableByName("TIMEPLAN");
       DatabaseEvent dbEvent = new DeleteEvent(new Integer(table.getId()), "null", request, dbconfig);
       // Set type to delete so that all fieldvalues will be parsed!!
       dbEvent.setType(EventType.EVENT_DATABASE_DELETE);
@@ -165,9 +186,8 @@ public class TestDbTextFieldTag extends JspTestCase {
       FieldValue f = fv.get("TIME");
       Date testDate = (Date) f.getFieldValueAsObject();
       assertTrue(testDate instanceof java.sql.Date);
-      assertTrue(testDate.getTime() == ((Date)timeTag.getFieldObject()).getTime());
+      assertTrue(testDate.getTime() == ((Date) timeTag.getFieldObject()).getTime());
 
-    
       f = fv.get("D");
       Double testNumber = (Double) f.getFieldValueAsObject();
       assertTrue(testNumber instanceof Double);

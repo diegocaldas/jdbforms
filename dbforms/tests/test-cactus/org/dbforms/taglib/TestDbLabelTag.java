@@ -112,4 +112,23 @@ public class TestDbLabelTag extends JspTestCase {
       res = s.indexOf("Jan 1, 1900") > -1;
       assertTrue(res);
    }
+
+	public void testOutputJPN() throws Exception {
+		MessageResources.setLocale(request, Locale.JAPANESE);
+		form.doStartTag();
+		int result = doubleTag.doEndTag();
+		assertEquals(BodyTag.EVAL_PAGE, result);
+		result = timeTag.doEndTag();
+		assertEquals(BodyTag.EVAL_PAGE, result);
+		form.doEndTag();
+
+	}
+
+	public void endOutputJPN(WebResponse theResponse) throws Exception {
+      String s = theResponse.getText();
+      boolean res = s.indexOf("2.3") > -1;
+      assertTrue(res);
+      res = s.indexOf("1900/01/01") > -1;
+      assertTrue(res);
+	}
 }
