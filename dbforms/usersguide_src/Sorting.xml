@@ -83,7 +83,7 @@ Future versions of DbForms may be expected to provide more on sorting.</para>
 			<para>This kind of filtering is very easy applied in DbForms. The filter criteria may be passed in the filter attribute of  the dbform- root tag.
 </para>
 			<example>
-				<title>Listing 24  An example for static filtering
+				<title>An example for static filtering
 </title>
 				<programlisting>
     <emphasis role="bold">&lt;db:dbform</emphasis> tableName="employee" maxRows="*" followUp="/employees.jsp"
@@ -98,15 +98,14 @@ Future versions of DbForms may be expected to provide more on sorting.</para>
 			<para>The following is a list of the operators that are currently supported by the filter attribute:
 </para>
 			<para/>
-			<table>
-				<title>Listing 25 Example for dynamic filtering
-</title>
+			<table><title>filter operators</title>
+				 
 				<tgroup cols="3">
 					<tbody>
 						<row>
-							<entry>Operator</entry>
-							<entry>Meaning</entry>
-							<entry>Example</entry>
+							<entry><emphasis role="bold">Operator</emphasis></entry>
+							<entry><emphasis role="bold">Meaning</emphasis></entry>
+							<entry><emphasis role="bold">Example</emphasis></entry>
 						</row>
 						<row>
 							<entry>=</entry>
@@ -159,7 +158,7 @@ Future versions of DbForms may be expected to provide more on sorting.</para>
 			<para>Dynamic filtering is possible as well, as the filter-attribute gets dynamically evaluated by the jsp container.
 </para></blockquote>
 			<example>
-				<title>Listing 25 Example for dynamic filtering
+				<title>Example for dynamic filtering
 </title>
 				<programlisting>
     &lt;%
@@ -264,12 +263,12 @@ Future versions of DbForms may be expected to provide more on sorting.</para>
 			<sect2>
                         <title>Search Criteria</title>
 			<para>The fields holding search-criteria, search-criteria-combing-mode and search-algorithms <emphasis role="bold">must follow a special naming convention</emphasis> (in order to allow searching in nested forms, etc). This makes the whole thing look a bit complicated, but it really isnt, as you will see below.
- This naming convention is prepared for you in hashtable objects accessible as scripting variables. (refer to the chapter on <link linkend='scrip_var'>Scripting Variables</link>
+ This naming convention is prepared for you in hashtable objects accessible as scripting variables. (refer to the chapter on <link linkend='scrip_var'>Scripting Variables</link>)
 </para>
 			<para/>
 			<para>
 				<table>
-					<title/>
+					<title>search naming system
 					<tgroup cols="2">
 						<tbody>
 							<row>
@@ -298,8 +297,7 @@ searchFieldAlgorithmNames_cust.get(&quot;firstname&quot;)</entry>
 					</tgroup>
 				</table>
 			</para>
-			<para>Table 3 - Example for dynamic filtering
-</para>
+			 
 		</sect2>
 		<sect2>
 			<title>Search Algorithms
@@ -309,7 +307,7 @@ searchFieldAlgorithmNames_cust.get(&quot;firstname&quot;)</entry>
 			<para/>
 			<para>
 				<table>
-					<title/>
+					<title>search behavior selection
 					<tgroup cols="2">
 						<tbody>
 							<row>
@@ -373,11 +371,11 @@ Searching is done with:</emphasis></entry>
 					</tgroup>
 				</table>
 			 </para>
-			<para>List of chars:
+			<para>List of special characters that are parsed for:
 </para>
 			<para>
 				<table>
-					<title/>
+					<title>special characters in searches</title>
 					<tgroup cols="2">
 						<tbody>
 							<row>
@@ -405,7 +403,7 @@ Searching is done with:</emphasis></entry>
 		 </para>
 			<para>
 				<table>
-					<title/>
+					<title>extended mode searches
 					<tgroup cols="2">
 						<tbody>
 							<row>
