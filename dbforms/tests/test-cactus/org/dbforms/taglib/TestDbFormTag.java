@@ -29,6 +29,7 @@ import junit.framework.TestSuite;
 import org.apache.cactus.JspTestCase;
 import org.apache.cactus.WebResponse;
 import org.dbforms.config.DbFormsConfig;
+import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.servlets.ConfigServlet;
 import org.dbforms.config.Table;
 import org.dbforms.util.AssertUtils;
@@ -89,6 +90,7 @@ public class TestDbFormTag extends JspTestCase
      */
     public void setUp() throws Exception
     {
+        DbFormsConfigRegistry.instance().register(null);
         tblAuthor = null;
         config.setInitParameter("dbformsConfig", "/WEB-INF/dbforms-config.xml");
         config.setInitParameter("log4j.configuration", "/WEB-INF/log4j.properties");
