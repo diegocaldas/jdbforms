@@ -2859,9 +2859,9 @@ hanlder executed when the user selects an item</info>
           <p>
 						<b>the 3 examles below produce all the same result</b>
 					</p>
-					<p>&lt;linkURL href="customer.jsp" table="customer" position="103~2"/&gt;</p>
-					<p>&lt;linkURL href="customer.jsp" table="customer" position="&lt;%= currentKey %&gt;"/&gt;</p>
-					<p>&lt;linkURL href="customer.jsp" table="customer"&gt;<br/>
+					<p>&lt;linkURL href="customer.jsp" tableName="customer" position="103~2"/&gt;</p>
+					<p>&lt;linkURL href="customer.jsp" tableName="customer" position="&lt;%= currentKey %&gt;"/&gt;</p>
+					<p>&lt;linkURL href="customer.jsp" tableName="customer"&gt;<br/>
             &lt;position field="id" value="103"/&gt;<br/>
             &lt;position field="cust_lang" value="2"/&gt;<br/>
           &lt;/linkURL&gt;
