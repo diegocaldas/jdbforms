@@ -4326,6 +4326,17 @@ in functionality and performance can be expected.
     </info>
   </attribute>
 
+  <attribute>
+            <name>messagePrefix</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <info>            
+		The user may define a messagePrefix attribute to specify a delimiter. If defined, only the exception message after the delimeter is
+		written out. This can be used to produce a user interface with nice, clean output. If the error tag does not contain a value for 
+		messagePrefix, the tag works as normal (prints out the exception information)
+            </info>
+  </attribute>
+
 </tag>
 
 
