@@ -22,19 +22,21 @@
  */
 
 package org.dbforms.event;
+
 import java.util.*;
 
 
 
 /**
-this exception may be thrown by user code
-in classes implementing the interceptor interface
-Allows developers to define more then one error - to be
-used in conjunction with the XML errors mechanism
-*/
+ *  This exception may be thrown by user code
+ *  in classes implementing the interceptor interface
+ *  Allows developers to define more then one error - to be
+ *  used in conjunction with the XML errors mechanism
+ */
 public class MultipleValidationException extends ValidationException
 {
     private Vector messages = null;
+
 
     /**
      * Creates a new MultipleValidationException object.
@@ -45,6 +47,7 @@ public class MultipleValidationException extends ValidationException
     {
         this.setMessages(messages);
     }
+
 
     /**
      * Gets the messages
@@ -63,5 +66,43 @@ public class MultipleValidationException extends ValidationException
     public void setMessages(Vector messages)
     {
         this.messages = messages;
+    }
+
+
+    /**
+     *  Returns the detail message string of this throwable.
+     *  <br>
+     *  Override the <code>getMessage</code> method of the <code>Throwable</code>
+     *  class.
+     *  <br>
+     *  Note: the Throwable class' <code>toString</code> method calls
+     *  <code>getLocalizedMessage()</code> to get the string representation of the
+     *  detaile error message. The original <code>getLocalizedMessage()</code>
+     *  implementation calls <code>getMessage()</code>.
+     *  <br>
+     *  Overriding <code>getMessage</code> to get the multiple messages from this
+     *  exception class let Log4j category classes log all the error messages.
+     *  (fossato, 2002.11.29)
+     *
+     * @return  the detail message string of this <tt>Throwable</tt> instance
+     */
+    public String getMessage()
+    {
+        StringBuffer sb = new StringBuffer();
+
+        if (messages != null)
+        {
+            for (int i = 0; i < messages.size(); i++)
+            {
+                Object o = messages.elementAt(i);
+
+                if (o != null)
+                {
+                    sb.append(o.toString()).append("\n");
+                }
+            }
+        }
+
+        return sb.toString();
     }
 }
