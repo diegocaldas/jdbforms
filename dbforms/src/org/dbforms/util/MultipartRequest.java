@@ -225,7 +225,7 @@ public class MultipartRequest
             return null;
          }
 
-         String value = (String) values.elementAt(values.size() - 1);
+         String value = (String) values.elementAt(0);
 
          return value;
       }

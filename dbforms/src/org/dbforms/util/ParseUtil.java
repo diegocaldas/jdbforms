@@ -65,8 +65,8 @@ public class ParseUtil
    * Returns the value of the named parameter as a String, or the default if
    * the parameter was not sent or was sent without a value.  The value is
    * guaranteed to be in its normal, decoded form.  If the parameter has
-   * multiple values, only the first (!!!!!) one is returned (for backward
-   * compatibility).  For parameters with multiple values, it's possible the
+   * multiple values, only the first (!!!) one is returned 
+   * For parameters with multiple values, it's possible the
    * first "value" may be null.
    *
    * @param request the request object
@@ -80,12 +80,10 @@ public class ParseUtil
                                     String             def)
   {
     String s = getParameter(request, name);
-
     if (Util.isNull(s))
     {
       s = def;
     }
-
     return s;
   }
 
@@ -94,8 +92,8 @@ public class ParseUtil
    * Returns the value of the named parameter as a String, or null if the
    * parameter was not sent or was sent without a value.  The value is
    * guaranteed to be in its normal, decoded form.  If the parameter has
-   * multiple values, only the first (!!!) one is returned (for backward
-   * compatibility).  For parameters with multiple values, it's possible the
+   * multiple values, only the first (!!!) one is returned 
+   * For parameters with multiple values, it's possible the
    * first "value" may be null.
    *
    * @param request the request object
