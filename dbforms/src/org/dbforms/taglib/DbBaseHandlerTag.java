@@ -241,6 +241,9 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
       } else {
          // try to get old value if we have an unbounded field!
          fieldValueObj = ParseUtil.getParameter((HttpServletRequest) pageContext.getRequest(), getFormFieldName());
+		 if (fieldValueObj == null)
+			// if we have an unbounded field and no old value then use default!
+		    fieldValueObj = getDefaultValue();
       }
       return fieldValueObj;
    }

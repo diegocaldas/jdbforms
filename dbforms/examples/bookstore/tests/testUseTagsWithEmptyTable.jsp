@@ -22,7 +22,7 @@
 			<db:radio
 					id="radio"
 					fieldName="radio"
-					value="2"
+					defaultValue="2"
 			>
 					<db:queryData
 						name="AUTHOR"
