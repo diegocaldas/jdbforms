@@ -90,7 +90,7 @@ public class MessageResource {
          try {
             rb = ResourceBundle.getBundle(subClass, loc);
          } catch (Exception e) {
-            logCat.error("getMessage", e);
+// wanted exception            logCat.error("getMessage", e);
          }
          // Put the ResourceBundle or null value in HashMap with the key
          hashResources.put(key, rb);
