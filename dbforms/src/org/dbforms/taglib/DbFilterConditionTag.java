@@ -29,6 +29,7 @@ import java.util.Iterator;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.BodyTagSupport;
+import javax.servlet.jsp.tagext.TryCatchFinally;
 
 import org.apache.log4j.Category;
 import org.dbforms.util.ParseUtil;
@@ -45,7 +46,7 @@ import org.dbforms.util.Util;
  * 
  * @version $Revision$
  */
-public class DbFilterConditionTag extends BodyTagSupport
+public class DbFilterConditionTag extends BodyTagSupport implements TryCatchFinally
 {
     /**
      * tag's state holder.
@@ -210,17 +211,6 @@ public class DbFilterConditionTag extends BodyTagSupport
     }
 
     /**
-     * initialize state for next tag's use
-     * 
-     * @see javax.servlet.jsp.tagext.Tag#doEndTag()
-     */
-    public int doEndTag() throws JspException
-    {
-        state = new State();
-        return super.doEndTag();
-    }
-
-    /**
      * initialize environment and process body only if this condition is the currently selected.
      * 
      * @see javax.servlet.jsp.tagext.Tag#doStartTag()
@@ -243,7 +233,9 @@ public class DbFilterConditionTag extends BodyTagSupport
         return SKIP_BODY;
     }
 
-    /* (non-Javadoc)
+    /**
+     * comparison using conditionId field
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     public boolean equals(Object obj)
@@ -336,6 +328,25 @@ public class DbFilterConditionTag extends BodyTagSupport
     {
         setParent(parent);
         this.state = state;
+    }
+
+    /**
+     * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+     */
+    public void doCatch(Throwable t) throws Throwable
+    {
+        logCat.error("doCatch called - " + t.toString());
+        throw t;
+    }
+
+    /**
+     * reset tag state
+     * 
+     * @see javax.servlet.jsp.tagext.TryCatchFinally#doFinally()
+     */
+    public void doFinally()
+    {
+        state = new State();
     }
 
 }

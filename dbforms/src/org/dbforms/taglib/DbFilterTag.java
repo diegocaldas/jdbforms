@@ -31,6 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.BodyTagSupport;
+import javax.servlet.jsp.tagext.TryCatchFinally;
 
 import org.apache.log4j.Category;
 import org.dbforms.util.ParseUtil;
@@ -113,7 +114,7 @@ import org.dbforms.util.ParseUtil;
  * 
  * @version $Revision$
  */
-public class DbFilterTag extends BodyTagSupport
+public class DbFilterTag extends BodyTagSupport implements TryCatchFinally
 {
     protected static String FLT_COND = "_cond_";
     protected static String FLT_PREFIX = "filter_";
@@ -154,7 +155,7 @@ public class DbFilterTag extends BodyTagSupport
         logCat.debug("filter condition from request : " + filterCondition);
         if (sqlFilter != null && sqlFilter.trim().length() > 0)
             // sqlFilter value is already defined, we AND it with out condition 
-            if (filterCondition != null && filterCondition.length() > 0)
+            if (filterCondition != null && filterCondition.trim().length() > 0)
                 filter =
                     " ( " + sqlFilter + " ) AND ( " + filterCondition + " ) ";
             else
@@ -209,35 +210,35 @@ public class DbFilterTag extends BodyTagSupport
     /**
      * list of conditions defined for this filter element
      */
-    protected ArrayList conds;
+    private ArrayList conds;
     /**
      * used to override the label of the main select's first option element
      */
-    protected String disabledCaption;
+    private String disabledCaption;
     /**
      * prefix for this filter of the request's parameters
      */
-    protected String filterName;
+    private String filterName;
     /**
      * reference to parent dbform
      */
-    protected DbFormTag parentForm;
+    private DbFormTag parentForm;
     /**
      * caption of the SET button
      */
-    protected String setCaption;
+    private String setCaption;
     /** 
      * size attribute for select element 
      */
-    protected String size;
+    private String size;
     /** 
      * class style to apply to select 
      */
-    protected String styleClass;
+    private String styleClass;
     /**
      * caption of the UNSET button
      */
-    protected String unsetCaption;
+    private String unsetCaption;
 
     /**
      * add a condition object to the list. Called by nested DbFilterConditionTag
@@ -288,6 +289,32 @@ public class DbFilterTag extends BodyTagSupport
         return SKIP_BODY;
     }
 
+    /**
+     * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+     */
+    public void doCatch(Throwable t) throws Throwable
+    {
+        logCat.error("doCatch called - " + t.toString());
+        throw t;
+    }
+
+    /**
+     * reset tag state
+     * 
+     * @see javax.servlet.jsp.tagext.TryCatchFinally#doFinally()
+     */
+    public void doFinally()
+    {
+        conds = null;
+        disabledCaption = null;
+        filterName = null;
+        parentForm = null;
+        setCaption = null;
+        size = null;
+        styleClass = null;
+        unsetCaption = null;
+    }
+
     /** 
      * initialize  environment
      * 
@@ -319,10 +346,9 @@ public class DbFilterTag extends BodyTagSupport
     }
 
     /**
-     * initialize class attributes.
-     *
+     * initialize class fields.
      */
-    protected void init()
+    private void init()
     {
         conds = new ArrayList();
         parentForm = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);

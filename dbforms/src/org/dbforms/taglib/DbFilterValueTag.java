@@ -35,6 +35,7 @@ import java.util.Vector;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.BodyTagSupport;
+import javax.servlet.jsp.tagext.TryCatchFinally;
 
 import org.apache.log4j.Category;
 import org.dbforms.config.DbFormsConfig;
@@ -51,7 +52,7 @@ import org.dbforms.util.ParseUtil;
  * 
  * @version $Revision$
  */
-public class DbFilterValueTag extends BodyTagSupport implements DataContainer
+public class DbFilterValueTag extends BodyTagSupport implements DataContainer, TryCatchFinally
 {
     /**
      * tag's state holder.
@@ -292,17 +293,6 @@ public class DbFilterValueTag extends BodyTagSupport implements DataContainer
     {
         super();
         state = new State();
-    }
-
-    /**
-     * initialize state for next tag use
-     * 
-     * @see javax.servlet.jsp.tagext.Tag#doEndTag()
-     */
-    public int doEndTag() throws JspException
-    {
-        state = new State();
-        return super.doEndTag();
     }
 
     /** 
@@ -702,6 +692,25 @@ public class DbFilterValueTag extends BodyTagSupport implements DataContainer
     public void setUseJsCalendar(String string)
     {
         state.useJsCalendar = string;
+    }
+
+    /**
+     * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+     */
+    public void doCatch(Throwable t) throws Throwable
+    {
+        logCat.error("doCatch called - " + t.toString());
+        throw t;
+    }
+
+    /**
+     * reset tag state
+     * 
+     * @see javax.servlet.jsp.tagext.TryCatchFinally#doFinally()
+     */
+    public void doFinally()
+    {
+        state = new State();
     }
 
 }

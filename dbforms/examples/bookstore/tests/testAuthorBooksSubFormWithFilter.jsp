@@ -22,7 +22,7 @@
 	         		NAME LIKE '%?%'
 	         		<db:filterValue/>
 	         	</db:filterCondition>
-	         	<db:filterCondition label="ID > V1 AND ID < V2">
+	         	<db:filterCondition label="ID >= V1 AND ID <= V2">
 	         		AUTHOR_ID >= ? AND AUTHOR_ID <= ?
 	         		<db:filterValue label="V1" type="numeric"/>
 	         		<db:filterValue label="V2" type="numeric"/>

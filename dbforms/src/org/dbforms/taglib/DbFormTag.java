@@ -2835,6 +2835,8 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
       {
          fieldNames.clear();
       }
+
+      sqlFilter = null;
    }
 
 
