@@ -9,7 +9,7 @@
 --> 
 
 <chapter>
-<title>How To ... Examples
+<title>How To ... Useful Code Examples
 </title>
 <para>You can now find in the bookstore example under <computeroutput>http://localhost:8080/bookstore/howto/package.html</computeroutput> a list of how-to-do different things that are commonly asked.</para>
 <para>As of Aug/12/2004 we have:
