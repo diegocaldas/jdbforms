@@ -74,7 +74,7 @@ public class DbLabelTag extends TagSupport
   protected DbFormTag parentForm;
 
   /** format object used to format this tag's value; */
-  protected Format format = DbFormsConfig.getDateFormatter();
+  protected Format format = null;
 
   
   /**
@@ -179,10 +179,14 @@ public class DbLabelTag extends TagSupport
     }
     catch (java.io.IOException ioe)
     {
+      // better to KNOW what happended !
+      logCat.error("::doEndTag - IO Error", ioe);
       throw new JspException("IO Error: " + ioe.getMessage());
     }
     catch (Exception e)
     {
+      // better to KNOW what happended !
+      logCat.error("::doEndTag - general exception", e);
       throw new JspException("Error: " + e.getMessage());
     }
 
