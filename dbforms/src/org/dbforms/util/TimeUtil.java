@@ -31,9 +31,11 @@ package org.dbforms.util;
 */
 import java.text.*;
 import java.util.*;
+import org.apache.log4j.Category;
 
 public class TimeUtil {
 
+	static Category logCat = Category.getInstance(TimeUtil.class.getName());
     static final int SECSPERDAY = 24 * 60 * 60;
 
     /**
@@ -171,7 +173,9 @@ public class TimeUtil {
         splitDate(format, fDate, fTime);
         long dDate = saveParseDate(loc, fDate.toString(), sDate.toString());
         long dTime = saveParseTime(loc, fTime.toString(), sTime.toString());
-        return new Date(dDate + dTime);
+    	Date d = new Date(dDate + dTime); 
+    	logCat.info("parsed " + s + " to " + d);
+        return d;
     }
 
     public static Date findEndOfDay(Date d) {
