@@ -1,10 +1,5 @@
-/*
- * Created on 13.06.2003
- *
- * To change this generated comment go to 
- * Window>Preferences>Java>Code Generation>Code and Comments
- */
 package interceptors;
+
 import java.util.Hashtable;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Connection;
