@@ -41,7 +41,7 @@ Happy coding!
 
 -->
 
-    <property name="dbforms.version" value="_v1_1_2"/>
+    <property name="dbforms.version" value="_v1_1_3pr1"/>
 
     <property name="cvs.workingdir" value="."/>
 
@@ -357,4 +357,26 @@ Happy coding!
   	  name="dist"
   />
 
+     <!-- create dbforms-releasefile -->
+    <target name="createReleaseFile" depends="createAllExamples,copy-devgui"  > <!-- depends="createAllExamples"--> 
+          
+        <tstamp/>
+        <property name="dbforms.releaseName" value="${dbforms.version}_${DSTAMP}"/>
+
+      <zip destfile="dbforms${dbforms.releaseName}.zip" >
+        <zipfileset dir="." prefix="dbforms${dbforms.releaseName}" includes="Changes_v1_0  Changes_v1_1  CommonMistakes  License  Readme  Readme_DevGui  Todo  build.xml"/>
+        <zipfileset dir="." prefix="dbforms${dbforms.releaseName}" includes="doc/**/*.html,doc/**/*.png,doc/**/*.txt,doc/**/*.pdf"/>
+        <zipfileset dir="." prefix="dbforms${dbforms.releaseName}" includes="dist/*.tld  dist/*.jar"/>
+        <zipfileset dir="./dist/bin" prefix="dbforms${dbforms.releaseName}/bin" includes="devgui.bat devgui.sh"/>
+        <zipfileset dir="." prefix="dbforms${dbforms.releaseName}" includes="etc/*.xml etc/*.xsl"/>
+        <zipfileset dir="./dist" prefix="dbforms${dbforms.releaseName}/examples" includes="*.war"/>
+        <zipfileset dir="." prefix="dbforms${dbforms.releaseName}" includes="examples/*.txt"/>
+        <zipfileset dir="." prefix="dbforms${dbforms.releaseName}" includes="src/org/**/*.java"/>
+        <zipfileset dir="." prefix="dbforms${dbforms.releaseName}" includes="temp/*.txt"/>
+        <zipfileset dir="." prefix="dbforms${dbforms.releaseName}" includes="xsl-stylesheets/*.xsl"/>
+        <zipfileset dir="." prefix="dbforms${dbforms.releaseName}" includes="misc/**/*.gif  misc/**/*.png  misc/**/*.js   misc/**/*.txt misc/*.css misc/**/*.html"/>                     
+       </zip>
+    </target>
+
+    
 </project>
