@@ -125,6 +125,21 @@ d. Required additional libraries:
    a subdirectory containing two icons and another subdirectory
    with the Javascript calendar application.
 
+
+ALTERNATIVE METHOD OF RUNNING DEVGUI VIA ANT
+
+If you already have Ant installed, and are comfortable with tweaking build.xml files
+then you can use the <devgui> target.  The DBFORMS_HOME directory will default to your current
+location of DbForms.  Make sure however that you have generated the DbForms jar by running the
+<jar_classes> target.  You will also need to place your JDBC drivers in your ant/lib directory,
+or tweak the build.xml to include where your JDBC drivers are.
+
+1. ant <jar_classes>
+
+2. ant <devgui>
+
+
+
 -----------------------------------------------------------------------------------
 About the included JavaScript Calendar:
 
