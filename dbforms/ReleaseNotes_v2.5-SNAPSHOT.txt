@@ -12,7 +12,7 @@ Contents:
 2-4-2)  new tag: SetCustomFormatter
 2-5-3)  new tag: RedirectUrl
 2-5-4)  Added new custom formatter attribute to rendering tags
-2-5-5)  add new option to handle empty data sets in DbSelectTag 
+2-5-5)  add new option to handle empty data sets in DbSelectTag
 2-5-6)  add new option to force state to checked in DbCheckboxTag
 2-5-7)  enable editing of blob columns in textarea tag
 2-6)    changed interceptor interface
@@ -20,7 +20,7 @@ Contents:
 2-8)    added new report systems to create excel spreadsheet and comma seperated values reports
 2-9)    Others
 2-10-1) Changed logging system
-2-10-2) Makes dbforms jdb 1.5 compliant
+2-10-2) Makes dbforms jdk 1.5 compliant
 
 
 1) About this release
