@@ -32,7 +32,7 @@ import dori.jasper.engine.JRException;
 import dori.jasper.engine.JRField;
 import org.dbforms.util.ResultSetVector;
 import org.dbforms.util.Util;
-
+import org.dbforms.util.ReflectionUtil;
 
 
 /**
@@ -78,7 +78,7 @@ public class JRDataSourceRSV implements JRDataSource
    {
       Object o;
       o = getFieldValue(field.getName());
-
+      
       if (o == null)
       {
          o = getFieldValue(field.getName().toUpperCase());
@@ -88,7 +88,18 @@ public class JRDataSourceRSV implements JRDataSource
       {
          o = getFieldValue(field.getName().toLowerCase());
       }
-
+      // Try class conversation if the classes do not match!
+      if ((o != null) && (o.getClass() != field.getValueClass())) 
+      {
+			try {
+				Object[] constructorArgs      = new Object[] {o.toString()};
+				Class[]  constructorArgsTypes = new Class[]  { String.class };
+				o = ReflectionUtil.newInstance(field.getValueClass(),
+												constructorArgsTypes, 
+												 constructorArgs);
+			} catch (Exception e) {
+			}
+      }
       return o;
    }
 
