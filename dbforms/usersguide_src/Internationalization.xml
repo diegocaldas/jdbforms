@@ -118,7 +118,8 @@
 </para>
 			
 <screen>
-    &lt;%@ taglib uri="/WEB-INF/dbforms.tld" prefix="db" %&gt;&lt;! - - Lookup caption in associated resource bundle - - &gt; 
+    &lt;%@ taglib uri="/WEB-INF/dbforms.tld" prefix="db" %&gt;
+    &lt;! - - Lookup caption in associated resource bundle - - &gt; 
 		
         &lt;db:form  tableName="myTable" <emphasis role="bold">captionResource="true" </emphasis>&gt; 
 		

@@ -74,7 +74,9 @@
 </para>
 			<screen>
 &lt;%@ taglib uri="/WEB-INF/dbforms.tld" prefix="db" %&gt;
-    &lt;db:dbform  tableName="bugs" captionResource="true" formValidatorName="bugs" <emphasis role="bold">javascriptValidation="true"</emphasis>&gt; 
+    &lt;db:dbform  tableName="bugs" captionResource="true" 
+    formValidatorName="bugs" <emphasis role="bold">javascriptValidation="true"</emphasis>&gt; 
+        
         &lt;table&gt; 
             &lt;tr&gt; 
 		&lt;td&gt; 
@@ -214,11 +216,11 @@ name
 		&lt;msg name="required" key="errors.required" resource="true"/&gt; 
                     &lt;arg0 name="required" key="bugsForm.title.displayname" resource="true"/&gt;
                      
-		&lt;msg name="mask"     key="bugsForm.error.title.mask" resource="true"/&gt; 
+		&lt;msg name="mask" key="bugsForm.error.title.mask" resource="true"/&gt; 
 		 
-		&lt;msg name="maxlength"     key="errors.maxlength" resource="true"/&gt; 
-                    &lt;arg0 name="maxlength"     key="bugsForm.title.displayname" resource="true"/&gt; 
-                    &lt;arg1 name="maxlength"      key="${var:maxlength}" resource="false"/&gt; 
+		&lt;msg name="maxlength" key="errors.maxlength" resource="true"/&gt; 
+                    &lt;arg0 name="maxlength" key="bugsForm.title.displayname" resource="true"/&gt; 
+                    &lt;arg1 name="maxlength" key="${var:maxlength}" resource="false"/&gt; 
 		
                 &lt;var&gt; 
                     &lt;var-name&gt;mask&lt;/var-name&gt; 
@@ -287,7 +289,7 @@ name
  
 		&lt;field property="title" depends="required"&gt; 
                     &lt;msg name="required" key="errors.required" resource="true"/&gt; 
-                        &lt;arg0 name="required" key="myForm.title.displayname" resource="true"/&gt; 
+                    &lt;arg0 name="required" key="myForm.title.displayname" resource="true"/&gt; 
 		&lt;/field&gt; 
 		
                 
@@ -303,7 +305,8 @@ name
 </para>
 				<screen>
             <emphasis role="bold">ApplicationResource.properties:</emphasis>
-                myForm.error.title.mask=The Title must begin with an uppercase character and contain alphanumeric characters only.
+                myForm.error.title.mask=The Title must begin with an uppercase character
+                 and contain alphanumeric characters only.
             
             
             <emphasis role="bold">Validation.xml: </emphasis>
@@ -317,7 +320,8 @@ name
             
                 
             <emphasis role="bold">Result when error: </emphasis>
-                The Title must begin with an uppercase character and contain alphanumeric characters only.
+                The Title must begin with an uppercase character
+                 and contain alphanumeric characters only.
  </screen>
 			</sect2>
                         
@@ -333,19 +337,23 @@ name
  
 
             <emphasis role="bold">Validation.xml: </emphasis>
-		&lt;field    property="age" depends="range"&gt; 
-                    &lt;msg name="range"     key="errors.range"/&gt; 
-                        &lt;arg0 name="range"     key="myForm.age.displayname" resource="true"/&gt; 
-                        &lt;arg1 name="range"     key="${var:min}" resource="false"/&gt; 
-                        &lt;arg2 name="range"     key="${var:max}" resource="false"/&gt; 
+		&lt;field    property="age" depends="range"&gt;
+                 
+                    &lt;msg name="range" key="errors.range"/&gt; 
+                    &lt;arg0 name="range" key="myForm.age.displayname" resource="true"/&gt; 
+                    &lt;arg1 name="range" key="${var:min}" resource="false"/&gt; 
+                    &lt;arg2 name="range" key="${var:max}" resource="false"/&gt; 
+                    
                     &lt;var&gt; 
                         &lt;var-name&gt;min&lt;/var-name&gt; 
                         &lt;var-value&gt;1&lt;/var-value&gt; 
-                    &lt;/var&gt; 
+                    &lt;/var&gt;
+                     
                     &lt;var&gt; 
                         &lt;var-name&gt;max&lt;/var-name&gt; 
                         &lt;var-value&gt;110&lt;/var-value&gt; 
-                    &lt;/var&gt; 
+                    &lt;/var&gt;
+                     
 		&lt;/field&gt;
                 
                  
@@ -367,7 +375,7 @@ name
             <emphasis role="bold">Validation.xml: </emphasis>
                 &lt;field property="age" depends="integer"&gt; 
                     &lt;msg name="integer" key="errors.integer"/&gt; 
-                        &lt;arg0 name="integer" key="myForm.age.displayname" resource="true"/&gt; 
+                    &lt;arg0 name="integer" key="myForm.age.displayname" resource="true"/&gt; 
                 &lt;/field&gt;
                     
                      
@@ -389,7 +397,8 @@ name
             <emphasis role="bold">Validation.xml: </emphasis>
                 &lt;field property="description" depends="minlength"&gt; 
                     &lt;msg name="minlength" key="errors.minlength"/&gt; 
-                        &lt;arg0 name="minlength" key="myForm.description.displayname" resource="true"/&gt; 
+                    &lt;arg0 name="minlength" key="myForm.description.displayname" resource="true"/&gt; 
+                    
                     &lt;var&gt; 
                         &lt;var-name&gt;minlength&lt;/var-name&gt; 
                         &lt;var-value&gt;25&lt;/var-value&gt; 
@@ -415,7 +424,8 @@ name
             <emphasis role="bold">Validation.xml: </emphasis>
                 &lt;field property="description" depends="maxlength"&gt; 
                     &lt;msg name="maxlength" key="errors.maxlength"/&gt; 
-                        &lt;arg0 name="maxlength" key="myForm.description.displayname" resource="true"/&gt; 
+                    &lt;arg0 name="maxlength" key="myForm.description.displayname" resource="true"/&gt; 
+                    
                     &lt;var&gt; 
                         &lt;var-name&gt;maxlength&lt;/var-name&gt; 
                         &lt;var-value&gt;25&lt;/var-value&gt; 
@@ -453,7 +463,8 @@ name
 		<emphasis role="bold">Validation.xml: </emphasis>
                     &lt;field property="opendate" depends="date"&gt; 
                         &lt;msg name="date" key="errors.date"/&gt; 
-                            &lt;arg0 name="date" key="myForm.opendate.displayname" resource="true"/&gt; 
+                        &lt;arg0 name="date" key="myForm.opendate.displayname" resource="true"/&gt; 
+                        
                         &lt;var&gt; 
                             &lt;var-name&gt;datePatternStrict&lt;/var-name&gt; 
                             &lt;var-value&gt;yyyy-MM-dd&lt;/var-value&gt; 
@@ -480,7 +491,7 @@ name
             <emphasis role="bold">Validation.xml: </emphasis>
 		&lt;field property="email_user" depends="email"&gt; 
                     &lt;msg name="email" key="errors.email"/&gt; 
-                        &lt;arg0 name="email" key="myForm.email.displayname" resource="true"/&gt; 
+                    &lt;arg0 name="email" key="myForm.email.displayname" resource="true"/&gt; 
 		&lt;/field&gt;
                 
                  
@@ -503,7 +514,7 @@ name
             <emphasis role="bold">Validation.xml: </emphasis>
 		&lt;field property="email_user" depends="creditcard"&gt; 
                     &lt;msg name="creditcard" key="errors.creditcard"/&gt; 
-                        &lt;arg0 name="creditcard" key="myForm.creditcard.displayname" resource="true"/&gt; 
+                    &lt;arg0 name="creditcard" key="myForm.creditcard.displayname" resource="true"/&gt; 
 		&lt;/field&gt; 
 		
                 

@@ -12,7 +12,7 @@
 <screen>
 &lt;!-- ==========Non-ConnectionFactory Connections================= --&gt;
 	&lt;!--
-	uncomment this if you have access to JNDI of an application server (see users guide for more info)
+	uncomment this for JNDI connections
 	&lt;dbconnection
 		name = &quot;jdbc/dbformstest&quot;
 		isJndi = &quot;true&quot;
