@@ -40,6 +40,7 @@ import org.dbforms.event.datalist.dao.DataSourceFactory;
 import org.dbforms.util.ResultSetVector;
 import org.dbforms.util.ParseUtil;
 import org.dbforms.util.FieldValue;
+import org.dbforms.util.Util;
 
 
 /**
@@ -124,7 +125,7 @@ public class NavPrevEvent extends NavigationEvent
       ResultSetVector   res      = qry.getPrev(position, count);
 
       // change behavior to navFirst if navPrev finds no data
-      if (res.size() < count)
+      if (Util.isNull(res))
       {
          res = qry.getFirst(count);
       }
