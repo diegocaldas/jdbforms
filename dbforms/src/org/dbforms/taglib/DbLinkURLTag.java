@@ -257,7 +257,7 @@ public class DbLinkURLTag extends BodyTagSupport
             if (position != null)
             { // position within table is not required. if no position was provided/determinated, dbForm will navigate to the first row
                 tagBuf.append("&dataac_goto_x_destPos=");
-                tagBuf.append(position);
+                tagBuf.append(java.net.URLEncoder.encode( position));
             }
 
             HttpServletResponse response = (HttpServletResponse) pageContext.getResponse();
