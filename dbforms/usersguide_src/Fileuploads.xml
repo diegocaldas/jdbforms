@@ -53,8 +53,6 @@ the java object.</para>
 <para>More documentation on this issue will follow; until then this section is a bit outdated. meanwhile,
 please refer to the API doc for class org.dbforms.event.BlobInterceptor to see how to configure the
 BLOB interceptor.</para>
-    
-</para>
       <screen>
         <emphasis role="bold">&lt;dbforms-config&gt;</emphasis>
                 &lt;table name="pets"&gt; 
