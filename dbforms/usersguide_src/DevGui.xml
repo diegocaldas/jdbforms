@@ -154,8 +154,10 @@ web-applications classpath, because DevGui runs outside the Servlet container!</
 </listitem>
 
 </orderedlist>			 
-			</para>	
-<para><emphasis role="bold">Running:</emphasis></para>			
+			</para>
+                        </sect1>
+                        <sect1>	
+<title>Running</title>			
 			<para>start the shell script in $DBFORMS_HOME/dbforms/bin:</para>
 <blockquote>
 <screen>
@@ -440,7 +442,7 @@ or tweak the build.xml to include where your JDBC drivers are.
 				
 </listitem>
 </itemizedlist>
-<para>Generated pages are written to the web application directory.<computeroutput>http://www.dbforms.org/docs/articles/XSL_DbForms.pdf</computeroutput>
+<para>Generated pages are written to the web application directory.</para><para><computeroutput>http://www.dbforms.org/docs/articles/XSL_DbForms.pdf</computeroutput>
 </para>				
 				
 				
