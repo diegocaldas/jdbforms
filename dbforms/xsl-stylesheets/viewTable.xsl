@@ -195,7 +195,7 @@ choose appropriate values that fit your needs
 
        <db:errors/>
 
-       <db:body>
+       <db:body allowNew="false">
 
           <xsl:text disable-output-escaping="yes">
 	&lt;tr class="&lt;%= (i++%2==0) ? "clsOddDataTableRow" : "clsEvenDataTableRow" %&gt;"&gt;
