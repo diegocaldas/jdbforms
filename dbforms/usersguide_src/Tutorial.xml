@@ -192,8 +192,7 @@
             &lt;/table&gt; 
 		</programlisting>
 				</example>
-				<para>
-					<emphasis role="bold">There exists a little tool which does all the painful work of transferring a database scheme into XML. See chapter </emphasis>Error! Reference source not found.<emphasis role="bold"> and appendix III for more information.</emphasis>
+				<para>There exists a little tool which does all the painful work of transferring a database scheme into XML. See <link linkend='devgui'><emphasis role="bold">DevGui</emphasis>(click here)</link> for more information.
 				</para>
 				<para>NOTE: If we would want to use advanced DbForms-features like fine-grained-security, sorting facility, etc. We would need to add additional information to the XML-description. This will be shown in the advanced tutorial mentioned earlier.
 </para>

@@ -65,11 +65,12 @@ Future versions of DbForms may be expected to provide more on sorting.</para>
 		</sect2>
                 <sect2><title>Alternative method to order query results</title>
  
- <para>An alternative to sorting is to use a<computeroutput>orderBy</computeroutput>attribute in the dbform tag of your jsp page.  See the TagLib for more information.</para>
+ <para>An alternative to sorting is to use a<computeroutput>orderBy</computeroutput>attribute in the dbform tag of your jsp page.</para>
 <para>Similar to sorting, if you use a non-primary key with orderBy, you MUST specify
 sortable=&quot;true&quot; within your dbforms-config.xml file.</para>
 <para>If you use orderBy with a non primary key and you don't specify that in the config file, then navNext/navPrev buttons will function like navLast/navFirst buttons and you will skip over results.
  </para>
+ <para>See the <ulink url="../../taglib/DbFormsTags_Frame.html"><citetitle>TagLib </citetitle></ulink>for more information.</para>
                 
                 </sect2>
                 
@@ -238,7 +239,7 @@ sortable=&quot;true&quot; within your dbforms-config.xml file.</para>
 		</sect2>
                 <sect2>
                 <title>Alternative way to restrict queries</title>
-<para>It is also possible to use a  <computeroutput>whereClause</computeroutput> within a dbform tag for situations where you need more complexity than filtering can handle.  See the TagLib from more info.</para>
+<para>It is also possible to use a  <computeroutput>whereClause</computeroutput> within a dbform tag for situations where you need more complexity than filtering can handle.  See the <ulink url="../../taglib/DbFormsTags_Frame.html"><citetitle>TagLib </citetitle></ulink> from more info.</para>
      <para>However, if you want to use navigation (eg. navNext/navPrev buttons), you should use orderBy
 and filter attributes instead of a whereClause because using a whereClause renders navigation impossible! 
 For instance, if you specify whereClause=&quot;where n&gt;3&quot; and your user views the page and then clicks the navNext button, the next page may show values

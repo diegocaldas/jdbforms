@@ -48,7 +48,7 @@
 			<para>This is where DbForms security concept steps in:
 </para>
 		</sect1>
-		<sect1>
+		<sect1 id="security">
 			<title>Security concept of DbForms
 </title>
 			<para>DbForms provides fine-grained definition of rights for data-access and manipulation. DbForms security works directly on <emphasis role="italic">tables</emphasis>, not on JSPs. All database operations done by  DbForms run through a security check before they get executed.
