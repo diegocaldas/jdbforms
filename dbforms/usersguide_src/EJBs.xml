@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
  <chapter lang="en-US">
     <title>
-   EJBs
+   EJBs and JBoss
     </title>
      
       <sect1><title>The Easy Way</title>
@@ -310,5 +310,55 @@ functions if your database supports it. (you could use the stateful session bean
    
    </screen>
  </sect2>
+ </sect1>
+ <sect1>
+ <title>JBoss dbconnection configuration -JNDI name
+ </title>
+<para>For JBoss-3.2.0 the configuration goes as follows:</para>
+<orderedlist numeration="lowerroman">
+<listitem>
+<para>Copy the proper database description file from
+"&lt;JBoss-dir&gt;/docs/examples/jca" to the deployment directory of your
+configured JBoss profile (for example
+"&lt;JBoss-dir&gt;/server/default/deploy") and customize it.</para>
+</listitem>
+<listitem>
+<para>Restart JBoss</para>
+</listitem>
+<listitem>
+<para>After that, the running JNDI 'nodes' can be checked using the
+JMX-Console (http://localhost:&lt;port&gt;/jmx-console), using the "listXML"
+operation. In my case, I had an entry saying</para>
+ 
+<screen>
+--- listXML results ---
+java:
+
+DB2DS
+org.jboss.resource.adapter.jdbc.WrapperDataSource
+--- /listXML results ---
+</screen>
+ 
+ 
+</listitem>
+<listitem>
+<para>From this I could easily derive the correct JNDI-name, which I
+configured as:</para>
+<screen>
+--- dbforms-config.xml ---
+&lt;dbconnection
+    id = "1"
+    isJndi = "true"
+    name = "java:DB2DS"
+    default = "true"
+    username = "user"
+    password = "password"
+    connectionProviderClass =
+        "org.jboss.resource.connectionmanager.LocalTxConnectionManager"
+    conClass  = "COM.ibm.db2.jdbc.app.DB2Driver"/&gt;
+-- /dbforms-config.xml ---</screen>
+</listitem>
+</orderedlist>
+  
  </sect1>
 </chapter>

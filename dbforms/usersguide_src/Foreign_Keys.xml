@@ -46,7 +46,7 @@ Foreign key information is available within running web application to be used b
 
     &lt;!ATTLIST foreign-key
         foreignTable    CDATA #REQUIRED
-        name            CDATA #IMPLIED
+        name            CDATA #REQUIRED
         visibleFields   CDATA #IMPLIED
         format          CDATA #IMPLIED
         displayType (select|radio|none) "none"
@@ -132,7 +132,7 @@ Foreign key information is available within running web application to be used b
     </para>
     </listitem>
     <listitem>
-    <para>name: name of this constraint (optional, currently not used)
+    <para>name: name of this constraint (required, used for a faster look-up)
     </para>
     </listitem>
     <listitem>
