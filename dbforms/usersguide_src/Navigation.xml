@@ -16,7 +16,7 @@
         <para>A new one - in the datalist package - which implements a simplified data list pattern described by Claudio Fratarcangeli,Data List Handler: A Pattern for Large Search Result Sets, published on TheServerSide.com. THE NEW SYSTEM NEEDS TO BE CONFIGURED IN DBFORMS-CONFIG.XML, WORKS WITH A <computeroutput>whereClause</computeroutput>, AND DOES NOT RE-EXECUTE THE SEARCH QUERY EVERY TIME.</para>
       </listitem>
     </itemizedlist>
-    <para>The new system is destined to become the eventual default, so page developers using this version are encouraged to use the new system (and a <computeroutput>whereClause</computeroutput>attributes if necessary instead of <computeroutput>orderBy</computeroutput> and/or <computeroutput>filter </computeroutput> attributes.</para> 
+    <para>The new dataList system is destined to become the eventual default!</para> 
   </sect1>
   <sect1>
     <title>Classic navigation</title>
