@@ -4756,6 +4756,25 @@ if(request.getParameter("goto")!=null) {
                         <p>name of the field this tag references to</p>
                     </info>
                 </attribute>
+                
+                <attribute>
+                  <name>defaultValue</name>
+                  <required>false</required>
+                  <rtexprvalue>true</rtexprvalue>
+                  <info>
+                    <p>
+                      default field name to use if the specified field is empty.<br/>
+
+                      "Filesystem blob" example:
+                      <br/><br/>
+                        &lt;img src="&lt;db:blobURL fieldName="THUMBNAIL" defaultValue="myImage.jpg"/&gt;" border="0" width="xx" height="yy"&gt; 
+                      <br/><br/>
+
+                      <b>Developers Note:</b> this attribute (up to now) is not used for "database blob" data,
+                      works only for "Disk Blob" data.
+                    </p>
+                  </info>
+                </attribute>
             </tag>
 
 			<!-- **************************** blobContent tag ***********************************-->									
