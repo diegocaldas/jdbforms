@@ -135,26 +135,6 @@ public class DataSourceJDBC extends DataSource {
    private void closeConnection() {
       getLogCat().debug("closeConnection  called");
       fetchedAll = true;
-
-      if (rs != null) {
-         try {
-            rs.close();
-         } catch (SQLException e) {
-            SqlUtil.logSqlException(e);
-         }
-
-         rs = null;
-      }
-
-      if (stmt != null) {
-         try {
-            stmt.close();
-         } catch (SQLException e) {
-            SqlUtil.logSqlException(e);
-         }
-         stmt = null;
-      }
-
       if (con != null) {
          try {
             if (!con.isClosed())
@@ -162,8 +142,9 @@ public class DataSourceJDBC extends DataSource {
          } catch (SQLException e) {
             SqlUtil.logSqlException(e);
          }
-
          con = null;
+         rs = null;
+         stmt = null;
       }
    }
 
@@ -172,7 +153,7 @@ public class DataSourceJDBC extends DataSource {
     * Clean the underlying data and keys vectors, then close the JDBC
     * resultSet, statement and connection objects.
     */
-   public void close() {
+   protected final void close() {
       getLogCat().debug("close called");
 
       if (data != null) {
@@ -194,7 +175,7 @@ public class DataSourceJDBC extends DataSource {
     * 
     * @throws SQLException if any error occurs
     */
-   protected void open() throws SQLException {
+   protected final void open() throws SQLException {
       if (!fetchedAll && (rs == null)) {
          if ((con == null) || con.isClosed()) {
             try {
@@ -273,7 +254,7 @@ public class DataSourceJDBC extends DataSource {
     * 
     * @throws SQLException if any error occurs
     */
-   protected int findStartRow(String startRow) throws SQLException {
+   protected final int findStartRow(String startRow) throws SQLException {
       int result = 0;
       boolean found = false;
 
@@ -365,7 +346,7 @@ public class DataSourceJDBC extends DataSource {
     * 
     * @throws SQLException if any error occurs
     */
-   protected int size() throws SQLException {
+   protected final int size() throws SQLException {
       // Workaround for bug in firebird driver: After reaching next the next call 
       // to next will start at the beginning of the resultset.
       // rs.next will return true, fetching data will get an NullPointerException. 
@@ -400,7 +381,7 @@ public class DataSourceJDBC extends DataSource {
     * 
     * @throws SQLException
     */
-   protected boolean hasMore(int i) throws SQLException {
+   protected final boolean hasMore(int i) throws SQLException {
       return !fetchedAll || (i < size());
    }
 

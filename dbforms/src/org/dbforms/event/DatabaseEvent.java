@@ -212,8 +212,8 @@ public abstract class DatabaseEvent extends WebEvent
 
       try
       {
-         key = Util.decode(ParseUtil.getParameter(request, 
-                                                  "k_" + getTable().getId() + "_" + keyId));
+         key = ParseUtil.getParameter(request,"k_" + getTable().getId() + "_" + keyId);
+         key = Util.decode(key, request.getCharacterEncoding());
          logCat.info("::getKeyValues - key: " + key);
       }
       catch (UnsupportedEncodingException e)

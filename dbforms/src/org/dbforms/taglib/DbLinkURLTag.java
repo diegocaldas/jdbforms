@@ -20,20 +20,16 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-package org.dbforms.taglib;
 
+package org.dbforms.taglib;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import javax.servlet.jsp.JspException;
-
 import org.dbforms.config.Field;
 import org.dbforms.config.FieldValue;
 import org.dbforms.config.FieldValues;
 import org.dbforms.config.Table;
-
 import org.dbforms.util.Util;
-
 import org.apache.log4j.Category;
 
 
@@ -69,20 +65,21 @@ import org.apache.log4j.Category;
  *
  * @author Joachim Peer <j.peer@gmx.net>
  */
-public class DbLinkURLTag extends DbBaseHandlerTag implements javax.servlet.jsp.tagext.TryCatchFinally
+public class DbLinkURLTag extends DbBaseHandlerTag
+   implements javax.servlet.jsp.tagext.TryCatchFinally
 {
-   private static Category       logCat     = Category.getInstance(DbLinkURLTag.class
-         .getName()); // logging category for this class
+   private static Category logCat = Category.getInstance(
+                                             DbLinkURLTag.class.getName()); // logging category for this class
+   private FieldValues     positionFv; // fields and their values, provided by embedded DbLinkPositionItem-Elements
 
-   private FieldValues   positionFv; // fields and their values, provided by embedded DbLinkPositionItem-Elements
    // -- properties
-   private String    href;
-   private String    tableName;
-   private String    position;
-   private String    keyToDestPos;
-   private String    keyToKeyToDestPos;
-   private String    singleRow = "false";
-   
+   private String href;
+   private String tableName;
+   private String position;
+   private String keyToDestPos;
+   private String keyToKeyToDestPos;
+   private String singleRow = "false";
+
    /**
     * used if parentTable is different to tableName:
     * field(s) in the main form that is/are linked to this form
@@ -151,8 +148,8 @@ public class DbLinkURLTag extends DbBaseHandlerTag implements javax.servlet.jsp.
 
 
    /**
-   to be called by DbLinkPositonItems
-   */
+      to be called by DbLinkPositonItems
+    */
    public void addPositionPart(Field field, String value)
    {
       if (positionFv == null)
@@ -173,12 +170,10 @@ public class DbLinkURLTag extends DbBaseHandlerTag implements javax.servlet.jsp.
     *
     * @throws JspException  thrown when error occurs in processing the body of
     *                       this method
-
     * @throws IllegalArgumentException thrown when some parameters are missing.
     */
    public int doStartTag() throws javax.servlet.jsp.JspException
    {
-
       if (Util.isNull(getPosition())) // if position was not set explicitly,
       {
          return EVAL_BODY_BUFFERED; // we have to evaluate body and hopefully find DbLinkPositionItems there
@@ -204,8 +199,8 @@ public class DbLinkURLTag extends DbBaseHandlerTag implements javax.servlet.jsp.
    }
 
 
-   private String getDataTag(String primaryTagName, String dataKey,
-      String dataValue)
+   private String getDataTag(String primaryTagName, String dataKey, 
+                             String dataValue)
    {
       String s = "";
 
@@ -224,21 +219,31 @@ public class DbLinkURLTag extends DbBaseHandlerTag implements javax.servlet.jsp.
       return s;
    }
 
-   public Table getTable() {   
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public Table getTable()
+   {
       if (!Util.isNull(tableName))
       {
          return getConfig().getTableByName(tableName);
       }
       else if (getParentForm() != null)
       { // we must try if we get info from parentForm
+
          return getParentForm().getTable();
       }
       else
       {
          throw new IllegalArgumentException(
-            "no table specified. either you define expliclty the attribute \"tableName\" or you put this tag inside a db:form!");
+                  "no table specified. either you define expliclty the attribute \"tableName\" or you put this tag inside a db:form!");
       }
    }
+
+
    /**
     * DOCUMENT ME!
     *
@@ -262,9 +267,8 @@ public class DbLinkURLTag extends DbBaseHandlerTag implements javax.servlet.jsp.
          }
 
          // build tag
-         StringBuffer       tagBuf      = new StringBuffer(200);
-         HttpServletRequest request     = (HttpServletRequest) pageContext
-            .getRequest();
+         StringBuffer       tagBuf  = new StringBuffer(200);
+         HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
          String             contextPath = request.getContextPath();
          tagBuf.append(contextPath);
 
@@ -282,42 +286,53 @@ public class DbLinkURLTag extends DbBaseHandlerTag implements javax.servlet.jsp.
          tagName = "data" + tagName + "_x";
          tagBuf.append(getDataTag(tagName, "fu", href));
 
+
          // table is required. we force to define a valid table.
          // because we do not want the developer to use this tag instead of
          // normal <a href="">-tags to arbitrary (static) ressources, as this would slow down the application.
          tagBuf.append(getDataTag(tagName, "destTable", getTable().getName()));
 
+
          // position within table is not required.
          // if no position was provided/determinated, dbForm will navigate to the first row
          // 2002-11-20 HKK: Fixed encoding bug!
-         tagBuf.append(getDataTag(tagName, "destPos", Util.encode(position,pageContext.getRequest().getCharacterEncoding())));
+         tagBuf.append(getDataTag(tagName, "destPos", 
+                                  Util.encode(position, 
+                                              pageContext.getRequest()
+                                                         .getCharacterEncoding())));
+
 
          // 2002-11-21 HKK: Allow same keys as in dbgotobutton
-         tagBuf.append(getDataTag(tagName, "keyToDestPos",
-         Util.encode(keyToDestPos,pageContext.getRequest().getCharacterEncoding())));
-         tagBuf.append(getDataTag(tagName, "keyToKeyDestPos",
-         Util.encode(keyToKeyToDestPos,pageContext.getRequest().getCharacterEncoding())));
-
-
+         tagBuf.append(getDataTag(tagName, "keyToDestPos", 
+                                  Util.encode(keyToDestPos, 
+                                              pageContext.getRequest()
+                                                         .getCharacterEncoding())));
+         tagBuf.append(getDataTag(tagName, "keyToKeyDestPos", 
+                                  Util.encode(keyToKeyToDestPos, 
+                                              pageContext.getRequest()
+                                                         .getCharacterEncoding())));
 
          // 2002-11-21 HKK: New: send parent table name as parameter if it is different to table
          if (getTable() != getParentForm().getTable())
          {
-            tagBuf.append(getDataTag(tagName, "srcTable",
-                  getParentForm().getTable().getName()));
-            tagBuf.append(getDataTag(tagName, "childField",
-                  Util.encode(childField)));
-            tagBuf.append(getDataTag(tagName, "parentField",
-                  Util.encode(parentField)));
+            tagBuf.append(getDataTag(tagName, "srcTable", 
+                                     getParentForm().getTable().getName()));
+            tagBuf.append(getDataTag(tagName, "childField", 
+                                     Util.encode(childField, 
+                                                 pageContext.getRequest()
+                                                            .getCharacterEncoding())));
+            tagBuf.append(getDataTag(tagName, "parentField", 
+                                     Util.encode(parentField, 
+                                                 pageContext.getRequest()
+                                                            .getCharacterEncoding())));
          }
 
-			tagBuf.append(getDataTag(tagName, "singleRow", getSingleRow()));
-		
-         HttpServletResponse response = (HttpServletResponse) pageContext
-            .getResponse();
+         tagBuf.append(getDataTag(tagName, "singleRow", getSingleRow()));
+
+         HttpServletResponse response = (HttpServletResponse) pageContext.getResponse();
          String              s = tagBuf.toString();
-         s    = s.substring(0, s.length() - 1);
-         s    = response.encodeURL(s);
+         s = s.substring(0, s.length() - 1);
+         s = response.encodeURL(s);
          pageContext.getOut().write(s);
       }
       catch (java.io.IOException ioe)
@@ -331,7 +346,6 @@ public class DbLinkURLTag extends DbBaseHandlerTag implements javax.servlet.jsp.
 
       return EVAL_PAGE;
    }
-
 
 
    /**
@@ -449,16 +463,17 @@ public class DbLinkURLTag extends DbBaseHandlerTag implements javax.servlet.jsp.
          positionFv.clear();
       }
 
-      positionFv = null;
-      href = null;
-      tableName = null;
-      position = null;
-      keyToDestPos = null;
+      positionFv        = null;
+      href              = null;
+      tableName         = null;
+      position          = null;
+      keyToDestPos      = null;
       keyToKeyToDestPos = null;
-      singleRow = "false";
-      
+      singleRow         = "false";
+
       super.doFinally();
    }
+
 
    /**
     * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
@@ -469,20 +484,20 @@ public class DbLinkURLTag extends DbBaseHandlerTag implements javax.servlet.jsp.
    }
 
 
-	/**
-	 * @return the attribute
-	 */
-	public String getSingleRow()
-	{
-		return singleRow;
-	}
+   /**
+    * @return the attribute
+    */
+   public String getSingleRow()
+   {
+      return singleRow;
+   }
 
-	/**
-	 * @param string 
-	 */
-	public void setSingleRow(String string)
-	{
-		singleRow = string;
-	}
 
+   /**
+    * @param string
+    */
+   public void setSingleRow(String string)
+   {
+      singleRow = string;
+   }
 }

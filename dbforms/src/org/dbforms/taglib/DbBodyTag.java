@@ -20,15 +20,14 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
+
 package org.dbforms.taglib;
-
 import javax.servlet.jsp.JspException;
-
 import javax.servlet.jsp.tagext.BodyTagSupport;
-
 import org.dbforms.config.ResultSetVector;
 import org.dbforms.util.Util;
 import java.io.UnsupportedEncodingException;
+
 
 
 /****
@@ -39,16 +38,27 @@ import java.io.UnsupportedEncodingException;
  *
  * @author Joachim Peer <j.peer@gmx.net>
  */
-public class DbBodyTag extends BodyTagSupport implements javax.servlet.jsp.tagext.TryCatchFinally
-
+public class DbBodyTag extends BodyTagSupport
+   implements javax.servlet.jsp.tagext.TryCatchFinally
 {
-   private String  allowNew = "true"; // by default this is "true" - if so, the body is rendered at least 1 time, even if there are no data rows in the table. this enables the user to insert a new data row. - to disable this feature, allowNew has to be set to "false"
+   private String allowNew = "true"; // by default this is "true" - if so, the body is rendered at least 1 time, even if there are no data rows in the table. this enables the user to insert a new data row. - to disable this feature, allowNew has to be set to "false"
 
+   /**
+    * DOCUMENT ME!
+    */
    public void doFinally()
    {
       allowNew = "true";
    }
 
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param t DOCUMENT ME!
+    *
+    * @throws Throwable DOCUMENT ME!
+    */
    public void doCatch(Throwable t) throws Throwable
    {
       throw t;
@@ -86,8 +96,8 @@ public class DbBodyTag extends BodyTagSupport implements javax.servlet.jsp.tagex
    {
       //DbFormTag myParent = (DbFormTag) getParent(); // parent Tag in which this tag is embedded in
       // between this form and its parent lies a DbHeader/Body/Footer-Tag and maybe other tags (styling, logic, etc.)
-      DbFormTag myParent = (DbFormTag) findAncestorWithClass(this,
-            DbFormTag.class);
+      DbFormTag myParent = (DbFormTag) findAncestorWithClass(this, 
+                                                             DbFormTag.class);
 
       // the body may be rendered under the following circumstances:
       // - resultSetVector > 0 => render a row
@@ -117,16 +127,25 @@ public class DbBodyTag extends BodyTagSupport implements javax.servlet.jsp.tagex
          {
             rsv.increasePointer(); // teleport us to future...
 
+
             // # jp 27-06-2001: replacing "." by "_", so that SCHEMATA can be used
             pageContext.setAttribute("currentRow_"
-               + myParent.getTableName().replace('.', '_'),
-               rsv.getCurrentRowAsHashtable());
+                                     + myParent.getTableName()
+                                               .replace('.', '_'), 
+                                     rsv.getCurrentRowAsHashtable());
+
             try
             {
                pageContext.setAttribute("position_"
-                  + myParent.getTableName().replace('.', '_'),
-                  Util.decode(myParent.getTable().getPositionString(rsv)));
-            } catch (Exception e) {
+                                        + myParent.getTableName()
+                                                  .replace('.', '_'), 
+                                        Util.decode(myParent.getTable()
+                                                            .getPositionString(rsv), 
+                                                    pageContext.getRequest()
+                                                               .getCharacterEncoding()));
+            }
+            catch (Exception e)
+            {
                throw new JspException(e.getMessage());
             }
 
@@ -148,26 +167,33 @@ public class DbBodyTag extends BodyTagSupport implements javax.servlet.jsp.tagex
    public int doAfterBody() throws JspException
    {
       //DbFormTag myParent = (DbFormTag) getParent(); // parent Tag in which this tag is embedded in
-      DbFormTag myParent = (DbFormTag) findAncestorWithClass(this,
-            DbFormTag.class);
+      DbFormTag myParent = (DbFormTag) findAncestorWithClass(this, 
+                                                             DbFormTag.class);
 
-     try {
-      // each rendering loop represents one row of data.
-      // for every row we need to print some data needed by the controller servlet in order to
-      // correctly dispatching and eventually modifying our data.
-      //
-      // now the key of the current dataset is printed out (always)
-      // this key will be used by actions such as delete or update.
-      
-      String curKeyString = Util.encode(myParent.getTable().getKeyPositionString(myParent.getResultSetVector()),pageContext.getRequest().getCharacterEncoding());
+      try
+      {
+         // each rendering loop represents one row of data.
+         // for every row we need to print some data needed by the controller servlet in order to
+         // correctly dispatching and eventually modifying our data.
+         //
+         // now the key of the current dataset is printed out (always)
+         // this key will be used by actions such as delete or update.
+         String curKeyString = Util.encode(myParent.getTable()
+                                                   .getKeyPositionString(myParent.getResultSetVector()), 
+                                           pageContext.getRequest()
+                                                      .getCharacterEncoding());
 
-      myParent.appendToChildElementOutput("<input type=\"hidden\" name=\"k_"
-         + myParent.getTable().getId() + "_" + myParent.getPositionPath()
-         + "\" value=\"" + curKeyString + "\"/>");
-
-      } catch(UnsupportedEncodingException uee) {
-      	throw new JspException(uee.toString());
+         myParent.appendToChildElementOutput("<input type=\"hidden\" name=\"k_"
+                                             + myParent.getTable().getId()
+                                             + "_" + myParent.getPositionPath()
+                                             + "\" value=\"" + curKeyString
+                                             + "\"/>");
       }
+      catch (UnsupportedEncodingException uee)
+      {
+         throw new JspException(uee.toString());
+      }
+
       myParent.increaseCurrentCount();
 
       if (!ResultSetVector.isNull(myParent.getResultSetVector()))

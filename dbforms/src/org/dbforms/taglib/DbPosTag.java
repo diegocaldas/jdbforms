@@ -20,9 +20,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-package org.dbforms.taglib;
 
+package org.dbforms.taglib;
 import org.dbforms.util.Util;
+
+
 
 /****
  * <p>
@@ -32,13 +34,16 @@ import org.dbforms.util.Util;
  *
  */
 public class DbPosTag extends DbBaseHandlerTag
-      implements javax.servlet.jsp.tagext.TryCatchFinally
+   implements javax.servlet.jsp.tagext.TryCatchFinally
 {
+   /**
+    * DOCUMENT ME!
+    */
+   public void doFinally()
+   {
+      super.doFinally();
+   }
 
-	public void doFinally()
-	{
-		super.doFinally();
-	}
 
    /**
     * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
@@ -61,19 +66,20 @@ public class DbPosTag extends DbBaseHandlerTag
    {
       try
       {
-         StringBuffer       tagBuf = new StringBuffer();
+         StringBuffer tagBuf = new StringBuffer();
          tagBuf.append(getParentForm().getTable().getId());
          tagBuf.append("_");
          tagBuf.append(getParentForm().getPositionPath());
-         pageContext.getOut().write(Util.decode(tagBuf.toString()));
+         pageContext.getOut()
+           .write(Util.decode(tagBuf.toString(), 
+                              pageContext.getRequest().getCharacterEncoding()));
       }
       catch (java.io.IOException ioe)
       {
-         throw new javax.servlet.jsp.JspException("IO Error: " + ioe.getMessage());
+         throw new javax.servlet.jsp.JspException("IO Error: "
+                                                  + ioe.getMessage());
       }
 
       return EVAL_PAGE;
    }
-
-
 }

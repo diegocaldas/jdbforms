@@ -205,7 +205,7 @@ public class GotoEvent extends NavigationEvent
       {
          try
          {
-            position = Util.decode(position);
+            position = Util.decode(position, request.getCharacterEncoding());
          }
          catch (UnsupportedEncodingException e)
          {

@@ -52,7 +52,7 @@ public class TestUtil extends AbstractTestCase {
 
         String s = SOURCE;
 
-        s = Util.encode(s);
+        s = Util.encode(s, null);
 
         assertTrue("Encoded String:" + s, s.equals(ENCODED));
 
@@ -60,7 +60,7 @@ public class TestUtil extends AbstractTestCase {
         s = null;
 
 
-        s = Util.encode(s);
+        s = Util.encode(s, null);
 
         assertTrue("S must be null", s == null);
 
@@ -75,14 +75,24 @@ public class TestUtil extends AbstractTestCase {
        String ENCODED = "http%3A%2F%2Fwww.sun.com%3Fsome+bogus%3Dvalue";
 
        String s = ENCODED;
-       s = Util.decode(s);
+       s = Util.decode(s, null);
        assertTrue("Encoded String:" + s, s.equals(SOURCE));
 
 
        s = null;
-       s = Util.encode(s);
+       s = Util.encode(s, null);
        assertTrue("S must be null", s == null);
    }
+   
+   
+   public void testEncodeDecode() throws Exception {
+      String s = "0%3A7%3A%8A%E1%92%86%82%C9%82%A8%82%A9%82%C8%82%A2-1%3A8%3A%82%AA%82%F1%82%BF%82%E3%82%A4%82%AA%82%C8%82%A2";
+      s = Util.decode(s, "Shift-JIS");
+      System.out.println(s.length() + " " + s);
+      s = "0%3A7%3A%E7%9C%BC%E4%B8%AD%E3%81%AB%E3%81%8A%E3%81%8B%E3%81%AA%E3%81%84-1%3A8%3A%E3%81%8C%E3%82%93%E3%81%A1%E3%82%85%E3%81%86%E3%81%8C%E3%81%AA%E3%81%84";
+      s = Util.decode(s, "UTF-8");
+      System.out.println(s.length() + " " + s);
+   }      
 
 
     /**

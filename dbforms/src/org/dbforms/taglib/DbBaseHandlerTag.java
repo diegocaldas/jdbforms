@@ -241,9 +241,7 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
       ResultSetVector res = getParentForm().getResultSetVector();
 
       if ((res != null) && (getField() != null)) {
-         Object[] objectRow = res.getCurrentRowAsObjects();
-         if (objectRow != null)
-            fieldValueObj = objectRow[getField().getId()];
+         fieldValueObj = res.getFieldAsObject(getField().getId());
       } else {
          // try to get old value if we have an unbounded field!
          fieldValueObj = ParseUtil.getParameter((HttpServletRequest) pageContext.getRequest(), getFormFieldName());
