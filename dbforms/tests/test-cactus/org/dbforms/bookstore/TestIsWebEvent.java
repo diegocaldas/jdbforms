@@ -42,10 +42,10 @@ public class TestIsWebEvent extends HttpTestCase {
    public void testTestIsWebEvent() throws Exception {
       get("http://localhost/bookstore/tests/testIsWebEvent.jsp");
       printResponse();
-      assertTrue(responseContains("Hijacking through the Galaxy 6"));
-      assertTrue(responseContains("this should be printed"));
-      assertTrue(responseContains("this should also be printed"));
-      assertFalse(responseContains("this should not be printed"));
+      assertTrue("Hijacking through the Galaxy 6", responseContains("Hijacking through the Galaxy 6"));
+      assertTrue("this should be printed", responseContains("this should be printed"));
+      assertTrue("this should also be printed", responseContains("this should also be printed"));
+      assertFalse("this should not be printed", responseContains("this should not be printed"));
    }
 
    /** ************* */

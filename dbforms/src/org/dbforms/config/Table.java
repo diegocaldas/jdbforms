@@ -863,7 +863,7 @@ public class Table implements Serializable {
     *         table.
     */
    public Vector getInterceptors() {
-      if (getConfig().hasInterceptors()) {
+      if ((getConfig() != null) && getConfig().hasInterceptors()) {
          Vector tmp = new Vector(interceptors);
          tmp.addAll(getConfig().getInterceptors());
          tmp.addAll(interceptors);
@@ -1501,8 +1501,9 @@ public class Table implements Serializable {
       if (field.hasIsKeySet()) {
          logCat.info("wow - field " + getName() + "." + field.getName()
                      + " is a key");
-         getKey()
-            .addElement(field);
+         // use key not getKey! getKey will return key Vector of parent
+         // table in case of query!
+         key.addElement(field);
       } else {
          logCat.info("field " + getName() + "." + field.getName()
                      + " is NO key");
@@ -1778,7 +1779,7 @@ public class Table implements Serializable {
     * @return true if the table contains interceptors, false otherwise
     */
    public boolean hasInterceptors() {
-      return getConfig().hasInterceptors()
+      return (getConfig() != null && getConfig().hasInterceptors())
              || ((interceptors != null) && (interceptors.size() > 0));
    }
 

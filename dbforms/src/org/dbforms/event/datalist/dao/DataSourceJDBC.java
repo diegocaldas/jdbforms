@@ -484,6 +484,7 @@ public class DataSourceJDBC extends DataSource {
             f.setName("count(*) cnt");
             Vector v = new Vector();
             v.add(f);
+//            v.addAll(getTable().getFields());
          	ResultSet rs = null;
             if (Util.isNull(whereClause)) {
                 String query = getTable()

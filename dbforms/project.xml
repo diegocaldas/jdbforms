@@ -173,6 +173,24 @@
             <role>Java Developer</role>
          </roles>
       </developer>
+      <developer>
+         <name>Sungam Noremac</name>
+         <id>noremac</id>
+         <email>noremac@users.sourceforge.net</email>
+         <organization/>
+         <roles>
+            <role>Java Developer</role>
+         </roles>
+      </developer>
+      <developer>
+         <name>Ivan Francolin Martinez</name>
+         <id>ivanfm</id>
+         <email>ivanfm@users.sourceforge.net</email>
+         <organization/>
+         <roles>
+            <role>Java Developer</role>
+         </roles>
+      </developer>
    </developers>
    <contributors>
       <contributor>
@@ -319,7 +337,7 @@
       </dependency>
       <dependency>
          <id>hsqldb</id>
-         <version>1.7.1</version>
+         <version>1.7.2.2</version>
          <properties>
             <war.bundle>true</war.bundle>
          </properties>
