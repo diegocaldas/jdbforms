@@ -4,7 +4,155 @@
   <title>Class diagrams</title>
 
   <sect1>
-    <title>DAO package</title>
+    <title>org.dbforms.event package</title>
+    <para>
+      The Event package contains the EventEngine and the Event Factory classes.
+      Provides the DbEventInterceptor interface and the DbEventInterceptorSupport class.
+    </para>
+    <para>
+      Click here for the <ulink url="./images/figures/uml/class/event.ucd.png">diagram</ulink> picture.
+    </para>
+    <sect2>
+      <title>EventEngine</title>
+      <para> 
+        This class is invoked by the Controller servlet. It parses a request to find out
+        which event(s) need to be instanciated.
+        The fine-grained parsing (parsing of additional data, etc) is done
+        by the WebEvent-Object itself (in order to hide complexity from this
+        class and to keep the framework open for implementations of new Event-classes).
+      </para>
+    </sect2>
+    <sect2>
+      <title>EventFactory</title>
+      <para> 
+        The EventFactory abstract class provides the interface and the implementation
+        of protected methods used by eventFactory subclasses (see NavEventFactory and DatabaseEventFactory) 
+      </para>
+    </sect2>
+    <sect2>
+      <title>NavEventFactory</title>
+      <para> 
+        The NavEventFactory abstract class provides the interface for a NavigationEvent 
+        concrete class (see NavEventFactoryImpl).       
+      </para>
+    </sect2>
+    <sect2>
+      <title>NavEventFactoryImpl</title>
+      <para> 
+        The NavEventFactoryImpl class is the concrete implementation of the NavEventFactory abstract class;
+        it initializes also the default navigation events.
+      </para>
+    </sect2>
+    <sect2>
+      <title>DatabaseEventFactory</title>
+      <para> 
+        The DatabaseEventFactory abstract class provides the interface for a DatabaseEvent 
+        concrete class (see DatabaseEventFactoryImpl).
+      </para>
+    </sect2>
+    <sect2>
+      <title>DatabaseEventFactoryImpl</title>
+      <para> 
+        The DatabaseEventFactoryImpl class is the concrete implementation of the DatabaseEventFactory abstract class;
+        it initializes also the default database events.
+      </para>
+    </sect2>
+    <sect2>
+      <title>NavigationEvent</title>
+      <para> 
+        The NavigationEvent abstract class provides the interface for NavigationEvent subclasses.
+        See the Datalist diagram page [REF HERE] for further informations about
+        NavigationEvent subclasses.
+      </para>
+    </sect2>
+    <sect2>
+      <title>ReloadEvent</title>
+      <para>
+        ReloadEvent is used to reload the current page with data from Request object.
+        When you want to do action on different field when one of them change.
+        Use for field manipulation server side.
+      </para>
+      <para>
+        Example: Select child change when Select parent change.
+      </para>
+    </sect2>
+    <sect2>
+      <title>NoopEvent</title>
+      <para>
+      </para>
+    </sect2>
+  </sect1>
+
+  <sect1>
+    <title>org.dbforms.event.datalist package</title>
+    <para>
+      The Datalist package provides the implementation of a simplified data list pattern used 
+      by the new navigation system. See the <link linkend="navigation">navigation</link> 
+      chapter for further details.
+    </para>
+    <para>
+      Click here for the <ulink url="./images/figures/uml/class/datalist.ucd.png">diagram</ulink> picture.
+    </para>
+    <sect2>
+      <title>InsertEvent</title>
+      <para>
+        This event prepares and performs a SQL-Insert operation. 
+      </para>
+    </sect2>
+    <sect2>
+      <title>UpdateEvent</title>
+      <para>
+        This event prepares and performs a SQL-Update operation.
+      </para>
+    </sect2>
+    <sect2>
+      <title>DeleteEvent</title>
+      <para>
+        This event prepares and performs a SQL-Delete operation. 
+      </para>
+    </sect2>
+    <sect2>
+      <title>NavFirstEvent</title>
+      <para>
+        This event scrolls the current ResultSet to its first row of data.
+      </para>
+    </sect2>
+    <sect2>
+      <title>NavLastEvent</title>
+      <para>
+         This event scrolls the current ResultSet to its last row of data.       
+      </para>
+    </sect2>
+    <sect2>
+      <title>NavLastEvent</title>
+      <para>
+         This event scrolls the current ResultSet to its last row of data.       
+      </para>
+    </sect2>
+    <sect2>
+      <title>NavNextEvent</title>
+      <para>
+        This event scrolls the current ResultSet to the next row of data; provides bounded navigation.
+      </para>
+    </sect2>
+    <sect2>
+      <title>NavPrevEvent</title>
+      <para>
+        This event scrolls the current ResultSet to the previous row of data; provides bounded navigation.
+      </para>
+    </sect2>
+    <sect2>
+      <title>GotoEvent</title>
+      <para> 
+        This event forces the controller to forward the current request
+        to a Request-Dispatcher specified by the Application-Developer
+        in a <computeroutput>org.dbforms.taglib.DbGotoButton</computeroutput>.
+      </para>
+    </sect2>
+  </sect1>
+
+  <sect1>
+    <title>org.dbforms.event.datalist.dao package</title>
     <para>
       The DAO (data access object) package provides the DataSource* classes
       that manage the database operations (insert, update, delete).
@@ -59,82 +207,58 @@
     </sect2>
   </sect1>
 
+
+
   <sect1>
-    <title>Event package</title>
+    <title>org.dbforms.conprovider package</title>
     <para>
-      The Event package contains the EventEngine and the Event Factory classes.
-      Provides the DbEventInterceptor interface and the DbEventInterceptorSupport class.
+      The conprovider package provides the ConnectionFactory used by DbForms to get a new JDBC connection object.
+      The ConnectionFactory uses specialized ConnectionProvider objects to manage the interaction with
+      connection pool libraries or other connection providers.
     </para>
     <para>
-      Click here for the <ulink url="./images/figures/uml/class/event.ucd.png">diagram</ulink> picture.
+      Click here for the <ulink url="./images/figures/uml/class/conprovider.ucd.png">diagram</ulink> picture, or
+      read further documentation about <link linkend="connSupp">connection support</link>.
     </para>
     <sect2>
-      <title>EventEngine</title>
+      <title>ConnectionFactory</title>
       <para> 
-        This class is invoked by the Controller servlet. It parses a request to find out
-        which Event(s) need to be instanciated.
-        The fine-grained parsing (parsing of additional data, etc) is done
-        by the WebEvent-Object itself (in order to hide complexity from this
-        class and to keep the framework open for implementations of new Event-classes).
+        Provides SQL Connection objects using the underlying ConnectionProvider instance.
       </para>
     </sect2>
     <sect2>
-      <title>EventFactory</title>
-      <para> 
-        The EventFactory abstract class provides the interface and the implementation
-        of protected methods used by eventFactory subclasses (see NavEventFactory and DatabaseEventFactory) 
-      </para>
-    </sect2>
-    <sect2>
-      <title>NavEventFactory</title>
-      <para> 
-        The NavEventFactory abstract class provides the interface for a NavigationEvent 
-        concrete class (see NavEventFactoryImpl).       
-      </para>
-    </sect2>
-    <sect2>
-      <title>NavEventFactoryImpl</title>
-      <para> 
-        The NavEventFactoryImpl class is the concrete implementation of the NavEventFactory abstract class;
-        it initializes also the default navigation events.
-      </para>
-    </sect2>
-    <sect2>
-      <title>DatabaseEventFactory</title>
-      <para> 
-        The DatabaseEventFactory abstract class provides the interface for a DatabaseEvent 
-        concrete class (see DatabaseEventFactoryImpl).
-      </para>
-    </sect2>
-    <sect2>
-      <title>DatabaseEventFactoryImpl</title>
-      <para> 
-        The DatabaseEventFactoryImpl class is the concrete implementation of the DatabaseEventFactory abstract class;
-        it initializes also the default database events.
-      </para>
-    </sect2>
-    <sect2>
-      <title>NavigationEvent</title>
-      <para> 
-        The NavigationEvent abstract class provides the interface for NavigationEvent subclasses.
-        See the Datalist diagram page [REF HERE] for further informations about
-        NavigationEvent subclasses.
-      </para>
-    </sect2>
-    <sect2>
-      <title>ReloadEventt</title>
+      <title>ConnectionProvider</title>
       <para>
-        ReloadEvent is used to reload the current page with data from Request object.
-        When you want to do action on different field when one of them change.
-        Use for field manipulation server side.
+        the ConnectionProvider abstract class defines the interface for specialized connectionProvider subclasses.
+        Provides SQL Connection objects using the underlying ConnectionProvider instance.
       </para>
       <para>
-        Example: Select child change when Select parent change.
+        Subclasses must extend this class and implement <computeroutput>initialize</computeroutput> 
+        and <computeroutput>getConnection</computeroutput> methods.
       </para>
     </sect2>
     <sect2>
-      <title>NoopEvent</title>
+      <title>ConnectionProviderPrefs</title>
+      <para> 
+        The ConnectionProviderPrefs class holds the preferences for a given connectionProvider object.
+      </para>
+    </sect2>
+    <sect2>
+      <title>JakartaConnectionProvider</title>
       <para>
+        Connection provider class for Apache Jakarta commons-dbcp component.
+      </para>
+    </sect2>
+    <sect2>
+      <title>ProtomatterConnectionProvider</title>
+      <para>
+        Connection provider for Protomatter Connection pool component.
+      </para>
+    </sect2>
+    <sect2>
+      <title>SimpleConnectionProvider</title>
+      <para>
+        Provides non-pooled connections.
       </para>
     </sect2>
   </sect1>
