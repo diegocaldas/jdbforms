@@ -226,7 +226,6 @@ public class DbSearchComboTag extends DbSearchTag
       paramNameBuf.append(fieldId);
 
       String oldValue = ParseUtil.getParameter(request, paramNameBuf.toString());
-
       if (!Util.isNull(oldValue))
       {
          selectedIndex = oldValue;

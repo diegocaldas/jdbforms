@@ -22,7 +22,6 @@
  */
 package org.dbforms.config;
 
-
 import java.util.Map;
 import java.util.HashMap;
 
@@ -34,44 +33,38 @@ import java.util.HashMap;
  *
  * @author Joachim Peer <j.peer@gmx.net>
  */
-public class Interceptor
-{
-   private String  className;
-   // params may contain configuration data for the interceptor
-   private Map params;
+public class Interceptor {
+	private String className;
+	// params may contain configuration data for the interceptor
+	private Map params;
 
-   public Interceptor()
-   {
-     params = new HashMap();
-   }
+	public Interceptor() {
+		params = new HashMap();
+	}
 
-   /**
-    * sets the name of the interceptor class to be invoked during runtime
-    *
-    * @param className - name of the Interceptor class
-    */
-   public void setClassName(String className)
-   {
-      this.className = className;
-   }
+	/**
+	 * sets the name of the interceptor class to be invoked during runtime
+	 *
+	 * @param className - name of the Interceptor class
+	 */
+	public void setClassName(String className) {
+		this.className = className;
+	}
 
+	/**
+	 * returns the name of the interceptor class
+	 *
+	 * @return the name of the interceptor class
+	 */
+	public String getClassName() {
+		return className;
+	}
 
-   /**
-    * returns the name of the interceptor class
-    *
-    * @return the name of the interceptor class
-    */
-   public String getClassName()
-   {
-      return className;
-   }
+	public void addParam(String name, String value) {
+		params.put(name, value);
+	}
 
-   public void addParam(String name, String value) 
-	 {
-			params.put(name, value); 
-	 }
-	 
-	 public Map getParams() {
-		 return params;
-	 }
+	public Map getParams() {
+		return params;
+	}
 }

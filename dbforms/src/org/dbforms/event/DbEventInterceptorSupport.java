@@ -41,7 +41,7 @@ import org.dbforms.config.Table;
 public class DbEventInterceptorSupport implements DbEventInterceptor
 {
 
-	protected Map params;
+	private Map params;
 	
 	public void setParams(Map params) {
 		this.params = params;
