@@ -85,7 +85,7 @@ public class MessageResources
     ********************************************************************************************/
    public static String getMessage(String msg, Locale loc)
    {
-      return msgRes.getMessage(msg, loc);
+      return (msgRes == null)?null:msgRes.getMessage(msg, loc);
    }
 
 
@@ -100,7 +100,7 @@ public class MessageResources
     ********************************************************************************************/
    public static String getMessage(String msg, Locale loc, String[] parms)
    {
-      return msgRes.getMessage(msg, loc, parms);
+      return (msgRes == null)?null:msgRes.getMessage(msg, loc, parms);
    }
 
 
