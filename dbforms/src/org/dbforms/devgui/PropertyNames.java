@@ -56,6 +56,6 @@ public interface PropertyNames
    static final String USE_GETCROSSREFERENCES  = "useGetCrossReferences";
    static final String DEACTIVATED             = "deactivated";
    static final String CONFIG_FILE             = "configFile";
-   static final String STYLESHEET_DIR          = "stylesheetDir";
+   static final String STYLESHEET_DIR          = "stylesheetDir";   static final String XSLT_ENCODING           = "xsltEncoding";
    static final String DATE_FORMAT             = "dateFormat";
 }

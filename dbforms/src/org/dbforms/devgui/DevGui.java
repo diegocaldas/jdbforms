@@ -26,11 +26,28 @@
  * Created on 26. April 2001, 14:50
  */
 package org.dbforms.devgui;
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import java.io.*;
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
+import javax.swing.ButtonGroup;
+import javax.swing.JFileChooser;
+import javax.swing.JMenu;
+import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+
+import org.dbforms.util.Util;
 
 
 /**
@@ -53,6 +70,10 @@ public class DevGui extends javax.swing.JFrame implements ActionListener
    private static final String metalLF   = "javax.swing.plaf.metal.MetalLookAndFeel";
    private static final String motifLF   = "com.sun.java.swing.plaf.motif.MotifLookAndFeel";
    private static final String windowsLF = "com.sun.java.swing.plaf.windows.WindowsLookAndFeel";
+   
+   private static final String ARG_PROPERTY_FILE_NAME = "propertyfilename";
+   private static final String ARG_CREATE_CONFIG = "createconfigfile";
+   private static final String ARG_OUTPUT_FILE_NAME = "outputfilename";
 
    // Gui Variables declaration
    private javax.swing.JMenuBar    jMenuBar1;
@@ -105,8 +126,10 @@ public class DevGui extends javax.swing.JFrame implements ActionListener
    }
 
    /** Creates new form DevGui */
-   public DevGui()
+   public DevGui(ProjectData projectData)
    {
+   	  this.projectData = projectData;
+   	  boolean projectDataLoaded = false;
       dbFormsHomeStr = System.getProperty("DBFORMS_HOME");
 
       if (dbFormsHomeStr != null)
@@ -117,7 +140,14 @@ public class DevGui extends javax.swing.JFrame implements ActionListener
          if (dbFormsHome.isDirectory() && dbFormsHome.canRead())
          {
             // CREATE DATA MODEL + SOME HELPER INFOS
-            this.projectData    = new ProjectData();
+            if (projectData == null) 
+            {
+            	this.projectData    = new ProjectData();
+            }
+            else
+            {
+            	projectDataLoaded = true;
+            }
 
             this.fileSeparator = System.getProperties().getProperty("file.separator");
 
@@ -192,6 +222,13 @@ public class DevGui extends javax.swing.JFrame implements ActionListener
 
             //        pack ();
             doLayout();
+            
+            if (projectDataLoaded) 
+            {
+              updateGUI();
+               this.setTitle(titleCore + "["
+                  + projectData.getFile().getAbsolutePath() + "]");
+            }
          }
          else
          {
@@ -548,62 +585,131 @@ public class DevGui extends javax.swing.JFrame implements ActionListener
    */
    public static void main(String[] args)
    {
-      if (args.length == 0)
-      {
-         new DevGui().show();
+   	
+   	  Map argsMap = parseCommandlineParameters(args);
+   	  
+   	  // create dbforms-config.xml ad exit
+   	  if (argsMap.get(ARG_CREATE_CONFIG) != null)
+   	  {
+   	    createConfigFile((String) argsMap.get(ARG_PROPERTY_FILE_NAME), (String) argsMap.get(ARG_OUTPUT_FILE_NAME));
+   	  }
+   	  // start gui
+   	  else
+   	  {
+   	  	 ProjectData pd = null;
+   	  	 String propsFileName = (String) argsMap.get(ARG_PROPERTY_FILE_NAME);
+   	  	 // try to load property file
+   	  	 if (! Util.isNull(propsFileName)) {
+      	   File projFile = new File(propsFileName);
+	       try {
+			 pd = ProjectData.loadFromDisc(projFile);
+		   } catch (IOException e) {
+			 e.printStackTrace();
+			 System.exit(1);
+		   }
+   	  	 }
+         new DevGui(pd).show();
       }
-      else
-      {
-         String whatToDo = args[0];
-
-         if (whatToDo.equalsIgnoreCase("createconfigfile"))
-         {
-            if ((args.length != 3) && (args.length != 2))
-            {
-               usage();
-            }
-            else
-            {
-               try
-               {
-                  String      propsFileName  = args[1];
-                  File        projFile       = new File(propsFileName);
-                  ProjectData pd             = ProjectData.loadFromDisc(projFile);
-                  String      outputFileName;
-
-                  if (args.length == 3)
-                  {
-                     outputFileName = args[2];
-                  }
-                  else
-                  {
-                     outputFileName = pd.getProperty("configFile");
-                  }
-
-                  if (outputFileName.equalsIgnoreCase(""))
-                  {
-                     throw new Exception(
-                        "Property configFile in propery file not set");
-                  }
-
-                  String         result = XMLConfigGenerator.createXMLOutput(pd,
-                        false);
-                  BufferedWriter bw = new BufferedWriter(new FileWriter(
-                           outputFileName));
-                  bw.write(result);
-                  bw.close();
-               }
-               catch (Exception ex)
-               {
-                  ex.printStackTrace();
-               }
-            }
-         }
-         else
-         {
-            usage();
-         }
+   }
+   
+   protected static void createConfigFile(String propsFileName, String outputFileName) {
+   	try
+	   {
+	      File        projFile       = new File(propsFileName);
+	      ProjectData pd             = ProjectData.loadFromDisc(projFile);
+	
+          if (Util.isNull(outputFileName)) 
+	      {
+	         outputFileName = pd.getProperty("configFile");
+	      }
+	
+	      if (Util.isNull(outputFileName))
+	      {
+	         throw new Exception(
+	            "Property configFile in propery file not set");
+	      }
+	
+	      String       result = XMLConfigGenerator.createXMLOutput(pd, false);
+	      BufferedWriter bw = new BufferedWriter(new FileWriter(outputFileName));
+	      bw.write(result);
+	      bw.close();
+	   }
+	   catch (Exception ex)
+	   {
+	      ex.printStackTrace();
+	   }
+   }
+   
+   protected static Map parseCommandlineParameters(String[] args) 
+   {
+      if (args == null) {
+      	return null;
       }
+      
+      Map argsMap = new HashMap();
+      
+      for (int i=0; i<args.length; i++)
+      {
+      	if (args[i].equalsIgnoreCase("-propertyfile"))
+      	{
+      		if (argsMap.get(ARG_PROPERTY_FILE_NAME) == null)
+      		{
+      		  argsMap.put(ARG_PROPERTY_FILE_NAME, args[++i]);
+      		}
+      		else
+      		{
+      		  System.err.println("Not allowed to specify \"createconfigfile\" and \"-propertyfile\" at the same time");
+      		  System.err.println("Programm stopped");
+      		  System.err.println();
+      		  usage();
+      		  System.exit(1);
+      		}
+      	}
+      	else if (args[i].equalsIgnoreCase("createconfigfile"))
+      	{
+      		
+      		argsMap.put(ARG_CREATE_CONFIG, new Boolean(true));
+      		
+      		if (argsMap.get(ARG_PROPERTY_FILE_NAME) == null)
+      		{
+      		  if (i < args.length)
+      		  {
+      		    argsMap.put(ARG_PROPERTY_FILE_NAME, args[++i]);
+      		  }
+      		  else
+      		  {
+      		  	System.err.println("<propertyfilename> must be specified");
+      		    System.err.println("Programm stopped");
+      		    System.err.println();
+      		    usage();
+      		    System.exit(1);
+      		  }
+      		  
+      		  if (i < args.length-1)
+      		  {
+      		  	argsMap.put(ARG_OUTPUT_FILE_NAME, args[++i]);
+      		  }
+      		}
+      		else
+      		{
+      		  System.err.println("Not allowed to specify \"createconfigfile\" and \"-propertyfile\" at the same time");
+      		  System.err.println("Programm stopped");
+      		  System.err.println();
+      		  usage();
+      		  System.exit(1);
+      		}
+      	}
+        else
+        {
+          System.err.println("Undefined parameter \"" + args[i] + "\"");	
+          System.err.println("Programm stopped");
+      	  System.err.println();
+      	  usage();
+      	  System.exit(1);
+        }
+      }
+      
+      return argsMap;
    }
 
 
@@ -612,6 +718,8 @@ public class DevGui extends javax.swing.JFrame implements ActionListener
       System.out.println("Usage: ");
       System.out.println("Gui mode: \n"
          + "  java -DDBFORMS_HOME=/path/to/dbfhome org.dbforms.devgui.DevGui ");
+      System.out.println("Gui mode with automatic loaded configfile: \n"
+         + "  java org.dbforms.devgui.DevGui -propertyfile <propertyfilename>");
       System.out.println("Command line mode: \n"
          + "  java org.dbforms.devgui.DevGui createconfigfile <propertyfilename> [ <outputfilename> ]");
    }

@@ -29,6 +29,7 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.OutputKeys;
 
 // Imported java classes
 import java.io.FileOutputStream;
@@ -37,7 +38,7 @@ import java.io.IOException;
 import java.io.File;
 
 
-
+import org.dbforms.util.Util;
 /**
  * Simple sample code to show how to run the XSL processor
  * from the API.
@@ -58,7 +59,7 @@ public class XSLTransformer
     * @throws IOException DOCUMENT ME!
     */
    public static void transform(File xmlFile, File xslFile,
-      File destinationFile, boolean useJsCalendar)
+      File destinationFile, boolean useJsCalendar, String xsltEncoding)
       throws TransformerException, TransformerConfigurationException, 
          FileNotFoundException, IOException
    {
@@ -73,6 +74,11 @@ public class XSLTransformer
       // into a compiled Templates object.
       Transformer transformer = tFactory.newTransformer(new StreamSource(
                xslFile));
+               
+      // Setting the XSLT encoding configured in the XSL Transformation Panel
+      if (! Util.isNull(xsltEncoding)) {
+      	transformer.setOutputProperty(OutputKeys.ENCODING, xsltEncoding);
+      }
 
       // If user has checked checkbox to use JavaScript Calendar for editing of
       // date fields, we have to pass a corresponding parameter to transformer

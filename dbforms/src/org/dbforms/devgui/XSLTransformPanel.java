@@ -26,12 +26,7 @@
  *  Created on 26. April 2001, 15:42
  */
 package org.dbforms.devgui;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import org.dbforms.xmldb.*;
+import java.awt.BorderLayout;import java.awt.GridBagConstraints;import java.awt.GridBagLayout;import java.awt.GridLayout;import java.awt.event.ActionEvent;import java.awt.event.ActionListener;import java.io.File;import javax.swing.JButton;import javax.swing.JCheckBox;import javax.swing.JFileChooser;import javax.swing.JLabel;import javax.swing.JList;import javax.swing.JOptionPane;import javax.swing.JPanel;import javax.swing.JScrollPane;import javax.swing.ListSelectionModel;import javax.swing.SwingConstants;import javax.swing.event.ListSelectionEvent;import javax.swing.event.ListSelectionListener;import org.dbforms.xmldb.FileSplitter;
 
 
 
@@ -56,7 +51,9 @@ public class XSLTransformPanel extends PropertyPanel implements ActionListener,
    private JCheckBox              cb_useJsCalendar;
    private javax.swing.JPanel     jPanel2;
    private javax.swing.JLabel     jLabel1;
+   private javax.swing.JLabel     jLabel2;
    private javax.swing.JTextField tf_stylesheetDir;
+   private javax.swing.JTextField tf_xsltEncoding;
    private javax.swing.JButton    b_browse;
 
    // other data
@@ -155,7 +152,7 @@ public class XSLTransformPanel extends PropertyPanel implements ActionListener,
       cb_useJsCalendar.setSelected(TRUESTRING.equalsIgnoreCase(
             projectData.getProperty(USE_JAVASCRIPT_CALENDAR)));
 
-      tf_stylesheetDir.setText(projectData.getProperty(STYLESHEET_DIR));
+      tf_stylesheetDir.setText(projectData.getProperty(STYLESHEET_DIR));      tf_xsltEncoding.setText(projectData.getProperty(XSLT_ENCODING));
 
       refreshAvailableStylesheets();
 
@@ -174,10 +171,11 @@ public class XSLTransformPanel extends PropertyPanel implements ActionListener,
       b_browse    = new javax.swing.JButton();
 
       jLabel1    = new javax.swing.JLabel();
-
-      tf_stylesheetDir = new javax.swing.JTextField();
-      tf_stylesheetDir.setText(projectData.getProperty(STYLESHEET_DIR));
-
+      tf_stylesheetDir = new javax.swing.JTextField();
+      tf_stylesheetDir.setText(projectData.getProperty(STYLESHEET_DIR));      
+      jLabel2    = new javax.swing.JLabel();
+      	  tf_xsltEncoding = new javax.swing.JTextField();	  tf_xsltEncoding.setText(projectData.getProperty(XSLT_ENCODING));
+	  
       setLayout(new GridBagLayout());
 
       JPanel panel_top = new JPanel();
@@ -276,8 +274,7 @@ public class XSLTransformPanel extends PropertyPanel implements ActionListener,
 
       jPanel2.add(jLabel1, gridBagConstraints2);
 
-      tf_stylesheetDir.setMinimumSize(new java.awt.Dimension(50, 24));
-
+      tf_stylesheetDir.setMinimumSize(new java.awt.Dimension(50, 24));                  
       gridBagConstraints2    = new java.awt.GridBagConstraints();
 
       gridBagConstraints2.fill    = java.awt.GridBagConstraints.HORIZONTAL;
@@ -286,12 +283,10 @@ public class XSLTransformPanel extends PropertyPanel implements ActionListener,
 
       jPanel2.add(tf_stylesheetDir, gridBagConstraints2);
 
-      b_browse.setText("browse...");
+      b_browse.setText("browse...");      
+      gridBagConstraints2 = new java.awt.GridBagConstraints();	  gridBagConstraints2.gridwidth = GridBagConstraints.REMAINDER;
 
-      gridBagConstraints2 = new java.awt.GridBagConstraints();
-
-      jPanel2.add(b_browse, gridBagConstraints2);
-
+      jPanel2.add(b_browse, gridBagConstraints2);            jLabel2.setText("XSLT Encoding:   ");      jLabel2.setHorizontalTextPosition(SwingConstants.RIGHT);      java.awt.GridBagConstraints gridBagConstraints3 = new java.awt.GridBagConstraints();      gridBagConstraints3.fill  = java.awt.GridBagConstraints.HORIZONTAL;      jPanel2.add(jLabel2, gridBagConstraints3);            gridBagConstraints3    = new java.awt.GridBagConstraints();      gridBagConstraints3.fill    = java.awt.GridBagConstraints.HORIZONTAL;      gridBagConstraints3.weightx = 1.0;      tf_xsltEncoding.setMinimumSize(new java.awt.Dimension(50, 24));      //tf_encoding.setPreferredSize(new java.awt.Dimension(50, 24));      jPanel2.add(tf_xsltEncoding, gridBagConstraints3);      
       cb_useJsCalendar.addItemListener(new java.awt.event.ItemListener()
          {
             public void itemStateChanged(java.awt.event.ItemEvent e)
@@ -362,6 +357,10 @@ public class XSLTransformPanel extends PropertyPanel implements ActionListener,
       b_browse.setToolTipText("default: DBFORMS_HOME"
          + parent.getFileSeparator() + "xsl-stylesheets"
          + parent.getFileSeparator() + "\nDefault location for Stylesheets");
+         
+               
+      // listener => for global property / Project data
+      addAFocusListener(tf_xsltEncoding, XSLT_ENCODING);
    }
 
 
@@ -422,8 +421,14 @@ public class XSLTransformPanel extends PropertyPanel implements ActionListener,
 
       try
       {
+      	 String xsltEncoding = projectData.getProperty(XSLT_ENCODING);
+      	 // removve trailing spaces if not null
+      	 if (xsltEncoding != null) {
+      	 	xsltEncoding = xsltEncoding.trim();
+      	 }
+      	
          XSLTransformer.transform(sourceFile, transformFile, destFile,
-            useJsCalendar);
+            useJsCalendar, xsltEncoding);
 
          FileSplitter fs = new FileSplitter(destFile, new File(webAppRoot));
 
