@@ -285,6 +285,14 @@
     </zip>
   </target>
 
+  <!-- create lib  -->
+  <target name="createLibFile" depends="generate_taglib">
+    <tstamp />
+    <property name="dbforms.releaseName" value="${dbforms.version}_${DSTAMP}" />
+    <zip destfile="${dist.dir}/dbforms_jaronly_${dbforms.releaseName}.zip">
+      <zipfileset dir="${dist.dir}" includes="dbforms*.jar dbforms*.tld" />
+    </zip>
+  </target>
 
   <!-- create dbforms-releasefiles, one zip file with dos/win lineends, one tgz file with *nix lineends: -->
   <target name="createReleaseFiles" depends="createAllExamples,copy-devgui" description="--&gt; Create zip and tgz release files">
@@ -299,6 +307,7 @@
     <mkdir dir="${dbforms.releaseDir}" />
     <!-- copy all files needed to release directory -->
     <copy todir="${dbforms.releaseDir}">
+      <fileset dir="." includes="dbforms*.jar dbforms*.tld" />
       <fileset dir="." includes="ChangeLog Changes_v1_0  Changes_v1_1  CommonMistakes  license.txt" />
       <fileset dir="." includes="Readme  Todo  build.xml ReleaseNotes*.txt" />
       <fileset dir="." includes="doc/**/*.html,doc/**/*.png,doc/**/*.gif,doc/**/*.jpg,doc/**/*.txt,doc/**/*.pdf,doc/**/*.css" />
@@ -355,7 +364,7 @@
   <!--                                                                     -->
   <!-- called by Maven's "dist" goal                                        -->
   <!-- =================================================================== -->
-  <target name="maven-build-release"   depends="createReleaseFiles" />
+  <target name="maven-build-release"   depends="createReleaseFiles, createLibFile" />
 
 
   <target name="maven-build-bookstore" depends="generate_taglib" >
