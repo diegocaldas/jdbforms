@@ -24,7 +24,7 @@
  * Many parts of this class where taken from the Apache Jakarta-Struts Project
  *
  */
-package org.dbforms.taglib.ext;
+package org.dbforms.taglib;
 
 import java.util.*;
 import java.sql.*;
@@ -37,7 +37,6 @@ import javax.servlet.jsp.tagext.*;
 
 import org.dbforms.*;
 import org.dbforms.util.*;
-import org.dbforms.taglib.*;
 
 import org.apache.log4j.Category;
 

@@ -4925,7 +4925,7 @@
 			Renders a position to use with keyToDestPos.
   			This is the same string wich would be used as value in the DbassociatedRadioTag.
                 </summary>
-	        <tagclass>org.dbforms.taglib.ext.DbPosTag</tagclass>
+	        <tagclass>org.dbforms.taglib.DbPosTag</tagclass>
                 <bodycontent>empty</bodycontent>
             </tag>
 
