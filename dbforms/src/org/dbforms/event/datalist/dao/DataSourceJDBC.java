@@ -658,6 +658,7 @@ public class DataSourceJDBC extends DataSource
             rsv.setPointer(0);
             fieldValues = rsv.getCurrentRowAsFieldValues();
          }
+         diskblobsPs.close();
       }
 
       // 20021031-HKK: Build in table!!
@@ -677,5 +678,6 @@ public class DataSourceJDBC extends DataSource
       {
          deleteBlobFilesFromDisk(fieldValues);
       }
+      ps.close();
    }
 }

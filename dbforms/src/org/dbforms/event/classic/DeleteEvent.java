@@ -210,6 +210,7 @@ public class DeleteEvent extends DatabaseEvent
          PreparedStatement diskblobsPs = con.prepareStatement(queryBuf.toString());
          table.populateWhereClauseForPS(keyValuesStr, diskblobsPs, 1);
          diskblobs = diskblobsPs.executeQuery();
+         diskblobsPs.close();
       }
 
       // 20021031-HKK: build in table!!
@@ -221,6 +222,7 @@ public class DeleteEvent extends DatabaseEvent
 
       // finally execute the query
       ps.executeUpdate();
+      ps.close();
 
       // if we came here, we can delete the diskblob files (if any)
       // #checkme: rollback if file problem (?? not sure!)
