@@ -1,0 +1,476 @@
+Release Notes for DbForms Version 1.1.3pr2,  2002-02-04
+
+Contents:
+1) About this release
+2) Details about enhancements and changes
+2-1) Enhancements of dbforms-config.xml
+2-1-1) New plugable event system
+2-1-2) Added support for SERVLETCONTEXT_REALPATH variable to use within connection string.
+2-2) Taglib enhancements
+2-2-1) Support for formatClass to be used within tableData and queryData tags which allows for custom formatting.
+2-2-2) Support for novalue attribute to be used within checkbox and radio tags
+2-2-3) Extended search algorithm for timestamps
+2-2-4) hasMoreRecords tag will render it's body now
+2-2-5) New tag hasNoRecords which will be rendered of recCount is null.
+2-2-6) extend linkURL tag to work with parentField and childField.
+2-3) Bug fixes
+2-3-1) fixed bug with navigation and NOTISNULL
+2-3-2) fixed bug with checkbox and radio tags where unset values would not be saved.
+2-3-3) fixed npe exception bug with format attribute in tableData and queryData tags.
+3-1) Documentaion enhancements
+3-1-1) Enhanced Taglib documentation 
+3-1-2) New document Suppliment_DBF_UsersGuide_1.1.3pr2.pdf describing the new features of dbforms and tips for good usage.
+
+
+
+1) About this release
+----------------------
+This is a developers release, so be careful about using this release in an
+important production environment. You are encouraged to try out this
+release and report any problems or comments to the mailing list of
+the project so that we may get a final release out.
+
+    jdbforms-interest@lists.sourceforge.net
+
+This documents summarizes the changes since last pre release 1.1.3pr1,
+that are of interest to end users. There have also been several internal 
+enhancements which are not mentioned here.
+
+2) Details about enhancements and changes
+------------------------------------------
+2-1) Enhancements of dbforms-config.xml
+------------------------------------------
+2-1-1) New plugable event system
+---------------------------------
+DbForms now uses a declarative event configuration system that provides the following features:
+   - event classes registration
+   - event classes override on a table-by-table basis
+   - event classes configuration on a table-by-table basis
+
+see Suppliment_DBF_UsersGuide_1.1.3pr2.pdf for details!
+
+
+2-1-2) Added support for SERVLETCONTEXT_REALPATH variable to use within connection string
+------------------------------------------------------------------------------------------
+To simplify distribution of your webapplication you know can use the SERVLETCONTEXT_REALPATH variable in the connection string
+to your database path. dbforms will fill this variable with the actual servlet context path. So it is not longer neccesary to
+change the database path after delivering.
+example:
+	<!-- ========== Connection =================================== -->
+	    <dbconnection
+		    isPow2		   			= "true"
+		    connectionProviderClass = "org.dbforms.conprovider.JakartaConnectionProvider"
+			name   					= "jdbc:hsqldb:$(SERVLETCONTEXT_REALPATH)/WEB-INF/db_hsqldb/testsuite"
+			isJndi 					= "false"
+			conClass 		 		= "org.hsqldb.jdbcDriver"
+			username 				= "sa"
+			password  				= ""
+	    />
+
+
+2-2) Taglib enhancements
+-------------------------
+2-2-1) Support for formatClass to be used within tableData and queryData tags
+------------------------------------------------------------------------------
+It is now possible to use your own formatting class within tableData and queryData. Just derived a class from 
+org.dbforms.util.PrintfFormat and fill in the formatClass attribute within the tableData and/or queryData tag. So you can do special formatting which dos not fit
+the default formatting class, e.g. look up for string in the message resources after formatting or replace special characters.
+ 
+2-2-2) Support for novalue attribute to be used within checkbox and radio tags
+-------------------------------------------------------------------------------
+To fixe the old bug where unset values in checkboxes will not be saved to the database a new attribute is created: novalue.
+This value is written to the database if you submit your unset checkbox.
+
+2-2-3) Extended search algorithm for timestamps
+-------------------------------------------------
+1. Changed parsing of timestamp to make it more fault tolerant. Now it's possible to
+   enter something like 12.12  and the value will be expanded to 12.12.2003 (current year).
+   Same for 12. will be expanded to 12.<current month>.<current year>
+
+2.  If you input a single time value like 12.01.2003 12:30 you
+    will get the range up to the end of the day: 12.01.2003 12:00 - 13.01.2003 0:00
+
+2-2-4) hasMoreRecords tag will render it's body now
+---------------------------------------------------
+See taglib description for details
+
+2-2-5) New tag hasNoRecords which will be rendered of recCount is null
+-----------------------------------------------------------------------
+See taglib description for details
+
+2-2-6) extend linkURL tag to work with parentField and childField.
+-----------------------------------------------------------------------
+See taglib description for details
+
+2-3) Bug fixes
+---------------
+2-3-1) fixed bug with navigation and NOTISNULL
+-----------------------------------------------
+2-3-2) fixed bug with checkbox and radio tags where unset values will not be saved
+------------------------------------------------------------------------------------
+2-3-3) fixed npe error when null value comes from the database and format attribute in queryData or tableData tag used-- now reverts to default formating (ie a comma seperated list).
+-----------------------------------------------------------------------------
+3-1) Documentaion enhancements
+-------------------------------
+3-1-1) Enhanced and correct taglib documentation
+------------------------------------------------
+have a look!
+
+3-1-2) New document Suppliment_DBF_UsersGuide_1.1.3pr2.pdf describing the new features of dbforms
+--------------------------------------------------------------------------------------------------
+    * Avoiding Navigation Errors
+    * Changing Key Values in Interceptors
+    * Pluggable Events
+    * EJBs
+    * Jump-Starting a MS SQL Server Database
+
+
+
+
+========================================================================================================================
+
+Release Notes for DbForms Version 1.1.3pr1,  2002-11-25
+
+Contents:
+
+1) About this release
+2) Compatibility Warning
+3) Contributors
+4) Details about enhancements and changes:
+4-0) DbForms and Tomcat 4.1.x taglib pooling
+4-1) Enhancements of dbforms-config.xml
+4-1-1: Using of connection pooling is simplified.
+4-1-2: Using of jdbc propertys is possible know.
+4-1-3: More flexible use of sql queries.
+4-1-4: Support for multiple database connections within one application
+4-1-5: New tags for foreign keys
+4-2) Taglib enhancements
+4-2-1:  JavaScript Calendar support for dateField
+4-2-2:  Support for printf style formatting to be used within
+        tableData and queryData tags.
+4-2-3: Extended search algorithm.
+4-2-4: New tags for searching
+4-2-5: Possibility to choose between different database connections
+4-3) Enhancements to XSL stylesheets
+4-4) Enhancements to DevGui
+4-5) Documentaion enhancements
+4-5-1: New PDF Version of user manual has clickable table of contents
+4-5-2: New User Guide with several new section written by various developers.
+4-5-3: Web pages included within release
+4-5-4: New taglib htmldocs with navigation frame
+4-5-5: New api javadoc. Can be found within doc/api directory.
+4-6) Example Applications
+4-7) Bug fixes
+4-8) Tests Cases Added
+4-8-1: Running JUnit Tests
+4-8-2: Running Cactus Tests
+4-8-3: Use of Maven to generate project statistics
+
+
+1) About this release
+----------------------
+This is a developers release, be careful to use this release in an
+important production environment, but you are encouraged to try out this
+release. Please report any problems or comments to the mailing list of
+the project
+
+    jdbforms-interest@lists.sourceforge.net
+
+This documents summarizes the changes since last official release 1.1.2,
+that are of interest to end users. There have also been several internal 
+enhancements which are not mentioned here.
+
+2) Compatibility Warnings
+-------------------------
+ The format attributes of tags queryData and tableData have  different
+sementics now that are not 100% backwards compatible. See section below
+for details.
+
+Also, the insert button on previously generated list_and_single.jsp pages
+will not appear unless the attribute showAlways="true" is added to the 
+insertButtonTag. Otherwise, it will only appear in insert mode such as through a NavNewEvent.
+
+3) Contributors
+---------------
+This release contains contributions from lots of people from the list,
+some of them now have become core developers for the project.
+
+ This release contains contributions from (in alphabetical order):
+
+   Shawn Asamoto-Brown
+   Sebastian Bogaci
+   Richard Bondi
+   Mark Dimon
+   Luca Fossato
+   John Gagon
+   Bradley M. Handy
+   Robert W. Husted
+   Henner Kollmann
+   Dirk Kraemer
+   Eric Pugh
+
+ Thanks also to those (worth mentioning:  Carlos Anjos) who discussed
+new proposals on the list.  This is an open project, anyone is welcome
+to join.
+
+
+4) Details about enhancements and changes:
+------------------------------------------
+
+4-0) DbForms and Tomcat 4.1.x taglib pooling
+ --------------------------------------------
+
+      Prior versions of DbForms should not be used with Tomcat 4.1.x
+      with taglib pooling activated. This release should be usable with
+      activated taglib pooling. 
+      
+4-1) Enhancements of dbforms-config.xml
+---------------------------------------
+
+4-1-1: Using of connection pooling is simplified.
+
+        (Contributed by Luca Fossato)
+        See documentation for further details.
+
+4-1-2: Using of jdbc propertys is possible know.
+
+        (Contributed by Henner Kollmann)
+        See documentation for further details.
+
+4-1-3: More flexible use of sql queries.
+
+      (Contributed by Henner Kollmann)
+      We introduce a new tag query to make the building of sql queries more flexible. 
+      It's possible know to:
+          - Create group by with flexible where part.
+          - Create joined sql with a flexible join statement
+          - Create an alias of an existing table
+          - Make dynamic changes of the query which prevents the use of a view in the database.
+       See documentation for further details.
+
+4-1-4: Support for multiple databases connections within one application
+      (initial contrib. by Brad Handy, further work by Luca Fossato and John Gagon)
+
+      DbForms now has support for multiple databases within one application.
+      See documentation for details.
+
+4-1-5: New tags for foreign keys
+
+      New tags 'foreign-key' and 'reference' have been introduced
+      to be able to put foreign key information into the config file.
+      These tags can also automatically be generated by DevGui.
+
+      See documentation for details.
+
+4-2) Taglib enhancements
+ ------------------------
+
+ 4-2-1:  JavaScript Calendar support for dateField:
+ 
+      supports now JavaScript Calendar written by
+      Robert W. Husted to edit date fields. See pages
+ 
+        http://developer.iplanet.com/viewsource/husted_calendar/husted_calendar.html
+  
+      and 
+
+        http://jscal.sourceforge.net/
+
+      for details of this application. Integration into dbforms stylesheets
+      by Sebastian Bogaci.
+
+      See also dbforms documentation about the calendar
+
+ 4-2-2: Support for printf style formatting to be used within
+      tableData and queryData tags.
+
+      (Contributed by Shawn Asamoto-Brown)
+      This method uses a (free) class PrintfFormat taken from
+      an article written by Allan Jacobs October 2000 about
+      formatted printing within Java. It was published at:
+
+       http://developer.java.sun.com/developer/technicalArticles/Programming/sprintf/
+
+      Example of usage within dbforms:
+
+       <db:select fieldName="cust_id">
+         <db:tableData
+           foreignTable="customer"
+           visibleFields="first_name,last_name,phone,cust_id"
+           storeField="cust_id"
+           name="custs"
+           format="%s %s (Phone: %s, Cust-Id: %d)" />
+       </db:select>
+
+       or equivalent:
+
+       <db:select fieldName="cust_id">
+         <db:queryData
+           query="select cust_id,first_name,last_name,phone,cust_id ascid from customer"
+           name="custs"
+           format="%s %s (Phone: %s, Cust-Id: %d)" />
+       </db:select>
+
+      Attention: This is not backwards compatible to old behaviour! 
+
+ 4-2-3: Extended search algorithm.
+
+	(Contributed by Henner Kollmann)
+      Know it is is possible to let dbforms automatically append % at beginning 
+      and/or end of search string.  Furthermore dbforms can interpret the 
+      search string and generate less then, greater then or between querys 
+      depended on the input string.
+      See new documentation for details.
+
+ 4-2-4: New tags for searching
+
+	(Contributed by Henner Kollmann)      
+	To simplify the generation of search stuff two new tags are introduced: search and searchCombo.
+	You can use this tags instead of the complex searchFieldNames_, 
+        searchFieldModeNames_ and searchFieldAlgorithmName_ 
+        stuff. This tags will render all necessary fields!
+
+ 4-2-5: Possibility to choose between different database connections
+
+       Several tags (DBForms, queryData, TableData, ...) have been extended to
+       allow to choose between different database connections.
+
+ 4-3) Enhancements to XSL stylesheets
+ -------------------------------------
+ (all contrib. Sebastian Bogaci, special  thanks also for further help
+and discussion)
+
+    - More usage of extended stylesheet dbforms.css to make generated
+      JSPs more configurable. A lot of attributes like color, background color,
+      fonts etc. can now be easily changed at a central place.
+      If you don't like the appearance of generated pages, it is now easy
+      to change it.
+
+    - Parameter multipart="true" is automatically set when fields of
+      type 'blob', 'image' or 'diskblob' are detected within a table.
+
+    - Made generated pages now really work when schema name
+      is included in table name by substituting '.' in file and
+      variable names by an '_'. Example: currentRow_schmema1.table1 is
+      an illegal variable name in Java, must use currentRow_schmema1_table1
+
+    - First integration of JavaScript Calendar written by
+      Robert W. Husted to edit date fields. See above (dateField tag).
+      The calender is not included in generated pages by default,
+      activation can be done by setting a (new) checkbox within devgui
+      on xsl transformation panel.
+
+      See also dbforms documentation about the calendar
+
+4-4) Enhancements to DevGui:
+----------------------------
+
+    - Automatic detection of auto-incremented (aka identity) fields
+      for some databases (contrib. Sebastian Bogaci). This information
+      is written to generated xml files by setting attribute autoInc="true".
+
+      Currently we (hope to) have support for MySQL, DB2 (Sebastian) and
+      Sybase (thanks to Eric Pugh). If you know how to add support for
+      more systems, please send a mail to dbforms-interest mailing list.
+
+    - New checkbox to include JavaScript calendar in JSPs generated by
+      xsl transformations (see above).
+
+    - New checkbox to write standard names for unknown field types to generated
+      dbforms-config.xml file.
+
+    - Now really fixed bug that could lead to problems when having tables
+      with same name in different schemas.
+
+    - Date format inside dbforms config file can now be set in DevGui.
+
+    - Foreign Key support
+
+    - Added Look & Feel Menu.
+
+    - New Readme file for DevGui
+
+ - DevGui can now be startet without Gui to regenerate a dbforms config file.
+   This can be done from command line as well as from a running Java program.
+   To do so, you have to:
+
+     - create a property file containing connection information etc
+       This may be done in a standard gui session of DevGui
+     - call it via:
+
+       java org.dbforms.devgui.DevGui createconfigfile <propertyfilename>
+
+       or
+
+       java org.dbforms.devgui.DevGui createconfigfile <propertyfilename> <outputfilename>
+
+     Here is an example:
+
+     $ java org.dbforms.devgui.DevGui createconfigfile /home/sweethome/dbex.props outout.xml
+
+   If the outputfilename is not set on command line, it will be taken from
+   property file. Normally the property file should be once generated in
+   a gui session. It can later be used in command line sessions to regenerate
+   the dbforms-config.xml file after changes to database.
+
+   It is also possible to call the main() method of class DevGui from
+   within a running java program like in
+
+       String[] pars = {"createconfigfile","/home/sweethome/dbex.props"};
+       org.dbforms.devgui.DevGui.main(pars);
+
+   The other DevGui functionality (XSL transformation) can currently not be called
+   via command line, maybe later.
+
+     
+4-5: Documentaion enhancements:
+-------------------------------
+
+4-5-1: The PDF Version of user guide has now clickable table of contents
+               (Thanks to Richard Bondi for restructuring the document as well as for
+                creating the PDF)
+4-5-2: User Guide has several new sections written by various developers.
+               (Thanks to Shawn Asamoto-Brown for bringing all of them into 
+                the document and publishing the new versions)
+4-5-3: Web pages included within release for easier navigation.
+               Simply open directory  'doc/index.html' with your favourite browser
+4-5-4: New taglib htmldocs with navigation frame to the left. Tags can be listed
+               in semantic and alphabetic order. Can be found within doc/taglib directory.
+4-5-5: New api javadoc. Can be found within doc/api directory.
+
+4-6) Example Applications
+-------------------------
+Example Applications should now run with (included) hsqldb (http://hsqldb.sourceforge.net/).
+(Thanks to Mark Dimon and Henner Kollmann).  It is still possible to other database systems.
+
+4-7) Bug fixes
+---------------
+
+A lot of bug fixes have be done. See changes_1_1 for details.
+
+4-8): JUnit Tests supported via Maven
+-------------------------------------
+(Contributed by Eric  Pugh)
+
+4-8-1: 9 JUnit test cases have been written to test some of the peripheral functions of DBForms. These
+			test cases allow developers to edit code, and if all the test cases pass, then to assume that
+			the code is reliable and working.  Over time, this will help increase the stability of the DBForms
+			codebase.  The test cases currently use the Maven (http://jakarta.apache.org/turbine/maven) build 
+			tool to provide the framework.  These testcases are ready to run out of the box.  If you have Maven
+			installed, then just type 
+				maven test
+			and the testcases will be run.
+4-8-2: 7 Cactus style incontainer test cases have been written.  These testcases test the more complex 
+			functionality in DbForms that requires the support of a servlet container like Tomcat.  These also
+			leverage maven for support and can be run by typing:
+				maven cactus:test-tomcat-4x
+4-8-3: Maven Support for Project Metrics.  Maven provides very comprehensive project statistics out of the 
+			box based on the included project.xml file.  Some of these metrics include javadocs, source code 
+			cross references, links to project tools, todo lists, test result reports, test coverage reports,
+			and code metrics.  Just type
+				maven site
+			and you will see the site documentation be produced.
+	
+
+
+
