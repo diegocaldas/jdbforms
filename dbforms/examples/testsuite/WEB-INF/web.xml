@@ -10,8 +10,8 @@
 
     <!--=========== DbForms Configuration Servlet ===========-->
     <servlet>
-        <servlet-name>org.dbforms.ConfigServlet</servlet-name>
-        <servlet-class>org.dbforms.ConfigServlet</servlet-class>
+        <servlet-name>config</servlet-name>
+        <servlet-class>org.dbforms.servlets.ConfigServlet</servlet-class>
 
         <!-- Uncomment to enable log4j configuration
     <init-param>
@@ -27,7 +27,7 @@
     <!--=========== DbForms Controller Servlet ==============-->
     <servlet>
         <servlet-name>control</servlet-name>
-        <servlet-class>org.dbforms.Controller</servlet-class>
+        <servlet-class>org.dbforms.servlets.Controller</servlet-class>
         <init-param>
             <param-name>maxUploadSize</param-name>
             <param-value>80000</param-value>
@@ -43,7 +43,7 @@
   -->
     <servlet>
         <servlet-name>file</servlet-name>
-        <servlet-class>org.dbforms.util.FileServlet</servlet-class>
+        <servlet-class>org.dbforms.servlets.FileServlet</servlet-class>
         <load-on-startup>2</load-on-startup>
     </servlet>
 
