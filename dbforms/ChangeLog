@@ -1,3 +1,7 @@
+2004-08-12
+(Henner.Kollmann@gmx.de)
+AutoUpdate will work with inserts too now
+
 2004-08-05
 (Henner.Kollmann@gmx.de)
 Moved the filename patch from BlobInterceptor to MultiPartRequest class!

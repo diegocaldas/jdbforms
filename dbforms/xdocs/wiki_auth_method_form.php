@@ -60,7 +60,7 @@ function ewiki_auth_query_form(&$data, $force_query=0) {
    #-- store login data as Cookie
    if ($_success && $_POST["login_user"]) {
 #      setcookie("ewiki_login", base64_encode("$_user:$_pw"), time()+7*24*3600);
-      setcookie("ewiki_login", base64_encode("$_user:$_pw"), time()+60);
+      setcookie("ewiki_login", base64_encode("$_user:$_pw"), time()+5*60);
    }
 
    #-- login form
