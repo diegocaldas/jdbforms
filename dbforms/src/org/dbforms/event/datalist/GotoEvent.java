@@ -225,12 +225,11 @@ public class GotoEvent extends NavigationEvent
    {
       // get the DataSourceList from the session
       logCat.info("==> GotoEvent.processEvent");
-
+      
       position = Util.decode(position);
-
+	  FieldValues fv;
       if (!Util.isNull(position))
       {
-         FieldValues fv;
 
          if ((srcTable != null) && !Util.isNull(childField)
                    && !Util.isNull(parentField))
@@ -244,12 +243,13 @@ public class GotoEvent extends NavigationEvent
          }
 
          position = table.getKeyPositionString(fv);
-
+/* 2003-08-01-HKK: Why this? Can't remember...
          if (fv != null)
          {
             childFieldValues = fv.toArr();
          }
-      }
+*/
+      } 
 
       DataSourceList ds = DataSourceList.getInstance(request);
       ds.remove(table, request);

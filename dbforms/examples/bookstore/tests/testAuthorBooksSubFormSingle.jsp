@@ -6,7 +6,7 @@
 	</head>
    <body>
       <db:dbform autoUpdate="false" 
-                 followUp="/tests/testAuthorBooksSubForm.jsp" 
+                 followUp="/tests/testAuthorBooksSubFormSingle.jsp" 
                  maxRows="1" 
                  tableName="AUTHOR"
                  
@@ -56,8 +56,8 @@
 		    <tr><td colspan="2" style="text-align:center">
 			    <db:dbform 
 		      		autoUpdate="false" 
-		      		followUp="/tests/testAuthorBooksSubForm.jsp"   
-		      		maxRows="*" 
+		      		followUp="/tests/testAuthorBooksSubFormSingle.jsp"   
+		      		maxRows="1" 
 		      		tableName="BOOK"
 		     		parentField="AUTHOR_ID"
 		     		childField="AUTHOR_ID"	 			

@@ -81,7 +81,7 @@ import org.dbforms.validation.DbFormsValidatorUtil;
 /**
  * This is the root element of a data manipulation form
  *
- * @author  Joachim Peer <j.peer@gmx.net>
+ * @author  Joachim Peer 
  */
 public class DbFormTag extends BodyTagSupport implements TryCatchFinally
 {
@@ -109,7 +109,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
    /** the data to be rendered */
    private ResultSetVector resultSetVector;
 
-   /** String formatted like {1:3:345-2:4:hugo} */
+   /** String formatted like 1:3:345-2:4:hugo */
    private String position;
 
    /** holds information about how many times the body of this tag has been rendered */
@@ -1617,7 +1617,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
             // we need to parse request using the given goto prefix
             if (!Util.isNull(gotoPrefix))
             {
-               logCat.info("ï¿½ï¿½ï¿½ NAV GOTO ï¿½ï¿½ï¿½");
+               logCat.info("§§§§ NAV GOTO §§§§");
 
                Vector v = ParseUtil.getParametersStartingWith(request, gotoPrefix);
                gotoHt = new Hashtable();
@@ -1674,21 +1674,21 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
             }
             else
             {
-				/* 2003-07-31-HKK: experimental remove jumping to myPosition. Seems that classic 
-				 *                 navigation needs this to find the last seen record again.
-				 *                 New navigation do not need this!
-				 *                      
-               String myPosition = (((count == 0) || "true".equals(getBypassNavigation()))
-                                      ? null : firstPosition);
+ 			  String myPosition 
+ 			  			    = (
+ 			  			    	(
+ 			  			    		(count == 0) 
+ 			  						|| "true".equals(getBypassNavigation()) 
+// 			  						|| ((webEvent != null) && EventType.EVENT_NAVIGATION_NEW.equals(webEvent.getType()))
+ 			  					)
+                            ? null : firstPosition);
               navEvent = navEventFactory.createGotoEvent(table, request, config, myPosition);
- 				 */ 
-				 navEvent = navEventFactory.createGotoEvent(table, request, config, null);
             }
          }
 
 
          // Now we have a NAVIGATION event to process
-         logCat.info("ï¿½ï¿½ï¿½ NAV/I ï¿½ï¿½ï¿½");
+		logCat.info("§§§ NAV/I §§§");
 
          if (navEvent != null)
          {
@@ -1701,9 +1701,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
                                     lastPosition, 
                                     con,
                                     dbConnectionName);
-
-            
-            // if (navEvent instanceof NavNewEvent)
+          
 			if (Util.isNull(resultSetVector))
             {
                setFooterReached(true);

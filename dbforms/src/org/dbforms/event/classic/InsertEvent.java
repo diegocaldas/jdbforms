@@ -44,10 +44,9 @@ import org.dbforms.util.Constants;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.Field;
 import org.dbforms.config.GrantedPrivileges;
-import org.dbforms.config.Table;
-import org.dbforms.event.*;
 
-
+import org.dbforms.event.DbEventInterceptor;
+import org.dbforms.event.MultipleValidationException;
 
 /****
  * 
@@ -55,7 +54,7 @@ import org.dbforms.event.*;
  * 
  *  This event prepares and performs a SQL-Insert operation.
  *
- * @author Joe Peer <j.peer@gmx.net>
+ * @author Joe Peer
  */
 public class InsertEvent extends ValidationEvent
 {

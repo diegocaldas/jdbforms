@@ -45,6 +45,19 @@ public class FieldValues
       ht = new Hashtable();
    }
 
+	/**
+	 * Creates a new FieldValues object.
+	 */
+	public FieldValues(FieldValue[] valueArr)
+	{
+		ht = new Hashtable();
+		for (int i = 0; i < valueArr.length; i++)
+		{
+		   if (!Util.isNull(valueArr[i].getFieldValue()))
+		   	  put(valueArr[i]);   	
+		}
+	}
+
    /**
     * DOCUMENT ME!
     * 
@@ -52,9 +65,9 @@ public class FieldValues
     * 
     * @return DOCUMENT ME!
     */
-   public FieldValue get(String key)
+   public FieldValue get(String name)
    {
-      return (FieldValue) ht.get(key);
+      return (FieldValue) ht.get(name);
    }
 
 
@@ -64,9 +77,9 @@ public class FieldValues
     * @param key DOCUMENT ME!
     * @param value DOCUMENT ME!
     */
-   public void put(String key, FieldValue value)
+   public void put(FieldValue value)
    {
-      ht.put(key, value);
+      ht.put(value.getField().getName(), value);
    }
 
 

@@ -362,11 +362,7 @@ public class DataSourceJDBC extends DataSource
                }
             }
 
-            if (rs.getRow() == 0)
-            {
-               fetchedAll = true;
-               closeConnection();
-            }
+            checkResultSetEnd();
          }
       }
 
@@ -409,16 +405,22 @@ public class DataSourceJDBC extends DataSource
                   }
                }
 
-               if (rs.getRow() == 0)
-               {
-                  fetchedAll = true;
-                  closeConnection();
-               }
+               checkResultSetEnd();
             }
          }
       }
 
       return result;
+   }
+
+
+   private void checkResultSetEnd() throws SQLException
+   {
+      if ((rs.getRow() == 0) || rs.isLast())
+      {
+         fetchedAll = true;
+         closeConnection();
+      }
    }
 
 
@@ -459,19 +461,23 @@ public class DataSourceJDBC extends DataSource
       return data.size();
    }
 
-	/**
-	 * return true if there are more records to fetch then the given record number
-	 *
-	 * @param i index of last fetched row.
-	 *  
-	 * @return true if there are more records to fetch then the given record number
-	 * 
-	 * @throws SQLException
-	 */
-	protected boolean hasMore(int i) throws SQLException 
-	{
-		return !fetchedAll || (i < size());
-	}
+
+   /**
+    * return true if there are more records to fetch then the given record
+    * number
+    * 
+    * @param i index of last fetched row.
+    * 
+    * @return true if there are more records to fetch then the given record
+    *         number
+    * 
+    * @throws SQLException
+    */
+   protected boolean hasMore(int i) throws SQLException
+   {
+      return !fetchedAll || (i < size());
+   }
+
 
    //------------------------------ DAO methods ---------------------------------
    private int fillWithData(PreparedStatement ps, FieldValues fieldValues)
@@ -645,8 +651,8 @@ public class DataSourceJDBC extends DataSource
       }
 
       // 20021031-HKK: Build in table!!
-      PreparedStatement ps = con.prepareStatement(getTable()
-                                                     .getDeleteStatement());
+      PreparedStatement ps = con.prepareStatement(
+                                      getTable().getDeleteStatement());
 
 
       // now we provide the values

@@ -181,7 +181,7 @@ public abstract class DatabaseEvent extends WebEvent
                   + keyId + "_" + iiFieldId));
          }
 
-         result.put(f.getName(), fv);
+         result.put(fv);
       }
 
       return result;

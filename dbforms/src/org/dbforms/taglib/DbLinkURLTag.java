@@ -170,7 +170,7 @@ public class DbLinkURLTag extends BodyTagSupport implements TryCatchFinally
 
       // 2003-03-29 HKK: Change from Hashtable to FieldValueTable
       FieldValue fv = new FieldValue(field, value);
-      positionFv.put(field.getName(), fv);
+      positionFv.put(fv);
    }
 
 

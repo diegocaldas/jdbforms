@@ -1471,7 +1471,7 @@ public class Table
 
             Field  f  = getField(fieldId);
             FieldValue fv = new FieldValue(f, valueStr);
-            result.put(f.getName(), fv);
+            result.put(fv);
 
             if (controlIndex == position.length())
             {
@@ -1535,7 +1535,7 @@ public class Table
             if (newValue != null)
             {
                FieldValue v = new FieldValue(f, newValue);
-               fv.put(f.getName(), v);
+               fv.put(v);
             }
          }
       }
@@ -2096,7 +2096,7 @@ public class Table
     * @param childFieldString  field names in child table
     * @param aPosition         position to map as position string
     *
-    * @return FieldValue[] with result
+    * @return FieldValues with result
     */
    public FieldValues mapChildFieldValues(Table parentTable,
       String parentFieldString, String childFieldString, String aPosition)
@@ -2139,7 +2139,7 @@ public class Table
          }
 
          String currentParentFieldValue = aFieldValue.getFieldValue();
-         childFieldValues.put(childField.getName(), new FieldValue(childField,
+         childFieldValues.put(new FieldValue(childField,
                currentParentFieldValue));
       }
       return childFieldValues;

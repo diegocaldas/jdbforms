@@ -122,6 +122,8 @@ public class XMLDataResult
             type = XPathResult.NUMBER_TYPE;
 
             break;
+         default:
+            break;
       }
 
       XPathResult data = (XPathResult) evaluator.evaluate(expression, item(i), 
