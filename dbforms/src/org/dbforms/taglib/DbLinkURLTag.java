@@ -66,7 +66,7 @@ import org.apache.log4j.Category;
  */
 
 
-public class DbLinkURLTag extends BodyTagSupport
+public class DbLinkURLTag extends BodyTagSupport implements TryCatchFinally
 {
     static Category logCat = Category.getInstance(DbLinkURLTag.class.getName()); // logging category for this class
     private DbFormsConfig config;
@@ -440,5 +440,27 @@ public class DbLinkURLTag extends BodyTagSupport
    public void setParentField(String parentField) {
       this.parentField = parentField;
    }
+
+	public void doFinally()
+	{
+		logCat.info("doFinally called");
+		position = null;
+		if (positionFv != null)
+		   positionFv.clear();
+		positionFv = null;
+	}
+
+
+	/**
+	 * DOCUMENT ME!
+	 *
+	 * @param  t DOCUMENT ME!
+	 * @throws  Throwable DOCUMENT ME!
+	 */
+	public void doCatch(Throwable t) throws Throwable
+	{
+		logCat.info("doCatch called - " + t.toString());
+		throw t;
+	}
 
 }
