@@ -243,12 +243,7 @@ Future versions of DbForms may be expected to provide more on sorting.</para>
                 <sect2>
                 <title>Alternative way to restrict queries</title>
 <para>It is also possible to use a  <computeroutput>whereClause</computeroutput> within a dbform tag for situations where you need more complexity than filtering can handle.  </para>
-     <para>However, if you want to use navigation (eg. navNext/navPrev buttons), you should use orderBy
-and filter attributes instead of a whereClause because using a whereClause renders navigation impossible! 
-For instance, if you specify whereClause=&quot;where n&gt;3&quot; and your user views the page and then clicks the navNext button, the next page may show values
-where n is not greater than 3.</para>
-
-<para>Also, the whereClause attribute <emphasis role="bold">can not be used with</emphasis> <computeroutput>orderBy</computeroutput> or <computeroutput>filter</computeroutput> attributes.
+     <para>However, the whereClause attribute <emphasis role="bold">can not be used with</emphasis> <computeroutput>orderBy</computeroutput> or <computeroutput>filter</computeroutput> attributes.
 They will be ignored. Order by should be used within the whereClause instead:</para>
  
  
