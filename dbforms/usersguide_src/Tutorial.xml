@@ -561,102 +561,75 @@
       <example>
         <title>customerlist.jsp code</title>
         <programlisting>
-            &lt;html&gt;
-                &lt;head&gt; 
-                    
-          <emphasis role="bold">&lt;db:base/&gt;</emphasis> 
-    &lt;/head&gt;
-                 
-    &lt;body&gt; 
-                    
-          <emphasis role="bold">&lt;db:errors/&gt;</emphasis>
-                     
-                    
-          <emphasis role="bold">&lt;db:dbform</emphasis> tableName="customer" maxRows="*" followUp="/customerlist.jsp"
-                    autoUpdate="false" allowNew=false&gt; 
-                        
-                        
-          <emphasis role="bold">&lt;db:header&gt;</emphasis>
-          <emphasis role="bold">&lt;db:gotoButton</emphasis> caption="Menu" destination="/menu.jsp" /&gt; 
-                            &lt;h1&gt;Customer-list&lt;/h1&gt; 
-                                &lt;table align="center"&gt; 
-                                    &lt;tr&gt; 
-                                        &lt;td&gt;&lt;/td&gt; 
-                                        &lt;td&gt;First Name&lt;/td&gt; 
-                                        &lt;td&gt;Last Name&lt;/td&gt; 
-                                        &lt;td&gt;Address&lt;/td&gt; 
-                                        &lt;td&gt;P-Code&lt;/td&gt; 
-                                        &lt;td&gt;City&lt;/td&gt; 
-                                        &lt;td&gt;Action&lt;/td&gt; 
-                                    &lt;/tr&gt; 
-                       
-          <emphasis role="bold">&lt;/db:header&gt;</emphasis>
-                         
-                        
-          <emphasis role="bold">&lt;db:body&gt;</emphasis> 
-                                    &lt;tr&gt; 
-                                        &lt;td&gt;
-          <emphasis role="bold">&lt;db:associatedRadio</emphasis> name="r_customerkey" /&gt;&lt;/td&gt; 
-                                        &lt;td&gt;
-          <emphasis role="bold">&lt;db:label</emphasis> fieldName="firstname"/&gt;&lt;/td&gt; 
-                                        &lt;td&gt;
-          <emphasis role="bold">&lt;db:label</emphasis> fieldName="lastname"/&gt;&lt;/td&gt; 
-                                        &lt;td&gt;
-          <emphasis role="bold">&lt;db:label</emphasis> fieldName="address"/&gt;&lt;/td&gt; 
-                                        &lt;td&gt;
-          <emphasis role="bold">&lt;db:label</emphasis> fieldName="pcode"/&gt;&lt;/td&gt; 
-                                        &lt;td&gt;
-          <emphasis role="bold">&lt;db:label</emphasis> fieldName="city"/&gt;&lt;/td&gt; 
-                                        &lt;td&gt;
-          <emphasis role="bold">&lt;db:deleteButton</emphasis> caption="delete"/&gt;&lt;/td&gt; 
-                                    &lt;/tr&gt; 
-                        
-          <emphasis role="bold">&lt;/db:body&gt;</emphasis>
-                         
-                        
-          <emphasis role="bold">&lt;db:footer&gt;</emphasis> 
-                                &lt;/table&gt; 
-                            &lt;p&gt;
-                            &lt;center&gt;
-                                
-                                Show
-                            
-                                
-          <emphasis role="bold">&lt;db:gotoButton</emphasis> caption="orders" 
-                                destination="/customer_orders.jsp" destTable = "customer" 
-                                keyToKeyToDestPos="r_customerkey"
-                                /&gt;
-                             
-                                
-          <emphasis role="bold">&lt;db:gotoButton</emphasis> caption=" complaints " 
-                                destination="/customer_complaints.jsp"
-                                destTable = "customer" 
-                                keyToKeyToDestPos="r_customerkey"
-                                /&gt; 
+  &lt;html&gt;
+  &lt;head&gt;                     
+    <emphasis role="bold">&lt;db:base/&gt;</emphasis> 
+  &lt;/head&gt;                 
+  &lt;body&gt;                     
+    <emphasis role="bold">&lt;db:errors/&gt;</emphasis>                                        
+
+    <emphasis role="bold">&lt;db:dbform</emphasis> tableName="customer" maxRows="*" followUp="/customerlist.jsp"
+      autoUpdate="false" allowNew=false&gt; 
+                                                
+    <emphasis role="bold">&lt;db:header&gt;</emphasis>
+    <emphasis role="bold">&lt;db:gotoButton</emphasis> caption="Menu" destination="/menu.jsp" /&gt; 
+      &lt;h1&gt;Customer-list&lt;/h1&gt; 
+      &lt;table align="center"&gt; 
+      &lt;tr&gt; 
+        &lt;td&gt;&lt;/td&gt; 
+        &lt;td&gt;First Name&lt;/td&gt; 
+        &lt;td&gt;Last Name&lt;/td&gt; 
+        &lt;td&gt;Address&lt;/td&gt; 
+        &lt;td&gt;P-Code&lt;/td&gt; 
+        &lt;td&gt;City&lt;/td&gt; 
+        &lt;td&gt;Action&lt;/td&gt; 
+      &lt;/tr&gt;                        
+    <emphasis role="bold">&lt;/db:header&gt;</emphasis>                                                 
+    <emphasis role="bold">&lt;db:body&gt;</emphasis> 
+      &lt;tr&gt; 
+        &lt;td&gt;<emphasis role="bold">&lt;db:associatedRadio</emphasis> name="r_customerkey" /&gt;&lt;/td&gt; 
+        &lt;td&gt;<emphasis role="bold">&lt;db:label</emphasis> fieldName="firstname"/&gt;&lt;/td&gt; 
+        &lt;td&gt;<emphasis role="bold">&lt;db:label</emphasis> fieldName="lastname"/&gt;&lt;/td&gt;                                 
+        &lt;td&gt;<emphasis role="bold">&lt;db:label</emphasis> fieldName="address"/&gt;&lt;/td&gt; 
+        &lt;td&gt;<emphasis role="bold">&lt;db:label</emphasis> fieldName="pcode"/&gt;&lt;/td&gt; 
+        &lt;td&gt;<emphasis role="bold">&lt;db:label</emphasis> fieldName="city"/&gt;&lt;/td&gt; 
+        &lt;td&gt;<emphasis role="bold">&lt;db:deleteButton</emphasis> caption="delete"/&gt;&lt;/td&gt; 
+      &lt;/tr&gt; 
+    <emphasis role="bold">&lt;/db:body&gt;</emphasis>                         
+    <emphasis role="bold">&lt;db:footer&gt;</emphasis> 
+      &lt;/table&gt; 
+      &lt;p&gt;
+      &lt;center&gt;
+
+      Show
+
+      <emphasis role="bold">&lt;db:gotoButton</emphasis> caption="orders" 
+        destination="/customer_orders.jsp" destTable="customer" 
+        keyToKeyToDestPos="r_customerkey"/&gt;
+                                                             
+      <emphasis role="bold">&lt;db:gotoButton</emphasis> caption=" complaints " 
+        destination="/customer_complaints.jsp"
+        destTable="customer" 
+        keyToKeyToDestPos="r_customerkey"/&gt; 
      
-                                
-          <emphasis role="bold">&lt;db:gotoButton</emphasis> caption=" all information "
-                                destination="/customer_all.jsp" destTable = "customer"
-                                keyToKeyToDestPos="r_customerkey"/&gt;
+      <emphasis role="bold">&lt;db:gotoButton</emphasis> caption=" all information "
+        destination="/customer_all.jsp" destTable="customer"
+        keyToKeyToDestPos="r_customerkey"/&gt;
                                  
-                                of the selected customer!
+      of the selected customer!
  
-                            &lt;/center&gt;
-                            &lt;/p&gt;
-                        
-          <emphasis role="bold">&lt;/db:footer&gt;</emphasis> 
-                    
-          <emphasis role="bold">&lt;/db:dbform&gt;</emphasis> 
-                &lt;/body&gt;
-            &lt;/html&gt; 
-    
+      &lt;/center&gt;
+      &lt;/p&gt;                        
+    <emphasis role="bold">&lt;/db:footer&gt;</emphasis> 
+    <emphasis role="bold">&lt;/db:dbform&gt;</emphasis> 
+  &lt;/body&gt;
+  &lt;/html&gt; 
         </programlisting>
       </example>
       <para/>
       <para>
         <figure id="List_of_existing_customers">
-          <title>List of existing customers
-</title>
+          <title>List of existing customers</title>
           <mediaobject>
             <imageobject role="html">
               <imagedata format="PNG" fileref="images/figures/existing_customers.png"/>
@@ -670,16 +643,16 @@
       <para>
         <emphasis role="bold">Remarks</emphasis>
       </para>
-      <para>In this page, we introduce a new pattern: 
+      <para>
+        In this page, we introduce a new pattern: 
         <emphasis role="bold">associatedRadio</emphasis> elements!To demonstrate the difference between this new pattern and the old pattern, we have used 
         <emphasis role="italic">both</emphasis> patterns in the customerlist-page:- the delete-buttons follow the old pattern- the orders, complaints and all information buttons implement the new pattern
-
       </para>
-      <para>Using associatedRadio-Elements to mark a row for certain actions (in our case navigating to orders, complaints and all information) saves a lot of space and makes for a cleaner interface. If we had to draw a button for all possible actions, the page would not look very user-friendly.
-</para>
-      <para>You may have noticed, that the 
-        <emphasis role="bold">gotoButton</emphasis> - tag has a strange-sounding attribute: 
-
+      <para>
+        Using associatedRadio-Elements to mark a row for certain actions (in our case navigating to orders, complaints and all information) saves a lot of space and makes for a cleaner interface. If we had to draw a button for all possible actions, the page would not look very user-friendly.
+      </para>
+      <para>
+        You may have noticed, that the <emphasis role="bold">gotoButton</emphasis> - tag has a strange-sounding attribute: 
       </para>
       <para>
         <emphasis role="bold">keyToKeyToDestPos</emphasis> This attribute refers to the associatedRadio button. And, in fact, nomen est omen, it refers to a field  (
@@ -687,25 +660,23 @@
         <emphasis role="bold">k_2</emphasis>, if the user selected the third row) This key is used to identify the row the system will jump to (
         <emphasis role="bold">Dest</emphasis>ination-
         <emphasis role="bold">Pos</emphasis>ition), if the user clicks an action-button.
-
       </para>
-      <para>Another interesting item worth mentioning, is that the attribute 
+      <para>
+        Another interesting item worth mentioning, is that the attribute 
         <emphasis role="bold">allowNew</emphasis> is set to a value of 
         <emphasis role="bold">false</emphasis> this has the effect, in the case of an empty result Set (no customers), of bypassing the body-tag altogether.
-
       </para>
       <para/>
     </sect2>
     <sect2>
-      <title>Orders 
-</title>
-      <para>This page provides the user with the ability to manage incoming orders for a given customer. The user is able to edit customer orders, as well as customer-data. The user should not be required to 'struggle' with item-numbers, but instead, should be able to simply select (from a drop down select box) the services the customer has indicated he/she is willing to purchase.
-</para>
+      <title>Orders</title>
+      <para>
+        This page provides the user with the ability to manage incoming orders for a given customer. The user is able to edit customer orders, as well as customer-data. The user should not be required to 'struggle' with item-numbers, but instead, should be able to simply select (from a drop down select box) the services the customer has indicated he/she is willing to purchase.
+      </para>
       <para/>
       <para>
         <figure id="Underlying_data_for_customer_order.jsp">
-          <title>Underlying data for customer_order.jsp
-</title>
+          <title>Underlying data for customer_order.jsp</title>
           <mediaobject>
             <imageobject role="html">
               <imagedata format="PNG" fileref="images/figures/customer_order.png"/>
