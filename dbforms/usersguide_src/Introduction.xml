@@ -98,7 +98,7 @@
               <title>Defining the database connection (1)</title>
               <programlisting>                                                
   &lt;<emphasis role="bold">dbconnection</emphasis> 
-    name   = "jdbc/dbformstest" 
+    name   = "java:comp/env/jdbc/dbformstest" 
     isJndi = "true"<emphasis role="bold">/&gt;</emphasis>
               </programlisting>
             </example>
