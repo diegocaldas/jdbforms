@@ -1170,12 +1170,19 @@ public class DbFormTag extends BodyTagSupport {
 		} catch (IOException e) {
 			return SKIP_BODY;
 		} catch (SQLException ne) {
-			logCat.error(ne);
+                        // now get also the stack trace (fossato@pow2.com [2002.11.09])
+			logCat.error("exception", ne);
+                        
+                        // all the sql exceptions ! (fossato@pow2.com [2002.11.09])
+                        int i = 0;
+                        while ((ne = ne.getNextException()) != null)
+                          logCat.error("nested SQLException (" + (i++) + ")", ne);
+                        
 			return SKIP_BODY;
 		} catch (MultipleValidationException mve) {
 			logCat.error(mve);
 			return SKIP_BODY;
-		}
+		} 
 
 		return EVAL_BODY_TAG;
 	}
