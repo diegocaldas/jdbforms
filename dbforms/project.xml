@@ -203,6 +203,14 @@
 
   <dependencies>       
     <dependency>
+      <id>struts</id>
+      <version>1.1-b3</version>
+      <properties>        
+        <war.bundle.jar>true</war.bundle.jar>
+      </properties>
+    </dependency>        
+
+    <dependency>
       <id>cos</id>
       <jar>cos.jar</jar>
       <properties>        
@@ -365,7 +373,7 @@
         <war.bundle.jar>true</war.bundle.jar>
       </properties>
     </dependency>  
-
+<!--  Seems to not be needed
     <dependency>
       <id>junit</id>
       <version>3.7</version>
@@ -373,8 +381,9 @@
         <war.bundle.jar>true</war.bundle.jar>
       </properties>
     </dependency>      
+-->    
   </dependencies>
-  
+ 
 
   <build>
     <nagEmailAddress></nagEmailAddress>
