@@ -6957,6 +6957,18 @@ error manager</summary>
 					<info>Index that should be selected as default when form redered the first time</info>
 				</attribute>
 				<attribute>
+					<name>compareWith</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+					      if set to "index" the index value will be used to compare against the selected value.
+					      if set to "value" the value value will be used to compare against the selected value.
+					      if set to "list" the index of the list will be used to compare against the selected value
+					      default is "index".
+					      
+					</info>
+				</attribute>
+				<attribute>
 					<name>size</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
