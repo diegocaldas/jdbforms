@@ -8,19 +8,13 @@ To build it, you will need to do four things:
 
     -or-
     
-    in dbforms/docs.xml set <property name="docbookHome.dir" value="your-path-to-your-DOCBOOK_HOME"/>
+    in dbforms/docs.xml set <property name="docbookHome.dir" value="your-path-to-your/DOCBOOK_HOME"/>
 
 3)  in your environment set FOP_HOME
 
     -or-
 
-    in dbforms/docs.xml set 
-
-        a)set <fileset dir="your_path_to_your_FOP_HOME/lib/"> 
-
-        and
-
-        b)set <fileset dir="your_path_to_your_FOP_HOME/build/"> 
+    in dbforms/docs.xml set <property name="fopHome.dir" value="your-path-to-your/FOP-HOME"/>                
 
 4)  Add image support for FOP. The Jimi image library, which is by default used for processing images in PNG and other formats, was removed from the distribution for licensing reasons. So...:
 
@@ -42,7 +36,7 @@ A FOP_HOME can be obtained at http://xml.apache.org/fop/download.html
 
 ______________________________________________________________________________________________
 
-IF YOU DO NOT WANT A DOCBOOK_HOME, YOU CAN SET THE FOLLOWING IN dbforms/docs.xml (SLOWER)
+IF YOU DO NOT WANT A DOCBOOK_HOME, YOU CAN RESET THE FOLLOWING IN dbforms/docs.xml (SLOWER)
 
 <!-- Main Docbook stylesheet  /> -->
 <property name="main.stylesheet" value="${sSheetHome.dir}\html\chunk.xsl"/> 1        
