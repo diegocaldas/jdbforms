@@ -21,12 +21,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.util;
-import java.sql.*;
-import java.util.*;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 import org.apache.log4j.Category;
-import org.dbforms.util.external.*;
-import org.dbforms.config.*;
+import org.dbforms.util.external.FileHolder;
+import org.dbforms.config.Field;
 import org.dbforms.taglib.DbBaseHandlerTag;
 
 
