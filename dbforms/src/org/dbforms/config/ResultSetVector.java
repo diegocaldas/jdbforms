@@ -67,7 +67,7 @@ import java.util.Vector;
  *
  * @author Joe Peer
  */
-public class ResultSetVector {
+public class ResultSetVector implements java.io.Serializable {
    private static Log logCat = LogFactory.getLog(ResultSetVector.class.getName());
    private Hashtable  selectFieldsHashtable;
    private Map        attributes   = new HashMap();
@@ -306,6 +306,25 @@ public class ResultSetVector {
       }
    }
 
+   /**
+    * returns the fieldValues Object given by row row and index i
+    *
+    * @param row row in the rsv
+    * @param i   Index into the objectArray
+    *
+    * @return the object
+    */
+   public Object getFieldAsObject(int row, int i) {
+      if (isPointerLegal(row)) {
+         try {
+            return ((Object[]) objectVector.elementAt(row))[i];
+         } catch (Exception e) {
+            return null;
+         }
+      } else {
+         return null;
+      }
+   }
 
    /**
     * returns the fieldValues Object given by it's name
@@ -324,6 +343,23 @@ public class ResultSetVector {
       return getFieldAsObject(fieldIndex);
    }
 
+   /**
+    * returns the fieldValues Object given by row row and index i
+    *
+    * @param row row in the rsv
+    * @param fieldName name of the field
+    *
+    * @return the object
+    */
+   public Object getFieldAsObject(int row, String fieldName) {
+      int fieldIndex = getFieldIndex(fieldName);
+
+      if (fieldIndex < 0) {
+         return null;
+      }
+
+      return getFieldAsObject(row, fieldIndex);
+   }
 
    /**
     * gets the Field object to a given fieldName
