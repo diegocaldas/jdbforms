@@ -50,6 +50,9 @@ public class ForeignKey
    /** Holds value of property id. */
    private int id;
 
+   /** Holds value of property displayType */
+   private String displayType;
+
    /** Creates a new instance of ForeignKeyInfo */
    public ForeignKey()
    {
@@ -175,4 +178,25 @@ public class ForeignKey
    {
       this.id = id;
    }
+
+   /** Getter for property displayType.
+   * @return Value of property displayTYpe.
+   *
+   */
+   public String getDisplayType()
+   {
+      return this.displayType;
+   }
+
+
+   /** Setter for property displayType.
+   * @param name New value of property displayType.
+   *
+   */
+   public void setDisplayType(String displayType)
+   {
+      this.displayType = displayType;
+   }
+
+
 }

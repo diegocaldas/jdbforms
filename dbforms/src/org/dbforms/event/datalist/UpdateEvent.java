@@ -117,9 +117,9 @@ public class UpdateEvent extends ValidationEvent {
       int operation = DbEventInterceptor.GRANT_OPERATION;
 
       // process the interceptors associated to this table
-      getTable().processInterceptors(DbEventInterceptor.PRE_UPDATE, getRequest(), fieldValues, getConfig(), con);
+      operation = getTable().processInterceptors(DbEventInterceptor.PRE_UPDATE, getRequest(), fieldValues, getConfig(), con);
 
-      if ((operation != DbEventInterceptor.IGNORE_OPERATION) && (fieldValues.size() > 0)) {
+      if ((operation == DbEventInterceptor.GRANT_OPERATION) && (fieldValues.size() > 0)) {
          // End of interceptor processing
          // in order to process an update, we need the key of the dataset to update
          String keyValuesStr = getKeyValues();

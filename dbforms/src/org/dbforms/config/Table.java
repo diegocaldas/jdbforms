@@ -1724,10 +1724,11 @@ public class Table {
       String s;
 
       try {
-         int interceptorsCnt = interceptors.size();
+         Vector allInterceptors = getInterceptors();
+         int interceptorsCnt = allInterceptors.size();
 
          for (int i = 0; i < interceptorsCnt; i++) {
-            Interceptor interceptor = (Interceptor) interceptors.elementAt(i);
+            Interceptor interceptor = (Interceptor) allInterceptors.elementAt(i);
             Class interceptorClass = Class.forName(interceptor.getClassName());
             DbEventInterceptor dbi =
                (DbEventInterceptor) interceptorClass.newInstance();

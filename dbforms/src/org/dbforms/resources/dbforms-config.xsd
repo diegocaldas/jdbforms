@@ -33,6 +33,17 @@
 						</xs:sequence>
 						<xs:attribute name="foreignTable" type="xs:string" use="required"/>
 						<xs:attribute name="name" type="xs:string" use="required"/>
+						<xs:attribute name="format" type="xs:string" use="optional"/>
+						<xs:attribute name="visibleFields" type="xs:string" use="required"/>
+						<xs:attribute name="displayType" use="optional" default="none">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="select"/>
+									<xs:enumeration value="radio"/>
+									<xs:enumeration value="none"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:attribute>
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence>
