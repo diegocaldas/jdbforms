@@ -23,7 +23,6 @@
 
 package org.dbforms.util;
 
-import java.io.InputStream;
 
 import java.util.Enumeration;
 import java.util.StringTokenizer;
@@ -159,42 +158,6 @@ public class ParseUtil {
                                         : multipartRequest.getFileHolder(name);
    }
 
-
-   /**
-    * Returns a InputStream object for the specified file pending around in the
-    * current request (it's still in a [File]Part!)
-    *
-    * @param request of the file name.
-    * @param name the file name
-    *
-    * @return a Fileinputstream object for the named file.
-    */
-   public static InputStream getFileInputStream(HttpServletRequest request,
-                                                String             name) {
-      MultipartRequest multipartRequest = (MultipartRequest) request
-                                          .getAttribute("multipartRequest");
-
-      return (multipartRequest == null) ? null
-                                        : multipartRequest.getFileInputStream(name);
-   }
-
-
-   /**
-    * Returns the names of all the uploaded files as an Enumeration of Strings.
-    * It returns an empty Enumeration if there are no uploaded files.  Each
-    * file name is the name specified by the form, not by the user.
-    *
-    * @param request the request object
-    *
-    * @return the names of all the uploaded files as an Enumeration of Strings.
-    */
-   public static Enumeration getFileNames(HttpServletRequest request) {
-      MultipartRequest multipartRequest = (MultipartRequest) request
-                                          .getAttribute("multipartRequest");
-
-      return (multipartRequest == null) ? null
-                                        : multipartRequest.getFileNames();
-   }
 
 
    /**

@@ -24,12 +24,13 @@
 package org.dbforms.util;
 
 import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+
+import org.apache.commons.fileupload.FileItem;
 
 
 
@@ -41,19 +42,9 @@ import java.io.OutputStream;
  * @author Joe Peer
  */
 public class FileHolder {
-   // content type of the file
-   private String contentType;
-
-   // "file system" name of the file
-   private String fileName;
-
    // buffer to hold data till its use (used if memory buffering choosen)
-   private byte[]  memoryBuffer;
-   private boolean toMemory;
-
-   // stores the length of the file
-   private int fileLength;
-
+   private FileItem fileItem;
+   private String fileName;
    /**
     * Constructor - takes descriptive data (fileName, contentType) -
     * inputstream, coming from servletinputstream - we must read it out _now_
@@ -69,21 +60,10 @@ public class FileHolder {
     * @throws IOException DOCUMENT ME!
     * @throws IllegalArgumentException DOCUMENT ME!
     */
-   public FileHolder(String      fileName,
-                     String      contentType,
-                     InputStream is,
-                     boolean     toMemory,
-                     int         maxSize)
+   public FileHolder(String fileName, FileItem fileItem)
               throws IOException, IllegalArgumentException {
-      this.toMemory    = toMemory;
-      this.fileName    = fileName;
-      this.contentType = contentType;
-
-      if (toMemory) {
-         bufferInMemory(maxSize, is);
-      } else {
-         throw new IllegalArgumentException("tmpFile-feature not implemented yet");
-      }
+       this.fileName = fileName;
+       this.fileItem = fileItem;
    }
 
    /**
@@ -92,7 +72,7 @@ public class FileHolder {
     * @return content type of the file data.
     */
    public String getContentType() {
-      return contentType;
+      return fileItem.getContentType();
    }
 
 
@@ -109,7 +89,7 @@ public class FileHolder {
     * @return content type of the file data.
     */
    public int getFileLength() {
-      return fileLength;
+      return (int) fileItem.getSize();
    }
 
 
@@ -143,26 +123,8 @@ public class FileHolder {
     *
     * @return DOCUMENT ME!
     */
-   public InputStream getInputStreamFromBuffer() {
-      if (toMemory) {
-         if (memoryBuffer == null) {
-            return null;
-         }
-
-         return new ByteArrayInputStream(memoryBuffer);
-      } else {
-         throw new IllegalArgumentException("tmpFile-feature not implemented yet");
-      }
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    */
-   public byte[] getMemoryBuffer() {
-      return memoryBuffer;
+   public InputStream getInputStreamFromBuffer() throws IOException {
+      return fileItem.getInputStream();
    }
 
 
@@ -176,12 +138,7 @@ public class FileHolder {
     */
    public void writeBufferToFile(File fileOrDirectory)
                           throws IOException {
-      if (!toMemory) {
-         throw new IllegalArgumentException("tmpFile-feature not implemented yet");
-      }
-
       OutputStream fileOut = null;
-
       try {
          // Only do something if this part contains a file
          if (fileName != null) {
@@ -199,28 +156,15 @@ public class FileHolder {
             }
 
             fileOut = new BufferedOutputStream(new FileOutputStream(file));
-            fileOut.write(memoryBuffer, 0, memoryBuffer.length);
+            InputStream input = fileItem.getInputStream();
+            int b;
+            while ((b = input.read()) != -1) 
+               fileOut.write(b);
          }
       } finally {
          if (fileOut != null) {
             fileOut.close();
          }
       }
-   }
-
-
-   private void bufferInMemory(int         maxSize,
-                               InputStream partInput) throws IOException {
-      byte[] tmpMemoryBuffer = new byte[maxSize];
-
-      // this could lead to memory problems. if it does used filebuffering instead
-      fileLength = partInput.read(tmpMemoryBuffer);
-
-      if (fileLength > 0) {
-         memoryBuffer = new byte[fileLength];
-         System.arraycopy(tmpMemoryBuffer, 0, memoryBuffer, 0, fileLength);
-      }
-
-      tmpMemoryBuffer = null;
    }
 }

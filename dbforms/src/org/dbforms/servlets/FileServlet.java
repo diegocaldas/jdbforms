@@ -35,6 +35,7 @@ import org.dbforms.config.Table;
 import org.dbforms.util.ParseUtil;
 import org.dbforms.util.SqlUtil;
 import org.dbforms.util.Util;
+import org.dbforms.util.FileHolder; 
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -140,9 +141,12 @@ public class FileServlet extends HttpServlet {
                // if no fileholder is used (new BLOB model)
                if (nameField != null) {
                   fileName = rs.getString(2);
+                  is = SqlUtil.readDbFieldBlob(rs);
+               } else {
+                  FileHolder fh =  SqlUtil.readFileHolderBlob(rs);
+                  is = fh.getInputStreamFromBuffer();
+                  fileName = fh.getFileName();
                }
-
-               is = SqlUtil.readDbFieldBlob(rs, fileName);
             }
          } else {
             logCat.info("::doGet - we have got no result using query "

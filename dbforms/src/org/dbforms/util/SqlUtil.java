@@ -38,203 +38,208 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-
-
 /**
  * <p>
  * this utility-class provides convenience methods for SQL related tasks
  * </p>
- *
+ * 
  * @author Joe Peer
  * @author Eric Pugh
  */
 public class SqlUtil {
-   // logging category for this class
-   private static Log logCat = LogFactory.getLog(SqlUtil.class.getName());
+    // logging category for this class
+    private static Log logCat = LogFactory.getLog(SqlUtil.class.getName());
 
-   /**
-    * Close the input connection
-    *
-    * @param con
-    *            the connection to close
-    */
-   public static final void closeConnection(Connection con) {
-      if (con != null) {
-         try {
-            SqlUtil.logCat.debug("About to close connection - " + con);
-            con.close();
-            SqlUtil.logCat.debug("Connection closed");
-         } catch (SQLException e) {
-            SqlUtil.logSqlException(e,
-                                    "::closeConnection - cannot close the input connection");
-         }
-      }
-   }
+    /**
+     * Close the input connection
+     * 
+     * @param con
+     *            the connection to close
+     */
+    public static final void closeConnection(Connection con) {
+        if (con != null) {
+            try {
+                SqlUtil.logCat.debug("About to close connection - " + con);
+                con.close();
+                SqlUtil.logCat.debug("Connection closed");
+            } catch (SQLException e) {
+                SqlUtil
+                        .logSqlException(e,
+                                "::closeConnection - cannot close the input connection");
+            }
+        }
+    }
 
+    /**
+     * Log the SQLException stacktrace (adding the input description to the
+     * first log statement) and do the same for all the nested exceptions.
+     * 
+     * @param e
+     *            the SQL exception to log
+     * @param desc
+     *            the exception description
+     */
+    public static final void logSqlException(SQLException e, String desc) {
+        int i = 0;
+        String excDesc = "::logSqlExceptionSQL - main SQL exception";
 
-   /**
-    * Log the SQLException stacktrace (adding the input description to the
-    * first log statement) and do the same for all the nested exceptions.
-    *
-    * @param e
-    *            the SQL exception to log
-    * @param desc
-    *            the exception description
-    */
-   public static final void logSqlException(SQLException e,
-                                            String       desc) {
-      int    i       = 0;
-      String excDesc = "::logSqlExceptionSQL - main SQL exception";
+        // adding the input description to the main log statement;
+        if (!Util.isNull(desc)) {
+            excDesc += (" [" + desc + "]");
+        }
 
-      // adding the input description to the main log statement;
-      if (!Util.isNull(desc)) {
-         excDesc += (" [" + desc + "]");
-      }
+        SqlUtil.logCat.error(excDesc, e);
 
-      SqlUtil.logCat.error(excDesc, e);
+        while ((e = e.getNextException()) != null)
+            SqlUtil.logCat.error("::logSqlException - nested SQLException ("
+                    + (i++) + ")", e);
+    }
 
-      while ((e = e.getNextException()) != null)
-         SqlUtil.logCat.error("::logSqlException - nested SQLException ("
-                              + (i++) + ")", e);
-   }
+    /**
+     * Log the SQLException stacktrace and do the same for all the nested
+     * exceptions.
+     * 
+     * @param e
+     *            the SQL exception to log
+     */
+    public static final void logSqlException(SQLException e) {
+        SqlUtil.logSqlException(e, null);
+    }
 
-
-   /**
-    * Log the SQLException stacktrace and do the same for all the nested
-    * exceptions.
-    *
-    * @param e
-    *            the SQL exception to log
-    */
-   public static final void logSqlException(SQLException e) {
-      SqlUtil.logSqlException(e, null);
-   }
-
-
-   /**
-    * Read the database field and write to the client its content
-    *
-    * @param rs
-    *            Description of the Parameter
-    * @param fileName
-    *            is the filename or NULL in the classic (Fileholder-based) BLOB
-    *            handling
-    * @exception IOException
-    *                Description of the Exception
-    * @exception SQLException
-    *                Description of the Exception
-    */
-   public static InputStream readDbFieldBlob(ResultSet rs,
-                                             String    fileName)
-                                      throws IOException, SQLException {
-      logCat.info("READING BLOB");
-
-      try {
-         Object o = rs.getObject(1);
-
-         if (o == null) {
+    /**
+     * Read the database field and write to the client its content
+     * 
+     * @param rs
+     *            Description of the Parameter
+     * @param fileName
+     *            is the filename or NULL in the classic (Fileholder-based) BLOB
+     *            handling
+     * @exception IOException
+     *                Description of the Exception
+     * @exception SQLException
+     *                Description of the Exception
+     */
+    public static FileHolder readFileHolderBlob(ResultSet rs)
+            throws IOException, SQLException {
+        logCat.info("READING FILEHOLDER");
+        Object o = rs.getObject(1);
+        if (o == null) {
             logCat.warn("::readDbFieldBlob - blob null, no response sent");
-
             return null;
-         }
-
-         logCat.info("o instanceof ..." + o.getClass().getName());
-
-         // if the object the JDBC driver returns to us implements
-         // the java.sql.Blob interface, then we use the BLOB object
-         // which wraps the binary stream of our FileHolder:
-         if (o instanceof java.sql.Blob) {
-            Blob blob = rs.getBlob(1);
-
-            // classic mode
-            if (fileName == null) {
-               ObjectInputStream ois = new ObjectInputStream(blob
-                                                             .getBinaryStream());
-
-               FileHolder        fh = (FileHolder) ois.readObject();
-               fileName = fh.getFileName();
-
-               return fh.getInputStreamFromBuffer();
+        }
+        logCat.info("o instanceof ..." + o.getClass().getName());
+        // if the object the JDBC driver returns to us implements
+        // the java.sql.Blob interface, then we use the BLOB object
+        // which wraps the binary stream of our FileHolder:
+        try {
+            if (o instanceof java.sql.Blob) {
+                Blob blob = rs.getBlob(1);
+                ObjectInputStream ois = new ObjectInputStream(blob
+                        .getBinaryStream());
+                FileHolder fh = (FileHolder) ois.readObject();
+                return fh;
             }
-            // new mode
+            // otherwise we are aquiring the stream directly:
             else {
-               return blob.getBinaryStream();
+                // old ("classic") mode
+                InputStream blobIS = rs.getBinaryStream(1);
+                ObjectInputStream ois = new ObjectInputStream(blobIS);
+                FileHolder fh = (FileHolder) ois.readObject();
+                return fh;
             }
-         }
-         // otherwise we are aquiring the stream directly:
-         else {
-            if (fileName == null) {
-               // old ("classic") mode
-               InputStream       blobIS = rs.getBinaryStream(1);
-               ObjectInputStream ois = new ObjectInputStream(blobIS);
-               FileHolder        fh  = (FileHolder) ois.readObject();
-               fileName = fh.getFileName();
+        } catch (ClassNotFoundException cnfe) {
+            logCat.error("::readDbFieldBlob - class not found", cnfe);
+            throw new IOException("error:" + cnfe.toString());
+        }
 
-               return fh.getInputStreamFromBuffer();
-            } else {
-               // new mode
-               return rs.getBinaryStream(1);
+    }
+
+    /**
+     * Read the database field and write to the client its content
+     * 
+     * @param rs
+     *            Description of the Parameter
+     * @param fileName
+     *            is the filename or NULL in the classic (Fileholder-based) BLOB
+     *            handling
+     * @exception IOException
+     *                Description of the Exception
+     * @exception SQLException
+     *                Description of the Exception
+     */
+    public static InputStream readDbFieldBlob(ResultSet rs) throws IOException,
+            SQLException {
+        logCat.info("READING BLOB");
+        Object o = rs.getObject(1);
+        if (o == null) {
+            logCat.warn("::readDbFieldBlob - blob null, no response sent");
+            return null;
+        }
+        logCat.info("o instanceof ..." + o.getClass().getName());
+        // if the object the JDBC driver returns to us implements
+        // the java.sql.Blob interface, then we use the BLOB object
+        // which wraps the binary stream of our FileHolder:
+        if (o instanceof java.sql.Blob) {
+            return ((Blob) o).getBinaryStream();
+        }
+        // otherwise we are aquiring the stream directly:
+        else {
+            // new mode
+            return rs.getBinaryStream(1);
+        }
+    }
+
+    /**
+     * Read the blob field from the filesystem and write to the client its
+     * content.
+     * 
+     * @param fileName
+     *            Description of the Parameter
+     * @param directory
+     *            Description of the Parameter
+     * @param defVal
+     *            Default value of the file tag
+     * @exception FileNotFoundException
+     *                Description of the Exception
+     * @exception IOException
+     *                Description of the Exception
+     */
+    public static FileInputStream readDiskBlob(String fileName,
+            String directory, String defVal) throws FileNotFoundException,
+            IOException {
+        logCat.info(new StringBuffer("READING DISKBLOB\n  directory = [")
+                .append(directory).append("]\n").append("  fileName = [")
+                .append(fileName).append("]\n").append("  defaultValue = [")
+                .append(defVal).append("]\n").toString());
+
+        if (Util.isNull(fileName)) {
+            if ((fileName = defVal) != null) {
+                logCat
+                        .info("::readDiskBlob - database data is null; use the default value ["
+                                + fileName + "]");
             }
-         }
-      } catch (ClassNotFoundException cnfe) {
-         logCat.error("::readDbFieldBlob - class not found", cnfe);
-         throw new IOException("error:" + cnfe.toString());
-      }
-   }
+        }
 
-
-   /**
-    * Read the blob field from the filesystem and write to the client its
-    * content.
-    *
-    * @param fileName
-    *            Description of the Parameter
-    * @param directory
-    *            Description of the Parameter
-    * @param defVal
-    *            Default value of the file tag
-    * @exception FileNotFoundException
-    *                Description of the Exception
-    * @exception IOException
-    *                Description of the Exception
-    */
-   public static FileInputStream readDiskBlob(String fileName,
-                                              String directory,
-                                              String defVal)
-                                       throws FileNotFoundException, 
-                                              IOException {
-      logCat.info(new StringBuffer("READING DISKBLOB\n  directory = [").append(directory).append("]\n").append("  fileName = [").append(fileName).append("]\n").append("  defaultValue = [").append(defVal).append("]\n").toString());
-
-      if ((fileName == null) || (fileName.trim()
-                                               .length() == 0)) {
-         if ((fileName = defVal) != null) {
-            logCat.info("::readDiskBlob - database data is null; use the default value ["
-                        + fileName + "]");
-         }
-      }
-
-      // directory or fileName can be null!
-      //if ((directory != null) && (fileName != null))
-      if (fileName != null) {
-         fileName = fileName.trim();
-
-         File file = new File(directory, fileName);
-
-         if (file.exists()) {
-            logCat.info("::readDiskBlob - file found ["
+        // directory or fileName can be null!
+        //if ((directory != null) && (fileName != null))
+        if (fileName != null) {
+            fileName = fileName.trim();
+            File file = new File(directory, fileName);
+            if (file.exists()) {
+                logCat.info("::readDiskBlob - file found ["
                         + file.getAbsoluteFile() + "]");
+                return new FileInputStream(file);
+            } else {
+                logCat.error("::readDiskBlob - file ["
+                        + (directory + "/" + fileName) + "] not found");
 
-            return new FileInputStream(file);
-         } else {
-            logCat.error("::readDiskBlob - file ["
-                         + (directory + "/" + fileName) + "] not found");
+                return null;
+            }
+        } else {
+            logCat
+                    .warn("::readDiskBlob - file name or directory value is null");
 
             return null;
-         }
-      } else {
-         logCat.warn("::readDiskBlob - file name or directory value is null");
-
-         return null;
-      }
-   }
+        }
+    }
 }

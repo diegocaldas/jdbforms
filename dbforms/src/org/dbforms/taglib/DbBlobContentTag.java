@@ -29,6 +29,7 @@ import org.apache.commons.logging.LogFactory;
 import org.dbforms.config.FieldTypes;
 import org.dbforms.config.Table;
 
+import org.dbforms.util.FileHolder;
 import org.dbforms.util.SqlUtil;
 
 import java.io.*;
@@ -40,161 +41,144 @@ import java.sql.SQLException;
 
 import javax.servlet.jsp.*;
 
-
-
 /**
  * #fixme docu to come
- *
+ * 
  * @author Joe Peer
  */
-public class DbBlobContentTag extends DbBaseHandlerTag
-   implements javax.servlet.jsp.tagext.TryCatchFinally {
-   private static Log logCat           = LogFactory.getLog(DbBlobContentTag.class);
-   private String     dbConnectionName;
+public class DbBlobContentTag extends DbBaseHandlerTag implements
+        javax.servlet.jsp.tagext.TryCatchFinally {
+    private static Log logCat = LogFactory.getLog(DbBlobContentTag.class);
 
-   /**
-    * DOCUMENT ME!
-    *
-    * @param string
-    */
-   public void setDbConnectionName(String string) {
-      dbConnectionName = string;
-   }
+    private String dbConnectionName;
 
+    /**
+     * DOCUMENT ME!
+     * 
+     * @param string
+     */
+    public void setDbConnectionName(String string) {
+        dbConnectionName = string;
+    }
 
-   /**
-    * DOCUMENT ME!
-    *
-    * @return
-    */
-   public String getDbConnectionName() {
-      return dbConnectionName;
-   }
+    /**
+     * DOCUMENT ME!
+     * 
+     * @return
+     */
+    public String getDbConnectionName() {
+        return dbConnectionName;
+    }
 
+    /**
+     * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+     */
+    public void doCatch(Throwable t) throws Throwable {
+        throw t;
+    }
 
-   /**
-    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
-    */
-   public void doCatch(Throwable t) throws Throwable {
-      throw t;
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    *
-    * @throws javax.servlet.jsp.JspException DOCUMENT ME!
-    * @throws IllegalArgumentException DOCUMENT ME!
-    * @throws JspException DOCUMENT ME!
-    */
-   public int doEndTag() throws javax.servlet.jsp.JspException {
-      try {
-         if (getParentForm()
-                      .getFooterReached()) {
-            return EVAL_PAGE; // nothing to do when no data available..
-         }
-
-         StringBuffer queryBuf = new StringBuffer();
-         queryBuf.append("SELECT ");
-         queryBuf.append(getField().getName());
-         queryBuf.append(" FROM ");
-         queryBuf.append(getParentForm().getTable().getName());
-         queryBuf.append(" WHERE ");
-         queryBuf.append(getParentForm().getTable().getWhereClauseForKeyFields());
-         logCat.info("blobcontent query- " + queryBuf.toString());
-
-         StringBuffer contentBuf = new StringBuffer();
-
-         try {
-            Connection        con = getConfig()
-                                       .getConnection(dbConnectionName);
-            PreparedStatement ps = con.prepareStatement(queryBuf.toString());
-            getParentForm()
-               .getTable()
-               .populateWhereClauseWithKeyFields(getKeyVal(), ps, 1);
-
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
-               InputStream is       = null;
-               String      fileName = null;
-
-               if (getField()
-                            .getType() == FieldTypes.DISKBLOB) {
-                  fileName = rs.getString(1);
-                  is       = SqlUtil.readDiskBlob(fileName,
-                                                  getField().getDirectory(),
-                                                  null);
-               } else {
-                  /*
-                   * As the classic and new blob handling modes are
-                   * distinguished by fileName, we use a small hack here
-                   * to provide empty string or null as the fileName
-                   * according to the blob handling strategy defined in
-                   * the configuration file.
-                   */
-                  fileName = (getField()
-                                 .getTable()
-                                 .getBlobHandlingStrategy() == Table.BLOB_CLASSIC)
-                             ? null
-                             : "";
-                  is = SqlUtil.readDbFieldBlob(rs, fileName);
-               }
-
-               if (is != null) {
-                  try {
-                     BufferedReader br   = new BufferedReader(new InputStreamReader(is));
-                     char[]         c    = new char[1024];
-                     int            read;
-
-                     while ((read = br.read(c)) != -1) {
-                        contentBuf.append(c, 0, read);
-                     }
-                  } finally {
-                     is.close();
-                  }
-               }
-            } else {
-               logCat.info("fs- we have got no result" + queryBuf);
+    /**
+     * DOCUMENT ME!
+     * 
+     * @return DOCUMENT ME!
+     * 
+     * @throws javax.servlet.jsp.JspException
+     *             DOCUMENT ME!
+     * @throws IllegalArgumentException
+     *             DOCUMENT ME!
+     * @throws JspException
+     *             DOCUMENT ME!
+     */
+    public int doEndTag() throws javax.servlet.jsp.JspException {
+        try {
+            if (getParentForm().getFooterReached()) {
+                return EVAL_PAGE; // nothing to do when no data available..
             }
 
-            SqlUtil.closeConnection(con);
-         } catch (SQLException sqle) {
-            sqle.printStackTrace();
-         }
+            StringBuffer queryBuf = new StringBuffer();
+            queryBuf.append("SELECT ");
+            queryBuf.append(getField().getName());
+            queryBuf.append(" FROM ");
+            queryBuf.append(getParentForm().getTable().getName());
+            queryBuf.append(" WHERE ");
+            queryBuf.append(getParentForm().getTable()
+                    .getWhereClauseForKeyFields());
+            logCat.info("blobcontent query- " + queryBuf.toString());
 
-         pageContext.getOut()
-                    .write(escapeHTML(contentBuf.toString()));
-      } catch (java.io.IOException ioe) {
-         throw new JspException("IO Error: " + ioe.getMessage());
-      }
+            StringBuffer contentBuf = new StringBuffer();
 
-      return EVAL_PAGE;
-   }
+            try {
+                Connection con = getConfig().getConnection(dbConnectionName);
+                PreparedStatement ps = con
+                        .prepareStatement(queryBuf.toString());
+                getParentForm().getTable().populateWhereClauseWithKeyFields(
+                        getKeyVal(), ps, 1);
 
+                ResultSet rs = ps.executeQuery();
 
-   /**
-    * DOCUMENT ME!
-    */
-   public void doFinally() {
-      dbConnectionName = null;
-      super.doFinally();
-   }
+                if (rs.next()) {
+                    InputStream is = null;
+                    String fileName = null;
 
+                    if (getField().getType() == FieldTypes.DISKBLOB) {
+                        fileName = rs.getString(1);
+                        is = SqlUtil.readDiskBlob(fileName, getField()
+                                .getDirectory(), null);
+                    } else if (getField().getTable().getBlobHandlingStrategy() == Table.BLOB_CLASSIC) {
+                        FileHolder fh = SqlUtil.readFileHolderBlob(rs);
+                        is = fh.getInputStreamFromBuffer();
+                    } else {
+                        is = SqlUtil.readDbFieldBlob(rs);
+                    }
+                    if (is != null) {
+                        try {
+                            BufferedReader br = new BufferedReader(
+                                    new InputStreamReader(is));
+                            char[] c = new char[1024];
+                            int read;
 
-   // ------------------------------------------------------ Protected Methods
-   // DbForms specific
+                            while ((read = br.read(c)) != -1) {
+                                contentBuf.append(c, 0, read);
+                            }
+                        } finally {
+                            is.close();
+                        }
+                    }
+                } else {
+                    logCat.info("fs- we have got no result" + queryBuf);
+                }
 
-   /**
-    * DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    */
-   private String getKeyVal() {
-      return getParentForm()
-                .getTable()
-                .getKeyPositionString(getParentForm().getResultSetVector());
-   }
+                SqlUtil.closeConnection(con);
+            } catch (SQLException sqle) {
+                sqle.printStackTrace();
+            }
+
+            pageContext.getOut().write(escapeHTML(contentBuf.toString()));
+        } catch (java.io.IOException ioe) {
+            throw new JspException("IO Error: " + ioe.getMessage());
+        }
+
+        return EVAL_PAGE;
+    }
+
+    /**
+     * DOCUMENT ME!
+     */
+    public void doFinally() {
+        dbConnectionName = null;
+        super.doFinally();
+    }
+
+    // ------------------------------------------------------ Protected Methods
+    // DbForms specific
+
+    /**
+     * DOCUMENT ME!
+     * 
+     * @return DOCUMENT ME!
+     */
+    private String getKeyVal() {
+        return getParentForm().getTable().getKeyPositionString(
+                getParentForm().getResultSetVector());
+    }
 }

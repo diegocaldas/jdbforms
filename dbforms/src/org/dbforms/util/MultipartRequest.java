@@ -146,7 +146,6 @@ public class MultipartRequest {
                if (!Util.isNull(fileName)) {
                   File f = new File(fileName);
                   fileName = f.getName();
-
                   // 2004-08-05-HKK/Dziugas Baltrunas: 
                   // FileItem always returns the full pathname!
                   if ((fileName.indexOf('/') >= 0)
@@ -165,9 +164,7 @@ public class MultipartRequest {
                   // we must delay storing the file-inputstream (into
                   // database, filesystem or whatever)
                   // until we know exactly what should happen with it
-                  FileHolder fileHolder = new FileHolder(fileName, contentType,
-                                                         item.getInputStream(),
-                                                         true, maxPostSize);
+                  FileHolder fileHolder = new FileHolder(fileName, item);
                   files.put(name, fileHolder);
                   logCat.info("buffered and now added as " + name
                               + " the following fileHolder:"

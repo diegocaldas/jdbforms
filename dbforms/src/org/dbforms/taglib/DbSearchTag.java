@@ -176,6 +176,12 @@ public class DbSearchTag extends DbBaseHandlerTag
       return EVAL_PAGE;
    }
 
+   /*
+    * Must be overloaded to get the right fieldName in renderPatternHtmlInputField!
+    */
+   protected String getFormFieldName() {
+       return getField().getSearchFieldName();
+    }
 
    /**
     * DOCUMENT ME!
