@@ -222,7 +222,11 @@ public class DbSearchComboTag extends DbSearchTag implements DataContainer, java
 			}
 
 			int embeddedDataSize = embeddedData.size();
-
+         int selectedIndexList = 0;
+         try {
+            selectedIndexList = Integer.parseInt(selectedIndex);
+         } catch (Exception e) { 
+         }
 			for (int i = 0; i < embeddedDataSize; i++) {
 				KeyValuePair aKeyValuePair = (KeyValuePair) embeddedData.get(i);
 				String aKey = aKeyValuePair.getKey();
@@ -234,8 +238,9 @@ public class DbSearchComboTag extends DbSearchTag implements DataContainer, java
 				} else {
 					if ("value".equalsIgnoreCase(getCompareWith())) {
 						isSelected = aValue.equals(selectedIndex);
-					if ("list".equalsIgnoreCase(getCompareWith())) {
-					} else { 
+               } else if ("list".equalsIgnoreCase(getCompareWith())) {
+                  isSelected = selectedIndexList == i;
+               } else { 
 						isSelected = aKey.equals(selectedIndex);
 					}
 				}
