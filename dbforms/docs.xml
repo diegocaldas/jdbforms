@@ -33,6 +33,7 @@
   <property name="fopHome.dir" value="${env.FOP_HOME}"/>
   <!-- end of properties that need to be set -->
 
+  <property name="dbforms.version" value="v2.x" />
   <property name="UsersGuide.dir" value="${basedir}/usersguide_src"/>
   <property name="cvs.workingdir" value="."/>
   <property name="dependend.dir"  value="${cvs.workingdir}/dependend"/>
@@ -159,20 +160,23 @@
            in    = "${etc.dir}/taglib_docu.xml" 
            out   = "${taglibdoc.dir}/DbFormsTags.html">
     </style>
+    <replace file="${taglibdoc.dir}/DbFormsTags.html" token="CURRENT_VERSION" value="${dbforms.version}" />
 
-    <delete file="${taglibdoc.dir}/DbFormsTags_TocSem.html"/>
     <echo message="style 2"/>
+    <delete file="${taglibdoc.dir}/DbFormsTags_TocSem.html"/>
     <style style = "${etc.dir}/tldoc2html_toc.xsl" 
            in    = "${etc.dir}/taglib_docu.xml" 
            out   = "${taglibdoc.dir}/DbFormsTags_TocSem.html"/>
+    <replace file="${taglibdoc.dir}/DbFormsTags_TocSem.html" token="CURRENT_VERSION" value="${dbforms.version}" />
 
-    <delete file = "${taglibdoc.dir}/DbFormsTags_TocAlph.html"/>
     <echo message="style 3"/>
+    <delete file = "${taglibdoc.dir}/DbFormsTags_TocAlph.html"/>
     <style style = "${etc.dir}/tldoc2html_toc.xsl" 
            in    = "${etc.dir}/taglib_docu.xml" 
            out   = "${taglibdoc.dir}/DbFormsTags_TocAlph.html">
       <param name="sortTagsAlphabetically" expression="true"/>
     </style>
+    <replace file="${taglibdoc.dir}/DbFormsTags_TocAlph.html" token="CURRENT_VERSION" value="${dbforms.version}" />
 
     <java jar="${basedir}/usersguide_src/docbook_tools/tlddoc.jar" fork="true" >
        <arg value="-d" />

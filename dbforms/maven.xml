@@ -70,6 +70,7 @@
   <goal name="dbforms:doc" description="generate dbforms documentation: taglib docu and manual">
     <ant:echo message="building the DbForms documentation user guide and jsp tag library" />
     <ant:ant antfile="docs.xml" target="maven-build-doc">
+      	<ant:property name="dbforms.version" value="${pom.currentVersion}" />
       	<ant:property name="doc.dir" value="target/docs" />
       	<ant:property name="dist.dir" value="target/dist" />
     </ant:ant>
