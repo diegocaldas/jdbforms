@@ -8,6 +8,7 @@
 -->
 <chapter>
   <title>Compatibility notes:</title>
+  <sect1><title>1.1.3</title>
   <para>The 
     <computeroutput>format</computeroutput> attributes of tags 
     <computeroutput>queryData</computeroutput> and 
@@ -26,4 +27,77 @@ will not appear unless the attribute
     <computeroutput>insertButtonTag</computeroutput>. Otherwise, it will only appear in insert mode such as through a NavNewEvent.
  
   </para>
+  </sect1>
+  <sect1> 
+    <title>1.1.4</title>
+    <para>
+      If you are upgrading from 1.1.3 or from 1.1.4dev (first dev release), you must make three changes to 
+      <computeroutput>dbforms-config.xml</computeroutput></para>
+      <para>These changes need to be made to the 
+        <computeroutput>&lt;servlet-class&gt;</computeroutput> element only and the  
+        <computeroutput>&lt;servlet-name&gt; </computeroutput>can remain as it is in your 
+        <computeroutput>dbforms-config.xml</computeroutput>
+      </para>
+      <orderedlist numeration="lowerroman">
+        <listitem>
+          <para>
+            <screen>
+  From:    
+    <computeroutput>&lt;servlet-name&gt;config&lt;/servlet-name&gt;</computeroutput>
+    <computeroutput>&lt;servlet-class&gt;org.dbforms.ConfigServlet&lt;/servlet-class&gt;</computeroutput>
+
+  To:
+    <computeroutput>&lt;servlet-name&gt;config&lt;/servlet-name&gt;</computeroutput>
+    <computeroutput>&lt;servlet-class&gt;org.dbforms.servlets.ConfigServlet&lt;/servlet-class&gt;</computeroutput>
+            </screen>
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            <screen>
+  From:
+    <computeroutput>&lt;servlet-name&gt;control&lt;/servlet-name&gt;</computeroutput>
+    <computeroutput>&lt;servlet-class&gt;org.dbforms.Controller&lt;/servlet-class&gt;</computeroutput>
+
+  To:    
+    <computeroutput>&lt;servlet-name&gt;control&lt;/servlet-name&gt;</computeroutput>
+    <computeroutput>&lt;servlet-class&gt;org.dbforms.servlets.Controller&lt;/servlet-class&gt;</computeroutput>
+            </screen>
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            <screen>
+  From:
+    <computeroutput>&lt;servlet-name&gt;file&lt;/servlet-name&gt;</computeroutput>
+    <computeroutput>&lt;servlet-class&gt;org.dbforms.util.FileServlet&lt;/servlet-class&gt;</computeroutput>
+    
+  To:
+    <computeroutput>&lt;servlet-name&gt;file&lt;/servlet-name&gt;</computeroutput>
+    <computeroutput>&lt;servlet-class&gt;org.dbforms.servlets.FileServlet&lt;/servlet-class&gt;</computeroutput>
+            </screen>
+          </para>
+        </listitem>
+      </orderedlist>
+      <para>
+        Not doing so will result in a error message:
+        <screen>
+  java.lang.ClassCastException
+    at org.dbforms.taglib.DbFormTag.setPageContext(DbFormTag.java:1087)
+    at org.apache.jsp.menu_jsp._jspService(menu_jsp.java:91)
+    at org.apache.jasper.runtime.HttpJspBase.service(HttpJspBase.java:137)...
+         </screen>
+      </para>
+    
+    <para>Similarly, to use JapsperReports please adjust the  <computeroutput>&lt;servlet-class&gt;</computeroutput> to be:
+    <screen>
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;startreport&lt;/servlet-name&gt;
+        &lt;display-name&gt;startreport&lt;/display-name&gt;
+        &lt;servlet-class&gt;org.dbforms.<emphasis role="bold">servlets.</emphasis>StartReportServlet&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+     </screen>
+    </para>
+   
+  </sect1>
 </chapter>
