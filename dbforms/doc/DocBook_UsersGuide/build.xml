@@ -16,7 +16,7 @@ Modified by SAB to produce pdf via fop and use apache resolver.
     
      
      <!-- set the following three values according to your path (other two are below in the pdf section) -->
-   <property name="UsersGuide.dir" value="C:\dbforms\doc\DocBook_UsersGuide"/><!-- 1) set here-->
+   <property name="UsersGuide.dir" value="/home/javauser/dbforms/doc/DocBook_UsersGuide"/><!-- 1) set here-->
  
    <property name="build.dir" value="${UsersGuide.dir}/build"/>
   
@@ -26,10 +26,10 @@ Modified by SAB to produce pdf via fop and use apache resolver.
  <!-- Main stylesheets -->
      <property name="sSheetHome.dir" value="${docbookHome.dir}/docbook-xsl-1.57.0"/>                
 
- <!-- Main Docbook stylesheet  />"${sSheetHome.dir}\html\chunk.xsl"-->
-<property name="main.stylesheet" value="http://docbook.sourceforge.net/release/xsl/current/html/chunk.xsl"/>         
- <!-- Stylesheet to use for fo processing "${sSheetHome.dir}\fo\docbook.xsl"/> -->
- <property name="fo.stylesheet" value="http://docbook.sourceforge.net/release/xsl/current/fo/docbook.xsl"/>
+ <!-- Main Docbook stylesheet  />"http://docbook.sourceforge.net/release/xsl/current/html/chunk.xsl"-->
+<property name="main.stylesheet" value="${sSheetHome.dir}/html/chunk.xsl"/>         
+ <!-- Stylesheet to use for fo processing "http://docbook.sourceforge.net/release/xsl/current/fo/docbook.xsl"/> -->
+ <property name="fo.stylesheet" value="${sSheetHome.dir}/fo/docbook.xsl"/>
 
               <!-- Input properties:  -->                                      
 <!-- all files should be in this directry-->
@@ -38,7 +38,7 @@ Modified by SAB to produce pdf via fop and use apache resolver.
 <property name="main.infile" value="DbForms_UsersGuide.xml"/>                                 
                    
            <!-- Output Properties: Output directory -->                          
- <property name="out.dir" value="${UsersGuide.dir}\finished_documentation" />  <!-- all files -->           
+ <property name="out.dir" value="${UsersGuide.dir}/finished_documentation" />  <!-- all files -->           
                                                       
  <!-- output file for layout styling -->
  <property name="fo.outfile" value="UsersGuide.fo"/>                                  
@@ -133,13 +133,13 @@ Modified by SAB to produce pdf via fop and use apache resolver.
      <arg line="-y org.apache.xml.resolver.tools.ResolvingXMLReader"/>
      <arg line="-r org.apache.xml.resolver.tools.CatalogResolver"/>
     
-     <arg line="${in.dir}\DbForms_UsersGuide.xml ${main.stylesheet} ${param.args.post} " />
+     <arg line="${in.dir}/DbForms_UsersGuide.xml ${main.stylesheet} ${param.args.post} " />
      <arg line="section.autolabel=1"/>
      <arg line="section.label.includes.component.label=1"/>
      <arg line="chunk.first.sections=1"/>
        
     	</java>
-     <copy todir="${out.dir}\html\images\callouts">
+     <copy todir="${out.dir}/html/images/callouts">
      <fileset dir="${in.dir}/images/callouts" includes="*.png"/>
     </copy>
      </target>
@@ -179,12 +179,12 @@ Modified by SAB to produce pdf via fop and use apache resolver.
    
    <path id="fopclasspath">      <!-- set classpath according to FOP_HOME -->
 
-           <fileset dir="${tools.dir}\fop.20.4rc\lib\"><!-- 2) set here-->
+           <fileset dir="${tools.dir}/fop-0.20.5rc/lib/"><!-- 2) set here-->
 
                <include name="*.jar"/>
            </fileset>
 
-           <fileset dir="${tools.dir}\fop.20.4rc\build\"><!-- 3) set here-->
+           <fileset dir="${tools.dir}/fop-0.20.5rc/build/"><!-- 3) set here-->
 
                <include name="*.jar"/>
 
