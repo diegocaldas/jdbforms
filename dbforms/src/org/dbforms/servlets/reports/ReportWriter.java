@@ -20,21 +20,15 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
+package org.dbforms.servlets.reports;
+
+import java.io.ByteArrayOutputStream;
 
 /**
- * Simple interface for Objects that can have an accessible session
+ * @author hkk
  */
-package org.dbforms.util;
-
-import javax.servlet.http.HttpSession;
-
-
-
-/**
- * DOCUMENT ME!
- *
- * @author Neal Katz
- */
-public interface IGetSession {
-   HttpSession getSession();
+public class ReportWriter {
+	public ByteArrayOutputStream data;
+	public String fileName;
+	public String mimeType;
 }

@@ -29,7 +29,7 @@
 								destTable="BOOK"
 								keyToKeyToDestPos="currentRow"
         	          			singleRow="true"
-        	          			destination="/reports/books"
+        	          			destination="/jasperreport/books"
                 	  	/>
 					</td>
 					<td>
@@ -38,7 +38,7 @@
 								destTable="BOOK"
 								keyToKeyToDestPos="currentRow"
         	          			singleRow="true"
-        	          			destination="/reports/books?reporttype=CSV"
+        	          			destination="/jasperreport/books?reporttype=CSV"
                 	  	/>
 					</td>
 				</tr>
@@ -50,13 +50,13 @@
     	              			caption="print all as PDF"
 								destTable="BOOK"
         	          			singleRow="false"
-        	          			destination="/reports/books" 
+        	          			destination="/jasperreport/books" 
                 	  	/>
 	                  	<db:gotoButton 
     	              			caption="print all as CSV"
 								destTable="BOOK"
         	          			singleRow="false"
-        	          			destination="/reports/books?reporttype=CSV" 
+        	          			destination="/jasperreport/books?reporttype=CSV" 
                 	  	/>
 					</td>
 				</tr>

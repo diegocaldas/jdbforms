@@ -2,7 +2,7 @@
 
 <!DOCTYPE web-app
     PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
-    "http://java.sun.com/dtd/web-app_2_3.dtd">
+    "http://java.sun.com/dtd/web-app_2_4.dtd">
 
 <!-- VERSION INFO:
  * $Header$
@@ -77,8 +77,8 @@
   </servlet>
   <!--============= JasperReport starter servlet =============================== -->
   <servlet>
-    <servlet-name>startreport</servlet-name>
-    <servlet-class>org.dbforms.servlets.StartReportServlet</servlet-class>
+    <servlet-name>jasperreport</servlet-name>
+    <servlet-class>org.dbforms.servlets.JasperReportServlet</servlet-class>
     <init-param>
       <param-name>reportdirs</param-name>
       <param-value>/WEB-INF/custom/reports/,/WEB-INF/reports/</param-value>
@@ -86,8 +86,8 @@
   </servlet>
   <!--============= Excel output servlet =============================== -->
    <servlet>
-    <servlet-name>startexcelreport</servlet-name>
-    <servlet-class>org.dbforms.servlets.StartServletExcel</servlet-class>
+    <servlet-name>excelreport</servlet-name>
+    <servlet-class>org.dbforms.servlets.ExcelReportServlet</servlet-class>
     <init-param>
       <param-name>reportdirs</param-name>
       <param-value>/WEB-INF/custom/reports/,/WEB-INF/reports/</param-value>
@@ -95,8 +95,8 @@
   </servlet>
    <!--============= csv output servlet =============================== -->
    <servlet>
-    <servlet-name>startcsvreport</servlet-name>
-    <servlet-class>org.dbforms.servlets.StartServletCSV</servlet-class>
+    <servlet-name>csvreport</servlet-name>
+    <servlet-class>org.dbforms.servlets.CSVReportServlet</servlet-class>
     <init-param>
       <param-name>reportdirs</param-name>
       <param-value>/WEB-INF/custom/reports/,/WEB-INF/reports/</param-value>
@@ -130,15 +130,15 @@
     <url-pattern>/servlet/file</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>startreport</servlet-name>
-    <url-pattern>/reports/*</url-pattern>
+    <servlet-name>jasperreport</servlet-name>
+    <url-pattern>/jasperreport/*</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-     <servlet-name>startexcelreport</servlet-name>
-     <url-pattern>/excelReport/*</url-pattern>
+     <servlet-name>excelreport</servlet-name>
+     <url-pattern>/excelreport/*</url-pattern>
   </servlet-mapping>
     <servlet-mapping>
-     <servlet-name>startcsvreport</servlet-name>
+     <servlet-name>csvreport</servlet-name>
      <url-pattern>/cvsreport/*</url-pattern>
   </servlet-mapping>
   <!--*************************************************-->
