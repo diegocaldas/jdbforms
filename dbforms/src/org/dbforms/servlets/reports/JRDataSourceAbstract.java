@@ -31,10 +31,16 @@ import net.sf.jasperreports.engine.JRDataSource;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import java.util.Map;
+
 public abstract class JRDataSourceAbstract implements JRDataSource {
 	private static Log logCat = LogFactory.getLog(JRDataSourceAbstract.class
 			.getName());
-
+	private Map attributes;
+	
+	JRDataSourceAbstract(Map attributes) {
+		this.attributes = attributes;
+	}
 	/**
 	 * @see net.sf.jasperreports.engine.JRDataSource#next()
 	 */
@@ -78,4 +84,10 @@ public abstract class JRDataSourceAbstract implements JRDataSource {
 
 	public abstract Object getFieldValue(String fieldName);
 
+	/**
+	 * @return Returns the attributes.
+	 */
+	public Map getAttributes() {
+		return attributes;
+	}
 }

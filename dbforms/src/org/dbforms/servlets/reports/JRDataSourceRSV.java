@@ -29,7 +29,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.dbforms.config.ResultSetVector;
-
+import java.util.Map;
 
 /**
  * use a ResultSetVector as data source.
@@ -47,7 +47,8 @@ public final class JRDataSourceRSV extends JRDataSourceAbstract  {
 	 * @param pageContext
 	 *            DOCUMENT ME!
 	 */
-	public JRDataSourceRSV(ResultSetVector rsv) {
+	public JRDataSourceRSV(Map attributes, ResultSetVector rsv) {
+		super(attributes);
 		this.rsv = rsv;
 		this.rsv.moveFirst();
 		// Set the pointer to one place before the first record

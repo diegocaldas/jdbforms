@@ -20,7 +20,9 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
+
 package org.dbforms.config;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -40,37 +42,40 @@ import java.util.Vector;
 
 /**
  * <p>
- * In version 0.5, this class held the actual data of a ResultSet (SELECT from a
- * table). The main weakness of this class was that it used too much memory and
- * processor time:
- *
+ * In version 0.5, this class held the actual data of a ResultSet (SELECT from
+ * a table). The main weakness of this class was that it used too much memory
+ * and processor time:
+ * 
  * <ul>
- * <li>1. every piece of data gots stored in an array (having a table with a
+ * <li>
+ * 1. every piece of data gots stored in an array (having a table with a
  * million datasets will mean running into trouble because all the memory gets
- * allocated at one time.)</li>
- * <li>2. every piece of data gots converted into a String and trim()ed</li>
+ * allocated at one time.)
+ * </li>
+ * <li>
+ * 2. every piece of data gots converted into a String and trim()ed
+ * </li>
  * </ul>
  * </p>
- *
+ * 
  * <p>
  * since version 0.7 DbForms queries only those record from the database the
  * user really wants to see. this way you can query from a table with millions
- * of records and you will still have no memory problems, [exception: you choose
- * count="" in DbForms-tag :=) -> see org.dbforms.taglib.DbFormTag]
+ * of records and you will still have no memory problems, [exception: you
+ * choose count="" in DbForms-tag :=) -> see org.dbforms.taglib.DbFormTag]
  * </p>
  *
  * @author Joe Peer
  */
 public class ResultSetVector {
-   private static Log logCat                = LogFactory.getLog(ResultSetVector.class
-         .getName());
+   private static Log logCat = LogFactory.getLog(ResultSetVector.class.getName());
    private Hashtable  selectFieldsHashtable;
-   private Vector     selectFields = new Vector();
+   private Map        attributes   = new HashMap();
+   private Table      table        = null;
    private Vector     objectVector = new Vector();
+   private Vector     selectFields = new Vector();
    private boolean    firstPage    = false;
    private boolean    lastPage     = false;
-   private Table      table        = null;
-   private Map                attributes = new HashMap();
 
    // logging category for this class
    private int pointer = 0;
@@ -85,8 +90,7 @@ public class ResultSetVector {
    /**
     * Creates a new ResultSetVector object with the given FieldList
     *
-    * @param selectFields
-    *            The FieldList to use
+    * @param table The FieldList to use
     */
    public ResultSetVector(Table table) {
       this.table = table;
@@ -101,12 +105,11 @@ public class ResultSetVector {
    /**
     * Creates a new ResultSetVector object.
     *
-    * @param table
-    *            DOCUMENT ME!
-    * @param selectedFields
-    *            DOCUMENT ME!
+    * @param table DOCUMENT ME!
+    * @param selectedFields DOCUMENT ME!
     */
-   public ResultSetVector(Table table, Vector selectedFields) {
+   public ResultSetVector(Table  table,
+                          Vector selectedFields) {
       this.table = table;
       setupSelectFieldsHashtable(selectedFields);
    }
@@ -114,13 +117,46 @@ public class ResultSetVector {
    /**
     * Checks if the given ResultSetVector is null
     *
-    * @param rsv
-    *            ResultSetVector to check
+    * @param rsv ResultSetVector to check
     *
     * @return true if ResultSetVector is null
     */
    public static final boolean isNull(ResultSetVector rsv) {
       return ((rsv == null) || (rsv.size() == 0));
+   }
+
+
+   /**
+    * Stores a value in the attributes list
+    *
+    * @param key key for the value
+    * @param value value to store
+    */
+   public void setAttribute(String key,
+                            Object value) {
+      attributes.put(key, value);
+   }
+
+
+   /**
+    * reads a value from the attributes list
+    *
+    * @param key key to read
+    *
+    * @return The value. If not found null
+    */
+   public Object getAttribute(String key) {
+      return attributes.get(key);
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return Returns the attributes.
+    */
+   public Map getAttributes() {
+      return attributes;
    }
 
 
@@ -150,13 +186,11 @@ public class ResultSetVector {
     *
     * @return DOCUMENT ME!
     *
-    * @throws IllegalArgumentException
-    *             DOCUMENT ME!
+    * @throws IllegalArgumentException DOCUMENT ME!
     */
    public FieldValues getCurrentRowAsFieldValues() {
       if (selectFields == null) {
-         throw new IllegalArgumentException(
-            "no field vector was provided to this result");
+         throw new IllegalArgumentException("no field vector was provided to this result");
       }
 
       String[] rowData = getCurrentRow();
@@ -182,13 +216,11 @@ public class ResultSetVector {
     *
     * @return DOCUMENT ME!
     *
-    * @throws IllegalArgumentException
-    *             DOCUMENT ME!
+    * @throws IllegalArgumentException DOCUMENT ME!
     */
    public Map getCurrentRowAsMap() {
       if (selectFields == null) {
-         throw new IllegalArgumentException(
-            "no field vector was provided to this result");
+         throw new IllegalArgumentException("no field vector was provided to this result");
       }
 
       String[] rowData = getCurrentRow();
@@ -232,7 +264,8 @@ public class ResultSetVector {
    public String getField(int i) {
       Object obj = getFieldAsObject(i);
 
-      return (obj != null) ? obj.toString() : "";
+      return (obj != null) ? obj.toString()
+                           : "";
    }
 
 
@@ -251,28 +284,6 @@ public class ResultSetVector {
       }
 
       return getField(fieldIndex);
-   }
-
-
-   /**
-    * returns the index of a given fieldName
-    *
-    * @param  fieldName name of the field
-    *
-    * @return the index of the field in the data arrays
-    */
-   public int getFieldIndex(String fieldName) {
-      int res = -1;
-
-      if (!Util.isNull(fieldName)) {
-         Field f = (Field) selectFieldsHashtable.get(fieldName);
-
-         if (f != null) {
-            res = selectFields.indexOf(f);
-         }
-      }
-
-      return res;
    }
 
 
@@ -319,8 +330,7 @@ public class ResultSetVector {
     *
     * @param fieldName name of the field
     *
-    * @return the Field object of the given name
-    *         null if not found
+    * @return the Field object of the given name null if not found
     */
    public Field getFieldDescription(String fieldName) {
       return (Field) selectFieldsHashtable.get(fieldName);
@@ -328,10 +338,41 @@ public class ResultSetVector {
 
 
    /**
+    * returns the index of a given fieldName
+    *
+    * @param fieldName name of the field
+    *
+    * @return the index of the field in the data arrays
+    */
+   public int getFieldIndex(String fieldName) {
+      int res = -1;
+
+      if (!Util.isNull(fieldName)) {
+         Field f = (Field) selectFieldsHashtable.get(fieldName);
+
+         if (f != null) {
+            res = selectFields.indexOf(f);
+         }
+      }
+
+      return res;
+   }
+
+
+   /**
+    * Return true if the current record is the first record
+    *
+    * @return true if the first record is reached
+    */
+   public boolean isFirst() {
+      return (pointer == 0);
+   }
+
+
+   /**
     * DOCUMENT ME!
     *
-    * @param b
-    *            value to set
+    * @param b value to set
     */
    public void setFirstPage(boolean b) {
       firstPage = b;
@@ -349,10 +390,19 @@ public class ResultSetVector {
 
 
    /**
+    * Return true if the current record is the last record
+    *
+    * @return true if the last record is reached
+    */
+   public boolean isLast() {
+      return (pointer == (size() - 1));
+   }
+
+
+   /**
     * DOCUMENT ME!
     *
-    * @param b
-    *            value to set
+    * @param b value to set
     */
    public void setLastPage(boolean b) {
       lastPage = b;
@@ -370,55 +420,16 @@ public class ResultSetVector {
 
 
    /**
-    * moves to the first record
-    */
-   public void moveFirst() {
-      this.pointer = 0;
-   }
-
-
-   /**
-    * moves to the last record
-    */
-   public void moveLast() {
-      this.pointer = size() - 1;
-   }
-
-
-   /**
-    * Return true if the current record is the last record
-    *
-    * @return true if the last record is reached
-    */
-   public boolean isLast() {
-      return (pointer == (size() - 1));
-   }
-
-   /**
-    * Return true if the current record is the first record
-    *
-    * @return true if the first record is reached
-    */
-   public boolean isFirst() {
-      return (pointer == 0);
-   }
-
-   private boolean isPointerLegal(int p) {
-      return ((p >= 0) && (p < size()));
-   }
-
-
-   /**
     * DOCUMENT ME!
     *
-    * @param rs
-    *            DOCUMENT ME!
+    * @param interceptorData DOCUMENT ME!
+    * @param rs DOCUMENT ME!
     *
-    * @throws SQLException
-    *             DOCUMENT ME!
+    * @throws SQLException DOCUMENT ME!
     */
-   public void addResultSet(DbEventInterceptorData interceptorData, ResultSet rs)
-      throws SQLException {
+   public void addResultSet(DbEventInterceptorData interceptorData,
+                            ResultSet              rs)
+                     throws SQLException {
       ResultSetMetaData rsmd    = rs.getMetaData();
       int               columns = rsmd.getColumnCount();
       IEscaper          escaper = null;
@@ -429,19 +440,23 @@ public class ResultSetVector {
             Object[] objectRow = new Object[columns];
 
             for (int i = 0; i < columns; i++) {
-               Field curField = (Field) selectFields.elementAt(i);
+               if ((selectFields != null) && (i < selectFields.size())) {
+                  Field curField = (Field) selectFields.elementAt(i);
 
-               if (curField != null) {
-                  escaper = curField.getEscaper();
+                  if (curField != null) {
+                     escaper = curField.getEscaper();
+                  }
                }
 
                if (table != null) {
-                  escaper = (escaper == null) ? escaper : table.getEscaper();
+                  escaper = (escaper == null) ? escaper
+                                              : table.getEscaper();
                }
 
                if (escaper == null) {
                   try {
-                     escaper = DbFormsConfigRegistry.instance().lookup()
+                     escaper = DbFormsConfigRegistry.instance()
+                                                    .lookup()
                                                     .getEscaper();
                   } catch (Exception e) {
                      logCat.error("cannot create the new default escaper", e);
@@ -462,13 +477,16 @@ public class ResultSetVector {
    /**
     * adds a row to the ResultSetVector
     *
-    * @param objectRow
-    *            row to add
+    * @param interceptorData DOCUMENT ME!
+    * @param objectRow row to add
     */
-   public void addRow(DbEventInterceptorData interceptorData, Object[] objectRow) {
+   public void addRow(DbEventInterceptorData interceptorData,
+                      Object[]               objectRow) {
       if (objectRow != null) {
          boolean  doit   = true;
-         Object[] newRow = new Object[selectFields.size()];
+         int size = (objectRow.length > selectFields.size())?objectRow.length:selectFields.size();
+         
+         Object[] newRow = new Object[size];
 
          for (int i = 0; i < objectRow.length; i++) {
             newRow[i] = objectRow[i];
@@ -477,13 +495,14 @@ public class ResultSetVector {
          if ((interceptorData != null) && (interceptorData.getTable() != null)) {
             interceptorData.setAttribute(DbEventInterceptorData.RESULTSET, this);
             interceptorData.setAttribute(DbEventInterceptorData.OBJECTROW,
-               newRow);
+                                         newRow);
 
             int res = DbEventInterceptor.GRANT_OPERATION;
 
             try {
-               res = interceptorData.getTable().processInterceptors(DbEventInterceptor.PRE_ADDROW,
-                     interceptorData);
+               res = interceptorData.getTable()
+                                    .processInterceptors(DbEventInterceptor.PRE_ADDROW,
+                                                         interceptorData);
             } catch (SQLException e) {
                ;
             }
@@ -495,28 +514,17 @@ public class ResultSetVector {
             objectVector.addElement(newRow);
 
             if ((interceptorData != null)
-                     && (interceptorData.getTable() != null)) {
+                      && (interceptorData.getTable() != null)) {
                try {
-                  interceptorData.getTable().processInterceptors(DbEventInterceptor.POST_ADDROW,
-                     interceptorData);
+                  interceptorData.getTable()
+                                 .processInterceptors(DbEventInterceptor.POST_ADDROW,
+                                                      interceptorData);
                } catch (SQLException e) {
                   ;
                }
             }
          }
       }
-   }
-
-
-   /**
-    * moves to the previous record
-    *
-    * @return true if beginning is reached
-    */
-   public boolean movePrevious() {
-      pointer--;
-
-      return (pointer < 0);
    }
 
 
@@ -539,6 +547,22 @@ public class ResultSetVector {
 
 
    /**
+    * moves to the first record
+    */
+   public void moveFirst() {
+      this.pointer = 0;
+   }
+
+
+   /**
+    * moves to the last record
+    */
+   public void moveLast() {
+      this.pointer = size() - 1;
+   }
+
+
+   /**
     * moves to the next record
     *
     * @return true if end is reached
@@ -547,6 +571,18 @@ public class ResultSetVector {
       pointer++;
 
       return (pointer >= size());
+   }
+
+
+   /**
+    * moves to the previous record
+    *
+    * @return true if beginning is reached
+    */
+   public boolean movePrevious() {
+      pointer--;
+
+      return (pointer < 0);
    }
 
 
@@ -560,6 +596,11 @@ public class ResultSetVector {
    }
 
 
+   private boolean isPointerLegal(int p) {
+      return ((p >= 0) && (p < size()));
+   }
+
+
    private void setupSelectFieldsHashtable(Vector paramSelectFields) {
       this.selectFields.addAll(paramSelectFields);
       selectFieldsHashtable = new Hashtable();
@@ -569,27 +610,4 @@ public class ResultSetVector {
          selectFieldsHashtable.put(f.getName(), f);
       }
    }
-   
-   /**
-    * reads a value from the attributes list
-    *
-    * @param key key to read
-    *
-    * @return The value. If not found null
-    */
-   public Object getAttribute(String key) {
-      return attributes.get(key);
-   }
-
-
-   /**
-    * Stores a value in the attributes list
-    *
-    * @param key key for the value
-    * @param value value to store
-    */
-   public void setAttribute(String key, Object value) {
-      attributes.put(key, value);
-   }
-
 }

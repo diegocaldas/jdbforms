@@ -351,7 +351,6 @@ public abstract class EmbeddedData extends DbBaseHandlerTag
             rsv.moveFirst();
 
             for (int i = 0; i < rsv.size(); i++) {
-               rsv.moveNext();
 
                String[] currentRow = rsv.getCurrentRow();
                String   htKey = currentRow[0];
@@ -377,6 +376,7 @@ public abstract class EmbeddedData extends DbBaseHandlerTag
 
                String htValue = printfFormat.sprintf(objs2);
                result.add(new KeyValuePair(htKey, htValue));
+               rsv.moveNext();
             }
 
             resultSuccessFullyFormated = true;
@@ -401,7 +401,6 @@ public abstract class EmbeddedData extends DbBaseHandlerTag
          rsv.moveFirst();
 
          for (int i = 0; i < rsv.size(); i++) {
-            rsv.moveNext();
 
             String[]     currentRow = rsv.getCurrentRow();
             String       htKey      = currentRow[0];
@@ -418,6 +417,7 @@ public abstract class EmbeddedData extends DbBaseHandlerTag
             String htValue = htValueBuf.toString(); //
 
             result.add(new KeyValuePair(htKey, htValue));
+            rsv.moveNext();
          }
       }
 

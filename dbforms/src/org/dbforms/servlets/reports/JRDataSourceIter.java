@@ -38,6 +38,7 @@
 package org.dbforms.servlets.reports;
 
 import java.util.Iterator;
+import java.util.Map;
 
 import net.sf.jasperreports.engine.JRException;
 
@@ -60,8 +61,9 @@ public final class JRDataSourceIter extends JRDataSourceAbstract {
     * @param iter
     * @param pageContext
     */
-   public JRDataSourceIter(Iterator    iter) {
-      this.iter        = iter;
+   public JRDataSourceIter(Map attributes, Iterator    iter) {
+      super(attributes);
+   	  this.iter        = iter;
       rownum           = 0;
    }
 

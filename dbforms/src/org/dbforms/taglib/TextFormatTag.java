@@ -20,13 +20,16 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
+
 package org.dbforms.taglib;
+
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.dbforms.config.Field;
 import org.dbforms.config.FieldValue;
+import org.dbforms.config.ResultSetVector;
 
 import org.dbforms.util.Util;
 
@@ -43,10 +46,30 @@ public class TextFormatTag extends DbBaseHandlerTag
    implements javax.servlet.jsp.tagext.TryCatchFinally {
    private static Log logCat      = LogFactory.getLog(TextFormatTag.class);
    private Object     fieldObject; // Holds the object to retrieve.
-   private String     pattern;
-   private String     type;
-   private String     value;
-   private String     contextVar;
+   private String contextVar;
+   private String pattern;
+   private String type;
+   private String value;
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param contextVar DOCUMENT ME!
+    */
+   public void setContextVar(String contextVar) {
+      this.contextVar = contextVar;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String getContextVar() {
+      return contextVar;
+   }
+
 
    /**
     * DOCUMENT ME!
@@ -152,22 +175,45 @@ public class TextFormatTag extends DbBaseHandlerTag
          fv.setPattern(getPattern());
          fieldObject = fv.getFieldValueAsObject();
       } else {
-         String search = getContextVar();
-         int    pos = search.indexOf(".");
+         String          search = getContextVar();
+         int             pos = search.indexOf(".");
+
+         ResultSetVector rsv = null;
+
+         if (getParentForm() != null) {
+            rsv = getParentForm()
+                     .getResultSetVector();
+         }
 
          if (pos == -1) {
-            // simple type, 'search' is an object in the session
-            fieldObject = pageContext.findAttribute(search);
+            if (rsv != null) {
+               fieldObject = rsv.getAttribute(search);
+            }
+
+            if (fieldObject == null) {
+               // simple type, 'search' is an object in the session
+               fieldObject = pageContext.findAttribute(search);
+            }
          } else {
             try {
                // complex, 'search' is really a bean
                String search_bean = search.substring(0, pos);
                search = search.substring(pos + 1);
-               Object   bean = pageContext.findAttribute(search_bean);
+
+               Object bean = null;
+
+               if (rsv != null) {
+                  bean = rsv.getAttribute(search);
+               }
+
+               if (bean == null) {
+                  // simple type, 'search' is an object in the session
+                  bean = pageContext.findAttribute(search);
+               }
 
                if (bean != null) {
-                  logCat.debug("calling PropertyUtils.getProperty " + search_bean
-                     + " " + search);
+                  logCat.debug("calling PropertyUtils.getProperty "
+                               + search_bean + " " + search);
                   fieldObject = PropertyUtils.getProperty(bean, search);
                }
             } catch (Exception e) {
@@ -188,7 +234,8 @@ public class TextFormatTag extends DbBaseHandlerTag
       fieldValue = escapeHTML(fieldValue);
 
       try {
-         pageContext.getOut().write(fieldValue);
+         pageContext.getOut()
+                    .write(fieldValue);
       } catch (java.io.IOException ioe) {
          // better to KNOW what happended !
          throw new JspException("IO Error: " + ioe.getMessage());
@@ -202,10 +249,10 @@ public class TextFormatTag extends DbBaseHandlerTag
     * DOCUMENT ME!
     */
    public void doFinally() {
-      pattern       = null;
-      type          = null;
-      value         = null;
-      contextVar    = null;
+      pattern    = null;
+      type       = null;
+      value      = null;
+      contextVar = null;
       super.doFinally();
    }
 
@@ -217,25 +264,5 @@ public class TextFormatTag extends DbBaseHandlerTag
     */
    protected void setFieldObject(Object fieldObject) {
       this.fieldObject = fieldObject;
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    */
-   public String getContextVar() {
-      return contextVar;
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param contextVar DOCUMENT ME!
-    */
-   public void setContextVar(String contextVar) {
-      this.contextVar = contextVar;
    }
 }

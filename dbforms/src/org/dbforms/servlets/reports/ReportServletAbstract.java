@@ -314,7 +314,7 @@ public abstract class ReportServletAbstract extends HttpServlet {
 				input = request.getSession().getAttribute("jasper.input");
 			if ((input != null) && (input instanceof Collection)) {
 				Iterator iter = ((Collection) input).iterator();
-				dataSource = new JRDataSourceIter(iter);
+				dataSource = new JRDataSourceIter(null, iter);
 				return dataSource;
 			}
 
@@ -327,7 +327,7 @@ public abstract class ReportServletAbstract extends HttpServlet {
 				if (rsv.size() == 0) {
 					handleNoData(request, response);
 				} else {
-					dataSource = new JRDataSourceRSV(rsv);
+					dataSource = new JRDataSourceRSV(rsv.getAttributes(), rsv);
 				}
 				return dataSource;
 			}
@@ -391,7 +391,7 @@ public abstract class ReportServletAbstract extends HttpServlet {
 				if (rsv.size() == 0) {
 					handleNoData(request, response);
 				} else {
-					dataSource = new JRDataSourceRSV(rsv);
+					dataSource = new JRDataSourceRSV(rsv.getAttributes(), rsv);
 				}
 
 				form.doFinally();

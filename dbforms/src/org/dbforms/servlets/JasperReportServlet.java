@@ -135,7 +135,7 @@ public class JasperReportServlet extends ReportServletAbstract {
 				}
 				try {
 					ReportParameter repParam = new ReportParameter(context,
-							request, con, FileUtil.dirname(reportFileFullName)
+							request, dataSource.getAttributes(), con, FileUtil.dirname(reportFileFullName)
 									+ File.separator);
 					Map map = new HashMap();
 					map.put("PARAM", repParam);

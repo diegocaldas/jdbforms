@@ -34,6 +34,7 @@ import org.dbforms.util.MessageResources;
 import org.dbforms.util.ParseUtil;
 
 import java.io.File;
+import java.util.Map;
 
 /**
  * Helper class send as parameter to JasperReports. So it is not neccesary to
@@ -61,6 +62,7 @@ public class ReportParameter {
    private Locale             locale;
    private ServletContext     context;
    private String             reportPath;
+   private Map attributes;			     		
 
    /**
     * Creates a new ReportParameter object.
@@ -72,12 +74,14 @@ public class ReportParameter {
     */
    public ReportParameter(ServletContext     context,
                           HttpServletRequest request,
+						  Map attributes,
                           Connection         connection,
                           String             reportPath) {
       this.context    = context;
       this.request    = request;
       this.connection = connection;
       this.reportPath = reportPath;
+      this.attributes = attributes;
       this.locale     = MessageResources.getLocale(request);
    }
 
@@ -124,6 +128,16 @@ public class ReportParameter {
       return ParseUtil.getParameter(request, param);
    }
 
+   /**
+    * Returns a request parameter
+    *
+    * @param param DOCUMENT ME!
+    *
+    * @return String
+    */
+   public Object getAttribute(String key) {
+      return attributes.get(key);
+   }
 
    /**
     * Returns the reportPath.
