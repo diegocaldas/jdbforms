@@ -211,6 +211,8 @@ public class DataSourceJDBC extends DataSource {
 						Constants.COMPARE_NONE);
 
 				stmt = con.prepareStatement(query);
+            if (stmt == null)
+               throw new SQLException("no statement: " + query);
 				rs =
 					getTable().getDoSelectResultSet(
 						filterConstraint,
@@ -225,6 +227,8 @@ public class DataSourceJDBC extends DataSource {
 						whereClause,
 						tableList);
 				stmt = con.createStatement();
+            if (stmt == null)
+               throw new SQLException("no statement");
 				rs = stmt.executeQuery(query);
 			}
 
