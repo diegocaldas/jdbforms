@@ -7,12 +7,12 @@ Peer, Philip Grunikiewicz et al.</author>
   </properties>
   <body>
     <taglib>
-      <tlibversion>1.0</tlibversion>
-      <jspversion>1.1</jspversion>
+      <tlibversion>1.1.4dev</tlibversion>
+      <jspversion>1.2</jspversion>
       <shortname>st</shortname>
       <display-name>DbForm Construction Tags</display-name>
       <uri>dbformstags</uri>
-      <info>version 1.1.1</info>
+      <info>version 1.1.4dev</info>
       <!-- **************************** dbform tag ***********************************-->
       <tag>
         <name>dbform</name>
@@ -141,8 +141,7 @@ Peer, Philip Grunikiewicz et al.</author>
           <info>
             <p style="text-autospace:none">Replaces the filter attribute in situations where 
   the whereClause is more complex. Allows a developer to specify a free form 
-  conditional clause (where Clause + order + etc).</p> <p> * Note that using this function renders navigation impossible!  For instance, if you specify &quot;where n>3&quot; and your user views the page
-  and then clicks the navNext button, the next page may show values where n is not greater than 3. </p> 
+  conditional clause (where Clause + order + etc).</p>  
   <p>Also, the whereClause can not be used with orderBy or filter attributes. They will be ignored. Order by should be used within the whereClause instead.</p>
             <p style="text-autospace:none">Example:</p>
             <p style="text-autospace:none">
