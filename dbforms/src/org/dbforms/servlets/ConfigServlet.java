@@ -100,20 +100,8 @@ public class ConfigServlet extends HttpServlet
       {
          initLogging();
 
-         // Setup digester debug level
-         int    digesterDebugLevel = 0;
-
-         String digesterDebugLevelInput = this.getServletConfig()
-                                              .getInitParameter("digesterDebugLevel");
-
-         if (digesterDebugLevelInput != null)
-         {
-            // Transform input into an integer
-            digesterDebugLevel = Integer.parseInt(digesterDebugLevelInput);
-         }
-
-         initXMLConfig(digesterDebugLevel);
-         initXMLErrors(digesterDebugLevel);
+         initXMLConfig();
+         initXMLErrors();
          initXMLValidator();
          initApplicationResources();
          initLocaleKey();
@@ -236,13 +224,12 @@ public class ConfigServlet extends HttpServlet
     * 
     * @return DOCUMENT ME!
     */
-   protected Digester initDigester(int detail, DbFormsConfig dbFormsConfig)
+   protected Digester initDigester(DbFormsConfig dbFormsConfig)
    {
       // Initialize a new Digester instance
       Digester digester = new Digester();
       digester.push(dbFormsConfig);
       digester.setNamespaceAware(true);
-      digester.setDebug(detail);
       digester.setValidating(false);
 
 
@@ -471,15 +458,13 @@ public class ConfigServlet extends HttpServlet
     * 
     * @return DOCUMENT ME!
     */
-   protected Digester initErrorsDigester(int detail, 
-                                         DbFormsErrors dbFormsErrors)
+   protected Digester initErrorsDigester(DbFormsErrors dbFormsErrors)
    {
       // Initialize a new Digester instance
       logCat.info("initialize Errors Digester.");
 
       Digester digester = new Digester();
       digester.push(dbFormsErrors);
-      digester.setDebug(detail);
       digester.setValidating(false);
 
 
@@ -512,7 +497,7 @@ public class ConfigServlet extends HttpServlet
     * @exception IOException if an input/output error is encountered
     * @exception ServletException if we cannot initialize these resources
     */
-   protected void initXMLErrors(int digesterDebugLevel)
+   protected void initXMLErrors()
                          throws IOException, ServletException
    {
       logCat.info("initialize XML Errors.");
@@ -539,7 +524,7 @@ public class ConfigServlet extends HttpServlet
       // Build a digester to process our errors resource
       DbFormsErrors dbFormsErrors = new DbFormsErrors();
       Digester      digester = null;
-      digester = initErrorsDigester(digesterDebugLevel, dbFormsErrors);
+      digester = initErrorsDigester(dbFormsErrors);
 
 
       // store a reference to ServletErrors (for interoperation with other parts of the Web-App!)
@@ -572,7 +557,7 @@ public class ConfigServlet extends HttpServlet
     * @exception IOException if an input/output error is encountered
     * @exception ServletException if we cannot initialize these resources
     */
-   protected void initXMLConfig(int digesterDebugLevel)
+   protected void initXMLConfig()
                          throws IOException, ServletException
    {
       // Initialize the context-relative path to our configuration resources
@@ -586,7 +571,7 @@ public class ConfigServlet extends HttpServlet
       String[] s = StringUtils.split(config, ",");
 
       for (int i = 0; i < s.length; i++)
-         initXMLConfigFile(s[i], digesterDebugLevel);
+         initXMLConfigFile(s[i]);
    }
 
 
@@ -599,7 +584,7 @@ public class ConfigServlet extends HttpServlet
     * @throws IOException DOCUMENT ME!
     * @throws ServletException DOCUMENT ME!
     */
-   protected void initXMLConfigFile(String config, int digesterDebugLevel)
+   protected void initXMLConfigFile(String config)
                              throws IOException, ServletException
    {
       // Build a digester to process our configuration resource
@@ -642,7 +627,7 @@ public class ConfigServlet extends HttpServlet
       }
 
       // ---------------------------------------------------------------
-      Digester digester = initDigester(digesterDebugLevel, dbFormsConfig);
+      Digester digester = initDigester(dbFormsConfig);
 
       // Parse the input stream to configure our mappings
       try
