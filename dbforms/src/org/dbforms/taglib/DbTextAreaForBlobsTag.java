@@ -82,7 +82,7 @@ public class DbTextAreaForBlobsTag extends DbTextAreaTag
     {
         super.doStartTag();
 
-        return EVAL_BODY_TAG;
+        return EVAL_BODY_BUFFERED;
     }
 
 

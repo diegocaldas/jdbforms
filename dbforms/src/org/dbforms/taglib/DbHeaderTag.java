@@ -55,7 +55,7 @@ public class DbHeaderTag extends BodyTagSupport
 
         if (myParent.getCurrentCount() == 0)
         {
-            return EVAL_BODY_TAG;
+            return EVAL_BODY_BUFFERED;
         }
         else
         {
