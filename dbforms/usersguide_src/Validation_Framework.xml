@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
  
 	<chapter>
-		<title>Validation Framework
+		<title id="valid">Validation Framework
 </title>
 		<sect1>
 			<title>Commons-Validator framework

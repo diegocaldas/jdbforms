@@ -270,8 +270,8 @@
 			<sect2>
 				<title>Example of <emphasis role="italic">creating</emphasis> templates
 </title>
-				<sect3>
-					<title id="tempbasedir">Template base directory
+				<sect3 id="tempbasedir">
+					<title>Template base directory
 </title>
 					<para>There exists (optionally) one template-directory for each web-application. This directory should be dedicated exclusively to templates. The location of this directory is specified in the web application deployment descriptor (web.xml) using the context-parameter templateBase (see following example)
 </para>
