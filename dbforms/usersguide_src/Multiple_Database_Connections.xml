@@ -12,16 +12,7 @@
 </para>
 <para>It is allowed to have at most 1 connection without an id
     within a config file. That will be the default connection.</para>
- <para>For connections using <emphasis role="bold">JNDI</emphasis> or a <emphasis role="bold">direct JDBC</emphasis> connection, an arbitrary id attribute <emphasis role="bold">must</emphasis> be added:</para>
-<screen>
-&lt;dbconnection
-    id = choose&lt;&lt;&lt;&lt;&lt;&lt; add the connectionName here!!!!!
-    name = "jdbc:mysql://localhost/test?useUnicode=true&amp;amp;characterEncoding=Shift_JIS"
-    isJndi = "false"
-    conClass = "org.gjt.mm.mysql.Driver"
-    username = "directConnectionExample"
-    password = "mustUseAnId"
-</screen>
+
 			 
 </listitem>
 <listitem>
