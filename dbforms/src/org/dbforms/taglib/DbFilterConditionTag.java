@@ -58,7 +58,7 @@ public class DbFilterConditionTag extends TagSupportWithScriptHandler
     * 
     * @author Sergio Moretti
     */
-   protected class State
+   protected static class State
    {
       /**
        * identifier of condition
@@ -82,7 +82,7 @@ public class DbFilterConditionTag extends TagSupportWithScriptHandler
    }
 
    /** DOCUMENT ME! */
-   protected static Category logCat = Category.getInstance(
+   protected static final Category logCat = Category.getInstance(
                                                DbFilterConditionTag.class.getName());
 
    /**

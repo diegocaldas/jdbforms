@@ -22,6 +22,7 @@
  */
 
 package org.dbforms.taglib;
+
 import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -40,38 +41,38 @@ import org.dbforms.util.Util;
 import org.dbforms.util.MessageResources;
 
 /**
- * Map a placeholder (?) in sql code to an input tag. 
- * Used as nested tag inside filterCondition.
- * Implements DataContainer interface to use the nested tags queryData, staticData ...
+ * Map a placeholder (?) in sql code to an input tag. Used as nested tag inside
+ * filterCondition. Implements DataContainer interface to use the nested tags
+ * queryData, staticData ...
  * 
  * @author Sergio Moretti <s.moretti@nsi-mail.it>
  * 
  * @version $Revision$
  */
-public class DbFilterValueTag
-	extends DbBaseHandlerTag
-	implements DataContainer, javax.servlet.jsp.tagext.TryCatchFinally {
+public class DbFilterValueTag extends DbBaseHandlerTag implements
+		DataContainer, javax.servlet.jsp.tagext.TryCatchFinally {
 	/**
-	 * tag's state holder.
-	 * Used a separate class to hold tag's state to workaround to Tag pooling, in which
-	 * an tag object is reused, but we have the need to store informations about all 
-	 * child tags in the parent, so we store the state, and apply it to a dummy tag when needed.
-	 *  
+	 * tag's state holder. Used a separate class to hold tag's state to
+	 * workaround to Tag pooling, in which an tag object is reused, but we have
+	 * the need to store informations about all child tags in the parent, so we
+	 * store the state, and apply it to a dummy tag when needed.
+	 * 
 	 * @author Sergio Moretti
 	 */
-	protected class State {
+	protected static class State {
 		/**
 		 * Allows an additional (independant) entry into the select list
 		 */
 		protected String customEntry = null;
 
 		/**
-		 * contains list of elements to show as options when type is select, (DataContainer interface)
+		 * contains list of elements to show as options when type is select,
+		 * (DataContainer interface)
 		 */
 		protected List embeddedData = null;
 
-		/** 
-		 * Holds value of property jsCalendarDateFormat. 
+		/**
+		 * Holds value of property jsCalendarDateFormat.
 		 */
 		protected String jsCalendarDateFormat = null;
 
@@ -100,13 +101,13 @@ public class DbFilterValueTag
 		 */
 		protected String type = null;
 
-		/** 
-		 * Holds value of property useJsCalendar. 
+		/**
+		 * Holds value of property useJsCalendar.
 		 */
 		protected String useJsCalendar = null;
 
 		/**
-		 * current value, readed from request 
+		 * current value, readed from request
 		 */
 		protected String value = null;
 
@@ -116,7 +117,7 @@ public class DbFilterValueTag
 		protected int valueId = -1;
 
 		/*
-		 * holds the searchAlgo 
+		 * holds the searchAlgo
 		 */
 		protected String searchAlgo = null;
 
@@ -137,44 +138,43 @@ public class DbFilterValueTag
 	/** DOCUMENT ME! */
 	protected static String FLT_VALUETYPE_TIMESTAMP = "timestamp";
 
-	static Category logCat =
-		Category.getInstance(DbFilterValueTag.class.getName());
+	static Category logCat = Category.getInstance(DbFilterValueTag.class
+			.getName());
 
 	/**
-	 * read from request all values associated to the condition identified with <tableId>, <conditionId>.
-	 * It try to read the value with identifier 0, if succeded go on with identifier 1, and so on.
-	 *    
-	 * @param tableId identify filter in request's parameters
-	 * @param conditionId identify condition in request's parameter
+	 * read from request all values associated to the condition identified with
+	 * <tableId>, <conditionId>. It try to read the value with identifier 0, if
+	 * succeded go on with identifier 1, and so on.
+	 * 
+	 * @param tableId
+	 *            identify filter in request's parameters
+	 * @param conditionId
+	 *            identify condition in request's parameter
 	 * @param request
 	 * @return list of all values readed from request
 	 */
 	protected static FieldValue[] readValuesFromRequest(
-		HttpServletRequest request,
-		int tableId,
-		int conditionId) {
+			HttpServletRequest request, int tableId, int conditionId) {
 		FieldValues values = new FieldValues();
 
 		for (int valueId = 0; true; ++valueId) {
-			// read from parameter's request the value and the type having this id
-			String paramValue =
-				DbFilterConditionTag.getConditionName(tableId, conditionId)
-					+ DbFilterTag.FLT_VALUE
-					+ valueId;
-			String paramType =
-				DbFilterConditionTag.getConditionName(tableId, conditionId)
-					+ DbFilterTag.FLT_VALUETYPE
-					+ valueId;
-			String searchAlgoType =
-				DbFilterConditionTag.getConditionName(tableId, conditionId)
-					+ DbFilterTag.FLT_SEARCHALGO
-					+ valueId;
+			// read from parameter's request the value and the type having this
+			// id
+			String paramValue = DbFilterConditionTag.getConditionName(tableId,
+					conditionId)
+					+ DbFilterTag.FLT_VALUE + valueId;
+			String paramType = DbFilterConditionTag.getConditionName(tableId,
+					conditionId)
+					+ DbFilterTag.FLT_VALUETYPE + valueId;
+			String searchAlgoType = DbFilterConditionTag.getConditionName(
+					tableId, conditionId)
+					+ DbFilterTag.FLT_SEARCHALGO + valueId;
 
 			String value = ParseUtil.getParameter(request, paramValue);
 			String valueType = ParseUtil.getParameter(request, paramType);
 
-			String aSearchAlgorithm =
-				ParseUtil.getParameter(request, searchAlgoType);
+			String aSearchAlgorithm = ParseUtil.getParameter(request,
+					searchAlgoType);
 			int algorithm = Constants.SEARCH_ALGO_SHARP;
 			if (!Util.isNull(aSearchAlgorithm)) {
 				if (aSearchAlgorithm.startsWith("weakStartEnd")) {
@@ -196,8 +196,7 @@ public class DbFilterValueTag
 				f.setFieldType(valueType);
 				Table table = null;
 				try {
-					table =
-						DbFormsConfigRegistry.instance().lookup().getTable(
+					table = DbFormsConfigRegistry.instance().lookup().getTable(
 							tableId);
 				} catch (Exception e) {
 					logCat.error("readValuesFromRequest", e);
@@ -222,15 +221,15 @@ public class DbFilterValueTag
 	private State state;
 
 	/**
-	 * 
+	 *  
 	 */
 	public DbFilterValueTag() {
 		super();
 		state = new State();
 	}
 
-	/** 
-	 * initialize  environment
+	/**
+	 * initialize environment
 	 * 
 	 * @see javax.servlet.jsp.tagext.Tag#doStartTag()
 	 */
@@ -241,17 +240,17 @@ public class DbFilterValueTag
 	}
 
 	/**
-	 * generate option element for select. borrowed from @see DbSearchComboTag#generateTagString
+	 * generate option element for select. borrowed from
+	 * 
+	 * @see DbSearchComboTag#generateTagString
 	 * 
 	 * @param value
-	 * @param description 
+	 * @param description
 	 * @param selected
 	 * @return string containing an html option element
 	 */
-	private String generateTagString(
-		String value,
-		String description,
-		boolean selected) {
+	private String generateTagString(String value, String description,
+			boolean selected) {
 		StringBuffer tagBuf = new StringBuffer();
 		tagBuf.append("<option value=\"");
 		tagBuf.append(value);
@@ -302,20 +301,17 @@ public class DbFilterValueTag
 
 	private String getValueName() {
 		return ((DbFilterConditionTag) getParent()).getConditionName()
-			+ DbFilterTag.FLT_VALUE
-			+ state.valueId;
+				+ DbFilterTag.FLT_VALUE + state.valueId;
 	}
 
 	private String getValueType() {
 		return ((DbFilterConditionTag) getParent()).getConditionName()
-			+ DbFilterTag.FLT_VALUETYPE
-			+ state.valueId;
+				+ DbFilterTag.FLT_VALUETYPE + state.valueId;
 	}
 
 	private String getSearchAlgoType() {
 		return ((DbFilterConditionTag) getParent()).getConditionName()
-			+ DbFilterTag.FLT_SEARCHALGO
-			+ state.valueId;
+				+ DbFilterTag.FLT_SEARCHALGO + state.valueId;
 
 	}
 
@@ -323,7 +319,8 @@ public class DbFilterValueTag
 	 * initialize tag's state before start using it
 	 */
 	private void init() {
-		// state object is createad in constructor (for the first use) and in doEndTag next
+		// state object is createad in constructor (for the first use) and in
+		// doEndTag next
 		if (state.type == null) {
 			state.type = "text";
 		}
@@ -333,32 +330,31 @@ public class DbFilterValueTag
 		}
 
 		state.valueId = ((DbFilterConditionTag) getParent()).addValue(this);
-		state.value =
-			ParseUtil.getParameter(
-				(HttpServletRequest) pageContext.getRequest(),
-				getValueName());
+		state.value = ParseUtil.getParameter((HttpServletRequest) pageContext
+				.getRequest(), getValueName());
 
 		if (state.value == null) {
 			state.value = "";
 		}
 
-		// the type attribute can be read either from request, with FLT_VALUETYPE, or directly from page
+		// the type attribute can be read either from request, with
+		// FLT_VALUETYPE, or directly from page
 		state.embeddedData = null;
 	}
 
 	protected Object getFieldObject() {
 		FieldValue fv = new FieldValue(getField(), state.value);
-		fv.setLocale(
-			MessageResources.getLocale(
-				(HttpServletRequest) pageContext.getRequest()));
+		fv.setLocale(MessageResources
+				.getLocale((HttpServletRequest) pageContext.getRequest()));
 		return fv.getFieldValueAsObject();
 	}
 
 	/**
-	 * render output of this value object. This is called only if its parent's condition is selected
+	 * render output of this value object. This is called only if its parent's
+	 * condition is selected
 	 * 
-	 * @return
-	 * @throws JspException
+	 * @return @throws
+	 *         JspException
 	 */
 	protected StringBuffer render() throws JspException {
 		StringBuffer buf = new StringBuffer();
@@ -375,14 +371,12 @@ public class DbFilterValueTag
 		}
 
 		if (state.type.equalsIgnoreCase(FLT_VALUETYPE_TEXT)
-			|| state.type.equalsIgnoreCase(FLT_VALUETYPE_NUMERIC)) {
+				|| state.type.equalsIgnoreCase(FLT_VALUETYPE_NUMERIC)) {
 			renderTextElement(buf);
-		} else if (
-			state.type.equalsIgnoreCase(FLT_VALUETYPE_DATE)
+		} else if (state.type.equalsIgnoreCase(FLT_VALUETYPE_DATE)
 				|| state.type.equalsIgnoreCase(FLT_VALUETYPE_TIMESTAMP)) {
 			renderDateElement(buf);
-		} else if (
-			FLT_VALUETYPE_SELECT.equalsIgnoreCase(state.type)
+		} else if (FLT_VALUETYPE_SELECT.equalsIgnoreCase(state.type)
 				&& (state.embeddedData != null)) {
 			renderSelectElement(buf);
 		} else {
@@ -405,35 +399,36 @@ public class DbFilterValueTag
 		// written by Robert W. Husted to edit the field:
 		if ("true".equals(state.useJsCalendar)) {
 			buf.append(" <a href=\"javascript:doNothing()\" ").append(
-				" onclick=\"");
+					" onclick=\"");
 
 			setPattern(state.jsCalendarDateFormat);
-			state.jsCalendarDateFormat =
-				((SimpleDateFormat) getFormatter()).toPattern();
+			state.jsCalendarDateFormat = ((SimpleDateFormat) getFormatter())
+					.toPattern();
 
 			if (state.jsCalendarDateFormat != null) // JS Date Format set ?
-				{
-				buf.append(
-					"calDateFormat='" + state.jsCalendarDateFormat + "';");
+			{
+				buf.append("calDateFormat='" + state.jsCalendarDateFormat
+						+ "';");
 			}
 
 			buf
-				.append("setDateField(document.dbform['")
-				.append(getValueName())
-				.append("']);")
-				.append(" top.newWin = window.open('")
-				.append(
-					((HttpServletRequest) pageContext.getRequest())
-						.getContextPath())
-				.append("/jscal/calendar.html','cal','width=270,height=280')\">")
-				.append("<img src=\"")
-				.append(
-					((HttpServletRequest) pageContext.getRequest())
-						.getContextPath())
-				.append("/jscal/calendar.gif\" width=\"32\" height=\"32\" ")
-				.append(" border=0  alt=\"Click on the Calendar to activate the Pop-Up Calendar Window.\">")
-				.append("</img>")
-				.append("</a>");
+					.append("setDateField(document.dbform['")
+					.append(getValueName())
+					.append("']);")
+					.append(" top.newWin = window.open('")
+					.append(
+							((HttpServletRequest) pageContext.getRequest())
+									.getContextPath())
+					.append(
+							"/jscal/calendar.html','cal','width=270,height=280')\">")
+					.append("<img src=\"")
+					.append(
+							((HttpServletRequest) pageContext.getRequest())
+									.getContextPath())
+					.append("/jscal/calendar.gif\" width=\"32\" height=\"32\" ")
+					.append(
+							" border=0  alt=\"Click on the Calendar to activate the Pop-Up Calendar Window.\">")
+					.append("</img>").append("</a>");
 		}
 	}
 
@@ -449,37 +444,22 @@ public class DbFilterValueTag
 			sizestr = "size=\"" + state.size + "\" ";
 		}
 
-		buf.append(
-			"<select name=\""
-				+ getValueName()
-				+ "\" "
-				+ sizestr
-				+ " class=\""
-				+ state.styleClass
-				+ "\">\n");
+		buf.append("<select name=\"" + getValueName() + "\" " + sizestr
+				+ " class=\"" + state.styleClass + "\">\n");
 
 		if ((state.customEntry != null)
-			&& (state.customEntry.trim().length() > 0)) {
-			String aKey =
-				org.dbforms.util.ParseUtil.getEmbeddedStringWithoutDots(
-					state.customEntry,
-					0,
-					',');
-			String aValue =
-				org.dbforms.util.ParseUtil.getEmbeddedStringWithoutDots(
-					state.customEntry,
-					1,
-					',');
+				&& (state.customEntry.trim().length() > 0)) {
+			String aKey = org.dbforms.util.ParseUtil
+					.getEmbeddedStringWithoutDots(state.customEntry, 0, ',');
+			String aValue = org.dbforms.util.ParseUtil
+					.getEmbeddedStringWithoutDots(state.customEntry, 1, ',');
 			boolean isSelected = false;
 
 			if ((state.selectedIndex == null)
-				|| (state.selectedIndex.trim().length() == 0)) {
-				isSelected =
-					"true".equals(
-						ParseUtil.getEmbeddedStringWithoutDots(
-							state.customEntry,
-							2,
-							','));
+					|| (state.selectedIndex.trim().length() == 0)) {
+				isSelected = "true"
+						.equals(ParseUtil.getEmbeddedStringWithoutDots(
+								state.customEntry, 2, ','));
 			}
 
 			buf.append(generateTagString(aKey, aValue, isSelected));
@@ -488,12 +468,13 @@ public class DbFilterValueTag
 		int embeddedDataSize = state.embeddedData.size();
 
 		for (int i = 0; i < embeddedDataSize; i++) {
-			KeyValuePair aKeyValuePair =
-				(KeyValuePair) state.embeddedData.get(i);
+			KeyValuePair aKeyValuePair = (KeyValuePair) state.embeddedData
+					.get(i);
 			String aKey = aKeyValuePair.getKey();
 			String aValue = aKeyValuePair.getValue();
 
-			// select, if datadriven and data matches with current value OR if explicitly set by user
+			// select, if datadriven and data matches with current value OR if
+			// explicitly set by user
 			boolean isSelected = aKey.equals(state.value);
 			buf.append(generateTagString(aKey, aValue, isSelected));
 		}
@@ -513,29 +494,14 @@ public class DbFilterValueTag
 			sizestr = "size=\"" + state.size + "\" ";
 		}
 
-		buf.append(
-			"<input type=\"text\" name=\""
-				+ getValueName()
-				+ "\" value=\""
-				+ this.getFormattedFieldValue()
-				+ "\""
-				+ sizestr
-				+ " class=\""
-				+ state.styleClass
-				+ "\"/>\n");
-		buf.append(
-			"<input type=\"hidden\" name=\""
-				+ getValueType()
-				+ "\" value=\""
-				+ state.type.toLowerCase()
-				+ "\"/>\n");
+		buf.append("<input type=\"text\" name=\"" + getValueName()
+				+ "\" value=\"" + this.getFormattedFieldValue() + "\""
+				+ sizestr + " class=\"" + state.styleClass + "\"/>\n");
+		buf.append("<input type=\"hidden\" name=\"" + getValueType()
+				+ "\" value=\"" + state.type.toLowerCase() + "\"/>\n");
 		if (!Util.isNull(state.searchAlgo)) {
-			buf.append(
-				"<input type=\"hidden\" name=\""
-					+ getSearchAlgoType()
-					+ "\" value=\""
-					+ state.searchAlgo
-					+ "\"/>\n");
+			buf.append("<input type=\"hidden\" name=\"" + getSearchAlgoType()
+					+ "\" value=\"" + state.searchAlgo + "\"/>\n");
 		}
 	}
 
@@ -549,18 +515,18 @@ public class DbFilterValueTag
 	}
 
 	/**
-	This method is a "hookup" for EmbeddedData - Tags which can assign the lines of data they loaded
-	(by querying a database, or by rendering data-subelements, etc. etc.) and make the data
-	available to this tag.
-	[this method is defined in Interface DataContainer]
-	*/
+	 * This method is a "hookup" for EmbeddedData - Tags which can assign the
+	 * lines of data they loaded (by querying a database, or by rendering
+	 * data-subelements, etc. etc.) and make the data available to this tag.
+	 * [this method is defined in Interface DataContainer]
+	 */
 	public void setEmbeddedData(List embeddedData) {
 		state.embeddedData = embeddedData;
 	}
 
 	/**
 	 * property jsCalendarDateFormat.
-	 *  
+	 * 
 	 * @param string
 	 */
 	public void setJsCalendarDateFormat(String string) {
@@ -597,10 +563,8 @@ public class DbFilterValueTag
 	/**
 	 * @param state
 	 */
-	public void setState(
-		PageContext pg,
-		DbFilterConditionTag parent,
-		State state) {
+	public void setState(PageContext pg, DbFilterConditionTag parent,
+			State state) {
 		setPageContext(pg);
 		setParent(parent);
 		this.state = state;
@@ -621,13 +585,17 @@ public class DbFilterValueTag
 	 * <dt>text
 	 * <dd>text input
 	 * <dt>date
-	 * <dd>input text for date type, a validation of the value will be done, and it supports the jscal object
+	 * <dd>input text for date type, a validation of the value will be done,
+	 * and it supports the jscal object
 	 * <dt>timestamp
-	 * <dd>input text for timestamp type, a validation of the value will be done, and it supports the jscal object (it doesn't fit very well, anyway ...)
+	 * <dd>input text for timestamp type, a validation of the value will be
+	 * done, and it supports the jscal object (it doesn't fit very well, anyway
+	 * ...)
 	 * <dt>numeric
 	 * <dd>input text for number, a validation of the value will be done
 	 * <dt>select
-	 * <dd>render an html select element, filled with nested tags like queryData, staticData and so on.
+	 * <dd>render an html select element, filled with nested tags like
+	 * queryData, staticData and so on.
 	 * </dl>
 	 * 
 	 * @param string

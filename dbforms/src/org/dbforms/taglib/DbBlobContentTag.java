@@ -111,16 +111,17 @@ public class DbBlobContentTag extends DbBaseHandlerTag implements
 							logCat.info("fs- file found " + file.getName());
 
 							FileInputStream fis = new FileInputStream(file);
-							BufferedReader br = new BufferedReader(
-									new InputStreamReader(fis));
-							char[] c = new char[1024];
-							int read;
-
-							while ((read = br.read(c)) != -1) {
-								contentBuf.append(c, 0, read);
+							try {
+								BufferedReader br = new BufferedReader(
+										new InputStreamReader(fis));
+								char[] c = new char[1024];
+								int read;
+								while ((read = br.read(c)) != -1) {
+									contentBuf.append(c, 0, read);
+								}
+							} finally {
+								fis.close();
 							}
-
-							fis.close();
 						} else {
 							logCat.info("fs- file not found");
 						}
@@ -136,13 +137,17 @@ public class DbBlobContentTag extends DbBaseHandlerTag implements
 							 * handling here as well
 							 */
 							Blob blob = rs.getBlob(1);
-							BufferedReader br = new BufferedReader(
-									new InputStreamReader(blob
-											.getBinaryStream()));
-							char[] c = new char[1024];
-							int read;
-							while ((read = br.read(c)) != -1)
-								contentBuf.append(c, 0, read);
+							InputStream is = blob.getBinaryStream();
+							try {
+								BufferedReader br = new BufferedReader(
+										new InputStreamReader(is));
+								char[] c = new char[1024];
+								int read;
+								while ((read = br.read(c)) != -1)
+									contentBuf.append(c, 0, read);
+							} finally {
+								is.close();
+							}
 						} catch (NullPointerException e) {
 							// the blob field was empty
 						}

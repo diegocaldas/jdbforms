@@ -1637,13 +1637,15 @@ public class Table {
 	 */
 	public FieldValue[] createOrderFieldValues(String order,
 			HttpServletRequest request, boolean includeKeys) {
-		Vector result = null;
 
+		if (!includeKeys) {
+			return null; // then we've got definitely no over
+		}
+		Vector result = null;
 		if (request != null) {
 			String paramStub = Constants.FIELDNAME_SORT + this.getId();
 			Vector sortFields = ParseUtil.getParametersStartingWith(request,
 					paramStub);
-
 			if (sortFields.size() > 0) {
 				result = createOrderFVFromRequest(request, paramStub,
 						sortFields);
@@ -1658,20 +1660,14 @@ public class Table {
 			if (order == null) {
 				order = getOrderBy();
 			}
-
 			result = createOrderFVFromAttribute(order);
-
 			logCat.debug("@@@ 1");
-
 			for (int i = 0; i < result.size(); i++) {
 				FieldValue fieldVal = (FieldValue) result.elementAt(i);
 				logCat.debug("fieldValue " + fieldVal.toString());
 			}
 		}
 
-		if ((result == null) && !includeKeys) {
-			return null; // then we've got definitely no over
-		}
 
 		// scroll through keys and append to order criteria, if not already
 		// included

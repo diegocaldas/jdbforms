@@ -120,8 +120,7 @@ public abstract class ConnectionProvider
     */
    protected String getLastToken(String str, String tokenSeparator)
    {
-      str.trim();
-
+      str = str.trim();
       return str.substring(str.lastIndexOf(tokenSeparator) + 1, str.length());
    }
    

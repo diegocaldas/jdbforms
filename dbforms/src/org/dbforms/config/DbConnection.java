@@ -218,7 +218,7 @@ public class DbConnection implements javax.sql.DataSource {
     * @param  isPow2 The new isPow2 value
     */
    public void setIsPow2(String isPow2) {
-      pow2 = new Boolean(isPow2).booleanValue();
+      pow2 = "true".equalsIgnoreCase(isPow2);
    }
 
    /**
@@ -593,7 +593,7 @@ public class DbConnection implements javax.sql.DataSource {
    /**
    	* Always throws a SQLException. Not supported.
    	*/
-   public synchronized void setLogWriter(PrintWriter out) throws SQLException {
+   public void setLogWriter(PrintWriter out) throws SQLException {
       throw new SQLException("dbforms.error.not_supported");
    }
 
