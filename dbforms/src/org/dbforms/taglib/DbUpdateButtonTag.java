@@ -128,7 +128,7 @@ public class DbUpdateButtonTag extends DbBaseButtonTag
          }
 
          tagNameBuf.append("_");
-         tagNameBuf.append(table.getId());
+         tagNameBuf.append(getTable().getId());
 
          if (associatedRadio == null)
          {

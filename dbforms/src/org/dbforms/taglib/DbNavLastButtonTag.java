@@ -74,7 +74,7 @@ public class DbNavLastButtonTag extends DbBaseButtonTag
       try
       {
          StringBuffer tagBuf  = new StringBuffer();
-         String       tagName = EventType.EVENT_NAVIGATION_TRANSFER_LAST + table.getId() + "_" + Integer.toString(getUniqueID());
+         String       tagName = EventType.EVENT_NAVIGATION_TRANSFER_LAST + getTable().getId() + "_" + Integer.toString(getUniqueID());
 
          if (followUp != null)
          {

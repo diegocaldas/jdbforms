@@ -185,7 +185,7 @@ public class DbGotoButtonTag extends DbBaseButtonTag
 
       try
       {
-			String       tagName = EventType.EVENT_NAVIGATION_TRANSFER_GOTO + table.getId() + "_" + Integer.toString(getUniqueID());
+			String       tagName = EventType.EVENT_NAVIGATION_TRANSFER_GOTO + ((getTable() != null)?getTable().getId():-1) + "_" + Integer.toString(getUniqueID());
 
          StringBuffer tagBuf = new StringBuffer();
 

@@ -161,7 +161,7 @@ public class HasNoRecordsTag extends DbBaseHandlerTag
     *
     * @param pageContext DOCUMENT ME!
     */
-   public void setPageContext(final javax.servlet.jsp.PageContext pageContext)
+   public void setPageContext(final javax.servlet.jsp.PageContext pageContext) 
    {
       super.setPageContext(pageContext);
       this.errors = (DbFormsErrors) pageContext.getServletContext()

@@ -87,7 +87,7 @@ public class DbNavNewButtonTag extends DbBaseButtonTag
          // Allow navNewButton to specify a table for insertion other than the
          // parent table. (Contrib. John Madsen)		  
          int    tableId = ((destTable != null) && (destTable.length() != 0))
-            ? getConfig().getTableByName(destTable).getId() : table.getId();
+            ? getConfig().getTableByName(destTable).getId() : getTable().getId();
 
          String tagName = EventType.EVENT_NAVIGATION_TRANSFER_NEW + tableId + "_" + Integer.toString(getUniqueID());
 

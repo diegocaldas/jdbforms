@@ -115,7 +115,7 @@ public class DbInsertButtonTag extends DbBaseButtonTag
          StringBuffer tagNameBuf = new StringBuffer();
 
          tagNameBuf.append("ac_insert_");
-         tagNameBuf.append(table.getId());
+         tagNameBuf.append(getTable().getId());
          tagNameBuf.append("_");
          tagNameBuf.append(getParentForm().getPositionPathCore());
 

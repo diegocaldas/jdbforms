@@ -30,6 +30,7 @@ import java.util.Vector;
 import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import org.dbforms.config.DbFormsConfig;
+import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.Constants;
 import org.dbforms.config.Field;
 import org.dbforms.config.FieldTypes;
@@ -40,6 +41,7 @@ import org.dbforms.util.ParseUtil;
 import org.dbforms.util.MessageResources;
 import org.dbforms.util.MessageResourcesInternal;
 import org.dbforms.util.Util;
+import org.apache.log4j.Category;
 
 /**
  * <p>Base class for db-tags that render form data-elements capable of including JavaScript
@@ -56,7 +58,8 @@ import org.dbforms.util.Util;
  * @author Joe Peer (modified and extended this class for use in DbForms-Project)
  */
 public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
-   private DbFormsConfig config;
+   private static Category logCat = Category.getInstance(DbBaseHandlerTag.class.getName());
+
    private Field field;
    private String fieldName;
    private String defaultValue;
@@ -196,16 +199,6 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
     */
    public void setFormat(Format format) {
       this.format = format;
-   }
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param pageContext DOCUMENT ME!
-    */
-   public void setPageContext(final javax.servlet.jsp.PageContext pageContext) {
-      super.setPageContext(pageContext);
-      config = (DbFormsConfig) pageContext.getServletContext().getAttribute(DbFormsConfig.CONFIG);
    }
 
    /**
@@ -406,7 +399,12 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
     * @return
     */
    public DbFormsConfig getConfig() {
-      return config;
+      try {
+         return DbFormsConfigRegistry.instance().lookup();
+      } catch (Exception e) {
+         logCat.error(e);
+         return null;
+      }
    }
 
    /**

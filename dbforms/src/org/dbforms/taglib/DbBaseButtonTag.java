@@ -61,7 +61,7 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag
    protected String followUpOnError;
 
    /** DOCUMENT ME! */
-   protected Table table;
+   private Table table;
 
    /** DOCUMENT ME! */
    protected String flavor; // the user desides which html tags/constructions should be used to render this tag
@@ -511,5 +511,12 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag
 		border = null;
 		super.doFinally();
 	}
+
+   /**
+    * @return
+    */
+   public Table getTable() {
+      return table;
+   }
 
 }
