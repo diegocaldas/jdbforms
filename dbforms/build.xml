@@ -345,18 +345,20 @@
     <fixcrlf srcDir="${cvs.workingdir}" eol="crlf" includes="${textfiles.patterns}" />
   </target>
 
-   <taskdef name="jalopy"
-            classname="de.hunsicker.jalopy.plugin.ant.AntPlugin">
-     <classpath>
-       <fileset dir="${env.JALOPY_HOME}/lib">
-         <include name="*.jar" />
-       </fileset>
-     </classpath>
-   </taskdef>
 
 
   <target name="format">
     <echo message="formats the sources" />
+      <taskdef name="jalopy"
+               classname="de.hunsicker.jalopy.plugin.ant.AntPlugin">
+        <classpath>
+          <fileset dir="${env.JALOPY_HOME}/lib">
+            <include name="*.jar" />
+          </fileset>
+        </classpath>
+      </taskdef>
+
+
     <!--
 
       Invokes Jalopy as follows:
