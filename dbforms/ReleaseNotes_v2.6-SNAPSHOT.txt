@@ -1,0 +1,32 @@
+Release Notes for DbForms Version 2.6,  xxxx-xx-xx
+
+Contents:
+1)      About this release
+2)      Details about enhancements and changes
+2-1)  Remove the formatter attribute
+
+
+1) About this release
+---------------------
+
+DbForms 2.6 is the next release to be labelled production/stable. It
+is the result of further development of the 2.5-SNAPSHOT
+releases. Changes made in those releases are included and described
+below.
+
+Please report any problems or comments to the DbForms mailing list:
+
+    jdbforms-interest@lists.sourceforge.net
+
+This document summarizes the changes since release 2.4 that are of
+interest to end users. Note that there have also been several internal
+enhancements to DbForms which are documented only within the
+source code (e.g. code cleanup, improved algorithms).
+
+
+2)    Details about enhancements and changes
+--------------------------------------------
+
+2-1)  Remove the formatter attribute
+--------------------------------------------
+The formatter attribute has been deprecated in version 2.5 and is removed now.

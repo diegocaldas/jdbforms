@@ -94,8 +94,6 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
 
 	private Field field;
 
-	private Format formatter;
-
 	// n.k. Support for CustomFormatter attribute - neal katz
 	private String customFormatter = null;
 
@@ -231,25 +229,13 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
 	/**
 	 * formatting a value
 	 * 
-	 * @param formatter
-	 *            DOCUMENT ME!
-	 */
-	public void setFormatter(Format formatter) {
-		this.formatter = formatter;
-	}
-
-	/**
-	 * formatting a value
-	 * 
 	 * @return DOCUMENT ME!
 	 */
-	public Format getFormatter() {
-		Format res = formatter;
-
-		if ((res == null) && (getField() != null)) {
+	protected Format getFormatter() {
+		Format res = null;
+		if (getField() != null) {
 			res = getField().getFormat(pattern, getLocale());
 		}
-
 		return res;
 	}
 
@@ -413,7 +399,6 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
 	 * DOCUMENT ME!
 	 */
 	public void doFinally() {
-		formatter = null;
 		field = null;
 		defaultValue = null;
 		pattern = null;

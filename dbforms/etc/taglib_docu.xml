@@ -1084,19 +1084,6 @@
 					</info>
 				</attribute>
 				<attribute>
-					<name>formatter</name>
-					<required>false</required>
-					<rtexprvalue>true</rtexprvalue>
-					<type>java.text.Format</type>
-					<info>
-						DEPRECATED! WILL BE REMOVED IN NEXT VERSION!
-						<p>
-							java.text.Format object used to format the
-							tag value
-						</p>
-					</info>
-				</attribute>
-				<attribute>
 					<name>customFormatter</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
@@ -1171,66 +1158,6 @@
 						check the Java API documentation for those two
 						classes: java.text.DecimalFormat and
 						java.text.SimpleDateFormat.
-					</info>
-				</attribute>
-				<attribute>
-					<name>formatter</name>
-					<required>false</required>
-					<rtexprvalue>true</rtexprvalue>
-					<type>java.text.Format</type>
-					<info>
-						DEPRECATED! WILL BE REMOVED IN NEXT VERSION!
-						<p>
-							an instance of java.text.Format or any
-							subclass of it. This instance is used to
-							force DbForms to print out the field's value
-							using a certain formatting style. This is
-							done internally by invoking method
-							&quot;format(Object)&quot; of the provided
-							Format object.
-						</p>
-						<p>
-							hint: the class java.text.DateFormat is a
-							ready-to-use Date formatter. you can aquire
-							an instance of DateFormat by writing:
-						</p>
-						<pre>
-							<span lang="DE" style="font-size:8.0pt;">
-								DateFormat df = DateFormat.
-							</span>
-						</pre>
-						<pre>
-							<span lang="DE" style="font-size:8.0pt;">
-								getDateInstance(DateFormat.SHORT);
-							</span>
-						</pre>
-						<p>
-							even more convenient to use, is the class
-							java.text.SimpleDateFormat:
-						</p>
-						<pre>
-							SimpleDateFormat sdf = new
-							SimpleDateFormat(&quot;yyyy-MM-dd&quot;);
-
-							Format Pattern Result ---------------------
-							&quot;yyyy.MM.dd G 'at' hh:mm:ss z&quot;
-							1996.07.10 AD at 15:08:56 PDT
-
-							&quot;EEE, MMM d, ''yy&quot; Wed, July 10,
-							'96
-
-							&quot;h:mm a&quot; 12:08 PM
-
-							&quot;hh 'o''clock' a, zzzz&quot; 12 o'clock
-							PM, Pacific Daylight Time
-
-							&quot;K:mm a, z&quot; 0:00 PM, PST
-
-							&quot;yyyyy.MMMMM.dd GGG hh:mm aaa&quot;
-							1996.July.10 AD 12:08 PM
-
-							(examples taken from Java API doc)
-						</pre>
 					</info>
 				</attribute>
 				<attribute>
@@ -1499,24 +1426,6 @@
 						check the Java API documentation for those two
 						classes: java.text.DecimalFormat and
 						java.text.SimpleDateFormat.
-					</info>
-				</attribute>
-				<attribute>
-					<name>formatter</name>
-					<required>false</required>
-					<rtexprvalue>true</rtexprvalue>
-					<type>java.text.Format</type>
-					<info>
-						DEPRECATED! WILL BE REMOVED IN NEXT VERSION!
-						<p>
-							an instance of java.text.Format or any
-							subclass of it. This instanceis used to
-							force DbForms to print out the field's value
-							using a certain formatting style.this is
-							done internally by invoking method
-							&quot;format(Object)&quot; of the
-							providedFormat object
-						</p>
 					</info>
 				</attribute>
 				<attribute>
@@ -1852,68 +1761,6 @@
 						check the Java API documentation for those two
 						classes: java.text.DecimalFormat and
 						java.text.SimpleDateFormat.
-					</info>
-				</attribute>
-				<attribute>
-					<name>formatter</name>
-					<required>false</required>
-					<rtexprvalue>true</rtexprvalue>
-					<type>java.text.Format</type>
-					<info>
-						DEPRECATED! WILL BE REMOVED IN NEXT VERSION!
-						<p>
-							an instance of java.text.Format or any
-							subclass of it. This instanceis used
-							<br />
-							to force DbForms to print out the field's
-							value using a certain formatting style.this
-							<br />
-							is done internally by invoking method
-							&quot;format(Object)&quot; of the
-							providedFormat
-							<br />
-							object
-						</p>
-						<p>
-							<b>hint:</b>
-							the class java.text.DateFormat is a
-							ready-to-use Date formatter.
-							<br />
-							you can aquire an instance of DateFormat by
-							writing:
-							<pre>
-								DateFormat df =
-								DateFormat.getDateInstance(DateFormat.SHORT);
-							</pre>
-						</p>
-						<p>
-							even more convenient to use is the class
-							java.text.SimpleDateFormat:
-							<pre>
-								SimpleDateFormat sdf = new
-								SimpleDateFormat(&quot;yyyy-MM-dd&quot;);
-
-								Format Pattern Result
-								--------------------- &quot;yyyy.MM.dd G
-								'at' hh:mm:ss z&quot; 1996.07.10 AD at
-								15:08:56 PDT
-
-								&quot;EEE, MMM d, ''yy&quot; Wed, July
-								10, '96
-
-								&quot;h:mm a&quot; 12:08 PM
-
-								&quot;hh 'o''clock' a, zzzz&quot; 12
-								o'clock PM, Pacific Daylight Time
-
-								&quot;K:mm a, z&quot; 0:00 PM, PST
-
-								&quot;yyyyy.MMMMM.dd GGG hh:mm aaa&quot;
-								1996.July.10 AD 12:08 PM
-
-								(examples taken from Java API doc)
-							</pre>
-						</p>
 					</info>
 				</attribute>
 				<attribute>
@@ -2273,24 +2120,6 @@
 					</info>
 				</attribute>
 				<attribute>
-					<name>formatter</name>
-					<required>false</required>
-					<rtexprvalue>true</rtexprvalue>
-					<type>java.text.Format</type>
-					<info>
-						DEPRECATED! WILL BE REMOVED IN NEXT VERSION!
-						<p>
-							an instance of java.text.Format or any
-							subclass of it. This instanceis used to
-							force DbForms to print out the field's value
-							using a certain formatting style.this is
-							done internally by invoking method
-							&quot;format(Object)&quot; of the
-							providedFormat object
-						</p>
-					</info>
-				</attribute>
-				<attribute>
 					<name>customFormatter</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
@@ -2640,24 +2469,6 @@
 						check the Java API documentation for those two
 						classes: java.text.DecimalFormat and
 						java.text.SimpleDateFormat.
-					</info>
-				</attribute>
-				<attribute>
-					<name>formatter</name>
-					<required>false</required>
-					<rtexprvalue>true</rtexprvalue>
-					<type>java.text.Format</type>
-					<info>
-						DEPRECATED! WILL BE REMOVED IN NEXT VERSION!
-						<p>
-							an instance of java.text.Format or any
-							subclass of it. This instanceis used to
-							force DbForms to print out the field's value
-							using a certain formatting style.this is
-							done internally by invoking method
-							&quot;format(Object)&quot; of the
-							providedFormat object
-						</p>
 					</info>
 				</attribute>
 				<attribute>

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry output="examples/bookstore/WEB-INF/classes" kind="src" path="examples/bookstore/WEB-INF/src"/>
-	<classpathentry output="examples/bookstore/WEB-INF/classes" kind="src" path="examples/bugtracker/WEB-INF/src"/>
-	<classpathentry output="examples/bookstore/WEB-INF/classes" kind="src" path="src"/>
-	<classpathentry output="examples/bookstore/WEB-INF/classes" kind="src" path="tests/test"/>
-	<classpathentry output="examples/bookstore/WEB-INF/classes" kind="src" path="tests/test-cactus"/>
+	<classpathentry kind="src" path="examples/bookstore/WEB-INF/src"/>
+	<classpathentry kind="src" path="examples/bugtracker/WEB-INF/src"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="tests/test"/>
+	<classpathentry kind="src" path="tests/test-cactus"/>
 	<classpathentry kind="lib" path="dependend/cactus-13-1.7dev20041109.jar"/>
 	<classpathentry kind="lib" path="dependend/commons-beanutils-1.6.jar"/>
 	<classpathentry kind="lib" path="dependend/commons-collections-2.1.jar"/>
@@ -26,8 +26,6 @@
 	<classpathentry kind="lib" path="dependend/oro-2.0.8.jar"/>
 	<classpathentry kind="lib" path="dependend/poi-2.0-final-20040126.jar"/>
 	<classpathentry kind="lib" path="dependend/protomatter-1.1.8-pre5.jar"/>
-	<classpathentry kind="lib" path="dependend/servletapi2.4/jsp-api-2.0-20040521.jar"/>
-	<classpathentry kind="lib" path="dependend/servletapi2.4/servletapi-2.4-20040521.jar"/>
 	<classpathentry kind="lib" path="dependend/xalan-2.5.1.jar"/>
 	<classpathentry kind="lib" path="dependend/xercesImpl-2.6.0.jar"/>
 	<classpathentry kind="lib" path="dependend/xmlParserAPIs-2.2.1.jar"/>
@@ -49,7 +47,8 @@
 	<classpathentry kind="lib" path="dependend/jcommon-0.9.6.jar"/>
 	<classpathentry kind="lib" path="dependend/jfreechart-0.9.21.jar"/>
 	<classpathentry sourcepath="D:/Projekte/webapps/cewolf-0.10.1/src" kind="lib" path="dependend/cewolf-0.10.1.jar"/>
-	<classpathentry kind="lib" path="dependend/jasperreports-0.6.4.jar"/>
-	<classpathentry kind="lib" path="dependend/jdt-compiler.jar"/>
+	<classpathentry sourcepath="D:/Projekte/webapps/jasperreports-0.6.4/src" kind="lib" path="dependend/jasperreports-0.6.4.jar"/>
+	<classpathentry kind="lib" path="examples/bookstore/WEB-INF/lib/pow2toolkit-1.0.jar"/>
+	<classpathentry kind="lib" path="examples/bookstore/WEB-INF/lib/pow2webgui-1.0.jar"/>
 	<classpathentry kind="output" path="examples/bookstore/WEB-INF/classes"/>
 </classpath>
