@@ -91,7 +91,7 @@ public class DbLabelTag extends DbBaseHandlerTag
                        .write(fieldValue);
          } else {
             pageContext.getOut()
-                       .write("<span " + s + "\">" + fieldValue + "</span>");
+                       .write("<span " + s +">" + fieldValue + "</span>");
          }
       } catch (java.io.IOException ioe) {
          // better to KNOW what happended !
