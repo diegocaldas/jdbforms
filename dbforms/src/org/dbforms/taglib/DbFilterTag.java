@@ -490,7 +490,6 @@ public class DbFilterTag extends TagSupportWithScriptHandler
                                                               this, 
                                                               DbNavReloadButtonTag.class);
             btn.getButton().setCaption(setCaption);
-            ((DbNavReloadButtonTag)btn.getButton()).setShowAlwaysInFooter("true");
             buf.append(btn.render());
          }
 
@@ -500,7 +499,6 @@ public class DbFilterTag extends TagSupportWithScriptHandler
                                                               this, 
                                                               DbNavReloadButtonTag.class);
             btn.getButton().setCaption(unsetCaption);
-            ((DbNavReloadButtonTag)btn.getButton()).setShowAlwaysInFooter("true");
             btn.getButton()
                .setOnClick("document.dbform." + filterName + FLT_SEL
                            + ".selectedIndex = -1;");

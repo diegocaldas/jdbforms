@@ -38,8 +38,6 @@ import org.dbforms.event.eventtype.EventType;
  */
 public class DbNavReloadButtonTag extends DbBaseButtonTag
 {
-   /** Holds value of property showAlwaysInFooter. */
-   private String showAlwaysInFooter = "false";
 
    /**
     * DOCUMENT ME!
@@ -54,8 +52,7 @@ public class DbNavReloadButtonTag extends DbBaseButtonTag
 		super.doStartTag();
 
       if (getParentForm().getFooterReached()
-               && ResultSetVector.isNull(getParentForm().getResultSetVector())
-               && "false".equalsIgnoreCase(showAlwaysInFooter))
+               && ResultSetVector.isNull(getParentForm().getResultSetVector()) )
       {
          // 20030521 HKK: Bug fixing, thanks to Michael Slack! 
          return SKIP_BODY;
@@ -98,23 +95,5 @@ public class DbNavReloadButtonTag extends DbBaseButtonTag
       }
    }
 
-   /** Getter for property showAlwaysInFooter.
-    * @return Value of property showAlwaysInFooter.
-    *
-    */
-   public String getShowAlwaysInFooter()
-   {
-      return this.showAlwaysInFooter;
-   }
-
-
-   /** Setter for property showAlwaysInFooter.
-    * @param showAlwaysInFooter New value of property showAlwaysInFooter.
-    *
-    */
-   public void setShowAlwaysInFooter(String showAlwaysInFooter)
-   {
-      this.showAlwaysInFooter = showAlwaysInFooter;
-   }
 
 }
