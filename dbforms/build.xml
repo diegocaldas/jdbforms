@@ -155,7 +155,24 @@ Happy coding!
     </target>
 
     <!-- generate PDF reference documentation from taglib-docu using XSL transformation and FOP -->
-    <target name="generate_taglib_pdfdocs"
+    <!-- fisrt, check if the FOP_HOME env var points to a directory -->
+    <target name="generate_taglib_pdfdocs_check">
+      <condition property="pdf.ok">
+        <available file="${env.FOP_HOME}" />        
+      </condition>
+    </target>
+
+    <!-- ... if not, display this error message -->
+    <target name="generate_taglib_pdfdocs_msg" 
+            unless="pdf.ok"
+            depends="generate_taglib_pdfdocs_check">
+      <echo message="cannot build the PDF documentation. Please install FOP (http://xml.apache.org/fop) and set the FOP_HOME env var" />
+    </target>
+
+    <!-- this is the real PDF task -->
+    <target name    = "generate_taglib_pdfdocs"
+            depends = "generate_taglib_pdfdocs_msg"
+            if      = "pdf.ok"
             description="--> Generate PDF reference documentation from taglib-docu.xml (FOP_HOME must be set)" >
  
         <echo message="begin xsl translation to generate xsl-fo   "/>
