@@ -71,14 +71,14 @@
 		isJndi = "true"
 	/>
 	-->
-
+	<!--
 	<dbconnection
 		name   = "jdbc:poolman://oracle_emp"
 		isJndi = "false"
 		conClass  = "com.codestudio.sql.PoolMan"
 	/>
+	-->	
 
-<!--
 	<dbconnection
 		name   = "jdbc:mysql://localhost/dbformstest"
 		isJndi = "false"
@@ -86,6 +86,6 @@
 		username = "sa"
 		password  = ""
 	/>
--->	
+
 
 </dbforms-config>
