@@ -23,12 +23,12 @@
 
 package org.dbforms.util;
 
+import org.apache.commons.fileupload.FileItem;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
-import org.apache.commons.fileupload.FileItem;
 
 
 
@@ -39,10 +39,11 @@ import org.apache.commons.fileupload.FileItem;
  *
  * @author Joe Peer
  */
-public class FileHolder {
+public class FileHolder implements java.io.Serializable {
    // buffer to hold data till its use (used if memory buffering choosen)
    private FileItem fileItem;
-   private String fileName;
+   private String   fileName;
+
    /**
     * Constructor - takes descriptive data (fileName, contentType) -
     * inputstream, coming from servletinputstream - we must read it out _now_
@@ -50,18 +51,16 @@ public class FileHolder {
     * tempfile (not implemented yet)
     *
     * @param fileName DOCUMENT ME!
-    * @param contentType DOCUMENT ME!
-    * @param is DOCUMENT ME!
-    * @param toMemory DOCUMENT ME!
-    * @param maxSize DOCUMENT ME!
+    * @param fileItem DOCUMENT ME!
     *
     * @throws IOException DOCUMENT ME!
     * @throws IllegalArgumentException DOCUMENT ME!
     */
-   public FileHolder(String fileName, FileItem fileItem)
+   public FileHolder(String   fileName,
+                     FileItem fileItem)
               throws IOException, IllegalArgumentException {
-       this.fileName = fileName;
-       this.fileItem = fileItem;
+      this.fileName = fileName;
+      this.fileItem = fileItem;
    }
 
    /**
@@ -78,7 +77,7 @@ public class FileHolder {
     * <p>
     * Returns the length of the file representated by this FileHolder
     * </p>
-    *
+    * 
     * <p>
     * fileLength gets determinated either during "bufferInMemory" or
     * "bufferInFile" (not impl. yet)
@@ -120,6 +119,8 @@ public class FileHolder {
     * DOCUMENT ME!
     *
     * @return DOCUMENT ME!
+    *
+    * @throws IOException DOCUMENT ME!
     */
    public InputStream getInputStreamFromBuffer() throws IOException {
       return fileItem.getInputStream();
@@ -136,31 +137,25 @@ public class FileHolder {
     */
    public void writeBufferToFile(File fileOrDirectory)
                           throws IOException {
-      OutputStream fileOut = null;
-      try {
-         // Only do something if this part contains a file
-         if (fileName != null) {
-            // Check if user supplied directory
-            File file;
+      // Only do something if this part contains a file
+      if (fileName != null) {
+         // Check if user supplied directory
+         File file;
 
-            if (fileOrDirectory.isDirectory()) {
-               // Write it to that dir the user supplied,
-               // with the filename it arrived with
-               file = new File(fileOrDirectory, fileName);
-            } else {
-               // Write it to the file the user supplied,
-               // ignoring the filename it arrived with
-               file = fileOrDirectory;
-            }
-            try {
-            	fileItem.write(file);
-            } catch (Exception e) {
-			   throw new IOException(e.getMessage());
-            }
+         if (fileOrDirectory.isDirectory()) {
+            // Write it to that dir the user supplied,
+            // with the filename it arrived with
+            file = new File(fileOrDirectory, fileName);
+         } else {
+            // Write it to the file the user supplied,
+            // ignoring the filename it arrived with
+            file = fileOrDirectory;
          }
-      } finally {
-         if (fileOut != null) {
-            fileOut.close();
+
+         try {
+            fileItem.write(file);
+         } catch (Exception e) {
+            throw new IOException(e.getMessage());
          }
       }
    }

@@ -41,7 +41,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author Joachim Peer
  */
-public class GrantedPrivileges {
+public class GrantedPrivileges implements java.io.Serializable {
    private static Log logCat = LogFactory.getLog(GrantedPrivileges.class
                                                  .getName()); // logging category for this class
 
