@@ -25,7 +25,6 @@ package org.dbforms.event;
 
 import org.dbforms.config.DbEventInterceptor;
 import org.dbforms.config.DbEventInterceptorData;
-import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.Interceptor;
 import org.dbforms.config.Table;
 
@@ -52,7 +51,6 @@ public class TestInterceptor extends AbstractTestCase {
                  interceptor.getClassName().equals("interceptors.InterceptorTest"));
 
       Table table = new Table();
-      table.setConfig(new DbFormsConfig(null));
       table.addInterceptor(interceptor);
 
       int i = table.getInterceptors()
@@ -107,7 +105,6 @@ public class TestInterceptor extends AbstractTestCase {
                  interceptor.getClassName().equals("interceptors.InterceptorTestClassic"));
 
       Table table = new Table();
-      table.setConfig(new DbFormsConfig(null));
       table.addInterceptor(interceptor);
 
       int i = table.getInterceptors()
