@@ -844,7 +844,8 @@ public class Table
         stmt.setMaxRows(maxRows); // important when quering huge tables
         rs = stmt.executeQuery(query);
         result = new ResultSetVector(fieldsToSelect, rs);
-        rs.close();
+		// 20021115-HKK: statement is closed in ResultSetVector()
+        // rs.close();
         stmt.close();
         logCat.info("rsv size=" + result.size());
 
