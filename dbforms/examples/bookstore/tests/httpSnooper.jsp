@@ -53,7 +53,7 @@ function toggleVisibility(id, NNtype, IEtype, WC3type)
 <br><br>
 <a href="javascript:void(0);" onClick="toggleVis('layer1');">HTTP debug</a>
 
-<DIV id="layer1" style="visibility: hidden">
+<div id="layer1" style="visibility: hidden">
   <table width="100%" border="0">
   <tr>
     <td>
@@ -61,4 +61,4 @@ function toggleVisibility(id, NNtype, IEtype, WC3type)
     </td>
   </tr>
   </table>
-</DIV>
+</div>
