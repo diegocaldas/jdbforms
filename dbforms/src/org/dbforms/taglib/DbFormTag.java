@@ -30,6 +30,8 @@ import java.util.Enumeration;
 import java.sql.SQLException;
 import java.sql.Connection;
 import java.io.IOException;
+import java.io.StringWriter;
+import java.io.PrintWriter;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.PageContext;
@@ -2908,7 +2910,10 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
     */
    public void doCatch(Throwable t) throws Throwable
    {
-      logCat.error("doCatch called - " + t.toString());
+	  StringWriter sw = new StringWriter();
+	  PrintWriter pw = new PrintWriter(sw);
+	  t.printStackTrace(pw);
+	  logCat.error("DbFormTag.doCatch called - " + t.toString() + "\n" + sw.toString());
       throw t;
    }
 }
