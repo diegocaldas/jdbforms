@@ -123,8 +123,6 @@ public class DbFilterConditionTag extends BodyTagSupport implements TryCatchFina
                 + values);
         /**
          * substitute ? with corresponding value in list 
-         *
-         * @todo search for \? to let use the ? char in condition
          */
         int p1 = 0;
         int p2 = filterCondition.indexOf('?', p1);

@@ -151,9 +151,6 @@ public class DbFilterValueTag extends BodyTagSupport implements DataContainer, T
         }
         else if (FLT_VALUETYPE_TIMESTAMP.equalsIgnoreCase(type))
         {
-            /** 
-             * @todo better handling of  timestamp format
-             */
             format = new SimpleDateFormat();
         }
         return format;
@@ -424,7 +421,6 @@ public class DbFilterValueTag extends BodyTagSupport implements DataContainer, T
         if (state.label != null)
             buf.append("<b>" + state.label + "</b>\n");
 
-        /// @todo better handling of timestamp
         if (state.type.equalsIgnoreCase(FLT_VALUETYPE_TEXT)
             || state.type.equalsIgnoreCase(FLT_VALUETYPE_NUMERIC))
         {

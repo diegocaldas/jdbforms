@@ -103,7 +103,7 @@ public class NavNextEvent extends NavigationEvent
 	 * @exception SQLException if any error occurs
 	 *
 	 * @todo change behavior to navLast if navNext finds no data
-         * @todo make a option to allow original "navNew" behavior if desired
+    * @todo make a option to allow original "navNew" behavior if desired
 	 */
    public ResultSetVector processEvent(FieldValue[] childFieldValues,
       FieldValue[] orderConstraint, String sqlFilter, int count, String firstPosition,
@@ -121,10 +121,6 @@ public class NavNextEvent extends NavigationEvent
       rsv = table.doConstrainedSelect(table.getFields(), childFieldValues,
             orderConstraint, sqlFilter, Constants.COMPARE_EXCLUSIVE, count, con);
 
-      /**
-       * @todo change behavior to navLast if navNext finds no data
-       * @todo make a option to allow original "navNew" behavior if desired
-       */
       if (rsv.size() == 0)
       {
          logCat.info("==>NavNextLastEvent");

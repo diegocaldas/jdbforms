@@ -256,7 +256,6 @@ public class DbFilterTag extends BodyTagSupport implements TryCatchFinally
      * here we read information from nested tags and we render output to the page. 
      * 
      * @see javax.servlet.jsp.tagext.IterationTag#doAfterBody()
-     * @todo must bodyContent be cleared?
      */
     public int doAfterBody() throws JspException
     {

@@ -2076,10 +2076,6 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
       {
          String searchFieldName = (String) searchFieldNames.elementAt(i);
 
-         /** 
-          * @todo Whats when there is more then onesearch field whith the same name?
-          * @todo Maybe we should parse all of them ....
-          */
          String aSearchFieldValue = ParseUtil.getParameter(request,
                searchFieldName);
 
