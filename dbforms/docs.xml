@@ -178,12 +178,13 @@
     </style>
     <replace file="${taglibdoc.dir}/DbFormsTags_TocAlph.html" token="CURRENT_VERSION" value="${dbforms.version}" />
 
+<!--
     <java jar="${basedir}/usersguide_src/docbook_tools/tlddoc.jar" fork="true" >
        <arg value="-d" />
        <arg value="${taglibdoc.dir}" />
        <arg value="${dist.dir}/dbforms.tld"  />
     </java>
-
+-->
     <echo message="end of xsl translation "/>
   </target>
 

@@ -144,16 +144,6 @@
     </ant:copy>
   </preGoal>
 
-  <!-- to start the appserver before junit test starts. So httpclient tests could be done!
-  <preGoal name="test:test">
-     <attainGoal name="dbforms:startweb" />
-  </preGoal>
-
-  <postGoal name="test:test">
-     <attainGoal name="dbforms:stopweb" />
-  </postGoal>
- -->
- 
   <!-- We have our own ChangeLog file! -->
   <postGoal name="changes:report">
     <ant:echo message="build changes.xml" />
@@ -176,6 +166,8 @@
 
   <preGoal name="site:run-reports">
      <ant:delete dir="${maven.appserver.conf.dir}/webapps/bookstore" />
+     <ant:echo message="generate dbforms documentation" />
+     <attainGoal name="dbforms:doc" />
   </preGoal>
 
   <postGoal name="site:run-reports">
