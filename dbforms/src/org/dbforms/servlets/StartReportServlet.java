@@ -277,6 +277,11 @@ public class StartReportServlet extends HttpServlet
                                                             "PDF");
 
                // create the output stream
+			   response.setHeader("Expires", "Mon, 26 Jul 1997 05:00:00 GMT");
+			   response.setHeader("Last-Modified", "Tue, 15 Nov 1994 12:45:26 GMT");
+			   response.setHeader("Pragma", "no-cache");
+			   response.setHeader("Cache-Control", "no-cache");
+
                if ("PDF".equals(outputFormat))
                {
                   response.setContentType("application/pdf");

@@ -159,7 +159,7 @@ public class ConfigServlet extends HttpServlet
 
          logCat = Logger.getLogger(ConfigServlet.class.getName());
          // logging category for this class
-         logCat.info("### LOGGING INITALIZED, USING URL: " + usingURL + " ###");
+         logCat.info("### LOGGING INITALIZED, USING URL: " + usingURL + " ###" + configurationStr);
       }
       else
       {
