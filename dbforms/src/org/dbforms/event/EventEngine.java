@@ -80,15 +80,12 @@ public class EventEngine
     private Vector parseInvolvedTables()
     {
         String[] invTables = ParseUtil.getParameterValues(request, "invtable");
-
         // in empty forms, for example, we don't have any involved tables..!
         if (invTables == null)
         {
             return null;
         }
-
         Vector result = new Vector();
-
         for (int i = 0; i < invTables.length; i++)
         {
             int tableIndex = Integer.parseInt(invTables[i]);
@@ -96,7 +93,6 @@ public class EventEngine
 
             result.addElement(t);
         }
-
         return result;
     }
 
@@ -128,11 +124,20 @@ public class EventEngine
         WebEvent e = null;
         String action = ParseUtil.getFirstParameterStartingWith(request, "ac_");
         String customEvent = request.getParameter("customEvent");
-
         if ((action == null) && (customEvent != null))
         {
             action = customEvent;
         }
+		// NOOP EVENT
+		//
+		// family: web event
+		if (action.equals(""))
+		{
+			logCat.info("##### N O O P   ELEMENT ######");
+			e = new NoopEvent(ParseUtil.getEmbeddedStringAsInteger(action, 2, '_'), request, config);
+			initializeWebEvent(e);
+			return e;
+		}
 
         // RELOAD EVENT
         //
@@ -144,38 +149,23 @@ public class EventEngine
         if (action.startsWith("re_"))
         {
             logCat.info("##### RELOAD  EVENT ######");
-            e = new ReloadEvent();
+            e = new ReloadEvent(ParseUtil.getEmbeddedStringAsInteger(action, 2, '_'), request, config);
             initializeWebEvent(e);
-
             return e;
         }
 
-        // NOOP EVENT
-        //
-        // family: web event
-        if (action.equals(""))
-        {
-            logCat.info("##### N O O P   ELEMENT ######");
-            e = new NoopEvent();
-            initializeWebEvent(e);
-
-            return e;
-        }
 
         // make the image button data (if any) look like a submit button;
         action = getImageButtonAction(action);
-
         // get the EventType class and identify the event type
         // and use the related factory class to create the event;
         EventType eventType = EventTypeUtil.getEventType(action);
-
         switch (eventType.getEventGroup())
         {
             case EventType.EVENT_GROUP_DATABASE:
             {
                 logCat.info("::generatePrimaryEvent - generating a database event");
                 e = dbEventFactory.createEvent(action, request, config);
-
                 break;
             }
 
@@ -183,21 +173,17 @@ public class EventEngine
             {
                 logCat.info("::generatePrimaryEvent - generating a navigation event");
                 e = navEventFactory.createEvent(action, request, config);
-
                 break;
             }
-
             default:
             {
                 logCat.error("::generatePrimaryEvent - WARNING: generating NO event. Why ?");
-
                 break;
             }
         }
 
         // setting the followUp attributes for the generated event
         setEventFollowUp(e, action);
-
         return e;
     }
 
@@ -217,20 +203,11 @@ public class EventEngine
         boolean collissionDanger = false;
 
         // first of all, we check if there is some real potential for collisions in the "to exclude"-event
-        if (exclude instanceof UpdateEvent || exclude instanceof DeleteEvent)
+        if (exclude instanceof DatabaseEvent)
         {
             collissionDanger = true;
             excludeTableId = exclude.getTableId();
-
-            //#checkme - this style of OOP doesn't look not very well
-            if (exclude instanceof UpdateEvent)
-            {
-                excludeKeyId = ((UpdateEvent) exclude).getKeyId();
-            }
-            else
-            {
-                excludeKeyId = ((DeleteEvent) exclude).getKeyId();
-            }
+			   excludeKeyId = ((DatabaseEvent) exclude).getKeyId();
         }
 
         for (int i = 0; i < vAc.size(); i++)
@@ -256,13 +233,12 @@ public class EventEngine
 
                     if (!collissionDanger || (excludeTableId != tableId) || !keyId.equals(excludeKeyId))
                     {
-                        UpdateEvent e = dbEventFactory.createUpdateEvent(tableId, keyId, request, config);
+                        DatabaseEvent e = dbEventFactory.createUpdateEvent(tableId, keyId, request, config);
                         result.addElement(e);
                     }
                 }
             }
         }
-
         return result.elements();
     }
 

@@ -83,7 +83,7 @@ public class DbInsertButtonTag extends DbBaseButtonTag
 
         logCat.info("pos DbInsertButtonTag 1");
 
-        if ( !"true".equalsIgnoreCase(showAlways) && !(parentForm.getFooterReached() && ResultSetVector.isEmptyOrNull(parentForm.getResultSetVector())) )
+        if ( !"true".equalsIgnoreCase(showAlways) && !(parentForm.getFooterReached() && Util.isNull(parentForm.getResultSetVector())) )
         {
             return EVAL_PAGE;
         }
