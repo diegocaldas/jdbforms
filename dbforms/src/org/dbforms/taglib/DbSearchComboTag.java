@@ -246,9 +246,9 @@ public class DbSearchComboTag extends DbSearchTag
 
             if (Util.isNull(selectedIndex))
             {
-               isSelected = "true".equals(
+               isSelected = "true".equalsIgnoreCase(
                                      org.dbforms.util.ParseUtil.getEmbeddedStringWithoutDots(
-                                              customEntry, 2, ','));
+                                              customEntry, 2, ',').trim());
             }
 
             tagBuf.append(generateTagString(aKey, aValue, isSelected));
