@@ -44,6 +44,7 @@
   <property name="taglibdoc.dir"  value="${doc.dir}/taglib"/>
   <property name="build.dir"      value="${UsersGuide.dir}/build"/>
   <property name="tools.dir"      value="${UsersGuide.dir}/docbook_tools"/>
+  <property name="dist.dir" 	  value="${cvs.workingdir}/dist" />
 
   <!-- Maven integration stuff -->
   <property name="maven.target"   value="${basedir}/target"/>  
@@ -136,11 +137,18 @@
     <mkdir dir="${out.dir}/html/images/figures"/>
   </target>
 
+  <!-- generate taglib descriptors from taglib-docu using XSL transformation -->
+  <target name="generate_taglib">
+    <echo message="begin xsl translation" />
+    <style style="${etc.dir}/tld.xsl" in="${etc.dir}/taglib_docu.xml" out="temp/dbforms.tld" />
+    <style style="${etc.dir}/pretty-printing.xsl" in="temp/dbforms.tld" out="${dist.dir}/dbforms.tld" />
+    <echo message="end of xsl translation " />
+  </target>
 
   <!-- 
      -  generate HTM reference documentation from taglib-docu using XSL transformation 
      -->
-  <target name="generate_taglib_htmldocs">
+  <target name="generate_taglib_htmldocs" depends="generate_taglib">
 
     <!-- Generate  HTML reference documentation within doc/html from taglib-docu.xml -->
     <echo message="begin xsl translation to generate HTML documentation  "/>
@@ -165,6 +173,11 @@
            out   = "${taglibdoc.dir}/DbFormsTags_TocAlph.html">
       <param name="sortTagsAlphabetically" expression="true"/>
     </style>
+    <java jar="${basedir}/usersguide_src/docbook_tools/tlddoc.jar" fork="true" >
+       <arg value="-d" />
+       <arg value="${taglibdoc.dir}" />
+       <arg value="${basedir}/dist/dbforms.tld"  />
+    </java>
     <echo message="end of xsl translation "/>
   </target>
 
@@ -390,6 +403,15 @@
      <delete file="${doc.dir}/taglib/DbFormsTags_TocAlph.html"/>
      <delete file="${doc.dir}/taglib/DbFormsTags.html"/>
      <delete file="${doc.dir}/taglib/DbFormsTags.pdf"/>
+     <delete file="${doc.dir}/taglib/help-doc.html"/>
+     <delete file="${doc.dir}/taglib/alltags-frame.html"/>
+     <delete file="${doc.dir}/taglib/alltags-noframe.html"/>
+     <delete file="${doc.dir}/taglib/help-doc.html"/>
+     <delete file="${doc.dir}/taglib/index.html"/>
+     <delete file="${doc.dir}/taglib/overview-frame.html"/>
+     <delete file="${doc.dir}/taglib/overview-summary.html"/>
+     <delete file="${doc.dir}/taglib/stylesheet.css"/>
+     <delete dir="${doc.dir}/taglib/dbforms"/>
      <delete file="${etc.dir}/DbFormsTags.xsl-fo"/>
      <delete dir="${basedir}/dist"/>
   </target>

@@ -135,7 +135,8 @@
   <!-- generate taglib descriptors from taglib-docu using XSL transformation -->
   <target name="generate_taglib" depends="jar_classes" description="--&gt; Generate the taglib dbforms.tld from taglib_docu.xml">
     <echo message="begin xsl translation" />
-    <style style="${etc.dir}/tld.xsl" in="${etc.dir}/taglib_docu.xml" out="${dist.dir}/dbforms.tld" />
+    <style style="${etc.dir}/tld.xsl" in="${etc.dir}/taglib_docu.xml" out="temp/dbforms.tld" />
+    <style style="${etc.dir}/pretty-printing.xsl" in="temp/dbforms.tld" out="${dist.dir}/dbforms.tld" />
     <echo message="end of xsl translation " />
   </target>
 
@@ -159,7 +160,7 @@
 
 
   <!-- Generate  HTML reference documentation within doc/html from taglib-docu.xml -->
-  <target name="generate_taglib_htmldocs">    
+  <target name="generate_taglib_htmldocs" depends="generate_taglib">    
     <echo message="begin xsl translation to generate HTML documentation  " />
     <delete file="{dist.dir}/taglib/DbFormsTags.html" />
     <echo message="style 1" />
@@ -172,6 +173,11 @@
     <style style="${etc.dir}/tldoc2html_toc.xsl" in="${etc.dir}/taglib_docu.xml" out="${dist.dir}/taglib/DbFormsTags_TocAlph.html">
       <param name="sortTagsAlphabetically" expression="true" />
     </style>
+    <java jar="${basedir}/usersguide_src/docbook_tools/tlddoc.jar" fork="true" >
+       <arg value="-d" />
+       <arg value="${basedir}/doc/taglib" />
+       <arg value="${basedir}/dist/dbforms.tld"  />
+    </java>
     <echo message="end of xsl translation " />
   </target>
 

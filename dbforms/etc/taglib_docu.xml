@@ -7,12 +7,12 @@
 	</properties>
 	<body>
 		<taglib>
-			<tlibversion>1.1.4dev</tlibversion>
+			<tlibversion>1.1.4pr1</tlibversion>
 			<jspversion>1.2</jspversion>
-			<shortname>st</shortname>
+			<shortname>dbforms</shortname>
 			<display-name>DbForm Construction Tags</display-name>
-			<uri>dbformstags</uri>
-			<info>version 1.1.4dev</info>
+			<uri>dbforms.tld</uri>
+			<info>version 1.1.4pr1</info>
 			<!-- **************************** dbform tag ***********************************-->
 			<tag>
 				<name>dbform</name>

@@ -32,8 +32,10 @@ import org.apache.cactus.WebRequest;
 import javax.servlet.http.HttpServletRequest;
 
 import org.dbforms.config.DbFormsConfigRegistry;
+
 import org.dbforms.servlets.ConfigServlet;
 import org.dbforms.config.SqlUtil;
+
 
 /**
  * Tests of the <code>Validation Event</code> class.
@@ -44,34 +46,6 @@ import org.dbforms.config.SqlUtil;
 public class TestUpdateEvent extends JspTestCase
 {
 
-   
-   /**
-    * Defines the testcase name for JUnit.
-    * 
-    * @param theName the testcase's name.
-    */
-   public TestUpdateEvent(String theName)
-   {
-      super(theName);
-
-   }
-
-   /**
-    * Start the tests.
-    * 
-    * @param theArgs the arguments. Not used
-    */
-   public static void main(String[] theArgs)
-   {
-      junit.swingui.TestRunner.main(
-               new String[] 
-      {
-         TestUpdateEvent.class.getName()
-      });
-   }
-
-
-
    /**
     * In addition to creating the tag instance and adding the pageContext to
     * it, this method creates a BodyContent object and passes it to the tag.
@@ -79,12 +53,10 @@ public class TestUpdateEvent extends JspTestCase
     */
    public void setUp() throws Exception
    {
-
 		DbFormsConfigRegistry.instance().register(null);
       config.setInitParameter("dbformsConfig", "/WEB-INF/dbforms-config.xml");
       config.setInitParameter("log4j.configuration", 
                               "/WEB-INF/log4j.properties");
-
       ConfigServlet configServlet = new ConfigServlet();
       configServlet.init(config);
    }
@@ -97,7 +69,7 @@ public class TestUpdateEvent extends JspTestCase
     *
     * @param theRequest DOCUMENT ME!
     */
-   public void beginUpdate(WebRequest theRequest)
+   public void beginUpdate(WebRequest theRequest) throws Exception
    {
       theRequest.addParameter("f_0_0@root_2", "organisation 1");
       theRequest.addParameter("of_0_0@root_2", "");
