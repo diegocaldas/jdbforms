@@ -32,7 +32,7 @@
 				<title>The Model: database objects described by database metadata</title>
 				<para>The aim of DbForms is to perform operations on databases. The tables and views utilized by DbForms must be declared in a XML  configuration file (<computeroutput>dbforms-config.xml</computeroutput>), which will be parsed and evaluated at Web-Application start-up time.</para>
 				<example>
-					<title>Listing 1 - defining the model</title>
+					<title>Defining the model</title>
 					<programlisting>
                 &lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;
                 &lt;!DOCTYPE dbforms-config PUBLIC "http://www.dbforms.org/dtd/dbf_conf.dtd"&gt; 
@@ -65,7 +65,7 @@
 		&lt;/dbforms-config&gt;
                 </programlisting>
 				</example>
-				<para>[Current versions restrict you to use only <emphasis role="italic">one</emphasis> database per Web-Application. Further releases are expected to support multiple databases in a single application]</para>
+				<para>Versions up to 1.1.2 restrict you to use only <emphasis role="italic">one</emphasis> database per Web-Application. 1.1.2pr1 and after support multiple databases in a single application. <link linkend='multdbcon'>See Multiple Database Connections.</link></para>
 				<sect4>
 					<title>Defining the logical model</title>
 					<para>As shown in Listing 1, every table or view to be accessed by DbForms has to be declared inside a <computeroutput>&lt;table&gt;</computeroutput> tag. All relevant table fields need to be declared inside a <computeroutput>&lt;field&gt;</computeroutput> tag nested in their respective table-tag. (There exists a tool for generating this XML-data. It reads and processes database-metadata, see Appendix III)</para>
@@ -77,7 +77,7 @@
 					<para>Accessing the Application Servers connection pool via JNDI</para>
 					<para>Lets look into this XML tag (originally taken from Listing 1):</para>
 					<example>
-						<title>Listing 2- defining the database connection (1)</title>
+						<title>Defining the database connection (1)</title>
 						<programlisting>
                                                 
                         &lt;dbconnection
@@ -95,7 +95,7 @@
 					<title>Using arbitrary connection pool</title>
 					<para>If you are not using an Application Server but a JSP-Engine like Apache Tomcat or Caucho Resin in conjunction with a Connection-Pool-Manager like poolman [Poolman], you have to tell DbForms which class it has to load in order to access the connection-pool manager. As an analogy to the JNDI  key, you have to tell DbForms how the Connection-Pool should be called.</para>
 					<example>
-						<title>Listing 3- defining the database connection (2)</title>
+						<title>Defining the database connection (2)</title>
 						<programlisting>
                         &lt;dbconnection
                         
@@ -114,7 +114,7 @@
 					<title>Using no connection pool</title>
 					<para>If you just want to test the functionality of DbForms and you do not care about speed (at the moment), then you might want to define a simple database connection as follows:</para>
 					<example>
-						<title>Listing 4 - defining the database connection (3)</title>
+						<title>Defining the database connection (3)</title>
 						<programlisting>
                         &lt;dbconnection
 
@@ -142,16 +142,48 @@
 				<para>
 					<emphasis role="bold">WebEvent-Objects</emphasis>: all Objects derived from this abstract super-class have the ability to initialize themselves by reading a given request. These events get executed either by the controller directly or by the View.</para>
 				<para>The following should give you a better picture of what the controller does and how it interacts with other components:</para>
-				<para>A user presses the delete row button on his/her DbForms  application.</para>
-				<para>The client's browser submits data via an HTTP-POST to the Controller-servlet.</para>
-				<para>The Controller-servlet delegates the incoming request to the EventEngine which determines the main-event. (the event, the user <emphasis role="italic">explicitly</emphasis> triggered by clicking a button) Secondary - <emphasis role="italic">implicit</emphasis> events may also have been requested  i.e. automatic updating of all changed input fields of all data rows.</para>
-				<para>The EventEngine-component parses the request and determines the kind of action the user wants to execute.</para>
-				<para>The EventEngine creates the appropriate WebEvent (in our case: a DeleteEvent) and delegates the Request-Object to this newly created WebEvent which finalizes its own initialization. After that, the EventEngine returns the event back to the Controller.</para>
-				<para>The Controller tells the event, if it is a Database-Event, to execute its built-in operation.  Else (Navigation-Events, .etc.), events are delegated to the appropriate View-component.</para>
-				<para>The controller invokes EventEngine again to check if there are additional (implicit) events to be executed. If so, the appropriate WebEvents-Objects are created and executed in the same manner as the main event described above.</para>
-				<para>The controller determines the View-component the request should be forwarded to. If found, the controller invokes it and forwards the request to it.</para>
-				<para>If the view-component is a JSP-page containing DbForms  tags, those tags will search for navigation- events to be executed, once completed, a response will be generated.</para>
-				<para>This response is then rendered by the users web browser.</para>
+ <orderedlist numeration="lowerroman">
+<listitem>
+ <para>A user presses the delete row button on his/her DbForms  application.</para> 
+</listitem>
+<listitem>
+<para>The client's browser submits data via an HTTP-POST to the Controller-servlet.</para>
+</listitem>
+<listitem>
+<para>The Controller-servlet delegates the incoming request to the EventEngine which determines the main-event. (the event, the user <emphasis role="italic">explicitly</emphasis> triggered by clicking a button) Secondary - <emphasis role="italic">implicit</emphasis> events may also have been requested  i.e. automatic updating of all changed input fields of all data rows.</para>
+</listitem>
+<listitem>
+ <para>The EventEngine-component parses the request and determines the kind of action the user wants to execute.</para> 
+</listitem>
+<listitem>
+<para>The EventEngine creates the appropriate WebEvent (in our case: a DeleteEvent) and delegates the Request-Object to this newly created WebEvent which finalizes its own initialization. After that, the EventEngine returns the event back to the Controller.</para>
+</listitem>
+<listitem>
+<para>The Controller tells the event, if it is a Database-Event, to execute its built-in operation.  Else (Navigation-Events, .etc.), events are delegated to the appropriate View-component.</para>
+</listitem>
+<listitem>
+<para>The controller invokes EventEngine again to check if there are additional (implicit) events to be executed. If so, the appropriate WebEvents-Objects are created and executed in the same manner as the main event described above.</para>
+</listitem>
+<listitem>
+<para>The controller determines the View-component the request should be forwarded to. If found, the controller invokes it and forwards the request to it.</para>
+</listitem>
+<listitem>
+<para>If the view-component is a JSP-page containing DbForms  tags, those tags will search for navigation- events to be executed, once completed, a response will be generated.</para>
+</listitem>
+<listitem>
+<para>This response is then rendered by the users web browser.</para>
+</listitem>
+</orderedlist>				
+                                
+				
+				
+				
+				
+				
+				
+				
+				
+				
 			</sect3>
 			<sect3>
 				<title>The View: JSP templates provided by the Application developer</title>
@@ -160,11 +192,10 @@
 				<para>DbForms is, essentially, a collection of custom tags for placing data-forms and data-fields on JSP-pages.</para>
 				<sect4>
 					<title>The structure of a DBForms - view</title>
-					<para>Figure 2 gives an overview of the main components of a typical DbForms-View:</para>
-					<para/>
+					 
 					<para>
 						<figure>
-							<title>Overall structure of a simple DbForms  View</title>
+							<title>main components of a typical view</title>
 							<mediaobject  id="overall_structure_simple_view">  
   <imageobject  role="html">
     <imagedata  format="PNG"  fileref="images/figures/overall_structure_simple_view.png"/>
