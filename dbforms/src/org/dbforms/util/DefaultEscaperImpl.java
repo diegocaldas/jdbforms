@@ -35,9 +35,6 @@ public class DefaultEscaperImpl implements Escaper {
 				case '"' :
 					v.append("&quot;");
 					break;
-				case '\'' :
-					v.append("&apos;");
-					break;
 				case '<' :
 					v.append("&lt;");
 					break;
