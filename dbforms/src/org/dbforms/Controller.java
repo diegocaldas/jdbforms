@@ -109,6 +109,7 @@ public class Controller extends HttpServlet {
 		// the whole application has to access Request via the "ParseUtil" class
 		// this is also true for jsp files written by the user
 		// #fixme taglib needed for convenient access to ParseUtil wrapper methods
+
 		String contentType = request.getContentType();
 		if (contentType != null && contentType.startsWith("multipart")) {
 			try {
@@ -128,91 +129,93 @@ public class Controller extends HttpServlet {
 		}
 
 		Connection con = config.getDbConnection().getConnection();
-		request.setAttribute("connection", con);
+		logCat.debug("Created new connection - " + con);
 
-		//try {
+		try {
 
-		Vector errors = new Vector();
-		request.setAttribute("errors", errors);
+			Vector errors = new Vector();
+			request.setAttribute("errors", errors);
 
-		EventEngine engine = new EventEngine(request, config);
-		WebEvent e = engine.generatePrimaryEvent();
-		// primary event can be any kind of event (database, navigation...)
+			EventEngine engine = new EventEngine(request, config);
+			WebEvent e = engine.generatePrimaryEvent();
+			// primary event can be any kind of event (database, navigation...)
 
-		if (e instanceof DatabaseEvent) {
-			try {
-				((DatabaseEvent) e).processEvent(con);
-			} catch (SQLException sqle) {
-				sqle.printStackTrace();
-				errors.addElement(sqle);
-			} catch (MultipleValidationException mve) {
-				java.util.Vector v = null;
-				if ((v = mve.getMessages()) != null) {
-					Enumeration enum = v.elements();
-					while (enum.hasMoreElements()) {
-						errors.addElement(enum.nextElement());
+			if (e instanceof DatabaseEvent) {
+				try {
+					((DatabaseEvent) e).processEvent(con);
+				} catch (SQLException sqle) {
+					sqle.printStackTrace();
+					errors.addElement(sqle);
+				} catch (MultipleValidationException mve) {
+					java.util.Vector v = null;
+					if ((v = mve.getMessages()) != null) {
+						Enumeration enum = v.elements();
+						while (enum.hasMoreElements()) {
+							errors.addElement(enum.nextElement());
+						}
 					}
 				}
+
+			} else {
+
+				// currently, we support db events ONLY
+				// but in future there may be events with processEvent() method which do not need a jdbc con!
+				// (you may think: "what about navigation events?" - well they are created by the
+				// controller but they get executed in the referncing "DbFormTag" at the jsp -- that's why we
+				// do not any further operations on them right here...we just put them into the request)
+
 			}
 
-		} else {
+			// secondary Events are always database events
+			// (in fact, they all are SQL UPDATEs)
+			if (engine.getInvolvedTables() != null) { // may be null if empty form!
+				Enumeration tableEnum = engine.getInvolvedTables().elements();
+				while (tableEnum.hasMoreElements()) {
+					Table t = (Table) tableEnum.nextElement();
 
-			// currently, we support db events ONLY
-			// but in future there may be events with processEvent() method which do not need a jdbc con!
-			// (you may think: "what about navigation events?" - well they are created by the
-			// controller but they get executed in the referncing "DbFormTag" at the jsp -- that's why we
-			// do not any further operations on them right here...we just put them into the request)
-
-		}
-
-		// secundary Events are always database events
-		// (in fact, they all are SQL UPDATEs)
-		if (engine.getInvolvedTables() != null) { // may be null if empty form!
-			Enumeration tableEnum = engine.getInvolvedTables().elements();
-			while (tableEnum.hasMoreElements()) {
-				Table t = (Table) tableEnum.nextElement();
-
-				Enumeration eventEnum = engine.generateSecundaryEvents(e);
-				while (eventEnum.hasMoreElements()) {
-					DatabaseEvent dbE = (DatabaseEvent) eventEnum.nextElement();
-					try {
-						dbE.processEvent(con);
-					} catch (SQLException sqle2) {
-						errors.addElement(sqle2);
-					} catch (MultipleValidationException mve) {
-						java.util.Vector v = null;
-						if ((v = mve.getMessages()) != null) {
-							Enumeration enum = v.elements();
-							while (enum.hasMoreElements()) {
-								errors.addElement(enum.nextElement());
+					Enumeration eventEnum = engine.generateSecundaryEvents(e);
+					while (eventEnum.hasMoreElements()) {
+						DatabaseEvent dbE = (DatabaseEvent) eventEnum.nextElement();
+						try {
+							dbE.processEvent(con);
+						} catch (SQLException sqle2) {
+							errors.addElement(sqle2);
+						} catch (MultipleValidationException mve) {
+							java.util.Vector v = null;
+							if ((v = mve.getMessages()) != null) {
+								Enumeration enum = v.elements();
+								while (enum.hasMoreElements()) {
+									errors.addElement(enum.nextElement());
+								}
 							}
 						}
 					}
 				}
 			}
-		}
 
-		// send as info to dbForms (=> Taglib)
-		//if(e instanceof NavigationEvent) {
-		request.setAttribute("webEvent", e);
-		//}
+			// send as info to dbForms (=> Taglib)
+			//if(e instanceof NavigationEvent) {
+			request.setAttribute("webEvent", e);
+			//}
 
-		request.getRequestDispatcher(e.getFollowUp()).forward(request, response);
+			request.getRequestDispatcher(e.getFollowUp()).forward(request, response);
 
-		/* #(JP) 27-06-2001
-		   as sugessted by Martin van Wijk, we forward the connection to the VIEW and
-		   therefore we do NOT close it
-		
-		
 		} finally {
-			try {
-			  con.close();
-			}	catch(SQLException sqle3) {
-				sqle3.printStackTrace();
+			// The connection should not be null - If it is, then you might have an infrastructure problem!
+			// Be sure to look into this!  Hint: check out your pool manager's performance! 
+
+			if (con != null) {
+
+				try {
+					logCat.debug("About to close connection - " + con);
+					con.close();
+					logCat.debug("Connection closed");
+				} catch (SQLException sqle3) {
+					sqle3.printStackTrace();
+				}
 			}
 		}
-		
-		*/
+
 	}
 
 	private void sendErrorMessage(

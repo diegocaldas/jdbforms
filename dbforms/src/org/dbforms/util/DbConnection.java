@@ -164,7 +164,7 @@ public class DbConnection {
 	 buf.append(",jndi="+isJndi);
 	 buf.append(",conClass="+conClass);
 	 buf.append(",username="+username);
-	 buf.append(",password="+password);
+	 //buf.append(",password="+password);  Not such a good idea!
 	 return buf.toString();
 
   }  

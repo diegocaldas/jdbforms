@@ -45,12 +45,12 @@ import org.apache.log4j.Category;
 
 public class DbBlobContentTag extends BodyTagSupport {
 
-	static Category logCat = Category.getInstance(DbBlobURLTag.class.getName()); // logging category for this class
+	static Category logCat = Category.getInstance(DbBlobURLTag.class.getName());
+	// logging category for this class
 
 	// ----------------------------------------------------- Instance Variables
 
-
-// DbForms specific
+	// DbForms specific
 
 	protected DbFormsConfig config;
 	protected String fieldName;
@@ -59,13 +59,13 @@ public class DbBlobContentTag extends BodyTagSupport {
 	protected DbFormTag parentForm;
 
 	public void setFieldName(String fieldName) {
-		this.fieldName=fieldName;
+		this.fieldName = fieldName;
 		this.field = parentForm.getTable().getFieldByName(fieldName);
 
-			//if(parentForm.isSubForm()) {
-				// tell parent that _this_ class will generate the html tag, not DbBodyTag!
-			//	parentForm.strikeOut(this.field);
-			//}
+		//if(parentForm.isSubForm()) {
+		// tell parent that _this_ class will generate the html tag, not DbBodyTag!
+		//	parentForm.strikeOut(this.field);
+		//}
 	}
 
 	public String getFieldName() {
@@ -74,12 +74,13 @@ public class DbBlobContentTag extends BodyTagSupport {
 
 	// --------------------------------------------------------- Public Methods
 
-
 	// DbForms specific
 
-	public void setPageContext(final javax.servlet.jsp.PageContext pageContext)  {
+	public void setPageContext(final javax.servlet.jsp.PageContext pageContext) {
 		super.setPageContext(pageContext);
-		config = (DbFormsConfig) pageContext.getServletContext().getAttribute(DbFormsConfig.CONFIG);
+		config =
+			(DbFormsConfig) pageContext.getServletContext().getAttribute(
+				DbFormsConfig.CONFIG);
 	}
 
 	public void setParent(final javax.servlet.jsp.tagext.Tag parent) {
@@ -92,102 +93,114 @@ public class DbBlobContentTag extends BodyTagSupport {
 	 * Release any acquired resources.
 	 */
 	public void release() {
-			super.release();
+		super.release();
 	}
 
-  public int doEndTag() throws javax.servlet.jsp.JspException {
+	public int doEndTag() throws javax.servlet.jsp.JspException {
 
-	try {
-
-		if(parentForm.getFooterReached()) return EVAL_PAGE; // nothing to do when no data available..
-
-		StringBuffer queryBuf = new StringBuffer();
-		queryBuf.append("SELECT ");
-		queryBuf.append(fieldName);
-		queryBuf.append(" FROM ");
-		queryBuf.append(parentForm.getTable().getName());
-		queryBuf.append(" WHERE ");
-		queryBuf.append(parentForm.getTable().getWhereClauseForPS());
-
-		logCat.info("blobcontent query- "+queryBuf.toString());
-
-		StringBuffer contentBuf = new StringBuffer();
-
-		Connection con = config.getDbConnection().getConnection();
 		try {
 
-			PreparedStatement ps = con.prepareStatement(queryBuf.toString());
-			parentForm.getTable().populateWhereClauseForPS(getKeyVal(), ps, 1);
+			if (parentForm.getFooterReached())
+				return EVAL_PAGE; // nothing to do when no data available..
 
-			ResultSet rs = ps.executeQuery();
+			StringBuffer queryBuf = new StringBuffer();
+			queryBuf.append("SELECT ");
+			queryBuf.append(fieldName);
+			queryBuf.append(" FROM ");
+			queryBuf.append(parentForm.getTable().getName());
+			queryBuf.append(" WHERE ");
+			queryBuf.append(parentForm.getTable().getWhereClauseForPS());
 
-					if(rs.next()) {
+			logCat.info("blobcontent query- " + queryBuf.toString());
 
+			StringBuffer contentBuf = new StringBuffer();
 
-						if(field.getType() == FieldTypes.DISKBLOB) {
+			Connection con = config.getDbConnection().getConnection();
+			logCat.debug("Created new connection - " + con);
 
-							String fileName = rs.getString(1);
-							if(fileName!=null) fileName = fileName.trim();
-							logCat.info("READING DISKBLOB field.getDirectory()="+field.getDirectory()+" "+"fileName="+fileName);
+			try {
 
-							if(fileName==null || field.getDirectory()==null || fileName.length()==0 || field.getDirectory().length()==0) {
-								return EVAL_PAGE;
-							}
+				PreparedStatement ps = con.prepareStatement(queryBuf.toString());
+				parentForm.getTable().populateWhereClauseForPS(getKeyVal(), ps, 1);
 
-							File file = new File(field.getDirectory(), fileName);
+				ResultSet rs = ps.executeQuery();
 
-							if(file.exists()) {
-								logCat.info("fs- file found "+file.getName());
-								FileInputStream fis = new FileInputStream(file);
-								BufferedReader br = new BufferedReader(new InputStreamReader(fis));
+				if (rs.next()) {
 
-								char[] c = new char[1024];
-								int read;
-								while( (read = br.read(c)) != -1) {
-									contentBuf.append(c,0,read);
-								}
+					if (field.getType() == FieldTypes.DISKBLOB) {
 
-								fis.close();
+						String fileName = rs.getString(1);
+						if (fileName != null)
+							fileName = fileName.trim();
+						logCat.info(
+							"READING DISKBLOB field.getDirectory()="
+								+ field.getDirectory()
+								+ " "
+								+ "fileName="
+								+ fileName);
 
-							} else
-								logCat.info("fs- file not found");
-						}else {
-							throw new IllegalArgumentException("DbBlobContentTag is currently only for DISKBLOBS - feel free to copy code from FileServlet.java to this place to bring this limitation to an end :=)");
+						if (fileName == null
+							|| field.getDirectory() == null
+							|| fileName.length() == 0
+							|| field.getDirectory().length() == 0) {
+							return EVAL_PAGE;
 						}
 
-					}else{
-						logCat.info("fs- we have got no result"+queryBuf);
+						File file = new File(field.getDirectory(), fileName);
+
+						if (file.exists()) {
+							logCat.info("fs- file found " + file.getName());
+							FileInputStream fis = new FileInputStream(file);
+							BufferedReader br = new BufferedReader(new InputStreamReader(fis));
+
+							char[] c = new char[1024];
+							int read;
+							while ((read = br.read(c)) != -1) {
+								contentBuf.append(c, 0, read);
+							}
+
+							fis.close();
+
+						} else
+							logCat.info("fs- file not found");
+					} else {
+						throw new IllegalArgumentException("DbBlobContentTag is currently only for DISKBLOBS - feel free to copy code from FileServlet.java to this place to bring this limitation to an end :=)");
 					}
 
-		}	catch(SQLException sqle) {
-			sqle.printStackTrace();
-		} finally {
-			try {
-				con.close();
-			} catch(SQLException sqle2) {
-				sqle2.printStackTrace();
+				} else {
+					logCat.info("fs- we have got no result" + queryBuf);
+				}
+
+			} catch (SQLException sqle) {
+				sqle.printStackTrace();
+			} finally {
+				// The connection should not be null - If it is, then you might have an infrastructure problem!
+				// Be sure to look into this!  Hint: check out your pool manager's performance! 
+				if (con != null) {
+
+					try {
+						logCat.debug("About to close connection - " + con);
+						con.close();
+						logCat.debug("Connection closed");
+
+					} catch (SQLException sqle2) {
+						sqle2.printStackTrace();
+					}
+				}
 			}
+
+			pageContext.getOut().write(contentBuf.toString());
+
+		} catch (java.io.IOException ioe) {
+			throw new JspException("IO Error: " + ioe.getMessage());
 		}
 
-
-		pageContext.getOut().write(contentBuf.toString());
-
-	} catch(java.io.IOException ioe) {
-		throw new JspException("IO Error: "+ioe.getMessage());
+		return EVAL_PAGE;
 	}
-
-	return EVAL_PAGE;
-	}
-
 
 	// ------------------------------------------------------ Protected Methods
 
-
-
-// DbForms specific
-
-
-
+	// DbForms specific
 
 	/**
 	generates the decoded name .
@@ -201,8 +214,8 @@ public class DbBlobContentTag extends BodyTagSupport {
 	}
 
 	protected String getKeyVal() {
-		return parentForm.getTable().getKeyPositionString(parentForm.getResultSetVector());
+		return parentForm.getTable().getKeyPositionString(
+			parentForm.getResultSetVector());
 	}
-
 
 }

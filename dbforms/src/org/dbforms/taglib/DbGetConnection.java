@@ -39,7 +39,7 @@ import org.apache.log4j.Category;
  * 
  * ***************************************************************/
 
-public class DbGetConnection extends TagSupport {
+public class DbGetConnection extends BodyTagSupport {
 
 	static Category logCat = Category.getInstance(DbGetConnection.class.getName());
 	// logging category for this class
@@ -58,8 +58,19 @@ public class DbGetConnection extends TagSupport {
 			throw new JspException("Database error" + e.toString());
 		}
 
+		return EVAL_BODY_TAG;
+		;
+	}
+
+	public int doAfterBody() {
+		try {
+			bodyContent.writeOut(bodyContent.getEnclosingWriter());
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
 		return SKIP_BODY;
 	}
+
 	/**
 	 * Gets the id
 	 * @return Returns a String
@@ -75,48 +86,44 @@ public class DbGetConnection extends TagSupport {
 		this.id = id;
 	}
 
+	public void release() {
+		super.release();
+
+		// The connection should not be null - If it is, then you might have an infrastructure problem!
+		// Be sure to look into this!  Hint: check out your pool manager's performance! 
+
+		if (con != null) {
+			try {
+				logCat.debug("About to close connection - " + con);
+				con.close();
+				logCat.debug("Connection closed");
+			} catch (java.sql.SQLException sqle) {
+				sqle.printStackTrace();
+			}
+		}
+	}
+
 	public void setPageContext(PageContext pc) {
 		super.setPageContext(pc);
 		DbFormsConfig config =
 			(DbFormsConfig) pageContext.getServletContext().getAttribute(
 				DbFormsConfig.CONFIG);
 
-		// take connection from request
-		// - it may have been set there by the Controller or by another DbFormTag
-		// - if there is nothing yet (for example if the jsp is called directly, and this
-		//   is the first evaluated form) than create a new object and store it for further reference
-		con = (Connection) pc.getAttribute("connection", PageContext.REQUEST_SCOPE);
+		if (config == null)
+			throw new IllegalArgumentException("Troubles with DbForms config xml file: can not find CONFIG object in application context! check system configuration! check if application crashes on start-up!");
 
-		// Make sure we don't serve dead connections!  Thanks to Dirk Kraemer foy his contribution		
-		boolean createNewConnection = true;
-		try {
-			createNewConnection = ((con == null) || (con.isClosed()));
-		} catch (SQLException ignoreBecauseNewConnection) {
-		}
+		DbConnection aDbConnection = config.getDbConnection();
 
-		if (createNewConnection) {
-			logCat.info("no connection yet, creating new and setting to request.");
+		if (aDbConnection == null)
+			throw new IllegalArgumentException("Troubles in your DbForms config xml file: DbConnection not properly included - check manual!");
 
-			if (config == null)
-				throw new IllegalArgumentException("Troubles with DbForms config xml file: can not find CONFIG object in application context! check system configuration! check if application crashes on start-up!");
+		con = aDbConnection.getConnection();
+		logCat.debug("Created new connection - " + con);
 
-			DbConnection aDbConnection = config.getDbConnection();
-
-			if (aDbConnection == null)
-				throw new IllegalArgumentException("Troubles in your DbForms config xml file: DbConnection not properly included - check manual!");
-
-			con = aDbConnection.getConnection();
-
-			if (con == null)
-				throw new IllegalArgumentException(
-					"JDBC-Troubles: was not able to create connection, using the following DbConnection:"
-						+ aDbConnection.toString());
-
-			pc.setAttribute("connection", con, PageContext.REQUEST_SCOPE);
-		} else {
-			logCat.info("connection found");
-			//#checkme - what about some connection validation??
-		}
+		if (con == null)
+			throw new IllegalArgumentException(
+				"JDBC-Troubles: was not able to create connection, using the following DbConnection:"
+					+ aDbConnection.toString());
 	}
 
 }

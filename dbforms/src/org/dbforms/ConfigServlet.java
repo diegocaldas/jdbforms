@@ -68,7 +68,6 @@ public class ConfigServlet extends HttpServlet {
 	protected String errors = "/WEB-INF/dbforms-errors.xml";
 
 
-
 	// ---------------------------------------------------- HttpServlet Methods
 
 
@@ -90,10 +89,22 @@ public class ConfigServlet extends HttpServlet {
 	 * @exception ServletException if we cannot configure ourselves correctly
 	 */
 	public void init() throws ServletException {
+		
 		try {
 			initLogging();
-			initXMLConfig();
-			initXMLErrors();
+			
+			// Setup digester debug level
+			int digesterDebugLevel = 1;
+			
+			String digesterDebugLevelInput = this.getServletConfig().getInitParameter("digesterDebugLevel");
+			if (digesterDebugLevelInput != null)
+			{
+				// Transform input into an integer
+				digesterDebugLevel = Integer.parseInt(digesterDebugLevelInput);
+			}
+				
+			initXMLConfig(digesterDebugLevel);
+			initXMLErrors(digesterDebugLevel);
 		} catch(IOException ioe) {
 			ioe.printStackTrace();
 		} catch(Exception e) {
@@ -213,6 +224,7 @@ public class ConfigServlet extends HttpServlet {
 	 * file format.
 	 */
 	protected Digester initDigester(int detail, DbFormsConfig dbFormsConfig) {
+		
 
 	// Initialize a new Digester instance
 	Digester digester = new Digester();
@@ -307,7 +319,7 @@ public class ConfigServlet extends HttpServlet {
 	 * @exception IOException if an input/output error is encountered
 	 * @exception ServletException if we cannot initialize these resources
 	 */
-	protected void initXMLErrors() throws IOException, ServletException {
+	protected void initXMLErrors(int digesterDebugLevel) throws IOException, ServletException {
 
 	    logCat.info("initialize XML Errors.");
 
@@ -330,7 +342,7 @@ public class ConfigServlet extends HttpServlet {
 
 		DbFormsErrors dbFormsErrors = new DbFormsErrors();
 		Digester digester = null;
-		digester = initErrorsDigester(1,dbFormsErrors);
+		digester = initErrorsDigester(digesterDebugLevel,dbFormsErrors);
 
 		 // store a reference to ServletErrors (for interoperation with other parts of the Web-App!)
 		dbFormsErrors.setServletConfig(getServletConfig());
@@ -356,13 +368,14 @@ public class ConfigServlet extends HttpServlet {
 	 * @exception IOException if an input/output error is encountered
 	 * @exception ServletException if we cannot initialize these resources
 	 */
-	protected void initXMLConfig() throws IOException, ServletException {
+	protected void initXMLConfig(int digesterDebugLevel) throws IOException, ServletException {
 
 
 		// Initialize the context-relative path to our configuration resources
 		String value = getServletConfig().getInitParameter(DbFormsConfig.CONFIG);
 		if (value != null)
 		    config = value;
+		    
 
 		// Acquire an input stream to our configuration resource
 		InputStream input = getServletContext().getResourceAsStream(config);
@@ -373,7 +386,7 @@ public class ConfigServlet extends HttpServlet {
 
 		DbFormsConfig dbFormsConfig = new DbFormsConfig();
 		Digester digester = null;
-		digester = initDigester(1,dbFormsConfig);
+		digester = initDigester(digesterDebugLevel,dbFormsConfig);
 
 		 // store a reference to ServletConfig (for interoperation with other parts of the Web-App!)
 		dbFormsConfig.setServletConfig(getServletConfig());

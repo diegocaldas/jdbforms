@@ -46,32 +46,19 @@ import javax.servlet.http.*;
  * @author Joachim Peer <j.peer@gmx.net>
  */
 
-public class DbTextAreaTag extends DbBaseInputTag  {
+public class DbTextAreaTag extends DbBaseInputTag {
 
-  static Category logCat = Category.getInstance(DbTextAreaTag.class.getName()); // logging category for this class
+	static Category logCat = Category.getInstance(DbTextAreaTag.class.getName());
+	// logging category for this class
 
-	private String wrap;
+	protected String wrap;
+	protected String renderBody;
+	protected java.lang.String overrideValue;
 
-	public void setWrap(String wrap) {
-		this.wrap = wrap;
-	}
+	public int doStartTag() throws javax.servlet.jsp.JspException {
 
-	public String getWrap() {
-		return wrap;
-	}
-
-  public int doStartTag() throws javax.servlet.jsp.JspException {
-	return SKIP_BODY;
-  }    
-
-public int doEndTag() throws javax.servlet.jsp.JspException {
-
-
-	HttpServletRequest request = (HttpServletRequest) this.pageContext.getRequest();
-	Vector errors = (Vector) request.getAttribute("errors");
-	
-
-	try {
+		HttpServletRequest request = (HttpServletRequest) this.pageContext.getRequest();
+		Vector errors = (Vector) request.getAttribute("errors");
 
 		StringBuffer tagBuf = new StringBuffer("<textarea name=\"");
 		tagBuf.append(getFormFieldName());
@@ -112,58 +99,95 @@ public int doEndTag() throws javax.servlet.jsp.JspException {
 		tagBuf.append(">");
 
 		/* If the overrideValue attribute has been set, use its value instead of the one
-			retrieved from the database.  This mechanism can be used to set an initial default
-			value for a given field. */
+				retrieved from the database.  This mechanism can be used to set an initial default
+				value for a given field. */
 
-		if (this.getOverrideValue() != null) 
-		{
-			//If the redisplayFieldsOnError attribute is set and we are in error mode, forget override!
-			if ("true".equals(parentForm.getRedisplayFieldsOnError()) && errors != null && errors.size() > 0) 
-			{
+		if (!"true".equals(renderBody)) {
+
+			if (this.getOverrideValue() != null) {
+
+				//If the redisplayFieldsOnError attribute is set and we are in error mode, forget override!
+				if ("true".equals(parentForm.getRedisplayFieldsOnError())
+					&& errors != null
+					&& errors.size() > 0) {
+					tagBuf.append(getFormFieldValue());
+				} else {
+					tagBuf.append(this.getOverrideValue());
+				}
+			} else {
 				tagBuf.append(getFormFieldValue());
-
-			} 
-			else 
-			{
-				tagBuf.append(this.getOverrideValue());				
-
 			}
 		}
+
+		try {
+			pageContext.getOut().write(tagBuf.toString());
+		} catch (java.io.IOException e) {
+			throw new JspException("IO Error: " + e.getMessage());
+		}
+
+		if (!"true".equals(renderBody))
+			return EVAL_BODY_TAG;
 		else
-		{
-			tagBuf.append(getFormFieldValue());
-		} 
-		tagBuf.append("</textarea>");
-		
-		//Setup validation parameters
-		tagBuf.append(prepareValidation());
-
-
-		pageContext.getOut().write(tagBuf.toString());
-	} catch (java.io.IOException ioe) {
-		throw new JspException("IO Error: " + ioe.getMessage());
+			return SKIP_BODY;
 	}
 
-	return EVAL_PAGE;
-}
+	public int doEndTag() throws javax.servlet.jsp.JspException {
+		try {
+			if ("true".equals(renderBody) && bodyContent != null) {
+				bodyContent.writeOut(bodyContent.getEnclosingWriter());
+				bodyContent.clearBody(); // workaround for duplicate rows in JRun 3.1
+			}
 
-	private java.lang.String overrideValue;
+			pageContext.getOut().write("</textArea>");
 
-/**
- * Insert the method's description here.
- * Creation date: (2001-06-27 17:44:16)
- * @return java.lang.String
- */
-public java.lang.String getOverrideValue() {
-	return overrideValue;
-}
+			//Setup validation parameters
+			pageContext.getOut().write(prepareValidation().toString());
 
-/**
- * Insert the method's description here.
- * Creation date: (2001-06-27 17:44:16)
- * @param newOverrideValue java.lang.String
- */
-public void setOverrideValue(java.lang.String newOverrideValue) {
-	overrideValue = newOverrideValue;
-}
+		} catch (java.io.IOException ioe) {
+			throw new JspException("IO Error: " + ioe.getMessage());
+		}
+
+		return EVAL_PAGE;
+	}
+
+	/**
+	 * Insert the method's description here.
+	 * Creation date: (2001-06-27 17:44:16)
+	 * @return java.lang.String
+	 */
+	public java.lang.String getOverrideValue() {
+		return overrideValue;
+	}
+
+	/**
+	 * Insert the method's description here.
+	 * Creation date: (2001-06-27 17:44:16)
+	 * @param newOverrideValue java.lang.String
+	 */
+	public void setOverrideValue(java.lang.String newOverrideValue) {
+		overrideValue = newOverrideValue;
+	}
+	/**
+	 * Gets the renderBody
+	 * @return Returns a String
+	 */
+	public String getRenderBody() {
+		return renderBody;
+	}
+	/**
+	 * Sets the renderBody
+	 * @param renderBody The renderBody to set
+	 */
+	public void setRenderBody(String renderBody) {
+		this.renderBody = renderBody;
+	}
+
+	public void setWrap(String wrap) {
+		this.wrap = wrap;
+	}
+
+	public String getWrap() {
+		return wrap;
+	}
+
 }

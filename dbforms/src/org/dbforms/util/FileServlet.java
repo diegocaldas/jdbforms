@@ -39,34 +39,37 @@ import org.apache.log4j.Category;
 
 public class FileServlet extends HttpServlet {
 
-	static Category logCat = Category.getInstance(FileServlet.class.getName()); // logging category for this class
+	static Category logCat = Category.getInstance(FileServlet.class.getName());
+	// logging category for this class
 
 	private DbFormsConfig config;
 	private FileNameMap fileNameMap;
 
-  /**
-   * Initialize this servlet.
-   */
+	/**
+	 * Initialize this servlet.
+	 */
 
-  public void init() throws ServletException {
+	public void init() throws ServletException {
 
 		// take Config-Object from application context - this object should have been
 		// initalized by Config-Servlet on Webapp/server-startup!
 		config = (DbFormsConfig) getServletContext().getAttribute(DbFormsConfig.CONFIG);
 		fileNameMap = URLConnection.getFileNameMap();
-  }  
-
+	}
 
 	/**
-
+	
 	*/
 
-	private void writeToClient(HttpServletResponse response, String fileName, InputStream is) throws IOException {
+	private void writeToClient(
+		HttpServletResponse response,
+		String fileName,
+		InputStream is)
+		throws IOException {
 
+		String contentType = fileNameMap.getContentTypeFor(fileName);
 
-		String contentType  = fileNameMap.getContentTypeFor(fileName);
-
-		logCat.info("writing to client:"+fileName+" ct="+contentType);
+		logCat.info("writing to client:" + fileName + " ct=" + contentType);
 
 		response.setContentType(contentType);
 
@@ -74,23 +77,24 @@ public class FileServlet extends HttpServlet {
 
 		byte[] b = new byte[1024];
 		int read;
-		while( (read = is.read(b)) != -1) {
-			out.write(b,0,read);
+		while ((read = is.read(b)) != -1) {
+			out.write(b, 0, read);
 		}
 		out.close();
 	}
 
 	//Process the HTTP Get request
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
-	   throws    ServletException, IOException {
+		throws ServletException, IOException {
 
-				Connection con = config.getDbConnection().getConnection();
+		Connection con = config.getDbConnection().getConnection();
+		logCat.debug("Created new connection - " + con);
 
-				String tf = request.getParameter("tf");
-				String keyValuesStr = request.getParameter("keyval");
+		String tf = request.getParameter("tf");
+		String keyValuesStr = request.getParameter("keyval");
 
-				int tableId = Integer.parseInt(ParseUtil.getEmbeddedString(tf, 0, '_'));
-			  Table table = config.getTable(tableId);
+		int tableId = Integer.parseInt(ParseUtil.getEmbeddedString(tf, 0, '_'));
+		Table table = config.getTable(tableId);
 
 		int fieldId = Integer.parseInt(ParseUtil.getEmbeddedString(tf, 1, '_'));
 		Field field = table.getField(fieldId);
@@ -103,107 +107,116 @@ public class FileServlet extends HttpServlet {
 		queryBuf.append(" WHERE ");
 		queryBuf.append(table.getWhereClauseForPS());
 
-				logCat.info("fs- "+queryBuf);
+		logCat.info("fs- " + queryBuf);
 
-				try {
+		try {
 
 			PreparedStatement ps = con.prepareStatement(queryBuf.toString());
 			table.populateWhereClauseForPS(keyValuesStr, ps, 1);
-					ResultSet rs = ps.executeQuery();
+			ResultSet rs = ps.executeQuery();
 
-					if(rs.next()) {
+			if (rs.next()) {
 
+				if (field.getType() == FieldTypes.DISKBLOB) {
 
-						if(field.getType() == FieldTypes.DISKBLOB) {
+					String fileName = rs.getString(1);
+					if (fileName != null)
+						fileName = fileName.trim();
+					logCat.info(
+						"READING DISKBLOB field.getDirectory()="
+							+ field.getDirectory()
+							+ " "
+							+ "fileName="
+							+ fileName);
+					File file = new File(field.getDirectory(), fileName);
 
-								String fileName = rs.getString(1);
-								if(fileName!=null) fileName = fileName.trim();
-								logCat.info("READING DISKBLOB field.getDirectory()="+field.getDirectory()+" "+"fileName="+fileName);
-								File file = new File(field.getDirectory(), fileName);
+					if (file.exists()) {
+						logCat.info("fs- file found " + file.getName());
 
-								if(file.exists()) {
-									logCat.info("fs- file found "+file.getName());
+						FileInputStream fis = new FileInputStream(file);
+						writeToClient(response, fileName, fis);
 
-									FileInputStream fis = new FileInputStream(file);
-									writeToClient(response, fileName, fis);
+					} else
+						logCat.info("fs- file not found");
 
-								} else
-									logCat.info("fs- file not found");
+				} else
+					if (field.getType() == FieldTypes.BLOB) {
 
+						logCat.info("READING BLOB");
 
-						} else if(field.getType() == FieldTypes.BLOB) {
+						try {
 
-								logCat.info("READING BLOB");
+							Object o = rs.getObject(1);
 
-								try {
+							// if the object the JDBC driver returns to us implements
+							// the java.sql.Blob interface, then we use the BLOB object
+							// which wraps the binary stream of our FileHolder:
+							if (o != null) {
 
-									Object o = rs.getObject(1);
+								if (o instanceof java.sql.Blob) {
 
-									// if the object the JDBC driver returns to us implements
-									// the java.sql.Blob interface, then we use the BLOB object
-									// which wraps the binary stream of our FileHolder:
-									if(o!=null) {
+									Blob blob = rs.getBlob(1);
+									ObjectInputStream ois = new ObjectInputStream(blob.getBinaryStream());
+									FileHolder fh = (FileHolder) ois.readObject();
+									writeToClient(response, fh.getFileName(), fh.getInputStreamFromBuffer());
 
-										if(o instanceof java.sql.Blob) {
-
-										   Blob blob = rs.getBlob(1);
-										   ObjectInputStream ois = new ObjectInputStream(blob.getBinaryStream());
-										   FileHolder fh = (FileHolder) ois.readObject();
-										   writeToClient(response, fh.getFileName(), fh.getInputStreamFromBuffer());
-
-										}
-/*
-										else if(o instanceof java.sql.Clob) {
-
-										   Clob clob = rs.getClob(1);
-										   ObjectInputStream ois = new ObjectInputStream(clob.getAsciiStream());
-										   FileHolder fh = (FileHolder) ois.readObject();
-										   writeToClient(response, fh.getFileName(), fh.getInputStreamFromBuffer());
-
-										}*/
-
-										// otherwise we are aquiring the stream directly:
-										else {
-
-											InputStream blobIS = rs.getBinaryStream(1);
-
-											ObjectInputStream ois = new ObjectInputStream(blobIS);
-											FileHolder fh = (FileHolder) ois.readObject();
-											writeToClient(response, fh.getFileName(), fh.getInputStreamFromBuffer());
-
-										}
-
-									} else logCat.warn("blob null, no response sent");
-
-
-								} catch(ClassNotFoundException cnfe) {
-									throw new IOException("error:"+cnfe.toString());
 								}
+								/*
+																		else if(o instanceof java.sql.Clob) {
+								
+																		   Clob clob = rs.getClob(1);
+																		   ObjectInputStream ois = new ObjectInputStream(clob.getAsciiStream());
+																		   FileHolder fh = (FileHolder) ois.readObject();
+																		   writeToClient(response, fh.getFileName(), fh.getInputStreamFromBuffer());
+								
+																		}*/
+
+								// otherwise we are aquiring the stream directly:
+								else {
+
+									InputStream blobIS = rs.getBinaryStream(1);
+
+									ObjectInputStream ois = new ObjectInputStream(blobIS);
+									FileHolder fh = (FileHolder) ois.readObject();
+									writeToClient(response, fh.getFileName(), fh.getInputStreamFromBuffer());
+
+								}
+
+							} else
+								logCat.warn("blob null, no response sent");
+
+						} catch (ClassNotFoundException cnfe) {
+							throw new IOException("error:" + cnfe.toString());
 						}
-
-
-
-					} else {
-						logCat.info("fs- we have got no result"+queryBuf);
 					}
 
+			} else {
+				logCat.info("fs- we have got no result" + queryBuf);
+			}
 
-	  	}	catch(SQLException sqle) {
-					sqle.printStackTrace();
-				} finally {
-					try {
-					  con.close();
-					} catch(SQLException sqle2) {
-						sqle2.printStackTrace();
-					}
+		} catch (SQLException sqle) {
+			sqle.printStackTrace();
+		} finally {
+
+			// The connection should not be null - If it is, then you might have an infrastructure problem!
+			// Be sure to look into this!  Hint: check out your pool manager's performance! 
+
+			if (con != null) {
+				try {
+					logCat.debug("About to close connection - " + con);
+					con.close();
+					logCat.debug("Connection closed");
+				} catch (SQLException sqle2) {
+					sqle2.printStackTrace();
 				}
+			}
+		}
 	}
 
 	//Process the HTTP Post request
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 		throws ServletException, IOException {
-		doGet(request,response);
+		doGet(request, response);
 	}
-
 
 }

@@ -46,21 +46,14 @@ import javax.servlet.http.*;
  * @author Joachim Peer <j.peer@gmx.net>
  */
 
-public class DbTextAreaForBlobsTag extends DbTextAreaTag  {
+public class DbTextAreaForBlobsTag extends DbTextAreaTag {
 
-	static Category logCat = Category.getInstance(DbTextAreaForBlobsTag.class.getName()); // logging category for this class
+	static Category logCat =
+		Category.getInstance(DbTextAreaForBlobsTag.class.getName());
+	// logging category for this class
 
 	private String suffix;
-	private String renderBody;
 
-	public void setRenderBody(String rb) {
-		this.renderBody = rb;
-	}
-
-	public String getRenderBody() {
-		return renderBody;
-	}
-	
 	public void setSuffix(String suffix) {
 		this.suffix = suffix;
 	}
@@ -72,17 +65,15 @@ public class DbTextAreaForBlobsTag extends DbTextAreaTag  {
 	public int doEndTag() throws javax.servlet.jsp.JspException {
 
 		try {
-			if("true".equals(renderBody) && bodyContent != null) {
-					bodyContent.writeOut(bodyContent.getEnclosingWriter());
-					bodyContent.clearBody(); // workaround for duplicate rows in JRun 3.1
+			if ("true".equals(renderBody) && bodyContent != null) {
+				bodyContent.writeOut(bodyContent.getEnclosingWriter());
+				bodyContent.clearBody(); // workaround for duplicate rows in JRun 3.1
 			}
 
 			pageContext.getOut().write("</textarea>");
 
-
-
 			StringBuffer suffixBuf = new StringBuffer("<input type=\"hidden\" name=\"");
-			suffixBuf.append("suffix_"+getFormFieldName());
+			suffixBuf.append("suffix_" + getFormFieldName());
 			suffixBuf.append("\" value=\"");
 			suffixBuf.append(suffix);
 			suffixBuf.append("\">");
@@ -90,19 +81,17 @@ public class DbTextAreaForBlobsTag extends DbTextAreaTag  {
 			pageContext.getOut().write(suffixBuf.toString());
 
 			StringBuffer fileNameBuf = new StringBuffer("<input type=\"hidden\" name=\"");
-			fileNameBuf.append("fn_"+getFormFieldName());
+			fileNameBuf.append("fn_" + getFormFieldName());
 			fileNameBuf.append("\" value=\"");
 			fileNameBuf.append(getFormFieldValue());
 			fileNameBuf.append("\">");
 
 			pageContext.getOut().write(fileNameBuf.toString());
 
-		}
-		catch(java.io.IOException e) {
+		} catch (java.io.IOException e) {
 			throw new JspException("IO Error: " + e.getMessage());
 		}
 		return EVAL_PAGE;
 	}
-
 
 }

@@ -2,7 +2,106 @@
 * $Revision$
 * $Date$
 
+
+
 __________________________________________________________________________________________________
+__________________________________________________________________________________________________
+
+Friday, February 1, 2002
+DbForms version 1.03
+Grunikiewicz.philip@hydro.qc.ca
+
+
+(Disk) BLOB support in textArea tag
+-----------------------------------
+
+Tags - textAreaForBlobs and blobContent were added to enable developers to
+edit the contents of files stored in a (disk)-blob via a textArea input.
+
+Example:
+
+	<db:textAreaForBlobs 
+		fieldName = "filePath"
+		renderBody = "true"
+		suffix = "jsp"
+		rows = "15"
+		cols = "60"
+		wrap = "virtual">
+		
+		<db:blobContent fieldName = "filePath"/>
+	</db:textAreaForBlobs>
+	
+	Note:
+			renderBody attribute must be set to true.
+			fieldPath is of type DISKBLOB.
+			
+Contributed by Joachim Peer
+
+
+getConnection - tag
+-------------------
+
+In order to assure the proper closing of connection objects, this tag
+is now divided into two parts.
+ 
+EXAMPLE
+(using Jakarta dbTags)
+
+             <db:getConnection id="myConnection">	<!-- Open connection -->
+
+	             <sql: statement id="stmt" conn="myConnection">
+	                 <sql:query>Select * from Table</sql:query>
+	                 <sql:resultSet id="rs">
+	                       Value: <sql:getColumn position="1"/>
+	                 </sql:resultSet>
+	             </sql:statement>
+             </db:getConnection>		<!-- close connection -->
+
+
+
+digesterDebugLevel setting in Config servlet
+--------------------------------------------
+
+Now that log4j handles all console output, you would think that by setting log4j
+to display fatal errors only, your console would be virtually empty.  Well, no!
+The current version of dbForms used the struts digester class to parse xml files
+at startup.  This class sends info to System.out.  The following setting (in web.xml)
+can be used to specify (to the digester) the amount of detail to display.
+
+Example:
+
+
+ <servlet>
+	<servlet-name>config</servlet-name>
+	<servlet-class>org.dbforms.ConfigServlet</servlet-class>
+      
+	<init-param>
+	      <param-name>log4j.configuration</param-name>
+	      <param-value>/WEB-INF/log4j.properties</param-value>
+      </init-param> 
+      
+	<init-param>
+	      <param-name>digesterDebugLevel</param-name>
+	      <param-value>0</param-value>	<!-- no debug(0) to (10) all info -->
+    </init-param>  
+  </servlet>
+
+
+Bug Fixes and General Maintenance
+---------------------------------
+
+Replaced all System.out and System.err method calls by equivalent log4j methods.
+Reviewed DbForm's database connection management and cleaned it up.
+Removed a reference to the login password in the connection's toString() method.
+Modified the ant build.xml file to enable its execution from within IBM's WSAD IDE
+
+
+
+Thanks to all who provide feedback and suggestions...
+
+__________________________________________________________________________________________________
+__________________________________________________________________________________________________
+
 Wednesday, January 23, 2002
 DbForms version 1.02
 Grunikiewicz.philip@hydro.qc.ca
@@ -40,6 +139,8 @@ you wish to DISPLAY dates in a format other then yyyy-MM-dd, then you are requir
 
 
 __________________________________________________________________________________________________
+__________________________________________________________________________________________________
+
 Friday, January 18th, 2002
 DbForms version 1.01
 Grunikiewicz.philip@hydro.qc.ca
@@ -61,6 +162,8 @@ Thank you to Jeff Kunkle, Dirk Kraemer, Ron Smith and Gemes Tibor for their inpu
 
 
 __________________________________________________________________________________________________
+__________________________________________________________________________________________________
+
 Tuesday, January 15th, 2002
 DbForms version 1.0
 Grunikiewicz.philip@hydro.qc.ca
@@ -186,7 +289,7 @@ EXAMPLE
         
 ------------------------------------------------------------------------------------
 
-getConnection - tag
+getConnection - tag		[NEW IMPLEMENTATION - ref: v1.03]
 
 Tag which provides a jdbc connection object. 
 
@@ -400,6 +503,8 @@ re-initialize the connection object.
 
 
 ______________________________________________________________________________________________________
+__________________________________________________________________________________________________
+
 
 Wed, 26-Sep-2001
 

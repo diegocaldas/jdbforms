@@ -1459,7 +1459,7 @@
                 <name>getConnection</name>
                 <summary>Allows other tags (or scriptlets) to obtain a database connection object using the same settings found in dbForms-config.xml</summary>
                 <tagclass>org.dbforms.taglib.DbGetConnection</tagclass>
-                <bodycontent>empty</bodycontent>
+                <bodycontent>JSP</bodycontent>
 
                 <attribute>
                     <name>id</name>
