@@ -51,6 +51,7 @@
   <property name="htmldoc.dir" value="${doc.dir}/html" />
   <property name="devguidoc.dir" value="${doc.dir}/devgui" />
   <property name="taglibdoc.dir" value="${doc.dir}/taglib" />
+  <property name="taglib.dir" value="${dist.dir}/taglib" />
   <property name="bin.dir" value="${cvs.workingdir}/bin" />
   <property environment="env" />
 
@@ -166,20 +167,24 @@
   <!-- Generate  HTML reference documentation within doc/html from taglib-docu.xml -->
   <target name="generate_taglib_htmldocs" depends="generate_taglib">    
     <echo message="begin xsl translation to generate HTML documentation  " />
-    <delete file="{dist.dir}/taglib/DbFormsTags.html" />
+    <delete file="${taglib.dir}/DbFormsTags.html" />
     <echo message="style 1" />
-    <style style="${etc.dir}/tldoc2html.xsl" in="${etc.dir}/taglib_docu.xml" out="${dist.dir}/taglib/DbFormsTags.html" />
+    <style style="${etc.dir}/tldoc2html.xsl" in="${etc.dir}/taglib_docu.xml" out="${taglib.dir}/DbFormsTags.html" />
     <delete file="${taglibdoc.dir}/DbFormsTags_TocSem.html" />
     <echo message="style 2" />
-    <style style="${etc.dir}/tldoc2html_toc.xsl" in="${etc.dir}/taglib_docu.xml" out="${dist.dir}/taglib/DbFormsTags_TocSem.html" />
+    <style style="${etc.dir}/tldoc2html_toc.xsl" in="${etc.dir}/taglib_docu.xml" out="${taglib.dir}/DbFormsTags_TocSem.html" />
     <delete file="${taglibdoc.dir}/DbFormsTags_TocAlph.html" />
     <echo message="style 3" />
-    <style style="${etc.dir}/tldoc2html_toc.xsl" in="${etc.dir}/taglib_docu.xml" out="${dist.dir}/taglib/DbFormsTags_TocAlph.html">
+    <style style="${etc.dir}/tldoc2html_toc.xsl" in="${etc.dir}/taglib_docu.xml" out="${taglib.dir}/DbFormsTags_TocAlph.html">
       <param name="sortTagsAlphabetically" expression="true" />
     </style>
+    <copy todir="${taglib.dir}">
+      <fileset dir="${cvs.workingdir}/doc/taglib" />
+    </copy>
+
     <java jar="${basedir}/usersguide_src/docbook_tools/tlddoc.jar" fork="true" >
        <arg value="-d" />
-       <arg value="${basedir}/doc/taglib" />
+       <arg value="${taglib.dir}" />
        <arg value="${dist.dir}/dbforms.tld"  />
     </java>
     <echo message="end of xsl translation " />

@@ -77,6 +77,7 @@
     <ant:ant antfile="build.xml" target="maven-build-release">
 	<ant:property name="dbforms.version" value="${pom.currentVersion}" />
       	<ant:property name="dist.dir" value="target/dist" />
+      	<ant:property name="taglib.dir" value="target/doc/taglib" />
     </ant:ant>
   </goal>
   
