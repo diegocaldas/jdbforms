@@ -696,7 +696,8 @@ public class Table {
 	 */
 	public Hashtable getFieldValuesFromPositionAsHt(String position) {
 
-		if (position == null)
+		// 20020705-HKK: Position maybe string with length = 0!!!!
+        if ((position == null) || (position.length() == 0))
 			return null;
 		// trailing blanks are significant for CHAR database fields
 		//	position = position.trim();
@@ -993,7 +994,9 @@ public class Table {
 
 		}
 
-		if (result == null && order != null) {
+      	// 20020703-HKK: use the default order if result.size == 0, not only if result == null 
+        //               This happens if  all parameters with sort_  are set to none
+		if ( ((result == null) || (result.size() == 0) ) && (order != null)) {
 			result = createOrderFVFromAttribute(order);
 
 			logCat.debug("@@@ 1");
