@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:ant="jelly:ant" xmlns:deploy="deploy" xmlns:doc="doc" xmlns:u="jelly:util" xmlns:j="jelly:core" default="">
-
   <ant:echo message="Hack to use xalan transformer!" />
   ${systemScope.setProperty('javax.xml.transform.TransformerFactory','org.apache.xalan.processor.TransformerFactoryImpl')}
 
@@ -12,18 +11,18 @@
      <ant:java  classname="com.bitmechanic.maxq.Main" fork="yes">
         <ant:classpath>
           <ant:pathelement path="dependend/maxq-0.95dev.jar"/>
-	      <ant:pathelement path="target/dist/dbforms${pom.currentVersion}.jar"/>
-	      <ant:pathelement path="${pom.getDependencyClasspath()}"/>
+         <ant:pathelement path="target/dist/dbforms${pom.currentVersion}.jar"/>
+         <ant:pathelement path="${pom.getDependencyClasspath()}"/>
         </ant:classpath>
         <ant:sysproperty key="generator.properties.file" value="${basedir}/maxq.properties" />
      </ant:java>
-  </goal>	
+  </goal>
 
   <goal name="maxq">
      <attainGoal name="dbforms:startweb" />
      <attainGoal name="maxq:start" />
      <attainGoal name="dbforms:stopweb" />
-  </goal>	
+  </goal>
 
   <goal name="dbforms:startweb">
     <ant:echo message="start tomcat" />
@@ -48,11 +47,11 @@
   <goal name="dbforms:bookstore">
      <deploy:copy-deps todir="target/dependend" />
      <ant:ant antfile="build.xml" target="maven-build-bookstore" >
-      	<ant:property name="dbforms.version" value="${pom.currentVersion}" />
-      	<ant:property name="dist.dir" value="target/dist" />
-      	<ant:property name="build.dir" value="target/build" />
-      	<ant:property name="dependend.dir" value="target/dependend" />
-     </ant:ant> 
+         <ant:property name="dbforms.version" value="${pom.currentVersion}" />
+         <ant:property name="dist.dir" value="target/dist" />
+         <ant:property name="build.dir" value="target/build" />
+         <ant:property name="dependend.dir" value="target/dependend" />
+     </ant:ant>
   </goal>
 
   <goal name="dbforms:getrelease" description="generate a new release from SF">
@@ -61,30 +60,30 @@
     <u:tokenize var="scmTokens" delim=":">${pom.repository.connection}</u:tokenize>
     <ant:cvspass cvsroot=":${scmTokens[2]}:${scmTokens[3]}:${scmTokens[4]}" password="" />
     <ant:cvs
-     	cvsRoot=":${scmTokens[2]}:${scmTokens[3]}:${scmTokens[4]}" 
-     	command="--lf co -P" 
-     	compression="true" 
-     	package="${scmTokens[5]}" 
-     	dest="target/release" 
+      cvsRoot=":${scmTokens[2]}:${scmTokens[3]}:${scmTokens[4]}"
+      command="--lf co -P"
+      compression="true"
+      package="${scmTokens[5]}"
+      dest="target/release"
      />
   </goal>
 
   <goal name="dbforms:doc" description="generate dbforms documentation: taglib docu and manual">
     <ant:echo message="building the DbForms documentation user guide and jsp tag library" />
     <ant:ant antfile="docs.xml" target="maven-build-doc">
-      	<ant:property name="dbforms.version" value="${pom.currentVersion}" />
-      	<ant:property name="doc.dir" value="target/docs" />
-      	<ant:property name="dist.dir" value="target/dist" />
+         <ant:property name="dbforms.version" value="${pom.currentVersion}" />
+         <ant:property name="doc.dir" value="target/docs" />
+         <ant:property name="dist.dir" value="target/dist" />
     </ant:ant>
      <ant:copy todir="target/docs/img" overwrite="true">
-    	<ant:fileset dir="doc/img">
-           <ant:include name="*" />    		
-    	</ant:fileset>
+      <ant:fileset dir="doc/img">
+           <ant:include name="*" />
+      </ant:fileset>
     </ant:copy>
      <ant:copy todir="target/docs/taglib" overwrite="true">
-    	<ant:fileset dir="doc/taglib">
-           <ant:include name="*" />    		
-    	</ant:fileset>
+      <ant:fileset dir="doc/taglib">
+           <ant:include name="*" />
+      </ant:fileset>
     </ant:copy>
   </goal>
 
@@ -93,32 +92,65 @@
     <deploy:copy-deps todir="target/dependend" />
     <ant:echo message="generate version ${pom.currentVersion}" />
     <ant:ant antfile="build.xml" target="maven-build-release">
-	<ant:property name="dbforms.version" value="${pom.currentVersion}" />
-      	<ant:property name="dist.dir" value="target/dist" />
-      	<ant:property name="taglib.dir" value="target/doc/taglib" />
-      	<ant:property name="dependend.dir" value="target/dependend" />
+   <ant:property name="dbforms.version" value="${pom.currentVersion}" />
+         <ant:property name="dist.dir" value="target/dist" />
+         <ant:property name="taglib.dir" value="target/doc/taglib" />
+         <ant:property name="dependend.dir" value="target/dependend" />
     </ant:ant>
   </goal>
-  
+
   <goal name="dbforms:weekly">
      <ant:mkdir dir="target/docs/weekly"/>
      <ant:copy todir="target/docs/weekly" overwrite="true">
-    	<ant:fileset dir="target/dist">
+      <ant:fileset dir="target/dist">
            <ant:include name="*.zip" />
            <ant:include name="*.tgz" />
            <ant:include name="*.war" />
-    	</ant:fileset>
+      </ant:fileset>
     </ant:copy>
-  </goal>	
-  
+  </goal>
+
+  <goal name="dbforms:fileset:dbforms">
+      <fileScanner var="maven.sourceforge.distFileList">
+         <fileset dir="${maven.dist.dir}">
+            <patternset>
+               <include name="dbforms*"/> 
+            </patternset>
+          </fileset>
+      </fileScanner>
+  </goal>
+
+  <goal name="dbforms:fileset:examples">
+      <fileScanner var="maven.sourceforge.distFileList">
+         <fileset dir="${maven.dist.dir}">
+            <patternset>
+               <include name="bookstore*"/> 
+               <include name="testsuite*"/> 
+               <include name="bugtracker*"/> 
+            </patternset>
+          </fileset>
+      </fileScanner>
+  </goal>
+
+  <goal name="dbforms:release" description="creates a new SF release">
+    <attainGoal name="sourceforge:changes"/>
+    <attainGoal name="dbforms:fileset:dbforms"/>
+    <attainGoal name="sourceforge:upload"/>
+    <attainGoal name="sourceforge:release"/>
+    <attainGoal name="dbforms:fileset:examples"/>
+    <attainGoal name="sourceforge:upload"/>
+    <attainGoal name="sourceforge:release"/>
+  </goal>
+
   <goal name="dbforms:deploy" description="do the whole deployment: generates site, generates doc, generates distribution">
     <ant:echo message="starting deploying site" />
     <ant:echo message="0. cleanup" />
     <attainGoal name="clean" />
-    <ant:echo message="2. generate whole site" />
-    <attainGoal name="site:generate" />
+    <ant:echo message="1. generate and deploy whole site" />
+    <attainGoal name="site:deploy" />
+    <ant:echo message="2. create release files" />
+    <attainGoal name="dbforms:release" />
   </goal>
-
 
   <!-- change crlf before jalopy task -->
   <preGoal name="jalopy:format">
@@ -126,29 +158,28 @@
     <ant:ant antfile="build.xml" target="forcedos" />
   </preGoal>
 
-
   <!-- to init the appserver with bookstore example -->
   <preGoal name="appserver:init">
      <ant:echo message="copy config" />
      <ant:copy todir="${maven.appserver.conf.dir}/conf/" overwrite="true">
-    	<ant:fileset dir="${maven.conf.dir}/${maven.appserver.name}-${maven.appserver.version}" />
+      <ant:fileset dir="${maven.conf.dir}/${maven.appserver.name}-${maven.appserver.version}" />
     </ant:copy>
     <ant:echo message="copy bookstore.war" />
     <ant:copy tofile="${maven.appserver.conf.dir}/webapps/bookstore.war" overwrite="true">
-    	<ant:fileset dir="target/dist">
-           <ant:include name="bookstore*.war" />    		
-    	</ant:fileset>
+      <ant:fileset dir="target/dist">
+           <ant:include name="bookstore*.war" />
+      </ant:fileset>
     </ant:copy>
   </preGoal>
 
   <!-- We have our own ChangeLog file! -->
   <postGoal name="changes:report">
     <ant:echo message="build changes.xml" />
-    <doc:text-xdoc 
-    	title="Changes" 
-    	section="CHANGES" 
-    	output="target/generated-xdocs/changes-report.xml" 
-    	inputFile="ChangeLog" 
+    <doc:text-xdoc
+      title="Changes"
+      section="CHANGES"
+      output="target/generated-xdocs/changes-report.xml"
+      inputFile="ChangeLog"
     />
   </postGoal>
 
@@ -173,28 +204,28 @@
   <postGoal name="site:run-reports">
     <ant:echo message="generate releasenotes" />
     <ant:mkdir dir="target/generated-xdocs" />
-    <doc:text-xdoc 
-    	title="Release Notes for ${pom.currentVersion}" 
-    	section="Release Notes" 
-    	output="target/generated-xdocs/releasenotes.xml" 
-    	inputFile="ReleaseNotes_v${pom.currentVersion}.txt" 
+    <doc:text-xdoc
+      title="Release Notes for ${pom.currentVersion}"
+      section="Release Notes"
+      output="target/generated-xdocs/releasenotes.xml"
+      inputFile="ReleaseNotes_v${pom.currentVersion}.txt"
     />
   </postGoal>
 
-   <postGoal name="war:webapp"> 
+   <postGoal name="war:webapp">
     <ant:echo message="compile interceptors" />
-    <ant:javac 
-    	srcdir="${maven.war.webapp.dir}/WEB-INF/src"
-    	destdir="${maven.war.webapp.dir}/WEB-INF/classes" 
-    	debug="on"
-    	optimize="off"
-    	deprecation="off"
+    <ant:javac
+      srcdir="${maven.war.webapp.dir}/WEB-INF/src"
+      destdir="${maven.war.webapp.dir}/WEB-INF/classes"
+      debug="on"
+      optimize="off"
+      deprecation="off"
     >
       <ant:classpath>
-	      <ant:pathelement path="${pom.getDependencyClasspath()}"/>
+         <ant:pathelement path="${pom.getDependencyClasspath()}"/>
       </ant:classpath>
     </ant:javac>
-   </postGoal> 
+   </postGoal>
 
 
 </project>

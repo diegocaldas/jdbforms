@@ -115,7 +115,7 @@ table attribute!
 --------------
 
 2-3-1) Support for html/database escaping
---------------------------------
+-----------------------------------------
 Escapers can be set for tables, fields in dbforms-config file, all output tags in the
 jsp page. 
 Ranking is:
