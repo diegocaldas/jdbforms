@@ -102,7 +102,7 @@ public class DbUpdateButtonTag extends DbBaseButtonTag
             setOnClick(onclick + ValidatorConstants.JS_CANCEL_VALIDATION + "=true;" + ValidatorConstants.JS_UPDATE_VALIDATION_MODE + "=true;");
         }
 
-        if (parentForm.getFooterReached() && ResultSetVector.isEmptyOrNull(parentForm.getResultSetVector()))
+        if (parentForm.getFooterReached() && Util.isNull(parentForm.getResultSetVector()))
         {
             return EVAL_PAGE;
         }
@@ -186,7 +186,7 @@ public class DbUpdateButtonTag extends DbBaseButtonTag
     {
         if (choosenFlavor == FLAVOR_MODERN)
         {
-            if (parentForm.getFooterReached() && ResultSetVector.isEmptyOrNull(parentForm.getResultSetVector()))
+            if (parentForm.getFooterReached() && Util.isNull(parentForm.getResultSetVector()))
             {
                 return EVAL_PAGE;
             }

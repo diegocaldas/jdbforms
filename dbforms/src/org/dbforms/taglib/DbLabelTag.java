@@ -139,7 +139,7 @@ public class DbLabelTag extends TagSupport
         {
 				String fieldValue = (nullFieldValue != null) ? nullFieldValue : NO_DATA;
 
-            if (!ResultSetVector.isEmptyOrNull(parentForm.getResultSetVector()))
+            if (!Util.isNull(parentForm.getResultSetVector()))
             {
                 Object fieldValueObj = parentForm.getResultSetVector().getCurrentRowAsObjects()[field.getId()];
 

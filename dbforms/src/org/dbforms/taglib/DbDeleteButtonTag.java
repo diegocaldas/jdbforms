@@ -153,7 +153,7 @@ public class DbDeleteButtonTag extends DbBaseButtonTag
             setOnClick(onclick + "return confirm('" + message + "');");
         }
 
-        if (parentForm.getFooterReached() && ResultSetVector.isEmptyOrNull(parentForm.getResultSetVector()))
+        if (parentForm.getFooterReached() && Util.isNull(parentForm.getResultSetVector()))
         {
             return EVAL_PAGE;
         }
@@ -237,7 +237,7 @@ public class DbDeleteButtonTag extends DbBaseButtonTag
     {
         if (choosenFlavor == FLAVOR_MODERN)
         {
-            if (parentForm.getFooterReached() && ResultSetVector.isEmptyOrNull(parentForm.getResultSetVector()))
+            if (parentForm.getFooterReached() && Util.isNull(parentForm.getResultSetVector()))
             {
                 return EVAL_PAGE;
             }
