@@ -1740,86 +1740,45 @@ public class Table {
 
             // (Sunil_Mishra@adp.com) - The return type to check for the
             // IGNORE_OPERATION
-            int operation;
+            int operation = DbEventInterceptor.GRANT_OPERATION;
+            String denyMessage = null;
 
             if (action == DbEventInterceptor.PRE_INSERT) {
                operation =
                   dbi.preInsert(request, this, fieldValues, config, con);
-
-               switch (operation) {
-                  case DbEventInterceptor.DENY_OPERATION :
-                     s =
-                        MessageResourcesInternal.getMessage(
-                           "dbforms.events.insert.nogrant",
-                           request.getLocale(),
-                           new String[] { getName()});
-                     throw new SQLException(s);
-                  case DbEventInterceptor.IGNORE_OPERATION :
-                     return operation;
-                  default :
-                     break;
-               }
+               denyMessage = "dbforms.events.insert.nogrant";
             } else if (action == DbEventInterceptor.POST_INSERT) {
                dbi.postInsert(request, config, con);
             } else if (action == DbEventInterceptor.PRE_UPDATE) {
                operation =
                   dbi.preUpdate(request, this, fieldValues, config, con);
-
-               switch (operation) {
-                  case DbEventInterceptor.DENY_OPERATION :
-                     s =
-                        MessageResourcesInternal.getMessage(
-                           "dbforms.events.update.nogrant",
-                           request.getLocale(),
-                           new String[] { getName()});
-                     throw new SQLException(s);
-
-                  case DbEventInterceptor.IGNORE_OPERATION :
-                     return operation;
-                  default :
-                     break;
-               }
+               denyMessage = "dbforms.events.update.nogrant";
             } else if (action == DbEventInterceptor.POST_UPDATE) {
                dbi.postUpdate(request, config, con);
             } else if (action == DbEventInterceptor.PRE_DELETE) {
                operation =
                   dbi.preDelete(request, this, fieldValues, config, con);
-
-               switch (operation) {
-                  case DbEventInterceptor.DENY_OPERATION :
-                     s =
-                        MessageResourcesInternal.getMessage(
-                           "dbforms.events.delete.nogrant",
-                           request.getLocale(),
-                           new String[] { getName()});
-                     throw new SQLException(s);
-
-                  case DbEventInterceptor.IGNORE_OPERATION :
-                     return operation;
-                  default :
-                     break;
-               }
+               denyMessage = "dbforms.events.delete.nogrant";
             } else if (action == DbEventInterceptor.POST_DELETE) {
                dbi.postDelete(request, config, con);
             } else if (action == DbEventInterceptor.PRE_SELECT) {
                operation = dbi.preSelect(request, config, con);
-
-               switch (operation) {
-                  case DbEventInterceptor.DENY_OPERATION :
-                     s =
-                        MessageResourcesInternal.getMessage(
-                           "dbforms.events.view.nogrant",
-                           request.getLocale(),
-                           new String[] { getName()});
-                     throw new SQLException(s);
-
-                  case DbEventInterceptor.IGNORE_OPERATION :
-                     return operation;
-                  default :
-                     break;
-               }
+               denyMessage = "dbforms.events.view.nogrant";
             } else if (action == DbEventInterceptor.POST_SELECT) {
                dbi.postSelect(request, config, con);
+            }
+            switch (operation) {
+               case DbEventInterceptor.DENY_OPERATION :
+                  s =
+                     MessageResourcesInternal.getMessage(
+                        denyMessage,
+                        request.getLocale(),
+                        new String[] { getName()});
+                  throw new SQLException(s);
+               case DbEventInterceptor.IGNORE_OPERATION :
+                  return operation;
+               default :
+                  break;
             }
          }
       } catch (ClassNotFoundException cnfe) {
