@@ -346,6 +346,11 @@
     </dependency>                         
 
     <dependency>
+      <id>xml-apis</id>      
+      <version>1.0.b2</version>
+    </dependency>                         
+
+    <dependency>
       <id>xalan</id>
       <version>2.4.1</version>
     </dependency>       
