@@ -50,9 +50,9 @@ public class NavEventFactoryImpl extends NavEventFactory
     private static NavEventFactory instance = null;
 
     /** classes used as constructor arguments types */
-    private static Class[] constructorArgsTypes2 = new Class[]
+    private static Class[] goToConstructorArgsTypes = new Class[]
     {
-        Table.class, DbFormsConfig.class
+        String.class, Table.class
     };
 
 
@@ -77,22 +77,6 @@ public class NavEventFactoryImpl extends NavEventFactory
         }
 
         return instance;
-    }
-
-
-    /**
-     *  Initialize the default events.
-     *
-     * @exception Exception if any error occurs
-     */
-    public void initializeEvents() throws Exception
-    {
-         addEventInfo(new EventInfo(EventType.EVENT_NAVIGATION_FIRST, "org.dbforms.event.NavFirstEvent"));
-         addEventInfo(new EventInfo(EventType.EVENT_NAVIGATION_GOTO,  "org.dbforms.event.GotoEvent"));
-         addEventInfo(new EventInfo(EventType.EVENT_NAVIGATION_LAST,  "org.dbforms.event.NavLastEvent"));
-         addEventInfo(new EventInfo(EventType.EVENT_NAVIGATION_NEW,   "org.dbforms.event.NavNewEvent"));
-         addEventInfo(new EventInfo(EventType.EVENT_NAVIGATION_NEXT,  "org.dbforms.event.BoundedNavNextEventImpl"));
-         addEventInfo(new EventInfo(EventType.EVENT_NAVIGATION_PREV,  "org.dbforms.event.BoundedNavPrevEventImpl"));
     }
 
 
@@ -134,6 +118,22 @@ public class NavEventFactoryImpl extends NavEventFactory
         // debug
         logCat.info("::createEvent - got event [" + einfo + "] from action [" + action + "]");
 
-        return (NavigationEvent) getEvent(einfo, constructorArgsTypes2, constructorArgs);
+        return (NavigationEvent) getEvent(einfo, goToConstructorArgsTypes, constructorArgs);
+    }
+
+
+    /**
+     *  Create and return a new navGoto event.
+     *
+     * @param  positionString the position string object
+     * @param  table the Table object
+     * @return a new navGoto event
+     */
+    public GotoEvent createGotoEvent(String positionString, Table table)
+    {
+        Object[] constructorArgs = new Object[] { positionString, table };
+        EventInfo einfo = table.getTableEvents().getEventInfo(EventType.EVENT_NAVIGATION_GOTO);
+
+        return (GotoEvent) getEvent(einfo, goToConstructorArgsTypes, constructorArgs);
     }
 }

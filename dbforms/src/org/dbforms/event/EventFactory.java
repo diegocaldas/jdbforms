@@ -77,38 +77,6 @@ public abstract class EventFactory
 
 
     /**
-     *  Initialize the default events.
-     *
-     * @exception Exception if any error occurs
-     */
-    public abstract void initializeEvents() throws Exception;
-
-
-    /**
-     *  Get the EventInfo object having the input identifier.
-     *
-     * @param  id the EventInfo identifier
-     * @return the EventInfo object having the input identifier, or null
-     *         if that object does not exist
-     */
-    public EventInfo getEventInfo(String id)
-    {
-        EventInfo einfo = null;
-
-        if ((eventInfoMap != null) && (eventInfoMap.containsKey(id)))
-        {
-            einfo = (EventInfo) eventInfoMap.get(id);
-        }
-        else
-        {
-            logCat.error("::getEventInfo - event having id [" + id + "] is not registered into the factory, returning a NULL event");
-        }
-
-        return einfo;
-    }
-
-
-    /**
      *  Add a new EventInfo object into the factory.
      *  <br>
      *  The EventInfo name must be unique.
@@ -135,35 +103,43 @@ public abstract class EventFactory
     }
 
 
-    /**
-     *  Instance a new DatabaseEvent object
-     *
-     * @param  eventType            the event type
-     * @param  constructorArgsTypes array of constructor argument classes
-     * @param  constructorArgs      array of constructor argument objects
-     * @return the event object, or null if any problem occurs
-     */
-    public WebEvent getEvent(String eventType, Class[] constructorArgsTypes, Object[] constructorArgs)
-    {
-        logCat.error("::getEvent - WARNING: this method cannot get the destination table - must be completed !!");
-
-        WebEvent event = null;
-        EventInfo einfo = null;
-
-        if ((einfo = getEventInfo(eventType)) != null)
-        {
-            event = getEvent(einfo, constructorArgsTypes, constructorArgs);
-        }
-
-        return event;
-    }
-
-
 
 
     /**
      *  PROTECTED methods here
      */
+
+
+    /**
+     *  Initialize the default events.
+     *
+     * @exception Exception if any error occurs
+     */
+    protected abstract void initializeEvents() throws Exception;
+
+
+    /**
+     *  Get the EventInfo object having the input identifier.
+     *
+     * @param  id the EventInfo identifier
+     * @return the EventInfo object having the input identifier, or null
+     *         if that object does not exist
+     */
+    protected EventInfo getEventInfo(String id)
+    {
+        EventInfo einfo = null;
+
+        if ((eventInfoMap != null) && (eventInfoMap.containsKey(id)))
+        {
+            einfo = (EventInfo) eventInfoMap.get(id);
+        }
+        else
+        {
+            logCat.error("::getEventInfo - event having id [" + id + "] is not registered into the factory, returning a NULL event");
+        }
+
+        return einfo;
+    }
 
 
     /**

@@ -23,11 +23,14 @@
 
 package org.dbforms.event;
 
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.log4j.Category;
+
 import org.dbforms.*;
 import org.dbforms.util.*;
-import javax.servlet.http.*;
-import java.sql.*;
-import org.apache.log4j.Category;
+import org.dbforms.event.eventtype.EventType;
 
 
 
@@ -39,7 +42,7 @@ import org.apache.log4j.Category;
 public abstract class NavEventFactory extends EventFactory
 {
     /** classes used as GotoEvent constructor arguments types */
-    public static Class[] gotoConstructorArgsTypes = new Class[]
+    protected static Class[] gotoConstructorArgsTypes = new Class[]
     {
         String.class, Table.class
     };
@@ -66,4 +69,30 @@ public abstract class NavEventFactory extends EventFactory
      * @return  a new navigation event
      */
     public abstract NavigationEvent createEvent(String action, Table table, DbFormsConfig config);
+
+
+    /**
+     *  Create and return a new navGoto event.
+     *
+     * @param  positionString the position string object
+     * @param  table the Table object
+     * @return a new navGoto event
+     */
+    public abstract GotoEvent createGotoEvent(String positionString, Table table);
+
+
+    /**
+     *  Initialize the default events.
+     *
+     * @exception Exception if any error occurs
+     */
+    protected void initializeEvents() throws Exception
+    {
+         addEventInfo(new EventInfo(EventType.EVENT_NAVIGATION_FIRST, "org.dbforms.event.NavFirstEvent"));
+         addEventInfo(new EventInfo(EventType.EVENT_NAVIGATION_GOTO,  "org.dbforms.event.GotoEvent"));
+         addEventInfo(new EventInfo(EventType.EVENT_NAVIGATION_LAST,  "org.dbforms.event.NavLastEvent"));
+         addEventInfo(new EventInfo(EventType.EVENT_NAVIGATION_NEW,   "org.dbforms.event.NavNewEvent"));
+         addEventInfo(new EventInfo(EventType.EVENT_NAVIGATION_NEXT,  "org.dbforms.event.BoundedNavNextEventImpl"));
+         addEventInfo(new EventInfo(EventType.EVENT_NAVIGATION_PREV,  "org.dbforms.event.BoundedNavPrevEventImpl"));
+    }
 }

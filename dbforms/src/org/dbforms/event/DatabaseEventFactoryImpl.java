@@ -62,19 +62,6 @@ public class DatabaseEventFactoryImpl extends DatabaseEventFactory
     }
 
 
-   /**
-     *  Initialize the default events.
-     *
-     * @exception Exception if any error occurs
-     */
-    public void initializeEvents() throws Exception
-    {
-        addEventInfo(new EventInfo(EventType.EVENT_DATABASE_DELETE,  "org.dbforms.event.DeleteEvent"));
-        addEventInfo(new EventInfo(EventType.EVENT_DATABASE_INSERT,  "org.dbforms.event.InsertEvent"));
-        addEventInfo(new EventInfo(EventType.EVENT_DATABASE_UPDATE,  "org.dbforms.event.UpdateEvent"));
-    }
-
-
     /**
      *  create and return a new database event
      *
@@ -120,10 +107,40 @@ public class DatabaseEventFactoryImpl extends DatabaseEventFactory
     }
 
 
+    /**
+     *  Create and return a new UpdateEvent as secondary event.
+     *
+     * @param  tableId the table identifier
+     * @param  keyId   the key   identifier
+     * @param  request the HttpServletRequest object
+     * @param  config  the DbForms config object
+     * @return  The updateEvent object
+     */
+    public UpdateEvent createUpdateEvent(int                tableId,
+                                         String             keyId,
+                                         HttpServletRequest request,
+                                         DbFormsConfig      config)
+    {
+        UpdateEvent event           = null;
+        Object[]    constructorArgs = new Object[]
+        {
+            new Integer(tableId), keyId, request, config
+        };
+
+        Table       table       = config.getTable(tableId);
+        TableEvents tableEvents = table.getTableEvents();
+        EventInfo   einfo       = tableEvents.getEventInfo(EventType.EVENT_DATABASE_UPDATE);
+
+        event = (UpdateEvent)getEvent(einfo, keyInfoConstructorArgsTypes, constructorArgs);
+
+        return event;
+    }
+
+
 
 
     /**
-     * PRIVATE METHODS here
+     *  PRIVATE METHODS here
      */
 
 
