@@ -470,10 +470,8 @@ public class Query extends Table
             {
                buf.append(" ");
                buf.append(followAfterWhere);
-               buf.append(" ");
+               buf.append(" (");
             }
-
-            buf.append(" AND ( ");
          }
 
          buf.append(s);

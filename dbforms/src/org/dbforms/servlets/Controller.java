@@ -215,8 +215,7 @@ public class Controller extends HttpServlet
 
                if (formValidatorName != null)
                {
-                  ((DatabaseEvent) e).doValidation(formValidatorName, 
-                                                   getServletContext(), request);
+                  ((DatabaseEvent) e).doValidation(formValidatorName, getServletContext());
                }
 
                ((DatabaseEvent) e).processEvent(con);
@@ -325,8 +324,7 @@ public class Controller extends HttpServlet
                   // doValidation with Commons-Validator
                   if (formValidatorName != null)
                   {
-                     dbE.doValidation(formValidatorName, getServletContext(), 
-                                      request);
+                     dbE.doValidation(formValidatorName, getServletContext());
                   }
 
                   dbE.processEvent(con);

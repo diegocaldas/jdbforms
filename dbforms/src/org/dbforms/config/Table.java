@@ -2033,6 +2033,10 @@ public class Table
       {
          throw sqle;
       }
+	  catch (MultipleValidationException ve)
+	  {
+		  throw new SQLException(ve.getMessage());
+	  }
       catch (ValidationException ve)
       {
          throw new SQLException(ve.getMessage());

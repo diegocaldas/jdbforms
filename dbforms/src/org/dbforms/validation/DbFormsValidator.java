@@ -28,13 +28,12 @@ import org.apache.commons.validator.Field;
 import org.apache.commons.validator.GenericValidator;
 import org.apache.commons.validator.ValidatorAction;
 import java.util.Vector;
-import java.util.Hashtable;
 
 import org.dbforms.config.DbFormsErrors;
+import org.dbforms.config.FieldValues;
 import org.dbforms.config.ValidationException;
+import org.dbforms.util.Util;
 import org.apache.log4j.Category;
-
-
 
 /*********************************************************************************************
  * <p>This class performs validations.
@@ -42,24 +41,22 @@ import org.apache.log4j.Category;
  *
  * @author Eric Beaumier
 *********************************************************************************************/
-public class DbFormsValidator implements Serializable
-{
-   private static Category             logCat = Category.getInstance(
-                                                 DbFormsValidator.class.getName());
-   private static final String REQUIRED   = "required";
-   private static final String MASK       = "mask";
-   private static final String RANGE      = "range";
-   private static final String MINLENGTH  = "minlength";
-   private static final String MAXLENGTH  = "maxlength";
-   private static final String BYTE       = "byte";
-   private static final String SHORT      = "short";
-   private static final String LONG       = "long";
-   private static final String INTEGER    = "integer";
-   private static final String FLOAT      = "float";
-   private static final String DOUBLE     = "double";
-   private static final String DATE       = "date";
+public class DbFormsValidator implements Serializable {
+   private static Category logCat = Category.getInstance(DbFormsValidator.class.getName());
+   private static final String REQUIRED = "required";
+   private static final String MASK = "mask";
+   private static final String RANGE = "range";
+   private static final String MINLENGTH = "minlength";
+   private static final String MAXLENGTH = "maxlength";
+   private static final String BYTE = "byte";
+   private static final String SHORT = "short";
+   private static final String LONG = "long";
+   private static final String INTEGER = "integer";
+   private static final String FLOAT = "float";
+   private static final String DOUBLE = "double";
+   private static final String DATE = "date";
    private static final String CREDITCARD = "creditcard";
-   private static final String EMAIL      = "email";
+   private static final String EMAIL = "email";
 
    /*********************************************************************************************
     * <p>Checks if the field isn't null and length of the field is greater than zero not
@@ -72,34 +69,23 @@ public class DbFormsValidator implements Serializable
     * @param         locale                 The <code>Locale</code> object of the Request.
          * @param   dbFormsErrors  DbForms Error class to retrieve error message in DbForm-Errors.xml format.
     ********************************************************************************************/
-   public static boolean validateRequired(Object bean, ValidatorAction va, 
-                                          Field field, Vector errors, 
-                                          Locale locale, 
-                                          DbFormsErrors dbFormsErrors)
-   {
-      Hashtable hash = (Hashtable) bean;
-
-      String    value = null;
-
-      if ((field.getProperty() != null) && (field.getProperty().length() > 0))
-      {
-         value = (String) hash.get(field.getProperty());
+   public static boolean validateRequired(Object bean, ValidatorAction va, Field field, Vector errors, Locale locale, DbFormsErrors dbFormsErrors) {
+      FieldValues hash = (FieldValues) bean;
+      String value = null;
+      try {
+         if (!Util.isNull(field.getProperty())) {
+            value = hash.get(field.getProperty()).getFieldValueAsObject().toString();
+         }
+      } catch (Exception e) {
+         logCat.error(e);
       }
-
-      if (GenericValidator.isBlankOrNull(value))
-      {
-         errors.add(new ValidationException(dbFormsErrorMessage(REQUIRED, va, 
-                                                                field, locale, 
-                                                                dbFormsErrors)));
-
+      if (GenericValidator.isBlankOrNull(value)) {
+         errors.add(new ValidationException(dbFormsErrorMessage(REQUIRED, va, field, locale, dbFormsErrors)));
          return false;
-      }
-      else
-      {
+      } else {
          return true;
       }
    }
-
 
    /*********************************************************************************************
     * <p>Checks if the field matches the regular expression in the field's mask attribute.</p>
@@ -111,44 +97,27 @@ public class DbFormsValidator implements Serializable
     * @param         locale                 The <code>Locale</code> object of the Request.
          * @param   dbFormsErrors  DbForms Error class to retrieve error message in DbForm-Errors.xml format.
     ********************************************************************************************/
-   public static boolean validateMask(Object bean, ValidatorAction va, 
-                                      Field field, Vector errors, Locale locale, 
-                                      DbFormsErrors dbFormsErrors)
-   {
-      Hashtable hash = (Hashtable) bean;
-
-      String    mask = field.getVarValue("mask");
-
-      if ((field.getProperty() != null) && (field.getProperty().length() > 0))
-      {
-         String value = (String) hash.get(field.getProperty());
-
-         try
-         {
-            if (!GenericValidator.isBlankOrNull(value)
-                      && !GenericValidator.matchRegexp(value, mask))
-            {
-               errors.add(new ValidationException(dbFormsErrorMessage(MASK, va, 
-                                                                      field, 
-                                                                      locale, 
-                                                                      dbFormsErrors)));
-
-               return false;
-            }
-            else
-            {
-               return true;
-            }
+   public static boolean validateMask(Object bean, ValidatorAction va, Field field, Vector errors, Locale locale, DbFormsErrors dbFormsErrors) {
+      FieldValues hash = (FieldValues) bean;
+      String value = null;
+      try {
+         if (!Util.isNull(field.getProperty())) {
+            value = hash.get(field.getProperty()).getFieldValueAsObject().toString();
          }
-         catch (Exception e)
-         {
-            logCat.error("Validator::validateMask() - " + e.getMessage());
+      } catch (Exception e) {
+         logCat.error(e);
+      }
+      if (!Util.isNull(value)) {
+         String mask = field.getVarValue("mask");
+         if (!GenericValidator.isBlankOrNull(value) && !GenericValidator.matchRegexp(value, mask)) {
+            errors.add(new ValidationException(dbFormsErrorMessage(MASK, va, field, locale, dbFormsErrors)));
+            return false;
+         } else {
+            return true;
          }
       }
-
       return true;
    }
-
 
    /********************************************************************************************
     * <p>Checks if the field can safely be converted to a byte primitive.</p>
@@ -160,28 +129,27 @@ public class DbFormsValidator implements Serializable
     * @param         locale                 The <code>Locale</code> object of the Request.
          * @param   dbFormsErrors  DbForms Error class to retrieve error message in DbForm-Errors.xml format.
     ********************************************************************************************/
-   public static boolean validateByte(Object bean, ValidatorAction va, 
-                                      Field field, Vector errors, Locale locale, 
-                                      DbFormsErrors dbFormsErrors)
-   {
-      Hashtable hash  = (Hashtable) bean;
-      String    value = (String) hash.get(field.getProperty());
-
-      if (!GenericValidator.isBlankOrNull(value)
-                && !GenericValidator.isByte(value))
-      {
-         errors.add(new ValidationException(dbFormsErrorMessage(BYTE, va, field, 
-                                                                locale, 
-                                                                dbFormsErrors)));
-
-         return false;
+   public static boolean validateByte(Object bean, ValidatorAction va, Field field, Vector errors, Locale locale, DbFormsErrors dbFormsErrors) {
+      FieldValues hash = (FieldValues) bean;
+      String value = null;
+      try {
+         if (!Util.isNull(field.getProperty())) {
+            value = hash.get(field.getProperty()).getFieldValueAsObject().toString();
+         }
+      } catch (Exception e) {
+         logCat.error(e);
       }
-      else
-      {
-         return true;
+      if (!Util.isNull(value)) {
+         if (!GenericValidator.isByte(value)) {
+            errors.add(new ValidationException(dbFormsErrorMessage(BYTE, va, field, locale, dbFormsErrors)));
+
+            return false;
+         } else {
+            return true;
+         }
       }
+      return true;
    }
-
 
    /********************************************************************************************
     * <p>Checks if the field can safely be converted to a short primitive.</p>
@@ -193,29 +161,27 @@ public class DbFormsValidator implements Serializable
     * @param         locale                 The <code>Locale</code> object of the Request.
          * @param   dbFormsErrors  DbForms Error class to retrieve error message in DbForm-Errors.xml format.
     ********************************************************************************************/
-   public static boolean validateShort(Object bean, ValidatorAction va, 
-                                       Field field, Vector errors, 
-                                       Locale locale, 
-                                       DbFormsErrors dbFormsErrors)
-   {
-      Hashtable hash  = (Hashtable) bean;
-      String    value = (String) hash.get(field.getProperty());
-
-      if (!GenericValidator.isBlankOrNull(value)
-                && !GenericValidator.isShort(value))
-      {
-         errors.add(new ValidationException(dbFormsErrorMessage(SHORT, va, 
-                                                                field, locale, 
-                                                                dbFormsErrors)));
-
-         return false;
+   public static boolean validateShort(Object bean, ValidatorAction va, Field field, Vector errors, Locale locale, DbFormsErrors dbFormsErrors) {
+      FieldValues hash = (FieldValues) bean;
+      String value = null;
+      try {
+         if (!Util.isNull(field.getProperty())) {
+            value = hash.get(field.getProperty()).getFieldValueAsObject().toString();
+         }
+      } catch (Exception e) {
+         logCat.error(e);
       }
-      else
-      {
-         return true;
+      if (!Util.isNull(value)) {
+         if (!GenericValidator.isShort(value)) {
+            errors.add(new ValidationException(dbFormsErrorMessage(SHORT, va, field, locale, dbFormsErrors)));
+
+            return false;
+         } else {
+            return true;
+         }
       }
+      return true;
    }
-
 
    /********************************************************************************************
     * <p>Checks if the field can safely be converted to an int primitive.</p>
@@ -227,29 +193,27 @@ public class DbFormsValidator implements Serializable
     * @param         locale                 The <code>Locale</code> object of the Request.
          * @param   dbFormsErrors  DbForms Error class to retrieve error message in DbForm-Errors.xml format.
     ********************************************************************************************/
-   public static boolean validateInteger(Object bean, ValidatorAction va, 
-                                         Field field, Vector errors, 
-                                         Locale locale, 
-                                         DbFormsErrors dbFormsErrors)
-   {
-      Hashtable hash  = (Hashtable) bean;
-      String    value = (String) hash.get(field.getProperty());
-
-      if (!GenericValidator.isBlankOrNull(value)
-                && !GenericValidator.isInt(value))
-      {
-         errors.add(new ValidationException(dbFormsErrorMessage(INTEGER, va, 
-                                                                field, locale, 
-                                                                dbFormsErrors)));
-
-         return false;
+   public static boolean validateInteger(Object bean, ValidatorAction va, Field field, Vector errors, Locale locale, DbFormsErrors dbFormsErrors) {
+      FieldValues hash = (FieldValues) bean;
+      String value = null;
+      try {
+         if (!Util.isNull(field.getProperty())) {
+            value = hash.get(field.getProperty()).getFieldValueAsObject().toString();
+         }
+      } catch (Exception e) {
+         logCat.error(e);
       }
-      else
-      {
-         return true;
+      if (!Util.isNull(value)) {
+         if (!GenericValidator.isInt(value)) {
+            errors.add(new ValidationException(dbFormsErrorMessage(INTEGER, va, field, locale, dbFormsErrors)));
+
+            return false;
+         } else {
+            return true;
+         }
       }
+      return true;
    }
-
 
    /********************************************************************************************
     * <p>Checks if the field can safely be converted to a long primitive.</p>
@@ -261,28 +225,27 @@ public class DbFormsValidator implements Serializable
     * @param         locale                 The <code>Locale</code> object of the Request.
          * @param   dbFormsErrors  DbForms Error class to retrieve error message in DbForm-Errors.xml format.
     ********************************************************************************************/
-   public static boolean validateLong(Object bean, ValidatorAction va, 
-                                      Field field, Vector errors, Locale locale, 
-                                      DbFormsErrors dbFormsErrors)
-   {
-      Hashtable hash  = (Hashtable) bean;
-      String    value = (String) hash.get(field.getProperty());
-
-      if (!GenericValidator.isBlankOrNull(value)
-                && !GenericValidator.isLong(value))
-      {
-         errors.add(new ValidationException(dbFormsErrorMessage(LONG, va, field, 
-                                                                locale, 
-                                                                dbFormsErrors)));
-
-         return false;
+   public static boolean validateLong(Object bean, ValidatorAction va, Field field, Vector errors, Locale locale, DbFormsErrors dbFormsErrors) {
+      FieldValues hash = (FieldValues) bean;
+      String value = null;
+      try {
+         if (!Util.isNull(field.getProperty())) {
+            value = hash.get(field.getProperty()).getFieldValueAsObject().toString();
+         }
+      } catch (Exception e) {
+         logCat.error(e);
       }
-      else
-      {
-         return true;
+      if (!Util.isNull(value)) {
+         if (!GenericValidator.isLong(value)) {
+            errors.add(new ValidationException(dbFormsErrorMessage(LONG, va, field, locale, dbFormsErrors)));
+
+            return false;
+         } else {
+            return true;
+         }
       }
+      return true;
    }
-
 
    /********************************************************************************************
     * <p>Checks if the field can safely be converted to a float primitive.</p>
@@ -294,29 +257,26 @@ public class DbFormsValidator implements Serializable
     * @param         locale                 The <code>Locale</code> object of the Request.
          * @param   dbFormsErrors  DbForms Error class to retrieve error message in DbForm-Errors.xml format.
     ********************************************************************************************/
-   public static boolean validateFloat(Object bean, ValidatorAction va, 
-                                       Field field, Vector errors, 
-                                       Locale locale, 
-                                       DbFormsErrors dbFormsErrors)
-   {
-      Hashtable hash  = (Hashtable) bean;
-      String    value = (String) hash.get(field.getProperty());
-
-      if (!GenericValidator.isBlankOrNull(value)
-                && !GenericValidator.isFloat(value))
-      {
-         errors.add(new ValidationException(dbFormsErrorMessage(FLOAT, va, 
-                                                                field, locale, 
-                                                                dbFormsErrors)));
-
-         return false;
+   public static boolean validateFloat(Object bean, ValidatorAction va, Field field, Vector errors, Locale locale, DbFormsErrors dbFormsErrors) {
+      FieldValues hash = (FieldValues) bean;
+      String value = null;
+      try {
+         if (!Util.isNull(field.getProperty())) {
+            value = hash.get(field.getProperty()).getFieldValueAsObject().toString();
+         }
+      } catch (Exception e) {
+         logCat.error(e);
       }
-      else
-      {
-         return true;
+      if (!Util.isNull(value)) {
+         if (!GenericValidator.isFloat(value)) {
+            errors.add(new ValidationException(dbFormsErrorMessage(FLOAT, va, field, locale, dbFormsErrors)));
+            return false;
+         } else {
+            return true;
+         }
       }
+      return true;
    }
-
 
    /********************************************************************************************
     * <p>Checks if the field can safely be converted to a double primitive.</p>
@@ -328,29 +288,27 @@ public class DbFormsValidator implements Serializable
     * @param         locale                 The <code>Locale</code> object of the Request.
          * @param   dbFormsErrors  DbForms Error class to retrieve error message in DbForm-Errors.xml format.
     ********************************************************************************************/
-   public static boolean validateDouble(Object bean, ValidatorAction va, 
-                                        Field field, Vector errors, 
-                                        Locale locale, 
-                                        DbFormsErrors dbFormsErrors)
-   {
-      Hashtable hash  = (Hashtable) bean;
-      String    value = (String) hash.get(field.getProperty());
-
-      if (!GenericValidator.isBlankOrNull(value)
-                && !GenericValidator.isDouble(value))
-      {
-         errors.add(new ValidationException(dbFormsErrorMessage(DOUBLE, va, 
-                                                                field, locale, 
-                                                                dbFormsErrors)));
-
-         return false;
+   public static boolean validateDouble(Object bean, ValidatorAction va, Field field, Vector errors, Locale locale, DbFormsErrors dbFormsErrors) {
+      FieldValues hash = (FieldValues) bean;
+      String value = null;
+      try {
+         if (!Util.isNull(field.getProperty())) {
+            value = hash.get(field.getProperty()).getFieldValueAsObject().toString();
+         }
+      } catch (Exception e) {
+         logCat.error(e);
       }
-      else
-      {
-         return true;
+      if (!Util.isNull(value)) {
+         if (!GenericValidator.isDouble(value)) {
+            errors.add(new ValidationException(dbFormsErrorMessage(DOUBLE, va, field, locale, dbFormsErrors)));
+
+            return false;
+         } else {
+            return true;
+         }
       }
+      return true;
    }
-
 
    /********************************************************************************************
     * <p>Checks if the field is a valid date.  If the field has a datePattern variable,
@@ -369,60 +327,40 @@ public class DbFormsValidator implements Serializable
     * @param         locale                 The <code>Locale</code> object of the Request.
          * @param   dbFormsErrors  DbForms Error class to retrieve error message in DbForm-Errors.xml format.
     ********************************************************************************************/
-   public static boolean validateDate(Object bean, ValidatorAction va, 
-                                      Field field, Vector errors, Locale locale, 
-                                      DbFormsErrors dbFormsErrors)
-   {
-      Hashtable hash  = (Hashtable) bean;
-      String    value = (String) hash.get(field.getProperty());
-
-      boolean   bValid = true;
-
-      String    datePattern       = field.getVarValue("datePattern");
-      String    datePatternStrict = field.getVarValue("datePatternStrict");
-
-      if (!GenericValidator.isBlankOrNull(value))
-      {
-         try
-         {
-            if ((datePattern != null) && (datePattern.length() > 0))
-            {
-               bValid = GenericValidator.isDate(value, datePattern, false);
-            }
-            else if ((datePatternStrict != null)
-                           && (datePatternStrict.length() > 0))
-            {
-               bValid = GenericValidator.isDate(value, datePatternStrict, true);
-            }
-            else
-            {
-               bValid = GenericValidator.isDate(value, locale);
+   public static boolean validateDate(Object bean, ValidatorAction va, Field field, Vector errors, Locale locale, DbFormsErrors dbFormsErrors) {
+      boolean bValid = true;
+      FieldValues hash = (FieldValues) bean;
+      String value = null;
+      try {
+         if (!Util.isNull(field.getProperty())) {
+            value = hash.get(field.getProperty()).getFieldValue();
+         }
+      } catch (Exception e) {
+         logCat.error(e);
+      }
+      if (!Util.isNull(value)) {
+         String datePattern = field.getVarValue("datePattern");
+         String datePatternStrict = field.getVarValue("datePatternStrict");
+         if (!GenericValidator.isBlankOrNull(value)) {
+            try {
+               if ((datePattern != null) && (datePattern.length() > 0)) {
+                  bValid = GenericValidator.isDate(value, datePattern, false);
+               } else if ((datePatternStrict != null) && (datePatternStrict.length() > 0)) {
+                  bValid = GenericValidator.isDate(value, datePatternStrict, true);
+               } else {
+                  bValid = GenericValidator.isDate(value, locale);
+               }
+            } catch (Exception e) {
+               errors.add(new ValidationException(dbFormsErrorMessage(DATE, va, field, locale, dbFormsErrors)));
+               bValid = false;
             }
          }
-         catch (Exception e)
-         {
-            errors.add(new ValidationException(dbFormsErrorMessage(DATE, va, 
-                                                                   field, 
-                                                                   locale, 
-                                                                   dbFormsErrors)));
-            bValid = false;
-         }
       }
-
-      if (!bValid)
-      {
-         errors.add(new ValidationException(dbFormsErrorMessage(DATE, va, field, 
-                                                                locale, 
-                                                                dbFormsErrors)));
+      if (!bValid) {
+         errors.add(new ValidationException(dbFormsErrorMessage(DATE, va, field, locale, dbFormsErrors)));
       }
-
-      logCat.debug("VALIDATEDATE()  datePattern:" + datePattern
-                   + "  datePatternStrict:" + datePatternStrict + " value:"
-                   + value + "  return:" + bValid);
-
       return bValid;
    }
-
 
    /********************************************************************************************
     * <p>Checks if a fields value is within a range (min &amp; max specified
@@ -435,48 +373,31 @@ public class DbFormsValidator implements Serializable
     * @param         locale                 The <code>Locale</code> object of the Request.
          * @param   dbFormsErrors  DbForms Error class to retrieve error message in DbForm-Errors.xml format.
     ********************************************************************************************/
-   public static boolean validateRange(Object bean, ValidatorAction va, 
-                                       Field field, Vector errors, 
-                                       Locale locale, 
-                                       DbFormsErrors dbFormsErrors)
-   {
-      Hashtable hash  = (Hashtable) bean;
-      String    value = (String) hash.get(field.getProperty());
-      String    sMin  = field.getVarValue("min");
-      String    sMax  = field.getVarValue("max");
-
-      if (!GenericValidator.isBlankOrNull(value))
-      {
-         try
-         {
-            int iValue = Integer.parseInt(value);
-            int min = Integer.parseInt(sMin);
-            int max = Integer.parseInt(sMax);
-
-            if (!GenericValidator.isInRange(iValue, min, max))
-            {
-               errors.add(new ValidationException(dbFormsErrorMessage(RANGE, va, 
-                                                                      field, 
-                                                                      locale, 
-                                                                      dbFormsErrors)));
-
-               return false;
-            }
+   public static boolean validateRange(Object bean, ValidatorAction va, Field field, Vector errors, Locale locale, DbFormsErrors dbFormsErrors) {
+      FieldValues hash = (FieldValues) bean;
+      String value = null;
+      try {
+         if (!Util.isNull(field.getProperty())) {
+            value = hash.get(field.getProperty()).getFieldValueAsObject().toString();
          }
-         catch (Exception e)
-         {
-            errors.add(new ValidationException(dbFormsErrorMessage(RANGE, va, 
-                                                                   field, 
-                                                                   locale, 
-                                                                   dbFormsErrors)));
+      } catch (Exception e) {
+         logCat.error(e);
+      }
+      if (!Util.isNull(value)) {
 
+         String sMin = field.getVarValue("min");
+         String sMax = field.getVarValue("max");
+         double iValue = Double.parseDouble(value);
+         double min = Double.parseDouble(sMin);
+         double max = Double.parseDouble(sMax);
+
+         if (!GenericValidator.isInRange(iValue, min, max)) {
+            errors.add(new ValidationException(dbFormsErrorMessage(RANGE, va, field, locale, dbFormsErrors)));
             return false;
          }
       }
-
       return true;
    }
-
 
    /********************************************************************************************
     * <p>Checks if the field is a valid credit card number.</p>
@@ -490,32 +411,24 @@ public class DbFormsValidator implements Serializable
     * @param         locale                 The <code>Locale</code> object of the Request.
          * @param   dbFormsErrors  DbForms Error class to retrieve error message in DbForm-Errors.xml format.
     ********************************************************************************************/
-   public static boolean validateCreditCard(Object bean, ValidatorAction va, 
-                                            Field field, Vector errors, 
-                                            Locale locale, 
-                                            DbFormsErrors dbFormsErrors)
-   {
-      Hashtable hash = (Hashtable) bean;
-
-      if ((field.getProperty() != null) && (field.getProperty().length() > 0))
-      {
-         String value = (String) hash.get(field.getProperty());
-
-         if (!GenericValidator.isBlankOrNull(value)
-                   && !GenericValidator.isCreditCard(value))
-         {
-            errors.add(new ValidationException(dbFormsErrorMessage(CREDITCARD, 
-                                                                   va, field, 
-                                                                   locale, 
-                                                                   dbFormsErrors)));
-
+   public static boolean validateCreditCard(Object bean, ValidatorAction va, Field field, Vector errors, Locale locale, DbFormsErrors dbFormsErrors) {
+      FieldValues hash = (FieldValues) bean;
+      String value = null;
+      try {
+         if (!Util.isNull(field.getProperty())) {
+            value = hash.get(field.getProperty()).getFieldValueAsObject().toString();
+         }
+      } catch (Exception e) {
+         logCat.error(e);
+      }
+      if (!Util.isNull(value)) {
+         if (!GenericValidator.isCreditCard(value)) {
+            errors.add(new ValidationException(dbFormsErrorMessage(CREDITCARD, va, field, locale, dbFormsErrors)));
             return false;
          }
       }
-
       return true;
    }
-
 
    /********************************************************************************************
     * <p>Checks if a field has a valid e-mail address.</p>
@@ -529,30 +442,24 @@ public class DbFormsValidator implements Serializable
     * @param         locale                 The <code>Locale</code> object of the Request.
          * @param   dbFormsErrors  DbForms Error class to retrieve error message in DbForm-Errors.xml format.
     ********************************************************************************************/
-   public static boolean validateEmail(Object bean, ValidatorAction va, 
-                                       Field field, Vector errors, 
-                                       Locale locale, 
-                                       DbFormsErrors dbFormsErrors)
-   {
-      Hashtable hash  = (Hashtable) bean;
-      String    value = (String) hash.get(field.getProperty());
-
-      if (!GenericValidator.isBlankOrNull(value)
-                && !GenericValidator.isEmail(value))
-      {
-         errors.add(new ValidationException(dbFormsErrorMessage(EMAIL, va, 
-                                                                field, locale, 
-                                                                dbFormsErrors)));
-
-         return false;
+   public static boolean validateEmail(Object bean, ValidatorAction va, Field field, Vector errors, Locale locale, DbFormsErrors dbFormsErrors) {
+      FieldValues hash = (FieldValues) bean;
+      String value = null;
+      try {
+         if (!Util.isNull(field.getProperty())) {
+            value = hash.get(field.getProperty()).getFieldValueAsObject().toString();
+         }
+      } catch (Exception e) {
+         logCat.error(e);
       }
-      else
-      {
-         return true;
+      if (!Util.isNull(value)) {
+         if (!GenericValidator.isEmail(value)) {
+            errors.add(new ValidationException(dbFormsErrorMessage(EMAIL, va, field, locale, dbFormsErrors)));
+            return false;
+         }
       }
+      return true;
    }
-
-
    /********************************************************************************************
     * <p>Checks if the field's length is less than or equal to the maximum value.  A <code>Null</code>
     * will be considered an error.</p>
@@ -564,37 +471,21 @@ public class DbFormsValidator implements Serializable
     * @param         locale                 The <code>Locale</code> object of the Request.
          * @param   dbFormsErrors  DbForms Error class to retrieve error message in DbForm-Errors.xml format.
     ********************************************************************************************/
-   public static boolean validateMaxLength(Object bean, ValidatorAction va, 
-                                           Field field, Vector errors, 
-                                           Locale locale, 
-                                           DbFormsErrors dbFormsErrors)
-   {
-      Hashtable hash       = (Hashtable) bean;
-      String    value      = (String) hash.get(field.getProperty());
-      String    sMaxLength = field.getVarValue("maxlength");
-
-      if (value != null)
-      {
-         try
-         {
-            int max = Integer.parseInt(sMaxLength);
-
-            if (!GenericValidator.maxLength(value, max))
-            {
-               errors.add(new ValidationException(dbFormsErrorMessage(MAXLENGTH, 
-                                                                      va, field, 
-                                                                      locale, 
-                                                                      dbFormsErrors)));
-
-               return false;
-            }
+   public static boolean validateMaxLength(Object bean, ValidatorAction va, Field field, Vector errors, Locale locale, DbFormsErrors dbFormsErrors) {
+      FieldValues hash = (FieldValues) bean;
+      String value = null;
+      try {
+         if (!Util.isNull(field.getProperty())) {
+            value = hash.get(field.getProperty()).getFieldValueAsObject().toString();
          }
-         catch (Exception e)
-         {
-            errors.add(new ValidationException(dbFormsErrorMessage(MAXLENGTH, 
-                                                                   va, field, 
-                                                                   locale, 
-                                                                   dbFormsErrors)));
+      } catch (Exception e) {
+         logCat.error(e);
+      }
+      if (!Util.isNull(value)) {
+         String sMaxLength = field.getVarValue("maxlength");
+         int max = Integer.parseInt(sMaxLength);
+         if (!GenericValidator.maxLength(value, max)) {
+            errors.add(new ValidationException(dbFormsErrorMessage(MAXLENGTH, va, field, locale, dbFormsErrors)));
 
             return false;
          }
@@ -602,7 +493,6 @@ public class DbFormsValidator implements Serializable
 
       return true;
    }
-
 
    /********************************************************************************************
     * <p>Checks if the field's length is greater than or equal to the minimum value.
@@ -615,45 +505,29 @@ public class DbFormsValidator implements Serializable
     * @param         locale                 The <code>Locale</code> object of the Request.
          * @param   dbFormsErrors  DbForms Error class to retrieve error message in DbForm-Errors.xml format.
     ********************************************************************************************/
-   public static boolean validateMinLength(Object bean, ValidatorAction va, 
-                                           Field field, Vector errors, 
-                                           Locale locale, 
-                                           DbFormsErrors dbFormsErrors)
-   {
-      Hashtable hash       = (Hashtable) bean;
-      String    value      = (String) hash.get(field.getProperty());
-      String    sMinLength = field.getVarValue("minlength");
-
-      if (value != null)
-      {
-         try
-         {
-            int min = Integer.parseInt(sMinLength);
-
-            if (!GenericValidator.minLength(value, min))
-            {
-               errors.add(new ValidationException(dbFormsErrorMessage(MINLENGTH, 
-                                                                      va, field, 
-                                                                      locale, 
-                                                                      dbFormsErrors)));
-
-               return false;
-            }
+   public static boolean validateMinLength(Object bean, ValidatorAction va, Field field, Vector errors, Locale locale, DbFormsErrors dbFormsErrors) {
+      FieldValues hash = (FieldValues) bean;
+      String value = null;
+      try {
+         if (!Util.isNull(field.getProperty())) {
+            value = hash.get(field.getProperty()).getFieldValueAsObject().toString();
          }
-         catch (Exception e)
-         {
-            errors.add(new ValidationException(dbFormsErrorMessage(MINLENGTH, 
-                                                                   va, field, 
-                                                                   locale, 
-                                                                   dbFormsErrors)));
+      } catch (Exception e) {
+         logCat.error(e);
+      }
+      if (!Util.isNull(value)) {
+         String sMinLength = field.getVarValue("minlength");
+
+         int min = Integer.parseInt(sMinLength);
+
+         if (!GenericValidator.minLength(value, min)) {
+            errors.add(new ValidationException(dbFormsErrorMessage(MINLENGTH, va, field, locale, dbFormsErrors)));
 
             return false;
          }
       }
-
       return true;
    }
-
 
    //***************************************************************************************************
    //*** P R I V A T E 	
@@ -670,13 +544,9 @@ public class DbFormsValidator implements Serializable
    * @param         locale                 The <code>Locale</code> object of the Request.
      * @param   dbFormsErrors  DbForms Error class to retrieve error message in DbForm-Errors.xml format.
    ********************************************************************************************/
-   private static String dbFormsErrorMessage(String type, ValidatorAction va, 
-                                             Field field, Locale locale, 
-                                             DbFormsErrors dbFormsErrors)
-   {
+   private static String dbFormsErrorMessage(String type, ValidatorAction va, Field field, Locale locale, DbFormsErrors dbFormsErrors) {
       //2003-01-31 HKK: Removed field.getMsg. It's handled in DbFormsValidatorUtil.getMessage
-      String message = DbFormsValidatorUtil.getMessage(type, va, locale, field, 
-                                                       dbFormsErrors);
+      String message = DbFormsValidatorUtil.getMessage(type, va, locale, field, dbFormsErrors);
 
       return message;
    }

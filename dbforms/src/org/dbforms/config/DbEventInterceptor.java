@@ -97,7 +97,7 @@ public interface DbEventInterceptor
     * @throws ValidationException DOCUMENT ME!
     */
    int preInsert(HttpServletRequest request, Table table, FieldValues fieldValues,
-      DbFormsConfig config, Connection con) throws ValidationException;
+      DbFormsConfig config, Connection con) throws ValidationException, MultipleValidationException;
 
 
    /**
@@ -125,7 +125,7 @@ public interface DbEventInterceptor
     */
    int preUpdate(HttpServletRequest request,  Table table, 
          FieldValues fieldValues, DbFormsConfig config, Connection con)
-      throws ValidationException;
+      throws ValidationException, MultipleValidationException;
    ;
 
    /**
@@ -152,7 +152,7 @@ public interface DbEventInterceptor
     * @throws ValidationException DOCUMENT ME!
     */
    int preDelete(HttpServletRequest request,  Table table, FieldValues fieldValues,
-      DbFormsConfig config, Connection con) throws ValidationException;
+      DbFormsConfig config, Connection con) throws ValidationException, MultipleValidationException;
    ;
 
    /**
@@ -178,7 +178,7 @@ public interface DbEventInterceptor
     * @throws ValidationException DOCUMENT ME!
     */
    int preSelect(HttpServletRequest request, DbFormsConfig config,
-      Connection con) throws ValidationException;
+      Connection con) throws ValidationException, MultipleValidationException;
    ;
 
    /**

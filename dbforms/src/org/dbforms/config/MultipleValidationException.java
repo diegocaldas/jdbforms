@@ -37,6 +37,11 @@ public class MultipleValidationException extends ValidationException
 {
    private Vector messages = null;
 
+	public MultipleValidationException(String message)
+	{
+		super();
+		addMessage(message);
+	}
    /**
     * Creates a new MultipleValidationException object.
     *
@@ -44,6 +49,7 @@ public class MultipleValidationException extends ValidationException
     */
    public MultipleValidationException(Vector messages)
    {
+	  super();
       this.setMessages(messages);
    }
 
@@ -65,7 +71,12 @@ public class MultipleValidationException extends ValidationException
    {
       this.messages = messages;
    }
-
+   
+   public void addMessage(String message) {
+      if (messages == null) 
+         messages = new Vector();
+      messages.add(message);
+   }
 
    /**
     *  Returns the detail message string of this throwable.

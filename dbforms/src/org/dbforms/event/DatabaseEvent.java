@@ -100,13 +100,10 @@ public abstract class DatabaseEvent extends WebEvent
     *
     * @param  formValidatorName The form name to retreive in validation.xml
     * @param  context The servlet context we are processing
-    * @param  request The servlet request we are processing
     *
     * @exception  MultipleValidationException The Vector of errors throwed with this exception
     */
-   public void doValidation(String formValidatorName, ServletContext context, 
-                            HttpServletRequest request)
-                     throws MultipleValidationException
+   public void doValidation(String formValidatorName, ServletContext context) throws MultipleValidationException
    {
    }
 
