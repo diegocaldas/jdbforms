@@ -21,9 +21,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.config;
-import java.util.*;
-import javax.servlet.http.HttpServletRequest;
-import org.dbforms.util.*;
+
 import org.apache.log4j.Category;
 
 
@@ -34,11 +32,12 @@ import org.apache.log4j.Category;
  * compare org.dbforms.event.DbEventInterceptor
  * </p>
  *
- * @auther Joachim Peer <joepeer@wap-force.net>
+ * @author Joachim Peer <joepeer@wap-force.net>
  */
 public class Interceptor
 {
-   static Category logCat    = Category.getInstance(Interceptor.class.getName()); // logging category for this class
+   private static Category logCat    = Category.getInstance(Interceptor.class.getName()); 
+                                         // logging category for this class
    private String  className;
 
    /**

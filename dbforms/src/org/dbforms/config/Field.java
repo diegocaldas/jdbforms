@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.config;
+
 import org.apache.log4j.Category;
 import org.dbforms.util.FieldTypes;
 
@@ -35,7 +36,7 @@ import org.dbforms.util.FieldTypes;
 public class Field
 {
    /** logging category for this class */
-   static Category logCat = Category.getInstance(Field.class.getName());
+   private static Category logCat = Category.getInstance(Field.class.getName());
 
    /** the id of this field (for dbforms-internal use) */
    private int id;
@@ -124,7 +125,7 @@ public class Field
     *  <br>
     *  this method is called by the digester framework to set the fieldType!
     *
-    * @param  aType the type string value (example: "int", "char", "numeric", etc)
+    * @param  fieldType the type string value (example: "int", "char", "numeric", etc)
     */
    public void setFieldType(String fieldType)
    {

@@ -23,7 +23,6 @@
 package org.dbforms.config;
 import java.util.HashMap;
 import org.apache.log4j.Category;
-import org.dbforms.event.*;
 import org.dbforms.event.eventtype.EventType;
 
 
@@ -120,8 +119,7 @@ public class TableEvents
    /**
     *  Set a new event for the linked Table.
     *
-    * @param eventType  the event type
-    * @param id         the event id
+    * @param einfo the  event info
     */
    public void addEventInfo(EventInfo einfo)
    {

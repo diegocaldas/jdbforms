@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.config;
-import java.util.HashMap;
+
 import javax.servlet.ServletContext;
 
 
@@ -67,7 +67,7 @@ public class DbFormsConfigRegistry
    /**
     *  Sets the servletContext attribute of the DbFormsConfigRegistry object
     *
-    * @param  servletConfig The new servletConfig value
+    * @param  servletContext The new servletConfig value
     */
    public void setServletContext(ServletContext servletContext)
    {

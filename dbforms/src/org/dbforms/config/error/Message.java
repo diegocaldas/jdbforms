@@ -21,8 +21,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.config.error;
-import java.util.*;
-import org.dbforms.util.*;
+
 import org.apache.log4j.Category;
 
 
@@ -31,11 +30,13 @@ import org.apache.log4j.Category;
  * <p>
  * This class represents a Message tag in dbforms-error.xml
  * </p>
+ * 
+ * @author unknown
  *
  */
 public class Message
 {
-   static Category logCat = Category.getInstance(Message.class.getName()); // logging category for this class
+   private static Category logCat = Category.getInstance(Message.class.getName()); // logging category for this class
 
    //------------------------ Properties ---------------------------------------------------------
    private String language; // Code used to specify a language for this message

@@ -21,14 +21,22 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.config;
-import java.util.*;
-import java.sql.*;
-import javax.sql.*;
-import javax.naming.*;
+
+import java.util.Properties;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+
+import javax.sql.DataSource;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+
+
 import org.apache.log4j.Category;
 import org.dbforms.conprovider.ConnectionFactory;
 import org.dbforms.conprovider.ConnectionProviderPrefs;
-import org.dbforms.event.*;
 
 
 
@@ -74,7 +82,7 @@ import org.dbforms.event.*;
 public class DbConnection
 {
    /** log4j category */
-   static Category logCat = Category.getInstance(DbConnection.class.getName());
+   private static Category logCat = Category.getInstance(DbConnection.class.getName());
 
    /** connection factory instance */
    private ConnectionFactory connectionFactory = ConnectionFactory.instance();

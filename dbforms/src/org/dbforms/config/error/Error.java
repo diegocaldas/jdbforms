@@ -21,9 +21,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.config.error;
-import java.util.*;
 
-import org.dbforms.util.*;
+import java.util.Hashtable;
+
 import org.apache.log4j.Category;
 
 
@@ -31,11 +31,13 @@ import org.apache.log4j.Category;
 /************************************************************************
  *
  * This class represents an error tag in dbforms-errors.xml
+ * 
+ * @author unknown
  *
  ************************************************************************/
 public class Error
 {
-   static Category logCat = Category.getInstance(Error.class.getName());
+   private static Category logCat = Category.getInstance(Error.class.getName());
 
    // logging category for this class
    //------------------------ Properties ---------------------------------------------------------
@@ -163,6 +165,8 @@ public class Error
    * adds a Message-Object to this error
    * and puts it into the datastructure for further references
    * (this method gets called from DbFormsError)
+   * 
+   * @param message message to add
    */
    public void addMessage(Message message)
    {

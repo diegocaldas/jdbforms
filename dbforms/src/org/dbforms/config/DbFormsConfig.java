@@ -21,12 +21,18 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.config;
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.Vector;
+
 import java.text.SimpleDateFormat;
-import javax.servlet.*;
-import javax.servlet.http.*;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletConfig;
+
 import org.apache.log4j.Category;
-import org.dbforms.config.*;
+
 import org.dbforms.util.Util;
 
 
@@ -44,7 +50,7 @@ import org.dbforms.util.Util;
  */
 public class DbFormsConfig
 {
-   static Category logCat = Category.getInstance(DbFormsConfig.class.getName());
+   private static Category logCat = Category.getInstance(DbFormsConfig.class.getName());
 
    /** DOCUMENT ME! */
    public static final String      CONFIG = "dbformsConfig";
@@ -67,6 +73,8 @@ public class DbFormsConfig
 
    /**
     * Creates a new DbFormsConfig object.
+    * 
+    * @param realPath local path to the application on local server
     */
    public DbFormsConfig(String realPath)
    {
@@ -220,7 +228,10 @@ public class DbFormsConfig
 
 
    /**
-   get access to configuration of config servlet
+   *   get access to configuration of config servlet
+   * 
+   *  @return the store config 
+   * 
    */
    public ServletConfig getServletConfig()
    {
@@ -231,6 +242,9 @@ public class DbFormsConfig
    /**
     *  Get access to servlet context in order to interoperate with
     *  other components of the web application
+    * 
+    * @return the stored context
+    * 
     */
    public ServletContext getServletContext()
    {

@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.config;
+
 import java.util.Vector;
 import javax.servlet.http.HttpServletRequest;
 import org.dbforms.util.ParseUtil;
@@ -37,7 +38,7 @@ import org.apache.log4j.Category;
  */
 public class GrantedPrivileges
 {
-   static Category logCat = Category.getInstance(GrantedPrivileges.class
+   private static Category logCat = Category.getInstance(GrantedPrivileges.class
          .getName()); // logging category for this class
 
    /** DOCUMENT ME! */
@@ -146,42 +147,4 @@ public class GrantedPrivileges
 
       return false; // otherwise we must deny the operation
    }
-
-   /*
-   =============================================
-   kindof 'deprecated'
-   replaced by DbInterceptor !!
-   =============================================
-
-      public void addCondition(Condition condition) {
-
-              Vector restrictedRoles = ParseUtil.splitString(condition.getRoles(), ",;~");
-
-              if(restrictedRoles==null) throw new IllegalArgumentException("Error parsing dbforms-config XML file! condition could not be added to privileges - object!");
-
-              int l = restrictedRoles.size();
-              for(int i=0; i<l; i++) {
-                    conditions.put( (String) restrictedRoles.elementAt(i), condition.getConditionChecker() );
-              }
-           }
-
-   =============================================
-   kindof 'deprecated'
-   replaced by DbInterceptor !!
-   =============================================
-
-      public String getCondition(HttpServletRequest request) {
-
-              Enumeration enum = conditions.keys(); // keys are the role names specified by developer/deployer
-
-              while(enum.hasMoreElements()) {
-                      String aRole = (String) enum.nextElement();
-                      if( request.isUserInRole(aRole) ) {
-                              return (String) conditions.get(aRole); // return name of connection checker associated with this restriction
-                      }
-              }
-
-              return null; // user is not restricted within the granted privilege.
-      }
-   */
 }
