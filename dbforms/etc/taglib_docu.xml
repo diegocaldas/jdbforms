@@ -502,6 +502,7 @@
 					<name>gotoHt</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
+					<type>java.util.Hashtable</type>
 					<info>
 						<p>
 							allows to define a hashtable containing fieldName / fieldValue combinations 
@@ -692,6 +693,7 @@ etc)</summary>
 					<name>formatter</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
+					<type>java.text.Format</type>
 					<info>
 						<p>java.text.Format object used to format the tag value</p>
 					</info>
@@ -748,6 +750,7 @@ etc)</summary>
 					<name>formatter</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
+					<type>java.text.Format</type>
 					<info>
 						<p>
 							an instance of java.text.Format or any subclass of it. This instance is used 
@@ -981,6 +984,7 @@ interaction with JavaScript<p style="text-autospace:none">Identification which c
 					<name>formatter</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
+					<type>java.text.Format</type>
 					<info>
 						<p>an instance of java.text.Format or any subclass of it. This instanceis used 
   to force DbForms to print out the field's value using a certain formatting style.this 
@@ -1226,6 +1230,7 @@ dbforms.pattern.timestamp=yyyy-MM-dd HH:mm</pre>
 					<name>formatter</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
+					<type>java.text.Format</type>
 					<info>
 						<p>an instance of java.text.Format or any subclass of it. This instanceis used <br/> 
   to force DbForms to print out the field's value using a certain formatting style.this <br/> 
@@ -1528,6 +1533,7 @@ of the input field</info>
 					<name>formatter</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
+					<type>java.text.Format</type>
 					<info>
 						<p>an instance of java.text.Format or any subclass of it. This instanceis used 
   to force DbForms to print out the field's value using a certain formatting style.this 
@@ -1770,6 +1776,7 @@ using textareas</info>
 					<name>formatter</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
+					<type>java.text.Format</type>
 					<info>
 						<p>an instance of java.text.Format or any subclass of it. This instanceis used 
   to force DbForms to print out the field's value using a certain formatting style.this 

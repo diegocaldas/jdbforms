@@ -79,6 +79,9 @@
       <xsl:if test="rtexprvalue">
         <rtexprvalue><xsl:value-of select="rtexprvalue"/></rtexprvalue>
       </xsl:if>
+      <xsl:if test="type">
+        <type><xsl:value-of select="type"/></type>
+      </xsl:if>
       <xsl:if test="info">
         <description><xsl:value-of select="info"/></description>
       </xsl:if>
