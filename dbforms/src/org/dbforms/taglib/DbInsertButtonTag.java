@@ -85,7 +85,8 @@ public class DbInsertButtonTag extends DbBaseButtonTag
 
         if ( !"true".equalsIgnoreCase(showAlways) && !(parentForm.getFooterReached() && Util.isNull(parentForm.getResultSetVector())) )
         {
-            return EVAL_PAGE;
+            // 20030521 HKK: Bug fixing, thanks to Michael Slack! 
+            return SKIP_BODY;
         }
 
 
