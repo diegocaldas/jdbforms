@@ -27,8 +27,6 @@ import javax.servlet.jsp.*;
 import org.dbforms.util.*;
 import org.dbforms.config.*;
 
-
-
 /**
  * <p>renders a input field for searching with special default search modes.</p>
  * <p>example:</p>
@@ -40,79 +38,65 @@ import org.dbforms.config.*;
  *
  * @author Henner Kollmann  (Henner.Kollmann@gmx.de)
  */
-public class DbSearchTag extends DbBaseHandlerTag
-      implements javax.servlet.jsp.tagext.TryCatchFinally
-{
+public class DbSearchTag extends DbBaseHandlerTag implements javax.servlet.jsp.tagext.TryCatchFinally {
 
-   private String      searchAlgo   = "sharp";
-   private String      searchMode   = "and";
-   private String      defaultValue = null;
+   private String searchAlgo = "sharp";
+   private String searchMode = "and";
+   private String defaultValue = null;
 
    /**
     * DOCUMENT ME!
     *
     * @param searchAlgo DOCUMENT ME!
     */
-   public void setSearchAlgo(String searchAlgo)
-   {
+   public void setSearchAlgo(String searchAlgo) {
       this.searchAlgo = searchAlgo;
    }
-
 
    /**
     * DOCUMENT ME!
     *
     * @return DOCUMENT ME!
     */
-   public String getSearchAlgo()
-   {
+   public String getSearchAlgo() {
       return searchAlgo;
    }
-
 
    /**
     * DOCUMENT ME!
     *
     * @param searchMode DOCUMENT ME!
     */
-   public void setSearchMode(String searchMode)
-   {
+   public void setSearchMode(String searchMode) {
       this.searchMode = searchMode;
    }
-
 
    /**
     * DOCUMENT ME!
     *
     * @return DOCUMENT ME!
     */
-   public String getSearchMode()
-   {
+   public String getSearchMode() {
       return searchMode;
    }
-
 
    /**
     * DOCUMENT ME!
     *
     * @param value DOCUMENT ME!
     */
-   public void setDefault(String value)
-   {
+   public void setDefault(String value) {
       this.defaultValue = value;
    }
-
 
    /**
     * DOCUMENT ME!
     *
     * @return DOCUMENT ME!
     */
-   public String getDefault()
-   {
+   public String getDefault() {
       return defaultValue;
    }
-
 
    /**
     * DOCUMENT ME!
@@ -122,9 +106,8 @@ public class DbSearchTag extends DbBaseHandlerTag
     *
     * @return DOCUMENT ME!
     */
-   protected String RenderHiddenFields(int tableId, int fieldId)
-   {
-      StringBuffer tagBuf        = new StringBuffer();
+   protected String RenderHiddenFields(int tableId, int fieldId) {
+      StringBuffer tagBuf = new StringBuffer();
       StringBuffer paramNameBufA = new StringBuffer();
       paramNameBufA.append("searchalgo_");
       paramNameBufA.append(tableId);
@@ -150,7 +133,6 @@ public class DbSearchTag extends DbBaseHandlerTag
       return tagBuf.toString();
    }
 
-
    /**
     * DOCUMENT ME!
     *
@@ -159,50 +141,36 @@ public class DbSearchTag extends DbBaseHandlerTag
     * @throws javax.servlet.jsp.JspException DOCUMENT ME!
     * @throws JspException DOCUMENT ME!
     */
-   public int doEndTag() throws javax.servlet.jsp.JspException
-   {
-      try
-      {
-         int   tableId = getParentForm().getTable().getId();
-         Field field   = getField();
-         int   fieldId = field.getId();
+   public int doEndTag() throws javax.servlet.jsp.JspException {
+      try {
+         int tableId = getParentForm().getTable().getId();
+         Field field = getField();
+         int fieldId = field.getId();
 
          /*
                             <input type="hidden" name="searchalgo_0_1" value="weakEnd"/>
                             <input type="hidden" name="searchmode_0_1" value="AND"/>
                             <input type="input" name="search_0_1"/>
          */
-         HttpServletRequest request = (HttpServletRequest) pageContext
-            .getRequest();
-         StringBuffer       tagBuf = new StringBuffer();
+         HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
+         StringBuffer tagBuf = new StringBuffer();
 
-         StringBuffer       paramNameBuf = new StringBuffer();
+         StringBuffer paramNameBuf = new StringBuffer();
          paramNameBuf.append("search_");
          paramNameBuf.append(tableId);
          paramNameBuf.append("_");
          paramNameBuf.append(fieldId);
 
-         String oldValue = ParseUtil.getParameter(request,
-               paramNameBuf.toString());
+         String oldValue = ParseUtil.getParameter(request, paramNameBuf.toString());
          tagBuf.append("<input type=\"input\" name=\"");
          tagBuf.append(paramNameBuf.toString());
          tagBuf.append("\" ");
 
-         if (!Util.isNull(getId()))
-         {
-            tagBuf.append("id=\"");
-            tagBuf.append(getId());
-            tagBuf.append("\" ");
-         }
-
          tagBuf.append("value=\"");
 
-         if (oldValue != null)
-         {
+         if (oldValue != null) {
             tagBuf.append(oldValue);
-         }
-         else if (defaultValue != null)
-         {
+         } else if (defaultValue != null) {
             tagBuf.append(defaultValue);
          }
 
@@ -211,22 +179,27 @@ public class DbSearchTag extends DbBaseHandlerTag
          tagBuf.append(prepareEventHandlers());
          tagBuf.append("/>\n");
 
+         String pattern = getPattern();
+         if (!Util.isNull(pattern)) {
+            tagBuf.append("<input type=\"hidden\" name=\"");
+            tagBuf.append(Constants.FIELDNAME_PATTERNTAG + paramNameBuf.toString());
+            tagBuf.append("\" value=\"");
+            tagBuf.append(pattern);
+            tagBuf.append("\" />");
+         }
+
          pageContext.getOut().write(RenderHiddenFields(tableId, fieldId));
          pageContext.getOut().write(tagBuf.toString());
-      }
-      catch (java.io.IOException ioe)
-      {
+      } catch (java.io.IOException ioe) {
          throw new JspException("IO Error: " + ioe.getMessage());
       }
 
       return EVAL_PAGE;
    }
 
-
-   public void doFinally()
-   {
-      searchAlgo   = "sharp";
-      searchMode   = "and";
+   public void doFinally() {
+      searchAlgo = "sharp";
+      searchMode = "and";
       defaultValue = null;
       super.doFinally();
    }
@@ -234,8 +207,7 @@ public class DbSearchTag extends DbBaseHandlerTag
    /**
     * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
     */
-   public void doCatch(Throwable t) throws Throwable
-   {
+   public void doCatch(Throwable t) throws Throwable {
       throw t;
    }
 
