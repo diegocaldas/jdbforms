@@ -155,6 +155,12 @@ public abstract class DbBaseInputTag extends DbBaseHandlerTag {
 	 */
 	public int doStartTag() throws JspException {
 
+		if(getReadOnly().equals("true") || parentForm.getReadOnly().equals("true")){
+			String onFocus = (getOnFocus()!=null)? getOnFocus():"";
+			if(onFocus.lastIndexOf(";")!=onFocus.length()-1) onFocus+=";"; // be sure javascript end with ";"
+			setOnFocus(onFocus+"this.blur();");
+		}
+
 		return (EVAL_BODY_TAG);
 
 	}

@@ -125,6 +125,12 @@ public class DbFormTag extends BodyTagSupport {
 
 	private Hashtable childFieldNames = new Hashtable();    // List of all child field name with assosciate
 															// generated name. Ex:  "champ1" : "f_0_3@root_3"
+															
+	private Hashtable javascriptDistinctFunctions = new Hashtable(); // Used to avoid creation of same javascript function.
+
+	private String readOnly = "false";	// Indicate if the form is in read-only mode
+	
+	
 	//----------------- Property Getters and Setters ----------------------------------------------
 
 	// (most of them get called by the JSP container)
@@ -367,6 +373,27 @@ public class DbFormTag extends BodyTagSupport {
 		return javascriptValidationSrcFile;
 	}	
 	
+
+	public void setReadOnly(String readOnly) {
+		this.readOnly = readOnly;
+	}
+
+	public String getReadOnly() {
+		return readOnly;
+	}	
+	
+	// This function is call from children (ex: DbSelectTag, DbRadioTag, ... ) 
+	// Add generic javascript function and avoid creation of multiple of same function with same name (ex: as much of DbSelectTag).
+	public void addJavascriptFunction(String jsFctName, StringBuffer jsFct){
+			if(!existJavascriptFunction(jsFctName))
+				javascriptDistinctFunctions.put(jsFctName, jsFct);
+	}
+	
+	// Verify if javascript function already exist.
+	public boolean existJavascriptFunction(String jsFctName){
+			return javascriptDistinctFunctions.containsKey(jsFctName);
+	}
+	
 	
 	// This function is call from children (ex: DbTextFieldTag, DbSelectTag, ... ) 
 	// Add real name and DbForm generate name in hashtable
@@ -536,9 +563,12 @@ public class DbFormTag extends BodyTagSupport {
 				if (_isMultipart)
 					tagBuf.append(" enctype=\"multipart/form-data\"");
 
-				if (getJavascriptValidation().equalsIgnoreCase("true"))
-					tagBuf.append(" onsubmit=\"return validate"+getFormValidatorName()+"(this);\" ");
-
+				if (getJavascriptValidation().equals("true")){
+				    String validationFct = getFormValidatorName();
+				    validationFct = Character.toUpperCase(validationFct.charAt(0)) +  validationFct.substring(1, validationFct.length());
+					tagBuf.append(" onsubmit=\"return validate"+validationFct+"(this);\" ");
+				}
+				
 				tagBuf.append(">");
 				// supports RFC 1867 - multipart upload, if some database-fields represent filedata
 
@@ -783,7 +813,11 @@ public class DbFormTag extends BodyTagSupport {
 									logCat.debug("instantiating local we:" + localWebEvent);
 									webEvent = new NavNewEvent(this.table, this.config);
 								}
+				// Setted with localWebEvent attribute.  
+				if(webEvent!=null) 	request.setAttribute("webEvent", webEvent);
 			}
+
+			
 
 			if (webEvent != null && webEvent instanceof NavigationEvent) {
 
@@ -1098,6 +1132,9 @@ public class DbFormTag extends BodyTagSupport {
 	 *   D O    E N D T A G	
 	 *******************************************************************************/
 	public int doEndTag() throws JspException {
+		
+		JspWriter jspOut = pageContext.getOut();  // avoid to call getOut each time (Demeter law)
+		
 		try {
 			if (bodyContent != null)
 				bodyContent.writeOut(bodyContent.getEnclosingWriter());
@@ -1105,16 +1142,16 @@ public class DbFormTag extends BodyTagSupport {
 			logCat.debug("childElementOutput=" + childElementOutput);
 			// hidden fields and other stuff coming from child elements get written out
 			if (childElementOutput != null)
-				pageContext.getOut().println(childElementOutput.toString());
+				jspOut.println(childElementOutput.toString());
 			if (parentForm == null)
-				pageContext.getOut().println("</form>");
+				jspOut.println("</form>");
 			
 			/***
 			 * Generate Javascript validation methods & calls
 			 */
 			if(getFormValidatorName()!=null 	&& 	getFormValidatorName().length()>0 	&& 
-				getJavascriptValidation()!=null && 	getJavascriptValidation().equalsIgnoreCase("true"))
-					pageContext.getOut().println(generateJavascriptValidation());
+				getJavascriptValidation()!=null && 	getJavascriptValidation().equals("true"))
+					jspOut.println(generateJavascriptValidation());
 			
 			/**
 			 *  Generate Javascript array of fields.  
@@ -1122,9 +1159,22 @@ public class DbFormTag extends BodyTagSupport {
 			 * 
 			 *  Ex: champ1 => f_0_1@root_4
 			 */
-			 if(getJavascriptFieldsArray()!=null && getJavascriptFieldsArray().equalsIgnoreCase("true"))
-					pageContext.getOut().println(generateJavascriptFieldsArray());
+			 if(getJavascriptFieldsArray()!=null && getJavascriptFieldsArray().equals("true"))
+					jspOut.println(generateJavascriptFieldsArray());
 			
+			/**
+			 *  Write generic Javascript functions created from childs tag
+			 */
+		 	if(javascriptDistinctFunctions.size() > 0 ){
+				jspOut.println("\n<SCRIPT language=\"javascript\">\n");
+				Enumeration enum = javascriptDistinctFunctions.keys();
+				while(enum.hasMoreElements()){
+			 		String aKey = (String) enum.nextElement();
+			 		StringBuffer sbFonction = (StringBuffer) javascriptDistinctFunctions.get(aKey);
+			 		jspOut.println(sbFonction);
+				}
+				jspOut.println("\n</SCRIPT>\n");
+			}
 			
 		} catch (IOException ioe) {
 			logCat.error(ioe);

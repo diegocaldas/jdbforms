@@ -50,6 +50,9 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer  {
 
 	private String checked; // only needed if parentForm is in "insert-mode", otherwise the DbForms-Framework determinates whether a radio should be selected or not.
 	private String growDirection; // only needed if we have a whole "group" of DbRadioTags; default = null == horizontal
+	private String growSize = "0"; // limit the number of elements per row (growDirection="horizontal")
+							 // only needed if we have a whole "group" of DbRadioTags; default = 1
+
 
 	public void setChecked(String checked) {
 		this.checked = checked;
@@ -65,6 +68,23 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer  {
 
 	public String getGrowDirection() {
 		return growDirection;
+	}
+
+	public void setGrowSize(String growSize) {
+		try{
+			int grow = Integer.parseInt(growSize);
+			if(grow > 0) 
+				this.growSize = growSize;
+			else
+				this.growSize = "0";
+		}catch(NumberFormatException nfe){
+			logCat.warn(" setGrowSize("+growSize+") NumberFormatException : "+nfe.getMessage());
+			this.growSize = "0";
+		}
+	}
+
+	public String getGrowSize() {
+		return growSize;
 	}
 
 
@@ -87,7 +107,7 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer  {
 	StringBuffer tagBuf = new StringBuffer();
 	tagBuf.append("<input type=\"radio\" name=\"");
 	tagBuf.append(getFormFieldName());
-	tagBuf.append("\" value =\"");
+	tagBuf.append("\" value=\"");
 	tagBuf.append(value);
 		tagBuf.append("\" ");
 
@@ -104,9 +124,10 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer  {
 			tagBuf.append(tabIndex);
 			tagBuf.append("\"");
 		}
-
+		
+		tagBuf.append(prepareStyles());
 		tagBuf.append(prepareEventHandlers());
-		tagBuf.append(">");
+		tagBuf.append(">\n");
 		tagBuf.append(description);
 
 		return tagBuf.toString();
@@ -120,6 +141,7 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer  {
 		// current Value from Database; or if no data: explicitly set by user; or ""
 		String currentValue = getFormFieldValue();
 
+
 		if(embeddedData==null) { // no embedded data is nested in this tag
 
 			// select, if datadriven and data matches with current value OR if explicitly set by user
@@ -128,8 +150,34 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer  {
 			tagBuf.append( generateTagString(value, "", isSelected) );
 
 		} else {
-
 			int embeddedDataSize = embeddedData.size();
+
+
+
+			// If radio is in read-only, retrieve selectedIndex and set the onclick of all radio with
+			// "document.formName['radioName'][selectedIndex].checked=true"
+			//
+			if(getReadOnly().equals("true") || parentForm.getReadOnly().equals("true")) {
+
+				// First pass to retreive radio selectedIndex, because in Javascript it use only this index (Netscape 4.x)
+				for(int i=0; i<embeddedDataSize; i++) {
+					KeyValuePair aKeyValuePair = (KeyValuePair) embeddedData.elementAt(i);
+					String aKey = aKeyValuePair.getKey();
+					String aValue = aKeyValuePair.getValue();
+					if(aKey.equals(currentValue)) {
+						String onclick = (getOnClick()!=null)? getOnClick():"";
+						if(onclick.lastIndexOf(";")!=onclick.length()-1) onclick+=";"; // be sure javascript end with ";"
+						setOnClick("document.dbform['"+getFormFieldName()+"']["+i+"].checked=true;"+onclick);
+						break;
+					}
+				}
+			}
+			
+
+			int maxSize = Integer.parseInt(getGrowSize());
+			
+			tagBuf.append("<TABLE BORDER=0 cellspacing=0 cellpadding=0><TR valign=top>");
+
 			for(int i=0; i<embeddedDataSize; i++) {
 
 				KeyValuePair aKeyValuePair = (KeyValuePair) embeddedData.elementAt(i);
@@ -139,18 +187,21 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer  {
 				// select, if datadriven and data matches with current value OR if explicitly set by user
 				boolean isSelected = aKey.equals(currentValue);
 
-				tagBuf.append(generateTagString(aKey, aValue, isSelected));
-
-				// how should the input-tags be separated
-				if(i<embeddedDataSize-1) {
-					if("vertical".equals(growDirection)) {
-						tagBuf.append("<br>");
-					} else if("horizontal".equals(growDirection)) {
-						tagBuf.append("&nbsp;");
-					}
+				if( "horizontal".equals(getGrowDirection()) && maxSize!=0 && (i % maxSize)==0 && i!=0 ) {
+						tagBuf.append("</TR><TR valign=top>");
+				}
+				
+				if( "vertical".equals(getGrowDirection()) && i!=0 ){
+						tagBuf.append("</TR><TR valign=top>");
 				}
 
+				tagBuf.append("<TD>").append(generateTagString(aKey, aValue, isSelected)).append("</TD>");
+
+				
+
 			}
+
+			tagBuf.append("</TR></TABLE>");
 
 		}
 

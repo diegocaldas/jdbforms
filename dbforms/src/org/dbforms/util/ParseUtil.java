@@ -244,15 +244,21 @@ public class ParseUtil {
 		return str.substring(lastIndex, nextIndex);
 	}
 
+
+
 	/**
 	<p>Method for parsing substring embedded by constant delimeters</p>
+	
+	<p>Because getEmbeddedString() support "." for image button, this
+	   method do the the same, but ignore dots. It's a patch and must
+	   be revised in the next cleanup... #checkme</p>
 	
 	<p>consider the following string s: English-001:param1, param2</p>
 	
 	<p><pre>
 	</pre></p>
 	*/
-	public static String getEmbeddedStringForErrors(
+	public static String getEmbeddedStringWithoutDots(
 		String str,
 		int afterDelims,
 		char delim) {
@@ -269,6 +275,7 @@ public class ParseUtil {
 
 		return str.substring(lastIndex, nextIndex);
 	}
+
 
 	public static int getEmbeddedStringAsInteger(
 		String str,

@@ -54,6 +54,8 @@ public class DbDateFieldTag extends DbBaseInputTag {
 
 	public int doStartTag() throws javax.servlet.jsp.JspException {
 
+		super.doStartTag();
+
 		// Use format defined in config file
 		if (this.format == null) {
 			this.format = DbFormsConfig.getDateFormatter();
@@ -84,7 +86,7 @@ public class DbDateFieldTag extends DbBaseInputTag {
 	*/
 
 	public int doEndTag() throws javax.servlet.jsp.JspException {
-
+	
 		HttpServletRequest request = (HttpServletRequest) this.pageContext.getRequest();
 		Vector errors = (Vector) request.getAttribute("errors");
 

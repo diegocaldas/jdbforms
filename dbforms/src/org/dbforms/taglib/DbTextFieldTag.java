@@ -52,6 +52,7 @@ public class DbTextFieldTag extends DbBaseInputTag  {
   static Category logCat = Category.getInstance(DbTextFieldTag.class.getName()); // logging category for this class
 
   public int doStartTag() throws javax.servlet.jsp.JspException {
+	super.doStartTag();
 	return SKIP_BODY;
   }    
 
@@ -81,7 +82,7 @@ public class DbTextFieldTag extends DbBaseInputTag  {
 */
 
 public int doEndTag() throws javax.servlet.jsp.JspException {
-
+	
 	HttpServletRequest request = (HttpServletRequest) this.pageContext.getRequest();
 	Vector errors = (Vector) request.getAttribute("errors");
 
@@ -97,10 +98,7 @@ public int doEndTag() throws javax.servlet.jsp.JspException {
 		tagBuf.append(getFormFieldName());
 		tagBuf.append("\" value=\"");
 		
-		
-		// For generation Javascript Validation.  Need all original and modified fields name
-		parentForm.addChildName(getFieldName(), getFormFieldName());
-		
+				
 		/* If the overrideValue attribute has been set, use its value instead of the one
 			retrieved from the database.  This mechanism can be used to set an initial default
 			value for a given field. */
@@ -156,6 +154,10 @@ public int doEndTag() throws javax.servlet.jsp.JspException {
 		tagBuf.append("/>");
 		
 		pageContext.getOut().write(tagBuf.toString());
+
+		// For generation Javascript Validation.  Need all original and modified fields name
+		parentForm.addChildName(getFieldName(), getFormFieldName());
+
 	} catch (java.io.IOException ioe) {
 		throw new JspException("IO Error: " + ioe.getMessage());
 	}

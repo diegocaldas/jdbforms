@@ -96,7 +96,7 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag  {
  	this.caption=caption;
 
  	// If the caption is not null and the resources="true" attribut
-  	if(caption!=null && parentForm.getCaptionResource().equalsIgnoreCase("true") ){
+  	if(caption!=null && parentForm.getCaptionResource().equals("true") ){
 		
 		try{	
 			HttpServletRequest request = (HttpServletRequest)pageContext.getRequest();

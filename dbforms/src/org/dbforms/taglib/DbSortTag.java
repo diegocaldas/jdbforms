@@ -101,7 +101,7 @@ public class DbSortTag extends TagSupport  {
 			String strAsc = "Ascending", strDesc = "Descending", strNone ="None";
 			
 			// Internationalization			
-			if( parentForm.getCaptionResource().equalsIgnoreCase("true") ) {
+			if( parentForm.getCaptionResource().equals("true") ) {
 		 		Locale reqLocale = request.getLocale();
 				// get message resource or if null take the default (english)
 				strAsc = MessageResources.getMessage("dbforms.select.sort.ascending", reqLocale, "Ascending");

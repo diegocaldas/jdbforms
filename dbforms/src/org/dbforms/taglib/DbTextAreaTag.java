@@ -56,6 +56,8 @@ public class DbTextAreaTag extends DbBaseInputTag {
 	protected java.lang.String overrideValue;
 
 	public int doStartTag() throws javax.servlet.jsp.JspException {
+		
+		super.doStartTag();
 
 		HttpServletRequest request = (HttpServletRequest) this.pageContext.getRequest();
 		Vector errors = (Vector) request.getAttribute("errors");
@@ -132,6 +134,8 @@ public class DbTextAreaTag extends DbBaseInputTag {
 	}
 
 	public int doEndTag() throws javax.servlet.jsp.JspException {
+		
+		
 		try {
 			if ("true".equals(renderBody) && bodyContent != null) {
 				bodyContent.writeOut(bodyContent.getEnclosingWriter());

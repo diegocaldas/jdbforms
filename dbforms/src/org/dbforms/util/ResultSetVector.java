@@ -70,7 +70,7 @@ public class ResultSetVector extends Vector {
 	int columns = rsmd.getColumnCount();
 
 	try { // #JP Jun 27, 2001
-
+		
    		while(rs.next()) {
 
 			Object[] objectRow = new Object[columns];
@@ -81,7 +81,7 @@ public class ResultSetVector extends Vector {
 
 			  logCat.debug("col="+(i+1)+", tmpObj="+tmpObj);
 
-			  if(tmpObj!=null) {
+ 			  if(tmpObj!=null) {
 				 objectRow[i] = tmpObj;
 				 stringRow[i] = tmpObj.toString();
 			  } else {

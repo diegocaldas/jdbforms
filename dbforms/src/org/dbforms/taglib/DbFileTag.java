@@ -61,6 +61,8 @@ public class DbFileTag extends DbBaseInputTag {
 
 	public int doStartTag() throws javax.servlet.jsp.JspException {
 
+		super.doStartTag();
+
 		if (!parentForm.hasMultipartCapability()) {
 			logCat.warn("DbFileTag is used but DbFormTag.multipart is not set (FALSE)");
 			throw new JspException("DbFileTag is used but DbFormTag.multipart is not set (it is set to \"FALSE\"). you must set it to \"TRUE\" to enable file uploads!");
@@ -71,9 +73,18 @@ public class DbFileTag extends DbBaseInputTag {
 
 	public int doEndTag() throws javax.servlet.jsp.JspException {
 
+	
 		try {
 
-			StringBuffer tagBuf = new StringBuffer("<input type=\"file\" name=\"");
+			StringBuffer tagBuf = new StringBuffer();
+
+			if(getReadOnly().equals("true") || parentForm.getReadOnly().equals("true")){
+				// if read-only, remove the browse button (for netscape problem)
+				tagBuf.append("<input type=\"text\" name=\"");
+			} else {
+				tagBuf.append("<input type=\"file\" name=\"");
+			}	
+			
 			tagBuf.append(getFormFieldName());
 			tagBuf.append("\" ");
 

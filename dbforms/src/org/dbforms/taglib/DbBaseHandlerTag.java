@@ -35,7 +35,6 @@ import java.text.Format;
 import java.util.Vector;
 import org.dbforms.util.ParseUtil;
 import javax.servlet.http.HttpServletRequest;
-
 import org.apache.log4j.Category;
 
 /**
@@ -151,6 +150,12 @@ public abstract class DbBaseHandlerTag extends BodyTagSupport {
 
 	/** Named Style class associated with component. */
 	private String styleClass = null;
+
+	/** Named Style class associated with component for read-only mode. */
+	private String readOnlyStyleClass = null;
+
+	/** Read-only attribute. */
+	private String readOnly = "false";
 
 	// ------------------------------------------------------------- Properties
 
@@ -397,6 +402,26 @@ public abstract class DbBaseHandlerTag extends BodyTagSupport {
 		return styleClass;
 	}
 
+	/** Sets the style class attribute for read-only mode. */
+	public void setReadOnlyStyleClass(String readOnlyStyleClass) {
+		this.readOnlyStyleClass = readOnlyStyleClass;
+	}
+
+	/** Returns the style class attribute for read-only mode. */
+	public String getReadOnlyStyleClass() {
+		return readOnlyStyleClass;
+	}
+
+	/** Sets the read-only attribute. */
+	public void setReadOnly(String readOnly) {
+		this.readOnly = readOnly;
+	}
+
+	/** Returns the read-only attribute. */
+	public String getReadOnly() {
+		return readOnly;
+	}
+
 	// --------------------------------------------------------- Public Methods
 
 	// DbForms specific
@@ -414,7 +439,8 @@ public abstract class DbBaseHandlerTag extends BodyTagSupport {
 		// between this form and its parent lies a DbHeader/Body/Footer-Tag and maybe other tags (styling, logic, etc.)
 		parentForm = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
 	}
-
+	
+	
 	/**
 	 * Release any acquired resources.
 	 */
@@ -618,15 +644,26 @@ public abstract class DbBaseHandlerTag extends BodyTagSupport {
 	 */
 	protected String prepareStyles() {
 		StringBuffer styles = new StringBuffer();
+		boolean readonly = readOnly.equals("true") || parentForm.getReadOnly().equals("true");
+		
 		if (style != null) {
 			styles.append(" style=\"");
 			styles.append(style);
 			styles.append("\"");
 		}
-		if (styleClass != null) {
-			styles.append(" class=\"");
-			styles.append(styleClass);
-			styles.append("\"");
+		
+		if (styleClass != null || readOnlyStyleClass != null) {
+						
+			if( readOnlyStyleClass != null && readonly ){
+				styles.append(" class=\"");
+				styles.append(readOnlyStyleClass);
+				styles.append("\"");
+				
+			} else if(styleClass != null) {
+				styles.append(" class=\"");
+				styles.append(styleClass);
+				styles.append("\"");
+			}
 		}
 		return styles.toString();
 	}

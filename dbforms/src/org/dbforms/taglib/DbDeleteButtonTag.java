@@ -28,6 +28,7 @@ import java.sql.*;
 import java.io.*;
 
 import javax.servlet.jsp.*;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.tagext.*;
 
 import org.dbforms.*;
@@ -50,6 +51,7 @@ public class DbDeleteButtonTag extends DbBaseButtonTag  {
   static Category logCat = Category.getInstance(DbDeleteButtonTag.class.getName()); // logging category for this class
   
   	private static int uniqueID;
+  	private String confirmMessage = null;
 
 	static {
 		uniqueID=1;
@@ -66,6 +68,13 @@ public class DbDeleteButtonTag extends DbBaseButtonTag  {
 	return associatedRadio;
   }  
 
+  public void setConfirmMessage(String confirmMessage) {
+	this.confirmMessage=confirmMessage;
+   }   
+
+  public String getConfirmMessage() {
+	return confirmMessage;
+  }  
 
 
   public int doStartTag() throws javax.servlet.jsp.JspException {
@@ -76,9 +85,28 @@ public class DbDeleteButtonTag extends DbBaseButtonTag  {
 	// if we do the javascript validation before subMit <FORM>
 	if( parentForm.getFormValidatorName()!=null && 
 		parentForm.getFormValidatorName().length() > 0 &&
-		parentForm.getJavascriptValidation().equalsIgnoreCase("true") ) 
-			setOnClick( getOnClick() + ValidatorConstants.JS_CANCEL_VALIDATION+"=true;" );
+		parentForm.getJavascriptValidation().equals("true") ){
+			String onclick = (getOnClick()!=null)? getOnClick():"";
+			if(onclick.lastIndexOf(";")!=onclick.length()-1) onclick+=";"; // be sure javascript end with ";"
+			setOnClick( onclick + ValidatorConstants.JS_CANCEL_VALIDATION+"=true;");
+	}
+	
+	if(getConfirmMessage()!=null){
+		String onclick = (getOnClick()!=null)? getOnClick():"";
+		if(onclick.lastIndexOf(";")!=onclick.length()-1) onclick+=";"; // be sure javascript end with ";"
 
+		String message = getConfirmMessage();
+		if(parentForm.getCaptionResource().equals("true")){
+			try{	
+				HttpServletRequest request = (HttpServletRequest)pageContext.getRequest();
+				message = MessageResources.getMessage(getConfirmMessage(), request.getLocale(), getConfirmMessage());
+			}catch(Exception e){
+				logCat.debug("confirm("+caption+") Exception : "+e.getMessage());
+			}
+		}
+		setOnClick(onclick+"return confirm('"+message+"');");
+	}
+	
 	if(parentForm.getFooterReached() && ResultSetVector.isEmptyOrNull(parentForm.getResultSetVector()) ) return EVAL_PAGE;
 
 		
@@ -119,13 +147,13 @@ public class DbDeleteButtonTag extends DbBaseButtonTag  {
 				}
 				
 
-		  tagBuf.append(getButtonBegin());
-		  tagBuf.append(" name=\"");
-		  tagBuf.append(tagName);
-		  tagBuf.append("\">");
-
-		  	pageContext.getOut().write(tagBuf.toString());
-
+				tagBuf.append(getButtonBegin());
+			  	tagBuf.append(" name=\"");
+			  	tagBuf.append(tagName);
+			  	tagBuf.append("\">");
+	
+			  	pageContext.getOut().write(tagBuf.toString());
+		  
 		} catch(java.io.IOException ioe) {
 			throw new JspException("IO Error: "+ioe.getMessage());
 		}

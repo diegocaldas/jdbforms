@@ -110,9 +110,12 @@ public class DbGotoButtonTag extends DbBaseButtonTag  {
 		// if we do the javascript validation before submit <FORM>
 		if( parentForm.getFormValidatorName()!=null && 
 			parentForm.getFormValidatorName().length() > 0 &&
-			parentForm.getJavascriptValidation().equalsIgnoreCase("true") ) 
-				setOnClick(  getOnClick() + ValidatorConstants.JS_CANCEL_VALIDATION+"=true;" );
-
+			parentForm.getJavascriptValidation().equals("true") ) {
+				String onclick = (getOnClick()!=null)? getOnClick():"";
+				if(onclick.lastIndexOf(";")!=onclick.length()-1) onclick+=";"; // be sure javascript end with ";"
+				setOnClick( onclick + ValidatorConstants.JS_CANCEL_VALIDATION+"=true;" );
+		}
+			
 		try {
 
 			String tagName = "ac_goto_"+uniqueID;

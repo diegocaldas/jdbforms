@@ -15,7 +15,7 @@
             <shortname>st</shortname>
             <display-name>DbForm Construction Tags</display-name>
             <uri>dbformstags</uri>
-            <info>version 1.1</info>
+            <info>version 1.1.1</info>
 
 			<!-- **************************** dbform tag ***********************************-->			
 			
@@ -51,6 +51,15 @@
                     <info>
                         <p>Override the servlet to which the dbform should be submitted</p>
                         <p>Default is the org.dbforms.Controller servlet</p>						
+                    </info>
+                </attribute>
+
+                <attribute>
+                    <name>readOnly</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>
+                        <p>Rendering of read-only html widgets</p>
                     </info>
                 </attribute>
 
@@ -422,6 +431,15 @@
                     </info>
                 </attribute>
 
+                <attribute>
+                    <name>nullFieldValue</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>
+                        <p>If the value (retrieved from the database) is null, allow the user to replace the text to display by a custom value.  May be used in conjunction with dbForm's I18N support.</p>
+                    </info>
+                </attribute>
+
             </tag>
 
 			<!-- **************************** dateLabel tag ***********************************-->						
@@ -442,7 +460,16 @@
                     <required>false</required>
                     <rtexprvalue>true</rtexprvalue>
                 </attribute>
-				
+
+                <attribute>
+                    <name>nullFieldValue</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>
+                        <p>If the value (retrieved from the database) is null, allow the user to replace the text to display by a custom value.  May be used in conjunction with dbForm's I18N support.</p>
+                    </info>
+                </attribute>
+
             </tag>
 
 			<!-- **************************** dataLabel tag ***********************************-->						
@@ -479,6 +506,15 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>
                         <p>Set a limit to the number of characters visible</p>
+                    </info>
+                </attribute>
+
+                <attribute>
+                    <name>nullFieldValue</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>
+                        <p>If the value (retrieved from the database) is null, allow the user to replace the text to display by a custom value.  May be used in conjunction with dbForm's I18N support.</p>
                     </info>
                 </attribute>
 
@@ -525,8 +561,6 @@
                     <info>Determines if the text field should be hidden or displayed.</info>
                 </attribute>
                 
-             
-                
                 <attribute>
                     <name>overrideValue</name>
                     <required>false</required>
@@ -546,6 +580,15 @@
                     <required>false</required>
                     <rtexprvalue>true</rtexprvalue>
                     <info>Maximum length of the string to be entered</info>
+                </attribute>
+
+                <attribute>
+                    <name>readOnly</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>
+                        <p>Rendering of read-only html widgets</p>
+                    </info>
                 </attribute>
 
                 <attribute>
@@ -665,6 +708,13 @@
                     <required>false</required>
                     <rtexprvalue>true</rtexprvalue>
                     <info>CSS stylesheet class to be applied to this HTML element.</info>
+                </attribute>
+
+                <attribute>
+                    <name>readOnlyStyleClass</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>CSS stylesheet class to be applied to this HTML element (read-only mode).</info>
                 </attribute>
 
                 <attribute>
@@ -765,6 +815,15 @@
                 </attribute>
 
                 <attribute>
+                    <name>readOnly</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>
+                        <p>Rendering of read-only html widgets</p>
+                    </info>
+                </attribute>
+
+                <attribute>
                     <name>onBlur</name>
                     <required>false</required>
                     <rtexprvalue>true</rtexprvalue>
@@ -884,6 +943,13 @@
                 </attribute>
 
                 <attribute>
+                    <name>readOnlyStyleClass</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>CSS stylesheet class to be applied to this HTML element (read-only mode).</info>
+                </attribute>
+
+                <attribute>
                     <name>tabIndex</name>
                     <required>false</required>
                     <rtexprvalue>true</rtexprvalue>
@@ -973,6 +1039,15 @@
                     <required>false</required>
                     <rtexprvalue>true</rtexprvalue>
                     <info>The keyboard character used to move focus immediately to thiselement.</info>
+                </attribute>
+
+                <attribute>
+                    <name>readOnly</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>
+                        <p>Rendering of read-only html widgets</p>
+                    </info>
                 </attribute>
 
                 <attribute>
@@ -1085,6 +1160,13 @@
                     <required>false</required>
                     <rtexprvalue>true</rtexprvalue>
                     <info>CSS stylesheet class to be applied to this HTML element.</info>
+                </attribute>
+
+                <attribute>
+                    <name>readOnlyStyleClass</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>CSS stylesheet class to be applied to this HTML element (read-only mode).</info>
                 </attribute>
 
                 <attribute>
@@ -1180,6 +1262,15 @@
                 </attribute>
 
                 <attribute>
+                    <name>readOnly</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>
+                        <p>Rendering of read-only html widgets</p>
+                    </info>
+                </attribute>
+
+                <attribute>
                     <name>onBlur</name>
                     <required>false</required>
                     <rtexprvalue>true</rtexprvalue>
@@ -1289,6 +1380,13 @@
                     <required>false</required>
                     <rtexprvalue>true</rtexprvalue>
                     <info>CSS stylesheet class to be applied to this HTML element.</info>
+                </attribute>
+
+                <attribute>
+                    <name>readOnlyStyleClass</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>CSS stylesheet class to be applied to this HTML element (read-only mode).</info>
                 </attribute>
 
                 <attribute>
@@ -1541,6 +1639,15 @@
                 </attribute>
 
                 <attribute>
+                    <name>readOnly</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>
+                        <p>Rendering of read-only html widgets</p>
+                    </info>
+                </attribute>
+
+                <attribute>
                     <name>onBlur</name>
                     <required>false</required>
                     <rtexprvalue>true</rtexprvalue>
@@ -1660,6 +1767,13 @@
                 </attribute>
 
                 <attribute>
+                    <name>readOnlyStyleClass</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>CSS stylesheet class to be applied to this HTML element (read-only mode).</info>
+                </attribute>
+
+                <attribute>
                     <name>tabIndex</name>
                     <required>false</required>
                     <rtexprvalue>true</rtexprvalue>
@@ -1723,12 +1837,28 @@
                 </attribute>
 
                 <attribute>
+                    <name>growSize</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>Allows a developer to limit the number of elements per row by generating [TABLE] [TR] [TD] html tags.</info>
+                </attribute>
+
+                <attribute>
                     <name>accessKey</name>
                     <required>false</required>
                     <rtexprvalue>true</rtexprvalue>
                     <info>The keyboard character used to move focus immediately to thiselement.</info>
                 </attribute>
 				
+                <attribute>
+                    <name>readOnly</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>
+                        <p>Rendering of read-only html widgets</p>
+                    </info>
+                </attribute>
+
                 <attribute>
                     <name>onBlur</name>
                     <required>false</required>
@@ -1825,6 +1955,20 @@
                     <required>false</required>
                     <rtexprvalue>true</rtexprvalue>
                     <info>JavaScipt event hanlder executed when the user selects some text</info>
+                </attribute>
+
+                <attribute>
+                    <name>styleClass</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>CSS stylesheet class to be applied to this HTML element.</info>
+                </attribute>
+                
+                <attribute>
+                    <name>readOnlyStyleClass</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>CSS stylesheet class to be applied to this HTML element (read-only mode).</info>
                 </attribute>
 
                 <attribute>
@@ -1891,12 +2035,28 @@
                 </attribute>
 
                 <attribute>
+                    <name>growSize</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>Allows a developer to limit the number of elements per row by generating [TABLE] [TR] [TD] html tags.</info>
+                </attribute>
+
+                <attribute>
                     <name>accessKey</name>
                     <required>false</required>
                     <rtexprvalue>true</rtexprvalue>
                     <info>The keyboard character used to move focus immediately to thiselement.</info>
                 </attribute>
 				
+                <attribute>
+                    <name>readOnly</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>
+                        <p>Rendering of read-only html widgets</p>
+                    </info>
+                </attribute>
+
                 <attribute>
                     <name>onBlur</name>
                     <required>false</required>
@@ -1993,6 +2153,20 @@
                     <required>false</required>
                     <rtexprvalue>true</rtexprvalue>
                     <info>JavaScipt event hanlder executed when the user selects some text</info>
+                </attribute>
+
+                <attribute>
+                    <name>styleClass</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>CSS stylesheet class to be applied to this HTML element.</info>
+                </attribute>
+                
+                <attribute>
+                    <name>readOnlyStyleClass</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>CSS stylesheet class to be applied to this HTML element (read-only mode).</info>
                 </attribute>
 
                 <attribute>
@@ -2067,6 +2241,15 @@
                     <required>false</required>
                     <rtexprvalue>true</rtexprvalue>
                     <info>The keyboard character used to move focus immediately to thiselement.</info>
+                </attribute>
+
+                <attribute>
+                    <name>readOnly</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>
+                        <p>Rendering of read-only html widgets</p>
+                    </info>
                 </attribute>
 
                 <attribute>
@@ -2181,6 +2364,13 @@
                     <info>CSS stylesheet class to be applied to this HTML element.</info>
                 </attribute>
                 
+                <attribute>
+                    <name>readOnlyStyleClass</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>CSS stylesheet class to be applied to this HTML element (read-only mode).</info>
+                </attribute>
+
                 <attribute>
                     <name>tabIndex</name>
                     <required>false</required>
@@ -2568,6 +2758,13 @@
                     <required>false</required>
                     <rtexprvalue>true</rtexprvalue>
                     <info>set html border attribute</info>
+                </attribute>
+
+               <attribute>
+                    <name>confirmMessage</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>This attribute will generate a javascript message asking if the user really wants to delete this entry.  If the 'captionResource' attribute of the (db)Form is set to true, the message can be resolve from a ResourceBundle (ref: I18N)</info>
                 </attribute>
 
                 <attribute>
@@ -4420,7 +4617,7 @@
                     <li>
                         to put a "deleteButton" into the body -> this button gets rendered for every row
                         <br/>
-                        if the user klicks the button the associated data row gets deleted.the disadvantage of this method is that multiple buttons must be rendered, which takes awaylots of space and makes layouting more difficult
+                        if the user clicks the button the associated data row gets deleted.the disadvantage of this method is that multiple buttons must be rendered, which takes awaylots of space and makes layouting more difficult
                     </li>
                     <li>
                         to put an "associatedRadio" into the body and the "deleteButton" on the footer (or header)
@@ -4630,7 +4827,50 @@
                     </info>
                 </attribute>
             </tag>
-			
+
+			<!-- **************************** javascriptArray tag ***********************************-->									
+
+            <tag>
+                <name>javascriptArray</name>
+                <summary>This tag was added to allow the generation of a javascript array from EmbeddedData.</summary>
+                <tagclass>org.dbforms.taglib.JavascriptArrayTag</tagclass>
+                <bodycontent>jsp</bodycontent>
+
+                <attribute>
+                    <name>name</name>
+                    <required>true</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>name of the array.
+                    </info>
+                </attribute>
+            </tag>
+
+			<!-- **************************** isWebEvent tag ***********************************-->									
+
+            <tag>
+                <name>isWebEvent</name>
+                <summary>Allows a developer to detect which type of event is being processed by the DbForms controller. The following events are currently available within dbForms: 
+				navFirst,navPrev, navNext, navLast, navNew, noop, goto, insert, update, delete </summary>
+                <tagclass>org.dbforms.taglib.IsWebEvent</tagclass>
+                <bodycontent>jsp</bodycontent>
+
+                <attribute>
+                    <name>event</name>
+                    <required>true</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>name of the event.
+                    </info>
+                </attribute>
+
+                <attribute>
+                    <name>value</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>Condition in which to evaluate body. Default is set to true.
+                    </info>
+                </attribute>
+
+            </tag>
 
         </taglib>
 

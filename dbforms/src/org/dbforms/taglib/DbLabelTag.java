@@ -28,6 +28,7 @@ import java.sql.*;
 import java.io.*;
 
 import javax.servlet.jsp.*;
+import javax.servlet.http.*;
 import javax.servlet.jsp.tagext.*;
 
 import org.dbforms.*;
@@ -54,7 +55,7 @@ public class DbLabelTag extends TagSupport  {
   protected DbFormsConfig config;
   protected String fieldName;
   protected Field field;
-
+  protected String nullFieldValue;
 
 	/**
 	 * PG, 2001-12-14
@@ -65,62 +66,80 @@ public class DbLabelTag extends TagSupport  {
 	protected DbFormTag parentForm;
 
 
-  public void setFieldName(String fieldName) {
-	this.fieldName=fieldName;
-	this.field = parentForm.getTable().getFieldByName(fieldName);
-  }  
+  	public void setFieldName(String fieldName) {
+		this.fieldName=fieldName;
+		this.field = parentForm.getTable().getFieldByName(fieldName);
+  	}  
 
-  public String getFieldName() {
-	return fieldName;
-  }  
+  	public String getFieldName() {
+		return fieldName;
+  	}  
 
-
-  public int doEndTag() throws javax.servlet.jsp.JspException {
-	try {
-
-		String fieldValue = NO_DATA;
-		if(!ResultSetVector.isEmptyOrNull(parentForm.getResultSetVector())) {
-			String[] currentRow = parentForm.getResultSetVector().getCurrentRow();
-			fieldValue = currentRow[field.getId()];
+	public void setNullFieldValue(String nullFieldValue) {
+		 
+		this.nullFieldValue = nullFieldValue;
+		// Resolve message if captionResource=true in the Form Tag
+		if(parentForm.getCaptionResource().equals("true")){
+			HttpServletRequest request = (HttpServletRequest)pageContext.getRequest();
+ 	       this.nullFieldValue = MessageResources.getMessage(nullFieldValue, request.getLocale(),nullFieldValue);
 		}
-		
-		// PG, 2001-12-14
-		// If maxlength was input, trim display
-		String size = null;
-		if((size = this.getMaxlength()) != null && 
-			size.trim().length()>0)
-		{
-			//convert to int
-			int count = Integer.parseInt(size);
-			// Trim and add trim indicator (...)
-			if (count < fieldValue.length())
-			{
-				fieldValue = fieldValue.substring(0,count);
-				fieldValue += "...";
+ 	}
+
+	public String getNullFieldValue() {
+		return nullFieldValue;
+	}
+	
+
+  	public int doEndTag() throws javax.servlet.jsp.JspException {
+		try {
+
+			String fieldValue = NO_DATA;
+			if(!ResultSetVector.isEmptyOrNull(parentForm.getResultSetVector())) {
+				Object fieldValueObj = parentForm.getResultSetVector().getCurrentRowAsObjects()[field.getId()];
+				if( fieldValueObj == null ){
+					fieldValue = ( nullFieldValue!=null )? nullFieldValue : "";
+				} else {
+					fieldValue = fieldValueObj.toString();
+				}
 			}
+			
+			// PG, 2001-12-14
+			// If maxlength was input, trim display
+			String size = null;
+			if((size = this.getMaxlength()) != null && 
+				size.trim().length()>0)
+			{
+				//convert to int
+				int count = Integer.parseInt(size);
+				// Trim and add trim indicator (...)
+				if (count < fieldValue.length())
+				{
+					fieldValue = fieldValue.substring(0,count);
+					fieldValue += "...";
+				}
+			}
+			
+			pageContext.getOut().write(fieldValue);
+
+		} 	catch(java.io.IOException ioe) {
+			throw new JspException("IO Error: "+ioe.getMessage());
+		}	catch(Exception e) {
+			throw new JspException("Error: "+e.getMessage());
 		}
-		
-		pageContext.getOut().write(fieldValue);
-
-	} 	catch(java.io.IOException ioe) {
-		throw new JspException("IO Error: "+ioe.getMessage());
-	}	catch(Exception e) {
-		throw new JspException("Error: "+e.getMessage());
-	}
-
-	return EVAL_PAGE;
-  }  
+	
+		return EVAL_PAGE;
+	}  
 
 
-  public void setPageContext(final javax.servlet.jsp.PageContext pageContext)  {
-	super.setPageContext(pageContext);
-		this.config = (DbFormsConfig) pageContext.getServletContext().getAttribute(DbFormsConfig.CONFIG);
-	}
-
-  public void setParent(final javax.servlet.jsp.tagext.Tag parent) {
-	super.setParent(parent);
-	this.parentForm = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
-  }  
+	public void setPageContext(final javax.servlet.jsp.PageContext pageContext)  {
+		super.setPageContext(pageContext);
+			this.config = (DbFormsConfig) pageContext.getServletContext().getAttribute(DbFormsConfig.CONFIG);
+	} 
+	
+	public void setParent(final javax.servlet.jsp.tagext.Tag parent) {
+		super.setParent(parent);
+		this.parentForm = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
+	}  
 
 
 	/**

@@ -32,7 +32,7 @@ Happy coding!
 
 -->
 
-    <property name="dbforms.version" value="_v1_1"/>
+    <property name="dbforms.version" value="_v1_1_1"/>
 
     <property name="cvs.workingdir" value="."/>
 

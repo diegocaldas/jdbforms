@@ -37,7 +37,8 @@ public abstract class EmbeddedData extends TagSupport {
 
 	static Category logCat = Category.getInstance(EmbeddedData.class.getName());
 	// logging category for this class
-
+	
+	
 	protected Hashtable data;
 	protected String name;
 	

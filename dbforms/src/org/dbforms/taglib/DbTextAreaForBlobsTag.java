@@ -62,8 +62,14 @@ public class DbTextAreaForBlobsTag extends DbTextAreaTag {
 		return suffix;
 	}
 
+	public int doStartTag() throws javax.servlet.jsp.JspException {
+		super.doStartTag();
+		return EVAL_BODY_TAG;
+	}
+
 	public int doEndTag() throws javax.servlet.jsp.JspException {
 
+		
 		try {
 			if ("true".equals(renderBody) && bodyContent != null) {
 				bodyContent.writeOut(bodyContent.getEnclosingWriter());

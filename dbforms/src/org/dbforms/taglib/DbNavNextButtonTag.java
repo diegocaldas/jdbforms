@@ -64,9 +64,12 @@ public class DbNavNextButtonTag extends DbBaseButtonTag  {
 	// if we do the javascript validation before submit <FORM>
 	if( parentForm.getFormValidatorName()!=null && 
 		parentForm.getFormValidatorName().length() > 0 &&
-		parentForm.getJavascriptValidation().equalsIgnoreCase("true") ) 
-			setOnClick(  getOnClick() + ValidatorConstants.JS_CANCEL_VALIDATION+"=true;" );
-			
+		parentForm.getJavascriptValidation().equals("true") ) {
+			String onclick = (getOnClick()!=null)? getOnClick():"";
+			if(onclick.lastIndexOf(";")!=onclick.length()-1) onclick+=";"; // be sure javascript end with ";"
+			setOnClick( onclick + ValidatorConstants.JS_CANCEL_VALIDATION+"=true;" );
+	}
+		
 	if(parentForm.getFooterReached() && ResultSetVector.isEmptyOrNull(parentForm.getResultSetVector()) ) return EVAL_PAGE;
 
 		try {

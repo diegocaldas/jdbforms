@@ -193,7 +193,7 @@ public class Controller extends HttpServlet {
 					Enumeration eventEnum = engine.generateSecundaryEvents(e);
 					while (eventEnum.hasMoreElements()) {
 						DatabaseEvent dbE = (DatabaseEvent) eventEnum.nextElement();
-		
+	
 						try {
 							// if hidden formValidatorName exist and it's an Update or Insert event, 
 							// doValidation with Commons-Validator
@@ -224,7 +224,6 @@ public class Controller extends HttpServlet {
 			//if(e instanceof NavigationEvent) {
 			request.setAttribute("webEvent", e);
 			//}
-			
 			
 			// PG  - if form contained errors, use followupOnError (if available!)
 			String fue = e.getFollowUpOnError();

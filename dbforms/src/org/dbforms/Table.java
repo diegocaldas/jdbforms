@@ -1111,7 +1111,7 @@ public class Table {
 		DbFormsConfig config,
 		Connection con)
 		throws SQLException, MultipleValidationException {
-
+		
 		try {
 
 			int interceptorsCnt = interceptors.size();
@@ -1185,10 +1185,13 @@ public class Table {
 		// No need to add extra comments, just re-throw exceptions as SqlExceptions
 			
 		} catch (ClassNotFoundException cnfe) {
+			logCat.warn(" ClassNotFoundException : "+cnfe.getMessage());
 			throw new SQLException(cnfe.getMessage());
 		} catch (InstantiationException ie) {
+			logCat.warn(" InstantiationException : "+ie.getMessage());
 			throw new SQLException(ie.getMessage());
 		} catch (IllegalAccessException iae) {
+			logCat.warn(" IllegalAccessException : "+iae.getMessage());
 			throw new SQLException(iae.getMessage());
 		} catch (SQLException sqle) {
 			throw new SQLException(sqle.getMessage());

@@ -29,6 +29,7 @@ import java.io.*;
 
 import javax.servlet.jsp.*;
 import javax.servlet.jsp.tagext.*;
+import javax.servlet.http.*;
 
 import org.dbforms.*;
 import org.dbforms.util.*;
@@ -62,7 +63,8 @@ public class DbDataContainerLabelTag
 	private String fieldName;
 	private Field field;
 	private DbFormTag parentForm;
-
+	private String nullFieldValue = null;
+	
 	/**
 	* PG, 2001-12-14
 	* The maximum number of characters to be displayed.
@@ -88,6 +90,22 @@ public class DbDataContainerLabelTag
 		this.embeddedData = embeddedData;
 	}
 
+
+	public void setNullFieldValue(String nullFieldValue) {
+		 
+		this.nullFieldValue = nullFieldValue;
+		// Resolve message if captionResource=true in the Form Tag
+		if(parentForm.getCaptionResource().equals("true")){
+			HttpServletRequest request = (HttpServletRequest)pageContext.getRequest();
+ 	       this.nullFieldValue = MessageResources.getMessage(nullFieldValue, request.getLocale(),nullFieldValue);
+		}
+ 	}
+
+	public String getNullFieldValue() {
+		return nullFieldValue;
+	}
+
+
 	public int doEndTag() throws javax.servlet.jsp.JspException {
 		try {
 
@@ -96,9 +114,17 @@ public class DbDataContainerLabelTag
 
 			if (!ResultSetVector.isEmptyOrNull(parentForm.getResultSetVector())) {
 
-				String[] currentRow = parentForm.getResultSetVector().getCurrentRow();
-				fieldValue = currentRow[field.getId()];
-
+				//String[] currentRow = parentForm.getResultSetVector().getCurrentRow();
+				//fieldValue = currentRow[field.getId()];
+				
+				Object fieldValueObj = parentForm.getResultSetVector().getCurrentRowAsObjects()[field.getId()];
+				if( fieldValueObj == null ){
+					fieldValue = ( nullFieldValue!=null )? nullFieldValue : "";
+				} else {
+					fieldValue = fieldValueObj.toString();
+				}
+					
+					
 				if (embeddedData != null) { //  embedded data is nested in this tag
 
 					boolean found = false;

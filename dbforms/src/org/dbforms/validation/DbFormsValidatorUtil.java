@@ -316,7 +316,7 @@ public class DbFormsValidatorUtil {
 												String methods) {
 												
        StringBuffer sb = new StringBuffer();
-       String name = formName.substring(0, 1).toUpperCase() + formName.substring(1, formName.length());
+       String name = Character.toUpperCase(formName.charAt(0)) +  formName.substring(1, formName.length());
        
        sb.append("<SCRIPT LANGUAGE=\"Javascript1.1\"> \n");
           

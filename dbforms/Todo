@@ -9,9 +9,7 @@ $Date$
 TO DO
 ------
 
-* Rendering of read-only html widgets (isReadOnly attribute in input tags)
-
-* Possibility of selecting several items from a select box (Assigned to Eric Beaumier)
+* Possibility of selecting several items from a select box.
 
 * Limit the select list (in query)to fields used in the body tag (useFieldsInBody attribute in form tag)
 
