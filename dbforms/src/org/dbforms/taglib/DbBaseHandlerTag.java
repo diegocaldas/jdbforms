@@ -191,6 +191,7 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
    protected Locale getLocale() {
       return getParentForm().getLocale();
    }
+   
    /**
     * DOCUMENT ME!
     *
