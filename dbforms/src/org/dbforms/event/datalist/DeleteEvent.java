@@ -117,6 +117,7 @@ public class DeleteEvent extends DatabaseEvent
       // Apply given security contraints (as defined in dbforms-config.xml)
       if (!hasUserPrivileg(GrantedPrivileges.PRIVILEG_DELETE))
       {
+         // TODO: Change to resource
          throw new SQLException(":: processEvent - sorry, deleting data from table "
                                 + table.getName() 
                                 + " is not granted for this session.");

@@ -20,94 +20,103 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-package org.dbforms.util;
 
+package org.dbforms.util;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Method;
 import java.lang.reflect.Field;
 import java.lang.reflect.Constructor;
-
 import java.io.Writer;
 import java.io.StringWriter;
 import java.io.PrintWriter;
 import java.io.OutputStreamWriter;
 import java.io.OutputStream;
 import java.io.BufferedWriter;
-
 import org.apache.log4j.Category;
 
 
 
 /**
- *  ReflectionUtil class
- *
- * @author  Luca Fossato
- * @created  20 novembre 2002
+ * ReflectionUtil class
+ * 
+ * @author Luca Fossato
+ * @deprecated 20 novembre 2002
  */
 public class ReflectionUtil
 {
    /** log4j category */
-   private static final Category logCat = Category.getInstance(ReflectionUtil.class);
+   private static Category logCat = Category.getInstance(ReflectionUtil.class);
 
    /**
     * Return the object having the input class name, instanced with the
     * constructor having the <code>constructorArgsTypes</code> arguments.
-    *
+    * 
     * @param className              the object class name
     * @param constructorArgsTypes   the object constructor arguments classes
     * @param constructorArgs        the object constructor arguments values
-    * @return                       the instanced object
+    * 
+    * @return the instanced object
+    * 
     * @exception Exception if any error occurs
     */
-   public static Object newInstance(String className,
-      Class[] constructorArgsTypes, Object[] constructorArgs)
-      throws Exception
+   public static Object newInstance(String className, 
+                                    Class[] constructorArgsTypes, 
+                                    Object[] constructorArgs)
+                             throws Exception
    {
-      Class       myClass       = Class.forName(className);
+      Class myClass = Class.forName(className);
+
       return newInstance(myClass, constructorArgsTypes, constructorArgs);
    }
 
-	/**
-	 * Return the object having the input class name, instanced with the
-	 * constructor having the <code>constructorArgsTypes</code> arguments.
-	 *
-	 * @param className              the object class name
-	 * @param constructorArgsTypes   the object constructor arguments classes
-	 * @param constructorArgs        the object constructor arguments values
-	 * @return                       the instanced object
-	 * @exception Exception if any error occurs
-	 */
-	public static Object newInstance(Class clazz,
-		Class[] constructorArgsTypes, Object[] constructorArgs)
-		throws Exception
-	{
-		Constructor myConstructor = clazz.getConstructor(constructorArgsTypes);
-		return myConstructor.newInstance(constructorArgs);
-	}
 
    /**
-    *  Invokes the underlying method represented by this Method object,
-    *  on the specified object with the specified parameters.
-    *  <br>
-    *  Individual parameters are automatically unwrapped to match primitive
-    *  formal parameters, and both primitive and reference parameters are subject
-    *  to widening conversions as necessary.
-    *  <br>
-    *  The value returned by the underlying method is automatically wrapped
-    *  in an object if it has a primitive type.
-    *
-    * @param className              the object class name
-    * @param constructorArgsTypes   the arguments classes for the object method
-    * @param constructorArgs        the arguments values for the object constructor
-    * @return    If the method completes normally, the value it returns is returned
-    *            to the caller of invoke; if the value has a primitive type,
-    *            it is first appropriately wrapped in an object.
-    *            If the underlying method return type is void, the invocation
-    *            returns null.
+    * Return the object having the input class name, instanced with the
+    * constructor having the <code>constructorArgsTypes</code> arguments.
+    * 
+    * @param clazz              the object class name
+    * @param constructorArgsTypes   the object constructor arguments classes
+    * @param constructorArgs        the object constructor arguments values
+    * 
+    * @return the instanced object
+    * 
     * @exception Exception if any error occurs
     */
-   public static Object invoke(String className, String methodName,
-      Class[] argsTypes, Object[] args) throws Exception
+   public static Object newInstance(Class clazz, Class[] constructorArgsTypes, 
+                                    Object[] constructorArgs)
+                             throws Exception
+   {
+      Constructor myConstructor = clazz.getConstructor(constructorArgsTypes);
+
+      return myConstructor.newInstance(constructorArgs);
+   }
+
+
+   /**
+    * Invokes the underlying method represented by this Method object, on the
+    * specified object with the specified parameters. <br>
+    * Individual parameters are automatically unwrapped to match primitive
+    * formal parameters, and both primitive and reference parameters are
+    * subject to widening conversions as necessary. <br>
+    * The value returned by the underlying method is automatically wrapped in
+    * an object if it has a primitive type.
+    * 
+    * @param className              the object class name
+    * @param methodName   the arguments classes for the object method
+    * @param argsTypes        the arguments values for the object constructor
+    * @param args DOCUMENT ME!
+    * 
+    * @return If the method completes normally, the value it returns is
+    *         returned to the caller of invoke; if the value has a primitive
+    *         type, it is first appropriately wrapped in an object. If the
+    *         underlying method return type is void, the invocation returns
+    *         null.
+    * 
+    * @exception Exception if any error occurs
+    */
+   public static Object invoke(String className, String methodName, 
+                               Class[] argsTypes, Object[] args)
+                        throws Exception
    {
       Class  c = Class.forName(className);
       Method m = c.getDeclaredMethod(methodName, argsTypes);
@@ -119,10 +128,11 @@ public class ReflectionUtil
 
 
    /**
-    *  Get the String representation of the input object
-    *
+    * Get the String representation of the input object
+    * 
     * @param o  the object to introspect
-    * @return   the String representation of the input object
+    * 
+    * @return the String representation of the input object
     */
    public static String toString(Object o)
    {
@@ -147,11 +157,12 @@ public class ReflectionUtil
 
 
    /**
-    *  Get the String representation of the class having
-    *  the input full qualified name.
-    *
+    * Get the String representation of the class having the input full
+    * qualified name.
+    * 
     * @param c  the full qualified name of the class to introspect
-    * @return   the String representation of the input object
+    * 
+    * @return the String representation of the input object
     */
    public static String toString(String c)
    {
@@ -176,10 +187,10 @@ public class ReflectionUtil
 
 
    /**
-    *  Reflect the input object state.
-    *
-    * @param  name Description of the Parameter
-    * @param  w Description of the Parameter
+    * Reflect the input object state.
+    * 
+    * @param o Description of the Parameter
+    * @param os Description of the Parameter
     */
    public static void reflectObject(Object o, OutputStream os)
    {
@@ -189,10 +200,10 @@ public class ReflectionUtil
 
 
    /**
-    *  Reflect the input object state.
-    *
-    * @param  name Description of the Parameter
-    * @param  w Description of the Parameter
+    * Reflect the input object state.
+    * 
+    * @param o Description of the Parameter
+    * @param w Description of the Parameter
     */
    public static void reflectObject(Object o, Writer w)
    {
@@ -201,10 +212,10 @@ public class ReflectionUtil
 
 
    /**
-    *  Reflect the input class state.
-    *
-    * @param  name Description of the Parameter
-    * @param  os Description of the Parameter
+    * Reflect the input class state.
+    * 
+    * @param name Description of the Parameter
+    * @param os Description of the Parameter
     */
    public static void reflectClass(String name, OutputStream os)
    {
@@ -214,10 +225,10 @@ public class ReflectionUtil
 
 
    /**
-    *  Reflect the input class state.
-    *
-    * @param  name Description of the Parameter
-    * @param  w Description of the Parameter
+    * Reflect the input class state.
+    * 
+    * @param name Description of the Parameter
+    * @param w Description of the Parameter
     */
    public static void reflectClass(String name, Writer w)
    {
@@ -238,18 +249,24 @@ public class ReflectionUtil
 
 
    /**
-    *   PRIVATE methods here
+    * PRIVATE methods here
+    * 
+    * @param o DOCUMENT ME!
+    * @param dumpValues DOCUMENT ME!
+    * @param w DOCUMENT ME!
     */
    /**
-    *  Reflect the input class state.
-    *
-    * @param  name Description of the Parameter
-    * @param  w Description of the Parameter
+    * Reflect the input class state.
+    * 
+    * @param o Description of the Parameter
+    * @param dumpValues DOCUMENT ME!
+    * @param w Description of the Parameter
     */
    private static void reflectClass(Object o, boolean dumpValues, Writer w)
    {
       PrintWriter pw = new PrintWriter(w);
       Class       c = o.getClass();
+
 
       // Print Declaration
       pw.println(Modifier.toString(c.getModifiers()) + " " + c.getName());
@@ -297,10 +314,11 @@ public class ReflectionUtil
 
 
    /**
-    *  Gets the typeName attribute of the input class
-    *
-    * @param  c Description of the Parameter
-    * @return  The typeName value
+    * Gets the typeName attribute of the input class
+    * 
+    * @param c Description of the Parameter
+    * 
+    * @return The typeName value
     */
    private static String getTypeName(Class c)
    {
@@ -337,10 +355,10 @@ public class ReflectionUtil
 
 
    /**
-    *  Get the class constructors.
-    *
-    * @param  pw Description of the Parameter
-    * @param  c Description of the Parameter
+    * Get the class constructors.
+    * 
+    * @param pw Description of the Parameter
+    * @param c Description of the Parameter
     */
    private static void listClassConstructors(PrintWriter pw, Class c)
    {
@@ -355,7 +373,7 @@ public class ReflectionUtil
          }
 
          pw.print("  " + Modifier.toString(constructors[i].getModifiers())
-            + " " + constructors[i].getName() + "(");
+                  + " " + constructors[i].getName() + "(");
 
          listParameters(pw, constructors[i].getParameterTypes());
          pw.println(");");
@@ -369,10 +387,10 @@ public class ReflectionUtil
 
 
    /**
-    *  Get the class methods
-    *
-    * @param  pw Description of the Parameter
-    * @param  c Description of the Parameter
+    * Get the class methods
+    * 
+    * @param pw Description of the Parameter
+    * @param c Description of the Parameter
     */
    private static void listClassMethods(PrintWriter pw, Class c)
    {
@@ -387,8 +405,8 @@ public class ReflectionUtil
          }
 
          pw.print("  " + Modifier.toString(methods[i].getModifiers()) + " "
-            + getTypeName(methods[i].getReturnType()) + " "
-            + methods[i].getName() + "(");
+                  + getTypeName(methods[i].getReturnType()) + " "
+                  + methods[i].getName() + "(");
 
          listParameters(pw, methods[i].getParameterTypes());
          pw.println(");");
@@ -397,14 +415,17 @@ public class ReflectionUtil
 
 
    /**
-    *  Get the class variables
-    *
-    * @param  pw         Description of the Parameter
-    * @param  o          Description of the Parameter
-    * @param  dumpValues Description of the Parameter
+    * Get the class variables
+    * 
+    * @param pw         Description of the Parameter
+    * @param o          Description of the Parameter
+    * @param dumpValues Description of the Parameter
+    * 
+    * @throws Exception DOCUMENT ME!
     */
-   private static void listClassVariables(PrintWriter pw, Object o,
-      boolean dumpValues) throws Exception
+   private static void listClassVariables(PrintWriter pw, Object o, 
+                                          boolean dumpValues)
+                                   throws Exception
    {
       Class   c      = o.getClass();
       String  name   = c.getName();
@@ -417,9 +438,11 @@ public class ReflectionUtil
             pw.println("  // Variables");
          }
 
+
          // Only take those that belong to this class
          pw.print("  " + Modifier.toString(fields[i].getModifiers()) + " "
-            + getTypeName(fields[i].getType()) + " " + fields[i].getName()); //+ ";");
+                  + getTypeName(fields[i].getType()) + " "
+                  + fields[i].getName()); //+ ";");
 
          // try to get the field value;
          if ((o != null) && dumpValues)
@@ -459,10 +482,10 @@ public class ReflectionUtil
 
 
    /**
-    *  Get the type of the class parameters
-    *
-    * @param  pw Description of the Parameter
-    * @param  parameters Description of the Parameter
+    * Get the type of the class parameters
+    * 
+    * @param pw Description of the Parameter
+    * @param parameters Description of the Parameter
     */
    private static void listParameters(PrintWriter pw, Class[] parameters)
    {

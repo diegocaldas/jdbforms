@@ -20,61 +20,68 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
+
 package org.dbforms.util;
 import java.io.InputStream;
 import java.util.Vector;
 import java.util.StringTokenizer;
 import java.util.Enumeration;
-
 import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Category;
 
 
 
-/****
+/**
  * <p>
- * this utility-class provides convenience methods for parsing strings and generating certain
- * data structures
+ * this utility-class provides convenience methods for parsing strings and
+ * generating certain data structures
  * </p>
- *
- * @author Joe Peer <j.peer@gmx.net>
+ * 
+ * @author Joe Peer
  */
 public class ParseUtil
 {
-   private static Category logCat = Category.getInstance(ParseUtil.class.getName());
+   private static Category logCat = Category.getInstance(
+                                             ParseUtil.class.getName());
 
    // logging category for this class
    // ------------------ methods directly related to HttpServletRequest operations
 
    /**
-    * Returns the names of all the parameters as an Enumeration of
-    * Strings.  It returns an empty Enumeration if there are no parameters.
-    *
+    * Returns the names of all the parameters as an Enumeration of Strings.  It
+    * returns an empty Enumeration if there are no parameters.
+    * 
+    * @param request DOCUMENT ME!
+    * 
     * @return the names of all the parameters as an Enumeration of Strings.
     */
    public static Enumeration getParameterNames(HttpServletRequest request)
    {
-      MultipartRequest multipartRequest = (MultipartRequest) request
-         .getAttribute("multipartRequest");
+      MultipartRequest multipartRequest = (MultipartRequest) request.getAttribute(
+                                                   "multipartRequest");
 
-      return (multipartRequest == null) ? request.getParameterNames()
-                                        : multipartRequest.getParameterNames();
+      return (multipartRequest == null)
+                ? request.getParameterNames()
+                : multipartRequest.getParameterNames();
    }
 
 
    /**
     * Returns the value of the named parameter as a String, or the default if
-    * the parameter was not sent or was sent without a value.  The value
-    * is guaranteed to be in its normal, decoded form.  If the parameter
-    * has multiple values, only the first (!!!!!) one is returned (for backward
+    * the parameter was not sent or was sent without a value.  The value is
+    * guaranteed to be in its normal, decoded form.  If the parameter has
+    * multiple values, only the first (!!!!!) one is returned (for backward
     * compatibility).  For parameters with multiple values, it's possible the
     * first "value" may be null.
-    *
+    * 
+    * @param request DOCUMENT ME!
     * @param name the parameter name.
+    * @param def DOCUMENT ME!
+    * 
     * @return the parameter value.
     */
-   public static String getParameter(HttpServletRequest request, String name,
-      String def)
+   public static String getParameter(HttpServletRequest request, String name, 
+                                     String def)
    {
       String t = request.getQueryString();
       String s = getParameter(request, name);
@@ -89,20 +96,22 @@ public class ParseUtil
 
 
    /**
-    * Returns the value of the named parameter as a String, or null if
-    * the parameter was not sent or was sent without a value.  The value
-    * is guaranteed to be in its normal, decoded form.  If the parameter
-    * has multiple values, only the first (!!!) one is returned (for backward
+    * Returns the value of the named parameter as a String, or null if the
+    * parameter was not sent or was sent without a value.  The value is
+    * guaranteed to be in its normal, decoded form.  If the parameter has
+    * multiple values, only the first (!!!) one is returned (for backward
     * compatibility).  For parameters with multiple values, it's possible the
     * first "value" may be null.
-    *
+    * 
+    * @param request DOCUMENT ME!
     * @param name the parameter name.
+    * 
     * @return the parameter value.
     */
    public static String getParameter(HttpServletRequest request, String name)
    {
-      MultipartRequest multipartRequest = (MultipartRequest) request
-         .getAttribute("multipartRequest");
+      MultipartRequest multipartRequest = (MultipartRequest) request.getAttribute(
+                                                   "multipartRequest");
 
       //patch by borghi
       if (request.getAttribute(name) != null)
@@ -112,8 +121,9 @@ public class ParseUtil
       else
       {
          //end patch		
-         return (multipartRequest == null) ? request.getParameter(name)
-                                           : multipartRequest.getParameter(name);
+         return (multipartRequest == null)
+                   ? request.getParameter(name)
+                   : multipartRequest.getParameter(name);
       }
    }
 
@@ -123,84 +133,104 @@ public class ParseUtil
     * the parameter was not sent.  The array has one entry for each parameter
     * field sent.  If any field was sent without a value that entry is stored
     * in the array as a null.  The values are guaranteed to be in their
-    * normal, decoded form.  A single value is returned as a one-element array.
-    *
+    * normal, decoded form.  A single value is returned as a one-element
+    * array.
+    * 
+    * @param request DOCUMENT ME!
     * @param name the parameter name.
+    * 
     * @return the parameter values.
     */
-   public static String[] getParameterValues(HttpServletRequest request, String name)
+   public static String[] getParameterValues(HttpServletRequest request, 
+                                             String name)
    {
-      MultipartRequest multipartRequest = (MultipartRequest) request
-         .getAttribute("multipartRequest");
+      MultipartRequest multipartRequest = (MultipartRequest) request.getAttribute(
+                                                   "multipartRequest");
 
-      return (multipartRequest == null) ? request.getParameterValues(name)
-                                        : multipartRequest.getParameterValues(name);
+      return (multipartRequest == null)
+                ? request.getParameterValues(name)
+                : multipartRequest.getParameterValues(name);
    }
 
 
    //------------- request operations on higher level (not related to standard api)
 
    /**
-    * Returns the names of all the uploaded files as an Enumeration of
-    * Strings.  It returns an empty Enumeration if there are no uploaded
-    * files.  Each file name is the name specified by the form, not by
-    * the user.
-    *
+    * Returns the names of all the uploaded files as an Enumeration of Strings.
+    * It returns an empty Enumeration if there are no uploaded files.  Each
+    * file name is the name specified by the form, not by the user.
+    * 
+    * @param request DOCUMENT ME!
+    * 
     * @return the names of all the uploaded files as an Enumeration of Strings.
     */
    public static Enumeration getFileNames(HttpServletRequest request)
    {
-      MultipartRequest multipartRequest = (MultipartRequest) request
-         .getAttribute("multipartRequest");
+      MultipartRequest multipartRequest = (MultipartRequest) request.getAttribute(
+                                                   "multipartRequest");
 
       return (multipartRequest == null) ? null : multipartRequest.getFileNames();
    }
 
 
    /**
-    * Returns a InputStream object for the specified file pending around in the current request (it's still in a [File]Part!)
-    *
-    * @param inputstream of the file name.
+    * Returns a InputStream object for the specified file pending around in the
+    * current request (it's still in a [File]Part!)
+    * 
+    * @param request of the file name.
+    * @param name DOCUMENT ME!
+    * 
     * @return a Fileinputstream object for the named file.
     */
-   public static InputStream getFileInputStream(HttpServletRequest request,
-      String name)
+   public static InputStream getFileInputStream(HttpServletRequest request, 
+                                                String name)
    {
-      MultipartRequest multipartRequest = (MultipartRequest) request
-         .getAttribute("multipartRequest");
+      MultipartRequest multipartRequest = (MultipartRequest) request.getAttribute(
+                                                   "multipartRequest");
 
-      return (multipartRequest == null) ? null
-                                        : multipartRequest.getFileInputStream(name);
+      return (multipartRequest == null)
+                ? null : multipartRequest.getFileInputStream(name);
    }
 
 
    /**
-    * Returns a FileHolder object for the specified file pending around in the current request
-    *
+    * Returns a FileHolder object for the specified file pending around in the
+    * current request
+    * 
+    * @param request DOCUMENT ME!
     * @param name the file name.
+    * 
     * @return a FileHolder object for the named file.
     */
-   public static FileHolder getFileHolder(HttpServletRequest request, String name)
+   public static FileHolder getFileHolder(HttpServletRequest request, 
+                                          String name)
    {
-      MultipartRequest multipartRequest = (MultipartRequest) request
-         .getAttribute("multipartRequest");
+      MultipartRequest multipartRequest = (MultipartRequest) request.getAttribute(
+                                                   "multipartRequest");
 
-      return (multipartRequest == null) ? null
-                                        : multipartRequest.getFileHolder(name);
+      return (multipartRequest == null)
+                ? null : multipartRequest.getFileHolder(name);
    }
 
 
    /**
-   */
-   public static Vector getParametersStartingWith(HttpServletRequest request,
-      String str)
+    * DOCUMENT ME!
+    *
+    * @param request DOCUMENT ME!
+    * @param str DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public static Vector getParametersStartingWith(HttpServletRequest request, 
+                                                  String str)
    {
-      MultipartRequest multipartRequest = (MultipartRequest) request
-         .getAttribute("multipartRequest");
+      MultipartRequest multipartRequest = (MultipartRequest) request.getAttribute(
+                                                   "multipartRequest");
 
       Vector           result = new Vector();
       Enumeration      enum   = (multipartRequest == null)
-         ? request.getParameterNames() : multipartRequest.getParameterNames();
+                                   ? request.getParameterNames()
+                                   : multipartRequest.getParameterNames();
 
       while (enum.hasMoreElements())
       {
@@ -217,15 +247,22 @@ public class ParseUtil
 
 
    /**
-   */
-   public static String getFirstParameterStartingWith(HttpServletRequest request,
-      String str)
+    * DOCUMENT ME!
+    *
+    * @param request DOCUMENT ME!
+    * @param str DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public static String getFirstParameterStartingWith(HttpServletRequest request, 
+                                                      String str)
    {
-      MultipartRequest multipartRequest = (MultipartRequest) request
-         .getAttribute("multipartRequest");
+      MultipartRequest multipartRequest = (MultipartRequest) request.getAttribute(
+                                                   "multipartRequest");
 
       Enumeration      enum = (multipartRequest == null)
-         ? request.getParameterNames() : multipartRequest.getParameterNames();
+                                 ? request.getParameterNames()
+                                 : multipartRequest.getParameterNames();
 
       while (enum.hasMoreElements())
       {
@@ -243,10 +280,10 @@ public class ParseUtil
 
    /**
     * DOCUMENT ME!
-    *
+    * 
     * @param str DOCUMENT ME!
     * @param delimeter DOCUMENT ME!
-    *
+    * 
     * @return DOCUMENT ME!
     */
    public static Vector splitString(String str, String delimeter)
@@ -263,20 +300,31 @@ public class ParseUtil
 
 
    /**
-   <p>Method for parsing substring embedded by constant delimeters</p>
-
-   <p>consider the following string s: ac_update_3_12</p>
-
-   <p><pre>
-   getEmbeddedString(s, 0, '_') ==> "ac"
-   getEmbeddedString(s, 1, '_') ==> "update"
-   getEmbeddedString(s, 2, '_') ==> "3"
-   getEmbeddedString(s, 3, '_') ==> "12"
-   getEmbeddedString(s, 3, '_') ==> will throw a Runtime Exception
-   </pre></p>
-   */
-   public static String getEmbeddedString(String str, int afterDelims,
-      char delim)
+    * <p>
+    * Method for parsing substring embedded by constant delimeters
+    * </p>
+    * 
+    * <p>
+    * consider the following string s: ac_update_3_12
+    * </p>
+    * 
+    * <p>
+    * <pre>
+    *  getEmbeddedString(s, 0, '_') ==> "ac"
+    *  getEmbeddedString(s, 1, '_') ==> "update"
+    *  getEmbeddedString(s, 2, '_') ==> "3"
+    *  getEmbeddedString(s, 3, '_') ==> "12"
+    *  getEmbeddedString(s, 3, '_') ==> will throw a Runtime Exception
+    *  </pre>
+    * </p>
+    * @param str DOCUMENT ME!
+    * @param afterDelims DOCUMENT ME!
+    * @param delim DOCUMENT ME!
+    * 
+    * @return DOCUMENT ME!
+    */
+   public static String getEmbeddedString(String str, int afterDelims, 
+                                          char delim)
    {
       int lastIndex = 0;
 
@@ -299,19 +347,33 @@ public class ParseUtil
 
 
    /**
-   <p>Method for parsing substring embedded by constant delimeters</p>
-
-   <p>Because getEmbeddedString() support "." for image button, this
-      method do the the same, but ignore dots. It's a patch and must
-      be revised in the next cleanup... #checkme</p>
-
-   <p>consider the following string s: English-001:param1, param2</p>
-
-   <p><pre>
-   </pre></p>
-   */
-   public static String getEmbeddedStringWithoutDots(String str,
-      int afterDelims, char delim)
+    * <p>
+    * Method for parsing substring embedded by constant delimeters
+    * </p>
+    * 
+    * <p>
+    * Because getEmbeddedString() support "." for image button, this method do
+    * the the same, but ignore dots. It's a patch and must be revised in the
+    * next cleanup... #checkme
+    * </p>
+    * 
+    * <p>
+    * consider the following string s: English-001:param1, param2
+    * </p>
+    * 
+    * <p>
+    * <pre>
+    *  </pre>
+    * </p>
+    * @param str DOCUMENT ME!
+    * @param afterDelims DOCUMENT ME!
+    * @param delim DOCUMENT ME!
+    * 
+    * @return DOCUMENT ME!
+    */
+   public static String getEmbeddedStringWithoutDots(String str, 
+                                                     int afterDelims, 
+                                                     char delim)
    {
       int lastIndex = 0;
 
@@ -333,15 +395,15 @@ public class ParseUtil
 
    /**
     * DOCUMENT ME!
-    *
+    * 
     * @param str DOCUMENT ME!
     * @param afterDelims DOCUMENT ME!
     * @param delim DOCUMENT ME!
-    *
+    * 
     * @return DOCUMENT ME!
     */
-   public static int getEmbeddedStringAsInteger(String str, int afterDelims,
-      char delim)
+   public static int getEmbeddedStringAsInteger(String str, int afterDelims, 
+                                                char delim)
    {
       return Integer.parseInt(getEmbeddedString(str, afterDelims, delim));
    }
@@ -349,9 +411,9 @@ public class ParseUtil
 
    /**
     * DOCUMENT ME!
-    *
+    * 
     * @param request DOCUMENT ME!
-    *
+    * 
     * @return DOCUMENT ME!
     */
    public static boolean hasSearchFields(HttpServletRequest request)

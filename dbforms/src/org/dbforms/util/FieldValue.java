@@ -20,31 +20,30 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
+
 package org.dbforms.util;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-
 import org.apache.log4j.Category;
 import org.dbforms.config.Field;
 
 
 
 /**
- *  This helper-class was originally used to maintain the mapped values
- *  between Main-Form and Sub-Form in the taglib package. in meantime
- *  it is used as holder of data in many places.
- *  <br>
- *  It also performs operations that involve "fields" and associated "values"
- *  (i.e. building blocks of SQL SELECT statements, etc)
- *
- * @author  Joe Peer <joepeer@excite.com>
- * @author  Philip Grunikiewicz<grunikiewicz.philip@hydro.qc.ca> (-> introduced better support of filtering)
- * @created  23 dicembre 2002
+ * This helper-class was originally used to maintain the mapped values between
+ * Main-Form and Sub-Form in the taglib package. in meantime it is used as
+ * holder of data in many places. <br>
+ * It also performs operations that involve "fields" and associated "values"
+ * (i.e. building blocks of SQL SELECT statements, etc)
+ * 
+ * @author Joe Peer
+ * @author Philip Grunikiewicz
  */
 public class FieldValue implements Cloneable
 {
    /** logging category for this class */
-   private static Category logCat = Category.getInstance(FieldValue.class.getName());
+   private static Category logCat = Category.getInstance(
+                                             FieldValue.class.getName());
 
    /** DOCUMENT ME! */
    /** field object */
@@ -72,8 +71,8 @@ public class FieldValue implements Cloneable
    private int searchAlgorithm;
 
    /**
-    * if used in a filter argument: the type of filter comparison operator
-    * (see FILTER_* definitions above)
+    * if used in a filter argument: the type of filter comparison operator (see
+    * FILTER_ definitions above)
     */
    private int operator;
 
@@ -84,7 +83,7 @@ public class FieldValue implements Cloneable
    private FileHolder fileHolder;
 
    /**
-    *  Creates a new FieldValue object.
+    * Creates a new FieldValue object.
     */
    public FieldValue()
    {
@@ -93,26 +92,23 @@ public class FieldValue implements Cloneable
 
    /**
     * Creates a new FieldValue object.
-    *
+    * 
     * @param field DOCUMENT ME!
     * @param fieldValue DOCUMENT ME!
     */
    public FieldValue(Field field, String fieldValue)
    {
-      this.field         = field;
-      this.fieldValue    = fieldValue;
+      this.field      = field;
+      this.fieldValue = fieldValue;
    }
 
 
    /**
-    *  Constructor.
-    *
-    * @param  field the field object
-    * @param  fieldValue the field value
-    * @param  renderHiddenHtmlTag if FieldValue is used in a "childFieldValue",
-    *                            it signalizes if it should be rendered
-    *                            as hidden tag or not (if "stroke out")
-    * @param  operator the type of filter comparison operator
+    * Constructor.
+    * 
+    * @param field the field object
+    * @param fieldValue the field value
+    * @param operator the type of filter comparison operator
     */
    public FieldValue(Field field, String fieldValue, int operator)
    {
@@ -123,26 +119,23 @@ public class FieldValue implements Cloneable
 
    /**
     * Constructor
-    *
-    * @param  field the field object
-    * @param  fieldValue the field value
-    * @param  renderHiddenHtmlTag if FieldValue is used in a "childFieldValue",
-    *                            it signalizes if it should be rendered
-    *                            as hidden tag or not (if "stroke out")
-    * @param  operator the type of filter comparison operator
-    * @param  isLogicalOR specifies whether to OR all values or AND them
+    * 
+    * @param field the field object
+    * @param fieldValue the field value
+    * @param operator the type of filter comparison operator
+    * @param isLogicalOR specifies whether to OR all values or AND them
     */
-   public FieldValue(Field field, String fieldValue, int operator,
-      boolean isLogicalOR)
+   public FieldValue(Field field, String fieldValue, int operator, 
+                     boolean isLogicalOR)
    {
       this(field, fieldValue, operator);
       this.logicalOR = isLogicalOR;
    }
 
    /**
-    *  Gets the operator attribute of the FieldValue object
-    *
-    * @return  The operator value
+    * Gets the operator attribute of the FieldValue object
+    * 
+    * @return The operator value
     */
    public int getOperator()
    {
@@ -151,9 +144,9 @@ public class FieldValue implements Cloneable
 
 
    /**
-    *  Sets the field attribute of the FieldValue object
-    *
-    * @param  field The new field value
+    * Sets the field attribute of the FieldValue object
+    * 
+    * @param field The new field value
     */
    public void setField(Field field)
    {
@@ -162,9 +155,9 @@ public class FieldValue implements Cloneable
 
 
    /**
-    *  Gets the field attribute of the FieldValue object
-    *
-    * @return  The field value
+    * Gets the field attribute of the FieldValue object
+    * 
+    * @return The field value
     */
    public Field getField()
    {
@@ -173,9 +166,9 @@ public class FieldValue implements Cloneable
 
 
    /**
-    *  Sets the fieldValue attribute of the FieldValue object
-    *
-    * @param  fieldValue The new fieldValue value
+    * Sets the fieldValue attribute of the FieldValue object
+    * 
+    * @param fieldValue The new fieldValue value
     */
    public void setFieldValue(String fieldValue)
    {
@@ -184,9 +177,9 @@ public class FieldValue implements Cloneable
 
 
    /**
-    *  Gets the fieldValue attribute of the FieldValue object
-    *
-    * @return  The fieldValue value
+    * Gets the fieldValue attribute of the FieldValue object
+    * 
+    * @return The fieldValue value
     */
    public String getFieldValue()
    {
@@ -195,9 +188,9 @@ public class FieldValue implements Cloneable
 
 
    /**
-    *  Sets the sortDirection attribute of the FieldValue object
-    *
-    * @param  sortDirection The new sortDirection value
+    * Sets the sortDirection attribute of the FieldValue object
+    * 
+    * @param sortDirection The new sortDirection value
     */
    public void setSortDirection(boolean sortDirection)
    {
@@ -206,9 +199,9 @@ public class FieldValue implements Cloneable
 
 
    /**
-    *  Gets the sortDirection attribute of the FieldValue object
-    *
-    * @return  The sortDirection value
+    * Gets the sortDirection attribute of the FieldValue object
+    * 
+    * @return The sortDirection value
     */
    public boolean getSortDirection()
    {
@@ -217,9 +210,9 @@ public class FieldValue implements Cloneable
 
 
    /**
-    *  Sets the renderHiddenHtmlTag attribute of the FieldValue object
-    *
-    * @param  renderHiddenHtmlTag The new renderHiddenHtmlTag value
+    * Sets the renderHiddenHtmlTag attribute of the FieldValue object
+    * 
+    * @param renderHiddenHtmlTag The new renderHiddenHtmlTag value
     */
    public void setRenderHiddenHtmlTag(boolean renderHiddenHtmlTag)
    {
@@ -228,9 +221,9 @@ public class FieldValue implements Cloneable
 
 
    /**
-    *  Gets the renderHiddenHtmlTag attribute of the FieldValue object
-    *
-    * @return  The renderHiddenHtmlTag value
+    * Gets the renderHiddenHtmlTag attribute of the FieldValue object
+    * 
+    * @return The renderHiddenHtmlTag value
     */
    public boolean getRenderHiddenHtmlTag()
    {
@@ -239,9 +232,9 @@ public class FieldValue implements Cloneable
 
 
    /**
-    *  Sets the searchMode attribute of the FieldValue object
-    *
-    * @param  searchMode The new searchMode value
+    * Sets the searchMode attribute of the FieldValue object
+    * 
+    * @param searchMode The new searchMode value
     */
    public void setSearchMode(int searchMode)
    {
@@ -250,9 +243,9 @@ public class FieldValue implements Cloneable
 
 
    /**
-    *  Gets the searchMode attribute of the FieldValue object
-    *
-    * @return  The searchMode value
+    * Gets the searchMode attribute of the FieldValue object
+    * 
+    * @return The searchMode value
     */
    public int getSearchMode()
    {
@@ -261,9 +254,9 @@ public class FieldValue implements Cloneable
 
 
    /**
-    *  Sets the searchAlgorithm attribute of the FieldValue object
-    *
-    * @param  searchAlgorithm The new searchAlgorithm value
+    * Sets the searchAlgorithm attribute of the FieldValue object
+    * 
+    * @param searchAlgorithm The new searchAlgorithm value
     */
    public void setSearchAlgorithm(int searchAlgorithm)
    {
@@ -272,9 +265,9 @@ public class FieldValue implements Cloneable
 
 
    /**
-    *  Gets the searchAlgorithm attribute of the FieldValue object
-    *
-    * @return  The searchAlgorithm value
+    * Gets the searchAlgorithm attribute of the FieldValue object
+    * 
+    * @return The searchAlgorithm value
     */
    public int getSearchAlgorithm()
    {
@@ -283,9 +276,9 @@ public class FieldValue implements Cloneable
 
 
    /**
-    *  Get the logicalOR attribute of this FieldValue object.
-    *
-    * @return  the logicalOR attribute of this FieldValue object
+    * Get the logicalOR attribute of this FieldValue object.
+    * 
+    * @return the logicalOR attribute of this FieldValue object
     */
    public boolean isLogicalOR()
    {
@@ -295,8 +288,8 @@ public class FieldValue implements Cloneable
 
    /**
     * Set the logicalOR attribute of this FieldValue object.
-    *
-    * @param  newLogicalOR the logicalOR attribute value to set
+    * 
+    * @param newLogicalOR the logicalOR attribute value to set
     */
    public void setLogicalOR(boolean newLogicalOR)
    {
@@ -305,10 +298,11 @@ public class FieldValue implements Cloneable
 
 
    /**
-    *  Build the WHERE clause string using the input field values.
-    *
-    * @param  fv the array of FieldValue objects
-    * @return  the WHERE clause string
+    * Build the WHERE clause string using the input field values.
+    * 
+    * @param fv the array of FieldValue objects
+    * 
+    * @return the WHERE clause string
     */
    public static String getWhereClause(FieldValue[] fv)
    {
@@ -408,30 +402,25 @@ public class FieldValue implements Cloneable
 
 
    /**
-    * situation: we have an array of fieldvalues (== fields + actual value ) with search
-    * information and we want to build a where - clause
-    * [that should restrict the resultset in matching to the search fields].
-    *
+    * situation: we have an array of fieldvalues (== fields + actual value )
+    * with search information and we want to build a where - clause [that
+    * should restrict the resultset in matching to the search fields].
     * <pre>
     * convention:    index 0-n => AND
     *                index (n+1)-m => OR
-    *
     * examples
-    *
     *            (A = 'meier' AND X = 'joseph') AND (AGE = '10')
     *            (A = 'meier' ) AND (X = 'joseph' OR AGE = '10')
     *            (X = 'joseph' OR AGE = '10')
     *            (A = 'meier' AND X = 'joseph')
-    *
     * for comparing to code:
-    *
     *   §1     §2        §3      §2          §4    §5   §6      §2      §7
     *   (   A = 'smith' AND   X LIKE 'jose%' )    AND    (  AGE = '10'   )
-    *
     * </pre>
-    *
-    * @param  fv Description of the Parameter
-    * @return  _part_ of a WHERE-clause
+    * 
+    * @param fv Description of the Parameter
+    * 
+    * @return _part_ of a WHERE-clause
     */
    public static String getWhereEqualsSearchClause(FieldValue[] fv)
    {
@@ -550,19 +539,22 @@ public class FieldValue implements Cloneable
 
 
    /**
-    * situation: we have built a query (involving the getWhereEqualsClause() method)
-    * and now we want to prepare the statemtent - provide actual values for the
-    * the '?' placeholders
-    *
-    * @param  fv the array of FieldValue objects
-    * @param  ps the PreparedStatement object
-    * @param  curCol the current PreparedStatement column; points to a
-    *                PreparedStatement xxx value
-    * @return  the current column value
-    * @exception  SQLException if any error occurs
+    * situation: we have built a query (involving the getWhereEqualsClause()
+    * method) and now we want to prepare the statemtent - provide actual
+    * values for the the '?' placeholders
+    * 
+    * @param fv the array of FieldValue objects
+    * @param ps the PreparedStatement object
+    * @param curCol the current PreparedStatement column; points to a
+    *        PreparedStatement xxx value
+    * 
+    * @return the current column value
+    * 
+    * @exception SQLException if any error occurs
     */
-   public static int populateWhereEqualsClause(FieldValue[] fv,
-      PreparedStatement ps, int curCol) throws SQLException
+   public static int populateWhereEqualsClause(FieldValue[] fv, 
+                                               PreparedStatement ps, int curCol)
+                                        throws SQLException
    {
       if ((fv != null) && (fv.length > 0))
       {
@@ -577,29 +569,28 @@ public class FieldValue implements Cloneable
 
 
    /**
-    * situation: we have an array of fieldvalues which represents actual values of
-    * order-determinating-fields. we want to build a part of the WHERE clause which restricts
-    * the query to rows coming AFTER the row containing the actual data.
-    * <br>
+    * situation: we have an array of fieldvalues which represents actual values
+    * of order-determinating-fields. we want to build a part of the WHERE
+    * clause which restricts the query to rows coming AFTER the row containing
+    * the actual data. <br>
     * shortly described the following rule is applied:
     * <pre>
     * +--------------------------------------------------------------------------------------------------+
     * |  RULE = R1 AND R2 AND ... AND Rn                                                                 |
     * |  Ri = fi OpA(i) fi* OR  f(i-1) OpB(i-1) f(i-1)* OR f(i-2) OpB(i-2) f(i-2)* OR ... OR f1 OpB f1*  |
     * +--------------------------------------------------------------------------------------------------+
-    *
     * For background info email joepeer@wap-force.net
     * </pre>
-    * IMPORTANT NOTE: the indizes of the fv-array indicate implicitly the order-priority
-    * of the fields.
-    * <br>
-    * example:
-    * if we have ORDER BY id,name,age -> then fv[0] should contain field id,
-    * fv[1] should contain field name, fv[2] should contain field age
-    *
-    * @param  fv the array of FieldValue objects
-    * @param  compareMode the comparison mode
-    * @return  _part_ of a WHERE-clause
+    * IMPORTANT NOTE: the indizes of the fv-array indicate implicitly the
+    * order-priority of the fields. <br>
+    * example: if we have ORDER BY id,name,age -> then fv[0] should contain
+    * field id, fv[1] should contain field name, fv[2] should contain field
+    * age
+    * 
+    * @param fv the array of FieldValue objects
+    * @param compareMode the comparison mode
+    * 
+    * @return _part_ of a WHERE-clause
     */
    public static String getWhereAfterClause(FieldValue[] fv, int compareMode)
    {
@@ -613,21 +604,21 @@ public class FieldValue implements Cloneable
       // COMPARE_INCLUSIVE
       if (compareMode == Constants.COMPARE_INCLUSIVE)
       {
-         opA1    = ">=";
-         opA2    = "<=";
-         opB1    = ">";
-         opB2    = "<";
-         conj    = " AND ";
-         disj    = " OR ";
+         opA1 = ">=";
+         opA2 = "<=";
+         opB1 = ">";
+         opB2 = "<";
+         conj = " AND ";
+         disj = " OR ";
       }
       else
       {
-         opA1    = ">";
-         opA2    = "<";
-         opB1    = ">=";
-         opB2    = "<=";
-         conj    = " OR ";
-         disj    = " AND ";
+         opA1 = ">";
+         opA2 = "<";
+         opB1 = ">=";
+         opB2 = "<=";
+         conj = " OR ";
+         disj = " AND ";
       }
 
       StringBuffer buf = new StringBuffer();
@@ -641,7 +632,8 @@ public class FieldValue implements Cloneable
             buf.append("(");
             buf.append(fv[i].getField().getName());
             buf.append((fv[i].getSortDirection() == Constants.ORDER_ASCENDING)
-               ? opA1 : opA2);
+                          ? opA1 : opA2);
+
 
             // OpA
             buf.append(" ? ");
@@ -654,7 +646,8 @@ public class FieldValue implements Cloneable
                   buf.append(disj);
                   buf.append(fv[j].getField().getName());
                   buf.append((fv[j].getSortDirection() == Constants.ORDER_ASCENDING)
-                     ? opB1 : opB2);
+                                ? opB1 : opB2);
+
 
                   // OpB
                   buf.append(" ? ");
@@ -677,19 +670,22 @@ public class FieldValue implements Cloneable
 
 
    /**
-    *  situation: we have built a query (involving the getWhereEqualsClause() method)
-    *  and now we want to prepare the statemtent - provide actual values for the
-    *  the '?' placeholders.
-    *
-    * @param  fv the array of FieldValue objects
-    * @param  ps the PreparedStatement object
-    * @param  curCol the current PreparedStatement column; points to a
-    *                PreparedStatement xxx value
-    * @return  the value of the current column
-    * @exception  SQLException if any error occurs
+    * situation: we have built a query (involving the getWhereEqualsClause()
+    * method) and now we want to prepare the statemtent - provide actual
+    * values for the the '?' placeholders.
+    * 
+    * @param fv the array of FieldValue objects
+    * @param ps the PreparedStatement object
+    * @param curCol the current PreparedStatement column; points to a
+    *        PreparedStatement xxx value
+    * 
+    * @return the value of the current column
+    * 
+    * @exception SQLException if any error occurs
     */
-   public static int populateWhereAfterClause(FieldValue[] fv,
-      PreparedStatement ps, int curCol) throws SQLException
+   public static int populateWhereAfterClause(FieldValue[] fv, 
+                                              PreparedStatement ps, int curCol)
+                                       throws SQLException
    {
       if ((fv != null) && (fv.length > 0))
       {
@@ -715,10 +711,10 @@ public class FieldValue implements Cloneable
 
 
    /**
-    * Inverts the sorting direction of all FieldValue objects in the given array
-    * [ASC-->DESC et vice versa]
-    *
-    * @param  fv the array of FieldValue objects
+    * Inverts the sorting direction of all FieldValue objects in the given
+    * array [ASC-->DESC et vice versa]
+    * 
+    * @param fv the array of FieldValue objects
     */
    public static void invert(FieldValue[] fv)
    {
@@ -728,23 +724,28 @@ public class FieldValue implements Cloneable
 
 
    /**
-    *  Fill the input PreparedStatement object
-    *
-    * @param  cur the FieldValue object
-    * @param  ps  the PreparedStatement object
-    * @param  curCol the current PreparedStatement column; points to a
-    *                PreparedStatement xxx value
-    * @exception  SQLException if any error occurs
+    * Fill the input PreparedStatement object
+    * 
+    * @param cur the FieldValue object
+    * @param ps  the PreparedStatement object
+    * @param curCol the current PreparedStatement column; points to a
+    *        PreparedStatement xxx value
+    * 
+    * @return DOCUMENT ME!
+    * 
+    * @exception SQLException if any error occurs
     */
-   private static int fillPreparedStatement(FieldValue cur,
-      PreparedStatement ps, int curCol) throws SQLException
+   private static int fillPreparedStatement(FieldValue cur, 
+                                            PreparedStatement ps, int curCol)
+                                     throws SQLException
    {
       Field  curField = cur.getField();
       String valueStr = cur.getFieldValue();
 
       logCat.info("setting col " + curCol + " with name "
-         + cur.getField().getName() + " to value " + valueStr + " of type "
-         + curField.getType() + " operator " + cur.getOperator());
+                  + cur.getField().getName() + " to value " + valueStr
+                  + " of type " + curField.getType() + " operator "
+                  + cur.getOperator());
 
       // 20020703-HKK: Extending search algorithm with WEAK_START, WEAK_END, WEAK_START_END
       //               results in like '%search', 'search%', '%search%'
@@ -775,8 +776,8 @@ public class FieldValue implements Cloneable
             break;
 
          default:
-            SqlUtil.fillPreparedStatement(ps, curCol, valueStr,
-               curField.getType());
+            SqlUtil.fillPreparedStatement(ps, curCol, valueStr, 
+                                          curField.getType());
             curCol++;
       }
 
@@ -785,8 +786,8 @@ public class FieldValue implements Cloneable
 
 
    /**
-    *  Clone this object.
-    *
+    * Clone this object.
+    * 
     * @return a cloned FieldValue object
     */
    public Object clone()
@@ -807,9 +808,9 @@ public class FieldValue implements Cloneable
 
 
    /**
-    *  Get the String representation of this object.
-    *
-    * @return  the String representation of this object
+    * Get the String representation of this object.
+    * 
+    * @return the String representation of this object
     */
    public String toString()
    {
@@ -837,6 +838,8 @@ public class FieldValue implements Cloneable
 
 
    /**
+    * DOCUMENT ME!
+    * 
     * @return FileHolder
     */
    public FileHolder getFileHolder()
@@ -847,6 +850,7 @@ public class FieldValue implements Cloneable
 
    /**
     * Sets the fileHolder.
+    * 
     * @param fileHolder The fileHolder to set
     */
    public void setFileHolder(FileHolder fileHolder)

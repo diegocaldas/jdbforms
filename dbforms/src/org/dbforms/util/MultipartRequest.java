@@ -89,7 +89,6 @@ public class MultipartRequest
     * problem reading or parsing the request.
     *
     * @param request the servlet request.
-    * @param saveDirectory the directory in which to save any uploaded files.
     * @param maxPostSize the maximum size of the POST content.
     * @exception IOException if the uploaded content is larger than
     * <tt>maxPostSize</tt> or there's a problem reading or parsing the request.

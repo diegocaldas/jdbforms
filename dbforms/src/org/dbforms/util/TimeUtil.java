@@ -20,34 +20,30 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
+
 package org.dbforms.util;
 
 /**
- *  Helper classes for dealing with time values
- *
- *  @author  frederic
+ * Helper classes for dealing with time values
+ * 
  */
 import java.text.SimpleDateFormat;
-
 import java.util.TimeZone;
 import java.util.Locale;
 import java.util.GregorianCalendar;
 import java.util.Date;
 import java.util.Calendar;
-
 import org.apache.regexp.RESyntaxException;
 import org.apache.regexp.RE;
-
-
 import org.apache.log4j.Category;
 
 
 
 /**
  * DOCUMENT ME!
- *
- * @author $author$
+ * 
  * @version $Revision$
+ * @author $author$
  */
 public class TimeUtil
 {
@@ -56,69 +52,65 @@ public class TimeUtil
 
    /**
     * Reformats seconds to time string with format: dd:hh:mm:ss
-    *
+    * 
     * @param seconds
+    * 
     * @return String
     */
-   public static final String Seconds2String(String seconds)
+   public static final String seconds2String(String seconds)
    {
       if (Util.isNull(seconds))
+      {
          return "";
+      }
       else
-         return Seconds2String(Integer.valueOf(seconds));
+      {
+         return seconds2String(Integer.valueOf(seconds));
+      }
    }
 
 
    /**
     * Reformats seconds to time string with format: dd:hh:mm:ss
-    *
+    * 
     * @param seconds
+    * 
     * @return String
     */
-   public static final String Seconds2String(Integer seconds)
+   public static final String seconds2String(Integer seconds)
    {
-      return Seconds2String(seconds.intValue());
+      return seconds2String(seconds.intValue());
    }
 
 
    /**
     * Reformats seconds to time string with format: dd:hh:mm:ss
-    *
+    * 
     * @param seconds
+    * 
     * @return String
     */
-   public static final String Seconds2String(long seconds)
+   public static final String seconds2String(long seconds)
    {
       long   d;
       long   h;
       long   m;
       String zeit;
-      d          = (seconds / SECSPERDAY);
-      seconds    = seconds - (d * SECSPERDAY);
-      h          = seconds / (60 * 60);
-      seconds    = seconds - (h * 60 * 60);
-      m          = seconds / 60;
-      seconds    = seconds - (m * 60);
+      d       = (seconds / SECSPERDAY);
+      seconds = seconds - (d * SECSPERDAY);
+      h       = seconds / (60 * 60);
+      seconds = seconds - (h * 60 * 60);
+      m       = seconds / 60;
+      seconds = seconds - (m * 60);
 
       if (d > 0)
       {
-         Object[] o = 
-         {
-            new Long(d),
-            new Long(h),
-            new Long(m),
-            new Long(seconds)
-         };
+         Object[] o = { new Long(d), new Long(h), new Long(m), new Long(seconds) };
          zeit = Util.sprintf("%i:%02i:%02i:%02i", o);
       }
       else
       {
-         Object[] o = 
-         {
-            new Long(h),
-            new Long(m),
-            new Long(seconds)
-         };
+         Object[] o = { new Long(h), new Long(m), new Long(seconds) };
          zeit = Util.sprintf("%i:%02i:%02i", o);
       }
 
@@ -126,8 +118,8 @@ public class TimeUtil
    }
 
 
-   private static void splitDate(String format, StringBuffer sDate,
-      StringBuffer sTime)
+   private static void splitDate(String format, StringBuffer sDate, 
+                                 StringBuffer sTime)
    {
       sDate.setLength(0);
       sTime.setLength(0);
@@ -238,7 +230,7 @@ public class TimeUtil
          Calendar cal = sdf.getCalendar();
 
          if (!cal.isSet(Calendar.HOUR_OF_DAY)
-                  && !cal.isSet(Calendar.HOUR_OF_DAY))
+                   && !cal.isSet(Calendar.HOUR_OF_DAY))
          {
             cal.set(Calendar.HOUR_OF_DAY, 0);
          }
@@ -261,12 +253,13 @@ public class TimeUtil
 
 
    /**
-    * Tries to parse a String into a Date value.
-    * String mustn't a full date, parts are enough.
-    * Parsing will set missing parts to default values
-    *
+    * Tries to parse a String into a Date value. String mustn't a full date,
+    * parts are enough. Parsing will set missing parts to default values
+    * 
     * @param format   java format string for date/time
-    * @return         the parsed date
+    * @param s DOCUMENT ME!
+    * 
+    * @return the parsed date
     */
    public static Date parseDate(String format, String s)
    {
@@ -275,14 +268,14 @@ public class TimeUtil
 
 
    /**
-    * Tries to parse a String into a Date value.
-    * String mustn't a full date, parts are enough.
-    * Parsing will set missing parts to default values
-    *
+    * Tries to parse a String into a Date value. String mustn't a full date,
+    * parts are enough. Parsing will set missing parts to default values
+    * 
     * @param loc      locale to use
     * @param format   java format string for date/time
     * @param s        string to be parsed
-    * @return         the parsed date
+    * 
+    * @return the parsed date
     */
    public static Date parseDate(Locale loc, String format, String s)
    {
@@ -303,25 +296,24 @@ public class TimeUtil
 
    /**
     * Parses an ISO8601 date format string
-    *
-    * @param s        string to be parsed
-    * @return         the parsed date
+    * 
     */
    private static class ISO8601
    {
       private int    year;
-		private int    month;
-		private int    day;
-		private int    hour;
-		private int    min;
-		private int    sec;
-		private int    frac;
-		private String tz;
+      private int    month;
+      private int    day;
+      private int    hour;
+      private int    min;
+      private int    sec;
+      private int    frac;
+      private String tz;
    }
 
    private static String reISO8601 = "(\\d\\d\\d\\d)(-(\\d\\d)(-(\\d\\d))?)?"
-      + "([T| ]?" + "(\\d\\d):(\\d\\d)(:((\\d\\d)(\\.(\\d+))?)?)?"
-      + "(Z|([+-]\\d\\d:\\d\\d)|([A-Z]{3}))?)?";
+                                     + "([T| ]?"
+                                     + "(\\d\\d):(\\d\\d)(:((\\d\\d)(\\.(\\d+))?)?)?"
+                                     + "(Z|([+-]\\d\\d:\\d\\d)|([A-Z]{3}))?)?";
 
    private static int toInt(String x)
    {
@@ -353,19 +345,20 @@ public class TimeUtil
          if (re.match(s))
          {
             ISO8601 iso = new ISO8601();
-            iso.year     = toInt(re.getParen(1));
-            iso.month    = toInt(re.getParen(3));
-            iso.day      = toInt(re.getParen(5));
-            iso.hour     = toInt(re.getParen(7));
-            iso.min      = toInt(re.getParen(8));
-            iso.sec      = toInt(re.getParen(11));
-            iso.frac     = toInt(re.getParen(13));
-            iso.tz       = re.getParen(14);
+            iso.year  = toInt(re.getParen(1));
+            iso.month = toInt(re.getParen(3));
+            iso.day   = toInt(re.getParen(5));
+            iso.hour  = toInt(re.getParen(7));
+            iso.min   = toInt(re.getParen(8));
+            iso.sec   = toInt(re.getParen(11));
+            iso.frac  = toInt(re.getParen(13));
+            iso.tz    = re.getParen(14);
 
             return iso;
          }
       }
-       // try
+
+      // try
       catch (RESyntaxException ree)
       {
          ree.printStackTrace();
@@ -377,9 +370,10 @@ public class TimeUtil
 
    /**
     * Parses an ISO8601 date format string
-    *
+    * 
     * @param s        string to be parsed
-    * @return         the parsed date
+    * 
+    * @return the parsed date
     */
    public static Date parseISO8601Date(String s)
    {
@@ -406,8 +400,8 @@ public class TimeUtil
             }
          }
 
-         Calendar cal = new GregorianCalendar(iso.year, iso.month - 1, iso.day,
-               iso.hour, iso.min, iso.sec);
+         Calendar cal = new GregorianCalendar(iso.year, iso.month - 1, iso.day, 
+                                              iso.hour, iso.min, iso.sec);
 
          if (tz != null)
          {
@@ -416,17 +410,18 @@ public class TimeUtil
 
          return cal.getTime();
       }
-       // if iso
 
+      // if iso
       return null;
    }
 
 
    /**
     * finds the end of the given day
-    *
+    * 
     * @param d        date of which end should be find
-    * @return         end of the day
+    * 
+    * @return end of the day
     */
    public static Date findEndOfDay(Date d)
    {
@@ -443,12 +438,13 @@ public class TimeUtil
 
    /**
     * main test routine
+    * @param args DOCUMENT ME!
     */
    public static void main(String[] args)
    {
       int k;
       k = 100024;
-      System.out.println(Seconds2String(k));
+      System.out.println(seconds2String(k));
 
       String format = "dd.MM.yyyy HH:mm";
       System.out.println(parseDate(format, "12.12.2002").toLocaleString());

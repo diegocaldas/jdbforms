@@ -39,7 +39,7 @@ public class MessageResources
 {
    /** DOCUMENT ME! */
    public static String LOCALE_KEY = "org.dbforms.LOCALE";
-   static Category      logCat = Category.getInstance(MessageResources.class
+   private static Category      logCat = Category.getInstance(MessageResources.class
          .getName());
 
    /*********************************************************************************************

@@ -1697,7 +1697,7 @@ public class PrintfFormat
          }
          else
          {
-            p = defaultDigits - 1;
+            p = DEFAULTDIGITS - 1;
          }
 
          char[] ca1 = sx.toCharArray();
@@ -2185,7 +2185,7 @@ public class PrintfFormat
          }
          else
          {
-            p = defaultDigits - 1;
+            p = DEFAULTDIGITS - 1;
          }
 
          if ((rPos != -1) && (ePos != -1))
@@ -3000,7 +3000,7 @@ public class PrintfFormat
          {
             if (!precisionSet)
             {
-               precision = defaultDigits;
+               precision = DEFAULTDIGITS;
             }
 
             if (precision == 0)
@@ -4883,7 +4883,7 @@ public class PrintfFormat
       private int precision = 0;
 
       /** Default precision. */
-      private static final int defaultDigits = 6;
+      private static final int DEFAULTDIGITS = 6;
 
       /**
        * Flag indicating that the precision is *.

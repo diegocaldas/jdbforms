@@ -97,7 +97,7 @@ import java.util.Vector;
 
 /**
  * DOCUMENT ME!
- *
+ * 
  * @version $Revision$
  * @author $author$
  */
@@ -192,6 +192,7 @@ public class FileUtil
    /**
     * Returns the filename portion of a file specification string. Matches the
     * equally named unix command.
+    * 
     * @param filename DOCUMENT ME!
     * @param suffix DOCUMENT ME!
     * 
@@ -222,6 +223,7 @@ public class FileUtil
     * Returns the extension portion of a file specification string. This
     * everything after the last dot '.' in the filename (NOT including the
     * dot).
+    * 
     * @param filename DOCUMENT ME!
     * 
     * @return DOCUMENT ME!
@@ -262,9 +264,11 @@ public class FileUtil
     * @param fileName The name of the file to read.
     * 
     * @return The file contents or null if read failed.
+    * 
     * @throws IOException DOCUMENT ME!
     */
-   public static String fileRead(String fileName) throws IOException
+   public static String fileRead(String fileName)
+                          throws IOException
    {
       StringBuffer    buf = new StringBuffer();
 
@@ -289,6 +293,7 @@ public class FileUtil
     * 
     * @param fileName The name of the file to write.
     * @param data The content to write to the file.
+    * 
     * @throws Exception DOCUMENT ME!
     */
    public static void fileWrite(String fileName, String data)
@@ -391,6 +396,7 @@ public class FileUtil
     * Given a directory and an array of extensions... return an array of
     * compliant files. The given extensions should be like "java" and not like
     * ".java"
+    * 
     * @param directory DOCUMENT ME!
     * @param extensions DOCUMENT ME!
     * 
@@ -412,9 +418,9 @@ public class FileUtil
 
       for (int i = 0; i < unknownFiles.length; ++i)
       {
-         String       currentFileName = directory
-                                        + System.getProperty("file.separator")
-                                        + unknownFiles[i];
+         String currentFileName = directory
+                                  + System.getProperty("file.separator")
+                                  + unknownFiles[i];
          java.io.File currentFile = new java.io.File(currentFileName);
 
          if (currentFile.isDirectory())
@@ -453,6 +459,7 @@ public class FileUtil
 
    /**
     * Private hepler method for getFilesFromExtension()
+    * 
     * @param v DOCUMENT ME!
     * @param files DOCUMENT ME!
     * 
@@ -473,6 +480,7 @@ public class FileUtil
     * Checks to see if a file is of a particular type(s). Note that if the file
     * does not have an extension, an empty string (&quot;&quot;) is matched
     * for.
+    * 
     * @param file DOCUMENT ME!
     * @param extensions DOCUMENT ME!
     * 
@@ -503,6 +511,7 @@ public class FileUtil
 
    /**
     * Simple way to make a directory
+    * 
     * @param dir DOCUMENT ME!
     */
    public static void mkdir(String dir)
@@ -532,6 +541,7 @@ public class FileUtil
     * 
     * @return true if the content of the files are equal or they both don't
     *         exist, false otherwise
+    * 
     * @throws IOException DOCUMENT ME!
     */
    public static boolean contentEquals(final File file1, final File file2)
@@ -606,7 +616,8 @@ public class FileUtil
     * 
     * @throws IOException if an error occurs
     */
-   public static URL[] toURLs(final File[] files) throws IOException
+   public static URL[] toURLs(final File[] files)
+                       throws IOException
    {
       final URL[] urls = new URL[files.length];
 
@@ -798,8 +809,6 @@ public class FileUtil
     * @throws IOException if <code>source</code> does not exist, the file in
     *         <code>destinationDirectory</code> cannot be written to, or an IO
     *         error occurs during copying.
-    * @throws IllegalArgumentException if <code>destinationDirectory</code>
-    *         isn't a directory.
     */
    public static void copyFileToDirectory(final File source, 
                                           final File destinationDirectory)
@@ -1115,10 +1124,13 @@ public class FileUtil
 
    /**
     * Delete a file. If file is directory delete it and all sub-directories.
+    * 
     * @param file DOCUMENT ME!
+    * 
     * @throws IOException DOCUMENT ME!
     */
-   public static void forceDelete(final String file) throws IOException
+   public static void forceDelete(final String file)
+                           throws IOException
    {
       forceDelete(new File(file));
    }
@@ -1126,10 +1138,13 @@ public class FileUtil
 
    /**
     * Delete a file. If file is directory delete it and all sub-directories.
+    * 
     * @param file DOCUMENT ME!
+    * 
     * @throws IOException DOCUMENT ME!
     */
-   public static void forceDelete(final File file) throws IOException
+   public static void forceDelete(final File file)
+                           throws IOException
    {
       if (file.isDirectory())
       {
@@ -1149,7 +1164,9 @@ public class FileUtil
    /**
     * Schedule a file to be deleted when JVM exits. If file is directory delete
     * it and all sub-directories.
+    * 
     * @param file DOCUMENT ME!
+    * 
     * @throws IOException DOCUMENT ME!
     */
    public static void forceDeleteOnExit(final File file)
@@ -1168,7 +1185,9 @@ public class FileUtil
 
    /**
     * Recursively schedule directory for deletion on JVM exit.
+    * 
     * @param directory DOCUMENT ME!
+    * 
     * @throws IOException DOCUMENT ME!
     */
    private static void deleteDirectoryOnExit(final File directory)
@@ -1186,7 +1205,9 @@ public class FileUtil
 
    /**
     * Clean a directory without deleting it.
+    * 
     * @param directory DOCUMENT ME!
+    * 
     * @throws IOException DOCUMENT ME!
     * @throws IllegalArgumentException DOCUMENT ME!
     */
@@ -1233,10 +1254,13 @@ public class FileUtil
    /**
     * Make a directory. If there already exists a file with specified name or
     * the directory is unable to be created then an exception is thrown.
+    * 
     * @param file DOCUMENT ME!
+    * 
     * @throws IOException DOCUMENT ME!
     */
-   public static void forceMkdir(final File file) throws IOException
+   public static void forceMkdir(final File file)
+                          throws IOException
    {
       if (file.exists())
       {
@@ -1260,7 +1284,9 @@ public class FileUtil
 
    /**
     * Recursively delete a directory.
+    * 
     * @param directory DOCUMENT ME!
+    * 
     * @throws IOException DOCUMENT ME!
     */
    public static void deleteDirectory(final String directory)
@@ -1272,7 +1298,9 @@ public class FileUtil
 
    /**
     * Recursively delete a directory.
+    * 
     * @param directory DOCUMENT ME!
+    * 
     * @throws IOException DOCUMENT ME!
     */
    public static void deleteDirectory(final File directory)
@@ -1296,7 +1324,9 @@ public class FileUtil
 
    /**
     * Clean a directory without deleting it.
+    * 
     * @param directory DOCUMENT ME!
+    * 
     * @throws IOException DOCUMENT ME!
     */
    public static void cleanDirectory(final String directory)
@@ -1308,9 +1338,10 @@ public class FileUtil
 
    /**
     * Clean a directory without deleting it.
+    * 
     * @param directory DOCUMENT ME!
+    * 
     * @throws IOException DOCUMENT ME!
-    * @throws IllegalArgumentException DOCUMENT ME!
     */
    public static void cleanDirectory(final File directory)
                               throws IOException
@@ -1371,6 +1402,7 @@ public class FileUtil
     * @param directory DOCUMENT ME!
     * 
     * @return size of directory in bytes.
+    * 
     * @throws IllegalArgumentException DOCUMENT ME!
     */
    public static long sizeOfDirectory(final File directory)

@@ -45,23 +45,28 @@ public class FieldValues
       ht = new Hashtable();
    }
 
-	/**
-	 * Creates a new FieldValues object.
-	 */
-	public FieldValues(FieldValue[] valueArr)
-	{
-		ht = new Hashtable();
-		for (int i = 0; i < valueArr.length; i++)
-		{
-		   if (!Util.isNull(valueArr[i].getFieldValue()))
-		   	  put(valueArr[i]);   	
-		}
-	}
+
+   /**
+    * Creates a new FieldValues object.
+    * @param valueArr DOCUMENT ME!
+    */
+   public FieldValues(FieldValue[] valueArr)
+   {
+      ht = new Hashtable();
+
+      for (int i = 0; i < valueArr.length; i++)
+      {
+         if (!Util.isNull(valueArr[i].getFieldValue()))
+         {
+            put(valueArr[i]);
+         }
+      }
+   }
 
    /**
     * DOCUMENT ME!
     * 
-    * @param key DOCUMENT ME!
+    * @param name DOCUMENT ME!
     * 
     * @return DOCUMENT ME!
     */
@@ -74,7 +79,6 @@ public class FieldValues
    /**
     * DOCUMENT ME!
     * 
-    * @param key DOCUMENT ME!
     * @param value DOCUMENT ME!
     */
    public void put(FieldValue value)
@@ -116,7 +120,7 @@ public class FieldValues
 
    /**
     * DOCUMENT ME!
-    *
+    * 
     * @return DOCUMENT ME!
     */
    public FieldValue[] toArr()
@@ -124,11 +128,13 @@ public class FieldValues
       FieldValue[] result = new FieldValue[size()];
       Enumeration  enum = ht.elements();
       int          cnt  = 0;
+
       while (enum.hasMoreElements())
       {
          result[cnt] = (FieldValue) enum.nextElement();
          cnt++;
       }
+
       return result;
    }
 }

@@ -107,6 +107,7 @@ public class InsertEvent extends DatabaseEvent
       // part 1: check if requested privilge is granted for role
       if (!hasUserPrivileg(GrantedPrivileges.PRIVILEG_INSERT))
       {
+			// TODO: Change to resource
          throw new SQLException("Sorry, adding data to table "
                                 + table.getName() 
                                 + " is not granted for this session.");

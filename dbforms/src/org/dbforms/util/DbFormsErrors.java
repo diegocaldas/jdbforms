@@ -20,6 +20,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
+
 package org.dbforms.util;
 import java.util.Hashtable;
 import javax.servlet.ServletContext;
@@ -29,18 +30,20 @@ import org.dbforms.config.error.Error;
 
 
 
-/****
+/**
  * <p>
- * This class gets populated with data from the dbforms-errors.xml file by the ConfigServlet.
- * This class is a kind of "single point of entry" for error messages: it contains the
- * definitions of error message id's, descriptions, severity etc.
+ * This class gets populated with data from the dbforms-errors.xml file by the
+ * ConfigServlet. This class is a kind of "single point of entry" for error
+ * messages: it contains the definitions of error message id's, descriptions,
+ * severity etc.
  * </p>
- *
- * @author Philip Grunikiewicz <grunikiewicz.philip@hydro.qc.ca>
+ * 
+ * @author Philip Grunikiewicz
  */
 public class DbFormsErrors
 {
-   private static Category logCat = Category.getInstance(DbFormsErrors.class.getName()); // logging category for this class
+   private static Category logCat = Category.getInstance(
+                                             DbFormsErrors.class.getName()); // logging category for this class
 
    /** DOCUMENT ME! */
    public static final String ERRORS        = "dbformsErrors";
@@ -58,7 +61,7 @@ public class DbFormsErrors
 
    /**
     * DOCUMENT ME!
-    *
+    * 
     * @param error DOCUMENT ME!
     */
    public void addError(Error error)
@@ -70,9 +73,9 @@ public class DbFormsErrors
 
    /**
     * DOCUMENT ME!
-    *
+    * 
     * @param id DOCUMENT ME!
-    *
+    * 
     * @return DOCUMENT ME!
     */
    public Error getErrorById(String id)
@@ -83,7 +86,7 @@ public class DbFormsErrors
 
    /**
     * DOCUMENT ME!
-    *
+    * 
     * @param servletConfig DOCUMENT ME!
     */
    public void setServletConfig(ServletConfig servletConfig)
@@ -93,9 +96,9 @@ public class DbFormsErrors
 
 
    /**
-   * get access to configuration of config servlet
-   * 
-   */
+    * get access to configuration of config servlet
+    * @return DOCUMENT ME!
+    */
    public ServletConfig getServletConfig()
    {
       return servletConfig;
@@ -103,9 +106,10 @@ public class DbFormsErrors
 
 
    /**
-   get access to servlet context in order to interoperate with
-   other components of the web application
-   */
+    * get access to servlet context in order to interoperate with other
+    * components of the web application
+    * @return DOCUMENT ME!
+    */
    public ServletContext getServletContext()
    {
       return servletConfig.getServletContext();

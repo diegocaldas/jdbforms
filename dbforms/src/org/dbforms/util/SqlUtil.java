@@ -20,6 +20,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
+
 package org.dbforms.util;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -31,7 +32,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-
 import org.apache.log4j.Category;
 import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.DbFormsConfig;
@@ -39,21 +39,29 @@ import org.dbforms.config.DbConnection;
 
 
 
-/****
- *
- * <p>this utility-class provides convenience methods for SQL related tasks</p>
- *
- * @author Joe Peer 
+/**
+ * <p>
+ * this utility-class provides convenience methods for SQL related tasks
+ * </p>
+ * 
+ * @author Joe Peer
  * @author Eric Pugh
  */
 public class SqlUtil
 {
    // logging category for this class
-   private static Category logCat = Category.getInstance(SqlUtil.class.getName());
+   private static Category    logCat = Category.getInstance(
+                                                SqlUtil.class.getName());
 
+   /** DOCUMENT ME! */
    public static final String DEFAULT_CONNECTION = "default";
+
    /**
+    * DOCUMENT ME!
     *
+    * @param value DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
     */
    public static java.sql.Date createAppropriateDate(Object value)
    {
@@ -69,10 +77,12 @@ public class SqlUtil
          return null;
       }
 
-		Date             result = null;
+      Date result = null;
+
       try
       {
-			SimpleDateFormat sdf    = DbFormsConfigRegistry.instance().lookup().getDateFormatter();
+         SimpleDateFormat sdf = DbFormsConfigRegistry.instance().lookup()
+                                                     .getDateFormatter();
          result = new Date(TimeUtil.parseDate(sdf.toPattern(), valueStr)
                                    .getTime());
       }
@@ -83,22 +93,30 @@ public class SqlUtil
 
       if (result == null)
       {
-			try
-			{
-				// Maybe date has been returned as a timestamp?
-					result = new Date(Timestamp.valueOf(valueStr).getTime());
-			}
-			catch (Exception exc)
-			{
-				result = null;
-			}
+         try
+         {
+            // Maybe date has been returned as a timestamp?
+            result = new Date(Timestamp.valueOf(valueStr).getTime());
+         }
+         catch (Exception exc)
+         {
+            result = null;
+         }
       }
-		String s = result.toString();
+
+      String s = result.toString();
 
       return result;
    }
 
 
+   /**
+    * DOCUMENT ME!
+    *
+    * @param value DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
    public static java.sql.Timestamp createAppropriateTimeStamp(Object value)
    {
       if (value == null)
@@ -113,11 +131,12 @@ public class SqlUtil
          return null;
       }
 
-      Timestamp        result = null;
+      Timestamp result = null;
 
       try
       {
-			SimpleDateFormat sdf    = DbFormsConfigRegistry.instance().lookup().getDateFormatter();
+         SimpleDateFormat sdf = DbFormsConfigRegistry.instance().lookup()
+                                                     .getDateFormatter();
          result = new Timestamp(TimeUtil.parseDate(sdf.toPattern(), valueStr)
                                         .getTime());
       }
@@ -128,15 +147,15 @@ public class SqlUtil
 
       if (result == null)
       {
-			try
-			{
-				// Maybe date has been returned as a timestamp?
-				result = Timestamp.valueOf(valueStr);
-			}
-			catch (Exception exc)
-			{
-				result = null;
-			}
+         try
+         {
+            // Maybe date has been returned as a timestamp?
+            result = Timestamp.valueOf(valueStr);
+         }
+         catch (Exception exc)
+         {
+            result = null;
+         }
       }
 
       return result;
@@ -144,7 +163,11 @@ public class SqlUtil
 
 
    /**
+    * DOCUMENT ME!
     *
+    * @param value DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
     */
    public static java.math.BigDecimal createAppropriateNumeric(Object value)
    {
@@ -165,19 +188,24 @@ public class SqlUtil
 
 
    /**
-    *  this utility-method assigns a particular value to a place holder of a PreparedStatement.
-    *  it tries to find the correct setXxx() value, accoring to the field-type information
-    *  represented by "fieldType".
-    *
-    *  quality: this method is bloody alpha (as you might see :=)
+    * this utility-method assigns a particular value to a place holder of a
+    * PreparedStatement. it tries to find the correct setXxx() value, accoring
+    * to the field-type information represented by "fieldType". quality: this
+    * method is bloody alpha (as you might see :=)
+    * @param ps DOCUMENT ME!
+    * @param col DOCUMENT ME!
+    * @param value DOCUMENT ME!
+    * @param fieldType DOCUMENT ME!
+    * @throws SQLException DOCUMENT ME!
     */
-   public static void fillPreparedStatement(PreparedStatement ps, int col,
-      Object value, int fieldType) throws SQLException
+   public static void fillPreparedStatement(PreparedStatement ps, int col, 
+                                            Object value, int fieldType)
+                                     throws SQLException
    {
       try
       {
          logCat.debug("fillPreparedStatement( ps, " + col + ", " + value + ", "
-            + fieldType + ")...");
+                      + fieldType + ")...");
 
          //Check for hard-coded NULL
          if ("$null$".equals(value))
@@ -223,7 +251,8 @@ public class SqlUtil
                   break;
 
                case FieldTypes.DOUBLE:
-                  ps.setDouble(col, Double.valueOf((String) value).doubleValue());
+                  ps.setDouble(col, 
+                               Double.valueOf((String) value).doubleValue());
 
                   break;
 
@@ -238,7 +267,8 @@ public class SqlUtil
 
                   try
                   {
-                     ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
+                     ByteArrayOutputStream byteOut = 
+                              new ByteArrayOutputStream();
                      ObjectOutputStream    out = new ObjectOutputStream(byteOut);
                      out.writeObject(fileHolder);
                      out.flush();
@@ -247,7 +277,8 @@ public class SqlUtil
                      byteOut.close();
                      out.close();
 
-                     ByteArrayInputStream bytein     = new ByteArrayInputStream(buf);
+                     ByteArrayInputStream bytein     = 
+                              new ByteArrayInputStream(buf);
                      int                  byteLength = buf.length;
                      ps.setBinaryStream(col, bytein, byteLength);
 
@@ -258,7 +289,7 @@ public class SqlUtil
                      ioe.printStackTrace();
                      logCat.info(ioe.toString());
                      throw new SQLException("error storing BLOB in database - "
-                        + ioe.toString(), null, 2);
+                                            + ioe.toString(), null, 2);
                   }
 
                   break;
@@ -327,12 +358,13 @@ public class SqlUtil
       catch (Exception e)
       {
          StringBuffer msgSB = new StringBuffer(
-               "Field type seems to be incorrect - " + e.toString());
+                                       "Field type seems to be incorrect - "
+                                       + e.toString());
 
          if (fieldType == 0)
          {
             msgSB.append(
-               " Double check your dbforms-config.xml, as the field type was not populated.");
+                     " Double check your dbforms-config.xml, as the field type was not populated.");
          }
 
          throw new SQLException(msgSB.toString(), null, 1);
@@ -342,7 +374,7 @@ public class SqlUtil
 
    /**
     * Close the input connection
-    *
+    * 
     * @param con the connection to close
     */
    public static final void closeConnection(Connection con)
@@ -357,24 +389,27 @@ public class SqlUtil
          }
          catch (SQLException e)
          {
-            logCat.error("::closeConnection - cannot close the input connection",
-               e);
+            logCat.error(
+                     "::closeConnection - cannot close the input connection", e);
          }
       }
    }
 
 
    /**
-    *  Get a connection using the connection name
-    *  specified into the xml configuration file.
-    *
+    * Get a connection using the connection name specified into the xml
+    * configuration file.
+    * 
     * @param config            the DbFormsConfig object
     * @param dbConnectionName  the name of the DbConnection element
+    * 
     * @return a JDBC connection object
+    * 
     * @throws IllegalArgumentException if any error occurs
     */
-   public static final Connection getConnection(DbFormsConfig config,
-      String dbConnectionName) throws IllegalArgumentException
+   public static final Connection getConnection(DbFormsConfig config, 
+                                                String dbConnectionName)
+                                         throws IllegalArgumentException
    {
       DbConnection dbConnection = null;
       Connection   con = null;
@@ -383,16 +418,16 @@ public class SqlUtil
       if ((dbConnection = config.getDbConnection(dbConnectionName)) == null)
       {
          throw new IllegalArgumentException(
-            "No DbConnection object configured with name '" + dbConnectionName
-            + "'");
+                  "No DbConnection object configured with name '"
+                  + dbConnectionName + "'");
       }
 
       // now try to get the JDBC connection from the retrieved DbConnection object;
       if ((con = dbConnection.getConnection()) == null)
       {
          throw new IllegalArgumentException(
-            "JDBC-Troubles:  was not able to create connection from "
-            + dbConnection);
+                  "JDBC-Troubles:  was not able to create connection from "
+                  + dbConnection);
       }
 
       return con;
@@ -400,36 +435,38 @@ public class SqlUtil
 
 
    /**
-    *  Log the SQLException stacktrace and do the same for all the
-    *  nested exceptions.
+    * Log the SQLException stacktrace and do the same for all the nested
+    * exceptions.
     * 
     * @param e  the SQL exception to log
     */
    public static final void logSqlException(SQLException e)
    {
-	  logSqlException(e, null);
+      logSqlException(e, null);
    }
-   
+
 
    /**
-	*  Log the SQLException stacktrace (adding the input description to 
-	*  the first log statement) and do the same for all the nested exceptions.
-	* 
-	* @param e    the SQL exception to log
-	* @param desc the exception description
-	*/
+    * Log the SQLException stacktrace (adding the input description to  the
+    * first log statement) and do the same for all the nested exceptions.
+    * 
+    * @param e    the SQL exception to log
+    * @param desc the exception description
+    */
    public static final void logSqlException(SQLException e, String desc)
-   {	    
-	  int i = 0;
-	  String excDesc = "::logSqlExceptionSQL - main SQL exception";
-	  
-	  // adding the input description to the main log statement;
-	  if (!Util.isNull(desc)) 
-	    excDesc += (" [" + desc + "]");
-	  
-	  logCat.error(excDesc, e);
+   {
+      int    i       = 0;
+      String excDesc = "::logSqlExceptionSQL - main SQL exception";
 
-	  while ((e = e.getNextException()) != null)
-		 logCat.error("::logSqlException - nested SQLException (" + (i++) + ")", e);
+      // adding the input description to the main log statement;
+      if (!Util.isNull(desc))
+      {
+         excDesc += (" [" + desc + "]");
+      }
+
+      logCat.error(excDesc, e);
+
+      while ((e = e.getNextException()) != null)
+         logCat.error("::logSqlException - nested SQLException (" + (i++) + ")", e);
    }
 }

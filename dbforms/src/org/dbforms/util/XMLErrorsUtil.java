@@ -20,33 +20,48 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-package org.dbforms.util;
 
+package org.dbforms.util;
 import java.util.Vector;
 import org.apache.log4j.Category;
 
 
 
-/****
+/**
+ * DOCUMENT ME!
+ *
+ * @version $Revision$
+ * @author $author$
  */
 public class XMLErrorsUtil
 {
    // logging category for this class
-   static Category logCat = Category.getInstance(XMLErrorsUtil.class.getName());
+   private static Category logCat = Category.getInstance(XMLErrorsUtil.class.getName());
 
    /** DOCUMENT ME! */
-   public static char PARAMETER_DELIMITER = '%';
+   public static final char PARAMETER_DELIMITER = '%';
 
    /**
-   <p>Method for parsing substring embedded by constant delimeters</p>
-
-   <p>consider the following string s: English-001:param1, param2</p>
-
-   <p><pre>
-   </pre></p>
-   */
-   public static String getEmbeddedStringForErrors(String str, int afterDelims,
-      char delim)
+    * <p>
+    * Method for parsing substring embedded by constant delimeters
+    * </p>
+    * 
+    * <p>
+    * consider the following string s: English-001:param1, param2
+    * </p>
+    * 
+    * <p>
+    * <pre>
+    *  </pre>
+    * </p>
+    * @param str DOCUMENT ME!
+    * @param afterDelims DOCUMENT ME!
+    * @param delim DOCUMENT ME!
+    * 
+    * @return DOCUMENT ME!
+    */
+   public static String getEmbeddedStringForErrors(String str, int afterDelims, 
+                                                   char delim)
    {
       int lastIndex = 0;
 
@@ -67,16 +82,22 @@ public class XMLErrorsUtil
 
 
    /**
-   */
-   public static String getXMLErrorMessage(String message,
-      DbFormsErrors dbfErrors)
+    * DOCUMENT ME!
+    *
+    * @param message DOCUMENT ME!
+    * @param dbfErrors DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public static String getXMLErrorMessage(String message, 
+                                           DbFormsErrors dbfErrors)
    {
-      String            langCode   = null;
-      String            language   = null;
-      String            errorCode  = null;
-      String            paramList  = null;
+      String                         langCode   = null;
+      String                         language   = null;
+      String                         errorCode  = null;
+      String                         paramList  = null;
       org.dbforms.config.error.Error anError    = null;
-      String            xmlMessage = null;
+      String                         xmlMessage = null;
 
       // If message is empty, return immediately
       if ((message == null) || (message.trim().length() == 0))
@@ -89,10 +110,10 @@ public class XMLErrorsUtil
       // ie: ORA-00001:Oracle Message
       try
       {
-         langCode     = getEmbeddedStringForErrors(message, 0, ':');
-         language     = getEmbeddedStringForErrors(langCode, 0, '-');
-         errorCode    = getEmbeddedStringForErrors(langCode, 1, '-');
-         paramList    = getEmbeddedStringForErrors(message, 1, ':');
+         langCode  = getEmbeddedStringForErrors(message, 0, ':');
+         language  = getEmbeddedStringForErrors(langCode, 0, '-');
+         errorCode = getEmbeddedStringForErrors(langCode, 1, '-');
+         paramList = getEmbeddedStringForErrors(message, 1, ':');
       }
       catch (Exception e)
       {
@@ -138,14 +159,15 @@ public class XMLErrorsUtil
 
 
    /**
-   * Grunikiewicz.philip@hydro.qc.ca
-   * 2001-12-04
-   *
-   * Replace placeholders by parameters
-   * Make sure that parameters required = parameters provided!
-   */
-   public static String insertParametersInString(String xmlMessage,
-      String paramList)
+    * Grunikiewicz.philip  2001-12-04 Replace placeholders by parameters Make
+    * sure that parameters required = parameters provided!
+    * @param xmlMessage DOCUMENT ME!
+    * @param paramList DOCUMENT ME!
+    * 
+    * @return DOCUMENT ME!
+    */
+   public static String insertParametersInString(String xmlMessage, 
+                                                 String paramList)
    {
       // Check if their are parameters expected
       int pos = xmlMessage.indexOf(PARAMETER_DELIMITER);
