@@ -64,7 +64,9 @@ public class SqlUtil {
 		Date result = null;
 
 		try {
-			result = new java.sql.Date(sdf.parse(valueStr).getTime());
+			result =
+				new Date(
+					TimeUtil.parseDate(sdf.toPattern(), valueStr).getTime());
 		} catch (Exception exc) {
 			result = null;
 		}
