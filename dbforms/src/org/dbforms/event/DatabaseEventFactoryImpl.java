@@ -32,7 +32,7 @@ import org.apache.log4j.Category;
 import org.dbforms.*;
 import org.dbforms.util.ParseUtil;
 import org.dbforms.util.ReflectionUtil;
-
+import org.dbforms.event.eventtype.EventType;
 
 
 /**
@@ -59,6 +59,19 @@ public class DatabaseEventFactoryImpl extends DatabaseEventFactory
             instance = new DatabaseEventFactoryImpl();
 
         return instance;
+    }
+
+
+   /**
+     *  Initialize the default events.
+     *
+     * @exception Exception if any error occurs
+     */
+    public void initializeEvents() throws Exception
+    {
+        addEventInfo(new EventInfo(EventType.EVENT_DATABASE_DELETE,  "org.dbforms.event.DeleteEvent"));
+        addEventInfo(new EventInfo(EventType.EVENT_DATABASE_INSERT,  "org.dbforms.event.InsertEvent"));
+        addEventInfo(new EventInfo(EventType.EVENT_DATABASE_UPDATE,  "org.dbforms.event.UpdateEvent"));
     }
 
 

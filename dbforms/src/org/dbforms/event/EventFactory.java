@@ -64,7 +64,24 @@ public abstract class EventFactory
     protected EventFactory()
     {
         eventInfoMap = new HashMap();
+
+        try
+        {
+          initializeEvents();
+        }
+        catch(Exception e)
+        {
+           logCat.error("::EventFactory - cannot initialize the factory events", e);
+        }
     }
+
+
+    /**
+     *  Initialize the default events.
+     *
+     * @exception Exception if any error occurs
+     */
+    public abstract void initializeEvents() throws Exception;
 
 
     /**
@@ -201,7 +218,7 @@ public abstract class EventFactory
         }
         catch(Exception e)
         {
-            logCat.error("::getEventIdFromDestinationTable - cannot get the config object from the bFormsConfigRegistry");
+            logCat.error("::getEventIdFromDestinationTable - cannot get the config object from the DbFormsConfigRegistry");
         }
 
         if (config != null)

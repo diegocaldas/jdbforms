@@ -81,6 +81,22 @@ public class NavEventFactoryImpl extends NavEventFactory
 
 
     /**
+     *  Initialize the default events.
+     *
+     * @exception Exception if any error occurs
+     */
+    public void initializeEvents() throws Exception
+    {
+         addEventInfo(new EventInfo(EventType.EVENT_NAVIGATION_FIRST, "org.dbforms.event.NavFirstEvent"));
+         addEventInfo(new EventInfo(EventType.EVENT_NAVIGATION_GOTO,  "org.dbforms.event.GotoEvent"));
+         addEventInfo(new EventInfo(EventType.EVENT_NAVIGATION_LAST,  "org.dbforms.event.NavLastEvent"));
+         addEventInfo(new EventInfo(EventType.EVENT_NAVIGATION_NEW,   "org.dbforms.event.NavNewEvent"));
+         addEventInfo(new EventInfo(EventType.EVENT_NAVIGATION_NEXT,  "org.dbforms.event.BoundedNavNextEventImpl"));
+         addEventInfo(new EventInfo(EventType.EVENT_NAVIGATION_PREV,  "org.dbforms.event.BoundedNavPrevEventImpl"));
+    }
+
+
+    /**
      *  create and return a new navigation event
      *
      * @param  action the action string that identifies the web event
