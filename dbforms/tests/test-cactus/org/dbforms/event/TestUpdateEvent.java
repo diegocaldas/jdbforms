@@ -29,7 +29,6 @@ import org.apache.cactus.JspTestCase;
 import org.apache.cactus.WebRequest;
 
 
-import javax.servlet.http.HttpServletRequest;
 
 import org.dbforms.config.DbFormsConfigRegistry;
 
