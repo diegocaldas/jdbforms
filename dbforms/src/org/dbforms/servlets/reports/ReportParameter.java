@@ -29,6 +29,8 @@ package org.dbforms.servlets.reports;
  */
 import java.sql.Connection;
 import java.util.Locale;
+import java.io.File;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import org.dbforms.util.MessageResources;
 import org.dbforms.util.ParseUtil;
@@ -44,6 +46,7 @@ import org.apache.log4j.Logger;
  * @author $author$
  */
 public class ReportParameter {
+   private ServletContext context;
    private HttpServletRequest request;
    private Connection connection;
    private String reportPath;
@@ -58,7 +61,8 @@ public class ReportParameter {
     * @param reportPath DOCUMENT ME!
     * @param contextPath DOCUMENT ME!
     */
-   public ReportParameter(HttpServletRequest request, Connection connection, String reportPath) {
+   public ReportParameter(ServletContext context, HttpServletRequest request, Connection connection, String reportPath) {
+      this.context = context;
       this.request = request;
       this.connection = connection;
       this.reportPath = reportPath;
@@ -162,4 +166,11 @@ public class ReportParameter {
       }
 
    }
+   /**
+    * @return
+    */
+   public String getContextPath() {
+	  return context.getRealPath("") + File.separator;
+   }
+
 }

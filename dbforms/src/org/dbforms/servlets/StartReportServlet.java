@@ -238,7 +238,8 @@ public class StartReportServlet extends HttpServlet
             Connection con = config.getConnection(getConnectionName(request));
             try
             {
-               ReportParameter repParam = new ReportParameter(request, 
+               ReportParameter repParam = new ReportParameter(context,
+                											  request, 
                                                               con, 
                                                               FileUtil.dirname(reportFileFullName) + File.separator
                                                               );
