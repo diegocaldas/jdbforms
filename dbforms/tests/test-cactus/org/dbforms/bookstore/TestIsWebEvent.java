@@ -10,6 +10,7 @@ public class TestIsWebEvent extends HttpTestCase {
 	public TestIsWebEvent(String name) {
 		super(name);
 	}
+
 	public void testTestIsWebEvent() throws Exception {
 		get("http://localhost/bookstore/tests/testIsWebEvent.jsp");
 		printResponse();
@@ -20,6 +21,6 @@ public class TestIsWebEvent extends HttpTestCase {
 
 	}
 
-	/****************/
+	/** ************* */
 
 }

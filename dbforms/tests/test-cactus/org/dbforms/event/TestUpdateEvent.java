@@ -28,65 +28,57 @@ import java.sql.Connection;
 import org.apache.cactus.JspTestCase;
 import org.apache.cactus.WebRequest;
 
-
-
 import org.dbforms.config.DbFormsConfigRegistry;
 
 import org.dbforms.servlets.ConfigServlet;
-
 
 /**
  * Tests of the <code>Validation Event</code> class.
  * 
  * @author Henner Kollmann
- * 
+ *  
  */
-public class TestUpdateEvent extends JspTestCase
-{
+public class TestUpdateEvent extends JspTestCase {
 
-   /**
-    * In addition to creating the tag instance and adding the pageContext to
-    * it, this method creates a BodyContent object and passes it to the tag.
-    * @throws Exception DOCUMENT ME!
-    */
-   public void setUp() throws Exception
-   {
-	super.setUp();	
-	DbFormsConfigRegistry.instance().register(null);
-      config.setInitParameter("dbformsConfig", "/WEB-INF/dbforms-config.xml");
-      config.setInitParameter("log4j.configuration", 
-                              "/WEB-INF/log4j.properties");
-      ConfigServlet configServlet = new ConfigServlet();
-      configServlet.init(config);
-   }
+	/**
+	 * In addition to creating the tag instance and adding the pageContext to
+	 * it, this method creates a BodyContent object and passes it to the tag.
+	 * 
+	 * @throws Exception
+	 *             DOCUMENT ME!
+	 */
+	public void setUp() throws Exception {
+		super.setUp();
+		DbFormsConfigRegistry.instance().register(null);
+		config.setInitParameter("dbformsConfig", "/WEB-INF/dbforms-config.xml");
+		config.setInitParameter("log4j.configuration",
+				"/WEB-INF/log4j.properties");
+		ConfigServlet configServlet = new ConfigServlet();
+		configServlet.init(config);
+	}
 
+	//-------------------------------------------------------------------------
 
-   //-------------------------------------------------------------------------
+	/**
+	 * DOCUMENT ME!
+	 * 
+	 * @param theRequest
+	 *            DOCUMENT ME!
+	 */
+	public void beginUpdate(WebRequest theRequest) throws Exception {
+		theRequest.addParameter("f_0_0@root_2", "organisation 1");
+		theRequest.addParameter("of_0_0@root_2", "");
+		theRequest.addParameter("f_0_0@root_1", "Eco, Umberto");
+		theRequest.addParameter("of_0_0@root_1", "");
+	}
 
-      /**
-    * DOCUMENT ME!
-    *
-    * @param theRequest DOCUMENT ME!
-    */
-   public void beginUpdate(WebRequest theRequest) throws Exception
-   {
-      theRequest.addParameter("f_0_0@root_2", "organisation 1");
-      theRequest.addParameter("of_0_0@root_2", "");
-      theRequest.addParameter("f_0_0@root_1", "Eco, Umberto");
-      theRequest.addParameter("of_0_0@root_1", "");
-   }
-
-   public void testUpdate() throws Exception 
-   {
-      DatabaseEvent evt = DatabaseEventFactoryImpl.instance()
-            .createUpdateEvent(
-                  0, 
-                  "0@root", 
-                  request, 
-                  DbFormsConfigRegistry.instance().lookup());
-      Connection con = DbFormsConfigRegistry.instance().lookup().getConnection();
-      evt.processEvent(con);            
-   }
-
+	public void testUpdate() throws Exception {
+		DatabaseEvent evt = DatabaseEventFactoryImpl.instance()
+				.createUpdateEvent(0, "0@root", request,
+						DbFormsConfigRegistry.instance().lookup());
+		Connection con = DbFormsConfigRegistry.instance().lookup()
+				.getConnection();
+		evt.processEvent(con);
+	}
 
 }

@@ -418,9 +418,8 @@ public class DbLinkURLTag extends DbBaseHandlerTag
       }
 
       // build tag
-      StringBuffer       tagBuf      = new StringBuffer(200);
-      HttpServletRequest request     = (HttpServletRequest) pageContext
-                                       .getRequest();
+      StringBuffer       tagBuf  = new StringBuffer(200);
+      HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
       String             contextPath = request.getContextPath();
       tagBuf.append(contextPath);
 

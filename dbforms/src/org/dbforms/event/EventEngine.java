@@ -104,8 +104,9 @@ public class EventEngine {
     * @return a new WebEvent object
     */
    public WebEvent generatePrimaryEvent() {
-      WebEvent e      = null;
-      String   action = ParseUtil.getFirstParameterStartingWith(request, "ac_");
+      WebEvent e           = null;
+      String   action      = ParseUtil.getFirstParameterStartingWith(request,
+                                                                     "ac_");
       String   customEvent = ParseUtil.getParameter(request, "customEvent");
 
       if (Util.isNull(action) && !Util.isNull(customEvent)) {

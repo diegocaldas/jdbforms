@@ -28,53 +28,46 @@ import javax.servlet.jsp.tagext.BodyTag;
 import org.apache.cactus.JspTestCase;
 import org.apache.cactus.WebResponse;
 
-
-
 /**
  * Tests of the <code>BaseTag</code> class.
- *
- * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
- *
+ * 
+ * @author <a href="mailto:epugh@upstate.com">Eric Pugh </a>
+ *  
  */
-public class TestBaseTag extends JspTestCase
-{
-    private BaseTag tag;
+public class TestBaseTag extends JspTestCase {
+	private BaseTag tag;
 
-    /**
-     * In addition to creating the tag instance and adding the pageContext to
-     * it, this method creates a BodyContent object and passes it to the tag.
-     */
-    public void setUp()
-    {
-    	super.setUp();	
+	/**
+	 * In addition to creating the tag instance and adding the pageContext to
+	 * it, this method creates a BodyContent object and passes it to the tag.
+	 */
+	public void setUp() throws Exception {
+		super.setUp();
 
-    	this.tag = new BaseTag();
-        this.tag.setPageContext(this.pageContext);
-    }
+		this.tag = new BaseTag();
+		this.tag.setPageContext(this.pageContext);
+	}
 
+	//-------------------------------------------------------------------------
 
-    //-------------------------------------------------------------------------
+	/**
+	 * Sets the replacement target and replacement String on the tag, then calls
+	 * doAfterBody(). Most of the assertion work is done in endReplacement().
+	 */
+	public void testBasicBaseTag() throws Exception {
+		//none of the other life cycle methods need to be implemented, so they
+		//do not need to be called.
+		int result = this.tag.doStartTag();
+		assertEquals(BodyTag.EVAL_BODY_INCLUDE, result);
+	}
 
-    /**
-     * Sets the replacement target and replacement String on the tag, then calls
-     * doAfterBody(). Most of the assertion work is done in endReplacement().
-     */
-    public void testBasicBaseTag() throws Exception
-    {
-        //none of the other life cycle methods need to be implemented, so they
-        //do not need to be called.
-        int result = this.tag.doStartTag();
-        assertEquals(BodyTag.EVAL_BODY_INCLUDE, result);
-    }
-
-    /**
-     * Verifies that the target String has indeed been replaced in the tag's
-     * body.
-     */
-    public void endBasicBaseTag(WebResponse theResponse)
-    {
-        String content = theResponse.getText();
-        AssertUtils.assertContains("base href", content);
-        AssertUtils.assertContains("http://localhost:8080/",content);
-    }
+	/**
+	 * Verifies that the target String has indeed been replaced in the tag's
+	 * body.
+	 */
+	public void endBasicBaseTag(WebResponse theResponse) {
+		String content = theResponse.getText();
+		AssertUtils.assertContains("base href", content);
+		AssertUtils.assertContains("http://localhost:8080/", content);
+	}
 }

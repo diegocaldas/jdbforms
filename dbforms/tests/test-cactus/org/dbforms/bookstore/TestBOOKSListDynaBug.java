@@ -6,16 +6,17 @@ import org.dbforms.util.HttpTestCase;
 
 // definition of test class
 public class TestBOOKSListDynaBug extends HttpTestCase {
-    // Test method generated from the MaxQ Java generator
-    public TestBOOKSListDynaBug(String name) {
-        super(name);
-    }
-    public void testTest() throws Exception {
-        get("http://localhost/bookstore/tests/testBOOKSListDynaBug.jsp");
-		printResponse();
-		
-    }
+	// Test method generated from the MaxQ Java generator
+	public TestBOOKSListDynaBug(String name) {
+		super(name);
+	}
 
-/****************/
+	public void testTest() throws Exception {
+		get("http://localhost/bookstore/tests/testBOOKSListDynaBug.jsp");
+		printResponse();
+
+	}
+
+	/** ************* */
 
 }

@@ -1930,20 +1930,17 @@ public class Table {
             String denyMessage = null;
 
             if (action == DbEventInterceptor.PRE_INSERT) {
-               operation   = dbi.preInsert(request, this, fieldValues, config,
-                                           con);
+               operation = dbi.preInsert(request, this, fieldValues, config, con);
                denyMessage = "dbforms.events.insert.nogrant";
             } else if (action == DbEventInterceptor.POST_INSERT) {
                dbi.postInsert(request, config, con);
             } else if (action == DbEventInterceptor.PRE_UPDATE) {
-               operation   = dbi.preUpdate(request, this, fieldValues, config,
-                                           con);
+               operation = dbi.preUpdate(request, this, fieldValues, config, con);
                denyMessage = "dbforms.events.update.nogrant";
             } else if (action == DbEventInterceptor.POST_UPDATE) {
                dbi.postUpdate(request, config, con);
             } else if (action == DbEventInterceptor.PRE_DELETE) {
-               operation   = dbi.preDelete(request, this, fieldValues, config,
-                                           con);
+               operation = dbi.preDelete(request, this, fieldValues, config, con);
                denyMessage = "dbforms.events.delete.nogrant";
             } else if (action == DbEventInterceptor.POST_DELETE) {
                dbi.postDelete(request, config, con);

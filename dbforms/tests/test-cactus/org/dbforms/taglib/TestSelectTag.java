@@ -38,78 +38,83 @@ import org.dbforms.util.ParseUtil;
 
 /**
  * Tests of the <code>TestDbTextFieldTag</code> class.
- *
- *
+ * 
+ *  
  */
 public class TestSelectTag extends JspTestCase {
-   private static DbFormsConfig dbconfig;
-   StaticDataItem staticDataItem1;
-   StaticDataItem staticDataItem2;
-   StaticData staticData;
-   DbSelectTag selectTag;
+	private static DbFormsConfig dbconfig;
 
-   private DbFormTag form;
-   public TestSelectTag(String name) throws Exception {
-      super(name);
+	StaticDataItem staticDataItem1;
 
-   }
-   /**
-    * In addition to creating the tag instance and adding the pageContext to
-    * it, this method creates a BodyContent object and passes it to the tag.
-    */
-   public void setUp() throws Exception {
-	super.setUp();	
+	StaticDataItem staticDataItem2;
 
-   	initConfig();
+	StaticData staticData;
 
-      form = new DbFormTag();
-      form.setPageContext(this.pageContext);
-      form.setTableName("BOOK");
-      form.setMaxRows("*");
+	DbSelectTag selectTag;
 
-      selectTag = new DbSelectTag();
-      selectTag.setPageContext(this.pageContext);
-      selectTag.setParent(form);
-      selectTag.setFieldName("AUTHOR_ID");
+	private DbFormTag form;
 
-      staticData = new StaticData();
-      staticData.setPageContext(this.pageContext);
-      staticData.setParent(selectTag);
-      staticData.setName("AUTHOR_ID");
+	public TestSelectTag(String name) throws Exception {
+		super(name);
 
-      staticDataItem1 = new StaticDataItem();
-      staticDataItem1.setPageContext(this.pageContext);
-      staticDataItem1.setParent(staticData);
-      staticDataItem1.setKey("1");
-      staticDataItem1.setValue("Eco");
+	}
 
-      staticDataItem2 = new StaticDataItem();
-      staticDataItem2.setPageContext(this.pageContext);
-      staticDataItem2.setParent(staticData);
-      staticDataItem2.setKey("2");
-      staticDataItem2.setValue("Douglas");
+	/**
+	 * In addition to creating the tag instance and adding the pageContext to
+	 * it, this method creates a BodyContent object and passes it to the tag.
+	 */
+	public void setUp() throws Exception {
+		super.setUp();
 
-      String s = ParseUtil.getParameter(request, "lang");
-      MessageResources.setLocale(request, new Locale(s));
-   }
+		initConfig();
 
-   //-------------------------------------------------------------------------
+		form = new DbFormTag();
+		form.setPageContext(this.pageContext);
+		form.setTableName("BOOK");
+		form.setMaxRows("*");
 
-   public void beginStaticDE(WebRequest theRequest) throws Exception {
-      theRequest.addParameter("lang", Locale.GERMAN.toString());
-   }
+		selectTag = new DbSelectTag();
+		selectTag.setPageContext(this.pageContext);
+		selectTag.setParent(form);
+		selectTag.setFieldName("AUTHOR_ID");
 
-   public void testStaticDE() throws Exception {
-      Locale locale = MessageResources.getLocale(request);
-      assertTrue("no german locale", locale.equals(Locale.GERMAN));
-      doTheTest();
-   }
+		staticData = new StaticData();
+		staticData.setPageContext(this.pageContext);
+		staticData.setParent(selectTag);
+		staticData.setName("AUTHOR_ID");
 
-   public void endStaticDE(WebResponse theResponse) throws Exception {
-      String s = theResponse.getText();
-      System.out.println(s);
-   }
+		staticDataItem1 = new StaticDataItem();
+		staticDataItem1.setPageContext(this.pageContext);
+		staticDataItem1.setParent(staticData);
+		staticDataItem1.setKey("1");
+		staticDataItem1.setValue("Eco");
 
+		staticDataItem2 = new StaticDataItem();
+		staticDataItem2.setPageContext(this.pageContext);
+		staticDataItem2.setParent(staticData);
+		staticDataItem2.setKey("2");
+		staticDataItem2.setValue("Douglas");
+
+		String s = ParseUtil.getParameter(request, "lang");
+		MessageResources.setLocale(request, new Locale(s));
+	}
+
+	//-------------------------------------------------------------------------
+
+	public void beginStaticDE(WebRequest theRequest) throws Exception {
+		theRequest.addParameter("lang", Locale.GERMAN.toString());
+	}
+
+	public void testStaticDE() throws Exception {
+		Locale locale = MessageResources.getLocale(request);
+		assertTrue("no german locale", locale.equals(Locale.GERMAN));
+		doTheTest();
+	}
+
+	public void endStaticDE(WebResponse theResponse) throws Exception {
+		String s = theResponse.getText();
+		System.out.println(s);
+	}
 
 	public void beginStaticJPN(WebRequest theRequest) throws Exception {
 		theRequest.addParameter("lang", Locale.JAPANESE.toString());
@@ -126,35 +131,38 @@ public class TestSelectTag extends JspTestCase {
 		System.out.println(s);
 	}
 
-   private void initConfig() throws Exception {
-      if (dbconfig == null) {
-         DbFormsConfigRegistry.instance().register(null);
-         config.setInitParameter("dbformsConfig", "/WEB-INF/dbforms-config.xml");
-         config.setInitParameter("log4j.configuration", "/WEB-INF/log4j.properties");
-         ConfigServlet configServlet = new ConfigServlet();
-         configServlet.init(config);
-         dbconfig = DbFormsConfigRegistry.instance().lookup();
-         if (dbconfig == null)
-            throw new NullPointerException("not able to create dbconfig object!");
-      }
-   }
+	private void initConfig() throws Exception {
+		if (dbconfig == null) {
+			DbFormsConfigRegistry.instance().register(null);
+			config.setInitParameter("dbformsConfig",
+					"/WEB-INF/dbforms-config.xml");
+			config.setInitParameter("log4j.configuration",
+					"/WEB-INF/log4j.properties");
+			ConfigServlet configServlet = new ConfigServlet();
+			configServlet.init(config);
+			dbconfig = DbFormsConfigRegistry.instance().lookup();
+			if (dbconfig == null)
+				throw new NullPointerException(
+						"not able to create dbconfig object!");
+		}
+	}
 
-   private void doTheTest() throws Exception {
-      form.doStartTag();
-      selectTag.doStartTag();
-      staticData.doStartTag();
-      staticDataItem1.doStartTag();
-      staticDataItem1.doEndTag();
-      staticDataItem1.doFinally();
-      staticDataItem2.doStartTag();
-      staticDataItem2.doEndTag();
-      staticDataItem2.doFinally();
-      staticData.doEndTag();
-      staticData.doFinally();
-      selectTag.doEndTag();
-      selectTag.doFinally();
-      form.doEndTag();
-      form.doFinally();
+	private void doTheTest() throws Exception {
+		form.doStartTag();
+		selectTag.doStartTag();
+		staticData.doStartTag();
+		staticDataItem1.doStartTag();
+		staticDataItem1.doEndTag();
+		staticDataItem1.doFinally();
+		staticDataItem2.doStartTag();
+		staticDataItem2.doEndTag();
+		staticDataItem2.doFinally();
+		staticData.doEndTag();
+		staticData.doFinally();
+		selectTag.doEndTag();
+		selectTag.doFinally();
+		form.doEndTag();
+		form.doFinally();
 
-   }
+	}
 }

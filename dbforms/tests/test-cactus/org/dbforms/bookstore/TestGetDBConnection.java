@@ -4,17 +4,16 @@ package org.dbforms.bookstore;
 
 import org.dbforms.util.HttpTestCase;
 
-
 // definition of test class
 public class TestGetDBConnection extends HttpTestCase {
 	// Test method generated from the MaxQ Java generator
 	public TestGetDBConnection(String name) {
 		super(name);
 	}
-	
+
 	public void testGetDBConnection() throws Exception {
 		get("http://localhost/bookstore/tests/testGetDBConnection.jsp");
-		
+
 		printResponse();
 		assertTrue(responseContains("Die Insel des vorigen Tages"));
 		assertTrue(responseContains("Das Foucaltsche Pendel"));
@@ -28,6 +27,6 @@ public class TestGetDBConnection extends HttpTestCase {
 
 	}
 
-	/****************/
+	/** ************* */
 
 }

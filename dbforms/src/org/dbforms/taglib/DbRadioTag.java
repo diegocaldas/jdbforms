@@ -42,7 +42,8 @@ import javax.servlet.jsp.*;
  */
 public class DbRadioTag extends DbBaseHandlerTag implements DataContainer,
                                                             javax.servlet.jsp.tagext.TryCatchFinally {
-   private static Log logCat = LogFactory.getLog(DbRadioTag.class.getName()); // logging category for this class
+   private static Log logCat        = LogFactory.getLog(DbRadioTag.class
+                                                        .getName()); // logging category for this class
    private List       embeddedData  = null;
    private String     growDirection; // only needed if we have a whole "group" of DbRadioTags; default = null == horizontal
    private String     growSize      = "0"; // limit the number of elements per row (growDirection="horizontal")

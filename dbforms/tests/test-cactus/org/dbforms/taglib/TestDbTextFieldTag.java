@@ -47,203 +47,214 @@ import org.dbforms.util.ParseUtil;
 
 /**
  * Tests of the <code>TestDbTextFieldTag</code> class.
- *
- *
+ * 
+ *  
  */
 public class TestDbTextFieldTag extends JspTestCase {
-   private DbTextFieldTag doubleTag;
-   private DbTextFieldTag timeTag;
-   private DbTextFieldTag nullTag;
-   private DbTextFieldTag nullTagWithNoData;
-   private DbFormTag form;
+	private DbTextFieldTag doubleTag;
 
-   private static DbFormsConfig dbconfig;
+	private DbTextFieldTag timeTag;
 
-   public TestDbTextFieldTag(String name) throws Exception {
-      super(name);
+	private DbTextFieldTag nullTag;
 
-   }
-   /**
-    * In addition to creating the tag instance and adding the pageContext to
-    * it, this method creates a BodyContent object and passes it to the tag.
-    */
-   public void setUp() throws Exception {
-	super.setUp();	
+	private DbTextFieldTag nullTagWithNoData;
 
-   	initConfig();
+	private DbFormTag form;
 
-      form = new DbFormTag();
-      form.setPageContext(this.pageContext);
-      form.setTableName("TIMEPLAN");
-      form.setMaxRows("*");
+	private static DbFormsConfig dbconfig;
 
-      doubleTag = new DbTextFieldTag();
-      doubleTag.setPageContext(this.pageContext);
-      doubleTag.setParent(form);
-      doubleTag.setFieldName("D");
+	public TestDbTextFieldTag(String name) throws Exception {
+		super(name);
 
-      timeTag = new DbTextFieldTag();
-      timeTag.setPageContext(this.pageContext);
-      timeTag.setParent(form);
-      timeTag.setFieldName("TIME");
+	}
 
-      nullTag = new DbTextFieldTag();
-      nullTag.setPageContext(this.pageContext);
-      nullTag.setParent(form);
-      nullTag.setFieldName("REMARK");
-      nullTag.setNullFieldValue("");
+	/**
+	 * In addition to creating the tag instance and adding the pageContext to
+	 * it, this method creates a BodyContent object and passes it to the tag.
+	 */
+	public void setUp() throws Exception {
+		super.setUp();
 
-      nullTagWithNoData = new DbTextFieldTag();
-      nullTagWithNoData.setPageContext(this.pageContext);
-      nullTagWithNoData.setParent(form);
-      nullTagWithNoData.setFieldName("REMARK");
+		initConfig();
 
-      String s = ParseUtil.getParameter(request, "lang");
-      MessageResources.setLocale(request, new Locale(s));
+		form = new DbFormTag();
+		form.setPageContext(this.pageContext);
+		form.setTableName("TIMEPLAN");
+		form.setMaxRows("*");
 
-   }
+		doubleTag = new DbTextFieldTag();
+		doubleTag.setPageContext(this.pageContext);
+		doubleTag.setParent(form);
+		doubleTag.setFieldName("D");
 
-   //-------------------------------------------------------------------------
+		timeTag = new DbTextFieldTag();
+		timeTag.setPageContext(this.pageContext);
+		timeTag.setParent(form);
+		timeTag.setFieldName("TIME");
 
-   public void beginOutputDE(WebRequest theRequest) throws Exception {
-      theRequest.addParameter("lang", Locale.GERMAN.toString());
-      // set startvalues that will be interpreted in testOutput!
-      // this values are compared to the values in the database
-      // see doTheTest()
-      theRequest.addParameter("f_8_null_1", "2,3");
-      theRequest.addParameter("of_8_null_1", "2,3");
-      theRequest.addParameter("pf_8_null_1", "#,##0.###");
-      theRequest.addParameter("f_8_null_0", "01.01.1900");
-      theRequest.addParameter("of_8_null_0", "01.01.1900");
-      theRequest.addParameter("pf_8_null_0", "dd.MM.yyyy");
-      }
+		nullTag = new DbTextFieldTag();
+		nullTag.setPageContext(this.pageContext);
+		nullTag.setParent(form);
+		nullTag.setFieldName("REMARK");
+		nullTag.setNullFieldValue("");
 
-   public void testOutputDE() throws Exception {
-      Locale locale = MessageResources.getLocale(request);
-      assertTrue("no german locale", locale.equals(Locale.GERMAN));
-      doTheTest();
-   }
+		nullTagWithNoData = new DbTextFieldTag();
+		nullTagWithNoData.setPageContext(this.pageContext);
+		nullTagWithNoData.setParent(form);
+		nullTagWithNoData.setFieldName("REMARK");
 
-   public void endOutputDE(WebResponse theResponse) throws Exception {
-      String s = theResponse.getText();
-      boolean res = s.indexOf("value=\"2,3\"") > -1;
-      assertTrue("not found: " + "value=\"2,3\"", res);
-      res = s.indexOf("value=\"01.01.1900\"") > -1;
-      assertTrue("not found: " + "value=\"01.01.1900\"", res);
-      res = s.indexOf("name=\"of_8_null_3\" value=\"\"") > -1;
-      assertTrue("no blank null value", res);
-      res = s.indexOf("name=\"of_8_null_3\" value=\"[NULL]\"") > -1;
-      assertTrue("no null value", res);
-   }
+		String s = ParseUtil.getParameter(request, "lang");
+		MessageResources.setLocale(request, new Locale(s));
 
-   public void beginOutputEN(WebRequest theRequest) throws Exception {
-      theRequest.addParameter("lang", Locale.ENGLISH.toString());
-      // set startvalues that will be interpreted in testOutput!
-      // this values are compared to the values in the database
-      // see doTheTest()
-      theRequest.addParameter("f_8_null_1", "2.3");
-      theRequest.addParameter("of_8_null_1", "2.3");
-      theRequest.addParameter("pf_8_null_1", "#,##0.###");
-      theRequest.addParameter("f_8_null_0", "Jan 1, 1900");
-      theRequest.addParameter("of_8_null_0", "Jan 1, 1900");
-      theRequest.addParameter("pf_8_null_0", "MMM d, yyyy");
-   }
+	}
 
-   public void testOutputEN() throws Exception {
-      Locale locale = MessageResources.getLocale(request);
-      assertTrue("no english locale", locale.equals(Locale.ENGLISH));
-      doTheTest();
-   }
+	//-------------------------------------------------------------------------
 
-   public void endOutputEN(WebResponse theResponse) throws Exception {
-      String s = theResponse.getText();
-      boolean res = s.indexOf("value=\"2.3\"") > -1;
-      assertTrue("not found: " + "value=\"2.3\"", res);
-      res = s.indexOf("value=\"Jan 1, 1900\"") > -1;
-      assertTrue("not found : " + "value=\"Jan 1, 1900\"", res);
-      res = s.indexOf("name=\"of_8_null_3\" value=\"\"") > -1;
-      assertTrue("no blank null value", res);
-      res = s.indexOf("name=\"of_8_null_3\" value=\"[No Data]\"") > -1;
-      assertTrue("no null value", res);
-   }
+	public void beginOutputDE(WebRequest theRequest) throws Exception {
+		theRequest.addParameter("lang", Locale.GERMAN.toString());
+		// set startvalues that will be interpreted in testOutput!
+		// this values are compared to the values in the database
+		// see doTheTest()
+		theRequest.addParameter("f_8_null_1", "2,3");
+		theRequest.addParameter("of_8_null_1", "2,3");
+		theRequest.addParameter("pf_8_null_1", "#,##0.###");
+		theRequest.addParameter("f_8_null_0", "01.01.1900");
+		theRequest.addParameter("of_8_null_0", "01.01.1900");
+		theRequest.addParameter("pf_8_null_0", "dd.MM.yyyy");
+	}
 
-   public void beginOutputJPN(WebRequest theRequest) throws Exception {
-      theRequest.addParameter("lang", Locale.JAPANESE.toString());
-      // set startvalues that will be interpreted in testOutput!
-      // this values are compared to the values in the database
-      // see doTheTest()
-      theRequest.addParameter("f_8_null_1", "2.3");
-      theRequest.addParameter("of_8_null_1", "2.3");
-      theRequest.addParameter("pf_8_null_1", "#,##0.###");
-      theRequest.addParameter("f_8_null_0", "1900/01/01");
-      theRequest.addParameter("of_8_null_0", "");
-      theRequest.addParameter("pf_8_null_0", "yyyy/MM/dd");
-   }
+	public void testOutputDE() throws Exception {
+		Locale locale = MessageResources.getLocale(request);
+		assertTrue("no german locale", locale.equals(Locale.GERMAN));
+		doTheTest();
+	}
 
-   public void testOutputJPN() throws Exception {
-      Locale locale = MessageResources.getLocale(request);
-      assertTrue("no japanese locale", locale.equals(Locale.JAPANESE));
-      doTheTest();
-   }
+	public void endOutputDE(WebResponse theResponse) throws Exception {
+		String s = theResponse.getText();
+		boolean res = s.indexOf("value=\"2,3\"") > -1;
+		assertTrue("not found: " + "value=\"2,3\"", res);
+		res = s.indexOf("value=\"01.01.1900\"") > -1;
+		assertTrue("not found: " + "value=\"01.01.1900\"", res);
+		res = s.indexOf("name=\"of_8_null_3\" value=\"\"") > -1;
+		assertTrue("no blank null value", res);
+		res = s.indexOf("name=\"of_8_null_3\" value=\"[NULL]\"") > -1;
+		assertTrue("no null value", res);
+	}
 
-   public void endOutputJPN(WebResponse theResponse) throws Exception {
-      String s = theResponse.getText();
-      boolean res = s.indexOf("value=\"2.3\"") > -1;
-      assertTrue("not found: " + "value=\"2.3\"", res);
-      res = s.indexOf("value=\"1900/01/01\"") > -1;
-      assertTrue("not found : " + "value=\"1900/01/01\"", res);
-      res = s.indexOf("name=\"of_8_null_3\" value=\"\"") > -1;
-      assertTrue("no blank null value", res);
-/* can not be tested! We have no japanese resource bundle! 
-      res = s.indexOf("name=\"of_8_null_3\" value=\"[NULL]\"") > -1;
-      assertTrue("no null value", res);
-*/      
-   }
+	public void beginOutputEN(WebRequest theRequest) throws Exception {
+		theRequest.addParameter("lang", Locale.ENGLISH.toString());
+		// set startvalues that will be interpreted in testOutput!
+		// this values are compared to the values in the database
+		// see doTheTest()
+		theRequest.addParameter("f_8_null_1", "2.3");
+		theRequest.addParameter("of_8_null_1", "2.3");
+		theRequest.addParameter("pf_8_null_1", "#,##0.###");
+		theRequest.addParameter("f_8_null_0", "Jan 1, 1900");
+		theRequest.addParameter("of_8_null_0", "Jan 1, 1900");
+		theRequest.addParameter("pf_8_null_0", "MMM d, yyyy");
+	}
 
-   private void initConfig() throws Exception {
-      if (dbconfig == null) {
-         DbFormsConfigRegistry.instance().register(null);
-         config.setInitParameter("dbformsConfig", "/WEB-INF/dbforms-config.xml");
-         config.setInitParameter("log4j.configuration", "/WEB-INF/log4j.properties");
-         ConfigServlet configServlet = new ConfigServlet();
-         configServlet.init(config);
-         dbconfig = DbFormsConfigRegistry.instance().lookup();
-         if (dbconfig == null)
-            throw new NullPointerException("not able to create dbconfig object!");
-      }
-   }
+	public void testOutputEN() throws Exception {
+		Locale locale = MessageResources.getLocale(request);
+		assertTrue("no english locale", locale.equals(Locale.ENGLISH));
+		doTheTest();
+	}
 
-   private void doTheTest() throws Exception {
-      form.doStartTag();
-      Table table = dbconfig.getTableByName("TIMEPLAN");
-      DatabaseEvent dbEvent = new DeleteEvent(new Integer(table.getId()), "null", request, dbconfig);
-      // Set type to delete so that all fieldvalues will be parsed!!
-      dbEvent.setType(EventType.EVENT_DATABASE_DELETE);
-      FieldValues fv = dbEvent.getFieldValues();
+	public void endOutputEN(WebResponse theResponse) throws Exception {
+		String s = theResponse.getText();
+		boolean res = s.indexOf("value=\"2.3\"") > -1;
+		assertTrue("not found: " + "value=\"2.3\"", res);
+		res = s.indexOf("value=\"Jan 1, 1900\"") > -1;
+		assertTrue("not found : " + "value=\"Jan 1, 1900\"", res);
+		res = s.indexOf("name=\"of_8_null_3\" value=\"\"") > -1;
+		assertTrue("no blank null value", res);
+		res = s.indexOf("name=\"of_8_null_3\" value=\"[No Data]\"") > -1;
+		assertTrue("no null value", res);
+	}
 
-      FieldValue f = fv.get("TIME");
-      Date testDate = (Date) f.getFieldValueAsObject();
-      assertTrue(testDate instanceof java.sql.Date);
-      assertTrue(testDate.getTime() == ((Date) timeTag.getFieldObject()).getTime());
+	public void beginOutputJPN(WebRequest theRequest) throws Exception {
+		theRequest.addParameter("lang", Locale.JAPANESE.toString());
+		// set startvalues that will be interpreted in testOutput!
+		// this values are compared to the values in the database
+		// see doTheTest()
+		theRequest.addParameter("f_8_null_1", "2.3");
+		theRequest.addParameter("of_8_null_1", "2.3");
+		theRequest.addParameter("pf_8_null_1", "#,##0.###");
+		theRequest.addParameter("f_8_null_0", "1900/01/01");
+		theRequest.addParameter("of_8_null_0", "");
+		theRequest.addParameter("pf_8_null_0", "yyyy/MM/dd");
+	}
 
-      f = fv.get("D");
-      Double testNumber = (Double) f.getFieldValueAsObject();
-      assertTrue(testNumber.equals(doubleTag.getFieldObject()));
+	public void testOutputJPN() throws Exception {
+		Locale locale = MessageResources.getLocale(request);
+		assertTrue("no japanese locale", locale.equals(Locale.JAPANESE));
+		doTheTest();
+	}
 
-      int result = doubleTag.doEndTag();
-      assertEquals(BodyTag.EVAL_PAGE, result);
+	public void endOutputJPN(WebResponse theResponse) throws Exception {
+		String s = theResponse.getText();
+		boolean res = s.indexOf("value=\"2.3\"") > -1;
+		assertTrue("not found: " + "value=\"2.3\"", res);
+		res = s.indexOf("value=\"1900/01/01\"") > -1;
+		assertTrue("not found : " + "value=\"1900/01/01\"", res);
+		res = s.indexOf("name=\"of_8_null_3\" value=\"\"") > -1;
+		assertTrue("no blank null value", res);
+		/*
+		 * can not be tested! We have no japanese resource bundle! res =
+		 * s.indexOf("name=\"of_8_null_3\" value=\"[NULL]\"") > -1;
+		 * assertTrue("no null value", res);
+		 */
+	}
 
-      result = timeTag.doEndTag();
-      assertEquals(BodyTag.EVAL_PAGE, result);
+	private void initConfig() throws Exception {
+		if (dbconfig == null) {
+			DbFormsConfigRegistry.instance().register(null);
+			config.setInitParameter("dbformsConfig",
+					"/WEB-INF/dbforms-config.xml");
+			config.setInitParameter("log4j.configuration",
+					"/WEB-INF/log4j.properties");
+			ConfigServlet configServlet = new ConfigServlet();
+			configServlet.init(config);
+			dbconfig = DbFormsConfigRegistry.instance().lookup();
+			if (dbconfig == null)
+				throw new NullPointerException(
+						"not able to create dbconfig object!");
+		}
+	}
 
-      result = nullTag.doEndTag();
-      assertEquals(BodyTag.EVAL_PAGE, result);
+	private void doTheTest() throws Exception {
+		form.doStartTag();
+		Table table = dbconfig.getTableByName("TIMEPLAN");
+		DatabaseEvent dbEvent = new DeleteEvent(new Integer(table.getId()),
+				"null", request, dbconfig);
+		// Set type to delete so that all fieldvalues will be parsed!!
+		dbEvent.setType(EventType.EVENT_DATABASE_DELETE);
+		FieldValues fv = dbEvent.getFieldValues();
 
-      result = nullTagWithNoData.doEndTag();
-      assertEquals(BodyTag.EVAL_PAGE, result);
+		FieldValue f = fv.get("TIME");
+		Date testDate = (Date) f.getFieldValueAsObject();
+		assertTrue(testDate instanceof java.sql.Date);
+		assertTrue(testDate.getTime() == ((Date) timeTag.getFieldObject())
+				.getTime());
 
-      form.doEndTag();
-      form.doFinally();
+		f = fv.get("D");
+		Double testNumber = (Double) f.getFieldValueAsObject();
+		assertTrue(testNumber.equals(doubleTag.getFieldObject()));
 
-   }
+		int result = doubleTag.doEndTag();
+		assertEquals(BodyTag.EVAL_PAGE, result);
+
+		result = timeTag.doEndTag();
+		assertEquals(BodyTag.EVAL_PAGE, result);
+
+		result = nullTag.doEndTag();
+		assertEquals(BodyTag.EVAL_PAGE, result);
+
+		result = nullTagWithNoData.doEndTag();
+		assertEquals(BodyTag.EVAL_PAGE, result);
+
+		form.doEndTag();
+		form.doFinally();
+
+	}
 }

@@ -12,25 +12,23 @@ import org.dbforms.util.ParseUtil;
 import java.sql.Connection;
 
 /**
- * @author  Viviana
+ * @author Viviana
  * @version
  */
 public class BLOBTESTEventInterceptor extends DbEventInterceptorSupport {
 
-	public int preUpdate(
-		HttpServletRequest request,
-		Table table,
-		FieldValues fieldValues,
-		DbFormsConfig config,
-		Connection con)
-		throws ValidationException {
+	public int preUpdate(HttpServletRequest request, Table table,
+			FieldValues fieldValues, DbFormsConfig config, Connection con)
+			throws ValidationException {
 
 		String deleteImage1 = ParseUtil.getParameter(request, "delete_image1");
 
 		if ("true".equalsIgnoreCase(deleteImage1)) {
 
-			//here something that deletes the field "FILE" of the "BLOBTEST" table
-			//without deleting the entire record (in my table I have a lot of others fields
+			//here something that deletes the field "FILE" of the "BLOBTEST"
+			// table
+			//without deleting the entire record (in my table I have a lot of
+			// others fields
 			//I would preserve)
 
 			//this way don't work for me

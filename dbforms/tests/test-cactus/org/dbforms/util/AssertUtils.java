@@ -25,19 +25,20 @@ package org.dbforms.util;
 
 import junit.framework.Assert;
 
-
-
-
 /**
  * Tests of the <code>DbFormTag</code> class.
- *
- * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
- *
+ * 
+ * @author <a href="mailto:epugh@upstate.com">Eric Pugh </a>
+ *  
  */
-public class AssertUtils
-{
+public class AssertUtils {
 
-    public static void assertContains(String sourceString, String targetString){
-        Assert.assertTrue("Make sure string contains another string.\nString to Find:\n" + sourceString + "\n\nString to Search:\n" + targetString,targetString.indexOf(sourceString)>=0);
-    }
+	public static void assertContains(String sourceString, String targetString) {
+		Assert
+				.assertTrue(
+						"Make sure string contains another string.\nString to Find:\n"
+								+ sourceString + "\n\nString to Search:\n"
+								+ targetString, targetString
+								.indexOf(sourceString) >= 0);
+	}
 }

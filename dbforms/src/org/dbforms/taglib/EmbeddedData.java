@@ -56,7 +56,8 @@ import javax.servlet.jsp.PageContext;
  */
 public abstract class EmbeddedData extends DbBaseHandlerTag
    implements javax.servlet.jsp.tagext.TryCatchFinally, StaticDataAddInterface {
-   private static Log logCat = LogFactory.getLog(EmbeddedData.class.getName());
+   private static Log logCat           = LogFactory.getLog(EmbeddedData.class
+                                                           .getName());
    private Formatter  printfFormat;
    private List       data;
    private String     dbConnectionName;
