@@ -2271,7 +2271,12 @@ if(request.getParameter("goto")!=null) {
                     <required>true</required>
                     <rtexprvalue>true</rtexprvalue>
                     <info>
-                        <p>name of the field this tag references to</p>
+                        <p>
+                           name of the field this tag references to.
+                           If this is not a valid fieldname of the table this attribute will be used for the name of the 
+                           select. So it is possible to build selects with a free name.
+                           
+                        </p>
                     </info>
                 </attribute>
 
@@ -2288,6 +2293,7 @@ if(request.getParameter("goto")!=null) {
                     <name>selectedIndex</name>
                     <required>false</required>
                     <rtexprvalue>true</rtexprvalue>
+                    <info>Index that should be selected as default when form is in insert mode.</info>
                 </attribute>
 
                 <attribute>
@@ -4952,7 +4958,265 @@ if(request.getParameter("goto")!=null) {
                 <bodycontent>empty</bodycontent>
             </tag>
 
+  		<!-- **************************** 20021030-HKK: search tag ***********************************-->									
+	    <tag>
+	        <name>search</name>
+                <summary>
+                	<p>
+                	Renders all the needed fields for searching. Hides the searchfieldName stuff from the 
+                	JSP developer. Rewrites the input field with the old value.
+                	</p>
+                	<p>example of result:</p>
+                	<p>
+	                	<ul>
+				<li>&lt;input type="hidden" name="searchalgo_0_1" value="weakEnd"/&gt;</li>
+				<li>&lt;input type="hidden" name="searchmode_0_1" value="AND"/&gt;</li>
+				<li>&lt;input type="input" name="search_0_1"/&gt;</li>
+				</ul>
+			</p>
+                </summary>
+	        <tagclass>org.dbforms.taglib.DbSearchTag</tagclass>
+	        <bodycontent>empty</bodycontent>
+	        <attribute>
+	            <name>fieldName</name>
+	            <required>true</required>
+	            <rtexprvalue>true</rtexprvalue>
+                    <info>
+                       Name of the field in the table for which the searching should be done
+                    </info>
+	        </attribute>
+	        <attribute>
+	            <name>searchAlgo</name>
+	            <required>false</required>
+	            <rtexprvalue>false</rtexprvalue>
+                    <info>
+                       The search algorithm. Default: sharp
+                    </info>
+	        </attribute>
+	        <attribute>
+	            <name>searchMode</name>
+	            <required>false</required>
+	            <rtexprvalue>false</rtexprvalue>
+                    <info>
+                       The search mode. Default: and
+                    </info>
+	        </attribute>
+	        <attribute>
+	            <name>default</name>
+	            <required>false</required>
+	            <rtexprvalue>false</rtexprvalue>
+                    <info>
+                       Default value for the field. This will be used at the first time the form is rendered
+                    </info>
+	        </attribute>
+	        <attribute>
+	            <name>onBlur</name>
+	            <required>false</required>
+	            <rtexprvalue>true</rtexprvalue>
+	        </attribute>
+	        <attribute>
+	            <name>onChange</name>
+	            <required>false</required>
+	            <rtexprvalue>true</rtexprvalue>
+	        </attribute>
+	        <attribute>
+	            <name>onClick</name>
+	            <required>false</required>
+	            <rtexprvalue>true</rtexprvalue>
+	        </attribute>
+	        <attribute>
+	            <name>onDblClick</name>
+	            <required>false</required>
+	            <rtexprvalue>true</rtexprvalue>
+	        </attribute>
+	        <attribute>
+	            <name>onFocus</name>
+	            <required>false</required>
+	            <rtexprvalue>true</rtexprvalue>
+	        </attribute>
+	        <attribute>
+	            <name>onKeyDown</name>
+	            <required>false</required>
+	            <rtexprvalue>true</rtexprvalue>
+	        </attribute>
+	        <attribute>
+	            <name>onKeyPress</name>
+	            <required>false</required>
+	            <rtexprvalue>true</rtexprvalue>
+	        </attribute>
+	        <attribute>
+	            <name>onKeyUp</name>
+	            <required>false</required>
+	            <rtexprvalue>true</rtexprvalue>
+	        </attribute>
+	        <attribute>
+	            <name>onMouseDown</name>
+	            <required>false</required>
+	            <rtexprvalue>true</rtexprvalue>
+	        </attribute>
+	        <attribute>
+	            <name>onMouseMove</name>
+	            <required>false</required>
+	            <rtexprvalue>true</rtexprvalue>
+	        </attribute>
+	        <attribute>
+	            <name>onMouseOut</name>
+	            <required>false</required>
+	            <rtexprvalue>true</rtexprvalue>
+	        </attribute>
+	        <attribute>
+	            <name>onMouseOver</name>
+	            <required>false</required>
+	            <rtexprvalue>true</rtexprvalue>
+	        </attribute>
+	        <attribute>
+	            <name>onMouseUp</name>
+	            <required>false</required>
+	            <rtexprvalue>true</rtexprvalue>
+	        </attribute>
+	        <attribute>
+	            <name>onSelect</name>
+	            <required>false</required>
+	            <rtexprvalue>true</rtexprvalue>
+	        </attribute>
+	        <attribute>
+	            <name>style</name>
+	                <required>false</required>
+	                <rtexprvalue>true</rtexprvalue>
+	        </attribute>
+	    </tag>
+  		<!-- **************************** 20021030-HKK: searchCombo tag ***********************************-->									
+	    <tag>
+                <summary>
+                	<p>
+                	Renders all the needed fields for searching with a comboBox. Hides the searchfieldName stuff from the 
+                	JSP developer. Rewrites the input field with the old value. Can be used together with tableData, queryData
+                	or staticData.
+                	</p>
+                	<p>
+                	example of result:
+			        &lt;input type="hidden" name="searchalgo_0_1" value="weakEnd"/&gt;
+			        &lt;input type="hidden" name="searchmode_0_1" value="AND"/&gt;
+			        &lt;select name="search_0_1"&gt;
+                                   &lt;option&gt;from datatag&lt;/option&gt;
+				&lt;/select&gt;
+			</p>
+                </summary>
+	        <name>searchCombo</name>
+	        <tagclass>org.dbforms.taglib.DbSearchComboTag</tagclass>
+			<bodycontent>JSP</bodycontent>
+	        <attribute>
+	            <name>fieldName</name>
+	            <required>true</required>
+	            <rtexprvalue>true</rtexprvalue>
+                    <info>
+                       Name of the field in the table for which the searching should be done
+                    </info>
+	        </attribute>
+	        <attribute>
+	            <name>searchAlgo</name>
+	            <required>false</required>
+	            <rtexprvalue>false</rtexprvalue>
+                    <info>
+                       The search algorithm. Default: sharp
+                    </info>
+	        </attribute>
+	        <attribute>
+	            <name>searchMode</name>
+	            <required>false</required>
+	            <rtexprvalue>false</rtexprvalue>
+                    <info>
+                       The search mode. Default: and
+                    </info>
+	        </attribute>
+	        <attribute>
+	            <name>customEntry</name>
+	            <required>false</required>
+	            <rtexprvalue>false</rtexprvalue>
+	            <info>Allows an additional (independant) entry into the select list</info>
+                </attribute>
+	        <attribute>
+	            <name>selectedIndex</name>
+	            <required>false</required>
+	            <rtexprvalue>false</rtexprvalue>
+	            <info>Index that should be selected as default when form redered the first time</info>
+		</attribute>
+	        <attribute>
+	            <name>onBlur</name>
+	            <required>false</required>
+	            <rtexprvalue>true</rtexprvalue>
+	        </attribute>
+	        <attribute>
+	            <name>onChange</name>
+	            <required>false</required>
+	            <rtexprvalue>true</rtexprvalue>
+	        </attribute>
+	        <attribute>
+	            <name>onClick</name>
+	            <required>false</required>
+	            <rtexprvalue>true</rtexprvalue>
+	        </attribute>
+	        <attribute>
+	            <name>onDblClick</name>
+	            <required>false</required>
+	            <rtexprvalue>true</rtexprvalue>
+	        </attribute>
+	        <attribute>
+	            <name>onFocus</name>
+	            <required>false</required>
+	            <rtexprvalue>true</rtexprvalue>
+	        </attribute>
+	        <attribute>
+	            <name>onKeyDown</name>
+	            <required>false</required>
+	            <rtexprvalue>true</rtexprvalue>
+	        </attribute>
+	        <attribute>
+	            <name>onKeyPress</name>
+	            <required>false</required>
+	            <rtexprvalue>true</rtexprvalue>
+	        </attribute>
+	        <attribute>
+	            <name>onKeyUp</name>
+	            <required>false</required>
+	            <rtexprvalue>true</rtexprvalue>
+	        </attribute>
+	        <attribute>
+	            <name>onMouseDown</name>
+	            <required>false</required>
+	            <rtexprvalue>true</rtexprvalue>
+	        </attribute>
+	        <attribute>
+	            <name>onMouseMove</name>
+	            <required>false</required>
+	            <rtexprvalue>true</rtexprvalue>
+	        </attribute>
+	        <attribute>
+	            <name>onMouseOut</name>
+	            <required>false</required>
+	            <rtexprvalue>true</rtexprvalue>
+	        </attribute>
+	        <attribute>
+	            <name>onMouseOver</name>
+	            <required>false</required>
+	            <rtexprvalue>true</rtexprvalue>
+	        </attribute>
+	        <attribute>
+	            <name>onMouseUp</name>
+	            <required>false</required>
+	            <rtexprvalue>true</rtexprvalue>
+	        </attribute>
+	        <attribute>
+	            <name>onSelect</name>
+	            <required>false</required>
+	            <rtexprvalue>true</rtexprvalue>
+	        </attribute>
+	        <attribute>
+	            <name>style</name>
+	                <required>false</required>
+	                <rtexprvalue>true</rtexprvalue>
+	        </attribute>
+	    </tag>
         </taglib>
-
     </body>
 </document>
