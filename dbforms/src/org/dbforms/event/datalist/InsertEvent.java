@@ -84,7 +84,8 @@ public class InsertEvent extends ValidationEvent {
     * @return the FieldValues object representing the collection
     *         of FieldValue objects builded from the request parameters
     */
-   protected FieldValues getFieldValues() {
+   // must be public because protected will break cactus testing!
+   public FieldValues getFieldValues() {
       return getFieldValues(true);
    }
 

@@ -77,7 +77,8 @@ public class UpdateEvent extends ValidationEvent {
     *
     * @return the FieldValues object
     */
-   protected FieldValues getFieldValues() {
+   // must be public because protected will break cactus testing!
+   public FieldValues getFieldValues() {
       String s = ParseUtil.getParameter(getRequest(), Constants.FIELDNAME_OVERRIDEFIELDTEST + getTable().getId());
       boolean flag = "true".equalsIgnoreCase(s);
       return getFieldValues(flag);
