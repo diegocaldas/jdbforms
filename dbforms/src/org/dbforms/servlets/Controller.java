@@ -412,12 +412,10 @@ public class Controller extends HttpServlet {
 	 */
 	private void processLocale(HttpServletRequest request) {
 		String lang = ParseUtil.getParameter(request, "lang");
-		String country = ParseUtil.getParameter(request, "country");
+		String country = ParseUtil.getParameter(request, "country", "");
 		Locale locale = null;
-		if (!Util.isNull(lang) && !Util.isNull(country)) {
+		if (!Util.isNull(lang)) {
 			locale = new Locale(lang, country);
-		} else if (!Util.isNull(lang)) {
-			locale = new Locale(lang);
 		} else if (MessageResources.getLocale(request) == null) {
 			MessageResources.setLocale(request, request.getLocale());
 		}
