@@ -9,7 +9,7 @@
 **
 **  
 -->
-<xsl:output indent="yes"/>
+<xsl:output method="html" indent="yes"/>
 <xsl:param name="useCalendar"/> 
 
 <!-- foreignkeys is a hash for use later to determine requirements (all foreign keys ought to be required) -->

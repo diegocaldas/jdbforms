@@ -9,7 +9,7 @@
 **
 **  
 -->
-<xsl:output indent="yes"/>
+<xsl:output method="html" indent="yes"/>
 <xsl:param name="useCalendar"/> 
 <!--
 definition of variables

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0" xmlns:db="http://www.wap-force.com/dbforms">
-<xsl:output indent="yes"/>
+<xsl:output method="html" indent="yes"/>
 <!--
 definition of variables
 choose appropriate values that fit your needs

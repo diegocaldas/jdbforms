@@ -9,7 +9,7 @@
 **
 **  
 -->
-<xsl:output indent="yes"/>
+<xsl:output method="html" indent="yes"/>
 
 <!--
 definition of variables
