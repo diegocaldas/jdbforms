@@ -443,7 +443,11 @@ public class DbFormTag extends BodyTagSupport {
 	* 	creation of, and execution of "fancy!" queries.
 	*
 	*
-	* Grunikiewicz.philip@hydro.qc.ca
+	* Henner.Kollmann@gmx.de
+        * 2002-07-03
+        * Added onSubmit support
+         
+         * Grunikiewicz.philip@hydro.qc.ca
 	* 2001-10-22
 	*
 	* Sometimes we use dbForms to simply display information on screen but wish to call another
@@ -555,7 +559,12 @@ public class DbFormTag extends BodyTagSupport {
 				}
 
 				tagBuf.append("\"");
-
+				// 20020703-HKK: Check if developer has set onSubmit
+				if (this.getonSubmit() != null && this.getonSubmit().trim().length() > 0) {
+                                   tagBuf.append("onSubmit=\"");
+                                   tagBuf.append(getonSubmit());
+                                   tagBuf.append("\" ");
+                                }    
 				if (target != null) {
 					tagBuf.append(" target=\"");
 					tagBuf.append(target);
@@ -579,7 +588,6 @@ public class DbFormTag extends BodyTagSupport {
 					// if form is an emptyform -> we've fineshed yet - cancel all further activities!
 					out.println(tagBuf.toString());
 					return EVAL_BODY_TAG;
-					
 				}
 
 				positionPathCore = "root";
@@ -1466,10 +1474,25 @@ public class DbFormTag extends BodyTagSupport {
 						: DbBaseHandlerTag.SEARCHMODE_OR;
 				String aSearchAlgorithm =
 					ParseUtil.getParameter(request, "searchalgo_" + tableId + "_" + fieldId);
-				int algorithm =
+                                // 20020703-HKK: Extending search algorithm with WEAK_START, WEAK_END, WEAK_START_END
+                                //               results in like '%search', 'search%', '%search%'
+                                /* Old code
+                                int algorithm =
 					("weak".equals(aSearchAlgorithm))
 						? FieldValue.SEARCH_ALGO_WEAK
 						: FieldValue.SEARCH_ALGO_SHARP;
+                                */
+                                int algorithm = FieldValue.SEARCH_ALGO_SHARP;
+                                if ("weak".equals(aSearchAlgorithm)) 
+                                   algorithm = FieldValue.SEARCH_ALGO_WEAK;
+                                else if ("weakStart".equals(aSearchAlgorithm))
+                                   algorithm = FieldValue.SEARCH_ALGO_WEAK_START;
+                                else if ("weakEnd".equals(aSearchAlgorithm))
+                                   algorithm = FieldValue.SEARCH_ALGO_WEAK_END;
+                                else if ("weakStartEnd".equals(aSearchAlgorithm))
+                                   algorithm = FieldValue.SEARCH_ALGO_WEAK_END;
+
+                                
 				FieldValue fv = new FieldValue(f, aSearchFieldValue, true);
 				fv.setSearchMode(mode);
 				fv.setSearchAlgorithm(algorithm);
@@ -1688,7 +1711,25 @@ public class DbFormTag extends BodyTagSupport {
 		bypassNavigation = newBypassNavigation;
 	}
 
-	private java.lang.String action;
+       // 20020703-HKK: Added onSubmit
+	private java.lang.String onSubmit;
+	/**
+	 * Insert the method's description here.
+	 * Creation date: (2001-10-22 18:17:25)
+	 * @return java.lang.String
+	 */
+	public java.lang.String getonSubmit() {
+		return onSubmit;
+	} /**
+	* Insert the method's description here.
+	* Creation date: (2001-10-22 18:17:25)
+	* @param newAction java.lang.String
+	*/
+	public void setonSubmit(java.lang.String newonSubmit) {
+		onSubmit  = newonSubmit;
+	} 
+
+        private java.lang.String action;
 	/**
 	 * Insert the method's description here.
 	 * Creation date: (2001-10-22 18:17:25)
@@ -1812,7 +1853,8 @@ public class DbFormTag extends BodyTagSupport {
 		result.append("--></SCRIPT> \n");
 
 		return result;
-	}
+	}
+
 	/****************************************************************************
 	 * Generate  the Javascript of Validation fields
 	 ****************************************************************************/
