@@ -14,12 +14,12 @@ import org.dbforms.util.MessageResourcesInternal;
 import org.dbforms.util.MessageResources;
 
 // definition of test class
-public class TestFilter extends AbstractTestBase {
+public class AuthorBooksSubFormWithFilter extends AbstractTestBase {
 
    private static String nodata = null;       
 
    // Test method generated from the MaxQ Java generator
-   public TestFilter(String name) {
+   public AuthorBooksSubFormWithFilter(String name) {
       super(name);
       if (nodata == null) {
          MessageResources.setSubClass("resources");
