@@ -1,0 +1,48 @@
+RUNNING THE DevGui tool
+============================
+
+0. prerequisites: all prerequisites listed in file "README";
+
+   additionally following prerequisites are required:
+   
+   * you should make the latest version of apache XALAN available in your CLASSPATH
+     (-> http://xml.apache.org/xalan/index.html)     
+   * you should have the JDBC driver class of your Database in your CLASSPATH 
+   (it helps not having it in your web-applications classpath, because 
+   DevGui runs outside the Servlet container!)
+   
+
+1. extract the DbForms distribution to a directory.
+   for example "h:\dbforms-0.9" on a Win32 system
+   
+   you should have a (similiar) directory structure as follows:
+   
+   h:\dbforms-0.9\bin\
+   h:\dbforms-0.9\example\
+   h:\dbforms-0.9\lib\
+   h:\dbforms-0.9\src\
+   h:\dbforms-0.9\temp\   
+   h:\dbforms-0.9\xml-stysheets\
+      
+2. Set an environment variable named "DBFORMS_HOME" which points to 
+   the directory containing the dbforms distribution:
+   
+   DBFORMS_HOME=h:\dbforms-0.9
+   
+   the exact command to use depends on your operation system:
+   - on Win32, you can type: SET DBFORMS_HOME=h:\dbforms-0.9 or you can use the system 
+     configuration panel.     
+   - on Unix, you can use the SETENV command
+   
+
+
+3. start the shell script in you find in {$install-drive}\dbforms-0.9\bin\:
+
+	devgui.bat (win32)
+	devgui.sh (unix - not tested yet, please send feedback if it works for you or not)
+	
+
+4. the SWING-based GUI should appear now. (enjoy!)
+
+
+==> please report questions & problems to <joepeer@excite.com>

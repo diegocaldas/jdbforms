@@ -1,0 +1,13 @@
+
+				DbForms v.09
+				============
+
+
+TO DO
+------
+
+* devgui.sh for unix shell users (DONE!)
+
+* database.sql script for databases like ms sql, sybase ase, etc. (DONE!)
+
+* create solution/fixes for various navigation/linking problems -> needed before going BETA

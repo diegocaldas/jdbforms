@@ -82,6 +82,10 @@ public abstract class DbBaseHandlerTag extends BodyTagSupport {
 
 	protected DbFormTag parentForm;
 
+//  Id Management
+
+    /** Id attribute */
+    protected String id = null;      // Fossato, 20011008
 
 //  Navigation Management
 
@@ -193,6 +197,17 @@ public abstract class DbBaseHandlerTag extends BodyTagSupport {
 	}
 
 
+//  Id Management                       // Fossato, 20011008
+
+    /** Sets the id attribute. */
+    public void setId(String id) {
+    this.id = id;
+    }
+
+    /** Returns the id attribute. */
+    public String getId() {
+    return (this.id);
+    }
 
 
 //  Navigation Management
@@ -413,6 +428,7 @@ public abstract class DbBaseHandlerTag extends BodyTagSupport {
 	 */
 	public void release() {
 			super.release();
+			id=null; // Luca Fossato
 			accessKey = null;
 			tabIndex = null;
 			onClick = null;
@@ -611,6 +627,7 @@ protected String getFormFieldValue() {
 	 */
 	protected String prepareEventHandlers() {
 		StringBuffer handlers = new StringBuffer();
+		prepareIdEvents(handlers);                        // Fossato, 20011008
 		prepareMouseEvents(handlers);
 		prepareKeyEvents(handlers);
 		prepareTextEvents(handlers);
@@ -620,6 +637,17 @@ protected String getFormFieldValue() {
 
 
 	// -------------------------------------------------------- Private Methods
+
+    /**
+     * Prepares the id handlers, appending them to the the given
+     * StringBuffer.
+     * @param handlers The StringBuffer that output will be appended to.
+     */
+    private void prepareIdEvents(StringBuffer handlers) {               // Fossato, 20011008
+        if (id != null) {
+            handlers.append(" id=\"").append(id).append("\"");
+        }
+    }
 
 
 	/**

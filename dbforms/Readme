@@ -1,0 +1,145 @@
+
+				DbForms v.09
+				============
+
+
+
+Installing and Using DbForms
+-----------------------------
+
+You can utilize a binary distribution of DbForms in your own web applications
+by following these steps. 
+
+- (*) Download and install a Java2 (version 1.2 or later) Java Development Kit
+  Kit implementation for your operating system platform.  Define an environment
+  variable JAVA_HOME that points at the base directory of your JDK
+  installation, and add the directory "$JAVA_HOME/bin" to your PATH variable.
+
+- (*) Download and install an XML parser that is compatible with the Java
+  API for XML Parsing (JAXP) specification.  A useful XML parser is the
+  JAXP Reference Implementation, version 1.0.1 or later, that is available
+  at <http://java.sun.com/xml>.  Another JAXP-compatible parser  is Xerces,
+  version 1.1.2 or later, available at <http://xml.apache.org>.  
+  Be sure to add the "jaxp.jar" and "parser.jar" (or whatever JAR file comes 
+  with your parser) files to your CLASSPATH environment variable.
+  
+
+  the following ressources are hosted on 
+  http://www.dbforms.org/dbforms/dependend
+  you can donwload the JARs from there or you can download the latest releases from
+  their respective sites:
+
+  
+- (*) Download and XALAN1-1 compatible XSL engine
+  http://jakarta.apache.org/log4j/docs/download.html
+  (only needed if you want to use the DevGui)
+
+- (*) Download and install the log4j toolkit
+  http://jakarta.apache.org/log4j/docs/download.html
+  (log4j.jar)
+
+- (*) Download and install Jason Hunters multipart servlet  classes from O'Reilly 
+  http://jakarta.apache.org/log4j/docs/download.html
+  (cos.jar)
+
+- (*) Download and Apache Commons
+  http://jakarta.apache.org/commons/index.html
+  (needed are: BeanUtils, Digester, Collections)
+
+- (*) Download and install a servlet container that supports the Servlet
+  API Specification, version 2.2 or later, and the JavaServer Pages (JSP)
+  Specification, version 1.1 or later.  A useful servlet container is
+  Tomcat, version 3.2 or later, that is available at
+  <http://jakarta.apache.org>.
+
+
+
+... and of course,
+
+- (*) Download and unpack a DbForms binary distribution
+
+
+
+running the examles
+-------------------------------------------------------------------------------------
+
+- (*) create the database by executing the SQL commands listed in example/*/WEB-INF/*.sql
+
+- (*) OPTIONAL: configure a database connection pool for that new created database using your 
+  favorite technique (either the connection pool built into your application server 
+  or codestudio's poolman or another database connection tool)
+  connection pools are important to speed-up your application
+  
+- (*) Install the DbForms example applications by deploying the directory
+  of the application into your servlet container, using the standard
+  techniques supported by that container.  (For Tomcat, simply copy this
+  directory to the $TOMCAT_HOME/webapps directory and restart Tomcat).
+  
+- (*) Do not forget to point the db-connection entry in /WEB-INF/dbforms-config.xml 
+  to the datasource / connection pool you established!
+  
+- (*) finally point you web browser to http://127.0.0.1/example_v08  or if you changed the directory 
+  name then point to http://127.0.0.1/{$NAME} !
+  
+
+**** * **** * **** * **** * **** * **** * **** * **** * **** * ****
+     ... and take a look into /example/README.txt and the 
+      other README_XXX files in the examples-directory!
+**** * **** * **** * **** * **** * **** * **** * **** * **** * ****
+
+
+building own DbForms- capable applications
+---------------------------------------------
+
+PLEASE NOTE: the JAR files are located in the example_v08/web-inf/lib file
+to keep the distribution bundle small!
+
+- (*) Copy the files "lib/dbforms.tld" from the DbForms distribution into the
+  "WEB-INF" directory of your web application.
+
+  +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  NOTE: the file "dbforms.tld" was named "taglib.tld" in prior versions. this name was too generic
+  and the risc of naming conflicts was too big, therefore we changed the name.
+  Some articles + manuals may still talk about "taglib.tld"... 
+  this is wrong (out of date)! use "dbforms.tld" instead!
+  +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+- (*) Copy the file "lib/dbforms.jar" from the DbForms distribution into the
+  "WEB-INF/lib" directory of your web application.
+  
+- (*) Copy the file "lib/struts.jar" from the DbForms or a Struts distribution into the
+  "WEB-INF/lib" directory of your web application.
+
+- (*) Copy the file "lib/cos.jar" from the DbForms distribution into the
+  "WEB-INF/lib" directory of your web application.  
+
+- (*) Copy the file "lib/log4j.jar" from the DbForms distribution into the
+  "WEB-INF/lib" directory of your web application.  
+
+- (*) Modify your "WEB-INF/web.xml" file to include 3 <servlet> element to
+  define the controller, the config and the file-servlet (see user's guide)
+  define TEMPLATE-Basedir
+  
+- (*) Modify the "WEB-INF/web.xml" file for your web application to include
+  a tag library declaration each Dbforms tag library (see user's guide)
+
+- (*) Create a file "WEB-INF/dbforms-config.xml" that defines the tables, fields
+  and the database connection to use. (see user's guide)
+
+- (*) In each JSP page that will use the DbForms custom tags, add a line at
+  the top of the page like this (for each Struts tag library needed):
+
+	<%@ taglib uri="/WEB-INF/dbforms.tld" prefix="db" %>
+	
+	(see comments above!)
+
+  (If you wish, you can use a prefix other that "db" and you can place the 
+  taglib descriptor to an other place as well!)
+
+
+
+------------------------------------------------------------------------------------------ 
+        if you have questions, please drop a line to our mailing list
+        http://lists.sourceforge.net/lists/listinfo/jdbforms-interest
+        or to <j.peer@gmx.net>
+------------------------------------------------------------------------------------------
