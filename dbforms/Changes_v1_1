@@ -1,3 +1,17 @@
+2002-11-15
+(Henner.Kollmann@gmx.de)
+        Source code formatting party
+        ----------------------------
+Things that had been done:
+	- created a tag on current version v1_1_2c 
+	- cleaned up code with jalopy using jarkarta settings
+	- added the settings
+	- corrected the wrong binary files
+	- deleted com.itp sources from the current version
+	- deleted org.dbforms.doc.html (old stuff is now in doc!)
+	- inserted Mark Dimons changes for Tomcat 4.1.1
+	- removed all release() methods
+        
 2002-11-14
 (Henner.Kollmann@gmx.de)
    extended build.xml with new target dist: will build a whole distribution with
