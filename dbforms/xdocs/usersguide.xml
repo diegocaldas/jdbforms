@@ -9,7 +9,10 @@
 <body>
 
 <section name="User guide">
-  <subsection name="Latest guide v1.1.3 pr1">
+<p>The UsersGuide (html & pdf) is now included in distributions</p>
+<p>See dbforms/doc/documentation.html</p>  
+
+ <subsection name="Guide v1.1.3 pr1">
     <p>
 	  This is the main DbForms guide (Files are zip compressed)
 	  <br/>
@@ -43,7 +46,7 @@
     </p>
   </subsection>
 
-  <subsection name="Latest guide's suppliment">
+  <subsection name="Guide 1.1.3pr1's suppliment">
     <p>
 	  This guide contains info on:<br/>
 	  <ul>
