@@ -32,6 +32,8 @@ import org.dbforms.DbFormsConfig;
 import org.dbforms.ConfigServlet;
 import org.dbforms.Table;
 
+import org.dbforms.AssertUtils;
+
 
 
 /**
@@ -63,7 +65,7 @@ public class TestDbFormTag extends JspTestCase
      */
     public static void main(String[] theArgs)
     {
-        junit.swingui.TestRunner.main(new String[] 
+        junit.swingui.TestRunner.main(new String[]
         {
             TestDbFormTag.class.getName()
         });
@@ -254,9 +256,9 @@ public class TestDbFormTag extends JspTestCase
     public void endSetUpTagNoTable(WebResponse theResponse)
     {
         String content = theResponse.getText();
+        AssertUtils.assertContains("<form name=\"dbform\"",content);
+        AssertUtils.assertContains("method=\"post\"",content);
 
-        assertTrue("Make sure form name is dbform", content.indexOf("<form name=\"dbform\"") >= 0);
-        assertTrue("Make sure method is post", content.indexOf("method=\"post\"") >= 0);
     }
 
 
@@ -275,11 +277,11 @@ public class TestDbFormTag extends JspTestCase
         */
         String content = theResponse.getText();
 
-        assertTrue("Make sure form name is dbform", content.indexOf("<form name=\"dbform\"") >= 0);
-        assertTrue("Make sure method is post", content.indexOf("method=\"post\"") >= 0);
-        assertTrue("Make sure of invtable", content.indexOf("<input type=\"hidden\" name=\"invtable\" value=\"0\">") >= 0);
-        assertTrue("Make sure of autoupdate", content.indexOf("<input type=\"hidden\" name=\"autoupdate_0\" value=\"true\">") >= 0);
-        assertTrue("Make sure of fu", content.indexOf("<input type=\"hidden\" name=\"fu_0\" value=\"null\">") >= 0);
+        AssertUtils.assertContains("<form name=\"dbform\"",content);
+        AssertUtils.assertContains("method=\"post\"",content);
+        AssertUtils.assertContains("<input type=\"hidden\" name=\"invtable\" value=\"0\">",content);
+        AssertUtils.assertContains("<input type=\"hidden\" name=\"autoupdate_0\" value=\"true\">",content);
+        AssertUtils.assertContains("<input type=\"hidden\" name=\"fu_0\" value=\"null\">",content);
     }
 
 
@@ -297,12 +299,12 @@ public class TestDbFormTag extends JspTestCase
         <input type="hidden" name="customEvent">
         */
         String content = theResponse.getText();
+        AssertUtils.assertContains("<form name=\"dbform\"",content);
+        AssertUtils.assertContains("method=\"post\"",content);
+        AssertUtils.assertContains("<input type=\"hidden\" name=\"invtable\" value=\"1\">",content);
+        AssertUtils.assertContains("<input type=\"hidden\" name=\"autoupdate_1\" value=\"true\">",content);
+        AssertUtils.assertContains("<input type=\"hidden\" name=\"fu_1\" value=\"null\">",content);
 
-        assertTrue("Make sure form name is dbform", content.indexOf("<form name=\"dbform\"") >= 0);
-        assertTrue("Make sure method is post", content.indexOf("method=\"post\"") >= 0);
-        assertTrue("Make sure of invtable", content.indexOf("<input type=\"hidden\" name=\"invtable\" value=\"1\">") >= 0);
-        assertTrue("Make sure of autoupdate", content.indexOf("<input type=\"hidden\" name=\"autoupdate_1\" value=\"true\">") >= 0);
-        assertTrue("Make sure of fu", content.indexOf("<input type=\"hidden\" name=\"fu_1\" value=\"null\">") >= 0);
     }
 
 
@@ -314,11 +316,19 @@ public class TestDbFormTag extends JspTestCase
     public void endSetUpTagForAuthorWithEverything(WebResponse theResponse)
     {
         String content = theResponse.getText();
-        String expectedContentA = "<form name=\"dbform\" action=\"/test/servlet/control";
-        String expectedContentB = "target=\"_TOP\" method=\"post\"><input type=\"hidden\" name=\"invtable\" value=\"0\"><input type=\"hidden\" name=\"autoupdate_0\" value=\"true\"><input type=\"hidden\" name=\"fu_0\" value=\"/AUTHOR_poweruser_list.jsp\"><input type=\"hidden\" name=\"source\" value=\"/test\"><input type=\"hidden\" name=\"customEvent\">";
 
-        assertTrue("Make sure content matches expected content:" + expectedContentA, content.indexOf(expectedContentA) >= 0);
-        assertTrue("Make sure content matches expected content:" + expectedContentB, content.indexOf(expectedContentB) >= 0);
+        AssertUtils.assertContains("name=\"dbform\"",content);
+        AssertUtils.assertContains("action=\"/test/servlet/control",content);
+        AssertUtils.assertContains("target=\"_TOP\"",content);
+        AssertUtils.assertContains("method=\"post\"",content);
+        AssertUtils.assertContains("type=\"hidden\"",content);
+        AssertUtils.assertContains("name=\"invtable\"",content);
+        AssertUtils.assertContains("value=\"0\"",content);
+        AssertUtils.assertContains("name=\"autoupdate_0\" value=\"true\"",content);
+        AssertUtils.assertContains("<input type=\"hidden\" name=\"fu_0\" value=\"/AUTHOR_poweruser_list.jsp\">",content);
+        AssertUtils.assertContains("<input type=\"hidden\" name=\"source\" value=\"/test\">",content);
+        AssertUtils.assertContains("<input type=\"hidden\" name=\"customEvent\">",content);
+
     }
 
 
@@ -343,4 +353,6 @@ public class TestDbFormTag extends JspTestCase
         //necessary for tag to output anything on most servlet engines.
         this.pageContext.popBody();
     }
+
+
 }
