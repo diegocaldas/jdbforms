@@ -391,9 +391,7 @@
         </listitem>
       </itemizedlist>
       <para>Generated pages are written to the web application directory.</para>
-      <para>
-        <computeroutput>http://www.dbforms.org/docs/articles/XSL_DbForms.pdf</computeroutput>
-      </para>
+       
     </sect2>
   </sect1>
   <sect1>
@@ -437,14 +435,14 @@
     <itemizedlist mark="closedcircle">
       <listitem>
         <para>
-          <ulink url="http://www.dbforms.org/docs/articles/DbForms_DevGui.pdf">
+          <ulink url="/non-cvs/docs/articles/DbForms_DevGui.pdf">
             <citetitle>DbForms_DevGui.pdf</citetitle>
           </ulink>
         </para>
       </listitem>
       <listitem>
         <para>
-          <ulink url="http://www.dbforms.org/docs/articles/XSL_DbForms.pdf">
+          <ulink url="/non-cvs/docs/articles/XSL_DbForms.pdf">
             <citetitle>XSL_DbForms.pdf</citetitle>
           </ulink>
         </para>
