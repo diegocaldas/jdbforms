@@ -33,7 +33,7 @@ define("EWIKI_PAGE_NEWEST",      'NewestPages');
 define("EWIKI_PAGE_SEARCH",      'SearchPages');
 define("EWIKI_PAGE_POWERSEARCH", 'PowerSearch');
 define("EWIKI_SCRIPT", '?id=');
-define("EWIKI_EMAILPROT_UNLOCK", 0);
+define("EWIKI_EMAILPROT_UNLOCK", 1);
 define("EWIKI_AUTO_EDIT", 1);
 define("EWIKI_EDIT_REDIRECT", 0);
 define("EWIKI_HIT_COUNTING", 1);
