@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 
-package src.org.dbforms.util;
+package org.dbforms.util;
 import java.net.URLEncoder;
 import java.net.URLDecoder;
 import org.dbforms.util.external.PrintfFormat;
