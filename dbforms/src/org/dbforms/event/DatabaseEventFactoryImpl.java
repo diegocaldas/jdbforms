@@ -21,14 +21,13 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.event;
-import java.util.HashMap;
-import java.util.Vector;
+
+
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Category;
+//import org.apache.log4j.Category;
 
 import org.dbforms.util.ParseUtil;
-import org.dbforms.util.ReflectionUtil;
 import org.dbforms.config.EventInfo;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.TableEvents;
