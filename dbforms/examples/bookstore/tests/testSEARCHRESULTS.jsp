@@ -8,7 +8,7 @@
 		<db:errors/>
 		<db:dbform tableName="BOOK" 
 			maxRows="*" 
-			followUp="/tests/testSEARCHRESULT.jsp" 
+			followUp="/tests/testSEARCHRESULTS.jsp" 
 			autoUpdate="false"
 		>
 			<db:header>

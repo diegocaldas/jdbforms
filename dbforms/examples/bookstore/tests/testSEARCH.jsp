@@ -8,7 +8,7 @@
 			<db:dbform 
 				multipart="false" 
 				autoUpdate="false" 
-				followUp="/tests/testSEARCHRESULT.jsp" 
+				followUp="/tests/testSEARCHRESULTS.jsp" 
 				maxRows="*" 
 				tableName="BOOK"
 			>
@@ -22,7 +22,7 @@
 						<td colspan="2" bgcolor="#F7A629">&nbsp;</td>
 						<td bgcolor="#F7A629">
 							<input value="Search!" type="button" onClick="javascript:document.dbform.submit()">
-							<db:gotoButton caption="Search!" destination="/tests/testSEARCHRESULT.jsp" />
+							<db:gotoButton caption="Search!" destination="/tests/testSEARCHRESULTS.jsp" />
 						</td>
 					</tr>
 					<tr bgcolor="#CCBBCC">
