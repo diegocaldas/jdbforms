@@ -25,24 +25,27 @@ package org.dbforms.event.datalist;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+
 import java.util.Hashtable;
 import java.util.Vector;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Category;
-import org.dbforms.util.ParseUtil;
-import org.dbforms.util.SqlUtil;
-import org.dbforms.util.FieldValues;
-import org.dbforms.util.MessageResourcesInternal;
 
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.Field;
 import org.dbforms.config.GrantedPrivileges;
+
 import org.dbforms.event.DatabaseEvent;
-import org.dbforms.event.MultipleValidationException;
 import org.dbforms.event.DbEventInterceptor;
+import org.dbforms.event.MultipleValidationException;
 import org.dbforms.event.datalist.dao.DataSourceFactory;
 
+import org.dbforms.util.FieldValues;
+import org.dbforms.util.MessageResourcesInternal;
+import org.dbforms.util.ParseUtil;
+import org.dbforms.util.SqlUtil;
 
 
 /**
@@ -54,186 +57,182 @@ import org.dbforms.event.datalist.dao.DataSourceFactory;
  */
 public class InsertEvent extends DatabaseEvent
 {
-   /** logging category for this class */
-   private static Category logCat = Category.getInstance(InsertEvent.class.getName());
+  /** logging category for this class */
+  private static Category logCat = Category.getInstance(InsertEvent.class.getName());
+
+  /**
+   *  Constructor.
+   *  <br>
+   *  Insert actionbutton-strings is as follows: ac_insert_12_root_3
+   *  which is equivalent to:
+   *
+   *       ac_insert  : insert action event
+   *       12         : table id
+   *       root       : key
+   *       3          : button count used to identify individual insert buttons
+   *
+   * @param  action  the action string
+   * @param  request the request object
+   * @param  config  the config object
+   */
+  public InsertEvent(String             action,
+                     HttpServletRequest request,
+                     DbFormsConfig      config)
+  {
+    super(ParseUtil.getEmbeddedStringAsInteger(action, 2, '_'),
+          ParseUtil.getEmbeddedString(action, 3, '_'), request, config);
+  }
 
 
-   /**
-    *  Constructor.
-    *  <br>
-    *  Insert actionbutton-strings is as follows: ac_insert_12_root_3
-    *  which is equivalent to:
-    *
-    *       ac_insert  : insert action event
-    *       12         : table id
-    *       root       : key
-    *       3          : button count used to identify individual insert buttons
-    * 
-    * @param  action  the action string
-    * @param  request the request object
-    * @param  config  the config object
-    */
-   public InsertEvent(String             action, 
-                      HttpServletRequest request,
-                      DbFormsConfig      config)
-   {
-      super(ParseUtil.getEmbeddedStringAsInteger(action, 2, '_'),
-            ParseUtil.getEmbeddedString(action, 3, '_'), 
-            request, 
-            config);
-   }
+  /**
+   * Get the FieldValues object representing the collection 
+   * of FieldValue objects builded from the request parameters
+   *
+   * @return the FieldValues object representing the collection 
+   *         of FieldValue objects builded from the request parameters
+   */
+  public FieldValues getFieldValues()
+  {
+    return getFieldValues(true);
+  }
 
 
-   /**
-    * Get the FieldValues attribute
-    *
-    * @return the FieldValues attribute
-    */
-   public FieldValues getFieldValues()
-   {
-      return getFieldValues(true);
-   }
+  /**
+   *  Process this event.
+   *
+   * @param  con the jdbc connection object
+   * @throws SQLException if any data access error occurs
+   * @throws MultipleValidationException if any validation error occurs
+   */
+  public void processEvent(Connection con) throws SQLException, MultipleValidationException
+  {
+    // Applying given security contraints (as defined in dbforms-config xml file)
+    // part 1: check if requested privilge is granted for role
+    if (!hasUserPrivileg(GrantedPrivileges.PRIVILEG_INSERT))
+    {
+      String s = MessageResourcesInternal.getMessage("dbforms.events.insert.nogrant",
+                                                     request.getLocale(),
+                                                     new String[] { table.getName() });
+      throw new SQLException(s);
+    }
 
+    FieldValues fieldValues = getFieldValues();
 
-   /**
-    *  Process this event.
-    *
-    * @param  con the jdbc connection object
-    * @throws SQLException if any data access error occurs
-    * @throws MultipleValidationException if any validation error occurs
-    */
-   public void processEvent(Connection con)
-      throws SQLException, MultipleValidationException
-   {
-      // Applying given security contraints (as defined in dbforms-config xml file)
-      // part 1: check if requested privilge is granted for role
-      if (!hasUserPrivileg(GrantedPrivileges.PRIVILEG_INSERT))
+    if (fieldValues.size() == 0)
+    {
+      throw new SQLException("no parameters");
+    }
+
+    // part 2: check if there are interceptors to be processed (as definied by
+    // "interceptor" element embedded in table element in dbforms-config xml file)
+    if (table.hasInterceptors())
+    {
+      try
       {
-			String s = MessageResourcesInternal.getMessage("dbforms.events.insert.nogrant", 
-																		  request.getLocale(),
-																		  new String[]{table.getName()} 
-																		  );
-			throw new SQLException(s);
+        // build a FieldValue hash table and pass it to the current interceptor;
+        Hashtable interceptorFieldValuesMap = getAssociativeFieldValues(fieldValues);
+
+        // process the interceptors associated to this table
+        table.processInterceptors(DbEventInterceptor.PRE_INSERT, request, interceptorFieldValuesMap, config,
+                                  con);
+
+        // synchronize data which may be changed by interceptor;
+        table.synchronizeData(fieldValues, interceptorFieldValuesMap);
       }
 
-      FieldValues fieldValues = getFieldValues();
-
-      if (fieldValues.size() == 0)
+      // better to log exceptions generated by method errors (fossato, 2002.12.04);
+      catch (SQLException sqle)
       {
-         throw new SQLException("no parameters");
+        SqlUtil.logSqlException(sqle, "::processEvent - SQL exception during PRE_INSERT interceptors procession");
+        throw sqle;
+      }
+      catch (MultipleValidationException mve)
+      {
+        logCat.error("::processEvent - MVE exception during PRE_INSERT interceptors procession", mve);
+        throw mve;
+      }
+    }
+
+    // End of interceptor processing
+    if (!checkSufficentValues(fieldValues))
+    {
+      throw new SQLException("unsufficent parameters");
+    }
+
+    // INSERT operation;
+    DataSourceFactory dsFactory = new DataSourceFactory(con, table);
+    dsFactory.doInsert(fieldValues);
+    dsFactory.close();
+
+    // Show the last record inserted
+    String firstPosition = table.getPositionString(fieldValues);
+    request.setAttribute("firstpos_" + tableId, firstPosition);
+
+    //end patch
+    // finally, we process interceptor again (post-insert)
+    if (table.hasInterceptors())
+    {
+      try
+      {
+        // process the interceptors associated to this table
+        table.processInterceptors(DbEventInterceptor.POST_INSERT, request, null, config, con);
+      }
+      catch (SQLException sqle)
+      {
+        SqlUtil.logSqlException(sqle,
+                                "::processEvent - SQL exception during POST_INSERT interceptors procession");
+        throw sqle;
+      }
+    }
+  }
+
+
+  /**
+   *  Check a list of conditions on the the input FieldValues object:
+   *  <ul>
+   *    <li>it must contains the same number of fields as the current main Table</li>
+   *    <li>
+   *      any autoInc field must NOT have a related FieldValue object (generated by a request
+   *      parameter) because that field value must be calculated by the underlying RDBMS
+   *    </li>
+   *  </ul>
+   * 
+   * @param fieldValues the FieldValues object containing the Field elements to check
+   * @return true  if the  all the above conditions are true, false otherwise
+   * @throws SQLException  if any check condition fails
+   */
+  private boolean checkSufficentValues(FieldValues fieldValues)
+                                throws SQLException
+  {
+    Vector fields = table.getFields();
+
+    for (int i = 0; i < fields.size(); i++)
+    {
+      Field field = (Field) fields.elementAt(i);
+
+      // if a field is a key and if it is NOT automatically generated,
+      // then it should be provided by the user
+      if (!field.getIsAutoInc() && field.isKey())
+      {
+        if (fieldValues.get(field.getName()) == null)
+        {
+          throw new SQLException("Field " + field.getName() + " is missing");
+        }
       }
 
-      // part 2: check if there are interceptors to be processed (as definied by
-      // "interceptor" element embedded in table element in dbforms-config xml file)
-      if (table.hasInterceptors())
+      // in opposite, if a field is automatically generated by the RDBMS, we need to
+      else if (field.getIsAutoInc())
       {
-         try
-         {
-            Hashtable associativeArray = getAssociativeFieldValues(fieldValues);
-
-            // process the interceptors associated to this table
-            table.processInterceptors(DbEventInterceptor.PRE_INSERT, 
-                                      request,
-                                      associativeArray, 
-                                      config, 
-                                      con);
-
-            // synchronize data which may be changed by interceptor:
-            table.synchronizeData(fieldValues, associativeArray);
-         }
-
-         // better to log exceptions generated by method errors (fossato, 2002.12.04);
-         catch (SQLException sqle)
-         {
-            SqlUtil.logSqlException(sqle, "::processEvent - SQL exception during PRE_INSERT interceptors procession");
-            throw sqle;
-         }
-         catch (MultipleValidationException mve)
-         {
-            logCat.error("::processEvent - MVE exception during PRE_INSERT interceptors procession", mve);
-            throw mve;
-         }
+        if (fieldValues.get(field.getName()) != null)
+        {
+          throw new SQLException("Field " + field.getName()
+                                 + " should be calculated by RDBMS, remove it from the form");
+        }
       }
 
-      // End of interceptor processing
-      if (!checkSufficentValues(fieldValues))
-      {
-         throw new SQLException("unsufficent parameters");
-      }
+      // in future we could do some other checks like NOT-NULL conditions,etc.
+    }
 
-      // INSERT operation;
-      DataSourceFactory qry = new DataSourceFactory(con, table);
-      qry.doInsert(fieldValues);
-      qry.close();
-
-      // Show the last record inserted
-      String firstPosition = table.getPositionString(fieldValues);
-      request.setAttribute("firstpos_" + tableId, firstPosition);
-
-      //end patch
-      // finally, we process interceptor again (post-insert)
-      if (table.hasInterceptors())
-      {
-         try
-         {
-            // process the interceptors associated to this table
-            table.processInterceptors(DbEventInterceptor.POST_INSERT, 
-                                      request,
-                                      null, 
-                                      config, 
-                                      con);
-         }
-         catch (SQLException sqle)
-         {
-			SqlUtil.logSqlException(sqle, "::processEvent - SQL exception during POST_INSERT interceptors procession");
-            throw sqle;
-         }
-      }
-   }
-
-
-   /**
-    *  Check if the input hash table has got sufficent parameters.
-    *
-    * @param fieldValues the hash map containing the names and values taken from
-    *                    the request object
-    * @return true  if the hash table has got sufficent parameters,
-    *         false otherwise
-    * @throws SQLException  if any data access error occurs
-    */
-   private boolean checkSufficentValues(FieldValues fieldValues)
-      throws SQLException
-   {
-      Vector fields = table.getFields();
-
-      for (int i = 0; i < fields.size(); i++)
-      {
-         Field field = (Field) fields.elementAt(i);
-
-         // if a field is a key and if it is NOT automatically generated,
-         // then it should be provided by the user
-         if (!field.getIsAutoInc() && field.isKey())
-         {
-            if (fieldValues.get(field.getName()) == null)
-            {
-               throw new SQLException("Field " + field.getName()
-                  + " is missing");
-            }
-         }
-
-         // in opposite, if a field is automatically generated by the RDBMS, we need to
-         else if (field.getIsAutoInc())
-         {
-            if (fieldValues.get(field.getName()) != null)
-            {
-               throw new SQLException("Field " + field.getName()
-                  + " should be calculated by RDBMS, remove it from the form");
-            }
-         }
-
-         // in future we could do some other checks like NOT-NULL conditions,etc.
-      }
-
-      return true;
-   }
+    return true;
+  }
 }
