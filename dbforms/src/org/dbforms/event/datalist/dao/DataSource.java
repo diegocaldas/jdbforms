@@ -73,15 +73,27 @@ public abstract class DataSource
 
 	/**
 	 * set the connection parameter for the DataSouce.
-	 * V virtual method, if you
-	 * need connection data you must override the method
+	 * virtual method, if you
+	 * need the connection data you must override the method
 	 * 
-	 * @param con this costructor gets an SQL Connection object
+     * @param con             	the JDBC Connection object
 	 */
 	public void setConnection(Connection con)
 	{
 	}
 
+	/**
+	 * set the connection parameter for the DataSouce.
+	 * virtual method, if you
+	 * need the connection data you must override the method
+	 * 
+	  * @param dbConnectionName   name of the used db connection. Can be used to
+	  *                           get an own db connection, e.g. to hold it during the 
+	  *                           session (see DataSourceJDBC for example!) 
+	 */
+	public void setConnectionName(String dbConnectionName)
+	{
+	}
 
 
    /**

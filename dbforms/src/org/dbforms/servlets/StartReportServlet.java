@@ -327,15 +327,14 @@ public class StartReportServlet extends HttpServlet {
     * @return DOCUMENT ME!
     */
    public static String getConnectionName(HttpServletRequest request) {
-      String res = SqlUtil.DEFAULT_CONNECTION;
       WebEvent webEvent = (WebEvent) request.getAttribute("webEvent");
-
+      String res = null;
       if ((webEvent != null) && (webEvent.getTableId() != -1)) {
          res =
             ParseUtil.getParameter(
                request,
-               "invname_" + webEvent.getTableId(),
-               res);
+               "invname_" + webEvent.getTableId()
+               );
       }
 
       return res;

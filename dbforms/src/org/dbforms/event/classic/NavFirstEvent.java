@@ -70,23 +70,30 @@ public class NavFirstEvent extends NavigationEvent
       super(table, request, config);
    }
 
-   /**
-    * DOCUMENT ME!
-    *
-    * @param childFieldValues DOCUMENT ME!
-    * @param orderConstraint DOCUMENT ME!
-    * @param count DOCUMENT ME!
-    * @param firstPost DOCUMENT ME!
-    * @param lastPos DOCUMENT ME!
-    * @param con DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    *
-    * @throws SQLException DOCUMENT ME!
-    */
+	/**
+	 * Process the current event.
+	 * 
+	 * @param filterFieldValues 	FieldValue array used to restrict a set of data
+	 * @param orderConstraint 	FieldValue array used to build a cumulation of
+	 *        					rules for ordering (sorting) and restricting fields
+	 * 							to the actual block of data 
+	 * @param count           	record count
+	 * @param firstPost   		a string identifying the first resultset position
+	 * @param lastPos    		a string identifying the last resultset position
+	 * @param dbConnectionName   name of the used db connection. Can be used to
+	 *                           get an own db connection, e.g. to hold it during the 
+	 *                           session (see DataSourceJDBC for example!) 
+	 * @param con             	the JDBC Connection object
+	 * 
+	 * @return a ResultSetVector object
+	 * 
+	 * @exception SQLException if any error occurs
+	 */
    public ResultSetVector processEvent(FieldValue[] childFieldValues,
       FieldValue[] orderConstraint, String sqlFilter, int count, String firstPosition,
-      String lastPosition, Connection con)
+      String lastPosition, 
+      String dbConnectionName,
+      Connection con)
       throws SQLException
    {
       // just select from table in given order

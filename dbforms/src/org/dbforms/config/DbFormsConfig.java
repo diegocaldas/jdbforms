@@ -183,7 +183,7 @@ public class DbFormsConfig
    {
       DbConnection connection = null;
 
-      if ((dbConnectionName == null) || (dbConnectionName.trim().length() == 0))
+      if (Util.isNull(dbConnectionName))
       {
          return defaultDbConnection;
       }
@@ -197,12 +197,9 @@ public class DbFormsConfig
       {
          ;
       }
-      finally
+      if (connection != null)
       {
-         if (connection != null)
-         {
-            return connection;
-         }
+	      return connection;
       }
 
       connection = (DbConnection) dbConnectionsHash.get(dbConnectionName);

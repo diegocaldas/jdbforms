@@ -46,7 +46,7 @@
     <servlet-class>org.dbforms.servlets.Controller</servlet-class>
     <init-param>
       <param-name>maxUploadSize</param-name>
-      <param-value>80000</param-value>
+      <param-value>8000000</param-value>
     </init-param>
   </servlet>
   <!--=========== DbForms FileServlet =====================

@@ -54,7 +54,7 @@
 	         		<db:filterValue type="timestamp" />
 	         	</db:filterCondition>
 	         	<db:filterCondition label="filter without user input">
-	         		AUTHOR_ID > 10
+	         		AUTHOR_ID > 1
 	         	</db:filterCondition>
 	         </db:filter>
 	           </td>

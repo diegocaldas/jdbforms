@@ -32,7 +32,7 @@ import java.sql.Types;
 import java.sql.Clob;
 import java.util.Vector;
 import java.util.Enumeration;
-import org.dbforms.config.DbFormsConfig;
+import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.Field;
 import org.dbforms.config.Table;
 import org.dbforms.util.FieldTypes;
@@ -55,6 +55,7 @@ public class DataSourceJDBC extends DataSource
 {
 	private String query;
 	private Connection con;
+	private boolean ownCon = false;
 	private ResultSet rs;
 	private Statement stmt;
 	private Vector data;
@@ -98,8 +99,34 @@ public class DataSourceJDBC extends DataSource
 	 */
 	public void setConnection(Connection con)
 	{
-		close();
-		this.con = con;
+		if (con != null) {
+			close();
+			ownCon = false;
+			this.con = con;
+		}
+	}
+
+	/**
+	 * set the connection parameter for the DataSouce.
+	 * virtual method, if you
+	 * need the connection data you must override the method
+	 * 
+	 * In this special case we need our own connection to save it in the session.
+	 * 
+    * @param dbConnectionName   name of the used db connection. Can be used to
+	 *                            get an own db connection, e.g. to hold it during the 
+	 *                            session (see DataSourceJDBC for example!) 
+	 */
+	public void setConnectionName(String dbConnectionName)
+	{
+		close(); 
+		ownCon = true;
+		try {
+			this.con = SqlUtil.getConnection(DbFormsConfigRegistry.instance().lookup(),
+										dbConnectionName);
+		} catch (Exception e) {
+			getLogCat().error(e);
+		}
 	}
 
 	/**
@@ -142,11 +169,10 @@ public class DataSourceJDBC extends DataSource
 			{
 				SqlUtil.logSqlException(e);
 			}
-
 			rs = null;
 		}
 
-		/* not for firebird. stmt is close automatically if rs is closed!!!!
+		/* not for firebird. stmt is close automatically if rs is closed!!!! 
 		if (stmt != null)
 		{
 		   try
@@ -160,6 +186,16 @@ public class DataSourceJDBC extends DataSource
 		   stmt = null;
 		}
 		*/
+		if (ownCon && (con != null)) {
+			try
+			{
+				con.close();
+			} catch (SQLException e)
+			{
+				SqlUtil.logSqlException(e);
+			}
+			con = null;
+		}
 	}
 
 	/**
@@ -378,7 +414,7 @@ public class DataSourceJDBC extends DataSource
 				keys.add(getTable().getKeyPositionString(getCurrentRow()));
 			}
 		}
-		if ((rs.getRow() == 0) || rs.isLast())
+		if ((rs.getRow() == 0)  || rs.isLast() )
 		{
 			fetchedAll = true;
 			closeConnection();
@@ -516,6 +552,7 @@ public class DataSourceJDBC extends DataSource
 
 		// now handle blob files
 		saveBlobFilesToDisk(fieldValues);
+		closeConnection();
 	}
 
 	/**
@@ -544,6 +581,7 @@ public class DataSourceJDBC extends DataSource
 
 		// now handle blob files
 		saveBlobFilesToDisk(fieldValues);
+		closeConnection();
 	}
 
 	/**
@@ -583,6 +621,7 @@ public class DataSourceJDBC extends DataSource
 				rsv.setPointer(0);
 				fieldValues = rsv.getCurrentRowAsFieldValues();
 			}
+			diskblobs.close();
 			diskblobsPs.close();
 		}
 
@@ -601,5 +640,6 @@ public class DataSourceJDBC extends DataSource
 			deleteBlobFilesFromDisk(fieldValues);
 		}
 		ps.close();
+		closeConnection();
 	}
 }

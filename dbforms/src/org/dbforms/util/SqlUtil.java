@@ -51,8 +51,6 @@ public class SqlUtil
     private static Category logCat =
         Category.getInstance(SqlUtil.class.getName());
 
-    /** DOCUMENT ME! */
-    public static final String DEFAULT_CONNECTION = "default";
 
     /**
      * DOCUMENT ME!

@@ -1177,7 +1177,6 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
    public int doStartTag()
    {
       Connection con = SqlUtil.getConnection(config, dbConnectionName);
-
       try
       {
          // *************************************************************
@@ -1726,7 +1725,8 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
                                     sqlFilter, 
                                     count, 
                                     firstPosition, 
-                                    lastPosition, 
+                                    lastPosition,
+												dbConnectionName, 
                                     con);
           
 			if (Util.isNull(resultSetVector))

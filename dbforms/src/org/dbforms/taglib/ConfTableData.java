@@ -189,7 +189,7 @@ public class ConfTableData extends EmbeddedData
 			Table table = config.getTableByName(getForeignTable());
 			FieldValue[] orderConstraint = table.createOrderFieldValues(getOrderBy(), null, false);
 			FieldValue[] childFieldValues = ParseUtil.initFilterFieldValues(table, getFilter());
-			DataSourceFactory qry = new DataSourceFactory(con, table, childFieldValues, orderConstraint, null);
+			DataSourceFactory qry = new DataSourceFactory(null, con, table, childFieldValues, orderConstraint, null);
 			ResultSetVector rsv = qry.getCurrent(null, 0);
 			return formatEmbeddedResultRows(rsv);
 		} catch (Exception e) {

@@ -464,8 +464,9 @@ public class Controller extends HttpServlet
       Connection   con            = null;
 
       // get the connection name from the request;
-	  connectionName =  ParseUtil.getParameter(request, "invname_" + tableId, SqlUtil.DEFAULT_CONNECTION);
-//      connectionName = SqlUtil.DEFAULT_CONNECTION;
+		if (tableId != -1) {
+		   connectionName =  ParseUtil.getParameter(request, "invname_" + tableId);
+		} 		   
       if ((con = (Connection) connectionsTable.get(connectionName)) == null)
       {
          con = SqlUtil.getConnection(config, connectionName);

@@ -56,7 +56,7 @@
 		    <tr><td colspan="2" style="text-align:center">
 			    <db:dbform 
 		      		autoUpdate="false" 
-		      		followUp="/tests/testAuthorBooksSub.jsp"   
+		      		followUp="/tests/testAuthorBooksSubForm.jsp"   
 		      		maxRows="*" 
 		      		tableName="BOOK"
 		     		parentField="AUTHOR_ID"

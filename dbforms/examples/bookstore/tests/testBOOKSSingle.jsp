@@ -5,7 +5,6 @@
 	</head>
 	<body>
 		<db:dbform 
-			multipart="false" 
 			autoUpdate="false" 
 			followUp="/tests/testBOOKSSingle.jsp" 
 			maxRows="1" tableName="BOOK">

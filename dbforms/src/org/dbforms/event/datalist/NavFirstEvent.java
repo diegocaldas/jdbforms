@@ -75,30 +75,33 @@ public class NavFirstEvent extends NavigationEvent
       super(table, request, config);
    }
 
-   /**
-    * Process the current event.
-    * 
-    * @param childFieldValues FieldValue array used to restrict a set in a
-    *        subform where all "childFields" in the  resultset match their
-    *        respective "parentFields" in main form
-    * @param orderConstraint FieldValue array used to build a cumulation of
-    *        rules for ordering (sorting) and restricting fields
-    * @param count           record count
-    * @param firstPosition   a string identifying the first resultset position
-    * @param lastPosition    a string identifying the last resultset position
-    * @param con             the JDBC Connection object
-    * @param dbConnectionName DOCUMENT ME!
-    * 
-    * @return a ResultSetVector object
-    * 
-    * @exception SQLException if any error occurs
-    */
+	/**
+	 * Process the current event.
+	 * 
+	 * @param filterFieldValues 	FieldValue array used to restrict a set of data
+	 * @param orderConstraint 	FieldValue array used to build a cumulation of
+	 *        					rules for ordering (sorting) and restricting fields
+	 * 							to the actual block of data 
+	 * @param count           	record count
+	 * @param firstPost   		a string identifying the first resultset position
+	 * @param lastPos    		a string identifying the last resultset position
+	 * @param dbConnectionName   name of the used db connection. Can be used to
+	 *                           get an own db connection, e.g. to hold it during the 
+	 *                           session (see DataSourceJDBC for example!) 
+	 * @param con             	the JDBC Connection object
+	 * 
+	 * @return a ResultSetVector object
+	 * 
+	 * @exception SQLException if any error occurs
+	 */
    public ResultSetVector processEvent(FieldValue[] childFieldValues, 
                                        FieldValue[] orderConstraint,
                                        String sqlFilter, 
                                        int count, 
                                        String firstPosition, 
-                                       String lastPosition, Connection con)
+                                       String lastPosition, 
+									  				String dbConnectionName,
+                                       Connection con)
                                 throws SQLException
    {
       logCat.info("==>NavFirstEvent.processEvent");
@@ -107,7 +110,7 @@ public class NavFirstEvent extends NavigationEvent
       DataSourceFactory qry = ds.get(table, request);
       if (qry == null)
       {
-          qry = new DataSourceFactory(con, table, childFieldValues, orderConstraint, sqlFilter);
+          qry = new DataSourceFactory(dbConnectionName, con, table, childFieldValues, orderConstraint, sqlFilter);
           ds.put(table, request, qry);
       }
 

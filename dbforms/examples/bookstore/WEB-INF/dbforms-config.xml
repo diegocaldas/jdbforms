@@ -99,6 +99,21 @@
 			<field name="KEY_4" fieldType="int"               isKey="true"/>
 		</table>
 
+		<table name="BLOBTEST">
+			<field 
+				name="NAME" 
+				fieldType="varchar"  
+			/>
+			<field 
+				name="FILE" 
+				fieldType="DISKBLOB"  
+				directory="c:\temp"
+			    encoding="false"
+			    size="1200"
+				isKey="true"
+			/>
+		</table>
+
 	<!-- ========== Connection =================================== -->
 	    <dbconnection
 		    isPow2		   			= "true"

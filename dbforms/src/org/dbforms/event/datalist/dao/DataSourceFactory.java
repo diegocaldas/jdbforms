@@ -92,15 +92,19 @@ public class DataSourceFactory
    /**
     * Creates a new DataSourceFactory object.
     *
-    * @param config 		  the configuration object
-    * @param dbConnectionName the name of the db connection
+    * @param dbConnectionName   name of the used db connection. Can be used to
+    *                           get an own db connection, e.g. to hold it during the 
+    *                           session (see DataSourceJDBC for example!) 
+    * @param con             	the JDBC Connection object
     * @param table 			  the input table
     * @param filterConstraint the filter constraint
     * @param orderConstraint  the order constraint
     *
     * @throws SQLException if any error occurs
     */
-   public DataSourceFactory(Connection con, 
+   public DataSourceFactory(
+								String dbConnectionName, 		
+								Connection con, 
    							Table 	      table, 
       						FieldValue[]  filterConstraint, 
       						FieldValue[]  orderConstraint,
@@ -108,6 +112,7 @@ public class DataSourceFactory
       throws SQLException
    {
       this(con, table);
+ 	  	dataHandler.setConnectionName(dbConnectionName);
       dataHandler.setSelect(filterConstraint, orderConstraint, sqlFilter);
    }
 
@@ -115,21 +120,26 @@ public class DataSourceFactory
    /**
     * Creates a new DataSourceFactory object.
     *
-    * @param config           the configuration object
-    * @param dbConnectionName the name of the db connection
+    * @param dbConnectionName   name of the used db connection. Can be used to
+    *                           get an own db connection, e.g. to hold it during the 
+    *                           session (see DataSourceJDBC for example!) 
+    * @param con             	the JDBC Connection object
     * @param table            the input table
     * @param tableList        the list of tables
     * @param whereClause      the SQL where clause
     *
     * @throws SQLException if any error occurs
     */
-   public DataSourceFactory(Connection con, 
+   public DataSourceFactory(
+							String dbConnectionName, 		
+   							Connection con, 
       						Table         table, 
       						String        tableList, 
       						String        whereClause)
       throws SQLException
    {
       this(con, table);
+	  dataHandler.setConnectionName(dbConnectionName);
       dataHandler.setSelect(tableList, whereClause);
    }
 
