@@ -89,7 +89,7 @@
 	      	</tr>
 	      	<tr>
 	    	  	<td>
-		      		Use information of config file i select/radio/searchcombo tags so that xml tables could be used.
+		      		Use information of config file in select/radio/searchcombo tags so that xml tables could be used.
 		      		Best would be to create a new tag.
 				</td>
 	      		<td>unassigned</td>
