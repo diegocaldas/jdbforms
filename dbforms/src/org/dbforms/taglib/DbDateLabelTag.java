@@ -83,7 +83,11 @@ public class DbDateLabelTag extends DbLabelTag
                // date formatter from the prefs; <fossato@pow2.com> [2002.11.09]
                if (format == null)
                {
-                  format = DbFormsConfig.getDateFormatter();
+                  try {
+							format = DbFormsConfigRegistry.instance().lookup().getDateFormatter();
+                  } catch (Exception e) {
+                  }
+                  
                }
 
                // anyway, a format object must exist !
