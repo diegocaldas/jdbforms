@@ -164,18 +164,14 @@ public class Controller extends HttpServlet
       {
          try
          {
-            logCat.debug("before new multipartRequest");
-
-            MultipartRequest multipartRequest = new MultipartRequest(request, 
-                                                                     maxUploadSize);
-            logCat.debug("after new multipartRequest");
+            MultipartRequest multipartRequest 
+                               = new MultipartRequest(request, maxUploadSize);
             request.setAttribute("multipartRequest", multipartRequest);
          }
          catch (IOException ioe)
          {
-            logCat.debug("Check if uploaded file(s) exceeded allowed size.");
-            sendErrorMessage("Check if uploaded file(s) exceeded allowed size.", 
-                             response);
+            logCat.error("::process - check if uploaded file(s) exceeded allowed size", ioe);
+            sendErrorMessage("Check if uploaded file(s) exceeded allowed size.", response);
 
             return;
          }
@@ -192,10 +188,9 @@ public class Controller extends HttpServlet
          EventEngine engine = new EventEngine(request, config);
          e = engine.generatePrimaryEvent();
 
+         // send as info to dbForms (=> Taglib)
          if (e != null)
          {
-            // send as info to dbForms (=> Taglib)
-            //if(e instanceof NavigationEvent) {
             request.setAttribute("webEvent", e);
          }
 
@@ -208,9 +203,9 @@ public class Controller extends HttpServlet
             {
                // if hidden formValidatorName exist and it's an Update or Insert event,
                // doValidation with Commons-Validator
-               String formValidatorName = request.getParameter(ValidatorConstants.FORM_VALIDATOR_NAME
-                                                               + "_"
-                                                               + e.getTableId());
+               String formValidatorName = 
+                 request.getParameter(ValidatorConstants.FORM_VALIDATOR_NAME
+                                      + "_" + e.getTableId());
 
                if (formValidatorName != null)
                {
@@ -245,56 +240,7 @@ public class Controller extends HttpServlet
          // (in fact, they all are SQL UPDATEs)
          if (engine.getInvolvedTables() != null)
          {
-            // may be null if empty form!
-            Enumeration tableEnum = engine.getInvolvedTables().elements();
-
-            // for every table related to the parent one, generate secundary (update) events 
-            // for that table and execute them;
-            while (tableEnum.hasMoreElements())
-            {
-               Table       t         = (Table) tableEnum.nextElement();
-               Enumeration eventEnum = engine.generateSecundaryEvents(e);
-
-               while (eventEnum.hasMoreElements())
-               {
-                  DatabaseEvent dbE = (DatabaseEvent) eventEnum.nextElement();
-
-                  // 2003-02-03 HKK: do not do the work twice - without this every event 
-                  // would be generated for each table and event
-                  if (t.getId() == dbE.getTableId())
-                  {
-                     con = getConnection(request, dbE.getTableId(), connections);
-
-                     // 2003-02-03 HKK: do not do the work twice!!!
-                     String formValidatorName = request.getParameter(ValidatorConstants.FORM_VALIDATOR_NAME
-                                                                     + "_"
-                                                                     + dbE.getTableId());
-
-                     try
-                     {
-                        // if hidden formValidatorName exist and it's an Update or Insert event,
-                        // doValidation with Commons-Validator
-                        if (formValidatorName != null)
-                        {
-                           dbE.doValidation(formValidatorName, 
-                                            getServletContext(), request);
-                        }
-
-                        dbE.processEvent(con);
-                     }
-                     catch (SQLException sqle2)
-                     {
-                     	SqlUtil.logSqlException(sqle2, "::process - exception while process secundary events");
-                        errors.addElement(sqle2);
-                        cleanUpConnectionAfterException(con);
-                     }
-                     catch (MultipleValidationException mve)
-                     {
-						processMultipleValidationException(con, errors, mve);
-                     }
-                  }
-               }
-            }
+			processInvolvedTables(request, connections, e, errors, engine);
          }
       }
       finally
@@ -304,14 +250,13 @@ public class Controller extends HttpServlet
 
          if (e != null)
          {
-            //}
             // PG  - if form contained errors, use followupOnError (if available!)
-            String fue = e.getFollowUpOnError();
+            String followUpError = e.getFollowUpOnError();
 
-            if ((errors.size() != 0) && (fue != null)
-                      && (fue.trim().length() > 0))
+            if ((errors.size() != 0) && (followUpError != null)
+                                     && (followUpError.trim().length() > 0))
             {
-               request.getRequestDispatcher(fue).forward(request, response);
+               request.getRequestDispatcher(followUpError).forward(request, response);
             }
             else
             {
@@ -323,13 +268,82 @@ public class Controller extends HttpServlet
    }
 
 
- 
- 
    /**
-	 * PRIVATE METHODS here
-	 */
-   
-   
+    * PRIVATE METHODS here
+    */
+
+	
+   /**
+    *  Process tables related to the main event table.
+    *  <br>
+    *  For every table related to the parent one, generate secundary (update) events 
+    *  for that table and execute them.
+    *  
+    * @param request      the request object
+    * @param connections  the connections hashTable
+    * @param e            the main webEvent object
+    * @param errors       the errors vector
+    * @param engine       the eventEngine reference
+    */
+   private void processInvolvedTables(HttpServletRequest request,
+     	                              Hashtable          connections,
+                                      WebEvent           e,
+                                      Vector             errors,
+                                      EventEngine        engine)
+   {
+     Connection con;
+
+     // may be null if empty form!
+     Enumeration tableEnum = engine.getInvolvedTables().elements();
+
+     while (tableEnum.hasMoreElements())
+     {
+       Table t = (Table) tableEnum.nextElement();
+       Enumeration eventEnum = engine.generateSecundaryEvents(e);
+
+       // scan all the secundary events for the current secundary table;
+       while (eventEnum.hasMoreElements())
+       {
+         DatabaseEvent dbE = (DatabaseEvent) eventEnum.nextElement();
+
+         // 2003-02-03 HKK: do not do the work twice - without this every event 
+         // would be generated for each table and event
+         if (t.getId() == dbE.getTableId())
+         {
+           con = getConnection(request, dbE.getTableId(), connections);
+
+           // 2003-02-03 HKK: do not do the work twice!!!
+           String formValidatorName = request.getParameter(
+               ValidatorConstants.FORM_VALIDATOR_NAME + "_" + dbE.getTableId());
+
+           try
+           {
+             // if hidden formValidatorName exist and it's an Update or Insert event,
+             // doValidation with Commons-Validator
+             if (formValidatorName != null)
+             {
+               dbE.doValidation(formValidatorName, getServletContext(), request);
+             }
+
+             dbE.processEvent(con);
+           }
+           catch (SQLException sqle2)
+           {
+             SqlUtil.logSqlException(sqle2,
+               "::process - exception while process secundary events");
+             errors.addElement(sqle2);
+             cleanUpConnectionAfterException(con);
+           }
+           catch (MultipleValidationException mve)
+           {
+             processMultipleValidationException(con, errors, mve);
+           }
+         }
+       }
+     }
+   }
+
+  
    /**
     *  Process the input MultipleValidationException object.
     * 
@@ -341,9 +355,8 @@ public class Controller extends HttpServlet
 	    										   Vector     errors,
 	                                               MultipleValidationException mve) 
    {
-     java.util.Vector v = null;
-	
-	 // log the exception !!!
+	 java.util.Vector v = null;
+     
 	 logCat.error("::processMultipleValidationException - exception", mve);
 	 
 	 if ((v = mve.getMessages()) != null)
