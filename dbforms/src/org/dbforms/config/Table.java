@@ -46,6 +46,9 @@ import java.util.Locale;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
+import java.io.Serializable;
+
+
 import javax.servlet.http.HttpServletRequest;
 
 
@@ -58,7 +61,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author Joe Peer
  */
-public class Table {
+public class Table implements Serializable {
    /** either "classic" or "interceptor", default is "interceptor" */
    public static final int BLOB_INTERCEPTOR = 0;
 
@@ -93,7 +96,7 @@ public class Table {
    private IEscaper  escaper = null;
 
    /** log4j category */
-   private Log logCat = LogFactory.getLog(this.getClass().getName());
+   private static Log logCat = LogFactory.getLog(Table.class.getName());
 
    /** some sort of alias to set in dbforms-config, not used yet */
    private String alias        = null;

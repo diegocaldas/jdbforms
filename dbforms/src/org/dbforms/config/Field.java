@@ -38,6 +38,8 @@ import java.text.Format;
 import java.util.Locale;
 import java.util.Vector;
 
+import java.io.Serializable;
+
 
 
 /**
@@ -45,7 +47,7 @@ import java.util.Vector;
  *
  * @author foxat
  */
-public class Field {
+public class Field implements Serializable {
    private static Log logCat  = LogFactory.getLog(Field.class.getName());
    private IEscaper    escaper = null;
 
