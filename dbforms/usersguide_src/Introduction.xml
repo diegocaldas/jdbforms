@@ -3,8 +3,8 @@
 	<title>Introduction</title>
 	<sect1>
 		<title>Technical background</title>
-		<para>DbForms is based on the following specifications: Java Servlets 2.2 and Java Server Pages 1.1 by Sun Microsystems. For more information on server-side Java technology please see [Servlet]</para>
-		<para>DbForms makes extensively use of the JSP Tag Library Extension included in the JSP 1.1 specification. [Taglib]</para>
+		<para>DbForms is based on the following specifications: Java Servlets 2.3 and Java Server Pages 1.2 by Sun Microsystems. For more information on server-side Java technology please see [Servlet]</para>
+		<para>DbForms makes extensively use of the JSP Tag Library Extension included in the JSP 1.2 specification. [Taglib]</para>
 		<para>XML parsing facilities and other parts of DbForms are based on code taken from Apache Groups Jakarta-Struts project. [Struts]</para>
 	</sect1>
 	<sect1>
