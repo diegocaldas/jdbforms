@@ -79,7 +79,7 @@ public class ReportParameter {
    public String getStringValue(Object obj, String pattern) {
       try {
          Field field = new Field();
-         field.setFieldType(obj);
+         field.setFieldType(obj.getClass());
          TextFormatter f = new TextFormatter(field, locale, pattern, obj);
          return f.getFormattedFieldValue();
       } catch (Exception e) {

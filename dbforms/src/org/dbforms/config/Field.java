@@ -174,24 +174,24 @@ public class Field
 		}
    }
 
-	public void setFieldType(Object obj) {
-		if (obj instanceof java.lang.Integer)
+	public void setFieldType(Class clazz) {
+		if (clazz.isAssignableFrom(java.lang.Integer.class))
 			type = FieldTypes.INTEGER;
-		else if (obj instanceof java.lang.Long)
+		else if (clazz.isAssignableFrom(java.lang.Long.class))
 			type = FieldTypes.INTEGER;
-		else if (obj instanceof java.lang.String)
+		else if (clazz.isAssignableFrom(java.lang.String.class))
 			type = FieldTypes.CHAR;
-		else if (obj instanceof java.math.BigDecimal)
+		else if (clazz.isAssignableFrom(java.math.BigDecimal.class))
 			type = FieldTypes.NUMERIC;
-		else if (obj instanceof java.sql.Date)
+		else if (clazz.isAssignableFrom(java.sql.Date.class))
 			type = FieldTypes.DATE;
-		else if (obj instanceof java.sql.Time)
+		else if (clazz.isAssignableFrom(java.sql.Time.class))
 			type = FieldTypes.TIME;
-		else if (obj instanceof java.sql.Timestamp)
+		else if (clazz.isAssignableFrom(java.sql.Timestamp.class))
 			type = FieldTypes.TIMESTAMP;
-		else if (obj instanceof java.lang.Double)
+		else if (clazz.isAssignableFrom(java.lang.Double.class))
 			type = FieldTypes.DOUBLE;
-		else if (obj instanceof java.lang.Float)
+		else if (clazz.isAssignableFrom(java.lang.Float.class))
 			type = FieldTypes.FLOAT;
 	}
 

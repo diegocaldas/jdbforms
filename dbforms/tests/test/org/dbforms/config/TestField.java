@@ -34,111 +34,180 @@ import org.dbforms.util.AbstractTestCase;
  */
 public class TestField extends AbstractTestCase
 {
-    /**
-     * DOCUMENT ME!
-     *
-     * @throws Exception DOCUMENT ME!
-     */
-    public void testGetSetName() throws Exception
-    {
-        Field f = new Field();
-        f.setName("FIELDNAME");
-        assertTrue("Field name should be FIELDNAME", f.getName().equals("FIELDNAME"));
-    }
+   /**
+    * DOCUMENT ME!
+    *
+    * @throws Exception DOCUMENT ME!
+    */
+   public void testGetSetName() throws Exception
+   {
+      Field f = new Field();
+      f.setName("FIELDNAME");
+      assertTrue("Field name should be FIELDNAME", 
+                 f.getName().equals("FIELDNAME"));
+   }
 
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @throws Exception DOCUMENT ME!
-     */
-    public void testGetSetId() throws Exception
-    {
-        Field f = new Field();
-        f.setId(10);
-        assertTrue("Field id should be 10", f.getId() == 10);
-    }
+   /**
+    * DOCUMENT ME!
+    *
+    * @throws Exception DOCUMENT ME!
+    */
+   public void testGetSetId() throws Exception
+   {
+      Field f = new Field();
+      f.setId(10);
+      assertTrue("Field id should be 10", f.getId() == 10);
+   }
 
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @throws Exception DOCUMENT ME!
-     */
-    public void testGetSetAutoInc() throws Exception
-    {
-        Field f = new Field();
-        f.setAutoInc("true");
-        assertTrue("Field should be autoinc", f.isAutoInc());
-    }
+   /**
+    * DOCUMENT ME!
+    *
+    * @throws Exception DOCUMENT ME!
+    */
+   public void testGetSetAutoInc() throws Exception
+   {
+      Field f = new Field();
+      f.setAutoInc("true");
+      assertTrue("Field should be autoinc", f.isAutoInc());
+   }
 
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @throws Exception DOCUMENT ME!
-     */
-    public void testGetSetAutoInc2() throws Exception
-    {
-        Field f = new Field();
-        f.setAutoInc("YES");
-        assertTrue("Field should be autoinc", f.isAutoInc());
-    }
+   /**
+    * DOCUMENT ME!
+    *
+    * @throws Exception DOCUMENT ME!
+    */
+   public void testGetSetAutoInc2() throws Exception
+   {
+      Field f = new Field();
+      f.setAutoInc("YES");
+      assertTrue("Field should be autoinc", f.isAutoInc());
+   }
 
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @throws Exception DOCUMENT ME!
-     */
-    public void testSortable() throws Exception
-    {
-        Field f = new Field();
-        f.setSortable("true");
-        assertTrue("Should be True", f.isSortable());
-        f.setSortable("TRUE");
-        assertTrue("Should be True", f.isSortable());
-        f.setSortable("yes");
-        assertTrue("Should be True", f.isSortable());
-        f.setSortable("FALSE");
-        assertTrue("Should be false", !f.isSortable());
-        f.setSortable("NO");
-        assertTrue("Should be false", !f.isSortable());
-    }
+   /**
+    * DOCUMENT ME!
+    *
+    * @throws Exception DOCUMENT ME!
+    */
+   public void testSortable() throws Exception
+   {
+      Field f = new Field();
+      f.setSortable("true");
+      assertTrue("Should be True", f.isSortable());
+      f.setSortable("TRUE");
+      assertTrue("Should be True", f.isSortable());
+      f.setSortable("yes");
+      assertTrue("Should be True", f.isSortable());
+      f.setSortable("FALSE");
+      assertTrue("Should be false", !f.isSortable());
+      f.setSortable("NO");
+      assertTrue("Should be false", !f.isSortable());
+   }
 
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @throws Exception DOCUMENT ME!
-     */
-    public void testType() throws Exception
-    {
-        Field f = new Field();
-        f.setFieldType("int");
-        assertTrue("Should be FieldTypes.INTEGER", f.getType() == FieldTypes.INTEGER);
-        f.setFieldType("smallint");
-        assertTrue("Should be FieldTypes.INTEGER", f.getType() == FieldTypes.INTEGER);
-        f.setFieldType("tinyint");
-        assertTrue("Should be FieldTypes.INTEGER", f.getType() == FieldTypes.INTEGER);
-        f.setFieldType("TINYINT");
-        assertTrue("Should be FieldTypes.INTEGER", f.getType() == FieldTypes.INTEGER);
+   /**
+    * DOCUMENT ME!
+    *
+    * @throws Exception DOCUMENT ME!
+    */
+   public void testType() throws Exception
+   {
+      Field f = new Field();
+      f.setFieldType("int");
+      assertTrue("Should be FieldTypes.INTEGER", 
+                 f.getType() == FieldTypes.INTEGER);
+      f.setFieldType("smallint");
+      assertTrue("Should be FieldTypes.INTEGER", 
+                 f.getType() == FieldTypes.INTEGER);
+      f.setFieldType("tinyint");
+      assertTrue("Should be FieldTypes.INTEGER", 
+                 f.getType() == FieldTypes.INTEGER);
+      f.setFieldType("TINYINT");
+      assertTrue("Should be FieldTypes.INTEGER", 
+                 f.getType() == FieldTypes.INTEGER);
 
-        f.setFieldType("NUMERIC");
-        assertTrue("Should be FieldTypes.NUMERIC", f.getType() == FieldTypes.NUMERIC);
-        f.setFieldType("NUMBER");
-        assertTrue("Should be FieldTypes.NUMERIC", f.getType() == FieldTypes.NUMERIC);
+      f.setFieldType("NUMERIC");
+      assertTrue("Should be FieldTypes.NUMERIC", 
+                 f.getType() == FieldTypes.NUMERIC);
+      f.setFieldType("NUMBER");
+      assertTrue("Should be FieldTypes.NUMERIC", 
+                 f.getType() == FieldTypes.NUMERIC);
 
-        f.setFieldType("char");
-        assertTrue("Should be FieldTypes.CHAR", f.getType() == FieldTypes.CHAR);
-        f.setFieldType("varchar");
-        assertTrue("Should be FieldTypes.CHAR", f.getType() == FieldTypes.CHAR);
-        f.setFieldType("nvarchar");
-        assertTrue("Should be FieldTypes.CHAR", f.getType() == FieldTypes.CHAR);
-        f.setFieldType("longchar");
-        assertTrue("Should be FieldTypes.CHAR", f.getType() == FieldTypes.CHAR);
+      f.setFieldType("char");
+      assertTrue("Should be FieldTypes.CHAR", f.getType() == FieldTypes.CHAR);
+      f.setFieldType("varchar");
+      assertTrue("Should be FieldTypes.CHAR", f.getType() == FieldTypes.CHAR);
+      f.setFieldType("nvarchar");
+      assertTrue("Should be FieldTypes.CHAR", f.getType() == FieldTypes.CHAR);
+      f.setFieldType("longchar");
+      assertTrue("Should be FieldTypes.CHAR", f.getType() == FieldTypes.CHAR);
+      f.setFieldType("text");
+      assertTrue("Should be FieldTypes.CHAR", f.getType() == FieldTypes.CHAR);
 
-        f.setFieldType("diskblob");
-        assertTrue("Should be FieldTypes.DISKBLOB", f.getType() == FieldTypes.DISKBLOB);
-    }
+      f.setFieldType("date");
+      assertTrue("Should be FieldTypes.DATE", f.getType() == FieldTypes.DATE);
+
+      f.setFieldType("timestamp");
+      assertTrue("Should be FieldTypes.TIMESTAMP", 
+                 f.getType() == FieldTypes.TIMESTAMP);
+
+      f.setFieldType("time");
+      assertTrue("Should be FieldTypes.TIME", f.getType() == FieldTypes.TIME);
+
+      f.setFieldType("double");
+      assertTrue("Should be FieldTypes.DOUBLE", 
+                 f.getType() == FieldTypes.DOUBLE);
+      f.setFieldType("float");
+      assertTrue("Should be FieldTypes.DOUBLE", 
+                 f.getType() == FieldTypes.DOUBLE);
+
+      f.setFieldType("real");
+      assertTrue("Should be FieldTypes.FLOAT", f.getType() == FieldTypes.FLOAT);
+
+      f.setFieldType("blob");
+      assertTrue("Should be FieldTypes.BLOB", f.getType() == FieldTypes.BLOB);
+      f.setFieldType("image");
+      assertTrue("Should be FieldTypes.BLOB", f.getType() == FieldTypes.BLOB);
+
+      f.setFieldType("diskblob");
+      assertTrue("Should be FieldTypes.DISKBLOB", 
+                 f.getType() == FieldTypes.DISKBLOB);
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @throws Exception DOCUMENT ME!
+    */
+   public void testType2() throws Exception
+   {
+      Field f = new Field();
+      f.setFieldType(java.lang.Integer.class);
+      assertTrue("Should be FieldTypes.INTEGER", 
+                 f.getType() == FieldTypes.INTEGER);
+      f.setFieldType(java.lang.Long.class);
+      assertTrue("Should be FieldTypes.INTEGER", 
+                 f.getType() == FieldTypes.INTEGER);
+      f.setFieldType(java.lang.String.class);
+      assertTrue("Should be FieldTypes.CHAR", f.getType() == FieldTypes.CHAR);
+      f.setFieldType(java.math.BigDecimal.class);
+      assertTrue("Should be FieldTypes.NUMERIC", 
+                 f.getType() == FieldTypes.NUMERIC);
+      f.setFieldType(java.sql.Date.class);
+      assertTrue("Should be FieldTypes.DATE", f.getType() == FieldTypes.DATE);
+      f.setFieldType(java.sql.Time.class);
+      assertTrue("Should be FieldTypes.TIME", f.getType() == FieldTypes.TIME);
+      f.setFieldType(java.sql.Timestamp.class);
+      assertTrue("Should be FieldTypes.TIMESTAMP", 
+                 f.getType() == FieldTypes.TIMESTAMP);
+      f.setFieldType(java.lang.Double.class);
+      assertTrue("Should be FieldTypes.DOUBLE", 
+                 f.getType() == FieldTypes.DOUBLE);
+      f.setFieldType(java.lang.Float.class);
+      assertTrue("Should be FieldTypes.FLOAT", f.getType() == FieldTypes.FLOAT);
+   }
 }
