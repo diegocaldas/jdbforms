@@ -186,7 +186,7 @@ public class StyleTag extends BodyTagSupport
                                 throw new JspException("Problem 1including template begin - "+ioe.toString());
                         } catch(ServletException se) {}
         */
-        return EVAL_BODY_TAG;
+        return EVAL_BODY_BUFFERED;
     }
 
 

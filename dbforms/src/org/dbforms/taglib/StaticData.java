@@ -66,7 +66,7 @@ public class StaticData extends BodyTagSupport
         {
             data = new Vector();
 
-            return EVAL_BODY_TAG;
+            return EVAL_BODY_BUFFERED;
         }
         else
         {
