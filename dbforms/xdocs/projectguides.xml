@@ -23,7 +23,7 @@
       </tr>
       <tr> 
 	    <td>HTML</td>
-		<td><a href="UsersGuide/html/index.html" target="_top">here</a></td>
+		<td><a href="UsersGuide/html/index.html">here</a></td>
 	  </tr>
       <tr> 
 	    <td>PDF</td>
@@ -46,11 +46,11 @@
       </tr>
       <tr> 
         <td>HTML</td>
-        <td><a href="taglib/DbFormsTags_Frame.html" target="_top">here</a></td>
+        <td><a href="taglib/DbFormsTags_Frame.html">here</a></td>
       </tr>
       <tr> 
         <td>TaglibDocs</td>
-        <td><a href="tlddoc/index.html" target="_top">here</a></td>
+        <td><a href="tlddoc/index.html">here</a></td>
       </tr>
       <tr> 
         <td>PDF</td>
@@ -72,7 +72,7 @@
       </tr>
       <tr> 
         <td>HTML</td>
-        <td><a href="apidocs/index.html" target="_top">here</a></td>
+        <td><a href="apidocs/index.html">here</a></td>
       </tr>
       </table>
    </p>

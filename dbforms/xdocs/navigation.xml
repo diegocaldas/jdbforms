@@ -20,6 +20,7 @@
     </menu>
     <menu type="footer">
        <item  
+            target="_blank"
             href="http://sourceforge.net/projects/jdbforms"
             img="http://sourceforge.net/sflogo.php?group_id=17608&amp;type=1" 
          /> 
@@ -27,10 +28,11 @@
     <menu name="Project">
       <item name="Overview"                     href="/index.html"/>
       <item name="Features List"                href="/featurelist.html"/>
+      <item name="WiKi"                         href="/wiki.php"/>
       <item name="Powered by and screenshots" 	href="/poweredby.html"/>
-      <item name="SourceForge's Summary Page"   href="http://sourceforge.net/projects/jdbforms"/>
-      <item name="Release Notes"    		href="/releasenotes.html"/>
-      <item name="ToDo List"    		href="/tasks.html" />
+      <item name="SourceForge's Summary Page"   href="http://sourceforge.net/projects/jdbforms" target="_blank"  />
+      <item name="Release Notes"                href="/releasenotes.html"/>
+      <item name="ToDo List"                    href="/tasks.html" />
     </menu>
 
     <menu name="Documentation">

@@ -247,6 +247,20 @@
       </ant:classpath>
     </ant:javac>
    </postGoal>
+   
+   <postGoal name="xdoc">
+      <concat destfile="target/docs/wiki.php" append="false">
+         INSERT_WIKI_INCLUDE_HERE
+      </concat>
+      <concat destfile="target/docs/wiki.php" append="true">
+         <fileset file="target/docs/wiki.html"/>
+      </concat>
+      <replace file="target/docs/wiki.php" token="INSERT_WIKI_INCLUDE_HERE" value='&lt;?php  define("EWIKI_SCRIPT", "wiki.php?page="); include("wiki_config.php"); $content = ewiki_page();?&gt;' />
+   
+
+      <replace file="target/docs/wiki.php" token="INSERT_WIKI_PAGE_HERE"    value='&lt;?php echo $content; ?&gt;' />
+      <delete  file="target/docs/wiki.html" />
+   </postGoal>
 
 
 </project>
