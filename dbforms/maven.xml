@@ -246,6 +246,12 @@
          <ant:pathelement path="${pom.getDependencyClasspath()}"/>
       </ant:classpath>
     </ant:javac>
+     <ant:copy todir="${maven.war.webapp.dir}/WEB-INF/classes" overwrite="true">
+      <ant:fileset dir="${maven.war.webapp.dir}/WEB-INF/src">
+           <ant:include name="*.properties" />
+           <ant:include name="*.x*" />
+      </ant:fileset>
+    </ant:copy>
    </postGoal>
    
    <postGoal name="xdoc">
