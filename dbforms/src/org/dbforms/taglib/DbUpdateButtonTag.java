@@ -144,7 +144,7 @@ public class DbUpdateButtonTag extends DbBaseButtonTag
          tagBuf.append(getButtonBegin());
          tagBuf.append(" name=\"");
          tagBuf.append(tagName);
-			tagBuf.append(getButtonEnd());
+		 tagBuf.append(getButtonEnd());
 
          pageContext.getOut().write(tagBuf.toString());
       }
