@@ -59,7 +59,6 @@ public class ReflectionUtil
     {
         Class myClass = Class.forName(className);
         Constructor myConstructor = myClass.getConstructor(constructorArgsTypes);
-
         return myConstructor.newInstance(constructorArgs);
     }
 
