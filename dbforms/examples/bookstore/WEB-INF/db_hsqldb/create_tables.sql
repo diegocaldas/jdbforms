@@ -27,8 +27,13 @@ CREATE INDEX book_isbn ON book (isbn);
 -- -----------------------------------------------------------------------
 -- insert some data
 -- -----------------------------------------------------------------------
-INSERT INTO AUTHOR  (author_id, name, organisation) VALUES(1, '1 Eco, Umberto','test2121');
-INSERT INTO AUTHOR  (author_id, name, organisation) VALUES(2, '2 test','test');
-INSERT INTO AUTHOR  (author_id, name, organisation) VALUES(3, '3 tes','redsasdf21111');
-INSERT INTO AUTHOR  (author_id, name, organisation) VALUES(4, '4 tes','redsasdf');
-INSERT INTO BOOK  (book_id, isbn, author_id, title) VALUES(5, '3-423-12445-4',1,'Die Insel des vorigen Tages');
+INSERT INTO AUTHOR  (author_id, name, organisation) VALUES(1, 'Eco, Umberto','organisation 1');
+INSERT INTO AUTHOR  (author_id, name, organisation) VALUES(2, 'Douglas, Adam','organisation 2');
+INSERT INTO BOOK  (book_id, isbn, author_id, title) VALUES(1, '3-423-12445-4',1,'Die Insel des vorigen Tages');
+INSERT INTO BOOK  (book_id, isbn, author_id, title) VALUES(2, '3-423-12445-5',1'Das Foucaltsche Pendel');
+INSERT INTO BOOK  (book_id, isbn, author_id, title) VALUES(3, '42-1',2,'Hijacking through the Galaxy 1');
+INSERT INTO BOOK  (book_id, isbn, author_id, title) VALUES(4, '42-2',2,'Hijacking through the Galaxy 2');
+INSERT INTO BOOK  (book_id, isbn, author_id, title) VALUES(5, '42-3',2,'Hijacking through the Galaxy 3');
+INSERT INTO BOOK  (book_id, isbn, author_id, title) VALUES(6, '42-4',2,'Hijacking through the Galaxy 4');
+INSERT INTO BOOK  (book_id, isbn, author_id, title) VALUES(7, '42-5',2,'Hijacking through the Galaxy 5');
+
