@@ -964,6 +964,31 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>The tab order (ascending positive integers) for this element.</info>
                 </attribute>
+		
+		
+		
+		<attribute>
+                    <name>useJsCalendar</name>
+                   <required>false</required>
+                   <rtexprvalue>true</rtexprvalue>
+		   <info>Place small calendar icon after input field. Clicking that icon 
+		                 will popup a JavaScript calendar 
+		                that can be used to set a new value for the field. 
+				 Some preparations have to be done, the
+				 calendar must be copied into the web applications 
+				 and must be included in current page. 
+				 See dbforms manual for details. </info>
+                </attribute>
+              
+	      <attribute>	      
+                 <name>jsCalendarDateFormat</name>
+                 <required>false</required>
+                 <rtexprvalue>true</rtexprvalue>
+		 <info>Subpatterns inside date formats have sometimes different meanings in Java and inside
+		         JavaScript calendar. For some date formats it may be neccessary to explicitely set a
+			 date format to the calendar that corresponds to the used date format inside dbforms
+			 application. See dbforms manual for details.</info>
+             </attribute>
             </tag>
 
 			<!-- **************************** textArea tag ***********************************-->			

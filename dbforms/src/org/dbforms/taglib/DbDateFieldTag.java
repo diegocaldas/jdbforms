@@ -93,7 +93,8 @@ public class DbDateFieldTag extends DbBaseInputTag {
 		HttpServletRequest request = (HttpServletRequest) this.pageContext.getRequest();
 		Vector errors = (Vector) request.getAttribute("errors");
 		WebEvent we = (WebEvent) request.getAttribute("webEvent");
-
+                
+               
 		try {
 
 			/* Does the developer require the field to be hidden or displayed? */
@@ -162,7 +163,40 @@ public class DbDateFieldTag extends DbBaseInputTag {
 			tagBuf.append(prepareStyles());
 			tagBuf.append(prepareEventHandlers());
 			tagBuf.append("/>");
-			
+	
+                                               // if property useJSCalendar is set to 'true' we will now add a little
+                                               // image that can be clicked to popup a small JavaScript Calendar
+                                               // written by Robert W. Husted to edit the field:
+                        if (  !     ("true".equals(this.getHidden()))    // no popup for hidden field 
+                              && ("true".equals(this.getUseJsCalendar()))) {
+                             tagBuf.append(" <A HREF=\"javascript:doNothing()\" ")
+                                         .append(" onclick=\"");
+                                                                    // if date format is not explicitely set for this calendar,
+                                                                    // use date format for this form field. 
+                             if ((jsCalendarDateFormat == null) &&
+                                  (this.format instanceof java.text.SimpleDateFormat)) {
+                                      java.text.SimpleDateFormat mysdf = (java.text.SimpleDateFormat)format;
+                                      jsCalendarDateFormat =  mysdf.toPattern(); 
+                                                                                  // 2 digit date format pattern is 'dd' in Java, 'DD' in
+                                                                                  // JavaScript calendar
+                                      if (jsCalendarDateFormat.indexOf("dd") >= 0) {
+                                          jsCalendarDateFormat = jsCalendarDateFormat.replace('d','D');
+                                      }
+                             }
+                             if (jsCalendarDateFormat != null)  // JS Date Format set ?
+                                 tagBuf.append("calDateFormat='"+ jsCalendarDateFormat + "';");
+                             tagBuf.append("setDateField(document.dbform['")
+                                         .append(getFormFieldName()).append("']);")
+                                         .append(" top.newWin = window.open('")
+                                         .append(request.getContextPath())
+                                         .append("/dbformslib/jscal/calendar.html','cal','WIDTH=270,HEIGHT=280')\">")
+                                         .append("<IMG SRC=\"")
+                                         .append(request.getContextPath())
+                                         .append("/dbformslib/jscal/calendar.gif\" WIDTH=\"32\" HEIGHT=\"32\" ")
+                                         .append(" BORDER=0  alt=\"Click on the Calendar to activate the Pop-Up Calendar Window.\">")
+                                         .append("</a>");                              
+                        }
+                        
 			// For generation Javascript Validation.  Need all original and modified fields name
 			parentForm.addChildName(getFieldName(), getFormFieldName());
 
@@ -177,6 +211,12 @@ public class DbDateFieldTag extends DbBaseInputTag {
 	private java.lang.String hidden = "false";
 	private java.lang.String overrideValue;
 
+        /** Holds value of property useJsCalendar. */
+        private String useJsCalendar;
+        
+        /** Holds value of property jsCalendarDateFormat. */
+        private String jsCalendarDateFormat;
+        
 	/**
 	 * Insert the method's description here.
 	 * Creation date: (2001-06-26 16:19:01)
@@ -212,4 +252,33 @@ public class DbDateFieldTag extends DbBaseInputTag {
 	public void setOverrideValue(java.lang.String newOverrideValue) {
 		overrideValue = newOverrideValue;
 	}
+        
+        /** Getter for property useJsCalendar.
+         * @return Value of property useJsCalendar.
+         */
+        public String getUseJsCalendar() {
+            return useJsCalendar;
+        }
+        
+        /** Setter for property useJsCalendar.
+         * @param useJsCalendar New value of property useJsCalendar.
+         */
+        public void setUseJsCalendar(String useJsCalendar) {
+            this.useJsCalendar = useJsCalendar;
+        }
+        
+        /** Getter for property jsCalendarDateFormat.
+         * @return Value of property jsCalendarDateFormat.
+         */
+        public String getJsCalendarDateFormat() {
+            return jsCalendarDateFormat;
+        }
+        
+        /** Setter for property jsCalendarDateFormat.
+         * @param jsCalendarDateFormat New value of property jsCalendarDateFormat.
+         */
+        public void setJsCalendarDateFormat(String jsCalendarDateFormat) {
+            this.jsCalendarDateFormat = jsCalendarDateFormat;
+        }
+        
 }
