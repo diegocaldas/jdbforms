@@ -6,6 +6,7 @@
 		<%@ taglib uri="/WEB-INF/pow2webgui.tld" prefix="gui" %>
 		<db:base/>
 	   <link   media="all"    href="../css/tabbedselector_amazon.css"  type="text/css" rel="stylesheet" >
+	   <link   media="all"    href="../css/tabbedselector_backoffice.css"  type="text/css" rel="stylesheet" >
 	</head>
     <% 
    		// get the tabbedSelector followUp parameter value:
@@ -42,14 +43,15 @@
                </tr>
 			</table>            
 			<gui:tabbedSelector name        = "ts1"
-			                    drawer      = "amazon"
+			                    drawer      = "backoffice"
 			                    color       = "#f0f0f0"
 			                    followUp    = "<%= "howtoUseTabSelector.jsp?" + 
 													((rsv_AUTHOR == null)?"":"fv_AUTHOR_ID=" + rsv_AUTHOR.getField("AUTHOR_ID"))
 												%>"
 			                    selectedTab = "<%=selectedTab  %>"
+			                    width       ="400px" 
 			>
-			  <gui:tab 	drawer="amazon" name="tab1" title="tab1">
+			  <gui:tab 	drawer="backoffice" name="tab1" title="tab1">
 		    	 <!-- This hidden input fields should remember the last used tab page if you move to the next record -->
 		    	 <input 
  		    	 		type="hidden" 
@@ -67,7 +69,7 @@
 				</table>
 			  </gui:tab>
 		      <% if (rsv_AUTHOR != null) {%>
-  			     <gui:tab 	drawer="amazon" name="tab2" title="tab2">
+  			     <gui:tab 	drawer="backoffice" name="tab2" title="tab2">
 	 		         <!-- This hidden input fields should remember the last used tab page if you move to the next record -->
 		    		 <input 
  		    	 			type="hidden" 
