@@ -326,12 +326,15 @@ public class XSLTransformPanel extends PropertyPanel implements ActionListener, 
         gridBagConstraints1.gridx = 0;
 
         gridBagConstraints1.gridy = 0;
+        gridBagConstraints1.weightx = 1.0;
+        gridBagConstraints1.fill = java.awt.GridBagConstraints.HORIZONTAL;
+
 
         gridBagConstraints1.anchor = java.awt.GridBagConstraints.WEST;
 
         add(jPanel2, gridBagConstraints1);
 
-        add(tf_stylesheetDir, gridBagConstraints1);
+ //       add(tf_stylesheetDir, gridBagConstraints1);
 
         gridBagConstraints1.gridx = 0;
 
