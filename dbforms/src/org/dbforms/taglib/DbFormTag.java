@@ -2419,28 +2419,28 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
                      mode_or.addElement(fv);
                   }
 
-                  operator = Constants.FILTER_SMALLER_THEN_EQUAL;
+                  operator = Constants.FILTER_GREATER_THEN_EQUAL;
+                  java.util.Date d = SqlUtil.createAppropriateTimeStamp(aSearchFieldValue);
+ 				  if (d != null) {
+	 				  try {
+						SimpleDateFormat sdf  = DbFormsConfigRegistry.instance().lookup().getDateFormatter();
+	 				  } catch (Exception e) {
+	 				     throw new IOException(e.getMessage());
+	 				  }
+    	              fv                   = new FieldValue(f, aSearchFieldValue, operator);
+        	          fv.setSearchMode(mode);
+            	      fv.setSearchAlgorithm(algorithm);
 
-						try {
-							SimpleDateFormat sdf  = DbFormsConfigRegistry.instance().lookup().getDateFormatter();
-							java.util.Date   d = TimeUtil.parseDate(sdf.toPattern(),  aSearchFieldValue);
-							d                    = TimeUtil.findEndOfDay(d);
-							aSearchFieldValue    = sdf.format(d);
-                  } catch (Exception e) {
-                  	 throw new IOException(e.getMessage());
-                  }
-                  fv                   = new FieldValue(f, aSearchFieldValue, operator);
-                  fv.setSearchMode(mode);
-                  fv.setSearchAlgorithm(algorithm);
+                	  if (mode == Constants.SEARCHMODE_AND)
+                  	  {
+                     	mode_and.addElement(fv);
+                  		}
+                  		else
+                  		{
+                     		mode_or.addElement(fv);
+                  		}
+				  }
 
-                  if (mode == Constants.SEARCHMODE_AND)
-                  {
-                     mode_and.addElement(fv);
-                  }
-                  else
-                  {
-                     mode_or.addElement(fv);
-                  }
                }
                else
                {

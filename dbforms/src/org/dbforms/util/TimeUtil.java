@@ -62,7 +62,10 @@ public class TimeUtil
     */
    public static final String Seconds2String(String seconds)
    {
-      return Seconds2String(Integer.valueOf(seconds));
+      if (Util.isNull(seconds))
+         return "";
+      else
+         return Seconds2String(Integer.valueOf(seconds));
    }
 
 

@@ -43,8 +43,8 @@ import org.dbforms.config.DbConnection;
  *
  * <p>this utility-class provides convenience methods for SQL related tasks</p>
  *
- * @author Joe Peer <j.peer@gmx.net>
- * @author Eric Pugh <epugh@upstate.com>
+ * @author Joe Peer 
+ * @author Eric Pugh
  */
 public class SqlUtil
 {
@@ -55,7 +55,7 @@ public class SqlUtil
    /**
     *
     */
-   private static java.sql.Date createAppropriateDate(Object value)
+   public static java.sql.Date createAppropriateDate(Object value)
    {
       if (value == null)
       {
@@ -83,8 +83,15 @@ public class SqlUtil
 
       if (result == null)
       {
-         // Maybe date has been returned as a timestamp?
-				result = new Date(Timestamp.valueOf(valueStr).getTime());
+			try
+			{
+				// Maybe date has been returned as a timestamp?
+					result = new Date(Timestamp.valueOf(valueStr).getTime());
+			}
+			catch (Exception exc)
+			{
+				result = null;
+			}
       }
 		String s = result.toString();
 
@@ -92,7 +99,7 @@ public class SqlUtil
    }
 
 
-   private static java.sql.Timestamp createAppropriateTimeStamp(Object value)
+   public static java.sql.Timestamp createAppropriateTimeStamp(Object value)
    {
       if (value == null)
       {
@@ -121,8 +128,15 @@ public class SqlUtil
 
       if (result == null)
       {
-         // Maybe date has been returned as a timestamp?
-         result = Timestamp.valueOf(valueStr);
+			try
+			{
+				// Maybe date has been returned as a timestamp?
+				result = Timestamp.valueOf(valueStr);
+			}
+			catch (Exception exc)
+			{
+				result = null;
+			}
       }
 
       return result;
@@ -132,7 +146,7 @@ public class SqlUtil
    /**
     *
     */
-   private static java.math.BigDecimal createAppropriateNumeric(Object value)
+   public static java.math.BigDecimal createAppropriateNumeric(Object value)
    {
       if (value == null)
       {
