@@ -33,7 +33,9 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.TagSupport;
+import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Category;
+import org.dbforms.util.MessageResources;
 import java.util.*;
 
 
@@ -52,11 +54,6 @@ public class ErrorsTag extends TagSupport
     static Category logCat = Category.getInstance(ErrorsTag.class.getName()); // logging category for this class
 
     // ----------------------------------------------------------- Properties
-
-    /**
-     * The default locale on our server.
-     */
-    protected static Locale defaultLocale = Locale.getDefault();
 
     /**
      * Name of the request scope attribute containing our error messages,
@@ -121,6 +118,7 @@ public class ErrorsTag extends TagSupport
     public int doStartTag() throws JspException
     {
         Vector originalErrors = (Vector) pageContext.getAttribute(name, PageContext.REQUEST_SCOPE);
+    	HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
 
         if ((originalErrors != null) && (originalErrors.size() > 0))
         {
@@ -135,7 +133,7 @@ public class ErrorsTag extends TagSupport
             for (int i = 0; i < errors.size(); i++)
             {
                 results.append("<li>");
-                results.append(errors.elementAt(i));
+                results.append(MessageResources.getMessage(request, (String)errors.elementAt(i)));
             }
 
             results.append("</ul>");
