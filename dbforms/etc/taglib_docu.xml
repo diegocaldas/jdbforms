@@ -6246,6 +6246,21 @@ error manager</summary>
 					</info>
 				</attribute>
 			</tag>
+			<!-- **************************** hasRecords tag ***********************************-->
+			<tag>
+				<name>hasRecords</name>
+				<summary>Verifies if the number of records in the result set is not equal 0</summary>
+				<tagclass>org.dbforms.taglib.HasRecordsTag</tagclass>
+				<bodycontent>JSP</bodycontent>
+				<attribute>
+					<name>message</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						<p>Message to display (see xml error manager)</p>
+					</info>
+				</attribute>
+			</tag>
 			<!-- **************************** associatedRadio tag ***********************************-->
 			<tag>
 				<name>associatedRadio</name>
