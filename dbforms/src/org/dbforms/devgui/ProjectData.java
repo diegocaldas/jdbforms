@@ -116,7 +116,7 @@ public class ProjectData implements Serializable, PropertyNames {
         // If a user hasn't specified a STYLESHEET_DIR, then guess at one!
         String dbFormsHomeStr = props.getProperty(STYLESHEET_DIR);
 
-        if (dbFormsHomeStr.equals("")) {
+        if ("".equals(dbFormsHomeStr)) {
 
             dbFormsHomeStr = System.getProperty("DBFORMS_HOME");
 
