@@ -109,6 +109,8 @@ public class Table {
 	/** reference to a TableEvents object */
 	private String dataAccessClass = null;
 
+	/** some sort of alias to set in dbforms-config, not used yet */
+	private String alias = null;
 
 	/**
 	 * Creates a new Table object.
@@ -287,6 +289,21 @@ public class Table {
 	public void setDataAccessClass(String dataAccessClass) {
 		this.dataAccessClass = dataAccessClass;
 	}
+
+	/**
+	 * @return String
+	 */
+	public String getAlias() {
+		return alias;
+	}
+
+	/**
+	 * @param customData
+	 */
+	public void setAlias(String alias) {
+		this.alias = alias;
+	}
+
 
 	/**
 	 *  Set configuration for table
