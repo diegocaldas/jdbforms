@@ -33,56 +33,56 @@ import java.text.*;
 import java.util.*;
 
 public class TimeUtil {
-   
-   static final int SECSPERDAY = 24 * 60 * 60;
 
-/**
- * Reformats seconds to time string with format: dd:hh:mm:ss
- * 
- * @param seconds
- * @return String
- */
-   public final static String Seconds2String(String seconds) {
-      return Seconds2String(Integer.valueOf(seconds));
-   }
+	static final int SECSPERDAY = 24 * 60 * 60;
 
-/**
- * Reformats seconds to time string with format: dd:hh:mm:ss
- * 
- * @param seconds
- * @return String
- */
-   public final static String Seconds2String(Integer seconds) {
-      return Seconds2String(seconds.intValue());
-   }
+	/**
+	 * Reformats seconds to time string with format: dd:hh:mm:ss
+	 * 
+	 * @param seconds
+	 * @return String
+	 */
+	public final static String Seconds2String(String seconds) {
+		return Seconds2String(Integer.valueOf(seconds));
+	}
 
-/**
- * Reformats seconds to time string with format: dd:hh:mm:ss
- * 
- * @param seconds
- * @return String
- */
-   public final static String Seconds2String(int seconds) {
-      int d, h, m;
-      String zeit;
+	/**
+	 * Reformats seconds to time string with format: dd:hh:mm:ss
+	 * 
+	 * @param seconds
+	 * @return String
+	 */
+	public final static String Seconds2String(Integer seconds) {
+		return Seconds2String(seconds.intValue());
+	}
 
-      d = (seconds / SECSPERDAY);
-      seconds = seconds - d * SECSPERDAY;
-      h = seconds / (60 * 60);
-      seconds = seconds - h * 60 * 60;
-      m = seconds / 60;
-      seconds = seconds - m * 60;
-      if (d > 0) {
-      	Object [] o = {new Integer(d),new Integer(h),new Integer(m) ,new Integer(seconds)};
-         zeit = StringUtil.sprintf("%i:%02i:%02i:%02i", o);
-      } else { 
-         Object [] o = {new Integer(h),new Integer(m) ,new Integer(seconds)};
-         zeit = StringUtil.sprintf("%i:%02i:%02i", o);
-      }
-      return zeit;
-   }
+	/**
+	 * Reformats seconds to time string with format: dd:hh:mm:ss
+	 * 
+	 * @param seconds
+	 * @return String
+	 */
+	public final static String Seconds2String(int seconds) {
+		int d, h, m;
+		String zeit;
 
-	private static void splitDate(String s, StringBuffer sDate,	StringBuffer sTime) {
+		d = (seconds / SECSPERDAY);
+		seconds = seconds - d * SECSPERDAY;
+		h = seconds / (60 * 60);
+		seconds = seconds - h * 60 * 60;
+		m = seconds / 60;
+		seconds = seconds - m * 60;
+		if (d > 0) {
+			Object[] o = { new Integer(d), new Integer(h), new Integer(m), new Integer(seconds)};
+			zeit = StringUtil.sprintf("%i:%02i:%02i:%02i", o);
+		} else {
+			Object[] o = { new Integer(h), new Integer(m), new Integer(seconds)};
+			zeit = StringUtil.sprintf("%i:%02i:%02i", o);
+		}
+		return zeit;
+	}
+
+	private static void splitDate(String s, StringBuffer sDate, StringBuffer sTime) {
 		sDate.setLength(0);
 		sTime.setLength(0);
 		int i = s.lastIndexOf(':');
@@ -118,17 +118,19 @@ public class TimeUtil {
 			if (!cal.isSet(Calendar.YEAR))
 				cal.set(Calendar.YEAR, now.get(Calendar.YEAR));
 			if (cal.get(Calendar.YEAR) < 30)
-			   cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) + 2000);
+				cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) + 2000);
 			else if (cal.get(Calendar.YEAR) < 100)
-			   cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) + 1900);
-			  
-			d = cal.getTimeInMillis();
+				cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) + 1900);
+
+			//			d = cal.getTimeInMillis();
+			d = cal.getTime().getTime();
 		} else {
 			Calendar now = Calendar.getInstance();
 			now.set(Calendar.HOUR_OF_DAY, 0);
 			now.set(Calendar.MINUTE, 0);
 			now.set(Calendar.SECOND, 0);
-			d = now.getTimeInMillis();
+			//			d = now.getTimeInMillis();
+			d = now.getTime().getTime();
 		}
 		return d;
 	}
@@ -150,7 +152,8 @@ public class TimeUtil {
 				cal.set(Calendar.MINUTE, 0);
 			if (!cal.isSet(Calendar.SECOND))
 				cal.set(Calendar.SECOND, 0);
-			d = cal.getTimeInMillis() + cal.getTimeZone().getRawOffset();
+			//			d = cal.getTimeInMillis() + cal.getTimeZone().getRawOffset();
+			d = cal.getTime().getTime() + cal.getTimeZone().getRawOffset();
 		}
 		return d;
 	}
@@ -172,31 +175,39 @@ public class TimeUtil {
 	}
 
 	public static Date findEndOfDay(Date d) {
-	   Calendar cal = Calendar.getInstance();
-	   cal.setTime(d);
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(d);
 		cal.set(Calendar.HOUR_OF_DAY, 0);
 		cal.set(Calendar.MINUTE, 0);
 		cal.set(Calendar.SECOND, 0);
 		cal.add(Calendar.DAY_OF_MONTH, 1);
-	   return cal.getTime();
+		return cal.getTime();
 	}
 
-   public static void main(String args[]) {
-      int k;
-      k = 100024;
-      System.out.println(Seconds2String(k));
+	private static void testJDK() {
+		Calendar cal = Calendar.getInstance();
+		long jdk14Method = cal.getTimeInMillis();
+		System.out.println(jdk14Method);
+		long jdk13Method = cal.getTime().getTime();
+		System.out.println(jdk13Method);
+	}
 
-   	String format = "dd.MM.yyyy HH:mm";
-   	System.out.println(parseDate(format, "12.12.2002").toLocaleString());
-   	System.out.println(parseDate(format, "12.12.2002 12:30").toLocaleString());
-   	System.out.println(parseDate(format, "12:30").toLocaleString());
-   	System.out.println(parseDate(format, "12. 12:30").toLocaleString());
-   	System.out.println(parseDate(format, "12.06 12:30").toLocaleString());
-   	System.out.println(parseDate(format, "12.").toLocaleString());
-   	System.out.println(parseDate(format, "12.06").toLocaleString());
-   	System.out.println(parseDate(format, "12.06.03").toLocaleString());
-   	System.out.println(parseDate(format, "12. 12:").toLocaleString());
-   	System.out.println(findEndOfDay(parseDate(format, "12. 12:")).toLocaleString());
-   }
+	public static void main(String args[]) {
+		int k;
+		k = 100024;
+		System.out.println(Seconds2String(k));
+		String format = "dd.MM.yyyy HH:mm";
+		testJDK();
+		System.out.println(parseDate(format, "12.12.2002").toLocaleString());
+		System.out.println(parseDate(format, "12.12.2002 12:30").toLocaleString());
+		System.out.println(parseDate(format, "12:30").toLocaleString());
+		System.out.println(parseDate(format, "12. 12:30").toLocaleString());
+		System.out.println(parseDate(format, "12.06 12:30").toLocaleString());
+		System.out.println(parseDate(format, "12.").toLocaleString());
+		System.out.println(parseDate(format, "12.06").toLocaleString());
+		System.out.println(parseDate(format, "12.06.03").toLocaleString());
+		System.out.println(parseDate(format, "12. 12:").toLocaleString());
+		System.out.println(findEndOfDay(parseDate(format, "12. 12:")).toLocaleString());
+	}
 
 }

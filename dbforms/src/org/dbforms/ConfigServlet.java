@@ -41,6 +41,7 @@ import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.commons.validator.ValidatorResources;
 import org.apache.commons.validator.ValidatorResourcesInitializer;
+import org.apache.commons.lang.StringUtils;
 
 import org.dbforms.validation.ValidatorConstants;
 import org.dbforms.util.MessageResources;
@@ -491,7 +492,7 @@ public class ConfigServlet extends HttpServlet
         {
             config = value;
         }
-     	  String[] s = config.split(",");
+     	  String[] s = StringUtils.split(config,",");
     	  for (int i = 0; i < s.length; i++)
     	     initXMLConfigFile(s[i], digesterDebugLevel);
     } 
@@ -617,7 +618,7 @@ public class ConfigServlet extends HttpServlet
 		if (value != null) {
 			validation = value;
 		}
-		String[] s = validation.split(",");
+		String[] s = StringUtils.split(validation,",");
 		for (int i = 0; i < s.length; i++)
 			initXMLValidatorValidation(resources, s[i]);
 

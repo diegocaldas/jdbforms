@@ -396,7 +396,8 @@ public class Query extends Table
         if ((f == null) || (f.isEmpty()) && !Util.isNull(from) )
         {
             Table t = config.getTableByName(from);
-            f = t.getFields();
+            if (t != null)
+               f = t.getFields();
         }
 
         return f;
@@ -425,7 +426,9 @@ public class Query extends Table
 
         if ((f == null) && !Util.isNull(from) )
         {
-            f = config.getTableByName(from).getFieldByName(name);
+            Table t = config.getTableByName(from); 
+            if (t != null)
+               f = t.getFieldByName(name);
         }
 
         return f;
@@ -463,7 +466,9 @@ public class Query extends Table
             }
             if ((f == null) && !Util.isNull(from))
             {
-                f = config.getTableByName(from).getField(fieldId);
+	        Table t = config.getTableByName(from);
+	        if (t != null)
+                f = t.getField(fieldId);
             }
         }
 
