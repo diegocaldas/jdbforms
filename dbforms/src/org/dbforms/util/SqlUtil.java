@@ -157,6 +157,19 @@ public class SqlUtil
             result = null;
         }
 
+		// if date is key, then have the standard format yyyy-MM-dd
+		if (result == null)
+		{
+			 try
+			 {
+				  result = java.sql.Timestamp.valueOf(valueStr);
+			 }
+			 catch (Exception exc)
+			 {
+				  result = null;
+			 }
+		}
+
         if (result == null)
         {
             try
