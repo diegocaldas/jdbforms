@@ -22,11 +22,12 @@
  */
 
 package org.dbforms.config;
+import java.util.Locale;
+
 import org.dbforms.util.AbstractTestCase;
 import org.dbforms.config.Field;
 import org.dbforms.config.Constants;
 import org.dbforms.config.FieldValue;
-
 /**
  *  Description of the Class
  *
@@ -116,4 +117,17 @@ public class TestFieldValue extends AbstractTestCase {
       assertTrue("fv was flipped", fvNotLogicalOR.getSortDirection() == (!fvNotLogicalOROrig.getSortDirection()));
       assertTrue("fv was flipped", fvLogicalORLikeFilter.getSortDirection() == (!fvLogicalORLikeFilterOrig.getSortDirection()));
    }
+   
+   
+   public void testNull() {
+      Field f = new Field();
+      f.setName("TESTINT");
+      f.setFieldType("int");
+      FieldValue fv = new FieldValue(f, "");
+      fv.setLocale(Locale.ENGLISH);
+      Integer i = (Integer) fv.getFieldValueAsObject();
+      assertTrue(i == null);
+   
+   }
+   
 }
