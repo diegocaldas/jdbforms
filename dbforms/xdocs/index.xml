@@ -41,18 +41,26 @@
 <section name="Technical background">
   <p>
     DbForms is based on the following specifications: 
-	"Java Servlets 2.2" and "Java Server Pages 1.1" by Sun 
+	"Java Servlets 2.3" and "Java Server Pages 1.2" by Sun 
 	Microsystems. 
 	For more information on server-side Java technology please 
 	see <a href="http://www.javasoft.com/products/servlets/"> [servlet]</a>
   </p>
   <p>
     DbForms makes extensively use of the "JSP Tag Library Extension" included in the JSP 1.1 specification. 
-	<a href="http://www.javasoft.com/products/jsp/taglibraries.html">[tags] </a>
+    <a href="http://www.javasoft.com/products/jsp/taglibraries.html">[tags] </a>
   </p>
   <p>
-    XML parsing facilities and other parts of DbForms are based on code taken from Apache Group's 
-	Jakarta-Struts project. <a href="http://jakarta.apache.org/struts/">[Struts]</a>
+    <!--
+      XML parsing facilities and other parts of DbForms are based on code taken from Apache Group's 
+      Jakarta-Struts project. <a href="http://jakarta.apache.org/struts/">[Struts]</a>
+    -->
+      XML parsing facilities and other parts of DbForms use <a href="http://www.apache.org">Apache</a> Group's XML components:
+      <ul>
+        <li><a href="http://xml.apache.org/xerces2-j/" target="_top">Xerces</a> XML parser</li>
+        <li><a href="http://xml.apache.org/xalan-j/"   target="_top">Xalan</a> XSLT processor</li>
+        <li><a href="http://jakarta.apache.org/commons/digester.html" target="_top">Digester</a> component</li>
+      </ul>
   </p>
 </section>
 
