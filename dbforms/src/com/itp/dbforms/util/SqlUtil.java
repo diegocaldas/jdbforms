@@ -38,6 +38,21 @@ public class SqlUtil {
 
   static Category logCat = Category.getInstance(SqlUtil.class.getName()); // logging category for this class
 
+
+  private static java.sql.Date createAppropriateDate(Object value) {
+	logCat.debug("createAppropriateDate...");
+	if(value==null) return null;
+logCat.debug("pos1...");
+	String valueStr = ((String) value).trim();
+logCat.debug("pos2..."+valueStr);
+	if(valueStr.length() == 0) return null;
+
+	Date result = java.sql.Date.valueOf(valueStr);
+
+logCat.debug("pos3..."+result.toString());
+	return result;
+  }
+
   /**
   this utility-method assigns a particular value to a place holder of a PreparedStatement
   it tries to find the determinate the correct setXxx() value, accoring to the field-type inforamtion
@@ -55,7 +70,7 @@ public class SqlUtil {
 				case FieldTypes.INTEGER: ps.setInt(col, Integer.parseInt((String)value)); break;
 				case FieldTypes.NUMERIC: ps.setBigDecimal(col, new java.math.BigDecimal((String) value)); break;
 				case FieldTypes.CHAR: ps.setString(col, (String)value); break;
-				case FieldTypes.DATE: ps.setDate(col, java.sql.Date.valueOf((String)value)); break; //#checkme
+				case FieldTypes.DATE: ps.setDate(col, createAppropriateDate(value)); break; //#checkme
 				case FieldTypes.TIMESTAMP: ps.setTimestamp(col, java.sql.Timestamp.valueOf((String)value)); break;
 				case FieldTypes.DOUBLE: ps.setDouble(col, Double.valueOf((String)value).doubleValue()); break;
 				case FieldTypes.FLOAT: ps.setFloat(col, Float.valueOf((String)value).floatValue()); break;
