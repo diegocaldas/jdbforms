@@ -256,9 +256,8 @@
          <fileset file="target/docs/wiki.html"/>
       </concat>
       <replace file="target/docs/wiki.php" token="INSERT_WIKI_INCLUDE_HERE" value='&lt;?php  define("EWIKI_SCRIPT", "wiki.php?page="); include("wiki_config.php"); $content = ewiki_page();?&gt;' />
-   
-
       <replace file="target/docs/wiki.php" token="INSERT_WIKI_PAGE_HERE"    value='&lt;?php echo $content; ?&gt;' />
+      <replace file="target/docs/wiki.php" token='&lt;/div&gt;&lt;div class="xright"&gt;' value='&lt;?php echo $ewiki_auth_user?" | ".$ewiki_auth_user:""; ?&gt;&lt;/div&gt;&lt;div class="xright"&gt;' />
       <delete  file="target/docs/wiki.html" />
    </postGoal>
 
