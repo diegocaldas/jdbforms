@@ -52,7 +52,7 @@ import java.io.File;
 public class XSLTransformer
 {
 
-	public static void transform(File xmlFile, File xslFile, File destinationFile)
+	public static void transform(File xmlFile, File xslFile, File destinationFile,boolean useJsCalendar)
 		throws TransformerException, TransformerConfigurationException, 
 		   FileNotFoundException, IOException
 	{  
@@ -66,6 +66,12 @@ public class XSLTransformer
 	// the stylesheet you specify. This method call also processes the stylesheet
 	// into a compiled Templates object.
 	Transformer transformer = tFactory.newTransformer(new StreamSource(xslFile));
+        
+        // If user has checked checkbox to use JavaScript Calendar for editing of
+        // date fields, we have to pass a corresponding parameter to transformer
+        if (useJsCalendar) {
+            transformer.setParameter("useCalendar","true");
+        }
 
 	// Use the Transformer to apply the associated Templates object to an XML document
 	// (foo.xml) and write the output to a file (foo.out).

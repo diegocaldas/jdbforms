@@ -44,6 +44,11 @@ public class ConfigFilePanel extends PropertyPanel implements ActionListener {
 private DevGui parent;
 private EditorPanel panel_editor; 
 
+private String[] dateFormats = 
+{"","yyyy-MM-dd","yyyy_MM_dd","yyyy/MM/dd","yyyy.MM.dd",
+  "dd-MMM-yyyy","dd.MM.yyyy","dd/MM/yyyyy","MM-dd-yyyy" };
+  
+
     		/** Creates new form WebAppPanel */
 		public ConfigFilePanel(DevGui parent) {
 			super(parent.getProjectData());
@@ -110,6 +115,7 @@ private EditorPanel panel_editor;
                         addCheckBoxItemListener(cb_examine_tables,                 EXAMINE_TABLES);
                         addCheckBoxItemListener(cb_examine_views,                  EXAMINE_VIEWS);
                         addCheckBoxItemListener(cb_examine_systabs,               EXAMINE_SYSTABS);
+                        addCheckBoxItemListener(cb_stdTypeNames,                   WRITE_STD_TYPENAMES);
    
                         initializeCatalogAndSchemaList();
                         
@@ -117,6 +123,13 @@ private EditorPanel panel_editor;
                                                                             // properties for catalog name and schema name:
                         addComboBoxItemListener(catalogList,CATALOG);
                         addComboBoxItemListener(schemaList,SCHEMA);
+                        
+                                                                            // initialize combo box with date formats:
+                        for (int i =0 ; i < dateFormats.length;i++) {
+                            dateFormat.addItem(dateFormats[i]);
+                        }
+                                                                            // register event Listener for date format combo box:
+                        addComboBoxItemListener(dateFormat,DATE_FORMAT);
        
         }
         
@@ -207,6 +220,12 @@ private EditorPanel panel_editor;
             catalogList = new javax.swing.JComboBox();
             schemaList = new javax.swing.JComboBox();
             b_loadLists = new javax.swing.JButton();
+            cb_stdTypeNames = new javax.swing.JCheckBox();
+            jSeparator6 = new javax.swing.JSeparator();
+            jPanel5 = new javax.swing.JPanel();
+            jLabel2 = new javax.swing.JLabel();
+            dateFormat = new javax.swing.JComboBox();
+            jSeparator7 = new javax.swing.JSeparator();
             
             
             setLayout(new java.awt.BorderLayout());
@@ -291,7 +310,7 @@ private EditorPanel panel_editor;
             
             gridBagConstraints1 = new java.awt.GridBagConstraints();
             gridBagConstraints1.gridx = 0;
-            gridBagConstraints1.gridy = 13;
+            gridBagConstraints1.gridy = 14;
             gridBagConstraints1.gridwidth = 4;
             gridBagConstraints1.fill = java.awt.GridBagConstraints.HORIZONTAL;
             panel_top.add(jSeparator2, gridBagConstraints1);
@@ -329,7 +348,7 @@ private EditorPanel panel_editor;
             
             gridBagConstraints1 = new java.awt.GridBagConstraints();
             gridBagConstraints1.gridx = 0;
-            gridBagConstraints1.gridy = 14;
+            gridBagConstraints1.gridy = 17;
             gridBagConstraints1.gridwidth = 4;
             panel_top.add(jPanel1, gridBagConstraints1);
             
@@ -367,7 +386,7 @@ private EditorPanel panel_editor;
             
             gridBagConstraints1 = new java.awt.GridBagConstraints();
             gridBagConstraints1.gridx = 0;
-            gridBagConstraints1.gridy = 12;
+            gridBagConstraints1.gridy = 13;
             gridBagConstraints1.gridwidth = 4;
             gridBagConstraints1.anchor = java.awt.GridBagConstraints.WEST;
             panel_top.add(jPanel3, gridBagConstraints1);
@@ -440,6 +459,42 @@ private EditorPanel panel_editor;
             gridBagConstraints1.fill = java.awt.GridBagConstraints.VERTICAL;
             gridBagConstraints1.weighty = 0.5;
             panel_top.add(b_loadLists, gridBagConstraints1);
+            
+            cb_stdTypeNames.setText("Try to write standard type names for unknown field types into xml config file.");
+            gridBagConstraints1 = new java.awt.GridBagConstraints();
+            gridBagConstraints1.gridx = 0;
+            gridBagConstraints1.gridy = 11;
+            gridBagConstraints1.gridwidth = 4;
+            gridBagConstraints1.anchor = java.awt.GridBagConstraints.WEST;
+            panel_top.add(cb_stdTypeNames, gridBagConstraints1);
+            
+            gridBagConstraints1 = new java.awt.GridBagConstraints();
+            gridBagConstraints1.gridx = 0;
+            gridBagConstraints1.gridy = 12;
+            gridBagConstraints1.gridwidth = 4;
+            gridBagConstraints1.fill = java.awt.GridBagConstraints.HORIZONTAL;
+            gridBagConstraints1.weightx = 1.0;
+            panel_top.add(jSeparator6, gridBagConstraints1);
+            
+            jLabel2.setText("Set date format to: ");
+            jPanel5.add(jLabel2);
+            
+            dateFormat.setEditable(true);
+            jPanel5.add(dateFormat);
+            
+            gridBagConstraints1 = new java.awt.GridBagConstraints();
+            gridBagConstraints1.gridx = 0;
+            gridBagConstraints1.gridy = 15;
+            gridBagConstraints1.gridwidth = 4;
+            gridBagConstraints1.anchor = java.awt.GridBagConstraints.WEST;
+            panel_top.add(jPanel5, gridBagConstraints1);
+            
+            gridBagConstraints1 = new java.awt.GridBagConstraints();
+            gridBagConstraints1.gridx = 0;
+            gridBagConstraints1.gridy = 16;
+            gridBagConstraints1.gridwidth = 4;
+            gridBagConstraints1.fill = java.awt.GridBagConstraints.HORIZONTAL;
+            panel_top.add(jSeparator7, gridBagConstraints1);
             
             add(panel_top, java.awt.BorderLayout.NORTH);
             
@@ -561,6 +616,9 @@ private EditorPanel panel_editor;
                         cb_autocommit.setSelected(TRUESTRING.equalsIgnoreCase(
                                         projectData.getProperty(AUTOCOMMIT_MODE)));   
                         
+                        cb_stdTypeNames.setSelected(TRUESTRING.equalsIgnoreCase(
+                                        projectData.getProperty(WRITE_STD_TYPENAMES)));   
+                        
                                        // set checkboxes for examination of tables, views and system tables:
                         cb_examine_tables.setSelected(
                             TRUESTRING.equalsIgnoreCase(projectData.getProperty(EXAMINE_TABLES)));
@@ -575,6 +633,12 @@ private EditorPanel panel_editor;
                         
                                        // set textfield for tablename pattern:
                         tf_tableNamePattern.setText(projectData.getProperty(TABLE_NAME_PATTERN));
+                        
+                                        // set date format, if found:
+                        if (projectData.getProperty(DATE_FORMAT) != null) {
+                            dateFormat.setSelectedItem(projectData.getProperty(DATE_FORMAT));
+                        }
+                            
 		}
  
     		public void actionPerformed(ActionEvent ev) {
@@ -586,7 +650,8 @@ private EditorPanel panel_editor;
 
 					try {
 
-						String result = XMLConfigGenerator.createXMLOutput(projectData);
+						String result = 
+                                                   XMLConfigGenerator.createXMLOutput(projectData,true);
 
 						FileOutputStream os = new FileOutputStream(f);
 						ByteArrayInputStream is = new ByteArrayInputStream(result.toString().getBytes());
@@ -691,5 +756,11 @@ private EditorPanel panel_editor;
                 private javax.swing.JComboBox catalogList;
                 private javax.swing.JComboBox schemaList;
                 private javax.swing.JButton b_loadLists;
+                private javax.swing.JCheckBox cb_stdTypeNames;
+                private javax.swing.JSeparator jSeparator6;
+                private javax.swing.JPanel jPanel5;
+                private javax.swing.JLabel jLabel2;
+                private javax.swing.JComboBox dateFormat;
+                private javax.swing.JSeparator jSeparator7;
                 // End of variables declaration//GEN-END:variables
 }

@@ -47,5 +47,10 @@ public interface PropertyNames {
         static final String SCHEMA                = "schema";
         static final String TABLE_NAME_PATTERN    = "tableNamePattern";
         
+        static final String WRITE_STD_TYPENAMES = "writeStdTypeNames";
+        static final String USE_JAVASCRIPT_CALENDAR
+        = "useJavaScriptCalendar";
+        
         static final String CONFIG_FILE           = "configFile";
+        static final String DATE_FORMAT       = "dateFormat";
 }

@@ -62,7 +62,8 @@ public class ProjectData implements Serializable , PropertyNames {
           defaultProps.setProperty(TABLE_SELECTION,                ALL);
           defaultProps.setProperty(EXAMINE_TABLES,                 TRUESTRING); 
           defaultProps.setProperty(EXAMINE_VIEWS,                   TRUESTRING); 
-          defaultProps.setProperty(EXAMINE_SYSTABS,               FALSESTRING);           
+          defaultProps.setProperty(EXAMINE_SYSTABS,               FALSESTRING);       
+          defaultProps.setProperty(WRITE_STD_TYPENAMES,   FALSESTRING);
         }
 
 	/** Creates new Project */

@@ -31,6 +31,32 @@ import java.util.*;
 
 
 public class XMLConfigGenerator implements PropertyNames  {
+      
+                                          // the following types are known inside class org.dbforms.Field:
+static final String[] knownFieldTypes  = 
+{   "tinyint","int","smallint","integer","bigint",  // mapped to INTEGER
+    "float","real",				                              // mapped to FLOAT
+    "double",					                               // mapped to DOUBLE
+    "numeric","decimal","number",			// mapped to NUMERIC
+    "char","varchar","longchar","nvarchar",      // mapped to CHAR
+    "blob","image",					                // mapped to BLOB
+    "diskblob",					                            // mapped to DISKBLOB
+    "date",					                        	// mapped to DATE
+    "timestamp"					                        // mapped to TIMESTAMP
+};
+
+static boolean fieldTypeIsKnown(String s) {
+    int i;
+    String sLower = s.toLowerCase();
+    for (i=0; i< knownFieldTypes.length;i++) 
+        if (s.startsWith( knownFieldTypes[i])) 
+            return true;
+    return false;
+}
+
+static private final int DBMS_MYSQL = 1;
+static private final int DBMS_IBMDB2 = 2;
+     
 
 /* changes 2002-03-04 dikr:
  * - 
@@ -50,14 +76,14 @@ public class XMLConfigGenerator implements PropertyNames  {
   }  
 
   // nope, i won't use DOM for that task ;-)
-  public static String createXMLOutput(ProjectData projectData) throws Exception {
+  public static String createXMLOutput(ProjectData projectData,
+                              boolean createGuiMessagewindow) throws Exception {
 
 	  String jdbcDriver = projectData.getProperty("jdbcDriver");
 	  String jdbcURL = projectData.getProperty("jdbcURL");
 	  String username = projectData.getProperty("username");
 	  String password = projectData.getProperty("password");
-
-          
+        
                                          // create boolean variables out of String properties:
           
           boolean includeCatalog = projectData.getProperty(INCLUDE_CATALOGNAME).
@@ -65,6 +91,8 @@ public class XMLConfigGenerator implements PropertyNames  {
           boolean includeSchema = projectData.getProperty(INCLUDE_SCHEMANAME).
                                                             equalsIgnoreCase(TRUESTRING);          
           boolean useAutoCommitMode = projectData.getProperty(AUTOCOMMIT_MODE).
+                                                            equalsIgnoreCase(TRUESTRING);
+          boolean useStdTypeNames = projectData.getProperty(WRITE_STD_TYPENAMES).
                                                             equalsIgnoreCase(TRUESTRING);
 
                                         // create array of  table types that have to be examined...
@@ -91,14 +119,17 @@ public class XMLConfigGenerator implements PropertyNames  {
                                  
           String tableNamePattern  = projectData.getProperty(TABLE_SELECTION).equalsIgnoreCase(ALL) ?
                                             null : projectData.getProperty(TABLE_NAME_PATTERN);
-                
- 
+               
+          String dateFormatTag =  projectData.getProperty(DATE_FORMAT).equalsIgnoreCase("") ? 
+                                            "" : "\n\t<date-format>" + projectData.getProperty(DATE_FORMAT) +
+                                                    "</date-format>\n\n" ;
+                                            
 	  System.out.println(": Retrieving metadata using the following properties ");
 	  System.out.println("-----------------------------------------------------");
 	  System.out.println("jdbcDriver="+jdbcDriver);
 	  System.out.println("jdbcURL="+jdbcURL);
 	  System.out.println("username="+username);
-	  System.out.println("password="+password);
+	  System.out.println("password=(hidden)");
 	  System.out.println("catalog="+catalog);
 	  System.out.println("schemaPattern="+schemaPattern);
 	  System.out.println("tableNamePattern="+tableNamePattern);
@@ -116,11 +147,47 @@ public class XMLConfigGenerator implements PropertyNames  {
 	try {
 
 		con = createConnection(jdbcDriver, jdbcURL, username, password);
-                
+                 
                
 		result.append("<?xml version=\"1.0\" encoding=\"ISO-8859-1\" ?>\n\n<dbforms-config>\n");
 
+                result.append(dateFormatTag);
+                
 		DatabaseMetaData dbmd = con.getMetaData();
+                
+                                                        // at leat until JDBC 2 there does not seem to be a standard
+                                                        // way to determine, which column is automatically incremented
+                                                        // by dbms. The following is a woraround to support some systems
+                                                        // (contributed by Sebastian Bogaci)
+                                                        // currently we are able to handle:
+                                                        //    MySQL, DB2    : using dbms specific query
+                                                        //    Sybase, (maybe MS-SQL): checking string representation of
+                                                        //                                                       column type
+                boolean checkForAutoIncFields = false;
+                String      autoIncColumnsQuery = "";
+                String      catalogPlaceholder       = ":catalog";
+                String      schemaPlaceholder       = ":schema";
+                String      tabnamePlaceholder    = ":tabname";
+                int            dbms = 0;
+                PreparedStatement spCall = null;
+                try {                                // this is not mission critical, so own try block
+                    String dbmsProductName = dbmd.getDatabaseProductName();
+                    if (dbmsProductName != null) {
+                      dbmsProductName = dbmsProductName.toLowerCase();
+                      if (dbmsProductName.equals("mysql")) {
+                        dbms = DBMS_MYSQL;
+                        checkForAutoIncFields = true;
+                        autoIncColumnsQuery  = "SHOW COLUMNS FROM :tabname LIKE ?";
+                     } else if (dbmsProductName.startsWith("db2")) {
+                        dbms = DBMS_IBMDB2;
+                        checkForAutoIncFields = true;
+                        autoIncColumnsQuery  = 
+                             "SELECT identity FROM sysibm.syscolumns " +
+                             "WHERE tbcreator=':schema' and  tbname = ':tabname' AND name = ?";
+                      }
+                    }
+                } catch (SQLException ignored) {}
+                
                 
                                                         // if user wants to include catalog names in table names,
                                                         // try to check if DBMS supports this feature:
@@ -191,6 +258,7 @@ public class XMLConfigGenerator implements PropertyNames  {
                        catalogNames.add(tablesRS.getString(1));
                        schemaNames.add(tablesRS.getString(2));
                        tableNames.add(tablesRS.getString(3));
+                       
                     }
                     tablesRS.close();
                 
@@ -214,6 +282,8 @@ public class XMLConfigGenerator implements PropertyNames  {
                     warningMessage.append(") <br>found with catalog='" + catalog +"', schemapattern='" +
                                                                      schemaPattern + "',<br>tablename pattern='" + tableNamePattern +"'");
                 }
+                
+                boolean autoIncColumnsQueryAlwaysSucceeded = true; 
                 
                 for (int i = 0; i < tableNames.size();i++ ) {
                    
@@ -239,6 +309,7 @@ public class XMLConfigGenerator implements PropertyNames  {
 		  result.append(tableName);
 		  result.append("\">\n");
 
+                                                                // read primary key into Vector keys:
 		  ResultSet rsKeys = dbmd.getPrimaryKeys(catalogName, schemaName, tableName);
 		  Vector keys = new Vector();
 		  while(rsKeys.next()) {
@@ -247,14 +318,126 @@ public class XMLConfigGenerator implements PropertyNames  {
 		  }
 		  rsKeys.close();
 
-		  ResultSet rsFields = dbmd.getColumns(catalog, schemaPattern, tableName, null);
+                                                                // now try to get information about automatically 
+                                                                // incemented fields. Unfortunaltely there is now 
+                                                                // standard way to get this information in JDBC 2. 
+                                                                // Is there one within JDBC 3 ? 
+                                                                // 
+                  
+                  if (checkForAutoIncFields) {
+                       
+                       String sqlStmtPS = autoIncColumnsQuery;
+                       
+                                                                // We first construct a dbms specific query by substituting
+                                                                // placeholders for catalog, schema and table name
+                                                                // in a sql query. We do not use JDBC prepared queries
+                                                                // with questionmarks because we do not know the order
+                                                                // of these parameters and because '?' might not be allowed
+                                                                // in any place
+                     
+                       int pos =  autoIncColumnsQuery.indexOf(tabnamePlaceholder);
+                       if (pos >= 0) 
+                           sqlStmtPS = autoIncColumnsQuery.substring(0,pos) + tableName +
+                                                   autoIncColumnsQuery.substring(pos + tabnamePlaceholder.length());
+                       
+                       pos =  sqlStmtPS.indexOf(schemaPlaceholder);
+                       if (pos >= 0) 
+                           sqlStmtPS = sqlStmtPS.substring(0,pos) + schemaName +
+                                                   sqlStmtPS.substring(pos + schemaPlaceholder.length());
+                       
+                       pos =  sqlStmtPS.indexOf(catalogPlaceholder);
+                       if (pos >= 0) 
+                           sqlStmtPS = sqlStmtPS.substring(0,pos) + catalogName +
+                                                   sqlStmtPS.substring(pos + catalogPlaceholder.length());
+                     
+                                                                // now prepare statement having just one '?' for 
+                                                                // column name left:
+                       
+                       try {                                 // if something goes wrong here (maybe wrong dbms version),
+                                                                // the program should go on, just the detection of auto-incremented
+                                                                // columns will not work...
+                          spCall = con.prepareStatement(sqlStmtPS);
+                       } catch (SQLException ex) {
+                           System.err.println("Warning: Prepare of Statement \n'" + sqlStmtPS 
+                              + "'\n  failed with message \n'" + ex.getMessage() 
+                              +"'.\n No reason to panic, just detection auf auto-incremented \n " 
+                              + " columns will not work. However, better send a mail to \n"
+                              + " DbForms Mailing list to get this corrected" );
+                       } 
+                  }
+                  
+		  ResultSet rsFields = dbmd.getColumns(catalogName, schemaName, tableName, null);
 		  while(rsFields.next()) {
 
-		      String columnName = rsFields.getString(4);
-		   	  short dataType = rsFields.getShort(5);
-		   	  String typeName = rsFields.getString(6);
-		   	  int columnSize = rsFields.getInt(7);
-		   	  String isNullable = rsFields.getString(18);
+		       String columnName = rsFields.getString(4);
+		       short dataType = rsFields.getShort(5);
+		       String typeName = rsFields.getString(6);
+		       int columnSize = rsFields.getInt(7);
+		       String isNullable = rsFields.getString(18);
+                       int typeCode = rsFields.getInt(5);
+                       
+                                                             // if we want to check for autoincremented
+                                                             // columns and have successfully prepared a
+                                                             // dbms specific query, we can now do an execute
+                                                             // for this query and evaluate results:    
+                       boolean isAutoIncColumn = false;
+                       if (checkForAutoIncFields && spCall != null) {
+                            try {
+                               spCall.setString(1, columnName);
+                               ResultSet rssp = spCall.executeQuery();
+
+                               switch (dbms) {
+                                    case DBMS_MYSQL :      
+                                       isAutoIncColumn =                                           
+                                          (   rssp.next() &&
+                                              rssp.getString(1).equalsIgnoreCase(columnName) &&
+                                              rssp.getString(6).equalsIgnoreCase("auto_increment") );                                           
+                                        break;
+                                   case DBMS_IBMDB2 :
+                                       isAutoIncColumn =                                           
+                                          (  rssp.next() &&
+                                              rssp.getString(1).equalsIgnoreCase("y") );
+                                       break;
+                              }
+                              rssp.close();
+                            } catch (SQLException ex) {    
+                                          // We do not want to print out this message again and again for each column,
+                                          // so we check if this error already occured and only print out message
+                                          // the first time
+                                if (autoIncColumnsQueryAlwaysSucceeded) {
+                                      System.err.println("Warning: Reading of auto-incremented columns  \n"  
+                                         + "\n  failed with message \n'" + ex.getMessage() 
+                                         +"'.\n No reason to panic, just detection auf auto-incremented \n " 
+                                         + " columns will not work. However, better send a mail to \n"
+                                         + " DbForms Mailing list to get this corrected" );    
+                                      autoIncColumnsQueryAlwaysSucceeded = false;
+                                }
+                            }
+                        } else { // some DBMS (like Sybase) simply have a trailing
+                                     // ' identity' in type name
+                            isAutoIncColumn =  typeName.toLowerCase().endsWith(" identity");
+                        }
+                                                                // if type name is unknown and user selected to
+                                                                // generate standard type names in this case, try
+                                                                // to set typeName to standard type name
+                          if ( useStdTypeNames && ( ! fieldTypeIsKnown(typeName)) ) {
+                              switch (typeCode) {
+                                  case java.sql.Types.BIGINT:
+                                  case java.sql.Types.INTEGER:
+                                  case java.sql.Types.SMALLINT:
+                                  case java.sql.Types.TINYINT:          typeName = "integer"; break;
+                                  case java.sql.Types.CHAR:
+                                  case java.sql.Types.LONGVARCHAR:
+                                  case java.sql.Types.VARCHAR:       typeName = "char";       break;
+                                  case java.sql.Types.DECIMAL:        typeName = "decimal"; break;
+                                  case java.sql.Types.NUMERIC:      typeName = "numeric"; break;
+                                  case java.sql.Types.FLOAT:             typeName = "float"; break;
+                                  case java.sql.Types.REAL:                typeName = "real"; break;
+                                  case java.sql.Types.DATE:               typeName = "date"; break;
+                                  case java.sql.Types.TIMESTAMP:  typeName = "timestamp"; break;
+                                  case java.sql.Types.BLOB:               typeName="blob"; break;
+                           }
+                          }
 
 			  result.append("\t\t<field name=\"");
 			  result.append(columnName);
@@ -266,6 +449,8 @@ public class XMLConfigGenerator implements PropertyNames  {
 			  if(keys.contains(columnName)) {
 			    result.append(" isKey=\"true\"");
 			  }
+                          if (isAutoIncColumn) result.append(" autoInc=\"true\"");
+                          
 			  result.append("/>\n");
 		  }
 		  rsFields.close();
@@ -312,8 +497,12 @@ public class XMLConfigGenerator implements PropertyNames  {
 		try {
 
                         if (showWarning)
-                          javax.swing.JOptionPane.showMessageDialog(null, warningMessage,"Warning", 
-                                                                                                          javax.swing.JOptionPane.WARNING_MESSAGE);
+                          if (createGuiMessagewindow) 
+                              javax.swing.JOptionPane.showMessageDialog(
+                                  null, warningMessage,"Warning", 
+                                  javax.swing.JOptionPane.WARNING_MESSAGE);
+                          else 
+                              System.err.println("Warning:\n " + warningMessage);
 	               
 			if(con!=null) con.close();
 		}	catch(SQLException sqle) {

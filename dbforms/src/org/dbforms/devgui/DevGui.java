@@ -53,9 +53,18 @@ import java.io.*;
 public class DevGui extends javax.swing.JFrame implements ActionListener{
 
 
+
+        private static final String metalLF    =
+            "javax.swing.plaf.metal.MetalLookAndFeel";
+        private static final String motifLF   =
+            "com.sun.java.swing.plaf.motif.MotifLookAndFeel";
+        private static final String windowsLF  =
+            "com.sun.java.swing.plaf.windows.WindowsLookAndFeel";
+
 	// Gui Variables declaration
 	private javax.swing.JMenuBar jMenuBar1;
-	private javax.swing.JMenu jMenu1;
+	private javax.swing.JMenu jMenu1, jMenu2, JMenu3;
+        private javax.swing.JMenuItem metalMenuItem, motifMenuItem, windowsMenuItem;
 	private javax.swing.JMenuItem newMenuItem;
 	private javax.swing.JMenuItem openMenuItem;
 	private javax.swing.JMenuItem saveMenuItem;
@@ -128,17 +137,48 @@ public class DevGui extends javax.swing.JFrame implements ActionListener{
                                 jTabbedPane1.setTitleAt(3,"(4) XSL Transformation");
                                 jTabbedPane1.setToolTipTextAt(3,"use XSL to generate JSPs from dbforms config file");
                                 
-                                                 /* create Menuitem for Help:
+                                                /* create Menuitem for Look and Feel:
                                                   */
-		                JMenu jMenu2 = new javax.swing.JMenu();
-                                jMenu2.setText("Help");                               
+                                ButtonGroup lfButtonGroup = new ButtonGroup();
+		                JMenu jMenu2 = new javax.swing.JMenu();                                
+                                jMenu2.setText("Look&Feel");  
+                                
+		                metalMenuItem = new javax.swing.JRadioButtonMenuItem("Java Metal L&F");
+                                metalMenuItem.setActionCommand("Java Metal L&F");
+                                metalMenuItem.addActionListener(this);
+                                lfButtonGroup.add(metalMenuItem);
+                                jMenu2.add(metalMenuItem);
+                                
+                                motifMenuItem = new javax.swing.JRadioButtonMenuItem("Motif L&F");
+                                motifMenuItem.setActionCommand("Motiv L&F");
+                                motifMenuItem.addActionListener(this);
+                                lfButtonGroup.add(motifMenuItem);
+                                jMenu2.add(motifMenuItem);
+                                
+                                windowsMenuItem = new javax.swing.JRadioButtonMenuItem("Windows L&F");
+                                windowsMenuItem.setActionCommand("Windows L&F");
+                                windowsMenuItem.addActionListener(this);
+                                lfButtonGroup.add(windowsMenuItem);
+                                jMenu2.add(windowsMenuItem);
+                                
+                                                                    // set Default L&F:
+                                metalMenuItem.setSelected(true);
+                                setLookAndFeel(metalLF);
+                                
+                                jMenuBar1.add(jMenu2);
+                                   
+                                                  
+                                                  /* create Menuitem for Help:
+                                                  */
+		                JMenu jMenu3 = new javax.swing.JMenu();
+                                jMenu3.setText("Help");                               
 		                helpMenuItem = new javax.swing.JMenuItem();
                                 helpMenuItem.setActionCommand("Show Helptext");
 		                helpMenuItem.setText("Show Helptext");
                                 helpMenuItem.addActionListener(this);
-                                jMenu2.add(helpMenuItem);
-                                jMenuBar1.add(jMenu2);
-                                
+                                jMenu3.add(helpMenuItem);
+                                jMenuBar1.add(jMenu3);
+ 
                                 helpFrame = new HelpFrame();
                                 
 		
@@ -291,11 +331,24 @@ public class DevGui extends javax.swing.JFrame implements ActionListener{
 
 		} else if(e.getSource()==helpMenuItem) {
                     helpFrame.show();
-                }
+                } else if (e.getSource() == metalMenuItem) {
+                    setLookAndFeel(metalLF);
+                } else if (e.getSource() == motifMenuItem) {
+                    setLookAndFeel(motifLF);
+                } else if (e.getSource() == windowsMenuItem) {
+                    setLookAndFeel(windowsLF);
+                } 
 
 	}
 
-
+        private void setLookAndFeel(String lf) {
+            try {
+                UIManager.setLookAndFeel(lf);
+                SwingUtilities.updateComponentTreeUI(this);
+            } catch (Exception ex) { 
+                System.err.println(ex.getMessage()); 
+            }
+        }
 
 
 
@@ -457,8 +510,53 @@ public class DevGui extends javax.swing.JFrame implements ActionListener{
 	* @param args the command line arguments
 	*/
 	public static void main (String args[]) {
+            if (args.length == 0) {
 		new DevGui ().show ();
+            } else {
+                String whatToDo = args[0];
+                if (whatToDo.equalsIgnoreCase("createconfigfile")) {
+                    if ((args.length != 3) && (args.length != 2)){
+                       usage();
+                    } else {
+                       try { 
+                          String propsFileName   = args[1];
+                          File projFile = new File(propsFileName);                           
+                          ProjectData pd = ProjectData.loadFromDisc(projFile);
+                          String outputFileName;
+                          if (args.length == 3) {
+                            outputFileName = args[2];
+                          } else {
+                            outputFileName  = pd.getProperty("configFile");
+                          }
+                          if (outputFileName.equalsIgnoreCase("")) {
+                             throw new Exception("Property configFile in propery file not set");
+                          }
+                          
+                          String result = XMLConfigGenerator.createXMLOutput(pd,false);
+                          BufferedWriter bw = new BufferedWriter
+                               (new FileWriter(outputFileName));
+                          bw.write(result);
+                          bw.close() ;
+                      } catch (Exception ex) {
+                           ex.printStackTrace();
+                      }
+                  }
+                } else {
+                    usage();
+                }
+            }
 	}
+            
+        static void usage() {
+            System.out.println("Usage: ");
+            System.out.println(
+             "Gui mode: \n" +
+             "  java -DDBFORMS_HOME=/path/to/dbfhome org.dbforms.devgui.DevGui ");
+            System.out.println(
+             "Command line mode: \n" +
+             "  java org.dbforms.devgui.DevGui createconfigfile <propertyfilename> [ <outputfilename> ]");
+        }
+            
 
 
 
