@@ -32,8 +32,6 @@ public class TestBooksSingleUpdate extends HttpTestCase
       list.add(new KeyValuePair("customEvent", ""));
       list.add(new KeyValuePair("firstpos_1", "0%3A1%3A1-2%3A1%3A1-3%3A27%3ADie+Insel+des+vorigen+Tages"));
       list.add(new KeyValuePair("lastpos_1", "0%3A1%3A1-2%3A1%3A1-3%3A27%3ADie+Insel+des+vorigen+Tages"));
-      list.add(new KeyValuePair("f_1_0@root_0", "1"));
-      list.add(new KeyValuePair("of_1_0@root_0", "1"));
       list.add(new KeyValuePair("f_1_0@root_1", "42-42-42"));
       list.add(new KeyValuePair("of_1_0@root_1", "3-423-12445-4"));
       list.add(new KeyValuePair("f_1_0@root_2", "1"));
@@ -55,8 +53,6 @@ public class TestBooksSingleUpdate extends HttpTestCase
       list.add(new KeyValuePair("customEvent", ""));
       list.add(new KeyValuePair("firstpos_1", "0%3A1%3A1-2%3A1%3A1-3%3A27%3ADie+Insel+des+vorigen+Tages"));
       list.add(new KeyValuePair("lastpos_1", "0%3A1%3A1-2%3A1%3A1-3%3A27%3ADie+Insel+des+vorigen+Tages"));
-      list.add(new KeyValuePair("f_1_0@root_0", "1"));
-      list.add(new KeyValuePair("of_1_0@root_0", "1"));
       list.add(new KeyValuePair("f_1_0@root_1", "3-423-12445-4"));
       list.add(new KeyValuePair("of_1_0@root_1", "42-42-42"));
       list.add(new KeyValuePair("f_1_0@root_2", "1"));
@@ -84,8 +80,6 @@ public class TestBooksSingleUpdate extends HttpTestCase
       list.add(new KeyValuePair("customEvent", ""));
       list.add(new KeyValuePair("firstpos_1", "0%3A1%3A1-2%3A1%3A1-3%3A27%3ADie+Insel+des+vorigen+Tages"));
       list.add(new KeyValuePair("lastpos_1", "0%3A1%3A1-2%3A1%3A1-3%3A27%3ADie+Insel+des+vorigen+Tages"));
-      list.add(new KeyValuePair("f_1_0@root_0", "1"));
-      list.add(new KeyValuePair("of_1_0@root_0", "1"));
       list.add(new KeyValuePair("f_1_0@root_1", "42-42-42"));
       list.add(new KeyValuePair("of_1_0@root_1", "42-42-42"));
       list.add(new KeyValuePair("f_1_0@root_3", "Die Insel des vorigen Tages"));
@@ -102,8 +96,8 @@ public class TestBooksSingleUpdate extends HttpTestCase
       list.add(new KeyValuePair("fu_1", "/tests/testBOOKSSingle.jsp"));
       list.add(new KeyValuePair("source", "/bookstore/tests/testBOOKSSingle.jsp"));
       list.add(new KeyValuePair("customEvent", ""));
-      list.add(new KeyValuePair("f_1_insroot_0", "0"));
-      list.add(new KeyValuePair("of_1_insroot_0", "0"));
+      list.add(new KeyValuePair("f_1_insroot_0", "999"));
+      list.add(new KeyValuePair("of_1_insroot_0", ""));
       list.add(new KeyValuePair("f_1_insroot_1", "4711"));
       list.add(new KeyValuePair("of_1_insroot_1", ""));
       list.add(new KeyValuePair("f_1_insroot_2", "1"));
@@ -113,6 +107,8 @@ public class TestBooksSingleUpdate extends HttpTestCase
       list.add(new KeyValuePair("ac_insert_1_root_22", "Insert"));
       list.add(new KeyValuePair("k_1_0@root", "null"));
       post("http://localhost/bookstore/servlet/control", list);
+      printResponse();
+      assertTrue(responseContains("<input type=\"text\" name=\"f_1_0@root_0\" value=\"999\" />"));
       assertTrue(responseContains("<input type=\"text\" name=\"f_1_0@root_1\" value=\"4711\" />"));
 
       list = new ArrayList();
@@ -124,9 +120,8 @@ public class TestBooksSingleUpdate extends HttpTestCase
       list.add(new KeyValuePair("customEvent", ""));
       list.add(new KeyValuePair("firstpos_1", "0%3A1%3A0-2%3A1%3A1"));
       list.add(new KeyValuePair("lastpos_1", "0%3A1%3A0-2%3A1%3A1"));
-      list.add(new KeyValuePair("f_1_0@root_0", "0"));
-      list.add(new KeyValuePair("of_1_0@root_0", "0"));
-      list.add(new KeyValuePair("pf_1_0@root_0", "#,##0"));
+      list.add(new KeyValuePair("f_1_0@root_0", "999"));
+      list.add(new KeyValuePair("of_1_0@root_0", "999"));
       list.add(new KeyValuePair("f_1_0@root_1", "4711"));
       list.add(new KeyValuePair("of_1_0@root_1", "4711"));
       list.add(new KeyValuePair("f_1_0@root_2", "1"));
@@ -135,8 +130,9 @@ public class TestBooksSingleUpdate extends HttpTestCase
       list.add(new KeyValuePair("f_1_0@root_3", "test"));
       list.add(new KeyValuePair("of_1_0@root_3", "test"));
       list.add(new KeyValuePair("ac_delete_1_0@root_8", "Delete"));
-      list.add(new KeyValuePair("k_1_0@root", "0%3A1%3A0-2%3A1%3A1"));
+      list.add(new KeyValuePair("k_1_0@root", "0%3A3%3A999-2%3A1%3A1"));
       post("http://localhost/bookstore/servlet/control", list);
+      printResponse();
       assertTrue(responseContains("<input type=\"text\" name=\"f_1_0@root_1\" value=\"3-423-12445-4\" />"));
       assertTrue(responseContains("<input type=\"text\" name=\"f_1_0@root_3\" value=\"Die Insel des vorigen Tages\" />"));
       
