@@ -369,40 +369,32 @@ public abstract class DataSource
       throws SQLException
    {
       ResultSetVector result = null;
-
       if (size() > 0)
       {
          result = new ResultSetVector(table.getFields());
-
          Object[] row;
-
          if (count > 0)
          {
             for (int i = startRow; i < (startRow + count); i++)
             {
                row = getRow(i);
-
                if (row == null)
                {
                   break;
                }
-
                result.addRow(row);
             }
          }
          else if (count < 0)
          {
-            startRow = startRow + count + 1;
-
-            if (startRow < 0)
+            int begin = startRow + count + 1;
+            if (begin < 0)
             {
-               startRow = 0;
+               begin = 0;
             }
-
-            for (int i = startRow; i <= startRow; i++)
+            for (int i = begin; i <= startRow; i++)
             {
                row = getRow(i);
-
                if (row == null)
                {
                   break;
@@ -412,7 +404,6 @@ public abstract class DataSource
             }
          }
       }
-
       return result;
    }
 
