@@ -76,6 +76,7 @@ public class SingleConnectionWrapper implements Connection {
                logCat.error(e);
             }
          }
+         list.clear();
          counter--;
          logCat.warn("closeConnection: connection count: " + String.valueOf(counter));
       }
