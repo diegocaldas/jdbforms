@@ -18,6 +18,7 @@
 		 isTitleNewPage="false"
 		 isSummaryNewPage="false">
 	<queryString><![CDATA[select * from book order by isbn]]></queryString>
+	<parameter name="PARAM" isForPrompting="true" class="org.dbforms.servlets.reports.ReportParameter"/>
 	<field name="BOOK_ID" class="java.lang.Integer"/>
 	<field name="AUTHOR_ID" class="java.lang.Integer"/>
 	<field name="ISBN" class="java.lang.String"/>
@@ -45,8 +46,7 @@
 					<textElement textAlignment="Center" verticalAlignment="Top" lineSpacing="Single">
 						<font fontName="SansSerif" pdfFontName="Helvetica" size="18" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="CP1252" isStrikeThrough="false" />
 					</textElement>
-				<text><![CDATA[BOOKSTORE
-list of books]]></text>
+				<text><![CDATA[BOOKSTORE list of books]]></text>
 				</staticText>
 			</band>
 		</title>
