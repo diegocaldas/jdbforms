@@ -22,11 +22,11 @@
  */
 package org.dbforms.event;
 import java.util.HashMap;
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Category;
 
-import org.dbforms.config.*;
+import org.dbforms.config.DbFormsConfig;
 import org.dbforms.event.eventtype.EventType;
 
 
