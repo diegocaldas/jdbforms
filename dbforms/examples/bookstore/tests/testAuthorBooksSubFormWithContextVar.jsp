@@ -70,7 +70,7 @@
         	          <td>
         	            <%=((DbFormContext)dbforms.get("BOOK")).getCurrentRow().get("BOOK_ID")%>
         	          </td>
-            	      <td>
+            	       <td>
         	            <%=((DbFormContext)dbforms.get("BOOK")).getCurrentRow().get("ISBN")%>
             	      </td>
                 	  <td>
@@ -82,15 +82,6 @@
 	               </tr>			              		 				
 				 </db:body>
 		         <db:footer>
-					  <tr class="button">
-					   	<td colspan="4" style="text-align:center">
-						 	<db:navFirstButton style="width:100" caption="<< First"/>
-					   		<db:navPrevButton  style="width:100" caption="<  Previous"/>
-							<db:navNextButton  style="width:100" caption=">  Next"/>
-						 	<db:navLastButton  style="width:100" caption=">> Last"/>
-						 	&nbsp;
-					   	</td>
-					  </tr>
 					<table>
 		         </db:footer>
 				</db:dbform>	
