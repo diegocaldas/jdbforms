@@ -46,6 +46,9 @@ public class DbNavNewButtonTag extends DbBaseButtonTag
     static Category logCat = Category.getInstance(DbNavNewButtonTag.class.getName()); // logging category for this class
     private String destTable;
 
+    /** Holds value of property showAlwaysInFooter. */
+    private String showAlwaysInFooter = "true";
+    
     /**
      * DOCUMENT ME!
      *
@@ -70,7 +73,7 @@ public class DbNavNewButtonTag extends DbBaseButtonTag
             setOnClick(onclick + ValidatorConstants.JS_CANCEL_VALIDATION + "=false;");
         }
 
-        if (parentForm.getFooterReached() && ResultSetVector.isEmptyOrNull(parentForm.getResultSetVector()))
+        if (parentForm.getFooterReached() && ResultSetVector.isEmptyOrNull(parentForm.getResultSetVector()) && "false".equalsIgnoreCase(showAlwaysInFooter))
         {
             return EVAL_PAGE;
         }
@@ -167,4 +170,21 @@ public class DbNavNewButtonTag extends DbBaseButtonTag
     {
         this.destTable = destTable;
     }
+    
+    /** Getter for property showAlwaysInFooter.
+     * @return Value of property showAlwaysInFooter.
+     *
+     */
+    public String getShowAlwaysInFooter() {
+        return this.showAlwaysInFooter;
+    }
+    
+    /** Setter for property showAlwaysInFooter.
+     * @param showAlwaysInFooter New value of property showAlwaysInFooter.
+     *
+     */
+    public void setShowAlwaysInFooter(String showAlwaysInFooter) {
+        this.showAlwaysInFooter = showAlwaysInFooter;
+    }
+    
 }
