@@ -31,14 +31,12 @@ import org.dbforms.config.*;
 
 
 
-/****
- *
- * <p>ReloadEvent is used to reload the current page with data from Request object.
- *    When you want to do action on different field when one of them change.
- *
- *    Use for field manipulation server side.
- *
- *    Exemple: Select child change when Select parent change.
+/**
+ * ReloadEvent is used to reload the current page with data from Request object.
+ * When you want to do action on different field when one of them change.
+ * Use for field manipulation server side.
+ * <br>
+ * Example: Select child change when Select parent change.
  *
  * @author Eric Beaumier
  */
@@ -47,7 +45,7 @@ public class ReloadEvent extends WebEvent
    static Category logCat = Category.getInstance(ReloadEvent.class.getName()); // logging category for this class
 
    /**
-    * Creates a new ReloadEvent object.
+    *  Creates a new ReloadEvent object.
     */
    public ReloadEvent(int tableId, HttpServletRequest request,
       DbFormsConfig config)

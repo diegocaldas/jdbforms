@@ -34,9 +34,7 @@ import org.dbforms.event.eventtype.EventType;
 
 
 /**
- *  This is the Bounded Navigation Event Factory.
- *  <br>
- *  Provides bounded navigation events.
+ *  Implementation of a Navigation Event Factory.
  *
  * @author  Luca Fossato <fossato@pow2.com>
  * @created  25 novembre 2002

@@ -29,7 +29,8 @@ import org.dbforms.config.*;
 
 
 /**
- *  NavigationeEvent Factory.
+ *  The NavEventFactory abstract class provides the interface for a 
+ *  Navigation Event concrete class (see NavEventFactoryImpl).
  *
  * @author Luca Fossato <fossato@pow2.com>
  */

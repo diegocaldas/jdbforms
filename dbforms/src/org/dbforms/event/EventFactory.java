@@ -40,7 +40,9 @@ import org.dbforms.event.eventtype.EventTypeUtil;
 
 
 /**
- * EventFactory class.
+ *  The EventFactory abstract class provides the interface and the implementation
+ *	of protected methods used by eventFactory subclasses 
+ *  (see NavEventFactory and DatabaseEventFactory).
  *
  * @author  Luca Fossato
  * @created  20 novembre 2002
@@ -62,6 +64,7 @@ public abstract class EventFactory
          DbFormsConfig.class
       };
 
+
    /**
     *  Creates a new EventFactory object.
     */
@@ -79,6 +82,7 @@ public abstract class EventFactory
       }
    }
 
+
    /**
     *  Create and return a new event.
     *
@@ -87,8 +91,7 @@ public abstract class EventFactory
     * @param  config the DbForms config object
     * @return  a new navigation event
     */
-   public abstract WebEvent createEvent(String action,
-      HttpServletRequest request, DbFormsConfig config);
+   public abstract WebEvent createEvent(String action, HttpServletRequest request, DbFormsConfig config);
 
 
    /**
@@ -116,22 +119,21 @@ public abstract class EventFactory
             {
                String prevClassName = prevEinfo.getClassName();
                logCat.warn(new StringBuffer(
-                     "::addEventInfo - the event information having id, class [").append(
-                     id).append(", ").append(einfo.getClassName())
-                                   .append("] overrides the event class [")
-                                   .append(prevClassName)
-                                   .append("]")
-                                   .toString());
+                     "::addEventInfo - the event information having id, class [")
+                     .append(id).append(", ").append(einfo.getClassName())
+                     .append("] overrides the event class [")
+                     .append(prevClassName)
+                     .append("]")
+                     .toString());
             }
          }
 
          // event info registration;
          eventInfoMap.put(id, einfo);
          logCat.info(new StringBuffer(
-               "::addEventInfo - event info having id, type, class [").append(
-               id).append(", ").append(einfo.getType()).append(", ")
-                                                       .append(einfo
-               .getClassName()).append("] registered"));
+               "::addEventInfo - event info having id, type, class [")
+               .append(id).append(", ").append(einfo.getType())
+               .append(", ").append(einfo.getClassName()).append("] registered"));
       }
    }
 
