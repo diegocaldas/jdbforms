@@ -100,4 +100,24 @@ will not appear unless the attribute
     </para>
    
   </sect1>
+  <sect1> 
+    <title>1.1.4pr2</title>
+    <para>(also see note for 1.1.4 above)  <emphasis role="italic">When upgrading from any previous release please note that:</emphasis>
+    To have better control of the fields written to the datebase we changed the interceptor interface of the 
+preUpdate/preInsert/preDelete events to: 
+    <screen>
+         public int preXXXXXX(HttpServletRequest request,  Table table, <emphasis role="bold">FieldValues</emphasis> fieldValues,
+							  DbFormsConfig config, Connection con) throws ValidationException
+    </screen>Now you have full control over the fields written to the datbase, you can remove, change and add fields.</para>
+
+    <para><emphasis role="bold">You only need to change the interfaces in your old interceptor code. Changing the code should not be necessary because the 
+           interface of the FieldValues class is nearly the same as the previously used Hashtable.</emphasis> </para>
+    <para><emphasis role="italic"> If you are upgrading from 1.1.4pr1,</emphasis> please adjust the following for the <computeroutput>&lt;filterCondition&gt;</computeroutput> tag (used embedded within the new <computeroutput>&lt;filter&gt;</computeroutput> tag).
+You must change your filter values for strings to not use the ''! This is now done automatically.</para>
+    <para>So: 
+    <screen>	name like '?' </screen>
+must be changed to
+    <screen>	name like ? </screen>
+    </para>
+  </sect1>
 </chapter>

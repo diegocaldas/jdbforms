@@ -54,7 +54,7 @@ Simplifies searching.
 &lt;db:filter&gt;
 
   &lt;db:filterCondition label=&quot;author is&quot;&gt;
-    NAME = '?'
+    NAME = ?
     &lt;db:filterValue type=&quot;select&quot;&gt;
       &lt;db:queryData name=&quot;q1&quot; query=&quot;select distinct name as n1, name as n2 from author where AUTHOR_ID &lt; 100 order by name&quot;/&gt;
     &lt;/db:filterValue&gt;
@@ -67,7 +67,7 @@ Simplifies searching.
       <screen>
 &lt;db:filter&gt;
   &lt;db:filterCondition label=&quot;title like&quot;&gt;
-    TITLE LIKE '%?%'
+    TITLE LIKE %?%
      &lt;db:filterValue/&gt;
   &lt;/db:filterCondition&gt;
   
