@@ -96,8 +96,10 @@ public class DbNavFirstButtonTag extends DbBaseButtonTag
 
          tagBuf.append(getButtonBegin());
          tagBuf.append(" name=\"");
-         tagBuf.append(tagName);
-         tagBuf.append("\">");
+			tagBuf.append(tagName + "\"");
+         if (parentForm.getResultSetVector().isFirstPage()) 
+         	tagBuf.append(" disabled=\"true\"");
+         tagBuf.append("/>");
 
          pageContext.getOut().write(tagBuf.toString());
       }

@@ -459,6 +459,19 @@ public class DataSourceJDBC extends DataSource
       return data.size();
    }
 
+	/**
+	 * return true if there are more records to fetch then the given record number
+	 *
+	 * @param i index of last fetched row.
+	 *  
+	 * @return true if there are more records to fetch then the given record number
+	 * 
+	 * @throws SQLException
+	 */
+	protected boolean hasMore(int i) throws SQLException 
+	{
+		return !fetchedAll || (i < size());
+	}
 
    //------------------------------ DAO methods ---------------------------------
    private int fillWithData(PreparedStatement ps, FieldValues fieldValues)

@@ -198,6 +198,16 @@ public abstract class DataSource
     */
    protected abstract int size() throws SQLException;
 
+	/**
+	 * return true if there are more records to fetch then the given record number
+	 *
+	 * @param i index of last fetched row.
+	 *  
+	 * @return true if there are more records to fetch then the given record number
+	 * 
+	 * @throws SQLException
+	 */
+	protected abstract boolean hasMore(int i) throws SQLException;
 
    /**
     * should retrieve the row at an special index as an Object[]
@@ -380,14 +390,17 @@ public abstract class DataSource
    {
       ResultSetVector result = null;
       result = new ResultSetVector(table.getFields());
-
+      int begin = 0;
+      int ende  = 0;
+            
       Object[] row;
 
       if (count > 0)
       {
-         for (int i = startRow; i < (startRow + count); i++)
+         begin = startRow;
+         for (ende = begin; ende < (startRow + count); ende++)
          {
-            row = getRow(i);
+            row = getRow(ende);
 
             if (row == null)
             {
@@ -399,16 +412,16 @@ public abstract class DataSource
       }
       else if (count < 0)
       {
-         int begin = startRow + count + 1;
+         begin = startRow + count + 1;
 
          if (begin < 0)
          {
             begin = 0;
          }
 
-         for (int i = begin; i <= startRow; i++)
+         for (ende = begin; ende <= startRow; ende++)
          {
-            row = getRow(i);
+            row = getRow(ende);
 
             if (row == null)
             {
@@ -418,7 +431,9 @@ public abstract class DataSource
             result.addRow(row);
          }
       }
-
+      
+      result.setFirstPage(!(begin > 0));
+      result.setLastPage(!hasMore(ende));
       return result;
    }
 

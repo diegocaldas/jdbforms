@@ -63,6 +63,9 @@ public class ResultSetVector {
    private Hashtable selectFieldsHashtable;
    private Vector stringVector;
    private Vector objectVector;
+   
+   private boolean firstPage = true;
+	private boolean lastPage = true;
 
    /**
     * Creates a new ResultSetVector object.
@@ -445,4 +448,36 @@ public class ResultSetVector {
 
       return fvHT;
    }
+	/**
+	 * @return
+	 */
+	public boolean isFirstPage()
+	{
+		return firstPage;
+	}
+
+	/**
+	 * @return
+	 */
+	public boolean isLastPage()
+	{
+		return lastPage;
+	}
+
+	/**
+	 * @param b
+	 */
+	public void setFirstPage(boolean b)
+	{
+		firstPage = b;
+	}
+
+	/**
+	 * @param b
+	 */
+	public void setLastPage(boolean b)
+	{
+		lastPage = b;
+	}
+
 }

@@ -171,6 +171,19 @@ public class DataSourceXML extends DataSource
       return res;
    }
 
+	/**
+	 * return true if there are more records to fetch then the given record number
+	 *
+	 * @param i index of last fetched row.
+	 *  
+	 * @return true if there are more records to fetch then the given record number
+	 * 
+	 * @throws SQLException
+	 */
+	protected boolean hasMore(int i) throws SQLException 
+	{
+		return (i < size());
+	}
 
    /**
     * DOCUMENT ME!
