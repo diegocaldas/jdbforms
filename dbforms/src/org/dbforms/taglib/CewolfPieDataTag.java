@@ -30,7 +30,7 @@ import javax.servlet.jsp.JspException;
 import de.laures.cewolf.taglib.DataAware;
 import de.laures.cewolf.DatasetProducer;
 
-import org.jfree.data.DefaultPieDataset;
+import org.jfree.data.general.DefaultPieDataset;
 
 import org.dbforms.util.CewolfDatasetProducer;
 import org.dbforms.config.ResultSetVector;
