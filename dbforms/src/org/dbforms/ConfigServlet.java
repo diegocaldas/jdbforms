@@ -22,6 +22,7 @@
  */
 
 package org.dbforms;
+
 import java.io.*;
 import java.net.*;
 import java.sql.*;
@@ -492,8 +493,15 @@ public class ConfigServlet extends HttpServlet
         // store this config object in servlet context ("application")
         getServletContext().setAttribute(DbFormsConfig.CONFIG, dbFormsConfig);
 
-        // fossato, 2002.11.30
-        DbFormsConfig.setInstance(dbFormsConfig);
+        // ---------------------------------------------------------------
+        // register the config object into the DbFormsConfigRegistry
+        // as the default config (fossato, 2002.12.02)
+        DbFormsConfigRegistry.instance().register(dbFormsConfig);
+
+        // but could use the context name as registry key...
+        //  String name = getServletContext().getServletContextName();
+        //  DbFormsConfigRegistry.instance().register(name, this);
+        // ---------------------------------------------------------------
 
         // Parse the input stream to configure our mappings
         try
