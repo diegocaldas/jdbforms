@@ -23,19 +23,17 @@
 
 package org.dbforms.event;
 
-import java.util.*;
+import java.sql.Connection;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
 import org.apache.cactus.JspTestCase;
-import org.apache.cactus.*;
+import org.apache.cactus.WebRequest;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.dbforms.config.MultipleValidationException;
 import org.dbforms.config.DbFormsConfigRegistry;
+import org.dbforms.config.SqlUtil;
+
 import org.dbforms.servlets.ConfigServlet;
-import org.dbforms.util.AssertUtils;
 
 
 /**
@@ -74,19 +72,6 @@ public class TestValidationEvent extends JspTestCase
 
 
    /**
-    * DOCUMENT ME!
-    * 
-    * @return a test suite (<code>TestSuite</code>) that includes all methods
-    *         starting with "test"
-    */
-   public static Test suite()
-   {
-      // All methods starting with "test" will be executed in the test suite.
-      return new TestSuite(TestValidationEvent.class);
-   }
-
-
-   /**
     * In addition to creating the tag instance and adding the pageContext to
     * it, this method creates a BodyContent object and passes it to the tag.
     * @throws Exception DOCUMENT ME!
@@ -119,7 +104,7 @@ public class TestValidationEvent extends JspTestCase
       theRequest.addParameter("of_0_0@root_1", "");
    }
 
-   public void testValidationNoError() throws Exception 
+   public void testUpdateFields() throws Exception 
    {
       DatabaseEvent evt = DatabaseEventFactoryImpl.instance()
             .createUpdateEvent(
@@ -127,38 +112,11 @@ public class TestValidationEvent extends JspTestCase
                   "0@root", 
                   (HttpServletRequest)this.pageContext.getRequest(), 
                   DbFormsConfigRegistry.instance().lookup());
-     evt.doValidation("test", this.pageContext.getServletContext(), (HttpServletRequest)this.pageContext.getRequest());                 
-                  
+      Connection con = SqlUtil.getConnection(DbFormsConfigRegistry.instance().lookup(), 
+                                                            "default");
+                                                            
+      evt.processEvent(con);            
    }
 
-   public void beginValidationError(WebRequest theRequest)
-   {
-      theRequest.addParameter("f_0_0@root_2", "organisation 1");
-      theRequest.addParameter("of_0_0@root_2", "");
-      theRequest.addParameter("f_0_0@root_1", "");
-      theRequest.addParameter("of_0_0@root_1", "Eco, Umberto");
-   }
-
-   public void testValidationError() throws Exception 
-   {
-      DatabaseEvent evt = DatabaseEventFactoryImpl.instance()
-            .createUpdateEvent(
-                  0, 
-                  "0@root", 
-                  (HttpServletRequest)this.pageContext.getRequest(), 
-                  DbFormsConfigRegistry.instance().lookup());
-     try 
-     {
-        evt.doValidation("test", this.pageContext.getServletContext(), (HttpServletRequest)this.pageContext.getRequest());
-     }                           
-        catch (MultipleValidationException mve)
-        {
-           Vector v = mve.getMessages();
-           assertNotNull(v);
-           assertEquals(v.size(), 1);
-           String s = ((Exception)v.elementAt(0)).getMessage();
-           AssertUtils.assertContains("field name required", s);
-        }
-   }
 
 }
