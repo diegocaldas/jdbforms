@@ -275,11 +275,21 @@ public class ConfigServlet extends HttpServlet {
 
 
 		// parse "DbConnecion" - object
-
-		digester.addObjectCreate("dbforms-config/dbconnection","org.dbforms.util.DbConnection");
-		digester.addSetProperties("dbforms-config/dbconnection");
+		digester.addObjectCreate("dbforms-config/dbconnection", "org.dbforms.util.DbConnection");
+                digester.addSetProperties("dbforms-config/dbconnection");
 		digester.addSetNext("dbforms-config/dbconnection", "setDbConnection", "org.dbforms.util.DbConnection");
 
+                // Bradley's multiple connection support [fossato <fossato@pow2.com> 2002/11/04]
+                // parse all the connections contained into the dbconnections parent element;
+                digester.addObjectCreate(
+			"dbforms-config/dbconnections/dbconnection",
+			"org.dbforms.util.DbConnection");
+		digester.addSetProperties(
+			"dbforms-config/dbconnections/dbconnection");
+		digester.addSetNext(
+			"dbforms-config/dbconnections/dbconnection",
+			"addDbConnection",
+			"org.dbforms.util.DbConnection");
 
 
 		return digester;
