@@ -9,7 +9,23 @@
  * $Revision$
  * $Date$
 -->
+
 <web-app>
+	<filter>
+      	<filter-name>Set Character Encoding</filter-name>
+      	<filter-class>org.dbforms.util.external.SetCharacterEncodingFilter</filter-class>
+	    <init-param>
+    	    <param-name>encoding</param-name>
+        	<param-value>UTF-8</param-value>
+	    </init-param>
+    </filter>
+
+	<filter-mapping>
+    	<filter-name>Set Character Encoding</filter-name>
+      	<url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+
   <!--=========== DbForms Configuration Servlet ===========-->
   <servlet>
     <servlet-name>config</servlet-name>
