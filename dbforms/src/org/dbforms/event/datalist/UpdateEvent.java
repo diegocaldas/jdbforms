@@ -115,6 +115,16 @@ public class UpdateEvent extends DatabaseEvent
    public void processEvent(Connection con)
       throws SQLException, MultipleValidationException
    {
+		
+		// 2003-08-05-HKK: first check if update is necessary before check security
+		// which values do we find in request
+		FieldValues fieldValues = getFieldValues();
+
+		if (fieldValues.size() == 0)
+		{
+			return;
+		}
+
       // Apply given security contraints (as defined in dbforms-config.xml)
       if (!hasUserPrivileg(GrantedPrivileges.PRIVILEG_UPDATE))
       {
@@ -125,13 +135,6 @@ public class UpdateEvent extends DatabaseEvent
 			throw new SQLException(s);
       }
 
-      // which values do we find in request
-      FieldValues fieldValues = getFieldValues();
-
-      if (fieldValues.size() == 0)
-      {
-         return;
-      }
 
       // part 2: check if there are interceptors to be processed (as definied by
       // "interceptor" element embedded in table element in dbforms-config xml file)
