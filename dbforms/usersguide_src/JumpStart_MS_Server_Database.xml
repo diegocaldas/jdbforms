@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<chapter lang="en-US">
-    <title id="mssql">
+<chapter lang="en-US" >
+    <title>
    Jump-start a MS SQL Server 
     </title>
-    <sect1>
+    <sect1 id="mssql" >
       <title>Introduction</title>
       
      <para>
@@ -93,7 +93,7 @@ dbforms installation.
 		under &quot;Download&quot;
 	- downloadable from <ulink url="http://jakarta.apache.org"><citetitle>http://jakarta.apache.org</citetitle></ulink>, Commons project
 
-        -commons-collections.jar
+-commons-collections.jar
 	- ver. 1.0
 	- downloadable from http://jdbforms.sourceforge.net, click &quot;Resources&quot;
                 under &quot;Download&quot;
@@ -104,12 +104,24 @@ dbforms installation.
 	- downloadable from http://jdbforms.sourceforge.net, click &quot;Resources&quot;
 		under &quot;Download&quot;
 	- downloadable from http://jakarta.apache.org, Commons project
+        
+- commons-lang.jar
+        -	ver. ?
+	- downloadable from http://jdbforms.sourceforge.net, click &quot;Resources&quot;
+		under &quot;Download&quot;
+	-	downloadable from http://jakarta.apache.org, Commons project
 
 - commons-logging.jar
 	-	ver. 1.0
 	- downloadable from http://jdbforms.sourceforge.net, click &quot;Resources&quot;
 		under &quot;Download&quot;
 	-	downloadable from http://jakarta.apache.org, Commons project
+        
+- commons-util.jar
+	-	ver. ?
+	- downloadable from http://jdbforms.sourceforge.net, click &quot;Resources&quot;
+		under &quot;Download&quot;
+	-	downloadable from http://jakarta.apache.org, Commons project      
 
 - commons-validator.jar
 	- ver. ? (manifest file doesn't list version.)
@@ -345,9 +357,7 @@ log4j.appender.A3.layout.ConversionPattern=%d{DATE} %F %p: %C(%x) - %m%n
 
 * &lt;param-name&gt;validation&lt;/param-name&gt;,
 	&lt;param-name&gt;validator-rules&lt;/param-name&gt;
-We don't know what these are or where to get them,
-but our Tomcat installation worked without them. We suspect they are
-used for form validation, but we really have no clue.
+See the Validation_Framework chapter for more information on this.
 
 * &lt;taglib-uri&gt;/WEB-INF/dbforms.tld&lt;/taglib-uri&gt;
 Put %DBFORMS_HOME%\dist\*.tld into WEB-INF
@@ -360,6 +370,8 @@ Copy required jars
 	-	commons-digester.jar
 	-	commons-logging.jar
 	-	commons-validator.jar
+        -       commons-util.jar
+        -       commons-lang.jar
 	-	cos.jar
 	-	jakarta-oro-2.0.6.jar
 	-	log4j.jar
