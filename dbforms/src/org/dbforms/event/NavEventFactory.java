@@ -24,7 +24,6 @@ package org.dbforms.event;
 
 
 import javax.servlet.http.HttpServletRequest;
-//import org.apache.log4j.Category;
 import org.dbforms.config.*;
 
 
@@ -44,6 +43,7 @@ public abstract class NavEventFactory extends EventFactory
          DbFormsConfig.class
       };
 
+
    /** classes used as constructor arguments types */
    protected static Class[] goToConstructorArgsTypes = new Class[]
       {
@@ -52,6 +52,7 @@ public abstract class NavEventFactory extends EventFactory
          DbFormsConfig.class,
          String.class
       };
+
 
    /** classes used as constructor arguments types */
    protected static Class[] goToConstructorArgsTypes2 = new Class[]
@@ -63,38 +64,52 @@ public abstract class NavEventFactory extends EventFactory
          String.class
       };
 
+
    /**
     *  Create and return a new navigation event.
     *
     * @param  action the action string that identifies the web event
     * @param  request the HttpServletRequest object
     * @param  config the DbForms config object
-    * @table  table to use
+    * @param  table to use
     * @return  a new navigation event
     */
-   public abstract NavigationEvent createEvent(String action,
-      HttpServletRequest request, DbFormsConfig config, Table table);
+   public abstract NavigationEvent createEvent(String             action, 
+                                               HttpServletRequest request, 
+                                               DbFormsConfig      config, 
+                                               Table              table);
 
 
    /**
     *  Create and return a new navGoto event.
     *
     * @param  positionString the position string object
-    * @param  table the Table object
+    * @param  table    the Table object
+    * @param  request  the request object
+    * @param  config   the configuration object
+    * @param  positionString the position string
     * @return a new navGoto event
     */
-   public abstract NavigationEvent createGotoEvent(Table table,
-      HttpServletRequest request, DbFormsConfig config, String positionString);
+   public abstract NavigationEvent createGotoEvent(Table              table,
+                                                   HttpServletRequest request, 
+                                                   DbFormsConfig      config, 
+                                                   String             positionString);
 
 
    /**
     *  Create and return a new navGoto event.
     *
     * @param  positionString the position string object
-    * @param  table the Table object
+    * @param  table    the Table object
+    * @param  request  the request object
+    * @param  config   the configuration object
+    * @param  whereClause the SQL where clause
+    * @param  tableList  the list of tables involved into the event procession
     * @return a new navGoto event
     */
-   public abstract NavigationEvent createGotoEvent(Table table,
-      HttpServletRequest request, DbFormsConfig config, String whereClause,
-      String tableList);
+   public abstract NavigationEvent createGotoEvent(Table              table,
+                                                   HttpServletRequest request, 
+                                                   DbFormsConfig      config, 
+                                                   String             whereClause,
+                                                   String             tableList);
 }
