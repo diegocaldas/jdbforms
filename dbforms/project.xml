@@ -342,4 +342,8 @@
     <jars></jars>
   </build>
 
+   <reports>
+    <report>maven-cactus-plugin</report>
+  </reports>
+
 </project>
