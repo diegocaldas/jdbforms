@@ -37,7 +37,6 @@
   <property name="cvs.workingdir" value="."/>
   <property name="dependend.dir"  value="${cvs.workingdir}/dependend"/>
   <property name="javasrc.dir"    value="${cvs.workingdir}/src"/>
-  <property environment="env"/>
   <property name="etc.dir"        value="${cvs.workingdir}/etc"/>
   <property name="doc.dir"        value="${cvs.workingdir}/doc"/>
   <property name="htmldoc.dir"    value="${doc.dir}/html"/>
