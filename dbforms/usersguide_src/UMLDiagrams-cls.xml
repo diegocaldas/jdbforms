@@ -13,12 +13,13 @@
 	<sect2>
 	  <title>DataSourceList</title>
 	  <para> 
-        DataSourceList holds a list of DataSourceFactory objects in the session context.
-        It's needed by the navigation events to store the datasource by a per session mode.
-        So it is possible to reuse the data between different calls 
-        and it's not neccessary to refetch again.
+        	DataSourceList holds a list of DataSourceFactory objects in the session context.
+        	It's needed by the navigation events to store the datasource by a per session mode.
+        	So it is possible to reuse the data between different calls 
+        	and it's not neccessary to refetch again.
 	  </para>
 	</sect2>
+	<sect2>
 	  <title>DataSourceFactory</title>
 	  <para>
 	    The DataSourceFactory class holds internally a DataSource object
