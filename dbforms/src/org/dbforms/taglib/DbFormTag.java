@@ -2325,7 +2325,7 @@ public class DbFormTag extends TagSupportWithScriptHandler implements
 	 */
 	public String produceLinkedTags() {
 		StringBuffer buf = new StringBuffer();
-		// childFieldValues m ay be null, if we have
+		// childFieldValues may be null, if we have
 		// a free form select using attribute whereClause
 		if (childFieldValues != null) {
 			for (int i = 0; i < childFieldValues.length; i++) {

@@ -90,7 +90,7 @@ public abstract class DatabaseEvent extends WebEvent {
     * @return the hash map containing the names and values taken from
     *         the request object
     */
-   public abstract FieldValues getFieldValues();
+   protected abstract FieldValues getFieldValues();
 
    /**
     *  DO the validation of <FORM> with Commons-Validator.

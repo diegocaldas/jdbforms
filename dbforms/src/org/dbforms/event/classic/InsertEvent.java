@@ -65,6 +65,20 @@ public class InsertEvent extends ValidationEvent
    static Category logCat = Category.getInstance(InsertEvent.class.getName());
 
    /**
+    * Creates a new InsertEvent object.
+    *
+    * @param tableId DOCUMENT ME!
+    * @param keyId DOCUMENT ME!
+    * @param request DOCUMENT ME!
+    * @param config DOCUMENT ME!
+    */
+   public InsertEvent(Integer tableId, String keyId, HttpServletRequest request, 
+                      DbFormsConfig config)
+   {
+      super(tableId.intValue(), keyId, request, config);
+   }
+
+   /**
     *  Insert actionbutton-strings is as follows: ac_insert_12_root_3
     *  which is equivalent to:
     *

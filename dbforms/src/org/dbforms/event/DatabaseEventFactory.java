@@ -47,4 +47,15 @@ public abstract class DatabaseEventFactory extends EventFactory
     */
    public abstract DatabaseEvent createUpdateEvent(int tableId, String keyId,
       HttpServletRequest request, DbFormsConfig config);
+
+   /**
+    *  Create and return a new InsertEvent as secondary event.
+    *
+    * @param  tableId the table identifier
+    * @param  request the HttpServletRequest object
+    * @param  config  the DbForms config object
+    * @return  The updateEvent object
+    */
+   public abstract DatabaseEvent createInsertEvent(int tableId, String keyId,
+      HttpServletRequest request, DbFormsConfig config);
 }

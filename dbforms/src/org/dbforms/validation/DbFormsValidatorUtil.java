@@ -34,6 +34,8 @@ import java.util.Enumeration;
 import org.dbforms.config.DbFormsErrors;
 import org.dbforms.util.MessageResources;
 import org.dbforms.util.Util;
+import org.dbforms.config.Constants;
+
 import org.apache.commons.validator.Arg;
 import org.apache.commons.validator.Var;
 import org.apache.commons.validator.Field;
@@ -327,7 +329,7 @@ public class DbFormsValidatorUtil {
 											2004-01-22
 											To support subforms, needed to replace insroot by ins
 									*/
-									if (fieldName.indexOf("ins") != -1) {
+									if (fieldName.indexOf(Constants.FIELDNAME_INSERTPREFIX) != -1) {
 										// Valide only Insert Mode
 										results.append("\t    if(").append(
 											ValidatorConstants.JS_UPDATE_VALIDATION_MODE).append(

@@ -157,6 +157,35 @@ public class DatabaseEventFactoryImpl extends DatabaseEventFactory
       return event;
    }
 
+   /**
+    *  Create and return a new InsertEvent as secondary event.
+    *
+    * @param  tableId the table identifier
+    * @param  keyId   the key   identifier
+    * @param  request the HttpServletRequest object
+    * @param  config  the DbForms config object
+    * @return  The updateEvent object
+    */
+   public DatabaseEvent createInsertEvent(int tableId, String keyId,
+      HttpServletRequest request, DbFormsConfig config)
+   {
+      DatabaseEvent event           = null;
+      Object[]      constructorArgs = new Object[]
+         {
+            new Integer(tableId),
+            keyId,
+            request,
+            config
+         };
+      Table       table       = config.getTable(tableId);
+      TableEvents tableEvents = table.getTableEvents();
+      String      eventId     = tableEvents.getEventId(EventType.EVENT_DATABASE_INSERT);
+      EventInfo   einfo       = getEventInfo(eventId);
+      event = (DatabaseEvent) getEvent(einfo, keyInfoConstructorArgsTypes,
+            constructorArgs);
+
+      return event;
+   }
 
    /**
     *  PRIVATE METHODS here

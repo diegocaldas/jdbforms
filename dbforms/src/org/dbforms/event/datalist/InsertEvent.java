@@ -45,7 +45,20 @@ import org.dbforms.util.ParseUtil;
  * @author Henner Kollmann <Henner.Kollmann@gmx.de>
  */
 public class InsertEvent extends ValidationEvent {
-   /**
+
+    /**
+     * Creates a new InsertEvent object.
+     *
+     * @param tableId the table identifier
+     * @param keyId   the key
+     * @param request the request object
+     * @param config  the configuration object
+     */
+    public InsertEvent(Integer tableId, String keyId, HttpServletRequest request, DbFormsConfig config) {
+        super(tableId.intValue(), keyId, request, config);
+     }
+
+    /**
     *  Constructor.
     *  <br>
     *  Insert actionbutton-strings is as follows: ac_insert_12_root_3
@@ -71,7 +84,7 @@ public class InsertEvent extends ValidationEvent {
     * @return the FieldValues object representing the collection
     *         of FieldValue objects builded from the request parameters
     */
-   public FieldValues getFieldValues() {
+   protected FieldValues getFieldValues() {
       return getFieldValues(true);
    }
 

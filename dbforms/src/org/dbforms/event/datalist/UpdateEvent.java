@@ -77,7 +77,7 @@ public class UpdateEvent extends ValidationEvent {
     *
     * @return the FieldValues object
     */
-   public FieldValues getFieldValues() {
+   protected FieldValues getFieldValues() {
       String s = ParseUtil.getParameter(getRequest(), Constants.FIELDNAME_OVERRIDEFIELDTEST + getTable().getId());
       boolean flag = "true".equalsIgnoreCase(s);
       return getFieldValues(flag);

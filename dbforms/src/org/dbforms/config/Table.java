@@ -1725,6 +1725,9 @@ public class Table {
         buf.append("\nname=");
         buf.append(name);
         buf.append(" ");
+        buf.append("\nid=");
+        buf.append(String.valueOf(getId()));
+        buf.append(" ");
 
         if (getFields() != null) {
             for (int i = 0; i < getFields().size(); i++) {

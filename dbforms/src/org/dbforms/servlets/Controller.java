@@ -291,7 +291,7 @@ public class Controller extends HttpServlet {
 
 		while (tableEnum.hasMoreElements()) {
 			Table t = (Table) tableEnum.nextElement();
-			Enumeration eventEnum = engine.generateSecundaryEvents(e);
+			Enumeration eventEnum = engine.generateSecundaryEvents(t, e);
 
 			// scan all the secundary events for the current secundary table;
 			while (eventEnum.hasMoreElements()) {
