@@ -320,6 +320,9 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer,
       return EVAL_PAGE;
    }
 
+   protected String getFormattedFieldValue() {
+      return getFieldValue();
+   }
 
    /**
     * DOCUMENT ME!
