@@ -31,8 +31,8 @@ import javax.servlet.jsp.*;
 import org.dbforms.*;
 import org.dbforms.util.*;
 import org.dbforms.taglib.*;
-import org.dbforms.taglib.ext.DbSortTag;
-import org.dbforms.taglib.ext.TagSupportWithScriptHandler;
+import org.dbforms.taglib.DbSortTag;
+import org.dbforms.taglib.TagSupportWithScriptHandler;
 
 import org.apache.log4j.Category;
 
