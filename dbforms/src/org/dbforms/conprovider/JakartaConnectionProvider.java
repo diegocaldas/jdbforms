@@ -33,16 +33,38 @@ import org.dbforms.util.Util;
 /**
  *  Connection provider for Apache Jakarta commons-dbcp.
  *  <br>
- *  See <code>http://jakarta.apache.org/commons/components.html</code>
+ *  See <code>http://jakarta.apache.org/commons/dbcp.html</code>
  *  for further informations.
  */
 public class JakartaConnectionProvider extends ConnectionProvider
 {
-    protected final static String PROPS_VALIDATION_QUERY = "validationQuery";
-    protected final static String PROPS_MAX_ACTIVE       = "maxActive";
-    protected final static String PROPS_MAX_IDLE         = "maxIdle";
-    protected final static String PROPS_MAX_WAIT         = "maxWait";
-    protected final static String PROPS_USE_LOG          = "useLog";
+    /**
+     *  The SQL query that will be used to validate connections from this pool
+     *  before returning them to the caller.
+     */
+    protected final static String CP_PROPS_VALIDATION_QUERY = "validationQuery";
+
+    /**
+     *  the maximum number of active connections that can be allocated from this pool
+     *  at the same time, or zero for no limit.
+     */
+    protected final static String CP_PROPS_MAX_ACTIVE = "maxActive";
+
+    /**
+     *  The maximum number of active connections that can remain idle in the pool,
+     *  without extra ones being released, or zero for no limit.
+     */
+    protected final static String CP_PROPS_MAX_IDLE = "maxIdle";
+
+    /**
+     *  The maximum number of milliseconds that the pool will wait
+     *  (when there are no available connections) for a connection to be returned
+     *  before throwing an exception, or -1 to wait indefinitely.
+     */
+    protected final static String CP_PROPS_MAX_WAIT = "maxWait";
+
+    /** log the dataSource object statements using log4j category class */
+    protected final static String CP_PROPS_USE_LOG = "useLog";
 
 
     /** Commons-dbcp dataSource * */
@@ -105,16 +127,16 @@ public class JakartaConnectionProvider extends ConnectionProvider
         if ((props = prefs.getPoolProperties()) == null)
             props = new Properties();
 
-        String validationQuery = props.getProperty(PROPS_VALIDATION_QUERY, null);
+        String validationQuery = props.getProperty(CP_PROPS_VALIDATION_QUERY, null);
         if (!Util.isNull(validationQuery))
           dataSource.setValidationQuery(validationQuery.trim());
 
-        dataSource.setMaxActive (Integer.parseInt(props.getProperty(PROPS_MAX_ACTIVE, "20")));
-        dataSource.setMaxIdle   (Integer.parseInt(props.getProperty(PROPS_MAX_IDLE,   "5")));
-        dataSource.setMaxWait   (Long.parseLong  (props.getProperty(PROPS_MAX_WAIT,   "-1")));
+        dataSource.setMaxActive (Integer.parseInt(props.getProperty(CP_PROPS_MAX_ACTIVE, "20")));
+        dataSource.setMaxIdle   (Integer.parseInt(props.getProperty(CP_PROPS_MAX_IDLE,   "5")));
+        dataSource.setMaxWait   (Long.parseLong  (props.getProperty(CP_PROPS_MAX_WAIT,   "-1")));
 
         // if PROPS_LOG == true, use log4j category to log the datasource info;
-        String useLog = props.getProperty(PROPS_USE_LOG, "false");
+        String useLog = props.getProperty(CP_PROPS_USE_LOG, "false");
         if (!Util.isNull(useLog) && "true".equals(useLog.trim()))
         {
             cat.info("::init - dataSource log activated");
