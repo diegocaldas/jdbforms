@@ -27,27 +27,32 @@ import java.util.*;
 import java.sql.*;
 import javax.sql.*;
 import javax.naming.*;
+
 import org.apache.log4j.Category;
+
 import org.dbforms.conprovider.ConnectionFactory;
 import org.dbforms.conprovider.ConnectionProviderPrefs;
 
 
 
 /**
- * <p>
- * this class represents datastructures like to following examples:
- * </p>
+ * This class represents datastructures like to following examples:
+ * <br>
  * <pre>
  *
  *  &lt;dbconnection
  *           name   = "jdbc/dbformstest"
  *           isJndi = "true"
  *  /&gt;
- *  </pre>
- *<p>(in the example above dbforms asumes that the jndi-entry "jdbc/dbformstest" is correctly configured in
- *the application-server's database configuration [i.e. date-sources.xml])</p>
- *
- * <p> or:</p>
+ * </pre>
+ * <p>
+ *   (in the example above dbforms asumes that the jndi-entry "jdbc/dbformstest"
+ *   is correctly configured in the application-server's database configuration
+ *   [i.e. date-sources.xml])
+ * </p>
+ * <p>
+ *   or:
+ * </p>
  * <pre>
  *  &lt;dbconnection
  *          name   = "jdbc:poolman://dbformstest"
@@ -56,11 +61,12 @@ import org.dbforms.conprovider.ConnectionProviderPrefs;
  *  /&gt;
  * </pre>
  * <p>
- *   (in the example above dbforms asumes that the connectionpool-entry "dbformstest" is correctly configured in
- *   the associated connection pool properties file)
- *
- *   as these examples show, the configuration of datasources is beyond the scope of dbforms. that is
- *   a task of the underlying applicationserver/jsp-engine!
+ *   (in the example above dbforms asumes that the connectionpool-entry "dbformstest"
+ *   is correctly configured in the associated connection pool properties file).
+ * </p>
+ * <p>
+ *   As these examples show, the configuration of datasources is beyond the scope of dbforms.
+ *   That is a task of the underlying applicationserver/jsp-engine!
  * </p>
  *
  * @author  Joe Peer <j.peer@gmx.net>
@@ -70,38 +76,80 @@ import org.dbforms.conprovider.ConnectionProviderPrefs;
  */
 public class DbConnection
 {
+    /** log4j category */
     static Category logCat = Category.getInstance(DbConnection.class.getName());
+
+    /** connection factory instance */
     private ConnectionFactory connectionFactory = ConnectionFactory.instance();
+
+    /** connection id */
     private String id;
+
+    /** connection name */
     private String name;
+
+    /** JNDI flag */
     private String isJndi = "false";
+
+    /** JNDI flag. Sei it to true to get connection objects from a JNDI service */
     private boolean jndi = false;
+
+    /** default connection flag */
     private boolean defaultConnection = false;
+
+    /** JDBC drivermanager class */
     private String conClass;
+
+    /** database user name */
     private String username;
+
+    /** database password */
     private String password;
+
+    /** JDBC properties */
     private Properties properties;
+
+    /** connection pool properties */
     private Properties poolProperties;
+
+    /** */
     private boolean isPropSetup = false;
+
+    /** connection provider class */
     private String connectionProviderClass;
+
+    /** connection provider URL */
     private String connectionPoolURL;
+
+    /** connection factory flag */
     private String isPow2 = "false";
+
+    /**
+     * connection factory flag. Set it to true to use connection factory
+     * to get JDBC connection objects
+     */
     private boolean pow2 = false;
+
+    /**
+     *  connection factory configuration flag. If true,
+     *  the connection factory is already configured
+     */
     private boolean isFactorySetup = false;
 
 
     /**
-     * Creates a new DbConnection object.
+     *  Constructor.
      */
     public DbConnection()
     {
-        properties     = new java.util.Properties();
+        properties = new java.util.Properties();
         poolProperties = new java.util.Properties();
     }
 
-
     /**
      *  Adds a new property - used while parsing XML file
+     *
+     * @param  prop The feature to be added to the Property attribute
      */
     public void addProperty(DbConnectionProperty prop)
     {
@@ -111,6 +159,8 @@ public class DbConnection
 
     /**
      *  Adds a new pool property - used while parsing XML file
+     *
+     * @param  prop The feature to be added to the PoolProperty attribute
      */
     public void addPoolProperty(DbConnectionProperty prop)
     {
@@ -331,89 +381,181 @@ public class DbConnection
 
 
     /**
-     *  Gets the connection attribute of the DbConnection object
+     *  Gets a JDBC connection object.
      *
-     * @return  The connection value
+     * @return  the connection object, or null if any error occurs
      */
     public Connection getConnection()
     {
         Connection con = null;
 
-        logCat.debug("returning a connection:" + this.toString());
-
-        // access Connection via Application Server's JNDI table
+        // get connection via Application Server's JNDI table;
+        // name attribute is used as JNDI lookup string;
         if (jndi)
-        {
-            try
-            {
-                Context ctx = new InitialContext();
-                DataSource ds = (DataSource) ctx.lookup(name);
-                con = ds.getConnection();
-            }
-            catch (NamingException ne)
-            {
-                logCat.error("::getConnection - cannot retrieve a connection from JNDI", ne);
-                return null;
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
+          con = getConnectionFromJNDI(name);
 
-                return null;
-            }
-        }
-
-        // access the connection using the pow2 library by Luca Fossato <fossato@pow2.com>
+        // get connection using the connection factory library
+        // by Luca Fossato <fossato@pow2.com>
         else if (pow2)
-        {
-            try
-            {
-                if (!isFactorySetup)
-                {
-                    setupConnectionFactory();
-                }
+          con = getConnectionFromFactory();
 
-                con = connectionFactory.getConnection();
-            }
-            catch (Exception se)
+        // get connection from DriverManager
+        else
+          con = getConnectionFromDriverManager();
+
+        return con;
+    }
+
+
+    /**
+     *  Gets the string representation of this object.
+     *
+     * @return  the string representation of this object
+     */
+    public String toString()
+    {
+        StringBuffer buf = new StringBuffer("DbConnection = ");
+
+        buf.append("id="         + id)
+           .append(", name="     + name)
+           .append(", jndi="     + isJndi)
+           .append(", conClass=" + conClass)
+           .append(", username=" + username)
+           .append(", default="  + defaultConnection);
+
+        if (pow2)
+            buf.append(", connectionProviderClass=" + connectionProviderClass)
+               .append(", connectionPoolURL="       + connectionPoolURL);
+
+        if (!properties.isEmpty())
+            buf.append(", jdbc properties: ")
+               .append(properties);
+
+
+        if (!poolProperties.isEmpty())
+            buf.append(", connection pool properties: ")
+               .append(poolProperties);
+
+        //buf.append(",password="+password);  Not such a good idea!
+        return buf.toString();
+    }
+
+
+
+
+    /**
+     *  PRIVATE METHODs here
+     */
+
+
+    /**
+     *  Gets a JDBC connection object from a JNDI server.
+     *
+     * @param  lookupString the string used to lookup the
+     *          datasource object from the JNDI server
+     * @return  the JDBC connection object, or null if the lookup fails
+     */
+    private Connection getConnectionFromJNDI(String lookupString)
+    {
+        Connection con = null;
+
+        // a useful source of examples for Tomcat 4.1:
+        // http://jakarta.apache.org/tomcat/tomcat-4.1-doc/jndi-datasource-examples-howto.html
+        try
+        {
+            Context ctx = new InitialContext();
+
+            if (ctx != null)
             {
-                logCat.error("::getConnection - cannot retrieve a connection from the connectionFactory", se);
-                return null;
+                DataSource ds = (DataSource) ctx.lookup(lookupString);
+
+                if (ds != null)
+                    con = ds.getConnection();
+                else
+                    logCat.error("::getConnectionFromJNDI - DataSource object is null");
+            }
+            else
+            {
+                logCat.error("::getConnectionFromJNDI - no context object avaiable");
             }
         }
-
-        // access connection directly from db or from a connectionpool-manager like "Poolman"
-        else
+        catch (NamingException ne)
         {
-            try
-            {
-                Class.forName(conClass).newInstance();
+            logCat.error("::getConnectionFromJNDI - cannot retrieve a connection from JNDI:", ne);
+        }
+        catch (Exception e)
+        {
+            logCat.error("::getConnectionFromJNDI - exception:", e);
+        }
 
-                if (!properties.isEmpty())
-                {
-                    if (!isPropSetup)
-                    {
-                        properties.put("user", getUsername());
-                        properties.put("password", getPassword());
-                        isPropSetup = true;
-                    }
+        return con;
+    }
 
-                    con = DriverManager.getConnection(name, properties);
-                }
-                else if (username != null)
-                {
-                    con = DriverManager.getConnection(name, username, password);
-                }
-                else
-                {
-                    con = DriverManager.getConnection(name);
-                }
-            }
-            catch (Exception e)
+
+    /**
+     *  Gets a JDBC connection object from the connection factory.
+     *
+     * @return  the JDBC connection object, or null if any error occurs
+     */
+    private Connection getConnectionFromFactory()
+    {
+        Connection con = null;
+
+        try
+        {
+            if (!isFactorySetup)
             {
-                logCat.error("::getConnection - cannot retrieve a connection from DriverManager", e);
-                return null;
+                setupConnectionFactory();
             }
+
+            con = connectionFactory.getConnection();
+        }
+        catch (Exception se)
+        {
+            logCat.error("::getConnectionFromFactory - cannot retrieve a connection from the connectionFactory", se);
+        }
+
+        return con;
+    }
+
+
+    /**
+     *  Gets a JDBC connection object from the DriverManager class
+     *  specified by the conClass member attribute.
+     *
+     * @return  the JDBC connection object, or null if any error occurs
+     */
+    private Connection getConnectionFromDriverManager()
+    {
+        Connection con = null;
+
+        try
+        {
+            Class.forName(conClass).newInstance();
+
+            if (!properties.isEmpty())
+            {
+                if (!isPropSetup)
+                {
+                    properties.put("user", getUsername());
+                    properties.put("password", getPassword());
+                    isPropSetup = true;
+                }
+
+                con = DriverManager.getConnection(name, properties);
+            }
+            else if (username != null)
+            {
+                con = DriverManager.getConnection(name, username, password);
+            }
+            else
+            {
+                con = DriverManager.getConnection(name);
+            }
+        }
+        catch (Exception e)
+        {
+            logCat.error("::getConnectionFromDriverManager - cannot retrieve a connection from DriverManager", e);
         }
 
         return con;
@@ -423,9 +565,9 @@ public class DbConnection
     /**
      *  Set up the ConnectionFactory
      *
-     * @exception  Exception Description of the Exception
+     * @exception  Exception if any error occurs
      */
-    public void setupConnectionFactory() throws Exception
+    private void setupConnectionFactory() throws Exception
     {
         ConnectionProviderPrefs prefs = new ConnectionProviderPrefs();
 
@@ -439,38 +581,5 @@ public class DbConnection
         prefs.setPoolProperties(poolProperties);
         connectionFactory.setProvider(prefs);
         isFactorySetup = true;
-    }
-
-
-    /**
-     *  Description of the Method
-     *
-     * @return  Description of the Return Value
-     */
-    public String toString()
-    {
-        StringBuffer buf = new StringBuffer("DbConnection = ");
-        buf.append("id=" + id)
-           .append(", name=" + name)
-           .append(", jndi=" + isJndi)
-           .append(", conClass=" + conClass)
-           .append(", username=" + username)
-           .append(", default=" + defaultConnection);
-
-        if (pow2)
-        {
-            buf.append(", connectionProviderClass=" + connectionProviderClass)
-               .append(", connectionPoolURL=" + connectionPoolURL);
-        }
-
-        if (!properties.isEmpty())
-            buf.append(", jdbc properties: ").append(properties);
-
-
-        if (!poolProperties.isEmpty())
-            buf.append(", connection pool properties: ").append(poolProperties);
-
-        //buf.append(",password="+password);  Not such a good idea!
-        return buf.toString();
     }
 }
