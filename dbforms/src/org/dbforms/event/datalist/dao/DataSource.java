@@ -22,12 +22,17 @@
  */
 
 package org.dbforms.event.datalist.dao;
+
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Enumeration;
+
 import java.sql.Connection;
 import java.sql.SQLException;
+
 import org.apache.log4j.Category;
+
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.Field;
 import org.dbforms.config.Table;
@@ -47,9 +52,10 @@ import org.dbforms.util.Util;
  */
 public abstract class DataSource
 {
-   /** DOCUMENT ME! */
+   /** log4j category class */
    protected Category logCat = Category.getInstance(this.getClass().getName());
    private Table      table;
+
 
    /**
     * Creates a new DataSource object.
@@ -139,11 +145,11 @@ public abstract class DataSource
    /**
     * performs an update into the DataSource
     * 
-    * @param fieldValues    FieldValues to update
-    * @param keyValuesStr   keyValueStr to the row to update key format:
-    *        FieldID ":" Length ":" Value example: if key id = 121 and field
-    *        id=2 then keyValueStr contains "2:3:121" if the key consists of
-    *        more than one fields, the key values are seperated through "-"
+    * @param fieldValues  FieldValues to update
+    * @param keyValuesStr keyValueStr to the row to update<br>
+    *        key format: FieldID ":" Length ":" Value<br>
+    *        example: if key id = 121 and field id=2 then keyValueStr contains "2:3:121"<br>
+    *        If the key consists of more than one fields, the key values are seperated through "-"<br>
     *        example: value of field 1=12, value of field 3=1992, then we'll
     *        get "1:2:12-3:4:1992"
     * 
@@ -158,10 +164,10 @@ public abstract class DataSource
    /**
     * performs an delete in the DataSource
     * 
-    * @param keyValuesStr   keyValueStr to the row to update key format:
-    *        FieldID ":" Length ":" Value example: if key id = 121 and field
-    *        id=2 then keyValueStr contains "2:3:121" if the key consists of
-    *        more than one fields, the key values are seperated through "-"
+    * @param keyValuesStr   keyValueStr to the row to update<br>
+    *        key format: FieldID ":" Length ":" Value<br>
+    *        example: if key id = 121 and field id=2 then keyValueStr contains "2:3:121"<br>
+    *        If the key consists of more than one fields, the key values are seperated through "-"<br>
     *        example: value of field 1=12, value of field 3=1992, then we'll
     *        get "1:2:12-3:4:1992"
     * 
@@ -213,11 +219,12 @@ public abstract class DataSource
    /**
     * maps the startRow to the internal index
     * 
-    * @param startRow       keyValueStr to the row key format: FieldID ":"
-    *        Length ":" Value example: if key id = 121 and field id=2 then
-    *        keyValueStr contains "2:3:121" if the key consists of more than
-    *        one fields, the key values are seperated through "-" example:
-    *        value of field 1=12, value of field 3=1992, then we'll get
+    * @param startRow  keyValueStr to the row<br>
+    *        key format: FieldID ":" Length ":" Value<br>
+    *        example: if key id = 121 and field id=2 then keyValueStr contains "2:3:121"<br>
+    *        If the key consists of more than one fields, the key values 
+    *        are seperated through "-"<br>
+    *        example: value of field 1=12, value of field 3=1992, then we'll get
     *        "1:2:12-3:4:1992"
     * 
     * @return the index of the row, 0 as first row if not found
@@ -231,13 +238,13 @@ public abstract class DataSource
    /**
     * get count next rows from position
     * 
-    * @param position       keyValueStr to the row key format: FieldID ":"
-    *        Length ":" Value example: if key id = 121 and field id=2 then
-    *        keyValueStr contains "2:3:121" if the key consists of more than
-    *        one fields, the key values are seperated through "-" example:
-    *        value of field 1=12, value of field 3=1992, then we'll get
+    * @param position  keyValueStr to the row<br>
+    *        key format: FieldID ":" Length ":" Value<br>
+    *        example: if key id = 121 and field id=2 then keyValueStr contains "2:3:121"<br>
+    *        If the key consists of more than one fields, the key values are seperated through "-"<br>
+    *        example: value of field 1=12, value of field 3=1992, then we'll get
     *        "1:2:12-3:4:1992"
-    * @param count          count of rows to fetch
+    * @param count count of rows to fetch
     * 
     * @return the fetched ResultSetVector
     * 
@@ -262,13 +269,15 @@ public abstract class DataSource
    /**
     * get count rows backwards from position
     * 
-    * @param position       keyValueStr to the row key format: FieldID ":"
-    *        Length ":" Value example: if key id = 121 and field id=2 then
-    *        keyValueStr contains "2:3:121" if the key consists of more than
-    *        one fields, the key values are seperated through "-" example:
-    *        value of field 1=12, value of field 3=1992, then we'll get
+    * @param position  keyValueStr to the row<br>
+    *        key format: FieldID ":" Length ":" Value<br>
+    *        example: if key id = 121 and field id=2 then
+    *        keyValueStr contains "2:3:121"<br>
+    *        If the key consists of more than one fields, the key values 
+    *        are seperated through "-"<br>
+    *        example: value of field 1=12, value of field 3=1992, then we'll get
     *        "1:2:12-3:4:1992"
-    * @param count          count of rows to fetch
+    * @param count  count of rows to fetch
     * 
     * @return the fetched ResultSetVector
     * 
@@ -331,13 +340,14 @@ public abstract class DataSource
    /**
     * get count rows from position
     * 
-    * @param position       keyValueStr to the row key format: FieldID ":"
-    *        Length ":" Value example: if key id = 121 and field id=2 then
-    *        keyValueStr contains "2:3:121" if the key consists of more than
-    *        one fields, the key values are seperated through "-" example:
-    *        value of field 1=12, value of field 3=1992, then we'll get
+    * @param position  keyValueStr to the row<br>
+    *        key format: FieldID ":" Length ":" Value<br>
+    *        example: if key id = 121 and field id=2 then keyValueStr contains "2:3:121"<br>
+    *        If the key consists of more than
+    *        one fields, the key values are seperated through "-"<br>
+    *        example: value of field 1=12, value of field 3=1992, then we'll get
     *        "1:2:12-3:4:1992"
-    * @param count          count of rows to fetch
+    * @param count  count of rows to fetch
     * 
     * @return the fetched ResultSetVector
     * 
@@ -359,6 +369,13 @@ public abstract class DataSource
    }
 
 
+   /**
+    * 
+    * @param startRow
+    * @param count
+    * @return
+    * @throws SQLException
+    */
    private ResultSetVector getResultSetVector(int startRow, int count)
                                        throws SQLException
    {
