@@ -1021,12 +1021,12 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
                     tagBuf.append(" enctype=\"multipart/form-data\"");
                 }
 
-					 String validationFct = null;
+                     String validationFct = null;
                 if (getJavascriptValidation().equals("true"))
                 {
                     validationFct = getFormValidatorName();
                     validationFct = Character.toUpperCase(validationFct.charAt(0)) + validationFct.substring(1, validationFct.length());
-						  validationFct = "validate" + validationFct + "(this);";
+                          validationFct = "validate" + validationFct + "(this);";
                 }
 
                 if (!Util.isNull(validationFct) && !Util.isNull(getOnSubmit()) ) {
@@ -1034,12 +1034,12 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
                    if (s.startsWith("return") )
                       s = s.substring(7);
                    if (s.endsWith(";"))
-                   	 s = s.substring(0, s.length() - 1);
+                     s = s.substring(0, s.length() - 1);
                    tagBuf.append(" onSubmit=\"");
                    tagBuf.append("return ");
-						 tagBuf.append(s);
-						 tagBuf.append(" && ");
-						 tagBuf.append(validationFct);
+                         tagBuf.append(s);
+                         tagBuf.append(" && ");
+                         tagBuf.append(validationFct);
                    tagBuf.append("\" ");
                 } else if (!Util.isNull(validationFct)) {
                     tagBuf.append(" onSubmit=\"");
@@ -1292,7 +1292,8 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
             webEvent = (WebEvent) request.getAttribute("webEvent");
 
             // test: use BoundedNavEventFactoryImpl [Fossato <fossato@pow2.com>, 2001/11/08]
-            NavEventFactory nef = BoundedNavEventFactoryImpl.instance();
+            //NavEventFactory nef = BoundedNavEventFactoryImpl.instance();
+            NavEventFactory nef = NavEventFactoryImpl.instance();
 
             // if there comes no web event from controller, then we check if there is
             // a local event defined on the jsp
@@ -1301,39 +1302,44 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
             // must be more flexible in final version
             if ((webEvent == null) && (localWebEvent != null))
             {
-                if ("navFirst".equals(localWebEvent))
-                {
-                    logCat.debug("instantiating local we:" + localWebEvent);
-                    webEvent = new NavFirstEvent(this.table, this.config);
-                }
-                else if ("navLast".equals(localWebEvent))
-                {
-                    logCat.debug("instantiating local we:" + localWebEvent);
-                    webEvent = new NavLastEvent(this.table, this.config);
-                }
-                else if ("navPrev".equals(localWebEvent))
-                {
-                    logCat.debug("instantiating local we:" + localWebEvent);
+                logCat.info("::doStartTag - CREATING A LOCAL WEB EVENT !! ... ... ... ... ...");
+                webEvent = nef.createEvent(localWebEvent, table, config);
 
-                    //webEvent = new NavPrevEvent(this.table, this.config);
-                    webEvent = nef.createNavPrevEvent(this.table, this.config);
-
-                    // [Fossato <fossato@pow2.com>, 2001/11/08]
-                }
-                else if ("navNext".equals(localWebEvent))
-                {
-                    logCat.debug("instantiating local we:" + localWebEvent);
-
-                    //webEvent = new NavNextEvent(this.table, this.config);
-                    webEvent = nef.createNavNextEvent(this.table, this.config);
-
-                    // [Fossato <fossato@pow2.com>, 2001/11/08]
-                }
-                else if ("navNew".equals(localWebEvent))
-                {
-                    logCat.debug("instantiating local we:" + localWebEvent);
-                    webEvent = new NavNewEvent(this.table, this.config);
-                }
+//    ------------------------------------------------------------------------------------
+//                if ("navFirst".equals(localWebEvent))
+//                {
+//                    logCat.debug("instantiating local we:" + localWebEvent);
+//                    webEvent = new NavFirstEvent(this.table, this.config);
+//                }
+//                else if ("navLast".equals(localWebEvent))
+//                {
+//                    logCat.debug("instantiating local we:" + localWebEvent);
+//                    webEvent = new NavLastEvent(this.table, this.config);
+//                }
+//                else if ("navPrev".equals(localWebEvent))
+//                {
+//                    logCat.debug("instantiating local we:" + localWebEvent);
+//
+//                    //webEvent = new NavPrevEvent(this.table, this.config);
+//                    webEvent = nef.createNavPrevEvent(this.table, this.config);
+//
+//                    // [Fossato <fossato@pow2.com>, 2001/11/08]
+//                }
+//                else if ("navNext".equals(localWebEvent))
+//                {
+//                    logCat.debug("instantiating local we:" + localWebEvent);
+//
+//                    //webEvent = new NavNextEvent(this.table, this.config);
+//                    webEvent = nef.createNavNextEvent(this.table, this.config);
+//
+//                    // [Fossato <fossato@pow2.com>, 2001/11/08]
+//                }
+//                else if ("navNew".equals(localWebEvent))
+//                {
+//                    logCat.debug("instantiating local we:" + localWebEvent);
+//                    webEvent = new NavNewEvent(this.table, this.config);
+//                }
+//    ------------------------------------------------------------------------------------
 
                 // Setted with localWebEvent attribute.
                 if (webEvent != null)
@@ -1397,6 +1403,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
             // we need to parse request using the given goto prefix
             else if ((gotoPrefix != null) && (gotoPrefix.length() > 0))
             {
+                logCat.info("::doStartTag - CREATING A LOCAL GO-TO EVENT !! ... ... ... ... ...");
                 logCat.info("§§§ NAV GOTO §§§");
 
                 Vector v = ParseUtil.getParametersStartingWith(request, gotoPrefix);
@@ -1792,14 +1799,16 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
             // childFieldValues remains null
             return;
         }
-         
+
          String aPosition = parentForm.getTable().getPositionString(parentForm.getResultSetVector());
-         
-			childFieldValues = getTable().mapChildFieldValues(parentForm.getTable(), 
-																			  parentField, 
-																			  childField, 
-																			  aPosition);
-/* 20021120-HKK: Split in new function FieldValue.mapChildFieldValues 
+
+
+            childFieldValues = getTable().mapChildFieldValues(parentForm.getTable(),
+                                                                              parentField,
+                                                                              childField,
+                                                                              aPosition);
+/* 20021120-HKK: Split in new function FieldValue.mapChildFieldValues
+
         // 1 to n fields may be mapped
         Vector childFieldNames = ParseUtil.splitString(childField, ",;~");
         Vector parentFieldNames = ParseUtil.splitString(parentField, ",;~");
@@ -1836,7 +1845,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
             }
             childFieldValues[i] = new FieldValue(childField, currentParentFieldValue, true);
         }
-*/        
+*/
     }
 
 
@@ -2502,7 +2511,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
 
         // or we could rewite as:
         // return Util.isNull(tableList) ? tableName : tableList;
-        
+
        // nevertheless moved the whole stuff to table.getFreeFormSelectQuery so using query tag will work!
        return tableList;
     }
