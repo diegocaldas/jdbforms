@@ -6,50 +6,81 @@
 		<sect1>
 			<title>ConnectionFactory
 </title>
-			<para>The ConnectionFactory class provides JDBC connection objects to the DbForms client (specifically, to the org.dbforms.util.DbConnection class).
+			<para>The ConnectionFactory class provides JDBC connection objects to the DbForms client (specifically, to the org.dbforms.util.DbConnection class).  It gives a common interface to retrieve connection objects, but defer the database interaction to specialized <emphasis role="italic">connectionProvider</emphasis> classes.
 </para>
-			<para>It gives a common interface to retrieve connection objects, but defer the database interaction to specialized <emphasis role="italic">connectionProvider</emphasis> classes.
-</para>
+<para><computeroutput>dbconnection</computeroutput> configuration is still compatible with previous means such as:</para>
+<screen>
+&lt;!-- ==========Non-ConnectionFactory Connections================= --&gt;
+	&lt;!--
+	uncomment this if you have access to JNDI of an application server (see users guide for more info)
+	&lt;dbconnection
+		name = &quot;jdbc/dbformstest&quot;
+		isJndi = &quot;true&quot;
+	/&gt;
+	--&gt;
+
+	&lt;dbconnection
+		name   = &quot;jdbc:mysql://localhost/test&quot;
+		isJndi = &quot;false&quot;
+		conClass  = &quot;org.gjt.mm.mysql.Driver&quot;
+		username = &quot;somename&quot;
+		password  = &quot;somepass&quot;
+	/&gt;
+</screen> 
+<para>The <computeroutput>connectionFactory </computeroutput>use is optional and must be enabled to work, so it will not be used if the new properties are not declared as shown above.</para>
 			<sect2>
 				<title>Included ConnectionProvider classes
 </title>
 				<para>The connectionFactory package provides three <emphasis role="italic">connectionProvider</emphasis> classes:
 </para>
-				<para>
-					<emphasis role="bold">ProtomatterConnectionProvider</emphasis>
-				</para>
-				<para>Provides connection objects using the Protomatter Connection Pool library
+<itemizedlist mark="opencircle">
+<listitem>
+<para>
+<emphasis role="bold">ProtomatterConnectionProvider</emphasis>
+    <blockquote>
+    <para>Provides connection objects using the Protomatter Connection Pool library</para>
+    <para><emphasis role="bold">http://protomatter.sourceforge.net/</emphasis></para>
+    <para>
+    <computeroutput>class name: org.dbforms.conprovider.ProtomatterConnectionProvider</computeroutput>
+    </para>
+     
+    </blockquote>
 </para>
-				<para>h<emphasis role="bold">ttp://protomatter.sourceforge.net</emphasis>/
+</listitem>
+<listitem>
+<para><emphasis role="bold">JakartaConnectionProvider</emphasis>
+<blockquote>
+    <para>Provides connection objects using the Jakarta commons-dbcp ConnectionPool library
 </para>
-				<para>
-					<computeroutput>class name: org.dbforms.conprovider.ProtomatterConnectionProvider</computeroutput>
-				</para>
-				<para>
-					<emphasis role="bold">JakartaConnectionProvider</emphasis>
-				</para>
-				<para>Provides connection objects using the Jakarta commons-dbcp ConnectionPool library
+    <para><emphasis role="bold">http://protomatter.sourceforge.net/</emphasis></para>
+    <para>
+    class name: <computeroutput>org.dbforms.conprovider.ProtomatterConnectionProvider</computeroutput>
+    </para>
+     
+    </blockquote> 
 </para>
-				<para>h<emphasis role="bold">ttp://jakarta.apache.org/commons/dbcp.htm</emphasis>l
+</listitem>
+<listitem>
+<para><emphasis role="bold">SimpleConnectionProvider</emphasis>
+ <blockquote>
+     
+    <para>Provides connection objects, but does not  use connection pool components.</para>
+<para>class name: <computeroutput>org.dbforms.conprovider.SimpleConnectionProvider</computeroutput></para>
+				 
+     
+    </blockquote>
 </para>
-				<para>
-					<computeroutput>class name: org.dbforms.conprovider.JakartaConnectionProvider</computeroutput>
-				</para>
-				<para>
-					<emphasis role="bold">SimpleConnectionProvider</emphasis>
-				</para>
-				<para>Provides connection objects, but does not  use connection pool components.
-</para>
-				<para>
-					<computeroutput>class name: org.dbforms.conprovider.SimpleConnectionProvider</computeroutput>
-				</para>
+</listitem>
+</itemizedlist>
+ 
+				
 			</sect2>
 			<sect2>
 				<title>DbForms and ConnectionFactory configuration
 </title>
 				<example>
 					<title/>
-					<programlisting>dbconnection configuration is still compatible with previous means. The <emphasis role="italic">connectionFactory </emphasis>use is optional and must be enabled to work, so it will not be used if the new properties are not declared.
+					<programlisting>
 </programlisting>
 				</example>
 				<para>The examples below show how to configure the "dbconnection" xml element contained in the dbforms-config.xml file.
@@ -57,176 +88,117 @@
 				<sect3>
 					<title>ProtomatterConnectionProvider
 </title>
-					<para>
-						<computeroutput>&lt;!--</computeroutput>
-					</para>
-					<para>
-						<computeroutput>    -  uses the Protomatter ConnectionPool</computeroutput>
-					</para>
-					<para>
-						<computeroutput>    -</computeroutput>
-					</para>
-					<para>
-						<computeroutput>    -  see http://protomatter.sourceforge.net/ for further information</computeroutput>
-					</para>
-					<para>
-						<computeroutput>    --&gt;</computeroutput>
-					</para>
-					<para>
-						<computeroutput>&lt;dbconnection</computeroutput>
-					</para>
-					<para>
-						<computeroutput>   id                                                         = "protomatter"</computeroutput>
-					</para>
-					<para>
-						<computeroutput>   isJndi                                                 = "false"</computeroutput>
-					</para>
-					<para>
-						<computeroutput>   isPow2                                                    = "true"</computeroutput>
-					</para>
-					<para>
-						<computeroutput>   default                                                        = "true"</computeroutput>
-					</para>
-					<para>
-						<computeroutput>   connectionProviderClass                =  "org.dbforms.conprovider.ProtomatterConnectionProvider"</computeroutput>
-					</para>
-					<para>
-						<computeroutput>   connectionPoolURL                     = "jdbc:protomatter:pool:postgresPool"</computeroutput>
-					</para>
-					<para>
-						<computeroutput>   conClass                                              = "org.postgresql.Driver"</computeroutput>
-					</para>
-					<para>
-						<computeroutput>   name                                                   = "jdbc:postgresql://localhost/myDatabase?charSet=ISO-8859-1"</computeroutput>
-					</para>
-					<para>
-						<computeroutput>   username                                           = "postgres"</computeroutput>
-					</para>
-					<para>
-						<computeroutput>password                                           = ""</computeroutput>
-					</para>
-					<para>
-						<computeroutput>/&gt;</computeroutput>
-					</para>
-				</sect3>
+<blockquote>
+<screen>
+
+&lt;!--
+    -  uses the Protomatter ConnectionPool
+    -
+    -  see http://protomatter.sourceforge.net/ for further information
+    --&gt;
+
+&lt;dbconnection
+
+    id                      = "protomatter"
+
+    isJndi                  = "false"
+
+    isPow2                  = "true"
+    
+    default                 = "true"
+
+    connectionProviderClass = "org.dbforms.conprovider.ProtomatterConnectionProvider"
+
+    connectionPoolURL       = "jdbc:protomatter:pool:postgresPool"
+
+    conClass                = "org.postgresql.Driver"
+
+    name                    = "jdbc:postgresql://localhost/myDatabase?charSet=ISO-8859-1"
+
+    username                = "postgres"
+
+    password                = ""
+
+/&gt;
+</screen>					
+</blockquote>				</sect3>
 				<sect3>
 					<title>JakartaConnectionProvider
-</title>
-					<para>
-						<computeroutput>&lt;!-</computeroutput>
-					</para>
-					<para>
-						<computeroutput>    -  uses the Jakarta commons-dbcp ConnectionPool</computeroutput>
-					</para>
-					<para>
-						<computeroutput>    -</computeroutput>
-					</para>
-					<para>
-						<computeroutput>    -  see http://jakarta.apache.org/commons/index.html for further informations</computeroutput>
-					</para>
-					<para>
-						<computeroutput>    -</computeroutput>
-					</para>
-					<para>
-						<computeroutput>    -  Note: this provider does NOT use the connectionPoolURL attribute.</computeroutput>
-					</para>
-					<para>
-						<computeroutput>    --&gt;</computeroutput>
-					</para>
-					<para>
-						<computeroutput>&lt;dbconnection</computeroutput>
-					</para>
-					<para>
-						<computeroutput>id                      = "jakarta-commons-dbcp"</computeroutput>
-					</para>
-					<para>
-						<computeroutput>isJndi                  = "false"</computeroutput>
-					</para>
-					<para>
-						<computeroutput>isPow2                                               = "true"</computeroutput>
-					</para>
-					<para>
-						<computeroutput>default                 = "false"</computeroutput>
-					</para>
-					<para>
-						<computeroutput>connectionProviderClass = "org.dbforms.conprovider.JakartaConnectionProvider"</computeroutput>
-					</para>
-					<para>
-						<computeroutput>connectionPoolURL       = ""</computeroutput>
-					</para>
-					<para>
-						<computeroutput>conClass                = "org.postgresql.Driver"</computeroutput>
-					</para>
-					<para>
-						<computeroutput>name                    = "jdbc:postgresql://localhost/myDatabase?charSet=ISO-8859-1"</computeroutput>
-					</para>
-					<para>
-						<computeroutput>username                = "postgres"</computeroutput>
-					</para>
-					<para>
-						<computeroutput>password                = ""</computeroutput>
-					</para>
-					<para>
-						<computeroutput>/&gt;</computeroutput>
-					</para>
-				</sect3>
-				<sect3>
-					<title>SimpleConnectionProvider
-</title>
-					<para>
-						<computeroutput>&lt;!-</computeroutput>
-					</para>
-					<para>
-						<computeroutput>    -  DOES NOT use connection pooling !!!</computeroutput>
-					</para>
-					<para>
-						<computeroutput>    -</computeroutput>
-					</para>
-					<para>
-						<computeroutput>    -  Note: this provider does NOT use the connectionPoolURL attribute.</computeroutput>
-					</para>
-					<para>
-						<computeroutput>    --&gt;</computeroutput>
-					</para>
-					<para>
-						<computeroutput>&lt;dbconnection</computeroutput>
-					</para>
-					<para>
-						<computeroutput>id                      = "simple"</computeroutput>
-					</para>
-					<para>
-						<computeroutput>isJndi                  = "false"</computeroutput>
-					</para>
-					<para>
-						<computeroutput>isPow2                                           = "true"</computeroutput>
-					</para>
-					<para>
-						<computeroutput>connectionProviderClass = "org.dbforms.conprovider.SimpleConnectionProvider"</computeroutput>
-					</para>
-					<para>
-						<computeroutput>connectionPoolURL       = ""</computeroutput>
-					</para>
-					<para>
-						<computeroutput>conClass                = "org.postgresql.Driver"</computeroutput>
-					</para>
-					<para>
-						<computeroutput>name                    = "jdbc:postgresql://localhost/myDatabase?charSet=ISO-8859-1"</computeroutput>
-					</para>
-					<para>
-						<computeroutput>username                = "postgres"</computeroutput>
-					</para>
-					<para>
-						<computeroutput>password                = ""</computeroutput>
-					</para>
-					<para>
-						<computeroutput>/&gt;</computeroutput>
-					</para>
-					<example>
-						<title/>
-						<programlisting>The new configuration has the following parameters:
-</programlisting>
-					</example>
-					<para/>
+</title><blockquote>
+<screen>
+
+&lt;!-
+    -  uses the Jakarta commons-dbcp ConnectionPool
+    -
+    -  see http://jakarta.apache.org/commons/index.html for further informations
+    -
+    -  Note: this provider does NOT use the connectionPoolURL attribute.
+    --&gt;
+
+
+&lt;dbconnection
+
+    id                      = "jakarta-commons-dbcp"
+
+    isJndi                  = "false"
+
+    isPow2                  = "true"
+
+    default                 = "false"
+
+    connectionProviderClass = "org.dbforms.conprovider.JakartaConnectionProvider"
+
+    connectionPoolURL       = ""
+
+    conClass                = "org.postgresql.Driver"
+
+    name                    = "jdbc:postgresql://localhost/myDatabase?charSet=ISO-8859-1"
+
+    username                = "postgres"
+
+    password                = ""
+
+/&gt;
+
+</screen></blockquote>			</sect3>
+				<sect3><title>SimpleConnectionProvider
+</title><blockquote>
+<screen>                                 
+
+&lt;!-
+    -  DOES NOT use connection pooling !!!
+    -
+    -  Note: this provider does NOT use the connectionPoolURL attribute.
+    --&gt;
+
+&lt;dbconnection
+
+    id                      = "simple"
+
+    isJndi                  = "false"
+
+    isPow2                  = "true"
+
+    connectionProviderClass = "org.dbforms.conprovider.SimpleConnectionProvider"
+
+    connectionPoolURL       = ""
+
+    conClass                = "org.postgresql.Driver"
+
+    name                    = "jdbc:postgresql://localhost/myDatabase?charSet=ISO-8859-1"
+
+    username                = "postgres"
+
+    password                = ""
+
+/&gt;
+
+</screen></blockquote>
+</sect3>
+</sect2>
+<sect2>					 
+						<title>configuration parameters</title>
+ 
 					<para>
 						<table>
 							<title/>
@@ -276,70 +248,54 @@ Used by ProtomatterConnectionProvider class.</entry>
 								</tbody>
 							</tgroup>
 						</table>
-					</para>
-					<para>Setting JDBC Properties
-</para>
-					<para>To set jdbc properties in jdbc drivers that can't specify properties using the JDBC url, you can nest property tags inside the dbconnection tag:
-</para>
-					<example>
-						<title/>
-						<programlisting>
-							<computeroutput>&lt;dbconnection&gt;</computeroutput>
-							<computeroutput>&lt;property name="charSet" value="8859_1" /&gt;</computeroutput> 
-		<computeroutput>&lt;/dbconnection&gt;</computeroutput> 
-		</programlisting>
-					</example>
+					</para></sect2>
+                                        <sect2>
+					<title>Setting JDBC Properties
+</title>
+					<para>To set jdbc properties in jdbc drivers that can't specify properties using the JDBC url, you can nest property tags inside the dbconnection tag:</para>
+ 
+<blockquote>
+<screen>
+    &lt;dbconnection&gt; 
+            &lt;property name="charSet" value="8859_1" /&gt; 
+    &lt;/dbconnection&gt; 
+</screen>
+</blockquote>
+					
+		 
+					 
 					<para>This properties will result in a DriverManager.getConnection(url, properties) call. It is not necessary to include the username and the password in the property list, this will be handled by the connection class.
 </para>
 					<para>Currently properties are supported for native connections (isJNDI=false, isPow2=false) and for connection with the Connection factory (isPow2=true)
 </para>
 					<para>
 						<emphasis role="bold">Example:</emphasis>
-					</para>
-					<para>
-						<computeroutput>&lt;dbconnection</computeroutput>
-					</para>
-					<para>
-						<computeroutput>id                                                      = "simple"</computeroutput>
-					</para>
-					<para>
-						<computeroutput>isPow2                                                   = "true"</computeroutput>
-					</para>
-					<para>
-						<computeroutput>connectionProviderClass                 = " org.dbforms.conprovider.SimpleConnectionProvider"</computeroutput>
-					</para>
-					<para>
-						<computeroutput>connectionPoolURL                       = ""</computeroutput>
-					</para>
-					<para>
-						<computeroutput>name                                                   = "jdbc:mysql://localhost/test"</computeroutput>
-					</para>
-					<para>
-						<computeroutput>isJndi                                                     = "false"</computeroutput>
-					</para>
-					<para>
-						<computeroutput>conClass                                              = "org.gjt.mm.mysql.Driver"</computeroutput>
-					</para>
-					<para>
-						<computeroutput>username                                             = "secret"</computeroutput>
-					</para>
-					<para>
-						<computeroutput>password                                              = "doublesecret"</computeroutput>
-					</para>
-					<para>
-						<computeroutput>&gt;</computeroutput>
-					</para>
-					<para>
-						<computeroutput>&lt;property name="useUnicode" value="true" /&gt;</computeroutput>
-					</para>
-					<para/>
-					<para>
-						<computeroutput>&lt;property name="characterEncoding" value="Shift_JIS" /&gt;</computeroutput>
-					</para>
-					<para>
-						<computeroutput>&lt;/dbconnection&gt;</computeroutput>
-					</para>
-				</sect3>
+
+                                         					</para>
+
+<blockquote><screen>
+
+    
+&lt;dbconnection
+    id                      = "simple"
+    isPow2                  = "true"
+    connectionProviderClass = "org.dbforms.conprovider.SimpleConnectionProvider"
+    connectionPoolURL       = ""
+    name                    = "jdbc:mysql://localhost/test"
+    isJndi                  = "false"
+    conClass                = "org.gjt.mm.mysql.Driver"
+    username                = "secret"
+    password                = "howdidyoufindout"&gt;
+
+        <emphasis role="bold">&lt;property</emphasis> name="useUnicode" value="true" /&gt;
+
+        <emphasis role="bold">&lt;property</emphasis> name="characterEncoding" value="Shift_JIS" /&gt;
+
+&lt;/dbconnection&gt;
+
+
+</screen></blockquote>					
+				
 			</sect2>
 		</sect1>
 		<sect1>
@@ -358,101 +314,79 @@ Used by ProtomatterConnectionProvider class.</entry>
 </para>
 				<para>
 					<emphasis role="bold">pool.initialSize</emphasis>:
-</para>
+</para><blockquote>
 				<para>The initial pool size (default is 0).
-</para>
+</para></blockquote>
 				<para>
 					<emphasis role="bold">pool.maxSize</emphasis>:
-</para>
+</para><blockquote>
 				<para>The max pool size (default is -1). If the max pool size is -1, the pool grows infinitely.
-</para>
+</para></blockquote>
 				<para>
 					<emphasis role="bold">pool.growBlock</emphasis>:
-</para>
+</para><blockquote>
 				<para>The grow size (default is 1). When a new object is needed, this many are created.
-</para>
+</para></blockquote>
 				<para>
 					<emphasis role="bold">pool.createWaitTime</emphasis>:
-</para>
+</para><blockquote>
 				<para>The time (in ms) to sleep between pool object creates (default is 0).
 </para>
-				<para>This is useful for database connection pools where it's possible to overload the database
-</para>
-				<para>by trying to make too many connections too quickly.
-</para>
+				<para>This is useful for database connection pools where it's possible to overload the database by trying to make too many connections too quickly.
+</para></blockquote>
 				<para>
 					<emphasis role="bold">jdbc.validityCheckStatement</emphasis>:
-</para>
-				<para>A SQL statement that is guaranteed to return at least 1 row. For Oracle,
-</para>
-				<para>this is "select 1 from dual" and for Sybase it is "select 1".
+</para><blockquote>
+				<para>A SQL statement that is guaranteed to return at least 1 row. For Oracle, this is "select 1 from dual" and for Sybase it is "select 1".
 </para>
 				<para>This statement is used as a means of checking that a connection is indeed working.
-</para>
+</para></blockquote>
 				<para>
 					<emphasis role="bold">pool.maxConnectionIdleTime</emphasis>:
+</para><blockquote>
+				<para>If this property is present, and the pool.maidThreadCheckInterval property is also present, then a thread will be created that looks for connections that have been idle for more than pool.maxConnectionIdleTime seconds. When this thread finds them, it closed the connection and logs a warning with a stack trace of when the connection was checked out of the pool.
 </para>
-				<para>If this property is present, and the pool.maidThreadCheckInterval property is also present,
-</para>
-				<para>then a thread will be created that looks for connections that have been idle
-</para>
-				<para>for more than pool.maxConnectionIdleTime seconds. When this thread finds them, it closed the connection and logs a warning with a stack trace of when
-</para>
-				<para>the connection was checked out of the pool.
-</para>
-				<para>This is primarily here as a debugging aid for finding places where connections are not getting close,
-</para>
-				<para>and should not be used in a production environment.
-</para>
+				<para>This is primarily here as a debugging aid for finding places where connections are not getting close, and should not be used in a production environment.
+</para></blockquote>
 				<para>
 					<emphasis role="bold">pool.maidThreadCheckInterval</emphasis>:
-</para>
+</para><blockquote>
 				<para>This is the number of seconds between attempts by the maid thread (if present) to find idle connections.
-</para>
-				<example>
-					<title/>
-					<programlisting>For further details:
+</para></blockquote>
+			<para/>	 <para>For further details:
 http://protomatter.sourceforge.net/1.1.8-pre5/javadoc/com/protomatter/jdbc/pool/JdbcConnectionPool.html
- 
-		</programlisting>
-				</example>
+ </para>
+		
+
 			</sect2>
 			<sect2>
 				<title>Protomatter ConnectionProvider configuration example
 </title>
-				<para/>
-				<para>&lt;dbconnection
-</para>
-				<para>   id                      = "protomatter"
-</para>
-				<para>   isJndi                  = "false"
-</para>
-				<para>   isPow2           = "true"
-</para>
-				<para>   defaultConnection       = "true"
-</para>
-				<para>   connectionProviderClass = "org.dbforms.conprovider.ProtomatterConnectionProvider"
-</para>
-				<para>   connectionPoolURL       = "jdbc:protomatter:pool:postgresPool"
-</para>
-				<para>   conClass                = "org.postgresql.Driver"
-</para>
-				<para>   name                    = "jdbc:postgresql://myHost/myDb"
-</para>
-				<para>   username                = "postgres"
-</para>
-				<para>   password                = ""&gt;</para>
-				<para>&lt;!-- jdbc properties --&gt;</para>
-				<para>&lt;property name="charSet" value="ISO-8859-1" /&gt;</para>
-				<para>&lt;!-- Connection pool dataSource properties --&gt;</para>
-				<para>&lt;pool-property name="pool.initialSize"             value="4"   /&gt;</para>
-				<para>&lt;pool-property name="pool.maxSize"                 value="10"  /&gt;</para>
-				<para>&lt;pool-property name="pool.growBlock"               value="2"   /&gt;</para>
-				<para>&lt;pool-property name="pool.createWaitTime"          value="100" /&gt;</para>
-				<para>&lt;pool-property name="pool.maxConnectionIdleTime"   value=""    /&gt;</para>
-				<para>&lt;pool-property name="pool.maidThreadCheckInterval" value=""    /&gt;</para>
-				<para>&lt;pool-property name="jdbc.validityCheckStatement"  value=""    /&gt;</para>
-				<para>&lt;/dbconnection&gt;</para>
+<screen>
+    &lt;dbconnection
+        id                      = "protomatter"
+        isJndi                  = "false"
+        isPow2                   = "true"
+        defaultConnection       = "true"
+        connectionProviderClass = "org.dbforms.conprovider.ProtomatterConnectionProvider"
+        connectionPoolURL       = "jdbc:protomatter:pool:postgresPool"
+        conClass                = "org.postgresql.Driver"
+        name                    = "jdbc:postgresql://myHost/myDb"
+        username                = "postgres"
+        password                = ""&gt;
+        &lt;!-- jdbc properties --&gt;
+            &lt;property name="charSet" value="ISO-8859-1" /&gt;
+
+        &lt;!-- Connection pool dataSource properties --&gt;
+            &lt;pool-property name="pool.initialSize"             value="4"   /&gt;
+            &lt;pool-property name="pool.maxSize"                 value="10"  /&gt;
+            &lt;pool-property name="pool.growBlock"               value="2"   /&gt;
+            &lt;pool-property name="pool.createWaitTime"          value="100" /&gt;
+            &lt;pool-property name="pool.maxConnectionIdleTime"   value=""    /&gt;
+            &lt;pool-property name="pool.maidThreadCheckInterval" value=""    /&gt;
+            &lt;pool-property name="jdbc.validityCheckStatement"  value=""    /&gt;
+    &lt;/dbconnection&gt;
+</screen>				
 			</sect2>
 			<sect2>
 				<title>Jakarta ConnectionProvider supported properties
@@ -462,84 +396,65 @@ http://protomatter.sourceforge.net/1.1.8-pre5/javadoc/com/protomatter/jdbc/pool/
 </para>
 				<para>
 					<emphasis role="bold">validationQuery</emphasis>:
-</para>
-				<para>The SQL query that will be used to validate connections from this pool before returning
-</para>
-				<para>them to the caller. If specified, this query MUST be an SQL SELECT statement that returns at least one row.
-</para>
+</para><blockquote>
+				<para>The SQL query that will be used to validate connections from this pool before returning them to the caller. If specified, this query MUST be an SQL SELECT statement that returns at least one row.
+</para></blockquote>
 				<para>
 					<emphasis role="bold">maxActive</emphasis>:
-</para>
-				<para>The maximum number of active connections that can be allocated from
-</para>
-				<para>this pool at the same time, or zero for no limit.
-</para>
+</para><blockquote>
+				<para>The maximum number of active connections that can be allocated from this pool at the same time, or zero for no limit.
+</para></blockquote>
 				<para>
 					<emphasis role="bold">maxIdle</emphasis>:
-</para>
-				<para>The maximum number of active connections that can remain idle in the pool,
-</para>
-				<para>without extra ones being released, or zero for no limit.
-</para>
+</para><blockquote>
+				<para>The maximum number of active connections that can remain idle in the pool, without extra ones being released, or zero for no limit.
+</para></blockquote>
 				<para>
 					<emphasis role="bold">maxWait</emphasis>:
-</para>
-				<para>The maximum number of milliseconds that the pool will wait (when there are no available connections)
-</para>
-				<para>for a connection to be returned before throwing an exception, or -1 to wait indefinitely.
-</para>
-				<example>
-					<title/>
-					<programlisting>For further details:
+</para><blockquote>
+				<para>The maximum number of milliseconds that the pool will wait (when there are no available connections) for a connection to be returned before throwing an exception, or -1 to wait indefinitely.
+</para></blockquote>
+				 <para/>
+                                 <para>For further details:
 http://jakarta.apache.org/commons/dbcp/api/org/apache/commons/dbcp/BasicDataSource.html
  
-		</programlisting>
-				</example>
-				<para>
-					<emphasis role="italic">Developer added this one to activate the dataSource log.</emphasis>
-				</para>
+		 </para>
+				
 				<para>
 					<emphasis role="bold">useLog</emphasis>: "true" | "false"
-</para>
+</para><blockquote>
 				<para>if "true", force the dataSource to log its statements using log4j.
-</para>
+</para><para>
+					<emphasis role="italic">Note: Developer added this one to activate the dataSource log.</emphasis>
+				</para></blockquote>
 			</sect2>
 			<sect2>
 				<title>Jakarta ConnectionProvider configuration example
 </title>
-				<para/>
-				<para>&lt;dbconnection
-</para>
-				<para>  id                      = "jakarta-commons-dbcp"
-</para>
-				<para>  isJndi                  = "false"
-</para>
-				<para>  isPow2                = "true"
-</para>
-				<para>  default                 = "false"
-</para>
-				<para>  connectionProviderClass = "org.dbforms.conprovider.JakartaConnectionProvider"
-</para>
-				<para>  connectionPoolURL       = ""
-</para>
-				<para>  conClass                = "org.postgresql.Driver"
-</para>
-				<para>  name                    = "jdbc:postgresql://localhost/myDatabase"
-</para>
-				<para>  username                = "postgres"
-</para>
-				<para>  password                = ""&gt;</para>
-				<para/>
-				<para>&lt;!-- jdbc properties --&gt;</para>
-				<para>&lt;property name="charSet" value="ISO-8859-1" /&gt;</para>
-				<para>&lt;!-- connection pool dataSource properties --&gt;</para>
-				<para>&lt;pool-property name="validationQuery" value=""     /&gt;</para>
-				<para>&lt;pool-property name="maxActive"       value="10"   /&gt;</para>
-				<para>&lt;pool-property name="maxIdle"         value="5"    /&gt;</para>
-				<para>&lt;pool-property name="maxWait"         value="-1"   /&gt;</para>
-				<para>&lt;pool-property name="useLog"          value="true" /&gt;</para>
-				<para>&lt;/dbconnection&gt;</para>
-				<para/>
+<screen>
+    &lt;dbconnection
+        id                      = "jakarta-commons-dbcp"
+        isJndi                  = "false"
+        isPow2                  = "true"
+        default                 = "false"
+        connectionProviderClass = "org.dbforms.conprovider.JakartaConnectionProvider"
+        connectionPoolURL       = ""
+        conClass                = "org.postgresql.Driver"
+        name                    = "jdbc:postgresql://localhost/myDatabase"
+        username                = "postgres"
+        password                = ""&gt;
+
+            &lt;!-- jdbc properties --&gt;
+                &lt;property name="charSet" value="ISO-8859-1" /&gt;
+                
+            &lt;!-- connection pool dataSource properties --&gt;
+                &lt;pool-property name="validationQuery" value=""     /&gt;
+                &lt;pool-property name="maxActive"       value="10"   /&gt;
+                &lt;pool-property name="maxIdle"         value="5"    /&gt;
+                &lt;pool-property name="maxWait"         value="-1"   /&gt;
+                &lt;pool-property name="useLog"          value="true" /&gt;
+    &lt;/dbconnection&gt;
+</screen>
 			</sect2>
 		</sect1>
 		<sect1>
@@ -547,11 +462,20 @@ http://jakarta.apache.org/commons/dbcp/api/org/apache/commons/dbcp/BasicDataSour
 </title>
 			<para>A specialized <emphasis role="italic">connectionProvider</emphasis> class is a common class that extends the <emphasis role="italic">ConnectionProvider</emphasis> abstract class and provides the implementation of the following abstract methods:
 </para>
-			<para>
-				<computeroutput>protected abstract void init() throws Exception;</computeroutput>
-			</para>
-			<para>
-				<computeroutput>protected abstract Connection getConnection() throws SQLException;</computeroutput>
+			<para><itemizedlist mark="opencircle">
+<listitem>
+<para>
+ <computeroutput>protected abstract void init() throws Exception;</computeroutput>
+</para>			 
+</listitem>
+<listitem>
+<para>
+ <computeroutput>protected abstract Connection getConnection() throws SQLException;</computeroutput>
+</para>
+</listitem>
+
+</itemizedlist>
+			 
 			</para>
 			<para>A connectionProvider can implement the code to interact with a connection pool system.
 </para>
@@ -561,66 +485,55 @@ http://jakarta.apache.org/commons/dbcp/api/org/apache/commons/dbcp/BasicDataSour
 				<para>The <emphasis role="italic">init</emphasis> method should be used to initialize the chosen data source object or the connection pool component.
 </para>
 				<para>Examples:
+</para><itemizedlist mark="opencircle">
+<listitem>
+<para>loading a specified DriverManager class
 </para>
-				<para>loading a specified DriverManager class
+</listitem>
+<listitem>
+<para>initialize a java DataSource object
 </para>
-				<para>initialize a java DataSource object
+</listitem>
+<listitem>
+<para>initialize a connection pool object
 </para>
-				<para>initialize a connection pool object
-</para>
+</listitem>
+</itemizedlist>
+				
+			<para/>	
+				
 				<para>Here's what the JakartaConnectionProvider class does:
 </para>
-				<para>
-					<computeroutput>  /**</computeroutput>
-				</para>
-				<para>
-					<computeroutput>   *  Initialize the Jakarta Commons connection pool.</computeroutput>
-				</para>
-				<para>
-					<computeroutput>   *</computeroutput>
-				</para>
-				<para>
-					<computeroutput>   * @throws Exception if any error occurs</computeroutput>
-				</para>
-				<para>
-					<computeroutput>   */</computeroutput>
-				</para>
-				<para>
-					<computeroutput>  protected void init() throws Exception</computeroutput>
-				</para>
-				<para>
-					<computeroutput>  {</computeroutput>
-				</para>
-				<para>
-					<computeroutput>    dataSource = new BasicDataSource();</computeroutput>
-				</para>
-				<para>
-					<computeroutput>    dataSource.setDriverClassName(prefs.getJdbcDriver());</computeroutput>
-				</para>
-				<para>
-					<computeroutput>    dataSource.setUrl(prefs.getJdbcURL());</computeroutput>
-				</para>
-				<para>
-					<computeroutput>    dataSource.setUsername(prefs.getUser());</computeroutput>
-				</para>
-				<para>
-					<computeroutput>    dataSource.setPassword(prefs.getPassword());</computeroutput>
-				</para>
-				<para>
-					<computeroutput>    dataSource.setValidationQuery(null);</computeroutput>
-				</para>
-				<para>
-					<computeroutput>    dataSource.setMaxActive(20);</computeroutput>
-				</para>
-				<para>
-					<computeroutput>    dataSource.setMaxIdle(5);</computeroutput>
-				</para>
-				<para>
-					<computeroutput>    dataSource.setMaxWait(-1);</computeroutput>
-				</para>
-				<para>
-					<computeroutput>  }</computeroutput>
-				</para>
+<screen>
+
+  /**
+   *  Initialize the Jakarta Commons connection pool.
+   *
+   * @throws Exception if any error occurs
+   */
+
+  protected void init() throws Exception {
+  
+    dataSource = new BasicDataSource();
+    
+    dataSource.setDriverClassName(prefs.getJdbcDriver());
+
+    dataSource.setUrl(prefs.getJdbcURL());
+
+    dataSource.setUsername(prefs.getUser());
+
+    dataSource.setPassword(prefs.getPassword());
+
+    dataSource.setValidationQuery(null);
+
+    dataSource.setMaxActive(20);
+
+    dataSource.setMaxIdle(5);
+
+    dataSource.setMaxWait(-1);
+
+  }
+</screen>			
 			</sect2>
 			<sect2>
 				<title>The getConnection method
@@ -629,36 +542,21 @@ http://jakarta.apache.org/commons/dbcp/api/org/apache/commons/dbcp/BasicDataSour
 </para>
 				<para>Example of  the JakartaConnectionProvider class:
 </para>
-				<para>
-					<computeroutput>  /**</computeroutput>
-				</para>
-				<para>
-					<computeroutput>   *  Get a JDBC Connection</computeroutput>
-				</para>
-				<para>
-					<computeroutput>   *</computeroutput>
-				</para>
-				<para>
-					<computeroutput>   * @return  a JDBC Connection</computeroutput>
-				</para>
-				<para>
-					<computeroutput>   * @exception  SQLException Description of the Exception</computeroutput>
-				</para>
-				<para>
-					<computeroutput>   */</computeroutput>
-				</para>
-				<para>
-					<computeroutput>  protected Connection getConnection() throws SQLException</computeroutput>
-				</para>
-				<para>
-					<computeroutput>  {</computeroutput>
-				</para>
-				<para>
-					<computeroutput>    return dataSource.getConnection();</computeroutput>
-				</para>
-				<para>
-					<computeroutput>  }</computeroutput>
-				</para>
+<screen>
+    /**
+    *  Get a JDBC Connection
+    *
+    * @return  a JDBC Connection
+    *
+    * @exception  SQLException Description of the Exception
+    */
+ 
+        protected Connection getConnection() throws SQLException {
+  
+            return dataSource.getConnection();
+        
+        }
+</screen>				
 			</sect2>
 		</sect1>
 		<sect1>
@@ -666,188 +564,186 @@ http://jakarta.apache.org/commons/dbcp/api/org/apache/commons/dbcp/BasicDataSour
 </title>
 			<para>To create your own connection provider class, follow these steps:
 </para>
-			<para>create a new class that extends "<computeroutput>org.dbforms.conprovider</computeroutput>.ConnectionProvider" class:
+<orderedlist numeration="lowerroman">
+<listitem>
+<para>create a new class that extends "<computeroutput>org.dbforms.conprovider</computeroutput>.ConnectionProvider" class:
+<blockquote>
+<screen>
+public class MyOwnConnectionProvider extends ConnectionProvider	{
+			...
+
+			}
+</screen>
+</blockquote>
 </para>
-			<para>public class MyOwnConnectionProvider extends ConnectionProvider
+</listitem>
+<listitem>
+<para>create a default constructor like this one:
+<blockquote><screen>
+    /**
+    *  Default constructor.
+    *
+    * @throws Exception because of the &lt;code&gt;throws Exception&lt;/code&gt; clause
+    *                   of the  &lt;code&gt;init&lt;/code&gt; method.
+    */
+
+
+        public MyConnectionProvider() throws Exception {
+   
+             super();    // up to now, do nothing...
+
+        }
+</screen>
+</blockquote>
 </para>
-			<para>{
+</listitem>
+<listitem>
+<para>implement the following ConnectionProvider abstract methods:
+<itemizedlist mark="opencircle">
+<listitem>
+<para>
+ <computeroutput>protected abstract void init() throws Exception;</computeroutput>
 </para>
-			<para>...
+</listitem>
+<listitem>
+<para>
+ <computeroutput>  protected abstract Connection getConnection() throws SQLException;</computeroutput>
 </para>
-			<para>}
+</listitem>
+ 
+</itemizedlist>
 </para>
-			<para>create a default constructor like this one:
-</para>
-			<para>
-				<computeroutput>  /**</computeroutput>
-			</para>
-			<para>
-				<computeroutput>   *  Default constructor.</computeroutput>
-			</para>
-			<para>
-				<computeroutput>   *</computeroutput>
-			</para>
-			<para>
-				<computeroutput>   * @throws Exception because of the &lt;code&gt;throws Exception&lt;/code&gt; clause</computeroutput>
-			</para>
-			<para>
-				<computeroutput>   *                   of the  &lt;code&gt;init&lt;/code&gt; method.</computeroutput>
-			</para>
-			<para>
-				<computeroutput>   */</computeroutput>
-			</para>
-			<para>
-				<computeroutput>  public MyConnectionProvider() throws Exception</computeroutput>
-			</para>
-			<para>
-				<computeroutput>  {</computeroutput>
-			</para>
-			<para>
-				<computeroutput>    super();    // up to now, do nothing...</computeroutput>
-			</para>
-			<para>
-				<computeroutput>  }</computeroutput>
-			</para>
-			<para> implement the following ConnectionProvider abstract methods:
-</para>
-			<para>
-				<computeroutput>protected abstract void init() throws Exception;</computeroutput>
-			</para>
-			<para>
-				<computeroutput>  protected abstract Connection getConnection() throws SQLException;</computeroutput>
-			</para>
+</listitem>
+ 
+</orderedlist>
+			 
+			 
 			<sect2>
 				<title>Using pool-property elements to configure the JDBC connection pool attributes
 </title>
-				<para>A connectionProvider class can configure its connection pool attributes
+				<para>A connectionProvider class can configure its connection pool attributes sing the values specificed by the pool-property xml elements, children of the dbconnection element of the dbforms-config.xml file.
 </para>
-				<para>using the values specificed by the pool-property xml elements,
+				<para>Here's an example of the configuration of the dbconnection element that uses the ProtomatterConnectionProvider class to obtain JDBC connections from the database:
 </para>
-				<para>children of the dbconnection element of the dbforms-config.xml file.
-</para>
-				<para>Here's an example of the configuration of the dbconnection element that
-</para>
-				<para>uses the ProtomatterConnectionProvider class to obtain JDBC connections from the database:
-</para>
-				<para>&lt;dbconnection
-</para>
-				<para>   id                      = "protomatter"
-</para>
-				<para>   isJndi                  = "false"
-</para>
-				<para>   isPow2                  = "true"
-</para>
-				<para>   defaultConnection       = "true"
-</para>
-				<para>   connectionProviderClass = "org.dbforms.conprovider.ProtomatterConnectionProvider"
-</para>
-				<para>   connectionPoolURL       = "jdbc:protomatter:pool:postgresPool"
-</para>
-				<para>   conClass                = "org.postgresql.Driver"
-</para>
-				<para>   name                    = "jdbc:postgresql://myHost/myDb"
-</para>
-				<para>   username                = "secret"
-</para>
-				<para>   password                = "moreSecret"&gt;</para>
-				<para>&lt;!-- jdbc properties --&gt;</para>
-				<para>&lt;property name="charSet" value="ISO-8859-1" /&gt;</para>
-				<para>&lt;!-- Connection pool dataSource properties --&gt;</para>
-				<para>&lt;pool-property name="pool.initialSize"             value="4"   /&gt;</para>
-				<para>&lt;pool-property name="pool.maxSize"                 value="10"  /&gt;</para>
-				<para>&lt;pool-property name="pool.growBlock"               value="2"   /&gt;</para>
-				<para>&lt;pool-property name="pool.createWaitTime"          value="100" /&gt;</para>
-				<para>&lt;pool-property name="pool.maxConnectionIdleTime"   value=""    /&gt;</para>
-				<para>&lt;pool-property name="pool.maidThreadCheckInterval" value=""    /&gt;</para>
-				<para>&lt;pool-property name="jdbc.validityCheckStatement"  value=""    /&gt;</para>
-				<para>&lt;/dbconnection&gt;</para>
+<blockquote>
+<screen>
+&lt;dbconnection
+
+   id                      = "protomatter"
+
+   isJndi                  = "false"
+
+   isPow2                  = "true"
+
+   defaultConnection       = "true"
+
+   connectionProviderClass = "org.dbforms.conprovider.ProtomatterConnectionProvider"
+
+   connectionPoolURL       = "jdbc:protomatter:pool:postgresPool"
+
+   conClass                = "org.postgresql.Driver"
+
+   name                    = "jdbc:postgresql://myHost/myDb"
+
+   username                = "secret"
+
+   password                = "moreSecret"&gt;
+        &lt;!-- jdbc properties --&gt;
+            &lt;property name="charSet" value="ISO-8859-1" /&gt;
+        &lt;!-- Connection pool dataSource properties --&gt;
+            &lt;pool-property name="pool.initialSize"             value="4"   /&gt;
+            &lt;pool-property name="pool.maxSize"                 value="10"  /&gt;
+            &lt;pool-property name="pool.growBlock"               value="2"   /&gt;
+            &lt;pool-property name="pool.createWaitTime"          value="100" /&gt;
+            &lt;pool-property name="pool.maxConnectionIdleTime"   value=""    /&gt;
+            &lt;pool-property name="pool.maidThreadCheckInterval" value=""    /&gt;
+            &lt;pool-property name="jdbc.validityCheckStatement"  value=""    /&gt;
+&lt;/dbconnection&gt;
+</screen></blockquote>
+				
 				<para>When a ConnectionProvider class is instantiated, it can access to the connection pool properties using the following statement:
+</para><blockquote>
+<screen>
+Properties props = prefs.getPoolProperties();
+</screen></blockquote>
+<para>
+The "name" attribute of the pool-property xml element becomes the property key that must be used to retrieve the property value from the above Properties class.
+</para><para>
+Every connection pool package uses its own configuration system; here's the example code used to configure the <emphasis role="italic">ProtomatterConnectionProvider</emphasis> class:
 </para>
-				<para>Properties props = prefs.getPoolProperties();
-</para>
-				<para>The "name" attribute of the pool-property xml element becomes the property key that must be used to retrieve the property value from the above Properties class.
-</para>
-				<para>Every connection pool package uses its own configuration system; here's the example code used to configure the <emphasis role="italic">ProtomatterConnectionProvider</emphasis> class:
-</para>
-				<para>  Properties props = null;
-</para>
-				<para>  ...
-</para>
-				<para>  // now set the connection pool custom properties;
-</para>
-				<para>  // if the connectionPool properties object is null,
-</para>
-				<para>  // instance a new properties object anyway, to use default values;
-</para>
-				<para>  if ((props = prefs.getPoolProperties()) == null)
-</para>
-				<para>       props = new Properties();
-</para>
-				<para>  // use defaults values as specified into the documentation;
-</para>
-				<para>  setIntegerArg(args, props, CP_PROPS_INITIALSIZE,             "0");
-</para>
-				<para>  setIntegerArg(args, props, CP_PROPS_MAXSIZE,                 "-1");
-</para>
-				<para>  setIntegerArg(args, props, CP_PROPS_GROWBLOCK,               "1");
-</para>
-				<para>  setIntegerArg(args, props, CP_PROPS_CREATEWAITTIME,          "0");
-</para>
-				<para>  setArg       (args, props, CP_PROPS_VALIDITYCHECKSTATEMENT,  null);
-</para>
-				<para>  setIntegerArg(args, props, CP_PROPS_MAXCONNECTIONIDLETIME,   null);
-</para>
-				<para>  setIntegerArg(args, props, CP_PROPS_MAIDTHREADCHECKINTERVAL, null);
-</para>
-				<para>  // finally create the pool and we're ready to go!
-</para>
-				<para>  Class.forName(CP_DRIVER).newInstance();
-</para>
-				<para>  connectionPool = new JdbcConnectionPool(getLastToken(prefs.getConnectionPoolURL(), ":"), args);
-</para>
+<blockquote>
+<screen>
+    Properties props = null;
+        ...
+
+    // now set the connection pool custom properties;
+    
+    // if the connectionPool properties object is null,
+    // instance a new properties object anyway, to use default values;
+
+        if ((props = prefs.getPoolProperties()) == null)
+            props = new Properties();
+
+    // use defaults values as specified into the documentation;
+
+        setIntegerArg(args, props, CP_PROPS_INITIALSIZE,             "0");
+
+        setIntegerArg(args, props, CP_PROPS_MAXSIZE,                 "-1");
+
+        setIntegerArg(args, props, CP_PROPS_GROWBLOCK,               "1");
+
+        setIntegerArg(args, props, CP_PROPS_CREATEWAITTIME,          "0");
+
+        setArg       (args, props, CP_PROPS_VALIDITYCHECKSTATEMENT,  null);
+
+        setIntegerArg(args, props, CP_PROPS_MAXCONNECTIONIDLETIME,   null);
+
+        setIntegerArg(args, props, CP_PROPS_MAIDTHREADCHECKINTERVAL, null);
+
+    // finally create the pool and we're ready to go!
+
+        Class.forName(CP_DRIVER).newInstance();
+
+        connectionPool = new JdbcConnectionPool(getLastToken(prefs.getConnectionPoolURL(), ":"), args);
+
+</screen></blockquote>
 				<para/>
 				<para>and here's the (simpler) code for J<emphasis role="italic">akartaConnectionProvider</emphasis> class:
 </para>
-				<para>  Properties props = null;
-</para>
-				<para>  ...
-</para>
-				<para>  // now set the connection pool custom properties;
-</para>
-				<para>  // if the connectionPool properties object is null,
-</para>
-				<para>  // instance a new properties object anyway, to use default values;
-</para>
-				<para>  if ((props = prefs.getPoolProperties()) == null)
-</para>
-				<para>       props = new Properties();
-</para>
-				<para>  String validationQuery = props.getProperty(CP_PROPS_VALIDATION_QUERY, null);
-</para>
-				<para>  if (!Util.isNull(validationQuery))
-</para>
-				<para>      dataSource.setValidationQuery(validationQuery.trim());
-</para>
-				<para>  dataSource.setMaxActive (Integer.parseInt(props.getProperty(CP_PROPS_MAX_ACTIVE, "20")));
-</para>
-				<para>  dataSource.setMaxIdle   (Integer.parseInt(props.getProperty(CP_PROPS_MAX_IDLE,   "5")));
-</para>
-				<para>  dataSource.setMaxWait   (Long.parseLong  (props.getProperty(CP_PROPS_MAX_WAIT,   "-1")));
-</para>
-				<para>   // if PROPS_LOG == true, use log4j category to log the datasource info;
-</para>
-				<para>   String useLog = props.getProperty(CP_PROPS_USE_LOG, "false");
-</para>
-				<para>   if (!Util.isNull(useLog)  "true".equals(useLog.trim()))
-</para>
-				<para>   {
-</para>
-				<para>       cat.info("::init - dataSource log activated");
-</para>
-				<para>       dataSource.setLogWriter(new Log4jPrintWriter(cat, cat.getPriority()));
-</para>
-				<para>   }
-</para>
+<screen>
+    Properties props = null;
+        ...
+
+    // now set the connection pool custom properties;
+
+    // if the connectionPool properties object is null,
+    // instance a new properties object anyway, to use default values;
+
+        if ((props = prefs.getPoolProperties()) == null)
+            props = new Properties();
+
+        String validationQuery = props.getProperty(CP_PROPS_VALIDATION_QUERY, null);
+
+        if (!Util.isNull(validationQuery))
+            dataSource.setValidationQuery(validationQuery.trim());
+
+        dataSource.setMaxActive (Integer.parseInt(props.getProperty(CP_PROPS_MAX_ACTIVE, "20")));
+
+        dataSource.setMaxIdle   (Integer.parseInt(props.getProperty(CP_PROPS_MAX_IDLE,   "5")));
+
+        dataSource.setMaxWait   (Long.parseLong  (props.getProperty(CP_PROPS_MAX_WAIT,   "-1")));
+
+    // if PROPS_LOG == true, use log4j category to log the datasource info;
+
+        String useLog = props.getProperty(CP_PROPS_USE_LOG, "false");
+
+            if (!Util.isNull(useLog)  "true".equals(useLog.trim()))
+                {
+                cat.info("::init - dataSource log activated");
+                dataSource.setLogWriter(new Log4jPrintWriter(cat, cat.getPriority()));
+                }
+</screen>				
+
 				<para/>
 			</sect2>
 		</sect1>
