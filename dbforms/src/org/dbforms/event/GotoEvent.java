@@ -125,7 +125,8 @@ public class GotoEvent extends NavigationEvent {
 
 	public ResultSetVector processEvent(FieldValue[] childFieldValues, FieldValue[] orderConstraint, int count, String firstPosition, String lastPosition, Connection con)
 	throws SQLException {
-		if(position!=null)
+		// 20020705-HKK: position.length() maybe 0!
+        if ((position!=null) && (position.length() > 0))
 			table.fillWithValues(orderConstraint, position);
 
 		logCat.info("gotopos = "+position);
