@@ -69,7 +69,7 @@ public class XMLConfigGenerator {
 	  System.out.println("password="+password);
 	  System.out.println("catalog="+catalog);
 	  System.out.println("schemaPattern="+schemaPattern);
-	  System.out.println("tableNamePattern="+schemaPattern);
+	  System.out.println("tableNamePattern="+tableNamePattern);
 
 	StringBuffer result = new StringBuffer();
 
