@@ -30,7 +30,6 @@ import org.dbforms.util.Util;
 
 import java.util.Vector;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.BodyTagSupport;
@@ -126,7 +125,6 @@ public class IsErrorTag extends BodyTagSupport
    public int doStartTag() throws JspException {
       Vector             originalErrors = (Vector) pageContext.getAttribute(getName(),
                                                                             PageContext.REQUEST_SCOPE);
-      HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
       boolean            haveError = false;
 
       haveError = (((originalErrors != null) && (originalErrors.size() > 0)));

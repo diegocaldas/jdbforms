@@ -23,9 +23,6 @@
 
 package org.dbforms.taglib;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import org.dbforms.util.PageContextBuffer;
 
 import javax.servlet.Servlet;
@@ -43,7 +40,6 @@ import javax.servlet.jsp.tagext.Tag;
  * @author Henner Kollmann
  */
 public class DbBaseHandlerFactory {
-   private static Log        logCat      = LogFactory.getLog(DbBaseHandlerFactory.class);
    private DbBaseHandlerTag  tag;
    private PageContextBuffer pageContext;
 
