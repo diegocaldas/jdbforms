@@ -78,20 +78,10 @@ public class ResultSetVector {
       try { // #JP Jun 27, 2001
          while (rs.next()) {
             Object[] objectRow = new Object[columns];
-            String[] stringRow = new String[columns];
             for (int i = 0; i < columns; i++) {
-               Object tmpObj = rs.getObject(i + 1);
-               logCat.debug("col=" + (i + 1) + ", tmpObj=" + tmpObj);
-               if (tmpObj != null) {
-                  objectRow[i] = tmpObj;
-                  stringRow[i] = tmpObj.toString();
-               } else {
-                  objectRow[i] = null; // #checkme: really necessary?
-                  stringRow[i] = "";
-               }
+					objectRow[i] = rs.getObject(i + 1);
             }
-            stringVector.addElement(stringRow);
-            objectVector.addElement(objectRow);
+            addRow(objectRow);	
          }
       } finally {
          rs.close();
@@ -121,7 +111,6 @@ public class ResultSetVector {
    private void setupSelectFieldsHashtable() {
       if (selectFields == null) {
          logCat.warn("selectField is null");
-
          return;
       }
       selectFieldsHashtable = new Hashtable();
