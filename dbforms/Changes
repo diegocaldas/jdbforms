@@ -7,6 +7,61 @@ ________________________________________________________________________________
 __________________________________________________________________________________________________
 
 Friday, March , 2002
+DbForms version 1.07
+Grunikiewicz.philip@hydro.qc.ca
+
+Bug Fixes and General Maintenance
+---------------------------------
+
+
+Attributes 'style' and 'styleClass' are now available for use in the select tag.
+
+Better handling of timestamp, date and null values in creation of prepared statement parameters. (Contrib. S.Borghi)
+
+Removed attribute 'disableCache' from StaticData tag (in dbforms.tld).
+
+Corrected html link in DevGui hekp file.
+
+
+------------------------------------------------------------------------------------
+
+navNewButton - tag
+destTable - attribute
+
+Allow navNewButton tag to specify a table for insertion other than the parent table. 
+(Contrib. John Madsen)
+
+Example:
+
+  <db:dbform tableName="company"...
+
+	<db:navNewButton caption="Add new Customer" followUp="new_cust.jsp" destTable="customer"/>
+
+------------------------------------------------------------------------------------
+
+tableData, queryData - tag
+format - attribute
+
+Specify a format to be used in concatenating several display fields.  When more then one (1) field 
+is shown, the fields are, by default, separated by a comma. The 'format' string should begin, 
+and contain 's' characters (s = string) and must contain the same amount of 's' characters as 
+the number of display fields. (contrib. Shawn)
+
+Example:
+
+     <db:queryData 
+          name="aQuery"
+          format = "s, s / s"
+          query="Select city_id, city_id, city_name, 
+          city_state from Cities"/>
+
+Result ->  014, Naples / Florida
+
+
+__________________________________________________________________________________________________
+__________________________________________________________________________________________________
+
+Friday, March 22, 2002
 DbForms version 1.06
 Grunikiewicz.philip@hydro.qc.ca
 

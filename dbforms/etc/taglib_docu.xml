@@ -1328,6 +1328,13 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>an arbitrary id declared by the user - this id is useful, if the same data should be used more than once at one jsp page. using this unique name the system is able to chache the data</info>
                 </attribute>
+
+                <attribute>
+                    <name>format</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>Allows you to define a format for concatenating individual fields</info>
+                </attribute>
 				
                 <attribute>
                     <name>foreignTable</name>
@@ -1388,6 +1395,13 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>an arbitrary id declared by the user - this id is useful, if the same data should be used more than once at one jsp page. using this unique name the system is able to chache the data</info>
                 </attribute>
+
+                <attribute>
+                    <name>format</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>Allows you to define a format for concatenating individual fields</info>
+                </attribute>
 				
                 <attribute>
                     <name>query</name>
@@ -1436,14 +1450,6 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>an arbitrary id declared by the user - this id is useful, if the same data should be used more than once at one jsp page. using this unique name the system is able to chache the data</info>
                 </attribute>
-
-                <attribute>
-                    <name>disableCache</name>
-                    <required>false</required>
-                    <rtexprvalue>true</rtexprvalue>
-                    <info>Each query is executed independently</info>
-                </attribute>
-
             </tag>
 
 			<!-- **************************** staticDataItem tag ***********************************-->			
@@ -2182,7 +2188,21 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>JavaScipt event hanlder executed when the user selects an item</info>
                 </attribute>
+                
+                <attribute>
+                    <name>style</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>CSS styles to be applied to this HTML element.</info>
+                </attribute>
 
+                <attribute>
+                    <name>styleClass</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>CSS stylesheet class to be applied to this HTML element.</info>
+                </attribute>
+                
                 <attribute>
                     <name>tabIndex</name>
                     <required>false</required>
@@ -3854,6 +3874,13 @@
                     <required>false</required>
                     <rtexprvalue>true</rtexprvalue>
                     <info>expose id, enables interaction with JavaScript</info>
+                </attribute>
+
+                <attribute>
+                    <name>destTable</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>specify a table for insertion other than the parent table.</info>
                 </attribute>
 
                 <attribute>

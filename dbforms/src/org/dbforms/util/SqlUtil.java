@@ -38,98 +38,170 @@ import org.dbforms.DbFormsConfig;
 
 public class SqlUtil {
 
-  static Category logCat = Category.getInstance(SqlUtil.class.getName()); // logging category for this class
+	static Category logCat = Category.getInstance(SqlUtil.class.getName());
+	// logging category for this class
 
-
-  private static java.sql.Date createAppropriateDate(Object value) {
-	if(value==null) return null;
-	String valueStr = ((String) value).trim();
-
-	if(valueStr.length() == 0) return null;
-	SimpleDateFormat sdf = DbFormsConfig.getDateFormatter();
-
-	//	Date result = java.sql.Date.valueOf(valueStr);
-	Date result = null;
-	try
-	{
-		result = new java.sql.Date(sdf.parse(valueStr).getTime());
-	}
-	catch (Exception exc) {
-		result = null;}
+	private static java.sql.Date createAppropriateDate(Object value) {
 		
-	if (result==null)	
-	// Maybe date has been returned as a timestamp?
-		result = new java.sql.Date(java.sql.Timestamp.valueOf(valueStr).getTime());
-	return result;
-  }    
+		if (value == null)
+			return null;
+			
+		String valueStr = ((String) value).trim();
 
-  private static java.math.BigDecimal createAppropriateNumeric(Object value) {
+		if (valueStr.length() == 0)
+			return null;
+			
+		SimpleDateFormat sdf = DbFormsConfig.getDateFormatter();
 
-	if(value==null) return null;
-	String valueStr = ((String) value).trim();
+		Date result = null;
+		try {
+			result = new java.sql.Date(sdf.parse(valueStr).getTime());
+		} catch (Exception exc) {
+			result = null;
+		}
 
-	if(valueStr.length() == 0) return null;
+		if (result == null)
+			// Maybe date has been returned as a timestamp?
+			try {
+				result = new java.sql.Date(java.sql.Timestamp.valueOf(valueStr).getTime());
+			} catch (java.lang.IllegalArgumentException ex) {
+				// Try date
+				result = java.sql.Date.valueOf(valueStr);
+			}
+		return result;
+	}
 
-	return new java.math.BigDecimal(valueStr);
-  }    
+	private static java.math.BigDecimal createAppropriateNumeric(Object value) {
 
-  /**
-  this utility-method assigns a particular value to a place holder of a PreparedStatement
-  it tries to find the determinate the correct setXxx() value, accoring to the field-type inforamtion
-  represented by "fieldType"0
+		if (value == null)
+			return null;
+		String valueStr = ((String) value).trim();
 
-  quality: this method is bloody alpha (as you migth see :=)
-  */
-	public static void fillPreparedStatement(PreparedStatement ps, int col, Object val, int fieldType)
-	throws SQLException {
+		if (valueStr.length() == 0)
+			return null;
+
+		return new java.math.BigDecimal(valueStr);
+	}
+
+	/**
+	this utility-method assigns a particular value to a place holder of a PreparedStatement.
+	it tries to find the correct setXxx() value, accoring to the field-type information
+	represented by "fieldType".
+	
+	quality: this method is bloody alpha (as you migth see :=)
+	*/
+	public static void fillPreparedStatement(
+		PreparedStatement ps,
+		int col,
+		Object val,
+		int fieldType)
+		throws SQLException {
 		try {
 
-			logCat.debug("fillPreparedStatement( ps, "+col+", "+val+", "+fieldType+")...");
-			Object value=null;
+			logCat.debug(
+				"fillPreparedStatement( ps, " + col + ", " + val + ", " + fieldType + ")...");
+			Object value = null;
 
 			//Check for hard-coded NULL
 			if (!("$null$".equals(val)))
 				value = val;
-			
-			switch(fieldType) {
-				case FieldTypes.INTEGER: ps.setInt(col, Integer.parseInt((String)value)); break;
-				case FieldTypes.NUMERIC: ps.setBigDecimal(col, createAppropriateNumeric(value)); break;
-				case FieldTypes.CHAR: ps.setString(col, (String)value); break;
-				case FieldTypes.DATE: ps.setDate(col, createAppropriateDate(value)); break; //#checkme
-				case FieldTypes.TIMESTAMP: ps.setTimestamp(col, java.sql.Timestamp.valueOf((String)value)); break;
-				case FieldTypes.DOUBLE: ps.setDouble(col, Double.valueOf((String)value).doubleValue()); break;
-				case FieldTypes.FLOAT: ps.setFloat(col, Float.valueOf((String)value).floatValue()); break;
-				case FieldTypes.BLOB:
-					FileHolder fileHolder = (FileHolder) value;
 
-					try {
-						ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
-	  	    	ObjectOutputStream out = new ObjectOutputStream(byteOut);
-	  	    	out.writeObject(fileHolder);
-	  	    	out.flush();
-	  	    	byte[] buf = byteOut.toByteArray();
+			if (value != null) {
 
-	  	    	byteOut.close();
-	  	    	out.close();
+				switch (fieldType) {
+					case FieldTypes.INTEGER :
+						ps.setInt(col, Integer.parseInt((String) value));
+						break;
+					case FieldTypes.NUMERIC :
+						ps.setBigDecimal(col, createAppropriateNumeric(value));
+						break;
+					case FieldTypes.CHAR :
+						ps.setString(col, (String) value);
+						break;
+					case FieldTypes.DATE :
+						ps.setDate(col, createAppropriateDate(value));
+						break; //#checkme
+					case FieldTypes.TIMESTAMP :
+						ps.setTimestamp(col, java.sql.Timestamp.valueOf((String) value));
+						break;
+					case FieldTypes.DOUBLE :
+						ps.setDouble(col, Double.valueOf((String) value).doubleValue());
+						break;
+					case FieldTypes.FLOAT :
+						ps.setFloat(col, Float.valueOf((String) value).floatValue());
+						break;
+					case FieldTypes.BLOB :
+						FileHolder fileHolder = (FileHolder) value;
 
-	  	    	ByteArrayInputStream bytein = new ByteArrayInputStream(buf);
-	  	    	int byteLength = buf.length;
+						try {
+							ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
+							ObjectOutputStream out = new ObjectOutputStream(byteOut);
+							out.writeObject(fileHolder);
+							out.flush();
+							byte[] buf = byteOut.toByteArray();
 
-						ps.setBinaryStream(col, bytein, byteLength); // store fileHolder as a whole (this way we don't lose file meta-info!)
-					} catch(IOException ioe) {
-						ioe.printStackTrace();
-						logCat.info(ioe.toString());
-						throw new SQLException("error storing BLOB in database - "+ioe.toString(), null, 2);
-					}
+							byteOut.close();
+							out.close();
 
-					break;
-				case FieldTypes.DISKBLOB: ps.setString(col, (String)value); break;
+							ByteArrayInputStream bytein = new ByteArrayInputStream(buf);
+							int byteLength = buf.length;
 
-				default: 	ps.setObject(col, value); //#checkme
+							ps.setBinaryStream(col, bytein, byteLength);
+							// store fileHolder as a whole (this way we don't lose file meta-info!)
+						} catch (IOException ioe) {
+							ioe.printStackTrace();
+							logCat.info(ioe.toString());
+							throw new SQLException(
+								"error storing BLOB in database - " + ioe.toString(),
+								null,
+								2);
+						}
+
+						break;
+					case FieldTypes.DISKBLOB :
+						ps.setString(col, (String) value);
+						break;
+
+					default :
+						ps.setObject(col, value); //#checkme
+				}
+			} else {
+				switch (fieldType) {
+					case FieldTypes.INTEGER :
+						ps.setNull(col, java.sql.Types.INTEGER);
+						break;
+					case FieldTypes.NUMERIC :
+						ps.setNull(col, java.sql.Types.NUMERIC);
+						break;
+					case FieldTypes.CHAR :
+						ps.setNull(col, java.sql.Types.CHAR);
+						break;
+					case FieldTypes.DATE :
+						ps.setNull(col, java.sql.Types.DATE);
+						break;
+					case FieldTypes.TIMESTAMP :
+						ps.setNull(col, java.sql.Types.TIMESTAMP);
+						break;
+					case FieldTypes.DOUBLE :
+						ps.setNull(col, java.sql.Types.DOUBLE);
+						break;
+					case FieldTypes.FLOAT :
+						ps.setNull(col, java.sql.Types.FLOAT);
+						break;
+					case FieldTypes.BLOB :
+						ps.setNull(col, java.sql.Types.BLOB);
+					case FieldTypes.DISKBLOB :
+						ps.setNull(col, java.sql.Types.CHAR);
+					default :
+						ps.setNull(col, java.sql.Types.OTHER);
+				}
 			}
 
-		} catch(Exception e) {
-			throw new SQLException("Field type seems to be incorrect - "+e.toString(), null, 1);
+		} catch (Exception e) {
+			throw new SQLException(
+				"Field type seems to be incorrect - " + e.toString(),
+				null,
+				1);
 		}
-  }                
+	}
 }

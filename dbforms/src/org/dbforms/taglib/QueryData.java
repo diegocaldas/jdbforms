@@ -58,12 +58,10 @@ import org.apache.log4j.Category;
  * @author Joachim Peer <j.peer@gmx.net>
  */
 
-
-
-
 public class QueryData extends EmbeddedData {
 
-	static Category logCat = Category.getInstance(QueryData.class.getName()); // logging category for this class
+	static Category logCat = Category.getInstance(QueryData.class.getName());
+	// logging category for this class
 
 	private String query;
 
@@ -75,37 +73,50 @@ public class QueryData extends EmbeddedData {
 		return query;
 	}
 
-
-
 	/**
-	returns Hashtable with data. Its keys represent the "value"-fields for the DataContainer-Tag, its values
-	represent the visible fields for the Multitags.
-	(DataContainer are: select, radio, checkbox and a special flavour of Label).
-  */
-	protected Vector fetchData(Connection con)
-	throws SQLException {
+	 * returns Hashtable with data. Its keys represent the "value"-fields for the DataContainer-Tag, its values
+	 * represent the visible fields for the Multitags.
+	 * (DataContainer are: select, radio, checkbox and a special flavour of Label).
+	 */
+	protected Vector fetchData(Connection con) throws SQLException {
 
-	  logCat.info("about to execute user defined query:"+query);
-	  PreparedStatement ps = con.prepareStatement(query);
+		logCat.info("about to execute user defined query:" + query);
+		PreparedStatement ps = con.prepareStatement(query);
 
-	  ResultSetVector rsv = new ResultSetVector(ps.executeQuery());
-	  ps.close(); // #JP Jun 27, 2001
+		ResultSetVector rsv = new ResultSetVector(ps.executeQuery());
+		ps.close(); // #JP Jun 27, 2001
 
 		Vector result = new Vector();
+		/*
+		*(2)Also add the following to be able to specify a format when concatenating several display fields 
+		*/
+		if (format != null) {
+			format();
+		} //add until this point for formating display fields.
 
 		// transforming the resultsetVector into a hashtable
-		for(int i=0; i<rsv.size(); i++) {
+		for (int i = 0; i < rsv.size(); i++) {
 			String[] currentRow = (String[]) rsv.elementAt(i);
 
 			String htKey = currentRow[0];
 			StringBuffer htValueBuf = new StringBuffer();
-			for(int j=1; j<currentRow.length; j++) {
+			int x = currentRow.length;
+			for (int j = 1; j < x; j++) {
 				htValueBuf.append(currentRow[j]);
-				if(j<currentRow.length-1) htValueBuf.append(", ");  //#checkme: this could be more generic
-		  }
+				/*
+				*(3) modify the original to the following to be able to specify a format when concatenating several display fields
+				*/
+				if ((format != null) && (j < currentRow.length)) {
+					htValueBuf.append(String.valueOf(formatted.get(j - 1)));
+				} else {
+					if (j < currentRow.length - 1)
+						htValueBuf.append(", ");
+				} //(3) modify until this point for formating display fields.
 
+			}
+			result.addElement(new KeyValuePair(htKey, htValueBuf.toString()));
+			// add current row, now well formatted, to result
 
-		  result.addElement(new KeyValuePair(htKey, htValueBuf.toString())); // add current row, now well formatted, to result
 		}
 
 		return result;

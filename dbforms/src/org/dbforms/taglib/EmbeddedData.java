@@ -40,6 +40,38 @@ public abstract class EmbeddedData extends TagSupport {
 
 	protected Hashtable data;
 	protected String name;
+	
+	/*
+	*(1)add the following to be able to specify a format when concatenating several display fields 
+	*/
+	protected java.lang.String format;
+
+	public void setFormat(java.lang.String format) {
+		this.format = format;
+	}
+
+	public String getFormat() {
+		return format;
+	}
+
+	protected ArrayList formatted;
+
+	public void format() {
+		formatted = new ArrayList();
+		String format = getFormat();
+		int c = 0;
+
+		for (int i = 0; i >= 0;) {
+			c = format.indexOf("s", i + 1);
+			if (c == -1) {
+				formatted.add(format.substring(i + 1, format.length()));
+			} else {
+				formatted.add(" " + format.substring(i + 1, c));
+			}
+			i = c;
+		}
+	} // add until this point for formating display fields.
+	
 
 	public int doStartTag() throws JspException {
 

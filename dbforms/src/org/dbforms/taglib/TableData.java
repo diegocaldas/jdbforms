@@ -90,6 +90,7 @@ public class TableData extends EmbeddedData {
 		return orderBy;
 	}
 
+
 	/**
 	returns Hashtable with data. Its keys represent the "value"-fields for the DataContainer-Tag, its values
 	represent the visible fields for the Multitags.
@@ -124,6 +125,12 @@ public class TableData extends EmbeddedData {
 		ps.close(); // #JP Jun 27, 2001
 
 		Vector result = new Vector();
+		/*
+		*(2)also add the following to be able to specify a format when concatenating several display fields 
+		*/
+		if (format != null) {
+			format();
+		} //add until this point for formating display fields.
 
 		// transforming the resultsetVector into a hashtable
 		for (int i = 0; i < rsv.size(); i++) {
@@ -133,8 +140,15 @@ public class TableData extends EmbeddedData {
 			StringBuffer htValueBuf = new StringBuffer();
 			for (int j = 1; j < currentRow.length; j++) {
 				htValueBuf.append(currentRow[j]);
-				if (j < currentRow.length - 1)
-					htValueBuf.append(", "); //#checkme: this could be more generic
+				/*
+				 *(3) modify the original to the following to be able to specify a format when concatenating several display fields
+				 **/
+				if ((format != null) && (j < currentRow.length)) {
+					htValueBuf.append(String.valueOf(formatted.get(j - 1)));
+				} else {
+					if (j < currentRow.length - 1)
+						htValueBuf.append(", ");
+				} //(3) modify until this point for formating display fields.
 			}
 			String htValue = htValueBuf.toString();
 

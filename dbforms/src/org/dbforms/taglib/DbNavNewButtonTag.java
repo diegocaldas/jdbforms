@@ -46,6 +46,7 @@ import org.apache.log4j.Category;
 public class DbNavNewButtonTag extends DbBaseButtonTag {
 
   static Category logCat = Category.getInstance(DbNavNewButtonTag.class.getName()); // logging category for this class
+  private String destTable;
 
   public int doStartTag() throws javax.servlet.jsp.JspException {
 
@@ -54,7 +55,15 @@ public class DbNavNewButtonTag extends DbBaseButtonTag {
 		try {
 
 		  StringBuffer tagBuf = new StringBuffer();
-				String tagName = "ac_new_"+table.getId();
+
+			// Allow navNewButton to specify a table for insertion other than the
+			// parent table. (Contrib. John Madsen)		  
+			int tableId = ((destTable != null) && (destTable.length() != 0))
+		  	? config.getTableByName(destTable).getId()
+		  	: table.getId();
+		  
+		  
+				String tagName = "ac_new_"+ tableId;
 
 				if(followUp != null) {
 					tagBuf.append( getDataTag(tagName, "fu", followUp) );
@@ -101,4 +110,19 @@ public class DbNavNewButtonTag extends DbBaseButtonTag {
   }  
 
 
+	/**
+	 * Gets the destTable
+	 * @return Returns a String
+	 */
+	public String getDestTable() {
+		return destTable;
+	}
+	/**
+	 * Sets the destTable
+	 * @param destTable The destTable to set
+	 */
+	public void setDestTable(String destTable) {
+		this.destTable = destTable;
+	}
+
 }
