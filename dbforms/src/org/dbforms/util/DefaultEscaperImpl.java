@@ -32,6 +32,9 @@ public class DefaultEscaperImpl implements Escaper {
 		StringBuffer v = new StringBuffer("");
 		for (i = 0; i < s.length(); i++) {
 			switch (s.charAt(i)) {
+				case '%' :
+					v.append("&#37;");
+					break;
 				case '"' :
 					v.append("&quot;");
 					break;
