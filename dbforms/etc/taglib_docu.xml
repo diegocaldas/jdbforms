@@ -2563,7 +2563,7 @@ of them</summary>
 					</info>
 				</attribute>
 				<attribute>
-					<name>value</name>
+					<name>defaultValue</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
 					<info>
