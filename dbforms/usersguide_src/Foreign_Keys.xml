@@ -7,371 +7,292 @@
 			<title>Introduction
 </title>
 			<para/>
-			<para> Contributed by Eric Pugh, DbForms contains limited support for
+			<para>DbForms contains limited support for foreign keys within database schemas. DbForms does currently not check foreign key constraints or start cascading actions like updating foreign keys within a referencing table whenever the key of a referenced row is updated. But:
 </para>
-			<para> foreign keys within database schemas.
+<itemizedlist mark="opencircle">
+<listitem>
+<para>There is support to express foreign keys within dbforms config file. 
 </para>
-			<para> DbForms does currently not check foreign key constraints
+</listitem>
+<listitem>
+<para>
+Foreign key information is available within running web application to be used by servlets or JSPs. 
 </para>
-			<para> or start cascading actions like updating foreign keys within a
+</listitem>
+<listitem>
+<para>
+ Devgui tries to include foreign key information automatically within dbforms config file by using JDBC metadata methods
 </para>
-			<para> referencing table whenever the key of a referenced row is
+</listitem>
+<listitem>
+<para>Some of the stylesheets used by devgui to automatically generate JSPs use foreign key information from config file. So they are able to generate select tags etc. to allow the user to choose from rows within another table.
 </para>
-			<para> updated. But:
-</para>
-			<para/>
-			<para>  - There is support to express foreign keys within
-</para>
-			<para>    dbforms config file.
-</para>
-			<para/>
-			<para>  - Foreign key information is available within
-</para>
-			<para>    running web application  to be used by servlets or JSPs.
-</para>
-			<para/>
-			<para>  - Devgui tries to include foreign key information automatically
-</para>
-			<para>    within dbforms config file by using JDBC metadata methods
-</para>
-			<para/>
-			<para>  - Some of the stylesheets used by devgui to automatically generate
-</para>
-			<para>    JSPs use foreign key information from config file. So they are
-</para>
-			<para>    able to generate select tags etc. to allow the user to choose
-</para>
-			<para>    from rows within another table.
-</para>
-			<para/>
+</listitem>
+</itemizedlist>
+ 
+			 
 		</sect1>
 		<sect1>
 			<title>Foreign-Key tag within dbforms-config.xml
 </title>
 			<para/>
-			<para> Foreign key infomation within config file has to be expressed using
+			<para> Foreign key infomation within config file has to be expressed using the foreign-key tag that has to be nested within the table tag belonging to the referencing tables.
 </para>
-			<para> the foreign-key tag that has to be nested within the table tag
+			<sect2>
+				<title>Here is an excerpt from the <emphasis role="bold">DTD</emphasis>:
+</title> 
+<screen><computeroutput>
+    &lt;!ELEMENT foreign-key (reference+)&gt;
+
+    &lt;!ATTLIST foreign-key
+        foreignTable    CDATA #REQUIRED
+        name            CDATA #IMPLIED
+        visibleFields   CDATA #IMPLIED
+        format          CDATA #IMPLIED
+        displayType (select|radio|none) "none"
+    &gt;
+
+
+    &lt;!ELEMENT reference EMPTY&gt;
+
+    &lt;!ATTLIST reference
+        local           CDATA #REQUIRED
+        foreign         CDATA #REQUIRED
+    &gt;
+
+</computeroutput></screen>
+ 
+			</sect2>
+			<sect2>
+				<title> Let's say you have created a <emphasis role="bold">database containing tables</emphasis>:
+ 
+</title> 
+<screen><computeroutput> 
+        create table customer
+            (cno integer not null primary key,
+            first_name char(20) not null,
+            last_name  char(20) not null
+            phone      char(20) not null,
+            ...
+            )
+
+        create table order
+            (orderno integer not null primary key,
+            cust_no integer not null,
+            order_date date not null,
+            ...
+            constraint customer_known_in_order
+                foreign key (cust_no)
+                references customer(cno)
+            )
+ </computeroutput></screen></sect2>   			
+			<sect2>
+				<title>Then within <emphasis role="bold">dbforms-config.xml</emphasis> you could write:</title>
+<screen><computeroutput>
+    &lt;table name="customer"&gt;
+        &lt;field name="cno" fieldType="integer" isKey="true"/&gt;
+        &lt;field name="first_name" fieldType="char" size="20"/&gt;
+        &lt;field name="last_name" fieldType="char" size="20"/&gt;
+        &lt;field name="phone" fieldType="char" size="20"/&gt;
+        ...
+    &lt;table&gt;
+
+    &lt;table name="order"&gt;
+        &lt;field name="cno" fieldType="integer" isKey="true"/&gt;
+        &lt;field name="cust_no" fieldType="integer"/&gt;
+        &lt;field name="order_date" fieldType="date"/&gt;
+        ...
+
+        &lt;foreign-key foreignTable="customer"
+
+                  name="customer_in_order"
+
+                  displayType="select"
+
+                  visibleFields="first_name,last_name,phone"
+
+                  format="%s %s (Phone %s)" &gt;
+                  
+            &lt;reference local="cust_no" foreign="cno"/&gt;
+        &lt;/foreign-key&gt;
+    &lt;/table&gt;
+ 
+</computeroutput></screen>
+<itemizedlist mark="opencircle">
+<listitem>
+<para>the foreign-key has to be nested within the referencing table
 </para>
-			<para> belonging to the referencing tables.
+</listitem>
+<listitem>
+<para>attributes:
+    <blockquote>
+    <itemizedlist mark="opencircle">
+    <listitem>
+    <para>foreignTable: name of referenced table (required)
+    </para>
+    </listitem>
+    <listitem>
+    <para>name: name of this constraint (optional, currently not used)
+    </para>
+    </listitem>
+    <listitem>
+    <para>displayType: This is a suggestion how to present this reference within an automatically generated page
+        <itemizedlist mark="opencircle">
+        <listitem>
+        <para>select: create a select tag
+        </para>
+        </listitem>
+        <listitem>
+        <para>radio : create a set of radio fields
+        </para>
+        </listitem>
+        <listitem>
+        <para>none  : ignore reference, do nothing (default if not set)
+        </para>
+        </listitem>
+        </itemizedlist>
+    </para>
+    </listitem>
+    <listitem>
+    <para>visibleFields: which columns of the referenced table shall be presented to the user? This gets directly passed to corresponding attribute within tableData tag, see docs there
+    </para>
+    </listitem>
+    <listitem>
+    <para>format: which format pattern shall be used to format the visibleFields? See docs for tag tableData for details.
+    </para>
+    </listitem>
+    </itemizedlist>
+    </blockquote>
 </para>
-			<example>
-				<title/>
-				<programlisting> Here is an excerpt from the <emphasis role="bold">DTD</emphasis>:
-</programlisting>
-			</example>
-			<para>
-				<computeroutput/>
-			</para>
-			<para>
-				<computeroutput>&lt;!ELEMENT foreign-key (reference+)&gt;</computeroutput>
-			</para>
-			<para>
-				<computeroutput>&lt;!ATTLIST foreign-key
-</computeroutput>
-			</para>
-			<para>
-				<computeroutput>     foreignTable  CDATA #REQUIRED
-</computeroutput>
-			</para>
-			<para>
-				<computeroutput>     name          CDATA #IMPLIED
-</computeroutput>
-			</para>
-			<para>
-				<computeroutput>     visibleFields CDATA #IMPLIED
-</computeroutput>
-			</para>
-			<para>
-				<computeroutput>     format        CDATA #IMPLIED
-</computeroutput>
-			</para>
-			<para>
-				<computeroutput>     displayType (select|radio|none) "none"
-</computeroutput>
-			</para>
-			<para>
-				<computeroutput>&gt;</computeroutput>
-			</para>
-			<para>
-				<computeroutput/>
-			</para>
-			<para>
-				<computeroutput>&lt;!ELEMENT reference EMPTY&gt;</computeroutput>
-			</para>
-			<para>
-				<computeroutput>&lt;!ATTLIST reference
-</computeroutput>
-			</para>
-			<para>
-				<computeroutput>     local   CDATA #REQUIRED
-</computeroutput>
-			</para>
-			<para>
-				<computeroutput>     foreign CDATA #REQUIRED
-</computeroutput>
-			</para>
-			<para>
-				<computeroutput>&gt;</computeroutput>
-			</para>
-			<para>
-				<computeroutput/>
-			</para>
-			<example>
-				<title/>
-				<programlisting> Let's say you have created a <emphasis role="bold">database containing tables</emphasis>:
-</programlisting>
-			</example>
-			<para/>
-			<para>
-				<computeroutput>   create table customer
-</computeroutput>
-			</para>
-			<para>
-				<computeroutput>    (cno integer not null primary key,
-</computeroutput>
-			</para>
-			<para>
-				<computeroutput>     first_name char(20) not null,
-</computeroutput>
-			</para>
-			<para>
-				<computeroutput>     last_name  char(20) not null
-</computeroutput>
-			</para>
-			<para>
-				<computeroutput>     phone      char(20) not null,
-</computeroutput>
-			</para>
-			<para>
-				<computeroutput>     ...
-</computeroutput>
-			</para>
-			<para>
-				<computeroutput>    )
-</computeroutput>
-			</para>
-			<para>
-				<computeroutput/>
-			</para>
-			<para>
-				<computeroutput>   create table order
-</computeroutput>
-			</para>
-			<para>
-				<computeroutput>    (orderno integer not null primary key,
-</computeroutput>
-			</para>
-			<para>
-				<computeroutput>     cust_no integer not null,
-</computeroutput>
-			</para>
-			<para>
-				<computeroutput>     order_date date not null,
-</computeroutput>
-			</para>
-			<para>
-				<computeroutput>     ...
-</computeroutput>
-			</para>
-			<para>
-				<computeroutput>     constraint customer_known_in_order
-</computeroutput>
-			</para>
-			<para>
-				<computeroutput>       foreign key (cust_no)
-</computeroutput>
-			</para>
-			<para>
-				<computeroutput>       references customer(cno)
-</computeroutput>
-			</para>
-			<para>
-				<computeroutput>    )
-</computeroutput>
-			</para>
-			<para/>
-			<example>
-				<title/>
-				<programlisting> Then within <emphasis role="bold">dbforms-config.xml</emphasis> you could write:
-</programlisting>
-			</example>
-			<para/>
-			<para>&lt;table name="customer"&gt;</para>
-			<para>&lt;field name="cno" fieldType="integer" isKey="true"/&gt;</para>
-			<para>&lt;field name="first_name" fieldType="char" size="20"/&gt;</para>
-			<para>&lt;field name="last_name" fieldType="char" size="20"/&gt;</para>
-			<para>&lt;field name="phone" fieldType="char" size="20"/&gt;</para>
-			<para>      ...
+</listitem>
+<listitem>
+<para>nested tags reference: models pairs of columns that take part in the reference:
+    <itemizedlist mark="opencircle">
+    <listitem>
+    <para>local: name of the referencing column
+    </para>
+    </listitem>
+    <listitem>
+    <para>foreign: name of the referenced column
+    <blockquote>
+        <para>If a key consists of more than one column, there will be more than one nested tag, e.g. if the customer is just unique within an area, we'd have:
+        <screen>
+        <computeroutput>
+    &lt;foreign-key foreignTable="customer" ...&gt;
+        &lt;reference local="area_id" foreign="area_id"/&gt;
+        &lt;reference local="cust_no" foreign="cno"/&gt;
+    &lt;/foreign-key&gt;        
+        </computeroutput>
+        </screen>
+        </para>
+  </blockquote>
+    </para>
+    </listitem>
+    </itemizedlist>
 </para>
-			<para>&lt;table&gt;</para>
-			<para/>
-			<para>&lt;table name="order"&gt;</para>
-			<para>&lt;field name="cno" fieldType="integer" isKey="true"/&gt;</para>
-			<para>&lt;field name="cust_no" fieldType="integer"/&gt;</para>
-			<para>&lt;field name="order_date" fieldType="date"/&gt;</para>
-			<para>     ...
-</para>
-			<para>&lt;foreign-key foreignTable="customer"
-</para>
-			<para>                  name="customer_in_order"
-</para>
-			<para>                  displayType="select"
-</para>
-			<para>                  visibleFields="first_name,last_name,phone"
-</para>
-			<para>                  format="%s %s (Phone %s)" &gt;</para>
-			<para>&lt;reference local="cust_no" foreign="cno"/&gt;</para>
-			<para>&lt;/foreign-key&gt;</para>
-			<para>&lt;/table&gt;</para>
-			<para/>
-			<para>the foreign-key has to be nested within the referencing table
-</para>
-			<para/>
-			<para>attributes:
-</para>
-			<para>foreignTable: name of referenced table (required)
-</para>
-			<para>name: name of this constraint (optional, currently not used)
-</para>
-			<para>displayType: This is a suggestion how to present this reference within an automatically generated page
-</para>
-			<para>          select: create a select tag
-</para>
-			<para>          radio : create a set of radio fields
-</para>
-			<para>          none  : ignore reference, do nothing (default if not set)
-</para>
-			<para>visibleFields: which columns of the referenced table shall be presented to the user? This gets directly passed to corresponding attribute within tableData tag, see docs there
-</para>
-			<para>format: which format pattern shall be used to format the visibleFields? See docs for tag tableData for details.
-</para>
-			<para/>
-			<para>nested tags reference: models pairs of columns that take part in the reference:
-</para>
-			<para>local: name of the referencing column
-</para>
-			<para>foreign: name of the referenced column
-</para>
-			<para>    If a key consists of more than one column, there will be
-</para>
-			<para>    more than one nested tag, e.g. if the customer is just
-</para>
-			<para>    unique within an area, we'd have:
-</para>
-			<para/>
-			<para>&lt;foreign-key foreignTable="customer" ...&gt;</para>
-			<para>&lt;reference local="area_id" foreign="area_id"/&gt;</para>
-			<para>&lt;reference local="cust_no" foreign="cno"/&gt;</para>
-			<para>&lt;/foreign-key&gt;</para>
-			<para/>
+</listitem>
+</itemizedlist>			
+</sect2>			
 		</sect1>
 		<sect1>
 			<title>Support within XSL Stylesheets
 </title>
-			<example>
-				<title/>
-				<programlisting>This has been assigned, but it is not yet implemented.
-</programlisting>
-			</example>
+			<para>This has been assigned, but it is not yet implemented (as of 1.1.2pr2).
+ </para>
 			<para/>
 			<para>Some of the stylesheets used by devgui use the information about foreign keys to create automatically tags allowing to select from a referenced table. In the above example, we
+ might get a:
 </para>
-			<para>might get a:
-</para>
-			<para/>
-			<para>&lt;db:select fieldName="cust_no"&gt;</para>
-			<para>&lt;db:tableData
-</para>
-			<para>       name="customer_in_order"
-</para>
-			<para>       foreignTable="customer"
-</para>
-			<para>       visibleFields="first_name,last_name,phone"
-</para>
-			<para>       format="%s %s (Phone %s)"
-</para>
-			<para>       storeField="cno" /&gt;</para>
-			<para>&lt;/db:select&gt;</para>
-			<para/>
-			<para/>
+<blockquote>
+<screen>
+<computeroutput>
+    &lt;db:select fieldName="cust_no"&gt;
+        &lt;db:tableData
+            name="customer_in_order"
+            foreignTable="customer"
+            visibleFields="first_name,last_name,phone"
+            format="%s %s (Phone %s)"
+            storeField="cno" 
+        /&gt;
+    &lt;/db:select&gt;
+</computeroutput>
+</screen>
+</blockquote>			 
+			
 		</sect1>
 		<sect1>
 			<title>Simplified Reference with New Attributes for table tag:
 </title>
 			<para/>
-			<para>If a table is referenced from lots of other tables, it might be neccessary to repeat the attribute values for visibleFields and format within each foreign-key tag again and again. To avoid
+			<para>If a table is referenced from lots of other tables, it might be neccessary to repeat the attribute values for visibleFields and format within each foreign-key tag again and again. To avoid this, two new attributes for the table tag have been introduced:
 </para>
-			<para>this, two new attributes for the table tag have been introduced:
+			 <itemizedlist mark="opencircle">
+<listitem>
+<para>
+ <emphasis role="bold">defaultVisibleFields</emphasis> sets the default for attribute visibleFields whenever referencing to this table
 </para>
-			<para/>
-			<para>   - <emphasis role="bold">defaultVisibleFields</emphasis> sets the default for attribute visibleFields
+</listitem>
+<listitem>
+<para><emphasis role="bold">defaultVisibleFieldsFormat</emphasis> does the same for format
 </para>
-			<para>     whenever referencing to this table
+ </listitem>
+</itemizedlist> 
+			<sect2>
+				<title>Example></title>
+				<para> So the previous example of the <emphasis role="bold">dbforms-config.xml</emphasis> could have been rewritten as:
 </para>
-			<para>   -<emphasis role="bold"> defaultVisibleFieldsFormat</emphasis> does the same for format
-</para>
-			<para/>
-			<example>
-				<title/>
-				<programlisting> So the above example of the <emphasis role="bold">dbforms-config.xml</emphasis> could have been rewritten as:
-</programlisting>
-			</example>
-			<para/>
-			<para>&lt;table name="customer"
-</para>
-			<para>         defaultVisibleFields="first_name,last_name,phone"
-</para>
-			<para>         defaultVisibleFieldsFormat="%s %s (Phone %s)"&gt;</para>
-			<para>&lt;field name="cno" fieldType="integer" isKey="true"/&gt;</para>
-			<para>&lt;field name="first_name" fieldType="char" size="20"/&gt;</para>
-			<para>&lt;field name="last_name" fieldType="char" size="20"/&gt;</para>
-			<para>&lt;field name="phone" fieldType="char" size="20"/&gt;</para>
-			<para>      ...
-</para>
-			<para>&lt;table&gt;</para>
-			<para/>
-			<para>&lt;table name="order"&gt;</para>
-			<para>&lt;field name="cno" fieldType="integer" isKey="true"/&gt;</para>
-			<para>&lt;field name="cust_no" fieldType="integer"/&gt;</para>
-			<para>&lt;field name="order_date" fieldType="date"/&gt;</para>
-			<para>     ...
-</para>
-			<para>&lt;foreign-key foreignTable="customer"
-</para>
-			<para>                  name="customer_in_order"
-</para>
-			<para>                  displayType="select"  &gt;</para>
-			<para>&lt;reference local="cust_no" foreign="cno"/&gt;</para>
-			<para>&lt;/foreign-key&gt;</para>
-			<para>&lt;/table&gt;</para>
-			<para/>
+<blockquote>
+<screen>
+ 
+&lt;table name="customer"
+    <emphasis role="bold">defaultVisibleFields</emphasis>="first_name,last_name,phone"
+    <emphasis role="bold">defaultVisibleFieldsFormat</emphasis>="%s %s (Phone %s)"&gt;
+
+        &lt;field name="cno" fieldType="integer" isKey="true"/&gt;
+        &lt;field name="first_name" fieldType="char" size="20"/&gt;
+        &lt;field name="last_name" fieldType="char" size="20"/&gt;
+        &lt;field name="phone" fieldType="char" size="20"/&gt;
+      ...
+
+&lt;table&gt;
+
+&lt;table name="order"&gt;
+        &lt;field name="cno" fieldType="integer" isKey="true"/&gt;
+        &lt;field name="cust_no" fieldType="integer"/&gt;
+        &lt;field name="order_date" fieldType="date"/&gt;
+        ...
+            &lt;foreign-key foreignTable="customer"
+                name="customer_in_order"
+                displayType="select"  &gt;
+            &lt;reference local="cust_no" foreign="cno"/&gt;
+            &lt;/foreign-key&gt;
+&lt;/table&gt;
+
+ 
+ 
+</screen>
+</blockquote>	</sect2>		
 		</sect1>
 		<sect1>
 			<title>Detection of references within DevGui
 </title>
-			<para>DevGui uses JDBC metadata methods to detect foreign keys andwill automatically insert corresponding foreign-key tags into generated dbforms-config.xml. This will surely only work if the JDBC driver has support for this feature, otherwise the file has to be edited manually. DevGui sets several default values, which might be edited before applying xsl stylesheets:
+			<para>DevGui uses JDBC metadata methods to detect foreign keys and will automatically insert corresponding foreign-key tags into generated dbforms-config.xml. This will surely only work if the JDBC driver has support for this feature, otherwise the file has to be edited manually. DevGui sets several default values, which might be edited before applying xsl stylesheets:
 </para>
-			<para/>
-			<para>  - if a key contains just one column, the displayType is set to "select",
+<itemizedlist mark="opencircle">
+ 
+<listitem>
+
+	<para>if a key contains just one column, the <computeroutput>displayType</computeroutput> is set to "select", if it contains more, <computeroutput>displayType</computeroutput> is set to "none". This is a problem of the underlying tags that will later be used within web application.
 </para>
-			<para>    if it contains more, displayType is set to "none". This is a problem
+</listitem>
+<listitem>
+<para>devgui does not set the <computeroutput>visibleFields</computeroutput> attribute within foreign-key tags, instead it sets the <computeroutput>defaultVisibleFields</computeroutput> attribute within each table. The attribute will initially be set to the primary key.
 </para>
-			<para>    of the underlying tags that will later be used within web application.
-</para>
-			<para/>
-			<para>  - devgui does not set the visibleFields attribute within foreign-key
-</para>
-			<para>    tags, instead it sets the defaultVisibleFields attribute within each
-</para>
-			<para>    table. The attribute will initially be set to the primary key.
-</para>
-			<para/>
-			<para> The displayType or defaultVisibleFields attribute might be changed before applying
-</para>
-			<para> the xsl stylesheets. It might also be a good idea to set a corresponding
-</para>
-			<para/>
+</listitem>
+</itemizedlist>
+			 
+			<para>The <computeroutput>displayType</computeroutput> or <computeroutput>defaultVisibleFields</computeroutput> attribute might be changed before applying the xsl stylesheets. It might also be a good idea to set a corresponding <computeroutput>defaultVisibleFieldsFormat</computeroutput>.
+</para>		 
 		</sect1>
 	</chapter>
  
