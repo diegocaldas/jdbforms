@@ -471,8 +471,7 @@ login-config?, security-role*, env-entry*, ejb-ref*,  ejb-local-ref*)&gt;
                 /WEB-INF/validation.xml
                 /WEB-INF/validator-rules.xml
  
-		/WEB-INF/lib/<emphasis role="bold">dbforms.jar</emphasis> 
-		/WEB-INF/lib/<emphasis role="bold">struts.jar</emphasis> 
+		/WEB-INF/lib/<emphasis role="bold">dbforms.jar</emphasis>  
 		/WEB-INF/lib/<emphasis role="bold">cos.jar</emphasis>
                 /WEB-INF/lib/<emphasis role="bold">log4j.jar </emphasis>
 		/WEB-INF/lib/<emphasis role="bold">commons-beanutils.jar</emphasis>
@@ -480,7 +479,6 @@ login-config?, security-role*, env-entry*, ejb-ref*,  ejb-local-ref*)&gt;
                 /WEB-INF/lib/<emphasis role="bold">commons-digester.jar </emphasis>
                 /WEB-INF/lib/<emphasis role="bold">commons-lang.jar </emphasis>
                 /WEB-INF/lib/<emphasis role="bold">commons-logging.jar </emphasis>
-                /WEB-INF/lib/<emphasis role="bold">commons-util.jar </emphasis>
                 /WEB-INF/lib/<emphasis role="bold">commons-validator.jar </emphasis>
                 /WEB-INF/lib/<emphasis role="bold">jakarta-oro.jar </emphasis>
             
