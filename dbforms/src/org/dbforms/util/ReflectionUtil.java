@@ -48,6 +48,21 @@ public class ReflectionUtil
    private static Category logCat = Category.getInstance(ReflectionUtil.class);
 
    /**
+    * Return the object having the input class name
+    * @param className              the object class name
+    * 
+    * @return the instanced object
+    * 
+    * @exception Exception if any error occurs
+    */
+   public static Object newInstance(String className)
+                             throws Exception
+   {
+      Class myClass = Class.forName(className);
+      return myClass.newInstance();
+   }
+
+   /**
     * Return the object having the input class name, instanced with the
     * constructor having the <code>constructorArgsTypes</code> arguments.
     * 
@@ -132,7 +147,7 @@ public class ReflectionUtil
     * 
     * @return the String representation of the input object
     */
-   public static String toString(Object o)
+   private static String toString(Object o)
    {
       StringWriter   sw = new StringWriter();
       BufferedWriter bw = new BufferedWriter(new PrintWriter(sw));
