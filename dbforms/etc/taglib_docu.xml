@@ -377,7 +377,11 @@ then DbForms will redisplay entered values even with UPDATES.</info>
     &gt;               Greater then            aField&gt;0
     &lt;=              Smaller then or equal   aField&lt;=100
     &gt;=              Greater then or equal   aField&gt;=0
-    ~               Like                    aField~%P%</pre>
+    ~               Like                    aField~%P%
+    since version 1.1.3pr1:
+    ISNULL            is null    	       aField ISNULL				
+    NOTISNULL	      is not null              aField NOTISNULL          
+</pre>
 						<p style="text-autospace:none">By default, all filter definitions are ANDed together. 
   If you wish to use OR, you may prefix your filter definition with the '|' symbol. 
   (even better! - use the whereClause attribute )</p>
@@ -394,6 +398,7 @@ then DbForms will redisplay entered values even with UPDATES.</info>
 							</span>
 							<span style="font-size:10.0pt;    font-family:Courier"></span>
 						</p>
+						<p>filter will be overwritten by searching!</p>
 					</info>
 				</attribute>
 				<attribute>
@@ -402,8 +407,8 @@ then DbForms will redisplay entered values even with UPDATES.</info>
 					<rtexprvalue>true</rtexprvalue>
 					<info>
 						<p>allows to define a prefix applied to request parameters in order to provide<br/> 
-  a convenient and easyway of implementing navigation. Using this attribute may<br/> 
-  substitute the use of the more complicated and not very convenient GotoButton-Tag!</p>
+  						   a convenient and easyway of implementing navigation. Using this attribute may<br/> 
+  						  substitute the use of the more complicated and not very convenient GotoButton-Tag!</p>
 						<p>example:</p>
 						<p>
 							<ul>
@@ -412,7 +417,7 @@ then DbForms will redisplay entered values even with UPDATES.</info>
 							</ul>
 						</p>
 						<p>=&gt; DbForms fetches the value of fv_ <b>id</b> which is &quot;4&quot; and 
-  then navigates to the row where id is 4.</p>
+  						  then navigates to the row where id is 4.</p>
 						<p>this attribute was added in release 0.9</p>
 					</info>
 				</attribute>
@@ -422,14 +427,13 @@ then DbForms will redisplay entered values even with UPDATES.</info>
 					<rtexprvalue>true</rtexprvalue>
 					<info>
 						<p>allows to define a hashtable containing fieldName / fieldValue combinations 
-  which <b>represent the valueof a key</b><br/>
-   (which can consist of more than one field, of course!)</p>
+  						which <b>represent the valueof a key</b><br/>
+   						(which can consist of more than one field, of course!)</p>
 						<p>example:</p>
 						<p>you could define a hashtable &quot;myGotoHash&quot; and apply it to the attribute<pre>
-                             
-  &lt;%Hashtable myGotoHash = null;if(request.getParameter("goto")!=null) {
-        myGotoHash = new Hashtable();myGotoHash.put("id",request.getParameter("goto"));
-        }%&gt;
+						  &lt;%Hashtable myGotoHash = null;if(request.getParameter("goto")!=null) {
+					        myGotoHash = new Hashtable();myGotoHash.put("id",request.getParameter("goto"));
+        					}%&gt;
           
   &lt;db:form table="customer" followUp="customer.jsp" goto="&lt;%= myGotoHash %&gt;" &gt;
   ... some code ...&lt;/db:form&gt;</pre></p>
@@ -1622,7 +1626,7 @@ is able to chache the data</info>
               several display fields. <br/> When more then one (1) field is shown, 
               the fields are, by default, separated by a comma.</p>
 						<p style="text-autospace:none">
-							 The format attribute was strngthened to make it
+							 The format attribute was strengthened to make it
 similar to the Unix sprintf utility.<br/> <b>  There is now a need to be type specific
 with the attribute.</b> </p>
 
@@ -1716,7 +1720,7 @@ is able to chache the data</info>
               several display fields. <br/> When more then one (1) field is shown, 
               the fields are, by default, separated by a comma.</p>
 						<p style="text-autospace:none">
-							 The format attribute was strngthened to make it
+							 The format attribute was strengthened to make it
 similar to the Unix sprintf utility.<br/> <b>  There is now a need to be type specific
 with the attribute.</b> </p>
 
@@ -2674,14 +2678,16 @@ hanlder executed when the user selects an item</info>
 				<tagclass>org.dbforms.taglib.DbLinkURLTag</tagclass>
 				<bodycontent>JSP</bodycontent>
 				<info>generates a link to a DbForms View. Setting the positionattribute will 
-force DbForms to navigate to this position within the destination-table<p> <b>the 3 examles below produce all the same result</b></p> <p>&lt;db:linkURL href=&quot;customer.jsp&quot; table=&quot;customer&quot; 
-        position=&quot;1:3:103-3:1:2&quot; /&gt;<br/>
-        <br/>
-        &lt;db:linkURL href=&quot;customer.jsp&quot; table=&quot;customer&quot; position=&quot;&lt;%= currentKey %&gt;&quot; /&gt;<br/>
-        <br/>&lt;db:linkURL href=&quot;customer.jsp&quot; table=&quot;customer&quot; 
-        &gt;<br/>&lt;db:position fieldName =&quot;id&quot; value=&quot;103&quot; /&gt;<br/>&lt;db:position fieldName =&quot;cust_lang&quot; value=&quot;2&quot; 
-        /&gt;<br/>
-        &lt;/db:linkURL&gt;<br/></p></info>
+					force DbForms to navigate to this position within the destination-table
+					<p><b>the 3 examles below produce all the same result</b></p>
+					<p>&lt;linkURL href="customer.jsp" table="customer" position="103~2"/&gt;</p>
+					<p>&lt;linkURL href="customer.jsp" table="customer" position="&lt;%= currentKey %&gt;"/&gt;</p>
+					<p>&lt;linkURL href="customer.jsp" table="customer"&gt;<br/>
+						&lt;position field="id" value="103"/&gt;<br/>
+						&lt;position field="cust_lang" value="2"/&gt;<br/>
+					&lt;/linkURL&gt;
+					</p>
+				</info>
 				<attribute>
 					<name>href</name>
 					<required>true</required>
@@ -2698,8 +2704,103 @@ force DbForms to navigate to this position within the destination-table<p> <b>th
 					<name>position</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
-					<info>optional: the position to navigate to within table &quot;tableName&quot;</info>
+					<info>
+						optional: the position to navigate to within table &quot;tableName&quot;
+  					  	<p>for backwards compatibility is the same as destPos!</p>
+					</info>
 				</attribute>
+				<attribute>
+					<name>parentField</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						<p>
+							used if parentTable is different to tableName: 
+							field(s) in the main form that is/are linked to this form
+						</p>
+					</info>
+				</attribute>
+				<attribute>
+					<name>childField</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						<p>
+							used if parentTable is different to tableName:
+						 	field(s) in this form that is/are linked to the parent form
+						 </p>
+					</info>
+				</attribute>
+				<attribute>
+					<name>destPos</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+					  <p> 
+						a value indicating the row to navigate to.
+						Position strings are used as request parameters 
+						allowing the framework to keep track 
+					        of the position the user comes from or goes to.  This string is 
+						structured as follows:
+					  </p>
+						<p>fieldId : fieldValueLength : fieldValue</p>
+						<p>It is important to note that if multiple keys exist in the definition 
+					           of the table, your position string must includes values for each 
+              					   key. (separated by dashes (-))
+              					</p>
+						<p>Example:</p>
+						<p>&lt;! Jump to another JSP, specify position using multiple keys--&gt;<br/>
+              					   &lt;db:gotoButton caption=&quot;View Sample Details&quot;
+                				   destination=&quot;/viewSample.jsp&quot;<br/>
+                				   destTable=&quot;Sample&quot; destPos=&quot;1:6:widget-3:2:23&quot;/&gt;
+                				</p>
+					</info>
+				</attribute>
+				<attribute>
+					<name>keyToDestPos</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+					   <p>
+						a key indicating the row to navigate to. 
+					   </p>	
+						<p>Example:</p>
+						<p>
+                                                   &lt;! Jump to another JSP, specify position through a key --&gt;<br/>
+              					&lt;db:gotoButton  
+                                                caption=&quot;View Sample Details&quot;  
+                                                destination=&quot;/viewSample.jsp&quot;<br/>
+                				destTable=&quot;Sample&quot; 
+               					keyToDestPos="k_1_1@root"/&gt;
+               				       </p>
+					</info>
+				</attribute>
+				<attribute>
+					<name>keyToKeyToDestPos</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+					   <p>
+						a key to the key indicating the row to navigate to. 
+						For each record in the result-set, 
+						the associatedRadio  tag generates a key reference 
+              					which can be used to retrieve a position string.
+              				 </p>
+						<p>Example:</p>
+						<p>&lt;!for each record, generate a key to the position string --&gt;<br/>
+					           &lt;db:body&gt;&lt;db:associatedRadio name=&quot;test&quot;/&gt;&lt;/db:body&gt;<br/><br/>
+              					   &lt;db:footer&gt;<br/>
+                                                   &lt;! Jump to another JSP, specify position 
+                                                   (get second record using appropriate key!)--&gt;<br/>
+              					&lt;db:gotoButton  
+                                                caption=&quot;View Sample Details&quot;  
+                                                destination=&quot;/viewSample.jsp&quot;<br/>
+                				destTable=&quot;Sample&quot; 
+               					keyToKeyDestPos=&quot;test&quot;/&gt;</p>
+               					Check "customerlist.jsp" in example!
+               			 </info>
+				</attribute>
+				
 			</tag>
 			<!-- **************************** position tag ***********************************-->
 			<tag>
@@ -2707,7 +2808,14 @@ force DbForms to navigate to this position within the destination-table<p> <b>th
 				<summary>element to be embedded inside a linkURL-element</summary>
 				<tagclass>org.dbforms.taglib.DbLinkPositionItemTag</tagclass>
 				<bodycontent>empty</bodycontent>
-				<info>example:<p> &lt;linkURL href=&quot;customer.jsp&quot; table=&quot;customer&quot;&gt; <br/> &lt;position field=&quot;id&quot; value=&quot;103&quot;/&gt; <br/>&lt;position field=&quot;cust_lang&quot; value=&quot;2&quot;/&gt; <br/>&lt;/linkURL&gt;</p></info>
+				<info>example:
+					<p>
+					   &lt;linkURL href="customer.jsp" table="customer"&gt;<br/>
+						&lt;position field="id" value="103"/&gt;<br/>
+						&lt;position field="cust_lang" value="2"/&gt;<br/>
+					   &lt;/linkURL&gt;
+					</p>
+				</info>
 				<attribute>
 					<name>fieldName</name>
 					<required>true</required>
@@ -2718,8 +2826,7 @@ force DbForms to navigate to this position within the destination-table<p> <b>th
 					<name>value</name>
 					<required>true</required>
 					<rtexprvalue>true</rtexprvalue>
-					<info>value of the key 
-field</info>
+					<info>value of the key field</info>
 				</attribute>
 			</tag>
 			<!-- **************************** insertButton tag ***********************************-->
@@ -4275,18 +4382,21 @@ flavor is "image")</info>
 immediately to this element.</info>
 				</attribute>
                                 <attribute>
-                                        <name>showAlwaysInFooter</name>
+				        <name>showAlwaysInFooter</name>
                                         <required>false</required>
                                         <rtexprvalue>true</rtexprvalue>
-                                        <info>A NavNewButton is different from other buttons, it
-will normally even been shown if it is placed within footer of a dbforms tag with empty result set.
-This makes sense if you want to show a set of rows and then below always the button to open
-a form to insert a new row. But if you have a form with body attribute allowNew set to &quot;true&quot;,
-an insert form will automatically be shown in case no row is found. In that case the button might
-irritate users, you should then set attribute showAlwaysInFooter to &quot;false&quot;.
-Then the button will not be shown if result set is empty.</info>
+                                        <info>
+                                           <p>
+                                              A NavNewButton is different from other buttons, it
+					      will normally even been shown if it is placed within footer of a dbforms tag with empty result set.
+					      This makes sense if you want to show a set of rows and then below always the button to open
+					      a form to insert a new row. But if you have a form with body attribute allowNew set to &quot;true&quot;,
+                                              an insert form will automatically be shown in case no row is found. In that case the button might
+                                              irritate users, you should then set attribute showAlwaysInFooter to &quot;false&quot;.
+                                              Then the button will not be shown if result set is empty.
+                                            </p>
+                                         </info>
                                 </attribute>
-
 				<attribute>
 					<name>onBlur</name>
 					<required>false</required>
@@ -4485,27 +4595,44 @@ the toplevel form to jump to [may be deprecated soon]</info>
 					<name>destPos</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
-					<info>a value indicating the row to navigate to (better description will come 
-soon, after this tag is completely stable)</info>
+					<info>
+					  <p> 
+						a value indicating the row to navigate to.
+						Position strings are used as request parameters 
+						allowing the framework to keep track 
+					        of the position the user comes from or goes to.  This string is 
+						structured as follows:
+					  </p>
+						<p>fieldId : fieldValueLength : fieldValue</p>
+						<p>It is important to note that if multiple keys exist in the definition 
+					           of the table, your position string must includes values for each 
+              					   key. (separated by dashes (-))
+              					</p>
+						<p>Example:</p>
+						<p>&lt;! Jump to another JSP, specify position using multiple keys--&gt;<br/>
+              					   &lt;db:gotoButton caption=&quot;View Sample Details&quot;
+                				   destination=&quot;/viewSample.jsp&quot;<br/>
+                				   destTable=&quot;Sample&quot; destPos=&quot;1:6:widget-3:2:23&quot;/&gt;
+                				</p>
+					</info>
 				</attribute>
 				<attribute>
 					<name>keyToDestPos</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
 					<info>
-						<p>a value indicating the row to navigate to.  Position strings are 
-              used as request parameters allowing the framework to keep track 
-              of the position the user comes from or goes to.  This string is 
-              structured as follows:</p>
-						<p>fieldId : fieldValueLength : fieldValue</p>
-						<p>It is important to note that if multiple keys exist in the definition 
-              of the table, your position string must includes values for each 
-              key. (separated by dashes (-))</p>
+					   <p>
+						a key indicating the row to navigate to. 
+					   </p>	
 						<p>Example:</p>
-						<p>&lt;! Jump to another JSP, specify position using multiple keys--&gt;<br/>
-              &lt;db:gotoButton caption=&quot;View Sample Details&quot;
-                destination=&quot;/viewSample.jsp&quot;<br/>
-                destTable=&quot;Sample&quot; destPos=&quot;1:6:widget-3:2:23&quot;/&gt;</p>
+						<p>
+                                                   &lt;! Jump to another JSP, specify position through a key --&gt;<br/>
+              					&lt;db:gotoButton  
+                                                caption=&quot;View Sample Details&quot;  
+                                                destination=&quot;/viewSample.jsp&quot;<br/>
+                				destTable=&quot;Sample&quot; 
+               					keyToDestPos="k_1_1@root"/&gt;
+               				       </p>
 					</info>
 				</attribute>
 				<attribute>
@@ -4513,19 +4640,25 @@ soon, after this tag is completely stable)</info>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
 					<info>
-						<p>a key indicating the row to navigate to. For each record in the 
-              result-set, the associatedRadio  tag generates a key reference 
-              which can be used to retrieve a position string.</p>
+					   <p>
+						a key to the key indicating the row to navigate to. 
+						For each record in the result-set, 
+						the associatedRadio  tag generates a key reference 
+              					which can be used to retrieve a position string.
+              				 </p>
 						<p>Example:</p>
 						<p>&lt;!for each record, generate a key to the position string --&gt;<br/>
-              &lt;db:body&gt;&lt;db:associatedRadio name=&quot;test&quot;/&gt;&lt;/db:body&gt;<br/><br/>
-              &lt;db:footer&gt;<br/>
-              &lt;! Jump to another JSP, specify position (get second record using appropriate key!)--&gt;<br/>
-              &lt;db:gotoButton  
-               caption=&quot;View Sample Details&quot;  
-                destination=&quot;/viewSample.jsp&quot;<br/>
-                destTable=&quot;Sample&quot; 
-               keyTodestPos=&quot;k_1_1@root&quot;/&gt;</p>Check "customerlist.jsp" in example!</info>
+					           &lt;db:body&gt;&lt;db:associatedRadio name=&quot;test&quot;/&gt;&lt;/db:body&gt;<br/><br/>
+              					   &lt;db:footer&gt;<br/>
+                                                   &lt;! Jump to another JSP, specify position 
+                                                   (get second record using appropriate key!)--&gt;<br/>
+              					&lt;db:gotoButton  
+                                                caption=&quot;View Sample Details&quot;  
+                                                destination=&quot;/viewSample.jsp&quot;<br/>
+                				destTable=&quot;Sample&quot; 
+               					keyToKeyDestPos=&quot;test&quot;/&gt;</p>
+               					Check "customerlist.jsp" in example!
+               			 </info>
 				</attribute>
 				<attribute>
 					<name>accessKey</name>
@@ -4787,36 +4920,54 @@ error manager</summary>
 			<!-- **************************** hasMoreRecords tag ***********************************-->
 			<tag>
 				<name>hasMoreRecords</name>
-				<summary>Verifies if the number of records in 
-the result set is larger then the number specified</summary>
+				<summary>Verifies if the number of records in the result set is larger then the number specified</summary>
 				<tagclass>org.dbforms.taglib.HasMoreRecordsTag</tagclass>
-				<bodycontent>empty</bodycontent>
+				<bodycontent>JSP</bodycontent>
 				<attribute>
 					<name>count</name>
 					<required>true</required>
 					<rtexprvalue>true</rtexprvalue>
 					<info>
 						<p>Number of records allowed</p>
-						<p style="  text-autospace:none">If the result Set contains &gt;= the number 
-        of elements specified, display the appropriate message (XML error file). 
-        As with error messages, arguments may be passed to the message string 
-        via a comma delimited string.</p>
+						<p style="  text-autospace:none">
+							If the result Set contains &gt;= the number 
+        						of elements specified, display the appropriate message (XML error file). 
+        						As with error messages, arguments may be passed to the message string 
+        						via a comma delimited string.
+        					</p>
 						<p style="  text-autospace:none">Example:</p>
-						<p>&lt;db:dbform table=&quot;TABLE&quot; <br/>
-        maxRows=&quot;200&quot; <br/>
-        followUp=&quot;next.jsp&quot;&gt;<br/>
-          &lt;db:header&gt;<br/>
-          &lt;!-Message: Resultset too big, displaying first 200 records 
-        --&gt;<br/>
-          &lt;db:hasMoreRecords count=&quot;200&quot; message=&quot;English-001:200&quot; 
-        /&gt;<br/>
-          &lt;/db:header&gt;<br/><br/>
-        &lt;/db:dbform&gt;<br/><br/></p>
+						<p>
+							&lt;db:dbform table=&quot;TABLE&quot; <br/>
+        						maxRows=&quot;200&quot; <br/>
+        						followUp=&quot;next.jsp&quot;&gt;<br/>
+          						&lt;db:header&gt;<br/>
+          						&lt;!-Message: Resultset too big, displaying first 200 records 
+        						--&gt;<br/>
+          						&lt;db:hasMoreRecords count=&quot;200&quot; message=&quot;English-001:200&quot; 
+        						/&gt;<br/>
+          						&lt;/db:header&gt;<br/><br/>
+        						&lt;/db:dbform&gt;<br/><br/>
+        					</p>
 					</info>
 				</attribute>
 				<attribute>
 					<name>message</name>
-					<required>true</required>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						<p>Message to display (see xml error manager)</p>
+					</info>
+				</attribute>
+			</tag>
+			<!-- **************************** hasNoRecords tag ***********************************-->
+			<tag>
+				<name>hasNoRecords</name>
+				<summary>Verifies if the number of records in the result set equal 0</summary>
+				<tagclass>org.dbforms.taglib.HasNoRecordsTag</tagclass>
+				<bodycontent>JSP</bodycontent>
+				<attribute>
+					<name>message</name>
+					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
 					<info>
 						<p>Message to display (see xml error manager)</p>
@@ -5353,4 +5504,3 @@ noop, goto, insert, update, delete</summary>
 		</taglib>
 	</body>
 </document>
-
