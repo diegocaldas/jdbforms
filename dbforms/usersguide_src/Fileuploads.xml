@@ -34,37 +34,48 @@
   <sect1>
     <title>BLOB-fields
 </title>
-    <sect2>
+    <sect2 id="blob_def">
       <title>Defining BLOBs in the model definition
 </title>
       <para>Managing BLOB Fields using DbForms is a trivial task. First, you have to tell DbForms about BLOB-Fields in the xml-configuration file:
 </para>
 
-<para>NOTE: after version 2.2, interceptor based BLOB handling was introduced. The interceptor
-org.dbforms.event.BlobInterceptor is used to store the filename of an uploaded file in a
+<para><emphasis role="bold"> NOTE:</emphasis> after version 2.2, interceptor based BLOB handling was introduced. The interceptor
+<computeroutput>org.dbforms.event.BlobInterceptor</computeroutput> is used to store the filename of an uploaded file in a
 specified column. In previous versions, the BLOB was stored as a serialized Java object in the
-database along with the file meta data. However, the disadvantage of this solution was the lack
-of long term storage (i.e. a change in the wrapper class would lead to ClassCastExceptions) and 
-the BLOB is not readable by other (non-DbForms) applications, because those apps can't de-serialize
-the java object.</para> 
+database along with the file meta data. However, the disadvantage of this solution was:
+<itemizedlist mark="opencircle">
+<listitem>
+<para>
+the lack of long term storage (i.e. a change in the wrapper class would lead to ClassCastExceptions)
+</para>
+</listitem>
+<listitem>
+<para>
+the BLOB is not readable by other (non-DbForms) applications because those apps can't de-serialize the java object
+</para>
+</listitem>
 
-<para>To switch back to the old way of handling BLOBs, you can set the optional attribute "blobHandling" to "classic" in the table definition in you dbforms config file.</para>
+</itemizedlist>
+</para>
+
+<para>To switch back to the old way of handling BLOBs, you can set the optional attribute <computeroutput>"blobHandling"</computeroutput> to <computeroutput>"classic"</computeroutput> in the table definition in your <computeroutput>dbforms-config.xml</computeroutput> file.</para>
 
 <para>More documentation on this issue will follow; until then this section is a bit outdated. meanwhile,
-please refer to the API doc for class org.dbforms.event.BlobInterceptor to see how to configure the
-BLOB interceptor.</para>
+please refer to the API doc for class <computeroutput>org.dbforms.event.BlobInterceptor</computeroutput> to see how to configure the
+BLOB interceptor the new way.  The following example is for the "classic" way.</para>
       <screen>
         <emphasis role="bold">&lt;dbforms-config&gt;</emphasis>
-                &lt;table name="pets"&gt; 
-                    &lt;field name="pet_id" fieldType="int" isKey="true" autoInc="true" /&gt; 
-                    &lt;field name="name" fieldType ="char" /&gt; 
+                &lt;table name="pets" <emphasis role="bold">blobHandling="classic"</emphasis>&gt;
+                    &lt;field name="pet_id" fieldType="int" isKey="true" autoInc="true" /&gt;
+                    &lt;field name="name" fieldType ="char" /&gt;
                     &lt;field name="portrait_pic" 
-        <emphasis role="bold">fieldType ="blob"</emphasis> /&gt; 
+        <emphasis role="bold">fieldType ="blob"</emphasis> /&gt;
                     &lt;field name="story" 
-        <emphasis role="bold">fieldType ="blob"</emphasis> /&gt; 
+        <emphasis role="bold">fieldType ="blob"</emphasis> /&gt;
 		
-				&lt;/table&gt; 
-            &lt;/dbforms-config&gt; 
+				&lt;/table&gt;
+            &lt;/dbforms-config&gt;
     
       </screen>
       <para>The configuration-code-snippet shown above in Listing 6 tells DbForms that the fields portrait_pic and story are of type BLOB. As you can see, DbForms allows more than one field defined in a table to be of type BLOB.
@@ -136,7 +147,7 @@ BLOB interceptor.</para>
       <programlisting>
         &lt;
         <emphasis role="bold">img</emphasis> src=&lt;db:
-        <emphasis role="bold">blobURL</emphasis> fieldName="portrait_pic"/&gt;width=100 height=80 border=0&gt; 
+        <emphasis role="bold">blobURL</emphasis> fieldName="portrait_pic"/&gt;width=100 height=80 border=0&gt;
     
       </programlisting>
       <para/>
@@ -173,20 +184,20 @@ BLOB interceptor.</para>
 </para>
       <programlisting>
         <emphasis role="bold">&lt;dbforms-config&gt;</emphasis>
-                &lt;table name="pets"&gt; 
-                    &lt;field name="pet_id" fieldType="int" isKey="true" autoInc="true" /&gt; 
-                    &lt;field name="name" fieldType ="char" /&gt; 
+                &lt;table name="pets"&gt;
+                    &lt;field name="pet_id" fieldType="int" isKey="true" autoInc="true" /&gt;
+                    &lt;field name="name" fieldType ="char" /&gt;
                     &lt;field name="portrait_pic" 
         <emphasis role="bold">fieldType</emphasis> ="diskblob"
             
         <emphasis role="bold">directory</emphasis>=c:\uploads\pets 
-        <emphasis role="bold">encoding</emphasis>=true  /&gt; 
+        <emphasis role="bold">encoding</emphasis>=true  /&gt;
                     &lt;field name="story" 
         <emphasis role="bold">fieldType</emphasis> ="diskblob" 
             
-        <emphasis role="bold">directory</emphasis>=x:\stories /&gt; 
+        <emphasis role="bold">directory</emphasis>=x:\stories /&gt;
     &lt;/table&gt;
-            &lt;/dbforms-config&gt; 
+            &lt;/dbforms-config&gt;
     
       </programlisting>
       <table>
@@ -264,15 +275,15 @@ b) must be writeable by the web-server </entry>
       <emphasis role="bold">pets</emphasis> (
 
                 pet_id int AUTO_INCREMENT NOT NULL PRIMARY KEY ,
- 
+
     name char (30) NULL ,
- 
+
     portrait_pic BLOB NULL ,
- 
+
     story BLOB NULL ,
- 
+
     );
- 
+
     
     </programlisting>
     <para>Here is the source code we need to create the application:

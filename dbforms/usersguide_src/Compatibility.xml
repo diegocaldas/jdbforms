@@ -153,4 +153,14 @@ must be changed to
   <sect1><title>2.0</title>
   <para>To upgrade to 2.0 please see the sections on 1.1.4pr1 and 1.1.4pr2 as they were the basis for this release</para>
 </sect1>
+   <sect1><title>2.3</title>
+  <para>To upgrade from any previous versions, an adjustment needs to be made in the <computeroutput>dbforms-config.xml</computeroutput> file if you are using BLOB-fields stored in your database and wish to retain the original way of storing that data. To do that, set the optional attribute <computeroutput>"blobHandling"</computeroutput> to <computeroutput>"classic"</computeroutput>. Please see <link linkend='blob_def'>BLOB-fields</link> for details.</para>
+       <para>
+           <screen>
+                <emphasis role="bold">&lt;dbforms-config&gt;</emphasis>
+                &lt;table name="pets" <emphasis role="bold">blobHandling="classic"</emphasis>&gt;
+           </screen>
+       </para>
+</sect1>
+
   </chapter>
