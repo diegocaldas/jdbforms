@@ -2,48 +2,62 @@
 
 /* Define colors, fonts and other style attributes here to override the defaults  */
 
-/* Page background color */
-body, th, td { 
-  font-family: Verdana, Helvetica, Arial, sans-serif;
+body, th, td 
+{ 
+  font-family: Helvetica, Arial, sans-serif;
 }
 
-html body, body th, body td {
- font-size: small
- }
+body
+{
+  background-color: #f6f6f6; 
+}
 
-a:link, a:visited {
+
+html body, body th, body td 
+{
+ /* font-size: small */
+ font-size: 12px;
+}
+
+a:link, a:visited 
+{
  color: #1F354D;
- }
+}
 
-a:active, a:hover, #leftcol a:active, #leftcol a:hover {
+a:active, a:hover, #leftcol a:active, #leftcol a:hover 
+{
  color: #f30 !important;
- }
+}
 
-a:link.selfref, a:visited.selfref {
+a:link.selfref, a:visited.selfref 
+{
  color: #1F354D !important;
- }
+}
 
-.a td {
+.a td 
+{
  background: #ddd;
  color: #000;
- }
+}
 
 /* Table colors */
-.TableHeadingColor     { background: #E5E3DB; color:#686868 } /* Dark blue */
-.TableSubHeadingColor  { background: #E5E3DB; color:#686868 } /* Dark grey */
-.TableRowColor         { background: #F5F4F1; color:#686868 } /* White */
+
+/* .TableHeadingColor     { background: #E5E3DB; color:#686868 } */ /* Dark blue */
+/* .TableSubHeadingColor  { background: #E5E3DB; color:#686868 } */ /* Dark grey */
+/* .TableRowColor         { background: #F5F4F1; color:#686868 } */ /* White */
+.TableHeadingColor     { background: #525D73; color:#f0f0f0 }
+.TableSubHeadingColor  { background: #A2ADC3; color:#f0f0f0 }
+.TableRowColor         { background: #f6f6f6; color:#000000 }
+
 
 /* Font used in left-hand frame lists */
-.FrameTitleFont   { font-size: normal; font-family: normal; color:#FFFFFF }
-.FrameHeadingFont { font-size: normal; font-family: normal; color:#FFFFFF }
-.FrameItemFont    { font-size: normal; font-family: normal; color:#FFFFFF }
-
-/* Example of smaller, sans-serif font in frames */
-/* .FrameItemFont  { font-size: 10pt; font-family: Helvetica, Arial, sans-serif } */
+.FrameTitleFont   { font-size: normal; color:#FFFFFF }
+.FrameHeadingFont { font-size: normal; color:#1F354D }
+.FrameItemFont    { font-size: normal; color:#FFFFFF }
 
 /* Navigation bar fonts and colors */
-.NavBarCell1    { background-color:#D5E1E9;}/* Light mauve */
-.NavBarCell1Rev { background-color:#A2B7C5;}/* Dark Blue */
+.NavBarCell1    { background-color:#E0E0E0;}
+.NavBarCell1Rev { background-color:#828DA3;}
 .NavBarFont1    { font-family: Arial, Helvetica, sans-serif; color:#000000;}
 .NavBarFont1Rev { font-family: Arial, Helvetica, sans-serif; color:#FFFFFF;}
 
