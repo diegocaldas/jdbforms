@@ -440,13 +440,17 @@ sortable="true" within your dbforms-config.xml file for the key you want to sort
                   myGotoHash = new Hashtable();myGotoHash.put("id",request.getParameter("goto"));
                   }%&gt;
           
-  &lt;db:form table="customer" followUp="customer.jsp" goto="&lt;%= myGotoHash %&gt;" &gt;
+  &lt;db:form table="customer" followUp="customer.jsp" gotoHt="&lt;%= myGotoHash %&gt;" &gt;
   ... some code ...&lt;/db:form&gt;</pre></p>
             <p>now, when a user calls aview.jsp?goto=234, then DbForms will navigate thetable 
   to the row where id==234!</p>
             <p>there are many other ways you can use this facility. the only important thing 
   is that<br/>the key value(s) in the hashtables refer to valid field names of the 
   table.</p>
+  
+  <p>BE SURE TO SPECIFY ALL YOUR KEYS OR NAVIGATION WILL BE UNPREDICTABLE [ if you do not know
+  what all the values should be, use a wildcard like: myGotoHash.put(&quot;how_used&quot;,&quot;*&quot;); and
+  navigation will be to the first instance</p>
             <p>this attribute was added in release 0.9</p>
           </info>
         </attribute>
