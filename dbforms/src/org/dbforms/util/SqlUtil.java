@@ -387,14 +387,34 @@ public class SqlUtil
    /**
     *  Log the SQLException stacktrace and do the same for all the
     *  nested exceptions.
+    * 
+    * @param e  the SQL exception to log
     */
    public static final void logSqlException(SQLException e)
    {
-      int i = 0;
-      logCat.error("::logSqlExceptionSQL - exception", e);
+	  logSqlException(e, null);
+   }
+   
 
-      while ((e = e.getNextException()) != null)
-         logCat.error("::logSqlException - nested SQLException (" + (i++) + ")",
-            e);
+   /**
+	*  Log the SQLException stacktrace (adding the input description to 
+	*  the first log statement) and do the same for all the nested exceptions.
+	* 
+	* @param e    the SQL exception to log
+	* @param desc the exception description
+	*/
+   public static final void logSqlException(SQLException e, String desc)
+   {	    
+	  int i = 0;
+	  String excDesc = "::logSqlExceptionSQL - main SQL exception";
+	  
+	  // adding the input description to the main log statement;
+	  if (!Util.isNull(desc)) 
+	    excDesc += (" [" + desc + "]");
+	  
+	  logCat.error(excDesc, e);
+
+	  while ((e = e.getNextException()) != null)
+		 logCat.error("::logSqlException - nested SQLException (" + (i++) + ")", e);
    }
 }
