@@ -27,3 +27,5 @@ For information on the Tag Library used in DbForms, please see:
 ***  IF YOU ARE USING CVS, YOU WILL NEED TO BUILD THE DOCUMENTATION VIA build.xml and docs.xml ***
 
 *** INFORMATION ON BUILDING THE USERSGUIDE IS LOCATED AT dbforms/usersguide_src/READ_ME.txt
+
+*** INFORMATION ON BUILDING THE MAVEN SITE LOCATED AT dbforms/xdocs/READ_ME.txt
