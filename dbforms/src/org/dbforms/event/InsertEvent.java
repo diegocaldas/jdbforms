@@ -361,7 +361,7 @@ public class InsertEvent extends DatabaseEvent
             fvEqual[i] = keyFieldValue;
         }
 
-        ResultSetVector resultSetVector = table.doConstrainedSelect(table.getFields(), fvEqual, null, table.GET_EQUAL, 1, con);
+        ResultSetVector resultSetVector = table.doConstrainedSelect(table.getFields(), fvEqual, null, Table.GET_EQUAL, 1, con);
 
         if (resultSetVector != null)
         {
