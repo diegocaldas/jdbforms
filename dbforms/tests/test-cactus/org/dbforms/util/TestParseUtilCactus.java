@@ -188,11 +188,12 @@ public class TestParseUtilCactus extends ServletTestCase
      */
     public void beginGetFirstParameterStartingWith(WebRequest theRequest)
     {
+//		theRequest.addParameter("name2", "value2");
+// 20030604-HKK: current cactus implementation do not garanty the sequence of the list!!!
         theRequest.addParameter("name", "value");
-        theRequest.addParameter("name2", "value2");
-        theRequest.addParameter("name3", "value3");
-        theRequest.addParameter("bob", "value");
-        theRequest.addParameter("bob2", "value2");
+//        theRequest.addParameter("name3", "value3");
+//        theRequest.addParameter("bob", "value");
+//        theRequest.addParameter("bob2", "value2");
         theRequest.addParameter("bob3", "value3");
     }
 

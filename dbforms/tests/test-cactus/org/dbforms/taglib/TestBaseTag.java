@@ -22,6 +22,8 @@
  */
 
 package org.dbforms.taglib;
+
+import org.dbforms.util.AssertUtils;
 import javax.servlet.jsp.tagext.BodyContent;
 import javax.servlet.jsp.tagext.BodyTag;
 import junit.framework.Test;
@@ -121,7 +123,7 @@ public class TestBaseTag extends JspTestCase
     public void endBasicBaseTag(WebResponse theResponse)
     {
         String content = theResponse.getText();
-        assertTrue("Response should have contained the [" + "base href] string", content.indexOf("base href") > -1);
-        assertTrue("Response should have contained the [" + "http://localhost/test] string", content.indexOf("http://localhost/test") > -1);
+        AssertUtils.assertContains("base href", content);
+        AssertUtils.assertContains("http://localhost:8080/",content);
     }
 }
