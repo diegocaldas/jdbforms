@@ -36,7 +36,7 @@
 				<para>The connectionFactory package provides three <emphasis role="italic">connectionProvider</emphasis> classes:
 </para><para>The jars for these classes need to be downloaded and put in your applications WEB-INF/lib directory</para>
 <para>Protomatter rquires <computeroutput>protomatter.jar</computeroutput></para>
-<para>JakartaConnectionPool requires <computeroutput>commons-pool</computeroutput> and <computeroutput>commons-dbcp</computeroutput>
+<para>JakartaConnectionPool requires <computeroutput>commons-pool</computeroutput> and <computeroutput>commons-dbcp</computeroutput></para>
 <itemizedlist mark="opencircle">
 <listitem>
 <para>
