@@ -31,7 +31,7 @@ import org.dbforms.util.Util;
 
 /**
  * This class represents a field tag in dbforms-config.xml.
- *
+ * 
  * @author foxat
  */
 public class Field
@@ -73,7 +73,7 @@ public class Field
    /**
     * sets the id of this field-object (this method is called by Table on
     * init).
-    *
+    * 
     * @param id The new id value
     */
    public void setId(int id)
@@ -84,7 +84,7 @@ public class Field
 
    /**
     * Gets the id attribute of the Field object
-    *
+    * 
     * @return The id value
     */
    public int getId()
@@ -95,7 +95,7 @@ public class Field
 
    /**
     * Sets the name attribute of the Field object
-    *
+    * 
     * @param name The new name value
     */
    public void setName(String name)
@@ -106,7 +106,7 @@ public class Field
 
    /**
     * Gets the name attribute of the Field object
-    *
+    * 
     * @return The name value
     */
    public String getName()
@@ -120,89 +120,120 @@ public class Field
     * We need this information in oder to call the appropriate
     * PreparedStatement.setXxx(..) methods <br>
     * this method is called by the digester framework to set the fieldType!
-    *
+    * 
     * @param fieldType the type string value (example: "int", "char",
     *        "numeric", etc)
     */
    public void setFieldType(String fieldType)
    {
-		fieldType = fieldType.toLowerCase();
-		if (fieldType.startsWith("int") || fieldType.startsWith("smallint")
-					 || fieldType.startsWith("tinyint"))
-		{
-			type = FieldTypes.INTEGER;
-		}
-		else if (fieldType.startsWith("char") || fieldType.startsWith("varchar")
-							|| fieldType.startsWith("nvarchar")
-							|| fieldType.startsWith("longchar")
-							|| fieldType.startsWith("text"))
-		{
-			type = FieldTypes.CHAR;
-		}
-		else if (fieldType.startsWith("numeric")
-							|| fieldType.startsWith("number"))
-		{
-			type = FieldTypes.NUMERIC;
-		}
-		else if (fieldType.startsWith("date"))
-		{
-			type = FieldTypes.DATE;
-		}
-		else if (fieldType.startsWith("timestamp"))
-		{
-			type = FieldTypes.TIMESTAMP;
-		}
-		else if (fieldType.startsWith("time"))
-		{
-			type = FieldTypes.TIME;
-		}
-		else if (fieldType.startsWith("double") || fieldType.startsWith("float"))
-		{
-			type = FieldTypes.DOUBLE;
-		}
-		else if (fieldType.startsWith("real"))
-		{
-			type = FieldTypes.FLOAT;
-		}
-		else if (fieldType.startsWith("blob") || fieldType.startsWith("image"))
-		{
-			type = FieldTypes.BLOB;
-		}
-		else if (fieldType.startsWith("diskblob"))
-		{
-			type = FieldTypes.DISKBLOB;
-		}
+      fieldType = fieldType.toLowerCase();
+
+      if (fieldType.startsWith("int") || fieldType.startsWith("smallint")
+                || fieldType.startsWith("tinyint"))
+      {
+         type = FieldTypes.INTEGER;
+      }
+      else if (fieldType.startsWith("char") || fieldType.startsWith("varchar")
+                     || fieldType.startsWith("nvarchar")
+                     || fieldType.startsWith("longchar")
+                     || fieldType.startsWith("text"))
+      {
+         type = FieldTypes.CHAR;
+      }
+      else if (fieldType.startsWith("numeric")
+                     || fieldType.startsWith("number"))
+      {
+         type = FieldTypes.NUMERIC;
+      }
+      else if (fieldType.startsWith("date"))
+      {
+         type = FieldTypes.DATE;
+      }
+      else if (fieldType.startsWith("timestamp"))
+      {
+         type = FieldTypes.TIMESTAMP;
+      }
+      else if (fieldType.startsWith("time"))
+      {
+         type = FieldTypes.TIME;
+      }
+      else if (fieldType.startsWith("double") || fieldType.startsWith("float"))
+      {
+         type = FieldTypes.DOUBLE;
+      }
+      else if (fieldType.startsWith("real"))
+      {
+         type = FieldTypes.FLOAT;
+      }
+      else if (fieldType.startsWith("blob") || fieldType.startsWith("image"))
+      {
+         type = FieldTypes.BLOB;
+      }
+      else if (fieldType.startsWith("diskblob"))
+      {
+         type = FieldTypes.DISKBLOB;
+      }
    }
 
-	public void setTypeByObject(Object obj) {
-		if (obj == null)
-		   return;
-		Class clazz = obj.getClass();
-		if (clazz.isAssignableFrom(java.lang.Integer.class))
-			type = FieldTypes.INTEGER;
-		else if (clazz.isAssignableFrom(java.lang.Long.class))
-			type = FieldTypes.INTEGER;
-		else if (clazz.isAssignableFrom(java.lang.String.class))
-			type = FieldTypes.CHAR;
-		else if (clazz.isAssignableFrom(java.math.BigDecimal.class))
-			type = FieldTypes.NUMERIC;
-		else if (clazz.isAssignableFrom(java.sql.Date.class))
-			type = FieldTypes.DATE;
-		else if (clazz.isAssignableFrom(java.sql.Time.class))
-			type = FieldTypes.TIME;
-		else if (clazz.isAssignableFrom(java.sql.Timestamp.class))
-			type = FieldTypes.TIMESTAMP;
-		else if (clazz.isAssignableFrom(java.lang.Double.class))
-			type = FieldTypes.DOUBLE;
-		else if (clazz.isAssignableFrom(java.lang.Float.class))
-			type = FieldTypes.FLOAT;
-	}
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param obj DOCUMENT ME!
+    */
+   public void setTypeByObject(Object obj)
+   {
+      if (obj == null)
+      {
+         return;
+      }
+
+      Class clazz = obj.getClass();
+
+      if (clazz.isAssignableFrom(java.lang.Integer.class))
+      {
+         type = FieldTypes.INTEGER;
+      }
+      else if (clazz.isAssignableFrom(java.lang.Long.class))
+      {
+         type = FieldTypes.INTEGER;
+      }
+      else if (clazz.isAssignableFrom(java.lang.String.class))
+      {
+         type = FieldTypes.CHAR;
+      }
+      else if (clazz.isAssignableFrom(java.math.BigDecimal.class))
+      {
+         type = FieldTypes.NUMERIC;
+      }
+      else if (clazz.isAssignableFrom(java.sql.Date.class))
+      {
+         type = FieldTypes.DATE;
+      }
+      else if (clazz.isAssignableFrom(java.sql.Time.class))
+      {
+         type = FieldTypes.TIME;
+      }
+      else if (clazz.isAssignableFrom(java.sql.Timestamp.class))
+      {
+         type = FieldTypes.TIMESTAMP;
+      }
+      else if (clazz.isAssignableFrom(java.lang.Double.class))
+      {
+         type = FieldTypes.DOUBLE;
+      }
+      else if (clazz.isAssignableFrom(java.lang.Float.class))
+      {
+         type = FieldTypes.FLOAT;
+      }
+   }
+
 
    /**
     * Gets the type attribute of the Field object as numeric value. <br>
     * It's read only because the field type is set by the digester during
     * initialize!
-    *
+    * 
     * @return The type value
     */
    public int getType()
@@ -213,7 +244,7 @@ public class Field
 
    /**
     * Sets the autoInc attribute of the Field object
-    *
+    * 
     * @param autoInc The new autoInc value
     */
    public void setAutoInc(String autoInc)
@@ -225,7 +256,7 @@ public class Field
 
    /**
     * Gets the isAutoInc attribute of the Field object
-    *
+    * 
     * @return The isAutoInc value
     */
    public boolean isAutoInc()
@@ -236,7 +267,7 @@ public class Field
 
    /**
     * Sets the isKey attribute of the Field object
-    *
+    * 
     * @param isKey The new isKey value
     */
    public void setIsKey(String isKey)
@@ -248,7 +279,7 @@ public class Field
 
    /**
     * Gets the key attribute of the Field object
-    *
+    * 
     * @return The key value
     */
    public boolean getKey()
@@ -259,7 +290,7 @@ public class Field
 
    /**
     * Sets the directory attribute of the Field object
-    *
+    * 
     * @param directory The new directory value
     */
    public void setDirectory(String directory)
@@ -270,7 +301,7 @@ public class Field
 
    /**
     * Gets the directory attribute of the Field object
-    *
+    * 
     * @return The directory value
     */
    public String getDirectory()
@@ -281,7 +312,7 @@ public class Field
 
    /**
     * Sets the encoding attribute of the Field object
-    *
+    * 
     * @param encoding The new encoding value
     */
    public void setEncoding(String encoding)
@@ -293,7 +324,7 @@ public class Field
 
    /**
     * Gets the encoding attribute of the Field object
-    *
+    * 
     * @return The encoding value
     */
    public boolean isEncoded()
@@ -304,7 +335,7 @@ public class Field
 
    /**
     * Sets the sortable attribute of the Field object
-    *
+    * 
     * @param sortable The new sortable value
     */
    public void setSortable(String sortable)
@@ -316,7 +347,7 @@ public class Field
 
    /**
     * Gets the fieldSortable attribute of the Field object
-    *
+    * 
     * @return The fieldSortable value
     */
    public boolean isSortable()
@@ -327,7 +358,7 @@ public class Field
 
    /**
     * Sets the expression attribute of the Field object
-    *
+    * 
     * @param expression The new expression value
     */
    public void setExpression(String expression)
@@ -338,7 +369,7 @@ public class Field
 
    /**
     * Gets the expression attribute of the Field object
-    *
+    * 
     * @return The expression value
     */
    public String getExpression()
@@ -349,29 +380,39 @@ public class Field
 
    /**
     * DOCUMENT ME!
-    *
+    * 
     * @param pattern DOCUMENT ME!
-    *
+    * @param locale DOCUMENT ME!
+    * 
     * @return DOCUMENT ME!
     */
    public Format getFormat(String pattern, Locale locale)
    {
-      Format res   = null;
+      Format res       = null;
       int    dateStyle = DateFormat.MEDIUM;
-	  int    timeStyle = DateFormat.SHORT;
+      int    timeStyle = DateFormat.SHORT;
+
       if (!Util.isNull(pattern))
       {
          if ("short".startsWith(pattern.toLowerCase()))
          {
-			dateStyle = DateFormat.SHORT;
+            dateStyle = DateFormat.SHORT;
+            pattern   = null;
+         }
+         else if ("medium".startsWith(pattern.toLowerCase()))
+         {
+            dateStyle = DateFormat.MEDIUM;
+            pattern   = null;
          }
          else if ("long".startsWith(pattern.toLowerCase()))
          {
-			dateStyle = DateFormat.LONG;
+            dateStyle = DateFormat.LONG;
+            pattern   = null;
          }
          else if ("full".startsWith(pattern.toLowerCase()))
          {
-			dateStyle = DateFormat.FULL;
+            dateStyle = DateFormat.FULL;
+            pattern   = null;
          }
       }
 
@@ -420,7 +461,8 @@ public class Field
             break;
 
          case FieldTypes.TIMESTAMP:
-            res = java.text.DateFormat.getDateTimeInstance(dateStyle, timeStyle, locale);
+            res = java.text.DateFormat.getDateTimeInstance(dateStyle, timeStyle, 
+                                                           locale);
 
             if (!Util.isNull(pattern))
             {
@@ -436,14 +478,25 @@ public class Field
       return res;
    }
 
-   public static int parseFieldType(String fieldType) {
-		int type = 0;
-        return type;
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param fieldType DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public static int parseFieldType(String fieldType)
+   {
+      int type = 0;
+
+      return type;
    }
-   
+
+
    /**
     * Get the String representation of this Field object.
-    *
+    * 
     * @return the String representation of this Field object
     */
    public String toString()
@@ -471,9 +524,9 @@ public class Field
 
    /**
     * Dump the fieldValue objects contained into the input FieldValue array.
-    *
+    * 
     * @param fv the FieldValue array to dump
-    *
+    * 
     * @return the String object containing the dumped data, or null if the
     *         input array is null
     */
