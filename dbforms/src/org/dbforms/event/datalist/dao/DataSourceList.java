@@ -28,8 +28,6 @@ import java.util.Iterator;
 import java.sql.SQLException;
 
 import org.dbforms.config.Table;
-import org.dbforms.util.ParseUtil;
-import org.dbforms.util.Util;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSessionBindingListener;
@@ -168,11 +166,8 @@ public class DataSourceList implements HttpSessionBindingListener {
     *         DataSource object from the internal hash table
     */
    private String getKey(Table table, HttpServletRequest request) {
-      String refSource = ParseUtil.getParameter(request, "source");
-      if (Util.isNull(refSource))
-         refSource = request.getRequestURI();
+      String  refSource = request.getRequestURI();
       refSource = refSource + "?" + table.getName();
-
       return refSource;
    }
 }
