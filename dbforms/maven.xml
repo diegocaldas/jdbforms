@@ -129,7 +129,6 @@
   <postGoal name="clean">
     <ant:echo message="clean docs too" />
     <ant:ant antfile="docs.xml" target="cleanUp" />
-    <ant:delete file="etc/DbFormsTags.xsl-fo"/>
   </postGoal>
 
   <postGoal name="appserver:install">
