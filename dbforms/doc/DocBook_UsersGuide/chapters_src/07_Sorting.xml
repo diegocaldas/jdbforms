@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<chapter>
+		<title>Sorting
+</title>
+		<sect1>
+			<title>Introduction
+</title>
+			<para>Sorting is an important, even essential, issue for many database applications. For example, look at the application shown in Figure 19 - it is an enhanced version of the service-JSP taken from the sample application (demonstrated in an earlier chapter)
+</para>
+			<para/>
+			<para>
+				<figure>
+					<title>Figure 19  DbForms built in sorting mechanism in action
+</title>
+					<graphic fileref="19" format="GIF"/>
+				</figure>
+			</para>
+			<para>The user is able to define the sorting of the table by choosing a value Ascending, Descending or None from the sorting-select-boxes below <emphasis role="bold">ID</emphasis> or below <emphasis role="bold">NAME</emphasis>
+			</para>
+			<para>If the user wants, for instance, the table to be ordered by <emphasis role="bold">NAME</emphasis> instead of <emphasis role="bold">ID</emphasis> then he/she has to select  ASCENDING or DESCENDING from the NAME drop-down select box.
+</para>
+		</sect1>
+		<sect1>
+			<title>How to use DbForms sorting facility
+</title>
+			<para>The custom tag enabling this functionality is very easy to use:
+</para>
+			<example>
+				<title>Listing 22  instantiating a sort - tag
+</title>
+				<programlisting>
+            &lt;db:sort fieldName="id" /&gt;</programlisting>
+			</example>
+			<para>Basically, this is all you need to write! This functionality even works within nested forms. But there is one important configuration issue you should be aware of: <emphasis role="bold">all non-key-fields</emphasis> you want to be sortable should be declared sortable in the XML-config file:
+</para>
+			<example>
+				<title>Listing 23  preparing tables for sorting: define sortable fields
+</title>
+				<programlisting>
+                                
+            &lt;table name="service"&gt;
+                &lt;field name="id" fieldType="int" isKey="true"/&gt; 
+		&lt;field name="name" fieldType="char" <emphasis role="bold">sortable="true"</emphasis>/&gt; 
+		&lt;field name="description" fieldType="char" /&gt; 
+            &lt;/table&gt; 
+		</programlisting>
+			</example>
+			<para>The default sorting behavior is false. You should use <emphasis role="bold">sortable=true</emphasis> sparingly, especially fields with big field size should not be declared as sortable if it's not really necessary. The reason for this is the amount of data to be transferred for enabling sorting. The more sortable fields, the more data traffic!
+</para>
+			<example>
+				<title/>
+				<programlisting>Please note: sorting is one of those issues which are still under development. The sorting-boxes described in this tag are already very powerful, but they are still only a beginning. A limitation of the current implementation is the melting of view and controller for the search widgets.
+Future versions of DbForms may be expected to provide more on sorting.
+ 
+		</programlisting>
+			</example>
+			<para/>
+		</sect1>
+	</chapter>
