@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 
-package org.dbforms.util;
+package src.org.dbforms.util;
 import java.net.URLEncoder;
 import java.net.URLDecoder;
 import org.dbforms.util.external.PrintfFormat;
@@ -83,6 +83,19 @@ public class Util
 
 
    /**
+    * Encode a string with desired character encoding.  defaults to "UTF-8"
+    * 
+    * @param s the string to encode
+    * 
+    * @return the encoded string
+    * @throws UnsupportedEncodingException DOCUMENT ME!
+    */
+   public static final String encode(String s) throws UnsupportedEncodingException
+   {
+     return encode(s, null);
+   }
+
+   /**
     * Encode a string with desired character encoding.  defaults to "ISO8859-1"
     * if param enc is null or jdk 1.3 is used
     * 
@@ -92,13 +105,13 @@ public class Util
     * @return the encoded string
     * @throws UnsupportedEncodingException DOCUMENT ME!
     */
-   public static final String encode(String s) throws UnsupportedEncodingException
+   public static final String encode(String s, String enc) throws UnsupportedEncodingException
    {
       if (!Util.isNull(s))
       {
          try
          {
-            s = encCheck(s);
+            s = encCheck(s, enc);
          } catch (NoSuchMethodException nsme)
          {
             s = URLEncoder.encode(s);
@@ -107,7 +120,6 @@ public class Util
 
       return s;
    }
-
    /**
     * Decodes a string with "ISO8859-1". This is the default in the servlet
     * engine (tomcat); hope that's the same in the other ones...
@@ -176,9 +188,17 @@ public class Util
     * @throws UnsupportedEncodingException DOCUMENT ME!
     * @throws NoSuchMethodException to signal that jdk 1.3 is being used
     */
-   private static final String encCheck(String s) throws UnsupportedEncodingException, NoSuchMethodException
+   private static final String encCheck(String s, String enc) throws UnsupportedEncodingException, NoSuchMethodException
    {
-      return URLEncoder.encode(s, "UTF-8");
+      if (isNull(enc))
+      {
+         enc = "UTF-8";
+      }
+
+      s = URLEncoder.encode(s, enc);
+
+      return s;
+       
    }
 
 
