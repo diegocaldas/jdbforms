@@ -7,7 +7,7 @@
    <body >
       <db:dbform autoUpdate="false" 
                  followUp="/authorsEditWithFilter.jsp" 
-                 maxRows="1" 
+                 maxRows="4" 
                  tableName="AUTHOR"
       >
          <h1 align="center">Edit Authors</h1>
