@@ -1,5 +1,5 @@
 <project
-  default="userguide"
+  default="documentation"
   xmlns:m="maven"
   xmlns:j="jelly:core"
   xmlns:u="jelly:util">
