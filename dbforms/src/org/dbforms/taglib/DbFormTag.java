@@ -1679,7 +1679,6 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
  			  			    	(
  			  			    		(count == 0) 
  			  						|| "true".equals(getBypassNavigation()) 
-// 			  						|| ((webEvent != null) && EventType.EVENT_NAVIGATION_NEW.equals(webEvent.getType()))
  			  					)
                             ? null : firstPosition);
               navEvent = navEventFactory.createGotoEvent(table, request, config, myPosition);
