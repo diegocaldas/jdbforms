@@ -39,8 +39,8 @@ public class TestTimeUtil extends AbstractTestCase {
 
    private boolean check(Calendar now, String s) {
       String s1 = format.format(now.getTime());
-      System.out.println(s);
-      System.out.println(s1);
+      System.out.println("parsing results");
+      System.out.println("===============");
       String s2 = format.format(TimeUtil.parseDate(format, s).getTime());
       System.out.println(s);
       System.out.println(s1);
@@ -48,14 +48,13 @@ public class TestTimeUtil extends AbstractTestCase {
       return s1.equals(s2);
    }
 
-   public void testTimeUtil() {
-
+   public void testSecondsToString() {
       int k = 4 + 47 * 60 + 3 * 60 * 60 + 1 * 24 * 60 * 60;
-
       assertEquals("1:03:47:04", TimeUtil.seconds2String(k));
+   }
 
+   public void testTimeUtil() {
       Calendar now;
-
       now = Calendar.getInstance();
       now.set(Calendar.HOUR_OF_DAY, 12);
       now.set(Calendar.MINUTE, 30);
@@ -170,6 +169,15 @@ public class TestTimeUtil extends AbstractTestCase {
       now.set(Calendar.MINUTE, 30);
       now.set(Calendar.SECOND, 0);
       assertTrue(check(now, "12:30"));
+
+      now = Calendar.getInstance();
+      now.set(Calendar.HOUR_OF_DAY, 12);
+      now.set(Calendar.MINUTE, 30);
+      now.set(Calendar.SECOND, 0);
+      now.set(Calendar.DAY_OF_MONTH, 12);
+      now.set(Calendar.MONTH, 11);
+      now.set(Calendar.YEAR, 2002);
+      assertTrue(check(now, "2002-12-12 12:30:00"));
 
    }
 }
