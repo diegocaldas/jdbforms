@@ -76,6 +76,7 @@ The
           <blockquote>
             <para>DbEventInterceptor.GRANT_OPERATION</para>
             <para>DbEventInterceptor.DENY_OPERATION</para>
+            <para>DbEventInterceptor.IGNORE_OPERATION</para>
           </blockquote>
         </para>
       </listitem>
