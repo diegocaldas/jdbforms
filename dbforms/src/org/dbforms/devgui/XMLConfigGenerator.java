@@ -20,11 +20,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
+
 package org.dbforms.devgui;
 import java.sql.*;
 import java.io.*;
 import java.util.*;
-
 import org.dbforms.config.ForeignKey;
 import org.dbforms.config.Reference;
 
@@ -41,31 +41,32 @@ public class XMLConfigGenerator implements PropertyNames
    // the following types are known inside class org.dbforms.Field:
    static final String[] knownFieldTypes = 
    {
-      "tinyint",
-      "int",
-      "smallint",
-      "integer",
+      "tinyint", 
+      "int", 
+      "smallint", 
+      "integer", 
       "bigint", // mapped to INTEGER
-      "float",
+      "float", 
       "real", // mapped to FLOAT
       "double", // mapped to DOUBLE
-      "numeric",
-      "decimal",
+      "numeric", 
+      "decimal", 
       "number", // mapped to NUMERIC
-      "char",
-      "varchar",
-      "longchar",
+      "char", 
+      "varchar", 
+      "longchar", 
       "nvarchar", // mapped to CHAR
-      "blob",
+      "blob", 
       "image", // mapped to BLOB
       "diskblob", // mapped to DISKBLOB
       "date", // mapped to DATE
       "timestamp" // mapped to TIMESTAMP
+
    };
 
    static boolean fieldTypeIsKnown(String s)
    {
-      int    i;
+      int i;
 
       for (i = 0; i < knownFieldTypes.length; i++)
          if (s.startsWith(knownFieldTypes[i]))
@@ -95,10 +96,14 @@ public class XMLConfigGenerator implements PropertyNames
     * @throws IOException DOCUMENT ME!
     * @throws IllegalAccessException DOCUMENT ME!
     */
-   protected static Connection createConnection(String jdbcDriver,
-      String jdbcURL, String username, String password)
-      throws SQLException, ClassNotFoundException, InstantiationException, 
-         IOException, IllegalAccessException
+   protected static Connection createConnection(String jdbcDriver, 
+                                                String jdbcURL, String username, 
+                                                String password)
+                                         throws SQLException, 
+                                                ClassNotFoundException, 
+                                                InstantiationException, 
+                                                IOException, 
+                                                IllegalAccessException
    {
       Class.forName(jdbcDriver).newInstance();
 
@@ -122,11 +127,16 @@ public class XMLConfigGenerator implements PropertyNames
     *
     * @return DOCUMENT ME!
     */
-   public static HashMap getForeignKeyInformation(DatabaseMetaData dbmd,
-      boolean includeCatalog, String catalogSeparator, boolean includeSchema,
-      String schemaSeparator, Vector knownTables,
-      boolean foreignKeyTryGetCrossReferences, Vector catalogNames,
-      Vector schemaNames, Vector tableNames)
+   public static HashMap getForeignKeyInformation(DatabaseMetaData dbmd, 
+                                                  boolean includeCatalog, 
+                                                  String catalogSeparator, 
+                                                  boolean includeSchema, 
+                                                  String schemaSeparator, 
+                                                  Vector knownTables, 
+                                                  boolean foreignKeyTryGetCrossReferences, 
+                                                  Vector catalogNames, 
+                                                  Vector schemaNames, 
+                                                  Vector tableNames)
    {
       HashMap hm = null;
 
@@ -138,13 +148,14 @@ public class XMLConfigGenerator implements PropertyNames
 
             // following method accepts no pattern, so we just pass nulls and read all
             // available information:
-            ResultSet rsk = dbmd.getCrossReference(null, null, null, null,
-                  null, null);
+            ResultSet rsk = dbmd.getCrossReference(null, null, null, null, null, 
+                                                   null);
 
             while (rsk.next())
             {
-               addSingleReference(hm, rsk, knownTables, includeCatalog,
-                  catalogSeparator, includeSchema, schemaSeparator);
+               addSingleReference(hm, rsk, knownTables, includeCatalog, 
+                                  catalogSeparator, includeSchema, 
+                                  schemaSeparator);
             }
          }
          catch (SQLException ex)
@@ -166,13 +177,15 @@ public class XMLConfigGenerator implements PropertyNames
                String    catalogName = (String) catalogNames.get(i);
                String    schemaName = (String) schemaNames.get(i);
                String    tableName  = (String) tableNames.get(i);
-               ResultSet rsk        = dbmd.getImportedKeys(catalogName,
-                     schemaName, tableName);
+               ResultSet rsk        = dbmd.getImportedKeys(catalogName, 
+                                                           schemaName, 
+                                                           tableName);
 
                while (rsk.next())
                {
-                  addSingleReference(hm, rsk, knownTables, includeCatalog,
-                     catalogSeparator, includeSchema, schemaSeparator);
+                  addSingleReference(hm, rsk, knownTables, includeCatalog, 
+                                     catalogSeparator, includeSchema, 
+                                     schemaSeparator);
                }
             }
          }
@@ -186,27 +199,31 @@ public class XMLConfigGenerator implements PropertyNames
    }
 
 
-   private static void addSingleReference(HashMap hm, ResultSet rsk,
-      Vector knownTables, boolean includeCatalog, String catalogSeparator,
-      boolean includeSchema, String schemaSeparator) throws SQLException
+   private static void addSingleReference(HashMap hm, ResultSet rsk, 
+                                          Vector knownTables, 
+                                          boolean includeCatalog, 
+                                          String catalogSeparator, 
+                                          boolean includeSchema, 
+                                          String schemaSeparator)
+                                   throws SQLException
    {
       String pCatalog = rsk.getString(1);
       String pSchema = rsk.getString(2);
       String pTable  = rsk.getString(3);
 
       if (!knownTables.contains("" + emptyIfNull(pSchema) + "\t"
-                  + emptyIfNull(pTable)))
+                                   + emptyIfNull(pTable)))
       {
          return;
       }
 
       String pColName = rsk.getString(4);
 
-      String fSchema  = rsk.getString(6);
-      String fTable   = rsk.getString(7);
+      String fSchema = rsk.getString(6);
+      String fTable  = rsk.getString(7);
 
       if (!knownTables.contains("" + emptyIfNull(fSchema) + "\t"
-                  + emptyIfNull(fTable)))
+                                   + emptyIfNull(fTable)))
       {
          return;
       }
@@ -268,8 +285,8 @@ public class XMLConfigGenerator implements PropertyNames
     *
     * @return DOCUMENT ME!
     */
-   public static String getForeignKeyTags(HashMap hm, String catalog,
-      String schema, String table)
+   public static String getForeignKeyTags(HashMap hm, String catalog, 
+                                          String schema, String table)
    {
       String  hashKey = emptyIfNull(schema) + "\t" + table;
       HashMap keyInfo = (HashMap) hm.get(hashKey);
@@ -291,7 +308,8 @@ public class XMLConfigGenerator implements PropertyNames
            .append("\"").append("\n\t\t      foreignTable=\"")
            .append(fk.getForeignTable()).append("\"")
            .append("\n\t\t      displayType=\"")
-           .append((v.size() == 1) ? "select" : "none").append("\"").append(">\n");
+           .append((v.size() == 1) ? "select" : "none").append("\"")
+           .append(">\n");
 
          for (int jj = 0; jj < v.size(); jj++)
          {
@@ -319,8 +337,9 @@ public class XMLConfigGenerator implements PropertyNames
     * @throws Exception DOCUMENT ME!
     * @throws SQLException DOCUMENT ME!
     */
-   public static String createXMLOutput(ProjectData projectData,
-      boolean createGuiMessagewindow) throws Exception
+   public static String createXMLOutput(ProjectData projectData, 
+                                        boolean createGuiMessagewindow)
+                                 throws Exception
    {
       String jdbcDriver = projectData.getProperty("jdbcDriver");
       String jdbcURL  = projectData.getProperty("jdbcURL");
@@ -328,19 +347,21 @@ public class XMLConfigGenerator implements PropertyNames
       String password = projectData.getProperty("password");
 
       // create boolean variables out of String properties:
-      boolean includeCatalog    = projectData.getProperty(INCLUDE_CATALOGNAME)
-                                             .equalsIgnoreCase(TRUESTRING);
-      boolean includeSchema     = projectData.getProperty(INCLUDE_SCHEMANAME)
-                                             .equalsIgnoreCase(TRUESTRING);
+      boolean includeCatalog = projectData.getProperty(INCLUDE_CATALOGNAME)
+                                          .equalsIgnoreCase(TRUESTRING);
+      boolean includeSchema = projectData.getProperty(INCLUDE_SCHEMANAME)
+                                         .equalsIgnoreCase(TRUESTRING);
       boolean useAutoCommitMode = projectData.getProperty(AUTOCOMMIT_MODE)
                                              .equalsIgnoreCase(TRUESTRING);
-      boolean useStdTypeNames   = projectData.getProperty(WRITE_STD_TYPENAMES)
-                                             .equalsIgnoreCase(TRUESTRING);
+      boolean useStdTypeNames = projectData.getProperty(WRITE_STD_TYPENAMES)
+                                           .equalsIgnoreCase(TRUESTRING);
 
-      boolean foreignKeyDetectionActivated    = !DEACTIVATED.equalsIgnoreCase(projectData
-            .getProperty(FOREIGNKEY_DETECTION));
-      boolean foreignKeyTryGetCrossReferences = USE_GETCROSSREFERENCES
-         .equalsIgnoreCase(projectData.getProperty(FOREIGNKEY_DETECTION));
+      boolean foreignKeyDetectionActivated = !DEACTIVATED.equalsIgnoreCase(
+                                                       projectData.getProperty(
+                                                                FOREIGNKEY_DETECTION));
+      boolean foreignKeyTryGetCrossReferences = USE_GETCROSSREFERENCES.equalsIgnoreCase(
+                                                         projectData.getProperty(
+                                                                  FOREIGNKEY_DETECTION));
 
       // create array of  table types that have to be examined...
       Vector typesVec = new Vector();
@@ -369,29 +390,29 @@ public class XMLConfigGenerator implements PropertyNames
 
       // set values for catalog, schema and table name according to properties:
       String catalog = projectData.getProperty(CATALOG_SELECTION)
-                                  .equalsIgnoreCase(ALL) ? null
-                                                         : projectData
-         .getProperty(CATALOG);
+                                  .equalsIgnoreCase(ALL)
+                          ? null : projectData.getProperty(CATALOG);
 
       String schemaPattern = projectData.getProperty(SCHEMA_SELECTION)
-                                        .equalsIgnoreCase(ALL) ? null
-                                                               : projectData
-         .getProperty(SCHEMA);
+                                        .equalsIgnoreCase(ALL)
+                                ? null : projectData.getProperty(SCHEMA);
 
       String tableNamePattern = projectData.getProperty(TABLE_SELECTION)
-                                           .equalsIgnoreCase(ALL) ? null
-                                                                  : projectData
-         .getProperty(TABLE_NAME_PATTERN);
+                                           .equalsIgnoreCase(ALL)
+                                   ? null
+                                   : projectData.getProperty(TABLE_NAME_PATTERN);
 
       String dateFormatTag = projectData.getProperty(DATE_FORMAT)
-                                        .equalsIgnoreCase("") ? ""
-                                                              : ("\n\t<date-format>"
-         + projectData.getProperty(DATE_FORMAT) + "</date-format>\n\n");
+                                        .equalsIgnoreCase("")
+                                ? ""
+                                : ("\n\t<date-format>"
+                                  + projectData.getProperty(DATE_FORMAT)
+                                  + "</date-format>\n\n");
 
       System.out.println(
-         ": Retrieving metadata using the following properties ");
+               ": Retrieving metadata using the following properties ");
       System.out.println(
-         "-----------------------------------------------------");
+               "-----------------------------------------------------");
       System.out.println("jdbcDriver=" + jdbcDriver);
       System.out.println("jdbcURL=" + jdbcURL);
       System.out.println("username=" + username);
@@ -414,7 +435,7 @@ public class XMLConfigGenerator implements PropertyNames
          con = createConnection(jdbcDriver, jdbcURL, username, password);
 
          result.append(
-            "<?xml version=\"1.0\" encoding=\"ISO-8859-1\" ?>\n\n<dbforms-config>\n");
+                  "<?xml version=\"1.0\" encoding=\"ISO-8859-1\" ?>\n\n<dbforms-config>\n");
 
          result.append(dateFormatTag);
 
@@ -447,16 +468,16 @@ public class XMLConfigGenerator implements PropertyNames
 
                if (dbmsProductName.equals("mysql"))
                {
-                  dbms                     = DBMS_MYSQL;
-                  checkForAutoIncFields    = true;
-                  autoIncColumnsQuery      = "SHOW COLUMNS FROM :tabname LIKE ?";
+                  dbms                  = DBMS_MYSQL;
+                  checkForAutoIncFields = true;
+                  autoIncColumnsQuery   = "SHOW COLUMNS FROM :tabname LIKE ?";
                }
                else if (dbmsProductName.startsWith("db2"))
                {
-                  dbms                     = DBMS_IBMDB2;
-                  checkForAutoIncFields    = true;
-                  autoIncColumnsQuery      = "SELECT identity FROM sysibm.syscolumns "
-                     + "WHERE tbcreator=':schema' and  tbname = ':tabname' AND name = ?";
+                  dbms                  = DBMS_IBMDB2;
+                  checkForAutoIncFields = true;
+                  autoIncColumnsQuery   = "SELECT identity FROM sysibm.syscolumns "
+                                          + "WHERE tbcreator=':schema' and  tbname = ':tabname' AND name = ?";
                }
             }
          }
@@ -484,9 +505,9 @@ public class XMLConfigGenerator implements PropertyNames
             {
                showWarning = true;
                warningMessage.append(
-                  "<li>Your database system does not seem to support use of  <br>"
-                  + "  catalog names in data manipulation statements. You should<br> "
-                  + "  better not include catalog names in table names.");
+                        "<li>Your database system does not seem to support use of  <br>"
+                        + "  catalog names in data manipulation statements. You should<br> "
+                        + "  better not include catalog names in table names.");
             }
          }
 
@@ -509,9 +530,9 @@ public class XMLConfigGenerator implements PropertyNames
             {
                showWarning = true;
                warningMessage.append(
-                  "<li>Your database system does not seem to support use of <br>"
-                  + "  schema names in data manipulation statements. You should <br>"
-                  + "  better not include schema names in table names.");
+                        "<li>Your database system does not seem to support use of <br>"
+                        + "  schema names in data manipulation statements. You should <br>"
+                        + "  better not include schema names in table names.");
             }
          }
 
@@ -521,8 +542,8 @@ public class XMLConfigGenerator implements PropertyNames
          {
             showWarning = true;
             warningMessage.append(
-               "<li>Transaction mode not supported by DBMS, connection is <br>"
-               + "    automatically set to autocommit mode.");
+                     "<li>Transaction mode not supported by DBMS, connection is <br>"
+                     + "    automatically set to autocommit mode.");
             useAutoCommitMode = true;
          }
 
@@ -545,9 +566,9 @@ public class XMLConfigGenerator implements PropertyNames
             {
                showWarning = true;
                warningMessage.append(
-                  "<li>Error reading catalog separator from database:   <br>"
-                  + ex.getMessage() + "<br>" + "  Using default '"
-                  + catalogSeparator + "' instead.");
+                        "<li>Error reading catalog separator from database:   <br>"
+                        + ex.getMessage() + "<br>" + "  Using default '"
+                        + catalogSeparator + "' instead.");
             }
          }
 
@@ -560,8 +581,8 @@ public class XMLConfigGenerator implements PropertyNames
 
          try
          {
-            ResultSet tablesRS = dbmd.getTables(catalog, schemaPattern,
-                  tableNamePattern, types);
+            ResultSet tablesRS = dbmd.getTables(catalog, schemaPattern, 
+                                                tableNamePattern, types);
 
             while (tablesRS.next())
             {
@@ -569,7 +590,7 @@ public class XMLConfigGenerator implements PropertyNames
                schemaNames.add(tablesRS.getString(2));
                tableNames.add(tablesRS.getString(3));
                knownTables.add("" + emptyIfNull(tablesRS.getString(2)) + "\t"
-                  + emptyIfNull(tablesRS.getString(3)));
+                               + emptyIfNull(tablesRS.getString(3)));
             }
 
             tablesRS.close();
@@ -578,11 +599,12 @@ public class XMLConfigGenerator implements PropertyNames
          {
             showWarning = true;
             warningMessage.append(
-               "<li>Error while trying to read table names with <br>"
-               + "  catalog=" + catalog + ",<br>   schemapattern="
-               + schemaPattern + ",<br>   tableNamePattern=" + tableNamePattern
-               + "<br> from database.   <br>Error message:" + ex.getMessage()
-               + "<br>");
+                     "<li>Error while trying to read table names with <br>"
+                     + "  catalog=" + catalog + ",<br>   schemapattern="
+                     + schemaPattern + ",<br>   tableNamePattern="
+                     + tableNamePattern
+                     + "<br> from database.   <br>Error message:"
+                     + ex.getMessage() + "<br>");
          }
 
          if (!useAutoCommitMode)
@@ -594,10 +616,12 @@ public class XMLConfigGenerator implements PropertyNames
 
          if (foreignKeyDetectionActivated)
          {
-            forKeys = getForeignKeyInformation(dbmd, includeCatalog,
-                  catalogSeparator, includeSchema, schemaSeparator,
-                  knownTables, foreignKeyTryGetCrossReferences, catalogNames,
-                  schemaNames, tableNames);
+            forKeys = getForeignKeyInformation(dbmd, includeCatalog, 
+                                               catalogSeparator, includeSchema, 
+                                               schemaSeparator, knownTables, 
+                                               foreignKeyTryGetCrossReferences, 
+                                               catalogNames, schemaNames, 
+                                               tableNames);
          }
 
          if (!useAutoCommitMode)
@@ -614,8 +638,9 @@ public class XMLConfigGenerator implements PropertyNames
                warningMessage.append("'").append(types[i]).append("' ");
 
             warningMessage.append(") <br>found with catalog='" + catalog
-               + "', schemapattern='" + schemaPattern
-               + "',<br>tablename pattern='" + tableNamePattern + "'");
+                                  + "', schemapattern='" + schemaPattern
+                                  + "',<br>tablename pattern='"
+                                  + tableNamePattern + "'");
          }
 
          boolean autoIncColumnsQueryAlwaysSucceeded = true;
@@ -631,34 +656,34 @@ public class XMLConfigGenerator implements PropertyNames
             // prepend catalog and schema names to table names
             // if desired by user and not empty:
             if (includeCatalog && (catalogName != null)
-                     && (!catalogName.equalsIgnoreCase("")))
+                      && (!catalogName.equalsIgnoreCase("")))
             {
                result.append(catalogName.trim()).append(catalogSeparator);
             }
 
             if (includeCatalog
-                     && ((catalogName == null)
-                     || catalogName.equalsIgnoreCase("")))
+                      && ((catalogName == null)
+                         || catalogName.equalsIgnoreCase("")))
             {
                catalogNameFailure++;
             }
 
             if (includeSchema && (schemaName != null)
-                     && (!schemaName.equalsIgnoreCase("")))
+                      && (!schemaName.equalsIgnoreCase("")))
             {
                result.append(schemaName.trim()).append(schemaSeparator);
             }
 
             if (includeSchema
-                     && ((schemaName == null)
-                     || schemaName.equalsIgnoreCase("")))
+                      && ((schemaName == null)
+                         || schemaName.equalsIgnoreCase("")))
             {
                schemaNameFailure++;
             }
 
             // read primary key into Vector keys:
-            ResultSet rsKeys               = dbmd.getPrimaryKeys(catalogName,
-                  schemaName, tableName);
+            ResultSet rsKeys = dbmd.getPrimaryKeys(catalogName, schemaName, 
+                                                   tableName);
             Vector    keys                 = new Vector();
             String    defaultVisibleFields = "";
             boolean   isFirst              = true;
@@ -687,7 +712,7 @@ public class XMLConfigGenerator implements PropertyNames
             if (defaultVisibleFields.length() > 0)
             {
                result.append("\n\t            defaultVisibleFields=\""
-                  + defaultVisibleFields + "\" ");
+                             + defaultVisibleFields + "\" ");
             }
 
             result.append(">\n");
@@ -712,8 +737,8 @@ public class XMLConfigGenerator implements PropertyNames
                if (pos >= 0)
                {
                   sqlStmtPS = autoIncColumnsQuery.substring(0, pos) + tableName
-                     + autoIncColumnsQuery.substring(pos
-                        + tabnamePlaceholder.length());
+                              + autoIncColumnsQuery.substring(pos
+                                                              + tabnamePlaceholder.length());
                }
 
                pos = sqlStmtPS.indexOf(schemaPlaceholder);
@@ -721,7 +746,8 @@ public class XMLConfigGenerator implements PropertyNames
                if (pos >= 0)
                {
                   sqlStmtPS = sqlStmtPS.substring(0, pos) + schemaName
-                     + sqlStmtPS.substring(pos + schemaPlaceholder.length());
+                              + sqlStmtPS.substring(pos
+                                                    + schemaPlaceholder.length());
                }
 
                pos = sqlStmtPS.indexOf(catalogPlaceholder);
@@ -729,7 +755,8 @@ public class XMLConfigGenerator implements PropertyNames
                if (pos >= 0)
                {
                   sqlStmtPS = sqlStmtPS.substring(0, pos) + catalogName
-                     + sqlStmtPS.substring(pos + catalogPlaceholder.length());
+                              + sqlStmtPS.substring(pos
+                                                    + catalogPlaceholder.length());
                }
 
                // now prepare statement having just one '?' for 
@@ -741,16 +768,17 @@ public class XMLConfigGenerator implements PropertyNames
                catch (SQLException ex)
                {
                   System.err.println("Warning: Prepare of Statement \n'"
-                     + sqlStmtPS + "'\n  failed with message \n'"
-                     + ex.getMessage()
-                     + "'.\n No reason to panic, just detection auf auto-incremented \n "
-                     + " columns will not work. However, better send a mail to \n"
-                     + " DbForms Mailing list to get this corrected");
+                                     + sqlStmtPS
+                                     + "'\n  failed with message \n'"
+                                     + ex.getMessage()
+                                     + "'.\n No reason to panic, just detection auf auto-incremented \n "
+                                     + " columns will not work. However, better send a mail to \n"
+                                     + " DbForms Mailing list to get this corrected");
                }
             }
 
-            ResultSet rsFields = dbmd.getColumns(catalogName, schemaName,
-                  tableName, null);
+            ResultSet rsFields = dbmd.getColumns(catalogName, schemaName, 
+                                                 tableName, null);
 
             while (rsFields.next())
             {
@@ -777,14 +805,17 @@ public class XMLConfigGenerator implements PropertyNames
                      {
                         case DBMS_MYSQL:
                            isAutoIncColumn = (rssp.next()
-                              && rssp.getString(1).equalsIgnoreCase(columnName)
-                              && rssp.getString(6).equalsIgnoreCase("auto_increment"));
+                                             && rssp.getString(1)
+                                                    .equalsIgnoreCase(columnName)
+                                             && rssp.getString(6)
+                                                    .equalsIgnoreCase("auto_increment"));
 
                            break;
 
                         case DBMS_IBMDB2:
                            isAutoIncColumn = (rssp.next()
-                              && rssp.getString(1).equalsIgnoreCase("y"));
+                                             && rssp.getString(1)
+                                                    .equalsIgnoreCase("y"));
 
                            break;
                      }
@@ -799,11 +830,12 @@ public class XMLConfigGenerator implements PropertyNames
                      if (autoIncColumnsQueryAlwaysSucceeded)
                      {
                         System.err.println(
-                           "Warning: Reading of auto-incremented columns  \n"
-                           + "\n  failed with message \n'" + ex.getMessage()
-                           + "'.\n No reason to panic, just detection auf auto-incremented \n "
-                           + " columns will not work. However, better send a mail to \n"
-                           + " DbForms Mailing list to get this corrected");
+                                 "Warning: Reading of auto-incremented columns  \n"
+                                 + "\n  failed with message \n'"
+                                 + ex.getMessage()
+                                 + "'.\n No reason to panic, just detection auf auto-incremented \n "
+                                 + " columns will not work. However, better send a mail to \n"
+                                 + " DbForms Mailing list to get this corrected");
                         autoIncColumnsQueryAlwaysSucceeded = false;
                      }
                   }
@@ -812,7 +844,8 @@ public class XMLConfigGenerator implements PropertyNames
                { // some DBMS (like Sybase) simply have a trailing
 
                   // ' identity' in type name
-                  isAutoIncColumn = typeName.toLowerCase().endsWith(" identity");
+                  isAutoIncColumn = typeName.toLowerCase()
+                                            .endsWith(" identity");
                }
 
                // if type name is unknown and user selected to
@@ -904,33 +937,35 @@ public class XMLConfigGenerator implements PropertyNames
 
             if (foreignKeyDetectionActivated)
             {
-               result.append(getForeignKeyTags(forKeys, catalogName,
-                     schemaName, tableName));
+               result.append(getForeignKeyTags(forKeys, catalogName, schemaName, 
+                                               tableName));
             }
 
             result.append(
-               "\n\t\t<!-- add \"granted-privileges\" element for security constraints -->\n\n\t</table>\n\n");
+                     "\n\t\t<!-- add \"granted-privileges\" element for security constraints -->\n\n\t</table>\n\n");
          }
 
          if (catalogNameFailure > 0)
          {
             showWarning = true;
             warningMessage.append("<li> " + catalogNameFailure
-               + " empty catalog names not " + "included in table name.");
+                                  + " empty catalog names not "
+                                  + "included in table name.");
          }
 
          if (schemaNameFailure > 0)
          {
             showWarning = true;
             warningMessage.append("<li> " + schemaNameFailure
-               + " empty schema names not " + "included in table name.");
+                                  + " empty schema names not "
+                                  + "included in table name.");
          }
 
          result.append(
-            "\t<!-- ========== Connection =================================== -->\n");
+                  "\t<!-- ========== Connection =================================== -->\n");
          result.append("\t<!--\n");
          result.append(
-            "\tuncomment this if you have access to JNDI of an application server (see users guide for more info)\n");
+                  "\tuncomment this if you have access to JNDI of an application server (see users guide for more info)\n");
          result.append("\t<dbconnection\n");
          result.append("\t\tname = \"jdbc/dbformstest\"\n");
          result.append("\t\tisJndi = \"true\"\n");
@@ -962,9 +997,10 @@ public class XMLConfigGenerator implements PropertyNames
             {
                if (createGuiMessagewindow)
                {
-                  javax.swing.JOptionPane.showMessageDialog(null,
-                     warningMessage, "Warning",
-                     javax.swing.JOptionPane.WARNING_MESSAGE);
+                  javax.swing.JOptionPane.showMessageDialog(null, 
+                                                            warningMessage, 
+                                                            "Warning", 
+                                                            javax.swing.JOptionPane.WARNING_MESSAGE);
                }
                else
                {
@@ -979,8 +1015,12 @@ public class XMLConfigGenerator implements PropertyNames
          }
          catch (SQLException sqle)
          {
-            throw new SQLException("could not close Connection - "
-               + sqle.getMessage());
+            // 20031130-HKK: Hint from Pavel Vesely; Ignore exception during close! 
+
+            /*
+               throw new SQLException("could not close Connection - "
+                                      + sqle.getMessage());
+             */
          }
       }
 
