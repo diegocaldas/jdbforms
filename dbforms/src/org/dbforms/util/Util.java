@@ -115,26 +115,9 @@ public class Util
    }
 
 
-   /**
-    * Encodes a string with "ISO8859-1". This is the default
-    * in the servlet engine (tomcat); hope that's the same in the other ones...
-    *
-    * @param s the string to encode
-    * @return the encoded string
-    */
-   public static final String encode(String s)
-   {
-      if (!Util.isNull(s))
-      {
-         s = URLEncoder.encode(s);
-      }
-
-      return s;
-   }
-
     /**
      *Encode a string with desired character encoding.  
-     *Works from java jdk 1.4, and defaults to "ISO8859-1"if jdk 1.3 is used
+     *defaults to "ISO8859-1" if param enc is null or jdk 1.3 is used
      *@param s the string to encode
      *@param enc the desired encoding
      *@return the encoded string
@@ -147,19 +130,12 @@ public class Util
         {
             try
                 {
-                    if (Util.isNull(enc))
-                    {
-                        s = encode (s);
-                    }
-                    
-                    else
-                    {
-                        s = Util.encCheck(s, enc);
-                    } 
+                    s = Util.encCheck(s, enc);
+                   
                 }
             catch (NoSuchMethodException nsme)
                 {
-                    s = encode (s);
+                    s = URLEncoder.encode(s);
                 }
            
         }
@@ -167,7 +143,7 @@ public class Util
    
     }
     /**
-     *checks to see if URLEncoder.encode(String s, String enc) is available (from jdk 1.4)
+     *needed by Util.encode(s,enc) to check if URLEncoder.encode(String s, String enc) is available (from jdk 1.4)
      *@throws NoSuchMethodException to signal that jdk 1.3 is being used 
      *@param s the string to encode
      *@param enc the desired encoding
@@ -177,12 +153,17 @@ public class Util
     public static final String encCheck (String s, String enc) 
     throws UnsupportedEncodingException, NoSuchMethodException
     {	
-        
+        if (Util.isNull(enc))
+                {
+                    enc = "ISO-8859-1";
+                }
+                    
         s = URLEncoder.encode (s, enc);
     
         return s;
-    
     }
+    
+      
     
     /**
 	 * returns a formated string
