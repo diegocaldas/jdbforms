@@ -29,6 +29,8 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.Serializable;
+
 
 /**
  * A <code>FileHolder</code> holds data saved from a
@@ -37,7 +39,7 @@ import java.io.File;
  * 
  * @author Joe Peer
  */
-public class FileHolder {
+public class FileHolder implements Serializable {
 	private boolean toMemory;
 
 	// "file system" name of the file
