@@ -24,7 +24,6 @@
 package org.dbforms.taglib;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -35,7 +34,6 @@ import javax.servlet.jsp.tagext.BodyTagSupport;
 
 import org.apache.log4j.Category;
 import org.dbforms.util.ParseUtil;
-import org.dbforms.util.Util;
 
 /**
  * custom tag that build up a set of sql filters.
@@ -154,7 +152,7 @@ public class DbFilterTag extends BodyTagSupport
                     conditionId);
         }
         logCat.debug("filter condition from request : " + filterCondition);
-        if (sqlFilter != null)
+        if (sqlFilter != null && sqlFilter.trim().length() > 0)
             // sqlFilter value is already defined, we AND it with out condition 
             if (filterCondition != null && filterCondition.length() > 0)
                 filter =
@@ -213,6 +211,10 @@ public class DbFilterTag extends BodyTagSupport
      */
     protected ArrayList conds;
     /**
+     * used to override the label of the main select's first option element
+     */
+    protected String disabledCaption;
+    /**
      * prefix for this filter of the request's parameters
      */
     protected String filterName;
@@ -220,6 +222,10 @@ public class DbFilterTag extends BodyTagSupport
      * reference to parent dbform
      */
     protected DbFormTag parentForm;
+    /**
+     * caption of the SET button
+     */
+    protected String setCaption;
     /** 
      * size attribute for select element 
      */
@@ -228,14 +234,6 @@ public class DbFilterTag extends BodyTagSupport
      * class style to apply to select 
      */
     protected String styleClass;
-    /**
-     * used to override the label of the main select's first option element
-     */
-    protected String disabledCaption;
-    /**
-     * caption of the SET button
-     */
-    protected String setCaption;
     /**
      * caption of the UNSET button
      */
@@ -249,7 +247,7 @@ public class DbFilterTag extends BodyTagSupport
      */
     protected int addCondition(DbFilterConditionTag condition)
     {
-        conds.add(condition);
+        conds.add(condition.getState());
         return conds.size() - 1;
     }
 
@@ -268,7 +266,11 @@ public class DbFilterTag extends BodyTagSupport
         DbFilterConditionTag currentCond = null;
         if (currentCondId > -1)
         {
-            currentCond = (DbFilterConditionTag) conds.get(currentCondId);
+            currentCond = new DbFilterConditionTag();
+            // read the object's state stored in array and apply it in newly created object 
+            currentCond.setState(
+                this,
+                (DbFilterConditionTag.State) conds.get(currentCondId));
         }
         try
         {
@@ -328,7 +330,7 @@ public class DbFilterTag extends BodyTagSupport
         if (styleClass == null)
             styleClass = "";
         if (size == null)
-            size ="1";
+            size = "1";
         if (disabledCaption == null)
             disabledCaption = "";
         if (setCaption == null)
@@ -355,16 +357,22 @@ public class DbFilterTag extends BodyTagSupport
                 + FLT_SEL
                 + "\" class=\""
                 + styleClass
-                + "\" size=\"" + size
+                + "\" size=\""
+                + size
                 + "\" onchange=\"document.dbform.submit()\" >\n");
         int cnt = 0;
-        buf.append("\t<option value=\"-1\" >" + disabledCaption + "</option>\n");
+        buf.append(
+            "\t<option value=\"-1\" >" + disabledCaption + "</option>\n");
         // render an option for each nested condition
+        DbFilterConditionTag cond = new DbFilterConditionTag();
         for (Iterator i = conds.iterator(); i.hasNext();)
         {
-            DbFilterConditionTag cond = (DbFilterConditionTag) i.next();
+            // read DbFilterConditionTag object's state stored in array and apply to cond object
+            cond.setState(this, (DbFilterConditionTag.State) i.next());
             // select the currently active condition 
-            String selected = currentCond == cond ? "selected" : "";
+            String selected =
+                currentCond != null
+                    && currentCond.equals(cond) ? "selected" : "";
             // render option
             buf.append(
                 "\t<option value=\""
@@ -383,12 +391,16 @@ public class DbFilterTag extends BodyTagSupport
             buf.append(currentCond.render());
             // render the buttons to set the filter
             buf.append(
-                "<input type=\"submit\" value=\"" + setCaption + "\" name=\""
+                "<input type=\"submit\" value=\""
+                    + setCaption
+                    + "\" name=\""
                     + filterName
                     + FLT_SET
                     + "\" />\n");
             buf.append(
-                "<input type=\"submit\" value=\"" + unsetCaption + "\" name=\""
+                "<input type=\"submit\" value=\""
+                    + unsetCaption
+                    + "\" name=\""
                     + filterName
                     + FLT_SET
                     + "\" onclick=\"document.dbform."
@@ -398,23 +410,7 @@ public class DbFilterTag extends BodyTagSupport
         }
         return buf;
     }
-    
-    /**
-     * @param string
-     */
-    public void setSize(String string)
-    {
-        size = string;
-    }
 
-    /**
-     * @param string
-     */
-    public void setStyleClass(String string)
-    {
-        styleClass = string;
-    }
-    
     /**
      * @param string
      */
@@ -429,6 +425,22 @@ public class DbFilterTag extends BodyTagSupport
     public void setSetCaption(String string)
     {
         setCaption = string;
+    }
+
+    /**
+     * @param string
+     */
+    public void setSize(String string)
+    {
+        size = string;
+    }
+
+    /**
+     * @param string
+     */
+    public void setStyleClass(String string)
+    {
+        styleClass = string;
     }
 
     /**

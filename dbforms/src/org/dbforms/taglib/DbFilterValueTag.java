@@ -23,7 +23,6 @@
 
 package org.dbforms.taglib;
 
-import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -42,7 +41,6 @@ import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.util.KeyValuePair;
 import org.dbforms.util.ParseUtil;
-import org.dbforms.util.Util;
 
 /**
  * Map a placeholder (?) in sql code to an input tag. 
@@ -55,13 +53,73 @@ import org.dbforms.util.Util;
  */
 public class DbFilterValueTag extends BodyTagSupport implements DataContainer
 {
+    /**
+     * tag's state holder.
+     * Used a separate class to hold tag's state to workaround to Tag pooling, in which
+     * an tag object is reused, but we have the need to store informations about all 
+     * child tags in the parent, so we store the state, and apply it to a dummy tag when needed.
+     *  
+     * @author Sergio Moretti
+     */
+    protected class State
+    {
+        /**
+         * Allows an additional (independant) entry into the select list
+         */
+        protected String customEntry = null;
+        /**
+         * contains list of elements to show as options when type is select, (DataContainer interface)
+         */
+        protected Vector embeddedData = null;
+        /** 
+         * Holds value of property jsCalendarDateFormat. 
+         */
+        protected String jsCalendarDateFormat = null;
+        /**
+         * label showed before input tag
+         */
+        protected String label = null;
+        /**
+         * parent DbCFilterConditionTag
+         */
+        //protected DbFilterConditionTag parentCondition = null;
+        /**
+         * currently selected index, valid only when type = select
+         */
+        protected String selectedIndex = null;
+        /**
+         * html input's attribute size
+         */
+        protected String size = null;
+        /**
+         * css class to be applied to input element
+         */
+        protected String styleClass = null;
+        /**
+         * type of input
+         */
+        protected String type = null;
+        /** 
+         * Holds value of property useJsCalendar. 
+         */
+        protected String useJsCalendar = null;
+        /**
+         * current value, readed from request 
+         */
+        protected String value = null;
+        /**
+         * identifier of this value object
+         */
+        protected int valueId = -1;
+    }
+
     // types value write in request's parameter ..._valuetype_<valueId> 
     protected static String FLT_VALUETYPE_DATE = "date";
     protected static String FLT_VALUETYPE_NUMERIC = "numeric";
-    protected static String FLT_VALUETYPE_TEXT = "text";
-    protected static String FLT_VALUETYPE_TIMESTAMP = "timestamp";
     // this is not a value type, but it tells that this value object is mapped to a select element
     protected static String FLT_VALUETYPE_SELECT = "select";
+    protected static String FLT_VALUETYPE_TEXT = "text";
+    protected static String FLT_VALUETYPE_TIMESTAMP = "timestamp";
 
     static Category logCat =
         Category.getInstance(DbFilterValueTag.class.getName());
@@ -110,7 +168,9 @@ public class DbFilterValueTag extends BodyTagSupport implements DataContainer
     {
         String retval = value;
         // type is null or type is text, do nothing
-        if (type == null || FLT_VALUETYPE_TEXT.equalsIgnoreCase(type))
+        if (type == null
+            || FLT_VALUETYPE_TEXT.equalsIgnoreCase(type)
+            || FLT_VALUETYPE_SELECT.equalsIgnoreCase(type))
         {
         }
         // if type is numeric, check if value is a valid number
@@ -221,53 +281,29 @@ public class DbFilterValueTag extends BodyTagSupport implements DataContainer
     }
 
     /**
-     * Allows an additional (independant) entry into the select list
+     * contain the state of this tag object
      */
-    protected String customEntry;
+    private State state;
+
     /**
-     * contains list of elements to show as options when type is select, (DataContainer interface)
+     * 
      */
-    protected Vector embeddedData;
-    /** 
-     * Holds value of property jsCalendarDateFormat. 
-     */
-    protected String jsCalendarDateFormat;
+    public DbFilterValueTag()
+    {
+        super();
+        state = new State();
+    }
+
     /**
-     * label showed before input tag
+     * initialize state for next tag use
+     * 
+     * @see javax.servlet.jsp.tagext.Tag#doEndTag()
      */
-    protected String label;
-    /**
-     * parent DbCFilterConditionTag
-     */
-    protected DbFilterConditionTag parentCondition;
-    /**
-     * currently selected index, valid only when type = select
-     */
-    protected String selectedIndex;
-    /**
-     * html input's attribute size
-     */
-    protected String size;
-    /**
-     * css class to be applied to input element
-     */
-    protected String styleClass;
-    /**
-     * type of input
-     */
-    protected String type;
-    /** 
-     * Holds value of property useJsCalendar. 
-     */
-    protected String useJsCalendar;
-    /**
-     * current value, readed from request 
-     */
-    protected String value;
-    /**
-     * identifier of this value object
-     */
-    protected int valueId;
+    public int doEndTag() throws JspException
+    {
+        state = new State();
+        return super.doEndTag();
+    }
 
     /** 
      * initialize  environment
@@ -288,7 +324,7 @@ public class DbFilterValueTag extends BodyTagSupport implements DataContainer
      * @param selected
      * @return string containing an html option element
      */
-    protected String generateTagString(
+    private String generateTagString(
         String value,
         String description,
         boolean selected)
@@ -314,7 +350,7 @@ public class DbFilterValueTag extends BodyTagSupport implements DataContainer
      */
     public String getJsCalendarDateFormat()
     {
-        return jsCalendarDateFormat;
+        return state.jsCalendarDateFormat;
     }
 
     /**
@@ -322,7 +358,14 @@ public class DbFilterValueTag extends BodyTagSupport implements DataContainer
      */
     public String getLabel()
     {
-        return label;
+        return state.label;
+    }
+    /**
+     * @return
+     */
+    protected State getState()
+    {
+        return state;
     }
 
     /**
@@ -330,65 +373,76 @@ public class DbFilterValueTag extends BodyTagSupport implements DataContainer
      */
     public String getUseJsCalendar()
     {
-        return useJsCalendar;
+        return state.useJsCalendar;
     }
 
-    protected String getValue()
+    private String getValue()
     {
-        return value;
+        return state.value;
     }
 
-    protected String getValueName()
+    private String getValueName()
     {
-        return parentCondition.getConditionName()
+        return ((DbFilterConditionTag) getParent()).getConditionName()
             + DbFilterTag.FLT_VALUE
-            + valueId;
+            + state.valueId;
     }
 
-    protected String getValueType()
+    private String getValueType()
     {
-        return parentCondition.getConditionName()
+        return ((DbFilterConditionTag) getParent()).getConditionName()
             + DbFilterTag.FLT_VALUETYPE
-            + valueId;
+            + state.valueId;
     }
 
-    protected void init()
+    /**
+     * initialize tag's state before start using it
+     */
+    private void init()
     {
-        if (type == null)
-            type = "text";
-        if (styleClass == null)
-            styleClass = "";
-        parentCondition = (DbFilterConditionTag) getParent();
-        valueId = parentCondition.addValue(this);
-        value =
+        // state object is createad in constructor (for the first use) and in doEndTag next
+        if (state.type == null)
+            state.type = "text";
+        if (state.styleClass == null)
+            state.styleClass = "";
+        //state.parentCondition = (DbFilterConditionTag) getParent();
+        state.valueId = ((DbFilterConditionTag) getParent()).addValue(this);
+        state.value =
             ParseUtil.getParameter(
                 (HttpServletRequest) pageContext.getRequest(),
                 getValueName());
-        if (value == null || parseValue(value, type) == null)
-            value = "";
+        if (state.value == null || parseValue(state.value, state.type) == null)
+            state.value = "";
         // the type attribute can be read either from request, with FLT_VALUETYPE, or directly from page
-        embeddedData = null;
+        state.embeddedData = null;
     }
 
-    protected StringBuffer render()
-        throws JspException
+    /**
+     * render output of this value object. This is called only if its parent's condition is selected
+     * 
+     * @return
+     * @throws JspException
+     */
+    protected StringBuffer render() throws JspException
     {
         StringBuffer buf = new StringBuffer();
-        if (label != null)
-            buf.append("<b>" + label + "</b>\n");
+        if (state.label != null)
+            buf.append("<b>" + state.label + "</b>\n");
         // TODO better handling of timestamp
-        if (type.equalsIgnoreCase(FLT_VALUETYPE_TEXT)
-            || type.equalsIgnoreCase(FLT_VALUETYPE_NUMERIC))
+        if (state.type.equalsIgnoreCase(FLT_VALUETYPE_TEXT)
+            || state.type.equalsIgnoreCase(FLT_VALUETYPE_NUMERIC))
         {
             renderTextElement(buf);
         }
         else if (
-            type.equalsIgnoreCase(FLT_VALUETYPE_DATE)
-                || type.equalsIgnoreCase(FLT_VALUETYPE_TIMESTAMP))
+            state.type.equalsIgnoreCase(FLT_VALUETYPE_DATE)
+                || state.type.equalsIgnoreCase(FLT_VALUETYPE_TIMESTAMP))
         {
             renderDateElement(buf);
         }
-        else if (FLT_VALUETYPE_SELECT.equalsIgnoreCase(type) && embeddedData != null)
+        else if (
+            FLT_VALUETYPE_SELECT.equalsIgnoreCase(state.type)
+                && state.embeddedData != null)
         {
             renderSelectElement(buf);
         }
@@ -397,28 +451,34 @@ public class DbFilterValueTag extends BodyTagSupport implements DataContainer
         return buf;
     }
 
-    protected void renderDateElement(StringBuffer buf)
+    /**
+     * render input's type "date"
+     * 
+     * @param buf
+     */
+    private void renderDateElement(StringBuffer buf)
     {
         renderTextElement(buf);
         // if property useJSCalendar is set to 'true' we will now add a little
         // image that can be clicked to popup a small JavaScript Calendar
         // written by Robert W. Husted to edit the field:
-        if ("true".equals(useJsCalendar))
+        if ("true".equals(state.useJsCalendar))
         {
             buf.append(" <a href=\"javascript:doNothing()\" ").append(
                 " onclick=\"");
 
-            if (jsCalendarDateFormat == null)
+            if (state.jsCalendarDateFormat == null)
             {
                 // get date format from config
                 SimpleDateFormat format =
-                    (SimpleDateFormat) getDateFormat(type);
+                    (SimpleDateFormat) getDateFormat(state.type);
                 if (format != null)
-                    jsCalendarDateFormat = format.toPattern();
+                    state.jsCalendarDateFormat = format.toPattern();
             }
-            if (jsCalendarDateFormat != null) // JS Date Format set ?
+            if (state.jsCalendarDateFormat != null) // JS Date Format set ?
             {
-                buf.append("calDateFormat='" + jsCalendarDateFormat + "';");
+                buf.append(
+                    "calDateFormat='" + state.jsCalendarDateFormat + "';");
             }
 
             buf
@@ -440,36 +500,42 @@ public class DbFilterValueTag extends BodyTagSupport implements DataContainer
         }
     }
 
-    protected void renderSelectElement(StringBuffer buf)
+    /**
+     * render input's type "select"
+     * 
+     * @param buf
+     */
+    private void renderSelectElement(StringBuffer buf)
     {
         String sizestr = "";
-        if (size != null)
-            sizestr = "size=\"" + size + "\" ";
+        if (state.size != null)
+            sizestr = "size=\"" + state.size + "\" ";
         buf.append(
             "<select name=\""
                 + getValueName()
                 + "\" "
                 + sizestr
                 + " class=\""
-                + styleClass
+                + state.styleClass
                 + "\">\n");
 
-        if ((customEntry != null) && (customEntry.trim().length() > 0))
+        if ((state.customEntry != null)
+            && (state.customEntry.trim().length() > 0))
         {
             String aKey =
                 org.dbforms.util.ParseUtil.getEmbeddedStringWithoutDots(
-                    customEntry,
+                    state.customEntry,
                     0,
                     ',');
             String aValue =
                 org.dbforms.util.ParseUtil.getEmbeddedStringWithoutDots(
-                    customEntry,
+                    state.customEntry,
                     1,
                     ',');
             boolean isSelected = false;
 
-            if ((selectedIndex == null)
-                || (selectedIndex.trim().length() == 0))
+            if ((state.selectedIndex == null)
+                || (state.selectedIndex.trim().length() == 0))
             {
                 isSelected =
                     "true".equals(
@@ -478,48 +544,53 @@ public class DbFilterValueTag extends BodyTagSupport implements DataContainer
                             .util
                             .ParseUtil
                             .getEmbeddedStringWithoutDots(
-                            customEntry,
+                            state.customEntry,
                             2,
                             ','));
             }
             buf.append(generateTagString(aKey, aValue, isSelected));
         }
 
-        int embeddedDataSize = embeddedData.size();
+        int embeddedDataSize = state.embeddedData.size();
         for (int i = 0; i < embeddedDataSize; i++)
         {
             KeyValuePair aKeyValuePair =
-                (KeyValuePair) embeddedData.elementAt(i);
+                (KeyValuePair) state.embeddedData.elementAt(i);
             String aKey = aKeyValuePair.getKey();
             String aValue = aKeyValuePair.getValue();
 
             // select, if datadriven and data matches with current value OR if explicitly set by user
-            boolean isSelected = aKey.equals(value);
+            boolean isSelected = aKey.equals(state.value);
             buf.append(generateTagString(aKey, aValue, isSelected));
         }
         buf.append("</select>\n");
     }
 
-    protected void renderTextElement(StringBuffer buf)
+    /**
+     * render input's type "text"
+     * 
+     * @param buf
+     */
+    private void renderTextElement(StringBuffer buf)
     {
         String sizestr = "";
-        if (size != null)
-            sizestr = "size=\"" + size + "\" ";
+        if (state.size != null)
+            sizestr = "size=\"" + state.size + "\" ";
         buf.append(
             "<input type=\"text\" name=\""
                 + getValueName()
                 + "\" value=\""
-                + value
+                + state.value
                 + "\""
                 + sizestr
                 + " class=\""
-                + styleClass
+                + state.styleClass
                 + "\"/>\n");
         buf.append(
             "<input type=\"hidden\" name=\""
                 + getValueType()
                 + "\" value=\""
-                + type.toLowerCase()
+                + state.type.toLowerCase()
                 + "\"/>\n");
     }
 
@@ -530,7 +601,7 @@ public class DbFilterValueTag extends BodyTagSupport implements DataContainer
      */
     public void setCustomEntry(String string)
     {
-        customEntry = string;
+        state.customEntry = string;
     }
 
     /**
@@ -541,7 +612,7 @@ public class DbFilterValueTag extends BodyTagSupport implements DataContainer
     */
     public void setEmbeddedData(Vector embeddedData)
     {
-        this.embeddedData = embeddedData;
+        state.embeddedData = embeddedData;
     }
 
     /**
@@ -551,7 +622,7 @@ public class DbFilterValueTag extends BodyTagSupport implements DataContainer
      */
     public void setJsCalendarDateFormat(String string)
     {
-        jsCalendarDateFormat = string;
+        state.jsCalendarDateFormat = string;
     }
 
     /**
@@ -561,7 +632,7 @@ public class DbFilterValueTag extends BodyTagSupport implements DataContainer
      */
     public void setLabel(String string)
     {
-        label = string;
+        state.label = string;
     }
 
     /**
@@ -571,7 +642,7 @@ public class DbFilterValueTag extends BodyTagSupport implements DataContainer
      */
     public void setSelectedIndex(String string)
     {
-        selectedIndex = string;
+        state.selectedIndex = string;
     }
 
     /**
@@ -581,7 +652,26 @@ public class DbFilterValueTag extends BodyTagSupport implements DataContainer
      */
     public void setSize(String string)
     {
-        size = string;
+        state.size = string;
+    }
+
+    /**
+     * @param state
+     */
+    protected void setState(DbFilterConditionTag parent, State state)
+    {
+        setParent(parent);
+        this.state = state;
+    }
+
+    /**
+     * css class to be applied to input element
+     * 
+     * @param string
+     */
+    public void setStyleClass(String string)
+    {
+        state.styleClass = string;
     }
 
     /**
@@ -603,7 +693,7 @@ public class DbFilterValueTag extends BodyTagSupport implements DataContainer
      */
     public void setType(String string)
     {
-        type = string;
+        state.type = string;
     }
 
     /**
@@ -611,16 +701,7 @@ public class DbFilterValueTag extends BodyTagSupport implements DataContainer
      */
     public void setUseJsCalendar(String string)
     {
-        useJsCalendar = string;
+        state.useJsCalendar = string;
     }
 
-    /**
-     * css class to be applied to input element
-     * 
-     * @param string
-     */
-    public void setStyleClass(String string)
-    {
-        styleClass = string;
-    }
 }

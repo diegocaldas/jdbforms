@@ -23,7 +23,6 @@
 
 package org.dbforms.taglib;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -48,117 +47,40 @@ import org.dbforms.util.Util;
  */
 public class DbFilterConditionTag extends BodyTagSupport
 {
+    /**
+     * tag's state holder.
+     * Used a separate class to hold tag's state to workaround to Tag pooling, in which
+     * an tag object is reused, but we have the need to store informations about all 
+     * child tags in the parent, so we store the state, and apply it to a dummy tag when needed. 
+     * 
+     * @author Sergio Moretti
+     */
+    protected class State
+    {
+        /**
+         * identifier of condition
+         */
+        protected int conditionId = -1;
+        /**
+         * raw filter condition
+         */
+        protected String filterCondition = null;
+        /**
+         * condition's label, appear as an option in html select element  
+         */
+        protected String label = null;
+        /**
+         * reference to parent object
+         */
+        //protected DbFilterTag parentFilter = null;
+        /**
+         * list of value object's state contained in this condition
+         */
+        protected ArrayList values = null;
+    }
+
     protected static Category logCat =
         Category.getInstance(DbFilterConditionTag.class.getName());
-
-    protected String filterCondition;
-    protected String label;
-    protected ArrayList values;
-    protected DbFilterTag parentFilter;
-    protected int conditionId;
-
-    /**
-     * add a value to the value's list. called from nested DbFilterValueTag objs.
-     * 
-     * @param value
-     * @return index of the newly added object
-     */
-    protected int addValue(DbFilterValueTag value)
-    {
-        values.add(value);
-        return values.size() - 1;
-    }
-
-    /**
-     * initialize environment and process body only if this condition is the currently selected.
-     * 
-     * @see javax.servlet.jsp.tagext.Tag#doStartTag()
-     */
-    public int doStartTag() throws JspException
-    {
-        init();
-        String sel =
-            ParseUtil.getParameter(
-                (HttpServletRequest) pageContext.getRequest(),
-                parentFilter.getFilterName() + DbFilterTag.FLT_SEL);
-        // process body only if this condition is active
-        if (sel != null)
-        {
-            int selId = Integer.parseInt(sel);
-            if (selId == conditionId)
-                return EVAL_BODY_BUFFERED;
-        }
-        return SKIP_BODY;
-    }
-
-    /**
-     * @return
-     */
-    public String getLabel()
-    {
-        return label;
-    }
-
-    /**
-     * initialize class's attributes
-     *
-     */
-    protected void init()
-    {
-        values = new ArrayList();
-        parentFilter = (DbFilterTag) getParent();
-        conditionId = parentFilter.addCondition(this);
-        filterCondition = null;
-        if (label == null)
-            label = Integer.toString(conditionId);
-    }
-
-    /**
-     * render output, called from parent DbFilterCondition obj.
-     * 
-     * @return string containing html code for this obj
-     * @throws JspException
-     */
-    protected StringBuffer render() throws JspException
-    {
-        StringBuffer buf = new StringBuffer();
-        buf.append(
-            "<input type=\"hidden\" name=\""
-                + parentFilter.getFilterName()
-                + DbFilterTag.FLT_COND
-                + conditionId
-                + "\" value=\""
-                + filterCondition
-                + "\" />\n");
-        for (Iterator i = values.iterator(); i.hasNext();)
-        {
-            DbFilterValueTag value = (DbFilterValueTag) i.next();
-            buf.append(value.render());
-        }
-        return buf;
-    }
-
-    /**
-     * @param string
-     */
-    public void setLabel(String string)
-    {
-        label = string;
-    }
-
-    /**
-     * read filterCondition from body
-     * 
-     * @see javax.servlet.jsp.tagext.IterationTag#doAfterBody()
-     */
-    public int doAfterBody() throws JspException
-    {
-        if (this.bodyContent != null)
-        {
-            filterCondition = bodyContent.getString().trim();
-        }
-        return SKIP_BODY;
-    }
 
     /**
      * generate condition from request. Called from nested DbFilterTag object
@@ -234,16 +156,6 @@ public class DbFilterConditionTag extends BodyTagSupport
     }
 
     /**
-     * condition prefix for request parameters
-     * 
-     * @return
-     */
-    protected String getConditionName()
-    {
-        return getConditionName(parentFilter.getTableId(), conditionId);
-    }
-
-    /**
      * condition prefix for request parameter
      * 
      * @param tableId
@@ -256,4 +168,174 @@ public class DbFilterConditionTag extends BodyTagSupport
             + DbFilterTag.FLT_COND
             + conditionId;
     }
+
+    /**
+     * object containing tag's state
+     */
+    private State state;
+
+    /**
+     * 
+     */
+    public DbFilterConditionTag()
+    {
+        super();
+        state = new State();
+    }
+
+    /**
+     * add a value to the value's list. called from nested DbFilterValueTag objs.
+     * 
+     * @param value
+     * @return index of the newly added object
+     */
+    protected int addValue(DbFilterValueTag value)
+    {
+        state.values.add(value.getState());
+        return state.values.size() - 1;
+    }
+
+    /**
+     * read filterCondition from body
+     * 
+     * @see javax.servlet.jsp.tagext.IterationTag#doAfterBody()
+     */
+    public int doAfterBody() throws JspException
+    {
+        if (this.bodyContent != null)
+        {
+            state.filterCondition = bodyContent.getString().trim();
+        }
+        return SKIP_BODY;
+    }
+
+    /**
+     * initialize state for next tag's use
+     * 
+     * @see javax.servlet.jsp.tagext.Tag#doEndTag()
+     */
+    public int doEndTag() throws JspException
+    {
+        state = new State();
+        return super.doEndTag();
+    }
+
+    /**
+     * initialize environment and process body only if this condition is the currently selected.
+     * 
+     * @see javax.servlet.jsp.tagext.Tag#doStartTag()
+     */
+    public int doStartTag() throws JspException
+    {
+        init();
+        String sel =
+            ParseUtil.getParameter(
+                (HttpServletRequest) pageContext.getRequest(),
+                ((DbFilterTag) getParent()).getFilterName()
+                    + DbFilterTag.FLT_SEL);
+        // process body only if this condition is active
+        if (sel != null)
+        {
+            int selId = Integer.parseInt(sel);
+            if (selId == state.conditionId)
+                return EVAL_BODY_BUFFERED;
+        }
+        return SKIP_BODY;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    public boolean equals(Object obj)
+    {
+        return (obj instanceof DbFilterConditionTag)
+            && (state.conditionId
+                == ((DbFilterConditionTag) obj).state.conditionId);
+    }
+
+    /**
+     * condition prefix for request parameters
+     * 
+     * @return
+     */
+    protected String getConditionName()
+    {
+        return getConditionName(
+            ((DbFilterTag) getParent()).getTableId(),
+            state.conditionId);
+    }
+
+    /**
+     * @return
+     */
+    public String getLabel()
+    {
+        return state.label;
+    }
+
+    /**
+     * @return
+     */
+    protected State getState()
+    {
+        return state;
+    }
+
+    /**
+     * initialize class's attributes
+     */
+    private void init()
+    {
+        // state object is createad in constructor (for the first use) and in doEndTag next times
+        state.values = new ArrayList();
+        //state.parentFilter = (DbFilterTag) getParent();
+        state.conditionId = ((DbFilterTag) getParent()).addCondition(this);
+        state.filterCondition = null;
+        if (state.label == null)
+            state.label = Integer.toString(state.conditionId);
+    }
+
+    /**
+     * render output, called from parent DbFilterCondition obj.
+     * 
+     * @return string containing html code for this obj
+     * @throws JspException
+     */
+    protected StringBuffer render() throws JspException
+    {
+        StringBuffer buf = new StringBuffer();
+        buf.append(
+            "<input type=\"hidden\" name=\""
+                + ((DbFilterTag) getParent()).getFilterName()
+                + DbFilterTag.FLT_COND
+                + state.conditionId
+                + "\" value=\""
+                + state.filterCondition
+                + "\" />\n");
+        DbFilterValueTag value = new DbFilterValueTag();
+        for (Iterator i = state.values.iterator(); i.hasNext();)
+        {
+            value.setState(this, (DbFilterValueTag.State) i.next());
+            buf.append(value.render());
+        }
+        return buf;
+    }
+
+    /**
+     * @param string
+     */
+    public void setLabel(String string)
+    {
+        state.label = string;
+    }
+
+    /**
+     * @param state
+     */
+    protected void setState(DbFilterTag parent, State state)
+    {
+        setParent(parent);
+        this.state = state;
+    }
+
 }
