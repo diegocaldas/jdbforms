@@ -52,18 +52,6 @@
      />
   </goal>
 
-  <goal name="dbforms:update" description="updates the sourcepath from the main repository on SF">
-    <ant:echo message="generate a new release from SF" />
-    <ant:delete dir="temp/release"/>
-    <u:tokenize var="scmTokens" delim=":">${pom.repository.connection}</u:tokenize>
-    <ant:cvspass cvsroot=":${scmTokens[2]}:${scmTokens[3]}:${scmTokens[4]}" password="" />
-    <ant:cvs
-     	cvsRoot=":${scmTokens[2]}:${scmTokens[3]}:${scmTokens[4]}" 
-     	command="--lf update -P" 
-     	compression="true" 
-     />
-  </goal>
-
   <goal name="dbforms:doc" description="generate dbforms documentation: taglib docu and manual">
     <ant:echo message="building the DbForms documentation user guide and jsp tag library" />
     <ant:ant antfile="docs.xml" target="maven-build-doc">
@@ -107,8 +95,6 @@
     <ant:echo message="starting deploying site" />
     <ant:echo message="0. cleanup" />
     <attainGoal name="clean" />
-    <ant:echo message="1. gets current version" />
-    <attainGoal name="site:update" />
     <ant:echo message="2. generate whole site" />
     <attainGoal name="site:generate" />
   </goal>
