@@ -6,6 +6,10 @@
 ANT BUILD.XML FOR DbForms
 =========================
 
+$Header$
+$Revision$
+$Date$
+
 -->
   
   <property name="dbforms.version"       value="_v09d"/>

@@ -1,0 +1,330 @@
+* $Header$
+* $Revision$
+* $Date$
+
+Sat, 13-Okt-2001
+
+* added 2 new tags:
+
+   1) TextAreaForBlobTag
+   2) BlobContentTag
+   
+  the purpose of these 2 tags is to enable users to edit the content of files stored 
+  in a (disk-)blob via a TextArea. 
+  
+  The following example demonstrates the usage of these 2 tags:
+   
+<db:textAreaForBlobs fieldName="filepath" renderBody="true" suffix="jsp" rows="15" cols="60" wrap="virtual">
+  <db:blobContent fieldName="filepath" />
+</db:textAreaForBlobs>   
+  
+  NOTA BENE: renderBody must be set to true, field "filepath" is of type "DISKBLOB" !
+  
+
+* added an "id"-attribute to many of the Tag handlers -> improving interoperability with JavaScript (thanks to L. Fossato)
+
+* changed taglib descriptor: set all attributes to RTEXPRVALUE=TRUE
+  so every property can be set during runtime:
+  
+  <%  String max= ... %>  
+  <db:dbform tableName="test" maxRows="<%= max %>"
+      
+* corrected WEB.XML file (now it is a valid xml file again)
+            
+* MAJOR CHANGE: replaced struts-digester package by apache-commons-digester !
+  this means org.apache.struts.digester.* was replaced by org.apache.commons.digester.*;
+  the same happened for the beanutil - package. 
+  see http://jakarta.apache.org/commons/index.html for more details
+      
+* fixed some minor bugs (e.g. "alt" tag was not rendered properly in Button-Tags)
+
+Wed, 26-Sep-2001
+
+* included contribution by Philip Grunikiewicz:
+
+1. Bypass Navigation (changed DbFormTag.java , DbForms.tld)
+
+Added a new attribute in the form tag to allow a developer to bypass navigation (i.e. bypassNavigation="true"): 
+
+Currently, when we set maxRows to anything else but *, dbForms create a special query to be able 
+to navigate to the next (or previous) set of related data.  The resulting query is sometimes quite complex and is long to execute.
+If we are NOT going to use navigation, eliminate the creation of, and execution of "fancy!" queries! 
+
+Example:  We are setting maxRows="201" to avoid having too many records displayed on screen.  If their are more than 200 records found, we simply tell our users to refine their search criterias. 
+
+2. Logical OR possible in dbforms filter attribute (WHERE clause) 
+(changed FieldValue.java)
+
+By default, all filter definitions are ANDed together.  I added support for logical OR.  Developers may prefix their filter definition with the '|' symbol.  This was a quick and simple way of adding support for OR! 
+
+Example: 
+aFieldVal=3, |anotherField>3 
+would produce the following: 
+... where aFieldVal=3 OR anotherField>3 
+        
+
+3. EmbeddedData caching may be disabled  (changed in EmbeddedData.java)
+
+EmbeddedData is retrieved via the TableData, QueryData or StaticData tags.  These tags are used within other tags (Select, dataLabel, Radio) to retrieve a result set.  By default, this result set is cached in the page and can be retrieved by any embeddedData tag which has been allocated the same name. 
+Example: 
+
+
+                <!-- following is repeated for each record retrieved from the resultset --> 
+                <db:select fieldName="id"> 
+                     <db:queryData 
+                        name ="queryAllDescriptions" 
+                        sql="Select Description from LookUp"/> 
+                </db:select> 
+
+
+The example above calls the database only ONCE and caches the result set containg 'descriptions' so that it's data may be used again and again (for each subsequent row).
+
+Sometimes a developer may want to execute the embedded data query for each and every row. i.e. not use the cached result set.  Suppose the 'lookUp' table contains 10000+ of rows, do you really want to cache the resultset or would it be better to build and execute a query for each row?  The query you specify could have a unique whereClause!  To achieve this, you need to be able to disable the caching mechanism.  Hence the disableCache attribute in TableData, QueryData and StaticData tags. 
+
+                <!-- following is repeated for each record retrieved from the resultset --> 
+                <% String sql = "Select Description from LookUp where id=" + currentRow_MainTable.get("id"); %> 
+                        <db:select fieldName="id"> 
+                                <db:queryData 
+                                        name ="queryAllDescriptions" 
+                                        disableCache="true" 
+                                        sql="<%=sql%>"/> 
+                        </db:select> 
+
+
+
+4. String identifier can be used to specify null object 
+(changed in SqlUtil.java)
+
+It is now possible to set the value of a field to null by using the '$null$' string identifier.  The following examples shows how to create a select clause which returns a set of records where field 'Test' is equal to null in the database: 
+
+                <% 
+                        StringBuffer whereClause = new StringBuffer(); 
+                        whereClause.append("Test="); 
+                        whereClause.append("$null$"); 
+                %> 
+
+                <db:form 
+                        table="aTable" 
+                        maxRow="*" 
+                        filter="<%= whereClause.toString() %>" 
+                        followUp="self.jsp"> 
+
+5.Enhancing ORDERING (ASC/DESC) (partially open)
+
+The orderBy clause usually defaults to ASCending order.A user may add, if we/she wishes the keyword ASC (ascending)  or DESC (descending) to specify a particular direction.Code in this method parses the orderBy clause and finds an occurence of either ASC or DESC.  Suppose your field name is DESCRIPTION! This name contains DESC therefore causing unexpected behaviour.   This bug fix consists of fine-tunning the parsing function to take into  consideration the sequence of parameters: 1-Field 2-Command 
+
+6. several other bug fixes:
+
+DbTextFieldTag          - Fix in redisplayFieldsOnError function.  Tag which 
+DbTextAreaTag           - contains overrideValue now conserves its value in 
+DbDateFieldTag          - redisplay mode (instead of using overrideValue) 
+
+
+Wed, 27-Jun-2001:
+
+* included contribution by Philip Grunikiewicz:
+
+  - 2 additional attributes for DbDateFieldTag: hidden, overrideValue
+
+
+* added Interbase - SQL files for bugtracker and testsuite
+  (contributed by Myles McLeod)
+
+
+* included a first fix for support of JDBC drivers (i.e. ProgressDriver)
+  which don't close Statements and ResultSets automatically (during garbage collection 
+  - as recommended by sun spec)
+  [this work is still in progress]
+
+
+Wed, 13-Jun-2001:
+
+* included contribution by John Peterson:
+
+  - support for Allaire/Macromedia JRun 3.1
+    [ changes in DbBodyTag.doEndTag() ]
+
+Tue, 12-Jun-2001:
+
+* included contributions by John Peterson:
+
+  - support for WebLogic 6: added servlet mappings (control => servlet/control, etc.) to web.xml
+  
+  - support for browsers without cookies: encoding URLs
+ 
+ 
+* included contribution by Ernesto Krsulovic:
+
+  - added PostgreSQL - files for bugtracker and testsuite
+  
+  - fixed a bug in devgui.sh shell script
+
+    
+
+Sa, 02-Jun-2001:
+
+* changed package structure to emphasize the nature of the project: Open Source
+  (com.itp.dbforms ----> org.dbforms)
+  
+  UPGRADING EXISTING APPLICATIONS TO NEW PACKAGE SCHEME:  
+
+  - replace dbforms_v0Xx.jar and dbforms.tld by new version
+  
+  - change org.itp.dbforms --> org.dbforms in all absolute servlet names in your WEB.XML
+        
+  - force JSP/Servlet container to recreate and recompile all JSPs containing DbForms tags
+  
+  - change import statements (org.itp.dbforms --> org.dbforms)
+    in all Application-specific Interceptors and recompile them
+  
+
+* added SQL files for example application "testsuite_v09" contributed by Marco Azzalini
+   
+* added improvements contributed by Philip Grunikiewicz:
+  - support for automatic formfield-repopulation in UPDATE mode (not just INSERT as before)
+  - various enhancements in taglib descriptor
+
+* added enhancement to DevGui:
+  - you can now set Catalog, TableName-Pattern and SchemaName-Pattern to generate XML metadata model of your database. 
+
+
+* added new IMPLICITE SCRIPTING VARIABLE: rsv_tableName
+
+  JSP developers can use this scripting variable inside a DbForms/body element to determine
+  the current value of any given field
+  
+  EXAMPLE:
+  if we want to print out a string representation of the current value of the field "reporter" in table "bugs", then we would write:
+  
+  <%= rsv_bugs.getField("reporter") %>  
+
+  we could also write:
+  <%= rsv_bugs.getFieldAsObject("reporter") %>
+
+  the difference between getField(String) and getFieldAsObject(String):
+  
+  -> getField always returns a String (as long as the fieldname is correct), even it the underlying data in the database has the value NULL.
+  -> getFieldAsObject returns the Object value as provided by the ResultSet.getObject(int) method. This means NULL values will be returned as null and not as ""-Strings.
+
+ 
+
+Fr, 25-May-2001:
+
+* added new attributes "overrideValue" and "hidden" to com.itp.dbforms.taglib.DbTextField
+
+* added ORACLE SQL scripts for the examples
+
+* corrected some errors in the demo applications and added two new JSP pages to 
+  testsuite_v09 (customers_pets.jsp, customer_complaints.jsp)
+
+
+Tue, 15-May-2001:
+
+* fixed a bug which caused an error in Orionserver (tried to remove a connection-object from 
+  request, which lead to a nullpointer exception)
+  
+* added a class com.itp.taglib.DbDateLabelTag which allows to display well formatted Date values easily
+  (contributed by Philip Grunikiewicz)
+  
+Mo, 14-May-2001:
+
+* fixed bug related to com.itp.dbforms.util.FileServlet and ORACLE database
+
+* added enhancement to error-tag (contributed by Philip Grunikiewicz)
+
+Mo, 06-May-2001:
+
+* bundled new distribution, including example-apps
+
+* enhanced XSL stylesheets
+
+* DateTags have now as default formatter the SimpleDataFormat("yyyy-mm-dd"), if the developer
+  does not provide a formatter via the "format"-attribute
+
+* renamed taglib.tld => dbforms.tld
+
+Sa, 05-May-2001:
+  
+* introduced new TAGLIB-tag: dateField (does, basically nothing more than a textField, but
+  we can start now adding date-specifica without messing up other code)
+
+* introduced a very useful attribute, "format". 
+  you can assign any subclass of java.text.Format and the value of the field will be formatted using
+  this formatter (example: new SimpleDateFormat("yyyy-MM-dd") - see taglib docu in CVS for more details)
+
+* fixed a bug regarding associated orderBy clause, sorting etc.
+  (DbForms ignored orderBy values set as dbform-tag attribute or table attribute in dbforms-config.xml
+
+* fixed a bug that lead to invalid database connections if there where multiple non-nested forms on
+  a JSP
+
+Fr, 04-May-2001:
+
+* Changed DevGui:
+  on panel "XML Config" there are 2 additional textfields available:
+  
+  - Catalog
+  - Schema Pattern
+
+  (compare to java Api-doc, java.sql.DatabaseMetaData::getTables(..), for more info about 
+  what catalog and schema pattern mean!)
+  
+  you can enter any string you want or you can leave them blank. if you want
+  them to be explicitly *null*, then you can enter the value "$null"
+
+  examples:
+  
+  #) if you want to query the default demo database from oracle then use:
+  - catalog = "$null"
+  - schema pattern = "SCOTT"
+ 
+  #) for querying agains a database on mysql
+  - catalaog =""
+  - schema pattern = ""
+
+
+=============================================
+
+@version 0.9   - 28-04-2001, major release, 
+
+this major release will be followed by a few minor releases, as we are testing and bug fixing right
+now. (this means, this version is not completetly stable yet)
+
+lots of new features and bug fixes in 0.9
+============================================
+
+- new syntax format for fields and keys.
+  the infamous "~" restriction is removed now!
+ 
+- fixed a bug which made it impossible to create subdirectories in web-root:
+  all JSP views had to be placed in web-app root, now the can be placed everywhere.
+  for example you could create a subdirectory "members" for JSP views protected
+  by the JSP container, etc. - DbForms will handle this correctly now.
+
+- new attributes to DbForm tag: gotoPrefix, goto, 
+
+- bug fixes regarding BLOBs/DISKBLOBs and in the FileServlet:
+  * now DISKBLOBs can get UPDATED
+  * FileServlet servers file correctly
+  * BLOB-URL custom tag writes URLs correctly
+  * Max. Upload size for files can be configured now using a init-parameter in WEB.XML
+  
+
+- a complete SWING-based GUI for managing XSL transformations for real Rapid Application Developement
+  (check manual for more info)  
+
+- fixed ordering/sorting bugs in TableData, QueryData, StaticData, Radio and Select - custom tags
+
+- introduced better LOGGING by integrating LOG4J framework
+
+- fixed bug in DbSelect-tag (fix contributed by Philip Grunikiewicz)
+
+- removed limitation in "filter"-Attribute of DbForm custom tag 
+  old versions only took into consideration an = (equal) as operator 
+  now it supports >,<,<=,>= (for date intervals)!
+  (fix contributed by Philip Grunikiewicz)
+
+@version 0.8   - 09-02-2001, major release, lots of new features and bug fixes
+@version 0.7.3 - 28-01-2001, quickly fixed a few bugs (more detailled info (soon) available on dbforms-website)
+@version 0.7.2 - 26-01-2001, fixed a bug
+@version 0.7.1 - 25-01-2001, first release of 0.7 
