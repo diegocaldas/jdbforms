@@ -149,7 +149,6 @@ public class EventInfo
         String name  = property.getName();
         String value = property.getValue();
         properties.put(name, value);
-
         logCat.info("::addProperty - added the property [" + name + ", " + value + "] to event [" + getId() + "]");
     }
 

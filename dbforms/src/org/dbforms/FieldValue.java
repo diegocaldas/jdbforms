@@ -52,64 +52,6 @@ public class FieldValue implements Cloneable
     static Category logCat = Category.getInstance(FieldValue.class.getName());
 
     /** DOCUMENT ME! */
-    public static int COMPARE_NONE = 0;
-
-    /** DOCUMENT ME! */
-    public static int COMPARE_INCLUSIVE = 1;
-
-    /** DOCUMENT ME! */
-    public static int COMPARE_EXCLUSIVE = 2;
-
-    /** DOCUMENT ME! */
-    public static final int SEARCH_ALGO_SHARP = 0;
-
-    /** DOCUMENT ME! */
-    public static final int SEARCH_ALGO_WEAK = 1;
-
-    /** DOCUMENT ME! */
-    public static final int SEARCH_ALGO_WEAK_START = 2;
-
-    /** DOCUMENT ME! */
-    public static final int SEARCH_ALGO_WEAK_END = 3;
-
-    /** DOCUMENT ME! */
-    public static final int SEARCH_ALGO_WEAK_START_END = 4;
-
-    /** DOCUMENT ME! */
-    public static final int SEARCH_ALGO_EXTENDED = 5;
-
-    /** DOCUMENT ME! */
-    public static final int FILTER_EQUAL = 0;
-
-    /** DOCUMENT ME! */
-    public static final int FILTER_GREATER_THEN = 1;
-
-    /** DOCUMENT ME! */
-    public static final int FILTER_GREATER_THEN_EQUAL = 3;
-
-    /** DOCUMENT ME! */
-    public static final int FILTER_SMALLER_THEN = 2;
-
-    /** DOCUMENT ME! */
-    public static final int FILTER_SMALLER_THEN_EQUAL = 4;
-
-    /** DOCUMENT ME! */
-    public static final int FILTER_LIKE = 5;
-
-    /** DOCUMENT ME! */
-    public static final int FILTER_NOT_EQUAL = 6;
-
-    /** DOCUMENT ME! */
-    public static final int FILTER_NULL = 7;
-
-    /** DOCUMENT ME! */
-    public static final int FILTER_NOT_NULL = 8;
-
-    /** DOCUMENT ME! */
-    public static final boolean ORDER_ASCENDING = false;
-
-    /** DOCUMENT ME! */
-    public static final boolean ORDER_DESCENDING = true;
 
     /** field object */
     private Field field;
@@ -127,7 +69,7 @@ public class FieldValue implements Cloneable
      * If FieldValue is used in a "childFieldValue", it signalizes if it should
      * be rendered as hidden tag or not (if "stroke out")
      */
-    private boolean renderHiddenHtmlTag;
+    private boolean renderHiddenHtmlTag = true;
 
     /** if used in an argument for searching: AND || OR! */
     private int searchMode;
@@ -144,6 +86,8 @@ public class FieldValue implements Cloneable
     /** specifies whether to OR all values or AND them... */
     private boolean logicalOR = false;
 
+	/** holds the FileHolder object */
+	 private FileHolder fileHolder;
 
     /**
      *  Creates a new FieldValue object.
@@ -152,22 +96,10 @@ public class FieldValue implements Cloneable
     {
     }
 
-
-    /**
-     *  Constructor.
-     *
-     * @param  field the field object
-     * @param  fieldValue the field value
-     * @param  renderHiddenHtmlTag if FieldValue is used in a "childFieldValue",
-     *                            it signalizes if it should be rendered
-     *                            as hidden tag or not (if "stroke out")
-     */
-    public FieldValue(Field field, String fieldValue, boolean renderHiddenHtmlTag)
-    {
-        this.field = field;
-        this.fieldValue = fieldValue;
-        this.renderHiddenHtmlTag = renderHiddenHtmlTag;
-    }
+	 public FieldValue(Field   field, String  fieldValue) {
+		this.field = field;
+		this.fieldValue = fieldValue;
+	 }
 
 
     /**
@@ -182,12 +114,9 @@ public class FieldValue implements Cloneable
      */
     public FieldValue(Field   field,
                       String  fieldValue,
-                      boolean renderHiddenHtmlTag,
                       int     operator)
     {
-        this.field = field;
-        this.fieldValue = fieldValue;
-        this.renderHiddenHtmlTag = renderHiddenHtmlTag;
+        this(field, fieldValue);
         this.operator = operator;
     }
 
@@ -205,14 +134,10 @@ public class FieldValue implements Cloneable
      */
     public FieldValue(Field   field,
                       String  fieldValue,
-                      boolean renderHiddenHtmlTag,
                       int     operator,
                       boolean isLogicalOR)
     {
-        this.field = field;
-        this.fieldValue = fieldValue;
-        this.renderHiddenHtmlTag = renderHiddenHtmlTag;
-        this.operator = operator;
+ 		  this(field, fieldValue, operator);	
         this.logicalOR = isLogicalOR;
     }
 
@@ -426,54 +351,54 @@ public class FieldValue implements Cloneable
                 // Check what type of operator is required
                 switch (fv[i].getOperator())
                 {
-                    case FieldValue.FILTER_EQUAL:
+                    case Constants.FILTER_EQUAL:
                         buf.append(" = ");
                         buf.append(" ? ");
 
                         break;
 
-                    case FieldValue.FILTER_NOT_EQUAL:
+                    case Constants.FILTER_NOT_EQUAL:
                         buf.append(" <> ");
                         buf.append(" ? ");
 
                         break;
 
-                    case FieldValue.FILTER_GREATER_THEN:
+                    case Constants.FILTER_GREATER_THEN:
                         buf.append(" > ");
                         buf.append(" ? ");
 
                         break;
 
-                    case FieldValue.FILTER_SMALLER_THEN:
+                    case Constants.FILTER_SMALLER_THEN:
                         buf.append(" < ");
                         buf.append(" ? ");
 
                         break;
 
-                    case FieldValue.FILTER_GREATER_THEN_EQUAL:
+                    case Constants.FILTER_GREATER_THEN_EQUAL:
                         buf.append(" >= ");
                         buf.append(" ? ");
 
                         break;
 
-                    case FieldValue.FILTER_SMALLER_THEN_EQUAL:
+                    case Constants.FILTER_SMALLER_THEN_EQUAL:
                         buf.append(" <= ");
                         buf.append(" ? ");
 
                         break;
 
-                    case FieldValue.FILTER_LIKE:
+                    case Constants.FILTER_LIKE:
                         buf.append(" LIKE ");
                         buf.append(" ? ");
 
                         break;
 
-                    case FieldValue.FILTER_NULL:
+                    case Constants.FILTER_NULL:
                         buf.append(" IS NULL ");
 
                         break;
 
-                    case FieldValue.FILTER_NOT_NULL:
+                    case Constants.FILTER_NOT_NULL:
                         buf.append(" IS NOT NULL ");
 
                         break;
@@ -548,54 +473,54 @@ public class FieldValue implements Cloneable
                 // 20020927-HKK: Check what type of operator is required
                 switch (fv[i].getOperator())
                 {
-                    case FieldValue.FILTER_EQUAL:
+                    case Constants.FILTER_EQUAL:
                         buf.append(" = ");
                         buf.append(" ? ");
 
                         break;
 
-                    case FieldValue.FILTER_NOT_EQUAL:
+                    case Constants.FILTER_NOT_EQUAL:
                         buf.append(" <> ");
                         buf.append(" ? ");
 
                         break;
 
-                    case FieldValue.FILTER_GREATER_THEN:
+                    case Constants.FILTER_GREATER_THEN:
                         buf.append(" > ");
                         buf.append(" ? ");
 
                         break;
 
-                    case FieldValue.FILTER_SMALLER_THEN:
+                    case Constants.FILTER_SMALLER_THEN:
                         buf.append(" < ");
                         buf.append(" ? ");
 
                         break;
 
-                    case FieldValue.FILTER_GREATER_THEN_EQUAL:
+                    case Constants.FILTER_GREATER_THEN_EQUAL:
                         buf.append(" >= ");
                         buf.append(" ? ");
 
                         break;
 
-                    case FieldValue.FILTER_SMALLER_THEN_EQUAL:
+                    case Constants.FILTER_SMALLER_THEN_EQUAL:
                         buf.append(" <= ");
                         buf.append(" ? ");
 
                         break;
 
-                    case FieldValue.FILTER_LIKE:
+                    case Constants.FILTER_LIKE:
                         buf.append(" LIKE ");
                         buf.append(" ? ");
 
                         break;
 
-                    case FieldValue.FILTER_NULL:
+                    case Constants.FILTER_NULL:
                         buf.append(" IS NULL ");
 
                         break;
 
-                    case FieldValue.FILTER_NOT_NULL:
+                    case Constants.FILTER_NOT_NULL:
                         buf.append(" IS NOT NULL ");
 
                         break;
@@ -603,7 +528,7 @@ public class FieldValue implements Cloneable
 
                 if ((i < (fv.length - 1)) && (fv[i + 1].getSearchMode() == mode))
                 {
-                    buf.append((mode == DbBaseHandlerTag.SEARCHMODE_AND) ? "AND " : "OR ");
+                    buf.append((mode == Constants.SEARCHMODE_AND) ? "AND " : "OR ");
 
                     // §3
                 }
@@ -691,7 +616,7 @@ public class FieldValue implements Cloneable
         String opB2;
 
         // COMPARE_INCLUSIVE
-        if (compareMode == FieldValue.COMPARE_INCLUSIVE)
+        if (compareMode == Constants.COMPARE_INCLUSIVE)
         {
             opA1 = ">=";
             opA2 = "<=";
@@ -720,7 +645,7 @@ public class FieldValue implements Cloneable
                 // generate a "fi OpA(i) fi*"
                 buf.append("(");
                 buf.append(fv[i].getField().getName());
-                buf.append((fv[i].getSortDirection() == ORDER_ASCENDING) ? opA1 : opA2);
+                buf.append((fv[i].getSortDirection() == Constants.ORDER_ASCENDING) ? opA1 : opA2);
 
                 // OpA
                 buf.append(" ? ");
@@ -732,7 +657,7 @@ public class FieldValue implements Cloneable
                     {
                         buf.append(disj);
                         buf.append(fv[j].getField().getName());
-                        buf.append((fv[j].getSortDirection() == ORDER_ASCENDING) ? opB1 : opB2);
+                        buf.append((fv[j].getSortDirection() == Constants.ORDER_ASCENDING) ? opB1 : opB2);
 
                         // OpB
                         buf.append(" ? ");
@@ -833,25 +758,25 @@ public class FieldValue implements Cloneable
         //               results in like '%search', 'search%', '%search%'
         switch (cur.getSearchAlgorithm())
         {
-            case FieldValue.SEARCH_ALGO_WEAK_START:
+            case Constants.SEARCH_ALGO_WEAK_START:
                 valueStr = '%' + valueStr;
                 break;
 
-            case FieldValue.SEARCH_ALGO_WEAK_END:
+            case Constants.SEARCH_ALGO_WEAK_END:
                 valueStr = valueStr + '%';
                 break;
 
-            case FieldValue.SEARCH_ALGO_WEAK_START_END:
+            case Constants.SEARCH_ALGO_WEAK_START_END:
                 valueStr = '%' + valueStr + '%';
                 break;
         }
 
         switch (cur.getOperator())
         {
-            case FieldValue.FILTER_NULL:
+            case Constants.FILTER_NULL:
                 break;
 
-            case FieldValue.FILTER_NOT_NULL:
+            case Constants.FILTER_NOT_NULL:
                 break;
 
             default:
@@ -912,4 +837,19 @@ public class FieldValue implements Cloneable
 
         return buf.toString();
     }
+	/**
+	 * @return FileHolder
+	 */
+	public FileHolder getFileHolder() {
+		return fileHolder;
+	}
+
+	/**
+	 * Sets the fileHolder.
+	 * @param fileHolder The fileHolder to set
+	 */
+	public void setFileHolder(FileHolder fileHolder) {
+		this.fileHolder = fileHolder;
+	}
+
 }

@@ -178,25 +178,21 @@ public class Query extends Table
         else
         {
             StringBuffer buf = new StringBuffer();
-
             if (fvOrder != null)
             {
                 for (int i = 0; i < fvOrder.length; i++)
                 {
                     buf.append(fvOrder[i].getField().getId() + 1);
-
-                    if (fvOrder[i].getSortDirection() == FieldValue.ORDER_DESCENDING)
+                    if (fvOrder[i].getSortDirection() == Constants.ORDER_DESCENDING)
                     {
                         buf.append(" DESC");
                     }
-
                     if (i < (fvOrder.length - 1))
                     {
                         buf.append(",");
                     }
                 }
             }
-
             return buf.toString();
         }
     }
@@ -257,7 +253,7 @@ public class Query extends Table
      *    where clause special from select fields
      * 
      */
-    protected String getSelectQuery(Vector fieldsToSelect, FieldValue[] fvEqual, FieldValue[] fvOrder, int compareMode)
+    public String getSelectQuery(Vector fieldsToSelect, FieldValue[] fvEqual, FieldValue[] fvOrder, int compareMode)
     {
         StringBuffer buf = new StringBuffer();
         String s;
@@ -281,21 +277,16 @@ public class Query extends Table
                 }
             }
         }
-
         FieldValue[] fvHaving = new FieldValue[mode_having.size()];
-
         for (int i = 0; i < mode_having.size(); i++)
         {
             fvHaving[i] = (FieldValue) mode_having.elementAt(i);
         }
-
         FieldValue[] fvWhere = new FieldValue[mode_where.size()];
-
         for (int i = 0; i < mode_where.size(); i++)
         {
             fvWhere[i] = (FieldValue) mode_where.elementAt(i);
         }
-
         buf.append("SELECT ");
         if ( distinct.equalsIgnoreCase("true") || distinct.equalsIgnoreCase("yes") ) {
            buf.append(" DISTINCT ");
@@ -304,12 +295,10 @@ public class Query extends Table
         buf.append(" FROM ");
         buf.append(getQueryFrom());
         s = getQueryWhere(fvWhere, null, compareMode);
-
         if ((s.length() > 0) || !Util.isNull(where) )
         {
             HatSchonWhere = true;
             buf.append(" WHERE ");
-
             if (!Util.isNull(where))
             {
                 buf.append(where);
@@ -365,17 +354,13 @@ public class Query extends Table
             buf.append(s);
             buf.append(")");
         }
-
         s = getQueryOrderBy(fvOrder);
-
         if (s.length() > 0)
         {
             buf.append(" ORDER BY ");
             buf.append(s);
         }
-
         logCat.info("doSelect:" + buf.toString());
-
         return buf.toString();
     }
 
@@ -392,14 +377,12 @@ public class Query extends Table
     {
         // In this case there are no fields listed. So use the fieldlist of the parent table!
         Vector f = super.getFields();
-
         if ((f == null) || (f.isEmpty()) && !Util.isNull(from) )
         {
             Table t = config.getTableByName(from);
             if (t != null)
                f = t.getFields();
         }
-
         return f;
     }
 
@@ -418,19 +401,16 @@ public class Query extends Table
     public Field getFieldByName(String name)
     {
         Field f = super.getFieldByName(name);
-
         if (f == null)
         {
             f = (Field) searchNameHash.get(name);
         }
-
         if ((f == null) && !Util.isNull(from) )
         {
             Table t = config.getTableByName(from); 
             if (t != null)
                f = t.getFieldByName(name);
         }
-
         return f;
     }
 

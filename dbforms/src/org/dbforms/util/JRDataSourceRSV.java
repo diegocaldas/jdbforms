@@ -71,7 +71,7 @@ public class JRDataSourceRSV implements JRDataSource {
 	 * @see dori.jasper.engine.JRDataSource#next()
 	 */
 	public boolean next() throws JRException {
-		if (ResultSetVector.isEmptyOrNull(rsv)) 
+		if (Util.isNull(rsv)) 
 			return false;
 		if (rsv.getPointer() == rsv.size() - 1)
 		   return false; 

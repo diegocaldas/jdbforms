@@ -108,7 +108,11 @@ public class DbFormsConfig
      */
     public Table getTable(int index)
     {
-        return (Table) tables.elementAt(index);
+		try {
+			return (Table) tables.elementAt(index);
+		} catch(Exception e) {
+			return null;
+		}
     }
 
 
@@ -121,7 +125,11 @@ public class DbFormsConfig
      */
     public Table getTableByName(String name)
     {
-        return (Table) tableNameHash.get(name);
+		try {
+	        return (Table) tableNameHash.get(name);
+		} catch(Exception e) {
+			return null;
+		}
     }
 
 
