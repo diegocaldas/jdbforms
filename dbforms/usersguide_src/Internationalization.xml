@@ -8,12 +8,23 @@
 </title>
 			<para>Resource bundles are made up of 1 or more .properties files.  Each file contains a key-value reference which is used to retrieve and display text in a given language.  Properties files, defined to be of the same resource bundle, have the following naming structure:
 </para>
-			<para>A common prefix is used to associate files into a bundle.
+<itemizedlist mark="opencircle">
+<listitem>
+<para>A common prefix is used to associate files into a bundle.
 </para>
-			<para>The locale, for which this file is valid for, is used as a suffix.
+</listitem>
+<listitem>
+<para>The locale, for which this file is valid for, is used as a suffix.
 </para>
-			<para>A default properties file exists in order to support non-defined locales.  This file does not have a (locale) suffix associated to its name.  All files must be located in a directory which is in the classpath.
+</listitem>
+<listitem>
+<para>A default properties file exists in order to support non-defined locales.  This file does not have a (locale) suffix associated to its name.  All files must be located in a directory which is in the classpath.
 </para>
+</listitem>
+</itemizedlist>
+			
+			
+			
 			<para>
 				<emphasis role="bold">ApplicationResources.properties</emphasis>
 			</para>
