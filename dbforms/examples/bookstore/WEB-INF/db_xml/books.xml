@@ -1,21 +1,90 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <books>
    <book>
-   	<title>Hijacking through the Galaxy</title>
-   	<isbn>42</isbn>
+   	<id>1</id>
+   	<title>Die Insel des vorigen Tages</title>
+   	<isbn>3-423-12445-4</isbn>
    	<author>
-   		<authorid>2</authorid>	
-   		<name>Douglas</name>
-   		<surname>Adman</surname>
+   		<authorid>1</authorid>	
+   		<name>Eco</name>
+   		<surname>Umberto</surname>
    	</author>
    </book>	
    <book>
-   	<title>Der Räuber Hotzenplotz</title>
-   	<isbn>43</isbn>
+   	<id>2</id>
+   	<title>Das Foucaltsche Pendel</title>
+   	<isbn>3-423-12445-5</isbn>
    	<author>
-   		<authorid>3</authorid>	
-   		<name>Preußler</name>
-   		<surname>Ottfried</surname>
+   		<authorid>1</authorid>	
+   		<name>Eco</name>
+   		<surname>Umberto</surname>
+   	</author>
+   </book>	
+   <book>
+   	<id>3</id>
+   	<title>Hijacking through the Galaxy 1</title>
+   	<isbn>42-1</isbn>
+   	<author>
+   		<authorid>2</authorid>	
+   		<name>Douglas</name>
+   		<surname>Adam</surname>
+   	</author>
+   </book>	
+   <book>
+   	<id>4</id>
+   	<title>Hijacking through the Galaxy 2</title>
+   	<isbn>42-2</isbn>
+   	<author>
+   		<authorid>2</authorid>	
+   		<name>Douglas</name>
+   		<surname>Adam</surname>
+   	</author>
+   </book>	
+   <book>
+   	<id>5</id>
+   	<title>Hijacking through the Galaxy 3</title>
+   	<isbn>42-3</isbn>
+   	<author>
+   		<authorid>2</authorid>	
+   		<name>Douglas</name>
+   		<surname>Adam</surname>
+   	</author>
+   </book>	
+   <book>
+   	<id>6</id>
+   	<title>Hijacking through the Galaxy 4</title>
+   	<isbn>42-4</isbn>
+   	<author>
+   		<authorid>2</authorid>	
+   		<name>Douglas</name>
+   		<surname>Adam</surname>
+   	</author>
+   </book>	
+   <book>
+   	<id>7</id>
+   	<title>Test null value</title>
+   	<isbn></isbn>
+   	<author>
+   	</author>
+   </book>	
+   <book>
+   	<id>8</id>
+   	<title>Luca''s favorite thing to eat is  "delicious Italian pasta"</title>
+   	<isbn>34-5</isbn>
+   	<author>
+   		<authorid>2</authorid>	
+   		<name>Douglas</name>
+   		<surname>Adam</surname>
+   	</author>
+   </book>	
+   <book>
+   	<id>9</id>
+   	<title>Hijacking through the Galaxy 6</title>
+   	<isbn>42-6</isbn>
+   	<author>
+   		<authorid>2</authorid>	
+   		<name>Douglas</name>
+   		<surname>Adam</surname>
    	</author>
    </book>	
 </books>
