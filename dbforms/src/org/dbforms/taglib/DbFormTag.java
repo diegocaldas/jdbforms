@@ -243,8 +243,8 @@ public class DbFormTag extends TagSupportWithScriptHandler
    private StringBuffer childElementOutput;
 
    /** the underlying table */
-   private transient Table  table;
-   private Vector overrulingOrderFields;
+   private transient Table table;
+   private Vector          overrulingOrderFields;
 
    /** holds the list of sub forms to validate (2003-02-04 HKK) */
    private Vector validationForms;
@@ -1106,10 +1106,7 @@ public class DbFormTag extends TagSupportWithScriptHandler
          }
 
          /* Generate Javascript validation methods & calls */
-         if ((getFormValidatorName() != null)
-                   && (getFormValidatorName()
-                                .length() > 0)
-                   && hasJavascriptValidationSet()) {
+         if (!Util.isNull(getFormValidatorName()) && hasJavascriptValidationSet()) {
             jspOut.println(generateJavascriptValidation());
          }
 
@@ -1166,10 +1163,11 @@ public class DbFormTag extends TagSupportWithScriptHandler
       if (fieldNames != null) {
          fieldNames.clear();
       }
+
       if (childFieldNames != null) {
-      	childFieldNames.clear();
+         childFieldNames.clear();
       }
-		
+
       sqlFilter          = null;
       orderFields        = null;
       overrideFieldCheck = null;
@@ -1341,10 +1339,14 @@ public class DbFormTag extends TagSupportWithScriptHandler
 
             if (hasJavascriptValidationSet()) {
                validationFct = getFormValidatorName();
-               validationFct = Character.toUpperCase(validationFct.charAt(0))
-                               + validationFct.substring(1,
-                                                         validationFct.length());
-               validationFct = "validate" + validationFct + "(this)";
+
+               if (!Util.isNull(validationFct)) {
+                  validationFct = Character.toUpperCase(validationFct.charAt(0))
+                                  + validationFct.substring(1,
+                                                            validationFct
+                                                            .length());
+                  validationFct = "validate" + validationFct + "(this)";
+               }
             }
 
             if (!Util.isNull(validationFct) && !Util.isNull(getOnSubmit())) {
@@ -2410,7 +2412,8 @@ public class DbFormTag extends TagSupportWithScriptHandler
     */
    private FieldValue[] initSearchFieldValues() {
       FieldValue[]       fieldValues;
-      HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
+      HttpServletRequest request          = (HttpServletRequest) pageContext
+                                            .getRequest();
       Vector             searchFieldNames = ParseUtil.getParametersStartingWith(request,
                                                                                 Constants.FIELDNAME_SEARCH
                                                                                 + this.tableId);
