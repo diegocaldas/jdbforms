@@ -419,7 +419,8 @@ public class Field
       switch (getType())
       {
          case FieldTypes.INTEGER:
-            res = java.text.NumberFormat.getIntegerInstance(locale);
+            res = java.text.NumberFormat.getInstance(locale);
+		    ((java.text.DecimalFormat) res).setParseIntegerOnly(true);
 
             if (!Util.isNull(pattern))
             {
