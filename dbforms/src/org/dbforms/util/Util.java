@@ -96,7 +96,7 @@ public class Util {
       if (!Util.isNull(s)) {
          try {
             s = encCheck(s, enc);
-         } catch (NoSuchMethodException nsme) {
+         } catch (NoSuchMethodError nsme) {
             s = URLEncoder.encode(s);
          }
       }
@@ -116,7 +116,7 @@ public class Util {
       if (!Util.isNull(s)) {
          try {
             s = decCheck(s, enc);
-         } catch (NoSuchMethodException nsme) {
+         } catch (NoSuchMethodError nsme) {
             s = URLDecoder.decode(s);
          }
       }
@@ -159,7 +159,7 @@ public class Util {
     * @throws NoSuchMethodException
     *             to signal that jdk 1.3 is being used
     */
-   private static final String decCheck(String s, String enc) throws UnsupportedEncodingException, NoSuchMethodException {
+   private static final String decCheck(String s, String enc) throws UnsupportedEncodingException, NoSuchMethodError {
       if (isNull(enc)) {
          enc = "UTF-8";
       }
@@ -182,7 +182,7 @@ public class Util {
     * @throws NoSuchMethodException
     *             to signal that jdk 1.3 is being used
     */
-   private static final String encCheck(String s, String enc) throws UnsupportedEncodingException, NoSuchMethodException {
+   private static final String encCheck(String s, String enc) throws UnsupportedEncodingException, NoSuchMethodError {
       if (isNull(enc)) {
          enc = "UTF-8";
       }
