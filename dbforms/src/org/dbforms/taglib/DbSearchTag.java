@@ -24,10 +24,9 @@ package org.dbforms.taglib;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.jsp.*;
-import org.dbforms.*;
+
 import org.dbforms.util.*;
 import org.dbforms.config.*;
-import org.CVS.*;
 import org.apache.log4j.Category;
 
 
