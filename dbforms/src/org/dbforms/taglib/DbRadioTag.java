@@ -22,7 +22,7 @@
  */
 
 package org.dbforms.taglib;
-import java.util.*;
+import java.util.List;
 import javax.servlet.jsp.*;
 import org.dbforms.util.*;
 import org.apache.log4j.Category;
@@ -40,7 +40,7 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer,
       javax.servlet.jsp.tagext.TryCatchFinally
 {
    private static Category logCat = Category.getInstance(DbRadioTag.class.getName()); // logging category for this class
-   private Vector  embeddedData  = null;
+   private List  embeddedData  = null;
    private String  growDirection; // only needed if we have a whole "group" of DbRadioTags; default = null == horizontal
    private String  growSize      = "0"; // limit the number of elements per row (growDirection="horizontal")
 
@@ -106,7 +106,7 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer,
     * [this method is defined in Interface DataContainer]
     * @param embeddedData DOCUMENT ME!
     */
-   public void setEmbeddedData(Vector embeddedData)
+   public void setEmbeddedData(List embeddedData)
    {
       this.embeddedData = embeddedData;
    }
@@ -197,7 +197,7 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer,
             // First pass to retreive radio selectedIndex, because in Javascript it use only this index (Netscape 4.x)
             for (int i = 0; i < embeddedDataSize; i++)
             {
-               KeyValuePair aKeyValuePair = (KeyValuePair) embeddedData.elementAt(i);
+               KeyValuePair aKeyValuePair = (KeyValuePair) embeddedData.get(i);
                String       aKey = aKeyValuePair.getKey();
 
                if (aKey.equals(currentValue))
@@ -224,7 +224,7 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer,
 
          for (int i = 0; i < embeddedDataSize; i++)
          {
-            KeyValuePair aKeyValuePair = (KeyValuePair) embeddedData.elementAt(i);
+            KeyValuePair aKeyValuePair = (KeyValuePair) embeddedData.get(i);
             String       aKey   = aKeyValuePair.getKey();
             String       aValue = aKeyValuePair.getValue();
 

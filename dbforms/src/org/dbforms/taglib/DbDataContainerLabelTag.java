@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.taglib;
-import java.util.Vector;
+import java.util.List;
 
 import javax.servlet.jsp.JspException;
 
@@ -51,7 +51,7 @@ public class DbDataContainerLabelTag
     private Category logCat =  Category.getInstance(this.getClass().getName());
 
     // logging category for this class
-    private Vector embeddedData = null;
+    private List embeddedData = null;
 
 	public void doFinally()
 	{
@@ -73,7 +73,7 @@ public class DbDataContainerLabelTag
     available to this tag.
     [this method is defined in Interface DataContainer]
     */
-    public void setEmbeddedData(Vector embeddedData)
+    public void setEmbeddedData(List embeddedData)
     {
         this.embeddedData = embeddedData;
     }
@@ -109,7 +109,7 @@ public class DbDataContainerLabelTag
                     while (!found && (i < embeddedDataSize))
                     {
                         KeyValuePair aKeyValuePair =
-                            (KeyValuePair) embeddedData.elementAt(i);
+                            (KeyValuePair) embeddedData.get(i);
 
                         if (aKeyValuePair.getKey().equals(fieldValue))
                         {

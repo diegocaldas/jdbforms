@@ -40,7 +40,7 @@ public class DbCheckboxTag extends DbBaseHandlerTag implements DataContainer,
        javax.servlet.jsp.tagext.TryCatchFinally
 {
    private Category logCat = Category.getInstance(this.getClass().getName()); // logging category for this class
-   private Vector embeddedData = null;
+   private List embeddedData = null;
    private String checked; // only needed if parentForm is in "insert-mode", otherwise the DbForms-Framework determinates whether a checkbox should be selected or not.
    private String growDirection; // only needed if we habe a whole "group" of DbRadioTags; default = null == horizontal
    private String growSize = "0"; // only needed if we habe a whole "group" of DbRadioTags; default = 1
@@ -139,7 +139,7 @@ public class DbCheckboxTag extends DbBaseHandlerTag implements DataContainer,
     * [this method is defined in Interface DataContainer]
     * @param embeddedData DOCUMENT ME!
     */
-   public void setEmbeddedData(Vector embeddedData) {
+   public void setEmbeddedData(List embeddedData) {
       this.embeddedData = embeddedData;
    }
 
@@ -232,7 +232,7 @@ public class DbCheckboxTag extends DbBaseHandlerTag implements DataContainer,
          tagBuf.append("<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\"><tr valign=\"top\">");
 
          for (int i = 0; i < embeddedDataSize; i++) {
-            KeyValuePair aKeyValuePair = (KeyValuePair) embeddedData.elementAt(i);
+            KeyValuePair aKeyValuePair = (KeyValuePair) embeddedData.get(i);
             String aKey = aKeyValuePair.getKey();
             String aValue = aKeyValuePair.getValue();
 

@@ -22,7 +22,7 @@
  */
 package org.dbforms.taglib;
 
-import java.util.Vector;
+import java.util.List;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -107,7 +107,7 @@ public class QueryData extends EmbeddedData
     * represent the visible fields for the Multitags.
     * (DataContainer are: select, radio, checkbox and a special flavour of Label).
     */
-   protected Vector fetchData(Connection con) throws SQLException
+   protected List fetchData(Connection con) throws SQLException
    {
       logCat.info("about to execute user defined query:" + query);
 

@@ -24,6 +24,7 @@ package org.dbforms.taglib;
 
 
 import java.util.Vector;
+import java.util.List;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -174,7 +175,7 @@ public class TableData extends EmbeddedData
    represent the visible fields for the Multitags.
    (DataContainer are: select, radio, checkbox and a special flavour of Label).
    */
-   protected Vector fetchData(Connection con) throws SQLException
+   protected List fetchData(Connection con) throws SQLException
    {
       Vector       vf = ParseUtil.splitString(visibleFields, ",;~");
 

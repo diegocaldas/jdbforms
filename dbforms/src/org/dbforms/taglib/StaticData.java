@@ -23,11 +23,14 @@
 package org.dbforms.taglib;
 
 import java.util.Vector;
+import java.util.Collection;
 import java.sql.Connection;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.*;
+
+import org.dbforms.util.KeyValuePair;
 
 
 
@@ -38,7 +41,7 @@ import javax.servlet.jsp.tagext.*;
  * @author $author$
  */
 public class StaticData extends BodyTagSupport
-		implements javax.servlet.jsp.tagext.TryCatchFinally
+		implements javax.servlet.jsp.tagext.TryCatchFinally, StaticDataAddInterface
 {
 
    private Vector data;
@@ -117,19 +120,15 @@ public class StaticData extends BodyTagSupport
    /**
    for use from parent element [radio, select, etc.]
    */
-   protected Vector fetchData(Connection con)
+   protected Collection fetchData(Connection con)
    {
       return data;
    }
 
 
-   /**
-   for use from StaticDataItems
-   */
-   public Vector getData()
-   {
-      return data;
-   }
+	public void addElement(KeyValuePair pair) {
+	   data.add(pair);   
+	}
 
 
    /**

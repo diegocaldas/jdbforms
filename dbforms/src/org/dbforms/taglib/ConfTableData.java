@@ -22,11 +22,10 @@
  */
 package org.dbforms.taglib;
 
-import java.util.Vector;
+import java.util.List;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-
 
 import org.dbforms.config.FieldValue;
 import org.dbforms.config.ResultSetVector;
@@ -35,9 +34,6 @@ import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.DbFormsConfigRegistry;
 
 import org.dbforms.event.datalist.dao.DataSourceFactory;
-
-
-
 
 /****
  *
@@ -58,151 +54,128 @@ import org.dbforms.event.datalist.dao.DataSourceFactory;
  *
  * @author Henner Kollmann
  */
-public class ConfTableData extends EmbeddedData
-      implements javax.servlet.jsp.tagext.TryCatchFinally
+public class ConfTableData extends EmbeddedData implements javax.servlet.jsp.tagext.TryCatchFinally {
 
-{
+   // logging category for this class
+   private String foreignTable;
+   private String visibleFields;
+   private String storeField;
+   private String filter;
+   private String orderBy;
 
-	// logging category for this class
-	private String foreignTable;
-	private String visibleFields;
-	private String storeField;
-	private String filter;
-	private String orderBy;
+   /**
+    * DOCUMENT ME!
+    *
+    * @param foreignTable DOCUMENT ME!
+    */
+   public void setForeignTable(String foreignTable) {
+      this.foreignTable = foreignTable;
+   }
 
-	/**
-	 * DOCUMENT ME!
-	 *
-	 * @param foreignTable DOCUMENT ME!
-	 */
-	public void setForeignTable(String foreignTable)
-	{
-		this.foreignTable = foreignTable;
-	}
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String getForeignTable() {
+      return foreignTable;
+   }
 
+   /**
+    * DOCUMENT ME!
+    *
+    * @param visibleFields DOCUMENT ME!
+    */
+   public void setVisibleFields(String visibleFields) {
+      this.visibleFields = visibleFields;
+   }
 
-	/**
-	 * DOCUMENT ME!
-	 *
-	 * @return DOCUMENT ME!
-	 */
-	public String getForeignTable()
-	{
-		return foreignTable;
-	}
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String getVisibleFields() {
+      return visibleFields;
+   }
 
+   /**
+    * DOCUMENT ME!
+    *
+    * @param storeField DOCUMENT ME!
+    */
+   public void setStoreField(String storeField) {
+      this.storeField = storeField;
+   }
 
-	/**
-	 * DOCUMENT ME!
-	 *
-	 * @param visibleFields DOCUMENT ME!
-	 */
-	public void setVisibleFields(String visibleFields)
-	{
-		this.visibleFields = visibleFields;
-	}
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String getStoreField() {
+      return storeField;
+   }
 
+   /**
+    * DOCUMENT ME!
+    *
+    * @param orderBy DOCUMENT ME!
+    */
+   public void setOrderBy(String orderBy) {
+      this.orderBy = orderBy;
+   }
 
-	/**
-	 * DOCUMENT ME!
-	 *
-	 * @return DOCUMENT ME!
-	 */
-	public String getVisibleFields()
-	{
-		return visibleFields;
-	}
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String getOrderBy() {
+      return orderBy;
+   }
 
+   /**
+    * @return the filter
+    */
+   public String getFilter() {
+      return filter;
+   }
 
-	/**
-	 * DOCUMENT ME!
-	 *
-	 * @param storeField DOCUMENT ME!
-	 */
-	public void setStoreField(String storeField)
-	{
-		this.storeField = storeField;
-	}
+   /**
+    * @param string
+    */
+   public void setFilter(String string) {
+      filter = string;
+   }
 
-
-	/**
-	 * DOCUMENT ME!
-	 *
-	 * @return DOCUMENT ME!
-	 */
-	public String getStoreField()
-	{
-		return storeField;
-	}
-
-
-	/**
-	 * DOCUMENT ME!
-	 *
-	 * @param orderBy DOCUMENT ME!
-	 */
-	public void setOrderBy(String orderBy)
-	{
-		this.orderBy = orderBy;
-	}
-
-
-	/**
-	 * DOCUMENT ME!
-	 *
-	 * @return DOCUMENT ME!
-	 */
-	public String getOrderBy()
-	{
-		return orderBy;
-	}
-
-	/**
-	 * @return the filter
-	 */
-	public String getFilter()
-	{
-		return filter;
-	}
-
-	/**
-	 * @param string
-	 */
-	public void setFilter(String string)
-	{
-		filter = string;
-	}
-
-	/**
-	returns Hashtable with data. Its keys represent the "value"-fields for the DataContainer-Tag, its values
-	represent the visible fields for the Multitags.
-	(DataContainer are: select, radio, checkbox and a special flavour of Label).
-	*/
-	protected Vector fetchData(Connection con) throws SQLException
-	{
-		try {
-			DbFormsConfig config = DbFormsConfigRegistry.instance().lookup();
-			Table table = config.getTableByName(getForeignTable());
-			FieldValue[] orderConstraint = table.createOrderFieldValues(getOrderBy(), null, false);
-			FieldValue[] childFieldValues = table.getFilterFieldArray(getFilter(), getParentForm().getLocale());
-			DataSourceFactory qry = new DataSourceFactory(null, con, table);
-			qry.setSelect(childFieldValues, orderConstraint, null, null);
-			ResultSetVector rsv = qry.getCurrent(null, 0);
+   /**
+   returns Hashtable with data. Its keys represent the "value"-fields for the DataContainer-Tag, its values
+   represent the visible fields for the Multitags.
+   (DataContainer are: select, radio, checkbox and a special flavour of Label).
+   */
+   protected List fetchData(Connection con) throws SQLException {
+      try {
+         DbFormsConfig config = DbFormsConfigRegistry.instance().lookup();
+         Table table = config.getTableByName(getForeignTable());
+         FieldValue[] orderConstraint = table.createOrderFieldValues(getOrderBy(), null, false);
+         FieldValue[] childFieldValues = table.getFilterFieldArray(getFilter(), getParentForm().getLocale());
+         DataSourceFactory qry = new DataSourceFactory(null, con, table);
+         qry.setSelect(childFieldValues, orderConstraint, null, null);
+         ResultSetVector rsv = qry.getCurrent(null, 0);
          qry.close();
-			return formatEmbeddedResultRows(rsv);
-		} catch (Exception e) {
-			throw new SQLException(e.getMessage());
-		}
-		
-	}
+         return formatEmbeddedResultRows(rsv);
+      } catch (Exception e) {
+         throw new SQLException(e.getMessage());
+      }
+
+   }
 
    /**
     * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
     */
-   public void doCatch(Throwable t) throws Throwable
-   {
+   public void doCatch(Throwable t) throws Throwable {
       throw t;
    }
-
 
 }

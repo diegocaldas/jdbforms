@@ -21,22 +21,15 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.taglib;
-import java.util.*;
 
-
+import org.dbforms.util.KeyValuePair;
 
 /**
- * DOCUMENT ME!
- *
- * @version $Revision$
- * @author $author$
+ * 
+ * Interfaced used by StaticDataItem
+ * 
+ * @author hkk
  */
-public interface DataContainer
-{
-   /**
-    * DOCUMENT ME!
-    *
-    * @param embeddedData DOCUMENT ME!
-    */
-   public void setEmbeddedData(List embeddedData);
+public interface StaticDataAddInterface {
+	void addElement(KeyValuePair pair);
 }

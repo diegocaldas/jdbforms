@@ -23,7 +23,7 @@
 
 package org.dbforms.taglib;
 import java.text.SimpleDateFormat;
-import java.util.Vector;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
@@ -66,7 +66,7 @@ public class DbFilterValueTag
 		/**
 		 * contains list of elements to show as options when type is select, (DataContainer interface)
 		 */
-		protected Vector embeddedData = null;
+		protected List embeddedData = null;
 
 		/** 
 		 * Holds value of property jsCalendarDateFormat. 
@@ -476,7 +476,7 @@ public class DbFilterValueTag
 
 		for (int i = 0; i < embeddedDataSize; i++) {
 			KeyValuePair aKeyValuePair =
-				(KeyValuePair) state.embeddedData.elementAt(i);
+				(KeyValuePair) state.embeddedData.get(i);
 			String aKey = aKeyValuePair.getKey();
 			String aValue = aKeyValuePair.getValue();
 
@@ -541,7 +541,7 @@ public class DbFilterValueTag
 	available to this tag.
 	[this method is defined in Interface DataContainer]
 	*/
-	public void setEmbeddedData(Vector embeddedData) {
+	public void setEmbeddedData(List embeddedData) {
 		state.embeddedData = embeddedData;
 	}
 

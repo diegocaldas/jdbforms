@@ -22,7 +22,7 @@
  */
 
 package org.dbforms.taglib;
-import java.util.*;
+import java.util.List;
 import javax.servlet.jsp.*;
 import javax.servlet.http.*;
 import org.dbforms.config.*;
@@ -49,7 +49,7 @@ import org.dbforms.util.*;
 public class DbSearchComboTag extends DbSearchTag
    implements DataContainer, javax.servlet.jsp.tagext.TryCatchFinally
 {
-   private Vector embeddedData  = null;
+   private List embeddedData  = null;
    private String selectedIndex;
    private String customEntry;
    private String size = "1";
@@ -135,7 +135,7 @@ public class DbSearchComboTag extends DbSearchTag
     * [this method is defined in Interface DataContainer]
     * @param embeddedData DOCUMENT ME!
     */
-   public void setEmbeddedData(Vector embeddedData)
+   public void setEmbeddedData(List embeddedData)
    {
       this.embeddedData = embeddedData;
    }
@@ -258,7 +258,7 @@ public class DbSearchComboTag extends DbSearchTag
 
          for (int i = 0; i < embeddedDataSize; i++)
          {
-            KeyValuePair aKeyValuePair = (KeyValuePair) embeddedData.elementAt(i);
+            KeyValuePair aKeyValuePair = (KeyValuePair) embeddedData.get(i);
             String       aKey   = aKeyValuePair.getKey();
             String       aValue = aKeyValuePair.getValue();
 

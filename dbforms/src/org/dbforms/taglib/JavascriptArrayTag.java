@@ -21,7 +21,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.taglib;
-import java.util.*;
+import java.util.List;
+import java.util.StringTokenizer;
 import javax.servlet.jsp.*;
 import javax.servlet.jsp.tagext.*;
 
@@ -41,7 +42,7 @@ public class JavascriptArrayTag extends BodyTagSupport implements DataContainer,
 {
    private static Category logCat       = Category.getInstance(JavascriptArrayTag.class
          .getName()); // logging category for this class
-   private Vector  embeddedData = null;
+   private List  embeddedData = null;
    private String  name         = null;
 
 	public void doFinally()
@@ -72,7 +73,7 @@ public class JavascriptArrayTag extends BodyTagSupport implements DataContainer,
    available to this tag.
    [this method is defined in Interface DataContainer]
    */
-   public void setEmbeddedData(Vector embeddedData)
+   public void setEmbeddedData(List embeddedData)
    {
       this.embeddedData = embeddedData;
    }
@@ -119,7 +120,7 @@ public class JavascriptArrayTag extends BodyTagSupport implements DataContainer,
 
          for (int i = 0; i < embeddedDataSize; i++)
          {
-            KeyValuePair aKeyValuePair = (KeyValuePair) embeddedData.elementAt(i);
+            KeyValuePair aKeyValuePair = (KeyValuePair) embeddedData.get(i);
             String       aKey = aKeyValuePair.getKey();
             tagBuf.append("   ").append(name).append("[").append(i)
                   .append("] = new Array('").append(aKey).append("'");

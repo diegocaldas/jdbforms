@@ -1888,7 +1888,7 @@ hanlder executed when the user selects some text</info>
 				<summary>external data to be nested into radio, checkbox 
           or select - tag!(useful only in conjunction with radio, checkbox or select - tag)</summary>
 				<tagclass>org.dbforms.taglib.TableData</tagclass>
-				<bodycontent>empty</bodycontent>
+				<bodycontent>JSP</bodycontent>
 				<info>
 					<p>this tag provides data to radio, checkbox or select - tags. It may be 
                   used for cross references to other tables.</p>
@@ -1994,7 +1994,7 @@ clause for the query</info>
                     use the table data given in the conf file and use a filter clause like in dbform tag
  			    </summary>
 				<tagclass>org.dbforms.taglib.ConfTableData</tagclass>
-				<bodycontent>empty</bodycontent>
+				<bodycontent>JSP</bodycontent>
 				<info>
 					<p>
 						this tag provides data to radio, checkbox or select - tags. It may be 
@@ -2116,7 +2116,7 @@ clause for the query</info>
            or select - tag!(useful only in conjunction with radio, checkbox or select - tag)
         </summary>
 				<tagclass>org.dbforms.taglib.QueryData</tagclass>
-				<bodycontent>empty</bodycontent>
+				<bodycontent>JSP</bodycontent>
 				<info>
 					<p>this tag provides data (provided by query result) to radio, checkbox or select - tags.</p>
 					<p>

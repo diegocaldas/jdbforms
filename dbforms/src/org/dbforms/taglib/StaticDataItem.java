@@ -111,14 +111,14 @@ public class StaticDataItem extends DbBaseHandlerTag
     */
    public int doStartTag() throws JspException
    {
-      if ((getParent() != null) && getParent() instanceof StaticData)
+      if ((getParent() != null) && getParent() instanceof StaticDataAddInterface)
       {
-         ((StaticData) getParent()).getData().addElement(new KeyValuePair(key, getValue()));
+         ((StaticDataAddInterface) getParent()).addElement(new KeyValuePair(key, getValue()));
       }
       else
       {
          throw new JspException(
-            "StaticDataItem element must be placed inside a StaticData element!");
+            "StaticDataItem element must be placed inside a AddStaticData element!");
       }
 
       return EVAL_BODY_INCLUDE;

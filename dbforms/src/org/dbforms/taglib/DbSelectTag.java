@@ -22,7 +22,7 @@
  */
 
 package org.dbforms.taglib;
-import java.util.*;
+import java.util.List;
 import javax.servlet.jsp.*;
 import org.dbforms.util.*;
 import org.dbforms.event.eventtype.EventType;
@@ -41,7 +41,7 @@ import javax.servlet.http.*;
 public class DbSelectTag extends DbBaseHandlerTag implements DataContainer,
       javax.servlet.jsp.tagext.TryCatchFinally
 {
-   private Vector  embeddedData  = null;
+   private List  embeddedData  = null;
    private String  selectedIndex;
    private String  customEntry;
    private String  size;
@@ -93,7 +93,7 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer,
       available to this tag.
       [this method is defined in Interface DataContainer]
     */
-   public void setEmbeddedData(Vector embeddedData)
+   public void setEmbeddedData(List embeddedData)
    {
       this.embeddedData = embeddedData;
    }
@@ -203,7 +203,7 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer,
    public int doEndTag() throws javax.servlet.jsp.JspException
    {
       HttpServletRequest request = (HttpServletRequest) this.pageContext.getRequest();
-      Vector             errors = (Vector) request.getAttribute("errors");
+      List               errors = (List) request.getAttribute("errors");
       WebEvent           we     = getParentForm().getWebEvent();
 
       StringBuffer       tagBuf          = new StringBuffer();
@@ -263,7 +263,7 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer,
 
          for (int i = 0; i < embeddedDataSize; i++)
          {
-            KeyValuePair aKeyValuePair = (KeyValuePair) embeddedData.elementAt(i);
+            KeyValuePair aKeyValuePair = (KeyValuePair) embeddedData.get(i);
             String       aKey   = aKeyValuePair.getKey();
             String       aValue = aKeyValuePair.getValue();
 
