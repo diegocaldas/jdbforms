@@ -57,6 +57,19 @@ version 0.9
   </attribute>
 
   <attribute>
+    <name>redisplayFieldsOnError</name>
+    <required>false</required>
+    <rtexprvalue>false</rtexprvalue>
+    <info>   
+      In a jsp which contains many input fields, it may be desirable, in the event of an error, to redisplay input data.
+      (instead of refreshing the fields from the DB) DbForms implements this functionality by default with INSERT fields only.
+      if you choose to set this attribute redisplayFieldsOnError to "true" then DbForms will redisplay entered values
+      even with UPDATES.     
+    </info>
+  </attribute>
+
+
+  <attribute>
     <name>followUp</name>
     <required>true</required>
     <rtexprvalue>false</rtexprvalue>
@@ -1170,7 +1183,7 @@ version 0.9
   <attribute>
     <name>query</name>
     <required>true</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>
 	<p>the query used to retrieve the data</p>
 	<p><b>query building convention:</b> first column is the "key" column for the radio/check/select
@@ -2228,7 +2241,7 @@ in functionality and performance can be expected.
       <p>this attribute over-rules the followUp-attribute of the parent form(s)!</p>
     </info>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
   </attribute>
 
     <attribute>
@@ -2272,7 +2285,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onClick</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element receives a
 				mouse click.
@@ -2460,7 +2473,7 @@ in functionality and performance can be expected.
       <p>this attribute over-rules the followUp-attribute of the parent form(s)!</p>
     </info>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
   </attribute>
 
   <attribute>
@@ -2517,7 +2530,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onClick</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element receives a
 				mouse click.
@@ -2704,7 +2717,7 @@ in functionality and performance can be expected.
       <p>this attribute over-rules the followUp-attribute of the parent form(s)!</p>
     </info>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
   </attribute>
 
   <attribute>
@@ -2761,7 +2774,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onClick</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element receives a
 				mouse click.

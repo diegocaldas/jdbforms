@@ -56,9 +56,9 @@ import org.apache.log4j.Category;
 
 public abstract class DbBaseHandlerTag extends BodyTagSupport {
 
-    static Category logCat = Category.getInstance(DbBaseHandlerTag.class.getName()); // logging category for this class
+	static Category logCat = Category.getInstance(DbBaseHandlerTag.class.getName()); // logging category for this class
 
-    // ----------------------------------------------------- Instance Variables
+	// ----------------------------------------------------- Instance Variables
 
 	public static final int SEARCHMODE_NONE = 0;
 	public static final int SEARCHMODE_AND = 1;
@@ -67,7 +67,7 @@ public abstract class DbBaseHandlerTag extends BodyTagSupport {
 
 // DbForms specific
 
-    protected DbFormsConfig config;
+	protected DbFormsConfig config;
   	protected String fieldName;
   	protected Field field;
 
@@ -80,76 +80,76 @@ public abstract class DbBaseHandlerTag extends BodyTagSupport {
 
 	protected Format format;
 
-    protected DbFormTag parentForm;
+	protected DbFormTag parentForm;
 
 
 //  Navigation Management
 
-    /** Access key character. */
-    protected String accessKey = null;
+	/** Access key character. */
+	protected String accessKey = null;
 
-    /** Tab index value. */
-    protected String tabIndex = null;
+	/** Tab index value. */
+	protected String tabIndex = null;
 
 //  Mouse Events
 
-    /** Mouse click event. */
-    private String onClick = null;
+	/** Mouse click event. */
+	private String onClick = null;
 
-    /** Mouse double click event. */
-    private String onDblClick = null;
+	/** Mouse double click event. */
+	private String onDblClick = null;
 
-    /** Mouse over component event. */
-    private String onMouseOver = null;
+	/** Mouse over component event. */
+	private String onMouseOver = null;
 
-    /** Mouse exit component event. */
-    private String onMouseOut = null;
+	/** Mouse exit component event. */
+	private String onMouseOut = null;
 
-    /** Mouse moved over component event. */
-    private String onMouseMove = null;
+	/** Mouse moved over component event. */
+	private String onMouseMove = null;
 
-    /** Mouse pressed on component event. */
-    private String onMouseDown = null;
+	/** Mouse pressed on component event. */
+	private String onMouseDown = null;
 
-    /** Mouse released on component event. */
-    private String onMouseUp = null;
+	/** Mouse released on component event. */
+	private String onMouseUp = null;
 
 //  Keyboard Events
 
-    /** Key down in component event. */
-    private String onKeyDown = null;
+	/** Key down in component event. */
+	private String onKeyDown = null;
 
-    /** Key released in component event. */
-    private String onKeyUp = null;
+	/** Key released in component event. */
+	private String onKeyUp = null;
 
-    /** Key down and up together in component event. */
-    private String onKeyPress = null;
+	/** Key down and up together in component event. */
+	private String onKeyPress = null;
 
 // Text Events
 
-    /** Text selected in component event. */
-    private String onSelect = null;
+	/** Text selected in component event. */
+	private String onSelect = null;
 
-    /** Content changed after component lost focus event. */
-    private String onChange = null;
+	/** Content changed after component lost focus event. */
+	private String onChange = null;
 
 // Focus Events
 
-    /** Component lost focus event. */
-    private String onBlur = null;
+	/** Component lost focus event. */
+	private String onBlur = null;
 
-    /** Component has received focus event. */
-    private String onFocus = null;
+	/** Component has received focus event. */
+	private String onFocus = null;
 
 // CSS Style Support
 
-    /** Style attribute associated with component. */
-    private String style = null;
+	/** Style attribute associated with component. */
+	private String style = null;
 
-    /** Named Style class associated with component. */
-    private String styleClass = null;
+	/** Named Style class associated with component. */
+	private String styleClass = null;
 
-    // ------------------------------------------------------------- Properties
+	// ------------------------------------------------------------- Properties
 
 
 // dbForms - specifcs
@@ -197,198 +197,198 @@ public abstract class DbBaseHandlerTag extends BodyTagSupport {
 
 //  Navigation Management
 
-    /** Sets the accessKey character. */
-    public void setAccessKey(String accessKey) {
+	/** Sets the accessKey character. */
+	public void setAccessKey(String accessKey) {
 	this.accessKey = accessKey;
-    }
+	}
 
-    /** Returns the accessKey character. */
-    public String getAccessKey() {
+	/** Returns the accessKey character. */
+	public String getAccessKey() {
 	return (this.accessKey);
-    }
+	}
 
 
-    /** Sets the tabIndex value. */
-    public void setTabIndex(String tabIndex) {
+	/** Sets the tabIndex value. */
+	public void setTabIndex(String tabIndex) {
 	this.tabIndex = tabIndex;
-    }
+	}
 
-    /** Returns the tabIndex value. */
-    public String getTabIndex() {
+	/** Returns the tabIndex value. */
+	public String getTabIndex() {
 	return (this.tabIndex);
-    }
+	}
 
 // Mouse Events
 
-    /** Sets the onClick event handler. */
-    public void setOnClick(String onClick) {
-        this.onClick = onClick;
-    }
+	/** Sets the onClick event handler. */
+	public void setOnClick(String onClick) {
+		this.onClick = onClick;
+	}
 
-    /** Returns the onClick event handler. */
-    public String getOnClick() {
-        return onClick;
-    }
+	/** Returns the onClick event handler. */
+	public String getOnClick() {
+		return onClick;
+	}
 
-    /** Sets the onDblClick event handler. */
-    public void setOnDblClick(String onDblClick) {
-        this.onDblClick = onDblClick;
-    }
+	/** Sets the onDblClick event handler. */
+	public void setOnDblClick(String onDblClick) {
+		this.onDblClick = onDblClick;
+	}
 
-    /** Returns the onDblClick event handler. */
-    public String getOnDblClick() {
-        return onDblClick;
-    }
+	/** Returns the onDblClick event handler. */
+	public String getOnDblClick() {
+		return onDblClick;
+	}
 
-    /** Sets the onMouseDown event handler. */
-    public void setOnMouseDown(String onMouseDown) {
-        this.onMouseDown = onMouseDown;
-    }
+	/** Sets the onMouseDown event handler. */
+	public void setOnMouseDown(String onMouseDown) {
+		this.onMouseDown = onMouseDown;
+	}
 
-    /** Returns the onMouseDown event handler. */
-    public String getOnMouseDown() {
-        return onMouseDown;
-    }
+	/** Returns the onMouseDown event handler. */
+	public String getOnMouseDown() {
+		return onMouseDown;
+	}
 
-    /** Sets the onMouseUp event handler. */
-    public void setOnMouseUp(String onMouseUp) {
-        this.onMouseUp = onMouseUp;
-    }
+	/** Sets the onMouseUp event handler. */
+	public void setOnMouseUp(String onMouseUp) {
+		this.onMouseUp = onMouseUp;
+	}
 
-    /** Returns the onMouseUp event handler. */
-    public String getOnMouseUp() {
-        return onMouseUp;
-    }
+	/** Returns the onMouseUp event handler. */
+	public String getOnMouseUp() {
+		return onMouseUp;
+	}
 
-    /** Sets the onMouseMove event handler. */
-    public void setOnMouseMove(String onMouseMove) {
-        this.onMouseMove = onMouseMove;
-    }
+	/** Sets the onMouseMove event handler. */
+	public void setOnMouseMove(String onMouseMove) {
+		this.onMouseMove = onMouseMove;
+	}
 
-    /** Returns the onMouseMove event handler. */
-    public String getOnMouseMove() {
-        return onMouseMove;
-    }
+	/** Returns the onMouseMove event handler. */
+	public String getOnMouseMove() {
+		return onMouseMove;
+	}
 
-    /** Sets the onMouseOver event handler. */
-    public void setOnMouseOver(String onMouseOver) {
-        this.onMouseOver = onMouseOver;
-    }
+	/** Sets the onMouseOver event handler. */
+	public void setOnMouseOver(String onMouseOver) {
+		this.onMouseOver = onMouseOver;
+	}
 
-    /** Returns the onMouseOver event handler. */
-    public String getOnMouseOver() {
-        return onMouseOver;
-    }
+	/** Returns the onMouseOver event handler. */
+	public String getOnMouseOver() {
+		return onMouseOver;
+	}
 
-    /** Sets the onMouseOut event handler. */
-    public void setOnMouseOut(String onMouseOut) {
-        this.onMouseOut = onMouseOut;
-    }
+	/** Sets the onMouseOut event handler. */
+	public void setOnMouseOut(String onMouseOut) {
+		this.onMouseOut = onMouseOut;
+	}
 
-    /** Returns the onMouseOut event handler. */
-    public String getOnMouseOut() {
-        return onMouseOut;
-    }
+	/** Returns the onMouseOut event handler. */
+	public String getOnMouseOut() {
+		return onMouseOut;
+	}
 
 // Keyboard Events
 
-    /** Sets the onKeyDown event handler. */
-    public void setOnKeyDown(String onKeyDown) {
-        this.onKeyDown = onKeyDown;
-    }
+	/** Sets the onKeyDown event handler. */
+	public void setOnKeyDown(String onKeyDown) {
+		this.onKeyDown = onKeyDown;
+	}
 
-    /** Returns the onKeyDown event handler. */
-    public String getOnKeyDown() {
-        return onKeyDown;
-    }
+	/** Returns the onKeyDown event handler. */
+	public String getOnKeyDown() {
+		return onKeyDown;
+	}
 
-    /** Sets the onKeyUp event handler. */
-    public void setOnKeyUp(String onKeyUp) {
-        this.onKeyUp = onKeyUp;
-    }
+	/** Sets the onKeyUp event handler. */
+	public void setOnKeyUp(String onKeyUp) {
+		this.onKeyUp = onKeyUp;
+	}
 
-    /** Returns the onKeyUp event handler. */
-    public String getOnKeyUp() {
-        return onKeyUp;
-    }
+	/** Returns the onKeyUp event handler. */
+	public String getOnKeyUp() {
+		return onKeyUp;
+	}
 
-    /** Sets the onKeyPress event handler. */
-    public void setOnKeyPress(String onKeyPress) {
-        this.onKeyPress = onKeyPress;
-    }
+	/** Sets the onKeyPress event handler. */
+	public void setOnKeyPress(String onKeyPress) {
+		this.onKeyPress = onKeyPress;
+	}
 
-    /** Returns the onKeyPress event handler. */
-    public String getOnKeyPress() {
-        return onKeyPress;
-    }
+	/** Returns the onKeyPress event handler. */
+	public String getOnKeyPress() {
+		return onKeyPress;
+	}
 
 // Text Events
 
-    /** Sets the onChange event handler. */
-    public void setOnChange(String onChange) {
-        this.onChange = onChange;
-    }
+	/** Sets the onChange event handler. */
+	public void setOnChange(String onChange) {
+		this.onChange = onChange;
+	}
 
-    /** Returns the onChange event handler. */
-    public String getOnChange() {
-        return onChange;
-    }
+	/** Returns the onChange event handler. */
+	public String getOnChange() {
+		return onChange;
+	}
 
-    /** Sets the onSelect event handler. */
-    public void setOnSelect(String onSelect) {
-        this.onSelect = onSelect;
-    }
+	/** Sets the onSelect event handler. */
+	public void setOnSelect(String onSelect) {
+		this.onSelect = onSelect;
+	}
 
-    /** Returns the onSelect event handler. */
-    public String getOnSelect() {
-        return onSelect;
-    }
+	/** Returns the onSelect event handler. */
+	public String getOnSelect() {
+		return onSelect;
+	}
 
 // Focus Events
 
-    /** Sets the onBlur event handler. */
-    public void setOnBlur(String onBlur) {
-        this.onBlur = onBlur;
-    }
+	/** Sets the onBlur event handler. */
+	public void setOnBlur(String onBlur) {
+		this.onBlur = onBlur;
+	}
 
-    /** Returns the onBlur event handler. */
-    public String getOnBlur() {
-        return onBlur;
-    }
+	/** Returns the onBlur event handler. */
+	public String getOnBlur() {
+		return onBlur;
+	}
 
-    /** Sets the onFocus event handler. */
-    public void setOnFocus(String onFocus) {
-        this.onFocus = onFocus;
-    }
+	/** Sets the onFocus event handler. */
+	public void setOnFocus(String onFocus) {
+		this.onFocus = onFocus;
+	}
 
-    /** Returns the onFocus event handler. */
-    public String getOnFocus() {
-        return onFocus;
-    }
+	/** Returns the onFocus event handler. */
+	public String getOnFocus() {
+		return onFocus;
+	}
 
 // CSS Style Support
 
-    /** Sets the style attribute. */
-    public void setStyle(String style) {
-        this.style = style;
-    }
+	/** Sets the style attribute. */
+	public void setStyle(String style) {
+		this.style = style;
+	}
 
-    /** Returns the style attribute. */
-    public String getStyle() {
-        return style;
-    }
+	/** Returns the style attribute. */
+	public String getStyle() {
+		return style;
+	}
 
-    /** Sets the style class attribute. */
-    public void setStyleClass(String styleClass) {
-        this.styleClass = styleClass;
-    }
+	/** Sets the style class attribute. */
+	public void setStyleClass(String styleClass) {
+		this.styleClass = styleClass;
+	}
 
-    /** Returns the style class attribute. */
-    public String getStyleClass() {
-        return styleClass;
-    }
+	/** Returns the style class attribute. */
+	public String getStyleClass() {
+		return styleClass;
+	}
 
-    // --------------------------------------------------------- Public Methods
+	// --------------------------------------------------------- Public Methods
 
 
 	// DbForms specific
@@ -408,10 +408,10 @@ public abstract class DbBaseHandlerTag extends BodyTagSupport {
 
 
 
-    /**
-     * Release any acquired resources.
-     */
-    public void release() {
+	/**
+	 * Release any acquired resources.
+	 */
+	public void release() {
 			super.release();
 			accessKey = null;
 			tabIndex = null;
@@ -431,10 +431,10 @@ public abstract class DbBaseHandlerTag extends BodyTagSupport {
 			onFocus = null;
 			style = null;
 			styleClass = null;
-    }
+	}
 
 
-    // ------------------------------------------------------ Protected Methods
+	// ------------------------------------------------------ Protected Methods
 
 
 
@@ -454,65 +454,95 @@ public abstract class DbBaseHandlerTag extends BodyTagSupport {
 
 
 
-	/**
-	determinates value of the html-widget.
-    */
-	protected String getFormFieldValue() {
+/**
+determinates value of the html-widget.
+*/
 
-		if(!parentForm.getFooterReached()) { // data from dataBase
+/*****************************************************************************
+ * grunikiewicz.philip@hydro.qc.ca
+ * 2001-05-31
+ *
+ * In a jsp which contains many input fields, it may be desirable, in the event of an error, to redisplay input data.
+ * (instead of refreshing the fields from the DB) Currently dbforms implements this functionality with INSERT fields only.
+ * The following describes the changes I've implemented:
+ *
+ *	- I've added a new attribute in the Form tag which sets the functionality (redisplayFieldsOnError=true/false)
+ *  - I've modified the code below to handle the redisplay of previously posted information
+ *
+ ******************************************************************************/
 
-      		Object[] currentRow = parentForm.getResultSetVector().getCurrentRowAsObjects();  // fetch database row as java objects
+protected String getFormFieldValue() {
 
-      		if(currentRow==null)
+	HttpServletRequest request = (HttpServletRequest) this.pageContext.getRequest();
+	Vector errors = (Vector) request.getAttribute("errors");
 
-      			return typicalDefaultValue();
 
-      		else {
+	// Are we in Update mode
+	if (!parentForm.getFooterReached()) { 
 
+		// Check if attribute 'redisplayFieldsOnError' has been set to true 
+		// and is this jsp displaying an error?
+		if ("true".equals(parentForm.getRedisplayFieldsOnError()) && errors != null && errors.size() > 0) {
+
+	        // Yes - redisplay posted data
+			String oldValue = ParseUtil.getParameter(request, getFormFieldName());
+			if (oldValue != null)
+				return oldValue;
+				
+			// fill out empty fields so that there are no plain field-syntax errors
+	        // on database operations...
+	        return typicalDefaultValue();
+ 
+	    } else {
+
+		    // Business as usual - get data from DB
+			Object[] currentRow = parentForm.getResultSetVector().getCurrentRowAsObjects();
+			
+			// fetch database row as java objects
+			if (currentRow == null)
+				return typicalDefaultValue(); 
+			else {
 				Object curVal = currentRow[field.getId()];
-
 				String curStr = null;
-				if(curVal!=null) {
-				  if(this.format != null)
-					curStr = format.format(curVal);
-				  else
-				    curStr = curVal.toString();
-				}
+				 
+				if (curVal != null) {
+					 if (this.format != null)
+						curStr = format.format(curVal); 
+					 else
+						curStr = curVal.toString(); }
 
-				if(curStr!=null) curStr = curStr.trim();
-
-      			return (curVal!=null && curStr!=null && curStr.length()>0) ? curStr : typicalDefaultValue();
-		    }
-
-		} else { // the form field is in 'insert-mode'
-
-			if(value != null) {
-
-				return value;  // default value defined by jsp-developer (provided via the "value" attribute of the tag)
-
-			} else {
-
-				//#fixme: perform jsp/form equality check to avoid confision in cross-jsp actions
-
-				HttpServletRequest request = (HttpServletRequest) this.pageContext.getRequest();
-
-				Vector errors = (Vector) request.getAttribute("errors");
-				if(errors!=null && errors.size()>0) { // an insert error occured. this is the typical use case for automatic field-repopulation
-
-					String oldValue = ParseUtil.getParameter(request, getFormFieldName());
-					if(oldValue!=null)
-						return oldValue;
-
-				}
-
-				// fill out empty fields so that there are no plain field-syntax errors
-				// on database operations...
-				return typicalDefaultValue();
-
-			}
+				if (curStr != null)
+					 curStr = curStr.trim();
+					 
+				return (curVal != null && curStr != null && curStr.length() > 0) ? curStr : typicalDefaultValue();}
 		}
 
+	} else { 
+	    
+	    // the form field is in 'insert-mode'
+
+
+	    //JOACHIM! CAN THE FOLLOWING LINE BE REMOVED? IT SEEMS TO BE OBSOLETE...
+	
+	    if (value != null) // default value defined by jsp-developer (provided via the "value" attribute of the tag)
+			return value;
+
+
+
+			
+		else { //#fixme: perform jsp/form equality check to avoid confision in cross-jsp actions
+			if (errors != null && errors.size() > 0) {
+	            
+				// an insert error occured. this is the typical use case for automatic field-repopulation
+  		        String oldValue = ParseUtil.getParameter(request, getFormFieldName());
+  		        
+				if (oldValue != null)
+					return oldValue;} // fill out empty fields so that there are no plain field-syntax errors
+			
+				// on database operations...
+				 return typicalDefaultValue();}
 	}
+}
 
   /**
   generates the decoded name for the html-widget.
@@ -523,11 +553,11 @@ public abstract class DbBaseHandlerTag extends BodyTagSupport {
 
 		StringBuffer buf = new StringBuffer();
 		buf.append("f_");
-    	buf.append(parentForm.getTable().getId());
-    	buf.append("_");
-    	buf.append(keyIndex);
-    	buf.append("_");
-    	buf.append(field.getId());
+		buf.append(parentForm.getTable().getId());
+		buf.append("_");
+		buf.append(keyIndex);
+		buf.append("_");
+		buf.append(field.getId());
 		return buf.toString();
 	}
 
@@ -537,175 +567,175 @@ public abstract class DbBaseHandlerTag extends BodyTagSupport {
 	protected String getSearchFieldName() {
 		StringBuffer buf = new StringBuffer();
 		buf.append("search_");
-    	buf.append(parentForm.getTable().getId());
-    	buf.append("_");
-    	buf.append(field.getId());
+		buf.append(parentForm.getTable().getId());
+		buf.append("_");
+		buf.append(field.getId());
 		return buf.toString();
 	}
 
 	protected String getSearchModeTag() {
 		StringBuffer buf = new StringBuffer();
 		buf.append("<input type=\"hidden\" name=\"searchmode_");
-    	buf.append(parentForm.getTable().getId());
-    	buf.append("_");
-    	buf.append(field.getId());
-    	buf.append("\" value=\"");
-    	buf.append(searchMode);
-    	buf.append("\">");
+		buf.append(parentForm.getTable().getId());
+		buf.append("_");
+		buf.append(field.getId());
+		buf.append("\" value=\"");
+		buf.append(searchMode);
+		buf.append("\">");
 		return buf.toString();
 	}
 */
 
-    /**
-     * Prepares the style attributes for inclusion in the component's HTML tag.
-     * @return The prepared String for inclusion in the HTML tag.
-     */
-    protected String prepareStyles() {
-        StringBuffer styles = new StringBuffer();
-        if (style != null) {
-            styles.append(" style=\"");
-            styles.append(style);
-            styles.append("\"");
-        }
-        if (styleClass != null) {
-            styles.append(" class=\"");
-            styles.append(styleClass);
-            styles.append("\"");
-        }
-        return styles.toString();
-    }
+	/**
+	 * Prepares the style attributes for inclusion in the component's HTML tag.
+	 * @return The prepared String for inclusion in the HTML tag.
+	 */
+	protected String prepareStyles() {
+		StringBuffer styles = new StringBuffer();
+		if (style != null) {
+			styles.append(" style=\"");
+			styles.append(style);
+			styles.append("\"");
+		}
+		if (styleClass != null) {
+			styles.append(" class=\"");
+			styles.append(styleClass);
+			styles.append("\"");
+		}
+		return styles.toString();
+	}
 
-    /**
-     * Prepares the event handlers for inclusion in the component's HTML tag.
-     * @return The prepared String for inclusion in the HTML tag.
-     */
-    protected String prepareEventHandlers() {
-        StringBuffer handlers = new StringBuffer();
-        prepareMouseEvents(handlers);
-        prepareKeyEvents(handlers);
-        prepareTextEvents(handlers);
-        prepareFocusEvents(handlers);
-        return handlers.toString();
-    }
-
-
-    // -------------------------------------------------------- Private Methods
+	/**
+	 * Prepares the event handlers for inclusion in the component's HTML tag.
+	 * @return The prepared String for inclusion in the HTML tag.
+	 */
+	protected String prepareEventHandlers() {
+		StringBuffer handlers = new StringBuffer();
+		prepareMouseEvents(handlers);
+		prepareKeyEvents(handlers);
+		prepareTextEvents(handlers);
+		prepareFocusEvents(handlers);
+		return handlers.toString();
+	}
 
 
-    /**
-     * Prepares the mouse event handlers, appending them to the the given
-     * StringBuffer.
-     * @param handlers The StringBuffer that output will be appended to.
-     */
-    private void prepareMouseEvents(StringBuffer handlers) {
-        if (onClick != null) {
-            handlers.append(" onClick=\"");
-            handlers.append(onClick);
-            handlers.append("\"");
-        }
+	// -------------------------------------------------------- Private Methods
 
-        if (onDblClick != null) {
-            handlers.append(" onDblClick=\"");
-            handlers.append(onDblClick);
-            handlers.append("\"");
-        }
 
-        if (onMouseOver != null) {
-            handlers.append(" onMouseOver=\"");
-            handlers.append(onMouseOver);
-            handlers.append("\"");
-        }
+	/**
+	 * Prepares the mouse event handlers, appending them to the the given
+	 * StringBuffer.
+	 * @param handlers The StringBuffer that output will be appended to.
+	 */
+	private void prepareMouseEvents(StringBuffer handlers) {
+		if (onClick != null) {
+			handlers.append(" onClick=\"");
+			handlers.append(onClick);
+			handlers.append("\"");
+		}
 
-        if (onMouseOut != null) {
-            handlers.append(" onMouseOut=\"");
-            handlers.append(onMouseOut);
-            handlers.append("\"");
-        }
+		if (onDblClick != null) {
+			handlers.append(" onDblClick=\"");
+			handlers.append(onDblClick);
+			handlers.append("\"");
+		}
 
-        if (onMouseMove != null) {
-            handlers.append(" onMouseMove=\"");
-            handlers.append(onMouseMove);
-            handlers.append("\"");
-        }
+		if (onMouseOver != null) {
+			handlers.append(" onMouseOver=\"");
+			handlers.append(onMouseOver);
+			handlers.append("\"");
+		}
 
-        if (onMouseDown != null) {
-            handlers.append(" onMouseDown=\"");
-            handlers.append(onMouseDown);
-            handlers.append("\"");
-        }
+		if (onMouseOut != null) {
+			handlers.append(" onMouseOut=\"");
+			handlers.append(onMouseOut);
+			handlers.append("\"");
+		}
 
-        if (onMouseUp != null) {
-            handlers.append(" onMouseUp=\"");
-            handlers.append(onMouseUp);
-            handlers.append("\"");
-        }
-    }
+		if (onMouseMove != null) {
+			handlers.append(" onMouseMove=\"");
+			handlers.append(onMouseMove);
+			handlers.append("\"");
+		}
 
-    /**
-     * Prepares the keyboard event handlers, appending them to the the given
-     * StringBuffer.
-     * @param handlers The StringBuffer that output will be appended to.
-     */
-    private void prepareKeyEvents(StringBuffer handlers) {
+		if (onMouseDown != null) {
+			handlers.append(" onMouseDown=\"");
+			handlers.append(onMouseDown);
+			handlers.append("\"");
+		}
 
-        if (onKeyDown != null) {
-            handlers.append(" onKeyDown=\"");
-            handlers.append(onKeyDown);
-            handlers.append("\"");
-        }
+		if (onMouseUp != null) {
+			handlers.append(" onMouseUp=\"");
+			handlers.append(onMouseUp);
+			handlers.append("\"");
+		}
+	}
 
-        if (onKeyUp != null) {
-            handlers.append(" onKeyUp=\"");
-            handlers.append(onKeyUp);
-            handlers.append("\"");
-        }
+	/**
+	 * Prepares the keyboard event handlers, appending them to the the given
+	 * StringBuffer.
+	 * @param handlers The StringBuffer that output will be appended to.
+	 */
+	private void prepareKeyEvents(StringBuffer handlers) {
 
-        if (onKeyPress != null) {
-            handlers.append(" onKeyPress=\"");
-            handlers.append(onKeyPress);
-            handlers.append("\"");
-        }
-    }
+		if (onKeyDown != null) {
+			handlers.append(" onKeyDown=\"");
+			handlers.append(onKeyDown);
+			handlers.append("\"");
+		}
 
-    /**
-     * Prepares the text event handlers, appending them to the the given
-     * StringBuffer.
-     * @param handlers The StringBuffer that output will be appended to.
-     */
-    private void prepareTextEvents(StringBuffer handlers) {
+		if (onKeyUp != null) {
+			handlers.append(" onKeyUp=\"");
+			handlers.append(onKeyUp);
+			handlers.append("\"");
+		}
 
-        if (onSelect != null) {
-            handlers.append(" onSelect=\"");
-            handlers.append(onSelect);
-            handlers.append("\"");
-        }
+		if (onKeyPress != null) {
+			handlers.append(" onKeyPress=\"");
+			handlers.append(onKeyPress);
+			handlers.append("\"");
+		}
+	}
 
-        if (onChange != null) {
-            handlers.append(" onChange=\"");
-            handlers.append(onChange);
-            handlers.append("\"");
-        }
-    }
+	/**
+	 * Prepares the text event handlers, appending them to the the given
+	 * StringBuffer.
+	 * @param handlers The StringBuffer that output will be appended to.
+	 */
+	private void prepareTextEvents(StringBuffer handlers) {
 
-    /**
-     * Prepares the focus event handlers, appending them to the the given
-     * StringBuffer.
-     * @param handlers The StringBuffer that output will be appended to.
-     */
-    private void prepareFocusEvents(StringBuffer handlers) {
+		if (onSelect != null) {
+			handlers.append(" onSelect=\"");
+			handlers.append(onSelect);
+			handlers.append("\"");
+		}
 
-        if (onBlur != null) {
-            handlers.append(" onBlur=\"");
-            handlers.append(onBlur);
-            handlers.append("\"");
-        }
+		if (onChange != null) {
+			handlers.append(" onChange=\"");
+			handlers.append(onChange);
+			handlers.append("\"");
+		}
+	}
 
-        if (onFocus != null) {
-            handlers.append(" onFocus=\"");
-            handlers.append(onFocus);
-            handlers.append("\"");
-        }
-    }
+	/**
+	 * Prepares the focus event handlers, appending them to the the given
+	 * StringBuffer.
+	 * @param handlers The StringBuffer that output will be appended to.
+	 */
+	private void prepareFocusEvents(StringBuffer handlers) {
+
+		if (onBlur != null) {
+			handlers.append(" onBlur=\"");
+			handlers.append(onBlur);
+			handlers.append("\"");
+		}
+
+		if (onFocus != null) {
+			handlers.append(" onFocus=\"");
+			handlers.append(onFocus);
+			handlers.append("\"");
+		}
+	}
 
 
 

@@ -103,15 +103,15 @@ public class DbFormTag extends BodyTagSupport {
 		this.tableName = tableName;
 	this.table = config.getTableByName(tableName);
 	this.tableId = table.getId();
-  }  
+  }
 
   public String getTableName() {
 		return tableName;
-  }  
+  }
 
   public Table getTable() {
 		return table;
-  }  
+  }
 
   public void setMaxRows(String maxRows) {
 		this.maxRows = maxRows;
@@ -119,7 +119,7 @@ public class DbFormTag extends BodyTagSupport {
 		  this.count = 0;
 	else
 		  this.count = Integer.parseInt(maxRows);
-  }  
+  }
 
   public String getMaxRows() {
 		return maxRows;
@@ -129,15 +129,15 @@ public class DbFormTag extends BodyTagSupport {
 
   public int getCount() {
 	 	return count;
-  }  
+  }
 
   public int getCurrentCount() {
 	 	return currentCount;
-  }  
+  }
 
   public void increaseCurrentCount() {
 		  currentCount++;
-  }  
+  }
 
   // this method gets called at every body-evaluation in order to keep pos.path up-to-date
   public void updatePositionPath() {
@@ -146,18 +146,18 @@ public class DbFormTag extends BodyTagSupport {
 	positionPathBuf.append("@");
 	positionPathBuf.append(this.positionPathCore);
 	this.positionPath = positionPathBuf.toString(); // ie. "5" + "@" + "root", "5" + "@" + "123@35@root"
-  }  
+  }
 
 
   public String getPositionPath() {
 	   return positionPath;
-  }  
+  }
 
   public String getPositionPathCore() {
 
 	   return  positionPathCore; // ie.  "root",  "123@35@root"
 
-  }  
+  }
 
 
 
@@ -191,19 +191,19 @@ public class DbFormTag extends BodyTagSupport {
 
   public void setParentField(String parentField) {
 		this.parentField = parentField;
-  }  
+  }
 
   public String getParentField() {
 	return parentField;
-  }  
+  }
 
   public void setChildField(String childField) {
 	this.childField = childField;
-  }  
+  }
 
   public String getChildField() {
 	return childField;
-  }  
+  }
 
 
 
@@ -297,7 +297,7 @@ public class DbFormTag extends BodyTagSupport {
 
   public ResultSetVector getResultSetVector() {
 	return resultSetVector;
-  }  
+  }
 
 	public boolean isSubForm() {
 		return isSubForm;
@@ -306,13 +306,13 @@ public class DbFormTag extends BodyTagSupport {
 
    public StringBuffer getChildElementOutput() {
 	   return childElementOutput;
-   }   
+   }
 
    // this method is called by child elements (i.e. <db:body>, etc.) to append some tags
    // the cumulated string gets written at DbFormTag:doEndTag()
    public void appendToChildElementOutput(String str) {
 	  this.childElementOutput.append(str);
-   }   
+   }
 
 
 	//----------------- Taglib Lifecyle + infrastructural methods --------------------------------
@@ -815,7 +815,7 @@ public class DbFormTag extends BodyTagSupport {
 		}	else {
 			return SKIP_BODY;
 		}
-  }  
+  }
 
   public int doEndTag() throws JspException {
 	try {
@@ -837,7 +837,7 @@ public class DbFormTag extends BodyTagSupport {
 
 		logCat.info("end reached of "+tableName);
  		return EVAL_PAGE;
-  }  
+  }
 
   public void release() {
 		super.release();
@@ -997,7 +997,7 @@ Removed ~ (tilde) as a separator value
 
 ie:
 	aFieldVal~startWith%
-	
+
 
 ========================================================*/
 
@@ -1306,10 +1306,29 @@ public void initFilterFieldValues() {
 		  sb.append("_");
 		  sb.append(fieldId);
 
-		  result.put( fieldName, sb.toString() );  // in PHP slang we would say "associative array" to that :=)
+		  result.put( fieldName, sb.toString() );  // in PHP slang we would call that an "associative array" :=)
 		}
 
 		return result;
 	}
 
+	private java.lang.String redisplayFieldsOnError = "false";
+
+/**
+ * grunikiewicz.philip@hydro.qc.ca
+ * Creation date: (2001-05-31 13:11:00)
+ * @return java.lang.String
+ */
+public java.lang.String getRedisplayFieldsOnError() {
+	return redisplayFieldsOnError;
+}
+
+/**
+ * grunikiewicz.philip@hydro.qc.ca
+ * Creation date: (2001-05-31 13:11:00)
+ * @param newRedisplayFieldsOnError java.lang.String
+ */
+public void setRedisplayFieldsOnError(java.lang.String newRedisplayFieldsOnError) {
+	redisplayFieldsOnError = newRedisplayFieldsOnError;
+}
 }

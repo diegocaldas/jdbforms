@@ -28,6 +28,11 @@
             <rtexprvalue>false</rtexprvalue>
         </attribute>
         <attribute>
+            <name>redisplayFieldsOnError</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+        <attribute>
             <name>followUp</name>
             <required>true</required>
             <rtexprvalue>false</rtexprvalue>
@@ -535,7 +540,7 @@
         <attribute>
             <name>query</name>
             <required>true</required>
-            <rtexprvalue>false</rtexprvalue>
+            <rtexprvalue>true</rtexprvalue>
         </attribute>
     </tag>
     <tag>
@@ -1050,7 +1055,7 @@
         <attribute>
             <name>followUp</name>
             <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
+            <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
             <name>accessKey</name>
@@ -1075,7 +1080,7 @@
         <attribute>
             <name>onClick</name>
             <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
+            <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
             <name>onDblClick</name>
@@ -1170,7 +1175,7 @@
         <attribute>
             <name>followUp</name>
             <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
+            <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
             <name>associatedRadio</name>
@@ -1200,7 +1205,7 @@
         <attribute>
             <name>onClick</name>
             <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
+            <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
             <name>onDblClick</name>
@@ -1295,7 +1300,7 @@
         <attribute>
             <name>followUp</name>
             <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
+            <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
             <name>associatedRadio</name>
@@ -1325,7 +1330,7 @@
         <attribute>
             <name>onClick</name>
             <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
+            <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
             <name>onDblClick</name>
