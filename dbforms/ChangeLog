@@ -8,6 +8,7 @@
    - new button create factory so that you can use each button in other tags.
    - change DbFilterTag to use button create factory to render reload buttons instead of goto buttons
    - remove special handling for filter from DbFormTag.
+   - refactor class hirachie of taglibs
 
 2003-09-29
 (Henner.Kollmann@gmx.de)
