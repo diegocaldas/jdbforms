@@ -20,10 +20,12 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-package org.dbforms.config;
+package org.dbforms.event.eventtype;
 import java.util.HashMap;
 import org.apache.log4j.Category;
-import org.dbforms.event.eventtype.EventType;
+
+import org.dbforms.config.EventInfo;
+import org.dbforms.config.Table;
 
 
 

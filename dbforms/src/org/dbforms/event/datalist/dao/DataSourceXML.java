@@ -40,11 +40,11 @@ import org.w3c.dom.Node;
 
 // apache logging
 //import org.apache.log4j.Category;
+import org.dbforms.config.Constants;
 import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.Field;
+import org.dbforms.config.FieldValue;
 import org.dbforms.config.Table;
-import org.dbforms.util.Constants;
-import org.dbforms.util.FieldValue;
 import org.dbforms.util.Util;
 
 
@@ -255,7 +255,7 @@ public class DataSourceXML extends DataSource
    {
       StringBuffer buf = new StringBuffer();
       buf.append(Util.replaceRealPath(getTable().getAlias(), 
-                                      DbFormsConfigRegistry.instance().lookup()));
+                                      DbFormsConfigRegistry.instance().lookup().getRealPath()));
 
       if (filterConstraint != null)
       {

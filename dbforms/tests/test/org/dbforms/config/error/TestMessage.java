@@ -23,7 +23,8 @@
 
 package org.dbforms.config.error;
 import junit.framework.*;
-import org.dbforms.util.FieldTypes;
+
+import org.dbforms.config.FieldTypes;
 
 
 

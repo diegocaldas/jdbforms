@@ -90,7 +90,7 @@ public class DbFormTagTEI extends TagExtraInfo
             VariableInfo.NESTED),
          
          new VariableInfo(varNames[5].toString(),
-            "org.dbforms.util.ResultSetVector", true, VariableInfo.NESTED)
+            "org.dbforms.config.ResultSetVector", true, VariableInfo.NESTED)
       };
 
       return info;

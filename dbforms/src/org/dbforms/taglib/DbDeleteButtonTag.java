@@ -23,6 +23,8 @@
 package org.dbforms.taglib;
 
 import javax.servlet.jsp.JspException;
+
+import org.dbforms.config.ResultSetVector;
 import org.dbforms.util.Util;
 import org.apache.log4j.Category;
 
@@ -138,7 +140,7 @@ public class DbDeleteButtonTag extends DbBaseButtonTag
       }
 
       if (getParentForm().getFooterReached()
-               && Util.isNull(getParentForm().getResultSetVector()))
+               && ResultSetVector.isNull(getParentForm().getResultSetVector()))
       {
          // 20030521 HKK: Bug fixing, thanks to Michael Slack! 
          return SKIP_BODY;

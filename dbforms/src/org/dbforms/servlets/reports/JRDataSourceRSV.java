@@ -28,7 +28,8 @@ package org.dbforms.servlets.reports;
 import dori.jasper.engine.JRDataSource;
 import dori.jasper.engine.JRException;
 import dori.jasper.engine.JRField;
-import org.dbforms.util.ResultSetVector;
+
+import org.dbforms.config.ResultSetVector;
 import org.dbforms.util.Util;
 
 
@@ -120,7 +121,7 @@ public class JRDataSourceRSV implements JRDataSource
     */
    public boolean next() throws JRException
    {
-      if (Util.isNull(rsv))
+      if (ResultSetVector.isNull(rsv))
       {
          return false;
       }

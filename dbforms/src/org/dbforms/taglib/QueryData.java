@@ -28,7 +28,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import org.dbforms.util.ResultSetVector;
+import org.dbforms.config.ResultSetVector;
 
 import org.apache.log4j.Category;
 

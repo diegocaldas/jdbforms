@@ -532,10 +532,7 @@ public class DbFilterValueTag extends BodyTagSupport implements DataContainer, T
             {
                 isSelected =
                     "true".equals(
-                        org
-                            .dbforms
-                            .util
-                            .ParseUtil
+                            ParseUtil
                             .getEmbeddedStringWithoutDots(
                             state.customEntry,
                             2,

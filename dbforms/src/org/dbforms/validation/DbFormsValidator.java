@@ -29,8 +29,9 @@ import org.apache.commons.validator.GenericValidator;
 import org.apache.commons.validator.ValidatorAction;
 import java.util.Vector;
 import java.util.Hashtable;
+
+import org.dbforms.config.error.DbFormsErrors;
 import org.dbforms.event.ValidationException;
-import org.dbforms.util.DbFormsErrors;
 import org.apache.log4j.Category;
 
 

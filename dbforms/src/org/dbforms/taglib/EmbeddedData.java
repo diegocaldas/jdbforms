@@ -23,14 +23,14 @@
 package org.dbforms.taglib;
 
 import org.dbforms.config.DbFormsConfig;
+import org.dbforms.config.ResultSetVector;
+import org.dbforms.config.SqlUtil;
 
-import org.dbforms.util.SqlUtil;
 import org.dbforms.util.KeyValuePair;
 import org.dbforms.util.MessageResources;
 import org.dbforms.util.ReflectionUtil;
 import org.dbforms.util.Util;
 import org.dbforms.util.external.PrintfFormat;
-import org.dbforms.util.ResultSetVector;
 
 import java.util.Hashtable;
 import java.util.Vector;

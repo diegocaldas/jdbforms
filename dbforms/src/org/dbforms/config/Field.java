@@ -23,7 +23,6 @@
 package org.dbforms.config;
 
 import org.apache.log4j.Category;
-import org.dbforms.util.FieldTypes;
 
 
 
@@ -352,4 +351,33 @@ public class Field
 
       return buf.toString();
    }
+   
+	/**
+	 * Dump the fieldValue objects contained into the input FieldValue array.
+	 * 
+	 * @param fv the FieldValue array to dump
+	 * 
+	 * @return the String object containing the dumped data, or null if the
+	 *         input array is null
+	 */
+	public static final String dumpFieldValueArray(FieldValue[] fv)
+	{
+		String s = null;
+
+		if (fv != null)
+		{
+			StringBuffer sb = new StringBuffer();
+
+			for (int i = 0; i < fv.length; i++)
+			{
+				FieldValue f = fv[i];
+				sb.append("  fv[").append(i).append("] = {").append(f.toString())
+				  .append("}\n");
+			}
+
+			s = sb.toString();
+		}
+
+		return s;
+	}
 }

@@ -31,6 +31,7 @@ import javax.servlet.jsp.tagext.TagSupport;
 import org.apache.log4j.Category;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.Field;
+import org.dbforms.config.ResultSetVector;
 import org.dbforms.util.MessageResources;
 import org.dbforms.util.Util;
 
@@ -144,7 +145,7 @@ public class DbLabelTag extends TagSupport
             String fieldValue =
                 (nullFieldValue != null) ? nullFieldValue : NO_DATA;
 
-            if (!Util.isNull(parentForm.getResultSetVector()))
+            if (!ResultSetVector.isNull(parentForm.getResultSetVector()))
             {
                 Object fieldValueObj =
                     parentForm

@@ -42,11 +42,11 @@ import java.net.FileNameMap;
 import java.net.URLConnection;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.Field;
+import org.dbforms.config.FieldTypes;
+import org.dbforms.config.SqlUtil;
 import org.dbforms.config.Table;
-import org.dbforms.util.FieldTypes;
 import org.dbforms.util.FileHolder;
 import org.dbforms.util.ParseUtil;
-import org.dbforms.util.SqlUtil;
 import org.apache.log4j.Category;
 
 

@@ -25,7 +25,6 @@ package org.dbforms.util;
 import java.net.URLEncoder;
 import java.net.URLDecoder;
 import org.dbforms.util.external.PrintfFormat;
-import org.dbforms.config.DbFormsConfig;
 import java.io.UnsupportedEncodingException;
 
 
@@ -48,19 +47,6 @@ public class Util
    public static final boolean isNull(String s)
    {
       return ((s == null) || (s.trim().length() == 0));
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    * 
-    * @param rsv DOCUMENT ME!
-    * 
-    * @return DOCUMENT ME!
-    */
-   public static final boolean isNull(ResultSetVector rsv)
-   {
-      return ((rsv == null) || (rsv.size() == 0));
    }
 
 
@@ -98,20 +84,6 @@ public class Util
       return s;
    }
 
-
-   /**
-    * Replaces the occurens from REALPATH in s with config.getRealPath().
-    * 
-    * @param s       the string containing the REALPATH token
-    * @param config  the config object
-    * 
-    * @return the input string, with the REALPATH token replaced with the
-    *         realpath value taken from the config object
-    */
-   public static final String replaceRealPath(String s, DbFormsConfig config)
-   {
-      return replaceRealPath(s, config.getRealPath());
-   }
 
 
    /**
@@ -220,32 +192,5 @@ public class Util
    }
 
 
-   /**
-    * Dump the fieldValue objects contained into the input FieldValue array.
-    * 
-    * @param fv the FieldValue array to dump
-    * 
-    * @return the String object containing the dumped data, or null if the
-    *         input array is null
-    */
-   public static final String dumpFieldValueArray(FieldValue[] fv)
-   {
-      String s = null;
 
-      if (fv != null)
-      {
-         StringBuffer sb = new StringBuffer();
-
-         for (int i = 0; i < fv.length; i++)
-         {
-            FieldValue f = fv[i];
-            sb.append("  fv[").append(i).append("] = {").append(f.toString())
-              .append("}\n");
-         }
-
-         s = sb.toString();
-      }
-
-      return s;
-   }
 }

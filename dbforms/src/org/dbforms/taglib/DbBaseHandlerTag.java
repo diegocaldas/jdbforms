@@ -26,12 +26,13 @@ package org.dbforms.taglib;
 // these 3 we need for formfield auto-population
 import java.text.Format;
 import java.util.Vector;
-import org.dbforms.util.ParseUtil;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.Field;
 import org.dbforms.event.ReloadEvent;
 import org.dbforms.event.NavCopyEvent;
 import org.dbforms.event.WebEvent;
+import org.dbforms.util.ParseUtil;
+
 import javax.servlet.http.HttpServletRequest;
 
 
@@ -193,16 +194,16 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler
 			switch (field.getType())
 			{
 				//case org.dbforms.util.FieldTypes.DATE : return "0";
-				case org.dbforms.util.FieldTypes.INTEGER:
+				case org.dbforms.config.FieldTypes.INTEGER:
 					return "0";
 
-				case org.dbforms.util.FieldTypes.NUMERIC:
+				case org.dbforms.config.FieldTypes.NUMERIC:
 					return "0";
 
-				case org.dbforms.util.FieldTypes.DOUBLE:
+				case org.dbforms.config.FieldTypes.DOUBLE:
 					return "0.0";
 
-				case org.dbforms.util.FieldTypes.FLOAT:
+				case org.dbforms.config.FieldTypes.FLOAT:
 					return "0.0";
 
 				default:

@@ -249,7 +249,7 @@ public class UpdateEvent extends ValidationEvent
 				String directory = null;
 				try {
 					directory = Util.replaceRealPath(curField.getDirectory(), 
-																  DbFormsConfigRegistry.instance().lookup());
+																  DbFormsConfigRegistry.instance().lookup().getRealPath());
 				} catch (Exception e) {
 					throw new SQLException(e.getMessage());
 				}

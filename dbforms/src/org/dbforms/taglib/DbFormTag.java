@@ -43,21 +43,21 @@ import javax.servlet.jsp.tagext.Tag;
 import org.apache.commons.validator.ValidatorResources;
 import org.apache.log4j.Category;
 
-import org.dbforms.util.Util;
-import org.dbforms.util.SqlUtil;
 import org.dbforms.util.ParseUtil;
-import org.dbforms.util.FieldValue;
-import org.dbforms.util.ResultSetVector;
-import org.dbforms.util.DbFormsErrors;
+import org.dbforms.util.Util;
 import org.dbforms.util.MessageResources;
-import org.dbforms.util.FieldValues;
-import org.dbforms.util.FieldTypes;
-import org.dbforms.util.Constants;
 
+import org.dbforms.config.Constants;
 import org.dbforms.config.DbFormsConfig;
+import org.dbforms.config.FieldTypes;
+import org.dbforms.config.FieldValue;
+import org.dbforms.config.FieldValues;
+import org.dbforms.config.ResultSetVector;
+import org.dbforms.config.SqlUtil;
 import org.dbforms.config.Table;
 import org.dbforms.config.Field;
 import org.dbforms.config.GrantedPrivileges;
+import org.dbforms.config.error.DbFormsErrors;
 
 
 import org.dbforms.event.WebEvent;
@@ -1490,7 +1490,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
 			FieldValue[] filterFieldValues = null;
 			 if (!Util.isNull(filter))
 			{
-				filterFieldValues = ParseUtil.initFilterFieldValues(table, filter);
+				filterFieldValues = FieldValue.getFilterFieldArray(table, filter);
 			}
  
 
@@ -1718,7 +1718,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
 												dbConnectionName, 
                                     con);
           
-			if (Util.isNull(resultSetVector))
+			if (ResultSetVector.isNull(resultSetVector))
             {
                setFooterReached(true);
             }
@@ -1762,7 +1762,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
 
          // End of interceptor processing
          // determinate new position-strings (== value of the first and the last row of the current view)
-         if (!Util.isNull(resultSetVector))
+         if (!ResultSetVector.isNull(resultSetVector))
          {
             resultSetVector.setPointer(0);
             firstPosition = table.getPositionString(resultSetVector);
@@ -1800,7 +1800,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
          // this is a weired crazy workaround [this code is also used in DbBodyTag!!]
          // why?
          // #fixme: explaination! -> initBody, spec, jsp container synchronizing variables, etc.
-         if (!Util.isNull(resultSetVector))
+         if (!ResultSetVector.isNull(resultSetVector))
          {
             pageContext.setAttribute("rsv_" + tableName.replace('.', '_'),
                resultSetVector);
@@ -1860,7 +1860,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
     */
    public int doAfterBody() throws JspException
    {
-      if (Util.isNull(resultSetVector))
+      if (ResultSetVector.isNull(resultSetVector))
       {
          return SKIP_BODY;
       }
@@ -2023,7 +2023,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
    private void initChildFieldValues()
    {
       // if parent form has no data, we can not render a subform!
-      if (Util.isNull(parentForm.getResultSetVector()))
+      if (ResultSetVector.isNull(parentForm.getResultSetVector()))
       {
          childFieldValues = null;
 

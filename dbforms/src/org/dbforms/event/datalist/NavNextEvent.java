@@ -26,14 +26,14 @@ import javax.servlet.http.HttpServletRequest;
 import java.sql.Connection;
 import java.sql.SQLException;
 import org.apache.log4j.Category;
+import org.dbforms.config.FieldValue;
+import org.dbforms.config.ResultSetVector;
 import org.dbforms.config.Table;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.event.NavigationEvent;
 import org.dbforms.event.datalist.dao.DataSourceList;
 import org.dbforms.event.datalist.dao.DataSourceFactory;
-import org.dbforms.util.ResultSetVector;
 import org.dbforms.util.ParseUtil;
-import org.dbforms.util.FieldValue;
 import org.dbforms.util.Util;
 
 
@@ -133,7 +133,7 @@ public class NavNextEvent extends NavigationEvent
                                             table.getFieldValues(lastPosition));
       ResultSetVector   res      = qry.getNext(position, count);
 
-      if (Util.isNull(res))
+      if (ResultSetVector.isNull(res))
       {
          res = qry.getLast(count);
       }

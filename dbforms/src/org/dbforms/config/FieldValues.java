@@ -21,9 +21,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 
-package org.dbforms.util;
+package org.dbforms.config;
 import java.util.Hashtable;
 import java.util.Enumeration;
+
+import org.dbforms.util.Util;
 
 
 
@@ -144,4 +146,28 @@ public class FieldValues
 
       return result;
    }
+   
+	/**
+	 *  Dump the input FieldValues object
+	 *
+	 * @param fValues the FieldValues object to dump
+	 * @return the string representation of the FieldValues object
+	 */
+	public String toString()
+	{
+	  StringBuffer sb = new StringBuffer();
+	  sb.append("FieldValues size: ")
+		 .append(size())
+		 .append("; elements are:\n");
+
+	  Enumeration keys = keys();
+
+	  while (keys.hasMoreElements())
+	  {
+		 String key = (String) keys.nextElement();
+		 FieldValue fValue = get(key);
+		 sb.append(fValue.toString());
+	  }
+	  return sb.toString();
+	}
 }

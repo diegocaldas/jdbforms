@@ -34,22 +34,22 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Category;
 
-import org.dbforms.util.FieldTypes;
-import org.dbforms.util.FieldValue;
 import org.dbforms.util.FileHolder;
 import org.dbforms.util.ParseUtil;
-import org.dbforms.util.ResultSetVector;
-import org.dbforms.util.SqlUtil;
 import org.dbforms.util.Util;
 import org.dbforms.util.UniqueIDGenerator;
-import org.dbforms.util.FieldValues;
-import org.dbforms.util.Constants;
 import org.dbforms.util.MessageResourcesInternal;
 
+import org.dbforms.config.Constants;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.Field;
+import org.dbforms.config.FieldTypes;
+import org.dbforms.config.FieldValue;
+import org.dbforms.config.FieldValues;
 import org.dbforms.config.GrantedPrivileges;
+import org.dbforms.config.ResultSetVector;
+import org.dbforms.config.SqlUtil;
 
 import org.dbforms.event.DbEventInterceptor;
 import org.dbforms.event.MultipleValidationException;
@@ -253,7 +253,7 @@ public class InsertEvent extends ValidationEvent
 				String directory = null;
 				try {
 					directory = Util.replaceRealPath(curField.getDirectory(), 
-																  DbFormsConfigRegistry.instance().lookup());
+																  DbFormsConfigRegistry.instance().lookup().getRealPath());
 				} catch (Exception e) {
 					throw new SQLException(e.getMessage());
 				}

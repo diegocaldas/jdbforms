@@ -27,7 +27,7 @@ import org.w3c.dom.xpath.XPathResult;
 import org.w3c.dom.xpath.XPathEvaluator;
 import org.w3c.dom.xpath.XPathNSResolver;
 import org.apache.xpath.domapi.XPathEvaluatorImpl;
-import org.dbforms.util.FieldTypes;
+import org.dbforms.config.FieldTypes;
 import org.dbforms.util.TimeUtil;
 
 

@@ -30,8 +30,9 @@ import javax.servlet.jsp.JspWriter;
 
 import org.apache.log4j.Category;
 
+import org.dbforms.config.ResultSetVector;
+import org.dbforms.config.error.DbFormsErrors;
 import org.dbforms.util.Util;
-import org.dbforms.util.DbFormsErrors;
 
 
 
@@ -59,7 +60,7 @@ public class HasNoRecordsTag extends DbBaseHandlerTag
     */
    public int doStartTag() throws JspException
    {
-      if (Util.isNull(getParentForm().getResultSetVector()))
+      if (ResultSetVector.isNull(getParentForm().getResultSetVector()))
       {
          return EVAL_BODY_BUFFERED;
       }
@@ -93,8 +94,7 @@ public class HasNoRecordsTag extends DbBaseHandlerTag
                bodyContent.clearBody();
             }
 
-            String message = org.dbforms.util.XMLErrorsUtil.getXMLErrorMessage(getMessage(),
-                  errors);
+            String message = errors.getXMLErrorMessage(getMessage());
 
             if (!Util.isNull(message))
             {

@@ -28,8 +28,6 @@ import java.util.Vector;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import org.apache.log4j.Category;
-import org.dbforms.util.Constants;
-import org.dbforms.util.FieldValue;
 import org.dbforms.util.Util;
 
 

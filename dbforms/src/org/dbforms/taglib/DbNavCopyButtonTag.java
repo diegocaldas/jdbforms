@@ -23,7 +23,9 @@
 package org.dbforms.taglib;
 
 import javax.servlet.jsp.JspException;
+
 import org.dbforms.util.Util;
+import org.dbforms.config.ResultSetVector;
 import org.dbforms.event.eventtype.EventType;
 
 
@@ -46,7 +48,7 @@ public class DbNavCopyButtonTag extends DbBaseButtonTag {
       super.doStartTag();
 
 		if (getParentForm().getFooterReached()
-					&& Util.isNull(getParentForm().getResultSetVector())
+					&& ResultSetVector.isNull(getParentForm().getResultSetVector())
 					&& "false".equalsIgnoreCase(showAlwaysInFooter))
 		{
 			// 20030521 HKK: Bug fixing, thanks to Michael Slack! 

@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 
-package org.dbforms.util;
+package org.dbforms.config;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -33,9 +33,10 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import org.apache.log4j.Category;
-import org.dbforms.config.DbFormsConfigRegistry;
-import org.dbforms.config.DbFormsConfig;
-import org.dbforms.config.DbConnection;
+
+import org.dbforms.util.FileHolder;
+import org.dbforms.util.TimeUtil;
+import org.dbforms.util.Util;
 
 /**
  * <p>

@@ -22,7 +22,7 @@
  */
 package org.dbforms.taglib;
 
-import org.dbforms.util.DbFormsErrors;
+import org.dbforms.config.error.DbFormsErrors;
 import org.dbforms.util.Util;
 
 import java.io.IOException;
@@ -93,8 +93,7 @@ public class HasMoreRecordsTag extends DbBaseHandlerTag
                bodyContent.clearBody();
             }
 
-            String message = org.dbforms.util.XMLErrorsUtil.getXMLErrorMessage(getMessage(),
-                  errors);
+            String message = errors.getXMLErrorMessage(getMessage());
 
             if (!Util.isNull(message))
             {

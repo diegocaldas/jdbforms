@@ -32,10 +32,10 @@ import javax.servlet.jsp.tagext.TryCatchFinally;
 
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.Field;
+import org.dbforms.config.FieldValue;
+import org.dbforms.config.FieldValues;
 import org.dbforms.config.Table;
 
-import org.dbforms.util.FieldValue;
-import org.dbforms.util.FieldValues;
 import org.dbforms.util.Util;
 
 import org.apache.log4j.Category;

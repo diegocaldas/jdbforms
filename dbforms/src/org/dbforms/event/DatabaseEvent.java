@@ -33,13 +33,13 @@ import java.util.Vector;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
+import org.dbforms.config.Constants;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.Field;
+import org.dbforms.config.FieldTypes;
+import org.dbforms.config.FieldValue;
+import org.dbforms.config.FieldValues;
 
-import org.dbforms.util.Constants;
-import org.dbforms.util.FieldTypes;
-import org.dbforms.util.FieldValue;
-import org.dbforms.util.FieldValues;
 import org.dbforms.util.ParseUtil;
 import org.dbforms.util.Util;
 

@@ -26,7 +26,7 @@ import javax.servlet.jsp.JspException;
 
 import javax.servlet.jsp.tagext.BodyTagSupport;
 
-import org.dbforms.util.ResultSetVector;
+import org.dbforms.config.ResultSetVector;
 import org.dbforms.util.Util;
 import org.apache.log4j.Category;
 import java.io.UnsupportedEncodingException;
@@ -82,7 +82,7 @@ public class DbBodyTag extends BodyTagSupport
       // the body may be rendered under the following circumstances:
       // - resultSetVector > 0 => render a row
       // - resultSetVector == 0 && allowNew==true => insert a new row
-      if (Util.isNull(myParent.getResultSetVector()))
+      if (ResultSetVector.isNull(myParent.getResultSetVector()))
       {
          myParent.setFooterReached(true);
 
@@ -101,7 +101,7 @@ public class DbBodyTag extends BodyTagSupport
       //
       ResultSetVector rsv = myParent.getResultSetVector();
 
-      if (!Util.isNull(rsv))
+      if (!ResultSetVector.isNull(rsv))
       {
          if (rsv.getPointer() < (rsv.size() - 1))
          {
@@ -155,7 +155,7 @@ public class DbBodyTag extends BodyTagSupport
       }
       myParent.increaseCurrentCount();
 
-      if (!Util.isNull(myParent.getResultSetVector()))
+      if (!ResultSetVector.isNull(myParent.getResultSetVector()))
       {
          myParent.getResultSetVector().increasePointer();
       }

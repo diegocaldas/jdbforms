@@ -32,16 +32,17 @@ import java.sql.Types;
 import java.sql.Clob;
 import java.util.Vector;
 import java.util.Enumeration;
+
+import org.dbforms.config.Constants;
 import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.Field;
+import org.dbforms.config.FieldTypes;
+import org.dbforms.config.FieldValue;
+import org.dbforms.config.FieldValues;
+import org.dbforms.config.ResultSetVector;
+import org.dbforms.config.SqlUtil;
 import org.dbforms.config.Table;
-import org.dbforms.util.FieldTypes;
-import org.dbforms.util.Constants;
-import org.dbforms.util.FieldValue;
 import org.dbforms.util.FileHolder;
-import org.dbforms.util.ResultSetVector;
-import org.dbforms.util.SqlUtil;
-import org.dbforms.util.FieldValues;
 import org.dbforms.util.UniqueIDGenerator;
 import org.dbforms.util.Util;
 
@@ -685,7 +686,7 @@ public class DataSourceJDBC extends DataSource
          ResultSetVector rsv = new ResultSetVector(getTable().getDiskblobs(), 
                                                    diskblobs);
 
-         if (!Util.isNull(rsv))
+         if (!ResultSetVector.isNull(rsv))
          {
             rsv.setPointer(0);
             fieldValues = rsv.getCurrentRowAsFieldValues();

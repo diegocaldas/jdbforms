@@ -32,9 +32,9 @@ import org.dbforms.config.EventInfo;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.Table;
 import org.dbforms.config.DbFormsConfigRegistry;
-import org.dbforms.config.TableEvents;
 import org.dbforms.event.eventtype.EventType;
 import org.dbforms.event.eventtype.EventTypeUtil;
+import org.dbforms.event.eventtype.TableEvents;
 
 
 

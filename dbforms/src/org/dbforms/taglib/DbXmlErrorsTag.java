@@ -40,7 +40,7 @@ import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.TagSupport;
 
-import org.dbforms.util.DbFormsErrors;
+import org.dbforms.config.error.DbFormsErrors;
 import org.apache.log4j.Category;
 
 
@@ -140,8 +140,7 @@ public class DbXmlErrorsTag extends TagSupport
          {
             Exception ex = (Exception) enum.nextElement();
 
-            String    result = org.dbforms.util.XMLErrorsUtil
-               .getXMLErrorMessage(ex.getMessage(), errors);
+            String    result = errors.getXMLErrorMessage(ex.getMessage());
 
             // ignore empty messages
             if (result != null)

@@ -25,6 +25,7 @@ import javax.servlet.jsp.JspException;
 
 import org.apache.log4j.Category;
 import org.dbforms.config.DbFormsConfigRegistry;
+import org.dbforms.config.ResultSetVector;
 import org.dbforms.util.Util;
 
 /****
@@ -56,7 +57,7 @@ public class DbDateLabelTag extends DbLabelTag
         {
             Object fieldValue = NO_DATA;
 
-            if (!Util.isNull(parentForm.getResultSetVector()))
+            if (!ResultSetVector.isNull(parentForm.getResultSetVector()))
             {
                 Object[] currentRow =
                     parentForm.getResultSetVector().getCurrentRowAsObjects();

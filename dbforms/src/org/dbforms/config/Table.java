@@ -35,17 +35,12 @@ import java.sql.Statement;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Category;
 
-import org.dbforms.util.Constants;
-import org.dbforms.util.FieldValue;
-import org.dbforms.util.FieldValues;
-import org.dbforms.util.FieldTypes;
 import org.dbforms.util.ParseUtil;
-import org.dbforms.util.ResultSetVector;
-import org.dbforms.util.SqlUtil;
 import org.dbforms.util.Util;
 import org.dbforms.event.DbEventInterceptor;
 import org.dbforms.event.MultipleValidationException;
 import org.dbforms.event.ValidationException;
+import org.dbforms.event.eventtype.*;
 
 
 
@@ -1181,7 +1176,7 @@ public class Table
     */
    public String getKeyPositionString(ResultSetVector rsv)
    {
-      if (Util.isNull(rsv))
+      if (ResultSetVector.isNull(rsv))
       {
          return null;
       }
@@ -1286,7 +1281,7 @@ public class Table
     */
    public String getPositionString(ResultSetVector rsv)
    {
-      if (Util.isNull(rsv))
+      if (ResultSetVector.isNull(rsv))
       {
          return null;
       }

@@ -21,11 +21,16 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 
-package org.dbforms.util;
+package org.dbforms.config;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Vector;
+
 import org.apache.log4j.Category;
-import org.dbforms.config.Field;
+
+import org.dbforms.util.ParseUtil;
+import org.dbforms.util.FileHolder;
+import org.dbforms.util.Util;
 
 
 
@@ -856,6 +861,24 @@ public class FieldValue implements Cloneable
       return null;
    }
 
+	/**
+	 *  Return a String containin blank chars.
+	 *
+	 * @param len number of space characters to add
+	 * @return a String containin blank chars whose length is equal
+	 *         to $len
+	 */
+	private static String addSpaces(int len)
+	{
+	  String res = "";
+
+	  for (int i = 0; i < len; i++)
+	  {
+		 res += " ";
+	  }
+
+	  return res;
+	}
 
    /**
     * Get the String representation of this object.
@@ -866,25 +889,41 @@ public class FieldValue implements Cloneable
    {
       StringBuffer buf = new StringBuffer();
 
-      if (field != null)
-      {
-         buf.append("FieldName=");
-         buf.append(field.getName());
-      }
-
-      buf.append(", fieldValue=");
-      buf.append(fieldValue);
-      buf.append(", sortDirection=");
-      buf.append(sortDirection);
-      buf.append(", renderHiddenHtmlTag=");
-      buf.append(renderHiddenHtmlTag);
-      buf.append(", searchMode=");
-      buf.append(searchMode);
-      buf.append(", searchAlgorithm=");
-      buf.append(searchAlgorithm);
-
+		String fieldName = getField().getName();
+		buf.append(addSpaces(2))
+		  .append("field [")
+		  .append(fieldName)
+		  .append("] has value, oldvalue [")
+		  .append(getFieldValue())
+		  .append(", ")
+		  .append(getOldValue())
+		  .append("]\n");
       return buf.toString();
    }
+
+	/**
+	 *  Dump the input FieldValue array
+	 °  TO BE FINISHED !!!!
+	 * 
+	 * @param fieldValues the fieldValues array
+	 * @return the string representation of the FieldValues object
+	 */
+	public static String toString(FieldValue[] fieldValues)
+	{
+	  StringBuffer sb = new StringBuffer();
+	  sb.append("FieldValue array size: ")
+		 .append(fieldValues.length)
+		 .append("; elements are:\n");
+
+	  for (int i = 0; i < fieldValues.length; i++)
+	  {
+		 FieldValue fieldValue = fieldValues[i];
+		 sb.append(fieldValue.toString());
+	  }
+	  return sb.toString();
+	}
+
+
 
 
    /**
@@ -929,4 +968,127 @@ public class FieldValue implements Cloneable
    {
       oldValue = string;
    }
+
+	  /**
+	   * Initialize the filterFieldValues array.
+	   * @param table the table object
+	   * @param filter the filter string
+	   *
+	   * @return an initialized FieldValue array
+	   * @todo    add MORE docs here !!!
+	   */
+	  public static FieldValue[] getFilterFieldArray(Table  table,
+	                                                   String filter)
+	  {
+	    // 1 to n fields may be mapped
+	    Vector keyValPairs = ParseUtil.splitString(filter, ",;");
+	
+	    // ~ no longer used as separator!
+	    int len = keyValPairs.size();
+	
+	    FieldValue[] result = new FieldValue[len];
+	
+	    for (int i = 0; i < len; i++)
+	    {
+	      int operator = 0;
+	      boolean isLogicalOR = false;
+	      int jump = 1;
+	      String aKeyValPair = (String) keyValPairs.elementAt(i);
+	
+	      // i.e "id=2"
+	      logCat.debug("initFilterFieldValues: aKeyValPair = " + aKeyValPair);
+	
+	      // Following code could be optimized, however I did not want to make too many changes...
+	      int n;
+	
+	      // Check for Not Equal
+	      if ((n = aKeyValPair.indexOf("<>")) != -1)
+	      {
+	        // Not Equal found! - Store the operation for use later on
+	        operator = Constants.FILTER_NOT_EQUAL;
+	        jump = 2;
+	      }
+	      else if ((n = aKeyValPair.indexOf(">=")) != -1)
+	      {
+	        // Check for GreaterThanEqual
+	        // GreaterThenEqual found! - Store the operation for use later on
+	        operator = Constants.FILTER_GREATER_THEN_EQUAL;
+	        jump = 2;
+	      }
+	      else if ((n = aKeyValPair.indexOf('>')) != -1)
+	      {
+	        // Check for GreaterThan
+	        // GreaterThen found! - Store the operation for use later on
+	        operator = Constants.FILTER_GREATER_THEN;
+	      }
+	      else if ((n = aKeyValPair.indexOf("<=")) != -1)
+	      {
+	        // Check for SmallerThenEqual
+	        // SmallerThenEqual found! - Store the operation for use later on
+	        operator = Constants.FILTER_SMALLER_THEN_EQUAL;
+	        jump = 2;
+	      }
+	      else if ((n = aKeyValPair.indexOf('<')) != -1)
+	      {
+	        // Check for SmallerThen
+	        // SmallerThen found! - Store the operation for use later on
+	        operator = Constants.FILTER_SMALLER_THEN;
+	      }
+	      else if ((n = aKeyValPair.indexOf('=')) != -1)
+	      {
+	        // Check for equal
+	        // Equal found! - Store the operator for use later on
+	        operator = Constants.FILTER_EQUAL;
+	      }
+	      else if ((n = aKeyValPair.indexOf('~')) != -1)
+	      {
+	        // Check for LIKE
+	        // LIKE found! - Store the operator for use later on
+	        operator = Constants.FILTER_LIKE;
+	      }
+	      else if ((n = aKeyValPair.toUpperCase().indexOf("NOTISNULL")) != -1)
+	      {
+	        // Check for not is null
+	        // LIKE found! - Store the operator for use later on
+	        jump = 9;
+	        operator = Constants.FILTER_NOT_NULL;
+	      }
+	      else if ((n = aKeyValPair.toUpperCase().indexOf("ISNULL")) != -1)
+	      {
+	        // Check for null
+	        // LIKE found! - Store the operator for use later on
+	        jump = 6;
+	        operator = Constants.FILTER_NULL;
+	      }
+	
+	      //  PG - At this point, I have set my operator and I should have a valid index.
+	      //	Note that the original code did not handle the posibility of not finding an index
+	      //	(value = -1)...
+	      String fieldName = aKeyValPair.substring(0, n).trim();
+	
+	      // i.e "id"
+	      logCat.debug("Filter field=" + fieldName);
+	
+	      if (fieldName.charAt(0) == '|')
+	      {
+	        // This filter must be associated to a logical OR, clean out the indicator...
+	        fieldName = fieldName.substring(1);
+	        isLogicalOR = true;
+	      }
+	
+	      Field filterField = table.getFieldByName(fieldName);
+	
+	      // Increment by 1 or 2 depending on operator
+	      String value = aKeyValPair.substring(n + jump).trim();
+	
+	      // i.e. "2"
+	      logCat.debug("Filter value=" + value);
+	
+	      // Create a new instance of FieldValue and set the operator variable
+	      result[i] = new FieldValue(filterField, value, operator, isLogicalOR);
+	      logCat.debug("and fv is =" + result[i].toString());
+	    }
+	
+	    return result;
+	  }
 }

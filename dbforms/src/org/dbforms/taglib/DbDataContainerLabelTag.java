@@ -31,6 +31,7 @@ import javax.servlet.jsp.tagext.BodyTagSupport;
 import org.apache.log4j.Category;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.Field;
+import org.dbforms.config.ResultSetVector;
 import org.dbforms.util.KeyValuePair;
 import org.dbforms.util.MessageResources;
 import org.dbforms.util.Util;
@@ -152,7 +153,7 @@ public class DbDataContainerLabelTag
             String fieldValue = "[no data]";
 
             // "fieldValue" is the variable actually printed out
-            if (!Util.isNull(parentForm.getResultSetVector()))
+            if (!ResultSetVector.isNull(parentForm.getResultSetVector()))
             {
                 //String[] currentRow = parentForm.getResultSetVector().getCurrentRow();
                 //fieldValue = currentRow[field.getId()];

@@ -30,12 +30,12 @@ import java.sql.SQLException;
 import org.apache.log4j.Category;
 import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.Field;
+import org.dbforms.config.FieldTypes;
+import org.dbforms.config.FieldValue;
+import org.dbforms.config.FieldValues;
+import org.dbforms.config.ResultSetVector;
 import org.dbforms.config.Table;
-import org.dbforms.util.FieldValue;
-import org.dbforms.util.FieldTypes;
-import org.dbforms.util.FieldValues;
 import org.dbforms.util.FileHolder;
-import org.dbforms.util.ResultSetVector;
 import org.dbforms.util.Util;
 
 
@@ -476,7 +476,7 @@ public abstract class DataSource
             {
                directory = Util.replaceRealPath(curField.getDirectory(), 
                                                 DbFormsConfigRegistry.instance()
-                                                                     .lookup());
+                                                                     .lookup().getRealPath());
             }
             catch (Exception e)
             {
@@ -570,7 +570,7 @@ public abstract class DataSource
             {
                directory = Util.replaceRealPath(curField.getDirectory(), 
                                                 DbFormsConfigRegistry.instance()
-                                                                     .lookup());
+                                                                     .lookup().getRealPath());
             }
             catch (Exception e)
             {

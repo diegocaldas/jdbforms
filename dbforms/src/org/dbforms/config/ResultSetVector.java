@@ -21,14 +21,14 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 
-package org.dbforms.util;
+package org.dbforms.config;
 import java.util.Vector;
 import java.util.Hashtable;
 import java.sql.Types;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.Clob;
-import org.dbforms.config.Field;
+
 import org.apache.log4j.Category;
 
 
@@ -65,6 +65,18 @@ public class ResultSetVector
    private static Category logCat = Category.getInstance(
                                      ResultSetVector.class.getName());
 
+	/**
+	 * Checks if the given ResultSetVector is null
+	 * 
+	 * @param rsv ResultSetVector to check
+	 * 
+	 * @return true if ResultSetVector is null
+	 */
+	public static final boolean isNull(ResultSetVector rsv)
+	{
+		return ((rsv == null) || (rsv.size() == 0));
+	}
+
    // logging category for this class
    private int       pointer               = 0;
    private Vector    selectFields;
@@ -88,9 +100,9 @@ public class ResultSetVector
    /**
     * Creates a new ResultSetVector object.
     * 
-    * @param rs DOCUMENT ME!
+    * @param rs data to fill the ResutlSetVector with
     * 
-    * @throws java.sql.SQLException DOCUMENT ME!
+    * @throws java.sql.SQLException thrown exception
     */
    public ResultSetVector(ResultSet rs) throws java.sql.SQLException
    {
@@ -140,13 +152,12 @@ public class ResultSetVector
 
 
    /**
-    * Creates a new ResultSetVector object.
+    * Creates a new ResultSetVector object with the given FieldList
     * 
-    * @param selectFields DOCUMENT ME!
+    * @param selectFields The FieldList to use
     * 
-    * @throws java.sql.SQLException DOCUMENT ME!
     */
-   public ResultSetVector(Vector selectFields) throws java.sql.SQLException
+   public ResultSetVector(Vector selectFields) 
    {
       this();
       this.selectFields = selectFields;
@@ -155,12 +166,12 @@ public class ResultSetVector
 
 
    /**
-    * Creates a new ResultSetVector object.
+    * Creates a new ResultSetVector object with the given FieldList and DataSet .
     * 
-    * @param selectFields DOCUMENT ME!
-    * @param rs DOCUMENT ME!
+    * @param selectFields The FieldList to use
+    * @param rs data to fill the ResutlSetVector with
     * 
-    * @throws java.sql.SQLException DOCUMENT ME!
+    * @throws java.sql.SQLException thrown exception
     */
    public ResultSetVector(Vector selectFields, ResultSet rs)
                    throws java.sql.SQLException
@@ -190,9 +201,9 @@ public class ResultSetVector
 
 
    /**
-    * DOCUMENT ME!
+    * adds a row to the ResultSetVector
     * 
-    * @param objectRow DOCUMENT ME!
+    * @param objectRow row to add
     */
    public void addRow(Object[] objectRow)
    {
@@ -221,7 +232,7 @@ public class ResultSetVector
 
    /**
     * implements size()
-    * @return DOCUMENT ME!
+    * @return the sizeof the vector
     */
    public int size()
    {
@@ -608,4 +619,5 @@ public class ResultSetVector
    {
       lastPage = b;
    }
+
 }

@@ -31,7 +31,7 @@ import java.util.Comparator;
 import java.util.Collections;
 import java.util.Enumeration;
 
-import org.dbforms.util.DbFormsErrors;
+import org.dbforms.config.error.DbFormsErrors;
 import org.dbforms.util.MessageResources;
 import org.dbforms.util.Util;
 import org.apache.commons.validator.Arg;
@@ -109,8 +109,7 @@ public class DbFormsValidatorUtil
       // 2002-09-12 HKK: Catch errors while getXMLErrorMessage!
       try
       {
-         result = org.dbforms.util.XMLErrorsUtil.getXMLErrorMessage(result,
-               errors);
+         result = errors.getXMLErrorMessage(result);
       }
       catch (Exception e)
       {

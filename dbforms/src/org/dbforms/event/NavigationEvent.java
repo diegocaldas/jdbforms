@@ -27,11 +27,11 @@ import java.sql.SQLException;
 import java.sql.Connection;
 
 import org.dbforms.config.DbFormsConfig;
+import org.dbforms.config.FieldValue;
+import org.dbforms.config.ResultSetVector;
 import org.dbforms.config.Table;
-
-import org.dbforms.util.FieldValue;
 import org.dbforms.util.ParseUtil;
-import org.dbforms.util.ResultSetVector;
+
 
 import javax.servlet.http.HttpServletRequest;
 

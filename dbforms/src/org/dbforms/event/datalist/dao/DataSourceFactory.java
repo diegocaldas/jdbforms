@@ -25,11 +25,11 @@ package org.dbforms.event.datalist.dao;
 import java.sql.Connection;
 import java.sql.SQLException;
 import org.apache.log4j.Category;
+import org.dbforms.config.FieldValue;
+import org.dbforms.config.FieldValues;
+import org.dbforms.config.ResultSetVector;
 import org.dbforms.config.Table;
-import org.dbforms.util.FieldValue;
-import org.dbforms.util.ResultSetVector;
 import org.dbforms.util.ReflectionUtil;
-import org.dbforms.util.FieldValues;
 import org.dbforms.util.Util;
 
 

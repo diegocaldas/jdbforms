@@ -27,15 +27,15 @@ import java.util.Vector;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import org.dbforms.util.ResultSetVector;
-import org.dbforms.util.ParseUtil;
-import org.dbforms.util.FieldValue;
 
+import org.dbforms.config.FieldValue;
+import org.dbforms.config.ResultSetVector;
 import org.dbforms.config.Table;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.DbFormsConfigRegistry;
 
 import org.dbforms.event.datalist.dao.DataSourceFactory;
+import org.dbforms.util.ParseUtil;
 
 import org.apache.log4j.Category;
 
@@ -185,7 +185,7 @@ public class ConfTableData extends EmbeddedData
 			DbFormsConfig config = DbFormsConfigRegistry.instance().lookup();
 			Table table = config.getTableByName(getForeignTable());
 			FieldValue[] orderConstraint = table.createOrderFieldValues(getOrderBy(), null, false);
-			FieldValue[] childFieldValues = ParseUtil.initFilterFieldValues(table, getFilter());
+			FieldValue[] childFieldValues = FieldValue.getFilterFieldArray(table, getFilter());
 			DataSourceFactory qry = new DataSourceFactory(null, con, table, childFieldValues, orderConstraint, null);
 			ResultSetVector rsv = qry.getCurrent(null, 0);
 			return formatEmbeddedResultRows(rsv);
