@@ -21,11 +21,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 
-package org.dbforms.config;
+package org.dbforms.taglib;
 
 import org.dbforms.servlets.ConfigServlet;
+import org.dbforms.config.DbFormsConfig;
+import org.dbforms.config.DbFormsConfigRegistry;
 
-import org.dbforms.taglib.DbFormTag;
 
 
 
@@ -34,7 +35,7 @@ import org.dbforms.taglib.DbFormTag;
  *
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh </a>
  */
-public class TestTableQuery extends org.apache.cactus.JspTestCase {
+public class TestFormResultSetVector extends org.apache.cactus.JspTestCase {
    private DbFormTag tag;
 
    /**

@@ -20,9 +20,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.event.classic;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -55,9 +53,8 @@ public class NavPrevEvent extends NavigationEvent {
     * @param request the request object
     * @param config the config object
     */
-   public NavPrevEvent(String             action,
-                       HttpServletRequest request,
-                       DbFormsConfig      config) {
+   public NavPrevEvent(String action, HttpServletRequest request,
+      DbFormsConfig config) {
       super(action, request, config);
    }
 
@@ -69,9 +66,8 @@ public class NavPrevEvent extends NavigationEvent {
     * @param request DOCUMENT ME!
     * @param config the config object
     */
-   public NavPrevEvent(Table              table,
-                       HttpServletRequest request,
-                       DbFormsConfig      config) {
+   public NavPrevEvent(Table table, HttpServletRequest request,
+      DbFormsConfig config) {
       super(table, request, config);
    }
 
@@ -97,30 +93,19 @@ public class NavPrevEvent extends NavigationEvent {
     * @exception SQLException if any error occurs
     */
    public ResultSetVector processEvent(FieldValue[] childFieldValues,
-                                       FieldValue[] orderConstraint,
-                                       String       sqlFilter,
-                                       FieldValue[] sqlFilterParams,
-                                       int          count,
-                                       String       firstPosition,
-                                       String       lastPosition,
-                                       String       dbConnectionName,
-                                       Connection   con)
-                                throws SQLException {
+      FieldValue[] orderConstraint, String sqlFilter,
+      FieldValue[] sqlFilterParams, int count, String firstPosition,
+      String lastPosition, DbEventInterceptorData interceptorData)
+      throws SQLException {
       logCat.info("==>NavPrevEvent");
 
       // select in inverted order everyting thats greater than firstpos
-      getTable()
-         .fillWithValues(orderConstraint, firstPosition);
+      getTable().fillWithValues(orderConstraint, firstPosition);
       FieldValue.invert(orderConstraint);
 
-      ResultSetVector resultSetVector = getTable()
-                                           .doConstrainedSelect(getTable().getFields(),
-                                                                childFieldValues,
-                                                                orderConstraint,
-                                                                sqlFilter,
-                                                                sqlFilterParams,
-                                                                Constants.COMPARE_EXCLUSIVE,
-                                                                count, con);
+      ResultSetVector resultSetVector = getTable().doConstrainedSelect(childFieldValues,
+            orderConstraint, sqlFilter, sqlFilterParams,
+            Constants.COMPARE_EXCLUSIVE, count, interceptorData);
 
       FieldValue.invert(orderConstraint);
       resultSetVector.flip();
@@ -129,13 +114,9 @@ public class NavPrevEvent extends NavigationEvent {
       if (resultSetVector.size() == 0) {
          // just select from table in given order
          logCat.info("==>NavPrevFirstEvent");
-         resultSetVector = getTable()
-                              .doConstrainedSelect(getTable().getFields(),
-                                                   childFieldValues,
-                                                   orderConstraint, sqlFilter,
-                                                   sqlFilterParams,
-                                                   Constants.COMPARE_NONE,
-                                                   count, con);
+         resultSetVector = getTable().doConstrainedSelect(childFieldValues,
+               orderConstraint, sqlFilter, sqlFilterParams,
+               Constants.COMPARE_NONE, count, interceptorData);
       }
 
       return resultSetVector;

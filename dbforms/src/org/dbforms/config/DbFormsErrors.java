@@ -20,9 +20,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.config;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -124,8 +122,7 @@ public class DbFormsErrors {
       String                   xmlMessage = null;
 
       // If message is empty, return immediately
-      if ((message == null) || (message.trim()
-                                             .length() == 0)) {
+      if ((message == null) || (message.trim().length() == 0)) {
          return null;
       }
 
@@ -133,10 +130,10 @@ public class DbFormsErrors {
       // ie: English-001:FieldName,200
       // ie: ORA-00001:Oracle Message
       try {
-         langCode  = getEmbeddedStringForErrors(message, 0, ':');
-         language  = getEmbeddedStringForErrors(langCode, 0, '-');
-         errorCode = getEmbeddedStringForErrors(langCode, 1, '-');
-         paramList = getEmbeddedStringForErrors(message, 1, ':');
+         langCode     = getEmbeddedStringForErrors(message, 0, ':');
+         language     = getEmbeddedStringForErrors(langCode, 0, '-');
+         errorCode    = getEmbeddedStringForErrors(langCode, 1, '-');
+         paramList    = getEmbeddedStringForErrors(message, 1, ':');
       } catch (Exception e) {
          //
          logCat.error("Not in proper format - do not try to convert!");
@@ -145,8 +142,7 @@ public class DbFormsErrors {
       // Reference to listing of predefined errors (xml file)
       if (errorCode != null) {
          // Error does not contain an id, ignore!				
-         if (errorCode.trim()
-                            .length() == 0) {
+         if (errorCode.trim().length() == 0) {
             return "";
          }
 
@@ -165,11 +161,11 @@ public class DbFormsErrors {
          }
 
          return xmlMessage;
-      } else {
-         // An error has occured, 
-         // however a custom error messages is not available		
-         return message;
       }
+
+      // An error has occured, 
+      // however a custom error messages is not available		
+      return message;
    }
 
 
@@ -204,9 +200,8 @@ public class DbFormsErrors {
     *
     * @return DOCUMENT ME!
     */
-   private String getEmbeddedStringForErrors(String str,
-                                             int    afterDelims,
-                                             char   delim) {
+   private String getEmbeddedStringForErrors(String str, int afterDelims,
+      char delim) {
       int lastIndex = 0;
 
       for (int i = 0; i < afterDelims; i++) {
@@ -232,8 +227,7 @@ public class DbFormsErrors {
     *
     * @return DOCUMENT ME!
     */
-   private String insertParametersInString(String xmlMessage,
-                                           String paramList) {
+   private String insertParametersInString(String xmlMessage, String paramList) {
       // Check if their are parameters expected
       int pos = xmlMessage.indexOf(PARAMETER_DELIMITER);
 

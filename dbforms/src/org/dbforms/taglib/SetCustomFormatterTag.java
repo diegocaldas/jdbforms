@@ -41,7 +41,7 @@ import org.dbforms.util.ReflectionUtil;
 public class SetCustomFormatterTag extends TagSupportWithScriptHandler
    implements javax.servlet.jsp.tagext.TryCatchFinally {
    
-   static final String sessionKey = "Tag.CustomFormatter.map";
+   static final String sessionKey = "dbforms.org.tag.CustomFormatterTag";
    
    Object              arg       = null;
    String              className = null;
@@ -53,7 +53,7 @@ public class SetCustomFormatterTag extends TagSupportWithScriptHandler
     * @param obj
     */
    public void setArg(Object obj) {
-      this.arg = obj;
+      this.arg = obj; 
    }
 
 

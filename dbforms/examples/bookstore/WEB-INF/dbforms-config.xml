@@ -23,6 +23,9 @@
 		  <field name="ISBN" fieldType="varchar"/>
 		  <field name="TITLE" fieldType="varchar"/>
 		  <search name="AUTHOR_ID" fieldType="int" isKey="true" />
+		  <calc name="ISBN_TITLE" fieldType="varchar" />
+		  <calc name="ROW_NUM" fieldType="int" />
+          <interceptor className = "interceptors.BookstoreCalcFieldAndSearchInterceptor"/>                
 		</query>
             
         <query name="BOOK_QUERY" from="BOOK">
@@ -122,7 +125,10 @@
             <interceptor className = "interceptors.BLOBTESTEventInterceptor"/>                
 		</table>
 
-        <query name="BOOK_QUERY_WHERE" from="BOOK" where="BOOK_ID=1">
+        <query name="BOOK_QUERY_WHERE" 
+			from="BOOK" 
+			where="BOOK_ID=1"
+		>
             <field name="BOOK_ID" fieldType="int" isKey="true" autoInc="true"/>
 	        <field name="ISBN" fieldType="varchar" />
 	        <field name="AUTHOR_ID" fieldType="int" isKey="true" />

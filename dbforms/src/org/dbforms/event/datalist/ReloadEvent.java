@@ -20,9 +20,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.event.datalist;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
+import org.dbforms.config.DbEventInterceptorData;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.FieldValue;
 import org.dbforms.config.ResultSetVector;
@@ -30,10 +32,9 @@ import org.dbforms.config.Table;
 
 import org.dbforms.event.NavigationEvent;
 import org.dbforms.event.datalist.dao.DataSourceFactory;
-import org.dbforms.event.datalist.dao.DataSourceList;
+import org.dbforms.event.datalist.dao.DataSourceSessionList;
 import org.dbforms.event.eventtype.EventType;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -47,8 +48,9 @@ import javax.servlet.http.HttpServletRequest;
  * @author Henner Kollmann
  */
 public class ReloadEvent extends NavigationEvent {
-   private boolean isForce  = false;
-   private boolean isInsert = false;
+   private static Log logCat   = LogFactory.getLog(ReloadEvent.class.getName()); // logging category for this class
+   private boolean    isForce  = false;
+   private boolean    isInsert = false;
 
    /**
     * Creates a new ReloadEvent object.
@@ -57,12 +59,11 @@ public class ReloadEvent extends NavigationEvent {
     * @param request the request object
     * @param config the configuration object
     */
-   public ReloadEvent(String             action,
-                      HttpServletRequest request,
-                      DbFormsConfig      config) {
+   public ReloadEvent(String action, HttpServletRequest request,
+      DbFormsConfig config) {
       super(action, request, config);
-      isForce  = action.indexOf("_force_") > 0;
-      isInsert = !isForce && (action.indexOf("_ins_") > 0);
+      isForce     = action.indexOf("_force_") > 0;
+      isInsert    = !isForce && (action.indexOf("_ins_") > 0);
    }
 
 
@@ -73,9 +74,8 @@ public class ReloadEvent extends NavigationEvent {
     * @param request the request object
     * @param config the configuration object
     */
-   public ReloadEvent(Table              table,
-                      HttpServletRequest request,
-                      DbFormsConfig      config) {
+   public ReloadEvent(Table table, HttpServletRequest request,
+      DbFormsConfig config) {
       super(table, request, config);
    }
 
@@ -101,23 +101,18 @@ public class ReloadEvent extends NavigationEvent {
     * @exception SQLException if any error occurs
     */
    public ResultSetVector processEvent(FieldValue[] filterFieldValues,
-                                       FieldValue[] orderConstraint,
-                                       String       sqlFilter,
-                                       FieldValue[] sqlFilterParams,
-                                       int          count,
-                                       String       firstPosition,
-                                       String       lastPosition,
-                                       String       dbConnectionName,
-                                       Connection   con)
-                                throws SQLException {
+      FieldValue[] orderConstraint, String sqlFilter,
+      FieldValue[] sqlFilterParams, int count, String firstPosition,
+      String lastPosition, DbEventInterceptorData interceptorData)
+      throws SQLException {
       if (isInsert) {
          return null;
       } else {
          logCat.info("==>NavCurrentEvent.processEvent");
 
-         DataSourceList    ds       = DataSourceList.getInstance(getRequest());
-         DataSourceFactory qry      = null;
-         String            position = null;
+         DataSourceSessionList ds       = DataSourceSessionList.getInstance(getRequest());
+         DataSourceFactory     qry      = null;
+         String                position = null;
 
          if (isForce) {
             setType(EventType.EVENT_NAVIGATION_FORCERELOAD);
@@ -127,20 +122,22 @@ public class ReloadEvent extends NavigationEvent {
          }
 
          if (qry == null) {
-            qry = new DataSourceFactory(dbConnectionName, con, getTable());
+            qry = new DataSourceFactory((String) interceptorData.getAttribute(
+                     DbEventInterceptorData.CONNECTIONNAME),
+                  interceptorData.getConnection(), getTable());
             qry.setSelect(filterFieldValues, orderConstraint, sqlFilter,
-                          sqlFilterParams);
+               sqlFilterParams);
             ds.put(getTable(), getRequest(), qry);
          }
 
          position = (count == 0) ? null
-                                 : getTable()
-                                      .getKeyPositionString(getTable().getFieldValues(lastPosition));
+                                 : getTable().getKeyPositionString(getTable()
+                                                                      .getFieldValues(lastPosition));
 
-         ResultSetVector res = qry.getCurrent(position, count);
+         ResultSetVector res = qry.getCurrent(interceptorData, position, count);
 
          if (ResultSetVector.isNull(res)) {
-            res = qry.getLast(count);
+            res = qry.getLast(interceptorData, count);
          }
 
          return res;

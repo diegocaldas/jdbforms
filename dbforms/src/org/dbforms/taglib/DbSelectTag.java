@@ -118,8 +118,8 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer,
     *
     * @return
     */
-   public boolean isIfEmptyDontDraw() {
-      return ifEmptyDontDraw.equalsIgnoreCase("true");
+   public boolean hasIfEmptyDontDrawSet() {
+      return Util.getTrue(ifEmptyDontDraw);
    }
 
 
@@ -264,7 +264,7 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer,
          String  me = null;
 
          if (embeddedDataSize == 0) {
-            if (isIfEmptyDontDraw()) {
+            if (hasIfEmptyDontDrawSet()) {
                drawIt = false;
             } else if ((me = getIfEmptyItem()) != null) {
                drawIt = false;
@@ -341,7 +341,7 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer,
          .addChildName(getName(), getFormFieldName());
 
       try {
-         if ((embeddedDataSize > 0) || !isIfEmptyDontDraw()) {
+         if ((embeddedDataSize > 0) || !hasIfEmptyDontDrawSet()) {
             pageContext.getOut()
                        .write(generateSelectHeader());
             pageContext.getOut()

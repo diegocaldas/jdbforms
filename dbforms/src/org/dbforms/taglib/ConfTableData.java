@@ -20,9 +20,8 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.taglib;
-
+import org.dbforms.config.DbEventInterceptorData;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.FieldValue;
@@ -35,6 +34,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 
 
@@ -185,18 +186,22 @@ public class ConfTableData extends EmbeddedData
     */
    protected List fetchData(Connection con) throws SQLException {
       try {
-         DbFormsConfig config = DbFormsConfigRegistry.instance()
-                                                     .lookup();
+         DbFormsConfig config = DbFormsConfigRegistry.instance().lookup();
          Table         table           = config.getTableByName(getForeignTable());
          FieldValue[]  orderConstraint = table.createOrderFieldValues(getOrderBy(),
-                                                                      null,
-                                                                      false);
+               null, false);
          FieldValue[]      childFieldValues = table.getFilterFieldArray(getFilter(),
-                                                                        getParentForm().getLocale());
+               getParentForm().getLocale());
          DataSourceFactory qry = new DataSourceFactory(null, con, table);
          qry.setSelect(childFieldValues, orderConstraint, null, null);
 
-         ResultSetVector rsv = qry.getCurrent(null, 0);
+         HttpServletRequest     request = (HttpServletRequest) pageContext
+            .getRequest();
+         DbEventInterceptorData data = new DbEventInterceptorData(request,
+               getConfig(), con, table);
+         data.setAttribute(DbEventInterceptorData.PAGECONTEXT,
+                pageContext);
+         ResultSetVector rsv = qry.getCurrent(data, null, 0);
          qry.close();
 
          return formatEmbeddedResultRows(rsv);

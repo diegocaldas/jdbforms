@@ -20,12 +20,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.event.datalist;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.dbforms.config.DbEventInterceptorData;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.FieldValue;
 import org.dbforms.config.ResultSetVector;
@@ -33,9 +32,8 @@ import org.dbforms.config.Table;
 
 import org.dbforms.event.NavigationEvent;
 import org.dbforms.event.datalist.dao.DataSourceFactory;
-import org.dbforms.event.datalist.dao.DataSourceList;
+import org.dbforms.event.datalist.dao.DataSourceSessionList;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -59,9 +57,8 @@ public class NavLastEvent extends NavigationEvent {
     * @param request the request object
     * @param config the config object
     */
-   public NavLastEvent(String             action,
-                       HttpServletRequest request,
-                       DbFormsConfig      config) {
+   public NavLastEvent(String action, HttpServletRequest request,
+      DbFormsConfig config) {
       super(action, request, config);
    }
 
@@ -73,9 +70,8 @@ public class NavLastEvent extends NavigationEvent {
     * @param request the request object
     * @param config the config object
     */
-   public NavLastEvent(Table              table,
-                       HttpServletRequest request,
-                       DbFormsConfig      config) {
+   public NavLastEvent(Table table, HttpServletRequest request,
+      DbFormsConfig config) {
       super(table, request, config);
    }
 
@@ -101,27 +97,24 @@ public class NavLastEvent extends NavigationEvent {
     * @exception SQLException if any error occurs
     */
    public ResultSetVector processEvent(FieldValue[] filterFieldValues,
-                                       FieldValue[] orderConstraint,
-                                       String       sqlFilter,
-                                       FieldValue[] sqlFilterParams,
-                                       int          count,
-                                       String       firstPosition,
-                                       String       lastPosition,
-                                       String       dbConnectionName,
-                                       Connection   con)
-                                throws SQLException {
+      FieldValue[] orderConstraint, String sqlFilter,
+      FieldValue[] sqlFilterParams, int count, String firstPosition,
+      String lastPosition, DbEventInterceptorData interceptorData)
+      throws SQLException {
       logCat.info("==>NavLastEvent.processEvent");
 
-      DataSourceList    ds  = DataSourceList.getInstance(getRequest());
-      DataSourceFactory qry = ds.get(getTable(), getRequest());
+      DataSourceSessionList ds  = DataSourceSessionList.getInstance(getRequest());
+      DataSourceFactory     qry = ds.get(getTable(), getRequest());
 
       if (qry == null) {
-         qry = new DataSourceFactory(dbConnectionName, con, getTable());
+         qry = new DataSourceFactory((String) interceptorData.getAttribute(
+                  DbEventInterceptorData.CONNECTIONNAME),
+               interceptorData.getConnection(), getTable());
          qry.setSelect(filterFieldValues, orderConstraint, sqlFilter,
-                       sqlFilterParams);
+            sqlFilterParams);
          ds.put(getTable(), getRequest(), qry);
       }
 
-      return qry.getLast(count);
+      return qry.getLast(interceptorData, count);
    }
 }

@@ -34,7 +34,7 @@ import org.dbforms.config.FieldValue;
 import org.dbforms.config.FieldValues;
 import org.dbforms.config.JDBCDataHelper;
 import org.dbforms.config.ResultSetVector;
-import org.dbforms.config.Table;
+import org.dbforms.config.DbEventInterceptorData;
 
 import org.dbforms.util.FileHolder;
 import org.dbforms.util.UniqueIDGenerator;
@@ -63,7 +63,7 @@ import java.util.Map;
  */
 public class DataSourceJDBC extends DataSource {
    private static Log   logCat           = LogFactory.getLog(DataSourceJDBC.class);
-   private Connection   con;
+   private Connection   connection;
    private List         data;
    private Map          keys;
    private ResultSet    rs;
@@ -84,31 +84,10 @@ public class DataSourceJDBC extends DataSource {
     *
     * @param table the inout table
     */
-   public DataSourceJDBC(Table table) {
-      super(table);
+   public DataSourceJDBC() {
       data = new ArrayList();
       keys = new HashMap();
    }
-
-   /**
-    * set the connection parameter for the DataSouce. virtual method, if you
-    * need the connection data you must override the method In this special
-    * case we need our own connection to save it in the session.
-    *
-    * @param con the JDBC Connection object
-    * @param dbConnectionName name of the used db connection. Can be used to
-    *        get an own db connection, e.g. to hold it during the session (see
-    *        DataSourceJDBC for example!)
-    */
-   public void setConnection(Connection con,
-                             String     dbConnectionName) {
-      close();
-
-      // To prevent empty connection name. We always need our own connection!
-      connectionName = Util.isNull(dbConnectionName) ? "default"
-                                                     : dbConnectionName;
-   }
-
 
    /**
     * Set the tableList and whererClause attributes used to build the SQL
@@ -161,7 +140,7 @@ public class DataSourceJDBC extends DataSource {
     *
     * @throws SQLException
     */
-   public void doDelete(Connection con,
+   public void doDelete(DbEventInterceptorData interceptorData,
                         String     keyValuesStr) throws SQLException {
       FieldValues fieldValues = null;
 
@@ -174,20 +153,20 @@ public class DataSourceJDBC extends DataSource {
          queryBuf.append(" WHERE ");
          queryBuf.append(getTable().getWhereClauseForKeyFields());
 
-         PreparedStatement diskblobsPs = con.prepareStatement(queryBuf.toString());
+         PreparedStatement diskblobsPs = interceptorData.getConnection().prepareStatement(queryBuf.toString());
 
          try {
             getTable()
                .populateWhereClauseWithKeyFields(keyValuesStr, diskblobsPs, 1);
 
             diskblobs = diskblobsPs.executeQuery();
-            try {
 
-               ResultSetVector rsv = new ResultSetVector(getTable().getDiskblobs(),
-                                                         diskblobs);
+            try {
+               ResultSetVector rsv = new ResultSetVector(getTable(), getTable().getDiskblobs());
+               rsv.addResultSet(interceptorData, diskblobs);
 
                if (!ResultSetVector.isNull(rsv)) {
-                  rsv.setPointer(0);
+                  rsv.moveFirst();
                   fieldValues = rsv.getCurrentRowAsFieldValues();
                }
             } finally {
@@ -199,7 +178,7 @@ public class DataSourceJDBC extends DataSource {
       }
 
       // 20021031-HKK: Build in table!!
-      PreparedStatement ps = con.prepareStatement(getTable().getDeleteStatement());
+      PreparedStatement ps = interceptorData.getConnection().prepareStatement(getTable().getDeleteStatement());
 
       try {
          // now we provide the values
@@ -228,9 +207,9 @@ public class DataSourceJDBC extends DataSource {
     *
     * @throws SQLException
     */
-   public void doInsert(Connection  con,
+   public void doInsert(DbEventInterceptorData interceptorData,
                         FieldValues fieldValues) throws SQLException {
-      PreparedStatement ps = con.prepareStatement(getTable().getInsertStatement(fieldValues));
+      PreparedStatement ps = interceptorData.getConnection().prepareStatement(getTable().getInsertStatement(fieldValues));
 
       try {
          // execute the query & throws an exception if something goes wrong
@@ -261,10 +240,10 @@ public class DataSourceJDBC extends DataSource {
     *
     * @throws SQLException
     */
-   public void doUpdate(Connection  con,
+   public void doUpdate(DbEventInterceptorData interceptorData,
                         FieldValues fieldValues,
                         String      keyValuesStr) throws SQLException {
-      PreparedStatement ps = con.prepareStatement(getTable().getUpdateStatement(fieldValues));
+      PreparedStatement ps = interceptorData.getConnection().prepareStatement(getTable().getUpdateStatement(fieldValues));
 
       try {
          int col = fillWithData(ps, fieldValues);
@@ -279,6 +258,26 @@ public class DataSourceJDBC extends DataSource {
 
       // now handle blob files
       saveBlobFilesToDisk(fieldValues);
+   }
+
+
+   /**
+    * set the connection parameter for the DataSouce. virtual method, if you
+    * need the connection data you must override the method In this special
+    * case we need our own connection to save it in the session.
+    *
+    * @param con the JDBC Connection object
+    * @param dbConnectionName name of the used db connection. Can be used to
+    *        get an own db connection, e.g. to hold it during the session (see
+    *        DataSourceJDBC for example!)
+    */
+   protected void setConnection(Connection con,
+                                String     dbConnectionName) {
+      close();
+
+      // To prevent empty connection name. We always need our own connection!
+      connectionName = Util.isNull(dbConnectionName) ? "default"
+                                                     : dbConnectionName;
    }
 
 
@@ -402,9 +401,9 @@ public class DataSourceJDBC extends DataSource {
     */
    protected final void open() throws SQLException {
       if (!fetchedAll && (rs == null)) {
-         if ((con == null) || con.isClosed()) {
+         if ((connection == null) || connection.isClosed()) {
             try {
-               this.con = DbFormsConfigRegistry.instance()
+               this.connection = DbFormsConfigRegistry.instance()
                                                .lookup()
                                                .getConnection(connectionName);
             } catch (Exception e) {
@@ -412,7 +411,7 @@ public class DataSourceJDBC extends DataSource {
             }
          }
 
-         if (con == null) {
+         if (connection == null) {
             throw new SQLException("no connection found!");
          }
 
@@ -421,7 +420,7 @@ public class DataSourceJDBC extends DataSource {
                        .getSelectQuery(getTable().getFields(),
                                        filterConstraint, orderConstraint,
                                        sqlFilter, Constants.COMPARE_NONE);
-            stmt = con.prepareStatement(query);
+            stmt = connection.prepareStatement(query);
 
             if (stmt == null) {
                throw new SQLException("no statement: " + query);
@@ -438,14 +437,11 @@ public class DataSourceJDBC extends DataSource {
             query = getTable()
                        .getFreeFormSelectQuery(getTable().getFields(),
                                                whereClause, tableList);
-            stmt = con.createStatement();
+            stmt = connection.createStatement();
 
             if (stmt == null) {
                throw new SQLException("no statement");
             }
-
-            // 20040730-HKK: To workaround a bug inside mysql driver
-            //                stmt.setFetchSize(Integer.MIN_VALUE); 
             rs = stmt.executeQuery(query);
          }
 
@@ -548,16 +544,16 @@ public class DataSourceJDBC extends DataSource {
          stmt = null;
       }
 
-      if (con != null) {
+      if (connection != null) {
          try {
-            if (!con.isClosed()) {
-               con.close();
+            if (!connection.isClosed()) {
+            	connection.close();
             }
          } catch (SQLException e) {
             logCat.info("closeConnection", e);
          }
 
-         con = null;
+         connection = null;
       }
    }
 
@@ -569,7 +565,7 @@ public class DataSourceJDBC extends DataSource {
                      throws SQLException {
       // now we provide the values;
       // every key is the parameter name from of the form page;
-      Iterator e = fieldValues.keys();
+      Iterator e   = fieldValues.keys();
       int      col = 1;
 
       while (e.hasNext()) {

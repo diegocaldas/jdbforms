@@ -20,12 +20,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.event.datalist.dao;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.dbforms.config.DbEventInterceptorData;
 import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.Field;
 import org.dbforms.config.FieldTypes;
@@ -59,26 +58,9 @@ public abstract class DataSource {
 
    /**
     * Creates a new DataSource object.
-    *
-    * @param table table for the DataSource
     */
-   public DataSource(Table table) {
-      this.table = table;
+   public DataSource() {
    }
-
-   /**
-    * set the connection parameter for the DataSouce. virtual method, if you
-    * need the connection data you must override the method
-    *
-    * @param con the JDBC Connection object
-    * @param dbConnectionName name of the used db connection. Can be used to
-    *        get an own db connection, e.g. to hold it during the  session
-    *        (see DataSourceJDBC for example!)
-    */
-   public void setConnection(Connection con,
-                             String     dbConnectionName) {
-   }
-
 
    /**
     * Sets the select data for this dataSource
@@ -91,9 +73,8 @@ public abstract class DataSource {
     * @param sqlFilterParams list of FieldValues to fill the sqlFilter with
     */
    public abstract void setSelect(FieldValue[] filterConstraint,
-                                  FieldValue[] orderConstraint,
-                                  String       sqlFilter,
-                                  FieldValue[] sqlFilterParams);
+      FieldValue[] orderConstraint, String sqlFilter,
+      FieldValue[] sqlFilterParams);
 
 
    /**
@@ -112,8 +93,8 @@ public abstract class DataSource {
     *
     * @throws SQLException
     */
-   public ResultSetVector getCurrent(String position,
-                                     int    count) throws SQLException {
+   public ResultSetVector getCurrent(DbEventInterceptorData interceptorData,
+      String position, int count) throws SQLException {
       try {
          open();
 
@@ -123,7 +104,7 @@ public abstract class DataSource {
             count = size() - start;
          }
 
-         return getResultSetVector(start, count);
+         return getResultSetVector(interceptorData, start, count);
       } catch (Exception e) {
          logCat.error("getCurrent", e);
          close();
@@ -142,7 +123,8 @@ public abstract class DataSource {
     *
     * @throws SQLException
     */
-   public ResultSetVector getFirst(int count) throws SQLException {
+   public ResultSetVector getFirst(DbEventInterceptorData interceptorData,
+      int count) throws SQLException {
       try {
          open();
 
@@ -150,7 +132,7 @@ public abstract class DataSource {
             count = size();
          }
 
-         return getResultSetVector(0, count);
+         return getResultSetVector(interceptorData, 0, count);
       } catch (Exception e) {
          logCat.error("getFirst", e);
          close();
@@ -169,11 +151,12 @@ public abstract class DataSource {
     *
     * @throws SQLException
     */
-   public ResultSetVector getLast(int count) throws SQLException {
+   public ResultSetVector getLast(DbEventInterceptorData interceptorData,
+      int count) throws SQLException {
       try {
          open();
 
-         return getResultSetVector(size() - 1, -count);
+         return getResultSetVector(interceptorData, size() - 1, -count);
       } catch (Exception e) {
          logCat.error("getLast", e);
          close();
@@ -199,8 +182,8 @@ public abstract class DataSource {
     *
     * @throws SQLException
     */
-   public ResultSetVector getNext(String position,
-                                  int    count) throws SQLException {
+   public ResultSetVector getNext(DbEventInterceptorData interceptorData,
+      String position, int count) throws SQLException {
       try {
          open();
 
@@ -210,7 +193,7 @@ public abstract class DataSource {
             count = size() - start;
          }
 
-         return getResultSetVector(start, count);
+         return getResultSetVector(interceptorData, start, count);
       } catch (Exception e) {
          logCat.error("getNext", e);
          close();
@@ -236,8 +219,8 @@ public abstract class DataSource {
     *
     * @throws SQLException
     */
-   public ResultSetVector getPrev(String position,
-                                  int    count) throws SQLException {
+   public ResultSetVector getPrev(DbEventInterceptorData interceptorData,
+      String position, int count) throws SQLException {
       try {
          open();
 
@@ -247,7 +230,7 @@ public abstract class DataSource {
             count = start;
          }
 
-         return getResultSetVector(start, -count);
+         return getResultSetVector(interceptorData, start, -count);
       } catch (Exception e) {
          logCat.error("getPrev", e);
          close();
@@ -266,8 +249,8 @@ public abstract class DataSource {
     *
     * @throws SQLException
     */
-   public void setSelect(String tableList,
-                         String whereClause) throws SQLException {
+   public void setSelect(String tableList, String whereClause)
+      throws SQLException {
       throw new SQLException("Free form select not implemented");
    }
 
@@ -296,8 +279,8 @@ public abstract class DataSource {
     *
     * @throws SQLException if any error occurs
     */
-   public void doDelete(Connection con,
-                        String     keyValuesStr) throws SQLException {
+   public void doDelete(DbEventInterceptorData interceptorData,
+      String keyValuesStr) throws SQLException {
    }
 
 
@@ -309,8 +292,8 @@ public abstract class DataSource {
     *
     * @throws SQLException
     */
-   public void doInsert(Connection  con,
-                        FieldValues fieldValues) throws SQLException {
+   public void doInsert(DbEventInterceptorData interceptorData,
+      FieldValues fieldValues) throws SQLException {
    }
 
 
@@ -329,9 +312,21 @@ public abstract class DataSource {
     *
     * @throws SQLException if any error occurs
     */
-   public void doUpdate(Connection  con,
-                        FieldValues fieldValues,
-                        String      keyValuesStr) throws SQLException {
+   public void doUpdate(DbEventInterceptorData interceptorData,
+      FieldValues fieldValues, String keyValuesStr) throws SQLException {
+   }
+
+
+   /**
+    * set the connection parameter for the DataSouce. virtual method, if you
+    * need the connection data you must override this method
+    *
+    * @param con the JDBC Connection object
+    * @param dbConnectionName name of the used db connection. Can be used to
+    *        get an own db connection, e.g. to hold it during the  session
+    *        (see DataSourceJDBC for example!)
+    */
+   protected void setConnection(Connection con, String dbConnectionName) {
    }
 
 
@@ -369,7 +364,7 @@ public abstract class DataSource {
     * @throws SQLException
     */
    protected abstract int findStartRow(String startRow)
-                                throws SQLException;
+      throws SQLException;
 
 
    /**
@@ -405,6 +400,14 @@ public abstract class DataSource {
 
 
    /**
+    * @param table The table to set.
+    */
+   protected void setTable(Table table) {
+      this.table = table;
+   }
+
+
+   /**
     * deletes the blob files on disk
     *
     * @param fieldValues FieldValues to delete, called by
@@ -412,7 +415,7 @@ public abstract class DataSource {
     * @throws SQLException
     */
    protected void deleteBlobFilesFromDisk(FieldValues fieldValues)
-                                   throws SQLException {
+      throws SQLException {
       Iterator iter = fieldValues.keys();
 
       while (iter.hasNext()) {
@@ -426,15 +429,14 @@ public abstract class DataSource {
 
             try {
                directory = Util.replaceRealPath(curField.getDirectory(),
-                                                DbFormsConfigRegistry.instance().lookup().getRealPath());
+                     DbFormsConfigRegistry.instance().lookup().getRealPath());
             } catch (Exception e) {
                logCat.error("deleteBlobFilesFromDisk", e);
                throw new SQLException(e.getMessage());
             }
 
             if (fieldType == FieldTypes.DISKBLOB) {
-               String fileName = fieldValues.get(fieldName)
-                                            .getFieldValue()
+               String fileName = fieldValues.get(fieldName).getFieldValue()
                                             .trim();
 
                // get a filename
@@ -445,10 +447,10 @@ public abstract class DataSource {
                   if (file.exists()) {
                      file.delete();
                      logCat.info("deleted file " + fileName + " from dir "
-                                 + directory);
+                        + directory);
                   } else {
                      logCat.info("delete of file " + fileName + " from dir "
-                                 + directory + " failed because file not found");
+                        + directory + " failed because file not found");
                   }
                }
             }
@@ -466,7 +468,7 @@ public abstract class DataSource {
     * @throws IllegalArgumentException
     */
    protected void saveBlobFilesToDisk(FieldValues fieldValues)
-                               throws SQLException {
+      throws SQLException {
       Iterator iter = fieldValues.keys();
 
       while (iter.hasNext()) {
@@ -481,12 +483,13 @@ public abstract class DataSource {
 
                // check if directory-attribute was provided
                if (directory == null) {
-                  throw new IllegalArgumentException("directory-attribute needed for fields of type DISKBLOB");
+                  throw new IllegalArgumentException(
+                     "directory-attribute needed for fields of type DISKBLOB");
                }
 
                try {
                   directory = Util.replaceRealPath(directory,
-                                                   DbFormsConfigRegistry.instance().lookup().getRealPath());
+                        DbFormsConfigRegistry.instance().lookup().getRealPath());
                } catch (Exception e) {
                   logCat.error("saveBlobFilesToDisk", e);
                }
@@ -497,18 +500,17 @@ public abstract class DataSource {
                // Check saveDirectory is truly a directory
                if (!dir.isDirectory()) {
                   throw new IllegalArgumentException("Not a directory: "
-                                                     + directory);
+                     + directory);
                }
 
                // Check saveDirectory is writable
                if (!dir.canWrite()) {
                   throw new IllegalArgumentException("Not writable: "
-                                                     + directory);
+                     + directory);
                }
 
                // dir is ok so lets store the filepart
-               FileHolder fileHolder = fieldValues.get(fieldName)
-                                                  .getFileHolder();
+               FileHolder fileHolder = fieldValues.get(fieldName).getFileHolder();
 
                if (fileHolder != null) {
                   try {
@@ -520,8 +522,8 @@ public abstract class DataSource {
                      //#checkme: this would be a good place for rollback in database!!
                      logCat.error("saveBlobFilesToDisk", ioe);
                      throw new SQLException("could not store file '"
-                                            + fileHolder.getFileName()
-                                            + "' to dir '" + directory + "'");
+                        + fileHolder.getFileName() + "' to dir '" + directory
+                        + "'");
                   }
                } else {
                   logCat.info("uh! empty fileHolder");
@@ -542,11 +544,11 @@ public abstract class DataSource {
     *
     * @throws SQLException
     */
-   private ResultSetVector getResultSetVector(int startRow,
-                                              int count)
-                                       throws SQLException {
+   private ResultSetVector getResultSetVector(
+      DbEventInterceptorData interceptorData, int startRow, int count)
+      throws SQLException {
       ResultSetVector result = null;
-      result = new ResultSetVector(table.getFields());
+      result = new ResultSetVector(table);
 
       int      begin = 0;
       int      ende = 0;
@@ -563,7 +565,7 @@ public abstract class DataSource {
                break;
             }
 
-            result.addRow(row);
+            result.addRow(interceptorData, row);
          }
       } else if (count < 0) {
          begin = startRow + count + 1;
@@ -579,7 +581,7 @@ public abstract class DataSource {
                break;
             }
 
-            result.addRow(row);
+            result.addRow(interceptorData, row);
          }
       }
 

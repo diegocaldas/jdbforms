@@ -20,20 +20,19 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.event.datalist;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.dbforms.config.DbEventInterceptor;
+import org.dbforms.config.DbEventInterceptorData;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.FieldValues;
 import org.dbforms.config.GrantedPrivileges;
 
 import org.dbforms.event.DatabaseEvent;
 import org.dbforms.event.datalist.dao.DataSourceFactory;
-import org.dbforms.event.datalist.dao.DataSourceList;
+import org.dbforms.event.datalist.dao.DataSourceSessionList;
 
 import org.dbforms.util.MessageResourcesInternal;
 import org.dbforms.util.StringUtil;
@@ -63,10 +62,8 @@ public class DeleteEvent extends DatabaseEvent {
     * @param request the request object
     * @param config the configuration object
     */
-   public DeleteEvent(Integer            tableId,
-                      String             keyId,
-                      HttpServletRequest request,
-                      DbFormsConfig      config) {
+   public DeleteEvent(Integer tableId, String keyId,
+      HttpServletRequest request, DbFormsConfig config) {
       super(tableId.intValue(), keyId, request, config);
    }
 
@@ -78,11 +75,10 @@ public class DeleteEvent extends DatabaseEvent {
     * @param request the request object
     * @param config the configuration object
     */
-   public DeleteEvent(String             action,
-                      HttpServletRequest request,
-                      DbFormsConfig      config) {
+   public DeleteEvent(String action, HttpServletRequest request,
+      DbFormsConfig config) {
       super(StringUtil.getEmbeddedStringAsInteger(action, 2, '_'),
-            StringUtil.getEmbeddedString(action, 3, '_'), request, config);
+         StringUtil.getEmbeddedString(action, 3, '_'), request, config);
    }
 
    /**
@@ -107,46 +103,51 @@ public class DeleteEvent extends DatabaseEvent {
       // Apply given security contraints (as defined in dbforms-config.xml)
       if (!hasUserPrivileg(GrantedPrivileges.PRIVILEG_DELETE)) {
          String s = MessageResourcesInternal.getMessage("dbforms.events.delete.nogrant",
-                                                        getRequest().getLocale(),
-                                                        new String[] {
-                                                           getTable()
-                                                              .getName()
-                                                        });
+               getRequest().getLocale(), new String[] {
+                  getTable().getName()
+               });
          throw new SQLException(s);
       }
 
+      // in order to process an update, we need the key of the dataset to update;
+      String keyValuesStr = getKeyValues();
+
+      if (Util.isNull(keyValuesStr)) {
+         logCat.error(
+            "::processEvent - At least one key is required per table, check your dbforms-config.xml");
+
+         return;
+      }
+
       // which values do we find in request
-      FieldValues fieldValues = getFieldValues();
+      FieldValues            fieldValues     = getFieldValues();
+      DbEventInterceptorData interceptorData = new DbEventInterceptorData(getRequest(),
+            getConfig(), con, getTable());
+      interceptorData.setAttribute(DbEventInterceptorData.FIELDVALUES,
+         fieldValues);
+      interceptorData.setAttribute(DbEventInterceptorData.KEYVALUES,
+         keyValuesStr);
 
       // part 2: check if there are interceptors to be processed (as definied by
       // "interceptor" element embedded in table element in dbforms-config xml file)
       // process the interceptors associated to this table
-      int operation = getTable()
-                         .processInterceptors(DbEventInterceptor.PRE_DELETE,
-                                              getRequest(), fieldValues,
-                                              getConfig(), con);
+      int operation = getTable().processInterceptors(DbEventInterceptor.PRE_DELETE,
+            interceptorData);
 
       if (operation == DbEventInterceptor.GRANT_OPERATION) {
-         // in order to process an update, we need the key of the dataset to update;
-         String keyValuesStr = getKeyValues();
-
-         if (Util.isNull(keyValuesStr)) {
-            logCat.error("::processEvent - At least one key is required per table, check your dbforms-config.xml");
-
-            return;
-         }
-
          // DELETE operation;
-         DataSourceList    ds  = DataSourceList.getInstance(getRequest());
-         DataSourceFactory qry = ds.get(getTable(), getRequest());
-         boolean           own = false;
+         DataSourceSessionList ds  = DataSourceSessionList.getInstance(getRequest());
+         DataSourceFactory     qry = ds.get(getTable(), getRequest());
+         boolean               own = false;
 
          if (qry == null) {
-            qry = new DataSourceFactory(getTable());
-            own = true;
+            qry    = new DataSourceFactory((String) interceptorData
+                  .getAttribute(DbEventInterceptorData.CONNECTIONNAME),
+                  interceptorData.getConnection(), getTable());
+            own    = true;
          }
 
-         qry.doDelete(con, keyValuesStr);
+         qry.doDelete(interceptorData, keyValuesStr);
 
          if (own) {
             qry.close();
@@ -156,9 +157,8 @@ public class DeleteEvent extends DatabaseEvent {
 
          // finally, we process interceptor again (post-delete)
          // process the interceptors associated to this table
-         getTable()
-            .processInterceptors(DbEventInterceptor.POST_DELETE, getRequest(),
-                                 fieldValues, getConfig(), con);
+         getTable().processInterceptors(DbEventInterceptor.POST_DELETE,
+            interceptorData);
       }
 
       // End of interceptor processing

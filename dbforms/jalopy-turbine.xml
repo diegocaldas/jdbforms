@@ -166,8 +166,8 @@
             <javadoc>
                 <check>
                     <innerclass>false</innerclass>
-                    <tags>false</tags>
-                    <throwsTags>false</throwsTags>
+                    <tags>true</tags>
+                    <throwsTags>true</throwsTags>
                 </check>
                 <fieldsShort>true</fieldsShort>
                 <generate>
@@ -176,7 +176,7 @@
                     <field>5</field>
                     <method>5</method>
                 </generate>
-                <parseComments>false</parseComments>
+                <parseComments>true</parseComments>
                 <tags>
                     <in-line />
                     <standard />

@@ -21,87 +21,61 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 
-package org.dbforms.config;
+package interceptors;
 
-import java.util.Map;
+import org.dbforms.config.DbEventInterceptorData;
+import org.dbforms.config.MultipleValidationException;
+import org.dbforms.config.ValidationException;
+
+import org.dbforms.event.DbEventInterceptorSupport;
 
 
 
-/**
- * <p>
- * This interface intercepts Database Operations DbForms is about to perform
- * </p>
- * 
- * <p>
- * As the names indicate
- * </p>
- * - the preXxx() methods get called before the respective database operation
- * is performed, - the postXxx() methods get called after the operation was
- * finished.
- */
 /**
  * DOCUMENT ME!
  *
- * @author $author$
- * @version $Revision$
+ * @author hkk To change this generated comment go to
+ *         Window>Preferences>Java>Code Generation>Code and Comments
  */
-public interface DbEventInterceptor {
+public class InterceptorTest extends DbEventInterceptorSupport {
    /** DOCUMENT ME! */
-   public static final int PRE_INSERT = 0;
-
-   /** DOCUMENT ME! */
-   public static final int POST_INSERT = 1;
+   public static boolean preInsertCalled  = false;
 
    /** DOCUMENT ME! */
-   public static final int PRE_UPDATE = 2;
+   public static boolean preSelectCalled  = false;
 
    /** DOCUMENT ME! */
-   public static final int POST_UPDATE = 3;
+   public static boolean preUpdateCalled  = false;
 
    /** DOCUMENT ME! */
-   public static final int PRE_DELETE = 4;
+   public static boolean preDeleteCalled  = false;
 
    /** DOCUMENT ME! */
-   public static final int POST_DELETE = 5;
+   public static boolean preAddRowCalled  = false;
 
    /** DOCUMENT ME! */
-   public static final int PRE_SELECT = 6;
+   public static boolean postUpdateCalled = false;
 
    /** DOCUMENT ME! */
-   public static final int POST_SELECT = 7;
+   public static boolean postSelectCalled = false;
 
    /** DOCUMENT ME! */
-   public static final int PRE_ADDROW = 8;
+   public static boolean postInsertCalled = false;
 
    /** DOCUMENT ME! */
-   public static final int POST_ADDROW = 9;
+   public static boolean postDeleteCalled = false;
 
-   /** The constant defined for granting the operation */
-   public static final int GRANT_OPERATION = 0;
-
-   /** The constant defined for not granting the operation */
-   public static final int DENY_OPERATION = 1;
-
-   /**
-    * The constant defined for ignoring an operation after processing
-    * interceptors.
-    */
-   public static final int IGNORE_OPERATION = 2;
+   /** DOCUMENT ME! */
+   public static boolean postAddRowCalled = false;
 
    /**
     * DOCUMENT ME!
     *
-    * @param params DOCUMENT ME!
+    * @param data DOCUMENT ME!
     */
-   public void setParameterMap(Map params);
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    */
-   public Map getParameterMap();
+   public void postAddRow(DbEventInterceptorData data) {
+      postAddRowCalled = true;
+   }
 
 
    /**
@@ -109,7 +83,9 @@ public interface DbEventInterceptor {
     *
     * @param data DOCUMENT ME!
     */
-   public void postAddRow(DbEventInterceptorData data);
+   public void postDelete(DbEventInterceptorData data) {
+      postDeleteCalled = true;
+   }
 
 
    /**
@@ -117,7 +93,9 @@ public interface DbEventInterceptor {
     *
     * @param data DOCUMENT ME!
     */
-   public void postDelete(DbEventInterceptorData data);
+   public void postInsert(DbEventInterceptorData data) {
+      postInsertCalled = true;
+   }
 
 
    /**
@@ -125,7 +103,9 @@ public interface DbEventInterceptor {
     *
     * @param data DOCUMENT ME!
     */
-   public void postInsert(DbEventInterceptorData data);
+   public void postSelect(DbEventInterceptorData data) {
+      postSelectCalled = true;
+   }
 
 
    /**
@@ -133,15 +113,9 @@ public interface DbEventInterceptor {
     *
     * @param data DOCUMENT ME!
     */
-   public void postSelect(DbEventInterceptorData data);
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param data DOCUMENT ME!
-    */
-   public void postUpdate(DbEventInterceptorData data);
+   public void postUpdate(DbEventInterceptorData data) {
+      postUpdateCalled = true;
+   }
 
 
    /**
@@ -155,7 +129,11 @@ public interface DbEventInterceptor {
     * @throws MultipleValidationException DOCUMENT ME!
     */
    public int preAddRow(DbEventInterceptorData data)
-                 throws ValidationException, MultipleValidationException;
+                 throws ValidationException, MultipleValidationException {
+      preAddRowCalled = true;
+
+      return GRANT_OPERATION;
+   }
 
 
    /**
@@ -169,7 +147,11 @@ public interface DbEventInterceptor {
     * @throws MultipleValidationException DOCUMENT ME!
     */
    public int preDelete(DbEventInterceptorData data)
-                 throws ValidationException, MultipleValidationException;
+                 throws ValidationException, MultipleValidationException {
+      preDeleteCalled = true;
+
+      return GRANT_OPERATION;
+   }
 
 
    /**
@@ -183,7 +165,11 @@ public interface DbEventInterceptor {
     * @throws MultipleValidationException DOCUMENT ME!
     */
    public int preInsert(DbEventInterceptorData data)
-                 throws ValidationException, MultipleValidationException;
+                 throws ValidationException, MultipleValidationException {
+      preInsertCalled = true;
+
+      return GRANT_OPERATION;
+   }
 
 
    /**
@@ -197,7 +183,11 @@ public interface DbEventInterceptor {
     * @throws MultipleValidationException DOCUMENT ME!
     */
    public int preSelect(DbEventInterceptorData data)
-                 throws ValidationException, MultipleValidationException;
+                 throws ValidationException, MultipleValidationException {
+      preSelectCalled = true;
+
+      return GRANT_OPERATION;
+   }
 
 
    /**
@@ -211,5 +201,9 @@ public interface DbEventInterceptor {
     * @throws MultipleValidationException DOCUMENT ME!
     */
    public int preUpdate(DbEventInterceptorData data)
-                 throws ValidationException, MultipleValidationException;
+                 throws ValidationException, MultipleValidationException {
+      preUpdateCalled = true;
+
+      return GRANT_OPERATION;
+   }
 }

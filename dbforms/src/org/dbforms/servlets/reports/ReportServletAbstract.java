@@ -35,9 +35,6 @@ import org.dbforms.config.Table;
 
 import org.dbforms.event.WebEvent;
 
-import org.dbforms.servlets.reports.JRDataSourceIter;
-import org.dbforms.servlets.reports.JRDataSourceRSV;
-
 import org.dbforms.taglib.DbFormTag;
 
 import org.dbforms.util.MessageResourcesInternal;
@@ -206,8 +203,7 @@ public abstract class ReportServletAbstract extends HttpServlet {
 
 			if (!Util.isNull(reportFile)) {
 				compileReport(getServletContext(), reportFile);
-				JRDataSourceAbstract dataSource = getDataForReport(getServletContext(),
-						request, response);
+				JRDataSourceAbstract dataSource = getDataForReport(request, response);
 				if (!response.isCommitted()) {
 					if (dataSource == null) {
 						handleNoData(request, response);
@@ -306,8 +302,7 @@ public abstract class ReportServletAbstract extends HttpServlet {
 	 * 
 	 * @return
 	 */
-	private JRDataSourceAbstract getDataForReport(ServletContext context,
-			HttpServletRequest request, HttpServletResponse response) {
+	private JRDataSourceAbstract getDataForReport(HttpServletRequest request, HttpServletResponse response) {
 		JRDataSourceAbstract dataSource = null;
 		Table table = null;
 		ResultSetVector rsv = null;

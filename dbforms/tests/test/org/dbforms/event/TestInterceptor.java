@@ -24,21 +24,20 @@
 package org.dbforms.event;
 
 import org.dbforms.config.DbEventInterceptor;
-import org.dbforms.config.Interceptor;
-import org.dbforms.config.Table;
 import org.dbforms.config.DbEventInterceptorData;
 import org.dbforms.config.DbFormsConfig;
+import org.dbforms.config.Interceptor;
+import org.dbforms.config.Table;
 
 import org.dbforms.util.AbstractTestCase;
 
 
 
 /**
- * Description of the Class
+ * DOCUMENT ME!
  *
- * @author epugh
- *
- * @deprecated May 3, 2002
+ * @author $author$
+ * @version $Revision$
  */
 public class TestInterceptor extends AbstractTestCase {
    /**
@@ -47,6 +46,61 @@ public class TestInterceptor extends AbstractTestCase {
     * @throws Exception DOCUMENT ME!
     */
    public void testInterceptor() throws Exception {
+      Interceptor interceptor = new Interceptor();
+      interceptor.setClassName("interceptors.InterceptorTest");
+      assertTrue("Class name should be interceptors.InterceptorTest",
+                 interceptor.getClassName().equals("interceptors.InterceptorTest"));
+
+      Table table = new Table();
+      table.setConfig(new DbFormsConfig(null));
+      table.addInterceptor(interceptor);
+
+      int i = table.getInterceptors()
+                   .size();
+      assertEquals("count interceptors", i, 1);
+
+      DbEventInterceptorData data = new DbEventInterceptorData(null, null,
+                                                               null, table);
+
+      table.processInterceptors(DbEventInterceptor.PRE_INSERT, data);
+      assertTrue("preInsert", interceptors.InterceptorTest.preInsertCalled);
+
+      table.processInterceptors(DbEventInterceptor.POST_INSERT, data);
+      assertTrue("postInsert", interceptors.InterceptorTest.postInsertCalled);
+
+      table.processInterceptors(DbEventInterceptor.PRE_UPDATE, data);
+      assertTrue("preUpdate", interceptors.InterceptorTest.preUpdateCalled);
+
+      table.processInterceptors(DbEventInterceptor.POST_UPDATE, data);
+      assertTrue("postUpdate", interceptors.InterceptorTest.postUpdateCalled);
+
+      table.processInterceptors(DbEventInterceptor.PRE_DELETE, data);
+      assertTrue("preUpdate", interceptors.InterceptorTest.preDeleteCalled);
+
+      table.processInterceptors(DbEventInterceptor.POST_DELETE, data);
+      assertTrue("postUpdate", interceptors.InterceptorTest.postDeleteCalled);
+
+      table.processInterceptors(DbEventInterceptor.PRE_SELECT, data);
+      assertTrue("preSelectUpdate", interceptors.InterceptorTest.preSelectCalled);
+
+      table.processInterceptors(DbEventInterceptor.POST_SELECT, data);
+      assertTrue("postSelectUpdate",
+                 interceptors.InterceptorTest.postSelectCalled);
+
+      table.processInterceptors(DbEventInterceptor.PRE_ADDROW, data);
+      assertTrue("preAddRow", interceptors.InterceptorTest.preAddRowCalled);
+
+      table.processInterceptors(DbEventInterceptor.POST_ADDROW, data);
+      assertTrue("postAddRow", interceptors.InterceptorTest.postAddRowCalled);
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @throws Exception DOCUMENT ME!
+    */
+   public void testInterceptorClassic() throws Exception {
       Interceptor interceptor = new Interceptor();
       interceptor.setClassName("interceptors.InterceptorTestClassic");
       assertTrue("Class name should be interceptors.InterceptorTestClassic",
@@ -59,32 +113,40 @@ public class TestInterceptor extends AbstractTestCase {
       int i = table.getInterceptors()
                    .size();
       assertEquals("count interceptors", i, 1);
-      DbEventInterceptorData data = new DbEventInterceptorData(null, null, null);
+
+      DbEventInterceptorData data = new DbEventInterceptorData(null, null,
+                                                               null, table);
 
       table.processInterceptors(DbEventInterceptor.PRE_INSERT, data);
-      assertTrue("preInsert", interceptors.InterceptorTestClassic.preInsertCalled);
+      assertTrue("preInsert",
+                 interceptors.InterceptorTestClassic.preInsertCalled);
 
       table.processInterceptors(DbEventInterceptor.POST_INSERT, data);
-      assertTrue("postInsert", interceptors.InterceptorTestClassic.postInsertCalled);
+      assertTrue("postInsert",
+                 interceptors.InterceptorTestClassic.postInsertCalled);
 
       table.processInterceptors(DbEventInterceptor.PRE_UPDATE, data);
-      assertTrue("preUpdate", interceptors.InterceptorTestClassic.preUpdateCalled);
+      assertTrue("preUpdate",
+                 interceptors.InterceptorTestClassic.preUpdateCalled);
 
       table.processInterceptors(DbEventInterceptor.POST_UPDATE, data);
-      assertTrue("postUpdate", interceptors.InterceptorTestClassic.postUpdateCalled);
+      assertTrue("postUpdate",
+                 interceptors.InterceptorTestClassic.postUpdateCalled);
 
       table.processInterceptors(DbEventInterceptor.PRE_DELETE, data);
-      assertTrue("preUpdate", interceptors.InterceptorTestClassic.preDeleteCalled);
+      assertTrue("preUpdate",
+                 interceptors.InterceptorTestClassic.preDeleteCalled);
 
       table.processInterceptors(DbEventInterceptor.POST_DELETE, data);
-      assertTrue("postUpdate", interceptors.InterceptorTestClassic.postDeleteCalled);
+      assertTrue("postUpdate",
+                 interceptors.InterceptorTestClassic.postDeleteCalled);
 
       table.processInterceptors(DbEventInterceptor.PRE_SELECT, data);
-      assertTrue("preSelectUpdate", interceptors.InterceptorTestClassic.preSelectCalled);
+      assertTrue("preSelectUpdate",
+                 interceptors.InterceptorTestClassic.preSelectCalled);
 
       table.processInterceptors(DbEventInterceptor.POST_SELECT, data);
-      assertTrue("postSelectUpdate", interceptors.InterceptorTestClassic.postSelectCalled);
-
-	  
+      assertTrue("postSelectUpdate",
+                 interceptors.InterceptorTestClassic.postSelectCalled);
    }
 }

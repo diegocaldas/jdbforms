@@ -45,7 +45,7 @@ import javax.servlet.jsp.JspException;
  *
  * @author Joachim Peer
  */
-public class DbBodyTag extends TagSupportWithScriptHandler
+public class DbBodyTag extends DbBaseHandlerTag
    implements javax.servlet.jsp.tagext.TryCatchFinally {
    private String allowNew = "true";
 
@@ -77,9 +77,7 @@ public class DbBodyTag extends TagSupportWithScriptHandler
     * @throws JspException DOCUMENT ME!
     */
    public int doAfterBody() throws JspException {
-      //DbFormTag myParent = (DbFormTag) getParent(); // parent Tag in which this tag is embedded in
-      DbFormTag myParent = (DbFormTag) findAncestorWithClass(this,
-                                                             DbFormTag.class);
+      DbFormTag myParent = getParentForm(); 
 
       try {
          // each rendering loop represents one row of data.
@@ -106,13 +104,6 @@ public class DbBodyTag extends TagSupportWithScriptHandler
          }
       } catch (UnsupportedEncodingException uee) {
          throw new JspException(uee.toString());
-      }
-
-      myParent.increaseCurrentCount();
-
-      if (!ResultSetVector.isNull(myParent.getResultSetVector())) {
-         myParent.getResultSetVector()
-                 .increasePointer();
       }
 
       return SKIP_BODY;
@@ -170,30 +161,25 @@ public class DbBodyTag extends TagSupportWithScriptHandler
     * @return DOCUMENT ME!
     */
    public int doStartTag() throws javax.servlet.jsp.JspException {
-      //DbFormTag myParent = (DbFormTag) getParent(); // parent Tag in which this tag is embedded in
-      // between this form and its parent lies a DbHeader/Body/Footer-Tag and maybe other tags (styling, logic, etc.)
-      DbFormTag myParent = (DbFormTag) findAncestorWithClass(this,
-                                                             DbFormTag.class);
-
+      DbFormTag myParent = getParentForm();
+      ResultSetVector rsv = myParent.getResultSetVector();
       // the body may be rendered under the following circumstances:
-      // - resultSetVector > 0 => render a row
-      // - resultSetVector == 0 && allowNew==true => insert a new row
-      if (ResultSetVector.isNull(myParent.getResultSetVector())) {
-         myParent.setFooterReached(true);
-
-         if ("false".equals(allowNew)) {
+      // - resultSetVector > 0 && not footer reached => render a row
+      // - resultSetVector == 0 && allowNew==true    => insert a new row
+      if (
+      		(!ResultSetVector.isNull(rsv) && myParent.isFooterReached())  
+      		||
+			(ResultSetVector.isNull(rsv) && Util.getFalse(allowNew))
+          ) {
             return SKIP_BODY;
-         }
       }
 
       myParent.updatePositionPath();
-
       // to enable access from jsp we provide a variable
       // #fixme: we need a more convenient data access structure
       //
       // #fixme: this is a CRAZY WEIRED ODD SQUARE WORKAROUND
       //
-      ResultSetVector rsv = myParent.getResultSetVector();
 
       if (!ResultSetVector.isNull(rsv)) {
          Map dbforms = (Map) pageContext.getAttribute("dbforms");
@@ -201,10 +187,8 @@ public class DbBodyTag extends TagSupportWithScriptHandler
          if (dbforms != null) {
             DbFormContext dbContext = (DbFormContext) dbforms.get(myParent
                                                                   .getName());
-
             if (dbContext != null) {
                dbContext.setCurrentRow(rsv.getCurrentRowAsMap());
-
                try {
                   dbContext.setPosition(Util.encode(myParent.getTable().getPositionString(rsv),
                                                     pageContext.getRequest().getCharacterEncoding()));
@@ -214,8 +198,8 @@ public class DbBodyTag extends TagSupportWithScriptHandler
             }
          }
 
-         if (rsv.getPointer() < (rsv.size() - 1)) {
-            rsv.increasePointer(); // teleport us to future...
+         if (!rsv.isLast()) {
+            rsv.moveNext(); // teleport us to future...
 
             // This must be done because currentRow_xxx is reread from 
             // the pagecontext after(!) the body of the tag. This means 
@@ -235,7 +219,7 @@ public class DbBodyTag extends TagSupportWithScriptHandler
                throw new JspException(e.getMessage());
             }
 
-            rsv.declinePointer(); // ...and back to present ;=)
+            rsv.movePrevious(); // ...and back to present ;=)
          }
       }
 

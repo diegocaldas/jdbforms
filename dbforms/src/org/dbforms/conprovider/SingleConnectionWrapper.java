@@ -330,6 +330,7 @@ public class SingleConnectionWrapper implements Connection {
                stmt.close();
             } catch (SQLException e) {
 //               logCat.info("close", e);
+            	;
             } catch (Exception e) {
                logCat.error(e);
             }

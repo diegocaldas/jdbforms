@@ -47,7 +47,8 @@ import javax.servlet.http.*;
  *
  * @author Joe Peer
  *
- * @deprecated <p>
+ * @deprecated
+ * <p>
  */
 public class DeleteEvent extends DatabaseEvent {
    // logging category for this class
@@ -56,10 +57,14 @@ public class DeleteEvent extends DatabaseEvent {
    /**
     * Creates a new DeleteEvent object.
     *
-    * @param tableId DOCUMENT ME!
-    * @param keyId DOCUMENT ME!
-    * @param request DOCUMENT ME!
-    * @param config DOCUMENT ME!
+    * @param tableId
+    *            DOCUMENT ME!
+    * @param keyId
+    *            DOCUMENT ME!
+    * @param request
+    *            DOCUMENT ME!
+    * @param config
+    *            DOCUMENT ME!
     */
    public DeleteEvent(Integer            tableId,
                       String             keyId,
@@ -72,9 +77,12 @@ public class DeleteEvent extends DatabaseEvent {
    /**
     * Creates a new DeleteEvent object.
     *
-    * @param action DOCUMENT ME!
-    * @param request DOCUMENT ME!
-    * @param config DOCUMENT ME!
+    * @param action
+    *            DOCUMENT ME!
+    * @param request
+    *            DOCUMENT ME!
+    * @param config
+    *            DOCUMENT ME!
     */
    public DeleteEvent(String             action,
                       HttpServletRequest request,
@@ -96,29 +104,15 @@ public class DeleteEvent extends DatabaseEvent {
    /**
     * DOCUMENT ME!
     *
-    * @param con DOCUMENT ME!
+    * @param con
+    *            DOCUMENT ME!
     *
-    * @throws SQLException DOCUMENT ME!
-    * @throws MultipleValidationException DOCUMENT ME!
+    * @throws SQLException
+    *             DOCUMENT ME!
+    * @throws MultipleValidationException
+    *             DOCUMENT ME!
     */
    public void processEvent(Connection con) throws SQLException {
-      // in order to process an delete, we need the key of the dataset to delete
-      //
-      // new since version 0.9:
-      // key format: FieldID ":" Length ":" Value
-      // example: if key id = 121 and field id=2 then keyValueStr contains "2:3:121"
-      //
-      // if the key consists of more than one fields, the key values are seperated through "-"
-      // example: value of field 1=12, value of field 3=1992, then we'll get "1:2:12-3:4:1992"
-      String keyValuesStr = getKeyValues();
-
-      if ((keyValuesStr == null) || (keyValuesStr.trim()
-                                                       .length() == 0)) {
-         logCat.error("At least one key is required per table, check your dbforms-config.xml");
-
-         return;
-      }
-
       // Apply given security contraints (as defined in dbforms-config.xml)
       if (!hasUserPrivileg(GrantedPrivileges.PRIVILEG_DELETE)) {
          String s = MessageResourcesInternal.getMessage("dbforms.events.delete.nogrant",
@@ -130,20 +124,46 @@ public class DeleteEvent extends DatabaseEvent {
          throw new SQLException(s);
       }
 
+      // in order to process an delete, we need the key of the dataset to
+      // delete
+      //
+      // new since version 0.9:
+      // key format: FieldID ":" Length ":" Value
+      // example: if key id = 121 and field id=2 then keyValueStr contains
+      // "2:3:121"
+      //
+      // if the key consists of more than one fields, the key values are
+      // seperated through "-"
+      // example: value of field 1=12, value of field 3=1992, then we'll get
+      // "1:2:12-3:4:1992"
+      String keyValuesStr = getKeyValues();
+
+      if (Util.isNull(keyValuesStr)) {
+         logCat.error("At least one key is required per table, check your dbforms-config.xml");
+
+         return;
+      }
+
       // which values do we find in request
-      FieldValues fieldValues = getFieldValues();
+      FieldValues            fieldValues = getFieldValues();
+
+      DbEventInterceptorData interceptorData = new DbEventInterceptorData(getRequest(),
+                                                               getConfig(), con, getTable());
+      interceptorData.setAttribute(DbEventInterceptorData.FIELDVALUES, fieldValues);
+      interceptorData.setAttribute(DbEventInterceptorData.KEYVALUES, keyValuesStr);
 
       // part 2b: process the interceptors associated to this table
       int operation = getTable()
                          .processInterceptors(DbEventInterceptor.PRE_DELETE,
-                                              getRequest(), fieldValues,
-                                              getConfig(), con);
+                                              interceptorData);
 
       // End of interceptor processing
       if (operation == DbEventInterceptor.GRANT_OPERATION) {
-         // we check if the table the delete should be applied to contains field(s)
+         // we check if the table the delete should be applied to contains
+         // field(s)
          // of the type "DISKBLOB"
-         // if so, we have to select the filename+dirs from the db before we can delete
+         // if so, we have to select the filename+dirs from the db before we
+         // can delete
          ResultSet diskblobs = null;
 
          if (getTable()
@@ -165,7 +185,8 @@ public class DeleteEvent extends DatabaseEvent {
          PreparedStatement ps = con.prepareStatement(getTable().getDeleteStatement());
 
          // now we provide the values
-         // of the key-fields, so that the WHERE clause matches the right dataset!
+         // of the key-fields, so that the WHERE clause matches the right
+         // dataset!
          getTable()
             .populateWhereClauseWithKeyFields(keyValuesStr, ps, 1);
 
@@ -202,7 +223,8 @@ public class DeleteEvent extends DatabaseEvent {
                            throw new SQLException(e.getMessage());
                         }
 
-                        // remember: every field may have its own storing dir!
+                        // remember: every field may have its own
+                        // storing dir!
                         File file = new File(directory, fileName);
 
                         if (file.exists()) {
@@ -223,8 +245,7 @@ public class DeleteEvent extends DatabaseEvent {
          // finally, we process interceptor again (post-delete)
          // process the interceptors associated to this table
          getTable()
-            .processInterceptors(DbEventInterceptor.POST_DELETE, getRequest(),
-                                 fieldValues, getConfig(), con);
+            .processInterceptors(DbEventInterceptor.POST_DELETE, interceptorData);
       }
 
       // End of interceptor processing

@@ -43,15 +43,16 @@ import javax.servlet.jsp.tagext.BodyTag;
  * Tests of the <code>DbLabelTag</code> class.
  *
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh </a>
- *
  */
-public class TestTextFormatTag extends JspTestCase {
-   private DbFormTag  form;
+public class TestTextFormatWithValueTag extends JspTestCase {
+   private DbFormTag     form;
    private TextFormatTag doubleTag;
 
    /**
     * In addition to creating the tag instance and adding the pageContext to
     * it, this method creates a BodyContent object and passes it to the tag.
+    *
+    * @throws Exception DOCUMENT ME!
     */
    public void setUp() throws Exception {
       super.setUp();
@@ -72,8 +73,8 @@ public class TestTextFormatTag extends JspTestCase {
       doubleTag = new TextFormatTag();
       doubleTag.setPageContext(this.pageContext);
       doubleTag.setParent(form);
-      doubleTag.setType("double");
-      doubleTag.setValue("2.3");
+      pageContext.setAttribute("TESTVAR", new Double(2.3));
+      doubleTag.setVariable("TESTVAR");
    }
 
 
@@ -123,6 +124,7 @@ public class TestTextFormatTag extends JspTestCase {
    public void testOutputDE() throws Exception {
       MessageResources.setLocale(request, Locale.GERMAN);
       form.doStartTag();
+
       int result = doubleTag.doEndTag();
       assertEquals(BodyTag.EVAL_PAGE, result);
       form.doEndTag();

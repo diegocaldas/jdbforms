@@ -27,10 +27,10 @@ import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.FieldValue;
 import org.dbforms.config.ResultSetVector;
 import org.dbforms.config.Table;
+import org.dbforms.config.DbEventInterceptorData;
 
 import org.dbforms.util.StringUtil;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -98,8 +98,7 @@ public abstract class NavigationEvent extends WebEvent {
                                                 int          count,
                                                 String       firstPosition,
                                                 String       lastPosition,
-                                                String       dbConnectionName,
-                                                Connection   con)
+                                                DbEventInterceptorData interceptorData)
                                          throws SQLException;
 
 

@@ -20,12 +20,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.event.datalist;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.dbforms.config.DbEventInterceptorData;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.FieldValue;
 import org.dbforms.config.ResultSetVector;
@@ -33,9 +32,8 @@ import org.dbforms.config.Table;
 
 import org.dbforms.event.NavigationEvent;
 import org.dbforms.event.datalist.dao.DataSourceFactory;
-import org.dbforms.event.datalist.dao.DataSourceList;
+import org.dbforms.event.datalist.dao.DataSourceSessionList;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -60,9 +58,8 @@ public class NavNextEvent extends NavigationEvent {
     * @param request the request object
     * @param config the config object
     */
-   public NavNextEvent(String             action,
-                       HttpServletRequest request,
-                       DbFormsConfig      config) {
+   public NavNextEvent(String action, HttpServletRequest request,
+      DbFormsConfig config) {
       super(action, request, config);
    }
 
@@ -74,9 +71,8 @@ public class NavNextEvent extends NavigationEvent {
     * @param request the request object
     * @param config the config object
     */
-   public NavNextEvent(Table              table,
-                       HttpServletRequest request,
-                       DbFormsConfig      config) {
+   public NavNextEvent(Table table, HttpServletRequest request,
+      DbFormsConfig config) {
       super(table, request, config);
    }
 
@@ -104,33 +100,30 @@ public class NavNextEvent extends NavigationEvent {
     * @todo make a option to allow original "navNew" behavior if desired
     */
    public ResultSetVector processEvent(FieldValue[] filterFieldValues,
-                                       FieldValue[] orderConstraint,
-                                       String       sqlFilter,
-                                       FieldValue[] sqlFilterParams,
-                                       int          count,
-                                       String       firstPosition,
-                                       String       lastPosition,
-                                       String       dbConnectionName,
-                                       Connection   con)
-                                throws SQLException {
+      FieldValue[] orderConstraint, String sqlFilter,
+      FieldValue[] sqlFilterParams, int count, String firstPosition,
+      String lastPosition, DbEventInterceptorData interceptorData)
+      throws SQLException {
       logCat.info("==>NavNextEvent.processEvent");
 
-      DataSourceList    ds  = DataSourceList.getInstance(getRequest());
-      DataSourceFactory qry = ds.get(getTable(), getRequest());
+      DataSourceSessionList ds  = DataSourceSessionList.getInstance(getRequest());
+      DataSourceFactory     qry = ds.get(getTable(), getRequest());
 
       if (qry == null) {
-         qry = new DataSourceFactory(dbConnectionName, con, getTable());
+         qry = new DataSourceFactory((String) interceptorData.getAttribute(
+                  DbEventInterceptorData.CONNECTIONNAME),
+               interceptorData.getConnection(), getTable());
          qry.setSelect(filterFieldValues, orderConstraint, sqlFilter,
-                       sqlFilterParams);
+            sqlFilterParams);
          ds.put(getTable(), getRequest(), qry);
       }
 
-      String          position = getTable()
-                                    .getKeyPositionString(getTable().getFieldValues(lastPosition));
-      ResultSetVector res = qry.getNext(position, count);
+      String          position = getTable().getKeyPositionString(getTable()
+                                                                    .getFieldValues(lastPosition));
+      ResultSetVector res = qry.getNext(interceptorData, position, count);
 
       if (ResultSetVector.isNull(res)) {
-         res = qry.getLast(count);
+         res = qry.getLast(interceptorData, count);
       }
 
       return res;

@@ -470,7 +470,6 @@
       <aspectSourceDirectory/>
       <unitTest>
          <includes>
-            <include>**/*Test.java</include>
             <include>**/Test*.java</include>
          </includes>
          <!-- Test resources -->

@@ -23,8 +23,6 @@
 
 package org.dbforms.event;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.Table;
@@ -48,8 +46,6 @@ import javax.servlet.http.HttpServletRequest;
  *
  */
 public abstract class WebEvent {
-   /** logging category for this class */
-   protected Log logCat = LogFactory.getLog(this.getClass().getName());
 
    /** the configuration object */
    private DbFormsConfig config;

@@ -218,8 +218,7 @@ public class GotoEvent extends NavigationEvent {
                                        int          count,
                                        String       firstPosition,
                                        String       lastPosition,
-                                       String       dbConnectionName,
-                                       Connection   con)
+                                       DbEventInterceptorData interceptorData)
                                 throws SQLException {
       if (Util.isNull(whereClause)) {
          try {
@@ -253,15 +252,14 @@ public class GotoEvent extends NavigationEvent {
          logCat.info("gotopos = " + position);
 
          return getTable()
-                   .doConstrainedSelect(getTable().getFields(),
-                                        childFieldValues, orderConstraint,
+                   .doConstrainedSelect(childFieldValues, orderConstraint,
                                         sqlFilter, sqlFilterParams, compMode,
-                                        count, con);
+                                        count, interceptorData);
       } else {
          // free form select
          return getTable()
-                   .doFreeFormSelect(getTable().getFields(), whereClause,
-                                     tableList, count, con);
+                   .doFreeFormSelect(whereClause,
+                                     tableList, count, interceptorData);
       }
    }
 }

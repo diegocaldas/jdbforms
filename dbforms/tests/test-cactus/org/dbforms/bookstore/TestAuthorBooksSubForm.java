@@ -38,7 +38,7 @@ import java.util.Locale;
 
 // definition of test class
 public class TestAuthorBooksSubForm extends HttpTestCase {
-   private static String nodata = null;
+   private String nodata = null;
 
    // Test method generated from the MaxQ Java generator
    public TestAuthorBooksSubForm(String name) {
@@ -49,6 +49,7 @@ public class TestAuthorBooksSubForm extends HttpTestCase {
          nodata = MessageResourcesInternal.getMessage("dbforms.nodata",
                                                       Locale.getDefault());
       }
+      println("nodata is " + nodata);
    }
 
    /**

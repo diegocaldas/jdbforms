@@ -20,8 +20,9 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.event;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.dbforms.config.Constants;
 import org.dbforms.config.DbFormsConfig;
@@ -57,6 +58,8 @@ import javax.servlet.http.HttpServletRequest;
  * @author Joe Peer
  */
 public abstract class DatabaseEvent extends WebEvent {
+   private static Log logCat = LogFactory.getLog(DatabaseEvent.class.getName()); // logging category for this class
+
    /** key identifier */
    private String keyId;
 
@@ -68,10 +71,8 @@ public abstract class DatabaseEvent extends WebEvent {
     * @param request the request object
     * @param config the configuration object
     */
-   public DatabaseEvent(int                tableId,
-                        String             keyId,
-                        HttpServletRequest request,
-                        DbFormsConfig      config) {
+   public DatabaseEvent(int tableId, String keyId, HttpServletRequest request,
+      DbFormsConfig config) {
       super(tableId, request, config);
       this.keyId = keyId;
    }
@@ -109,9 +110,8 @@ public abstract class DatabaseEvent extends WebEvent {
     * @exception MultipleValidationException The Vector of errors throwed with
     *            this exception
     */
-   public void doValidation(String         formValidatorName,
-                            ServletContext context)
-                     throws MultipleValidationException {
+   public void doValidation(String formValidatorName, ServletContext context)
+      throws MultipleValidationException {
    }
 
 
@@ -124,7 +124,7 @@ public abstract class DatabaseEvent extends WebEvent {
     * @throws MultipleValidationException if any validation error occurs
     */
    public abstract void processEvent(Connection con)
-                              throws SQLException, MultipleValidationException;
+      throws SQLException, MultipleValidationException;
 
 
    /**
@@ -138,13 +138,12 @@ public abstract class DatabaseEvent extends WebEvent {
     */
    protected FieldValues getFieldValues(boolean insertMode) {
       FieldValues result    = new FieldValues();
-      String      paramStub = (Constants.FIELDNAME_PREFIX + getTable()
-                                                               .getId() + "_"
-                              + (EventType.EVENT_DATABASE_INSERT.equals(getType())
-                                 ? Constants.FIELDNAME_INSERTPREFIX
-                                 : "") + keyId + "_");
+      String      paramStub = (Constants.FIELDNAME_PREFIX + getTable().getId()
+         + "_"
+         + (EventType.EVENT_DATABASE_INSERT.equals(getType())
+         ? Constants.FIELDNAME_INSERTPREFIX : "") + keyId + "_");
       Vector params = ParseUtil.getParametersStartingWith(getRequest(),
-                                                          paramStub);
+            paramStub);
 
       // Always doit in insert or delete mode    
       boolean doIt = insertMode;
@@ -161,8 +160,7 @@ public abstract class DatabaseEvent extends WebEvent {
 
             // old value of the named parameter;
             String oldValue = ParseUtil.getParameter(getRequest(),
-                                                     Constants.FIELDNAME_OLDVALUETAG
-                                                     + param);
+                  Constants.FIELDNAME_OLDVALUETAG + param);
 
             // if they are not equals, set the update flag for this field
             // and exit from the loop;
@@ -181,35 +179,27 @@ public abstract class DatabaseEvent extends WebEvent {
          while (e.hasNext()) {
             String param = (String) e.next();
 
-            int    iiFieldId = Integer.parseInt(param.substring(paramStub
-                                                                .length()));
-            Field  f = getTable()
-                          .getField(iiFieldId);
+            int    iiFieldId = Integer.parseInt(param.substring(
+                     paramStub.length()));
+            Field  f = getTable().getField(iiFieldId);
 
-            String value = f.getEscaper()
-                            .unescapeHTML(ParseUtil.getParameter(getRequest(),
-                                                                 param));
+            String value = f.getEscaper().unescapeHTML(ParseUtil.getParameter(
+                     getRequest(), param));
             FieldValue fv = new FieldValue(f, value);
 
-            fv.setOldValue(f.getEscaper().unescapeHTML(ParseUtil.getParameter(getRequest(),
-                                                                              Constants.FIELDNAME_OLDVALUETAG
-                                                                              + param)));
+            fv.setOldValue(f.getEscaper().unescapeHTML(ParseUtil.getParameter(
+                     getRequest(), Constants.FIELDNAME_OLDVALUETAG + param)));
             fv.setPattern(ParseUtil.getParameter(getRequest(),
-                                                 Constants.FIELDNAME_PATTERNTAG
-                                                 + param));
+                  Constants.FIELDNAME_PATTERNTAG + param));
             fv.setLocale(MessageResources.getLocale(getRequest()));
 
             if ((f.getType() == FieldTypes.BLOB)
-                      || (f.getType() == FieldTypes.DISKBLOB)) {
+                     || (f.getType() == FieldTypes.DISKBLOB)) {
                // in case of a BLOB or DISKBLOB save get the FileHolder for later use
                fv.setFileHolder(ParseUtil.getFileHolder(getRequest(),
-                                                        "f_"
-                                                        + getTable().getId()
-                                                        + "_"
-                                                        + (insertMode
-                                                           ? Constants.FIELDNAME_INSERTPREFIX
-                                                           : "") + keyId + "_"
-                                                        + iiFieldId));
+                     "f_" + getTable().getId() + "_"
+                     + (insertMode ? Constants.FIELDNAME_INSERTPREFIX : "")
+                     + keyId + "_" + iiFieldId));
             }
 
             result.put(fv);
@@ -229,8 +219,8 @@ public abstract class DatabaseEvent extends WebEvent {
       String key = null;
 
       try {
-         key = ParseUtil.getParameter(getRequest(),
-                                      "k_" + getTable().getId() + "_" + keyId);
+         key    = ParseUtil.getParameter(getRequest(),
+               "k_" + getTable().getId() + "_" + keyId);
          key = Util.decode(key, getRequest().getCharacterEncoding());
          logCat.info("::getKeyValues - key: " + key);
       } catch (UnsupportedEncodingException e) {

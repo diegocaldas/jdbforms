@@ -20,12 +20,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.event.datalist;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.dbforms.config.DbEventInterceptorData;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.FieldValue;
 import org.dbforms.config.FieldValues;
@@ -34,14 +33,13 @@ import org.dbforms.config.Table;
 
 import org.dbforms.event.NavigationEvent;
 import org.dbforms.event.datalist.dao.DataSourceFactory;
-import org.dbforms.event.datalist.dao.DataSourceList;
+import org.dbforms.event.datalist.dao.DataSourceSessionList;
 
 import org.dbforms.util.ParseUtil;
 import org.dbforms.util.Util;
 
 import java.io.UnsupportedEncodingException;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -78,15 +76,14 @@ public class GotoEvent extends NavigationEvent {
     * @param request the request object
     * @param config the config object
     */
-   public GotoEvent(String             action,
-                    HttpServletRequest request,
-                    DbFormsConfig      config) {
+   public GotoEvent(String action, HttpServletRequest request,
+      DbFormsConfig config) {
       // create dummy action so that tableId will be parsed to -1!
       // table and tableId will be parsed here!
       super("data_data_-1", request, config);
 
       String destTable = ParseUtil.getParameter(request,
-                                                "data" + action + "_destTable");
+            "data" + action + "_destTable");
 
       // if the user wants a simple, dumb link and we want no form to be navigated through
       if (destTable == null) {
@@ -104,11 +101,10 @@ public class GotoEvent extends NavigationEvent {
       }
 
       String srcTable = ParseUtil.getParameter(request,
-                                               "data" + action + "_srcTable");
+            "data" + action + "_srcTable");
 
       singleRow = "true".equals(ParseUtil.getParameter(request,
-                                                       "data" + action
-                                                       + "_singleRow"));
+               "data" + action + "_singleRow"));
 
       if (srcTable != null) {
          this.srcTable = config.getTableByName(srcTable);
@@ -117,40 +113,38 @@ public class GotoEvent extends NavigationEvent {
             this.srcTable = config.getTable(Integer.parseInt(srcTable));
          }
 
-         childField = ParseUtil.getParameter(request,
-                                             "data" + action + "_childField");
+         childField    = ParseUtil.getParameter(request,
+               "data" + action + "_childField");
          parentField = ParseUtil.getParameter(request,
-                                              "data" + action + "_parentField");
+               "data" + action + "_parentField");
       }
 
       // the position to go to within the destination-jsp's-table can be given
       // more or less directly
       String destPos = ParseUtil.getParameter(request,
-                                              "data" + action + "_destPos");
+            "data" + action + "_destPos");
 
       // the direct way - i.e. "1:5:value"
       if (destPos != null) {
          this.position = destPos;
       } else {
          String keyToDestPos = ParseUtil.getParameter(request,
-                                                      "data" + action
-                                                      + "_keyToDestPos");
+               "data" + action + "_keyToDestPos");
 
          // the 1-leveled indirect way: i.e. "k_1_1" whereby k_1_1 leads to "1:2:23"
          if (keyToDestPos != null) {
             this.position = ParseUtil.getParameter(request, keyToDestPos);
          } else {
             String keyToKeyToDestPos = ParseUtil.getParameter(request,
-                                                              "data" + action
-                                                              + "_keyToKeyToDestPos");
+                  "data" + action + "_keyToKeyToDestPos");
 
             // the 2-leveled indirect way: i.e. "my_sel" wherby "mysel" leads to "1_1",
             // which leads to "1:2:23"
             if (keyToKeyToDestPos != null) {
                String widgetValue = ParseUtil.getParameter(request,
-                                                           keyToKeyToDestPos); // i.e. "1_1"
+                     keyToKeyToDestPos); // i.e. "1_1"
                this.position = ParseUtil.getParameter(request,
-                                                      "k_" + widgetValue); // i.e. "1:2:23"
+                     "k_" + widgetValue); // i.e. "1:2:23"
             }
          }
       }
@@ -169,10 +163,8 @@ public class GotoEvent extends NavigationEvent {
     * @param config the config object
     * @param position the position string
     */
-   public GotoEvent(Table              table,
-                    HttpServletRequest request,
-                    DbFormsConfig      config,
-                    String             position) {
+   public GotoEvent(Table table, HttpServletRequest request,
+      DbFormsConfig config, String position) {
       super(table, request, config);
       this.position = table.getKeyPositionString(table.getFieldValues(position));
    }
@@ -189,14 +181,11 @@ public class GotoEvent extends NavigationEvent {
     * @param whereClause the SQL where clause
     * @param tableList the table list
     */
-   public GotoEvent(Table              table,
-                    HttpServletRequest request,
-                    DbFormsConfig      config,
-                    String             whereClause,
-                    String             tableList) {
+   public GotoEvent(Table table, HttpServletRequest request,
+      DbFormsConfig config, String whereClause, String tableList) {
       super(table, request, config);
-      this.whereClause = whereClause;
-      this.tableList   = tableList;
+      this.whereClause    = whereClause;
+      this.tableList      = tableList;
    }
 
    /**
@@ -221,15 +210,10 @@ public class GotoEvent extends NavigationEvent {
     * @exception SQLException if any error occurs
     */
    public ResultSetVector processEvent(FieldValue[] childFieldValues,
-                                       FieldValue[] orderConstraint,
-                                       String       sqlFilter,
-                                       FieldValue[] sqlFilterParams,
-                                       int          count,
-                                       String       firstPosition,
-                                       String       lastPosition,
-                                       String       dbConnectionName,
-                                       Connection   con)
-                                throws SQLException {
+      FieldValue[] orderConstraint, String sqlFilter,
+      FieldValue[] sqlFilterParams, int count, String firstPosition,
+      String lastPosition, DbEventInterceptorData interceptorData)
+      throws SQLException {
       // get the DataSourceList from the session
       logCat.info("==> GotoEvent.processEvent");
 
@@ -243,40 +227,37 @@ public class GotoEvent extends NavigationEvent {
             throw new SQLException(e.getMessage());
          }
 
-         if ((srcTable != null)
-                   && !Util.isNull(childField)
-                   && !Util.isNull(parentField)) {
-            fv = getTable()
-                    .mapChildFieldValues(srcTable, parentField, childField,
-                                         position);
+         if ((srcTable != null) && !Util.isNull(childField)
+                  && !Util.isNull(parentField)) {
+            fv = getTable().mapChildFieldValues(srcTable, parentField,
+                  childField, position);
          } else {
-            fv = getTable()
-                    .getFieldValues(position);
+            fv = getTable().getFieldValues(position);
          }
 
-         position = getTable()
-                       .getKeyPositionString(fv);
+         position = getTable().getKeyPositionString(fv);
 
          if (singleRow && (fv != null)) {
             childFieldValues = fv.toArray();
          }
       }
 
-      DataSourceList ds = DataSourceList.getInstance(getRequest());
+      DataSourceSessionList ds = DataSourceSessionList.getInstance(getRequest());
       ds.remove(getTable(), getRequest());
 
-      DataSourceFactory qry = new DataSourceFactory(dbConnectionName, con,
-                                                    getTable());
+      DataSourceFactory qry = new DataSourceFactory((String) interceptorData
+            .getAttribute(DbEventInterceptorData.CONNECTIONNAME),
+            interceptorData.getConnection(), getTable());
 
       if (Util.isNull(whereClause)) {
          qry.setSelect(childFieldValues, orderConstraint, sqlFilter,
-                       sqlFilterParams);
+            sqlFilterParams);
       } else {
          qry.setSelect(tableList, whereClause);
       }
 
       ds.put(getTable(), getRequest(), qry);
 
-      return qry.getCurrent(position, count);
+      return qry.getCurrent(interceptorData, position, count);
    }
 }

@@ -20,9 +20,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.taglib;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -57,14 +55,15 @@ import javax.servlet.jsp.PageContext;
  */
 public abstract class EmbeddedData extends DbBaseHandlerTag
    implements javax.servlet.jsp.tagext.TryCatchFinally, StaticDataAddInterface {
-   private static Log logCat = LogFactory.getLog(EmbeddedData.class.getName());
-   private IFormatEmbeddedData  printfFormat;
-   private List       data;
-   private String     dbConnectionName;
-   private String     disableCache = "false";
-   private String     format;
-   private String     formatClass;
-   private String     name;
+   private static Log          logCat           = LogFactory.getLog(EmbeddedData.class
+         .getName());
+   private IFormatEmbeddedData printfFormat;
+   private List                data;
+   private String              dbConnectionName;
+   private String              disableCache = "false";
+   private String              format;
+   private String              formatClass;
+   private String              name;
 
    /**
     * DOCUMENT ME!
@@ -115,7 +114,7 @@ public abstract class EmbeddedData extends DbBaseHandlerTag
     */
    public IEscaper getEscaper() {
       DataContainer parent = ((DataContainer) getParent());
-      IEscaper       res = parent.getEscaper();
+      IEscaper      res = parent.getEscaper();
 
       return res;
    }
@@ -197,12 +196,12 @@ public abstract class EmbeddedData extends DbBaseHandlerTag
     * DOCUMENT ME!
     */
    public void doFinally() {
-      name             = null;
-      dbConnectionName = null;
-      format           = null;
-      printfFormat     = null;
-      formatClass      = null;
-      disableCache     = "false";
+      name                = null;
+      dbConnectionName    = null;
+      format              = null;
+      printfFormat        = null;
+      formatClass         = null;
+      disableCache        = "false";
    }
 
 
@@ -253,12 +252,12 @@ public abstract class EmbeddedData extends DbBaseHandlerTag
 
          try {
             printfFormat = (IFormatEmbeddedData) ReflectionUtil.newInstance(getFormatClass());
-            printfFormat.setLocale(MessageResources.getLocale((HttpServletRequest) pageContext
-                                                              .getRequest()));
+            printfFormat.setLocale(MessageResources.getLocale(
+                  (HttpServletRequest) pageContext.getRequest()));
             printfFormat.setFormat(format);
          } catch (Exception e) {
             logCat.error("cannot create the new printfFormat ["
-                         + getFormatClass() + "]", e);
+               + getFormatClass() + "]", e);
          }
       }
 
@@ -282,8 +281,7 @@ public abstract class EmbeddedData extends DbBaseHandlerTag
          DbFormsConfig config = null;
 
          try {
-            config = DbFormsConfigRegistry.instance()
-                                          .lookup();
+            config = DbFormsConfigRegistry.instance().lookup();
          } catch (Exception e) {
             logCat.error(e);
             throw new JspException(e);
@@ -307,7 +305,7 @@ public abstract class EmbeddedData extends DbBaseHandlerTag
             // cache result for further loops
          } catch (SQLException sqle) {
             throw new JspException("Database error in EmbeddedData.fetchData "
-                                   + sqle.toString());
+               + sqle.toString());
          } finally {
             SqlUtil.closeConnection(con);
          }
@@ -350,8 +348,11 @@ public abstract class EmbeddedData extends DbBaseHandlerTag
 
       if (printfFormat != null) {
          try {
+            rsv.moveFirst();
+
             for (int i = 0; i < rsv.size(); i++) {
-               rsv.setPointer(i);
+               rsv.moveNext();
+
                String[] currentRow = rsv.getCurrentRow();
                String   htKey = currentRow[0];
 
@@ -360,13 +361,12 @@ public abstract class EmbeddedData extends DbBaseHandlerTag
                Object[] objs2 = new Object[objs.length - 1];
 
                for (int j = 0; j < objs2.length; j++) {
-                  if ((objs[j] instanceof String)
-                            || (objs[j] instanceof Byte)
-                            || (objs[j] instanceof java.lang.Integer)
-                            || (objs[j] instanceof Short)
-                            || (objs[j] instanceof Float)
-                            || (objs[j] instanceof Long)
-                            || (objs[j] instanceof Double)) {
+                  if ((objs[j] instanceof String) || (objs[j] instanceof Byte)
+                           || (objs[j] instanceof java.lang.Integer)
+                           || (objs[j] instanceof Short)
+                           || (objs[j] instanceof Float)
+                           || (objs[j] instanceof Long)
+                           || (objs[j] instanceof Double)) {
                      objs2[j] = objs[(j + 1)];
                   } else {
                      objs2[j] = currentRow[j + 1];
@@ -382,22 +382,26 @@ public abstract class EmbeddedData extends DbBaseHandlerTag
             resultSuccessFullyFormated = true;
          } catch (IllegalArgumentException ex) {
             logCat.error("Could not format result using format '" + format
-                         + "', error message is " + ex.getMessage());
-            logCat.error("Using fallback method of comma separated list instead");
+               + "', error message is " + ex.getMessage());
+            logCat.error(
+               "Using fallback method of comma separated list instead");
             result = new java.util.Vector();
          } catch (NullPointerException npe) // npe will be thrown if null// value returned from database
           {
             logCat.error("Could not format result using format '" + format
-                         + "', error message is " + npe.getMessage());
-            logCat.error("Using fallback method of comma separated list instead");
+               + "', error message is " + npe.getMessage());
+            logCat.error(
+               "Using fallback method of comma separated list instead");
             result = new java.util.Vector();
          }
       }
 
       if (!resultSuccessFullyFormated) // no format given or formatting failed
        {
+         rsv.moveFirst();
+
          for (int i = 0; i < rsv.size(); i++) {
-            rsv.setPointer(i);
+            rsv.moveNext();
 
             String[]     currentRow = rsv.getCurrentRow();
             String       htKey      = currentRow[0];

@@ -23,12 +23,14 @@
 
 package org.dbforms.event;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.dbforms.config.DbEventInterceptorData;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.FieldValue;
 import org.dbforms.config.ResultSetVector;
 import org.dbforms.config.Table;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -46,6 +48,7 @@ import javax.servlet.http.HttpServletRequest;
  * @version $Revision$
  */
 public class NavCopyEvent extends NavigationEvent {
+	   private static Log logCat = LogFactory.getLog(NavCopyEvent.class.getName()); // logging category for this class
    /**
     * Creates a new NavCopyEvent object.
     *
@@ -101,8 +104,7 @@ public class NavCopyEvent extends NavigationEvent {
                                        int          count,
                                        String       firstPosition,
                                        String       lastPosition,
-                                       String       dbConnectionName,
-                                       Connection   con)
+                                       DbEventInterceptorData interceptorData)
                                 throws SQLException {
       logCat.info("processed NavCopyEvent");
 

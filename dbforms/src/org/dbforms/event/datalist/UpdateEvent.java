@@ -28,13 +28,14 @@ import org.apache.commons.logging.LogFactory;
 
 import org.dbforms.config.Constants;
 import org.dbforms.config.DbEventInterceptor;
+import org.dbforms.config.DbEventInterceptorData;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.FieldValues;
 import org.dbforms.config.GrantedPrivileges;
 
 import org.dbforms.event.ValidationEvent;
 import org.dbforms.event.datalist.dao.DataSourceFactory;
-import org.dbforms.event.datalist.dao.DataSourceList;
+import org.dbforms.event.datalist.dao.DataSourceSessionList;
 
 import org.dbforms.util.MessageResourcesInternal;
 import org.dbforms.util.ParseUtil;
@@ -114,16 +115,6 @@ public class UpdateEvent extends ValidationEvent {
     * @throws MultipleValidationException if any validation error occurs
     */
    public void processEvent(Connection con) throws SQLException {
-      // 2003-08-05-HKK: first check if update is necessary before check security
-      // which values do we find in request
-      FieldValues fieldValues = getFieldValues();
-
-      if (fieldValues.size() == 0) {
-         logCat.info("no parameters to update found");
-
-         return;
-      }
-
       // Apply given security contraints (as defined in dbforms-config.xml)
       if (!hasUserPrivileg(GrantedPrivileges.PRIVILEG_UPDATE)) {
          String s = MessageResourcesInternal.getMessage("dbforms.events.update.nogrant",
@@ -135,35 +126,49 @@ public class UpdateEvent extends ValidationEvent {
          throw new SQLException(s);
       }
 
+      // End of interceptor processing
+      // in order to process an update, we need the key of the dataset to update
+      String keyValuesStr = getKeyValues();
+
+      if (Util.isNull(keyValuesStr)) {
+         logCat.error("::processEvent - at least one key is required per table, check your dbforms-config.xml");
+
+         return;
+      }
+
+      // 2003-08-05-HKK: first check if update is necessary before check security
+      // which values do we find in request
+      FieldValues fieldValues = getFieldValues();
+
+      if (fieldValues.size() == 0) {
+         logCat.info("no parameters to update found");
+
+         return;
+      }
+
+      DbEventInterceptorData interceptorData = new DbEventInterceptorData(getRequest(),
+                                                               getConfig(), con, getTable());
+      interceptorData.setAttribute(DbEventInterceptorData.FIELDVALUES, fieldValues);
+      interceptorData.setAttribute(DbEventInterceptorData.KEYVALUES, keyValuesStr);
+
       // process the interceptors associated to this table
       int operation = getTable()
                          .processInterceptors(DbEventInterceptor.PRE_UPDATE,
-                                              getRequest(), fieldValues,
-                                              getConfig(), con);
+                                              interceptorData);
 
       if ((operation == DbEventInterceptor.GRANT_OPERATION)
                 && (fieldValues.size() > 0)) {
-         // End of interceptor processing
-         // in order to process an update, we need the key of the dataset to update
-         String keyValuesStr = getKeyValues();
-
-         if (Util.isNull(keyValuesStr)) {
-            logCat.error("::processEvent - at least one key is required per table, check your dbforms-config.xml");
-
-            return;
-         }
-
          // UPDATE operation;
-         DataSourceList    ds  = DataSourceList.getInstance(getRequest());
+         DataSourceSessionList    ds  = DataSourceSessionList.getInstance(getRequest());
          DataSourceFactory qry = ds.get(getTable(), getRequest());
          boolean           own = false;
 
          if (qry == null) {
-            qry = new DataSourceFactory(getTable());
+            qry = new DataSourceFactory((String)interceptorData.getAttribute(DbEventInterceptorData.CONNECTIONNAME), interceptorData.getConnection(), getTable());
             own = true;
          }
 
-         qry.doUpdate(con, fieldValues, keyValuesStr);
+         qry.doUpdate(interceptorData, fieldValues, keyValuesStr);
 
          if (own) {
             qry.close();
@@ -174,8 +179,7 @@ public class UpdateEvent extends ValidationEvent {
          // finally, we process interceptor again (post-update)
          // process the interceptors associated to this table
          getTable()
-            .processInterceptors(DbEventInterceptor.POST_UPDATE, getRequest(),
-                                 fieldValues, getConfig(), con);
+            .processInterceptors(DbEventInterceptor.POST_UPDATE, interceptorData);
       }
 
       // End of interceptor processing

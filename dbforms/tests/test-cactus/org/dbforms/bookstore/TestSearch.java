@@ -38,17 +38,17 @@ import java.util.Locale;
 
 // definition of test class
 public class TestSearch extends HttpTestCase {
-   private static String nodata = null;
+   private String nodata = null;
 
    // Test method generated from the MaxQ Java generator
    public TestSearch(String name) {
       super(name);
-
       if (nodata == null) {
          MessageResources.setSubClass("resources");
          nodata = MessageResourcesInternal.getMessage("dbforms.nodata",
                                                       Locale.getDefault());
       }
+      println("nodata is " + nodata);
    }
 
    /**

@@ -48,11 +48,11 @@ import javax.servlet.http.HttpSessionBindingListener;
  *
  * @author hkk
  */
-public class DataSourceList implements HttpSessionBindingListener {
+public class DataSourceSessionList implements HttpSessionBindingListener {
    /** Hashtable to hold all DataSource objects. Key is queryString. */
 
    // logging category for this class;
-   private static Log logCat = LogFactory.getLog(DataSourceList.class.getName());
+   private static Log logCat = LogFactory.getLog(DataSourceSessionList.class.getName());
    private Map        ht = new HashMap();
 
    /**
@@ -60,7 +60,7 @@ public class DataSourceList implements HttpSessionBindingListener {
     * Use <code>getInstance</code> to get an instance of  the DataSourceList
     * object.
     */
-   private DataSourceList() {
+   private DataSourceSessionList() {
       super();
    }
 
@@ -71,18 +71,18 @@ public class DataSourceList implements HttpSessionBindingListener {
     *
     * @return DOCUMENT ME!
     */
-   public static synchronized DataSourceList getInstance(HttpServletRequest request) {
+   public static synchronized DataSourceSessionList getInstance(HttpServletRequest request) {
       // try to retrieve an existant dataSourceList object from the session
       // context;
-      DataSourceList ds = (DataSourceList) request.getSession()
-                                                  .getAttribute("org.dbforms.event.datalist.dao.DataSourceList");
+      DataSourceSessionList ds = (DataSourceSessionList) request.getSession()
+                                                  .getAttribute("org.dbforms.event.datalist.dao.DataSourceSessionList");
 
       // if it does not exist, createn a new one and store
       // its reference into the session;
       if (ds == null) {
-         ds = new DataSourceList();
+         ds = new DataSourceSessionList();
          request.getSession()
-                .setAttribute("org.dbforms.event.datalist.dao.DataSourceList",
+                .setAttribute("org.dbforms.event.datalist.dao.DataSourceSessionList",
                               ds);
       }
 

@@ -214,10 +214,10 @@ public class DbConnection implements javax.sql.DataSource {
     *
     * @return DOCUMENT ME!
     */
-   public Connection getConnection(String username,
-                                   String password) throws SQLException {
-      setUsername(username);
-      setPassword(password);
+   public Connection getConnection(String p_username,
+                                   String p_password) throws SQLException {
+      setUsername(p_username);
+      setPassword(p_password);
 
       return getConnection();
    }

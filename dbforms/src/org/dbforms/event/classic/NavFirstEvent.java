@@ -101,14 +101,13 @@ public class NavFirstEvent extends NavigationEvent {
                                        int          count,
                                        String       firstPosition,
                                        String       lastPosition,
-                                       String       dbConnectionName,
-                                       Connection   con)
+                                       DbEventInterceptorData interceptorData)
                                 throws SQLException {
       // just select from table in given order
       return getTable()
-                .doConstrainedSelect(getTable().getFields(), childFieldValues,
+                .doConstrainedSelect(childFieldValues,
                                      orderConstraint, sqlFilter,
                                      sqlFilterParams, Constants.COMPARE_NONE,
-                                     count, con);
+                                     count, interceptorData);
    }
 }

@@ -20,12 +20,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.taglib;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.dbforms.config.DbEventInterceptorData;
 import org.dbforms.config.ResultSetVector;
 
 import org.dbforms.util.StringUtil;
@@ -36,6 +35,8 @@ import java.sql.SQLException;
 
 import java.util.List;
 import java.util.Vector;
+
+import javax.servlet.http.HttpServletRequest;
 
 
 
@@ -153,10 +154,10 @@ public class TableData extends EmbeddedData
     * DOCUMENT ME!
     */
    public void doFinally() {
-      foreignTable  = null;
-      visibleFields = null;
-      storeField    = null;
-      orderBy       = null;
+      foreignTable     = null;
+      visibleFields    = null;
+      storeField       = null;
+      orderBy          = null;
       super.doFinally();
    }
 
@@ -202,7 +203,15 @@ public class TableData extends EmbeddedData
       ResultSetVector   rsv = null;
 
       try {
-         rsv = new ResultSetVector(getEscaper(), ps.executeQuery());
+         rsv = new ResultSetVector();
+
+         HttpServletRequest     request = (HttpServletRequest) pageContext
+            .getRequest();
+         DbEventInterceptorData data = new DbEventInterceptorData(request,
+               getConfig(), con, null);
+         data.setAttribute(DbEventInterceptorData.PAGECONTEXT,
+                pageContext);
+         rsv.addResultSet(data, ps.executeQuery());
       } finally {
          ps.close(); // #JP Jun 27, 2001
       }

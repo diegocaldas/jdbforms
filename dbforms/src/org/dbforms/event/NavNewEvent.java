@@ -26,12 +26,12 @@ package org.dbforms.event;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.dbforms.config.DbEventInterceptorData;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.FieldValue;
 import org.dbforms.config.ResultSetVector;
 import org.dbforms.config.Table;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -105,8 +105,7 @@ public class NavNewEvent extends NavigationEvent {
                                        int          count,
                                        String       firstPosition,
                                        String       lastPosition,
-                                       String       dbConnectionName,
-                                       Connection   con)
+                                       DbEventInterceptorData interceptorData)
                                 throws SQLException {
       logCat.info("processed NavNewEvent");
 

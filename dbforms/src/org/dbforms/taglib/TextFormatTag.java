@@ -26,6 +26,8 @@ package org.dbforms.taglib;
 import org.dbforms.config.Field;
 import org.dbforms.config.FieldValue;
 
+import org.dbforms.util.Util;
+
 import javax.servlet.jsp.JspException;
 
 
@@ -35,15 +37,28 @@ import javax.servlet.jsp.JspException;
  *
  * @author hkk
  */
-public class TextFormatTag extends DbBaseHandlerTag {
-   private Object obj;
+public class TextFormatTag extends DbBaseHandlerTag
+   implements javax.servlet.jsp.tagext.TryCatchFinally {
+   private Object fieldObject; // Holds the object to retrieve.
    private String pattern;
    private String type;
    private String value;
+   private String variable;
 
    /**
-    * @param pattern
-    *            The pattern to set.
+    * DOCUMENT ME!
+    *
+    * @return
+    */
+   public Object getFieldObject() {
+      return fieldObject;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param pattern The pattern to set.
     */
    public void setPattern(String pattern) {
       this.pattern = pattern;
@@ -51,6 +66,8 @@ public class TextFormatTag extends DbBaseHandlerTag {
 
 
    /**
+    * DOCUMENT ME!
+    *
     * @return Returns the pattern.
     */
    public String getPattern() {
@@ -59,6 +76,8 @@ public class TextFormatTag extends DbBaseHandlerTag {
 
 
    /**
+    * DOCUMENT ME!
+    *
     * @param type The type to set.
     */
    public void setType(String type) {
@@ -67,6 +86,8 @@ public class TextFormatTag extends DbBaseHandlerTag {
 
 
    /**
+    * DOCUMENT ME!
+    *
     * @return Returns the type.
     */
    public String getType() {
@@ -75,8 +96,9 @@ public class TextFormatTag extends DbBaseHandlerTag {
 
 
    /**
-    * @param value
-    *            The value to set.
+    * DOCUMENT ME!
+    *
+    * @param value The value to set.
     */
    public void setValue(String value) {
       this.value = value;
@@ -84,6 +106,8 @@ public class TextFormatTag extends DbBaseHandlerTag {
 
 
    /**
+    * DOCUMENT ME!
+    *
     * @return Returns the value.
     */
    public String getValue() {
@@ -92,23 +116,51 @@ public class TextFormatTag extends DbBaseHandlerTag {
 
 
    /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable {
+      throw t;
+   }
+
+
+   /**
     * Description of the Method
-    *     * @return Description of the Return Value
     *
-    * @exception javax.servlet.jsp.JspException
-    *                Description of the Exception
+    * @return Description of the Return Value
+    *
+    * @exception javax.servlet.jsp.JspException Description of the Exception
+    * @throws JspException DOCUMENT ME!
     */
    public int doEndTag() throws javax.servlet.jsp.JspException {
-      Field field = new Field();
-      field.setFieldType(getType());
+      if (Util.isNull(getVariable()) && Util.isNull(getValue())) {
+         throw new JspException("either var or value must be setted!");
+      }
 
-      FieldValue fv = new FieldValue(field, getValue());
-      fv.setPattern(getPattern());
-      obj = fv.getFieldValueAsObject();
-      setField(field);
+      Field field = new Field();
+
+      if (!Util.isNull(getValue())) {
+         if (Util.isNull(getType())) {
+            throw new JspException("value setted - type must be setted  too!");
+         }
+
+         field.setFieldType(getType());
+
+         FieldValue fv = new FieldValue(field, getValue());
+         fv.setPattern(getPattern());
+         fieldObject = fv.getFieldValueAsObject();
+      } else {
+         fieldObject = pageContext.findAttribute(getVariable());
+
+         if (fieldObject == null) {
+            throw new JspException("object not found in context!");
+         }
+
+         field.setTypeByObject(fieldObject);
+      }
+
+      this.setField(field);
 
       String fieldValue = getFormattedFieldValue();
-
       fieldValue = escapeHTML(fieldValue);
 
       try {
@@ -125,10 +177,42 @@ public class TextFormatTag extends DbBaseHandlerTag {
 
    /**
     * DOCUMENT ME!
+    */
+   public void doFinally() {
+      pattern  = null;
+      type     = null;
+      value    = null;
+      variable = null;
+      super.doFinally();
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param fieldObject DOCUMENT ME!
+    */
+   protected void setFieldObject(Object fieldObject) {
+      this.fieldObject = fieldObject;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param variable DOCUMENT ME!
+    */
+   public void setVariable(String variable) {
+      this.variable = variable;
+   }
+
+
+   /**
+    * DOCUMENT ME!
     *
     * @return DOCUMENT ME!
     */
-   protected Object getFieldObject() {
-      return obj;
+   public String getVariable() {
+      return variable;
    }
 }

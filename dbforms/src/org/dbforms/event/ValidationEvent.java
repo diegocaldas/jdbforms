@@ -20,9 +20,9 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.event;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.commons.validator.Validator;
 import org.apache.commons.validator.ValidatorResources;
 
@@ -50,6 +50,8 @@ import javax.servlet.http.HttpServletRequest;
  * @author hkk
  */
 public abstract class ValidationEvent extends DatabaseEvent {
+   private static Log logCat = LogFactory.getLog(ValidationEvent.class.getName()); // logging category for this class
+
    /**
     * Creates a new ValidationEvent object.
     *
@@ -58,10 +60,8 @@ public abstract class ValidationEvent extends DatabaseEvent {
     * @param request DOCUMENT ME!
     * @param config DOCUMENT ME!
     */
-   public ValidationEvent(int                tableId,
-                          String             keyId,
-                          HttpServletRequest request,
-                          DbFormsConfig      config) {
+   public ValidationEvent(int tableId, String keyId,
+      HttpServletRequest request, DbFormsConfig config) {
       super(tableId, keyId, request, config);
    }
 
@@ -74,9 +74,8 @@ public abstract class ValidationEvent extends DatabaseEvent {
     * @exception MultipleValidationException The Vector of errors throwed with
     *            this exception
     */
-   public void doValidation(String         formValidatorName,
-                            ServletContext context)
-                     throws MultipleValidationException {
+   public void doValidation(String formValidatorName, ServletContext context)
+      throws MultipleValidationException {
       FieldValues fieldValues = getFieldValues();
 
       // If no data to validate, return
@@ -110,7 +109,7 @@ public abstract class ValidationEvent extends DatabaseEvent {
          validator.validate();
       } catch (Exception ex) {
          logCat.error("\n!!! doValidation error for : " + formValidatorName
-                      + "  !!!\n" + ex);
+            + "  !!!\n" + ex);
       }
 
       // If error(s) found, throw Exception

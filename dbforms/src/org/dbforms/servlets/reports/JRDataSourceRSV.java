@@ -39,9 +39,6 @@ public final class JRDataSourceRSV extends JRDataSourceAbstract  {
 			.getName());
 
 	private ResultSetVector rsv;
-
-	private int rownum = 0;
-
 	/**
 	 * Constructor for JRDataSourceRSV.
 	 * 
@@ -52,8 +49,10 @@ public final class JRDataSourceRSV extends JRDataSourceAbstract  {
 	 */
 	public JRDataSourceRSV(ResultSetVector rsv) {
 		this.rsv = rsv;
-		this.rsv.setPointer(-1);
-		rownum = 0;
+		this.rsv.moveFirst();
+		// Set the pointer to one place before the first record
+		// Retriving data for JRDataSource will start with a moveNext!
+		this.rsv.movePrevious();
 	}
 
 	/**
@@ -63,11 +62,10 @@ public final class JRDataSourceRSV extends JRDataSourceAbstract  {
 		if (ResultSetVector.isNull(rsv)) {
 			return false;
 		}
-		if (rsv.getPointer() == (rsv.size() - 1)) {
+		if (rsv.isLast()) {
 			return false;
 		}
-		rsv.increasePointer();
-		rownum++;
+		rsv.moveNext();
 		return true;
 	}
 

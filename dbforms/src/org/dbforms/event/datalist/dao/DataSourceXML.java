@@ -31,7 +31,6 @@ import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.Field;
 import org.dbforms.config.FieldValue;
 import org.dbforms.config.FieldValues;
-import org.dbforms.config.Table;
 
 import org.dbforms.dom.DOMFactory;
 
@@ -66,14 +65,6 @@ public class DataSourceXML extends DataSource {
    private FieldValue[]  orderConstraint;
    private FieldValue[]  sqlFilterParams;
 
-   /**
-    * Contructor
-    *
-    * @param table to set
-    */
-   public DataSourceXML(Table table) {
-      super(table);
-   }
 
    /**
     * Set the filterConstraint and orderConstraint used to build the SQL Select

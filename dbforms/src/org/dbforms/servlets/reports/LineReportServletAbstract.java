@@ -27,9 +27,6 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.dbforms.servlets.reports.JRDataSourceAbstract;
-import org.dbforms.servlets.reports.ReportServletAbstract;
-import org.dbforms.servlets.reports.ReportWriter;
 
 import org.dbforms.util.Util;
 import org.dbforms.util.external.FileUtil;

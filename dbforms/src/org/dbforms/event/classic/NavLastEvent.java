@@ -101,21 +101,19 @@ public class NavLastEvent extends NavigationEvent {
                                        int          count,
                                        String       firstPosition,
                                        String       lastPosition,
-                                       String       dbConnectionName,
-                                       Connection   con)
+                                       DbEventInterceptorData interceptorData)
                                 throws SQLException {
       // select from table in inverted order
       logCat.info("==>NavLastEvent");
       FieldValue.invert(orderConstraint);
 
       ResultSetVector resultSetVector = getTable()
-                                           .doConstrainedSelect(getTable().getFields(),
-                                                                childFieldValues,
+                                           .doConstrainedSelect(childFieldValues,
                                                                 orderConstraint,
                                                                 sqlFilter,
                                                                 sqlFilterParams,
                                                                 Constants.COMPARE_NONE,
-                                                                count, con);
+                                                                count, interceptorData);
       FieldValue.invert(orderConstraint);
       resultSetVector.flip();
 

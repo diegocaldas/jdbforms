@@ -407,8 +407,6 @@ public class TestExports extends HttpTestCase {
         list.add(new KeyValuePair("k_1_7@root", "0%3A1%3A8-2%3A1%3A2"));
         list.add(new KeyValuePair("k_1_8@root", "0%3A1%3A9-2%3A1%3A2"));
         post("http://localhost/bookstore/servlet/control", list);
-
-        post("http://localhost/bookstore/servlet/control", list);
         printResponse();
         assertTrue(responseContains("BOOKSTORE list of books,,,,"));
         assertTrue(responseContains(",ID,,ISBN,TITLE"));
@@ -604,7 +602,7 @@ public class TestExports extends HttpTestCase {
         list.add(new KeyValuePair("k_1_6@root", "0%3A1%3A7-2%3A0%3A"));
         list.add(new KeyValuePair("k_1_7@root", "0%3A1%3A8-2%3A1%3A2"));
         list.add(new KeyValuePair("k_1_8@root", "0%3A1%3A9-2%3A1%3A2"));
-        post("http://localhost/bookstore/servlet/control;", list);
+        post("http://localhost/bookstore/servlet/control", list);
         
         printResponse();
         assertTrue(responseContains("\"BOOK_ID\",\"ISBN\",\"AUTHOR_ID\",\"TITLE\""));

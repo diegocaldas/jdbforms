@@ -1,9 +1,34 @@
+2004-10-20
+(Henner.Kollmann@gmx.de)
+   - added attribute support for resultsetvector
+
+2004-10-19
+(Henner.Kollmann@gmx.de)
+   - removed CustomFormatTag - it's superseded by the TextFormatTag
+   - modified footer/header/body settings. Now the record pointer is increased
+     in dbform tag. Check for footer reached is done here too.
+     So it's posible to ommit the inner tags.
+   	   
+2004-10-18
+(Henner.Kollmann@gmx.de)
+   - Changed interceptor interfaces again - hopefully without breaking compatibility
+   - Added new interceptors preAddRow, postAddRow. If preAddRow returns IGNORE_OPERATION the row is 
+     not written to the resultsetvector. So custom filter could be build.
+   - Added support for calculated fields. This field are defined in the config file and should/could 
+     be calculated in the preAddRow, postAddRow or postSelect interceptor. See bookstore for an example.
+    
+       
+2004-10-17
+(Henner.Kollmann@gmx.de)
+   - Deprecate formatter tag.
+   - Split ParseUtil class in StringUtil and ParseUtil classes
+   - Added new tag TextFormat to format a simple text with dbforms formatting
+       
 2004-10-15
 (Henner.Kollmann@gmx.de)
    - Clean up and simplify reporting/export stuff
      Added test code to test this
-   - Translate alt text in image button if necessary  
-   
+   - Bug fix international support for alt tag in image buttons
 
 2004-10-12
 (Henner.Kollmann@gmx.de)
@@ -22,7 +47,7 @@
         org.apache.commons.logging.LogFactory
      everywhere.
      
-2004-08-12
+2004-08-12		
 (Henner.Kollmann@gmx.de)
 AutoUpdate will work with inserts too now
 

@@ -339,6 +339,12 @@ public class ConfigLoader {
       digester.addSetNext("dbforms-config/table/field", "addField",
                           BASE_CLASS_FIELD);
 
+      // parse "calc" - object + add it to parent (which is "Table")
+      digester.addObjectCreate("dbforms-config/table/calc", fieldClassName);
+      digester.addSetProperties("dbforms-config/table/calc");
+      digester.addSetNext("dbforms-config/table/calc", "addCalcField",
+                          BASE_CLASS_FIELD);
+
       // parse "Foreign-Key" - object + add it to parent (which is "Table")
       digester.addObjectCreate("dbforms-config/table/foreign-key",
                                foreignKeyClassName);
@@ -409,6 +415,13 @@ public class ConfigLoader {
       digester.addSetNext("dbforms-config/query/field", "addField",
                           BASE_CLASS_FIELD);
 
+      // parse "calc" - object + add it to parent (which is "Table")
+      digester.addObjectCreate("dbforms-config/query/calc", fieldClassName);
+      digester.addSetProperties("dbforms-config/query/calc");
+      digester.addSetNext("dbforms-config/query/calc", "addCalcField",
+                          BASE_CLASS_FIELD);
+
+      
       // parse "search" - object + add it to parent (which is "Query")
       digester.addObjectCreate("dbforms-config/query/search", fieldClassName);
       digester.addSetProperties("dbforms-config/query/search");

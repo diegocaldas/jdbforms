@@ -73,7 +73,7 @@ public class Interceptor {
     *
     * @return DOCUMENT ME!
     */
-   public Map getParams() {
+   public Map getParameterMap() {
       return params;
    }
 

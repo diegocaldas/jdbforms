@@ -127,32 +127,35 @@ public class UpdateEvent extends ValidationEvent {
          return;
       }
 
+      // in order to process an update, we need the key of the dataset to update
+      //
+      // new since version 0.9:
+      // key format: FieldID ":" Length ":" Value
+      // example: if key id = 121 and field id=2 then keyValueStr contains "2:3:121"
+      //
+      // if the key consists of more than one fields, the key values are seperated through "-"
+      // example: value of field 1=12, value of field 3=1992, then we'll get "1:2:12-3:4:1992"
+      String keyValuesStr = getKeyValues();
+
+      if (Util.isNull(keyValuesStr)) {
+         logCat.error("At least one key is required per table, check your dbforms-config.xml");
+
+         return;
+      }
+
+      DbEventInterceptorData interceptorData = new DbEventInterceptorData(getRequest(),
+                                                               getConfig(), con, getTable());
+      interceptorData.setAttribute(DbEventInterceptorData.FIELDVALUES, fieldValues);
+      interceptorData.setAttribute(DbEventInterceptorData.KEYVALUES, keyValuesStr);
+
       // process the interceptors associated to this table
       int operation = getTable()
                          .processInterceptors(DbEventInterceptor.PRE_UPDATE,
-                                              getRequest(), fieldValues,
-                                              getConfig(), con);
+                                              interceptorData);
 
       if ((operation == DbEventInterceptor.GRANT_OPERATION)
                 && (fieldValues.size() > 0)) {
          // End of interceptor processing
-         // in order to process an update, we need the key of the dataset to update
-         //
-         // new since version 0.9:
-         // key format: FieldID ":" Length ":" Value
-         // example: if key id = 121 and field id=2 then keyValueStr contains "2:3:121"
-         //
-         // if the key consists of more than one fields, the key values are seperated through "-"
-         // example: value of field 1=12, value of field 3=1992, then we'll get "1:2:12-3:4:1992"
-         String keyValuesStr = getKeyValues();
-
-         if ((keyValuesStr == null) || (keyValuesStr.trim()
-                                                          .length() == 0)) {
-            logCat.error("At least one key is required per table, check your dbforms-config.xml");
-
-            return;
-         }
-
          // now we start building the UPDATE statement
          // 20021031-HKK: Moved into table
          PreparedStatement ps = con.prepareStatement(getTable().getUpdateStatement(fieldValues));
@@ -288,8 +291,7 @@ public class UpdateEvent extends ValidationEvent {
          // finally, we process interceptor again (post-update)
          // process the interceptors associated to this table
          getTable()
-            .processInterceptors(DbEventInterceptor.POST_UPDATE, getRequest(),
-                                 fieldValues, getConfig(), con);
+            .processInterceptors(DbEventInterceptor.POST_UPDATE, interceptorData);
       }
 
       // End of interceptor processing

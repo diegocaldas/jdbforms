@@ -91,7 +91,7 @@ public class DbBlobContentTag extends DbBaseHandlerTag implements
      */
     public int doEndTag() throws javax.servlet.jsp.JspException {
         try {
-            if (getParentForm().getFooterReached()) {
+            if (getParentForm().isFooterReached()) {
                 return EVAL_PAGE; // nothing to do when no data available..
             }
 

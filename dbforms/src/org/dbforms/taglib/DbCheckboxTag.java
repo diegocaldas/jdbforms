@@ -231,7 +231,7 @@ public class DbCheckboxTag extends DbBaseHandlerTag implements DataContainer,
 
          // select, if datadriven and data matches with current value OR if explicitly set by user
          boolean isSelected = ((!getParentForm()
-                                    .getFooterReached()
+                                    .isFooterReached()
                               || ((we != null)
                               && we.getType()
                                    .equals(EventType.EVENT_NAVIGATION_RELOAD)))
@@ -239,7 +239,7 @@ public class DbCheckboxTag extends DbBaseHandlerTag implements DataContainer,
                               && getValue()
                                     .equals(currentValue))
                               || (getParentForm()
-                                     .getFooterReached() && hasCheckedSet());
+                                     .isFooterReached() && hasCheckedSet());
 
          // nk, check if need to force it on. Useful w/ custom controller or javascript
          if (isForce()) {

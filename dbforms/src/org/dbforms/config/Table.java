@@ -34,7 +34,6 @@ import org.dbforms.util.SqlUtil;
 import org.dbforms.util.StringUtil;
 import org.dbforms.util.Util;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -64,23 +63,34 @@ public class Table {
    public static final int BLOB_INTERCEPTOR = 0;
 
    /** DOCUMENT ME! */
-   public static final int BLOB_CLASSIC = 1;
+   public static final int  BLOB_CLASSIC = 1;
+   private static final int MAXFIELDS = 1000;
+
+   /** DOCUMENT ME! */
+   protected static final int DB_FIELD = 0;
+
+   /** DOCUMENT ME! */
+   protected static final int SEARCH_FIELD = 1;
+
+   /** DOCUMENT ME! */
+   protected static final int CALC_FIELD = 2;
 
    /** config object */
    protected DbFormsConfig config;
-   private IEscaper         escaper = null;
 
    /**
     * access control list for this object (if null, then its open to all users
     * for all operations). Defined in dbforms-config.xml
     */
-   private GrantedPrivileges grantedPrivileges = null;
+   private GrantedPrivileges grantedPrivileges  = null;
+   private Hashtable         calcFieldsNameHash = new Hashtable();
 
    /** structure for quick acessing of fields "by name" */
    private Hashtable fieldNameHash = new Hashtable();
 
    /** access foreign key by name */
    private Hashtable foreignKeyNameHash = new Hashtable();
+   private IEscaper  escaper = null;
 
    /** log4j category */
    private Log logCat = LogFactory.getLog(this.getClass().getName());
@@ -110,6 +120,7 @@ public class Table {
 
    /** reference to a TableEvents object */
    private TableEvents tableEvents = null;
+   private Vector      calcFields = new Vector();
 
    /**
     * subset of "fields", containting those keys which represent DISKBLOBs
@@ -190,6 +201,16 @@ public class Table {
     */
    public int getBlobHandlingStrategy() {
       return this.blobHandlingStrategy;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return
+    */
+   public Vector getCalcFields() {
+      return calcFields;
    }
 
 
@@ -459,7 +480,15 @@ public class Table {
     * @return the Field object having the input id
     */
    public Field getField(int fieldId) {
-      return (Field) fields.elementAt(fieldId);
+      Field f = null;
+
+      if (checkFieldId(CALC_FIELD, fieldId)) {
+         f = (Field) calcFields.elementAt(decodeFieldId(CALC_FIELD, fieldId));
+      } else {
+         f = (Field) fields.elementAt(fieldId);
+      }
+
+      return f;
    }
 
 
@@ -472,7 +501,13 @@ public class Table {
     * @return Filed object having the input name
     */
    public Field getFieldByName(String name) {
-      return (Field) fieldNameHash.get(name);
+      Field f = (Field) fieldNameHash.get(name);
+
+      if (f == null) {
+         f = (Field) calcFieldsNameHash.get(name);
+      }
+
+      return f;
    }
 
 
@@ -841,6 +876,7 @@ public class Table {
       if (config.hasInterceptors()) {
          Vector tmp = new Vector(interceptors);
          tmp.addAll(config.getInterceptors());
+         tmp.addAll(interceptors);
 
          return tmp;
       } else {
@@ -919,6 +955,8 @@ public class Table {
     * @param fvHT has field as key and FieldValue as value!
     *
     * @return the key position string
+    *
+    * @throws IllegalArgumentException DOCUMENT ME!
     */
    public String getKeyPositionString(FieldValues fvHT) {
       if (fvHT == null) {
@@ -986,7 +1024,7 @@ public class Table {
    public Hashtable getNamesHashtable(String core) {
       Hashtable result = new Hashtable();
       Iterator  e = getFields()
-                          .iterator();
+                       .iterator();
 
       while (e.hasNext()) {
          Field f = (Field) e.next();
@@ -1093,10 +1131,10 @@ public class Table {
     * @return the position string
     */
    public String getPositionString(Hashtable ht) {
-      StringBuffer buf  = new StringBuffer();
-      int          cnt  = 0;
-      Iterator     e = ht.keySet()
-                            .iterator();
+      StringBuffer buf = new StringBuffer();
+      int          cnt = 0;
+      Iterator     e   = ht.keySet()
+                           .iterator();
 
       while (e.hasNext()) {
          String fieldName = (String) e.next();
@@ -1131,12 +1169,14 @@ public class Table {
     * @param fvHT has field as key and FieldValue as value!
     *
     * @return the key position string
+    *
+    * @throws IllegalArgumentException DOCUMENT ME!
     */
    public String getPositionString(FieldValues fvHT) {
       if (fvHT != null) {
-         StringBuffer buf  = new StringBuffer();
-         int          cnt  = 0;
-         Iterator     e = fvHT.keys();
+         StringBuffer buf = new StringBuffer();
+         int          cnt = 0;
+         Iterator     e   = fvHT.keys();
 
          while (e.hasNext()) {
             String     fieldName = (String) e.next();
@@ -1429,17 +1469,41 @@ public class Table {
 
 
    /**
+    * adds a Field-Object to this table and puts it into othere datastructure
+    * for further references (this method gets called from DbFormsConfig)
+    *
+    * @param field field to add
+    *
+    * @throws Exception DOCUMENT ME!
+    */
+   public void addCalcField(Field field) throws Exception {
+      if (field.getType() == 0) {
+         throw new Exception("no type!");
+      }
+
+      field.setId(encodeFieldId(CALC_FIELD, calcFields.size()));
+      field.setTable(this);
+      calcFields.addElement(field);
+
+      // for quicker lookup by name:
+      calcFieldsNameHash.put(field.getName(), field);
+   }
+
+
+   /**
     * Adds a Field-Object to this table and puts it into othere datastructure
     * for further references (this method gets called from DbFormsConfig)
     *
     * @param field the Field object to add
+    *
+    * @throws Exception DOCUMENT ME!
     */
    public void addField(Field field) throws Exception {
       if (field.getType() == 0) {
          throw new Exception("no type!");
       }
 
-      field.setId(fields.size());
+      field.setId(encodeFieldId(DB_FIELD, fields.size()));
       field.setTable(this);
       fields.addElement(field);
 
@@ -1598,7 +1662,6 @@ public class Table {
    /**
     * Do a constrained select.
     *
-    * @param fieldsToSelect vector containing all the fields to select
     * @param fvEqual FieldValue array used to restrict a set in a subform where
     *        all "childFields" in the resultset match their respective
     *        "parentFields" in main form
@@ -1608,29 +1671,30 @@ public class Table {
     * @param sqlFilterParams DOCUMENT ME!
     * @param compareMode the value of the compare mode
     * @param maxRows the max number of rows to manage
-    * @param con the connection object
+    * @param interceptorData the connection object
     *
     * @return a ResultSetVector object
     *
     * @throws SQLException if any error occurs
     */
-   public ResultSetVector doConstrainedSelect(Vector       fieldsToSelect,
-                                              FieldValue[] fvEqual,
-                                              FieldValue[] fvOrder,
-                                              String       sqlFilter,
-                                              FieldValue[] sqlFilterParams,
-                                              int          compareMode,
-                                              int          maxRows,
-                                              Connection   con)
+   public ResultSetVector doConstrainedSelect(FieldValue[]           fvEqual,
+                                              FieldValue[]           fvOrder,
+                                              String                 sqlFilter,
+                                              FieldValue[]           sqlFilterParams,
+                                              int                    compareMode,
+                                              int                    maxRows,
+                                              DbEventInterceptorData interceptorData)
                                        throws SQLException {
-      String            query = getSelectQuery(fieldsToSelect, fvEqual,
-                                               fvOrder, sqlFilter, compareMode);
-      PreparedStatement ps = con.prepareStatement(query);
+      String            query = getSelectQuery(getFields(), fvEqual, fvOrder,
+                                               sqlFilter, compareMode);
+      PreparedStatement ps = interceptorData.getConnection()
+                                            .prepareStatement(query);
       ps.setMaxRows(maxRows); // important when quering huge tables
 
       ResultSet       rs = getDoSelectResultSet(fvEqual, fvOrder,
                                                 sqlFilterParams, compareMode, ps);
-      ResultSetVector result = new ResultSetVector(fieldsToSelect, rs);
+      ResultSetVector result = new ResultSetVector(this);
+      result.addResultSet(interceptorData, rs);
       ps.close();
       logCat.info("::doConstrainedSelect - rsv size = " + result.size());
 
@@ -1641,29 +1705,28 @@ public class Table {
    /**
     * perform free-form select query
     *
-    * @param fieldsToSelect vector of fields to be selected
     * @param whereClause free-form whereClause to be appended to query
     * @param tableList the list of tables involved into the query
     * @param maxRows how many rows should be stored in the resultSet (zero
     *        means unlimited)
-    * @param con the active db connection to use
+    * @param interceptorData the active db connection to use
     *
     * @return the ResultSetVector object
     *
     * @throws SQLException if any error occurs
     */
-   public ResultSetVector doFreeFormSelect(Vector     fieldsToSelect,
-                                           String     whereClause,
-                                           String     tableList,
-                                           int        maxRows,
-                                           Connection con)
+   public ResultSetVector doFreeFormSelect(String                 whereClause,
+                                           String                 tableList,
+                                           int                    maxRows,
+                                           DbEventInterceptorData interceptorData)
                                     throws SQLException {
-      Statement       stmt   = con.createStatement();
-      ResultSet       rs;
-      ResultSetVector result;
-      String          query = getFreeFormSelectQuery(fieldsToSelect,
-                                                     whereClause, tableList);
+      Statement stmt = interceptorData.getConnection()
+                                      .createStatement();
+      String    query = getFreeFormSelectQuery(getFields(), whereClause,
+                                               tableList);
       stmt.setMaxRows(maxRows); // important when quering huge tables
+
+      ResultSet rs;
 
       try {
          rs = stmt.executeQuery(query);
@@ -1672,7 +1735,8 @@ public class Table {
          throw new SQLException(sqle.getMessage());
       }
 
-      result = new ResultSetVector(fieldsToSelect, rs);
+      ResultSetVector result = new ResultSetVector(this);
+      result.addResultSet(interceptorData, rs);
 
       // 20021115-HKK: resultset is closed in ResultSetVector()
       // rs.close();
@@ -1774,6 +1838,8 @@ public class Table {
     * @param aPosition position to map as position string
     *
     * @return FieldValues with result
+    *
+    * @throws IllegalArgumentException DOCUMENT ME!
     */
    public FieldValues mapChildFieldValues(Table  parentTable,
                                           String parentFieldString,
@@ -1892,21 +1958,14 @@ public class Table {
     * Process the interceptor objects related to this table.
     *
     * @param action DOCUMENT ME!
-    * @param request the request object
-    * @param fieldValues DOCUMENT ME!
-    * @param config the config object
-    * @param con the JDBC connection object
+    * @param data the request object
     *
     * @return DOCUMENT ME!
     *
     * @throws SQLException if any error occurs
-    * @throws MultipleValidationException if any validation error occurs
     */
-   public int processInterceptors(int                action,
-                                  HttpServletRequest request,
-                                  FieldValues        fieldValues,
-                                  DbFormsConfig      config,
-                                  Connection         con)
+   public int processInterceptors(int                    action,
+                                  DbEventInterceptorData data)
                            throws SQLException {
       String s;
 
@@ -1924,7 +1983,7 @@ public class Table {
 
             // J.Peer 03/18/2004 - plug in some additional config data for
             // interceptor
-            dbi.setParams(interceptor.getParams());
+            dbi.setParameterMap(interceptor.getParameterMap());
 
             // (Sunil_Mishra@adp.com) - The return type to check for the
             // IGNORE_OPERATION
@@ -1932,34 +1991,36 @@ public class Table {
             String denyMessage = null;
 
             if (action == DbEventInterceptor.PRE_INSERT) {
-               operation   = dbi.preInsert(request, this, fieldValues, config,
-                                           con);
+               operation   = dbi.preInsert(data);
                denyMessage = "dbforms.events.insert.nogrant";
             } else if (action == DbEventInterceptor.POST_INSERT) {
-               dbi.postInsert(request, config, con);
+               dbi.postInsert(data);
             } else if (action == DbEventInterceptor.PRE_UPDATE) {
-               operation   = dbi.preUpdate(request, this, fieldValues, config,
-                                           con);
+               operation   = dbi.preUpdate(data);
                denyMessage = "dbforms.events.update.nogrant";
             } else if (action == DbEventInterceptor.POST_UPDATE) {
-               dbi.postUpdate(request, config, con);
+               dbi.postUpdate(data);
             } else if (action == DbEventInterceptor.PRE_DELETE) {
-               operation   = dbi.preDelete(request, this, fieldValues, config,
-                                           con);
+               operation   = dbi.preDelete(data);
                denyMessage = "dbforms.events.delete.nogrant";
             } else if (action == DbEventInterceptor.POST_DELETE) {
-               dbi.postDelete(request, config, con);
+               dbi.postDelete(data);
             } else if (action == DbEventInterceptor.PRE_SELECT) {
-               operation   = dbi.preSelect(request, config, con);
+               operation   = dbi.preSelect(data);
                denyMessage = "dbforms.events.view.nogrant";
             } else if (action == DbEventInterceptor.POST_SELECT) {
-               dbi.postSelect(request, config, con);
+               dbi.postSelect(data);
+            } else if (action == DbEventInterceptor.PRE_ADDROW) {
+               operation   = dbi.preAddRow(data);
+               denyMessage = "dbforms.events.addrow.nogrant";
+            } else if (action == DbEventInterceptor.POST_ADDROW) {
+               dbi.postAddRow(data);
             }
 
             switch (operation) {
                case DbEventInterceptor.DENY_OPERATION:
                   s = MessageResourcesInternal.getMessage(denyMessage,
-                                                          request.getLocale(),
+                                                          data.getRequest().getLocale(),
                                                           new String[] {
                                                              getName()
                                                           });
@@ -2118,6 +2179,50 @@ public class Table {
 
 
    /**
+    * DOCUMENT ME!
+    *
+    * @param type DOCUMENT ME!
+    * @param id DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   protected boolean checkFieldId(int type,
+                                  int id) {
+      int i = id / MAXFIELDS;
+
+      return i == type;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param type DOCUMENT ME!
+    * @param id DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   protected int decodeFieldId(int type,
+                               int id) {
+      return id - (type * MAXFIELDS);
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param type DOCUMENT ME!
+    * @param id DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   protected int encodeFieldId(int type,
+                               int id) {
+      return (type * MAXFIELDS) + id;
+   }
+
+
+   /**
     * returns an SQLExpression based on the given FieldValue
     *
     * @param fv the FieldValue
@@ -2229,29 +2334,29 @@ public class Table {
     * the actual data. <br>
     * shortly described the following rule is applied:
     * <pre>
-    *
-    *
-    *
-    *
-    *
-    *
-    *
-    *
-    *
+    * 
+    * 
+    * 
+    * 
+    * 
+    * 
+    * 
+    * 
+    * 
     *          +--------------------------------------------------------------------------------------------------+
     *          |  RULE = R1 AND R2 AND ... AND Rn                                                                 |
     *          |  Ri = fi OpA(i) fi* OR  f(i-1) OpB(i-1) f(i-1)* OR f(i-2) OpB(i-2) f(i-2)* OR ... OR f1 OpB f1*  |
     *          +--------------------------------------------------------------------------------------------------+
     *          For background info email joepeer@wap-force.net
-    *
-    *
-    *
-    *
-    *
-    *
-    *
-    *
-    *
+    * 
+    * 
+    * 
+    * 
+    * 
+    * 
+    * 
+    * 
+    * 
     * </pre>
     * IMPORTANT NOTE: the indizes of the fv-array indicate implicitly the
     * order-priority of the fields. <br>
@@ -2339,15 +2444,15 @@ public class Table {
     * with search information and we want to build a where - clause [that
     * should restrict the resultset in matching to the search fields].
     * <pre>
-    *
-    *
-    *
-    *
-    *
-    *
-    *
-    *
-    *
+    * 
+    * 
+    * 
+    * 
+    * 
+    * 
+    * 
+    * 
+    * 
     *          convention:    index 0-n =&gt; AND
     *                         index (n+1)-m =&gt; OR
     *          examples
@@ -2358,15 +2463,15 @@ public class Table {
     *          for comparing to code:
     *            §1     §2        §3      §2          §4    §5   §6      §2      §7
     *            (   A = 'smith' AND   X LIKE 'jose%' )    AND    (  AGE = '10'   )
-    *
-    *
-    *
-    *
-    *
-    *
-    *
-    *
-    *
+    * 
+    * 
+    * 
+    * 
+    * 
+    * 
+    * 
+    * 
+    * 
     * </pre>
     *
     * @param fv Description of the Parameter
@@ -2541,25 +2646,25 @@ public class Table {
    /**
     * Creates a token string with the format:
     * <pre>
-    *
-    *
-    *
-    *
-    *
-    *
-    *
-    *
-    *
+    * 
+    * 
+    * 
+    * 
+    * 
+    * 
+    * 
+    * 
+    * 
     *             field.id : field.length : field.value
-    *
-    *
-    *
-    *
-    *
-    *
-    *
-    *
-    *
+    * 
+    * 
+    * 
+    * 
+    * 
+    * 
+    * 
+    * 
+    * 
     * </pre>
     *
     * @param field the field object

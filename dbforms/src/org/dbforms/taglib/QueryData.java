@@ -20,12 +20,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.taglib;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.dbforms.config.DbEventInterceptorData;
 import org.dbforms.config.ResultSetVector;
 
 import java.sql.Connection;
@@ -33,6 +32,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 
 
@@ -124,7 +125,15 @@ public class QueryData extends EmbeddedData
       PreparedStatement ps = con.prepareStatement(query);
 
       try {
-         rsv = new ResultSetVector(getEscaper(), ps.executeQuery());
+         rsv = new ResultSetVector();
+
+         HttpServletRequest     request = (HttpServletRequest) pageContext
+            .getRequest();
+         DbEventInterceptorData data = new DbEventInterceptorData(request,
+               getConfig(), con, null);
+         data.setAttribute(DbEventInterceptorData.PAGECONTEXT,
+                pageContext);
+         rsv.addResultSet(data, ps.executeQuery());
       } finally {
          ps.close(); // #JP Jun 27, 2001
       }

@@ -23,14 +23,9 @@
 
 package org.dbforms.taglib;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import org.dbforms.config.FieldValue;
 
 import org.dbforms.util.ParseUtil;
-import org.dbforms.util.Util;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -54,8 +49,6 @@ import javax.servlet.jsp.tagext.TryCatchFinally;
  */
 public class DbFilterConditionTag extends TagSupportWithScriptHandler
    implements TryCatchFinally {
-   /** DOCUMENT ME! */
-   private static Log logCat = LogFactory.getLog(DbFilterConditionTag.class);
 
    /** object containing tag's state */
    private transient State state;
@@ -219,80 +212,6 @@ public class DbFilterConditionTag extends TagSupportWithScriptHandler
                                                     conditionId);
    }
 
-
-   /**
-    * generate condition from request. Called from nested DbFilterTag object
-    *
-    * @param request
-    * @param tableId
-    * @param conditionId
-    *
-    * @return string containing sql condition code
-    *
-    * @deprecated code is moved into the DataSource classes so that XML data
-    *             can be handled too
-    */
-   protected static String generateFilterCondition(HttpServletRequest request,
-                                                   int                tableId,
-                                                   int                conditionId) {
-      // read raw condition from request
-      String filterCondition = getSqlFilter(request, tableId, conditionId);
-
-      if (Util.isNull(filterCondition)) {
-         return null;
-      }
-
-      int cnt = StringUtils.split(filterCondition, '?').length;
-
-      // build up the list of the values of the nested filterValue's parameters 
-      FieldValue[] values = DbFilterValueTag.readValuesFromRequest(request,
-                                                                   tableId,
-                                                                   conditionId);
-
-      logCat.debug("init parse filterCondition : " + filterCondition
-                   + ", values : " + FieldValue.toString(values));
-
-      /** substitute ? with corresponding value in list */
-      int          p1  = 0;
-      int          p2  = filterCondition.indexOf('?', p1);
-      StringBuffer buf = new StringBuffer();
-      cnt = 0;
-
-      while (p2 > -1) {
-         // add the string before the next ?
-         buf.append(filterCondition.substring(p1, p2));
-
-         // if values are exausted, then abort
-         if (cnt >= values.length) {
-            logCat.error("reference to a missing filterValue in "
-                         + filterCondition);
-
-            return null;
-         }
-
-         // retrieve value
-         String value = values[cnt].getFieldValue();
-
-         if (value == null) {
-            value = "";
-         }
-
-         // add value to string gbuffer
-         buf.append(value);
-
-         // restart search from next char after ? 
-         p1 = p2 + 1;
-         p2 = filterCondition.indexOf('?', p1);
-         cnt++;
-      }
-
-      // add remaining part of string
-      buf.append(filterCondition.substring(p1));
-      filterCondition = buf.toString();
-      logCat.debug("end parse filterCondition : " + filterCondition);
-
-      return filterCondition;
-   }
 
 
    /**

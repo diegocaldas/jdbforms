@@ -52,8 +52,6 @@ import java.util.Vector;
 public class Query extends Table {
    /** log4j category */
    private static Log       logCat           = LogFactory.getLog(Query.class);
-   private static final int WHEREIDSTART     = 1000;
-   private Hashtable        searchNameHash;
    private String           distinct         = "false";
    private String           followAfterWhere = " AND ";
    private String           from;
@@ -61,16 +59,9 @@ public class Query extends Table {
    private String           having;
    private String           orderWithPos     = "false";
    private String           where;
-   private Vector           searchfields; // the Field-Objects this table constists of
+   private Hashtable        searchNameHash  = new Hashtable();
+   private Vector           searchfields = new Vector(); // the Field-Objects this table constists of
 
-   /**
-    * Constructor for View.
-    */
-   public Query() {
-      super();
-      searchfields   = new Vector();
-      searchNameHash = new Hashtable();
-   }
 
    /**
     * DOCUMENT ME!
@@ -94,9 +85,8 @@ public class Query extends Table {
     */
    public Field getField(int fieldId) {
       Field f = null;
-
-      if (fieldId >= WHEREIDSTART) {
-         f = (Field) searchfields.elementAt(fieldId - WHEREIDSTART);
+      if (checkFieldId(SEARCH_FIELD, fieldId)) {
+         f = (Field) searchfields.elementAt(decodeFieldId(SEARCH_FIELD, fieldId));
       } else {
          try {
             f = super.getField(fieldId);
@@ -507,7 +497,7 @@ public class Query extends Table {
          throw new Exception("no type!");
       }
 
-      field.setId(WHEREIDSTART + searchfields.size());
+      field.setId(encodeFieldId(SEARCH_FIELD, searchfields.size()));
       field.setTable(this);
       searchfields.addElement(field);
 
@@ -606,8 +596,7 @@ public class Query extends Table {
       // Split fields in where and having part
       if (fvEqual != null) {
          for (int i = 0; i < fvEqual.length; i++) {
-            if (!(fvEqual[i].getField()
-                                  .getId() >= WHEREIDSTART)) {
+            if (!checkFieldId(SEARCH_FIELD, fvEqual[i].getField().getId())) {
                mode_having.add(fvEqual[i]);
             }
          }
@@ -629,8 +618,7 @@ public class Query extends Table {
       // Split fields in where and having part
       if (fvEqual != null) {
          for (int i = 0; i < fvEqual.length; i++) {
-            if (fvEqual[i].getField()
-                                .getId() >= WHEREIDSTART) {
+            if (checkFieldId(SEARCH_FIELD, fvEqual[i].getField().getId())) {
                mode_where.add(fvEqual[i]);
             }
          }

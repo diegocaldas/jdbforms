@@ -123,8 +123,8 @@ public class BlobInterceptor extends DbEventInterceptorSupport {
     *
     * @param params DOCUMENT ME!
     */
-   public void setParams(Map params) {
-      super.setParams(params);
+   public void setParameterMap(Map params) {
+      super.setParameterMap(params);
       blobFieldData = new HashMap();
 
       for (Iterator iter = params.entrySet()

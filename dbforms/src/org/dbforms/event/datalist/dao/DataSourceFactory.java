@@ -20,12 +20,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.event.datalist.dao;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.dbforms.config.DbEventInterceptorData;
 import org.dbforms.config.FieldValue;
 import org.dbforms.config.FieldValues;
 import org.dbforms.config.ResultSetVector;
@@ -48,38 +47,8 @@ import java.sql.SQLException;
 public class DataSourceFactory {
    // logging category for this class;
    private static Log logCat = LogFactory.getLog(DataSourceFactory.class
-                                                 .getName());
+         .getName());
    private DataSource dataHandler;
-
-   /**
-    * Creates a new DataSourceFactory object. <br>
-    * Set its DataSource object as dataHandler, using the dataAccess class
-    * name for the given table.
-    *
-    * @param table DOCUMENT ME!
-    */
-   public DataSourceFactory(Table table) {
-      String dataAccessClass = table.getDataAccessClass();
-
-      if (Util.isNull(dataAccessClass)) {
-         dataAccessClass = "org.dbforms.event.datalist.dao.DataSourceJDBC";
-      }
-
-      try {
-         Object[] constructorArgs = new Object[] {
-                                       table
-                                    };
-         Class[]  constructorArgsTypes = new Class[] {
-                                            Table.class
-                                         };
-         dataHandler = (DataSource) ReflectionUtil.newInstance(dataAccessClass,
-                                                               constructorArgsTypes,
-                                                               constructorArgs);
-      } catch (Exception e) {
-         logCat.error(e);
-      }
-   }
-
 
    /**
     * Creates a new DataSourceFactory object.
@@ -92,11 +61,21 @@ public class DataSourceFactory {
     *
     * @throws SQLException if any error occurs
     */
-   public DataSourceFactory(String     dbConnectionName,
-                            Connection con,
-                            Table      table) throws SQLException {
-      this(table);
-      dataHandler.setConnection(con, dbConnectionName);
+   public DataSourceFactory(String dbConnectionName, Connection connection,
+      Table table) throws SQLException {
+      String dataAccessClass = table.getDataAccessClass();
+
+      if (Util.isNull(dataAccessClass)) {
+         dataAccessClass = "org.dbforms.event.datalist.dao.DataSourceJDBC";
+      }
+
+      try {
+         dataHandler = (DataSource) ReflectionUtil.newInstance(dataAccessClass);
+         dataHandler.setTable(table);
+         dataHandler.setConnection(connection, dbConnectionName);
+      } catch (Exception e) {
+         logCat.error(e);
+      }
    }
 
    /**
@@ -111,9 +90,9 @@ public class DataSourceFactory {
     *
     * @throws SQLException if any error occurs
     */
-   public ResultSetVector getCurrent(String position,
-                                     int    count) throws SQLException {
-      return dataHandler.getCurrent(position, count);
+   public ResultSetVector getCurrent(DbEventInterceptorData interceptorData,
+      String position, int count) throws SQLException {
+      return dataHandler.getCurrent(interceptorData, position, count);
    }
 
 
@@ -138,8 +117,9 @@ public class DataSourceFactory {
     *
     * @throws SQLException if any error occurs
     */
-   public ResultSetVector getFirst(int count) throws SQLException {
-      return dataHandler.getFirst(count);
+   public ResultSetVector getFirst(DbEventInterceptorData interceptorData,
+      int count) throws SQLException {
+      return dataHandler.getFirst(interceptorData, count);
    }
 
 
@@ -152,8 +132,9 @@ public class DataSourceFactory {
     *
     * @throws SQLException if any error occurs
     */
-   public ResultSetVector getLast(int count) throws SQLException {
-      return dataHandler.getLast(count);
+   public ResultSetVector getLast(DbEventInterceptorData interceptorData,
+      int count) throws SQLException {
+      return dataHandler.getLast(interceptorData, count);
    }
 
 
@@ -169,9 +150,9 @@ public class DataSourceFactory {
     *
     * @throws SQLException if any error occurs
     */
-   public ResultSetVector getNext(String position,
-                                  int    count) throws SQLException {
-      return dataHandler.getNext(position, count);
+   public ResultSetVector getNext(DbEventInterceptorData interceptorData,
+      String position, int count) throws SQLException {
+      return dataHandler.getNext(interceptorData, position, count);
    }
 
 
@@ -187,9 +168,9 @@ public class DataSourceFactory {
     *
     * @throws SQLException if any error occurs
     */
-   public ResultSetVector getPrev(String position,
-                                  int    count) throws SQLException {
-      return dataHandler.getPrev(position, count);
+   public ResultSetVector getPrev(DbEventInterceptorData interceptorData,
+      String position, int count) throws SQLException {
+      return dataHandler.getPrev(interceptorData, position, count);
    }
 
 
@@ -204,11 +185,10 @@ public class DataSourceFactory {
     * @param sqlFilterParams DOCUMENT ME!
     */
    public void setSelect(FieldValue[] filterConstraint,
-                         FieldValue[] orderConstraint,
-                         String       sqlFilter,
-                         FieldValue[] sqlFilterParams) {
+      FieldValue[] orderConstraint, String sqlFilter,
+      FieldValue[] sqlFilterParams) {
       dataHandler.setSelect(filterConstraint, orderConstraint, sqlFilter,
-                            sqlFilterParams);
+         sqlFilterParams);
    }
 
 
@@ -221,8 +201,8 @@ public class DataSourceFactory {
     *
     * @throws SQLException
     */
-   public void setSelect(String tableList,
-                         String whereClause) throws SQLException {
+   public void setSelect(String tableList, String whereClause)
+      throws SQLException {
       dataHandler.setSelect(tableList, whereClause);
    }
 
@@ -243,9 +223,9 @@ public class DataSourceFactory {
     *
     * @throws SQLException if any error occurs
     */
-   public void doDelete(Connection con,
-                        String     keyValuesStr) throws SQLException {
-      dataHandler.doDelete(con, keyValuesStr);
+   public void doDelete(DbEventInterceptorData interceptorData,
+      String keyValuesStr) throws SQLException {
+      dataHandler.doDelete(interceptorData, keyValuesStr);
    }
 
 
@@ -257,9 +237,9 @@ public class DataSourceFactory {
     *
     * @throws SQLException if any error occurs
     */
-   public void doInsert(Connection  con,
-                        FieldValues fieldValues) throws SQLException {
-      dataHandler.doInsert(con, fieldValues);
+   public void doInsert(DbEventInterceptorData interceptorData,
+      FieldValues fieldValues) throws SQLException {
+      dataHandler.doInsert(interceptorData, fieldValues);
    }
 
 
@@ -272,9 +252,8 @@ public class DataSourceFactory {
     *
     * @throws SQLException if any error occurs
     */
-   public void doUpdate(Connection  con,
-                        FieldValues fieldValues,
-                        String      keyValuesStr) throws SQLException {
-      dataHandler.doUpdate(con, fieldValues, keyValuesStr);
+   public void doUpdate(DbEventInterceptorData interceptorData,
+      FieldValues fieldValues, String keyValuesStr) throws SQLException {
+      dataHandler.doUpdate(interceptorData, fieldValues, keyValuesStr);
    }
 }

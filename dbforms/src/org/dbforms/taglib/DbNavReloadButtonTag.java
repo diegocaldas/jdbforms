@@ -98,7 +98,7 @@ public class DbNavReloadButtonTag extends DbBaseButtonTag
          if (hasForceReloadSet()) {
             tagName.append("_force");
          } else if (getParentForm()
-                             .getFooterReached()) {
+                             .isFooterReached()) {
             tagName.append("_ins");
          }
 

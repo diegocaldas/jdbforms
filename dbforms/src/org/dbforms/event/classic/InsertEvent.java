@@ -28,6 +28,7 @@ import org.apache.commons.logging.LogFactory;
 
 import org.dbforms.config.Constants;
 import org.dbforms.config.DbEventInterceptor;
+import org.dbforms.config.DbEventInterceptorData;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.Field;
@@ -146,11 +147,14 @@ public class InsertEvent extends ValidationEvent {
          throw new SQLException("no parameters");
       }
 
+      DbEventInterceptorData interceptorData = new DbEventInterceptorData(getRequest(),
+                                                               getConfig(), con, getTable());
+      interceptorData.setAttribute(DbEventInterceptorData.FIELDVALUES, fieldValues);
+
       // process the interceptors associated to this table
       int operation = getTable()
                          .processInterceptors(DbEventInterceptor.PRE_INSERT,
-                                              getRequest(), fieldValues,
-                                              getConfig(), con);
+                                              interceptorData);
 
       if ((operation == DbEventInterceptor.GRANT_OPERATION)
                 && (fieldValues.size() > 0)) {
@@ -310,15 +314,14 @@ public class InsertEvent extends ValidationEvent {
          }
 
          ResultSetVector resultSetVector = getTable()
-                                              .doConstrainedSelect(getTable().getFields(),
-                                                                   fvEqual,
+                                              .doConstrainedSelect(fvEqual,
                                                                    null, null,
                                                                    null,
                                                                    Constants.COMPARE_NONE,
-                                                                   1, con);
+                                                                   1, interceptorData);
 
          if (resultSetVector != null) {
-            resultSetVector.setPointer(0);
+            resultSetVector.moveFirst();
             firstPosition = getTable()
                                .getPositionString(resultSetVector);
          }
@@ -329,8 +332,7 @@ public class InsertEvent extends ValidationEvent {
          // finally, we process interceptor again (post-insert)
          // process the interceptors associated to this table
          getTable()
-            .processInterceptors(DbEventInterceptor.POST_INSERT, getRequest(),
-                                 fieldValues, getConfig(), con);
+            .processInterceptors(DbEventInterceptor.POST_INSERT, interceptorData);
       }
    }
 

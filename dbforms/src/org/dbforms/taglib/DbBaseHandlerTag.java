@@ -466,7 +466,7 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
 		ResultSetVector res = getParentForm().getResultSetVector();
 
 		if ((res != null) && (getField() != null)) {
-			fieldValueObj = res.getFieldAsObject(getField().getId());
+			fieldValueObj = res.getFieldAsObject(getField().getName());
 		} else {
 			// try to get old value if we have an unbounded field!
 			fieldValueObj = ParseUtil.getParameter(
@@ -537,7 +537,7 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
 		StringBuffer buf = new StringBuffer();
 
 		if ((getParentForm().getTable() != null) && (getField() != null)) {
-			String keyIndex = (getParentForm().getFooterReached()) ? (Constants.FIELDNAME_INSERTPREFIX + getParentForm()
+			String keyIndex = (getParentForm().isFooterReached()) ? (Constants.FIELDNAME_INSERTPREFIX + getParentForm()
 					.getPositionPathCore())
 					: getParentForm().getPositionPath();
 			buf.append(Constants.FIELDNAME_PREFIX);
@@ -572,7 +572,7 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
 		WebEvent we = getParentForm().getWebEvent();
 
 		// Are we in Update mode
-		if (!getParentForm().getFooterReached()) {
+		if (!getParentForm().isFooterReached()) {
 			// Check if attribute 'redisplayFieldsOnError' has been set to true
 			// and is this jsp displaying an error?
 			if ((getParentForm().hasRedisplayFieldsOnErrorSet()
@@ -747,7 +747,7 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
 		tagBuf.append(Constants.FIELDNAME_OLDVALUETAG + getFormFieldName());
 		tagBuf.append("\" value=\"");
 
-		if (!getParentForm().getFooterReached()) {
+		if (!getParentForm().isFooterReached()) {
 			tagBuf.append(escapeHTML(getFormattedFieldValue()));
 		} else {
 			tagBuf.append(escapeHTML(getFormFieldDefaultValue()));
@@ -827,7 +827,7 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
 	 * @return DOCUMENT ME!
 	 */
 	private String getFormFieldNameForCopyEvent() {
-		boolean footerReached = getParentForm().getFooterReached();
+		boolean footerReached = getParentForm().isFooterReached();
 		getParentForm().setFooterReached(false);
 
 		String name = getFormFieldName();
@@ -852,7 +852,7 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
 		// Resolve message if captionResource=true in the Form Tag
 		if ((getParentForm() != null)
 				&& getParentForm().hasCaptionResourceSet()) {
-			res = MessageResources.getMessage(res, getLocale());
+			res = MessageResources.getMessage(res, getLocale(), res);
 		}
 
 		/**

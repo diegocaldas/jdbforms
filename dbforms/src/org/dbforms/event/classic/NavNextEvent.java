@@ -20,9 +20,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.event.classic;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -55,9 +53,8 @@ public class NavNextEvent extends NavigationEvent {
     * @param request the request object
     * @param config the config object
     */
-   public NavNextEvent(String             action,
-                       HttpServletRequest request,
-                       DbFormsConfig      config) {
+   public NavNextEvent(String action, HttpServletRequest request,
+      DbFormsConfig config) {
       super(action, request, config);
    }
 
@@ -69,9 +66,8 @@ public class NavNextEvent extends NavigationEvent {
     * @param request DOCUMENT ME!
     * @param config the config object
     */
-   public NavNextEvent(Table              table,
-                       HttpServletRequest request,
-                       DbFormsConfig      config) {
+   public NavNextEvent(Table table, HttpServletRequest request,
+      DbFormsConfig config) {
       super(table, request, config);
    }
 
@@ -99,36 +95,26 @@ public class NavNextEvent extends NavigationEvent {
     * @todo make a option to allow original "navNew" behavior if desired
     */
    public ResultSetVector processEvent(FieldValue[] childFieldValues,
-                                       FieldValue[] orderConstraint,
-                                       String       sqlFilter,
-                                       FieldValue[] sqlFilterParams,
-                                       int          count,
-                                       String       firstPosition,
-                                       String       lastPosition,
-                                       String       dbConnectionName,
-                                       Connection   con)
-                                throws SQLException {
+      FieldValue[] orderConstraint, String sqlFilter,
+      FieldValue[] sqlFilterParams, int count, String firstPosition,
+      String lastPosition, DbEventInterceptorData interceptorData)
+      throws SQLException {
       ResultSetVector rsv;
 
       logCat.info("==>NavNextEvent");
 
       // select in given order everyting thats greater than lastpos
-      getTable()
-         .fillWithValues(orderConstraint, lastPosition);
-      rsv = getTable()
-               .doConstrainedSelect(getTable().getFields(), childFieldValues,
-                                    orderConstraint, sqlFilter,
-                                    sqlFilterParams,
-                                    Constants.COMPARE_EXCLUSIVE, count, con);
+      getTable().fillWithValues(orderConstraint, lastPosition);
+      rsv = getTable().doConstrainedSelect(childFieldValues, orderConstraint,
+            sqlFilter, sqlFilterParams, Constants.COMPARE_EXCLUSIVE, count,
+            interceptorData);
 
       if (rsv.size() == 0) {
          logCat.info("==>NavNextLastEvent");
          FieldValue.invert(orderConstraint);
-         rsv = getTable()
-                  .doConstrainedSelect(getTable().getFields(),
-                                       childFieldValues, orderConstraint,
-                                       sqlFilter, sqlFilterParams,
-                                       Constants.COMPARE_NONE, count, con);
+         rsv = getTable().doConstrainedSelect(childFieldValues,
+               orderConstraint, sqlFilter, sqlFilterParams,
+               Constants.COMPARE_NONE, count, interceptorData);
          FieldValue.invert(orderConstraint);
          rsv.flip();
       }

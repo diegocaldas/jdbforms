@@ -20,9 +20,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package interceptors;
-
 import org.apache.log4j.Category;
 
 import org.dbforms.config.DbFormsConfig;
@@ -63,11 +61,9 @@ public class BookstoreWithInterceptorTest extends DbEventInterceptorSupport {
     *
     * @throws ValidationException DOCUMENT ME!
     */
-   public int preInsert(HttpServletRequest request,
-                        Table              table,
-                        FieldValues        fieldValues,
-                        DbFormsConfig      config,
-                        Connection         con) throws ValidationException {
+   public int preInsert(HttpServletRequest request, Table table,
+      FieldValues fieldValues, DbFormsConfig config, Connection con)
+      throws ValidationException {
       logCat.info("preInsert called");
 
       Statement stmt;
@@ -80,12 +76,12 @@ public class BookstoreWithInterceptorTest extends DbEventInterceptorSupport {
 
       if (fieldValues.get(strID) == null) {
          try {
-            stmt   = con.createStatement();
-            strSql = "select max(" + strID + ") from " + strTbl;
+            stmt      = con.createStatement();
+            strSql    = "select max(" + strID + ") from " + strTbl;
 
             if (fieldValues.get(strParentID) != null) {
                strSql = strSql + " where " + strParentID + "="
-                        + fieldValues.get(strParentID);
+                  + fieldValues.get(strParentID);
             }
 
             rs = stmt.executeQuery(strSql);
@@ -98,20 +94,17 @@ public class BookstoreWithInterceptorTest extends DbEventInterceptorSupport {
 
          if (new_id == 0) {
             throw new ValidationException("Error generating automatic IDs");
-         } else {
-            fieldValues.remove(strID);
-            setValue(table, fieldValues, strID, Long.toString(new_id));
-            setValue(table, fieldValues, strParentID, Long.toString(1));
-
-            // Test: set title to fixed string!
-            setValue(table, fieldValues, "TITLE",
-                     "fixed title in new interceptor");
-
-            return GRANT_OPERATION;
          }
-      } else {
-         return GRANT_OPERATION;
+
+         fieldValues.remove(strID);
+         setValue(table, fieldValues, strID, Long.toString(new_id));
+         setValue(table, fieldValues, strParentID, Long.toString(1));
+
+         // Test: set title to fixed string!
+         setValue(table, fieldValues, "TITLE", "fixed title in new interceptor");
       }
+
+      return GRANT_OPERATION;
    }
 
 
@@ -124,9 +117,8 @@ public class BookstoreWithInterceptorTest extends DbEventInterceptorSupport {
     *
     * @return DOCUMENT ME!
     */
-   public int preSelect(HttpServletRequest request,
-                        DbFormsConfig      config,
-                        Connection         con) {
+   public int preSelect(HttpServletRequest request, DbFormsConfig config,
+      Connection con) {
       logCat.info("preSelect called");
 
       return GRANT_OPERATION;
@@ -146,19 +138,17 @@ public class BookstoreWithInterceptorTest extends DbEventInterceptorSupport {
     *
     * @throws ValidationException DOCUMENT ME!
     */
-   public int preUpdate(HttpServletRequest request,
-                        Table              table,
-                        FieldValues        fieldValues,
-                        DbFormsConfig      config,
-                        Connection         con) throws ValidationException {
+   public int preUpdate(HttpServletRequest request, Table table,
+      FieldValues fieldValues, DbFormsConfig config, Connection con)
+      throws ValidationException {
       logCat.info("preUpdate called");
 
       if ("42".equals(fieldValues.get("ISBN").getFieldValue())) {
          return IGNORE_OPERATION;
-      } else {
-         fieldValues.remove("ISBN");
-
-         return GRANT_OPERATION;
       }
+
+      fieldValues.remove("ISBN");
+
+      return GRANT_OPERATION;
    }
 }

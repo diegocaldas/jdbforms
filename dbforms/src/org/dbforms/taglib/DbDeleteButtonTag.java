@@ -151,7 +151,7 @@ public class DbDeleteButtonTag extends DbBaseButtonTag
       }
 
       if (getParentForm()
-                   .getFooterReached()
+                   .isFooterReached()
                 && ResultSetVector.isNull(getParentForm().getResultSetVector())) {
          // 20030521 HKK: Bug fixing, thanks to Michael Slack! 
          return SKIP_BODY;
