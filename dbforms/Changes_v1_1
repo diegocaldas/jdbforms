@@ -1,3 +1,12 @@
+2003-01-24
+(Henner.Kollmann@gmx.de)
+	taglib_docu.xml:
+	   added formatClass to tableData and queryData
+	EmbeddedData.java
+	   added formatClass attribute. Class given in formatClass attribute will be loaded through reflection and will be
+	   used for formatting the output. Must be derived from org.dbforms.util.PrintfFormat. 
+	   Default is org.dbforms.util.PrintfFormat.
+
 2003-01-23
 (Henner.Kollmann@gmx.de)
 	taglib_docu.xml:
