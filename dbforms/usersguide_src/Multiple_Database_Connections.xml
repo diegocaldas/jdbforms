@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
  
 	<chapter>
-		<title>Multiple Database Connections
+		<title id="multdbcon">Multiple Database Connections
 </title>
 		<sect1>
 			<title>Multiple Database Connections</title>
