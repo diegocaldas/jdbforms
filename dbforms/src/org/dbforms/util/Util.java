@@ -60,7 +60,7 @@ public class Util {
     *         realpath value
     */
    public static final String replaceRealPath(String s, String realpath) {
-      if (!isNull(realpath)) {
+      if (!isNull(s) && !isNull(realpath)) {
          // 20030604-HKK: Bugfixing for different engine, e.g. cactus. Path
          // maybe without trailing '/'!!!
          if (realpath.charAt(realpath.length() - 1) != '/') {
