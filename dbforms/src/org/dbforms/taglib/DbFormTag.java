@@ -21,20 +21,57 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.taglib;
-import java.util.*;
-import java.sql.*;
-import java.io.*;
-import java.text.*;
-import javax.servlet.http.*;
-import javax.servlet.jsp.*;
-import javax.servlet.jsp.tagext.*;
+import java.util.Vector;
+import java.util.Hashtable;
+import java.util.StringTokenizer;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.sql.SQLException;
+import java.sql.Connection;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletRequest;
+
+import javax.servlet.jsp.PageContext;
+import javax.servlet.jsp.JspWriter;
+import javax.servlet.jsp.JspException;
+
+import javax.servlet.jsp.tagext.BodyTagSupport;
+import javax.servlet.jsp.tagext.TryCatchFinally;
+import javax.servlet.jsp.tagext.Tag;
 
 import org.apache.commons.validator.ValidatorResources;
 import org.apache.log4j.Category;
 
-import org.dbforms.util.*;
-import org.dbforms.config.*;
-import org.dbforms.event.*;
+import org.dbforms.util.Util;
+import org.dbforms.util.TimeUtil;
+import org.dbforms.util.SqlUtil;
+import org.dbforms.util.ParseUtil;
+import org.dbforms.util.FieldValue;
+import org.dbforms.util.ResultSetVector;
+import org.dbforms.util.DbFormsErrors;
+import org.dbforms.util.MessageResources;
+import org.dbforms.util.FieldValues;
+import org.dbforms.util.FieldTypes;
+import org.dbforms.util.Constants;
+
+import org.dbforms.config.DbFormsConfig;
+import org.dbforms.config.Table;
+import org.dbforms.config.Field;
+import org.dbforms.config.GrantedPrivileges;
+import org.dbforms.config.DbFormsConfigRegistry;
+
+
+import org.dbforms.event.WebEvent;
+import org.dbforms.event.ReloadEvent;
+import org.dbforms.event.NavigationEvent;
+import org.dbforms.event.NavEventFactory;
+import org.dbforms.event.NavEventFactoryImpl;
+import org.dbforms.event.MultipleValidationException;
+import org.dbforms.event.DbEventInterceptor;
+
+
 import org.dbforms.event.eventtype.EventType;
 import org.dbforms.validation.ValidatorConstants;
 import org.dbforms.validation.DbFormsValidatorUtil;
@@ -1414,10 +1451,10 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
          // is there a POSITION we are supposed to navigate to?
          // positions are key values: for example "2", oder "2~454"
          //String position = pageContext.getRequest().getParameter("pos_"+tableId);
-         String firstPosition = ParseUtil.getParameter(request,
-               "firstpos_" + tableId);
-         String lastPosition = ParseUtil.getParameter(request,
-               "lastpos_" + tableId);
+         String firstPosition = Util.decode(ParseUtil.getParameter(request,
+               "firstpos_" + tableId));
+         String lastPosition = Util.decode(ParseUtil.getParameter(request,
+               "lastpos_" + tableId));
 
          if (firstPosition == null)
          {
@@ -1654,7 +1691,9 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
                   orderConstraint, count, firstPosition, lastPosition, con,
                   dbConnectionName);
 
-            if (navEvent instanceof NavNewEvent)
+            
+//            if (navEvent instanceof NavNewEvent)
+			if (Util.isNull(resultSetVector))
             {
                setFooterReached(true);
             }
@@ -1713,13 +1752,13 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
             if (firstPosition != null)
             {
                tagBuf.append("<input type=\"hidden\" name=\"firstpos_"
-                  + tableId + "\" value=\"" + firstPosition + "\">");
+                  + tableId + "\" value=\"" + Util.encode(firstPosition) + "\">");
             }
 
             if (lastPosition != null)
             {
                tagBuf.append("<input type=\"hidden\" name=\"lastpos_" + tableId
-                  + "\" value=\"" + lastPosition + "\">");
+                  + "\" value=\"" + Util.encode(lastPosition) + "\">");
             }
          }
 
@@ -1784,7 +1823,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
     */
    public int doAfterBody() throws JspException
    {
-      if ((resultSetVector == null) || (resultSetVector.size() == 0))
+      if (Util.isNull(resultSetVector))
       {
          return SKIP_BODY;
       }
