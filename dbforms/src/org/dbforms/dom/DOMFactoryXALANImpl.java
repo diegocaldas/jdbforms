@@ -27,10 +27,17 @@ import java.io.OutputStream;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import java.io.StringReader;
+import java.io.StringWriter;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.dom.DOMSource;
+
 import org.xml.sax.InputSource;
-import org.w3c.dom.ls.DOMWriter;
+
 import org.w3c.dom.xpath.XPathEvaluator;
 import org.apache.xpath.domapi.XPathEvaluatorImpl;
 import org.apache.log4j.Category;
@@ -44,7 +51,7 @@ import org.dbforms.util.Util;
  */
 public class DOMFactoryXALANImpl extends DOMFactory {
 	private Category logCat = Category.getInstance(this.getClass().getName());
-	private DOMWriter writer = createDOMWriter();
+	private Transformer transformer = createDOMWriter();
 	private DocumentBuilder builder = createDOMBuilder();
 
 	/**
@@ -73,7 +80,16 @@ public class DOMFactoryXALANImpl extends DOMFactory {
 	 * @return string representation
 	 */
 	public String DOM2String(Document doc) {
-		return writer.writeToString(doc);
+		StringWriter writer = new StringWriter();
+		try {
+			StreamResult result = new StreamResult(writer);
+			DOMSource source = new DOMSource(doc);
+			transformer.transform(source, result);
+		} catch (Exception e) {
+			logCat.error("write", e);
+		}
+		String s = writer.toString();
+		return s;
 	}
 
 	/**
@@ -142,20 +158,24 @@ public class DOMFactoryXALANImpl extends DOMFactory {
 	 * @param doc The Ddcument to write
 	 */
 	public void write(OutputStream out, Element root) {
-		writer.writeNode(out, root);
+		try {
+			StreamResult result = new StreamResult(out);
+			DOMSource source = new DOMSource(root);
+			transformer.transform(source, result);
+		} catch (Exception e) {
+			logCat.error("write", e);
+		}
 	}
 
-	private DOMWriter createDOMWriter() {
-		DOMWriter res = null;
+	private Transformer createDOMWriter() {
 
+		Transformer transformer = null;
 		try {
-			res = new org.apache.xml.serialize.DOMWriterImpl();
-			res.setEncoding("ISO-8859-1");
-			res.setNewLine("CR-LF");
+			TransformerFactory transFactory = TransformerFactory.newInstance();
+			transformer = transFactory.newTransformer();
 		} catch (Exception e) {
-			logCat.error(e);
+			logCat.error("createDOMWriter", e);
 		}
-
-		return res;
+		return transformer;
 	}
 }
