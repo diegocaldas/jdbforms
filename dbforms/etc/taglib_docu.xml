@@ -6,8 +6,8 @@
 	</properties>
 	<body>
 		<taglib>
-			<tlibversion>2.0</tlibversion>
-			<jspversion>CURRENT_VERSION</jspversion>
+			<tlibversion>CURRENT_VERSION</tlibversion>
+			<jspversion>1.2</jspversion>
 			<shortname>dbforms</shortname>
 			<display-name>DbForm Construction Tags</display-name>
 			<uri>dbforms.tld</uri>
