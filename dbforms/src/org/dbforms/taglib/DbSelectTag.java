@@ -193,7 +193,8 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer
             tagBuf.append(" selected");
         }
 
-        tagBuf.append("> ");
+        //20021203-HKK: Removed unneeded blank
+        tagBuf.append(">");
         tagBuf.append(description);
 
 
