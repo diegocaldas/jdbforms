@@ -216,13 +216,16 @@
       </properties>
     </dependency>       
 
-    <!--
+    <!-- 
+       -  j2ee.jar is used to compile the GUI for DbForms, it provides
+       -  the varios javax.xml classes like Streamer and TransformationFactory.
+       -  It is not needed by the webapp, and can be commented out.
+       -->    
     <dependency>
       <id>j2ee</id>      
-      <version/>
       <jar>j2ee.jar</jar>
     </dependency>
-    -->
+
 
     <!-- 
        -  jdbc2_0-stdext.jar is used to compile JakartaConnectionProvider class
@@ -231,10 +234,11 @@
        -  J2SE JDK1.3.x no.
        -
        -  http://java.sun.com/products/jdbc/download.html#binary
+       -- I think the name in Maven land has changed to just jdbc. - DEP
        -->
     <dependency>
-      <id>jdbc2_0-stdext</id>
-      <jar>jdbc2_0-stdext.jar</jar>
+      <id>jdbc</id>
+      <version>2.0</version>
       <properties>        
         <war.bundle.jar>true</war.bundle.jar>
       </properties>
@@ -297,7 +301,14 @@
       </properties>
     </dependency>
 
-    <!-- validator 1.0 is out ! -->
+    <dependency>
+      <id>commons-lang</id>      
+      <version>1.0</version>
+      <properties>        
+        <war.bundle.jar>true</war.bundle.jar>
+      </properties>
+    </dependency>            
+
     <dependency>
       <id>commons-validator</id>
       <version>1.0</version>
@@ -332,7 +343,7 @@
        -  some tag classes implements TryCatchFinally ... 
        -->
     <dependency>
-      <id>servlet</id>
+      <id>servletapi</id>
       <version>2.3</version>
     </dependency>         
 
@@ -360,15 +371,6 @@
     <sourceDirectory>src</sourceDirectory>
     <unitTestSourceDirectory>tests/test</unitTestSourceDirectory>
     <aspectSourceDirectory></aspectSourceDirectory>
-
-    <sourceModifications>
-      <sourceModification>
-        <excludes>
-            <exclude>com/**/*.*</exclude>
-        </excludes>
-      </sourceModification>
-    </sourceModifications>
-
     
     <unitTest>
       <includes>
