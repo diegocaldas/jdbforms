@@ -20,24 +20,20 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-package org.dbforms.servlets;
 
+package org.dbforms.servlets;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
-
 import java.net.URL;
 import java.net.MalformedURLException;
-
 import javax.servlet.ServletException;
 import javax.servlet.UnavailableException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.digester.Digester;
 import org.apache.commons.digester.AbstractObjectCreationFactory;
-
 import org.xml.sax.SAXException;
 import org.apache.log4j.Category;
 import org.apache.log4j.PropertyConfigurator;
@@ -54,22 +50,23 @@ import org.dbforms.event.DatabaseEventFactoryImpl;
 import org.dbforms.util.SingletonClassFactoryCreate;
 import org.dbforms.event.NavEventFactoryImpl;
 
-/****
+
+
+/**
  * This Servlet runs at application startup and reads the XML configuration in
- * dbforms-config.xml, populates a DbFormsConfig - Object and stores it in application
- * context.
- *
- *   @author Joe Peer
+ * dbforms-config.xml, populates a DbFormsConfig - Object and stores it in
+ * application context.
+ * 
+ * @author Joe Peer
  */
-public class ConfigServlet extends HttpServlet {
+public class ConfigServlet extends HttpServlet
+{
    /** DOCUMENT ME! */
    private Category logCat;
 
    // ----------------------------------------------------- Instance Variables
 
-   /**
-    * The context-relative path to our configuration and errors resources.
-    */
+   /** The context-relative path to our configuration and errors resources. */
    protected String config = "/WEB-INF/dbforms-config.xml";
 
    /** DOCUMENT ME! */
@@ -87,26 +84,31 @@ public class ConfigServlet extends HttpServlet {
     * Gracefully shut down this controller servlet, releasing any resources
     * that were allocated at initialization.
     */
-   public void destroy() {
+   public void destroy()
+   {
       log("finalizing");
    }
 
+
    /**
     * Initialize this servlet.
-    *
+    * 
     * @exception ServletException if we cannot configure ourselves correctly
     */
-   public void init() throws ServletException {
-      try {
+   public void init() throws ServletException
+   {
+      try
+      {
          initLogging();
 
          // Setup digester debug level
-         int digesterDebugLevel = 0;
+         int    digesterDebugLevel = 0;
 
-         String digesterDebugLevelInput =
-            this.getServletConfig().getInitParameter("digesterDebugLevel");
+         String digesterDebugLevelInput = this.getServletConfig()
+                                              .getInitParameter("digesterDebugLevel");
 
-         if (digesterDebugLevelInput != null) {
+         if (digesterDebugLevelInput != null)
+         {
             // Transform input into an integer
             digesterDebugLevel = Integer.parseInt(digesterDebugLevelInput);
          }
@@ -116,29 +118,39 @@ public class ConfigServlet extends HttpServlet {
          initXMLValidator();
          initApplicationResources();
          initLocaleKey();
-      } catch (IOException ioe) {
+      }
+      catch (IOException ioe)
+      {
          ioe.printStackTrace();
-      } catch (Exception e) {
+      }
+      catch (Exception e)
+      {
          e.printStackTrace();
       }
    }
 
+
    /**
-    * Initialize Logging for this web application
-    * a url/path to a log4j properties file should be defined by the servlet init parameter "log4j.configuration"
+    * Initialize Logging for this web application a url/path to a log4j
+    * properties file should be defined by the servlet init parameter
+    * "log4j.configuration"
     */
-   public void initLogging() {
-      String configurationStr =
-         this.getServletConfig().getInitParameter("log4j.configuration");
+   public void initLogging()
+   {
+      String  configurationStr = this.getServletConfig()
+                                     .getInitParameter("log4j.configuration");
       boolean usingURL = true;
 
-      if (configurationStr != null) {
-         try {
+      if (configurationStr != null)
+      {
+         try
+         {
             // Assuming that a webapp relative path starts with "/WEB-INF/"...
             // is the log4j.configuration parameter value a relative URL ?
             // (example: "/WEB-INF/log4j.configuration")
             // [Fossato <fossato@pow2.com>, 20011123]
-            if (configurationStr.startsWith("/WEB-INF/")) {
+            if (configurationStr.startsWith("/WEB-INF/"))
+            {
                // get the web application context prefix;
                String prefix = this.getServletContext().getRealPath("/");
                configurationStr = (prefix + configurationStr);
@@ -149,68 +161,83 @@ public class ConfigServlet extends HttpServlet {
             }
 
             System.out.println(
-               "ConfigServlet::initLogging - log4j configuration str = ["
-                  + configurationStr
-                  + "]");
+                     "ConfigServlet::initLogging - log4j configuration str = ["
+                     + configurationStr + "]");
 
             URL configURL = new URL(configurationStr);
             PropertyConfigurator.configure(configURL);
-         } catch (MalformedURLException mue) {
+         }
+         catch (MalformedURLException mue)
+         {
             PropertyConfigurator.configure(configurationStr);
             usingURL = false;
          }
 
          logCat = Category.getInstance(ConfigServlet.class.getName());
 
+
          // logging category for this class
          logCat.info("### LOGGING INITALIZED, USING URL: " + usingURL + " ###");
-      } else {
+      }
+      else
+      {
          BasicConfigurator.configure();
          logCat = Category.getInstance(ConfigServlet.class.getName());
+
 
          // logging category for this class
          logCat.info("### LOGGING INITALIZED, USING BASIC CONFIGURATION.");
          logCat.info(
-            "### You can use init-parameter \"log4j.configuration\" in web.xml for defining individual properties, if you want. Check DbForms manual!");
+                  "### You can use init-parameter \"log4j.configuration\" in web.xml for defining individual properties, if you want. Check DbForms manual!");
       }
    }
 
+
    /**
     * Process an HTTP "GET" request.
-    *
+    * 
     * @param request The servlet request we are processing
     * @param response The servlet response we are creating
-    *
+    * 
     * @exception IOException if an input/output error occurs
     * @exception ServletException if a servlet exception occurs
     */
    public void doGet(HttpServletRequest request, HttpServletResponse response)
-      throws IOException, ServletException {
+              throws IOException, ServletException
+   {
       process(request, response);
    }
 
+
    /**
     * Process an HTTP "POST" request.
-    *
+    * 
     * @param request The servlet request we are processing
     * @param response The servlet response we are creating
-    *
+    * 
     * @exception IOException if an input/output error occurs
     * @exception ServletException if a servlet exception occurs
     */
    public void doPost(HttpServletRequest request, HttpServletResponse response)
-      throws IOException, ServletException {
+               throws IOException, ServletException
+   {
       process(request, response);
    }
+
 
    // --------------------------------------------------------- Public Methods
    // ------------------------------------------------------ Protected Methods
 
    /**
-    * Construct and return a digester that uses the new configuration
-    * file format.
+    * Construct and return a digester that uses the new configuration file
+    * format.
+    * @param detail DOCUMENT ME!
+    * @param dbFormsConfig DOCUMENT ME!
+    * 
+    * @return DOCUMENT ME!
     */
-   protected Digester initDigester(int detail, DbFormsConfig dbFormsConfig) {
+   protected Digester initDigester(int detail, DbFormsConfig dbFormsConfig)
+   {
       // Initialize a new Digester instance
       Digester digester = new Digester();
       digester.push(dbFormsConfig);
@@ -218,72 +245,60 @@ public class ConfigServlet extends HttpServlet {
       digester.setDebug(detail);
       digester.setValidating(false);
 
+
       // Configure the processing rules
       // parse "DateFormatter"
-      digester.addCallMethod(
-         "dbforms-config/date-format",
-         "setDateFormatter",
-         0);
+      digester.addCallMethod("dbforms-config/date-format", "setDateFormatter", 0);
+
 
       // parse "Table" - object + add it to parent
-      digester.addObjectCreate(
-         "dbforms-config/table",
-         "org.dbforms.config.Table");
+      digester.addObjectCreate("dbforms-config/table", 
+                               "org.dbforms.config.Table");
       digester.addSetProperties("dbforms-config/table");
-      digester.addSetNext(
-         "dbforms-config/table",
-         "addTable",
-         "org.dbforms.config.Table");
+      digester.addSetNext("dbforms-config/table", "addTable", 
+                          "org.dbforms.config.Table");
+
 
       // parse "Field" - object + add it to parent (which is "Table")
-      digester.addObjectCreate(
-         "dbforms-config/table/field",
-         "org.dbforms.config.Field");
+      digester.addObjectCreate("dbforms-config/table/field", 
+                               "org.dbforms.config.Field");
       digester.addSetProperties("dbforms-config/table/field");
-      digester.addSetNext(
-         "dbforms-config/table/field",
-         "addField",
-         "org.dbforms.config.Field");
+      digester.addSetNext("dbforms-config/table/field", "addField", 
+                          "org.dbforms.config.Field");
+
 
       // parse "Foreign-Key" - object + add it to parent (which is "Table")
-      digester.addObjectCreate(
-         "dbforms-config/table/foreign-key",
-         "org.dbforms.config.ForeignKey");
+      digester.addObjectCreate("dbforms-config/table/foreign-key", 
+                               "org.dbforms.config.ForeignKey");
       digester.addSetProperties("dbforms-config/table/foreign-key");
-      digester.addSetNext(
-         "dbforms-config/table/foreign-key",
-         "addForeignKey",
-         "org.dbforms.config.ForeignKey");
+      digester.addSetNext("dbforms-config/table/foreign-key", "addForeignKey", 
+                          "org.dbforms.config.ForeignKey");
+
 
       // parse "Reference" - object + add it to parent (which is "ForeignKey")
-      digester.addObjectCreate(
-         "dbforms-config/table/foreign-key/reference",
-         "org.dbforms.config.Reference");
+      digester.addObjectCreate("dbforms-config/table/foreign-key/reference", 
+                               "org.dbforms.config.Reference");
       digester.addSetProperties("dbforms-config/table/foreign-key/reference");
-      digester.addSetNext(
-         "dbforms-config/table/foreign-key/reference",
-         "addReference",
-         "org.dbforms.config.Reference");
+      digester.addSetNext("dbforms-config/table/foreign-key/reference", 
+                          "addReference", "org.dbforms.config.Reference");
+
 
       // parse "GrantedPrivileges" - object + add it to parent (which is "Table")
-      digester.addObjectCreate(
-         "dbforms-config/table/granted-privileges",
-         "org.dbforms.config.GrantedPrivileges");
+      digester.addObjectCreate("dbforms-config/table/granted-privileges", 
+                               "org.dbforms.config.GrantedPrivileges");
       digester.addSetProperties("dbforms-config/table/granted-privileges");
-      digester.addSetNext(
-         "dbforms-config/table/granted-privileges",
-         "setGrantedPrivileges",
-         "org.dbforms.config.GrantedPrivileges");
+      digester.addSetNext("dbforms-config/table/granted-privileges", 
+                          "setGrantedPrivileges", 
+                          "org.dbforms.config.GrantedPrivileges");
+
 
       // parse "Interceptor" - object + add it to parent (which is "Table")
-      digester.addObjectCreate(
-         "dbforms-config/table/interceptor",
-         "org.dbforms.config.Interceptor");
+      digester.addObjectCreate("dbforms-config/table/interceptor", 
+                               "org.dbforms.config.Interceptor");
       digester.addSetProperties("dbforms-config/table/interceptor");
-      digester.addSetNext(
-         "dbforms-config/table/interceptor",
-         "addInterceptor",
-         "org.dbforms.config.Interceptor");
+      digester.addSetNext("dbforms-config/table/interceptor", "addInterceptor", 
+                          "org.dbforms.config.Interceptor");
+
 
       // register custom database or navigation events (parent is "Table");
       // 1) for every "events" element, instance a new TableEvents object;
@@ -293,99 +308,79 @@ public class ConfigServlet extends HttpServlet {
       // 5) for every event's property attribute, instance a new Property object
       //    and and set its properties ("name" and "value")
       // 6) register the Property object into the EventInfo object
-      digester.addObjectCreate(
-         "dbforms-config/table/events",
-         "org.dbforms.config.TableEvents");
-      digester.addSetNext(
-         "dbforms-config/table/events",
-         "setTableEvents",
-         "org.dbforms.config.TableEvents");
-      digester.addObjectCreate(
-         "dbforms-config/table/events/event",
-         "org.dbforms.config.EventInfo");
+      digester.addObjectCreate("dbforms-config/table/events", 
+                               "org.dbforms.config.TableEvents");
+      digester.addSetNext("dbforms-config/table/events", "setTableEvents", 
+                          "org.dbforms.config.TableEvents");
+      digester.addObjectCreate("dbforms-config/table/events/event", 
+                               "org.dbforms.config.EventInfo");
       digester.addSetProperties("dbforms-config/table/events/event");
-      digester.addSetNext(
-         "dbforms-config/table/events/event",
-         "addEventInfo",
-         "org.dbforms.config.EventInfo");
-      digester.addObjectCreate(
-         "dbforms-config/table/events/event/property",
-         "org.dbforms.config.DbConnectionProperty");
+      digester.addSetNext("dbforms-config/table/events/event", "addEventInfo", 
+                          "org.dbforms.config.EventInfo");
+      digester.addObjectCreate("dbforms-config/table/events/event/property", 
+                               "org.dbforms.config.DbConnectionProperty");
       digester.addSetProperties("dbforms-config/table/events/event/property");
-      digester.addSetNext(
-         "dbforms-config/table/events/event/property",
-         "addProperty",
-         "org.dbforms.config.DbConnectionProperty");
+      digester.addSetNext("dbforms-config/table/events/event/property", 
+                          "addProperty", 
+                          "org.dbforms.config.DbConnectionProperty");
+
 
       // parse "Query" - object + add it to parent
-      digester.addObjectCreate(
-         "dbforms-config/query",
-         "org.dbforms.config.Query");
+      digester.addObjectCreate("dbforms-config/query", 
+                               "org.dbforms.config.Query");
       digester.addSetProperties("dbforms-config/query");
-      digester.addSetNext(
-         "dbforms-config/query",
-         "addTable",
-         "org.dbforms.config.Table");
+      digester.addSetNext("dbforms-config/query", "addTable", 
+                          "org.dbforms.config.Table");
+
 
       // parse "Field" - object + add it to parent (which is "Query")
-      digester.addObjectCreate(
-         "dbforms-config/query/field",
-         "org.dbforms.config.Field");
+      digester.addObjectCreate("dbforms-config/query/field", 
+                               "org.dbforms.config.Field");
       digester.addSetProperties("dbforms-config/query/field");
-      digester.addSetNext(
-         "dbforms-config/query/field",
-         "addField",
-         "org.dbforms.config.Field");
+      digester.addSetNext("dbforms-config/query/field", "addField", 
+                          "org.dbforms.config.Field");
+
 
       // parse "search" - object + add it to parent (which is "Query")
-      digester.addObjectCreate(
-         "dbforms-config/query/search",
-         "org.dbforms.config.Field");
+      digester.addObjectCreate("dbforms-config/query/search", 
+                               "org.dbforms.config.Field");
       digester.addSetProperties("dbforms-config/query/search");
-      digester.addSetNext(
-         "dbforms-config/query/search",
-         "addSearchField",
-         "org.dbforms.config.Field");
+      digester.addSetNext("dbforms-config/query/search", "addSearchField", 
+                          "org.dbforms.config.Field");
+
 
       // parse "Foreign-Key" - object + add it to parent (which is "Table")
-      digester.addObjectCreate(
-         "dbforms-config/query/foreign-key",
-         "org.dbforms.config.ForeignKey");
+      digester.addObjectCreate("dbforms-config/query/foreign-key", 
+                               "org.dbforms.config.ForeignKey");
       digester.addSetProperties("dbforms-config/query/foreign-key");
-      digester.addSetNext(
-         "dbforms-config/query/foreign-key",
-         "addForeignKey",
-         "org.dbforms.config.ForeignKey");
+      digester.addSetNext("dbforms-config/query/foreign-key", "addForeignKey", 
+                          "org.dbforms.config.ForeignKey");
+
 
       // parse "Reference" - object + add it to parent (which is "ForeignKey")
-      digester.addObjectCreate(
-         "dbforms-config/query/foreign-key/reference",
-         "org.dbforms.config.Reference");
+      digester.addObjectCreate("dbforms-config/query/foreign-key/reference", 
+                               "org.dbforms.config.Reference");
       digester.addSetProperties("dbforms-config/query/foreign-key/reference");
-      digester.addSetNext(
-         "dbforms-config/query/foreign-key/reference",
-         "addReference",
-         "org.dbforms.config.Reference");
+      digester.addSetNext("dbforms-config/query/foreign-key/reference", 
+                          "addReference", "org.dbforms.config.Reference");
+
 
       // parse "GrantedPrivileges" - object + add it to parent (which is "Query")
-      digester.addObjectCreate(
-         "dbforms-config/query/granted-privileges",
-         "org.dbforms.config.GrantedPrivileges");
+      digester.addObjectCreate("dbforms-config/query/granted-privileges", 
+                               "org.dbforms.config.GrantedPrivileges");
       digester.addSetProperties("dbforms-config/query/granted-privileges");
-      digester.addSetNext(
-         "dbforms-config/query/granted-privileges",
-         "setGrantedPrivileges",
-         "org.dbforms.config.GrantedPrivileges");
+      digester.addSetNext("dbforms-config/query/granted-privileges", 
+                          "setGrantedPrivileges", 
+                          "org.dbforms.config.GrantedPrivileges");
+
 
       // parse "Condition" - object + add it to parent (which is "Query")
-      digester.addObjectCreate(
-         "dbforms-config/query/interceptor",
-         "org.dbforms.config.Interceptor");
+      digester.addObjectCreate("dbforms-config/query/interceptor", 
+                               "org.dbforms.config.Interceptor");
       digester.addSetProperties("dbforms-config/query/interceptor");
-      digester.addSetNext(
-         "dbforms-config/query/interceptor",
-         "addInterceptor",
-         "org.dbforms.config.Interceptor");
+      digester.addSetNext("dbforms-config/query/interceptor", "addInterceptor", 
+                          "org.dbforms.config.Interceptor");
+
 
       // register custom database or navigation events (parent is "Query");
       // 1) for every "events" element, instance a new TableEvents object;
@@ -395,99 +390,89 @@ public class ConfigServlet extends HttpServlet {
       // 5) for every event's property attribute, instance a new Property object
       //    and and set its properties ("name" and "value")
       // 6) register the Property object into the EventInfo object
-      digester.addObjectCreate(
-         "dbforms-config/query/events",
-         "org.dbforms.config.TableEvents");
-      digester.addSetNext(
-         "dbforms-config/query/events",
-         "setTableEvents",
-         "org.dbforms.config.TableEvents");
-      digester.addObjectCreate(
-         "dbforms-config/query/events/event",
-         "org.dbforms.config.EventInfo");
+      digester.addObjectCreate("dbforms-config/query/events", 
+                               "org.dbforms.config.TableEvents");
+      digester.addSetNext("dbforms-config/query/events", "setTableEvents", 
+                          "org.dbforms.config.TableEvents");
+      digester.addObjectCreate("dbforms-config/query/events/event", 
+                               "org.dbforms.config.EventInfo");
       digester.addSetProperties("dbforms-config/query/events/event");
-      digester.addSetNext(
-         "dbforms-config/query/events/event",
-         "addEventInfo",
-         "org.dbforms.config.EventInfo");
-      digester.addObjectCreate(
-         "dbforms-config/query/events/event/property",
-         "org.dbforms.config.DbConnectionProperty");
+      digester.addSetNext("dbforms-config/query/events/event", "addEventInfo", 
+                          "org.dbforms.config.EventInfo");
+      digester.addObjectCreate("dbforms-config/query/events/event/property", 
+                               "org.dbforms.config.DbConnectionProperty");
       digester.addSetProperties("dbforms-config/query/events/event/property");
-      digester.addSetNext(
-         "dbforms-config/query/events/event/property",
-         "addProperty",
-         "org.dbforms.config.DbConnectionProperty");
+      digester.addSetNext("dbforms-config/query/events/event/property", 
+                          "addProperty", 
+                          "org.dbforms.config.DbConnectionProperty");
+
 
       // parse "DbConnecion" - object
-      digester.addObjectCreate(
-         "dbforms-config/dbconnection",
-         "org.dbforms.config.DbConnection");
+      digester.addObjectCreate("dbforms-config/dbconnection", 
+                               "org.dbforms.config.DbConnection");
       digester.addSetProperties("dbforms-config/dbconnection");
-      digester.addSetNext(
-         "dbforms-config/dbconnection",
-         "addDbConnection",
-         "org.dbforms.config.DbConnection");
+      digester.addSetNext("dbforms-config/dbconnection", "addDbConnection", 
+                          "org.dbforms.config.DbConnection");
+
 
       // parse "property" - object + add it to parent (which is "DbConnection")
-      digester.addObjectCreate(
-         "dbforms-config/dbconnection/property",
-         "org.dbforms.config.DbConnectionProperty");
+      digester.addObjectCreate("dbforms-config/dbconnection/property", 
+                               "org.dbforms.config.DbConnectionProperty");
       digester.addSetProperties("dbforms-config/dbconnection/property");
-      digester.addSetNext(
-         "dbforms-config/dbconnection/property",
-         "addProperty",
-         "org.dbforms.config.DbConnectionProperty");
+      digester.addSetNext("dbforms-config/dbconnection/property", "addProperty", 
+                          "org.dbforms.config.DbConnectionProperty");
+
 
       // parse "pool-property" - object + add it to parent (which is "DbConnection")
-      digester.addObjectCreate(
-         "dbforms-config/dbconnection/pool-property",
-         "org.dbforms.config.DbConnectionProperty");
+      digester.addObjectCreate("dbforms-config/dbconnection/pool-property", 
+                               "org.dbforms.config.DbConnectionProperty");
       digester.addSetProperties("dbforms-config/dbconnection/pool-property");
-      digester.addSetNext(
-         "dbforms-config/dbconnection/pool-property",
-         "addPoolProperty",
-         "org.dbforms.config.DbConnectionProperty");
+      digester.addSetNext("dbforms-config/dbconnection/pool-property", 
+                          "addPoolProperty", 
+                          "org.dbforms.config.DbConnectionProperty");
+
 
       // parse "database-events/database-event" - object and register them into the DatabaseEventsFactory
-      digester.addFactoryCreate(
-         "dbforms-config/events/database-events",
-         new SingletonClassFactoryCreate(
-            DatabaseEventFactoryImpl.class.getName()));
+      digester.addFactoryCreate("dbforms-config/events/database-events", 
+                                new SingletonClassFactoryCreate(
+                                         DatabaseEventFactoryImpl.class.getName()));
       digester.addObjectCreate(
-         "dbforms-config/events/database-events/database-event",
-         "org.dbforms.config.EventInfo");
+               "dbforms-config/events/database-events/database-event", 
+               "org.dbforms.config.EventInfo");
       digester.addSetProperties(
-         "dbforms-config/events/database-events/database-event");
+               "dbforms-config/events/database-events/database-event");
       digester.addSetNext(
-         "dbforms-config/events/database-events/database-event",
-         "addEventInfo",
-         "org.dbforms.config.EventInfo");
+               "dbforms-config/events/database-events/database-event", 
+               "addEventInfo", "org.dbforms.config.EventInfo");
+
 
       // parse "database-events/navigation-event" - object and register them into the NavigationEventsFactory
-      digester.addFactoryCreate(
-         "dbforms-config/events/navigation-events",
-         new SingletonClassFactoryCreate(NavEventFactoryImpl.class.getName()));
+      digester.addFactoryCreate("dbforms-config/events/navigation-events", 
+                                new SingletonClassFactoryCreate(
+                                         NavEventFactoryImpl.class.getName()));
       digester.addObjectCreate(
-         "dbforms-config/events/navigation-events/navigation-event",
-         "org.dbforms.config.EventInfo");
+               "dbforms-config/events/navigation-events/navigation-event", 
+               "org.dbforms.config.EventInfo");
       digester.addSetProperties(
-         "dbforms-config/events/navigation-events/navigation-event");
+               "dbforms-config/events/navigation-events/navigation-event");
       digester.addSetNext(
-         "dbforms-config/events/navigation-events/navigation-event",
-         "addEventInfo",
-         "org.dbforms.config.EventInfo");
+               "dbforms-config/events/navigation-events/navigation-event", 
+               "addEventInfo", "org.dbforms.config.EventInfo");
 
       return digester;
    }
 
+
    /**
-    * Construct and return a digester that uses the new errors
-    * file format.
+    * Construct and return a digester that uses the new errors file format.
+    * @param detail DOCUMENT ME!
+    * @param dbFormsErrors DOCUMENT ME!
+    * 
+    * @return DOCUMENT ME!
     */
-   protected Digester initErrorsDigester(
-      int detail,
-      DbFormsErrors dbFormsErrors) {
+   protected Digester initErrorsDigester(int detail, 
+                                         DbFormsErrors dbFormsErrors)
+   {
       // Initialize a new Digester instance
       logCat.info("initialize Errors Digester.");
 
@@ -496,52 +481,54 @@ public class ConfigServlet extends HttpServlet {
       digester.setDebug(detail);
       digester.setValidating(false);
 
+
       // Configure the processing rules
       // parse "Error" - object
-      digester.addObjectCreate(
-         "dbforms-errors/error",
-         "org.dbforms.config.error.Error");
+      digester.addObjectCreate("dbforms-errors/error", 
+                               "org.dbforms.config.error.Error");
       digester.addSetProperties("dbforms-errors/error");
-      digester.addSetNext(
-         "dbforms-errors/error",
-         "addError",
-         "org.dbforms.config.error.Error");
+      digester.addSetNext("dbforms-errors/error", "addError", 
+                          "org.dbforms.config.error.Error");
+
 
       // parse "Message" - object + add it to parent (which is "Error")
-      digester.addObjectCreate(
-         "dbforms-errors/error/message",
-         "org.dbforms.config.error.Message");
-      digester.addSetNext(
-         "dbforms-errors/error/message",
-         "addMessage",
-         "org.dbforms.config.error.Message");
+      digester.addObjectCreate("dbforms-errors/error/message", 
+                               "org.dbforms.config.error.Message");
+      digester.addSetNext("dbforms-errors/error/message", "addMessage", 
+                          "org.dbforms.config.error.Message");
       digester.addSetProperties("dbforms-errors/error/message");
       digester.addCallMethod("dbforms-errors/error/message", "setMessage", 0);
 
       return digester;
    }
 
+
    /**
     * Initialize the mapping information for this application.
-    *
+    * 
+    * @param digesterDebugLevel DOCUMENT ME!
+    * 
     * @exception IOException if an input/output error is encountered
     * @exception ServletException if we cannot initialize these resources
     */
    protected void initXMLErrors(int digesterDebugLevel)
-      throws IOException, ServletException {
+                         throws IOException, ServletException
+   {
       logCat.info("initialize XML Errors.");
 
       // Look to see if developer has specified his/her own errors filename & location
       String value = getServletConfig().getInitParameter(DbFormsErrors.ERRORS);
 
-      if (value != null) {
+      if (value != null)
+      {
          errors = value;
       }
 
       // Acquire an input stream to our errors resource
       InputStream input = getServletContext().getResourceAsStream(errors);
 
-      if (input == null) {
+      if (input == null)
+      {
          // File not available, log warning
          logCat.warn("XML Errors file not found, XML error handler disabled!");
 
@@ -550,37 +537,48 @@ public class ConfigServlet extends HttpServlet {
 
       // Build a digester to process our errors resource
       DbFormsErrors dbFormsErrors = new DbFormsErrors();
-      Digester digester = null;
+      Digester      digester = null;
       digester = initErrorsDigester(digesterDebugLevel, dbFormsErrors);
+
 
       // store a reference to ServletErrors (for interoperation with other parts of the Web-App!)
       dbFormsErrors.setServletConfig(getServletConfig());
+
 
       // store this errors object in the servlet context ("application")
       getServletContext().setAttribute(DbFormsErrors.ERRORS, dbFormsErrors);
 
       // Parse the input stream to configure our mappings
-      try {
+      try
+      {
          digester.parse(input);
          input.close();
-      } catch (SAXException e) {
+      }
+      catch (SAXException e)
+      {
          throw new ServletException(e.toString());
       }
+
       logCat.info("DbForms Error: " + dbFormsErrors);
    }
 
+
    /**
     * Initialize the mapping information for this application.
-    *
+    * 
+    * @param digesterDebugLevel DOCUMENT ME!
+    * 
     * @exception IOException if an input/output error is encountered
     * @exception ServletException if we cannot initialize these resources
     */
    protected void initXMLConfig(int digesterDebugLevel)
-      throws IOException, ServletException {
+                         throws IOException, ServletException
+   {
       // Initialize the context-relative path to our configuration resources
       String value = getServletConfig().getInitParameter(DbFormsConfig.CONFIG);
 
-      if (value != null) {
+      if (value != null)
+      {
          config = value;
       }
 
@@ -590,40 +588,53 @@ public class ConfigServlet extends HttpServlet {
          initXMLConfigFile(s[i], digesterDebugLevel);
    }
 
+
    /**
     * DOCUMENT ME!
-    *
+    * 
     * @param config DOCUMENT ME!
     * @param digesterDebugLevel DOCUMENT ME!
-    *
+    * 
     * @throws IOException DOCUMENT ME!
     * @throws ServletException DOCUMENT ME!
     * @throws UnavailableException DOCUMENT ME!
     */
    protected void initXMLConfigFile(String config, int digesterDebugLevel)
-      throws IOException, ServletException {
+                             throws IOException, ServletException
+   {
       // Build a digester to process our configuration resource
       String realPath = getServletContext().getRealPath("/");
 
       // Acquire an input stream to our configuration resource
       InputStream input = getServletContext().getResourceAsStream(config);
 
-      if (input == null) {
+      if (input == null)
+      {
          throw new UnavailableException("configMissing");
       }
 
       // register the config object into the DbFormsConfigRegistry
       // as the default config (fossato, 2002.12.02)
-      DbFormsConfigRegistry registry = DbFormsConfigRegistry.instance();
-      DbFormsConfig dbFormsConfig = null;
-      try {
-			dbFormsConfig = registry.lookup();
-      } catch(Exception e) {
+      DbFormsConfigRegistry registry      = DbFormsConfigRegistry.instance();
+      DbFormsConfig         dbFormsConfig = null;
+
+      try
+      {
+         dbFormsConfig = registry.lookup();
       }
-      if (dbFormsConfig == null) {
+      catch (Exception e)
+      {
+      }
+
+      if (dbFormsConfig == null)
+      {
          dbFormsConfig = new DbFormsConfig(realPath);
+
+
          // store a reference to ServletConfig (for interoperation with other parts of the Web-App!)
          dbFormsConfig.setServletConfig(getServletConfig());
+
+
          // ---------------------------------------------------------------
          registry.setServletContext(getServletContext());
          registry.register(dbFormsConfig);
@@ -631,37 +642,43 @@ public class ConfigServlet extends HttpServlet {
 
       // ---------------------------------------------------------------
       Digester digester = initDigester(digesterDebugLevel, dbFormsConfig);
+
       // Parse the input stream to configure our mappings
-      try {
+      try
+      {
          digester.parse(input);
          input.close();
-      } catch (SAXException e) {
+      }
+      catch (SAXException e)
+      {
          logCat.error("::initXMLConfig - SaxException", e);
          throw new ServletException(e.toString());
       }
    }
 
+
    /**
     * DOCUMENT ME!
-    *
+    * 
     * @param resources DOCUMENT ME!
     * @param validator_rules DOCUMENT ME!
-    *
+    * 
     * @throws IOException DOCUMENT ME!
     * @throws ServletException DOCUMENT ME!
     */
-   protected void initXMLValidatorRules(
-      ValidatorResources resources,
-      String validator_rules)
-      throws IOException, ServletException {
+   protected void initXMLValidatorRules(ValidatorResources resources, 
+                                        String validator_rules)
+                                 throws IOException, ServletException
+   {
       // Acquire an input stream validator_rules
-      InputStream inputValidatorRules =
-         getServletContext().getResourceAsStream(validator_rules);
+      InputStream inputValidatorRules = getServletContext()
+                                           .getResourceAsStream(validator_rules);
 
-      if (inputValidatorRules == null) {
+      if (inputValidatorRules == null)
+      {
          // File not available, log warning
          logCat.warn(
-            "XML Validator rule file not found, XML Validator handler disabled!");
+                  "XML Validator rule file not found, XML Validator handler disabled!");
 
          return;
       }
@@ -669,102 +686,123 @@ public class ConfigServlet extends HttpServlet {
       //
       // Initialize ValidatorResources
       //
-      try {
-         ValidatorResourcesInitializer.initialize(
-            resources,
-            inputValidatorRules);
-      } catch (IOException e) {
+      try
+      {
+         ValidatorResourcesInitializer.initialize(resources, 
+                                                  inputValidatorRules);
+      }
+      catch (IOException e)
+      {
          logCat.warn(
-            "XML Validator Exception ValidatorResourcesInitializer.initialize  : "
-               + e.getMessage());
+                  "XML Validator Exception ValidatorResourcesInitializer.initialize  : "
+                  + e.getMessage());
          throw new ServletException(e.toString());
-      } finally {
-         if (inputValidatorRules != null) {
-            try {
+      }
+      finally
+      {
+         if (inputValidatorRules != null)
+         {
+            try
+            {
                inputValidatorRules.close();
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                ;
             }
          }
       }
    }
 
+
    /**
     * DOCUMENT ME!
-    *
+    * 
     * @param resources DOCUMENT ME!
     * @param validation DOCUMENT ME!
-    *
+    * 
     * @throws IOException DOCUMENT ME!
     * @throws ServletException DOCUMENT ME!
     */
-   protected void initXMLValidatorValidation(
-      ValidatorResources resources,
-      String validation)
-      throws IOException, ServletException {
+   protected void initXMLValidatorValidation(ValidatorResources resources, 
+                                             String validation)
+                                      throws IOException, ServletException
+   {
       //
       // LOAD Validation & Validator_rules files
       //
       // Acquire an input stream validation
-      InputStream inputValidation =
-         getServletContext().getResourceAsStream(validation);
+      InputStream inputValidation = getServletContext()
+                                       .getResourceAsStream(validation);
 
-      if (inputValidation == null) {
+      if (inputValidation == null)
+      {
          // File not available, log warning
          logCat.warn(
-            "XML Validation file not found, XML Validator handler disabled!");
+                  "XML Validation file not found, XML Validator handler disabled!");
 
          return;
       }
 
-      try {
+      try
+      {
          ValidatorResourcesInitializer.initialize(resources, inputValidation);
-      } catch (IOException e) {
+      }
+      catch (IOException e)
+      {
          logCat.warn(
-            "XML Validator Exception ValidatorResourcesInitializer.initialize  : "
-               + e.getMessage());
+                  "XML Validator Exception ValidatorResourcesInitializer.initialize  : "
+                  + e.getMessage());
          throw new ServletException(e.toString());
-      } finally {
-         if (inputValidation != null) {
-            try {
+      }
+      finally
+      {
+         if (inputValidation != null)
+         {
+            try
+            {
                inputValidation.close();
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                ;
             }
          }
       }
    }
 
+
    /**
     * Initialize the ValidatorResources information for this application.
-    *
+    * 
     * @exception IOException if an input/output error is encountered
     * @exception ServletException if we cannot initialize these resources
     */
-   protected void initXMLValidator() throws IOException, ServletException {
+   protected void initXMLValidator() throws IOException, ServletException
+   {
       // Map the commons-logging used by commons-validator to Log4J logger
-      System.setProperty(
-         "org.apache.commons.logging.Log",
-         "org.apache.commons.logging.impl.Log4JCategoryLog");
+      System.setProperty("org.apache.commons.logging.Log", 
+                         "org.apache.commons.logging.impl.Log4JCategoryLog");
 
       ValidatorResources resources = new ValidatorResources();
       logCat.info("initialize XML Validator.");
 
       String value;
-      value =
-         getServletConfig().getInitParameter(
-            ValidatorConstants.VALIDATOR_RULES);
+      value = getServletConfig()
+                 .getInitParameter(ValidatorConstants.VALIDATOR_RULES);
 
-      if (value != null) {
+      if (value != null)
+      {
          validator_rules = value;
       }
 
       initXMLValidatorRules(resources, validator_rules);
 
-      value =
-         getServletConfig().getInitParameter(ValidatorConstants.VALIDATION);
+      value = getServletConfig()
+                 .getInitParameter(ValidatorConstants.VALIDATION);
 
-      if (value != null) {
+      if (value != null)
+      {
          validation = value;
       }
 
@@ -773,31 +811,34 @@ public class ConfigServlet extends HttpServlet {
       for (int i = 0; i < s.length; i++)
          initXMLValidatorValidation(resources, s[i]);
 
+
       // store this errors object in the servlet context ("application")
       getServletContext().setAttribute(ValidatorConstants.VALIDATOR, resources);
 
       logCat.info(" DbForms Validator : Loaded ");
    }
 
+
    /**
-    * Initialize the SubClass information use by the ResourceBundle for this application.
-    *
-    * ATTENTION: Here the "application" it's use as Class name, not like path/file coordonnates. (see java.util.ResourceBundle)
-    *
+    * Initialize the SubClass information use by the ResourceBundle for this
+    * application. ATTENTION: Here the "application" it's use as Class name,
+    * not like path/file coordonnates. (see java.util.ResourceBundle)
+    * 
     * @exception IOException if an input/output error is encountered
     * @exception ServletException if we cannot initialize these resources
     */
-   protected void initApplicationResources()
-      throws IOException, ServletException {
+   protected void initApplicationResources() throws IOException, 
+                                                    ServletException
+   {
       logCat.info("initialize Application Resources.");
 
-      String value =
-         getServletConfig().getInitParameter(
-            ValidatorConstants.RESOURCE_BUNDLE);
+      String value = getServletConfig()
+                        .getInitParameter(ValidatorConstants.RESOURCE_BUNDLE);
 
-      if (value == null) {
+      if (value == null)
+      {
          logCat.warn(
-            " Application Resources file not setted in Web.xml, ApplicationResources handler disabled!");
+                  " Application Resources file not setted in Web.xml, ApplicationResources handler disabled!");
 
          return;
       }
@@ -807,55 +848,59 @@ public class ConfigServlet extends HttpServlet {
       logCat.info(" DbForms Application Resources : SubClass initialized ");
    }
 
+
    /**
-    * Initialize the Locale key for Session scope.
-    * Usefull for sharing the same Locale across different framework.
-    *
-    * Ex: By setting "localeKey" to "org.apache.struts.action.LOCALE"
-    *     you can share the same Locale in the session scope with Struts.
-    *
+    * Initialize the Locale key for Session scope. Usefull for sharing the same
+    * Locale across different framework. Ex: By setting "localeKey" to
+    * "org.apache.struts.action.LOCALE" you can share the same Locale in the
+    * session scope with Struts.
     */
-   protected void initLocaleKey() {
+   protected void initLocaleKey()
+   {
       logCat.info("initialize Locale Key for session attribute.");
 
       String value = getServletConfig().getInitParameter("localeKey");
 
-      if (value == null) {
-         logCat.warn(
-            " Locale Key not setted, use \""
-               + MessageResources.LOCALE_KEY
-               + "\" as key to access the Locale in session scope.");
+      if (value == null)
+      {
+         logCat.warn(" Locale Key not setted, use \""
+                     + MessageResources.LOCALE_KEY
+                     + "\" as key to access the Locale in session scope.");
 
          return;
       }
 
       MessageResources.LOCALE_KEY = value.trim();
 
-      logCat.info(
-         " Locale Key setted with \""
-            + MessageResources.LOCALE_KEY
-            + "\" as key to access the Locale in session scope.");
+      logCat.info(" Locale Key setted with \"" + MessageResources.LOCALE_KEY
+                  + "\" as key to access the Locale in session scope.");
    }
+
 
    /**
     * Process an HTTP request.
-    *
+    * 
     * @param request The servlet request we are processing
     * @param response The servlet response we are creating
-    *
+    * 
     * @exception IOException if an input/output error occurs
     * @exception ServletException if a servlet exception occurs
     */
-   protected void process(
-      HttpServletRequest request,
-      HttpServletResponse response)
-      throws IOException, ServletException {
+   protected void process(HttpServletRequest request, 
+                          HttpServletResponse response)
+                   throws IOException, ServletException
+   {
       PrintWriter out = response.getWriter();
-		try {
-			DbFormsConfig dbFormsConfig = DbFormsConfigRegistry.instance().lookup();
-			out.println(dbFormsConfig.traverse());
-		} catch (Exception e){
-			throw new IOException(e.getMessage());
-		}
+
+      try
+      {
+         DbFormsConfig dbFormsConfig = DbFormsConfigRegistry.instance()
+                                                            .lookup();
+         out.println(dbFormsConfig.traverse());
+      }
+      catch (Exception e)
+      {
+         throw new IOException(e.getMessage());
+      }
    }
 }
