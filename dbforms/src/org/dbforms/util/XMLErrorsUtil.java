@@ -78,7 +78,7 @@ public class XMLErrorsUtil
       String            language   = null;
       String            errorCode  = null;
       String            paramList  = null;
-      org.dbforms.Error anError    = null;
+      org.dbforms.config.error.Error anError    = null;
       String            xmlMessage = null;
 
       // If message is empty, return immediately

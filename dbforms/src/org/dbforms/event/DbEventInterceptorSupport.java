@@ -24,8 +24,9 @@ package org.dbforms.event;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Hashtable;
 import java.sql.Connection;
-import org.dbforms.DbFormsConfig;
+
 import org.apache.log4j.Category;
+import org.dbforms.config.DbFormsConfig;
 
 
 
