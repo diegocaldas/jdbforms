@@ -62,7 +62,7 @@
 					<title>Listing 7  Implementing a file tag
 </title>
 					<programlisting>
-						<emphasis role="bold">&lt;db:file</emphasis><emphasis role="bold">fieldName</emphasis>=portrait_pic&gt;</programlisting>
+<emphasis role="bold">&lt;db:file</emphasis><emphasis role="bold">fieldName</emphasis>=portrait_pic&gt;</programlisting>
 				</example>
 				<para>The attribute <computeroutput>fieldName</computeroutput> refers to the name of the field, the file needs to be uploaded into. There are additional attributes available for this element (accept, maxLength, etc.), please see chapter DbForms Custom Tag Library for additional information)
 </para>
@@ -108,7 +108,7 @@
 				<example>
 					<title>Listing 8 implementing a blobURL
 </title>
-					<programlisting>&lt;db:<emphasis role="bold">blobURL</emphasis> fieldName="portrait_pic"/&gt;</programlisting>
+<programlisting>&lt;db:<emphasis role="bold">blobURL</emphasis> fieldName="portrait_pic"/&gt;</programlisting>
 				</example>
 				<para>This tag renders an URL pointing to a servlet built into DbForms. This servlet retrieves the specified field from the database, tries to figure out the MIME type of the file, assigns it to the response and finally returns a stream of bytes containing the data of the BLOB.
 </para>
@@ -117,7 +117,7 @@
 				<example>
 					<title>Listing 9  rendering images using a blobURL
 </title>
-					<programlisting>&lt;<emphasis role="bold">img</emphasis> src=&lt;db:<emphasis role="bold">blobURL</emphasis> fieldName="portrait_pic"/&gt;width=100 height=80 border=0&gt; 
+<programlisting>&lt;<emphasis role="bold">img</emphasis> src=&lt;db:<emphasis role="bold">blobURL</emphasis> fieldName="portrait_pic"/&gt;width=100 height=80 border=0&gt; 
 		</programlisting>
 				</example>
 				<para>To establish a link to a BLOB (for example to a word or pdf document) you could write:
@@ -125,7 +125,7 @@
 				<example>
 					<title>Listing 10  rendering a hyperlink using a blobURL
 </title>
-					<programlisting>&lt;<emphasis role="bold">a</emphasis> href=&lt;db:<emphasis role="bold">blobURL</emphasis> fieldName="portrait_pic"/&gt;&gt;Click to download&lt;/<emphasis role="bold">a</emphasis>&gt;</programlisting>
+<programlisting>&lt;<emphasis role="bold">a</emphasis> href=&lt;db:<emphasis role="bold">blobURL</emphasis> fieldName="portrait_pic"/&gt;&gt;Click to download&lt;/<emphasis role="bold">a</emphasis>&gt;</programlisting>
 				</example>
 				<para>Dependent of the installed plug-ins and other browser-and system properties, either the MIME-matching plug-in (or helper application) will be opened, a save-as dialog will pop up or a download manager like <emphasis role="italic">Gozilla!</emphasis> will be started.
 </para>
@@ -146,7 +146,7 @@
 				<example>
 					<title>Listing 11  defining a field of type DISKBLOB
 </title>
-					<programlisting>
+<programlisting>
             &lt;dbforms-config&gt;
                 &lt;table name="pets"&gt; 
                     &lt;field name="pet_id" fieldType="int" isKey="true" autoInc="true" /&gt; 
@@ -277,108 +277,106 @@ b) must be writeable by the web-server </entry>
 			</example>
 			<para>Here is the source code we need to create the application:
 </para>
-			<programlisting>
-            &lt;%@ taglib uri="/WEB-INF/dbForms.tld" prefix="db" %&gt;
-                &lt;html&gt;
-                
-                    &lt;head&gt;
-                        &lt;db:base/&gt;
-                            &lt;link rel="stylesheet" href="dbforms.css"&gt;
-                            &lt;SCRIPT&gt;
-                            &lt;!-- function openWin(s) {
-                                window.open(s,"littlewin","width=450,height=350,resizable=yes");
+<programlisting>
+&lt;%@ taglib uri="/WEB-INF/dbForms.tld" prefix="db" %&gt;
+ &lt;html&gt;             
+  &lt;head&gt;
+    &lt;db:base/&gt;
+    &lt;link rel="stylesheet" href="dbforms.css"&gt;
+
+    &lt;SCRIPT&gt;
+        &lt;!-- function openWin(s) {
+        window.open(s,"littlewin","width=450,height=350,resizable=yes");
+        }--&gt;
+    &lt;/SCRIPT&gt;
+  &lt;/head&gt;
+  
+  &lt;body&gt;
+    &lt;db:errors/&gt;
+    &lt;db:dbform tableName="pets" maxRows="*" followUp="/petportraits.jsp" multipart=true&gt;
+        &lt;db:header&gt;
+            &lt;db:gotoButton caption="Menu" destination="/menu.jsp" /&gt;
+            
+            &lt;hr&gt;
+            &lt;h1&gt;Funny pets page (1)&lt;/h1&gt;
+            &lt;center&gt;&lt;h3&gt;very important creatures&lt;/h3&gt;&lt;/center&gt;
+            
+            &lt;table border="5" width="60%" align="CENTER"&gt;
+                &lt;tr&gt;
+                    &lt;th&gt;name&lt;/th&gt;
+                    &lt;th&gt;portrait-pic&lt;/th&gt;
+                    &lt;th&gt;story&lt;/th&gt;
+                    &lt;th&gt;actions&lt;/th&gt;
+                &lt;/tr&gt;
+                      &lt;/db:header&gt;
  
-				}
-			
-				--&gt;
-                            &lt;/SCRIPT&gt;
-                    &lt;/head&gt;
-                    
-                    &lt;body&gt;
-                        &lt;db:errors/&gt;
-                        &lt;db:dbform tableName="pets" maxRows="*" followUp="/petportraits.jsp" multipart=true&gt;
-                            &lt;db:header&gt;
-                                &lt;db:gotoButton caption="Menu" destination="/menu.jsp" /&gt;
-                                    &lt;hr&gt;
-                                    &lt;h1&gt;Funny pets page (1)&lt;/h1&gt;
-                                    &lt;center&gt;&lt;h3&gt;very important creatures&lt;/h3&gt;&lt;/center&gt;
-                                        &lt;table border="5" width="60%" align="CENTER"&gt;
-                                            &lt;tr&gt;
-                                                &lt;th&gt;name&lt;/th&gt;
-                                                &lt;th&gt;portrait-pic&lt;/th&gt;
-                                                &lt;th&gt;story&lt;/th&gt;
-                                                &lt;th&gt;actions&lt;/th&gt;
-                                            &lt;/tr&gt;
-                            &lt;/db:header&gt;
-			
-                            &lt;db:body allowNew="false"&gt;
+        &lt;db:body allowNew="false"&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;&lt;db:textField fieldName="name" size="20" maxlength="30"/&gt;
+                    &lt;/td&gt;
+                    &lt;td&gt;
+                        &lt;a href="javascript:openWin('/example_v06/&lt;db:blobURL
+                            fieldName="portrait_pic"/&gt;')"&gt;
+                            &lt;img src="&lt;db:blobURL fieldName="portrait_pic"/&gt;" border="0" 
+                            width="60" height="60" alt="pet portrait (click to see full size)"&gt;
+                        &lt;/a&gt;
+                        &lt;br&gt;
+                    &lt;/td&gt;
+                    &lt;td&gt;
+                        For a funny story about &lt;db:label fieldName="name"/&gt; click
+                        &lt;a href="javascript:openWin('/example_v06/&lt;db:blobURL fieldName="story"/&gt;')"&gt;
+                        [here]
+                    &lt;/td&gt;
+                    &lt;td&gt;
+                        &lt;db:updateButton caption="Update"/&gt;
+                        &lt;db:deleteButton caption="Delete"/&gt;
+                    &lt;/td&gt;
+                &lt;/tr&gt;
+        &lt;/db:body&gt;
  
-                                            &lt;tr&gt;
-                                                &lt;td&gt;&lt;db:textField fieldName="name" size="20" maxlength="30"/&gt;
-                                                &lt;/td&gt;
-                                                &lt;td&gt;
-                                                    &lt;a href="javascript:openWin('/example_v06/&lt;db:blobURL
-                                                    fieldName="portrait_pic"/&gt;')"&gt;
-                                                    &lt;img src="&lt;db:blobURL fieldName="portrait_pic"/&gt;" border="0" width="60"
-                                                    height="60" alt="pet portrait (click to see full size)"&gt;
-                                                    &lt;/a&gt;
-                                                    &lt;br&gt;
-                                                &lt;/td&gt;
-                                                &lt;td&gt;
-                                                    For a funny story about &lt;db:label fieldName="name"/&gt; click
-                                                    &lt;a href="javascript:openWin('/example_v06/&lt;db:blobURL fieldName="story"/&gt;')"&gt;
-                                                    [here]
-                                                    &lt;/a&gt;!
-                                                &lt;/td&gt;
-                                                &lt;td&gt;
-                                                    &lt;db:updateButton caption="Update"/&gt;
-                                                    &lt;db:deleteButton caption="Delete"/&gt;
-                                                &lt;/td&gt;
-                                            &lt;/tr&gt;
-                           &lt;/db:body&gt;
- 
-                           &lt;db:footer&gt;
+        &lt;db:footer&gt;
+            &lt;/table&gt;
 			
-			
-                                        &lt;/table&gt;
-			
-			
-                                    &lt;center&gt;&lt;h3&gt;upload new pet portrait:&lt;/h3&gt;&lt;/center&gt;
-                                    &lt;p&gt;
-                                    &lt;center&gt;Please fill out the following form!&lt;/center&gt;
-                                    &lt;/p&gt;
+            &lt;center&gt;&lt;h3&gt;upload new pet portrait:&lt;/h3&gt;&lt;/center&gt;
+            &lt;p&gt;
+            &lt;center&gt;Please fill out the following form!&lt;/center&gt;
+            &lt;/p&gt;
                                         
-                                        &lt;table align="center" border="3"&gt;
-                                            &lt;tr&gt;
-                                                &lt;td&gt;Pet's Name:&lt;/td&gt;
-                                                &lt;td&gt;&lt;db:textField size="20" maxlength="30" fieldName="name"/&gt;&lt;/td&gt;
-                                            &lt;/tr&gt;
-                                            &lt;tr&gt;
-                                                &lt;td&gt;Picture:&lt;/td&gt;
-                                                &lt;td&gt;&lt;db:file fieldName="portrait_pic" accept="image/*" /&gt;&lt;/td&gt;
-                                            &lt;tr&gt;
-                                            &lt;tr&gt;
-                                                &lt;td&gt;Funny story&lt;br&gt;(any format: html, pdf, txt, word,...)&lt;/td&gt;
-                                                &lt;td&gt;&lt;db:file fieldName="story" /&gt;&lt;/td&gt;
-                                            &lt;tr&gt;
-                                        &lt;/table&gt;
+             &lt;table align="center" border="3"&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;Pet's Name:&lt;/td&gt;
+                    &lt;td&gt;
+                        &lt;db:textField size="20" maxlength="30" fieldName="name"/&gt;
+                    &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;Picture:&lt;/td&gt;
+                    &lt;td&gt;
+                        &lt;db:file fieldName="portrait_pic" accept="image/*" /&gt;
+                    &lt;/td&gt;
+                &lt;tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;
+                        Funny story&lt;br&gt;(any format: html, pdf, txt, word,...)
+                    &lt;/td&gt;
+                    &lt;td&gt;
+                        &lt;db:file fieldName="story" /&gt;
+                    &lt;/td&gt;
+                &lt;tr&gt;
+            &lt;/table&gt;
                                         
-                                &lt;br&gt;&lt;center&gt;&lt;db:insertButton caption="Right, load the portrait to server..!!"/&gt;&lt;/center&gt;
+            &lt;br&gt;
+            &lt;center&gt;
+                &lt;db:insertButton caption="Right, load the portrait to server..!!"/&gt;
+            &lt;/center&gt;	
 			
+            &lt;hr&gt;
 			
-				&lt;hr&gt;
+        &lt;/db:footer&gt;
+    &lt;/db:dbform&gt;
 			
-			
-                            &lt;/db:footer&gt;
-			
-			
-			&lt;/db:dbform&gt;
-			
-			
-                    &lt;/body&gt;
-			
-			
-                &lt;/html&gt;
+  &lt;/body&gt;
+ &lt;/html&gt;
                         </programlisting>
 			<para>You have now seen &lt;blobURL&gt; and &lt;file&gt; in action!  As you can see, it is pretty easy to handle files with DbForms. Most of the code is about laying out the html-view and playing around with JavaScripts to create pop-up windows for showing the pet-stories and portraits in an attractive way.
 </para>

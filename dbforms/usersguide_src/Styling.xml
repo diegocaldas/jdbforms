@@ -33,7 +33,7 @@
 				<title>Listing 13  instantiating a standard button
 </title>
 				<programlisting>
-					<emphasis role="bold">&lt;db:gotoButton</emphasis> caption="Edit bears" destination="/bears.jsp" <emphasis role="bold">/&gt;</emphasis>
+<emphasis role="bold">&lt;db:gotoButton</emphasis> caption="Edit bears" destination="/bears.jsp" <emphasis role="bold">/&gt;</emphasis>
 				</programlisting>
 			</example>
 			<table>
@@ -50,7 +50,7 @@
 				<title>Listing 14  instantiating an image button
 </title>
 				<programlisting>
-					<emphasis role="bold">&lt;db:gotoButton</emphasis> destination="/bears.jsp" <emphasis role="bold">flavor="image"</emphasis> src="bear.gif" alt="click to edit bears"<emphasis role="bold">/&gt;</emphasis> 
+<emphasis role="bold">&lt;db:gotoButton</emphasis> destination="/bears.jsp" <emphasis role="bold">flavor="image"</emphasis> src="bear.gif" alt="click to edit bears"<emphasis role="bold">/&gt;</emphasis> 
 		</programlisting>
 			</example>
 			<table>
@@ -95,10 +95,8 @@
 			<example>
 				<title>Listing 16  the syntax of the db:style tag
 </title>
-				<programlisting>Please note: this topic is currently under construction. It is possible that the styling approach described in this chapter will be replaced by some other approach in subsequent versions.
-(Further comments at the end of the chapter)
- 
-		</programlisting>
+<para>Please note: this topic is currently under construction. It is possible that the styling approach described in this chapter will be replaced by some other approach in subsequent versions.
+(Further comments at the end of the chapter)</para>
 			</example>
 			<sect2>
 				<title>Introduction
@@ -172,12 +170,18 @@
                             &lt;table align="center"&gt;
 				&lt;tr&gt;
                                     &lt;td&gt;
-                                        &lt;b&gt;Username: &lt;/b&gt;&lt;br&gt;&lt;input name="j_username" type="text"&gt;&lt;br&gt;
+                                        &lt;b&gt;Username: &lt;/b&gt;
+                                        &lt;br&gt;
+                                        &lt;input name="j_username" type="text"&gt;
+                                        &lt;br&gt;
                                     &lt;/td&gt;
 				&lt;/tr&gt;
                                 &lt;tr&gt;
                                     &lt;td&gt;
-                                        &lt;b&gt;Password: &lt;/b&gt;&lt;br&gt;&lt;input name="j_password" type="password"&gt;&lt;br&gt;
+                                        &lt;b&gt;Password: &lt;/b&gt;
+                                        &lt;br&gt;
+                                        &lt;input name="j_password" type="password"&gt;
+                                        &lt;br&gt;
                                     &lt;/td&gt;
                                 &lt;/tr&gt;
                                 &lt;tr&gt;
@@ -333,16 +337,16 @@
 </title>
 						<programlisting>
                                               
-            &lt;%@ taglib uri="/WEB-INF/taglib.tld" prefix="db" %&gt;[...]
+&lt;%@ taglib uri="/WEB-INF/taglib.tld" prefix="db" %&gt;[...]
  
-		&lt;table cellpadding="0" cellspacing="0" border="0" width<emphasis role="bold">="&lt;db:templateParam name="width" defaultValue="99%" /&gt;</emphasis>"&gt; 
-                    [...]
+    &lt;table cellpadding="0" cellspacing="0" border="0" width<emphasis role="bold">="&lt;db:templateParam name="width" defaultValue="99%" /&gt;</emphasis>"&gt; 
+     [...]
  
-                    &lt;td background<emphasis role="bold">="&lt;db:templateBasedir/&gt;</emphasis>images/tbar1.png" width="1%" height="17"&gt; 
-                        [...]
+        &lt;td background<emphasis role="bold">="&lt;db:templateBasedir/&gt;</emphasis>images/tbar1.png" width="1%" height="17"&gt; 
+         [...]
  
-                        &lt;db:templateParam name="bg" defaultValue="steel.jpg" dir="images" /&gt;" &gt; 
-                            [...]
+            &lt;db:templateParam name="bg" defaultValue="steel.jpg" dir="images" /&gt;" &gt; 
+             [...]
  
 		</programlisting>
 					</example>
