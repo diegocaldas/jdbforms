@@ -46,12 +46,21 @@ public class ReportParameter {
 		this.reportPath = reportPath;
 	}
 
+	
 	/**
 	 * Returns a message
 	 * @return String
 	 */
 	public String getMessage(String msg) {
 		return MessageResources.getMessage(request, msg);
+	}
+
+	/**
+	 * Returns a request parameter
+	 * @return String
+	 */
+	public String getParameter(String param) {
+		return ParseUtil.getParameter(request, param);
 	}
 
 	/**
