@@ -1,6 +1,5 @@
 package interceptors;
 
-import java.util.Hashtable;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Connection;
 import java.sql.Statement;
@@ -9,6 +8,8 @@ import java.sql.SQLException;
 import org.dbforms.event.DbEventInterceptorSupport;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.ValidationException;
+import org.dbforms.config.Table;
+import org.dbforms.config.FieldValues;
 
 /**
  * @author hkk
@@ -17,8 +18,10 @@ import org.dbforms.config.ValidationException;
  * Window>Preferences>Java>Code Generation>Code and Comments
  */
 public class BookstoreWithInterceptorTest extends DbEventInterceptorSupport {
-   public int preInsert(HttpServletRequest request, Hashtable fieldValues, DbFormsConfig config, Connection con)
-      throws ValidationException {
+
+   public int preInsert(HttpServletRequest request,  Table table, FieldValues fieldValues,
+      DbFormsConfig config, Connection con) throws ValidationException
+   {
 
       Statement stmt;
       ResultSet rs = null;
@@ -44,16 +47,18 @@ public class BookstoreWithInterceptorTest extends DbEventInterceptorSupport {
             throw new ValidationException("Error generating automatic IDs");
          else {
             fieldValues.remove(strID);
-            fieldValues.put(strID, Long.toString(new_id));
-            fieldValues.put(strParentID, Long.toString(1));
+            setValue(table, fieldValues, strID, Long.toString(new_id));
+            setValue(table, fieldValues, strParentID, Long.toString(1));
             return GRANT_OPERATION;
          }
       } else
          return GRANT_OPERATION;
    }
 
-   public int preUpdate(HttpServletRequest request, Hashtable fieldValues, DbFormsConfig config, Connection con)
-      throws ValidationException {
+   public int preUpdate(HttpServletRequest request, Table table, 
+         FieldValues fieldValues, DbFormsConfig config, Connection con)
+      throws ValidationException
+   {
 
       fieldValues.remove("ISBN");
       return GRANT_OPERATION;
