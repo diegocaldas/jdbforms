@@ -21,6 +21,7 @@
 </itemizedlist>			
 			
 			<para/>
+               
 		</sect1>
 		<sect1>
 			<title>Installation
@@ -524,17 +525,31 @@ or tweak the build.xml to include where your JDBC drivers are.
 		
 			
 			
-<para>More documentation about DevGui can be found in:</para>
-<para>
-<computeroutput>http://www.dbforms.org/docs/articles/DbForms_DevGui.pdf
-</computeroutput></para>
-	<para>	    <computeroutput>http://www.dbforms.org/docs/articles/XSL_DbForms.pdf</computeroutput>
- </para>
-		 
-			<para>Both PDF articles are still worth reading, because they descibe ideas and principles behind DevGui. Included information about needed libraries or user interface is partially out of date, so please read on this file about how to install and run the application and next section on use.
 
-</para>
 			 
 		</sect1>
+                <sect1><title>Additional information</title>
+     <para>More documentation about DevGui can be found in:</para>
+ <itemizedlist mark="closedcircle">
+<listitem>
+<para>
+  <ulink url="http://www.dbforms.org/docs/articles/DbForms_DevGui.pdf"><citetitle>DbForms_DevGui.pdf</citetitle></ulink>
+</para>
+</listitem>
+<listitem>
+<para>
+<ulink url="http://www.dbforms.org/docs/articles/XSL_DbForms.pdf"><citetitle>XSL_DbForms.pdf</citetitle> </ulink> 
+</para>
+</listitem>
+ 
+</itemizedlist>
+
+ 
+	 
+		 
+			<para>Both PDF articles are still worth reading, because they descibe ideas and principles behind DevGui.  However, included information about needed libraries or user interface is partially out of date, so please rely on the UsersGuide about how to install, run, and use the application.
+
+</para>                    
+                </sect1>
 	</chapter>
  
