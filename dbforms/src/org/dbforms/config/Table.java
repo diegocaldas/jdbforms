@@ -1075,8 +1075,10 @@ public class Table {
      *      
      *       
      *        
-     *            field.id : field.length : field.value
-     *          
+     *         
+     *             field.id : field.length : field.value
+     *           
+     *         
      *        
      *       
      *      
@@ -1168,23 +1170,26 @@ public class Table {
      * @return the key position string
      */
     public String getKeyPositionString(FieldValues fvHT) {
-        if (fvHT == null) 
+        if (fvHT == null)
             return null;
         StringBuffer buf = new StringBuffer();
         int cnt = 0;
-        Iterator enum = fvHT.elements();
-        while (enum.hasNext()) {
-            FieldValue fv = (FieldValue) enum.next();
-            String value = fv.getFieldValue();
-            if (value == null) {
-                throw new IllegalArgumentException(
-                        "wrong fields provided");
-            }
-            Field f = fv.getField();
-            if (f.hasIsKeySet()) {
+
+        for (int i = 0; i < getKey().size(); i++) {
+            Field f = (Field) getKey().elementAt(i);
+            FieldValue fv = fvHT.get(f.getName());
+
+            if (fv != null) {
+                String value = fv.getFieldValue();
+
+                if (value == null) {
+                    throw new IllegalArgumentException("wrong fields provided");
+                }
+
                 if (cnt > 0) {
                     buf.append("-"); // control byte
                 }
+
                 buf.append(createToken(f, value));
                 cnt++;
             }
@@ -2013,16 +2018,18 @@ public class Table {
      *      
      *       
      *        
-     *         convention:    index 0-n =&gt; AND
-     *                        index (n+1)-m =&gt; OR
-     *         examples
-     *                    (A = 'meier' AND X = 'joseph') AND (AGE = '10')
-     *                    (A = 'meier' ) AND (X = 'joseph' OR AGE = '10')
-     *                    (X = 'joseph' OR AGE = '10')
-     *                    (A = 'meier' AND X = 'joseph')
-     *         for comparing to code:
-     *           §1     §2        §3      §2          §4    §5   §6      §2      §7
-     *           (   A = 'smith' AND   X LIKE 'jose%' )    AND    (  AGE = '10'   )
+     *         
+     *          convention:    index 0-n =&gt; AND
+     *                         index (n+1)-m =&gt; OR
+     *          examples
+     *                     (A = 'meier' AND X = 'joseph') AND (AGE = '10')
+     *                     (A = 'meier' ) AND (X = 'joseph' OR AGE = '10')
+     *                     (X = 'joseph' OR AGE = '10')
+     *                     (A = 'meier' AND X = 'joseph')
+     *          for comparing to code:
+     *            §1     §2        §3      §2          §4    §5   §6      §2      §7
+     *            (   A = 'smith' AND   X LIKE 'jose%' )    AND    (  AGE = '10'   )
+     *          
      *         
      *        
      *       
@@ -2131,11 +2138,13 @@ public class Table {
      *      
      *       
      *        
-     *         +--------------------------------------------------------------------------------------------------+
-     *         |  RULE = R1 AND R2 AND ... AND Rn                                                                 |
-     *         |  Ri = fi OpA(i) fi* OR  f(i-1) OpB(i-1) f(i-1)* OR f(i-2) OpB(i-2) f(i-2)* OR ... OR f1 OpB f1*  |
-     *         +--------------------------------------------------------------------------------------------------+
-     *         For background info email joepeer@wap-force.net
+     *         
+     *          +--------------------------------------------------------------------------------------------------+
+     *          |  RULE = R1 AND R2 AND ... AND Rn                                                                 |
+     *          |  Ri = fi OpA(i) fi* OR  f(i-1) OpB(i-1) f(i-1)* OR f(i-2) OpB(i-2) f(i-2)* OR ... OR f1 OpB f1*  |
+     *          +--------------------------------------------------------------------------------------------------+
+     *          For background info email joepeer@wap-force.net
+     *          
      *         
      *        
      *       
