@@ -255,15 +255,15 @@ public class EventEngine
 
                     if (!collissionDanger || (excludeTableId != tableId) || !keyId.equals(excludeKeyId))
                     {
-                        // WARNING !! MUST USE THE FACTORY !!!!
+                        // Test the following event creation: the commented statement below shows the
+                        // original direct instantiation. Must use the database event factory, now !
                         //UpdateEvent e = new UpdateEvent(new Integer(tableId), keyId, request, config);
 
-                        // NOT A GOOD THING to use the "ac_updatear" directly... FIX THIS !! (fossato)
-                        EventInfo einfo                = dbEventFactory.getEventInfo("ac_updatear");
+                        // // get the event from the factory;
+                        EventInfo einfo                = dbEventFactory.getEventInfo(EventType.EVENT_DATABASE_UPDATE);
                         Class[]   constructorArgsTypes = dbEventFactory.keyInfoConstructorArgsTypes;
                         Object[]  constructorArgs      = new Object[]{new Integer(tableId), keyId, request, config};
 
-                        // get the event from the factory;
                         UpdateEvent e = (UpdateEvent)dbEventFactory.getEvent(einfo, constructorArgsTypes, constructorArgs);
 
                         result.addElement(e);
