@@ -162,8 +162,20 @@ public abstract class ReportServletAbstract extends HttpServlet {
 			HttpServletResponse response, String message) {
 		try {
 			Vector errors = (Vector) request.getAttribute("errors");
+			
+			// [20050302 fossato@pow2.com] errors vector can be null; for example if you set
+			// into your html browser an URL string like:
+			//
+			// http://localhost:8080/myContext/reports/
+			//
+			// without specifying the name of the report to print;
+			if (errors == null)
+			{			 
+			  errors = new Vector();
+			}
+			
 			errors.add(new Exception(message));
-
+						
 			String fue = ParseUtil.getParameter(request, "source");
 			String contextPath = request.getContextPath();
 
