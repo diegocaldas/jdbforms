@@ -5,7 +5,7 @@
     <!ENTITY intr SYSTEM "Introduction.xml">
      <!ENTITY inst SYSTEM "Installation.xml">
      <!ENTITY jsms SYSTEM "JumpStart_MS_Server_Database.xml">
-     <!ENTITY depl SYSTEM "Deployment.xml">
+     <!--ENTITY depl SYSTEM "Deployment.xml"-->
     <!ENTITY tuto SYSTEM "Tutorial.xml">
 <!ENTITY secu SYSTEM "Security.xml">
 <!ENTITY uplo SYSTEM "Fileuploads.xml">
@@ -35,6 +35,7 @@
 <!ENTITY refe SYSTEM "Appendix_References.xml">
 <!ENTITY ackn SYSTEM "Appendix_Acknowledgements.xml">
 <!ENTITY auth SYSTEM "Appendix_Author.xml">
+<!--ENTITY lics SYSTEM "Appendix_License.xml"-->
 ]>
 <book>
 <title>DataBaseForms UsersGuide</title>
@@ -48,7 +49,7 @@
 <part><title>Installation </title>
 &inst;
 &devg;
-&depl;
+ 
 &jsms;
 </part>
 
@@ -85,6 +86,7 @@
 &ackn;
 &auth;
 &refe;
+<!--&lics;-->
 </part>
 
 
