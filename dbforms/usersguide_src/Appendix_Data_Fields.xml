@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Luca (H3G) -->
 <appendix>
-  <title>Description of used data fields
+  <title>Description of fields send to/retrieved from html page
 </title>
   <para>
       <table>
@@ -34,6 +34,14 @@
             <entry>autoupdate_[tableId]</entry>
             <entry>true/false</entry>
             <entry>autoupdate setted for given table</entry>
+          </row>
+          <row>
+            <entry>overridefieldcheck_[tableId]</entry>
+            <entry>true/false</entry>
+            <entry>
+               If set to true the field values will not be checked if they are changed.
+               The database update will be done always.
+            </entry>
           </row>
           <row>
             <entry>fu_[tableId]</entry>
@@ -95,7 +103,7 @@
           </row>
           <row>
             <entry>of_[tableId]_insroot_[fieldId]</entry>
-            <entry>null</entry>
+            <entry></entry>
             <entry>old value of field to insert in table</entry>
           </row>
           <row>

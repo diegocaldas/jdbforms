@@ -321,6 +321,19 @@
 					</info>
 				</attribute>
 				<attribute>
+					<name>overrideFieldCheck</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						If set to true the field values will not be checked if they are changed.
+						The database update will be done always
+						This could be usefull if you want to call your interceptor always to check fields which are
+						not part of the table.
+						In your interceptor you can use return DbEventInterceptor.IGNORE_OPERATION if you do not want
+						the database update
+					</info>
+				</attribute>
+				<attribute>
 					<name>parentField</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
