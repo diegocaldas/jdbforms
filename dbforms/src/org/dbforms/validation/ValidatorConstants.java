@@ -20,7 +20,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.validation;
 import java.util.*;
 import javax.servlet.ServletConfig;
@@ -39,31 +38,31 @@ import org.apache.log4j.Category;
  */
 public class ValidatorConstants
 {
-    /** DOCUMENT ME! */
-    public static final String VALIDATION = "validation";
+   /** DOCUMENT ME! */
+   public static final String VALIDATION = "validation";
 
-    /** DOCUMENT ME! */
-    public static final String VALIDATOR_RULES = "validator-rules";
+   /** DOCUMENT ME! */
+   public static final String VALIDATOR_RULES = "validator-rules";
 
-    /** DOCUMENT ME! */
-    public static final String RESOURCE_BUNDLE = "resourceBundle";
+   /** DOCUMENT ME! */
+   public static final String RESOURCE_BUNDLE = "resourceBundle";
 
-    /** DOCUMENT ME! */
-    public static final String VALIDATOR = "Validator";
+   /** DOCUMENT ME! */
+   public static final String VALIDATOR = "Validator";
 
-    /** DOCUMENT ME! */
-    public static final String FORM_VALIDATOR_NAME = "formValidatorName";
+   /** DOCUMENT ME! */
+   public static final String FORM_VALIDATOR_NAME = "formValidatorName";
 
-    /** DOCUMENT ME! */
-    public static final String JS_CANCEL_VALIDATION = "bValidateForm";
+   /** DOCUMENT ME! */
+   public static final String JS_CANCEL_VALIDATION = "bValidateForm";
 
-    /** DOCUMENT ME! */
-    public static final String JS_UPDATE_VALIDATION_MODE = "bValidateUpdate";
+   /** DOCUMENT ME! */
+   public static final String JS_UPDATE_VALIDATION_MODE = "bValidateUpdate";
 
-    /**
-     * Creates a new ValidatorConstants object.
-     */
-    public ValidatorConstants()
-    {
-    }
+   /**
+    * Creates a new ValidatorConstants object.
+    */
+   public ValidatorConstants()
+   {
+   }
 }

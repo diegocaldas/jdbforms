@@ -20,7 +20,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.taglib;
 import java.util.*;
 import java.sql.*;
@@ -45,61 +44,64 @@ import org.apache.log4j.Category;
  */
 public class DbPosTag extends TagSupport
 {
-    static Category logCat = Category.getInstance(DbSortTag.class.getName()); // logging category for this class
-    private DbFormsConfig config;
-    private DbFormTag parentForm;
+   static Category       logCat     = Category.getInstance(DbSortTag.class
+         .getName()); // logging category for this class
+   private DbFormsConfig config;
+   private DbFormTag     parentForm;
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     *
-     * @throws javax.servlet.jsp.JspException DOCUMENT ME!
-     * @throws JspException DOCUMENT ME!
-     */
-    public int doEndTag() throws javax.servlet.jsp.JspException
-    {
-        try
-        {
-            HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
-            int tableId = parentForm.getTable().getId();
-            Vector v = parentForm.getTable().getFields();
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws javax.servlet.jsp.JspException DOCUMENT ME!
+    * @throws JspException DOCUMENT ME!
+    */
+   public int doEndTag() throws javax.servlet.jsp.JspException
+   {
+      try
+      {
+         HttpServletRequest request = (HttpServletRequest) pageContext
+            .getRequest();
+         int                tableId = parentForm.getTable().getId();
+         Vector             v       = parentForm.getTable().getFields();
 
-            StringBuffer tagBuf = new StringBuffer();
-            tagBuf.append(parentForm.getTable().getId());
-            tagBuf.append("_");
-            tagBuf.append(parentForm.getPositionPath());
-            pageContext.getOut().write(tagBuf.toString());
-        }
-        catch (java.io.IOException ioe)
-        {
-            throw new JspException("IO Error: " + ioe.getMessage());
-        }
+         StringBuffer       tagBuf = new StringBuffer();
+         tagBuf.append(parentForm.getTable().getId());
+         tagBuf.append("_");
+         tagBuf.append(parentForm.getPositionPath());
+         pageContext.getOut().write(tagBuf.toString());
+      }
+      catch (java.io.IOException ioe)
+      {
+         throw new JspException("IO Error: " + ioe.getMessage());
+      }
 
-        return EVAL_PAGE;
-    }
-
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @param pageContext DOCUMENT ME!
-     */
-    public void setPageContext(final javax.servlet.jsp.PageContext pageContext)
-    {
-        super.setPageContext(pageContext);
-        this.config = (DbFormsConfig) pageContext.getServletContext().getAttribute(DbFormsConfig.CONFIG);
-    }
+      return EVAL_PAGE;
+   }
 
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param parent DOCUMENT ME!
-     */
-    public void setParent(final javax.servlet.jsp.tagext.Tag parent)
-    {
-        super.setParent(parent);
-        this.parentForm = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
-    }
+   /**
+    * DOCUMENT ME!
+    *
+    * @param pageContext DOCUMENT ME!
+    */
+   public void setPageContext(final javax.servlet.jsp.PageContext pageContext)
+   {
+      super.setPageContext(pageContext);
+      this.config = (DbFormsConfig) pageContext.getServletContext()
+                                               .getAttribute(DbFormsConfig.CONFIG);
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param parent DOCUMENT ME!
+    */
+   public void setParent(final javax.servlet.jsp.tagext.Tag parent)
+   {
+      super.setParent(parent);
+      this.parentForm = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
+   }
 }
