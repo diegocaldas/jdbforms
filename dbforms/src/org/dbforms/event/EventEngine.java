@@ -297,7 +297,7 @@ public class EventEngine
     */
    private String setSourcePath(String contextPath, String sourcePath)
    {
-      if ((contextPath.length() > 0) && sourcePath.startsWith(contextPath))
+      if (!Util.isNull(contextPath) && !Util.isNull(sourcePath) && sourcePath.startsWith(contextPath))
       {
          // shouldn't! just make sure!
          if (contextPath.endsWith("/"))
@@ -353,7 +353,7 @@ public class EventEngine
 
       logCat.info("sourcePath = " + sourcePath);
       sourcePath = setSourcePath(contextPath, sourcePath);
-
+      
       e.setFollowUp(sourcePath);
       logCat.info("followup=" + e.getFollowUp());
    }
