@@ -13,8 +13,8 @@
 	</table>
 
 	<table name="customer">
-		<field name="id" fieldType="int" size="11" isKey="true"  autoInc="true"/>
 		<field name="firstname" fieldType="char" size="50" isKey="true" />
+		<field name="id" fieldType="int" size="11" isKey="true" />
 		<field name="lastname" fieldType="char" size="50"/>
 		<field name="address" fieldType="char" size="30"/>
 		<field name="pcode" fieldType="char" size="10"/>
