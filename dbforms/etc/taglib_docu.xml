@@ -36,7 +36,7 @@ Peer, Philip Grunikiewicz et al.</author>
 				<attribute>
 					<name>tableName</name>
 					<required>false</required>
-					<rtexprvalue>true</rtexprvalue>
+					<rtexprvalue>false</rtexprvalue>
 					<info>
 						<p>the name of the table/view referenced by the dbform</p>
 						<p>not required if form is empty!</p>
