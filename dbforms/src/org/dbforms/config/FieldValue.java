@@ -305,6 +305,97 @@ public class FieldValue implements Cloneable
    }
 
 
+   private static String getExpression(FieldValue fv)
+   {
+   	StringBuffer buf = new StringBuffer();
+		// 20021104-HKK: Ceck for expression.
+		Field  f         = fv.getField();
+		String fieldName = Util.isNull(f.getExpression())
+									 ? f.getName() : f.getExpression();
+		buf.append(fieldName);
+
+		// Check what type of operator is required
+		switch (fv.getOperator())
+		{
+			case Constants.FILTER_EQUAL:
+				buf.append(" = ");
+				buf.append(" ? ");
+
+				break;
+
+			case Constants.FILTER_NOT_EQUAL:
+				buf.append(" <> ");
+				buf.append(" ? ");
+
+				break;
+
+			case Constants.FILTER_GREATER_THEN:
+				buf.append(" > ");
+				buf.append(" ? ");
+
+				break;
+
+			case Constants.FILTER_SMALLER_THEN:
+				buf.append(" < ");
+				buf.append(" ? ");
+
+				break;
+
+			case Constants.FILTER_GREATER_THEN_EQUAL:
+				buf.append(" >= ");
+				buf.append(" ? ");
+
+				break;
+
+			case Constants.FILTER_SMALLER_THEN_EQUAL:
+				buf.append(" <= ");
+				buf.append(" ? ");
+
+				break;
+
+			case Constants.FILTER_LIKE:
+				buf.append(" LIKE ");
+				buf.append(" ? ");
+
+				break;
+
+			case Constants.FILTER_NULL:
+				buf.append(" IS NULL ");
+
+				break;
+
+			case Constants.FILTER_NOT_NULL:
+				buf.append(" IS NOT NULL ");
+
+				break;
+
+			case Constants.FILTER_EMPTY:
+
+				if (f.getType() == FieldTypes.CHAR)
+				{
+					buf.append(" = '' ");
+					buf.append(" OR ");
+					buf.append(fieldName);
+					buf.append(" IS NULL ");
+				}
+
+				break;
+
+			case Constants.FILTER_NOT_EMPTY:
+
+				if (f.getType() == FieldTypes.CHAR)
+				{
+					buf.append(" <> '' ");
+					buf.append(" OR ");
+					buf.append(fieldName);
+					buf.append(" IS NOT NULL ");
+				}
+
+				break;
+		}
+   	
+   	return buf.toString();
+   }
    /**
     * Build the WHERE clause string using the input field values.
     * 
@@ -338,91 +429,7 @@ public class FieldValue implements Cloneable
                }
             }
 
-            // 20021104-HKK: Ceckk for expression.
-            Field  f         = fv[i].getField();
-            String fieldName = Util.isNull(f.getExpression())
-                                  ? f.getName() : f.getExpression();
-            buf.append(fieldName);
-
-            // Check what type of operator is required
-            switch (fv[i].getOperator())
-            {
-               case Constants.FILTER_EQUAL:
-                  buf.append(" = ");
-                  buf.append(" ? ");
-
-                  break;
-
-               case Constants.FILTER_NOT_EQUAL:
-                  buf.append(" <> ");
-                  buf.append(" ? ");
-
-                  break;
-
-               case Constants.FILTER_GREATER_THEN:
-                  buf.append(" > ");
-                  buf.append(" ? ");
-
-                  break;
-
-               case Constants.FILTER_SMALLER_THEN:
-                  buf.append(" < ");
-                  buf.append(" ? ");
-
-                  break;
-
-               case Constants.FILTER_GREATER_THEN_EQUAL:
-                  buf.append(" >= ");
-                  buf.append(" ? ");
-
-                  break;
-
-               case Constants.FILTER_SMALLER_THEN_EQUAL:
-                  buf.append(" <= ");
-                  buf.append(" ? ");
-
-                  break;
-
-               case Constants.FILTER_LIKE:
-                  buf.append(" LIKE ");
-                  buf.append(" ? ");
-
-                  break;
-
-               case Constants.FILTER_NULL:
-                  buf.append(" IS NULL ");
-
-                  break;
-
-               case Constants.FILTER_NOT_NULL:
-                  buf.append(" IS NOT NULL ");
-
-                  break;
-
-               case Constants.FILTER_EMPTY:
-
-                  if (fv[i].getField().getType() == FieldTypes.CHAR)
-                  {
-                     buf.append(" = '' ");
-                     buf.append(" OR ");
-                     buf.append(fieldName);
-                     buf.append(" IS NULL ");
-                  }
-
-                  break;
-
-               case Constants.FILTER_NOT_EMPTY:
-
-                  if (fv[i].getField().getType() == FieldTypes.CHAR)
-                  {
-                     buf.append(" <> '' ");
-                     buf.append(" OR ");
-                     buf.append(fieldName);
-                     buf.append(" IS NOT NULL ");
-                  }
-
-                  break;
-            }
+            buf.append(getExpression(fv[i]));
          }
 
          buf.append(" ) ");
@@ -475,91 +482,7 @@ public class FieldValue implements Cloneable
             }
 
             // §2, i.e "A = 'smith'" or "X LIKE 'jose%'"
-            // 20021104-HKK: Ceckk for expression.
-            Field  f         = fv[i].getField();
-            String fieldName = Util.isNull(f.getExpression())
-                                  ? f.getName() : f.getExpression();
-            buf.append(fieldName);
-
-            // 20020927-HKK: Check what type of operator is required
-            switch (fv[i].getOperator())
-            {
-               case Constants.FILTER_EQUAL:
-                  buf.append(" = ");
-                  buf.append(" ? ");
-
-                  break;
-
-               case Constants.FILTER_NOT_EQUAL:
-                  buf.append(" <> ");
-                  buf.append(" ? ");
-
-                  break;
-
-               case Constants.FILTER_GREATER_THEN:
-                  buf.append(" > ");
-                  buf.append(" ? ");
-
-                  break;
-
-               case Constants.FILTER_SMALLER_THEN:
-                  buf.append(" < ");
-                  buf.append(" ? ");
-
-                  break;
-
-               case Constants.FILTER_GREATER_THEN_EQUAL:
-                  buf.append(" >= ");
-                  buf.append(" ? ");
-
-                  break;
-
-               case Constants.FILTER_SMALLER_THEN_EQUAL:
-                  buf.append(" <= ");
-                  buf.append(" ? ");
-
-                  break;
-
-               case Constants.FILTER_LIKE:
-                  buf.append(" LIKE ");
-                  buf.append(" ? ");
-
-                  break;
-
-               case Constants.FILTER_NULL:
-                  buf.append(" IS NULL ");
-
-                  break;
-
-               case Constants.FILTER_NOT_NULL:
-                  buf.append(" IS NOT NULL ");
-
-                  break;
-
-               case Constants.FILTER_EMPTY:
-
-                  if (fv[i].getField().getType() == FieldTypes.CHAR)
-                  {
-                     buf.append(" = '' ");
-                     buf.append(" OR ");
-                     buf.append(fieldName);
-                     buf.append(" IS NULL ");
-                  }
-
-                  break;
-
-               case Constants.FILTER_NOT_EMPTY:
-
-                  if (fv[i].getField().getType() == FieldTypes.CHAR)
-                  {
-                     buf.append(" <> '' ");
-                     buf.append(" OR ");
-                     buf.append(fieldName);
-                     buf.append(" IS NOT NULL ");
-                  }
-
-                  break;
-            }
+            buf.append(getExpression(fv[i]));
 
             if ((i < (fv.length - 1)) && (fv[i + 1].getSearchMode() == mode))
             {
@@ -1091,4 +1014,10 @@ public class FieldValue implements Cloneable
 	
 	    return result;
 	  }
+     
+     public static final boolean isNull(FieldValue [] arr)
+     { 	  
+        return ((arr == null) || (arr.length == 0));
+     }
+	  
 }
