@@ -1,4 +1,4 @@
-Release Notes for DbForms Version 1.1.4,  2004-01-24
+Release Notes for DbForms Version 1.2,  2004-01-24
 
 Contents:
 1)   About this release
@@ -21,8 +21,8 @@ Contents:
 1) About this release
 ----------------------
 
-DbForms 1.1.4 is the second release to be labelled production/stable.
-It is the result of 1.1.4dev and 1.1.4pr2 developer releases.  Changes made in those releases are included below.
+DbForms 1.2 is the second release to be labelled production/stable.
+It is the result of the 1.1.4 developer releases.  Changes made in those releases are included below.
 
 Please report any problems or comments to the mailing list of
 the project
