@@ -155,7 +155,8 @@ public class DbDeleteButtonTag extends DbBaseButtonTag
 
         if (parentForm.getFooterReached() && Util.isNull(parentForm.getResultSetVector()))
         {
-            return EVAL_PAGE;
+			// 20030521 HKK: Bug fixing, thanks to Michael Slack! 
+			return SKIP_BODY;
         }
 
         try
