@@ -30,7 +30,10 @@ import org.apache.log4j.Category;
 
 import org.dbforms.*;
 import org.dbforms.util.Util;
+import org.dbforms.util.EventUtil;
 import org.dbforms.util.ReflectionUtil;
+import org.dbforms.event.eventtype.EventType;
+import org.dbforms.event.eventtype.EventTypeUtil;
 
 
 
@@ -62,32 +65,6 @@ public abstract class EventFactory
     {
         eventInfoMap = new HashMap();
     }
-
-
-    /**
-     * DEPRECATED !!
-     *
-     *  Gets the eventInfoMap attribute of the DatabaseEventFactory object
-     *
-     * @return  The eventInfoMap value
-     */
-    //public HashMap getEventInfoMap()
-    //{
-    //    return eventInfoMap;
-    //}
-
-
-    /**
-     * DEPRECATED !!
-     *
-     *  Sets the eventInfoMap attribute of the DatabaseEventFactory object
-     *
-     * @param  eventInfoMap The new eventInfoMap value
-     */
-    //public void setEventInfoMap(HashMap eventInfoMap)
-    //{
-    //    this.eventInfoMap = eventInfoMap;
-    //}
 
 
     /**
@@ -126,6 +103,8 @@ public abstract class EventFactory
     {
         if (eventInfoMap != null)
         {
+            // note: events are registered using their id value (if that value is not null),
+            // or their type value (if the id is null or empty).
             String id = einfo.getId();
 
             if (eventInfoMap.containsKey(id))
@@ -134,32 +113,40 @@ public abstract class EventFactory
             }
 
             eventInfoMap.put(id, einfo);
-            logCat.info("::addEventInfo - event info having id, type [" + id + ", " + einfo.getType() + "] registered");
+            logCat.info(new StringBuffer("::addEventInfo - event info having id, type, class [").append(id).append(", ").append(einfo.getType()).append(", ").append(einfo.getClassName()).append("] registered"));
         }
     }
-
 
 
     /**
      *  Instance a new DatabaseEvent object
      *
-     * @param  id the Event(Info) identifier
+     * @param  eventType            the event type
      * @param  constructorArgsTypes array of constructor argument classes
-     * @param  constructorArgs array of constructor argument objects
+     * @param  constructorArgs      array of constructor argument objects
      * @return the event object, or null if any problem occurs
      */
-    public WebEvent getEvent(String id, Class[] constructorArgsTypes, Object[] constructorArgs)
+    public WebEvent getEvent(String eventType, Class[] constructorArgsTypes, Object[] constructorArgs)
     {
-        WebEvent  event = null;
+        logCat.error("::getEvent - WARNING: this method cannot get the destination table - must be completed !!");
+
+        WebEvent event = null;
         EventInfo einfo = null;
 
-        if ((einfo = getEventInfo(id)) != null)
+        if ((einfo = getEventInfo(eventType)) != null)
         {
             event = getEvent(einfo, constructorArgsTypes, constructorArgs);
         }
 
         return event;
     }
+
+
+
+
+    /**
+     *  PROTECTED methods here
+     */
 
 
     /**
@@ -170,7 +157,7 @@ public abstract class EventFactory
      * @param  constructorArgs array of constructor argument objects
      * @return the event object, or null if any problem occurs
      */
-    public WebEvent getEvent(EventInfo einfo, Class[] constructorArgsTypes, Object[] constructorArgs)
+    protected WebEvent getEvent(EventInfo einfo, Class[] constructorArgsTypes, Object[] constructorArgs)
     {
         WebEvent event = null;
 
@@ -178,7 +165,9 @@ public abstract class EventFactory
         {
             try
             {
-                event = (WebEvent) ReflectionUtil.newInstance(einfo.getClassName(), constructorArgsTypes, constructorArgs);
+                event = (WebEvent) ReflectionUtil.newInstance(einfo.getClassName(),
+                                                              constructorArgsTypes,
+                                                              constructorArgs);
             }
             catch (Exception e)
             {
@@ -187,5 +176,74 @@ public abstract class EventFactory
         }
 
         return event;
+    }
+
+
+    /**
+     *   Get the Event identifier from the destination table
+     *   related to the input action string
+     *
+     * @param request the request object
+     * @param action  the action string
+     * @return the Event identifier  from the destination table, or null
+     *          if any error occurs
+     */
+    protected String getEventIdFromDestinationTable(HttpServletRequest request, String action)
+    {
+        DbFormsConfig config    = DbFormsConfig.getInstance();
+        String        eventType = EventTypeUtil.getEventType(action).getEventType();
+        Table         table     = null;
+        String        eventId   = null;
+
+        // get the table object from the input action string;
+        // must use different methods, depending on the request mode (GET | POST)
+        if (request.getMethod().equals("GET"))
+        {
+            String tableName = EventUtil.getDestinationTableName(request, action);
+            table = config.getTableByName(tableName);
+        }
+        else
+        {
+            int tableId = EventUtil.getTableId(action);
+            table = config.getTable(tableId);
+        }
+
+        if (!Util.isNull(eventType))
+        {
+            TableEvents tableEvents = table.getTableEvents();
+            eventId = tableEvents.getEventId(eventType);
+        }
+
+        logCat.info("::getEventIdFromDestinationTable - eventId = [" + eventId + "]");
+
+        return eventId;
+    }
+
+
+    /**
+     *   Get the Event identifier from the destination table
+     *   related to the input action string
+     *
+     * @param table   the table object
+     * @param action  the action string
+     * @return the Event identifier  from the destination table, or null
+     *          if any error occurs
+     */
+    protected String getEventIdFromDestinationTable(Table table, String action)
+    {
+        DbFormsConfig config = DbFormsConfig.getInstance();
+        String eventId = null;
+
+        if (config != null)
+        {
+            TableEvents tableEvents = table.getTableEvents();
+            String eventType = EventTypeUtil.getEventType(action).getEventType();
+
+            eventId = tableEvents.getEventId(eventType);
+        }
+
+        logCat.info("::getEventIdFromDestinationTable - eventId = [" + eventId + "]");
+
+        return eventId;
     }
 }

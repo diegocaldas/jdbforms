@@ -90,9 +90,14 @@ public class NavEventFactoryImpl extends NavEventFactory
      */
     public NavigationEvent createEvent(String action, HttpServletRequest request, DbFormsConfig config)
     {
-        Object[] constructorArgs = new Object[] { action, request, config };
+        Object[]  constructorArgs = new Object[] { action, request, config };
+        String    eventId = getEventIdFromDestinationTable(request, action);
+        EventInfo einfo   = getEventInfo(eventId);
 
-        return createEvent(action, constructorArgsTypes, constructorArgs);
+        // debug
+        logCat.info("::createEvent - got event [" + einfo + "] from action [" + action + "]");
+
+        return (NavigationEvent) getEvent(einfo, constructorArgsTypes, constructorArgs);
     }
 
 
@@ -107,27 +112,12 @@ public class NavEventFactoryImpl extends NavEventFactory
     public NavigationEvent createEvent(String action, Table table, DbFormsConfig config)
     {
         Object[] constructorArgs = new Object[] { table, config };
-
-        return createEvent(action, constructorArgsTypes2, constructorArgs);
-    }
-
-
-    /**
-     *  Create the navigation event
-     *
-     * @param  action               the action String
-     * @param  constructorArgsTypes classes used as constructor arguments types
-     * @param  constructorArgs      the NavigationEvent constructor arguments
-     */
-    private NavigationEvent createEvent(String action, Class[] constructorArgsTypes, Object[] constructorArgs)
-    {
-        // identify the event type from the action string;
-        EventType eventType = EventTypeUtil.getEventType(action);
-        EventInfo einfo = getEventInfo(eventType.getEventType());  // should be the ID !!
+        String    eventId = getEventIdFromDestinationTable(table, action);
+        EventInfo einfo   = getEventInfo(eventId);
 
         // debug
         logCat.info("::createEvent - got event [" + einfo + "] from action [" + action + "]");
 
-        return (NavigationEvent) getEvent(einfo, constructorArgsTypes, constructorArgs);
+        return (NavigationEvent) getEvent(einfo, constructorArgsTypes2, constructorArgs);
     }
 }

@@ -24,6 +24,9 @@
 package org.dbforms.event;
 
 
+import org.dbforms.util.Util;
+
+
 /**
  *  Event information class
  *
@@ -53,7 +56,7 @@ public class EventInfo
     public String getId()
     {
         //return id;
-        return (id != null) ? id : type;
+        return (!Util.isNull(id)) ? id : type;
     }
 
 

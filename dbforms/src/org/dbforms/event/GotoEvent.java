@@ -26,9 +26,7 @@ package org.dbforms.event;
 import javax.servlet.http.*;
 import java.sql.*;
 import java.util.*;
-
 import org.apache.log4j.Category;
-
 import org.dbforms.*;
 import org.dbforms.util.*;
 
@@ -69,7 +67,6 @@ public class GotoEvent extends NavigationEvent
         this.followUp = ParseUtil.getParameter(request, "data" + action + "_fu");
         logCat.info("gotoevent's followup = " + followUp);
         */
-
         String destTable = ParseUtil.getParameter(request, "data" + action + "_destTable");
 
         if (destTable == null)
@@ -79,9 +76,9 @@ public class GotoEvent extends NavigationEvent
             return; // if the user wants a simple, dumb link and we want no form to be navigated through
         }
 
-
         //# fixme: decision for *1* of the 2 approaches should be met soon!! (either id- OR name-based lookup)
         this.table = config.getTableByName(destTable);
+
         if (table == null)
         {
             this.table = config.getTable(Integer.parseInt(destTable));
@@ -89,17 +86,20 @@ public class GotoEvent extends NavigationEvent
 
         this.tableId = table.getId();
 
-
         String srcTable = ParseUtil.getParameter(request, "data" + action + "_srcTable");
-        if (srcTable != null) {
-               this.srcTable = config.getTableByName(srcTable);
-            if (this.srcTable == null) {
+
+        if (srcTable != null)
+        {
+            this.srcTable = config.getTableByName(srcTable);
+
+            if (this.srcTable == null)
+            {
                 this.srcTable = config.getTable(Integer.parseInt(srcTable));
             }
-            childField  = ParseUtil.getParameter(request, "data" + action + "_childField");
+
+            childField = ParseUtil.getParameter(request, "data" + action + "_childField");
             parentField = ParseUtil.getParameter(request, "data" + action + "_parentField");
         }
-
 
         // the position to go to within the destination-jsp's-table	can be given
         // more or less directly
@@ -130,10 +130,10 @@ public class GotoEvent extends NavigationEvent
                     String widgetValue = ParseUtil.getParameter(request, keyToKeyToDestPos); // i.e. "1_1"
 
                     this.position = (String) ParseUtil.getParameter(request, "k_" + widgetValue); // i.e. 1:2:23
-
                 }
             }
         }
+
         logCat.info("--->pos=" + position);
     }
 
@@ -148,7 +148,6 @@ public class GotoEvent extends NavigationEvent
         this.table = table;
         this.position = position;
     }
-
 
     /**
      * DOCUMENT ME!
@@ -166,15 +165,16 @@ public class GotoEvent extends NavigationEvent
      */
     public ResultSetVector processEvent(FieldValue[] childFieldValues, FieldValue[] orderConstraint, int count, String firstPosition, String lastPosition, Connection con) throws SQLException
     {
-        int compMode = !Util.isNull(position) ? FieldValue.COMPARE_INCLUSIVE : FieldValue.COMPARE_NONE;
-        if ( !Util.isNull(position) && (srcTable != null) && !Util.isNull(childField) && !Util.isNull(parentField) ) {
-                FieldValue[] fv = table.mapChildFieldValues(srcTable,
-                                                                        parentField,
-                                                                        childField,
-                                                                        position);
-                childFieldValues = fv;
-                compMode = FieldValue.COMPARE_NONE;
-        } else if (!Util.isNull(position) ) {
+        int compMode = (!Util.isNull(position)) ? FieldValue.COMPARE_INCLUSIVE : FieldValue.COMPARE_NONE;
+
+        if (!Util.isNull(position) && (srcTable != null) && !Util.isNull(childField) && !Util.isNull(parentField))
+        {
+            FieldValue[] fv = table.mapChildFieldValues(srcTable, parentField, childField, position);
+            childFieldValues = fv;
+            compMode = FieldValue.COMPARE_NONE;
+        }
+        else if (!Util.isNull(position))
+        {
             table.fillWithValues(orderConstraint, position);
         }
 

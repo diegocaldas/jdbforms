@@ -32,8 +32,6 @@ import org.apache.log4j.Category;
 import org.dbforms.*;
 import org.dbforms.util.ParseUtil;
 import org.dbforms.util.ReflectionUtil;
-import org.dbforms.event.eventtype.EventType;
-import org.dbforms.event.eventtype.EventTypeUtil;
 
 
 
@@ -77,15 +75,21 @@ public class DatabaseEventFactoryImpl extends DatabaseEventFactory
         DatabaseEvent event           = null;
         Object[]      constructorArgs = null;
 
-        // identify the event type from the action string;
-        EventType eventType = EventTypeUtil.getEventType(action);
-        EventInfo einfo     = getEventInfo(eventType.getEventType());  // should be the ID !!
+        // get the event id of the destination table
+        String    eventId = getEventIdFromDestinationTable(request, action);
+        EventInfo einfo   = getEventInfo(eventId);
 
         // debug
         logCat.info("::createEvent - got event [" + einfo + "] from action [" + action + "]");
 
-        // instance keyInfo database events;
-        if (isKeyInfoEvent(action))
+        // instance "normal" database events;
+        if (!isKeyInfoEvent(action))
+        {
+            constructorArgs = new Object[] { action, request, config };
+            event = (DatabaseEvent)getEvent(einfo, constructorArgsTypes, constructorArgs);
+        }
+        // instance "keyInfo" database events;
+        else
         {
             KeyInfo kInfo = getKeyInfo(action, request, config);
 
@@ -97,13 +101,6 @@ public class DatabaseEventFactoryImpl extends DatabaseEventFactory
                              config };
 
             event = (DatabaseEvent)getEvent(einfo, keyInfoConstructorArgsTypes, constructorArgs);
-        }
-
-        // instance "normal" database events;
-        else
-        {
-            constructorArgs = new Object[] { action, request, config };
-            event = (DatabaseEvent)getEvent(einfo, constructorArgsTypes, constructorArgs);
         }
 
         return event;
