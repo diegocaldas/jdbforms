@@ -27,6 +27,9 @@ import org.dbforms.util.DbConnection;
 import org.dbforms.util.SqlUtil;
 import org.dbforms.util.PrintfFormat;
 import org.dbforms.util.KeyValuePair;
+import org.dbforms.util.MessageResources;
+import org.dbforms.util.ReflectionUtil;
+import org.dbforms.util.Util;
 import java.io.*;
 import java.util.*;
 import java.sql.*;
@@ -62,6 +65,8 @@ public abstract class EmbeddedData extends TagSupport
     /** instance of helper class to create formatted output: **/
     protected PrintfFormat printfFormat;
 
+    protected String formatClass;
+    
     /**
     * DOCUMENT ME!
     *
@@ -125,7 +130,6 @@ public abstract class EmbeddedData extends TagSupport
                     }
 
                     String htValue = printfFormat.sprintf(objs2);
-
                     result.addElement(new KeyValuePair(htKey, htValue));
                 }
 
@@ -200,8 +204,13 @@ public abstract class EmbeddedData extends TagSupport
          ********************************************************************************/
         printfFormat = null;
 
-        if (format != null)
+        if (!Util.isNull(getFormat()) || !Util.isNull(getFormatClass())) 
         {
+            if (Util.isNull(getFormatClass())) 
+               setFormatClass("org.dbforms.util.PrintfFormat");
+            if (Util.isNull(getFormat()))
+               setFormat("%s");   
+               
             if (format.indexOf('%') < 0) // try cheap compatibility mode for old applications without '%' within patterns
             {
                 StringBuffer newFormat = new StringBuffer();
@@ -221,7 +230,13 @@ public abstract class EmbeddedData extends TagSupport
                 format = newFormat.toString(); // was 's bla bla s -- s' is now '%s blabla %s -- %s'
             }
 
-            printfFormat = new PrintfFormat(format); // create instance of PrintfFormat class 
+        	Class[] constructorArgsTypes = new Class[] {Locale.class, String.class};
+        	Object[] constructorArgs = new Object[] { MessageResources.getLocale((HttpServletRequest)pageContext.getRequest()), format };
+       	    try {
+       	    	printfFormat = (PrintfFormat) ReflectionUtil.newInstance(getFormatClass(),constructorArgsTypes, constructorArgs);
+       	    } catch (Exception e) {
+       	    	logCat.error("cannot create the new printfFormat [" + getFormatClass() + "]", e);
+       	    }
         }
 
         Vector d = null;
@@ -351,4 +366,20 @@ public abstract class EmbeddedData extends TagSupport
     {
         disableCache = newDisableCache;
     }
+	/**
+	 * Returns the formatClass.
+	 * @return String
+	 */
+	public String getFormatClass() {
+		return formatClass;
+	}
+
+	/**
+	 * Sets the formatClass.
+	 * @param formatClass The formatClass to set
+	 */
+	public void setFormatClass(String formatClass) {
+		this.formatClass = formatClass;
+	}
+
 }
