@@ -4,6 +4,7 @@ Contents:
 1)   About this release
 2)   Compatibility Warning
 2-1) Changed interceptor interfaces
+2-2) Changed filter value interface
 3)   Details about enhancements and changes
 3-0) Code cleanup
 3-1) New navigation system
@@ -39,6 +40,17 @@ No you have full control over the fields written to the datbase, you can remove,
 
 ATTENTION: You must change the interfaces in your old interceptor code. Changing the code should'nt be necessary because the 
            interface of the FieldValues class is nearly the same as the old used hashtable.
+
+2-1) Changed filter value interface
+-----------------------------------
+Changed filters to use the resultset setter methods. So string and numeric value handling is done automatically.
+You must change your filter values for string to not use the ''! This is done automatically.
+So 
+	name like '?' 
+	must be 
+	changed to name like? 
+!
+
 
 
 3-0) Code cleanup
