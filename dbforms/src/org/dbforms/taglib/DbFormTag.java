@@ -990,7 +990,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
 		try {
 			// *************************************************************
 			//  Part I - checking user access right, processing interceptor
-			// *************************************************************
+			// *********ad****************************************************
 			HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
 			HttpServletResponse response = (HttpServletResponse) pageContext.getResponse();
 
@@ -1000,6 +1000,20 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
 			logCat.info("servlet getPathInfo = " + request.getPathInfo());
 
 			logCat.info("servlet getContextPath = " + request.getContextPath());
+			logCat.info("servlet getRequestURI = " + request.getRequestURI());
+			
+			String strFollowUp = getFollowUp();
+			if (Util.isNull(strFollowUp)) {
+			   strFollowUp = request.getRequestURI();
+			   String contextPath = request.getContextPath();
+			   if (!Util.isNull(contextPath)) {
+			      strFollowUp = strFollowUp.substring(contextPath.length(), strFollowUp.length());	
+			   }
+			   if(!Util.isNull(request.getQueryString())) {
+			      strFollowUp += "?" + request.getQueryString();
+			   }
+			}
+			
 			logCat.debug("pos1");
 
 			// part I/a - security
@@ -1181,7 +1195,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
 			tagBuf.append("<input type=\"hidden\" name=\"autoupdate_" + tableId + "\" value=\"" + autoUpdate + "\"/>");
 
 			// write out the followup-default for this table
-			tagBuf.append("<input type=\"hidden\" name=\"fu_" + tableId + "\" value=\"" + followUp + "\"/>");
+			tagBuf.append("<input type=\"hidden\" name=\"fu_" + tableId + "\" value=\"" + strFollowUp + "\"/>");
 
 			// write out the locale
 			tagBuf.append("<input type=\"hidden\" name=\"lang" + "\" value=\"" + locale.toString() + "\"/>");
