@@ -13,13 +13,11 @@
 			<para>DbForms does not restrict you in any way.
 </para>
 			<sect2>
-				<title>6.1.1.    Cascading Style Sheet Usage
+				<title>Cascading Style Sheet Usage
 </title>
 				<para>A lot of attributes like color, background color, fonts etc. can now be easily changed at a central place by using the stylesheet <emphasis role="bold">dbforms.css</emphasis> to make generated JSPs to your liking in terms of style. The stylesheet dbforms.css can be found inside the <emphasis role="bold">misc</emphasis> directory in cvs and within the directory <emphasis role="bold">dist</emphasis> inside a DbForms distribution..
 </para>
-				<para>If you don't like the appearance of generated pages, it is now easy
-</para>
-				<para>to change it.
+				<para>If you don't like the appearance of generated pages, it is now easy to change it.
 </para>
 			</sect2>
 		</sect1>
@@ -130,21 +128,31 @@
  
 	<emphasis role="bold">paramList</emphasis>="param1='value1',param2='value2',. . .,paramN='valueN'"
  
-	<emphasis role="bold">part</emphasis>= "begin"  /<emphasis role="bold">
-    &gt;</emphasis> 
+	<emphasis role="bold">part</emphasis>= "begin"  /<emphasis role="bold">&gt;</emphasis>
+     
 		</programlisting>
 				</example>
 				<para>This tag may or may not include a body. Its attributes are:
+</para><itemizedlist mark="opencircle">
+<listitem>
+<para>
+<emphasis role="bold">template</emphasis> [required]: this refers to the name of the template to be used
 </para>
-				<para>
-					<emphasis role="bold">template</emphasis> [required]: this refers to the name of the template to be used
+</listitem>
+<listitem>
+<para>
+<emphasis role="bold">paramList</emphasis>: a parameter-list used to specify rendering properties for the template.
 </para>
-				<para>
-					<emphasis role="bold">paramList</emphasis>: a parameter-list used to specify rendering properties for the template.
+</listitem>
+<listitem>
+<para>
+<emphasis role="bold">part</emphasis>: the part of the template (i.e. begin, end)
 </para>
-				<para>
-					<emphasis role="bold">part</emphasis>: the part of the template (i.e. begin, end)
-</para>
+</listitem>
+</itemizedlist>
+				
+				
+				
 			</sect2>
 			<sect2>
 				<title>Example of <emphasis role="italic">applying</emphasis> templates
