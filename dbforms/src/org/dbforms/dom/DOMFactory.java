@@ -126,18 +126,27 @@ public abstract class DOMFactory {
 		Document doc = null;
 		if (!Util.isNull(url)) {
 			InputStream in = null;
+			String path = null;
+			URL u = null;
 			try {
-				// Try to parse via URL connection
-				URL u = new URL(url);
-				URLConnection con = u.openConnection();
-				con.connect();
-				in = con.getInputStream();
+				u = new URL(url);
+				path = u.getPath();
 			} catch (Exception e) {
-				logCat.error("read", e);
+				path = url;
+			}
+			if (u != null) {
+				try {
+					// Try to parse via URL connection
+					URLConnection con = u.openConnection();
+					con.connect();
+					in = con.getInputStream();
+				} catch (Exception e) {
+					logCat.error("read", e);
+				}
 			}
 			if (in == null) {
 				try {
-					in = new FileInputStream(url);
+					in = new FileInputStream(path);
 				} catch (Exception e) {
 					logCat.error("read", e);
 				}
@@ -147,9 +156,8 @@ public abstract class DOMFactory {
 				try {
 					in.close();
 				} catch (Exception e) {
-               logCat.error("read", e); 
+					logCat.error("read", e);
 				}
-
 			}
 		}
 		return doc;

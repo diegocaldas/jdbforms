@@ -23,6 +23,7 @@
 
 package org.dbforms.event.datalist.dao;
 
+import java.net.URL;
 import org.apache.log4j.Category;
 
 import java.util.Vector;
@@ -131,11 +132,17 @@ public class DataSourceXML extends DataSource {
    protected final void open() throws SQLException {
       if (dataObject == null) {
          try {
-            String url = getURI();
+            String qry = getQuery();
+            String url = getFilePath() + qry;
+			try {
+				URL u = new URL(url);
+				qry = u.getQuery();
+			} catch (Exception e) {
+			}
             Document doc = read(url);
             if (doc != null) {
                Element elem = doc.getDocumentElement();
-               data = new XMLDataResult(elem,  "." + url);
+               data = new XMLDataResult(elem, qry);
             }
          } catch (Exception e) {
             logCat.error("open", e);
@@ -152,7 +159,8 @@ public class DataSourceXML extends DataSource {
    protected final void close() {
       if ((data != null) && data.hasChanged()) {
          try {
-            write(getURI(), data.getRoot());
+			String url = getFilePath() + getQuery();
+            write(url, data.getRoot());
          } catch (Exception e) {
             logCat.error(e);
          }
@@ -363,10 +371,6 @@ public class DataSourceXML extends DataSource {
       return buf.toString();
    }
 
-   private String getURI() throws Exception {
-      String qry = getFilePath() + getQuery();
-      return qry;
-   }
 
    private String getFilePath() throws Exception {
       return Util.replaceRealPath(getTable().getReadAlias(), DbFormsConfigRegistry.instance().lookup().getRealPath());
