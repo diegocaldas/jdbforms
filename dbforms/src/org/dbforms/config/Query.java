@@ -22,39 +22,39 @@
  */
 
 package org.dbforms.config;
-
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
-
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
-
-
 import org.apache.log4j.Category;
-
 import org.dbforms.util.Constants;
 import org.dbforms.util.FieldValue;
 import org.dbforms.util.Util;
 
+
+
 /**
  * <p>
- * This class represents the query tag in dbforms-config.xml (dbforms config xml file)
+ * This class represents the query tag in dbforms-config.xml (dbforms config
+ * xml file)
  * </p>
- *
+ * 
  * <p>
  * it's derived from the table class and overloads the necessary methods.
  * </p>
- *
- * @author Henner Kollmann (Henner.Kollmann@gmx.de)
+ * 
+ * @author Henner Kollmann
  */
 public class Query extends Table
 {
-	/** log4j category */
-	private static Category logCat = Category.getInstance(Query.class.getName());
+   /** log4j category */
+   private static Category  logCat           = Category.getInstance(
+                                                        Query.class.getName());
    private String           from;
    private String           groupBy;
    private String           where;
+   private String           having;
    private Vector           searchfields; // the Field-Objects this table constists of
    private Hashtable        searchNameHash;
    private static final int WHEREIDSTART     = 1000;
@@ -73,9 +73,8 @@ public class Query extends Table
    }
 
    /**
-    * adds a Field-Object to this table
-    * and puts it into othere datastructure for further references
-    * (this method gets called from DbFormsConfig)
+    * adds a Field-Object to this table and puts it into othere datastructure
+    * for further references (this method gets called from DbFormsConfig)
     * 
     * @param field field to add
     */
@@ -91,13 +90,11 @@ public class Query extends Table
 
 
    /**
-    * set from, if defined in dbforms-config-xml
-    * (this method gets called from XML-digester)
+    * set from, if defined in dbforms-config-xml (this method gets called from
+    * XML-digester)
     * 
     * @param value sql from
-    * 
-    * 
-   */
+    */
    public void setFrom(String value)
    {
       this.from = value;
@@ -105,12 +102,11 @@ public class Query extends Table
 
 
    /**
-    * set groupBy, if defined in dbforms-config-xml
-    * (this method gets called from XML-digester)
+    * set groupBy, if defined in dbforms-config-xml (this method gets called
+    * from XML-digester)
     * 
     * @param value sql group by
-    * 
-   */
+    */
    public void setGroupBy(String value)
    {
       this.groupBy = value;
@@ -118,12 +114,11 @@ public class Query extends Table
 
 
    /**
-    * set whereClause, if defined in dbforms-config-xml
-    * (this method gets called from XML-digester)
+    * set whereClause, if defined in dbforms-config-xml (this method gets
+    * called from XML-digester)
     * 
     * @param value sql where
-    * 
-   */
+    */
    public void setWhere(String value)
    {
       this.where = value;
@@ -131,14 +126,12 @@ public class Query extends Table
 
 
    /**
-    * set OrderWithPos, if defined in dbforms-config-xml
-    * (this method gets called from XML-digester)
-    * if set the ORDER BY statment will use position number instead of
-    * field names in ORDER BY
+    * set OrderWithPos, if defined in dbforms-config-xml (this method gets
+    * called from XML-digester) if set the ORDER BY statment will use position
+    * number instead of field names in ORDER BY
     * 
     * @param value sets orderWithPos
-    * 
-   */
+    */
    public void setOrderWithPos(String value)
    {
       this.orderWithPos = value;
@@ -146,13 +139,11 @@ public class Query extends Table
 
 
    /**
-    * return OrderWithPos
-    * OrderWithPos will be set if
-    *    - groupBy is set
-    *    - OrderWithPos is defined in dbforms-config.xml
+    * return OrderWithPos OrderWithPos will be set if - groupBy is set -
+    * OrderWithPos is defined in dbforms-config.xml
     * 
     * @return orderWithPos
-   */
+    */
    public boolean needOrderWithPos()
    {
       return !Util.isNull(groupBy) || orderWithPos.equalsIgnoreCase("true")
@@ -161,13 +152,10 @@ public class Query extends Table
 
 
    /**
-    *  Returns the search fields
-    *
-    *  search fields are fields in the query which are only used in the where part,
-    *  not in the select part
+    * Returns the search fields search fields are fields in the query which are
+    * only used in the where part, not in the select part
     * 
     * @return search field list
-    *
     */
    public Vector getSearchFields()
    {
@@ -176,13 +164,10 @@ public class Query extends Table
 
 
    /**
-    * returns the from part of a query.
-    *
-    * overloaded from Table
-    * if from is defind in dbforms-config.xml use this, else method from Table
+    * returns the from part of a query. overloaded from Table if from is defind
+    * in dbforms-config.xml use this, else method from Table
     * 
     * @return sql from
-    * 
     */
    protected String getQueryFrom()
    {
@@ -198,18 +183,15 @@ public class Query extends Table
 
 
    /**
-    * returns the part of the orderby-clause represented by this FieldValue object.
-    * FieldName [DESC]
-    * (ASC will be not printed because it is defined DEFAULT in SQL
-    * if there are RDBMS which do not tolerate this please let me know; then i'll
-    * change it)
-    *
-    * overloaded from Table
-    * if from is defind in dbforms-config.xml use this, else method from Table
+    * returns the part of the orderby-clause represented by this FieldValue
+    * object. FieldName [DESC] (ASC will be not printed because it is defined
+    * DEFAULT in SQL if there are RDBMS which do not tolerate this please let
+    * me know; then i'll change it) overloaded from Table if from is defind in
+    * dbforms-config.xml use this, else method from Table
     * 
     * @param fvOrder order list
-    * @return sql order by
     * 
+    * @return sql order by
     */
    protected String getQueryOrderBy(FieldValue[] fvOrder)
    {
@@ -245,16 +227,13 @@ public class Query extends Table
 
 
    /**
-    * returns the select part of a query
-    * overloaded from Table
-    * if from is defind in dbforms-config.xml use this, else method from Table
-    *
-    * extends field names with expressions:
-    * expression as name
+    * returns the select part of a query overloaded from Table if from is
+    * defind in dbforms-config.xml use this, else method from Table extends
+    * field names with expressions: expression as name
     * 
     * @param fieldsToSelect fieldlist
-    * @return sql select part
     * 
+    * @return sql select part
     */
    protected String getQuerySelect(Vector fieldsToSelect)
    {
@@ -284,94 +263,105 @@ public class Query extends Table
       return buf.toString();
    }
 
-   private FieldValue[] getFieldValueHaving(FieldValue[] fvEqual) 
+
+   private FieldValue[] getFieldValueHaving(FieldValue[] fvEqual)
    {
-		Vector       mode_having              = new Vector();
-		Vector       mode_where               = new Vector();
-		// Split fields in where and having part
-		if (fvEqual != null)
-		{
-			for (int i = 0; i < fvEqual.length; i++)
-			{
-				if ((fvEqual[i].getField().getId() >= WHEREIDSTART))
-				{
-				}
-				else
-				{
-					mode_having.add(fvEqual[i]);
-				}
-			}
-		}
-		FieldValue[] fvHaving = new FieldValue[mode_having.size()];
-		for (int i = 0; i < mode_having.size(); i++)
-		{
-			fvHaving[i] = (FieldValue) mode_having.elementAt(i);
-		}
-		return fvHaving;
+      Vector mode_having = new Vector();
+      Vector mode_where = new Vector();
+
+      // Split fields in where and having part
+      if (fvEqual != null)
+      {
+         for (int i = 0; i < fvEqual.length; i++)
+         {
+            if ((fvEqual[i].getField().getId() >= WHEREIDSTART))
+            {
+            }
+            else
+            {
+               mode_having.add(fvEqual[i]);
+            }
+         }
+      }
+
+      FieldValue[] fvHaving = new FieldValue[mode_having.size()];
+
+      for (int i = 0; i < mode_having.size(); i++)
+      {
+         fvHaving[i] = (FieldValue) mode_having.elementAt(i);
+      }
+
+      return fvHaving;
    }
 
-	private FieldValue[] getFieldValueWhere(FieldValue[] fvEqual) 
-	{
-		Vector       mode_having              = new Vector();
-		Vector       mode_where               = new Vector();
-		// Split fields in where and having part
-		if (fvEqual != null)
-		{
-			for (int i = 0; i < fvEqual.length; i++)
-			{
-				if (fvEqual[i].getField().getId() >= WHEREIDSTART)
-				{
-					mode_where.add(fvEqual[i]);
-				}
-			}
-		}
-		FieldValue[] fvWhere = new FieldValue[mode_where.size()];
-		for (int i = 0; i < mode_where.size(); i++)
-		{
-			fvWhere[i] = (FieldValue) mode_where.elementAt(i);
-		}
-      return fvWhere;   	
-	}
 
-	/**
-	 * situation: we have built a query (involving the getWhereEqualsClause() method)
-	 * and now we want to prepare the statemtent - provide actual values for the
-	 * the '?' placeholders
-	 *
-	 * @param  fvEqual the array of FieldValue objects
-	 * @param  ps the PreparedStatement object
-	 * @param  curCol the current PreparedStatement column; points to a
-	 *                PreparedStatement xxx value
-	 * @return  the current column value
-	 * @exception  SQLException if any error occurs
-	 */
-	protected int populateWhereEqualsClause(FieldValue[] fvEqual,
-		PreparedStatement ps, int curCol) throws SQLException
-	{
-		curCol = FieldValue.populateWhereEqualsClause(getFieldValueWhere(fvEqual), ps, curCol);
-		curCol = FieldValue.populateWhereEqualsClause(getFieldValueHaving(fvEqual), ps, curCol);
-		return curCol;
-	}
+   private FieldValue[] getFieldValueWhere(FieldValue[] fvEqual)
+   {
+      Vector mode_having = new Vector();
+      Vector mode_where = new Vector();
+
+      // Split fields in where and having part
+      if (fvEqual != null)
+      {
+         for (int i = 0; i < fvEqual.length; i++)
+         {
+            if (fvEqual[i].getField().getId() >= WHEREIDSTART)
+            {
+               mode_where.add(fvEqual[i]);
+            }
+         }
+      }
+
+      FieldValue[] fvWhere = new FieldValue[mode_where.size()];
+
+      for (int i = 0; i < mode_where.size(); i++)
+      {
+         fvWhere[i] = (FieldValue) mode_where.elementAt(i);
+      }
+
+      return fvWhere;
+   }
 
 
-    
    /**
-    * Prepares the Querystring for the select statement
-    * if the statement is for a sub-form (=> doConstrainedSelect),
-    * we set some place holders for correct mapping
-    *
-    * overloaded from Table
-    * if from is defind in dbforms-config.xml use this, else method from Table
-    *
-    * extends select query with:
-    *    group by
-    *    where clause special from select fields
+    * situation: we have built a query (involving the getWhereEqualsClause()
+    * method) and now we want to prepare the statemtent - provide actual
+    * values for the the '?' placeholders
     * 
-    *  @param fieldsToSelect - vector of fields to be selected
-    *  @param fvEqual - fieldValues representing values we are looking for
-    *  @param fvOrder - fieldValues representing needs for order clauses
-    *  @param compareMode - and / or
-    *
+    * @param fvEqual the array of FieldValue objects
+    * @param ps the PreparedStatement object
+    * @param curCol the current PreparedStatement column; points to a
+    *        PreparedStatement xxx value
+    * 
+    * @return the current column value
+    * 
+    * @exception SQLException if any error occurs
+    */
+   protected int populateWhereEqualsClause(FieldValue[] fvEqual, 
+                                           PreparedStatement ps, int curCol)
+                                    throws SQLException
+   {
+      curCol = FieldValue.populateWhereEqualsClause(getFieldValueWhere(fvEqual), 
+                                                    ps, curCol);
+      curCol = FieldValue.populateWhereEqualsClause(getFieldValueHaving(fvEqual), 
+                                                    ps, curCol);
+
+      return curCol;
+   }
+
+
+   /**
+    * Prepares the Querystring for the select statement if the statement is for
+    * a sub-form (=> doConstrainedSelect), we set some place holders for
+    * correct mapping overloaded from Table if from is defind in
+    * dbforms-config.xml use this, else method from Table extends select query
+    * with: group by where clause special from select fields
+    * 
+    * @param fieldsToSelect - vector of fields to be selected
+    * @param fvEqual - fieldValues representing values we are looking for
+    * @param fvOrder - fieldValues representing needs for order clauses
+    * @param compareMode - and / or
+    * 
     * @return generated sql query
     */
    public String getSelectQuery(Vector fieldsToSelect, FieldValue[] fvEqual, 
@@ -381,8 +371,9 @@ public class Query extends Table
       String       s;
       boolean      hatSchonWhere            = false;
       boolean      hatSchonFollowAfterWhere = false;
-      FieldValue[] fvHaving = getFieldValueHaving(fvEqual);
-      FieldValue[] fvWhere  = getFieldValueWhere(fvEqual);
+      boolean      hatSchonHaving           = false;
+      FieldValue[] fvHaving                 = getFieldValueHaving(fvEqual);
+      FieldValue[] fvWhere                  = getFieldValueWhere(fvEqual);
 
       buf.append("SELECT ");
 
@@ -436,6 +427,7 @@ public class Query extends Table
          if (!Util.isNull(groupBy))
          {
             buf.append(" HAVING ( ");
+            hatSchonHaving = true;
          }
          else if (!hatSchonWhere)
          {
@@ -450,12 +442,22 @@ public class Query extends Table
                buf.append(" ");
             }
 
-
             buf.append(" AND ( ");
          }
 
          buf.append(s);
          buf.append(")");
+      }
+
+      if (!Util.isNull(groupBy) && !Util.isNull(getHaving()))
+      {
+         if (!hatSchonHaving)		   
+		    buf.append(" HAVING ");
+		 else   
+		 buf.append(" AND ");
+         buf.append("(");
+         buf.append(getHaving());
+         buf.append(") ");
       }
 
       s = getQueryOrderBy(fvOrder);
@@ -473,14 +475,11 @@ public class Query extends Table
 
 
    /**
-    * returns the vector of fields this table constists of
-    *
-    * overloaded from Table
-    * Specials:
-    * if view has field defined, use this otherwise use fields from parent table
+    * returns the vector of fields this table constists of overloaded from
+    * Table Specials: if view has field defined, use this otherwise use fields
+    * from parent table
     * 
     * @return the fields
-    *
     */
    public Vector getFields()
    {
@@ -503,17 +502,13 @@ public class Query extends Table
 
    /**
     * returns the field-objects as specified by name (or null if no field with
-    * the specified name exists in this table)
-    *
-    * overloaded from Table
-    * Specials:
-    *    1. Try to find in fields
-    *    2. Try to find in search fields
-    *    3. Try to find in parent table
+    * the specified name exists in this table) overloaded from Table Specials:
+    * 1. Try to find in fields 2. Try to find in search fields 3. Try to find
+    * in parent table
     * 
     * @param name The name of the field
-    * @return the field
     * 
+    * @return the field
     */
    public Field getFieldByName(String name)
    {
@@ -539,19 +534,15 @@ public class Query extends Table
 
 
    /**
-    * returns the Field-Objet with specified id
-    *
-    *
-    * overloaded from Table
-    * Specials:
-    *    1. if fieldId is in range from search fields, get from search fields
-    *    2. if has fields try to find in fields
-    *    3. if not has fields try to find in parent table
+    * returns the Field-Objet with specified id overloaded from Table Specials:
+    * 1. if fieldId is in range from search fields, get from search fields 2.
+    * if has fields try to find in fields 3. if not has fields try to find in
+    * parent table
     * 
     * @param fieldId The id of the field to be returned
-    * @return the field
     * 
-   */
+    * @return the field
+    */
    public Field getField(int fieldId)
    {
       Field f = null;
@@ -587,14 +578,11 @@ public class Query extends Table
 
 
    /**
-    * returns the key of this table (consisting of Field-Objects representing key-fields)
-    *
-    * overloaded from Table
-    * Specials:
-    *    if key of view is not defined (if view has not defined fields) use keys from parent table
+    * returns the key of this table (consisting of Field-Objects representing
+    * key-fields) overloaded from Table Specials: if key of view is not
+    * defined (if view has not defined fields) use keys from parent table
     * 
     * @return the keys
-    * 
     */
    public Vector getKey()
    {
@@ -610,10 +598,11 @@ public class Query extends Table
 
 
    /**
+    * DOCUMENT ME!
     * 
     * @param core starting tag for the fields
-    * @return the hash table. Hashtables are build from fields + searchfields!
     * 
+    * @return the hash table. Hashtables are build from fields + searchfields!
     */
    public Hashtable getNamesHashtable(String core)
    {
@@ -640,6 +629,8 @@ public class Query extends Table
 
 
    /**
+    * DOCUMENT ME!
+    * 
     * @return String the followAfterWhere.
     */
    public String getFollowAfterWhere()
@@ -650,6 +641,7 @@ public class Query extends Table
 
    /**
     * Sets the followAfterWhere.
+    * 
     * @param followAfterWhere The followAfterWhere to set
     */
    public void setFollowAfterWhere(String followAfterWhere)
@@ -660,10 +652,33 @@ public class Query extends Table
 
    /**
     * Sets the distinct.
+    * 
     * @param distinct The distinct to set
     */
    public void setDistinct(String distinct)
    {
       this.distinct = distinct;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    * 
+    * @return the string
+    */
+   public String getHaving()
+   {
+      return having;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    * 
+    * @param string
+    */
+   public void setHaving(String string)
+   {
+      having = string;
    }
 }
