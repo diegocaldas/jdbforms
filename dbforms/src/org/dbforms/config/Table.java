@@ -1208,35 +1208,26 @@ public class Table
    {
       if (fvHT != null)
       {
-         StringBuffer buf  = new StringBuffer();
-         int          cnt  = 0;
-         Enumeration  enum = fvHT.keys();
-
-         while (enum.hasMoreElements())
-         {
-            String     fieldName = (String) enum.nextElement();
-            FieldValue fv = fvHT.get(fieldName);
-            Field      f  = fv.getField();
-
-            if (f.isKey())
-            {
-               String value = fv.getFieldValue();
-
-               if (value == null)
-               {
-                  throw new IllegalArgumentException("wrong fields provided");
-               }
-
-               if (cnt > 0)
-               {
-                  buf.append("-"); // control byte
-               }
-
-               buf.append(createToken(f, value));
-               cnt++;
-            }
-         }
-
+			StringBuffer buf  = new StringBuffer();
+			int cnt = 0;
+			for (int i = 0; i < getKey().size(); i++)
+			{
+				Field f = (Field) getKey().elementAt(i);
+				FieldValue fv = fvHT.get(f.getName());
+				if (fv != null) {
+					String value = fv.getFieldValue();
+					if (value == null)
+					{
+						throw new IllegalArgumentException("wrong fields provided");
+					}
+					if (cnt > 0)
+					{
+						buf.append("-"); // control byte
+					}
+					buf.append(createToken(f, value));
+					cnt++;
+				}
+			}
          return buf.toString();
       }
       else
