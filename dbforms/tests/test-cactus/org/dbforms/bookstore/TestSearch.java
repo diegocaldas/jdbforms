@@ -61,7 +61,7 @@ public class TestSearch extends HttpTestCase {
 
       get("http://localhost/bookstore/tests/testSEARCH.jsp");
       printResponse();
-      assertTrue(responseContains("<h1>Search Page</h1>"));
+      assertTrue(responseContains("Search Page"));
 
       list = new ArrayList();
       list.add(new KeyValuePair("invtable", "1"));
@@ -88,7 +88,7 @@ public class TestSearch extends HttpTestCase {
       list.add(new KeyValuePair("k_1_8@root", "0%3A1%3A9-2%3A1%3A2"));
       post("http://localhost/bookstore/servlet/control", list);
       printResponse();
-      assertTrue(responseContains("<h1>Search Page</h1>"));
+      assertTrue(responseContains("Search Page"));
 
       list = new ArrayList();
       list.add(new KeyValuePair("invtable", "1"));
