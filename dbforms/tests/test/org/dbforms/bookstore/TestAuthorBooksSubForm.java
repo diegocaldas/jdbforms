@@ -132,7 +132,7 @@ public class TestAuthorBooksSubForm extends AbstractTestBase
 		printResponse();
 		assertTrue(responseContains("<input type=\"submit\"  value=\"New\"  style=\"width:100\" name=\"ac_new_0\">"));
 		assertTrue(responseContains("<input type=\"submit\"  value=\"Copy\"  style=\"width:100\" name=\"ac_copy_0\">"));
-		
+
 		list = new ArrayList();
 		list.add(new NVPair("invtable", "0"));
 		list.add(new NVPair("invname_0", "null"));
@@ -191,7 +191,8 @@ public class TestAuthorBooksSubForm extends AbstractTestBase
 		assertFalse(responseContains("<input type=\"submit\"  value=\"New\"  style=\"width:100\" name=\"ac_new_0\">"));
 		assertFalse(responseContains("<input type=\"submit\"  value=\"Copy\"  style=\"width:100\" name=\"ac_copy_0\">"));
 		assertTrue(responseContains("<td style=\"width:100px\">[No Data]&nbsp;</td>"));
-		assertTrue(responseContains("<td style=\"width:300px\"><input type=\"text\" name=\"f_0_insroot_1\" value=\"\"  size=\"25\"/></td>"));
+		assertTrue(
+			responseContains("<td style=\"width:300px\"><input type=\"text\" name=\"f_0_insroot_1\" value=\"\"  size=\"25\"/></td>"));
 		assertTrue(responseContains("<td><input type=\"text\" name=\"f_0_insroot_2\" value=\"\"  size=\"25\"/>"));
 
 	}
@@ -247,7 +248,8 @@ public class TestAuthorBooksSubForm extends AbstractTestBase
 		assertFalse(responseContains("<input type=\"submit\"  value=\"New\"  style=\"width:100\" name=\"ac_new_0\">"));
 		assertFalse(responseContains("<input type=\"submit\"  value=\"Copy\"  style=\"width:100\" name=\"ac_copy_0\">"));
 		assertTrue(responseContains("<td style=\"width:100px\">[No Data]&nbsp;</td>"));
-		assertTrue(responseContains("<td style=\"width:300px\"><input type=\"text\" name=\"f_0_insroot_1\" value=\"Eco, Umberto\"  size=\"25\"/></td>"));
+		assertTrue(
+			responseContains("<td style=\"width:300px\"><input type=\"text\" name=\"f_0_insroot_1\" value=\"Eco, Umberto\"  size=\"25\"/></td>"));
 		assertTrue(responseContains("<td><input type=\"text\" name=\"f_0_insroot_2\" value=\"organisation 11\"  size=\"25\"/>"));
 
 	}
@@ -360,6 +362,91 @@ public class TestAuthorBooksSubForm extends AbstractTestBase
 		assertTrue(responseContains("<input type=\"submit\"  value=\"New\"  style=\"width:100\" name=\"ac_new_1\">"));
 		assertTrue(responseContains("<input type=\"submit\"  value=\"Copy\"  style=\"width:100\" name=\"ac_copy_1\">"));
 
+	}
+
+	public void testNavNewInSubForm() throws Exception
+	{
+
+		List list;
+
+		System.out.println("Testing URL: " + replaceURL("http://localhost/bookstore/tests/testAuthorBooksSubForm.jsp"));
+		get("http://localhost/bookstore/tests/testAuthorBooksSubForm.jsp");
+		System.out.println("Response code: " + getResponse().getStatusCode());
+		assertEquals("Assert number 3 failed", 200, getResponse().getStatusCode());
+		assertTrue(responseContains("<input type=\"submit\"  value=\"New\"  style=\"width:100\" name=\"ac_new_1\">"));
+		assertTrue(responseContains("<input type=\"submit\"  value=\"Copy\"  style=\"width:100\" name=\"ac_copy_1\">"));
+
+		list = new ArrayList();
+		list.add(new NVPair("invtable", "0"));
+		list.add(new NVPair("invname_0", "null"));
+		list.add(new NVPair("autoupdate_0", "false"));
+		list.add(new NVPair("fu_0", "/tests/testAuthorBooksSubForm.jsp"));
+		list.add(new NVPair("source", "/bookstore/tests/testAuthorBooksSubForm.jsp"));
+		list.add(new NVPair("customEvent", ""));
+		list.add(new NVPair("firstpos_0", "0%3A1%3A1-1%3A12%3AEco%2C+Umberto-2%3A15%3Aorganisation+11"));
+		list.add(new NVPair("lastpos_0", "0%3A1%3A1-1%3A12%3AEco%2C+Umberto-2%3A15%3Aorganisation+11"));
+		list.add(new NVPair("f_0_0@root_1", "Eco, Umberto"));
+		list.add(new NVPair("f_0_0@root_2", "organisation 11"));
+		list.add(new NVPair("invtable", "1"));
+		list.add(new NVPair("invname_1", "null"));
+		list.add(new NVPair("autoupdate_1", "false"));
+		list.add(new NVPair("fu_1", "/tests/testAuthorBooksSubForm.jsp"));
+		list.add(new NVPair("source", "/bookstore/tests/testAuthorBooksSubForm.jsp"));
+		list.add(new NVPair("customEvent", ""));
+		list.add(new NVPair("firstpos_1", "0%3A1%3A1-2%3A1%3A1-3%3A27%3ADie+Insel+des+vorigen+Tages"));
+		list.add(new NVPair("lastpos_1", "0%3A1%3A2-2%3A1%3A1-3%3A22%3ADas+Foucaltsche+Pendel"));
+		list.add(new NVPair("f_1_0@0@root_1", "3-423-12445-4"));
+		list.add(new NVPair("f_1_0@0@root_3", "Die Insel des vorigen Tages"));
+		list.add(new NVPair("f_1_1@0@root_1", "3-423-12445-5"));
+		list.add(new NVPair("f_1_1@0@root_3", "Das Foucaltsche Pendel"));
+		list.add(new NVPair("ac_new_1", "New"));
+		list.add(new NVPair("k_1_0@0@root", "0%3A1%3A1-2%3A1%3A1-3%3A27%3ADie+Insel+des+vorigen+Tages"));
+		list.add(new NVPair("f_1_ins0@root_2", "1"));
+		list.add(new NVPair("k_1_1@0@root", "0%3A1%3A2-2%3A1%3A1-3%3A22%3ADas+Foucaltsche+Pendel"));
+		list.add(new NVPair("f_1_ins0@root_2", "1"));
+		list.add(new NVPair("k_0_0@root", "0%3A1%3A1"));
+		System.out.println(
+			"Testing URL: "
+				+ replaceURL("http://localhost/bookstore/servlet/control?invtable=0&invname_0=null&autoupdate_0=false&fu_0=/tests/testAuthorBooksSubForm.jsp&source=/bookstore/tests/testAuthorBooksSubForm.jsp&customEvent=&firstpos_0=0%3A1%3A1-1%3A12%3AEco%2C+Umberto-2%3A15%3Aorganisation+11&lastpos_0=0%3A1%3A1-1%3A12%3AEco%2C+Umberto-2%3A15%3Aorganisation+11&f_0_0@root_1=Eco, Umberto&f_0_0@root_2=organisation 11&invtable=1&invname_1=null&autoupdate_1=false&fu_1=/tests/testAuthorBooksSubForm.jsp&source=/bookstore/tests/testAuthorBooksSubForm.jsp&customEvent=&firstpos_1=0%3A1%3A1-2%3A1%3A1-3%3A27%3ADie+Insel+des+vorigen+Tages&lastpos_1=0%3A1%3A2-2%3A1%3A1-3%3A22%3ADas+Foucaltsche+Pendel&f_1_0@0@root_1=3-423-12445-4&f_1_0@0@root_3=Die Insel des vorigen Tages&f_1_1@0@root_1=3-423-12445-5&f_1_1@0@root_3=Das Foucaltsche Pendel&ac_new_1=New&k_1_0@0@root=0%3A1%3A1-2%3A1%3A1-3%3A27%3ADie+Insel+des+vorigen+Tages&f_1_ins0@root_2=1&k_1_1@0@root=0%3A1%3A2-2%3A1%3A1-3%3A22%3ADas+Foucaltsche+Pendel&f_1_ins0@root_2=1&k_0_0@root=0%3A1%3A1"));
+		post("http://localhost/bookstore/servlet/control", list);
+		System.out.println("Response code: " + getResponse().getStatusCode());
+		assertEquals("Assert number 4 failed", 200, getResponse().getStatusCode());
+		printResponse();
+		assertTrue(responseContains("<input type=\"submit\"  value=\"New\"  style=\"width:100\" name=\"ac_new_1\">"));
+		assertTrue(responseContains("<input type=\"submit\"  value=\"Copy\"  style=\"width:100\" name=\"ac_copy_1\">"));
+
+		list = new ArrayList();
+		list.add(new NVPair("invtable", "0"));
+		list.add(new NVPair("invname_0", "null"));
+		list.add(new NVPair("autoupdate_0", "false"));
+		list.add(new NVPair("fu_0", "/tests/testAuthorBooksSubForm.jsp"));
+		list.add(new NVPair("source", "/bookstore/tests/testAuthorBooksSubForm.jsp"));
+		list.add(new NVPair("customEvent", ""));
+		list.add(new NVPair("firstpos_0", "0%3A1%3A1-1%3A12%3AEco%2C+Umberto-2%3A15%3Aorganisation+11"));
+		list.add(new NVPair("lastpos_0", "0%3A1%3A1-1%3A12%3AEco%2C+Umberto-2%3A15%3Aorganisation+11"));
+		list.add(new NVPair("f_0_0@root_1", "Eco, Umberto"));
+		list.add(new NVPair("f_0_0@root_2", "organisation 11"));
+		list.add(new NVPair("ac_next_0", ">  Next"));
+		list.add(new NVPair("invtable", "1"));
+		list.add(new NVPair("invname_1", "null"));
+		list.add(new NVPair("autoupdate_1", "false"));
+		list.add(new NVPair("fu_1", "/tests/testAuthorBooksSubForm.jsp"));
+		list.add(new NVPair("source", "/bookstore/tests/testAuthorBooksSubForm.jsp"));
+		list.add(new NVPair("customEvent", ""));
+		list.add(new NVPair("f_1_ins0@root_1", ""));
+		list.add(new NVPair("f_1_ins0@root_3", ""));
+		list.add(new NVPair("k_1_0@0@root", "null"));
+		list.add(new NVPair("f_1_ins0@root_2", "1"));
+		list.add(new NVPair("k_0_0@root", "0%3A1%3A1"));
+		System.out.println(
+			"Testing URL: "
+				+ replaceURL("http://localhost/bookstore/servlet/control?invtable=0&invname_0=null&autoupdate_0=false&fu_0=/tests/testAuthorBooksSubForm.jsp&source=/bookstore/tests/testAuthorBooksSubForm.jsp&customEvent=&firstpos_0=0%3A1%3A1-1%3A12%3AEco%2C+Umberto-2%3A15%3Aorganisation+11&lastpos_0=0%3A1%3A1-1%3A12%3AEco%2C+Umberto-2%3A15%3Aorganisation+11&f_0_0@root_1=Eco, Umberto&f_0_0@root_2=organisation 11&ac_next_0=>  Next&invtable=1&invname_1=null&autoupdate_1=false&fu_1=/tests/testAuthorBooksSubForm.jsp&source=/bookstore/tests/testAuthorBooksSubForm.jsp&customEvent=&f_1_ins0@root_1=&f_1_ins0@root_3=&k_1_0@0@root=null&f_1_ins0@root_2=1&k_0_0@root=0%3A1%3A1"));
+		post("http://localhost/bookstore/servlet/control", list);
+		System.out.println("Response code: " + getResponse().getStatusCode());
+		assertEquals("Assert number 5 failed", 200, getResponse().getStatusCode());
+		printResponse();
+		assertTrue(responseContains("<input type=\"text\" name=\"f_0_0@root_1\" value=\"Douglas, Adam\"  size=\"25\"/>"));
+		assertTrue(responseContains("<input type=\"text\" name=\"f_1_0@0@root_1\" value=\"42-1\" />"));
 	}
 
 }
