@@ -3,6 +3,10 @@
 	<head>
 		<db:base/>
 	</head>
+    <h1>
+		Shows howto print a JasperReport from dbforms
+	</h1>
+	<p>Shows the technique to print a single selected row and to print all show rows!</p>
 	<body>
 		<db:dbform 
 			multipart="false" 
