@@ -289,6 +289,15 @@
        </properties>
     </dependency>          
 
+<!--
+    <dependency>
+      <id>commons-el</id>      
+      <version>1.0</version>
+      <properties>
+	      <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>       
+-->
     <dependency>
       <id>xerces</id>      
       <version>2.4.0</version>
@@ -299,7 +308,7 @@
 
     <dependency>
       <id>xml-apis</id>      
-      <version>2.0.2</version>
+      <version>1.0.b2</version>
       <properties>
          <war.bundle>true</war.bundle>
        </properties>
@@ -353,10 +362,6 @@
     </dependency>  
 
     <!-- just for compiling! -->
-    <!-- 
-       -  must use at least servlet 2.3 now;
-       -  some tag classes implements TryCatchFinally ... 
-       -->
     <dependency>
       <id>servletapi</id>
       <version>2.3</version>
@@ -365,7 +370,24 @@
        </properties>
     </dependency>         
 
+<!--
+    <dependency>
+      <id>servletapi</id>
+      <version>2.4-20030804.000000</version>
+      <properties>
+         <war.bundle>false</war.bundle>
+       </properties>
+    </dependency>         
 
+    <dependency>
+      <id>jsp-api</id>
+      <groupId>tomcat</groupId>
+      <version>5.0.18</version>
+      <properties>
+         <war.bundle>false</war.bundle>
+       </properties>
+    </dependency>         
+-->
 
     <!-- self hosted -->
     <dependency>
@@ -392,24 +414,6 @@
        </properties>
     </dependency>  
 
-    <!-- 
-       -  jdbc2_0-stdext.jar is used to compile JakartaConnectionProvider class
-       -  (it uses a Datasource object instead of DriverManager).
-       -  J2SE JDK1.4.x includes this class into its core libraries;
-       -  J2SE JDK1.3.x no.
-       -
-       -  http://java.sun.com/products/jdbc/download.html#binary
-       -  I think the name in Maven land has changed to just jdbc. - DEP
-       -->
-<!--
-    <dependency>
-      <id>jdbc</id>
-      <version>2.0</version>
-      <properties>
-	      <war.bundle>true</war.bundle>
-      </properties>
-    </dependency>
--->
     
     <dependency>
       <id>jasperreports</id>      

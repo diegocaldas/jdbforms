@@ -28,7 +28,18 @@
      <j:thread>
         <attainGoal name="appserver:start" />
      </j:thread>
+     <ant:sleep seconds="30" />
   </goal>
+
+  <goal name="dbforms:stopweb">
+    <ant:echo message="stop tomcat" />
+     <j:thread>
+        <attainGoal name="appserver:stop" />
+     </j:thread>
+     <ant:sleep seconds="30" />
+    <attainGoal name="appserver:clean" />
+  </goal>
+
 
   <goal name="dbforms:bookstore">
      <ant:ant antfile="build.xml" target="maven-build-bookstore" >
@@ -131,12 +142,10 @@
   <!-- to start the appserver before junit test starts. So httpclient tests could be done! -->
   <preGoal name="test:test">
      <attainGoal name="dbforms:startweb" />
-     <ant:sleep seconds="30" />
   </preGoal>
 
   <postGoal name="test:test">
-     <attainGoal name="appserver:stop" />
-     <ant:sleep seconds="30" />
+     <attainGoal name="dbforms:stopweb" />
   </postGoal>
 
   <!-- We have our own ChangeLog file! -->

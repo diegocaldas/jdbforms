@@ -1,17 +1,12 @@
-<!-- change from standard port. so cactus tests can run later. 
-	appserver:stop do not stop tomcat!
--->
-<Server port="8042" shutdown="SHUTDOWN" debug="0">
+<Server port="8005" shutdown="SHUTDOWN" debug="0">
 
   <Service name="Tomcat-Standalone">
 
-    <Connector className="org.apache.catalina.connector.http.HttpConnector"
+    <Connector 
                port="80" minProcessors="5" maxProcessors="75"
                acceptCount="10" debug="0"/>
 
     <Engine name="Standalone" defaultHost="localhost" debug="0">
-
-      <Realm className="org.apache.catalina.realm.MemoryRealm" />
       <Logger className="org.apache.catalina.logger.FileLogger"
              prefix="dbforms-junit." suffix=".log"  timestamp="true"/>
       <Host name="localhost" debug="1" appBase="webapps" unpackWARs="true">

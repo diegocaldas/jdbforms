@@ -52,7 +52,6 @@ public class DbGetConnection
 		try {
 			// get the connection and place it in attribute;
 			DataSource ds = getConfig().getDbConnection(dbConnectionName);
-			String s = getId();
 			pageContext.setAttribute(getId(), ds, PageContext.PAGE_SCOPE);
 		} catch (Exception e) {
 			throw new JspException("Database error" + e.getMessage());
