@@ -22,6 +22,7 @@
  */
 
 package org.dbforms.event.datalist.dao;
+
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
@@ -30,8 +31,10 @@ import java.sql.PreparedStatement;
 import java.sql.Connection;
 import java.sql.Types;
 import java.sql.Clob;
+
 import java.util.Vector;
 import java.util.Enumeration;
+
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.Field;
 import org.dbforms.config.Table;
@@ -57,7 +60,7 @@ public class DataSourceJDBC extends DataSource
 {
    private String        query;
    private Connection    con;
-   private boolean       ownCon           = false;
+   private boolean       ownCon = false;
    private ResultSet     rs;
    private Statement     stmt;
    private Vector        data;
@@ -70,10 +73,11 @@ public class DataSourceJDBC extends DataSource
    private FieldValue[]  orderConstraint;
    private DbFormsConfig config;
 
+
    /**
     * Creates a new DataSourceJDBC object.
     *
-    * @param table DOCUMENT ME!
+    * @param table the inout table
     */
    public DataSourceJDBC(Table table)
    {
@@ -82,10 +86,11 @@ public class DataSourceJDBC extends DataSource
       keys = new Vector();
    }
 
+
    /**
-    * DOCUMENT ME!
+    * Finalize this object.
     *
-    * @throws Throwable DOCUMENT ME!
+    * @throws Throwable in any error occurs
     */
    protected void finalize() throws Throwable
    {
@@ -94,10 +99,10 @@ public class DataSourceJDBC extends DataSource
 
 
    /**
-    * DOCUMENT ME!
+    * Set the conenction name.
     * 
-    * @param config DOCUMENT ME!
-    * @param dbConnectionName DOCUMENT ME!
+    * @param config teh configuration object
+    * @param dbConnectionName the name of the database connection
     */
    public void setConnection(DbFormsConfig config, String dbConnectionName)
    {
@@ -108,9 +113,9 @@ public class DataSourceJDBC extends DataSource
 
 
    /**
-    * DOCUMENT ME!
+    * Set the connection object.
     * 
-    * @param con DOCUMENT ME!
+    * @param con the connection object
     */
    public void setConnection(Connection con)
    {
@@ -120,10 +125,11 @@ public class DataSourceJDBC extends DataSource
 
 
    /**
-    * DOCUMENT ME!
+    * Set the tableList and whererClause attributes used
+    * to build the SQL Select condition.
     * 
-    * @param tableList DOCUMENT ME!
-    * @param whereClause DOCUMENT ME!
+    * @param tableList the table list string
+    * @param whereClause the SQL where clause string
     */
    public void setSelect(String tableList, String whereClause)
    {
@@ -133,10 +139,13 @@ public class DataSourceJDBC extends DataSource
 
 
    /**
-    * DOCUMENT ME!
+    * Set the filterConstraint and orderConstraint used
+    * to build the SQL Select condition.
     * 
-    * @param filterConstraint DOCUMENT ME!
-    * @param orderConstraint DOCUMENT ME!
+    * @param filterConstraint FieldValue array used to build a cumulation of rules for filtering
+	*                         fields.
+    * @param orderConstraint  FieldValue array used to build a cumulation of rules for ordering
+	*                         (sorting) and restricting fields.
     */
    public void setSelect(FieldValue[] filterConstraint, 
                          FieldValue[] orderConstraint)
@@ -147,8 +156,10 @@ public class DataSourceJDBC extends DataSource
 
 
    /**
-    * DOCUMENT ME!
-    * 
+    * Release all the resources holded by this datasource.
+    * <br>
+    * Clean the underlying data and keys vectors, then
+    * close the JDBC resultSet, statement and connection objects. 
     */
    public void close()
    {
@@ -208,9 +219,9 @@ public class DataSourceJDBC extends DataSource
 
 
    /**
-    * DOCUMENT ME!
+    * Open this datasource and initialize its resources.
     * 
-    * @throws SQLException DOCUMENT ME!
+    * @throws SQLException if any error occurs
     */
    protected void open() throws SQLException
    {
@@ -222,11 +233,15 @@ public class DataSourceJDBC extends DataSource
          if (Util.isNull(whereClause))
          {
             query = getTable()
-                       .getSelectQuery(getTable().getFields(), filterConstraint, 
-                                       orderConstraint, Constants.COMPARE_NONE);
+                       .getSelectQuery(getTable().getFields(), 
+                                       filterConstraint, 
+                                       orderConstraint, 
+                                       Constants.COMPARE_NONE);
+                                       
             stmt = con.prepareStatement(query);
             rs   = getTable()
-                      .getDoSelectResultSet(filterConstraint, orderConstraint, 
+                      .getDoSelectResultSet(filterConstraint, 
+                                            orderConstraint, 
                                             Constants.COMPARE_NONE, 
                                             (PreparedStatement) stmt);
          }
@@ -287,13 +302,13 @@ public class DataSourceJDBC extends DataSource
 
 
    /**
-    * DOCUMENT ME!
+    * Find the first row of the internal data vector. 
     * 
-    * @param startRow DOCUMENT ME!
+    * @param startRow the string identifying the initial row
     * 
-    * @return DOCUMENT ME!
+    * @return the start row position
     * 
-    * @throws SQLException DOCUMENT ME!
+    * @throws SQLException if any error occurs
     */
    protected int findStartRow(String startRow) throws SQLException
    {
@@ -307,7 +322,6 @@ public class DataSourceJDBC extends DataSource
             if (startRow.equals((String) keys.elementAt(i)))
             {
                result = i;
-
                break;
             }
          }
@@ -323,7 +337,6 @@ public class DataSourceJDBC extends DataSource
                if (startRow.equals(s))
                {
                   result = data.size() - 1;
-
                   break;
                }
             }
@@ -335,13 +348,13 @@ public class DataSourceJDBC extends DataSource
 
 
    /**
-    * DOCUMENT ME!
+    * Get the requested row  as array of objects.
+    *
+    * @param i the row number
     * 
-    * @param i DOCUMENT ME!
+    * @return the requested row  as array of objects
     * 
-    * @return DOCUMENT ME!
-    * 
-    * @throws SQLException DOCUMENT ME!
+    * @throws SQLException if any error occurs
     */
    protected final Object[] getRow(int i) throws SQLException
    {
@@ -374,16 +387,18 @@ public class DataSourceJDBC extends DataSource
 
 
    /**
-    * DOCUMENT ME!
+    * Get the size of the data vector.
     * 
-    * @return DOCUMENT ME!
+    * @return the size of the data vector
     * 
-    * @throws SQLException DOCUMENT ME!
+    * @throws SQLException if any error occurs
     */
    protected int size() throws SQLException
    {
-      // Workaround for bug in firebird driver: After reaching next the next call to next will start at the beginning of the resultset.
-      // rs.next will return true, fetching data will get an NullPointerException. Catch this error and do an break!   
+      // Workaround for bug in firebird driver: After reaching next the next call 
+      // to next will start at the beginning of the resultset.
+      // rs.next will return true, fetching data will get an NullPointerException. 
+      // Catch this error and do an break!   
       while (rs.next())
       {
          try
@@ -404,8 +419,9 @@ public class DataSourceJDBC extends DataSource
 
 
    //------------------------------ DAO methods ---------------------------------
-   private int fillWithData(PreparedStatement ps, FieldValues fieldValues)
-                     throws SQLException
+   private int fillWithData(PreparedStatement ps, 
+                            FieldValues       fieldValues)
+     throws SQLException
    {
       // now we provide the values;
       // every key is the parameter name from of the form page;
@@ -475,64 +491,69 @@ public class DataSourceJDBC extends DataSource
 
 
    /**
-    * DOCUMENT ME!
-    * 
-    * @param fieldValues DOCUMENT ME!
-    * 
-    * @throws SQLException DOCUMENT ME!
-    */
+	* Performs an insert into the DataSource
+	* 
+	* @param fieldValues FieldValues to insert
+	* 
+	* @throws SQLException
+	*/
    public void doInsert(FieldValues fieldValues) throws SQLException
    {
-      PreparedStatement ps = con.prepareStatement(getTable()
-                                                     .getInsertStatement(fieldValues));
-
+      PreparedStatement ps = 
+         con.prepareStatement(getTable().getInsertStatement(fieldValues));
 
       // execute the query & throws an exception if something goes wrong
       fillWithData(ps, fieldValues);
       ps.executeUpdate();
       ps.close();
 
-
       // now handle blob files
       saveBlobFilesToDisk(fieldValues);
    }
 
 
-   /**
-    * DOCUMENT ME!
-    * 
-    * @param fieldValues DOCUMENT ME!
-    * @param keyValuesStr DOCUMENT ME!
-    * 
-    * @throws SQLException DOCUMENT ME!
-    */
+  /**
+   * Performs an update into the DataSource
+   * 
+   * @param fieldValues  FieldValues to update
+   * @param keyValuesStr keyValueStr to the row to update<br>
+   *        key format: FieldID ":" Length ":" Value<br>
+   *        example: if key id = 121 and field id=2 then keyValueStr contains "2:3:121"<br>
+   *        If the key consists of more than one fields, the key values are seperated through "-"<br>
+   *        example: value of field 1=12, value of field 3=1992, then we'll
+   *        get "1:2:12-3:4:1992"
+   * 
+   * @throws SQLException
+   */
    public void doUpdate(FieldValues fieldValues, String keyValuesStr)
                  throws SQLException
    {
-      PreparedStatement ps  = con.prepareStatement(
-                                       getTable()
-                                          .getUpdateStatement(fieldValues));
-      int               col = fillWithData(ps, fieldValues);
+      PreparedStatement ps 
+        = con.prepareStatement(getTable().getUpdateStatement(fieldValues));
+      int col = fillWithData(ps, fieldValues);
       getTable().populateWhereClauseForPS(keyValuesStr, ps, col);
-
 
       // we are now ready to execute the query
       ps.executeUpdate();
       ps.close();
 
-
       // now handle blob files
       saveBlobFilesToDisk(fieldValues);
    }
 
 
-   /**
-    * DOCUMENT ME!
-    * 
-    * @param keyValuesStr DOCUMENT ME!
-    * 
-    * @throws SQLException DOCUMENT ME!
-    */
+  /**
+   * performs a delete in the DataSource
+   * 
+   * @param keyValuesStr   keyValueStr to the row to update<br>
+   *        key format: FieldID ":" Length ":" Value<br>
+   *        example: if key id = 121 and field id=2 then keyValueStr contains "2:3:121"<br>
+   *        If the key consists of more than one fields, the key values are seperated through "-"<br>
+   *        example: value of field 1=12, value of field 3=1992, then we'll
+   *        get "1:2:12-3:4:1992"
+   * 
+   * @throws SQLException
+   */
    public void doDelete(String keyValuesStr) throws SQLException
    {
       FieldValues fieldValues = null;
@@ -546,13 +567,12 @@ public class DataSourceJDBC extends DataSource
          queryBuf.append(" WHERE ");
          queryBuf.append(getTable().getWhereClauseForPS());
 
-         PreparedStatement diskblobsPs = con.prepareStatement(
-                                                  queryBuf.toString());
+         PreparedStatement diskblobsPs = 
+           con.prepareStatement(queryBuf.toString());
          getTable().populateWhereClauseForPS(keyValuesStr, diskblobsPs, 1);
          diskblobs = diskblobsPs.executeQuery();
 
-         ResultSetVector rsv = new ResultSetVector(getTable().getDiskblobs(), 
-                                                   diskblobs);
+         ResultSetVector rsv = new ResultSetVector(getTable().getDiskblobs(), diskblobs);
 
          if (!Util.isNull(rsv))
          {
@@ -562,14 +582,11 @@ public class DataSourceJDBC extends DataSource
       }
 
       // 20021031-HKK: Build in table!!
-      PreparedStatement ps = con.prepareStatement(
-                                      getTable().getDeleteStatement());
-
+      PreparedStatement ps = con.prepareStatement(getTable().getDeleteStatement());
 
       // now we provide the values
       // of the key-fields, so that the WHERE clause matches the right dataset!
       getTable().populateWhereClauseForPS(keyValuesStr, ps, 1);
-
 
       // finally execute the query
       ps.executeUpdate();
