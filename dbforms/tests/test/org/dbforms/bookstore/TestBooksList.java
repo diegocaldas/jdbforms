@@ -28,7 +28,7 @@ public class TestBooksList extends AbstractTestBase
 		junit.textui.TestRunner.main(new String[] { TestBooksList.class.getName()});
 	}
 
-	public void testBooksList() throws Exception
+	public void testBooksList2() throws Exception
 	{
 		System.out.println("testBooksList");
 		System.out.println("Testing URL: " + replaceURL("http://localhost/bookstore/tests/testBOOKSList.jsp"));

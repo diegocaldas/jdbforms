@@ -17,7 +17,7 @@ public class TestBooksSingle2 extends AbstractTestBase
 		super(name);
 	}
 	
-	public void testTest() throws Exception
+	public void testBooksSingle() throws Exception
 	{
 		List list;
 		String rsp;
