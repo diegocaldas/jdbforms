@@ -29,11 +29,6 @@
 						<td><db:navNextButton  caption="next"/></td>
 						<td><db:navLastButton  caption="last"/></td>
 					</tr>
-			    <db:hasMoreRecords count="1">
-					<tr>
-						<td colspan="4">more records</td>
-					</tr>
-			    </db:hasMoreRecords>
 				</table>
 			</db:footer>
 		</db:dbform>
