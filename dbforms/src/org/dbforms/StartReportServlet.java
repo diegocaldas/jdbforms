@@ -43,43 +43,43 @@ import dori.jasper.engine.export.*;
 
 /**
  * 
- * This servlet starts a JasperReport. 
- * Data is read from the current dbForm.
+ * This servlet starts a JasperReport.</br>
+ * Data is read from the current dbForm.</br>
  * Servlet is looking for the report xml file in 
- * WEB-INF/custom/reports, WEB-INF/reports. 
+ * WEB-INF/custom/reports, WEB-INF/reports.</br>
  *
- * If report xml is newer then jasper file report will be recompiled.
+ * If report xml is newer then jasper file report will be recompiled.</br>
  * 
  * Data is send to report as JRDataSourceRSV which is a Wrapper around an
- * ResultSetVector.
+ * ResultSetVector.</br>
  * 
  * To enable subreports, message resources etc an ReportParameter is send to the
- * JasperReport. 
+ * JasperReport. </br>
  * 
- * usage:
- * with a simple goto button:
- *        &lt;db:gotoButton 
- *  			    destTable="web_parts"
- *                          destination=" /reports/Artikel"/&gt;
+ * usage:</br>
+ * with a simple goto button:</br>
+ *        &lt;db:gotoButton</br>
+ *  			    destTable="web_parts"</br>
+ *                          destination=" /reports/Artikel"/&gt;</br>
  *
  * 
- * or for one record:
- *           	&lt;db:gotoButton
- * 			destTable="web_parts"
- *			keyToDestPos="currentRow"
- *     			destination="/reports/Artikel"
- *            	  	/&gt;
+ * or for one record:</br>
+ *           	&lt;db:gotoButton</br>
+ * 			destTable="web_parts"</br>
+ *			keyToDestPos="currentRow"</br>
+ *     			destination="/reports/Artikel"</br>
+ *            	  	/&gt;</br>
  * 
- * Servlet mapping must be set to handle all /reports by this servlet!!!
- *		   &lt;servlet/&gt;
- *   			&lt;servlet-name/&gt;startreport&lt;/servlet-name/&gt;
- *   			&lt;display-name/&gt;startreport&lt;/display-name/&gt;
- *   			&lt;servlet-class/&gt;de.aucos.servlet.StartReportServlet&lt;/servlet-class/&gt;
- * 		&lt;/servlet/&gt;
- *   		&lt;servlet-mapping/&gt;
- *    			&lt;servlet-name/&gt;startreport&lt;/servlet-name/&gt;
- *   			&lt;url-pattern/&gt;/reports/*&lt;/url-pattern/&gt;
- * 		&lt;/servlet-mapping&gt;
+ * Servlet mapping must be set to handle all /reports by this servlet!!!</br>
+ *		   &lt;servlet/&gt;</br>
+ *   			&lt;servlet-name/&gt;startreport&lt;/servlet-name/&gt;</br>
+ *   			&lt;display-name/&gt;startreport&lt;/display-name/&gt;</br>
+ *   			&lt;servlet-class/&gt;org.dbforms.StartReportServlet&lt;/servlet-class/&gt;</br>
+ * 		&lt;/servlet&gt;</br>
+ *   		&lt;servlet-mapping/&gt;</br>
+ *    			&lt;servlet-name/&gt;startreport&lt;/servlet-name/&gt;</br>
+ *   			&lt;url-pattern/&gt;/reports/*&lt;/url-pattern/&gt;</br>
+ * 		&lt;/servlet-mapping&gt;</br>
  * 
  * 
  * 

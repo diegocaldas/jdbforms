@@ -15,16 +15,20 @@ Modified by SAB to produce pdf via fop and use apache resolver.
      default="output-all">
     
      
+    <property environment="env"/>
+
      <!-- set the following three values according to your path (other two are below in the pdf section) -->
-   <property name="UsersGuide.dir" value="/home/javauser/dbforms/doc/DocBook_UsersGuide"/><!-- 1) set here-->
+   <property name="UsersGuide.dir" value="d:/projekte/webapps/dbforms/doc/DocBook_UsersGuide"/><!-- 1) set here-->
  
    <property name="build.dir" value="${UsersGuide.dir}/build"/>
   
  <property name="tools.dir" value="${UsersGuide.dir}/docbook_tools"/>
+
  <!-- docbook location: Everything taken relative to this for docbook stuff -->
-     <property name="docbookHome.dir" value="${UsersGuide.dir}/docbook_tools"/>                      
+     <property name="docbookHome.dir" value="${env.DOCBOOK_HOME}"/>                      
+
  <!-- Main stylesheets -->
-     <property name="sSheetHome.dir" value="${docbookHome.dir}/docbook-xsl-1.57.0"/>                
+     <property name="sSheetHome.dir" value="${docbookHome.dir}"/>                
 
  <!-- Main Docbook stylesheet  />"http://docbook.sourceforge.net/release/xsl/current/html/chunk.xsl"-->
 <property name="main.stylesheet" value="${sSheetHome.dir}/html/chunk.xsl"/>         
@@ -179,12 +183,12 @@ Modified by SAB to produce pdf via fop and use apache resolver.
    
    <path id="fopclasspath">      <!-- set classpath according to FOP_HOME -->
 
-           <fileset dir="${tools.dir}/fop-0.20.5rc/lib/"><!-- 2) set here-->
+           <fileset dir="${env.FOP_HOME}/lib/"><!-- 2) set here-->
 
                <include name="*.jar"/>
            </fileset>
 
-           <fileset dir="${tools.dir}/fop-0.20.5rc/build/"><!-- 3) set here-->
+           <fileset dir="${env.FOP_HOME}/build/"><!-- 3) set here-->
 
                <include name="*.jar"/>
 

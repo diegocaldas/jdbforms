@@ -1,3 +1,35 @@
+2003-02-07
+(Henner.Kollmann@gmx.de)
+    integrate DbForms with JasperReports.
+    taken from api doc:
+    	This servlet starts a JasperReport.
+	Data is read from the current dbForm.
+	Servlet is looking for the report xml file in WEB-INF/custom/reports, WEB-INF/reports.
+	If report xml is newer then jasper file report will be recompiled.
+	Data is send to report as JRDataSourceRSV which is a Wrapper around an ResultSetVector.
+	To enable subreports, message resources etc an ReportParameter is send to the JasperReport. 
+	usage:
+		with a simple goto button:
+			<db:gotoButton
+				destTable="web_parts"
+				destination=" /reports/Artikel"/>
+		or for one record:
+			<db:gotoButton
+				destTable="web_parts"
+				keyToDestPos="currentRow"
+				destination="/reports/Artikel"
+			/>
+	Servlet mapping must be set to handle all /reports by this servlet!!!
+		<servlet/>
+			<servlet-name/>startreport</servlet-name/>
+			<display-name/>startreport</display-name/>
+			<servlet-class/>org.dbforms.StartReportServlet</servlet-class/>
+		</servlet>
+		<servlet-mapping/>
+			<servlet-name/>startreport</servlet-name/>
+			<url-pattern/>/reports/*</url-pattern/>
+		</servlet-mapping>
+
 2003-02-04
 (Henner.Kollmann@gmx.de)
     Controller.java,DbFormTag.java, DbFormsValidatorUtil.java
