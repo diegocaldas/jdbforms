@@ -32,7 +32,7 @@
 				</table>
 			<db:gotoButton  caption="export_to_excel"  singleRow="false"
                 destTable="BOOK"
-                destination="/excelReport/books?filename=BOOK.xls&sheetname=BOOKLIST" />
+                destination="/excelreport/books?filename=BOOK.xls&sheetname=BOOKLIST" />
 			</db:footer>
 			<!-- -->
 		</db:dbform>

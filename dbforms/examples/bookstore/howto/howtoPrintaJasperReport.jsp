@@ -30,7 +30,7 @@
 								destTable="BOOK"
 								keyToKeyToDestPos="currentRow"
         	          			singleRow="true"
-        	          			destination="/reports/books"
+        	          			destination="/jasperreport/books"
                 	  	/>
 					</td>
 				</tr>
@@ -42,7 +42,7 @@
     	              			caption="print all"
 								destTable="BOOK"
         	          			singleRow="false"
-        	          			destination="/reports/books" 
+        	          			destination="/jasperreport/books" 
                 	  	/>
 					</td>
 				</tr>

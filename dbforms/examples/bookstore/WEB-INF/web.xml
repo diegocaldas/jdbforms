@@ -139,7 +139,7 @@
   </servlet-mapping>
     <servlet-mapping>
      <servlet-name>csvreport</servlet-name>
-     <url-pattern>/cvsreport/*</url-pattern>
+     <url-pattern>/csvreport/*</url-pattern>
   </servlet-mapping>
   <!--*************************************************-->
   <!--**======= Other configuration items, not=======**-->

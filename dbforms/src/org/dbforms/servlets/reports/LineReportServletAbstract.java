@@ -278,8 +278,7 @@ public abstract class LineReportServletAbstract extends ReportServletAbstract {
 			ReportWriter res = fillReport(request, headerFields, reportFields,
 					dataSource);
 			if (res != null) {
-				res.fileName = FileUtil.basename(reportFileFullName,
-						res.fileName);
+				res.fileName = FileUtil.basename(reportFileFullName)  + res.fileName;
 			}
 			return res;
 		} catch (Exception e) {
