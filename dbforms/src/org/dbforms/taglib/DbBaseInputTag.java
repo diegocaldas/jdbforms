@@ -163,7 +163,7 @@ public abstract class DbBaseInputTag extends DbBaseHandlerTag
             setOnFocus(onFocus + "this.blur();");
         }
 
-        return EVAL_BODY_TAG;
+        return EVAL_BODY_BUFFERED;
     }
 
 

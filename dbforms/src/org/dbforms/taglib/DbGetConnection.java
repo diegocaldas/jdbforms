@@ -74,7 +74,7 @@ public class DbGetConnection extends BodyTagSupport implements TryCatchFinally
             throw new JspException("Database error" + e.toString());
         }
 
-        return EVAL_BODY_TAG;
+        return EVAL_BODY_BUFFERED;
     }
 
 
