@@ -635,10 +635,11 @@ public class DbFormTag extends BodyTagSupport {
 				"<input type=\"hidden\" name=\""+ValidatorConstants.FORM_VALIDATOR_NAME+"\" value=\""+ getFormValidatorName()+"\">");
 			}	
 
-			tagBuf.append(
-				"<input type=\"hidden\" name=\"source\" value=\""
-					+ request.getRequestURI()+"?"+request.getQueryString()
-					+ "\">");
+			tagBuf.append("<input type=\"hidden\" name=\"source\" value=\"");
+			tagBuf.append(request.getRequestURI());
+			if(request.getQueryString()!=null)
+				 tagBuf.append("?").append(request.getQueryString());
+			tagBuf.append("\">");
 		
 			
 			// Allow to send action dynamicaly from javascript
@@ -1229,7 +1230,10 @@ public class DbFormTag extends BodyTagSupport {
 		// want  A's order constraints get applied to B
 		if (localRequest != null) {
 
-			String refSource = localRequest.getRequestURI()+"?"+request.getQueryString();
+			String refSource = localRequest.getRequestURI();
+			if(request.getQueryString()!=null)
+				 refSource+="?"+request.getQueryString();
+				 
 			String sourceTag = ParseUtil.getParameter(localRequest, "source");
 			logCat.info("!comparing page " + refSource + " TO " + sourceTag);
 			/*
