@@ -130,8 +130,7 @@ public class Controller extends HttpServlet
         // the whole application has to access Request via the "ParseUtil" class
         // this is also true for jsp files written by the user
         // #fixme taglib needed for convenient access to ParseUtil wrapper methods
-        // Bradley's multiple connection support [fossato <fossato@pow2.com> 2002/11/04]:
-        // the connections HashTable;
+
         Hashtable connections = new Hashtable();
         String contentType = request.getContentType();
         String formValidatorName = request.getParameter(ValidatorConstants.FORM_VALIDATOR_NAME);
@@ -147,7 +146,6 @@ public class Controller extends HttpServlet
             try
             {
                 logCat.debug("before new multipartRequest");
-
                 MultipartRequest multipartRequest = new MultipartRequest(request, maxUploadSize);
 
                 logCat.debug("after new multipartRequest");
@@ -180,7 +178,8 @@ public class Controller extends HttpServlet
                 {
                     // if hidden formValidatorName exist and it's an Update or Insert event,
                     // doValidation with Commons-Validator
-                    if ((formValidatorName != null) && (e instanceof UpdateEvent || e instanceof InsertEvent))
+                    if ((formValidatorName != null) &&
+                        (e instanceof UpdateEvent || e instanceof InsertEvent))
                     {
                         doValidation(formValidatorName, e, request);
                     }
@@ -452,35 +451,38 @@ public class Controller extends HttpServlet
     /**
      *  Gets the connection object.
      *
-     * @param  request     the request object
-     * @param  tableId     the table identifier
-     * @param  connections the connections hash table
+     * @param  request          the request object
+     * @param  tableId          the table identifier
+     * @param  connectionsTable the connections hash table
      * @return  The connection object
      */
-    private Connection getConnection(HttpServletRequest request, int tableId, Hashtable connections)
+    private Connection getConnection(HttpServletRequest request, int tableId, Hashtable connectionsTable)
     {
-        String dbConnectionName = request.getParameter("invname_" + tableId);
-        DbConnection aDbConnection = config.getDbConnection(dbConnectionName);
-        Connection con = null;
+        String       connectionName = null;
+        DbConnection dbConnection   = null;
+        Connection   con            = null;
 
-        if (aDbConnection == null)
-        {
-            throw new IllegalArgumentException("No dbconnection configured with name '" + dbConnectionName + "'.");
-        }
+        // get the connection name from the request;
+        if ((connectionName = request.getParameter("invname_" + tableId)) == null)
+          connectionName = "default";
 
-        if (dbConnectionName == null)
-        {
-            dbConnectionName = "default";
-        }
+        // WHY Controller uses this code to get a connection object, while some
+        // other classes use SqlUtil.getConnection ???? <fossato@pow2.com>
 
-        if (connections.get(dbConnectionName) == null)
+        // get the related DbConnection object
+        if ((dbConnection = config.getDbConnection(connectionName)) == null)
+          throw new IllegalArgumentException("No DbConnection object configured with name '"
+                                             + connectionName + "'");
+
+        // ... AND... why this ?? <fossato@pow2.com>
+
+        // a) try to get a connection object from the connection table;
+        // b) if the connectionsTable does not contain that connection,
+        //    create a new one and store it into the table;
+        if ((con = (Connection)connectionsTable.get(connectionName)) == null)
         {
-            con = aDbConnection.getConnection();
-            connections.put(dbConnectionName, con);
-        }
-        else
-        {
-            con = (Connection) connections.get(dbConnectionName);
+            con = dbConnection.getConnection();
+            connectionsTable.put(connectionName, con);
         }
 
         return con;
@@ -490,16 +492,16 @@ public class Controller extends HttpServlet
     /**
      *  Close all the connections stored into the the connections HashTable.
      *
-     * @param  connections the connections HashTable
+     * @param  connectionsTable the connections HashTable
      */
-    private void closeConnections(Hashtable connections)
+    private void closeConnections(Hashtable connectionsTable)
     {
-        Enumeration cons = connections.keys();
+        Enumeration cons = connectionsTable.keys();
 
         while (cons.hasMoreElements())
         {
             String dbConnectionName = (String) cons.nextElement();
-            Connection con = (Connection) connections.get(dbConnectionName);
+            Connection con = (Connection) connectionsTable.get(dbConnectionName);
             SqlUtil.closeConnection(con);
         }
     }
