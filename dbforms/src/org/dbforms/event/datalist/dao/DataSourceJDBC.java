@@ -304,6 +304,7 @@ public class DataSourceJDBC extends DataSource {
 					while (rs.next()) {
                   addRow();
 						if (i < data.size()) {
+                     result = (Object[]) data.get(i);
 							break;
 						}
 					}
