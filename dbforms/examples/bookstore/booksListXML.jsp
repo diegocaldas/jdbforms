@@ -9,7 +9,8 @@
       <h1 align="center">List of books</h1>
       <db:dbform 
       	tableName="XMLBOOKS" 
-      	followUp="booksListXML.jsp" 
+        maxRows="1" 
+      	followUp="/booksListXML.jsp" 
       	autoUpdate="false" 
       >
 	      	<db:header>
@@ -36,7 +37,18 @@
 			      </tr>			              		 				
 			</db:body>
 			<db:footer>
+        		    <tr class="button">
+		               <td colspan="4" style="text-align:center">
+                		 <db:navFirstButton style="width:100" caption="<< First"/>
+        		         <db:navPrevButton  style="width:100" caption="<  Previous"/>
+		                 <db:navNextButton  style="width:100" caption=">  Next"/>
+                		 <db:navLastButton  style="width:100" caption=">> Last"/>
+        		         <db:navNewButton   style="width:100" caption="New"/>
+		                 &nbsp;
+            		   </td>
+    		        </tr>
 	  			</table>
+	  			
 	       </db:footer>
 	</db:dbform>		
    </body>
