@@ -30,20 +30,21 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
 import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Category;
-import org.dbforms.DbFormsConfig;
-import org.dbforms.Field;
-import org.dbforms.FieldValue;
-import org.dbforms.GrantedPrivileges;
-import org.dbforms.Table;
 import org.dbforms.util.FieldTypes;
-import org.dbforms.util.FileHolder;
+import org.dbforms.util.FieldValue;
 import org.dbforms.util.ParseUtil;
 import org.dbforms.util.ResultSetVector;
 import org.dbforms.util.SqlUtil;
 import org.dbforms.util.UniqueIDGenerator;
 import org.dbforms.util.FieldValues;
 import org.dbforms.util.Constants;
+import org.dbforms.util.external.FileHolder;
+import org.dbforms.config.DbFormsConfig;
+import org.dbforms.config.Field;
+import org.dbforms.config.GrantedPrivileges;
+import org.dbforms.config.Table;
 import org.dbforms.event.*;
 
 
@@ -295,7 +296,7 @@ public class InsertEvent extends ValidationEvent
 
       //Patch insert nav by Stefano Borghi
       //Show the last record inserted
-      // TODO: Will not work key field is autoinc!!
+      // TODO: Will not work if key field is autoinc!!
       String       firstPosition = null;
       Vector       key     = table.getKey();
       FieldValue[] fvEqual = new FieldValue[key.size()];

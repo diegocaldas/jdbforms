@@ -20,64 +20,37 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-package org.dbforms.util;
-import java.util.Hashtable;
-import java.util.Enumeration;
+package org.dbforms.config.error;
+import java.util.*;
+import org.dbforms.util.*;
+import org.apache.log4j.Category;
 
 
 
-
-/**
- *
- * New class to deal with a list of FieldValues. Delagate pattern: Delegate everything to an Hashtable
- * Do the necessary type transformations.
- *
- * @author hkk
+/****
+ * <p>
+ * This class represents a Message tag in dbforms-error.xml
+ * </p>
  *
  */
-public class FieldValues
+public class Message
 {
-   private Hashtable ht;
+   static Category logCat = Category.getInstance(Message.class.getName()); // logging category for this class
 
-   /**
-    * Creates a new FieldValues object.
-    */
-   public FieldValues()
-   {
-      ht = new Hashtable();
-   }
+   //------------------------ Properties ---------------------------------------------------------
+   private String language; // Code used to specify a language for this message
 
-   /**
-    * DOCUMENT ME!
-    *
-    * @param key DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    */
-   public FieldValue get(String key)
-   {
-      return (FieldValue) ht.get(key);
-   }
-
+   // May be converted to a real Locale object if need be...
+   private String message; // the message-name, as provided in xml-error file
 
    /**
     * DOCUMENT ME!
     *
-    * @param key DOCUMENT ME!
-    * @param value DOCUMENT ME!
+    * @param message DOCUMENT ME!
     */
-   public void put(String key, FieldValue value)
+   public void setMessage(String message)
    {
-      ht.put(key, value);
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    */
-   public void clear()
-   {
-      ht.clear();
+      this.message = message;
    }
 
 
@@ -86,9 +59,20 @@ public class FieldValues
     *
     * @return DOCUMENT ME!
     */
-   public Enumeration keys()
+   public String getMessage()
    {
-      return ht.keys();
+      return message;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param language DOCUMENT ME!
+    */
+   public void setLanguage(String language)
+   {
+      this.language = language;
    }
 
 
@@ -97,8 +81,25 @@ public class FieldValues
     *
     * @return DOCUMENT ME!
     */
-   public int size()
+   public String getLanguage()
    {
-      return ht.size();
+      return language;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String toString()
+   {
+      StringBuffer buf = new StringBuffer();
+      buf.append("language=");
+      buf.append(language);
+      buf.append(" message=");
+      buf.append(getMessage());
+
+      return buf.toString();
    }
 }

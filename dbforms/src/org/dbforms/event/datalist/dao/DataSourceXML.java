@@ -40,12 +40,12 @@ import org.w3c.dom.Node;
 
 // apache logging
 import org.apache.log4j.Category;
-import org.dbforms.FieldValue;
-import org.dbforms.Table;
-import org.dbforms.Field;
+import org.dbforms.config.DbFormsConfigRegistry;
+import org.dbforms.config.Field;
+import org.dbforms.config.Table;
 import org.dbforms.util.Constants;
+import org.dbforms.util.FieldValue;
 import org.dbforms.util.Util;
-import org.dbforms.DbFormsConfigRegistry;
 
 
 

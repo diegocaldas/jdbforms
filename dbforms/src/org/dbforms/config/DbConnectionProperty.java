@@ -20,39 +20,56 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-package org.dbforms.util;
+package org.dbforms.config;
 
 /**
  *
- * Some String helpers.
+ * Adds property support to DbConnection
  *
  *
- * @author hkk
- *
+ * @author Henner Kollmann (Henner.Kollmann@gmx.de)
  */
-import org.dbforms.util.external.*;
-
-
-
-/**
- * DOCUMENT ME!
- *
- * @author $author$
- * @version $Revision$
- */
-public class StringUtil
+public class DbConnectionProperty
 {
+   private String name;
+   private String value;
+
    /**
-    * returns a formated string
-    *
-    * @param f
-    * @param s
+    * Returns the name.
     * @return String
     */
-   public static String sprintf(String format, Object[] o)
+   public String getName()
    {
-      PrintfFormat printfFormat = new PrintfFormat(format); // create instance of PrintfFormat class
+      return name;
+   }
 
-      return printfFormat.sprintf(o);
+
+   /**
+    * Returns the value.
+    * @return String
+    */
+   public String getValue()
+   {
+      return value;
+   }
+
+
+   /**
+    * Sets the name.
+    * @param name The name to set
+    */
+   public void setName(String name)
+   {
+      this.name = name;
+   }
+
+
+   /**
+    * Sets the value.
+    * @param value The value to set
+    */
+   public void setValue(String value)
+   {
+      this.value = value;
    }
 }

@@ -20,64 +20,35 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-package org.dbforms.util;
-import java.util.Hashtable;
-import java.util.Enumeration;
+package org.dbforms.config;
+import java.util.*;
+import javax.servlet.http.HttpServletRequest;
+import org.dbforms.util.*;
+import org.apache.log4j.Category;
 
 
 
-
-/**
+/****
+ * <p>
+ * This class holds XML config data defining interceptors for tables.
+ * compare org.dbforms.event.DbEventInterceptor
+ * </p>
  *
- * New class to deal with a list of FieldValues. Delagate pattern: Delegate everything to an Hashtable
- * Do the necessary type transformations.
- *
- * @author hkk
- *
+ * @auther Joachim Peer <joepeer@wap-force.net>
  */
-public class FieldValues
+public class Interceptor
 {
-   private Hashtable ht;
-
-   /**
-    * Creates a new FieldValues object.
-    */
-   public FieldValues()
-   {
-      ht = new Hashtable();
-   }
+   static Category logCat    = Category.getInstance(Interceptor.class.getName()); // logging category for this class
+   private String  className;
 
    /**
     * DOCUMENT ME!
     *
-    * @param key DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
+    * @param className DOCUMENT ME!
     */
-   public FieldValue get(String key)
+   public void setClassName(String className)
    {
-      return (FieldValue) ht.get(key);
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param key DOCUMENT ME!
-    * @param value DOCUMENT ME!
-    */
-   public void put(String key, FieldValue value)
-   {
-      ht.put(key, value);
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    */
-   public void clear()
-   {
-      ht.clear();
+      this.className = className;
    }
 
 
@@ -86,19 +57,8 @@ public class FieldValues
     *
     * @return DOCUMENT ME!
     */
-   public Enumeration keys()
+   public String getClassName()
    {
-      return ht.keys();
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    */
-   public int size()
-   {
-      return ht.size();
+      return className;
    }
 }

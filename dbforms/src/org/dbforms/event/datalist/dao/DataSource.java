@@ -26,17 +26,18 @@ import java.io.IOException;
 import java.util.Enumeration;
 import java.sql.Connection;
 import java.sql.SQLException;
+
 import org.apache.log4j.Category;
-import org.dbforms.Table;
-import org.dbforms.Field;
-import org.dbforms.FieldValue;
-import org.dbforms.util.FileHolder;
+import org.dbforms.config.DbFormsConfig;
+import org.dbforms.config.Field;
+import org.dbforms.config.Table;
+import org.dbforms.util.FieldValue;
 import org.dbforms.util.FieldTypes;
 import org.dbforms.util.FieldValues;
-import org.dbforms.DbFormsConfig;
 import org.dbforms.util.ResultSetVector;
 import org.dbforms.util.FieldValues;
 import org.dbforms.util.Util;
+import org.dbforms.util.external.FileHolder;
 
 
 

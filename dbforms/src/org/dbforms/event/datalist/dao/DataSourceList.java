@@ -24,7 +24,8 @@ package org.dbforms.event.datalist.dao;
 import java.util.Hashtable;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
-import org.dbforms.Table;
+
+import org.dbforms.config.Table;
 import org.dbforms.util.ParseUtil;
 
 

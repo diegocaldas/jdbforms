@@ -23,8 +23,11 @@
 package org.dbforms.event.classic;
 import javax.servlet.http.*;
 import java.sql.*;
+
+import org.CVS.*;
 import org.apache.log4j.Category;
 import org.dbforms.*;
+import org.dbforms.config.*;
 import org.dbforms.event.*;
 import org.dbforms.util.*;
 

@@ -23,10 +23,11 @@
 package org.dbforms.event.datalist.dao;
 import java.sql.*;
 import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Category;
-import org.dbforms.Table;
-import org.dbforms.FieldValue;
-import org.dbforms.DbFormsConfig;
+import org.dbforms.config.DbFormsConfig;
+import org.dbforms.config.Table;
+import org.dbforms.util.FieldValue;
 import org.dbforms.util.ResultSetVector;
 import org.dbforms.util.ReflectionUtil;
 import org.dbforms.util.FieldValues;
