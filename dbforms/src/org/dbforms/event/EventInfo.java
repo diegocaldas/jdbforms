@@ -172,10 +172,9 @@ public class EventInfo
      */
     public String toString()
     {
-        StringBuffer sb = new StringBuffer();
-
-        sb.append("event: id = ").append(getId()).append("; type = ").append(type).append("; className = ").append(className);
-
-        return sb.toString();
+        return new StringBuffer("event: id = ").append(getId())
+                        .append("; type = ").append(type)
+                        .append("; className = ").append(className)
+                        .toString();
     }
 }
