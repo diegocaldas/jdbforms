@@ -145,8 +145,8 @@ functions if your database supports it. (you could use the stateful session bean
  	 * @param inclusive set to true 
  	 *  if you want the low &lt;= check and check &lt;= high .
  	 * @param digits the number in digits to the 
- 	 *  left of the decimal to round. positive, non-zero integer only. For example: 1438 with 1
-         *  passed in will give us 1440.
+ 	 *  left of the decimal to round. positive, non-zero integer only. 
+         *  For example: 1438 with 1 passed in will give us 1440.
  	 * @return value converted to a string.
  	 * @throws ValidationException for any number format problems.
  	 */
@@ -210,8 +210,10 @@ functions if your database supports it. (you could use the stateful session bean
  		}
  		catch(NumberFormatException nfe)
  		{
- 			throw new MathException(&quot;Invalid arguements to method: inRange(String check, String low,
-String high, boolean inclusive):&quot;+check+&quot;,&quot;+low+&quot;,&quot;+high+&quot;,&quot;+inclusive);
+ 			throw new MathException(&quot;Invalid arguements to method:
+                            inRange(String check, String low, String high,
+                            boolean inclusive):&quot;+check+&quot;,&quot;+low+&quot;
+                            ,&quot;+high+&quot;,&quot;+inclusive);
  		}
  
  
