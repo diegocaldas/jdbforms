@@ -28,6 +28,8 @@ import java.util.StringTokenizer;
 import java.util.Enumeration;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Category;
+import org.dbforms.config.Field;
+import org.dbforms.config.Table;
 
 
 
@@ -215,10 +217,10 @@ public class ParseUtil
 
    /**
     * DOCUMENT ME!
-    *
+    * 
     * @param request DOCUMENT ME!
     * @param str DOCUMENT ME!
-    *
+    * 
     * @return DOCUMENT ME!
     */
    public static Vector getParametersStartingWith(HttpServletRequest request, 
@@ -248,10 +250,10 @@ public class ParseUtil
 
    /**
     * DOCUMENT ME!
-    *
+    * 
     * @param request DOCUMENT ME!
     * @param str DOCUMENT ME!
-    *
+    * 
     * @return DOCUMENT ME!
     */
    public static String getFirstParameterStartingWith(HttpServletRequest request, 
@@ -317,6 +319,7 @@ public class ParseUtil
     *  getEmbeddedString(s, 3, '_') ==> will throw a Runtime Exception
     *  </pre>
     * </p>
+    * 
     * @param str DOCUMENT ME!
     * @param afterDelims DOCUMENT ME!
     * @param delim DOCUMENT ME!
@@ -365,6 +368,7 @@ public class ParseUtil
     * <pre>
     *  </pre>
     * </p>
+    * 
     * @param str DOCUMENT ME!
     * @param afterDelims DOCUMENT ME!
     * @param delim DOCUMENT ME!
@@ -410,16 +414,127 @@ public class ParseUtil
 
 
    /**
-    * DOCUMENT ME!
-    * 
-    * @param request DOCUMENT ME!
+    * Initialize the filterFieldValues array.
+    * @param table DOCUMENT ME!
+    * @param filter DOCUMENT ME!
     * 
     * @return DOCUMENT ME!
     */
-   public static boolean hasSearchFields(HttpServletRequest request)
+   public static FieldValue[] initFilterFieldValues(Table table, String filter)
    {
-      Vector searchFieldNames = getParametersStartingWith(request, "search_");
+      // 1 to n fields may be mapped
+      Vector keyValPairs = ParseUtil.splitString(filter, ",;");
 
-      return ((searchFieldNames == null) || (searchFieldNames.size() == 0));
+      // ~ no longer used as separator!
+      int          len = keyValPairs.size();
+
+      FieldValue[] result = new FieldValue[len];
+
+      for (int i = 0; i < len; i++)
+      {
+         int     operator    = 0;
+         boolean isLogicalOR = false;
+         int     jump        = 1;
+         String  aKeyValPair = (String) keyValPairs.elementAt(i);
+
+
+         // i.e "id=2"
+         logCat.debug("initFilterFieldValues: aKeyValPair = " + aKeyValPair);
+
+         // Following code could be optimized, however I did not want to make too many changes...
+         int n;
+
+         // Check for Not Equal
+         if ((n = aKeyValPair.indexOf("<>")) != -1)
+         {
+            // Not Equal found! - Store the operation for use later on
+            operator = Constants.FILTER_NOT_EQUAL;
+            jump     = 2;
+         }
+         else if ((n = aKeyValPair.indexOf(">=")) != -1)
+         {
+            // Check for GreaterThanEqual
+            // GreaterThenEqual found! - Store the operation for use later on
+            operator = Constants.FILTER_GREATER_THEN_EQUAL;
+            jump     = 2;
+         }
+         else if ((n = aKeyValPair.indexOf('>')) != -1)
+         {
+            // Check for GreaterThan
+            // GreaterThen found! - Store the operation for use later on
+            operator = Constants.FILTER_GREATER_THEN;
+         }
+         else if ((n = aKeyValPair.indexOf("<=")) != -1)
+         {
+            // Check for SmallerThenEqual
+            // SmallerThenEqual found! - Store the operation for use later on
+            operator = Constants.FILTER_SMALLER_THEN_EQUAL;
+            jump     = 2;
+         }
+         else if ((n = aKeyValPair.indexOf('<')) != -1)
+         {
+            // Check for SmallerThen
+            // SmallerThen found! - Store the operation for use later on
+            operator = Constants.FILTER_SMALLER_THEN;
+         }
+         else if ((n = aKeyValPair.indexOf('=')) != -1)
+         {
+            // Check for equal
+            // Equal found! - Store the operator for use later on
+            operator = Constants.FILTER_EQUAL;
+         }
+         else if ((n = aKeyValPair.indexOf('~')) != -1)
+         {
+            // Check for LIKE
+            // LIKE found! - Store the operator for use later on
+            operator = Constants.FILTER_LIKE;
+         }
+         else if ((n = aKeyValPair.toUpperCase().indexOf("NOTISNULL")) != -1)
+         {
+            // Check for not is null
+            // LIKE found! - Store the operator for use later on
+            jump     = 9;
+            operator = Constants.FILTER_NOT_NULL;
+         }
+         else if ((n = aKeyValPair.toUpperCase().indexOf("ISNULL")) != -1)
+         {
+            // Check for null
+            // LIKE found! - Store the operator for use later on
+            jump     = 6;
+            operator = Constants.FILTER_NULL;
+         }
+
+         //  PG - At this point, I have set my operator and I should have a valid index.
+         //	Note that the original code did not handle the posibility of not finding an index
+         //	(value = -1)...
+         String fieldName = aKeyValPair.substring(0, n).trim();
+
+
+         // i.e "id"
+         logCat.debug("Filter field=" + fieldName);
+
+         if (fieldName.charAt(0) == '|')
+         {
+            // This filter must be associated to a logical OR, clean out the indicator...
+            fieldName   = fieldName.substring(1);
+            isLogicalOR = true;
+         }
+
+         Field filterField = table.getFieldByName(fieldName);
+
+         // Increment by 1 or 2 depending on operator
+         String value = aKeyValPair.substring(n + jump).trim();
+
+
+         // i.e. "2"
+         logCat.debug("Filter value=" + value);
+
+
+         // Create a new instance of FieldValue and set the operator variable
+         result[i] = new FieldValue(filterField, value, operator, isLogicalOR);
+         logCat.debug("and fv is =" + result[i].toString());
+      }
+
+      return result;
    }
 }

@@ -164,10 +164,6 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
     */
    private FieldValue[] childFieldValues;
 
-   /**
-    *  this data structure holds the filters values
-    */
-   private FieldValue[] filterFieldValues;
 
    /** subform flag */
    private boolean isSubForm = false;
@@ -178,7 +174,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
    /** filter string */
    private String filter;
    /** SQL filter string */
-   private String sqlFilter;
+   private String sqlFilter = null;
 
    private String gotoPrefix;
 
@@ -575,11 +571,6 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
    public void setFilter(String filter)
    {
       this.filter = filter;
-
-      if (!Util.isNull(filter))
-      {
-         initFilterFieldValues();
-      }
    }
 
 
@@ -1481,6 +1472,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
             lastPosition = firstPosition;
          }
 
+
          if (ParseUtil.getParameter(request, "filter_" + table.getId() + "_set") != null)
          {
              logCat.debug("a filter set/unset is called: reset firstpos and lastpos");
@@ -1506,6 +1498,13 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
 
          logCat.info("firstposition " + firstPosition);
          logCat.info("lastPosition " + lastPosition);
+
+			FieldValue[] filterFieldValues = null;
+			 if (!Util.isNull(filter))
+			{
+				filterFieldValues = ParseUtil.initFilterFieldValues(table, filter);
+			}
+ 
 
          FieldValue[] mergedFieldValues = null;
 
@@ -2048,123 +2047,6 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
             .getResultSetVector());
       childFieldValues = getTable().mapChildFieldValues(parentForm.getTable(),
             parentField, childField, aPosition).toArr();
-   }
-
-
-   /**
-    *  Initialize the filterFieldValues array.
-    */
-   private void initFilterFieldValues()
-   {
-      // 1 to n fields may be mapped
-      Vector keyValPairs = ParseUtil.splitString(filter, ",;");
-
-      // ~ no longer used as separator!
-      int len = keyValPairs.size();
-
-      filterFieldValues = new FieldValue[len];
-
-      for (int i = 0; i < len; i++)
-      {
-         int     operator    = 0;
-         boolean isLogicalOR = false;
-         int     jump        = 1;
-         String  aKeyValPair = (String) keyValPairs.elementAt(i);
-
-         // i.e "id=2"
-         logCat.debug("initFilterFieldValues: aKeyValPair = " + aKeyValPair);
-
-         // Following code could be optimized, however I did not want to make too many changes...
-         int n;
-
-         // Check for Not Equal
-         if ((n = aKeyValPair.indexOf("<>")) != -1)
-         {
-            // Not Equal found! - Store the operation for use later on
-            operator    = Constants.FILTER_NOT_EQUAL;
-            jump        = 2;
-         }
-         else if ((n = aKeyValPair.indexOf(">=")) != -1)
-         {
-            // Check for GreaterThanEqual
-            // GreaterThenEqual found! - Store the operation for use later on
-            operator    = Constants.FILTER_GREATER_THEN_EQUAL;
-            jump        = 2;
-         }
-         else if ((n = aKeyValPair.indexOf('>')) != -1)
-         {
-            // Check for GreaterThan
-            // GreaterThen found! - Store the operation for use later on
-            operator = Constants.FILTER_GREATER_THEN;
-         }
-         else if ((n = aKeyValPair.indexOf("<=")) != -1)
-         {
-            // Check for SmallerThenEqual
-            // SmallerThenEqual found! - Store the operation for use later on
-            operator    = Constants.FILTER_SMALLER_THEN_EQUAL;
-            jump        = 2;
-         }
-         else if ((n = aKeyValPair.indexOf('<')) != -1)
-         {
-            // Check for SmallerThen
-            // SmallerThen found! - Store the operation for use later on
-            operator = Constants.FILTER_SMALLER_THEN;
-         }
-         else if ((n = aKeyValPair.indexOf('=')) != -1)
-         {
-            // Check for equal
-            // Equal found! - Store the operator for use later on
-            operator = Constants.FILTER_EQUAL;
-         }
-         else if ((n = aKeyValPair.indexOf('~')) != -1)
-         {
-            // Check for LIKE
-            // LIKE found! - Store the operator for use later on
-            operator = Constants.FILTER_LIKE;
-         }
-         else if ((n = aKeyValPair.toUpperCase().indexOf("NOTISNULL")) != -1)
-         {
-            // Check for not is null
-            // LIKE found! - Store the operator for use later on
-            jump        = 9;
-            operator    = Constants.FILTER_NOT_NULL;
-         }
-         else if ((n = aKeyValPair.toUpperCase().indexOf("ISNULL")) != -1)
-         {
-            // Check for null
-            // LIKE found! - Store the operator for use later on
-            jump        = 6;
-            operator    = Constants.FILTER_NULL;
-         }
-
-         //  PG - At this point, I have set my operator and I should have a valid index.
-         //	Note that the original code did not handle the posibility of not finding an index
-         //	(value = -1)...
-         String fieldName = aKeyValPair.substring(0, n).trim();
-
-         // i.e "id"
-         logCat.debug("Filter field=" + fieldName);
-
-         if (fieldName.charAt(0) == '|')
-         {
-            // This filter must be associated to a logical OR, clean out the indicator...
-            fieldName      = fieldName.substring(1);
-            isLogicalOR    = true;
-         }
-
-         Field filterField = this.table.getFieldByName(fieldName);
-
-         // Increment by 1 or 2 depending on operator
-         String value = aKeyValPair.substring(n + jump).trim();
-
-         // i.e. "2"
-         logCat.debug("Filter value=" + value);
-
-         // Create a new instance of FieldValue and set the operator variable
-         filterFieldValues[i] = new FieldValue(filterField, value, operator,
-               isLogicalOR);
-         logCat.debug("and fv is =" + filterFieldValues[i].toString());
-      }
    }
 
 

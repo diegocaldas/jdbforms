@@ -1,3 +1,9 @@
+2003-09-11
+(Henner.Kollmann@gmx.de)
+	new tag confTableData:
+		external data source like tableData. 
+		Can be used with all tables configured in the config file, xml data included!
+
 2003-08-08
 (Henner.Kollmann@gmx.de)
    - added a tabselector example to bookstore/howto

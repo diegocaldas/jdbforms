@@ -22,20 +22,29 @@
  */
 package org.dbforms.taglib;
 
-import org.dbforms.config.*;
+import org.dbforms.config.DbFormsConfig;
+
 import org.dbforms.util.SqlUtil;
 import org.dbforms.util.KeyValuePair;
 import org.dbforms.util.MessageResources;
 import org.dbforms.util.ReflectionUtil;
 import org.dbforms.util.Util;
 import org.dbforms.util.external.PrintfFormat;
+import org.dbforms.util.ResultSetVector;
 
-import java.io.*;
-import java.util.*;
-import java.sql.*;
-import javax.servlet.http.*;
-import javax.servlet.jsp.*;
-import javax.servlet.jsp.tagext.*;
+import java.util.Hashtable;
+import java.util.Vector;
+import java.util.Locale;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+
+import javax.servlet.http.HttpServletRequest;
+
+import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.PageContext;
+
+import javax.servlet.jsp.tagext.TagSupport;
 
 import org.apache.log4j.Category;
 
@@ -100,8 +109,7 @@ public abstract class EmbeddedData extends TagSupport
     *
     * @return a vector of key-value pairs, the values eventually formatted according to a given format string
     */
-   protected Vector formatEmbeddedResultRows(
-      org.dbforms.util.ResultSetVector rsv)
+   protected Vector formatEmbeddedResultRows(ResultSetVector rsv)
    {
       Vector  result                     = new Vector();
       boolean resultSuccessFullyFormated = false;

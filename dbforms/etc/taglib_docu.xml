@@ -1822,6 +1822,131 @@ clause for the query</info>
 					<name>storeField</name>
 					<required>true</required>
 					<rtexprvalue>true</rtexprvalue>
+					<info>Describes the field in wich the data should be stored</info>
+				</attribute>
+			</tag>
+			<!-- **************************** confTableData tag ***********************************-->
+			<tag>
+				<name>confTableData</name>
+				<summary>
+					external data to be nested into radio, checkbox 
+			        or select - tag!(useful only in conjunction with radio, checkbox or select - tag)
+					this tag provides similar functionality to "TableData", but as it allows to
+                    use the table data given in the conf file and use a filter clause like in dbform tag
+ 			    </summary>
+				<tagclass>org.dbforms.taglib.ConfTableData</tagclass>
+				<bodycontent>empty</bodycontent>
+				<info>
+					<p>
+						this tag provides data to radio, checkbox or select - tags. It may be 
+		                used for cross references to other tables.
+		            </p>
+					<p>
+						Example:<span style="font-size:8.0pt;font-family:Courier;   "/>
+					</p>
+					<p>
+						&lt;We want to display a drop down list with data from the Cities table,<br/>
+						use the city_reference value for the default list selection--&gt;<br/>
+						&lt;db:select fieldName=&quot;city_reference&quot;&gt;<br/>
+						&lt;db:tableData <br/>name=&quot;aQuery&quot;<br/>
+						foreignTable=&quot;Cities&quot;<br/>
+						visibleFields=&quot;city_name, city_state&quot;<br/>
+						storeField=&quot;city_id&quot;/&gt;<br/>&lt;/db:select&gt;
+					</p>
+				</info>
+				<attribute>
+					<name>name</name>
+					<required>true</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+			            an arbitrary id declared by the user - this id is useful, if the same data 
+			            should be used more than once at one jsp page. using this unique name the system 
+			            is able to chache the data
+          			</info>
+				</attribute>
+				<attribute>
+					<name>dbConnectionName</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>indicate which dbconnection object to user.</info>
+				</attribute>
+				<attribute>
+					<name>format</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						<p style="text-autospace:none">
+				          specify a format to be used in concatenating 
+                          several display fields. <br/> When more then one (1) field is shown, 
+                          the fields are, by default, separated by a comma.</p>
+						<p style="text-autospace:none">
+			               The format attribute was strengthened to make it
+            			   similar to the Unix sprintf utility.<br/>
+							<b>  
+								There is now a need to be type specific
+				               with the attribute.
+				           	</b>
+						</p>
+						<p>For example,<br/>format=&quot;%s is about %.2f&quot; would be where your float (ie%.2f) would be truncated to two decimals.<br/>
+							<b>ONLY THE DISPLAY VALUE WILL BE TRUNCATED</b>
+                For more info, please see the Unix man page <br/>
+               or http://developer.java.sun.com/developer/technicalArticles/Programming/sprintf/<br/>
+               or the javadocs<br/>
+						</p>
+						<p>Example:</p>
+						<p>
+              &lt;db:tableData name=&quot;aQuery&quot; 
+                          foreignTable=&quot;Cities&quot; visibleFields=&quot;city_id, city_name, city_state&quot;<br/>format = &quot;%i, %s / %s&quot; storeField=&quot;city_id&quot;/&gt; 
+                          <br/>
+                          Can be used when city_id is an integer, city_name and city_state are strings in your database.</p>
+						<p>Result -&gt; 014, Naples / Florida</p>
+					</info>
+				</attribute>
+				<attribute>
+					<name>formatClass</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+            class to use for special formatting.<br/>
+            This class must be derivide from org.dbforms.util.PrintfFormat.<br/>
+                  This class will be loaded through reflection api and will be used to format the output.<br/>
+                  Default is org.dbforms.util.PrintfFormat
+          </info>
+				</attribute>
+				<attribute>
+					<name>foreignTable</name>
+					<required>true</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>the name of the table where</info>
+				</attribute>
+				<attribute>
+					<name>visibleFields</name>
+					<required>true</required>
+					<rtexprvalue>true</rtexprvalue>
+				</attribute>
+				<attribute>
+					<name>disableCache</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>Each query is executed independently</info>
+				</attribute>
+				<attribute>
+					<name>orderBy</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>Specify an orderby clause for the query</info>
+				</attribute>
+				<attribute>
+					<name>storeField</name>
+					<required>true</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>Describes the field in wich the data should be stored</info>
+				</attribute>
+				<attribute>
+					<name>filter</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>Describes a filter for the data. Format is like filter tag in dbform</info>
 				</attribute>
 			</tag>
 			<!-- **************************** queryData tag ***********************************-->
