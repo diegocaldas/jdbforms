@@ -1,4 +1,12 @@
 2002-11-18
+(fossato@pow2.com)
+        connectionProviders' connection pool configuration
+        --------------------------------------------------
+        connection pools managed by Protomatter and Jakarta connectionProviders 
+        can be configured via the dbforms-config.xml file
+
+
+2002-11-18
 (Henner.Kollmann@gmx.de)
 	some minor bug fixes
 	new attribute in for query: distinct. If true query will build select distinct ....
@@ -17,7 +25,6 @@
           - SimpleConnectionProvider.java
 
         - added the following jars to the dependend directory:
-          - jdbc2_0-stdext.jar         (needed by JakartaConnectionProvider class)
           - commons-dbcp.jar           (needed by JakartaConnectionProvider class)
           - protomatter-1.1.8-pre5.jar (needed by ProtomatterConnectionProvider class)
 
