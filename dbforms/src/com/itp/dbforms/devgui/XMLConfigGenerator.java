@@ -50,12 +50,16 @@ public class XMLConfigGenerator {
 
 	  String catalog = projectData.getProperty("catalog");
 	  String schemaPattern = projectData.getProperty("schemaPattern");
+	  String tableNamePattern = projectData.getProperty("tableNamePattern");
 
 	  if(catalog != null && catalog.trim().equalsIgnoreCase("$null"))
 	  	catalog = null;
 
 	  if(schemaPattern != null && schemaPattern.trim().equalsIgnoreCase("$null"))
 	  	schemaPattern = null;
+
+	  if(tableNamePattern != null && tableNamePattern.trim().equalsIgnoreCase("$null"))
+	  	tableNamePattern = null;
 
 	  System.out.println(": Retrieving metadata using the following properties ");
 	  System.out.println("-----------------------------------------------------");
@@ -65,6 +69,7 @@ public class XMLConfigGenerator {
 	  System.out.println("password="+password);
 	  System.out.println("catalog="+catalog);
 	  System.out.println("schemaPattern="+schemaPattern);
+	  System.out.println("tableNamePattern="+schemaPattern);
 
 	StringBuffer result = new StringBuffer();
 
@@ -78,8 +83,8 @@ public class XMLConfigGenerator {
 		if(con==null) {System.exit(1);}
 
 		DatabaseMetaData dbmd = con.getMetaData();
-		//String[] types = {"TABLE", "VIEW"};
-		ResultSet tablesRS = dbmd.getTables(catalog, schemaPattern, "%", null);
+		String[] types = {"TABLE", "VIEW"};
+		ResultSet tablesRS = dbmd.getTables(catalog, schemaPattern, tableNamePattern, types);
 
 		while(tablesRS.next()) {
 
@@ -95,7 +100,7 @@ public class XMLConfigGenerator {
 		      String columnName = rsKeys.getString(4);
 			  keys.addElement(columnName);
 		  }
-		  rsKeys.close();
+		  //rsKeys.close();
 
 		  ResultSet rsFields = dbmd.getColumns(catalog, schemaPattern, tableName, null);
 		  while(rsFields.next()) {
@@ -118,7 +123,7 @@ public class XMLConfigGenerator {
 			  }
 			  result.append("/>\n");
 		  }
-		  rsFields.close();
+		  //rsFields.close();
 
 		  result.append("\n\t\t<!-- add \"granted-privileges\" element for security constraints -->\n\n\t</table>\n\n");
 		}

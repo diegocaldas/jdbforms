@@ -44,7 +44,7 @@
 
 		// GUI Variables declaration
 		private JLabel jLabel1;
-		private JTextField tf_configFile, tf_catalog, tf_schemaPattern;
+		private JTextField tf_configFile, tf_catalog, tf_schemaPattern, tf_tableNamePattern;
 		private JButton b_generate, b_browse;
 		private EditorPanel panel_editor;
 		private DevGui parent;
@@ -90,7 +90,7 @@
 			setLayout(new BorderLayout());
 
 			JPanel panel_top = new JPanel();
-			panel_top.setLayout(new GridLayout(2,4));
+			panel_top.setLayout(new GridLayout(3,4));
 			add(BorderLayout.NORTH, panel_top);
 
 			jLabel1.setText("DbForms-Config File");
@@ -139,6 +139,10 @@
 			panel_top.add(tf_schemaPattern);
 
 
+			panel_top.add(new JLabel("Tablename Pattern:"));
+			tf_tableNamePattern = new JTextField();
+			addAFocusListener(tf_tableNamePattern, "tableNamePattern");
+			panel_top.add(tf_tableNamePattern);
 
 
 			panel_editor = new EditorPanel();
