@@ -20,11 +20,8 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.event;
-
 import java.sql.*;
-
 import org.dbforms.*;
 import org.dbforms.util.*;
 import javax.servlet.http.*;
@@ -38,46 +35,47 @@ import javax.servlet.http.*;
  */
 public abstract class NavigationEvent extends WebEvent
 {
-	/**
-	 *
-	 *   called by event engine
-	 * 
-	 */
-	public NavigationEvent(String action, HttpServletRequest request, DbFormsConfig config) {
-	   super(ParseUtil.getEmbeddedStringAsInteger(action, 2, '_'), request, config);
-	}
-
-	/**
-	 *
-	 *   called by DbFormsTag to create local web event
-	 * 
-	 */
-	public NavigationEvent(Table table, HttpServletRequest request, DbFormsConfig config) {
-		super(table.getId(), request, config);
-	}
+   /**
+    *
+    *   called by event engine
+    *
+    */
+   public NavigationEvent(String action, HttpServletRequest request,
+      DbFormsConfig config)
+   {
+      super(ParseUtil.getEmbeddedStringAsInteger(action, 2, '_'), request,
+         config);
+   }
 
 
-    /**
-     *  Process the current event.
-     *
-     * @param  childFieldValues FieldValue array used to restrict a set in a subform where
-     *                          all "childFields" in the  resultset match their respective
-     *                          "parentFields" in main form
-     * @param  orderConstraint FieldValue array used to build a cumulation of rules for ordering
-     *                         (sorting) and restricting fields
-     * @param  count           record count
-     * @param  firstPosition   a string identifying the first resultset position
-     * @param  lastPosition    a string identifying the last resultset position
-     * @param  con             the JDBC Connection object
-     * @return  a ResultSetVector object
-     * @exception  SQLException if any error occurs
-     */
-    public abstract ResultSetVector processEvent(FieldValue[] childFieldValues,
-                                                 FieldValue[] orderConstraint,
-                                                 int          count,
-                                                 String       firstPost,
-                                                 String       lastPos,
-                                                 Connection con,
-                                                 String dbConnectionName)
+   /**
+    *
+    *   called by DbFormsTag to create local web event
+    *
+    */
+   public NavigationEvent(Table table, HttpServletRequest request,
+      DbFormsConfig config)
+   {
+      super(table.getId(), request, config);
+   }
+
+   /**
+    *  Process the current event.
+    *
+    * @param  childFieldValues FieldValue array used to restrict a set in a subform where
+    *                          all "childFields" in the  resultset match their respective
+    *                          "parentFields" in main form
+    * @param  orderConstraint FieldValue array used to build a cumulation of rules for ordering
+    *                         (sorting) and restricting fields
+    * @param  count           record count
+    * @param  firstPosition   a string identifying the first resultset position
+    * @param  lastPosition    a string identifying the last resultset position
+    * @param  con             the JDBC Connection object
+    * @return  a ResultSetVector object
+    * @exception  SQLException if any error occurs
+    */
+   public abstract ResultSetVector processEvent(FieldValue[] childFieldValues,
+      FieldValue[] orderConstraint, int count, String firstPost,
+      String lastPos, Connection con, String dbConnectionName)
       throws SQLException;
 }

@@ -20,13 +20,10 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.util;
-
 import java.io.*;
 import java.util.*;
 import java.net.URLEncoder;
-
 import org.dbforms.DbFormsConfig;
 import org.dbforms.FieldValue;
 
@@ -37,110 +34,119 @@ import org.dbforms.FieldValue;
  */
 public class Util
 {
-    private static final String REALPATH = "$(SERVLETCONTEXT_REALPATH)";
+   private static final String REALPATH = "$(SERVLETCONTEXT_REALPATH)";
+
+   /**
+    * Test if the input string is null or empty (does not contain any character)
+    *
+    * @param s the string value to test
+    * @return true if the input string is null or empty, false otherwise
+    */
+   public static final boolean isNull(String s)
+   {
+      return ((s == null) || (s.trim().length() == 0));
+   }
 
 
-    /**
-     * Test if the input string is null or empty (does not contain any character)
-     *
-     * @param s the string value to test
-     * @return true if the input string is null or empty, false otherwise
-     */
-    public final static boolean isNull(String s)
-    {
-        return ((s == null) || (s.trim().length() == 0));
-    }
-
-	public final static boolean isNull(ResultSetVector rsv)
-	{
-		return ((rsv == null) || (rsv.size() == 0));
-	}
+   /**
+    * DOCUMENT ME!
+    *
+    * @param rsv DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public static final boolean isNull(ResultSetVector rsv)
+   {
+      return ((rsv == null) || (rsv.size() == 0));
+   }
 
 
-    /**
-     *  Replaces the occurens from REALPATH in s with realpath.
-     *
-     * @param s        the string containing the REALPATH token
-     * @param realpath the value used to replace the REALPATH token
-     * @return the input string, with the REALPATH token replaced with the
-     *         realpath value
-     */
-    public final static String replaceRealPath(String s, String realpath)
-    {
-        if (!isNull(realpath))
-        {
-            int i = s.indexOf(REALPATH);
+   /**
+    *  Replaces the occurens from REALPATH in s with realpath.
+    *
+    * @param s        the string containing the REALPATH token
+    * @param realpath the value used to replace the REALPATH token
+    * @return the input string, with the REALPATH token replaced with the
+    *         realpath value
+    */
+   public static final String replaceRealPath(String s, String realpath)
+   {
+      if (!isNull(realpath))
+      {
+         int i = s.indexOf(REALPATH);
 
-            if (i >= 0)
-            {
-                StringBuffer buf = new StringBuffer();
-                buf.append(s.substring(0, i));
-                buf.append(realpath);
-                buf.append(s.substring(i + REALPATH.length() + 1));
-                s = buf.toString();
-            }
-        }
+         if (i >= 0)
+         {
+            StringBuffer buf = new StringBuffer();
+            buf.append(s.substring(0, i));
+            buf.append(realpath);
+            buf.append(s.substring(i + REALPATH.length() + 1));
+            s = buf.toString();
+         }
+      }
 
-        return s;
-    }
-
-
-    /**
-     *  Replaces the occurens from REALPATH in s with config.getRealPath().
-     *
-     * @param s       the string containing the REALPATH token
-     * @param config  the config object
-     * @return the input string, with the REALPATH token replaced with the
-     *         realpath value taken from the config object
-     */
-    public final static String replaceRealPath(String s, DbFormsConfig config)
-    {
-        return replaceRealPath(s, config.getRealPath());
-    }
+      return s;
+   }
 
 
-    /**
-     * Encodes a string with "ISO8859-1". This is the default
-     * in the servlet engine (tomcat); hope that's the same in the other ones...
-     *
-     * @param s the string to encode
-     * @return the encoded string
-     */
-    public final static String encode(String s) throws UnsupportedEncodingException
-    {
-        if (!Util.isNull(s))
-        {
-            s = URLEncoder.encode(s);
-        }
-
-        return s;
-    }
+   /**
+    *  Replaces the occurens from REALPATH in s with config.getRealPath().
+    *
+    * @param s       the string containing the REALPATH token
+    * @param config  the config object
+    * @return the input string, with the REALPATH token replaced with the
+    *         realpath value taken from the config object
+    */
+   public static final String replaceRealPath(String s, DbFormsConfig config)
+   {
+      return replaceRealPath(s, config.getRealPath());
+   }
 
 
-    /**
-     *  Dump the fieldValue objects contained into the input FieldValue array.
-     *
-     * @param fv the FieldValue array to dump
-     * @return the String object containing the dumped data,
-     *         or null if the input array is null
-     */
-    public final static String dumpFieldValueArray(FieldValue[] fv)
-    {
-        String s = null;
+   /**
+    * Encodes a string with "ISO8859-1". This is the default
+    * in the servlet engine (tomcat); hope that's the same in the other ones...
+    *
+    * @param s the string to encode
+    * @return the encoded string
+    */
+   public static final String encode(String s)
+      throws UnsupportedEncodingException
+   {
+      if (!Util.isNull(s))
+      {
+         s = URLEncoder.encode(s);
+      }
 
-        if (fv != null)
-        {
-          StringBuffer sb = new StringBuffer();
+      return s;
+   }
 
-          for (int i = 0; i < fv.length; i++)
-          {
+
+   /**
+    *  Dump the fieldValue objects contained into the input FieldValue array.
+    *
+    * @param fv the FieldValue array to dump
+    * @return the String object containing the dumped data,
+    *         or null if the input array is null
+    */
+   public static final String dumpFieldValueArray(FieldValue[] fv)
+   {
+      String s = null;
+
+      if (fv != null)
+      {
+         StringBuffer sb = new StringBuffer();
+
+         for (int i = 0; i < fv.length; i++)
+         {
             FieldValue f = fv[i];
-            sb.append("  fv[").append(i).append("] = {").append(f.toString()).append("}\n");
-          }
+            sb.append("  fv[").append(i).append("] = {").append(f.toString())
+              .append("}\n");
+         }
 
-          s = sb.toString();
-        }
+         s = sb.toString();
+      }
 
-        return s;
-    }
+      return s;
+   }
 }

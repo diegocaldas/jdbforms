@@ -20,7 +20,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.devgui;
 
 // Imported TraX classes
@@ -45,42 +44,46 @@ import java.io.File;
  */
 public class XSLTransformer
 {
-    /**
-     * DOCUMENT ME!
-     *
-     * @param xmlFile DOCUMENT ME!
-     * @param xslFile DOCUMENT ME!
-     * @param destinationFile DOCUMENT ME!
-     * @param useJsCalendar DOCUMENT ME!
-     *
-     * @throws TransformerException DOCUMENT ME!
-     * @throws TransformerConfigurationException DOCUMENT ME!
-     * @throws FileNotFoundException DOCUMENT ME!
-     * @throws IOException DOCUMENT ME!
-     */
-    public static void transform(File xmlFile, File xslFile, File destinationFile, boolean useJsCalendar) throws TransformerException, TransformerConfigurationException, FileNotFoundException, IOException
-    {
-        // Use the static TransformerFactory.newInstance() method to instantiate 
-        // a TransformerFactory. The javax.xml.transform.TransformerFactory 
-        // system property setting determines the actual class to instantiate --
-        // org.apache.xalan.transformer.TransformerImpl.
-        TransformerFactory tFactory = TransformerFactory.newInstance();
+   /**
+    * DOCUMENT ME!
+    *
+    * @param xmlFile DOCUMENT ME!
+    * @param xslFile DOCUMENT ME!
+    * @param destinationFile DOCUMENT ME!
+    * @param useJsCalendar DOCUMENT ME!
+    *
+    * @throws TransformerException DOCUMENT ME!
+    * @throws TransformerConfigurationException DOCUMENT ME!
+    * @throws FileNotFoundException DOCUMENT ME!
+    * @throws IOException DOCUMENT ME!
+    */
+   public static void transform(File xmlFile, File xslFile,
+      File destinationFile, boolean useJsCalendar)
+      throws TransformerException, TransformerConfigurationException, 
+         FileNotFoundException, IOException
+   {
+      // Use the static TransformerFactory.newInstance() method to instantiate 
+      // a TransformerFactory. The javax.xml.transform.TransformerFactory 
+      // system property setting determines the actual class to instantiate --
+      // org.apache.xalan.transformer.TransformerImpl.
+      TransformerFactory tFactory = TransformerFactory.newInstance();
 
-        // Use the TransformerFactory to instantiate a Transformer that will work with  
-        // the stylesheet you specify. This method call also processes the stylesheet
-        // into a compiled Templates object.
-        Transformer transformer = tFactory.newTransformer(new StreamSource(xslFile));
+      // Use the TransformerFactory to instantiate a Transformer that will work with  
+      // the stylesheet you specify. This method call also processes the stylesheet
+      // into a compiled Templates object.
+      Transformer transformer = tFactory.newTransformer(new StreamSource(
+               xslFile));
 
-        // If user has checked checkbox to use JavaScript Calendar for editing of
-        // date fields, we have to pass a corresponding parameter to transformer
-        if (useJsCalendar)
-        {
-            transformer.setParameter("useCalendar", "true");
-        }
+      // If user has checked checkbox to use JavaScript Calendar for editing of
+      // date fields, we have to pass a corresponding parameter to transformer
+      if (useJsCalendar)
+      {
+         transformer.setParameter("useCalendar", "true");
+      }
 
-
-        // Use the Transformer to apply the associated Templates object to an XML document
-        // (foo.xml) and write the output to a file (foo.out).
-        transformer.transform(new StreamSource(xmlFile), new StreamResult(new FileOutputStream(destinationFile)));
-    }
+      // Use the Transformer to apply the associated Templates object to an XML document
+      // (foo.xml) and write the output to a file (foo.out).
+      transformer.transform(new StreamSource(xmlFile),
+         new StreamResult(new FileOutputStream(destinationFile)));
+   }
 }

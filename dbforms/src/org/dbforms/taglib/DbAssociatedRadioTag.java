@@ -20,7 +20,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.taglib;
 import java.util.*;
 import java.sql.*;
@@ -66,80 +65,80 @@ import org.apache.log4j.Category;
  */
 public class DbAssociatedRadioTag extends TagSupport
 {
-    static Category logCat = Category.getInstance(DbAssociatedRadioTag.class.getName()); // logging category for this class
-    private DbFormTag parentForm;
-    private String name;
+   static Category   logCat     = Category.getInstance(DbAssociatedRadioTag.class
+         .getName()); // logging category for this class
+   private DbFormTag parentForm;
+   private String    name;
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param name DOCUMENT ME!
-     */
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
-    public String getName()
-    {
-        return name;
-    }
+   /**
+    * DOCUMENT ME!
+    *
+    * @param name DOCUMENT ME!
+    */
+   public void setName(String name)
+   {
+      this.name = name;
+   }
 
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     *
-     * @throws javax.servlet.jsp.JspException DOCUMENT ME!
-     * @throws JspException DOCUMENT ME!
-     */
-    public int doEndTag() throws javax.servlet.jsp.JspException
-    {
-        try
-        {
-            StringBuffer tagBuf = new StringBuffer("<input type=\"radio\" name=\"");
-            tagBuf.append(name);
-            tagBuf.append("\" value=\"");
-            tagBuf.append(parentForm.getTable().getId());
-            tagBuf.append("_");
-            tagBuf.append(parentForm.getPositionPath());
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String getName()
+   {
+      return name;
+   }
 
 
-            // 20020705-HKK: Set defaultChecked for first row!  
-            tagBuf.append("\"");
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws javax.servlet.jsp.JspException DOCUMENT ME!
+    * @throws JspException DOCUMENT ME!
+    */
+   public int doEndTag() throws javax.servlet.jsp.JspException
+   {
+      try
+      {
+         StringBuffer tagBuf = new StringBuffer("<input type=\"radio\" name=\"");
+         tagBuf.append(name);
+         tagBuf.append("\" value=\"");
+         tagBuf.append(parentForm.getTable().getId());
+         tagBuf.append("_");
+         tagBuf.append(parentForm.getPositionPath());
 
-            if (parentForm.getCurrentCount() == 0)
-            {
-                tagBuf.append(" checked=\"true\"");
-            }
+         // 20020705-HKK: Set defaultChecked for first row!  
+         tagBuf.append("\"");
 
-            tagBuf.append(">");
-            pageContext.getOut().write(tagBuf.toString());
-        }
-        catch (java.io.IOException ioe)
-        {
-            throw new JspException("IO Error: " + ioe.getMessage());
-        }
+         if (parentForm.getCurrentCount() == 0)
+         {
+            tagBuf.append(" checked=\"true\"");
+         }
 
-        return EVAL_PAGE;
-    }
+         tagBuf.append(">");
+         pageContext.getOut().write(tagBuf.toString());
+      }
+      catch (java.io.IOException ioe)
+      {
+         throw new JspException("IO Error: " + ioe.getMessage());
+      }
+
+      return EVAL_PAGE;
+   }
 
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param parent DOCUMENT ME!
-     */
-    public void setParent(final javax.servlet.jsp.tagext.Tag parent)
-    {
-        super.setParent(parent);
-        parentForm = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
-    }
+   /**
+    * DOCUMENT ME!
+    *
+    * @param parent DOCUMENT ME!
+    */
+   public void setParent(final javax.servlet.jsp.tagext.Tag parent)
+   {
+      super.setParent(parent);
+      parentForm = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
+   }
 }

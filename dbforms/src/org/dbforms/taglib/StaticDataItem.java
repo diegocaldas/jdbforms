@@ -20,7 +20,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.taglib;
 import java.io.*;
 import java.util.*;
@@ -41,92 +40,100 @@ import org.dbforms.util.*;
  */
 public class StaticDataItem extends TagSupport
 {
-    static Category logCat = Category.getInstance(StaticDataItem.class.getName()); // logging category for this class
-    private String key;
-    private String value;
+   static Category logCat = Category.getInstance(StaticDataItem.class.getName()); // logging category for this class
+   private String  key;
+   private String  value;
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
-    public String getKey()
-    {
-        return key;
-    }
-
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @param key DOCUMENT ME!
-     */
-    public void setKey(String key)
-    {
-        this.key = key;
-    }
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String getKey()
+   {
+      return key;
+   }
 
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
-    public String getValue()
-    {
-        return value;
-    }
+   /**
+    * DOCUMENT ME!
+    *
+    * @param key DOCUMENT ME!
+    */
+   public void setKey(String key)
+   {
+      this.key = key;
+   }
 
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param value DOCUMENT ME!
-     */
-    public void setValue(String value)
-    {
-        String message = null;
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String getValue()
+   {
+      return value;
+   }
 
-        this.value = value;
 
-        if ((value != null) && (getParent() instanceof StaticData && getParent().getParent() instanceof DbBaseHandlerTag && ((DbBaseHandlerTag) getParent().getParent()).parentForm.getCaptionResource().equals("true")))
-        {
-            try
+   /**
+    * DOCUMENT ME!
+    *
+    * @param value DOCUMENT ME!
+    */
+   public void setValue(String value)
+   {
+      String message = null;
+
+      this.value = value;
+
+      if ((value != null)
+               && (getParent() instanceof StaticData
+               && getParent().getParent() instanceof DbBaseHandlerTag
+               && ((DbBaseHandlerTag) getParent().getParent()).parentForm.getCaptionResource()
+                                                                               .equals("true")))
+      {
+         try
+         {
+            Locale locale = MessageResources.getLocale((HttpServletRequest) pageContext
+                  .getRequest());
+            message = MessageResources.getMessage(value, locale);
+
+            if (message != null)
             {
-                Locale locale = MessageResources.getLocale((HttpServletRequest) pageContext.getRequest());
-                message = MessageResources.getMessage(value, locale);
-
-                if (message != null)
-                {
-                    this.value = message;
-                }
+               this.value = message;
             }
-            catch (Exception e)
-            {
-                logCat.debug("setValue(" + value + ") Exception : " + e.getMessage());
-            }
-        }
-    }
+         }
+         catch (Exception e)
+         {
+            logCat.debug("setValue(" + value + ") Exception : "
+               + e.getMessage());
+         }
+      }
+   }
 
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     *
-     * @throws JspException DOCUMENT ME!
-     */
-    public int doStartTag() throws JspException
-    {
-        if ((getParent() != null) && getParent() instanceof StaticData)
-        {
-            ((StaticData) getParent()).getData().addElement(new KeyValuePair(key, value));
-        }
-        else
-        {
-            throw new JspException("StaticDataItem element must be placed inside a StaticData element!");
-        }
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws JspException DOCUMENT ME!
+    */
+   public int doStartTag() throws JspException
+   {
+      if ((getParent() != null) && getParent() instanceof StaticData)
+      {
+         ((StaticData) getParent()).getData().addElement(new KeyValuePair(key,
+               value));
+      }
+      else
+      {
+         throw new JspException(
+            "StaticDataItem element must be placed inside a StaticData element!");
+      }
 
-        return EVAL_BODY_INCLUDE;
-    }
+      return EVAL_BODY_INCLUDE;
+   }
 }
