@@ -22,6 +22,8 @@
  */
 
 package org.dbforms.servlets;
+
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Hashtable;
@@ -39,7 +41,6 @@ import org.dbforms.util.SqlUtil;
 import org.dbforms.util.MultipartRequest;
 import org.dbforms.util.MessageResources;
 import org.dbforms.config.DbFormsConfig;
-import org.dbforms.config.DbConnection;
 import org.dbforms.config.Table;
 import org.dbforms.event.EventEngine;
 import org.dbforms.event.DatabaseEvent;
@@ -174,7 +175,7 @@ public class Controller extends HttpServlet
          {
             logCat.debug("Check if uploaded file(s) exceeded allowed size.");
             sendErrorMessage("Check if uploaded file(s) exceeded allowed size.", 
-                             request, response);
+                             response);
 
             return;
          }
@@ -242,14 +243,15 @@ public class Controller extends HttpServlet
                cleanUpConnectionAfterException(con);
             }
          }
-         else
-         {
+         
+         //else
+         //{
             // currently, we support db events ONLY
             // but in future there may be events with processEvent() method which do not need a jdbc con!
             // (you may think: "what about navigation events?" - well they are created by the
             // controller but they get executed in the referncing "DbFormTag" at the jsp -- that's why we
             // do not any further operations on them right here...we just put them into the request)
-         }
+         //}
 
          // secondary Events are always database events
          // (in fact, they all are SQL UPDATEs)
@@ -258,6 +260,8 @@ public class Controller extends HttpServlet
             // may be null if empty form!
             Enumeration tableEnum = engine.getInvolvedTables().elements();
 
+            // for every table related to the parent one, generate secundary (update) events 
+            // for that table and execute them;
             while (tableEnum.hasMoreElements())
             {
                Table       t         = (Table) tableEnum.nextElement();
@@ -267,7 +271,8 @@ public class Controller extends HttpServlet
                {
                   DatabaseEvent dbE = (DatabaseEvent) eventEnum.nextElement();
 
-                  // 2003-02-03 HKK: do not do the work twice - without this every event would be generated for each table and event
+                  // 2003-02-03 HKK: do not do the work twice - without this every event 
+                  // would be generated for each table and event
                   if (t.getId() == dbE.getTableId())
                   {
                      con = getConnection(request, dbE.getTableId(), connections);
@@ -348,7 +353,7 @@ public class Controller extends HttpServlet
     * @param request the request object
     * @param response the response object
     */
-   private void sendErrorMessage(String message, HttpServletRequest request, 
+   private void sendErrorMessage(String message, 
                                  HttpServletResponse response)
    {
       try
@@ -362,15 +367,18 @@ public class Controller extends HttpServlet
       }
       catch (IOException ioe)
       {
-         logCat.error("!!!senderror message crashed!!!" + ioe);
+         logCat.error("::sendErrorMessage - senderror message crashed", ioe);
       }
    }
 
 
+
+
    /**
     * PRIVATE METHODS here
-    * @param con DOCUMENT ME!
     */
+   
+   
    /**
     * Grunikiewicz.philip&at;hydro.qc.ca 2001-10-29 In our development, we
     * sometimes set the connection object to autoCommit = false in the
@@ -430,8 +438,7 @@ public class Controller extends HttpServlet
                                     Hashtable connectionsTable)
    {
       String       connectionName = null;
-      DbConnection dbConnection = null;
-      Connection   con          = null;
+      Connection   con            = null;
 
       // get the connection name from the request;
       if ((connectionName = request.getParameter("invname_" + tableId)) == null)
