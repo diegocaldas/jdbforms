@@ -117,6 +117,11 @@ public class TimeUtil {
 				cal.set(Calendar.MONTH, now.get(Calendar.MONTH));
 			if (!cal.isSet(Calendar.YEAR))
 				cal.set(Calendar.YEAR, now.get(Calendar.YEAR));
+			if (cal.get(Calendar.YEAR) < 30)
+			   cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) + 2000);
+			else if (cal.get(Calendar.YEAR) < 100)
+			   cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) + 1900);
+			  
 			d = cal.getTimeInMillis();
 		} else {
 			Calendar now = Calendar.getInstance();
@@ -189,6 +194,7 @@ public class TimeUtil {
    	System.out.println(parseDate(format, "12.06 12:30").toLocaleString());
    	System.out.println(parseDate(format, "12.").toLocaleString());
    	System.out.println(parseDate(format, "12.06").toLocaleString());
+   	System.out.println(parseDate(format, "12.06.03").toLocaleString());
    	System.out.println(parseDate(format, "12. 12:").toLocaleString());
    	System.out.println(findEndOfDay(parseDate(format, "12. 12:")).toLocaleString());
    }
