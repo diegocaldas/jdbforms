@@ -2163,7 +2163,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
                     }
                     else if (aSearchAlgorithm.startsWith("weakStartEnd"))
                     {
-                        algorithm = FieldValue.SEARCH_ALGO_WEAK_END;
+                        algorithm = FieldValue.SEARCH_ALGO_WEAK_START_END;
                         operator = FieldValue.FILTER_LIKE;
                     }
                     else if (aSearchAlgorithm.startsWith("weakStart"))
