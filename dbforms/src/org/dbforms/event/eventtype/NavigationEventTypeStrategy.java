@@ -68,6 +68,7 @@ public class NavigationEventTypeStrategy implements EventTypeStrategy
 					|| eventString.startsWith(EventType.EVENT_NAVIGATION_TRANSFER_NEW)
 					|| eventString.startsWith(EventType.EVENT_NAVIGATION_TRANSFER_RELOAD)
 					|| eventString.startsWith(EventType.EVENT_NAVIGATION_TRANSFER_GOTO)
+					|| eventString.startsWith(EventType.EVENT_NAVIGATION_TRANSFER_COPY)
                || eventString.equals(EventType.EVENT_NAVIGATION_FIRST)
                || eventString.equals(EventType.EVENT_NAVIGATION_PREV)
                || eventString.equals(EventType.EVENT_NAVIGATION_NEXT)
@@ -75,6 +76,7 @@ public class NavigationEventTypeStrategy implements EventTypeStrategy
                || eventString.equals(EventType.EVENT_NAVIGATION_NEW)
 					|| eventString.equals(EventType.EVENT_NAVIGATION_RELOAD)
 					|| eventString.equals(EventType.EVENT_NAVIGATION_GOTO)
+					|| eventString.equals(EventType.EVENT_NAVIGATION_COPY)
                || eventString.equals("goto")
 			)
       {
@@ -121,20 +123,23 @@ public class NavigationEventTypeStrategy implements EventTypeStrategy
          eventType = EventType.EVENT_NAVIGATION_NEW;
       }
       else if (eventString.startsWith(EventType.EVENT_NAVIGATION_TRANSFER_COPY)
-               || eventString.equals(EventType.EVENT_NAVIGATION_GOTO))
+               || eventString.equals(EventType.EVENT_NAVIGATION_COPY))
       {
-         eventType = EventType.EVENT_NAVIGATION_GOTO;
+         eventType = EventType.EVENT_NAVIGATION_COPY;
       }
 		else if (eventString.startsWith(EventType.EVENT_NAVIGATION_TRANSFER_RELOAD)
 					|| eventString.equals(EventType.EVENT_NAVIGATION_RELOAD))
 		{
 			eventType = EventType.EVENT_NAVIGATION_RELOAD;
 		}
-      else if (eventString.startsWith(EventType.EVENT_NAVIGATION_TRANSFER_GOTO) 
-      			|| eventString.equals("goto")
-					|| eventString.equals(EventType.EVENT_NAVIGATION_COPY))
+      else if (
+                  	eventString.startsWith(EventType.EVENT_NAVIGATION_TRANSFER_GOTO) 
+						|| eventString.equals(EventType.EVENT_NAVIGATION_GOTO)
+						|| eventString.equals("goto")
+					)
+				   
       {
-         eventType = EventType.EVENT_NAVIGATION_COPY;
+         eventType = EventType.EVENT_NAVIGATION_GOTO;
       }
 
       return eventType;
