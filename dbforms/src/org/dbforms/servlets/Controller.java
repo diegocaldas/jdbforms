@@ -284,6 +284,7 @@ public class Controller extends HttpServlet
                      }
                      catch (SQLException sqle2)
                      {
+                     	SqlUtil.logSqlException(sqle2, "::process - exception while process secundary events");
                         errors.addElement(sqle2);
                         cleanUpConnectionAfterException(con);
                      }
@@ -342,6 +343,9 @@ public class Controller extends HttpServlet
    {
      java.util.Vector v = null;
 	
+	 // log the exception !!!
+	 logCat.error("::processMultipleValidationException - exception", mve);
+	 
 	 if ((v = mve.getMessages()) != null)
 	 {
 	    Enumeration enum = v.elements();
