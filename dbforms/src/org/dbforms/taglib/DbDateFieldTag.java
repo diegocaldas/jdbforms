@@ -57,14 +57,19 @@ public class DbDateFieldTag extends DbBaseInputTag
     *
     * @throws javax.servlet.jsp.JspException DOCUMENT ME!
     */
-   public int doStartTag() throws javax.servlet.jsp.JspException
+   public int doStartTag() throws JspException
    {
       super.doStartTag();
 
       // Use format defined in config file
       if (this.format == null)
       {
-         this.format = DbFormsConfig.getDateFormatter();
+         try {
+				this.format = DbFormsConfigRegistry.instance().lookup().getDateFormatter();
+         } catch (Exception e) {
+            throw new JspException(e.getMessage());
+         }
+         
       }
 
       return SKIP_BODY;
