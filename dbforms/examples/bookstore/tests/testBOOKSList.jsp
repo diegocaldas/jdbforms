@@ -12,6 +12,12 @@
 			<db:header>
 				<db:errors/>  
 				<table>
+				<tr>
+					<td><db:sort fieldName="BOOK_ID"/>&nbsp;</td>
+					<td><db:sort fieldName="ISBN"/>&nbsp;</td>
+					<td><db:sort fieldName="AUTHOR_ID"/>&nbsp;</td>
+					<td><db:sort fieldName="TITLE"/>&nbsp;</td>
+				</tr>
 			</db:header>
 			<db:body allowNew="false">
 				<tr>
