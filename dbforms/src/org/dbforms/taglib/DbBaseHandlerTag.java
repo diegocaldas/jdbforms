@@ -456,6 +456,8 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler
    public String getNullFieldValue()
    {
       String res = nullFieldValue;
+      if (Util.isNull(res)) 
+         res = "[No Data]";
       // Resolve message if captionResource=true in the Form Tag
       if (getParentForm().getCaptionResource().equals("true"))
       {
