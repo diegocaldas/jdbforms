@@ -79,7 +79,17 @@ public class DbFormsValidator implements Serializable {
          // Field not found in fieldvector -> so it's not on current page.
          // So we will not check it!
          return true;
-      if (f.getFieldValue().equals(f.getOldValue()))
+         
+         
+      /********************************************
+       * Grunikiewicz.philip@hydro.qc.ca
+       * 2003-12-03
+       * 
+       * When a validation returns multiple errors and the user corrects these problems one at a time,
+       * it is important to verify that the old value is not null or empty.
+       */   
+      if (f.getFieldValue().equals(f.getOldValue()) && 
+      		!(Util.isNull(f.getFieldValue())))
          // Check only if new value != old value!
          return true;
 
