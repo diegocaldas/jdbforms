@@ -1,3 +1,15 @@
+2002-11-5 (dikr):
+
+New classes to model foreign key references:
+  org.dbforms.ForeignKey
+  org.dbforms.Reference
+
+Devgui has been extendended:
+  Foreign Keys are automatically detected,
+  the corresponding foreign-key and reference
+  tags are written into dbforms config file
+  (updated  XMLConfigGenerator.java ).
+
 2002-11-4 (dikr):
 
 Added Files:
