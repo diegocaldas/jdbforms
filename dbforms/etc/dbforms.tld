@@ -114,6 +114,21 @@
         </attribute>
     </tag>
     <tag>
+        <name>dateLabel</name>
+        <tagclass>com.itp.dbforms.taglib.DbDateLabelTag</tagclass>
+        <bodycontent>empty</bodycontent>
+        <attribute>
+            <name>fieldName</name>
+            <required>true</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>format</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+    <tag>
         <name>dataLabel</name>
         <tagclass>com.itp.dbforms.taglib.DbDataContainerLabelTag</tagclass>
         <bodycontent>JSP</bodycontent>
@@ -880,7 +895,7 @@
         <attribute>
             <name>selectedIndex</name>
             <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
+            <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
             <name>accessKey</name>

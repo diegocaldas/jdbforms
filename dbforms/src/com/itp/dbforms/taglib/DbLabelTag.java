@@ -49,23 +49,23 @@ public class DbLabelTag extends TagSupport  {
 
   static Category logCat = Category.getInstance(DbLabelTag.class.getName()); // logging category for this class
 
-  private static final String NO_DATA = "[No Data]";
+  protected static final String NO_DATA = "[No Data]";
 
-  private DbFormsConfig config;
-  private String fieldName;
-  private Field field;
+  protected DbFormsConfig config;
+  protected String fieldName;
+  protected Field field;
 
-	private DbFormTag parentForm;
+	protected DbFormTag parentForm;
 
 
   public void setFieldName(String fieldName) {
-    this.fieldName=fieldName;
+	this.fieldName=fieldName;
 	this.field = parentForm.getTable().getFieldByName(fieldName);
-  }
+  }  
 
   public String getFieldName() {
-    return fieldName;
-  }
+	return fieldName;
+  }  
 
 
   public int doEndTag() throws javax.servlet.jsp.JspException {
@@ -85,20 +85,18 @@ public class DbLabelTag extends TagSupport  {
 	}
 
 	return EVAL_PAGE;
-  }
+  }  
 
 
   public void setPageContext(final javax.servlet.jsp.PageContext pageContext)  {
-    super.setPageContext(pageContext);
+	super.setPageContext(pageContext);
 		this.config = (DbFormsConfig) pageContext.getServletContext().getAttribute(DbFormsConfig.CONFIG);
 	}
 
   public void setParent(final javax.servlet.jsp.tagext.Tag parent) {
-    super.setParent(parent);
-    this.parentForm = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
-  }
+	super.setParent(parent);
+	this.parentForm = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
+  }  
 
 
 }
-
-

@@ -330,6 +330,22 @@ version 0.9
 
 
 <tag>
+	<name>dateLabel</name>
+	<tagclass>com.itp.dbforms.taglib.DbDateLabelTag</tagclass>
+	<bodycontent>empty</bodycontent>
+	<attribute>
+	    <name>fieldName</name>
+	    <required>true</required>
+	    <rtexprvalue>false</rtexprvalue>
+	</attribute>
+	<attribute>
+	    <name>format</name>
+	    <required>false</required>
+	    <rtexprvalue>true</rtexprvalue>
+	</attribute>
+</tag>
+
+<tag>
   <name>dataLabel</name>
   <summary>
   <p>
