@@ -23,7 +23,8 @@
 
 package org.dbforms;
 
-import org.apache.log4j.Category;import org.dbforms.util.FieldTypes;
+import org.apache.log4j.Category;
+import org.dbforms.util.FieldTypes;
 
 
 
@@ -124,7 +125,9 @@ public class Field
      *  Maps the field type description to internal value.
      *  <br>
      *  We need this information in oder to call the appropriate
-     *  PreparedStatement.setXxx(..) methods
+     *  PreparedStatement.setXxx(..) methods 
+     *  <br>
+     *  this method is called by the digester framework to set the fieldType!
      *
      * @param  aType the type string value (example: "int", "char", "numeric", etc)
      */
@@ -173,7 +176,16 @@ public class Field
     }
 
 
-	/**	 *  Gets the type attribute of the Field object	 *	 * @return  The type value	 * @deprecated Should use getFieldType()	 */    public int getType() {    	return type;    }
+	/**
+	 *  Gets the type attribute of the Field object as numeric value. 
+	 *  <br>
+	 *  It i read only because the field type is set by the digester during initialize!
+	 *
+	 * @return  The type value
+	 */
+    public int getType() {
+    	return type;
+    }
 
 
     /**
