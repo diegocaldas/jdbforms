@@ -29,7 +29,7 @@ will not appear unless the attribute
   </para>
   </sect1>
   <sect1> 
-    <title>1.1.4</title>
+    <title>1.1.4pr1</title>
     <para>
       If you are upgrading from 1.1.3 or from 1.1.4dev (first dev release), you must make three changes to 
       <computeroutput>dbforms-config.xml</computeroutput></para>
@@ -102,7 +102,7 @@ will not appear unless the attribute
   </sect1>
   <sect1> 
     <title>1.1.4pr2</title>
-    <para>(also see note for 1.1.4 above)  <emphasis role="italic">When upgrading from any previous release please note that:</emphasis>
+    <para>(also see note for 1.1.4pr1 above)  <emphasis role="italic">When upgrading from any previous release please note that:</emphasis>
     To have better control of the fields written to the datebase we changed the interceptor interface of the 
 preUpdate/preInsert/preDelete events to: 
     <screen>
