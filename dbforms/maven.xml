@@ -46,10 +46,12 @@
 
 
   <goal name="dbforms:bookstore">
+     <deploy:copy-deps todir="target/dependend" />
      <ant:ant antfile="build.xml" target="maven-build-bookstore" >
       	<ant:property name="dbforms.version" value="${pom.currentVersion}" />
       	<ant:property name="dist.dir" value="target/dist" />
       	<ant:property name="build.dir" value="target/build" />
+      	<ant:property name="dependend.dir" value="target/dependend" />
      </ant:ant> 
   </goal>
 
@@ -94,6 +96,7 @@
 	<ant:property name="dbforms.version" value="${pom.currentVersion}" />
       	<ant:property name="dist.dir" value="target/dist" />
       	<ant:property name="taglib.dir" value="target/doc/taglib" />
+      	<ant:property name="dependend.dir" value="target/dependend" />
     </ant:ant>
   </goal>
   
@@ -125,10 +128,12 @@
 
 
   <!-- neccesary to get cactus report!!! -->
+<!-- not neccessary for maven 1.0.
   <preGoal name="cactus:report">
     	<ant:echo message="run cactus tests" />
     	<attainGoal name="cactus:test"/>
   </preGoal>
+-->
 
   <!-- to init the appserver with bookstore example -->
   <preGoal name="appserver:init">
