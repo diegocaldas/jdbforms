@@ -4,7 +4,7 @@
   <body>
     Hello !
 
-<%@ include file="httpSnooper.html" %> 
+<%@ include file="httpSnooper.jsp" %> 
 
   </body>
 </html>

@@ -57,7 +57,7 @@ function toggleVisibility(id, NNtype, IEtype, WC3type)
   <table width="100%" border="0">
   <tr>
     <td>
-      <pre><%=org.dbforms.util.external.ServletUtil.dumpRequest(request, "\n") %></pre>
+      <pre><%=org.dbforms.util.ServletUtil.dumpRequest(request) %></pre>
     </td>
   </tr>
   </table>

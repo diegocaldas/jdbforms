@@ -2,7 +2,7 @@
 <body>
    This is testMenuPage2
 
-<%@ include file="httpSnooper.html" %> 
+<%@ include file="httpSnooper.jsp" %> 
 
 </body>
 </html>    

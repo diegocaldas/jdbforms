@@ -53,7 +53,7 @@
          </db:footer>
       </db:dbform>
 
-<%@ include file="httpSnooper.html" %>
+<%@ include file="httpSnooper.jsp" %>
 
    </body>
 </html>
