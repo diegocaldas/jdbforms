@@ -37,7 +37,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLWarning;
 import java.sql.Statement;
 
-import org.dbforms.util.SqlUtil;
 
 public class SingleConnectionWrapper implements Connection {
    private static Category logCat = Category.getInstance(SingleConnectionWrapper.class.getName());
@@ -70,7 +69,7 @@ public class SingleConnectionWrapper implements Connection {
             try {
                stmt.close();
             } catch (SQLException e) {
-               SqlUtil.logSqlException(e);
+               logCat.warn(e);
             } catch (Exception e) {
                logCat.error(e);
             }
@@ -264,8 +263,7 @@ public class SingleConnectionWrapper implements Connection {
       }
    }
 
-   public Statement createStatement(int resultSetType, int resultSetConcurrency, int resultSetHoldability)
-      throws SQLException {
+   public Statement createStatement(int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
       synchronized (_conn) {
          Statement res = _conn.createStatement(resultSetType, resultSetConcurrency, resultSetHoldability);
          list.add(res);
@@ -273,8 +271,7 @@ public class SingleConnectionWrapper implements Connection {
       }
    }
 
-   public PreparedStatement prepareStatement(String sql, int resultSetType, int resultSetConcurrency, int resultSetHoldability)
-      throws SQLException {
+   public PreparedStatement prepareStatement(String sql, int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
       synchronized (_conn) {
          PreparedStatement res = _conn.prepareStatement(sql, resultSetType, resultSetConcurrency, resultSetHoldability);
          list.add(res);
@@ -282,8 +279,7 @@ public class SingleConnectionWrapper implements Connection {
       }
    }
 
-   public CallableStatement prepareCall(String sql, int resultSetType, int resultSetConcurrency, int resultSetHoldability)
-      throws SQLException {
+   public CallableStatement prepareCall(String sql, int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
       synchronized (_conn) {
          CallableStatement res = _conn.prepareCall(sql, resultSetType, resultSetConcurrency, resultSetHoldability);
          list.add(res);
