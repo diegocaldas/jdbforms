@@ -51,7 +51,7 @@ import org.dbforms.util.MessageResources;
 public abstract class DatabaseEvent extends WebEvent
 {
    /** key identifier */
-   protected String keyId;
+   private String keyId;
 
    /**
     * Creates a new DatabaseEvent object.

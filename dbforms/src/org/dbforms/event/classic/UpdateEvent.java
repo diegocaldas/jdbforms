@@ -176,7 +176,7 @@ public class UpdateEvent extends ValidationEvent
                {
                   // in case of a BLOB we supply the FileHolder object to SqlUtils for further operations
                   logCat.info("we are looking for fileholder with name: f_"
-                              + getTable().getId() + "_" + keyId + "_"
+                              + getTable().getId() + "_" + getKeyId() + "_"
                               + curField.getId());
                   value = fv.getFileHolder();
                   logCat.info("and found a value=" + value);
@@ -280,7 +280,7 @@ public class UpdateEvent extends ValidationEvent
                                                                   "f_"
                                                                   + getTable()
                                                                        .getId()
-                                                                  + "_" + keyId
+                                                                  + "_" + getKeyId()
                                                                   + "_"
                                                                   + curField.getId());
 

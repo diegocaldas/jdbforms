@@ -272,7 +272,7 @@ public class InsertEvent extends ValidationEvent
                                                                   "f_"
                                                                   + getTable().getId()
                                                                   + "_ins"
-                                                                  + keyId + "_"
+                                                                  + getKeyId() + "_"
                                                                   + curField.getId());
 
                   if (fileHolder != null)
