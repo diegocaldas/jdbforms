@@ -2,7 +2,7 @@
 <chapter>
  <title id="qSupp">Query Support</title>
  
-    <para>To make the usage of sql queries more flexible in dbforms you can use the query element which can be used to:</para>
+    <para>To make the usage of sql queries more flexible in dbforms, you can use the query element which can be used to:</para>
     <itemizedlist mark="opencircle">
       <listitem>
         <para>Create 
