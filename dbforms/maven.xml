@@ -1,0 +1,17 @@
+<project
+  default="userguide"
+  xmlns:m="maven"
+  xmlns:j="jelly:core"
+  xmlns:u="jelly:util">
+
+  <!--
+     -  Build the DbForms docbook guide
+	 -->
+  <goal name="documentation">
+    <j:jelly xmlns:j="jelly:core" xmlns="jelly:ant">
+	  <echo message="building the DbForms docbook user guide"/>          
+	  <ant antfile="docs.xml"/>
+    </j:jelly>
+  </goal>
+
+</project>
