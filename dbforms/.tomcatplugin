@@ -6,6 +6,6 @@
     <redirectLogger>false</redirectLogger>
     <updateXml>true</updateXml>
     <warLocation></warLocation>
-    <extraInfo></extraInfo>
+    <extraInfo>%3CValve++className%3D%22org.apache.catalina.authenticator.NonLoginAuthenticator%22++disableProxyCaching%3D%22false%22++%2F%3E%0D%0A</extraInfo>
     <webPath>/bookstore</webPath>
 </tomcatProjectProperties>

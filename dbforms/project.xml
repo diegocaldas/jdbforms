@@ -410,6 +410,20 @@
          </properties>
       </dependency>
       <dependency>
+         <id>rhino</id>
+         <version>1.5R4.1</version>
+         <properties>
+            <war.bundle>false</war.bundle>
+         </properties>
+      </dependency>
+      <dependency>
+         <id>nekohtml</id>
+         <version>0.9.3</version>
+         <properties>
+            <war.bundle>false</war.bundle>
+         </properties>
+      </dependency>
+      <dependency>
          <id>junit</id>
          <version>3.8.1</version>
          <properties>
