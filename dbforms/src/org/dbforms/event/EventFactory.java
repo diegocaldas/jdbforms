@@ -23,13 +23,17 @@
 package org.dbforms.event;
 import java.util.HashMap;
 import java.util.Properties;
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Category;
 
 import org.dbforms.util.Util;
 import org.dbforms.util.ReflectionUtil;
 import org.dbforms.config.*;
+import org.dbforms.config.DbFormsConfig;
+import org.dbforms.config.Table;
+import org.dbforms.config.DbFormsConfigRegistry;
+import org.dbforms.config.TableEvents;
 import org.dbforms.event.eventtype.EventType;
 import org.dbforms.event.eventtype.EventTypeUtil;
 
@@ -114,10 +118,10 @@ public abstract class EventFactory
                logCat.warn(new StringBuffer(
                      "::addEventInfo - the event information having id, class [").append(
                      id).append(", ").append(einfo.getClassName())
-                                                                                                        .append("] overrides the event class [")
-                                                                                                        .append(prevClassName)
-                                                                                                        .append("]")
-                                                                                                        .toString());
+                                   .append("] overrides the event class [")
+                                   .append(prevClassName)
+                                   .append("]")
+                                   .toString());
             }
          }
 
@@ -126,7 +130,7 @@ public abstract class EventFactory
          logCat.info(new StringBuffer(
                "::addEventInfo - event info having id, type, class [").append(
                id).append(", ").append(einfo.getType()).append(", ")
-                                                                                             .append(einfo
+                                                       .append(einfo
                .getClassName()).append("] registered"));
       }
    }
