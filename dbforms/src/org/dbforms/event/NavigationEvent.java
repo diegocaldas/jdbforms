@@ -23,36 +23,44 @@
 
 package org.dbforms.event;
 
-import org.dbforms.*;
-import org.dbforms.util.*;
 import java.sql.*;
 
+import org.dbforms.*;
+import org.dbforms.util.*;
 
 
-/****
- *
- * <p>abstract base class for all web-events related to navigation</p>
+
+/**
+ * Abstract base class for all web-events related to navigation.
  *
  * @author Joe Peer <j.peer@gmx.net>
  */
 public abstract class NavigationEvent extends WebEvent
 {
-    /** DOCUMENT ME! */
+    /** the related Table object */
     protected Table table;
 
+
     /**
-     * DOCUMENT ME!
+     *  Process the current event.
      *
-     * @param childFieldValues DOCUMENT ME!
-     * @param orderConstraint DOCUMENT ME!
-     * @param count DOCUMENT ME!
-     * @param firstPost DOCUMENT ME!
-     * @param lastPos DOCUMENT ME!
-     * @param con DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     *
-     * @throws SQLException DOCUMENT ME!
+     * @param  childFieldValues FieldValue array used to restrict a set in a subform where
+     *                          all "childFields" in the  resultset match their respective
+     *                          "parentFields" in main form
+     * @param  orderConstraint FieldValue array used to build a cumulation of rules for ordering
+     *                         (sorting) and restricting fields
+     * @param  count           record count
+     * @param  firstPosition   a string identifying the first resultset position
+     * @param  lastPosition    a string identifying the last resultset position
+     * @param  con             the JDBC Connection object
+     * @return  a ResultSetVector object
+     * @exception  SQLException if any error occurs
      */
-    public abstract ResultSetVector processEvent(FieldValue[] childFieldValues, FieldValue[] orderConstraint, int count, String firstPost, String lastPos, Connection con) throws SQLException;
+    public abstract ResultSetVector processEvent(FieldValue[] childFieldValues,
+                                                 FieldValue[] orderConstraint,
+                                                 int          count,
+                                                 String       firstPost,
+                                                 String       lastPos,
+                                                 Connection con)
+      throws SQLException;
 }
