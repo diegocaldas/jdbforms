@@ -308,23 +308,23 @@
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
 					<info>
-						<p>
+						&lt;p&gt;
 							if &quot;true&quot;, at every action (navigation, insert, update, etc.) all 
-							  input fields of ALL currentlyrendered rowsets are parsed and updated. many rows 
+							  input fields of ALL currently rendered rowsets are parsed and updated. many rows 
 							  may be affected. This can be <b>very useful</b> if people need to change lots 
 							  of data, even multiple datarows, at once
-						</p>
-						<p>
+						&lt;/p&gt;
+						&lt;p&gt;
 							if &quot;false&quot;, updates are only performed if an explicite &quot;update&quot;- 
-							  action is launched(normally by hitting the updateAction-button). Up to 1 row may be affected.
-						</p>
-                                                <p>
-							if &quot;OnUpdateOnly&quot;, updates are only performed if an explicite &quot;update&quot;- 
-							  action is launched(normally by hitting the updateAction-button), all 
-							  input fields of ALL currentlyrendered rowsets are parsed and updated. Many rows 
+							  action is launched (normally by hitting the updateAction-button). Only the current row is affected.
+						&lt;/p&gt;
+						&lt;p&gt;
+							if &quot;OnUpdateOnly&quot;, updates are only performed if an explicite &quot;update&quot; - 
+							  action is launched (normally by hitting the updateAction-button), all 
+							  input fields of ALL currently rendered rowsets are parsed and updated. Many rows 
 							  may be affected. This can be <b>very useful</b> if people need to change lots 
 							  of data, even multiple datarows, at once.  
-						</p>
+						&lt;/p&gt;
                                                 
 					</info>
 				</attribute>
