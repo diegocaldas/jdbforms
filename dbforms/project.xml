@@ -234,7 +234,7 @@
        -  J2SE JDK1.3.x no.
        -
        -  http://java.sun.com/products/jdbc/download.html#binary
-       -- I think the name in Maven land has changed to just jdbc. - DEP
+       -  I think the name in Maven land has changed to just jdbc. - DEP
        -->
     <dependency>
       <id>jdbc</id>
@@ -278,6 +278,14 @@
     </dependency>        
 
     <dependency>
+      <id>commons-lang</id>      
+      <version>1.0</version>
+      <properties>        
+        <war.bundle.jar>true</war.bundle.jar>
+      </properties>
+    </dependency>            
+
+    <dependency>
       <id>commons-logging</id>
       <version>1.0.1</version>
       <properties>        
@@ -300,14 +308,6 @@
         <war.bundle.jar>true</war.bundle.jar>
       </properties>
     </dependency>
-
-    <dependency>
-      <id>commons-lang</id>      
-      <version>1.0</version>
-      <properties>        
-        <war.bundle.jar>true</war.bundle.jar>
-      </properties>
-    </dependency>            
 
     <dependency>
       <id>commons-validator</id>
