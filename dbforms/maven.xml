@@ -2,7 +2,7 @@
          xmlns:m = "maven"
          xmlns:j = "jelly:core"
          xmlns:u = "jelly:util"
-         xmlns:w = "jelly:werkz" >
+	 >
 
 
   <!--
@@ -10,23 +10,40 @@
      -    tag library
      -    docbook guide 
      -->
-  <w:goal name="doc">
+  <goal name="dbforms:doc" description="generate dbforms documentation: taglib docu and manual">
     <j:jelly xmlns:j="jelly:core" xmlns="jelly:ant">
       <echo message="building the DbForms documentation user guide and jsp tag library"/>
       <ant antfile="docs.xml" target="maven-build-doc"/>
     </j:jelly>
-  </w:goal>
+  </goal>
 
+   <goal name="dbforms:dist" description="generates the distribution via build.xml">
+     <echo message="building the distribution using ant "/>
+     <echo message="generate version ${pom.currentVersion}"/>
+     <ant antfile="build.xml" target="maven-build-release">
+     	<property name="dbforms.version" value="${pom.currentVersion}" />
+     </ant>
+  </goal>
+
+  <goal name="dbforms:deploy" description="do the whole deployment: generates site, generates doc, generates distribution">
+     <echo message="starting deploying site"/>
+     <echo message="1. generate whole site"/>
+     <attainGoal name="site:generate"/>
+     <echo message="2. generate dbforms documentation via docs.xml"/>
+     <attainGoal name="dbforms:doc"/>
+     <echo message="3. build the distribution via build.xml"/>
+     <attainGoal name="dbforms:dist"/>
+  </goal>
 
   <!--
      -  Move the $DBFORMS_HOME/target/docs/* stuff into the 
      -  $DBFORMS_HOME/doc directory
      -->
-  <w:postGoal name="site:generate">
+  <postGoal name="site:generate">
     <j:jelly xmlns:j="jelly:core" xmlns="jelly:ant">
       <echo message="moving the Maven docs stuff into the main DbForms doc directory"/>
       <ant antfile="docs.xml" target="maven-move-doc"/>
     </j:jelly>
-  </w:postGoal>
+  </postGoal>
 
 </project>

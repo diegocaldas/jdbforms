@@ -49,8 +49,8 @@ public class NoopEvent extends WebEvent
     /**
      * Creates a new NoopEvent object.
      */
-    public NoopEvent()
+    public NoopEvent(int tableId, HttpServletRequest request, DbFormsConfig config)
     {
-        tableId = -1;
+        super(tableId, request, config);
     }
 }
