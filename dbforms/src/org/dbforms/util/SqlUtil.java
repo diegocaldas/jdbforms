@@ -22,6 +22,7 @@
  */
 
 package org.dbforms.util;
+
 import java.sql.*;
 import java.io.*;
 import org.apache.log4j.Category;
@@ -38,9 +39,12 @@ import org.dbforms.DbFormsConfig;
  */
 public class SqlUtil
 {
+    // logging category for this class
     static Category logCat = Category.getInstance(SqlUtil.class.getName());
 
-    // logging category for this class
+    /**
+     *
+     */
     private static java.sql.Date createAppropriateDate(Object value)
     {
         if (value == null)
@@ -85,7 +89,9 @@ public class SqlUtil
     }
 
 
-    //2002/10/01-HKK: Do the same for timestamp!
+    /**
+     * 2002/10/01-HKK: Do the same for timestamp!
+     */
     private static java.sql.Timestamp createAppropriateTimeStamp(Object value)
     {
         if (value == null)
@@ -122,6 +128,9 @@ public class SqlUtil
     }
 
 
+    /**
+     *
+     */
     private static java.math.BigDecimal createAppropriateNumeric(Object value)
     {
         if (value == null)
@@ -141,12 +150,12 @@ public class SqlUtil
 
 
     /**
-this utility-method assigns a particular value to a place holder of a PreparedStatement.
-it tries to find the correct setXxx() value, accoring to the field-type information
-represented by "fieldType".
-            
-quality: this method is bloody alpha (as you migth see :=)
-*/
+     *  this utility-method assigns a particular value to a place holder of a PreparedStatement.
+     *  it tries to find the correct setXxx() value, accoring to the field-type information
+     *  represented by "fieldType".
+     *
+     *  quality: this method is bloody alpha (as you migth see :=)
+     */
     public static void fillPreparedStatement(PreparedStatement ps, int col, Object val, int fieldType) throws SQLException
     {
         try
@@ -297,14 +306,12 @@ quality: this method is bloody alpha (as you migth see :=)
 
 
     /**
- * DOCUMENT ME!
- *
- * @param con DOCUMENT ME!
- */
+     * Close the input connection
+     *
+     * @param con the connection to close
+     */
     public final static void closeConnection(Connection con)
     {
-        // The connection should not be null - If it is, then you might have an infrastructure problem!
-        // Be sure to look into this!  Hint: check out your pool manager's performance! 
         if (con != null)
         {
             try
@@ -313,10 +320,52 @@ quality: this method is bloody alpha (as you migth see :=)
                 con.close();
                 logCat.debug("Connection closed");
             }
-            catch (SQLException sqle2)
+            catch (SQLException e)
             {
-                sqle2.printStackTrace();
+                logCat.error("::closeConnection - cannot close the input connection", e);
             }
         }
+    }
+
+
+    /**
+     *  Get a connection using the connection name
+     *  specified into the xml configuration file.
+     *
+     * @param config            the DbFormsConfig object
+     * @param dbConnectionName  the connection name
+     * @return a connection object
+     */
+    public static final Connection getConnection(DbFormsConfig config, String dbConnectionName) throws IllegalArgumentException
+    {
+        DbConnection aDbConnection = null;
+        Connection con = null;
+
+        if ((aDbConnection = config.getDbConnection(dbConnectionName)) == null)
+        {
+            throw new IllegalArgumentException("DbConnection named [" + dbConnectionName + "] is not configured properly.");
+        }
+
+        if ((con = aDbConnection.getConnection()) == null)
+        {
+            throw new IllegalArgumentException("JDBC-Troubles:  was not able to create connection using the following dbconnection: " + aDbConnection);
+        }
+
+        return con;
+    }
+
+
+    /**
+     *  Log the SQLException stacktrace and do the same for all the
+     *  nested exceptions.
+     */
+    public static final void logSqlException(SQLException e)
+    {
+        int i = 0;
+
+        logCat.error("::logSqlExceptionSQL - exception", e);
+
+        while ((e = e.getNextException()) != null)
+            logCat.error("::logSqlException - nested SQLException (" + (i++) + ")", e);
     }
 }
