@@ -4255,6 +4255,19 @@ flavor is "image")</info>
 					<info>The keyboard character used to move focus 
 immediately to this element.</info>
 				</attribute>
+                                <attribute>
+                                        <name>showAlwaysInFooter</name>
+                                        <required>false</required>
+                                        <rtexprvalue>true</rtexprvalue>
+                                        <info>A NavNewButton is different from other buttons, it
+will normally even been shown if it is placed within footer of a dbforms tag with empty result set.
+This makes sense if you want to show a set of rows and then below always the button to open
+a form to insert a new row. But if you have a form with body attribute allowNew set to &quot;true&quot;,
+an insert form will automatically be shown in case no row is found. In that case the button might
+irritate users, you should then set attribute showAlwaysInFooter to &quot;false&quot;.
+Then the button will not be shown if result set is empty.</info>
+                                </attribute>
+
 				<attribute>
 					<name>onBlur</name>
 					<required>false</required>
@@ -5321,3 +5334,4 @@ noop, goto, insert, update, delete</summary>
 		</taglib>
 	</body>
 </document>
+
