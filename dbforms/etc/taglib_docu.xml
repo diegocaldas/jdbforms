@@ -5362,6 +5362,12 @@ noop, goto, insert, update, delete</summary>
           <info>Default value for the field. This will be used at the first time the form is rendered</info>
         </attribute>
         <attribute>
+          <name>id</name>
+          <required>false</required>
+          <rtexprvalue>true</rtexprvalue>
+          <info>Renders HTML id field</info>
+        </attribute>
+        <attribute>
           <name>onBlur</name>
           <required>false</required>
           <rtexprvalue>true</rtexprvalue>

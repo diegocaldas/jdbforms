@@ -1,3 +1,7 @@
+2003-02-18
+(Henner.Kollmann@gmx.de)
+     Add id attribute to search tag
+
 2003-02-12
 (Henner.Kollmann@gmx.de)
      DbLinkURLTag.java: added TryCatchFinnaly to support Tomcat 4 tag pooling.
