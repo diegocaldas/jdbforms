@@ -30,7 +30,6 @@ import java.util.Hashtable;
 
 import org.apache.log4j.Category;
 
-import org.dbforms.config.Table;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.GrantedPrivileges;
 
@@ -38,21 +37,17 @@ import org.dbforms.event.DatabaseEvent;
 import org.dbforms.event.MultipleValidationException;
 import org.dbforms.event.DbEventInterceptor;
 
-import org.dbforms.event.datalist.dao.DataSourceList;
 import org.dbforms.event.datalist.dao.DataSourceFactory;
 
-import org.dbforms.util.ResultSetVector;
 import org.dbforms.util.ParseUtil;
-import org.dbforms.util.FieldValue;
 import org.dbforms.util.FieldValues;
 import org.dbforms.util.Util;
 
 
-/****
- *
- * <p>This event prepares and performs a SQL-Delete operation</p>
- *
- * <p>Works with new factory classes</p>
+/**
+ * This event prepares and performs a SQL-Delete operation.
+ * <br>
+ * Works with new factory classes.
  *
  * @author Henner Kollmann <Henner.Kollmann@gmx.de>
  */
@@ -60,16 +55,19 @@ public class DeleteEvent extends DatabaseEvent
 {
    static Category logCat = Category.getInstance(DeleteEvent.class.getName());
 
+
    /**
     * Creates a new DeleteEvent object.
     *
-    * @param tableId DOCUMENT ME!
-    * @param keyId DOCUMENT ME!
-    * @param request DOCUMENT ME!
-    * @param config DOCUMENT ME!
+    * @param tableId the table id
+    * @param keyId   the key id
+    * @param request the request object
+    * @param config  the configuration object
     */
-   public DeleteEvent(Integer tableId, String keyId,
-      HttpServletRequest request, DbFormsConfig config)
+   public DeleteEvent(Integer            tableId, 
+                      String             keyId,
+      				  HttpServletRequest request, 
+      				  DbFormsConfig      config)
    {
       super(tableId.intValue(), keyId, request, config);
    }
@@ -78,21 +76,25 @@ public class DeleteEvent extends DatabaseEvent
    /**
     * Creates a new DeleteEvent object.
     *
-    * @param action DOCUMENT ME!
-    * @param request DOCUMENT ME!
-    * @param config DOCUMENT ME!
+    * @param action  the action string
+    * @param request the request object
+    * @param config  the configuration object
     */
-   public DeleteEvent(String action, HttpServletRequest request,
-      DbFormsConfig config)
+   public DeleteEvent(String             action, 
+                      HttpServletRequest request,
+                      DbFormsConfig      config)
    {
       super(ParseUtil.getEmbeddedStringAsInteger(action, 2, '_'),
-         ParseUtil.getEmbeddedString(action, 3, '_'), request, config);
+            ParseUtil.getEmbeddedString(action, 3, '_'), 
+            request, 
+            config);
    }
 
+
    /**
-    * DOCUMENT ME!
+    * Get the FieldValues attribute.
     *
-    * @return DOCUMENT ME!
+    * @return the FieldValues attribute
     */
    public FieldValues getFieldValues()
    {
@@ -101,12 +103,12 @@ public class DeleteEvent extends DatabaseEvent
 
 
    /**
-    * DOCUMENT ME!
+    * Process this event.
     *
-    * @param con DOCUMENT ME!
+    * @param con the connection object
     *
-    * @throws SQLException DOCUMENT ME!
-    * @throws MultipleValidationException DOCUMENT ME!
+    * @throws SQLException  if any SQL error occurs
+    * @throws MultipleValidationException if any validation error occurs
     */
    public void processEvent(Connection con)
       throws SQLException, MultipleValidationException
@@ -114,8 +116,9 @@ public class DeleteEvent extends DatabaseEvent
       // Apply given security contraints (as defined in dbforms-config.xml)
       if (!hasUserPrivileg(GrantedPrivileges.PRIVILEG_DELETE))
       {
-         throw new SQLException("Sorry, deleting data from table "
-            + table.getName() + " is not granted for this session.");
+         throw new SQLException(":: processEvent - sorry, deleting data from table "
+                                + table.getName() 
+                                + " is not granted for this session.");
       }
 
       // which values do we find in request
@@ -135,38 +138,38 @@ public class DeleteEvent extends DatabaseEvent
             Hashtable associativeArray = getAssociativeFieldValues(fieldValues);
 
             // process the interceptors associated to this table
-            table.processInterceptors(DbEventInterceptor.PRE_DELETE, request,
-               associativeArray, config, con);
+            table.processInterceptors(DbEventInterceptor.PRE_DELETE, 
+                                      request,
+                                      associativeArray, 
+                                      config, 
+                                      con);
 
             // synchronize data which may be changed by interceptor:
             table.synchronizeData(fieldValues, associativeArray);
          }
          catch (SQLException sqle)
          {
-            // PG = 2001-12-04
-            // No need to add extra comments, just re-throw exceptions as SqlExceptions
-            throw new SQLException(sqle.getMessage());
+            logCat.error("::processEvent - SQL exception during PRE_DELETE interceptors procession", sqle);
+			throw sqle;
          }
          catch (MultipleValidationException mve)
          {
-            // PG, 2001-12-14
-            // Support for multiple error messages in one interceptor
-            throw new MultipleValidationException(mve.getMessages());
+			logCat.error("::processEvent - MVE exception during PRE_DELETE interceptors procession", mve);
+            throw mve;
          }
       }
 
-      // in order to process an update, we need the key of the dataset to update
-      //
+      // in order to process an update, we need the key of the dataset to update;
       String keyValuesStr = getKeyValues();
 
       if (Util.isNull(keyValuesStr))
       {
-         logCat.error(
-            "At least one key is required per table, check your dbforms-config.xml");
+         logCat.error("At least one key is required per table, check your dbforms-config.xml");
 
          return;
       }
 
+      // DELETE operation;
       DataSourceFactory qry = new DataSourceFactory(con, table);
       qry.doDelete(keyValuesStr);
       qry.close();
@@ -177,14 +180,12 @@ public class DeleteEvent extends DatabaseEvent
          try
          {
             // process the interceptors associated to this table
-            table.processInterceptors(DbEventInterceptor.POST_DELETE, request,
-               null, config, con);
+            table.processInterceptors(DbEventInterceptor.POST_DELETE, request, null, config, con);
          }
          catch (SQLException sqle)
          {
-            // PG = 2001-12-04
-            // No need to add extra comments, just re-throw exceptions as SqlExceptions
-            throw new SQLException(sqle.getMessage());
+			logCat.error("::processEvent - SQL exception during POST_DELETE interceptors procession", sqle);
+			throw sqle;
          }
       }
 
