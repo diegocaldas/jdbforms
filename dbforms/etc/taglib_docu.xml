@@ -2526,7 +2526,7 @@ of them</summary>
          first entry --&gt;<br/>
         &lt;db:radio fieldName=&quot;timeframe&quot; <br/>
          growDirection=&quot;vertical&quot;<br/>
-         value=&quot;0&quot; &gt;<br/>
+         defaultValue=&quot;0&quot; &gt;<br/>
          &lt;db:staticData name=&quot;myQuery&quot;&gt; <br/>
          &lt;db:staticDataItem key=&quot;0&quot; value=&quot;9:00  12:00&quot;/&gt;<br/>
          &lt;db:staticDataItem key=&quot;1&quot; value=&quot;12:01  15:00&quot;/&gt;<br/>
@@ -2563,42 +2563,11 @@ of them</summary>
 					</info>
 				</attribute>
 				<attribute>
-					<name>value</name>
-					<required>false</required>
-					<rtexprvalue>true</rtexprvalue>
-					<info>
-						<p>value that should be used as default when form is in insert mode.</p>
-						<p>only needed if form is in insert-mode, otherwise the DbForms-Framework determinates 
-  						   the value.</p>
-  						<p>only used if there is no nested data!</p>
-					</info>
-				</attribute>
-				<attribute>
 					<name>defaultValue</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
 					<info>
       						default field name to use if the specified field is empty.
-      						Only used if there is nested data!
-					</info>
-				</attribute>
-				<attribute>
-					<name>novalue</name>
-					<required>false</required>
-					<rtexprvalue>true</rtexprvalue>
-					<info>
-						<p>value that should be used if check box is not checked</p>
-					</info>
-				</attribute>
-				<attribute>
-					<name>checked</name>
-					<required>false</required>
-					<rtexprvalue>true</rtexprvalue>
-					<info>
-						<p>determinates if this radio should be selected by default when form is in insert 
-  mode</p>
-						<p>only needed if form is in insert-mode, otherwise the DbForms-Framework determinates 
-  whether a radio should be selected or not.</p>
 					</info>
 				</attribute>
 				<attribute>
