@@ -116,7 +116,12 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer  {
 		StringBuffer tagBuf = new StringBuffer();
 
 		tagBuf.append("<select name=\"");
-		tagBuf.append(getFormFieldName());
+		// 20021025-HKK: If fieldName is not a dabasefield just append fieldname!
+      try {
+   		tagBuf.append(getFormFieldName());
+      } catch (Throwable t) {
+   		tagBuf.append(getFieldName());
+      }
 		tagBuf.append("\"");
 
 		if (size != null) {
@@ -156,7 +161,9 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer  {
 
 		tagBuf.append("> ");
 		tagBuf.append(description);
-
+      
+      // 20021025-HKK: Appended </option>
+		tagBuf.append("</option>");
 		return tagBuf.toString();
 	}
 
@@ -172,7 +179,12 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer  {
 		StringBuffer selectedOptions = new StringBuffer();
 		
 		// current Value from Database; or if no data: explicitly set by user; or ""
-		String currentValue = getFormFieldValue();
+  		// 20021025-HKK: Error handling if fieldName is not a database field!
+  		String currentValue = "";
+		try {
+			currentValue = getFormFieldValue();
+		} catch (Throwable t) {
+		};
 		
 		if(embeddedData==null) { // no embedded data is nested in this tag
 
@@ -261,7 +273,12 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer  {
  		
  		
 		// For generation Javascript Validation.  Need original and modified fields name
-		parentForm.addChildName(getFieldName(), getFormFieldName());
+  		// 20021025-HKK: Error handling if fieldName is not a database field!
+  		try {
+			parentForm.addChildName(getFieldName(), getFormFieldName());
+		} catch (Throwable t) {
+		};
+
 
 
 		try {
