@@ -71,7 +71,7 @@ public class Util
         {
             int i = s.indexOf(REALPATH);
 
-            if (i > 0)
+            if (i >= 0)
             {
                 StringBuffer buf = new StringBuffer();
                 buf.append(s.substring(0, i));
