@@ -1674,9 +1674,15 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
             }
             else
             {
+				/* 2003-07-31-HKK: experimental remove jumping to myPosition. Seems that classic 
+				 *                 navigation needs this to find the last seen record again.
+				 *                 New navigation do not need this!
+				 *                      
                String myPosition = (((count == 0) || "true".equals(getBypassNavigation()))
                                       ? null : firstPosition);
-               navEvent = navEventFactory.createGotoEvent(table, request, config, myPosition);
+              navEvent = navEventFactory.createGotoEvent(table, request, config, myPosition);
+ 				 */ 
+				 navEvent = navEventFactory.createGotoEvent(table, request, config, null);
             }
          }
 
