@@ -24,7 +24,7 @@ package org.dbforms.event;
 import java.util.Properties;
 import org.apache.log4j.Category;
 import org.dbforms.util.Util;
-import org.dbforms.util.DbConnectionProperty;
+import org.dbforms.config.DbConnectionProperty;
 
 
 
