@@ -54,6 +54,7 @@ Happy coding!
     <property name="bin.dir" value="${cvs.workingdir}/bin"/>
     <property environment="env"/>
 
+
     <!-- Indentify Classpath -->
     <path id="classpath">
         <fileset dir="${dependend.dir}">
@@ -140,7 +141,7 @@ Happy coding!
   <target name="javadoc" depends="jar_classes">
     <javadoc packagenames = "org.dbforms.*" 
              sourcepath   = "${javasrc.dir}" 
-             destdir      = "${dist.dir}/api" 
+             destdir      = "${dist.dir}/apidocs" 
              author       = "true" 
              version      = "true" 
              use          = "true" 
@@ -196,6 +197,8 @@ Happy coding!
     <!-- make an example app -->
 
     <target name="createExample">
+	<tstamp/>
+        <property name="dbforms.releaseName" value="${dbforms.version}_${DSTAMP}"/>
 
         <echo message="BUILDING EXAMPLE: ${example.name}"/>
 
@@ -237,7 +240,7 @@ Happy coding!
         <echo message="finished compiling example specific code"/>
 
         <!-- creating WAR file for this example -->
-        <jar jarfile="${dist.dir}/${example.name}.war" basedir="${build.dir}/${example.name}" includes="*/**"/>
+        <jar jarfile="${dist.dir}/${example.name}_${dbforms.releaseName}.war" basedir="${build.dir}/${example.name}" includes="*/**"/>
     </target>
 
 
@@ -307,10 +310,8 @@ Happy coding!
 
      <!-- create dbforms-releasefile -->
     <target name="createReleaseFile" depends="createAllExamples,copy-devgui"  >
-          
-        <tstamp/>
-        <property name="dbforms.releaseName" value="${dbforms.version}_${DSTAMP}"/>
-
+      <tstamp/>
+      <property name="dbforms.releaseName" value="${dbforms.version}_${DSTAMP}"/>
       <zip destfile="dbforms${dbforms.releaseName}.zip" >
         <zipfileset dir="."          prefix="dbforms${dbforms.releaseName}"         includes="ChangeLog Changes_v1_0  Changes_v1_1  CommonMistakes license.txt Readme Todo build.xml ReleaseNotes*.txt"/>
         <zipfileset dir="."          prefix="dbforms${dbforms.releaseName}"         includes="doc/**/*.html,doc/**/*.png,doc/**/*.gif,doc/**/*.jpg,doc/**/*.txt,doc/**/*.pdf"/>
@@ -348,7 +349,7 @@ Happy coding!
         <fileset dir="." includes="doc/**/*.html,doc/**/*.png,doc/**/*.gif,doc/**/*.jpg,doc/**/*.txt,doc/**/*.pdf,doc/**/*.css"/>
         <fileset dir="." includes="dist/*.tld  dist/*.jar"/>
         <fileset dir="." includes="etc/*.xml etc/*.xsl"/>
-        <fileset dir="." includes="examples/*.txt"/>
+        <fileset dir="." includes="examples/**/*"/>
         <fileset dir="." includes="src/org/**/*.java"/>
         <fileset dir="." includes="temp/*.txt"/>
         <fileset dir="." includes="xsl-stylesheets/*.xsl"/>
@@ -361,10 +362,6 @@ Happy coding!
 
      <copy todir="${dbforms.releaseDir}/bin" >
         <fileset dir="./dist/bin" includes="devgui.bat devgui.sh"/>
-     </copy>
-
-     <copy todir="${dbforms.releaseDir}/examples">
-          <fileset dir="./dist"     includes="*.war"/>
      </copy>
 
      <copy todir="${dbforms.releaseDir}/dist">
