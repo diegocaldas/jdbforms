@@ -38,54 +38,6 @@ import junit.framework.*;
 
 public class TestUtil extends TestCase {
 
-    /**
-     * Creates a new TestUtil object.
-     *
-     * @param  name           DOCUMENT ME!
-     * @exception  Exception  Description of the Exception
-     * @throws  Exception     DOCUMENT ME!
-     */
-
-    public TestUtil(String name)
-        throws Exception {
-
-        super(name);
-
-    }
-
-
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @throws  Exception  DOCUMENT ME!
-     */
-
-    public void setUp()
-        throws Exception {
-
-        super.setUp();
-
-    }
-
-
-
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @throws  Exception  DOCUMENT ME!
-     */
-
-    public void tearDown()
-        throws Exception {
-
-        super.tearDown();
-
-    }
-
-
-
 
     /**
      * DOCUMENT ME!
