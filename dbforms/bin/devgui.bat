@@ -25,7 +25,7 @@ rem ----- Save Environment Variables That May Change ------------------------
 
 set _CP=%CP%
 set _TOMCAT_HOME=%TOMCAT_HOME%
-set _CLASSPATH=%CLASSPATH%;%DBFORMS_HOME%\dist\dbforms_v1_1_2.jar;
+set _CLASSPATH=%CLASSPATH%;%DBFORMS_HOME%\dist\dbforms_CURRENT_VERSION.jar;
 set _RUNJAVA="%JAVA_HOME%\bin\java"
 
 rem ----- Verify and Set Required Environment Variables ---------------------
