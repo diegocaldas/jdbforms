@@ -156,8 +156,6 @@
   </postGoal>
 
   <postGoal name="site:generate">
-    <ant:echo message="generate dbforms documentation" />
-    <attainGoal name="dbforms:doc" />
     <ant:echo message="build the distribution via build.xml" />
     <attainGoal name="dbforms:dist" />
     <ant:echo message="copy weekly build" />
