@@ -216,7 +216,12 @@ Happy coding!
         <copy todir="${build.dir}/${example.name}/WEB-INF/lib">
             <fileset dir="${dependend.dir}"/>
         </copy>
-
+        
+        <!-- xerces.jar, xalan.jar might be neccessary for other tasks, but are disturbing with tomcat 4 -->
+        <!-- FIXME: must be documented what do do with other servers.... -->
+       <delete file="${build.dir}/${example.name}/WEB-INF/lib/xerces.jar"/>
+       <delete file="${build.dir}/${example.name}/WEB-INF/lib/xalan.jar"/>
+       
         <!-- compile example-specific Java code -->
         <echo message="compiling example specific code"/>
         <javac srcdir="${build.dir}/${example.name}/src" destdir="${build.dir}/${example.name}/WEB-INF/classes" debug="on" optimize="off" deprecation="off" classpath="${dist.dir}/dbforms${dbforms.version}.jar"/>
