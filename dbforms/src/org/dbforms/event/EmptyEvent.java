@@ -4,7 +4,7 @@
  * $Date$
  *
  * DbForms - a Rapid Application Development Framework
- * Copyright (C) 2001 Joachim Peer <j.peer@gmx.net> et al.
+ * Copyright (C) 2001 Joachim Peer <joepeer@excite.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,13 +22,12 @@
  */
 
 package org.dbforms.event;
-
 import java.sql.*;
 import javax.servlet.http.*;
 import org.dbforms.*;
 import org.dbforms.util.*;
-
 import org.apache.log4j.Category;
+
 
 
 /****
@@ -43,13 +42,18 @@ import org.apache.log4j.Category;
  *
  * @author Joe Peer <j.peer@gmx.net>
  */
+public class EmptyEvent extends WebEvent
+{
+    static Category logCat = Category.getInstance(EmptyEvent.class.getName()); // logging category for this class
 
-public class EmptyEvent extends WebEvent {
-
-	static Category logCat = Category.getInstance(EmptyEvent.class.getName()); // logging category for this class
-
-	public EmptyEvent(String action, HttpServletRequest request) {
-		tableId = ParseUtil.getEmbeddedStringAsInteger(action, 2, '_');
-	}
-
+    /**
+     * Creates a new EmptyEvent object.
+     *
+     * @param action DOCUMENT ME!
+     * @param request DOCUMENT ME!
+     */
+    public EmptyEvent(String action, HttpServletRequest request)
+    {
+        tableId = ParseUtil.getEmbeddedStringAsInteger(action, 2, '_');
+    }
 }

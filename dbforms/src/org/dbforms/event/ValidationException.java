@@ -4,7 +4,7 @@
  * $Date$
  *
  * DbForms - a Rapid Application Development Framework
- * Copyright (C) 2001 Joachim Peer <j.peer@gmx.net> et al.
+ * Copyright (C) 2001 Joachim Peer <joepeer@excite.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -50,14 +50,24 @@ package org.dbforms.event;
 this exception may be thrown by user code
 in classes implementing the interceptor interface
 */
+public class ValidationException extends Exception
+{
+    /**
+     * Creates a new ValidationException object.
+     *
+     * @param message DOCUMENT ME!
+     */
+    public ValidationException(String message)
+    {
+        super(message);
+    }
 
-public class ValidationException extends Exception{
 
-	public ValidationException(String message) {
-		super(message);
-	}
-	
-	public ValidationException() {
-		super();
-	}
+    /**
+     * Creates a new ValidationException object.
+     */
+    public ValidationException()
+    {
+        super();
+    }
 }

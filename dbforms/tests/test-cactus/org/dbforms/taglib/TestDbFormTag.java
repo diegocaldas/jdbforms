@@ -1,5 +1,3 @@
-package org.dbforms.taglib;
-
 /*
  * $Header$
  * $Revision$
@@ -23,19 +21,18 @@ package org.dbforms.taglib;
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 
-
+package org.dbforms.taglib;
 import javax.servlet.jsp.tagext.BodyContent;
 import javax.servlet.jsp.tagext.BodyTag;
-
 import junit.framework.Test;
 import junit.framework.TestSuite;
-
 import org.apache.cactus.JspTestCase;
 import org.apache.cactus.WebResponse;
-
 import org.dbforms.DbFormsConfig;
 import org.dbforms.ConfigServlet;
 import org.dbforms.Table;
+
+
 
 /**
  * Tests of the <code>DbFormTag</code> class.
@@ -66,9 +63,12 @@ public class TestDbFormTag extends JspTestCase
      */
     public static void main(String[] theArgs)
     {
-        junit.swingui.TestRunner.main(
-            new String[] { TestDbFormTag.class.getName() });
+        junit.swingui.TestRunner.main(new String[] 
+        {
+            TestDbFormTag.class.getName()
+        });
     }
+
 
     /**
      * @return a test suite (<code>TestSuite</code>) that includes all methods
@@ -80,6 +80,7 @@ public class TestDbFormTag extends JspTestCase
         return new TestSuite(TestDbFormTag.class);
     }
 
+
     /**
      * In addition to creating the tag instance and adding the pageContext to
      * it, this method creates a BodyContent object and passes it to the tag.
@@ -87,13 +88,13 @@ public class TestDbFormTag extends JspTestCase
     public void setUp() throws Exception
     {
         tblAuthor = null;
-        config.setInitParameter("dbformsConfig","/WEB-INF/conf/dbforms-config.xml");
-        config.setInitParameter("log4j.configuration","/WEB-INF/conf/log4j.properties");
+        config.setInitParameter("dbformsConfig", "/WEB-INF/conf/dbforms-config.xml");
+        config.setInitParameter("log4j.configuration", "/WEB-INF/conf/log4j.properties");
 
-       ConfigServlet configServlet = new ConfigServlet();
-       configServlet.init(config);
+        ConfigServlet configServlet = new ConfigServlet();
+        configServlet.init(config);
 
-        DbFormsConfig dbFormsConfig = (DbFormsConfig)configServlet.getServletContext().getAttribute(DbFormsConfig.CONFIG);
+        DbFormsConfig dbFormsConfig = (DbFormsConfig) configServlet.getServletContext().getAttribute(DbFormsConfig.CONFIG);
 
         this.tag = new DbFormTag();
         this.tag.setPageContext(this.pageContext);
@@ -103,6 +104,7 @@ public class TestDbFormTag extends JspTestCase
         //this.tag.setBodyContent(this.tagContent);
     }
 
+
     //-------------------------------------------------------------------------
 
     /**
@@ -111,31 +113,38 @@ public class TestDbFormTag extends JspTestCase
      */
     public void testMaxRows() throws Exception
     {
-
-         this.tag.setMaxRows("1");
-         assertEquals("1",this.tag.getMaxRows());
-         assertTrue("Should be 1",this.tag.getCount()==1);
+        this.tag.setMaxRows("1");
+        assertEquals("1", this.tag.getMaxRows());
+        assertTrue("Should be 1", this.tag.getCount() == 1);
 
         this.tag.setMaxRows("0");
-         assertEquals("0",this.tag.getMaxRows());
-         assertTrue("should be 0",this.tag.getCount()==0);
-
+        assertEquals("0", this.tag.getMaxRows());
+        assertTrue("should be 0", this.tag.getCount() == 0);
     }
 
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @throws Exception DOCUMENT ME!
+     */
     public void testMaxRows2() throws Exception
     {
-         this.tag.setMaxRows("*");
-         assertEquals("*",this.tag.getMaxRows());
-         assertTrue("should be 0",this.tag.getCount()==0);
+        this.tag.setMaxRows("*");
+        assertEquals("*", this.tag.getMaxRows());
+        assertTrue("should be 0", this.tag.getCount() == 0);
     }
 
 
-
+    /**
+     * DOCUMENT ME!
+     *
+     * @throws Exception DOCUMENT ME!
+     */
     public void testSetUpTagNoTable() throws Exception
     {
         // mimic
         //<db:dbform redisplayFieldsOnError="true" autoUpdate="true" followUp="/AUTHOR_poweruser_list.jsp" maxRows="*">
-
         this.tag.setMaxRows("*");
 
         this.tag.setRedisplayFieldsOnError("true");
@@ -145,20 +154,22 @@ public class TestDbFormTag extends JspTestCase
         assertEquals(BodyTag.EVAL_BODY_TAG, result);
     }
 
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @throws Exception DOCUMENT ME!
+     */
     public void testSetUpTagForAuthor() throws Exception
     {
         // mimic
         //<db:dbform redisplayFieldsOnError="true" autoUpdate="true" followUp="/AUTHOR_poweruser_list.jsp" maxRows="*" tableName="AUTHOR">
-
         this.tag.setMaxRows("*");
         this.tag.setTableName("AUTHOR");
         tblAuthor = tag.getTable();
         assertTrue("Make sure we get table name back", tag.getTableName().equals("AUTHOR"));
         assertTrue("Make sure we get table with right name back", tag.getTable().getName().equals("AUTHOR"));
 
-
-
-
         this.tag.setRedisplayFieldsOnError("true");
         this.tag.setAutoUpdate("true");
 
@@ -166,20 +177,22 @@ public class TestDbFormTag extends JspTestCase
         assertEquals(BodyTag.EVAL_BODY_TAG, result);
     }
 
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @throws Exception DOCUMENT ME!
+     */
     public void testSetUpTagForBook() throws Exception
     {
         // mimic
         //<db:dbform redisplayFieldsOnError="true" autoUpdate="true" followUp="/BOOK_poweruser_list.jsp" maxRows="*" tableName="BOOK">
-
         this.tag.setMaxRows("*");
         this.tag.setTableName("BOOK");
         tblAuthor = tag.getTable();
         assertTrue("Make sure we get table name back", tag.getTableName().equals("BOOK"));
         assertTrue("Make sure we get table with right name back", tag.getTable().getName().equals("BOOK"));
 
-
-
-
         this.tag.setRedisplayFieldsOnError("true");
         this.tag.setAutoUpdate("true");
 
@@ -188,11 +201,15 @@ public class TestDbFormTag extends JspTestCase
     }
 
 
+    /**
+     * DOCUMENT ME!
+     *
+     * @throws Exception DOCUMENT ME!
+     */
     public void testSetUpTagForAuthorWithEverything() throws Exception
     {
         // mimic
         //<db:dbform redisplayFieldsOnError="true" autoUpdate="true" followUp="/AUTHOR_poweruser_list.jsp" maxRows="*" tableName="AUTHOR">
-
         this.tag.setMaxRows("*");
         this.tag.setTableName("AUTHOR");
         this.tag.setRedisplayFieldsOnError("true");
@@ -207,19 +224,20 @@ public class TestDbFormTag extends JspTestCase
     }
 
 
+    /**
+     * DOCUMENT ME!
+     *
+     * @throws Exception DOCUMENT ME!
+     */
     public void testEndTagForAuthor() throws Exception
     {
         // mimic
         //<db:dbform redisplayFieldsOnError="true" autoUpdate="true" followUp="/AUTHOR_poweruser_list.jsp" maxRows="*" tableName="AUTHOR">
-
         this.tag.setMaxRows("*");
         this.tag.setTableName("AUTHOR");
         tblAuthor = tag.getTable();
         assertTrue("Make sure we get table name back", tag.getTableName().equals("AUTHOR"));
         assertTrue("Make sure we get table with right name back", tag.getTable().getName().equals("AUTHOR"));
-
-
-
 
         this.tag.setRedisplayFieldsOnError("true");
         this.tag.setAutoUpdate("true");
@@ -237,14 +255,18 @@ public class TestDbFormTag extends JspTestCase
     {
         String content = theResponse.getText();
 
-        assertTrue("Make sure form name is dbform",content.indexOf("<form name=\"dbform\"")>=0);
-        assertTrue("Make sure method is post",content.indexOf("method=\"post\"")>=0);
-
+        assertTrue("Make sure form name is dbform", content.indexOf("<form name=\"dbform\"") >= 0);
+        assertTrue("Make sure method is post", content.indexOf("method=\"post\"") >= 0);
     }
 
-     public void endSetUpTagForAuthor (WebResponse theResponse)
-    {
 
+    /**
+     * DOCUMENT ME!
+     *
+     * @param theResponse DOCUMENT ME!
+     */
+    public void endSetUpTagForAuthor(WebResponse theResponse)
+    {
         /* expected content:
         <form name="dbform" action="/test/servlet/control;jsessionid=9056E6E9E4F59E13EF9DE8E371E2D5A3" method="post">
         <input type="hidden" name="invtable" value="0"><input type="hidden" name="autoupdate_0" value="true">
@@ -253,21 +275,21 @@ public class TestDbFormTag extends JspTestCase
         */
         String content = theResponse.getText();
 
-
-        assertTrue("Make sure form name is dbform",content.indexOf("<form name=\"dbform\"")>=0);
-        assertTrue("Make sure method is post",content.indexOf("method=\"post\"")>=0);
-        assertTrue("Make sure of invtable",content.indexOf("<input type=\"hidden\" name=\"invtable\" value=\"0\">")>=0);
-        assertTrue("Make sure of autoupdate",content.indexOf("<input type=\"hidden\" name=\"autoupdate_0\" value=\"true\">")>=0);
-        assertTrue("Make sure of fu",content.indexOf("<input type=\"hidden\" name=\"fu_0\" value=\"null\">")>=0);
-
-
+        assertTrue("Make sure form name is dbform", content.indexOf("<form name=\"dbform\"") >= 0);
+        assertTrue("Make sure method is post", content.indexOf("method=\"post\"") >= 0);
+        assertTrue("Make sure of invtable", content.indexOf("<input type=\"hidden\" name=\"invtable\" value=\"0\">") >= 0);
+        assertTrue("Make sure of autoupdate", content.indexOf("<input type=\"hidden\" name=\"autoupdate_0\" value=\"true\">") >= 0);
+        assertTrue("Make sure of fu", content.indexOf("<input type=\"hidden\" name=\"fu_0\" value=\"null\">") >= 0);
     }
 
 
-
-     public void endSetUpTagForBook (WebResponse theResponse)
+    /**
+     * DOCUMENT ME!
+     *
+     * @param theResponse DOCUMENT ME!
+     */
+    public void endSetUpTagForBook(WebResponse theResponse)
     {
-
         /* expected content:
         <form name="dbform" action="/test/servlet/control;jsessionid=9056E6E9E4F59E13EF9DE8E371E2D5A3" method="post">
         <input type="hidden" name="invtable" value="1"><input type="hidden" name="autoupdate_1" value="true">
@@ -276,28 +298,29 @@ public class TestDbFormTag extends JspTestCase
         */
         String content = theResponse.getText();
 
-        assertTrue("Make sure form name is dbform",content.indexOf("<form name=\"dbform\"")>=0);
-        assertTrue("Make sure method is post",content.indexOf("method=\"post\"")>=0);
-        assertTrue("Make sure of invtable",content.indexOf("<input type=\"hidden\" name=\"invtable\" value=\"1\">")>=0);
-        assertTrue("Make sure of autoupdate",content.indexOf("<input type=\"hidden\" name=\"autoupdate_1\" value=\"true\">")>=0);
-        assertTrue("Make sure of fu",content.indexOf("<input type=\"hidden\" name=\"fu_1\" value=\"null\">")>=0);
-
-
-
+        assertTrue("Make sure form name is dbform", content.indexOf("<form name=\"dbform\"") >= 0);
+        assertTrue("Make sure method is post", content.indexOf("method=\"post\"") >= 0);
+        assertTrue("Make sure of invtable", content.indexOf("<input type=\"hidden\" name=\"invtable\" value=\"1\">") >= 0);
+        assertTrue("Make sure of autoupdate", content.indexOf("<input type=\"hidden\" name=\"autoupdate_1\" value=\"true\">") >= 0);
+        assertTrue("Make sure of fu", content.indexOf("<input type=\"hidden\" name=\"fu_1\" value=\"null\">") >= 0);
     }
 
-    public void endSetUpTagForAuthorWithEverything (WebResponse theResponse)
-    {
 
+    /**
+     * DOCUMENT ME!
+     *
+     * @param theResponse DOCUMENT ME!
+     */
+    public void endSetUpTagForAuthorWithEverything(WebResponse theResponse)
+    {
         String content = theResponse.getText();
         String expectedContentA = "<form name=\"dbform\" action=\"/test/servlet/control";
         String expectedContentB = "target=\"_TOP\" method=\"post\"><input type=\"hidden\" name=\"invtable\" value=\"0\"><input type=\"hidden\" name=\"autoupdate_0\" value=\"true\"><input type=\"hidden\" name=\"fu_0\" value=\"/AUTHOR_poweruser_list.jsp\"><input type=\"hidden\" name=\"source\" value=\"/test\"><input type=\"hidden\" name=\"customEvent\">";
 
-
-        assertTrue("Make sure content matches expected content:" + expectedContentA,content.indexOf(expectedContentA)>=0);
-        assertTrue("Make sure content matches expected content:" + expectedContentB,content.indexOf(expectedContentB)>=0);
-
+        assertTrue("Make sure content matches expected content:" + expectedContentA, content.indexOf(expectedContentA) >= 0);
+        assertTrue("Make sure content matches expected content:" + expectedContentB, content.indexOf(expectedContentB) >= 0);
     }
+
 
     /**
      * Verifies that the target text is in the tag's
@@ -308,17 +331,16 @@ public class TestDbFormTag extends JspTestCase
         String content = theResponse.getText();
         String expectedContentA = "</form>";
 
-        assertTrue("Make sure content matches expected content:" + expectedContentA,content.indexOf(expectedContentA)>=0);
-
-
+        assertTrue("Make sure content matches expected content:" + expectedContentA, content.indexOf(expectedContentA) >= 0);
     }
 
 
+    /**
+     * DOCUMENT ME!
+     */
     public void tearDown()
     {
         //necessary for tag to output anything on most servlet engines.
         this.pageContext.popBody();
-
     }
-
 }

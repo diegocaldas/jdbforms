@@ -4,7 +4,7 @@
  * $Date$
  *
  * DbForms - a Rapid Application Development Framework
- * Copyright (C) 2001 Joachim Peer <j.peer@gmx.net> et al.
+ * Copyright (C) 2001 Joachim Peer <joepeer@excite.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,88 +22,72 @@
  */
 
 package org.dbforms.taglib;
-
 import javax.servlet.jsp.tagext.*;
 import org.apache.log4j.Category;
 
-public class DbFormTagTEI extends TagExtraInfo {
-
-  static Category logCat = Category.getInstance(DbFormTagTEI.class.getName()); // logging category for this class
-
-  public VariableInfo[] getVariableInfo(TagData data) {
 
 
-	StringBuffer[] varNames = {
-	 new StringBuffer("currentRow"),
-	 new StringBuffer("position"),
-	 new StringBuffer("searchFieldNames"),
-	 new StringBuffer("searchFieldModeNames"),
-	 new StringBuffer("searchFieldAlgorithmNames"),
-	 new StringBuffer("rsv")
-	};
+/**
+ * DOCUMENT ME!
+ *
+ * @version $Revision$
+ * @author $author$
+ */
+public class DbFormTagTEI extends TagExtraInfo
+{
+    static Category logCat = Category.getInstance(DbFormTagTEI.class.getName()); // logging category for this class
 
-	// convention for DbFroms TEI-provided variables: varName "_" tableName
-	// this is necessary to prevent JSP compiler errors if forms are nested
+    /**
+     * DOCUMENT ME!
+     *
+     * @param data DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public VariableInfo[] getVariableInfo(TagData data)
+    {
+        StringBuffer[] varNames = 
+        {
+            new StringBuffer("currentRow"), new StringBuffer("position"), 
+            new StringBuffer("searchFieldNames"), 
+            new StringBuffer("searchFieldModeNames"), 
+            new StringBuffer("searchFieldAlgorithmNames"), 
+            new StringBuffer("rsv")
+        };
 
-	String table = data.getAttributeString("tableName");
-	if( table != null ) {
-		for(int i=0; i<varNames.length; i++) {
-			varNames[i].append("_");
-			varNames[i].append(table.replace('.', '_')); // # jp 27-06-2001
-		}
-	}
+        // convention for DbFroms TEI-provided variables: varName "_" tableName
+        // this is necessary to prevent JSP compiler errors if forms are nested
+        String table = data.getAttributeString("tableName");
 
-	logCat.info("*** TEI CLASS IN ACTION ***");
-	logCat.info("table="+table);
-	logCat.info("varNames[0]="+varNames[0].toString());
+        if (table != null)
+        {
+            for (int i = 0; i < varNames.length; i++)
+            {
+                varNames[i].append("_");
+                varNames[i].append(table.replace('.', '_')); // # jp 27-06-2001
+            }
+        }
 
-	VariableInfo[] info =  {
+        logCat.info("*** TEI CLASS IN ACTION ***");
+        logCat.info("table=" + table);
+        logCat.info("varNames[0]=" + varNames[0].toString());
 
-		new VariableInfo(
-		    	varNames[0].toString(),
-		    	"java.util.Hashtable",
-		    	true,
-		    	VariableInfo.NESTED
-		),
+        VariableInfo[] info = 
+        {
 
-		new VariableInfo(
-		    	varNames[1].toString(),
-		    	"java.lang.String",
-		    	true,
-		    	VariableInfo.NESTED
-		),
+            new VariableInfo(varNames[0].toString(), "java.util.Hashtable", true, VariableInfo.NESTED), 
 
-		new VariableInfo(
-		    	varNames[2].toString(),
-		    	"java.util.Hashtable",
-		    	true,
-		    	VariableInfo.NESTED
-		),
+            new VariableInfo(varNames[1].toString(), "java.lang.String", true, VariableInfo.NESTED), 
 
-		new VariableInfo(
-		    	varNames[3].toString(),
-		    	"java.util.Hashtable",
-		    	true,
-		    	VariableInfo.NESTED
-		),
+            new VariableInfo(varNames[2].toString(), "java.util.Hashtable", true, VariableInfo.NESTED), 
 
-		new VariableInfo(
-		    	varNames[4].toString(),
-		    	"java.util.Hashtable",
-		    	true,
-		    	VariableInfo.NESTED
-		),
+            new VariableInfo(varNames[3].toString(), "java.util.Hashtable", true, VariableInfo.NESTED), 
 
-		new VariableInfo(
-		    	varNames[5].toString(),
-		    	"org.dbforms.util.ResultSetVector",
-		    	true,
-		    	VariableInfo.NESTED
-		)
-	};
+            new VariableInfo(varNames[4].toString(), "java.util.Hashtable", true, VariableInfo.NESTED), 
 
-	return info;
+            new VariableInfo(varNames[5].toString(), "org.dbforms.util.ResultSetVector", true, VariableInfo.NESTED)
+        };
 
-  }  
-
+        return info;
+    }
 }

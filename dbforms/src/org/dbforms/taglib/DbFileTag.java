@@ -4,7 +4,7 @@
  * $Date$
  *
  * DbForms - a Rapid Application Development Framework
- * Copyright (C) 2001 Joachim Peer <j.peer@gmx.net> et al.
+ * Copyright (C) 2001 Joachim Peer <joepeer@excite.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,17 +22,15 @@
  */
 
 package org.dbforms.taglib;
-
 import java.util.*;
 import java.sql.*;
 import java.io.*;
-
 import javax.servlet.jsp.*;
 import javax.servlet.jsp.tagext.*;
-
 import org.dbforms.*;
-
 import org.apache.log4j.Category;
+
+
 
 /****
  *
@@ -43,91 +41,130 @@ import org.apache.log4j.Category;
  *
  * @author Joachim Peer <j.peer@gmx.net>
  */
+public class DbFileTag extends DbBaseInputTag
+{
+    static Category logCat = Category.getInstance(DbFileTag.class.getName());
 
-public class DbFileTag extends DbBaseInputTag {
+    // logging category for this class
+    private String accept;
 
-	static Category logCat = Category.getInstance(DbFileTag.class.getName());
-	// logging category for this class
+    /**
+     * DOCUMENT ME!
+     *
+     * @param accept DOCUMENT ME!
+     */
+    public void setAccept(String accept)
+    {
+        this.accept = accept;
+    }
 
-	private String accept;
 
-	public void setAccept(String accept) {
-		this.accept = accept;
-	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public String getAccept()
+    {
+        return accept;
+    }
 
-	public String getAccept() {
-		return accept;
-	}
 
-	public int doStartTag() throws javax.servlet.jsp.JspException {
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     *
+     * @throws javax.servlet.jsp.JspException DOCUMENT ME!
+     * @throws JspException DOCUMENT ME!
+     */
+    public int doStartTag() throws javax.servlet.jsp.JspException
+    {
+        super.doStartTag();
 
-		super.doStartTag();
+        if (!parentForm.hasMultipartCapability())
+        {
+            logCat.warn("DbFileTag is used but DbFormTag.multipart is not set (FALSE)");
+            throw new JspException("DbFileTag is used but DbFormTag.multipart is not set (it is set to \"FALSE\"). you must set it to \"TRUE\" to enable file uploads!");
+        }
 
-		if (!parentForm.hasMultipartCapability()) {
-			logCat.warn("DbFileTag is used but DbFormTag.multipart is not set (FALSE)");
-			throw new JspException("DbFileTag is used but DbFormTag.multipart is not set (it is set to \"FALSE\"). you must set it to \"TRUE\" to enable file uploads!");
-		}
+        return SKIP_BODY;
+    }
 
-		return SKIP_BODY;
-	}
 
-	public int doEndTag() throws javax.servlet.jsp.JspException {
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     *
+     * @throws javax.servlet.jsp.JspException DOCUMENT ME!
+     * @throws JspException DOCUMENT ME!
+     */
+    public int doEndTag() throws javax.servlet.jsp.JspException
+    {
+        try
+        {
+            StringBuffer tagBuf = new StringBuffer();
 
-	
-		try {
+            if (getReadOnly().equals("true") || parentForm.getReadOnly().equals("true"))
+            {
+                // if read-only, remove the browse button (for netscape problem)
+                tagBuf.append("<input type=\"text\" name=\"");
+            }
+            else
+            {
+                tagBuf.append("<input type=\"file\" name=\"");
+            }
 
-			StringBuffer tagBuf = new StringBuffer();
+            tagBuf.append(getFormFieldName());
+            tagBuf.append("\" ");
 
-			if(getReadOnly().equals("true") || parentForm.getReadOnly().equals("true")){
-				// if read-only, remove the browse button (for netscape problem)
-				tagBuf.append("<input type=\"text\" name=\"");
-			} else {
-				tagBuf.append("<input type=\"file\" name=\"");
-			}	
-			
-			tagBuf.append(getFormFieldName());
-			tagBuf.append("\" ");
+            if (accept != null)
+            {
+                tagBuf.append(" accept=\"");
+                tagBuf.append(accept);
+                tagBuf.append("\"");
+            }
 
-			if (accept != null) {
-				tagBuf.append(" accept=\"");
-				tagBuf.append(accept);
-				tagBuf.append("\"");
-			}
+            if (accessKey != null)
+            {
+                tagBuf.append(" accesskey=\"");
+                tagBuf.append(accessKey);
+                tagBuf.append("\"");
+            }
 
-			if (accessKey != null) {
-				tagBuf.append(" accesskey=\"");
-				tagBuf.append(accessKey);
-				tagBuf.append("\"");
-			}
+            if (maxlength != null)
+            {
+                tagBuf.append(" maxlength=\"");
+                tagBuf.append(maxlength);
+                tagBuf.append("\"");
+            }
 
-			if (maxlength != null) {
-				tagBuf.append(" maxlength=\"");
-				tagBuf.append(maxlength);
-				tagBuf.append("\"");
-			}
+            if (cols != null)
+            {
+                tagBuf.append(" size=\"");
+                tagBuf.append(cols);
+                tagBuf.append("\"");
+            }
 
-			if (cols != null) {
-				tagBuf.append(" size=\"");
-				tagBuf.append(cols);
-				tagBuf.append("\"");
-			}
+            if (tabIndex != null)
+            {
+                tagBuf.append(" tabindex=\"");
+                tagBuf.append(tabIndex);
+                tagBuf.append("\"");
+            }
 
-			if (tabIndex != null) {
-				tagBuf.append(" tabindex=\"");
-				tagBuf.append(tabIndex);
-				tagBuf.append("\"");
-			}
+            tagBuf.append(prepareStyles());
+            tagBuf.append(prepareEventHandlers());
+            tagBuf.append("/>");
 
-			tagBuf.append(prepareStyles());
-			tagBuf.append(prepareEventHandlers());
-			tagBuf.append("/>");
+            pageContext.getOut().write(tagBuf.toString());
+        }
+        catch (java.io.IOException ioe)
+        {
+            throw new JspException("IO Error: " + ioe.getMessage());
+        }
 
-			pageContext.getOut().write(tagBuf.toString());
-		} catch (java.io.IOException ioe) {
-			throw new JspException("IO Error: " + ioe.getMessage());
-		}
-
-		return EVAL_PAGE;
-	}
-
+        return EVAL_PAGE;
+    }
 }

@@ -1,0 +1,244 @@
+<jalopy>
+    <messages>
+        <printerMsgPrio>30000</printerMsgPrio>
+        <parserJavadocMsgPrio>30000</parserJavadocMsgPrio>
+        <transformMsgPrio>30000</transformMsgPrio>
+        <showErrorStackTrace>true</showErrorStackTrace>
+        <printerJavadocMsgPrio>30000</printerJavadocMsgPrio>
+        <ioMsgPrio>30000</ioMsgPrio>
+        <parserMsgPrio>30000</parserMsgPrio>
+    </messages>
+    <printer>
+        <whitespace>
+            <beforeLogicalNot>false</beforeLogicalNot>
+            <afterComma>true</afterComma>
+            <paddingRelationalOperators>true</paddingRelationalOperators>
+            <beforeStatementParenthesis>true</beforeStatementParenthesis>
+            <padddingTypeCast>false</padddingTypeCast>
+            <padddingBrackets>false</padddingBrackets>
+            <beforeBracketsTypes>false</beforeBracketsTypes>
+            <beforeMethodCallParenthesis>false</beforeMethodCallParenthesis>
+            <beforeBraces>true</beforeBraces>
+            <afterSemiColon>true</afterSemiColon>
+            <padddingBraces>true</padddingBraces>
+            <beforeCaseColon>false</beforeCaseColon>
+            <beforeMethodDeclarationParenthesis>false</beforeMethodDeclarationParenthesis>
+            <paddingBitwiseOperators>true</paddingBitwiseOperators>
+            <paddingAssignmentOperators>true</paddingAssignmentOperators>
+            <afterCastingParenthesis>true</afterCastingParenthesis>
+            <paddingShiftOperators>true</paddingShiftOperators>
+            <paddingLogicalOperators>true</paddingLogicalOperators>
+            <padddingParenthesis>false</padddingParenthesis>
+            <paddingMathematicalOperators>true</paddingMathematicalOperators>
+            <beforeBrackets>false</beforeBrackets>
+        </whitespace>
+        <comments>
+            <javadoc>
+                <addField>5</addField>
+                <checkTags>false</checkTags>
+                <addClass>5</addClass>
+                <templates>
+                    <methods>
+                        <bottom> */</bottom>
+                        <param> * @param $paramType$ DOCUMENT ME!</param>
+                        <return> * @return DOCUMENT ME!</return>
+                        <exception> * @throws $exceptionType$ DOCUMENT ME!</exception>
+                        <top>/**| * DOCUMENT ME!</top>
+                    </methods>
+                </templates>
+                <tags>
+                    <standard />
+                    <in-line />
+                </tags>
+                <remove>false</remove>
+                <parseComments>false</parseComments>
+                <addMethod>5</addMethod>
+                <addCtor>5</addCtor>
+                <checkInnerClass>false</checkInnerClass>
+            </javadoc>
+            <removeMultiLine>false</removeMultiLine>
+            <separator>
+                <instanceInit>Instance initializers</instanceInit>
+                <fillCharacter>·</fillCharacter>
+                <staticVariableInit>Static variables/initializers</staticVariableInit>
+                <ctor>Constructors</ctor>
+                <instanceVariable>Instance variables</instanceVariable>
+                <method>Methods</method>
+                <interface>Interfaces</interface>
+                <class>Classes</class>
+            </separator>
+            <formatMultiLine>false</formatMultiLine>
+            <removeSingleLine>false</removeSingleLine>
+            <insertSeparator>false</insertSeparator>
+            <insertSeparatorRecursive>false</insertSeparatorRecursive>
+        </comments>
+        <header>
+            <smartModeLines>20</smartModeLines>
+            <use>true</use>
+            <keys>Copyright (C) |DbForms - a Rapid Application Development Framework </keys>
+            <text>/*
+ * $Header$
+ * $Revision$
+ * $Date$
+ *
+ * DbForms - a Rapid Application Development Framework
+ * Copyright (C) 2001 Joachim Peer &lt;joepeer@excite.com&gt;
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+ */
+</text>
+        </header>
+        <blankLines>
+            <afterDeclaration>0</afterDeclaration>
+            <afterClass>2</afterClass>
+            <beforeControl>1</beforeControl>
+            <afterInterface>2</afterInterface>
+            <beforeCommentMultiLine>1</beforeCommentMultiLine>
+            <beforeHeader>0</beforeHeader>
+            <afterMethod>2</afterMethod>
+            <beforeJavadoc>1</beforeJavadoc>
+            <beforeDeclaration>1</beforeDeclaration>
+            <beforeCommentSingleLine>1</beforeCommentSingleLine>
+            <afterBraceLeft>0</afterBraceLeft>
+            <keepUpTo>1</keepUpTo>
+            <afterHeader>0</afterHeader>
+            <beforeBraceRight>0</beforeBraceRight>
+            <afterLastImport>3</afterLastImport>
+            <beforeCaseBlock>1</beforeCaseBlock>
+            <beforeFooter>0</beforeFooter>
+            <afterPackage>0</afterPackage>
+            <beforeBlock>1</beforeBlock>
+            <afterBlock>1</afterBlock>
+            <afterFooter>0</afterFooter>
+        </blankLines>
+        <indentation>
+            <braceCuddled>1</braceCuddled>
+            <tabs>
+                <size>8</size>
+                <use>false</use>
+            </tabs>
+            <firstColumnComments>true</firstColumnComments>
+            <braceRightAfter>0</braceRightAfter>
+            <caseFromSwitch>true</caseFromSwitch>
+            <leading>0</leading>
+            <throws>-1</throws>
+            <continationIf>true</continationIf>
+            <braceRight>0</braceRight>
+            <parameter>-1</parameter>
+            <braceLeft>0</braceLeft>
+            <implements>-1</implements>
+            <continuation>4</continuation>
+            <deep>55</deep>
+            <label>false</label>
+            <useMethodCallParams>false</useMethodCallParams>
+            <extends>-1</extends>
+            <commentEndline>1</commentEndline>
+            <general>4</general>
+            <continationIfTernary>false</continationIfTernary>
+        </indentation>
+        <wrapping>
+            <beforeImplements>false</beforeImplements>
+            <arrayElements>0</arrayElements>
+            <afterImplementsTypes>false</afterImplementsTypes>
+            <paramsMethodDef>false</paramsMethodDef>
+            <beforeOperator>false</beforeOperator>
+            <paramsMethodCallIfCall>false</paramsMethodCallIfCall>
+            <paramsMethodCall>false</paramsMethodCall>
+            <afterThrowsTypes>false</afterThrowsTypes>
+            <beforeExtends>false</beforeExtends>
+            <afterChainedMethodCall>false</afterChainedMethodCall>
+            <afterLabel>true</afterLabel>
+            <use>false</use>
+            <lineLength>80</lineLength>
+            <afterExtendsTypes>false</afterExtendsTypes>
+            <beforeThrows>false</beforeThrows>
+        </wrapping>
+        <sorting>
+            <method>false</method>
+            <variable>false</variable>
+            <orderModifiers>public,protected,private,abstract,static,final,synchronized,transient,volatile,native,strictfp</orderModifiers>
+            <use>false</use>
+            <order>Static Variables/Initializers,Instance Variables,Instance Initializers,Constructors,Methods,Interfaces,Classes</order>
+            <class>false</class>
+            <constructor>false</constructor>
+            <interface>false</interface>
+            <modifiers>
+                <use>false</use>
+            </modifiers>
+        </sorting>
+        <braces>
+            <rightBraceNewLine>true</rightBraceNewLine>
+            <insertBracesIfElse>true</insertBracesIfElse>
+            <removeBracesIfElse>false</removeBracesIfElse>
+            <leftBraceNewLine>true</leftBraceNewLine>
+            <insertBracesDoWhile>false</insertBracesDoWhile>
+            <emptyCuddle>false</emptyCuddle>
+            <treatMethodClassDifferent>false</treatMethodClassDifferent>
+            <removeBracesDoWhile>false</removeBracesDoWhile>
+            <removeBracesBlock>true</removeBracesBlock>
+            <emptyInsertStatement>false</emptyInsertStatement>
+            <removeBracesFor>false</removeBracesFor>
+            <insertBracesWhile>false</insertBracesWhile>
+            <insertBracesFor>false</insertBracesFor>
+            <removeBracesWhile>false</removeBracesWhile>
+        </braces>
+        <footer>
+            <keys />
+            <text />
+            <use>false</use>
+            <smartModeLines>0</smartModeLines>
+        </footer>
+        <history>
+            <policy>History.Policy [disabled]</policy>
+        </history>
+        <alignment>
+            <ParamsMethodDef>false</ParamsMethodDef>
+            <ternaryValue>false</ternaryValue>
+            <varIdents>false</varIdents>
+            <varAssigns>false</varAssigns>
+            <ternaryExpresssion>false</ternaryExpresssion>
+        </alignment>
+        <environment />
+        <chunks>
+            <byBlankLines>true</byBlankLines>
+            <byComments>true</byComments>
+        </chunks>
+    </printer>
+    <transform>
+        <import>
+            <grouping>java:2|gnu:2|javax:2</grouping>
+            <policy>ImportPolicy [disabled]</policy>
+            <groupingDepth>3</groupingDepth>
+            <sort>false</sort>
+        </import>
+        <misc>
+            <insertExpressionParenthesis>true</insertExpressionParenthesis>
+            <insertUID>false</insertUID>
+            <insertLoggingConditional>false</insertLoggingConditional>
+        </misc>
+    </transform>
+    <general>
+        <styleName>Turbine</styleName>
+        <threadCount>1</threadCount>
+        <styleDescription>Jakarta Turbine Coding Convention</styleDescription>
+        <backupLevel>0</backupLevel>
+        <sourceVersion>14</sourceVersion>
+        <forceFormatting>false</forceFormatting>
+        <backupDirectory>bak</backupDirectory>
+    </general>
+    <internal>
+        <version>4</version>
+    </internal>
+</jalopy>

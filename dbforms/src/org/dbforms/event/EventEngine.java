@@ -4,7 +4,7 @@
  * $Date$
  *
  * DbForms - a Rapid Application Development Framework
- * Copyright (C) 2001 Joachim Peer <j.peer@gmx.net> et al.
+ * Copyright (C) 2001 Joachim Peer <joepeer@excite.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,14 +22,13 @@
  */
 
 package org.dbforms.event;
-
 import java.util.*;
 import javax.servlet.http.*;
-
 import org.dbforms.*;
 import org.dbforms.util.*;
-
 import org.apache.log4j.Category;
+
+
 
 /****
  *
@@ -41,312 +40,366 @@ import org.apache.log4j.Category;
  *
  * @author Joe Peer <j.peer@gmx.net>
  */
+public class EventEngine
+{
+    static Category logCat = Category.getInstance(EventEngine.class.getName());
 
-public class EventEngine {
-	static Category logCat = Category.getInstance(EventEngine.class.getName());
-	// logging category for this class
+    // logging category for this class
+    private HttpServletRequest request;
+    private DbFormsConfig config;
+    Vector involvedTables;
 
-	private HttpServletRequest request;
-	private DbFormsConfig config;
-	Vector involvedTables;
+    // test: use BoundedNavEventFactoryImpl  [Fossato <fossato@pow2.com>, 2001/11/08]
+    private NavEventFactory nef = BoundedNavEventFactoryImpl.instance();
 
-	// test: use BoundedNavEventFactoryImpl  [Fossato <fossato@pow2.com>, 2001/11/08]
-	private NavEventFactory nef = BoundedNavEventFactoryImpl.instance();
+    /**
+ *
+ */
+    public EventEngine(HttpServletRequest request, DbFormsConfig config)
+    {
+        this.request = request;
+        this.config = config;
+        involvedTables = parseInvolvedTables();
+    }
 
-	/**
-	 *
-	 */
-	public EventEngine(HttpServletRequest request, DbFormsConfig config) {
-		this.request = request;
-		this.config = config;
-		involvedTables = parseInvolvedTables();
-	}
+    /**
+<p>find out which tables where on the jsp</p>
+<p>(one jsp file may contain multiple dbforms, and each forms could contain many
+subforms nested inside!)</p>
+*/
+    private Vector parseInvolvedTables()
+    {
+        String[] invTables = ParseUtil.getParameterValues(request, "invtable");
 
-	/**
-	<p>find out which tables where on the jsp</p>
-	<p>(one jsp file may contain multiple dbforms, and each forms could contain many
-	subforms nested inside!)</p>
-	*/
-	private Vector parseInvolvedTables() {
+        if (invTables == null)
+        {
+            // in empty forms, for example, we don't have any involved tables..!
+            return null;
+        }
 
-		String[] invTables = ParseUtil.getParameterValues(request, "invtable");
+        Vector result = new Vector();
 
-		if (invTables == null)
-			// in empty forms, for example, we don't have any involved tables..!
-			return null;
+        for (int i = 0; i < invTables.length; i++)
+        {
+            int tableIndex = Integer.parseInt(invTables[i]);
+            Table t = config.getTable(tableIndex);
+            result.addElement(t);
+        }
 
-		Vector result = new Vector();
-		for (int i = 0; i < invTables.length; i++) {
-			int tableIndex = Integer.parseInt(invTables[i]);
-			Table t = config.getTable(tableIndex);
-			result.addElement(t);
-		}
-		return result;
-	}
+        return result;
+    }
 
-	public Vector getInvolvedTables() {
-		return involvedTables;
-	}
 
-	/**
-	<p>result of this method depends on which Database- or Navigation - button was clicked
-	and should reflect the users' intention (is that to pathetic? ;=)
-	</p>
-	
-	<p>this is alpha code. the goal for version 1.0 is to make it more flexible and open it
-	for new code - it would be great to add new Web-Events without even compiling this class.
-	</p>
-	
-	<p>if you have a hint for me on this topics please mail me: <j.peer@gmx.net></p>
-	*/
-	public WebEvent generatePrimaryEvent() {
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public Vector getInvolvedTables()
+    {
+        return involvedTables;
+    }
 
-		WebEvent e = null;
 
-		String action = ParseUtil.getFirstParameterStartingWith(request, "ac_");
+    /**
+<p>result of this method depends on which Database- or Navigation - button was clicked
+and should reflect the users' intention (is that to pathetic? ;=)
+</p>
+        
+<p>this is alpha code. the goal for version 1.0 is to make it more flexible and open it
+for new code - it would be great to add new Web-Events without even compiling this class.
+</p>
+        
+<p>if you have a hint for me on this topics please mail me: <j.peer@gmx.net></p>
+*/
+    public WebEvent generatePrimaryEvent()
+    {
+        WebEvent e = null;
 
-		String customEvent = request.getParameter("customEvent");
+        String action = ParseUtil.getFirstParameterStartingWith(request, "ac_");
 
-		if(action == null && customEvent != null) action = customEvent;
+        String customEvent = request.getParameter("customEvent");
 
-		// ReloadEvent use to refresh field values from request object
-		// and to allow server side manipulation for these fields
-		// Ex: Select parent -> Select child
-		if(action.startsWith("re_")){
-			e = new ReloadEvent();
-			logCat.info("##### RELOAD  EVENT ######");
-			
-			String contextPath = request.getContextPath();
-			String sourcePath = ParseUtil.getParameter(request, "source");
-			
-			logCat.info("sourcePath = " + sourcePath);
+        if ((action == null) && (customEvent != null))
+        {
+            action = customEvent;
+        }
 
-			if ((contextPath.length() > 0) && sourcePath.startsWith(contextPath)) {
-				if (contextPath.endsWith("/")) // shouldn't! just make sure!
-					sourcePath = sourcePath.substring(contextPath.length() - 1);
-				else
-					sourcePath = sourcePath.substring(contextPath.length());
-			}
+        // ReloadEvent use to refresh field values from request object
+        // and to allow server side manipulation for these fields
+        // Ex: Select parent -> Select child
+        if (action.startsWith("re_"))
+        {
+            e = new ReloadEvent();
+            logCat.info("##### RELOAD  EVENT ######");
 
-			e.setFollowUp(sourcePath);
-			logCat.info("followup=" + e.getFollowUp());	
-			return e;
-		}
+            String contextPath = request.getContextPath();
+            String sourcePath = ParseUtil.getParameter(request, "source");
 
-		if (action.equals("")) {
-			
-			logCat.info("##### N O O P   ELEMENT ######");
-			e = new NoopEvent();
+            logCat.info("sourcePath = " + sourcePath);
 
-			String contextPath = request.getContextPath();
-			String sourcePath = ParseUtil.getParameter(request, "source");
+            if ((contextPath.length() > 0) && sourcePath.startsWith(contextPath))
+            {
+                if (contextPath.endsWith("/")) // shouldn't! just make sure!
+                {
+                    sourcePath = sourcePath.substring(contextPath.length() - 1);
+                }
+                else
+                {
+                    sourcePath = sourcePath.substring(contextPath.length());
+                }
+            }
 
-			logCat.info("sourcePath = " + sourcePath);
+            e.setFollowUp(sourcePath);
+            logCat.info("followup=" + e.getFollowUp());
 
-			/* If length of context Path is greater then zero (not root context)
-			   and sourcePath begins with context Path, then remove context path from
-			   sourcePath */
-			if ((contextPath.length() > 0) && sourcePath.startsWith(contextPath)) {
-				if (contextPath.endsWith("/")) // shouldn't! just make sure!
-					sourcePath = sourcePath.substring(contextPath.length() - 1);
-				else
-					sourcePath = sourcePath.substring(contextPath.length());
-			}
+            return e;
+        }
 
-			e.setFollowUp(sourcePath);
-			logCat.info("followup=" + e.getFollowUp());
-			return e;
-		}
+        if (action.equals(""))
+        {
+            logCat.info("##### N O O P   ELEMENT ######");
+            e = new NoopEvent();
 
-		// image buttons submit different parameters than submit buttons 
-		// for submit the browser sends one value
-		//    parameter:ac_insert_0_root=Submit this bug!
-		// for image buttons, the browser returns two values, showing the x and y
-		// position of the mouse
-		//    parameter ac_insert_0_root.y=24
-		//    parameter ac_insert_0_root.x=34
-		// make the image button data look like a submit button
-		if (action.endsWith(".y") || action.endsWith(".x")) {
-			logCat.debug("image action = " + action);
-			action = action.substring(0, action.length() - 2);
-		}
+            String contextPath = request.getContextPath();
+            String sourcePath = ParseUtil.getParameter(request, "source");
 
-		logCat.info("*** action = " + action + " ***");
-		if (action.startsWith("ac_insert")) {
+            logCat.info("sourcePath = " + sourcePath);
 
-			logCat.info("about to instanciate InsertEvent");
-			e = new InsertEvent(action, request, config);
-		} else
-			if (action.startsWith("ac_update_")) {
+            /* If length of context Path is greater then zero (not root context)
+and sourcePath begins with context Path, then remove context path from
+sourcePath */
+            if ((contextPath.length() > 0) && sourcePath.startsWith(contextPath))
+            {
+                if (contextPath.endsWith("/")) // shouldn't! just make sure!
+                {
+                    sourcePath = sourcePath.substring(contextPath.length() - 1);
+                }
+                else
+                {
+                    sourcePath = sourcePath.substring(contextPath.length());
+                }
+            }
 
-				logCat.info("about to instanciate UpdateEvent");
-				e = new UpdateEvent(action, request, config);
-			} else
-				if (action.startsWith("ac_updatear_")) {
+            e.setFollowUp(sourcePath);
+            logCat.info("followup=" + e.getFollowUp());
 
-					logCat.info(
-						"about to instanciate UpdateEvent with key-info in associated radio");
-					String associatedRadioName =
-						ParseUtil.getParameter(request, "data" + action + "_arname");
-					String keyString = ParseUtil.getParameter(request, associatedRadioName);
-					if (keyString != null) {
-						int tableId = ParseUtil.getEmbeddedStringAsInteger(keyString, 0, '_');
-						String keyId = ParseUtil.getEmbeddedString(keyString, 1, '_');
-						e = new UpdateEvent(tableId, keyId, request, config);
-					} else {
-						logCat.info("EmptyEvent installed1");
-						e = new EmptyEvent(action, request);
-						((Vector) request.getAttribute("errors")).addElement(
-							new WebEventException(
-								"Radio button '" + associatedRadioName + "' needs to be selected!"));
-					}
+            return e;
+        }
 
-				} else
-					if (action.startsWith("ac_delete_")) {
+        // image buttons submit different parameters than submit buttons 
+        // for submit the browser sends one value
+        //    parameter:ac_insert_0_root=Submit this bug!
+        // for image buttons, the browser returns two values, showing the x and y
+        // position of the mouse
+        //    parameter ac_insert_0_root.y=24
+        //    parameter ac_insert_0_root.x=34
+        // make the image button data look like a submit button
+        if (action.endsWith(".y") || action.endsWith(".x"))
+        {
+            logCat.debug("image action = " + action);
+            action = action.substring(0, action.length() - 2);
+        }
 
-						logCat.info("about to instanciate DeleteEvent");
-						e = new DeleteEvent(action, request, config);
-					} else
-						if (action.startsWith("ac_deletear_")) {
+        logCat.info("*** action = " + action + " ***");
 
-							logCat.info(
-								"about to instanciate DeleteEvent with key-info in associated radio");
-							String associatedRadioName =
-								ParseUtil.getParameter(request, "data" + action + "_arname");
-							String keyString = ParseUtil.getParameter(request, associatedRadioName);
-							if (keyString != null) {
-								int tableId = ParseUtil.getEmbeddedStringAsInteger(keyString, 0, '_');
-								String keyId = ParseUtil.getEmbeddedString(keyString, 1, '_');
-								e = new DeleteEvent(tableId, keyId, request, config);
-							} else {
-								logCat.info("EmptyEvent installed2");
-								e = new EmptyEvent(action, request);
-								((Vector) request.getAttribute("errors")).addElement(
-									new WebEventException(
-										"Radio button '" + associatedRadioName + "' needs to be selected!"));
-							}
+        if (action.startsWith("ac_insert"))
+        {
+            logCat.info("about to instanciate InsertEvent");
+            e = new InsertEvent(action, request, config);
+        }
+        else if (action.startsWith("ac_update_"))
+        {
+            logCat.info("about to instanciate UpdateEvent");
+            e = new UpdateEvent(action, request, config);
+        }
+        else if (action.startsWith("ac_updatear_"))
+        {
+            logCat.info("about to instanciate UpdateEvent with key-info in associated radio");
 
-						} else
-							if (action.startsWith("ac_first_")) {
+            String associatedRadioName = ParseUtil.getParameter(request, "data" + action + "_arname");
+            String keyString = ParseUtil.getParameter(request, associatedRadioName);
 
-								logCat.info("about to instanciate NavFirstEvent");
-								e = new NavFirstEvent(action, request, config);
-							} else
-								if (action.startsWith("ac_prev_")) {
+            if (keyString != null)
+            {
+                int tableId = ParseUtil.getEmbeddedStringAsInteger(keyString, 0, '_');
+                String keyId = ParseUtil.getEmbeddedString(keyString, 1, '_');
+                e = new UpdateEvent(tableId, keyId, request, config);
+            }
+            else
+            {
+                logCat.info("EmptyEvent installed1");
+                e = new EmptyEvent(action, request);
+                ((Vector) request.getAttribute("errors")).addElement(new WebEventException("Radio button '" + associatedRadioName + "' needs to be selected!"));
+            }
+        }
+        else if (action.startsWith("ac_delete_"))
+        {
+            logCat.info("about to instanciate DeleteEvent");
+            e = new DeleteEvent(action, request, config);
+        }
+        else if (action.startsWith("ac_deletear_"))
+        {
+            logCat.info("about to instanciate DeleteEvent with key-info in associated radio");
 
-									logCat.info("about to instanciate NavPrevEvent");
-									//e = new NavPrevEvent(action, request, config);
-									e = nef.createNavPrevEvent(action, request, config);
-									// [Fossato <fossato@pow2.com>, 2001/11/08]
-								} else
-									if (action.startsWith("ac_next_")) {
+            String associatedRadioName = ParseUtil.getParameter(request, "data" + action + "_arname");
+            String keyString = ParseUtil.getParameter(request, associatedRadioName);
 
-										logCat.info("about to instanciate NavNextEvent");
-										//e = new NavNextEvent(action, request, config);
-										e = nef.createNavNextEvent(action, request, config);
-										// [Fossato <fossato@pow2.com>, 2001/11/08]
-									} else
-										if (action.startsWith("ac_last_")) {
+            if (keyString != null)
+            {
+                int tableId = ParseUtil.getEmbeddedStringAsInteger(keyString, 0, '_');
+                String keyId = ParseUtil.getEmbeddedString(keyString, 1, '_');
+                e = new DeleteEvent(tableId, keyId, request, config);
+            }
+            else
+            {
+                logCat.info("EmptyEvent installed2");
+                e = new EmptyEvent(action, request);
+                ((Vector) request.getAttribute("errors")).addElement(new WebEventException("Radio button '" + associatedRadioName + "' needs to be selected!"));
+            }
+        }
+        else if (action.startsWith("ac_first_"))
+        {
+            logCat.info("about to instanciate NavFirstEvent");
+            e = new NavFirstEvent(action, request, config);
+        }
+        else if (action.startsWith("ac_prev_"))
+        {
+            logCat.info("about to instanciate NavPrevEvent");
 
-											logCat.info("about to instanciate NavLastEvent");
-											e = new NavLastEvent(action, request, config);
-										} else
-											if (action.startsWith("ac_new_")) {
 
-												logCat.info("about to instanciate NavNewEvent");
-												e = new NavNewEvent(action, request, config);
-											} else
-												if (action.startsWith("ac_goto_")) {
+            //e = new NavPrevEvent(action, request, config);
+            e = nef.createNavPrevEvent(action, request, config);
 
-													logCat.info("about to instanciate GotoEvent");
-													e = new GotoEvent(action, request, config);
-												} // now we have to find the followup-site the app-developer wants us to display.
-		// there are 2 possibilities
-		// §1 the submitted action button has a "follow-up"  - attribute.
-		// §2 the submitted <dbforms:form> has set a follow-up attribute
-		// §1 overrules §2
-		// by the way: follow ups will not be determined for secundary events!
-		// check if §1-followup exists:
-		// PG - added the concept of a different followup for handling errors which occured in a page
-		String followUp = ParseUtil.getParameter(request, "data" + action + "_fu");
-		if (followUp == null) { // if not...
-			// ...then check if §2-followup exists (should always exist!)
-			followUp = ParseUtil.getParameter(request, "fu_" + e.getTableId());
-		}
+            // [Fossato <fossato@pow2.com>, 2001/11/08]
+        }
+        else if (action.startsWith("ac_next_"))
+        {
+            logCat.info("about to instanciate NavNextEvent");
 
-		logCat.info("setting follow up to:" + followUp);
-		e.setFollowUp(followUp);
-		String followUpOnError =
-			ParseUtil.getParameter(request, "data" + action + "_fue");
-		if (followUpOnError == null) { // if not...
-			// ...then check if §2-followup exists 
-			followUpOnError = ParseUtil.getParameter(request, "fue_" + e.getTableId());
-		} // Still no followup on error - use general followup
-		if (followUpOnError == null) {
-			followUpOnError = followUp;
-		}
 
-		logCat.info("setting follow up on Error to:" + followUpOnError);
-		e.setFollowUpOnError(followUpOnError);
-		return e;
-	} /**
-	<p>independet of the primary - Action there may be some data to update
-	accoring to some changes in the input-widgets! in fact, all secunary events
-	are (sql-) UPDATES!</p>
-	
-	<p>interferrences between primary and secundary events could lead to problems</p>
-	<ul>
-	<li>i.e. primary event is the "delete" of row "n". if the controller would try to
-	update "n", it would raise an sql expcetion, because the table does not exist any more
-	<li>to avoid such problems, the parameter "exclude" will be checked for each update and
-	if it affects the same data, the update-event will not be created.
-	</ul>
-	*/
-	public Enumeration generateSecundaryEvents(WebEvent exclude) {
+            //e = new NavNextEvent(action, request, config);
+            e = nef.createNavNextEvent(action, request, config);
 
-		Vector result = new Vector();
-		Vector vAc = ParseUtil.getParametersStartingWith(request, "autoupdate_");
-		int excludeTableId = -1;
-		String excludeKeyId = null;
-		boolean collissionDanger = false;
-		// first of all, we check if there is some real potential for collisions in the "to exclude"-event
-		if (exclude instanceof UpdateEvent || exclude instanceof DeleteEvent) {
-			collissionDanger = true;
-			excludeTableId = exclude.getTableId();
-			//#checkme - this style of OOP doesn't look not very well
-			if (exclude instanceof UpdateEvent)
-				excludeKeyId = ((UpdateEvent) exclude).getKeyId();
-			else
-				excludeKeyId = ((DeleteEvent) exclude).getKeyId();
-		}
+            // [Fossato <fossato@pow2.com>, 2001/11/08]
+        }
+        else if (action.startsWith("ac_last_"))
+        {
+            logCat.info("about to instanciate NavLastEvent");
+            e = new NavLastEvent(action, request, config);
+        }
+        else if (action.startsWith("ac_new_"))
+        {
+            logCat.info("about to instanciate NavNewEvent");
+            e = new NavNewEvent(action, request, config);
+        }
+        else if (action.startsWith("ac_goto_"))
+        {
+            logCat.info("about to instanciate GotoEvent");
+            e = new GotoEvent(action, request, config);
+        } // now we have to find the followup-site the app-developer wants us to display.
 
-		for (int i = 0; i < vAc.size(); i++) {
-			String param = (String) vAc.elementAt(i);
-			// auto-updating may be disabled, so we have to check:
-			if (ParseUtil.getParameter(request, param).equalsIgnoreCase("true")) {
-				// let's find the id of the next table we may update
-				int tableId = Integer.parseInt(param.substring("autoupdate_".length()));
-				// we can only update existing rowsets. so we just look for key-values
-				String paramStub = "k_" + tableId + "_";
-				Enumeration keysOfCurrentTable =
-					ParseUtil.getParametersStartingWith(request, paramStub).elements();
-				while (keysOfCurrentTable.hasMoreElements()) {
-					String aKeyParam = (String) keysOfCurrentTable.nextElement();
-					String keyId = aKeyParam.substring(paramStub.length());
-					logCat.info(
-						"autoaupdate debug info: keyId=" + keyId + " excludeKeyId=" + excludeKeyId);
-					if (!collissionDanger
-						|| excludeTableId != tableId
-						|| !keyId.equals(excludeKeyId)) {
+        // there are 2 possibilities
+        // §1 the submitted action button has a "follow-up"  - attribute.
+        // §2 the submitted <dbforms:form> has set a follow-up attribute
+        // §1 overrules §2
+        // by the way: follow ups will not be determined for secundary events!
+        // check if §1-followup exists:
+        // PG - added the concept of a different followup for handling errors which occured in a page
+        String followUp = ParseUtil.getParameter(request, "data" + action + "_fu");
 
-						UpdateEvent e = new UpdateEvent(tableId, keyId, request, config);
-						result.addElement(e);
-					}
-				}
+        if (followUp == null)
+        { // if not...
 
-			}
-		}
+            // ...then check if §2-followup exists (should always exist!)
+            followUp = ParseUtil.getParameter(request, "fu_" + e.getTableId());
+        }
 
-		return result.elements();
-	}
+        logCat.info("setting follow up to:" + followUp);
+        e.setFollowUp(followUp);
+
+        String followUpOnError = ParseUtil.getParameter(request, "data" + action + "_fue");
+
+        if (followUpOnError == null)
+        { // if not...
+
+            // ...then check if §2-followup exists 
+            followUpOnError = ParseUtil.getParameter(request, "fue_" + e.getTableId());
+        } // Still no followup on error - use general followup
+
+        if (followUpOnError == null)
+        {
+            followUpOnError = followUp;
+        }
+
+        logCat.info("setting follow up on Error to:" + followUpOnError);
+        e.setFollowUpOnError(followUpOnError);
+
+        return e;
+    }
+
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param exclude DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public Enumeration generateSecundaryEvents(WebEvent exclude)
+    {
+        Vector result = new Vector();
+        Vector vAc = ParseUtil.getParametersStartingWith(request, "autoupdate_");
+        int excludeTableId = -1;
+        String excludeKeyId = null;
+        boolean collissionDanger = false;
+
+        // first of all, we check if there is some real potential for collisions in the "to exclude"-event
+        if (exclude instanceof UpdateEvent || exclude instanceof DeleteEvent)
+        {
+            collissionDanger = true;
+            excludeTableId = exclude.getTableId();
+
+            //#checkme - this style of OOP doesn't look not very well
+            if (exclude instanceof UpdateEvent)
+            {
+                excludeKeyId = ((UpdateEvent) exclude).getKeyId();
+            }
+            else
+            {
+                excludeKeyId = ((DeleteEvent) exclude).getKeyId();
+            }
+        }
+
+        for (int i = 0; i < vAc.size(); i++)
+        {
+            String param = (String) vAc.elementAt(i);
+
+            // auto-updating may be disabled, so we have to check:
+            if (ParseUtil.getParameter(request, param).equalsIgnoreCase("true"))
+            {
+                // let's find the id of the next table we may update
+                int tableId = Integer.parseInt(param.substring("autoupdate_".length()));
+
+                // we can only update existing rowsets. so we just look for key-values
+                String paramStub = "k_" + tableId + "_";
+                Enumeration keysOfCurrentTable = ParseUtil.getParametersStartingWith(request, paramStub).elements();
+
+                while (keysOfCurrentTable.hasMoreElements())
+                {
+                    String aKeyParam = (String) keysOfCurrentTable.nextElement();
+                    String keyId = aKeyParam.substring(paramStub.length());
+                    logCat.info("autoaupdate debug info: keyId=" + keyId + " excludeKeyId=" + excludeKeyId);
+
+                    if (!collissionDanger || (excludeTableId != tableId) || !keyId.equals(excludeKeyId))
+                    {
+                        UpdateEvent e = new UpdateEvent(tableId, keyId, request, config);
+                        result.addElement(e);
+                    }
+                }
+            }
+        }
+
+        return result.elements();
+    }
 }

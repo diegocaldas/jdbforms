@@ -1,6 +1,10 @@
 /*
+ * $Header$
+ * $Revision$
+ * $Date$
+ *
  * DbForms - a Rapid Application Development Framework
- * Copyright (C) 2001 Joachim Peer <j.peer@gmx.net> et al.
+ * Copyright (C) 2001 Joachim Peer <joepeer@excite.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,7 +22,6 @@
  */
 
 package org.dbforms.taglib;
-
 import java.io.*;
 import java.util.*;
 import java.sql.*;
@@ -27,8 +30,9 @@ import javax.servlet.jsp.*;
 import javax.servlet.jsp.tagext.*;
 import org.dbforms.util.*;
 import org.dbforms.*;
-
 import org.apache.log4j.Category;
+
+
 
 /*************************************************************
  * Grunikiewicz.philip@hydro.qc.ca
@@ -38,131 +42,157 @@ import org.apache.log4j.Category;
  * in dbForms-config.xml file
  * 
  * ***************************************************************/
+public class DbGetConnection extends BodyTagSupport implements TryCatchFinally
+{
+    static Category logCat = Category.getInstance(DbGetConnection.class.getName());
 
-public class DbGetConnection extends BodyTagSupport {
+    // logging category for this class
+    private String id;
+    private Connection con;
 
-	static Category logCat = Category.getInstance(DbGetConnection.class.getName());
-	// logging category for this class
+    // Bradley's multiple connection stuff [fossato <fossato@pow2.com> [20021105]
+    private String dbConnectionName;
+    private DbFormsConfig config;
 
-	private String id;
-	private Connection con;
-	
-        // Bradley's multiple connection stuff [fossato <fossato@pow2.com> [20021105]
-        private String dbConnectionName;
-	private DbFormsConfig config;
-        // Bradley's multiple connection stuff end
-        
-	public int doStartTag() throws JspException {
+    /**
+ * DOCUMENT ME!
+ *
+ * @return DOCUMENT ME!
+ *
+ * @throws JspException DOCUMENT ME!
+ * @throws IllegalArgumentException DOCUMENT ME!
+ */
+    public int doStartTag() throws JspException
+    {
+        try
+        {
+            // ---- Bradley's multiple connection [fossato <fossato@pow2.com> [20021105] ----
+            DbConnection aDbConnection = config.getDbConnection(dbConnectionName);
 
-		try {
-                        // ---- Bradley's multiple connection [fossato <fossato@pow2.com> [20021105] ----
-                  	DbConnection aDbConnection = config.getDbConnection(dbConnectionName);
+            if (aDbConnection == null)
+            {
+                throw new IllegalArgumentException("Troubles in your DbForms config xml file: " + "DbConnection '" + dbConnectionName + "' " + "not properly included - check manual!");
+            }
 
-			if (aDbConnection == null) {
-			    throw new IllegalArgumentException(
-				"Troubles in your DbForms config xml file: "
-				+ "DbConnection '" + dbConnectionName + "' "
-				+ "not properly included - check manual!");
-			}
+            con = aDbConnection.getConnection();
+            logCat.debug("Created new connection - " + con);
 
-			con = aDbConnection.getConnection();
-			logCat.debug("Created new connection - " + con);
+            if (con == null)
+            {
+                throw new IllegalArgumentException("JDBC-Troubles: was not able to create " + "connection, using the following DbConnection " + "- " + aDbConnection);
+            }
 
-			if (con == null) {
-			    throw new IllegalArgumentException(
-				"JDBC-Troubles: was not able to create "
-				+ "connection, using the following DbConnection "
-				+ "- " + aDbConnection);
-			}
-                        // ---- Bradley's multiple connection stuff end ---------------------------------
 
-			// Place connection in attribute
-			pageContext.setAttribute(this.getId(), con, PageContext.PAGE_SCOPE);
+            // ---- Bradley's multiple connection stuff end ---------------------------------
+            // Place connection in attribute
+            pageContext.setAttribute(this.getId(), con, PageContext.PAGE_SCOPE);
+        }
+        catch (Exception e)
+        {
+            throw new JspException("Database error" + e.toString());
+        }
 
-		} catch (Exception e) {
-			throw new JspException("Database error" + e.toString());
-		}
+        return EVAL_BODY_TAG;
+    }
 
-		return EVAL_BODY_TAG;
-		
-	}
 
-	public int doAfterBody() {
-		try {
-			bodyContent.writeOut(bodyContent.getEnclosingWriter());
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
-		}
-		return SKIP_BODY;
-	}
+    /**
+ * DOCUMENT ME!
+ *
+ * @return DOCUMENT ME!
+ */
+    public int doAfterBody()
+    {
+        try
+        {
+            bodyContent.writeOut(bodyContent.getEnclosingWriter());
+        }
+        catch (IOException ioe)
+        {
+            ioe.printStackTrace();
+        }
 
-	/**
-	 * Gets the id
-	 * @return Returns a String
-	 */
-	public String getId() {
-		return id;
-	}
-	/**
-	 * Sets the id
-	 * @param id The id to set
-	 */
-	public void setId(String id) {
-		this.id = id;
-	}
+        return SKIP_BODY;
+    }
 
-        // ---- Bradley's multiple connection stuff [fossato <fossato@pow2.com> [20021105] ---- 
-	public void setDbConnectionName(String name) {
-		dbConnectionName = name;
-	}
 
-	public String getDbConnectionName() {
-		return dbConnectionName;
-	}
-        // ---- Bradley's multiple connection stuff end ---------------------------------------
-        
-        
-        public void release() {
-		super.release();
+    /**
+ * Gets the id
+ * @return Returns a String
+ */
+    public String getId()
+    {
+        return id;
+    }
 
-		// The connection should not be null - If it is, then you might have an infrastructure problem!
-		// Be sure to look into this!  Hint: check out your pool manager's performance! 
 
-		if (con != null) {
-			try {
-				logCat.debug("About to close connection - " + con);
-				con.close();
-				logCat.debug("Connection closed");
-			} catch (java.sql.SQLException sqle) {
-				sqle.printStackTrace();
-			}
-		}
-	}
+    /**
+ * Sets the id
+ * @param id The id to set
+ */
+    public void setId(String id)
+    {
+        this.id = id;
+    }
 
-	public void setPageContext(PageContext pc) {
-		super.setPageContext(pc);
-		//DbFormsConfig config =
-                config = 
-			(DbFormsConfig) pageContext.getServletContext().getAttribute(
-				DbFormsConfig.CONFIG);
 
-		if (config == null)
-			throw new IllegalArgumentException("Troubles with DbForms config xml file: can not find CONFIG object in application context! check system configuration! check if application crashes on start-up!");
+    /**
+ * DOCUMENT ME!
+ *
+ * @param name DOCUMENT ME!
+ */
+    public void setDbConnectionName(String name)
+    {
+        dbConnectionName = name;
+    }
 
-                // Bradley's multiple connection stuff [fossato <fossato@pow2.com> [20021105] ---- 
-                // comment this code
-//		DbConnection aDbConnection = config.getDbConnection();
-//
-//		if (aDbConnection == null)
-//			throw new IllegalArgumentException("Troubles in your DbForms config xml file: DbConnection not properly included - check manual!");
-//
-//		con = aDbConnection.getConnection();
-//		logCat.debug("Created new connection - " + con);
-//
-//		if (con == null)
-//			throw new IllegalArgumentException(
-//				"JDBC-Troubles: was not able to create connection, using the following DbConnection:"
-//					+ aDbConnection.toString());
-	}
 
+    /**
+ * DOCUMENT ME!
+ *
+ * @return DOCUMENT ME!
+ */
+    public String getDbConnectionName()
+    {
+        return dbConnectionName;
+    }
+
+
+    /**
+ * DOCUMENT ME!
+ *
+ * @param pc DOCUMENT ME!
+ */
+    public void setPageContext(PageContext pc)
+    {
+        super.setPageContext(pc);
+        config = (DbFormsConfig) pageContext.getServletContext().getAttribute(DbFormsConfig.CONFIG);
+
+        if (config == null)
+        {
+            throw new IllegalArgumentException("Troubles with DbForms config xml file: can not find CONFIG object in application context! check system configuration! check if application crashes on start-up!");
+        }
+    }
+
+
+    /**
+ * DOCUMENT ME!
+ */
+    public void doFinally()
+    {
+        SqlUtil.closeConnection(con);
+    }
+
+
+    /**
+ * DOCUMENT ME!
+ *
+ * @param t DOCUMENT ME!
+ *
+ * @throws Throwable DOCUMENT ME!
+ */
+    public void doCatch(Throwable t) throws Throwable
+    {
+        throw t;
+    }
 }

@@ -1,90 +1,78 @@
 /*
- *  $Header$
- *  $Revision$
- *  $Date$
+ * $Header$
+ * $Revision$
+ * $Date$
  *
- *  DbForms - a Rapid Application Development Framework
- *  Copyright (C) 2001 Joachim Peer <j.peer@gmx.net> et al.
+ * DbForms - a Rapid Application Development Framework
+ * Copyright (C) 2001 Joachim Peer <joepeer@excite.com>
  *
- *  This library is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public
- *  License as published by the Free Software Foundation; either
- *  version 2.1 of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
  *
- *  This library is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *  Lesser General Public License for more details.
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
- *  License along with this library; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
+
 /*
  *  WebAppPanel.java
  *
  *  Created on 26. April 2001, 15:42
  */
 package org.dbforms.devgui;
-
 import java.awt.*;
-
 import java.awt.event.*;
-
 import java.io.*;
-
 import javax.swing.*;
-
 import javax.swing.event.*;
-
 import org.dbforms.xmldb.*;
+
+
 
 /**
  * @author     Joachim Peer <j.peer@gmx.net>
  * @created    October 18, 2002
  * @version
  */
-
-public class XSLTransformPanel extends PropertyPanel implements ActionListener, ListSelectionListener {
+public class XSLTransformPanel extends PropertyPanel implements ActionListener, ListSelectionListener
+{
+    // GUI Variables declaration
+    private JList list_xslStylesheets;
 
     // GUI Variables declaration
-
-    private JList list_xslStylesheets, list_results;
-
-    private JButton b_start, b_refresh, b_openInBrowser, b_save, b_refreshJSPs;
-
+    private JList list_results;
+    private JButton b_start;
+    private JButton b_refresh;
+    private JButton b_openInBrowser;
+    private JButton b_save;
+    private JButton b_refreshJSPs;
     private JTextArea ta_editor;
-
     private EditorPanel panel_editor;
-
     private JCheckBox cb_useJsCalendar;
-
     private javax.swing.JPanel jPanel2;
-
     private javax.swing.JLabel jLabel1;
-
     private javax.swing.JTextField tf_stylesheetDir;
-
     private javax.swing.JButton b_browse;
 
     // other data
-
     private File[] availableStylesheets;
-
     private File[] JSPs;
-
     private DevGui parent;
 
-
-
     /**
-     * Creates new form WebAppPanel
-     *
-     * @param  parent  Description of the Parameter
-     */
-
-    public XSLTransformPanel(DevGui parent) {
-
+ * Creates new form WebAppPanel
+ *
+ * @param  parent  Description of the Parameter
+ */
+    public XSLTransformPanel(DevGui parent)
+    {
         super(parent.getProjectData());
 
         this.parent = parent;
@@ -98,104 +86,87 @@ public class XSLTransformPanel extends PropertyPanel implements ActionListener, 
         refreshJSPs();
 
         doLayout();
-
     }
 
-
-
     /**  Description of the Method */
-    private void refreshAvailableStylesheets() {
-
+    private void refreshAvailableStylesheets()
+    {
         //String xslDirStr = FileNameTool.normalize(parent.getDbFormsHome().getAbsolutePath()) + "xsl-stylesheets";
         String xslDirStr = FileNameTool.normalize(parent.getProjectData().getProperty(STYLESHEET_DIR));
         File xslDir = new File(xslDirStr);
 
-        if (xslDir.isDirectory() && xslDir.canRead()) {
-
-            try {
-
+        if (xslDir.isDirectory() && xslDir.canRead())
+        {
+            try
+            {
                 this.availableStylesheets = FileUtility.getFilesInDirectory(xslDir, null);
 
                 list_xslStylesheets.setListData(this.availableStylesheets);
-
             }
-            catch (IOException ioe) {
-
+            catch (IOException ioe)
+            {
                 ioe.printStackTrace();
 
                 showExceptionDialog(ioe);
-
             }
-
         }
-
     }
 
 
-
     /**  Description of the Method */
-    private void refreshJSPs() {
-
+    private void refreshJSPs()
+    {
         String jspDirStr = projectData.getProperty("webAppRoot");
 
         File jspDir = new File(jspDirStr);
 
-        if (jspDir.isDirectory() && jspDir.canRead()) {
-
-            try {
-
-                String[] postFixList = {".jsp"};
+        if (jspDir.isDirectory() && jspDir.canRead())
+        {
+            try
+            {
+                String[] postFixList = { ".jsp" };
 
                 this.JSPs = FileUtility.getFilesInDirectory(jspDir, postFixList);
 
                 list_results.setListData(this.JSPs);
-
             }
-            catch (IOException ioe) {
-
+            catch (IOException ioe)
+            {
                 ioe.printStackTrace();
 
                 showExceptionDialog(ioe);
-
             }
-
         }
-
     }
 
 
-
     /**
-     *  Sets the newProjectData attribute of the XSLTransformPanel object
-     *
-     * @param  projectData  The new newProjectData value
-     */
-    public void setNewProjectData(ProjectData projectData) {
-
+ *  Sets the newProjectData attribute of the XSLTransformPanel object
+ *
+ * @param  projectData  The new newProjectData value
+ */
+    public void setNewProjectData(ProjectData projectData)
+    {
         this.projectData = projectData;
 
-        cb_useJsCalendar.setSelected(TRUESTRING.equalsIgnoreCase(
-                projectData.getProperty(USE_JAVASCRIPT_CALENDAR)));
+        cb_useJsCalendar.setSelected(TRUESTRING.equalsIgnoreCase(projectData.getProperty(USE_JAVASCRIPT_CALENDAR)));
 
         tf_stylesheetDir.setText(projectData.getProperty(STYLESHEET_DIR));
 
         refreshAvailableStylesheets();
 
         refreshJSPs();
-
     }
 
 
-
     /**
-     * This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the FormEditor.
-     */
-
-    private void initComponents() {
-
+ * This method is called from within the constructor to
+ * initialize the form.
+ * WARNING: Do NOT modify this code. The content of this method is
+ * always regenerated by the FormEditor.
+ */
+    private void initComponents()
+    {
         b_browse = new javax.swing.JButton();
 
         jLabel1 = new javax.swing.JLabel();
@@ -210,8 +181,9 @@ public class XSLTransformPanel extends PropertyPanel implements ActionListener, 
         panel_top.setLayout(new GridLayout(1, 2));
 
         JPanel panel_top_left = new JPanel();
-        // xsl stylesheet stuff
 
+
+        // xsl stylesheet stuff
         panel_top_left.setLayout(new BorderLayout());
 
         panel_top_left.add(BorderLayout.NORTH, new JLabel("XSL stylesheets"));
@@ -241,8 +213,9 @@ public class XSLTransformPanel extends PropertyPanel implements ActionListener, 
         panel_top_left.add(BorderLayout.SOUTH, panel_buttons1);
 
         JPanel panel_top_right = new JPanel();
-        // xhtml result stuff
 
+
+        // xhtml result stuff
         panel_top_right.setLayout(new BorderLayout());
 
         panel_top_right.add(BorderLayout.NORTH, new JLabel("(Generated) JSP files in WebApp-Root"));
@@ -279,8 +252,7 @@ public class XSLTransformPanel extends PropertyPanel implements ActionListener, 
 
         panel_top.add(panel_top_right);
 
-        cb_useJsCalendar = new JCheckBox(
-                "Use JavaScript Calendar in generated pages for editing date fields");
+        cb_useJsCalendar = new JCheckBox("Use JavaScript Calendar in generated pages for editing date fields");
 
         jPanel2 = new javax.swing.JPanel();
 
@@ -310,17 +282,13 @@ public class XSLTransformPanel extends PropertyPanel implements ActionListener, 
 
         jPanel2.add(b_browse, gridBagConstraints2);
 
-        cb_useJsCalendar.addItemListener(
-            new java.awt.event.ItemListener() {
-
-                public void itemStateChanged(java.awt.event.ItemEvent e) {
-
-                    projectData.setProperty(USE_JAVASCRIPT_CALENDAR,
-                            cb_useJsCalendar.isSelected() ? TRUESTRING : FALSESTRING);
-
-                }
-
-            });
+        cb_useJsCalendar.addItemListener(new java.awt.event.ItemListener()
+        {
+            public void itemStateChanged(java.awt.event.ItemEvent e)
+            {
+                projectData.setProperty(USE_JAVASCRIPT_CALENDAR, cb_useJsCalendar.isSelected() ? TRUESTRING : FALSESTRING);
+            }
+        });
 
         GridBagConstraints gridBagConstraints1 = new java.awt.GridBagConstraints();
 
@@ -330,13 +298,12 @@ public class XSLTransformPanel extends PropertyPanel implements ActionListener, 
         gridBagConstraints1.weightx = 1.0;
         gridBagConstraints1.fill = java.awt.GridBagConstraints.HORIZONTAL;
 
-
         gridBagConstraints1.anchor = java.awt.GridBagConstraints.WEST;
 
         add(jPanel2, gridBagConstraints1);
 
- //       add(tf_stylesheetDir, gridBagConstraints1);
 
+        //       add(tf_stylesheetDir, gridBagConstraints1);
         gridBagConstraints1.gridx = 0;
 
         gridBagConstraints1.gridy = 1;
@@ -355,18 +322,17 @@ public class XSLTransformPanel extends PropertyPanel implements ActionListener, 
 
         add(panel_top, gridBagConstraints1);
 
-//      add(BorderLayout.NORTH, panel_top);
 
+        //      add(BorderLayout.NORTH, panel_top);
         panel_editor = new EditorPanel();
 
         gridBagConstraints1.gridy = 3;
 
         add(panel_editor, gridBagConstraints1);
 
-//      add(BorderLayout.CENTER, panel_editor);
 
+        //      add(BorderLayout.CENTER, panel_editor);
         // set logical state of dialog
-
         list_xslStylesheets.clearSelection();
 
         b_start.setEnabled(false);
@@ -374,55 +340,49 @@ public class XSLTransformPanel extends PropertyPanel implements ActionListener, 
         list_results.clearSelection();
 
         b_openInBrowser.setEnabled(false);
-
     }
 
 
-
     /**  Description of the Method */
-    private void initComponents2() {
-
+    private void initComponents2()
+    {
         b_browse.addActionListener(this);
 
-        // first listener => for global property / Project data
 
+        // first listener => for global property / Project data
         addAFocusListener(tf_stylesheetDir, STYLESHEET_DIR);
 
         b_browse.setToolTipText("default: DBFORMS_HOME" + parent.getFileSeparator() + "xsl-stylesheets" + parent.getFileSeparator() + "\nDefault location for Stylesheets");
-
     }
 
 
-
     /**  Description of the Method */
-    private void performXSLTransformation() {
-
+    private void performXSLTransformation()
+    {
         System.out.println(projectData.toString());
 
-        boolean useJsCalendar = TRUESTRING.equalsIgnoreCase(
-                projectData.getProperty(USE_JAVASCRIPT_CALENDAR));
+        boolean useJsCalendar = TRUESTRING.equalsIgnoreCase(projectData.getProperty(USE_JAVASCRIPT_CALENDAR));
 
         String webAppRoot = projectData.getProperty("webAppRoot");
 
         System.out.println("webAppRoot=" + webAppRoot + "!");
 
-        if ("".equals(webAppRoot)) {
-
+        if ("".equals(webAppRoot))
+        {
             JOptionPane.showMessageDialog(this, "Please provide web application root", "missing data", JOptionPane.ERROR_MESSAGE);
 
             return;
         }
 
         //String sourcePath = webAppRoot + parent.getFileSeparator() + "WEB-INF" + parent.getFileSeparator() + projectData.getProperty("configFile");
-
         String sourcePath = projectData.getProperty("configFile");
 
         File sourceFile = new File(sourcePath);
 
         System.out.println("sourcePath=" + sourcePath);
 
-        if (!sourceFile.exists() || !sourceFile.canRead()) {
-
+        if (!sourceFile.exists() || !sourceFile.canRead())
+        {
             JOptionPane.showMessageDialog(this, "Please provide correct XML config file, " + sourcePath + " is wrong", "wrong data", JOptionPane.ERROR_MESSAGE);
 
             return;
@@ -430,8 +390,8 @@ public class XSLTransformPanel extends PropertyPanel implements ActionListener, 
 
         File transformFile = (File) list_xslStylesheets.getModel().getElementAt(list_xslStylesheets.getSelectedIndex());
 
-        if (!transformFile.exists() || !transformFile.canRead()) {
-
+        if (!transformFile.exists() || !transformFile.canRead())
+        {
             JOptionPane.showMessageDialog(this, "Please provide correct XSL stylesheet", "wrong data", JOptionPane.ERROR_MESSAGE);
 
             return;
@@ -441,8 +401,8 @@ public class XSLTransformPanel extends PropertyPanel implements ActionListener, 
 
         File destFile = new File(destPath);
 
-        try {
-
+        try
+        {
             XSLTransformer.transform(sourceFile, transformFile, destFile, useJsCalendar);
 
             FileSplitter fs = new FileSplitter(destFile, new File(webAppRoot));
@@ -452,76 +412,64 @@ public class XSLTransformPanel extends PropertyPanel implements ActionListener, 
             this.refreshJSPs();
 
             JOptionPane.showMessageDialog(this, "XSL Transformation done.\nCheck new JSPs in your WebApp root", "XSL result", JOptionPane.PLAIN_MESSAGE);
-
         }
-        catch (Exception e) {
-
+        catch (Exception e)
+        {
             JOptionPane.showMessageDialog(this, "Error during transform:" + e.toString(), "XSL transform error", JOptionPane.ERROR_MESSAGE);
-
         }
-
     }
 
 
-
     /**
-     *  Description of the Method
-     *
-     * @param  ev  Description of the Parameter
-     */
-    public void actionPerformed(ActionEvent ev) {
-
-        if (ev.getSource() == b_openInBrowser) {
-
+ *  Description of the Method
+ *
+ * @param  ev  Description of the Parameter
+ */
+    public void actionPerformed(ActionEvent ev)
+    {
+        if (ev.getSource() == b_openInBrowser)
+        {
             int selIndex = list_results.getSelectedIndex();
 
-            if (selIndex != -1) {
-
+            if (selIndex != -1)
+            {
                 String selFileName = ((File) list_results.getModel().getElementAt(selIndex)).getName();
 
                 String webAppURLStr = projectData.getProperty("webAppURL").trim();
 
                 StringBuffer webAppURL = new StringBuffer(webAppURLStr);
 
-                if (!webAppURLStr.toString().endsWith("/")) {
-
+                if (!webAppURLStr.toString().endsWith("/"))
+                {
                     webAppURL.append("/");
-
                 }
 
                 webAppURL.append(selFileName);
 
-                try {
-
+                try
+                {
                     BrowserTool.openURL(webAppURL.toString());
-
                 }
-                catch (Exception ioe) {
-
+                catch (Exception ioe)
+                {
                     showExceptionDialog(ioe);
-
                 }
-
             }
-
         }
-        else if (ev.getSource() == b_refresh) {
-
+        else if (ev.getSource() == b_refresh)
+        {
             refreshAvailableStylesheets();
-
         }
-        else if (ev.getSource() == b_start) {
-
+        else if (ev.getSource() == b_start)
+        {
             performXSLTransformation();
-
         }
-        else if (ev.getSource() == b_refreshJSPs) {
-
+        else if (ev.getSource() == b_refreshJSPs)
+        {
             refreshJSPs();
-
         }
-        else if (ev.getSource() == b_browse) {
-
+        else if (ev.getSource() == b_browse)
+        {
             String stylesheetDir = projectData.getProperty(STYLESHEET_DIR);
 
             System.out.println("styleSheetDir=" + stylesheetDir + "!");
@@ -530,29 +478,24 @@ public class XSLTransformPanel extends PropertyPanel implements ActionListener, 
 
             System.out.println("ps2");
 
-            if (!"".equals(stylesheetDir)) {
-
+            if (!"".equals(stylesheetDir))
+            {
                 System.out.println("ps3");
 
                 dlgFile = new File(stylesheetDir);
 
                 System.out.println("ps4");
-
             }
-            else {
-
+            else
+            {
                 System.out.println("ps5");
 
                 dlgFile = null;
-
             }
 
             //if (dlgFile != null && dlgFile.exists()) {
-
             //  dlgFile = null;
-
             //}
-
             JFileChooser dlg_fileChooser = new JFileChooser(dlgFile);
             dlg_fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
@@ -560,70 +503,58 @@ public class XSLTransformPanel extends PropertyPanel implements ActionListener, 
 
             int returnVal = dlg_fileChooser.showOpenDialog(this);
 
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
+            if (returnVal == JFileChooser.APPROVE_OPTION)
+            {
                 String dirname = dlg_fileChooser.getSelectedFile().getAbsolutePath();
                 tf_stylesheetDir.setText(dirname);
-                projectData.setProperty(STYLESHEET_DIR,dirname);
+                projectData.setProperty(STYLESHEET_DIR, dirname);
                 refreshAvailableStylesheets();
                 tf_stylesheetDir.grabFocus();
-
             }
-
         }
-
     }
 
 
-
     /**
-     *  Description of the Method
-     *
-     * @param  e  Description of the Parameter
-     */
-    public void valueChanged(ListSelectionEvent e) {
-
-        if (e.getSource() == list_xslStylesheets) {
-
+ *  Description of the Method
+ *
+ * @param  e  Description of the Parameter
+ */
+    public void valueChanged(ListSelectionEvent e)
+    {
+        if (e.getSource() == list_xslStylesheets)
+        {
             int selIndex = list_xslStylesheets.getSelectedIndex();
 
-            if (selIndex >= 0) {
-
+            if (selIndex >= 0)
+            {
                 File f = (File) list_xslStylesheets.getModel().getElementAt(selIndex);
 
                 panel_editor.setFile(f);
 
                 b_start.setEnabled(true);
-
             }
-            else {
-
+            else
+            {
                 b_start.setEnabled(false);
-
             }
-
         }
-        else if (e.getSource() == list_results) {
-
+        else if (e.getSource() == list_results)
+        {
             int selIndex = list_results.getSelectedIndex();
 
-            if (selIndex >= 0) {
-
+            if (selIndex >= 0)
+            {
                 File f = (File) list_results.getModel().getElementAt(selIndex);
 
                 panel_editor.setFile(f);
 
                 b_openInBrowser.setEnabled(true);
-
             }
-            else {
-
+            else
+            {
                 b_openInBrowser.setEnabled(false);
-
             }
-
         }
-
     }
-
 }
-

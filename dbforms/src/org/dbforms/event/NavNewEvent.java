@@ -4,7 +4,7 @@
  * $Date$
  *
  * DbForms - a Rapid Application Development Framework
- * Copyright (C) 2001 Joachim Peer <j.peer@gmx.net> et al.
+ * Copyright (C) 2001 Joachim Peer <joepeer@excite.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,12 +22,13 @@
  */
 
 package org.dbforms.event;
-
 import org.dbforms.*;
 import org.dbforms.util.*;
 import javax.servlet.http.*;
 import java.sql.*;
 import org.apache.log4j.Category;
+
+
 
 /****
  *
@@ -36,29 +37,55 @@ import org.apache.log4j.Category;
  *
  * @author Joe Peer <j.peer@gmx.net>
  */
+public class NavNewEvent extends NavigationEvent
+{
+    static Category logCat = Category.getInstance(NavNewEvent.class.getName()); // logging category for this class
 
-public class NavNewEvent extends NavigationEvent {
-
-	static Category logCat = Category.getInstance(NavNewEvent.class.getName()); // logging category for this class
-
-	public NavNewEvent(String action, HttpServletRequest request, DbFormsConfig config) {
-		this.config = config;
-		tableId = ParseUtil.getEmbeddedStringAsInteger(action, 2, '_');
-		this.table = config.getTable(tableId);
-	}
-
-	// for call from localevent
-	public NavNewEvent(Table table, DbFormsConfig config) {
-	  this.table = table;
-	  this.tableId = table.getId();
-	  this.config = config;
-	}
-
-	public ResultSetVector processEvent(FieldValue[] childFieldValues, FieldValue[] orderConstraint, int count, String firstPost, String lastPos, Connection con) {
-	//	rsv.setPointer( rsv.size() ); //#fixme - this is not well thought through
-		logCat.info("processed NavNewEvent");
-		return null;
-	}
+    /**
+     * Creates a new NavNewEvent object.
+     *
+     * @param action DOCUMENT ME!
+     * @param request DOCUMENT ME!
+     * @param config DOCUMENT ME!
+     */
+    public NavNewEvent(String action, HttpServletRequest request, DbFormsConfig config)
+    {
+        this.config = config;
+        tableId = ParseUtil.getEmbeddedStringAsInteger(action, 2, '_');
+        this.table = config.getTable(tableId);
+    }
 
 
+    /**
+     * Creates a new NavNewEvent object.
+     *
+     * @param table DOCUMENT ME!
+     * @param config DOCUMENT ME!
+     */
+    public NavNewEvent(Table table, DbFormsConfig config)
+    {
+        this.table = table;
+        this.tableId = table.getId();
+        this.config = config;
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param childFieldValues DOCUMENT ME!
+     * @param orderConstraint DOCUMENT ME!
+     * @param count DOCUMENT ME!
+     * @param firstPost DOCUMENT ME!
+     * @param lastPos DOCUMENT ME!
+     * @param con DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public ResultSetVector processEvent(FieldValue[] childFieldValues, FieldValue[] orderConstraint, int count, String firstPost, String lastPos, Connection con)
+    {
+        //	rsv.setPointer( rsv.size() ); //#fixme - this is not well thought through
+        logCat.info("processed NavNewEvent");
+
+        return null;
+    }
 }

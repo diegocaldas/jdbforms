@@ -4,7 +4,7 @@
  * $Date$
  *
  * DbForms - a Rapid Application Development Framework
- * Copyright (C) 2001 Joachim Peer <j.peer@gmx.net> et al.
+ * Copyright (C) 2001 Joachim Peer <joepeer@excite.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,7 +22,6 @@
  */
 
 package org.dbforms.event;
-
 import java.io.*;
 import java.util.*;
 import java.sql.*;
@@ -32,282 +31,363 @@ import org.dbforms.util.*;
 import com.oreilly.servlet.multipart.*;
 import org.apache.log4j.Category;
 
+
+
 /****
  *
  * <p>This event prepares and performs a SQL-Insert operation</p>
  *
  * @author Joe Peer <j.peer@gmx.net>
  */
+public class InsertEvent extends DatabaseEvent
+{
+    static Category logCat = Category.getInstance(InsertEvent.class.getName());
 
-public class InsertEvent extends DatabaseEvent {
+    // logging category for this class
+    private Table table;
+    private String idStr;
 
-	static Category logCat = Category.getInstance(InsertEvent.class.getName());
-	// logging category for this class
+    /**
+    insert actionbutton-strings is as follows: ac_insert_12_root_3
+    which is equivalent to:
+                
+            ac_insert         : insert action event
+            12                         : table id
+            root                : key
+            3                        : button count used to identify individual insert buttons
+    */
+    public InsertEvent(String str, HttpServletRequest request, DbFormsConfig config)
+    {
+        this.request = request;
+        this.config = config;
 
-	private Table table;
-	private String idStr;
+        this.tableId = ParseUtil.getEmbeddedStringAsInteger(str, 2, '_');
+        this.table = config.getTable(tableId);
+        this.idStr = ParseUtil.getEmbeddedString(str, 3, '_');
 
-	/**
-	insert actionbutton-strings is as follows: ac_insert_12_root_3
-	which is equivalent to:
-	
-		ac_insert 	: insert action event
-		12 			: table id
-		root		: key
-		3			: button count used to identify individual insert buttons
-	*/
+        logCat.info("parsing insertevent");
+        logCat.info("tableName=" + table.getName());
+        logCat.info("tableId=" + tableId);
+        logCat.info("idStr=" + idStr); // ie. "root", "1@root"
+    }
 
-	public InsertEvent(String str, HttpServletRequest request, DbFormsConfig config) {
-		this.request = request;
-		this.config = config;
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public Hashtable getFieldValues()
+    {
+        Hashtable result = new Hashtable();
 
-		this.tableId = ParseUtil.getEmbeddedStringAsInteger(str, 2, '_');
-		this.table = config.getTable(tableId);
-		this.idStr = ParseUtil.getEmbeddedString(str, 3, '_');
+        String paramStub = "f_" + tableId + "_ins" + idStr + "_";
+        Vector params = ParseUtil.getParametersStartingWith(request, paramStub);
+        Enumeration enum = params.elements();
 
-		logCat.info("parsing insertevent");
-		logCat.info("tableName=" + table.getName());
-		logCat.info("tableId=" + tableId);
-		logCat.info("idStr=" + idStr); // ie. "root", "1@root"
-	}
+        while (enum.hasMoreElements())
+        {
+            String param = (String) enum.nextElement();
+            String value = ParseUtil.getParameter(request, param);
 
-	public Hashtable getFieldValues() {
-		Hashtable result = new Hashtable();
+            logCat.info("insertevent::getFieldValues - param=" + param + " value=" + value);
 
-		String paramStub = "f_" + tableId + "_ins" + idStr + "_";
-		Vector params = ParseUtil.getParametersStartingWith(request, paramStub);
-		Enumeration enum = params.elements();
-		while (enum.hasMoreElements()) {
-			String param = (String) enum.nextElement();
-			String value = ParseUtil.getParameter(request, param);
+            Integer iiFieldId = new Integer(param.substring(paramStub.length()));
+            result.put(iiFieldId, value);
+        }
 
-			logCat.info("insertevent::getFieldValues - param=" + param + " value=" + value);
+        return result;
+    }
 
-			Integer iiFieldId = new Integer(param.substring(paramStub.length()));
-			result.put(iiFieldId, value);
-		}
 
-		return result;
-	}
+    /**
+    for use in ConditionChecker only
+    "associative" -> this hashtable works like "associative arrays" in PERL or PHP
+    */
+    public Hashtable getAssociativeFieldValues(Hashtable scalarFieldValues)
+    {
+        Hashtable result = new Hashtable();
 
-	/**
-	for use in ConditionChecker only
-	"associative" -> this hashtable works like "associative arrays" in PERL or PHP
-	*/
-	public Hashtable getAssociativeFieldValues(Hashtable scalarFieldValues) {
+        Enumeration scalars = scalarFieldValues.keys();
 
-		Hashtable result = new Hashtable();
+        while (scalars.hasMoreElements())
+        {
+            Integer fieldIndex = (Integer) scalars.nextElement();
+            String fieldName = table.getField(fieldIndex.intValue()).getName();
 
-		Enumeration scalars = scalarFieldValues.keys();
-		while (scalars.hasMoreElements()) {
-			Integer fieldIndex = (Integer) scalars.nextElement();
-			String fieldName = table.getField(fieldIndex.intValue()).getName();
+            result.put(fieldName, scalarFieldValues.get(fieldIndex));
 
-			result.put(fieldName, scalarFieldValues.get(fieldIndex));
-			// building "associative array"
-		}
+            // building "associative array"
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	private boolean checkSufficentValues(Hashtable fieldValues) throws SQLException {
-		Vector fields = table.getFields();
-		for (int i = 0; i < fields.size(); i++) {
-			Field field = (Field) fields.elementAt(i);
 
-			// if a field is a key and if it is NOT automatically generated, then it should be provided by the user
-			if (!field.getIsAutoInc() && field.isKey()) {
+    private boolean checkSufficentValues(Hashtable fieldValues) throws SQLException
+    {
+        Vector fields = table.getFields();
 
-				if (fieldValues.get(new Integer(i)) == null)
-					throw new SQLException("Field " + field.getName() + " is missing");
+        for (int i = 0; i < fields.size(); i++)
+        {
+            Field field = (Field) fields.elementAt(i);
 
-			}
+            // if a field is a key and if it is NOT automatically generated, then it should be provided by the user
+            if (!field.getIsAutoInc() && field.isKey())
+            {
+                if (fieldValues.get(new Integer(i)) == null)
+                {
+                    throw new SQLException("Field " + field.getName() + " is missing");
+                }
+            }
 
-			// in opposite, if a field is automatically generated by the RDBMS, we need to
-			else if (field.getIsAutoInc()) {
+            // in opposite, if a field is automatically generated by the RDBMS, we need to
+            else if (field.getIsAutoInc())
+            {
+                if (fieldValues.get(new Integer(i)) != null)
+                {
+                    throw new SQLException("Field " + field.getName() + " should be calculated by RDBMS, remove it from the form");
+                }
+            } // in future we could do some other checks like NOT-NULL conditions,etc.
+        }
 
-				if (fieldValues.get(new Integer(i)) != null)
-					throw new SQLException(
-						"Field " + field.getName() + " should be calculated by RDBMS, remove it from the form");
+        return true;
+    }
 
-			} // in future we could do some other checks like NOT-NULL conditions,etc.
 
-		}
+    /**
+     * DOCUMENT ME!
+     *
+     * @param con DOCUMENT ME!
+     *
+     * @throws SQLException DOCUMENT ME!
+     * @throws MultipleValidationException DOCUMENT ME!
+     * @throws IllegalArgumentException DOCUMENT ME!
+     */
+    public void processEvent(Connection con) throws SQLException, MultipleValidationException
+    {
+        // Applying given security contraints (as defined in dbforms-config xml file)
+        // part 1: check if requested privilge is granted for role
+        if (!hasUserPrivileg(GrantedPrivileges.PRIVILEG_INSERT))
+        {
+            throw new SQLException("Sorry, adding data to table " + table.getName() + " is not granted for this session.");
+        }
 
-		return true;
-	}
+        Hashtable fieldValues = getFieldValues();
 
-	public void processEvent(Connection con) throws SQLException, MultipleValidationException {
+        if (fieldValues.size() == 0)
+        {
+            throw new SQLException("no parameters");
+        }
 
-		// Applying given security contraints (as defined in dbforms-config xml file)
-		// part 1: check if requested privilge is granted for role
-		if (!hasUserPrivileg(GrantedPrivileges.PRIVILEG_INSERT))
-			throw new SQLException("Sorry, adding data to table " + table.getName() + " is not granted for this session.");
+        // part 2: check if there are interceptors to be processed (as definied by
+        // "interceptor" element embedded in table element in dbforms-config xml file)
+        if (table.hasInterceptors())
+        {
+            try
+            {
+                Hashtable associativeArray = getAssociativeFieldValues(fieldValues);
 
-		Hashtable fieldValues = getFieldValues();
-		if (fieldValues.size() == 0)
-			throw new SQLException("no parameters");
 
-		// part 2: check if there are interceptors to be processed (as definied by
-		// "interceptor" element embedded in table element in dbforms-config xml file)
-		if (table.hasInterceptors()) {
-			try {
-				Hashtable associativeArray = getAssociativeFieldValues(fieldValues);
-				// process the interceptors associated to this table
-				table.processInterceptors(DbEventInterceptor.PRE_INSERT, request, associativeArray, config, con);
-				// synchronize data which may be changed by interceptor:
-				table.synchronizeData(fieldValues, associativeArray);
-			} catch (SQLException sqle) {
-				// PG = 2001-12-04
-				// No need to add extra comments, just re-throw exceptions as SqlExceptions
-				throw new SQLException(sqle.getMessage());
-			} catch (MultipleValidationException mve) {
-				// PG, 2001-12-14
-				// Support for multiple error messages in one interceptor
-				throw new MultipleValidationException(mve.getMessages());
-			}
-		}
-		// End of interceptor processing
+                // process the interceptors associated to this table
+                table.processInterceptors(DbEventInterceptor.PRE_INSERT, request, associativeArray, config, con);
 
-		if (!checkSufficentValues(fieldValues))
-			throw new SQLException("unsufficent parameters");
 
-		// 20021031-HKK: table.getInsertStatement()
-		PreparedStatement ps = con.prepareStatement(table.getInsertStatement(fieldValues));
+                // synchronize data which may be changed by interceptor:
+                table.synchronizeData(fieldValues, associativeArray);
+            }
+            catch (SQLException sqle)
+            {
+                // PG = 2001-12-04
+                // No need to add extra comments, just re-throw exceptions as SqlExceptions
+                throw new SQLException(sqle.getMessage());
+            }
+            catch (MultipleValidationException mve)
+            {
+                // PG, 2001-12-14
+                // Support for multiple error messages in one interceptor
+                throw new MultipleValidationException(mve.getMessages());
+            }
+        }
 
-		// now we provide the values
-		Enumeration enum = fieldValues.keys();
-		int col = 1;
-		while (enum.hasMoreElements()) {
-			Integer iiFieldId = (Integer) enum.nextElement();
-			Field curField = (Field) table.getFields().elementAt(iiFieldId.intValue());
-			if (curField != null) {
-				int fieldType = curField.getType();
-				Object value = null;
-				if (fieldType == FieldTypes.BLOB) {
-					// in case of a BLOB we supply the FileHolder object to SqlUtils for further operations
-					value = ParseUtil.getFileHolder(request, "f_" + tableId + "_ins" + idStr + "_" + iiFieldId);
-				} else if (fieldType == FieldTypes.DISKBLOB) {
-					// check if we need to store it encoded or not
-					if ("true".equals(curField.getEncoding())) {
-						FileHolder fileHolder =
-							ParseUtil.getFileHolder(request, "f_" + tableId + "_ins" + idStr + "_" + iiFieldId);
+        // End of interceptor processing
+        if (!checkSufficentValues(fieldValues))
+        {
+            throw new SQLException("unsufficent parameters");
+        }
 
-						// encode fileName
-						String fileName = fileHolder.getFileName();
-						int dotIndex = fileName.lastIndexOf('.');
-						String suffix = (dotIndex != -1) ? fileName.substring(dotIndex) : "";
-						fileHolder.setFileName(UniqueIDGenerator.getUniqueID() + suffix);
+        // 20021031-HKK: table.getInsertStatement()
+        PreparedStatement ps = con.prepareStatement(table.getInsertStatement(fieldValues));
 
-						// a diskblob gets stored to db as an ordinary string (it's only the reference!)
-						value = fileHolder.getFileName();
-					} else {
-						// a diskblob gets stored to db as an ordinary string	 (it's only the reference!)
-						value = fieldValues.get(iiFieldId);
-					}
+        // now we provide the values
+        Enumeration enum = fieldValues.keys();
+        int col = 1;
 
-				} else {
-					// in case of simple db types we just supply a string representing the value of the fields
-					value = fieldValues.get(iiFieldId);
-				}
-				logCat.info("PRE_INSERT: field=" + curField.getName() + " col=" + col + " value=" + value);
-				SqlUtil.fillPreparedStatement(ps, col, value, fieldType);
-				col++;
-			}
-		}
+        while (enum.hasMoreElements())
+        {
+            Integer iiFieldId = (Integer) enum.nextElement();
+            Field curField = (Field) table.getFields().elementAt(iiFieldId.intValue());
 
-		// execute the query & throws an exception if something goes wrong
-		ps.executeUpdate();
-		ps.close(); // #JP Jun 27, 2001
+            if (curField != null)
+            {
+                int fieldType = curField.getType();
+                Object value = null;
 
-		// if something went wrong we do not reach this piece of code:
-		// the story may continue for DISKBLOBs:
-		// #checkme: we need some kind of ROLLBACK-mechanism:
-		//  for the case that file upload physically failed we should rollback the logical db entry!
-		//  but this depends on the capabilities of the system's database / jdbc-driver
-		// #checkme: ho to find out if rollback possible, how to behave if not possible?
+                if (fieldType == FieldTypes.BLOB)
+                {
+                    // in case of a BLOB we supply the FileHolder object to SqlUtils for further operations
+                    value = ParseUtil.getFileHolder(request, "f_" + tableId + "_ins" + idStr + "_" + iiFieldId);
+                }
+                else if (fieldType == FieldTypes.DISKBLOB)
+                {
+                    // check if we need to store it encoded or not
+                    if ("true".equals(curField.getEncoding()))
+                    {
+                        FileHolder fileHolder = ParseUtil.getFileHolder(request, "f_" + tableId + "_ins" + idStr + "_" + iiFieldId);
 
-		enum = fieldValues.keys();
-		while (enum.hasMoreElements()) {
-			Integer iiFieldId = (Integer) enum.nextElement();
+                        // encode fileName
+                        String fileName = fileHolder.getFileName();
+                        int dotIndex = fileName.lastIndexOf('.');
+                        String suffix = (dotIndex != -1) ? fileName.substring(dotIndex) : "";
+                        fileHolder.setFileName(UniqueIDGenerator.getUniqueID() + suffix);
 
-			Field curField = (Field) table.getFields().elementAt(iiFieldId.intValue());
-			if (curField != null) {
-            int fieldType = curField.getType();
-   			String directory = curField.getDirectory();
-   
-   			if (fieldType == FieldTypes.DISKBLOB) {
-   
-   				// check if directory-attribute was provided
-   				if (directory == null)
-   					throw new IllegalArgumentException("directory-attribute needed for fields of type DISKBLOB");
-   
-   				// instanciate file object for that dir
-   				File dir = new File(directory);
-   
-   				// Check saveDirectory is truly a directory
-   				if (!dir.isDirectory())
-   					throw new IllegalArgumentException("Not a directory: " + directory);
-   
-   				// Check saveDirectory is writable
-   				if (!dir.canWrite())
-   					throw new IllegalArgumentException("Not writable: " + directory);
-   
-   				// dir is ok so lets store the filepart
-   				FileHolder fileHolder = ParseUtil.getFileHolder(request, "f_" + tableId + "_ins" + idStr + "_" + iiFieldId);
-   				if (fileHolder != null) {
-   					try {
-   
-   						fileHolder.writeBufferToFile(dir);
-   
-   						//filePart.getInputStream().close();
-   						logCat.info("fin + closedy");
-   					} catch (IOException ioe) {
-   						//#checkme: this would be a good place for rollback in database!!
-   						throw new SQLException(
-   							"could not store file '" + fileHolder.getFileName() + "' to dir '" + directory + "'");
-   					}
-   
-   				} else
-   					logCat.info("uh! empty fileHolder");
-   			}
-         }
-		}
 
-		//Patch insert nav by Stefano Borghi
-		//Show the last record inserted
-		String firstPosition = null;
-		Vector key = table.getKey();
-		FieldValue[] fvEqual = new FieldValue[key.size()];
-		for (int i = 0; i < key.size(); i++) {
-			Field field = (Field) key.elementAt(i);
-			String value = (String) fieldValues.get(new Integer(field.getId()));
-			FieldValue keyFieldValue = new FieldValue(field, value, false);
-			fvEqual[i] = keyFieldValue;
-		}
+                        // a diskblob gets stored to db as an ordinary string (it's only the reference!)
+                        value = fileHolder.getFileName();
+                    }
+                    else
+                    {
+                        // a diskblob gets stored to db as an ordinary string	 (it's only the reference!)
+                        value = fieldValues.get(iiFieldId);
+                    }
+                }
+                else
+                {
+                    // in case of simple db types we just supply a string representing the value of the fields
+                    value = fieldValues.get(iiFieldId);
+                }
 
-		ResultSetVector resultSetVector =
-			table.doConstrainedSelect(table.getFields(), fvEqual, null, table.GET_EQUAL, 1, con);
-		if (resultSetVector != null) {
-			resultSetVector.setPointer(0);
-			firstPosition = table.getPositionString(resultSetVector);
-		}
-		request.setAttribute("firstpos_" + tableId, firstPosition);
-		//end patch
+                logCat.info("PRE_INSERT: field=" + curField.getName() + " col=" + col + " value=" + value);
+                SqlUtil.fillPreparedStatement(ps, col, value, fieldType);
+                col++;
+            }
+        }
 
-		// finally, we process interceptor again (post-insert)
-		if (table.hasInterceptors()) {
-			try {
-				// process the interceptors associated to this table
-				table.processInterceptors(DbEventInterceptor.POST_INSERT, request, null, config, con);
-			} catch (SQLException sqle) {
-				// PG = 2001-12-04
-				// No need to add extra comments, just re-throw exceptions as SqlExceptions
-				throw new SQLException(sqle.getMessage());
-			}
-		}
-		// End of interceptor processing
 
-	}
+        // execute the query & throws an exception if something goes wrong
+        ps.executeUpdate();
+        ps.close(); // #JP Jun 27, 2001
 
+
+        // if something went wrong we do not reach this piece of code:
+        // the story may continue for DISKBLOBs:
+        // #checkme: we need some kind of ROLLBACK-mechanism:
+        //  for the case that file upload physically failed we should rollback the logical db entry!
+        //  but this depends on the capabilities of the system's database / jdbc-driver
+        // #checkme: ho to find out if rollback possible, how to behave if not possible?
+        enum = fieldValues.keys();
+
+        while (enum.hasMoreElements())
+        {
+            Integer iiFieldId = (Integer) enum.nextElement();
+
+            Field curField = (Field) table.getFields().elementAt(iiFieldId.intValue());
+
+            if (curField != null)
+            {
+                int fieldType = curField.getType();
+                String directory = curField.getDirectory();
+
+                if (fieldType == FieldTypes.DISKBLOB)
+                {
+                    // check if directory-attribute was provided
+                    if (directory == null)
+                    {
+                        throw new IllegalArgumentException("directory-attribute needed for fields of type DISKBLOB");
+                    }
+
+                    // instanciate file object for that dir
+                    File dir = new File(directory);
+
+                    // Check saveDirectory is truly a directory
+                    if (!dir.isDirectory())
+                    {
+                        throw new IllegalArgumentException("Not a directory: " + directory);
+                    }
+
+                    // Check saveDirectory is writable
+                    if (!dir.canWrite())
+                    {
+                        throw new IllegalArgumentException("Not writable: " + directory);
+                    }
+
+                    // dir is ok so lets store the filepart
+                    FileHolder fileHolder = ParseUtil.getFileHolder(request, "f_" + tableId + "_ins" + idStr + "_" + iiFieldId);
+
+                    if (fileHolder != null)
+                    {
+                        try
+                        {
+                            fileHolder.writeBufferToFile(dir);
+
+
+                            //filePart.getInputStream().close();
+                            logCat.info("fin + closedy");
+                        }
+                        catch (IOException ioe)
+                        {
+                            //#checkme: this would be a good place for rollback in database!!
+                            throw new SQLException("could not store file '" + fileHolder.getFileName() + "' to dir '" + directory + "'");
+                        }
+                    }
+                    else
+                    {
+                        logCat.info("uh! empty fileHolder");
+                    }
+                }
+            }
+        }
+
+        //Patch insert nav by Stefano Borghi
+        //Show the last record inserted
+        String firstPosition = null;
+        Vector key = table.getKey();
+        FieldValue[] fvEqual = new FieldValue[key.size()];
+
+        for (int i = 0; i < key.size(); i++)
+        {
+            Field field = (Field) key.elementAt(i);
+            String value = (String) fieldValues.get(new Integer(field.getId()));
+            FieldValue keyFieldValue = new FieldValue(field, value, false);
+            fvEqual[i] = keyFieldValue;
+        }
+
+        ResultSetVector resultSetVector = table.doConstrainedSelect(table.getFields(), fvEqual, null, table.GET_EQUAL, 1, con);
+
+        if (resultSetVector != null)
+        {
+            resultSetVector.setPointer(0);
+            firstPosition = table.getPositionString(resultSetVector);
+        }
+
+        request.setAttribute("firstpos_" + tableId, firstPosition);
+
+        //end patch
+        // finally, we process interceptor again (post-insert)
+        if (table.hasInterceptors())
+        {
+            try
+            {
+                // process the interceptors associated to this table
+                table.processInterceptors(DbEventInterceptor.POST_INSERT, request, null, config, con);
+            }
+            catch (SQLException sqle)
+            {
+                // PG = 2001-12-04
+                // No need to add extra comments, just re-throw exceptions as SqlExceptions
+                throw new SQLException(sqle.getMessage());
+            }
+        }
+
+        // End of interceptor processing
+    }
 }

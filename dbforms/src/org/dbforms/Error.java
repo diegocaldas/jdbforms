@@ -1,4 +1,8 @@
 /*
+ * $Header$
+ * $Revision$
+ * $Date$
+ *
  * DbForms - a Rapid Application Development Framework
  * Copyright (C) 2001 Joachim Peer <joepeer@excite.com>
  *
@@ -18,90 +22,151 @@
  */
 
 package org.dbforms;
-
 import java.util.*;
 import org.dbforms.util.*;
-
 import org.apache.log4j.Category;
+
+
 
 /************************************************************************
  *
  * This class represents an error tag in dbforms-errors.xml
  *
  ************************************************************************/
+public class Error
+{
+    static Category logCat = Category.getInstance(Error.class.getName());
 
-public class Error {
+    // logging category for this class
+    //------------------------ Properties ---------------------------------------------------------
+    private String id; // the id of this error
+    private String type; // the type of error
+    private Hashtable messages;
 
-	static Category logCat = Category.getInstance(Error.class.getName());
-	// logging category for this class
+    /**
+     * Creates a new Error object.
+     */
+    public Error()
+    {
+        messages = new Hashtable();
+    }
 
-	//------------------------ Properties ---------------------------------------------------------
+    /**
+     * DOCUMENT ME!
+     *
+     * @param id DOCUMENT ME!
+     */
+    public void setId(String id)
+    {
+        this.id = id;
+    }
 
-	private String id; // the id of this error
-	private String type; // the type of error
-	private Hashtable messages;
-	// the error messages, as provided in xml-error file Key=Locale value=Message
 
-	public Error() {
-		messages = new Hashtable();
-	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public String getId()
+    {
+        return id;
+    }
 
-	//------------------------ property access methods --------------------------------------------
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @param msgs DOCUMENT ME!
+     */
+    public void setMessages(Hashtable msgs)
+    {
+        this.messages = msgs;
+    }
 
-	public String getId() {
-		return id;
-	}
 
-	public void setMessages(Hashtable msgs) {
-		this.messages = msgs;
-	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public Hashtable getMessages()
+    {
+        return messages;
+    }
 
-	public Hashtable getMessages() {
-		return messages;
-	}
 
-	public void setMessage(String language, String message) {
-		this.messages.put(language, message);
-	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @param language DOCUMENT ME!
+     * @param message DOCUMENT ME!
+     */
+    public void setMessage(String language, String message)
+    {
+        this.messages.put(language, message);
+    }
 
-	public String getMessage(String language) {
-		return (String) messages.get(language);
-	}
 
-	public void setType(String t) {
-		this.type = t;
-	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @param language DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public String getMessage(String language)
+    {
+        return (String) messages.get(language);
+    }
 
-	public String getType() {
-		return type;
-	}
 
-	// --------------------- utility methods -------------------------------------------------------
+    /**
+     * DOCUMENT ME!
+     *
+     * @param t DOCUMENT ME!
+     */
+    public void setType(String t)
+    {
+        this.type = t;
+    }
 
-	public String toString() {
-		StringBuffer buf = new StringBuffer();
-		buf.append("id=");
-		buf.append(this.getId());
-		buf.append(" type=");
-		buf.append(this.getType());
-		return buf.toString();
-	}
 
-	/**
-	* adds a Message-Object to this error
-	* and puts it into the datastructure for further references
-	* (this method gets called from DbFormsError)
-	*/
-	public void addMessage(Message message) {
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public String getType()
+    {
+        return type;
+    }
 
-		messages.put(message.getLanguage(), message.getMessage());
-		logCat.info(
-			"Language " + message.getLanguage() + " Message " + message.getMessage());
 
-	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public String toString()
+    {
+        StringBuffer buf = new StringBuffer();
+        buf.append("id=");
+        buf.append(this.getId());
+        buf.append(" type=");
+        buf.append(this.getType());
 
+        return buf.toString();
+    }
+
+
+    /**
+    * adds a Message-Object to this error
+    * and puts it into the datastructure for further references
+    * (this method gets called from DbFormsError)
+    */
+    public void addMessage(Message message)
+    {
+        messages.put(message.getLanguage(), message.getMessage());
+        logCat.info("Language " + message.getLanguage() + " Message " + message.getMessage());
+    }
 }

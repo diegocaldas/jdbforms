@@ -1,4 +1,8 @@
 /*
+ * $Header$
+ * $Revision$
+ * $Date$
+ *
  * DbForms - a Rapid Application Development Framework
  * Copyright (C) 2001 Joachim Peer <joepeer@excite.com>
  *
@@ -18,12 +22,12 @@
  */
 
 package org.dbforms;
-
 import java.util.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
-
 import org.apache.log4j.Category;
+
+
 
 /****
  * <p>
@@ -34,49 +38,75 @@ import org.apache.log4j.Category;
  *
  * @author Philip Grunikiewicz <grunikiewicz.philip@hydro.qc.ca>
  */
+public class DbFormsErrors
+{
+    static Category logCat = Category.getInstance(DbFormsErrors.class.getName()); // logging category for this class
 
-public class DbFormsErrors {
+    /** DOCUMENT ME! */
+    public static final String ERRORS = "dbformsErrors";
+    private Hashtable errorIDHash; // for quicker lookup by ID
+    private ServletConfig servletConfig;
 
-  static Category logCat = Category.getInstance(DbFormsErrors.class.getName()); // logging category for this class
+    /**
+     * Creates a new DbFormsErrors object.
+     */
+    public DbFormsErrors()
+    {
+        logCat.info("Create instance of DbFormsErrors");
+        errorIDHash = new Hashtable();
+    }
 
-  public static final String ERRORS = "dbformsErrors";
-
-  private Hashtable errorIDHash; // for quicker lookup by ID
-  private ServletConfig servletConfig;
-
-  public DbFormsErrors() {
-		logCat.info("Create instance of DbFormsErrors");
-		errorIDHash = new Hashtable();
-  }  
-
-  public void addError(Error error) {
-		logCat.info("error added: " + error);
-		errorIDHash.put(error.getId(), error);
-  }  
-
-	public Error getErrorById(String id) {
-		return (Error) errorIDHash.get(id);
-	}
-
-
-	public void setServletConfig(ServletConfig servletConfig) {
-		this.servletConfig = servletConfig;
-	}
-
-	/**
-	get access to configuration of config servlet
-	*/
-	public ServletConfig getServletConfig() {
-		return servletConfig;
-	}
-
-	/**
-	get access to servlet context in order to interoperate with
-	other components of the web application
-	*/
-	public ServletContext getServletContext() {
-		return servletConfig.getServletContext();
-	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @param error DOCUMENT ME!
+     */
+    public void addError(Error error)
+    {
+        logCat.info("error added: " + error);
+        errorIDHash.put(error.getId(), error);
+    }
 
 
+    /**
+     * DOCUMENT ME!
+     *
+     * @param id DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public Error getErrorById(String id)
+    {
+        return (Error) errorIDHash.get(id);
+    }
+
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param servletConfig DOCUMENT ME!
+     */
+    public void setServletConfig(ServletConfig servletConfig)
+    {
+        this.servletConfig = servletConfig;
+    }
+
+
+    /**
+    get access to configuration of config servlet
+    */
+    public ServletConfig getServletConfig()
+    {
+        return servletConfig;
+    }
+
+
+    /**
+    get access to servlet context in order to interoperate with
+    other components of the web application
+    */
+    public ServletContext getServletContext()
+    {
+        return servletConfig.getServletContext();
+    }
 }

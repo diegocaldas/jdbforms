@@ -1,4 +1,8 @@
 /*
+ * $Header$
+ * $Revision$
+ * $Date$
+ *
  * DbForms - a Rapid Application Development Framework
  * Copyright (C) 2001 Joachim Peer <joepeer@excite.com>
  *
@@ -18,11 +22,11 @@
  */
 
 package org.dbforms;
-
 import java.util.*;
 import org.dbforms.util.*;
-
 import org.apache.log4j.Category;
+
+
 
 /****
  * <p>
@@ -30,49 +34,73 @@ import org.apache.log4j.Category;
  * </p>
  *
  */
+public class Message
+{
+    static Category logCat = Category.getInstance(Message.class.getName()); // logging category for this class
 
-public class Message {
+    //------------------------ Properties ---------------------------------------------------------
+    private String language; // Code used to specify a language for this message
 
-	static Category logCat = Category.getInstance(Message.class.getName()); // logging category for this class
+    // May be converted to a real Locale object if need be...
+    private String message; // the message-name, as provided in xml-error file
 
-	//------------------------ Properties ---------------------------------------------------------
-
-	private String language;	// Code used to specify a language for this message
-							// May be converted to a real Locale object if need be...
-	
-		
-	private String message; // the message-name, as provided in xml-error file
-
-
-	//------------------------ property access methods --------------------------------------------
-
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
-
-	public String getMessage() {
-		return message;
-	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @param message DOCUMENT ME!
+     */
+    public void setMessage(String message)
+    {
+        this.message = message;
+    }
 
 
-	public void setLanguage(String language) {
-		this.language = language;
-	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public String getMessage()
+    {
+        return message;
+    }
 
-	public String getLanguage() {
-		return language;
-	}
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param language DOCUMENT ME!
+     */
+    public void setLanguage(String language)
+    {
+        this.language = language;
+    }
 
 
-	// --------------------- utility methods -------------------------------------------------------
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public String getLanguage()
+    {
+        return language;
+    }
 
-	public String toString() {
-		StringBuffer buf = new StringBuffer();
-		buf.append("language=");
-		buf.append(language);
-		buf.append(" message=");
-		buf.append(getMessage());
-		return buf.toString();
-	}
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public String toString()
+    {
+        StringBuffer buf = new StringBuffer();
+        buf.append("language=");
+        buf.append(language);
+        buf.append(" message=");
+        buf.append(getMessage());
+
+        return buf.toString();
+    }
 }

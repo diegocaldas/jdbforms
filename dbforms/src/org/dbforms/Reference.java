@@ -1,7 +1,10 @@
 /*
+ * $Header$
+ * $Revision$
+ * $Date$
  *
  * DbForms - a Rapid Application Development Framework
- * Copyright (C) 2001 Joachim Peer <j.peer@gmx.net> et al.
+ * Copyright (C) 2001 Joachim Peer <joepeer@excite.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,52 +23,74 @@
 
 package org.dbforms;
 
-public class Reference {
-    
+/**
+ * DOCUMENT ME!
+ *
+ * @version $Revision$
+ * @author $author$
+ */
+public class Reference
+{
     /** Holds value of property local. */
     private String local;
-    
+
     /** Holds value of property foreign. */
     private String foreign;
-    
+
     /** Creates a new instance of ReferenceColumnPair */
-    public Reference() {
+    public Reference()
+    {
     }
-    
-    public Reference(String local, String foreign) {
+
+
+    /**
+     * Creates a new Reference object.
+     *
+     * @param local DOCUMENT ME!
+     * @param foreign DOCUMENT ME!
+     */
+    public Reference(String local, String foreign)
+    {
         this.local = local;
         this.foreign = foreign;
     }
+
     /** Getter for property local.
-     * @return Value of property local.
-     *
-     */
-    public String getLocal() {
+ * @return Value of property local.
+ *
+ */
+    public String getLocal()
+    {
         return this.local;
     }
-    
+
+
     /** Setter for property local.
-     * @param local New value of property local.
-     *
-     */
-    public void setLocal(String local) {
+ * @param local New value of property local.
+ *
+ */
+    public void setLocal(String local)
+    {
         this.local = local;
     }
-    
+
+
     /** Getter for property foreign.
-     * @return Value of property foreign.
-     *
-     */
-    public String getForeign() {
+ * @return Value of property foreign.
+ *
+ */
+    public String getForeign()
+    {
         return this.foreign;
     }
-    
+
+
     /** Setter for property foreign.
-     * @param foreign New value of property foreign.
-     *
-     */
-    public void setForeign(String foreign) {
+ * @param foreign New value of property foreign.
+ *
+ */
+    public void setForeign(String foreign)
+    {
         this.foreign = foreign;
     }
-    
 }

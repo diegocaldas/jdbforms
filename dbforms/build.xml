@@ -52,8 +52,8 @@ Happy coding!
     <property name="build.dir" value="${cvs.workingdir}/build"/>
     <property name="dist.dir" value="${cvs.workingdir}/dist"/>
     <property name="dependend.dir" value="${cvs.workingdir}/dependend"/>
-    <property name="htmldoc.dir" value="${cvs.workingdir}/doc/html"/>
     <property name="doc.dir" value="${cvs.workingdir}/doc"/>
+    <property name="htmldoc.dir" value="${doc.dir}/html"/>
     <property name="bin.dir" value="${cvs.workingdir}/bin"/>
     <property environment="env"/>
 
@@ -128,28 +128,28 @@ Happy coding!
         
         <copy 
         	file="${htmldoc.dir}/DbFormsTags_Frame.html" 
-        	tofile="${dist.dir}/doc/taglib/DbFormsTags_Frame.html" 
+        	tofile="${dist.dir}/docs/taglib/DbFormsTags_Frame.html" 
         	overwrite="true"
         />
         <copy 
         	file="${htmldoc.dir}/dbforms_logo.png" 
-        	tofile="${dist.dir}/doc/taglib/dbforms_logo.png" 
+        	tofile="${dist.dir}/docs/taglib/dbforms_logo.png" 
         	overwrite="true"
         />
         <style 
         	style="${etc.dir}/tldoc2html.xsl" 
         	in="${etc.dir}/taglib_docu.xml" 
-        	out="${dist.dir}/doc/taglib/DbFormsTags.html"
+        	out="${dist.dir}/docs/taglib/DbFormsTags.html"
         />
         <style 
         	style="${etc.dir}/tldoc2html_toc.xsl" 
         	in="${etc.dir}/taglib_docu.xml" 
-               	out="${dist.dir}/doc/taglib/DbFormsTags_TocSem.html"
+               	out="${dist.dir}/docs/taglib/DbFormsTags_TocSem.html"
         />
         <style 
         	style="${etc.dir}/tldoc2html_toc.xsl" 
         	in="${etc.dir}/taglib_docu.xml" 
-               	out="${dist.dir}/doc/taglib/DbFormsTags_TocAlph.html"
+               	out="${dist.dir}/docs/taglib/DbFormsTags_TocAlph.html"
         >
             <param name="sortTagsAlphabetically" expression="true"/>
         </style>
@@ -275,10 +275,10 @@ Happy coding!
                     description="--> Generate  HTML reference documentation within doc/html from taglib-docu.xml" >
         <copy 
         	file="${htmldoc.dir}/devgui.html" 
-        	tofile="${dist.dir}/doc/devgui/devgui.html" 
+        	tofile="${dist.dir}/docs/devgui/devgui.html" 
         	overwrite="true"
         />
-        <copy todir="${dist.dir}/doc/devgui">
+        <copy todir="${dist.dir}/docs/devgui">
             <fileset dir="${htmldoc.dir}">
             	<include name="devgui*.png" />
             </fileset>
@@ -293,7 +293,7 @@ Happy coding!
   <target name="javadoc">
     <javadoc packagenames = "org.dbforms.*"
              sourcepath   = "${javasrc.dir}"
-             destdir      = "${dist.dir}/doc/api"
+             destdir      = "${dist.dir}/docs/api"
              author       = "true"
              version      = "true"
              use          = "true"
@@ -314,7 +314,7 @@ Happy coding!
   </target>
  
   <target name="dist_doc"
-  	  depends="javadoc, generate_taglib_doc,generate_devgui_doc"
+  	  depends="javadoc, generate_taglib_doc, generate_devgui_doc"
   />
 
   <target name="dist_bin"

@@ -4,7 +4,7 @@
  * $Date$
  *
  * DbForms - a Rapid Application Development Framework
- * Copyright (C) 2001 Joachim Peer <j.peer@gmx.net> et al.
+ * Copyright (C) 2001 Joachim Peer <joepeer@excite.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,13 +22,22 @@
  */
 
 package org.dbforms.taglib;
-
-
 import java.util.*;
 
 
-public interface DataContainer {
 
-
-	public void setEmbeddedData(Vector embeddedData);
+/**
+ * DOCUMENT ME!
+ *
+ * @version $Revision$
+ * @author $author$
+ */
+public interface DataContainer
+{
+    /**
+     * DOCUMENT ME!
+     *
+     * @param embeddedData DOCUMENT ME!
+     */
+    public void setEmbeddedData(Vector embeddedData);
 }

@@ -22,15 +22,14 @@
  */
 
 package org.dbforms;
-
 import java.util.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
-
 import org.dbforms.util.DbConnection;
-
 import org.apache.log4j.Category;
 import java.text.SimpleDateFormat;
+
+
 
 /****
  * <p>
@@ -43,155 +42,236 @@ import java.text.SimpleDateFormat;
  *
  * @author Joe Peer <joepeer@excite.com>
  */
+public class DbFormsConfig
+{
+    static Category logCat = Category.getInstance(DbFormsConfig.class.getName());
 
-public class DbFormsConfig {
+    /** DOCUMENT ME! */
+    public static final String CONFIG = "dbformsConfig";
+    private static SimpleDateFormat sdf;
+    private Vector tables;
+    private Hashtable tableNameHash; // for quicker lookup by name
 
-	static Category logCat = Category.getInstance(DbFormsConfig.class.getName());
-	// logging category for this class
+    // Bradley's multiple connection support [fossato <fossato@pow2.com> 2002/11/04]
+    private DbConnection defaultDbConnection;
+    private ArrayList dbConnectionsList;
+    private Hashtable dbConnectionsHash;
 
-	public static final String CONFIG = "dbformsConfig";
-	private static SimpleDateFormat sdf;
+    //private DbConnection dbConnection;
+    private ServletConfig servletConfig;
 
-	private Vector tables;
-	private Hashtable tableNameHash; // for quicker lookup by name
+    /**
+     * Creates a new DbFormsConfig object.
+     */
+    public DbFormsConfig()
+    {
+        tables = new Vector();
+        tableNameHash = new Hashtable();
 
-	// Bradley's multiple connection support [fossato <fossato@pow2.com> 2002/11/04]
-	private DbConnection defaultDbConnection;
-	private ArrayList dbConnectionsList;
-	private Hashtable dbConnectionsHash;
 
-	//private DbConnection dbConnection;
-	private ServletConfig servletConfig;
+        // Bradley's multiple connection support [fossato <fossato@pow2.com> 2002/11/04]
+        dbConnectionsHash = new Hashtable();
+        dbConnectionsList = new ArrayList();
+    }
 
-	public DbFormsConfig() {
-		tables = new Vector();
-		tableNameHash = new Hashtable();
+    /**
+     * DOCUMENT ME!
+     *
+     * @param table DOCUMENT ME!
+     */
+    public void addTable(Table table)
+    {
+        logCat.info("add table called");
+        table.setId(tables.size());
+        table.setConfig(this);
+        table.initDefaultOrder();
+        tables.addElement(table);
+        tableNameHash.put(table.getName(), table);
+    }
 
-		// Bradley's multiple connection support [fossato <fossato@pow2.com> 2002/11/04]
-		dbConnectionsHash = new Hashtable();
-		dbConnectionsList = new ArrayList();
-	}
 
-	public void addTable(Table table) {
-		logCat.info("add table called");
-		table.setId(tables.size());
-		table.setConfig(this);
-		table.initDefaultOrder();
-		tables.addElement(table);
-		tableNameHash.put(table.getName(), table);
-	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @param index DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public Table getTable(int index)
+    {
+        return (Table) tables.elementAt(index);
+    }
 
-	public Table getTable(int index) {
-		return (Table) tables.elementAt(index);
-	}
 
-	public Table getTableByName(String name) {
-		return (Table) tableNameHash.get(name);
-	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @param name DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public Table getTableByName(String name)
+    {
+        return (Table) tableNameHash.get(name);
+    }
 
-	// Bradley's multiple connection support [fossato <fossato@pow2.com> 2002/11/04]
-	// comment setDbConnection;
 
-	//	public void setDbConnection(DbConnection dbConnection) {
-	//		this.dbConnection = dbConnection;
-	//		logCat.info("***** DBCONNECTION = " + dbConnection.toString() + "******");
-	//	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @param dbConnection DOCUMENT ME!
+     */
+    public void addDbConnection(DbConnection dbConnection)
+    {
+        dbConnectionsList.add(dbConnection);
 
-	// Bradley's multiple connection support [fossato <fossato@pow2.com> 2002/11/04]
-	public void addDbConnection(DbConnection dbConnection) {
-		dbConnectionsList.add(dbConnection);
+        if ((dbConnection.getId() != null) && (dbConnection.getId().trim().length() > 0))
+        {
+            dbConnectionsHash.put(dbConnection.getId(), dbConnection);
+        }
 
-		if (dbConnection.getId() != null && dbConnection.getId().trim().length() > 0) {
-			dbConnectionsHash.put(dbConnection.getId(), dbConnection);
-		}
+        if ((dbConnection.isDefaultConnection() && ((defaultDbConnection == null) || !defaultDbConnection.isDefaultConnection())) || (defaultDbConnection == null))
+        {
+            defaultDbConnection = dbConnection;
+        }
 
-		if ((dbConnection.isDefaultConnection()
-			&& ((defaultDbConnection == null) || !defaultDbConnection.isDefaultConnection()))
-			|| (defaultDbConnection == null)) {
-			defaultDbConnection = dbConnection;
-		}
+        logCat.info("***** DbConnection Added *****");
+        logCat.info(dbConnection.toString());
+    }
 
-		logCat.info("***** DbConnection Added *****");
-		logCat.info(dbConnection.toString());
-	}
 
-	// Bradley's multiple connection support [fossato <fossato@pow2.com> 2002/11/04]
-	public DbConnection getDbConnection(String dbConnectionName) {
-		DbConnection connection = null;
+    /**
+     * DOCUMENT ME!
+     *
+     * @param dbConnectionName DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public DbConnection getDbConnection(String dbConnectionName)
+    {
+        DbConnection connection = null;
 
-		if (dbConnectionName == null || dbConnectionName.trim().length() == 0) {
-			return defaultDbConnection;
-		}
+        if ((dbConnectionName == null) || (dbConnectionName.trim().length() == 0))
+        {
+            return defaultDbConnection;
+        }
 
-		try {
-			connection = (DbConnection) dbConnectionsList.get(Integer.parseInt(dbConnectionName));
-		} catch (Exception ex) {
-		} finally {
-			if (connection != null) {
-				return connection;
-			}
-		}
+        try
+        {
+            connection = (DbConnection) dbConnectionsList.get(Integer.parseInt(dbConnectionName));
+        }
+        catch (Exception ex)
+        {
+        }
+        finally
+        {
+            if (connection != null)
+            {
+                return connection;
+            }
+        }
 
-		connection = (DbConnection) dbConnectionsHash.get(dbConnectionName);
+        connection = (DbConnection) dbConnectionsHash.get(dbConnectionName);
 
-		if (connection == null) {
-			connection = defaultDbConnection;
-		}
+        if (connection == null)
+        {
+            connection = defaultDbConnection;
+        }
 
-		return connection;
+        return connection;
+    }
 
-	}
 
-	// Bradley's multiple connection support [fossato <fossato@pow2.com> 2002/11/04]
-	//	public DbConnection getDbConnection() {
-	//		return dbConnection;
-	//	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @param servletConfig DOCUMENT ME!
+     */
+    public void setServletConfig(ServletConfig servletConfig)
+    {
+        this.servletConfig = servletConfig;
+    }
 
-	public void setServletConfig(ServletConfig servletConfig) {
-		this.servletConfig = servletConfig;
-	}
 
-	/**
-	get access to configuration of config servlet
-	*/
-	public ServletConfig getServletConfig() {
-		return servletConfig;
-	}
+    /**
+    get access to configuration of config servlet
+    */
+    public ServletConfig getServletConfig()
+    {
+        return servletConfig;
+    }
 
-	/**
-	get access to servlet context in order to interoperate with
-	other components of the web application
-	*/
-	public ServletContext getServletContext() {
-		return servletConfig.getServletContext();
-	}
 
-	public static SimpleDateFormat getDateFormatter() {
-		if (sdf == null) {
-			/* init */
-			sdf = new SimpleDateFormat();
-		}
-		return sdf;
-	}
+    /**
+    get access to servlet context in order to interoperate with
+    other components of the web application
+    */
+    public ServletContext getServletContext()
+    {
+        return servletConfig.getServletContext();
+    }
 
-	public static void setDateFormatter(String pattern) {
-		sdf = new SimpleDateFormat(pattern);
-	}
 
-	// We have the table and field ID - we need the field name  
-	public String getFieldName(int tableID, int fieldID) {
-		Table t = (Table) tables.elementAt(tableID);
-		return (t.getFieldName(fieldID));
-	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public static SimpleDateFormat getDateFormatter()
+    {
+        if (sdf == null)
+        {
+            /* init */
+            sdf = new SimpleDateFormat();
+        }
 
-	public String traverse() {
-		StringBuffer buf = new StringBuffer();
-		for (int i = 0; i < tables.size(); i++) {
-			Table t = (Table) tables.elementAt(i);
-			buf.append("table:\n");
-			buf.append(t.traverse());
-		}
-		return buf.toString();
-	}
+        return sdf;
+    }
 
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param pattern DOCUMENT ME!
+     */
+    public static void setDateFormatter(String pattern)
+    {
+        sdf = new SimpleDateFormat(pattern);
+    }
+
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param tableID DOCUMENT ME!
+     * @param fieldID DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public String getFieldName(int tableID, int fieldID)
+    {
+        Table t = (Table) tables.elementAt(tableID);
+
+        return (t.getFieldName(fieldID));
+    }
+
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public String traverse()
+    {
+        StringBuffer buf = new StringBuffer();
+
+        for (int i = 0; i < tables.size(); i++)
+        {
+            Table t = (Table) tables.elementAt(i);
+            buf.append("table:\n");
+            buf.append(t.traverse());
+        }
+
+        return buf.toString();
+    }
 }

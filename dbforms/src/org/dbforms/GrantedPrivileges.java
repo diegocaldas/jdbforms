@@ -22,12 +22,12 @@
  */
 
 package org.dbforms;
-
 import java.util.*;
 import javax.servlet.http.HttpServletRequest;
-
 import org.dbforms.util.*;
 import org.apache.log4j.Category;
+
+
 
 /****
  * <p>
@@ -36,100 +36,152 @@ import org.apache.log4j.Category;
  *
  * @author Joachim Peer <joepeer@wap-force.net>
  */
+public class GrantedPrivileges
+{
+    static Category logCat = Category.getInstance(GrantedPrivileges.class.getName()); // logging category for this class
 
-public class GrantedPrivileges {
+    /** DOCUMENT ME! */
+    public static final int PRIVILEG_SELECT = 0;
 
-  static Category logCat = Category.getInstance(GrantedPrivileges.class.getName()); // logging category for this class
+    /** DOCUMENT ME! */
+    public static final int PRIVILEG_INSERT = 1;
 
-  public static final int PRIVILEG_SELECT = 0;
-  public static final int PRIVILEG_INSERT = 1;
-  public static final int PRIVILEG_UPDATE = 2;
-  public static final int PRIVILEG_DELETE = 3;
+    /** DOCUMENT ME! */
+    public static final int PRIVILEG_UPDATE = 2;
 
-	private String select, insert, update, delete; // placeholders where XML digester will place the parsed values
+    /** DOCUMENT ME! */
+    public static final int PRIVILEG_DELETE = 3;
+    private String select; // placeholders where XML digester will place the parsed values
+    private String insert; // placeholders where XML digester will place the parsed values
+    private String update; // placeholders where XML digester will place the parsed values
+    private String delete; // placeholders where XML digester will place the parsed values
+    private Vector[] grantedRoles;
 
-	private Vector[] grantedRoles;
+    /**
+     * Creates a new GrantedPrivileges object.
+     */
+    public GrantedPrivileges()
+    {
+        grantedRoles = new Vector[4];
 
-	//private Hashtable conditions;
+        //conditions = new Hashtable();
+    }
 
-	public GrantedPrivileges() {
-		grantedRoles = new Vector[4];
-		//conditions = new Hashtable();
-	}
-
-  public void setSelect(String select) {
-		this.select = select;
-		logCat.info("select");
-		grantedRoles[PRIVILEG_SELECT] = ParseUtil.splitString(select, ",;~");
-	}
-
-  public void setInsert(String insert) {
-		this.insert = insert;
-		logCat.info("insert");
-		grantedRoles[PRIVILEG_INSERT] = ParseUtil.splitString(insert, ",;~");
-	}
-
-  public void setUpdate(String update) {
-		this.update = update;
-		logCat.info("update");
-		grantedRoles[PRIVILEG_UPDATE] = ParseUtil.splitString(update, ",;~");
-	}
-
-  public void setDelete(String delete) {
-		this.delete = delete;
-		logCat.info("delete");
-		grantedRoles[PRIVILEG_DELETE] = ParseUtil.splitString(delete, ",;~");
-	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @param select DOCUMENT ME!
+     */
+    public void setSelect(String select)
+    {
+        this.select = select;
+        logCat.info("select");
+        grantedRoles[PRIVILEG_SELECT] = ParseUtil.splitString(select, ",;~");
+    }
 
 
-   public boolean hasUserPrivileg(HttpServletRequest request, int privileg) {
+    /**
+     * DOCUMENT ME!
+     *
+     * @param insert DOCUMENT ME!
+     */
+    public void setInsert(String insert)
+    {
+        this.insert = insert;
+        logCat.info("insert");
+        grantedRoles[PRIVILEG_INSERT] = ParseUtil.splitString(insert, ",;~");
+    }
 
-		if(grantedRoles[privileg] == null) return true; // if no constraints specified -> wildcard access ;-)
 
-		for(int i=0; i<grantedRoles[privileg].size(); i++) {
-			String aGrantedRole = (String) grantedRoles[privileg].elementAt(i);
-			if(request.isUserInRole(aGrantedRole)) return true; // if the user is InRole(aGrantedRole) then let him go on :=)
-		}
+    /**
+     * DOCUMENT ME!
+     *
+     * @param update DOCUMENT ME!
+     */
+    public void setUpdate(String update)
+    {
+        this.update = update;
+        logCat.info("update");
+        grantedRoles[PRIVILEG_UPDATE] = ParseUtil.splitString(update, ",;~");
+    }
 
-	 	return false; // otherwise we must deny the operation
-	}
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param delete DOCUMENT ME!
+     */
+    public void setDelete(String delete)
+    {
+        this.delete = delete;
+        logCat.info("delete");
+        grantedRoles[PRIVILEG_DELETE] = ParseUtil.splitString(delete, ",;~");
+    }
 
 
-/*
-=============================================
-kindof 'deprecated'
-replaced by DbInterceptor !!
-=============================================
+    /**
+     * DOCUMENT ME!
+     *
+     * @param request DOCUMENT ME!
+     * @param privileg DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public boolean hasUserPrivileg(HttpServletRequest request, int privileg)
+    {
+        if (grantedRoles[privileg] == null)
+        {
+            return true; // if no constraints specified -> wildcard access ;-)
+        }
 
-   public void addCondition(Condition condition) {
+        for (int i = 0; i < grantedRoles[privileg].size(); i++)
+        {
+            String aGrantedRole = (String) grantedRoles[privileg].elementAt(i);
 
-	   Vector restrictedRoles = ParseUtil.splitString(condition.getRoles(), ",;~");
+            if (request.isUserInRole(aGrantedRole))
+            {
+                return true; // if the user is InRole(aGrantedRole) then let him go on :=)
+            }
+        }
 
-	   if(restrictedRoles==null) throw new IllegalArgumentException("Error parsing dbforms-config XML file! condition could not be added to privileges - object!");
+        return false; // otherwise we must deny the operation
+    }
 
-	   int l = restrictedRoles.size();
-	   for(int i=0; i<l; i++) {
-		 conditions.put( (String) restrictedRoles.elementAt(i), condition.getConditionChecker() );
-	   }
-	}
-
-=============================================
-kindof 'deprecated'
-replaced by DbInterceptor !!
-=============================================
-
-   public String getCondition(HttpServletRequest request) {
-
-	   Enumeration enum = conditions.keys(); // keys are the role names specified by developer/deployer
-
-	   while(enum.hasMoreElements()) {
-		   String aRole = (String) enum.nextElement();
-		   if( request.isUserInRole(aRole) ) {
-			   return (String) conditions.get(aRole); // return name of connection checker associated with this restriction
-		   }
-	   }
-
-	   return null; // user is not restricted within the granted privilege.
-   }
-*/
+    /*
+    =============================================
+    kindof 'deprecated'
+    replaced by DbInterceptor !!
+    =============================================
+        
+       public void addCondition(Condition condition) {
+        
+               Vector restrictedRoles = ParseUtil.splitString(condition.getRoles(), ",;~");
+        
+               if(restrictedRoles==null) throw new IllegalArgumentException("Error parsing dbforms-config XML file! condition could not be added to privileges - object!");
+        
+               int l = restrictedRoles.size();
+               for(int i=0; i<l; i++) {
+                     conditions.put( (String) restrictedRoles.elementAt(i), condition.getConditionChecker() );
+               }
+            }
+        
+    =============================================
+    kindof 'deprecated'
+    replaced by DbInterceptor !!
+    =============================================
+        
+       public String getCondition(HttpServletRequest request) {
+        
+               Enumeration enum = conditions.keys(); // keys are the role names specified by developer/deployer
+        
+               while(enum.hasMoreElements()) {
+                       String aRole = (String) enum.nextElement();
+                       if( request.isUserInRole(aRole) ) {
+                               return (String) conditions.get(aRole); // return name of connection checker associated with this restriction
+                       }
+               }
+        
+               return null; // user is not restricted within the granted privilege.
+       }
+    */
 }

@@ -4,7 +4,7 @@
  * $Date$
  *
  * DbForms - a Rapid Application Development Framework
- * Copyright (C) 2001 Joachim Peer <j.peer@gmx.net> et al.
+ * Copyright (C) 2001 Joachim Peer <joepeer@excite.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,10 +22,10 @@
  */
 
 package org.dbforms.event;
-
 import org.dbforms.*;
 import org.dbforms.util.*;
 import java.sql.*;
+
 
 
 /****
@@ -34,12 +34,24 @@ import java.sql.*;
  *
  * @author Joe Peer <j.peer@gmx.net>
  */
+public abstract class NavigationEvent extends WebEvent
+{
+    /** DOCUMENT ME! */
+    protected Table table;
 
-public abstract class NavigationEvent extends WebEvent {
-
-  protected Table table;
-
-	public abstract ResultSetVector processEvent(FieldValue[] childFieldValues, FieldValue[] orderConstraint, int count, String firstPost, String lastPos, Connection con)
-	throws SQLException ;
-
+    /**
+     * DOCUMENT ME!
+     *
+     * @param childFieldValues DOCUMENT ME!
+     * @param orderConstraint DOCUMENT ME!
+     * @param count DOCUMENT ME!
+     * @param firstPost DOCUMENT ME!
+     * @param lastPos DOCUMENT ME!
+     * @param con DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     *
+     * @throws SQLException DOCUMENT ME!
+     */
+    public abstract ResultSetVector processEvent(FieldValue[] childFieldValues, FieldValue[] orderConstraint, int count, String firstPost, String lastPos, Connection con) throws SQLException;
 }

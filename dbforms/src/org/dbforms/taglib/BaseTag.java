@@ -4,7 +4,7 @@
  * $Date$
  *
  * DbForms - a Rapid Application Development Framework
- * Copyright (C) 2001 Joachim Peer <j.peer@gmx.net> et al.
+ * Copyright (C) 2001 Joachim Peer <joepeer@excite.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,16 +19,9 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
- *
- *
- * NOTE:
- * substantial parts of this class where taken from the class BaseTag of the
- * Apache Struts Project
  */
 
-
 package org.dbforms.taglib;
-
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
@@ -36,6 +29,8 @@ import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.TagSupport;
 import org.apache.log4j.Category;
+
+
 
 /**
  * Renders an HTML <base> element with an href
@@ -48,37 +43,45 @@ import org.apache.log4j.Category;
  * author Luis Arias <luis@elysia.com>
  * @author Joe Peer <joepeer@wap-force.net> (changed class for use in DbForms-Framework)
  */
+public class BaseTag extends TagSupport
+{
+    static Category logCat = Category.getInstance(BaseTag.class.getName()); // logging category for this class
 
-public class BaseTag extends TagSupport {
+    /**
+     * Process the start of this tag.
+     *
+     * @exception JspException if a JSP exception has occurred
+     */
+    public int doStartTag() throws JspException
+    {
+        HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
+        StringBuffer buf = new StringBuffer("<base href=\"");
+        buf.append(request.getScheme());
+        buf.append("://");
+        buf.append(request.getServerName());
 
-  static Category logCat = Category.getInstance(BaseTag.class.getName()); // logging category for this class
+        int port = request.getServerPort();
 
-  /**
-   * Process the start of this tag.
-   *
-   * @exception JspException if a JSP exception has occurred
-   */
-  public int doStartTag() throws JspException {
-	HttpServletRequest request = (HttpServletRequest)pageContext.getRequest();
-	StringBuffer buf = new StringBuffer("<base href=\"");
-	buf.append(request.getScheme());
-	buf.append("://");
-	buf.append(request.getServerName());
+        if (port != 80)
+        {
+            buf.append(":");
+            buf.append(port);
+        }
 
-	int port = request.getServerPort();
-	if(port!=80) {
-	    buf.append(":");
-	    buf.append(port);
-  	}
-	buf.append(request.getRequestURI());
-	buf.append("\">");
-	JspWriter out = pageContext.getOut();
-	try {
-		out.write(buf.toString());
-	}
-	catch (IOException e) {
-		throw new JspException(e.toString());
-	}
-	return EVAL_BODY_INCLUDE;
-  }  
+        buf.append(request.getRequestURI());
+        buf.append("\">");
+
+        JspWriter out = pageContext.getOut();
+
+        try
+        {
+            out.write(buf.toString());
+        }
+        catch (IOException e)
+        {
+            throw new JspException(e.toString());
+        }
+
+        return EVAL_BODY_INCLUDE;
+    }
 }

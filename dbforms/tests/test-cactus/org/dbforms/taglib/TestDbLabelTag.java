@@ -1,5 +1,3 @@
-package org.dbforms.taglib;
-
 /*
  * $Header$
  * $Revision$
@@ -23,14 +21,15 @@ package org.dbforms.taglib;
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 
+package org.dbforms.taglib;
 import javax.servlet.jsp.tagext.BodyContent;
 import javax.servlet.jsp.tagext.BodyTag;
-
 import junit.framework.Test;
 import junit.framework.TestSuite;
-
 import org.apache.cactus.JspTestCase;
 import org.apache.cactus.WebResponse;
+
+
 
 /**
  * Tests of the <code>DbLabelTag</code> class.
@@ -60,9 +59,12 @@ public class TestDbLabelTag extends JspTestCase
      */
     public static void main(String[] theArgs)
     {
-        junit.swingui.TestRunner.main(
-            new String[] { TestDbLabelTag.class.getName() });
+        junit.swingui.TestRunner.main(new String[] 
+        {
+            TestDbLabelTag.class.getName()
+        });
     }
+
 
     /**
      * @return a test suite (<code>TestSuite</code>) that includes all methods
@@ -73,6 +75,7 @@ public class TestDbLabelTag extends JspTestCase
         // All methods starting with "test" will be executed in the test suite.
         return new TestSuite(TestDbLabelTag.class);
     }
+
 
     /**
      * In addition to creating the tag instance and adding the pageContext to
@@ -88,26 +91,30 @@ public class TestDbLabelTag extends JspTestCase
         //this.tag.setBodyContent(this.tagContent);
     }
 
+
     //-------------------------------------------------------------------------
 
     /**
      * Sets the replacement target and replacement String on the tag, then calls
      * doAfterBody(). Most of the assertion work is done in endReplacement().
      */
-    public void  testReplacement() throws Exception
+    public void testReplacement() throws Exception
     {
         //set the target and the String to replace it with
         //this.tag.setFieldName("EMAIL_ID");
-        assertTrue("This will always be true!",true);
-
+        assertTrue("This will always be true!", true);
     }
 
 
+    /**
+     * DOCUMENT ME!
+     */
     public void tearDown()
     {
         //necessary for tag to output anything on most servlet engines.
         this.pageContext.popBody();
     }
+
 
     /**
      * Verifies that the target String has indeed been replaced in the tag's
@@ -116,14 +123,14 @@ public class TestDbLabelTag extends JspTestCase
     public void endReplacement(WebResponse theResponse)
     {
         String content = theResponse.getText();
-        assertTrue("This is always true!",true);
+        assertTrue("This is always true!", true);
 
-     /*   assertTrue("Response should have contained the ["
-            + "replacement is now replacement] string",
-            content.indexOf("replacement is now replacement") > -1);
-        assertTrue("Response should have contained the ["
-            + "replacement_replacement] string",
-            content.indexOf("replacement") > -1);
-            */
+        /*   assertTrue("Response should have contained the ["
+               + "replacement is now replacement] string",
+               content.indexOf("replacement is now replacement") > -1);
+           assertTrue("Response should have contained the ["
+               + "replacement_replacement] string",
+               content.indexOf("replacement") > -1);
+               */
     }
 }

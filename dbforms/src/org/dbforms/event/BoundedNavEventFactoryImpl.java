@@ -1,10 +1,10 @@
 /*
- * $Header:
- * $Revision:
- * $Date:
+ * $Header$
+ * $Revision$
+ * $Date$
  *
  * DbForms - a Rapid Application Development Framework
- * Copyright (C) 2001 Joachim Peer <j.peer@gmx.net> et al.
+ * Copyright (C) 2001 Joachim Peer <joepeer@excite.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,12 +22,12 @@
  */
 
 package org.dbforms.event;
-
 import org.dbforms.*;
 import org.dbforms.util.*;
 import javax.servlet.http.*;
 import java.sql.*;
 import org.apache.log4j.Category;
+
 
 
 /**
@@ -46,7 +46,6 @@ public class BoundedNavEventFactoryImpl extends NavEventFactory
     {
     }
 
-
     /**
      *  Get the instance of the NavEventFactoryImpl class.
      *
@@ -54,7 +53,11 @@ public class BoundedNavEventFactoryImpl extends NavEventFactory
      */
     public static synchronized NavEventFactory instance()
     {
-        if (instance == null) instance = new BoundedNavEventFactoryImpl();
+        if (instance == null)
+        {
+            instance = new BoundedNavEventFactoryImpl();
+        }
+
         return instance;
     }
 
@@ -70,11 +73,18 @@ public class BoundedNavEventFactoryImpl extends NavEventFactory
     }
 
 
+    /**
+     * DOCUMENT ME!
+     *
+     * @param table DOCUMENT ME!
+     * @param config DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
     public NavNextEvent createNavNextEvent(Table table, DbFormsConfig config)
     {
-        return new  BoundedNavNextEventImpl(table, config);
+        return new BoundedNavNextEventImpl(table, config);
     }
-
 
 
     /**
@@ -87,8 +97,17 @@ public class BoundedNavEventFactoryImpl extends NavEventFactory
         return new BoundedNavPrevEventImpl(action, request, config);
     }
 
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param table DOCUMENT ME!
+     * @param config DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
     public NavPrevEvent createNavPrevEvent(Table table, DbFormsConfig config)
     {
-        return new  BoundedNavPrevEventImpl(table, config);
+        return new BoundedNavPrevEventImpl(table, config);
     }
 }

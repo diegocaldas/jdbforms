@@ -4,7 +4,7 @@
  * $Date$
  *
  * DbForms - a Rapid Application Development Framework
- * Copyright (C) 2001 Joachim Peer <j.peer@gmx.net> et al.
+ * Copyright (C) 2001 Joachim Peer <joepeer@excite.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,21 +20,20 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-package org.dbforms.taglib;
 
+package org.dbforms.taglib;
 import java.util.*;
 import java.sql.*;
 import java.io.*;
 import java.text.Format;
-
 import javax.servlet.jsp.*;
 import javax.servlet.http.*;
 import javax.servlet.jsp.tagext.*;
-
 import org.dbforms.*;
 import org.dbforms.util.*;
-
 import org.apache.log4j.Category;
+
+
 
 /**
  * this tag renders a dabase-datadriven LABEL, which is apassive element (it can't be changed by
@@ -46,218 +45,216 @@ import org.apache.log4j.Category;
  */
 public class DbLabelTag extends TagSupport
 {
-  // logging category for this class
-  static Category logCat = Category.getInstance(DbLabelTag.class.getName());
+    // logging category for this class
+    static Category logCat = Category.getInstance(DbLabelTag.class.getName());
 
-  /**  Description of the Field */
-  protected static final String NO_DATA = "[No Data]";
+    /**  Description of the Field */
+    protected static final String NO_DATA = "[No Data]";
 
-  /**  Description of the Field */
-  protected DbFormsConfig config;
+    /**  Description of the Field */
+    protected DbFormsConfig config;
 
-  /**  Description of the Field */
-  protected String fieldName;
+    /**  Description of the Field */
+    protected String fieldName;
 
-  /**  Description of the Field */
-  protected Field field;
+    /**  Description of the Field */
+    protected Field field;
 
-  /**  Description of the Field */
-  protected String nullFieldValue;
+    /**  Description of the Field */
+    protected String nullFieldValue;
 
-  /**
-   *  PG, 2001-12-14
-   *  The maximum number of characters to be displayed.
-   */
-  protected String maxlength = null;
+    /**
+     *  PG, 2001-12-14
+     *  The maximum number of characters to be displayed.
+     */
+    protected String maxlength = null;
 
-  /**  parent form pointer */
-  protected DbFormTag parentForm;
+    /**  parent form pointer */
+    protected DbFormTag parentForm;
 
-  /** format object used to format this tag's value; */
-  protected Format format = null;
+    /** format object used to format this tag's value; */
+    protected Format format = null;
 
-  
-  /**
-   *  Sets the fieldName attribute of the DbLabelTag object
-   *
-   * @param  fieldName The new fieldName value
-   */
-  public void setFieldName(String fieldName)
-  {
-    this.fieldName = fieldName;
-    this.field     = parentForm.getTable().getFieldByName(fieldName);
-  }
-
-
-  /**
-   *  Gets the fieldName attribute of the DbLabelTag object
-   *
-   * @return  The fieldName value
-   */
-  public String getFieldName()
-  {
-    return fieldName;
-  }
-
-
-  /**
-   *  Sets the nullFieldValue attribute of the DbLabelTag object
-   *
-   * @param  nullFieldValue The new nullFieldValue value
-   */
-  public void setNullFieldValue(String nullFieldValue)
-  {
-    this.nullFieldValue = nullFieldValue;
-
-    // Resolve message if captionResource=true in the Form Tag
-    if (parentForm.getCaptionResource().equals("true"))
+    /**
+     *  Sets the fieldName attribute of the DbLabelTag object
+     *
+     * @param  fieldName The new fieldName value
+     */
+    public void setFieldName(String fieldName)
     {
-      Locale locale       = MessageResources.getLocale((HttpServletRequest) pageContext.getRequest());
-      this.nullFieldValue = MessageResources.getMessage(nullFieldValue, locale, nullFieldValue);
+        this.fieldName = fieldName;
+        this.field = parentForm.getTable().getFieldByName(fieldName);
     }
-  }
 
 
-  /**
-   *  Gets the nullFieldValue attribute of the DbLabelTag object
-   *
-   * @return  The nullFieldValue value
-   */
-  public String getNullFieldValue()
-  {
-    return nullFieldValue;
-  }
-
-
-  /**
-   *  Description of the Method
-   *
-   * @return  Description of the Return Value
-   * @exception  javax.servlet.jsp.JspException Description of the Exception
-   */
-  public int doEndTag() throws javax.servlet.jsp.JspException
-  {
-    try
+    /**
+     *  Gets the fieldName attribute of the DbLabelTag object
+     *
+     * @return  The fieldName value
+     */
+    public String getFieldName()
     {
-      String fieldValue  = NO_DATA;
+        return fieldName;
+    }
 
-      if (!ResultSetVector.isEmptyOrNull(parentForm.getResultSetVector()))
-      {
-        Object fieldValueObj = parentForm.getResultSetVector().getCurrentRowAsObjects()[field.getId()];
 
-        if (fieldValueObj == null)
+    /**
+     *  Sets the nullFieldValue attribute of the DbLabelTag object
+     *
+     * @param  nullFieldValue The new nullFieldValue value
+     */
+    public void setNullFieldValue(String nullFieldValue)
+    {
+        this.nullFieldValue = nullFieldValue;
+
+        // Resolve message if captionResource=true in the Form Tag
+        if (parentForm.getCaptionResource().equals("true"))
         {
-          fieldValue = (nullFieldValue != null) ? nullFieldValue : "";
+            Locale locale = MessageResources.getLocale((HttpServletRequest) pageContext.getRequest());
+            this.nullFieldValue = MessageResources.getMessage(nullFieldValue, locale, nullFieldValue);
         }
-        else
-        {
-           // Fossato, 20002-08-29
-           // uses the format class to format this tag's value;
-           fieldValue = (format != null) ?
-               format.format(fieldValueObj) : fieldValueObj.toString();
-        }
-      }
-
-      // PG, 2001-12-14
-      // If maxlength was input, trim display
-      String size = null;
-
-      if ((size = this.getMaxlength()) != null && size.trim().length() > 0)
-      {
-        //convert to int
-        int count  = Integer.parseInt(size);
-
-        // Trim and add trim indicator (...)
-        if (count < fieldValue.length())
-        {
-          fieldValue = fieldValue.substring(0, count);
-          fieldValue += "...";
-        }
-      }
-
-      pageContext.getOut().write(fieldValue);
     }
-    catch (java.io.IOException ioe)
+
+
+    /**
+     *  Gets the nullFieldValue attribute of the DbLabelTag object
+     *
+     * @return  The nullFieldValue value
+     */
+    public String getNullFieldValue()
     {
-      // better to KNOW what happended !
-      logCat.error("::doEndTag - IO Error", ioe);
-      throw new JspException("IO Error: " + ioe.getMessage());
+        return nullFieldValue;
     }
-    catch (Exception e)
+
+
+    /**
+     *  Description of the Method
+     *
+     * @return  Description of the Return Value
+     * @exception  javax.servlet.jsp.JspException Description of the Exception
+     */
+    public int doEndTag() throws javax.servlet.jsp.JspException
     {
-      // better to KNOW what happended !
-      logCat.error("::doEndTag - general exception", e);
-      throw new JspException("Error: " + e.getMessage());
+        try
+        {
+            String fieldValue = NO_DATA;
+
+            if (!ResultSetVector.isEmptyOrNull(parentForm.getResultSetVector()))
+            {
+                Object fieldValueObj = parentForm.getResultSetVector().getCurrentRowAsObjects()[field.getId()];
+
+                if (fieldValueObj == null)
+                {
+                    fieldValue = (nullFieldValue != null) ? nullFieldValue : "";
+                }
+                else
+                {
+                    // Fossato, 20002-08-29
+                    // uses the format class to format this tag's value;
+                    fieldValue = (format != null) ? format.format(fieldValueObj) : fieldValueObj.toString();
+                }
+            }
+
+            // PG, 2001-12-14
+            // If maxlength was input, trim display
+            String size = null;
+
+            if (((size = this.getMaxlength()) != null) && (size.trim().length() > 0))
+            {
+                //convert to int
+                int count = Integer.parseInt(size);
+
+                // Trim and add trim indicator (...)
+                if (count < fieldValue.length())
+                {
+                    fieldValue = fieldValue.substring(0, count);
+                    fieldValue += "...";
+                }
+            }
+
+            pageContext.getOut().write(fieldValue);
+        }
+        catch (java.io.IOException ioe)
+        {
+            // better to KNOW what happended !
+            logCat.error("::doEndTag - IO Error", ioe);
+            throw new JspException("IO Error: " + ioe.getMessage());
+        }
+        catch (Exception e)
+        {
+            // better to KNOW what happended !
+            logCat.error("::doEndTag - general exception", e);
+            throw new JspException("Error: " + e.getMessage());
+        }
+
+        return EVAL_PAGE;
     }
 
-    return EVAL_PAGE;
-  }
+
+    /**
+     *  Sets the pageContext attribute of the DbLabelTag object
+     *
+     * @param  pageContext The new pageContext value
+     */
+    public void setPageContext(final javax.servlet.jsp.PageContext pageContext)
+    {
+        super.setPageContext(pageContext);
+        this.config = (DbFormsConfig) pageContext.getServletContext().getAttribute(DbFormsConfig.CONFIG);
+    }
 
 
-  /**
-   *  Sets the pageContext attribute of the DbLabelTag object
-   *
-   * @param  pageContext The new pageContext value
-   */
-  public void setPageContext(final javax.servlet.jsp.PageContext pageContext)
-  {
-    super.setPageContext(pageContext);
-    this.config = (DbFormsConfig) pageContext.getServletContext().getAttribute(DbFormsConfig.CONFIG);
-  }
+    /**
+     *  Sets the parent attribute of the DbLabelTag object
+     *
+     * @param  parent The new parent value
+     */
+    public void setParent(final javax.servlet.jsp.tagext.Tag parent)
+    {
+        super.setParent(parent);
+        this.parentForm = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
+    }
 
 
-  /**
-   *  Sets the parent attribute of the DbLabelTag object
-   *
-   * @param  parent The new parent value
-   */
-  public void setParent(final javax.servlet.jsp.tagext.Tag parent)
-  {
-    super.setParent(parent);
-    this.parentForm = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
-  }
+    /**
+     * Gets the maxlength
+     *
+     * @return  Returns a String
+     */
+    public String getMaxlength()
+    {
+        return maxlength;
+    }
 
 
-  /**
-   * Gets the maxlength
-   *
-   * @return  Returns a String
-   */
-  public String getMaxlength()
-  {
-    return maxlength;
-  }
+    /**
+     * Sets the maxlength
+     *
+     * @param  maxlength The maxlength to set
+     */
+    public void setMaxlength(String maxlength)
+    {
+        this.maxlength = maxlength;
+    }
 
 
-  /**
-   * Sets the maxlength
-   *
-   * @param  maxlength The maxlength to set
-   */
-  public void setMaxlength(String maxlength)
-  {
-    this.maxlength = maxlength;
-  }
+    /**
+     *  Sets the format attribute of the DbLabelTag object
+     *
+     * @param  format The new format value
+     */
+    public void setFormat(Format format)
+    {
+        this.format = format;
+    }
 
 
-  /**
-   *  Sets the format attribute of the DbLabelTag object
-   *
-   * @param  format The new format value
-   */
-  public void setFormat(Format format)
-  {
-    this.format = format;
-  }
-
-
-  /**
-   *  Gets the format attribute of the DbLabelTag object
-   *
-   * @return  The format value
-   */
-  public Format getFormat()
-  {
-    return format;
-  }
+    /**
+     *  Gets the format attribute of the DbLabelTag object
+     *
+     * @return  The format value
+     */
+    public Format getFormat()
+    {
+        return format;
+    }
 }

@@ -4,7 +4,7 @@
  * $Date$
  *
  * DbForms - a Rapid Application Development Framework
- * Copyright (C) 2001 Joachim Peer <j.peer@gmx.net> et al.
+ * Copyright (C) 2001 Joachim Peer <joepeer@excite.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,30 +22,60 @@
  */
 
 package org.dbforms.devgui;
-
 import java.io.*;
 
 
-public class FileUtility {
 
-  public static String[] getFileNamesInDirectory(File dir, String[] extensions)
-  throws IOException {
+/**
+ * DOCUMENT ME!
+ *
+ * @version $Revision$
+ * @author $author$
+ */
+public class FileUtility
+{
+    /**
+     * DOCUMENT ME!
+     *
+     * @param dir DOCUMENT ME!
+     * @param extensions DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     *
+     * @throws IOException DOCUMENT ME!
+     */
+    public static String[] getFileNamesInDirectory(File dir, String[] extensions) throws IOException
+    {
+        if (extensions == null)
+        {
+            return dir.list();
+        }
+        else
+        {
+            return dir.list(new ExtensionFilter(extensions));
+        }
+    }
 
-  	if(extensions==null) {
-  	  return dir.list();
-  	} else {
-  	  return dir.list(new ExtensionFilter(extensions));
-  	}
-  }  
 
-  public static File[] getFilesInDirectory(File dir, String[] extensions)
-  throws IOException {
-
-  	if(extensions==null) {
-  	  return dir.listFiles();
-  	} else {
-  	  return dir.listFiles(new ExtensionFilter(extensions));
-  	}
-  }  
-
+    /**
+     * DOCUMENT ME!
+     *
+     * @param dir DOCUMENT ME!
+     * @param extensions DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     *
+     * @throws IOException DOCUMENT ME!
+     */
+    public static File[] getFilesInDirectory(File dir, String[] extensions) throws IOException
+    {
+        if (extensions == null)
+        {
+            return dir.listFiles();
+        }
+        else
+        {
+            return dir.listFiles(new ExtensionFilter(extensions));
+        }
+    }
 }

@@ -4,7 +4,7 @@
  * $Date$
  *
  * DbForms - a Rapid Application Development Framework
- * Copyright (C) 2001 Joachim Peer <j.peer@gmx.net> et al.
+ * Copyright (C) 2001 Joachim Peer <joepeer@excite.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,18 +22,16 @@
  */
 
 package org.dbforms.taglib;
-
 import java.util.*;
 import java.sql.*;
 import java.io.*;
-
 import javax.servlet.jsp.*;
 import javax.servlet.jsp.tagext.*;
-
 import org.dbforms.*;
 import org.dbforms.util.*;
-
 import org.apache.log4j.Category;
+
+
 
 /****
  *
@@ -43,104 +41,147 @@ import org.apache.log4j.Category;
  *
  * @author Joachim Peer <j.peer@gmx.net>
  */
+public class DbBodyTag extends BodyTagSupport
+{
+    static Category logCat = Category.getInstance(DbBodyTag.class.getName()); // logging category for this class
+    private String allowNew = "true"; // by default this is "true" - if so, the body is rendered at least 1 time, even if there are no data rows in the table. this enables the user to insert a new data row. - to disable this feature, allowNew has to be set to "false"
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param allowNew DOCUMENT ME!
+     */
+    public void setAllowNew(String allowNew)
+    {
+        this.allowNew = allowNew;
+    }
 
 
-public class DbBodyTag extends BodyTagSupport {
-
-	static Category logCat = Category.getInstance(DbBodyTag.class.getName()); // logging category for this class
-
-	private String allowNew = "true"; // by default this is "true" - if so, the body is rendered at least 1 time, even if there are no data rows in the table. this enables the user to insert a new data row. - to disable this feature, allowNew has to be set to "false"
-
-	public void setAllowNew(String allowNew) {
-		this.allowNew = allowNew;
-	}
-
-	public String getAllowNew() {
-		return allowNew;
-	}
-
-  public int doStartTag() {
-
-	  //DbFormTag myParent = (DbFormTag) getParent(); // parent Tag in which this tag is embedded in
-	  // between this form and its parent lies a DbHeader/Body/Footer-Tag and maybe other tags (styling, logic, etc.)
-	  DbFormTag myParent = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
-
-		// the body may be rendered under the following circumstances:
-		// - resultSetVector > 0 => render a row
-		// - resultSetVector == 0 && allowNew==true => insert a new row
-
-	  if(myParent.getResultSetVector()==null || myParent.getResultSetVector().size()==0) {
-			myParent.setFooterReached(true);
-			if("false".equals(allowNew)) return SKIP_BODY;
-		}
-
-		myParent.updatePositionPath();
-
-		// to enable access from jsp we provide a variable
-		// #fixme: we need a more convenient data access structure
-		//
-		// #fixme: this is a CRAZY WEIRED ODD SQUARE WORKAROUND
-		//
-
-		ResultSetVector rsv = myParent.getResultSetVector();
-
-		if(!ResultSetVector.isEmptyOrNull(rsv)) {
-			if(rsv.getPointer() < rsv.size()-1 ) {
-				rsv.increasePointer(); // teleport us to future...
-
-				// # jp 27-06-2001: replacing "." by "_", so that SCHEMATA can be used
-				pageContext.setAttribute("currentRow_"+myParent.getTableName().replace('.', '_'), rsv.getCurrentRowAsHashtable());
-				pageContext.setAttribute("position_"+myParent.getTableName().replace('.', '_'), myParent.getTable().getPositionString(rsv) );
-
-				rsv.declinePointer(); // ...and back to present ;=)
-			}
-		}
-	 	return EVAL_BODY_TAG;
-  }  
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public String getAllowNew()
+    {
+        return allowNew;
+    }
 
 
-  public int doAfterBody() throws JspException {
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public int doStartTag()
+    {
+        //DbFormTag myParent = (DbFormTag) getParent(); // parent Tag in which this tag is embedded in
+        // between this form and its parent lies a DbHeader/Body/Footer-Tag and maybe other tags (styling, logic, etc.)
+        DbFormTag myParent = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
 
-	//DbFormTag myParent = (DbFormTag) getParent(); // parent Tag in which this tag is embedded in
-	DbFormTag myParent = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
+        // the body may be rendered under the following circumstances:
+        // - resultSetVector > 0 => render a row
+        // - resultSetVector == 0 && allowNew==true => insert a new row
+        if ((myParent.getResultSetVector() == null) || (myParent.getResultSetVector().size() == 0))
+        {
+            myParent.setFooterReached(true);
 
-		JspWriter out = pageContext.getOut();
+            if ("false".equals(allowNew))
+            {
+                return SKIP_BODY;
+            }
+        }
 
-	//try {
-			// each rendering loop represents one row of data.
-			// for every row we need to print some data needed by the controller servlet in order to
-			// correctly dispatching and eventually modifying our data.
-			//
-			// now the key of the current dataset is printed out (always)
-			// this key will be used by actions such as delete or update.
-			String curKeyString = myParent.getTable().getKeyPositionString(myParent.getResultSetVector());
+        myParent.updatePositionPath();
 
-			myParent.appendToChildElementOutput("<input type=\"hidden\" name=\"k_"+myParent.getTable().getId()+"_"+myParent.getPositionPath()+"\" value=\""+curKeyString+"\">");
-		//} catch(IOException ioe) {
-		//	throw new JspException(ioe.toString());
-		//}
+        // to enable access from jsp we provide a variable
+        // #fixme: we need a more convenient data access structure
+        //
+        // #fixme: this is a CRAZY WEIRED ODD SQUARE WORKAROUND
+        //
+        ResultSetVector rsv = myParent.getResultSetVector();
 
-		myParent.increaseCurrentCount();
+        if (!ResultSetVector.isEmptyOrNull(rsv))
+        {
+            if (rsv.getPointer() < (rsv.size() - 1))
+            {
+                rsv.increasePointer(); // teleport us to future...
 
 
-		if(!ResultSetVector.isEmptyOrNull(myParent.getResultSetVector()))
-			myParent.getResultSetVector().increasePointer();
+                // # jp 27-06-2001: replacing "." by "_", so that SCHEMATA can be used
+                pageContext.setAttribute("currentRow_" + myParent.getTableName().replace('.', '_'), rsv.getCurrentRowAsHashtable());
+                pageContext.setAttribute("position_" + myParent.getTableName().replace('.', '_'), myParent.getTable().getPositionString(rsv));
 
-		return SKIP_BODY;
-  }  
+                rsv.declinePointer(); // ...and back to present ;=)
+            }
+        }
 
-  public int doEndTag() throws JspException {
+        return EVAL_BODY_TAG;
+    }
 
-	try {
-	  	if(bodyContent != null) {
-				bodyContent.writeOut(bodyContent.getEnclosingWriter());
-				bodyContent.clearBody(); // workaround for duplicate rows in JRun 3.1
-	    }
-	}
-	catch(java.io.IOException e) {
-		throw new JspException("IO Error: " + e.getMessage());
-	}
-	return EVAL_PAGE;
-  }  
 
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     *
+     * @throws JspException DOCUMENT ME!
+     */
+    public int doAfterBody() throws JspException
+    {
+        //DbFormTag myParent = (DbFormTag) getParent(); // parent Tag in which this tag is embedded in
+        DbFormTag myParent = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
+
+        JspWriter out = pageContext.getOut();
+
+        //try {
+        // each rendering loop represents one row of data.
+        // for every row we need to print some data needed by the controller servlet in order to
+        // correctly dispatching and eventually modifying our data.
+        //
+        // now the key of the current dataset is printed out (always)
+        // this key will be used by actions such as delete or update.
+        String curKeyString = myParent.getTable().getKeyPositionString(myParent.getResultSetVector());
+
+        myParent.appendToChildElementOutput("<input type=\"hidden\" name=\"k_" + myParent.getTable().getId() + "_" + myParent.getPositionPath() + "\" value=\"" + curKeyString + "\">");
+
+
+        //} catch(IOException ioe) {
+        //	throw new JspException(ioe.toString());
+        //}
+        myParent.increaseCurrentCount();
+
+        if (!ResultSetVector.isEmptyOrNull(myParent.getResultSetVector()))
+        {
+            myParent.getResultSetVector().increasePointer();
+        }
+
+        return SKIP_BODY;
+    }
+
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     *
+     * @throws JspException DOCUMENT ME!
+     */
+    public int doEndTag() throws JspException
+    {
+        try
+        {
+            if (bodyContent != null)
+            {
+                bodyContent.writeOut(bodyContent.getEnclosingWriter());
+                bodyContent.clearBody(); // workaround for duplicate rows in JRun 3.1
+            }
+        }
+        catch (java.io.IOException e)
+        {
+            throw new JspException("IO Error: " + e.getMessage());
+        }
+
+        return EVAL_PAGE;
+    }
 }

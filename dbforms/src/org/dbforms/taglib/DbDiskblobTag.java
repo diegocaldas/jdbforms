@@ -4,7 +4,7 @@
  * $Date$
  *
  * DbForms - a Rapid Application Development Framework
- * Copyright (C) 2001 Joachim Peer <j.peer@gmx.net> et al.
+ * Copyright (C) 2001 Joachim Peer <joepeer@excite.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,109 +22,139 @@
  */
 
 package org.dbforms.taglib;
-
 import javax.servlet.jsp.*;
 import javax.servlet.jsp.tagext.*;
 import org.dbforms.*;
 import org.apache.log4j.Category;
 
+
+
 /**
 
  * @author Joe Peer
  */
+public class DbDiskblobTag extends BodyTagSupport
+{
+    static Category logCat = Category.getInstance(DbDiskblobTag.class.getName()); // logging category for this class
 
-public class DbDiskblobTag extends BodyTagSupport {
+    /** DOCUMENT ME! */
+    protected DbFormsConfig config;
 
-  static Category logCat = Category.getInstance(DbDiskblobTag.class.getName()); // logging category for this class
+    /** DOCUMENT ME! */
+    protected String fieldName;
 
-	// ----------------------------------------------------- Instance Variables
+    /** DOCUMENT ME! */
+    protected Field field;
 
+    /** DOCUMENT ME! */
+    protected DbFormTag parentForm;
 
-// DbForms specific
+    /**
+     * DOCUMENT ME!
+     *
+     * @param fieldName DOCUMENT ME!
+     */
+    public void setFieldName(String fieldName)
+    {
+        this.fieldName = fieldName;
+        this.field = parentForm.getTable().getFieldByName(fieldName);
 
-	protected DbFormsConfig config;
-  	protected String fieldName;
-  	protected Field field;
-
-		protected DbFormTag parentForm;
-
-	  public void setFieldName(String fieldName) {
-	    this.fieldName=fieldName;
-			this.field = parentForm.getTable().getFieldByName(fieldName);
-
-			//if(parentForm.isSubForm()) {
-				// tell parent that _this_ class will generate the html tag, not DbBodyTag!
-			//	parentForm.strikeOut(this.field);
-			//}
-	  }
-
-	  public String getFieldName() {
-	    return fieldName;
-	  }
-
-
-	// --------------------------------------------------------- Public Methods
-
-
-	// DbForms specific
-
-	  public void setPageContext(final javax.servlet.jsp.PageContext pageContext)  {
-	    super.setPageContext(pageContext);
-	    config = (DbFormsConfig) pageContext.getServletContext().getAttribute(DbFormsConfig.CONFIG);
-	  }
-
-	  public void setParent(final javax.servlet.jsp.tagext.Tag parent) {
-	    super.setParent(parent);
-	    //parentForm = (DbFormTag) getParent().getParent(); // between this form and its parent lies a DbHeader/Body/Footer-Tag!
-	    parentForm = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
-	  }
-
-	/**
-	 * Release any acquired resources.
-	 */
-	public void release() {
-			super.release();
-	}
-
-  public int doEndTag() throws javax.servlet.jsp.JspException {
-
-		try {
-  	  StringBuffer tagBuf = new StringBuffer("servlet/file?tf=");
-	  tagBuf.append(getTableFieldCode());
-			tagBuf.append("&keyval=");
-			tagBuf.append(getKeyVal());
-		  pageContext.getOut().write(tagBuf.toString());
-		} catch(java.io.IOException ioe) {
-			throw new JspException("IO Error: "+ioe.getMessage());
-		}
-
-		return EVAL_PAGE;
-  }  
+        //if(parentForm.isSubForm()) {
+        // tell parent that _this_ class will generate the html tag, not DbBodyTag!
+        //	parentForm.strikeOut(this.field);
+        //}
+    }
 
 
-	// ------------------------------------------------------ Protected Methods
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public String getFieldName()
+    {
+        return fieldName;
+    }
 
 
-
-// DbForms specific
-
-
-
-
-  /**
-  generates the decoded name .
-  */
-	protected String getTableFieldCode() {
-		StringBuffer buf = new StringBuffer();
-	buf.append(parentForm.getTable().getId());
-	buf.append("_");
-	buf.append(field.getId());
-		return buf.toString();
-	}
-
-	protected String getKeyVal() {
-		return parentForm.getTable().getPositionString(parentForm.getResultSetVector());
-	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @param pageContext DOCUMENT ME!
+     */
+    public void setPageContext(final javax.servlet.jsp.PageContext pageContext)
+    {
+        super.setPageContext(pageContext);
+        config = (DbFormsConfig) pageContext.getServletContext().getAttribute(DbFormsConfig.CONFIG);
+    }
 
 
+    /**
+     * DOCUMENT ME!
+     *
+     * @param parent DOCUMENT ME!
+     */
+    public void setParent(final javax.servlet.jsp.tagext.Tag parent)
+    {
+        super.setParent(parent);
+
+
+        //parentForm = (DbFormTag) getParent().getParent(); // between this form and its parent lies a DbHeader/Body/Footer-Tag!
+        parentForm = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
+    }
+
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     *
+     * @throws javax.servlet.jsp.JspException DOCUMENT ME!
+     * @throws JspException DOCUMENT ME!
+     */
+    public int doEndTag() throws javax.servlet.jsp.JspException
+    {
+        try
+        {
+            StringBuffer tagBuf = new StringBuffer("servlet/file?tf=");
+            tagBuf.append(getTableFieldCode());
+            tagBuf.append("&keyval=");
+            tagBuf.append(getKeyVal());
+            pageContext.getOut().write(tagBuf.toString());
+        }
+        catch (java.io.IOException ioe)
+        {
+            throw new JspException("IO Error: " + ioe.getMessage());
+        }
+
+        return EVAL_PAGE;
+    }
+
+
+    // ------------------------------------------------------ Protected Methods
+    // DbForms specific
+
+    /**
+    generates the decoded name .
+    */
+    protected String getTableFieldCode()
+    {
+        StringBuffer buf = new StringBuffer();
+        buf.append(parentForm.getTable().getId());
+        buf.append("_");
+        buf.append(field.getId());
+
+        return buf.toString();
+    }
+
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    protected String getKeyVal()
+    {
+        return parentForm.getTable().getPositionString(parentForm.getResultSetVector());
+    }
 }

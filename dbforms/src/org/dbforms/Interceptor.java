@@ -22,12 +22,12 @@
  */
 
 package org.dbforms;
-
 import java.util.*;
 import javax.servlet.http.HttpServletRequest;
-
 import org.dbforms.util.*;
 import org.apache.log4j.Category;
+
+
 
 /****
  * <p>
@@ -37,21 +37,29 @@ import org.apache.log4j.Category;
  *
  * @auther Joachim Peer <joepeer@wap-force.net>
  */
+public class Interceptor
+{
+    static Category logCat = Category.getInstance(Interceptor.class.getName()); // logging category for this class
+    private String className;
 
-public class Interceptor {
-
-  static Category logCat = Category.getInstance(Interceptor.class.getName()); // logging category for this class
-
-  private String className;
-
-
-  public void setClassName(String className) {
-	  this.className = className;
-  }  
-
-  public String getClassName() {
-	  return className;
-  }  
+    /**
+     * DOCUMENT ME!
+     *
+     * @param className DOCUMENT ME!
+     */
+    public void setClassName(String className)
+    {
+        this.className = className;
+    }
 
 
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public String getClassName()
+    {
+        return className;
+    }
 }

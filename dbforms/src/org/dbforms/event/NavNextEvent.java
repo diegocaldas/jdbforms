@@ -4,7 +4,7 @@
  * $Date$
  *
  * DbForms - a Rapid Application Development Framework
- * Copyright (C) 2001 Joachim Peer <j.peer@gmx.net> et al.
+ * Copyright (C) 2001 Joachim Peer <joepeer@excite.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,12 +22,13 @@
  */
 
 package org.dbforms.event;
-
 import org.dbforms.*;
 import org.dbforms.util.*;
 import javax.servlet.http.*;
 import java.sql.*;
 import org.apache.log4j.Category;
+
+
 
 /****
  *
@@ -35,47 +36,41 @@ import org.apache.log4j.Category;
  *
  * @author Joe Peer <j.peer@gmx.net>
  */
-
-public abstract class NavNextEvent extends NavigationEvent 
+public abstract class NavNextEvent extends NavigationEvent
 {
-    static  Category logCat    = Category.getInstance(NavNextEvent.class.getName()); // logging category for this class
-    private int      stepWidth = 1;
-
+    static Category logCat = Category.getInstance(NavNextEvent.class.getName()); // logging category for this class
+    private int stepWidth = 1;
 
     /**
      *
      */
-    public NavNextEvent(String action, HttpServletRequest request, DbFormsConfig config) 
+    public NavNextEvent(String action, HttpServletRequest request, DbFormsConfig config)
     {
         this.config = config;
         tableId = ParseUtil.getEmbeddedStringAsInteger(action, 2, '_');
         this.table = config.getTable(tableId);
-        
-        String stepWidthStr = ParseUtil.getParameter(request,"data"+action+"_sw");
-        if(stepWidthStr!=null)
+
+        String stepWidthStr = ParseUtil.getParameter(request, "data" + action + "_sw");
+
+        if (stepWidthStr != null)
+        {
             stepWidth = Integer.parseInt(stepWidthStr);
+        }
     }
 
 
     /**
      *  for call from localevent
      */
-    public NavNextEvent(Table table, DbFormsConfig config) 
+    public NavNextEvent(Table table, DbFormsConfig config)
     {
         this.table = table;
         this.tableId = table.getId();
         this.config = config;
     }
 
-
     /**
      *  subclasses must implement this method.
      */
-    abstract public ResultSetVector processEvent(FieldValue[] childFieldValues, 
-                                                 FieldValue[] orderConstraint, 
-                                                 int          count, 
-                                                 String       firstPosition, 
-                                                 String       lastPosition, 
-                                                 Connection   con)
-	throws java.sql.SQLException;
+    abstract public ResultSetVector processEvent(FieldValue[] childFieldValues, FieldValue[] orderConstraint, int count, String firstPosition, String lastPosition, Connection con) throws java.sql.SQLException;
 }

@@ -1,10 +1,10 @@
 /*
- * $Header: 
- * $Revision: 
- * $Date: 
+ * $Header$
+ * $Revision$
+ * $Date$
  *
  * DbForms - a Rapid Application Development Framework
- * Copyright (C) 2001 Joachim Peer <j.peer@gmx.net> et al.
+ * Copyright (C) 2001 Joachim Peer <joepeer@excite.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,12 +22,12 @@
  */
 
 package org.dbforms.event;
-
 import org.dbforms.*;
 import org.dbforms.util.*;
 import javax.servlet.http.*;
 import java.sql.*;
 import org.apache.log4j.Category;
+
 
 
 /**
@@ -44,15 +44,23 @@ public abstract class NavEventFactory
     /** singleton instance; */
     static protected NavEventFactory instance = null;
 
-
     /**
      *  Create the NavNextEvent object.
      *
      *  @return the NavNextEvent object.
      */
-    public abstract NavNextEvent createNavNextEvent(String action, HttpServletRequest request, DbFormsConfig config);    
-    public abstract NavNextEvent createNavNextEvent(Table table, DbFormsConfig config);    
+    public abstract NavNextEvent createNavNextEvent(String action, HttpServletRequest request, DbFormsConfig config);
 
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param table DOCUMENT ME!
+     * @param config DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public abstract NavNextEvent createNavNextEvent(Table table, DbFormsConfig config);
 
 
     /**
@@ -61,7 +69,15 @@ public abstract class NavEventFactory
      *  @return the NavNextEvent object.
      */
     public abstract NavPrevEvent createNavPrevEvent(String action, HttpServletRequest request, DbFormsConfig config);
-    public abstract NavPrevEvent createNavPrevEvent(Table table, DbFormsConfig config);    
+
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param table DOCUMENT ME!
+     * @param config DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public abstract NavPrevEvent createNavPrevEvent(Table table, DbFormsConfig config);
 }
-
-

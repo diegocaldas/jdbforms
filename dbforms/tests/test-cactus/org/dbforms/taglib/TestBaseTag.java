@@ -1,5 +1,3 @@
-package org.dbforms.taglib;
-
 /*
  * $Header$
  * $Revision$
@@ -23,15 +21,15 @@ package org.dbforms.taglib;
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 
-
+package org.dbforms.taglib;
 import javax.servlet.jsp.tagext.BodyContent;
 import javax.servlet.jsp.tagext.BodyTag;
-
 import junit.framework.Test;
 import junit.framework.TestSuite;
-
 import org.apache.cactus.JspTestCase;
 import org.apache.cactus.WebResponse;
+
+
 
 /**
  * Tests of the <code>BaseTag</code> class.
@@ -61,9 +59,9 @@ public class TestBaseTag extends JspTestCase
      */
     public static void main(String[] theArgs)
     {
-        junit.swingui.TestRunner.main(
-            new String[] { TestBaseTag.class.getName() });
+        junit.swingui.TestRunner.main(new String[] { TestBaseTag.class.getName() });
     }
+
 
     /**
      * @return a test suite (<code>TestSuite</code>) that includes all methods
@@ -74,6 +72,7 @@ public class TestBaseTag extends JspTestCase
         // All methods starting with "test" will be executed in the test suite.
         return new TestSuite(TestBaseTag.class);
     }
+
 
     /**
      * In addition to creating the tag instance and adding the pageContext to
@@ -89,6 +88,7 @@ public class TestBaseTag extends JspTestCase
         //this.tag.setBodyContent(this.tagContent);
     }
 
+
     //-------------------------------------------------------------------------
 
     /**
@@ -97,7 +97,6 @@ public class TestBaseTag extends JspTestCase
      */
     public void testBasicBaseTag() throws Exception
     {
-
         //none of the other life cycle methods need to be implemented, so they
         //do not need to be called.
         int result = this.tag.doStartTag();
@@ -106,14 +105,15 @@ public class TestBaseTag extends JspTestCase
     }
 
 
-
-
-
+    /**
+     * DOCUMENT ME!
+     */
     public void tearDown()
     {
         //necessary for tag to output anything on most servlet engines.
         this.pageContext.popBody();
     }
+
 
     /**
      * Verifies that the target String has indeed been replaced in the tag's
@@ -123,13 +123,8 @@ public class TestBaseTag extends JspTestCase
     {
         String content = theResponse.getText();
 
+        assertTrue("Response should have contained the [" + "base href] string", content.indexOf("base href") > -1);
 
-        assertTrue("Response should have contained the ["
-            + "base href] string",
-            content.indexOf("base href") > -1);
-
-        assertTrue("Response should have contained the ["
-            + "http://localhost/test] string",
-            content.indexOf("http://localhost/test") > -1);
+        assertTrue("Response should have contained the [" + "http://localhost/test] string", content.indexOf("http://localhost/test") > -1);
     }
 }

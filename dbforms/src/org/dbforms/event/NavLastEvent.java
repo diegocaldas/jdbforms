@@ -4,7 +4,7 @@
  * $Date$
  *
  * DbForms - a Rapid Application Development Framework
- * Copyright (C) 2001 Joachim Peer <j.peer@gmx.net> et al.
+ * Copyright (C) 2001 Joachim Peer <joepeer@excite.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,12 +22,13 @@
  */
 
 package org.dbforms.event;
-
 import org.dbforms.*;
 import org.dbforms.util.*;
 import javax.servlet.http.*;
 import java.sql.*;
 import org.apache.log4j.Category;
+
+
 
 /****
  *
@@ -35,33 +36,62 @@ import org.apache.log4j.Category;
  *
  * @author Joe Peer <j.peer@gmx.net>
  */
+public class NavLastEvent extends NavigationEvent
+{
+    static Category logCat = Category.getInstance(NavLastEvent.class.getName()); // logging category for this class
 
-public class NavLastEvent extends NavigationEvent {
+    /**
+     * Creates a new NavLastEvent object.
+     *
+     * @param action DOCUMENT ME!
+     * @param request DOCUMENT ME!
+     * @param config DOCUMENT ME!
+     */
+    public NavLastEvent(String action, HttpServletRequest request, DbFormsConfig config)
+    {
+        this.config = config;
+        tableId = ParseUtil.getEmbeddedStringAsInteger(action, 2, '_');
+        this.table = config.getTable(tableId);
+    }
 
-  static Category logCat = Category.getInstance(NavLastEvent.class.getName()); // logging category for this class
 
-	public NavLastEvent(String action, HttpServletRequest request, DbFormsConfig config) {
-		this.config = config;
-		tableId = ParseUtil.getEmbeddedStringAsInteger(action, 2, '_');
-		this.table = config.getTable(tableId);
-	}
+    /**
+     * Creates a new NavLastEvent object.
+     *
+     * @param table DOCUMENT ME!
+     * @param config DOCUMENT ME!
+     */
+    public NavLastEvent(Table table, DbFormsConfig config)
+    {
+        this.table = table;
+        this.tableId = table.getId();
+        this.config = config;
+    }
 
-	// for call from localevent
-	public NavLastEvent(Table table, DbFormsConfig config) {
-	  this.table = table;
-	  this.tableId = table.getId();
-	  this.config = config;
-	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @param childFieldValues DOCUMENT ME!
+     * @param orderConstraint DOCUMENT ME!
+     * @param count DOCUMENT ME!
+     * @param firstPost DOCUMENT ME!
+     * @param lastPos DOCUMENT ME!
+     * @param con DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     *
+     * @throws SQLException DOCUMENT ME!
+     */
+    public ResultSetVector processEvent(FieldValue[] childFieldValues, FieldValue[] orderConstraint, int count, String firstPost, String lastPos, Connection con) throws SQLException
+    {
+        // select from table in inverted order
+        logCat.info("==>NavLastEvent");
+        FieldValue.invert(orderConstraint);
 
-	public ResultSetVector processEvent(FieldValue[] childFieldValues, FieldValue[] orderConstraint, int count, String firstPost, String lastPos, Connection con)
-	throws SQLException {
-		// select from table in inverted order
-		logCat.info("==>NavLastEvent");
-		FieldValue.invert(orderConstraint);
-		ResultSetVector resultSetVector = table.doConstrainedSelect(table.getFields(), childFieldValues, orderConstraint, FieldValue.COMPARE_NONE, count, con);
-		FieldValue.invert(orderConstraint);
-		resultSetVector.flip();
-		return resultSetVector;
-	}
+        ResultSetVector resultSetVector = table.doConstrainedSelect(table.getFields(), childFieldValues, orderConstraint, FieldValue.COMPARE_NONE, count, con);
+        FieldValue.invert(orderConstraint);
+        resultSetVector.flip();
 
+        return resultSetVector;
+    }
 }

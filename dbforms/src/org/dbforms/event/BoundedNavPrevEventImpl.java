@@ -4,7 +4,7 @@
  * $Date$
  *
  * DbForms - a Rapid Application Development Framework
- * Copyright (C) 2001 Joachim Peer <j.peer@gmx.net> et al.
+ * Copyright (C) 2001 Joachim Peer <joepeer@excite.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,12 +22,13 @@
  */
 
 package org.dbforms.event;
-
 import org.dbforms.*;
 import org.dbforms.util.*;
 import javax.servlet.http.*;
 import java.sql.*;
 import org.apache.log4j.Category;
+
+
 
 /**
  *
@@ -37,7 +38,7 @@ import org.apache.log4j.Category;
  *
  *  @author Joe Peer <j.peer@gmx.net>, John Peterson <>
  */
-public class BoundedNavPrevEventImpl extends NavPrevEvent 
+public class BoundedNavPrevEventImpl extends NavPrevEvent
 {
     /**
      *  Constructor
@@ -51,49 +52,36 @@ public class BoundedNavPrevEventImpl extends NavPrevEvent
     /**
      *  for call from localevent
      */
-    public BoundedNavPrevEventImpl(Table table, DbFormsConfig config) 
+    public BoundedNavPrevEventImpl(Table table, DbFormsConfig config)
     {
         super(table, config);
     }
 
-
     /**
      *
      */
-    public ResultSetVector processEvent(FieldValue[] childFieldValues,
-                                        FieldValue[] orderConstraint, 
-                                        int          count, 
-                                        String       firstPosition, 
-                                        String       lastPosition, 
-                                        Connection    con)
-        throws SQLException 
+    public ResultSetVector processEvent(FieldValue[] childFieldValues, FieldValue[] orderConstraint, int count, String firstPosition, String lastPosition, Connection con) throws SQLException
     {
         logCat.info("==>NavPrevEvent");
-        
+
+
         // select in inverted order everyting thats greater than firstpos
         table.fillWithValues(orderConstraint, firstPosition);
         FieldValue.invert(orderConstraint);
-        ResultSetVector resultSetVector = table.doConstrainedSelect(table.getFields(), 
-                                                                    childFieldValues,
-                                                                    orderConstraint, 
-                                                                    FieldValue.COMPARE_EXCLUSIVE, 
-                                                                    count, 
-                                                                    con);
+
+        ResultSetVector resultSetVector = table.doConstrainedSelect(table.getFields(), childFieldValues, orderConstraint, FieldValue.COMPARE_EXCLUSIVE, count, con);
         FieldValue.invert(orderConstraint);
         resultSetVector.flip();
-        
+
         // change behavior to navFirst if navPrev finds no data
         // todo: make a option to allow original "navNew" behavior if desired
-        if (resultSetVector.size() == 0) 
-            {
-                // just select from table in given order
-                logCat.info("==>NavPrevFirstEvent");
-                resultSetVector = table.doConstrainedSelect(table.getFields(),
-                                                            childFieldValues, 
-                                                            orderConstraint, 
-                                                            FieldValue.COMPARE_NONE, 
-                                                            count, con);
-            }
+        if (resultSetVector.size() == 0)
+        {
+            // just select from table in given order
+            logCat.info("==>NavPrevFirstEvent");
+            resultSetVector = table.doConstrainedSelect(table.getFields(), childFieldValues, orderConstraint, FieldValue.COMPARE_NONE, count, con);
+        }
+
         return resultSetVector;
     }
 }

@@ -4,7 +4,7 @@
  * $Date$
  *
  * DbForms - a Rapid Application Development Framework
- * Copyright (C) 2001 Joachim Peer <j.peer@gmx.net> et al.
+ * Copyright (C) 2001 Joachim Peer <joepeer@excite.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,18 +22,17 @@
  */
 
 package org.dbforms.taglib;
-
 import java.util.*;
 import java.sql.*;
 import java.io.*;
-
 import javax.servlet.jsp.*;
 import javax.servlet.jsp.tagext.*;
-
 import org.dbforms.*;
 import org.dbforms.util.*;
 import org.dbforms.validation.ValidatorConstants;
 import org.apache.log4j.Category;
+
+
 
 /****
  *
@@ -41,151 +40,246 @@ import org.apache.log4j.Category;
  *
  * @author Joachim Peer <j.peer@gmx.net>
  */
+public class DbGotoButtonTag extends DbBaseButtonTag
+{
+    static Category logCat = Category.getInstance(DbGotoButtonTag.class.getName()); // logging category for this class
+    private String destination;
+    private String destTable;
+    private String destPos;
+    private String keyToDestPos;
+    private String keyToKeyToDestPos;
+    private static int uniqueID;
 
-public class DbGotoButtonTag extends DbBaseButtonTag  {
+    static
+    {
+        uniqueID = 1;
+    }
 
-  static Category logCat = Category.getInstance(DbGotoButtonTag.class.getName()); // logging category for this class
-
-  private String destination;
-  private String destTable;
-  private String destPos;
-  private String keyToDestPos;
-  private String keyToKeyToDestPos;
-
-	private static int uniqueID;
-
-	static {
-		uniqueID=1;
-	}
-
-
-
-  public void setDestination(String destination) {
-	this.destination=destination;
-   }   
-
-  public String getDestination() {
-	return destination;
-  }  
-
-	public void setDestTable(String destTable) {
-		this.destTable = destTable;
-	}
-
-	public String getDestTable() {
-		return destTable;
-	}
-
-	public void setDestPos(String destPos) {
-		this.destPos = destPos;
-	}
-
-	public String getDestPos() {
-		return destPos;
-	}
-
-	public void setKeyToDestPos(String keyToDestPos) {
-		this.keyToDestPos = keyToDestPos;
-	}
-
-	public String getKeyToDestPos() {
-		return keyToDestPos;
-	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @param destination DOCUMENT ME!
+     */
+    public void setDestination(String destination)
+    {
+        this.destination = destination;
+    }
 
 
-	public void setKeyToKeyToDestPos(String keyToKeyToDestPos) {
-		this.keyToKeyToDestPos = keyToKeyToDestPos;
-	}
-
-	public String getKeyToKeyToDestPos() {
-		return keyToKeyToDestPos;
-	}
-
-
-  public int doStartTag() throws javax.servlet.jsp.JspException {
-
-		DbGotoButtonTag.uniqueID++; // make sure that we don't mix up buttons
-		
-		// ValidatorConstants.JS_CANCEL_SUBMIT is the javascript variable boolean to verify
-		// if we do the javascript validation before submit <FORM>
-		if( parentForm.getFormValidatorName()!=null && 
-			parentForm.getFormValidatorName().length() > 0 &&
-			parentForm.getJavascriptValidation().equals("true") ) {
-				String onclick = (getOnClick()!=null)? getOnClick():"";
-				if(onclick.lastIndexOf(";")!=onclick.length()-1) onclick+=";"; // be sure javascript end with ";"
-				setOnClick( onclick + ValidatorConstants.JS_CANCEL_VALIDATION+"=false;" );
-		}
-			
-		try {
-
-			String tagName = "ac_goto_"+uniqueID;
-
-			StringBuffer tagBuf = new StringBuffer();
-
-			// mask destination as "fu" (FollowUp), so that we can use standard-event dispatching facilities
-			// from Controller and dont have to invent something new!
-			// #checkme: should we rename destination to followUp ?
-			if(destination!=null) {
-				tagBuf.append(getDataTag(tagName, "fu", destination));
-			}
-			
-			if(destTable!=null) {
-				tagBuf.append(getDataTag(tagName, "destTable", destTable));
-			}
-
-			if(destPos!=null) {
-				tagBuf.append(getDataTag(tagName, "destPos", destPos));
-			}
-
-			if(keyToDestPos!=null) {
-				tagBuf.append(getDataTag(tagName, "keyToDestPos", keyToDestPos));
-			}
-
-			if(keyToKeyToDestPos!=null) {
-				tagBuf.append(getDataTag(tagName, "keyToKeyToDestPos", keyToKeyToDestPos));
-			}
-
-			tagBuf.append(getButtonBegin());
-			tagBuf.append(" name=\"");
-			tagBuf.append(tagName);
-			tagBuf.append("\">");
-
-		  pageContext.getOut().write(tagBuf.toString());
-
-		} catch(java.io.IOException ioe) {
-			throw new JspException("IO Error: "+ioe.getMessage());
-		}
-
-		if(choosenFlavor == FLAVOR_MODERN)
-			return EVAL_BODY_TAG;
-		else
-		return SKIP_BODY;
-  }  
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public String getDestination()
+    {
+        return destination;
+    }
 
 
-  public int doEndTag() throws javax.servlet.jsp.JspException {
-
-		if(choosenFlavor == FLAVOR_MODERN) {
-			if(	parentForm.getFooterReached() && ResultSetVector.isEmptyOrNull(parentForm.getResultSetVector()) )
-			return EVAL_PAGE;
-
-			try {
-				if(bodyContent != null)
-					bodyContent.writeOut(bodyContent.getEnclosingWriter());
-
-			  pageContext.getOut().write( "</button>" );
-			} catch(java.io.IOException ioe) {
-				throw new JspException("IO Error: "+ioe.getMessage());
-			}
-		}
-
-		return EVAL_PAGE;
-  }  
+    /**
+     * DOCUMENT ME!
+     *
+     * @param destTable DOCUMENT ME!
+     */
+    public void setDestTable(String destTable)
+    {
+        this.destTable = destTable;
+    }
 
 
-  public void release() {
-		super.release();
-		//DbGotoButtonTag.uniqueID=0; // nobody needs to know how many buttons where rendered in the lifetime of the app ;=) [release behavior is different implemented on tomcat, orion, etc so i will not play with the fire and remove this ;=)]
-	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public String getDestTable()
+    {
+        return destTable;
+    }
 
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param destPos DOCUMENT ME!
+     */
+    public void setDestPos(String destPos)
+    {
+        this.destPos = destPos;
+    }
+
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public String getDestPos()
+    {
+        return destPos;
+    }
+
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param keyToDestPos DOCUMENT ME!
+     */
+    public void setKeyToDestPos(String keyToDestPos)
+    {
+        this.keyToDestPos = keyToDestPos;
+    }
+
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public String getKeyToDestPos()
+    {
+        return keyToDestPos;
+    }
+
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param keyToKeyToDestPos DOCUMENT ME!
+     */
+    public void setKeyToKeyToDestPos(String keyToKeyToDestPos)
+    {
+        this.keyToKeyToDestPos = keyToKeyToDestPos;
+    }
+
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public String getKeyToKeyToDestPos()
+    {
+        return keyToKeyToDestPos;
+    }
+
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     *
+     * @throws javax.servlet.jsp.JspException DOCUMENT ME!
+     * @throws JspException DOCUMENT ME!
+     */
+    public int doStartTag() throws javax.servlet.jsp.JspException
+    {
+        DbGotoButtonTag.uniqueID++; // make sure that we don't mix up buttons
+
+        // ValidatorConstants.JS_CANCEL_SUBMIT is the javascript variable boolean to verify
+        // if we do the javascript validation before submit <FORM>
+        if ((parentForm.getFormValidatorName() != null) && (parentForm.getFormValidatorName().length() > 0) && parentForm.getJavascriptValidation().equals("true"))
+        {
+            String onclick = (getOnClick() != null) ? getOnClick() : "";
+
+            if (onclick.lastIndexOf(";") != (onclick.length() - 1))
+            {
+                onclick += ";"; // be sure javascript end with ";"
+            }
+
+            setOnClick(onclick + ValidatorConstants.JS_CANCEL_VALIDATION + "=false;");
+        }
+
+        try
+        {
+            String tagName = "ac_goto_" + uniqueID;
+
+            StringBuffer tagBuf = new StringBuffer();
+
+            // mask destination as "fu" (FollowUp), so that we can use standard-event dispatching facilities
+            // from Controller and dont have to invent something new!
+            // #checkme: should we rename destination to followUp ?
+            if (destination != null)
+            {
+                tagBuf.append(getDataTag(tagName, "fu", destination));
+            }
+
+            if (destTable != null)
+            {
+                tagBuf.append(getDataTag(tagName, "destTable", destTable));
+            }
+
+            if (destPos != null)
+            {
+                tagBuf.append(getDataTag(tagName, "destPos", destPos));
+            }
+
+            if (keyToDestPos != null)
+            {
+                tagBuf.append(getDataTag(tagName, "keyToDestPos", keyToDestPos));
+            }
+
+            if (keyToKeyToDestPos != null)
+            {
+                tagBuf.append(getDataTag(tagName, "keyToKeyToDestPos", keyToKeyToDestPos));
+            }
+
+            tagBuf.append(getButtonBegin());
+            tagBuf.append(" name=\"");
+            tagBuf.append(tagName);
+            tagBuf.append("\">");
+
+            pageContext.getOut().write(tagBuf.toString());
+        }
+        catch (java.io.IOException ioe)
+        {
+            throw new JspException("IO Error: " + ioe.getMessage());
+        }
+
+        if (choosenFlavor == FLAVOR_MODERN)
+        {
+            return EVAL_BODY_TAG;
+        }
+        else
+        {
+            return SKIP_BODY;
+        }
+    }
+
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     *
+     * @throws javax.servlet.jsp.JspException DOCUMENT ME!
+     * @throws JspException DOCUMENT ME!
+     */
+    public int doEndTag() throws javax.servlet.jsp.JspException
+    {
+        if (choosenFlavor == FLAVOR_MODERN)
+        {
+            if (parentForm.getFooterReached() && ResultSetVector.isEmptyOrNull(parentForm.getResultSetVector()))
+            {
+                return EVAL_PAGE;
+            }
+
+            try
+            {
+                if (bodyContent != null)
+                {
+                    bodyContent.writeOut(bodyContent.getEnclosingWriter());
+                }
+
+                pageContext.getOut().write("</button>");
+            }
+            catch (java.io.IOException ioe)
+            {
+                throw new JspException("IO Error: " + ioe.getMessage());
+            }
+        }
+
+        return EVAL_PAGE;
+    }
 }

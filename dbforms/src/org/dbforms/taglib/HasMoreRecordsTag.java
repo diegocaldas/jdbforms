@@ -1,6 +1,10 @@
 /*
+ * $Header$
+ * $Revision$
+ * $Date$
+ *
  * DbForms - a Rapid Application Development Framework
- * Copyright (C) 2001 Joachim Peer <j.peer@gmx.net> et al.
+ * Copyright (C) 2001 Joachim Peer <joepeer@excite.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,7 +22,6 @@
  */
 
 package org.dbforms.taglib;
-
 import org.dbforms.*;
 import org.dbforms.util.*;
 import java.io.IOException;
@@ -27,10 +30,10 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.TagSupport;
-
 import org.apache.log4j.Category;
-
 import java.util.*;
+
+
 
 /**********************************************************
  * 
@@ -41,98 +44,117 @@ import java.util.*;
  * number of rows to display
  * 
  ***********************************************************/
- 
-public class HasMoreRecordsTag extends DbBaseHandlerTag {
+public class HasMoreRecordsTag extends DbBaseHandlerTag
+{
+    // logging category for this class
+    static Category logCat = Category.getInstance(HasMoreRecordsTag.class.getName());
+    private String count = null;
+    private String message = null;
+    private DbFormsErrors errors;
 
-	// logging category for this class
-	static Category logCat = Category.getInstance(HasMoreRecordsTag.class.getName());
+    /**
+     * Render the specified error messages if there are any.
+     *
+     * @exception JspException if a JSP exception has occurred
+     */
+    public int doStartTag() throws JspException
+    {
+        return SKIP_BODY;
+    }
 
-	private String count = null;
-	private String message = null;
-	private DbFormsErrors errors;
 
-	/**
-	 * Render the specified error messages if there are any.
-	 *
-	 * @exception JspException if a JSP exception has occurred
-	 */
-	public int doStartTag() throws JspException {
-		return SKIP_BODY;
-	}
-	
-	public int doEndTag() throws javax.servlet.jsp.JspException {		
-		
-		
-		// Get result set vector from parent and calculate size
-		int rsvSize = parentForm.getResultSetVector().size();
-		
-		if(rsvSize >= getCountAsInt())
-		{
-			String message = org.dbforms.util.XMLErrorsUtil.getXMLErrorMessage(getMessage(), errors);
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     *
+     * @throws javax.servlet.jsp.JspException DOCUMENT ME!
+     * @throws JspException DOCUMENT ME!
+     */
+    public int doEndTag() throws javax.servlet.jsp.JspException
+    {
+        // Get result set vector from parent and calculate size
+        int rsvSize = parentForm.getResultSetVector().size();
 
-			// Print the results to our output writer
-			JspWriter writer = pageContext.getOut();
-			try {
-		    writer.print(message);
-			} catch (IOException e) {
-			    throw new JspException(e.toString());
-			}
-		}
+        if (rsvSize >= getCountAsInt())
+        {
+            String message = org.dbforms.util.XMLErrorsUtil.getXMLErrorMessage(getMessage(), errors);
 
-		return EVAL_PAGE;
-	}
+            // Print the results to our output writer
+            JspWriter writer = pageContext.getOut();
 
-	/**
-	 * Release any acquired resources.
-	 */
-	public void release() {
+            try
+            {
+                writer.print(message);
+            }
+            catch (IOException e)
+            {
+                throw new JspException(e.toString());
+            }
+        }
 
-		super.release();
+        return EVAL_PAGE;
+    }
 
-	}
-	/**
-	 * Gets the count
-	 * @return Returns a String
-	 */
-	public String getCount() {
-		return count;
-	}
-	/**
-	 * Sets the count
-	 * @param count The count to set
-	 */
-	public void setCount(String count) {
-		this.count = count;
-	}
 
-	/**
-	 * Gets the count as int
-	 * @param count Returns an int
-	 */
-	public int getCountAsInt() {
-		return Integer.parseInt(getCount());
-	}
-
-	/**
-	 * Gets the message
-	 * @return Returns a String
-	 */
-	public String getMessage() {
-		return message;
-	}
-	/**
-	 * Sets the message
-	 * @param message The message to set
-	 */
-	public void setMessage(String message) {
-		this.message = message;
-	}
-	
-	public void setPageContext(final javax.servlet.jsp.PageContext pageContext) {
-		super.setPageContext(pageContext);
-		this.errors =
-			(DbFormsErrors) pageContext.getServletContext().getAttribute(
-				DbFormsErrors.ERRORS);
-	}
-
+    /**
+     * Gets the count
+     * @return Returns a String
+     */
+    public String getCount()
+    {
+        return count;
+    }
+
+
+    /**
+     * Sets the count
+     * @param count The count to set
+     */
+    public void setCount(String count)
+    {
+        this.count = count;
+    }
+
+
+    /**
+     * Gets the count as int
+     * @param count Returns an int
+     */
+    public int getCountAsInt()
+    {
+        return Integer.parseInt(getCount());
+    }
+
+
+    /**
+     * Gets the message
+     * @return Returns a String
+     */
+    public String getMessage()
+    {
+        return message;
+    }
+
+
+    /**
+     * Sets the message
+     * @param message The message to set
+     */
+    public void setMessage(String message)
+    {
+        this.message = message;
+    }
+
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param pageContext DOCUMENT ME!
+     */
+    public void setPageContext(final javax.servlet.jsp.PageContext pageContext)
+    {
+        super.setPageContext(pageContext);
+        this.errors = (DbFormsErrors) pageContext.getServletContext().getAttribute(DbFormsErrors.ERRORS);
+    }
 }

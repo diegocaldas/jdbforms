@@ -4,7 +4,7 @@
  * $Date$
  *
  * DbForms - a Rapid Application Development Framework
- * Copyright (C) 2001 Joachim Peer <j.peer@gmx.net> et al.
+ * Copyright (C) 2001 Joachim Peer <joepeer@excite.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,25 +22,44 @@
  */
 
 package org.dbforms.devgui;
-
 import java.io.*;
 
-class ExtensionFilter implements FilenameFilter {
-
-  String[] extensions;
-
-  public ExtensionFilter(String[] extensions) {
-  	this.extensions = extensions;
-  }  
-
-  public boolean accept(File dir, String name) {
-	for(int i=0; i<extensions.length; i++) {
-		String anExtension = extensions[i];
-		if("*".equals(anExtension) || name.endsWith(anExtension)) return true;
-	}
-
-	return false;
-  }  
 
 
+class ExtensionFilter implements FilenameFilter
+{
+    String[] extensions;
+
+    /**
+     * Creates a new ExtensionFilter object.
+     *
+     * @param extensions DOCUMENT ME!
+     */
+    public ExtensionFilter(String[] extensions)
+    {
+        this.extensions = extensions;
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param dir DOCUMENT ME!
+     * @param name DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public boolean accept(File dir, String name)
+    {
+        for (int i = 0; i < extensions.length; i++)
+        {
+            String anExtension = extensions[i];
+
+            if ("*".equals(anExtension) || name.endsWith(anExtension))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

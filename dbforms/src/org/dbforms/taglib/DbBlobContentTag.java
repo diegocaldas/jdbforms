@@ -4,7 +4,7 @@
  * $Date$
  *
  * DbForms - a Rapid Application Development Framework
- * Copyright (C) 2001 Joachim Peer <j.peer@gmx.net> et al.
+ * Copyright (C) 2001 Joachim Peer <joepeer@excite.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,225 +22,256 @@
  */
 
 package org.dbforms.taglib;
-
 import java.io.*;
 import java.util.*;
 import java.net.*;
 import java.sql.*;
-
 import javax.servlet.http.*;
 import javax.servlet.jsp.*;
 import javax.servlet.jsp.tagext.*;
-
 import org.dbforms.*;
 import org.dbforms.util.*;
-
 import org.apache.log4j.Category;
+
+
 
 /**
  * #fixme docu to come
  *
  * @author Joe Peer
  */
+public class DbBlobContentTag extends BodyTagSupport
+{
+    static Category logCat = Category.getInstance(DbBlobURLTag.class.getName());
 
-public class DbBlobContentTag extends BodyTagSupport {
+    /** DOCUMENT ME! */
+    protected DbFormsConfig config;
 
-	static Category logCat = Category.getInstance(DbBlobURLTag.class.getName());
-	// logging category for this class
+    /** DOCUMENT ME! */
+    protected String fieldName;
 
-	// ----------------------------------------------------- Instance Variables
+    /** DOCUMENT ME! */
+    protected Field field;
 
-	// DbForms specific
+    /** DOCUMENT ME! */
+    protected DbFormTag parentForm;
 
-	protected DbFormsConfig config;
-	protected String fieldName;
-	protected Field field;
+    /** DOCUMENT ME! */
+    protected String dbConnectionName;
 
-	protected DbFormTag parentForm;
-        
-        // ---- Bradley's multiple connection support [fossato <fossato@pow2.com> 2002/11/05] ----
-        protected String dbConnectionName;
+    /**
+ * DOCUMENT ME!
+ *
+ * @param name DOCUMENT ME!
+ */
+    public void setDbConnectionName(String name)
+    {
+        dbConnectionName = name;
+    }
 
-	public void setDbConnectionName(String name) {
-		dbConnectionName = name;
-	}
 
-	public String getDbConnectionName() {
-		return dbConnectionName;
-	}
-        // ---- Bradley's multiple connection support end ----------------------------------------
+    /**
+ * DOCUMENT ME!
+ *
+ * @return DOCUMENT ME!
+ */
+    public String getDbConnectionName()
+    {
+        return dbConnectionName;
+    }
 
-	public void setFieldName(String fieldName) {
-		this.fieldName = fieldName;
-		this.field = parentForm.getTable().getFieldByName(fieldName);
 
-		//if(parentForm.isSubForm()) {
-		// tell parent that _this_ class will generate the html tag, not DbBodyTag!
-		//	parentForm.strikeOut(this.field);
-		//}
-	}
+    /**
+ * DOCUMENT ME!
+ *
+ * @param fieldName DOCUMENT ME!
+ */
+    public void setFieldName(String fieldName)
+    {
+        this.fieldName = fieldName;
+        this.field = parentForm.getTable().getFieldByName(fieldName);
+    }
 
-	public String getFieldName() {
-		return fieldName;
-	}
 
-	// --------------------------------------------------------- Public Methods
+    /**
+ * DOCUMENT ME!
+ *
+ * @return DOCUMENT ME!
+ */
+    public String getFieldName()
+    {
+        return fieldName;
+    }
 
-	// DbForms specific
 
-	public void setPageContext(final javax.servlet.jsp.PageContext pageContext) {
-		super.setPageContext(pageContext);
-		config =
-			(DbFormsConfig) pageContext.getServletContext().getAttribute(
-				DbFormsConfig.CONFIG);
-	}
+    /**
+ * DOCUMENT ME!
+ *
+ * @param pageContext DOCUMENT ME!
+ */
+    public void setPageContext(final javax.servlet.jsp.PageContext pageContext)
+    {
+        super.setPageContext(pageContext);
+        config = (DbFormsConfig) pageContext.getServletContext().getAttribute(DbFormsConfig.CONFIG);
+    }
 
-	public void setParent(final javax.servlet.jsp.tagext.Tag parent) {
-		super.setParent(parent);
-		//parentForm = (DbFormTag) getParent().getParent(); // between this form and its parent lies a DbHeader/Body/Footer-Tag!
-		parentForm = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
-	}
 
-	/**
-	 * Release any acquired resources.
-	 */
-	public void release() {
-		super.release();
-	}
+    /**
+ * DOCUMENT ME!
+ *
+ * @param parent DOCUMENT ME!
+ */
+    public void setParent(final javax.servlet.jsp.tagext.Tag parent)
+    {
+        super.setParent(parent);
+        parentForm = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
+    }
 
-	public int doEndTag() throws javax.servlet.jsp.JspException {
 
-		try {
+    /**
+ * DOCUMENT ME!
+ *
+ * @return DOCUMENT ME!
+ *
+ * @throws javax.servlet.jsp.JspException DOCUMENT ME!
+ * @throws IllegalArgumentException DOCUMENT ME!
+ * @throws JspException DOCUMENT ME!
+ */
+    public int doEndTag() throws javax.servlet.jsp.JspException
+    {
+        try
+        {
+            if (parentForm.getFooterReached())
+            {
+                return EVAL_PAGE; // nothing to do when no data available..
+            }
 
-			if (parentForm.getFooterReached())
-				return EVAL_PAGE; // nothing to do when no data available..
+            StringBuffer queryBuf = new StringBuffer();
+            queryBuf.append("SELECT ");
+            queryBuf.append(fieldName);
+            queryBuf.append(" FROM ");
+            queryBuf.append(parentForm.getTable().getName());
+            queryBuf.append(" WHERE ");
+            queryBuf.append(parentForm.getTable().getWhereClauseForPS());
+            logCat.info("blobcontent query- " + queryBuf.toString());
 
-			StringBuffer queryBuf = new StringBuffer();
-			queryBuf.append("SELECT ");
-			queryBuf.append(fieldName);
-			queryBuf.append(" FROM ");
-			queryBuf.append(parentForm.getTable().getName());
-			queryBuf.append(" WHERE ");
-			queryBuf.append(parentForm.getTable().getWhereClauseForPS());
+            StringBuffer contentBuf = new StringBuffer();
 
-			logCat.info("blobcontent query- " + queryBuf.toString());
+            //Connection con = config.getDbConnection().getConnection();
+            // ---- Bradley's multiple connection support [fossato <fossato@pow2.com> 2002/11/05] ----
+            DbConnection aDbConnection = config.getDbConnection(dbConnectionName);
 
-			StringBuffer contentBuf = new StringBuffer();
+            if (aDbConnection == null)
+            {
+                throw new IllegalArgumentException("Troubles in your DbForms config xml file: " + "DbConnection '" + dbConnectionName + "' " + "not properly configured - check manual!");
+            }
 
-			//Connection con = config.getDbConnection().getConnection();
-                        // ---- Bradley's multiple connection support [fossato <fossato@pow2.com> 2002/11/05] ----
-                        DbConnection aDbConnection = config.getDbConnection(dbConnectionName);
+            Connection con = aDbConnection.getConnection();
+            logCat.debug("Created new connection - " + con);
 
-			if (aDbConnection == null) 
+            // ----  Bradley's multiple connection support end ---------------------------------------
+            try
+            {
+                PreparedStatement ps = con.prepareStatement(queryBuf.toString());
+                parentForm.getTable().populateWhereClauseForPS(getKeyVal(), ps, 1);
+
+                ResultSet rs = ps.executeQuery();
+
+                if (rs.next())
+                {
+                    if (field.getType() == FieldTypes.DISKBLOB)
+                    {
+                        String fileName = rs.getString(1);
+
+                        if (fileName != null)
                         {
-			    throw new IllegalArgumentException(
-				"Troubles in your DbForms config xml file: "
-				+ "DbConnection '" + dbConnectionName + "' "
-				+ "not properly configured - check manual!");
-			}
+                            fileName = fileName.trim();
+                        }
 
-			Connection con = aDbConnection.getConnection();
-			logCat.debug("Created new connection - " + con);
-                        // ----  Bradley's multiple connection support end ---------------------------------------
-                        
-			try {
+                        logCat.info("READING DISKBLOB field.getDirectory()=" + field.getDirectory() + " " + "fileName=" + fileName);
 
-				PreparedStatement ps = con.prepareStatement(queryBuf.toString());
-				parentForm.getTable().populateWhereClauseForPS(getKeyVal(), ps, 1);
+                        if ((fileName == null) || (field.getDirectory() == null) || (fileName.length() == 0) || (field.getDirectory().length() == 0))
+                        {
+                            return EVAL_PAGE;
+                        }
 
-				ResultSet rs = ps.executeQuery();
+                        File file = new File(field.getDirectory(), fileName);
 
-				if (rs.next()) {
+                        if (file.exists())
+                        {
+                            logCat.info("fs- file found " + file.getName());
 
-					if (field.getType() == FieldTypes.DISKBLOB) {
+                            FileInputStream fis = new FileInputStream(file);
+                            BufferedReader br = new BufferedReader(new InputStreamReader(fis));
+                            char[] c = new char[1024];
+                            int read;
 
-						String fileName = rs.getString(1);
-						if (fileName != null)
-							fileName = fileName.trim();
-						logCat.info(
-							"READING DISKBLOB field.getDirectory()="
-								+ field.getDirectory()
-								+ " "
-								+ "fileName="
-								+ fileName);
+                            while ((read = br.read(c)) != -1)
+                            {
+                                contentBuf.append(c, 0, read);
+                            }
 
-						if (fileName == null
-							|| field.getDirectory() == null
-							|| fileName.length() == 0
-							|| field.getDirectory().length() == 0) {
-							return EVAL_PAGE;
-						}
+                            fis.close();
+                        }
+                        else
+                        {
+                            logCat.info("fs- file not found");
+                        }
+                    }
+                    else
+                    {
+                        throw new IllegalArgumentException("DbBlobContentTag is currently only for DISKBLOBS - feel free to copy code from FileServlet.java to this place to bring this limitation to an end :=)");
+                    }
+                }
+                else
+                {
+                    logCat.info("fs- we have got no result" + queryBuf);
+                }
+            }
+            catch (SQLException sqle)
+            {
+                sqle.printStackTrace();
+            }
+            finally
+            {
+                SqlUtil.closeConnection(con);
+            }
 
-						File file = new File(field.getDirectory(), fileName);
+            pageContext.getOut().write(contentBuf.toString());
+        }
+        catch (java.io.IOException ioe)
+        {
+            throw new JspException("IO Error: " + ioe.getMessage());
+        }
 
-						if (file.exists()) {
-							logCat.info("fs- file found " + file.getName());
-							FileInputStream fis = new FileInputStream(file);
-							BufferedReader br = new BufferedReader(new InputStreamReader(fis));
+        return EVAL_PAGE;
+    }
 
-							char[] c = new char[1024];
-							int read;
-							while ((read = br.read(c)) != -1) {
-								contentBuf.append(c, 0, read);
-							}
 
-							fis.close();
+    // ------------------------------------------------------ Protected Methods
+    // DbForms specific
 
-						} else
-							logCat.info("fs- file not found");
-					} else {
-						throw new IllegalArgumentException("DbBlobContentTag is currently only for DISKBLOBS - feel free to copy code from FileServlet.java to this place to bring this limitation to an end :=)");
-					}
+    /**
+generates the decoded name .
+*/
+    protected String getTableFieldCode()
+    {
+        StringBuffer buf = new StringBuffer();
+        buf.append(parentForm.getTable().getId());
+        buf.append("_");
+        buf.append(field.getId());
 
-				} else {
-					logCat.info("fs- we have got no result" + queryBuf);
-				}
+        return buf.toString();
+    }
 
-			} catch (SQLException sqle) {
-				sqle.printStackTrace();
-			} finally {
-				// The connection should not be null - If it is, then you might have an infrastructure problem!
-				// Be sure to look into this!  Hint: check out your pool manager's performance! 
-				if (con != null) {
 
-					try {
-						logCat.debug("About to close connection - " + con);
-						con.close();
-						logCat.debug("Connection closed");
-
-					} catch (SQLException sqle2) {
-						sqle2.printStackTrace();
-					}
-				}
-			}
-
-			pageContext.getOut().write(contentBuf.toString());
-
-		} catch (java.io.IOException ioe) {
-			throw new JspException("IO Error: " + ioe.getMessage());
-		}
-
-		return EVAL_PAGE;
-	}
-
-	// ------------------------------------------------------ Protected Methods
-
-	// DbForms specific
-
-	/**
-	generates the decoded name .
-	*/
-	protected String getTableFieldCode() {
-		StringBuffer buf = new StringBuffer();
-		buf.append(parentForm.getTable().getId());
-		buf.append("_");
-		buf.append(field.getId());
-		return buf.toString();
-	}
-
-	protected String getKeyVal() {
-		return parentForm.getTable().getKeyPositionString(
-			parentForm.getResultSetVector());
-	}
-
+    /**
+ * DOCUMENT ME!
+ *
+ * @return DOCUMENT ME!
+ */
+    protected String getKeyVal()
+    {
+        return parentForm.getTable().getKeyPositionString(parentForm.getResultSetVector());
+    }
 }

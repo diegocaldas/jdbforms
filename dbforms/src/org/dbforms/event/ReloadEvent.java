@@ -4,7 +4,7 @@
  * $Date$
  *
  * DbForms - a Rapid Application Development Framework
- * Copyright (C) 2001 Joachim Peer <j.peer@gmx.net> et al.
+ * Copyright (C) 2001 Joachim Peer <joepeer@excite.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,11 +22,11 @@
  */
 
 package org.dbforms.event;
-
-
 import org.apache.log4j.Category;
 import javax.servlet.http.*;
 import org.dbforms.util.*;
+
+
 
 /****
  *
@@ -39,12 +39,15 @@ import org.dbforms.util.*;
  *
  * @author Eric Beaumier
  */
+public class ReloadEvent extends WebEvent
+{
+    static Category logCat = Category.getInstance(ReloadEvent.class.getName()); // logging category for this class
 
-public class ReloadEvent extends WebEvent {
-
-	static Category logCat = Category.getInstance(ReloadEvent.class.getName()); // logging category for this class
-
-	public ReloadEvent() {
-		//tableId = -1;
-	}
+    /**
+     * Creates a new ReloadEvent object.
+     */
+    public ReloadEvent()
+    {
+        //tableId = -1;
+    }
 }

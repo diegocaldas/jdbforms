@@ -22,11 +22,11 @@
  */
 
 package org.dbforms;
-
 import java.util.*;
 import org.dbforms.util.*;
-
 import org.apache.log4j.Category;
+
+
 
 /****
  * <p>
@@ -34,35 +34,25 @@ import org.apache.log4j.Category;
  * </p>
  *
  */
-
-public class Field {
-
+public class Field
+{
     static Category logCat = Category.getInstance(Field.class.getName());
+
     // logging category for this class
-
-
     //------------------------ Properties ---------------------------------------------------------
-
     private int id; // the id of this field (for dbforms-internal use)
     private String name; // the field-name, as provided in xml-config file
-
     private int type; // integer representation of the "fieldType"-value
-
-
     private boolean isAutoInc; // stores if the field is AUTOINCremental
-
-
     private boolean key = false; // stores if the field is a KEY
-
     private boolean isSortable = false; // stores if the field is sortable
-
     private String directory;
+
     // used only for DISKBLOB: holds the directory uploaded files should be stored to
-
     private String encoding;
-    // used only for DISKBLOB: if "true" -> then files will be renamed to ensure that every file is unique and no file overwrites another. default is "false" (keep original names)
 
-	 private String expression;
+    // used only for DISKBLOB: if "true" -> then files will be renamed to ensure that every file is unique and no file overwrites another. default is "false" (keep original names)
+    private String expression;
 
     //------------------------ property access methods --------------------------------------------
 
@@ -70,123 +60,254 @@ public class Field {
      * sets the id of this field-object
      * (this method is called by Table on init.)
      */
-    public void setId(int id) {
+    public void setId(int id)
+    {
         this.id = id;
     }
 
-    public int getId() {
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public int getId()
+    {
         return id;
     }
 
-    public void setName(String name) {
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param name DOCUMENT ME!
+     */
+    public void setName(String name)
+    {
         this.name = name;
     }
 
-    public String getName() {
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public String getName()
+    {
         return name;
     }
 
-    public void setFieldType(String fieldType) {
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param fieldType DOCUMENT ME!
+     */
+    public void setFieldType(String fieldType)
+    {
         setType(fieldType);
     }
+
 
     /**
     maps the field type description to internal value
     we need this information in oder to call the appropriate PreparedStatement.setXxx(..) - Methods
     */
-    public void setType(String aType) {
+    public void setType(String aType)
+    {
         aType = aType.toLowerCase();
-        if (aType.startsWith("int")
-            || aType.startsWith("smallint")
-            || aType.startsWith("tinyint"))
+
+        if (aType.startsWith("int") || aType.startsWith("smallint") || aType.startsWith("tinyint"))
+        {
             type = FieldTypes.INTEGER;
-        else
-            if (aType.startsWith("char")
-                || aType.startsWith("varchar")
-                || aType.startsWith("nvarchar")
-                || aType.startsWith("longchar"))
-                type = FieldTypes.CHAR;
-            else
-                if (aType.startsWith("numeric") || aType.startsWith("number"))
-                    type = FieldTypes.NUMERIC;
-                else
-                    if (aType.startsWith("date"))
-                        type = FieldTypes.DATE;
-                    else
-                        if (aType.startsWith("timestamp"))
-                            type = FieldTypes.TIMESTAMP;
-                        else
-                            if (aType.startsWith("double"))
-                                type = FieldTypes.DOUBLE;
-                            else
-                                if (aType.startsWith("float") || aType.startsWith("real"))
-                                    type = FieldTypes.FLOAT;
-                                else
-                                    if (aType.startsWith("blob") || aType.startsWith("image"))
-                                        type = FieldTypes.BLOB;
-                                    else
-                                        if (aType.startsWith("diskblob"))
-                                            type = FieldTypes.DISKBLOB;
+        }
+        else if (aType.startsWith("char") || aType.startsWith("varchar") || aType.startsWith("nvarchar") || aType.startsWith("longchar"))
+        {
+            type = FieldTypes.CHAR;
+        }
+        else if (aType.startsWith("numeric") || aType.startsWith("number"))
+        {
+            type = FieldTypes.NUMERIC;
+        }
+        else if (aType.startsWith("date"))
+        {
+            type = FieldTypes.DATE;
+        }
+        else if (aType.startsWith("timestamp"))
+        {
+            type = FieldTypes.TIMESTAMP;
+        }
+        else if (aType.startsWith("double"))
+        {
+            type = FieldTypes.DOUBLE;
+        }
+        else if (aType.startsWith("float") || aType.startsWith("real"))
+        {
+            type = FieldTypes.FLOAT;
+        }
+        else if (aType.startsWith("blob") || aType.startsWith("image"))
+        {
+            type = FieldTypes.BLOB;
+        }
+        else if (aType.startsWith("diskblob"))
+        {
+            type = FieldTypes.DISKBLOB;
+        }
     }
 
-    public int getType() {
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public int getType()
+    {
         return type;
     }
 
-    public void setAutoInc(String autoInc) {
-        this.isAutoInc =
-            autoInc.equalsIgnoreCase("true") || autoInc.equalsIgnoreCase("yes");
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param autoInc DOCUMENT ME!
+     */
+    public void setAutoInc(String autoInc)
+    {
+        this.isAutoInc = autoInc.equalsIgnoreCase("true") || autoInc.equalsIgnoreCase("yes");
     }
 
-    public boolean getIsAutoInc() {
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public boolean getIsAutoInc()
+    {
         return isAutoInc;
     }
 
-    public void setIsKey(String isKey) {
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param isKey DOCUMENT ME!
+     */
+    public void setIsKey(String isKey)
+    {
         this.key = isKey.equalsIgnoreCase("true") || isKey.equalsIgnoreCase("yes");
     }
 
-    public boolean isKey() {
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public boolean isKey()
+    {
         return key;
     }
 
-    public void setDirectory(String directory) {
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param directory DOCUMENT ME!
+     */
+    public void setDirectory(String directory)
+    {
         this.directory = directory;
     }
 
-    public String getDirectory() {
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public String getDirectory()
+    {
         return directory;
     }
 
-    public void setEncoding(String encoding) {
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param encoding DOCUMENT ME!
+     */
+    public void setEncoding(String encoding)
+    {
         this.encoding = encoding;
     }
 
-    public String getEncoding() {
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public String getEncoding()
+    {
         return encoding;
     }
 
-    public void setSortable(String sortable) {
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param sortable DOCUMENT ME!
+     */
+    public void setSortable(String sortable)
+    {
         logCat.info("***sortable setter called***");
         this.isSortable = sortable.equalsIgnoreCase("true") || sortable.equalsIgnoreCase("yes");
     }
 
-    public boolean isFieldSortable() {
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public boolean isFieldSortable()
+    {
         return isSortable;
     }
 
-    public void setExpression(String expression) {
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param expression DOCUMENT ME!
+     */
+    public void setExpression(String expression)
+    {
         this.expression = expression;
     }
 
-    public String getExpression() {
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public String getExpression()
+    {
         return expression;
     }
 
 
-    // --------------------- utility methods -------------------------------------------------------
-
-    public String toString() {
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public String toString()
+    {
         StringBuffer buf = new StringBuffer();
         buf.append("name=");
         buf.append(name);
@@ -202,6 +323,7 @@ public class Field {
         buf.append(directory);
         buf.append(" expression=");
         buf.append(expression);
+
         return buf.toString();
     }
 }

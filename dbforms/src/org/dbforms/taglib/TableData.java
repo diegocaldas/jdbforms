@@ -4,7 +4,7 @@
  * $Date$
  *
  * DbForms - a Rapid Application Development Framework
- * Copyright (C) 2001 Joachim Peer <j.peer@gmx.net> et al.
+ * Copyright (C) 2001 Joachim Peer <joepeer@excite.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,7 +22,6 @@
  */
 
 package org.dbforms.taglib;
-
 import java.io.*;
 import java.util.*;
 import java.sql.*;
@@ -31,6 +30,8 @@ import javax.servlet.jsp.*;
 import javax.servlet.jsp.tagext.*;
 import org.dbforms.util.*;
 import org.apache.log4j.Category;
+
+
 
 /****
  *
@@ -46,117 +47,190 @@ import org.apache.log4j.Category;
  *
  * @author Joachim Peer <j.peer@gmx.net>
  */
+public class TableData extends EmbeddedData
+{
+    static Category logCat = Category.getInstance(TableData.class.getName());
 
-public class TableData extends EmbeddedData {
+    // logging category for this class
+    private String foreignTable;
+    private String visibleFields;
+    private String storeField;
+    private String orderBy;
 
-	static Category logCat = Category.getInstance(TableData.class.getName());
-	// logging category for this class
-
-	private String foreignTable;
-	private String visibleFields;
-	private String storeField;
-	private String orderBy;
-
-	public void setForeignTable(String foreignTable) {
-		this.foreignTable = foreignTable;
-	}
-
-	public String getForeignTable() {
-		return foreignTable;
-	}
-
-	public void setVisibleFields(String visibleFields) {
-		this.visibleFields = visibleFields;
-	}
-
-	public String getVisibleFields() {
-		return visibleFields;
-	}
-
-	public void setStoreField(String storeField) {
-		this.storeField = storeField;
-	}
-
-	public String getStoreField() {
-		return storeField;
-	}
-
-	public void setOrderBy(String orderBy) {
-		this.orderBy = orderBy;
-		logCat.info("setOrderBy(\"" + orderBy + "\")");
-	}
-
-	public String getOrderBy() {
-		return orderBy;
-	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @param foreignTable DOCUMENT ME!
+     */
+    public void setForeignTable(String foreignTable)
+    {
+        this.foreignTable = foreignTable;
+    }
 
 
-	/**
-	returns Hashtable with data. Its keys represent the "value"-fields for the DataContainer-Tag, its values
-	represent the visible fields for the Multitags.
-	(DataContainer are: select, radio, checkbox and a special flavour of Label).
-	*/
-	protected Vector fetchData(Connection con) throws SQLException {
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public String getForeignTable()
+    {
+        return foreignTable;
+    }
 
-		Vector vf = ParseUtil.splitString(visibleFields, ",;~");
 
-		StringBuffer queryBuf = new StringBuffer();
+    /**
+     * DOCUMENT ME!
+     *
+     * @param visibleFields DOCUMENT ME!
+     */
+    public void setVisibleFields(String visibleFields)
+    {
+        this.visibleFields = visibleFields;
+    }
 
-		queryBuf.append("SELECT ");
-		queryBuf.append(storeField);
-		queryBuf.append(", ");
 
-		for (int i = 0; i < vf.size(); i++) {
-			queryBuf.append((String) vf.elementAt(i));
-			if (i < vf.size() - 1)
-				queryBuf.append(", ");
-		}
-		queryBuf.append(" FROM ");
-		queryBuf.append(foreignTable);
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public String getVisibleFields()
+    {
+        return visibleFields;
+    }
 
-		if (orderBy != null) {
-			queryBuf.append(" ORDER BY ");
-			queryBuf.append(orderBy);
-		}
 
-		logCat.info("about to execute:" + queryBuf.toString());
-		PreparedStatement ps = con.prepareStatement(queryBuf.toString());
-		ResultSetVector rsv = new ResultSetVector(ps.executeQuery());
-		ps.close(); // #JP Jun 27, 2001
+    /**
+     * DOCUMENT ME!
+     *
+     * @param storeField DOCUMENT ME!
+     */
+    public void setStoreField(String storeField)
+    {
+        this.storeField = storeField;
+    }
 
-		Vector result = new Vector();
-		/*
-		*(2)also add the following to be able to specify a format when concatenating several display fields 
-		*/
-		if (format != null) {
-			format();
-		} //add until this point for formating display fields.
 
-		// transforming the resultsetVector into a hashtable
-		for (int i = 0; i < rsv.size(); i++) {
-			String[] currentRow = (String[]) rsv.elementAt(i);
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public String getStoreField()
+    {
+        return storeField;
+    }
 
-			String htKey = currentRow[0];
-			StringBuffer htValueBuf = new StringBuffer();
-			for (int j = 1; j < currentRow.length; j++) {
-				htValueBuf.append(currentRow[j]);
-				/*
-				 *(3) modify the original to the following to be able to specify a format when concatenating several display fields
-				 **/
-				if ((format != null) && (j < currentRow.length)) {
-					htValueBuf.append(String.valueOf(formatted.get(j - 1)));
-				} else {
-					if (j < currentRow.length - 1)
-						htValueBuf.append(", ");
-				} //(3) modify until this point for formating display fields.
-			}
-			String htValue = htValueBuf.toString();
 
-			result.addElement(new KeyValuePair(htKey, htValue));
-			// add current row, now well formatted, to result
-		}
+    /**
+     * DOCUMENT ME!
+     *
+     * @param orderBy DOCUMENT ME!
+     */
+    public void setOrderBy(String orderBy)
+    {
+        this.orderBy = orderBy;
+        logCat.info("setOrderBy(\"" + orderBy + "\")");
+    }
 
-		return result;
-	}
 
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public String getOrderBy()
+    {
+        return orderBy;
+    }
+
+
+    /**
+    returns Hashtable with data. Its keys represent the "value"-fields for the DataContainer-Tag, its values
+    represent the visible fields for the Multitags.
+    (DataContainer are: select, radio, checkbox and a special flavour of Label).
+    */
+    protected Vector fetchData(Connection con) throws SQLException
+    {
+        Vector vf = ParseUtil.splitString(visibleFields, ",;~");
+
+        StringBuffer queryBuf = new StringBuffer();
+
+        queryBuf.append("SELECT ");
+        queryBuf.append(storeField);
+        queryBuf.append(", ");
+
+        for (int i = 0; i < vf.size(); i++)
+        {
+            queryBuf.append((String) vf.elementAt(i));
+
+            if (i < (vf.size() - 1))
+            {
+                queryBuf.append(", ");
+            }
+        }
+
+        queryBuf.append(" FROM ");
+        queryBuf.append(foreignTable);
+
+        if (orderBy != null)
+        {
+            queryBuf.append(" ORDER BY ");
+            queryBuf.append(orderBy);
+        }
+
+        logCat.info("about to execute:" + queryBuf.toString());
+
+        PreparedStatement ps = con.prepareStatement(queryBuf.toString());
+        ResultSetVector rsv = new ResultSetVector(ps.executeQuery());
+        ps.close(); // #JP Jun 27, 2001
+
+        Vector result = new Vector();
+
+        /*
+        *(2)also add the following to be able to specify a format when concatenating several display fields 
+        */
+        if (format != null)
+        {
+            format();
+        } //add until this point for formating display fields.
+
+        // transforming the resultsetVector into a hashtable
+        for (int i = 0; i < rsv.size(); i++)
+        {
+            String[] currentRow = (String[]) rsv.elementAt(i);
+
+            String htKey = currentRow[0];
+            StringBuffer htValueBuf = new StringBuffer();
+
+            for (int j = 1; j < currentRow.length; j++)
+            {
+                htValueBuf.append(currentRow[j]);
+
+                /*
+                *(3) modify the original to the following to be able to specify a format when concatenating several display fields
+                **/
+                if ((format != null) && (j < currentRow.length))
+                {
+                    htValueBuf.append(String.valueOf(formatted.get(j - 1)));
+                }
+                else
+                {
+                    if (j < (currentRow.length - 1))
+                    {
+                        htValueBuf.append(", ");
+                    }
+                } //(3) modify until this point for formating display fields.
+            }
+
+            String htValue = htValueBuf.toString();
+
+            result.addElement(new KeyValuePair(htKey, htValue));
+
+            // add current row, now well formatted, to result
+        }
+
+        return result;
+    }
 }

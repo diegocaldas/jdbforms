@@ -4,7 +4,7 @@
  * $Date$
  *
  * DbForms - a Rapid Application Development Framework
- * Copyright (C) 2001 Joachim Peer <j.peer@gmx.net> et al.
+ * Copyright (C) 2001 Joachim Peer <joepeer@excite.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,21 +22,28 @@
  */
 
 package org.dbforms.util;
-
 import org.apache.log4j.Category;
 
-public class UniqueIDGenerator  {
 
-  static Category logCat = Category.getInstance(UniqueIDGenerator.class.getName()); // logging category for this class
 
-  /**
-  may be optimized in future versions
-  */
-  public static String getUniqueID() {
-  	long first = new java.util.Date().getTime();
-  	int second = (int) (Math.random()*100);
+/**
+ * DOCUMENT ME!
+ *
+ * @version $Revision$
+ * @author $author$
+ */
+public class UniqueIDGenerator
+{
+    static Category logCat = Category.getInstance(UniqueIDGenerator.class.getName()); // logging category for this class
 
-  	return Long.toString(first) + Integer.toString(second);
-  }  
+    /**
+    may be optimized in future versions
+    */
+    public static String getUniqueID()
+    {
+        long first = new java.util.Date().getTime();
+        int second = (int) (Math.random() * 100);
 
+        return Long.toString(first) + Integer.toString(second);
+    }
 }

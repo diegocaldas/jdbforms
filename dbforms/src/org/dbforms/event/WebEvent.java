@@ -4,7 +4,7 @@
  * $Date$
  *
  * DbForms - a Rapid Application Development Framework
- * Copyright (C) 2001 Joachim Peer <j.peer@gmx.net> et al.
+ * Copyright (C) 2001 Joachim Peer <joepeer@excite.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,11 +22,12 @@
  */
 
 package org.dbforms.event;
-
 import java.sql.*;
 import javax.servlet.http.*;
 import org.dbforms.*;
 import org.apache.log4j.Category;
+
+
 
 /****
  *
@@ -40,59 +41,120 @@ import org.apache.log4j.Category;
  *
  * @author Joe Peer <j.peer@gmx.net>
  */
+public abstract class WebEvent
+{
+    static Category logCat = Category.getInstance(WebEvent.class.getName()); // logging category for this class
 
-public abstract class WebEvent {
+    /** DOCUMENT ME! */
+    protected HttpServletRequest request;
 
-  static Category logCat = Category.getInstance(WebEvent.class.getName()); // logging category for this class
+    /** DOCUMENT ME! */
+    protected DbFormsConfig config;
 
-  protected HttpServletRequest request;
-  protected DbFormsConfig config;
-  protected int tableId; // which table does the event operate on?
-  protected String followUp;
-  protected String followUpOnError;
+    /** DOCUMENT ME! */
+    protected int tableId; // which table does the event operate on?
 
-	public void setTableId(int tableId) {
-		this.tableId = tableId;
-	}
+    /** DOCUMENT ME! */
+    protected String followUp;
 
-	public int getTableId() {
-		return tableId;
-	}
+    /** DOCUMENT ME! */
+    protected String followUpOnError;
 
-	public void setConfig(DbFormsConfig config) {
-		this.config = config;
-	}
-
-	public DbFormsConfig getConfig() {
-		return config;
-	}
-
-	public void setFollowUp(String followUp) {
-		this.followUp = followUp;
-	}
-
-	public String getFollowUp() {
-		return followUp;
-	}
-
-	protected boolean hasUserPrivileg(int privileg) {
-		return config.getTable(tableId).hasUserPrivileg(request, privileg);
-	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @param tableId DOCUMENT ME!
+     */
+    public void setTableId(int tableId)
+    {
+        this.tableId = tableId;
+    }
 
 
-	/**
-	 * Gets the followUpOnError
-	 * @return Returns a String
-	 */
-	public String getFollowUpOnError() {
-		return followUpOnError;
-	}
-	/**
-	 * Sets the followUpOnError
-	 * @param followUpOnError The followUpOnError to set
-	 */
-	public void setFollowUpOnError(String followUpOnError) {
-		this.followUpOnError = followUpOnError;
-	}
-
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public int getTableId()
+    {
+        return tableId;
+    }
+
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param config DOCUMENT ME!
+     */
+    public void setConfig(DbFormsConfig config)
+    {
+        this.config = config;
+    }
+
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public DbFormsConfig getConfig()
+    {
+        return config;
+    }
+
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param followUp DOCUMENT ME!
+     */
+    public void setFollowUp(String followUp)
+    {
+        this.followUp = followUp;
+    }
+
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public String getFollowUp()
+    {
+        return followUp;
+    }
+
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param privileg DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    protected boolean hasUserPrivileg(int privileg)
+    {
+        return config.getTable(tableId).hasUserPrivileg(request, privileg);
+    }
+
+
+    /**
+     * Gets the followUpOnError
+     * @return Returns a String
+     */
+    public String getFollowUpOnError()
+    {
+        return followUpOnError;
+    }
+
+
+    /**
+     * Sets the followUpOnError
+     * @param followUpOnError The followUpOnError to set
+     */
+    public void setFollowUpOnError(String followUpOnError)
+    {
+        this.followUpOnError = followUpOnError;
+    }
 }

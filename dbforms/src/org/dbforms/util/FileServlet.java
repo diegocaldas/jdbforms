@@ -4,7 +4,7 @@
  * $Date$
  *
  * DbForms - a Rapid Application Development Framework
- * Copyright (C) 2001 Joachim Peer <j.peer@gmx.net> et al.
+ * Copyright (C) 2001 Joachim Peer <joepeer@excite.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,8 +20,8 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-package org.dbforms.util;
 
+package org.dbforms.util;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.*;
@@ -32,294 +32,289 @@ import java.net.URLConnection;
 import org.dbforms.*;
 import org.apache.log4j.Category;
 
+
+
 /**
  *#fixme - add appropriate exception-handling..
  */
 public class FileServlet extends HttpServlet
 {
-  // logging category for this class
-  static   Category       logCat       = Category.getInstance(FileServlet.class.getName());
-  private  DbFormsConfig  config;
-  private  FileNameMap    fileNameMap;
+    // logging category for this class
+    static Category logCat = Category.getInstance(FileServlet.class.getName());
+    private DbFormsConfig config;
+    private FileNameMap fileNameMap;
 
-
-  /**
-   * Initialize this servlet.
-   *
-   * @exception  ServletException Description of the Exception
-   */
-  public void init() throws ServletException
-  {
-    // take Config-Object from application context - this object should have been
-    // initalized by Config-Servlet on Webapp/server-startup!
-    config = (DbFormsConfig) getServletContext().getAttribute(DbFormsConfig.CONFIG);
-    fileNameMap = URLConnection.getFileNameMap();
-  }
-
-
-  /**
-   *  Process the HTTP Post request
-   *
-   * @param  request Description of the Parameter
-   * @param  response Description of the Parameter
-   * @exception  ServletException Description of the Exception
-   * @exception  IOException Description of the Exception
-   */
-  public void doPost(HttpServletRequest request, HttpServletResponse response)
-       throws ServletException, IOException
-  {
-    doGet(request, response);
-  }
-
-
-  /**
-   *  Process the HTTP Get request
-   *
-   * @param  request Description of the Parameter
-   * @param  response Description of the Parameter
-   * @exception  ServletException Description of the Exception
-   * @exception  IOException Description of the Exception
-   */
-  public void doGet(HttpServletRequest request, HttpServletResponse response)
-       throws ServletException, IOException
-  {
-    String        tf            = request.getParameter("tf");
-    String        keyValuesStr  = request.getParameter("keyval");
-    int           tableId       = Integer.parseInt(ParseUtil.getEmbeddedString(tf, 0, '_'));
-    Table         table         = config.getTable(tableId);
-    int           fieldId       = Integer.parseInt(ParseUtil.getEmbeddedString(tf, 1, '_'));
-    Field         field         = table.getField(fieldId);
-    StringBuffer  queryBuf      = new StringBuffer();
-
-    //Connection con = config.getDbConnection().getConnection();                // original
-    //Connection con = config.getDbConnection(null).getConnection();            // fossato - adapted for cpoolFactory
-
-    // ---- Bradley's multiple connection support [fossato <fossato@pow2.com> 2002/11/04] ------
-    String       dbConnectionName = request.getParameter("invname_" + tableId);
-    DbConnection aDbConnection    = config.getDbConnection(dbConnectionName);
-
-    if (aDbConnection == null) 
-      throw new IllegalArgumentException("Troubles in your DbForms config xml file: DbConnection "
-					 + "'" + dbConnectionName + "' not properly include - "
-                                         + "check manual!");
-	
-    Connection con = aDbConnection.getConnection();
-    logCat.debug("::doGet - created new connection - " + con);
-    // ---- Bradley's multiple connection support end ------------------------------------------
-
-    queryBuf.append("SELECT ");
-    queryBuf.append(field.getName());
-    queryBuf.append(" FROM ");
-    queryBuf.append(table.getName());
-    queryBuf.append(" WHERE ");
-    queryBuf.append(table.getWhereClauseForPS());
-
-    // example: SELECT imageNameField FROM myTable WHERE myTable.key = ?
-    logCat.info("::doGet - query is [" + queryBuf + "]");
-
-    try
+    /**
+     * Initialize this servlet.
+     *
+     * @exception  ServletException Description of the Exception
+     */
+    public void init() throws ServletException
     {
-      PreparedStatement  ps  = con.prepareStatement(queryBuf.toString());
-      table.populateWhereClauseForPS(keyValuesStr, ps, 1);
-      ResultSet          rs  = ps.executeQuery();
-
-      if (rs.next())
-      {
-        // use the filesystem;
-        if (field.getType() == FieldTypes.DISKBLOB)
-          readDiskBlob(rs.getString(1), field.getDirectory(), request, response);
-
-        // use the rdbms;
-        else if (field.getType() == FieldTypes.BLOB)
-          readDbFieldBlob(rs, request, response);
-      }
-      else
-        logCat.info("::doGet - we have got no result using query " + queryBuf);
-    }
-    catch (SQLException sqle)
-    {
-      logCat.error("::doGet - SQL exception", sqle);
+        // take Config-Object from application context - this object should have been
+        // initalized by Config-Servlet on Webapp/server-startup!
+        config = (DbFormsConfig) getServletContext().getAttribute(DbFormsConfig.CONFIG);
+        fileNameMap = URLConnection.getFileNameMap();
     }
 
-    // The connection should not be null - If it is, then you might have
-    // an infrastructure problem! Be sure to look into this!
-    // Hint: check out your pool manager's performance!
-     finally
+
+    /**
+     *  Process the HTTP Post request
+     *
+     * @param  request Description of the Parameter
+     * @param  response Description of the Parameter
+     * @exception  ServletException Description of the Exception
+     * @exception  IOException Description of the Exception
+     */
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-      closeConnection(con);
+        doGet(request, response);
     }
-  }
 
 
-  /**
-   *  Read the database field and write to the client its content
-   *
-   * @param  rs Description of the Parameter
-   * @param  request  Description of the Parameter
-   * @param  response Description of the Parameter
-   * @exception  IOException Description of the Exception
-   * @exception  SQLException Description of the Exception
-   */
-  private void readDbFieldBlob(ResultSet rs,
-                               HttpServletRequest request,
-                               HttpServletResponse response)
-       throws IOException, SQLException
-  {
-    logCat.info("READING BLOB");
-
-    try
+    /**
+     *  Process the HTTP Get request
+     *
+     * @param  request Description of the Parameter
+     * @param  response Description of the Parameter
+     * @exception  ServletException Description of the Exception
+     * @exception  IOException Description of the Exception
+     */
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-      Object  o  = rs.getObject(1);
+        String tf = request.getParameter("tf");
+        String keyValuesStr = request.getParameter("keyval");
+        int tableId = Integer.parseInt(ParseUtil.getEmbeddedString(tf, 0, '_'));
+        Table table = config.getTable(tableId);
+        int fieldId = Integer.parseInt(ParseUtil.getEmbeddedString(tf, 1, '_'));
+        Field field = table.getField(fieldId);
+        StringBuffer queryBuf = new StringBuffer();
 
-      // if the object the JDBC driver returns to us implements
-      // the java.sql.Blob interface, then we use the BLOB object
-      // which wraps the binary stream of our FileHolder:
-      if (o != null)
-      {
-        if (o instanceof java.sql.Blob)
+        //Connection con = config.getDbConnection().getConnection();                // original
+        //Connection con = config.getDbConnection(null).getConnection();            // fossato - adapted for cpoolFactory
+        // ---- Bradley's multiple connection support [fossato <fossato@pow2.com> 2002/11/04] ------
+        String dbConnectionName = request.getParameter("invname_" + tableId);
+        DbConnection aDbConnection = config.getDbConnection(dbConnectionName);
+
+        if (aDbConnection == null)
         {
-          Blob               blob  = rs.getBlob(1);
-          ObjectInputStream  ois   = new ObjectInputStream(blob.getBinaryStream());
-          FileHolder         fh    = (FileHolder) ois.readObject();
-          writeToClient(response, fh.getFileName(), fh.getInputStreamFromBuffer());
+            throw new IllegalArgumentException("Troubles in your DbForms config xml file: DbConnection " + "'" + dbConnectionName + "' not properly include - " + "check manual!");
         }
 
-        /*
-          else if(o instanceof java.sql.Clob)
-          {
-        Clob clob = rs.getClob(1);
-        ObjectInputStream ois = new ObjectInputStream(clob.getAsciiStream());
-        FileHolder fh = (FileHolder) ois.readObject();
-        writeToClient(response, fh.getFileName(), fh.getInputStreamFromBuffer());
-      }
-        */
+        Connection con = aDbConnection.getConnection();
+        logCat.debug("::doGet - created new connection - " + con);
 
-        // otherwise we are aquiring the stream directly:
+
+        // ---- Bradley's multiple connection support end ------------------------------------------
+        queryBuf.append("SELECT ");
+        queryBuf.append(field.getName());
+        queryBuf.append(" FROM ");
+        queryBuf.append(table.getName());
+        queryBuf.append(" WHERE ");
+        queryBuf.append(table.getWhereClauseForPS());
+
+
+        // example: SELECT imageNameField FROM myTable WHERE myTable.key = ?
+        logCat.info("::doGet - query is [" + queryBuf + "]");
+
+        try
+        {
+            PreparedStatement ps = con.prepareStatement(queryBuf.toString());
+            table.populateWhereClauseForPS(keyValuesStr, ps, 1);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next())
+            {
+                // use the filesystem;
+                if (field.getType() == FieldTypes.DISKBLOB)
+                {
+                    readDiskBlob(rs.getString(1), field.getDirectory(), request, response);
+                }
+
+                // use the rdbms;
+                else if (field.getType() == FieldTypes.BLOB)
+                {
+                    readDbFieldBlob(rs, request, response);
+                }
+            }
+            else
+            {
+                logCat.info("::doGet - we have got no result using query " + queryBuf);
+            }
+        }
+        catch (SQLException sqle)
+        {
+            logCat.error("::doGet - SQL exception", sqle);
+        }
+
+        // The connection should not be null - If it is, then you might have
+        // an infrastructure problem! Be sure to look into this!
+        // Hint: check out your pool manager's performance!
+        finally
+        {
+            closeConnection(con);
+        }
+    }
+
+
+    /**
+     *  Read the database field and write to the client its content
+     *
+     * @param  rs Description of the Parameter
+     * @param  request  Description of the Parameter
+     * @param  response Description of the Parameter
+     * @exception  IOException Description of the Exception
+     * @exception  SQLException Description of the Exception
+     */
+    private void readDbFieldBlob(ResultSet rs, HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException
+    {
+        logCat.info("READING BLOB");
+
+        try
+        {
+            Object o = rs.getObject(1);
+
+            // if the object the JDBC driver returns to us implements
+            // the java.sql.Blob interface, then we use the BLOB object
+            // which wraps the binary stream of our FileHolder:
+            if (o != null)
+            {
+                if (o instanceof java.sql.Blob)
+                {
+                    Blob blob = rs.getBlob(1);
+                    ObjectInputStream ois = new ObjectInputStream(blob.getBinaryStream());
+                    FileHolder fh = (FileHolder) ois.readObject();
+                    writeToClient(response, fh.getFileName(), fh.getInputStreamFromBuffer());
+                }
+
+                /*
+                  else if(o instanceof java.sql.Clob)
+                  {
+                Clob clob = rs.getClob(1);
+                ObjectInputStream ois = new ObjectInputStream(clob.getAsciiStream());
+                FileHolder fh = (FileHolder) ois.readObject();
+                writeToClient(response, fh.getFileName(), fh.getInputStreamFromBuffer());
+                }
+                */
+
+                // otherwise we are aquiring the stream directly:
+                else
+                {
+                    InputStream blobIS = rs.getBinaryStream(1);
+                    ObjectInputStream ois = new ObjectInputStream(blobIS);
+                    FileHolder fh = (FileHolder) ois.readObject();
+                    writeToClient(response, fh.getFileName(), fh.getInputStreamFromBuffer());
+                }
+            }
+            else
+            {
+                logCat.warn("::readDbFieldBlob - blob null, no response sent");
+            }
+        }
+        catch (ClassNotFoundException cnfe)
+        {
+            logCat.error("::readDbFieldBlob - class not found", cnfe);
+            throw new IOException("error:" + cnfe.toString());
+        }
+    }
+
+
+    /**
+     *  Read the blob field from the filesystem and write to the client its content.
+     *
+     * @param  fileName Description of the Parameter
+     * @param  directory Description of the Parameter
+     * @param  request  Description of the Parameter
+     * @param  response Description of the Parameter
+     * @exception  FileNotFoundException Description of the Exception
+     * @exception  IOException Description of the Exception
+     */
+    private void readDiskBlob(String fileName, String directory, HttpServletRequest request, HttpServletResponse response) throws FileNotFoundException, IOException
+    {
+        logCat.info(new StringBuffer("READING DISKBLOB\n  directory = [").append(directory).append("]\n").append("  fileName = [").append(fileName).append("]\n").append("  defaultValue = [").append(request.getParameter("defaultValue")).append("]\n").toString());
+
+        if ((fileName == null) || (fileName.trim().length() == 0))
+        {
+            if ((fileName = request.getParameter("defaultValue")) != null)
+            {
+                logCat.info("::readDiskBlob - database data is null; use the default value [" + fileName + "]");
+            }
+        }
+
+        // directory or fileName can be null!
+        //if ((directory != null) && (fileName != null))
+        if (fileName != null)
+        {
+            fileName = fileName.trim();
+
+            File file = new File(directory, fileName);
+
+            if (file.exists())
+            {
+                logCat.info("::readDiskBlob - file found [" + file.getAbsoluteFile() + "]");
+
+                FileInputStream fis = new FileInputStream(file);
+                writeToClient(response, fileName, fis);
+            }
+            else
+            {
+                logCat.error("::readDiskBlob - file [" + (directory + "/" + fileName) + "] not found");
+            }
+        }
         else
         {
-          InputStream        blobIS  = rs.getBinaryStream(1);
-          ObjectInputStream  ois     = new ObjectInputStream(blobIS);
-          FileHolder         fh      = (FileHolder) ois.readObject();
-          writeToClient(response, fh.getFileName(), fh.getInputStreamFromBuffer());
+            logCat.warn("::readDiskBlob - file name or directory value is null");
         }
-      }
-      else
-      {
-        logCat.warn("::readDbFieldBlob - blob null, no response sent");
-      }
     }
-    catch (ClassNotFoundException cnfe)
+
+
+    /**
+     *  Write the content of the input file to the client.
+     *
+     * @param  response Description of the Parameter
+     * @param  fileName Description of the Parameter
+     * @param  is Description of the Parameter
+     * @exception  IOException Description of the Exception
+     */
+    private void writeToClient(HttpServletResponse response, String fileName, InputStream is) throws IOException
     {
-      logCat.error("::readDbFieldBlob - class not found", cnfe);
-      throw new IOException("error:" + cnfe.toString());
+        String contentType = fileNameMap.getContentTypeFor(fileName);
+        logCat.info("::writeToClient- writing to client:" + fileName + " ct=" + contentType);
+        response.setContentType(contentType);
+
+        ServletOutputStream out = response.getOutputStream();
+        byte[] b = new byte[1024];
+        int read;
+
+        while ((read = is.read(b)) != -1)
+            out.write(b, 0, read);
+
+        out.close();
     }
-  }
 
 
-  /**
-   *  Read the blob field from the filesystem and write to the client its content.
-   *
-   * @param  fileName Description of the Parameter
-   * @param  directory Description of the Parameter
-   * @param  request  Description of the Parameter
-   * @param  response Description of the Parameter
-   * @exception  FileNotFoundException Description of the Exception
-   * @exception  IOException Description of the Exception
-   */
-  private void readDiskBlob(String              fileName,
-                            String              directory,
-                            HttpServletRequest  request,
-                            HttpServletResponse response)
-       throws FileNotFoundException, IOException
-  {
-    logCat.info(
-      new StringBuffer("READING DISKBLOB\n  directory = [")
-          .append(directory)
-          .append("]\n")
-          .append("  fileName = [")
-          .append(fileName)
-          .append("]\n")
-          .append("  defaultValue = [")
-          .append(request.getParameter("defaultValue"))
-          .append("]\n").toString());
-
-    if ((fileName == null) || (fileName.trim().length() == 0))
+    /**
+     *  Close the input SQL connection.
+     *
+     * @param  con the SQL connection to close
+     */
+    private void closeConnection(Connection con)
     {
-      if ((fileName = request.getParameter("defaultValue")) != null)
-        logCat.info("::readDiskBlob - database data is null; use the default value [" + fileName + "]");
+        if (con != null)
+        {
+            try
+            {
+                logCat.debug("::doGet - about to close connection - " + con);
+                con.close();
+                logCat.debug("::doGet - connection closed");
+            }
+            catch (SQLException sqle2)
+            {
+                logCat.error("::doGet - cannot close the SQL connection", sqle2);
+
+                //sqle2.printStackTrace();
+            }
+        }
     }
-
-    // directory or fileName can be null!
-    //if ((directory != null) && (fileName != null))
-    if (fileName != null)
-    {
-      fileName = fileName.trim();
-      File file = new File(directory, fileName);
-
-      if (file.exists())
-      {
-        logCat.info("::readDiskBlob - file found [" + file.getAbsoluteFile() + "]");
-        FileInputStream  fis  = new FileInputStream(file);
-        writeToClient(response, fileName, fis);
-      }
-      else
-        logCat.error("::readDiskBlob - file [" + (directory + "/" + fileName) + "] not found");
-    }
-    else
-    {
-      logCat.warn("::readDiskBlob - file name or directory value is null");
-    }
-  }
-
-
-  /**
-   *  Write the content of the input file to the client.
-   *
-   * @param  response Description of the Parameter
-   * @param  fileName Description of the Parameter
-   * @param  is Description of the Parameter
-   * @exception  IOException Description of the Exception
-   */
-  private void writeToClient(HttpServletResponse response,
-      String fileName,
-      InputStream is)
-       throws IOException
-  {
-    String contentType = fileNameMap.getContentTypeFor(fileName);
-    logCat.info("::writeToClient- writing to client:" + fileName + " ct=" + contentType);
-    response.setContentType(contentType);
-
-    ServletOutputStream  out    = response.getOutputStream();
-    byte[]               b      = new byte[1024];
-    int                  read;
-
-    while ((read = is.read(b)) != -1)
-      out.write(b, 0, read);
-
-    out.close();
-  }
-
-
-  /**
-   *  Close the input SQL connection.
-   *
-   * @param  con the SQL connection to close
-   */
-  private void closeConnection(Connection con)
-  {
-    if (con != null)
-    {
-      try
-      {
-        logCat.debug("::doGet - about to close connection - " + con);
-        con.close();
-        logCat.debug("::doGet - connection closed");
-      }
-      catch (SQLException sqle2)
-      {
-        logCat.error("::doGet - cannot close the SQL connection", sqle2);
-        //sqle2.printStackTrace();
-      }
-    }
-  }
 }

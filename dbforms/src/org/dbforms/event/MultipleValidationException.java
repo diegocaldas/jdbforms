@@ -1,6 +1,10 @@
 /*
+ * $Header$
+ * $Revision$
+ * $Date$
+ *
  * DbForms - a Rapid Application Development Framework
- * Copyright (C) 2001 Joachim Peer <j.peer@gmx.net> et al.
+ * Copyright (C) 2001 Joachim Peer <joepeer@excite.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,36 +24,44 @@
 package org.dbforms.event;
 import java.util.*;
 
+
+
 /**
 this exception may be thrown by user code
 in classes implementing the interceptor interface
 Allows developers to define more then one error - to be
 used in conjunction with the XML errors mechanism
 */
+public class MultipleValidationException extends ValidationException
+{
+    private Vector messages = null;
 
-public class MultipleValidationException extends ValidationException{
+    /**
+     * Creates a new MultipleValidationException object.
+     *
+     * @param messages DOCUMENT ME!
+     */
+    public MultipleValidationException(Vector messages)
+    {
+        this.setMessages(messages);
+    }
 
-	private Vector messages = null;
+    /**
+     * Gets the messages
+     * @return Returns a Vector
+     */
+    public Vector getMessages()
+    {
+        return messages;
+    }
 
 
-	public MultipleValidationException(Vector messages) {
-		this.setMessages(messages); 
-	}
-
-
-	/**
-	 * Gets the messages
-	 * @return Returns a Vector
-	 */
-	public Vector getMessages() {
-		return messages;
-	}
-	/**
-	 * Sets the messages
-	 * @param messages The messages to set
-	 */
-	public void setMessages(Vector messages) {
-		this.messages = messages;
-	}
-
+    /**
+     * Sets the messages
+     * @param messages The messages to set
+     */
+    public void setMessages(Vector messages)
+    {
+        this.messages = messages;
+    }
 }

@@ -4,7 +4,7 @@
  * $Date$
  *
  * DbForms - a Rapid Application Development Framework
- * Copyright (C) 2001 Joachim Peer <j.peer@gmx.net> et al.
+ * Copyright (C) 2001 Joachim Peer <joepeer@excite.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,12 +22,13 @@
  */
 
 package org.dbforms.event;
-
 import org.dbforms.*;
 import org.dbforms.util.*;
 import java.sql.*;
 import javax.servlet.http.*;
 import org.apache.log4j.Category;
+
+
 
 /****
  *
@@ -35,28 +36,54 @@ import org.apache.log4j.Category;
  *
  * @author Joe Peer <j.peer@gmx.net>
  */
+public class NavFirstEvent extends NavigationEvent
+{
+    static Category logCat = Category.getInstance(NavFirstEvent.class.getName()); // logging category for this class
 
-public class NavFirstEvent extends NavigationEvent {
-
-	static Category logCat = Category.getInstance(NavFirstEvent.class.getName()); // logging category for this class
-
-	public NavFirstEvent(String action, HttpServletRequest request, DbFormsConfig config) {
-		this.config = config;
-		tableId = ParseUtil.getEmbeddedStringAsInteger(action, 2, '_');
-		this.table = config.getTable(tableId);
-	}
-
-	// for call from localevent
-	public NavFirstEvent(Table table, DbFormsConfig config) {
-	  this.table = table;
-	  this.config = config;
-	}
+    /**
+     * Creates a new NavFirstEvent object.
+     *
+     * @param action DOCUMENT ME!
+     * @param request DOCUMENT ME!
+     * @param config DOCUMENT ME!
+     */
+    public NavFirstEvent(String action, HttpServletRequest request, DbFormsConfig config)
+    {
+        this.config = config;
+        tableId = ParseUtil.getEmbeddedStringAsInteger(action, 2, '_');
+        this.table = config.getTable(tableId);
+    }
 
 
-	public ResultSetVector processEvent(FieldValue[] childFieldValues, FieldValue[] orderConstraint, int count, String firstPost, String lastPos, Connection con)
-	throws SQLException {
-		// just select from table in given order
-		return table.doConstrainedSelect(table.getFields(), childFieldValues, orderConstraint, FieldValue.COMPARE_NONE, count, con);
-	}
+    /**
+     * Creates a new NavFirstEvent object.
+     *
+     * @param table DOCUMENT ME!
+     * @param config DOCUMENT ME!
+     */
+    public NavFirstEvent(Table table, DbFormsConfig config)
+    {
+        this.table = table;
+        this.config = config;
+    }
 
+    /**
+     * DOCUMENT ME!
+     *
+     * @param childFieldValues DOCUMENT ME!
+     * @param orderConstraint DOCUMENT ME!
+     * @param count DOCUMENT ME!
+     * @param firstPost DOCUMENT ME!
+     * @param lastPos DOCUMENT ME!
+     * @param con DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     *
+     * @throws SQLException DOCUMENT ME!
+     */
+    public ResultSetVector processEvent(FieldValue[] childFieldValues, FieldValue[] orderConstraint, int count, String firstPost, String lastPos, Connection con) throws SQLException
+    {
+        // just select from table in given order
+        return table.doConstrainedSelect(table.getFields(), childFieldValues, orderConstraint, FieldValue.COMPARE_NONE, count, con);
+    }
 }

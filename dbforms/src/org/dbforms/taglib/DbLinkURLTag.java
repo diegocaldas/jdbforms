@@ -4,7 +4,7 @@
  * $Date$
  *
  * DbForms - a Rapid Application Development Framework
- * Copyright (C) 2001 Joachim Peer <j.peer@gmx.net> et al.
+ * Copyright (C) 2001 Joachim Peer <joepeer@excite.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,18 +22,16 @@
  */
 
 package org.dbforms.taglib;
-
 import java.util.*;
 import java.io.*;
-
 import javax.servlet.http.*;
 import javax.servlet.jsp.*;
 import javax.servlet.jsp.tagext.*;
-
 import org.dbforms.*;
 import org.dbforms.util.*;
-
 import org.apache.log4j.Category;
+
+
 
 /****
  *
@@ -66,130 +64,238 @@ import org.apache.log4j.Category;
  *
  * @author Joachim Peer <j.peer@gmx.net>
  */
+public class DbLinkURLTag extends BodyTagSupport
+{
+    static Category logCat = Category.getInstance(DbLinkURLTag.class.getName()); // logging category for this class
+    private DbFormsConfig config;
+    private Table table;
+    private Hashtable positionFv; // fields and their values, provided by embedded DbLinkPositionItem-Elements
+
+    // -- properties
+    private String href;
+    private String tableName;
+    private String position;
+    private DbFormTag parentForm;
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public String getHref()
+    {
+        return href;
+    }
 
 
-public class DbLinkURLTag extends BodyTagSupport {
+    /**
+     * DOCUMENT ME!
+     *
+     * @param href DOCUMENT ME!
+     */
+    public void setHref(String href)
+    {
+        this.href = href;
+    }
 
-	static Category logCat = Category.getInstance(DbLinkURLTag.class.getName()); // logging category for this class
 
-	private DbFormsConfig config;
-	private Table table;
-	private Hashtable positionFv; // fields and their values, provided by embedded DbLinkPositionItem-Elements
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public String getTableName()
+    {
+        return tableName;
+    }
 
-	// -- properties
-	private String href;
-	private String tableName;
-	private String position;
 
-	private DbFormTag parentForm;
+    /**
+     * DOCUMENT ME!
+     *
+     * @param tableName DOCUMENT ME!
+     */
+    public void setTableName(String tableName)
+    {
+        this.tableName = tableName;
+    }
 
-	public String getHref() {
-		return href;
-	}
 
-	public void setHref(String href) {
-		this.href = href;
-	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public String getPosition()
+    {
+        return position;
+    }
 
-	public String getTableName() {
-		return tableName;
-	}
 
-	public void setTableName(String tableName) {
-		this.tableName = tableName;
-	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @param position DOCUMENT ME!
+     */
+    public void setPosition(String position)
+    {
+        this.position = position;
+    }
 
-	public String getPosition() {
-		return position;
-	}
 
-	public void setPosition(String position) {
-		this.position = position;
-	}
+    /**
+    to be called by DbLinkPositonItems
+    */
+    public void addPositionPart(Field field, String value)
+    {
+        if (positionFv == null)
+        {
+            positionFv = new Hashtable();
+        }
 
-	/**
-	to be called by DbLinkPositonItems
-	*/
-	public void addPositionPart(Field field, String value) {
-	    if(positionFv==null)
-	    	positionFv=new Hashtable();
+        positionFv.put(field, value);
+    }
 
-	    positionFv.put(field, value);
-	}
 
-	public Table getTable() {
-		return table;
-	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public Table getTable()
+    {
+        return table;
+    }
 
-	public int doStartTag() throws javax.servlet.jsp.JspException {
-		// determinate table
-		if(this.tableName!=null) {
-			this.table = config.getTableByName(tableName);
-		} else if(this.parentForm!=null) { // we must try if we get info from parentForm
-			this.table = parentForm.getTable();
-		} else {
-			throw new IllegalArgumentException("no table specified. either you define expliclty the attribute \"tableName\" or you put this tag inside a db:form/db-element!");
-		}
 
-		if(position==null) // if position was not set explicitly,
-			return EVAL_BODY_TAG;  // we have to evaluate body and hopefully find DbLinkPositionItems there
-		else
-			return SKIP_BODY; // if position was provided we don't need to look into body
-	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     *
+     * @throws javax.servlet.jsp.JspException DOCUMENT ME!
+     * @throws IllegalArgumentException DOCUMENT ME!
+     */
+    public int doStartTag() throws javax.servlet.jsp.JspException
+    {
+        // determinate table
+        if (this.tableName != null)
+        {
+            this.table = config.getTableByName(tableName);
+        }
+        else if (this.parentForm != null)
+        { // we must try if we get info from parentForm
+            this.table = parentForm.getTable();
+        }
+        else
+        {
+            throw new IllegalArgumentException("no table specified. either you define expliclty the attribute \"tableName\" or you put this tag inside a db:form/db-element!");
+        }
 
-	public int doBodyEndTag() throws javax.servlet.jsp.JspException {
-		return SKIP_BODY;
-	}
+        if (position == null) // if position was not set explicitly,
+        {
+            return EVAL_BODY_TAG; // we have to evaluate body and hopefully find DbLinkPositionItems there
+        }
+        else
+        {
+            return SKIP_BODY; // if position was provided we don't need to look into body
+        }
+    }
 
-	public int doEndTag() throws javax.servlet.jsp.JspException {
 
-		try {
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     *
+     * @throws javax.servlet.jsp.JspException DOCUMENT ME!
+     */
+    public int doBodyEndTag() throws javax.servlet.jsp.JspException
+    {
+        return SKIP_BODY;
+    }
 
-			// determinate position inside table (key)
-			if(this.position==null) { // not explic. def. by attribute
-			  if(positionFv!=null) { // but (maybe) defined by sub-elements (DbLinkPositionItem)
-				position = table.getKeyPositionString(positionFv);
-			  }
-			}
 
-			// build tag
-			StringBuffer tagBuf = new StringBuffer(200);
-			String contextPath = ((HttpServletRequest) pageContext.getRequest()).getContextPath();
-			tagBuf.append(contextPath);
-			
-			// 2002-01-17 Fix contributed by Dirk Kraemer and Bertram Gong//
-			if(!contextPath.endsWith("/"))
-				tagBuf.append("/");
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     *
+     * @throws javax.servlet.jsp.JspException DOCUMENT ME!
+     * @throws JspException DOCUMENT ME!
+     */
+    public int doEndTag() throws javax.servlet.jsp.JspException
+    {
+        try
+        {
+            // determinate position inside table (key)
+            if (this.position == null)
+            { // not explic. def. by attribute
 
-			tagBuf.append("servlet/control?ac_goto_x=t&dataac_goto_x_fu=");
-			tagBuf.append(href);
-			tagBuf.append("&dataac_goto_x_destTable="); // table is required. we force to define a valid table. because we do not want the developer to use this tag instead of normal <a href="">-tags to arbitrary (static) ressources, as this would slow down the application.
-			tagBuf.append(table.getId());
-			if(position!=null) { // position within table is not required. if no position was provided/determinated, dbForm will navigate to the first row
-				tagBuf.append("&dataac_goto_x_destPos=");
-				tagBuf.append(position);
-			}
+                if (positionFv != null)
+                { // but (maybe) defined by sub-elements (DbLinkPositionItem)
+                    position = table.getKeyPositionString(positionFv);
+                }
+            }
 
-			HttpServletResponse response = (HttpServletResponse) pageContext.getResponse();
-			pageContext.getOut().write(response.encodeURL(tagBuf.toString()));
+            // build tag
+            StringBuffer tagBuf = new StringBuffer(200);
+            String contextPath = ((HttpServletRequest) pageContext.getRequest()).getContextPath();
+            tagBuf.append(contextPath);
 
-		} 	catch(java.io.IOException ioe) {
-			throw new JspException("IO Error: "+ioe.getMessage());
-		}	catch(Exception e) {
-			throw new JspException("Error: "+e.getMessage());
-		}
+            // 2002-01-17 Fix contributed by Dirk Kraemer and Bertram Gong//
+            if (!contextPath.endsWith("/"))
+            {
+                tagBuf.append("/");
+            }
 
-		return EVAL_PAGE;
-	}
+            tagBuf.append("servlet/control?ac_goto_x=t&dataac_goto_x_fu=");
+            tagBuf.append(href);
+            tagBuf.append("&dataac_goto_x_destTable="); // table is required. we force to define a valid table. because we do not want the developer to use this tag instead of normal <a href="">-tags to arbitrary (static) ressources, as this would slow down the application.
+            tagBuf.append(table.getId());
 
-  public void setPageContext(final javax.servlet.jsp.PageContext pageContext)  {
-	super.setPageContext(pageContext);
-	this.config = (DbFormsConfig) pageContext.getServletContext().getAttribute(DbFormsConfig.CONFIG);
-  }  
+            if (position != null)
+            { // position within table is not required. if no position was provided/determinated, dbForm will navigate to the first row
+                tagBuf.append("&dataac_goto_x_destPos=");
+                tagBuf.append(position);
+            }
 
-  public void setParent(final javax.servlet.jsp.tagext.Tag parent) {
-	super.setParent(parent);
-	this.parentForm = (DbFormTag) findAncestorWithClass(this, DbFormTag.class); // may be null!
-  }  
+            HttpServletResponse response = (HttpServletResponse) pageContext.getResponse();
+            pageContext.getOut().write(response.encodeURL(tagBuf.toString()));
+        }
+        catch (java.io.IOException ioe)
+        {
+            throw new JspException("IO Error: " + ioe.getMessage());
+        }
+        catch (Exception e)
+        {
+            throw new JspException("Error: " + e.getMessage());
+        }
 
+        return EVAL_PAGE;
+    }
+
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param pageContext DOCUMENT ME!
+     */
+    public void setPageContext(final javax.servlet.jsp.PageContext pageContext)
+    {
+        super.setPageContext(pageContext);
+        this.config = (DbFormsConfig) pageContext.getServletContext().getAttribute(DbFormsConfig.CONFIG);
+    }
+
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param parent DOCUMENT ME!
+     */
+    public void setParent(final javax.servlet.jsp.tagext.Tag parent)
+    {
+        super.setParent(parent);
+        this.parentForm = (DbFormTag) findAncestorWithClass(this, DbFormTag.class); // may be null!
+    }
 }

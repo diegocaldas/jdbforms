@@ -4,7 +4,7 @@
  * $Date$
  *
  * DbForms - a Rapid Application Development Framework
- * Copyright (C) 2001 Joachim Peer <j.peer@gmx.net> et al.
+ * Copyright (C) 2001 Joachim Peer <joepeer@excite.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,10 +22,10 @@
  */
 
 package org.dbforms.event;
-
 import java.sql.*;
 import java.util.*;
 import org.dbforms.*;
+
 
 
 /****
@@ -35,9 +35,15 @@ import org.dbforms.*;
  *
  * @author Joe Peer <j.peer@gmx.net>
  */
-
-public abstract class DatabaseEvent extends WebEvent {
-
-	public abstract void processEvent(Connection con) throws SQLException, MultipleValidationException;
-
+public abstract class DatabaseEvent extends WebEvent
+{
+    /**
+     * DOCUMENT ME!
+     *
+     * @param con DOCUMENT ME!
+     *
+     * @throws SQLException DOCUMENT ME!
+     * @throws MultipleValidationException DOCUMENT ME!
+     */
+    public abstract void processEvent(Connection con) throws SQLException, MultipleValidationException;
 }
