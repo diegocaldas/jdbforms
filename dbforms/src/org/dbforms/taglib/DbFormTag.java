@@ -285,7 +285,6 @@ public class DbFormTag
       if (fieldNames == null) {
          fieldNames = new Hashtable();
       }
-
       fieldNames.putAll(fields);
    }
 
@@ -295,9 +294,12 @@ public class DbFormTag
     *
     * @param  tableName The new tableName value
     */
-   public void setTableName(String tableName) {
+   public void setTableName(String tableName) throws Exception {
       this.tableName = tableName;
       this.table = getConfig().getTableByName(tableName);
+      if (table == null) {
+         throw new Exception("Table " + tableName + " not found in configuration"); 
+      }
       this.tableId = table.getId();
    }
 
