@@ -29,11 +29,16 @@ import java.sql.*;
 import java.util.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
-import org.apache.struts.digester.Digester;  // thanks to everybody involved for this great tool!
+
+//import org.apache.struts.digester.Digester;  // thanks to everybody involved for this great tool!
 //import org.apache.struts.taglib.form.Constants;
-import org.apache.struts.util.BeanUtils;
-import org.apache.struts.util.GenericDataSource;
-import org.apache.struts.util.MessageResources;
+//import org.apache.struts.util.BeanUtils;
+//import org.apache.struts.util.GenericDataSource;
+//import org.apache.struts.util.MessageResources;
+
+import org.apache.commons.digester.*;
+import org.apache.commons.beanutils.*;
+
 import org.xml.sax.SAXException;
 
 import org.apache.log4j.Category;

@@ -84,6 +84,9 @@ public class FileServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response)
        throws    ServletException, IOException {
 
+				logCat.debug("config="+config);
+				logCat.debug("config.getDbConnection()="+config.getDbConnection());
+				logCat.debug("config.getDbConnection().getConnection()="+config.getDbConnection().getConnection());
 				Connection con = config.getDbConnection().getConnection();
 
 				String tf = request.getParameter("tf");
