@@ -293,4 +293,18 @@ public class DbSearchComboTag extends DbSearchTag
    }
 
    // ------------------------------------------------------ Protected Methods
+   /**
+    * @return
+    */
+   public String getSize() {
+      return size;
+   }
+
+   /**
+    * @param string
+    */
+   public void setSize(String string) {
+      size = string;
+   }
+
 }
