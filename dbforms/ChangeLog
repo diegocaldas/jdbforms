@@ -1,3 +1,15 @@
+2003-07-29
+(Henner.Kollmann@gmx.de)
+   - integrated junit tesing for the client side. Now we can test the results of dbforms.
+   - New button: NavCopyButton to generate a new record with copying the old values
+     (thanks to our new developer Stefano Borghi)
+   - Bug fixes.
+   - merged the developer branch v1_1_4dev back to the head revision.
+   - setup automatic deployment task to update the web side quite often.
+   - new documentation and uml diagrams (thanks to Luca)
+   
+      
+ 
 ====================== v1_1_4dev was released ==============================================       
 2003-05-03
 (Henner.Kollmann@gmx.de)
