@@ -47,48 +47,49 @@ import org.apache.log4j.Category;
 
 public class FieldValue implements Cloneable {
 
-	static Category logCat = Category.getInstance(FieldValue.class.getName()); // logging category for this class
+    static Category logCat = Category.getInstance(FieldValue.class.getName()); // logging category for this class
 
-	//--------- constants -------------------------------------------------------------
+    //--------- constants -------------------------------------------------------------
 
-	public static int COMPARE_NONE  = 0;
-	public static int COMPARE_INCLUSIVE  = 1;
-	public static int COMPARE_EXCLUSIVE  = 2;
+    public static int COMPARE_NONE  = 0;
+    public static int COMPARE_INCLUSIVE  = 1;
+    public static int COMPARE_EXCLUSIVE  = 2;
 
-	// 20020703-HKK: Make const public static final to use it outside this class!
-	public static final int SEARCH_ALGO_SHARP = 0;
-	public static final int SEARCH_ALGO_WEAK = 1;
+    // 20020703-HKK: Make const public static final to use it outside this class!
+    public static final int SEARCH_ALGO_SHARP = 0;
+    public static final int SEARCH_ALGO_WEAK = 1;
 
-	// 20020703-HKK: Extending search algorithm with WEAK_START, WEAK_END, WEAK_START_END
-        //               results in like '%search', 'search%', '%search%'
-        public static final int SEARCH_ALGO_WEAK_START = 2;
-        public static final int SEARCH_ALGO_WEAK_END = 3;
-        public static final int SEARCH_ALGO_WEAK_START_END = 4;
+    // 20020703-HKK: Extending search algorithm with WEAK_START, WEAK_END, WEAK_START_END
+    //               results in like '%search', 'search%', '%search%'
+    public static final int SEARCH_ALGO_WEAK_START      = 2;
+    public static final int SEARCH_ALGO_WEAK_END        = 3;
+    public static final int SEARCH_ALGO_WEAK_START_END  = 4;
 
-	public static final int FILTER_EQUAL					= 0;
-	public static final int FILTER_GREATER_THEN			= 1;
-	public static final int FILTER_GREATER_THEN_EQUAL	= 3;
-	public static final int FILTER_SMALLER_THEN			= 2;
-	public static final int FILTER_SMALLER_THEN_EQUAL	= 4;
-	public static final int FILTER_LIKE  					= 5;
-	public static final int FILTER_NOT_EQUAL 	 			= 6;
-	public static final int FILTER_NULL  					= 7;
-	public static final int FILTER_NOT_NULL  				= 8;
+    public static final int FILTER_EQUAL                = 0;
+    public static final int FILTER_GREATER_THEN         = 1;
+    public static final int FILTER_GREATER_THEN_EQUAL   = 3;
+    public static final int FILTER_SMALLER_THEN         = 2;
+    public static final int FILTER_SMALLER_THEN_EQUAL   = 4;
+    public static final int FILTER_LIKE                 = 5;
+    public static final int FILTER_NOT_EQUAL            = 6;
+    public static final int FILTER_NULL                 = 7;
+    public static final int FILTER_NOT_NULL             = 8;
 
   //--------- properties ------------------------------------------------------------
 
-	private Field field;
-	private String fieldValue; // a value a field is associated with
-	private boolean sortDirection; // Field.ORDER_ASCENDING or Field.ORDER_DESCENDING
-	private boolean renderHiddenHtmlTag; // if FieldValue is used in a "childFieldValue", it signalizes if it should be rendered as hidden tag or not (if "stroke out")
-	private int searchMode; // if used in an argument for searching: AND || OR!
-	private int searchAlgorithm; // if used in an argument for searching: SHARP || WEAK!
-	private int operator; // if used in a filter argument: the type of filter comparison operator (see FILTER_* definitions above)
+    private Field field;
+    private String fieldValue; // a value a field is associated with
+    private boolean sortDirection; // Field.ORDER_ASCENDING or Field.ORDER_DESCENDING
+    private boolean renderHiddenHtmlTag; // if FieldValue is used in a "childFieldValue", it signalizes if it should be rendered as hidden tag or not (if "stroke out")
+    private int searchMode; // if used in an argument for searching: AND || OR!
+    private int searchAlgorithm; // if used in an argument for searching: SHARP || WEAK!
+    private int operator; // if used in a filter argument: the type of filter comparison operator (see FILTER_* definitions above)
+    private boolean logicalOR = false;  // specifies whether to OR all values or AND them...
 
-	//--------- contructors -----------------------------------------------------------
+    //--------- contructors -----------------------------------------------------------
 
   // Empty constructor
-	public FieldValue() {}
+    public FieldValue() {}
 
   /**
    * constructor
@@ -98,11 +99,11 @@ public class FieldValue implements Cloneable {
    * @param renderHiddenHtmlTag
    * @author
    */
-	public FieldValue(Field field, String fieldValue, boolean renderHiddenHtmlTag) {
-		this.field = field;
-		this.fieldValue = fieldValue;
-		this.renderHiddenHtmlTag = renderHiddenHtmlTag;
-	}
+    public FieldValue(Field field, String fieldValue, boolean renderHiddenHtmlTag) {
+        this.field = field;
+        this.fieldValue = fieldValue;
+        this.renderHiddenHtmlTag = renderHiddenHtmlTag;
+    }
 
 
 
@@ -115,71 +116,90 @@ public class FieldValue implements Cloneable {
    * @param renderHiddenHtmlTag
    * @param operator
    */
-	public FieldValue(Field field, String fieldValue, boolean renderHiddenHtmlTag, int operator) {
-		this.field = field;
-		this.fieldValue = fieldValue;
-		this.renderHiddenHtmlTag = renderHiddenHtmlTag;
-		this.operator = operator;
-	}
-
-	public int getOperator() {
-		return operator;
-	}
+    public FieldValue(Field field, String fieldValue, boolean renderHiddenHtmlTag, int operator) {
+        this.field = field;
+        this.fieldValue = fieldValue;
+        this.renderHiddenHtmlTag = renderHiddenHtmlTag;
+        this.operator = operator;
+    }
 
 
 
+  /**
+   * constructor
+   *
+   * @param field
+   * @param fieldValue
+   * @param renderHiddenHtmlTag
+   * @param operator
+   */
+    public FieldValue(Field field, String fieldValue, boolean renderHiddenHtmlTag, int operator, boolean isLogicalOR) {
+        this.field = field;
+        this.fieldValue = fieldValue;
+        this.renderHiddenHtmlTag = renderHiddenHtmlTag;
+        this.operator = operator;
+        this.logicalOR = isLogicalOR;
+    }
 
-	//--------- poperty getters and setters -------------------------------------------
 
-	public void setField(Field field) {
-		this.field = field;
-	}
+    public int getOperator() {
+        return operator;
+    }
 
-	public Field getField() {
-		return field;
-	}
 
-	public void setFieldValue(String fieldValue) {
-		this.fieldValue = fieldValue;
-	}
 
-	public String getFieldValue() {
-		return fieldValue;
-	}
 
-	public void setSortDirection(boolean sortDirection) {
-		this.sortDirection = sortDirection;
+    //--------- poperty getters and setters -------------------------------------------
 
-	}
+    public void setField(Field field) {
+        this.field = field;
+    }
 
-	public boolean getSortDirection() {
-		return sortDirection;
-	}
+    public Field getField() {
+        return field;
+    }
 
-	public void setRenderHiddenHtmlTag(boolean renderHiddenHtmlTag) {
-		this.renderHiddenHtmlTag = renderHiddenHtmlTag;
-	}
+    public void setFieldValue(String fieldValue) {
+        this.fieldValue = fieldValue;
+    }
 
-	public boolean getRenderHiddenHtmlTag() {
-		return renderHiddenHtmlTag;
-	}
+    public String getFieldValue() {
+        return fieldValue;
+    }
 
-	public void setSearchMode(int searchMode) {
-		this.searchMode = searchMode;
+    public void setSortDirection(boolean sortDirection) {
+        this.sortDirection = sortDirection;
 
-	}
+    }
 
-	public int getSearchMode() {
-		return searchMode;
-	}
+    public boolean getSortDirection() {
+        return sortDirection;
+    }
 
-	public void setSearchAlgorithm(int searchAlgorithm) {
-		this.searchAlgorithm = searchAlgorithm;
-	}
+    public void setRenderHiddenHtmlTag(boolean renderHiddenHtmlTag) {
+        this.renderHiddenHtmlTag = renderHiddenHtmlTag;
+    }
 
-	public int getSearchAlgorithm() {
-		return searchAlgorithm;
-	}
+    public boolean getRenderHiddenHtmlTag() {
+        return renderHiddenHtmlTag;
+    }
+
+    public void setSearchMode(int searchMode) {
+        this.searchMode = searchMode;
+
+    }
+
+    public int getSearchMode() {
+        return searchMode;
+    }
+
+    public void setSearchAlgorithm(int searchAlgorithm) {
+        this.searchAlgorithm = searchAlgorithm;
+    }
+
+    public int getSearchAlgorithm() {
+        return searchAlgorithm;
+    }
 
   //---------------------------------------------------------------------------
   // this class serves as helper for building and populating queries:
@@ -196,22 +216,22 @@ public class FieldValue implements Cloneable {
 
   public static String getWhereEqualsClause(FieldValue[] fv) {
 
-		StringBuffer buf = new StringBuffer();
-		if(fv != null && fv.length > 0) {
+        StringBuffer buf = new StringBuffer();
+        if(fv != null && fv.length > 0) {
 
-			for(int i=0; i<fv.length; i++) {
-				buf.append(fv[i].getField().getName());
+            for(int i=0; i<fv.length; i++) {
+                buf.append(fv[i].getField().getName());
 
-				buf.append(" = ");
-				buf.append(" ? ");
+                buf.append(" = ");
+                buf.append(" ? ");
 
-				if(i < fv.length-1)
-					buf.append(" AND ");
-			}
-		}
-		return buf.toString();
+                if(i < fv.length-1)
+                    buf.append(" AND ");
+            }
+        }
+        return buf.toString();
 
-	}
+    }
    */
 
   /**
@@ -225,39 +245,39 @@ public class FieldValue implements Cloneable {
    */
   public static String getWhereClause(FieldValue[] fv) {
 
-		StringBuffer buf = new StringBuffer();
-		if(fv != null && fv.length > 0) {
+        StringBuffer buf = new StringBuffer();
+        if(fv != null && fv.length > 0) {
 
-			for(int i=0; i<fv.length; i++) {
+            for(int i=0; i<fv.length; i++) {
 
 
-				// Depending on the value of isLogicalOR in FieldValue, prefix the filter definition
-				// with either OR or AND (Skip first entry!)
-				if(i != 0)
-				{
-					if(fv[i].isLogicalOR())
-						buf.append(" OR ");
-					else
-						buf.append(" AND ");					
-				}
-			
-				buf.append(fv[i].getField().getName());
-				// Check what type of operator is required
-				switch(fv[i].getOperator()) {
-					case FieldValue.FILTER_EQUAL:				buf.append(" = "); break;
-					case FieldValue.FILTER_NOT_EQUAL:			buf.append(" <> "); break;
-					case FieldValue.FILTER_GREATER_THEN:		buf.append(" > "); break;
-					case FieldValue.FILTER_SMALLER_THEN:		buf.append(" < "); break;
-					case FieldValue.FILTER_GREATER_THEN_EQUAL:	buf.append(" >= "); break;
-					case FieldValue.FILTER_SMALLER_THEN_EQUAL:	buf.append(" <= "); break;
-					case FieldValue.FILTER_LIKE:				buf.append(" like "); break;
+                // Depending on the value of isLogicalOR in FieldValue, prefix the filter definition
+                // with either OR or AND (Skip first entry!)
+                if(i != 0)
+                {
+                    if(fv[i].isLogicalOR())
+                        buf.append(" OR ");
+                    else
+                        buf.append(" AND ");
+                }
 
-				}
-				buf.append(" ? ");
-			}
-		}
-		return buf.toString();
-	}
+                buf.append(fv[i].getField().getName());
+                // Check what type of operator is required
+                switch(fv[i].getOperator()) {
+                    case FieldValue.FILTER_EQUAL:               buf.append(" = "); break;
+                    case FieldValue.FILTER_NOT_EQUAL:           buf.append(" <> "); break;
+                    case FieldValue.FILTER_GREATER_THEN:        buf.append(" > "); break;
+                    case FieldValue.FILTER_SMALLER_THEN:        buf.append(" < "); break;
+                    case FieldValue.FILTER_GREATER_THEN_EQUAL:  buf.append(" >= "); break;
+                    case FieldValue.FILTER_SMALLER_THEN_EQUAL:  buf.append(" <= "); break;
+                    case FieldValue.FILTER_LIKE:                buf.append(" like "); break;
+
+                }
+                buf.append(" ? ");
+            }
+        }
+        return buf.toString();
+    }
 
 
 
@@ -267,15 +287,15 @@ public class FieldValue implements Cloneable {
    * to build a where - clause [that should restrict the resultset in matching to
    * the search fieleds]
    *
-   * convention: 	index 0-n => AND
-   *				index (n+1)-m => OR
+   * convention:    index 0-n => AND
+   *                index (n+1)-m => OR
    *
    * examples
    *
-   *			(A = 'meier' AND X = 'joseph') AND (AGE = '10')
-   *  			(A = 'meier' ) AND (X = 'joseph' OR AGE = '10')
-   *			(X = 'joseph' OR AGE = '10')
-   *			(A = 'meier' AND X = 'joseph')
+   *            (A = 'meier' AND X = 'joseph') AND (AGE = '10')
+   *            (A = 'meier' ) AND (X = 'joseph' OR AGE = '10')
+   *            (X = 'joseph' OR AGE = '10')
+   *            (A = 'meier' AND X = 'joseph')
    *
    * for comparing to code:
    *
@@ -298,49 +318,49 @@ public class FieldValue implements Cloneable {
                     // §2, i.e "A = 'smith'" or "X LIKE 'jose%'"
                     buf.append(fv[i].getField().getName());
                     // 20020927-HKK: Check what type of operator is required
-	                  switch(fv[i].getOperator()){
-	                      case FieldValue.FILTER_EQUAL:               
-	                      	buf.append(" = "); 
-		                buf.append(" ? "); 
-	                      	break;
-	                      case FieldValue.FILTER_NOT_EQUAL:		
-	                      	buf.append(" <> "); 
-		                buf.append(" ? ");
-	                      	break;
-	                      case FieldValue.FILTER_GREATER_THEN:	
-	                      	buf.append(" > "); 
-			        buf.append(" ? ");
-	                      	break;
-	                      case FieldValue.FILTER_SMALLER_THEN:	
-	                      	buf.append(" < "); 
-			        buf.append(" ? ");
-	                      	break;
-	                      case FieldValue.FILTER_GREATER_THEN_EQUAL:	
-	                      	buf.append(" >= "); 
-			        buf.append(" ? ");
-	                      	break;
-	                      case FieldValue.FILTER_SMALLER_THEN_EQUAL:	
-	                      	buf.append(" <= "); 
-    	                        buf.append(" ? ");
-	                      	break;
-	                      case FieldValue.FILTER_LIKE:	
-	                      	buf.append(" LIKE "); 
-			        buf.append(" ? ");
-	                      	break;
-	                      case FieldValue.FILTER_NULL:	
-	                      	buf.append(" IS NULL "); 
-	                      	break;
-	                      case FieldValue.FILTER_NOT_NULL:	
-	                      	buf.append(" IS NOT NULL "); 
-	                      	break;
-	                  }
+                      switch(fv[i].getOperator()){
+                          case FieldValue.FILTER_EQUAL:
+                            buf.append(" = ");
+                        buf.append(" ? ");
+                            break;
+                          case FieldValue.FILTER_NOT_EQUAL:
+                            buf.append(" <> ");
+                        buf.append(" ? ");
+                            break;
+                          case FieldValue.FILTER_GREATER_THEN:
+                            buf.append(" > ");
+                    buf.append(" ? ");
+                            break;
+                          case FieldValue.FILTER_SMALLER_THEN:
+                            buf.append(" < ");
+                    buf.append(" ? ");
+                            break;
+                          case FieldValue.FILTER_GREATER_THEN_EQUAL:
+                            buf.append(" >= ");
+                    buf.append(" ? ");
+                            break;
+                          case FieldValue.FILTER_SMALLER_THEN_EQUAL:
+                            buf.append(" <= ");
+                                buf.append(" ? ");
+                            break;
+                          case FieldValue.FILTER_LIKE:
+                            buf.append(" LIKE ");
+                    buf.append(" ? ");
+                            break;
+                          case FieldValue.FILTER_NULL:
+                            buf.append(" IS NULL ");
+                            break;
+                          case FieldValue.FILTER_NOT_NULL:
+                            buf.append(" IS NOT NULL ");
+                            break;
+                      }
                     if(i < fv.length-1 && fv[i+1].getSearchMode()==mode)
                             buf.append( mode == DbBaseHandlerTag.SEARCHMODE_AND ? "AND " : "OR " ); // §3
                     else {
                     //if(i==fv.length-1 || fv[i+1].getSearchMode()!=mode) {
-                            buf.append(")");	  // §4, §7
+                            buf.append(")");      // §4, §7
                             if(i!=fv.length-1) {
-                              buf.append(" OR ");	// §5 #checkme
+                              buf.append(" OR ");   // §5 #checkme
                             }
                     }
             }
@@ -361,15 +381,15 @@ public class FieldValue implements Cloneable {
   public static int populateWhereEqualsClause(FieldValue[] fv, PreparedStatement ps, int curCol)
   throws SQLException {
 
-		if(fv != null && fv.length > 0) {
-			for(int i=0; i<fv.length; i++) {
-				fillPreparedStatement(fv[i],ps,curCol);
-				curCol++;
-			}
-		}
+        if(fv != null && fv.length > 0) {
+            for(int i=0; i<fv.length; i++) {
+                fillPreparedStatement(fv[i],ps,curCol);
+                curCol++;
+            }
+        }
 
-		return curCol;
-	}
+        return curCol;
+    }
 
 
   /**
@@ -394,57 +414,57 @@ public class FieldValue implements Cloneable {
    */
   public static String getWhereAfterClause(FieldValue[] fv, int compareMode) {
 
-		String conj, disj, opA1, opA2, opB1, opB2;
+        String conj, disj, opA1, opA2, opB1, opB2;
 
-		if(compareMode == FieldValue.COMPARE_INCLUSIVE) {
-			opA1 = ">=";
-			opA2 = "<=";
-			opB1 = ">";
-			opB2 = "<";
-			conj = " AND ";
-			disj = " OR ";
-		} else  { // COMPARE_INCLUSIVE
-			opA1 = ">";
-			opA2 = "<";
-			opB1 = ">=";
-			opB2 = "<=";
-			conj = " OR ";
-			disj = " AND ";
-		}
+        if(compareMode == FieldValue.COMPARE_INCLUSIVE) {
+            opA1 = ">=";
+            opA2 = "<=";
+            opB1 = ">";
+            opB2 = "<";
+            conj = " AND ";
+            disj = " OR ";
+        } else  { // COMPARE_INCLUSIVE
+            opA1 = ">";
+            opA2 = "<";
+            opB1 = ">=";
+            opB2 = "<=";
+            conj = " OR ";
+            disj = " AND ";
+        }
 
-		StringBuffer buf = new StringBuffer();
-		if(fv != null && fv.length > 0) {
+        StringBuffer buf = new StringBuffer();
+        if(fv != null && fv.length > 0) {
 
-			// generate the Ri's
-			for(int i=0; i<fv.length; i++) {
+            // generate the Ri's
+            for(int i=0; i<fv.length; i++) {
 
-				// generate a "fi OpA(i) fi*"
-				buf.append("(");
-				buf.append(fv[i].getField().getName());
-				buf.append(fv[i].getSortDirection()==Field.ORDER_ASCENDING ? opA1 : opA2); // OpA
-				buf.append(" ? ");
+                // generate a "fi OpA(i) fi*"
+                buf.append("(");
+                buf.append(fv[i].getField().getName());
+                buf.append(fv[i].getSortDirection()==Field.ORDER_ASCENDING ? opA1 : opA2); // OpA
+                buf.append(" ? ");
 
-			  // generate the "f(i-1) OpB(i-1) f(i-1)* OR f(i-2) OpB(i-2) f(i-2)* OR ... OR f1 OpB f1*"
-				if(i>0) {
+              // generate the "f(i-1) OpB(i-1) f(i-1)* OR f(i-2) OpB(i-2) f(i-2)* OR ... OR f1 OpB f1*"
+                if(i>0) {
 
-					for(int j=i-1; j>=0; j--)	{
+                    for(int j=i-1; j>=0; j--)   {
 
-						buf.append(disj);
-						buf.append(fv[j].getField().getName());
-						buf.append(fv[j].getSortDirection()==Field.ORDER_ASCENDING ? opB1 : opB2); // OpB
-						buf.append(" ? ");
-					}
-				}
-				buf.append(" ) ");
+                        buf.append(disj);
+                        buf.append(fv[j].getField().getName());
+                        buf.append(fv[j].getSortDirection()==Field.ORDER_ASCENDING ? opB1 : opB2); // OpB
+                        buf.append(" ? ");
+                    }
+                }
+                buf.append(" ) ");
 
-				if(i < fv.length-1)
-					buf.append(conj); // link the R's together (conjunction)
+                if(i < fv.length-1)
+                    buf.append(conj); // link the R's together (conjunction)
 
-			}
+            }
 
-		}
-		return buf.toString();
-	}
+        }
+        return buf.toString();
+    }
 
 
   /**
@@ -460,60 +480,60 @@ public class FieldValue implements Cloneable {
   public static int populateWhereAfterClause(FieldValue[] fv, PreparedStatement ps, int curCol)
   throws SQLException {
 
-		if(fv != null && fv.length > 0) {
-			// populate the Ri's
-			for(int i=0; i<fv.length; i++) {
-				// populate a "fi OpA(i) fi*"
+        if(fv != null && fv.length > 0) {
+            // populate the Ri's
+            for(int i=0; i<fv.length; i++) {
+                // populate a "fi OpA(i) fi*"
 
-				logCat.info("setting col "+curCol);
-				fillPreparedStatement(fv[i], ps, curCol);
-				curCol++;
-			  // populate the "f(i-1) OpB(i-1) f(i-1)* OR f(i-2) OpB(i-2) f(i-2)* OR ... OR f1 OpB f1*"
-				if(i>0) {
-					for(int j=i-1; j>=0; j--)	{
-						logCat.info("setting col "+curCol);
-						fillPreparedStatement(fv[j], ps, curCol);
-						curCol++;
-					}
-				}
-			}
-		}
+                logCat.info("setting col "+curCol);
+                fillPreparedStatement(fv[i], ps, curCol);
+                curCol++;
+              // populate the "f(i-1) OpB(i-1) f(i-1)* OR f(i-2) OpB(i-2) f(i-2)* OR ... OR f1 OpB f1*"
+                if(i>0) {
+                    for(int j=i-1; j>=0; j--)   {
+                        logCat.info("setting col "+curCol);
+                        fillPreparedStatement(fv[j], ps, curCol);
+                        curCol++;
+                    }
+                }
+            }
+        }
 
-		return curCol;
- 	}  
+        return curCol;
+    }
 
   /**
    * inverts the sorting direction of all FieldValue objects in the given array
    * [ASC-->DESC et vice versa]
    */
-	public static void invert(FieldValue[] fv) {
-		for(int i=0; i<fv.length; i++)
-		  fv[i].sortDirection = (!fv[i].sortDirection);
-	}
+    public static void invert(FieldValue[] fv) {
+        for(int i=0; i<fv.length; i++)
+          fv[i].setSortDirection(!fv[i].getSortDirection());
+    }
 
-	/**
-	 * returns the part of the orderby-clause represented by this FieldValue object.
-	 * FieldName [DESC]
-	 * (ASC will be not printed because it is defined DEFAULT in SQL
-	 * if there are RDBMS which do not tolerate this please let me know; then i'll
-	 * change it)
-	 */
-	public String getOrderClause() {
-		StringBuffer buf = new StringBuffer();
-	  buf.append(field.getName());
-		if(sortDirection == Field.ORDER_DESCENDING)
-		 	buf.append(" DESC");
+    /**
+     * returns the part of the orderby-clause represented by this FieldValue object.
+     * FieldName [DESC]
+     * (ASC will be not printed because it is defined DEFAULT in SQL
+     * if there are RDBMS which do not tolerate this please let me know; then i'll
+     * change it)
+     */
+    public String getOrderClause() {
+        StringBuffer buf = new StringBuffer();
+      buf.append(field.getName());
+        if(sortDirection == Field.ORDER_DESCENDING)
+            buf.append(" DESC");
 
-		return buf.toString();
-	}
+        return buf.toString();
+    }
 
-	private static void fillPreparedStatement(FieldValue cur, PreparedStatement ps, int curCol)
-	throws SQLException{
-		Field curField = cur.getField();
-		String valueStr = cur.getFieldValue();
+    private static void fillPreparedStatement(FieldValue cur, PreparedStatement ps, int curCol)
+    throws SQLException{
+        Field curField = cur.getField();
+        String valueStr = cur.getFieldValue();
 
-		logCat.info("setting "+cur.getField().getName()+" to value "+valueStr+" of type "+curField.getType());
-       
+        logCat.info("setting "+cur.getField().getName()+" to value "+valueStr+" of type "+curField.getType());
+
                 // 20020703-HKK: Extending search algorithm with WEAK_START, WEAK_END, WEAK_START_END
                 //               results in like '%search', 'search%', '%search%'
                 switch (cur.getSearchAlgorithm()) {
@@ -528,81 +548,64 @@ public class FieldValue implements Cloneable {
                         break;
                 }
                 switch (cur.getOperator()) {
-                    case FieldValue.FILTER_NULL:	
+                    case FieldValue.FILTER_NULL:
                         break;
-                      case FieldValue.FILTER_NOT_NULL:	
+                      case FieldValue.FILTER_NOT_NULL:
                         break;
                     default:
                         SqlUtil.fillPreparedStatement(ps, curCol, valueStr, curField.getType());
-                }        
-	}
+                }
+    }
 
 
-	/**
-	 transfer values from asscociative (name-orientated, user friendly) hashtable [param 'assocFv']
-	 into plain fieldValues objects [param 'fv']
+    /**
+     transfer values from asscociative (name-orientated, user friendly) hashtable [param 'assocFv']
+     into plain fieldValues objects [param 'fv']
 
-	public static void synchronizeData(FieldValue[] fv, Hashtable assocFv) {
+    public static void synchronizeData(FieldValue[] fv, Hashtable assocFv) {
 
-		for(int i=0; i<fv.length; i++) {
-		  String fieldName = fv[i].getField().getName();
-		  String valueFromHash = (String) assocFv.get(fieldName);
-		  fv[i].setFieldValue(valueFromHash);
-		}
+        for(int i=0; i<fv.length; i++) {
+          String fieldName = fv[i].getField().getName();
+          String valueFromHash = (String) assocFv.get(fieldName);
+          fv[i].setFieldValue(valueFromHash);
+        }
 
-	}
+    }
 
 */
 
   public Object clone() {
-	try {
-		return super.clone(); // shallow copy ;=)
-	} catch ( CloneNotSupportedException e ) {
-	  // should not happen
-	}
-		return null;
-  }    
+    try {
+        return super.clone(); // shallow copy ;=)
+    } catch ( CloneNotSupportedException e ) {
+      // should not happen
+    }
+        return null;
+  }
 
 
   public String toString() {
-	StringBuffer buf = new StringBuffer();
+    StringBuffer buf = new StringBuffer();
 
-	if(field!=null) {
-		buf.append("FieldName=");
-		buf.append(field.getName());
-	}
-	buf.append(", fieldValue=");
-	buf.append(fieldValue);
-	buf.append(", sortDirection=");
-	buf.append(sortDirection);
-	buf.append(", renderHiddenHtmlTag=");
-	buf.append(renderHiddenHtmlTag);
-	buf.append(", searchMode=");
-	buf.append(searchMode);
-	buf.append(", searchAlgorithm=");
-	buf.append(searchAlgorithm);
+    if(field!=null) {
+        buf.append("FieldName=");
+        buf.append(field.getName());
+    }
+    buf.append(", fieldValue=");
+    buf.append(fieldValue);
+    buf.append(", sortDirection=");
+    buf.append(sortDirection);
+    buf.append(", renderHiddenHtmlTag=");
+    buf.append(renderHiddenHtmlTag);
+    buf.append(", searchMode=");
+    buf.append(searchMode);
+    buf.append(", searchAlgorithm=");
+    buf.append(searchAlgorithm);
 
-	return buf.toString();
-  }    
+    return buf.toString();
+  }
 
 
-	private boolean logicalOR = false;
-
-  /**
-   * constructor
-   *
-   * @param field
-   * @param fieldValue
-   * @param renderHiddenHtmlTag
-   * @param operator
-   */
-	public FieldValue(Field field, String fieldValue, boolean renderHiddenHtmlTag, int operator, boolean isLogicalOR) {
-		this.field = field;
-		this.fieldValue = fieldValue;
-		this.renderHiddenHtmlTag = renderHiddenHtmlTag;
-		this.operator = operator;
-		this.logicalOR = isLogicalOR;
-	}
 
 /**
  * Insert the method's description here.
@@ -610,7 +613,7 @@ public class FieldValue implements Cloneable {
  * @return boolean
  */
 public boolean isLogicalOR() {
-	return logicalOR;
+    return logicalOR;
 }
 
 /**
@@ -619,6 +622,6 @@ public boolean isLogicalOR() {
  * @param newLogicalOR boolean
  */
 public void setLogicalOR(boolean newLogicalOR) {
-	logicalOR = newLogicalOR;
+    logicalOR = newLogicalOR;
 }
 }
