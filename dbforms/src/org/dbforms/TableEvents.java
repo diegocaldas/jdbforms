@@ -103,19 +103,38 @@ public class TableEvents
      *  Get the event id related to the input event type.
      *
      * @param eventType the event type
-     * @return the event id related to the input event type
+     * @return the event id related to the input event type, or null if
+     *         the object does not exist
      */
     public String getEventId(String eventType)
     {
-        String id = null;
+        String    id    = null;
+        EventInfo einfo = getEventInfo(eventType);
+
+        if (einfo != null)
+            id = einfo.getId();
+
+        return id;
+    }
+
+
+    /**
+     *  Get the eventInfo object related to the input event type.
+     *
+     * @param eventType the event type string
+     * @return the eventInfo object related to the input event type, or null if
+     *         the object does not exist
+     */
+    public EventInfo getEventInfo(String eventType)
+    {
+        EventInfo einfo = null;
 
         if (eventMap.containsKey(eventType))
         {
-            EventInfo einfo = (EventInfo)eventMap.get(eventType);
-            id = einfo.getId();
+            einfo = (EventInfo)eventMap.get(eventType);
         }
 
-        return id;
+        return einfo;
     }
 
 
