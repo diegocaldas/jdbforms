@@ -25,6 +25,7 @@ import javax.servlet.jsp.*;
 import javax.servlet.jsp.tagext.*;
 
 import org.dbforms.config.*;
+import org.dbforms.util.Util;
 import org.apache.log4j.Category;
 
 
@@ -60,7 +61,7 @@ public class DbPosTag extends TagSupport
          tagBuf.append(parentForm.getTable().getId());
          tagBuf.append("_");
          tagBuf.append(parentForm.getPositionPath());
-         pageContext.getOut().write(tagBuf.toString());
+         pageContext.getOut().write(Util.decode(tagBuf.toString(), pageContext.getRequest().getCharacterEncoding()));
       }
       catch (java.io.IOException ioe)
       {

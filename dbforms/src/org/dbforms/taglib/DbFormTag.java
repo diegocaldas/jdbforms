@@ -1530,7 +1530,8 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
          if (!ResultSetVector.isNull(resultSetVector)) {
             pageContext.setAttribute("rsv_" + tableName.replace('.', '_'), resultSetVector);
             pageContext.setAttribute("currentRow_" + tableName.replace('.', '_'), resultSetVector.getCurrentRowAsHashtable());
-            pageContext.setAttribute("position_" + tableName.replace('.', '_'), table.getPositionString(resultSetVector));
+            pageContext.setAttribute("position_" + tableName.replace('.', '_'), 
+                        Util.decode(table.getPositionString(resultSetVector), pageContext.getRequest().getCharacterEncoding()));
          }
 
          out.println(tagBuf.toString());

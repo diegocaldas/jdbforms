@@ -72,7 +72,7 @@ public class DbBodyTag extends BodyTagSupport
     *
     * @return DOCUMENT ME!
     */
-   public int doStartTag()
+   public int doStartTag() throws javax.servlet.jsp.JspException
    {
       //DbFormTag myParent = (DbFormTag) getParent(); // parent Tag in which this tag is embedded in
       // between this form and its parent lies a DbHeader/Body/Footer-Tag and maybe other tags (styling, logic, etc.)
@@ -111,9 +111,14 @@ public class DbBodyTag extends BodyTagSupport
             pageContext.setAttribute("currentRow_"
                + myParent.getTableName().replace('.', '_'),
                rsv.getCurrentRowAsHashtable());
-            pageContext.setAttribute("position_"
-               + myParent.getTableName().replace('.', '_'),
-               myParent.getTable().getPositionString(rsv));
+            try
+            {
+               pageContext.setAttribute("position_"
+                  + myParent.getTableName().replace('.', '_'),
+                  Util.decode(myParent.getTable().getPositionString(rsv), pageContext.getRequest().getCharacterEncoding()));
+            } catch (Exception e) {
+               throw new JspException(e.getMessage());
+            }
 
             rsv.declinePointer(); // ...and back to present ;=)
          }
