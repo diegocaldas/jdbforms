@@ -106,7 +106,7 @@ will not appear unless the attribute
     To have better control of the fields written to the datebase we changed the interceptor interface of the 
 preUpdate/preInsert/preDelete events to: 
     <screen>
-         public int preXXXXXX(HttpServletRequest request,  Table table, <emphasis role="bold">FieldValues</emphasis> fieldValues,
+         public int preXXXXXX(HttpServletRequest request,  <emphasis role="bold">Table table</emphasis>, <emphasis role="bold">FieldValues</emphasis> fieldValues,
 							  DbFormsConfig config, Connection con) throws ValidationException
     </screen>Now you have full control over the fields written to the datbase, you can remove, change and add fields.</para>
 
