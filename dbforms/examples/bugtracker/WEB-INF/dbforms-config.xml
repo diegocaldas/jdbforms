@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<dbforms-config>
+	<table name="bugs">
+		<field name="id" fieldType="int" size="11" isKey="true" autoInc="true"/>
+		<field name="category" fieldType="int"  size="11" sortable="true" />
+		<field name="priority" fieldType="int" size="11" sortable="true" />
+		<field name="title" fieldType="varchar" size="40"/>
+		<field name="description" fieldType="varchar" size="255"/>
+		<field name="indate" fieldType="datetime" size="19"  sortable="true" />
+		<field name="outdate" fieldType="datetime" size="19"/>
+		<field name="reporter" fieldType="varchar" size="40"  sortable="true" />
+		<field name="bugstate" fieldType="int" size="11"  sortable="true" />
+
+		<granted-privileges
+		  update="bug_admin"
+		  delete="bug_admin"
+		/>
+		
+		<interceptor
+		  className = "com.foo.bar.BugInterceptor"
+		/>
+	
+	</table>
+
+	<table name="category">
+		<field name="id" fieldType="int" size="11" isKey="true"/>
+		<field name="title" fieldType="varchar" size="40"/>
+		<field name="description" fieldType="varchar" size="255"/>
+
+		<granted-privileges
+		  insert="bug_admin"
+		  update="bug_admin"
+		  delete="bug_admin"
+		/>
+
+	</table>
+
+	<table name="priority">
+		<field name="id" fieldType="int" size="11" isKey="true"/>
+		<field name="title" fieldType="varchar" size="40"/>
+		<field name="description" fieldType="varchar" size="255"/>
+
+		<granted-privileges
+		  insert="bug_admin"
+		  update="bug_admin"
+		  delete="bug_admin"
+		/>
+
+	</table>
+
+	<!-- ========== Connection =================================== -->
+	<!--
+	uncomment this if you have access to JNDI of an application server (see users guide for more info)
+	<dbconnection
+		name = "jdbc/dbformstest"
+		isJndi = "true"
+	/>
+	-->
+
+	
+	<dbconnection
+		name   = "jdbc:mysql://localhost/bugtracker"
+		isJndi = "false"
+		conClass  = "org.gjt.mm.mysql.Driver"
+		username = "sa"
+		password = ""
+	/>
+	
+<!--	
+	<dbconnection
+		name   = "jdbc:poolman://oracle_emp"
+		isJndi = "false"
+		conClass  = "com.codestudio.sql.PoolMan"
+	/>	
+-->	
+</dbforms-config>
