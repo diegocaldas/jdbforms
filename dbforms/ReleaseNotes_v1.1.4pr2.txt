@@ -5,6 +5,7 @@ Contents:
 2)   Compatibility Warning
 2-1) Changed interceptor interfaces
 2-2) Changed filter value interface
+2-3) Moved validationException classes
 3)   Details about enhancements and changes
 3-0) Code cleanup
 3-1) New navigation system
@@ -50,6 +51,16 @@ So
 	must be 
 	changed to name like? 
 !
+
+2-3) Moved validationException classes
+---------------------------------------
+To break cyclic references the classes 
+	org/dbforms/event/ValidationException and 
+	org/dbforms/event/MultipleValidationException
+are moved to
+	org/dbforms/config/ValidationException
+	org/dbforms/config/MultipleValidationException
+
 
 
 
