@@ -48,7 +48,12 @@
         <emphasis role="bold">fieldType ="blob"</emphasis> /&gt; 
                     &lt;field name="story" 
         <emphasis role="bold">fieldType ="blob"</emphasis> /&gt; 
-    &lt;/table&gt; 
+
+								&lt;interceptor className="org.dbforms.event.BlobInterceptor"&gt;<br>
+										&nbsp;&nbsp;&lt;param name="blob-column" value="file"/&gt;<br>
+										&nbsp;&nbsp;&lt;param name="name-column" value="filename"/&gt;<br>  
+								&lt;/interceptor&gt;<br>				
+				&lt;/table&gt; 
             &lt;/dbforms-config&gt; 
     
       </screen>

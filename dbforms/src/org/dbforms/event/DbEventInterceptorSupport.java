@@ -23,6 +23,7 @@
 package org.dbforms.event;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Connection;
+import java.util.Map;
 
 import org.dbforms.config.DbEventInterceptor;
 import org.dbforms.config.ValidationException;
@@ -40,6 +41,16 @@ import org.dbforms.config.Table;
 public class DbEventInterceptorSupport implements DbEventInterceptor
 {
 
+	protected Map params;
+	
+	public void setParams(Map params) {
+		this.params = params;
+	}
+
+	public Map getParams() {
+		return params;
+	}	 	
+	
 	/**
 	 * adds or replace a value in the fieldValues
 	 * @param table wich should be used to lookup for the fieldName

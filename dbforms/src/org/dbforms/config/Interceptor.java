@@ -23,7 +23,8 @@
 package org.dbforms.config;
 
 
-
+import java.util.Map;
+import java.util.HashMap;
 
 /****
  * <p>
@@ -31,16 +32,23 @@ package org.dbforms.config;
  * compare org.dbforms.event.DbEventInterceptor
  * </p>
  *
- * @author Joachim Peer <joepeer@wap-force.net>
+ * @author Joachim Peer <j.peer@gmx.net>
  */
 public class Interceptor
 {
    private String  className;
+   // params may contain configuration data for the interceptor
+   private Map params;
+
+   public Interceptor()
+   {
+     params = new HashMap();
+   }
 
    /**
-    * DOCUMENT ME!
+    * sets the name of the interceptor class to be invoked during runtime
     *
-    * @param className DOCUMENT ME!
+    * @param className - name of the Interceptor class
     */
    public void setClassName(String className)
    {
@@ -49,12 +57,21 @@ public class Interceptor
 
 
    /**
-    * DOCUMENT ME!
+    * returns the name of the interceptor class
     *
-    * @return DOCUMENT ME!
+    * @return the name of the interceptor class
     */
    public String getClassName()
    {
       return className;
    }
+
+   public void addParam(String name, String value) 
+	 {
+			params.put(name, value); 
+	 }
+	 
+	 public Map getParams() {
+		 return params;
+	 }
 }
