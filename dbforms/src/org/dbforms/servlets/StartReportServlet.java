@@ -84,9 +84,10 @@ import java.sql.Connection;
  * @author Henner Kollmann
  */
 public class StartReportServlet extends HttpServlet {
-	/** DOCUMENT ME! */
 	private static Category logCat = Category.getInstance("StartReportServlet");
 
+    private static final String REPORTFILEEXTENSION = "jrxml";
+    
 	/** DOCUMENT ME! */
 	public static final String REPORTNAMEPARAM = "reportname";
 
@@ -183,20 +184,7 @@ public class StartReportServlet extends HttpServlet {
 		}
 	}
 
-	/**
-	 * generates a report.
-	 *
-	 * @param reportFileFullName filename of report to process
-	 *        reportHTTPServletRequest generated                by
-	 *        getReportFile! getReportFile should be called before fetching
-	 *        data, so that error handling of report not found e.g. could be
-	 *        processed first!
-	 * @param dataSource data for the report
-	 * @param context ServletContext
-	 * @param request HTTPServletRequest
-	 * @param response HTTPServletResponse
-	 */
-	public static void processReport(
+	private  static void processReport(
 		String reportFileFullName,
 		JRDataSource dataSource,
 		ServletContext context,
@@ -317,17 +305,7 @@ public class StartReportServlet extends HttpServlet {
 		}
 	}
 
-	/**
-	 * DOCUMENT ME!
-	 *
-	 * @param reportFileName DOCUMENT ME!
-	 * @param context DOCUMENT ME!
-	 * @param request DOCUMENT ME!
-	 * @param response DOCUMENT ME!
-	 *
-	 * @return DOCUMENT ME!
-	 */
-	public String getReportFileFullName(
+	private String getReportFileFullName(
 		String reportFileName,
 		ServletContext context,
 		HttpServletRequest request,
@@ -341,7 +319,7 @@ public class StartReportServlet extends HttpServlet {
 				reportFile =
 					context.getRealPath(reportdirs[i] + reportFileName);
 
-				if (FileUtil.fileExists(reportFile + ".xml")) {
+				if (FileUtil.fileExists(reportFile + "." + REPORTFILEEXTENSION)) {
 					found = true;
 
 					break;
@@ -366,7 +344,7 @@ public class StartReportServlet extends HttpServlet {
 	 *
 	 * @return DOCUMENT ME!
 	 */
-	public static String getConnectionName(HttpServletRequest request) {
+	private static String getConnectionName(HttpServletRequest request) {
 		WebEvent webEvent = (WebEvent) request.getAttribute("webEvent");
 		String res = null;
 
@@ -380,14 +358,7 @@ public class StartReportServlet extends HttpServlet {
 		return res;
 	}
 
-	/**
-	 * DOCUMENT ME!
-	 *
-	 * @param request DOCUMENT ME!
-	 * @param response DOCUMENT ME!
-	 * @param e DOCUMENT ME!
-	 */
-	public static void handleException(
+	private static void handleException(
 		HttpServletRequest request,
 		HttpServletResponse response,
 		Exception e) {
@@ -400,13 +371,7 @@ public class StartReportServlet extends HttpServlet {
 				new String[] { e.getMessage()}));
 	}
 
-	/**
-	 * DOCUMENT ME!
-	 *
-	 * @param request DOCUMENT ME!
-	 * @param response DOCUMENT ME!
-	 */
-	public static void handleNoData(
+	private static void handleNoData(
 		HttpServletRequest request,
 		HttpServletResponse response) {
 		sendErrorMessage(
@@ -533,7 +498,7 @@ public class StartReportServlet extends HttpServlet {
 			String s = FileUtil.removeExtension(list[i].getPath());
 			String ext = FileUtil.getExtension(list[i].getPath());
 
-			if (s.startsWith(reportFile) && (ext.equals("xml"))) {
+			if (s.startsWith(reportFile) && (ext.equals(REPORTFILEEXTENSION))) {
 				File xmlFile = list[i];
 				File jasperFile = FileUtil.getFile(s + ".jasper");
 
