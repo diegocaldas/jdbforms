@@ -1,3 +1,10 @@
+2003-01-31
+(Henner.Kollmann@gmx.de)
+   	ConfigServlet.java
+   	    added events to query
+	    rearranged initXMLValidator code
+====================== v1_1_3_pr2 was released ==============================================		
+
 2003-01-28
 (Henner.Kollmann@gmx.de)
 	2 more helper classes:

@@ -102,7 +102,7 @@ public class ConfigServlet extends HttpServlet
             initLogging();
 
             // Setup digester debug level
-            int digesterDebugLevel = 1;
+            int digesterDebugLevel = 0;
 
             String digesterDebugLevelInput = this.getServletConfig().getInitParameter("digesterDebugLevel");
 
@@ -333,6 +333,22 @@ public class ConfigServlet extends HttpServlet
         digester.addSetProperties("dbforms-config/query/interceptor");
         digester.addSetNext("dbforms-config/query/interceptor", "addInterceptor", "org.dbforms.Interceptor");
 
+    	// register custom database or navigation events (parent is "Query");
+    	// 1) for every "events" element, instance a new TableEvents object;
+    	// 2) set the TableEvents reference into the Table object
+    	// 3) for every "event" element, instance a new EventInfo object and set its properties ("type" and "id")
+    	// 4) register the EventInfo object into the TableEvents via TableEvents.addEventInfo()
+    	// 5) for every event's property attribute, instance a new Property object
+    	//    and and set its properties ("name" and "value")
+    	// 6) register the Property object into the EventInfo object
+    	digester.addObjectCreate ("dbforms-config/query/events", "org.dbforms.TableEvents");
+    	digester.addSetNext      ("dbforms-config/query/events", "setTableEvents", "org.dbforms.TableEvents");
+    	digester.addObjectCreate ("dbforms-config/query/events/event", "org.dbforms.event.EventInfo");
+    	digester.addSetProperties("dbforms-config/query/events/event");
+    	digester.addSetNext      ("dbforms-config/query/events/event", "addEventInfo", "org.dbforms.event.EventInfo");
+    	digester.addObjectCreate ("dbforms-config/query/events/event/property", "org.dbforms.util.DbConnectionProperty");
+    	digester.addSetProperties("dbforms-config/query/events/event/property");
+    	digester.addSetNext      ("dbforms-config/query/events/event/property", "addProperty", "org.dbforms.util.DbConnectionProperty");
 
         // parse "DbConnecion" - object
         digester.addObjectCreate("dbforms-config/dbconnection", "org.dbforms.util.DbConnection");
@@ -523,117 +539,90 @@ public class ConfigServlet extends HttpServlet
     }
 
 
-    /**
-     * Initialize the ValidatorResources information for this application.
-     *
-     * @exception IOException if an input/output error is encountered
-     * @exception ServletException if we cannot initialize these resources
-     */
-    protected void initXMLValidator() throws IOException, ServletException
-    {
-        // Map the commons-logging used by commons-validator to Log4J logger
-        System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.Log4JCategoryLog");
+	protected void initXMLValidatorRules(ValidatorResources resources, String validator_rules) throws IOException, ServletException {
+		// Acquire an input stream validator_rules
+		InputStream inputValidatorRules = getServletContext().getResourceAsStream(validator_rules);
+		if (inputValidatorRules == null) {
+			// File not available, log warning
+			logCat.warn("XML Validator rule file not found, XML Validator handler disabled!");
+			return;
+		}
+		//
+		// Initialize ValidatorResources
+		//
+		try {
+			ValidatorResourcesInitializer.initialize(resources, inputValidatorRules, false);
+		} catch (IOException e) {
+			logCat.warn("XML Validator Exception ValidatorResourcesInitializer.initialize  : " + e.getMessage());
+			throw new ServletException(e.toString());
+		} finally {
+			if (inputValidatorRules != null) {
+				try {
+					inputValidatorRules.close();
+				} catch (Exception e) {
+				}
+			}
+		}
+	}
 
-        ValidatorResources resources = new ValidatorResources();
+	protected void initXMLValidatorValidation(ValidatorResources resources, String validation) throws IOException, ServletException {
+		//
+		// LOAD Validation & Validator_rules files
+		//
+		// Acquire an input stream validation
+		InputStream inputValidation = getServletContext().getResourceAsStream(validation);
+		if (inputValidation == null) {
+			// File not available, log warning
+			logCat.warn("XML Validation file not found, XML Validator handler disabled!");
+			return;
+		}
+		try {
+			ValidatorResourcesInitializer.initialize(resources, inputValidation, true);
+		} catch (IOException e) {
+			logCat.warn("XML Validator Exception ValidatorResourcesInitializer.initialize  : " + e.getMessage());
+			throw new ServletException(e.toString());
+		} finally {
+			if (inputValidation != null) {
+				try {
+					inputValidation.close();
+				} catch (Exception e) {
+				}
+			}
+		}
+	}
 
-        logCat.info("initialize XML Validator.");
+	/**
+	 * Initialize the ValidatorResources information for this application.
+	 *
+	 * @exception IOException if an input/output error is encountered
+	 * @exception ServletException if we cannot initialize these resources
+	 */
+	protected void initXMLValidator() throws IOException, ServletException {
+		// Map the commons-logging used by commons-validator to Log4J logger
 
-        String value = getServletConfig().getInitParameter(ValidatorConstants.VALIDATION);
+		System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.Log4JCategoryLog");
 
-        if (value != null)
-        {
-            validation = value;
-        }
+		ValidatorResources resources = new ValidatorResources();
+		logCat.info("initialize XML Validator.");
 
-        value = getServletConfig().getInitParameter(ValidatorConstants.VALIDATOR_RULES);
+		String value;
+		value = getServletConfig().getInitParameter(ValidatorConstants.VALIDATOR_RULES);
+		if (value != null) {
+			validator_rules = value;
+		}
+		initXMLValidatorRules(resources, validator_rules);
 
-        if (value != null)
-        {
-            validator_rules = value;
-        }
+		value = getServletConfig().getInitParameter(ValidatorConstants.VALIDATION);
+		if (value != null) {
+			validation = value;
+		}
+		initXMLValidatorValidation(resources, validation);
 
-        //
-        // LOAD Validation & Validator_rules files
-        //
-        // Acquire an input stream validation
-        InputStream inputValidation = getServletContext().getResourceAsStream(validation);
+		// store this errors object in the servlet context ("application")
+		getServletContext().setAttribute(ValidatorConstants.VALIDATOR, resources);
 
-        if (inputValidation == null)
-        {
-            // File not available, log warning
-            logCat.warn("XML Validation file not found, XML Validator handler disabled!");
-
-            return;
-        }
-
-        // Acquire an input stream validator_rules
-        InputStream inputValidatorRules = getServletContext().getResourceAsStream(validator_rules);
-
-        if (inputValidatorRules == null)
-        {
-            // File not available, log warning
-            logCat.warn("XML Validator rule file not found, XML Validator handler disabled!");
-
-            return;
-        }
-
-        //
-        // Initialize ValidatorResources
-        //
-        try
-        {
-            ValidatorResourcesInitializer.initialize(resources, inputValidatorRules, false);
-        }
-        catch (IOException e)
-        {
-            logCat.warn("XML Validator Exception ValidatorResourcesInitializer.initialize  : " + e.getMessage());
-
-            throw new ServletException(e.toString());
-        }
-        finally
-        {
-            if (inputValidatorRules != null)
-            {
-                try
-                {
-                    inputValidatorRules.close();
-                }
-                catch (Exception e)
-                {
-                }
-            }
-        }
-
-        //
-        try
-        {
-            ValidatorResourcesInitializer.initialize(resources, inputValidation, true);
-        }
-        catch (IOException e)
-        {
-            logCat.warn("XML Validator Exception ValidatorResourcesInitializer.initialize  : " + e.getMessage());
-            throw new ServletException(e.toString());
-        }
-        finally
-        {
-            if (inputValidation != null)
-            {
-                try
-                {
-                    inputValidation.close();
-                }
-                catch (Exception e)
-                {
-                }
-            }
-        }
-
-
-        // store this errors object in the servlet context ("application")
-        getServletContext().setAttribute(ValidatorConstants.VALIDATOR, resources);
-
-        logCat.info(" DbForms Validator : Loaded ");
-    }
+		logCat.info(" DbForms Validator : Loaded ");
+	}
 
 
     /**
