@@ -68,11 +68,10 @@ public class SqlUtil
          return null;
       }
 
-      SimpleDateFormat sdf    = DbFormsConfig.getDateFormatter();
-      Date             result = null;
-
+		Date             result = null;
       try
       {
+			SimpleDateFormat sdf    = DbFormsConfigRegistry.instance().lookup().getDateFormatter();
          result = new Date(TimeUtil.parseDate(sdf.toPattern(), valueStr)
                                    .getTime());
       }
@@ -113,11 +112,11 @@ public class SqlUtil
          return null;
       }
 
-      SimpleDateFormat sdf    = DbFormsConfig.getDateFormatter();
       Timestamp        result = null;
 
       try
       {
+			SimpleDateFormat sdf    = DbFormsConfigRegistry.instance().lookup().getDateFormatter();
          result = new Timestamp(TimeUtil.parseDate(sdf.toPattern(), valueStr)
                                         .getTime());
       }
