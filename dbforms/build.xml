@@ -90,7 +90,7 @@ Happy coding!
     <!-- generate taglib descriptors from taglib-docu using XSL transformation -->
     <target name="generate_taglib" depends="jar_classes">
         <echo message="begin xsl translation"/>
-        <java classname="org.apache.xalan.xslt.Process" fork="true" jvm="${java.home}/bin/java.exe" args="-IN ${etc.dir}/taglib_docu.xml -XSL ${etc.dir}/tld.xsl -OUT ${dist.dir}/dbforms.tld"/>
+        <java classpathref="classpath" classname="org.apache.xalan.xslt.Process" fork="true" jvm="${java.home}/bin/java" args="-IN ${etc.dir}/taglib_docu.xml -XSL ${etc.dir}/tld.xsl -OUT ${dist.dir}/dbforms.tld"/>
         <echo message="end of xsl translation "/>
     </target>
 
