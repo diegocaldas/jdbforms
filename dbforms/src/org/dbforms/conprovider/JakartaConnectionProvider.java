@@ -27,7 +27,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.dbforms.util.Util;
-import org.dbforms.util.SqlUtil;
 
 
 
@@ -90,9 +89,9 @@ public class JakartaConnectionProvider extends ConnectionProvider
     */
    protected Connection getConnection() throws SQLException
    {
-      getCat().debug("::getConnection - MaxActive = " + dataSource.getMaxActive());
-      getCat().debug("::getConnection - NumActive = " + dataSource.getNumActive());
-	  getCat().debug("::getConnection - NumIdle   = " + dataSource.getNumIdle());
+      getLog4JCategory().debug("::getConnection - MaxActive = " + dataSource.getMaxActive());
+      getLog4JCategory().debug("::getConnection - NumActive = " + dataSource.getNumActive());
+	  getLog4JCategory().debug("::getConnection - NumIdle   = " + dataSource.getNumIdle());
 	  return dataSource.getConnection();
    }
 
@@ -119,7 +118,7 @@ public class JakartaConnectionProvider extends ConnectionProvider
          {
             String key = (String) e.nextElement();
             dataSource.addConnectionProperty(key, props.getProperty(key));
-            getCat().info("::init - dataSource property [" + key + "] = ["
+            getLog4JCategory().info("::init - dataSource property [" + key + "] = ["
                + props.getProperty(key) + "]");
          }
       }
@@ -151,8 +150,8 @@ public class JakartaConnectionProvider extends ConnectionProvider
 
       if (!Util.isNull(useLog) && "true".equals(useLog.trim()))
       {
-         getCat().info("::init - dataSource log activated");
-         dataSource.setLogWriter(new Log4jPrintWriter(getCat(), getCat().getPriority()));
+         getLog4JCategory().info("::init - dataSource log activated");
+         dataSource.setLogWriter(new Log4jPrintWriter(getLog4JCategory(), getLog4JCategory().getPriority()));
       }
    }
 }

@@ -121,11 +121,15 @@ public abstract class ConnectionProvider
 
       return str.substring(str.lastIndexOf(tokenSeparator) + 1, str.length());
    }
+   
+   
    /**
-    * @return
+    * Get the Log4J Category object
+    * 
+    * @return the Log4J Category object
     */
-   public Category getCat() {
+   protected Category getLog4JCategory() 
+   {
       return cat;
    }
-
 }
