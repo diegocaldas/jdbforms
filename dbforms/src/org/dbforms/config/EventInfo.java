@@ -37,8 +37,7 @@ import org.dbforms.util.Util;
 public class EventInfo
 {
    /** logging category */
-   protected static Category logCat = Category.getInstance(EventInfo.class
-         .getName());
+   private Category logCat = Category.getInstance(this.getClass().getName());
    private String            id         = null;
    private String            className  = null;
    private String            type       = null;
