@@ -231,7 +231,7 @@ public class ConfigServlet extends HttpServlet
 
 
         // Configure the processing rules
-        // parse "DateFormatter" 
+        // parse "DateFormatter"
         digester.addCallMethod("dbforms-config/date-format", "setDateFormatter", 0);
 
 
@@ -324,6 +324,11 @@ public class ConfigServlet extends HttpServlet
         digester.addSetProperties("dbforms-config/dbconnection/property");
         digester.addSetNext("dbforms-config/dbconnection/property", "addProperty", "org.dbforms.util.DbConnectionProperty");
 
+        // parse "pool-property" - object + add it to parent (which is "DbConnection")
+        digester.addObjectCreate("dbforms-config/dbconnection/pool-property", "org.dbforms.util.DbConnectionProperty");
+        digester.addSetProperties("dbforms-config/dbconnection/pool-property");
+        digester.addSetNext("dbforms-config/dbconnection/pool-property", "addPoolProperty", "org.dbforms.util.DbConnectionProperty");
+
         return digester;
     }
 
@@ -344,7 +349,7 @@ public class ConfigServlet extends HttpServlet
 
 
         // Configure the processing rules
-        // parse "Error" - object 
+        // parse "Error" - object
         digester.addObjectCreate("dbforms-errors/error", "org.dbforms.Error");
         digester.addSetProperties("dbforms-errors/error");
         digester.addSetNext("dbforms-errors/error", "addError", "org.dbforms.Error");
@@ -613,7 +618,7 @@ public class ConfigServlet extends HttpServlet
      *
      * Ex: By setting "localeKey" to "org.apache.struts.action.LOCALE"
      *     you can share the same Locale in the session scope with Struts.
-     * 
+     *
      */
     protected void initLocaleKey()
     {
