@@ -7,8 +7,11 @@
   <currentVersion>1.1.3-pr2</currentVersion>
   <organization>
     <name>DbForms</name>
-    <url>http://www.dbforms.org</url>
-    <logo>http://www.dbforms.org/img/logo.gif</logo>
+    <url>http://jdbforms.sourceforge.net</url>
+    <logo>http://jdbforms.sourceforge.net/img/logo.gif</logo>
+    <!-- 
+      <logo>http://www.dbforms.org/img/logo.gif</logo> 
+    -->
   </organization>
   <inceptionYear>2002</inceptionYear>
   <package>org.dbforms</package>
@@ -29,7 +32,7 @@
   <distributionDirectory></distributionDirectory> 
   <repository>
     <connection>scm:cvs:pserver:anonymous@cvs.jdbforms.sourceforge.net:/cvsroot/jdbforms:dbforms</connection> 
-	<url>http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/jdbforms/dbforms/</url>
+    <url>http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/jdbforms/dbforms/</url>
   </repository>
 
   <mailingLists>
@@ -103,7 +106,7 @@
       <name>Luca Fossato</name>
       <id>foxat</id>
       <email>fossato@pow2.com</email>
-      <organization/>
+      <organization><a href="http://www.pow2.com" target="_new">Power Of Two S.r.l.</a></organization>
       <roles>
         <role>Java Developer</role>
       </roles>
@@ -172,6 +175,15 @@
 
   <contributors>
      <contributor>
+       <name>Bradley M. Handy</name>
+       <email>bhandy@arbor.edu</email>
+       <organization/>
+       <roles>
+         <role>Java Developer</role>
+       </roles>
+     </contributor>
+
+     <contributor>
        <name>Robert W. Husted</name>
        <email>husted@netscape.com</email>
        <organization/>
@@ -181,11 +193,12 @@
      </contributor>
 
      <contributor>
-       <name>Bradley M. Handy</name>
-       <email>bhandy@arbor.edu</email>
+       <name>Matthew Stein</name>
+       <email>mstein@ergito.com</email>
        <organization/>
        <roles>
-         <role>Java Developer</role>
+         <role>XSL Developer</role>
+         <role>Documentation Developer</role>
        </roles>
      </contributor>
   </contributors>
