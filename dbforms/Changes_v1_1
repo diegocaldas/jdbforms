@@ -1,8 +1,45 @@
+2003-01-30
+(fossato@pow2.com)
+    start the "Mavenization" process for the the current DbForms web site.
+	See http://jakarta.apache.org/turbine/maven/ for further informations about the
+    Jakarta Turbine-Maven project.
+ 
+	- started the porting of the actual web site documentation to the xdoc format;
+	- added the "site.xml" ant build file that can be used to build a preview of the
+      "xdoc documentation" - Maven "site:generate" target is quite an heavy beast !! ;^)
+
+	SITE PREVIEW:
+    To generate a *preview* of the web site documentation, follow those steps:
+
+    > cd $DBFORMS_HOME
+    $DBFORMS_HOME > ant -buildfile site.xml
+
+    Ant will build the $DBFORMS_HOME/xdocs_target directory; it will contains 
+	the new html documentation that uses the "jakarta-site2" look
+	http://jakarta.apache.org/site/jakarta-site2.html
+
+    MAVEN SITE GENERATION
+	a) get and install the latest Turbine-Maven distribuition
+	   http://jakarta.apache.org/turbine/maven/
+
+	b.0) put $MAVEN_HOME/bin directory into your system PATH;
+	b.1) put your cvs.exe client program into your system PATH;
+
+    c) > cd $DBFORMS_HOME
+	   $DBFORMS_HOME > maven site:generate
+
+    d) wait a bit... ;^)
+
+    A successfull Maven build process creates the $DBFORMS_HOME/target/docs directory;
+	to view the new site load the $DBFORMS_HOME/target/docs/index.html file into your web browser.
+	
+
 2003-01-31
 (Henner.Kollmann@gmx.de)
    	ConfigServlet.java
    	    added events to query
 	    rearranged initXMLValidator code
+
 ====================== v1_1_3_pr2 was released ==============================================		
 
 2003-01-28
