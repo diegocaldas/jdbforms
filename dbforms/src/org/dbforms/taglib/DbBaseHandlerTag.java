@@ -37,6 +37,7 @@ import org.dbforms.event.WebEvent;
 import org.dbforms.event.eventtype.EventType;
 import org.dbforms.util.ParseUtil;
 import org.dbforms.util.MessageResources;
+import org.dbforms.util.MessageResourcesInternal;
 import org.dbforms.util.Util;
 
 
@@ -509,12 +510,11 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler
    {
       String res = nullFieldValue;
       if (res == null)
-         res = "[No Data]";
+         res = MessageResourcesInternal.getMessage("dbforms.nodata", getParentForm().getLocale());
       // Resolve message if captionResource=true in the Form Tag
       if (getParentForm().hasCaptionResourceSet())
       {
-         res = MessageResources.getMessage(
-                        (HttpServletRequest) pageContext.getRequest(), res);
+         res = MessageResources.getMessage(res, getParentForm().getLocale());
       }
 
       return res;

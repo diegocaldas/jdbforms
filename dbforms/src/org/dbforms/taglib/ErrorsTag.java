@@ -119,7 +119,7 @@ public class ErrorsTag extends BodyTagSupport
     */
    public int doStartTag() throws JspException
    {
-      Vector             originalErrors = (Vector) pageContext.getAttribute(name,  PageContext.REQUEST_SCOPE);
+      Vector             originalErrors = (Vector) pageContext.getAttribute(getName(),  PageContext.REQUEST_SCOPE);
       HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
 
       if ((originalErrors != null) && (originalErrors.size() > 0))
