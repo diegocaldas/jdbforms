@@ -7,7 +7,7 @@
          Tests retrieving of caption resources
       </h1>
       <db:dbform  
-	      	maxRows="*" 
+	      	maxRows="1" 
 	         followUp="/tests/testApplicationResources.jsp" 
     	     	 autoUpdate="false" tableName="BOOKLISTPERAUTHOR"
     	     	captionResource="true"
@@ -39,6 +39,18 @@
                            <db:staticDataItem key="Debit" value="author.jm"/>
                         </db:staticData>
                      </db:select>
+                  </td>
+               </tr>
+               <tr>
+                  <td>
+                     Test image button
+                  </td>
+                  <td>
+					 <db:deleteButton flavor="image" 
+						confirmMessage="msg.confirmDelete" 
+						src="btnDelete.gif" 
+						alt="button.delete" 
+					/>
                   </td>
                </tr>
             </table>
