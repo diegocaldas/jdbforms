@@ -4,10 +4,22 @@
 <head>
 <db:base/>
 <title>Main Menu Form</title>
-<link href="dbforms.css" rel="stylesheet"/>
 </head>
 <body>
 	<db:dbform followUp="testMenu.jsp">
+		<db:gotoButton 
+			caption="test goto menu page"
+			destination="/tests/testMenuPage1.jsp" 
+		/>
+		<db:gotoButton 
+			caption="test goto testPositionAuthorEdit.jsp"
+			destination="/tests/testPositionAuthorEdit.jsp" 
+		/>
+		<db:gotoButton 
+			caption="test goto testPositionAuthorEdit.jsp with AUTHORVIEW"
+			destination="/tests/testPositionAuthorEdit.jsp"
+			destTable="AUTHOR_VIEW" 
+		/>
 		<db:navNewButton 
 			followUp="/tests/testMenuPage1.jsp" 
 			destTable="AUTHOR" 
