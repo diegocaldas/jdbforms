@@ -1,3 +1,61 @@
+2004-03-21
+(j.peer@gmx.net)
+
+- minor change on DbForms Tag affecting InsertEvents: if the form is an endless one 
+ (maxRow="*"), no attempts to navigate to the previously inserted dataset are made,
+ to avoid potential user confusion over "missing rows".       
+
+2004-03-21
+(j.peer@gmx.net)
+
+New BLOB handling:
+--------------------
+1. New default way of BLOB handling:
+on upload, files will be directly stored in the database, no Java wrapper object is used
+anymore. The Java wrapper object (FileHolder) was stored in the DB in previous versions 
+to retain meta-information about the file (most importantly, its file name) However, this
+yielded serious issues (e.g. Deserialization-problems and the inability of non-DBForms /
+non-Java applications to access the BLOBs).
+
+Therefore, DbForms stores files now directly as BLOBs, without any wrapper objects.
+To make sure that the file name information is not lost, you can install the Interceptor
+org.dbforms.eventBlobInterceptor inside the respective table/query element in dbforms-config.
+As the example below shows, the interceptor uses two arguments "blob-column" and 
+"name-column" to tell the system where to store the file and where to store its name.
+(The incerceptor works onInsert and onUpdate)
+   
+<table ...>
+		<interceptor className="org.dbforms.event.BlobInterceptor">
+		  <param name="blob-column" value="myfile"/>
+		  <param name="name-column" value="myfilename"/>			
+		</interceptor>
+</table>
+	
+If the table/query has several BLOBs that need to be processed by the interceptor, you
+can simply append numbers to the parameter names (e.g. "blob-column1", "name-column1",
+"blob-column2", "name-column2", ...)
+ 
+If you want or need to use the BLOB handling as provided by earlier verions , you need to 
+manually switch back to "classic" mode by adding the an attribute "blobHandling" with
+value "classic" to your table/query defintion in dbforms-config.xml:
+
+<table blobHandling="classic">
+  <!-- table where BLOBs should be stored as FileHolders -->
+</table> 
+ 
+2. Added support for parameters in Interceptors. Interceptor implementations may retrieve
+a Map containing parameters via the getParams() method. 
+
+3. Added an optional parameter "nameField" to the blobURL-Tag (org.dbforms.tablib.DbBlobUrlTag)
+The blobURL tag renders an HTML hyperlink which - when clicked - triggers a file download. To 
+provide the FileServlet (which handles the download) with the necessary filename info, we send
+it the name of the column where it can look up the name of the file to be returned. In case of
+the  example above, we  would specify <db:blobURL fieldName="file" nameField="fileName"/>
+ 
+4. Added some minor changes to FileServlet, to process this parameter correctly. If it
+is called with the additional parameter described above, it assumes the "new" mode, otherwise
+it assumes the "classic" mode and tries to extract fileHolder objects from the DB. 
+
 ====================== v2.2 was released  ==============================================         
 2004-02-21
 (Henner.Kollmann@gmx.de)

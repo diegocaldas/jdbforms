@@ -370,7 +370,12 @@ public class ConfigServlet extends HttpServlet
       digester.addSetNext("dbforms-config/query/interceptor", "addInterceptor", 
                           "org.dbforms.config.Interceptor");
 
-
+			// J.Peer 03/2004: parse interceptor "param"s + add it to parent (which is "Interceptor")
+			digester.addCallMethod("dbforms-config/table/interceptor/param", "addParam", 2);
+			digester.addCallParam("dbforms-config/table/interceptor/param", 0, "name");
+			digester.addCallParam("dbforms-config/table/interceptor/param", 1, "value");
+							
+													
       // register custom database or navigation events (parent is "Query");
       // 1) for every "events" element, instance a new TableEvents object;
       // 2) set the TableEvents reference into the Table object
