@@ -155,7 +155,7 @@ public class DbCheckboxTag extends DbBaseHandlerTag implements DataContainer
      */
     public int doStartTag() throws javax.servlet.jsp.JspException
     {
-        return EVAL_BODY_TAG;
+        return EVAL_BODY_BUFFERED;
     }
 
 
