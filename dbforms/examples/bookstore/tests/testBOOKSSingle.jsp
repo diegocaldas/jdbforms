@@ -24,10 +24,10 @@
 				</table>
 				<table>
 					<tr>
-						<td><db:navFirstButton caption="&lt;&lt; First"/></td>
-						<td><db:navPrevButton  caption="&lt; Previous"/></td>
-						<td><db:navNextButton  caption="Next &gt;"/></td>
-						<td><db:navLastButton  caption="Last &gt;&gt;"/></td>
+						<td><db:navFirstButton caption="first"/></td>
+						<td><db:navPrevButton  caption="previous"/></td>
+						<td><db:navNextButton  caption="next"/></td>
+						<td><db:navLastButton  caption="last"/></td>
 					</tr>
 				</table>
 			</db:footer>
