@@ -148,10 +148,11 @@ public class ProtomatterConnectionProvider extends ConnectionProvider
         if ((props = prefs.getPoolProperties()) == null)
             props = new Properties();
 
-        setIntegerArg(args, props, CP_PROPS_INITIALSIZE,             "5");
-        setIntegerArg(args, props, CP_PROPS_MAXSIZE,                 "10");
-        setIntegerArg(args, props, CP_PROPS_GROWBLOCK,               "2");
-        setIntegerArg(args, props, CP_PROPS_CREATEWAITTIME,          "1000");
+        // use defaults values as specified into the documentation;
+        setIntegerArg(args, props, CP_PROPS_INITIALSIZE,             "0");
+        setIntegerArg(args, props, CP_PROPS_MAXSIZE,                 "-1");
+        setIntegerArg(args, props, CP_PROPS_GROWBLOCK,               "1");
+        setIntegerArg(args, props, CP_PROPS_CREATEWAITTIME,          "0");
         setArg       (args, props, CP_PROPS_VALIDITYCHECKSTATEMENT,  null);
         setIntegerArg(args, props, CP_PROPS_MAXCONNECTIONIDLETIME,   null);
         setIntegerArg(args, props, CP_PROPS_MAIDTHREADCHECKINTERVAL, null);
