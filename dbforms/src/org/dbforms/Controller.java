@@ -155,14 +155,15 @@ public class Controller extends HttpServlet
         // Connection con = config.getDbConnection().getConnection();
         // logCat.debug("Created new connection - " + con);
         Connection con = null;
+		WebEvent e = null;
+        Vector errors = new Vector();
 
         try
         {
-            Vector errors = new Vector();
             request.setAttribute("errors", errors);
 
             EventEngine engine = new EventEngine(request, config);
-            WebEvent e = engine.generatePrimaryEvent();
+            e = engine.generatePrimaryEvent();
 
             // ---- Bradley's multiple connection support [fossato <fossato@pow2.com> 2002/11/04] ---------
             String dbConnectionName = request.getParameter("invname_" + e.getTableId());
@@ -188,7 +189,6 @@ public class Controller extends HttpServlet
                     {
                         doValidation(formValidatorName, e, request);
                     }
-
                     ((DatabaseEvent) e).processEvent(con);
                 }
                 catch (SQLException sqle)
@@ -303,22 +303,6 @@ public class Controller extends HttpServlet
             }
 
 
-            // send as info to dbForms (=> Taglib)
-            //if(e instanceof NavigationEvent) {
-            request.setAttribute("webEvent", e);
-
-            //}
-            // PG  - if form contained errors, use followupOnError (if available!)
-            String fue = e.getFollowUpOnError();
-
-            if ((errors.size() != 0) && (fue != null) && (fue.trim().length() > 0))
-            {
-                request.getRequestDispatcher(fue).forward(request, response);
-            }
-            else
-            {
-                request.getRequestDispatcher(e.getFollowUp()).forward(request, response);
-            }
         }
         finally
         {
@@ -333,7 +317,26 @@ public class Controller extends HttpServlet
                 con = (Connection) connections.get(dbConnectionName);
                 SqlUtil.closeConnection(con);
             }
-            // ---- Bradley's multiple connection support end -----------------------------------------------
+
+            if (e != null) {
+	            // ---- Bradley's multiple connection support end -----------------------------------------------
+	            // send as info to dbForms (=> Taglib)
+	            //if(e instanceof NavigationEvent) {
+	            request.setAttribute("webEvent", e);
+	
+	            //}
+	            // PG  - if form contained errors, use followupOnError (if available!)
+	            String fue = e.getFollowUpOnError();
+	
+	            if ((errors.size() != 0) && (fue != null) && (fue.trim().length() > 0))
+	            {
+	                request.getRequestDispatcher(fue).forward(request, response);
+	            }
+	            else
+	            {
+	                request.getRequestDispatcher(e.getFollowUp()).forward(request, response);
+	            }
+            }
         }
     }
 
