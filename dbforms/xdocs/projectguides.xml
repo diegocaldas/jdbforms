@@ -55,6 +55,25 @@
       </table>
    </p>
  </subsection>
+
+ <subsection name="JavaDocs">
+   <p> 
+     JavaDoc API documentation.
+   </p>
+   <p>
+      <table width="500" border="1" cellspacing="0" cellpadding="2">
+      <tr> 
+        <th width="100">file type</th>
+        <th>link</th>
+      </tr>
+      <tr> 
+        <td>HTML</td>
+        <td><a href="apidocs/index.html" target="_top">here</a></td>
+      </tr>
+      </table>
+   </p>
+ </subsection>
+
 </section>
 
 </body>

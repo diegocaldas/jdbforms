@@ -452,7 +452,7 @@ public class DataSourceJDBC extends DataSource
          }
       }
 
-      if ((rs.getRow() == 0) || rs.isLast())
+      if ((rs.getRow() == 0) /* || rs.isLast() 20031510-HKK: removed because of Oracle problems */ )
       {
          closeConnection();
       }

@@ -22,6 +22,8 @@
  */
 
 package org.dbforms.event.datalist.dao;
+
+import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.xpath.XPathResult;
 import org.w3c.dom.xpath.XPathEvaluator;
@@ -44,23 +46,33 @@ public class XMLDataResult
    private XPathResult     data;
    private XPathEvaluator  evaluator;
    private XPathNSResolver resolver;
-
+   private boolean changed = false;
+   private Document doc;
    /**
     * Creates a new XMLDataResult object.
     * 
     * @param root xml dom object
     * @param qry xpath string to query
     */
-   public XMLDataResult(XPathEvaluator evaluator, Node root, String qry)
+   public XMLDataResult(XPathEvaluator evaluator, Document root, String qry)
    {
+      this.doc = root;
       this.evaluator = evaluator;
       resolver  = evaluator.createNSResolver(root);
       // Evaluate the xpath expression. 
-      data = (XPathResult) evaluator.evaluate(qry, root, resolver, 
+      data = (XPathResult) evaluator.evaluate(qry, doc, resolver, 
                                               XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, 
                                               null);
    }
 
+   public boolean hasChanged() {
+      return changed;
+   }
+   
+   public Document getDocument() {
+      return doc;
+   }
+   
    /**
     * returns the result at index as dom node
     * 
@@ -75,22 +87,36 @@ public class XMLDataResult
 
 
    /**
-    * returns the field value of a special node as string. Value is decribed by
+    * sets the field value of a special node as string. node is decribed by
+    * an xpath string
+    * 
+    * @param i    node of result to return
+    * @param      expression xpath string which discribes the field to return
+    * @param      objectType field type to return
+    * @value       the value to set
+    */
+   public void setItemValue(int i, String expression, int objectType, Object value)
+   {
+
+   }
+
+   /**
+    * returns the field value of a special node as String. Node is decribed by
     * an xpath string
     * 
     * @param i      node of result to return
     * @param expression xpath string which discribes the field to return
+    * @param objectType field type to return
     * 
-    * @return value as string
+    * @return value as Object of selected type
     */
-   public String getItemValue(int i, String expression)
-   {
-      return (String) getItemValue(i, expression, FieldTypes.CHAR);
+   public String getString(int i, String expression, int objectType) {
+      return getItemValue(i, expression, objectType).toString();
    }
-
+   
 
    /**
-    * returns the field value of a special node as Object. Value is decribed by
+    * returns the field value of a special node as Object. Node is decribed by
     * an xpath string
     * 
     * @param i      node of result to return

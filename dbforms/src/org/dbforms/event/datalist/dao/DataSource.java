@@ -171,9 +171,7 @@ public abstract class DataSource
    /**
     * should close all open datasets
     */
-   public void close()
-   {
-   }
+   protected abstract void close();
 
 
    /**

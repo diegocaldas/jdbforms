@@ -56,33 +56,33 @@
 	    
 	    <table 
 	    	name="XMLBOOKS"
-		   dataAccessClass="org.dbforms.event.datalist.dao.DataSourceDOM4J" 
+		   dataAccessClass="org.dbforms.event.datalist.dao.DataSourceXML" 
 		   alias="file:///$(SERVLETCONTEXT_REALPATH)/WEB-INF/db_xml/books.xml?/books/book"
 	    >	
 	        <field 
 	        	name="TITLE" 
 	        	fieldType="varchar"
-			expression="title"
+				expression="title"
 	        />
 	        <field 
 	        	name="ISBN" 
 	        	fieldType="varchar" 
-			expression="isbn"
+				expression="isbn"
 	        />
 	        <field 
 	        	name="AUTHOR_NAME" 
 	        	fieldType="varchar" 
-			expression="author/name"
+				expression="author/name"
 	        />
 	        <field 
 	        	name="AUTHOR_SURNAME" 
 	        	fieldType="varchar" 
-			expression="author/surname"
+				expression="author/surname"
 	        />
 	        <field 
 	        	name="AUTHOR_ID" 
 	        	fieldType="int" 
-			expression="author/authorid"
+				expression="author/authorid"
 	        />
 	    </table>
 
