@@ -113,22 +113,6 @@
     							</description>
 </attribute>
 <attribute>
-<name>bypassNavigation</name>
-<required>false</required>
-<rtexprvalue>true</rtexprvalue>
-<description>Disables navigation - optimizes queriesCaution: use this setting only if you do not intend on using dbforms navigation.
-							Currently, when we set maxRows to anything else but *, dbForms creates a special 
-							  query to be able to navigate to the next (or previous) set of related data. 
-							  The resulting query is sometimes quite complex and is long to execute. If we 
-							  are NOT going to use navigation, eliminate the creation of, and execution of 
-							  "fancy!" queries!
-  						Example:
-							We are setting maxRows="201" to avoid having too many records displayed 
-							  on screen. If their are more than 200 records found, we simply tell our users 
-							  to refine their search criterias.
-						</description>
-</attribute>
-<attribute>
 <name>formValidatorName</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>

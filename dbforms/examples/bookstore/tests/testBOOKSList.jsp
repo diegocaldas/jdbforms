@@ -1,5 +1,5 @@
 <%@ taglib uri="/WEB-INF/dbforms.tld" prefix="db" %>
-<html xmlns:db="http://www.wap-force.com/dbforms">
+<html>
 	<head>
 		<db:base/>
 	</head>

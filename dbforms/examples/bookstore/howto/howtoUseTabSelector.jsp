@@ -19,7 +19,6 @@
 		  <!-- use gotoPrefix to move to the same record after changing the tab -->
 	      <db:dbform  
           	    tableName="AUTHOR" 
-	      		bypassNavigation="true" 
 	         	followUp="/howto/howtoUseTabSelector.jsp" 
     	     	maxRows="1" 
         	 	autoUpdate="false" 

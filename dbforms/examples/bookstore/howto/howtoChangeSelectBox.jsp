@@ -8,7 +8,6 @@
 	    </h1>
 	      <db:dbform  
 	      		maxRows="*" 
-	      		bypassNavigation="true" 
 	         	followUp="/howto/howtoChangeSelectBox.jsp" 
     	     	autoUpdate="false" 
 	      		>
