@@ -1,3 +1,9 @@
+2004-02-14
+(Henner.Kollmann@gmx.de)
+changed getConnection Tag so that it will work with jstl 1.0: 
+	- getConnection must add an javax.sql.DataSource to the pageContext. 
+	- This DataSource must not be closed. It is just needed to retrieve a Connection from it. 
+So i changed the DbConnection class so that it implements the javax.sql.DataSource interface. 
 ====================== v2.0 was released  ==============================================         
 2004-01-21
 (Henner.Kollmann@gmx.de)
