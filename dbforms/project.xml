@@ -179,6 +179,16 @@
       </roles>
     </developer>
 
+    <developer>
+      <name>Jan-Friedrich Mutter</name>
+      <id>krabatz</id>
+      <email>Krabatz@gmx.net</email>
+      <organization/>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+
   </developers>
 
   <contributors>
