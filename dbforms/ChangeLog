@@ -1,7 +1,13 @@
+2003-10-05
+fossato@pow2.com
+   - added snooper to all test pages in the bookstore example.
+     With this snooper the contents of the http request is be dumped to the page
+     
+
 2003-10-04
 (Henner.Kollmann@gmx.de)
    - changed to jasperreports 0.5.0
-   - new howto for printing jasperreport in bookstore
+   - new howto for printing jasperreports in bookstore
    
 2003-10-03
 (Henner.Kollmann@gmx.de)
