@@ -68,9 +68,13 @@ public class DataSourceList
     */
    public static DataSourceList getInstance(HttpServletRequest request)
    {
+   	  // try to retrieve an existant dataSourceList object from the session
+   	  // context;
       DataSourceList ds = 
         (DataSourceList)request.getSession().getAttribute("DataSourceList");
 
+      // if it does not exist, createn a new one and store
+      // its reference into the session;
       if (ds == null)
       {
          ds = new DataSourceList();
@@ -82,7 +86,7 @@ public class DataSourceList
 
 
    /**
-    * Adds a DataSource object to the list. 
+    * Adds a DataSourceFactory object to the list. 
     * If object exists in the Hashtable close first!
     * 
     * @param table the table object
@@ -97,12 +101,12 @@ public class DataSourceList
 
 
    /**
-    * Get a DataSource object. 
+    * Get a DataSourceFactory object. 
     *
     * @param table   the table object
     * @param request the request object
     *
-    * @return the DataSource object related to the input table
+    * @return the DataSourceFactory object related to the input table
     */
    public DataSourceFactory get(Table table, HttpServletRequest request)
    {
@@ -122,7 +126,7 @@ public class DataSourceList
     *         Note that the returned DataSource object has just been closed
     *         by this method.
     *
-    * @throws SQLException DOCUMENT ME!
+    * @throws SQLException if any error occurs
     */
    public DataSourceFactory remove(Table table, HttpServletRequest request)
    {
@@ -139,11 +143,13 @@ public class DataSourceList
    
    
    /**
-	* Get the key string.
+	* Get the key string used to retrieve the DataSource object 
+	* from the internal hash table.
 	* 
 	* @param table  the table object
 	* @param request the request object
-	* @return the key string (a.k.a. the queryString)
+	* @return the key string (a.k.a. the queryString) used to retrieve 
+	*         the DataSource object from the internal hash table
 	*/
    private String getKey(Table table, HttpServletRequest request)
    {
