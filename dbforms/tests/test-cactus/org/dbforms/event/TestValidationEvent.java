@@ -1,0 +1,171 @@
+/*
+ * $Header$
+ * $Revision$
+ * $Date$
+ *
+ * DbForms - a Rapid Application Development Framework
+ * Copyright (C) 2001 Joachim Peer <joepeer@excite.com>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+ */
+
+package org.dbforms.event;
+
+import java.util.*;
+
+import junit.framework.Test;
+import junit.framework.TestSuite;
+import org.apache.cactus.JspTestCase;
+import org.apache.cactus.*;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.dbforms.config.MultipleValidationException;
+import org.dbforms.config.DbFormsConfigRegistry;
+import org.dbforms.servlets.ConfigServlet;
+import org.dbforms.util.AssertUtils;
+
+
+/**
+ * Tests of the <code>DbFormTag</code> class.
+ * 
+ * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
+ */
+public class TestValidationEvent extends JspTestCase
+{
+
+   
+   /**
+    * Defines the testcase name for JUnit.
+    * 
+    * @param theName the testcase's name.
+    */
+   public TestValidationEvent(String theName)
+   {
+      super(theName);
+   }
+
+   /**
+    * Start the tests.
+    * 
+    * @param theArgs the arguments. Not used
+    */
+   public static void main(String[] theArgs)
+   {
+      junit.swingui.TestRunner.main(
+               new String[] 
+      {
+         TestValidationEvent.class.getName()
+      });
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    * 
+    * @return a test suite (<code>TestSuite</code>) that includes all methods
+    *         starting with "test"
+    */
+   public static Test suite()
+   {
+      // All methods starting with "test" will be executed in the test suite.
+      return new TestSuite(TestValidationEvent.class);
+   }
+
+
+   /**
+    * In addition to creating the tag instance and adding the pageContext to
+    * it, this method creates a BodyContent object and passes it to the tag.
+    * @throws Exception DOCUMENT ME!
+    */
+   public void setUp() throws Exception
+   {
+
+		DbFormsConfigRegistry.instance().register(null);
+      config.setInitParameter("dbformsConfig", "/WEB-INF/dbforms-config.xml");
+      config.setInitParameter("log4j.configuration", 
+                              "/WEB-INF/log4j.properties");
+
+      ConfigServlet configServlet = new ConfigServlet();
+      configServlet.init(config);
+   }
+
+
+   //-------------------------------------------------------------------------
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param theRequest DOCUMENT ME!
+    */
+   public void beginValidationNoError(WebRequest theRequest)
+   {
+      theRequest.addParameter("f_0_0@root_2", "organisation 1");
+      theRequest.addParameter("of_0_0@root_2", "");
+      theRequest.addParameter("f_0_0@root_1", "Eco, Umberto");
+      theRequest.addParameter("of_0_0@root_1", "");
+   }
+
+   public void testValidationNoError() throws Exception 
+   {
+      DatabaseEvent evt = DatabaseEventFactoryImpl.instance()
+            .createUpdateEvent(
+                  0, 
+                  "0@root", 
+                  (HttpServletRequest)this.pageContext.getRequest(), 
+                  DbFormsConfigRegistry.instance().lookup());
+     evt.doValidation("test", this.pageContext.getServletContext(), (HttpServletRequest)this.pageContext.getRequest());                 
+                  
+   }
+
+   public void beginValidationError(WebRequest theRequest)
+   {
+      theRequest.addParameter("f_0_0@root_2", "organisation 1");
+      theRequest.addParameter("of_0_0@root_2", "");
+      theRequest.addParameter("f_0_0@root_1", "");
+      theRequest.addParameter("of_0_0@root_1", "Eco, Umberto");
+   }
+
+   public void testValidationError() throws Exception 
+   {
+      DatabaseEvent evt = DatabaseEventFactoryImpl.instance()
+            .createUpdateEvent(
+                  0, 
+                  "0@root", 
+                  (HttpServletRequest)this.pageContext.getRequest(), 
+                  DbFormsConfigRegistry.instance().lookup());
+     try 
+     {
+        evt.doValidation("test", this.pageContext.getServletContext(), (HttpServletRequest)this.pageContext.getRequest());
+     }                           
+        catch (MultipleValidationException mve)
+        {
+           Vector v = mve.getMessages();
+           assertNotNull(v);
+           assertEquals(v.size(), 1);
+           String s = ((Exception)v.elementAt(0)).getMessage();
+           AssertUtils.assertContains("field name required", s);
+        }
+   }
+
+   /**
+    * DOCUMENT ME!
+    */
+   public void tearDown()
+   {
+      //necessary for tag to output anything on most servlet engines.
+      //        this.pageContext.popBody();
+   }
+}
