@@ -116,6 +116,17 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag
 		return EVAL_PAGE;
 	}
 
+	/**
+	 * DOCUMENT ME!
+	 *
+	 * @param parent DOCUMENT ME!
+	 */
+	public void setParent(final javax.servlet.jsp.tagext.Tag parent)
+	{
+		super.setParent(parent);
+		table = getParentForm().getTable();
+	}
+
 
    /**
     * DOCUMENT ME!
@@ -261,17 +272,6 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag
    public String getFollowUp()
    {
       return followUp;
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param pageContext DOCUMENT ME!
-    */
-   public void setPageContext(final javax.servlet.jsp.PageContext pageContext)
-   {
-      super.setPageContext(pageContext);
    }
 
 
