@@ -25,6 +25,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Hashtable;
 import java.sql.Connection;
 
+import org.dbforms.config.DbEventInterceptor;
+import org.dbforms.config.ValidationException;
 import org.dbforms.config.DbFormsConfig;
 
 

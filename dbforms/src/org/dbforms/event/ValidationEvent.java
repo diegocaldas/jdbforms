@@ -31,6 +31,7 @@ import org.apache.commons.validator.ValidatorResources;
 import org.apache.commons.validator.Validator;
 import org.apache.commons.validator.ValidatorResults;
 import org.dbforms.validation.ValidatorConstants;
+import org.dbforms.config.MultipleValidationException;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.error.DbFormsErrors;
 import org.dbforms.util.MessageResources;

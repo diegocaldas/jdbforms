@@ -33,6 +33,7 @@ import java.util.Vector;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
+import org.dbforms.config.MultipleValidationException;
 import org.dbforms.config.Constants;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.Field;

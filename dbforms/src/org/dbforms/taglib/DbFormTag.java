@@ -48,10 +48,12 @@ import org.dbforms.util.Util;
 import org.dbforms.util.MessageResources;
 
 import org.dbforms.config.Constants;
+import org.dbforms.config.DbEventInterceptor;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.FieldTypes;
 import org.dbforms.config.FieldValue;
 import org.dbforms.config.FieldValues;
+import org.dbforms.config.MultipleValidationException;
 import org.dbforms.config.ResultSetVector;
 import org.dbforms.config.SqlUtil;
 import org.dbforms.config.Table;
@@ -65,8 +67,6 @@ import org.dbforms.event.ReloadEvent;
 import org.dbforms.event.NavigationEvent;
 import org.dbforms.event.NavEventFactory;
 import org.dbforms.event.NavEventFactoryImpl;
-import org.dbforms.event.MultipleValidationException;
-import org.dbforms.event.DbEventInterceptor;
 
 
 import org.dbforms.event.eventtype.EventType;

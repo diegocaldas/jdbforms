@@ -41,6 +41,7 @@ import org.dbforms.util.UniqueIDGenerator;
 import org.dbforms.util.MessageResourcesInternal;
 
 import org.dbforms.config.Constants;
+import org.dbforms.config.DbEventInterceptor;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.Field;
@@ -48,11 +49,10 @@ import org.dbforms.config.FieldTypes;
 import org.dbforms.config.FieldValue;
 import org.dbforms.config.FieldValues;
 import org.dbforms.config.GrantedPrivileges;
+import org.dbforms.config.MultipleValidationException;
 import org.dbforms.config.ResultSetVector;
 import org.dbforms.config.SqlUtil;
 
-import org.dbforms.event.DbEventInterceptor;
-import org.dbforms.event.MultipleValidationException;
 import org.dbforms.event.ValidationEvent;
 
 /****

@@ -13,8 +13,8 @@ import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.dbforms.event.DbEventInterceptorSupport;
-import org.dbforms.event.ValidationException;
-import org.dbforms.config.DbFormsConfig;  
+import org.dbforms.config.DbFormsConfig;
+import org.dbforms.config.ValidationException;
 
 /**
  * @author hkk
