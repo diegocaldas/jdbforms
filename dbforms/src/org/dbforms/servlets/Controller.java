@@ -247,7 +247,8 @@ public class Controller extends HttpServlet {
 				String followUp = null;
 				if (errors.size() != 0) {
 					followUp = e.getFollowUpOnError();
-				} else {
+				}
+				if (Util.isNull(followUp)) {
 					followUp = e.getFollowUp();
 				}
 				logCat.info(
