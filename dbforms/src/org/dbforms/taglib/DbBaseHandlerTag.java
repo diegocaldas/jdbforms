@@ -773,7 +773,7 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
 			tagBuf.append("<input type=\"hidden\" name=\"");
 			tagBuf.append(Constants.FIELDNAME_PATTERNTAG + getFormFieldName());
 			tagBuf.append("\" value=\"");
-			tagBuf.append(pattern);
+			tagBuf.append(ppattern);
 			tagBuf.append("\" />");
 		}
 
