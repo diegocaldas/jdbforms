@@ -159,31 +159,52 @@ public abstract class DatabaseEvent extends WebEvent
          + (insertMode ? Constants.INSERTPREFIX : "") + keyId + "_";
       Vector      params    = ParseUtil.getParametersStartingWith(request,
             paramStub);
-      Enumeration enum      = params.elements();
 
-      while (enum.hasMoreElements())
+ 	  boolean doIt = insertMode;
+	  if (!doIt)
+	  { 
+		// First check if update is necessary
+		Enumeration enum      = params.elements();
+		while (enum.hasMoreElements())
+		{
+			String param = (String) enum.nextElement();
+			String value = ParseUtil.getParameter(request, param);
+			String oldValue = ParseUtil.getParameter(request, "o" + param);
+			doIt = !value.equals(oldValue);
+			break;
+		}  
+	  }
+      if (doIt) 
       {
-         String param = (String) enum.nextElement();
-         String value = ParseUtil.getParameter(request, param);
-         logCat.info("::getFieldValues - param=" + param + " value=" + value);
-
-         int        iiFieldId = Integer.parseInt(param.substring(
-                  paramStub.length()));
-         Field      f  = table.getField(iiFieldId);
-         FieldValue fv = new FieldValue(f, value);
-
-         if ((f.getType() == FieldTypes.BLOB)
-                  || (f.getType() == FieldTypes.DISKBLOB))
-         {
-            // in case of a BLOB or DISKBLOB save get the FileHolder for later use
-            fv.setFileHolder(ParseUtil.getFileHolder(request,
-                  "f_" + tableId + (insertMode ? Constants.INSERTPREFIX : "")
-                  + keyId + "_" + iiFieldId));
-         }
-
-         result.put(fv);
+	      // if update is necessary then do update for all data columns
+		  Enumeration enum      = params.elements();
+	      while (enum.hasMoreElements())
+	      {
+	         String param = (String) enum.nextElement();
+	         String value = ParseUtil.getParameter(request, param);
+	         String oldValue = ParseUtil.getParameter(request, "o" + param);
+	         
+	         logCat.info("::getFieldValues - param=" + param + " value=" + value);
+	
+	         int        iiFieldId = Integer.parseInt(param.substring(
+	                  paramStub.length()));
+	         Field      f  = table.getField(iiFieldId);
+	         FieldValue fv = new FieldValue(f, value);
+	         
+	         fv.setOldValue(oldValue);
+	          
+	         if ((f.getType() == FieldTypes.BLOB)
+	                  || (f.getType() == FieldTypes.DISKBLOB))
+	         {
+	            // in case of a BLOB or DISKBLOB save get the FileHolder for later use
+	            fv.setFileHolder(ParseUtil.getFileHolder(request,
+	                  "f_" + tableId + (insertMode ? Constants.INSERTPREFIX : "")
+	                  + keyId + "_" + iiFieldId));
+	         }
+	          
+	         result.put(fv);
+	      }
       }
-
       return result;
    }
 
