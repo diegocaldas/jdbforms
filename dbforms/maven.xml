@@ -120,7 +120,6 @@
      <ant:copy todir="${maven.appserver.conf.dir}/conf/" overwrite="true">
     	<ant:fileset dir="${maven.conf.dir}/${maven.appserver.name}-${maven.appserver.version}" />
     </ant:copy>
-    <ant:echo message="remove old bookstore" />
     <ant:echo message="copy bookstore.war" />
     <ant:copy tofile="${maven.appserver.conf.dir}/webapps/bookstore.war" overwrite="true">
     	<ant:fileset dir="target/dist">
