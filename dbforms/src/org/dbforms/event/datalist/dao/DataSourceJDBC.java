@@ -233,24 +233,21 @@ public class DataSourceJDBC extends DataSource {
 		}
 	}
 
-	private Object[] getCurrentRowAsObject() throws SQLException {
-		Object[] objectRow = new Object[colCount];
-		for (int i = 0; i < colCount; i++) {
-			objectRow[i] = JDBCDataHelper.getData(rs,getTable().getField(i).getEscaper(), i + 1);
-		}
-		return objectRow;
-	}
-
-	private String[] getCurrentRow() throws SQLException {
-		String[] objectRow = new String[colCount];
-		for (int i = 0; i < colCount; i++) {
-         Object tmp = JDBCDataHelper.getData(rs, getTable().getField(i).getEscaper(), i + 1);
-         objectRow[i] = (tmp == null) ? null : tmp.toString();
-		}
-		return objectRow;
-	}
-
-	/**
+	private String addRow() throws SQLException {
+      Integer j = new Integer(data.size());
+      Object[] objectRow = new Object[colCount];
+      String[] stringRow = new String[colCount];
+      for (int i = 0; i < colCount; i++) {
+         objectRow[i] = JDBCDataHelper.getData(rs, getTable().getField(i).getEscaper(), i + 1);
+         stringRow[i] = (objectRow[i] != null) ? objectRow[i].toString() : null;
+      }
+      data.add(objectRow);
+      String key = getTable().getKeyPositionString(stringRow);
+      keys.put(key, j);
+	   return key;
+   }
+   
+   /**
 	 * Find the first row of the internal data vector.
 	 * 
 	 * @param startRow the string identifying the initial row
@@ -272,11 +269,7 @@ public class DataSourceJDBC extends DataSource {
 
 			if (!found && !fetchedAll) {
 				while (rs.next()) {
-					Integer j = new Integer(data.size());
-					data.add(getCurrentRowAsObject());
-					String key = getTable().getKeyPositionString(getCurrentRow());
-					keys.put(key, j);
-
+               String key = addRow();
 					if (startRow.equals(key)) {
 						result = data.size() - 1;
 
@@ -309,11 +302,7 @@ public class DataSourceJDBC extends DataSource {
 			} else {
 				if (!fetchedAll) {
 					while (rs.next()) {
-						result = getCurrentRowAsObject();
-						Integer j = new Integer(data.size());
-						data.add(result);
-						keys.put(getTable().getKeyPositionString(getCurrentRow()), j);
-
+                  addRow();
 						if (i < data.size()) {
 							break;
 						}
@@ -331,9 +320,7 @@ public class DataSourceJDBC extends DataSource {
 			// test if next record is avaiable...
 			// rs.isLast is not allowed in all circumstances! 
 			if (rs.next()) {
-				Integer j = new Integer(data.size());
-				data.add(getCurrentRowAsObject());
-				keys.put(getTable().getKeyPositionString(getCurrentRow()), j);
+				addRow();
 			}
 		}
 
@@ -359,9 +346,7 @@ public class DataSourceJDBC extends DataSource {
 		if (!fetchedAll) {
 			while (rs.next()) {
 				try {
-					Integer j = new Integer(data.size());
-					data.add(getCurrentRowAsObject());
-					keys.put(getTable().getKeyPositionString(getCurrentRow()), j);
+					addRow();
 				} catch (Exception e) {
 					getLogCat().error("size", e);
 
