@@ -843,6 +843,18 @@ SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd&quot;);
 					</info>
 				</attribute>
 				<attribute>
+					<name>strict</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						<p>
+							if strict is true, value is set to empty string if it's not found in the embedded data.
+							otherwise it's set to the formatted field value.
+							default is false, so that it act's like before.
+						</p>
+					</info>
+				</attribute>
+				<attribute>
 					<name>maxlength</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>

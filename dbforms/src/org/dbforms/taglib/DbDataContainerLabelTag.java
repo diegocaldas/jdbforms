@@ -43,139 +43,124 @@ import org.dbforms.util.Util;
  *
  * @author Joachim Peer <j.peer@gmx.net>
  */
-public class DbDataContainerLabelTag
-    extends DbBaseHandlerTag
-    implements DataContainer, javax.servlet.jsp.tagext.TryCatchFinally
+public class DbDataContainerLabelTag extends DbBaseHandlerTag implements DataContainer, javax.servlet.jsp.tagext.TryCatchFinally {
+   private Category logCat = Category.getInstance(this.getClass().getName());
 
-{
-    private Category logCat =  Category.getInstance(this.getClass().getName());
+   // logging category for this class
+   private List embeddedData = null;
+   private String strict = "false";
 
-    // logging category for this class
-    private List embeddedData = null;
-
-	public void doFinally()
-	{
-		embeddedData = null;
-		super.doFinally();
-	}
+   public void doFinally() {
+      embeddedData = null;
+      super.doFinally();
+   }
 
    /**
     * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
     */
-   public void doCatch(Throwable t) throws Throwable
-   {
+   public void doCatch(Throwable t) throws Throwable {
       throw t;
    }
 
-    /**
-    This method is a "hookup" for EmbeddedData - Tags which can assign the lines of data they loaded
-    (by querying a database, or by rendering data-subelements, etc. etc.) and make the data
-    available to this tag.
-    [this method is defined in Interface DataContainer]
+   /**
+   This method is a "hookup" for EmbeddedData - Tags which can assign the lines of data they loaded
+   (by querying a database, or by rendering data-subelements, etc. etc.) and make the data
+   available to this tag.
+   [this method is defined in Interface DataContainer]
+   */
+   public void setEmbeddedData(List embeddedData) {
+      this.embeddedData = embeddedData;
+   }
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws javax.servlet.jsp.JspException DOCUMENT ME!
+    * @throws JspException DOCUMENT ME!
     */
-    public void setEmbeddedData(List embeddedData)
-    {
-        this.embeddedData = embeddedData;
-    }
+   public int doEndTag() throws javax.servlet.jsp.JspException {
+      try {
+         String fieldValue = "";
+         if (!"true".equalsIgnoreCase(strict)) {
+            fieldValue = this.getFormattedFieldValue();	   
+         }
+         String compareValue = this.getFieldValue();
+         // "fieldValue" is the variable actually printed out
+         if (!ResultSetVector.isNull(getParentForm().getResultSetVector())) {
 
+            if (embeddedData != null) { //  embedded data is nested in this tag
 
+               int embeddedDataSize = embeddedData.size();
+               int i = 0;
+               String embeddedDataValue = null;
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     *
-     * @throws javax.servlet.jsp.JspException DOCUMENT ME!
-     * @throws JspException DOCUMENT ME!
-     */
-    public int doEndTag() throws javax.servlet.jsp.JspException
-    {
-        try
-        {
-            String fieldValue = this.getFormattedFieldValue();
-            String compareValue = this.getFieldValue();
-            // "fieldValue" is the variable actually printed out
-            if (!ResultSetVector.isNull(getParentForm().getResultSetVector()))
-            {
+               while (i < embeddedDataSize) {
+                  KeyValuePair aKeyValuePair = (KeyValuePair) embeddedData.get(i);
 
-                if (embeddedData != null)
-                { //  embedded data is nested in this tag
+                  if (aKeyValuePair.getKey().equals(compareValue)) {
+                     embeddedDataValue = aKeyValuePair.getValue();
+                     break;
+                  }
 
-                    boolean found = false;
-                    int embeddedDataSize = embeddedData.size();
-                    int i = 0;
-                    String embeddedDataValue = null;
+                  i++;
+               }
 
-                    while (!found && (i < embeddedDataSize))
-                    {
-                        KeyValuePair aKeyValuePair =
-                            (KeyValuePair) embeddedData.get(i);
+               if (embeddedDataValue != null) {
+                  fieldValue = embeddedDataValue;
 
-                        if (aKeyValuePair.getKey().equals(compareValue))
-                        {
-                            embeddedDataValue = aKeyValuePair.getValue();
-                            found = true;
-                        }
-
-                        i++;
-                    }
-
-                    if (embeddedDataValue != null)
-                    {
-                        fieldValue = embeddedDataValue;
-
-                        // we'll print out embedded value associated with the current value
-                    }
-                }
+                  // we'll print out embedded value associated with the current value
+               }
             }
+         }
 
-            // PG, 2001-12-14
-            // If maxlength was input, trim display
-            String size = null;
+         // PG, 2001-12-14
+         // If maxlength was input, trim display
+         String size = null;
 
-            if (((size = this.getMaxlength()) != null)
-                && (size.trim().length() > 0))
-            {
-                //convert to int
-                int count = Integer.parseInt(size);
+         if (((size = this.getMaxlength()) != null) && (size.trim().length() > 0)) {
+            //convert to int
+            int count = Integer.parseInt(size);
 
-                // Trim and add trim indicator (...)
-                if (count < fieldValue.length())
-                {
-                    fieldValue = fieldValue.substring(0, count);
-                    fieldValue += "...";
-                }
+            // Trim and add trim indicator (...)
+            if (count < fieldValue.length()) {
+               fieldValue = fieldValue.substring(0, count);
+               fieldValue += "...";
             }
+         }
 
-            // SM 2003-08-05
-            // if styleClass is present, render a SPAN with text included
-           String s = prepareStyles();
-           if (Util.isNull(s))
-            {
-                pageContext.getOut().write(fieldValue);
-            }
-            else
-            {
-                pageContext.getOut().write(
-                    "<span "
-                        + s
-                        + "\">"
-                        + fieldValue
-                        + "</span>");
-            }
-        }
-        catch (java.io.IOException ioe)
-        {
-            logCat.error(ioe);
-            throw new JspException("IO Error: " + ioe.getMessage());
-        }
-        catch (Exception e)
-        {
-            logCat.error(e);
-            throw new JspException("Error: " + e.getMessage());
-        }
+         // SM 2003-08-05
+         // if styleClass is present, render a SPAN with text included
+         String s = prepareStyles();
+         if (Util.isNull(s)) {
+            pageContext.getOut().write(fieldValue);
+         } else {
+            pageContext.getOut().write("<span " + s + "\">" + fieldValue + "</span>");
+         }
+      } catch (java.io.IOException ioe) {
+         logCat.error(ioe);
+         throw new JspException("IO Error: " + ioe.getMessage());
+      } catch (Exception e) {
+         logCat.error(e);
+         throw new JspException("Error: " + e.getMessage());
+      }
 
-        return EVAL_PAGE;
-    }
+      return EVAL_PAGE;
+   }
+
+   /**
+    * @return
+    */
+   public String getStrict() {
+      return strict;
+   }
+
+   /**
+    * @param string
+    */
+   public void setStrict(String string) {
+      strict = string;
+   }
 
 }
