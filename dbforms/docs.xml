@@ -366,6 +366,7 @@
      <delete file="${doc.dir}/taglib/DbFormsTags_TocAlph.html"/>
      <delete file="${doc.dir}/taglib/DbFormsTags.html"/>
      <delete file="${doc.dir}/taglib/DbFormsTags.pdf"/>
+     <delete dir="${basedir}/dist"/>
   </target>
   	
   <!-- Fill these in if you want to view files post build -->
