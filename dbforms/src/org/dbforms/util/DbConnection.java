@@ -54,13 +54,13 @@ import org.dbforms.conprovider.ConnectionProviderPrefs;
  *          isJndi = "false"
  *          class  = "com.codestudio.sql.PoolMan"
  *  /&gt;
- *</pre>
- *<p>
- *        (in the example above dbforms asumes that the connectionpool-entry "dbformstest" is correctly configured in
- *        the associated connection pool properties file)
+ * </pre>
+ * <p>
+ *   (in the example above dbforms asumes that the connectionpool-entry "dbformstest" is correctly configured in
+ *   the associated connection pool properties file)
  *
- *        as these examples show, the configuration of datasources is beyond the scope of dbforms. that is
- *        a task of the underlying applicationserver/jsp-engine!
+ *   as these examples show, the configuration of datasources is beyond the scope of dbforms. that is
+ *   a task of the underlying applicationserver/jsp-engine!
  * </p>
  *
  * @author  Joe Peer <j.peer@gmx.net>
@@ -81,6 +81,7 @@ public class DbConnection
     private String username;
     private String password;
     private Properties properties;
+    private Properties poolProperties;
     private boolean isPropSetup = false;
     private String connectionProviderClass;
     private String connectionPoolURL;
@@ -94,16 +95,26 @@ public class DbConnection
      */
     public DbConnection()
     {
-        properties = new java.util.Properties();
+        properties     = new java.util.Properties();
+        poolProperties = new java.util.Properties();
     }
 
 
     /**
-     *  Adds a new proptery - used while parsing XML file
+     *  Adds a new property - used while parsing XML file
      */
     public void addProperty(DbConnectionProperty prop)
     {
         properties.put(prop.getName(), prop.getValue());
+    }
+
+
+    /**
+     *  Adds a new pool property - used while parsing XML file
+     */
+    public void addPoolProperty(DbConnectionProperty prop)
+    {
+        poolProperties.put(prop.getName(), prop.getValue());
     }
 
 
@@ -425,6 +436,7 @@ public class DbConnection
         prefs.setUser(username);
         prefs.setPassword(password);
         prefs.setProperties(properties);
+        prefs.setPoolProperties(poolProperties);
         connectionFactory.setProvider(prefs);
         isFactorySetup = true;
     }
@@ -438,23 +450,25 @@ public class DbConnection
     public String toString()
     {
         StringBuffer buf = new StringBuffer("DbConnection = ");
-        buf.append("id=" + id);
-        buf.append(",name=" + name);
-        buf.append(",jndi=" + isJndi);
-        buf.append(",conClass=" + conClass);
-        buf.append(",username=" + username);
-        buf.append(",default=" + defaultConnection);
+        buf.append("id=" + id)
+           .append(", name=" + name)
+           .append(", jndi=" + isJndi)
+           .append(", conClass=" + conClass)
+           .append(", username=" + username)
+           .append(", default=" + defaultConnection);
 
         if (pow2)
         {
-            buf.append(",connectionProviderClass" + connectionProviderClass);
-            buf.append(",connectionPoolURL" + connectionPoolURL);
+            buf.append(", connectionProviderClass=" + connectionProviderClass)
+               .append(", connectionPoolURL=" + connectionPoolURL);
         }
 
         if (!properties.isEmpty())
-        {
-            buf.append(properties);
-        }
+            buf.append(", jdbc properties: ").append(properties);
+
+
+        if (!poolProperties.isEmpty())
+            buf.append(", connection pool properties: ").append(poolProperties);
 
         //buf.append(",password="+password);  Not such a good idea!
         return buf.toString();
