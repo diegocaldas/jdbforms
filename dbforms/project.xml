@@ -206,20 +206,19 @@
         <include>**/Test*.java</include>
         
       </includes>
+      <!-- Test resources -->
+      
       <resources>
-        <include>**/*.txt</include>
+        <resource>
+          <directory>tests/test</directory>
+          <includes>
+            <include>**/*.txt</include>
+          </includes>
+        </resource>
       </resources>
+      
     </unitTest>
-    <testResources>
-      <testResource>
-        <directory>tests/test</directory>
-        <includes>
-          <include>**/*.txt</include>
-        </includes>
-      </testResource>
-    </testResources>
-    
-    <resources></resources>
+        
     <jars></jars>
   </build>
 </project>
