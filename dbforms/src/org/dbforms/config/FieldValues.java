@@ -97,6 +97,27 @@ public class FieldValues
 
 
    /**
+    * removes the from the internal hash table.
+    * 
+    * @param value the FieldValue object to remove
+    */
+   public FieldValue remove(String name)
+   {
+      return (FieldValue)remove(name);
+   }
+
+   /**
+    * removes the from the internal hash table.
+    * 
+    * @param value the FieldValue object to remove
+    */
+   public FieldValue remove(FieldValue value)
+   {
+      return remove(value.getField().getName());
+   }
+
+
+   /**
     *  Clear the internal hash table.
     */
    public void clear()
