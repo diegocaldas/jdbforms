@@ -1,6 +1,6 @@
 The DocBook_UsersGuide is still under construction.
 
-To build it, you will need to do three things:
+To build it, you will need to do four things:
 
 1)  in dbforms/docs.xml set  <property name="UsersGuide.dir" value="your-path-to/dbforms/usersguide_src"/> 
 
@@ -21,6 +21,18 @@ To build it, you will need to do three things:
         and
 
         b)set <fileset dir="your_path_to_your_FOP_HOME/build/"> 
+
+4)  Add image support for FOP. The Jimi image library, which is by default used for processing images in PNG and other formats, was removed from the distribution for licensing reasons. So...:
+
+    Either
+
+        a) obtain Jimi from http://java.sun.com/products/jimi/ and Extract the file "JimiProClasses.zip" from the archive you've downloaded, rename it to "jimi-1.0.jar" and move it to FOP's lib directory.
+
+    OR
+
+        b) obtain JAI from http://java.sun.com/products/java-media/jai/downloads/download.html and follow the installation instructions there.
+            
+            (much faster, but not available for all platforms)
 
 _____________________________________________________________________________________________
 
