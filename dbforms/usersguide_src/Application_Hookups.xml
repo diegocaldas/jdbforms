@@ -199,6 +199,11 @@ will ensure that the value smith be stored in the lastname field in the data
 </para>
 <example><title>Validation checking in interceptor</title>
 <screen>
+import org.dbforms.*;
+import org.dbforms.event.*;
+import java.sql.*;
+import java.util.*;
+import javax.servlet.http.*;
 
     public class CheckCustomerData <emphasis role="bold">extends DbEventInterceptorSupport</emphasis> {
 
