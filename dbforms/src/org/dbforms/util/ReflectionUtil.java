@@ -40,7 +40,7 @@ import org.apache.log4j.Category;
  * ReflectionUtil class
  * 
  * @author Luca Fossato
- * @deprecated 20 novembre 2002
+ * @created 20 novembre 2002
  */
 public class ReflectionUtil
 {
