@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
  
 	<chapter>
-		<title id="valid">Validation Framework
+		<title>Validation Framework
 </title>
-		<sect1>
+		<sect1 id="valid">
 			<title>Commons-Validator framework
 </title>
 			<para>After having evaluated several validation frameworks, we finally decided to integrate Apache's Commons-Validator into DbForms.  This framework is capable of performing basic server-side validations such as verifying if a field is required, or that it matches a regular expression.  Different validation rules can be defined for different locales.  Although the framework already provides several basic validation routines, custom validation routines can be created and added to the framework.

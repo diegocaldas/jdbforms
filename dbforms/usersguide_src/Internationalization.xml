@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
  
 	<chapter>
-		<title id="intern">Internationalization (i18n) Support
+		<title>Internationalization (i18n) Support
 </title>
-		<sect1>
+		<sect1 id="intern">
 			<title>Defining Resource Bundles
 </title>
 			<para>Resource bundles are made up of 1 or more .properties files.  Each file contains a key-value reference which is used to retrieve and display text in a given language.  Properties files, defined to be of the same resource bundle, have the following naming structure:
