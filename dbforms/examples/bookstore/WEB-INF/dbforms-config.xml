@@ -101,10 +101,6 @@
 
 		<table name="BLOBTEST">
 			<field 
-				name="NAME" 
-				fieldType="varchar"  
-			/>
-			<field 
 				name="FILE" 
 				fieldType="DISKBLOB"  
 				directory="c:\temp"
