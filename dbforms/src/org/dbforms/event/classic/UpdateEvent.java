@@ -128,8 +128,7 @@ public class UpdateEvent extends ValidationEvent
 
 
       // process the interceptors associated to this table
-      getTable()
-         .processInterceptors(DbEventInterceptor.PRE_UPDATE, getRequest(), 
+      operation = getTable().processInterceptors(DbEventInterceptor.PRE_UPDATE, getRequest(), 
                               fieldValues, getConfig(), con);
 
       if ((operation == DbEventInterceptor.GRANT_OPERATION)
