@@ -17,8 +17,13 @@
         <tbody>
           <row>
             <entry>lang</entry>
-            <entry>otuput from Locale.toString(), see java doc</entry>
-            <entry>the locale setted inside dbforms</entry>
+            <entry>output from  Locale.getLanguage(), see java doc</entry>
+            <entry>the language setted inside dbforms</entry>
+          </row>
+          <row>
+            <entry>country</entry>
+            <entry>otuput from Locale.getCountry(), see java doc</entry>
+            <entry>the country setted inside dbforms</entry>
           </row>
           <row>
             <entry>invtable</entry>
