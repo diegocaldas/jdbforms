@@ -7,13 +7,13 @@
 		<db:dbform 
 			multipart="false" 
 			autoUpdate="false" 
-			followUp="/tests/testBOOKSListXML.jsp" 
-			maxRows="*" tableName="XMLBOOKS">
+			followUp="/tests/testBOOKSSingleXML2.jsp" 
+			maxRows="2" 
+			tableName="XMLBOOKS">
 			<db:header>
-				<db:errors/>  
 				<table>
 			</db:header>
-			<db:body allowNew="false">
+			<db:body>
 				<tr>
 					<td><db:label fieldName="BOOK_ID"/></a>&nbsp;</td>
 					<td><db:label fieldName="ISBN"/>&nbsp;</td>
@@ -23,33 +23,19 @@
 			</db:body>
 			<db:footer>
 				</table>
+				<table>
+					<tr>
+						<td><db:navFirstButton caption="first"/></td>
+						<td><db:navPrevButton  caption="previous"/></td>
+						<td><db:navNextButton  caption="next"/></td>
+						<td><db:navLastButton  caption="last"/></td>
+					</tr>
+				</table>
 			</db:footer>
 		</db:dbform>
 
-<%@ include file="httpSnooper.jsp" %> 
+<%@ include file="httpSnooper.jsp" %>
 
-</body>
+	</body>
 </html>    
 
-	    
-	        
-	        
-	        
-	        
-                            
-	        
-	    
-
-	    
-	    
-	    
-	    
-	        
-	        
-	        
-	        
-	        
-	        
-	    
-	    
-	    

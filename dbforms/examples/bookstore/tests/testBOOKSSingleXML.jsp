@@ -14,9 +14,10 @@
 			</db:header>
 			<db:body>
 				<tr>
-					<td><%=currentRow_XMLBOOKS.get("ISBN") %>&nbsp;</td>
-					<td><%=currentRow_XMLBOOKS.get("AUTHOR_ID") %>&nbsp;</td>
-					<td><%=currentRow_XMLBOOKS.get("TITLE") %>&nbsp;</td>
+					<td><db:label fieldName="BOOK_ID"/></a>&nbsp;</td>
+					<td><db:label fieldName="ISBN"/>&nbsp;</td>
+					<td><db:label fieldName="AUTHOR_ID"/>&nbsp;</td>
+					<td><db:label fieldName="TITLE"/>&nbsp;</td>
 				</tr>
 			</db:body>
 			<db:footer>
