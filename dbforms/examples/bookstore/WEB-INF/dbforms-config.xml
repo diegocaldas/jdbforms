@@ -22,7 +22,7 @@
 		  <field name="BOOK_ID" fieldType="int"	isKey="true" autoInc="true"/>
 		  <field name="ISBN" fieldType="varchar"/>
 		  <field name="TITLE" fieldType="varchar"/>
-		  <search name="AUTHOR_ID" fieldType="int"/>
+		  <search name="AUTHOR_ID" fieldType="int" isKey="true" />
 		</query>
             
         <query name="BOOK_QUERY" from="BOOK">
