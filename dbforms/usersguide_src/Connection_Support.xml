@@ -36,7 +36,7 @@
 				<para>The connectionFactory package provides three <emphasis role="italic">connectionProvider</emphasis> classes:
 </para><para>The jars for these classes need to be downloaded and put in your applications WEB-INF/lib directory</para>
 <para>Protomatter rquires <computeroutput>protomatter.jar</computeroutput></para>
-<para>JakartaConnectionPool requires <computeroutput>commons-pool</computeroutput> and <computeroutput>commons-dbcp</computeroutput></para>
+<para>JakartaConnectionPool requires <computeroutput>commons-dbcp.jar</computeroutput></para>
 <itemizedlist mark="opencircle">
 <listitem>
 <para>
@@ -56,9 +56,9 @@
 <blockquote>
     <para>Provides connection objects using the Jakarta commons-dbcp ConnectionPool library
 </para>
-    <para><emphasis role="bold">http://protomatter.sourceforge.net/</emphasis></para>
+    <para><emphasis role="bold">http://jakarta.apache.org/commons/index.html</emphasis></para>
     <para>
-    class name: <computeroutput>org.dbforms.conprovider.ProtomatterConnectionProvider</computeroutput>
+    class name: <computeroutput>org.dbforms.conprovider.JakartaConnectionProvider</computeroutput>
     </para>
      
     </blockquote> 
