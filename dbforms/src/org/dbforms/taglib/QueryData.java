@@ -32,8 +32,6 @@ import org.dbforms.config.ResultSetVector;
 
 import org.apache.log4j.Category;
 
-
-
 /****
  *
  * external data to be nested into radio, checkbox or select - tag!
@@ -58,64 +56,56 @@ import org.apache.log4j.Category;
  *
  * @author Joachim Peer <j.peer@gmx.net>
  */
-public class QueryData extends EmbeddedData
-      implements javax.servlet.jsp.tagext.TryCatchFinally
-{
-   private static Category logCat = Category.getInstance(QueryData.class.getName());
+public class QueryData extends EmbeddedData implements javax.servlet.jsp.tagext.TryCatchFinally {
+	private static Category logCat = Category.getInstance(QueryData.class.getName());
 
-   // logging category for this class
-   private String query;
+	// logging category for this class
+	private String query;
 
-	public void doFinally()
-	{	
+	public void doFinally() {
 		query = null;
 		super.doFinally();
 	}
 
-   /**
-    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
-    */
-   public void doCatch(Throwable t) throws Throwable
-   {
-      throw t;
-   }
+	/**
+	 * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+	 */
+	public void doCatch(Throwable t) throws Throwable {
+		throw t;
+	}
 
-   /**
-    * DOCUMENT ME!
-    *
-    * @param query DOCUMENT ME!
-    */
-   public void setQuery(String query)
-   {
-      this.query = query;
-   }
+	/**
+	 * DOCUMENT ME!
+	 *
+	 * @param query DOCUMENT ME!
+	 */
+	public void setQuery(String query) {
+		this.query = query;
+	}
 
+	/**
+	 * DOCUMENT ME!
+	 *
+	 * @return DOCUMENT ME!
+	 */
+	public String getQuery() {
+		return query;
+	}
 
-   /**
-    * DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    */
-   public String getQuery()
-   {
-      return query;
-   }
-
-
-   /**
-    * returns Hashtable with data. Its keys represent the "value"-fields for the DataContainer-Tag, its values
-    * represent the visible fields for the Multitags.
-    * (DataContainer are: select, radio, checkbox and a special flavour of Label).
-    */
-   protected List fetchData(Connection con) throws SQLException
-   {
-      logCat.info("about to execute user defined query:" + query);
-
-      PreparedStatement ps = con.prepareStatement(query);
-
-      ResultSetVector   rsv = new ResultSetVector(ps.executeQuery());
-      ps.close(); // #JP Jun 27, 2001
-
-      return formatEmbeddedResultRows(rsv);
-   }
+	/**
+	 * returns Hashtable with data. Its keys represent the "value"-fields for the DataContainer-Tag, its values
+	 * represent the visible fields for the Multitags.
+	 * (DataContainer are: select, radio, checkbox and a special flavour of Label).
+	 */
+	protected List fetchData(Connection con) throws SQLException {
+		logCat.info("about to execute user defined query:" + query);
+		ResultSetVector rsv = null;
+		PreparedStatement ps = con.prepareStatement(query);
+		try {
+			rsv = new ResultSetVector(ps.executeQuery());
+		} finally {
+			ps.close(); // #JP Jun 27, 2001
+		}
+		return formatEmbeddedResultRows(rsv);
+	}
 }
