@@ -217,7 +217,7 @@ public class DbDeleteButtonTag extends DbBaseButtonTag
 
         if (choosenFlavor == FLAVOR_MODERN)
         {
-            return EVAL_BODY_TAG;
+            return EVAL_BODY_BUFFERED;
         }
         else
         {
