@@ -226,18 +226,21 @@ public class GotoEvent extends NavigationEvent
       logCat.info("==> GotoEvent.processEvent");
       
   	  position = Util.decode(position);
-      if (!Util.isNull(position) 
-           && (srcTable != null)
-           && !Util.isNull(childField) 
+      if (!Util.isNull(position))  
+      {		 
+		 FieldValues fv;
+         if ((srcTable != null) && !Util.isNull(childField) 
            && !Util.isNull(parentField))
-      {
-         FieldValues fv = table.mapChildFieldValues(srcTable, parentField, childField, position);
-         position = table.getKeyPositionString(fv);
-         if (fv != null) 
-            childFieldValues = fv.toArr();
+         {
+            fv = table.mapChildFieldValues(srcTable, parentField, childField, position);
+	     } else {
+            fv = table.getFieldValues(position);  
+    	 }
+		 position = table.getKeyPositionString(fv);
+		 if (fv != null) 
+	        childFieldValues = fv.toArr();
       }
 
-      // REMOVE operation;
       DataSourceList ds = DataSourceList.getInstance(request);
       ds.remove(table, request);
       DataSourceFactory qry;
