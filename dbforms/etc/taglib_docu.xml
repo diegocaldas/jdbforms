@@ -6319,9 +6319,29 @@ error manager</summary>
                         &lt;img src="&lt;db:blobURL fieldName="THUMBNAIL" defaultValue="myImage.jpg"/&gt;" border="0" width="xx" height="yy"&gt;<br/>
 							<br/>
 							<b>Developers Note:</b> this attribute (up to now) is not used for "database blob" data,
-                      works only for "Disk Blob" data.</p>
+                      works only for "Disk Blob" data.
+							<b>Update 03/2004:</b> works now for BLOB data as well (if BLOB is not in classic mode
+							and nameField is used)</p>
+											
 					</info>
 				</attribute>
+				<attribute>
+					<name>nameField</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						<p>this optional attribute may be used to tell the fileservlet 
+							in which table column (field) the name of the file is stored.
+						</p>
+						<p>
+							This is (only) needed if you use the new (default) BLOB model which 
+							does not rely on FileHolder anymore to associate files and their
+							names. Hence, the association between file and name must be captured by other means: During
+							upload we use the BlobInterceptor, and during download we use this
+							"nameField" argument.
+						</p>
+					</info>					
+				</attribute>				
 			</tag>
 			<!-- **************************** blobContent tag ***********************************-->
 			<tag>

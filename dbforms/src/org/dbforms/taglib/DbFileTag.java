@@ -126,7 +126,9 @@ public class DbFileTag
 			tagBuf.append("/>");
 
 			// Writes out the old field value
-			writeOutSpecialValues();
+			
+			// Joe Peer: this is deadly for FileTags
+			//writeOutSpecialValues();
 
 			pageContext.getOut().write(tagBuf.toString());
 		} catch (java.io.IOException ioe) {

@@ -35,6 +35,8 @@ public class DbBlobURLTag extends DbBaseHandlerTag
       implements javax.servlet.jsp.tagext.TryCatchFinally
 {
 
+		protected String nameField;
+	
    // --------------------------------------------------------- Public Methods
    // DbForms specific
 
@@ -53,6 +55,12 @@ public class DbBlobURLTag extends DbBaseHandlerTag
 
          tagBuf.append("/servlet/file?tf=").append(getTableFieldCode())
                .append("&keyval=").append(getKeyVal());
+					
+				// JPEer 03/2004
+				 if(this.nameField != null) {
+					 tagBuf.append("&nf=");
+					 tagBuf.append(nameField);
+				 }							 
 
          // append the defaultValue parameter;
          if (getDefaultValue() != null)
@@ -72,7 +80,15 @@ public class DbBlobURLTag extends DbBaseHandlerTag
       return EVAL_PAGE;
    }
 
-
+	 public void setNameField(String nameField) {
+		 this.nameField = nameField;
+	 }
+	 
+	 public String getNameField() {
+		 return nameField;
+	 }
+	 
+	 
    // ------------------------------------------------------ Protected Methods
    // DbForms specific
 

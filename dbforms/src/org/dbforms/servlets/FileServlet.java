@@ -124,8 +124,15 @@ public class FileServlet extends HttpServlet
       String       dbConnectionName = request.getParameter("invname_" + tableId);
       Connection   con              = config.getConnection(dbConnectionName);
 
+			// JPeer 03/2004 - optional parameter
+			String nameField = request.getParameter("nf");
+			
       queryBuf.append("SELECT ");
       queryBuf.append(field.getName());
+			if(nameField!=null) {
+				queryBuf.append(", ");
+				queryBuf.append(nameField);
+			}
       queryBuf.append(" FROM ");
       queryBuf.append(table.getName());
       queryBuf.append(" WHERE ");
@@ -154,7 +161,12 @@ public class FileServlet extends HttpServlet
             // use the rdbms;
             else if (field.getType() == FieldTypes.BLOB)
             {
-               readDbFieldBlob(rs, response);
+							// if no fileholder is used (new BLOB model)
+							String fileName = null;
+							if(nameField!=null) {
+								fileName=rs.getString(2);
+							}
+               readDbFieldBlob(rs, fileName, response);
             }
          }
          else
@@ -184,10 +196,11 @@ public class FileServlet extends HttpServlet
     * @param  rs Description of the Parameter
     * @param  request  Description of the Parameter
     * @param  response Description of the Parameter
+		* @param fileName is the filename or NULL in the classic (Fileholder-based) BLOB handling
     * @exception  IOException Description of the Exception
     * @exception  SQLException Description of the Exception
     */
-   private void readDbFieldBlob(ResultSet rs, HttpServletResponse response)
+   private void readDbFieldBlob(ResultSet rs, String fileName, HttpServletResponse response)
                          throws IOException, SQLException
    {
       logCat.info("READING BLOB");
@@ -195,6 +208,7 @@ public class FileServlet extends HttpServlet
       try
       {
          Object o = rs.getObject(1);
+				 System.out.println("o instanceof ..."+o.getClass().getName());
 
          // if the object the JDBC driver returns to us implements
          // the java.sql.Blob interface, then we use the BLOB object
@@ -204,11 +218,21 @@ public class FileServlet extends HttpServlet
             if (o instanceof java.sql.Blob)
             {
                Blob              blob = rs.getBlob(1);
-               ObjectInputStream ois = new ObjectInputStream(
+																			
+							 // classic mode
+							 if(fileName == null) {
+								 ObjectInputStream ois = new ObjectInputStream(
                                                 blob.getBinaryStream());
-               FileHolder        fh = (FileHolder) ois.readObject();
-               writeToClient(response, fh.getFileName(), 
-                             fh.getInputStreamFromBuffer());
+
+								 FileHolder        fh = (FileHolder) ois.readObject();
+								 writeToClient(response, fh.getFileName(), 
+                 	            fh.getInputStreamFromBuffer());
+							 } 
+							 // new mode
+							 else {
+								 writeToClient(response, fileName, 
+                 	            blob.getBinaryStream());
+							 }
             }
 
             /*
@@ -224,11 +248,18 @@ public class FileServlet extends HttpServlet
             // otherwise we are aquiring the stream directly:
             else
             {
-               InputStream       blobIS = rs.getBinaryStream(1);
-               ObjectInputStream ois = new ObjectInputStream(blobIS);
-               FileHolder        fh  = (FileHolder) ois.readObject();
-               writeToClient(response, fh.getFileName(), 
-                             fh.getInputStreamFromBuffer());
+							 if(fileName == null) {
+								 // old ("classic") mode
+								 InputStream       blobIS = rs.getBinaryStream(1);
+								 ObjectInputStream ois = new ObjectInputStream(blobIS);
+								 FileHolder        fh  = (FileHolder) ois.readObject();
+								 writeToClient(response, fh.getFileName(), 
+														 fh.getInputStreamFromBuffer());
+							 } else {
+								 // new mode
+								 InputStream       blobIS = rs.getBinaryStream(1);
+								 writeToClient(response, fileName, blobIS);								 
+							 }
             }
          }
          else
