@@ -454,7 +454,8 @@ public class StartReportServlet extends HttpServlet
 
          String fue         = ParseUtil.getParameter(request, "source");
          String contextPath = request.getContextPath();
-         fue = fue.substring(contextPath.length());
+         if (!Util.isNull(fue))
+         	fue = fue.substring(contextPath.length());
 
          if (Util.isNull(fue))
          {
@@ -467,6 +468,7 @@ public class StartReportServlet extends HttpServlet
       }
       catch (Exception ex)
       {
+         logCat.error(ex);
          sendErrorMessageText(response, message);
       }
    }
@@ -604,10 +606,15 @@ public class StartReportServlet extends HttpServlet
 
             // set the source attribute to the requestURI.
             // So the form will think that the source is equal to the target and will use order constraints
-            String saveSource = ParseUtil.getParameter(request, "source");
-            request.setAttribute("source", request.getRequestURI());
+            // Source must be saved and restored - we need it e.g. in error processing again!
+            String saveSource = (String) request.getAttribute("source"); 
+            String refSource = request.getRequestURI();
+			if (request.getQueryString() != null) {
+				refSource += ("?" + request.getQueryString());
+			}
+            request.setAttribute("source", refSource);
             form.doStartTag();
-            request.setAttribute("source", saveSource);
+			request.setAttribute("source", saveSource);
 
             ResultSetVector rsv = form.getResultSetVector();
             logCat.info("get resultsetvector rsv= " + rsv.size());
