@@ -102,8 +102,6 @@ public class TestDbFormsConfig extends ServletTestCase
         Table tblAuthor = dbFormsConfig.getTableByName("AUTHOR");
         assertTrue("Found tblAuthor", tblAuthor.getName().equals("AUTHOR"));
         assertTrue("Found tblBook", dbFormsConfig.getTableByName("BOOK").getName().equals("BOOK"));
-
-
         // TODO I think that table names shouldn't be case sensitive
         assertTrue("Make sure table names ARE casesensitve", dbFormsConfig.getTableByName("book") == null);
     }

@@ -99,6 +99,7 @@ public class TestConfigServlet extends ServletTestCase
 
         Table tblAuthor = dbFormsConfig.getTableByName("AUTHOR");
         assertTrue("Found tblAuthor", tblAuthor.getName().equals("AUTHOR"));
+        
     }
 
 
