@@ -30,6 +30,9 @@ package org.dbforms.config;
  * @author hkk
  */
 public class Constants {
+   public static final int DATE_STYLE_DEFAULT = java.text.DateFormat.SHORT;
+   public static final int TIME_STYLE_DEFAULT = java.text.DateFormat.SHORT;
+   
    public static final String FIELDNAME_PREFIX = "f_";
 
    public static final String FIELDNAME_OLDVALUETAG = "o";
