@@ -1,4 +1,5 @@
 @echo off
+rem $Id$
 rem -------------------------------------------------------------------------
 rem *** DbForms Developer's swing based GUI ***
 rem *** start script for win32 systems ***
@@ -35,7 +36,7 @@ goto cleanup
 :gotJavaHome
 
 if not "%DBFORMS_HOME%" == "" goto gotDbFormsHome
-echo You must set JAVA_HOME to point at your Java Development Kit installation
+echo You must set DBFORMS_HOME to point at your Java Development Kit installation
 goto cleanup
 
 :gotDbFormsHome
