@@ -220,8 +220,10 @@ Happy coding!
         
         <!-- xerces.jar, xalan.jar might be neccessary for other tasks, but are disturbing with tomcat 4 -->
         <!-- FIXME: must be documented what do do with other servers.... -->
+        <!--- no problem to deliver them with the examples, so let them in the package!
         <delete file="${build.dir}/${example.name}/WEB-INF/lib/xerces.jar"/>
         <delete file="${build.dir}/${example.name}/WEB-INF/lib/xalan.jar"/>
+        -->
        
         <!-- compile example-specific Java code -->
         <echo message="compiling example specific code"/>
@@ -351,6 +353,10 @@ Happy coding!
         <fileset dir="." includes="temp/*.txt"/>
         <fileset dir="." includes="xsl-stylesheets/*.xsl"/>
         <fileset dir="." includes="misc/**/*.gif  misc/**/*.png  misc/**/*.js   misc/**/*.txt misc/*.css misc/**/*.html"/>
+     </copy>
+
+      <copy todir="${dbforms.releaseDir}/dependend" >
+        <fileset dir="./target/dependend" includes="*.jar"/>
      </copy>
 
      <copy todir="${dbforms.releaseDir}/bin" >
