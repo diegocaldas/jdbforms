@@ -211,6 +211,7 @@ public class Query extends Table {
    protected String getSelectQuery(Vector fieldsToSelect, FieldValue[] fvEqual, FieldValue[] fvOrder, int compareMode) {
       StringBuffer buf = new StringBuffer();
 		String s;
+		boolean HatSchonWhere = false;
       Vector mode_having = new Vector();
       Vector mode_where  = new Vector();
       // Split fields in where and having part
@@ -236,13 +237,17 @@ public class Query extends Table {
       buf.append(getQueryFrom());
 		s = getQueryWhere(fvWhere, null, compareMode);
 		if ( (s.length() > 0) || ((where != null) && (where.length() > 0)) ) {
-	      buf.append(" WHERE ( ");
+			HatSchonWhere = true;
+	      buf.append(" WHERE ");
 	      if  ((where != null) && (where.length() > 0)) {
 		      buf.append(where);
 		      buf.append(" ");
 	      }
-	      buf.append(s);
-   	   buf.append(")");
+   	   if (s.length() > 0) {
+	   	   buf.append("(");
+		      buf.append(s);
+   		   buf.append(")");
+   	   }
 		}
       if ((groupBy != null) && (groupBy.length() > 0)) {
 			buf.append(" GROUP BY ");
@@ -252,9 +257,11 @@ public class Query extends Table {
 		if (s.length() > 0) {
 	      if ((groupBy != null) && (groupBy.length() > 0)) {
 		      buf.append(" HAVING ( ");
-	      } else {
+	      } else if (!HatSchonWhere) {
 		      buf.append(" WHERE ( ");
-	      }	      	
+	      } else {
+		      buf.append(" ( ");
+ 			}	      	
 	      buf.append(s);
    	   buf.append(")");
 		}
