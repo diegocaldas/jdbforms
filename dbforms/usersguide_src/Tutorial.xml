@@ -71,10 +71,9 @@
 			<sect2>
 				<title>Physical table creation
 </title>
-				<para>Here is the SQL code for creating the database model shown in Figure 4:
+				<para>Here is the SQL code for creating the database model shown in the preceeding Figure:
 </para>
-				<example>
-					<title/>
+				 
 					<programlisting>
                 CREATE TABLE service (
 
@@ -145,7 +144,7 @@
 		)
  
 		</programlisting>
-				</example>
+				 
 				<para>It would be desirable to add referential integrity, (by adding foreign keys and/or triggers) but to keep things simple</para>
 			</sect2>
 			<sect2>
@@ -154,7 +153,7 @@
 				<para>The next step is to create the XML-based description of this model, as follows.
 </para>
 				<example>
-					<title/>
+					<title>tables in dbforms-config.xml</title>
 					<programlisting>
             &lt;table name="<emphasis role="bold">service</emphasis>"&gt;
                 &lt;field name="id" fieldType="int" isKey="true" /&gt; 
@@ -206,7 +205,7 @@
 			<para>To fulfill the requirements, we need to implements at least the following JSP  views:
 </para>
 			<table>
-				<title>Table 1  core requirements for our sample application
+				<title>Core requirements for our sample application
 </title>
 				<tgroup cols="2">
 					<tbody>
@@ -228,7 +227,7 @@
 			<para>In addition to the core requirements, well implement the following views for users convenience:
 </para>
 			<table>
-				<title>Table 2  additional features for our sample application
+				<title>Additional features for our sample application
 </title>
 				<tgroup cols="2">
 					<tbody>
@@ -241,7 +240,7 @@
 							<entry>This page provides a listing (overview) of all customers enables the user to select a customer and jump to the appropriate input-page</entry>
 						</row>
 						<row>
-							<entry>All infos about customers</entry>
+							<entry>All info about customers</entry>
 							<entry>This page shows all orders and all complaints for a given customer  displayed data may be edited from this page.</entry>
 						</row>
 						<row>
@@ -253,7 +252,7 @@
 			</table>
 			<para>
 				<figure id="screen_flow">
-					<title>Figure 5 - screen flow of our application
+					<title>Screen flow of our application
 </title><mediaobject>  
   <imageobject  role="html">
     <imagedata  format="PNG"  fileref="images/figures/screen_flow.png"/>
@@ -276,14 +275,14 @@
 			<para>I highly suggest installing the dbForms example application and taking a detailed look at it  you will quickly find out how the elements behave and which pattern of combined DbForms-elements is used best for each purpose.
 </para>
 			<para>For more detailed information about each DbForms-Custom Tag, please refer to the <emphasis role="bold">DbForms Custom Tag Library</emphasis> chapter, which contains a complete description of all DbForms-Tags and their attributes.
-</para>
+</para><para/>
 			<sect2>
-				<title>Main-Menu (menu.jsp)
+				<title>Main-Menu
 </title>
 				<para>The main menus only purpose is to link to the other pages. Of course, this could be done by simply coding html-hyperlinks, but I would like to demonstrate how to use an empty <emphasis role="bold">dbform</emphasis>  element and how to use <emphasis role="bold">gotoButton</emphasis> elements:
 </para>
 				<example>
-					<title/>
+					<title>menu.jsp code</title>
 					<programlisting>
 &lt;%@ taglib uri="/WEB-INF/dbForms.tld" prefix="db" %&gt;
  &lt;html&gt;
@@ -368,16 +367,17 @@
 </mediaobject>
 						 
 					</figure>
-				</para>
+				</para>  <para/>
 			</sect2>
+                      
 			<sect2>
-				<title>Services (service.jsp)
+				<title>Services
 </title>
 				<para/>
 				<para>This page enables the user(s) to administer the services the agency sells to its customers. The user should get a list of all the existing services along with text fields and buttons to update and delete rows. Finally an empty input mask for inserting new services is also presented.
  </para>
 				<example>
-					<title/>
+					<title>service.jsp code</title>
 					<programlisting>
         &lt;%@ taglib uri="/WEB-INF/dbForms.tld" prefix="db" %&gt;
             &lt;html&gt;
@@ -491,15 +491,16 @@
 						 
 					</figure>
 				</para>
-				<para>
-					<emphasis role="bold">Priorities (priorities.jsp)</emphasis>
-				</para>
+                                <para/>
+                                </sect2>
+                                <sect2><title> Priorities</title>
+				 
 				<para/>
 				<para>This page enables the user to manage a list of priorities we will use this data later in the <computeroutput>complaints</computeroutput> page where we will prompt the user to select the appropriate priority for a user's complaint. This setting could be used to help prioritize a to-do list or something similar  (however, that functionality is not included in the sample application)
 </para>
 								 
 				<example>
-					<title/>
+					<title>priorities.jsp code</title>
 					<programlisting>
             &lt;html&gt;
                 &lt;head&gt; 
@@ -594,18 +595,17 @@
 				<para>The only real difference can be found in the <emphasis role="bold">autoUpdate</emphasis> attribute, which is set to <emphasis role="bold">true</emphasis> in priorities.jsp. This means, that all rows will be updated if their text-fields (and other data-sensitive elements) have been edited by the user.Example:
 </para>
 				<para>If the user edits data in priorities number 1, 2 and 3 and then clicks update, (or any other action button) <emphasis role="bold">all</emphasis> changes will be stored <emphasis role="bold">automatically</emphasis> in the database! (These automatically triggered events are called <emphasis role="italic">implicit</emphasis>, or <emphasis role="italic">secondary</emphasis> events)
-</para>
+</para>  <para/>
 			</sect2>
 			<sect2>
-				<title>Customer list (customerlist.jsp)
-</title>
+				<title>Customer list</title>
 				<para/>
 				<para>This convenience page provides the user with a listing of all agency customers. The user is able to select a customer from the list and perform a given operation (edit orders,  view complaints submitted by the customer)
 The user should be able to delete existing customers, as well.
 				</para>
 				 
 				<example>
-					<title/>
+					<title>customerlist.jsp code</title>
 					<programlisting>
             &lt;html&gt;
                 &lt;head&gt; 
@@ -707,10 +707,10 @@ The user should be able to delete existing customers, as well.
 					<emphasis role="bold">keyToKeyToDestPos</emphasis> This attribute refers to the associatedRadio button. And, in fact, nomen est omen, it refers to a field  (<emphasis role="bold">customerkey</emphasis>), which has a key as its value. (i.e. <emphasis role="bold">k_2</emphasis>, if the user selected the third row) This key is used to identify the row the system will jump to (<emphasis role="bold">Dest</emphasis>ination-<emphasis role="bold">Pos</emphasis>ition), if the user clicks an action-button.
 </para>
 				<para>Another interesting item worth mentioning, is that the attribute <emphasis role="bold">allowNew</emphasis> is set to a value of <emphasis role="bold">false</emphasis> this has the effect, in the case of an empty result Set (no customers), of bypassing the body-tag altogether.
-</para>
+</para>  <para/>
 			</sect2>
 			<sect2>
-				<title>Orders (customer_orders.jsp)
+				<title>Orders 
 </title>
 				<para>This page provides the user with the ability to manage incoming orders for a given customer. The user is able to edit customer orders, as well as customer-data. The user should not be required to 'struggle' with item-numbers, but instead, should be able to simply select (from a drop down select box) the services the customer has indicated he/she is willing to purchase.
 </para>
@@ -735,7 +735,7 @@ The user should be able to delete existing customers, as well.
 					<emphasis role="bold">&lt;%@ taglib uri="/WEB-INF/dbForms.tld" prefix="db" %&gt;</emphasis>
 				</para>
 				<example>
-					<title/>
+					<title>customer_orders.jsp code</title>
 					<programlisting>
 &lt;html&gt;
  &lt;head&gt; 
@@ -943,10 +943,10 @@ The user should be able to delete existing customers, as well.
 </mediaobject>
 						 
 					</figure>
-				</para>
+				</para>  <para/>
 			</sect2>
 			<sect2>
-				<title>Complaints (customer_complaints.jsp)
+				<title>Complaints 
 </title>
 				<para>This page is conceptually similar to the previous file (customer_orders.jsp) It provides the user with the ability to manage customer complaints. The user is, once again, able to edit  customer complaints as well as customer-data, all from the same page.
 </para>
@@ -970,7 +970,7 @@ The user should be able to delete existing customers, as well.
 					</figure>
 				</para>
 				<example>
-    					<title/><programlisting>
+    					<title>customer_order.jsp code</title><programlisting>
 &lt;%@ taglib uri="/WEB-INF/dbForms.tld" prefix="db" %&gt;
  &lt;html&gt; 
   &lt;head&gt; 
@@ -1196,10 +1196,10 @@ The user should be able to delete existing customers, as well.
 </mediaobject>
 						 
 					</figure>
-				</para>
+				</para>  <para/>
 			</sect2>
 			<sect2>
-				<title>Customers information (customer_all.jsp)
+				<title>Customers information 
 </title>
 				<para>This page is the result of merging customer_orders.jsp and customer_complaints.jsp into one big file. Given that this page does not introduce any new patterns or tags,  its code has not been included in this document.  Please refer to the example application for a complete listing .
 </para>
