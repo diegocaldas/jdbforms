@@ -15,7 +15,7 @@
 #
 #
 #   CLASSPATH    keep in mind the XALAN, XERCES, and your JDBC driver should
-# 		   be in classpath
+#		 		   be in classpath
 #
 #   JAVA_HOME    Must point at your Java Development Kit installation.
 #
@@ -41,8 +41,6 @@
 # PLEASE REPORT COMMENTS, BUGs ENHANCEMENTS TO <jdbforms-developers@lists.sourceforge.net> !
 
 
-echo $PATH
-echo $DBFORMS_HOME
 if [ "$DBFORMS_HOME" = "" ] ; then
     echo DBFORMS_HOME not set, you need to set it or install in a standard location
     exit 1
@@ -62,11 +60,41 @@ if [ "$JAVACMD" = "" ] ; then
    # it may be defined in env - including flags!!
    JAVACMD=$JAVA_HOME/bin/java
 fi
+# ----- Cygwin Unix Paths Setup -----------------------------------------------
 
+# Cygwin support.  $cygwin _must_ be set to either true or false.
+case "`uname`" in
+  CYGWIN*) cygwin=true ;;
+  *) cygwin=false ;;
+esac
+ 
 oldCP=$CLASSPATH
-CLASSPATH=${CLASSPATH}:${DBFORMS_HOME}/lib/dbforms_v09d.jar
+
+# For Cygwin, ensure paths are in UNIX format before anything is touched
+if $cygwin ; then
+  [ -n "$CLASSPATH" ] &&
+   CLASSPATH=`cygpath --path --unix "$CLASSPATH"`
+  [ -n "$DBFORMS_HOME" ] &&
+    DBFORMS_HOME=`cygpath --unix "$DBFORMS_HOME"`
+    [ -n "$JAVA_HOME" ] &&
+    JAVA_HOME=`cygpath --unix "$JAVA_HOME"`
+fi
+
+
+
+CLASSPATH=${CLASSPATH}:${DBFORMS_HOME}/lib/dbforms_v1_01.jar;
 
 export CLASSPATH
+
+
+# ----- Cygwin Windows Paths Setup --------------------------------------------
+
+# convert the existing path to windows
+if $cygwin ; then
+   CLASSPATH=`cygpath --path --windows "$CLASSPATH"`
+   DBFORMS_HOME=`cygpath --path --windows "$DBFORMS_HOME"`
+   JAVA_HOME=`cygpath --path --windows "$JAVA_HOME"`
+fi
 
 # joepeer:
 # i do not know if classpath is needed as argument on unix shells
@@ -79,6 +107,3 @@ if [ "$oldCP" != "" ]; then
 else
     unset CLASSPATH
 fi
-
-
-

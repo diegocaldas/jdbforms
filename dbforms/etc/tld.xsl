@@ -33,6 +33,11 @@
 
   <!-- Process an individual tag -->
   <xsl:template match="tag">
+  
+<xsl:text disable-output-escaping="yes">
+&lt;!--*******************************************************************--&gt;
+</xsl:text>
+	
     <tag>
       <xsl:if test="name">
         <name><xsl:value-of select="name"/></name>

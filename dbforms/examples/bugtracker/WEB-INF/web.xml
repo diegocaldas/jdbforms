@@ -29,7 +29,7 @@
     
     <init-param>
       <param-name>log4j.configuration</param-name>
-      <param-value>file:/jt32/conf/log4j.properties</param-value>
+      <param-value>/WEB-INF/log4j.properties</param-value>
     </init-param>      
    
     <load-on-startup>1</load-on-startup>

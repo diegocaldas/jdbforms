@@ -1,9 +1,10 @@
  * $Header$
  * $Revision$
  * $Date$
-				DbForms v.09
-				============
-
+ 
+ 
+				DbForms 
+				=======
 
 
 Installing and Using DbForms
@@ -43,10 +44,11 @@ by following these steps.
 - (*) Download and install Jason Hunters multipart servlet  classes from O'Reilly 
   http://jakarta.apache.org/log4j/docs/download.html
   (cos.jar)
-
-- (*) Download and Apache Commons
-  http://jakarta.apache.org/commons/index.html
-  (needed are: BeanUtils, Digester, Collections)
+  
+- (*) Download and install the struts framework
+  http://jakarta.apache.org/struts>
+  (struts.jar)
+  
 
 - (*) Download and install a servlet container that supports the Servlet
   API Specification, version 2.2 or later, and the JavaServer Pages (JSP)
@@ -80,7 +82,7 @@ running the examles
 - (*) Do not forget to point the db-connection entry in /WEB-INF/dbforms-config.xml 
   to the datasource / connection pool you established!
   
-- (*) finally point you web browser to http://127.0.0.1/example_v08  or if you changed the directory 
+- (*) finally point you web browser to http://127.0.0.1/example or if you changed the directory 
   name then point to http://127.0.0.1/{$NAME} !
   
 
@@ -93,20 +95,17 @@ running the examles
 building own DbForms- capable applications
 ---------------------------------------------
 
-PLEASE NOTE: the JAR files are located in the example_v08/web-inf/lib file
-to keep the distribution bundle small!
-
-- (*) Copy the files "lib/dbforms.tld" from the DbForms distribution into the
+- (*) Copy the files "dist/dbforms.tld" from the DbForms distribution into the
   "WEB-INF" directory of your web application.
 
   +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   NOTE: the file "dbforms.tld" was named "taglib.tld" in prior versions. this name was too generic
-  and the risc of naming conflicts was too big, therefore we changed the name.
+  and the risk of naming conflicts was too big, therefore we changed the name.
   Some articles + manuals may still talk about "taglib.tld"... 
   this is wrong (out of date)! use "dbforms.tld" instead!
   +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-- (*) Copy the file "lib/dbforms.jar" from the DbForms distribution into the
+- (*) Copy the file "dist/dbforms_v?.jar" from the DbForms distribution into the
   "WEB-INF/lib" directory of your web application.
   
 - (*) Copy the file "lib/struts.jar" from the DbForms or a Struts distribution into the
@@ -123,11 +122,13 @@ to keep the distribution bundle small!
   define TEMPLATE-Basedir
   
 - (*) Modify the "WEB-INF/web.xml" file for your web application to include
-  a tag library declaration each Dbforms tag library (see user's guide)
+  a tag library declaration for the Dbforms tag library (see user's guide)
 
 - (*) Create a file "WEB-INF/dbforms-config.xml" that defines the tables, fields
   and the database connection to use. (see user's guide)
 
+- (*) Optionally, create a file "WEB-INF/dbforms-errors.xml" that defines error messages.
+  
 - (*) In each JSP page that will use the DbForms custom tags, add a line at
   the top of the page like this (for each Struts tag library needed):
 
@@ -143,5 +144,4 @@ to keep the distribution bundle small!
 ------------------------------------------------------------------------------------------ 
         if you have questions, please drop a line to our mailing list
         http://lists.sourceforge.net/lists/listinfo/jdbforms-interest
-        or to <j.peer@gmx.net>
 ------------------------------------------------------------------------------------------

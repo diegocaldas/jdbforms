@@ -3,6 +3,27 @@
 * $Date$
 
 __________________________________________________________________________________________________
+Friday, January 18th, 2002
+DbForms version 1.01
+Grunikiewicz.philip@hydro.qc.ca
+
+Bug Fixes and General Maintenance
+---------------------------------
+
+Fixed up the distribution packages (missing files)
+Cleaned up the web.xml file
+Optimized the readability of the dbForms.tld file.
+Corrected a problem in the DbLinkURL tag concerning contextPath
+Upgraded DevGui to xalan version 2
+Updated the information files (readme, CommonMistakes, etc...)
+
+Contributions
+-------------
+
+Thank you to Jeff Kunkle, Dirk Kraemer, Ron Smith and Gemes Tibor for their input and contributions in this latest release.
+
+
+__________________________________________________________________________________________________
 Tuesday, January 15th, 2002
 DbForms version 1.0
 Grunikiewicz.philip@hydro.qc.ca
@@ -37,11 +58,12 @@ EXAMPLE
 
  In jsp:
 
-       <db:form table="AnyName" 
-maxRows="*"  
-followUp="next.jsp" 
-          	tableList="Table1,Table2" 
-   	whereClause="Where Table1.id = Table2.id">
+       <db:form tableName="AnyName" 
+       		maxRows="*"  
+       		followUp="next.jsp" 
+       		tableList="Table1,Table2" 
+       		whereClause="Where Table1.id = Table2.id">
+       		
             <db:header/>
             <db:body>
                 <db:textField fieldname="Table1.fieldName"/>

@@ -6,7 +6,7 @@ list of common mistakes of DbForms-based development
   database
 
 
-* forget to set sortable="true" in dbforms-config.xml, when using sorttags and orderBy clauses
+* forget to set sortable="true" in dbforms-config.xml, when using sort tags and orderBy clauses
   associated with that field
   
 
@@ -19,9 +19,7 @@ list of common mistakes of DbForms-based development
 
 * insufficient classpath, especially log4j and jdbc drivers
   for using DevGui, you need XALAN in your classpath!
-  if you are using XALAN-2 (recommended) then you need to add XALAN1COMPAT.jar to
-  your classpath, too
-
+  
 
 * performance problems: do you refer to a pooled connection or to an "ordinary" connection in 
   dbforms-config.xml ?
