@@ -21,13 +21,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.event;
+
+
 import javax.servlet.http.HttpServletRequest;
-
-import org.apache.log4j.Category;
-
-import org.dbforms.util.*;
+//import org.apache.log4j.Category;
 import org.dbforms.config.*;
-import org.dbforms.event.eventtype.EventType;
 
 
 
