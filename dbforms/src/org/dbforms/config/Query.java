@@ -155,7 +155,7 @@ public class Query extends Table
     * 
     * @return search field list
     */
-   private Vector getSearchFields()
+   public Vector getSearchFields()
    {
       return searchfields;
    }
