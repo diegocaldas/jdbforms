@@ -278,12 +278,19 @@ public class ConfigServlet extends HttpServlet
         // 1) for every "events" element, instance a new TableEvents object;
         // 2) set the TableEvents reference into the Table object
         // 3) for every "event" element, instance a new EventInfo object and set its properties ("type" and "id")
-        // 4) register the EventInfo object into the TableEvents \via TableEvents.addEventInfo()
+        // 4) register the EventInfo object into the TableEvents via TableEvents.addEventInfo()
+        // 5) for every event's property attribute, instance a new Property object
+        //    and and set its properties ("name" and "value")
+        // 6) register the Property object into the EventInfo object
         digester.addObjectCreate ("dbforms-config/table/events", "org.dbforms.TableEvents");
         digester.addSetNext      ("dbforms-config/table/events", "setTableEvents", "org.dbforms.TableEvents");
         digester.addObjectCreate ("dbforms-config/table/events/event", "org.dbforms.event.EventInfo");
         digester.addSetProperties("dbforms-config/table/events/event");
         digester.addSetNext      ("dbforms-config/table/events/event", "addEventInfo", "org.dbforms.event.EventInfo");
+        digester.addObjectCreate ("dbforms-config/table/events/event/property", "org.dbforms.util.DbConnectionProperty");
+        digester.addSetProperties("dbforms-config/table/events/event/property");
+        digester.addSetNext      ("dbforms-config/table/events/event/property", "addProperty", "org.dbforms.util.DbConnectionProperty");
+
 
         // parse "Query" - object + add it to parent
         digester.addObjectCreate("dbforms-config/query", "org.dbforms.Query");
@@ -496,11 +503,9 @@ public class ConfigServlet extends HttpServlet
         // ---------------------------------------------------------------
         // register the config object into the DbFormsConfigRegistry
         // as the default config (fossato, 2002.12.02)
-        DbFormsConfigRegistry.instance().register(dbFormsConfig);
-
-        // but could use the context name as registry key...
-        //  String name = getServletContext().getServletContextName();
-        //  DbFormsConfigRegistry.instance().register(name, this);
+        DbFormsConfigRegistry registry = DbFormsConfigRegistry.instance();
+        registry.setServletContext(getServletContext());
+        registry.register(dbFormsConfig);
         // ---------------------------------------------------------------
 
         // Parse the input stream to configure our mappings
