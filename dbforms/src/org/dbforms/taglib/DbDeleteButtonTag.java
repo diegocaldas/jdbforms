@@ -147,7 +147,7 @@ public class DbDeleteButtonTag extends DbBaseButtonTag
             }
             catch (Exception e)
             {
-               logCat.debug("confirm(" + caption + ") Exception : "
+               logCat.debug("confirm(" + getCaption() + ") Exception : "
                   + e.getMessage());
             }
          }
@@ -195,14 +195,14 @@ public class DbDeleteButtonTag extends DbBaseButtonTag
             tagBuf.append(getDataTag(tagName, "arname", associatedRadio));
          }
 
-         if (followUp != null)
+         if (getFollowUp() != null)
          {
-            tagBuf.append(getDataTag(tagName, "fu", followUp));
+            tagBuf.append(getDataTag(tagName, "fu", getFollowUp()));
          }
 
-         if (followUpOnError != null)
+         if (getFollowUpOnError() != null)
          {
-            tagBuf.append(getDataTag(tagName, "fue", followUpOnError));
+            tagBuf.append(getDataTag(tagName, "fue", getFollowUpOnError()));
          }
 
          tagBuf.append(getButtonBegin());
@@ -217,7 +217,7 @@ public class DbDeleteButtonTag extends DbBaseButtonTag
          throw new JspException("IO Error: " + ioe.getMessage());
       }
 
-      if (choosenFlavor == FLAVOR_MODERN)
+      if (getChoosenFlavor() == FLAVOR_MODERN)
       {
          return EVAL_BODY_BUFFERED;
       }

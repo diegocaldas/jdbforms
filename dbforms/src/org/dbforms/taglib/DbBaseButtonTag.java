@@ -54,32 +54,15 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag
    // logging category for this class
    private static int uniqueID = 0;
 
-   /** DOCUMENT ME! */
-   protected String followUp;
-
-   /** DOCUMENT ME! */
-   protected String followUpOnError;
-
-   /** DOCUMENT ME! */
+   private String followUp;
+   private String followUpOnError;
    private Table table;
-
-   /** DOCUMENT ME! */
-   protected String flavor; // the user desides which html tags/constructions should be used to render this tag
-
-   /** DOCUMENT ME! */
-   protected int choosenFlavor = 0; // default = standard
-
-   /** DOCUMENT ME! */
-   protected String caption; // used if flavor is "standard"
-
-   /** DOCUMENT ME! */
-   protected String src; // used if flavor is "image"
-
-   /** DOCUMENT ME! */
-   protected String alt; // used if flavor is "image"
-
-   /** DOCUMENT ME! */
-   protected String border; // used to set html border attribute"
+   private String flavor; // the user desides which html tags/constructions should be used to render this tag
+   private int choosenFlavor = 0; // default = standard
+   private String caption; // used if flavor is "standard"
+   private String src; // used if flavor is "image"
+   private String alt; // used if flavor is "image"
+   private String border; // used to set html border attribute"
 
    /**
     * DOCUMENT ME!
@@ -200,16 +183,6 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag
       }
    }
 
-
-   /**
-    * DOCUMENT ME!
-    * 
-    * @return DOCUMENT ME!
-    */
-   public String getFlavor()
-   {
-      return flavor;
-   }
 
 
    /**
@@ -517,6 +490,13 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag
     */
    public Table getTable() {
       return table;
+   }
+
+   /**
+    * @return
+    */
+   public int getChoosenFlavor() {
+      return choosenFlavor;
    }
 
 }

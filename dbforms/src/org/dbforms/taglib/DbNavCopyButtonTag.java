@@ -73,11 +73,11 @@ public class DbNavCopyButtonTag extends DbBaseButtonTag
 		try {
 			StringBuffer tagBuf = new StringBuffer();
 			String tagName = EventType.EVENT_NAVIGATION_TRANSFER_COPY + getTable().getId() + "_" + Integer.toString(getUniqueID());
-			if (followUp != null) {
-				tagBuf.append(getDataTag(tagName, "fu", followUp));
+			if (getFollowUp() != null) {
+				tagBuf.append(getDataTag(tagName, "fu", getFollowUp()));
 			}
-			if (followUpOnError != null) {
-				tagBuf.append(getDataTag(tagName, "fue", followUpOnError));
+			if (getFollowUpOnError() != null) {
+				tagBuf.append(getDataTag(tagName, "fue", getFollowUpOnError()));
 			}
 			tagBuf.append(getButtonBegin());
 			tagBuf.append(" name=\"");
@@ -89,7 +89,7 @@ public class DbNavCopyButtonTag extends DbBaseButtonTag
 			throw new JspException("IO Error: " + ioe.getMessage());
 		}
 
-		if (choosenFlavor == FLAVOR_MODERN)
+		if (getChoosenFlavor() == FLAVOR_MODERN)
 			return EVAL_BODY_BUFFERED;
 		else
 			return SKIP_BODY;

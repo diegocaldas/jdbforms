@@ -233,7 +233,7 @@ public class DbGotoButtonTag extends DbBaseButtonTag
          throw new JspException("IO Error: " + ioe.getMessage());
       }
 
-      if (choosenFlavor == FLAVOR_MODERN)
+      if (getChoosenFlavor() == FLAVOR_MODERN)
       {
          return EVAL_BODY_BUFFERED;
       }

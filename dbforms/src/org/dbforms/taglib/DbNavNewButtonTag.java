@@ -91,14 +91,14 @@ public class DbNavNewButtonTag extends DbBaseButtonTag
 
          String tagName = EventType.EVENT_NAVIGATION_TRANSFER_NEW + tableId + "_" + Integer.toString(getUniqueID());
 
-         if (followUp != null)
+         if (getFollowUp() != null)
          {
-            tagBuf.append(getDataTag(tagName, "fu", followUp));
+            tagBuf.append(getDataTag(tagName, "fu", getFollowUp()));
          }
 
-         if (followUpOnError != null)
+         if (getFollowUpOnError() != null)
          {
-            tagBuf.append(getDataTag(tagName, "fue", followUpOnError));
+            tagBuf.append(getDataTag(tagName, "fue", getFollowUpOnError()));
          }
 
          tagBuf.append(getButtonBegin());
@@ -113,7 +113,7 @@ public class DbNavNewButtonTag extends DbBaseButtonTag
          throw new JspException("IO Error: " + ioe.getMessage());
       }
 
-      if (choosenFlavor == FLAVOR_MODERN)
+      if (getChoosenFlavor() == FLAVOR_MODERN)
       {
          return EVAL_BODY_BUFFERED;
       }
