@@ -35,6 +35,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSessionBindingListener;
 import javax.servlet.http.HttpSessionBindingEvent;
 
+import org.apache.log4j.Category;
+
 /**
  * Holds a list of DataSourceFactory object in the session context. Needed by
  * the navigation events to store the datasource  by a per session mode. So it
@@ -45,6 +47,8 @@ import javax.servlet.http.HttpSessionBindingEvent;
  */
 public class DataSourceList implements HttpSessionBindingListener {
    /** Hashtable to hold all DataSource objects. Key is queryString. */
+	// logging category for this class;
+	private static Category logCat = Category.getInstance(DataSourceList.class.getName());
    private Map ht = new HashMap();
 
    /**
@@ -63,6 +67,7 @@ public class DataSourceList implements HttpSessionBindingListener {
     */
    public void valueUnbound(HttpSessionBindingEvent event) {
       synchronized (ht) {
+      	 logCat.info("valueUnbound called");
          Iterator iter = ht.values().iterator();
          while (iter.hasNext()) {          
             Object obj = iter.next();
