@@ -132,7 +132,7 @@ public class TestDbLabelTag extends JspTestCase {
       String s = theResponse.getText();
       boolean res = s.indexOf("2.3") > -1;
       assertTrue("wrong number", res);
-      res = s.indexOf("1/1/00") > -1;
+      res = s.indexOf("Jan 1, 1900") > -1;
       assertTrue("wrong date", res);
       res = s.indexOf("[]") > -1;
       assertTrue("wrong setted null field", res);
