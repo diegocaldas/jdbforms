@@ -71,29 +71,41 @@ public class DbNavLastButtonTag extends DbBaseButtonTag
          return SKIP_BODY;
       }
 
+	  boolean isLastPage = getParentForm().getResultSetVector().isLastPage();
+
       try
       {
-         StringBuffer tagBuf  = new StringBuffer();
-         String       tagName = EventType.EVENT_NAVIGATION_TRANSFER_LAST + getTable().getId() + "_" + Integer.toString(getUniqueID());
-
-         if (getFollowUp() != null)
-         {
-            tagBuf.append(getDataTag(tagName, "fu", getFollowUp()));
-         }
-
-         if (getFollowUpOnError() != null)
-         {
-            tagBuf.append(getDataTag(tagName, "fue", getFollowUpOnError()));
-         }
-
-         tagBuf.append(getButtonBegin());
-			if (getParentForm().getResultSetVector().isLastPage()) 
-				tagBuf.append(" disabled=\"true\"");
-         tagBuf.append(" name=\"");
-         tagBuf.append(tagName);
-         tagBuf.append(getButtonEnd());
-
-         pageContext.getOut().write(tagBuf.toString());
+      	 //20040227 JFM
+	      if (isLastPage && "nohtml".equals(getDisabledBehaviour())) {
+	      	return SKIP_BODY;
+	      } else if (isLastPage && "altimage".equals(getDisabledBehaviour())) {
+	      	pageContext.getOut().write(getDisabledImage());
+	      	return SKIP_BODY;
+	      } 
+	      //default: "disabled".equals(getDisabledBehaviour())
+	      else {
+	         StringBuffer tagBuf  = new StringBuffer();
+	         String       tagName = EventType.EVENT_NAVIGATION_TRANSFER_LAST + getTable().getId() + "_" + Integer.toString(getUniqueID());
+	
+	         if (getFollowUp() != null)
+	         {
+	            tagBuf.append(getDataTag(tagName, "fu", getFollowUp()));
+	         }
+	
+	         if (getFollowUpOnError() != null)
+	         {
+	            tagBuf.append(getDataTag(tagName, "fue", getFollowUpOnError()));
+	         }
+	
+	         tagBuf.append(getButtonBegin());
+				if (isLastPage) 
+					tagBuf.append(" disabled=\"true\"");
+	         tagBuf.append(" name=\"");
+	         tagBuf.append(tagName);
+	         tagBuf.append(getButtonEnd());
+	
+	         pageContext.getOut().write(tagBuf.toString());
+	      }
       }
       catch (java.io.IOException ioe)
       {

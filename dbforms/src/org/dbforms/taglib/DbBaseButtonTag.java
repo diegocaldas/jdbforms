@@ -59,6 +59,12 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag {
    private String caption; // used if flavor is "standard"
    private String src; // used if flavor is "image"
    private String alt; // used if flavor is "image"
+   //20040225 JFM
+   private String disabledBehaviour;
+   private String disabledImageSrc;
+   private String disabledImageAlt;
+   private String disabledImageWidth;
+   private String disabledImageHeight;
    private String border; // used to set html border attribute"
 
    /**
@@ -294,6 +300,45 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag {
 
       return buf.toString();
    }
+   
+   //20040225 JFM: added
+   /**
+    * 
+    * @return HTML code for the disabled Image
+    */
+   protected String getDisabledImage() {
+   		StringBuffer imgBuf  = new StringBuffer();
+   		// image src
+      	imgBuf.append("<img src=\"");
+      	imgBuf.append(getDisabledImageSrc());
+      	imgBuf.append("\"");
+      	
+      	// image alt
+      	imgBuf.append(" alt=\"");
+      	imgBuf.append(getDisabledImageAlt());
+      	imgBuf.append("\"");
+      	
+      	// image style
+      	imgBuf.append(prepareStyles());
+      	
+      	// image events: 
+        //imgBuf.append(prepareEventHandlers());
+        
+        // image width and height
+        if (!Util.isNull(getDisabledImageWidth())) {
+        	imgBuf.append(" width=\"");
+        	imgBuf.append(getDisabledImageWidth());
+        	imgBuf.append("\"");
+        }
+        if (!Util.isNull(getDisabledImageHeight())) {
+        	imgBuf.append(" height=\"");
+        	imgBuf.append(getDisabledImageHeight());
+        	imgBuf.append("\"");
+        }
+      	imgBuf.append(" />");
+      	
+      	return imgBuf.toString();
+   }
 
    /**
     * returns beginnings of tags with attributes defining type/value/[src/alt -
@@ -392,6 +437,94 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag {
    public void setFollowUpOnError(String followUpOnError) {
       this.followUpOnError = followUpOnError;
    }
+   
+   /**
+    * @return
+    */
+   public Table getTable() {
+      return table;
+   }
+
+   /**
+    * @return
+    */
+   public int getChoosenFlavor() {
+      return choosenFlavor;
+   }
+
+	/**
+	 * @return alternative image alt text if button is disabled and flavor 'image'
+	 */
+	public String getDisabledImageAlt() {
+		return disabledImageAlt;
+	}
+	
+	/**
+	 * 
+	 * @return alternative image src if button is disabled and flavor 'image'
+	 */
+	public String getDisabledImageSrc() {
+		return disabledImageSrc;
+	}
+	
+	/**
+	 * @param disabledImageAlt - alternative image if button is disabled and flavor 'image'
+	 */
+	public void setDisabledImageAlt(String disabledImageAlt) {
+		this.disabledImageAlt = disabledImageAlt;
+	}
+	
+	/**
+	 * @param disabledImageSrc - alternative image alt text if button is disabled and flavor 'image'
+	 */
+	public void setDisabledImageSrc(String disabledImageSrc) {
+		this.disabledImageSrc = disabledImageSrc;
+	}
+
+	/**
+	 * @return
+	 */
+	public String getDisabledBehaviour() {
+		return disabledBehaviour;
+	}
+	
+	/**
+	 * @param disabledBehaviour - possible values: "nohtml", "altimage", "disabled"
+	 */
+	public void setDisabledBehaviour(String disabledBehaviour) {
+		this.disabledBehaviour = disabledBehaviour;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public String getDisabledImageHeight() {
+		return disabledImageHeight;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public String getDisabledImageWidth() {
+		return disabledImageWidth;
+	}
+	
+	/**
+	 * @param disabledImageHeight - the height of disabledImageSrc
+	 */
+	public void setDisabledImageHeight(String disabledImageHeight) {
+		this.disabledImageHeight = disabledImageHeight;
+	}
+	
+	/**
+	 * @param disabledImageWidth - the width of disabledImageSrc
+	 */
+	public void setDisabledImageWidth(String disabledImageWidth) {
+		this.disabledImageWidth = disabledImageWidth;
+	}
+
 
    /**
     * DOCUMENT ME!
@@ -408,18 +541,5 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag {
       super.doFinally();
    }
 
-   /**
-    * @return
-    */
-   public Table getTable() {
-      return table;
-   }
-
-   /**
-    * @return
-    */
-   public int getChoosenFlavor() {
-      return choosenFlavor;
-   }
 
 }

@@ -4239,6 +4239,53 @@ is released.</info>
 					<rtexprvalue>true</rtexprvalue>
 					<info>The tab order (ascending positive integers) for this element.</info>
 				</attribute>
+				
+				<attribute>
+					<name>disabledBehaviour</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>Describes the behaviour of this button if it is on the last page.
+possible values: "nohtml", "altimage", "disabled"
+<ul>
+	<li>nohtml: no HTML output</li>
+	<li>altimage: only an image with no functionality is displayed. The src for that image
+can be specified in the attribute disabledImageSrc which can have an alt attribute
+specified in disabledImageAlt and width and height specified by disabledImageWidth
+and disabledImageHeight.</li>
+	<li>disabled (default): The image specified in scr is used but disabled.</li>
+</ul>
+
+example: 
+&lt;db:navPrevButton src="images/ico_back.gif" flavor="image" disabledBehaviour="altimage" disabledImageSrc="images/transparent.gif" disabledImageAlt="my alt text" disabledImageWidth="50" disabledImageHeight="1" onMouseOver="javascript: self.status='go back'; return true;" onMouseOut="javascript: self.status=''; return true;"/&gt;
+
+If on first page, HTML result is:
+&lt;img src="images/transparent.gif" alt="" width="50" height="1" /&gt;</info>
+				</attribute>
+				<attribute>
+					<name>disabledImageSrc</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>see disabledBehaviour</info>
+				</attribute>
+				<attribute>
+					<name>disabledImageAlt</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>see disabledBehaviour</info>
+				</attribute>
+				<attribute>
+					<name>disabledImageWidth</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>see disabledBehaviour</info>
+				</attribute>
+				<attribute>
+					<name>disabledImageHeight</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>see disabledBehaviour</info>
+				</attribute>
+								
 			</tag>
 			<!-- **************************** navNextButton tag ***********************************-->
 			<tag>
@@ -4453,6 +4500,53 @@ is released.</info>
 					<rtexprvalue>true</rtexprvalue>
 					<info>The tab order (ascending positive integers) for this element.</info>
 				</attribute>
+				
+				<attribute>
+					<name>disabledBehaviour</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>Describes the behaviour of this button if it is on the last page.
+possible values: "nohtml", "altimage", "disabled"
+<ul>
+	<li>nohtml: no HTML output</li>
+	<li>altimage: only an image with no functionality is displayed. The src for that image
+can be specified in the attribute disabledImageSrc which can have an alt attribute
+specified in disabledImageAlt and width and height specified by disabledImageWidth
+and disabledImageHeight.</li>
+	<li>disabled (default): The image specified in scr is used but disabled.</li>
+</ul>
+
+example: 
+&lt;db:navNextButton src="images/ico_back.gif" flavor="image" disabledBehaviour="altimage" disabledImageSrc="images/transparent.gif" disabledImageAlt="my alt text" disabledImageWidth="50" disabledImageHeight="1" onMouseOver="javascript: self.status='go back'; return true;" onMouseOut="javascript: self.status=''; return true;"/&gt;
+
+If on last page, HTML result is:
+&lt;img src="images/transparent.gif" alt="" width="50" height="1" /&gt;</info>
+				</attribute>
+				<attribute>
+					<name>disabledImageSrc</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>see disabledBehaviour</info>
+				</attribute>
+				<attribute>
+					<name>disabledImageAlt</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>see disabledBehaviour</info>
+				</attribute>
+				<attribute>
+					<name>disabledImageWidth</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>see disabledBehaviour</info>
+				</attribute>
+				<attribute>
+					<name>disabledImageHeight</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>see disabledBehaviour</info>
+				</attribute>
+
 			</tag>
 			<!-- **************************** navFirstButton tag ***********************************-->
 			<tag>
@@ -4661,6 +4755,53 @@ is released.</info>
 					<rtexprvalue>true</rtexprvalue>
 					<info>The tab order (ascending positive integers) for this element.</info>
 				</attribute>
+
+				<attribute>
+					<name>disabledBehaviour</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>Describes the behaviour of this button if it is on the last page.
+possible values: "nohtml", "altimage", "disabled"
+<ul>
+	<li>nohtml: no HTML output</li>
+	<li>altimage: only an image with no functionality is displayed. The src for that image
+can be specified in the attribute disabledImageSrc which can have an alt attribute
+specified in disabledImageAlt and width and height specified by disabledImageWidth
+and disabledImageHeight.</li>
+	<li>disabled (default): The image specified in scr is used but disabled.</li>
+</ul>
+
+example: 
+&lt;db:navFirstButton src="images/ico_back.gif" flavor="image" disabledBehaviour="altimage" disabledImageSrc="images/transparent.gif" disabledImageAlt="my alt text" disabledImageWidth="50" disabledImageHeight="1" onMouseOver="javascript: self.status='go back'; return true;" onMouseOut="javascript: self.status=''; return true;"/&gt;
+
+If on first page, HTML result is:
+&lt;img src="images/transparent.gif" alt="" width="50" height="1" /&gt;</info>
+				</attribute>
+				<attribute>
+					<name>disabledImageSrc</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>see disabledBehaviour</info>
+				</attribute>
+				<attribute>
+					<name>disabledImageAlt</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>see disabledBehaviour</info>
+				</attribute>
+				<attribute>
+					<name>disabledImageWidth</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>see disabledBehaviour</info>
+				</attribute>
+				<attribute>
+					<name>disabledImageHeight</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>see disabledBehaviour</info>
+				</attribute>
+				
 			</tag>
 			<!-- **************************** navLastButton tag ***********************************-->
 			<tag>
@@ -4869,6 +5010,53 @@ is released.</info>
 					<rtexprvalue>true</rtexprvalue>
 					<info>The tab order (ascending positive integers) for this element.</info>
 				</attribute>
+				
+				<attribute>
+					<name>disabledBehaviour</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>Describes the behaviour of this button if it is on the last page.
+possible values: "nohtml", "altimage", "disabled"
+<ul>
+	<li>nohtml: no HTML output</li>
+	<li>altimage: only an image with no functionality is displayed. The src for that image
+can be specified in the attribute disabledImageSrc which can have an alt attribute
+specified in disabledImageAlt and width and height specified by disabledImageWidth
+and disabledImageHeight.</li>
+	<li>disabled (default): The image specified in scr is used but disabled.</li>
+</ul>
+
+example: 
+&lt;db:navLastButton src="images/ico_back.gif" flavor="image" disabledBehaviour="altimage" disabledImageSrc="images/transparent.gif" disabledImageAlt="my alt text" disabledImageWidth="50" disabledImageHeight="1" onMouseOver="javascript: self.status='go back'; return true;" onMouseOut="javascript: self.status=''; return true;"/&gt;
+
+If on last page, HTML result is:
+&lt;img src="images/transparent.gif" alt="" width="50" height="1" /&gt;</info>
+				</attribute>
+				<attribute>
+					<name>disabledImageSrc</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>see disabledBehaviour</info>
+				</attribute>
+				<attribute>
+					<name>disabledImageAlt</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>see disabledBehaviour</info>
+				</attribute>
+				<attribute>
+					<name>disabledImageWidth</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>see disabledBehaviour</info>
+				</attribute>
+				<attribute>
+					<name>disabledImageHeight</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>see disabledBehaviour</info>
+				</attribute>
+								
 			</tag>
 			<!-- **************************** navNewButton tag ***********************************-->
 			<tag>
