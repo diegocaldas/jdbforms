@@ -11,16 +11,30 @@
   <!-- *************************************************  --> 	
 
 
+  <!--==*************************************************==--> 	
+  <!--==**=======  DBFORMS STYLING TEMPLATES  =========**==--> 
+  <!--==*************************************************==--> 	
+
+   <!-- uncomment this if you want your template directory 
+  	different to "/templates" (default)    -->          
+   <context-param>
+      <param-name>templateBase</param-name>
+      <param-value>templates</param-value>
+   </context-param>	   
+
+  <!--==*************************************************==--> 	
+  <!--==**===========  DBFORMS SERVLETS  ==============**==--> 
+  <!--==*************************************************==--> 	
+
   <!--  ========= DbForms Configuration Servlet =========  -->
   <servlet>
     <servlet-name>org.dbforms.ConfigServlet</servlet-name>
     <servlet-class>org.dbforms.ConfigServlet</servlet-class>
-    <load-on-startup>1</load-on-startup>
-    
     <init-param>
       <param-name>log4j.configuration</param-name>
       <param-value>file:/jt32/conf/log4j.properties</param-value>
     </init-param>      
+    <load-on-startup>1</load-on-startup>
   </servlet>
  
   <!--=========== DbForms Controller Servlet ==============--> 
@@ -34,11 +48,6 @@
     </init-param>    
   </servlet>
   
-  <servlet-mapping>
-    <servlet-name>control</servlet-name>
-    <url-pattern>servlet/control</url-pattern>
-  </servlet-mapping>    
-
   <!--=========== DbForms FileServlet =====================
   ensure that "load-on-startup" is less than "load-on-startup" 
   element of Configuration Servlet! because we need to access
@@ -52,9 +61,31 @@
   </servlet>
   
   <servlet-mapping>
+    <servlet-name>control</servlet-name>
+    <url-pattern>servlet/control</url-pattern>
+  </servlet-mapping>    
+
+  <servlet-mapping>
     <servlet-name>file</servlet-name>
     <url-pattern>servlet/file</url-pattern>
   </servlet-mapping>    
+
+
+  <!--==*************************************************==--> 	
+  <!--==**======= Other configuration items, not=======**==--> 
+  <!--==**=======     directly related to DbForms======**==--> 
+  <!--==*************************************************==--> 	
+	
+  <!-- Session config -->
+  <session-config>
+    <session-timeout>30</session-timeout>
+  </session-config>
+  
+  <!-- The Welcome File List -->
+  <welcome-file-list>
+    <welcome-file>menu.jsp</welcome-file>
+  </welcome-file-list>  
+	
 
   <!--=========== DbForms Tag Library Descriptor ==========--> 
   <taglib>
@@ -63,18 +94,6 @@
   </taglib>
 
 
-  <!--==*************************************************==--> 	
-  <!--==**=======  DBFORMS STYLING TEMPLATES  =========**==--> 
-  <!--==*************************************************==--> 	
-
-   <!-- uncomment this if you want your template directory 
-  	different to "/templates" (default)    -->          
-   <context-param>
-      <param-name>templateBase</param-name>
-      <param-value>templates</param-value>
-   </context-param>	   
-
-   
   <!--==*************************************************==--> 	
   <!--==**======= YOUR APPLICATION's SECURITY =========**==--> 
   <!--==*************************************************==--> 	
@@ -160,22 +179,5 @@
 -->	
 	
 
-
-  <!--==*************************************************==--> 	
-  <!--==**======= Other configuration items, not=======**==--> 
-  <!--==**=======     directly related to DbForms======**==--> 
-  <!--==*************************************************==--> 	
-	
-  <!-- Session config -->
-  <session-config>
-    <session-timeout>30</session-timeout>
-  </session-config>
-  
-  <!-- The Welcome File List -->
-  <welcome-file-list>
-    <welcome-file>menu.jsp</welcome-file>
-  </welcome-file-list>  
-	
-	
 
 </web-app>
