@@ -27,6 +27,8 @@ package org.dbforms.devgui;
 import java.sql.*;
 import java.io.*;
 import java.util.*;
+import org.dbforms.ForeignKey;
+import org.dbforms.Reference;
 
 
 
@@ -75,6 +77,84 @@ static private final int DBMS_IBMDB2 = 2;
 	  return DriverManager.getConnection(jdbcURL, username, password);
   }  
 
+    public static HashMap getForeignKeyInformation(DatabaseMetaData dbmd,
+                          boolean includeCatalog, String catalogSeparator,
+                          boolean includeSchema,String schemaSeparator,
+                          Vector knownTables) throws SQLException  {
+      HashMap hm = new HashMap();
+                                   // following method accepts no pattern, so we just pass nulls and read all
+                                   // available information:
+      ResultSet rsk = dbmd.getCrossReference(null, null, null, null,null,null ) ;
+      
+      while (rsk.next()) {
+          String pCatalog = rsk.getString(1);
+          String pSchema = rsk.getString(2);
+          String pTable= rsk.getString(3);
+          if ( ! knownTables.contains("" + pCatalog + "\t" + pSchema + "\t" + pTable)) continue; 
+         
+          String pColName = rsk.getString(4);
+          
+          String fCatalog = rsk.getString(5);
+          String fSchema = rsk.getString(6);
+          String fTable=rsk.getString(7);
+          if ( ! knownTables.contains("" + fCatalog + "\t" + fSchema + "\t" + fTable)) continue;
+          
+          String fColName = rsk.getString(8);
+          
+          String fkName = rsk.getString(12);
+ 
+          if (fkName == null)   // foreign key name not set, construct one....
+              fkName = pCatalog + "::" + pSchema + "::" + pTable;  
+          
+          String hashKey = fCatalog + "\t" + fSchema + "\t" + fTable;
+          
+          HashMap tabForKeys = (HashMap)hm.get(hashKey);  // Hash with foreign key information for referencing table
+          if (tabForKeys == null) {
+              tabForKeys = new HashMap();
+              hm.put(hashKey, tabForKeys);
+          }
+          ForeignKey fki = (ForeignKey)tabForKeys.get(fkName);
+          if (fki == null) {
+               fki = new ForeignKey();
+               tabForKeys.put(fkName,fki);
+               String fullTabName = "";
+               if (includeCatalog) fullTabName = pCatalog + catalogSeparator;
+               if (includeSchema) fullTabName +=  pSchema + schemaSeparator;
+               fullTabName +=  pTable;
+               fki.setForeignTable(fullTabName);
+               fki.setName(fkName);              
+          }
+          fki.addReference(new Reference(fColName, pColName));
+      }       
+      return hm;      
+  }
+  
+  public static String getForeignKeyTags(HashMap hm, String catalog,String schema,String table ) {
+       String hashKey = catalog + "\t" +schema + "\t" + table;
+       HashMap keyInfo = (HashMap)hm.get(hashKey);
+       if (keyInfo == null) return "";
+       
+       StringBuffer sb = new StringBuffer("");
+       Collection col = keyInfo.values();
+       Iterator forKeyIt = col.iterator();
+       while (forKeyIt.hasNext()) {
+           ForeignKey fk = (ForeignKey)forKeyIt.next();
+           java.util.Vector v = fk.getReferencesVector();
+           sb.append("\n\t\t<foreign-key  name=\"").append(fk.getName()).append("\"" ).
+               append("\n\t\t      foreignTable=\"").append(fk.getForeignTable()).append("\"" ).
+               append("\n\t\t      displayType=\"").append(v.size() == 1 ? "select" : "none").append("\"").               
+               append(">\n");
+           
+           for (int jj = 0; jj < v.size();jj++ ) {
+              Reference ref = (Reference)v.get(jj);
+              sb.append("\t\t     <reference local=\"").append(ref.getLocal()).append("\"").
+                append("\n\t\t              foreign=\"").append(ref.getForeign()).append("\"/>\n");           
+           }
+           sb.append("\t\t</foreign-key>\n");
+       }
+       return sb.toString();                       
+   }
+       
   // nope, i won't use DOM for that task ;-)
   public static String createXMLOutput(ProjectData projectData,
                               boolean createGuiMessagewindow) throws Exception {
@@ -250,7 +330,8 @@ static private final int DBMS_IBMDB2 = 2;
                 Vector tableNames      = new Vector();
                 Vector catalogNames  = new Vector();
                 Vector schemaNames = new Vector();
-              
+                Vector knownTables = new Vector();
+                
                 try {
                     ResultSet tablesRS = dbmd.getTables(catalog, schemaPattern, tableNamePattern, types);               
 
@@ -258,7 +339,7 @@ static private final int DBMS_IBMDB2 = 2;
                        catalogNames.add(tablesRS.getString(1));
                        schemaNames.add(tablesRS.getString(2));
                        tableNames.add(tablesRS.getString(3));
-                       
+                       knownTables.add("" + tablesRS.getString(1) + "\t" + tablesRS.getString(2) + "\t" + tablesRS.getString(3));                      
                     }
                     tablesRS.close();
                 
@@ -272,6 +353,11 @@ static private final int DBMS_IBMDB2 = 2;
                                                                            ex.getMessage() + "<br>");
                 }
                 
+                
+                if (! useAutoCommitMode) con.commit();
+                
+                HashMap forKeys = getForeignKeyInformation(dbmd, includeCatalog, catalogSeparator,
+                                                     includeSchema,schemaSeparator,knownTables) ;
                 
                 if (! useAutoCommitMode) con.commit();
                 
@@ -305,18 +391,26 @@ static private final int DBMS_IBMDB2 = 2;
                       result.append(schemaName.trim()).append(schemaSeparator);
                   if (includeSchema && ((schemaName == null) || schemaName.equalsIgnoreCase("")) )
                       schemaNameFailure++;
-                  
-		  result.append(tableName);
-		  result.append("\">\n");
 
                                                                 // read primary key into Vector keys:
 		  ResultSet rsKeys = dbmd.getPrimaryKeys(catalogName, schemaName, tableName);
 		  Vector keys = new Vector();
+                  String  defaultVisibleFields = "";
+                  boolean isFirst = true;
 		  while(rsKeys.next()) {
 		      String columnName = rsKeys.getString(4);
 		      keys.addElement(columnName);
+                      if (isFirst) defaultVisibleFields += columnName;
+                      else defaultVisibleFields += "," +  columnName;
+                      isFirst = false;
 		  }
 		  rsKeys.close();
+                  
+                  result.append(tableName).append("\"");
+                  
+                  if (defaultVisibleFields.length() > 0) 
+                      result.append("\n\t            defaultVisibleFields=\"" + defaultVisibleFields + "\" ");
+		  result.append(">\n");
 
                                                                 // now try to get information about automatically 
                                                                 // incemented fields. Unfortunaltely there is now 
@@ -455,6 +549,9 @@ static private final int DBMS_IBMDB2 = 2;
 		  }
 		  rsFields.close();
                   if (! useAutoCommitMode) con.commit();
+                  
+                  result.append(getForeignKeyTags(forKeys,catalogName,schemaName, tableName) );
+ 
 		  result.append("\n\t\t<!-- add \"granted-privileges\" element for security constraints -->\n\n\t</table>\n\n");
 		}
 		
