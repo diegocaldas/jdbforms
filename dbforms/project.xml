@@ -48,15 +48,57 @@
   </mailingLists>
 
   <developers>
+
     <developer>
-      <name>Eric Pugh</name>
-      <id>epugh</id>
-      <email>epugh@upstate.com</email>
+      <name>Joachim Peer</name>
+      <id>jpeer</id>
+      <email></email>
       <organization/>
       <roles>
         <role>Java Developer</role>
       </roles>
     </developer>
+
+    <developer>
+      <name>Shawn Asamoto-Brown</name>
+      <id>shawn</id>
+      <email></email>
+      <organization/>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+
+    <developer>
+      <name>Sebastian Bogaci</name>
+      <id>sbogaci</id>
+      <email>Henner.Kollmann@gmx.de</email>
+      <organization/>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+
+    <developer>
+      <name>Richard Bondi</name>
+      <id>rbondi</id>
+      <email>rbondi@ergito.com</email>
+      <organization/>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+
+    <developer>
+      <name>Mark Dimon</name>
+      <id>mdimon</id>
+      <email></email>
+      <organization/>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+
     <developer>
       <name>Luca Fossato</name>
       <id>foxat</id>
@@ -65,6 +107,38 @@
       <roles>
         <role>Java Developer</role>
       </roles>
+    </developer>
+
+    <developer>
+      <name>John Gagon</name>
+      <id>jgagon</id>
+      <email></email>
+      <organization/>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+
+    <developer>
+      <name>Bradley M. Handy</name>
+      <id>bmhandy</id>
+      <email>Henner.Kollmann@gmx.de</email>
+      <organization/>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+
+    <developer>
+      <name>Robert W. Husted</name>
+      <id>rwhusted</id>
+      <email></email>
+      <organization/>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+
     <developer>
       <name>Henner Kollmann</name>
       <id>hkollmann</id>
@@ -74,6 +148,27 @@
         <role>Java Developer</role>
       </roles>
     </developer>
+
+    <developer>
+      <name>Dirk Kraemer</name>
+      <id>dkraemer</id>
+      <email>kraemer@rz.uni-kiel.de</email>
+      <organization/>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+
+    <developer>
+      <name>Eric Pugh</name>
+      <id>epugh</id>
+      <email>epugh@upstate.com</email>
+      <organization/>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+
   </developers>
 
   <dependencies>       
