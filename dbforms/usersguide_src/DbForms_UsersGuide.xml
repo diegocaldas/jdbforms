@@ -32,7 +32,6 @@
 <!ENTITY refe SYSTEM "Appendix_References.xml">
 <!ENTITY ackn SYSTEM "Appendix_Acknowledgements.xml">
 <!ENTITY auth SYSTEM "Appendix_Author.xml">
-<!ENTITY multi_byte_link SYSTEM "Multibyte_Chars_In_LinkURL.xml">
 <!ENTITY navi SYSTEM "Navigation.xml">
 <!ENTITY xml  SYSTEM "XMLDatasource.xml">
 <!ENTITY uml-cls SYSTEM "UMLDiagrams-cls.xml">
@@ -90,7 +89,6 @@
 <part><title>Appendices</title>
 &tagl;
 &date;
-&multi_byte_link;
 &chan;
 &todo;
 &ackn;
