@@ -13,7 +13,7 @@
 			<db:header>
 				<table>
 			</db:header>
-			<db:body allowNew="true">
+			<db:body allowNew="false">
 					<tr>
 						<td>
 							<db:file  fieldName="FILE"/> 
