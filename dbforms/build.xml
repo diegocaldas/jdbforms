@@ -140,6 +140,7 @@
   <target name="generate_taglib" depends="jar_classes" description="--&gt; Generate the taglib dbforms.tld from taglib_docu.xml">
     <echo message="begin xsl translation" />
     <style style="${etc.dir}/tld.xsl" in="${etc.dir}/taglib_docu.xml" out="${dist.dir}/dbforms.tld" />
+    <replace file="${dist.dir}/dbforms.tld" token="CURRENT_VERSION" value="${dbforms.version}" />
     <echo message="end of xsl translation " />
   </target>
 
@@ -179,7 +180,7 @@
     <java jar="${basedir}/usersguide_src/docbook_tools/tlddoc.jar" fork="true" >
        <arg value="-d" />
        <arg value="${basedir}/doc/taglib" />
-       <arg value="${basedir}/dist/dbforms.tld"  />
+       <arg value="${dist.dir}/dbforms.tld"  />
     </java>
     <echo message="end of xsl translation " />
   </target>
