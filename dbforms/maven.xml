@@ -8,23 +8,25 @@
      -    tag library
      -    docbook guide 
      -->
-  <goal name="maxq:run">
-     <attainGoal name="dbforms:startweb" />
-      <ant:java  classname="com.bitmechanic.maxq.Main" fork="yes">
+  <goal name="maxq:start">
+     <ant:echo message="please setup your browser to use localhost:8090 as proxy port!" />
+     <ant:java  classname="com.bitmechanic.maxq.Main" fork="yes">
         <ant:classpath>
           <ant:pathelement path="dependend/maxq-0.94x.jar"/>
 	      <ant:pathelement path="${pom.getDependencyClasspath()}"/>
         </ant:classpath>
         <ant:sysproperty key="generator.properties.file" value="${basedir}/maxq.properties" />
-      </ant:java>
-      <attainGoal name="appserver:stop" />
+     </ant:java>
   </goal>	
 
   <goal name="maxq">
-     <attainGoal name="maxq:run" />
+     <attainGoal name="dbforms:startweb" />
+     <attainGoal name="maxq:start" />
+     <attainGoal name="appserver:stop" />
   </goal>	
 
   <goal name="dbforms:startweb">
+    <ant:echo message="start tomcat" />
     <attainGoal name="dbforms:bookstore" />
     <attainGoal name="appserver:install" />
      <j:thread>
@@ -129,6 +131,7 @@
   <postGoal name="clean">
     <ant:echo message="clean docs too" />
     <ant:ant antfile="docs.xml" target="cleanUp" />
+    <ant:delete dir="build"/>
   </postGoal>
 
   <postGoal name="appserver:install">
@@ -147,6 +150,7 @@
   </preGoal>
 
   <postGoal name="test:test">
+     <ant:echo message="stop tomcat" />
      <attainGoal name="appserver:stop" />
   </postGoal>
 </project>
