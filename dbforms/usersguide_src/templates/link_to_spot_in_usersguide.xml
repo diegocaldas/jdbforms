@@ -7,7 +7,7 @@
     Description:
         Purpose of the document follows.
 -->
-
+<root>
 <para>
 In this sentence <link linkend='nextsect'>this</link> word is
 hot and points to the following section.
@@ -19,8 +19,9 @@ There is also a link to the section called
 in this sentence.
 </para>
 
-<sect2 id='nextsect'><title id='nextsect.title'>A Subsection</title>
+<sect2 id='nextsect'><title id='nextsect.title'>A Subsection</title></sect2>
 
 <para>
 This section only exists to be the target of a couple of links.
 </para>
+</root>

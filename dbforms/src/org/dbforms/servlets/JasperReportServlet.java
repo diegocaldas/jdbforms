@@ -163,15 +163,15 @@ public class JasperReportServlet extends ReportServletAbstract {
 					if ("PDF".equals(outputFormat)) {
 						res.mimeType = "application/pdf";
 						res.data = exportToPDF(jPrint);
-						fName = FileUtil.basename(reportFileFullName) + ".pdf";
+						fName = FileUtil.filename(reportFileFullName) + ".pdf";
 					} else if ("XLS".equals(outputFormat)) {
 						res.mimeType = "application/msexcel";
 						res.data = exportToXLS(jPrint);
-						fName = FileUtil.basename(reportFileFullName) + ".xls";
+						fName = FileUtil.filename(reportFileFullName) + ".xls";
 					} else if ("CSV".equalsIgnoreCase(outputFormat)) {
 						res.mimeType = "text/comma-separated-values";
 						res.data = exportToCSV(jPrint);
-						fName = FileUtil.basename(reportFileFullName) + ".csv";
+						fName = FileUtil.filename(reportFileFullName) + ".csv";
 					}
 					res.fileName = ParseUtil.getParameter(request, REPORTNAMEPARAM, fName);
 					jPrint = null;
@@ -219,9 +219,9 @@ public class JasperReportServlet extends ReportServletAbstract {
 
 		for (int i = 0; i < list.length; i++) {
 			String s = FileUtil.removeExtension(list[i].getPath());
-			String ext = FileUtil.getExtension(list[i].getPath());
+			String ext = "." + FileUtil.getExtension(list[i].getPath());
 
-			if (s.startsWith(reportFile) && (ext.equals(REPORTFILEEXTENSION))) {
+			if (s.startsWith(reportFile) && (ext.equals(getReportFileExtension()))) {
 				File xmlFile = list[i];
 				File jasperFile = FileUtil.getFile(s + ".jasper");
 

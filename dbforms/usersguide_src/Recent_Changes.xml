@@ -58,14 +58,14 @@ There is a new servlet to generate a jasperreport with the data from an dbform.
 				destination="/reports/Artikel"
 			/>
 	Servlet mapping must be set to handle all /reports by this servlet!!!
-		<servlet/>
-			<servlet-name/>startreport</servlet-name/>
-			<display-name/>startreport</display-name/>
-			<servlet-class/>org.dbforms.StartReportServlet</servlet-class/>
+		<servlet>
+			<servlet-name>startreport</servlet-name>
+			<display-name>startreport</display-name>
+			<servlet-class>org.dbforms.StartReportServlet</servlet-class>
 		</servlet>
-		<servlet-mapping/>
-			<servlet-name/>startreport</servlet-name/>
-			<url-pattern/>/reports/*</url-pattern/>
+		<servlet-mapping>
+			<servlet-name>startreport</servlet-name>
+			<url-pattern>/reports/*</url-pattern>
 		</servlet-mapping>
 
 </screen>

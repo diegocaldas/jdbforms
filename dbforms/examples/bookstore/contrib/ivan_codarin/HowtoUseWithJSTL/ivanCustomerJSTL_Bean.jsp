@@ -2,7 +2,7 @@
 	<%@ taglib uri="/WEB-INF/dbforms.tld" prefix="db" %>
 	<%@ taglib uri="/WEB-INF/c-el.tld" prefix="c" %>
 		
-	<jsp:useBean id="backcolor" scope="page" class="net.myPackage.IvanBackgroudColor"/>
+	<jsp:useBean id="backcolor" scope="page" class="contrib.ivan_codarin.IvanBackgroudColor"/>
 	<!-- To use the bean in JSTL you have to define a variable with jstl c:set var filled with the value of the bean.
 	     In this way later you could access to the properties of that bean -->
 	<c:set var="backcolor" value="${backcolor}" />

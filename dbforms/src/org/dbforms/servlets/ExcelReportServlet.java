@@ -125,6 +125,7 @@ public class ExcelReportServlet extends LineReportServletAbstract {
 						MessageResources.getLocale(request)));
 		wb = new HSSFWorkbook();
 		sheet = wb.createSheet(sheetname);
+		rowCnt = 0;
 		super.process(request, response);
 	}
 
