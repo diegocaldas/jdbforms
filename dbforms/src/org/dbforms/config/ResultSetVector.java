@@ -161,6 +161,13 @@ public class ResultSetVector implements java.io.Serializable {
 		return attributes;
 	}
 
+	public String getTableName() {
+		String result = null;
+		if (table != null)
+		   result = table.getName();
+		return result;
+	}
+	
 	/**
 	 * DOCUMENT ME!
 	 * 
