@@ -72,9 +72,8 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag {
     *
     * @return DOCUMENT ME!
     */
-   protected static int getUniqueID() {
+   protected synchronized static int getUniqueID() {
       uniqueID++;
-
       return uniqueID;
    }
 

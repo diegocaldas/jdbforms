@@ -33,8 +33,6 @@ import org.dbforms.event.NavigationEvent;
 import org.dbforms.event.datalist.dao.DataSourceList;
 import org.dbforms.event.datalist.dao.DataSourceFactory;
 
-
-
 /**
  *
  * This event reloads the current dataset and moves to the first row of data
@@ -44,8 +42,9 @@ import org.dbforms.event.datalist.dao.DataSourceFactory;
  * @author Henner Kollmann <Henner.Kollmann@gmx.de>
  *
  */
-public class ReloadEvent extends NavigationEvent
-{
+public class ReloadEvent extends NavigationEvent {
+
+   private boolean isInsert = false;
    /**
     * Creates a new ReloadEvent object.
     *
@@ -53,12 +52,10 @@ public class ReloadEvent extends NavigationEvent
     * @param request the request object
     * @param config  the configuration object
     */
-   public ReloadEvent(String action, HttpServletRequest request, 
-                      DbFormsConfig config)
-   {
+   public ReloadEvent(String action, HttpServletRequest request, DbFormsConfig config) {
       super(action, request, config);
+      isInsert = action.indexOf("_ins_") > 0;
    }
-
 
    /**
     * Creates a new ReloadEvent object.
@@ -67,9 +64,7 @@ public class ReloadEvent extends NavigationEvent
     * @param request the request object
     * @param config the configuration object
     */
-   public ReloadEvent(Table table, HttpServletRequest request, 
-                      DbFormsConfig config)
-   {
+   public ReloadEvent(Table table, HttpServletRequest request, DbFormsConfig config) {
       super(table, request, config);
    }
 
@@ -92,31 +87,35 @@ public class ReloadEvent extends NavigationEvent
     *
     * @exception SQLException if any error occurs
     */
-   public ResultSetVector processEvent(FieldValue[] filterFieldValues, 
-                                       FieldValue[] orderConstraint, 
-                                       String sqlFilter, 
-                                       FieldValue[] sqlFilterParams, int count, 
-                                       String firstPosition, 
-                                       String lastPosition, 
-                                       String dbConnectionName, Connection con)
-                                throws SQLException
-   {
-      DataSourceList    ds  = DataSourceList.getInstance(request);
-      DataSourceFactory qry = ds.get(getTable(), request);
+   public ResultSetVector processEvent(
+      FieldValue[] filterFieldValues,
+      FieldValue[] orderConstraint,
+      String sqlFilter,
+      FieldValue[] sqlFilterParams,
+      int count,
+      String firstPosition,
+      String lastPosition,
+      String dbConnectionName,
+      Connection con)
+      throws SQLException {
+      if (isInsert)
+         return null;
+      else {
+         logCat.info("==>NavCurrentEvent.processEvent");
+         DataSourceList ds = DataSourceList.getInstance(request);
+         DataSourceFactory qry = ds.get(getTable(), request);
+         if (qry == null) {
+            qry = new DataSourceFactory(dbConnectionName, con, getTable());
+            qry.setSelect(filterFieldValues, orderConstraint, sqlFilter, sqlFilterParams);
+            ds.put(getTable(), request, qry);
+         }
+         String position = getTable().getKeyPositionString(getTable().getFieldValues(lastPosition));
+         ResultSetVector res = qry.getCurrent(position, count);
+         if (ResultSetVector.isNull(res)) {
+            res = qry.getLast(count);
+         }
 
-      if (qry == null)
-      {
-         qry = new DataSourceFactory(dbConnectionName, con, getTable());
-         ds.put(getTable(), request, qry);
+         return res;
       }
-      else
-      {
-         qry.close();
-      }
-
-      qry.setSelect(filterFieldValues, orderConstraint, sqlFilter, 
-                    sqlFilterParams);
-
-      return qry.getCurrent(null, count);
    }
 }

@@ -76,10 +76,6 @@ public class EventType
 	/**  value of the navigation reload event */
 	public static final String EVENT_NAVIGATION_RELOAD = "navReload";
 
-   /**  value of the navigation reload event */
-   public static final String EVENT_PAGE_RELOAD = "navPageReload";
-
-
 	
 	
 	/**  transfer value of the navigation first event */

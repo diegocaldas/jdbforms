@@ -253,7 +253,7 @@ public abstract class DbBaseInputTag extends DbBaseHandlerTag
       if ( (this.getOverrideValue() != null) && 
             !(
                (getParentForm().hasRedisplayFieldsOnErrorSet() && (errors != null) && (errors.size() > 0))
-              || ((we != null) && (we.getType() == EventType.EVENT_PAGE_RELOAD))
+              || ((we != null) && (we.getType().equals(EventType.EVENT_NAVIGATION_RELOAD)))
              )
          )
       {

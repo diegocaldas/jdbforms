@@ -171,7 +171,7 @@ public class EventEngine
          e = new PageReloadEvent(ParseUtil.getEmbeddedStringAsInteger(action, 2, 
                                                                       '_'), 
                                  request, config);
-         e.setType(EventType.EVENT_PAGE_RELOAD);
+         e.setType(EventType.EVENT_NAVIGATION_RELOAD);
          initializeWebEvent(e);
 
          return e;

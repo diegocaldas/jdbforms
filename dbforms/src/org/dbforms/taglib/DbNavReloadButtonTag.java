@@ -68,7 +68,11 @@ public class DbNavReloadButtonTag extends DbBaseButtonTag
       try
       {
          StringBuffer tagBuf  = new StringBuffer();
-         String       tagName = EventType.EVENT_NAVIGATION_TRANSFER_RELOAD + getTable().getId() + "_" + Integer.toString(getUniqueID());
+         String       tagName = EventType.EVENT_NAVIGATION_TRANSFER_RELOAD;
+         tagName = tagName + getTable().getId(); 
+         if (getParentForm().getFooterReached())
+            tagName = tagName + "_ins"; 
+         tagName = tagName + "_" + Integer.toString(getUniqueID());
 
          if (getFollowUp() != null)
          {

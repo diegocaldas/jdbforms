@@ -26,6 +26,7 @@
 				<table>
 		            <tr class="button">
         		       <td >
+		               	 <db:navReloadButton caption="Refresh"/>
 		               	 <db:updateButton caption="Save"/>
         		         <db:deleteButton caption="Delete"/>
                 		 <db:insertButton caption="Insert" showAlways="false" />
@@ -37,7 +38,6 @@
 							<db:navPrevButton  caption="previous"/>
 							<db:navNextButton  caption="next"/>
 							<db:navLastButton  caption="last"/>
-							<db:navReloadButton  caption="reload"/>
 		                	<db:navNewButton   caption="New" showAlwaysInFooter="false" />
                             <db:gotoButton     
                                caption="goto same record" 

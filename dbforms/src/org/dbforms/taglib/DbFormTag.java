@@ -2413,7 +2413,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
       ResultSetVector result = null;
       HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
 
-      if ((webEvent != null) && (webEvent.getType() == EventType.EVENT_PAGE_RELOAD)) {
+      if ((webEvent != null) && (webEvent.getType().equals(EventType.EVENT_NAVIGATION_RELOAD))) {
          Field field = getTable().getFieldByName(name);
 
          if (field == null) {
