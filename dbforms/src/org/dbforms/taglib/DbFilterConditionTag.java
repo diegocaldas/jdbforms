@@ -114,8 +114,7 @@ public class DbFilterConditionTag extends BodyTagSupport
                                                     int tableId, 
                                                     int conditionId)
    {
-      return DbFilterValueTag.readValuesFromRequest(request, tableId, 
-                                                    conditionId);
+      return DbFilterValueTag.readValuesFromRequest(request, tableId, conditionId);
    }
 
 
@@ -132,17 +131,14 @@ public class DbFilterConditionTag extends BodyTagSupport
                                                    int tableId, int conditionId)
    {
       // read raw condition from request
-      String filterCondition = ParseUtil.getParameter(request, 
-                                                      DbFilterTag.getFilterName(
-                                                               tableId)
-                                                      + DbFilterTag.FLT_COND
-                                                      + conditionId);
+      String filterCondition = getSqlFilter(request, tableId, conditionId);
 
       if (Util.isNull(filterCondition))
       {
          return null;
       }
 
+      int cnt = filterCondition.split("[?]").length; 
       // build up the list of the values of the nested filterValue's parameters 
       FieldValue[] values = DbFilterValueTag.readValuesFromRequest(request, 
                                                                    tableId, 
@@ -157,7 +153,7 @@ public class DbFilterConditionTag extends BodyTagSupport
       int          p1  = 0;
       int          p2  = filterCondition.indexOf('?', p1);
       StringBuffer buf = new StringBuffer();
-      int          cnt = 0;
+      cnt = 0;
 
       while (p2 > -1)
       {

@@ -164,7 +164,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
    private String filter;
 
    /** SQL filter string */
-   private String sqlfilter = null;
+   private String sqlFilter = null;
    private String gotoPrefix;
 
    //private String gotoPos;
@@ -587,7 +587,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
    */
    public String getSqlFilter()
    {
-      return sqlfilter;
+      return sqlFilter;
    }
 
 
@@ -596,7 +596,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
    */
    public void setSqlFilter(String string)
    {
-      sqlfilter = string;
+      sqlFilter = string;
    }
 
 
@@ -1188,9 +1188,6 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
          logCat.info("servlet getPathInfo = " + request.getPathInfo());
 
 
-         // 20030604-HKK: Removed because of bug in current cactus enviroment! 
-         //               getPathTranslated() will get an null exception! 
-         //  logCat.info("servlet getPathTranslated = " + request.getPathTranslated());
          logCat.info("servlet getContextPath = " + request.getContextPath());
          logCat.debug("pos1");
 
@@ -1426,28 +1423,28 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
          // III/1:
          // initialize all of the different filters
 
-         setSqlFilter(DbFilterTag.generateSqlFilter(request, getTable().getId(), getSqlFilter()));
+//         setSqlFilter(DbFilterTag.generateSqlFilter(request, getTable().getId(), getSqlFilter()));
 
          // retrieve sqlFilters 
 			String sqlFilterString = "";
-			String filter = DbFilterTag.getSqlFilter(request, this.getTable().getId());
+			String requestSqlFilterString = DbFilterTag.getSqlFilter(request, this.getTable().getId());
 			FieldValue[] sqlFilterParams = null;
 			
-			if (!Util.isNull(getSqlFilter()) && !Util.isNull(filter))
+			if (!Util.isNull(getSqlFilter()) && !Util.isNull(requestSqlFilterString))
 			{
-				sqlFilterString = " ( " + filter + " ) AND ( " + getSqlFilter() + " ) ";
+				sqlFilterString = " ( " + requestSqlFilterString + " ) AND ( " + getSqlFilter() + " ) ";
 			}
 			else if (!Util.isNull(getSqlFilter()))
 			{
 				sqlFilterString = getSqlFilter();
 			}
-			else if (!Util.isNull(filter))
+			else if (!Util.isNull(requestSqlFilterString))
 			{
-				sqlFilterString = filter;
+				sqlFilterString = requestSqlFilterString;
 			}
 			logCat.debug("filter to apply : " + sqlFilterString);
 
-         if (!Util.isNull(filter)) {
+         if (!Util.isNull(requestSqlFilterString)) {
             sqlFilterParams = DbFilterTag.getSqlFilterParams(request, this.getTable().getId());
          }
 			
@@ -2227,7 +2224,8 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
             }
             else if (aSearchFieldValue.indexOf("-") != -1)
             {
-               // delimiter found in SearchFieldValue, create something like
+               // is extended searching and delimiter found in SearchFieldValue
+               // create 2 searchfields
                algorithm = Constants.SEARCH_ALGO_EXTENDED;
 
                StringTokenizer st = new StringTokenizer(" " + aSearchFieldValue
@@ -2899,6 +2897,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
       {
          fieldNames.clear();
       }
+      sqlFilter = null;
    }
 
 

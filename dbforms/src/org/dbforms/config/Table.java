@@ -770,7 +770,7 @@ public class Table
     *                    "parentFields" in main form
     * @param fvOrder     FieldValue array used to build a cumulation of rules for ordering
     *                    (sorting) and restricting fields
-    * @param compareMode compare mode value
+    * @param compareMode compare mode value for generating the order clause
     * @return the WHERE part of a query
     */
    protected String getQueryWhere(FieldValue[] fvEqual, FieldValue[] fvOrder,
@@ -780,7 +780,7 @@ public class Table
       StringBuffer buf = new StringBuffer();
 
       // build the first term;
-      if ((fvEqual != null) && (fvEqual.length > 0))
+      if (!FieldValue.isNull(fvEqual))
       {
          // check if the fieldvalues contain _search_ information
          buf.append(" ( ");
@@ -801,7 +801,7 @@ public class Table
       // build the second term;
       // this SHOULD be the WHERE clause which restricts
       // the query to rows coming AFTER the row containing the actual data.
-      if ((fvOrder != null) && (fvOrder.length > 0))
+      if (!FieldValue.isNull(fvOrder))
       {
          if (compareMode != Constants.COMPARE_NONE)
          {
@@ -856,35 +856,48 @@ public class Table
 
    /**
     *  Prepares the Querystring for the select statement
-    *  if the statement is for a sub-form (=> doConstrainedSelect),
-    *  we set some place holders for correct mapping
+    * 
+    * Order of parts:
+    *  1. sqlFilter                                               (fild in getDoSelectResultSet!)
+    *  2. where condition generated from having / ordering fields (fild in populateWhereEqualsClause)
+    * 
+    *  Retrieving the parameters in getDoSelectResultSet() must match this
+    *  order! 
     *
     * @param fieldsToSelect  vector of fields to be selected
     * @param fvEqual         fieldValues representing values we are looking for
     * @param fvOrder         fieldValues representing needs for order clauses
-    * @param sqlFilter       sql condition to add to where clause
-    * @param compareMode     and / or
+    * @param sqlFilter       sql condition to and with the where clause
+    * @param compareMode     compare mode value for generating the order clause
     * @return the query string
     */
    public String getSelectQuery(Vector fieldsToSelect, FieldValue[] fvEqual,
       FieldValue[] fvOrder, String sqlFilter, int compareMode)
    {
       StringBuffer buf = new StringBuffer();
+
       buf.append("SELECT ");
       buf.append(getQuerySelect(fieldsToSelect));
       buf.append(" FROM ");
       buf.append(getQueryFrom());
 
-      String s;
-      s = getQueryWhere(fvEqual, fvOrder, compareMode);
+      String s = getQueryWhere(fvEqual, fvOrder, compareMode);
 
       if (!Util.isNull(s) || !Util.isNull(sqlFilter))
          buf.append(" WHERE ");
          
+      // where condition from DbFormTag's sqlFilter attribute
+      if (!Util.isNull(sqlFilter))
+      {
+          buf.append(" ( ");
+          buf.append(sqlFilter);
+          buf.append(" ) ");
+      }
+
       // where condition generated from searching / ordering
       if (!Util.isNull(s))
       {
-			if (s.length() > 0)
+			if (!Util.isNull(sqlFilter))
 				buf.append(" AND ( ");
 			else
 				buf.append(" ( ");
@@ -892,19 +905,8 @@ public class Table
          buf.append(" ) ");
       }
       
-      // where condition from DbFormTag's sqlFilter attribute
-      if (!Util.isNull(sqlFilter))
-      {
-      	 if (s.length() > 0)
-      	    buf.append(" AND ( ");
-      	 else
-      	    buf.append(" ( ");
-      	 buf.append(sqlFilter);
-      	 buf.append(" ) ");
-      }
 
       s = getQueryOrderBy(fvOrder);
-
       if (s.length() > 0)
       {
          buf.append(" ORDER BY ");
@@ -970,6 +972,15 @@ public class Table
 
    /**
     *  Get the SQL ResultSet from the query builded using the input data.
+    * 
+    * 
+    * Order of parts:
+    *  1. sqlFilter
+    *  2. where condition generated from searching
+    *  3. where condition generated from ordering 
+    * 
+    *  Generating the query in getSelectQuery()  must match this
+    *  order! 
     *
     * @param fvEqual     FieldValue array used to restrict a set in a subform where
     *                    all "childFields" in the  resultset match their respective
@@ -989,28 +1000,23 @@ public class Table
       int curCol = 1;
 
       logCat.debug("###getDoSelectResultSet pos1");
-
-      // build a query (involving the getWhereEqualsClause() method)
-      // and prepare the statemtent, providing the actual values for the
-      // the '?' placeholders
-      if ((fvEqual != null) && (fvEqual.length > 0))
-      {
-         logCat.debug("###getDoSelectResultSet pos2");
-         curCol = populateWhereEqualsClause(fvEqual, ps, curCol);
-         logCat.debug("###getDoSelectResultSet pos3");
+      if (!FieldValue.isNull(sqlFilterParams)) 
+      { 
+         curCol = FieldValue.populateWhereEqualsClause(sqlFilterParams, ps, curCol);
       }
 
-      logCat.debug("###getDoSelectResultSet pos4");
+      logCat.debug("###getDoSelectResultSet pos2");
+      if (!FieldValue.isNull(fvEqual))
+      {
+         curCol = populateWhereEqualsClause(fvEqual, ps, curCol);
+      }
 
+      logCat.debug("###getDoSelectResultSet pos3");
       if ((compareMode != Constants.COMPARE_NONE) && (fvOrder != null)
                && (fvOrder.length > 0))
       {
-         logCat.debug("###getDoSelectResultSet pos5");
          FieldValue.populateWhereAfterClause(fvOrder, ps, curCol);
-         logCat.debug("###getDoSelectResultSet pos6");
       }
-
-      logCat.debug("###getDoSelectResultSet pos7");
 
       ResultSet result = null;
 

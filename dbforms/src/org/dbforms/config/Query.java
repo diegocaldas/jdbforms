@@ -155,7 +155,7 @@ public class Query extends Table
     * 
     * @return search field list
     */
-   public Vector getSearchFields()
+   private Vector getSearchFields()
    {
       return searchfields;
    }
@@ -348,22 +348,26 @@ public class Query extends Table
 
 
    /**
-    * Prepares the Querystring for the select statement if the statement is for
-    * a sub-form (=> doConstrainedSelect), we set some place holders for
-    * correct mapping overloaded from Table if from is defind in
-    * dbforms-config.xml use this, else method from Table extends select query
-    * with: group by where clause special from select fields
+    *  Prepares the Querystring for the select statement
     * 
-    * @param fieldsToSelect - vector of fields to be selected
-    * @param fvEqual - fieldValues representing values we are looking for
-    * @param fvOrder - fieldValues representing needs for order clauses
-    * @param sqlFilter       sql condition to add to where clause
-    * @param compareMode - and / or
+    * Order of parts:
+    *  1. where condition from config                             (no params!)
+    *  2. sqlFilter                                               (fild in getDoSelectResultSet!)
+    *  3. where condition generated from search fields            (fild in overloaded populateWhereEqualsClause)
+    *  4. where condition generated from having / ordering fields (fild in overloaded populateWhereEqualsClause)
     * 
-    * @return generated sql query
+    *  Retrieving the parameters in getDoSelectResultSet() must match this
+    *  order! 
+    *
+    * @param fieldsToSelect  vector of fields to be selected
+    * @param fvEqual         fieldValues representing values we are looking for
+    * @param fvOrder         fieldValues representing needs for order clauses
+    * @param sqlFilter       sql condition to and with the where clause
+    * @param compareMode     compare mode value for generating the order clause
+    * @return the query string
     */
-   public String getSelectQuery(Vector fieldsToSelect, FieldValue[] fvEqual, 
-                                FieldValue[] fvOrder, String sqlFilter, int compareMode)
+   public String getSelectQuery(Vector fieldsToSelect, FieldValue[] fvEqual,
+      FieldValue[] fvOrder, String sqlFilter, int compareMode)
    {
       StringBuffer buf                      = new StringBuffer();
       String       s;
@@ -383,8 +387,8 @@ public class Query extends Table
       buf.append(getQuerySelect(fieldsToSelect));
       buf.append(" FROM ");
       buf.append(getQueryFrom());
-      s = getQueryWhere(fvWhere, null, compareMode);
 
+      s = getQueryWhere(fvWhere, null, 0);
 		if (!Util.isNull(s) || !Util.isNull(where) || !Util.isNull(sqlFilter))
       {
          hatSchonWhere = true;
@@ -398,28 +402,34 @@ public class Query extends Table
             buf.append(" ) ");
          }
 
-         // where condition part generated from searching / ordering
-         if (!Util.isNull(s))
+         // where condition part from DbFormTag's sqlFilter attribute
+         if (!Util.isNull(sqlFilter))
          {
             if (!Util.isNull(where))
             {
                hatSchonFollowAfterWhere = true;
-               buf.append(getFollowAfterWhere());
+               buf.append(followAfterWhere);
             }
-            // parents are inserted in getQueryWhere method 
-            buf.append(s);
+            else
+               buf.append(" ( ");
+            buf.append(sqlFilter);
+            buf.append(" ) ");
          }
 
-         // where condition part from DbFormTag's sqlFilter attribute
-         if (!Util.isNull(sqlFilter))
+         // where condition part generated from searching / ordering
+         if (!Util.isNull(s))
          {
-            if (!Util.isNull(where) || !Util.isNull(s))
+            if (!Util.isNull(sqlFilter))
+               buf.append(" AND ( ");
+            else if (!Util.isNull(where))
             {
                hatSchonFollowAfterWhere = true;
-               buf.append(getFollowAfterWhere());
+               buf.append(followAfterWhere);
             }
-            buf.append(" ( ");
-            buf.append(sqlFilter);
+            else
+               buf.append(" ( ");
+            // parents are inserted in getQueryWhere method 
+            buf.append(s);
             buf.append(" ) ");
          }
       }
@@ -431,8 +441,7 @@ public class Query extends Table
       }
 
       s = getQueryWhere(fvHaving, fvOrder, compareMode);
-
-      if (s.length() > 0)
+      if (!Util.isNull(s))
       {
          if (!Util.isNull(groupBy))
          {
@@ -448,30 +457,27 @@ public class Query extends Table
             if (!Util.isNull(where) && !hatSchonFollowAfterWhere)
             {
                buf.append(" ");
-               buf.append(getFollowAfterWhere());
+               buf.append(followAfterWhere);
                buf.append(" ");
             }
-
             buf.append(" AND ( ");
          }
-
          buf.append(s);
          buf.append(")");
       }
 
-      if (!Util.isNull(groupBy) && !Util.isNull(getHaving()))
+      if (!Util.isNull(groupBy) && !Util.isNull(having))
       {
          if (!hatSchonHaving)		   
 		    buf.append(" HAVING ");
 		 else   
-		 buf.append(" AND ");
+   		 buf.append(" AND ");
          buf.append("(");
-         buf.append(getHaving());
+         buf.append(having);
          buf.append(") ");
       }
 
       s = getQueryOrderBy(fvOrder);
-
       if (s.length() > 0)
       {
          buf.append(" ORDER BY ");
@@ -479,7 +485,6 @@ public class Query extends Table
       }
 
       logCat.info("doSelect:" + buf.toString());
-
       return buf.toString();
    }
 
@@ -639,17 +644,6 @@ public class Query extends Table
 
 
    /**
-    * DOCUMENT ME!
-    * 
-    * @return String the followAfterWhere.
-    */
-   public String getFollowAfterWhere()
-   {
-      return followAfterWhere;
-   }
-
-
-   /**
     * Sets the followAfterWhere.
     * 
     * @param followAfterWhere The followAfterWhere to set
@@ -657,28 +651,6 @@ public class Query extends Table
    public void setFollowAfterWhere(String followAfterWhere)
    {
       this.followAfterWhere = followAfterWhere;
-   }
-
-
-   /**
-    * Sets the distinct.
-    * 
-    * @param distinct The distinct to set
-    */
-   public void setDistinct(String distinct)
-   {
-      this.distinct = distinct;
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    * 
-    * @return the string
-    */
-   public String getHaving()
-   {
-      return having;
    }
 
 

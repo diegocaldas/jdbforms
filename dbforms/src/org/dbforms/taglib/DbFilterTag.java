@@ -354,13 +354,10 @@ public class DbFilterTag extends TagSupportWithScriptHandler
       {
          // clear body content. 
          // It's meaningless for filter tag and should not be rendered!
-
-         /*
-                  if (bodyContent != null)
-                  {
-                     bodyContent.clearBody();
-                  }
-         */
+         if (bodyContent != null)
+         {
+            bodyContent.clearBody();
+         }
          JspWriter out = pageContext.getOut();
          out.write(buf.toString());
       }
@@ -504,6 +501,7 @@ public class DbFilterTag extends TagSupportWithScriptHandler
                                                               this, 
                                                               DbNavReloadButtonTag.class);
             btn.getButton().setCaption(setCaption);
+            ((DbNavReloadButtonTag)btn.getButton()).setShowAlwaysInFooter("true");
             buf.append(btn.render());
          }
 
@@ -513,6 +511,7 @@ public class DbFilterTag extends TagSupportWithScriptHandler
                                                               this, 
                                                               DbNavReloadButtonTag.class);
             btn.getButton().setCaption(unsetCaption);
+            ((DbNavReloadButtonTag)btn.getButton()).setShowAlwaysInFooter("true");
             btn.getButton()
                .setOnClick("document.dbform." + filterName + FLT_SEL
                            + ".selectedIndex = -1;");
