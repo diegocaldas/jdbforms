@@ -37,7 +37,6 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.Iterator;
 
-
 import org.dbforms.config.Constants;
 import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.Field;
@@ -52,39 +51,35 @@ import org.dbforms.util.UniqueIDGenerator;
 import org.dbforms.util.Util;
 import org.dbforms.util.SqlUtil;
 
-
-
 /**
  * Special implementation of DataSource. This is the default class and deals
  * with JDBC Connections.
  * 
  * @author hkk
  */
-public class DataSourceJDBC extends DataSource 
-{
-   private String       query;
-   private Connection   con;
-   private String       connectionName;
-   private ResultSet    rs;
-   private Statement    stmt;
-   private List          data;
-   private Map          keys;
-   private int          colCount;
-   private String       whereClause;
-   private String       tableList;
+public class DataSourceJDBC extends DataSource {
+   private String query;
+   private Connection con;
+   private String connectionName;
+   private ResultSet rs;
+   private Statement stmt;
+   private List data;
+   private Map keys;
+   private int colCount;
+   private String whereClause;
+   private String tableList;
    private FieldValue[] filterConstraint;
    private FieldValue[] orderConstraint;
    private FieldValue[] sqlFilterParams;
-   private String       sqlFilter;
-   private boolean      fetchedAll = false;
+   private String sqlFilter;
+   private boolean fetchedAll = false;
 
    /**
     * Creates a new DataSourceJDBC object.
     * 
     * @param table the inout table
     */
-   public DataSourceJDBC(Table table)
-   {
+   public DataSourceJDBC(Table table) {
       super(table);
       data = new ArrayList();
       keys = new HashMap();
@@ -100,15 +95,12 @@ public class DataSourceJDBC extends DataSource
     *        get an own db connection, e.g. to hold it during the  session
     *        (see DataSourceJDBC for example!)
     */
-   public void setConnection(Connection con, String dbConnectionName)
-   {
+   public void setConnection(Connection con, String dbConnectionName) {
       close();
 
       // To prevent empty connection name. We always need our own connection!
-      connectionName = Util.isNull(dbConnectionName)
-                          ? "default" : dbConnectionName;
+      connectionName = Util.isNull(dbConnectionName) ? "default" : dbConnectionName;
    }
-
 
    /**
     * Set the tableList and whererClause attributes used to build the SQL
@@ -117,12 +109,10 @@ public class DataSourceJDBC extends DataSource
     * @param tableList the table list string
     * @param whereClause the SQL where clause string
     */
-   public void setSelect(String tableList, String whereClause)
-   {
-      this.tableList   = tableList;
+   public void setSelect(String tableList, String whereClause) {
+      this.tableList = tableList;
       this.whereClause = whereClause;
    }
-
 
    /**
     * Set the filterConstraint and orderConstraint used to build the SQL Select
@@ -135,58 +125,41 @@ public class DataSourceJDBC extends DataSource
     * @param sqlFilter       sql condition to add to where clause
     * @param sqlFilterParams list of FieldValues to fill the sqlFilter with
     */
-   public void setSelect(FieldValue[] filterConstraint, 
-                         FieldValue[] orderConstraint, String sqlFilter, 
-                         FieldValue[] sqlFilterParams)
-   {
+   public void setSelect(FieldValue[] filterConstraint, FieldValue[] orderConstraint, String sqlFilter, FieldValue[] sqlFilterParams) {
       this.filterConstraint = filterConstraint;
-      this.orderConstraint  = orderConstraint;
-      this.sqlFilter        = sqlFilter;
-      this.sqlFilterParams  = sqlFilterParams;
+      this.orderConstraint = orderConstraint;
+      this.sqlFilter = sqlFilter;
+      this.sqlFilterParams = sqlFilterParams;
    }
 
-
-   private void closeConnection()
-   {
-	  getLogCat().debug("closeConnection  called");
+   private void closeConnection() {
+      getLogCat().debug("closeConnection  called");
       fetchedAll = true;
 
-      if (rs != null)
-      {
-         try
-         {
+      if (rs != null) {
+         try {
             rs.close();
-         }
-         catch (SQLException e)
-         {
+         } catch (SQLException e) {
             SqlUtil.logSqlException(e);
          }
 
          rs = null;
       }
 
-      if (stmt != null)
-      {
-      try
-      {
-           stmt.close();
-      }
-      catch (SQLException e)
-      {
-        SqlUtil.logSqlException(e);
-      }
-      stmt = null;
+      if (stmt != null) {
+         try {
+            stmt.close();
+         } catch (SQLException e) {
+            SqlUtil.logSqlException(e);
+         }
+         stmt = null;
       }
 
-      if (con != null) 
-      {
-         try
-         {
+      if (con != null) {
+         try {
             if (!con.isClosed())
                con.close();
-         }
-         catch (SQLException e)
-         {
+         } catch (SQLException e) {
             SqlUtil.logSqlException(e);
          }
 
@@ -194,81 +167,56 @@ public class DataSourceJDBC extends DataSource
       }
    }
 
-
    /**
     * Release all the resources holded by this datasource. <br>
     * Clean the underlying data and keys vectors, then close the JDBC
     * resultSet, statement and connection objects.
     */
-   public void close()
-   {
-	  getLogCat().debug("close called");
+   public void close() {
+      getLogCat().debug("close called");
 
-      if (data != null)
-      {
+      if (data != null) {
          data.clear();
       }
 
-      if (keys != null)
-      {
+      if (keys != null) {
          keys.clear();
       }
 
       closeConnection();
 
-
       // reset fetched all flag. So DataSource can be reopened after close!
       fetchedAll = false;
    }
-
 
    /**
     * Open this datasource and initialize its resources.
     * 
     * @throws SQLException if any error occurs
     */
-   protected void open() throws SQLException
-   {
-      if (!fetchedAll && (rs == null))
-      {
-         if ((con == null) || con.isClosed())
-         {
-            try
-            {
+   protected void open() throws SQLException {
+      if (!fetchedAll && (rs == null)) {
+         if ((con == null) || con.isClosed()) {
+            try {
                this.con = DbFormsConfigRegistry.instance().lookup().getConnection(connectionName);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                getLogCat().error(e);
             }
          }
 
-         if (con == null)
-         {
+         if (con == null) {
             throw new SQLException("no connection found!");
          }
 
-         if (Util.isNull(whereClause))
-         {
-            query = getTable()
-                       .getSelectQuery(getTable().getFields(), filterConstraint, 
-                                       orderConstraint, sqlFilter, 
-                                       Constants.COMPARE_NONE);
+         if (Util.isNull(whereClause)) {
+            query = getTable().getSelectQuery(getTable().getFields(), filterConstraint, orderConstraint, sqlFilter, Constants.COMPARE_NONE);
 
             stmt = con.prepareStatement(query);
-            rs   = getTable()
-                      .getDoSelectResultSet(filterConstraint, orderConstraint, 
-                                            sqlFilterParams, 
-                                            Constants.COMPARE_NONE, 
-                                            (PreparedStatement) stmt);
-         }
-         else
-         {
-            query = getTable()
-                       .getFreeFormSelectQuery(getTable().getFields(), 
-                                               whereClause, tableList);
+            rs = getTable().getDoSelectResultSet(filterConstraint, orderConstraint, sqlFilterParams, Constants.COMPARE_NONE, (PreparedStatement) stmt);
+         } else {
+            query = getTable().getFreeFormSelectQuery(getTable().getFields(), whereClause, tableList);
             stmt = con.createStatement();
-            rs   = stmt.executeQuery(query);
+            rs = stmt.executeQuery(query);
          }
 
          ResultSetMetaData rsmd = rs.getMetaData();
@@ -276,29 +224,19 @@ public class DataSourceJDBC extends DataSource
       }
    }
 
-
-   private Object[] getCurrentRowAsObject() throws SQLException
-   {
+   private Object[] getCurrentRowAsObject() throws SQLException {
       Object[] objectRow = new Object[colCount];
 
-      for (int i = 0; i < colCount; i++)
-      {
-         if (rs.getMetaData().getColumnType(i + 1) == Types.CLOB)
-         {
+      for (int i = 0; i < colCount; i++) {
+         if (rs.getMetaData().getColumnType(i + 1) == Types.CLOB) {
             Clob tmpObj = (Clob) rs.getObject(i + 1);
 
-            if (tmpObj != null)
-            {
-               objectRow[i] = tmpObj.getSubString((long) 1, 
-                                                  (int) tmpObj.length());
-            }
-            else
-            {
+            if (tmpObj != null) {
+               objectRow[i] = tmpObj.getSubString((long) 1, (int) tmpObj.length());
+            } else {
                objectRow[i] = null;
             }
-         }
-         else
-         {
+         } else {
             Object tmpObj = rs.getObject(i + 1);
             objectRow[i] = tmpObj;
          }
@@ -307,34 +245,24 @@ public class DataSourceJDBC extends DataSource
       return objectRow;
    }
 
-
-   private String[] getCurrentRow() throws SQLException
-   {
+   private String[] getCurrentRow() throws SQLException {
       String[] objectRow = new String[colCount];
 
       for (int i = 0; i < colCount; i++)
-         if (rs.getMetaData().getColumnType(i + 1) == Types.CLOB)
-         {
+         if (rs.getMetaData().getColumnType(i + 1) == Types.CLOB) {
             Clob tmpObj = (Clob) rs.getObject(i + 1);
 
-            if (tmpObj != null)
-            {
-               objectRow[i] = tmpObj.getSubString((long) 1, 
-                                                  (int) tmpObj.length());
-            }
-            else
-            {
+            if (tmpObj != null) {
+               objectRow[i] = tmpObj.getSubString((long) 1, (int) tmpObj.length());
+            } else {
                objectRow[i] = null;
             }
-         }
-         else
-         {
+         } else {
             objectRow[i] = rs.getString(i + 1);
          }
 
       return objectRow;
    }
-
 
    /**
     * Find the first row of the internal data vector.
@@ -345,30 +273,25 @@ public class DataSourceJDBC extends DataSource
     * 
     * @throws SQLException if any error occurs
     */
-   protected int findStartRow(String startRow) throws SQLException
-   {
-      int     result = 0;
+   protected int findStartRow(String startRow) throws SQLException {
+      int result = 0;
       boolean found = false;
 
-      if (startRow != null)
-      {
+      if (startRow != null) {
          Integer i = (Integer) keys.get(startRow);
          if (i != null) {
             result = i.intValue();
-            found  = true;
+            found = true;
          }
 
-         if (!found && !fetchedAll)
-         {
-            while (rs.next())
-            {
+         if (!found && !fetchedAll) {
+            while (rs.next()) {
                Integer j = new Integer(data.size());
                data.add(getCurrentRowAsObject());
                String key = getTable().getKeyPositionString(getCurrentRow());
                keys.put(key, j);
 
-               if (startRow.equals(key))
-               {
+               if (startRow.equals(key)) {
                   result = data.size() - 1;
 
                   break;
@@ -382,7 +305,6 @@ public class DataSourceJDBC extends DataSource
       return result;
    }
 
-
    /**
     * Get the requested row  as array of objects.
     * 
@@ -392,29 +314,21 @@ public class DataSourceJDBC extends DataSource
     * 
     * @throws SQLException if any error occurs
     */
-   protected final Object[] getRow(int i) throws SQLException
-   {
+   protected final Object[] getRow(int i) throws SQLException {
       Object[] result = null;
 
-      if (i >= 0)
-      {
-         if (i < data.size())
-         {
+      if (i >= 0) {
+         if (i < data.size()) {
             result = (Object[]) data.get(i);
-         }
-         else
-         {
-            if (!fetchedAll)
-            {
-               while (rs.next())
-               {
+         } else {
+            if (!fetchedAll) {
+               while (rs.next()) {
                   result = getCurrentRowAsObject();
                   Integer j = new Integer(data.size());
                   data.add(result);
-                  keys.put(getTable().getKeyPositionString(getCurrentRow()),j);
+                  keys.put(getTable().getKeyPositionString(getCurrentRow()), j);
 
-                  if (i < data.size())
-                  {
+                  if (i < data.size()) {
                      break;
                   }
                }
@@ -427,27 +341,22 @@ public class DataSourceJDBC extends DataSource
       return result;
    }
 
-
-   private void checkResultSetEnd() throws SQLException
-   {
-      if ((rs.getRow() != 0))
-      {
+   private void checkResultSetEnd() throws SQLException {
+      if ((rs.getRow() != 0)) {
          // test if next record is avaiable...
          // rs.isLast is not allowed in all circumstances! 
-         if (rs.next())
-         {
+         if (rs.next()) {
             Integer j = new Integer(data.size());
             data.add(getCurrentRowAsObject());
             keys.put(getTable().getKeyPositionString(getCurrentRow()), j);
          }
       }
 
-      if ((rs.getRow() == 0) /* || rs.isLast() 20031510-HKK: removed because of Oracle problems */ )
-      {
+      if ((rs.getRow() == 0) /* || rs.isLast() 20031510-HKK: removed because of Oracle problems */
+         ) {
          closeConnection();
       }
    }
-
 
    /**
     * Get the size of the data vector.
@@ -456,24 +365,18 @@ public class DataSourceJDBC extends DataSource
     * 
     * @throws SQLException if any error occurs
     */
-   protected int size() throws SQLException
-   {
+   protected int size() throws SQLException {
       // Workaround for bug in firebird driver: After reaching next the next call 
       // to next will start at the beginning of the resultset.
       // rs.next will return true, fetching data will get an NullPointerException. 
       // Catch this error and do an break!   
-      if (!fetchedAll)
-      {
-         while (rs.next())
-         {
-            try
-            {
+      if (!fetchedAll) {
+         while (rs.next()) {
+            try {
                Integer j = new Integer(data.size());
                data.add(getCurrentRowAsObject());
                keys.put(getTable().getKeyPositionString(getCurrentRow()), j);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                getLogCat().error(e.getMessage());
 
                break;
@@ -486,7 +389,6 @@ public class DataSourceJDBC extends DataSource
       return data.size();
    }
 
-
    /**
     * return true if there are more records to fetch then the given record
     * number
@@ -498,75 +400,54 @@ public class DataSourceJDBC extends DataSource
     * 
     * @throws SQLException
     */
-   protected boolean hasMore(int i) throws SQLException
-   {
+   protected boolean hasMore(int i) throws SQLException {
       return !fetchedAll || (i < size());
    }
 
-
    //------------------------------ DAO methods ---------------------------------
-   private int fillWithData(PreparedStatement ps, FieldValues fieldValues)
-                     throws SQLException
-   {
+   private int fillWithData(PreparedStatement ps, FieldValues fieldValues) throws SQLException {
       // now we provide the values;
       // every key is the parameter name from of the form page;
       Iterator enum = fieldValues.keys();
-      int         col = 1;
+      int col = 1;
 
-      while (enum.hasNext())
-      {
+      while (enum.hasNext()) {
          String fieldName = (String) enum.next();
-         Field  curField = getTable().getFieldByName(fieldName);
+         Field curField = getTable().getFieldByName(fieldName);
 
-         if (curField != null)
-         {
+         if (curField != null) {
             FieldValue fv = fieldValues.get(fieldName);
 
-            getLogCat()
-               .debug("Retrieved curField:" + curField.getName() + " type:"
-                      + curField.getType());
+            getLogCat().debug("Retrieved curField:" + curField.getName() + " type:" + curField.getType());
 
-            int    fieldType = curField.getType();
+            int fieldType = curField.getType();
             Object value = null;
 
-            if (fieldType == FieldTypes.BLOB)
-            {
+            if (fieldType == FieldTypes.BLOB) {
                // in case of a BLOB we supply the FileHolder object to SqlUtils for further operations
                value = fv.getFileHolder();
-            }
-            else if (fieldType == FieldTypes.DISKBLOB)
-            {
+            } else if (fieldType == FieldTypes.DISKBLOB) {
                FileHolder fileHolder = fv.getFileHolder();
                // encode fileName
                String fileName = fileHolder.getFileName();
                // check if we need to store it encoded or not
-               if (curField.isEncoded())
-               {
-                  int    dotIndex = fileName.lastIndexOf('.');
-                  String suffix   = (dotIndex != -1)
-                                       ? fileName.substring(dotIndex) : "";
-                  fileHolder.setFileName(UniqueIDGenerator.getUniqueID()
-                                         + suffix);
-
+               if (curField.isEncoded()) {
+                  int dotIndex = fileName.lastIndexOf('.');
+                  String suffix = (dotIndex != -1) ? fileName.substring(dotIndex) : "";
+                  fileHolder.setFileName(UniqueIDGenerator.getUniqueID() + suffix);
 
                   // a diskblob gets stored to db as an ordinary string (it's only the reference!)
                   value = fileHolder.getFileName();
-               }
-               else
-               {
+               } else {
                   // a diskblob gets stored to db as an ordinary string	 (it's only the reference!)
                   value = fileName;
                }
-            }
-            else
-            {
+            } else {
                // in case of simple db types we just supply a string representing the value of the fields
                value = fv.getFieldValueAsObject();
             }
 
-            getLogCat()
-               .info("field=" + curField.getName() + " col=" + col + " value="
-                     + value + " type=" + fieldType);
+            getLogCat().info("field=" + curField.getName() + " col=" + col + " value=" + value + " type=" + fieldType);
             JDBCDataHelper.fillPreparedStatement(ps, col, value, fieldType);
             col++;
          }
@@ -575,7 +456,6 @@ public class DataSourceJDBC extends DataSource
       return col;
    }
 
-
    /**
     * Performs an insert into the DataSource
     * 
@@ -583,22 +463,17 @@ public class DataSourceJDBC extends DataSource
     * 
     * @throws SQLException
     */
-   public void doInsert(Connection con, FieldValues fieldValues) throws SQLException
-   {
-      PreparedStatement ps = con.prepareStatement(getTable()
-                                                     .getInsertStatement(fieldValues));
-
+   public void doInsert(Connection con, FieldValues fieldValues) throws SQLException {
+      PreparedStatement ps = con.prepareStatement(getTable().getInsertStatement(fieldValues));
 
       // execute the query & throws an exception if something goes wrong
       fillWithData(ps, fieldValues);
       ps.executeUpdate();
       ps.close();
 
-
       // now handle blob files
       saveBlobFilesToDisk(fieldValues);
    }
-
 
    /**
     * Performs an update into the DataSource
@@ -614,24 +489,18 @@ public class DataSourceJDBC extends DataSource
     * 
     * @throws SQLException
     */
-   public void doUpdate(Connection con, FieldValues fieldValues, String keyValuesStr)
-                 throws SQLException
-   {
-      PreparedStatement ps = con.prepareStatement(getTable()
-                                                     .getUpdateStatement(fieldValues));
-      int               col = fillWithData(ps, fieldValues);
+   public void doUpdate(Connection con, FieldValues fieldValues, String keyValuesStr) throws SQLException {
+      PreparedStatement ps = con.prepareStatement(getTable().getUpdateStatement(fieldValues));
+      int col = fillWithData(ps, fieldValues);
       getTable().populateWhereClauseWithKeyFields(keyValuesStr, ps, col);
-
 
       // we are now ready to execute the query
       ps.executeUpdate();
       ps.close();
 
-
       // now handle blob files
       saveBlobFilesToDisk(fieldValues);
    }
-
 
    /**
     * performs a delete in the DataSource
@@ -646,29 +515,24 @@ public class DataSourceJDBC extends DataSource
     * 
     * @throws SQLException
     */
-   public void doDelete(Connection con, String keyValuesStr) throws SQLException
-   {
+   public void doDelete(Connection con, String keyValuesStr) throws SQLException {
       FieldValues fieldValues = null;
 
       // get current blob files from database
-      if (getTable().containsDiskblob())
-      {
-         ResultSet    diskblobs = null;
+      if (getTable().containsDiskblob()) {
+         ResultSet diskblobs = null;
          StringBuffer queryBuf = new StringBuffer();
          queryBuf.append(getTable().getDisblobSelectStatement());
          queryBuf.append(" WHERE ");
          queryBuf.append(getTable().getWhereClauseForKeyFields());
 
-         PreparedStatement diskblobsPs = con.prepareStatement(
-                                                  queryBuf.toString());
+         PreparedStatement diskblobsPs = con.prepareStatement(queryBuf.toString());
          getTable().populateWhereClauseWithKeyFields(keyValuesStr, diskblobsPs, 1);
          diskblobs = diskblobsPs.executeQuery();
 
-         ResultSetVector rsv = new ResultSetVector(getTable().getDiskblobs(), 
-                                                   diskblobs);
+         ResultSetVector rsv = new ResultSetVector(getTable().getDiskblobs(), diskblobs);
 
-         if (!ResultSetVector.isNull(rsv))
-         {
+         if (!ResultSetVector.isNull(rsv)) {
             rsv.setPointer(0);
             fieldValues = rsv.getCurrentRowAsFieldValues();
          }
@@ -678,20 +542,16 @@ public class DataSourceJDBC extends DataSource
       }
 
       // 20021031-HKK: Build in table!!
-      PreparedStatement ps = con.prepareStatement(
-                                      getTable().getDeleteStatement());
-
+      PreparedStatement ps = con.prepareStatement(getTable().getDeleteStatement());
 
       // now we provide the values
       // of the key-fields, so that the WHERE clause matches the right dataset!
       getTable().populateWhereClauseWithKeyFields(keyValuesStr, ps, 1);
 
-
       // finally execute the query
       ps.executeUpdate();
 
-      if (fieldValues != null)
-      {
+      if (fieldValues != null) {
          deleteBlobFilesFromDisk(fieldValues);
       }
 
