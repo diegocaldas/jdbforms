@@ -27,8 +27,6 @@ import javax.servlet.jsp.*;
 
 import org.dbforms.util.SqlUtil;
 
-
-
 /*************************************************************
  * Grunikiewicz.philip@hydro.qc.ca
  * 2001-12-18
@@ -37,121 +35,82 @@ import org.dbforms.util.SqlUtil;
  * in dbForms-config.xml file
  *
  * ***************************************************************/
-public class DbGetConnection extends DbBaseHandlerTag
-      implements javax.servlet.jsp.tagext.TryCatchFinally
-{
+public class DbGetConnection
+	extends DbBaseHandlerTag
+	implements javax.servlet.jsp.tagext.TryCatchFinally {
 
-   // logging category for this class
-   private String        id;
-   private Connection    con;
-   private String        dbConnectionName;
+	private Connection con;
+	private String dbConnectionName;
 
-   /**
-    * DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    *
-    * @throws JspException DOCUMENT ME!
-    * @throws IllegalArgumentException DOCUMENT ME!
-    */
-   public int doStartTag() throws JspException
-   {
-      try
-      {
-         // get the connection and place it in attribute;
-         con = getConfig().getConnection(dbConnectionName);
-         pageContext.setAttribute(this.getId(), con, PageContext.PAGE_SCOPE);
-      }
-      catch (Exception e)
-      {
-         throw new JspException("Database error" + e.toString());
-      }
+	/**
+	 * DOCUMENT ME!
+	 *
+	 * @return DOCUMENT ME!
+	 *
+	 * @throws JspException DOCUMENT ME!
+	 * @throws IllegalArgumentException DOCUMENT ME!
+	 */
+	public int doStartTag() throws JspException {
+		try {
+			// get the connection and place it in attribute;
+			con = getConfig().getConnection(dbConnectionName);
+			String s = getId();
+			pageContext.setAttribute(getId(), con, PageContext.PAGE_SCOPE);
+		} catch (Exception e) {
+			throw new JspException("Database error" + e.toString());
+		}
 
-      return EVAL_BODY_BUFFERED;
-   }
+		return EVAL_BODY_BUFFERED;
+	}
 
+	/**
+	* DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public int doAfterBody() {
+		try {
+			bodyContent.writeOut(bodyContent.getEnclosingWriter());
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
 
-   /**
-   * DOCUMENT ME!
-   *
-   * @return DOCUMENT ME!
-   */
-   public int doAfterBody()
-   {
-      try
-      {
-         bodyContent.writeOut(bodyContent.getEnclosingWriter());
-      }
-      catch (IOException ioe)
-      {
-         ioe.printStackTrace();
-      }
+		return SKIP_BODY;
+	}
 
-      return SKIP_BODY;
-   }
+	/**
+	* DOCUMENT ME!
+	*
+	* @param name DOCUMENT ME!
+	*/
+	public void setDbConnectionName(String name) {
+		dbConnectionName = name;
+	}
 
+	/**
+	* DOCUMENT ME!
+	*
+	* @return DOCUMENT ME!
+	*/
+	public String getDbConnectionName() {
+		return dbConnectionName;
+	}
 
-   /**
-   * Gets the id
-   * @return Returns a String
-   */
-   public String getId()
-   {
-      return id;
-   }
+	/**
+	* DOCUMENT ME!
+	*/
+	public void doFinally() {
+		SqlUtil.closeConnection(con);
+		con = null;
+		dbConnectionName = null;
+		super.doFinally();
+	}
 
-
-   /**
-   * Sets the id
-   * @param id The id to set
-   */
-   public void setId(String id)
-   {
-      this.id = id;
-   }
-
-
-   /**
-   * DOCUMENT ME!
-   *
-   * @param name DOCUMENT ME!
-   */
-   public void setDbConnectionName(String name)
-   {
-      dbConnectionName = name;
-   }
-
-
-   /**
-   * DOCUMENT ME!
-   *
-   * @return DOCUMENT ME!
-   */
-   public String getDbConnectionName()
-   {
-      return dbConnectionName;
-   }
-
-
-   /**
-   * DOCUMENT ME!
-   */
-   public void doFinally()
-   {
-     SqlUtil.closeConnection(con);
-	  id = null;
-	  con = null;
-	  dbConnectionName = null;
-      super.doFinally();
-   }
-
-   /**
-    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
-    */
-   public void doCatch(Throwable t) throws Throwable
-   {
-      throw t;
-   }
-
+	/**
+	 * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+	 */
+	public void doCatch(Throwable t) throws Throwable {
+		throw t;
+	}
 
 }
