@@ -52,6 +52,8 @@ public class FieldValue implements Cloneable
    /** a value a field is associated with */
    private String fieldValue;
 
+   private String oldValue;
+   
    /**
     * Field sor direction. Can be Field.ORDER_ASCENDING or
     * Field.ORDER_DESCENDING.
@@ -857,4 +859,20 @@ public class FieldValue implements Cloneable
    {
       this.fileHolder = fileHolder;
    }
+	/**
+	 * @return
+	 */
+	public String getOldValue()
+	{
+		return oldValue;
+	}
+
+	/**
+	 * @param string
+	 */
+	public void setOldValue(String string)
+	{
+		oldValue = string;
+	}
+
 }
