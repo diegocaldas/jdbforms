@@ -36,7 +36,7 @@ import java.util.Map;
  *
  * @author Joachim Peer
  */
-public class Interceptor {
+public class Interceptor implements java.io.Serializable {
    // params may contain configuration data for the interceptor
    private Map    params;
    private String className;

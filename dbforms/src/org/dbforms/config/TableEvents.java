@@ -28,6 +28,7 @@ import org.apache.commons.logging.LogFactory;
 
 import org.dbforms.event.eventtype.EventType;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 
@@ -38,7 +39,7 @@ import java.util.HashMap;
  * @author Luca Fossato
  *
  */
-public class TableEvents {
+public class TableEvents implements Serializable{
    private static Log logCat   = LogFactory.getLog(TableEvents.class.getName());
    private HashMap    eventMap = null;
    private Table      table    = null;

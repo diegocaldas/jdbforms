@@ -95,8 +95,8 @@ public class Query extends Table {
          }
 
          if ((f == null) && !Util.isNull(from)) {
-            if (config != null) {
-               Table t = config.getTableByName(from);
+            if (getConfig() != null) {
+               Table t = getConfig().getTableByName(from);
 
                if (t != null) {
                   f = t.getField(fieldId);
@@ -127,8 +127,8 @@ public class Query extends Table {
       }
 
       if ((f == null) && !Util.isNull(from)) {
-         if (config != null) {
-            Table t = config.getTableByName(from);
+         if (getConfig() != null) {
+            Table t = getConfig().getTableByName(from);
 
             if (t != null) {
                f = t.getFieldByName(name);
@@ -138,7 +138,7 @@ public class Query extends Table {
 
       return f;
    }
-
+   
 
    /**
     * returns the vector of fields this table constists of overloaded from
@@ -153,8 +153,8 @@ public class Query extends Table {
       Vector f = super.getFields();
 
       if ((f == null) || ((f.isEmpty()) && !Util.isNull(from))) {
-         if (config != null) {
-            Table t = config.getTableByName(from);
+         if (getConfig() != null) {
+            Table t = getConfig().getTableByName(from);
 
             if (t != null) {
                f = t.getFields();
@@ -229,8 +229,8 @@ public class Query extends Table {
       Vector v = super.getKey();
 
       if (((v == null) || v.isEmpty()) && !Util.isNull(from)) {
-         if (config != null) {
-            Table t = config.getTableByName(from);
+         if (getConfig() != null) {
+            Table t = getConfig().getTableByName(from);
 
             if (t != null) {
                v = t.getKey();

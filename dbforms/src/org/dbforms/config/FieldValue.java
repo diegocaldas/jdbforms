@@ -33,6 +33,7 @@ import org.dbforms.util.UniqueIDGenerator;
 import org.dbforms.util.Util;
 
 // imports for return objects
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 import java.sql.Date;
@@ -59,7 +60,7 @@ import java.util.Locale;
  * @author Philip Grunikiewicz
  * @author Henner Kollmann
  */
-public class FieldValue implements Cloneable {
+public class FieldValue implements Cloneable, Serializable {
    /** field object */
    private Field field;
 
@@ -70,7 +71,7 @@ public class FieldValue implements Cloneable {
    private Locale locale;
 
    /** logging category for this class */
-   private Log logCat = LogFactory.getLog(this.getClass().getName());
+   private static Log logCat = LogFactory.getLog(FieldValue.class.getName());
 
    /** a value a field is associated with */
    private String fieldValue;

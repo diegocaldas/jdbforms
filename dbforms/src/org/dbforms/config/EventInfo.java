@@ -28,6 +28,7 @@ import org.apache.commons.logging.LogFactory;
 
 import org.dbforms.util.Util;
 
+import java.io.Serializable;
 import java.util.Properties;
 
 
@@ -38,9 +39,9 @@ import java.util.Properties;
  * @author Luca Fossato
  *
  */
-public class EventInfo {
+public class EventInfo implements Serializable{
    /** logging category */
-   private Log        logCat     = LogFactory.getLog(this.getClass().getName());
+   private static Log        logCat     = LogFactory.getLog(EventInfo.class.getName());
    private Properties properties = null;
    private String     className  = null;
    private String     id         = null;

@@ -645,7 +645,7 @@ public class DbConnection implements javax.sql.DataSource {
       prefs.setPassword(password);
       prefs.setProperties(properties);
       prefs.setPoolProperties(poolProperties);
-      prefs.setServletContext(DbFormsConfigRegistry.instance().lookup().getServletConfig().getServletContext());
+      prefs.setServletContext(DbFormsConfigRegistry.instance().lookup().getServletContext());
       connectionFactory.setProvider(prefs);
       isFactorySetup = true;
    }

@@ -23,12 +23,14 @@
 
 package org.dbforms.util;
 
+import java.io.Serializable;
+
 
 /**
  * DefaultEscaper
  *
  */
-public class DefaultEscaperImpl implements IEscaper {
+public class DefaultEscaperImpl implements IEscaper, Serializable {
    /**
     * DOCUMENT ME!
     *

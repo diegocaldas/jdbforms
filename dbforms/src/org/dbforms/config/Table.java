@@ -78,9 +78,6 @@ public class Table implements Serializable {
    /** DOCUMENT ME! */
    protected static final int CALC_FIELD = 2;
 
-   /** config object */
-   protected DbFormsConfig config;
-
    /**
     * access control list for this object (if null, then its open to all users
     * for all operations). Defined in dbforms-config.xml
@@ -214,16 +211,6 @@ public class Table implements Serializable {
     */
    public Vector getCalcFields() {
       return calcFields;
-   }
-
-
-   /**
-    * Set configuration for table
-    *
-    * @param config the DbFormsConfig object
-    */
-   public void setConfig(DbFormsConfig config) {
-      this.config = config;
    }
 
 
@@ -876,9 +863,9 @@ public class Table implements Serializable {
     *         table.
     */
    public Vector getInterceptors() {
-      if (config.hasInterceptors()) {
+      if (getConfig().hasInterceptors()) {
          Vector tmp = new Vector(interceptors);
-         tmp.addAll(config.getInterceptors());
+         tmp.addAll(getConfig().getInterceptors());
          tmp.addAll(interceptors);
 
          return tmp;
@@ -1791,7 +1778,7 @@ public class Table implements Serializable {
     * @return true if the table contains interceptors, false otherwise
     */
    public boolean hasInterceptors() {
-      return config.hasInterceptors()
+      return getConfig().hasInterceptors()
              || ((interceptors != null) && (interceptors.size() > 0));
    }
 
@@ -2826,4 +2813,15 @@ public class Table implements Serializable {
 
       return curCol;
    }
+   
+   protected static DbFormsConfig getConfig() {
+    DbFormsConfig config = null;
+    try {
+    	config = DbFormsConfigRegistry.instance().lookup();
+    } catch (Exception e) {
+    	logCat.error("no config object", e);
+    }
+    return config;
+ }
+
 }

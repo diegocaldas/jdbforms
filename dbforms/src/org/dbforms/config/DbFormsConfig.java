@@ -392,7 +392,6 @@ public class DbFormsConfig {
    public void addTable(Table table) {
       logCat.info("add table called");
       table.setId(tables.size());
-      table.setConfig(this);
       table.initDefaultOrder();
       tables.addElement(table);
       tableNameHash.put(table.getName(), table);
