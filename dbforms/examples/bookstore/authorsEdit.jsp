@@ -7,7 +7,7 @@
    <body >
       <db:dbform autoUpdate="false" 
                  followUp="/authorsEdit.jsp" 
-                 maxRows="3" 
+                 maxRows="1" 
                  tableName="AUTHOR"
                  
       >
@@ -52,6 +52,7 @@
             <tr class="button">
                <td colspan="2" style="text-align:center">
                  <db:gotoButton style="width:200" caption="Back to list" destination="/authorsList.jsp"/>
+                 <a href="/bookstore/authorsList.jsp">Liste</a>
                </td>
             </tr>
             </table>
