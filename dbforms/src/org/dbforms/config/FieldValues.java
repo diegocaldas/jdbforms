@@ -144,7 +144,17 @@ public class FieldValues
     */
    public FieldValue[] toArr()
    {
-      return (FieldValue[]) ht.values().toArray();
+      FieldValue[] result = new FieldValue[size()];
+      Iterator  enum = ht.values().iterator();
+      int          cnt  = 0;
+
+      while (enum.hasNext())
+      {
+         result[cnt] = (FieldValue) enum.next();
+         cnt++;
+      }
+
+      return result;
    }
    
 	/**
