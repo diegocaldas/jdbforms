@@ -147,7 +147,6 @@ public class DbFilterValueTag extends DbBaseHandlerTag implements DataContainer,
                                                        int                conditionId)
    {
       FieldValues values = new FieldValues();
-
       for (int valueId = 0; true; ++valueId)
       {
          // read from parameter's request the value and the type having this id
@@ -161,10 +160,8 @@ public class DbFilterValueTag extends DbBaseHandlerTag implements DataContainer,
          String value     = ParseUtil.getParameter(request, paramValue);
          String valueType = ParseUtil.getParameter(request, paramType);
          valueType = Util.isNull(valueType) ? FLT_VALUETYPE_TEXT : valueType;
-
          if (value != null)
          {
-
             // add value, possibly converted, to list
             Field f = new Field();
             f.setName(paramValue);

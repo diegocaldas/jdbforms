@@ -119,7 +119,7 @@
 	         <db:filter>
 	         	<db:filterCondition label="author name like">
 	         		NAME LIKE ?
-	         		<db:filterValue />
+	         		<db:filterValue searchAlgo="weakEnd" />
 	         	</db:filterCondition>
 	         	<db:filterCondition label="ID >= V1 AND ID <= V2">
 	         		AUTHOR_ID >= ? AND AUTHOR_ID <= ?
