@@ -282,12 +282,15 @@
       <arg line="chunk.first.sections=1"/>
       <arg line="generate.section.toc.level=0"/>
       <arg line="toc.section.depth=1"/>
+      <arg line="html.stylesheet=javadoc-stylesheet.css"/>
     </java>
 
     <copy todir="${out.dir}/html/images/callouts">
       <fileset dir="${in.dir}/images/callouts" includes="*.png"/>
     </copy>
-
+    <copy todir="${out.dir}/html">
+      <fileset dir="${cvs.workingdir}/xdocs/stylesheets" includes="*.css"/>
+    </copy>
     <copy todir="${out.dir}/html/images/figures">
       <fileset dir="${in.dir}/images/figures" includes="*.png"/>
     </copy>
