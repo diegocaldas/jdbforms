@@ -1499,9 +1499,6 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
                navEvent = navEventFactory.createGotoEvent(table, request, config, whereClause, getTableList());
             } else {
                String myPosition = null;
-							 System.out.println("*** here we go again and mypos = "+myPosition);
-							 System.out.println("*** here we go again and firstPosition = "+firstPosition);
-							 System.out.println("*** here we go again and webEvent = "+webEvent);							 
                if ((webEvent != null) && 
                      ( 
                         // we have one of the update events...
