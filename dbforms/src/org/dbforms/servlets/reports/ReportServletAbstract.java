@@ -376,7 +376,7 @@ public abstract class ReportServletAbstract extends HttpServlet {
 				form.setTableName(tableName);
 
 				String maxRows = ParseUtil
-						.getParameter(request, "MaxRows", "*");
+						.getParameter(request, "maxRows", "*");
 				form.setMaxRows(maxRows);
 				form.setFollowUp("");
 				form.setAutoUpdate("false");
