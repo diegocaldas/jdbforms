@@ -658,7 +658,9 @@ public abstract class DbBaseHandlerTag extends BodyTagSupport
             }
             else
             {
-               Object curVal = currentRow[field.getId()];
+ 			   Object curVal = null;
+               if (field != null)  
+                  curVal = currentRow[field.getId()];
                String curStr = null;
 
                if (curVal != null)
@@ -756,7 +758,7 @@ public abstract class DbBaseHandlerTag extends BodyTagSupport
    {
       StringBuffer buf = new StringBuffer();
 
-      if (parentForm.getTable() != null)
+      if ((parentForm.getTable() != null) && (field != null))
       {
          String keyIndex = (parentForm.getFooterReached())
             ? ("ins" + parentForm.getPositionPathCore())
