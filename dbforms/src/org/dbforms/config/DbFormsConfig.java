@@ -74,7 +74,9 @@ public class DbFormsConfig {
    private String defaultEscaperClass = "org.dbforms.util.DefaultEscaperImpl";
    private Escaper escaper = null;
 
+   /** global application hookups */
    private Vector interceptors = new Vector();
+
    /**
     * Creates a new DbFormsConfig object.
     * 
