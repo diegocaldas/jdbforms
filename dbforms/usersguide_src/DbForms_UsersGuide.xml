@@ -25,7 +25,7 @@
 <!ENTITY mult SYSTEM "Multiple_Database_Connections.xml">
 <!ENTITY plug SYSTEM "PluggableEvents.xml">
 <!ENTITY ejbs SYSTEM "EJBs.xml">
-<!ENTITY avoi SYSTEM "Avoiding_Navigation_Errors.xml">
+<!--ENTITY avoi SYSTEM "Avoiding_Navigation_Errors.xml"-->
 <!ENTITY tagl SYSTEM "Appendix_Tag_Library.xml">
 
 <!ENTITY date SYSTEM "Appendix_Internationalization_of_Dates.xml">
@@ -79,7 +79,7 @@
 </part>
 <part><title>Appendices</title>
 &tagl;
-&avoi;
+<!--&avoi;-->
 &date;
 &chan;
 &todo;
