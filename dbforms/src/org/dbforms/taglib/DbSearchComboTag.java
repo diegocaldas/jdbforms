@@ -26,10 +26,9 @@ import javax.servlet.*;
 import javax.servlet.jsp.*;
 import javax.servlet.jsp.tagext.*;
 import javax.servlet.http.*;
-import org.dbforms.*;
+
 import org.dbforms.config.*;
 import org.dbforms.util.*;
-import org.CVS.*;
 import org.apache.log4j.Category;
 
 
