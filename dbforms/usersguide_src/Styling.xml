@@ -88,10 +88,10 @@
 
 <mediaobject  id="html4_button">  
   <imageobject  role="html">
-    <imagedata  format="PNG"  fileref="images/figures/html4_button"/>
+    <imagedata  format="PNG"  fileref="images/figures/html4_button.png"/>
   </imageobject>
   <imageobject  role="fo">
-    <imagedata  format="PNG"  fileref="../images/figures/html4_button"/>
+    <imagedata  format="PNG"  fileref="../images/figures/html4_button.png"/>
   </imageobject>
 </mediaobject>
 				<programlisting>
