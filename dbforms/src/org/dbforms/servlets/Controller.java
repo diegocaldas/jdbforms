@@ -138,6 +138,10 @@ public class Controller extends HttpServlet
    private void process(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException
    {
+	   HttpSession session = request.getSession(true);
+	   logCat.debug("session timeout: " + session.getMaxInactiveInterval());
+
+
       // create RFC-1867 data wrapper for the case the form was sent in multipart mode
       // this is needed because common HttpServletRequestImpl - classes do not support it
       // the whole application has to access Request via the "ParseUtil" class

@@ -21,8 +21,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.conprovider;
-import java.util.*;
-import java.sql.*;
+import java.util.Enumeration;
+import java.util.Properties;
+import java.sql.Connection;
+import java.sql.SQLException;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.dbforms.util.Util;
 
@@ -87,10 +89,9 @@ public class JakartaConnectionProvider extends ConnectionProvider
     */
    protected Connection getConnection() throws SQLException
    {
-      cat.debug("::getConnection - MaxActive = " + dataSource.getMaxActive());
-      cat.debug("::getConnection - NumActive = " + dataSource.getNumActive());
-      cat.debug("::getConnection - NumIdle   = " + dataSource.getNumIdle());
-
+      getCat().debug("::getConnection - MaxActive = " + dataSource.getMaxActive());
+      getCat().debug("::getConnection - NumActive = " + dataSource.getNumActive());
+	  getCat().debug("::getConnection - NumIdle   = " + dataSource.getNumIdle());
       return dataSource.getConnection();
    }
 
@@ -117,7 +118,7 @@ public class JakartaConnectionProvider extends ConnectionProvider
          {
             String key = (String) e.nextElement();
             dataSource.addConnectionProperty(key, props.getProperty(key));
-            cat.info("::init - dataSource property [" + key + "] = ["
+            getCat().info("::init - dataSource property [" + key + "] = ["
                + props.getProperty(key) + "]");
          }
       }
@@ -149,8 +150,8 @@ public class JakartaConnectionProvider extends ConnectionProvider
 
       if (!Util.isNull(useLog) && "true".equals(useLog.trim()))
       {
-         cat.info("::init - dataSource log activated");
-         dataSource.setLogWriter(new Log4jPrintWriter(cat, cat.getPriority()));
+         getCat().info("::init - dataSource log activated");
+         dataSource.setLogWriter(new Log4jPrintWriter(getCat(), getCat().getPriority()));
       }
    }
 }

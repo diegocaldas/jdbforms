@@ -23,7 +23,9 @@
 package org.dbforms.conprovider;
 
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.SQLException;
+
 import org.apache.log4j.Category;
 
 

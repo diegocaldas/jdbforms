@@ -21,7 +21,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.conprovider;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.SQLException;
 import org.apache.log4j.Category;
 
 
@@ -36,7 +37,7 @@ import org.apache.log4j.Category;
 public abstract class ConnectionProvider
 {
    /** Log4j category */
-   protected Category cat = Category.getInstance(this.getClass());
+   private Category cat = Category.getInstance(this.getClass());
 
    /** ConnectionProvider preferences */
    protected ConnectionProviderPrefs prefs = null;
@@ -120,4 +121,11 @@ public abstract class ConnectionProvider
 
       return str.substring(str.lastIndexOf(tokenSeparator) + 1, str.length());
    }
+   /**
+    * @return
+    */
+   public Category getCat() {
+      return cat;
+   }
+
 }

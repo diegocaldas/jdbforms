@@ -21,22 +21,55 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.servlets;
-import org.apache.log4j.Category;
-import java.io.*;
-import java.util.*;
-import java.sql.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
-import javax.servlet.jsp.*;
 
-import org.dbforms.util.*;
-import org.dbforms.util.external.*;
-import org.dbforms.servlets.reports.*;
-import org.dbforms.config.*;
-import org.dbforms.event.*;
+import org.apache.log4j.Category;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Vector;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.File;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
+
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import javax.servlet.jsp.PageContext;
+
+import org.dbforms.servlets.reports.JRDataSourceRSV;
+import org.dbforms.servlets.reports.PageContextDummy;
+import org.dbforms.servlets.reports.ReportParameter;
+
+import org.dbforms.event.WebEvent;
+
+import org.dbforms.util.ResultSetVector;
+import org.dbforms.util.SqlUtil;
+import org.dbforms.util.ParseUtil;
+import org.dbforms.util.Util;
+
+import org.dbforms.util.external.FileUtil;
+
+import org.dbforms.config.DbFormsConfig;
+
 import org.dbforms.taglib.DbFormTag;
-import dori.jasper.engine.*;
-import dori.jasper.engine.export.*;
+
+import dori.jasper.engine.JasperCompileManager;
+import dori.jasper.engine.JasperFillManager;
+import dori.jasper.engine.JasperPrint;
+import dori.jasper.engine.JRDataSource;
+import dori.jasper.engine.JRException;
+import dori.jasper.engine.JRExporterParameter;
+import dori.jasper.engine.JRExporter;
+
+import dori.jasper.engine.export.JRPdfExporter;
+import dori.jasper.engine.export.JRXlsExporter;
 
 
 
