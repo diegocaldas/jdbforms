@@ -35,7 +35,7 @@ package org.dbforms.config;
  */
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Connection;
-
+import java.util.Map;
 
 
 /**
@@ -82,6 +82,10 @@ public interface DbEventInterceptor
     */
    public static final int IGNORE_OPERATION = 2;
 
+	 
+	 public void setParams(Map params);
+	 public Map getParams();	 
+	 
    /**
     * DOCUMENT ME!
     *
