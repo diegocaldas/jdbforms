@@ -311,7 +311,7 @@ Happy coding!
         <property name="dbforms.releaseName" value="${dbforms.version}_${DSTAMP}"/>
 
       <zip destfile="dbforms${dbforms.releaseName}.zip" >
-        <zipfileset dir="."          prefix="dbforms${dbforms.releaseName}"         includes="Changes_v1_0  Changes_v1_1  CommonMistakes  License  Readme  Readme_DevGui  Todo  build.xml"/>
+        <zipfileset dir="."          prefix="dbforms${dbforms.releaseName}"         includes="Changes_v1_0  Changes_v1_1  CommonMistakes  License  Readme  Readme_DevGui  Todo  build.xml ReleaseNotes_v1_1_3pr1.txt "/>
         <zipfileset dir="."          prefix="dbforms${dbforms.releaseName}"         includes="doc/**/*.html,doc/**/*.png,doc/**/*.gif,doc/**/*.jpg,doc/**/*.txt,doc/**/*.pdf"/>
         <zipfileset dir="."          prefix="dbforms${dbforms.releaseName}"         includes="dist/*.tld  dist/*.jar"/>
         <zipfileset dir="./dist/bin" prefix="dbforms${dbforms.releaseName}/bin"     includes="devgui.bat devgui.sh"/>
