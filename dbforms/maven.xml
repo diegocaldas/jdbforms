@@ -45,7 +45,7 @@
     <ant:cvspass cvsroot=":${scmTokens[2]}:${scmTokens[3]}:${scmTokens[4]}" password="" />
     <ant:cvs
      	cvsRoot=":${scmTokens[2]}:${scmTokens[3]}:${scmTokens[4]}" 
-     	command="co" 
+     	command="co -P" 
      	compression="true" 
      	package="${scmTokens[5]}" 
      	dest="temp/release" 
