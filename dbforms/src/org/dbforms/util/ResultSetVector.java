@@ -23,8 +23,8 @@
 package org.dbforms.util;
 import java.util.*;
 import java.sql.*;
-import org.dbforms.Field;
-import org.dbforms.FieldValue;
+
+import org.dbforms.config.Field;
 import org.apache.log4j.Category;
 
 

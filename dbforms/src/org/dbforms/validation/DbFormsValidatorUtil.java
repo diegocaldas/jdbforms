@@ -30,9 +30,9 @@ import java.util.Map;
 import java.util.Comparator;
 import java.util.Collections;
 import java.util.Enumeration;
+
+import org.dbforms.util.DbFormsErrors;
 import org.dbforms.util.MessageResources;
-import org.dbforms.validation.ValidatorConstants;
-import org.dbforms.DbFormsErrors;
 import org.dbforms.util.Util;
 import org.apache.commons.validator.Arg;
 import org.apache.commons.validator.Var;
