@@ -10952,6 +10952,37 @@ pageContext or pass in a value directly and then use the textFormat tag to forma
 					</info>
 				</attribute>
 			</tag>
+			<!-- **************************** CewolfPiData tag ***********************************-->
+			<tag>
+				<name>pieData</name>
+				<summary>
+					This datatag generates a cewolf DatasetProducer with PieDataSet included.
+					Data is taken from the dbforms resultsetvector.
+				</summary>
+				<tagclass>org.dbforms.taglib.CewolfPieDataTag</tagclass>
+				<bodycontent>empty</bodycontent>
+				<info>
+				</info>
+				<attribute>
+					<name>categoryField</name>
+					<required>true</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+					   Name of the field in the resultsetvector which should be 
+					   used as the key in the pie dataset.
+					</info>
+				</attribute>
+				<attribute>
+					<name>dataField</name>
+					<required>true</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+					   Name of the field in the resultsetvector which should be 
+					   used for getting the values for the pie dataset.
+					   This field must be a numeric value!
+					</info>
+				</attribute>
+			</tag>
 		</taglib>
 	</body>
 </document>
