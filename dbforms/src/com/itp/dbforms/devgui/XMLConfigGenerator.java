@@ -48,7 +48,23 @@ public class XMLConfigGenerator {
 	  String username = projectData.getProperty("username");
 	  String password = projectData.getProperty("password");
 
+	  String catalog = projectData.getProperty("catalog");
+	  String schemaPattern = projectData.getProperty("schemaPattern");
 
+	  if(catalog != null && catalog.trim().equalsIgnoreCase("$null"))
+	  	catalog = null;
+
+	  if(schemaPattern != null && schemaPattern.trim().equalsIgnoreCase("$null"))
+	  	schemaPattern = null;
+
+	  System.out.println(": Retrieving metadata using the following properties ");
+	  System.out.println("-----------------------------------------------------");
+	  System.out.println("jdbcDriver="+jdbcDriver);
+	  System.out.println("jdbcURL="+jdbcURL);
+	  System.out.println("username="+username);
+	  System.out.println("password="+password);
+	  System.out.println("catalog="+catalog);
+	  System.out.println("schemaPattern="+schemaPattern);
 
 	StringBuffer result = new StringBuffer();
 
@@ -62,8 +78,8 @@ public class XMLConfigGenerator {
 		if(con==null) {System.exit(1);}
 
 		DatabaseMetaData dbmd = con.getMetaData();
-		String[] types = {"TABLE", "VIEW"};
-		ResultSet tablesRS = dbmd.getTables("", "", "", types);
+		//String[] types = {"TABLE", "VIEW"};
+		ResultSet tablesRS = dbmd.getTables(catalog, schemaPattern, "%", null);
 
 		while(tablesRS.next()) {
 
@@ -73,7 +89,7 @@ public class XMLConfigGenerator {
 		  result.append(tableName);
 		  result.append("\">\n");
 
-		  ResultSet rsKeys = dbmd.getPrimaryKeys("", "", tableName);
+		  ResultSet rsKeys = dbmd.getPrimaryKeys(catalog, schemaPattern, tableName);
 		  Vector keys = new Vector();
 		  while(rsKeys.next()) {
 		      String columnName = rsKeys.getString(4);
@@ -81,7 +97,7 @@ public class XMLConfigGenerator {
 		  }
 		  rsKeys.close();
 
-		  ResultSet rsFields = dbmd.getColumns("", "", tableName, null);
+		  ResultSet rsFields = dbmd.getColumns(catalog, schemaPattern, tableName, null);
 		  while(rsFields.next()) {
 
 		      String columnName = rsFields.getString(4);

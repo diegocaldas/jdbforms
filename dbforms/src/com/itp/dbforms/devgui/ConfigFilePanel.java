@@ -44,7 +44,7 @@
 
 		// GUI Variables declaration
 		private JLabel jLabel1;
-		private JTextField tf_configFile;
+		private JTextField tf_configFile, tf_catalog, tf_schemaPattern;
 		private JButton b_generate, b_browse;
 		private EditorPanel panel_editor;
 		private DevGui parent;
@@ -90,7 +90,7 @@
 			setLayout(new BorderLayout());
 
 			JPanel panel_top = new JPanel();
-			panel_top.setLayout(new GridLayout(1,4));
+			panel_top.setLayout(new GridLayout(2,4));
 			add(BorderLayout.NORTH, panel_top);
 
 			jLabel1.setText("DbForms-Config File");
@@ -127,6 +127,19 @@
 			b_generate.addActionListener(this);
 			b_generate.setToolTipText("Generate raw content of config-file by quering the database you defined in tab \"Database properties\".");
 			panel_top.add(b_generate);
+
+			panel_top.add(new JLabel("Catalog:"));
+			tf_catalog = new JTextField();
+			addAFocusListener(tf_catalog, "catalog");
+			panel_top.add(tf_catalog);
+
+			panel_top.add(new JLabel("Schema Pattern:"));
+			tf_schemaPattern = new JTextField();
+			addAFocusListener(tf_schemaPattern, "schemaPattern");
+			panel_top.add(tf_schemaPattern);
+
+
+
 
 			panel_editor = new EditorPanel();
 			add(BorderLayout.CENTER, panel_editor);
