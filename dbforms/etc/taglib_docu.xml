@@ -8,11 +8,11 @@
 	<body>
 		<taglib>
 			<tlibversion>2.0</tlibversion>
-			<jspversion>1.2</jspversion>
+			<jspversion>CURRENT_VERSION</jspversion>
 			<shortname>dbforms</shortname>
 			<display-name>DbForm Construction Tags</display-name>
 			<uri>dbforms.tld</uri>
-			<info>version 1.1.4pr2</info>
+			<info>version CURRENT_VERSION</info>
 			<!-- **************************** dbform tag ***********************************-->
 			<tag>
 				<name>dbform</name>
