@@ -57,6 +57,12 @@
             <para>
               on Win32, you can type: SET DBFORMS_HOME=h:\dbforms or you can use the system configuration panel.
             </para>
+            <para>
+            Be sure there are no spaces in your path or you will get a <computeroutput>java.lang.NoClassDefFoundError</computeroutput>.  For example, <emphasis role="bold">the following will fail</emphasis>:
+            </para>
+            <para> 
+                <computeroutput>DBFORMS_HOME = C:\Documents and Settings\me\My Documents\tools\DbForms\dbforms_2.3_20040329</computeroutput>
+            </para>
           </listitem>
           <listitem>
             <para>on Unix, you can use the SETENV or EXPORT command, depending on your shell:</para>
