@@ -119,26 +119,6 @@ public class TableEvents
 
 
     /**
-     *  Get the eventInfo object related to the input event type.
-     *
-     * @param eventType the event type string
-     * @return the eventInfo object related to the input event type, or null if
-     *         the object does not exist
-     */
-    public EventInfo getEventInfo(String eventType)
-    {
-        EventInfo einfo = null;
-
-        if (eventMap.containsKey(eventType))
-        {
-            einfo = (EventInfo)eventMap.get(eventType);
-        }
-
-        return einfo;
-    }
-
-
-    /**
      *  Set a new event for the linked Table.
      *
      * @param eventType  the event type
@@ -178,5 +158,25 @@ public class TableEvents
         einfo.setType(eventType);
         einfo.setId(eventType);
         addEventInfo(einfo);
+    }
+
+
+    /**
+     *  Get the eventInfo object related to the input event type.
+     *
+     * @param eventType the event type string
+     * @return the eventInfo object related to the input event type, or null if
+     *         the object does not exist
+     */
+    private EventInfo getEventInfo(String eventType)
+    {
+        EventInfo einfo = null;
+
+        if (eventMap.containsKey(eventType))
+        {
+            einfo = (EventInfo)eventMap.get(eventType);
+        }
+
+        return einfo;
     }
 }
