@@ -408,7 +408,7 @@ public class Query extends Table
 
 
             /// @TODO Missing and???
-            buf.append(" ( ");
+            buf.append(" AND ( ");
          }
 
          buf.append(s);

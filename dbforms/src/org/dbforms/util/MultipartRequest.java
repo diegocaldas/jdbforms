@@ -21,13 +21,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.util;
-import java.io.File;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Hashtable;
 import java.util.Vector;
 import java.util.Enumeration;
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import com.oreilly.servlet.multipart.FilePart;
 import com.oreilly.servlet.multipart.MultipartParser;
@@ -73,7 +71,7 @@ import org.apache.log4j.Category;
  */
 public class MultipartRequest
 {
-   static Category          logCat                = Category.getInstance(MultipartRequest.class
+   private static Category          logCat                = Category.getInstance(MultipartRequest.class
          .getName()); // logging category for this class
    private static final int DEFAULT_MAX_POST_SIZE = 1024 * 1024; // 1 Meg
 

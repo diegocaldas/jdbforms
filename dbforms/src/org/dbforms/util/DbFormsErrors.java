@@ -40,7 +40,7 @@ import org.dbforms.config.error.Error;
  */
 public class DbFormsErrors
 {
-   static Category logCat = Category.getInstance(DbFormsErrors.class.getName()); // logging category for this class
+   private static Category logCat = Category.getInstance(DbFormsErrors.class.getName()); // logging category for this class
 
    /** DOCUMENT ME! */
    public static final String ERRORS        = "dbformsErrors";
@@ -93,7 +93,8 @@ public class DbFormsErrors
 
 
    /**
-   get access to configuration of config servlet
+   * get access to configuration of config servlet
+   * 
    */
    public ServletConfig getServletConfig()
    {

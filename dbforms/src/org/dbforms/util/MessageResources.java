@@ -24,7 +24,6 @@ package org.dbforms.util;
 import java.util.ResourceBundle;
 import java.util.Locale;
 import java.util.HashMap;
-import java.util.Enumeration;
 import org.apache.log4j.Category;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletRequest;

@@ -122,10 +122,9 @@ public class DbFormsConfigRegistry
     * @return  Description of the Return Value
     * @exception  Exception if the lookup operation fails
     */
-   public DbFormsConfig lookup(String name) throws Exception
+   private DbFormsConfig lookup(String name) throws Exception
    {
       DbFormsConfig config = null;
-
       if (servletContext != null)
       {
          config = (DbFormsConfig) servletContext.getAttribute(name);

@@ -41,7 +41,7 @@ import org.apache.log4j.Category;
  */
 public class ParseUtil
 {
-   static Category logCat = Category.getInstance(ParseUtil.class.getName());
+   private static Category logCat = Category.getInstance(ParseUtil.class.getName());
 
    // logging category for this class
    // ------------------ methods directly related to HttpServletRequest operations

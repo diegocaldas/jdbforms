@@ -26,7 +26,6 @@ import java.sql.SQLException;
 
 import org.apache.log4j.Category;
 import org.dbforms.config.Field;
-import org.dbforms.taglib.DbBaseHandlerTag;
 
 
 
@@ -45,7 +44,7 @@ import org.dbforms.taglib.DbBaseHandlerTag;
 public class FieldValue implements Cloneable
 {
    /** logging category for this class */
-   static Category logCat = Category.getInstance(FieldValue.class.getName());
+   private static Category logCat = Category.getInstance(FieldValue.class.getName());
 
    /** DOCUMENT ME! */
    /** field object */

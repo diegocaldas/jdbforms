@@ -135,7 +135,6 @@ public class DataSourceXML extends DataSource
                logCat.error(e);
             }
          }
-
          data = new XMLDataResult(getResultNode(url), url.getQuery());
       }
       catch (Exception e)

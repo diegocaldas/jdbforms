@@ -45,7 +45,7 @@ import org.apache.log4j.Category;
  */
 public class FileHolder implements Serializable
 {
-   static Category logCat   = Category.getInstance(FileHolder.class.getName()); // logging category for this class
+   private static Category logCat   = Category.getInstance(FileHolder.class.getName()); // logging category for this class
    private boolean toMemory;
 
    // "file system" name of the file

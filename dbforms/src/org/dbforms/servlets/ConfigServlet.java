@@ -63,7 +63,7 @@ import org.dbforms.event.NavEventFactoryImpl;
  */
 public class ConfigServlet extends HttpServlet {
    /** DOCUMENT ME! */
-   protected Category logCat;
+   private Category logCat;
 
    // ----------------------------------------------------- Instance Variables
 
@@ -566,7 +566,6 @@ public class ConfigServlet extends HttpServlet {
       } catch (SAXException e) {
          throw new ServletException(e.toString());
       }
-
       logCat.info("DbForms Error: " + dbFormsErrors);
    }
 
@@ -618,24 +617,20 @@ public class ConfigServlet extends HttpServlet {
       DbFormsConfigRegistry registry = DbFormsConfigRegistry.instance();
       DbFormsConfig dbFormsConfig = null;
       try {
-         dbFormsConfig = registry.lookup();
-      } catch (Exception e) {
+			dbFormsConfig = registry.lookup();
+      } catch(Exception e) {
       }
       if (dbFormsConfig == null) {
          dbFormsConfig = new DbFormsConfig(realPath);
          // store a reference to ServletConfig (for interoperation with other parts of the Web-App!)
          dbFormsConfig.setServletConfig(getServletConfig());
-         // store this config object in servlet context ("application")
-         getServletContext().setAttribute(DbFormsConfig.CONFIG, dbFormsConfig);
          // ---------------------------------------------------------------
          registry.setServletContext(getServletContext());
          registry.register(dbFormsConfig);
       }
 
       // ---------------------------------------------------------------
-
       Digester digester = initDigester(digesterDebugLevel, dbFormsConfig);
-
       // Parse the input stream to configure our mappings
       try {
          digester.parse(input);
@@ -856,8 +851,11 @@ public class ConfigServlet extends HttpServlet {
       HttpServletResponse response)
       throws IOException, ServletException {
       PrintWriter out = response.getWriter();
-      DbFormsConfig dbFormsConfig =
-         (DbFormsConfig) getServletContext().getAttribute("xmlconfig");
-      out.println(dbFormsConfig.traverse());
+		try {
+			DbFormsConfig dbFormsConfig = DbFormsConfigRegistry.instance().lookup();
+			out.println(dbFormsConfig.traverse());
+		} catch (Exception e){
+			throw new IOException(e.getMessage());
+		}
    }
 }
