@@ -182,7 +182,7 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
       formatting a value
     */
    public Format getFormat() {
-      if (format == null) {
+      if ((format == null) && (getField() != null)) {
          format = getField().getFormat(pattern, getLocale());
       }
 
