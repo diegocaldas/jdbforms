@@ -260,11 +260,9 @@ public class DbLinkURLTag extends DbBaseHandlerTag
     {
 		HttpServletResponse response =
 		   (HttpServletResponse) pageContext.getResponse();
-
-		               String s = makeUrl();
-	                  s = response.encodeURL(s);
-	                  pageContext.getOut().write(s);
-      pageContext.getOut().write(s);
+		String s = makeUrl();
+		s = response.encodeURL(s);
+		pageContext.getOut().write(s);
     }
 
       catch (java.io.IOException ioe)
