@@ -13,15 +13,6 @@ public class TestTest extends AbstractTestBase
 		super(name);
 	}
 
-	/**
-	 * Start the tests.
-	 *
-	 * @param theArgs the arguments. Not used
-	 */
-	public static void main(String[] theArgs)
-	{
-		junit.textui.TestRunner.main(new String[] { TestTest.class.getName()});
-	}
 
 	public void testSimpleJSPPage() throws Exception
 	{

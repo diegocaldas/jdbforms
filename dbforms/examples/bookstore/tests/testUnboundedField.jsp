@@ -6,7 +6,7 @@
 	</head>
    <body >
       <db:dbform autoUpdate="false" 
-                 followUp="/tests/testPositionAuthorEdit.jsp" 
+                 followUp="/tests/testUnboundedField.jsp" 
                  maxRows="1" 
                  tableName="AUTHOR"
                  
