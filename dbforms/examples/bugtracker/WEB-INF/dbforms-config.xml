@@ -84,7 +84,14 @@
 	/>
 	-->
 
-	
+        <dbconnection
+                name = "jdbc:hsqldb:./webapps/bugtracker/WEB-INF/db/bugtracker"
+                isJndi = "false"
+                conClass = "org.hsqldb.jdbcDriver"
+                username = "sa"
+                password = ""
+        />
+<!--	
 	<dbconnection
 		name   = "jdbc:mysql://localhost/bugtracker"
 		isJndi = "false"
@@ -92,6 +99,7 @@
 		username = "sa"
 		password = ""
 	/>
+-->
 	
 <!--	
 	<dbconnection
