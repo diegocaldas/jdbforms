@@ -4602,6 +4602,22 @@ flavor is "image")</info>
 flavor is "image")</info>
 				</attribute>
 				<attribute>
+					<name>showAlwaysInFooter</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						<p>
+                                              A NavNewButton is different from other buttons, it
+                will normally even been shown if it is placed within footer of a dbforms tag with empty result set.
+                This makes sense if you want to show a set of rows and then below always the button to open
+                a form to insert a new row. But if you have a form with body attribute allowNew set to &quot;true&quot;,
+                                              an insert form will automatically be shown in case no row is found. In that case the button might
+                                              irritate users, you should then set attribute showAlwaysInFooter to &quot;false&quot;.
+                                              Then the button will not be shown if result set is empty.
+                                            </p>
+					</info>
+				</attribute>
+				<attribute>
 					<name>border</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
@@ -4633,22 +4649,6 @@ flavor is "image")</info>
 					<rtexprvalue>true</rtexprvalue>
 					<info>The keyboard character used to move focus 
 immediately to this element.</info>
-				</attribute>
-				<attribute>
-					<name>showAlwaysInFooter</name>
-					<required>false</required>
-					<rtexprvalue>true</rtexprvalue>
-					<info>
-						<p>
-                                              A NavNewButton is different from other buttons, it
-                will normally even been shown if it is placed within footer of a dbforms tag with empty result set.
-                This makes sense if you want to show a set of rows and then below always the button to open
-                a form to insert a new row. But if you have a form with body attribute allowNew set to &quot;true&quot;,
-                                              an insert form will automatically be shown in case no row is found. In that case the button might
-                                              irritate users, you should then set attribute showAlwaysInFooter to &quot;false&quot;.
-                                              Then the button will not be shown if result set is empty.
-                                            </p>
-					</info>
 				</attribute>
 				<attribute>
 					<name>onBlur</name>
@@ -4785,6 +4785,22 @@ is released.</info>
                     <rtexprvalue>true</rtexprvalue>
                     <info>expose id, enables interaction with JavaScript</info>
                 </attribute>
+				<attribute>
+					<name>showAlwaysInFooter</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						<p>
+                                              A NavNewCopy is different from other buttons, it
+                will normally even been shown if it is placed within footer of a dbforms tag with empty result set.
+                This makes sense if you want to show a set of rows and then below always the button to open
+                a form to insert a new row. But if you have a form with body attribute allowNew set to &quot;true&quot;,
+                                              an insert form will automatically be shown in case no row is found. In that case the button might
+                                              irritate users, you should then set attribute showAlwaysInFooter to &quot;false&quot;.
+                                              Then the button will not be shown if result set is empty.
+                                            </p>
+					</info>
+				</attribute>
 
                 <attribute>
                     <name>flavor</name>
