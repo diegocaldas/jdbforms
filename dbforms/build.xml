@@ -301,7 +301,7 @@ Happy coding!
   </target>
  
   <target name="build-doc"
-      depends="javadoc, generate_taglib_htmldocs"
+      depends="javadoc, generate_taglib_htmldocs, generate_taglib_pdfdocs"
   />
 
      <!-- create dbforms-releasefile -->
