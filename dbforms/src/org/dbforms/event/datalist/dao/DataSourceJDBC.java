@@ -72,7 +72,7 @@ public class DataSourceJDBC extends DataSource
    private FieldValue[]  filterConstraint;
    private FieldValue[]  orderConstraint;
    private DbFormsConfig config;
-
+   private boolean calledFromFinalize = false;
 
    /**
     * Creates a new DataSourceJDBC object.
@@ -94,6 +94,10 @@ public class DataSourceJDBC extends DataSource
     */
    protected void finalize() throws Throwable
    {
+	  // To overcome a bug in the firebird jdbc driver. 
+	  // This drivers makes an error if you call stmt.close in finalize.
+	  // After this error no more connections are possible!
+	  calledFromFinalize = true;      
       close();
    }
 
@@ -183,7 +187,6 @@ public class DataSourceJDBC extends DataSource
          {
 				SqlUtil.logSqlException(e);
          }
-
          rs = null;
       }
 
@@ -191,13 +194,13 @@ public class DataSourceJDBC extends DataSource
       {
          try
          {
-            stmt.close();
+            if (!calledFromFinalize) 
+               stmt.close();
          }
          catch (SQLException e)
          {
 				SqlUtil.logSqlException(e);
          }
-
          stmt = null;
       }
 
