@@ -22,17 +22,15 @@
  */
 package org.dbforms.util.external;
 
-import org.apache.log4j.Category;
-
-import org.dbforms.util.Util;
-
 import java.io.*;
-
 import java.util.*;
-
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.http.HttpUtils;
+
+import org.apache.log4j.Category;
+
+import org.dbforms.util.Util;
 
 
 /**
@@ -92,13 +90,11 @@ public class ServletUtil
     private static String dump(HttpServletRequest req, String returnToken)
                         throws ServletException, IOException
     {
-        // this routine simple dumps out HTTP variables and headers.
         StringBuffer sb = new StringBuffer();
         String s = null;
 
         sb.append("HTTP Snooper Servlet").append(returnToken).append(returnToken);
         sb.append("Request URL:").append(returnToken);
-
         sb.append(" http://" + req.getServerName() + req.getServerPort() + req.getRequestURI() +
                   returnToken).append(returnToken);
 
@@ -120,7 +116,7 @@ public class ServletUtil
         	// warning, this should be deprecated... servlet2.3 specs
         	// do not have this HttpUtils method... I read somewhere...
             Hashtable ht = HttpUtils.parseQueryString(queryString);
-            sb.append(geKeyData(ht, returnToken)).append(returnToken);
+            sb.append(geKeyValuesData(ht, returnToken)).append(returnToken);
         }
 
         sb.append(" Server Name: " + req.getServerName()).append(returnToken);
@@ -130,11 +126,11 @@ public class ServletUtil
         sb.append(" Remote Address: " + req.getRemoteAddr()).append(returnToken);
         sb.append(" Authentication Scheme: " + req.getAuthType()).append("").append(returnToken);
 
-        // return parameters (name/value pairs)
-        int maxLength = getParametersNameMaxLength(req.getParameterNames());
-        
-        Enumeration params = req.getParameterNames();
-
+		// return parameters (name/value pairs)
+		
+        int maxParamNameLength = getElementNameMaxLength(req.getParameterNames());
+		Enumeration params     = req.getParameterNames();
+		
         if (params.hasMoreElements())
         {
             sb.append(returnToken).append("Parameters:").append(returnToken);
@@ -142,7 +138,7 @@ public class ServletUtil
             while (params.hasMoreElements())
             {
                 String name = (String) params.nextElement();
-                sb.append("  ").append(name).append(addSpaces(maxLength, name)).append(" = ");
+                sb.append("  ").append(name).append(addSpaces(maxParamNameLength, name)).append(" = ");
 
                 String[] values = req.getParameterValues(name);
 
@@ -186,26 +182,35 @@ public class ServletUtil
 
 
     /**
-     *   Get the data from the input hashMap where keys are string and key values are
-     *   string arrays.
+     *  Get the data from the input hashMap where keys are string 
+     *  and key values are string arrays.
      *
      * @param ht  the hash table
      * @param returnToken the return token, i.e.: "\n" or "<br>\n"
      */
-    private static StringBuffer geKeyData(Hashtable ht, String returnToken)
+    private static StringBuffer geKeyValuesData(Hashtable ht, String returnToken)
     {
         StringBuffer sb = new StringBuffer();
         Enumeration keys = ht.keys();
-
+		int maxKeyNameLength = getElementNameMaxLength(ht.keys());
+		
+		int aa = 0;
         while (keys.hasMoreElements())
-        {
-            String key = (String) keys.nextElement();
+        {  
+            String   key    = (String)   keys.nextElement();
             String[] values = (String[]) ht.get(key);
 
             for (int i = 0; i < values.length; i++)
             {
-                sb.append("  {").append(key).append(" [").append(i).append("]} = ").append("[")
-                  .append(values[i]).append("]").append(returnToken);
+                sb.append("  {")
+                  .append(key)
+                  .append(" [")
+                  .append(i)
+                  .append("]}")
+                  .append(addSpaces(maxKeyNameLength, key))
+                  .append(" = ")
+                  .append(values[i])
+                  .append(returnToken);
             }
         }
 
@@ -242,12 +247,12 @@ public class ServletUtil
 
 
     /**
-     *  Get the length of the request parameter having the longer name
+     *  Get the length of the element having the longer name
      * 
-     * @param paramNames the enumeration got from req.getParameterNames()
-     * @return the length of the request parameter having the longer name
+     * @param paramNames the enumeration element
+     * @return the length of the element having the longer name
      */
-    private static int getParametersNameMaxLength(Enumeration paramNames)
+    private static int getElementNameMaxLength(Enumeration paramNames)
     {
         int len = 0;
 
