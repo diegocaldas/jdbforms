@@ -181,7 +181,7 @@ public class DbGotoButtonTag extends DbBaseButtonTag implements javax.servlet.js
          tagBuf.append(getDataTag(tagName, "keyToKeyDestPos", Util.encode(keyToKeyToDestPos, pageContext.getRequest().getCharacterEncoding())));
 
          // 2004-01-13 HKK: Add support for childField/parentField
-         if (getConfig().getTableByName(destTable) != getTable()) {
+         if ((getConfig().getTableByName(destTable) != getTable()) && (getParentForm().getTable() != null)) {
             tagBuf.append(getDataTag(tagName, "srcTable", getParentForm().getTable().getName()));
             tagBuf.append(getDataTag(tagName, "childField", Util.encode(childField, pageContext.getRequest().getCharacterEncoding())));
             tagBuf.append(getDataTag(tagName, "parentField", Util.encode(parentField, pageContext.getRequest().getCharacterEncoding())));
