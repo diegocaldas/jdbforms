@@ -67,7 +67,7 @@ public class DataSourceJDBC extends DataSource
    private String       connectionName;
    private ResultSet    rs;
    private Statement    stmt;
-   private ArrayList    data;
+   private List          data;
    private Map          keys;
    private int          colCount;
    private String       whereClause;
