@@ -129,7 +129,7 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer
         else
         System.out.println("\n id : "+id+"   category : is null");
         }*/
-        return EVAL_BODY_TAG;
+        return EVAL_BODY_BUFFERED;
     }
 
 
