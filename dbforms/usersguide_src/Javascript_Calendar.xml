@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
  
 	<chapter>
-		<title>JavaScript Calendar Application
+		<title id="js_cal">JavaScript Calendar Application
 </title>
 		<sect1>
 			<title>What is it?
