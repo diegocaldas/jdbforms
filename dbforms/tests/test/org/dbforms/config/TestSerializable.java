@@ -40,7 +40,7 @@ public class TestSerializable  extends org.dbforms.util.AbstractTestCase {
        }
        assertNotNull(obj.getClass().getName(), mo);
        long i = mo.hashCode();
-       assertTrue(obj.getClass().getName(), mo.hashCode() != 0);
+       assertTrue(obj.getClass().getName(), i != 0);
     }
 
     public void testSerializable() throws Exception {

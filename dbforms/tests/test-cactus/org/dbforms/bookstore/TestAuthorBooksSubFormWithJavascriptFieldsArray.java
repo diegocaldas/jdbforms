@@ -32,9 +32,6 @@ import java.util.ArrayList;
 import org.dbforms.util.KeyValuePair;
 import org.dbforms.util.HttpTestCase;
 
-import com.meterware.httpunit.*;
-import com.meterware.httpunit.scripting.*;
-
 // definition of test class
 public class TestAuthorBooksSubFormWithJavascriptFieldsArray extends
 		HttpTestCase {
