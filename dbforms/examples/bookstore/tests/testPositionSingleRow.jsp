@@ -22,7 +22,9 @@
                  <td>
                    <a 
                    		href="<db:linkURL href="/tests/testPositionAuthorViewEdit.jsp" 
-		                   		tableName="AUTHOR_VIEW">
+		                   		tableName="AUTHOR_VIEW"
+		                   		singleRow="true"
+		                   	   >
 	   		                    <db:position fieldName="AUTHOR_ID" value='<%=(String)currentRow_AUTHOR_VIEW.get("AUTHOR_ID")%>'/>
          				      </db:linkURL>"
 				   >
@@ -35,6 +37,7 @@
                    				destination="/tests/testPositionAuthorViewEdit.jsp" 
 		                   		destTable="AUTHOR_VIEW"
 		                   		destPos='<%= position_AUTHOR_VIEW%>'
+		                   		singleRow="true"
                    	/>
                  </td>
                  <td>   
@@ -44,6 +47,7 @@
 		                   		tableName="AUTHOR"
         		           		childField="AUTHOR_ID"
                 		   		parentField="AUTHOR_ID"
+		                   		singleRow="true"
                    			>
    	                    		<db:position fieldName="AUTHOR_ID" value='<%=(String)currentRow_AUTHOR_VIEW.get("AUTHOR_ID")%>'/>
 			       	       </db:linkURL>"

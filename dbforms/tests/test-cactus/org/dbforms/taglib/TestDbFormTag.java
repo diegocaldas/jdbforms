@@ -223,12 +223,12 @@ public class TestDbFormTag extends JspTestCase
 		AssertUtils.assertContains("<form name=\"dbform\"", content);
 		AssertUtils.assertContains("method=\"post\"", content);
 		AssertUtils.assertContains(
-					"<input type=\"hidden\" name=\"invtable\" value=\"0\">", content);
+					"<input type=\"hidden\" name=\"invtable\" value=\"0\"/>", content);
 		AssertUtils.assertContains(
-					"<input type=\"hidden\" name=\"autoupdate_0\" value=\"true\">", 
+					"<input type=\"hidden\" name=\"autoupdate_0\" value=\"true\"/>", 
 					content);
 		AssertUtils.assertContains(
-					"<input type=\"hidden\" name=\"fu_0\" value=\"null\">", content);
+					"<input type=\"hidden\" name=\"fu_0\" value=\"null\"/>", content);
 	}
 
 
