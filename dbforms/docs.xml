@@ -40,7 +40,7 @@ Modified by SAB.
 <property name="main.infile" value="DbForms_UsersGuide.xml"/>                                 
                    
            <!-- Output Properties: Output directory -->                          
- <property name="out.dir" value=".doc/UsersGuide" />  <!-- all files -->           
+ <property name="out.dir" value="doc/UsersGuide" />  <!-- all files -->           
                                                       
  <!-- output file for layout styling -->
  <property name="fo.outfile" value="UsersGuide.fo"/>                                  
