@@ -17,7 +17,7 @@ public class TestTest extends AbstractTestBase
 	public void testSimpleJSPPage() throws Exception
 	{
 		System.out.println("testTest");
-		System.out.println("Testing URL: " + replaceURL("http://bookstore/dbforms/tests/test.jsp"));
+		System.out.println("Testing URL: " + replaceURL("http://localhost/bookstore/tests/test.jsp"));
 		get("http://localhost/bookstore/tests/test.jsp");
 		System.out.println("Response code: " + getResponse().getStatusCode());
 		assertEquals("Assert number 1 failed", 200, getResponse().getStatusCode());
