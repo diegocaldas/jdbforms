@@ -16,7 +16,7 @@
   <para/>
   <sect1><title>tableName known at compile time</title>
   <para>
-    <table width="100%">
+    <table>
       <title>List of scripting variables</title>
       <tgroup cols="3">
         <tbody>

@@ -183,7 +183,7 @@ Simplifies searching.
       </para>
       <para>The following is a list of the operators that are currently supported by the filter attribute:</para>
       <para/>
-      <table width="100%">
+      <table>
         <title>filter operators</title>
         <tgroup cols="3">
           <tbody>
@@ -357,7 +357,7 @@ Simplifies searching.
       </para>
       <para/>
       <para>
-        <table width="100%">
+        <table>
           <title>search naming system</title>
           <tgroup cols="2">
             <tbody>
@@ -398,7 +398,7 @@ Simplifies searching.
       <para>The behaviour of searching is selected by different algorithm types:</para>
       <para/>
       <para>
-        <table width="100%">
+        <table>
           <title>search behavior selection</title>
           <tgroup cols="2">
             <tbody>
@@ -503,7 +503,7 @@ Simplifies searching.
       <para>If extended mode is set, the values will be parsed for special chars at the beginning:
      </para>
       <para>
-        <table width="100%">
+        <table>
           <title>extended mode searches</title>
           <tgroup cols="2">
             <tbody>

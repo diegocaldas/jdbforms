@@ -135,7 +135,7 @@ or throw a <computeroutput>ValidationExeception</computeroutput> with your own e
 </title>
     <para/>
     <para>
-      <table width="100%">
+      <table>
         <title>Parameters available in methods of DbEventInterceptor</title>
         <tgroup cols="2">
           <tbody>

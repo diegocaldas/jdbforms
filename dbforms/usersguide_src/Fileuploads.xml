@@ -200,7 +200,7 @@ BLOB interceptor the new way.  The following example is for the "classic" way.</
             &lt;/dbforms-config&gt;
     
       </programlisting>
-      <table width="100%">
+      <table>
         <title>define a table capable of Blobs (depends on SQL dialect implemented by RDBM vendor)</title>
         <tgroup cols="2">
           <tbody>
