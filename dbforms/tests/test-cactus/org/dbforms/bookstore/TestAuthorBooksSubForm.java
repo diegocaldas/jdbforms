@@ -259,7 +259,6 @@ public class TestAuthorBooksSubForm extends HttpTestCase {
       list.add(new KeyValuePair("fu_1", "/tests/testAuthorBooksSubForm.jsp"));
       list.add(new KeyValuePair("source",
                                 "/bookstore/tests/testAuthorBooksSubForm.jsp"));
-      list.add(new KeyValuePair("customEvent", ""));
       list.add(new KeyValuePair("f_1_ins0@root_1", ""));
       list.add(new KeyValuePair("f_1_ins0@root_3", ""));
       list.add(new KeyValuePair("k_1_0@0@root", "null"));
@@ -268,7 +267,7 @@ public class TestAuthorBooksSubForm extends HttpTestCase {
       post("http://localhost/bookstore/servlet/control", list);
       printResponse();
       assertTrue(responseContains("<input type=\"text\" name=\"f_0_0@root_1\" value=\"Douglas, Adam\"  size=\"25\"/>"));
-      assertTrue(responseContains("<input type=\"text\" name=\"f_1_0@0@root_1\" value=\"42-1\" />"));
+      assertTrue(responseContains("<input type=\"text\" name=\"f_1_0@0@root_1\" value=\"42-6\" />"));
    }
 
 
