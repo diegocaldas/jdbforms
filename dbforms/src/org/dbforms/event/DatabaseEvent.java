@@ -26,7 +26,7 @@ package org.dbforms.event;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.Hashtable;
 import java.util.Vector;
 
@@ -125,11 +125,11 @@ public abstract class DatabaseEvent extends WebEvent
   public Hashtable getAssociativeFieldValues(FieldValues scalarFieldValues)
   {
     Hashtable result = new Hashtable();
-    Enumeration scalars = scalarFieldValues.keys();
+    Iterator scalars = scalarFieldValues.keys();
 
-    while (scalars.hasMoreElements())
+    while (scalars.hasNext())
     {
-      String fieldName = (String) scalars.nextElement();
+      String fieldName = (String) scalars.next();
       result.put(fieldName, scalarFieldValues.get(fieldName).getFieldValue());
     }
 
@@ -178,11 +178,11 @@ public abstract class DatabaseEvent extends WebEvent
     // First check if update is necessary
     if (!doIt)
     { 
-      Enumeration enum = params.elements();
+      Iterator enum = params.iterator();
       
-      while (enum.hasMoreElements())
+      while (enum.hasNext())
       {
-        String param = (String) enum.nextElement();
+        String param = (String) enum.next();
         
         // value of the named parameter;
         String value = ParseUtil.getParameter(request, param);
@@ -204,10 +204,10 @@ public abstract class DatabaseEvent extends WebEvent
     //  if update is necessary then do update for all data columns
     if (doIt)
     {
-      Enumeration enum = params.elements();
-      while (enum.hasMoreElements())
+      Iterator enum = params.iterator();
+      while (enum.hasNext())
       {
-        String param = (String) enum.nextElement();
+        String param = (String) enum.next();
         String value = ParseUtil.getParameter(request, param);
         String oldValue = ParseUtil.getParameter(request, "o" + param);
 
