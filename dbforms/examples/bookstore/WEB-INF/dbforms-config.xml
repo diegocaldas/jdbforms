@@ -94,6 +94,8 @@
 
 	    <table name="TIMEPLAN">
 	        <field name="TIME" fieldType="DATE" isKey="true"/>
+	        <field name="D" fieldType="DOUBLE" />
+	        <field name="I" fieldType="INTEGER" />
 	        <field name="REMARK" fieldType="varchar" />
 	    </table>    
 

@@ -24,9 +24,15 @@
 package org.dbforms.taglib;
 
 import org.apache.cactus.JspTestCase;
-import org.apache.cactus.WebResponse;
+import com.meterware.httpunit.WebResponse;
 
+import javax.servlet.jsp.tagext.BodyTag;
 
+import java.util.Locale;
+
+import org.dbforms.config.DbFormsConfigRegistry;
+import org.dbforms.servlets.ConfigServlet;
+import org.dbforms.util.MessageResources;
 
 /**
  * Tests of the <code>DbLabelTag</code> class.
@@ -34,54 +40,76 @@ import org.apache.cactus.WebResponse;
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
  *
  */
-public class TestDbLabelTag extends JspTestCase
-{
-    private DbLabelTag tag;
+public class TestDbLabelTag extends JspTestCase {
+   private DbLabelTag doubleTag;
+   private DbLabelTag timeTag;
+   private DbFormTag form;
 
+   /**
+    * In addition to creating the tag instance and adding the pageContext to
+    * it, this method creates a BodyContent object and passes it to the tag.
+    */
+   public void setUp() throws Exception {
+      DbFormsConfigRegistry.instance().register(null);
+      config.setInitParameter("dbformsConfig", "/WEB-INF/dbforms-config.xml");
+      config.setInitParameter("log4j.configuration", "/WEB-INF/log4j.properties");
+      ConfigServlet configServlet = new ConfigServlet();
+      configServlet.init(config);
 
-    /**
-     * In addition to creating the tag instance and adding the pageContext to
-     * it, this method creates a BodyContent object and passes it to the tag.
-     */
-    public void setUp()
-    {
-        this.tag = new DbLabelTag();
-        this.tag.setPageContext(this.pageContext);
+      form = new DbFormTag();
+      form.setPageContext(this.pageContext);
+      form.setTableName("TIMEPLAN");
+      form.setMaxRows("*");
 
-        //create the BodyContent object and call the setter on the tag instance
-        //this.tagContent = this.pageContext.pushBody();
-        //this.tag.setBodyContent(this.tagContent);
-    }
+      doubleTag = new DbLabelTag();
+      doubleTag.setPageContext(this.pageContext);
+      doubleTag.setParent(form);
+      doubleTag.setFieldName("D");
 
+      timeTag = new DbLabelTag();
+      timeTag.setPageContext(this.pageContext);
+      timeTag.setParent(form);
+      timeTag.setFieldName("TIME");
 
-    //-------------------------------------------------------------------------
+   }
 
-    /**
-     * Sets the replacement target and replacement String on the tag, then calls
-     * doAfterBody(). Most of the assertion work is done in endReplacement().
-     */
-    public void testReplacement() throws Exception
-    {
-        //set the target and the String to replace it with
-        //this.tag.setFieldName("EMAIL_ID");
-        assertTrue("This will always be true!", true);
-    }
+   //-------------------------------------------------------------------------
 
+   public void testOutputDE() throws Exception {
+      MessageResources.setLocale(request, Locale.GERMAN);
+      form.doStartTag();
+      int result = doubleTag.doEndTag();
+      assertEquals(BodyTag.EVAL_PAGE, result);
+      result = timeTag.doEndTag();
+      assertEquals(BodyTag.EVAL_PAGE, result);
+      form.doEndTag();
 
-    /**
-     * Verifies that the target String has indeed been replaced in the tag's
-     * body.
-     */
-    public void endReplacement(WebResponse theResponse)
-    {
-        assertTrue("This is always true!", true);
+   }
 
-        /*   assertTrue("Response should have contained the ["
-               + "replacement is now replacement] string",
-               content.indexOf("replacement is now replacement") > -1);
-           assertTrue("Response should have contained the ["
-               + "replacement_replacement] string",
-               content.indexOf("replacement") > -1);
-               */
-    }
+   public void endOutputDE(WebResponse theResponse) throws Exception {
+      String s = theResponse.getText();
+      boolean res = s.indexOf("2,3") > -1;
+      assertTrue(res);
+      res = s.indexOf("01.01.1900") > -1;
+      assertTrue(res);
+   }
+
+   public void testOutputEN() throws Exception {
+      MessageResources.setLocale(request, Locale.ENGLISH);
+      form.doStartTag();
+      int result = doubleTag.doEndTag();
+      assertEquals(BodyTag.EVAL_PAGE, result);
+      result = timeTag.doEndTag();
+      assertEquals(BodyTag.EVAL_PAGE, result);
+      form.doEndTag();
+
+   }
+
+   public void endOutputEN(WebResponse theResponse) throws Exception {
+      String s = theResponse.getText();
+      boolean res = s.indexOf("2.3") > -1;
+      assertTrue(res);
+      res = s.indexOf("Jan 1, 1900") > -1;
+      assertTrue(res);
+   }
 }

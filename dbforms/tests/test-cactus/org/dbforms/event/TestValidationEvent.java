@@ -114,7 +114,7 @@ public class TestValidationEvent extends JspTestCase
                  "0@root", 
                  (HttpServletRequest)this.pageContext.getRequest(), 
                  DbFormsConfigRegistry.instance().lookup());
-    evt.doValidation("test", this.pageContext.getServletContext(), (HttpServletRequest)this.pageContext.getRequest());                 
+    evt.doValidation("test", this.pageContext.getServletContext());                 
                   
   }
 
@@ -136,7 +136,7 @@ public class TestValidationEvent extends JspTestCase
                  DbFormsConfigRegistry.instance().lookup());
     try 
     {
-       evt.doValidation("test", this.pageContext.getServletContext(), (HttpServletRequest)this.pageContext.getRequest());
+       evt.doValidation("test", this.pageContext.getServletContext());
     }                           
        catch (MultipleValidationException mve)
        {

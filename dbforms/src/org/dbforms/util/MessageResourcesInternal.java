@@ -88,6 +88,7 @@ public class MessageResourcesInternal
 		return msgRes.getMessage(msg, loc, parms);
 	}
 	
+   
 	private static void init()
 	{
 	   if (msgRes == null)
