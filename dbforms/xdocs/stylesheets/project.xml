@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project name="DbForms site" href="http://jdbforms.sourceforge.net/">
+
+  <title>DbForms site</title>
+
+  <!-- 
+     -  If you want your project logo hyperlinked to the project home
+     -  page in the upper right corner of each generated page, set "href"
+     -   below to the URL of the image, and uncomment this element
+
+    <logo href="http://jakarta.apache.org/images/jakarta-logo.gif">
+      The Jakarta Project
+    </logo>
+  -->
+
+  <body>
+    <menu name="Project">
+      <item name="Overview"                href="/index.html"/>
+      <item name="Feature List"            href="/featurelist.html"/>
+      <item name="Summary Page at SF.net"  href="http://sourceforge.net/projects/jdbforms"/>
+      <item name="Related work"            href="/related.html"/>
+    </menu>
+
+    <menu name="Documentation">
+      <item name="User's guide"            href="/usersguide.html"/>
+      <item name="API docs"                href="/doc/api/index.html"/>
+      <item name="Tag Library"             href="/doc/taglib/DbFormsTags_Frame.html"/>
+      <item name="Devgui"                  href="/devgui.html"/>
+    </menu>
+
+    <menu name="Download">
+      <item name="Latest builds"           href="http://sourceforge.net/project/showfiles.php?group_id=17608"/>
+      <item name="Resources"               href="/depend/index.xml"/>
+      <item name="CVS"                     href="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/jdbforms/"/>
+      <item name="CVS info"                href="/workwithcvs.html"/>
+    </menu>
+
+    <menu name="Demo">
+      <item name="On line demos"           href="/demo.html"/>
+    </menu>
+
+  </body>
+</project>

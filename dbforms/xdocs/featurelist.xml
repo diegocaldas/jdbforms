@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <author email="fossato@pow2.com">Luca Fossato</author>
+    <title>DbForms features list</title>
+  </properties>
+
+<body>
+
+<section name="Features list">
+  <p>
+    <ul>
+      <li>Nested database forms (arbitrary deep nesting)</li>
+      <li>Custom tag library for many kinds of data input- and presentation-widgets</li>
+      <li>Custom tag library for many kinds of action-buttons (navigation, insert, delete, update, new, search, ...)</li>
+      <li>Built in sorting support</li>
+      <li>Built in searching support</li>
+      <li>Built in row filtering support</li>
+      <li>Built in Blob support</li>
+      <li>Built in "Diskblob" support (substitution of a databases' BLOB capability by storing files on the file system instead)</li>
+      <li>Automatic re-repopulating input fields</li>
+      <li>Automatic updating of multiple rows with only 1 submit</li>
+      <li>Styling tags</li>
+      <li>Multi + concurrent user support</li>
+      <li>Complete flexibility, as all DbForms-views are just usual JSP files. No preprocessing, no dubious code generation. Just keep on using your favorite HTML/JSP editing tools!</li>
+      <li>Security (support of role-based permission granting)</li>
+      <li>Scalability (support of database connection pools, no (known) bottlenecks in DbForms architecture, no constraints on database- or table-size)</li>
+      <li>Support for scripting independently from the custom tag library (through JSP TEIs)</li>
+      <li>API for programming
+        <ul>
+          <li>application hookups (database event listeners) to interoperate with virtual any other components (EJBs, Servlets, Struts applications, Legacy Systems, etc.)  available to the web-application</li>
+          <li>background database operations (transaction logs, etc)</li>
+          <li>individual serverside (input-)data validators</li>
+        </ul>
+      </li>
+      <li>Configuration completely XML based (+ tool for automatic generation of the XML configuration file)</li>
+      <li>SWING based user interface for more efficient RAD!</li>
+      <li>Pure Java, Open source</li>
+    </ul>
+  </p>
+</section>
+
+</body>
+</document>
