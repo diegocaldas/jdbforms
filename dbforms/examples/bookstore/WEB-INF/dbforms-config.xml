@@ -153,21 +153,6 @@
 	        </events>
 	    </query>    
 
-        <events>
-            <database-events>
-                <database-event id="insertClassic" type="insert" className="org.dbforms.event.classic.InsertEvent" /> 
-                <database-event id="updateClassic" type="update" className="org.dbforms.event.classic.UpdateEvent" />
-                <database-event id="deleteClassic" type="delete" className="org.dbforms.event.classic.DeleteEvent" />
-            </database-events>
-            <navigation-events>
-                <navigation-event id="navGotoClassic" type="navGoto"   className="org.dbforms.event.classic.GotoEvent" />
-                <navigation-event id="navPrevClassic" type="navPrev"   className="org.dbforms.event.classic.NavPrevEvent" />
-                <navigation-event id="navNextClassic" type="navNext"   className="org.dbforms.event.classic.NavNextEvent" />
-                <navigation-event id="navFirstClassic" type="navFirst" className="org.dbforms.event.classic.NavFirstEvent" />
-                <navigation-event id="navLastClassic" type="navLast"   className="org.dbforms.event.classic.NavLastEvent" />
-            </navigation-events>
-        </events>
-
 	    <table name="LIBRARY">
 	        <field name="LIBRARY_ID" fieldType="int" isKey="true" autoInc="true"/>
 	        <field name="COMPANYNAME" fieldType="varchar"  sortable="true"/>
@@ -182,6 +167,32 @@
 	        <field name="LIBRARY_ID" fieldType="int" isKey="true" />
 	        <field name="CUSTOMER_ID" fieldType="int" isKey="true" />
 	    </table>    
+	    
+	    <query 	name="BOOKCOUNT" 
+		    	from="AUTHOR, BOOK"
+		    	where="BOOK.AUTHOR_ID = AUTHOR.AUTHOR_ID" 
+			  	groupBy="NAME" 
+	    >
+	       <field name="NAME" fieldType="char" />
+    	   <field name="C" fieldType="integer" expression="count(ISBN)"/>
+		</query>
+	    
+
+	<!-- ========== event definition for classic data access =================================== -->
+        <events>
+            <database-events>
+                <database-event id="insertClassic" type="insert" className="org.dbforms.event.classic.InsertEvent" /> 
+                <database-event id="updateClassic" type="update" className="org.dbforms.event.classic.UpdateEvent" />
+                <database-event id="deleteClassic" type="delete" className="org.dbforms.event.classic.DeleteEvent" />
+            </database-events>
+            <navigation-events>
+                <navigation-event id="navGotoClassic" type="navGoto"   className="org.dbforms.event.classic.GotoEvent" />
+                <navigation-event id="navPrevClassic" type="navPrev"   className="org.dbforms.event.classic.NavPrevEvent" />
+                <navigation-event id="navNextClassic" type="navNext"   className="org.dbforms.event.classic.NavNextEvent" />
+                <navigation-event id="navFirstClassic" type="navFirst" className="org.dbforms.event.classic.NavFirstEvent" />
+                <navigation-event id="navLastClassic" type="navLast"   className="org.dbforms.event.classic.NavLastEvent" />
+            </navigation-events>
+        </events>
 
 
 	<!-- ========== Connection =================================== -->

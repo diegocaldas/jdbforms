@@ -129,6 +129,8 @@
 								<xs:attribute name="followAfterWhere" type="xs:string" use="optional"/>
 								<xs:attribute name="orderWithPos" type="xs:string" use="optional"/>
 								<xs:attribute name="distinct" type="xs:string" use="optional"/>
+								<xs:attribute name="groupBy" type="xs:string" use="optional"/>
+								<xs:attribute name="having" type="xs:string" use="optional"/>
 							</xs:extension>
 						</xs:complexContent>
 					</xs:complexType>

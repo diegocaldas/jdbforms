@@ -9923,5 +9923,24 @@
 </attribute>
 <example>either var or type and value must be setted!</example>
 </tag>
+			<tag>
+				<name>pieData</name>
+				<tagclass>org.dbforms.taglib.CewolfPieDataTag</tagclass>
+				<bodycontent>empty</bodycontent>
+				<attribute>
+					<name>categoryField</name>
+					<required>true</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+					</info>
+				</attribute>
+				<attribute>
+					<name>dataField</name>
+					<required>true</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+					</info>
+				</attribute>
+			</tag>
 </taglib>
 	
