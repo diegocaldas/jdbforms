@@ -62,9 +62,9 @@ public class Table {
 	private String name; // the name of the Table
 	private Hashtable fieldNameHash;
 	// structure for quick acessing of fields "by name"
-        private Vector foreignKeys;  
-        private Hashtable foreignKeyNameHash;  // access foreign key by name
-        
+	private Vector foreignKeys;
+	private Hashtable foreignKeyNameHash; // access foreign key by name
+
 	private Vector diskblobs;
 	// subset of "fields", containting those keys which represent DISKBLOBs (wondering about that term? -> see docu)
 
@@ -78,11 +78,13 @@ public class Table {
 	private GrantedPrivileges grantedPrivileges = null;
 	// access control list for this object (if null, then its open to all users for all operations). defined in dbforms-config.xml
 
-	private Vector interceptors;  // application hookups
-        
-        /** Holds value of property defaultVisibleFields. */
-        private String defaultVisibleFields;
-        
+	private Vector interceptors; // application hookups
+
+	protected DbFormsConfig config;
+
+	/** Holds value of property defaultVisibleFields. */
+	private String defaultVisibleFields;
+
 	public Table() {
 		fields = new Vector();
 		key = new Vector();
@@ -104,9 +106,7 @@ public class Table {
 	 * checks if there exists a granted-privileges object and if so it queries if access/operation is possible
 	 */
 	public boolean hasUserPrivileg(HttpServletRequest request, int privileg) {
-		return (grantedPrivileges == null)
-			? true
-			: grantedPrivileges.hasUserPrivileg(request, privileg);
+		return (grantedPrivileges == null) ? true : grantedPrivileges.hasUserPrivileg(request, privileg);
 	}
 
 	/**
@@ -153,7 +153,7 @@ public class Table {
 		}
 	}
 
-         /**
+	/**
 	 * adds a ForeignKey-Object to this table
 	 * and puts it into othere datastructure for further references
 	 * (this method gets called from DbFormsConfig)
@@ -163,11 +163,11 @@ public class Table {
             
                 // add to vector containing all foreign keys:
 		foreignKeys.addElement(fk);
-		
+
 		// for quicker lookup by name:
-		foreignKeyNameHash.put(fk.getName(),fk);		
+		foreignKeyNameHash.put(fk.getName(), fk);
 	}
-        
+
 	/**
 	 * returns the Field-Objet with specified id
 	 *
@@ -205,6 +205,24 @@ public class Table {
 	*/
 	public String getName() {
 		return name;
+	}
+
+	/**
+	 * set configuration for table
+	*/
+	public void setConfig(DbFormsConfig config) {
+		this.config = config;
+	}
+
+	/**
+	 * returns readOnly mode for table
+	 * needed in DbFormTag.
+	 * 
+	 * In case of table returns always false
+	 * Should be overloaded from e.g. view!
+	*/
+	public boolean isReadOnly() {
+		return false;
 	}
 
 	/**
@@ -250,21 +268,17 @@ public class Table {
 	 * this method generates a datastructure holding sorting information from "orderBy".clause in XML-config
 	 */
 	public void initDefaultOrder() {
-
 		if (orderBy == null) {
 			// if developer specified no orderBy in XML, then we set the KEYs as DEFAULT ORDER
 			initDefaultOrderFromKeys();
 			return;
 		}
-
 		// build the datastructure, containing Fields, and infos about sort
 		defaultOrder = this.createOrderFieldValues(orderBy, null, true);
-
 		// building a list of the fields contained in the defaultOrder structure
 		defaultOrderFields = new Vector();
 		for (int i = 0; i < defaultOrder.length; i++)
 			defaultOrderFields.addElement(defaultOrder[i].getField());
-
 		logCat.info("Table.initDefaultOrder done.");
 	}
 
@@ -274,17 +288,14 @@ public class Table {
 	* (check SQL spec + docu)
 	*/
 	public void initDefaultOrderFromKeys() {
-
-		defaultOrder = new FieldValue[key.size()];
+		defaultOrder = new FieldValue[getKey().size()];
 		defaultOrderFields = new Vector();
-
-		for (int i = 0; i < this.key.size(); i++) {
-			Field keyField = (Field) key.elementAt(i);
+		for (int i = 0; i < this.getKey().size(); i++) {
+			Field keyField = (Field) getKey().elementAt(i);
 			defaultOrder[i] = new FieldValue();
 			defaultOrder[i].setField(keyField);
 			defaultOrderFields.addElement(keyField);
 		}
-
 		logCat.info("Table.initDefaultOrderfromKey done.");
 	}
 
@@ -317,6 +328,190 @@ public class Table {
 		return defaultOrderFields;
 	}
 
+	public String getSelectStatement() {
+		StringBuffer queryBuf = new StringBuffer();
+		queryBuf.append("SELECT ");
+		queryBuf.append(getQuerySelect(fields));
+		queryBuf.append(" FROM ");
+		queryBuf.append(getQueryFrom());
+		logCat.info(queryBuf.toString());
+		return queryBuf.toString();
+	}
+
+	/**
+	 * generates part of a field list for a  SQL SELECT clause selecting the DISKBLOB
+	 * fields from a table
+	 * (used by DeleteEvent to maintain data consistence)
+	 */
+	public String getDisblobSelectStatement() {
+		StringBuffer buf = new StringBuffer();
+		buf.append("SELECT ");
+		int cnt = diskblobs.size();
+		for (int i = 0; i < cnt; i++) {
+			Field diskblobField = (Field) diskblobs.elementAt(i);
+			// get the name of the encoded key field
+			buf.append(diskblobField.getName());
+			if (i < cnt - 1)
+				buf.append(", ");
+		}
+		buf.append(" FROM ");
+		buf.append(getQueryFrom());
+		return buf.toString();
+	}
+
+	/**
+	 * returns SQL delete statement, used by deleteEvent
+	 */
+	public String getDeleteStatement() {
+		// now we start building the DELETE statement
+		StringBuffer queryBuf = new StringBuffer();
+		queryBuf.append("DELETE FROM ");
+		queryBuf.append(getQueryToChange());
+		queryBuf.append(" WHERE ");
+		queryBuf.append(getWhereClauseForPS());
+		logCat.info(queryBuf.toString());
+		return queryBuf.toString();
+	}
+
+	/**
+	 * returns SQL update statement, used by updateEvent
+	 */
+	public String getUpdateStatement(Hashtable fieldValues) {
+		StringBuffer queryBuf = new StringBuffer();
+		queryBuf.append("UPDATE ");
+		queryBuf.append(getQueryToChange());
+		queryBuf.append(" SET ");
+		// list the names of fields and the place holder for their new values
+		// important: these are the fields which are sent throug the current request;
+		// this list may be only a subset of the field list, it is not necessarily the complete field list of a table!
+		Vector fields = getFields();
+		Enumeration enum = fieldValues.keys();
+		boolean kommaNeeded = false;
+		while (enum.hasMoreElements()) {
+			Integer iiFieldId = (Integer) enum.nextElement();
+			String fieldName = ((Field) getFields().elementAt(iiFieldId.intValue())).getName();
+			if (kommaNeeded)
+				queryBuf.append(", ");
+			else
+				kommaNeeded = true;
+			queryBuf.append(fieldName);
+			queryBuf.append("= ?");
+		}
+		queryBuf.append(" WHERE ");
+		queryBuf.append(getWhereClauseForPS());
+		logCat.info(queryBuf.toString());
+		return queryBuf.toString();
+	}
+
+	/**
+	 * returns SQL insert statement, used by insertEvent
+	 */
+	public String getInsertStatement(Hashtable fieldValues) {
+		StringBuffer queryBuf = new StringBuffer();
+		queryBuf.append("INSERT INTO ");
+		queryBuf.append(getQueryToChange());
+		queryBuf.append(" (");
+		// list the names of fields we'll include into the insert operation
+		Vector fields = getFields();
+		Enumeration enum = fieldValues.keys();
+		while (enum.hasMoreElements()) {
+			Integer iiFieldId = (Integer) enum.nextElement();
+			String fieldName = ((Field) getFields().elementAt(iiFieldId.intValue())).getName();
+			queryBuf.append(fieldName);
+			if (enum.hasMoreElements())
+				queryBuf.append(",");
+		}
+		// list the place-holders for the fields to include
+		queryBuf.append(") VALUES (");
+		for (int i = 0; i < fieldValues.size(); i++) {
+			if (i != 0)
+				queryBuf.append(",");
+			queryBuf.append("?");
+		}
+		queryBuf.append(")");
+		logCat.info(queryBuf.toString());
+		return queryBuf.toString();
+	}
+
+	/**
+	 * returns the select part of a query
+	 */
+	protected String getQuerySelect(Vector fieldsToSelect) {
+		StringBuffer buf = new StringBuffer();
+		int fieldsToSelectSize = fieldsToSelect.size();
+		// #checkme: do i need this when using Hotspot ?
+		// we scroll through vector directly (no enumeration!) to maintain correct order of elements
+		for (int i = 0; i < fieldsToSelectSize; i++) {
+			Field f = (Field) fieldsToSelect.elementAt(i);
+			buf.append(f.getName());
+			buf.append(", ");
+		}
+		buf.deleteCharAt(buf.length() - 2);
+		return buf.toString();
+	}
+
+	/**
+	 * returns the from part of a query
+	 */
+	protected String getQueryFrom() {
+		return name;
+	}
+
+	/**
+	 * returns the from part of a insert/delete/update query
+	 */
+	protected String getQueryToChange() {
+		return getQueryFrom();
+	}
+
+	/**
+	 * returns the where part of a query
+	 */
+	protected String getQueryWhere(FieldValue[] fvEqual, FieldValue[] fvOrder, int compareMode) {
+		boolean firstTermExists = false;
+		StringBuffer buf = new StringBuffer();
+		if (fvEqual != null && fvEqual.length > 0) {
+			// check if the fieldvalues contain _search_ information
+			buf.append(" ( ");
+			if (fvEqual[0].getSearchMode() == DbBaseHandlerTag.SEARCHMODE_NONE) {
+				buf.append(FieldValue.getWhereClause(fvEqual));
+			} else {
+				buf.append(FieldValue.getWhereEqualsSearchClause(fvEqual));
+			}
+			buf.append(" ) ");
+			firstTermExists = true;
+		}
+		if (fvOrder != null && fvOrder.length > 0) {
+			if (compareMode != FieldValue.COMPARE_NONE) {
+				buf.append(firstTermExists ? " AND ( " : "");
+				buf.append(FieldValue.getWhereAfterClause(fvOrder, compareMode));
+				buf.append(firstTermExists ? " ) " : "");
+			}
+		}
+		return buf.toString();
+	}
+
+	/**
+	 * returns the part of the orderby-clause represented by this FieldValue object.
+	 * FieldName [DESC]
+	 * (ASC will be not printed because it is defined DEFAULT in SQL
+	 * if there are RDBMS which do not tolerate this please let me know; then i'll
+	 * change it)
+	 */
+	protected String getQueryOrderBy(FieldValue[] fvOrder) {
+		StringBuffer buf = new StringBuffer();
+		if (fvOrder != null) {
+			for (int i = 0; i < fvOrder.length; i++) {
+				buf.append(fvOrder[i].getField().getName());
+				if (fvOrder[i].getSortDirection() == FieldValue.ORDER_DESCENDING)
+					buf.append(" DESC");
+				if (i < fvOrder.length - 1)
+					buf.append(",");
+			}
+		}
+		return buf.toString();
+	}
+
 	/**
 	 *	Prepares the Querystring for the select statement
 	 *	if the statement is for a sub-form (=> doConstrainedSelect),
@@ -328,107 +523,50 @@ public class Table {
 	 *    @param compareMode - and / or
 	 *
 	 */
-	private String getSelectQuery(
+	protected String getSelectQuery(
 		Vector fieldsToSelect,
 		FieldValue[] fvEqual,
 		FieldValue[] fvOrder,
 		int compareMode) {
+
 		StringBuffer buf = new StringBuffer();
 		buf.append("SELECT ");
-
-		int fieldsToSelectSize = fieldsToSelect.size();
-		// #checkme: do i need this when using Hotspot ?
-
-		// we scroll through vector directly (no enumeration!) to maintain correct order of elements
-		for (int i = 0; i < fieldsToSelectSize; i++) {
-			Field f = (Field) fieldsToSelect.elementAt(i);
-			buf.append(f.getName());
-			if (i < fieldsToSelect.size() - 1)
-				buf.append(", ");
-		}
+		buf.append(getQuerySelect(fieldsToSelect));
 		buf.append(" FROM ");
-		buf.append(this.name);
-
-		boolean firstTermExists = false;
-
-		if (fvEqual != null && fvEqual.length > 0) {
-
+		buf.append(getQueryFrom());
+		String s;
+		s = getQueryWhere(fvEqual, fvOrder, compareMode);
+		if (s.length() > 0) {
 			buf.append(" WHERE ( ");
-
-			// check if the fieldvalues contain _search_ information
-			if (fvEqual[0].getSearchMode() == DbBaseHandlerTag.SEARCHMODE_NONE) {
-				buf.append(FieldValue.getWhereClause(fvEqual));
-			} else {
-				buf.append(FieldValue.getWhereEqualsSearchClause(fvEqual));
-			}
-
-			buf.append(" ) ");
-
-			firstTermExists = true;
+			buf.append(s);
+			buf.append(")");
 		}
-
-		if (fvOrder != null && fvOrder.length > 0) {
-
-			if (compareMode != FieldValue.COMPARE_NONE) {
-
-				buf.append(firstTermExists ? " AND ( " : " WHERE ( ");
-				buf.append(FieldValue.getWhereAfterClause(fvOrder, compareMode));
-				buf.append(" ) ");
-
-			}
-
+		s = getQueryOrderBy(fvOrder);
+		if (s.length() > 0) {
 			buf.append(" ORDER BY ");
-			for (int i = 0; i < fvOrder.length; i++) {
-				buf.append(fvOrder[i].getOrderClause());
-				if (i < fvOrder.length - 1)
-					buf.append(",");
-			}
+			buf.append(s);
 		}
-
 		logCat.info("doSelect:" + buf.toString());
 		return buf.toString();
 	}
-	
-	
+
 	/**
 	 *	Prepares the Querystring for the free form select statement
 	 *
 	 *	@param fieldsToSelect - vector of fields to be selected
 	 *  @param whereClause - free-form whereClause to be appended to query
 	 */
-	private String getFreeFormSelectQuery(
-		Vector fieldsToSelect,
-		String whereClause,
-		String tableList) 
-		{
-			
+	protected String getFreeFormSelectQuery(Vector fieldsToSelect, String whereClause, String tableList) {
 		StringBuffer buf = new StringBuffer();
 		buf.append("SELECT ");
-
-		int fieldsToSelectSize = fieldsToSelect.size();
-
-		// we scroll through vector directly (no enumeration!) to maintain correct order of elements
-		for (int i = 0; i < fieldsToSelectSize; i++) {
-			Field f = (Field) fieldsToSelect.elementAt(i);
-			buf.append(f.getName());
-			if (i < fieldsToSelect.size() - 1)
-				buf.append(", ");
-		}
+		buf.append(getQuerySelect(fieldsToSelect));
 		buf.append(" FROM ");
-		
-		if(tableList != null && tableList.trim().length() > 0)
-			buf.append(tableList);
-		else
-			buf.append(this.name);
-
+		buf.append(tableList);
 		buf.append(" ");
 		buf.append(whereClause);
-
 		logCat.info("doFreeFromSelect:" + buf.toString());
 		return buf.toString();
-	}	
-	
-	
+	}
 
 	/**
 	 *	Prepares SELECT-Statement
@@ -438,34 +576,10 @@ public class Table {
 	 *	!!@param fieldsToSelect - vector of fields to be selected
 	 *	1!@param childFieldValues - horziontal selection: filetering rows according to the value definitions in childFieldValues. If childFieldValues is null, no horizontal selection is made.
 	 *  @param connection - the active db connection to use
-	
-	public ResultSet getDoSelectResultSet(Vector fieldsToSelect, FieldValue[] fvEqual, FieldValue[] fvOrder, int compareMode, int maxRows, Connection con)
-	throws SQLException {
-	
-			PreparedStatement ps = con.prepareStatement(getSelectQuery(fieldsToSelect, fvEqual, fvOrder, compareMode));
-			ps.setMaxRows(maxRows); // important when quering huge tables
-	
-			int curCol = 1;
-			logCat.debug("###getDoSelectResultSet pos1");
-			if(fvEqual != null && fvEqual.length > 0) {
-						logCat.debug("###getDoSelectResultSet pos2");
-				curCol = FieldValue.populateWhereEqualsClause(fvEqual, ps, curCol);
-						logCat.debug("###getDoSelectResultSet pos3");
-			}
-			logCat.debug("###getDoSelectResultSet pos4");
-			if(compareMode!=FieldValue.COMPARE_NONE && fvOrder != null && fvOrder.length > 0) {
-						logCat.debug("###getDoSelectResultSet pos5");
-				FieldValue.populateWhereAfterClause(fvOrder, ps, curCol);
-						logCat.debug("###getDoSelectResultSet pos6");
-			}
-			logCat.debug("###getDoSelectResultSet pos7");
-			return ps.executeQuery();
-	}
-	
 	 */
 
 	// this version by Martin van Wijk
-	public ResultSet getDoSelectResultSet(
+	protected ResultSet getDoSelectResultSet(
 		Vector fieldsToSelect,
 		FieldValue[] fvEqual,
 		FieldValue[] fvOrder,
@@ -482,9 +596,7 @@ public class Table {
 			logCat.debug("###getDoSelectResultSet pos3");
 		}
 		logCat.debug("###getDoSelectResultSet pos4");
-		if (compareMode != FieldValue.COMPARE_NONE
-			&& fvOrder != null
-			&& fvOrder.length > 0) {
+		if (compareMode != FieldValue.COMPARE_NONE && fvOrder != null && fvOrder.length > 0) {
 			logCat.debug("###getDoSelectResultSet pos5");
 			FieldValue.populateWhereAfterClause(fvOrder, ps, curCol);
 			logCat.debug("###getDoSelectResultSet pos6");
@@ -502,15 +614,7 @@ public class Table {
 	*  @param maxRows - how many rows should be stored in the resultSet (zero means unlimited)
 	*  @param conditionAttribute - this attribute gets applied only if childFieldValues not null; "0" means normal (query rows with EQUAL fields), "1" means quering rows with EQUAL-OR-GREATER logic
 	*  @param connection - the active db connection to use
-	
-	public ResultSetVector doConstrainedSelect(Vector fieldsToSelect, FieldValue[] fvEqual, FieldValue[] vfOrder, int compareMode, int maxRows, Connection con)
-	throws SQLException {
-		ResultSetVector result = new ResultSetVector(fieldsToSelect, getDoSelectResultSet(fieldsToSelect, fvEqual, vfOrder, compareMode, maxRows, con) );
-		logCat.info("rsv size="+result.size());
-		return result;
-	}
 	*/
-
 	// this version by Martin van Wijk
 	public ResultSetVector doConstrainedSelect(
 		Vector fieldsToSelect,
@@ -520,20 +624,12 @@ public class Table {
 		int maxRows,
 		Connection con)
 		throws SQLException {
-		PreparedStatement ps =
-			con.prepareStatement(
-				getSelectQuery(fieldsToSelect, fvEqual, vfOrder, compareMode));
+		PreparedStatement ps = con.prepareStatement(getSelectQuery(fieldsToSelect, fvEqual, vfOrder, compareMode));
 		ps.setMaxRows(maxRows); // important when quering huge tables
 		ResultSetVector result =
 			new ResultSetVector(
 				fieldsToSelect,
-				getDoSelectResultSet(
-					fieldsToSelect,
-					fvEqual,
-					vfOrder,
-					compareMode,
-					maxRows,
-					ps));
+				getDoSelectResultSet(fieldsToSelect, fvEqual, vfOrder, compareMode, maxRows, ps));
 		ps.close();
 		logCat.info("rsv size=" + result.size());
 		return result;
@@ -547,7 +643,7 @@ public class Table {
 	*  @param maxRows - how many rows should be stored in the resultSet (zero means unlimited)
 	*  @param connection - the active db connection to use
 	*/
-	
+
 	public ResultSetVector doFreeFormSelect(
 		Vector fieldsToSelect,
 		String whereClause,
@@ -555,17 +651,17 @@ public class Table {
 		int maxRows,
 		Connection con)
 		throws SQLException {
-			
+
 		Statement stmt = con.createStatement();
 		ResultSet rs;
 		ResultSetVector result;
-		
+
 		String query = getFreeFormSelectQuery(fieldsToSelect, whereClause, tableList);
-				
+
 		stmt.setMaxRows(maxRows); // important when quering huge tables
 		rs = stmt.executeQuery(query);
 		result = new ResultSetVector(fieldsToSelect, rs);
-		
+
 		stmt.close();
 		logCat.info("rsv size=" + result.size());
 		return result;
@@ -600,18 +696,14 @@ public class Table {
 	 */
 	public String getPositionString(ResultSetVector rsv) {
 		StringBuffer buf = new StringBuffer();
-
 		if (ResultSetVector.isEmptyOrNull(rsv))
 			return null;
-
 		String[] currentRow = rsv.getCurrentRow();
 		if (currentRow == null)
 			return null;
-		;
-
 		int cnt = 0;
-		for (int i = 0; i < fields.size(); i++) {
-			Field f = (Field) fields.elementAt(i);
+		for (int i = 0; i < getFields().size(); i++) {
+			Field f = (Field) getFields().elementAt(i);
 
 			if (f.isKey() || f.isFieldSortable()) {
 
@@ -623,11 +715,8 @@ public class Table {
 					buf.append("-"); // control byte
 				buf.append(createToken(f, currentRow[f.getId()]));
 				cnt++;
-
 			}
-
 		}
-
 		return buf.toString();
 	}
 
@@ -638,47 +727,33 @@ public class Table {
 	 */
 	public String getKeyPositionString(ResultSetVector rsv) {
 		StringBuffer buf = new StringBuffer();
-
 		if (ResultSetVector.isEmptyOrNull(rsv))
 			return null;
-
 		String[] currentRow = rsv.getCurrentRow();
 		if (currentRow == null)
 			return null;
-		;
-
-		for (int i = 0; i < key.size(); i++) {
-			Field f = (Field) key.elementAt(i);
-			/*
-			int keyIndex = (f).getId();
-			buf.append(currentRow[keyIndex]);*/
-
+		for (int i = 0; i < getKey().size(); i++) {
+			Field f = (Field) getKey().elementAt(i);
 			if (i > 0)
 				buf.append("-"); // control byte
 			buf.append(createToken(f, currentRow[f.getId()]));
 
 		}
-
 		return buf.toString();
 	}
 
 	public String getKeyPositionString(Hashtable fvHT) {
-
 		StringBuffer buf = new StringBuffer();
-
-		for (int i = 0; i < key.size(); i++) {
-			Field f = (Field) key.elementAt(i);
+		for (int i = 0; i < getKey().size(); i++) {
+			Field f = (Field) getKey().elementAt(i);
 			String value = (String) fvHT.get(f);
-
 			if (value == null)
 				throw new IllegalArgumentException("wrong fields provided");
-
 			if (i > 0)
 				buf.append("-"); // control byte
 			buf.append(createToken(f, value));
 
 		}
-
 		return buf.toString();
 	}
 
@@ -720,7 +795,7 @@ public class Table {
 	public Hashtable getFieldValuesFromPositionAsHt(String position) {
 
 		// 20020705-HKK: Position maybe string with length = 0!!!!
-        if ((position == null) || (position.length() == 0))
+		if ((position == null) || (position.length() == 0))
 			return null;
 		// trailing blanks are significant for CHAR database fields
 		//	position = position.trim();
@@ -735,7 +810,7 @@ public class Table {
 
 			int firstColon = position.indexOf(':', startIndex);
 			int secondColon = position.indexOf(':', firstColon + 1);
-			
+
 			String fieldIdStr = position.substring(startIndex, firstColon);
 			int fieldId = Integer.parseInt(fieldIdStr);
 
@@ -744,16 +819,6 @@ public class Table {
 
 			int controlIndex = secondColon + 1 + valueLength;
 
-			//String valueStr = position.substring(secondColon+1, controlIndex);
-
-			/*
-					FieldValue fv = new FieldValue();
-					fv.setField( getField(fieldId) );
-					fv.setFieldValue(valueStr);
-			
-			resolving CVS conflict (joepeer, 27.9.2001)
-			
-			*/
 			// make already be trimmed ... avoid substring exception
 			String valueStr =
 				(controlIndex < position.length())
@@ -768,22 +833,21 @@ public class Table {
 
 			if (controlIndex == position.length()) {
 				endOfString = true;
-			} else
-				if (controlIndex > position.length()) {
-					logCat.warn("Controlbyte wrong but continuing execution");
-					endOfString = true;
-				} else {
-					char controlByte = position.charAt(controlIndex);
-					if (controlByte != '-') {
-						logCat.error("Controlbyte wrong, abandon execution");
-						throw new IllegalArgumentException();
-					}
-					startIndex = controlIndex + 1;
-
-					if (position.length() == startIndex)
-						endOfString = true;
-
+			} else if (controlIndex > position.length()) {
+				logCat.warn("Controlbyte wrong but continuing execution");
+				endOfString = true;
+			} else {
+				char controlByte = position.charAt(controlIndex);
+				if (controlByte != '-') {
+					logCat.error("Controlbyte wrong, abandon execution");
+					throw new IllegalArgumentException();
 				}
+				startIndex = controlIndex + 1;
+
+				if (position.length() == startIndex)
+					endOfString = true;
+
+			}
 
 		}
 
@@ -795,26 +859,24 @@ public class Table {
 	
 	 */
 	public void fillWithValues(FieldValue[] orderConstraint, String aPosition) {
-
 		Hashtable ht = getFieldValuesFromPositionAsHt(aPosition);
-
-		logCat.info("*** parsing through: " + aPosition);
-
-		// then we copy some of those values into the orderConstraint
-		for (int i = 0; i < orderConstraint.length; i++) {
-			logCat.info("***" + orderConstraint[i].getField().getId() + "***");
-			//orderConstraint[i].setFieldValue( values[orderConstraint[i].getField().getId()] );
-
-			Integer aFieldId = new Integer(orderConstraint[i].getField().getId());
-			FieldValue aFieldValue = (FieldValue) ht.get(aFieldId);
-			if (aFieldValue != null)
-				orderConstraint[i].setFieldValue(aFieldValue.getFieldValue());
-			else
-				logCat.warn(
-					"position entry has null value:" + orderConstraint[i].getField().getName());
-
+		// 20021104-HKK: Error handling if aPosition is not given!
+		if (ht != null) {
+			logCat.info("*** parsing through: " + aPosition);
+			// then we copy some of those values into the orderConstraint
+			for (int i = 0; i < orderConstraint.length; i++) {
+				Field f = orderConstraint[i].getField();
+				if (f != null) {
+					logCat.info("***" + f.getId() + "***");
+					Integer aFieldId = new Integer(f.getId());
+					FieldValue aFieldValue = (FieldValue) ht.get(aFieldId);
+					if (aFieldValue != null)
+						orderConstraint[i].setFieldValue(aFieldValue.getFieldValue());
+					else
+						logCat.warn("position entry has null value:" + f.getName());
+				}
+			}
 		}
-
 	}
 
 	// ----------------- some convenience methods ---------------------------------------------
@@ -844,10 +906,7 @@ public class Table {
 	 * using values endcoded in a string
 	 * #fixme: replace seperator-based tokenization by better algoithm!
 	*/
-	public void populateWhereClauseForPS(
-		String keyValuesStr,
-		PreparedStatement ps,
-		int startColumn)
+	public void populateWhereClauseForPS(String keyValuesStr, PreparedStatement ps, int startColumn)
 		throws SQLException {
 		int col = startColumn;
 		// then we list the values of the key-fields, so that the WHERE clause matches the right dataset
@@ -857,34 +916,12 @@ public class Table {
 		for (int i = 0; i < keyLength; i++) {
 			Field curField = (Field) this.getKey().elementAt(i);
 
-			FieldValue aFieldValue =
-				(FieldValue) keyValuesHt.get(new Integer(curField.getId()));
+			FieldValue aFieldValue = (FieldValue) keyValuesHt.get(new Integer(curField.getId()));
 			String valueStr = aFieldValue.getFieldValue();
 
 			SqlUtil.fillPreparedStatement(ps, col, valueStr, curField.getType());
 			col++;
 		}
-	}
-
-	/**
-	 * generates part of a field list for a  SQL SELECT clause selecting the DISKBLOB
-	 * fields from a table
-	 * (used by DeleteEvent to maintain data consistence)
-	 */
-	public String getDisblobSelectClause() {
-		StringBuffer buf = new StringBuffer();
-		int cnt = diskblobs.size();
-
-		for (int i = 0; i < cnt; i++) {
-			Field diskblobField = (Field) diskblobs.elementAt(i);
-			// get the name of the encoded key field
-			buf.append(diskblobField.getName());
-
-			if (i < cnt - 1)
-				buf.append(", ");
-		}
-
-		return buf.toString();
 	}
 
 	/**********************************************************
@@ -901,84 +938,67 @@ public class Table {
 	 * consideration the sequence of parameters: 1-Field 2-Command
 	 *
 	 ***********************************************************/
-
 	private Vector createOrderFVFromAttribute(String order) {
-
 		Vector result = new Vector();
-
-		StringTokenizer st = new StringTokenizer(order, ",");
-		while (st.hasMoreTokens()) {
-
-			//Remove leading and trailing white space characters.
-			String token = st.nextToken().trim();
-
-			logCat.info("token = " + token);
-
-			FieldValue fv = new FieldValue();
-			boolean sortDirection = Field.ORDER_ASCENDING; // we propose the default
-
-			//Separate field from command
-			int index = token.indexOf(" "); // Blank space used between field and command
-
-			if (index != -1) // Do we have a command, if not assume ASC order
-				{
-				String command = token.substring(index);
-				int pos = command.indexOf("ASC");
-				if (pos == -1) // ASC not found, try descending
+		if (order != null) {
+			StringTokenizer st = new StringTokenizer(order, ",");
+			while (st.hasMoreTokens()) {
+				//Remove leading and trailing white space characters.
+				String token = st.nextToken().trim();
+				logCat.info("token = " + token);
+				FieldValue fv = new FieldValue();
+				boolean sortDirection = FieldValue.ORDER_ASCENDING; // we propose the default
+				//Separate field from command
+				int index = token.indexOf(" "); // Blank space used between field and command
+				if (index != -1) // Do we have a command, if not assume ASC order
 					{
-					pos = command.indexOf("DESC");
-					if (index != -1)
-						sortDirection = Field.ORDER_DESCENDING; // ... we set DESC.
+					String command = token.substring(index);
+					int pos = command.indexOf("ASC");
+					if (pos == -1) // ASC not found, try descending
+						{
+						pos = command.indexOf("DESC");
+						if (index != -1)
+							sortDirection = FieldValue.ORDER_DESCENDING; // ... we set DESC.
+					}
+				}
+				String fieldName;
+				if (index == -1) {
+					fieldName = token.trim();
+				} else {
+					fieldName = token.substring(0, index).trim();
+				}
+				Field f = this.getFieldByName(fieldName);
+				if (f != null) {
+					fv.setField(f);
+					fv.setSortDirection(sortDirection);
+					logCat.info("Field '" + fieldName + "' is ordered in mode:" + sortDirection);
+					result.addElement(fv);
 				}
 			}
-
-			String fieldName;
-			if (index == -1) {
-				fieldName = token.trim();
-			} else {
-				fieldName = token.substring(0, index).trim();
-			}
-
-			fv.setField(this.getFieldByName(fieldName));
-			fv.setSortDirection(sortDirection);
-
-			logCat.info("Field '" + fieldName + "' is ordered in mode:" + sortDirection);
-			result.addElement(fv);
 		}
-
 		return result;
 	}
 
-	private Vector createOrderFVFromRequest(
-		HttpServletRequest request,
-		String paramStub,
-		Vector sortFields) {
+	private Vector createOrderFVFromRequest(HttpServletRequest request, String paramStub, Vector sortFields) {
 		Vector result = new Vector();
 		int fieldIndex = paramStub.length() + 1;
 		// "sort_1" -> fieldindex= 8 (length of paramStub "order_1" is 7)
-
 		for (int i = 0; i < sortFields.size(); i++) {
-
 			String dataParam = (String) sortFields.elementAt(i);
 			int fieldId = Integer.parseInt(dataParam.substring(fieldIndex));
 			String sortState = ParseUtil.getParameter(request, dataParam);
-
 			logCat.info("### dataparam=" + dataParam);
 			logCat.info("### fieldId=" + fieldId);
 			logCat.info("### sortState=" + sortState);
-
 			if (sortState.equalsIgnoreCase("asc") || sortState.equalsIgnoreCase("desc")) {
 				boolean sortDirection =
-					sortState.equalsIgnoreCase("asc")
-						? Field.ORDER_ASCENDING
-						: Field.ORDER_DESCENDING;
+					sortState.equalsIgnoreCase("asc") ? FieldValue.ORDER_ASCENDING : FieldValue.ORDER_DESCENDING;
 				FieldValue fv = new FieldValue();
 				fv.setField(this.getField(fieldId));
 				fv.setSortDirection(sortDirection);
 				result.addElement(fv);
 			}
 		}
-
 		return result;
 	}
 
@@ -998,28 +1018,20 @@ public class Table {
 	#fixme - determinate illegal input and throw IllegalArgumentException
 	*/
 
-	public FieldValue[] createOrderFieldValues(
-		String order,
-		HttpServletRequest request,
-		boolean includeKeys) {
+	public FieldValue[] createOrderFieldValues(String order, HttpServletRequest request, boolean includeKeys) {
 		Vector result = null;
-
 		if (request != null) {
 			String paramStub = "sort_" + this.getId();
 			Vector sortFields = ParseUtil.getParametersStartingWith(request, paramStub);
-
 			if (sortFields.size() > 0)
 				result = createOrderFVFromRequest(request, paramStub, sortFields);
-			//else
-			//  result = new Vector();
-
-			//logCat.info("result="+result.size());
-
 		}
-
-      	// 20020703-HKK: use the default order if result.size == 0, not only if result == null 
-        //               This happens if  all parameters with sort_  are set to none
-		if ( ((result == null) || (result.size() == 0) ) && (order != null)) {
+		// 20020703-HKK: use the default order if result.size == 0, not only if result == null 
+		//               This happens if  all parameters with sort_  are set to none
+		if (((result == null) || result.isEmpty())) {
+			// 20021104-HKK: use default order from table if form has no order!
+			if (order == null)
+				order = getOrderBy();
 			result = createOrderFVFromAttribute(order);
 
 			logCat.debug("@@@ 1");
@@ -1028,14 +1040,11 @@ public class Table {
 				logCat.debug("fieldValue " + fieldVal.toString());
 			}
 		}
-
 		if (result == null && !includeKeys)
 			return null; // then we've got definitely no over
-
 		// scroll through keys and append to order criteria, if not already included
-		for (int i = 0; i < this.key.size(); i++) {
-			Field keyField = (Field) key.elementAt(i);
-
+		for (int i = 0; i < this.getKey().size(); i++) {
+			Field keyField = (Field) getKey().elementAt(i);
 			boolean found = false;
 			int j = 0;
 			while (!found && j < result.size()) {
@@ -1044,19 +1053,15 @@ public class Table {
 					found = true;
 				j++;
 			}
-
 			if (!found)
 				addFieldValue(result, keyField);
 		}
-
 		FieldValue[] resultArray = new FieldValue[result.size()];
 		result.copyInto(resultArray);
-
 		logCat.debug("@@@ 2");
 		for (int i = 0; i < resultArray.length; i++) {
 			logCat.debug("fieldValue " + resultArray[i].toString());
 		}
-
 		return resultArray;
 	}
 
@@ -1071,8 +1076,8 @@ public class Table {
 		buf.append(name);
 		buf.append(" ");
 
-		for (int i = 0; i < fields.size(); i++) {
-			Field f = (Field) fields.elementAt(i);
+		for (int i = 0; i < getFields().size(); i++) {
+			Field f = (Field) getFields().elementAt(i);
 			buf.append("\nfield: ");
 			buf.append(f.toString());
 		}
@@ -1125,9 +1130,7 @@ public class Table {
 				if (newValue != null)
 					fv.put(ii, newValue);
 			}
-
 		}
-
 	}
 
 	public void processInterceptors(
@@ -1137,7 +1140,7 @@ public class Table {
 		DbFormsConfig config,
 		Connection con)
 		throws SQLException, MultipleValidationException {
-		
+
 		try {
 
 			int interceptorsCnt = interceptors.size();
@@ -1148,76 +1151,66 @@ public class Table {
 
 				if (action == DbEventInterceptor.PRE_INSERT) {
 
-					if (dbi.preInsert(request, associativeArray, config, con)
-						== DbEventInterceptor.DENY_OPERATION)
+					if (dbi.preInsert(request, associativeArray, config, con) == DbEventInterceptor.DENY_OPERATION)
 						throw new SQLException(
 							"Sorry, adding data to table "
 								+ this.getName()
 								+ " was not granted this time. Your request violated a condition.");
 
-				} else
-					if (action == DbEventInterceptor.POST_INSERT) {
+				} else if (action == DbEventInterceptor.POST_INSERT) {
 
-						dbi.postInsert(request, config, con);
+					dbi.postInsert(request, config, con);
 
-					} else
-						if (action == DbEventInterceptor.PRE_UPDATE) {
+				} else if (action == DbEventInterceptor.PRE_UPDATE) {
 
-							if (dbi.preUpdate(request, associativeArray, config, con)
-								== DbEventInterceptor.DENY_OPERATION)
-								throw new SQLException(
-									"Sorry, updating data in table "
-										+ this.getName()
-										+ " was not granted this time. Your request violated a condition.");
+					if (dbi.preUpdate(request, associativeArray, config, con) == DbEventInterceptor.DENY_OPERATION)
+						throw new SQLException(
+							"Sorry, updating data in table "
+								+ this.getName()
+								+ " was not granted this time. Your request violated a condition.");
 
-						} else
-							if (action == DbEventInterceptor.POST_UPDATE) {
+				} else if (action == DbEventInterceptor.POST_UPDATE) {
 
-								dbi.postUpdate(request, config, con);
+					dbi.postUpdate(request, config, con);
 
-							} else
-								if (action == DbEventInterceptor.PRE_DELETE) {
+				} else if (action == DbEventInterceptor.PRE_DELETE) {
 
-									if (dbi.preDelete(request, associativeArray, config, con)
-										== DbEventInterceptor.DENY_OPERATION)
-										throw new SQLException(
-											"Sorry, deleting data from table "
-												+ this.getName()
-												+ " was not granted this time. Your request violated a condition.");
+					if (dbi.preDelete(request, associativeArray, config, con) == DbEventInterceptor.DENY_OPERATION)
+						throw new SQLException(
+							"Sorry, deleting data from table "
+								+ this.getName()
+								+ " was not granted this time. Your request violated a condition.");
 
-								} else
-									if (action == DbEventInterceptor.POST_DELETE) {
+				} else if (action == DbEventInterceptor.POST_DELETE) {
 
-										dbi.postDelete(request, config, con);
+					dbi.postDelete(request, config, con);
 
-									} else
-										if (action == DbEventInterceptor.PRE_SELECT) {
+				} else if (action == DbEventInterceptor.PRE_SELECT) {
 
-											if (dbi.preSelect(request, config, con) == DbEventInterceptor.DENY_OPERATION)
-												throw new SQLException(
-													"Sorry, selecting data from table "
-														+ this.getName()
-														+ " was not granted this time. Your request violated a condition.");
+					if (dbi.preSelect(request, config, con) == DbEventInterceptor.DENY_OPERATION)
+						throw new SQLException(
+							"Sorry, selecting data from table "
+								+ this.getName()
+								+ " was not granted this time. Your request violated a condition.");
 
-										} else
-											if (action == DbEventInterceptor.POST_SELECT) {
+				} else if (action == DbEventInterceptor.POST_SELECT) {
 
-												dbi.postSelect(request, config, con);
+					dbi.postSelect(request, config, con);
 
-											}
+				}
 			}
-			
-		// PG = 2001-12-04
-		// No need to add extra comments, just re-throw exceptions as SqlExceptions
-			
+
+			// PG = 2001-12-04
+			// No need to add extra comments, just re-throw exceptions as SqlExceptions
+
 		} catch (ClassNotFoundException cnfe) {
-			logCat.warn(" ClassNotFoundException : "+cnfe.getMessage());
+			logCat.warn(" ClassNotFoundException : " + cnfe.getMessage());
 			throw new SQLException(cnfe.getMessage());
 		} catch (InstantiationException ie) {
-			logCat.warn(" InstantiationException : "+ie.getMessage());
+			logCat.warn(" InstantiationException : " + ie.getMessage());
 			throw new SQLException(ie.getMessage());
 		} catch (IllegalAccessException iae) {
-			logCat.warn(" IllegalAccessException : "+iae.getMessage());
+			logCat.warn(" IllegalAccessException : " + iae.getMessage());
 			throw new SQLException(iae.getMessage());
 		} catch (SQLException sqle) {
 			throw new SQLException(sqle.getMessage());
@@ -1229,28 +1222,49 @@ public class Table {
 
 	}
 
-	
-	// We have the field ID - we need the field name  
-  	public String getFieldName(int fieldID) 
-  	{
-  		Field f = (Field) fields.elementAt(fieldID);
-		return(f.getName());
-	} 
-        
-        /** Getter for property defaultVisibleFields.
-         * @return Value of property defaultVisibleFields.
-         *
-         */
-        public String getDefaultVisibleFields() {
-            return this.defaultVisibleFields;
-        }
-        
-        /** Setter for property defaultVisibleFields.
-         * @param defaultVisibleFields New value of property defaultVisibleFields.
-         *
-         */
-        public void setDefaultVisibleFields(String defaultVisibleFields) {
-            this.defaultVisibleFields = defaultVisibleFields;
-        }
-        
+	/**
+	* We have the field ID - we need the field name  
+	*/
+	public String getFieldName(int fieldID) {
+		Field f = (Field) getFields().elementAt(fieldID);
+		return (f.getName());
+	}
+
+	/**
+	 * returns the hash table. Moved from dbFormTag to table, so that you can overload it!
+	 */
+	public Hashtable getNamesHashtable(String core) {
+		Hashtable result = new Hashtable();
+		Enumeration enum = getFields().elements();
+		while (enum.hasMoreElements()) {
+			Field f = (Field) enum.nextElement();
+			String fieldName = f.getName();
+			int fieldId = f.getId();
+			StringBuffer sb = new StringBuffer(core);
+			sb.append("_");
+			sb.append(getId());
+			sb.append("_");
+			sb.append(fieldId);
+			result.put(fieldName, sb.toString());
+			// in PHP slang we would call that an "associative array" :=)
+		}
+		return result;
+	}
+
+	/** Getter for property defaultVisibleFields.
+	 * @return Value of property defaultVisibleFields.
+	 *
+	 */
+	public String getDefaultVisibleFields() {
+		return this.defaultVisibleFields;
+	}
+
+	/** Setter for property defaultVisibleFields.
+	 * @param defaultVisibleFields New value of property defaultVisibleFields.
+	 *
+	 */
+	public void setDefaultVisibleFields(String defaultVisibleFields) {
+		this.defaultVisibleFields = defaultVisibleFields;
+	}
+
 }

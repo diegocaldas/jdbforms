@@ -113,21 +113,9 @@ public class DeleteEvent extends DatabaseEvent {
 				// part 2a: we need eventually information about the data to be deleted
 				//#checkme: this means performance overhead!
 				//can we go without this luxury? (=> USE CASES! where do we need info about data to delete?)
-				StringBuffer queryBuf = new StringBuffer("SELECT ");
-
-				int cnt = table.getFields().size();
-				for (int i = 0; i < cnt; i++) {
-					Field f = (Field) table.getFields().elementAt(i);
-					// get the name of the encoded key field
-					queryBuf.append(f.getName());
-
-					if (i < cnt - 1)
-						queryBuf.append(", ");
-				}
-
-				queryBuf.append(" FROM ");
-				queryBuf.append(table.getName());
-				queryBuf.append(" WHERE ");
+				StringBuffer queryBuf = new StringBuffer();
+            queryBuf.append(table.getSelectStatement());
+            queryBuf.append(" WHERE ");
 				queryBuf.append(table.getWhereClauseForPS());
 
 				logCat.info("doing interceptor before delete:" + queryBuf.toString());
@@ -140,13 +128,11 @@ public class DeleteEvent extends DatabaseEvent {
 					// yea, this code really sucks...
 					// but i do not want the jdbc driver to fetch the row name (-> what do we if a
 					// driver does not support column names...??-> this is the reason i do not to rely on this!)
-					for (int i = 0; i < cnt; i++) {
+					for (int i = 0; i < table.getFields().size(); i++) {
 						Field f = (Field) table.getFields().elementAt(i);
 						// get the name of the encoded key field
-
 						String key = f.getName();
 						String value = rowToDelete.getString(i + 1);
-
 						if (value != null)
 							associativeArray.put(key, value);
 					}
@@ -185,11 +171,8 @@ public class DeleteEvent extends DatabaseEvent {
 		// if so, we have to select the filename+dirs from the db before we can delete
 		ResultSet diskblobs = null;
 		if (table.containsDiskblob()) {
-
-			StringBuffer queryBuf = new StringBuffer("SELECT ");
-			queryBuf.append(table.getDisblobSelectClause());
-			queryBuf.append(" FROM ");
-			queryBuf.append(table.getName());
+         StringBuffer queryBuf = new StringBuffer();
+         queryBuf.append(table.getDisblobSelectStatement());
 			queryBuf.append(" WHERE ");
 			queryBuf.append(table.getWhereClauseForPS());
 
@@ -197,25 +180,16 @@ public class DeleteEvent extends DatabaseEvent {
 			table.populateWhereClauseForPS(keyValuesStr, diskblobsPs, 1);
 			diskblobs = diskblobsPs.executeQuery();
 		}
+      
+      // 20021031-HKK: Build in table!!
+      PreparedStatement ps = con.prepareStatement(table.getDeleteStatement());
 
-		// now we start building the DELETE statement
-		StringBuffer queryBuf = new StringBuffer();
-		queryBuf.append("DELETE FROM ");
-		queryBuf.append(table.getName());
-		queryBuf.append(" WHERE ");
-		queryBuf.append(table.getWhereClauseForPS());
-
-		logCat.info(queryBuf.toString());
-		PreparedStatement ps = con.prepareStatement(queryBuf.toString());
-
-		// now we provide the values
-		// of the key-fields, so that the WHERE clause matches the right dataset!
-
-		table.populateWhereClauseForPS(keyValuesStr, ps, 1);
-
-		// finally execute the query
-		ps.executeUpdate();
-
+      // now we provide the values
+      // of the key-fields, so that the WHERE clause matches the right dataset!
+      table.populateWhereClauseForPS(keyValuesStr, ps, 1);
+      // finally execute the query
+      ps.executeUpdate();
+      
 		// if we came here, we can delete the diskblob files (if any)
 		// #checkme: rollback if file problem (?? not sure!)
 

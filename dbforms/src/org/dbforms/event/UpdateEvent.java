@@ -138,84 +138,56 @@ public class UpdateEvent extends DatabaseEvent {
 		}
 
 		// now we start building the UPDATE statement
-		StringBuffer queryBuf = new StringBuffer();
-		queryBuf.append("UPDATE ");
-		queryBuf.append(table.getName());
-		queryBuf.append(" SET ");
-
-	// list the names of fields and the place holder for their new values
-	// important: these are the fields which are sent throug the current request;
-	// this list may be only a subset of the field list, it is not necessarily the complete field list of a table!
-		Vector fields = table.getFields();
-		Enumeration enum = fieldValues.keys();
-		boolean kommaNeeded = false;
-		while(enum.hasMoreElements()) {
-			Integer iiFieldId = (Integer) enum.nextElement();
-			String fieldName = ((Field) fields.elementAt(iiFieldId.intValue())).getName();
-
-			if(kommaNeeded) queryBuf.append(", "); else kommaNeeded=true;
-			queryBuf.append(fieldName);
-			queryBuf.append("= ?");
-
-		}
-		queryBuf.append(" WHERE ");
-		queryBuf.append(table.getWhereClauseForPS());
-
-
-		logCat.info(queryBuf.toString());
-		PreparedStatement ps = con.prepareStatement(queryBuf.toString());
+      // 20021031-HKK: Moved into table      
+		PreparedStatement ps = con.prepareStatement(table.getUpdateStatement(fieldValues));
 
 		// now we provide the values
 		// first, we provide the "new" values for fields
-		enum = fieldValues.keys();
+		Enumeration enum = fieldValues.keys();
 		int col=1;
 		while(enum.hasMoreElements()) {
 			Integer iiFieldId = (Integer) enum.nextElement();
-			Field curField = (Field) fields.elementAt(iiFieldId.intValue());
-
-			int fieldType = curField.getType();
-			Object value = null;
-
-			if(fieldType == FieldTypes.BLOB) {
-				// in case of a BLOB we supply the FileHolder object to SqlUtils for further operations
-				logCat.info("we are looking for fileholder with name: f_"+tableId+"_"+keyId+"_"+iiFieldId);
-				value = ParseUtil.getFileHolder(request, "f_"+tableId+"_"+keyId+"_"+iiFieldId);
-				logCat.info("and found a value="+value);
-
-
-			} else if(fieldType == FieldTypes.DISKBLOB) {
-
-				FileHolder fileHolder = ParseUtil.getFileHolder(request, "f_"+tableId+"_"+keyId+"_"+iiFieldId);
-				String fileName = fileHolder.getFileName();
-
-				// check if we need to store it encoded or not
-				if("yes".equals(curField.getEncoding())) {
-
-					// encode fileName
-
-					int dotIndex = fileName.lastIndexOf('.');
-					String suffix = (dotIndex != -1) ? fileName.substring(dotIndex) : "";
-					fileHolder.setFileName(UniqueIDGenerator.getUniqueID()+suffix);
-
-					// a diskblob gets stored to db as an ordinary string (it's only the reference!)
-					value = fileHolder.getFileName();
-
-				} else {
-
-					// a diskblob gets stored to db as an ordinary string	 (it's only the reference!)
-					value = fileName;
-				}
-
-			} else {
-
-				// in case of simple db types we just supply a string representing the value of the fields
-				value = (String) fieldValues.get(iiFieldId);
-			}
-
-			SqlUtil.fillPreparedStatement(ps, col, value, curField.getType());
-			col++;
+			Field curField = (Field) table.getFields().elementAt(iiFieldId.intValue());
+         if (curField != null) {
+   			int fieldType = curField.getType();
+   			Object value = null;
+   
+   			if(fieldType == FieldTypes.BLOB) {
+   				// in case of a BLOB we supply the FileHolder object to SqlUtils for further operations
+   				logCat.info("we are looking for fileholder with name: f_"+tableId+"_"+keyId+"_"+iiFieldId);
+   				value = ParseUtil.getFileHolder(request, "f_"+tableId+"_"+keyId+"_"+iiFieldId);
+   				logCat.info("and found a value="+value);
+   			} else if(fieldType == FieldTypes.DISKBLOB) {
+   
+   				FileHolder fileHolder = ParseUtil.getFileHolder(request, "f_"+tableId+"_"+keyId+"_"+iiFieldId);
+   				String fileName = fileHolder.getFileName();
+   
+   				// check if we need to store it encoded or not
+   				if("yes".equals(curField.getEncoding())) {
+   
+   					// encode fileName
+   
+   					int dotIndex = fileName.lastIndexOf('.');
+   					String suffix = (dotIndex != -1) ? fileName.substring(dotIndex) : "";
+   					fileHolder.setFileName(UniqueIDGenerator.getUniqueID()+suffix);
+   
+   					// a diskblob gets stored to db as an ordinary string (it's only the reference!)
+   					value = fileHolder.getFileName();
+   
+   				} else {
+   
+   					// a diskblob gets stored to db as an ordinary string	 (it's only the reference!)
+   					value = fileName;
+   				}
+   
+   			} else {
+   				// in case of simple db types we just supply a string representing the value of the fields
+   				value = (String) fieldValues.get(iiFieldId);
+   			}
+   			SqlUtil.fillPreparedStatement(ps, col, value, curField.getType());
+   			col++;
+         }
 		}
-
 		table.populateWhereClauseForPS(keyValuesStr, ps, col);
 
 		// we are now ready to execute the query
@@ -234,44 +206,39 @@ public class UpdateEvent extends DatabaseEvent {
 		while(enum.hasMoreElements()) {
 			Integer iiFieldId = (Integer) enum.nextElement();
 
-			Field curField = (Field) fields.elementAt(iiFieldId.intValue());
-			int fieldType = curField.getType();
-			String directory = curField.getDirectory();
-
-			if(fieldType == FieldTypes.DISKBLOB) {
-
-				// check if directory-attribute was provided
-				if(directory==null)
-					throw new IllegalArgumentException("directory-attribute needed for fields of type DISKBLOB");
-
-			    // instanciate file object for that dir
-			    File dir = new File(directory);
-
-			    // Check saveDirectory is truly a directory
-			    if (!dir.isDirectory())
-			      throw new IllegalArgumentException("Not a directory: " + directory);
-
-			    // Check saveDirectory is writable
-			    if (!dir.canWrite())
-			      throw new IllegalArgumentException("Not writable: " + directory);
-
-				// dir is ok so lets store the filepart
-				FileHolder fileHolder = ParseUtil.getFileHolder(request, "f_"+tableId+"_"+keyId+"_"+iiFieldId);
-				if(fileHolder!=null) {
-				  try {
-
-					fileHolder.writeBufferToFile(dir);
-
-
-					//filePart.getInputStream().close();
-					logCat.info("fin + closedy");
-				  } catch(IOException ioe) {
-					//#checkme: this would be a good place for rollback in database!!
-					throw new SQLException("could not store file '"+fileHolder.getFileName()+"' to dir '"+directory+"'");
-				  }
-
-				} else logCat.info("uh! empty fileHolder");
-			}
+			Field curField = (Field) table.getFields().elementAt(iiFieldId.intValue());
+         if (curField != null) {
+   			int fieldType = curField.getType();
+   			String directory = curField.getDirectory();
+   
+   			if(fieldType == FieldTypes.DISKBLOB) {
+   				// check if directory-attribute was provided
+   				if(directory==null)
+   					throw new IllegalArgumentException("directory-attribute needed for fields of type DISKBLOB");
+   			    // instanciate file object for that dir
+   			    File dir = new File(directory);
+   			    // Check saveDirectory is truly a directory
+   			    if (!dir.isDirectory())
+   			      throw new IllegalArgumentException("Not a directory: " + directory);
+   
+   			    // Check saveDirectory is writable
+   			    if (!dir.canWrite())
+   			      throw new IllegalArgumentException("Not writable: " + directory);
+   
+   				// dir is ok so lets store the filepart
+   				FileHolder fileHolder = ParseUtil.getFileHolder(request, "f_"+tableId+"_"+keyId+"_"+iiFieldId);
+   				if(fileHolder!=null) {
+   				  try {
+   					fileHolder.writeBufferToFile(dir);
+   					//filePart.getInputStream().close();
+   					logCat.info("fin + closedy");
+   				  } catch(IOException ioe) {
+   					//#checkme: this would be a good place for rollback in database!!
+   					throw new SQLException("could not store file '"+fileHolder.getFileName()+"' to dir '"+directory+"'");
+   				  }
+   				} else logCat.info("uh! empty fileHolder");
+   			}
+         }
 		}
 
 

@@ -54,8 +54,8 @@ public class DbFormsConfig {
 
 	private Vector tables;
 	private Hashtable tableNameHash; // for quicker lookup by name
-        
-        // Bradley's multiple connection support [fossato <fossato@pow2.com> 2002/11/04]
+
+	// Bradley's multiple connection support [fossato <fossato@pow2.com> 2002/11/04]
 	private DbConnection defaultDbConnection;
 	private ArrayList dbConnectionsList;
 	private Hashtable dbConnectionsHash;
@@ -66,8 +66,8 @@ public class DbFormsConfig {
 	public DbFormsConfig() {
 		tables = new Vector();
 		tableNameHash = new Hashtable();
-                
-                // Bradley's multiple connection support [fossato <fossato@pow2.com> 2002/11/04]
+
+		// Bradley's multiple connection support [fossato <fossato@pow2.com> 2002/11/04]
 		dbConnectionsHash = new Hashtable();
 		dbConnectionsList = new ArrayList();
 	}
@@ -75,6 +75,7 @@ public class DbFormsConfig {
 	public void addTable(Table table) {
 		logCat.info("add table called");
 		table.setId(tables.size());
+		table.setConfig(this);
 		table.initDefaultOrder();
 		tables.addElement(table);
 		tableNameHash.put(table.getName(), table);
@@ -88,71 +89,63 @@ public class DbFormsConfig {
 		return (Table) tableNameHash.get(name);
 	}
 
-        // Bradley's multiple connection support [fossato <fossato@pow2.com> 2002/11/04]
-        // comment setDbConnection;
-        
-//	public void setDbConnection(DbConnection dbConnection) {
-//		this.dbConnection = dbConnection;
-//		logCat.info("***** DBCONNECTION = " + dbConnection.toString() + "******");
-//	}
-        
+	// Bradley's multiple connection support [fossato <fossato@pow2.com> 2002/11/04]
+	// comment setDbConnection;
 
-        // Bradley's multiple connection support [fossato <fossato@pow2.com> 2002/11/04]
-        public void addDbConnection(DbConnection dbConnection) {
-	    dbConnectionsList.add(dbConnection);
+	//	public void setDbConnection(DbConnection dbConnection) {
+	//		this.dbConnection = dbConnection;
+	//		logCat.info("***** DBCONNECTION = " + dbConnection.toString() + "******");
+	//	}
 
-	    if (dbConnection.getId() != null
-		    && dbConnection.getId().trim().length() > 0) 
-            {
-		dbConnectionsHash.put(dbConnection.getId(), dbConnection);
-	    }
+	// Bradley's multiple connection support [fossato <fossato@pow2.com> 2002/11/04]
+	public void addDbConnection(DbConnection dbConnection) {
+		dbConnectionsList.add(dbConnection);
 
-                if ((dbConnection.isDefaultConnection()
-		    && ((defaultDbConnection == null)
-			|| !defaultDbConnection.isDefaultConnection()))
-		    || (defaultDbConnection == null)) {
-		defaultDbConnection = dbConnection;
-	    }
-            
-	    logCat.info("***** DbConnection Added *****");
-	    logCat.info(dbConnection.toString());
-	}
-
-        
-        // Bradley's multiple connection support [fossato <fossato@pow2.com> 2002/11/04]
-	public DbConnection getDbConnection(String dbConnectionName) {
-	    DbConnection connection = null;
-
-	    if (dbConnectionName == null 
-		    || dbConnectionName.trim().length() == 0) {
-		return defaultDbConnection;
-	    }
-
-	    try {
-		connection = (DbConnection) 
-				dbConnectionsList
-				    .get(Integer.parseInt(dbConnectionName));
-	    } catch (Exception ex) {
-	    } finally {
-		if (connection != null) {
-		    return connection;
+		if (dbConnection.getId() != null && dbConnection.getId().trim().length() > 0) {
+			dbConnectionsHash.put(dbConnection.getId(), dbConnection);
 		}
-	    }
 
-	    connection = (DbConnection) dbConnectionsHash.get(dbConnectionName);
+		if ((dbConnection.isDefaultConnection()
+			&& ((defaultDbConnection == null) || !defaultDbConnection.isDefaultConnection()))
+			|| (defaultDbConnection == null)) {
+			defaultDbConnection = dbConnection;
+		}
 
-	    if (connection == null) {
-		connection = defaultDbConnection;
-	    }
+		logCat.info("***** DbConnection Added *****");
+		logCat.info(dbConnection.toString());
+	}
 
-	    return connection;
+	// Bradley's multiple connection support [fossato <fossato@pow2.com> 2002/11/04]
+	public DbConnection getDbConnection(String dbConnectionName) {
+		DbConnection connection = null;
+
+		if (dbConnectionName == null || dbConnectionName.trim().length() == 0) {
+			return defaultDbConnection;
+		}
+
+		try {
+			connection = (DbConnection) dbConnectionsList.get(Integer.parseInt(dbConnectionName));
+		} catch (Exception ex) {
+		} finally {
+			if (connection != null) {
+				return connection;
+			}
+		}
+
+		connection = (DbConnection) dbConnectionsHash.get(dbConnectionName);
+
+		if (connection == null) {
+			connection = defaultDbConnection;
+		}
+
+		return connection;
 
 	}
-        
-        // Bradley's multiple connection support [fossato <fossato@pow2.com> 2002/11/04]
-//	public DbConnection getDbConnection() {
-//		return dbConnection;
-//	}
+
+	// Bradley's multiple connection support [fossato <fossato@pow2.com> 2002/11/04]
+	//	public DbConnection getDbConnection() {
+	//		return dbConnection;
+	//	}
 
 	public void setServletConfig(ServletConfig servletConfig) {
 		this.servletConfig = servletConfig;

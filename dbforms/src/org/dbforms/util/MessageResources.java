@@ -62,6 +62,17 @@ public class MessageResources {
 
 	/*********************************************************************************************
 	 *  Get the message from ResourceBundle.  If not present, return the defaultMsg at
+	 *  the place of a null.  
+	 * 
+	 ********************************************************************************************/	
+	public static String getMessage(	HttpServletRequest request,
+													String msg
+													) {
+		return getMessage(msg, getLocale(request), msg);
+	}														
+		
+	/*********************************************************************************************
+	 *  Get the message from ResourceBundle.  If not present, return the defaultMsg at
 	 *  the place of a null.  To avoid to doing this condition everywhere in the code ...
 	 * 
 	 * @param  <code>String</code> : Message key to lookup.

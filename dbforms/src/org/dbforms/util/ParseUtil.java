@@ -26,6 +26,7 @@ package org.dbforms.util;
 import java.io.*;
 import java.util.*;
 import java.sql.*;
+import javax.servlet.*;
 import javax.servlet.http.*;
 import org.apache.log4j.Category;
 
@@ -71,7 +72,7 @@ public class ParseUtil {
 	 * @param name the parameter name.
 	 * @return the parameter value.
 	 */
-	public static String getParameter(HttpServletRequest request, String name) {
+	public static String getParameter(ServletRequest request, String name) {
 		MultipartRequest multipartRequest =
 			(MultipartRequest) request.getAttribute("multipartRequest");
 		//patch by borghi
@@ -96,7 +97,7 @@ public class ParseUtil {
 	 * @return the parameter values.
 	 */
 	public static String[] getParameterValues(
-		HttpServletRequest request,
+		ServletRequest request,
 		String name) {
 		MultipartRequest multipartRequest =
 			(MultipartRequest) request.getAttribute("multipartRequest");
@@ -115,7 +116,7 @@ public class ParseUtil {
 	 *
 	 * @return the names of all the uploaded files as an Enumeration of Strings.
 	 */
-	public static Enumeration getFileNames(HttpServletRequest request) {
+	public static Enumeration getFileNames(ServletRequest request) {
 		MultipartRequest multipartRequest =
 			(MultipartRequest) request.getAttribute("multipartRequest");
 		return (multipartRequest == null) ? null : multipartRequest.getFileNames();
@@ -129,7 +130,7 @@ public class ParseUtil {
 	 * @return a Fileinputstream object for the named file.
 	 */
 	public static InputStream getFileInputStream(
-		HttpServletRequest request,
+		ServletRequest request,
 		String name) {
 		MultipartRequest multipartRequest =
 			(MultipartRequest) request.getAttribute("multipartRequest");
@@ -145,7 +146,7 @@ public class ParseUtil {
 	 * @return a FileHolder object for the named file.
 	 */
 	public static FileHolder getFileHolder(
-		HttpServletRequest request,
+		ServletRequest request,
 		String name) {
 		MultipartRequest multipartRequest =
 			(MultipartRequest) request.getAttribute("multipartRequest");
@@ -155,7 +156,7 @@ public class ParseUtil {
 	/**
 	*/
 	public static Vector getParametersStartingWith(
-		HttpServletRequest request,
+		ServletRequest request,
 		String str) {
 		MultipartRequest multipartRequest =
 			(MultipartRequest) request.getAttribute("multipartRequest");
@@ -178,7 +179,7 @@ public class ParseUtil {
 	/**
 	*/
 	public static String getFirstParameterStartingWith(
-		HttpServletRequest request,
+		ServletRequest request,
 		String str) {
 		MultipartRequest multipartRequest =
 			(MultipartRequest) request.getAttribute("multipartRequest");
@@ -283,5 +284,12 @@ public class ParseUtil {
 		char delim) {
 		return Integer.parseInt(getEmbeddedString(str, afterDelims, delim));
 	}
+
+	public static boolean hasSearchFields(ServletRequest request) {
+        Vector searchFieldNames =
+                getParametersStartingWith(request, "search_");
+        return ((searchFieldNames == null) || (searchFieldNames.size() == 0));
+	}
+
 
 }

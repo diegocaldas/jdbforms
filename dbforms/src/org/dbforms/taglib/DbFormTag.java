@@ -882,7 +882,7 @@ public class DbFormTag extends BodyTagSupport {
 			if (webEvent != null && webEvent instanceof NavigationEvent) {
 
 				NavigationEvent navEvent = (NavigationEvent) webEvent;
-				if (navEvent != null && navEvent.getTableId() == tableId) {
+				if ((navEvent != null) && (navEvent.getTableId() == tableId) ) {
 
 					logCat.info("§§§ NAV/I §§§");
 					logCat.info("about to process nav event:" + navEvent.getClass().getName());
@@ -1144,13 +1144,13 @@ public class DbFormTag extends BodyTagSupport {
 			// # jp 27-06-2001: replacing "." by "_", so that SCHEMATA can be used
 			pageContext.setAttribute(
 				"searchFieldNames_" + tableName.replace('.', '_'),
-				getNamesHashtable("search"));
+				table.getNamesHashtable("search"));
 			pageContext.setAttribute(
 				"searchFieldModeNames_" + tableName.replace('.', '_'),
-				getNamesHashtable("searchmode"));
+				table.getNamesHashtable("searchmode"));
 			pageContext.setAttribute(
 				"searchFieldAlgorithmNames_" + tableName.replace('.', '_'),
-				getNamesHashtable("searchalgo"));
+				table.getNamesHashtable("searchalgo"));
 			// #fixme:
 			// this is a weired crazy workaround [this code is also used in DbBodyTag!!]
 			// why?
@@ -1403,82 +1403,76 @@ public class DbFormTag extends BodyTagSupport {
 		
 	========================================================*/
 
+	// 20021104-HKK: Extended Filter with is Null, not is null
 	public void initFilterFieldValues() {
-		// 1 to n fields may be mapped
-		Vector keyValPairs = ParseUtil.splitString(filter, ",;");
-		// ~ no longer used as separator!
-		int len = keyValPairs.size();
-		filterFieldValues = new FieldValue[len];
-		for (int i = 0; i < len; i++) {
-			int operator = 0;
-			boolean isLogicalOR = false;
-			int jump = 1;
-			String aKeyValPair = (String) keyValPairs.elementAt(i);
-			// i.e "id=2"
-			logCat.debug("initFilterFieldValues: aKeyValPair = " + aKeyValPair);
-			// Following code could be optimized, however I did not want to make too many changes...
-			int n;
-			// Check for Not Equal
-			if ((n = aKeyValPair.indexOf("<>")) != -1) {
-				// Not Equal found! - Store the operation for use later on
-				operator = FieldValue.FILTER_NOT_EQUAL;
-				jump = 2;
-			} else { // Check for GreaterThanEqual
-				if ((n = aKeyValPair.indexOf(">=")) != -1) {
-					// GreaterThenEqual found! - Store the operation for use later on
-					operator = FieldValue.FILTER_GREATER_THEN_EQUAL;
-					jump = 2;
-				} else { // Check for GreaterThan
-					if ((n = aKeyValPair.indexOf('>')) != -1) {
-						// GreaterThen found! - Store the operation for use later on
-						operator = FieldValue.FILTER_GREATER_THEN;
-					} else { // Check for SmallerThenEqual
-						if ((n = aKeyValPair.indexOf("<=")) != -1) {
-							// SmallerThenEqual found! - Store the operation for use later on
-							operator = FieldValue.FILTER_SMALLER_THEN_EQUAL;
-							jump = 2;
-						} else { // Check for SmallerThen
-							if ((n = aKeyValPair.indexOf('<')) != -1) {
-								// SmallerThen found! - Store the operation for use later on
-								operator = FieldValue.FILTER_SMALLER_THEN;
-							} else { // Check for equal
-								if ((n = aKeyValPair.indexOf('=')) != -1) {
-									// Equal found! - Store the operator for use later on
-									operator = FieldValue.FILTER_EQUAL;
-								} else { // Check for LIKE
-									if ((n = aKeyValPair.indexOf('~')) != -1) {
-										// LIKE found! - Store the operator for use later on
-										operator = FieldValue.FILTER_LIKE;
-									}
-								}
-							}
-
-						}
-					}
-
-				}
-			} //  PG - At this point, I have set my operator and I should have a valid index.
-			//	Note that the original code did not handle the posibility of not finding an index
-			//	(value = -1)...
-			String fieldName = aKeyValPair.substring(0, n);
-			// i.e "id"
-			logCat.debug("Filter field=" + fieldName);
-			if (fieldName.charAt(0) == '|') {
-				// This filter must be associated to a logical OR, clean out the indicator...
-				fieldName = fieldName.substring(1);
-				isLogicalOR = true;
-			}
-
-			Field filterField = this.table.getFieldByName(fieldName);
-			// Increment by 1 or 2 depending on operator
-			String value = aKeyValPair.substring(n + jump);
-			// i.e. "2"
-			logCat.debug("Filter value=" + value);
-			// Create a new instance of FieldValue and set the operator variable
-			filterFieldValues[i] =
-				new FieldValue(filterField, value, false, operator, isLogicalOR);
-			logCat.debug("and fv is =" + filterFieldValues[i].toString());
-		}
+	      // 1 to n fields may be mapped
+	      Vector keyValPairs = ParseUtil.splitString(filter, ",;");
+	      // ~ no longer used as separator!
+	      int len = keyValPairs.size();
+	      filterFieldValues = new FieldValue[len];
+	      for (int i = 0; i < len; i++) {
+	         int operator = 0;
+	         boolean isLogicalOR = false;
+	         int jump = 1;
+	         String aKeyValPair = (String) keyValPairs.elementAt(i);
+	         // i.e "id=2"
+	         logCat.debug("initFilterFieldValues: aKeyValPair = " + aKeyValPair);
+	         // Following code could be optimized, however I did not want to make too many changes...
+	         int n;
+	         // Check for Not Equal
+	         if ((n = aKeyValPair.indexOf("<>")) != -1) {
+	            // Not Equal found! - Store the operation for use later on
+	            operator = FieldValue.FILTER_NOT_EQUAL;
+	            jump = 2;
+	         } else if ((n = aKeyValPair.indexOf(">=")) != -1) { // Check for GreaterThanEqual
+	            // GreaterThenEqual found! - Store the operation for use later on
+	            operator = FieldValue.FILTER_GREATER_THEN_EQUAL;
+	            jump = 2;
+	         } else if ((n = aKeyValPair.indexOf('>')) != -1) { // Check for GreaterThan
+	            // GreaterThen found! - Store the operation for use later on
+	            operator = FieldValue.FILTER_GREATER_THEN;
+	         } else if ((n = aKeyValPair.indexOf("<=")) != -1) { // Check for SmallerThenEqual
+	            // SmallerThenEqual found! - Store the operation for use later on
+	            operator = FieldValue.FILTER_SMALLER_THEN_EQUAL;
+	            jump = 2;
+	         } else if ((n = aKeyValPair.indexOf('<')) != -1) { // Check for SmallerThen
+	            // SmallerThen found! - Store the operation for use later on
+	            operator = FieldValue.FILTER_SMALLER_THEN;
+	         } else if ((n = aKeyValPair.indexOf('=')) != -1) { // Check for equal
+	            // Equal found! - Store the operator for use later on
+	            operator = FieldValue.FILTER_EQUAL;
+	         } else if ((n = aKeyValPair.indexOf('~')) != -1) { // Check for LIKE
+	            // LIKE found! - Store the operator for use later on
+	            operator = FieldValue.FILTER_LIKE;
+	         } else if ((n = aKeyValPair.toUpperCase().indexOf("NOTISNULL")) != -1) { // Check for not is null
+	            // LIKE found! - Store the operator for use later on
+	            jump = 9;
+	            operator = FieldValue.FILTER_NOT_NULL;
+	         } else if ((n = aKeyValPair.toUpperCase().indexOf("ISNULL")) != -1) { // Check for null
+	            // LIKE found! - Store the operator for use later on
+	            jump = 6;
+	            operator = FieldValue.FILTER_NULL;
+	         } //  PG - At this point, I have set my operator and I should have a valid index.
+	         //	Note that the original code did not handle the posibility of not finding an index
+	         //	(value = -1)...
+	         String fieldName = aKeyValPair.substring(0, n).trim();
+	         // i.e "id"
+	         logCat.debug("Filter field=" + fieldName);
+	         if (fieldName.charAt(0) == '|') {
+	            // This filter must be associated to a logical OR, clean out the indicator...
+	            fieldName = fieldName.substring(1);
+	            isLogicalOR = true;
+	         }
+	
+	         Field filterField = this.table.getFieldByName(fieldName);
+	         // Increment by 1 or 2 depending on operator
+	         String value = aKeyValPair.substring(n + jump);
+	         // i.e. "2"
+	         logCat.debug("Filter value=" + value);
+	         // Create a new instance of FieldValue and set the operator variable
+	         filterFieldValues[i] = new FieldValue(filterField, value, false, operator, isLogicalOR);
+	         logCat.debug("and fv is =" + filterFieldValues[i].toString());
+	      }
 	} /**
 	this methods reads search parameters (provided by search-tags, see docu, advance topics/search)
 	and build an array of FieldValues containing the search terms the user provided
@@ -1559,91 +1553,101 @@ public class DbFormTag extends BodyTagSupport {
 	                         mode_and.addElement(fv);
 	                 else
 	                         mode_or.addElement(fv);
-                 } else if (aSearchFieldValue.indexOf("-") != -1) {
-                   // delimiter found in SearchFieldValue, create something like
-                    StringTokenizer st = new StringTokenizer(" " + aSearchFieldValue + " ", "-");
-                    int tokenCounter = 0;
-                    while (st.hasMoreTokens()) {
-                        aSearchFieldValue = st.nextToken().trim();
-                        tokenCounter++;
-                        if (aSearchFieldValue.length() > 0) {
-                          switch (tokenCounter) {
-                              case 1:
-                                  operator = FieldValue.FILTER_GREATER_THEN_EQUAL;
-                                  break;
-                              case 2:
-                                  operator = FieldValue.FILTER_SMALLER_THEN_EQUAL;
-                                  break;   
-                              default:
-                                 operator = -1;
-                                 break;
-                          }
-                          if (operator != -1) {
-                             FieldValue fv = new FieldValue(f, aSearchFieldValue, true, operator);
-                             fv.setSearchMode(mode);
-                             fv.setSearchAlgorithm(algorithm);
-                             if (mode == DbBaseHandlerTag.SEARCHMODE_AND)
-                                     mode_and.addElement(fv);
-                             else
-                                     mode_or.addElement(fv);
-                         }	
-                        }	                 
-                    }
-                } else {
-                	// parse special chars in SearchFieldValue
-	                int jump = 0;
-	                // Check for Not Equal
-	                if (aSearchFieldValue.startsWith("<>")) {
-	                    operator = FieldValue.FILTER_NOT_EQUAL;
-	                    jump = 2;
-	                // Check for not equal
-	                } else if (aSearchFieldValue.startsWith("!=")) {
-	                    // GreaterThenEqual found! - Store the operation for use later on
-	                    operator = FieldValue.FILTER_NOT_EQUAL;
-	                    jump = 2;
-	                // Check for GreaterThanEqual
-	                } else if (aSearchFieldValue.startsWith(">=")) {
-	                    // GreaterThenEqual found! - Store the operation for use later on
-	                    operator = FieldValue.FILTER_GREATER_THEN_EQUAL;
-	                    jump = 2;
-	                // Check for GreaterThan
-	                } else if (aSearchFieldValue.startsWith(">")) {
-	                    // GreaterThen found! - Store the operation for use later on
-	                    operator = FieldValue.FILTER_GREATER_THEN;
-	                // Check for SmallerThenEqual
-	                } else if (aSearchFieldValue.startsWith("<=")) {
-	                    // SmallerThenEqual found! - Store the operation for use later on
-	                    operator = FieldValue.FILTER_SMALLER_THEN_EQUAL;
-	                    jump = 2;
-	                // Check for SmallerThen
-	                } else if (aSearchFieldValue.startsWith("<")) {
-	                    // SmallerThen found! - Store the operation for use later on
-	                    operator = FieldValue.FILTER_SMALLER_THEN;
-	                    jump = 1;
-	                // Check for equal
-	                } else if (aSearchFieldValue.startsWith("=")) {
-	                    // Equal found! - Store the operator for use later on
-	                    operator = FieldValue.FILTER_EQUAL;
-	                    jump = 1;
-	                } else if (aSearchFieldValue.startsWith("[NULL]")) {
-	                    operator = FieldValue.FILTER_NULL;
-	                    jump = 0;
-	                } else if (aSearchFieldValue.startsWith("[!NULL]")) {
-	                    operator = FieldValue.FILTER_NOT_NULL;
-	                    jump = 0;
-	                }
-                   if (jump > 0) 
-   	                aSearchFieldValue = aSearchFieldValue.substring(jump).trim();
-	                FieldValue fv = new FieldValue(f, aSearchFieldValue, true, operator);
-	                fv.setSearchMode(mode);
-	                fv.setSearchAlgorithm(algorithm);
-	                if (mode == DbBaseHandlerTag.SEARCHMODE_AND)
-	                    mode_and.addElement(fv);
-	                else
-	                    mode_or.addElement(fv);
-                }    
-            }  
-        }        
+            } else if (aSearchFieldValue.indexOf("-") != -1) {
+               // delimiter found in SearchFieldValue, create something like
+               algorithm = FieldValue.SEARCH_ALGO_EXTENDED;
+               StringTokenizer st = new StringTokenizer(" " + aSearchFieldValue + " ", "-");
+               int tokenCounter = 0;
+               while (st.hasMoreTokens()) {
+                  aSearchFieldValue = st.nextToken().trim();
+                  tokenCounter++;
+                  if (aSearchFieldValue.length() > 0) {
+                     switch (tokenCounter) {
+                        case 1 :
+                           operator = FieldValue.FILTER_GREATER_THEN_EQUAL;
+                           break;
+                        case 2 :
+                           operator = FieldValue.FILTER_SMALLER_THEN_EQUAL;
+                           break;
+                        default :
+                           operator = -1;
+                           break;
+                     }
+                     if (operator != -1) {
+                        FieldValue fv = new FieldValue(f, aSearchFieldValue, true, operator);
+                        fv.setSearchMode(mode);
+                        fv.setSearchAlgorithm(algorithm);
+                        if (mode == DbBaseHandlerTag.SEARCHMODE_AND)
+                           mode_and.addElement(fv);
+                        else
+                           mode_or.addElement(fv);
+                     }
+                  }
+               }
+            } else {
+               // parse special chars in SearchFieldValue
+               int jump = 0;
+               // Check for Not Equal
+               if (aSearchFieldValue.startsWith("<>")) {
+                  algorithm = FieldValue.SEARCH_ALGO_EXTENDED;
+                  operator = FieldValue.FILTER_NOT_EQUAL;
+                  jump = 2;
+                  // Check for not equal
+               } else if (aSearchFieldValue.startsWith("!=")) {
+                  // GreaterThenEqual found! - Store the operation for use later on
+                  algorithm = FieldValue.SEARCH_ALGO_EXTENDED;
+                  operator = FieldValue.FILTER_NOT_EQUAL;
+                  jump = 2;
+                  // Check for GreaterThanEqual
+               } else if (aSearchFieldValue.startsWith(">=")) {
+                  // GreaterThenEqual found! - Store the operation for use later on
+                  algorithm = FieldValue.SEARCH_ALGO_EXTENDED;
+                  operator = FieldValue.FILTER_GREATER_THEN_EQUAL;
+                  jump = 2;
+                  // Check for GreaterThan
+               } else if (aSearchFieldValue.startsWith(">")) {
+                  // GreaterThen found! - Store the operation for use later on
+                  algorithm = FieldValue.SEARCH_ALGO_EXTENDED;
+                  operator = FieldValue.FILTER_GREATER_THEN;
+                  // Check for SmallerThenEqual
+               } else if (aSearchFieldValue.startsWith("<=")) {
+                  // SmallerThenEqual found! - Store the operation for use later on
+                  algorithm = FieldValue.SEARCH_ALGO_EXTENDED;
+                  operator = FieldValue.FILTER_SMALLER_THEN_EQUAL;
+                  jump = 2;
+                  // Check for SmallerThen
+               } else if (aSearchFieldValue.startsWith("<")) {
+                  // SmallerThen found! - Store the operation for use later on
+                  algorithm = FieldValue.SEARCH_ALGO_EXTENDED;
+                  operator = FieldValue.FILTER_SMALLER_THEN;
+                  jump = 1;
+                  // Check for equal
+               } else if (aSearchFieldValue.startsWith("=")) {
+                  // Equal found! - Store the operator for use later on
+                  algorithm = FieldValue.SEARCH_ALGO_EXTENDED;
+                  operator = FieldValue.FILTER_EQUAL;
+                  jump = 1;
+               } else if (aSearchFieldValue.startsWith("[NULL]")) {
+                  algorithm = FieldValue.SEARCH_ALGO_EXTENDED;
+                  operator = FieldValue.FILTER_NULL;
+                  jump = 0;
+               } else if (aSearchFieldValue.startsWith("[!NULL]")) {
+                  algorithm = FieldValue.SEARCH_ALGO_EXTENDED;
+                  operator = FieldValue.FILTER_NOT_NULL;
+                  jump = 0;
+               }
+               if (jump > 0)
+                  aSearchFieldValue = aSearchFieldValue.substring(jump).trim();
+               FieldValue fv = new FieldValue(f, aSearchFieldValue, true, operator);
+               fv.setSearchMode(mode);
+               fv.setSearchAlgorithm(algorithm);
+               if (mode == DbBaseHandlerTag.SEARCHMODE_AND)
+                  mode_and.addElement(fv);
+               else
+                  mode_or.addElement(fv);
+            }
+         }
+      }
         int andBagSize = mode_and.size();
         int orBagSize = mode_or.size();
         int criteriaFieldCount = andBagSize + orBagSize;
@@ -1798,26 +1802,6 @@ public class DbFormTag extends BodyTagSupport {
 	} /**
 	
 	*/
-	private Hashtable getNamesHashtable(String core) {
-
-		Hashtable result = new Hashtable();
-		Enumeration enum = this.table.getFields().elements();
-		while (enum.hasMoreElements()) {
-			Field f = (Field) enum.nextElement();
-			String fieldName = f.getName();
-			int fieldId = f.getId();
-			StringBuffer sb = new StringBuffer(core);
-			sb.append("_");
-			sb.append(tableId);
-			sb.append("_");
-			sb.append(fieldId);
-			result.put(fieldName, sb.toString());
-			// in PHP slang we would call that an "associative array" :=)
-		}
-
-		return result;
-	}
-
 	private java.lang.String redisplayFieldsOnError = "false";
 	/**
 	 * grunikiewicz.philip@hydro.qc.ca

@@ -40,10 +40,6 @@ public class Field {
     static Category logCat = Category.getInstance(Field.class.getName());
     // logging category for this class
 
-    //------------------------ Constants ----------------------------------------------------------
-
-    public static boolean ORDER_ASCENDING = false;
-    public static boolean ORDER_DESCENDING = true;
 
     //------------------------ Properties ---------------------------------------------------------
 
@@ -66,6 +62,7 @@ public class Field {
     private String encoding;
     // used only for DISKBLOB: if "true" -> then files will be renamed to ensure that every file is unique and no file overwrites another. default is "false" (keep original names)
 
+	 private String expression;
 
     //------------------------ property access methods --------------------------------------------
 
@@ -173,13 +170,17 @@ public class Field {
         logCat.info("***sortable setter called***");
         this.isSortable = sortable.equalsIgnoreCase("true") || sortable.equalsIgnoreCase("yes");
     }
-    /*
-        public String getSortable() {
-            return sortable;
-        }*/
 
     public boolean isFieldSortable() {
         return isSortable;
+    }
+
+    public void setExpression(String expression) {
+        this.expression = expression;
+    }
+
+    public String getExpression() {
+        return expression;
     }
 
 
@@ -195,10 +196,12 @@ public class Field {
         buf.append(key);
         buf.append(" isAutoinc=");
         buf.append(isAutoInc);
-        buf.append(" ! issortable=");
+        buf.append(" issortable=");
         buf.append(isSortable);
         buf.append(" directory=");
         buf.append(directory);
+        buf.append(" expression=");
+        buf.append(expression);
         return buf.toString();
     }
 }
