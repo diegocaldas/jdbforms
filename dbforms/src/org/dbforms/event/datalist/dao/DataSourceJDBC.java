@@ -269,7 +269,10 @@ public class DataSourceJDBC extends DataSource
          if (rs.getMetaData().getColumnType(i + 1) == Types.CLOB)
          {
             Clob tmpObj = (Clob) rs.getObject(i + 1);
-            objectRow[i] = tmpObj.getSubString((long) 1, (int) tmpObj.length());
+            if (tmpObj != null)  
+            	objectRow[i] = tmpObj.getSubString((long) 1, (int) tmpObj.length());
+            else
+					objectRow[i] = null;
          }
          else
          {
