@@ -28,7 +28,7 @@ import org.apache.commons.logging.LogFactory;
 
 import org.dbforms.config.ResultSetVector;
 
-import org.dbforms.util.ParseUtil;
+import org.dbforms.util.StringUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -172,7 +172,7 @@ public class TableData extends EmbeddedData
     * @return DOCUMENT ME!
     */
    protected List fetchData(Connection con) throws SQLException {
-      Vector       vf = ParseUtil.splitString(visibleFields, ",;~");
+      Vector       vf = StringUtil.splitString(visibleFields, ",;~");
 
       StringBuffer queryBuf = new StringBuffer();
 

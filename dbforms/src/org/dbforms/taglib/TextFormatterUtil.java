@@ -34,7 +34,7 @@ import java.util.Locale;
  *
  * @author hkk
  */
-public class TextFormatter extends DbBaseInputTag {
+public class TextFormatterUtil extends DbBaseHandlerTag {
    private Locale locale;
    private Object obj;
 
@@ -46,7 +46,7 @@ public class TextFormatter extends DbBaseInputTag {
     * @param pattern DOCUMENT ME!
     * @param obj DOCUMENT ME!
     */
-   public TextFormatter(Field  field,
+   public TextFormatterUtil(Field  field,
                         Locale locale,
                         String pattern,
                         Object obj) {
@@ -65,7 +65,6 @@ public class TextFormatter extends DbBaseInputTag {
     */
    public String getFormFieldName(DbFormTag parentForm) {
       setParent(parentForm);
-
       return super.getFormFieldName();
    }
 

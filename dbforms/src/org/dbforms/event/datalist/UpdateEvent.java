@@ -38,6 +38,7 @@ import org.dbforms.event.datalist.dao.DataSourceList;
 
 import org.dbforms.util.MessageResourcesInternal;
 import org.dbforms.util.ParseUtil;
+import org.dbforms.util.StringUtil;
 import org.dbforms.util.Util;
 
 import java.sql.Connection;
@@ -83,8 +84,8 @@ public class UpdateEvent extends ValidationEvent {
    public UpdateEvent(String             action,
                       HttpServletRequest request,
                       DbFormsConfig      config) {
-      super(ParseUtil.getEmbeddedStringAsInteger(action, 2, '_'),
-            ParseUtil.getEmbeddedString(action, 3, '_'), request, config);
+      super(StringUtil.getEmbeddedStringAsInteger(action, 2, '_'),
+            StringUtil.getEmbeddedString(action, 3, '_'), request, config);
    }
 
    /**

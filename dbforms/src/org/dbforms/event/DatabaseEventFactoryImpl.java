@@ -34,6 +34,7 @@ import org.dbforms.config.TableEvents;
 import org.dbforms.event.eventtype.EventType;
 
 import org.dbforms.util.ParseUtil;
+import org.dbforms.util.StringUtil;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -220,8 +221,8 @@ public class DatabaseEventFactoryImpl extends DatabaseEventFactory {
       String keyString = ParseUtil.getParameter(request, associatedRadioName);
 
       if (keyString != null) {
-         int    tableId = ParseUtil.getEmbeddedStringAsInteger(keyString, 0, '_');
-         String keyId = ParseUtil.getEmbeddedString(keyString, 1, '_');
+         int    tableId = StringUtil.getEmbeddedStringAsInteger(keyString, 0, '_');
+         String keyId = StringUtil.getEmbeddedString(keyString, 1, '_');
          keyInfo = new KeyInfo();
          keyInfo.setTableId(tableId);
          keyInfo.setKeyId(keyId);

@@ -24,6 +24,7 @@
 package org.dbforms.event;
 
 import org.dbforms.util.ParseUtil;
+import org.dbforms.util.StringUtil;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -61,7 +62,7 @@ public class EventHelper {
       int res = -1;
 
       try {
-         res = ParseUtil.getEmbeddedStringAsInteger(action, 2, '_');
+         res = StringUtil.getEmbeddedStringAsInteger(action, 2, '_');
       } catch (Exception e) {
          res = -1;
       }

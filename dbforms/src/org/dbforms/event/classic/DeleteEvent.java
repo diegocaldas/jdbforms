@@ -79,8 +79,8 @@ public class DeleteEvent extends DatabaseEvent {
    public DeleteEvent(String             action,
                       HttpServletRequest request,
                       DbFormsConfig      config) {
-      super(ParseUtil.getEmbeddedStringAsInteger(action, 2, '_'),
-            ParseUtil.getEmbeddedString(action, 3, '_'), request, config);
+      super(StringUtil.getEmbeddedStringAsInteger(action, 2, '_'),
+            StringUtil.getEmbeddedString(action, 3, '_'), request, config);
    }
 
    /**

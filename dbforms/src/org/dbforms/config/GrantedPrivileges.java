@@ -26,7 +26,7 @@ package org.dbforms.config;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.dbforms.util.ParseUtil;
+import org.dbforms.util.StringUtil;
 
 import java.util.Vector;
 
@@ -74,7 +74,7 @@ public class GrantedPrivileges {
     */
    public void setDelete(String delete) {
       logCat.info("delete");
-      grantedRoles[PRIVILEG_DELETE] = ParseUtil.splitString(delete, ",;~");
+      grantedRoles[PRIVILEG_DELETE] = StringUtil.splitString(delete, ",;~");
    }
 
 
@@ -85,7 +85,7 @@ public class GrantedPrivileges {
     */
    public void setInsert(String insert) {
       logCat.info("insert");
-      grantedRoles[PRIVILEG_INSERT] = ParseUtil.splitString(insert, ",;~");
+      grantedRoles[PRIVILEG_INSERT] = StringUtil.splitString(insert, ",;~");
    }
 
 
@@ -96,7 +96,7 @@ public class GrantedPrivileges {
     */
    public void setSelect(String select) {
       logCat.info("select");
-      grantedRoles[PRIVILEG_SELECT] = ParseUtil.splitString(select, ",;~");
+      grantedRoles[PRIVILEG_SELECT] = StringUtil.splitString(select, ",;~");
    }
 
 
@@ -107,7 +107,7 @@ public class GrantedPrivileges {
     */
    public void setUpdate(String update) {
       logCat.info("update");
-      grantedRoles[PRIVILEG_UPDATE] = ParseUtil.splitString(update, ",;~");
+      grantedRoles[PRIVILEG_UPDATE] = StringUtil.splitString(update, ",;~");
    }
 
 

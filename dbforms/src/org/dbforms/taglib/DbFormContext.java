@@ -37,12 +37,12 @@ import java.util.Map;
  * @author Henner Kollmann
  */
 public class DbFormContext {
-   Map             currentRow;
-   Map             searchFieldAlgorithmNames;
-   Map             searchFieldModeNames;
-   Map             searchFieldNames;
-   ResultSetVector rsv;
-   String          position;
+   private Map             currentRow;
+   private Map             searchFieldAlgorithmNames;
+   private Map             searchFieldModeNames;
+   private Map             searchFieldNames;
+   private ResultSetVector rsv;
+   private String          position;
 
    /**
     * Creates a new DbFormContext object.

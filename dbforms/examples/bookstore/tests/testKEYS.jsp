@@ -1,4 +1,4 @@
-<%@ taglib uri="WEB-INF/dbforms.tld" prefix="db" %>
+<%@ taglib uri="/WEB-INF/dbforms.tld" prefix="db" %>
 <html>
    <head>
       <db:base/>

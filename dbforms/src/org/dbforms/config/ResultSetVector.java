@@ -136,15 +136,6 @@ public class ResultSetVector {
    }
 
 
-   /**
-    * DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    */
-   public boolean isCurrentPointerLegal() {
-      return ((pointer >= 0) && (pointer < size()));
-   }
-
 
    /**
     * DOCUMENT ME!

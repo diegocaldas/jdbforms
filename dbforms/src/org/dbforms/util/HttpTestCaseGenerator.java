@@ -132,7 +132,7 @@ public class HttpTestCaseGenerator extends AbstractCodeGenerator {
       super.loadScriptAdapter(script);
 
       String testName = parseTestName();
-      System.out.println("testNAme = " + testName);
+      System.out.println("testName = " + testName);
       setTestName(testName);
       setDefaultTestName(testName);
 

@@ -28,8 +28,8 @@ import org.apache.commons.logging.LogFactory;
 
 import org.dbforms.util.IEscaper;
 import org.dbforms.util.MessageResourcesInternal;
-import org.dbforms.util.ParseUtil;
 import org.dbforms.util.ReflectionUtil;
+import org.dbforms.util.StringUtil;
 import org.dbforms.util.Util;
 
 import java.text.DateFormat;
@@ -477,7 +477,7 @@ public class Field {
       }
 
       Class  clazz = obj.getClass();
-      Vector v = ParseUtil.splitString(clazz.getName().toLowerCase(), ".");
+      Vector v = StringUtil.splitString(clazz.getName().toLowerCase(), ".");
       fieldType = (String) v.lastElement();
 
       if (clazz.isAssignableFrom(java.lang.Integer.class)) {

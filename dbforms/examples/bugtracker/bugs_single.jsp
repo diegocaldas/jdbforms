@@ -105,8 +105,8 @@
     <tr class="<%=class2%>" >
         <td><db:message key="bugsForm.indate.displayname"/></td>
         <td><% java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd"); %> 
-		<db:dateField fieldName="indate" format="<%=sdf%>" size="12" />&nbsp;&nbsp;&nbsp;
-		<db:dateLabel fieldName="indate" format="<%=sdf%>"/>
+		<db:dateField fieldName="indate" formatter="<%=sdf%>" size="12" />&nbsp;&nbsp;&nbsp;
+		<db:dateLabel fieldName="indate" formatter="<%=sdf%>"/>
 		</td>
     </tr>
 

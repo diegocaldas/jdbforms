@@ -32,8 +32,8 @@ import org.dbforms.config.Field;
 import org.dbforms.config.FieldTypes;
 import org.dbforms.config.Table;
 
-import org.dbforms.util.ParseUtil;
 import org.dbforms.util.SqlUtil;
+import org.dbforms.util.StringUtil;
 import org.dbforms.util.Util;
 import org.dbforms.util.FileHolder; 
 
@@ -90,11 +90,11 @@ public class FileServlet extends HttpServlet {
    	try {
       	String tf           = request.getParameter("tf");
          String keyValuesStr = request.getParameter("keyval");
-         int    tableId      = Integer.parseInt(ParseUtil.getEmbeddedString(tf,
+         int    tableId      = Integer.parseInt(StringUtil.getEmbeddedString(tf,
                                                                             0,
                                                                             '_'));
          Table table   = config.getTable(tableId);
-         int   fieldId = Integer.parseInt(ParseUtil.getEmbeddedString(tf, 1, '_'));
+         int   fieldId = Integer.parseInt(StringUtil.getEmbeddedString(tf, 1, '_'));
          Field        field = table.getField(fieldId);
 
          StringBuffer queryBuf         = new StringBuffer();

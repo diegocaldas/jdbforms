@@ -196,13 +196,13 @@ public class DbSearchComboTag extends DbSearchTag implements DataContainer,
       if (embeddedData != null) { // no embedded data is nested in this tag
 
          if (!Util.isNull(customEntry)) {
-            String aKey = org.dbforms.util.ParseUtil
+            String aKey = org.dbforms.util.StringUtil
                           .getEmbeddedStringWithoutDots(customEntry, 0, ',');
-            String aValue = org.dbforms.util.ParseUtil
+            String aValue = org.dbforms.util.StringUtil
                             .getEmbeddedStringWithoutDots(customEntry, 1, ',');
 
             if (Util.isNull(selectedIndex)) {
-               isSelected = Util.getTrue(org.dbforms.util.ParseUtil.getEmbeddedStringWithoutDots(customEntry,
+               isSelected = Util.getTrue(org.dbforms.util.StringUtil.getEmbeddedStringWithoutDots(customEntry,
                                                                                                  2,
                                                                                                  ',').trim());
             }

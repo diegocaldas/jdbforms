@@ -36,6 +36,7 @@ import org.dbforms.config.Table;
 import org.dbforms.util.KeyValuePair;
 import org.dbforms.util.MessageResources;
 import org.dbforms.util.ParseUtil;
+import org.dbforms.util.StringUtil;
 import org.dbforms.util.Util;
 
 import java.text.SimpleDateFormat;
@@ -597,17 +598,17 @@ public class DbFilterValueTag extends DbBaseHandlerTag implements DataContainer,
       if ((state.customEntry != null)
                 && (state.customEntry.trim()
                                            .length() > 0)) {
-         String aKey = org.dbforms.util.ParseUtil.getEmbeddedStringWithoutDots(state.customEntry,
+         String aKey = org.dbforms.util.StringUtil.getEmbeddedStringWithoutDots(state.customEntry,
                                                                                0,
                                                                                ',');
-         String aValue = org.dbforms.util.ParseUtil
+         String aValue = org.dbforms.util.StringUtil
                          .getEmbeddedStringWithoutDots(state.customEntry, 1, ',');
          boolean isSelected = false;
 
          if ((state.selectedIndex == null)
                    || (state.selectedIndex.trim()
                                                 .length() == 0)) {
-            isSelected = "true".equals(ParseUtil.getEmbeddedStringWithoutDots(state.customEntry,
+            isSelected = "true".equals(StringUtil.getEmbeddedStringWithoutDots(state.customEntry,
                                                                               2,
                                                                               ','));
          }

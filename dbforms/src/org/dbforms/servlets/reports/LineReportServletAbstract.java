@@ -114,15 +114,15 @@ public abstract class LineReportServletAbstract extends ReportServletAbstract {
 		Object o = null;
 		search = search.replaceAll("__", ".");
 
-		if (search.startsWith("context.")) {
-			search = search.substring(search.indexOf("context."));
-			logCat.debug("Trying to find data for page context value: "
-					+ search);
-			o = getPageContextValue(request, search);
-		} else if (search.startsWith("internal.")) {
+		if (search.startsWith("internal.")) {
 			search = search.substring(search.indexOf("internal."));
 			logCat.debug("Trying to find data for internal value: " + search);
 			o = getInternalValue(search);
+		} else if (search.startsWith("request.")) {
+			search = search.substring(search.indexOf("request."));
+			logCat.debug("Trying to find data for page context value: "
+					+ search);
+			o = getRequestValue(request, search);
 		} else if (search.startsWith("session.")) {
 			search = search.substring(search.indexOf("session."));
 			logCat.debug("Trying to find data for session value: " + search);
@@ -149,7 +149,7 @@ public abstract class LineReportServletAbstract extends ReportServletAbstract {
 		return obj;
 	}
 
-	private Object getPageContextValue(HttpServletRequest request, String search) {
+	private Object getRequestValue(HttpServletRequest request, String search) {
 		Object obj = null;
 		int pos;
 		try {

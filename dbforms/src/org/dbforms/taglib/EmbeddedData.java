@@ -352,10 +352,8 @@ public abstract class EmbeddedData extends DbBaseHandlerTag
          try {
             for (int i = 0; i < rsv.size(); i++) {
                rsv.setPointer(i);
-
                String[] currentRow = rsv.getCurrentRow();
                String   htKey = currentRow[0];
-               rsv.setPointer(i);
 
                Object[] objs = rsv.getCurrentRowAsObjects();
 

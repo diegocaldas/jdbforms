@@ -28,8 +28,8 @@ import org.apache.commons.logging.LogFactory;
 
 import org.dbforms.config.Field;
 
-import org.dbforms.taglib.TextFormatter;
 
+import org.dbforms.taglib.TextFormatterUtil;
 import org.dbforms.util.MessageResources;
 import org.dbforms.util.ParseUtil;
 
@@ -149,9 +149,7 @@ public class ReportParameter {
       try {
          Field field = new Field();
          field.setTypeByObject(obj);
-
-         TextFormatter f = new TextFormatter(field, locale, pattern, obj);
-
+         TextFormatterUtil f = new TextFormatterUtil(field, locale, pattern, obj);
          return f.getFormattedFieldValue();
       } catch (Exception e) {
          logCat.error(e);

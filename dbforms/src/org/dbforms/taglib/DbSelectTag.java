@@ -230,9 +230,9 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer,
          if (((ce = this.getCustomEntry()) != null) && (ce.trim()
                                                                 .length() > 0)) {
             boolean isSelected = false;
-            String  aKey = org.dbforms.util.ParseUtil
+            String  aKey = org.dbforms.util.StringUtil
                            .getEmbeddedStringWithoutDots(ce, 0, ',');
-            String  aValue = org.dbforms.util.ParseUtil
+            String  aValue = org.dbforms.util.StringUtil
                              .getEmbeddedStringWithoutDots(ce, 1, ',');
 
             // Check if we are in redisplayFieldsOnError mode and errors have occured
@@ -244,7 +244,7 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer,
                       && (we.getType().equals(EventType.EVENT_NAVIGATION_RELOAD)))) {
                isSelected = (currentValue.equals(aKey));
             } else {
-               isSelected = "true".equals(org.dbforms.util.ParseUtil
+               isSelected = "true".equals(org.dbforms.util.StringUtil
                                           .getEmbeddedStringWithoutDots(ce, 2,
                                                                         ','));
             }
@@ -269,9 +269,9 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer,
             } else if ((me = getIfEmptyItem()) != null) {
                drawIt = false;
 
-               String aKey = org.dbforms.util.ParseUtil
+               String aKey = org.dbforms.util.StringUtil
                              .getEmbeddedStringWithoutDots(me, 0, ',');
-               String aValue = org.dbforms.util.ParseUtil
+               String aValue = org.dbforms.util.StringUtil
                                .getEmbeddedStringWithoutDots(me, 1, ',');
 
                // always selected, since no other items

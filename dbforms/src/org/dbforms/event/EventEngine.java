@@ -34,6 +34,7 @@ import org.dbforms.event.eventtype.EventType;
 import org.dbforms.event.eventtype.EventTypeUtil;
 
 import org.dbforms.util.ParseUtil;
+import org.dbforms.util.StringUtil;
 import org.dbforms.util.Util;
 
 import java.util.Enumeration;
@@ -136,7 +137,7 @@ public class EventEngine {
       //
       if (action.startsWith("re_")) {
          logCat.info("##### RELOAD  EVENT ######");
-         e = new PageReloadEvent(ParseUtil.getEmbeddedStringAsInteger(action,
+         e = new PageReloadEvent(StringUtil.getEmbeddedStringAsInteger(action,
                                                                       2, '_'),
                                  request, config);
          e.setType(EventType.EVENT_NAVIGATION_RELOAD);
@@ -250,7 +251,7 @@ public class EventEngine {
             if (v.size() > 0) {
                String aKeyParam = (String) v.firstElement();
                String keyId = aKeyParam.substring(paramStub.length());
-               keyId = ParseUtil.getEmbeddedString(keyId, 0, '_');
+               keyId = StringUtil.getEmbeddedString(keyId, 0, '_');
 
                DatabaseEvent e = dbEventFactory.createInsertEvent(actTable
                                                                   .getId(),

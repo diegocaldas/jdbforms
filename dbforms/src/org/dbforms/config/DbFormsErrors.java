@@ -26,7 +26,7 @@ package org.dbforms.config;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.dbforms.util.ParseUtil;
+import org.dbforms.util.StringUtil;
 
 import java.util.Hashtable;
 import java.util.Vector;
@@ -242,7 +242,7 @@ public class DbFormsErrors {
       }
 
       // Sort parameter list
-      Vector v     = ParseUtil.splitString(paramList, ",");
+      Vector v     = StringUtil.splitString(paramList, ",");
       int    count = 0;
 
       while (pos >= 0) {

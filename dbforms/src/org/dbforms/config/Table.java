@@ -31,6 +31,7 @@ import org.dbforms.util.MessageResourcesInternal;
 import org.dbforms.util.ParseUtil;
 import org.dbforms.util.ReflectionUtil;
 import org.dbforms.util.SqlUtil;
+import org.dbforms.util.StringUtil;
 import org.dbforms.util.Util;
 
 import java.sql.Connection;
@@ -595,7 +596,7 @@ public class Table {
    public FieldValue[] getFilterFieldArray(String filter,
                                            Locale locale) {
       // 1 to n fields may be mapped
-      Vector keyValPairs = ParseUtil.splitString(filter, ",;");
+      Vector keyValPairs = StringUtil.splitString(filter, ",;");
 
       // ~ no longer used as separator!
       int          len = keyValPairs.size();
@@ -1779,8 +1780,8 @@ public class Table {
                                           String childFieldString,
                                           String aPosition) {
       // 1 to n fields may be mapped
-      Vector childFieldNames  = ParseUtil.splitString(childFieldString, ",;~");
-      Vector parentFieldNames = ParseUtil.splitString(parentFieldString, ",;~");
+      Vector childFieldNames  = StringUtil.splitString(childFieldString, ",;~");
+      Vector parentFieldNames = StringUtil.splitString(parentFieldString, ",;~");
 
       // do some basic checks
       // deeper checks like Datatyp-compatibility,etc not done yet

@@ -43,6 +43,7 @@ import org.dbforms.event.ValidationEvent;
 import org.dbforms.util.FileHolder;
 import org.dbforms.util.MessageResourcesInternal;
 import org.dbforms.util.ParseUtil;
+import org.dbforms.util.StringUtil;
 import org.dbforms.util.UniqueIDGenerator;
 import org.dbforms.util.Util;
 
@@ -100,8 +101,8 @@ public class InsertEvent extends ValidationEvent {
    public InsertEvent(String             action,
                       HttpServletRequest request,
                       DbFormsConfig      config) {
-      super(ParseUtil.getEmbeddedStringAsInteger(action, 2, '_'),
-            ParseUtil.getEmbeddedString(action, 3, '_'), request, config);
+      super(StringUtil.getEmbeddedStringAsInteger(action, 2, '_'),
+            StringUtil.getEmbeddedString(action, 3, '_'), request, config);
    }
 
    /**

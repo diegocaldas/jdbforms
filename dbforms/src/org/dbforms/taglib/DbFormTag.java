@@ -2042,7 +2042,7 @@ public class DbFormTag extends TagSupportWithScriptHandler
       if (childFieldValues != null) {
          for (int i = 0; i < childFieldValues.length; i++) {
             if (childFieldValues[i].getRenderHiddenHtmlTag()) {
-               TextFormatter formatter = new TextFormatter(childFieldValues[i]
+               TextFormatterUtil formatter = new TextFormatterUtil(childFieldValues[i]
                                                            .getField(),
                                                            getLocale(), null,
                                                            childFieldValues[i]

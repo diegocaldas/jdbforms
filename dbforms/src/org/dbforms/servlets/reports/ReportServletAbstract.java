@@ -313,12 +313,10 @@ public abstract class ReportServletAbstract extends HttpServlet {
 		ResultSetVector rsv = null;
 
 		try {
-			PageContext pageContext = new PageContextBuffer();
-			pageContext
-					.initialize(this, request, response, null, true, 0, true);
-
 			// is the datasource a Collection ?
-			Object input = pageContext.findAttribute("jasper.input");
+			Object input = request.getAttribute("jasper.input");
+			if (input == null)
+				input = request.getSession().getAttribute("jasper.input");
 			if ((input != null) && (input instanceof Collection)) {
 				Iterator iter = ((Collection) input).iterator();
 				dataSource = new JRDataSourceIter(iter);
@@ -326,7 +324,9 @@ public abstract class ReportServletAbstract extends HttpServlet {
 			}
 
 			// check if we are using a ResultSetVector passed by user
-			rsv = (ResultSetVector) pageContext.findAttribute("jasper.rsv");
+			rsv = (ResultSetVector) request.getAttribute("jasper.rsv");
+			if (rsv == null)
+				rsv = (ResultSetVector) request.getSession().getAttribute("jasper.rsv");
 			if (rsv != null) {
 				logCat.info("get resultsetvector rsv= " + rsv.size());
 				if (rsv.size() == 0) {
@@ -336,6 +336,10 @@ public abstract class ReportServletAbstract extends HttpServlet {
 				}
 				return dataSource;
 			}
+
+			PageContext pageContext = new PageContextBuffer();
+			pageContext
+					.initialize(this, request, response, null, true, 0, true);
 
 			// Create form to get the resultsetvector
 			WebEvent webEvent = (WebEvent) request.getAttribute("webEvent");

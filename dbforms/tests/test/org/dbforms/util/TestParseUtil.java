@@ -42,10 +42,10 @@ public class TestParseUtil extends AbstractTestCase {
    public void testGetEmbeddedString() throws Exception {
       String s = "ac_update_3_12";
 
-      assertTrue(ParseUtil.getEmbeddedString(s, 0, '_').equals("ac"));
-      assertTrue(ParseUtil.getEmbeddedString(s, 1, '_').equals("update"));
-      assertTrue(ParseUtil.getEmbeddedString(s, 2, '_').equals("3"));
-      assertTrue(ParseUtil.getEmbeddedString(s, 3, '_').equals("12"));
+      assertTrue(StringUtil.getEmbeddedString(s, 0, '_').equals("ac"));
+      assertTrue(StringUtil.getEmbeddedString(s, 1, '_').equals("update"));
+      assertTrue(StringUtil.getEmbeddedString(s, 2, '_').equals("3"));
+      assertTrue(StringUtil.getEmbeddedString(s, 3, '_').equals("12"));
 
       /*
       try {
@@ -66,11 +66,11 @@ public class TestParseUtil extends AbstractTestCase {
    public void testGetEmbeddedStringAsInteger() throws Exception {
       String s = "ac_update_3_12";
 
-      assertTrue(ParseUtil.getEmbeddedStringAsInteger(s, 2, '_') == 3);
-      assertTrue(ParseUtil.getEmbeddedStringAsInteger(s, 3, '_') == 12);
+      assertTrue(StringUtil.getEmbeddedStringAsInteger(s, 2, '_') == 3);
+      assertTrue(StringUtil.getEmbeddedStringAsInteger(s, 3, '_') == 12);
 
       try {
-         int i = ParseUtil.getEmbeddedStringAsInteger(s, 4, '_');
+         int i = StringUtil.getEmbeddedStringAsInteger(s, 4, '_');
          assertTrue("This should not be hit! result:" + i, i == 999);
          fail("Should not get here, should have exception");
       } catch (Exception e) {
@@ -87,10 +87,10 @@ public class TestParseUtil extends AbstractTestCase {
    public void testGetEmbeddedStringWithoutDots() throws Exception {
       String s = "ac_update_3_12";
 
-      assertTrue(ParseUtil.getEmbeddedStringWithoutDots(s, 0, '_').equals("ac"));
-      assertTrue(ParseUtil.getEmbeddedStringWithoutDots(s, 1, '_').equals("update"));
-      assertTrue(ParseUtil.getEmbeddedStringWithoutDots(s, 2, '_').equals("3"));
-      assertTrue(ParseUtil.getEmbeddedStringWithoutDots(s, 3, '_').equals("12"));
+      assertTrue(StringUtil.getEmbeddedStringWithoutDots(s, 0, '_').equals("ac"));
+      assertTrue(StringUtil.getEmbeddedStringWithoutDots(s, 1, '_').equals("update"));
+      assertTrue(StringUtil.getEmbeddedStringWithoutDots(s, 2, '_').equals("3"));
+      assertTrue(StringUtil.getEmbeddedStringWithoutDots(s, 3, '_').equals("12"));
 
       /*
       try {
@@ -109,7 +109,7 @@ public class TestParseUtil extends AbstractTestCase {
     * @throws Exception DOCUMENT ME!
     */
    public void testSplitString() throws Exception {
-      Vector v = ParseUtil.splitString("hello,there,this,is,delimited", ",");
+      Vector v = StringUtil.splitString("hello,there,this,is,delimited", ",");
       assertTrue("Vector must have have 5 elements", v.size() == 5);
       assertTrue("check elements", v.get(0).toString().equals("hello"));
       assertTrue("check elements", v.get(1).toString().equals("there"));

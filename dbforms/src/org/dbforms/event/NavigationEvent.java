@@ -28,7 +28,7 @@ import org.dbforms.config.FieldValue;
 import org.dbforms.config.ResultSetVector;
 import org.dbforms.config.Table;
 
-import org.dbforms.util.ParseUtil;
+import org.dbforms.util.StringUtil;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -107,7 +107,7 @@ public abstract class NavigationEvent extends WebEvent {
       int tableId;
 
       try {
-         tableId = ParseUtil.getEmbeddedStringAsInteger(action, 2, '_');
+         tableId = StringUtil.getEmbeddedStringAsInteger(action, 2, '_');
       } catch (Exception e) {
          tableId = -1;
       }
