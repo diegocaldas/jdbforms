@@ -32,6 +32,7 @@
 						   foreignTable="book"
 						   visibleFields="title, author_id"
 						   storeField="book_id"
+						   format="%s"
 						/>
 				   	</db:select>
 					<db:select 
@@ -47,6 +48,7 @@
 										"BOOK.BOOK_ID = " +
 										org.dbforms.util.ParseUtil.getParameter(request, "books", "-1")
 								   %>'
+							format="%s"
 						/>
 				   </db:select>
               </db:body>
