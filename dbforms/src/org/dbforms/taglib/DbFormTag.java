@@ -2406,8 +2406,7 @@ public class DbFormTag extends TagSupportWithScriptHandler
     */
    private FieldValue[] initSearchFieldValues() {
       FieldValue[]       fieldValues;
-      HttpServletRequest request          = (HttpServletRequest) pageContext
-                                            .getRequest();
+      HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
       Vector             searchFieldNames = ParseUtil.getParametersStartingWith(request,
                                                                                 Constants.FIELDNAME_SEARCH
                                                                                 + this.tableId);

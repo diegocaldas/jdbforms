@@ -79,11 +79,9 @@ public class FileServlet extends HttpServlet {
          int    tableId      = Integer.parseInt(ParseUtil.getEmbeddedString(tf,
                                                                             0,
                                                                             '_'));
-         Table        table   = config.getTable(tableId);
-         int          fieldId = Integer.parseInt(ParseUtil.getEmbeddedString(tf,
-                                                                             1,
-                                                                             '_'));
-         Field        field   = table.getField(fieldId);
+         Table table   = config.getTable(tableId);
+         int   fieldId = Integer.parseInt(ParseUtil.getEmbeddedString(tf, 1, '_'));
+         Field        field = table.getField(fieldId);
 
          StringBuffer queryBuf         = new StringBuffer();
          String       dbConnectionName = request.getParameter("invname_"

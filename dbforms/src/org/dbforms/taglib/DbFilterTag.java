@@ -287,9 +287,8 @@ public class DbFilterTag extends DbBaseHandlerTag
     */
    public int doEndTag() throws JspException {
       // retrieve the currently active condition from request
-      int                  currentCondId = getCurrentCondition((HttpServletRequest) pageContext
-                                                               .getRequest(),
-                                                               getTableId());
+      int currentCondId = getCurrentCondition((HttpServletRequest) pageContext
+                                              .getRequest(), getTableId());
       DbFilterConditionTag currentCond = null;
 
       if (currentCondId > -1) {

@@ -66,8 +66,7 @@ import java.util.Vector;
  * @author Joe Peer
  */
 public class ResultSetVector {
-   private static Log logCat                = LogFactory.getLog(ResultSetVector.class
-                                                                .getName());
+   private static Log logCat = LogFactory.getLog(ResultSetVector.class.getName());
    private Hashtable  selectFieldsHashtable;
    private Vector     objectVector = new Vector();
    private Vector     selectFields;

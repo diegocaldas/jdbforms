@@ -125,8 +125,7 @@ public class IsErrorTag extends BodyTagSupport
    public int doStartTag() throws JspException {
       Vector             originalErrors = (Vector) pageContext.getAttribute(getName(),
                                                                             PageContext.REQUEST_SCOPE);
-      HttpServletRequest request   = (HttpServletRequest) pageContext
-                                     .getRequest();
+      HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
       boolean            haveError = false;
 
       haveError = (((originalErrors != null) && (originalErrors.size() > 0)));
