@@ -23,8 +23,13 @@
 
 package org.dbforms.event;
 
+import java.util.Properties;
+
+import org.apache.log4j.Category;
 
 import org.dbforms.util.Util;
+import org.dbforms.util.DbConnectionProperty;
+
 
 
 /**
@@ -35,16 +40,35 @@ import org.dbforms.util.Util;
  */
 public class EventInfo
 {
+    /** logging category */
+    protected static Category logCat = Category.getInstance(EventInfo.class.getName());
+
     private String id = null;
     private String className = null;
     private String type = null;
+    private Properties properties = null;
 
 
     /**
-     *  Constructor for the EventInfo object
+     *   Default constructor.
      */
     public EventInfo()
     {
+        properties = new Properties();
+    }
+
+
+    /**
+     *  Constructor.
+     *
+     * @param  type the event type
+     * @param  className the full qualified bname of the event class
+     */
+    public EventInfo(String type, String className)
+    {
+        this();
+        this.type = type;
+        this.className = className;
     }
 
 
@@ -112,6 +136,32 @@ public class EventInfo
     public void setClassName(String className)
     {
         this.className = className;
+    }
+
+
+    /**
+     *  Adds a new property to this EventInfo object.
+     *
+     * @param  property The feature to be added to the Property attribute
+     */
+    public void addProperty(DbConnectionProperty property)
+    {
+        String name  = property.getName();
+        String value = property.getValue();
+        properties.put(name, value);
+
+        logCat.info("::addProperty - added the property [" + name + ", " + value + "] to event [" + getId() + "]");
+    }
+
+
+    /**
+     *  Gets the properties attribute of the EventInfo object
+     *
+     * @return  The properties value
+     */
+    public Properties getProperties()
+    {
+        return properties;
     }
 
 
