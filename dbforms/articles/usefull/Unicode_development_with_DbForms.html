@@ -1,0 +1,634 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head>
+        
+        <title>Unicode development with DbForms, MySQL 4.1, and friends</title><meta http-equiv="content-type" content="text/html; charset=windows-1252">
+        <meta name="keywords" content=" Java DbForms Internationalization  localization MySQL Unicode">
+        <meta name="description" content="This article covers Neal Katz's experiences developing a multilingual Website using DbForms and MySQL 4.1. Katz discusses the configuration details and provides tips on how to use the various localization tools available. The article will also explain how to generate reports with JasperReports and POI (Poor Obfuscation Implementation). (3,200 words; September 6, 2004)">
+<meta name="GOOGLEBOT" content="NOARCHIVE">
+        <style type="text/css">
+            code {font: 110%;}
+            pre {font: 100%;}
+            td {font: 90%;}
+        </style> </head>
+
+    <body topmargin="0" leftmargin="0" rightmargin="0" bottommargin="0" alink="#990033" bgcolor="#ffffff" link="#990033" marginheight="0" marginwidth="0" text="#000000" vlink="#990033"><basefont face="verdana, arial, helvetica" size="2">
+        
+        
+     
+				    <!-- ## MAIN CONTENT STARTS HERE ### -->
+                    <font face="verdana, arial, helvetica" size="2">
+                       </font><p><font face="verdana, arial, helvetica" size="2"> <strong></strong></font></p>
+<font face="verdana, arial, helvetica" size="2">                        </font><p>
+<font face="verdana, arial, helvetica" size="2">                            </font></p><h1 align="center"><font face="verdana, arial, helvetica" size="2"> Unicode development with DbForms, MySQL 4.1, and friends
+</font></h1>
+<font face="verdana, arial, helvetica" size="2">                            </font><h3 align="center"><font face="verdana, arial, helvetica" size="2"> Developing a Unicode-enabled application with DbForms and MySQL 4.1
+</font></h3>
+<font face="verdana, arial, helvetica" size="2">                        </font><p></p>
+<font face="verdana, arial, helvetica" size="2">                        <!--<BLOCKQUOTE><STRONG>Summary</STRONG><BR>-->
+                        </font><blockquote>
+<font face="verdana, arial, helvetica" size="2"><strong>Summary</strong><br>This
+article covers Neal Katz's experiences developing a multilingual
+Website using DbForms and MySQL 4.1. Katz discusses the configuration
+details and provides tips on how to use the various localization tools
+available. The article will also explain how to generate reports with
+JasperReports and POI (Poor Obfuscation Implementation). (<em>3,200 words;</em> <strong>September 6, 2004</strong>)
+</font></blockquote>
+<font face="verdana, arial, helvetica" size="2">                        <!--</BLOCKQUOTE>-->
+                        <strong>By  Neal Katz
+</strong>
+                        </font><p><font face="verdana, arial, helvetica" size="2"> </font></p>
+
+<font face="verdana, arial, helvetica" size="2">                        </font><p><font face="verdana, arial, helvetica" size="2"><br></font></p>
+<font face="verdana, arial, helvetica" size="2">                        <!-- #include snippets/jw-articles-336x280.txt -->
+                        </font><p>
+</p><p>
+<font face="verdana, arial, helvetica" size="2"> Developing
+a Unicode-based application can be a frustrating experience because of
+the myriad of little "gotchas" involved with making each piece of a
+complex system work with Unicode data. This article covers my recent
+experiences in building a college registration system supporting
+English and the Thai languages. The development was J2EE-based and used
+the following technologies: </font></p><p>
+</p><li><font face="verdana, arial, helvetica" size="2">Jakarta Tomcat 5.0.19</font></li><font face="verdana, arial, helvetica" size="2"> <li>MySQL 4.1.2</li> <li>DbForms 2.4rcX</li> <li>JasperReports 0.5.2</li> <li>Apache POI (Poor Obfuscation Implementation)</li> </font><p>
+<font face="verdana, arial, helvetica" size="2">During the project's
+initial phases, my team needed to decide on a database to use that
+would store Thai characters. For maximum flexibility, we decided to use
+Unicode to store data, instead of a Thai character set. Our database
+would also store English data, and future versions of this system might
+need to support other languages as well. Due to our limited budget, we
+narrowed the database choice to open source products that support
+Unicode.
+</font></p><p>
+<font face="verdana, arial, helvetica" size="2">My prior experience
+with MySQL led me to make the potentially risky choice of using MySQL
+4.1, which is clearly marked as a develop release. After doing research
+on the Web and reading mail archives, I concluded that MySQL 4.1 had
+some problems with complex queries and complicated collating with
+fields of different character sets; however, 4.1 had no reported
+problems with data integrity or database corruption. </font></p><p>
+<font face="verdana, arial, helvetica" size="2">We started development
+with the MySQL 4.1.1 release and noticed a few complex queries where
+the ordering did not work as expected; we were forced to rewrite the
+queries or break a single query into two queries. We were also able to
+create one complex query that crashed the system (but did not cause any
+corruption). Upgrading to 4.1.2 solved the problem with the crashing
+query. To date, we have not experienced any crashing with 4.1.2. </font></p><p>
+<font face="verdana, arial, helvetica" size="2">We are happy with our
+decision to use 4.1.2, but it was a risky choice, and we were prepared
+to back out if necessary. Also, given the application type, this risk
+level was acceptable. For a more mission-critical application, I
+probably would not have used MySQL 4.1. </font></p><p>
+<font face="verdana, arial, helvetica" size="2">MySQL supports multiple
+table types, the default is ISAM (indexed sequential access method),
+which is fast, but does not offer referential integrity through foreign
+key constraints. Instead, we used InnoDB tables in our system and used
+the constraint feature for referential integrity. Any potential
+performance loss was more than offset by the reliability that
+referential integrity adds to a complex database. </font></p><p>
+<font face="verdana, arial, helvetica" size="2">Using Unicode with
+MySQL 4.1 is simple, and there are two ways to specify which character
+set to use. The first approach specifies a character set as the default
+for a table; the second declares a character set for a specific field.
+Specifying a field's character set takes precedence over the table's
+character set.
+</font></p><p>
+<font face="verdana, arial, helvetica" size="2"><strong>Example 1. Define a default character set for a table</strong> </font></p><p>
+<code></code></p><p>
+<font face="verdana, arial, helvetica" size="2">CREATE TABLE `city` (<br>
+
+  `city_id` int(11) NOT NULL default '0',<br>
+
+  `name` varchar(25) NOT NULL default '',<br>
+
+  `name_eng` varchar(25) NOT NULL default '',<br>
+
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;<br>
+</font></p><p>
+<font face="verdana, arial, helvetica" size="2"><strong>Example 2. Define a default character set and specific character set for a field</strong> </font></p><p>
+<code></code></p><p>
+<font face="verdana, arial, helvetica" size="2">CREATE TABLE `test2` (<br>
+
+  `alpha` varchar(5) character set utf8 NOT NULL default '',<br>
+
+  `beta` varchar(10) default NULL<br>
+
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;<br>
+</font></p><p>
+<font face="verdana, arial, helvetica" size="2">In the first example, all fields are UTF-8: <code>name</code> stores Thai data and <code>name_eng</code> stores English language data. In the second example, the table's character set is <code>latin1</code> and field <code>alpha</code> is UTF-8. <code>latin1</code> is the standard character set for tables that don't specify a default character set. 
+</font></p><p>
+<font face="verdana, arial, helvetica" size="2">On my version of Linux (SuSE 9.1), I can display Thai characters using the MySQL shell by starting it with the command <code>mysql --default-character-set=utf8</code>.
+Unfortunately, this did not work on Windows. Under Windows, we had to
+wait until we had a Webpage working before we could visually verify
+that we had Thai data. When using the commands <code>mysqldump</code> to back up a database and <code>mysql</code> to restore the database, you <strong>must</strong> use <code>--default-character-set=utf8 option</code>, otherwise character set information is lost. 
+</font></p><p>
+<font face="verdana, arial, helvetica" size="2">We used a commercial product MySQL Manager 2 from <a href="#resources">EMS</a>
+to design the database and generate our queries. The tool offers a nice
+visual query builder that can then display the query's text. We then
+copied the SQL code into our source. The tool is designed to work with
+MySQL 4.0 and did not support 4.1's character set extensions. If we
+created a table with the tool, we then had to manually execute an <code>alter table</code> command to change the character set.
+</font></p><p>
+<!-- break --></p><p><font face="verdana, arial, helvetica" size="2"><font size="+1"><strong> Server platform </strong></font><br>
+After selecting MySQL, our next choice was deciding which J2EE server
+to use. Development started with Tomcat 4.1.x, but we quickly switched
+to 5.0.19 for the better tag library support. As an extra bonus, we
+were able to take advantage of the EL (expression language) support
+integrated with 5.0.x. </font></p><p>
+<font face="verdana, arial, helvetica" size="2">The final major
+decision was our selection of DbForms. DbForms bills itself as a tool
+that "enables developers to build sophisticated Web-based
+database-driven applications in very short time and with very little
+efforts. DbForms applications are built in a manner conceptually
+similar to RAD [rapid application development]." </font></p><p>
+<font face="verdana, arial, helvetica" size="2">DbForms is best thought
+of as many different pieces: first, a J2EE framework for writing
+database-driven applications; second, a rich library of tags to take
+advantage of the framework; and third, a GUI tool that generates JSP
+(JavaServer Pages) pages from a database via XSL (Extensible Stylesheet
+Language) templates. We modified some of these template files to add
+support for including a common file at the top and generating all pages
+as UTF-8. </font></p><p>
+<font face="verdana, arial, helvetica" size="2">DBForms's GUI tool is
+useful in creating initial JSP pages for data views and entry. For
+simple screens, the code created by the GUI tool can be used unaltered.
+In our application, approximately 40 percent of the data entry screens
+were generated by the GUI tool and deployed unaltered. Another 30
+percent of the screens required minimal coding to be useful, usually
+adding DbForms's <code>Select</code> tag so that the user could select a field value from a foreign database.
+</font></p><p>
+<font face="verdana, arial, helvetica" size="2">One limitation of the GUI tool is that it is not a "lifecycle" tool. If you use it to regenerate a page or the global <code>dbforms-config.xml</code>
+file, it will overwrite the old file. The GUI tool does not remember
+changes from previous edits. To get around this limitation, I created a
+parallel directory structure called "dummy," made new edits there, then
+copied and pasted from the dummy directory to the real directory. This
+proved useful in situations where I added a few fields to a table and
+wanted to regenerate the data entry screen, but did not want to lose
+any changes I had previously made to the JSP page. </font></p><p>
+<font face="verdana, arial, helvetica" size="2">Now that we have covered the big picture, let's start looking at the individual steps required to get things working. 
+</font></p><p><font face="verdana, arial, helvetica" size="2"><font size="+1"><strong> Getting Unicode to work </strong></font><br>
+The first thing we did was write a standalone Java program that would
+read in Thai characters from a MySQL database and write them out to a
+file. The test database was populated by hand. The program's key part
+is the section that opens the connection: </font></p><p>
+<code></code></p><p>
+<font face="verdana, arial, helvetica" size="2">DriverManager.setLogWriter(new PrintWriter(System.out));<br>
+
+Class.forName("com.mysql.jdbc.Driver");<br>
+
+Connection db =<br>
+
+DriverManager.getConnection(<br>
+
+"jdbc:mysql:///" + dbname +<br>
+
+"?requireSSL=false&amp;useUnicode=true&amp;characterEncoding=UTF-8",<br>
+
+   "root", "");<br>
+</font></p><p>
+<font face="verdana, arial, helvetica" size="2">The <code>setLogWriter()</code> function is used for diagnostics and isn't needed in production, but is helpful for tracking down problems. 
+</font></p><p>
+<font face="verdana, arial, helvetica" size="2">The JDBC (Java Database Connectivity) connect string has three parameters. Their meaning should be obvious. We used <code>requireSSL=false</code>
+since we had problems building MySQL 4.1.x from scratch using SSL
+(Secure Socket Layer) on Linux. We didn't try very hard though; in our
+environment, SSL was not important. The <code>useUnicode</code> and <code>characterSetEncoding</code> parameters tell the JDBC subsystem that the database is Unicode and everything is UTF-8. Note that the string <code>UTF-8</code> is the Java way of specifying the charset; MySQL uses the string <code>utf8</code>. If changing charsets, you'll have to compare what Java supports with what MySQL supports. 
+</font></p><p>
+<font face="verdana, arial, helvetica" size="2">We also copied the
+above code to a JSP page and ensured we could display Thai. The only
+tricky part of that exercise was setting the page output charset. That
+was accomplished by putting the following line at the top of each page:
+</font></p><p>
+<code></code></p><p>
+<font face="verdana, arial, helvetica" size="2">&lt;%@ page contentType="text/html;charset=UTF-8" language="java" %&gt;<br>
+</font></p><p>
+<font face="verdana, arial, helvetica" size="2"><strong>Note:</strong>
+If you use Apache with mod_jk (the Apache module for running Tomcat as
+a plug-in within Apache), you will have to configure Apache to treat
+the page as UTF-8 as well; the Apache setting might overwrite the
+Tomcat setting (depending on which version you use). Our project used
+Tomcat as a standalone server. </font></p><p>
+<font face="verdana, arial, helvetica" size="2">Our next step was to get things working with DbForms. We started by using the GUI tool and setting the JDBC connect string, <code>jdbc:mysql:///dbtest?requireSSL=false&amp;useUnicode=true&amp;characterEncoding=UTF-8</code>. The tool then created a <code>dbforms-config.xml</code> file. Scroll down to the bottom of the file and you should see: 
+</font></p><p>
+<code></code></p><p>
+<font face="verdana, arial, helvetica" size="2">&lt;dbconnection<br>
+
+  Name="jdbc:mysql:///stpneal2?requireSSL=false&amp;amp;useUnicode=true<br>
+
+    &amp;amp;characterEncoding=UTF-8"<br>
+
+  isJndi = "false"<br>
+
+  conClass  = "com.mysql.jdbc.Driver"<br>
+
+  username = "root"<br>
+
+  password  = ""/&gt;<br>
+</font></p><p>
+<font face="verdana, arial, helvetica" size="2"><strong>Note:</strong> If you do not see <code>&amp;amp;</code>, then you are using an old version of the GUI tool, which does not handle XML escaping correctly. 
+</font></p><p>
+<font face="verdana, arial, helvetica" size="2">In the DbForms GUI
+tool, click on the XSL Transformation tab and create some JSP files.
+You can then review the code produced to see what DbForms and the GUI
+tool can do for you in terms of generating ready-to-use JSP pages. </font></p><p>
+<font face="verdana, arial, helvetica" size="2">We then manually edited the generated JSP files and inserted the <code>&lt;%@ page contentType="text/html;charset=UTF-8" language="java" %&gt;</code>
+directive. After verifying it worked, we modified the XSL files used by
+the GUI tool to generate the code. The change will vary file-to-file,
+but it will look something like this:
+</font></p><p>
+<code></code></p><p>
+<font face="verdana, arial, helvetica" size="2"> //--file " <br>
+
+  &lt;xsl:value-of select="$fileName" /&gt; <br>
+
+  " ------------------------------------------------ <br>
+
+  &lt;xsl:text disable-output-escaping="yes"&gt;<br>
+
+     &lt;%@ page contentType="text/html;charset=UTF-8" language="java" %&gt;<br>
+
+     &lt;%@ include file="inc_taglibs.jsp" %&gt; <br>
+
+  &lt;/xsl:text&gt;<br>
+</font></p><p>
+<font face="verdana, arial, helvetica" size="2">As you can see, we modified the XSL file to output two directives at the top of each file generated. One sets the page <code>contentType</code> and <code>charset</code>; the other includes a file that we used to define all our taglibs. 
+</font></p><p>
+<font face="verdana, arial, helvetica" size="2">Everything worked fine
+in terms of displaying data, but updating data did not work correctly.
+A little digging revealed the problem to be that the form-processing
+code did not know what charset to use. A limitation of HTML form
+processing is that the data's charset entered in the form or in the
+page used to display the form is not passed back to the server. Once we
+discovered the problem, the answer was simple: we set Tomcat to treat
+all form data as UTF-8. We did that by defining a filter in the <code>web.xml</code>
+file. A filter is a code snippet called by the Web server that
+manipulates the input before passing it on. The filter code is in the
+class file <code>org.dbforms.util.external.SetCharacterEncodingFilter</code>. This file is a copy of the sample filter that ships with Tomcat, but it has been copied into the DbForms JAR for ease of use: 
+</font></p><p>
+<code></code></p><p>
+<font face="verdana, arial, helvetica" size="2">&lt;!-- ======== Filter for Set Character Encoding  ======= --&gt; <br>
+
+&lt;filter&gt;<br>
+
+  &lt;filter-name&gt;Set Character Encoding&lt;/filter-name&gt; <br>
+
+  &lt;filter-class&gt;<br>
+
+     org.dbforms.util.external.SetCharacterEncodingFilter<br>
+
+  &lt;/filter-class&gt; <br>
+&lt;init-param&gt;<br>
+
+  &lt;param-name&gt;encoding&lt;/param-name&gt; <br>
+
+  &lt;param-value&gt;UTF-8&lt;/param-value&gt; <br>
+
+  &lt;/init-param&gt;<br>
+
+&lt;/filter&gt;<br>
+</font></p><p>
+<font face="verdana, arial, helvetica" size="2">At this point, our
+application displayed and updated Thai information in the database, but
+we still had many tasks to complete in order to make our application
+fully usable as a multilingual site. </font></p><p>
+<font face="verdana, arial, helvetica" size="2">The next task was to
+display static content on the page that was localized. The easiest way
+to perform localization is with tags, and we could choose from two
+different tag libraries: the standard formatting (prefix FMT) tag
+library that is part of JSTL (Java Standard Tag Library), or DbForms's <code>db:message</code>
+tag. We ended up supporting both. In most cases, we used the FMT tag
+explicitly in our JSP code, but we used the DbForms message tag code
+implicitly to perform localization on HTML widgets like buttons. </font></p><p>
+<font face="verdana, arial, helvetica" size="2">Fortunately, both tag libraries worked the same way—they used a set of property files in the <code>WEB-INF/</code> classes directory composed of key-value statements. 
+</font></p><p><font face="verdana, arial, helvetica" size="2"><strong> A brief introduction to ApplicationResources files for localization </strong><br>
+Localization is performed through a hierarchy of property files. There
+is a base file and then descendent files. If a given key cannot be
+found in a descendent file, its parent files will be checked in
+ascending order. The hierarchy model is used to support a default file,
+a specific language, and its dialects. </font></p><p>
+<font face="verdana, arial, helvetica" size="2">Assuming we use the name <code>ApplicationResources</code> for our file naming, we can have four files in <code>WEB-INF/</code> classes: 
+</font></p><p>
+<table bgcolor="#000000" border="0" cellpadding="0" cellspacing="1"> <tbody><tr> <td> <table celspacing="1" border="0" cellpadding="5"> <tbody><tr bgcolor="#cccccc"><td><code>ApplicationResources.properties</code></td> <td>The base file</td> </tr> <tr bgcolor="#ffffff"> <td><code>ApplicationResources_en.properties</code></td> <td>English language</td> </tr> <tr bgcolor="#cccccc"> <td><code>ApplicationResources_en_UK.properties</code></td> <td>English, British dialect</td> </tr> <tr bgcolor="#ffffff"> <td><code>ApplicationResources_th.properties</code>,</td> <td>Thai language</td> </tr> </tbody></table> </td> </tr> </tbody></table><font face="verdana, arial, helvetica" size="2"> </font></p><p>
+<font face="verdana, arial, helvetica" size="2">Depending on our
+current locale's setting, we start with one of these files. If a key
+cannot be found, then the next ascending file is checked until we run
+out of files and generate a <code>not found</code>. 
+</font></p><p>
+<font face="verdana, arial, helvetica" size="2">Here are some sample <code>ApplicationResources</code> files showing how they look and describing how the lookup logic works: 
+</font></p><p>
+<code></code></p><p>
+<font face="verdana, arial, helvetica" size="2">FILE: ApplicationResources.properties:<br>
+
+One=first<br>
+
+Two=second<br>
+
+Elevator=up thing<br>
+
+user_name=User Name<br>
+
+RoomSchedule.font=Lucida-plain-10<br>
+
+<br>
+
+FILE: ApplicationResources_en.properties:<br>
+
+Two=dos<br>
+
+Elevator=Elevator<br>
+
+<br>
+
+FILE: ApplicationResources_en_UK.properties:<br>
+
+Two=double<br>
+
+Elevator=LIFT<br>
+
+<br>
+
+FILE: ApplicationResources_th.properties:<br>
+
+user_name=&amp;#3594;&amp;#3639;&amp;#3656;&amp;#3629;&amp;#3612;&amp;#3641;<br>
+
+&amp;#3657;&amp;#3651;&amp;#3594;&amp;#3657;&amp;#3591;&amp;#3634;&amp;#3609;<br>
+</font></p><p>
+<font face="verdana, arial, helvetica" size="2">If our locale is <code>en_UK</code>, then searching for "Elevator" would find "LIFT," and searching for "One," would return "first." 
+</font></p><p>
+<font face="verdana, arial, helvetica" size="2">In the Thai example, we
+must use Unicode escape sequences to encode our strings. Unfortunately,
+the property files are plain 8-bit ASCII. You can use the <code>native2ascii -encoding UTF-8 command src dtst</code>
+command to convert a UTF-8 file to ASCII, but in our environment, we
+just found it easier to use Dreamweaver in design mode, then cut and
+paste from code view. Microsoft Word can also be used; type in some
+characters, save as a Webpage, then view code. </font></p><p>
+<font face="verdana, arial, helvetica" size="2">You should adopt a naming convention early in your project to keep things organized. In our environment, we used the prefix <code>bean.xyz.key</code> if a message was used in <code>bean xyz</code>; <code>abc.key</code> if a key was used on JSP page <code>abc</code>; and no prefix for common things like <code>user_name</code>. Ours is not the best example, but better than no naming scheme at all. 
+</font></p><p>
+<font face="verdana, arial, helvetica" size="2">For our application, we used only the default file <code>ApplicationResources.properties</code> and <code>ApplicationResources_th.properties</code>,
+effectively making English the default language. The files also
+contained internal configuration information that was locale-specific,
+such as the <code>Bean.RoomSchedule.font=Lucida-plain-10</code> setting. (For more details, see <a href="#resources">Resources</a>). 
+</font></p><p>
+<font face="verdana, arial, helvetica" size="2">Configuration for both localization methods is done in <code>web.xml</code>. For the JSTL, the configuration setting is a top-level <code>context-param</code>: 
+</font></p><p>
+<code></code></p><p>
+<font face="verdana, arial, helvetica" size="2">&lt;web-app&gt;<br>
+&lt;context-param&gt;<br>
+
+  &lt;param-name&gt;javax.servlet.jsp.jstl.fmt.localizationContext&lt;/param-name&gt; <br>
+
+  &lt;param-value&gt;ApplicationResources&lt;/param-value&gt; <br>
+&lt;/context-param&gt;</font></p><p>
+</p><p>
+<font face="verdana, arial, helvetica" size="2">For DbForms, it is an <code>init-param</code> to the servlet: 
+</font></p><p>
+<code></code></p><p>
+<font face="verdana, arial, helvetica" size="2">&lt;!-- ======= DbForms Configuration Servlet =======   --&gt; <br>
+
+&lt;servlet&gt;<br>
+
+  &lt;servlet-name&gt;config&lt;/servlet-name&gt; <br>
+
+  &lt;servlet-class&gt;org.dbforms.servlets.ConfigServlet&lt;/servlet-class&gt; <br>
+
+  &lt;init-param&gt;<br>
+
+    &lt;param-name&gt;resourceBundle&lt;/param-name&gt; <br>
+
+    &lt;param-value&gt;ApplicationResources&lt;/param-value&gt; <br>
+
+  &lt;/init-param&gt;</font></p><p>
+</p><p>
+<font face="verdana, arial, helvetica" size="2">Using the FMT tag is very simple: download and copy the file <code>jstl.jar</code> into your <code>WEB-INF/bin</code> directory. Then at the top of your JSP file, include a tag directive: 
+</font></p><p>
+<code></code></p><p>
+<font face="verdana, arial, helvetica" size="2">&lt;%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %&gt;<br>
+</font></p><p>
+<font face="verdana, arial, helvetica" size="2">Usage is as easy as <code>&lt;fmt:message key="user_name"/&gt;</code>. 
+</font></p><p>
+<font face="verdana, arial, helvetica" size="2">To use the other localization approach, DbForms's <code>db:message</code> tag: 
+</font></p><p>
+<code></code></p><p>
+<font face="verdana, arial, helvetica" size="2">&lt;db:message key="user_name" /&gt;</font></p><p>
+</p><p>
+<font face="verdana, arial, helvetica" size="2">The <code>db:message</code> tag also takes an optional attribute <code>params</code>, which is a comma separated list of values that replaces <code>{0}</code>,<code>{1}</code>, etc., in the found string. 
+</font></p><p>
+<font face="verdana, arial, helvetica" size="2">DbForms's localization also works with other DbForms's tags like <code>&lt;db:gotoButton&gt;</code> to enable the <code>set-caption</code> attribute's localization to the key <code>&lt;db:gotoButton caption="user_name" &gt;</code>, <strong>and</strong> have <code>caption resource="true"</code> in the enclosing <code>dbform</code> tag: 
+</font></p><p>
+<code></code></p><p>
+<font face="verdana, arial, helvetica" size="2">&lt;db:dbform followUp="/menu.jsp" captionResource="true"&gt;</font></p><p>
+</p><p>
+<font face="verdana, arial, helvetica" size="2"><strong>Note:</strong> DbForms's GUI tool sometimes embeds spaces in the caption attribute for the code it generates; you should remove them.
+</font></p><p>
+<!-- break --></p><p><font face="verdana, arial, helvetica" size="2"><font size="+1"><strong> Setting locale </strong></font><br>
+Changing locale is performed in the file <code>options.jsp</code>. The key point is that when the user changes the locale, we use the <code>fmt:setLocale</code> tag to set the locale used by JSTL, and we invoke the following code to set the locale used by DbForms: 
+</font></p><p>
+<code></code></p><p>
+<font face="verdana, arial, helvetica" size="2">&lt;%  session.setAttribute("org.dbforms.LOCALE", <br>
+
+        new Locale( request.getParameter("locale") )); %&gt;</font></p><p>
+</p><p><font face="verdana, arial, helvetica" size="2"><font size="+1"><strong> Dynamic localization </strong></font><br>
+In our database model, we needed to keep the Thai and English text for
+various attributes. We did that by having a separate field in the
+table. We also used a common naming convention: <code>name</code> for Thai and <code>name_eng</code> for English. 
+</font></p><p>
+<font face="verdana, arial, helvetica" size="2">We keep this code snippet in an include file: 
+</font></p><p>
+<code></code></p><p>
+<font face="verdana, arial, helvetica" size="2">&lt;c:choose&gt;<br>
+
+    &lt;c:when test="${sessionScope.locale=='th'}"&gt;<br>
+
+        &lt;c:set var="name_field" value="name"/&gt; <br>
+
+    &lt;/c:when&gt;<br>
+
+    &lt;c:otherwise&gt;<br>
+
+        &lt;c:set var="name_field value="name_eng" ""/&gt;<br>
+
+   &lt;/c:otherwise&gt;<br>
+
+&lt;/c:choose&gt;</font></p><p>
+</p><p>
+<font face="verdana, arial, helvetica" size="2">This sets the variable <code>name_field</code> to the appropriate field name to access depending on our locale setting. We used EL notation <code>${name_field}</code> to access the variable. 
+</font></p><p>
+<font face="verdana, arial, helvetica" size="2">We then display a single value in the correct language like this: 
+</font></p><p>
+<code></code></p><p>
+<font face="verdana, arial, helvetica" size="2">&lt;db:dataLabel  fieldName="city_id"  &gt; <br>
+
+   &lt;db:tableData    name="city" foreignTable="city"  <br>
+visibleFields="${name_field}" storeField="city_id" /&gt;<br>
+
+&lt;/db:dataLabel&gt;</font></p><p>
+</p><p>
+<font face="verdana, arial, helvetica" size="2">This will show the name of the current city in the correct language. 
+</font></p><p>
+<font face="verdana, arial, helvetica" size="2">To let the user select a list of cities using the current language, we use the <code>db:select</code> tag; inside that, we use a <code>db:tabledata</code> tag: 
+</font></p><p>
+<code></code></p><p>
+<font face="verdana, arial, helvetica" size="2">&lt;db:select pattern="#" fieldName="city_id" size="0"<br>
+
+    selectedIndex="&lt;%=(String)currentRow_person.get("city_id")%&gt;" &gt;<br>
+
+       &lt;db:tableData name="city" foreignTable="city"  <br>
+
+          visibleFields="${name_field}" storeField="city_id" /&gt;<br>
+
+&lt;/db:select&gt;<br>
+</font></p><p>
+<font face="verdana, arial, helvetica" size="2">The <code>selectedIndex</code> line reads <code>city_id</code>'s current value for this record in the <code>person</code> table and uses it as the initial selection. 
+</font></p><p><font face="verdana, arial, helvetica" size="2"><font size="+1"><strong> Reports </strong></font><br>
+We used JasperReports, to create reports in PDF format. DbForms has
+integrated support for JasperReports. To use it, you simply create a
+JasperReports definition file and store it in the <code>WEB-INF/reports</code> directory or change the configuration in <code>web.xml</code> to use some other directory. On your JSP page, include a line similar to the following inside a <code>db:dbforms</code> tag body: 
+</font></p><p>
+<code></code></p><p>
+<font face="verdana, arial, helvetica" size="2">&lt;db:gotoButton  destination="/reports/city_report" caption="print_report" destTable="city"  singleRow="false" /&gt;<br>
+</font></p><p>
+<font face="verdana, arial, helvetica" size="2">In the <code>db:gotoButton</code>, the destination attribute points to <code>"/reports/city_report</code>". <code>/report</code> is a servlet mapping handled by the <code>StartReportServlet</code> (see the <code>web.xml</code> for the configuration). The report definition file is called <code>city_report.xml</code> (the development release of DbForms uses <code>jxml</code>
+instead; this change will be incorporated into the next stable
+release). The report definition file will be compiled on demand to a <code>.jasper</code> file. You can edit report-file definition files at any time—no need to restart the application to test new reports. The <code>testTable</code> attribute should match the enclosing <code>db:dbform</code> tag's <code>tableName</code> attribute. The <code>singleRow</code> attribute is true if you want to display only one record, otherwise false. 
+</font></p><p>
+<font face="verdana, arial, helvetica" size="2">One gotcha we discovered: In the report definition file, make sure that the <code>&lt;jasperReport&gt;</code> tag's name attribute is the same as the file's base name. Otherwise it will not work: 
+</font></p><p>
+<code></code></p><p>
+<font face="verdana, arial, helvetica" size="2">&lt;jasperReport name="city_report" ... &gt;</font></p><p>
+</p><p>
+<font face="verdana, arial, helvetica" size="2">Getting JasperReports to work with Unicode requires <code>textElement</code> sections to be defined like this: 
+</font></p><p>
+<code></code></p><p>
+<font face="verdana, arial, helvetica" size="2">&lt;textElement textAlignment="Left" verticalAlignment="Top"<br>
+
+   lineSpacing="Single"&gt;<br>
+
+      &lt;font fontName="Angsana New"<br>
+
+            pdfFontName="c:\fonts\ANGSA.TTF" pdfEncoding ="Identity-H" <br>
+
+            isPdfEmbedded ="false"  size="12"<br>
+
+            isBold="false" isItalic="false" isUnderline="false"<br>
+
+            isStrikeThrough="false" /&gt;<br>
+
+&lt;/textElement&gt;<br>
+</font></p><p>
+<font face="verdana, arial, helvetica" size="2">As you can see, the <code>&lt;font&gt;</code> settings are tricky and require a lot of research and playing around. <code>pdfEncoding</code> specifies that the font is an external Unicode font being drawn horizontally. <code>pdfFontName</code>
+is a full path to a font, in this case, ANGSA.TTF, which is a Thai
+language font. For Unix systems, you will have to change the path. We
+use a sed script to do that automatically. <code>isPdfEmbedded</code> should be false, even though true seems to make more sense. 
+</font></p><p>
+<font face="verdana, arial, helvetica" size="2">To create our report definition files, we used an excellent tool called <a href="#resources">iReport</a>. Unfortunately, with iReport, we could not create the <code>&lt;font&gt;</code>
+settings exactly the way we needed them to be for Thai support. We had
+to edit the XML file by hand and modify the font setting. Then we used
+iReport to modify the file further. If we needed another field to be
+Thai, we just copied the one we edited and modified that. In short, we
+only needed to hand modify the file once. </font></p><p><font face="verdana, arial, helvetica" size="2"><font size="+1"><strong> POI </strong></font><br>
+During my development with DbForms, I wrote a report generator called
+ExcelReportWriter to generate an Excel spreadsheet using POI. POI
+turned out to be easy to use; the only change required for supporting
+Unicode data was the addition of this line: <code>cell.setEncoding(HSSFCell.ENCODING_UTF_16);</code>.
+This method call is applied to all character data; i.e., I do not
+bother checking if the incoming data is non-UTF-8, I just make the
+whole spreadsheet Unicode. This might result in a bigger output file,
+but in my situation, that was not a concern. The full code for the
+ExcelReportWriter is in the development release of DbForms. </font></p><p><font face="verdana, arial, helvetica" size="2"><font size="+1"><strong> Conclusions </strong></font><br>
+Hopefully this article will help those people interested in writing
+multilingual applications. Even if you don't plan to support
+multilingual applications immediately, you can do a few tasks to make
+the process easier if you plan to add such functionality later: </font></p><p>
+</p><ol><li><font face="verdana, arial, helvetica" size="2">Use <code>ApplicationResources</code>
+files. Separating out the messages' text from the code is just good
+programming practice. Avoid hard code strings in your beans and JSP
+files.</font></li><font face="verdana, arial, helvetica" size="2"> </font><p>
+</p><li><font face="verdana, arial, helvetica" size="2">Use a taglib to display strings from <code>ApplicationResources</code> files.</font></li><font face="verdana, arial, helvetica" size="2"> </font><p>
+</p><li><font face="verdana, arial, helvetica" size="2">Handle times,
+dates, numbers, and currency values, which are all subject to regional
+changes. Java has a rich API for handling these. Look at the <code>Calendar</code> class for time and date handling, and the <code>Formatter</code> class for handling numbers and currency values.</font></li><font face="verdana, arial, helvetica" size="2"> </font><p>
+</p><li><font face="verdana, arial, helvetica" size="2">Set your page
+output to UTF-8. Sending pages as UTF-8 should not result in any
+drawbacks, even if all the character data is ASCII.</font></li><font face="verdana, arial, helvetica" size="2"> </font><p>
+</p><li><font face="verdana, arial, helvetica" size="2">Set
+form-handling to treat all data as UTF-8. This is a little trickier
+since you are now opening yourself up for a user to input Unicode data.
+If you are not prepared to handle this (or your database is not
+prepared for it), then do <strong>not</strong> enable UTF-8 form-handling. </font></li></ol><font face="verdana, arial, helvetica" size="2"> </font><p>
+<font face="verdana, arial, helvetica" size="2">DbForms is a great tool
+for generating applications that are data-entry centric. This article
+did not cover all of the program's aspects. To get started, I suggest
+downloading the project and the sample codes. Look at the bookstore
+first, then move onto the other demos. The default installation uses a
+memory resident database, so you can get started quickly without
+configuring any database. </font></p><p>
+<font face="verdana, arial, helvetica" size="2">JasperReports is great
+for generating PDF files; it can create Excel files too, but I found it
+easier to use the ExcelReportWriter that I developed to generate simple
+Excel files. </font></p><p>
+<font face="verdana, arial, helvetica" size="2">MySQL 4.1 proved to be
+a good choice, with no problems from a stability perspective. As I
+write this, the 4.1 branch has graduated to beta from developer
+release.  </font></p><p><font face="verdana, arial, helvetica" size="2"><br></font></p>
+<font face="verdana, arial, helvetica" size="2">                        </font><p><font face="verdana, arial, helvetica" size="2"><strong>About the author</strong><br>
+Neal Katz is president of Nechsi Software of Bangkok, Thailand. He has
+more than 15 years of professional software development work and has
+been using Java since version 0.9. Katz prefers to use Linux and open
+source technologies in his work. He is a contributor to DbForms and
+other open source projects. Prior to Nechsi Software, Katz was a
+founder of MessageOne technologies and an early member of Mail.Com and
+Bigfoot. <br></font></p>
+<font face="verdana, arial, helvetica" size="2">                        </font><p></p><ul><font face="verdana, arial, helvetica" size="2"><a name="resources"></a><strong>Resources</strong>
+<br>
+
+<li>DbForms: <br><a href="http://jdbforms.sourceforge.net/">http://jdbforms.sourceforge.net
+</a><br>
+
+
+</li><li>MySQL Developer Zone: <br><a href="http://dev.mysql.com/">http://dev.mysql.com/
+</a><br>
+
+
+</li><li>MySQL Manager 2 from EMS: <br><a href="http://ems-hitech.com/mymanager/">http://ems-hitech.com/mymanager/
+</a><br>
+
+
+</li><li>JasperReports: <br><a href="http://jasperreports.sourceforge.net/">http://jasperreports.sourceforge.net/
+</a><br>
+
+
+</li><li>Download iReport: <br><a href="http://ireport.sourceforge.net/">http://ireport.sourceforge.net
+</a><br>
+
+
+</li><li>POI project from the Apache Jakarta Project: <br><a href="http://jakarta.apache.org/poi/index.html">http://jakarta.apache.org/poi/index.html
+</a><br>
+
+
+</li><li>Sun guidelines on using ApplicationResources files: <br><a href="http://java.sun.com/blueprints/guidelines/designing_enterprise_applications_2e/i18n/i18n.html">http://java.sun.com/blueprints/guidelines/designing_enterprise_applications_2e/i18n/i18n.html
+</a><br>
+
+
+</li><li>For more on JasperReports, read "Reports Made Easy with JasperReports," Erik Swenson (<em>JavaWorld,</em> September 2002):  <br><a href="http://www.javaworld.com/javaworld/jw-09-2002/jw-0920-opensourceprofile.html">http://www.javaworld.com/javaworld/jw-09-2002/jw-0920-opensourceprofile.html 
+</a><br>
+
+
+</li><li>For more on POI, read "Excelling in Excel with Java," Elango Sundaram (<em>JavaWorld,</em> March 2004): <br><a href="http://www.javaworld.com/javaworld/jw-03-2004/jw-0322-poi.html">http://www.javaworld.com/javaworld/jw-03-2004/jw-0322-poi.html
+</a><br>
+
+
+</li><li>For more on developing multilingual applications, read "Multibyte-Character Processing in J2EE," Wang Yu  (<em>JavaWorld,</em> April 2004): <br><a href="http://www.javaworld.com/javaworld/jw-04-2004/jw-0419-multibytes.html">http://www.javaworld.com/javaworld/jw-04-2004/jw-0419-multibytes.html
+</a><br>
+
+
+</li><li>For more articles on development tools, browse the <strong>Development Tools</strong> section of <em>JavaWorld'</em>s Topical Index: <br><a href="http://www.javaworld.com/channel_content/jw-tools-index.shtml">http://www.javaworld.com/channel_content/jw-tools-index.shtml
+</a><br>
+
+
+</li><li>For more articles on putting your Java skills to work, search the articles in the <strong>Applied Java</strong> section of <em>JavaWorld'</em>s Topical Index: <br><a href="http://www.javaworld.com/channel_content/jw-applied-index.shtml">http://www.javaworld.com/channel_content/jw-applied-index.shtml
+</a><br>
+
+</li></font></ul><font face="verdana, arial, helvetica" size="2"><br></font><p></p>
+<font face="verdana, arial, helvetica" size="2">                        <!-- REPLACE SIDEBAR -->
+                    </font>
+                    <!-- ## MAIN CONTENT ENDS HERE ### -->
+                
+     </body></html>
