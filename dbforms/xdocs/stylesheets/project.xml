@@ -36,14 +36,14 @@
       -->
     </menu>
 
-    <menu name="Download">
+    <menu name="Downloads">
       <item name="Weekly builds"           href="/weekly/"/>
       <item name="Latest builds"           href="http://sourceforge.net/project/showfiles.php?group_id=17608"/>
     </menu>
 
-    <menu name="Misc">
-      <item name="Tasks"           href="/tasks.html"/>
-    </menu>
+    <menu name="ToDoList"  >
+      <item name=""    href="/tasks.html" />
+     </menu>
 
 <!---
     <menu name="Demo">

@@ -1997,8 +1997,10 @@ public class Table
     * @param fv the array of FieldValue objects
     * 
     * @return the WHERE clause string
+    * 
+    * protected so that it can be tested 
     */
-   private String getWhereClause(FieldValue[] fv)
+   protected String getWhereClause(FieldValue[] fv)
    {
       StringBuffer buf = new StringBuffer();
 
