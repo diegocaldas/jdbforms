@@ -90,12 +90,6 @@ import org.dbforms.util.Util;
  * <dd>current value of the input tag corresponding to the filterValue tag identified by [valueId]
  * <dt>filter_[tableId]_cond_[condId]_valuetype_[valueId]
  * <dd>type of the value identified by [valueId] 
- * <dt>filter_[tableId]_set
- * <dd>name of the submit button to set/unset the filter. If this parameter is present in the request,
- * I know that a filter set/unset operation is requested. This is needed because I have to nullify the 
- * current position to permit to the goto event to go to the first row (and not to the current row, which maybe will
- * be out the filtered rowset).  
- * this custom tag generate
  * </dl>
  * <p> 
  * Reading data from request, and update corrispondently the sqlFilter attribute of DbFormTag
@@ -106,14 +100,13 @@ import org.dbforms.util.Util;
  * (.i.e. when user press the set button, and so the filter_<tableId>_set parameter is found in request).
  * This is needed because here we must force the goto event to move to the first avalilable row. 
  * <p>   
- * @todo can I extends this tag from TagSupportWithScriptHandler to inherit attributes?
  * @todo add internationalization support
  *  
  * @author Sergio Moretti <s.moretti@nsi-mail.it>
  * 
  * @version $Revision$
  */
-public class DbFilterTag extends TagSupport implements TryCatchFinally
+public class DbFilterTag extends TagSupportWithScriptHandler implements TryCatchFinally
 {
    /** DOCUMENT ME! */
    protected static String FLT_COND = "_cond_";
@@ -162,26 +155,20 @@ public class DbFilterTag extends TagSupport implements TryCatchFinally
       }
 
       logCat.debug("filter condition from request : " + filterCondition);
-
-      if ((sqlFilter != null) && (sqlFilter.trim().length() > 0))
+      if (!Util.isNull(sqlFilter) && !Util.isNull(filterCondition))
       {
-         // sqlFilter value is already defined, we AND it with out condition 
-         if ((filterCondition != null) && (filterCondition.trim().length() > 0))
-         {
             filter = " ( " + sqlFilter + " ) AND ( " + filterCondition + " ) ";
-         }
-         else
-         {
-            filter = sqlFilter;
-         }
       }
-      else
+      else if (!Util.isNull(sqlFilter))
       {
-         filter = (filterCondition != null) ? filterCondition : "";
+            filter = sqlFilter;
+      }
+      else if (!Util.isNull(filterCondition))
+      {
+         filter =  filterCondition;
       }
 
       logCat.debug("filter to apply : " + filter);
-
       return filter;
    }
 
@@ -202,7 +189,7 @@ public class DbFilterTag extends TagSupport implements TryCatchFinally
       String param = ParseUtil.getParameter(request, 
                                             getFilterName(tableId) + FLT_SEL);
 
-      if (param != null)
+      if (!Util.isNull(param))
       {
          // try to transform parameter string in integer
          try
