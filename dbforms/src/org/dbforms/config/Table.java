@@ -1118,13 +1118,16 @@ public class Table
    {
       StringBuffer buf = new StringBuffer();
 
+		buf.append(field.getId());
+		buf.append(":");
       if (!Util.isNull(fieldValue))
       {
-         buf.append(field.getId());
-         buf.append(":");
          buf.append(fieldValue.length());
          buf.append(":");
          buf.append(fieldValue);
+      } else {
+			buf.append(0);
+			buf.append(":");
       }
 
       return buf.toString();
