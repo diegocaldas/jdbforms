@@ -239,6 +239,8 @@ public class DataSourceXML extends DataSource {
    }
 
    private Object[] getValuesAsObject(int index) throws SQLException {
+      if ((index < 0) || (index >= dataObject.length)) 
+         return null;  
       if (dataObject[index] == null) {
          Vector fields = getTable().getFields();
          Object[] objectRow = new Object[fields.size()];
