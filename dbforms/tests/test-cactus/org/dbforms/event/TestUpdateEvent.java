@@ -23,20 +23,17 @@
 
 package org.dbforms.event;
 
-import java.util.Vector;
-
-import org.dbforms.config.MultipleValidationException;
+import java.sql.Connection;
 
 import org.apache.cactus.JspTestCase;
 import org.apache.cactus.WebRequest;
 
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.dbforms.config.DbFormsConfigRegistry;
-
 import org.dbforms.servlets.ConfigServlet;
-import org.dbforms.util.AssertUtils;
-
+import org.dbforms.config.SqlUtil;
 
 /**
  * Tests of the <code>Validation Event</code> class.
@@ -44,7 +41,7 @@ import org.dbforms.util.AssertUtils;
  * @author Henner Kollmann
  * 
  */
-public class TestValidationEvent extends JspTestCase
+public class TestUpdateEvent extends JspTestCase
 {
 
    
@@ -53,9 +50,10 @@ public class TestValidationEvent extends JspTestCase
     * 
     * @param theName the testcase's name.
     */
-   public TestValidationEvent(String theName)
+   public TestUpdateEvent(String theName)
    {
       super(theName);
+
    }
 
    /**
@@ -68,9 +66,10 @@ public class TestValidationEvent extends JspTestCase
       junit.swingui.TestRunner.main(
                new String[] 
       {
-         TestValidationEvent.class.getName()
+         TestUpdateEvent.class.getName()
       });
    }
+
 
 
    /**
@@ -93,59 +92,31 @@ public class TestValidationEvent extends JspTestCase
 
    //-------------------------------------------------------------------------
 
-   /**
-   * DOCUMENT ME!
-   *
-   * @param theRequest DOCUMENT ME!
-   */
-  public void beginValidationNoError(WebRequest theRequest)
-  {
-     theRequest.addParameter("f_0_0@root_2", "organisation 1");
-     theRequest.addParameter("of_0_0@root_2", "");
-     theRequest.addParameter("f_0_0@root_1", "Eco, Umberto");
-     theRequest.addParameter("of_0_0@root_1", "");
-  }
+      /**
+    * DOCUMENT ME!
+    *
+    * @param theRequest DOCUMENT ME!
+    */
+   public void beginUpdate(WebRequest theRequest)
+   {
+      theRequest.addParameter("f_0_0@root_2", "organisation 1");
+      theRequest.addParameter("of_0_0@root_2", "");
+      theRequest.addParameter("f_0_0@root_1", "Eco, Umberto");
+      theRequest.addParameter("of_0_0@root_1", "");
+   }
 
-  public void testValidationNoError() throws Exception 
-  {
-     DatabaseEvent evt = DatabaseEventFactoryImpl.instance()
-           .createUpdateEvent(
-                 0, 
-                 "0@root", 
-                 (HttpServletRequest)this.pageContext.getRequest(), 
-                 DbFormsConfigRegistry.instance().lookup());
-    evt.doValidation("test", this.pageContext.getServletContext(), (HttpServletRequest)this.pageContext.getRequest());                 
-                  
-  }
+   public void testUpdate() throws Exception 
+   {
+      DatabaseEvent evt = DatabaseEventFactoryImpl.instance()
+            .createUpdateEvent(
+                  0, 
+                  "0@root", 
+                  (HttpServletRequest)request, 
+                  DbFormsConfigRegistry.instance().lookup());
+      Connection con = SqlUtil.getConnection(DbFormsConfigRegistry.instance().lookup(), 
+                                                            "default");
+      evt.processEvent(con);            
+   }
 
-  public void beginValidationError(WebRequest theRequest)
-  {
-     theRequest.addParameter("f_0_0@root_2", "organisation 1");
-     theRequest.addParameter("of_0_0@root_2", "");
-     theRequest.addParameter("f_0_0@root_1", "");
-     theRequest.addParameter("of_0_0@root_1", "Eco, Umberto");
-  }
-
-  public void testValidationError() throws Exception 
-  {
-     DatabaseEvent evt = DatabaseEventFactoryImpl.instance()
-           .createUpdateEvent(
-                 0, 
-                 "0@root", 
-                 (HttpServletRequest)this.pageContext.getRequest(), 
-                 DbFormsConfigRegistry.instance().lookup());
-    try 
-    {
-       evt.doValidation("test", this.pageContext.getServletContext(), (HttpServletRequest)this.pageContext.getRequest());
-    }                           
-       catch (MultipleValidationException mve)
-       {
-          Vector v = mve.getMessages();
-          assertNotNull(v);
-          assertEquals(v.size(), 1);
-          String s = ((Exception)v.elementAt(0)).getMessage();
-          AssertUtils.assertContains("field name required", s);
-       }
-  }
 
 }
