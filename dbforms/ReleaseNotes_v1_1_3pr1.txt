@@ -1,4 +1,4 @@
-Release Notes for DbForms Version 1.1.3pr1,  2002-11-??
+Release Notes for DbForms Version 1.1.3pr1,  2002-11-25
 
 Contents:
 
@@ -310,7 +310,7 @@ and discussion)
 4-6) Example Applications
 -------------------------
 Example Applications should now run with (included) hsqldb (http://hsqldb.sourceforge.net/).
-It is still possible to other database systems.
+(Thanks to Mark Dimon and Henner Kollmann).  It is still possible to other database systems.
 
 4-7) Bug fixes
 ---------------
@@ -318,7 +318,8 @@ It is still possible to other database systems.
 A lot of bug fixes have be done. See changes_1_1 for details.
 
 4-8): JUnit Tests supported via Maven
----------------
+-------------------------------------
+(Contributed by Eric  Pugh)
 
 4-8-1: 9 JUnit test cases have been written to test some of the peripheral functions of DBForms. These
 			test cases allow developers to edit code, and if all the test cases pass, then to assume that
