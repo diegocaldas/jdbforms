@@ -14,6 +14,7 @@ Modified by SAB.
       
      
   
+   <property environment="env"/>
 
      <!-- set the following three values according to your path (other two are below in the pdf section) -->
    <property name="UsersGuide.dir" value="d:/projekte/webapps/dbforms/usersguide_src"/><!-- 1) set here-->
@@ -55,7 +56,6 @@ Modified by SAB.
 
     <!-- XSLT engine class -->
  <property name="xslt.processor.class" value="com.icl.saxon.StyleSheet" />    
-  <property environment="env"/>
  <!-- path for xslt processor. 
           -->
  <path id="xslt.processor.classpath">                                          
