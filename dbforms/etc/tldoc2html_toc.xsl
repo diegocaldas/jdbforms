@@ -41,7 +41,7 @@
    </a>
    <br/>
     <xsl:if test="tlibversion">
-      <em>Tag Library Version:</em>
+      <em>Tag Library Version: </em>
       <xsl:value-of select="tlibversion"/>
       <br/>
     </xsl:if>

@@ -55,7 +55,7 @@
   <xsl:template match="body/taglib">
 
     <xsl:if test="tlibversion">
-      <em>Tag library version:</em>
+      <em>Tag library version: </em>
       <xsl:value-of select="tlibversion"/>
       <br/>
     </xsl:if>
