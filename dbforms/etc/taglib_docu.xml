@@ -425,19 +425,19 @@
 							<br/>
 							<span style="font-size:8.0pt;font-family:Courier">&lt;<b>/db:dbform</b>&gt;</span>
 						</p>
-						<pre>Operator:       Meaning:                Example:
+						<pre>Operator:          Meaning:                Example:</pre>
     
-							    =               Equals                  aField=value
-							    &lt;&gt;              Not Equal               aField&lt;&gt;value
-							    &lt;               Smaller then            aField&lt;100
-							    &gt;               Greater then            aField&gt;0
-							    &lt;=              Smaller then or equal   aField&lt;=100
-							    &gt;=              Greater then or equal   aField&gt;=0
-							    ~               Like                    aField~%P%
-							    since version 1.1.3pr1:
-							    ISNULL            is null            aField ISNULL        
-							    NOTISNULL       is not null              aField NOTISNULL          
-						</pre>
+                                                <pre>=                  Equals                  aField=value</pre>
+                                                <pre>&lt;&gt;           Not Equal               aField&lt;&gt;value</pre>
+                                                <pre>&lt;               Smaller then            aField&lt;100</pre>
+                                                <pre>&gt;               Greater then            aField&gt;0</pre>
+                                                <pre>&lt;=              Smaller then or equal   aField&lt;=100</pre>
+                                                <pre>&gt;=              Greater then or equal   aField&gt;=0</pre>
+                                                <pre>~                  Like                    aField~%P%</pre>
+                                                <pre>Since version 1.1.3pr1:</pre>
+                                                <pre>ISNULL             is null                 aField ISNULL</pre>        
+                                                <pre>NOTISNULL          is not null             aField NOTISNULL</pre>          
+						
 						<p style="text-autospace:none">
 							By default, all filter definitions are ANDed together. 
 							  If you wish to use OR, you may prefix your filter definition with the '|' symbol. 
@@ -1035,7 +1035,12 @@ which is an active element - the usercan change data. it is very similar to Text
 but this class providesan extension to TextField: the additional attribute &quot;dateFormat&quot;.</summary>
 				<tagclass>org.dbforms.taglib.DbDateFieldTag</tagclass>
 				<bodycontent>empty</bodycontent>
-				<info>i/o text field</info>
+				<info><p>i/o text field</p>
+                                <p>To set the format that a date value is sent to the database in, add it to <b>dbforms-config.xml</b> file as follows (for example):<br/>
+ 
+    <pre>&lt;date-format&gt;yyyy-MM-dd&lt;/date-format&gt;</pre></p>
+<p>To use a different format than a globally specified one, use the format attribute in the 
+dateField tag.</p></info>
 				<attribute>
 					<name>id</name>
 					<required>false</required>
