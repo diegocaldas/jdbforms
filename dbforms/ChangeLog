@@ -1,3 +1,15 @@
+2004-10-11
+(Henner.Kollmann@gmx.de)
+   - Moved to jasperreports 0.6.1
+   - Changed all variable names which are in conflict with
+     jdk 1.5
+
+2004-09-01
+   - Changed logging system to use
+        org.apache.commons.logging.Log
+        org.apache.commons.logging.LogFactory
+     everywhere.
+     
 2004-08-12
 (Henner.Kollmann@gmx.de)
 AutoUpdate will work with inserts too now
