@@ -877,7 +877,7 @@ public class DbFormTag extends BodyTagSupport {
 
 			}
 
-			// if we have not an orderby clause nor a request we may use then we cant create orderconstraint
+			// if we have neither an orderby clause nor a request we may use then we cant create orderconstraint
 		  if(orderBy==null && localRequest==null) return;
 
 

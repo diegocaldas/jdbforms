@@ -32,6 +32,7 @@ import javax.servlet.jsp.tagext.*;
 import com.itp.dbforms.*;
 
 // these 3 we need for formfield auto-population
+import java.text.Format;
 import java.util.Vector;
 import com.itp.dbforms.util.ParseUtil;
 import javax.servlet.http.HttpServletRequest;
@@ -76,6 +77,8 @@ public abstract class DbBaseHandlerTag extends BodyTagSupport {
   	// only needed/used if parent tag is in "insert-mode" (footer, etc.)
 		// otherwise this tag takes the current value from the database result!
   	protected String value;
+
+	protected Format format;
 
     protected DbFormTag parentForm;
 
@@ -176,6 +179,20 @@ public abstract class DbBaseHandlerTag extends BodyTagSupport {
 		public void setValue(String value) {
 			this.value = value;
 		}
+
+
+	/**
+	formatting a value
+	*/
+	public Format getFormat() {
+		return this.format;
+	}
+
+	public void setFormat(Format format) {
+	     this.format = format;
+	}
+
+
 
 
 //  Navigation Management
@@ -388,29 +405,7 @@ public abstract class DbBaseHandlerTag extends BodyTagSupport {
 	    parentForm = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
 	  }
 
-	  /**
- 		valid attribute parameters are: "none" (default), "and", "or"
 
-	  public void setSearchMode(String searchMode) {
-		 this.searchMode = searchMode;
-
-		 if(searchMode.equals("and"))
-		 	parsedSearchMode = SEARCHMODE_AND;
-		 else if(searchMode.equals("or"))
-			parsedSearchMode = SEARCHMODE_OR;
-		 else
-			parsedSearchMode = SEARCHMODE_NONE;
-
-	  }
-
-	  public String getSearchMode() {
-		  return searchMode;
-	  }
-
-	  public int getParsedSearchMode() {
-		  return parsedSearchMode;
-	  }
-*/
 
 
     /**
@@ -447,12 +442,17 @@ public abstract class DbBaseHandlerTag extends BodyTagSupport {
 
 	protected String typicalDefaultValue() {
 		switch(field.getType()) {
+			//case com.itp.dbforms.util.FieldTypes.DATE : return "0";
 			case com.itp.dbforms.util.FieldTypes.INTEGER : return "0";
+			case com.itp.dbforms.util.FieldTypes.NUMERIC : return "0";
 			case com.itp.dbforms.util.FieldTypes.DOUBLE : return "0.0";
 			case com.itp.dbforms.util.FieldTypes.FLOAT : return "0.0";
 			default : return ""; // in all other cases we just leave the formfield empty
 		}
 	}
+
+
+
 
 	/**
 	determinates value of the html-widget.
@@ -461,13 +461,27 @@ public abstract class DbBaseHandlerTag extends BodyTagSupport {
 
 		if(!parentForm.getFooterReached()) { // data from dataBase
 
-      		String[] currentRow = parentForm.getResultSetVector().getCurrentRow();
+      		Object[] currentRow = parentForm.getResultSetVector().getCurrentRowAsObjects();  // fetch database row as java objects
 
       		if(currentRow==null)
+
       			return typicalDefaultValue();
+
       		else {
-				String curVal = currentRow[field.getId()];
-      			return (curVal!=null && curVal.length()>0) ? curVal : typicalDefaultValue();
+
+				Object curVal = currentRow[field.getId()];
+
+				String curStr = null;
+				if(curVal!=null) {
+				  if(this.format != null)
+					curStr = format.format(curVal);
+				  else
+				    curStr = curVal.toString();
+				}
+
+				if(curStr!=null) curStr = curStr.trim();
+
+      			return (curVal!=null && curStr!=null && curStr.length()>0) ? curStr : typicalDefaultValue();
 		    }
 
 		} else { // the form field is in 'insert-mode'
