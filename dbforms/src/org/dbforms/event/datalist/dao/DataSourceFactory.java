@@ -36,7 +36,6 @@ import org.dbforms.util.Util;
 
 
 /**
- *
  * Factory class to generate different DataSources.
  * datasource is attribute of table class and can be changed in dbforms-config.
  * Default class is
@@ -48,17 +47,18 @@ public class DataSourceFactory
    private DataSource dataHandler;
 
    // logging category for this class;
-   static Category logCat = Category.getInstance(DataSourceFactory.class
-         .getName());
+   static Category logCat = Category.getInstance(DataSourceFactory.class.getName());
 
    /**
     * Creates a new DataSourceFactory object.
+    * <br>
+    * Set its DataSource object as dataHandler, using the dataAccess class name
+    * for the given table. 
     *
-    * @param table DOCUMENT ME!
-    *
-    * @throws SQLException DOCUMENT ME!
+    * @param table the input table
     */
-   public DataSourceFactory(Table table) throws SQLException
+   public DataSourceFactory(Table table)
+     //  throws SQLException
    {
       String dataAccessClass = table.getDataAccessClass();
 
@@ -69,16 +69,11 @@ public class DataSourceFactory
 
       try
       {
-         Object[] constructorArgs      = new Object[]
-            {
-               table
-            };
-         Class[]  constructorArgsTypes = new Class[]
-            {
-               Table.class
-            };
+         Object[] constructorArgs      = new Object[] { table };
+         Class[]  constructorArgsTypes = new Class[]  { Table.class };
          dataHandler = (DataSource) ReflectionUtil.newInstance(dataAccessClass,
-               constructorArgsTypes, constructorArgs);
+                                                               constructorArgsTypes, 
+                                                               constructorArgs);
       }
       catch (Exception e)
       {
@@ -90,10 +85,10 @@ public class DataSourceFactory
    /**
     * Creates a new DataSourceFactory object.
     *
-    * @param con DOCUMENT ME!
-    * @param table DOCUMENT ME!
+    * @param con the input connection object
+    * @param table the input table object 
     *
-    * @throws SQLException DOCUMENT ME!
+    * @throws SQLException if any error occurs
     */
    public DataSourceFactory(Connection con, Table table)
       throws SQLException
@@ -106,16 +101,19 @@ public class DataSourceFactory
    /**
     * Creates a new DataSourceFactory object.
     *
-    * @param config DOCUMENT ME!
-    * @param dbConnectionName DOCUMENT ME!
-    * @param table DOCUMENT ME!
-    * @param filterConstraint DOCUMENT ME!
-    * @param orderConstraint DOCUMENT ME!
+    * @param config 		  the configuration object
+    * @param dbConnectionName the name of the db connection
+    * @param table 			  the input table
+    * @param filterConstraint the filter constraint
+    * @param orderConstraint  the order constraint
     *
-    * @throws SQLException DOCUMENT ME!
+    * @throws SQLException if any error occurs
     */
-   public DataSourceFactory(DbFormsConfig config, String dbConnectionName,
-      Table table, FieldValue[] filterConstraint, FieldValue[] orderConstraint)
+   public DataSourceFactory(DbFormsConfig config, 
+                            String        dbConnectionName,
+      						Table 	      table, 
+      						FieldValue[]  filterConstraint, 
+      						FieldValue[]  orderConstraint)
       throws SQLException
    {
       this(table);
@@ -127,16 +125,19 @@ public class DataSourceFactory
    /**
     * Creates a new DataSourceFactory object.
     *
-    * @param config DOCUMENT ME!
-    * @param dbConnectionName DOCUMENT ME!
-    * @param table DOCUMENT ME!
-    * @param tableList DOCUMENT ME!
-    * @param whereClause DOCUMENT ME!
+    * @param config           the configuration object
+    * @param dbConnectionName the name of the db connection
+    * @param table            the input table
+    * @param tableList        the list of tables
+    * @param whereClause      the SQL where clause
     *
-    * @throws SQLException DOCUMENT ME!
+    * @throws SQLException if any error occurs
     */
-   public DataSourceFactory(DbFormsConfig config, String dbConnectionName,
-      Table table, String tableList, String whereClause)
+   public DataSourceFactory(DbFormsConfig config, 
+                            String        dbConnectionName,
+      						Table         table, 
+      						String        tableList, 
+      						String        whereClause)
       throws SQLException
    {
       this(table);
@@ -144,9 +145,9 @@ public class DataSourceFactory
       dataHandler.setSelect(tableList, whereClause);
    }
 
+
    /**
-    * DOCUMENT ME!
-    *
+    *  Close the underlying dataHandler.
     */
    public void close()
    {
@@ -155,14 +156,16 @@ public class DataSourceFactory
 
 
    /**
-    * DOCUMENT ME!
+    * Return a resultSetVector object containing the next <i>count</i> records
+    * starting from the input position
     *
-    * @param position DOCUMENT ME!
-    * @param count DOCUMENT ME!
+    * @param position the current table position
+    * @param count number of records to fetch
     *
-    * @return DOCUMENT ME!
+    * @return a resultSetVector object containing the next <i>count</i> records
+    *         starting from the input position
     *
-    * @throws SQLException DOCUMENT ME!
+    * @throws SQLException if any error occurs
     */
    public ResultSetVector getNext(String position, int count)
       throws SQLException
