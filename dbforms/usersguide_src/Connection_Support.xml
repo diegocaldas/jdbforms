@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
  
 	<chapter>
-		<title>Connection Support
+		<title id="connSupp">Connection Support
 </title>
 		<sect1>
 			<title>ConnectionFactory
 </title>
 			<para>The ConnectionFactory class provides JDBC connection objects to the DbForms client (specifically, to the org.dbforms.util.DbConnection class).  It gives a common interface to retrieve connection objects, but defer the database interaction to specialized <emphasis role="italic">connectionProvider</emphasis> classes.
 </para>
+<para>The <computeroutput>connectionFactory </computeroutput>use is optional and must be enabled to work, so it will not be used if the new properties are not declared as shown below.</para>
+
 <para><computeroutput>dbconnection</computeroutput> configuration is still compatible with previous means such as:</para>
 <screen>
 &lt;!-- ==========Non-ConnectionFactory Connections================= --&gt;
@@ -27,12 +29,14 @@
 		password  = &quot;somepass&quot;
 	/&gt;
 </screen> 
-<para>The <computeroutput>connectionFactory </computeroutput>use is optional and must be enabled to work, so it will not be used if the new properties are not declared as shown above.</para>
+
 			<sect2>
 				<title>Included ConnectionProvider classes
 </title>
 				<para>The connectionFactory package provides three <emphasis role="italic">connectionProvider</emphasis> classes:
-</para>
+</para><para>The jars for these classes need to be downloaded and put in your applications WEB-INF/lib directory</para>
+<para>Protomatter rquires <computeroutput>protomatter.jar</computeroutput></para>
+<para>JakartaConnectionPool requires <computeroutput>commons-pool</computeroutput> and <computeroutput>commons-dbcp</computeroutput>
 <itemizedlist mark="opencircle">
 <listitem>
 <para>
@@ -245,7 +249,7 @@ Used by ProtomatterConnectionProvider class.</entry>
 							</tgroup>
 						</informaltable>
 					</para></sect2>
-                                        <sect2>
+                                        <sect2 id="jdbcProps">
 					<title>Setting JDBC Properties
 </title>
 					<para>To set jdbc properties in jdbc drivers that can't specify properties using the JDBC url, you can nest property tags inside the dbconnection tag:</para>
