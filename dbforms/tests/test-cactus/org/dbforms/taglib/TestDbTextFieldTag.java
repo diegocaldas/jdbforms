@@ -150,7 +150,7 @@ public class TestDbTextFieldTag extends JspTestCase {
 
    public void testOutputJPN() throws Exception {
       Locale locale = MessageResources.getLocale(request);
-      assertTrue("no english locale", locale.equals(Locale.JAPANESE));
+      assertTrue("no japanese locale", locale.equals(Locale.JAPANESE));
       doTheTest();
    }
 
