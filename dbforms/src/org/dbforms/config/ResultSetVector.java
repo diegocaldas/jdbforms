@@ -30,6 +30,7 @@ import java.sql.SQLException;
 import java.sql.ResultSetMetaData;
 import org.apache.log4j.Category;
 import org.dbforms.util.Escaper;
+import org.dbforms.util.Util;
 /**
  * <p>
  * In version 0.5, this class held the actual data of a ResultSet (SELECT from
@@ -342,6 +343,8 @@ public class ResultSetVector {
 	 * @return DOCUMENT ME!
 	 */
 	public String getField(String fieldName) {
+		if (Util.isNull(fieldName)) 
+		   return null;
 		Field f = (Field) selectFieldsHashtable.get(fieldName);
 		if (f == null) {
 			return null;
@@ -377,6 +380,8 @@ public class ResultSetVector {
 	 * @return DOCUMENT ME!
 	 */
 	public Object getFieldAsObject(String fieldName) {
+		if (Util.isNull(fieldName)) 
+			return null;
 		Field f = (Field) selectFieldsHashtable.get(fieldName);
 		if (f == null) {
 			return null;
