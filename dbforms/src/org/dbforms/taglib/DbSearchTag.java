@@ -26,9 +26,8 @@ import javax.servlet.http.*;
 import javax.servlet.jsp.*;
 import org.dbforms.*;
 import org.dbforms.util.*;
-import org.dbforms.taglib.*;
-import org.dbforms.taglib.DbSortTag;
-import org.dbforms.taglib.TagSupportWithScriptHandler;
+import org.dbforms.config.*;
+import org.CVS.*;
 import org.apache.log4j.Category;
 
 

@@ -25,9 +25,10 @@ import java.sql.*;
 import java.util.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
-import org.dbforms.DbFormsConfig;
-import org.dbforms.Field;
-import org.dbforms.FieldValue;
+
+import org.dbforms.config.DbFormsConfig;
+import org.dbforms.config.Field;
+import org.dbforms.util.FieldValue;
 import org.dbforms.util.ParseUtil;
 import org.dbforms.util.Constants;
 import org.dbforms.util.FieldValues;
