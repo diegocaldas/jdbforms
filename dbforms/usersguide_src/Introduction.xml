@@ -26,7 +26,8 @@
 				<example>
 					<title>Listing 1 - defining the model</title>
 					<programlisting>
-                &lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;&lt;!DOCTYPE dbforms-config PUBLIC "http://www.dbforms.org/dtd/dbf_conf.dtd"&gt; 
+                &lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;
+                &lt;!DOCTYPE dbforms-config PUBLIC "http://www.dbforms.org/dtd/dbf_conf.dtd"&gt; 
 		
                 &lt;dbforms-config&gt; 
                     
