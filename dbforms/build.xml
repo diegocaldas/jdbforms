@@ -54,6 +54,8 @@ Happy coding!
     <property name="dependend.dir" value="${cvs.workingdir}/dependend"/>
     <property name="doc.dir" value="${cvs.workingdir}/doc"/>
     <property name="htmldoc.dir" value="${doc.dir}/html"/>
+    <property name="devguidoc.dir" value="${doc.dir}/devgui"/>
+    <property name="taglibdoc.dir" value="${doc.dir}/taglib"/>
     <property name="bin.dir" value="${cvs.workingdir}/bin"/>
     <property environment="env"/>
 
@@ -110,12 +112,18 @@ Happy coding!
     <target name="generate_taglib_htmldocs" 
                     description="--> Generate  HTML reference documentation within doc/html from taglib-docu.xml" >
         <echo message="begin xsl translation to generate HTML documentation  "/>
-        <delete file="${htmldoc.dir}/DbFormsTags.html"/>
-        <style style="${etc.dir}/tldoc2html.xsl" in="${etc.dir}/taglib_docu.xml" out="${htmldoc.dir}/DbFormsTags.html"/>
+        
+        <delete file="${taglibdoc.dir}/DbFormsTags.html"/>
+        <style style="${etc.dir}/tldoc2html.xsl" in="${etc.dir}/taglib_docu.xml" 
+              out="${taglibdoc.dir}/DbFormsTags.html"/>
+              
+        <delete file="${taglibdoc.dir}/DbFormsTags_TocSem.html"/>
         <style style="${etc.dir}/tldoc2html_toc.xsl" in="${etc.dir}/taglib_docu.xml" 
-               out="${htmldoc.dir}/DbFormsTags_TocSem.html"/>
+               out="${taglibdoc.dir}/DbFormsTags_TocSem.html"/>
+               
+        <delete file="${taglibdoc.dir}/DbFormsTags_TocAlph.html"/>
         <style style="${etc.dir}/tldoc2html_toc.xsl" in="${etc.dir}/taglib_docu.xml" 
-               out="${htmldoc.dir}/DbFormsTags_TocAlph.html">
+               out="${taglibdoc.dir}/DbFormsTags_TocAlph.html">
             <param name="sortTagsAlphabetically" expression="true"/>
         </style>
         <echo message="end of xsl translation "/>
@@ -220,13 +228,13 @@ Happy coding!
 
 
     <target name="createAllExamples" depends="generate_taglib" description="--> Create all the examples">
-        <!--antcall target="createExample">
+        <antcall target="createExample">
             <param name="example.name" value="bugtracker"/>
         </antcall>
 
         <antcall target="createExample">
             <param name="example.name" value="testsuite"/>
-        </antcall-->
+        </antcall>
 
         <!-- clean up temporary directories -->
         <antcall target="cleanWorkspace"/>
