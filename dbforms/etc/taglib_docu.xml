@@ -7657,10 +7657,10 @@ This structure will be rendered as a html select element to select the condition
 				<name>customFormat</name>
 				<summary>Format input by using a registered CustomFormatter			
 				</summary>
-				<tagclass></tagclass>
+				<tagclass>org.dbforms.taglib.CustomFormatTag</tagclass>
 				<bodycontent>JSP</bodycontent>
 				<info>
-						<p>format input by using a register CustomFormatter</p>
+						<p>Format an arbitray string with a register Custom Formatter</p>
 						<p>example:</p>
 						<pre>
 &lt;db:customFormat customFormatter="stid"&gt;1234567812345678&lt;/db:customFormat&gt;
