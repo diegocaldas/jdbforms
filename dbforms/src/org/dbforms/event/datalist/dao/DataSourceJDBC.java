@@ -156,6 +156,7 @@ public class DataSourceJDBC extends DataSource
    {
       fetchedAll = true;
 
+	 /* not for firebird. stmt is close automatically if con is closed!!!! 
       if (rs != null)
       {
          try
@@ -170,7 +171,6 @@ public class DataSourceJDBC extends DataSource
          rs = null;
       }
 
-      /* not for firebird. stmt is close automatically if rs is closed!!!! 
       if (stmt != null)
       {
       try
