@@ -372,7 +372,7 @@ public class EventEngine
       String followUp = ParseUtil.getParameter(request, "data" + action + "_fu");
 
       // if not...
-      // ...then check if ï¿½2-followup exists (should always exist!)
+      // ...then check if §2-followup exists (should always exist!)
       if (followUp == null)
       {
          followUp = ParseUtil.getParameter(request, 
@@ -387,7 +387,7 @@ public class EventEngine
                                                       "data" + action + "_fue");
 
       // if not...
-      // ...then check if ï¿½2-followup exists
+      // ...then check if §2-followup exists
       if (followUpOnError == null)
       {
          followUpOnError = ParseUtil.getParameter(request, 

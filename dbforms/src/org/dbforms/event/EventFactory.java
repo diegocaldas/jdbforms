@@ -33,10 +33,7 @@ import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.Table;
 import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.TableEvents;
-import org.dbforms.event.eventtype.EventType;
 import org.dbforms.event.eventtype.EventTypeUtil;
-
-
 
 /**
  * The EventFactory abstract class provides the interface and the
@@ -46,36 +43,33 @@ import org.dbforms.event.eventtype.EventTypeUtil;
  * @author Luca Fossato
  * @created 20 novembre 2002
  */
-public abstract class EventFactory
-{
+public abstract class EventFactory {
    /** logging category */
-   protected static Category logCat = Category.getInstance(
-                                               EventFactory.class.getName());
+   protected static Category logCat =
+      Category.getInstance(EventFactory.class.getName());
 
    /** map of supported event */
    protected HashMap eventInfoMap = null;
 
    /** classes used as "non keyInfo" constructor arguments types */
-   protected static Class[] constructorArgsTypes = 
-            new Class[] 
-   {
-      String.class, HttpServletRequest.class, DbFormsConfig.class
-   };
+   protected static Class[] constructorArgsTypes =
+      new Class[] {
+         String.class,
+         HttpServletRequest.class,
+         DbFormsConfig.class };
 
    /**
     * Creates a new EventFactory object.
     */
-   protected EventFactory()
-   {
+   protected EventFactory() {
       eventInfoMap = new HashMap();
 
-      try
-      {
+      try {
          initializeEvents();
-      }
-      catch (Exception e)
-      {
-         logCat.error("::EventFactory - cannot initialize the factory events", e);
+      } catch (Exception e) {
+         logCat.error(
+            "::EventFactory - cannot initialize the factory events",
+            e);
       }
    }
 
@@ -88,10 +82,10 @@ public abstract class EventFactory
     * 
     * @return a new navigation event
     */
-   public abstract WebEvent createEvent(String action, 
-                                        HttpServletRequest request, 
-                                        DbFormsConfig config);
-
+   public abstract WebEvent createEvent(
+      String action,
+      HttpServletRequest request,
+      DbFormsConfig config);
 
    /**
     * Add a new EventInfo object into the factory. <br>
@@ -100,45 +94,42 @@ public abstract class EventFactory
     * @param einfo the EventInfo object to add to
     * 
     */
-   public void addEventInfo(EventInfo einfo)
-   {
-      if (eventInfoMap != null)
-      {
+   public void addEventInfo(EventInfo einfo) {
+      if (eventInfoMap != null) {
          // note: events are registered using their id value (if that value is not null),
          // or their type value (if the id is null or empty).
          String id = einfo.getId();
 
          // event info override;
-         if (eventInfoMap.containsKey(id))
-         {
+         if (eventInfoMap.containsKey(id)) {
             EventInfo prevEinfo = (EventInfo) eventInfoMap.get(id);
 
-            if (prevEinfo != null)
-            {
+            if (prevEinfo != null) {
                String prevClassName = prevEinfo.getClassName();
-               logCat.warn(new StringBuffer(
-                                    "::addEventInfo - the event information having id, class [").append(
-                                    id).append(", ")
-                                                                                                        .append(einfo.getClassName())
-                                                                                                        .append("] overrides the event class [")
-                                                                                                        .append(prevClassName)
-                                                                                                        .append("]")
-                                                                                                        .toString());
+               logCat.warn(
+                  new StringBuffer("::addEventInfo - the event information having id, class [")
+                     .append(id)
+                     .append(", ")
+                     .append(einfo.getClassName())
+                     .append("] overrides the event class [")
+                     .append(prevClassName)
+                     .append("]")
+                     .toString());
             }
          }
 
-
          // event info registration;
          eventInfoMap.put(id, einfo);
-         logCat.info(new StringBuffer(
-                              "::addEventInfo - event info having id, type, class [").append(
-                              id).append(", ").append(einfo.getType())
-                                                                                             .append(", ")
-                                                                                             .append(einfo.getClassName())
-                                                                                             .append("] registered"));
+         logCat.info(
+            new StringBuffer("::addEventInfo - event info having id, type, class [")
+               .append(id)
+               .append(", ")
+               .append(einfo.getType())
+               .append(", ")
+               .append(einfo.getClassName())
+               .append("] registered"));
       }
    }
-
 
    /**
     * PROTECTED methods here
@@ -151,7 +142,6 @@ public abstract class EventFactory
     */
    protected abstract void initializeEvents() throws Exception;
 
-
    /**
     * Get the EventInfo object having the input identifier.
     * 
@@ -160,23 +150,20 @@ public abstract class EventFactory
     * @return the EventInfo object having the input identifier, or null if that
     *         object does not exist
     */
-   protected EventInfo getEventInfo(String id)
-   {
+   protected EventInfo getEventInfo(String id) {
       EventInfo einfo = null;
 
-      if ((eventInfoMap != null) && (eventInfoMap.containsKey(id)))
-      {
+      if ((eventInfoMap != null) && (eventInfoMap.containsKey(id))) {
          einfo = (EventInfo) eventInfoMap.get(id);
-      }
-      else
-      {
-         logCat.error("::getEventInfo - event having id [" + id
-                      + "] is not registered into the factory, returning a NULL event");
+      } else {
+         logCat.error(
+            "::getEventInfo - event having id ["
+               + id
+               + "] is not registered into the factory, returning a NULL event");
       }
 
       return einfo;
    }
-
 
    /**
     * Instance a new DatabaseEvent object.
@@ -187,32 +174,31 @@ public abstract class EventFactory
     * 
     * @return the event object, or null if any problem occurs
     */
-   protected WebEvent getEvent(EventInfo einfo, Class[] constructorArgsTypes, 
-                               Object[] constructorArgs)
-   {
+   protected WebEvent getEvent(
+      EventInfo einfo,
+      Class[] constructorArgsTypes,
+      Object[] constructorArgs) {
       WebEvent event = null;
 
-      if (einfo != null)
-      {
-         try
-         {
-            event = (WebEvent) ReflectionUtil.newInstance(einfo.getClassName(), 
-                                                          constructorArgsTypes, 
-                                                          constructorArgs);
+      if (einfo != null) {
+         try {
+            event =
+               (WebEvent) ReflectionUtil.newInstance(
+                  einfo.getClassName(),
+                  constructorArgsTypes,
+                  constructorArgs);
             // set a new Properties object into the event;
             event.setProperties(new Properties(einfo.getProperties()));
             event.setType(einfo.getType());
-         }
-         catch (Exception e)
-         {
-            logCat.error("::getEvent - cannot create the new event [" + einfo
-                         + "]", e);
+         } catch (Exception e) {
+            logCat.error(
+               "::getEvent - cannot create the new event [" + einfo + "]",
+               e);
          }
       }
 
       return event;
    }
-
 
    /**
     * Get the Event identifier from the destination table related to the input
@@ -224,71 +210,49 @@ public abstract class EventFactory
     * @return the Event identifier  from the destination table, or null if any
     *         error occurs
     */
-   protected String getEventIdFromDestinationTable(HttpServletRequest request, 
-                                                   String action)
-   {
-      DbFormsConfig config    = null;
-      Table         table     = null;
-      String        eventId   = null;
-      String        eventType = EventTypeUtil.getEventType(action)
-                                             .getEventType();
+   protected String getEventIdFromDestinationTable(
+      HttpServletRequest request,
+      String action) {
+      DbFormsConfig config = null;
+      Table table = null;
+      String eventId = null;
+      String eventType = EventTypeUtil.getEventType(action).getEventType();
 
-      try
-      {
+      try {
          config = DbFormsConfigRegistry.instance().lookup();
-      }
-      catch (Exception e)
-      {
+      } catch (Exception e) {
          logCat.error(
-                  "::getEventIdFromDestinationTable - cannot get the config object from the DbFormsConfigRegistry");
+            "::getEventIdFromDestinationTable - cannot get the config object from the DbFormsConfigRegistry");
       }
 
-      if (config != null)
-      {
+      if (config != null) {
 
-         // if a gotoButton tag like:
-         //
-         //   <db:gotoButton caption="users" destination="/dispatcher.do?fwd=userListBO" />
-         //
-         // does not specify its destTable attribute (ie: destTable="APP_USER"),
-         // the factory cannot override the goto event class; so it returns
-         // the default EventType.EVENT_NAVIGATION_GOTO event id.
-         if (eventType.equals(EventType.EVENT_NAVIGATION_GOTO))
-         {
-            //logCat.warn("::getEventIdFromDestinationTable - got an EVENT_NAVIGATION_GOTO");
-            return EventType.EVENT_NAVIGATION_GOTO;
-         }
-         else
-         {
-				// try to retrieve a valid  target table name from the request;
-				// if it's null, try to retrieve the table id from the action string.
-				String tableName = EventHelper.getDestinationTableName(request, action);
-				if (!Util.isNull(tableName))
-				{
-					table = config.getTableByName(tableName);
-				}
+         // try to retrieve a valid  target table name from the request;
+         // if it's null, try to retrieve the table id from the action string.
+         String tableName =
+            EventHelper.getDestinationTableName(request, action);
+         if (!Util.isNull(tableName)) {
+            table = config.getTableByName(tableName);
+         } else {
             int tableId = EventHelper.getTableId(action);
             table = config.getTable(tableId);
          }
-
-         if (!Util.isNull(eventType) )
-         {
-			TableEvents tableEvents;
+         if (!Util.isNull(eventType)) {
+            TableEvents tableEvents;
             if (table != null) {
-			   tableEvents= table.getTableEvents();
+               tableEvents = table.getTableEvents();
             } else {
-				tableEvents = new TableEvents();
+               tableEvents = new TableEvents();
             }
             eventId = tableEvents.getEventId(eventType);
          }
       }
 
-      logCat.info("::getEventIdFromDestinationTable - eventId = [" + eventId
-                  + "]");
+      logCat.info(
+         "::getEventIdFromDestinationTable - eventId = [" + eventId + "]");
 
       return eventId;
    }
-
 
    /**
     * Get the Event identifier from the destination table related to the input
@@ -300,14 +264,15 @@ public abstract class EventFactory
     * @return the Event identifier  from the destination table, or null if any
     *         error occurs
     */
-   protected String getEventIdFromDestinationTable(Table table, String action)
-   {
+   protected String getEventIdFromDestinationTable(
+      Table table,
+      String action) {
       TableEvents tableEvents = table.getTableEvents();
-      String      eventType = EventTypeUtil.getEventType(action).getEventType();
-      String      eventId   = tableEvents.getEventId(eventType);
+      String eventType = EventTypeUtil.getEventType(action).getEventType();
+      String eventId = tableEvents.getEventId(eventType);
 
-      logCat.info("::getEventIdFromDestinationTable - eventId = [" + eventId
-                  + "]");
+      logCat.info(
+         "::getEventIdFromDestinationTable - eventId = [" + eventId + "]");
 
       return eventId;
    }
