@@ -174,13 +174,12 @@
   <build>
     <nagEmailAddress></nagEmailAddress>
     <sourceDirectory>src</sourceDirectory>
-    <unitTestSourceDirectory>src/tests/test</unitTestSourceDirectory>
+    <unitTestSourceDirectory>tests/test</unitTestSourceDirectory>
     <aspectSourceDirectory></aspectSourceDirectory>
 
     <sourceModifications>
       <sourceModification>
         <excludes>
-          <exclude>tests/**/*.*</exclude>
         </excludes>
       </sourceModification>
     </sourceModifications>
