@@ -22,7 +22,7 @@
  */
 package org.dbforms.taglib;
 import javax.servlet.jsp.tagext.*;
-import org.dbforms.*;
+
 
 // these 3 we need for formfield auto-population
 import java.text.Format;
@@ -33,7 +33,6 @@ import org.dbforms.event.ReloadEvent;
 import org.dbforms.event.WebEvent;
 import javax.servlet.http.HttpServletRequest;
 
-import org.CVS.*;
 import org.apache.log4j.Category;
 
 
