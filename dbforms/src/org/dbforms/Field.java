@@ -47,6 +47,8 @@ public class Field
     /** integer representation of the "fieldType"-value */
     private int type;
 
+	private String fieldType;
+
     /** stores if the field is AUTOINCremental */
     private boolean isAutoInc;
 
@@ -70,6 +72,7 @@ public class Field
 
     /** */
     private String expression;
+
 
 
     /**
@@ -118,17 +121,6 @@ public class Field
 
 
     /**
-     *  Sets the fieldType attribute of the Field object
-     *
-     * @param  fieldType The new fieldType value
-     */
-    //public void setFieldType(String fieldType)
-    //{
-      //  setType(fieldType);
-//    }
-
-
-    /**
      *  Maps the field type description to internal value.
      *  <br>
      *  We need this information in oder to call the appropriate
@@ -136,58 +128,52 @@ public class Field
      *
      * @param  aType the type string value (example: "int", "char", "numeric", etc)
      */
-    public void setFieldType(String aType)
+    public void setFieldType(String fieldType)
     {
-        aType = aType.toLowerCase();
+		logCat.info("***setFieldType setter called***");
+		this.fieldType = fieldType;
 
-        if (aType.startsWith("int") || aType.startsWith("smallint") || aType.startsWith("tinyint"))
+		fieldType = fieldType.toLowerCase();
+        if (fieldType.startsWith("int") || fieldType.startsWith("smallint") || fieldType.startsWith("tinyint"))
         {
             type = FieldTypes.INTEGER;
         }
-        else if (aType.startsWith("char") || aType.startsWith("varchar") || aType.startsWith("nvarchar") || aType.startsWith("longchar"))
+        else if (fieldType.startsWith("char") || fieldType.startsWith("varchar") || fieldType.startsWith("nvarchar") || fieldType.startsWith("longchar"))
         {
             type = FieldTypes.CHAR;
         }
-        else if (aType.startsWith("numeric") || aType.startsWith("number"))
+        else if (fieldType.startsWith("numeric") || fieldType.startsWith("number"))
         {
             type = FieldTypes.NUMERIC;
         }
-        else if (aType.startsWith("date"))
+        else if (fieldType.startsWith("date"))
         {
             type = FieldTypes.DATE;
         }
-        else if (aType.startsWith("timestamp"))
+        else if (fieldType.startsWith("timestamp"))
         {
             type = FieldTypes.TIMESTAMP;
         }
-        else if (aType.startsWith("double"))
+        else if (fieldType.startsWith("double"))
         {
             type = FieldTypes.DOUBLE;
         }
-        else if (aType.startsWith("float") || aType.startsWith("real"))
+        else if (fieldType.startsWith("float") || fieldType.startsWith("real"))
         {
             type = FieldTypes.FLOAT;
         }
-        else if (aType.startsWith("blob") || aType.startsWith("image"))
+        else if (fieldType.startsWith("blob") || fieldType.startsWith("image"))
         {
             type = FieldTypes.BLOB;
         }
-        else if (aType.startsWith("diskblob"))
+        else if (fieldType.startsWith("diskblob"))
         {
             type = FieldTypes.DISKBLOB;
         }
     }
 
 
-    /**
-     *  Gets the type attribute of the Field object
-     *
-     * @return  The type value
-     */
-    public int getFieldType()
-    {
-        return type;
-    }	/**	 *  Gets the type attribute of the Field object	 *	 * @return  The type value	 * @deprecated Should use getFieldType()	 */    public int getType(){    	return getFieldType();    }
+	/**	 *  Gets the type attribute of the Field object	 *	 * @return  The type value	 * @deprecated Should use getFieldType()	 */    public int getType() {    	return type;    }
 
 
     /**
