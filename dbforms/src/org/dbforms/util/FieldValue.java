@@ -42,8 +42,9 @@ import org.dbforms.config.Field;
 public class FieldValue implements Cloneable
 {
    /** logging category for this class */
-   private static Category logCat = Category.getInstance(FieldValue.class.getName());
-                                             
+   private static Category logCat = Category.getInstance(
+                                             FieldValue.class.getName());
+
    /** field object */
    private Field field;
 
@@ -52,7 +53,7 @@ public class FieldValue implements Cloneable
 
    /** old value */
    private String oldValue;
-   
+
    /**
     * Field sor direction. Can be Field.ORDER_ASCENDING or
     * Field.ORDER_DESCENDING.
@@ -99,7 +100,7 @@ public class FieldValue implements Cloneable
     */
    public FieldValue(Field field, String fieldValue)
    {
-   	  this();
+      this();
       this.field      = field;
       this.fieldValue = fieldValue;
    }
@@ -127,15 +128,12 @@ public class FieldValue implements Cloneable
     * @param operator     the type of filter comparison operator
     * @param isLogicalOR  specifies whether to OR all values or AND them
     */
-   public FieldValue(Field   field, 
-                     String  fieldValue, 
-                     int     operator, 
+   public FieldValue(Field field, String fieldValue, int operator, 
                      boolean isLogicalOR)
    {
       this(field, fieldValue, operator);
       this.logicalOR = isLogicalOR;
    }
-
 
    /**
     * Gets the operator attribute of the FieldValue object
@@ -315,8 +313,9 @@ public class FieldValue implements Cloneable
 
       if ((fv != null) && (fv.length > 0))
       {
-          // SM 2003-08-08: added brackets for each and-ed condition
-          buf.append(" ( ");
+         // SM 2003-08-08: added brackets for each and-ed condition
+         buf.append(" ( ");
+
          for (int i = 0; i < fv.length; i++)
          {
             // depending on the value of isLogicalOR in FieldValue,
@@ -400,10 +399,24 @@ public class FieldValue implements Cloneable
                   buf.append(" IS NOT NULL ");
 
                   break;
+
+               case Constants.FILTER_EMPTY:
+                  if (fv[i].getField().getType() == FieldTypes.CHAR )
+                     buf.append(" = '' ");
+
+                  break;
+
+               case Constants.FILTER_NOT_EMPTY:
+	 			  if (fv[i].getField().getType() == FieldTypes.CHAR )
+                     buf.append(" <> '' ");
+
+                  break;
             }
          }
+
          buf.append(" ) ");
       }
+
       return buf.toString();
    }
 
@@ -515,6 +528,16 @@ public class FieldValue implements Cloneable
 
                case Constants.FILTER_NOT_NULL:
                   buf.append(" IS NOT NULL ");
+
+                  break;
+
+               case Constants.FILTER_EMPTY:
+                  buf.append(" = '' ");
+
+                  break;
+
+               case Constants.FILTER_NOT_EMPTY:
+                  buf.append(" <> '' ");
 
                   break;
             }
@@ -782,6 +805,12 @@ public class FieldValue implements Cloneable
          case Constants.FILTER_NOT_NULL:
             break;
 
+         case Constants.FILTER_EMPTY:
+            break;
+
+         case Constants.FILTER_NOT_EMPTY:
+            break;
+
          default:
             SqlUtil.fillPreparedStatement(ps, curCol, valueStr, 
                                           curField.getType());
@@ -845,9 +874,9 @@ public class FieldValue implements Cloneable
 
 
    /**
-    *  Return the fileHolder object for this field.
+    * Return the fileHolder object for this field.
     * 
-    * @return  the fileHolder object of this field
+    * @return the fileHolder object of this field
     */
    public FileHolder getFileHolder()
    {
@@ -864,22 +893,22 @@ public class FieldValue implements Cloneable
    {
       this.fileHolder = fileHolder;
    }
-    
-    
+
+
    /**
-    *  Get the oldValue of this Field object.
+    * Get the oldValue of this Field object.
     * 
-	* @return the oldValue of this Field object
-	*/
+    * @return the oldValue of this Field object
+    */
    public String getOldValue()
    {
-	 return oldValue;
+      return oldValue;
    }
 
 
    /**
-    *  Set the oldValue for this Field object.
-	* 
+    * Set the oldValue for this Field object.
+    * 
     * @param string the oldValue for this Field object
     */
    public void setOldValue(String string)

@@ -28,8 +28,7 @@ package org.dbforms.util;
  *
  * @author hkk
  */
-public class Constants
-{
+public class Constants {
    /** DOCUMENT ME! */
    public static final String INSERTPREFIX = "ins";
 
@@ -95,6 +94,12 @@ public class Constants
 
    /** DOCUMENT ME! */
    public static final int FILTER_NOT_NULL = 8;
+
+   /** DOCUMENT ME! */
+   public static final int FILTER_EMPTY = 9;
+
+   /** DOCUMENT ME! */
+   public static final int FILTER_NOT_EMPTY = 10;
 
    /** DOCUMENT ME! */
    public static final boolean ORDER_ASCENDING = false;

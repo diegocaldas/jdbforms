@@ -3677,6 +3677,16 @@ is released.</info>
 					</info>
 				</attribute>
 				<attribute>
+					<name>showAlways</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						<p>If false (which is the default setting), the update button will be rendered<br/>
+                                                   only if resultset contains data<br/>
+						</p>
+					</info>
+				</attribute>
+				<attribute>
 					<name>caption</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>

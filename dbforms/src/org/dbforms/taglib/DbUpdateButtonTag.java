@@ -54,6 +54,8 @@ public class DbUpdateButtonTag extends DbBaseButtonTag
 
    private String associatedRadio;
 
+   private String showAlways = "false";
+
    /**
     * DOCUMENT ME!
     *
@@ -104,7 +106,8 @@ public class DbUpdateButtonTag extends DbBaseButtonTag
             + "=true;");
       }
 
-      if (parentForm.getFooterReached()
+      if (!"true".equalsIgnoreCase(showAlways) 
+      		&& parentForm.getFooterReached()
                && Util.isNull(parentForm.getResultSetVector()))
       {
          // 20030521 HKK: Bug fixing, thanks to Michael Slack! 
@@ -189,7 +192,8 @@ public class DbUpdateButtonTag extends DbBaseButtonTag
    {
       if (choosenFlavor == FLAVOR_MODERN)
       {
-         if (parentForm.getFooterReached()
+         if ("true".equalsIgnoreCase(showAlways) 
+         		&& parentForm.getFooterReached()
                   && Util.isNull(parentForm.getResultSetVector()))
          {
             return EVAL_PAGE;
@@ -212,4 +216,18 @@ public class DbUpdateButtonTag extends DbBaseButtonTag
 
       return EVAL_PAGE;
    }
+   /**
+    * @return
+    */
+   public String getShowAlways() {
+      return showAlways;
+   }
+
+   /**
+    * @param string
+    */
+   public void setShowAlways(String string) {
+      showAlways = string;
+   }
+
 }

@@ -40,6 +40,7 @@ import org.apache.log4j.Category;
 import org.dbforms.util.SqlUtil;
 import org.dbforms.util.MultipartRequest;
 import org.dbforms.util.MessageResources;
+import org.dbforms.util.ParseUtil;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.Table;
 import org.dbforms.event.EventEngine;
@@ -463,11 +464,8 @@ public class Controller extends HttpServlet
       Connection   con            = null;
 
       // get the connection name from the request;
-      if ((connectionName = request.getParameter("invname_" + tableId)) == null)
-      {
-         connectionName = SqlUtil.DEFAULT_CONNECTION;
-      }
-
+	  connectionName =  ParseUtil.getParameter(request, "invname_" + tableId, SqlUtil.DEFAULT_CONNECTION);
+//      connectionName = SqlUtil.DEFAULT_CONNECTION;
       if ((con = (Connection) connectionsTable.get(connectionName)) == null)
       {
          con = SqlUtil.getConnection(config, connectionName);

@@ -183,7 +183,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
    private FieldValue[] overrulingOrder;
    private Vector       overrulingOrderFields;
    private String       localWebEvent;
-   private String       dbConnectionName;
+   private String       dbConnectionName = null;
 
    /** #fixme: description */
    private StringBuffer childElementOutput;
@@ -1374,7 +1374,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
 
          // write out the name of the involved dbconnection.
          tagBuf.append("<input type='hidden' name='invname_" + tableId
-            + "' value='" + dbConnectionName + "'/>");
+            + "' value='" + (Util.isNull(dbConnectionName)?"":dbConnectionName) + "'/>");
 
          // write out the autoupdate-policy of this form
          tagBuf.append("<input type=\"hidden\" name=\"autoupdate_" + tableId
@@ -2309,6 +2309,18 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
                   operator     = Constants.FILTER_NOT_NULL;
                   jump         = 0;
                }
+				else if (aSearchFieldValue.startsWith("[EMPTY]"))
+				{
+					algorithm    = Constants.SEARCH_ALGO_EXTENDED;
+					operator     = Constants.FILTER_EMPTY;
+					jump         = 0;
+				}
+				else if (aSearchFieldValue.startsWith("[!EMPTY]"))
+				{
+					algorithm    = Constants.SEARCH_ALGO_EXTENDED;
+					operator     = Constants.FILTER_NOT_EMPTY;
+					jump         = 0;
+				}
 
                if (jump > 0)
                {
