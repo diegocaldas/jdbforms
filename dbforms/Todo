@@ -21,8 +21,6 @@ TO DO
 
 * Include support for DBCS. 
 
-* Allow free-form queries (whereClause attribute in dbform tag) to be used in conjunction with DbForms navigation.
-
 * On multiple-row updates, update only the rows for which fields have been modified.
 
 
