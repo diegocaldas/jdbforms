@@ -125,8 +125,8 @@
 						</p>
 						<p style="    text-autospace:none">
 							<span style="font-size:8.0pt;font-family:&quot;Courier New&quot;;     ">&lt;db:body&gt;</span>
-							<span style="font-size:8.0pt;font-family:&quot;Courier New&quot;;     ">&lt;db:textField fieldname=&quot;Table1.fieldName&quot;/&gt;</span>
-							<span style="font-size:8.0pt;font-family:&quot;Courier New&quot;;     ">&lt;db:textField fieldname=&quot;Table2.otherField&quot;/&gt;</span>
+							<span style="font-size:8.0pt;font-family:&quot;Courier New&quot;;     ">&lt;db:textField fieldName=&quot;Table1.fieldName&quot;/&gt;</span>
+							<span style="font-size:8.0pt;font-family:&quot;Courier New&quot;;     ">&lt;db:textField fieldName=&quot;Table2.otherField&quot;/&gt;</span>
 						</p>
 						<p style="    text-autospace:none">
 							<span style="font-size:8.0pt;font-family:&quot;Courier New&quot;;     ">&lt;/db:body&gt;</span>
@@ -336,6 +336,7 @@
 					<rtexprvalue>true</rtexprvalue>
 					<info>
 						<p>used in sub-form: field(s) in the main form that is/are linked to this form</p>
+                                                <p>Should either be a key or set to <computeroutput>sortable="true"</computeroutput>in <computeroutput>dbforms-config.xml</computeroutput>
 					</info>
 				</attribute>
 				<attribute>
@@ -344,7 +345,8 @@
 					<rtexprvalue>true</rtexprvalue>
 					<info>
 						<p>used in sub-form: field(s) in this form that is/are linked to the parent form</p>
-					</info>
+					<p>Should either be a key or set to <computeroutput>sortable="true"</computeroutput>in <computeroutput>dbforms-config.xml</computeroutput>
+                                        </info>
 				</attribute>
 				<attribute>
 					<name>target</name>
@@ -744,7 +746,7 @@ etc)</summary>
 					<p>
 				            &lt;!We have an ID, we want to display the Description -look it
 				              up in the Priorities table --&gt;<br/>
-				              &lt;db:dataLabel fieldname=&quot;ID_Priority&quot;&gt; <br/>
+				              &lt;db:dataLabel fieldName=&quot;ID_Priority&quot;&gt; <br/>
 				              &lt;db:queryData  
 				              name=&quot;aQuery&quot; 
 				              query=&quot;SELECT ID_Priority, Description from Priorities&quot;/&gt;<br/>
@@ -1697,7 +1699,7 @@ hanlder executed when the user selects some text</info>
                   used for cross references to other tables.</p>
 					<p>Example:<span style="font-size:8.0pt;font-family:Courier;   "/>
 					</p>
-					<p>&lt;We want to display a drop down list with data from the Cities table,<br/>use the city_reference value for the default list selection--&gt;<br/>&lt;db:select fieldname=&quot;city_reference&quot;&gt;<br/>&lt;db:tableData <br/>name=&quot;aQuery&quot;<br/>foreignTable=&quot;Cities&quot;<br/>visibleFields=&quot;city_name, city_state&quot;<br/>storeField=&quot;city_id&quot;/&gt;<br/>&lt;/db:select&gt;</p>
+					<p>&lt;We want to display a drop down list with data from the Cities table,<br/>use the city_reference value for the default list selection--&gt;<br/>&lt;db:select fieldName=&quot;city_reference&quot;&gt;<br/>&lt;db:tableData <br/>name=&quot;aQuery&quot;<br/>foreignTable=&quot;Cities&quot;<br/>visibleFields=&quot;city_name, city_state&quot;<br/>storeField=&quot;city_id&quot;/&gt;<br/>&lt;/db:select&gt;</p>
 				</info>
 				<attribute>
 					<name>name</name>
@@ -1806,7 +1808,7 @@ clause for the query</info>
 					<p>
             &lt;!We want to display a drop down list with data from the Cities table,<br/>
                   use the city_reference value for the default list selection --&gt;<br/>
-                  &lt;db:select fieldname=&quot;city_reference&quot;&gt;<br/>
+                  &lt;db:select fieldName=&quot;city_reference&quot;&gt;<br/>
                   &lt;db:queryData 
                   name=&quot;aQuery&quot;<br/>
                   query=&quot;Select city_id, city_name, city_state from Cities&quot;/&gt;<br/>
@@ -1913,7 +1915,7 @@ checkbox or select - tag!(useful only in conjunction with radio, checkbox or sel
 					</p>
 					<p>&lt;!We want to display a drop down list with days of the week,<br/>
          use the day_reference value for the default list selection--&gt;<br/>
-        &lt;db:select fieldname=&quot;day_reference&quot;&gt;<br/>
+        &lt;db:select fieldName=&quot;day_reference&quot;&gt;<br/>
           &lt;db:staticData name=&quot;myQuery&quot;&gt; <br/>
         &lt;db:staticDataItem key=&quot;0&quot; value=&quot;Sunday&quot;/&gt;<br/>
           &lt;db:staticDataItem key=&quot;1&quot; value=&quot;Monday&quot;/&gt;<br/>
@@ -2208,10 +2210,10 @@ of them</summary>
   tableData, queryData, staticData, ...)</p>
 					<p>Example:<span style="font-size:8.0pt;font-family:Courier;   "/>
 					</p>
-					<p>&lt;!We want to display a group of radio button, use the value of fieldname 
+					<p>&lt;!We want to display a group of radio button, use the value of fieldName 
         'timeframe' for the default list selection. In INSERT mode, use the<br/>
          first entry --&gt;<br/>
-        &lt;db:radio fieldname=&quot;timeframe&quot; <br/>
+        &lt;db:radio fieldName=&quot;timeframe&quot; <br/>
          growDirection=&quot;vertical&quot;<br/>
          value=&quot;0&quot; &gt;<br/>
          &lt;db:staticData name=&quot;myQuery&quot;&gt; <br/>
@@ -2439,7 +2441,7 @@ group of them</summary>
 					<p>
 						<span style="font-size:8.0pt;   font-family:Courier;">&lt;!We want to display a checkbox which, when checked, 
         is set to &quot;yes&quot; --&gt;<br/>
-        &lt;db:checkbox fieldname=&quot;yesNo&quot; value=&quot;yes&quot; checked=&quot;true&quot;/&gt;<br/>
+        &lt;db:checkbox fieldName=&quot;yesNo&quot; value=&quot;yes&quot; checked=&quot;true&quot;/&gt;<br/>
 						</span>
 					</p>
 				</info>
@@ -2647,7 +2649,7 @@ embedded OPTION elements.</summary>
 					<p>&lt;!We want to display a drop down list with data from the Cities table,<br/>
           use the city_reference value for the default list selection.<br/>
          Added a blank entry as default selection --&gt;<br/>
-        &lt;db:select fieldname=&quot;city_reference&quot; customEntry=&quot;001,,true&quot;&gt;<br/>
+        &lt;db:select fieldName=&quot;city_reference&quot; customEntry=&quot;001,,true&quot;&gt;<br/>
           &lt;db:queryData <br/>
           name=&quot;aQuery&quot;<br/>
          query=&quot;Select city_id, city_name, city_state from Cities&quot;/&gt;<br/>
@@ -5294,7 +5296,7 @@ error manager</summary>
 				<name>blobURL</name>
 				<summary>
 					<p>This tag generates an URL pointing to a servlet downloading the DISKBLOB referenced 
-  by fieldname</p>
+  by fieldName</p>
 				</summary>
 				<tagclass>org.dbforms.taglib.DbBlobURLTag</tagclass>
 				<bodycontent>empty</bodycontent>
