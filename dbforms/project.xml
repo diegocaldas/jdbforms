@@ -314,12 +314,9 @@
     </dependency>       
 
     <dependency>
-      <id>regexp</id>
-      <version>1.2</version>
-      <properties>
-         <war.bundle>true</war.bundle>
-       </properties>
-    </dependency>       
+      <id>oro</id>
+      <version>2.0.7</version>
+    </dependency>
 
     <!-- testing only -->
     <dependency>
