@@ -105,9 +105,7 @@ public class NavNextEvent extends NavigationEvent
 	 * 
 	 * @exception SQLException if any error occurs
     *
-    * @todo change behavior to navLast if navNext finds no data
     * @todo make a option to allow original "navNew" behavior if desired
-    * @todo change behavior to navFirst if navPrev finds no data
 	 */
    public ResultSetVector processEvent(
 							FieldValue[] filterFieldValues,

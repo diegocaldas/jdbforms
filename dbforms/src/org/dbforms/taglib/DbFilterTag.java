@@ -100,7 +100,6 @@ import org.dbforms.util.Util;
  * (.i.e. when user press the set button, and so the filter_<tableId>_set parameter is found in request).
  * This is needed because here we must force the goto event to move to the first avalilable row. 
  * <p>   
- * @todo add internationalization support
  *  
  * @author Sergio Moretti <s.moretti@nsi-mail.it>
  * 
@@ -182,6 +181,7 @@ public class DbFilterTag extends TagSupportWithScriptHandler
     * @param tableId
     * @param sqlFilter
     * @return filter string
+    * @deprecated code is moved into the DataSource classes so that XML data can be handled too
     */
    public static String generateSqlFilter(HttpServletRequest request, 
                                           int tableId, String sqlFilter)

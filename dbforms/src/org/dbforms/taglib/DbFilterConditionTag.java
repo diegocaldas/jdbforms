@@ -125,7 +125,7 @@ public class DbFilterConditionTag extends BodyTagSupport
     * @param tableId
     * @param conditionId
     * @return string containing sql condition code
-    * @todo search for \? to let use the ? char in condition
+    * @deprecated code is moved into the DataSource classes so that XML data can be handled too
     */
    protected static String generateFilterCondition(HttpServletRequest request, 
                                                    int tableId, int conditionId)
