@@ -1727,8 +1727,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
                                     count, 
                                     firstPosition, 
                                     lastPosition, 
-                                    con,
-                                    dbConnectionName);
+                                    con);
           
 			if (Util.isNull(resultSetVector))
             {

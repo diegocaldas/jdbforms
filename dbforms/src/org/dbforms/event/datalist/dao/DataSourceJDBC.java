@@ -55,19 +55,16 @@ public class DataSourceJDBC extends DataSource
 {
 	private String query;
 	private Connection con;
-	private boolean ownCon = false;
 	private ResultSet rs;
 	private Statement stmt;
 	private Vector data;
 	private Vector keys;
 	private int colCount;
 	private String whereClause;
-	private String dbConnectionName;
 	private String tableList;
 	private FieldValue[] filterConstraint;
 	private FieldValue[] orderConstraint;
 	private String sqlFilter;
-	private DbFormsConfig config;
 	private boolean fetchedAll = false;
 
 	/**
@@ -93,18 +90,6 @@ public class DataSourceJDBC extends DataSource
 		close();
 	}
 
-	/**
-	 * Set the conenction name.
-	 * 
-	 * @param config teh configuration object
-	 * @param dbConnectionName the name of the database connection
-	 */
-	public void setConnection(DbFormsConfig config, String dbConnectionName)
-	{
-		close();
-		this.config = config;
-		this.dbConnectionName = dbConnectionName;
-	}
 
 	/**
 	 * Set the connection object.
@@ -161,7 +146,7 @@ public class DataSourceJDBC extends DataSource
 			rs = null;
 		}
 
-		/*
+		/* not for firebird. stmt is close automatically if rs is closed!!!!
 		if (stmt != null)
 		{
 		   try
@@ -175,20 +160,6 @@ public class DataSourceJDBC extends DataSource
 		   stmt = null;
 		}
 		*/
-		if (ownCon)
-		{
-			try
-			{
-				con.close();
-			} catch (SQLException e)
-			{
-				SqlUtil.logSqlException(e);
-			}
-
-			con = null;
-		}
-
-		ownCon = false;
 	}
 
 	/**
@@ -220,9 +191,6 @@ public class DataSourceJDBC extends DataSource
 	{
 		if (!fetchedAll && (rs == null))
 		{
-			ownCon = true;
-			con = SqlUtil.getConnection(config, dbConnectionName);
-
 			if (Util.isNull(whereClause))
 			{
 				query =

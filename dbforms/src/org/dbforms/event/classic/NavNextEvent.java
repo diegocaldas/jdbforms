@@ -100,7 +100,7 @@ public class NavNextEvent extends NavigationEvent
     */
    public ResultSetVector processEvent(FieldValue[] childFieldValues,
       FieldValue[] orderConstraint, String sqlFilter, int count, String firstPosition,
-      String lastPosition, Connection con, String dbConnectionName)
+      String lastPosition, Connection con)
       throws SQLException
    {
       ResultSetVector rsv;

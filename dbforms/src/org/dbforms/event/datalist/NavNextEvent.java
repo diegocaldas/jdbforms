@@ -110,8 +110,7 @@ public class NavNextEvent extends NavigationEvent
                                        String sqlFilter, 
                                        int count, 
                                        String firstPosition, 
-                                       String lastPosition, Connection con, 
-                                       String dbConnectionName)
+                                       String lastPosition, Connection con)
                                 throws SQLException
    {
       logCat.info("==>NavNextEvent.processEvent");
@@ -120,7 +119,7 @@ public class NavNextEvent extends NavigationEvent
       DataSourceFactory qry      = ds.get(table, request);
       if (qry == null)
       {
-          qry = new DataSourceFactory(config, dbConnectionName, table, childFieldValues, orderConstraint, sqlFilter);
+          qry = new DataSourceFactory(con, table, childFieldValues, orderConstraint, sqlFilter);
           ds.put(table, request, qry);
       }      
       String            position = table.getKeyPositionString(

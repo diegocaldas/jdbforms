@@ -227,8 +227,7 @@ public class GotoEvent extends NavigationEvent
                                        String sqlFilter, 
                                        int count, 
                                        String firstPosition, 
-                                       String lastPosition, Connection con, 
-                                       String dbConnectionName)
+                                       String lastPosition, Connection con)
                                 throws SQLException
    {
       // get the DataSourceList from the session
@@ -266,13 +265,11 @@ public class GotoEvent extends NavigationEvent
 
       if (Util.isNull(whereClause))
       {
-         qry = new DataSourceFactory(config, dbConnectionName, table, 
-                                     childFieldValues, orderConstraint, sqlFilter);
+         qry = new DataSourceFactory(con, table, childFieldValues, orderConstraint, sqlFilter);
       }
       else
       {
-         qry = new DataSourceFactory(config, dbConnectionName, table, tableList, 
-                                     whereClause);
+         qry = new DataSourceFactory(con, table, tableList, whereClause);
       }
 
       ds.put(table, request, qry);

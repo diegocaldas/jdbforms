@@ -71,28 +71,17 @@ public abstract class DataSource
       return table;
    }
 
+	/**
+	 * set the connection parameter for the DataSouce.
+	 * V virtual method, if you
+	 * need connection data you must override the method
+	 * 
+	 * @param con this costructor gets an SQL Connection object
+	 */
+	public void setConnection(Connection con)
+	{
+	}
 
-   /**
-    * set the connection parameter for the DataSouce virtual method, if you
-    * need connection data you must override the method
-    * 
-    * @param config             DbFormConfig object
-    * @param dbConnectionName    name of the connection to use
-    */
-   public void setConnection(DbFormsConfig config, String dbConnectionName)
-   {
-   }
-
-
-   /**
-    * set the connection parameter for the DataSouce virtual method, if you
-    * need connection data you must override the method
-    * 
-    * @param con this costructor gets an SQL Connection object
-    */
-   public void setConnection(Connection con)
-   {
-   }
 
 
    /**

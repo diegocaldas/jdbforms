@@ -97,7 +97,7 @@ public class NavCopyEvent extends NavigationEvent
                                        FieldValue[] orderConstraint, 
                                        String sqlFilter, int count, 
                                        String firstPost, String lastPos, 
-                                       Connection con, String dbConnectionName)
+                                       Connection con)
                                 throws SQLException
    {
       logCat.info("processed NavCopyEvent");

@@ -24,6 +24,7 @@
 package org.dbforms.event.datalist.dao;
 import org.apache.log4j.Category;
 import java.util.Vector;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.net.URI;
 import java.net.URLConnection;

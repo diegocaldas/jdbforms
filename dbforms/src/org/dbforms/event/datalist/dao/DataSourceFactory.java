@@ -57,9 +57,8 @@ public class DataSourceFactory
     * Set its DataSource object as dataHandler, using the dataAccess class name
     * for the given table. 
     *
-    * @param table the input table
     */
-   public DataSourceFactory(Table table)
+   private DataSourceFactory(Table table)
      //  throws SQLException
    {
       String dataAccessClass = table.getDataAccessClass();
@@ -71,7 +70,7 @@ public class DataSourceFactory
 
       try
       {
-         Object[] constructorArgs      = new Object[] { table };
+         Object[] constructorArgs      = new Object[] {table };
          Class[]  constructorArgsTypes = new Class[]  { Table.class };
          dataHandler = (DataSource) ReflectionUtil.newInstance(dataAccessClass,
                                                                constructorArgsTypes, 
@@ -84,21 +83,11 @@ public class DataSourceFactory
    }
 
 
-   /**
-    * Creates a new DataSourceFactory object.
-    *
-    * @param con the input connection object
-    * @param table the input table object 
-    *
-    * @throws SQLException if any error occurs
-    */
-   public DataSourceFactory(Connection con, Table table)
-      throws SQLException
-   {
-      this(table);
-      dataHandler.setConnection(con);
-   }
-
+	public DataSourceFactory(Connection con, Table table)
+	{
+	   this(table);
+	   dataHandler.setConnection(con);
+	}
 
    /**
     * Creates a new DataSourceFactory object.
@@ -111,16 +100,14 @@ public class DataSourceFactory
     *
     * @throws SQLException if any error occurs
     */
-   public DataSourceFactory(DbFormsConfig config, 
-                            String        dbConnectionName,
-      						Table 	      table, 
+   public DataSourceFactory(Connection con, 
+   							Table 	      table, 
       						FieldValue[]  filterConstraint, 
       						FieldValue[]  orderConstraint,
       						String sqlFilter)
       throws SQLException
    {
-      this(table);
-      dataHandler.setConnection(config, dbConnectionName);
+      this(con, table);
       dataHandler.setSelect(filterConstraint, orderConstraint, sqlFilter);
    }
 
@@ -136,15 +123,13 @@ public class DataSourceFactory
     *
     * @throws SQLException if any error occurs
     */
-   public DataSourceFactory(DbFormsConfig config, 
-                            String        dbConnectionName,
+   public DataSourceFactory(Connection con, 
       						Table         table, 
       						String        tableList, 
       						String        whereClause)
       throws SQLException
    {
-      this(table);
-      dataHandler.setConnection(config, dbConnectionName);
+      this(con, table);
       dataHandler.setSelect(tableList, whereClause);
    }
 

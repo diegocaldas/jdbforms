@@ -92,8 +92,7 @@ public class NavNewEvent extends NavigationEvent
                                        String sqlFilter, 
                                        int count,
                                        String firstPosition, 
-                                       String lastPosition, Connection con, 
-                                       String dbConnectionName)
+                                       String lastPosition, Connection con)
                                 throws SQLException
    {
       logCat.info("processed NavNewEvent");

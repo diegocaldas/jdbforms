@@ -31,6 +31,7 @@ import java.sql.SQLException;
 import org.dbforms.util.ResultSetVector;
 import org.dbforms.util.ParseUtil;
 import org.dbforms.util.FieldValue;
+import org.dbforms.util.SqlUtil;
 
 import org.dbforms.config.Table;
 import org.dbforms.config.DbFormsConfig;
@@ -188,7 +189,7 @@ public class ConfTableData extends EmbeddedData
 			Table table = config.getTableByName(getForeignTable());
 			FieldValue[] orderConstraint = table.createOrderFieldValues(getOrderBy(), null, false);
 			FieldValue[] childFieldValues = ParseUtil.initFilterFieldValues(table, getFilter());
-			DataSourceFactory qry = new DataSourceFactory(config, dbConnectionName, table, childFieldValues, orderConstraint, null);
+			DataSourceFactory qry = new DataSourceFactory(con, table, childFieldValues, orderConstraint, null);
 			ResultSetVector rsv = qry.getCurrent(null, 0);
 			return formatEmbeddedResultRows(rsv);
 		} catch (Exception e) {

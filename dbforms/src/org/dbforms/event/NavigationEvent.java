@@ -92,7 +92,6 @@ public abstract class NavigationEvent extends WebEvent
                                                 FieldValue[] orderConstraint,
                                                 String sqlFilter, 
                                                 int count, String firstPost, 
-                                                String lastPos, Connection con, 
-                                                String dbConnectionName)
+                                                String lastPos, Connection con)
                                          throws SQLException;
 }
