@@ -34,6 +34,8 @@ import org.dbforms.*;
 import java.text.Format;
 import java.util.Vector;
 import org.dbforms.util.ParseUtil;
+import org.dbforms.event.ReloadEvent;
+import org.dbforms.event.WebEvent;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Category;
 
@@ -508,21 +510,26 @@ public abstract class DbBaseHandlerTag extends BodyTagSupport {
 
 		HttpServletRequest request = (HttpServletRequest) this.pageContext.getRequest();
 		Vector errors = (Vector) request.getAttribute("errors");
+		WebEvent we = (WebEvent) request.getAttribute("webEvent");
 
+							
 		// Are we in Update mode
 		if (!parentForm.getFooterReached()) {
 
 			// Check if attribute 'redisplayFieldsOnError' has been set to true
 			// and is this jsp displaying an error?
-			if ("true".equals(parentForm.getRedisplayFieldsOnError())
-				&& errors != null
-				&& errors.size() > 0) {
+			if ( ("true".equals(parentForm.getRedisplayFieldsOnError())
+				  && errors != null
+				  && errors.size() > 0
+				  ) 
+				|| (we instanceof ReloadEvent)) {
 
 				// Yes - redisplay posted data
 				String oldValue = ParseUtil.getParameter(request, getFormFieldName());
+				
 				if (oldValue != null)
 					return oldValue;
-
+				
 				// fill out empty fields so that there are no plain field-syntax errors
 				// on database operations...
 				return typicalDefaultValue();
@@ -536,6 +543,7 @@ public abstract class DbBaseHandlerTag extends BodyTagSupport {
 				if (currentRow == null)
 					return typicalDefaultValue();
 				else {
+		
 					Object curVal = currentRow[field.getId()];
 					String curStr = null;
 
@@ -570,6 +578,15 @@ public abstract class DbBaseHandlerTag extends BodyTagSupport {
 		} else {
 
 			// the form field is in 'insert-mode'
+
+			if ( we instanceof ReloadEvent ) {
+				String oldValue = ParseUtil.getParameter(request, getFormFieldName());
+				if (oldValue != null)
+					return oldValue;
+				// Patch to reload checkbox, because when unchecked checkbox is null
+				// If unchecked, return anything different of typicalDefaultValue() ...
+				if(this instanceof DbCheckboxTag) return typicalDefaultValue()+"_";
+			}	
 
 			//JOACHIM! CAN THE FOLLOWING LINE BE REMOVED? IT SEEMS TO BE OBSOLETE...
 

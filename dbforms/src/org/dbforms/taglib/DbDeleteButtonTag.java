@@ -88,7 +88,7 @@ public class DbDeleteButtonTag extends DbBaseButtonTag  {
 		parentForm.getJavascriptValidation().equals("true") ){
 			String onclick = (getOnClick()!=null)? getOnClick():"";
 			if(onclick.lastIndexOf(";")!=onclick.length()-1) onclick+=";"; // be sure javascript end with ";"
-			setOnClick( onclick + ValidatorConstants.JS_CANCEL_VALIDATION+"=true;");
+			setOnClick( onclick + ValidatorConstants.JS_CANCEL_VALIDATION+"=false;");
 	}
 	
 	if(getConfirmMessage()!=null){
@@ -98,8 +98,8 @@ public class DbDeleteButtonTag extends DbBaseButtonTag  {
 		String message = getConfirmMessage();
 		if(parentForm.getCaptionResource().equals("true")){
 			try{	
-				HttpServletRequest request = (HttpServletRequest)pageContext.getRequest();
-				message = MessageResources.getMessage(getConfirmMessage(), request.getLocale(), getConfirmMessage());
+				Locale locale = MessageResources.getLocale((HttpServletRequest)pageContext.getRequest());
+				message = MessageResources.getMessage(getConfirmMessage(), locale, getConfirmMessage());
 			}catch(Exception e){
 				logCat.debug("confirm("+caption+") Exception : "+e.getMessage());
 			}

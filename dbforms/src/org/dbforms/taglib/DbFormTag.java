@@ -20,7 +20,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
+ 
 package org.dbforms.taglib;
 
 import java.util.*;
@@ -129,6 +129,8 @@ public class DbFormTag extends BodyTagSupport {
 	private Hashtable javascriptDistinctFunctions = new Hashtable(); // Used to avoid creation of same javascript function.
 
 	private String readOnly = "false";	// Indicate if the form is in read-only mode
+	
+	private WebEvent webEvent = null;	// Keep trace of witch event is use
 	
 	
 	//----------------- Property Getters and Setters ----------------------------------------------
@@ -398,7 +400,8 @@ public class DbFormTag extends BodyTagSupport {
 	// This function is call from children (ex: DbTextFieldTag, DbSelectTag, ... ) 
 	// Add real name and DbForm generate name in hashtable
 	public void addChildName(String tableFieldName, String dbFormGeneratedName){
-			childFieldNames.put(tableFieldName, dbFormGeneratedName);
+		//	childFieldNames.put(tableFieldName, dbFormGeneratedName);
+			childFieldNames.put(dbFormGeneratedName, tableFieldName);
 	}
 
 
@@ -631,14 +634,17 @@ public class DbFormTag extends BodyTagSupport {
 			tagBuf.append(
 				"<input type=\"hidden\" name=\""+ValidatorConstants.FORM_VALIDATOR_NAME+"\" value=\""+ getFormValidatorName()+"\">");
 			}	
-			
 
-					
-			// write out source-tag
 			tagBuf.append(
 				"<input type=\"hidden\" name=\"source\" value=\""
-					+ request.getRequestURI()
+					+ request.getRequestURI()+"?"+request.getQueryString()
 					+ "\">");
+		
+			
+			// Allow to send action dynamicaly from javascript
+			tagBuf.append(
+				"<input type=\"hidden\" name=\"customEvent\">");
+					
 			// *************************************************************
 			//  Part III - fetching Data. This data is provided to all sub-
 			//  elements of this form.
@@ -778,7 +784,7 @@ public class DbFormTag extends BodyTagSupport {
 			// etter (more readable, maintainable) code  (evt. own method or class)!
 			// is there a NAVIGATION event (like "nav to first row" or "nav to previous row", or "nav back 4 rows"?
 			// if so...
-			WebEvent webEvent = (WebEvent) request.getAttribute("webEvent");
+			webEvent = (WebEvent) request.getAttribute("webEvent");
 
 			// test: use BoundedNavEventFactoryImpl [Fossato <fossato@pow2.com>, 2001/11/08]
 			NavEventFactory nef = BoundedNavEventFactoryImpl.instance();
@@ -938,7 +944,8 @@ public class DbFormTag extends BodyTagSupport {
 					&& (overrulingOrder == null
 						|| webEvent instanceof DatabaseEvent
 						|| webEvent instanceof NoopEvent
-						|| webEvent instanceof EmptyEvent)) {
+						|| webEvent instanceof EmptyEvent
+						|| webEvent instanceof ReloadEvent)) {
 					// we have someting to look for, and we have _no_ change of search criteria #fixme - explain better
 					/******************************************************************************************* 
 					 * Grunikiewicz.philip@hydro.qc.ca
@@ -1025,7 +1032,10 @@ public class DbFormTag extends BodyTagSupport {
 
 				}
 
-			} // *** DONE! We have now the underlying data, and this data is accessible to all sub-elements (labels, textFields, etc. of this form ***
+			} 
+			
+					
+			// *** DONE! We have now the underlying data, and this data is accessible to all sub-elements (labels, textFields, etc. of this form ***
 			// *************************************************************
 			//  Part IV - Again, some WebEvent infrastructural stuff:
 			//  write out data indicating the position we have
@@ -1219,7 +1229,7 @@ public class DbFormTag extends BodyTagSupport {
 		// want  A's order constraints get applied to B
 		if (localRequest != null) {
 
-			String refSource = localRequest.getRequestURI();
+			String refSource = localRequest.getRequestURI()+"?"+request.getQueryString();
 			String sourceTag = ParseUtil.getParameter(localRequest, "source");
 			logCat.info("!comparing page " + refSource + " TO " + sourceTag);
 			/*
@@ -1720,28 +1730,84 @@ public class DbFormTag extends BodyTagSupport {
 
 	/****************************************************************************
 	 * Generate Javascript Array of Original field name et DbForm generated name
+	 * Generate Array for each field name.
+	 * 
+	 * Ex: dbFormFields
+	 * 
 	 ****************************************************************************/
 	private StringBuffer generateJavascriptFieldsArray(){
 		
+		// This section looks hard to understand, but to avoid using
+		// synchronized object like keySet ... don't want to alter
+		// childFieldNames hashtable.
+		// We use different step of enumeration.
+		
 		StringBuffer result = new StringBuffer();
-		String key = null, val = null;
+		
+		String key = null, val = null, tmp= null, values= "";
 		
 		result.append("<SCRIPT language=\"javascript\">\n");
 		result.append("<!-- \n\n");
-		result.append("   var dbFormFields = new Array();\n");
-
+		result.append("    var dbFormFields = new Array();\n");
+		
+		Hashtable fields = new Hashtable();
+		
+	
 		Enumeration enum = childFieldNames.keys();
+		
+		//
+		// Loop in each keys "f_0_0@root_2" and create hashtable of unique fieldnames
+		//
 		while(enum.hasMoreElements()){
 			key = (String) enum.nextElement();
 			val = (String) childFieldNames.get(key);
-			result.append(" 	dbFormFields[\"").append(key).append("\"] = \"").append(val).append("\";\n");		
+			values="";
+			if(fields.containsKey(val))
+				 values = (String) fields.get(val);
+				 
+			fields.put(val,values+";"+key);
 		}
+
+		enum = fields.keys();
+		
+		//
+		// Loop for each fieldname and generate text for javascript Array 
+		//
+		// Ex: dbFormFields["DESCRIPTIONDEMANDE"] = new Array("f_0_0@root_4", "f_0_1@root_4", "f_0_insroot_4");
+		//
+		while(enum.hasMoreElements()){
+				key = (String) enum.nextElement();
+				val = (String) fields.get(key);
+				
+				result.append("    dbFormFields[\"").append(key).append("\"] = new Array(");
+				
+				// Sort the delimited string and return an ArrayList of it.
+				ArrayList arrValues = sortFields(val);
+				
+				if(arrValues.size()==1){
+					result.append("\"").append((String) arrValues.get(0)).append("\"");
+				} else {
+				
+					for(int i=0;i<=arrValues.size()-1;i++){					
+						result.append("\"").append((String)arrValues.get(i)).append("\"");
+						if(i!=arrValues.size()-1) result.append(", ");
+					}
+				}
+				result.append(");\n");		
+		}
+
 		result.append("\n    function getDbFormFieldName(name){ \n");		
-		result.append(" 	    return dbFormFields[name]; \n");		
-		result.append(" 	}\n");		
+		result.append("      return getDbFormFieldName(name,null); \n");		
+		result.append("    }\n\n");
+		result.append("\n    function getDbFormFieldName(name,pos){ \n");		
+		result.append("      var result = dbFormFields[name]; \n");		  	  
+		result.append("      if(pos==null) return result[result.length-1]; \n");		
+		result.append("      return result[pos]; \n");		
+		result.append("    }\n");
+		
 		result.append("--></SCRIPT> \n");
 
-		return result;	
+		return result;
 	}
 	/****************************************************************************
 	 * Generate  the Javascript of Validation fields
@@ -1754,11 +1820,118 @@ public class DbFormTag extends BodyTagSupport {
 		DbFormsErrors errors = (DbFormsErrors) pageContext.getServletContext().getAttribute(DbFormsErrors.ERRORS);
 		
 		return DbFormsValidatorUtil.getJavascript( 	getFormValidatorName(), 
-													pageContext.getRequest().getLocale(),
+													MessageResources.getLocale( (HttpServletRequest)pageContext.getRequest() ),
 													childFieldNames,
 													vr,
 													getJavascriptValidationSrcFile(),
 													errors);
 	}
+
+	/**
+	 *  Use by generateJavascriptFieldsArray() to sort the order 
+	 *  of field name. 
+	 */
+	private ArrayList sortFields(String str){
+		/*
+		*  Sort delimited string of DbForms field, and return ArraList of this result.
+		*  
+		*  Ex: "f_0_1@root_1;f_0_insroot_1;f_0_0@root_1;"
+		*
+		*      result : "f_0_0@root_1"
+		*               "f_0_1@root_1"
+		*               "f_0_insroot_1;"
+		*/
+		ArrayList arr = new ArrayList();
+		String tmp="",tmp1=null, tmp2=null, insroot=null;
+		int ident1=0, ident2=0;
+
+		StringTokenizer token = new StringTokenizer(str,";");
+		while (token.hasMoreTokens()){
+	      tmp = (String) token.nextToken();
+	      if(tmp.indexOf("@root")!=-1) 
+	      	 arr.add(tmp);
+	      else
+	      	 insroot = tmp;
+		}
+		if(insroot!=null){
+			arr.add(insroot);
+		}
+		
+		//String[] result = (String[]) arr.toArray(new String[arr.size()]);
+		
+		if(arr.size()==1) return arr;
+
+		for(int i=0;i<=arr.size()-2;i++){
+			tmp1 = (String) arr.get(i);
+			for(int j=i+1;j<=arr.size()-1;j++){
+				tmp2 = (String) arr.get(j);
+				
+				if(tmp1.indexOf("@root")!=-1 && tmp2.indexOf("@root")!=-1){
+					try{
+						ident1 = Integer.parseInt(tmp1.substring(tmp1.indexOf("_",2)+1,tmp1.indexOf("@")));
+						ident2 = Integer.parseInt(tmp2.substring(tmp2.indexOf("_",2)+1,tmp2.indexOf("@")));
+					}catch(Exception e){
+						ident1=-1;
+						ident2=-1;
+					}
+					if(ident2 < ident1){
+						arr.set(i, tmp2);
+						arr.set(j, tmp1);
+						tmp1 = tmp2;
+					}
+				} 
+			}
+		}
+		
+		return arr;
+	}
+	
+
+	/**
+	 *  This method allow to retreive value from resultsetVector
+	 *  from current Form, parentForm or from request. 
+	 * 
+	 */
+	public String getChildFieldValue(String name){
+		ResultSetVector result = null;
+		HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
+		
+		if(webEvent instanceof ReloadEvent){
+			Field field = (Field) getTable().getFieldByName(name);
+			if(field==null)
+				logCat.warn("Field name : "+name+" is not present in Table "+getTable().getName());
+				
+			String keyIndex =(getFooterReached())? "ins" + getPositionPathCore(): getPositionPath();
+
+			StringBuffer buf = new StringBuffer();
+			buf.append("f_");
+			buf.append(getTable().getId());
+			buf.append("_");
+			buf.append(keyIndex);
+			buf.append("_");
+			buf.append(field.getId());
+			
+			return request.getParameter(buf.toString());
+		}
+		
+		if(name.indexOf(":")!=-1){
+			name = name.substring(name.indexOf("."),name.length());
+			if(parentForm!=null){
+				result =  parentForm.getResultSetVector();
+			} else {
+				result =  getResultSetVector();
+			}
+		} else {
+			result =  getResultSetVector();
+		}
+		
+		if(result!=null){
+			return result.getField(name);
+		}else{
+			return null;
+		}
+	}
+	
+
 
 }

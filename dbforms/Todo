@@ -13,7 +13,7 @@ TO DO
 
 * Limit the select list (in query)to fields used in the body tag (useFieldsInBody attribute in form tag)
 
-* Devise a technique (tag?) for 'populating' (without going to the server) a child select box, given a selection in the parent select box.
+* Devise a technique (tag?) for 'populating' a child select box, given a selection in the parent select box. (Assigned Eric Beaumier)
 
 * Make the resultSetVector class more accessible.  Allow it to be cached and manipulated.
 

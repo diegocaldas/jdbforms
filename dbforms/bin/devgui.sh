@@ -82,7 +82,7 @@ fi
 
 
 
-CLASSPATH=${CLASSPATH}:${DBFORMS_HOME}/lib/dbforms_v1_01.jar;
+CLASSPATH=${CLASSPATH}:${DBFORMS_HOME}/lib/dbforms_v1_1_2.jar;
 
 export CLASSPATH
 

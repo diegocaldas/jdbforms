@@ -65,8 +65,8 @@ public class StaticDataItem extends TagSupport {
 	        ((DbBaseHandlerTag) getParent().getParent()).parentForm.getCaptionResource().equals("true") )){
             
             try{
-                HttpServletRequest request = (HttpServletRequest)pageContext.getRequest();
-                message = MessageResources.getMessage(value, request.getLocale());
+ 				Locale locale = MessageResources.getLocale((HttpServletRequest)pageContext.getRequest());
+                message = MessageResources.getMessage(value, locale);
                 if(message!=null) this.value=message;
             }catch(Exception e){
                 logCat.debug("setValue("+value+") Exception : "+e.getMessage());

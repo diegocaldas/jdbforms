@@ -32,6 +32,9 @@ import javax.servlet.jsp.*;
 import javax.servlet.jsp.tagext.*;
 
 import org.dbforms.*;
+import org.dbforms.util.ParseUtil;
+import org.dbforms.event.ReloadEvent;
+import org.dbforms.event.WebEvent;
 
 import org.apache.log4j.Category;
 
@@ -89,6 +92,7 @@ public class DbDateFieldTag extends DbBaseInputTag {
 	
 		HttpServletRequest request = (HttpServletRequest) this.pageContext.getRequest();
 		Vector errors = (Vector) request.getAttribute("errors");
+		WebEvent we = (WebEvent) request.getAttribute("webEvent");
 
 		try {
 
@@ -108,9 +112,9 @@ public class DbDateFieldTag extends DbBaseInputTag {
 
 			if (this.getOverrideValue() != null) {
 				//If the redisplayFieldsOnError attribute is set and we are in error mode, forget override!
-				if ("true".equals(parentForm.getRedisplayFieldsOnError())
-					&& errors != null
-					&& errors.size() > 0) {
+				if ( ("true".equals(parentForm.getRedisplayFieldsOnError())
+				  		&& errors != null && errors.size() > 0 ) 
+				 	|| (we instanceof ReloadEvent)) {
 					tagBuf.append(getFormFieldValue());
 
 				} else {
@@ -118,7 +122,15 @@ public class DbDateFieldTag extends DbBaseInputTag {
 
 				}
 			} else {
-				tagBuf.append(getFormFieldValue());
+				if ( we instanceof ReloadEvent ) {
+					String oldValue = ParseUtil.getParameter(request, getFormFieldName());
+					if (oldValue != null)
+						tagBuf.append(oldValue); 
+					else 
+						tagBuf.append(getFormFieldValue());
+				} else {
+					tagBuf.append(getFormFieldValue());
+				}
 			}
 
 			tagBuf.append("\" ");

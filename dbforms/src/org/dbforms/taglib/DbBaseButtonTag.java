@@ -99,9 +99,9 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag  {
   	if(caption!=null && parentForm.getCaptionResource().equals("true") ){
 		
 		try{	
-			HttpServletRequest request = (HttpServletRequest)pageContext.getRequest();
+			Locale locale = MessageResources.getLocale((HttpServletRequest)pageContext.getRequest());
 			
-			message = MessageResources.getMessage(caption, request.getLocale());
+			message = MessageResources.getMessage(caption, locale);
 		
 			if(message!=null) this.caption=message;
 			

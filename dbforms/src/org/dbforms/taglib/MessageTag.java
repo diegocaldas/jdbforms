@@ -1,6 +1,7 @@
 package org.dbforms.taglib;
 
 import org.dbforms.util.MessageResources;
+import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
@@ -30,10 +31,10 @@ public class MessageTag extends TagSupport {
 	public int doEndTag() throws JspException {
 		
 		if(getKey()!=null){
-			HttpServletRequest request = (HttpServletRequest)pageContext.getRequest();
+			Locale locale = MessageResources.getLocale((HttpServletRequest)pageContext.getRequest());
 			ServletContext application = pageContext.getServletContext();
-			
-			String message = MessageResources.getMessage( getKey(), request.getLocale());
+
+			String message = MessageResources.getMessage( getKey(), locale);
 			
 			try{
 				if(message!=null) {

@@ -33,6 +33,9 @@ public class ValidatorConstants {
 	// javascript boolean variable for doing or bypass validation when submit of <FORM>	
 	public static final String JS_CANCEL_VALIDATION = "bValidateForm";
 	
+	// javascript boolean variable for doing validation for update or insert mode	
+	public static final String JS_UPDATE_VALIDATION_MODE = "bValidateUpdate";
+
 	public ValidatorConstants() {
 		
 	}

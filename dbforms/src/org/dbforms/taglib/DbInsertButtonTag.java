@@ -66,7 +66,7 @@ public class DbInsertButtonTag extends DbBaseButtonTag {
 			parentForm.getJavascriptValidation().equals("true") ){
 				String onclick = (getOnClick()!=null)? getOnClick():"";
 				if(onclick.lastIndexOf(";")!=onclick.length()-1) onclick+=";"; // be sure javascript end with ";"
-				setOnClick( onclick + ValidatorConstants.JS_CANCEL_VALIDATION+"=false;");
+				setOnClick( onclick + ValidatorConstants.JS_CANCEL_VALIDATION+"=true;" + ValidatorConstants.JS_UPDATE_VALIDATION_MODE + "=false;");
 		}
 		
 		DbInsertButtonTag.uniqueID++; // make sure that we don't mix up buttons

@@ -5,6 +5,7 @@ import java.util.Locale;
 import java.util.HashMap;
 import java.util.Enumeration;
 import org.apache.log4j.Category;
+import javax.servlet.http.*;
 
 /**
  * 	This class have been created to cached ResourcesBundle in HashMap.
@@ -31,6 +32,11 @@ import org.apache.log4j.Category;
 
 public class MessageResources {
 
+	// LOCALE_KEY is not final.  Allowing to modify the session attribute name
+	// for sharing with other apps.  Ex: to avoid to store two Locale, one with Struts
+	// and one with DbForms.  By setting LOCALE_KEY to "org.apache.struts.action.LOCALE"
+	// you can share the same Locale in the session scope.
+	public static String LOCALE_KEY = "org.dbforms.LOCALE";
 
 	static Category logCat = Category.getInstance(MessageResources.class.getName());
 
@@ -91,7 +97,7 @@ public class MessageResources {
 
 		// Faster than String (immuable) concatenation
 		String key = new StringBuffer().append(loc.getLanguage()).append("_").append(loc.getCountry()).append("_").append(loc.getVariant()).toString();
-				
+		
 		if(hashResources.containsKey(key)){
 			rb = (ResourceBundle) hashResources.get(key);	
 		} else {
@@ -177,5 +183,20 @@ public class MessageResources {
 	    }
 	}
 
+	public static Locale getLocale(HttpServletRequest request){
+		HttpSession session = request.getSession(); 
+		if(session.getAttribute(MessageResources.LOCALE_KEY)==null){
+			session.setAttribute(MessageResources.LOCALE_KEY, request.getLocale());
+			return request.getLocale();
+		} else {
+			return (Locale) session.getAttribute(MessageResources.LOCALE_KEY);
+		}
+	}
+
+	// Set this Locale in the session scope	
+	public static void setLocale(HttpServletRequest request, Locale locale){
+		HttpSession session = request.getSession(); 
+		session.setAttribute(MessageResources.LOCALE_KEY, locale);
+	}
 }
 

@@ -1,6 +1,58 @@
 __________________________________________________________________________________________________
 __________________________________________________________________________________________________
 
+Friday, May 17, 2002
+DbForms version 1.1.2
+Grunikiewicz.philip@hydro.qc.ca
+
+
+These enhancements are the direct result of your feedback and Eric Beaumier's hard work.  
+
+
+New features
+---------------------------------
+
+
+textField  - tag
+password - attribute
+--------------------
+
+If 'password' attribute is set to true, the textField tag will render a 'password' type (html) 
+input tag.  This allows developers, to make available, visually encrypted input field.
+
+
+
+localeKey - attribute
+Session scope (web.xml)
+-----------------------
+
+Dbforms will first look in the Session object to see if a locale object is available. If not, it
+will retrieve a locale from the request object.
+
+The attribute used to retrieve the locale object from the session can be specified by the developer.  
+(The locale object may have been placed in a given attribute by another framework [ie: Struts]).  
+To specify the attribute to use, set the following:
+
+In web.xml
+
+<init-param>
+	<param-name>localeKey</param-name>
+	<param-value>AttributeNameWhereOtherFrameworkStoresLocaleObject</param-value>	
+</init-param>
+
+If 'localeKey' is not set by the user, DbForms will store, for future reference, the locale object
+in the attribute named 'org.dbforms.LOCALE'.
+
+
+Bug Fixes and general maintenance
+---------------------------------
+
+The generated 'javascriptValidation' methods now support more complex (db)forms. (Multiple data rows, insert mode)
+The generated 'javascriptFieldsArray' method has also been enhanced to support more complex (db)forms.
+
+__________________________________________________________________________________________________
+__________________________________________________________________________________________________
+
 Friday, May 3, 2002
 DbForms version 1.1.1
 Grunikiewicz.philip@hydro.qc.ca

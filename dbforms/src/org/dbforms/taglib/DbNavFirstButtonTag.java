@@ -56,7 +56,7 @@ public class DbNavFirstButtonTag extends DbBaseButtonTag  {
 		parentForm.getJavascriptValidation().equals("true") ){
 			String onclick = (getOnClick()!=null)? getOnClick():"";
 			if(onclick.lastIndexOf(";")!=onclick.length()-1) onclick+=";"; // be sure javascript end with ";"
-			setOnClick( onclick + ValidatorConstants.JS_CANCEL_VALIDATION+"=true;");
+			setOnClick( onclick + ValidatorConstants.JS_CANCEL_VALIDATION+"=false;");
 	}
 	
 	if(parentForm.getFooterReached() && ResultSetVector.isEmptyOrNull(parentForm.getResultSetVector()) ) return EVAL_PAGE;

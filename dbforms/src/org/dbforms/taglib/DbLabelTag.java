@@ -80,8 +80,8 @@ public class DbLabelTag extends TagSupport  {
 		this.nullFieldValue = nullFieldValue;
 		// Resolve message if captionResource=true in the Form Tag
 		if(parentForm.getCaptionResource().equals("true")){
-			HttpServletRequest request = (HttpServletRequest)pageContext.getRequest();
- 	       this.nullFieldValue = MessageResources.getMessage(nullFieldValue, request.getLocale(),nullFieldValue);
+		   Locale locale = MessageResources.getLocale((HttpServletRequest)pageContext.getRequest());
+ 	       this.nullFieldValue = MessageResources.getMessage( nullFieldValue, locale, nullFieldValue);
 		}
  	}
 

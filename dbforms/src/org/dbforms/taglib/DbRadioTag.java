@@ -29,9 +29,12 @@ import java.io.*;
 
 import javax.servlet.jsp.*;
 import javax.servlet.jsp.tagext.*;
+import javax.servlet.http.*;
 
 import org.dbforms.*;
 import org.dbforms.util.*;
+import org.dbforms.event.ReloadEvent;
+import org.dbforms.event.WebEvent;
 
 import org.apache.log4j.Category;
 
@@ -137,6 +140,8 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer  {
   public int doEndTag() throws javax.servlet.jsp.JspException {
 
 		StringBuffer tagBuf = new StringBuffer();
+		HttpServletRequest request = (HttpServletRequest) this.pageContext.getRequest();
+		WebEvent we = (WebEvent) request.getAttribute("webEvent");
 
 		// current Value from Database; or if no data: explicitly set by user; or ""
 		String currentValue = getFormFieldValue();
@@ -145,7 +150,9 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer  {
 		if(embeddedData==null) { // no embedded data is nested in this tag
 
 			// select, if datadriven and data matches with current value OR if explicitly set by user
-			boolean isSelected = (!parentForm.getFooterReached() && value!=null && value.equals(currentValue)) || "true".equals(checked);
+			boolean isSelected =( (!parentForm.getFooterReached() || we instanceof ReloadEvent) 
+									 && value!=null && value.equals(currentValue)) 
+								   || "true".equals(checked);
 
 			tagBuf.append( generateTagString(value, "", isSelected) );
 

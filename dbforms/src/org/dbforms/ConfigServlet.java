@@ -113,6 +113,7 @@ public class ConfigServlet extends HttpServlet {
 			initXMLErrors(digesterDebugLevel);
 			initXMLValidator();
 			initApplicationResources();
+			initLocaleKey();
 		} catch(IOException ioe) {
 			ioe.printStackTrace();
 		} catch(Exception e) {
@@ -525,6 +526,31 @@ public class ConfigServlet extends HttpServlet {
 	}
 
 
+	/**
+	 * Initialize the Locale key for Session scope.
+	 * Usefull for sharing the same Locale across different framework.
+	 *
+	 * Ex: By setting "localeKey" to "org.apache.struts.action.LOCALE"
+	 *     you can share the same Locale in the session scope with Struts.
+	 * 
+	 */
+	protected void initLocaleKey() {
+
+	    logCat.info("initialize Locale Key for session attribute.");
+      
+		String value = getServletConfig().getInitParameter("localeKey");
+
+        if(value == null) {
+		    logCat.warn(" Locale Key not setted, use \""+MessageResources.LOCALE_KEY+"\" as key to access the Locale in session scope.");
+            return;
+        }
+            
+        MessageResources.LOCALE_KEY = value.trim();
+
+		logCat.info(" Locale Key setted with \""+MessageResources.LOCALE_KEY+"\" as key to access the Locale in session scope.");
+
+
+	}
 
 
 	/**

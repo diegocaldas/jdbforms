@@ -546,6 +546,15 @@
                 </attribute>
 
                 <attribute>
+                    <name>password</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>
+                        <p>visually encrypted input field</p>
+                    </info>
+                </attribute>
+
+                <attribute>
                     <name>format</name>
                     <required>false</required>
                     <rtexprvalue>true</rtexprvalue>

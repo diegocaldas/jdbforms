@@ -31,6 +31,10 @@ import javax.servlet.jsp.*;
 import javax.servlet.jsp.tagext.*;
 
 import org.dbforms.*;
+import org.dbforms.util.ParseUtil;
+
+import org.dbforms.event.ReloadEvent;
+import org.dbforms.event.WebEvent;
 
 import org.apache.log4j.Category;
 
@@ -85,14 +89,19 @@ public int doEndTag() throws javax.servlet.jsp.JspException {
 	
 	HttpServletRequest request = (HttpServletRequest) this.pageContext.getRequest();
 	Vector errors = (Vector) request.getAttribute("errors");
+	WebEvent we = (WebEvent) request.getAttribute("webEvent");
 
 	try {
 
-		/* Does the developer require the field to be hidden or displayed? */
-		String value =
-			("true".equals(this.getHidden()))
-				? "<input type=\"hidden\" name=\""
-				: "<input type=\"text\" name=\"";
+		/* Does the developer require the field to be hidden, displayed or displayed as password? */
+		String value = null;
+		
+		if("true".equals(this.getHidden())) 
+			 value = "<input type=\"hidden\" name=\"";
+		else if("true".equals(this.getPassword()))
+			 value = "<input type=\"password\" name=\"";
+		else 
+			 value = "<input type=\"text\" name=\"";
 
 		StringBuffer tagBuf = new StringBuffer(value);
 		tagBuf.append(getFormFieldName());
@@ -106,7 +115,10 @@ public int doEndTag() throws javax.servlet.jsp.JspException {
 		if (this.getOverrideValue() != null) 
 		{
 			//If the redisplayFieldsOnError attribute is set and we are in error mode, forget override!
-			if ("true".equals(parentForm.getRedisplayFieldsOnError()) && errors != null && errors.size() > 0) 
+			if ( ("true".equals(parentForm.getRedisplayFieldsOnError())
+				  	&& errors != null
+				  	&& errors.size() > 0) 
+				 || (we instanceof ReloadEvent)) 
 			{
 				tagBuf.append(getFormFieldValue());
 
@@ -119,7 +131,16 @@ public int doEndTag() throws javax.servlet.jsp.JspException {
 		}
 		else
 		{
-			tagBuf.append(getFormFieldValue());
+			if ( we instanceof ReloadEvent ) 
+			{
+				String oldValue = ParseUtil.getParameter(request, getFormFieldName());
+				if (oldValue != null)
+					tagBuf.append(oldValue); 
+				else 
+					tagBuf.append(getFormFieldValue());
+			} else {
+				tagBuf.append(getFormFieldValue());
+			}
 		} 
 		
 
@@ -167,7 +188,8 @@ public int doEndTag() throws javax.servlet.jsp.JspException {
 
 	private java.lang.String hidden = "false";
 	private java.lang.String overrideValue = null;
-
+	private java.lang.String password = "false";
+	
 /**
  * grunikiewicz.philip@hydro.qc.ca
  * 2001-05-23
@@ -215,5 +237,17 @@ public void setHidden(java.lang.String newHidden) {
  */
 public void setOverrideValue(java.lang.String newOverrideValue) {
 	overrideValue = newOverrideValue;
+}
+
+/**
+ *  Determines if the text field should be a password text field (display '****')
+ */
+
+public void setPassword(String pwd){
+	this.password = pwd;
+}
+
+public String getPassword(){
+	return this.password;
 }
 }

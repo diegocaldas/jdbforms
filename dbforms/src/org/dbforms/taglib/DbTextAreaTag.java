@@ -31,6 +31,10 @@ import javax.servlet.jsp.*;
 import javax.servlet.jsp.tagext.*;
 
 import org.dbforms.*;
+import org.dbforms.util.ParseUtil;
+
+import org.dbforms.event.ReloadEvent;
+import org.dbforms.event.WebEvent;
 
 import org.apache.log4j.Category;
 
@@ -61,6 +65,7 @@ public class DbTextAreaTag extends DbBaseInputTag {
 
 		HttpServletRequest request = (HttpServletRequest) this.pageContext.getRequest();
 		Vector errors = (Vector) request.getAttribute("errors");
+		WebEvent we = (WebEvent) request.getAttribute("webEvent");
 
 		StringBuffer tagBuf = new StringBuffer("<textarea name=\"");
 		tagBuf.append(getFormFieldName());
@@ -109,17 +114,26 @@ public class DbTextAreaTag extends DbBaseInputTag {
 			if (this.getOverrideValue() != null) {
 
 				//If the redisplayFieldsOnError attribute is set and we are in error mode, forget override!
-				if ("true".equals(parentForm.getRedisplayFieldsOnError())
-					&& errors != null
-					&& errors.size() > 0) {
+				if ( ( "true".equals(parentForm.getRedisplayFieldsOnError())
+				  		&& errors != null && errors.size() > 0 ) 
+					  || (we instanceof ReloadEvent)) {
 					tagBuf.append(getFormFieldValue());
 				} else {
 					tagBuf.append(this.getOverrideValue());
 				}
 			} else {
-				tagBuf.append(getFormFieldValue());
+				
+				if ( we instanceof ReloadEvent ) {
+					String oldValue = ParseUtil.getParameter(request, getFormFieldName());
+					if (oldValue != null)
+						tagBuf.append(oldValue); 
+					else 
+						tagBuf.append(getFormFieldValue());
+				} else {
+					tagBuf.append(getFormFieldValue());
+				}
 			}
-		}
+		} 
 
 		try {
 			pageContext.getOut().write(tagBuf.toString());

@@ -105,7 +105,36 @@ public class EventEngine {
 
 		String action = ParseUtil.getFirstParameterStartingWith(request, "ac_");
 
-		if (action == null) {
+		String customEvent = request.getParameter("customEvent");
+
+		if(action == null && customEvent != null) action = customEvent;
+
+		// ReloadEvent use to refresh field values from request object
+		// and to allow server side manipulation for these fields
+		// Ex: Select parent -> Select child
+		if(action.startsWith("re_")){
+			e = new ReloadEvent();
+			logCat.info("##### RELOAD  EVENT ######");
+			
+			String contextPath = request.getContextPath();
+			String sourcePath = ParseUtil.getParameter(request, "source");
+			
+			logCat.info("sourcePath = " + sourcePath);
+
+			if ((contextPath.length() > 0) && sourcePath.startsWith(contextPath)) {
+				if (contextPath.endsWith("/")) // shouldn't! just make sure!
+					sourcePath = sourcePath.substring(contextPath.length() - 1);
+				else
+					sourcePath = sourcePath.substring(contextPath.length());
+			}
+
+			e.setFollowUp(sourcePath);
+			logCat.info("followup=" + e.getFollowUp());	
+			return e;
+		}
+
+		if (action.equals("")) {
+			
 			logCat.info("##### N O O P   ELEMENT ######");
 			e = new NoopEvent();
 

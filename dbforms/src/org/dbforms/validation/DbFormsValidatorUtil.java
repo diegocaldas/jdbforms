@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Comparator;
 import java.util.Collections;
+import java.util.Enumeration;
 
 import org.dbforms.util.MessageResources;
 import org.dbforms.validation.ValidatorConstants;
@@ -174,7 +175,8 @@ public class DbFormsValidatorUtil {
 		             Field field = (Field)i.next();
 		          	
 		          	 // Select only fields inside the <db:form >...</db:form>
-		          	 if(!fieldsName.containsKey(field.getProperty())) continue;
+		          	 //if(!fieldsName.containsKey(field.getProperty())) continue;
+		          	 if(!fieldsName.containsValue(field.getProperty())) continue;
 		          	 
 		             for (Iterator x = field.getDependencies().iterator(); x.hasNext(); ) {   
 		             	Object o = x.next();
@@ -254,35 +256,54 @@ public class DbFormsValidatorUtil {
 	   	   					//String message = DbFormsValidatorUtil.getMessage(messages, locale, va, field);
 	   	   					//message = (message != null ? message : "");
 
-	               			jscriptVar = getNextVar(jscriptVar);
+	               			//jscriptVar = getNextVar(jscriptVar);
           					
        						String message = getMessage(	functionName, va, locale, field, errors);
-               				results.append("	    this." + jscriptVar + " = new Array(\"" + (String) fieldsName.get(field.getKey()) + "\", \"" + message + "\", ");
+       						Enumeration enum = fieldsName.keys();
+       						while(enum.hasMoreElements()){
+       							String fieldName = (String) enum.nextElement();
+       							String val = (String) fieldsName.get(fieldName);
+               					if(field.getKey().equals(val)){
+               						 jscriptVar = getNextVar(jscriptVar); 
+               						 
+               						 if(fieldName.indexOf("insroot")!=-1)
+               							// Valide only Insert Mode
+               						 	results.append("\t    if(").append(ValidatorConstants.JS_UPDATE_VALIDATION_MODE).append("==false) ");
+               						 else
+               							// Valide only Update Mode
+               						 	results.append("\t    if(").append(ValidatorConstants.JS_UPDATE_VALIDATION_MODE).append("==true) ");
+               						 
+               						    
+               						 results.append(" this." + jscriptVar + " = new Array(\"" + fieldName + "\", \"" + message + "\", ");
+               						 results.append("new Function (\"varName\", \"");
+       						
+               				
                    
-               				results.append("new Function (\"varName\", \"");
-                   
-               				Map hVars = field.getVars();
-               				// Loop through the field's variables.
-                   			for (Iterator iVars = hVars.keySet().iterator(); iVars.hasNext(); ) {
-                      			String varKey = (String)iVars.next();
-                      			Var var = (Var)hVars.get(varKey);
-                      			String varValue = var.getValue();
-                      			String jsType = var.getJsType();
+               						Map hVars = field.getVars();
+               						// Loop through the field's variables.
+                   					for (Iterator iVars = hVars.keySet().iterator(); iVars.hasNext(); ) {
+                      					String varKey = (String)iVars.next();
+                      					Var var = (Var)hVars.get(varKey);
+                      					String varValue = var.getValue();
+                      					String jsType = var.getJsType();
 	               
-	               				if (Var.JSTYPE_INT.equalsIgnoreCase(jsType))
-	                  				results.append("this." + varKey + "=" + ValidatorUtil.replace(varValue, "\\", "\\\\") + "; ");
-	               				else if (Var.JSTYPE_REGEXP.equalsIgnoreCase(jsType))
-	                  				results.append("this." + varKey + "=/" + ValidatorUtil.replace(varValue, "\\", "\\\\") + "/; ");
-	               				else if (Var.JSTYPE_STRING.equalsIgnoreCase(jsType))
-	                  				results.append("this." + varKey + "='" + ValidatorUtil.replace(varValue, "\\", "\\\\") + "'; ");
-	               					// So everyone using the latest format doesn't need to change their xml files immediately.
-	               				else if ("mask".equalsIgnoreCase(varKey))
-	                  				results.append("this." + varKey + "=/" + ValidatorUtil.replace(varValue, "\\", "\\\\") + "/; ");
-	               				else
-	                  				results.append("this." + varKey + "='" + ValidatorUtil.replace(varValue, "\\", "\\\\") + "'; ");
-                   			}
+	               						if (Var.JSTYPE_INT.equalsIgnoreCase(jsType))
+	                  						results.append("this." + varKey + "=" + ValidatorUtil.replace(varValue, "\\", "\\\\") + "; ");
+	               						else if (Var.JSTYPE_REGEXP.equalsIgnoreCase(jsType))
+	                  						results.append("this." + varKey + "=/" + ValidatorUtil.replace(varValue, "\\", "\\\\") + "/; ");
+	               						else if (Var.JSTYPE_STRING.equalsIgnoreCase(jsType))
+	                  						results.append("this." + varKey + "='" + ValidatorUtil.replace(varValue, "\\", "\\\\") + "'; ");
+	               							// So everyone using the latest format doesn't need to change their xml files immediately.
+	               						else if ("mask".equalsIgnoreCase(varKey))
+	                  						results.append("this." + varKey + "=/" + ValidatorUtil.replace(varValue, "\\", "\\\\") + "/; ");
+	               						else
+	                  						results.append("this." + varKey + "='" + ValidatorUtil.replace(varValue, "\\", "\\\\") + "'; ");
+                   					}
                                                
-                   			results.append(" return this[varName];\"));\n");
+                   					results.append(" return this[varName];\"));\n");
+               					}
+       						}
+                   			
                 			                		
                 	}
              }
@@ -321,11 +342,12 @@ public class DbFormsValidatorUtil {
        sb.append("<SCRIPT LANGUAGE=\"Javascript1.1\"> \n");
           
        sb.append("<!-- Begin \n");
-       sb.append("\n	 var "+ValidatorConstants.JS_CANCEL_VALIDATION+" = false; \n\n");
+       sb.append("\n	 var "+ValidatorConstants.JS_CANCEL_VALIDATION+" = false;");
+       sb.append("\n	 var "+ValidatorConstants.JS_UPDATE_VALIDATION_MODE+" = true; \n\n");
 
        sb.append("	 function validate" + name + "(form) {  \n");
                                 
-       sb.append("	      if ("+ValidatorConstants.JS_CANCEL_VALIDATION+") \n");
+       sb.append("	      if (!"+ValidatorConstants.JS_CANCEL_VALIDATION+") \n");
        sb.append("	 	return true; \n");
        sb.append("	      else \n");     
        

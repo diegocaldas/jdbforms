@@ -55,7 +55,8 @@ public class Controller extends HttpServlet {
 
 	private DbFormsConfig config;
 	private int maxUploadSize = 102400; // 100KB default upload size
-
+	
+	 
 	/**
 	 * Initialize this servlet.
 	 */
@@ -119,6 +120,9 @@ public class Controller extends HttpServlet {
 		String contentType = request.getContentType();
 		String formValidatorName = request.getParameter(ValidatorConstants.FORM_VALIDATOR_NAME);
 
+		processLocale(request);  // Verify if Locale have been setted in session with "LOCALE_KEY"
+		                         // if not, take the request.getLocale() as default and put it in session
+
 		if (contentType != null && contentType.startsWith("multipart")) {
 			try {
 				logCat.debug("before new multipartRequest");
@@ -146,6 +150,7 @@ public class Controller extends HttpServlet {
 
 			EventEngine engine = new EventEngine(request, config);
 			WebEvent e = engine.generatePrimaryEvent();
+
 			// primary event can be any kind of event (database, navigation...)
 
 			if (e instanceof DatabaseEvent) {
@@ -327,11 +332,12 @@ public class Controller extends HttpServlet {
 			Validator validator = new Validator( vr, formValidatorName.trim());
 			Vector errors = new Vector();
 			DbFormsErrors dbFormErrors = (DbFormsErrors) getServletContext().getAttribute(DbFormsErrors.ERRORS);
+			Locale locale = MessageResources.getLocale(request);
 			
 			// Add these resources to perform validation
 			validator.addResource(Validator.BEAN_KEY, fieldValues);  			// The values
 		    validator.addResource("java.util.Vector", errors);	
-		    validator.addResource(Validator.LOCALE_KEY, request.getLocale());	// Vector of errors to populate
+		    validator.addResource(Validator.LOCALE_KEY, locale);	// Vector of errors to populate
 		    validator.addResource("org.dbforms.DbFormsErrors", dbFormErrors);	// Applicatiob context
 			
 			
@@ -348,6 +354,11 @@ public class Controller extends HttpServlet {
 		
 	}
 					
-					
-
+	private void processLocale(HttpServletRequest request){
+		HttpSession session = request.getSession();
+      	
+        if ( session.getAttribute(MessageResources.LOCALE_KEY) == null) {
+			session.setAttribute(MessageResources.LOCALE_KEY, request.getLocale());
+        }					
+	}
 }
