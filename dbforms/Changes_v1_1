@@ -1,3 +1,9 @@
+2002-11-18
+(Henner.Kollmann@gmx.de)
+	some minor bug fixes
+	new attribute in for query: distinct. If true query will build select distinct ....
+
+	
 2002-11-15
 (fossato@pow2.com)
         connectionFactory sources integration

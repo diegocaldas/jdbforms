@@ -35,7 +35,7 @@ package org.dbforms;
  * @author Henner Kollmann (Henner.Kollmann@gmx.de)
  */
 import java.util.*;
-
+import org.dbforms.util.*;
 
 
 /**
@@ -52,8 +52,9 @@ public class Query extends Table
     private Vector searchfields; // the Field-Objects this table constists of
     private Hashtable searchNameHash;
     private static final int WHEREIDSTART = 1000;
-    private boolean orderWithPos = false;
+    private String orderWithPos = "false";
     private String followAfterWhere = " AND ";
+    private String distinct = "false";
 
     /**
      * Constructor for View.
@@ -110,7 +111,6 @@ public class Query extends Table
         this.where = value;
     }
 
-
     /**
      * set OrderWithPos, if defined in dbforms-config-xml
      * (this method gets called from XML-digester)
@@ -119,9 +119,8 @@ public class Query extends Table
     */
     public void setOrderWithPos(String value)
     {
-        this.orderWithPos = value.equalsIgnoreCase("true") || value.equalsIgnoreCase("yes");
+        this.orderWithPos = value;
     }
-
 
     /**
      * return OrderWithPos
@@ -131,7 +130,7 @@ public class Query extends Table
     */
     public boolean needOrderWithPos()
     {
-        return ((groupBy != null) && (groupBy.length() > 0)) || orderWithPos;
+        return !Util.isNull(groupBy) || orderWithPos.equalsIgnoreCase("true") || orderWithPos.equalsIgnoreCase("yes");
     }
 
 
@@ -156,7 +155,7 @@ public class Query extends Table
      */
     protected String getQueryFrom()
     {
-        if ((from != null) && (from.length() > 0))
+        if (!Util.isNull(from))
         {
             return from;
         }
@@ -305,17 +304,20 @@ public class Query extends Table
         }
 
         buf.append("SELECT ");
+        if ( distinct.equalsIgnoreCase("true") || distinct.equalsIgnoreCase("yes") ) {
+           buf.append(" DISTINCT ");
+        }
         buf.append(getQuerySelect(fieldsToSelect));
         buf.append(" FROM ");
         buf.append(getQueryFrom());
         s = getQueryWhere(fvWhere, null, compareMode);
 
-        if ((s.length() > 0) || ((where != null) && (where.length() > 0)))
+        if ((s.length() > 0) || !Util.isNull(where) )
         {
             HatSchonWhere = true;
             buf.append(" WHERE ");
 
-            if ((where != null) && (where.length() > 0))
+            if (!Util.isNull(where))
             {
                 buf.append(where);
             }
@@ -324,7 +326,7 @@ public class Query extends Table
             {
                 buf.append(" ");
 
-                if ((where != null) && (where.length() > 0))
+                if (!Util.isNull(where))
                 {
                     HatSchonFollowAfterWhere = true;
                     buf.append(getFollowAfterWhere());
@@ -337,7 +339,7 @@ public class Query extends Table
             }
         }
 
-        if ((groupBy != null) && (groupBy.length() > 0))
+        if (!Util.isNull(groupBy))
         {
             buf.append(" GROUP BY ");
             buf.append(groupBy);
@@ -347,7 +349,7 @@ public class Query extends Table
 
         if (s.length() > 0)
         {
-            if ((groupBy != null) && (groupBy.length() > 0))
+            if (!Util.isNull(groupBy))
             {
                 buf.append(" HAVING ( ");
             }
@@ -357,7 +359,7 @@ public class Query extends Table
             }
             else
             {
-                if ((where != null) && (where.length() > 0) && !HatSchonFollowAfterWhere)
+                if (!Util.isNull(where) && !HatSchonFollowAfterWhere)
                 {
                     buf.append(" ");
                     buf.append(getFollowAfterWhere());
@@ -398,7 +400,7 @@ public class Query extends Table
         // In this case there are no fields listed. So use the fieldlist of the parent table!
         Vector f = super.getFields();
 
-        if ((f == null) || (f.isEmpty()))
+        if ((f == null) || (f.isEmpty()) && !Util.isNull(from) )
         {
             Table t = config.getTableByName(from);
             f = t.getFields();
@@ -428,7 +430,7 @@ public class Query extends Table
             f = (Field) searchNameHash.get(name);
         }
 
-        if (f == null)
+        if ((f == null) && !Util.isNull(from) )
         {
             f = config.getTableByName(from).getFieldByName(name);
         }
@@ -466,10 +468,7 @@ public class Query extends Table
             {
                 f = null;
             }
-
-            ;
-
-            if (f == null)
+            if ((f == null) && !Util.isNull(from))
             {
                 f = config.getTableByName(from).getField(fieldId);
             }
@@ -490,7 +489,7 @@ public class Query extends Table
     {
         Vector v = super.getKey();
 
-        if ((v == null) || v.isEmpty())
+        if ( ((v == null) || v.isEmpty()) && !Util.isNull(from) )
         {
             v = config.getTableByName(from).getKey();
         }
@@ -544,4 +543,13 @@ public class Query extends Table
     {
         this.followAfterWhere = followAfterWhere;
     }
+
+   /**
+    * Sets the distinct.
+    * @param distinct The distinct to set
+    */
+   public void setDistinct(String distinct) {
+      this.distinct = distinct;
+   }
+
 }
