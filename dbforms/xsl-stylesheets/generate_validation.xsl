@@ -76,22 +76,22 @@ conflicts.
 		<xsl:param name="thisField"/>
 		<xsl:choose>
 			<xsl:when test="$thisField/@fieldType='int' or $thisField/@fieldType='integer'">
-				<field name="{@name}" depends="integer">
+				<field property="{@name}" depends="integer">
 					<msg name="integer" resource="false" key="{$thisField/@name} should be set to an integer value"/>
 				</field>
 			</xsl:when>
 			<xsl:when test="$thisField/@fieldType='smallint'">
-				<field name="{@name}" depends="short">
+				<field property="{@name}" depends="short">
 					<msg name="short" resource="false" key="{$thisField/@name} should be set to an short value (e.g. 0 to 65535 unsigned)"/>
 				</field>
 			</xsl:when>
 			<xsl:when test="$thisField/@fieldType='tinyint'">
-				<field name="{@name}" depends="byte">
+				<field property="{@name}" depends="byte">
 					<msg name="byte" resource="false" key="{$thisField/@name} should be set to a byte value (e.g. 0 or 1)"/>
 				</field>
 			</xsl:when>
 			<xsl:when test="$thisField/@fieldType='char' or $thisField/@fieldType='varchar' or $thisField/@fieldType='varchar2'  or $thisField/@fieldType='nvarchar'  or $thisField/@fieldType='longvarchar' or $thisField/@fieldType='character'">
-				<field name="{@name}" depends="maxlength">
+				<field property="{@name}" depends="maxlength">
 					<msg name="maxlength" resource="false" key="{@name} has a maximum length of ${{var:maxchars}}"/>
 					<arg0 name="maxlength" resource="false" key="${{var:maxchars}}"/>
 					<var>
@@ -103,17 +103,17 @@ conflicts.
 				</field>
 			</xsl:when>
 			<xsl:when test="$thisField/@fieldType='double'">
-				<field name="{@name}" depends="double">
+				<field property="{@name}" depends="double">
 					<msg name="double" resource="false" key="{@name} requires a double value (approximately 1.7E–308 to 1.7E+308)"/>
 				</field>
 			</xsl:when>
 			<xsl:when test="$thisField/@fieldType='float' or $thisField/@fieldType='decimal'">
-				<field name="{@name}" depends="float">
+				<field property="{@name}" depends="float">
 					<msg name="float" resource="false" key="{@name} expects a float value (approximately 3.4E–38 to 3.4E+38)"/>
 				</field>
 			</xsl:when>
-			<xsl:when test="$thisField/@fieldType='date' or $thisField/@fieldType='datetime'">
-				<field name="{@name}" depends="date">
+			<xsl:when test="$thisField/@fieldType='date' or $thisField/@fieldType='datetime' or $thisField/@fieldType='timestamp'">
+				<field property="{@name}" depends="date">
 					<msg name="date" resource="false" key="{@name} should be formatted as ${{var:datePattern}}"/>
 					<arg0 name="date" resource="false" key="${{var:datePattern}}"/>
 					<var>
