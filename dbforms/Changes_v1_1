@@ -1,3 +1,20 @@
+2003-02-03
+(Henner.Kollmann@gmx.de)
+    ConfigServlet.java
+	allow more then one config file, seperated by ,
+	allow mre then one validation file, seperated by ,          
+    DbFormsValidator.java
+        remove null pointer exception
+    DbFormsValidatorUtil.java
+        remove blind javascript code if validation not found
+        
+        
+2003-01-31
+(Henner.Kollmann@gmx.de)
+    ConfigServlet.java
+        added events to query
+        rearranged initXMLValidator code
+
 2003-01-30
 (fossato@pow2.com)
     started the "Mavenization" process for the the current DbForms web site.
@@ -34,11 +51,6 @@
     to view the new site load the $DBFORMS_HOME/target/docs/index.html file into your web browser.
     
 
-2003-01-31
-(Henner.Kollmann@gmx.de)
-    ConfigServlet.java
-        added events to query
-        rearranged initXMLValidator code
 
 ====================== v1_1_3_pr2 was released ==============================================       
 
