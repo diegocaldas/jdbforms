@@ -90,6 +90,7 @@ public class JDBCDataHelper {
             break;
 		 case FieldTypes.DISKBLOB:
 		    ps.setObject(col, value, FieldTypes.CHAR);
+          break;
          default :
             ps.setObject(col, value, fieldType);
       }
