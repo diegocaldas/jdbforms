@@ -10,7 +10,7 @@ by following these steps.</para>
 <sect1><title id="prereqs">Prerequisites</title>
 <orderedlist numeration="upperroman">
 <note>
-<para>the following resources (except for Sun's JDK/SDK) are hosted at our site and <ulink url="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/jdbforms/dbforms/dependend/"><citetitle>you can donwload the JARs</citetitle></ulink> from there or you can download the latest releases from their respective sites: 
+<para>the following resources (except for Sun's JDK/SDK) are hosted at our site and <ulink url="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/jdbforms/dbforms/dependend/">you can<citetitle>download the JARs</citetitle></ulink> from there or you can download the latest releases from their respective sites: 
 </para>
 </note>
 <listitem>
@@ -63,11 +63,6 @@ commons-logging.jar
 </listitem>
 <listitem>
 <para>
-commons-util.jar
-</para>
-</listitem>
-<listitem>
-<para>
 commons-validator.jar 
 </para>
 </listitem>
@@ -100,7 +95,7 @@ commons-validator.jar
 <para>create the database by executing the SQL commands listed in example/*/WEB-INF/*.sql</para>
 </listitem>
 <listitem>
-<para> OPTIONAL: configure a database connection pool for that new created database using your favorite technique (either the connection pool built into your application server or codestudio's poolman or another database connection tool) connection pools are important to speed-up your application. See <link linkend='dbConn'> examples (click here)</link></para>
+<para> OPTIONAL: configure a database connection pool for that new created database using your favorite technique (either the connection pool built into your application server or codestudio's poolman or another database connection tool) connection pools are important to speed-up your application. See <link linkend='dbConn2'> examples (click here)</link></para>
 </listitem>
 <listitem>
 <para>Install the DbForms example applications by deploying the directory of the application into your servlet container, using the standard techniques supported by that container.</para><para> (For Tomcat, simply copy this
@@ -108,7 +103,7 @@ commons-validator.jar
  
 </listitem>
 <listitem>
-<para>Do not forget to point the db-connection entry in <computeroutput>/WEB-INF/dbforms-config.xml</computeroutput> to the datasource or connection pool you established! See <link linkend='dbConn'> three examples (click here)</link>.</para>
+<para>Do not forget to point the db-connection entry in <computeroutput>/WEB-INF/dbforms-config.xml</computeroutput> to the datasource or connection pool you established! See <link linkend='dbConn'>examples (click here)</link>.</para>
 </listitem>
 <listitem>
 <para>Take a look into /example/README.txt and the other README_XXX files in the examples-directory!
@@ -214,7 +209,7 @@ Three &lt;servlet&gt; elements to define the controller, the config and the file
 				<title>Changes in web.xml to enable DbForms(1)
 </title>
 				<screen>
-&lt;web-app&gt;
+<emphasis role="bold">&lt;web-app&gt;</emphasis>
     &lt;!--============= DBFORMS STYLING TEMPLATES =============--&gt; 
     &lt;context-param&gt; 
 	&lt;param-name&gt;templateBase&lt;/param-name&gt;  <co id="templ"/>
@@ -396,7 +391,7 @@ login-config?, security-role*, env-entry*, ejb-ref*,  ejb-local-ref*)&gt;
 		("StackOverFlow")
     --&gt; 
     
-&lt;security-constraint&gt; 
+<emphasis role="bold">&lt;security-constraint&gt;</emphasis> 
 	&lt;web-resource-collection&gt; 
             &lt;web-resource-name&gt;myapp&lt;/web-resource-name&gt; 
             &lt;url-pattern&gt;/protected/*&lt;/url-pattern&gt; 
@@ -410,7 +405,7 @@ login-config?, security-role*, env-entry*, ejb-ref*,  ejb-local-ref*)&gt;
     &lt;/security-constraint&gt;
 
 &lt;!--=================== login config ====================--&gt; 
-    &lt;login-config&gt; 
+    <emphasis role="bold">&lt;login-config&gt;</emphasis> 
 	&lt;auth-method&gt;FORM&lt;/auth-method&gt; 
 	&lt;realm-name&gt;Form-Based Authentication Area&lt;/realm-name&gt; 
             
@@ -429,17 +424,17 @@ login-config?, security-role*, env-entry*, ejb-ref*,  ejb-local-ref*)&gt;
     
 &lt;!--=================== roles ===========================--&gt;
  
-    &lt;security-role&gt; 
+    <emphasis role="bold">&lt;security-role&gt;</emphasis> 
         &lt;description&gt;Have read only access&lt;/description&gt; 
         &lt;role-name&gt;guests&lt;/role-name&gt; 
     &lt;/security-role&gt;
         
-    &lt;security-role&gt; 	
+    <emphasis role="bold">&lt;security-role&gt;</emphasis> 	
         &lt;description&gt;Registered users can do stuff, others not.&lt;/description&gt; 
 	&lt;role-name&gt;a_users&lt;/role-name&gt; 
     &lt;/security-role&gt;
     
-    &lt;security-role&gt; 
+    <emphasis role="bold">&lt;security-role&gt;</emphasis>
         &lt;description&gt;Registered users can do less then users_a&lt;/description&gt; 
 	&lt;role-name&gt;b_users&lt;/role-name&gt; 
     &lt;/security-role&gt;    

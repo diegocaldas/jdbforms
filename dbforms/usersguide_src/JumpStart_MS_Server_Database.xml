@@ -116,13 +116,7 @@ dbforms installation.
 	- downloadable from http://jdbforms.sourceforge.net, click &quot;Resources&quot;
 		under &quot;Download&quot;
 	-	downloadable from http://jakarta.apache.org, Commons project
-        
-- commons-util.jar
-	-	ver. ?
-	- downloadable from http://jdbforms.sourceforge.net, click &quot;Resources&quot;
-		under &quot;Download&quot;
-	-	downloadable from http://jakarta.apache.org, Commons project      
-
+      
 - commons-validator.jar
 	- ver. ? (manifest file doesn't list version.)
 	- downloadable from http://jdbforms.sourceforge.net, click &quot;Resources&quot;
