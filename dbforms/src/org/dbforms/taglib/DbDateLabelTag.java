@@ -48,13 +48,6 @@ public class DbDateLabelTag extends DbLabelTag
 {
    static Category logCat = Category.getInstance(DbDateLabelTag.class.getName());
 
-   // this property is moved into the supercalss (DbLabelTag)  
-   // please remove the commented attribute below after the release of
-   // the future 1.1.3 version !
-   //
-   // fossato <fossato@pow2.com> [2002.11.09]
-   //protected java.text.Format format = DbFormsConfig.getDateFormatter();
-
    /**
    grunikiewicz.philip@hydro.qc.ca
    2001-05-14
@@ -114,29 +107,4 @@ public class DbDateLabelTag extends DbLabelTag
       return EVAL_PAGE;
    }
 
-   // Note on format accessors: they are moved into DbLabelTag;
-   // please remove the commented code below after the release of
-   // the future 1.1.3 version !
-   //
-   // fossato <fossato@pow2.com> [2002.11.09]
-
-   /**
-    * Insert the method's description here.
-    * Creation date: (2001-05-14 15:28:11)
-    * @return java.text.Format
-    */
-
-   //public java.text.Format getFormat() {
-   //	return format;
-   //}
-
-   /**
-    * Insert the method's description here.
-    * Creation date: (2001-05-14 15:28:11)
-    * @param newFormat java.text.Format
-    */
-
-   //public void setFormat(java.text.Format newFormat) {
-   //	format = newFormat;
-   //}
 }
