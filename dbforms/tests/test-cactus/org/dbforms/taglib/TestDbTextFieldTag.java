@@ -69,11 +69,6 @@ public class TestDbTextFieldTag extends JspTestCase {
    public void setUp() throws Exception {
       initConfig();
 
-      String s = ParseUtil.getParameter(request, "lang");
-      assertTrue(s != null);
-      Locale locale = new Locale(s);
-      MessageResources.setLocale(request, locale);
-
       form = new DbFormTag();
       form.setPageContext(this.pageContext);
       form.setTableName("TIMEPLAN");
@@ -88,12 +83,80 @@ public class TestDbTextFieldTag extends JspTestCase {
       timeTag.setPageContext(this.pageContext);
       timeTag.setParent(form);
       timeTag.setFieldName("TIME");
+      
+      String s = ParseUtil.getParameter(request, "lang");
+      MessageResources.setLocale(request, new Locale(s));   
 
+   }
+
+   //-------------------------------------------------------------------------
+
+   public void beginOutputDE(WebRequest theRequest) throws Exception {
+      theRequest.addParameter("lang", Locale.GERMAN.toString());
+      theRequest.addParameter("f_8_null_1", "2,3");
+      theRequest.addParameter("of_8_null_1", "2,3");
+      theRequest.addParameter("pf_8_null_1", "#,##0.###");
+      theRequest.addParameter("f_8_null_0", "01.01.1900");
+      theRequest.addParameter("of_8_null_0", "01.01.1900");
+      theRequest.addParameter("pf_8_null_0", "dd.MM.yyyy");
+   }
+
+   public void testOutputDE() throws Exception {
+      Locale locale = MessageResources.getLocale(request);
+      assertTrue("no german locale", locale.equals(Locale.GERMAN));
+      doTheTest();
+}
+
+   public void endOutputDE(WebResponse theResponse) throws Exception {
+      String s = theResponse.getText();
+      boolean res = s.indexOf("value=\"2,3\"") > -1;
+      assertTrue("not found: " + "value=\"2,3\"", res);
+      res = s.indexOf("value=\"01.01.1900\"") > -1;
+      assertTrue("not found: " + "value=\"01.01.1900\"", res);
+   }
+
+   public void beginOutputEN(WebRequest theRequest) throws Exception {
+      theRequest.addParameter("lang", Locale.ENGLISH.toString());
+      theRequest.addParameter("f_8_null_1", "2.3");
+      theRequest.addParameter("of_8_null_1", "2.3");
+      theRequest.addParameter("pf_8_null_1", "#,##0.###");
+      theRequest.addParameter("f_8_null_0", "Jan 1, 1900");
+      theRequest.addParameter("of_8_null_0", "Jan 1, 1900");
+      theRequest.addParameter("pf_8_null_0", "MMM d, yyyy");
+   }
+
+
+   public void testOutputEN() throws Exception { 
+      Locale locale = MessageResources.getLocale(request);
+      assertTrue("no english locale", locale.equals(Locale.ENGLISH));
+      doTheTest();
+   }
+
+   public void endOutputEN(WebResponse theResponse) throws Exception {
+      String s = theResponse.getText();
+      boolean res = s.indexOf("value=\"2.3\"") > -1;
+      assertTrue("not found: " + "value=\"2.3\"", res);
+      res = s.indexOf("value=\"Jan 1, 1900\"") > -1;
+      assertTrue("not found : " + "value=\"Jan 1, 1900\"", res);
+   }
+
+   private void initConfig() throws Exception {
+      if (dbconfig == null) {
+         DbFormsConfigRegistry.instance().register(null);
+         config.setInitParameter("dbformsConfig", "/WEB-INF/dbforms-config.xml");
+         config.setInitParameter("log4j.configuration", "/WEB-INF/log4j.properties");
+         ConfigServlet configServlet = new ConfigServlet();
+         configServlet.init(config);
+         dbconfig = DbFormsConfigRegistry.instance().lookup();
+         if (dbconfig == null)
+            throw new NullPointerException("not able to create dbconfig object!");
+      }
+   }
+   
+   
+   private void doTheTest() throws Exception {
       form.doStartTag();
-
-
-
-      Table table = dbconfig.getTableByName("TIMEPLAN");
+     Table table = dbconfig.getTableByName("TIMEPLAN");
       DatabaseEvent dbEvent = new DeleteEvent(new Integer(table.getId()), "null", request, dbconfig);
       // Set type to delete so that all fieldvalues will be parsed!!
       dbEvent.setType(EventType.EVENT_DATABASE_DELETE);
@@ -118,63 +181,6 @@ public class TestDbTextFieldTag extends JspTestCase {
 
       form.doEndTag();
       form.doFinally();
-
-   }
-
-   //-------------------------------------------------------------------------
-
-   public void beginOutputDE(WebRequest theRequest) throws Exception {
-      theRequest.addParameter("lang", "de");
-      theRequest.addParameter("f_8_null_1", "2,3");
-      theRequest.addParameter("of_8_null_1", "2,3");
-      theRequest.addParameter("pf_8_null_1", "#,##0.###");
-      theRequest.addParameter("f_8_null_0", "01.01.1900");
-      theRequest.addParameter("of_8_null_0", "01.01.1900");
-      theRequest.addParameter("pf_8_null_0", "dd.MM.yyyy");
-   }
-
-   public void testOutputDE() throws Exception {}
-
-   public void endOutputDE(WebResponse theResponse) throws Exception {
-      String s = theResponse.getText();
-      boolean res = s.indexOf("value=\"2,3\"") > -1;
-      assertTrue("not found: " + "value=\"2,3\"", res);
-      res = s.indexOf("value=\"01.01.1900\"") > -1;
-      assertTrue("not found: " + "value=\"01.01.1900\"", res);
-   }
-
-   public void beginOutputEN(WebRequest theRequest) throws Exception {
-      theRequest.addParameter("lang", "en");
-      theRequest.addParameter("f_8_null_1", "2.3");
-      theRequest.addParameter("of_8_null_1", "2.3");
-      theRequest.addParameter("pf_8_null_1", "#,##0.###");
-      theRequest.addParameter("f_8_null_0", "Jan 1, 1900");
-      theRequest.addParameter("of_8_null_0", "Jan 1, 1900");
-      theRequest.addParameter("pf_8_null_0", "MMM d, yyyy");
-   }
-
-
-   public void testOutputEN() throws Exception { }
-
-   public void endOutputEN(WebResponse theResponse) throws Exception {
-      String s = theResponse.getText();
-      boolean res = s.indexOf("value=\"2.3\"") > -1;
-      assertTrue("not found: " + "value=\"2.3\"", res);
-      res = s.indexOf("value=\"Jan 1, 1900\"") > -1;
-      assertTrue("not found : " + "value=\"Jan 1, 1900\"", res);
-   }
-
-   private void initConfig() throws Exception {
-      if (dbconfig == null) {
-         DbFormsConfigRegistry.instance().register(null);
-         config.setInitParameter("dbformsConfig", "/WEB-INF/dbforms-config.xml");
-         config.setInitParameter("log4j.configuration", "/WEB-INF/log4j.properties");
-         ConfigServlet configServlet = new ConfigServlet();
-         configServlet.init(config);
-         dbconfig = DbFormsConfigRegistry.instance().lookup();
-         if (dbconfig == null)
-            throw new NullPointerException("not able to create dbconfig object!");
-      }
 
    }
 }
