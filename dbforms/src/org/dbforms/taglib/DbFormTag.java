@@ -1592,6 +1592,8 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
 							whereClause,
 							getTableList());
 				} else {
+					String myPosition = (count == 0) ? null : firstPosition;
+/*
 					String myPosition = null;
 					if ((webEvent != null)
 						&& (// we have one of the update events...
@@ -1612,7 +1614,8 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
 						// in endless forms
 						myPosition = (count == 0) ? null : firstPosition;
 					}
-					navEvent =
+*/
+										navEvent =
 						navEventFactory.createGotoEvent(
 							table,
 							request,
