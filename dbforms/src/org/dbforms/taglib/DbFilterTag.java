@@ -48,59 +48,57 @@ import org.dbforms.util.Util;
  * With the "type" attribute of this tag you can select the input more. 
  * Selecting "text", a filterValue will render an html input tag, with "select" you'll have an html select, and so on.
  * An example is like this:
- * <db:filter>
- *     <db:filterCondition label="author name like">
+ * <pre>
+ * &lt;db:filter>
+ *     &lt;db:filterCondition label="author name like">
  *         NAME LIKE '%?%'
- *         <db:filterValue type="timestamp" useJsCalendar="true" />
- *     </db:filterCondition>
- *     <db:filterCondition label="ID > V1 AND ID < V2">
- *         AUTHOR_ID >= ? AND AUTHOR_ID <= ?
- *         <db:filterValue label="V1" type="numeric"/>
- *         <db:filterValue label="V2" type="numeric"/>
- *     </db:filterCondition>
- *     <db:filterCondition label="author = ">
+ *         &lt;db:filterValue type="timestamp" useJsCalendar="true" />
+ *     &lt;/db:filterCondition>
+ *     &lt;db:filterCondition label="ID > V1 AND ID &lt; V2">
+ *         AUTHOR_ID >= ? AND AUTHOR_ID &lt;= ?
+ *         &lt;db:filterValue label="V1" type="numeric"/>
+ *         &lt;db:filterValue label="V2" type="numeric"/>
+ *     &lt;/db:filterCondition>
+ *     &lt;db:filterCondition label="author = ">
  *         NAME = '?'
- *         <db:filterValue type="select">
- *             <db:queryData name="q1" query="select distinct name as n1, name as n2 from author where AUTHOR_ID < 100 order by name"/>
- *         </db:filterValue>
- *     </db:filterCondition>
- *     <db:filterCondition label="now is after date">
+ *         &lt;db:filterValue type="select">
+ *             &lt;db:queryData name="q1" query="select distinct name as n1, name as n2 from author where AUTHOR_ID &lt; 100 order by name"/>
+ *         &lt;/db:filterValue>
+ *     &lt;/db:filterCondition>
+ *     &lt;db:filterCondition label="now is after date">
  *         CURRENT_DATE > ?
- *         <db:filterValue type="date" useJsCalendar="true" />
- *     </db:filterCondition>
- *     <db:filterCondition label="filter without user input">
+ *         &lt;db:filterValue type="date" useJsCalendar="true" />
+ *     &lt;/db:filterCondition>
+ *     &lt;db:filterCondition label="filter without user input">
  *         AUTHOR_ID > 10
- *     </db:filterCondition>
- * </db:filter>
+ *     &lt;/db:filterCondition>
+ * &lt;/db:filter>
+ * </pre>
  * 
  * This structure will be rendered as a html select element to select the condition the you want to apply. 
  * On the onchange event there is a submit, so the page reload with the input elements of the condition that you have selected. 
- * After all input elements, there are two buttons, one to apply the condition, one to unset the current applied condition.
- *  
- * @author Sergio Moretti <s.moretti@nsi-mail.it>
- * 
- * @version $Revision$
- * 
+ * After all input elements, there are two buttons, one to apply the condition, one to unset the current applied condition. 
+ * <p>
  * Internals:
  * <dl>Request parameters:
- * <dt>filter_<tableId> 
+ * <dt>filter_[tableId] 
  * <dd>prefix that all the parameters created by this tag have.
- * <dt>filter_<tableId>_sel
+ * <dt>filter_[tableId]_sel
  * <dd>index of the currently selected condition
- * <dt>filter_<tableId>_cond_<condId>
+ * <dt>filter_[tableId]_cond_[condId]
  * <dd>text of the currently selected condition
- * <dt>filter_<tableId>_cond_<condId>_value_<valueId>
- * <dd>current value of the input tag corresponding to the filterValue tag identified by <valueId>
- * <dt>filter_<tableId>_cond_<condId>_valuetype_<valueId>
- * <dd>type of the value identified by <valueId> 
- * <dt>filter_<tableId>_set
+ * <dt>filter_[tableId]_cond_[condId]_value_[valueId]
+ * <dd>current value of the input tag corresponding to the filterValue tag identified by [valueId]
+ * <dt>filter_[tableId]_cond_[condId]_valuetype_[valueId]
+ * <dd>type of the value identified by [valueId] 
+ * <dt>filter_[tableId]_set
  * <dd>name of the submit button to set/unset the filter. If this parameter is present in the request,
  * I know that a filter set/unset operation is requested. This is needed because I have to nullify the 
  * current position to permit to the goto event to go to the first row (and not to the current row, which maybe will
  * be out the filtered rowset).  
  * this custom tag generate
  * </dl>
- * 
+ * <p> 
  * Reading data from request, and update corrispondently the sqlFilter attribute of DbFormTag
  * is done in the static method generateSqlFilter, which produce in output a valid filter string.
  * This method is called in DbFormTag's method doStartTag, setting with it the sqlFilter attribute value.
@@ -108,9 +106,14 @@ import org.dbforms.util.Util;
  * lastPosition variables that normally contain the current position in the case of applying of a filter 
  * (.i.e. when user press the set button, and so the filter_<tableId>_set parameter is found in request).
  * This is needed because here we must force the goto event to move to the first avalilable row. 
- *   
+ * <p>   
  * TODO can I extends this tag from TagSupportWithScriptHandler to inherit attributes?
  * TODO I have to find a way to apply filter only when "set" button is pressed (problem with goto to current position that is anymore visible)
+ * TODO add internationalization support
+ *  
+ * @author Sergio Moretti <s.moretti@nsi-mail.it>
+ * 
+ * @version $Revision$
  */
 public class DbFilterTag extends BodyTagSupport
 {
