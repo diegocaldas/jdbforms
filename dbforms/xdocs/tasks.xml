@@ -71,6 +71,20 @@
 	      		<td>unassigned</td>
 	      		<td>open</td>
 	      	</tr>
+	      	<tr>
+	      		<td>
+		      		Make it possible to have the configurations as attributes in the &lt;db:dateField&gt;
+		      		tag instead of putting them in web.xml. Some thing like:
+					&lt;db:dateField 
+						fieldName="birthdate"   
+						useJsCalendar="true"
+						jsCalendarDateFormat="yyyy-mm-dd" 
+						jsCalendarImageHeight="16" 
+						jsCalendarImageWidth="16"  
+						jsCalendarImageSrc="&lt;%=imageFiles%&gt;"  /&gt;
+				If the attributes are not given then the tag takes the default values (current implementation).
+			</td>
+	      	</tr>
 	    </table>
 	  </p>
   	
