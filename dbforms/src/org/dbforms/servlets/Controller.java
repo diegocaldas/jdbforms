@@ -272,6 +272,8 @@ public class Controller extends HttpServlet
             }
             else
             {
+								System.out.println("*** e = "+e);
+								System.out.println("*** e.getFollowUp() = "+e.getFollowUp());
                request.getRequestDispatcher(e.getFollowUp())
                       .forward(request, response);
             }

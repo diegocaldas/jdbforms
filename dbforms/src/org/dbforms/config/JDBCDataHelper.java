@@ -56,7 +56,7 @@ public class JDBCDataHelper {
     * @param fieldType DOCUMENT ME!
     * @throws SQLException DOCUMENT ME!
     */
-   public static void fillPreparedStatement(PreparedStatement ps, int col, Object value, int fieldType) throws SQLException {
+   public static void fillPreparedStatement(PreparedStatement ps, int col, Object value, int fieldType, Table table) throws SQLException {
       logCat.debug("fillPreparedStatement( ps, " + col + ", " + value + ", " + fieldType + ")...");
       switch (fieldType) {
          case 0:
@@ -66,26 +66,35 @@ public class JDBCDataHelper {
                ps.setNull(col, java.sql.Types.BLOB);
             } else {
                FileHolder fileHolder = (FileHolder) value;
-               try {
-                  ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
-                  ObjectOutputStream out = new ObjectOutputStream(byteOut);
-                  out.writeObject(fileHolder);
-                  out.flush();
-
-                  byte[] buf = byteOut.toByteArray();
-                  byteOut.close();
-                  out.close();
-
-                  ByteArrayInputStream bytein = new ByteArrayInputStream(buf);
-                  int byteLength = buf.length;
-                  ps.setBinaryStream(col, bytein, byteLength);
-
-                  // store fileHolder as a whole (this way we don't lose file meta-info!)
-               } catch (IOException ioe) {
-                  ioe.printStackTrace();
-                  logCat.info(ioe.toString());
-                  throw new SQLException("error storing BLOB in database - " + ioe.toString(), null, 2);
-               }
+							 
+							 if(table.getBlobHandlingStrategy() == Table.BLOB_CLASSIC) {
+								 try {
+										ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
+										ObjectOutputStream out = new ObjectOutputStream(byteOut);
+										out.writeObject(fileHolder);
+										out.flush();
+	
+										byte[] buf = byteOut.toByteArray();
+										byteOut.close();
+										out.close();
+	
+										ByteArrayInputStream bytein = new ByteArrayInputStream(buf);
+										int byteLength = buf.length;
+										ps.setBinaryStream(col, bytein, byteLength);
+	
+										// store fileHolder as a whole (this way we don't lose file meta-info!)
+								 } catch (IOException ioe) {
+										ioe.printStackTrace();
+										logCat.info(ioe.toString());
+										throw new SQLException("error storing BLOB in database (BLOB_CLASSIC MODE) - " + ioe.toString(), null, 2);
+								 }
+								 
+							 } 
+							 // case TABLE.BLOB_INTERCEPTOR: direct storage, the rest is dont by interceptor
+							 else {								 
+								 ps.setBinaryStream(col, fileHolder.getInputStreamFromBuffer(), fileHolder.getFileLength());
+							 }
+							 
             }
             break;
 		 case FieldTypes.DISKBLOB:

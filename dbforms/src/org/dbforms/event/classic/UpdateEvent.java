@@ -212,7 +212,7 @@ public class UpdateEvent extends ValidationEvent
                   value = fv.getFieldValueAsObject();
                }
 
-               JDBCDataHelper.fillPreparedStatement(ps, col, value, fieldType);
+               JDBCDataHelper.fillPreparedStatement(ps, col, value, fieldType, getTable());
                col++;
             }
          }

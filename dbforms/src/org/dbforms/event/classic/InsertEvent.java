@@ -205,7 +205,7 @@ public class InsertEvent extends ValidationEvent
 
                logCat.info("PRE_INSERT: field=" + curField.getName() + " col="
                            + col + " value=" + value + " type=" + fieldType);
-               JDBCDataHelper.fillPreparedStatement(ps, col, value, fieldType);
+               JDBCDataHelper.fillPreparedStatement(ps, col, value, fieldType, getTable());
                col++;
             }
          }

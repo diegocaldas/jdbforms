@@ -123,6 +123,9 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
    /** site to be invoked after action if previous form contained errors- nota bene: this followUp may be overruled by "followUp"-attributes of actionButtons */
    private String followUpOnError;
 
+	 /** address of the rel. address of page that renders this form (Joe Peer 2004-18-03*/ 
+	 private String source;
+	 
    /** pedant to the html-target attribute in html-form tag: the target frame to jump to */
    private String target;
 
@@ -420,6 +423,24 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
       return followUp;
    }
 
+   /**
+    *  Sets the source attribute of the DbFormTag object
+    *
+    * @param  source The new followUp value
+    */
+   public void setSource(String source) {
+      this.source = source;
+   }
+
+   /**
+    *  Gets the source attribute of the DbFormTag object
+    *
+    * @return  The source value
+    */
+   public String getSource() {
+      return source;
+   }	 
+	 
    /**
     *  Sets the target attribute of the DbFormTag object
     *
@@ -1649,7 +1670,12 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
 
    private void appendSource(HttpServletRequest request, StringBuffer tagBuf) {
       tagBuf.append("<input type=\"hidden\" name=\"source\" value=\"");
-      tagBuf.append(request.getRequestURI());
+
+			if(this.source==null) {
+				tagBuf.append(request.getRequestURI());
+			} else {
+				tagBuf.append(this.source);
+			}
 
       if (request.getQueryString() != null) {
          tagBuf.append("?").append(request.getQueryString());

@@ -109,6 +109,12 @@ public class Table {
    /** some sort of alias to set in dbforms-config, not used yet */
    private String alias = null;
 
+	 /** either "classic" or "interceptor", default is "interceptor" **/
+	 public static final int BLOB_INTERCEPTOR = 0;	 
+	 public static final int BLOB_CLASSIC = 1;
+	 private String blobHandling;
+	 private int blobHandlingStrategy;
+	 
    /**
     * Creates a new Table object.
     */
@@ -120,6 +126,7 @@ public class Table {
       interceptors = new Vector();
       foreignKeys = new Vector();
       foreignKeyNameHash = new Hashtable();
+			blobHandlingStrategy = BLOB_INTERCEPTOR;
    }
 
    /**
@@ -305,6 +312,31 @@ public class Table {
       this.alias = alias;
    }
 
+   /**
+	  * for digester only, see blobHandlingStrategy
+    * @return String
+    */
+   public String getBlobHandling() {
+      return blobHandling;
+   }
+
+   /**
+	  * for digester only, see blobHandlingStrategy
+    * @param blobHandling config parameter
+    */
+   public void setBlobHandling(String blobHandling) {
+      this.blobHandling = blobHandling;
+			if("classic".equals(blobHandling)) {
+				this.blobHandlingStrategy = BLOB_CLASSIC;
+			} else {
+				this.blobHandlingStrategy = BLOB_INTERCEPTOR;
+			}
+   }
+	 
+	 public int getBlobHandlingStrategy() {
+			return this.blobHandlingStrategy;
+	 }
+	 
    /**
     *  Set configuration for table
     *
@@ -1349,7 +1381,7 @@ public class Table {
          Field curField = (Field) this.getKey().elementAt(i);
          FieldValue aFieldValue = keyValuesHt.get(curField.getName());
          Object value = aFieldValue.getFieldValueAsObject();
-         JDBCDataHelper.fillPreparedStatement(ps, col, value, curField.getType());
+         JDBCDataHelper.fillPreparedStatement(ps, col, value, curField.getType(), this);
          col++;
       }
    }
@@ -1587,6 +1619,8 @@ public class Table {
             Interceptor interceptor = (Interceptor) interceptors.elementAt(i);
             Class interceptorClass = Class.forName(interceptor.getClassName());
             DbEventInterceptor dbi = (DbEventInterceptor) interceptorClass.newInstance();
+						// J.Peer 03/18/2004 - plug in some additional config data for interceptor
+						dbi.setParams(interceptor.getParams());
 
             // (Sunil_Mishra@adp.com) - The return type to check for the
             // IGNORE_OPERATION
@@ -2179,7 +2213,7 @@ public class Table {
             break;
 
          default :
-            JDBCDataHelper.fillPreparedStatement(ps, curCol, curValue, curField.getType());
+            JDBCDataHelper.fillPreparedStatement(ps, curCol, curValue, curField.getType(), this);
             curCol++;
       }
 

@@ -423,7 +423,7 @@ public class DataSourceJDBC extends DataSource {
             }
 
             getLogCat().info("field=" + curField.getName() + " col=" + col + " value=" + value + " type=" + fieldType);
-            JDBCDataHelper.fillPreparedStatement(ps, col, value, fieldType);
+            JDBCDataHelper.fillPreparedStatement(ps, col, value, fieldType, getTable());
             col++;
          }
       }
