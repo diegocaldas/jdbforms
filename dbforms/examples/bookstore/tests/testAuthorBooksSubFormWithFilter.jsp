@@ -72,7 +72,7 @@
 							Subform filter:&nbsp;							
 							<db:filter>
 								<db:filterCondition label="title like">
-									TITLE LIKE '%?%'
+									TITLE LIKE ?
 									<db:filterValue/>
 								</db:filterCondition>
 								<db:filterCondition label="title not unique">

@@ -7,8 +7,8 @@
 	<body>
 		<db:errors/>
 		<db:dbform tableName="BOOK" 
-			maxRows="3" 
-			followUp="/tests/list_search_book.jsp" 
+			maxRows="*" 
+			followUp="/tests/testSEARCHRESULT.jsp" 
 			autoUpdate="false"
 		>
 			<db:header>
@@ -17,8 +17,8 @@
 			</db:header>
 			<db:body>
 				<tr bgcolor="#<%= (i++%2==0) ? "FFFFCC" : "FFFF99" %>">
-					<td><%=currentRow_BOOK.get("TITLE") %>&nbsp;</td>
-					<td><%=currentRow_BOOK.get("ISBN") %>&nbsp;</td>
+					<td><db:label fieldName="TITLE" /></td>
+					<td><db:label fieldName="ISBN" /></td>
 				</tr>
 			</db:body>
 			<db:footer>

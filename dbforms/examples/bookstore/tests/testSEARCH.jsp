@@ -22,6 +22,7 @@
 						<td colspan="2" bgcolor="#F7A629">&nbsp;</td>
 						<td bgcolor="#F7A629">
 							<input value="Search!" type="button" onClick="javascript:document.dbform.submit()">
+							<db:gotoButton caption="Search!" destination="/tests/testSEARCHRESULT.jsp" />
 						</td>
 					</tr>
 					<tr bgcolor="#CCBBCC">
