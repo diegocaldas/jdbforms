@@ -2095,8 +2095,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
     * Initialize the value of the search fields.
     *
     * @return  the field values array
-    * @todo Whats when there is more then onesearch field whith the same name?
-    * @todo Maybe we should parse all of them ....
+    * @todo Whats when there is more then one search field whith the same name?<br/>Maybe we should parse all of them ....
     */
    private FieldValue[] initSearchFieldValues() throws IOException
    {
