@@ -130,6 +130,36 @@
 	        <field name="TITLE" fieldType="varchar" isKey="true" />
         </query> 
 
+	    <query name="AUTHOR_CLASSIC" from="AUTHOR" >
+	        <field name="AUTHOR_ID" fieldType="int" isKey="true" autoInc="true"/>
+	        <field name="NAME" fieldType="varchar"  sortable="true"/>
+	        <field name="ORGANISATION" fieldType="varchar"  sortable="true"/>
+	        <events>
+	            <event type="insert" 	id="insertClassic"/>
+	            <event type="update" 	id="updateClassic"/>
+	            <event type="delete" 	id="deleteClassic"/>
+	            <event type="navGoto" 	id="navGotoClassic"/>
+	            <event type="navPrev" 	id="navPrevClassic"/>
+	            <event type="navNext" 	id="navNextClassic"/>
+	            <event type="navFirst" 	id="navFirstClassic"/>
+	            <event type="navLast" 	id="navLastClassic"/>
+	        </events>
+	    </query>    
+
+        <events>
+            <database-events>
+                <database-event id="insertClassic" type="insert" className="org.dbforms.event.classic.InsertEvent" /> 
+                <database-event id="updateClassic" type="update" className="org.dbforms.event.classic.UpdateEvent" />
+                <database-event id="deleteClassic" type="delete" className="org.dbforms.event.classic.DeleteEvent" />
+            </database-events>
+            <navigation-events>
+                <navigation-event id="navGotoClassic" type="navGoto"   className="org.dbforms.event.classic.GotoEvent" />
+                <navigation-event id="navPrevClassic" type="navPrev"   className="org.dbforms.event.classic.NavPrevEvent" />
+                <navigation-event id="navNextClassic" type="navNext"   className="org.dbforms.event.classic.NavNextEvent" />
+                <navigation-event id="navFirstClassic" type="navFirst" className="org.dbforms.event.classic.NavFirstEvent" />
+                <navigation-event id="navLastClassic" type="navLast"   className="org.dbforms.event.classic.NavLastEvent" />
+            </navigation-events>
+        </events>
 
 	<!-- ========== Connection =================================== -->
 	    <dbconnection
