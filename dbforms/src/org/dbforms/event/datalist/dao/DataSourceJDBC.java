@@ -193,7 +193,7 @@ public class DataSourceJDBC extends DataSource {
 						DbFormsConfigRegistry.instance().lookup().getConnection(
 							connectionName);
 				} catch (Exception e) {
-					getLogCat().error(e);
+					getLogCat().error("open", e);
 				}
 			}
 
@@ -243,9 +243,10 @@ public class DataSourceJDBC extends DataSource {
 
 	private String[] getCurrentRow() throws SQLException {
 		String[] objectRow = new String[colCount];
-		for (int i = 0; i < colCount; i++)
-			objectRow[i] = JDBCDataHelper.getData(rs, getTable().getField(i).getEscaper(), i + 1).toString();
-
+		for (int i = 0; i < colCount; i++) {
+         Object tmp = JDBCDataHelper.getData(rs, getTable().getField(i).getEscaper(), i + 1);
+         objectRow[i] = (tmp == null) ? null : tmp.toString();
+		}
 		return objectRow;
 	}
 
@@ -362,7 +363,7 @@ public class DataSourceJDBC extends DataSource {
 					data.add(getCurrentRowAsObject());
 					keys.put(getTable().getKeyPositionString(getCurrentRow()), j);
 				} catch (Exception e) {
-					getLogCat().error(e.getMessage());
+					getLogCat().error("size", e);
 
 					break;
 				}

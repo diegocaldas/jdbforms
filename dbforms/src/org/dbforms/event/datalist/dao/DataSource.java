@@ -276,7 +276,7 @@ public abstract class DataSource
       }
       catch (Exception e)
       {
-         logCat.error(e);
+         logCat.error("getNext", e);
          close();
 
          return new ResultSetVector();
@@ -318,7 +318,7 @@ public abstract class DataSource
       }
       catch (Exception e)
       {
-         logCat.error(e);
+         logCat.error("getPrev", e);
          close();
 
          return new ResultSetVector();
@@ -350,7 +350,7 @@ public abstract class DataSource
       }
       catch (Exception e)
       {
-         logCat.error(e);
+         logCat.error("getFirst", e);
          close();
          return new ResultSetVector();
       }
@@ -376,7 +376,7 @@ public abstract class DataSource
       }
       catch (Exception e)
       {
-         logCat.error(e);
+         logCat.error("getLast", e);
          close();
          return new ResultSetVector();
       }
@@ -417,7 +417,7 @@ public abstract class DataSource
       }
       catch (Exception e)
       {
-         logCat.error(e);
+         logCat.error("getCurrent", e);
          close();
 
          return new ResultSetVector();
@@ -533,7 +533,7 @@ public abstract class DataSource
                }
                catch (Exception e)
                {
-                  logCat.error(e);
+                  logCat.error("saveBlobFilesToDisk", e);
                }
 
                // instanciate file object for that dir
@@ -570,7 +570,7 @@ public abstract class DataSource
                   catch (IOException ioe)
                   {
                      //#checkme: this would be a good place for rollback in database!!
-                     logCat.error(ioe);
+                     logCat.error("saveBlobFilesToDisk", ioe);
                      throw new SQLException("could not store file '"
                                             + fileHolder.getFileName()
                                             + "' to dir '" + directory + "'");
@@ -618,7 +618,7 @@ public abstract class DataSource
             }
             catch (Exception e)
             {
-               logCat.error(e);
+               logCat.error("deleteBlobFilesFromDisk", e);
                throw new SQLException(e.getMessage());
             }
 

@@ -29,9 +29,11 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 import org.apache.log4j.Category;
 import org.dbforms.config.Field;
+import org.dbforms.config.Table;
 import org.dbforms.config.FieldValue;
 import org.dbforms.config.FieldValues;
 import org.dbforms.config.Constants;
+import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.util.KeyValuePair;
 import org.dbforms.util.ParseUtil;
 import org.dbforms.util.Util;
@@ -191,6 +193,13 @@ public class DbFilterValueTag
 				f.setName(paramValue);
 				f.setId(valueId);
 				f.setFieldType(valueType);
+            Table table = null;
+            try {
+               table = DbFormsConfigRegistry.instance().lookup().getTable(tableId);
+            } catch (Exception e) {
+               logCat.error("readValuesFromRequest", e);
+            }
+            f.setTable(table);
 				FieldValue fv = new FieldValue(f, value);
 				fv.setLocale(MessageResources.getLocale(request));
 				fv.setSearchAlgorithm(algorithm);
@@ -355,6 +364,7 @@ public class DbFilterValueTag
 		f.setName(state.label);
 		f.setId(state.valueId);
 		f.setFieldType(state.type);
+      f.setTable(getParentForm().getTable());
 		setField(f);
 
 		if (state.label != null) {
