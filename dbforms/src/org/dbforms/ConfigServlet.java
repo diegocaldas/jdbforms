@@ -261,6 +261,18 @@ public class ConfigServlet extends HttpServlet {
 		digester.addSetProperties("dbforms-config/table/field");
 		digester.addSetNext("dbforms-config/table/field", "addField", "org.dbforms.Field");
 
+                // parse "Foreign-Key" - object + add it to parent (which is "Table")
+
+		digester.addObjectCreate("dbforms-config/table/foreign-key","org.dbforms.ForeignKey");
+		digester.addSetProperties("dbforms-config/table/foreign-key");
+		digester.addSetNext("dbforms-config/table/foreign-key", "addForeignKey", "org.dbforms.ForeignKey");
+                
+                // parse "Reference" - object + add it to parent (which is "ForeignKey")
+
+		digester.addObjectCreate("dbforms-config/table/foreign-key/reference","org.dbforms.Reference");
+		digester.addSetProperties("dbforms-config/table/foreign-key/reference");
+		digester.addSetNext("dbforms-config/table/foreign-key/reference", "addReference", "org.dbforms.Reference");
+                
 		// parse "GrantedPrivileges" - object + add it to parent (which is "Table")
 
 		digester.addObjectCreate("dbforms-config/table/granted-privileges","org.dbforms.GrantedPrivileges");
