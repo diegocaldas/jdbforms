@@ -1,5 +1,14 @@
 2002-11-07
 (Henner.Kollmann@gmx.de):
+	added properties to DbConnection:
+	<connection>
+   		<property name="charSet" value="8859_1"
+	</connection>
+	Will be used as 
+           con = DriverManager.getConnection(name, properties);
+
+2002-11-07
+(Henner.Kollmann@gmx.de):
 	dbforms/ConfigServlet.java
 		Extended with query syntax, cleaned up connection stuff
 	dbforms/DbFormsConfig.java
