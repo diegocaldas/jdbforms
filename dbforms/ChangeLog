@@ -1,3 +1,8 @@
+2004-10-12
+(Henner.Kollmann@gmx.de)
+   - Clean up the CustomFormatter code, separate the interfaces.
+     Added test code
+     
 2004-10-11
 (Henner.Kollmann@gmx.de)
    - Moved to jasperreports 0.6.1
