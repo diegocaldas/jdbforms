@@ -1,9 +1,6 @@
 <project default = ""
 	 xmlns:deploy="deploy"
 	 xmlns:doc="doc" 
-         xmlns:m = "maven"
-         xmlns:j = "jelly:core"
-         xmlns:u = "jelly:util"
 	 >
 
 <echo message="Hack to use xalan transformer!"/>
@@ -16,10 +13,8 @@ ${systemScope.setProperty('javax.xml.transform.TransformerFactory','org.apache.x
      -    docbook guide 
      -->
   <goal name="dbforms:doc" description="generate dbforms documentation: taglib docu and manual">
-    <j:jelly xmlns:j="jelly:core" xmlns="jelly:ant">
       <echo message="building the DbForms documentation user guide and jsp tag library"/>
       <ant antfile="docs.xml" target="maven-build-doc"/>
-    </j:jelly>
   </goal>
 
   <goal name="dbforms:dist" description="generates the distribution via build.xml">
@@ -36,7 +31,8 @@ ${systemScope.setProperty('javax.xml.transform.TransformerFactory','org.apache.x
 
   <goal name="dbforms:deploy" description="do the whole deployment: generates site, generates doc, generates distribution">
      <echo message="starting deploying site"/>
-     <echo message="generate changes"/>
+     <echo message="0. cleanup"/>
+     <attainGoal name="clean"/>
      <echo message="1. generate whole site"/>
      <attainGoal name="site:generate"/>
      <echo message="2. generate dbforms documentation via docs.xml"/>
@@ -60,17 +56,23 @@ ${systemScope.setProperty('javax.xml.transform.TransformerFactory','org.apache.x
             output="target/generated-xdocs/changes-report.xml"
             inputFile="ChangeLog"/>
   </postGoal>
+
   <!--
      -  Move the $DBFORMS_HOME/target/docs/* stuff into the 
      -  $DBFORMS_HOME/doc directory
      -->
   <postGoal name="site:generate">
-    <j:jelly xmlns:j="jelly:core" xmlns="jelly:ant">
       <echo message="moving the Maven docs stuff into the main DbForms doc directory"/>
       <ant antfile="docs.xml" target="maven-move-doc"/>
-    </j:jelly>
   </postGoal>
 
+  <!--
+      clean doc dir too
+     -->
+  <postGoal name="clean">
+      <echo message="clean docs too"/>
+      <ant antfile="docs.xml" target="cleanUp"/>
+  </postGoal>
 
 
 </project>
