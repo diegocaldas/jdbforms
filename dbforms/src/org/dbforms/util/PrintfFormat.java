@@ -17,6 +17,9 @@
   Changes for integration into dbforms:
 
   packet changed to org.dbforms.util;
+
+  2002-12-18 (dikr) NP check within internalsprintf(Object s) added
+
 */
 
 package org.dbforms.util;
@@ -1159,6 +1162,7 @@ public class PrintfFormat {
      *     conversion character is neither s nor S.
      */
     String internalsprintf(Object s) {
+      if (s == null) return ""; // dikr 2002-12-18, return null values as empty string 
       String s2 = "";
       if(conversionCharacter=='s'
       || conversionCharacter=='S')
