@@ -227,8 +227,9 @@ public abstract class DatabaseEvent extends WebEvent
           // in case of a BLOB or DISKBLOB save get the FileHolder for later use
           fv.setFileHolder(ParseUtil.getFileHolder(request,
                                                    "f_" + tableId
+																	+ "_"
                                                    + (insertMode ? Constants.INSERTPREFIX : "")  
-                                                   + "_" + keyId + "_" + iiFieldId));
+                                                   + keyId + "_" + iiFieldId));
         }
 
         result.put(fv);
