@@ -1,34 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <chapter>
   <title>Navigation</title>
   <sect1>
-   
-  
     <title>Introduction</title>
     <para>Since version 1.1.4 DbForms contains two different navigation systems:</para>
     <itemizedlist>
-    <listitem>
-        <para>A new one - in the datalist package - which implements a simplified data list pattern described by Claudio Fratarcangeli,Data List Handler: A Pattern for Large Search Result Sets, published on TheServerSide.com. THE NEW SYSTEM NEEDS TO BE CONFIGURED IN DBFORMS-CONFIG.XML, WORKS WITH A <computeroutput>whereClause</computeroutput>, AND DOES NOT RE-EXECUTE THE SEARCH QUERY EVERY TIME.</para>
+      <listitem>
+        <para>A new one - in the datalist package - which implements a simplified data list pattern described by Claudio Fratarcangeli,Data List Handler: A Pattern for Large Search Result Sets, published on TheServerSide.com. THE NEW SYSTEM NEEDS TO BE CONFIGURED IN DBFORMS-CONFIG.XML, WORKS WITH A 
+          <computeroutput>whereClause</computeroutput>, AND DOES NOT RE-EXECUTE THE SEARCH QUERY EVERY TIME.
+        </para>
       </listitem>
       <listitem>
-        <para>The original one - in the classic package. The original code re-executes the search query every time the client requests a subset of the hits. THIS DOES NOT WORK WHEN A <computeroutput>whereClause</computeroutput> ATTRIBUTE IS USED IN THE <computeroutput>dbForm</computeroutput> TAG!</para>
-        <para>See the <computeroutput>dbform</computeroutput>tag in <ulink url="../../taglib/DbFormsTags_Frame.html"><citetitle>the TagLib </citetitle></ulink>for more information.</para>
-        
-        </listitem>
-      
+        <para>The original one - in the classic package. The original code re-executes the search query every time the client requests a subset of the hits. THIS DOES NOT WORK WHEN A 
+          <computeroutput>whereClause</computeroutput> ATTRIBUTE IS USED IN THE 
+          <computeroutput>dbForm</computeroutput> TAG!
+        </para>
+        <para>See the 
+          <computeroutput>dbform</computeroutput>tag in 
+          <ulink url="../../taglib/DbFormsTags_Frame.html">
+            <citetitle>the TagLib </citetitle>
+          </ulink>for more information.
+        </para>
+      </listitem>
     </itemizedlist>
-    <para> <emphasis role="bold">The new dataList system is now used by default!</emphasis></para> 
+    <para>
+      <emphasis role="bold">The new dataList system is now used by default!</emphasis>
+    </para>
   </sect1>
-  
   <sect1>
     <title>Datalist navigation</title>
     <para>The new datalist based navigation has following advantages:</para>
     <itemizedlist>
       <listitem>
-        <para>Data source is not only jdbc. It should be possible to write data source handlers for all other data, e.g.<link linkend='xml_data'>xml</link>.</para>
+        <para>Data source is not only jdbc. It should be possible to write data source handlers for all other data, e.g.
+          <link linkend="xml_data">xml</link>.
+        </para>
       </listitem>
       <listitem>
-        <para>Navigation should be independent from filtering. Navigation should be possible with free form select, too --i.e. use of a <computeroutput>whereClause</computeroutput> should be ok.</para>
+        <para>Navigation should be independent from filtering. Navigation should be possible with free form select, too --i.e. use of a 
+          <computeroutput>whereClause</computeroutput> should be ok.
+        </para>
       </listitem>
     </itemizedlist>
     <para>
@@ -36,10 +48,10 @@
         <title>Class diagram of datalist navigation</title>
         <mediaobject id="datalist_Navigation">
           <imageobject role="html">
-            <imagedata fileref="images/figures/event.datalist.png" format="PNG" />
+            <imagedata fileref="images/figures/event.datalist.png" format="PNG"/>
           </imageobject>
           <imageobject role="fo">
-            <imagedata fileref="../images/figures/event.datalist_pdf.png" format="PNG" />
+            <imagedata fileref="../images/figures/event.datalist_pdf.png" format="PNG"/>
           </imageobject>
         </mediaobject>
       </figure>
@@ -48,8 +60,8 @@
     <sect2>
       <title>navigation events</title>
       <para>
-      		On the contrary to the classic navigation, where each request will result in an new query to the database with special selections to 
-      		get the next/previous/first and last data, the new navigation system makes an query to the database only if an GotoEvent happens. 
+          On the contrary to the classic navigation, where each request will result in an new query to the database with special selections to 
+          get the next/previous/first and last data, the new navigation system makes an query to the database only if an GotoEvent happens. 
             This query context represented by an DataSource object is stored in the session context an will be reused if one of the other 
             navigation events happens.
       </para>
@@ -72,28 +84,28 @@
       <title>abstract class DataSource</title>
       <para>
         The abstract class DataSource is the base class for all data access. Retrieving data is done by four abstract methods which must be overloaded by implementing class:</para>
-        <itemizedlist>
-          <listitem>
-            <para>protected abstract void open(): This method is called to open the resultset.</para>
-          </listitem>
-          <listitem>
-            <para>protected abstract int size(): This method must return the size of the whole resultset with all data fetch</para>
-          </listitem>
-          <listitem>
-            <para>protected abstract Object[] getRow(int i) This method must return the row at special index as an Object[]</para>
-          </listitem>
-          <listitem>
-            <para>protected abstract int findStartRow(String startRow) This method gets the index of an row given by the special DbForms startrow string, This string has the format FieldID ":" Length ":" Value example: if key id = 121 and field id=2 then keyValueStr contains "2:3:121" if the key consists of more than one fields, the key values are seperated through "-" example: value of field 1=12, value of field 3=1992, then we'll get "1:2:12-3:4:1992"</para>
-          </listitem>
-        </itemizedlist>
-        <para>This methods are called by the DataSource methods getCurrent, getFirst, getPrev, getNext and getLast. This datasource methods are called indirect by the DataSourceFactory during service of the navigation events.</para>
-        <para>To insert/update/delete data exists empty methods doInsert/doUpdate/doDelete which could be overloaded by the implementing classes. This method are called indirect by the DataSourceFactory which is called through the insert/update/delete events of the datalist events.</para>
-      
+      <itemizedlist>
+        <listitem>
+          <para>protected abstract void open(): This method is called to open the resultset.</para>
+        </listitem>
+        <listitem>
+          <para>protected abstract int size(): This method must return the size of the whole resultset with all data fetch</para>
+        </listitem>
+        <listitem>
+          <para>protected abstract Object[] getRow(int i) This method must return the row at special index as an Object[]</para>
+        </listitem>
+        <listitem>
+          <para>protected abstract int findStartRow(String startRow) This method gets the index of an row given by the special DbForms startrow string, This string has the format FieldID ":" Length ":" Value example: if key id = 121 and field id=2 then keyValueStr contains "2:3:121" if the key consists of more than one fields, the key values are seperated through "-" example: value of field 1=12, value of field 3=1992, then we'll get "1:2:12-3:4:1992"</para>
+        </listitem>
+      </itemizedlist>
+      <para>This methods are called by the DataSource methods getCurrent, getFirst, getPrev, getNext and getLast. This datasource methods are called indirect by the DataSourceFactory during service of the navigation events.</para>
+      <para>To insert/update/delete data exists empty methods doInsert/doUpdate/doDelete which could be overloaded by the implementing classes. This method are called indirect by the DataSourceFactory which is called through the insert/update/delete events of the datalist events.</para>
     </sect2>
     <sect2>
       <title>JDBC Access</title>
       <para>
         The class DataSourceJDBC is an implementation of the DataSource class which retrieves data from JDBC data sources. doInsert/doUpdate/doDelete are implemented and do there work via SQL statements for insert/update/delete. The interesting part is retrieving of the data. This is done by a simplified data list handler pattern:
+        
         <itemizedlist>
           <listitem>
             <para>protected abstract void open():</para>
@@ -114,7 +126,6 @@
         </itemizedlist>
       </para>
     </sect2>
-    
   </sect1>
   <sect1>
     <title>Classic navigation</title>
@@ -123,12 +134,12 @@
     <para>
       <figure>
         <title>Class diagram of classic navigation</title>
-        <mediaobject  id="classic_Navigation">
+        <mediaobject id="classic_Navigation">
           <imageobject role="html">
-            <imagedata fileref="images/figures/event.classic.png" format="PNG" />
+            <imagedata fileref="images/figures/event.classic.png" format="PNG"/>
           </imageobject>
           <imageobject role="fo">
-            <imagedata fileref="../images/figures/event.classic.png" format="PNG" />
+            <imagedata fileref="../images/figures/event.classic.png" format="PNG"/>
           </imageobject>
         </mediaobject>
       </figure>
@@ -137,24 +148,26 @@
       <title>HowTo use classic navigation</title>
       <para>
          To use classic navigation you must define custom events in your dbforms-config.xml:
-         <programlisting>
+         
+        <programlisting>
           &lt;!-- ========== custom events =================================== --&gt;
-	  &lt;events&gt;
-	    &lt;database-events&gt;
-	      &lt;database-event type="insert" className="org.dbforms.event.classic.InsertEvent" /&gt;
-	      &lt;database-event type="update" className="org.dbforms.event.classic.UpdateEvent" /&gt;
-	      &lt;database-event type="delete" className="org.dbforms.event.classic.DeleteEvent" /&gt;
-	    &lt;/database-events&gt;
-	    &lt;navigation-events&gt;
-	      &lt;navigation-event type="navGoto" className="org.dbforms.event.classic.GotoEvent" /&gt;
-	      &lt;navigation-event type="navPrev" className="org.dbforms.event.classic.NavPrevEvent" /&gt;
-	      &lt;navigation-event type="navNext" className="org.dbforms.event.classic.NavNextEvent" /&gt;
-	      &lt;navigation-event type="navFirst" className="org.dbforms.event.classic.NavFirstEvent" /&gt;
-	      &lt;navigation-event type="navLast" className="org.dbforms.event.classic.NavLastEvent" /&gt;
-	    &lt;/navigation-events&gt;
-	  &lt;/events&gt;
+    &lt;events&gt;
+      &lt;database-events&gt;
+        &lt;database-event type="insert" className="org.dbforms.event.classic.InsertEvent" /&gt;
+        &lt;database-event type="update" className="org.dbforms.event.classic.UpdateEvent" /&gt;
+        &lt;database-event type="delete" className="org.dbforms.event.classic.DeleteEvent" /&gt;
+      &lt;/database-events&gt;
+      &lt;navigation-events&gt;
+        &lt;navigation-event type="navGoto" className="org.dbforms.event.classic.GotoEvent" /&gt;
+        &lt;navigation-event type="navPrev" className="org.dbforms.event.classic.NavPrevEvent" /&gt;
+        &lt;navigation-event type="navNext" className="org.dbforms.event.classic.NavNextEvent" /&gt;
+        &lt;navigation-event type="navFirst" className="org.dbforms.event.classic.NavFirstEvent" /&gt;
+        &lt;navigation-event type="navLast" className="org.dbforms.event.classic.NavLastEvent" /&gt;
+      &lt;/navigation-events&gt;
+    &lt;/events&gt;
          </programlisting>
          This is is necessary starting after the 1.1.4dev release.  Classic navigation was the default up through 1.1.4dev
+      
       </para>
     </sect2>
   </sect1>
@@ -164,10 +177,9 @@
     <itemizedlist>
       <listitem>
         <para>
-        	Greate a thread that will throw away unused DataSources when the user navigate to another page.
+          Greate a thread that will throw away unused DataSources when the user navigate to another page.
         </para>
       </listitem>
-     
       <listitem>
         <para>
             What do you think?
@@ -175,38 +187,38 @@
       </listitem>
     </itemizedlist>
   </sect1>
-  <sect1><title>Classic Configuration in Dbforms-config.xml</title>
-  <para>To use the classic navigation system, please add the following within dbforms-config.xml:</para>
-  <programlisting>
+  <sect1>
+    <title>Classic Configuration in Dbforms-config.xml</title>
+    <para>To use the classic navigation system, please add the following within dbforms-config.xml:</para>
+    <programlisting>
 &lt;events&gt;
     &lt;database-events&gt;
-      &lt;database-event type=&quot;insert&quot; className=&quot;org.dbforms.event.classic.InsertEvent&quot; /&gt;
-       &lt;database-event type=&quot;update&quot; className=&quot;org.dbforms.event.classic.UpdateEvent&quot; /&gt;
-       &lt;database-event type=&quot;delete&quot; className=&quot;org.dbforms.event.classic.DeleteEvent&quot; /&gt;
+      &lt;database-event type="insert" className="org.dbforms.event.classic.InsertEvent" /&gt;
+       &lt;database-event type="update" className="org.dbforms.event.classic.UpdateEvent" /&gt;
+       &lt;database-event type="delete" className="org.dbforms.event.classic.DeleteEvent" /&gt;
      &lt;/database-events&gt;
 
      &lt;navigation-events&gt;
-       &lt;navigation-event type=&quot;navGoto&quot; className=&quot;org.dbforms.event.classic.GotoEvent&quot; /&gt;
-       &lt;navigation-event type=&quot;navPrev&quot; className=&quot;org.dbforms.event.classic.NavPrevEvent&quot; /&gt;
-       &lt;navigation-event type=&quot;navNext&quot; className=&quot;org.dbforms.event.classic.NavNextEvent&quot; /&gt;
-       &lt;navigation-event type=&quot;navFirst&quot; className=&quot;org.dbforms.event.classic.NavFirstEvent&quot; /&gt;
-       &lt;navigation-event type=&quot;navLast&quot; className=&quot;org.dbforms.event.classic.NavLastEvent&quot; /&gt;
+       &lt;navigation-event type="navGoto" className="org.dbforms.event.classic.GotoEvent" /&gt;
+       &lt;navigation-event type="navPrev" className="org.dbforms.event.classic.NavPrevEvent" /&gt;
+       &lt;navigation-event type="navNext" className="org.dbforms.event.classic.NavNextEvent" /&gt;
+       &lt;navigation-event type="navFirst" className="org.dbforms.event.classic.NavFirstEvent" /&gt;
+       &lt;navigation-event type="navLast" className="org.dbforms.event.classic.NavLastEvent" /&gt;
      &lt;/navigation-events&gt;
 &lt;/events&gt;
   </programlisting>
-  <para>The new navigation system can also be enabled on a table by table basis by:</para>
-  <itemizedlist mark="opencircle">
- 
-<listitem>
-<para>
- <link linkend='regi'>Registering new navigation classes</link></para>
- 
-</listitem>
-<listitem><para>
-<link linkend='tbyt'>Overriding on a table by table basis</link></para>
-</listitem>
-</itemizedlist>
-  
+    <para>The new navigation system can also be enabled on a table by table basis by:</para>
+    <itemizedlist mark="opencircle">
+      <listitem>
+        <para>
+          <link linkend="regi">Registering new navigation classes</link>
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <link linkend="tbyt">Overriding on a table by table basis</link>
+        </para>
+      </listitem>
+    </itemizedlist>
   </sect1>
 </chapter>
-

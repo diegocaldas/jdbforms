@@ -1,37 +1,33 @@
-<?xml version="1.0" encoding="UTF-8"?> 
+<?xml version="1.0" encoding="UTF-8"?>
 
 <appendix lang="en-US">
-    <title>
+  <title>
     Avoiding Navigation Errors 
     </title>
-    <sect1>
-      <title>whereClause usage in dbform tag</title>
-      
-     <para>If you want to use navigation (eg. navNext/navPrev buttons), you should use orderBy
+  <sect1>
+    <title>whereClause usage in dbform tag</title>
+    <para>If you want to use navigation (eg. navNext/navPrev buttons), you should use orderBy
 and filter attributes instead of a whereClause because using a whereClause renders navigation impossible! 
-For instance, if you specify whereClause=&quot;where n&gt;3&quot; and your user views the page and then clicks the navNext button, the next page may show values
+For instance, if you specify whereClause="where n&gt;3" and your user views the page and then clicks the navNext button, the next page may show values
 where n is not greater than 3.</para>
-
-<para>Also, the whereClause attribute can not be used with orderBy or filter attributes.
+    <para>Also, the whereClause attribute can not be used with orderBy or filter attributes.
 They will be ignored. Order by should be used within the whereClause instead:</para>
- 
- <para>
- <screen>
- whereClause=&quot;WHERE (FIELD1 &gt;'25' AND FIELD1 &lt;'50' ) OR FIELD2 NOT NULL ORDERBY FIELD7&quot;
+    <para>
+      <screen>
+ whereClause="WHERE (FIELD1 &gt;'25' AND FIELD1 &lt;'50' ) OR FIELD2 NOT NULL ORDERBY FIELD7"
 </screen>
-</para>
-</sect1>
- <sect1>
- <title>orderBy usage in dbform tag</title>
- 
- <para>
+    </para>
+  </sect1>
+  <sect1>
+    <title>orderBy usage in dbform tag</title>
+    <para>
 If you use a non-primary key, you MUST specify
-sortable=&quot;true&quot; within your dbforms-config.xml file.</para>
-<para>If you use orderBy
+sortable="true" within your dbforms-config.xml file.</para>
+    <para>If you use orderBy
 with a non primary key and you don't specify that in the config file,
 then navNext/navPrev buttons will function like navLast/navFirst buttons
 and you will skip over results.
  </para>
- <para>As note in the manual under sorting, too much use of the sortable attribute may negatively affect performance.</para>
-</sect1>
+    <para>As note in the manual under sorting, too much use of the sortable attribute may negatively affect performance.</para>
+  </sect1>
 </appendix>
