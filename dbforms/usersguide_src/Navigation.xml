@@ -7,7 +7,9 @@
     <itemizedlist>
       <listitem>
         <para>The original one - in the classic package - and a new one in the datalist package. The original code re-execute the search query every time the client requests a subset of the hits. This works only with pages which do not use free form select!</para>
-      </listitem>
+        <para>This means that <emphasis role="bold">forms using a <computeroutput> whereClause </computeroutput> will use the new system.  Forms using <computeroutput>filters</computeroutput>, <computeroutput>orderBy</computeroutput> or nothing will use the "classic" system.</emphasis>  See the <computeroutput>dbform</computeroutput>tag in <ulink url="../../taglib/DbFormsTags_Frame.html"><citetitle>the TagLib </citetitle></ulink>for more information.</para>
+        
+        </listitem>
       <listitem>
         <para>A new one - in the datalist package - wich implements a simplified data list pattern described by Claudio Fratarcangeli, Data List Handler: A Pattern for Large Search Result Sets, published on TheServerSide.com.</para>
       </listitem>
@@ -15,12 +17,12 @@
   </sect1>
   <sect1>
     <title>Classic navigation</title>
-    <para>Classic navigation is moved from package org.dbforms.event to package org.dbforms.event.classic in version 1.1.4. The whole navigation is simplified, unessary classes are removed and the usage of "instanceof EventType" is removed from DbForms. The often used Hashtable of FieldValues is rebuild with an deligator pattern to FieldValues to make the usage more fault proved (see API documentation).</para>
+    <para>Classic navigation is moved from package org.dbforms.event to package org.dbforms.event.classic in version 1.1.4. The whole navigation is simplified, unnessary classes are removed and the usage of "instanceof EventType" is removed from DbForms. The often used Hashtable of FieldValues is rebuilt with an deligator pattern to FieldValues to make the usage more fault proved (see API documentation).</para>
     <para>Details of the class structure could be seen in the class diagram.</para>
     <para>
-      <figure id="classic_Navigation">
+      <figure>
         <title>Class diagram of classic navigation</title>
-        <mediaobject>
+        <mediaobject  id="classic_Navigation">
           <imageobject role="html">
             <imagedata fileref="images/figures/event.classic.png" format="PNG" />
           </imageobject>
@@ -43,9 +45,9 @@
       </listitem>
     </itemizedlist>
     <para>
-      <figure id="datalist_Navigation">
+      <figure>
         <title>Class diagram of datalist navigation</title>
-        <mediaobject>
+        <mediaobject id="datalist_Navigation">
           <imageobject role="html">
             <imagedata fileref="images/figures/event.datalist.png" format="PNG" />
           </imageobject>
@@ -75,7 +77,7 @@
     <sect2>
       <title>abstract class DataSource</title>
       <para>
-        The abstract class DataSource is the base class for all data access. Retrieving data is done by four abstract methods which must be overloaded by implementing class:
+        The abstract class DataSource is the base class for all data access. Retrieving data is done by four abstract methods which must be overloaded by implementing class:</para>
         <itemizedlist>
           <listitem>
             <para>protected abstract void open(): This method is called to open the resultset.</para>
@@ -92,7 +94,7 @@
         </itemizedlist>
         <para>This methods are called by the DataSource methods getCurrent, getFirst, getPrev, getNext and getLast. This datasource methods are called indirect by the DataSourceFactory during service of the navigation events.</para>
         <para>To insert/update/delete data exists empty methods doInsert/doUpdate/doDelete which could be overloaded by the implementing classes. This method are called indirect by the DataSourceFactory which is called through the insert/update/delete events of the datalist events.</para>
-      </para>
+      
     </sect2>
     <sect2>
       <title>JDBC Access</title>
