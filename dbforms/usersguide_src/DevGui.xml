@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
  
 	<chapter>
-		<title id ="devgui">DevGui
+		<title>DevGui
 </title>
-		<sect1>
+		<sect1 id ="devgui" >
 			<title>Introduction
 </title>
 			<para>Tools for <emphasis role="bold">automatic generation of DbForms configuration XML file</emphasis> (dbforms-config.xml) and for <emphasis role="bold">automatic generation of JSP views</emphasis>, are available using a convenient SWING based application interface that can:
@@ -128,7 +128,8 @@ bash,ksh:  export DBFORMS_HOME=/home/user123/dbforms
 <listitem>
 <para>libraries for Xalan-Java XSLT processor and a XML parser like Xerxes.
 </para>
-<blockquote><para>Please download simply a binary<ulink url="http://xml.apache.org/xalan-j/"><citetitle> xalan distribution</citetitle></ulink> and include xalan.jar and xercesImpl.jar (both included) in your CLASSPATH.
+<para>If your JDK is 1.4.x or later, you may skip this step</para>
+<blockquote><para>Please download a binary<ulink url="http://xml.apache.org/xalan-j/"><citetitle> xalan distribution</citetitle></ulink> and include xalan.jar and xercesImpl.jar (both included) in your CLASSPATH.
 </para>
 <para>example(win):</para>
 <screen>
