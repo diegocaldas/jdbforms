@@ -20,7 +20,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.util;
 
 /**
@@ -31,30 +30,30 @@ package org.dbforms.util;
  */
 public class FieldTypes
 {
-    /** DOCUMENT ME! */
-    public static final int INTEGER = 1;
+   /** DOCUMENT ME! */
+   public static final int INTEGER = 1;
 
-    /** DOCUMENT ME! */
-    public static final int CHAR = 2;
+   /** DOCUMENT ME! */
+   public static final int CHAR = 2;
 
-    /** DOCUMENT ME! */
-    public static final int DATE = 3;
+   /** DOCUMENT ME! */
+   public static final int DATE = 3;
 
-    /** DOCUMENT ME! */
-    public static final int TIMESTAMP = 4;
+   /** DOCUMENT ME! */
+   public static final int TIMESTAMP = 4;
 
-    /** DOCUMENT ME! */
-    public static final int DOUBLE = 5;
+   /** DOCUMENT ME! */
+   public static final int DOUBLE = 5;
 
-    /** DOCUMENT ME! */
-    public static final int FLOAT = 6;
+   /** DOCUMENT ME! */
+   public static final int FLOAT = 6;
 
-    /** DOCUMENT ME! */
-    public static final int BLOB = 7;
+   /** DOCUMENT ME! */
+   public static final int BLOB = 7;
 
-    /** DOCUMENT ME! */
-    public static final int DISKBLOB = 8;
+   /** DOCUMENT ME! */
+   public static final int DISKBLOB = 8;
 
-    /** DOCUMENT ME! */
-    public static final int NUMERIC = 9;
+   /** DOCUMENT ME! */
+   public static final int NUMERIC = 9;
 }

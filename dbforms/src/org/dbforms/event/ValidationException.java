@@ -20,7 +20,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.event;
 
 /*
@@ -52,22 +51,22 @@ in classes implementing the interceptor interface
 */
 public class ValidationException extends Exception
 {
-    /**
-     * Creates a new ValidationException object.
-     *
-     * @param message DOCUMENT ME!
-     */
-    public ValidationException(String message)
-    {
-        super(message);
-    }
+   /**
+    * Creates a new ValidationException object.
+    *
+    * @param message DOCUMENT ME!
+    */
+   public ValidationException(String message)
+   {
+      super(message);
+   }
 
 
-    /**
-     * Creates a new ValidationException object.
-     */
-    public ValidationException()
-    {
-        super();
-    }
+   /**
+    * Creates a new ValidationException object.
+    */
+   public ValidationException()
+   {
+      super();
+   }
 }

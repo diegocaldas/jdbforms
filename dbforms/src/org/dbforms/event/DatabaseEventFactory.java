@@ -20,14 +20,10 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.event;
-
 import java.util.HashMap;
 import javax.servlet.http.*;
-
 import org.apache.log4j.Category;
-
 import org.dbforms.*;
 import org.dbforms.event.eventtype.EventType;
 
@@ -42,20 +38,15 @@ import org.dbforms.event.eventtype.EventType;
  */
 public abstract class DatabaseEventFactory extends EventFactory
 {
-
-    /**
-     *  Create and return a new UpdateEvent as secondary event.
-     *
-     * @param  tableId the table identifier
-     * @param  keyId   the key   identifier
-     * @param  request the HttpServletRequest object
-     * @param  config  the DbForms config object
-     * @return  The updateEvent object
-     */
-    public abstract DatabaseEvent createUpdateEvent(int                tableId,
-                                                  String             keyId,
-                                                  HttpServletRequest request,
-                                                  DbFormsConfig      config);
-
-
+   /**
+    *  Create and return a new UpdateEvent as secondary event.
+    *
+    * @param  tableId the table identifier
+    * @param  keyId   the key   identifier
+    * @param  request the HttpServletRequest object
+    * @param  config  the DbForms config object
+    * @return  The updateEvent object
+    */
+   public abstract DatabaseEvent createUpdateEvent(int tableId, String keyId,
+      HttpServletRequest request, DbFormsConfig config);
 }

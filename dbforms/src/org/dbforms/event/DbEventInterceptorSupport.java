@@ -20,7 +20,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.event;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Hashtable;
@@ -35,123 +34,133 @@ convenience class
 */
 public class DbEventInterceptorSupport implements DbEventInterceptor
 {
-    static Category logCat = Category.getInstance(DbEventInterceptorSupport.class.getName()); // logging category for this class
+   static Category logCat = Category.getInstance(DbEventInterceptorSupport.class
+         .getName()); // logging category for this class
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param request DOCUMENT ME!
-     * @param fieldValues DOCUMENT ME!
-     * @param config DOCUMENT ME!
-     * @param con DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     *
-     * @throws ValidationException DOCUMENT ME!
-     */
-    public int preInsert(HttpServletRequest request, Hashtable fieldValues, DbFormsConfig config, Connection con) throws ValidationException
-    {
-        return GRANT_OPERATION;
-    }
-
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @param request DOCUMENT ME!
-     * @param config DOCUMENT ME!
-     * @param con DOCUMENT ME!
-     */
-    public void postInsert(HttpServletRequest request, DbFormsConfig config, Connection con)
-    {
-    }
+   /**
+    * DOCUMENT ME!
+    *
+    * @param request DOCUMENT ME!
+    * @param fieldValues DOCUMENT ME!
+    * @param config DOCUMENT ME!
+    * @param con DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws ValidationException DOCUMENT ME!
+    */
+   public int preInsert(HttpServletRequest request, Hashtable fieldValues,
+      DbFormsConfig config, Connection con) throws ValidationException
+   {
+      return GRANT_OPERATION;
+   }
 
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param request DOCUMENT ME!
-     * @param fieldValues DOCUMENT ME!
-     * @param config DOCUMENT ME!
-     * @param con DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     *
-     * @throws ValidationException DOCUMENT ME!
-     */
-    public int preUpdate(HttpServletRequest request, java.util.Hashtable fieldValues, DbFormsConfig config, Connection con) throws ValidationException
-    {
-        return GRANT_OPERATION;
-    }
+   /**
+    * DOCUMENT ME!
+    *
+    * @param request DOCUMENT ME!
+    * @param config DOCUMENT ME!
+    * @param con DOCUMENT ME!
+    */
+   public void postInsert(HttpServletRequest request, DbFormsConfig config,
+      Connection con)
+   {
+   }
 
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param request DOCUMENT ME!
-     * @param config DOCUMENT ME!
-     * @param con DOCUMENT ME!
-     */
-    public void postUpdate(HttpServletRequest request, DbFormsConfig config, Connection con)
-    {
-    }
+   /**
+    * DOCUMENT ME!
+    *
+    * @param request DOCUMENT ME!
+    * @param fieldValues DOCUMENT ME!
+    * @param config DOCUMENT ME!
+    * @param con DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws ValidationException DOCUMENT ME!
+    */
+   public int preUpdate(HttpServletRequest request,
+      java.util.Hashtable fieldValues, DbFormsConfig config, Connection con)
+      throws ValidationException
+   {
+      return GRANT_OPERATION;
+   }
 
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param request DOCUMENT ME!
-     * @param fieldValues DOCUMENT ME!
-     * @param config DOCUMENT ME!
-     * @param con DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     *
-     * @throws ValidationException DOCUMENT ME!
-     */
-    public int preDelete(HttpServletRequest request, Hashtable fieldValues, DbFormsConfig config, Connection con) throws ValidationException
-    {
-        return GRANT_OPERATION;
-    }
+   /**
+    * DOCUMENT ME!
+    *
+    * @param request DOCUMENT ME!
+    * @param config DOCUMENT ME!
+    * @param con DOCUMENT ME!
+    */
+   public void postUpdate(HttpServletRequest request, DbFormsConfig config,
+      Connection con)
+   {
+   }
 
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param request DOCUMENT ME!
-     * @param config DOCUMENT ME!
-     * @param con DOCUMENT ME!
-     */
-    public void postDelete(HttpServletRequest request, DbFormsConfig config, Connection con)
-    {
-    }
+   /**
+    * DOCUMENT ME!
+    *
+    * @param request DOCUMENT ME!
+    * @param fieldValues DOCUMENT ME!
+    * @param config DOCUMENT ME!
+    * @param con DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws ValidationException DOCUMENT ME!
+    */
+   public int preDelete(HttpServletRequest request, Hashtable fieldValues,
+      DbFormsConfig config, Connection con) throws ValidationException
+   {
+      return GRANT_OPERATION;
+   }
 
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param request DOCUMENT ME!
-     * @param config DOCUMENT ME!
-     * @param con DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     *
-     * @throws ValidationException DOCUMENT ME!
-     */
-    public int preSelect(HttpServletRequest request, DbFormsConfig config, Connection con) throws ValidationException
-    {
-        return GRANT_OPERATION;
-    }
+   /**
+    * DOCUMENT ME!
+    *
+    * @param request DOCUMENT ME!
+    * @param config DOCUMENT ME!
+    * @param con DOCUMENT ME!
+    */
+   public void postDelete(HttpServletRequest request, DbFormsConfig config,
+      Connection con)
+   {
+   }
 
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param request DOCUMENT ME!
-     * @param config DOCUMENT ME!
-     * @param con DOCUMENT ME!
-     */
-    public void postSelect(HttpServletRequest request, DbFormsConfig config, Connection con)
-    {
-    }
+   /**
+    * DOCUMENT ME!
+    *
+    * @param request DOCUMENT ME!
+    * @param config DOCUMENT ME!
+    * @param con DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws ValidationException DOCUMENT ME!
+    */
+   public int preSelect(HttpServletRequest request, DbFormsConfig config,
+      Connection con) throws ValidationException
+   {
+      return GRANT_OPERATION;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param request DOCUMENT ME!
+    * @param config DOCUMENT ME!
+    * @param con DOCUMENT ME!
+    */
+   public void postSelect(HttpServletRequest request, DbFormsConfig config,
+      Connection con)
+   {
+   }
 }

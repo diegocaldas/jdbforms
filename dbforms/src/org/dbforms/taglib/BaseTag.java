@@ -20,7 +20,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.taglib;
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
@@ -45,43 +44,43 @@ import org.apache.log4j.Category;
  */
 public class BaseTag extends TagSupport
 {
-    static Category logCat = Category.getInstance(BaseTag.class.getName()); // logging category for this class
+   static Category logCat = Category.getInstance(BaseTag.class.getName()); // logging category for this class
 
-    /**
-     * Process the start of this tag.
-     *
-     * @exception JspException if a JSP exception has occurred
-     */
-    public int doStartTag() throws JspException
-    {
-        HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
-        StringBuffer buf = new StringBuffer("<base href=\"");
-        buf.append(request.getScheme());
-        buf.append("://");
-        buf.append(request.getServerName());
+   /**
+    * Process the start of this tag.
+    *
+    * @exception JspException if a JSP exception has occurred
+    */
+   public int doStartTag() throws JspException
+   {
+      HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
+      StringBuffer       buf = new StringBuffer("<base href=\"");
+      buf.append(request.getScheme());
+      buf.append("://");
+      buf.append(request.getServerName());
 
-        int port = request.getServerPort();
+      int port = request.getServerPort();
 
-        if (port != 80)
-        {
-            buf.append(":");
-            buf.append(port);
-        }
+      if (port != 80)
+      {
+         buf.append(":");
+         buf.append(port);
+      }
 
-        buf.append(request.getRequestURI());
-        buf.append("\">");
+      buf.append(request.getRequestURI());
+      buf.append("\">");
 
-        JspWriter out = pageContext.getOut();
+      JspWriter out = pageContext.getOut();
 
-        try
-        {
-            out.write(buf.toString());
-        }
-        catch (IOException e)
-        {
-            throw new JspException(e.toString());
-        }
+      try
+      {
+         out.write(buf.toString());
+      }
+      catch (IOException e)
+      {
+         throw new JspException(e.toString());
+      }
 
-        return EVAL_BODY_INCLUDE;
-    }
+      return EVAL_BODY_INCLUDE;
+   }
 }

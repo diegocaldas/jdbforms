@@ -20,7 +20,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.devgui;
 import java.io.*;
 
@@ -34,48 +33,50 @@ import java.io.*;
  */
 public class FileUtility
 {
-    /**
-     * DOCUMENT ME!
-     *
-     * @param dir DOCUMENT ME!
-     * @param extensions DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     *
-     * @throws IOException DOCUMENT ME!
-     */
-    public static String[] getFileNamesInDirectory(File dir, String[] extensions) throws IOException
-    {
-        if (extensions == null)
-        {
-            return dir.list();
-        }
-        else
-        {
-            return dir.list(new ExtensionFilter(extensions));
-        }
-    }
+   /**
+    * DOCUMENT ME!
+    *
+    * @param dir DOCUMENT ME!
+    * @param extensions DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws IOException DOCUMENT ME!
+    */
+   public static String[] getFileNamesInDirectory(File dir, String[] extensions)
+      throws IOException
+   {
+      if (extensions == null)
+      {
+         return dir.list();
+      }
+      else
+      {
+         return dir.list(new ExtensionFilter(extensions));
+      }
+   }
 
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param dir DOCUMENT ME!
-     * @param extensions DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     *
-     * @throws IOException DOCUMENT ME!
-     */
-    public static File[] getFilesInDirectory(File dir, String[] extensions) throws IOException
-    {
-        if (extensions == null)
-        {
-            return dir.listFiles();
-        }
-        else
-        {
-            return dir.listFiles(new ExtensionFilter(extensions));
-        }
-    }
+   /**
+    * DOCUMENT ME!
+    *
+    * @param dir DOCUMENT ME!
+    * @param extensions DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws IOException DOCUMENT ME!
+    */
+   public static File[] getFilesInDirectory(File dir, String[] extensions)
+      throws IOException
+   {
+      if (extensions == null)
+      {
+         return dir.listFiles();
+      }
+      else
+      {
+         return dir.listFiles(new ExtensionFilter(extensions));
+      }
+   }
 }
