@@ -1,0 +1,225 @@
+<?xml version="1.0"?>
+ <!-- 
+This is the ant build file to create the DbFormsUsersGuide 
+ 
+Modified by SAB.
+ -->
+
+ <!-- Set the base directory to the location of the xml files -->
+<project 
+     name="UsersGuide"   
+                     
+     default="output-all" basedir=".">
+    
+      
+     
+  
+
+     <!-- set the following three values according to your path (other two are below in the pdf section) -->
+   <property name="UsersGuide.dir" value="d:/projekte/webapps/dbforms/usersguide_src"/><!-- 1) set here-->
+ 
+   <property name="build.dir" value="${UsersGuide.dir}/build"/>
+  
+ <property name="tools.dir" value="${UsersGuide.dir}/docbook_tools"/>
+
+ <!-- docbook location: Everything taken relative to this for docbook stuff -->
+     <property name="docbookHome.dir" value="${env.DOCBOOK_HOME}"/>                      
+
+ <!-- Main stylesheets -->
+     <property name="sSheetHome.dir" value="${docbookHome.dir}"/>                
+
+ <!-- Main Docbook stylesheet  />use "http://docbook.sourceforge.net/release/xsl/current/html/chunk.xsl" if not available locally-->
+<property name="main.stylesheet" value="${sSheetHome.dir}/html/chunk.xsl"/>         
+ <!-- Stylesheet to use for fo processing use "http://docbook.sourceforge.net/release/xsl/current/fo/docbook.xsl"/> if not available locally-->
+ <property name="fo.stylesheet" value="${sSheetHome.dir}/fo/docbook.xsl"/>
+
+              <!-- Input properties:  -->                                      
+<!-- all files should be in this directry-->
+<property name="in.dir" value="${UsersGuide.dir}"/>                          
+<!-- input file for any docbook valid document -->
+<property name="main.infile" value="DbForms_UsersGuide.xml"/>                                 
+                   
+           <!-- Output Properties: Output directory -->                          
+ <property name="out.dir" value=".doc/UsersGuide" />  <!-- all files -->           
+                                                      
+ <!-- output file for layout styling -->
+ <property name="fo.outfile" value="UsersGuide.fo"/>                                  
+ <!-- output file for layout styling -->
+ 
+ <property name="autolayout.outfile" value="layout.xml"/>                     
+
+        <!-- Post XSLT transform parameter. Leave as is for Saxon -->
+ <property name="param.args.post" value="saxon.extensions=1"/>                 
+
+
+
+    <!-- XSLT engine class -->
+ <property name="xslt.processor.class" value="com.icl.saxon.StyleSheet" />    
+  <property environment="env"/>
+ <!-- path for xslt processor. 
+          -->
+ <path id="xslt.processor.classpath">                                          
+  <pathelement path="${tools.dir}/saxon/saxon.jar" />  <!-- Saxon jar -->
+  <pathelement path="${tools.dir}/saxon/saxon651.jar" /><!-- docbook extensions -->
+ </path>
+ 
+ <path id="xsl.stylesheets">
+ <pathelement path="${tools.dir}/xsl/sheets.zip"/>
+ </path>
+
+ <!-- Use javac 1.3 -->
+  <property name="build.compiler" value="modern"/>                            
+
+
+  
+  
+ <!--  -->
+ <!--Initial directory creation and directory cleanup -->
+ <!--  -->
+ <target name="clearWorkspace">
+
+        <delete dir="${build.dir}"/>
+
+        <mkdir dir="${build.dir}"/>
+
+    </target>
+
+
+
+    <target name="cleanWorkspace">
+
+        <delete dir="${build.dir}"/>
+
+    </target>
+
+
+
+    <target name="prepare" depends="clearWorkspace">
+
+        <delete dir="${out.dir}"/>
+
+        <mkdir dir="${out.dir}"/>
+<mkdir dir="${out.dir}/html"/>
+<mkdir dir="${out.dir}/pdf"/>
+<mkdir dir="${out.dir}/html/images/callouts"/>
+    </target>
+
+    <!-- ================================================ -->
+    <!--Generate output (select as needed)                 -->
+    <!-- ================================================ -->
+    <target name="output-all" depends="prepare,create_HTML,create_PDF,run-j">                     
+ <!-- -->
+    </target>
+  
+ 
+    
+  
+    <!-- ================================================ -->
+    <!-- Generic XSLT-processor call (main docbook transform) -->
+    <!-- ================================================ -->
+    <target name="create_HTML">                                                       
+	<java classname="${xslt.processor.class}" 
+	      fork="yes" 
+	      dir="${out.dir}\html"
+	      failonerror="true">
+	    <classpath refid="xslt.processor.classpath"/>
+           
+<classpath refid="xsl.stylesheets"/>  
+   
+      <!--${main.stylesheet}-->
+     <arg line="-l"/>
+      
+    
+    
+     <arg line="${in.dir}/DbForms_UsersGuide.xml ${main.stylesheet} ${param.args.post} " />
+     <arg line="section.autolabel=1"/>
+     <arg line="section.label.includes.component.label=1"/>
+     <arg line="chunk.first.sections=1"/>
+       
+    	</java>
+     <copy todir="${out.dir}/html/images/callouts">
+     <fileset dir="${in.dir}/images/callouts" includes="*.png"/>
+    </copy>
+     </target>
+    
+
+<!-- ================================================ -->
+    <!--(FOP docbook transform) -->
+    <!-- ================================================ -->
+    <target name="create_PDF" depends="clearWorkspace">                                                       
+	<java classname="${xslt.processor.class}" 
+	      fork="yes" 
+	      dir="${in.dir}"
+	      failonerror="true">
+	    <classpath refid="xslt.processor.classpath" />
+  
+     <arg line="-o ${build.dir}/${fo.outfile}"/>
+     <arg line="-l"/>
+   
+     <arg line="${in.dir}/${main.infile} ${fo.stylesheet}" />
+     <arg line="fop.extensions=1"/>
+     <arg line="section.label.includes.component.label=1"/>
+      <arg line="section.autolabel=1"/>
+  <arg line="callout.unicode=1" />
+  <arg line="callout.graphics=0" />
+    	</java>
+    
+
+ 
+ 
+<echo message="finished fo output file"/>
+
+        <echo message="starting generation of ${out.dir}/DbFormsTags.pdf using Apache FOP (FOP_HOME must be set)"/>
+
+   
+   <path id="fopclasspath">      <!-- set classpath according to FOP_HOME -->
+
+           <fileset dir="${env.FOP_HOME}/lib/"><!-- 2) set here-->
+
+               <include name="*.jar"/>
+           </fileset>
+
+           <fileset dir="${env.FOP_HOME}/build/"><!-- 3) set here-->
+
+               <include name="*.jar"/>
+
+           </fileset>
+
+        </path>
+
+
+        <java classname="org.apache.fop.apps.Fop" 
+
+           fork="true" jvm="${java.home}/bin/java" >
+
+           <arg line="${build.dir}/${fo.outfile} ${out.dir}/pdf/DbForms_UsersGuide.pdf"/>
+            
+          
+
+           <classpath refid="fopclasspath"/>
+
+        </java>
+
+        <echo message="end of PDF generation, output file is ${out.dir}/pdf/DbForms_UsersGuide.pdf"/>
+ <antcall target="cleanWorkspace"/>
+     </target>
+
+     
+
+ <!-- Fill these in if you want to view files post build -->
+
+
+<target name="run-j">                                                           
+
+  <tstamp>
+   <format property="TODAY_UK" pattern="d-MMM-yyyy" locale="en"/>
+  </tstamp>
+
+
+  <echo>View ${out.dir}/html/index.html output file.</echo>
+  <echo>Completed at ${TODAY_UK}</echo>
+
+</target>
+
+
+</project>
