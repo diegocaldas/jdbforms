@@ -31,32 +31,32 @@ package org.dbforms.config;
 public class FieldTypes
 {
    /** DOCUMENT ME! */
-   public static final int INTEGER = 1;
+   public static final int INTEGER = java.sql.Types.INTEGER;
 
    /** DOCUMENT ME! */
-   public static final int CHAR = 2;
+   public static final int CHAR = java.sql.Types.CHAR;
 
    /** DOCUMENT ME! */
-   public static final int DATE = 3;
+   public static final int DATE = java.sql.Types.DATE;
 
    /** DOCUMENT ME! */
-   public static final int TIMESTAMP = 4;
+   public static final int TIMESTAMP = java.sql.Types.TIMESTAMP;
 
    /** DOCUMENT ME! */
-   public static final int TIME = 5;
+   public static final int TIME = java.sql.Types.TIME;
 
    /** DOCUMENT ME! */
-   public static final int DOUBLE = 6;
+   public static final int DOUBLE = java.sql.Types.DOUBLE;
 
    /** DOCUMENT ME! */
-   public static final int FLOAT = 7;
+   public static final int FLOAT = java.sql.Types.FLOAT;
 
    /** DOCUMENT ME! */
-   public static final int BLOB = 8;
+   public static final int BLOB = java.sql.Types.BLOB;
 
    /** DOCUMENT ME! */
-   public static final int DISKBLOB = 9;
+   public static final int DISKBLOB = 4200;
 
    /** DOCUMENT ME! */
-   public static final int NUMERIC = 10;
+   public static final int NUMERIC = java.sql.Types.NUMERIC;
 }

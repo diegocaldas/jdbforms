@@ -92,7 +92,7 @@ public class ServletUtil
 
       sb.append("HTTP Snooper Servlet").append(returnToken).append(returnToken);
       sb.append("Request URL:").append(returnToken);
-      sb.append(" http://" + req.getServerName() + req.getServerPort()
+      sb.append(" http://" + req.getServerName() + ":" + req.getServerPort()
                 + req.getRequestURI() + returnToken).append(returnToken);
 
       sb.append("Request Info:").append(returnToken);

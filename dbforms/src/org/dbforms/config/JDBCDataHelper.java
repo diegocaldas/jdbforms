@@ -61,7 +61,7 @@ public class JDBCDataHelper {
       switch (fieldType) {
          case 0:
             throw new SQLException("illegal type!");      
-         case FieldTypes.BLOB :
+         case FieldTypes.BLOB:
             if (value == null) {
                ps.setNull(col, java.sql.Types.BLOB);
             } else {
@@ -88,8 +88,10 @@ public class JDBCDataHelper {
                }
             }
             break;
+		 case FieldTypes.DISKBLOB:
+		    ps.setObject(col, value, FieldTypes.CHAR);
          default :
-            ps.setObject(col, value);
+            ps.setObject(col, value, fieldType);
       }
    }
 }

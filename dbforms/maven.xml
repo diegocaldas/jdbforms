@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:ant="jelly:ant" xmlns:deploy="deploy" xmlns:doc="doc" xmlns:u="jelly:util" xmlns:j="jelly:core" default="">
+
   <ant:echo message="Hack to use xalan transformer!" />
   ${systemScope.setProperty('javax.xml.transform.TransformerFactory','org.apache.xalan.processor.TransformerFactoryImpl')}
+
+  <ant:echo message="set enviroment variable so that it can be used in property files" />
   <ant:property environment="env" />
 
   <goal name="maxq:start">
@@ -9,6 +12,7 @@
      <ant:java  classname="com.bitmechanic.maxq.Main" fork="yes">
         <ant:classpath>
           <ant:pathelement path="dependend/maxq-0.94x.jar"/>
+	      <ant:pathelement path="target/dist/dbforms${pom.currentVersion}.jar"/>
 	      <ant:pathelement path="${pom.getDependencyClasspath()}"/>
         </ant:classpath>
         <ant:sysproperty key="generator.properties.file" value="${basedir}/maxq.properties" />
@@ -18,7 +22,7 @@
   <goal name="maxq">
      <attainGoal name="dbforms:startweb" />
      <attainGoal name="maxq:start" />
-     <attainGoal name="appserver:stop" />
+     <attainGoal name="dbforms:stopweb" />
   </goal>	
 
   <goal name="dbforms:startweb">
@@ -139,7 +143,7 @@
     </ant:copy>
   </preGoal>
 
-  <!-- to start the appserver before junit test starts. So httpclient tests could be done! -->
+  <!-- to start the appserver before junit test starts. So httpclient tests could be done!
   <preGoal name="test:test">
      <attainGoal name="dbforms:startweb" />
   </preGoal>
@@ -147,7 +151,8 @@
   <postGoal name="test:test">
      <attainGoal name="dbforms:stopweb" />
   </postGoal>
-
+ -->
+ 
   <!-- We have our own ChangeLog file! -->
   <postGoal name="changes:report">
     <ant:echo message="build changes.xml" />

@@ -345,13 +345,6 @@
     </dependency>  
 
 
-    <dependency>
-      <id>maxq</id>
-      <version>0.94</version>
-      <properties>
-         <war.bundle>false</war.bundle>
-       </properties>
-    </dependency>  
 
     <dependency>
       <id>junit</id>
@@ -422,6 +415,14 @@
 	      <war.bundle>true</war.bundle>
       </properties>
     </dependency>       
+
+    <dependency>
+      <id>maxq</id>
+      <version>0.95dev</version>
+      <properties>
+         <war.bundle>false</war.bundle>
+       </properties>
+    </dependency>  
 
 
   </dependencies>
