@@ -336,7 +336,7 @@ Happy coding!
         <property name="dbforms.releaseName" value="${dbforms.version}_${DSTAMP}"/>
 
       <zip destfile="dbforms${dbforms.releaseName}.zip" >
-        <zipfileset dir="."          prefix="dbforms${dbforms.releaseName}"         includes="Changes_v1_0  Changes_v1_1  CommonMistakes  License  Readme  Readme_DevGui  Todo  build.xml ReleaseNotes*.txt"/>
+        <zipfileset dir="."          prefix="dbforms${dbforms.releaseName}"         includes="Changes_v1_0  Changes_v1_1  CommonMistakes license.txt Readme  Readme_DevGui  Todo  build.xml ReleaseNotes*.txt"/>
         <zipfileset dir="."          prefix="dbforms${dbforms.releaseName}"         includes="doc/**/*.html,doc/**/*.png,doc/**/*.gif,doc/**/*.jpg,doc/**/*.txt,doc/**/*.pdf"/>
         <zipfileset dir="."          prefix="dbforms${dbforms.releaseName}"         includes="dist/*.tld  dist/*.jar"/>
         <zipfileset dir="./dist/bin" prefix="dbforms${dbforms.releaseName}/bin"     includes="devgui.bat devgui.sh"/>
@@ -367,7 +367,7 @@ Happy coding!
 
               <!-- copy all files needed to release directory -->
       <copy todir="${dbforms.releaseDir}" >
-        <fileset dir="." includes="Changes_v1_0  Changes_v1_1  CommonMistakes  License"/>
+        <fileset dir="." includes="Changes_v1_0  Changes_v1_1  CommonMistakes  license.txt"/>
         <fileset dir="." includes="Readme  Readme_DevGui  Todo  build.xml ReleaseNotes*.txt"/>
         <fileset dir="." includes="doc/**/*.html,doc/**/*.png,doc/**/*.gif,doc/**/*.jpg,doc/**/*.txt,doc/**/*.pdf"/>
         <fileset dir="." includes="dist/*.tld  dist/*.jar"/>
@@ -392,7 +392,7 @@ Happy coding!
      </copy>
 
              <!-- modify all text files to have dos/win lineends -->
-     <property name="textfiles.patterns" value="**/*.html,**/*.xml,**/*.java,**/*.txt,**/*.xsl,**/*.bat,**/*.sh,Changes*,CommonMistakes,License,Todo" />
+     <property name="textfiles.patterns" value="**/*.html,**/*.xml,**/*.java,**/*.txt,**/*.xsl,**/*.bat,**/*.sh,Changes*,CommonMistakes,Todo" />
 
      <echo message="modifying temporary files to contain dos/win lineends"/>
      <fixcrlf srcDir="${dbforms.releaseDir}" eol="crlf" includes="${textfiles.patterns}" />

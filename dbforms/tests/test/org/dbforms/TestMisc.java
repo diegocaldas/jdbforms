@@ -23,7 +23,8 @@
 
 package org.dbforms;
 import junit.framework.*;
-
+import java.text.*;
+import java.util.*;
 
 
 /**
@@ -72,11 +73,10 @@ public class TestMisc extends TestCase
      */
     public void testTimeInMillisApproximate() throws Exception
     {
+        Calendar cal = Calendar.getInstance();
         long jdk14Method = cal.getTimeInMillis();
-        long jdk13Method = cal.getDate().getTime();
-        assertTrue("Make sure the second method is larger, but not too much larger!",jdk13Method > jdk14Method);
-        assertTrue("Make sure the second method is larger, but not too much larger!",jdk13Method < jdk14Method + 1000);
-
+        long jdk13Method = cal.getTime().getTime();
+        assertTrue("jdk14Method == jdk13Method", (jdk14Method == jdk13Method));
     }
 
 }
