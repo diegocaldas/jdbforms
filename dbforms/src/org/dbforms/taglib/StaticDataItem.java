@@ -38,7 +38,7 @@ import org.dbforms.util.*;
  * @version $Revision$
  * @author $author$
  */
-public class StaticDataItem extends TagSupport
+public class StaticDataItem extends TagSupportWithScriptHandler
 {
    static Category logCat = Category.getInstance(StaticDataItem.class.getName()); // logging category for this class
    private String  key;
@@ -91,8 +91,7 @@ public class StaticDataItem extends TagSupport
       if ((value != null)
                && (getParent() instanceof StaticData
                && getParent().getParent() instanceof DbBaseHandlerTag
-               && ((DbBaseHandlerTag) getParent().getParent()).parentForm.getCaptionResource()
-                                                                               .equals("true")))
+               && getParentForm().getCaptionResource().equals("true")))
       {
          try
          {

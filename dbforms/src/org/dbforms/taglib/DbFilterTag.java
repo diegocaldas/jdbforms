@@ -28,7 +28,7 @@ import java.util.Iterator;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
-import javax.servlet.jsp.tagext.BodyTagSupport;
+import javax.servlet.jsp.tagext.TagSupport;
 import javax.servlet.jsp.tagext.TryCatchFinally;
 import org.apache.log4j.Category;
 import org.dbforms.util.ParseUtil;
@@ -107,14 +107,13 @@ import org.dbforms.util.Util;
  * This is needed because here we must force the goto event to move to the first avalilable row. 
  * <p>   
  * @todo can I extends this tag from TagSupportWithScriptHandler to inherit attributes?
- * @todo I have to find a way to apply filter only when "set" button is pressed (problem with goto to current position that is anymore visible)
  * @todo add internationalization support
  *  
  * @author Sergio Moretti <s.moretti@nsi-mail.it>
  * 
  * @version $Revision$
  */
-public class DbFilterTag extends BodyTagSupport implements TryCatchFinally
+public class DbFilterTag extends TagSupport implements TryCatchFinally
 {
    /** DOCUMENT ME! */
    protected static String FLT_COND = "_cond_";
@@ -296,7 +295,7 @@ public class DbFilterTag extends BodyTagSupport implements TryCatchFinally
    {
       init();
 
-      return EVAL_BODY_BUFFERED;
+      return EVAL_BODY_INCLUDE;
    }
 
 
@@ -328,10 +327,12 @@ public class DbFilterTag extends BodyTagSupport implements TryCatchFinally
       {
 			// clear body content. 
 			// It's meaningless for filter tag and should not be rendered!
+/*
 			if (bodyContent != null)
 			{
 				bodyContent.clearBody();
 			}
+*/			
          JspWriter out = pageContext.getOut();
          out.write(buf.toString());
 

@@ -70,8 +70,8 @@ public class DbInsertButtonTag extends DbBaseButtonTag
       logCat.info("pos DbInsertButtonTag 1");
 
       if (!"true".equalsIgnoreCase(showAlways)
-               && !(parentForm.getFooterReached()
-               && Util.isNull(parentForm.getResultSetVector())))
+               && !(getParentForm().getFooterReached()
+               && Util.isNull(getParentForm().getResultSetVector())))
       {
          // 20030521 HKK: Bug fixing, thanks to Michael Slack! 
          return SKIP_BODY;
@@ -93,7 +93,7 @@ public class DbInsertButtonTag extends DbBaseButtonTag
          tagNameBuf.append("ac_insert_");
          tagNameBuf.append(table.getId());
          tagNameBuf.append("_");
-         tagNameBuf.append(parentForm.getPositionPathCore());
+         tagNameBuf.append(getParentForm().getPositionPathCore());
 
          // PG - Render the name unique
          tagNameBuf.append("_");

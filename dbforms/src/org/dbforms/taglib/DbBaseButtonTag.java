@@ -30,6 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.ServletContext;
 
 import org.dbforms.validation.ValidatorConstants;
+import org.apache.log4j.Category;
 
 
 /****
@@ -42,6 +43,7 @@ import org.dbforms.validation.ValidatorConstants;
  */
 public abstract class DbBaseButtonTag extends DbBaseHandlerTag
 {
+	private static Category logCat = Category.getInstance(DbBaseButtonTag.class.getName()); // logging category for this class
 
    /** DOCUMENT ME! */
    protected static final int FLAVOR_STANDARD = 0;
@@ -83,9 +85,9 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag
 
 	public int doStartTag() throws javax.servlet.jsp.JspException 
 	{
-		if ((parentForm.getFormValidatorName() != null)
-					&& (parentForm.getFormValidatorName().length() > 0)
-					&& parentForm.getJavascriptValidation().equals("true"))
+		if ((getParentForm().getFormValidatorName() != null)
+					&& (getParentForm().getFormValidatorName().length() > 0)
+					&& getParentForm().getJavascriptValidation().equals("true"))
 		{
 			String onclick = (getOnClick() != null) ? getOnClick() : "";
 
@@ -162,7 +164,7 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag
       this.caption = caption;
 
       // If the caption is not null and the resources="true" attribut
-      if ((caption != null) && parentForm.getCaptionResource().equals("true"))
+      if ((caption != null) && getParentForm().getCaptionResource().equals("true"))
       {
          try
          {
@@ -274,17 +276,6 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag
 
 
    /**
-    * DOCUMENT ME!
-    *
-    * @param parent DOCUMENT ME!
-    */
-   public void setParent(final javax.servlet.jsp.tagext.Tag parent)
-   {
-      super.setParent(parent);
-      table = parentForm.getTable();
-   }
-
-
    /**
    returns beginnings of tags with attributes defining type/value/[src/alt - if image]
    */

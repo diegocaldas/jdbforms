@@ -175,17 +175,17 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer
          tagBuf.append(" checked ");
       }
 
-      if (accessKey != null)
+      if (getAccessKey() != null)
       {
          tagBuf.append(" accesskey=\"");
-         tagBuf.append(accessKey);
+         tagBuf.append(getAccessKey());
          tagBuf.append("\"");
       }
 
-      if (tabIndex != null)
+      if (getTabIndex() != null)
       {
          tagBuf.append(" tabindex=\"");
-         tagBuf.append(tabIndex);
+         tagBuf.append(getTabIndex());
          tagBuf.append("\"");
       }
 
@@ -225,10 +225,10 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer
       { // no embedded data is nested in this tag
 
          // select, if datadriven and data matches with current value OR if explicitly set by user
-         boolean isSelected = ((!parentForm.getFooterReached()
+         boolean isSelected = ((!getParentForm().getFooterReached()
             || we instanceof ReloadEvent) && (value != null)
             && value.equals(currentValue))
-            || (parentForm.getFooterReached() && "true".equals(checked));
+            || (getParentForm().getFooterReached() && "true".equals(checked));
 
          tagBuf.append(generateTagString(value, "", isSelected));
 
@@ -250,7 +250,7 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer
          // "document.formName['radioName'][selectedIndex].checked=true"
          //
          if (getReadOnly().equals("true")
-                  || parentForm.getReadOnly().equals("true"))
+                  || getParentForm().getReadOnly().equals("true"))
          {
             // First pass to retreive radio selectedIndex, because in Javascript it use only this index (Netscape 4.x)
             for (int i = 0; i < embeddedDataSize; i++)
@@ -312,7 +312,7 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer
       }
 
       // For generation Javascript Validation.  Need all original and modified fields name
-      parentForm.addChildName(getFieldName(), getFormFieldName());
+		getParentForm().addChildName(getFieldName(), getFormFieldName());
 
       try
       {

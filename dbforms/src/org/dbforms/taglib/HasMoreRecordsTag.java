@@ -59,7 +59,7 @@ public class HasMoreRecordsTag extends DbBaseHandlerTag
     */
    public int doStartTag() throws JspException
    {
-      int rsvSize = parentForm.getResultSetVector().size();
+      int rsvSize = getParentForm().getResultSetVector().size();
 
       if (rsvSize >= getCountAsInt())
       {
@@ -85,7 +85,7 @@ public class HasMoreRecordsTag extends DbBaseHandlerTag
       // Get result set vector from parent and calculate size
       try
       {
-         int rsvSize = parentForm.getResultSetVector().size();
+         int rsvSize = getParentForm().getResultSetVector().size();
 
          if (rsvSize >= getCountAsInt())
          {

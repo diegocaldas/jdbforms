@@ -99,10 +99,10 @@ public class DbTextFieldTag extends DbBaseInputTag
 			tagBuf.append(getFormFieldValue());
          tagBuf.append("\" ");
 
-         if (accessKey != null)
+         if (getAccessKey() != null)
          {
             tagBuf.append(" accesskey=\"");
-            tagBuf.append(accessKey);
+            tagBuf.append(getAccessKey());
             tagBuf.append("\"");
          }
 
@@ -120,10 +120,10 @@ public class DbTextFieldTag extends DbBaseInputTag
             tagBuf.append("\"");
          }
 
-         if (tabIndex != null)
+         if (getTabIndex() != null)
          {
             tagBuf.append(" tabindex=\"");
-            tagBuf.append(tabIndex);
+            tagBuf.append(getTabIndex());
             tagBuf.append("\"");
          }
 
@@ -137,7 +137,7 @@ public class DbTextFieldTag extends DbBaseInputTag
 			writeOutOldValue();
 
          // For generation Javascript Validation.  Need all original and modified fields name
-         parentForm.addChildName(getFieldName(), getFormFieldName());
+			getParentForm().addChildName(getFieldName(), getFormFieldName());
       }
       catch (java.io.IOException ioe)
       {

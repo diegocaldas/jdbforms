@@ -122,7 +122,7 @@ public class DbDeleteButtonTag extends DbBaseButtonTag
 
          String message = getConfirmMessage();
 
-         if (parentForm.getCaptionResource().equals("true"))
+         if (getParentForm().getCaptionResource().equals("true"))
          {
             try
             {
@@ -138,8 +138,8 @@ public class DbDeleteButtonTag extends DbBaseButtonTag
          setOnClick(onclick + "return confirm('" + message + "');");
       }
 
-      if (parentForm.getFooterReached()
-               && Util.isNull(parentForm.getResultSetVector()))
+      if (getParentForm().getFooterReached()
+               && Util.isNull(getParentForm().getResultSetVector()))
       {
          // 20030521 HKK: Bug fixing, thanks to Michael Slack! 
          return SKIP_BODY;
@@ -161,7 +161,7 @@ public class DbDeleteButtonTag extends DbBaseButtonTag
          if (associatedRadio == null)
          {
             tagNameBuf.append("_");
-            tagNameBuf.append(parentForm.getPositionPath());
+            tagNameBuf.append(getParentForm().getPositionPath());
          }
 
          // PG - Render the name unique

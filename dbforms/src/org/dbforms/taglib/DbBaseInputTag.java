@@ -158,7 +158,7 @@ public abstract class DbBaseInputTag extends DbBaseHandlerTag
    public int doStartTag() throws JspException
    {
       if (getReadOnly().equals("true")
-                || parentForm.getReadOnly().equals("true"))
+                || getParentForm().getReadOnly().equals("true"))
       {
          String onFocus = (getOnFocus() != null) ? getOnFocus() : "";
 
@@ -258,7 +258,7 @@ public abstract class DbBaseInputTag extends DbBaseHandlerTag
       if (this.getOverrideValue() != null)
       {
          //If the redisplayFieldsOnError attribute is set and we are in error mode, forget override!
-         if (("true".equals(parentForm.getRedisplayFieldsOnError())
+         if (("true".equals(getParentForm().getRedisplayFieldsOnError())
                       && (errors != null) && (errors.size() > 0))
                    || (we instanceof ReloadEvent))
          {

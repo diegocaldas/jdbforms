@@ -150,17 +150,17 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer
          tagBuf.append("\"");
       }
 
-      if (accessKey != null)
+      if (getAccessKey() != null)
       {
          tagBuf.append(" accesskey=\"");
-         tagBuf.append(accessKey);
+         tagBuf.append(getAccessKey());
          tagBuf.append("\"");
       }
 
-      if (tabIndex != null)
+      if (getTabIndex() != null)
       {
          tagBuf.append(" tabindex=\"");
-         tagBuf.append(tabIndex);
+         tagBuf.append(getTabIndex());
          tagBuf.append("\"");
       }
 
@@ -240,7 +240,7 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer
 
             // Check if we are in redisplayFieldsOnError mode and errors have occured
             // If so, only set to selected if currentRow is equal to custom row.
-            if (("true".equals(parentForm.getRedisplayFieldsOnError())
+            if (("true".equals(getParentForm().getRedisplayFieldsOnError())
                      && (errors != null) && (errors.size() > 0))
                      || (we instanceof ReloadEvent))
             {
@@ -288,7 +288,7 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer
       // using javascript function on client side.
       //
       if (getReadOnly().equals("true")
-               || parentForm.getReadOnly().equals("true"))
+               || getParentForm().getReadOnly().equals("true"))
       {
          selectedOptions.append("-");
 
@@ -296,7 +296,7 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer
             + "');";
          setOnChange(onChange + ((getOnChange() != null) ? getOnChange() : ""));
 
-         if (!parentForm.existJavascriptFunction("resetSelect"))
+         if (!getParentForm().existJavascriptFunction("resetSelect"))
          {
             StringBuffer buf = new StringBuffer();
             buf.append("\nfunction resetSelect(sel,x){\n");
@@ -310,12 +310,12 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer
             buf.append("   }\n");
             buf.append("}\n");
 
-            parentForm.addJavascriptFunction("resetSelect", buf);
+				getParentForm().addJavascriptFunction("resetSelect", buf);
          }
       }
 
       // For generation Javascript Validation.  Need original and modified fields name
-      parentForm.addChildName(getFieldName(), getFormFieldName());
+		getParentForm().addChildName(getFieldName(), getFormFieldName());
 
       try
       {

@@ -61,7 +61,7 @@ public class HasNoRecordsTag extends DbBaseHandlerTag
     */
    public int doStartTag() throws JspException
    {
-      if (Util.isNull(parentForm.getResultSetVector()))
+      if (Util.isNull(getParentForm().getResultSetVector()))
       {
          return EVAL_BODY_BUFFERED;
       }
@@ -85,7 +85,7 @@ public class HasNoRecordsTag extends DbBaseHandlerTag
       // Get result set vector from parent and calculate size
       try
       {
-         int rsvSize = parentForm.getResultSetVector().size();
+         int rsvSize = getParentForm().getResultSetVector().size();
 
          if (rsvSize == 0)
          {

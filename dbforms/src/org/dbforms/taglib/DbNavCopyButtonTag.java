@@ -49,8 +49,8 @@ public class DbNavCopyButtonTag extends DbBaseButtonTag {
 
       super.doStartTag();
 
-		if (parentForm.getFooterReached()
-					&& Util.isNull(parentForm.getResultSetVector())
+		if (getParentForm().getFooterReached()
+					&& Util.isNull(getParentForm().getResultSetVector())
 					&& "false".equalsIgnoreCase(showAlwaysInFooter))
 		{
 			// 20030521 HKK: Bug fixing, thanks to Michael Slack! 

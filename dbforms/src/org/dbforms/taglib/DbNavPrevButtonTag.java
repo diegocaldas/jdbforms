@@ -76,8 +76,8 @@ public class DbNavPrevButtonTag extends DbBaseButtonTag
 
 		super.doStartTag();
 		
-      if (parentForm.getFooterReached()
-               && Util.isNull(parentForm.getResultSetVector()))
+      if (getParentForm().getFooterReached()
+               && Util.isNull(getParentForm().getResultSetVector()))
       {
          // 20030521 HKK: Bug fixing, thanks to Michael Slack! 
          return SKIP_BODY;
@@ -104,7 +104,7 @@ public class DbNavPrevButtonTag extends DbBaseButtonTag
          }
 
          tagBuf.append(getButtonBegin());
-			if (parentForm.getResultSetVector().isFirstPage()) 
+			if (getParentForm().getResultSetVector().isFirstPage()) 
 				tagBuf.append(" disabled=\"true\"");
          tagBuf.append(" name=\"");
 			tagBuf.append(tagName);

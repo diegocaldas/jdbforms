@@ -81,7 +81,7 @@ public class DbFileTag extends DbBaseInputTag
    {
       super.doStartTag();
 
-      if (!parentForm.hasMultipartCapability())
+      if (!getParentForm().hasMultipartCapability())
       {
          logCat.warn(
             "DbFileTag is used but DbFormTag.multipart is not set (FALSE)");
@@ -108,7 +108,7 @@ public class DbFileTag extends DbBaseInputTag
          StringBuffer tagBuf = new StringBuffer();
 
          if (getReadOnly().equals("true")
-                  || parentForm.getReadOnly().equals("true"))
+                  || getParentForm().getReadOnly().equals("true"))
          {
             // if read-only, remove the browse button (for netscape problem)
             tagBuf.append("<input type=\"text\" name=\"");
@@ -128,10 +128,10 @@ public class DbFileTag extends DbBaseInputTag
             tagBuf.append("\"");
          }
 
-         if (accessKey != null)
+         if (getAccessKey() != null)
          {
             tagBuf.append(" accesskey=\"");
-            tagBuf.append(accessKey);
+            tagBuf.append(getAccessKey());
             tagBuf.append("\"");
          }
 
@@ -149,10 +149,10 @@ public class DbFileTag extends DbBaseInputTag
             tagBuf.append("\"");
          }
 
-         if (tabIndex != null)
+         if (getTabIndex() != null)
          {
             tagBuf.append(" tabindex=\"");
-            tagBuf.append(tabIndex);
+            tagBuf.append(getTabIndex());
             tagBuf.append("\"");
          }
 

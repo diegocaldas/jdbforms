@@ -176,17 +176,17 @@ public class DbCheckboxTag extends DbBaseHandlerTag implements DataContainer
          tagBuf.append(" checked ");
       }
 
-      if (accessKey != null)
+      if (getAccessKey() != null)
       {
          tagBuf.append(" accesskey=\"");
-         tagBuf.append(accessKey);
+         tagBuf.append(getAccessKey());
          tagBuf.append("\"");
       }
 
-      if (tabIndex != null)
+      if (getTabIndex() != null)
       {
          tagBuf.append(" tabindex=\"");
-         tagBuf.append(tabIndex);
+         tagBuf.append(getTabIndex());
          tagBuf.append("\"");
       }
 
@@ -227,19 +227,19 @@ public class DbCheckboxTag extends DbBaseHandlerTag implements DataContainer
       }
 
       // For generation Javascript Validation.  Need all original and modified fields name
-      parentForm.addChildName(getFieldName(), getFormFieldName());
+		getParentForm().addChildName(getFieldName(), getFormFieldName());
 
       if (embeddedData == null)
       { // no embedded data is nested in this tag
 
          // select, if datadriven and data matches with current value OR if explicitly set by user
-         boolean isSelected = ((!parentForm.getFooterReached()
+         boolean isSelected = ((!getParentForm().getFooterReached()
             || we instanceof ReloadEvent) && (value != null)
             && value.equals(currentValue))
-            || (parentForm.getFooterReached() && "true".equals(checked));
+            || (getParentForm().getFooterReached() && "true".equals(checked));
 
          if (getReadOnly().equals("true")
-                  || parentForm.getReadOnly().equals("true"))
+                  || getParentForm().getReadOnly().equals("true"))
          {
             setOnClick("this.checked=" + isSelected + ";" + onclick);
          }
@@ -274,7 +274,7 @@ public class DbCheckboxTag extends DbBaseHandlerTag implements DataContainer
             boolean isSelected = aKey.equals(currentValue);
 
             if (getReadOnly().equals("true")
-                     || parentForm.getReadOnly().equals("true"))
+                     || getParentForm().getReadOnly().equals("true"))
             {
                setOnClick("this.checked=" + isSelected + ";" + onclick);
             }

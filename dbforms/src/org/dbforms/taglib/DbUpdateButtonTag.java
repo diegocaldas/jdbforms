@@ -91,8 +91,8 @@ public class DbUpdateButtonTag extends DbBaseButtonTag
 
 
       if (!"true".equalsIgnoreCase(showAlways) 
-      		&& parentForm.getFooterReached()
-               && Util.isNull(parentForm.getResultSetVector()))
+      		&& getParentForm().getFooterReached()
+               && Util.isNull(getParentForm().getResultSetVector()))
       {
          // 20030521 HKK: Bug fixing, thanks to Michael Slack! 
          return SKIP_BODY;
@@ -114,7 +114,7 @@ public class DbUpdateButtonTag extends DbBaseButtonTag
          if (associatedRadio == null)
          {
             tagNameBuf.append("_");
-            tagNameBuf.append(parentForm.getPositionPath());
+            tagNameBuf.append(getParentForm().getPositionPath());
          }
 
          // PG - Render the name unique
