@@ -32,7 +32,6 @@
       <item name="Powered by and screenshots" 	href="/poweredby.html"/>
       <item name="SourceForge's Summary Page"   href="http://sourceforge.net/projects/jdbforms" target="_blank"  />
       <item name="Release Notes"                href="/releasenotes.html"/>
-      <item name="ToDo List"                    href="/tasks.html" />
     </menu>
 
     <menu name="Documentation">
