@@ -5161,7 +5161,7 @@
 					example:
 					<p>
 						&lt;linkURL href="customer.jsp"
-						table="customer"&gt;
+						tableName="customer"&gt;
 						<br />
 						&lt;position fieldName="id" value="103"/&gt;
 						<br />
