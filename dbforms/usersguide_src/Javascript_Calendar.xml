@@ -6,8 +6,7 @@
 		<sect1>
 			<title>What is it?
 </title>
-			<para>DbForms contains a JavaScript Calendar application written by Robert W. Husted (<emphasis role="bold">rhusted@requisite.com</emphasis>) with friendly permission of author. See <emphasis role="bold">http://developer.iplanet.com/viewsource/husted_calendar/husted_calendar.html
-</emphasis> for more information about this tool. The calendar is now developed as an open source project 'jscal' with homepage at <emphasis role="bold">http://jscal.sourceforge.net/</emphasis>.
+			<para>DbForms contains a <ulink url="http://developer.iplanet.com/viewsource/husted_calendar/husted_calendar.html"><citetitle>JavaScript Calendar application </citetitle> </ulink> written by Robert W. Husted (<emphasis role="bold">rhusted@requisite.com</emphasis>) with friendly permission of author.  The calendar is now developed as an open source project<ulink url="http://jscal.sourceforge.net/"><citetitle> 'jscal' </citetitle></ulink>
 </para>
 			<para>The calendar can be used to edit values of date fields using a small calendar popup window.
 </para>
