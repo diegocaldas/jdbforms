@@ -32,6 +32,7 @@ import org.dbforms.config.Field;
 import org.dbforms.taglib.TextFormatterUtil;
 import org.dbforms.util.MessageResources;
 import org.dbforms.util.ParseUtil;
+import org.dbforms.util.Util;
 
 import java.io.File;
 import java.util.Map;
@@ -104,6 +105,9 @@ public class ReportParameter {
       return context.getRealPath("") + File.separator;
    }
 
+   public String getBaseURL() {
+   	   return Util.getBaseURL(request);
+   }
 
    /**
     * Returns a message

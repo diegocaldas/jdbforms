@@ -32,6 +32,8 @@ import java.net.URLEncoder;
 
 import java.text.Format;
 
+import javax.servlet.http.HttpServletRequest;
+
 
 
 /**
@@ -260,4 +262,40 @@ public class Util {
 
       return s;
    }
+
+	public static String getBaseURL(HttpServletRequest request) {
+		StringBuffer buf = new StringBuffer();
+		buf.append(request.getScheme());
+		buf.append("://");
+		buf.append(request.getServerName());
+
+		int port = request.getServerPort();
+		if((port!=80) && (port !=443)) {
+			buf.append(":");
+			buf.append(String.valueOf(port));
+		}
+		buf.append(request.getContextPath());
+		buf.append("/");
+		return buf.toString();
+	}
+
+	public static String getRequestURL(HttpServletRequest request) {
+		StringBuffer buf = new StringBuffer();
+		buf.append(request.getScheme());
+		buf.append("://");
+		buf.append(request.getServerName());
+		int port = request.getServerPort();
+		if ((port != 80) && (port != 443)) {
+			buf.append(":");
+			buf.append(port);
+		}
+		buf.append(request.getRequestURI());
+		String query = request.getQueryString();
+		if (!isNull(query)) {
+			buf.append("?");
+			buf.append(query);
+		}
+		return buf.toString();
+	}
+
 }
