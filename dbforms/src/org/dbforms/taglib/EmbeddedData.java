@@ -137,6 +137,14 @@ public abstract class EmbeddedData extends TagSupport
                 logCat.error("Using fallback method of comma separated list instead");
                 result = new Vector(); 
             }
+            
+           catch (NullPointerException npe) // npe will be thrown if null value returned from database
+            {
+                logCat.error("Could not format result using format '" + format + "', error message is " + npe.getMessage());
+                logCat.error("Using fallback method of comma separated list instead");
+                result = new Vector(); 
+            }
+        
         }
 
         if (!resultSuccessFullyFormated) // no format given or formatting failed
