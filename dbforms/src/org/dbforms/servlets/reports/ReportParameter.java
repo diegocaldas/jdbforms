@@ -35,7 +35,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.dbforms.util.MessageResources;
 import org.dbforms.util.ParseUtil;
 import org.dbforms.config.Field;
-import org.dbforms.taglib.DbBaseHandlerTag;
+import org.dbforms.taglib.TextFormatter;
 
 import org.apache.log4j.Logger;
 
@@ -142,30 +142,6 @@ public class ReportParameter {
       return reportPath;
    }
 
-    private class TextFormatter extends DbBaseHandlerTag {
-      private Object obj;
-      private Locale locale;
-
-      TextFormatter(Field field, Locale locale, String pattern, Object obj) {
-         this.obj = obj;
-         this.locale = locale;
-         setPattern(pattern);
-         setField(field);
-      }
-
-      protected Locale getLocale() {
-         return locale;
-      }
-
-      protected Object getFieldObject() {
-         return obj;
-      }
-
-      public String getFormattedFieldValue() {
-         return super.getFormattedFieldValue();
-      }
-
-   }
    /**
     * @return
     */

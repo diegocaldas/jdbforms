@@ -369,7 +369,7 @@ public class Field {
 
 		switch (getType()) {
 			case FieldTypes.INTEGER :
-				res = java.text.NumberFormat.getInstance(locale);
+				res = java.text.NumberFormat.getIntegerInstance(locale);
 				((java.text.DecimalFormat) res).setParseIntegerOnly(true);
 				if (!Util.isNull(pattern)) {
 					((java.text.DecimalFormat) res).applyPattern(pattern);
@@ -379,7 +379,7 @@ public class Field {
 			case FieldTypes.NUMERIC :
 			case FieldTypes.DOUBLE :
 			case FieldTypes.FLOAT :
-				res = java.text.NumberFormat.getInstance(locale);
+				res = java.text.NumberFormat.getNumberInstance(locale);
 				if (!Util.isNull(pattern)) {
 					((java.text.DecimalFormat) res).applyPattern(pattern);
 				}

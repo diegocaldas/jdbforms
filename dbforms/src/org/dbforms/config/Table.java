@@ -1231,7 +1231,7 @@ public class Table {
     */
    public FieldValues getFieldValues(String position) {
       // 20020705-HKK: Position maybe string with length = 0!!!!
-      if ((position == null) || (position.length() == 0)) {
+      if (Util.isNull(position)) {
          return null;
       }
 
@@ -1775,31 +1775,26 @@ public class Table {
       // do some basic checks
       // deeper checks like Datatyp-compatibility,etc not done yet
       int len = childFieldNames.size();
-
       if ((len == 0) || (len != parentFieldNames.size())) {
          return null;
       }
 
       // 2003-03-29 HKK: Change from Hashtable to FieldValueTable 
       FieldValues ht = parentTable.getFieldValues(aPosition);
-
       if (ht == null) {
          return null;
       }
 
       FieldValues childFieldValues = new FieldValues();
-
       for (int i = 0; i < len; i++) {
          String parentFieldName = (String) parentFieldNames.elementAt(i);
          Field parentField = parentTable.getFieldByName(parentFieldName);
          String childFieldName = (String) childFieldNames.elementAt(i);
          Field childField = this.getFieldByName(childFieldName);
          FieldValue aFieldValue = ht.get(parentField.getName());
-
          if (aFieldValue == null) {
             throw new IllegalArgumentException("ERROR: Make sure that field " + parentField.getName() + " is a KEY of the table " + parentTable.getName() + "! Otherwise you can not use it as PARENT/CHILD LINK argument!");
          }
-
          String currentParentFieldValue = aFieldValue.getFieldValue();
          childFieldValues.put(new FieldValue(childField, currentParentFieldValue));
       }

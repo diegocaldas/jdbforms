@@ -320,7 +320,7 @@ public abstract class DbBaseInputTag extends DbBaseHandlerTag {
    protected void writeOutSpecialValues() throws JspException {
       super.writeOutSpecialValues();
       try {
-         pageContext.getOut().write(getFormatInputField());
+         pageContext.getOut().write(renderPatternHtmlInputField());
       } catch (java.io.IOException ioe) {
          throw new JspException("IO Error: " + ioe.getMessage());
       }
@@ -330,7 +330,7 @@ public abstract class DbBaseInputTag extends DbBaseHandlerTag {
     * writes out the current used format to the page
     * @throws JspException
     */
-   public String getFormatInputField() {
+   protected String renderPatternHtmlInputField() {
       StringBuffer tagBuf = new StringBuffer();
       String pattern = getPattern();
       if (!Util.isNull(pattern)) {

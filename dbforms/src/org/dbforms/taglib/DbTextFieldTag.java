@@ -91,7 +91,6 @@ public class DbTextFieldTag extends DbBaseInputTag
          else
             tagBuf.append(prepareType());
          tagBuf.append(prepareName());
-         
          tagBuf.append(prepareValue());
          tagBuf.append(prepareSize());
          tagBuf.append(prepareKeys());

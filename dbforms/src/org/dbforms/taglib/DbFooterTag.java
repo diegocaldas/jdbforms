@@ -99,16 +99,12 @@ public class DbFooterTag extends BodyTagSupport
     */
    public int doEndTag() throws JspException
    {
-      //DbFormTag myParent = (DbFormTag) getParent(); // parent Tag in which this tag is embedded in
-      DbFormTag myParent = (DbFormTag) findAncestorWithClass(this,
-            DbFormTag.class);
-
-
+      DbFormTag myParent = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
       // field values that have not been rendered by html tags but that is determinated by field
       // mapping between main- and subform are rendered now:
       try
       {
-         if (myParent.isSubForm())
+         if (myParent.isSubForm() && myParent.getFooterReached())
          {
             myParent.appendToChildElementOutput(myParent.produceLinkedTags()); // print hidden-fields for missing insert-fields we can determinated
          }

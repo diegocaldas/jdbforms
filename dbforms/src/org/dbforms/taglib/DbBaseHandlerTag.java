@@ -272,7 +272,7 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
     *
     * @return the field value
     */
-   public String getFormattedFieldValue() {
+   protected String getFormattedFieldValue() {
       Object fieldValueObj = getFieldObject();
       String res;
 
@@ -394,18 +394,17 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
       // on database operations...
       return typicalDefaultValue();
    }
+
    /**
       generates the decoded name for the html-widget.
     */
-   public String getFormFieldName() {
+   protected String getFormFieldName() {
       StringBuffer buf = new StringBuffer();
-
       if ((getParentForm().getTable() != null) && (getField() != null)) {
          String keyIndex =
             (getParentForm().getFooterReached())
                ? (Constants.FIELDNAME_INSERTPREFIX + getParentForm().getPositionPathCore())
                : getParentForm().getPositionPath();
-
          buf.append(Constants.FIELDNAME_PREFIX);
          buf.append(getParentForm().getTable().getId());
          buf.append("_");
@@ -415,7 +414,6 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
       } else {
          buf.append(fieldName);
       }
-
       return buf.toString();
    }
 
@@ -522,7 +520,7 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
     */
    protected void writeOutSpecialValues() throws JspException {
       try {
-         pageContext.getOut().write(getOldValueInputField());
+         pageContext.getOut().write(renderOldValueHtmlInputField());
       } catch (java.io.IOException ioe) {
          throw new JspException("IO Error: " + ioe.getMessage());
       }
@@ -531,7 +529,7 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
    /**
     * writes out the field value in hidden field _old
     */
-   public String getOldValueInputField(){
+   protected String renderOldValueHtmlInputField(){
          StringBuffer tagBuf = new StringBuffer();
          tagBuf.append("<input type=\"hidden\" name=\"");
          tagBuf.append(Constants.FIELDNAME_OLDVALUETAG + getFormFieldName());
