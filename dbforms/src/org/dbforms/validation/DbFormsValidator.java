@@ -280,13 +280,14 @@ public class DbFormsValidator implements Serializable {
       boolean bValid = true;
       String value = getValue(bean, field);
       if (!Util.isNull(value)) {
+		 value = ((FieldValues) bean).get(field.getProperty()).getFieldValue();   
          String datePattern = field.getVarValue("datePattern");
          String datePatternStrict = field.getVarValue("datePatternStrict");
          if (!GenericValidator.isBlankOrNull(value)) {
             try {
                if ((datePattern != null) && (datePattern.length() > 0)) {
                   bValid = GenericValidator.isDate(value, datePattern, false);
-               } else if ((datePatternStrict != null) && (datePatternStrict.length() > 0)) {
+               } else if (!Util.isNull(datePatternStrict)) {
                   bValid = GenericValidator.isDate(value, datePatternStrict, true);
                } else {
                   bValid = GenericValidator.isDate(value, locale);
