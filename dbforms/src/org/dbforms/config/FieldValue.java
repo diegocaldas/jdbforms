@@ -362,43 +362,50 @@ public class FieldValue implements Cloneable {
       if (getField() == null) {
          return null;
       }
-      return getFieldValueAsObject(getField().getType());
+      return getFieldValueAsObject(getFieldValue(), getField().getType());
    }
 
-   public Object getFieldValueAsObject(int fieldType) {
+	public Object getOldValueAsObject() {
+		if (getField() == null) {
+			return null;
+		}
+		return getFieldValueAsObject(getOldValue(), getField().getType());
+	}
+
+   private Object getFieldValueAsObject(String value, int fieldType) {
       Object res = null;
       switch (fieldType) {
 
          case FieldTypes.INTEGER :
-            res = parseINTEGER();
+            res = parseINTEGER(value);
             break;
 
          case FieldTypes.DOUBLE :
-            res = parseDOUBLE();
+            res = parseDOUBLE(value);
             break;
 
          case FieldTypes.FLOAT :
-            res = parseFLOAT();
+            res = parseFLOAT(value);
             break;
 
          case FieldTypes.NUMERIC :
-            res = parseNUMERIC();
+            res = parseNUMERIC(value);
             break;
 
          case FieldTypes.CHAR :
-            res = getFieldValue();
+            res = value;
             break;
 
          case FieldTypes.DATE :
-            res = parseDATE();
+            res = parseDATE(value);
             break;
 
          case FieldTypes.TIME :
-            res = parseTIME();
+            res = parseTIME(value);
             break;
 
          case FieldTypes.TIMESTAMP :
-            res = parseTIMESTAMP();
+            res = parseTIMESTAMP(value);
             break;
 
          case FieldTypes.BLOB :
@@ -415,8 +422,8 @@ public class FieldValue implements Cloneable {
       return res;
    }
 
-   private BigDecimal parseNUMERIC() {
-      String valueStr = getFieldValue().trim();
+   private BigDecimal parseNUMERIC(String value) {
+      String valueStr = value.trim();
       if (Util.isNull(valueStr)) {
          return null;
       }
@@ -436,8 +443,8 @@ public class FieldValue implements Cloneable {
       return null;
    }
 
-   private Integer parseINTEGER() {
-      String valueStr = getFieldValue().trim();
+   private Integer parseINTEGER(String value) {
+      String valueStr = value.trim();
       if (Util.isNull(valueStr)) {
          return null;
       }
@@ -457,8 +464,8 @@ public class FieldValue implements Cloneable {
       return null;
    }
 
-   private Float parseFLOAT() {
-      String valueStr = getFieldValue().trim();
+   private Float parseFLOAT(String value) {
+      String valueStr = value.trim();
       if (Util.isNull(valueStr)) {
          return null;
       }
@@ -478,8 +485,8 @@ public class FieldValue implements Cloneable {
       return null;
    }
 
-   private Double parseDOUBLE() {
-      String valueStr = getFieldValue().trim();
+   private Double parseDOUBLE(String value) {
+      String valueStr = value.trim();
       if (Util.isNull(valueStr)) {
          return null;
       }
@@ -499,8 +506,8 @@ public class FieldValue implements Cloneable {
       return null;
    }
 
-   private Time parseTIME() {
-      String valueStr = getFieldValue().trim();
+   private Time parseTIME(String value) {
+      String valueStr = value.trim();
       if (Util.isNull(valueStr)) {
          return null;
       }
@@ -524,8 +531,8 @@ public class FieldValue implements Cloneable {
       return null;
    }
 
-   private Date parseDATE() {
-      String valueStr = getFieldValue().trim();
+   private Date parseDATE(String value) {
+      String valueStr = value.trim();
       if (Util.isNull(valueStr)) {
          return null;
       }
@@ -549,7 +556,7 @@ public class FieldValue implements Cloneable {
       return null;
    }
 
-   private Timestamp parseTIMESTAMP() {
+   private Timestamp parseTIMESTAMP(String value) {
       String valueStr = getFieldValue().trim();
       if (Util.isNull(valueStr)) {
          return null;
