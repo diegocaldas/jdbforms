@@ -110,15 +110,28 @@
   <target name="compile" depends="prepare,failIfBadPath">
     <!-- Required when building in eclipse (WSAD) -->
     <available classname="org.eclipse.core.launcher.Main" property="build.compiler" value="org.eclipse.pde.internal.core.JDTCompilerAdapter" classpath="${java.class.path}" />
-    <javac srcdir="${javasrc.dir}/org/dbforms" destdir="${build.dir}" debug="on" optimize="off" deprecation="off">
+    <javac 
+    	srcdir="${javasrc.dir}/org/dbforms" 
+    	destdir="${build.dir}" 
+    	debug="on" 
+    	optimize="off" 
+    	deprecation="off">
       <classpath refid="classpath" />
     </javac>
+    <copy todir="${build.dir}/org/dbforms/resources">
+      <fileset dir="${javasrc.dir}/org/dbforms/resources" />
+    </copy>
+    
   </target>
 
 
   <!-- generate dbforms_x.jar library -->
-  <target name="jar_classes" depends="prepare,compile" description="--&gt; Build Dbforms jar">
-    <jar jarfile="${dist.dir}/dbforms${dbforms.version}.jar" manifest="${etc.dir}/dbforms_manifest" basedir="${build.dir}" />
+  <target name="jar_classes" depends="prepare,compile" description="Build Dbforms jar">
+    <jar 
+    	jarfile="${dist.dir}/dbforms${dbforms.version}.jar" 
+    	manifest="${etc.dir}/dbforms_manifest" 
+    	basedir="${build.dir}" 
+    />
   </target>
 
 
