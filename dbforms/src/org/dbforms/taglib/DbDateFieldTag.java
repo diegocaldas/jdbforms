@@ -73,7 +73,7 @@ public class DbDateFieldTag extends DbBaseInputTag
     * @throws javax.servlet.jsp.JspException DOCUMENT ME!
     * @throws JspException DOCUMENT ME!
     */
-   public int doEndTag() throws javax.servlet.jsp.JspException
+   public int doEndTag() throws JspException
    {
       HttpServletRequest request = (HttpServletRequest) this.pageContext
          .getRequest();

@@ -20,11 +20,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
+
 package org.dbforms.taglib;
 import java.util.*;
 import javax.servlet.jsp.*;
 import javax.servlet.http.*;
-
 import org.dbforms.util.*;
 import org.dbforms.event.ReloadEvent;
 import org.dbforms.event.WebEvent;
@@ -32,16 +32,17 @@ import org.apache.log4j.Category;
 
 
 
-/****
- *
- * <p>This tag renders a html CHECKBOX element or a whole group of them</p>
- *
- * @author Joachim Peer <j.peer@gmx.net>
+/**
+ * <p>
+ * This tag renders a html CHECKBOX element or a whole group of them
+ * </p>
+ * 
+ * @author Joachim Peer
  */
-public class DbCheckboxTag extends DbBaseHandlerTag implements DataContainer
+public class DbCheckboxTag extends DbBaseHandlerTag
+   implements DataContainer
 {
-   static Category logCat        = Category.getInstance(DbCheckboxTag.class
-         .getName()); // logging category for this class
+   static Category logCat = Category.getInstance(DbCheckboxTag.class.getName()); // logging category for this class
    private Vector  embeddedData  = null;
    private String  checked; // only needed if parentForm is in "insert-mode", otherwise the DbForms-Framework determinates whether a checkbox should be selected or not.
    private String  growDirection; // only needed if we habe a whole "group" of DbRadioTags; default = null == horizontal
@@ -50,7 +51,7 @@ public class DbCheckboxTag extends DbBaseHandlerTag implements DataContainer
 
    /**
     * DOCUMENT ME!
-    *
+    * 
     * @param checked DOCUMENT ME!
     */
    public void setChecked(String checked)
@@ -61,7 +62,7 @@ public class DbCheckboxTag extends DbBaseHandlerTag implements DataContainer
 
    /**
     * DOCUMENT ME!
-    *
+    * 
     * @return DOCUMENT ME!
     */
    public String getChecked()
@@ -72,7 +73,7 @@ public class DbCheckboxTag extends DbBaseHandlerTag implements DataContainer
 
    /**
     * DOCUMENT ME!
-    *
+    * 
     * @param growDirection DOCUMENT ME!
     */
    public void setGrowDirection(String growDirection)
@@ -83,7 +84,7 @@ public class DbCheckboxTag extends DbBaseHandlerTag implements DataContainer
 
    /**
     * DOCUMENT ME!
-    *
+    * 
     * @return DOCUMENT ME!
     */
    public String getGrowDirection()
@@ -94,7 +95,7 @@ public class DbCheckboxTag extends DbBaseHandlerTag implements DataContainer
 
    /**
     * DOCUMENT ME!
-    *
+    * 
     * @param growSize DOCUMENT ME!
     */
    public void setGrowSize(String growSize)
@@ -115,7 +116,7 @@ public class DbCheckboxTag extends DbBaseHandlerTag implements DataContainer
       catch (NumberFormatException nfe)
       {
          logCat.warn(" setGrowSize(" + growSize + ") NumberFormatException : "
-            + nfe.getMessage());
+                     + nfe.getMessage());
          this.growSize = "0";
       }
    }
@@ -123,7 +124,7 @@ public class DbCheckboxTag extends DbBaseHandlerTag implements DataContainer
 
    /**
     * DOCUMENT ME!
-    *
+    * 
     * @return DOCUMENT ME!
     */
    public String getGrowSize()
@@ -133,11 +134,12 @@ public class DbCheckboxTag extends DbBaseHandlerTag implements DataContainer
 
 
    /**
-   This method is a "hookup" for EmbeddedData - Tags which can assign the lines of data they loaded
-   (by querying a database, or by rendering data-subelements, etc. etc.) and make the data
-   available to this tag.
-   [this method is defined in Interface DataContainer]
-   */
+    * This method is a "hookup" for EmbeddedData - Tags which can assign the
+    * lines of data they loaded (by querying a database, or by rendering
+    * data-subelements, etc. etc.) and make the data available to this tag.
+    * [this method is defined in Interface DataContainer]
+    * @param embeddedData DOCUMENT ME!
+    */
    public void setEmbeddedData(Vector embeddedData)
    {
       this.embeddedData = embeddedData;
@@ -146,9 +148,9 @@ public class DbCheckboxTag extends DbBaseHandlerTag implements DataContainer
 
    /**
     * DOCUMENT ME!
-    *
+    * 
     * @return DOCUMENT ME!
-    *
+    * 
     * @throws javax.servlet.jsp.JspException DOCUMENT ME!
     */
    public int doStartTag() throws javax.servlet.jsp.JspException
@@ -157,8 +159,8 @@ public class DbCheckboxTag extends DbBaseHandlerTag implements DataContainer
    }
 
 
-   private String generateTagString(String value, String description,
-      boolean selected)
+   private String generateTagString(String value, String description, 
+                                    boolean selected)
    {
       StringBuffer tagBuf = new StringBuffer();
 
@@ -191,6 +193,7 @@ public class DbCheckboxTag extends DbBaseHandlerTag implements DataContainer
       tagBuf.append(prepareEventHandlers());
       tagBuf.append(">");
       tagBuf.append(description);
+      tagBuf.append("</input>");
 
       return tagBuf.toString();
    }
@@ -198,18 +201,17 @@ public class DbCheckboxTag extends DbBaseHandlerTag implements DataContainer
 
    /**
     * DOCUMENT ME!
-    *
+    * 
     * @return DOCUMENT ME!
-    *
+    * 
     * @throws javax.servlet.jsp.JspException DOCUMENT ME!
     * @throws JspException DOCUMENT ME!
     */
    public int doEndTag() throws javax.servlet.jsp.JspException
    {
       StringBuffer       tagBuf  = new StringBuffer();
-      HttpServletRequest request = (HttpServletRequest) this.pageContext
-         .getRequest();
-      WebEvent           we      = (WebEvent) request.getAttribute("webEvent");
+      HttpServletRequest request = (HttpServletRequest) this.pageContext.getRequest();
+      WebEvent           we = (WebEvent) request.getAttribute("webEvent");
 
       // current Value from Database; or if no data: explicitly set by user; or ""
       String currentValue = getFormFieldValue();
@@ -223,35 +225,27 @@ public class DbCheckboxTag extends DbBaseHandlerTag implements DataContainer
          onclick += ";"; // be sure javascript end with ";"
       }
 
+
       // For generation Javascript Validation.  Need all original and modified fields name
-		getParentForm().addChildName(getFieldName(), getFormFieldName());
+      getParentForm().addChildName(getFieldName(), getFormFieldName());
 
       if (embeddedData == null)
       { // no embedded data is nested in this tag
 
          // select, if datadriven and data matches with current value OR if explicitly set by user
          boolean isSelected = ((!getParentForm().getFooterReached()
-            || we instanceof ReloadEvent) && (value != null)
-            && value.equals(currentValue))
-            || (getParentForm().getFooterReached() && "true".equals(checked));
+                                 || we instanceof ReloadEvent)
+                              && (value != null) && value.equals(currentValue))
+                              || (getParentForm().getFooterReached()
+                              && "true".equals(checked));
 
          if (getReadOnly().equals("true")
-                  || getParentForm().getReadOnly().equals("true"))
+                   || getParentForm().getReadOnly().equals("true"))
          {
             setOnClick("this.checked=" + isSelected + ";" + onclick);
          }
 
          tagBuf.append(generateTagString(value, "", isSelected));
-
-         if (!Util.isNull(getNovalue()))
-         {
-            tagBuf.append("<input type=\"hidden\" name=\"");
-            tagBuf.append(getFormFieldName());
-            tagBuf.append("\" value =\"");
-            tagBuf.append(getNovalue());
-            tagBuf.append("\" ");
-            tagBuf.append("/>");
-         }
       }
       else
       {
@@ -259,7 +253,7 @@ public class DbCheckboxTag extends DbBaseHandlerTag implements DataContainer
          int maxSize = Integer.parseInt(getGrowSize());
 
          tagBuf.append(
-            "<TABLE BORDER=0 cellspacing=0 cellpadding=0><TR valign=top>");
+                  "<TABLE BORDER=0 cellspacing=0 cellpadding=0><TR valign=top>");
 
          for (int i = 0; i < embeddedDataSize; i++)
          {
@@ -271,13 +265,13 @@ public class DbCheckboxTag extends DbBaseHandlerTag implements DataContainer
             boolean isSelected = aKey.equals(currentValue);
 
             if (getReadOnly().equals("true")
-                     || getParentForm().getReadOnly().equals("true"))
+                      || getParentForm().getReadOnly().equals("true"))
             {
                setOnClick("this.checked=" + isSelected + ";" + onclick);
             }
 
             if ("horizontal".equals(getGrowDirection()) && (maxSize != 0)
-                     && ((i % maxSize) == 0) && (i != 0))
+                      && ((i % maxSize) == 0) && (i != 0))
             {
                tagBuf.append("</TR><TR valign=top>");
             }
@@ -288,15 +282,32 @@ public class DbCheckboxTag extends DbBaseHandlerTag implements DataContainer
             }
 
             tagBuf.append("<TD>")
-                  .append(generateTagString(aKey, aValue, isSelected)).append("&nbsp;</TD>");
+                  .append(generateTagString(aKey, aValue, isSelected))
+                  .append("&nbsp;</TD>");
          }
 
          tagBuf.append("</TR></TABLE>");
       }
 
+		if (!Util.isNull(getNovalue()))
+		{
+		// Write noValue first. During parameter parsing the 
+		// first written value will be returned.
+		// This the setted value!!!
+		tagBuf.append("<input type=\"hidden\" name=\"");
+		tagBuf.append(getFormFieldName());
+		tagBuf.append("\" value =\"");
+		tagBuf.append(getNovalue());
+		tagBuf.append("\" ");
+		tagBuf.append("/>");
+		}
+
+
       try
       {
          pageContext.getOut().write(tagBuf.toString());
+	// Writes out the old field value
+	writeOutOldValue();
       }
       catch (java.io.IOException ioe)
       {
@@ -309,6 +320,7 @@ public class DbCheckboxTag extends DbBaseHandlerTag implements DataContainer
 
    /**
     * Returns the noValue.
+    * 
     * @return String
     */
    public String getNovalue()
@@ -319,6 +331,7 @@ public class DbCheckboxTag extends DbBaseHandlerTag implements DataContainer
 
    /**
     * Sets the noValue.
+    * 
     * @param noValue The noValue to set
     */
    public void setNovalue(String noValue)

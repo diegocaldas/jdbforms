@@ -293,38 +293,6 @@ public abstract class DbBaseInputTag extends DbBaseHandlerTag
    }
 
 
-   /**
-    * generates the decoded name for the old value of the html-widget.
-    * 
-    * @return String
-    */
-   protected String getFormFieldNameOld()
-   {
-      return "o" + getFormFieldName();
-   }
-
-
-   /**
-    * writes out the field value in hidden field _old
-    */
-   protected void writeOutOldValue() throws JspException
-   {
-      try
-      {
-	      StringBuffer tagBuf = new StringBuffer();
-	      tagBuf.append("<input type=\"hidden\" name=\"");
-	      tagBuf.append(getFormFieldNameOld());
-			tagBuf.append("\" value=\"");
-			tagBuf.append(getFormFieldValue());
-			tagBuf.append("\" />");
-			pageContext.getOut().write(tagBuf.toString());
-      }	
-		catch (java.io.IOException ioe)
-		{
-			throw new JspException("IO Error: " + ioe.getMessage());
-		}
-
-   }
 
    protected String prepareSize() 
    {

@@ -25,6 +25,7 @@ package org.dbforms.taglib;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 import javax.servlet.jsp.tagext.TryCatchFinally;
 
+import org.dbforms.util.Util;
 
 
 /****
@@ -112,6 +113,9 @@ public abstract class TagSupportWithScriptHandler extends BodyTagSupport impleme
 
 	/** Read-only attribute. */
 	private String readOnly = "false";
+
+	/** Id attribute */
+	private String id = null; // Fossato, 20011008
 
 
 	/**
@@ -423,7 +427,6 @@ public abstract class TagSupportWithScriptHandler extends BodyTagSupport impleme
 		return readOnly;
 	}
 
-
 	/**
 	 * Prepares the style attributes for inclusion in the component's HTML tag.
 	 * @return The prepared String for inclusion in the HTML tag.
@@ -434,22 +437,22 @@ public abstract class TagSupportWithScriptHandler extends BodyTagSupport impleme
 		boolean      readonly = readOnly.equals("true")
 			|| parentForm.getReadOnly().equals("true");
 
-		if (style != null)
+		if (!Util.isNull(style))
 		{
 			styles.append(" style=\"");
 			styles.append(style);
 			styles.append("\"");
 		}
 
-		if ((styleClass != null) || (readOnlyStyleClass != null))
+		if ( (!Util.isNull(styleClass)) || (!Util.isNull(readOnlyStyleClass)))
 		{
-			if ((readOnlyStyleClass != null) && readonly)
+			if (!Util.isNull(readOnlyStyleClass) && readonly)
 			{
 				styles.append(" class=\"");
 				styles.append(readOnlyStyleClass);
 				styles.append("\"");
 			}
-			else if (styleClass != null)
+			else if (!Util.isNull(styleClass))
 			{
 				styles.append(" class=\"");
 				styles.append(styleClass);
@@ -604,6 +607,21 @@ public abstract class TagSupportWithScriptHandler extends BodyTagSupport impleme
 			handlers.append("\"");
 		}
 	}
+
+
+	/** Sets the id attribute. */
+	public void setId(String id)
+	{
+		this.id = id;
+	}
+
+
+	/** Returns the id attribute. */
+	public String getId()
+	{
+		return (this.id);
+	}
+
 
 
 	/**

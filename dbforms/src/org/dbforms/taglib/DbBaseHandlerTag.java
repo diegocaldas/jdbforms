@@ -22,6 +22,7 @@
  */
 package org.dbforms.taglib;
 
+import javax.servlet.jsp.JspException;
 
 // these 3 we need for formfield auto-population
 import java.text.Format;
@@ -70,8 +71,6 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler
    /** DOCUMENT ME! */
    protected Format format;
 
-   /** Id attribute */
-   protected String id = null; // Fossato, 20011008
 
 
    /**
@@ -131,6 +130,38 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler
       this.value = value;
    }
 
+	/**
+	 * generates the decoded name for the old value of the html-widget.
+	 * 
+	 * @return String
+	 */
+	protected String getFormFieldNameOld()
+	{
+		return "o" + getFormFieldName();
+	}
+
+
+	/**
+	 * writes out the field value in hidden field _old
+	 */
+	protected void writeOutOldValue() throws JspException
+	{
+		try
+		{
+			StringBuffer tagBuf = new StringBuffer();
+			tagBuf.append("<input type=\"hidden\" name=\"");
+			tagBuf.append(getFormFieldNameOld());
+			tagBuf.append("\" value=\"");
+			tagBuf.append(getFormFieldValue());
+			tagBuf.append("\" />");
+			pageContext.getOut().write(tagBuf.toString());
+		}	
+		catch (java.io.IOException ioe)
+		{
+			throw new JspException("IO Error: " + ioe.getMessage());
+		}
+
+	}
 
    /**
    formatting a value
@@ -149,22 +180,6 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler
    public void setFormat(Format format)
    {
       this.format = format;
-   }
-
-
-   //  Id Management                       // Fossato, 20011008
-
-   /** Sets the id attribute. */
-   public void setId(String id)
-   {
-      this.id = id;
-   }
-
-
-   /** Returns the id attribute. */
-   public String getId()
-   {
-      return (this.id);
    }
 
 

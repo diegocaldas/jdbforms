@@ -32,6 +32,7 @@ import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.Field;
 import org.dbforms.config.ResultSetVector;
 import org.dbforms.util.MessageResources;
+import org.dbforms.util.Util;
 
 /**
  * this tag renders a dabase-datadriven LABEL, which is apassive element (it can't be changed by
@@ -72,9 +73,6 @@ public class DbLabelTag extends TagSupportWithScriptHandler
 
     /** format object used to format this tag's value; */
     protected Format format = null;
-
-    /** style to apply to element, with an added span surrounding it */
-    protected String styleClass;
 
     /**
      *  Sets the fieldName attribute of the DbLabelTag object
@@ -186,19 +184,20 @@ public class DbLabelTag extends TagSupportWithScriptHandler
 
             // SM 2003-08-05
             // if styleClass is present, render a SPAN with text included
-            if (styleClass == null)
-            {
-                pageContext.getOut().write(fieldValue);
-            }
-            else
-            {
-                pageContext.getOut().write(
-                    "<span class=\""
-                        + styleClass
-                        + "\">"
-                        + fieldValue
-                        + "</span>");
-            }
+			String s = prepareStyles();
+			if (Util.isNull(s))
+			{
+				 pageContext.getOut().write(fieldValue.toString());
+			}
+			else
+			{
+				 pageContext.getOut().write(
+					  "<span "
+							+ s
+							+ "\">"
+							+ fieldValue
+							+ "</span>");
+			}
         }
         catch (java.io.IOException ioe)
         {
@@ -281,27 +280,5 @@ public class DbLabelTag extends TagSupportWithScriptHandler
         return format;
     }
 
-    /**
-     * Gets the style to apply to element
-     *  
-     * @return
-     */
-    public String getStyleClass()
-    {
-        return styleClass;
-    }
-
-    /**
-     * Set the style to apply to element.
-     * 
-     * If the styleClass attribute is not set, a label element is rendered as it is, but 
-     * if the attribute is present, a SPAN element surrounding text is used to apply the style to the text.
-     * 
-     * @param string
-     */
-    public void setStyleClass(String string)
-    {
-        styleClass = string;
-    }
 
 }

@@ -26,6 +26,7 @@ import javax.servlet.jsp.JspException;
 import org.apache.log4j.Category;
 import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.ResultSetVector;
+import org.dbforms.util.Util;
 
 /****
  *
@@ -98,15 +99,16 @@ public class DbDateLabelTag extends DbLabelTag
                 }
             }
 
-            if (styleClass == null)
+            String s = prepareStyles();
+            if (Util.isNull(s))
             {
                 pageContext.getOut().write(fieldValue.toString());
             }
             else
             {
                 pageContext.getOut().write(
-                    "<span class=\""
-                        + styleClass
+                    "<span "
+                        + s
                         + "\">"
                         + fieldValue
                         + "</span>");

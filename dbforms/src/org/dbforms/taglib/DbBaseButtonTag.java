@@ -333,10 +333,9 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag
             }
       }
 
-      //logCat.info("prepareEventHandlers()="+prepareEventHandlers());
+	  buf.append(prepareStyles());
       buf.append(prepareEventHandlers());
-      buf.append(prepareStyles());
-
+	  
       return buf.toString();
    }
 

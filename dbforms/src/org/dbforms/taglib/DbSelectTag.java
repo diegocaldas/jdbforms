@@ -319,6 +319,7 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer
       {
          pageContext.getOut().write(generateSelectHeader());
          pageContext.getOut().write(tagBuf.toString());
+	 writeOutOldValue();
       }
       catch (java.io.IOException ioe)
       {
