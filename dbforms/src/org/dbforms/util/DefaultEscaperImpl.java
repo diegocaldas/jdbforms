@@ -28,7 +28,9 @@ package org.dbforms.util;
  */
 public class DefaultEscaperImpl implements Escaper {
 	public String escapeHTML(String s) {
-		int i;
+		if (s == null)
+         return null;      
+      int i;
 		StringBuffer v = new StringBuffer("");
 		for (i = 0; i < s.length(); i++) {
 			switch (s.charAt(i)) {
