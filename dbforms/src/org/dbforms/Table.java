@@ -133,6 +133,8 @@ public class Table
     /**
      * returns object containing info about rights mapped to user-roles.
      * (context: this table object!)
+     *
+     * @return the GrantedPrivileges object
      */
     public GrantedPrivileges getGrantedPrivileges()
     {
@@ -146,6 +148,7 @@ public class Table
      *
      * @param request  the request object
      * @param privileg the privilege value
+     * @return true if the user has got privileges over this table, false otherwise
      */
     public boolean hasUserPrivileg(HttpServletRequest request, int privileg)
     {
@@ -256,6 +259,7 @@ public class Table
      *  Returns the Field-Objet with specified id.
      *
      * @param fieldId The id of the field to be returned
+     * @return the Field object having the input id
      */
     public Field getField(int fieldId)
     {
@@ -277,6 +281,8 @@ public class Table
 
     /**
      *  Returns ID of this table.
+     *
+     * @return the id value
      */
     public int getId()
     {
@@ -298,6 +304,8 @@ public class Table
 
     /**
      *  Returns name of the table
+     *
+     * @return the name of this table
      */
     public String getName()
     {
@@ -346,6 +354,7 @@ public class Table
      *  the specified name exists in this table).
      *
      * @param name The name of the field
+     * @return Filed object having the input name
      */
     public Field getFieldByName(String name)
     {
@@ -524,7 +533,7 @@ public class Table
     /**
      *  Set the table events object related to this table.
      *
-     * @rparam tableEvents  the table events object related to this table
+     * @param tableEvents  the table events object related to this table
      */
     public void setTableEvents(TableEvents tableEvents)
     {
@@ -590,6 +599,7 @@ public class Table
     /**
      *  Returns SQL update statement, used by updateEvent.
      *
+     * @param fieldValues the Hashtable object containing the field values
      * @return the SQL update statement
      */
     public String getUpdateStatement(Hashtable fieldValues)
@@ -635,6 +645,7 @@ public class Table
     /**
      *  Returns SQL insert statement, used by insertEvent.
      *
+     * @param fieldValues the Hashtable containing the field values
      * @return the SQL insert statement
      */
     public String getInsertStatement(Hashtable fieldValues)
@@ -683,7 +694,9 @@ public class Table
     /**
      *  Returns the select part of a query.
      *
-     * @return the select part of a query
+     * @param fieldsToSelect the vector containing the Field objects
+     *                       used to build the elect part of the query
+     * @return               the select part of a query
      */
     protected String getQuerySelect(Vector fieldsToSelect)
     {
@@ -839,6 +852,7 @@ public class Table
      * @param fvEqual         fieldValues representing values we are looking for
      * @param fvOrder         fieldValues representing needs for order clauses
      * @param compareMode     and / or
+     * @return the query string
      */
     protected String getSelectQuery(Vector       fieldsToSelect,
                                     FieldValue[] fvEqual,
@@ -880,6 +894,7 @@ public class Table
      * @param fieldsToSelect  vector of fields to be selected
      * @param whereClause     free-form whereClause to be appended to query
      * @param tableList       the list of tables involved into the query
+     * @return the query string
      */
     protected String getFreeFormSelectQuery(Vector fieldsToSelect, String whereClause, String tableList)
     {
@@ -977,28 +992,42 @@ public class Table
 
 
     /**
-     * DOCUMENT ME!
+     *  Do a constrained select.
      *
-     * @param fieldsToSelect DOCUMENT ME!
-     * @param fvEqual DOCUMENT ME!
-     * @param vfOrder DOCUMENT ME!
-     * @param compareMode DOCUMENT ME!
-     * @param maxRows DOCUMENT ME!
-     * @param con DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     *
-     * @throws SQLException DOCUMENT ME!
+     * @param fieldsToSelect vector containing all the fields to select
+     * @param fvEqual FieldValue array used to restrict a set in a subform where
+     *                all "childFields" in the  resultset match their respective
+     *                "parentFields" in main form
+     * @param vfOrder FieldValue array used to build a cumulation of rules for ordering
+     *                (sorting) and restricting fields
+     * @param compareMode the value of the compare mode
+     * @param maxRows the max number of rows to manage
+     * @param con the connection object
+     * @return a ResultSetVector object
+     * @throws SQLException if any error occurs
      */
-    public ResultSetVector doConstrainedSelect(Vector fieldsToSelect, FieldValue[] fvEqual, FieldValue[] vfOrder, int compareMode, int maxRows, Connection con) throws SQLException
+    public ResultSetVector doConstrainedSelect(Vector       fieldsToSelect,
+                                               FieldValue[] fvEqual,
+                                               FieldValue[] vfOrder,
+                                               int          compareMode,
+                                               int maxRows,
+                                               Connection con)
+     throws SQLException
     {
+        //logCat.info("::doConstrainedSelect ----> fvEqual: " + Util.dumpFieldValueArray(fvEqual));
+        //logCat.info("::doConstrainedSelect ----> vfOrder: " + Util.dumpFieldValueArray(vfOrder));
+
         String query = getSelectQuery(fieldsToSelect, fvEqual, vfOrder, compareMode);
         PreparedStatement ps = con.prepareStatement(query);
         ps.setMaxRows(maxRows); // important when quering huge tables
 
-        ResultSetVector result = new ResultSetVector(fieldsToSelect, getDoSelectResultSet(fieldsToSelect, fvEqual, vfOrder, compareMode, maxRows, ps));
+        ResultSet rs =
+          getDoSelectResultSet(fieldsToSelect, fvEqual, vfOrder, compareMode, maxRows, ps);
+
+        ResultSetVector result = new ResultSetVector(fieldsToSelect, rs);
+
         ps.close();
-        logCat.info("rsv size=" + result.size());
+        logCat.info("::doConstrainedSelect - rsv size = " + result.size());
 
         return result;
     }
@@ -1007,12 +1036,20 @@ public class Table
     /**
      *  perform free-form select query
      *
-     *  @param fieldsToSelect - vector of fields to be selected
-     *  @param whereClause - free-form whereClause to be appended to query
-     *  @param maxRows - how many rows should be stored in the resultSet (zero means unlimited)
-     *  @param connection - the active db connection to use
+     *  @param fieldsToSelect vector of fields to be selected
+     *  @param whereClause    free-form whereClause to be appended to query
+     *  @param maxRows        how many rows should be stored in the resultSet (zero means unlimited)
+     *  @param tableList      the list of tables involved into the query
+     *  @param con            the active db connection to use
+     *  @return the ResultSetVector object
+     *  @throws SQLException if any error occurs
      */
-    public ResultSetVector doFreeFormSelect(Vector fieldsToSelect, String whereClause, String tableList, int maxRows, Connection con) throws SQLException
+    public ResultSetVector doFreeFormSelect(Vector     fieldsToSelect,
+                                            String     whereClause,
+                                            String     tableList,
+                                            int        maxRows,
+                                            Connection con)
+      throws SQLException
     {
         Statement stmt = con.createStatement();
         ResultSet rs;
@@ -1043,10 +1080,14 @@ public class Table
 
 
     /**
+     *  Creates a token string with the format:
+     *  <pre>
+     *    field.id : field.length : field.value
+     *  </pre>
      *
-     * @param field
-     * @param fieldValue
-     * @return
+     * @param field  the field object
+     * @param fieldValue the field value
+     * @return the token string
      */
     private String createToken(Field field, String fieldValue)
     {
@@ -1062,19 +1103,22 @@ public class Table
 
 
     /**
-     * builds a "position- string" representing the values of the current row in the given
-     * ResultSetVector..
-     *
-     * not all field-values get explicitl listed in this string. only fields important
-     * for navigation and sorting are listed.
-     *
-     * position strings are used as request parameters allowing the framework to keep track
-     * of the position the user comes from or goes to.
-     *
-     * look into com.itp.tablib.DbFormTag for better understanding
+     *  Builds a "position- string" representing the values of the current row in the given
+     *  ResultSetVector.
+     *  <br>
+     *  Not all field-values get explicitl listed in this string. only fields important
+     *  for navigation and sorting are listed.
+     *  <br>
+     *  Position strings are used as request parameters allowing the framework to keep track
+     *  of the position the user comes from or goes to.
+     *  <br>
+     *  Look into com.itp.tablib.DbFormTag for better understanding
      *
      * changed 0-04-2001 by joe
      * #note: enhanced algorithm since version 0.9!
+     *
+     * @param rsv the ResultSetVector object
+     * @return the position string
      */
     public String getPositionString(ResultSetVector rsv)
     {
@@ -1119,9 +1163,13 @@ public class Table
 
 
     /**
-     * does basically the same as getPositionString but only for key-fields
-     * #checkme: could be merged with getPositionString
-     * #fixme: replace seperator-based tokenization by better algoithm!
+     *  Does basically the same as getPositionString but only for key-fields.
+     *  <br>
+     *  #checkme: could be merged with getPositionString<br>
+     *  #fixme: replace seperator-based tokenization by better algoithm!
+     *
+     * @param rsv the ResultSetVector object
+     * @return the position string for key fields
      */
     public String getKeyPositionString(ResultSetVector rsv)
     {
@@ -1189,7 +1237,11 @@ public class Table
 
 
     /**
-     *  used for instance by goto with prefix
+     *  Used for instance by goto with prefix
+     *
+     * @param ht the Hashtable object containing the field names
+     *           used to build the position string
+     * @return the position string
      */
     public String getPositionStringFromFieldAndValueHt(Hashtable ht)
     {
@@ -1201,8 +1253,7 @@ public class Table
         while (enum.hasMoreElements())
         {
             String fieldName = (String) enum.nextElement();
-
-            Field aField = getFieldByName(fieldName);
+            Field aField     = getFieldByName(fieldName);
 
             if (aField != null)
             {
@@ -1227,10 +1278,14 @@ public class Table
 
 
     /**
-     * this method parses a position string and build a data structure
-     * representing the values of the fields decoded from the position.
+     *  This method parses a position string and build a data structure
+     *  representing the values of the fields decoded from the position.
+     *  <br>
+     *  #fixme: replace seperator-based tokenization by better algoithm!
      *
-     * #fixme: replace seperator-based tokenization by better algoithm!
+     * @param position the position string
+     * @return the HashTable containing the values of the fields decoded
+     *         from the position
      */
     public Hashtable getFieldValuesFromPositionAsHt(String position)
     {
@@ -1309,6 +1364,10 @@ public class Table
 
     /**
      *  in version 0.9 this method moved from FieldValue.fillWithValues to Table.fillWithValues
+     *
+     * @param orderConstraint  FieldValue array used to build a cumulation of rules
+     *                         for ordering (sorting) and restricting fields
+     * @param aPosition        resultset position
      */
     public void fillWithValues(FieldValue[] orderConstraint, String aPosition)
     {
@@ -1348,8 +1407,11 @@ public class Table
     // ----------------- some convenience methods ---------------------------------------------
 
     /**
-     * generates a part of the SQL where clause needed to select a distinguished row form the table
-     * this is done by querying for KEY VALUES !
+     *  Generates a part of the SQL where clause needed to select a distinguished row form the table.
+     *  This is done by querying for KEY VALUES !
+     *
+     * @return  a part of the SQL where clause needed to select a distinguished
+     *          row form the table
      */
     public String getWhereClauseForPS()
     {
@@ -1375,15 +1437,25 @@ public class Table
 
 
     /**
-     * POPULATES a part of the SQL where clause needed to select a distinguished row form the table
-     * using values endcoded in a string
-     * #fixme: replace seperator-based tokenization by better algoithm!
-    */
-    public void populateWhereClauseForPS(String keyValuesStr, PreparedStatement ps, int startColumn) throws SQLException
+     *  POPULATES a part of the SQL where clause needed to select a distinguished
+     *  row form the table using values endcoded in a string.
+     *  <br>
+     *  #fixme: replace seperator-based tokenization by better algoithm!
+     *
+     * @param  keyValuesStr the position string
+     * @param  ps           the PreparedStatement object
+     * @param  startColumn  PreparedStatement start column
+     * @throws SQLException if any error occurs
+     */
+    public void populateWhereClauseForPS(String            keyValuesStr,
+                                         PreparedStatement ps,
+                                         int               startColumn)
+      throws SQLException
     {
         int col = startColumn;
 
-        // then we list the values of the key-fields, so that the WHERE clause matches the right dataset
+        // then we list the values of the key-fields, so that the WHERE clause
+        // matches the right dataset
         Hashtable keyValuesHt = getFieldValuesFromPositionAsHt(keyValuesStr);
 
         int keyLength = this.getKey().size();
@@ -1401,20 +1473,24 @@ public class Table
     }
 
 
-    /**********************************************************
-     * Grunikiewicz.philip@hydro.qc.ca
-     * 2001-08-09
+    /**
+     *  The orderBy clause usually defaults to ASCending order.
+     *  A user may add, if we/she wishes the keyword ASC (ascending)
+     *  or DESC (descending) to specify a particular direction.
+     *  <br>
+     *  Code in this method parses the orderBy clause and finds an occurence
+     *  of either ASC or DESC.  Suppose your field name is "DESCRIPTION" !
+     *  <br>
+     *  This name contains "DESC" therefore causing unexpected behaviour.
+     *  This bug fix consists of fine-tunning the parsing function to take into
+     *  consideration the sequence of parameters: 1-Field 2-Command
      *
-     * The orderBy clause usually defaults to ASCending order.
-     * A user may add, if we/she wishes the keyword ASC (ascending)
-     * or DESC (descending) to specify a particular direction.
-     * Code in this method parses the orderBy clause and finds an occurence
-     * of either ASC or DESC.  Suppose your field name is DESCRIPTION!
-     * This name contains DESC therefore causing unexpected behaviour.
-     * This bug fix consists of fine-tunning the parsing function to take into
-     * consideration the sequence of parameters: 1-Field 2-Command
+     * @param order order string
+     * @return a vector of Field objects
      *
-     ***********************************************************/
+     * @author Grunikiewicz.philip@hydro.qc.ca
+     * @date   2001-08-09
+     */
     private Vector createOrderFVFromAttribute(String order)
     {
         Vector result = new Vector();
@@ -1478,7 +1554,16 @@ public class Table
     }
 
 
-    private Vector createOrderFVFromRequest(HttpServletRequest request, String paramStub, Vector sortFields)
+    /**
+     *
+     * @param request
+     * @param paramStub
+     * @param sortFields
+     * @return
+     */
+    private Vector createOrderFVFromRequest(HttpServletRequest request,
+                                            String             paramStub,
+                                            Vector             sortFields)
     {
         Vector result = new Vector();
         int fieldIndex = paramStub.length() + 1;
@@ -1509,18 +1594,24 @@ public class Table
 
     /**
       *  Column ["ASC" | "DESC"] {"," Column ["ASC" | "DESC"] }
-      *  (if neither ASC nor DESC follow "Col", then ASC is choosen as default)
-      *
+      *  (if neither ASC nor DESC follow "Col", then ASC is choosen as default).
+      *  <br>
       *  this method assures, that ALL KEY FIELDs are part of the order criteria,
       *  in any case (independly from the order-Str). if necessary it appends them.
       *  WHY: to ensure correct scrollig (not getting STUCK if the search criteria
-      *  are not "sharp" enough)
+      *  are not "sharp" enough).
+      *  <br>
       * #fixme - better explaination
       * #fixme - determinate illegal input and throw IllegalArgumentException
       *
-      * @param order - a String from JSP provided by the user in SQL-Style:
+      * @param order       a String from JSP provided by the user in SQL-Style
+      * @param request     the request object
+      * @param includeKeys true to include key fields, false otherwise
+      * @return            ???
       */
-    public FieldValue[] createOrderFieldValues(String order, HttpServletRequest request, boolean includeKeys)
+    public FieldValue[] createOrderFieldValues(String             order,
+                                               HttpServletRequest request,
+                                               boolean            includeKeys)
     {
         Vector result = null;
 
@@ -1602,7 +1693,9 @@ public class Table
     //------------------------------ utility / helper methods ---------------------------------
 
     /**
-     * for logging / debugging purposes only
+     *  This metod is useful for logging / debugging purposes only.
+     *
+     * @return a string containing the Table name and field values
      */
     public String traverse()
     {
@@ -1632,8 +1725,12 @@ public class Table
 
 
     /**
-     *  transfer values from asscociative (name-orientated, user friendly) hashtable [param 'assocFv']
-     *  into hashtable used interally by DbForms used during parameter-passing for interceptors
+     *  Transfer values from asscociative (name-orientated, user friendly) hashtable
+     *  [param 'assocFv'] into hashtable used interally by DbForms used during
+     *  parameter-passing for interceptors
+     *
+     * @param fv
+     * @param assocFv
      */
     public void synchronizeData(Hashtable fv, Hashtable assocFv)
     {
@@ -1674,18 +1771,24 @@ public class Table
 
 
     /**
-     * DOCUMENT ME!
+     *  Process the interceptor objects related to this table.
      *
-     * @param action DOCUMENT ME!
-     * @param request DOCUMENT ME!
+     * @param action           DOCUMENT ME!
+     * @param request          the request object
      * @param associativeArray DOCUMENT ME!
-     * @param config DOCUMENT ME!
-     * @param con DOCUMENT ME!
+     * @param config           the config object
+     * @param con              the JDBC connection object
      *
-     * @throws SQLException DOCUMENT ME!
-     * @throws MultipleValidationException DOCUMENT ME!
+     * @throws SQLException if any error occurs
+     * @throws MultipleValidationException if any validation error occurs
      */
-    public void processInterceptors(int action, HttpServletRequest request, Hashtable associativeArray, DbFormsConfig config, Connection con) throws SQLException, MultipleValidationException
+    public void processInterceptors(int                action,
+                                    HttpServletRequest request,
+                                    Hashtable          associativeArray,
+                                    DbFormsConfig      config,
+                                    Connection         con)
+      throws SQLException,
+             MultipleValidationException
     {
         try
         {
