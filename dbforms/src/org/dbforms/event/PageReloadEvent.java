@@ -35,7 +35,7 @@ import org.dbforms.config.DbFormsConfig;
  * 
  * @author Eric Beaumier
  */
-public class ReloadEvent extends WebEvent
+public class PageReloadEvent extends WebEvent
 {
 
    /**
@@ -44,7 +44,7 @@ public class ReloadEvent extends WebEvent
     * @param request DOCUMENT ME!
     * @param config DOCUMENT ME!
     */
-   public ReloadEvent(int tableId, HttpServletRequest request, 
+   public PageReloadEvent(int tableId, HttpServletRequest request, 
                       DbFormsConfig config)
    {
       super(tableId, request, config);
