@@ -73,8 +73,10 @@ public class Util
    {
       if (!isNull(realpath))
       {
+         // 20030604-HKK: Bugfixing for different engine, e.g. cactus. Path maybe without trailing '/'!!!
+         if (realpath.charAt(realpath.length() - 1) != '/')
+         	realpath = realpath + '/';
          int i = s.indexOf(REALPATH);
-
          if (i >= 0)
          {
             StringBuffer buf = new StringBuffer();
