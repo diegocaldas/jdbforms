@@ -336,7 +336,7 @@
 					<rtexprvalue>true</rtexprvalue>
 					<info>
 						<p>used in sub-form: field(s) in the main form that is/are linked to this form</p>
-                                                <p>Should either be a key or set to <computeroutput>sortable="true"</computeroutput>in <computeroutput>dbforms-config.xml</computeroutput>
+                                                <p>Should either be a key or set to <computeroutput>sortable="true"</computeroutput>in <computeroutput>dbforms-config.xml</computeroutput></p>
 					</info>
 				</attribute>
 				<attribute>
@@ -345,7 +345,7 @@
 					<rtexprvalue>true</rtexprvalue>
 					<info>
 						<p>used in sub-form: field(s) in this form that is/are linked to the parent form</p>
-					<p>Should either be a key or set to <computeroutput>sortable="true"</computeroutput>in <computeroutput>dbforms-config.xml</computeroutput>
+					<p>Should either be a key or set to <computeroutput>sortable="true"</computeroutput>in <computeroutput>dbforms-config.xml</computeroutput></p>
                                         </info>
 				</attribute>
 				<attribute>
