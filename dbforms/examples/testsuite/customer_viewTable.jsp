@@ -110,9 +110,6 @@
                 </td>
               </tr>
            
-                <center>
-                    <db:insertButton caption="Nuovo customer"/>
-                </center>
             </db:body>
             <db:footer>
           </table>

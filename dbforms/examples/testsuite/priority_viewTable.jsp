@@ -101,9 +101,6 @@
                 </td>
               </tr>
            
-                <center>
-                    <db:insertButton caption="Nuovo priority"/>
-                </center>
             </db:body>
             <db:footer>
           </table>

@@ -50,7 +50,7 @@
             
             </db:header>
             <db:errors/>
-            <db:body>
+            <db:body allowNew="false">
                 <table width="400" align="center" border="0">
                     <tr bgcolor="#FFFF99">
                         <td>id</td>
@@ -103,7 +103,7 @@
 
 			<%int i=0; %>
 			
-        <db:dbform autoUpdate="false" followUp="/customers_pets.jsp" maxRows="*" tableName="pets" parentField="id" childField="customer" multipart="true">
+        <db:dbform autoUpdate="false" followUp="/customers_pets.jsp" maxRows="*" tableName="pets" parentField="id" childField="customer" multipart="true" >
             <db:header>
           <table align="center" >
         
@@ -132,9 +132,6 @@
                 </td>
            </tr>
            
-                <center>
-                    <db:insertButton caption="Create new pets"/>
-                </center>
             </db:body>
             <db:footer>
           </table>

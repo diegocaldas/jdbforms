@@ -101,9 +101,6 @@
                 </td>
               </tr>
            
-                <center>
-                    <db:insertButton caption="Nuovo service"/>
-                </center>
             </db:body>
             <db:footer>
           </table>

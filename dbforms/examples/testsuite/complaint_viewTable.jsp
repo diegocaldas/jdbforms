@@ -104,9 +104,6 @@
                 </td>
               </tr>
            
-                <center>
-                    <db:insertButton caption="Nuovo complaint"/>
-                </center>
             </db:body>
             <db:footer>
           </table>

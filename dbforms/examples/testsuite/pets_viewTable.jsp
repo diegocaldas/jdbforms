@@ -104,9 +104,6 @@
                 </td>
               </tr>
            
-                <center>
-                    <db:insertButton caption="Nuovo pets"/>
-                </center>
             </db:body>
             <db:footer>
           </table>
