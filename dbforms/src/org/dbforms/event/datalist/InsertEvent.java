@@ -116,13 +116,18 @@ public class InsertEvent extends ValidationEvent {
          // INSERT operation;
          DataSourceList ds = DataSourceList.getInstance(request);
          DataSourceFactory qry = ds.get(getTable(), request);
-
+         
+         boolean own = false;
          if (qry == null) {
             qry = new DataSourceFactory(getTable());
+            own = true;
          }
 
          qry.doInsert(con, fieldValues);
-         ds.remove(getTable(), request);
+         if (own) 
+            qry.close();
+         else
+            ds.remove(getTable(), request);
 
          // Show the last record inserted
          String firstPosition = getTable().getPositionString(fieldValues);

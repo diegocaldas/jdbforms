@@ -130,11 +130,16 @@ public class UpdateEvent extends ValidationEvent {
          // UPDATE operation;
          DataSourceList ds = DataSourceList.getInstance(request);
          DataSourceFactory qry = ds.get(getTable(), request);
+         boolean own = false;
          if (qry == null) {
             qry = new DataSourceFactory(getTable());
+            own = true;
          }
          qry.doUpdate(con, fieldValues, keyValuesStr);
-         ds.remove(getTable(), request);
+         if (own) 
+            qry.close();
+         else
+            ds.remove(getTable(), request);
       }
 
       // finally, we process interceptor again (post-update)

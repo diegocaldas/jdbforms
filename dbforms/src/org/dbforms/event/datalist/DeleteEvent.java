@@ -121,12 +121,16 @@ public class DeleteEvent extends DatabaseEvent {
          // DELETE operation;
          DataSourceList ds = DataSourceList.getInstance(request);
          DataSourceFactory qry = ds.get(getTable(), request);
-
+         boolean own = false;
          if (qry == null) {
             qry = new DataSourceFactory(getTable());
+            own = true;
          }
          qry.doDelete(con, keyValuesStr);
-         ds.remove(getTable(), request);
+         if (own) 
+            qry.close();
+         else
+            ds.remove(getTable(), request);
       }
 
       // finally, we process interceptor again (post-delete)
