@@ -2081,7 +2081,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
     *
     * @return  the field values array
     */
-   private FieldValue[] initSearchFieldValues()
+   private FieldValue[] initSearchFieldValues() throws IOException
    {
       FieldValue[]       fieldValues;
       HttpServletRequest request          = (HttpServletRequest) pageContext
@@ -2362,13 +2362,15 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
 
                   operator = Constants.FILTER_SMALLER_THEN_EQUAL;
 
-                  SimpleDateFormat sdf = DbFormsConfig.getDateFormatter();
-                  java.util.Date   d = TimeUtil.parseDate(sdf.toPattern(),
-                        aSearchFieldValue);
-                  d                    = TimeUtil.findEndOfDay(d);
-                  aSearchFieldValue    = sdf.format(d);
-                  fv                   = new FieldValue(f, aSearchFieldValue,
-                        operator);
+						try {
+							SimpleDateFormat sdf  = DbFormsConfigRegistry.instance().lookup().getDateFormatter();
+							java.util.Date   d = TimeUtil.parseDate(sdf.toPattern(),  aSearchFieldValue);
+							d                    = TimeUtil.findEndOfDay(d);
+							aSearchFieldValue    = sdf.format(d);
+                  } catch (Exception e) {
+                  	 throw new IOException(e.getMessage());
+                  }
+                  fv                   = new FieldValue(f, aSearchFieldValue, operator);
                   fv.setSearchMode(mode);
                   fv.setSearchAlgorithm(algorithm);
 
