@@ -343,7 +343,7 @@ Happy coding!
 
               <!-- copy all files needed to release directory -->
       <copy todir="${dbforms.releaseDir}" >
-        <fileset dir="." includes="Changes_v1_0  Changes_v1_1  CommonMistakes  license.txt"/>
+        <fileset dir="." includes="ChangeLog Changes_v1_0  Changes_v1_1  CommonMistakes  license.txt"/>
         <fileset dir="." includes="Readme  Todo  build.xml ReleaseNotes*.txt"/>
         <fileset dir="." includes="doc/**/*.html,doc/**/*.png,doc/**/*.gif,doc/**/*.jpg,doc/**/*.txt,doc/**/*.pdf,doc/**/*.css"/>
         <fileset dir="." includes="dist/*.tld  dist/*.jar"/>
@@ -372,7 +372,7 @@ Happy coding!
      </copy>
 
              <!-- modify all text files to have dos/win lineends -->
-     <property name="textfiles.patterns" value="**/*.html,**/*.xml,**/*.java,**/*.txt,**/*.xsl,**/*.bat,**/*.sh,Changes*,CommonMistakes,Todo" />
+     <property name="textfiles.patterns" value="**/*.html,**/*.xml,**/*.java,**/*.txt,**/*.xsl,**/*.bat,**/*.sh, Change*,CommonMistakes,Todo" />
 
      <echo message="modifying temporary files to contain dos/win lineends"/>
      <fixcrlf srcDir="${dbforms.releaseDir}" eol="crlf" includes="${textfiles.patterns}" />
