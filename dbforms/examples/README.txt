@@ -9,13 +9,21 @@ BUGTRACKER
 This web application uses real business logic. It can also be
 accessed online at http://www.wap-force.net/bugtracker.
 
-TESTSUITE_V09
+TESTSUITE
 -------------
 This application contains no business logic; instead, it demonstrates
 pure table inserts, updates, and deletes via JSP pages that use
 DbForms JSP tags. The numerous JSPs for this Web application were automatically generated; for
 more information on how, see Appendix III of the DbForms User Guide.
 TESTSUITE is useful for testing code and demonstrating DbForms.
+
+BOOKSTORE
+------------
+Some hand made examples to show and test some special features of dbforms, 
+e.g. aliases, querys, filters, xml data source. This examples are for educational purpose only.
+Not a real application, no use of devgui. Just a mixture of small examples.
+
+
 
 II. Database installation
 =============================
