@@ -163,18 +163,10 @@ public class FieldValues
     * 
     * @return the FieldValue array representation of this object
     */
-   public FieldValue[] toArr()
+   public FieldValue[] toArray()
    {
-      FieldValue[] result = new FieldValue[size()];
-      Iterator  enum = ht.values().iterator();
-      int          cnt  = 0;
-
-      while (enum.hasNext())
-      {
-         result[cnt] = (FieldValue) enum.next();
-         cnt++;
-      }
-
+      FieldValue[] result = new FieldValue[0];
+      result = (FieldValue[])ht.values().toArray(result);
       return result;
    }
    

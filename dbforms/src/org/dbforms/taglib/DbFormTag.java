@@ -2072,7 +2072,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
       childFieldValues = getTable()
                             .mapChildFieldValues(parentForm.getTable(), 
                                                  parentField, childField, 
-                                                 aPosition).toArr();
+                                                 aPosition).toArray();
    }
 
 

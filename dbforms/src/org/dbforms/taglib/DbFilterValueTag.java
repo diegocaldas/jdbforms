@@ -317,7 +317,7 @@ public class DbFilterValueTag extends BodyTagSupport implements DataContainer,
          }
       }
 
-      return values.toArr();
+      return values.toArray();
    }
 
    /**

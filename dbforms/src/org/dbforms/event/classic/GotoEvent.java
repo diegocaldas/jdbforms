@@ -218,7 +218,7 @@ public class GotoEvent extends NavigationEvent
 
             if (fv != null)
             {
-               childFieldValues    = fv.toArr();
+               childFieldValues    = fv.toArray();
                compMode            = Constants.COMPARE_NONE;
             }
          }

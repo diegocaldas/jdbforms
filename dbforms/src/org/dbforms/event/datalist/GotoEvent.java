@@ -260,7 +260,7 @@ public class GotoEvent extends NavigationEvent
 
 			if (singleRow && (fv != null))
 			{
-				childFieldValues = fv.toArr();
+				childFieldValues = fv.toArray();
 			}
       }
 
