@@ -1566,8 +1566,8 @@ public class Table {
       buf.append(name);
       buf.append(" ");
 
-      for (int i = 0; i < getFields().size(); i++) {
-         if (getFields() != null) {
+      if (getFields() != null) {
+         for (int i = 0; i < getFields().size(); i++) {
             Field f = (Field) getFields().elementAt(i);
             buf.append("\nfield: ");
             buf.append(f.toString());
