@@ -144,7 +144,7 @@
     <attainGoal name="scm:update-project" />	
   </goal>
   	
-  <goal name="dbforms:site-deploy" description="deploys the site to the web">
+  <goal name="dbforms:site:deploy" description="deploys the site to the web">
     <ant:echo message="starting deploying site" />
     <ant:echo message="0. cleanup" />
     <attainGoal name="clean" />
@@ -153,7 +153,7 @@
     <attainGoal name="site:deploy" />
   </goal>
 
-  <goal name="dbforms:site-generate" description="generates the web sites">
+  <goal name="dbforms:site:generate" description="generates the web sites">
     <ant:echo message="starting deploying site" />
     <ant:echo message="0. cleanup" />
     <attainGoal name="clean" />
