@@ -52,16 +52,18 @@
     &lt;/init-param&gt; 
     
       <emphasis role="bold">&lt;init-param&gt;</emphasis> 
-                    &lt;param-name&gt;
-      <emphasis role="bold">validation</emphasis>&lt;/param-name&gt; 
-                    &lt;param-value&gt;
-      <emphasis role="bold">/WEB-INF/validation.xml</emphasis>&lt;/param-value&gt; 
-    
+                    &lt;param-name&gt;<emphasis role="bold">validation</emphasis>&lt;/param-name&gt; 
+                    &lt;param-value&gt;<emphasis role="bold">/WEB-INF/validation.xml</emphasis>&lt;/param-value&gt; 
       <emphasis role="bold">&lt;/init-param&gt;</emphasis> 
     
+      &lt;!--More than one validation file is possible--&gt;
+      &lt;!--init-param&gt;
+                    &lt;param-name&gt;validation&lt;/param-name&gt;
+                    &lt;param-value&gt;/WEB-INF/validation.xml,/WEB-INF/custom/validation.xml&lt;/param-value&gt;
+      &lt;/init-param--&gt;
+      
       <emphasis role="bold">&lt;init-param&gt;</emphasis> 
-                    &lt;param-name&gt;
-      <emphasis role="bold">validator-rules</emphasis>&lt;/param-name&gt; 
+                    &lt;param-name&gt;<emphasis role="bold">validator-rules</emphasis>&lt;/param-name&gt; 
                     &lt;param-value&gt;/WEB-INF/validator-rules.xml&lt;/param-value&gt; 
     
       <emphasis role="bold">&lt;/init-param&gt;</emphasis> 

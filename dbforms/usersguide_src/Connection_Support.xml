@@ -318,7 +318,7 @@
       </blockquote>
       <para/>
       <para>
-        For further details: <code>http://protomatter.sourceforge.net/1.1.8/javadoc/com/protomatter/jdbc/pool/JdbcConnectionPool.html</code>
+        For further details:  see http://protomatter.sourceforge.net/1.1.8/javadoc/com/protomatter/jdbc/pool/JdbcConnectionPool.html 
       </para>
     </sect2>
     <sect2>

@@ -6,7 +6,7 @@
     by following the steps in the subsequent sections.
   </para>
   <para>Users of MS SQL Server should refer instead to 
-    <link linkend="mssql">JumpStart MS Server Database(click here)</link>
+    <link linkend="mssql">JumpStart MS Server Database</link>
   </para>
   <para>If you have questions, please drop a line to our 
     <ulink url="http://lists.sourceforge.net/lists/listinfo/jdbforms-interest">
@@ -54,7 +54,7 @@
       </listitem>
       <listitem>
         <para> OPTIONAL: configure a database connection pool for that new created database using your favorite technique (either the connection pool built into your application server or codestudio's poolman or another database connection tool) connection pools are important to speed-up your application. See 
-          <link linkend="dbConn2"> examples (click here)</link>
+          <link linkend="dbConn2"> examples</link>
         </para>
       </listitem>
       <listitem>
@@ -64,7 +64,7 @@
       <listitem>
         <para>Do not forget to point the db-connection entry in 
           <computeroutput>/WEB-INF/dbforms-config.xml</computeroutput> to the datasource or connection pool you established! See 
-          <link linkend="dbConn">examples (click here)</link>.
+          <link linkend="dbConn">examples</link>.
         </para>
       </listitem>
       <listitem>
@@ -101,7 +101,7 @@
       <listitem>
         <para>
           Copy the jars (listed in 
-          <link linkend="prereqs">prerequisites (click)</link> section) into the 
+          <link linkend="prereqs">prerequisites</link> section) into the 
           "<computeroutput>WEB-INF/lib</computeroutput>" directory of your web application.
         </para>
       </listitem>
@@ -110,19 +110,19 @@
         <itemizedlist mark="opencircle">
           <listitem>
             <para>
-              Three &lt;servlet&gt; elements to define the controller, the config and the file-servlet and mappings(
-              <link linkend="depldesc">click to see below</link>) 
+              Three &lt;servlet&gt; elements to define the controller -- (
+              <link linkend="depldesc">the config and the file-servlet and mappings</link>) 
             </para>
           </listitem>
           <listitem>
             <para>
-              a tag library declaration for the Dbforms tag library 
-              (<link linkend="taglibdesc">click to see below</link>)
+              
+              <link linkend="taglibdesc"> a tag library declaration</link> for the Dbforms tag library 
             </para>
           </listitem>
           <listitem>
-            <para>security measures for your application(
-              <link linkend="secr">click to see below</link>)
+            <para><link linkend="secr">security measures </link> for your application(
+              
             </para>
           </listitem>
         </itemizedlist>
@@ -131,8 +131,17 @@
         <para>
           Create a file "<computeroutput>WEB-INF/dbforms-config.xml</computeroutput>" 
           that defines the tables, fields and the database connection to use. See a 
-          <link linkend="sampConfig"> simple sample here (click)</link>. This can be GENERATED AUTOMATICALLY (along with jsp pages) by using 
-          <link linkend="devgui">DEVGUI(click)</link>
+          <link linkend="sampConfig"> simple sample here </link>. This can be GENERATED AUTOMATICALLY (along with jsp pages) by using 
+          <link linkend="devgui">DEVGUI</link>
+        </para>
+        <para>It is also possible to use more then one config file as the init param of the <computeroutput>ConfigServlet</computeroutput> in 
+<computeroutput>web.xml</computeroutput>:
+  <screen>
+    &lt;init-param&gt;
+      &lt;param-name&gt;dbformsConfig&lt;/param-name&gt;
+      &lt;param-value&gt;/WEB-INF/dbforms-config.xml,/WEB-INF/custom/dbforms-config.xml&lt;/param-value&gt;
+    &lt;/init-param&gt;
+    </screen>
         </para>
       </listitem>
       <listitem>
@@ -166,7 +175,7 @@
         </para>
         <para>
           One way to do this is to use 
-          <link linkend="dbtab">the database tab in DevGui (click)</link>
+          <link linkend="dbtab">the database tab in DevGui </link>
           (for simple, non-jndi and non-connection pool connections).  
           Better yet, why not just try out a few of the pages you generated with DEVGUI!!!!
         </para>
@@ -232,6 +241,12 @@
         &lt;param-value&gt;/WEB-INF/validation.xml&lt;/param-value&gt; 
       &lt;/init-param&gt; 
 
+      &lt;!--More than one validation file is possible--&gt;
+      &lt;!--init-param&gt;
+        &lt;param-name&gt;validation&lt;/param-name&gt;
+        &lt;param-value&gt;/WEB-INF/validation.xml,/WEB-INF/custom/validation.xml&lt;/param-value&gt;
+      &lt;/init-param--&gt;
+      
       &lt;init-param&gt; 
         &lt;param-name&gt;validator-rules&lt;/param-name&gt; 
         &lt;param-value&gt;/WEB-INF/validator-rules.xml&lt;/param-value&gt; 
@@ -273,7 +288,7 @@
         <calloutlist>
           <callout arearefs="templ">
             <para>This is optional.  See 
-              <link linkend="tempbasedir"> templates base directory (click)</link> for more info.
+              <link linkend="tempbasedir"> templates base directory </link> for more info.
             </para>
           </callout>
           <callout arearefs="log4j">
@@ -321,7 +336,7 @@ log4j.appender.logFile.MaxBackupIndex=1
               Labels, messages, etc. can be stored in 'resource bundle' files and retrieved using 
               appropriate DbForm tags.  The (optional) init-parameter 'resourceBundle' 
               setting is used to specify the resource bundle root name.  Refer to the section on 
-              <link linkend="intern">internationalization (click)</link>.
+              <link linkend="intern">internationalization </link>.
             </para>
           </callout>
           <callout arearefs="vald">
@@ -330,7 +345,7 @@ log4j.appender.logFile.MaxBackupIndex=1
               framework into dbForms v1.1.  This framework requires the use of two distinct xml 
               descriptor files. The (optional) init-parameters 'validator-rules' and 'validation' 
               are used to specify these files.  Refer to the section on 
-              <link linkend="valid">validation (click)</link>.
+              <link linkend="valid">validation </link>.
             </para>
           </callout>
           <callout arearefs="upsize">
