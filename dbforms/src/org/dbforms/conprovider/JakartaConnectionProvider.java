@@ -91,7 +91,10 @@ public class JakartaConnectionProvider extends ConnectionProvider
      */
     protected Connection getConnection() throws SQLException
     {
-        return dataSource.getConnection();
+    	  cat.debug("::getConnection - MaxActive = " + dataSource.getMaxActive());
+        cat.debug("::getConnection - NumActive = " + dataSource.getNumActive());
+        cat.debug("::getConnection - NumIdle   = " + dataSource.getNumIdle());
+    	  return dataSource.getConnection();
     }
 
 
