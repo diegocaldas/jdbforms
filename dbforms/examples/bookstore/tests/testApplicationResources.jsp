@@ -9,7 +9,7 @@
       <db:dbform  
 	      	maxRows="*" 
 	         followUp="/tests/testApplicationResources.jsp" 
-    	     	autoUpdate="false" tableName="BOOKLISTPERA"http://java.sun.com/dtd/web-app_2_4.dtd">UTHOR"
+    	     	 autoUpdate="false" tableName="BOOKLISTPERAUTHOR"
     	     	captionResource="true"
 	      		>
          <db:header/>
