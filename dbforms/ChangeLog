@@ -1,9 +1,13 @@
+2003-10-10
+(Henner.Kollmann@gmx.de)
+   - move value setting for the sqlFilter from the DbFilterConditionTag to the DataSource classes.
+   - added sqlFilter support for XML DataSource
+
 2003-10-05
 fossato@pow2.com
    - added snooper to all test pages in the bookstore example.
      With this snooper the contents of the http request is be dumped to the page
      
-
 2003-10-04
 (Henner.Kollmann@gmx.de)
    - changed to jasperreports 0.5.0
