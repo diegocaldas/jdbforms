@@ -1,3 +1,17 @@
+Tuesday, October 22, 2002:
+(Henner.Kollmann@aucos.de):
+
+        - taglib_docu.xml:
+		extended message tag
+	- DBMessageTag.java
+		extend with parameters
+	- SQLUtil.java
+		createAppropriateTimeStamp
+	- FieldValue.java
+		new searching
+	- DBFormTag.java
+		new searching
+
 Sunday, October 13, 2002:
 (Henner.Kollmann@aucos.de):
 
