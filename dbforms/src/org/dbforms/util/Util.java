@@ -23,9 +23,10 @@
 
 package org.dbforms.util;
 
-import java.net.URLEncoder;
-import java.io.*;
 import org.dbforms.DbFormsConfig;
+import java.io.*;
+import java.net.URLEncoder;
+
 
 
 /**
@@ -33,8 +34,8 @@ import org.dbforms.DbFormsConfig;
  */
 public class Util
 {
-
     private static final String REALPATH = "$(SERVLETCONTEXT_REALPATH)";
+
 
     /**
      * Test if the input string is null or empty (does not contain any character)
@@ -47,46 +48,63 @@ public class Util
         return ((s == null) || (s.trim().length() == 0)) ? true : false;
     }
 
+
     /**
+     *  Replaces the occurens from REALPATH in s with realpath.
      *
-     * replaces the occurens from REALPATH in s with realpath
-     *
+     * @param s        the string containing the REALPATH token
+     * @param realpath the value used to replace the REALPATH token
+     * @return the input string, with the REALPATH token replaced with the
+     *         realpath value
      */
-    public final static String replaceRealPath(String s, String realpath) {
-        if (!isNull(realpath) ) {
-           int i = s.indexOf(REALPATH);
-           if (i > 0) {
-              StringBuffer buf = new StringBuffer();
-              buf.append(s.substring(0,i));
-              buf.append(realpath);
-              buf.append(s.substring(i + REALPATH.length() + 1));
-              s = buf.toString();
-           }
+    public final static String replaceRealPath(String s, String realpath)
+    {
+        if (!isNull(realpath))
+        {
+            int i = s.indexOf(REALPATH);
+
+            if (i > 0)
+            {
+                StringBuffer buf = new StringBuffer();
+                buf.append(s.substring(0, i));
+                buf.append(realpath);
+                buf.append(s.substring(i + REALPATH.length() + 1));
+                s = buf.toString();
+            }
         }
+
         return s;
     }
 
+
     /**
-    *
-     * replaces the occurens from REALPATH in s with config.getRealPath()
+     *  Replaces the occurens from REALPATH in s with config.getRealPath().
      *
+     * @param s       the string containing the REALPATH token
+     * @param config  the config object
+     * @return the input string, with the REALPATH token replaced with the
+     *         realpath value taken from the config object
      */
-    public final static String replaceRealPath(String s, DbFormsConfig config) {
+    public final static String replaceRealPath(String s, DbFormsConfig config)
+    {
         return replaceRealPath(s, config.getRealPath());
     }
 
+
     /**
-    *
-     * encodes a string with "ISO8859-1". This is the default in the servlet engine (tomcat)
-     * hope that's the same in the other ones...
+     * Encodes a string with "ISO8859-1". This is the default
+     * in the servlet engine (tomcat); hope that's the same in the other ones...
      *
+     * @param s the string to encode
+     * @return the encoded string
      */
-    public final static String encode(String s) throws UnsupportedEncodingException {
-            if (!Util.isNull(s)) {
-                s = URLEncoder.encode(s);
-            }
-            return s;
+    public final static String encode(String s) throws UnsupportedEncodingException
+    {
+        if (!Util.isNull(s))
+        {
+            s = URLEncoder.encode(s);
+        }
+
+        return s;
     }
-
-
 }
