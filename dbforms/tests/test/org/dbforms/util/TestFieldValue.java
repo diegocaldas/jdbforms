@@ -117,7 +117,8 @@ public class TestFieldValue extends TestCase
     public void testGetWhereClause() throws Exception
     {
         FieldValue[] fvs = { fvLogicalOR, fvNotLogicalOR };
-        assertTrue("Test fvs Where clause equals:AUTHOR_ID =  ?  AND BOOK_ID =  ?:" + FieldValue.getWhereClause(fvs), FieldValue.getWhereClause(fvs).indexOf("AUTHOR_ID =  ?  AND BOOK_ID =  ?") >= 0);
+        String s = FieldValue.getWhereClause(fvs);
+        assertTrue("Test fvs Where clause equals: (AUTHOR_ID =  ?)  AND (BOOK_ID =  ?):" + s, s.indexOf("( AUTHOR_ID =  ?  ) AND ( BOOK_ID =  ?  )") >= 0);
 
         FieldValue[] fvs2 = { fvLogicalOR, fvLogicalOR };
         assertTrue("Test fvs2 Where clause equals:" + FieldValue.getWhereClause(fvs2), FieldValue.getWhereClause(fvs2).indexOf("AUTHOR_ID =  ?  OR AUTHOR_ID =  ?") >= 0);

@@ -365,7 +365,7 @@ public class Query extends Table
     * @return generated sql query
     */
    public String getSelectQuery(Vector fieldsToSelect, FieldValue[] fvEqual, 
-                                FieldValue[] fvOrder, int compareMode)
+                                FieldValue[] fvOrder, String sqlFilter, int compareMode)
    {
       StringBuffer buf                      = new StringBuffer();
       String       s;
@@ -387,7 +387,7 @@ public class Query extends Table
       buf.append(getQueryFrom());
       s = getQueryWhere(fvWhere, null, compareMode);
 
-      if ((s.length() > 0) || !Util.isNull(where))
+		if (!Util.isNull(s) || !Util.isNull(where) || !Util.isNull(sqlFilter))
       {
          hatSchonWhere = true;
          buf.append(" WHERE ");
@@ -397,7 +397,7 @@ public class Query extends Table
             buf.append(where);
          }
 
-         if (s.length() > 0)
+         if (!Util.isNull(s))
          {
             buf.append(" ");
 

@@ -910,11 +910,11 @@ public class Table
       String s;
       s = getQueryWhere(fvEqual, fvOrder, compareMode);
 
-      if (s.length() > 0 || (sqlFilter != null && sqlFilter.length() > 0))
+      if (!Util.isNull(s) || !Util.isNull(sqlFilter))
          buf.append(" WHERE ");
          
       // where condition generated from searching / ordering
-      if (s.length() > 0)
+      if (!Util.isNull(s))
       {
          buf.append(" ( ");
          buf.append(s);
@@ -922,7 +922,7 @@ public class Table
       }
       
       // where condition from DbFormTag's sqlFilter attribute
-      if (sqlFilter != null && sqlFilter.length() > 0)
+      if (!Util.isNull(sqlFilter))
       {
       	 if (s.length() > 0)
       	    buf.append(" AND ( ");
