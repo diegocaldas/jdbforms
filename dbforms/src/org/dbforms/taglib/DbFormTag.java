@@ -215,6 +215,9 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
 
    /** redisplayFieldsOnError flag */
    private String redisplayFieldsOnError = "false";
+   
+   /** represents the HTML form tag attribute AUTOCOMPLETE. */
+   private String autocomplete = null;
 
    /** onSubmit form field  (20020703-HKK) */
    private String onSubmit;
@@ -1078,6 +1081,11 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
             }
 
             tagBuf.append("\"");
+            
+            // JFM 20040309: additional attribute autocomplete
+            if (getAutocomplete() != null) {
+            	tagBuf.append(" autocomplete=\"" + getAutocomplete() + "\"");
+            } 
 
             // append target element
             if (target != null) {
@@ -2502,5 +2510,19 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
    public void setId(String string) {
       id = string;
    }
+
+	/**
+	 * @return autocomplete
+	 */
+	public String getAutocomplete() {
+		return autocomplete;
+	}
+	
+	/**
+	 * @param string
+	 */
+	public void setAutocomplete(String string) {
+		autocomplete = string;
+	}
 
 }

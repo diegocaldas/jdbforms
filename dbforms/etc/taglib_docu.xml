@@ -539,6 +539,19 @@
                            the form will not be submitted. When the result is TRUE, the form will be submitted</p>
 					</info>
 				</attribute>
+				<attribute>
+					<name>autocomplete</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						<p>if the autocomplete value is specified then the attribute is inserted in the form tag. <br/>
+						if the value is "off" and if the browser has  autocompletion ability, it can be disabled <br/>
+						with this tag.<br/>
+						Any value will be accepted for autocomplete. e.g. autocomplete="any", <br/>
+						the generated HTML code is:<br/>
+						&lt;form name="dbforms" ... autocomplete="any" ... &gt;</p>
+					</info>
+				</attribute>
 			</tag>
 			<!-- **************************** header tag ***********************************-->
 			<tag>
@@ -4244,8 +4257,8 @@ is released.</info>
 					<name>disabledBehaviour</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
-					<info>Describes the behaviour of this button if it is on the last page.
-possible values: "nohtml", "altimage", "disabled"
+					<info>Describes the behaviour of this button if it is on the first page.
+possible values:
 <ul>
 	<li>nohtml: no HTML output</li>
 	<li>altimage: only an image with no functionality is displayed. The src for that image
@@ -4255,11 +4268,11 @@ and disabledImageHeight.</li>
 	<li>disabled (default): The image specified in scr is used but disabled.</li>
 </ul>
 
-example: 
-&lt;db:navPrevButton src="images/ico_back.gif" flavor="image" disabledBehaviour="altimage" disabledImageSrc="images/transparent.gif" disabledImageAlt="my alt text" disabledImageWidth="50" disabledImageHeight="1" onMouseOver="javascript: self.status='go back'; return true;" onMouseOut="javascript: self.status=''; return true;"/&gt;
-
-If on first page, HTML result is:
-&lt;img src="images/transparent.gif" alt="" width="50" height="1" /&gt;</info>
+<p>example: <br/>
+&lt;db:navPrevButton src="images/ico_prev.gif" flavor="image" disabledBehaviour="altimage" disabledImageSrc="images/transparent.gif" disabledImageAlt="my alt text" disabledImageWidth="50" disabledImageHeight="1" onMouseOver="javascript: self.status='previous'; return true;" onMouseOut="javascript: self.status=''; return true;"/&gt;
+<br/>
+If on first page, HTML result is:<br/>
+&lt;img src="images/transparent.gif" alt="my alt text" width="50" height="1" /&gt;</p></info>
 				</attribute>
 				<attribute>
 					<name>disabledImageSrc</name>
@@ -4506,7 +4519,7 @@ is released.</info>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
 					<info>Describes the behaviour of this button if it is on the last page.
-possible values: "nohtml", "altimage", "disabled"
+possible values:
 <ul>
 	<li>nohtml: no HTML output</li>
 	<li>altimage: only an image with no functionality is displayed. The src for that image
@@ -4516,11 +4529,11 @@ and disabledImageHeight.</li>
 	<li>disabled (default): The image specified in scr is used but disabled.</li>
 </ul>
 
-example: 
-&lt;db:navNextButton src="images/ico_back.gif" flavor="image" disabledBehaviour="altimage" disabledImageSrc="images/transparent.gif" disabledImageAlt="my alt text" disabledImageWidth="50" disabledImageHeight="1" onMouseOver="javascript: self.status='go back'; return true;" onMouseOut="javascript: self.status=''; return true;"/&gt;
-
-If on last page, HTML result is:
-&lt;img src="images/transparent.gif" alt="" width="50" height="1" /&gt;</info>
+<p>example: <br/>
+&lt;db:navNextButton src="images/ico_next.gif" flavor="image" disabledBehaviour="altimage" disabledImageSrc="images/transparent.gif" disabledImageAlt="my alt text" disabledImageWidth="50" disabledImageHeight="1" onMouseOver="javascript: self.status='next'; return true;" onMouseOut="javascript: self.status=''; return true;"/&gt;
+<br/>
+If on last page, HTML result is:<br/>
+&lt;img src="images/transparent.gif" alt="my alt text" width="50" height="1" /&gt;</p></info>
 				</attribute>
 				<attribute>
 					<name>disabledImageSrc</name>
@@ -4760,8 +4773,8 @@ is released.</info>
 					<name>disabledBehaviour</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
-					<info>Describes the behaviour of this button if it is on the last page.
-possible values: "nohtml", "altimage", "disabled"
+					<info>Describes the behaviour of this button if it is on the first page.
+possible values: 
 <ul>
 	<li>nohtml: no HTML output</li>
 	<li>altimage: only an image with no functionality is displayed. The src for that image
@@ -4771,11 +4784,11 @@ and disabledImageHeight.</li>
 	<li>disabled (default): The image specified in scr is used but disabled.</li>
 </ul>
 
-example: 
-&lt;db:navFirstButton src="images/ico_back.gif" flavor="image" disabledBehaviour="altimage" disabledImageSrc="images/transparent.gif" disabledImageAlt="my alt text" disabledImageWidth="50" disabledImageHeight="1" onMouseOver="javascript: self.status='go back'; return true;" onMouseOut="javascript: self.status=''; return true;"/&gt;
-
-If on first page, HTML result is:
-&lt;img src="images/transparent.gif" alt="" width="50" height="1" /&gt;</info>
+<p>example: <br/>
+&lt;db:navFirstButton src="images/ico_first.gif" flavor="image" disabledBehaviour="altimage" disabledImageSrc="images/transparent.gif" disabledImageAlt="my alt text" disabledImageWidth="50" disabledImageHeight="1" onMouseOver="javascript: self.status='first'; return true;" onMouseOut="javascript: self.status=''; return true;"/&gt;
+<br/>
+If on first page, HTML result is:<br/>
+&lt;img src="images/transparent.gif" alt="my alt text" width="50" height="1" /&gt;</p></info>
 				</attribute>
 				<attribute>
 					<name>disabledImageSrc</name>
@@ -5016,7 +5029,7 @@ is released.</info>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
 					<info>Describes the behaviour of this button if it is on the last page.
-possible values: "nohtml", "altimage", "disabled"
+possible values: 
 <ul>
 	<li>nohtml: no HTML output</li>
 	<li>altimage: only an image with no functionality is displayed. The src for that image
@@ -5026,11 +5039,11 @@ and disabledImageHeight.</li>
 	<li>disabled (default): The image specified in scr is used but disabled.</li>
 </ul>
 
-example: 
-&lt;db:navLastButton src="images/ico_back.gif" flavor="image" disabledBehaviour="altimage" disabledImageSrc="images/transparent.gif" disabledImageAlt="my alt text" disabledImageWidth="50" disabledImageHeight="1" onMouseOver="javascript: self.status='go back'; return true;" onMouseOut="javascript: self.status=''; return true;"/&gt;
-
-If on last page, HTML result is:
-&lt;img src="images/transparent.gif" alt="" width="50" height="1" /&gt;</info>
+<p>example: <br/>
+&lt;db:navLastButton src="images/ico_last.gif" flavor="image" disabledBehaviour="altimage" disabledImageSrc="images/transparent.gif" disabledImageAlt="my alt text" disabledImageWidth="50" disabledImageHeight="1" onMouseOver="javascript: self.status='last'; return true;" onMouseOut="javascript: self.status=''; return true;"/&gt;
+<br/>
+If on last page, HTML result is:<br/>
+&lt;img src="images/transparent.gif" alt="my alt text" width="50" height="1" /&gt;</p></info>
 				</attribute>
 				<attribute>
 					<name>disabledImageSrc</name>
