@@ -37,8 +37,6 @@ import org.dbforms.event.datalist.dao.DataSourceFactory;
 import org.dbforms.util.MessageResourcesInternal;
 import org.dbforms.util.ParseUtil;
 
-
-
 /**
  * This event prepares and performs a SQL-Insert operation.
  * <br>
@@ -46,8 +44,7 @@ import org.dbforms.util.ParseUtil;
  *
  * @author Henner Kollmann <Henner.Kollmann@gmx.de>
  */
-public class InsertEvent extends ValidationEvent
-{
+public class InsertEvent extends ValidationEvent {
    /**
     *  Constructor.
     *  <br>
@@ -63,11 +60,8 @@ public class InsertEvent extends ValidationEvent
     * @param  request the request object
     * @param  config  the config object
     */
-   public InsertEvent(String action, HttpServletRequest request, 
-                      DbFormsConfig config)
-   {
-      super(ParseUtil.getEmbeddedStringAsInteger(action, 2, '_'), 
-            ParseUtil.getEmbeddedString(action, 3, '_'), request, config);
+   public InsertEvent(String action, HttpServletRequest request, DbFormsConfig config) {
+      super(ParseUtil.getEmbeddedStringAsInteger(action, 2, '_'), ParseUtil.getEmbeddedString(action, 3, '_'), request, config);
    }
 
    /**
@@ -77,11 +71,9 @@ public class InsertEvent extends ValidationEvent
     * @return the FieldValues object representing the collection
     *         of FieldValue objects builded from the request parameters
     */
-   public FieldValues getFieldValues()
-   {
+   public FieldValues getFieldValues() {
       return getFieldValues(true);
    }
-
 
    /**
     *  Process this event.
@@ -90,26 +82,21 @@ public class InsertEvent extends ValidationEvent
     * @throws SQLException if any data access error occurs
     * @throws MultipleValidationException if any validation error occurs
     */
-   public void processEvent(Connection con) throws SQLException
-   {
+   public void processEvent(Connection con) throws SQLException {
       // Applying given security contraints (as defined in dbforms-config xml file)
       // part 1: check if requested privilge is granted for role
-      if (!hasUserPrivileg(GrantedPrivileges.PRIVILEG_INSERT))
-      {
-         String s = MessageResourcesInternal.getMessage(
-                             "dbforms.events.insert.nogrant", 
-                             request.getLocale(), 
-                             new String[] 
-         {
-            getTable().getName()
-         });
+      if (!hasUserPrivileg(GrantedPrivileges.PRIVILEG_INSERT)) {
+         String s =
+            MessageResourcesInternal.getMessage(
+               "dbforms.events.insert.nogrant",
+               request.getLocale(),
+               new String[] { getTable().getName()});
          throw new SQLException(s);
       }
 
       FieldValues fieldValues = getFieldValues();
 
-      if (fieldValues.size() == 0)
-      {
+      if (fieldValues.size() == 0) {
          throw new SQLException("no parameters");
       }
 
@@ -117,54 +104,36 @@ public class InsertEvent extends ValidationEvent
       // "interceptor" element embedded in table element in dbforms-config xml file)
       int operation = DbEventInterceptor.GRANT_OPERATION;
 
-
       // process the interceptors associated to this table
-      operation = getTable()
-                     .processInterceptors(DbEventInterceptor.PRE_INSERT, 
-                                          request, fieldValues, getConfig(), 
-                                          con);
+      operation = getTable().processInterceptors(DbEventInterceptor.PRE_INSERT, request, fieldValues, getConfig(), con);
 
-      if ((operation != DbEventInterceptor.IGNORE_OPERATION)
-                && (fieldValues.size() > 0))
-      {
+      if ((operation != DbEventInterceptor.IGNORE_OPERATION) && (fieldValues.size() > 0)) {
          // End of interceptor processing
-         if (!checkSufficentValues(fieldValues))
-         {
+         if (!checkSufficentValues(fieldValues)) {
             throw new SQLException("unsufficent parameters");
          }
 
          // INSERT operation;
-         boolean           mustClose = false;
-         DataSourceList    ds  = DataSourceList.getInstance(request);
+         DataSourceList ds = DataSourceList.getInstance(request);
          DataSourceFactory qry = ds.get(getTable(), request);
 
-         if (qry == null)
-         {
-            qry       = new DataSourceFactory(getTable());
-            mustClose = true;
+         if (qry == null) {
+            qry = new DataSourceFactory(getTable());
          }
 
          qry.doInsert(con, fieldValues);
-
-         if (mustClose)
-         {
-            qry.close();
-         }
+         ds.remove(getTable(), request);
 
          // Show the last record inserted
          String firstPosition = getTable().getPositionString(fieldValues);
          request.setAttribute("firstpos_" + getTable().getId(), firstPosition);
       }
 
-
       //end patch
       // finally, we process interceptor again (post-insert)
       // process the interceptors associated to this table
-      getTable()
-         .processInterceptors(DbEventInterceptor.POST_INSERT, request, null, 
-                              getConfig(), con);
+      getTable().processInterceptors(DbEventInterceptor.POST_INSERT, request, null, getConfig(), con);
    }
-
 
    /**
     *  Check a list of conditions on the the input FieldValues object:
@@ -180,33 +149,24 @@ public class InsertEvent extends ValidationEvent
     * @return true  if the  all the above conditions are true, false otherwise
     * @throws SQLException  if any check condition fails
     */
-   private boolean checkSufficentValues(FieldValues fieldValues)
-                                 throws SQLException
-   {
+   private boolean checkSufficentValues(FieldValues fieldValues) throws SQLException {
       Vector fields = getTable().getFields();
 
-      for (int i = 0; i < fields.size(); i++)
-      {
+      for (int i = 0; i < fields.size(); i++) {
          Field field = (Field) fields.elementAt(i);
 
          // if a field is a key and if it is NOT automatically generated,
          // then it should be provided by the user
-         if (!field.hasAutoIncSet() && field.getKey())
-         {
-            if (fieldValues.get(field.getName()) == null)
-            {
-               throw new SQLException("Field " + field.getName()
-                                      + " is missing");
+         if (!field.hasAutoIncSet() && field.getKey()) {
+            if (fieldValues.get(field.getName()) == null) {
+               throw new SQLException("Field " + field.getName() + " is missing");
             }
          }
 
          // in opposite, if a field is automatically generated by the RDBMS, we need to
-         else if (field.hasAutoIncSet())
-         {
-            if (fieldValues.get(field.getName()) != null)
-            {
-               throw new SQLException("Field " + field.getName()
-                                      + " should be calculated by RDBMS, remove it from the form");
+         else if (field.hasAutoIncSet()) {
+            if (fieldValues.get(field.getName()) != null) {
+               throw new SQLException("Field " + field.getName() + " should be calculated by RDBMS, remove it from the form");
             }
          }
 

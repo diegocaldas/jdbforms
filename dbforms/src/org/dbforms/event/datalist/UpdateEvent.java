@@ -37,8 +37,6 @@ import org.dbforms.event.ValidationEvent;
 import org.dbforms.event.datalist.dao.DataSourceList;
 import org.dbforms.event.datalist.dao.DataSourceFactory;
 
-
-
 /**
  * This event prepares and performs a SQL-Update operation.
  * <br>
@@ -46,11 +44,9 @@ import org.dbforms.event.datalist.dao.DataSourceFactory;
  *
  * @author Henner Kollmann <Henner.Kollmann@gmx.de>
  */
-public class UpdateEvent extends ValidationEvent
-{
+public class UpdateEvent extends ValidationEvent {
    // logging category for this class
-   private static Category logCat = Category.getInstance(
-                                             UpdateEvent.class.getName());
+   private static Category logCat = Category.getInstance(UpdateEvent.class.getName());
 
    /**
     * Creates a new UpdateEvent object.
@@ -60,12 +56,9 @@ public class UpdateEvent extends ValidationEvent
     * @param request the request object
     * @param config  the configuration object
     */
-   public UpdateEvent(Integer tableId, String keyId, HttpServletRequest request, 
-                      DbFormsConfig config)
-   {
+   public UpdateEvent(Integer tableId, String keyId, HttpServletRequest request, DbFormsConfig config) {
       super(tableId.intValue(), keyId, request, config);
    }
-
 
    /**
     * Creates a new UpdateEvent object.
@@ -74,11 +67,8 @@ public class UpdateEvent extends ValidationEvent
     * @param request the request object
     * @param config  the configuration object
     */
-   public UpdateEvent(String action, HttpServletRequest request, 
-                      DbFormsConfig config)
-   {
-      super(ParseUtil.getEmbeddedStringAsInteger(action, 2, '_'), 
-            ParseUtil.getEmbeddedString(action, 3, '_'), request, config);
+   public UpdateEvent(String action, HttpServletRequest request, DbFormsConfig config) {
+      super(ParseUtil.getEmbeddedStringAsInteger(action, 2, '_'), ParseUtil.getEmbeddedString(action, 3, '_'), request, config);
    }
 
    /**
@@ -86,11 +76,9 @@ public class UpdateEvent extends ValidationEvent
     *
     * @return the FieldValues object
     */
-   public FieldValues getFieldValues()
-   {
+   public FieldValues getFieldValues() {
       return getFieldValues(false);
    }
-
 
    /**
     * Process this event.
@@ -100,29 +88,24 @@ public class UpdateEvent extends ValidationEvent
     * @throws SQLException                if any SQL error occurs
     * @throws MultipleValidationException if any validation error occurs
     */
-   public void processEvent(Connection con) throws SQLException
-   {
+   public void processEvent(Connection con) throws SQLException {
       // 2003-08-05-HKK: first check if update is necessary before check security
       // which values do we find in request
       FieldValues fieldValues = getFieldValues();
 
-      if (fieldValues.size() == 0)
-      {
+      if (fieldValues.size() == 0) {
          logCat.info("no parameters to update found");
 
          return;
       }
 
       // Apply given security contraints (as defined in dbforms-config.xml)
-      if (!hasUserPrivileg(GrantedPrivileges.PRIVILEG_UPDATE))
-      {
-         String s = MessageResourcesInternal.getMessage(
-                             "dbforms.events.update.nogrant", 
-                             request.getLocale(), 
-                             new String[] 
-         {
-            getTable().getName()
-         });
+      if (!hasUserPrivileg(GrantedPrivileges.PRIVILEG_UPDATE)) {
+         String s =
+            MessageResourcesInternal.getMessage(
+               "dbforms.events.update.nogrant",
+               request.getLocale(),
+               new String[] { getTable().getName()});
          throw new SQLException(s);
       }
 
@@ -130,52 +113,33 @@ public class UpdateEvent extends ValidationEvent
       // "interceptor" element embedded in table element in dbforms-config xml file)
       int operation = DbEventInterceptor.GRANT_OPERATION;
 
-
       // process the interceptors associated to this table
-      getTable()
-         .processInterceptors(DbEventInterceptor.PRE_UPDATE, request, 
-                              fieldValues, getConfig(), con);
+      getTable().processInterceptors(DbEventInterceptor.PRE_UPDATE, request, fieldValues, getConfig(), con);
 
-      if ((operation != DbEventInterceptor.IGNORE_OPERATION)
-                && (fieldValues.size() > 0))
-      {
+      if ((operation != DbEventInterceptor.IGNORE_OPERATION) && (fieldValues.size() > 0)) {
          // End of interceptor processing
          // in order to process an update, we need the key of the dataset to update
          String keyValuesStr = getKeyValues();
 
-         if (Util.isNull(keyValuesStr))
-         {
-            logCat.error(
-                     "::processEvent - at least one key is required per table, check your dbforms-config.xml");
+         if (Util.isNull(keyValuesStr)) {
+            logCat.error("::processEvent - at least one key is required per table, check your dbforms-config.xml");
 
             return;
          }
 
          // UPDATE operation;
-         boolean           mustClose = false;
-         DataSourceList    ds  = DataSourceList.getInstance(request);
+         DataSourceList ds = DataSourceList.getInstance(request);
          DataSourceFactory qry = ds.get(getTable(), request);
-
-         if (qry == null)
-         {
-            qry       = new DataSourceFactory(getTable());
-            mustClose = true;
+         if (qry == null) {
+            qry = new DataSourceFactory(getTable());
          }
-
          qry.doUpdate(con, fieldValues, keyValuesStr);
-
-         if (mustClose)
-         {
-            qry.close();
-         }
+         ds.remove(getTable(), request);
       }
-
 
       // finally, we process interceptor again (post-update)
       // process the interceptors associated to this table
-      getTable()
-         .processInterceptors(DbEventInterceptor.POST_UPDATE, request, null, 
-                              getConfig(), con);
+      getTable().processInterceptors(DbEventInterceptor.POST_UPDATE, request, null, getConfig(), con);
 
       // End of interceptor processing
    }

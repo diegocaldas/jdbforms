@@ -148,8 +148,8 @@ public class DataSourceList implements HttpSessionBindingListener {
     *         returned DataSource object has just been closed by this method.
     */
    public DataSourceFactory remove(Table table, HttpServletRequest request) {
-      DataSourceFactory result = (DataSourceFactory) ht.remove(getKey(table, request));
       synchronized (ht) {
+         DataSourceFactory result = (DataSourceFactory) ht.remove(getKey(table, request));
          if (result != null) {
             result.close();
          }
