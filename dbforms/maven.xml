@@ -5,6 +5,7 @@
 
 <echo message="Hack to use xalan transformer!"/>
 ${systemScope.setProperty('javax.xml.transform.TransformerFactory','org.apache.xalan.processor.TransformerFactoryImpl')}
+<property environment="env"/>
 
 
   <!--
@@ -43,9 +44,6 @@ ${systemScope.setProperty('javax.xml.transform.TransformerFactory','org.apache.x
      <attainGoal name="dbforms:dist"/>
   </goal>
 
-  <preGoal name="site:run-reports">
-     <attainGoal name="cactus"/>
-  </preGoal>
   
   <preGoal name="jalopy:format">
       <echo message="fixcrlf"/>
@@ -59,6 +57,16 @@ ${systemScope.setProperty('javax.xml.transform.TransformerFactory','org.apache.x
             output="target/generated-xdocs/changes-report.xml"
             inputFile="ChangeLog"/>
   </postGoal>
+
+  <preGoal name="xdoc:jelly-transform">
+     <attainGoal name="cactus:test"/>
+     <attainGoal name="cactus:report"/>
+     <copy file="${maven.build.dir}/generated-xdocs/cactus-report.xml" 
+     	   tofile="${maven.build.dir}/generated-xdocs/junit-report.xml" 
+     	   overwrite="true" 
+     />
+     <delete file="${maven.build.dir}/generated-xdocs/cactus-report.xml"  />
+  </preGoal>
 
   <!--
      -  Move the $DBFORMS_HOME/target/docs/* stuff into the 
