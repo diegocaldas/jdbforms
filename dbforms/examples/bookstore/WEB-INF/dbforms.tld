@@ -33,8 +33,13 @@
 <attribute>
 <name>tableName</name>
 <required>false</required>
-<rtexprvalue>false</rtexprvalue>
+<rtexprvalue>true</rtexprvalue>
 <description>the name of the table/view referenced by the dbformnot required if form is empty!</description>
+</attribute>
+<attribute>
+<name>name</name>
+<required>false</required>
+<rtexprvalue>false</rtexprvalue>
 </attribute>
 <attribute>
 <name>action</name>

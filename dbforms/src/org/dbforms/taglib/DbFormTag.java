@@ -24,6 +24,7 @@
 package org.dbforms.taglib;
 import java.util.Vector;
 import java.util.Hashtable;
+import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -237,6 +238,12 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
    private Locale locale = null;
 
    private FieldValues orderFields = null;
+
+   /** holds name attribute */
+   private String name = null;
+
+   /** holds id attribute */
+   private String id = null;
 
    /** 
     *
@@ -1082,8 +1089,13 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
          // if main form
          // we write out the form-tag which points to the controller-servlet
          if (parentForm == null) {
-            tagBuf.append("<form name=\"dbform\" action=\"");
-
+            tagBuf.append("<form ");
+            if (!Util.isNull(getId())) {
+               tagBuf.append("id=\"");
+               tagBuf.append(getId());
+               tagBuf.append("\" ");
+            }
+            tagBuf.append("name=\"dbform\" action=\"");
             //Check if developer has overriden action
             if ((this.getAction() != null) && (this.getAction().trim().length() > 0)) {
                tagBuf.append(this.getAction());
@@ -1544,6 +1556,18 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
             }
          }
 
+         if (!isSubForm) {
+            pageContext.setAttribute("dbforms", new Hashtable());
+         }
+
+         Map dbforms = (Map) pageContext.getAttribute("dbforms");
+         DbFormContext dbContext = new DbFormContext(table.getNamesHashtable("search"), table.getNamesHashtable("searchmode"), table.getNamesHashtable("searchalgo"), resultSetVector);
+         if (!ResultSetVector.isNull(resultSetVector)) {
+            dbContext.setCurrentRow(resultSetVector.getCurrentRowAsMap());
+            dbContext.setPosition(Util.decode(table.getPositionString(resultSetVector), pageContext.getRequest().getCharacterEncoding()));
+         }
+         dbforms.put(getName(), dbContext);
+
          // construct TEI variables for access from JSP
          // # jp 27-06-2001: replacing "." by "_", so that SCHEMATA can be used
          pageContext.setAttribute("searchFieldNames_" + tableName.replace('.', '_'), table.getNamesHashtable("search"));
@@ -1556,7 +1580,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
          // #fixme: explaination! -> initBody, spec, jsp container synchronizing variables, etc.
          if (!ResultSetVector.isNull(resultSetVector)) {
             pageContext.setAttribute("rsv_" + tableName.replace('.', '_'), resultSetVector);
-            pageContext.setAttribute("currentRow_" + tableName.replace('.', '_'), resultSetVector.getCurrentRowAsHashtable());
+            pageContext.setAttribute("currentRow_" + tableName.replace('.', '_'), resultSetVector.getCurrentRowAsMap());
             pageContext.setAttribute("position_" + tableName.replace('.', '_'), Util.decode(table.getPositionString(resultSetVector), pageContext.getRequest().getCharacterEncoding()));
          }
 
@@ -1619,7 +1643,8 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
       try {
          if (bodyContent != null) {
             bodyContent.writeOut(bodyContent.getEnclosingWriter());
-            bodyContent.clearBody(); // 2002116-HKK: workaround for duplicate rows in Tomcat 4.1
+            bodyContent.clearBody();
+            // 2002116-HKK: workaround for duplicate rows in Tomcat 4.1
          }
 
          logCat.debug("pageContext.getOut()=" + pageContext.getOut());
@@ -1733,6 +1758,11 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
       }
 
       String aPosition = parentForm.getTable().getPositionString(parentForm.getResultSetVector());
+      if (Util.isNull(aPosition)) {
+         childFieldValues = null;
+         // childFieldValues remains null
+         return;
+      }
       childFieldValues = getTable().mapChildFieldValues(parentForm.getTable(), parentField, childField, aPosition).toArray();
    }
 
@@ -2369,4 +2399,33 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
    public WebEvent getWebEvent() {
       return webEvent;
    }
+
+   /**
+    * @return
+    */
+   public String getName() {
+      return (name != null) ? name : tableName;
+   }
+
+   /**
+    * @param string
+    */
+   public void setName(String string) {
+      name = string;
+   }
+
+   /**
+    * @return
+    */
+   public String getId() {
+      return id;
+   }
+
+   /**
+    * @param string
+    */
+   public void setId(String string) {
+      id = string;
+   }
+
 }

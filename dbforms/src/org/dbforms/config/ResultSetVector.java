@@ -24,6 +24,7 @@
 package org.dbforms.config;
 import java.util.Vector;
 import java.util.Hashtable;
+import java.util.Map;
 import java.sql.Types;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -566,7 +567,7 @@ public class ResultSetVector
     * 
     * @throws IllegalArgumentException DOCUMENT ME!
     */
-   public Hashtable getCurrentRowAsHashtable()
+   public Map getCurrentRowAsMap()
    {
       if (selectFields == null)
       {
