@@ -109,7 +109,8 @@ public class TableData extends EmbeddedData {
 
 		logCat.info("about to execute:"+queryBuf.toString());
 		PreparedStatement ps = con.prepareStatement(queryBuf.toString());
-	  ResultSetVector rsv = new ResultSetVector(ps.executeQuery());
+	    ResultSetVector rsv = new ResultSetVector(ps.executeQuery());
+	    ps.close(); // #jp 27-06-2001
 
 		Vector result = new Vector();
 

@@ -3,7 +3,7 @@
 
 
 <properties>
-  <author>Joachim Peer</author>
+  <author>Joachim Peer et al.</author>
   <title>DbForms Custom Tag Library</title>
 </properties>
 
@@ -23,8 +23,8 @@ version 0.9
 <tag>
   <name>dbform</name>
   <summary>a database application form (root element of a JSP view)</summary>
-  <tagclass>com.itp.dbforms.taglib.DbFormTag</tagclass>
-  <teiclass>com.itp.dbforms.taglib.DbFormTagTEI</teiclass>
+  <tagclass>org.dbforms.taglib.DbFormTag</tagclass>
+  <teiclass>org.dbforms.taglib.DbFormTagTEI</teiclass>
   <bodycontent>JSP</bodycontent>
   <info>this is the root element of a data manipulation form</info>
 
@@ -161,12 +161,14 @@ version 0.9
      <required>false</required>
      <rtexprvalue>true</rtexprvalue>
      <info>
-       <p>definition of a FILTER. Format: Fieldname/Fielvalue pairs, seperated by , or ; or ~ symbol.</p>
+       <p>definition of a FILTER. Format: Fieldname/Fielvalue pairs, seperated by , or ; symbol.</p>
        <p>examples:</p>
        <ul>
-       <li>"id=2"</li>
-       <li>"id=2;name=Hugo Berger"</li>
+       <li>filter="id=2"</li>
+       <li>filter="id=2;name=Hugo Berger"</li>
+       <li>filter="deptno=101,salery>=30000,name~Peter"</li>
        <p>since version 0.9, you can use &lt;, &gt; &lt;= and &gt;= operators, too!</p>
+       <p>the ~ symbol is an aquivalant to the SQL keyword "LIKE" used in SELECT statements!</p>
        </ul>
      </info>
   </attribute>
@@ -274,7 +276,7 @@ version 0.9
   <summary>
   	this tag renders a Header-tag. It should be nested within a dbform-tag
   </summary>
-  <tagclass>com.itp.dbforms.taglib.DbHeaderTag</tagclass>
+  <tagclass>org.dbforms.taglib.DbHeaderTag</tagclass>
   <bodycontent>JSP</bodycontent>
   <info>
 	<p>this tag renders a Header-tag. Itshould to be nested within a dbform-tag.
@@ -288,7 +290,7 @@ version 0.9
   <summary>
 	this tag renders a Body-tag. It should to be nested within a dbform-tag.
   </summary>
-  <tagclass>com.itp.dbforms.taglib.DbBodyTag</tagclass>
+  <tagclass>org.dbforms.taglib.DbBodyTag</tagclass>
   <bodycontent>JSP</bodycontent>
   <info>
   	<p>the body grouping tag</p>
@@ -312,7 +314,7 @@ version 0.9
   <summary>
   	the footer grouping tag. it is supposed to be nested within a dbform-tag
   </summary>
-  <tagclass>com.itp.dbforms.taglib.DbFooterTag</tagclass>
+  <tagclass>org.dbforms.taglib.DbFooterTag</tagclass>
   <bodycontent>JSP</bodycontent>
   <info>
 	<p>this tag renders a Footer-tag. it should be nested within a dbform-tag.
@@ -329,7 +331,7 @@ version 0.9
   	the user) - it is predestinated for use with read-only data (i.e. primary keys you don't want
 	the user to change, etc)
   </summary>
-  <tagclass>com.itp.dbforms.taglib.DbLabelTag</tagclass>
+  <tagclass>org.dbforms.taglib.DbLabelTag</tagclass>
   <bodycontent>empty</bodycontent>
   <info>label - can never be used as input field</info>
 
@@ -344,7 +346,7 @@ version 0.9
 
 <tag>
 	<name>dateLabel</name>
-	<tagclass>com.itp.dbforms.taglib.DbDateLabelTag</tagclass>
+	<tagclass>org.dbforms.taglib.DbDateLabelTag</tagclass>
 	<bodycontent>empty</bodycontent>
 	<attribute>
 	    <name>fieldName</name>
@@ -365,7 +367,7 @@ version 0.9
   	label - a tag for data PRESENTATION, NOT data EDITING (=&gt; can never be used as input field)
   </p>
   </summary>
-  <tagclass>com.itp.dbforms.taglib.DbDataContainerLabelTag</tagclass>
+  <tagclass>org.dbforms.taglib.DbDataContainerLabelTag</tagclass>
   <bodycontent>JSP</bodycontent>
   <info>
 	<p>
@@ -397,7 +399,7 @@ version 0.9
 	this tag renders a dabase-datadriven TEXTFIELD, which is an active element - the user
 	can change data
   </summary>
-  <tagclass>com.itp.dbforms.taglib.DbTextFieldTag</tagclass>
+  <tagclass>org.dbforms.taglib.DbTextFieldTag</tagclass>
   <bodycontent>empty</bodycontent>
   <info>i/o text field</info>
 
@@ -637,7 +639,7 @@ version 0.9
 	can change data. it is very similar to TextField, but this class provides
 	an extension to TextField: the additional attribute "dateFormat".
   </summary>
-  <tagclass>com.itp.dbforms.taglib.DbDateFieldTag</tagclass>
+  <tagclass>org.dbforms.taglib.DbDateFieldTag</tagclass>
   <bodycontent>empty</bodycontent>
   <info>i/o text field</info>
 
@@ -647,6 +649,7 @@ version 0.9
     <rtexprvalue>false</rtexprvalue>
     <info><p>name of the field this tag references to</p></info>
   </attribute>
+
 
   <attribute>
     <name>format</name>
@@ -688,6 +691,26 @@ version 0.9
       
     </info>
   </attribute>
+  
+  
+  <attribute>
+      <name>hidden</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <info><p>Determines if the text field should be hidden or displayed.</p></info>
+  </attribute>
+  
+  
+  <attribute>
+      <name>overrideValue</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <info><p>
+	Defines the text field's default value. When this attribute is set, 
+	the value retrieved from the database is ignored.            
+      </p></info>
+  </attribute>
+  
 
     <attribute>
       <name>accessKey</name>
@@ -885,7 +908,7 @@ version 0.9
 <tag>
   <name>textArea</name>
   <summary>renders a HTML TEXTAREA element</summary>
-  <tagclass>com.itp.dbforms.taglib.DbTextAreaTag</tagclass>
+  <tagclass>org.dbforms.taglib.DbTextAreaTag</tagclass>
   <bodycontent>empty</bodycontent>
   <info>i/o textarea</info>
 
@@ -1115,7 +1138,7 @@ version 0.9
 	external data to be nested into radio, checkbox or select - tag!
 	(useful only in conjunction with radio, checkbox or select - tag)
   </summary>
-  <tagclass>com.itp.dbforms.taglib.TableData</tagclass>
+  <tagclass>org.dbforms.taglib.TableData</tagclass>
   <bodycontent>empty</bodycontent>
   <info>
 
@@ -1158,7 +1181,7 @@ version 0.9
 	external data to be nested into radio, checkbox or select - tag!
 	(useful only in conjunction with radio, checkbox or select - tag)
   </summary>
-  <tagclass>com.itp.dbforms.taglib.QueryData</tagclass>
+  <tagclass>org.dbforms.taglib.QueryData</tagclass>
   <bodycontent>empty</bodycontent>
   <info>
 
@@ -1202,7 +1225,7 @@ version 0.9
 	external data to be nested into radio, checkbox or select - tag!
 	(useful only in conjunction with radio, checkbox or select - tag)
   </summary>
-  <tagclass>com.itp.dbforms.taglib.StaticData</tagclass>
+  <tagclass>org.dbforms.taglib.StaticData</tagclass>
   <bodycontent>JSP</bodycontent>
   <info>
 
@@ -1233,7 +1256,7 @@ version 0.9
   <summary>
 	data to be nested into staticData element! (see description of staticData for further details)
   </summary>
-  <tagclass>com.itp.dbforms.taglib.StaticDataItem</tagclass>
+  <tagclass>org.dbforms.taglib.StaticDataItem</tagclass>
   <bodycontent>empty</bodycontent>
 
   <attribute>
@@ -1261,7 +1284,7 @@ version 0.9
 	this tag renders an UPLOAD-button for uploading files into BLOBs or DISKBLOBs
 
   </summary>
-  <tagclass>com.itp.dbforms.taglib.DbFileTag</tagclass>
+  <tagclass>org.dbforms.taglib.DbFileTag</tagclass>
   <bodycontent>empty</bodycontent>
   <info>
   <p>
@@ -1497,7 +1520,7 @@ in functionality and performance can be expected.
 <tag>
   <name>radio</name>
   <summary>renders a HTML RADIO element or a whole group of them</summary>
-  <tagclass>com.itp.dbforms.taglib.DbRadioTag</tagclass>
+  <tagclass>org.dbforms.taglib.DbRadioTag</tagclass>
   <bodycontent>JSP</bodycontent>
   <info>
   <p>radio tag, may be a radio group as well and it may contain nested DbData-Tags
@@ -1700,7 +1723,7 @@ in functionality and performance can be expected.
 <tag>
   <name>checkbox</name>
   <summary>renders a HTML CHECKBOX element or a whole group of them</summary>
-  <tagclass>com.itp.dbforms.taglib.DbCheckboxTag</tagclass>	
+  <tagclass>org.dbforms.taglib.DbCheckboxTag</tagclass>	
   <bodycontent>JSP</bodycontent>
   <info>
   <p>radio tag, may be a radio group as well and it may contain nested DbData-Tags
@@ -1899,7 +1922,7 @@ in functionality and performance can be expected.
 
   <name>select</name>
   <summary>This tag renders a html SELECT element including embedded OPTION elements.</summary>
-  <tagclass>com.itp.dbforms.taglib.DbSelectTag</tagclass>
+  <tagclass>org.dbforms.taglib.DbSelectTag</tagclass>
   <bodycontent>JSP</bodycontent>
   <info>
   <p>select tag, may contain nested "DbData"-Tags (OR "dboption" tags, which are not implemented yet)<br/>
@@ -2097,7 +2120,7 @@ in functionality and performance can be expected.
 <tag>
   <name>linkURL</name>
   <summary>generates a link to a DbForms View</summary>
-  <tagclass>com.itp.dbforms.taglib.DbLinkURLTag</tagclass>
+  <tagclass>org.dbforms.taglib.DbLinkURLTag</tagclass>
   <bodycontent>JSP</bodycontent>
   <info>
   generates a link to a DbForms View. Setting the position
@@ -2151,7 +2174,7 @@ in functionality and performance can be expected.
 <tag>
   <name>position</name>
   <summary>element to be embedded inside a linkURL-element</summary>
-  <tagclass>com.itp.dbforms.taglib.DbLinkPositionItemTag</tagclass>
+  <tagclass>org.dbforms.taglib.DbLinkPositionItemTag</tagclass>
   <bodycontent>empty</bodycontent>
   <info>
 
@@ -2191,7 +2214,7 @@ in functionality and performance can be expected.
 <tag>
   <name>insertButton</name>
   <summary>this tag renders an INSERT-button</summary>
-  <tagclass>com.itp.dbforms.taglib.DbInsertButtonTag</tagclass>
+  <tagclass>org.dbforms.taglib.DbInsertButtonTag</tagclass>
   <bodycontent>JSP</bodycontent>
   <info>
   	<p>this tag renders an insert-button</p>
@@ -2423,7 +2446,7 @@ in functionality and performance can be expected.
 <tag>
   <name>deleteButton</name>
   <summary>this tag renders a DELETE-button</summary>
-  <tagclass>com.itp.dbforms.taglib.DbDeleteButtonTag</tagclass>
+  <tagclass>org.dbforms.taglib.DbDeleteButtonTag</tagclass>
   <bodycontent>JSP</bodycontent>
   <info>
   <p>delete button</p>
@@ -2667,7 +2690,7 @@ in functionality and performance can be expected.
 <tag>
   <name>updateButton</name>
   <summary>this tag renders an UPDATE-button</summary>
-  <tagclass>com.itp.dbforms.taglib.DbUpdateButtonTag</tagclass>
+  <tagclass>org.dbforms.taglib.DbUpdateButtonTag</tagclass>
   <bodycontent>JSP</bodycontent>
   <info>
   <p>update button</p>
@@ -2910,7 +2933,7 @@ in functionality and performance can be expected.
 <tag>
   <name>navPrevButton</name>
   <summary>this tag renders a navigation button for scrolling to previous row(s) of the current table</summary>
-  <tagclass>com.itp.dbforms.taglib.DbNavPrevButtonTag</tagclass>
+  <tagclass>org.dbforms.taglib.DbNavPrevButtonTag</tagclass>
   <bodycontent>JSP</bodycontent>
   <info>navigation button to scroll back</info>
 
@@ -3144,7 +3167,7 @@ in functionality and performance can be expected.
 <tag>
   <name>navNextButton</name>
   <summary>this tag renders a navigation button for scrolling to next row(s) of the current table</summary>
-  <tagclass>com.itp.dbforms.taglib.DbNavNextButtonTag</tagclass>
+  <tagclass>org.dbforms.taglib.DbNavNextButtonTag</tagclass>
   <bodycontent>empty</bodycontent>
   <info>navigation button to scroll to next dataset(s)</info>
 
@@ -3379,7 +3402,7 @@ in functionality and performance can be expected.
 <tag>
   <name>navFirstButton</name>
   <summary>this tag renders a navigation button for scrolling to the first row(s) of the current table</summary>
-  <tagclass>com.itp.dbforms.taglib.DbNavFirstButtonTag</tagclass>
+  <tagclass>org.dbforms.taglib.DbNavFirstButtonTag</tagclass>
   <bodycontent>JSP</bodycontent>
   <info>navigation button to scroll to first dataset</info>
 
@@ -3608,7 +3631,7 @@ in functionality and performance can be expected.
 <tag>
   <name>navLastButton</name>
   <summary>this tag renders a navigation button for scrolling to the last row(s) of the current table</summary>
-  <tagclass>com.itp.dbforms.taglib.DbNavLastButtonTag</tagclass>
+  <tagclass>org.dbforms.taglib.DbNavLastButtonTag</tagclass>
   <bodycontent>JSP</bodycontent>
   <info>navigation button to scroll to last dataset</info>
 
@@ -3836,7 +3859,7 @@ in functionality and performance can be expected.
 <tag>
   <name>navNewButton</name>
   <summary>this tag renders a navigation button for creating a new row of data</summary>
-  <tagclass>com.itp.dbforms.taglib.DbNavNewButtonTag</tagclass>
+  <tagclass>org.dbforms.taglib.DbNavNewButtonTag</tagclass>
   <bodycontent>JSP</bodycontent>
   <info>
   <p>navigation button to scroll to new, empty dataset</p>
@@ -4067,7 +4090,7 @@ in functionality and performance can be expected.
 <tag>
   <name>gotoButton</name>
   <summary>button for jumping to other jsp</summary>
-  <tagclass>com.itp.dbforms.taglib.DbGotoButtonTag</tagclass>
+  <tagclass>org.dbforms.taglib.DbGotoButtonTag</tagclass>
   <bodycontent>JSP</bodycontent>
   <info>button for jumping to other jsp</info>
 
@@ -4329,7 +4352,7 @@ in functionality and performance can be expected.
 <tag>
   <name>base</name>
   <summary>renders a HTML-BASE tag</summary>
-  <tagclass>com.itp.dbforms.taglib.BaseTag</tagclass>
+  <tagclass>org.dbforms.taglib.BaseTag</tagclass>
   <bodycontent>empty</bodycontent>
   <info>
   <p>Renders a HTML "base" element with a "href"-
@@ -4352,7 +4375,7 @@ in functionality and performance can be expected.
    Custom tag that renders error messages if an appropriate request attribute
    has been created.
   </summary>
-  <tagclass>com.itp.dbforms.taglib.ErrorsTag</tagclass>
+  <tagclass>org.dbforms.taglib.ErrorsTag</tagclass>
   <bodycontent>empty</bodycontent>
   <info>renders errors stored in request</info>
 
@@ -4394,7 +4417,7 @@ in functionality and performance can be expected.
   <name>associatedRadio</name>
   <summary><p>This tag enables the end-user to define a row by selecting the radio-button
   rendered by this tag</p></summary>
-  <tagclass>com.itp.dbforms.taglib.DbAssociatedRadioTag</tagclass>
+  <tagclass>org.dbforms.taglib.DbAssociatedRadioTag</tagclass>
   <bodycontent>empty</bodycontent>
   <info>
   <p>example: imagine a table "customer". The rows of this table should be listed. The user should
@@ -4437,7 +4460,7 @@ in functionality and performance can be expected.
 <tag>
   <name>blobURL</name>
   <summary><p>This tag generates an URL pointing to a servlet downloading the DISKBLOB referenced by fieldname</p></summary>
-  <tagclass>com.itp.dbforms.taglib.DbBlobURLTag</tagclass>
+  <tagclass>org.dbforms.taglib.DbBlobURLTag</tagclass>
   <bodycontent>empty</bodycontent>
   <info>
   <p>use cases:</p>
@@ -4461,7 +4484,7 @@ in functionality and performance can be expected.
   	<p>this tag rendes a select box for switching the order-state of a field (ascending, descending, none)</p>
   	<p>(this tag is full functional but still subject of change)</p>
   </summary>
-  <tagclass>com.itp.dbforms.taglib.DbSortTag</tagclass>
+  <tagclass>org.dbforms.taglib.DbSortTag</tagclass>
   <bodycontent>empty</bodycontent>
 
   <attribute>
@@ -4478,7 +4501,7 @@ in functionality and performance can be expected.
   <summary>
   generic style tag
   </summary>
-  <tagclass>com.itp.dbforms.taglib.StyleTag</tagclass>
+  <tagclass>org.dbforms.taglib.StyleTag</tagclass>
   <bodycontent>JSP</bodycontent>
 
   <attribute>
@@ -4508,7 +4531,7 @@ in functionality and performance can be expected.
   <summary>
   param name
   </summary>
-  <tagclass>com.itp.dbforms.taglib.TemplateParamTag</tagclass>
+  <tagclass>org.dbforms.taglib.TemplateParamTag</tagclass>
   <bodycontent>empty</bodycontent>
 
   <attribute>
@@ -4554,7 +4577,7 @@ in functionality and performance can be expected.
   <summary>
   writes out base dir of the current template
   </summary>
-  <tagclass>com.itp.dbforms.taglib.TemplateBasedirTag</tagclass>
+  <tagclass>org.dbforms.taglib.TemplateBasedirTag</tagclass>
   <bodycontent>empty</bodycontent>
   <info>
   <p><b>only used in template (_begin.jsp / _end.jsp) - definition files!</b></p>

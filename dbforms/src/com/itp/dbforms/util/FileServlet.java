@@ -178,6 +178,8 @@ public class FileServlet extends HttpServlet {
 						logCat.info("fs- we have got no result"+queryBuf);
 					}
 
+					rs.close(); // #jp 27-06-2001
+					ps.close(); // #jp 27-06-2001
 
       	}	catch(SQLException sqle) {
 					sqle.printStackTrace();

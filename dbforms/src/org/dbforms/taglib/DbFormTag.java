@@ -358,6 +358,7 @@ public class DbFormTag extends BodyTagSupport {
 			//  Part I - checking user access right, processing interceptor
 			// *************************************************************
 			HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
+			HttpServletResponse response = (HttpServletResponse) pageContext.getResponse();
 
 			logCat.info("servlet path = "+request.getServletPath());
 			logCat.info("servlet getPathInfo = "+request.getPathInfo());
@@ -421,8 +422,7 @@ public class DbFormTag extends BodyTagSupport {
 	  	  if(parentForm == null) {
 
 	  	    tagBuf.append("<form name=\"dbform\" action=\"");
-	  	    tagBuf.append(request.getContextPath());
-	  	    tagBuf.append("/servlet/control");
+	  	    tagBuf.append(response.encodeURL(request.getContextPath() + "/servlet/control"));
 	  	    tagBuf.append("\"");
 
 	  	    if(target!=null) {
@@ -1017,6 +1017,8 @@ public void initFilterFieldValues() {
 		int jump = 1;
 		String aKeyValPair = (String) keyValPairs.elementAt(i); // i.e "id=2"
 
+        logCat.debug("initFilterFieldValues: aKeyValPair = "+aKeyValPair);
+
 		// Following code could be optimized, however I did not want to make too many changes...
 		int n;
 
@@ -1065,15 +1067,17 @@ public void initFilterFieldValues() {
 		//	(value = -1)...
 
 		String fieldName = aKeyValPair.substring(0, n); // i.e "id"
-		System.out.println("Filter field=" + fieldName);
+		logCat.debug("Filter field=" + fieldName);
 		Field filterField = this.table.getFieldByName(fieldName);
 
 		// Increment by 1 or 2 depending on operator
 		String value = aKeyValPair.substring(n + jump); // i.e. "2"
-		System.out.println("Filter value=" + value);
+		logCat.debug("Filter value=" + value);
 
 		// Create a new instance of FieldValue and set the operator variable
 		filterFieldValues[i] = new FieldValue(filterField, value, false, operator);
+
+		logCat.debug("and fv is ="+filterFieldValues[i].toString());
 	}
 }
 

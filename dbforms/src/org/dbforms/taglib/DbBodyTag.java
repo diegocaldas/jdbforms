@@ -129,13 +129,15 @@ public class DbBodyTag extends BodyTagSupport {
   public int doEndTag() throws JspException {
 
     try {
-	  	if(bodyContent != null)
+	  	if(bodyContent != null) {
 				bodyContent.writeOut(bodyContent.getEnclosingWriter());
-		}
-		catch(java.io.IOException e) {
-			throw new JspException("IO Error: " + e.getMessage());
-		}
-		return EVAL_PAGE;
+				bodyContent.clearBody(); // workaround for duplicate rows in JRun 3.1
+	    }
+	}
+	catch(java.io.IOException e) {
+		throw new JspException("IO Error: " + e.getMessage());
+	}
+	return EVAL_PAGE;
   }
 
 }

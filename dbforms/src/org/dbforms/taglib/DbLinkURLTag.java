@@ -26,6 +26,7 @@ package org.dbforms.taglib;
 import java.util.*;
 import java.io.*;
 
+import javax.servlet.http.*;
 import javax.servlet.jsp.*;
 import javax.servlet.jsp.tagext.*;
 
@@ -162,7 +163,8 @@ public class DbLinkURLTag extends BodyTagSupport {
 				tagBuf.append(position);
 			}
 
-			pageContext.getOut().write(tagBuf.toString());
+			HttpServletResponse response = (HttpServletResponse) pageContext.getResponse();
+			pageContext.getOut().write(response.encodeURL(tagBuf.toString()));
 
 		} 	catch(java.io.IOException ioe) {
 			throw new JspException("IO Error: "+ioe.getMessage());

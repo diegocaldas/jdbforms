@@ -152,6 +152,15 @@ public class FileServlet extends HttpServlet {
 										   writeToClient(response, fh.getFileName(), fh.getInputStreamFromBuffer());
 
 										}
+/*
+										else if(o instanceof java.sql.Clob) {
+
+										   Clob clob = rs.getClob(1);
+										   ObjectInputStream ois = new ObjectInputStream(clob.getAsciiStream());
+										   FileHolder fh = (FileHolder) ois.readObject();
+										   writeToClient(response, fh.getFileName(), fh.getInputStreamFromBuffer());
+
+										}*/
 
 										// otherwise we are aquiring the stream directly:
 										else {

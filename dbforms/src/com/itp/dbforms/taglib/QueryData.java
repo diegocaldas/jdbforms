@@ -87,27 +87,31 @@ public class QueryData extends EmbeddedData {
 
 	  logCat.info("about to execute user defined query:"+query);
 	  PreparedStatement ps = con.prepareStatement(query);
+	  try {
+	  		ResultSetVector rsv = new ResultSetVector(ps.executeQuery());
 
-	  ResultSetVector rsv = new ResultSetVector(ps.executeQuery());
+			Vector result = new Vector();
 
-		Vector result = new Vector();
+			// transforming the resultsetVector into a hashtable
+			for(int i=0; i<rsv.size(); i++) {
+				String[] currentRow = (String[]) rsv.elementAt(i);
 
-		// transforming the resultsetVector into a hashtable
-		for(int i=0; i<rsv.size(); i++) {
-			String[] currentRow = (String[]) rsv.elementAt(i);
+				String htKey = currentRow[0];
+				StringBuffer htValueBuf = new StringBuffer();
+				for(int j=1; j<currentRow.length; j++) {
+					htValueBuf.append(currentRow[j]);
+					if(j<currentRow.length-1) htValueBuf.append(", ");  //#checkme: this could be more generic
+			 	}
 
-			String htKey = currentRow[0];
-			StringBuffer htValueBuf = new StringBuffer();
-			for(int j=1; j<currentRow.length; j++) {
-				htValueBuf.append(currentRow[j]);
-				if(j<currentRow.length-1) htValueBuf.append(", ");  //#checkme: this could be more generic
-		  }
+			 	result.addElement(new KeyValuePair(htKey, htValueBuf.toString())); // add current row, now well formatted, to result
+			}
 
+			return result;
 
-		  result.addElement(new KeyValuePair(htKey, htValueBuf.toString())); // add current row, now well formatted, to result
-		}
+	  } finally {
+			ps.close();
+	  }
 
-		return result;
 	}
 
 }

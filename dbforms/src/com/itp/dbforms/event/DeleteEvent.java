@@ -141,12 +141,13 @@ public class DeleteEvent extends DatabaseEvent {
 			} else throw new SQLException("Sorry, deleting data from table "+table.getName()+" is not granted this time. Your request could have been violating a condition or there is a weird database error. Contact system administrator if problem persists.");
 
 			rowToDelete.close();
+			ps.close(); // #jp 27-06-2001
 
 			// part 2b: process the interceptors associated to this table
 			table.processInterceptors(DbEventInterceptor.PRE_DELETE, request, associativeArray, config, con);
 
 		  } catch(SQLException sqle) {
-				throw new SQLException("Exception in interceptor: " + sqle.getMessage());
+				throw new SQLException("Exception, eventually in interceptor: " + sqle.getMessage());
 		  }
 		}
 		// End of interceptor processing

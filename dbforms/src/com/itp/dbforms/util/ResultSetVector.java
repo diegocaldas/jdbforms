@@ -65,31 +65,37 @@ public class ResultSetVector extends Vector {
   public ResultSetVector(ResultSet rs) throws java.sql.SQLException {
     this();
 
-    ResultSetMetaData rsmd = rs.getMetaData();
-    int columns = rsmd.getColumnCount();
+	try {
 
-    while(rs.next()) {
+	    ResultSetMetaData rsmd = rs.getMetaData();
+	    int columns = rsmd.getColumnCount();
 
-    	Object[] objectRow = new Object[columns];
-    	String[] stringRow = new String[columns];
+	    while(rs.next()) {
 
-    	for(int i=0; i<columns; i++) {
-		  Object tmpObj = rs.getObject(i+1);
+	    	Object[] objectRow = new Object[columns];
+	    	String[] stringRow = new String[columns];
 
-		  logCat.debug("col="+(i+1)+", tmpObj="+tmpObj);
+	    	for(int i=0; i<columns; i++) {
+			  Object tmpObj = rs.getObject(i+1);
 
-    	  if(tmpObj!=null) {
-			 objectRow[i] = tmpObj;
-			 stringRow[i] = tmpObj.toString();
-    	  } else {
-			 objectRow[i] = null; // #checkme: really necessary?
-			 stringRow[i] = "";
-		 }
-    	}
+			  logCat.debug("col="+(i+1)+", tmpObj="+tmpObj);
 
-    	this.addElement(stringRow);
-    	objectVector.addElement(objectRow);
-    }
+	    	  if(tmpObj!=null) {
+				 objectRow[i] = tmpObj;
+				 stringRow[i] = tmpObj.toString();
+	    	  } else {
+				 objectRow[i] = null; // #checkme: really necessary?
+				 stringRow[i] = "";
+			 }
+	    	}
+
+	    	this.addElement(stringRow);
+	    	objectVector.addElement(objectRow);
+	    }
+
+  	} finally {
+		rs.close();  // #jp 27-06-2001
+	}
 
   }
 

@@ -14,8 +14,8 @@
     <uri>dbformstags</uri>
     <tag>
         <name>dbform</name>
-        <tagclass>com.itp.dbforms.taglib.DbFormTag</tagclass>
-        <teiclass>com.itp.dbforms.taglib.DbFormTagTEI</teiclass>
+        <tagclass>org.dbforms.taglib.DbFormTag</tagclass>
+        <teiclass>org.dbforms.taglib.DbFormTagTEI</teiclass>
         <bodycontent>JSP</bodycontent>
         <attribute>
             <name>tableName</name>
@@ -90,12 +90,12 @@
     </tag>
     <tag>
         <name>header</name>
-        <tagclass>com.itp.dbforms.taglib.DbHeaderTag</tagclass>
+        <tagclass>org.dbforms.taglib.DbHeaderTag</tagclass>
         <bodycontent>JSP</bodycontent>
     </tag>
     <tag>
         <name>body</name>
-        <tagclass>com.itp.dbforms.taglib.DbBodyTag</tagclass>
+        <tagclass>org.dbforms.taglib.DbBodyTag</tagclass>
         <bodycontent>JSP</bodycontent>
         <attribute>
             <name>allowNew</name>
@@ -105,12 +105,12 @@
     </tag>
     <tag>
         <name>footer</name>
-        <tagclass>com.itp.dbforms.taglib.DbFooterTag</tagclass>
+        <tagclass>org.dbforms.taglib.DbFooterTag</tagclass>
         <bodycontent>JSP</bodycontent>
     </tag>
     <tag>
         <name>label</name>
-        <tagclass>com.itp.dbforms.taglib.DbLabelTag</tagclass>
+        <tagclass>org.dbforms.taglib.DbLabelTag</tagclass>
         <bodycontent>empty</bodycontent>
         <attribute>
             <name>fieldName</name>
@@ -120,7 +120,7 @@
     </tag>
     <tag>
         <name>dateLabel</name>
-        <tagclass>com.itp.dbforms.taglib.DbDateLabelTag</tagclass>
+        <tagclass>org.dbforms.taglib.DbDateLabelTag</tagclass>
         <bodycontent>empty</bodycontent>
         <attribute>
             <name>fieldName</name>
@@ -135,7 +135,7 @@
     </tag>
     <tag>
         <name>dataLabel</name>
-        <tagclass>com.itp.dbforms.taglib.DbDataContainerLabelTag</tagclass>
+        <tagclass>org.dbforms.taglib.DbDataContainerLabelTag</tagclass>
         <bodycontent>JSP</bodycontent>
         <attribute>
             <name>fieldName</name>
@@ -145,7 +145,7 @@
     </tag>
     <tag>
         <name>textField</name>
-        <tagclass>com.itp.dbforms.taglib.DbTextFieldTag</tagclass>
+        <tagclass>org.dbforms.taglib.DbTextFieldTag</tagclass>
         <bodycontent>empty</bodycontent>
         <attribute>
             <name>fieldName</name>
@@ -270,7 +270,7 @@
     </tag>
     <tag>
         <name>dateField</name>
-        <tagclass>com.itp.dbforms.taglib.DbDateFieldTag</tagclass>
+        <tagclass>org.dbforms.taglib.DbDateFieldTag</tagclass>
         <bodycontent>empty</bodycontent>
         <attribute>
             <name>fieldName</name>
@@ -385,7 +385,7 @@
     </tag>
     <tag>
         <name>textArea</name>
-        <tagclass>com.itp.dbforms.taglib.DbTextAreaTag</tagclass>
+        <tagclass>org.dbforms.taglib.DbTextAreaTag</tagclass>
         <bodycontent>empty</bodycontent>
         <attribute>
             <name>fieldName</name>
@@ -505,7 +505,7 @@
     </tag>
     <tag>
         <name>tableData</name>
-        <tagclass>com.itp.dbforms.taglib.TableData</tagclass>
+        <tagclass>org.dbforms.taglib.TableData</tagclass>
         <bodycontent>empty</bodycontent>
         <attribute>
             <name>name</name>
@@ -530,7 +530,7 @@
     </tag>
     <tag>
         <name>queryData</name>
-        <tagclass>com.itp.dbforms.taglib.QueryData</tagclass>
+        <tagclass>org.dbforms.taglib.QueryData</tagclass>
         <bodycontent>empty</bodycontent>
         <attribute>
             <name>name</name>
@@ -545,7 +545,7 @@
     </tag>
     <tag>
         <name>staticData</name>
-        <tagclass>com.itp.dbforms.taglib.StaticData</tagclass>
+        <tagclass>org.dbforms.taglib.StaticData</tagclass>
         <bodycontent>JSP</bodycontent>
         <attribute>
             <name>name</name>
@@ -555,7 +555,7 @@
     </tag>
     <tag>
         <name>staticDataItem</name>
-        <tagclass>com.itp.dbforms.taglib.StaticDataItem</tagclass>
+        <tagclass>org.dbforms.taglib.StaticDataItem</tagclass>
         <bodycontent>empty</bodycontent>
         <attribute>
             <name>key</name>
@@ -570,7 +570,7 @@
     </tag>
     <tag>
         <name>file</name>
-        <tagclass>com.itp.dbforms.taglib.DbFileTag</tagclass>
+        <tagclass>org.dbforms.taglib.DbFileTag</tagclass>
         <bodycontent>empty</bodycontent>
         <attribute>
             <name>fieldName</name>
@@ -685,7 +685,7 @@
     </tag>
     <tag>
         <name>radio</name>
-        <tagclass>com.itp.dbforms.taglib.DbRadioTag</tagclass>
+        <tagclass>org.dbforms.taglib.DbRadioTag</tagclass>
         <bodycontent>JSP</bodycontent>
         <attribute>
             <name>fieldName</name>
@@ -790,7 +790,7 @@
     </tag>
     <tag>
         <name>checkbox</name>
-        <tagclass>com.itp.dbforms.taglib.DbCheckboxTag</tagclass>
+        <tagclass>org.dbforms.taglib.DbCheckboxTag</tagclass>
         <bodycontent>JSP</bodycontent>
         <attribute>
             <name>fieldName</name>
@@ -895,7 +895,7 @@
     </tag>
     <tag>
         <name>select</name>
-        <tagclass>com.itp.dbforms.taglib.DbSelectTag</tagclass>
+        <tagclass>org.dbforms.taglib.DbSelectTag</tagclass>
         <bodycontent>JSP</bodycontent>
         <attribute>
             <name>fieldName</name>
@@ -995,7 +995,7 @@
     </tag>
     <tag>
         <name>linkURL</name>
-        <tagclass>com.itp.dbforms.taglib.DbLinkURLTag</tagclass>
+        <tagclass>org.dbforms.taglib.DbLinkURLTag</tagclass>
         <bodycontent>JSP</bodycontent>
         <attribute>
             <name>href</name>
@@ -1015,7 +1015,7 @@
     </tag>
     <tag>
         <name>position</name>
-        <tagclass>com.itp.dbforms.taglib.DbLinkPositionItemTag</tagclass>
+        <tagclass>org.dbforms.taglib.DbLinkPositionItemTag</tagclass>
         <bodycontent>empty</bodycontent>
         <attribute>
             <name>fieldName</name>
@@ -1030,7 +1030,7 @@
     </tag>
     <tag>
         <name>insertButton</name>
-        <tagclass>com.itp.dbforms.taglib.DbInsertButtonTag</tagclass>
+        <tagclass>org.dbforms.taglib.DbInsertButtonTag</tagclass>
         <bodycontent>JSP</bodycontent>
         <attribute>
             <name>flavor</name>
@@ -1150,7 +1150,7 @@
     </tag>
     <tag>
         <name>deleteButton</name>
-        <tagclass>com.itp.dbforms.taglib.DbDeleteButtonTag</tagclass>
+        <tagclass>org.dbforms.taglib.DbDeleteButtonTag</tagclass>
         <bodycontent>JSP</bodycontent>
         <attribute>
             <name>flavor</name>
@@ -1275,7 +1275,7 @@
     </tag>
     <tag>
         <name>updateButton</name>
-        <tagclass>com.itp.dbforms.taglib.DbUpdateButtonTag</tagclass>
+        <tagclass>org.dbforms.taglib.DbUpdateButtonTag</tagclass>
         <bodycontent>JSP</bodycontent>
         <attribute>
             <name>flavor</name>
@@ -1400,7 +1400,7 @@
     </tag>
     <tag>
         <name>navPrevButton</name>
-        <tagclass>com.itp.dbforms.taglib.DbNavPrevButtonTag</tagclass>
+        <tagclass>org.dbforms.taglib.DbNavPrevButtonTag</tagclass>
         <bodycontent>JSP</bodycontent>
         <attribute>
             <name>flavor</name>
@@ -1525,7 +1525,7 @@
     </tag>
     <tag>
         <name>navNextButton</name>
-        <tagclass>com.itp.dbforms.taglib.DbNavNextButtonTag</tagclass>
+        <tagclass>org.dbforms.taglib.DbNavNextButtonTag</tagclass>
         <bodycontent>empty</bodycontent>
         <attribute>
             <name>flavor</name>
@@ -1650,7 +1650,7 @@
     </tag>
     <tag>
         <name>navFirstButton</name>
-        <tagclass>com.itp.dbforms.taglib.DbNavFirstButtonTag</tagclass>
+        <tagclass>org.dbforms.taglib.DbNavFirstButtonTag</tagclass>
         <bodycontent>JSP</bodycontent>
         <attribute>
             <name>flavor</name>
@@ -1770,7 +1770,7 @@
     </tag>
     <tag>
         <name>navLastButton</name>
-        <tagclass>com.itp.dbforms.taglib.DbNavLastButtonTag</tagclass>
+        <tagclass>org.dbforms.taglib.DbNavLastButtonTag</tagclass>
         <bodycontent>JSP</bodycontent>
         <attribute>
             <name>flavor</name>
@@ -1890,7 +1890,7 @@
     </tag>
     <tag>
         <name>navNewButton</name>
-        <tagclass>com.itp.dbforms.taglib.DbNavNewButtonTag</tagclass>
+        <tagclass>org.dbforms.taglib.DbNavNewButtonTag</tagclass>
         <bodycontent>JSP</bodycontent>
         <attribute>
             <name>flavor</name>
@@ -2010,7 +2010,7 @@
     </tag>
     <tag>
         <name>gotoButton</name>
-        <tagclass>com.itp.dbforms.taglib.DbGotoButtonTag</tagclass>
+        <tagclass>org.dbforms.taglib.DbGotoButtonTag</tagclass>
         <bodycontent>JSP</bodycontent>
         <attribute>
             <name>flavor</name>
@@ -2150,12 +2150,12 @@
     </tag>
     <tag>
         <name>base</name>
-        <tagclass>com.itp.dbforms.taglib.BaseTag</tagclass>
+        <tagclass>org.dbforms.taglib.BaseTag</tagclass>
         <bodycontent>empty</bodycontent>
     </tag>
     <tag>
         <name>errors</name>
-        <tagclass>com.itp.dbforms.taglib.ErrorsTag</tagclass>
+        <tagclass>org.dbforms.taglib.ErrorsTag</tagclass>
         <bodycontent>empty</bodycontent>
         <attribute>
             <name>caption</name>
@@ -2175,7 +2175,7 @@
     </tag>
     <tag>
         <name>associatedRadio</name>
-        <tagclass>com.itp.dbforms.taglib.DbAssociatedRadioTag</tagclass>
+        <tagclass>org.dbforms.taglib.DbAssociatedRadioTag</tagclass>
         <bodycontent>empty</bodycontent>
         <attribute>
             <name>name</name>
@@ -2185,7 +2185,7 @@
     </tag>
     <tag>
         <name>blobURL</name>
-        <tagclass>com.itp.dbforms.taglib.DbBlobURLTag</tagclass>
+        <tagclass>org.dbforms.taglib.DbBlobURLTag</tagclass>
         <bodycontent>empty</bodycontent>
         <attribute>
             <name>fieldName</name>
@@ -2195,7 +2195,7 @@
     </tag>
     <tag>
         <name>sort</name>
-        <tagclass>com.itp.dbforms.taglib.DbSortTag</tagclass>
+        <tagclass>org.dbforms.taglib.DbSortTag</tagclass>
         <bodycontent>empty</bodycontent>
         <attribute>
             <name>fieldName</name>
@@ -2205,7 +2205,7 @@
     </tag>
     <tag>
         <name>style</name>
-        <tagclass>com.itp.dbforms.taglib.StyleTag</tagclass>
+        <tagclass>org.dbforms.taglib.StyleTag</tagclass>
         <bodycontent>JSP</bodycontent>
         <attribute>
             <name>template</name>
@@ -2225,7 +2225,7 @@
     </tag>
     <tag>
         <name>templateParam</name>
-        <tagclass>com.itp.dbforms.taglib.TemplateParamTag</tagclass>
+        <tagclass>org.dbforms.taglib.TemplateParamTag</tagclass>
         <bodycontent>empty</bodycontent>
         <attribute>
             <name>name</name>
@@ -2245,7 +2245,7 @@
     </tag>
     <tag>
         <name>templateBasedir</name>
-        <tagclass>com.itp.dbforms.taglib.TemplateBasedirTag</tagclass>
+        <tagclass>org.dbforms.taglib.TemplateBasedirTag</tagclass>
         <bodycontent>empty</bodycontent>
     </tag>
 </taglib>

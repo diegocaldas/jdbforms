@@ -243,7 +243,7 @@ public class ResultSetVector extends Vector {
 			for(int i=1; i<vSize; i++) {
 				Object o = this.elementAt(i);
 
-				logCat.debug("o="+o);
+				//logCat.debug("o="+o);
 
 				this.remove(i);
 				this.insertElementAt(o,0);
