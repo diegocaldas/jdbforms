@@ -192,8 +192,7 @@ public class DbFormsConfig
 
       try
       {
-         connection = (DbConnection) dbConnectionsList.get(Integer.parseInt(
-                  dbConnectionName));
+         connection = (DbConnection) dbConnectionsList.get(Integer.parseInt(dbConnectionName));
       }
       catch (Exception ex)
       {
