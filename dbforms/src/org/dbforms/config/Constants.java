@@ -29,7 +29,7 @@ package org.dbforms.config;
  *
  * @author hkk
  */
-public class Constants {
+public interface Constants {
    public static final int DATE_STYLE_DEFAULT = java.text.DateFormat.MEDIUM;
    public static final int TIME_STYLE_DEFAULT = java.text.DateFormat.SHORT;
    
