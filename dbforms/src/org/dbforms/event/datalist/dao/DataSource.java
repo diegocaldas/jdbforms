@@ -460,28 +460,25 @@ public abstract class DataSource
          {
             int    fieldType = curField.getType();
 
-            String directory = null;
-
-            try
-            {
-               directory = Util.replaceRealPath(curField.getDirectory(), 
-                                                DbFormsConfigRegistry.instance()
-                                                                     .lookup()
-                                                                     .getRealPath());
-            }
-            catch (Exception e)
-            {
-               logCat.error(e);
-               directory = curField.getDirectory();
-            }
-
             if (fieldType == FieldTypes.DISKBLOB)
             {
+               String directory = curField.getDirectory();
                // check if directory-attribute was provided
                if (directory == null)
                {
                   throw new IllegalArgumentException(
                            "directory-attribute needed for fields of type DISKBLOB");
+               }
+               try
+               {
+                  directory = Util.replaceRealPath(directory, 
+                                                DbFormsConfigRegistry.instance()
+                                                                     .lookup()
+                                                                     .getRealPath());
+               }
+               catch (Exception e)
+               {
+                  logCat.error(e);
                }
 
                // instanciate file object for that dir
