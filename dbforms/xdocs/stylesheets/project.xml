@@ -19,28 +19,29 @@
       <item name="Overview"                href="/index.html"/>
       <item name="Features List"           href="/featurelist.html"/>
       <item name="Related work"            href="/related.html"/>
-	  <!--
-	    <item name="Contributions"           href="/contributed.html"/>
-	    <item name="Powered by"              href="/powered.html"/>
+      <!--
+        <item name="Contributions"           href="/contributed.html"/>
+        <item name="Powered by"              href="/powered.html"/>
       -->
       <item name="SourceForge's Summary Page"  href="http://sourceforge.net/projects/jdbforms"/>
     </menu>
 
     <menu name="Documentation">
       <item name="User's guide"            href="/usersguide.html"/>
-      <item name="Tag Library"             href="/docs/taglib/DbFormsTags_Frame.html"/>
+      <item name="Tag Library"             href="/non-cvs/docs/taglib/taglib_docu.html"/>
       <item name="Devgui"                  href="/devgui.html"/>
       <item name="CVS client setup"        href="/cvssetup.html"/>
-	  <item name="Maven setup"             href="/mavensetup.html"/>
+      <!-- 
+        <item name="Maven setup"             href="/mavensetup.html"/> 
+      -->
     </menu>
 
     <menu name="Download">
       <item name="Latest builds"           href="http://sourceforge.net/project/showfiles.php?group_id=17608"/>
-      <item name="Resources"               href="/depend/index.xml"/>
     </menu>
 
     <menu name="Demo">
-      <item name="On line demos"           href="/demo.html"/>
+      <item name="Online demos"            href="/demo.html"/>
     </menu>
 
   </body>
