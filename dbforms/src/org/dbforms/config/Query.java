@@ -471,8 +471,10 @@ public class Query extends Table
                buf.append(" ");
                buf.append(followAfterWhere);
                buf.append(" (");
+            } else {
+               buf.append(" AND (");
             }
-         }
+         } 
 
          buf.append(s);
          buf.append(")");

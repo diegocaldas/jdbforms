@@ -34,6 +34,7 @@ import java.util.Date;
 
 
 import org.dbforms.config.DbFormsConfigRegistry;
+import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.FieldValues;
 import org.dbforms.config.FieldValue;
 import org.dbforms.event.eventtype.EventType;
@@ -55,7 +56,8 @@ public class TestDbTextFieldTag extends JspTestCase {
    private DbFormTag form;
    private static Date merkeDate;
    private static Number merkeNumber;
-   
+   private static DbFormsConfig dbconfig;
+
    /**
     * In addition to creating the tag instance and adding the pageContext to
     * it, this method creates a BodyContent object and passes it to the tag.
@@ -66,6 +68,7 @@ public class TestDbTextFieldTag extends JspTestCase {
       config.setInitParameter("log4j.configuration", "/WEB-INF/log4j.properties");
       ConfigServlet configServlet = new ConfigServlet();
       configServlet.init(config);
+      dbconfig = DbFormsConfigRegistry.instance().lookup(); 
 
       form = new DbFormTag();
       form.setPageContext(this.pageContext);
@@ -107,15 +110,14 @@ public class TestDbTextFieldTag extends JspTestCase {
       res = s.indexOf("value=\"01.01.1900\"") > -1;
       assertTrue(res);
       HttpServletRequest request = new WebFormWrapper(theResponse.getFormWithName("dbform"), Locale.GERMAN);
-      DatabaseEvent dbEvent = new DeleteEvent(new Integer(DbFormsConfigRegistry.instance().lookup().getTableByName("TIMEPLAN").getId()),
+      DatabaseEvent dbEvent = new DeleteEvent(new Integer(dbconfig.getTableByName("TIMEPLAN").getId()),
                                                 "null", 
                                                 request, 
-                                                DbFormsConfigRegistry.instance().lookup() 
+                                                dbconfig 
                                              );
       // Set type to delete so that all fieldvalues will be parsed!!
       dbEvent.setType(EventType.EVENT_DATABASE_DELETE);                                             
       FieldValues fv = dbEvent.getFieldValues();
-      getLogger().info(fv.toString());
 
       FieldValue f = fv.get("TIME");
       Date testDate  = (Date) f.getFieldValueAsObject();
@@ -152,15 +154,14 @@ public class TestDbTextFieldTag extends JspTestCase {
       assertTrue(res);
 
       HttpServletRequest request = new WebFormWrapper(theResponse.getFormWithName("dbform"), Locale.ENGLISH);
-      DatabaseEvent dbEvent = new DeleteEvent(new Integer(DbFormsConfigRegistry.instance().lookup().getTableByName("TIMEPLAN").getId()),
+      DatabaseEvent dbEvent = new DeleteEvent(new Integer(dbconfig.getTableByName("TIMEPLAN").getId()),
                                                 "null", 
                                                 request, 
-                                                DbFormsConfigRegistry.instance().lookup() 
+                                                dbconfig 
                                              );
       // Set type to delete so that all fieldvalues will be parsed!!
       dbEvent.setType(EventType.EVENT_DATABASE_DELETE);                                             
       FieldValues fv = dbEvent.getFieldValues();
-      getLogger().info(fv.toString());
 
       FieldValue f = fv.get("TIME");
       Date testDate  = (Date) f.getFieldValueAsObject();

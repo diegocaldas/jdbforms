@@ -97,5 +97,12 @@ public class TestTableQuery extends org.apache.cactus.JspTestCase
       assertEquals(1, this.tag.getResultSetVector().size());
    }
 
+   public void testQuery2() throws Exception
+   {
+      this.tag.setTableName("BOOK_QUERY_WHERE");
+      this.tag.setFilter("BOOK_ID=1");
+      this.tag.doStartTag();
+      assertEquals(1, this.tag.getResultSetVector().size());
+   }
 
 }

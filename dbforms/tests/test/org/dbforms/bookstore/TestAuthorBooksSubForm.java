@@ -5,15 +5,24 @@ package org.dbforms.bookstore;
 import java.util.List;
 import java.util.ArrayList;
 
+import java.util.Locale;
+
+import org.dbforms.util.MessageResourcesInternal;
+
 import HTTPClient.NVPair;
 
 // definition of test class
 public class TestAuthorBooksSubForm extends AbstractTestBase
 {
+   private static String nodata = null;       
+
 	// Test method generated from the MaxQ Java generator
 	public TestAuthorBooksSubForm(String name)
 	{
-		super(name);
+      super(name);
+      if (nodata == null) {
+         nodata = MessageResourcesInternal.getMessage("dbforms.nodata", Locale.getDefault());
+      }
 	}
 
 	/**
@@ -188,7 +197,7 @@ public class TestAuthorBooksSubForm extends AbstractTestBase
 		printResponse();
 		assertFalse(responseContains("<input type=\"submit\"  value=\"New\"  style=\"width:100\" name=\"ac_new_0"));
 		assertFalse(responseContains("<input type=\"submit\"  value=\"Copy\"  style=\"width:100\" name=\"ac_copy_0"));
-		assertTrue(responseContains("<td style=\"width:100px\">[No Data]&nbsp;</td>"));
+		assertTrue(responseContains("<td style=\"width:100px\">" + nodata + "&nbsp;</td>"));
 		assertTrue(
 			responseContains("<input type=\"text\" name=\"f_0_insroot_1\" value=\"\"  size=\"25\"/>"));
 		assertTrue(responseContains("<input type=\"text\" name=\"f_0_insroot_2\" value=\"\"  size=\"25\"/>"));
@@ -245,7 +254,7 @@ public class TestAuthorBooksSubForm extends AbstractTestBase
 		printResponse();
 		assertFalse(responseContains("<input type=\"submit\"  value=\"New\"  style=\"width:100\" name=\"ac_new_0"));
 		assertFalse(responseContains("<input type=\"submit\"  value=\"Copy\"  style=\"width:100\" name=\"ac_copy_0"));
-		assertTrue(responseContains("<td style=\"width:100px\">[No Data]&nbsp;</td>"));
+		assertTrue(responseContains("<td style=\"width:100px\">" + nodata + "&nbsp;</td>"));
 		assertTrue(
 			responseContains("<input type=\"text\" name=\"f_0_insroot_1\" value=\"Eco, Umberto\"  size=\"25\"/>"));
 		assertTrue(responseContains("<input type=\"text\" name=\"f_0_insroot_2\" value=\"organisation 11\"  size=\"25\"/>"));
@@ -354,7 +363,7 @@ public class TestAuthorBooksSubForm extends AbstractTestBase
 		System.out.println("Response code: " + getResponse().getStatusCode());
 		assertEquals("Assert number 11 failed", 200, getResponse().getStatusCode());
 		printResponse();
-		assertTrue(responseContains("<td>[No Data]&nbsp;</td>"));
+		assertTrue(responseContains("<td>" + nodata + "&nbsp;</td>"));
 		assertTrue(responseContains("<input type=\"text\" name=\"f_1_ins0@root_1\" value=\"3-423-12445-4\" />"));
 		assertTrue(responseContains("<input type=\"text\" name=\"f_1_ins0@root_3\" value=\"Die Insel des vorigen Tages\" />"));
 		assertTrue(responseContains("<input type=\"submit\"  value=\"New\"  style=\"width:100\" name=\"ac_new_1"));
