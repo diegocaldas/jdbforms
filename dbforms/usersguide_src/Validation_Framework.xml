@@ -562,5 +562,13 @@ name
 				<para/>
 			</sect2>
 		</sect1>
+                 <sect1>
+                            <title>Validator-rules.xml</title>
+ 
+                            <para>A sample is included in the bugtracker example in the <computeroutput>/examples</computeroutput> directory.</para>
+ 
+                            <para>In addition, a sample <computeroutput>validation.js</computeroutput> is available there as well.  This is a contecnation of <computeruotput>validator-rules.xml</computeruotput> used for performance reasons via the <computeroutput>javascriptValidationSrcFile</computeroutput> attribute of the <computeroutput>dbform </computeroutput>tag.</para>
+                            <para>Finally, since DBF's validation was based on Struts, you can also check out <ulink url="http://jdbforms.sourceforge.net/non-cvs/docs/usersguide/pdf/validation/ch12.pdf"><citetitle>the validation chapter from "Struts In Action"</citetitle></ulink></para>
+                </sect1>
 	</chapter>
  
