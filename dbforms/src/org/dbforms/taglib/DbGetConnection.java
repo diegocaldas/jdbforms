@@ -21,11 +21,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.taglib;
-import java.io.*;
-import java.sql.*;
-import javax.servlet.jsp.*;
 
-import org.dbforms.util.SqlUtil;
+import javax.sql.DataSource;
+import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.PageContext;
 
 /*************************************************************
  * Grunikiewicz.philip@hydro.qc.ca
@@ -39,7 +38,6 @@ public class DbGetConnection
 	extends DbBaseHandlerTag
 	implements javax.servlet.jsp.tagext.TryCatchFinally {
 
-	private Connection con;
 	private String dbConnectionName;
 
 	/**
@@ -53,28 +51,12 @@ public class DbGetConnection
 	public int doStartTag() throws JspException {
 		try {
 			// get the connection and place it in attribute;
-			con = getConfig().getConnection(dbConnectionName);
+			DataSource ds = getConfig().getDbConnection(dbConnectionName);
 			String s = getId();
-			pageContext.setAttribute(getId(), con, PageContext.PAGE_SCOPE);
+			pageContext.setAttribute(getId(), ds, PageContext.PAGE_SCOPE);
 		} catch (Exception e) {
-			throw new JspException("Database error" + e.toString());
+			throw new JspException("Database error" + e.getMessage());
 		}
-
-		return EVAL_BODY_BUFFERED;
-	}
-
-	/**
-	* DOCUMENT ME!
-	*
-	* @return DOCUMENT ME!
-	*/
-	public int doAfterBody() {
-		try {
-			bodyContent.writeOut(bodyContent.getEnclosingWriter());
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
-		}
-
 		return SKIP_BODY;
 	}
 
@@ -100,8 +82,6 @@ public class DbGetConnection
 	* DOCUMENT ME!
 	*/
 	public void doFinally() {
-		SqlUtil.closeConnection(con);
-		con = null;
 		dbConnectionName = null;
 		super.doFinally();
 	}

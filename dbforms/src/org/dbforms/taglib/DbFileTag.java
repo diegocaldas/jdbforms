@@ -25,8 +25,6 @@ import javax.servlet.jsp.*;
 
 import org.apache.log4j.Category;
 
-
-
 /****
  *
  * <p>This tag renders a HTML TextArea - Element</p>
@@ -36,120 +34,105 @@ import org.apache.log4j.Category;
  *
  * @author Joachim Peer <j.peer@gmx.net>
  */
-public class DbFileTag extends DbBaseInputTag
-   implements javax.servlet.jsp.tagext.TryCatchFinally
-{
-   private static Category logCat = Category.getInstance(DbFileTag.class.getName());
+public class DbFileTag
+	extends DbBaseInputTag
+	implements javax.servlet.jsp.tagext.TryCatchFinally {
+	private static Category logCat =
+		Category.getInstance(DbFileTag.class.getName());
 
-   private String accept;
+	private String accept;
 
-	public void doFinally()
-	{
+	public void doFinally() {
 		accept = null;
 		super.doFinally();
 	}
 
-   /**
-    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
-    */
-   public void doCatch(Throwable t) throws Throwable
-   {
-      throw t;
-   }
+	/**
+	 * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+	 */
+	public void doCatch(Throwable t) throws Throwable {
+		throw t;
+	}
 
-   /**
-    * DOCUMENT ME!
-    *
-    * @param accept DOCUMENT ME!
-    */
-   public void setAccept(String accept)
-   {
-      this.accept = accept;
-   }
+	/**
+	 * DOCUMENT ME!
+	 *
+	 * @param accept DOCUMENT ME!
+	 */
+	public void setAccept(String accept) {
+		this.accept = accept;
+	}
 
+	/**
+	 * DOCUMENT ME!
+	 *
+	 * @return DOCUMENT ME!
+	 */
+	public String getAccept() {
+		return accept;
+	}
 
-   /**
-    * DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    */
-   public String getAccept()
-   {
-      return accept;
-   }
+	/**
+	 * DOCUMENT ME!
+	 *
+	 * @return DOCUMENT ME!
+	 *
+	 * @throws javax.servlet.jsp.JspException DOCUMENT ME!
+	 * @throws JspException DOCUMENT ME!
+	 */
+	public int doStartTag() throws javax.servlet.jsp.JspException {
+		super.doStartTag();
 
+		if (!getParentForm().hasMultipartSet()) {
+			logCat.warn(
+				"DbFileTag is used but DbFormTag.multipart is not set (FALSE)");
+			throw new JspException("DbFileTag is used but DbFormTag.multipart is not set (it is set to \"FALSE\"). you must set it to \"TRUE\" to enable file uploads!");
+		}
 
-   /**
-    * DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    *
-    * @throws javax.servlet.jsp.JspException DOCUMENT ME!
-    * @throws JspException DOCUMENT ME!
-    */
-   public int doStartTag() throws javax.servlet.jsp.JspException
-   {
-      super.doStartTag();
+		return SKIP_BODY;
+	}
 
-      if (!getParentForm().hasMultipartSet())
-      {
-         logCat.warn(
-            "DbFileTag is used but DbFormTag.multipart is not set (FALSE)");
-         throw new JspException(
-            "DbFileTag is used but DbFormTag.multipart is not set (it is set to \"FALSE\"). you must set it to \"TRUE\" to enable file uploads!");
-      }
+	/**
+	 * DOCUMENT ME!
+	 *
+	 * @return DOCUMENT ME!
+	 *
+	 * @throws javax.servlet.jsp.JspException DOCUMENT ME!
+	 * @throws JspException DOCUMENT ME!
+	 */
+	public int doEndTag() throws javax.servlet.jsp.JspException {
+		try {
+			StringBuffer tagBuf = new StringBuffer();
 
-      return SKIP_BODY;
-   }
+			if (hasReadOnlySet() || getParentForm().hasReadOnlySet()) {
+				// if read-only, remove the browse button (for netscape problem)
+				tagBuf.append("<input type=\"text\"");
+			} else {
+				tagBuf.append("<input type=\"file\"");
+			}
 
+			tagBuf.append(prepareName());
 
-   /**
-    * DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    *
-    * @throws javax.servlet.jsp.JspException DOCUMENT ME!
-    * @throws JspException DOCUMENT ME!
-    */
-   public int doEndTag() throws javax.servlet.jsp.JspException
-   {
-      try
-      {
-         StringBuffer tagBuf = new StringBuffer();
+			if (accept != null) {
+				tagBuf.append(" accept=\"");
+				tagBuf.append(accept);
+				tagBuf.append("\"");
+			}
 
-         if (hasReadOnlySet()
-                  || getParentForm().hasReadOnlySet())
-         {
-            // if read-only, remove the browse button (for netscape problem)
-            tagBuf.append("<input type=\"text\"");
-         }
-         else
-         {
-            tagBuf.append("<input type=\"file\"");
-         }
+			tagBuf.append(prepareSize());
+			tagBuf.append(prepareKeys());
+			tagBuf.append(prepareStyles());
+			tagBuf.append(prepareEventHandlers());
+			tagBuf.append("/>");
 
-         tagBuf.append(prepareName());
+			// Writes out the old field value
+			writeOutSpecialValues();
 
-         if (accept != null)
-         {
-            tagBuf.append(" accept=\"");
-            tagBuf.append(accept);
-            tagBuf.append("\"");
-         }
+			pageContext.getOut().write(tagBuf.toString());
+		} catch (java.io.IOException ioe) {
+			throw new JspException("IO Error: " + ioe.getMessage());
+		}
 
-         tagBuf.append(prepareSize());
-         tagBuf.append(prepareKeys());
-         tagBuf.append(prepareStyles());
-         tagBuf.append(prepareEventHandlers());
-         tagBuf.append("/>");
-
-         pageContext.getOut().write(tagBuf.toString());
-      }
-      catch (java.io.IOException ioe)
-      {
-         throw new JspException("IO Error: " + ioe.getMessage());
-      }
-
-      return EVAL_PAGE;
-   }
+		return EVAL_PAGE;
+	}
 }

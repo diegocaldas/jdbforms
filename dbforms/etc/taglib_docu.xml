@@ -2266,39 +2266,38 @@ is able to chache the data</info>
 			<!-- **************************** getConnection tag ***********************************-->
 			<tag>
 				<name>getConnection</name>
-				<summary>Allows other tags (or scriptlets) to 
-obtain a database connection object using the same settings found in dbForms-config.xml</summary>
+				<summary>
+					Allows other tags (or scriptlets) to 
+					obtain a DataSource using the same settings found in dbForms-config.xml</summary>
 				<tagclass>org.dbforms.taglib.DbGetConnection</tagclass>
 				<bodycontent>JSP</bodycontent>
 				<attribute>
 					<name>id</name>
 					<required>true</required>
 					<rtexprvalue>true</rtexprvalue>
-					<info>Attribute in page that will be used to reference the connection object<p style="  text-autospace:none">Allows other tags (and/or java scriptlets) 
-        to obtain a connection via the same settings as defined in dbForms</p>
-						<p style="  text-autospace:none">Example:</p>
-						<p style="  text-autospace:none">(using Jakarta dbTags)</p>
-						<p style="  text-autospace:none">&lt;db:getConnection id=&quot;myConnection&quot;&gt; 
-        &lt;!-- Open connection --&gt;</p>
-						<p style="  text-autospace:none">
-							<span style="font-size:8.0pt;font-family:&quot;Courier New&quot;;   ">&lt;sql: statement id=&quot;stmt&quot; conn=&quot;myConnection&quot;&gt;</span>
-						</p>
-						<p style="  text-autospace:none">
-							<span style="font-size:8.0pt;font-family:&quot;Courier New&quot;;   ">&lt;sql:query&gt;Select * from Table&lt;/sql:query&gt;</span>
-						</p>
-						<p style="  text-autospace:none">
-							<span style="font-size:8.0pt;font-family:&quot;Courier New&quot;;   ">&lt;sql:resultSet id=&quot;rs&quot;&gt;</span>
-						</p>
-						<p style="  text-autospace:none">
-							<span style="font-size:8.0pt;font-family:&quot;Courier New&quot;;   ">Value: &lt;sql:getColumn position=&quot;1&quot;/&gt;</span>
-						</p>
-						<p style="  text-autospace:none">
-							<span style="font-size:8.0pt;font-family:&quot;Courier New&quot;;   ">&lt;/sql:resultSet&gt;</span>
-						</p>
-						<p style="  text-autospace:none">
-							<span style="font-size:8.0pt;font-family:&quot;Courier New&quot;;   ">&lt;/sql:statement&gt;<br/>
-							</span>&lt;/db:getConnection&gt;&lt;!-- 
-        close connection --&gt;</p>
+					<info>
+					<p>
+						Attribute in page that will be used to reference the connection object
+						Allows other tags (and/or java scriptlets) 
+        					to obtain a connection via the same settings as defined in dbForms
+        				</p>
+						<p>Example:</p>
+						<p>(using Jakarta dbTags)</p>
+						<span style="font-size:8.0pt;font-family:&quot;Courier New&quot;;   ">
+							<p>
+								&lt;db:getConnection id=&quot;myDataSource&quot; /&gt;</p>
+							<p>
+								&lt;sql:query var="qry" dataSource="${myDataSource}"&gt;Select * from Table&lt;/sql:query&gt;
+							</p>
+							<p>
+								&lt;c:forEach var="row" items="${qry.rows}" &gt;</p>
+							<p>
+								Value: &lt;c:out value="{row.field}" /&gt;
+							</p>
+							<p>
+								&lt;/c:forEach&gt;
+							</p>
+						</span>
 					</info>
 				</attribute>
 				<attribute>

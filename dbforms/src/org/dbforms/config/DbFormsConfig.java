@@ -179,7 +179,7 @@ public class DbFormsConfig
     *
     * @return DOCUMENT ME!
     */
-   private DbConnection getDbConnection(String dbConnectionName)
+   public DbConnection getDbConnection(String dbConnectionName)
    {
       DbConnection connection = null;
 
@@ -194,7 +194,7 @@ public class DbFormsConfig
       }
       catch (Exception ex)
       {
-// wanted!        logCat.error("getDbConnection", ex);
+		// wanted! logCat.error("getDbConnection", ex);
       }
       if (connection != null)
       {
