@@ -606,7 +606,7 @@ public class ConfigServlet extends HttpServlet
       }
       catch (Exception e)
       {
-         logCat.error("initXMLConfigFile", e);
+//         logCat.error("initXMLConfigFile", e);
       }
 
       if (dbFormsConfig == null)
