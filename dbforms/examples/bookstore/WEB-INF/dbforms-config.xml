@@ -56,7 +56,7 @@
 	    
 	    <table 
 	    	name="XMLBOOKS"
-		   dataAccessClass="org.dbforms.event.datalist.dao.DataSourceXML" 
+		   dataAccessClass="org.dbforms.event.datalist.dao.DataSourceDOM4J" 
 		   alias="file:///$(SERVLETCONTEXT_REALPATH)/WEB-INF/db_xml/books.xml?/books/book"
 	    >	
 	        <field 
