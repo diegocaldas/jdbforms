@@ -24,7 +24,6 @@ package org.dbforms.event.datalist.dao;
 
 
 import java.sql.*;
-import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Category;
 import org.dbforms.config.DbFormsConfig;

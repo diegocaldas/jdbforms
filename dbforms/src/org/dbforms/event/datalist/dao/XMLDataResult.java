@@ -21,8 +21,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.event.datalist.dao;
-import java.util.Date;
-import org.w3c.dom.Document;
+
 import org.w3c.dom.Node;
 import org.w3c.dom.xpath.XPathResult;
 import org.w3c.dom.xpath.XPathEvaluator;

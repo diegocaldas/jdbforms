@@ -21,8 +21,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.event.datalist.dao;
+
 import java.util.Vector;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.net.URI;
 import java.net.URLConnection;
@@ -31,7 +31,6 @@ import java.io.InputStream;
 //	Imported JAVA API for XML Parsing 1.0 classes
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.InputSource;
 
 //	Imported dom classes
@@ -39,7 +38,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 // apache logging
-import org.apache.log4j.Category;
+//import org.apache.log4j.Category;
 import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.Field;
 import org.dbforms.config.Table;

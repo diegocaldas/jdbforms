@@ -21,12 +21,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.conprovider;
-import java.lang.reflect.*;
-import java.util.*;
+
+
 import java.sql.*;
 import org.apache.log4j.Category;
-import org.dbforms.conprovider.*;
-
 
 
 /**
@@ -84,7 +82,7 @@ public class ConnectionFactory
       provider.init();
 
       cat.info("::setProvider - ConnectionProvider [" + providerClass
-         + "] successfully set and initialized");
+               + "] successfully set and initialized");
    }
 
 

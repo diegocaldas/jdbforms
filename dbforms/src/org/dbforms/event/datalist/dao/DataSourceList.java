@@ -21,12 +21,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.event.datalist.dao;
+
 import java.util.Hashtable;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
 
 import org.dbforms.config.Table;
-import org.dbforms.util.ParseUtil;
 
 
 
@@ -97,8 +97,7 @@ public class DataSourceList
     */
    public DataSourceFactory get(Table table, HttpServletRequest request)
    {
-      DataSourceFactory result = (DataSourceFactory) ht.get(getKey(table,
-               request));
+      DataSourceFactory result = (DataSourceFactory) ht.get(getKey(table, request));
 
       return result;
    }

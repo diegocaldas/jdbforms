@@ -36,7 +36,6 @@ import org.dbforms.util.FieldTypes;
 import org.dbforms.util.FieldValues;
 import org.dbforms.util.FileHolder;
 import org.dbforms.util.ResultSetVector;
-import org.dbforms.util.FieldValues;
 import org.dbforms.util.Util;
 
 

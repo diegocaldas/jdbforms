@@ -32,7 +32,6 @@ import java.sql.Types;
 import java.sql.Clob;
 import java.util.Vector;
 import java.util.Enumeration;
-import org.apache.log4j.Category;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.Field;
 import org.dbforms.config.Table;
