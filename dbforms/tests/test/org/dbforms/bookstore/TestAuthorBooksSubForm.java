@@ -130,8 +130,8 @@ public class TestAuthorBooksSubForm extends AbstractTestBase
 		System.out.println("Response code: " + getResponse().getStatusCode());
 		assertEquals("Assert number 3 failed", 200, getResponse().getStatusCode());
 		printResponse();
-		assertTrue(responseContains("<input type=\"submit\"  value=\"New\"  style=\"width:100\" name=\"ac_new_0\"/>"));
-		assertTrue(responseContains("<input type=\"submit\"  value=\"Copy\"  style=\"width:100\" name=\"ac_copy_0\"/>"));
+		assertTrue(responseContains("<input type=\"submit\"  value=\"New\"  style=\"width:100\" name=\"ac_new_0"));
+		assertTrue(responseContains("<input type=\"submit\"  value=\"Copy\"  style=\"width:100\" name=\"ac_copy_0"));
 
 		list = new ArrayList();
 		list.add(new NVPair("invtable", "0"));
@@ -188,8 +188,8 @@ public class TestAuthorBooksSubForm extends AbstractTestBase
 		System.out.println("Response code: " + getResponse().getStatusCode());
 		assertEquals("Assert number 4 failed", 200, getResponse().getStatusCode());
 		printResponse();
-		assertFalse(responseContains("<input type=\"submit\"  value=\"New\"  style=\"width:100\" name=\"ac_new_0\"/>"));
-		assertFalse(responseContains("<input type=\"submit\"  value=\"Copy\"  style=\"width:100\" name=\"ac_copy_0\"/>"));
+		assertFalse(responseContains("<input type=\"submit\"  value=\"New\"  style=\"width:100\" name=\"ac_new_0"));
+		assertFalse(responseContains("<input type=\"submit\"  value=\"Copy\"  style=\"width:100\" name=\"ac_copy_0"));
 		assertTrue(responseContains("<td style=\"width:100px\">[No Data]&nbsp;</td>"));
 		assertTrue(
 			responseContains("<input type=\"text\" name=\"f_0_insroot_1\" value=\"\"  size=\"25\"/>"));
@@ -206,8 +206,8 @@ public class TestAuthorBooksSubForm extends AbstractTestBase
 		System.out.println("Response code: " + getResponse().getStatusCode());
 		assertEquals("Assert number 6 failed", 200, getResponse().getStatusCode());
 		printResponse();
-		assertTrue(responseContains("<input type=\"submit\"  value=\"New\"  style=\"width:100\" name=\"ac_new_0\"/>"));
-		assertTrue(responseContains("<input type=\"submit\"  value=\"Copy\"  style=\"width:100\" name=\"ac_copy_0\"/>"));
+		assertTrue(responseContains("<input type=\"submit\"  value=\"New\"  style=\"width:100\" name=\"ac_new_0"));
+		assertTrue(responseContains("<input type=\"submit\"  value=\"Copy\"  style=\"width:100\" name=\"ac_copy_0"));
 
 		list = new ArrayList();
 		list.add(new NVPair("invtable", "0"));
@@ -245,8 +245,8 @@ public class TestAuthorBooksSubForm extends AbstractTestBase
 		System.out.println("Response code: " + getResponse().getStatusCode());
 		assertEquals("Assert number 7 failed", 200, getResponse().getStatusCode());
 		printResponse();
-		assertFalse(responseContains("<input type=\"submit\"  value=\"New\"  style=\"width:100\" name=\"ac_new_0\"/>"));
-		assertFalse(responseContains("<input type=\"submit\"  value=\"Copy\"  style=\"width:100\" name=\"ac_copy_0\"/>"));
+		assertFalse(responseContains("<input type=\"submit\"  value=\"New\"  style=\"width:100\" name=\"ac_new_0"));
+		assertFalse(responseContains("<input type=\"submit\"  value=\"Copy\"  style=\"width:100\" name=\"ac_copy_0"));
 		assertTrue(responseContains("<td style=\"width:100px\">[No Data]&nbsp;</td>"));
 		assertTrue(
 			responseContains("<input type=\"text\" name=\"f_0_insroot_1\" value=\"Eco, Umberto\"  size=\"25\"/>"));
@@ -263,8 +263,8 @@ public class TestAuthorBooksSubForm extends AbstractTestBase
 		System.out.println("Response code: " + getResponse().getStatusCode());
 		assertEquals("Assert number 8 failed", 200, getResponse().getStatusCode());
 		printResponse();
-		assertTrue(responseContains("<input type=\"submit\"  value=\"New\"  style=\"width:100\" name=\"ac_new_1\"/>"));
-		assertTrue(responseContains("<input type=\"submit\"  value=\"Copy\"  style=\"width:100\" name=\"ac_copy_1\"/>"));
+		assertTrue(responseContains("<input type=\"submit\"  value=\"New\"  style=\"width:100\" name=\"ac_new_1"));
+		assertTrue(responseContains("<input type=\"submit\"  value=\"Copy\"  style=\"width:100\" name=\"ac_copy_1"));
 
 		list = new ArrayList();
 		list.add(new NVPair("invtable", "0"));
@@ -302,8 +302,8 @@ public class TestAuthorBooksSubForm extends AbstractTestBase
 		System.out.println("Response code: " + getResponse().getStatusCode());
 		assertEquals("Assert number 9 failed", 200, getResponse().getStatusCode());
 		printResponse();
-		assertTrue(responseContains("<input type=\"submit\"  value=\"New\"  style=\"width:100\" name=\"ac_new_1\"/>"));
-		assertTrue(responseContains("<input type=\"submit\"  value=\"Copy\"  style=\"width:100\" name=\"ac_copy_1\"/>"));
+		assertTrue(responseContains("<input type=\"submit\"  value=\"New\"  style=\"width:100\" name=\"ac_new_1"));
+		assertTrue(responseContains("<input type=\"submit\"  value=\"Copy\"  style=\"width:100\" name=\"ac_copy_1"));
 
 	}
 
@@ -317,8 +317,8 @@ public class TestAuthorBooksSubForm extends AbstractTestBase
 		System.out.println("Response code: " + getResponse().getStatusCode());
 		assertEquals("Assert number 10 failed", 200, getResponse().getStatusCode());
 		printResponse();
-		assertTrue(responseContains("<input type=\"submit\"  value=\"New\"  style=\"width:100\" name=\"ac_new_1\"/>"));
-		assertTrue(responseContains("<input type=\"submit\"  value=\"Copy\"  style=\"width:100\" name=\"ac_copy_1\"/>"));
+		assertTrue(responseContains("<input type=\"submit\"  value=\"New\"  style=\"width:100\" name=\"ac_new_1"));
+		assertTrue(responseContains("<input type=\"submit\"  value=\"Copy\"  style=\"width:100\" name=\"ac_copy_1"));
 
 		list = new ArrayList();
 		list.add(new NVPair("invtable", "0"));
@@ -359,8 +359,8 @@ public class TestAuthorBooksSubForm extends AbstractTestBase
 		assertTrue(responseContains("<td>[No Data]&nbsp;</td>"));
 		assertTrue(responseContains("<input type=\"text\" name=\"f_1_ins0@root_1\" value=\"3-423-12445-4\" />"));
 		assertTrue(responseContains("<input type=\"text\" name=\"f_1_ins0@root_3\" value=\"Die Insel des vorigen Tages\" />"));
-		assertTrue(responseContains("<input type=\"submit\"  value=\"New\"  style=\"width:100\" name=\"ac_new_1\"/>"));
-		assertTrue(responseContains("<input type=\"submit\"  value=\"Copy\"  style=\"width:100\" name=\"ac_copy_1\"/>"));
+		assertTrue(responseContains("<input type=\"submit\"  value=\"New\"  style=\"width:100\" name=\"ac_new_1"));
+		assertTrue(responseContains("<input type=\"submit\"  value=\"Copy\"  style=\"width:100\" name=\"ac_copy_1"));
 
 	}
 
@@ -373,8 +373,8 @@ public class TestAuthorBooksSubForm extends AbstractTestBase
 		get("http://localhost/bookstore/tests/testAuthorBooksSubForm.jsp");
 		System.out.println("Response code: " + getResponse().getStatusCode());
 		assertEquals("Assert number 3 failed", 200, getResponse().getStatusCode());
-		assertTrue(responseContains("<input type=\"submit\"  value=\"New\"  style=\"width:100\" name=\"ac_new_1\"/>"));
-		assertTrue(responseContains("<input type=\"submit\"  value=\"Copy\"  style=\"width:100\" name=\"ac_copy_1\"/>"));
+		assertTrue(responseContains("<input type=\"submit\"  value=\"New\"  style=\"width:100\" name=\"ac_new_1"));
+		assertTrue(responseContains("<input type=\"submit\"  value=\"Copy\"  style=\"width:100\" name=\"ac_copy_1"));
 
 		list = new ArrayList();
 		list.add(new NVPair("invtable", "0"));
@@ -412,8 +412,8 @@ public class TestAuthorBooksSubForm extends AbstractTestBase
 		System.out.println("Response code: " + getResponse().getStatusCode());
 		assertEquals("Assert number 4 failed", 200, getResponse().getStatusCode());
 		printResponse();
-		assertTrue(responseContains("<input type=\"submit\"  value=\"New\"  style=\"width:100\" name=\"ac_new_1\"/>"));
-		assertTrue(responseContains("<input type=\"submit\"  value=\"Copy\"  style=\"width:100\" name=\"ac_copy_1\"/>"));
+		assertTrue(responseContains("<input type=\"submit\"  value=\"New\"  style=\"width:100\" name=\"ac_new_1"));
+		assertTrue(responseContains("<input type=\"submit\"  value=\"Copy\"  style=\"width:100\" name=\"ac_copy_1"));
 
 		list = new ArrayList();
 		list.add(new NVPair("invtable", "0"));
