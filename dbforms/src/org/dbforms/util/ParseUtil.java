@@ -210,21 +210,29 @@ public class ParseUtil
                                                  String             str)
   {
     MultipartRequest multipartRequest = (MultipartRequest) request.getAttribute("multipartRequest");
-
     Vector result = new Vector();
     Enumeration enum = (multipartRequest == null) ? request.getParameterNames()
                                                   : multipartRequest.getParameterNames();
-
     while (enum.hasMoreElements())
     {
       String param = (String) enum.nextElement();
-
       if (param.startsWith(str))
       {
-        result.addElement(param);
+        if (!result.contains(param)) 
+        	result.addElement(param);
       }
     }
 
+	enum = request.getAttributeNames();
+	while (enum.hasMoreElements())
+	{
+	  String param = (String) enum.nextElement();
+	  if (param.startsWith(str))
+	  {
+		if (!result.contains(param)) 
+			result.addElement(param);
+	  }
+	}
     return result;
   }
 
@@ -254,6 +262,17 @@ public class ParseUtil
         return param;
       }
     }
+
+	enum = request.getAttributeNames();
+	while (enum.hasMoreElements())
+	{
+	  String param = (String) enum.nextElement();
+
+	  if (param.startsWith(str))
+	  {
+		return param;
+	  }
+	}
 
     return null;
   }
