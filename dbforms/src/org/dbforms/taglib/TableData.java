@@ -20,7 +20,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.taglib;
 import java.io.*;
 import java.util.*;
@@ -49,142 +48,143 @@ import org.apache.log4j.Category;
  */
 public class TableData extends EmbeddedData
 {
-    static Category logCat = Category.getInstance(TableData.class.getName());
+   static Category logCat = Category.getInstance(TableData.class.getName());
 
-    // logging category for this class
-    private String foreignTable;
-    private String visibleFields;
-    private String storeField;
-    private String orderBy;
+   // logging category for this class
+   private String foreignTable;
+   private String visibleFields;
+   private String storeField;
+   private String orderBy;
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param foreignTable DOCUMENT ME!
-     */
-    public void setForeignTable(String foreignTable)
-    {
-        this.foreignTable = foreignTable;
-    }
-
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
-    public String getForeignTable()
-    {
-        return foreignTable;
-    }
-
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @param visibleFields DOCUMENT ME!
-     */
-    public void setVisibleFields(String visibleFields)
-    {
-        this.visibleFields = visibleFields;
-    }
-
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
-    public String getVisibleFields()
-    {
-        return visibleFields;
-    }
-
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @param storeField DOCUMENT ME!
-     */
-    public void setStoreField(String storeField)
-    {
-        this.storeField = storeField;
-    }
-
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
-    public String getStoreField()
-    {
-        return storeField;
-    }
-
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @param orderBy DOCUMENT ME!
-     */
-    public void setOrderBy(String orderBy)
-    {
-        this.orderBy = orderBy;
-        logCat.info("setOrderBy(\"" + orderBy + "\")");
-    }
-
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
-    public String getOrderBy()
-    {
-        return orderBy;
-    }
-
-
-    /**
-    returns Hashtable with data. Its keys represent the "value"-fields for the DataContainer-Tag, its values
-    represent the visible fields for the Multitags.
-    (DataContainer are: select, radio, checkbox and a special flavour of Label).
+   /**
+    * DOCUMENT ME!
+    *
+    * @param foreignTable DOCUMENT ME!
     */
-    protected Vector fetchData(Connection con) throws SQLException
-    {
-        Vector vf = ParseUtil.splitString(visibleFields, ",;~");
+   public void setForeignTable(String foreignTable)
+   {
+      this.foreignTable = foreignTable;
+   }
 
-        StringBuffer queryBuf = new StringBuffer();
 
-        queryBuf.append("SELECT ");
-        queryBuf.append(storeField);
-        queryBuf.append(", ");
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String getForeignTable()
+   {
+      return foreignTable;
+   }
 
-        for (int i = 0; i < vf.size(); i++)
-        {
-            queryBuf.append((String) vf.elementAt(i));
 
-            if (i < (vf.size() - 1))
-            {
-                queryBuf.append(", ");
-            }
-        }
+   /**
+    * DOCUMENT ME!
+    *
+    * @param visibleFields DOCUMENT ME!
+    */
+   public void setVisibleFields(String visibleFields)
+   {
+      this.visibleFields = visibleFields;
+   }
 
-        queryBuf.append(" FROM ");
-        queryBuf.append(foreignTable);
 
-        if (orderBy != null)
-        {
-            queryBuf.append(" ORDER BY ");
-            queryBuf.append(orderBy);
-        }
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String getVisibleFields()
+   {
+      return visibleFields;
+   }
 
-        logCat.info("about to execute:" + queryBuf.toString());
 
-        PreparedStatement ps = con.prepareStatement(queryBuf.toString());
-        ResultSetVector rsv = new ResultSetVector(ps.executeQuery());
-        ps.close(); // #JP Jun 27, 2001
-        return formatEmbeddedResultRows(rsv);
-    }
+   /**
+    * DOCUMENT ME!
+    *
+    * @param storeField DOCUMENT ME!
+    */
+   public void setStoreField(String storeField)
+   {
+      this.storeField = storeField;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String getStoreField()
+   {
+      return storeField;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param orderBy DOCUMENT ME!
+    */
+   public void setOrderBy(String orderBy)
+   {
+      this.orderBy = orderBy;
+      logCat.info("setOrderBy(\"" + orderBy + "\")");
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String getOrderBy()
+   {
+      return orderBy;
+   }
+
+
+   /**
+   returns Hashtable with data. Its keys represent the "value"-fields for the DataContainer-Tag, its values
+   represent the visible fields for the Multitags.
+   (DataContainer are: select, radio, checkbox and a special flavour of Label).
+   */
+   protected Vector fetchData(Connection con) throws SQLException
+   {
+      Vector       vf = ParseUtil.splitString(visibleFields, ",;~");
+
+      StringBuffer queryBuf = new StringBuffer();
+
+      queryBuf.append("SELECT ");
+      queryBuf.append(storeField);
+      queryBuf.append(", ");
+
+      for (int i = 0; i < vf.size(); i++)
+      {
+         queryBuf.append((String) vf.elementAt(i));
+
+         if (i < (vf.size() - 1))
+         {
+            queryBuf.append(", ");
+         }
+      }
+
+      queryBuf.append(" FROM ");
+      queryBuf.append(foreignTable);
+
+      if (orderBy != null)
+      {
+         queryBuf.append(" ORDER BY ");
+         queryBuf.append(orderBy);
+      }
+
+      logCat.info("about to execute:" + queryBuf.toString());
+
+      PreparedStatement ps  = con.prepareStatement(queryBuf.toString());
+      ResultSetVector   rsv = new ResultSetVector(ps.executeQuery());
+      ps.close(); // #JP Jun 27, 2001
+
+      return formatEmbeddedResultRows(rsv);
+   }
 }
