@@ -3,7 +3,7 @@
 * $Date$
 
 __________________________________________________________________________________________________
-Monday, January 21, 2002
+Wednesday, January 23, 2002
 DbForms version 1.02
 Grunikiewicz.philip@hydro.qc.ca
 
@@ -14,6 +14,29 @@ Corrected the well-formed'ness of the dbforms.tld file.
 Added two new attributes to the various input tags to allow for validation.  More to come in future releases
 Fixed a problem in how dbform's allocates a database connection (Contributed by Dirk Kraemer).
 Error exceptions which are thrown, and are empty, are no longer displayed.
+
+
+DbForms-config.xml
+------------------
+
+Enhancement contributed by Stefano Borghi
+
+Currently, a date value sent to the database is converted into the yyyy-MM-dd format.  This is fine
+if you have configured your database to support this format but chances are, you may need to 
+use a different format.  This format can now be set in the dbforms-config.xml file as follows:
+
+<dbforms-config>
+
+	<date-format>dd/MM/yyyy</date-format>
+	
+
+	<table name=...	
+
+The format you specify, is the format in which you are expected to input your dates.  A conversion
+takes place within dbForms to convert your date value to the format expected by your database.  If
+you wish to DISPLAY dates in a format other then yyyy-MM-dd, then you are required to use the 
+'format' attribute as documented in the user manual.
+
 
 
 __________________________________________________________________________________________________
