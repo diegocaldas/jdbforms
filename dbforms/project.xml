@@ -48,14 +48,13 @@
   </mailingLists>
 
   <developers>
-
     <developer>
       <name>Joachim Peer</name>
       <id>joepeer</id>
       <email></email>
       <organization/>
       <roles>
-	    <role>Project founder</role>
+        <role>Project founder</role>
         <role>Java Developer</role>
       </roles>
     </developer>
@@ -73,7 +72,7 @@
     <developer>
       <name>Sebastian Bogaci</name>
       <id>sbogaci</id>
-      <email>Henner.Kollmann@gmx.de</email>
+      <email></email>
       <organization/>
       <roles>
         <role>Java Developer</role>
@@ -126,7 +125,6 @@
       <email></email>
       <organization/>
       <roles>
-	    <role>Project founder</role>
         <role>Java Developer</role>
       </roles>
     </developer>
@@ -170,24 +168,30 @@
         <role>Java Developer</role>
       </roles>
     </developer>
-
   </developers>
 
   <contributors>
      <contributor>
        <name>Robert W. Husted</name>
        <email>husted@netscape.com</email>
+       <organization/>
+       <roles>
+         <role></role>
+       </roles>
      </contributor>
 
      <contributor>
        <name>Bradley M. Handy</name>
-       <email></email>
+       <email>bhandy@arbor.edu</email>
+       <organization/>
+       <roles>
+         <role>Java Developer</role>
+       </roles>
      </contributor>
   </contributors>
 
 
   <dependencies>       
-
     <dependency>
       <id>cos</id>
       <jar>cos.jar</jar>
@@ -220,23 +224,23 @@
     </dependency>
     -->
 
-	<!-- 
+    <!-- 
        -  jdbc2_0-stdext.jar is used to compile JakartaConnectionProvider class
-	   -  (it uses a Datasource object insetad of DriverManager).
-	   -  J2SE JDK1.4.x includes this class into its core libraries;
-	   -  J2SE JDK1.3.x no.
-	   -
-	   -  http://java.sun.com/products/jdbc/download.html#binary
-	   -->
+       -  (it uses a Datasource object instead of DriverManager).
+       -  J2SE JDK1.4.x includes this class into its core libraries;
+       -  J2SE JDK1.3.x no.
+       -
+       -  http://java.sun.com/products/jdbc/download.html#binary
+       -->
     <dependency>
       <id>jdbc2_0-stdext</id>
-	  <jar>jdbc2_0-stdext.jar</jar>
+      <jar>jdbc2_0-stdext.jar</jar>
       <properties>        
         <war.bundle.jar>true</war.bundle.jar>
       </properties>
     </dependency>
 
-	<!-- Apache Jakarta commons here, pliz ! -->
+    <!-- Apache Jakarta commons here, pliz ! -->
     <dependency>
       <id>commons-collections</id>      
       <version>2.0</version>
@@ -297,9 +301,6 @@
     <dependency>
       <id>commons-validator</id>
       <version>1.0</version>
-      <!-- better to use the version number
-      <jar>commons-validator.jar</jar>
-      -->
       <properties>        
         <war.bundle.jar>true</war.bundle.jar>
       </properties>
@@ -372,11 +373,10 @@
     <unitTest>
       <includes>
         <include>**/*Test.java</include>
-        <include>**/Test*.java</include>
-        
+        <include>**/Test*.java</include>        
       </includes>
-      <!-- Test resources -->
-      
+
+      <!-- Test resources -->      
       <resources>
         <resource>
           <directory>tests/test</directory>
@@ -384,8 +384,7 @@
             <include>**/*.txt</include>
           </includes>
         </resource>
-      </resources>
-      
+      </resources>  
     </unitTest>
         
     <jars></jars>
