@@ -83,6 +83,7 @@
 		<xs:attribute name="orderBy" type="xs:string" use="optional"/>
 		<xs:attribute name="dataAccessClass" type="xs:string" use="optional"/>
 		<xs:attribute name="alias" type="xs:string" use="optional"/>
+		<xs:attribute name="blobHandling" type="xs:string" use="optional"/>
 	</xs:complexType>
 	<xs:element name="dbforms-config">
 		<xs:complexType>
