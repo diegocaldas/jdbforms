@@ -29,9 +29,16 @@ version 0.9
   <info>this is the root element of a data manipulation form</info>
 
   <attribute>
+     <name>id</name>
+     <required>false</required>
+     <rtexprvalue>true</rtexprvalue>
+     <info>expose id, enables interaction with JavaScript</info>     
+  </attribute>
+
+  <attribute>
     <name>tableName</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>
     <p>the name of the table/view referenced by the dbform</p>
     <p>not needed if form is empty!</p>
@@ -41,7 +48,7 @@ version 0.9
   <attribute>
     <name>maxRows</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>
     <p>
     Determinates how many times the body tag and its sub-elements get executed (evaluated &amp; rendered):
@@ -59,7 +66,7 @@ version 0.9
   <attribute>
     <name>redisplayFieldsOnError</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>   
       In a jsp which contains many input fields, it may be desirable, in the event of an error, to redisplay input data.
       (instead of refreshing the fields from the DB) DbForms implements this functionality by default with INSERT fields only.
@@ -72,7 +79,7 @@ version 0.9
   <attribute>
     <name>followUp</name>
     <required>true</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>
     <p>site to be invoked after action - nota bene: this followUp may be overruled by "followUp"-
     attributes of actionButtons</p>
@@ -82,7 +89,7 @@ version 0.9
   <attribute>
     <name>autoUpdate</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>
 	<p>if "true", at every action (navigation, insert, update, etc.) all input fields of ALL currently
 	rendered rowsets are parsed and updated. many rows may be affected. This can be <b>very useful</b>
@@ -113,7 +120,7 @@ version 0.9
   <attribute>
     <name>target</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>
       	<p>pendant to the html-target attribute in html-form tag: the target frame to jump to</p>
     </info>
@@ -122,7 +129,7 @@ version 0.9
   <attribute>
     <name>multipart</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>
     <p>
     multipart <b>must</b> be set to "true" if the form contains file-upload tags or if the form may be invoked by a form containing file-upload tags, or
@@ -176,7 +183,7 @@ version 0.9
   <attribute>
      <name>gotoPrefix</name>
      <required>false</required>
-     <rtexprvalue>false</rtexprvalue>
+     <rtexprvalue>true</rtexprvalue>
      <info>
      <p>
      allows to define a prefix applied to request parameters in order to provide a convenient and easy
@@ -302,7 +309,7 @@ version 0.9
   <attribute>
     <name>allowNew</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>
     by default this is "true" - if so, the body is rendered at least 1 time, even if there are no data rows in the table. this enables the user to insert a new data row. - to disable this feature, allowNew has to be set to "false"
     </info>
@@ -338,7 +345,7 @@ version 0.9
   <attribute>
     <name>fieldName</name>
     <required>true</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info><p>name of the field this tag references to</p></info>
   </attribute>
 </tag>
@@ -351,7 +358,7 @@ version 0.9
 	<attribute>
 	    <name>fieldName</name>
 	    <required>true</required>
-	    <rtexprvalue>false</rtexprvalue>
+	    <rtexprvalue>true</rtexprvalue>
 	</attribute>
 	<attribute>
 	    <name>format</name>
@@ -387,7 +394,7 @@ version 0.9
   <attribute>
     <name>fieldName</name>
     <required>true</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info><p>name of the field this tag references to</p></info>
   </attribute>
 </tag>
@@ -404,9 +411,16 @@ version 0.9
   <info>i/o text field</info>
 
   <attribute>
+     <name>id</name>
+     <required>false</required>
+     <rtexprvalue>true</rtexprvalue>
+     <info>expose id, enables interaction with JavaScript</info>     
+  </attribute>
+
+  <attribute>
     <name>fieldName</name>
     <required>true</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info><p>name of the field this tag references to</p></info>
   </attribute>
 
@@ -426,7 +440,7 @@ version 0.9
         <attribute>
             <name>hidden</name>
             <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
+            <rtexprvalue>true</rtexprvalue>
             <info>Determines if the text field should be hidden or displayed.</info>
         </attribute>
         
@@ -446,7 +460,7 @@ version 0.9
     <attribute>
       <name>accessKey</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	The keyboard character used to move focus immediately to this
 	element.
@@ -456,14 +470,14 @@ version 0.9
     <attribute>
       <name>maxlength</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>Maximum length of the string to be entered</info>
     </attribute>
 
     <attribute>
       <name>onBlur</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 	<info>
 	JavaScript event handler executed when this element loses input
 	focus.
@@ -473,7 +487,7 @@ version 0.9
     <attribute>
       <name>onChange</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element loses input
 				focus and its value has changed.
@@ -483,7 +497,7 @@ version 0.9
     <attribute>
       <name>onClick</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element receives a
 				mouse click.
@@ -493,7 +507,7 @@ version 0.9
     <attribute>
       <name>onDblClick</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element receives a
 				mouse double click.
@@ -502,7 +516,7 @@ version 0.9
     <attribute>
       <name>onFocus</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element receives input
 				focus.
@@ -512,7 +526,7 @@ version 0.9
     <attribute>
       <name>onKeyDown</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element has focus and a
 				key is depressed.
@@ -522,7 +536,7 @@ version 0.9
     <attribute>
       <name>onKeyPress</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element has focus and a
 				key is depressed and released.
@@ -532,7 +546,7 @@ version 0.9
     <attribute>
       <name>onKeyUp</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element has focus and a
 				key is released.
@@ -542,7 +556,7 @@ version 0.9
     <attribute>
       <name>onMouseDown</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element is under the mouse
 				pointer and a mouse button is depressed.
@@ -552,7 +566,7 @@ version 0.9
     <attribute>
       <name>onMouseMove</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element is under the
 				mouse pointer and the pointer is moved.
@@ -561,7 +575,7 @@ version 0.9
     <attribute>
       <name>onMouseOut</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element was under the
 				mouse pointer but the pointer was moved outside the element.
@@ -571,7 +585,7 @@ version 0.9
     <attribute>
       <name>onMouseOver</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element was not under
 				the mouse pointer but the pointer is moved inside the element.
@@ -581,7 +595,7 @@ version 0.9
     <attribute>
       <name>onMouseUp</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element is under the
 				mouse pointer and a mouse button is released.
@@ -591,21 +605,21 @@ version 0.9
     <attribute>
       <name>onSelect</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>JavaScipt event hanlder executed when the user selects some text</info>
     </attribute>
 
     <attribute>
       <name>size</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>Size of the input field</info>
     </attribute>
 
     <attribute>
       <name>style</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	CSS styles to be applied to this HTML element.
       </info>
@@ -614,7 +628,7 @@ version 0.9
     <attribute>
       <name>styleClass</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	CSS stylesheet class to be applied to this HTML element.
       </info>
@@ -623,7 +637,7 @@ version 0.9
     <attribute>
       <name>tabIndex</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	The tab order (ascending positive integers) for this element.
        </info>
@@ -644,9 +658,16 @@ version 0.9
   <info>i/o text field</info>
 
   <attribute>
+     <name>id</name>
+     <required>false</required>
+     <rtexprvalue>true</rtexprvalue>
+     <info>expose id, enables interaction with JavaScript</info>     
+  </attribute>
+
+  <attribute>
     <name>fieldName</name>
     <required>true</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info><p>name of the field this tag references to</p></info>
   </attribute>
 
@@ -696,7 +717,7 @@ version 0.9
   <attribute>
       <name>hidden</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info><p>Determines if the text field should be hidden or displayed.</p></info>
   </attribute>
   
@@ -704,7 +725,7 @@ version 0.9
   <attribute>
       <name>overrideValue</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info><p>
 	Defines the text field's default value. When this attribute is set, 
 	the value retrieved from the database is ignored.            
@@ -715,7 +736,7 @@ version 0.9
     <attribute>
       <name>accessKey</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	The keyboard character used to move focus immediately to this
 	element.
@@ -725,14 +746,14 @@ version 0.9
     <attribute>
       <name>maxlength</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>Maximum length of the string to be entered</info>
     </attribute>
 
     <attribute>
       <name>onBlur</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 	<info>
 	JavaScript event handler executed when this element loses input
 	focus.
@@ -742,7 +763,7 @@ version 0.9
     <attribute>
       <name>onChange</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element loses input
 				focus and its value has changed.
@@ -752,7 +773,7 @@ version 0.9
     <attribute>
       <name>onClick</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element receives a
 				mouse click.
@@ -762,7 +783,7 @@ version 0.9
     <attribute>
       <name>onDblClick</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element receives a
 				mouse double click.
@@ -771,7 +792,7 @@ version 0.9
     <attribute>
       <name>onFocus</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element receives input
 				focus.
@@ -781,7 +802,7 @@ version 0.9
     <attribute>
       <name>onKeyDown</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element has focus and a
 				key is depressed.
@@ -791,7 +812,7 @@ version 0.9
     <attribute>
       <name>onKeyPress</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element has focus and a
 				key is depressed and released.
@@ -801,7 +822,7 @@ version 0.9
     <attribute>
       <name>onKeyUp</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element has focus and a
 				key is released.
@@ -811,7 +832,7 @@ version 0.9
     <attribute>
       <name>onMouseDown</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element is under the mouse
 				pointer and a mouse button is depressed.
@@ -821,7 +842,7 @@ version 0.9
     <attribute>
       <name>onMouseMove</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element is under the
 				mouse pointer and the pointer is moved.
@@ -830,7 +851,7 @@ version 0.9
     <attribute>
       <name>onMouseOut</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element was under the
 				mouse pointer but the pointer was moved outside the element.
@@ -840,7 +861,7 @@ version 0.9
     <attribute>
       <name>onMouseOver</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element was not under
 				the mouse pointer but the pointer is moved inside the element.
@@ -850,7 +871,7 @@ version 0.9
     <attribute>
       <name>onMouseUp</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element is under the
 				mouse pointer and a mouse button is released.
@@ -860,21 +881,21 @@ version 0.9
     <attribute>
       <name>onSelect</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>JavaScipt event hanlder executed when the user selects some text</info>
     </attribute>
 
     <attribute>
       <name>size</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>Size of the input field</info>
     </attribute>
 
     <attribute>
       <name>style</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	CSS styles to be applied to this HTML element.
       </info>
@@ -883,7 +904,7 @@ version 0.9
     <attribute>
       <name>styleClass</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	CSS stylesheet class to be applied to this HTML element.
       </info>
@@ -892,7 +913,7 @@ version 0.9
     <attribute>
       <name>tabIndex</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	The tab order (ascending positive integers) for this element.
        </info>
@@ -909,13 +930,20 @@ version 0.9
   <name>textArea</name>
   <summary>renders a HTML TEXTAREA element</summary>
   <tagclass>org.dbforms.taglib.DbTextAreaTag</tagclass>
-  <bodycontent>empty</bodycontent>
+  <bodycontent>JSP</bodycontent>
   <info>i/o textarea</info>
+
+  <attribute>
+     <name>id</name>
+     <required>false</required>
+     <rtexprvalue>true</rtexprvalue>
+     <info>expose id, enables interaction with JavaScript</info>     
+  </attribute>
 
   <attribute>
     <name>fieldName</name>
     <required>true</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info><p>name of the field this tag references to</p></info>
   </attribute>
 
@@ -934,21 +962,21 @@ version 0.9
      <attribute>
         <name>rows</name>
         <required>false</required>
-        <rtexprvalue>false</rtexprvalue>
+        <rtexprvalue>true</rtexprvalue>
         <info>how many rows does the textArea have</info>
     </attribute>
 
         <attribute>
           <name>cols</name>
           <required>false</required>
-          <rtexprvalue>false</rtexprvalue>
+          <rtexprvalue>true</rtexprvalue>
           <info>how many columns does the textArea have</info>
     </attribute>
 
     <attribute>
       <name>wrap</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
       may be:
       <ul>
@@ -962,7 +990,7 @@ version 0.9
   <attribute>
       <name>overrideValue</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info><p>
 	Defines the textarea's default value. When this attribute is set, 
 	the value retrieved from the database is ignored.            
@@ -970,9 +998,17 @@ version 0.9
   </attribute>
 
         <attribute>
+          <name>renderBody</name>
+          <required>false</required>
+          <rtexprvalue>true</rtexprvalue>
+          <info>if the content inside the body of this tag should be rendered or if the value of the associated field should be shown instead</info>
+    </attribute>
+
+
+        <attribute>
           <name>accessKey</name>
           <required>false</required>
-          <rtexprvalue>false</rtexprvalue>
+          <rtexprvalue>true</rtexprvalue>
       <info>
 	The keyboard character used to move focus immediately to this
 	element.
@@ -983,7 +1019,7 @@ version 0.9
     <attribute>
       <name>onBlur</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 	<info>
 	JavaScript event handler executed when this element loses input
 	focus.
@@ -993,7 +1029,7 @@ version 0.9
     <attribute>
       <name>onChange</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element loses input
 				focus and its value has changed.
@@ -1003,7 +1039,7 @@ version 0.9
     <attribute>
       <name>onClick</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element receives a
 				mouse click.
@@ -1013,7 +1049,7 @@ version 0.9
     <attribute>
       <name>onDblClick</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element receives a
 				mouse double click.
@@ -1022,7 +1058,7 @@ version 0.9
     <attribute>
       <name>onFocus</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element receives input
 				focus.
@@ -1032,7 +1068,7 @@ version 0.9
     <attribute>
       <name>onKeyDown</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element has focus and a
 				key is depressed.
@@ -1042,7 +1078,7 @@ version 0.9
     <attribute>
       <name>onKeyPress</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element has focus and a
 				key is depressed and released.
@@ -1052,7 +1088,7 @@ version 0.9
     <attribute>
       <name>onKeyUp</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element has focus and a
 				key is released.
@@ -1062,7 +1098,7 @@ version 0.9
     <attribute>
       <name>onMouseDown</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element is under the mouse
 				pointer and a mouse button is depressed.
@@ -1072,7 +1108,7 @@ version 0.9
     <attribute>
       <name>onMouseMove</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element is under the
 				mouse pointer and the pointer is moved.
@@ -1081,7 +1117,7 @@ version 0.9
     <attribute>
       <name>onMouseOut</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element was under the
 				mouse pointer but the pointer was moved outside the element.
@@ -1091,7 +1127,7 @@ version 0.9
     <attribute>
       <name>onMouseOver</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element was not under
 				the mouse pointer but the pointer is moved inside the element.
@@ -1101,7 +1137,7 @@ version 0.9
     <attribute>
       <name>onMouseUp</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element is under the
 				mouse pointer and a mouse button is released.
@@ -1110,14 +1146,14 @@ version 0.9
     <attribute>
       <name>onSelect</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>JavaScipt event hanlder executed when the user selects some text</info>
     </attribute>
 
     <attribute>
       <name>style</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	CSS styles to be applied to this HTML element.
       </info>
@@ -1126,7 +1162,7 @@ version 0.9
     <attribute>
       <name>styleClass</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	CSS stylesheet class to be applied to this HTML element.
       </info>
@@ -1135,12 +1171,275 @@ version 0.9
     <attribute>
       <name>tabIndex</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	The tab order (ascending positive integers) for this element.
        </info>
     </attribute>
   </tag>
+
+
+
+<tag>
+  <name>textAreaForBlobs</name>
+  <summary>renders a HTML TEXTAREA element</summary>
+  <tagclass>org.dbforms.taglib.DbTextAreaForBlobsTag</tagclass>
+  <bodycontent>JSP</bodycontent>
+  <info>i/o textarea for character diskblobs. use it if you want users to edit files using textareas</info>
+
+  <attribute>
+    <name>fieldName</name>
+    <required>true</required>
+    <rtexprvalue>true</rtexprvalue>
+    <info><p>name of the field this tag references to</p></info>
+  </attribute>
+
+  <attribute>
+    <name>format</name>
+    <required>false</required>
+    <rtexprvalue>true</rtexprvalue>
+    <info>
+      <p>an instance of java.text.Format or any subclass of it. This instance
+      is used to force DbForms to print out the field's value using a certain formatting style. 
+      this is done internally by invoking method "format(Object)" of the provided
+      Format object</p>
+    </info>
+  </attribute>
+
+     <attribute>
+        <name>rows</name>
+        <required>false</required>
+        <rtexprvalue>true</rtexprvalue>
+        <info>how many rows does the textArea have</info>
+    </attribute>
+
+        <attribute>
+          <name>cols</name>
+          <required>false</required>
+          <rtexprvalue>true</rtexprvalue>
+          <info>how many columns does the textArea have</info>
+    </attribute>
+
+    <attribute>
+      <name>wrap</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <info>
+      may be:
+      <ul>
+      	<li>"virtual" - text get wrapped optically</li>
+      	<li>"phyiscal" - text get wrapped optically and physically (line breaks)</li>
+      </ul>
+      </info>
+    </attribute>
+
+
+  <attribute>
+      <name>overrideValue</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <info><p>
+	Defines the textarea's default value. When this attribute is set, 
+	the value retrieved from the database is ignored.            
+      </p></info>
+  </attribute>
+
+        <attribute>
+          <name>renderBody</name>
+          <required>false</required>
+          <rtexprvalue>true</rtexprvalue>
+          <info>if the content inside the body of this tag should be rendered or if the value of the associated field should be shown instead</info>
+    </attribute>
+
+        <attribute>
+          <name>suffix</name>
+          <required>false</required>
+          <rtexprvalue>true</rtexprvalue>
+          <info>suffix, e.g. jsp, xml, etc.</info>
+    </attribute>
+
+
+        <attribute>
+          <name>accessKey</name>
+          <required>false</required>
+          <rtexprvalue>true</rtexprvalue>
+      <info>
+	The keyboard character used to move focus immediately to this
+	element.
+      </info>
+    </attribute>
+
+
+    <attribute>
+      <name>onBlur</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+	<info>
+	JavaScript event handler executed when this element loses input
+	focus.
+      </info>
+    </attribute>
+
+    <attribute>
+      <name>onChange</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+			<info>
+				JavaScript event handler executed when this element loses input
+				focus and its value has changed.
+			</info>
+    </attribute>
+
+    <attribute>
+      <name>onClick</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+			<info>
+				JavaScript event handler executed when this element receives a
+				mouse click.
+			</info>
+    </attribute>
+
+    <attribute>
+      <name>onDblClick</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+			<info>
+				JavaScript event handler executed when this element receives a
+				mouse double click.
+			</info>
+    </attribute>
+    <attribute>
+      <name>onFocus</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+			<info>
+				JavaScript event handler executed when this element receives input
+				focus.
+			</info>
+    </attribute>
+
+    <attribute>
+      <name>onKeyDown</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+			<info>
+				JavaScript event handler executed when this element has focus and a
+				key is depressed.
+			</info>
+    </attribute>
+
+    <attribute>
+      <name>onKeyPress</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+			<info>
+				JavaScript event handler executed when this element has focus and a
+				key is depressed and released.
+			</info>
+    </attribute>
+
+    <attribute>
+      <name>onKeyUp</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+			<info>
+				JavaScript event handler executed when this element has focus and a
+				key is released.
+			</info>
+    </attribute>
+
+    <attribute>
+      <name>onMouseDown</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+			<info>
+				JavaScript event handler executed when this element is under the mouse
+				pointer and a mouse button is depressed.
+			</info>
+    </attribute>
+
+    <attribute>
+      <name>onMouseMove</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+			<info>
+				JavaScript event handler executed when this element is under the
+				mouse pointer and the pointer is moved.
+			</info>
+    </attribute>
+    <attribute>
+      <name>onMouseOut</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+			<info>
+				JavaScript event handler executed when this element was under the
+				mouse pointer but the pointer was moved outside the element.
+			</info>
+    </attribute>
+
+    <attribute>
+      <name>onMouseOver</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+			<info>
+				JavaScript event handler executed when this element was not under
+				the mouse pointer but the pointer is moved inside the element.
+			</info>
+    </attribute>
+
+    <attribute>
+      <name>onMouseUp</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+			<info>
+				JavaScript event handler executed when this element is under the
+				mouse pointer and a mouse button is released.
+			</info>
+    </attribute>
+    <attribute>
+      <name>onSelect</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <info>JavaScipt event hanlder executed when the user selects some text</info>
+    </attribute>
+
+    <attribute>
+      <name>style</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <info>
+	CSS styles to be applied to this HTML element.
+      </info>
+    </attribute>
+
+    <attribute>
+      <name>styleClass</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <info>
+	CSS stylesheet class to be applied to this HTML element.
+      </info>
+    </attribute>
+
+    <attribute>
+      <name>tabIndex</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <info>
+	The tab order (ascending positive integers) for this element.
+       </info>
+    </attribute>
+  </tag>
+
+
+
+
+
+
+
+
+
 
 
 <tag>
@@ -1164,24 +1463,24 @@ version 0.9
   <attribute>
     <name>name</name>
     <required>true</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>an arbitrary id declared by the user - this id is useful, if the same data should be used more than once at one jsp page. using this unique name the system is able to chache the data  </info>
   </attribute>
   <attribute>
     <name>foreignTable</name>
     <required>true</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>the name of the table whre</info>
   </attribute>
   <attribute>
     <name>visibleFields</name>
     <required>true</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
   </attribute>
   <attribute>
     <name>storeField</name>
     <required>true</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
   </attribute>
 </tag>
 
@@ -1211,7 +1510,7 @@ version 0.9
   <attribute>
     <name>name</name>
     <required>true</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>an arbitrary id declared by the user - this id is useful, if the same data should be used more than once at one jsp page. using this unique name the system is able to chache the data  </info>
   </attribute>
   <attribute>
@@ -1256,7 +1555,7 @@ version 0.9
   <attribute>
     <name>name</name>
     <required>true</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>an arbitrary id declared by the user - this id is useful, if the same data should be used more than once at one jsp page. using this unique name the system is able to chache the data  </info>
   </attribute>
 </tag>
@@ -1273,13 +1572,13 @@ version 0.9
   <attribute>
     <name>key</name>
     <required>true</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
   </attribute>
 
   <attribute>
     <name>value</name>
     <required>true</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
   </attribute>
 </tag>
 
@@ -1306,16 +1605,23 @@ in functionality and performance can be expected.
   </info>
 
   <attribute>
+     <name>id</name>
+     <required>false</required>
+     <rtexprvalue>true</rtexprvalue>
+     <info>expose id, enables interaction with JavaScript</info>     
+  </attribute>
+
+  <attribute>
     <name>fieldName</name>
     <required>true</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info><p>name of the field this tag references to</p></info>
   </attribute>
 
     <attribute>
       <name>accept</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	<p>MIME(s)-types of the fields to be uploaded. you may use wildcards as well</p>
 	<p>example: accept="text/*" for text, htm, html,etc.</p>
@@ -1326,7 +1632,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>accessKey</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	The keyboard character used to move focus immediately to this
 	element.
@@ -1336,14 +1642,14 @@ in functionality and performance can be expected.
     <attribute>
       <name>maxlength</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>Maximum length of the string to be entered</info>
     </attribute>
 
     <attribute>
       <name>onBlur</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 	<info>
 	JavaScript event handler executed when this element loses input
 	focus.
@@ -1353,7 +1659,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onChange</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element loses input
 				focus and its value has changed.
@@ -1363,7 +1669,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onClick</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element receives a
 				mouse click.
@@ -1373,7 +1679,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onDblClick</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element receives a
 				mouse double click.
@@ -1382,7 +1688,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onFocus</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element receives input
 				focus.
@@ -1392,7 +1698,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onKeyDown</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element has focus and a
 				key is depressed.
@@ -1402,7 +1708,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onKeyPress</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element has focus and a
 				key is depressed and released.
@@ -1412,7 +1718,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onKeyUp</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element has focus and a
 				key is released.
@@ -1422,7 +1728,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseDown</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element is under the mouse
 				pointer and a mouse button is depressed.
@@ -1432,7 +1738,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseMove</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element is under the
 				mouse pointer and the pointer is moved.
@@ -1441,7 +1747,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseOut</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element was under the
 				mouse pointer but the pointer was moved outside the element.
@@ -1451,7 +1757,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseOver</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element was not under
 				the mouse pointer but the pointer is moved inside the element.
@@ -1461,7 +1767,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseUp</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element is under the
 				mouse pointer and a mouse button is released.
@@ -1471,21 +1777,21 @@ in functionality and performance can be expected.
     <attribute>
       <name>onSelect</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>JavaScipt event hanlder executed when the user selects some text</info>
     </attribute>
 
     <attribute>
       <name>size</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>Size of the input field</info>
     </attribute>
 
     <attribute>
       <name>style</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	CSS styles to be applied to this HTML element.
       </info>
@@ -1494,7 +1800,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>styleClass</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	CSS stylesheet class to be applied to this HTML element.
       </info>
@@ -1503,7 +1809,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>tabIndex</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	The tab order (ascending positive integers) for this element.
        </info>
@@ -1540,16 +1846,23 @@ in functionality and performance can be expected.
   </info>
 
   <attribute>
+     <name>id</name>
+     <required>false</required>
+     <rtexprvalue>true</rtexprvalue>
+     <info>expose id, enables interaction with JavaScript</info>     
+  </attribute>
+
+  <attribute>
     <name>fieldName</name>
     <required>true</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info><p>name of the field this tag references to</p></info>
   </attribute>
 
   <attribute>
     <name>value</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>
     <p>value that sould be used as default when form is in insert mode.</p>
     <p>only needed if form is in insert-mode, otherwise the DbForms-Framework determinates the value.</p>
@@ -1559,7 +1872,7 @@ in functionality and performance can be expected.
   <attribute>
     <name>checked</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>
     <p>determinates if this radio should be selected by default when form is in insert mode</p>
     <p>only needed if form is in insert-mode, otherwise the DbForms-Framework determinates whether a radio should be selected or not.</p>
@@ -1569,14 +1882,14 @@ in functionality and performance can be expected.
   <attribute>
     <name>growDirection</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>for radio groups only: in which direction should the group grow: valid values are "horizontal" and "vertical"</info>
   </attribute>
 
     <attribute>
       <name>accessKey</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	The keyboard character used to move focus immediately to this
 	element.
@@ -1585,7 +1898,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onBlur</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 	<info>
 	JavaScript event handler executed when this element loses input
 	focus.
@@ -1595,7 +1908,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onChange</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element loses input
 				focus and its value has changed.
@@ -1605,7 +1918,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onClick</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element receives a
 				mouse click.
@@ -1615,7 +1928,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onDblClick</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element receives a
 				mouse double click.
@@ -1624,7 +1937,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onFocus</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element receives input
 				focus.
@@ -1634,7 +1947,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onKeyDown</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element has focus and a
 				key is depressed.
@@ -1644,7 +1957,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onKeyPress</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element has focus and a
 				key is depressed and released.
@@ -1654,7 +1967,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onKeyUp</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element has focus and a
 				key is released.
@@ -1664,7 +1977,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseDown</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element is under the mouse
 				pointer and a mouse button is depressed.
@@ -1674,7 +1987,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseMove</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element is under the
 				mouse pointer and the pointer is moved.
@@ -1683,7 +1996,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseOut</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element was under the
 				mouse pointer but the pointer was moved outside the element.
@@ -1693,7 +2006,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseOver</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element was not under
 				the mouse pointer but the pointer is moved inside the element.
@@ -1703,7 +2016,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseUp</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element is under the
 				mouse pointer and a mouse button is released.
@@ -1713,14 +2026,14 @@ in functionality and performance can be expected.
     <attribute>
       <name>onSelect</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>JavaScipt event hanlder executed when the user selects some text</info>
     </attribute>
 
     <attribute>
       <name>tabIndex</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	The tab order (ascending positive integers) for this element.
        </info>
@@ -1741,16 +2054,24 @@ in functionality and performance can be expected.
 (like tableData, queryData, staticData, ...)
   </p>
   </info>
+  
+  <attribute>
+     <name>id</name>
+     <required>false</required>
+     <rtexprvalue>true</rtexprvalue>
+     <info>expose id, enables interaction with JavaScript</info>     
+  </attribute>  
+  
   <attribute>
     <name>fieldName</name>
     <required>true</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info><p>name of the field this tag references to</p></info>
   </attribute>
   <attribute>
     <name>value</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info><p>value that sould be used as default when form is in insert mode</p>
     <p>only needed if parentForm is in "insert-mode", otherwise the DbForms-Framework determinates the value.</p>
 
@@ -1759,7 +2080,7 @@ in functionality and performance can be expected.
   <attribute>
     <name>checked</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>
     <p>determinates if this checkbox should be checked by default when form is in insert mode</p>
     <p>only needed if parentForm is in "insert-mode", otherwise the DbForms-Framework determinates whether a checkbox should be selected or not.</p>
@@ -1769,14 +2090,14 @@ in functionality and performance can be expected.
   <attribute>
     <name>growDirection</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>for checkbox groups only: in which direction should the group grow: valid values are "horizontal" and "vertical"</info>
   </attribute>
 
     <attribute>
       <name>accessKey</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	The keyboard character used to move focus immediately to this
 	element.
@@ -1785,7 +2106,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onBlur</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 	<info>
 	JavaScript event handler executed when this element loses input
 	focus.
@@ -1795,7 +2116,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onChange</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element loses input
 				focus and its value has changed.
@@ -1805,7 +2126,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onClick</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element receives a
 				mouse click.
@@ -1815,7 +2136,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onDblClick</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element receives a
 				mouse double click.
@@ -1824,7 +2145,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onFocus</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element receives input
 				focus.
@@ -1834,7 +2155,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onKeyDown</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element has focus and a
 				key is depressed.
@@ -1844,7 +2165,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onKeyPress</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element has focus and a
 				key is depressed and released.
@@ -1854,7 +2175,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onKeyUp</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element has focus and a
 				key is released.
@@ -1864,7 +2185,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseDown</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element is under the mouse
 				pointer and a mouse button is depressed.
@@ -1874,7 +2195,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseMove</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element is under the
 				mouse pointer and the pointer is moved.
@@ -1883,7 +2204,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseOut</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element was under the
 				mouse pointer but the pointer was moved outside the element.
@@ -1893,7 +2214,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseOver</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element was not under
 				the mouse pointer but the pointer is moved inside the element.
@@ -1903,7 +2224,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseUp</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element is under the
 				mouse pointer and a mouse button is released.
@@ -1912,14 +2233,14 @@ in functionality and performance can be expected.
     <attribute>
       <name>onSelect</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>JavaScipt event hanlder executed when the user selects some text</info>
     </attribute>
 
     <attribute>
       <name>tabIndex</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	The tab order (ascending positive integers) for this element.
        </info>
@@ -1947,16 +2268,23 @@ in functionality and performance can be expected.
   </info>
 
   <attribute>
+     <name>id</name>
+     <required>false</required>
+     <rtexprvalue>true</rtexprvalue>
+     <info>expose id, enables interaction with JavaScript</info>     
+  </attribute>
+
+  <attribute>
     <name>fieldName</name>
     <required>true</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info><p>name of the field this tag references to</p></info>
   </attribute>
 
 <attribute>
     <name>size</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>
     <p>how many rows should the select box have</p>	
     </info>
@@ -1972,7 +2300,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>accessKey</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	The keyboard character used to move focus immediately to this
 	element.
@@ -1982,7 +2310,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onBlur</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 	<info>
 	JavaScript event handler executed when this element loses input
 	focus.
@@ -1992,7 +2320,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onChange</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element loses input
 				focus and its value has changed.
@@ -2002,7 +2330,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onClick</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element receives a
 				mouse click.
@@ -2012,7 +2340,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onDblClick</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element receives a
 				mouse double click.
@@ -2021,7 +2349,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onFocus</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element receives input
 				focus.
@@ -2031,7 +2359,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onKeyDown</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element has focus and a
 				key is depressed.
@@ -2041,7 +2369,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onKeyPress</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element has focus and a
 				key is depressed and released.
@@ -2051,7 +2379,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onKeyUp</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element has focus and a
 				key is released.
@@ -2061,7 +2389,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseDown</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element is under the mouse
 				pointer and a mouse button is depressed.
@@ -2071,7 +2399,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseMove</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element is under the
 				mouse pointer and the pointer is moved.
@@ -2080,7 +2408,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseOut</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element was under the
 				mouse pointer but the pointer was moved outside the element.
@@ -2090,7 +2418,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseOver</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element was not under
 				the mouse pointer but the pointer is moved inside the element.
@@ -2100,7 +2428,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseUp</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element is under the
 				mouse pointer and a mouse button is released.
@@ -2109,14 +2437,14 @@ in functionality and performance can be expected.
     <attribute>
       <name>onSelect</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>JavaScipt event hanlder executed when the user selects an item</info>
     </attribute>
 
     <attribute>
       <name>tabIndex</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	The tab order (ascending positive integers) for this element.
        </info>
@@ -2156,7 +2484,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>href</name>
       <required>true</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	the url of the JSP file representing the view
        </info>
@@ -2165,7 +2493,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>tableName</name>
       <required>true</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>	
 	the url of the table the view represents
        </info>
@@ -2202,7 +2530,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>fieldName</name>
       <required>true</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>	
       name of the key-field
        </info>
@@ -2233,9 +2561,16 @@ in functionality and performance can be expected.
   </info>
 
   <attribute>
+     <name>id</name>
+     <required>false</required>
+     <rtexprvalue>true</rtexprvalue>
+     <info>expose id, enables interaction with JavaScript</info>     
+  </attribute>
+
+  <attribute>
     <name>flavor</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>
     <p>styling of the button</p>
     choices:
@@ -2250,21 +2585,21 @@ in functionality and performance can be expected.
   <attribute>
     <name>caption</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>caption of the button (use it if the chosen flavor is "standard")</info>
   </attribute>
 
   <attribute>
     <name>src</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>source of the image (use it if the coosen flavor is "image")</info>
   </attribute>
 
   <attribute>
     <name>alt</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>alternative to image (use it if the coosen flavor is "image")</info>
   </attribute>
 
@@ -2281,7 +2616,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>accessKey</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	The keyboard character used to move focus immediately to this
 	element.
@@ -2291,7 +2626,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onBlur</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 	<info>
 	JavaScript event handler executed when this element loses input
 	focus.
@@ -2301,7 +2636,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onChange</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element loses input
 				focus and its value has changed.
@@ -2311,7 +2646,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onSelect</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>JavaScipt event hanlder executed when the user selects some text</info>
     </attribute>
 
@@ -2329,7 +2664,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onDblClick</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element receives a
 				mouse double click.
@@ -2338,7 +2673,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onFocus</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element receives input
 				focus.
@@ -2348,7 +2683,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onKeyDown</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element has focus and a
 				key is depressed.
@@ -2358,7 +2693,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onKeyPress</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element has focus and a
 				key is depressed and released.
@@ -2368,7 +2703,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onKeyUp</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element has focus and a
 				key is released.
@@ -2378,7 +2713,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseDown</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element is under the mouse
 				pointer and a mouse button is depressed.
@@ -2388,7 +2723,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseMove</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element is under the
 				mouse pointer and the pointer is moved.
@@ -2397,7 +2732,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseOut</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element was under the
 				mouse pointer but the pointer was moved outside the element.
@@ -2407,7 +2742,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseOver</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element was not under
 				the mouse pointer but the pointer is moved inside the element.
@@ -2417,7 +2752,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseUp</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element is under the
 				mouse pointer and a mouse button is released.
@@ -2427,7 +2762,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>style</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	CSS styles to be applied to this HTML element.
       </info>
@@ -2436,7 +2771,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>styleClass</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	CSS stylesheet class to be applied to this HTML element.
       </info>
@@ -2445,7 +2780,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>tabIndex</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	The tab order (ascending positive integers) for this element.
        </info>
@@ -2465,9 +2800,16 @@ in functionality and performance can be expected.
   </info>
 
   <attribute>
+     <name>id</name>
+     <required>false</required>
+     <rtexprvalue>true</rtexprvalue>
+     <info>expose id, enables interaction with JavaScript</info>     
+  </attribute>
+
+  <attribute>
     <name>flavor</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>
     <p>styling of the button</p>
     choices:
@@ -2482,21 +2824,21 @@ in functionality and performance can be expected.
   <attribute>
     <name>caption</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>caption of the button (use it if the chosen flavor is "standard")</info>
   </attribute>
 
   <attribute>
     <name>src</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>source of the image (use it if the coosen flavor is "image")</info>
   </attribute>
 
   <attribute>
     <name>alt</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>alternative to image (use it if the coosen flavor is "image")</info>
   </attribute>
 
@@ -2513,7 +2855,7 @@ in functionality and performance can be expected.
   <attribute>
     <name>associatedRadio</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>
 	    <p>determinates the unique name of a data-row-marking "radio"-element (this MUST extist on the
 	    same JSP - page as this button!</p>
@@ -2526,7 +2868,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>accessKey</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	The keyboard character used to move focus immediately to this
 	element.
@@ -2536,7 +2878,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onBlur</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 	<info>
 	JavaScript event handler executed when this element loses input
 	focus.
@@ -2546,7 +2888,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onChange</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element loses input
 				focus and its value has changed.
@@ -2556,7 +2898,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onSelect</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>JavaScipt event hanlder executed when the user selects some text</info>
     </attribute>
 
@@ -2574,7 +2916,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onDblClick</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element receives a
 				mouse double click.
@@ -2583,7 +2925,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onFocus</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element receives input
 				focus.
@@ -2593,7 +2935,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onKeyDown</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element has focus and a
 				key is depressed.
@@ -2603,7 +2945,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onKeyPress</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element has focus and a
 				key is depressed and released.
@@ -2613,7 +2955,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onKeyUp</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element has focus and a
 				key is released.
@@ -2623,7 +2965,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseDown</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element is under the mouse
 				pointer and a mouse button is depressed.
@@ -2633,7 +2975,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseMove</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element is under the
 				mouse pointer and the pointer is moved.
@@ -2642,7 +2984,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseOut</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element was under the
 				mouse pointer but the pointer was moved outside the element.
@@ -2652,7 +2994,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseOver</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element was not under
 				the mouse pointer but the pointer is moved inside the element.
@@ -2662,7 +3004,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseUp</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element is under the
 				mouse pointer and a mouse button is released.
@@ -2672,7 +3014,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>style</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	CSS styles to be applied to this HTML element.
       </info>
@@ -2681,7 +3023,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>styleClass</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	CSS stylesheet class to be applied to this HTML element.
       </info>
@@ -2690,7 +3032,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>tabIndex</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	The tab order (ascending positive integers) for this element.
        </info>
@@ -2709,9 +3051,16 @@ in functionality and performance can be expected.
   </info>
 
   <attribute>
+     <name>id</name>
+     <required>false</required>
+     <rtexprvalue>true</rtexprvalue>
+     <info>expose id, enables interaction with JavaScript</info>     
+  </attribute>
+
+  <attribute>
     <name>flavor</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>
     <p>styling of the button</p>
     choices:
@@ -2726,21 +3075,21 @@ in functionality and performance can be expected.
   <attribute>
     <name>caption</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>caption of the button (use it if the chosen flavor is "standard")</info>
   </attribute>
 
   <attribute>
     <name>src</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>source of the image (use it if the coosen flavor is "image")</info>
   </attribute>
 
   <attribute>
     <name>alt</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>alternative to image (use it if the coosen flavor is "image")</info>
   </attribute>
 
@@ -2757,7 +3106,7 @@ in functionality and performance can be expected.
   <attribute>
     <name>associatedRadio</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>
 	    <p>determinates the unique name of a data-row-marking "radio"-element (this MUST extist on the
 	    same JSP - page as this button!</p>
@@ -2770,7 +3119,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>accessKey</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	The keyboard character used to move focus immediately to this
 	element.
@@ -2780,7 +3129,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onBlur</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 	<info>
 	JavaScript event handler executed when this element loses input
 	focus.
@@ -2790,7 +3139,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onChange</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element loses input
 				focus and its value has changed.
@@ -2800,7 +3149,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onSelect</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>JavaScipt event hanlder executed when the user selects some text</info>
     </attribute>
 
@@ -2818,7 +3167,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onDblClick</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element receives a
 				mouse double click.
@@ -2827,7 +3176,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onFocus</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element receives input
 				focus.
@@ -2837,7 +3186,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onKeyDown</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element has focus and a
 				key is depressed.
@@ -2847,7 +3196,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onKeyPress</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element has focus and a
 				key is depressed and released.
@@ -2857,7 +3206,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onKeyUp</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element has focus and a
 				key is released.
@@ -2867,7 +3216,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseDown</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element is under the mouse
 				pointer and a mouse button is depressed.
@@ -2877,7 +3226,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseMove</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element is under the
 				mouse pointer and the pointer is moved.
@@ -2886,7 +3235,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseOut</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element was under the
 				mouse pointer but the pointer was moved outside the element.
@@ -2896,7 +3245,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseOver</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element was not under
 				the mouse pointer but the pointer is moved inside the element.
@@ -2906,7 +3255,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseUp</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element is under the
 				mouse pointer and a mouse button is released.
@@ -2916,7 +3265,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>style</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	CSS styles to be applied to this HTML element.
       </info>
@@ -2925,7 +3274,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>styleClass</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	CSS stylesheet class to be applied to this HTML element.
       </info>
@@ -2934,7 +3283,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>tabIndex</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	The tab order (ascending positive integers) for this element.
        </info>
@@ -2949,9 +3298,16 @@ in functionality and performance can be expected.
   <info>navigation button to scroll back</info>
 
   <attribute>
+     <name>id</name>
+     <required>false</required>
+     <rtexprvalue>true</rtexprvalue>
+     <info>expose id, enables interaction with JavaScript</info>     
+  </attribute>
+
+  <attribute>
     <name>flavor</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>
     <p>styling of the button</p>
     choices:
@@ -2966,28 +3322,28 @@ in functionality and performance can be expected.
   <attribute>
     <name>caption</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>caption of the button (use it if the chosen flavor is "standard")</info>
   </attribute>
 
   <attribute>
     <name>src</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>source of the image (use it if the coosen flavor is "image")</info>
   </attribute>
 
   <attribute>
     <name>alt</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>alternative to image (use it if the coosen flavor is "image")</info>
   </attribute>
 
   <attribute>
     <name>stepWidth</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>how many rows of data should be scrolled</info>
   </attribute>
 
@@ -2998,13 +3354,13 @@ in functionality and performance can be expected.
       <p>this attribute over-rules the followUp-attribute of the parent form(s)!</p>
     </info>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
   </attribute>
 
     <attribute>
       <name>accessKey</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	The keyboard character used to move focus immediately to this
 	element.
@@ -3014,7 +3370,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onBlur</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 	<info>
 	JavaScript event handler executed when this element loses input
 	focus.
@@ -3024,7 +3380,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onChange</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element loses input
 				focus and its value has changed.
@@ -3034,7 +3390,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onSelect</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>JavaScipt event hanlder executed when the user selects some text</info>
     </attribute>
 
@@ -3042,7 +3398,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onClick</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element receives a
 				mouse click.
@@ -3052,7 +3408,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onDblClick</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element receives a
 				mouse double click.
@@ -3061,7 +3417,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onFocus</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element receives input
 				focus.
@@ -3071,7 +3427,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onKeyDown</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element has focus and a
 				key is depressed.
@@ -3081,7 +3437,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onKeyPress</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element has focus and a
 				key is depressed and released.
@@ -3091,7 +3447,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onKeyUp</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element has focus and a
 				key is released.
@@ -3101,7 +3457,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseDown</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element is under the mouse
 				pointer and a mouse button is depressed.
@@ -3111,7 +3467,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseMove</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element is under the
 				mouse pointer and the pointer is moved.
@@ -3120,7 +3476,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseOut</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element was under the
 				mouse pointer but the pointer was moved outside the element.
@@ -3130,7 +3486,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseOver</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element was not under
 				the mouse pointer but the pointer is moved inside the element.
@@ -3140,7 +3496,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseUp</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element is under the
 				mouse pointer and a mouse button is released.
@@ -3150,7 +3506,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>style</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	CSS styles to be applied to this HTML element.
       </info>
@@ -3159,7 +3515,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>styleClass</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	CSS stylesheet class to be applied to this HTML element.
       </info>
@@ -3168,7 +3524,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>tabIndex</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	The tab order (ascending positive integers) for this element.
        </info>
@@ -3183,9 +3539,16 @@ in functionality and performance can be expected.
   <info>navigation button to scroll to next dataset(s)</info>
 
   <attribute>
+     <name>id</name>
+     <required>false</required>
+     <rtexprvalue>true</rtexprvalue>
+     <info>expose id, enables interaction with JavaScript</info>     
+  </attribute>
+
+  <attribute>
     <name>flavor</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>
     <p>styling of the button</p>
     choices:
@@ -3200,28 +3563,28 @@ in functionality and performance can be expected.
   <attribute>
     <name>caption</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>caption of the button (use it if the chosen flavor is "standard")</info>
   </attribute>
 
   <attribute>
     <name>src</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>source of the image (use it if the coosen flavor is "image")</info>
   </attribute>
 
   <attribute>
     <name>alt</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>alternative to image (use it if the coosen flavor is "image")</info>
   </attribute>
 
   <attribute>
     <name>stepWidth</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>how many rows of data should be scrolled</info>
   </attribute>
 
@@ -3232,13 +3595,13 @@ in functionality and performance can be expected.
       <p>this attribute over-rules the followUp-attribute of the parent form(s)!</p>
     </info>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
   </attribute>
 
     <attribute>
       <name>accessKey</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	The keyboard character used to move focus immediately to this
 	element.
@@ -3248,7 +3611,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onBlur</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 	<info>
 	JavaScript event handler executed when this element loses input
 	focus.
@@ -3258,7 +3621,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onChange</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element loses input
 				focus and its value has changed.
@@ -3268,7 +3631,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onSelect</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>JavaScipt event hanlder executed when the user selects some text</info>
     </attribute>
 
@@ -3276,7 +3639,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onClick</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element receives a
 				mouse click.
@@ -3286,7 +3649,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onDblClick</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element receives a
 				mouse double click.
@@ -3295,7 +3658,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onFocus</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element receives input
 				focus.
@@ -3305,7 +3668,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onKeyDown</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element has focus and a
 				key is depressed.
@@ -3315,7 +3678,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onKeyPress</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element has focus and a
 				key is depressed and released.
@@ -3325,7 +3688,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onKeyUp</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element has focus and a
 				key is released.
@@ -3335,7 +3698,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseDown</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element is under the mouse
 				pointer and a mouse button is depressed.
@@ -3345,7 +3708,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseMove</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element is under the
 				mouse pointer and the pointer is moved.
@@ -3354,7 +3717,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseOut</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element was under the
 				mouse pointer but the pointer was moved outside the element.
@@ -3364,7 +3727,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseOver</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element was not under
 				the mouse pointer but the pointer is moved inside the element.
@@ -3374,7 +3737,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseUp</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element is under the
 				mouse pointer and a mouse button is released.
@@ -3384,7 +3747,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>style</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	CSS styles to be applied to this HTML element.
       </info>
@@ -3393,7 +3756,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>styleClass</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	CSS stylesheet class to be applied to this HTML element.
       </info>
@@ -3402,7 +3765,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>tabIndex</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	The tab order (ascending positive integers) for this element.
        </info>
@@ -3418,9 +3781,16 @@ in functionality and performance can be expected.
   <info>navigation button to scroll to first dataset</info>
 
   <attribute>
+     <name>id</name>
+     <required>false</required>
+     <rtexprvalue>true</rtexprvalue>
+     <info>expose id, enables interaction with JavaScript</info>     
+  </attribute>
+
+  <attribute>
     <name>flavor</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>
     <p>styling of the button</p>
     choices:
@@ -3435,21 +3805,21 @@ in functionality and performance can be expected.
   <attribute>
     <name>caption</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>caption of the button (use it if the chosen flavor is "standard")</info>
   </attribute>
 
   <attribute>
     <name>src</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>source of the image (use it if the coosen flavor is "image")</info>
   </attribute>
 
   <attribute>
     <name>alt</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>alternative to image (use it if the coosen flavor is "image")</info>
   </attribute>
 
@@ -3460,13 +3830,13 @@ in functionality and performance can be expected.
       <p>this attribute over-rules the followUp-attribute of the parent form(s)!</p>
     </info>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
   </attribute>
 
     <attribute>
       <name>accessKey</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	The keyboard character used to move focus immediately to this
 	element.
@@ -3476,7 +3846,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onBlur</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 	<info>
 	JavaScript event handler executed when this element loses input
 	focus.
@@ -3486,7 +3856,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onChange</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element loses input
 				focus and its value has changed.
@@ -3496,7 +3866,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onSelect</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>JavaScipt event hanlder executed when the user selects some text</info>
     </attribute>
 
@@ -3504,7 +3874,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onClick</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element receives a
 				mouse click.
@@ -3514,7 +3884,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onDblClick</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element receives a
 				mouse double click.
@@ -3523,7 +3893,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onFocus</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element receives input
 				focus.
@@ -3533,7 +3903,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onKeyDown</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element has focus and a
 				key is depressed.
@@ -3543,7 +3913,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onKeyPress</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element has focus and a
 				key is depressed and released.
@@ -3553,7 +3923,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onKeyUp</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element has focus and a
 				key is released.
@@ -3563,7 +3933,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseDown</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element is under the mouse
 				pointer and a mouse button is depressed.
@@ -3573,7 +3943,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseMove</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element is under the
 				mouse pointer and the pointer is moved.
@@ -3582,7 +3952,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseOut</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element was under the
 				mouse pointer but the pointer was moved outside the element.
@@ -3592,7 +3962,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseOver</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element was not under
 				the mouse pointer but the pointer is moved inside the element.
@@ -3602,7 +3972,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseUp</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element is under the
 				mouse pointer and a mouse button is released.
@@ -3612,7 +3982,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>style</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	CSS styles to be applied to this HTML element.
       </info>
@@ -3621,7 +3991,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>styleClass</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	CSS stylesheet class to be applied to this HTML element.
       </info>
@@ -3630,7 +4000,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>tabIndex</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	The tab order (ascending positive integers) for this element.
        </info>
@@ -3647,9 +4017,16 @@ in functionality and performance can be expected.
   <info>navigation button to scroll to last dataset</info>
 
   <attribute>
+     <name>id</name>
+     <required>false</required>
+     <rtexprvalue>true</rtexprvalue>
+     <info>expose id, enables interaction with JavaScript</info>     
+  </attribute>
+
+  <attribute>
     <name>flavor</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>
     <p>styling of the button</p>
     choices:
@@ -3664,21 +4041,21 @@ in functionality and performance can be expected.
   <attribute>
     <name>caption</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>caption of the button (use it if the chosen flavor is "standard")</info>
   </attribute>
 
   <attribute>
     <name>src</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>source of the image (use it if the coosen flavor is "image")</info>
   </attribute>
 
   <attribute>
     <name>alt</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>alternative to image (use it if the coosen flavor is "image")</info>
   </attribute>
 
@@ -3689,13 +4066,13 @@ in functionality and performance can be expected.
       <p>this attribute over-rules the followUp-attribute of the parent form(s)!</p>
     </info>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
   </attribute>
 
     <attribute>
       <name>accessKey</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	The keyboard character used to move focus immediately to this
 	element.
@@ -3705,7 +4082,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onBlur</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 	<info>
 	JavaScript event handler executed when this element loses input
 	focus.
@@ -3715,7 +4092,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onChange</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element loses input
 				focus and its value has changed.
@@ -3725,7 +4102,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onSelect</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>JavaScipt event hanlder executed when the user selects some text</info>
     </attribute>
 
@@ -3733,7 +4110,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onClick</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element receives a
 				mouse click.
@@ -3743,7 +4120,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onDblClick</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element receives a
 				mouse double click.
@@ -3752,7 +4129,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onFocus</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element receives input
 				focus.
@@ -3762,7 +4139,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onKeyDown</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element has focus and a
 				key is depressed.
@@ -3772,7 +4149,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onKeyPress</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element has focus and a
 				key is depressed and released.
@@ -3782,7 +4159,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onKeyUp</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element has focus and a
 				key is released.
@@ -3792,7 +4169,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseDown</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element is under the mouse
 				pointer and a mouse button is depressed.
@@ -3802,7 +4179,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseMove</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element is under the
 				mouse pointer and the pointer is moved.
@@ -3811,7 +4188,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseOut</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element was under the
 				mouse pointer but the pointer was moved outside the element.
@@ -3821,7 +4198,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseOver</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element was not under
 				the mouse pointer but the pointer is moved inside the element.
@@ -3831,7 +4208,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseUp</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element is under the
 				mouse pointer and a mouse button is released.
@@ -3841,7 +4218,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>style</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	CSS styles to be applied to this HTML element.
       </info>
@@ -3850,7 +4227,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>styleClass</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	CSS stylesheet class to be applied to this HTML element.
       </info>
@@ -3859,7 +4236,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>tabIndex</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	The tab order (ascending positive integers) for this element.
        </info>
@@ -3878,9 +4255,16 @@ in functionality and performance can be expected.
   </info>
 
   <attribute>
+     <name>id</name>
+     <required>false</required>
+     <rtexprvalue>true</rtexprvalue>
+     <info>expose id, enables interaction with JavaScript</info>     
+  </attribute>
+
+  <attribute>
     <name>flavor</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>
     <p>styling of the button</p>
     choices:
@@ -3895,21 +4279,21 @@ in functionality and performance can be expected.
   <attribute>
     <name>caption</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>caption of the button (use it if the chosen flavor is "standard")</info>
   </attribute>
 
   <attribute>
     <name>src</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>source of the image (use it if the coosen flavor is "image")</info>
   </attribute>
 
   <attribute>
     <name>alt</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>alternative to image (use it if the coosen flavor is "image")</info>
   </attribute>
 
@@ -3920,13 +4304,13 @@ in functionality and performance can be expected.
       <p>this attribute over-rules the followUp-attribute of the parent form(s)!</p>
     </info>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
   </attribute>
 
     <attribute>
       <name>accessKey</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	The keyboard character used to move focus immediately to this
 	element.
@@ -3936,7 +4320,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onBlur</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 	<info>
 	JavaScript event handler executed when this element loses input
 	focus.
@@ -3946,7 +4330,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onChange</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element loses input
 				focus and its value has changed.
@@ -3956,7 +4340,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onSelect</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>JavaScipt event hanlder executed when the user selects some text</info>
     </attribute>
 
@@ -3964,7 +4348,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onClick</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element receives a
 				mouse click.
@@ -3974,7 +4358,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onDblClick</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element receives a
 				mouse double click.
@@ -3983,7 +4367,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onFocus</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element receives input
 				focus.
@@ -3993,7 +4377,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onKeyDown</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element has focus and a
 				key is depressed.
@@ -4003,7 +4387,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onKeyPress</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element has focus and a
 				key is depressed and released.
@@ -4013,7 +4397,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onKeyUp</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element has focus and a
 				key is released.
@@ -4023,7 +4407,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseDown</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element is under the mouse
 				pointer and a mouse button is depressed.
@@ -4033,7 +4417,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseMove</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element is under the
 				mouse pointer and the pointer is moved.
@@ -4042,7 +4426,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseOut</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element was under the
 				mouse pointer but the pointer was moved outside the element.
@@ -4052,7 +4436,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseOver</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element was not under
 				the mouse pointer but the pointer is moved inside the element.
@@ -4062,7 +4446,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseUp</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element is under the
 				mouse pointer and a mouse button is released.
@@ -4072,7 +4456,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>style</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	CSS styles to be applied to this HTML element.
       </info>
@@ -4081,7 +4465,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>styleClass</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	CSS stylesheet class to be applied to this HTML element.
       </info>
@@ -4090,7 +4474,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>tabIndex</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	The tab order (ascending positive integers) for this element.
        </info>
@@ -4106,9 +4490,16 @@ in functionality and performance can be expected.
   <info>button for jumping to other jsp</info>
 
   <attribute>
+     <name>id</name>
+     <required>false</required>
+     <rtexprvalue>true</rtexprvalue>
+     <info>expose id, enables interaction with JavaScript</info>     
+  </attribute>
+
+  <attribute>
     <name>flavor</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>
     <p>styling of the button</p>
     choices:
@@ -4123,35 +4514,35 @@ in functionality and performance can be expected.
   <attribute>
     <name>caption</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>caption of the button (use it if the chosen flavor is "standard")</info>
   </attribute>
 
   <attribute>
     <name>src</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>source of the image (use it if the coosen flavor is "image")</info>
   </attribute>
 
   <attribute>
     <name>alt</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>alternative to image (use it if the coosen flavor is "image")</info>
   </attribute>
 
   <attribute>
     <name>destination</name>
     <required>true</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>the  URL of the jsp-view to be invoked</info>
   </attribute>
 
   <attribute>
     <name>destTable</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>the table of the toplevel form to jump to [may be deprecated soon]</info>
   </attribute>
 
@@ -4165,21 +4556,21 @@ in functionality and performance can be expected.
   <attribute>
     <name>keyToDestPos</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>a key indicating the row to navigate to (better description will come soon, after this tag is completely stable)</info>
   </attribute>
 
   <attribute>
     <name>keyToKeyToDestPos</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>the name of the "associatedRadio"- button used to identify a row. Check "customerlist.jsp" in example!</info>
   </attribute>
 
     <attribute>
       <name>accessKey</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	The keyboard character used to move focus immediately to this
 	element.
@@ -4189,7 +4580,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onBlur</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 	<info>
 	JavaScript event handler executed when this element loses input
 	focus.
@@ -4199,7 +4590,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onChange</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element loses input
 				focus and its value has changed.
@@ -4209,7 +4600,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onSelect</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>JavaScipt event hanlder executed when the user selects some text</info>
     </attribute>
 
@@ -4217,7 +4608,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onClick</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element receives a
 				mouse click.
@@ -4227,7 +4618,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onDblClick</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element receives a
 				mouse double click.
@@ -4236,7 +4627,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onFocus</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element receives input
 				focus.
@@ -4246,7 +4637,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onKeyDown</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element has focus and a
 				key is depressed.
@@ -4256,7 +4647,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onKeyPress</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element has focus and a
 				key is depressed and released.
@@ -4266,7 +4657,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onKeyUp</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element has focus and a
 				key is released.
@@ -4276,7 +4667,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseDown</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element is under the mouse
 				pointer and a mouse button is depressed.
@@ -4286,7 +4677,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseMove</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element is under the
 				mouse pointer and the pointer is moved.
@@ -4295,7 +4686,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseOut</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element was under the
 				mouse pointer but the pointer was moved outside the element.
@@ -4305,7 +4696,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseOver</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element was not under
 				the mouse pointer but the pointer is moved inside the element.
@@ -4315,7 +4706,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>onMouseUp</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
 			<info>
 				JavaScript event handler executed when this element is under the
 				mouse pointer and a mouse button is released.
@@ -4325,7 +4716,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>style</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	CSS styles to be applied to this HTML element.
       </info>
@@ -4334,7 +4725,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>styleClass</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	CSS stylesheet class to be applied to this HTML element.
       </info>
@@ -4343,7 +4734,7 @@ in functionality and performance can be expected.
     <attribute>
       <name>tabIndex</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
       <info>
 	The tab order (ascending positive integers) for this element.
        </info>
@@ -4393,7 +4784,7 @@ in functionality and performance can be expected.
   <attribute>
     <name>caption</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>
     <p>caption of the error-list</p>
     <p>default = "Error:"</p>
@@ -4403,7 +4794,7 @@ in functionality and performance can be expected.
   <attribute>
     <name>name</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>
     <p>the name that should be used for retrieving the error-data from the session</p>
     <p>default = "errors"</p>
@@ -4413,7 +4804,7 @@ in functionality and performance can be expected.
   <attribute>
             <name>messagePrefix</name>
             <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
+            <rtexprvalue>true</rtexprvalue>
             <info>            
 		The user may define a messagePrefix attribute to specify a delimiter. If defined, only the exception message after the delimeter is
 		written out. This can be used to produce a user interface with nice, clean output. If the error tag does not contain a value for 
@@ -4455,7 +4846,7 @@ in functionality and performance can be expected.
   <attribute>
     <name>name</name>
     <required>true</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>
     <p>
     a unique name for the radio box. this name is used by buttons like "deleteButton" or "updateButton"
@@ -4484,10 +4875,28 @@ in functionality and performance can be expected.
   <attribute>
     <name>fieldName</name>
     <required>true</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info><p>name of the field this tag references to</p></info>
   </attribute>
 </tag>
+
+
+<tag>
+  <name>blobContent</name>
+  <summary></summary>
+  <tagclass>org.dbforms.taglib.DbBlobContentTag</tagclass>
+  <bodycontent>empty</bodycontent>
+  <info>
+  </info>
+
+  <attribute>
+    <name>fieldName</name>
+    <required>true</required>
+    <rtexprvalue>true</rtexprvalue>
+    <info><p>name of the field this tag references to</p></info>
+  </attribute>
+</tag>
+
 
 <tag>
   <name>sort</name>
@@ -4501,7 +4910,7 @@ in functionality and performance can be expected.
   <attribute>
     <name>fieldName</name>
     <required>true</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info><p>name of the field this tag references to</p></info>
   </attribute>
 </tag>
@@ -4518,21 +4927,21 @@ in functionality and performance can be expected.
   <attribute>
     <name>template</name>
     <required>true</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info><p>name of the template to be included</p></info>
   </attribute>
 
   <attribute>
     <name>part</name>
     <required>true</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info><p>part of the template to be invoked</p></info>
   </attribute>
 
   <attribute>
     <name>paramList</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info><p>parameter list used to specify rendering properties for the template</p></info>
   </attribute>
 </tag>
@@ -4548,7 +4957,7 @@ in functionality and performance can be expected.
   <attribute>
     <name>name</name>
     <required>true</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info>
     <p>name of the template param to evaluate</p>
     <p><b>only used in template (_begin.jsp / _end.jsp) - definition files!</b></p>
@@ -4558,7 +4967,7 @@ in functionality and performance can be expected.
   <attribute>
     <name>defaultValue</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info><p>default value to choose if no value specified in paramList - attribute in the db:style tag of the embedded jsp</p></info>
   </attribute>
 
@@ -4566,7 +4975,7 @@ in functionality and performance can be expected.
   <attribute>
     <name>dir</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
     <info><p>
     <ul>
     <li>if the parameter describes a ressource then <b>dir</b> should be set to the directory containing that
