@@ -59,7 +59,7 @@
       <ul>
         <li><a href="http://xml.apache.org/xerces2-j/" target="_top">Xerces</a> XML parser</li>
         <li><a href="http://xml.apache.org/xalan-j/"   target="_top">Xalan</a> XSLT processor</li>
-        <li><a href="http://jakarta.apache.org/commons/digester.html" target="_top">Digester</a> component</li>
+        <li><a href="http://jakarta.apache.org/commons/digester/" target="_top">Digester</a> component</li>
       </ul>
   </p>
 </section>
