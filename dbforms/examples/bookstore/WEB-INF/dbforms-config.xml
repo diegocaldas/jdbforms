@@ -137,5 +137,17 @@
 			username = "sa"
 			password  = ""
 		/>
+
+	    <dbconnection 
+	    		id="asoexdb" 
+			    isPow2		   			= "true"
+			    connectionProviderClass = "org.dbforms.conprovider.SingleConnectionProvider"
+				name   = "jdbc:hsqldb:$(SERVLETCONTEXT_REALPATH)/WEB-INF/db_hsqldb/bookstore"
+				isJndi = "false"
+				conClass  = "org.hsqldb.jdbcDriver"
+				username = "sa"
+				password  = ""
+	    /> 
+
 	<date-format>dd.MM.yyyy</date-format>
 </dbforms-config>

@@ -25,7 +25,8 @@ package org.dbforms.config;
 import org.apache.cactus.ServletTestCase;
 import org.dbforms.servlets.ConfigServlet;
 
-
+import java.sql.Connection;
+ 
 
 /**
  * Tests of the <code>DbFormsConfig</code> class.
@@ -96,11 +97,14 @@ public class TestDbFormsConfig extends ServletTestCase
                               .equals("NEW_TABLE"));
    }
 
+	public void testGetConnection() throws Exception
+	{
+		Connection con = dbFormsConfig.getConnection();
+		assertTrue("default not found", con != null);
+		con =  dbFormsConfig.getConnection("asoexdb");
+		assertTrue("asoexdb", con != null);
+	}
 
-   /**
-    * DOCUMENT ME!
-    */
-   public void tearDown()
-   {
-   }
+
+ 
 }
