@@ -31,7 +31,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-
 import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Category;
 
@@ -39,17 +38,13 @@ import org.dbforms.util.ParseUtil;
 import org.dbforms.util.Util;
 import org.dbforms.util.MessageResourcesInternal;
 
-
-
-
-
 /**
  * This class represents a table tag in dbforms-config.xml (dbforms config xml file).
  * <br>
  * It also defines a lot of methods for preparing and actually performing
  * operations (queries) on the table
  *
- * @author Joe Peer <joepeer@excite.com>
+ * @author Joe Peer
  */
 public class Table
 {
@@ -70,7 +65,7 @@ public class Table
 
    /** structure for quick acessing of fields "by name" */
    private Hashtable fieldNameHash;
-   private Vector    foreignKeys;
+   private Vector foreignKeys;
 
    /** access foreign key by name */
    private Hashtable foreignKeyNameHash;
@@ -89,7 +84,6 @@ public class Table
 
    /** the order-by clause, as specified in dbforms-config.xml (optional!) */
    private FieldValue[] defaultOrder;
-
 
    /**
     * access control list for this object (if null, then its open to all users
@@ -120,13 +114,13 @@ public class Table
     */
    public Table()
    {
-      fields                = new Vector();
-      key                   = new Vector();
-      fieldNameHash         = new Hashtable();
-      diskblobs             = new Vector();
-      interceptors          = new Vector();
-      foreignKeys           = new Vector();
-      foreignKeyNameHash    = new Hashtable();
+      fields = new Vector();
+      key = new Vector();
+      fieldNameHash = new Hashtable();
+      diskblobs = new Vector();
+      interceptors = new Vector();
+      foreignKeys = new Vector();
+      foreignKeyNameHash = new Hashtable();
    }
 
    /**
@@ -140,7 +134,6 @@ public class Table
       return grantedPrivileges;
    }
 
-
    /**
     *  Checks if there exists a granted-privileges object and if so it
     *  queries if access/operation is possible
@@ -151,11 +144,8 @@ public class Table
     */
    public boolean hasUserPrivileg(HttpServletRequest request, int privileg)
    {
-      return (grantedPrivileges == null) ? true
-                                         : grantedPrivileges.hasUserPrivileg(request,
-         privileg);
+      return (grantedPrivileges == null) ? true : grantedPrivileges.hasUserPrivileg(request, privileg);
    }
-
 
    /**
     *  Set GrantedPrivileges, if defined in dbforms-config-xml
@@ -168,7 +158,6 @@ public class Table
       this.grantedPrivileges = grantedPrivileges;
    }
 
-
    /**
     *  Add an interceptor to this table.
     *
@@ -178,7 +167,6 @@ public class Table
    {
       interceptors.addElement(interceptor);
    }
-
 
    /**
     *  Get all the interceptor objects related to this table.
@@ -191,7 +179,6 @@ public class Table
       return interceptors;
    }
 
-
    /**
     * Check if this table has got interceptors.
     *
@@ -201,7 +188,6 @@ public class Table
    {
       return (interceptors != null) && (interceptors.size() > 0);
    }
-
 
    /**
     * Adds a Field-Object to this table and puts it into othere datastructure
@@ -217,14 +203,11 @@ public class Table
       // if the field is (part of) the key
       if (field.isKey())
       {
-         logCat.info("wow - field " + getName() + "." + field.getName()
-            + " is a key");
+         logCat.info("wow - field " + getName() + "." + field.getName() + " is a key");
          key.addElement(field);
-      }
-      else
+      } else
       {
-         logCat.info("field " + getName() + "." + field.getName()
-            + " is NO key");
+         logCat.info("field " + getName() + "." + field.getName() + " is NO key");
       }
 
       // for quicker lookup by name:
@@ -236,7 +219,6 @@ public class Table
          diskblobs.addElement(field);
       }
    }
-
 
    /**
     *  Adds a ForeignKey-Object to this table
@@ -256,7 +238,6 @@ public class Table
       foreignKeyNameHash.put(fk.getName(), fk);
    }
 
-
    /**
     *  Returns the Field-Objet with specified id.
     *
@@ -267,7 +248,6 @@ public class Table
    {
       return (Field) fields.elementAt(fieldId);
    }
-
 
    /**
     *  Sets the ID of this table
@@ -280,7 +260,6 @@ public class Table
       this.id = id;
    }
 
-
    /**
     *  Returns ID of this table.
     *
@@ -290,7 +269,6 @@ public class Table
    {
       return id;
    }
-
 
    /**
     *  Sets the name of the table
@@ -303,7 +281,6 @@ public class Table
       this.name = name;
    }
 
-
    /**
     *  Returns name of the table
     *
@@ -314,7 +291,6 @@ public class Table
       return name;
    }
 
-
    /**
     * @return String
     */
@@ -322,7 +298,6 @@ public class Table
    {
       return dataAccessClass;
    }
-
 
    /**
     * Sets the dataAccessClass.
@@ -333,7 +308,6 @@ public class Table
       this.dataAccessClass = dataAccessClass;
    }
 
-
    /**
     * @return String
     */
@@ -342,7 +316,6 @@ public class Table
       return alias;
    }
 
-
    /**
     * @param alias the alias to set
     */
@@ -350,7 +323,6 @@ public class Table
    {
       this.alias = alias;
    }
-
 
    /**
     *  Set configuration for table
@@ -361,7 +333,6 @@ public class Table
    {
       this.config = config;
    }
-
 
    /**
     *  Returns readOnly mode for table needed in DbFormTag.
@@ -376,7 +347,6 @@ public class Table
       return false;
    }
 
-
    /**
     *  Returns the vector of fields this table constists of
     *
@@ -386,7 +356,6 @@ public class Table
    {
       return fields;
    }
-
 
    /**
     *  Returns the field-objects as specified by name (or null if no field with
@@ -400,7 +369,6 @@ public class Table
       return (Field) fieldNameHash.get(name);
    }
 
-
    /**
     *  Returns the key of this table (consisting of Field-Objects
     *  representing key-fields).
@@ -412,7 +380,6 @@ public class Table
    {
       return key;
    }
-
 
    /**
     *  Determinates if this table contains a diskblob field.
@@ -426,7 +393,6 @@ public class Table
       return diskblobs.size() > 0;
    }
 
-
    /**
     *  Returns a Vector of Field-Objects representing fields of type "DISKBLOB"
     *
@@ -436,7 +402,6 @@ public class Table
    {
       return diskblobs;
    }
-
 
    /**
     *  This method generates a datastructure holding sorting information
@@ -453,11 +418,10 @@ public class Table
       }
 
       // build the datastructure, containing Fields, and infos about sort
-      defaultOrder    = this.createOrderFieldValues(orderBy, null, true);
+      defaultOrder = this.createOrderFieldValues(orderBy, null, true);
 
       logCat.info("Table.initDefaultOrder done.");
    }
-
 
    /**
     *  This method generated a datastructure holding sorting information from
@@ -466,18 +430,16 @@ public class Table
     */
    public void initDefaultOrderFromKeys()
    {
-      defaultOrder          = new FieldValue[getKey().size()];
+      defaultOrder = new FieldValue[getKey().size()];
 
       for (int i = 0; i < this.getKey().size(); i++)
       {
          Field keyField = (Field) getKey().elementAt(i);
-         defaultOrder[i] = new FieldValue();
-         defaultOrder[i].setField(keyField);
+         defaultOrder[i] = new FieldValue(keyField);
       }
 
       logCat.info("Table.initDefaultOrderfromKey done.");
    }
-
 
    /**
     *  Sets a default-orderBy clause from xml config
@@ -490,7 +452,6 @@ public class Table
       this.orderBy = orderBy;
    }
 
-
    /**
     * Return default-orderBy clause from xml config or null if not specified.
     *
@@ -501,7 +462,6 @@ public class Table
    {
       return orderBy;
    }
-
 
    /**
     *  Return the datastructure containing info about the default
@@ -514,7 +474,6 @@ public class Table
    {
       return defaultOrder;
    }
-
 
    /**
     *  Get the table events object related to this table.
@@ -534,7 +493,6 @@ public class Table
       return tableEvents;
    }
 
-
    /**
     *  Set the table events object related to this table.
     *
@@ -545,7 +503,6 @@ public class Table
       this.tableEvents = tableEvents;
       tableEvents.setTable(this);
    }
-
 
    //------------------------------ SQL methods ---------------------------------
 
@@ -565,7 +522,6 @@ public class Table
 
       return queryBuf.toString();
    }
-
 
    /**
     *  Generates part of a field list for a  SQL SELECT clause selecting
@@ -601,7 +557,6 @@ public class Table
       return buf.toString();
    }
 
-
    /**
     *  Returns SQL delete statement, used by deleteEvent.
     *
@@ -620,7 +575,6 @@ public class Table
       return queryBuf.toString();
    }
 
-
    /**
     *  Returns SQL update statement, used by updateEvent.
     *
@@ -638,8 +592,8 @@ public class Table
       // important: these are the fields which are sent through the current request;
       // this list may be only a subset of the field list, 
       //  it is not necessarily the complete field list of a table!
-      Iterator enum        = fieldValues.keys();
-      boolean     kommaNeeded = false;
+      Iterator enum = fieldValues.keys();
+      boolean kommaNeeded = false;
 
       while (enum.hasNext())
       {
@@ -648,8 +602,7 @@ public class Table
          if (kommaNeeded)
          {
             queryBuf.append(", ");
-         }
-         else
+         } else
          {
             kommaNeeded = true;
          }
@@ -664,7 +617,6 @@ public class Table
 
       return queryBuf.toString();
    }
-
 
    /**
     *  Returns SQL insert statement, used by insertEvent.
@@ -712,7 +664,6 @@ public class Table
       return queryBuf.toString();
    }
 
-
    /**
     *  Returns the select part of a query.
     *
@@ -722,8 +673,8 @@ public class Table
     */
    protected String getQuerySelect(Vector fieldsToSelect)
    {
-      StringBuffer buf                = new StringBuffer();
-      int          fieldsToSelectSize = fieldsToSelect.size();
+      StringBuffer buf = new StringBuffer();
+      int fieldsToSelectSize = fieldsToSelect.size();
 
       // #checkme: do i need this when using Hotspot ?
       // we scroll through vector directly (no enumeration!)
@@ -740,7 +691,6 @@ public class Table
       return buf.toString();
    }
 
-
    /**
     *  Returns the FROM part of a query.
     *
@@ -751,7 +701,6 @@ public class Table
       return name;
    }
 
-
    /**
     *  Returns the FROM part of a insert/delete/update query.
     *
@@ -761,7 +710,6 @@ public class Table
    {
       return getQueryFrom();
    }
-
 
    /**
     *  Returns the WHERE part of a query.
@@ -774,10 +722,9 @@ public class Table
     * @param compareMode compare mode value for generating the order clause
     * @return the WHERE part of a query
     */
-   protected String getQueryWhere(FieldValue[] fvEqual, FieldValue[] fvOrder,
-      int compareMode)
+   protected String getQueryWhere(FieldValue[] fvEqual, FieldValue[] fvOrder, int compareMode)
    {
-      boolean      firstTermExists = false;
+      boolean firstTermExists = false;
       StringBuffer buf = new StringBuffer();
 
       // build the first term;
@@ -788,11 +735,10 @@ public class Table
 
          if (fvEqual[0].getSearchMode() == Constants.SEARCHMODE_NONE)
          {
-            buf.append(FieldValue.getWhereClause(fvEqual));
-         }
-         else
+            buf.append(getWhereClause(fvEqual));
+         } else
          {
-            buf.append(FieldValue.getWhereEqualsSearchClause(fvEqual));
+            buf.append(getWhereEqualsSearchClause(fvEqual));
          }
 
          buf.append(" ) ");
@@ -807,14 +753,13 @@ public class Table
          if (compareMode != Constants.COMPARE_NONE)
          {
             buf.append(firstTermExists ? " AND ( " : "");
-            buf.append(FieldValue.getWhereAfterClause(fvOrder, compareMode));
+            buf.append(getWhereAfterClause(fvOrder, compareMode));
             buf.append(firstTermExists ? " ) " : "");
          }
       }
 
       return buf.toString();
    }
-
 
    /**
     *  Returns the part of the orderby-clause represented by this
@@ -854,7 +799,6 @@ public class Table
       return buf.toString();
    }
 
-
    /**
     *  Prepares the Querystring for the select statement
     * 
@@ -872,8 +816,7 @@ public class Table
     * @param compareMode     compare mode value for generating the order clause
     * @return the query string
     */
-   public String getSelectQuery(Vector fieldsToSelect, FieldValue[] fvEqual,
-      FieldValue[] fvOrder, String sqlFilter, int compareMode)
+   public String getSelectQuery(Vector fieldsToSelect, FieldValue[] fvEqual, FieldValue[] fvOrder, String sqlFilter, int compareMode)
    {
       StringBuffer buf = new StringBuffer();
 
@@ -886,26 +829,25 @@ public class Table
 
       if (!Util.isNull(s) || !Util.isNull(sqlFilter))
          buf.append(" WHERE ");
-         
+
       // where condition from DbFormTag's sqlFilter attribute
       if (!Util.isNull(sqlFilter))
       {
-          buf.append(" ( ");
-          buf.append(sqlFilter);
-          buf.append(" ) ");
+         buf.append(" ( ");
+         buf.append(sqlFilter);
+         buf.append(" ) ");
       }
 
       // where condition generated from searching / ordering
       if (!Util.isNull(s))
       {
-			if (!Util.isNull(sqlFilter))
-				buf.append(" AND ( ");
-			else
-				buf.append(" ( ");
+         if (!Util.isNull(sqlFilter))
+            buf.append(" AND ( ");
+         else
+            buf.append(" ( ");
          buf.append(s);
          buf.append(" ) ");
       }
-      
 
       s = getQueryOrderBy(fvOrder);
       if (s.length() > 0)
@@ -919,7 +861,6 @@ public class Table
       return buf.toString();
    }
 
-
    /**
     *  Prepares the Querystring for the free form select statement
     *
@@ -928,8 +869,7 @@ public class Table
     * @param tableList       the list of tables involved into the query
     * @return the query string
     */
-   public String getFreeFormSelectQuery(Vector fieldsToSelect,
-      String whereClause, String tableList)
+   public String getFreeFormSelectQuery(Vector fieldsToSelect, String whereClause, String tableList)
    {
       StringBuffer buf = new StringBuffer();
       buf.append("SELECT ");
@@ -939,8 +879,7 @@ public class Table
       if (Util.isNull(tableList))
       {
          buf.append(getQueryFrom());
-      }
-      else
+      } else
       {
          buf.append(tableList);
       }
@@ -951,25 +890,6 @@ public class Table
 
       return buf.toString();
    }
-
-	/**
-	 * situation: we have built a query (involving the getWhereEqualsClause() method)
-	 * and now we want to prepare the statemtent - provide actual values for the
-	 * the '?' placeholders
-	 *
-	 * @param  fvEqual the array of FieldValue objects
-	 * @param  ps the PreparedStatement object
-	 * @param  curCol the current PreparedStatement column; points to a
-	 *                PreparedStatement xxx value
-	 * @return  the current column value
-	 * @exception  SQLException if any error occurs
-	 */
-	protected int populateWhereEqualsClause(FieldValue[] fvEqual,
-		PreparedStatement ps, int curCol) throws SQLException
-	{
-		return FieldValue.populateWhereEqualsClause(fvEqual, ps, curCol);
-	}
-
 
    /**
     *  Get the SQL ResultSet from the query builded using the input data.
@@ -993,17 +913,15 @@ public class Table
     * @return a ResultSet object
     * @throws SQLException if any error occurs
     */
-   public ResultSet getDoSelectResultSet(FieldValue[] fvEqual,
-      FieldValue[] fvOrder, FieldValue[] sqlFilterParams, int compareMode, PreparedStatement ps)
-      throws SQLException
+   public ResultSet getDoSelectResultSet(FieldValue[] fvEqual, FieldValue[] fvOrder, FieldValue[] sqlFilterParams, int compareMode, PreparedStatement ps) throws SQLException
    {
       // the index of the first NOT POPULATED placeholder;
       int curCol = 1;
 
       logCat.debug("###getDoSelectResultSet pos1");
-      if (!FieldValue.isNull(sqlFilterParams)) 
-      { 
-         curCol = FieldValue.populateWhereEqualsClause(sqlFilterParams, ps, curCol);
+      if (!FieldValue.isNull(sqlFilterParams))
+      {
+         curCol = populateWhereEqualsClause(sqlFilterParams, ps, curCol);
       }
 
       logCat.debug("###getDoSelectResultSet pos2");
@@ -1013,10 +931,9 @@ public class Table
       }
 
       logCat.debug("###getDoSelectResultSet pos3");
-      if ((compareMode != Constants.COMPARE_NONE) && (fvOrder != null)
-               && (fvOrder.length > 0))
+      if ((compareMode != Constants.COMPARE_NONE) && (fvOrder != null) && (fvOrder.length > 0))
       {
-         FieldValue.populateWhereAfterClause(fvOrder, ps, curCol);
+         populateWhereAfterClause(fvOrder, ps, curCol);
       }
 
       ResultSet result = null;
@@ -1024,8 +941,7 @@ public class Table
       try
       {
          result = ps.executeQuery();
-      }
-      catch (SQLException sqle)
+      } catch (SQLException sqle)
       {
          SqlUtil.logSqlException(sqle);
          throw sqle;
@@ -1033,7 +949,6 @@ public class Table
 
       return result;
    }
-
 
    //------------------------------ Old ResultSetVector stuff ---------------------------------
 
@@ -1053,24 +968,19 @@ public class Table
     * @return a ResultSetVector object
     * @throws SQLException if any error occurs
     */
-   public ResultSetVector doConstrainedSelect(Vector fieldsToSelect,
-      FieldValue[] fvEqual, FieldValue[] fvOrder, String sqlFilter, FieldValue[] sqlFilterParams,
-      int compareMode, int maxRows,
-      Connection con) throws SQLException
+   public ResultSetVector doConstrainedSelect(Vector fieldsToSelect, FieldValue[] fvEqual, FieldValue[] fvOrder, String sqlFilter, FieldValue[] sqlFilterParams, int compareMode, int maxRows, Connection con) throws SQLException
    {
-      String            query = getSelectQuery(fieldsToSelect, fvEqual,
-            fvOrder, sqlFilter, compareMode);
+      String query = getSelectQuery(fieldsToSelect, fvEqual, fvOrder, sqlFilter, compareMode);
       PreparedStatement ps = con.prepareStatement(query);
       ps.setMaxRows(maxRows); // important when quering huge tables
 
-      ResultSet       rs     = getDoSelectResultSet(fvEqual, fvOrder, sqlFilterParams, compareMode, ps);
+      ResultSet rs = getDoSelectResultSet(fvEqual, fvOrder, sqlFilterParams, compareMode, ps);
       ResultSetVector result = new ResultSetVector(fieldsToSelect, rs);
       ps.close();
       logCat.info("::doConstrainedSelect - rsv size = " + result.size());
 
       return result;
    }
-
 
    /**
     *  perform free-form select query
@@ -1083,22 +993,18 @@ public class Table
     *  @return the ResultSetVector object
     *  @throws SQLException if any error occurs
     */
-   public ResultSetVector doFreeFormSelect(Vector fieldsToSelect,
-      String whereClause, String tableList, int maxRows, Connection con)
-      throws SQLException
+   public ResultSetVector doFreeFormSelect(Vector fieldsToSelect, String whereClause, String tableList, int maxRows, Connection con) throws SQLException
    {
-      Statement       stmt   = con.createStatement();
-      ResultSet       rs;
+      Statement stmt = con.createStatement();
+      ResultSet rs;
       ResultSetVector result;
-      String          query = getFreeFormSelectQuery(fieldsToSelect,
-            whereClause, tableList);
+      String query = getFreeFormSelectQuery(fieldsToSelect, whereClause, tableList);
       stmt.setMaxRows(maxRows); // important when quering huge tables
 
       try
       {
          rs = stmt.executeQuery(query);
-      }
-      catch (SQLException sqle)
+      } catch (SQLException sqle)
       {
          SqlUtil.logSqlException(sqle);
          throw new SQLException(sqle.getMessage());
@@ -1113,7 +1019,6 @@ public class Table
 
       return result;
    }
-
 
    //------------------------------ dealing with Postion and key Strings ---------------------------------
 
@@ -1131,23 +1036,21 @@ public class Table
    {
       StringBuffer buf = new StringBuffer();
 
-		buf.append(field.getId());
-		buf.append(":");
+      buf.append(field.getId());
+      buf.append(":");
       if (!Util.isNull(fieldValue))
       {
          buf.append(fieldValue.length());
          buf.append(":");
          buf.append(fieldValue);
-      } 
-      else 
+      } else
       {
-			buf.append(0);
-			buf.append(":");
+         buf.append(0);
+         buf.append(":");
       }
 
       return buf.toString();
    }
-
 
    /**
     *  Does basically the same as getPositionString but only for key-fields.
@@ -1174,7 +1077,6 @@ public class Table
 
       return getKeyPositionString(currentRow);
    }
-
 
    /**
     *  Does basically the same as getPositionString but only for key-fields.
@@ -1204,7 +1106,6 @@ public class Table
       return buf.toString();
    }
 
-
    /**
     * Get key position from the input hash table
     *
@@ -1216,30 +1117,29 @@ public class Table
    {
       if (fvHT != null)
       {
-			StringBuffer buf  = new StringBuffer();
-			int cnt = 0;
-			for (int i = 0; i < getKey().size(); i++)
-			{
-				Field f = (Field) getKey().elementAt(i);
-				FieldValue fv = fvHT.get(f.getName());
-				if (fv != null) 
-				{
-					String value = fv.getFieldValue();
-					if (value == null)
-					{
-						throw new IllegalArgumentException("wrong fields provided");
-					}
-					if (cnt > 0)
-					{
-						buf.append("-"); // control byte
-					}
-					buf.append(createToken(f, value));
-					cnt++;
-				}
-			}
+         StringBuffer buf = new StringBuffer();
+         int cnt = 0;
+         for (int i = 0; i < getKey().size(); i++)
+         {
+            Field f = (Field) getKey().elementAt(i);
+            FieldValue fv = fvHT.get(f.getName());
+            if (fv != null)
+            {
+               String value = fv.getFieldValue();
+               if (value == null)
+               {
+                  throw new IllegalArgumentException("wrong fields provided");
+               }
+               if (cnt > 0)
+               {
+                  buf.append("-"); // control byte
+               }
+               buf.append(createToken(f, value));
+               cnt++;
+            }
+         }
          return buf.toString();
-      }
-      else
+      } else
       {
          return null;
       }
@@ -1280,7 +1180,6 @@ public class Table
       return getPositionString(currentRow);
    }
 
-
    /**
     *  Builds a "position- string" representing the values of the current row in the given
     *  ResultSetVector.
@@ -1298,7 +1197,7 @@ public class Table
    public String getPositionString(String[] currentRow)
    {
       StringBuffer buf = new StringBuffer();
-      int          cnt = 0;
+      int cnt = 0;
 
       for (int i = 0; i < getFields().size(); i++)
       {
@@ -1319,7 +1218,6 @@ public class Table
       return buf.toString();
    }
 
-
    /**
     *  Used for instance by goto with prefix
     *
@@ -1330,14 +1228,14 @@ public class Table
     */
    public String getPositionString(Hashtable ht)
    {
-      StringBuffer buf  = new StringBuffer();
-      int          cnt  = 0;
-      Iterator  enum = ht.keySet().iterator();
+      StringBuffer buf = new StringBuffer();
+      int cnt = 0;
+      Iterator enum = ht.keySet().iterator();
 
       while (enum.hasNext())
       {
          String fieldName = (String) enum.next();
-         Field  aField = getFieldByName(fieldName);
+         Field aField = getFieldByName(fieldName);
 
          if ((aField != null) && (aField.isKey() || aField.isFieldSortable()))
          {
@@ -1350,8 +1248,7 @@ public class Table
 
             buf.append(createToken(aField, fieldValue));
             cnt++;
-         }
-         else
+         } else
          {
             logCat.error("provided goto field " + fieldName + " not found!");
          }
@@ -1359,7 +1256,6 @@ public class Table
 
       return buf.toString();
    }
-
 
    /**
     * Get key position from the input hash table
@@ -1372,15 +1268,15 @@ public class Table
    {
       if (fvHT != null)
       {
-         StringBuffer buf  = new StringBuffer();
-         int          cnt  = 0;
-         Iterator  enum = fvHT.keys();
+         StringBuffer buf = new StringBuffer();
+         int cnt = 0;
+         Iterator enum = fvHT.keys();
 
          while (enum.hasNext())
          {
-            String     fieldName = (String) enum.next();
+            String fieldName = (String) enum.next();
             FieldValue fv = fvHT.get(fieldName);
-            Field      f  = fv.getField();
+            Field f = fv.getField();
 
             if (f.isKey() || f.isFieldSortable())
             {
@@ -1402,13 +1298,11 @@ public class Table
          }
 
          return buf.toString();
-      }
-      else
+      } else
       {
          return null;
       }
    }
-
 
    /**
     *  This method parses a position string and build a data structure
@@ -1436,13 +1330,13 @@ public class Table
 
       try
       {
-         int     startIndex  = 0;
+         int startIndex = 0;
          boolean endOfString = false;
 
          // looping through the string
          while (!endOfString)
          {
-            int firstColon  = position.indexOf(':', startIndex);
+            int firstColon = position.indexOf(':', startIndex);
             int secondColon = position.indexOf(':', firstColon + 1);
 
             if ((firstColon == -1) && (secondColon == -1))
@@ -1451,33 +1345,28 @@ public class Table
             }
 
             String fieldIdStr = position.substring(startIndex, firstColon);
-            int    fieldId = Integer.parseInt(fieldIdStr);
+            int fieldId = Integer.parseInt(fieldIdStr);
 
-            String valueLengthStr = position.substring(firstColon + 1,
-                  secondColon);
-            int    valueLength = Integer.parseInt(valueLengthStr);
+            String valueLengthStr = position.substring(firstColon + 1, secondColon);
+            int valueLength = Integer.parseInt(valueLengthStr);
 
-            int    controlIndex = secondColon + 1 + valueLength;
+            int controlIndex = secondColon + 1 + valueLength;
 
             // make already be trimmed ... avoid substring exception
-            String valueStr = (controlIndex < position.length())
-               ? position.substring(secondColon + 1, controlIndex)
-               : position.substring(secondColon + 1);
+            String valueStr = (controlIndex < position.length()) ? position.substring(secondColon + 1, controlIndex) : position.substring(secondColon + 1);
 
-            Field  f  = getField(fieldId);
+            Field f = getField(fieldId);
             FieldValue fv = new FieldValue(f, valueStr);
             result.put(fv);
 
             if (controlIndex == position.length())
             {
                endOfString = true;
-            }
-            else if (controlIndex > position.length())
+            } else if (controlIndex > position.length())
             {
                logCat.warn("Controlbyte wrong but continuing execution");
                endOfString = true;
-            }
-            else
+            } else
             {
                char controlByte = position.charAt(controlIndex);
 
@@ -1495,8 +1384,7 @@ public class Table
                }
             }
          }
-      }
-      catch (Exception e)
+      } catch (Exception e)
       {
          logCat.error("::getFieldValuesFromPositionAsHt - exception:", e);
          result = null;
@@ -1504,7 +1392,6 @@ public class Table
 
       return result;
    }
-
 
    /**
     *  Transfer values from asscociative (name-orientated, user friendly) hashtable
@@ -1523,7 +1410,7 @@ public class Table
       while (enum.hasNext())
       {
          String aFieldName = (String) enum.next();
-         Field  f = this.getFieldByName(aFieldName);
+         Field f = this.getFieldByName(aFieldName);
 
          if (f != null)
          {
@@ -1537,7 +1424,6 @@ public class Table
          }
       }
    }
-
 
    /**
     *  in version 0.9 this method moved from FieldValue.fillWithValues to Table.fillWithValues
@@ -1568,8 +1454,7 @@ public class Table
                if (aFieldValue != null)
                {
                   orderConstraint[i].setFieldValue(aFieldValue.getFieldValue());
-               }
-               else
+               } else
                {
                   logCat.warn("position entry has null value:" + f.getName());
                }
@@ -1577,7 +1462,6 @@ public class Table
          }
       }
    }
-
 
    // ----------------- some convenience methods ---------------------------------------------
 
@@ -1591,7 +1475,7 @@ public class Table
    public String getWhereClauseForPS()
    {
       StringBuffer buf = new StringBuffer();
-      int          cnt = this.getKey().size();
+      int cnt = this.getKey().size();
 
       for (int i = 0; i < cnt; i++)
       {
@@ -1610,7 +1494,6 @@ public class Table
       return buf.toString();
    }
 
-
    /**
     *  POPULATES a part of the SQL where clause needed to select a distinguished
     *  row form the table using values endcoded in a string.
@@ -1622,8 +1505,7 @@ public class Table
     * @param  startColumn  PreparedStatement start column
     * @throws SQLException if any error occurs
     */
-   public void populateWhereClauseForPS(String keyValuesStr,
-      PreparedStatement ps, int startColumn) throws SQLException
+   public void populateWhereClauseForPS(String keyValuesStr, PreparedStatement ps, int startColumn) throws SQLException
    {
       int col = startColumn;
 
@@ -1631,18 +1513,17 @@ public class Table
       // matches the right dataset
       // 2003-03-29 HKK: Change from Hashtable to FieldValueTable 
       FieldValues keyValuesHt = getFieldValues(keyValuesStr);
-      int         keyLength = this.getKey().size();
+      int keyLength = this.getKey().size();
 
       for (int i = 0; i < keyLength; i++)
       {
-         Field      curField    = (Field) this.getKey().elementAt(i);
+         Field curField = (Field) this.getKey().elementAt(i);
          FieldValue aFieldValue = keyValuesHt.get(curField.getName());
-         String     valueStr    = aFieldValue.getFieldValue();
+         String valueStr = aFieldValue.getFieldValue();
          SqlUtil.fillPreparedStatement(ps, col, valueStr, curField.getType());
          col++;
       }
    }
-
 
    /**
     *  The orderBy clause usually defaults to ASCending order.
@@ -1676,8 +1557,7 @@ public class Table
             String token = st.nextToken().trim();
             logCat.info("token = " + token);
 
-            FieldValue fv            = new FieldValue();
-            boolean    sortDirection = Constants.ORDER_ASCENDING;
+            boolean sortDirection = Constants.ORDER_ASCENDING;
 
             // we propose the default
             //Separate field from command
@@ -1687,7 +1567,7 @@ public class Table
             if (index != -1) // Do we have a command, if not assume ASC order
             {
                String command = token.substring(index).toUpperCase();
-               int    pos = command.indexOf("ASC");
+               int pos = command.indexOf("ASC");
 
                if (pos == -1) // ASC not found, try descending
                {
@@ -1707,8 +1587,7 @@ public class Table
             if (index == -1)
             {
                fieldName = token.trim();
-            }
-            else
+            } else
             {
                fieldName = token.substring(0, index).trim();
             }
@@ -1717,10 +1596,9 @@ public class Table
 
             if (f != null)
             {
-               fv.setField(f);
+               FieldValue fv = new FieldValue(f);
                fv.setSortDirection(sortDirection);
-               logCat.info("Field '" + fieldName + "' is ordered in mode:"
-                  + sortDirection);
+               logCat.info("Field '" + fieldName + "' is ordered in mode:" + sortDirection);
                result.addElement(fv);
             }
          }
@@ -1729,7 +1607,6 @@ public class Table
       return result;
    }
 
-
    /**
     *
     * @param request
@@ -1737,29 +1614,25 @@ public class Table
     * @param sortFields
     * @return
     */
-   private Vector createOrderFVFromRequest(HttpServletRequest request,
-      String paramStub, Vector sortFields)
+   private Vector createOrderFVFromRequest(HttpServletRequest request, String paramStub, Vector sortFields)
    {
-      Vector result     = new Vector();
-      int    fieldIndex = paramStub.length() + 1;
+      Vector result = new Vector();
+      int fieldIndex = paramStub.length() + 1;
 
       // "sort_1" -> fieldindex= 8 (length of paramStub "order_1" is 7)
       for (int i = 0; i < sortFields.size(); i++)
       {
          String dataParam = (String) sortFields.elementAt(i);
-         int    fieldId   = Integer.parseInt(dataParam.substring(fieldIndex));
+         int fieldId = Integer.parseInt(dataParam.substring(fieldIndex));
          String sortState = ParseUtil.getParameter(request, dataParam);
          logCat.info("### dataparam=" + dataParam);
          logCat.info("### fieldId=" + fieldId);
          logCat.info("### sortState=" + sortState);
 
-         if (sortState.equalsIgnoreCase("asc")
-                  || sortState.equalsIgnoreCase("desc"))
+         if (sortState.equalsIgnoreCase("asc") || sortState.equalsIgnoreCase("desc"))
          {
-            boolean sortDirection = sortState.equalsIgnoreCase("asc")
-               ? Constants.ORDER_ASCENDING : Constants.ORDER_DESCENDING;
-            FieldValue fv = new FieldValue();
-            fv.setField(this.getField(fieldId));
+            boolean sortDirection = sortState.equalsIgnoreCase("asc") ? Constants.ORDER_ASCENDING : Constants.ORDER_DESCENDING;
+            FieldValue fv = new FieldValue(this.getField(fieldId));
             fv.setSortDirection(sortDirection);
             result.addElement(fv);
          }
@@ -1767,7 +1640,6 @@ public class Table
 
       return result;
    }
-
 
    /**
      *  Column ["ASC" | "DESC"] {"," Column ["ASC" | "DESC"] }
@@ -1786,16 +1658,14 @@ public class Table
      * @param includeKeys true to include key fields, false otherwise
      * @return            ???
      */
-   public FieldValue[] createOrderFieldValues(String order,
-      HttpServletRequest request, boolean includeKeys)
+   public FieldValue[] createOrderFieldValues(String order, HttpServletRequest request, boolean includeKeys)
    {
       Vector result = null;
 
       if (request != null)
       {
-         String paramStub  = "sort_" + this.getId();
-         Vector sortFields = ParseUtil.getParametersStartingWith(request,
-               paramStub);
+         String paramStub = "sort_" + this.getId();
+         Vector sortFields = ParseUtil.getParametersStartingWith(request, paramStub);
 
          if (sortFields.size() > 0)
          {
@@ -1832,9 +1702,9 @@ public class Table
       // scroll through keys and append to order criteria, if not already included
       for (int i = 0; i < this.getKey().size(); i++)
       {
-         Field   keyField = (Field) getKey().elementAt(i);
+         Field keyField = (Field) getKey().elementAt(i);
          boolean found = false;
-         int     j     = 0;
+         int j = 0;
 
          while (!found && (j < result.size()))
          {
@@ -1866,7 +1736,6 @@ public class Table
       return resultArray;
    }
 
-
    //------------------------------ utility / helper methods ---------------------------------
 
    /**
@@ -1891,17 +1760,14 @@ public class Table
       return buf.toString();
    }
 
-
    /**
     *   helper method used locally in this class
     */
    private void addFieldValue(Vector stub, Field f)
    {
-      FieldValue fv = new FieldValue();
-      fv.setField(f);
+      FieldValue fv = new FieldValue(f);
       stub.addElement(fv);
    }
-
 
    /**
     *  Process the interceptor objects related to this table.
@@ -1915,9 +1781,7 @@ public class Table
     * @throws SQLException if any error occurs
     * @throws MultipleValidationException if any validation error occurs
     */
-   public int processInterceptors(int action, HttpServletRequest request,
-      Hashtable associativeArray, DbFormsConfig config, Connection con)
-      throws SQLException
+   public int processInterceptors(int action, HttpServletRequest request, Hashtable associativeArray, DbFormsConfig config, Connection con) throws SQLException
    {
       String s;
       try
@@ -1937,102 +1801,82 @@ public class Table
             if (action == DbEventInterceptor.PRE_INSERT)
             {
                operation = dbi.preInsert(request, associativeArray, config, con);
-               switch (operation) {
-                  case DbEventInterceptor.DENY_OPERATION:
-                     s = MessageResourcesInternal.getMessage("dbforms.events.insert.nogrant",
-                                                                request.getLocale(),
-                                                                new String[] { getName() });
+               switch (operation)
+               {
+                  case DbEventInterceptor.DENY_OPERATION :
+                     s = MessageResourcesInternal.getMessage("dbforms.events.insert.nogrant", request.getLocale(), new String[] { getName()});
                      throw new SQLException(s);
-                  case DbEventInterceptor.IGNORE_OPERATION:
+                  case DbEventInterceptor.IGNORE_OPERATION :
                      return operation;
                }
-            }
-            else if (action == DbEventInterceptor.POST_INSERT)
+            } else if (action == DbEventInterceptor.POST_INSERT)
             {
                dbi.postInsert(request, config, con);
-            }
-            else if (action == DbEventInterceptor.PRE_UPDATE)
+            } else if (action == DbEventInterceptor.PRE_UPDATE)
             {
                operation = dbi.preUpdate(request, associativeArray, config, con);
-               switch (operation) {
-                  case DbEventInterceptor.DENY_OPERATION:
-                     s = MessageResourcesInternal.getMessage("dbforms.events.update.nogrant", 
-                                                                 request.getLocale(),
-                                                                 new String[]{getName()} 
-                                                                 );
+               switch (operation)
+               {
+                  case DbEventInterceptor.DENY_OPERATION :
+                     s = MessageResourcesInternal.getMessage("dbforms.events.update.nogrant", request.getLocale(), new String[] { getName()});
                      throw new SQLException(s);
-                  case DbEventInterceptor.IGNORE_OPERATION:
+                  case DbEventInterceptor.IGNORE_OPERATION :
                      return operation;
                }
-            }
-            else if (action == DbEventInterceptor.POST_UPDATE)
+            } else if (action == DbEventInterceptor.POST_UPDATE)
             {
                dbi.postUpdate(request, config, con);
-            }
-            else if (action == DbEventInterceptor.PRE_DELETE)
+            } else if (action == DbEventInterceptor.PRE_DELETE)
             {
                operation = dbi.preDelete(request, associativeArray, config, con);
-               switch (operation) {
-                  case DbEventInterceptor.DENY_OPERATION:
-                     s = MessageResourcesInternal.getMessage("dbforms.events.delete.nogrant", 
-                                                                 request.getLocale(),
-                                                                 new String[]{getName()} 
-                                                                 );
+               switch (operation)
+               {
+                  case DbEventInterceptor.DENY_OPERATION :
+                     s = MessageResourcesInternal.getMessage("dbforms.events.delete.nogrant", request.getLocale(), new String[] { getName()});
                      throw new SQLException(s);
-                  case DbEventInterceptor.IGNORE_OPERATION:
+                  case DbEventInterceptor.IGNORE_OPERATION :
                      return operation;
                }
-            }
-            else if (action == DbEventInterceptor.POST_DELETE)
+            } else if (action == DbEventInterceptor.POST_DELETE)
             {
                dbi.postDelete(request, config, con);
-            }
-            else if (action == DbEventInterceptor.PRE_SELECT)
+            } else if (action == DbEventInterceptor.PRE_SELECT)
             {
                operation = dbi.preSelect(request, config, con);
-               switch (operation) {
-                  case DbEventInterceptor.DENY_OPERATION:
-                     s = MessageResourcesInternal.getMessage("dbforms.events.view.nogrant", 
-                                                                 request.getLocale(),
-                                                                 new String[]{getName()} 
-                                                                 );
+               switch (operation)
+               {
+                  case DbEventInterceptor.DENY_OPERATION :
+                     s = MessageResourcesInternal.getMessage("dbforms.events.view.nogrant", request.getLocale(), new String[] { getName()});
                      throw new SQLException(s);
-                  case DbEventInterceptor.IGNORE_OPERATION:
+                  case DbEventInterceptor.IGNORE_OPERATION :
                      return operation;
                }
-            }
-            else if (action == DbEventInterceptor.POST_SELECT)
+            } else if (action == DbEventInterceptor.POST_SELECT)
             {
                dbi.postSelect(request, config, con);
             }
          }
-      }
-      catch (ClassNotFoundException cnfe)
+      } catch (ClassNotFoundException cnfe)
       {
          logCat.warn(" ClassNotFoundException : " + cnfe.getMessage());
          throw new SQLException(cnfe.getMessage());
-      }
-      catch (InstantiationException ie)
+      } catch (InstantiationException ie)
       {
          logCat.warn(" InstantiationException : " + ie.getMessage());
          throw new SQLException(ie.getMessage());
-      }
-      catch (IllegalAccessException iae)
+      } catch (IllegalAccessException iae)
       {
          logCat.warn(" IllegalAccessException : " + iae.getMessage());
          throw new SQLException(iae.getMessage());
-      }
-      catch (SQLException sqle)
+      } catch (SQLException sqle)
       {
          throw new SQLException(sqle.getMessage());
-      }
-      catch (ValidationException ve)
+      } catch (ValidationException ve)
       {
          throw new SQLException(ve.getMessage());
       }
       return DbEventInterceptor.GRANT_OPERATION;
    }
-
 
    /**
     * We have the field ID - we need the field name
@@ -2047,7 +1891,6 @@ public class Table
       return (f.getName());
    }
 
-
    /**
     * returns the hash table. Moved from dbFormTag to table, so that you can overload it!
     * 
@@ -2058,15 +1901,15 @@ public class Table
     */
    public Hashtable getNamesHashtable(String core)
    {
-      Hashtable   result = new Hashtable();
+      Hashtable result = new Hashtable();
       Iterator enum = getFields().iterator();
 
       while (enum.hasNext())
       {
-         Field        f         = (Field) enum.next();
-         String       fieldName = f.getName();
-         int          fieldId   = f.getId();
-         StringBuffer sb        = new StringBuffer(core);
+         Field f = (Field) enum.next();
+         String fieldName = f.getName();
+         int fieldId = f.getId();
+         StringBuffer sb = new StringBuffer(core);
          sb.append("_");
          sb.append(getId());
          sb.append("_");
@@ -2076,7 +1919,6 @@ public class Table
 
       return result;
    }
-
 
    /**
     * Getter for property defaultVisibleFields.
@@ -2088,7 +1930,6 @@ public class Table
       return this.defaultVisibleFields;
    }
 
-
    /**
     * Setter for property defaultVisibleFields.
     *
@@ -2098,7 +1939,6 @@ public class Table
    {
       this.defaultVisibleFields = defaultVisibleFields;
    }
-
 
    /**
     * maps chield fields to parent fields
@@ -2110,11 +1950,10 @@ public class Table
     *
     * @return FieldValues with result
     */
-   public FieldValues mapChildFieldValues(Table parentTable,
-      String parentFieldString, String childFieldString, String aPosition)
+   public FieldValues mapChildFieldValues(Table parentTable, String parentFieldString, String childFieldString, String aPosition)
    {
       // 1 to n fields may be mapped
-      Vector childFieldNames  = ParseUtil.splitString(childFieldString, ",;~");
+      Vector childFieldNames = ParseUtil.splitString(childFieldString, ",;~");
       Vector parentFieldNames = ParseUtil.splitString(parentFieldString, ",;~");
 
       // do some basic checks
@@ -2136,24 +1975,563 @@ public class Table
       FieldValues childFieldValues = new FieldValues();
       for (int i = 0; i < len; i++)
       {
-         String     parentFieldName = (String) parentFieldNames.elementAt(i);
-         Field      parentField    = parentTable.getFieldByName(parentFieldName);
-         String     childFieldName = (String) childFieldNames.elementAt(i);
-         Field      childField     = this.getFieldByName(childFieldName);
-         FieldValue aFieldValue    = ht.get(parentField.getName());
+         String parentFieldName = (String) parentFieldNames.elementAt(i);
+         Field parentField = parentTable.getFieldByName(parentFieldName);
+         String childFieldName = (String) childFieldNames.elementAt(i);
+         Field childField = this.getFieldByName(childFieldName);
+         FieldValue aFieldValue = ht.get(parentField.getName());
 
          if (aFieldValue == null)
          {
-            throw new IllegalArgumentException("ERROR: Make sure that field "
-               + parentField.getName() + " is a KEY of the table "
-               + parentTable.getName()
-               + "! Otherwise you can not use it as PARENT/CHILD LINK argument!");
+            throw new IllegalArgumentException("ERROR: Make sure that field " + parentField.getName() + " is a KEY of the table " + parentTable.getName() + "! Otherwise you can not use it as PARENT/CHILD LINK argument!");
          }
 
          String currentParentFieldValue = aFieldValue.getFieldValue();
-         childFieldValues.put(new FieldValue(childField,
-               currentParentFieldValue));
+         childFieldValues.put(new FieldValue(childField, currentParentFieldValue));
       }
       return childFieldValues;
+   }
+
+   /**
+    * Build the WHERE clause string using the input field values.
+    * 
+    * @param fv the array of FieldValue objects
+    * 
+    * @return the WHERE clause string
+    */
+   private String getWhereClause(FieldValue[] fv)
+   {
+      StringBuffer buf = new StringBuffer();
+
+      if ((fv != null) && (fv.length > 0))
+      {
+         // SM 2003-08-08: added brackets for each and-ed condition
+         buf.append(" ( ");
+
+         for (int i = 0; i < fv.length; i++)
+         {
+            // depending on the value of isLogicalOR in FieldValue,
+            // prefix the filter definition with either OR or AND
+            // (Skip first entry!)
+            if (i != 0)
+            {
+               if (fv[i].getLogicalOR())
+               {
+                  buf.append(" OR ");
+               } else
+               {
+                  buf.append(" ) AND ( ");
+               }
+            }
+
+            buf.append(getExpression(fv[i]));
+         }
+
+         buf.append(" ) ");
+      }
+
+      return buf.toString();
+   }
+
+   /**
+    * returns an SQLExpression based on the given FieldValue
+    * @param fv the FieldValue
+    * @return string holding the SQL Expression
+    */
+   private String getExpression(FieldValue fv)
+   {
+      StringBuffer buf = new StringBuffer();
+      // 20021104-HKK: Check for expression.
+      Field f = fv.getField();
+      String fieldName = Util.isNull(f.getExpression()) ? f.getName() : f.getExpression();
+      buf.append(fieldName);
+
+      // Check what type of operator is required
+      switch (fv.getOperator())
+      {
+         case Constants.FILTER_EQUAL :
+            buf.append(" = ");
+            buf.append(" ? ");
+
+            break;
+
+         case Constants.FILTER_NOT_EQUAL :
+            buf.append(" <> ");
+            buf.append(" ? ");
+
+            break;
+
+         case Constants.FILTER_GREATER_THEN :
+            buf.append(" > ");
+            buf.append(" ? ");
+
+            break;
+
+         case Constants.FILTER_SMALLER_THEN :
+            buf.append(" < ");
+            buf.append(" ? ");
+
+            break;
+
+         case Constants.FILTER_GREATER_THEN_EQUAL :
+            buf.append(" >= ");
+            buf.append(" ? ");
+
+            break;
+
+         case Constants.FILTER_SMALLER_THEN_EQUAL :
+            buf.append(" <= ");
+            buf.append(" ? ");
+
+            break;
+
+         case Constants.FILTER_LIKE :
+            buf.append(" LIKE ");
+            buf.append(" ? ");
+
+            break;
+
+         case Constants.FILTER_NULL :
+            buf.append(" IS NULL ");
+
+            break;
+
+         case Constants.FILTER_NOT_NULL :
+            buf.append(" IS NOT NULL ");
+
+            break;
+
+         case Constants.FILTER_EMPTY :
+
+            if (f.getType() == FieldTypes.CHAR)
+            {
+               buf.append(" = '' ");
+               buf.append(" OR ");
+               buf.append(fieldName);
+               buf.append(" IS NULL ");
+            }
+
+            break;
+
+         case Constants.FILTER_NOT_EMPTY :
+
+            if (f.getType() == FieldTypes.CHAR)
+            {
+               buf.append(" <> '' ");
+               buf.append(" OR ");
+               buf.append(fieldName);
+               buf.append(" IS NOT NULL ");
+            }
+
+            break;
+      }
+
+      return buf.toString();
+   }
+
+   /**
+    * situation: we have an array of fieldvalues (== fields + actual value )
+    * with search information and we want to build a where - clause [that
+    * should restrict the resultset in matching to the search fields].
+    * <pre>
+    * convention:    index 0-n => AND
+    *                index (n+1)-m => OR
+    * examples
+    *            (A = 'meier' AND X = 'joseph') AND (AGE = '10')
+    *            (A = 'meier' ) AND (X = 'joseph' OR AGE = '10')
+    *            (X = 'joseph' OR AGE = '10')
+    *            (A = 'meier' AND X = 'joseph')
+    * for comparing to code:
+    *   §1     §2        §3      §2          §4    §5   §6      §2      §7
+    *   (   A = 'smith' AND   X LIKE 'jose%' )    AND    (  AGE = '10'   )
+    * </pre>
+    * 
+    * @param fv Description of the Parameter
+    * 
+    * @return _part_ of a WHERE-clause
+    */
+   private String getWhereEqualsSearchClause(FieldValue[] fv)
+   {
+      StringBuffer buf = new StringBuffer();
+
+      if ((fv != null) && (fv.length > 0))
+      {
+         int mode;
+         int oldMode = -1;
+
+         for (int i = 0; i < fv.length; i++)
+         {
+            mode = fv[i].getSearchMode();
+
+            if (oldMode != mode)
+            {
+               oldMode = mode;
+               buf.append("(");
+
+               // §1, §6
+            }
+
+            // §2, i.e "A = 'smith'" or "X LIKE 'jose%'"
+            buf.append(getExpression(fv[i]));
+
+            if ((i < (fv.length - 1)) && (fv[i + 1].getSearchMode() == mode))
+            {
+               buf.append((mode == Constants.SEARCHMODE_AND) ? "AND " : "OR ");
+
+               // §3
+            } else
+            {
+               //if(i==fv.length-1 || fv[i+1].getSearchMode()!=mode) {
+               buf.append(")");
+
+               // §4, §7
+               if (i != (fv.length - 1))
+               {
+                  buf.append(" OR ");
+
+                  // §5 #checkme
+               }
+            }
+         }
+      }
+
+      return buf.toString();
+   }
+
+   /**
+    * situation: we have built a query (involving the getWhereEqualsClause()
+    * method) and now we want to prepare the statemtent - provide actual
+    * values for the the '?' placeholders
+    * 
+    * @param fv the array of FieldValue objects
+    * @param ps the PreparedStatement object
+    * @param curCol the current PreparedStatement column; points to a
+    *        PreparedStatement xxx value
+    * 
+    * @return the current column value
+    * 
+    * @exception SQLException if any error occurs
+    */
+   protected int populateWhereEqualsClause(FieldValue[] fv, PreparedStatement ps, int curCol) throws SQLException
+   {
+      if ((fv != null) && (fv.length > 0))
+      {
+         for (int i = 0; i < fv.length; i++)
+         {
+            curCol = fillPreparedStatement(fv[i], ps, curCol);
+         }
+      }
+
+      return curCol;
+   }
+
+   /**
+    * situation: we have an array of fieldvalues which represents actual values
+    * of order-determinating-fields. we want to build a part of the WHERE
+    * clause which restricts the query to rows coming AFTER the row containing
+    * the actual data. <br>
+    * shortly described the following rule is applied:
+    * <pre>
+    * +--------------------------------------------------------------------------------------------------+
+    * |  RULE = R1 AND R2 AND ... AND Rn                                                                 |
+    * |  Ri = fi OpA(i) fi* OR  f(i-1) OpB(i-1) f(i-1)* OR f(i-2) OpB(i-2) f(i-2)* OR ... OR f1 OpB f1*  |
+    * +--------------------------------------------------------------------------------------------------+
+    * For background info email joepeer@wap-force.net
+    * </pre>
+    * IMPORTANT NOTE: the indizes of the fv-array indicate implicitly the
+    * order-priority of the fields. <br>
+    * example: if we have ORDER BY id,name,age -> then fv[0] should contain
+    * field id, fv[1] should contain field name, fv[2] should contain field
+    * age
+    * 
+    * @param fv the array of FieldValue objects
+    * @param compareMode the comparison mode
+    * 
+    * @return _part_ of a WHERE-clause
+    */
+   private String getWhereAfterClause(FieldValue[] fv, int compareMode)
+   {
+      String conj;
+      String disj;
+      String opA1;
+      String opA2;
+      String opB1;
+      String opB2;
+
+      // COMPARE_INCLUSIVE
+      if (compareMode == Constants.COMPARE_INCLUSIVE)
+      {
+         opA1 = ">=";
+         opA2 = "<=";
+         opB1 = ">";
+         opB2 = "<";
+         conj = " AND ";
+         disj = " OR ";
+      } else
+      {
+         opA1 = ">";
+         opA2 = "<";
+         opB1 = ">=";
+         opB2 = "<=";
+         conj = " OR ";
+         disj = " AND ";
+      }
+
+      StringBuffer buf = new StringBuffer();
+
+      if ((fv != null) && (fv.length > 0))
+      {
+         // generate the Ri's
+         for (int i = 0; i < fv.length; i++)
+         {
+            // generate a "fi OpA(i) fi*"
+            buf.append("(");
+            buf.append(fv[i].getField().getName());
+            buf.append((fv[i].getSortDirection() == Constants.ORDER_ASCENDING) ? opA1 : opA2);
+
+            // OpA
+            buf.append(" ? ");
+
+            // generate the "f(i-1) OpB(i-1) f(i-1)* OR f(i-2) OpB(i-2) f(i-2)* OR ... OR f1 OpB f1*"
+            if (i > 0)
+            {
+               for (int j = i - 1; j >= 0; j--)
+               {
+                  buf.append(disj);
+                  buf.append(fv[j].getField().getName());
+                  buf.append((fv[j].getSortDirection() == Constants.ORDER_ASCENDING) ? opB1 : opB2);
+
+                  // OpB
+                  buf.append(" ? ");
+               }
+            }
+
+            buf.append(" ) ");
+
+            if (i < (fv.length - 1))
+            {
+               buf.append(conj);
+
+               // link the R's together (conjunction)
+            }
+         }
+      }
+
+      return buf.toString();
+   }
+
+   /**
+    * situation: we have built a query (involving the getWhereEqualsClause()
+    * method) and now we want to prepare the statemtent - provide actual
+    * values for the the '?' placeholders.
+    * 
+    * @param fv the array of FieldValue objects
+    * @param ps the PreparedStatement object
+    * @param curCol the current PreparedStatement column; points to a
+    *        PreparedStatement xxx value
+    * 
+    * @return the value of the current column
+    * 
+    * @exception SQLException if any error occurs
+    */
+   private int populateWhereAfterClause(FieldValue[] fv, PreparedStatement ps, int curCol) throws SQLException
+   {
+      if ((fv != null) && (fv.length > 0))
+      {
+         // populate the Ri's
+         for (int i = 0; i < fv.length; i++)
+         {
+            // populate a "fi OpA(i) fi*"
+            curCol = fillPreparedStatement(fv[i], ps, curCol);
+
+            // populate the "f(i-1) OpB(i-1) f(i-1)* OR f(i-2) OpB(i-2) f(i-2)* OR ... OR f1 OpB f1*"
+            if (i > 0)
+            {
+               for (int j = i - 1; j >= 0; j--)
+               {
+                  curCol = fillPreparedStatement(fv[j], ps, curCol);
+               }
+            }
+         }
+      }
+
+      return curCol;
+   }
+
+   /**
+    * Fill the input PreparedStatement object
+    * 
+    * @param cur the FieldValue object
+    * @param ps  the PreparedStatement object
+    * @param curCol the current PreparedStatement column; points to a
+    *        PreparedStatement xxx value
+    * 
+    * @return DOCUMENT ME!
+    * 
+    * @exception SQLException if any error occurs
+    */
+   private int fillPreparedStatement(FieldValue cur, PreparedStatement ps, int curCol) throws SQLException
+   {
+      Field curField = cur.getField();
+      String valueStr = cur.getFieldValue();
+
+      logCat.info("setting col " + curCol + " with name " + cur.getField().getName() + " to value " + valueStr + " of type " + curField.getType() + " operator " + cur.getOperator());
+
+      // 20020703-HKK: Extending search algorithm with WEAK_START, WEAK_END, WEAK_START_END
+      //               results in like '%search', 'search%', '%search%'
+      switch (cur.getSearchAlgorithm())
+      {
+         case Constants.SEARCH_ALGO_WEAK_START :
+            valueStr = '%' + valueStr;
+
+            break;
+
+         case Constants.SEARCH_ALGO_WEAK_END :
+            valueStr = valueStr + '%';
+
+            break;
+
+         case Constants.SEARCH_ALGO_WEAK_START_END :
+            valueStr = '%' + valueStr + '%';
+
+            break;
+      }
+
+      switch (cur.getOperator())
+      {
+         case Constants.FILTER_NULL :
+            break;
+
+         case Constants.FILTER_NOT_NULL :
+            break;
+
+         case Constants.FILTER_EMPTY :
+            break;
+
+         case Constants.FILTER_NOT_EMPTY :
+            break;
+
+         default :
+            SqlUtil.fillPreparedStatement(ps, curCol, valueStr, curField.getType());
+            curCol++;
+      }
+
+      return curCol;
+   }
+
+   /**
+    * Initialize the filterFieldValues array.
+    * @param table the table object
+    * @param filter the filter string
+    *
+    * @return an initialized FieldValue array
+    * @todo    add MORE docs here !!!
+    */
+   public FieldValue[] getFilterFieldArray(String filter)
+   {
+      // 1 to n fields may be mapped
+      Vector keyValPairs = ParseUtil.splitString(filter, ",;");
+
+      // ~ no longer used as separator!
+      int len = keyValPairs.size();
+
+      FieldValue[] result = new FieldValue[len];
+
+      for (int i = 0; i < len; i++)
+      {
+         int operator = 0;
+         boolean isLogicalOR = false;
+         int jump = 1;
+         String aKeyValPair = (String) keyValPairs.elementAt(i);
+
+         // i.e "id=2"
+         logCat.debug("initFilterFieldValues: aKeyValPair = " + aKeyValPair);
+
+         // Following code could be optimized, however I did not want to make too many changes...
+         int n;
+
+         // Check for Not Equal
+         if ((n = aKeyValPair.indexOf("<>")) != -1)
+         {
+            // Not Equal found! - Store the operation for use later on
+            operator = Constants.FILTER_NOT_EQUAL;
+            jump = 2;
+         } else if ((n = aKeyValPair.indexOf(">=")) != -1)
+         {
+            // Check for GreaterThanEqual
+            // GreaterThenEqual found! - Store the operation for use later on
+            operator = Constants.FILTER_GREATER_THEN_EQUAL;
+            jump = 2;
+         } else if ((n = aKeyValPair.indexOf('>')) != -1)
+         {
+            // Check for GreaterThan
+            // GreaterThen found! - Store the operation for use later on
+            operator = Constants.FILTER_GREATER_THEN;
+         } else if ((n = aKeyValPair.indexOf("<=")) != -1)
+         {
+            // Check for SmallerThenEqual
+            // SmallerThenEqual found! - Store the operation for use later on
+            operator = Constants.FILTER_SMALLER_THEN_EQUAL;
+            jump = 2;
+         } else if ((n = aKeyValPair.indexOf('<')) != -1)
+         {
+            // Check for SmallerThen
+            // SmallerThen found! - Store the operation for use later on
+            operator = Constants.FILTER_SMALLER_THEN;
+         } else if ((n = aKeyValPair.indexOf('=')) != -1)
+         {
+            // Check for equal
+            // Equal found! - Store the operator for use later on
+            operator = Constants.FILTER_EQUAL;
+         } else if ((n = aKeyValPair.indexOf('~')) != -1)
+         {
+            // Check for LIKE
+            // LIKE found! - Store the operator for use later on
+            operator = Constants.FILTER_LIKE;
+         } else if ((n = aKeyValPair.toUpperCase().indexOf("NOTISNULL")) != -1)
+         {
+            // Check for not is null
+            // LIKE found! - Store the operator for use later on
+            jump = 9;
+            operator = Constants.FILTER_NOT_NULL;
+         } else if ((n = aKeyValPair.toUpperCase().indexOf("ISNULL")) != -1)
+         {
+            // Check for null
+            // LIKE found! - Store the operator for use later on
+            jump = 6;
+            operator = Constants.FILTER_NULL;
+         }
+
+         //  PG - At this point, I have set my operator and I should have a valid index.
+         //	Note that the original code did not handle the posibility of not finding an index
+         //	(value = -1)...
+         String fieldName = aKeyValPair.substring(0, n).trim();
+
+         // i.e "id"
+         logCat.debug("Filter field=" + fieldName);
+
+         if (fieldName.charAt(0) == '|')
+         {
+            // This filter must be associated to a logical OR, clean out the indicator...
+            fieldName = fieldName.substring(1);
+            isLogicalOR = true;
+         }
+
+         Field filterField = getFieldByName(fieldName);
+
+         // Increment by 1 or 2 depending on operator
+         String value = aKeyValPair.substring(n + jump).trim();
+
+         // i.e. "2"
+         logCat.debug("Filter value=" + value);
+
+         // Create a new instance of FieldValue and set the operator variable
+         result[i] = new FieldValue(filterField, value);
+         result[i].setOperator(operator);
+         result[i].setLogicalOR(isLogicalOR);
+         logCat.debug("and fv is =" + result[i].toString());
+      }
+
+      return result;
    }
 }

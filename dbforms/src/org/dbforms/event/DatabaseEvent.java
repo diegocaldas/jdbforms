@@ -30,6 +30,8 @@ import java.util.Iterator;
 import java.util.Hashtable;
 import java.util.Vector;
 
+import java.io.UnsupportedEncodingException;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
@@ -242,10 +244,15 @@ public abstract class DatabaseEvent extends WebEvent
    *
    * @return the key values string from the request object 
    */
-  protected String getKeyValues()
+  protected String getKeyValues() 
   {
-    String key = Util.decode(ParseUtil.getParameter(request, "k_" + tableId + "_" + keyId));
-    logCat.info("::getKeyValues - key: " + key);
+    String key = null;
+    try {
+		key = Util.decode(ParseUtil.getParameter(request, "k_" + tableId + "_" + keyId));
+		logCat.info("::getKeyValues - key: " + key);
+    } catch (UnsupportedEncodingException e) {
+    	logCat.error(e);
+    }
     return key;
   }
 

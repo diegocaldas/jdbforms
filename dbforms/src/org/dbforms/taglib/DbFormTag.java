@@ -1490,7 +1490,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
 
          if (!Util.isNull(filter))
          {
-            filterFieldValues = FieldValue.getFilterFieldArray(table, filter);
+            filterFieldValues = table.getFilterFieldArray(filter);
          }
 
          FieldValue[] mergedFieldValues = null;
@@ -2192,7 +2192,8 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
                       || (aSearchAlgorithm.toLowerCase().indexOf("extended") == -1))
             {
                // Extended not found, only append field
-               FieldValue fv = new FieldValue(f, aSearchFieldValue, operator);
+               FieldValue fv = new FieldValue(f, aSearchFieldValue);
+               fv.setOperator( operator);
 
                fv.setSearchMode(mode);
                fv.setSearchAlgorithm(algorithm);
@@ -2243,8 +2244,8 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
 
                      if (operator != -1)
                      {
-                        FieldValue fv = new FieldValue(f, aSearchFieldValue, 
-                                                       operator);
+                        FieldValue fv = new FieldValue(f, aSearchFieldValue);
+                        fv.setOperator(operator);
                         fv.setSearchMode(mode);
                         fv.setSearchAlgorithm(algorithm);
 
@@ -2361,7 +2362,8 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
                   // found a single timestamp value. Extend it to >value and <end of day of value
                   FieldValue fv;
                   operator = Constants.FILTER_GREATER_THEN_EQUAL;
-                  fv       = new FieldValue(f, aSearchFieldValue, operator);
+                  fv       = new FieldValue(f, aSearchFieldValue);
+                  fv.setOperator( operator);
                   fv.setSearchMode(mode);
                   fv.setSearchAlgorithm(algorithm);
 
@@ -2381,7 +2383,8 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
 
                   if (d != null)
                   {
-                     fv = new FieldValue(f, aSearchFieldValue, operator);
+                     fv = new FieldValue(f, aSearchFieldValue);
+                     fv.setOperator(operator);
                      fv.setSearchMode(mode);
                      fv.setSearchAlgorithm(algorithm);
 
@@ -2397,7 +2400,8 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
                }
                else
                {
-                  FieldValue fv = new FieldValue(f, aSearchFieldValue, operator);
+                  FieldValue fv = new FieldValue(f, aSearchFieldValue);
+                  fv.setOperator(operator);
                   fv.setSearchMode(mode);
                   fv.setSearchAlgorithm(algorithm);
 

@@ -24,6 +24,8 @@ package org.dbforms.event.classic;
 import javax.servlet.http.*;
 import java.sql.*;
 
+import java.io.UnsupportedEncodingException;
+
 import org.apache.log4j.Category;
 
 import org.dbforms.config.*;
@@ -205,7 +207,12 @@ public class GotoEvent extends NavigationEvent
    {
       if (Util.isNull(whereClause))
       {
-		 position = Util.decode(position);
+		 try {
+			position = Util.decode(position);
+		 } catch (UnsupportedEncodingException e) {
+		    logCat.error(e);
+		    throw new SQLException(e.getMessage());
+		 }
          // Standard way  
          int compMode = (!Util.isNull(position)) ? Constants.COMPARE_INCLUSIVE
                                                  : Constants.COMPARE_NONE;

@@ -47,8 +47,7 @@ import org.dbforms.util.Util;
 public class Query extends Table
 {
    /** log4j category */
-   private static Category  logCat           = Category.getInstance(
-                                                        Query.class.getName());
+   private static Category  logCat = Category.getInstance(Query.class.getName());
    private String           from;
    private String           groupBy;
    private String           where;
@@ -265,7 +264,7 @@ public class Query extends Table
    private FieldValue[] getFieldValueHaving(FieldValue[] fvEqual)
    {
       Vector mode_having = new Vector();
-      
+
       // Split fields in where and having part
       if (fvEqual != null)
       {
@@ -273,7 +272,7 @@ public class Query extends Table
          {
             if ((fvEqual[i].getField().getId() >= WHEREIDSTART))
             {
-            	;
+               ;
             }
             else
             {
@@ -338,36 +337,36 @@ public class Query extends Table
                                            PreparedStatement ps, int curCol)
                                     throws SQLException
    {
-      curCol = FieldValue.populateWhereEqualsClause(getFieldValueWhere(fvEqual), 
-                                                    ps, curCol);
-      curCol = FieldValue.populateWhereEqualsClause(getFieldValueHaving(fvEqual), 
-                                                    ps, curCol);
+      curCol = super.populateWhereEqualsClause(getFieldValueWhere(fvEqual), ps, 
+                                               curCol);
+      curCol = super.populateWhereEqualsClause(getFieldValueHaving(fvEqual), ps, 
+                                               curCol);
 
       return curCol;
    }
 
 
    /**
-    *  Prepares the Querystring for the select statement
+    * Prepares the Querystring for the select statement  Order of parts: 1.
+    * where condition from config                             (no params!) 2.
+    * sqlFilter                                               (fild in
+    * getDoSelectResultSet!) 3. where condition generated from search fields
+    * (fild in overloaded populateWhereEqualsClause) 4. where
+    * condition generated from having / ordering fields (fild in overloaded
+    * populateWhereEqualsClause)  Retrieving the parameters in
+    * getDoSelectResultSet() must match this order!
     * 
-    * Order of parts:
-    *  1. where condition from config                             (no params!)
-    *  2. sqlFilter                                               (fild in getDoSelectResultSet!)
-    *  3. where condition generated from search fields            (fild in overloaded populateWhereEqualsClause)
-    *  4. where condition generated from having / ordering fields (fild in overloaded populateWhereEqualsClause)
-    * 
-    *  Retrieving the parameters in getDoSelectResultSet() must match this
-    *  order! 
-    *
     * @param fieldsToSelect  vector of fields to be selected
     * @param fvEqual         fieldValues representing values we are looking for
     * @param fvOrder         fieldValues representing needs for order clauses
     * @param sqlFilter       sql condition to and with the where clause
     * @param compareMode     compare mode value for generating the order clause
+    * 
     * @return the query string
     */
-   public String getSelectQuery(Vector fieldsToSelect, FieldValue[] fvEqual,
-      FieldValue[] fvOrder, String sqlFilter, int compareMode)
+   public String getSelectQuery(Vector fieldsToSelect, FieldValue[] fvEqual, 
+                                FieldValue[] fvOrder, String sqlFilter, 
+                                int compareMode)
    {
       StringBuffer buf                      = new StringBuffer();
       String       s;
@@ -389,7 +388,8 @@ public class Query extends Table
       buf.append(getQueryFrom());
 
       s = getQueryWhere(fvWhere, null, 0);
-		if (!Util.isNull(s) || !Util.isNull(where) || !Util.isNull(sqlFilter))
+
+      if (!Util.isNull(s) || !Util.isNull(where) || !Util.isNull(sqlFilter))
       {
          hatSchonWhere = true;
          buf.append(" WHERE ");
@@ -411,7 +411,10 @@ public class Query extends Table
                buf.append(followAfterWhere);
             }
             else
+            {
                buf.append(" ( ");
+            }
+
             buf.append(sqlFilter);
             buf.append(" ) ");
          }
@@ -420,14 +423,20 @@ public class Query extends Table
          if (!Util.isNull(s))
          {
             if (!Util.isNull(sqlFilter))
+            {
                buf.append(" AND ( ");
+            }
             else if (!Util.isNull(where))
             {
                hatSchonFollowAfterWhere = true;
                buf.append(followAfterWhere);
             }
             else
+            {
                buf.append(" ( ");
+            }
+
+
             // parents are inserted in getQueryWhere method 
             buf.append(s);
             buf.append(" ) ");
@@ -441,6 +450,7 @@ public class Query extends Table
       }
 
       s = getQueryWhere(fvHaving, fvOrder, compareMode);
+
       if (!Util.isNull(s))
       {
          if (!Util.isNull(groupBy))
@@ -460,24 +470,32 @@ public class Query extends Table
                buf.append(followAfterWhere);
                buf.append(" ");
             }
+
             buf.append(" AND ( ");
          }
+
          buf.append(s);
          buf.append(")");
       }
 
       if (!Util.isNull(groupBy) && !Util.isNull(having))
       {
-         if (!hatSchonHaving)		   
-		    buf.append(" HAVING ");
-		 else   
-   		 buf.append(" AND ");
+         if (!hatSchonHaving)
+         {
+            buf.append(" HAVING ");
+         }
+         else
+         {
+            buf.append(" AND ");
+         }
+
          buf.append("(");
          buf.append(having);
          buf.append(") ");
       }
 
       s = getQueryOrderBy(fvOrder);
+
       if (s.length() > 0)
       {
          buf.append(" ORDER BY ");
@@ -485,6 +503,7 @@ public class Query extends Table
       }
 
       logCat.info("doSelect:" + buf.toString());
+
       return buf.toString();
    }
 

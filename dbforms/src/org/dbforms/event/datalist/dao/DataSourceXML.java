@@ -293,7 +293,7 @@ public class DataSourceXML extends DataSource {
       if (!FieldValue.isNull(filterConstraint)) {
          for (int i = 0; i < filterConstraint.length; i++) {
             if (i != 0) {
-               if (filterConstraint[i].isLogicalOR()) {
+               if (filterConstraint[i].getLogicalOR()) {
                   buf.append(" or ");
                } else {
                   buf.append(" and ");
