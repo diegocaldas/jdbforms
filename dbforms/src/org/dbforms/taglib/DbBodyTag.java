@@ -83,8 +83,7 @@ public class DbBodyTag extends BodyTagSupport
       // the body may be rendered under the following circumstances:
       // - resultSetVector > 0 => render a row
       // - resultSetVector == 0 && allowNew==true => insert a new row
-      if ((myParent.getResultSetVector() == null)
-               || (myParent.getResultSetVector().size() == 0))
+      if (Util.isNull(myParent.getResultSetVector()))
       {
          myParent.setFooterReached(true);
 

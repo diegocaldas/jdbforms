@@ -15,10 +15,10 @@
 			</db:header>
 			<db:body allowNew="false">
 				<tr>
-					<td><%= currentRow_BOOK.get("BOOK_ID") %></a>&nbsp;</td>
-					<td><%=currentRow_BOOK.get("ISBN") %>&nbsp;</td>
-					<td><%=currentRow_BOOK.get("AUTHOR_ID") %>&nbsp;</td>
-					<td><%=currentRow_BOOK.get("TITLE") %>&nbsp;</td>
+					<td><db:label fieldName="BOOK_ID"/></a>&nbsp;</td>
+					<td><db:label fieldName="ISBN"/>&nbsp;</td>
+					<td><db:label fieldName="AUTHOR_ID"/>&nbsp;</td>
+					<td><db:label fieldName="TITLE"/>&nbsp;</td>
 				</tr>
 			</db:body>
 			<db:footer>
