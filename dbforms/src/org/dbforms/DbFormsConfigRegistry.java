@@ -24,6 +24,7 @@
 package org.dbforms;
 
 import java.util.HashMap;
+import javax.servlet.ServletContext;
 
 
 
@@ -35,11 +36,8 @@ import java.util.HashMap;
  */
 public class DbFormsConfigRegistry
 {
-    /** default config name */
-    private static final String DEFAULT_NAME = "default";
-
-    /** map of DbFormsConfig objects */
-    private static HashMap map = new HashMap();
+    /** servlet config */
+    private ServletContext servletContext = null;
 
     /** unique instance for this class */
     private static DbFormsConfigRegistry instance = null;
@@ -70,54 +68,70 @@ public class DbFormsConfigRegistry
 
 
     /**
+     *  Sets the servletContext attribute of the DbFormsConfigRegistry object
+     *
+     * @param  servletConfig The new servletConfig value
+     */
+    public void setServletContext(ServletContext servletContext)
+    {
+        this.servletContext = servletContext;
+    }
+
+
+    /**
      *  Register the input DbFormsConfig object into the registry
      *  as the default config object.
      *
-     * @param config the DbFormsConfig object
+     * @param  config the DbFormsConfig object
      */
     public void register(DbFormsConfig config)
     {
-        register(DEFAULT_NAME, config);
+        register(DbFormsConfig.CONFIG, config);
     }
 
 
     /**
      *  Register a DbFormsConfig object into the registry
      *
-     * @param name   the DbFormsConfig name used as the registry key
-     * @param config the DbFormsConfig object
+     * @param  name the DbFormsConfig name used as the registry key
+     * @param  config the DbFormsConfig object
      */
     public void register(String name, DbFormsConfig config)
     {
-        map.put(name, config);
+        if (servletContext != null)
+        {
+            servletContext.setAttribute(name, config);
+        }
     }
 
 
     /**
      *  Look up the default DbFormsConfig object stored into the registry.
      *
-     * @exception Exception if the lookup operation fails
+     * @return  Description of the Return Value
+     * @exception  Exception if the lookup operation fails
      */
     public DbFormsConfig lookup() throws Exception
     {
-        return lookup(DEFAULT_NAME);
+        return lookup(DbFormsConfig.CONFIG);
     }
 
 
     /**
      *  Look up a DbFormsConfig object stored into the registry.
      *
-     * @param name the DbFormsConfig name previously used to store the
+     * @param  name the DbFormsConfig name previously used to store the
      *             config object into the registry.
-     * @exception Exception if the lookup operation fails
+     * @return  Description of the Return Value
+     * @exception  Exception if the lookup operation fails
      */
     public DbFormsConfig lookup(String name) throws Exception
     {
         DbFormsConfig config = null;
 
-        if (map.containsKey(name))
+        if (servletContext != null)
         {
-            config = (DbFormsConfig) map.get(name);
+            config = (DbFormsConfig) servletContext.getAttribute(name);
         }
         else
         {
