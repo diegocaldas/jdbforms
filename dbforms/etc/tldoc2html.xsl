@@ -157,4 +157,8 @@
   <xsl:template match="li"><li><xsl:apply-templates/></li></xsl:template>
   <xsl:template match="br"><br><xsl:apply-templates/></br></xsl:template>
   <xsl:template match="b"><b><xsl:apply-templates/></b></xsl:template>
+  <xsl:template match="dl"><dl><xsl:apply-templates/></dl></xsl:template>
+  <xsl:template match="dt"><dt><xsl:apply-templates/></dt></xsl:template>
+  <xsl:template match="dd"><dd><xsl:apply-templates/></dd></xsl:template>
+  <xsl:template match="code"><code><xsl:apply-templates/></code></xsl:template>
 </xsl:stylesheet>
