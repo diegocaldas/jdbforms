@@ -100,9 +100,9 @@ public class DbDateFieldTag extends DbBaseInputTag
             // if date format is not explicitely set for this calendar,
             // use date format for this form field. 
             if ((jsCalendarDateFormat == null)
-                     && (getFormat() instanceof java.text.SimpleDateFormat))
+                     && (getFormatter() instanceof java.text.SimpleDateFormat))
             {
-               java.text.SimpleDateFormat mysdf = (java.text.SimpleDateFormat) getFormat();
+               java.text.SimpleDateFormat mysdf = (java.text.SimpleDateFormat) getFormatter();
                jsCalendarDateFormat = mysdf.toPattern();
 
                // 2 digit date format pattern is 'dd' in Java, 'DD' in

@@ -689,7 +689,7 @@ etc)</summary>
 					</info>
 				</attribute>
 				<attribute>
-					<name>format</name>
+					<name>formatter</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
 					<info>
@@ -745,7 +745,7 @@ etc)</summary>
 					</info>
 				</attribute>
 				<attribute>
-					<name>format</name>
+					<name>formatter</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
 					<info>
@@ -978,7 +978,7 @@ interaction with JavaScript<p style="text-autospace:none">Identification which c
 					</info>
 				</attribute>
 				<attribute>
-					<name>format</name>
+					<name>formatter</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
 					<info>
@@ -1223,7 +1223,7 @@ dbforms.pattern.timestamp=yyyy-MM-dd HH:mm</pre>
 					</info>
 				</attribute>
 				<attribute>
-					<name>format</name>
+					<name>formatter</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
 					<info>
@@ -1525,7 +1525,7 @@ of the input field</info>
 					</info>
 				</attribute>
 				<attribute>
-					<name>format</name>
+					<name>formatter</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
 					<info>
@@ -1767,7 +1767,7 @@ using textareas</info>
 					</info>
 				</attribute>
 				<attribute>
-					<name>format</name>
+					<name>formatter</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
 					<info>

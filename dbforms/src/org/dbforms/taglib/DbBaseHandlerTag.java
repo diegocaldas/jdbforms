@@ -155,7 +155,7 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
     * @return
     */
    public String getPattern() {
-      Format f = getFormat();
+      Format f = getFormatter();
       if (f == null)
          return null;
       if (f instanceof java.text.DecimalFormat)
@@ -189,7 +189,7 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
    /**
       formatting a value
     */
-   public Format getFormat() {
+   public Format getFormatter() {
       Format res = formatter;
       if ((res == null) && (getField() != null)) {
          res = getField().getFormat(pattern, getLocale());
@@ -217,7 +217,7 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
             case org.dbforms.config.FieldTypes.DOUBLE :
             case org.dbforms.config.FieldTypes.FLOAT :
                try {
-                  res = getFormat().format(new Double(0));
+                  res = getFormatter().format(new Double(0));
                } catch (Exception e) {
                   res = "0";
                }
@@ -311,7 +311,7 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
                case FieldTypes.TIME :
                case FieldTypes.TIMESTAMP :
                   try {
-                     res = getFormat().format(fieldValueObj);
+                     res = getFormatter().format(fieldValueObj);
                   } catch (Exception e) {
                      logCat.error(
                         "field type: "
