@@ -220,9 +220,6 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
 	/** redisplayFieldsOnError flag */
 	private String redisplayFieldsOnError = "false";
 
-	/** bypassNavigation flag */
-	private java.lang.String bypassNavigation = "false";
-
 	/** onSubmit form field  (20020703-HKK) */
 	private String onSubmit;
 
@@ -881,27 +878,6 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
 	public void setRedisplayFieldsOnError(
 		java.lang.String newRedisplayFieldsOnError) {
 		redisplayFieldsOnError = newRedisplayFieldsOnError;
-	}
-
-	/**
-	 *  Get the getBypassNavigation attribute.
-	 *  <br>
-	 *  author: grunikiewicz.philip@hydro.qc.ca<br>
-	 *  creation date: (2001-08-17 10:25:56)
-	 *
-	 * @return  the getBypassNavigation attribute
-	 */
-	public boolean hasBypassNavigationSet() {
-		return "true".equalsIgnoreCase(bypassNavigation);
-	}
-
-	/**
-	 * Set the bypassNavigation attribute
-	 *
-	 * @param  newBypassNavigation the new bypassNavigation value
-	 */
-	public void setBypassNavigation(String newBypassNavigation) {
-		bypassNavigation = newBypassNavigation;
 	}
 
 	/**
@@ -1610,16 +1586,12 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
 							whereClause,
 							getTableList());
 				} else {
-					String myPosition =
-						((count == 0) || hasBypassNavigationSet())
-							? null
-							: firstPosition;
 					navEvent =
 						navEventFactory.createGotoEvent(
 							table,
 							request,
 							config,
-							myPosition);
+							null);
 				}
 			}
 

@@ -1,5 +1,4 @@
 <?xml version="1.0"?>
-<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by XMLSPY 5 Professional Ed. Release 4, Installed Multi + SMP for 2 users (Aucos Elektronische Geräte GmbH) -->
 <document url="./taglib_docu.xml">
 	<properties>
 		<author>Joachim Peer, Philip Grunikiewicz et al.</author>
@@ -198,28 +197,6 @@
 								&lt;db:dbform table=&quot;TABLE1&quot; followUp=&quot;this.jsp&quot; whereClause = &quot;&lt;%whereClause.toString()%&gt;&quot;&gt;
     							</span>
 							<span lang="FR-CA"/>
-						</p>
-					</info>
-				</attribute>
-				<attribute>
-					<name>bypassNavigation</name>
-					<required>false</required>
-					<rtexprvalue>true</rtexprvalue>
-					<info>
-						<p>Disables navigation - optimizes queries</p>
-						<p>Caution: use this setting only if you do not intend on using dbforms navigation.</p>
-						<p>
-							Currently, when we set maxRows to anything else but *, dbForms creates a special 
-							  query to be able to navigate to the next (or previous) set of related data. 
-							  The resulting query is sometimes quite complex and is long to execute. If we 
-							  are NOT going to use navigation, eliminate the creation of, and execution of 
-							  &quot;fancy!&quot; queries!
-  						</p>
-						<p>Example:</p>
-						<p>
-							We are setting maxRows=&quot;201&quot; to avoid having too many records displayed 
-							  on screen. If their are more than 200 records found, we simply tell our users 
-							  to refine their search criterias.
 						</p>
 					</info>
 				</attribute>
