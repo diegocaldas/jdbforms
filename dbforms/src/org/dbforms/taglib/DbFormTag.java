@@ -788,6 +788,7 @@ public class DbFormTag extends BodyTagSupport {
 
 			if(!ResultSetVector.isEmptyOrNull(resultSetVector)) {
 
+					pageContext.setAttribute("rsv_"+tableName, resultSetVector);
 					pageContext.setAttribute("currentRow_"+tableName, resultSetVector.getCurrentRowAsHashtable());
 					pageContext.setAttribute("position_"+tableName, table.getPositionString(resultSetVector) );
 			}

@@ -54,6 +54,7 @@ public class ResultSetVector extends Vector {
 
   private int pointer=0;
   private Vector selectFields;
+  private Hashtable selectFieldsHashtable;
 
   Vector objectVector;
 
@@ -97,6 +98,21 @@ public class ResultSetVector extends Vector {
   public ResultSetVector(Vector selectFields, ResultSet rs) throws java.sql.SQLException {
     this(rs);
     this.selectFields = selectFields;
+    this.setupSelectFieldsHashtable();
+  }
+
+  private void setupSelectFieldsHashtable() {
+	if(selectFields==null) {
+		logCat.warn("selectField is null");
+		return;
+	}
+
+	selectFieldsHashtable = new Hashtable();
+
+	for(int i=0; i<selectFields.size(); i++) {
+		Field f = (Field) selectFields.elementAt(i);
+		selectFieldsHashtable.put(f.getName(), f);
+	}
   }
 
 
@@ -183,12 +199,32 @@ public class ResultSetVector extends Vector {
   }
 
 
+  public String getField(String fieldName) {
+		if(isPointerLegal(pointer)) {
+			Field f = (Field) selectFieldsHashtable.get(fieldName);
+			int fieldIndex = selectFields.indexOf(f);
+			return ((String[]) elementAt(pointer))[fieldIndex];
+		} else
+			return null;
+  }
+
   public Object getFieldAsObject(int i) {
 		if(isPointerLegal(pointer))
 			return ((Object[]) elementAt(pointer))[i];
 		else
 			return null;
   }
+
+
+  public Object getFieldAsObject(String fieldName) {
+		if(isPointerLegal(pointer)) {
+			Field f = (Field) selectFieldsHashtable.get(fieldName);
+			int fieldIndex = selectFields.indexOf(f);
+			return ((Object[]) objectVector.elementAt(pointer))[fieldIndex];
+		} else
+			return null;
+  }
+
 
 
 	public int getIndexOfField(Field f) {
@@ -203,12 +239,22 @@ public class ResultSetVector extends Vector {
 		int vSize = this.size();
 
 		if (vSize>1) {
-			logCat.info("flipping "+vSize+" elements");
+			logCat.info("flipping "+vSize+" elements!");
 			for(int i=1; i<vSize; i++) {
 				Object o = this.elementAt(i);
+
+				logCat.debug("o="+o);
+
 				this.remove(i);
 				this.insertElementAt(o,0);
+
+				// we must flip the duplicate vector, too
+				o=objectVector.elementAt(i);
+				objectVector.remove(i);
+				objectVector.insertElementAt(o,0);
 			}
+
+
 
 		}
 
