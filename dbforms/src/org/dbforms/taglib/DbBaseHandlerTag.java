@@ -290,6 +290,7 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
                      logCat.error(
 								  "field type: " + getField().getType() + "\n" 
 								+ "object type: " + fieldValueObj.getClass().getName() + "\n"
+								+ "pattern: " + getPattern() + "\n" 
 								+ e.getMessage()
                            );
                      res = fieldValueObj.toString();
