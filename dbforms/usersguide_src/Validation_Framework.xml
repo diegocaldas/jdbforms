@@ -1,378 +1,419 @@
 <?xml version="1.0" encoding="UTF-8"?>
- 
-	<chapter>
-		<title>Validation Framework
+<chapter>
+  <title>Validation Framework
 </title>
-		<sect1 id="valid">
-			<title>Commons-Validator framework
+  <sect1 id="valid">
+    <title>Commons-Validator framework
 </title>
-			<para>After having evaluated several validation frameworks, we finally decided to integrate Apache's Commons-Validator into DbForms.  This framework is capable of performing basic server-side validations such as verifying if a field is required, or that it matches a regular expression.  Different validation rules can be defined for different locales.  Although the framework already provides several basic validation routines, custom validation routines can be created and added to the framework.
+    <para>After having evaluated several validation frameworks, we finally decided to integrate Apache's Commons-Validator into DbForms.  This framework is capable of performing basic server-side validations such as verifying if a field is required, or that it matches a regular expression.  Different validation rules can be defined for different locales.  Although the framework already provides several basic validation routines, custom validation routines can be created and added to the framework.
 </para>
-			<para>This framework also supports client-side validation through the generation of JavaScript methods.  Use of these methods is enabled via an attribute setting within dbForms.
+    <para>This framework also supports client-side validation through the generation of JavaScript methods.  Use of these methods is enabled via an attribute setting within dbForms.
 </para>
-			<para>Commons-validator uses two xml files for setting up validation:
+    <para>Commons-validator uses two xml files for setting up validation:
 </para>
-<orderedlist numeration="lowerroman">
-<listitem>
-<para>Validator-rules.xml
-<blockquote><para>Contains general validation rules.
-</para></blockquote>
-</para> 
-</listitem>
-<listitem>
-<para>Validation.xml<blockquote><para>This file is used to associate validation rules to table fields.
-</para></blockquote>
-</para>
-</listitem>
- 
-</orderedlist>
- 
+    <orderedlist numeration="lowerroman">
+      <listitem>
+        <para>Validator-rules.xml
 
-
-			
-			
-			
-			
-		</sect1>
-		<sect1>
-			<title>Setting up DbForms
-</title>
-			<para>To define that the validation framework is to be used within a dbForms application, the associated XML files must be specified in the web.xml deployment descriptor (associated to the dbForms config servlet):
+          <blockquote>
+            <para>Contains general validation rules.
 </para>
-			<screen>
-    <emphasis role="bold">&lt;web-app&gt;</emphasis>
+          </blockquote>
+        </para>
+      </listitem>
+      <listitem>
+        <para>Validation.xml
+          <blockquote>
+            <para>This file is used to associate validation rules to table fields.
+</para>
+          </blockquote>
+        </para>
+      </listitem>
+    </orderedlist>
+  </sect1>
+  <sect1>
+    <title>Setting up DbForms
+</title>
+    <para>To define that the validation framework is to be used within a dbForms application, the associated XML files must be specified in the web.xml deployment descriptor (associated to the dbForms config servlet):
+</para>
+    <screen>
+      <emphasis role="bold">&lt;web-app&gt;</emphasis>
         &lt;!--=========== DbForms Configuration Servlet ===========--&gt; 
-        <emphasis role="bold">&lt;servlet&gt;</emphasis> 
+        
+      <emphasis role="bold">&lt;servlet&gt;</emphasis> 
             &lt;servlet-name&gt;org.dbforms.ConfigServlet&lt;/servlet-name&gt; 
             &lt;servlet-class&gt;org.dbforms.ConfigServlet&lt;/servlet-class&gt; 
-		&lt;init-param&gt; 
+    &lt;init-param&gt; 
                     &lt;param-name&gt;log4j.configuration&lt;/param-name&gt; 
                     &lt;param-value&gt;log4j.properties&lt;/param-value&gt; 
-		&lt;/init-param&gt;&lt;init-param&gt; 
+    &lt;/init-param&gt;&lt;init-param&gt; 
                     &lt;param-name&gt;resourceBundle&lt;/param-name&gt; 
                     &lt;param-value&gt;ApplicationResources&lt;/param-value&gt; 
-		&lt;/init-param&gt; 
-		<emphasis role="bold">&lt;init-param&gt;</emphasis> 
-                    &lt;param-name&gt;<emphasis role="bold">validation</emphasis>&lt;/param-name&gt; 
-                    &lt;param-value&gt;<emphasis role="bold">/WEB-INF/validation.xml</emphasis>&lt;/param-value&gt; 
-		<emphasis role="bold">&lt;/init-param&gt;</emphasis> 
-		<emphasis role="bold">&lt;init-param&gt;</emphasis> 
-                    &lt;param-name&gt;<emphasis role="bold">validator-rules</emphasis>&lt;/param-name&gt; 
+    &lt;/init-param&gt; 
+    
+      <emphasis role="bold">&lt;init-param&gt;</emphasis> 
+                    &lt;param-name&gt;
+      <emphasis role="bold">validation</emphasis>&lt;/param-name&gt; 
+                    &lt;param-value&gt;
+      <emphasis role="bold">/WEB-INF/validation.xml</emphasis>&lt;/param-value&gt; 
+    
+      <emphasis role="bold">&lt;/init-param&gt;</emphasis> 
+    
+      <emphasis role="bold">&lt;init-param&gt;</emphasis> 
+                    &lt;param-name&gt;
+      <emphasis role="bold">validator-rules</emphasis>&lt;/param-name&gt; 
                     &lt;param-value&gt;/WEB-INF/validator-rules.xml&lt;/param-value&gt; 
-		<emphasis role="bold">&lt;/init-param&gt;</emphasis> 
+    
+      <emphasis role="bold">&lt;/init-param&gt;</emphasis> 
             &lt;load-on-startup&gt;1&lt;/load-on-startup&gt; 
         &lt;/servlet&gt; 
-		</screen>
-			 
-			<para>
-				<emphasis role="bold">Version 1.1 of DbForms has been upgraded to use the Apache commons framework.  This framework required Java XML Parser (JAXP) v1.1.  Older Web containers (such as Tomcat v3.2.x) are still using JAXP v1.0 technology and are therefore incompatible.</emphasis>
-			</para>
-		</sect1>
-		<sect1>
-			<title>Using validation within DbForms
+    
+    </screen>
+    <para>
+      <emphasis role="bold">Version 1.1 of DbForms has been upgraded to use the Apache commons framework.  This framework required Java XML Parser (JAXP) v1.1.  Older Web containers (such as Tomcat v3.2.x) are still using JAXP v1.0 technology and are therefore incompatible.</emphasis>
+    </para>
+  </sect1>
+  <sect1>
+    <title>Using validation within DbForms
 </title>
-			<para>Using validation within dbForms is as simple as setting an attribute in the 'dbform' tag.  In dbForms v1.1, the attribute 'formValidatorName' has been added to allow a dbForm developer to associate a (dbForms) form to an [entry] in the Validation.xml file.  Take for example the following JSP:
+    <para>Using validation within dbForms is as simple as setting an attribute in the 'dbform' tag.  In dbForms v1.1, the attribute 'formValidatorName' has been added to allow a dbForm developer to associate a (dbForms) form to an [entry] in the Validation.xml file.  Take for example the following JSP:
 </para>
-			<screen>
+    <screen>
 &lt;%@ taglib uri="/WEB-INF/dbforms.tld" prefix="db" %&gt;
     &lt;db:dbform  tableName="bugs" captionResource="true" 
-    formValidatorName="bugs" <emphasis role="bold">javascriptValidation="true"</emphasis>&gt; 
+    formValidatorName="bugs" 
+      <emphasis role="bold">javascriptValidation="true"</emphasis>&gt; 
         
         &lt;table&gt; 
             &lt;tr&gt; 
-		&lt;td&gt; 
+    &lt;td&gt; 
                     &lt;db:textField fieldName="title" size="40"/&gt; 
-		&lt;/td&gt; 
+    &lt;/td&gt; 
             &lt;/tr&gt; 
         &lt;/table&gt; 
-		&lt;br&gt;
+    &lt;br&gt;
         &lt;db:updateButton  caption="Save" /&gt;&lt;br&gt; 
-	
+  
         &lt;db:deleteButton  caption="Delete"/&gt;&lt;br&gt; 
-		 
+     
     &lt;/db:form&gt; 
-		</screen>
-			<para>The 'formValidationName' attribute is set to 'bugs'.  As you will see in the next section, the Validation.xml file includes an [entry] for 'bugs'.  This [entry] will specify which fields will be validated, which validation(s) will be performed on each field and what error messages to display if the validation(s) fail.
+    
+    </screen>
+    <para>The 'formValidationName' attribute is set to 'bugs'.  As you will see in the next section, the Validation.xml file includes an [entry] for 'bugs'.  This [entry] will specify which fields will be validated, which validation(s) will be performed on each field and what error messages to display if the validation(s) fail.
 </para>
-			<para>Another feature which has been added to dbForms is support for client-side javaScript validation.  When the attribute 'JavaScript Validation' is set to 'true', DbForms will generate methods to automatically validate client-side using the same rules found in Validation.xml.
+    <para>Another feature which has been added to dbForms is support for client-side javaScript validation.  When the attribute 'JavaScript Validation' is set to 'true', DbForms will generate methods to automatically validate client-side using the same rules found in Validation.xml.
 </para>
-		</sect1>
-                <sect1>
-                <title>Generating Validation.xml</title>
-                <para>generate_validation.xsl can now (included from dbforms 1.3) be used to generate the <computeroutput>validation.xml</computeroutput> file that dbforms uses for validation. (The source XML file is <computeroutput>dbforms-config.xml</computeroutput>.)</para>
- <para>Please note that we added the attribute generate-jsp (true/false) to table tags because there were a few tables we wanted in the <computeroutput>dbforms-config.xml</computeroutput> file for foreign-key reasons but we didn't want tables to be generated. The line test="not(@generate-jsp='false')" returns true when (a) generate-jsp is set to some value other than false or (b) when it doesn't exist. (generate-jsp!='false' by comparison returns true only when generate-jsp is set to something other than false.) This way, its functionality is retained while making it an optional attribute as far as <computeroutput>DevGui is concerned.</computeroutput></para> 
-<para>Limitations: </para>
-<orderedlist numeration="lowerroman">
-<listitem>
-<para>Assumes that all foreign-keys are required and that the server will do its own testing for valid entry.</para>
-</listitem>
-<listitem>
-<para>Asserts that isKey'd columns that aren't also autoInc'd are</para>
-<itemizedlist mark="opencircle">
-<listitem>
-<para>
+  </sect1>
+  <sect1>
+    <title>Generating Validation.xml</title>
+    <para>generate_validation.xsl can now (included from dbforms 1.3) be used to generate the 
+      <computeroutput>validation.xml</computeroutput> file that dbforms uses for validation. (The source XML file is 
+      <computeroutput>dbforms-config.xml</computeroutput>.)
+    </para>
+    <para>Please note that we added the attribute generate-jsp (true/false) to table tags because there were a few tables we wanted in the 
+      <computeroutput>dbforms-config.xml</computeroutput> file for foreign-key reasons but we didn't want tables to be generated. The line test="not(@generate-jsp='false')" returns true when (a) generate-jsp is set to some value other than false or (b) when it doesn't exist. (generate-jsp!='false' by comparison returns true only when generate-jsp is set to something other than false.) This way, its functionality is retained while making it an optional attribute as far as 
+      <computeroutput>DevGui is concerned.</computeroutput>
+    </para>
+    <para>Limitations: </para>
+    <orderedlist numeration="lowerroman">
+      <listitem>
+        <para>Assumes that all foreign-keys are required and that the server will do its own testing for valid entry.</para>
+      </listitem>
+      <listitem>
+        <para>Asserts that isKey'd columns that aren't also autoInc'd are</para>
+        <itemizedlist mark="opencircle">
+          <listitem>
+            <para>
 required
 </para>
-</listitem>
-<listitem>
-<para>
+          </listitem>
+          <listitem>
+            <para>
 in need of maxlength validating 
 </para>
-</listitem>
-</itemizedlist>
-</listitem>
-<listitem>
-<para>the resulting validation.xml asserts that the database server will insure that there are no key column conflicts
+          </listitem>
+        </itemizedlist>
+      </listitem>
+      <listitem>
+        <para>the resulting validation.xml asserts that the database server will insure that there are no key column conflicts
 </para>
-</listitem>
-
-</orderedlist>
-     </sect1>       
-		<sect1>
-			<title> Validation.xml Tags
+      </listitem>
+    </orderedlist>
+  </sect1>
+  <sect1>
+    <title> Validation.xml Tags
 </title>
-			<para>Various tags are used within the Validation.xml file to describe validation rules.  The following describes each tag in detail:
+    <para>Various tags are used within the Validation.xml file to describe validation rules.  The following describes each tag in detail:
 </para>
-			<para>
-				<table>
-					<title>Validation Tag Details</title>
-					<tgroup cols="2">
-						<tbody>
-							<row>
-								<entry>Tag Name</entry>
-								<entry>Description</entry>
-							</row>
-							<row>
-								<entry>formset</entry>
-								<entry>This tag is used to support i18n.  Suppose that a form is to be validated and that a field within this form is a postal code.  Depending upon the locale, this postal code could have very different formats (US/Canadian/German).  Multiple formset tags can be defined and each, can be associated to a different locale.  Association may be defined using either of the following attributes:
-<itemizedlist mark="opencircle">
-<listitem>
-<para>
+    <para>
+      <table>
+        <title>Validation Tag Details</title>
+        <tgroup cols="2">
+          <tbody>
+            <row>
+              <entry>Tag Name</entry>
+              <entry>Description</entry>
+            </row>
+            <row>
+              <entry>formset</entry>
+              <entry>This tag is used to support i18n.  Suppose that a form is to be validated and that a field within this form is a postal code.  Depending upon the locale, this postal code could have very different formats (US/Canadian/German).  Multiple formset tags can be defined and each, can be associated to a different locale.  Association may be defined using either of the following attributes:
+
+                <itemizedlist mark="opencircle">
+                  <listitem>
+                    <para>
 country
 </para>
-</listitem>
-<listitem>
-<para>
+                  </listitem>
+                  <listitem>
+                    <para>
 language
 </para>
-</listitem>
-</itemizedlist>
-If an un-specified locale is requested, the default (no attributes) formset entry is executed.</entry>
-							</row>
-							<row>
-								<entry>form</entry>
-								<entry>This tag corresponds to the value of the dbform tag 'formValidatorName' attribute.</entry>
-							</row>
-							<row>
-								<entry>field</entry>
-								<entry> This tag identifies the table field. (refer to dbforms-config.xml)</entry>
-							</row>
-							<row>
-								<entry>depends</entry>
-								<entry> Defines which type(s) of validation(s) are required for the field.</entry>
-							</row>
-							<row>
-								<entry>msg</entry>
-								<entry>This tag specifies the error message to display if the validation fails.  The following attributes are required:
-<itemizedlist mark="opencircle">
-<listitem>
-<para>
-name
-<blockquote><para>Specifies validation type.</para>
-</blockquote>
-</para>
-</listitem>
-<listitem>
-<para>resource
- <blockquote><para>Determines if the key should be resolved using i18n.</para>
-</blockquote>
-</para>
-</listitem>
-<listitem>
-<para>key
- <blockquote>
-<para>If 'resource = false': Corresponds to error message.</para>
-<para>If 'resource = true': key is used to lookup error message in appropriate resource bundle.</para>
-</blockquote>
-</para>
-</listitem>
-</itemizedlist>
+                  </listitem>
+                </itemizedlist>
+If an un-specified locale is requested, the default (no attributes) formset entry is executed.
+              </entry>
+            </row>
+            <row>
+              <entry>form</entry>
+              <entry>This tag corresponds to the value of the dbform tag 'formValidatorName' attribute.</entry>
+            </row>
+            <row>
+              <entry>field</entry>
+              <entry> This tag identifies the table field. (refer to dbforms-config.xml)</entry>
+            </row>
+            <row>
+              <entry>depends</entry>
+              <entry> Defines which type(s) of validation(s) are required for the field.</entry>
+            </row>
+            <row>
+              <entry>msg</entry>
+              <entry>This tag specifies the error message to display if the validation fails.  The following attributes are required:
 
-
- 
- 
-</entry>
-							</row>
-							<row>
-								<entry>arg</entry>
-								<entry>Is used to pass arguments to messages.  The following attributes are required:
-<itemizedlist mark="opencircle">
-<listitem>
-<para>
+                <itemizedlist mark="opencircle">
+                  <listitem>
+                    <para>
 name
-<blockquote><para>Specifies validation type.</para>
-</blockquote>
-</para>
-</listitem>
-<listitem>
-<para>resource
- <blockquote><para>Determines if the key should be resolved using i18n.</para>
-</blockquote>
-</para>
-</listitem>
-<listitem>
-<para>key
- <blockquote>
-<para>If 'resource = false': Argument sent as is. </para>
-<para>If 'resource = true': key is used to lookup error message in appropriate resource bundle.</para>
-</blockquote>
-</para>
-</listitem>
-</itemizedlist> 
-</entry>
-							</row>
-							<row>
-								<entry>var</entry>
-								<entry>Defines variables for use in validation.</entry>
-							</row>
-						</tbody>
-					</tgroup>
-				</table>
-			</para>
-        </sect1>
-        <sect1>
-        <title>Validation.xml file</title>
-<para>In a previous section, we defined that our (dbform) form would be associated to an [entry] called 'bugs'.  The 'bugs' form contained a single textField entry (referring to 'title').  Let's take a look at the resulting <emphasis role="bold">Validation.xml</emphasis> file:
-</para>
-			<screen>
-    <emphasis role="bold">&lt;formset&gt;</emphasis>
-        <emphasis role="bold">&lt;form</emphasis> name="bugs"&gt; 
-            <emphasis role="bold">&lt;field</emphasis> property="title" depends="required,mask,maxlength"&gt; 
-		<emphasis role="bold">&lt;msg</emphasis> name="required" key="errors.required" resource="true"/&gt; 
-                    <emphasis role="bold">&lt;arg0</emphasis> name="required" key="bugsForm.title.displayname" resource="true"/&gt;
+
+                      <blockquote>
+                        <para>Specifies validation type.</para>
+                      </blockquote>
+                    </para>
+                  </listitem>
+                  <listitem>
+                    <para>resource
+ 
+                      <blockquote>
+                        <para>Determines if the key should be resolved using i18n.</para>
+                      </blockquote>
+                    </para>
+                  </listitem>
+                  <listitem>
+                    <para>key
+ 
+                      <blockquote>
+                        <para>If 'resource = false': Corresponds to error message.</para>
+                        <para>If 'resource = true': key is used to lookup error message in appropriate resource bundle.</para>
+                      </blockquote>
+                    </para>
+                  </listitem>
+                </itemizedlist>
+              </entry>
+            </row>
+            <row>
+              <entry>arg</entry>
+              <entry>Is used to pass arguments to messages.  The following attributes are required:
+
+                <itemizedlist mark="opencircle">
+                  <listitem>
+                    <para>
+name
+
+                      <blockquote>
+                        <para>Specifies validation type.</para>
+                      </blockquote>
+                    </para>
+                  </listitem>
+                  <listitem>
+                    <para>resource
+ 
+                      <blockquote>
+                        <para>Determines if the key should be resolved using i18n.</para>
+                      </blockquote>
+                    </para>
+                  </listitem>
+                  <listitem>
+                    <para>key
+ 
+                      <blockquote>
+                        <para>If 'resource = false': Argument sent as is. </para>
+                        <para>If 'resource = true': key is used to lookup error message in appropriate resource bundle.</para>
+                      </blockquote>
+                    </para>
+                  </listitem>
+                </itemizedlist>
+              </entry>
+            </row>
+            <row>
+              <entry>var</entry>
+              <entry>Defines variables for use in validation.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </para>
+  </sect1>
+  <sect1>
+    <title>Validation.xml file</title>
+    <para>In a previous section, we defined that our (dbform) form would be associated to an [entry] called 'bugs'.  The 'bugs' form contained a single textField entry (referring to 'title').  Let's take a look at the resulting 
+      <emphasis role="bold">Validation.xml</emphasis> file:
+
+    </para>
+    <screen>
+      <emphasis role="bold">&lt;formset&gt;</emphasis>
+      <emphasis role="bold">&lt;form</emphasis> name="bugs"&gt; 
+            
+      <emphasis role="bold">&lt;field</emphasis> property="title" depends="required,mask,maxlength"&gt; 
+    
+      <emphasis role="bold">&lt;msg</emphasis> name="required" key="errors.required" resource="true"/&gt; 
+                    
+      <emphasis role="bold">&lt;arg0</emphasis> name="required" key="bugsForm.title.displayname" resource="true"/&gt;
                      
-		<emphasis role="bold">&lt;msg</emphasis> name="mask" key="bugsForm.error.title.mask" resource="true"/&gt; 
-		 
-		<emphasis role="bold">&lt;msg</emphasis> name="maxlength" key="errors.maxlength" resource="true"/&gt; 
-                    <emphasis role="bold">&lt;arg0</emphasis> name="maxlength" key="bugsForm.title.displayname" resource="true"/&gt; 
-                    <emphasis role="bold">&lt;arg1</emphasis> name="maxlength" key="${var:maxlength}" resource="false"/&gt; 
-		
-                <emphasis role="bold">&lt;var&gt;</emphasis> 
+    
+      <emphasis role="bold">&lt;msg</emphasis> name="mask" key="bugsForm.error.title.mask" resource="true"/&gt; 
+     
+    
+      <emphasis role="bold">&lt;msg</emphasis> name="maxlength" key="errors.maxlength" resource="true"/&gt; 
+                    
+      <emphasis role="bold">&lt;arg0</emphasis> name="maxlength" key="bugsForm.title.displayname" resource="true"/&gt; 
+                    
+      <emphasis role="bold">&lt;arg1</emphasis> name="maxlength" key="${var:maxlength}" resource="false"/&gt; 
+    
+                
+      <emphasis role="bold">&lt;var&gt;</emphasis> 
                     &lt;var-name&gt;mask&lt;/var-name&gt; 
                     &lt;var-value&gt;^[A-Z][A-Za-z0-9\s]*$&lt;/var-value&gt; 
-		<emphasis role="bold">&lt;/var&gt;</emphasis>
-		<emphasis role="bold">&lt;var&gt;</emphasis>
+    
+      <emphasis role="bold">&lt;/var&gt;</emphasis>
+      <emphasis role="bold">&lt;var&gt;</emphasis>
                     &lt;var-name&gt;maxlength&lt;/var-name&gt; 
                     &lt;var-value&gt;10&lt;/var-value&gt; 
-		<emphasis role="bold">&lt;/var&gt;</emphasis>
+    
+      <emphasis role="bold">&lt;/var&gt;</emphasis>
                  
             &lt;/field&gt; 
-	&lt;/form&gt; 
+  &lt;/form&gt; 
     &lt;/formset&gt; 
-		</screen>
-                <para/>
-                <para>Its content may be summarized as follows:
+    
+    </screen>
+    <para/>
+    <para>Its content may be summarized as follows:
 </para>
-              <itemizedlist mark="opencircle">
-<listitem>
- <para>The formset is not associated to any country or language therefore it will be used for all locales.
-</para>
-</listitem>
-<listitem>
-<para>The 'value' input in the (dbForms) TextField which represents the 'title' column will be validated as follows:
     <itemizedlist mark="opencircle">
-    <listitem>
-        <para>Value is required
+      <listitem>
+        <para>The formset is not associated to any country or language therefore it will be used for all locales.
+</para>
+      </listitem>
+      <listitem>
+        <para>The 'value' input in the (dbForms) TextField which represents the 'title' column will be validated as follows:
+    
+          <itemizedlist mark="opencircle">
+            <listitem>
+              <para>Value is required
         </para>
-    </listitem>
-    <listitem>
-        <para>Value must start with an uppercase character and contain alphanumeric characters only.
+            </listitem>
+            <listitem>
+              <para>Value must start with an uppercase character and contain alphanumeric characters only.
         </para>
-    </listitem>    
-    <listitem>
-        <para>Value+ 
+            </listitem>
+            <listitem>
+              <para>Value+ 
         must not contain more then 10 characters.
         </para>
-    </listitem>
-    </itemizedlist>
-</para>
-</listitem>
-<listitem>
+            </listitem>
+          </itemizedlist>
+        </para>
+      </listitem>
+      <listitem>
         <para>Most messages (and arguments) are resolved using i18n except for 'arg1' of 'maxlength' which uses a locally-defined variable.
         </para>
-    </listitem>
-</itemizedlist>  	
-		</sect1>
-		<sect1>
-			<title>Types of validation available
+      </listitem>
+    </itemizedlist>
+  </sect1>
+  <sect1>
+    <title>Types of validation available
 </title>
-			<para>The following shows a listing of the various types of validations possible.  Of course, the developer is free to add custom validation-rules as needed.
+    <para>The following shows a listing of the various types of validations possible.  Of course, the developer is free to add custom validation-rules as needed.
 </para>
-			<sect2>
-				<title>required
+    <sect2>
+      <title>required
 </title>
-				<para>Value is required, and must be input by the end-user.
+      <para>Value is required, and must be input by the end-user.
 </para>
-				<screen>
-            <emphasis role="bold">ApplicationResource.properties:</emphasis>
+      <screen>
+        <emphasis role="bold">ApplicationResource.properties:</emphasis>
             
                 errors.required={0} is required.
                 myForm.title.displayname=Title
  
 
-            <emphasis role="bold">Validation.xml: </emphasis>
+            
+        <emphasis role="bold">Validation.xml: </emphasis>
  
-		&lt;field property="title" depends="required"&gt; 
+    &lt;field property="title" depends="required"&gt; 
                     &lt;msg name="required" key="errors.required" resource="true"/&gt; 
                     &lt;arg0 name="required" key="myForm.title.displayname" resource="true"/&gt; 
-		&lt;/field&gt; 
-		
+    &lt;/field&gt; 
+    
                 
-            <emphasis role="bold">Result when error: </emphasis>
+            
+        <emphasis role="bold">Result when error: </emphasis>
                 Title is required.
- </screen>
-			</sect2>
-                        
-			<sect2>
-				<title>mask
+ 
+      </screen>
+    </sect2>
+    <sect2>
+      <title>mask
 </title>
-				<para>Validation made via a "regular expression".
+      <para>Validation made via a "regular expression".
 </para>
-				<screen>
-            <emphasis role="bold">ApplicationResource.properties:</emphasis>
+      <screen>
+        <emphasis role="bold">ApplicationResource.properties:</emphasis>
                 myForm.error.title.mask=The Title must begin with an uppercase character
                  and contain alphanumeric characters only.
             
             
-            <emphasis role="bold">Validation.xml: </emphasis>
-		&lt;field property="title" depends="mask"&gt; 
+            
+        <emphasis role="bold">Validation.xml: </emphasis>
+    &lt;field property="title" depends="mask"&gt; 
                     &lt;msg name="mask" key="myForm.error.title.mask" resource="true"/&gt; 
                     &lt;var&gt; 
                         &lt;var-name&gt;mask&lt;/var-name&gt; 
                         &lt;var-value&gt;^[A-Z][A-Za-z0-9\s]*$&lt;/var-value&gt; 
                     &lt;/var&gt; 
-		&lt;/field&gt; 
+    &lt;/field&gt; 
             
                 
-            <emphasis role="bold">Result when error: </emphasis>
+            
+        <emphasis role="bold">Result when error: </emphasis>
                 The Title must begin with an uppercase character
                  and contain alphanumeric characters only.
- </screen>
-			</sect2>
-                        
-			<sect2>
-				<title>range
+ 
+      </screen>
+    </sect2>
+    <sect2>
+      <title>range
 </title>
-				<para>Validation made via a "regular expression".
+      <para>Validation made via a "regular expression".
 </para>
-				<screen>
-            <emphasis role="bold">ApplicationResource.properties:</emphasis>
+      <screen>
+        <emphasis role="bold">ApplicationResource.properties:</emphasis>
                 errors.range={0} must be between {1} and {2}.
                 myForm.age.displayname=age
  
 
-            <emphasis role="bold">Validation.xml: </emphasis>
-		&lt;field    property="age" depends="range"&gt;
+            
+        <emphasis role="bold">Validation.xml: </emphasis>
+    &lt;field    property="age" depends="range"&gt;
                  
                     &lt;msg name="range" key="errors.range"/&gt; 
                     &lt;arg0 name="range" key="myForm.age.displayname" resource="true"/&gt; 
@@ -389,47 +430,53 @@ name
                         &lt;var-value&gt;110&lt;/var-value&gt; 
                     &lt;/var&gt;
                      
-		&lt;/field&gt;
+    &lt;/field&gt;
                 
                  
-            <emphasis role="bold">Result when error: </emphasis>
+            
+        <emphasis role="bold">Result when error: </emphasis>
                 age must be between 1 and 110.
- </screen>
-			</sect2>
-			<sect2>
-				<title>byte, short, long, integer, double, float
+ 
+      </screen>
+    </sect2>
+    <sect2>
+      <title>byte, short, long, integer, double, float
 </title>
-				<para>Validation to insure a specific data type. Each of these validations may be used separately.
+      <para>Validation to insure a specific data type. Each of these validations may be used separately.
 </para>
-				<screen>
-            <emphasis role="bold">ApplicationResource.properties:</emphasis>
+      <screen>
+        <emphasis role="bold">ApplicationResource.properties:</emphasis>
                 errors.integer={0} should be of type integer.
                 myForm.age.displayname=age
  
 
-            <emphasis role="bold">Validation.xml: </emphasis>
+            
+        <emphasis role="bold">Validation.xml: </emphasis>
                 &lt;field property="age" depends="integer"&gt; 
                     &lt;msg name="integer" key="errors.integer"/&gt; 
                     &lt;arg0 name="integer" key="myForm.age.displayname" resource="true"/&gt; 
                 &lt;/field&gt;
                     
                      
-            <emphasis role="bold">Result when error: </emphasis>
+            
+        <emphasis role="bold">Result when error: </emphasis>
                 age should be of type integer.
-		 </screen>
-			</sect2>
-			<sect2>
-				<title>minlength
+     
+      </screen>
+    </sect2>
+    <sect2>
+      <title>minlength
 </title>
-				<para>Validates if the number of characters input by the user, respects the minimum number required.
+      <para>Validates if the number of characters input by the user, respects the minimum number required.
 </para>
-				<screen>
-            <emphasis role="bold">ApplicationResource.properties:</emphasis>
+      <screen>
+        <emphasis role="bold">ApplicationResource.properties:</emphasis>
                 errors.minlength={0} cannot contain less than {1} characters.
                 myForm.description.displayname=Description
 
 
-            <emphasis role="bold">Validation.xml: </emphasis>
+            
+        <emphasis role="bold">Validation.xml: </emphasis>
                 &lt;field property="description" depends="minlength"&gt; 
                     &lt;msg name="minlength" key="errors.minlength"/&gt; 
                     &lt;arg0 name="minlength" key="myForm.description.displayname" resource="true"/&gt; 
@@ -438,25 +485,28 @@ name
                         &lt;var-name&gt;minlength&lt;/var-name&gt; 
                         &lt;var-value&gt;25&lt;/var-value&gt; 
                     &lt;/var&gt; 
-		&lt;/field&gt;
+    &lt;/field&gt;
                 
                  
-            <emphasis role="bold">Result when error: </emphasis>
+            
+        <emphasis role="bold">Result when error: </emphasis>
                 Description cannot contain less than 25 characters.
-		 </screen>
-			</sect2>
-			<sect2>
-				<title>maxlength
+     
+      </screen>
+    </sect2>
+    <sect2>
+      <title>maxlength
 </title>
-				<para>Validates if the number of characters input by the user, respects the maximum number required.
+      <para>Validates if the number of characters input by the user, respects the maximum number required.
 </para>
-				<screen>
-            <emphasis role="bold">ApplicationResource.properties:</emphasis>
+      <screen>
+        <emphasis role="bold">ApplicationResource.properties:</emphasis>
                 errors.maxlength={0} cannot contain more than {1} characters.
-		myForm.description.displayname=Description
+    myForm.description.displayname=Description
  
 
-            <emphasis role="bold">Validation.xml: </emphasis>
+            
+        <emphasis role="bold">Validation.xml: </emphasis>
                 &lt;field property="description" depends="maxlength"&gt; 
                     &lt;msg name="maxlength" key="errors.maxlength"/&gt; 
                     &lt;arg0 name="maxlength" key="myForm.description.displayname" resource="true"/&gt; 
@@ -465,37 +515,40 @@ name
                         &lt;var-name&gt;maxlength&lt;/var-name&gt; 
                         &lt;var-value&gt;25&lt;/var-value&gt; 
                     &lt;/var&gt; 
-		&lt;/field&gt;
+    &lt;/field&gt;
                 
                  
-            <emphasis role="bold">Result when error: </emphasis>
+            
+        <emphasis role="bold">Result when error: </emphasis>
                 Description cannot contain more than 25 characters.
- </screen>
-			</sect2>
-			<sect2>
-				<title>date
+ 
+      </screen>
+    </sect2>
+    <sect2>
+      <title>date
 </title>
-				<para>Validates if the date input is a valid date.  This validation requires two arguments: 'SimpleDateFormat' and a (date) pattern.  Valid patterns include:
+      <para>Validates if the date input is a valid date.  This validation requires two arguments: 'SimpleDateFormat' and a (date) pattern.  Valid patterns include:
 </para>
-<itemizedlist mark="opencircle">
-<listitem>
-<para>datePattern
+      <itemizedlist mark="opencircle">
+        <listitem>
+          <para>datePattern
 </para>
-</listitem>
-<listitem>
-<para>datePatternStrict which validates length.
+        </listitem>
+        <listitem>
+          <para>datePatternStrict which validates length.
 </para>
-</listitem>
-</itemizedlist>
-<para>Hence, if the SimpleDateFormat is set to 'yyyy-MM-dd' and the user input '2002-4-4', using 'datePatternStrict' would return an error. (Expecting 10 characters  got 8)
+        </listitem>
+      </itemizedlist>
+      <para>Hence, if the SimpleDateFormat is set to 'yyyy-MM-dd' and the user input '2002-4-4', using 'datePatternStrict' would return an error. (Expecting 10 characters  got 8)
 </para>
-				<screen>
-            <emphasis role="bold">ApplicationResource.properties:</emphasis>
+      <screen>
+        <emphasis role="bold">ApplicationResource.properties:</emphasis>
                 errors.date={0} is not a valid date.
                 myForm.opendate.displayname=Start Date
  
 
-		<emphasis role="bold">Validation.xml: </emphasis>
+    
+        <emphasis role="bold">Validation.xml: </emphasis>
                     &lt;field property="opendate" depends="date"&gt; 
                         &lt;msg name="date" key="errors.date"/&gt; 
                         &lt;arg0 name="date" key="myForm.opendate.displayname" resource="true"/&gt; 
@@ -507,68 +560,84 @@ name
                     &lt;/field&gt;
                     
                      
-		<emphasis role="bold">Result when error: </emphasis>
+    
+        <emphasis role="bold">Result when error: </emphasis>
                     Start Date is not a valid date.
  
-		</screen>
-			</sect2>
-			<sect2>
-				<title>email
+    
+      </screen>
+    </sect2>
+    <sect2>
+      <title>email
 </title>
-				<para>Validates an e-mail address.
+      <para>Validates an e-mail address.
 </para>
-				<screen>
-            <emphasis role="bold">ApplicationResource.properties:</emphasis>
+      <screen>
+        <emphasis role="bold">ApplicationResource.properties:</emphasis>
                 errors.email={0} does not contain a valid e-mail address.
                 myForm.email.displayname=User E-mail address
  
 
-            <emphasis role="bold">Validation.xml: </emphasis>
-		&lt;field property="email_user" depends="email"&gt; 
+            
+        <emphasis role="bold">Validation.xml: </emphasis>
+    &lt;field property="email_user" depends="email"&gt; 
                     &lt;msg name="email" key="errors.email"/&gt; 
                     &lt;arg0 name="email" key="myForm.email.displayname" resource="true"/&gt; 
-		&lt;/field&gt;
+    &lt;/field&gt;
                 
                  
-            <emphasis role="bold">Result when error: </emphasis>
+            
+        <emphasis role="bold">Result when error: </emphasis>
                 User E-mail address does not contain a valid e-mail address.
  
-		</screen>
-			</sect2>
-			<sect2>
-				<title>creditcard
+    
+      </screen>
+    </sect2>
+    <sect2>
+      <title>creditcard
 </title>
-				<para>Validates a credit card number (using checksum).
+      <para>Validates a credit card number (using checksum).
 </para>
-				<screen>
-            <emphasis role="bold">ApplicationResource.properties:</emphasis>
+      <screen>
+        <emphasis role="bold">ApplicationResource.properties:</emphasis>
                 errors.creditcard={0} does not contain a valid credit card number.
                 myForm.creditcard.displayname=Client credit card
  
 
-            <emphasis role="bold">Validation.xml: </emphasis>
-		&lt;field property="email_user" depends="creditcard"&gt; 
+            
+        <emphasis role="bold">Validation.xml: </emphasis>
+    &lt;field property="email_user" depends="creditcard"&gt; 
                     &lt;msg name="creditcard" key="errors.creditcard"/&gt; 
                     &lt;arg0 name="creditcard" key="myForm.creditcard.displayname" resource="true"/&gt; 
-		&lt;/field&gt; 
-		
+    &lt;/field&gt; 
+    
                 
-            <emphasis role="bold">Result when error: </emphasis>
+            
+        <emphasis role="bold">Result when error: </emphasis>
                 Client credit card does not contain a valid credit card number.
  
-		</screen>
-				<para>Please refer to the sample application 'bugtracker' for a detailed exemple of using  validation within dbForms.  This application can be found in the distribution package.
+    
+      </screen>
+      <para>Please refer to the sample application 'bugtracker' for a detailed exemple of using  validation within dbForms.  This application can be found in the distribution package.
 </para>
-				<para/>
-			</sect2>
-		</sect1>
-                 <sect1>
-                            <title>Validator-rules.xml</title>
- 
-                            <para>A sample is included in the bugtracker example in the <computeroutput>/examples</computeroutput> directory.</para>
- 
-                            <para>In addition, a sample <computeroutput>validation.js</computeroutput> is available there as well.  This is a contecnation of <computeroutput>validator-rules.xml</computeroutput> used for performance reasons via the <computeroutput>javascriptValidationSrcFile</computeroutput> attribute of the <computeroutput>dbform </computeroutput>tag.</para>
-                            <para>Finally, since DBF's validation was based on Struts, you can also check out <ulink url="http://jdbforms.sourceforge.net/non-cvs/docs/usersguide/pdf/validation/ch12.pdf"><citetitle>the validation chapter from "Struts In Action"</citetitle></ulink></para>
-                </sect1>
-	</chapter>
- 
+      <para/>
+    </sect2>
+  </sect1>
+  <sect1>
+    <title>Validator-rules.xml</title>
+    <para>A sample is included in the bugtracker example in the 
+      <computeroutput>/examples</computeroutput> directory.
+    </para>
+    <para>In addition, a sample 
+      <computeroutput>validation.js</computeroutput> is available there as well.  This is a contecnation of 
+      <computeroutput>validator-rules.xml</computeroutput> used for performance reasons via the 
+      <computeroutput>javascriptValidationSrcFile</computeroutput> attribute of the 
+      <computeroutput>dbform </computeroutput>tag.
+    </para>
+    <para>Finally, since DBF's validation was based on Struts, you can also check out 
+      <ulink url="http://jdbforms.sourceforge.net/non-cvs/docs/usersguide/pdf/validation/ch12.pdf">
+        <citetitle>the validation chapter from "Struts In Action"</citetitle>
+      </ulink>
+    </para>
+  </sect1>
+</chapter>
