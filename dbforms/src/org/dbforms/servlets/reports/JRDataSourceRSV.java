@@ -25,11 +25,12 @@ package org.dbforms.servlets.reports;
 
 /**
  */
+import org.apache.log4j.Category;
+import org.dbforms.config.ResultSetVector;
+
 import dori.jasper.engine.JRDataSource;
 import dori.jasper.engine.JRException;
 import dori.jasper.engine.JRField;
-
-import org.dbforms.config.ResultSetVector;
 
 
 
@@ -41,6 +42,8 @@ import org.dbforms.config.ResultSetVector;
  */
 public class JRDataSourceRSV implements JRDataSource
 {
+	private static Category logCat = Category.getInstance(JRDataSourceRSV.class.getName());	
+	
    private ResultSetVector rsv;
 
    /**
@@ -72,19 +75,32 @@ public class JRDataSourceRSV implements JRDataSource
 
    /**
     * @see dori.jasper.engine.JRDataSource#getFieldValue(dori.jasper.engine.JRField)
+    * 
+    * Grunikiewicz.philip@hydro.qc.ca
+    * 2004-01-13
+    * 
+    * Because I had fields defined (dbforms-config.xml) in mix case (ie: creditLimit) and in my XML file, my field was in
+    * uppercase (ie: CREDITLIMIT), my field could not be found. 
+    * 
+    * Added some logging to help out debugging this type of problem.
     */
    public Object getFieldValue(JRField field) throws JRException
    {
       Object o;
+      
+      String search = field.getName();
+      logCat.debug("Trying to find data for field named: " + search);
       o = getFieldValue(field.getName());
 
       if (o == null)
       {
-         o = getFieldValue(field.getName().toUpperCase());
+		logCat.debug("Field not found in dbforms-config, trying field renamed to uppercase: " + search.toUpperCase());
+         o = getFieldValue(search.toUpperCase());
       }
 
       if (o == null)
       {
+		 logCat.debug("Field not found in dbforms-config, trying field renamed to lowercase: " + search.toLowerCase());      	
          o = getFieldValue(field.getName().toLowerCase());
       }
 /*
