@@ -1,3 +1,13 @@
+2004-08-01
+(Henner.Kollmann@gmx.de)
+Support added for servletapi 2.4
+
+2004-07-18
+(Henner.Kollmann@gmx.de)
+First try to support blobs in ContentTag, thanks to Dziugas Baltrunas [dziugas.baltrunas@metasite.net]
+added support for comboboxes for foreign fields, thanks to Ali Demir [demir4@yahoo.com]
+
+
 2004-06-29
 (Henner.Kollmann@gmx.de)
 New tag DbSearchCheckBox to have a checkbox with a dedicated value for searching

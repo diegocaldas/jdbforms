@@ -152,6 +152,11 @@
     />
   </postGoal>
 
+  <postGoal name="sourceforge:changes">
+    <ant:echo message="copy ChangeLog" />
+    <ant:copy file="ChangeLog" tofile="${maven.dist.dir}/CHANGES.txt" overwrite="true"/>
+  </postGoal>
+
   <postGoal name="site:generate">
     <ant:echo message="build the distribution via build.xml" />
     <attainGoal name="dbforms:dist" />

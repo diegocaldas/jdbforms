@@ -261,7 +261,7 @@
   </target>
 
   <!-- create lib  -->
-  <target name="createLibFile" depends="generate_taglib">
+  <target name="createLibFile" depends="jar_classes, generate_taglib">
     <tstamp />
     <property name="dbforms.releaseName" value="${dbforms.version}_${DSTAMP}" />
     <zip destfile="${dist.dir}/dbforms_jaronly_${dbforms.releaseName}.zip">
@@ -327,6 +327,12 @@
     <!-- compress tarfile using gzip, delete intermediate tar file: -->
     <gzip zipfile="${dbforms.tgzfilename}" src="${dbforms.tarfilename}" />
     <delete file="${dbforms.tarfilename}" />
+    <delete dir="${dbforms.releaseDir}" />
+    <delete dir="${dist.dir}/bin" />
+    <delete>
+       <fileset dir="${dist.dir}" includes="dbforms*.jar dbforms*.tld" />
+    </delete>
+
   </target>
 
 
@@ -342,7 +348,7 @@
   <!--                                                                     -->
   <!-- called by Maven's "dist" goal                                        -->
   <!-- =================================================================== -->
-  <target name="maven-build-release"   depends="createReleaseFiles, createLibFile" />
+  <target name="maven-build-release"   depends="createLibFile, createReleaseFiles" />
 
 
   <target name="maven-build-bookstore" depends="generate_taglib" >
