@@ -10,10 +10,10 @@ import org.dbforms.util.MessageResourcesInternal;
 import org.dbforms.util.MessageResources;
 
 // definition of test class
-public class testUnboundedField extends HttpTestCase {
+public class TestUnboundedField extends HttpTestCase {
    private static String nodata = null;       
 
-   public testUnboundedField(String name) {
+   public TestUnboundedField(String name) {
       super(name);
       if (nodata == null) {
          MessageResources.setSubClass("resources");
