@@ -2268,8 +2268,44 @@ is able to chache the data</info>
 				<name>getConnection</name>
 				<summary>
 					Allows other tags (or scriptlets) to 
-					obtain a DataSource using the same settings found in dbForms-config.xml</summary>
+					obtain a database connection object using the same settings found in dbForms-config.xml
+				</summary>
 				<tagclass>org.dbforms.taglib.DbGetConnection</tagclass>
+				<bodycontent>JSP</bodycontent>
+				<attribute>
+					<name>id</name>
+					<required>true</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						Attribute in page that will be used to reference the connection object
+						Allows other tags (and/or java scriptlets) to obtain a connection via the same settings as defined in dbForms<br/>
+						Example:<br/>
+						&lt;db:getConnection id=&quot;myConnection&quot;&gt;<br/>
+					        &lt;!-- Open connection --&gt;<br/>
+							&lt;sql: statement id=&quot;stmt&quot; conn=&quot;myConnection&quot;&gt;<br/>
+							&lt;sql:query&gt;Select * from Table&lt;/sql:query&gt;<br/>
+							&lt;sql:resultSet id=&quot;rs&quot;&gt;<br/>
+							Value: &lt;sql:getColumn position=&quot;1&quot;/&gt;<br/>
+							&lt;/sql:resultSet&gt;<br/>
+							&lt;/sql:statement&gt;<br/>
+							&lt;/db:getConnection&gt;<br/>
+							&lt;!-- close connection --&gt;<br/>
+					</info>
+				</attribute>
+				<attribute>
+					<name>dbConnectionName</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>indicate which dbconnection object to user.</info>
+				</attribute>
+			</tag>
+			<!-- **************************** setDataSource tag ***********************************-->
+			<tag>
+				<name>setDataSource</name>
+				<summary>
+					Allows other tags (or scriptlets) to 
+					obtain a DataSource using the same settings found in dbForms-config.xml</summary>
+				<tagclass>org.dbforms.taglib.DbSetDataSource</tagclass>
 				<bodycontent>JSP</bodycontent>
 				<attribute>
 					<name>id</name>
@@ -2280,24 +2316,14 @@ is able to chache the data</info>
 						Attribute in page that will be used to reference the connection object
 						Allows other tags (and/or java scriptlets) 
         					to obtain a connection via the same settings as defined in dbForms
-        				</p>
-						<p>Example:</p>
-						<p>(using Jakarta dbTags)</p>
-						<span style="font-size:8.0pt;font-family:&quot;Courier New&quot;;   ">
-							<p>
-								&lt;db:getConnection id=&quot;myDataSource&quot; /&gt;</p>
-							<p>
-								&lt;sql:query var="qry" dataSource="${myDataSource}"&gt;Select * from Table&lt;/sql:query&gt;
-							</p>
-							<p>
-								&lt;c:forEach var="row" items="${qry.rows}" &gt;</p>
-							<p>
-								Value: &lt;c:out value="{row.field}" /&gt;
-							</p>
-							<p>
-								&lt;/c:forEach&gt;
-							</p>
-						</span>
+	       				</p>
+						<p>Example: (using Jakarta dbTags)<br/>
+								&lt;db:setDataSource id=&quot;myDataSource&quot; /&gt;<br/>
+								&lt;sql:query var="qry" dataSource="${myDataSource}"&gt;Select * from Table&lt;/sql:query&gt;<br/>
+								&lt;c:forEach var="row" items="${qry.rows}" &gt;<br/>
+								Value: &lt;c:out value="{row.field}" /&gt;<br/>
+								&lt;/c:forEach&gt;<br/>
+						</p>
 					</info>
 				</attribute>
 				<attribute>

@@ -66,7 +66,6 @@ public class SingleConnectionProvider extends ConnectionProvider {
             props.put("password", getPrefs().getPassword());
             con = DriverManager.getConnection(getPrefs().getJdbcURL(), props);
          }
-
          // "plain" flavour;
          else {
             con = DriverManager.getConnection(getPrefs().getJdbcURL(), getPrefs().getUser(), getPrefs().getPassword());

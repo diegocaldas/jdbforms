@@ -1,3 +1,9 @@
+====================== v2.2 was released  ==============================================         
+2004-02-21
+(Henner.Kollmann@gmx.de)
+changed getConnection Tag again so that it works as before - returning an Connection
+added a new tag setDataSource for use with jstl
+====================== v2.1 was released  ==============================================         
 2004-02-14
 (Henner.Kollmann@gmx.de)
 changed getConnection Tag so that it will work with jstl 1.0: 

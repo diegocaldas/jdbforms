@@ -147,7 +147,7 @@ public class ReflectionUtil
     * 
     * @return the String representation of the input object
     */
-   private static String toString(Object o)
+   public static String toString(Object o)
    {
       StringWriter   sw = new StringWriter();
       BufferedWriter bw = new BufferedWriter(new PrintWriter(sw));

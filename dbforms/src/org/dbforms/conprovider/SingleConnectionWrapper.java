@@ -42,7 +42,9 @@ public class SingleConnectionWrapper implements Connection {
 
    private Connection _conn;
    private List list = new ArrayList();
+   private boolean open = true;
    private static int counter = 0;
+   
 
    public SingleConnectionWrapper(Connection con) {
 //      logCat.warn("createConnection: connection count: " + String.valueOf(counter));
@@ -78,6 +80,7 @@ public class SingleConnectionWrapper implements Connection {
          }
          list.clear();
          counter--;
+         open = false;
 //         logCat.warn("closeConnection: connection count: " + String.valueOf(counter));
       }
    }
@@ -180,7 +183,7 @@ public class SingleConnectionWrapper implements Connection {
 
    public boolean isClosed() throws SQLException {
       synchronized (_conn) {
-         return _conn.isClosed();
+         return !open || _conn.isClosed();
       }
    }
 

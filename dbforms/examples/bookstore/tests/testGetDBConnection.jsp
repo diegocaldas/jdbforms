@@ -10,7 +10,7 @@
 </head>
 <html>
    <body>
-		<db:getConnection id="con" />
+		<db:setDataSource id="con" />
 		<sql:query dataSource="${con}" var="qry">
    		     select * from BOOK
 	   </sql:query>
