@@ -447,7 +447,7 @@ public class Controller extends HttpServlet
    {
       String loc = ParseUtil.getParameter(request, "lang");
       if (!Util.isNull(loc)) {
-         Locale locale = new Locale(loc);
+         Locale locale = new Locale(loc, "");
          MessageResources.setLocale(request, locale);      
       } else if (MessageResources.getLocale(request) == null)
       {

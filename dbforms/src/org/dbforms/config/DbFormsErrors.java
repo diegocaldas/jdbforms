@@ -256,7 +256,6 @@ public class DbFormsErrors
 		// Sort parameter list
 		Vector v     = ParseUtil.splitString(paramList, ",");
 		int    count = 0;
-
 		while (pos >= 0)
 		{
 			// Replace

@@ -109,7 +109,7 @@ public class StartReportServlet extends HttpServlet {
 			value = "WEB-INF/reports/";
 		}
 
-		reportdirs = StringUtils.split(value, ",");
+		reportdirs = StringUtils.split(value, ',');
 	}
 
 	/**
@@ -178,7 +178,7 @@ public class StartReportServlet extends HttpServlet {
 				}
 			}
 		} catch (Exception e) {
-			logCat.error(e);
+			logCat.error("process", e);
 			handleException(request, response, e);
 		}
 	}
@@ -224,7 +224,7 @@ public class StartReportServlet extends HttpServlet {
 			try {
 				config = DbFormsConfigRegistry.instance().lookup();
 			} catch (Exception e) {
-				logCat.error(e);
+				logCat.error("processReport", e);
 				throw new ServletException(e);
 			}
 
@@ -291,7 +291,7 @@ public class StartReportServlet extends HttpServlet {
 					}
 				}
 			} catch (JRException e) {
-				logCat.error("jasper error: " + e.getMessage());
+				logCat.error("processReport",  e);
 				handleException(request, response, e);
 
 				return;
@@ -429,7 +429,7 @@ public class StartReportServlet extends HttpServlet {
 			out.flush();
 			out.close();
 		} catch (IOException ioe2) {
-			logCat.error("!!!senderror message crashed!!!" + ioe2.getMessage());
+			logCat.error("sendErrorMessageText", ioe2);
 		}
 	}
 
@@ -454,7 +454,7 @@ public class StartReportServlet extends HttpServlet {
 				request.getRequestDispatcher(fue).forward(request, response);
 			}
 		} catch (Exception ex) {
-			logCat.error(ex);
+			logCat.error("sendErrorMessage", ex);
 			sendErrorMessageText(response, message);
 		}
 	}
@@ -517,7 +517,7 @@ public class StartReportServlet extends HttpServlet {
 		try {
 			JasperCompileManager.compileReportToFile(reportFile);
 		} catch (Exception e) {
-			logCat.error("compile error " + e.getMessage());
+			logCat.error("compile", e);
 			throw e;
 		}
 	}

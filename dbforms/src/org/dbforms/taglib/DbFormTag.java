@@ -44,6 +44,7 @@ import javax.servlet.jsp.tagext.BodyTagSupport;
 import javax.servlet.jsp.tagext.TryCatchFinally;
 import javax.servlet.jsp.tagext.Tag;
 import org.apache.commons.validator.ValidatorResources;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Category;
 import org.dbforms.util.ParseUtil;
 import org.dbforms.util.Util;
@@ -1103,7 +1104,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
             if (!Util.isNull(validationFct) && !Util.isNull(getOnSubmit())) {
                boolean found = false;
                String s = getOnSubmit();
-               String[] cmds = s.split(";");
+               String[] cmds = StringUtils.split(s, ';');
 
                for (int i = 0; i < cmds.length; i++) {
                   cmds[i] = cmds[i].trim();

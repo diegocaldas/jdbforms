@@ -131,7 +131,6 @@ public class XMLDataResult {
          Node n = item(i);
          if (n != null) {
             XPathResult data = (XPathResult) evaluator.evaluate(expression, n, resolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
-
             if (data != null) {
                n = data.getSingleNodeValue();
                if (n != null) {
@@ -178,6 +177,7 @@ public class XMLDataResult {
     * @return size of result set
     */
    public int size() {
-      return data.getSnapshotLength();
+      int res = data.getSnapshotLength(); 
+      return res;
    }
 }

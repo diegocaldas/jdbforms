@@ -29,6 +29,7 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 import javax.servlet.jsp.tagext.TryCatchFinally;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Category;
 import org.dbforms.config.FieldValue;
 import org.dbforms.util.ParseUtil;
@@ -138,7 +139,7 @@ public class DbFilterConditionTag extends BodyTagSupport
          return null;
       }
 
-      int cnt = filterCondition.split("[?]").length; 
+      int cnt = StringUtils.split(filterCondition, '?').length; 
       // build up the list of the values of the nested filterValue's parameters 
       FieldValue[] values = DbFilterValueTag.readValuesFromRequest(request, 
                                                                    tableId, 

@@ -566,7 +566,7 @@ public class ConfigServlet extends HttpServlet
       }
 
       String[] s = StringUtils.split(config, ",");
-
+      
       for (int i = 0; i < s.length; i++)
          initXMLConfigFile(s[i]);
    }

@@ -28,6 +28,7 @@ import java.util.Calendar;
 import java.text.SimpleDateFormat;
 import java.text.DecimalFormat;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Category;
 
 import org.dbforms.util.UniqueIDGenerator;
@@ -551,7 +552,7 @@ public class FieldValue implements Cloneable {
       try {
          // 20031123-HKK: patch suggested by Igor Longagnani [i.longagnani@tiscali.it]:
          //               use only the first part of date string.   
-         String[] vStr  = valueStr.split(" ");
+         String[] vStr  = StringUtils.split(valueStr, " ");
          String str = vStr[0];
          return Date.valueOf(str);
       } catch (Exception e) {

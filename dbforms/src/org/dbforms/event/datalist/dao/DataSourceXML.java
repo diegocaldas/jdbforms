@@ -29,8 +29,6 @@ import java.util.Vector;
 import java.util.Hashtable;
 import java.util.Iterator;
 
-import java.net.URI;
-
 import java.sql.SQLException;
 import java.sql.Connection;
 
@@ -115,11 +113,11 @@ public class DataSourceXML extends DataSource {
          while (iter.hasNext()) {
             FieldValue fv = (FieldValue) iter.next();
             Field f = fv.getField();
-            data.setItemValue(r, 
-                  Util.isNull(f.getExpression()) ? f.getName() : f.getExpression(), 
-                  f.getType(), 
-                  fv.getFieldValueAsObject()
-               );
+            data.setItemValue(
+               r,
+               Util.isNull(f.getExpression()) ? f.getName() : f.getExpression(),
+               f.getType(),
+               fv.getFieldValueAsObject());
          }
          dataObject[r] = null;
       }
@@ -133,12 +131,14 @@ public class DataSourceXML extends DataSource {
    protected final void open() throws SQLException {
       if (dataObject == null) {
          try {
-            URI url = getURI();
-			Document doc = read(url);
-			Element elem = doc.getDocumentElement();
-			data = new XMLDataResult(elem, url.getQuery());
+            String url = getURI();
+            Document doc = read(url);
+            if (doc != null) {
+               Element elem = doc.getDocumentElement();
+               data = new XMLDataResult(elem,  "." + url);
+            }
          } catch (Exception e) {
-            logCat.error(e);
+            logCat.error("open", e);
             throw new SQLException(e.getMessage());
          }
          keys = new Hashtable();
@@ -220,7 +220,7 @@ public class DataSourceXML extends DataSource {
     * @throws SQLException
     */
    protected final Object[] getRow(int currRow) throws SQLException {
-      if ((currRow < 0) || (currRow >= dataObject.length)) {
+      if ((currRow < 0) || (currRow >= size())) {
          return null;
       }
 
@@ -252,8 +252,8 @@ public class DataSourceXML extends DataSource {
     * 
     * @throws Exception Exception during processing IO
     */
-   protected Document read(URI url) throws Exception {
-      return DOMFactory.instance().read(url.getPath());
+   protected Document read(String url) throws Exception {
+      return DOMFactory.instance().read(url);
    }
 
    /**
@@ -261,8 +261,8 @@ public class DataSourceXML extends DataSource {
     * 
     * @throws Exception Exception during processing IO
     */
-   protected void write(URI url, Element root) throws Exception {
-      DOMFactory.instance().write(url.getPath(), root);
+   protected void write(String url, Element root) throws Exception {
+      DOMFactory.instance().write(url, root);
    }
 
    private String getSQLFilter() {
@@ -363,47 +363,30 @@ public class DataSourceXML extends DataSource {
       return buf.toString();
    }
 
-   private URI getURI() throws Exception {
-      URI url = null;
+   private String getURI() throws Exception {
       String qry = getFilePath() + getQuery();
-      // Check if we got a full URI
-      try {
-         url = new URI(qry);
-      } catch (Exception e) {
-         logCat.error(e);
-      }
-
-      // No valid URI given, put query into to query part of the 
-      // URI object
-      if (url == null) {
-         try {
-            url = new URI(null, null, null, qry, null);
-         } catch (Exception e) {
-            logCat.error(e);
-         }
-      }
-      return url;
+      return qry;
    }
 
    private String getFilePath() throws Exception {
-      return Util.replaceRealPath(getTable().getAlias(), DbFormsConfigRegistry.instance().lookup().getRealPath());
+      return Util.replaceRealPath(getTable().getReadAlias(), DbFormsConfigRegistry.instance().lookup().getRealPath());
    }
 
    private String getQuery() throws SQLException {
       StringBuffer buf = new StringBuffer();
-      
+
       String filter = getWhereClause();
       String sqlFilter = getSQLFilter();
 
       if (!Util.isNull(filter) || !Util.isNull(sqlFilter)) {
          buf.append("[");
          buf.append(filter);
-
-         if (!Util.isNull(filter)) {
-            buf.append(" and ");
+         if (!Util.isNull(sqlFilter)) {
+            if (!Util.isNull(filter)) {
+               buf.append(" and ");
+            }
+            buf.append(sqlFilter);
          }
-
-         buf.append(sqlFilter);
          buf.append("]");
       }
       return buf.toString();

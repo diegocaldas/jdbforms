@@ -107,7 +107,8 @@ public class Table {
    private String dataAccessClass = null;
 
    /** some sort of alias to set in dbforms-config, not used yet */
-   private String alias = null;
+   private String readAlias = null;
+   private String writeAlias = null;
 
    /**
     * Creates a new Table object.
@@ -294,15 +295,15 @@ public class Table {
    /**
     * @return String
     */
-   public String getAlias() {
-      return alias;
+   public String getReadAlias() {
+      return readAlias;
    }
 
    /**
     * @param alias the alias to set
     */
-   public void setAlias(String alias) {
-      this.alias = alias;
+   public void setReadAlias(String alias) {
+      this.readAlias = alias;
    }
 
    /**
@@ -2287,4 +2288,18 @@ public class Table {
 
       return result;
    }
+   /**
+    * @return
+    */
+   public String getWriteAlias() {
+      return writeAlias;
+   }
+
+   /**
+    * @param string
+    */
+   public void setWriteAlias(String string) {
+      writeAlias = string;
+   }
+
 }
