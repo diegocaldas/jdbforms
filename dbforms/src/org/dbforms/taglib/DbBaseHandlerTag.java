@@ -207,28 +207,24 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
     * @return DOCUMENT ME!
     */
    protected String typicalDefaultValue() {
+      // 20030113-HKK: Change to use format too
+      String res = "";
       if (getField() != null) {
+
          switch (field.getType()) {
             case org.dbforms.config.FieldTypes.INTEGER :
-               return "0";
-
             case org.dbforms.config.FieldTypes.NUMERIC :
-               return "0";
-
             case org.dbforms.config.FieldTypes.DOUBLE :
-               return "0.0";
-
             case org.dbforms.config.FieldTypes.FLOAT :
-               return "0.0";
-
-            default :
-               return "";
-
+               try {
+                  res = getFormat().format(new Double(0));
+               } catch (Exception e) {
+                  res = "0";
+               }
                // in all other cases we just leave the formfield empty
          }
-      } else {
-         return "";
       }
+      return res;
    }
 
    /**
