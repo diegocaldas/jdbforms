@@ -136,6 +136,7 @@ public class ErrorsTag extends BodyTagSupport
          {
             results.append("<li>");
             results.append(MessageResources.getMessage(request, (String) errors.elementAt(i)));
+            results.append("</li>");
          }
 
          results.append("</ul>");

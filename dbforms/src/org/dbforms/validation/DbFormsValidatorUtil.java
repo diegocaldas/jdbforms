@@ -520,7 +520,7 @@ public class DbFormsValidatorUtil
       String       name = Character.toUpperCase(formName.charAt(0))
          + formName.substring(1, formName.length());
 
-      sb.append("<SCRIPT LANGUAGE=\"Javascript1.1\"> \n");
+      sb.append("<script language=\"Javascript1.1\"> \n");
 
       sb.append("<!-- Begin \n");
       sb.append("\n	 var " + ValidatorConstants.JS_CANCEL_VALIDATION
@@ -557,7 +557,7 @@ public class DbFormsValidatorUtil
 
       sb.append("\n");
       sb.append("//  End -->\n");
-      sb.append("</SCRIPT>\n\n");
+      sb.append("</script>\n\n");
 
       return sb.toString();
    }

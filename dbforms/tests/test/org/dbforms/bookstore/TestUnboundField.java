@@ -45,9 +45,9 @@ public class TestUnboundField extends HttpTestCase {
       list.add(new NVPair("invtable", "0"));
       list.add(new NVPair("invname_0", ""));
       list.add(new NVPair("autoupdate_0", "false"));
-      list.add(new NVPair("fu_0", "/tests/testUnboundedField.jsp"));
+      list.add(new NVPair("fu_0", "/tests/testUnboundField.jsp"));
       list.add(new NVPair("lang", "de"));
-      list.add(new NVPair("source", "/bookstore/tests/testUnboundedField.jsp"));
+      list.add(new NVPair("source", "/bookstore/tests/testUnboundField.jsp"));
       list.add(new NVPair("customEvent", ""));
       list.add(new NVPair("firstpos_0", "0%3A1%3A1"));
       list.add(new NVPair("lastpos_0", "0%3A1%3A1"));
@@ -73,9 +73,9 @@ public class TestUnboundField extends HttpTestCase {
       list.add(new NVPair("invtable", "0"));
       list.add(new NVPair("invname_0", ""));
       list.add(new NVPair("autoupdate_0", "false"));
-      list.add(new NVPair("fu_0", "/tests/testUnboundedField.jsp"));
+      list.add(new NVPair("fu_0", "/tests/testUnboundField.jsp"));
       list.add(new NVPair("lang", "de"));
-      list.add(new NVPair("source", "/bookstore/tests/testUnboundedField.jsp"));
+      list.add(new NVPair("source", "/bookstore/tests/testUnboundField.jsp"));
       list.add(new NVPair("customEvent", ""));
       list.add(new NVPair("firstpos_0", "0%3A1%3A2"));
       list.add(new NVPair("lastpos_0", "0%3A1%3A2"));

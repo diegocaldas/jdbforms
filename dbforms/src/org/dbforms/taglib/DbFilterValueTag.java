@@ -229,7 +229,7 @@ public class DbFilterValueTag extends DbBaseHandlerTag implements DataContainer,
 
       if (selected)
       {
-         tagBuf.append(" selected");
+         tagBuf.append(" selected=\"selected\"");
       }
 
       tagBuf.append(">");

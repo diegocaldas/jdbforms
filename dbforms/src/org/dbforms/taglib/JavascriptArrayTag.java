@@ -112,7 +112,7 @@ public class JavascriptArrayTag extends BodyTagSupport implements DataContainer,
       }
       else
       {
-         tagBuf.append("\n<SCRIPT language=\"javascript\">\n");
+         tagBuf.append("\n<script language=\"javascript\">\n");
          tagBuf.append("   var " + name + " = new Array();\n");
 
          int embeddedDataSize = embeddedData.size();
@@ -134,7 +134,7 @@ public class JavascriptArrayTag extends BodyTagSupport implements DataContainer,
             tagBuf.append(");\n");
          }
 
-         tagBuf.append("</SCRIPT>\n");
+         tagBuf.append("</script>\n");
       }
 
       try

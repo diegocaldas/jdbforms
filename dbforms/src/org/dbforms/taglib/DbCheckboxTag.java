@@ -229,7 +229,7 @@ public class DbCheckboxTag extends DbBaseHandlerTag implements DataContainer,
          int embeddedDataSize = embeddedData.size();
          int maxSize = Integer.parseInt(getGrowSize());
 
-         tagBuf.append("<TABLE BORDER=0 cellspacing=0 cellpadding=0><TR valign=top>");
+         tagBuf.append("<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\"><tr valign=\"top\">");
 
          for (int i = 0; i < embeddedDataSize; i++) {
             KeyValuePair aKeyValuePair = (KeyValuePair) embeddedData.elementAt(i);
@@ -244,17 +244,17 @@ public class DbCheckboxTag extends DbBaseHandlerTag implements DataContainer,
             }
 
             if ("horizontal".equals(getGrowDirection()) && (maxSize != 0) && ((i % maxSize) == 0) && (i != 0)) {
-               tagBuf.append("</TR><TR valign=top>");
+               tagBuf.append("</tr><tr valign=\"top\">");
             }
 
             if ("vertical".equals(getGrowDirection()) && (i != 0)) {
-               tagBuf.append("</TR><TR valign=top>");
+               tagBuf.append("</tr><tr valign=\"top\">");
             }
 
-            tagBuf.append("<TD>").append(generateTagString(aKey, aValue, isSelected)).append("&nbsp;</TD>");
+            tagBuf.append("<td>").append(generateTagString(aKey, aValue, isSelected)).append("&nbsp;</td>");
          }
 
-         tagBuf.append("</TR></TABLE>");
+         tagBuf.append("</tr></table>");
       }
 
       if (!Util.isNull(getNovalue())) {

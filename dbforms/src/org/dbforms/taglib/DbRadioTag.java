@@ -260,7 +260,7 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer,
          int maxSize = growSize();
 
          tagBuf.append(
-                  "<TABLE  BORDER=0 cellspacing=0 cellpadding=0><TR valign=top>");
+                  "<table  BORDER=\"0\" cellspacing=\"0\" cellpadding=\"0\"><tr valign=\"top\">");
 
          for (int i = 0; i < embeddedDataSize; i++)
          {
@@ -274,22 +274,22 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer,
             if ("horizontal".equals(getGrowDirection()) && (maxSize != 0)
                       && ((i % maxSize) == 0) && (i != 0))
             {
-               tagBuf.append("</TR><TR valign=top>");
+               tagBuf.append("</tr><tr valign=\"top\">");
             }
 
             if ("vertical".equals(getGrowDirection()) && (i != 0))
             {
-               tagBuf.append("</TR><TR valign=top>");
+               tagBuf.append("</tr><tr valign=\"top\">");
             }
 
-            tagBuf.append("<TD ");
+            tagBuf.append("<td ");
             tagBuf.append(prepareStyles());
             tagBuf.append(">")
                   .append(generateTagString(aKey, aValue, isSelected))
-                  .append("</TD>");
+                  .append("</td>");
          }
 
-         tagBuf.append("</TR></TABLE>");
+         tagBuf.append("</tr></table>");
       }
 
 		if (!Util.isNull(getNoValue()))

@@ -95,7 +95,7 @@ public class DbDateFieldTag extends DbBaseInputTag
          // written by Robert W. Husted to edit the field:
          if (!hasHiddenSet() && ("true".equals(this.getUseJsCalendar())))
          {
-            tagBuf.append(" <A HREF=\"javascript:doNothing()\" ").append(" onclick=\"");
+            tagBuf.append(" <a href=\"javascript:doNothing()\" ").append(" onclick=\"");
 
             // if date format is not explicitely set for this calendar,
             // use date format for this form field. 
@@ -122,10 +122,10 @@ public class DbDateFieldTag extends DbBaseInputTag
                   .append(getFormFieldName()).append("']);")
                   .append(" top.newWin = window.open('")
                   .append(request.getContextPath())
-                  .append("/dbformslib/jscal/calendar.html','cal','WIDTH=270,HEIGHT=280')\">")
-                  .append("<IMG SRC=\"").append(request.getContextPath())
-                  .append("/dbformslib/jscal/calendar.gif\" WIDTH=\"32\" HEIGHT=\"32\" ")
-                  .append(" BORDER=0  alt=\"Click on the Calendar to activate the Pop-Up Calendar Window.\">")
+                  .append("/dbformslib/jscal/calendar.html','cal','width=\"270\",height=\"280\"')\">")
+                  .append("<img SRC=\"").append(request.getContextPath())
+                  .append("/dbformslib/jscal/calendar.gif\" width=\"32\" height=\"32\" ")
+                  .append(" border=\"0\"  alt=\"Click on the Calendar to activate the Pop-Up Calendar Window.\">")
                   .append("</a>");
          }
 

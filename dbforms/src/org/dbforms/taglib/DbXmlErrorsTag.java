@@ -164,6 +164,7 @@ public class DbXmlErrorsTag extends BodyTagSupport
          {
             results.append("<li>");
             results.append(transformedErrors.elementAt(i));
+            results.append("</li>");
          }
 
          results.append("</ul>");
