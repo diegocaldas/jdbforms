@@ -65,13 +65,15 @@ public class FieldValue implements Cloneable {
         public static final int SEARCH_ALGO_WEAK_END = 3;
         public static final int SEARCH_ALGO_WEAK_START_END = 4;
 
-	public static final int FILTER_EQUAL  = 0;
-	public static final int FILTER_GREATER_THEN  = 1;
-	public static final int FILTER_GREATER_THEN_EQUAL  = 3;
-	public static final int FILTER_SMALLER_THEN  = 2;
-	public static final int FILTER_SMALLER_THEN_EQUAL  = 4;
-	public static final int FILTER_LIKE  = 5;
-	public static final int FILTER_NOT_EQUAL  = 6;
+	public static final int FILTER_EQUAL					= 0;
+	public static final int FILTER_GREATER_THEN			= 1;
+	public static final int FILTER_GREATER_THEN_EQUAL	= 3;
+	public static final int FILTER_SMALLER_THEN			= 2;
+	public static final int FILTER_SMALLER_THEN_EQUAL	= 4;
+	public static final int FILTER_LIKE  					= 5;
+	public static final int FILTER_NOT_EQUAL 	 			= 6;
+	public static final int FILTER_NULL  					= 7;
+	public static final int FILTER_NOT_NULL  				= 8;
 
   //--------- properties ------------------------------------------------------------
 
@@ -238,14 +240,10 @@ public class FieldValue implements Cloneable {
 					else
 						buf.append(" AND ");					
 				}
-
-				
+			
 				buf.append(fv[i].getField().getName());
-
-
 				// Check what type of operator is required
-				switch(fv[i].getOperator())
-				{
+				switch(fv[i].getOperator()) {
 					case FieldValue.FILTER_EQUAL:				buf.append(" = "); break;
 					case FieldValue.FILTER_NOT_EQUAL:			buf.append(" <> "); break;
 					case FieldValue.FILTER_GREATER_THEN:		buf.append(" > "); break;
@@ -256,11 +254,9 @@ public class FieldValue implements Cloneable {
 
 				}
 				buf.append(" ? ");
-
 			}
 		}
 		return buf.toString();
-
 	}
 
 
@@ -290,45 +286,67 @@ public class FieldValue implements Cloneable {
    * @returns _part_ of a WHERE-clause
    */
   public static String getWhereEqualsSearchClause(FieldValue[] fv) {
-
-		StringBuffer buf = new StringBuffer();
-		if(fv != null && fv.length > 0) {
-
-		    int mode, oldMode=-1;
-
-			for(int i=0; i<fv.length; i++) {
-
-				mode = fv[i].getSearchMode();
-
-				if(oldMode!=mode) {
-					oldMode = mode;
-					buf.append("("); // §1, §6
-				}
-
-				// §2, i.e "A = 'smith'" or "X LIKE 'jose%'"
-				buf.append(fv[i].getField().getName());
-	// 20020703-HKK: Extending search algorithm with WEAK_START, WEAK_END, WEAK_START_END
-        //               results in like '%search', 'search%', '%search%'
-        //               look for SEARCH_ALGO_SHARP instead of SEARCH_ALGO_WEAK!                                
-				buf.append(fv[i].getSearchAlgorithm() == SEARCH_ALGO_SHARP ? " = " : " LIKE ");
-				buf.append(" ? ");
-
-				if(i < fv.length-1 && fv[i+1].getSearchMode()==mode)
-					buf.append( mode == DbBaseHandlerTag.SEARCHMODE_AND ? "AND " : "OR " ); // §3
-
-				else {
-				//if(i==fv.length-1 || fv[i+1].getSearchMode()!=mode) {
-					buf.append(")");	  // §4, §7
-
-					if(i!=fv.length-1) {
-					  buf.append(" OR ");	// §5 #checkme
-					}
-				}
-			}
-		}
-		return buf.toString();
-
-	}
+        StringBuffer buf = new StringBuffer();
+        if(fv != null && fv.length > 0) {
+            int mode, oldMode=-1;
+            for(int i=0; i<fv.length; i++) {
+                    mode = fv[i].getSearchMode();
+                    if(oldMode!=mode) {
+                            oldMode = mode;
+                            buf.append("("); // §1, §6
+                    }
+                    // §2, i.e "A = 'smith'" or "X LIKE 'jose%'"
+                    buf.append(fv[i].getField().getName());
+                    // 20020927-HKK: Check what type of operator is required
+	                  switch(fv[i].getOperator()){
+	                      case FieldValue.FILTER_EQUAL:               
+	                      	buf.append(" = "); 
+		                buf.append(" ? "); 
+	                      	break;
+	                      case FieldValue.FILTER_NOT_EQUAL:		
+	                      	buf.append(" <> "); 
+		                buf.append(" ? ");
+	                      	break;
+	                      case FieldValue.FILTER_GREATER_THEN:	
+	                      	buf.append(" > "); 
+			        buf.append(" ? ");
+	                      	break;
+	                      case FieldValue.FILTER_SMALLER_THEN:	
+	                      	buf.append(" < "); 
+			        buf.append(" ? ");
+	                      	break;
+	                      case FieldValue.FILTER_GREATER_THEN_EQUAL:	
+	                      	buf.append(" >= "); 
+			        buf.append(" ? ");
+	                      	break;
+	                      case FieldValue.FILTER_SMALLER_THEN_EQUAL:	
+	                      	buf.append(" <= "); 
+    	                        buf.append(" ? ");
+	                      	break;
+	                      case FieldValue.FILTER_LIKE:	
+	                      	buf.append(" LIKE "); 
+			        buf.append(" ? ");
+	                      	break;
+	                      case FieldValue.FILTER_NULL:	
+	                      	buf.append(" IS NULL "); 
+	                      	break;
+	                      case FieldValue.FILTER_NOT_NULL:	
+	                      	buf.append(" IS NOT NULL "); 
+	                      	break;
+	                  }
+                    if(i < fv.length-1 && fv[i+1].getSearchMode()==mode)
+                            buf.append( mode == DbBaseHandlerTag.SEARCHMODE_AND ? "AND " : "OR " ); // §3
+                    else {
+                    //if(i==fv.length-1 || fv[i+1].getSearchMode()!=mode) {
+                            buf.append(")");	  // §4, §7
+                            if(i!=fv.length-1) {
+                              buf.append(" OR ");	// §5 #checkme
+                            }
+                    }
+            }
+        }
+        return buf.toString();
+}
 
   /**
    * situation: we have built a query (involving the getWhereEqualsClause() method)
@@ -489,11 +507,6 @@ public class FieldValue implements Cloneable {
 		return buf.toString();
 	}
 
-
-
-
-
-
 	private static void fillPreparedStatement(FieldValue cur, PreparedStatement ps, int curCol)
 	throws SQLException{
 		Field curField = cur.getField();
@@ -501,8 +514,8 @@ public class FieldValue implements Cloneable {
 
 		logCat.info("setting "+cur.getField().getName()+" to value "+valueStr+" of type "+curField.getType());
        
-	// 20020703-HKK: Extending search algorithm with WEAK_START, WEAK_END, WEAK_START_END
-        //               results in like '%search', 'search%', '%search%'
+                // 20020703-HKK: Extending search algorithm with WEAK_START, WEAK_END, WEAK_START_END
+                //               results in like '%search', 'search%', '%search%'
                 switch (cur.getSearchAlgorithm()) {
                     case FieldValue.SEARCH_ALGO_WEAK_START:
                         valueStr = '%' + valueStr;
@@ -514,7 +527,14 @@ public class FieldValue implements Cloneable {
                         valueStr = '%' + valueStr + '%';
                         break;
                 }
-                SqlUtil.fillPreparedStatement(ps, curCol, valueStr, curField.getType());
+                switch (cur.getOperator()) {
+                    case FieldValue.FILTER_NULL:	
+                        break;
+                      case FieldValue.FILTER_NOT_NULL:	
+                        break;
+                    default:
+                        SqlUtil.fillPreparedStatement(ps, curCol, valueStr, curField.getType());
+                }        
 	}
 
 

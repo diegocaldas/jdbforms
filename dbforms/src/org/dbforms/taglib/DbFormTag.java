@@ -15,7 +15,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- *
+*
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
@@ -1365,7 +1365,6 @@ public class DbFormTag extends BodyTagSupport {
 		int len = keyValPairs.size();
 		filterFieldValues = new FieldValue[len];
 		for (int i = 0; i < len; i++) {
-
 			int operator = 0;
 			boolean isLogicalOR = false;
 			int jump = 1;
@@ -1451,78 +1450,176 @@ public class DbFormTag extends BodyTagSupport {
 		Vector mode_and = new Vector();
 		Vector mode_or = new Vector();
 		for (int i = 0; i < searchFieldNames.size(); i++) {
+            String searchFieldName = (String) searchFieldNames.elementAt(i);
+            //. i.e search_1_12
+            // 20020927-HKK-TODO: Whats when there is more then onesearch field whith the same name? 
+            //                    Maybe we should parse all of them ....
+            String aSearchFieldValue = ParseUtil.getParameter(request, searchFieldName);
+            // ie. search_1_12 is mapped to "john"
+            if (aSearchFieldValue != null && aSearchFieldValue.trim().length() > 0) {
+                int firstUnderscore = searchFieldName.indexOf('_');
+                int secondUnderscore = searchFieldName.indexOf('_', firstUnderscore + 1);
+                int tableId =
+                        Integer.parseInt(
+                                searchFieldName.substring(firstUnderscore + 1, secondUnderscore));
+                // is equal to tableid, off course
+                int fieldId = Integer.parseInt(searchFieldName.substring(secondUnderscore + 1));
+                Field f = table.getField(fieldId);
+                String aSearchMode =
+                        ParseUtil.getParameter(request, "searchmode_" + tableId + "_" + fieldId);
+                int mode =
+                        ("and".equals(aSearchMode))
+                                ? DbBaseHandlerTag.SEARCHMODE_AND
+                                : DbBaseHandlerTag.SEARCHMODE_OR;
+                String aSearchAlgorithm =
+                         ParseUtil.getParameter(request, "searchalgo_" + tableId + "_" + fieldId);
+                // 20021019-HKK: new searching
+                 aSearchFieldValue = aSearchFieldValue.trim();
+                 // Check for operator 
+                 int algorithm = FieldValue.SEARCH_ALGO_SHARP;
+                 int operator = FieldValue.FILTER_EQUAL;
+                 if         ("sharpLT".equals(aSearchAlgorithm)) {
+                    operator = FieldValue.FILTER_SMALLER_THEN;
+                 } else if ("sharpLE".equals(aSearchAlgorithm)) {
+                    operator = FieldValue.FILTER_SMALLER_THEN_EQUAL;
+                 } else if ("sharpGT".equals(aSearchAlgorithm)) {
+                    operator = FieldValue.FILTER_GREATER_THEN;
+                 } else if ("sharpGE".equals(aSearchAlgorithm)) {
+                    operator = FieldValue.FILTER_GREATER_THEN_EQUAL;
+                 } else if ("sharpNE".equals(aSearchAlgorithm)) {
+                    operator = FieldValue.FILTER_NOT_EQUAL;
+                 } else if ("sharpNULL".equals(aSearchAlgorithm)) {
+                    operator = FieldValue.FILTER_NULL;
+                 } else if ("sharpNOTNULL".equals(aSearchAlgorithm)) {
+                    operator = FieldValue.FILTER_NOT_NULL;
+                 } else if ("weak".equals(aSearchAlgorithm)) {
+                    algorithm = FieldValue.SEARCH_ALGO_WEAK;
+                    operator = FieldValue.FILTER_LIKE;
+		 } else if ("weakStart".equals(aSearchAlgorithm)) {
+                    algorithm = FieldValue.SEARCH_ALGO_WEAK_START;
+                    operator = FieldValue.FILTER_LIKE;
+	         } else if ("weakEnd".equals(aSearchAlgorithm)) {
+                    algorithm = FieldValue.SEARCH_ALGO_WEAK_END;
+                    operator = FieldValue.FILTER_LIKE;
+	         } else if ("weakStartEnd".equals(aSearchAlgorithm)) {
+                    algorithm = FieldValue.SEARCH_ALGO_WEAK_END;
+                    operator = FieldValue.FILTER_LIKE;
+		 }   
+                 if (aSearchAlgorithm.toLowerCase().indexOf("extended") == -1) {
+	                 // Extended not found, only append field 	
+	                 FieldValue fv = new FieldValue(f, aSearchFieldValue, true, operator);
+	                 fv.setSearchMode(mode);
+	                 fv.setSearchAlgorithm(algorithm);
+	                 if (mode == DbBaseHandlerTag.SEARCHMODE_AND)
+	                         mode_and.addElement(fv);
+	                 else
+	                         mode_or.addElement(fv);
+                } else if (aSearchFieldValue.indexOf("-") != -1) {
+                   // delimiter found in SearchFieldValue, create something like
+                    StringTokenizer st = new StringTokenizer(" " + aSearchFieldValue + " ", "-");
+                    int tokenCounter = 0;
+                    while (st.hasMoreTokens()) {
+                        aSearchFieldValue = st.nextToken().trim();
+                        tokenCounter++;
+                        if (aSearchFieldValue.length() > 0) {
+                          switch (tokenCounter) {
+                              case 1:
+                                  operator = FieldValue.FILTER_GREATER_THEN_EQUAL;
+                                  break;
+                              case 2:
+                                  operator = FieldValue.FILTER_SMALLER_THEN_EQUAL;
+                                  break;   
+                              default:
+                                 operator = -1;
+                                 break;
+                          }
+                          if (operator != -1) {
+                             FieldValue fv = new FieldValue(f, aSearchFieldValue, true, operator);
+                             fv.setSearchMode(mode);
+                             fv.setSearchAlgorithm(algorithm);
+                             if (mode == DbBaseHandlerTag.SEARCHMODE_AND)
+                                     mode_and.addElement(fv);
+                             else
+                                     mode_or.addElement(fv);
+                         }	
+                        }	                 
+                    }
+                } else {
+                	// parse special chars in SearchFieldValue
+	                int jump = 0;
+	                // Check for Not Equal
+	                if (aSearchFieldValue.startsWith("<>")) {
+	                    operator = FieldValue.FILTER_NOT_EQUAL;
+	                    jump = 2;
+	                // Check for not equal
+	                } else if (aSearchFieldValue.startsWith("!=")) {
+	                    // GreaterThenEqual found! - Store the operation for use later on
+	                    operator = FieldValue.FILTER_NOT_EQUAL;
+	                    jump = 2;
+	                // Check for GreaterThanEqual
+	                } else if (aSearchFieldValue.startsWith(">=")) {
+	                    // GreaterThenEqual found! - Store the operation for use later on
+	                    operator = FieldValue.FILTER_GREATER_THEN_EQUAL;
+	                    jump = 2;
+	                // Check for GreaterThan
+	                } else if (aSearchFieldValue.startsWith(">")) {
+	                    // GreaterThen found! - Store the operation for use later on
+	                    operator = FieldValue.FILTER_GREATER_THEN;
+	                // Check for SmallerThenEqual
+	                } else if (aSearchFieldValue.startsWith("<=")) {
+	                    // SmallerThenEqual found! - Store the operation for use later on
+	                    operator = FieldValue.FILTER_SMALLER_THEN_EQUAL;
+	                    jump = 2;
+	                // Check for SmallerThen
+	                } else if (aSearchFieldValue.startsWith("<")) {
+	                    // SmallerThen found! - Store the operation for use later on
+	                    operator = FieldValue.FILTER_SMALLER_THEN;
+	                    jump = 1;
+	                // Check for equal
+	                } else if (aSearchFieldValue.startsWith("=")) {
+	                    // Equal found! - Store the operator for use later on
+	                    operator = FieldValue.FILTER_EQUAL;
+	                    jump = 1;
+	                } else if (aSearchFieldValue.startsWith("[NULL]")) {
+	                    operator = FieldValue.FILTER_NULL;
+	                    jump = 0;
+	                } else if (aSearchFieldValue.startsWith("[!NULL]")) {
+	                    operator = FieldValue.FILTER_NOT_NULL;
+	                    jump = 0;
+	                }
+                   if (jump > 0) 
+   	                aSearchFieldValue = aSearchFieldValue.substring(jump).trim();
+	                FieldValue fv = new FieldValue(f, aSearchFieldValue, true, operator);
+	                fv.setSearchMode(mode);
+	                fv.setSearchAlgorithm(algorithm);
+	                if (mode == DbBaseHandlerTag.SEARCHMODE_AND)
+	                    mode_and.addElement(fv);
+	                else
+	                    mode_or.addElement(fv);
+                }    
+            }  
+        }        
+        int andBagSize = mode_and.size();
+        int orBagSize = mode_or.size();
+        int criteriaFieldCount = andBagSize + orBagSize;
+        logCat.info("criteriaFieldCount=" + criteriaFieldCount);
+        if (criteriaFieldCount == 0)
+            return null;
+        // now we construct the fieldValues array
+        // we ensure that the searchmodes are not mixed up
+        fieldValues = new FieldValue[criteriaFieldCount];
+        int i = 0;
+        for (i = 0; i < andBagSize; i++) {
+            fieldValues[i] = (FieldValue) mode_and.elementAt(i);
+        }
 
-			String searchFieldName = (String) searchFieldNames.elementAt(i);
-			//. i.e search_1_12
-			String aSearchFieldValue = ParseUtil.getParameter(request, searchFieldName);
-			// ie. search_1_12 is mapped to "john"
-			if (aSearchFieldValue != null && aSearchFieldValue.trim().length() > 0) {
+        for (int j = 0; j < orBagSize; j++) {
+            fieldValues[j + i] = (FieldValue) mode_or.elementAt(j);
+        }
 
-				int firstUnderscore = searchFieldName.indexOf('_');
-				int secondUnderscore = searchFieldName.indexOf('_', firstUnderscore + 1);
-				int tableId =
-					Integer.parseInt(
-						searchFieldName.substring(firstUnderscore + 1, secondUnderscore));
-				// is equal to tableid, off course
-				int fieldId = Integer.parseInt(searchFieldName.substring(secondUnderscore + 1));
-				Field f = table.getField(fieldId);
-				String aSearchMode =
-					ParseUtil.getParameter(request, "searchmode_" + tableId + "_" + fieldId);
-				int mode =
-					("and".equals(aSearchMode))
-						? DbBaseHandlerTag.SEARCHMODE_AND
-						: DbBaseHandlerTag.SEARCHMODE_OR;
-				String aSearchAlgorithm =
-					ParseUtil.getParameter(request, "searchalgo_" + tableId + "_" + fieldId);
-                                // 20020703-HKK: Extending search algorithm with WEAK_START, WEAK_END, WEAK_START_END
-                                //               results in like '%search', 'search%', '%search%'
-                                /* Old code
-                                int algorithm =
-					("weak".equals(aSearchAlgorithm))
-						? FieldValue.SEARCH_ALGO_WEAK
-						: FieldValue.SEARCH_ALGO_SHARP;
-                                */
-                                int algorithm = FieldValue.SEARCH_ALGO_SHARP;
-                                if ("weak".equals(aSearchAlgorithm)) 
-                                   algorithm = FieldValue.SEARCH_ALGO_WEAK;
-                                else if ("weakStart".equals(aSearchAlgorithm))
-                                   algorithm = FieldValue.SEARCH_ALGO_WEAK_START;
-                                else if ("weakEnd".equals(aSearchAlgorithm))
-                                   algorithm = FieldValue.SEARCH_ALGO_WEAK_END;
-                                else if ("weakStartEnd".equals(aSearchAlgorithm))
-                                   algorithm = FieldValue.SEARCH_ALGO_WEAK_END;
-
-                                
-				FieldValue fv = new FieldValue(f, aSearchFieldValue, true);
-				fv.setSearchMode(mode);
-				fv.setSearchAlgorithm(algorithm);
-				if (mode == DbBaseHandlerTag.SEARCHMODE_AND)
-					mode_and.addElement(fv);
-				else
-					mode_or.addElement(fv);
-			}
-		}
-
-		int andBagSize = mode_and.size();
-		int orBagSize = mode_or.size();
-		int criteriaFieldCount = andBagSize + orBagSize;
-		logCat.info("criteriaFieldCount=" + criteriaFieldCount);
-		if (criteriaFieldCount == 0)
-			return null;
-		// now we construct the fieldValues array
-		// we ensure that the searchmodes are not mixed up
-		fieldValues = new FieldValue[criteriaFieldCount];
-		int i = 0;
-		for (i = 0; i < andBagSize; i++) {
-			fieldValues[i] = (FieldValue) mode_and.elementAt(i);
-		}
-
-		for (int j = 0; j < orBagSize; j++) {
-			fieldValues[j + i] = (FieldValue) mode_or.elementAt(j);
-		}
-
-		return fieldValues;
-	} /**
+        return fieldValues;
+	} 
+	/**
 	* This method is only used if this class is instantiated as sub-form (== embedded in another
 	* form's body tag)
 	*
