@@ -8,15 +8,15 @@
       multipart="true"
       autoUpdate="false"
       followUp="/tests/testDISKBLOBS.jsp"
-      maxRows="1"
+      maxRows="*"
       tableName="BLOBTEST">
       <db:header>
         <table>
       </db:header>
-      <db:body allowNew="true">
+      <db:body allowNew="false">
           <tr>
             <td>
-              <db:textField  fieldName="NAME" /><db:file  fieldName="FILE" /><db:label  fieldName="FILE" /><db:blobContent  fieldName="FILE" />
+              <db:textField  fieldName="NAME" /><db:file  fieldName="FILE" /><db:label  fieldName="FILE" />
               <!-- add -->
               <db:checkbox id="delete_image1" fieldName="delete_image1" value="true" />
               <!-- end add -->
