@@ -69,9 +69,6 @@ public class DbFormsConfig
     //private DbConnection dbConnection;
     private ServletConfig servletConfig;
 
-    /** instance */
-    private static DbFormsConfig instance = null;
-
 
     /**
      * Creates a new DbFormsConfig object.
@@ -290,28 +287,6 @@ public class DbFormsConfig
     public void setRealPath(String realPath)
     {
         this.realPath = realPath;
-    }
-
-
-    /**
-     *  set the instance of this class
-     *
-     * @param instance the instance of this class
-     */
-    public static void setInstance(DbFormsConfig config)
-    {
-        instance = config;
-    }
-
-
-    /**
-     *  Get the instance of this class
-     *
-     * @return the instance of this class
-     */
-    public static DbFormsConfig getInstance()
-    {
-        return instance;
     }
 
 
