@@ -401,6 +401,12 @@ Happy coding!
 
     </target>
 
+  <target name="forcedos">	
+     <echo message="forcedos for all java files"/>
+     <fixcrlf srcDir="${javasrc.dir}" eol="crlf" includes="**/*.java" />
+  </target>
+	
+
   <!-- =================================================================== -->
   <!-- Maven integration: generate project documentation and copy it into  -->
   <!-- the target directory                                                -->
@@ -408,6 +414,6 @@ Happy coding!
   <!-- called by Maven's "dist" goal                                        -->
   <!-- =================================================================== -->
   <target name    = "maven-build-release"  depends = "createReleaseFiles" />
-	
+
     
 </project>
