@@ -322,6 +322,7 @@
       </validator>
       <validator name="float"
                  classname="org.dbforms.validation.DbFormsValidator"
+                 methodParams="java.lang.Object,org.apache.commons.validator.ValidatorAction,org.apache.commons.validator.Field,java.util.Vector,java.util.Locale,org.dbforms.config.DbFormsErrors" 
                  method="validateFloat"
                  msg="dbforms.error.float"
                  jsFunctionName="FloatValidations">
