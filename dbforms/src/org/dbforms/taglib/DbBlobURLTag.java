@@ -37,14 +37,14 @@ import org.apache.log4j.Category;
 
 public class DbBlobURLTag extends BodyTagSupport {
 
-    static Category logCat = Category.getInstance(DbBlobURLTag.class.getName()); // logging category for this class
+	static Category logCat = Category.getInstance(DbBlobURLTag.class.getName()); // logging category for this class
 
-    // ----------------------------------------------------- Instance Variables
+	// ----------------------------------------------------- Instance Variables
 
 
 // DbForms specific
 
-    protected DbFormsConfig config;
+	protected DbFormsConfig config;
   	protected String fieldName;
   	protected Field field;
 
@@ -65,7 +65,7 @@ public class DbBlobURLTag extends BodyTagSupport {
 	  }
 
 
-    // --------------------------------------------------------- Public Methods
+	// --------------------------------------------------------- Public Methods
 
 
 	// DbForms specific
@@ -81,12 +81,12 @@ public class DbBlobURLTag extends BodyTagSupport {
 	    parentForm = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
 	  }
 
-    /**
-     * Release any acquired resources.
-     */
-    public void release() {
+	/**
+	 * Release any acquired resources.
+	 */
+	public void release() {
 			super.release();
-    }
+	}
 
   public int doEndTag() throws javax.servlet.jsp.JspException {
 
@@ -96,7 +96,7 @@ public class DbBlobURLTag extends BodyTagSupport {
 
   	  StringBuffer tagBuf = new StringBuffer(((HttpServletRequest) pageContext.getRequest()).getContextPath());
   	  tagBuf.append("/servlet/file?tf=");
-      tagBuf.append(getTableFieldCode());
+	  tagBuf.append(getTableFieldCode());
 			tagBuf.append("&keyval=");
 			tagBuf.append(getKeyVal());
 		  pageContext.getOut().write(tagBuf.toString());
@@ -105,10 +105,10 @@ public class DbBlobURLTag extends BodyTagSupport {
 		}
 
 		return EVAL_PAGE;
-  }
+  }  
 
 
-    // ------------------------------------------------------ Protected Methods
+	// ------------------------------------------------------ Protected Methods
 
 
 
@@ -122,9 +122,9 @@ public class DbBlobURLTag extends BodyTagSupport {
   */
 	protected String getTableFieldCode() {
 		StringBuffer buf = new StringBuffer();
-    buf.append(parentForm.getTable().getId());
-    buf.append("_");
-    buf.append(field.getId());
+	buf.append(parentForm.getTable().getId());
+	buf.append("_");
+	buf.append(field.getId());
 		return buf.toString();
 	}
 

@@ -47,7 +47,7 @@ public class SqlUtil {
 
 	Date result = java.sql.Date.valueOf(valueStr);
 	return result;
-  }  
+  }    
 
   private static java.math.BigDecimal createAppropriateNumeric(Object value) {
 
@@ -57,7 +57,7 @@ public class SqlUtil {
 	if(valueStr.length() == 0) return null;
 
 	return new java.math.BigDecimal(valueStr);
-  }  
+  }    
 
   /**
   this utility-method assigns a particular value to a place holder of a PreparedStatement
@@ -106,7 +106,7 @@ public class SqlUtil {
 					} catch(IOException ioe) {
 						ioe.printStackTrace();
 						logCat.info(ioe.toString());
-						throw new SQLException("error storing BLOB in database - "+ioe.toString());
+						throw new SQLException("error storing BLOB in database - "+ioe.toString(), null, 2);
 					}
 
 					break;
@@ -116,7 +116,7 @@ public class SqlUtil {
 			}
 
 		} catch(Exception e) {
-			throw new SQLException("Field type seems to be incorrect - "+e.toString());
+			throw new SQLException("Field type seems to be incorrect - "+e.toString(), null, 1);
 		}
-  }              
+  }                
 }

@@ -66,7 +66,7 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag  {
 
 
   public void setFlavor(String flavor) {
-    this.flavor=flavor;
+	this.flavor=flavor;
 
    	if("image".equals(flavor))
 		  choosenFlavor = FLAVOR_IMAGE;
@@ -75,49 +75,49 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag  {
 		else
 			choosenFlavor = FLAVOR_STANDARD;
 
-  }
+  }  
 
 
 
   public String getFlavor() {
-    return flavor;
-  }
+	return flavor;
+  }  
 
 
   public void setCaption(String caption) {
-    this.caption=caption;
-   }
+	this.caption=caption;
+   }   
 
   public String getCaption() {
-    return caption;
-  }
+	return caption;
+  }  
 
 
   public void setSrc(String src) {
-    this.src=src;
-  }
+	this.src=src;
+  }  
 
   public String getSrc() {
-    return src;
-  }
+	return src;
+  }  
 
-  public void setAlt(String alt) {
-    this.alt=alt;
-  }
+  public void setAlt(String src) {
+	this.alt=alt;
+  }  
 
   public String getAlt() {
-    return alt;
-  }
+	return alt;
+  }  
 
 
 
   public void setFollowUp(String followUp) {
-    this.followUp=followUp;
-  }
+	this.followUp=followUp;
+  }  
 
   public String getFollowUp() {
-    return followUp;
-  }
+	return followUp;
+  }  
 
 
 
@@ -129,20 +129,20 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag  {
   	followUp = null;
   	parentForm = null;
   	followUp = null;
-    flavor = null;
-    caption = null;
-    src = null;
-    alt = null;
+	flavor = null;
+	caption = null;
+	src = null;
+	alt = null;
 	}
 
   public void setPageContext(final javax.servlet.jsp.PageContext pageContext)  {
-    super.setPageContext(pageContext);
-  }
+	super.setPageContext(pageContext);
+  }  
 
   public void setParent(final javax.servlet.jsp.tagext.Tag parent) {
-    super.setParent(parent);
+	super.setParent(parent);
 		table = parentForm.getTable();
-  }
+  }  
 
 
 	/**
@@ -211,5 +211,3 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag  {
 
 
 }
-
-

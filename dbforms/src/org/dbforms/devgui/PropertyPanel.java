@@ -47,13 +47,13 @@ public abstract class PropertyPanel extends javax.swing.JPanel {
 	}
 
 	protected void addAFocusListener(final JTextField tf, final String p) {
-        tf.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent e){
-                projectData.setProperty(p, tf.getText());
-            }
-        }
-        );
-    }
+		tf.addFocusListener(new java.awt.event.FocusAdapter() {
+			public void focusLost(java.awt.event.FocusEvent e){
+				projectData.setProperty(p, tf.getText());
+			}
+		}
+		);
+	}
 
 
 	public abstract void setNewProjectData(ProjectData projectData);

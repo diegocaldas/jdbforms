@@ -36,7 +36,7 @@ public class FileUtility {
   	} else {
   	  return dir.list(new ExtensionFilter(extensions));
   	}
-  }
+  }  
 
   public static File[] getFilesInDirectory(File dir, String[] extensions)
   throws IOException {
@@ -46,6 +46,6 @@ public class FileUtility {
   	} else {
   	  return dir.listFiles(new ExtensionFilter(extensions));
   	}
-  }
+  }  
 
 }

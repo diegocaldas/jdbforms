@@ -62,9 +62,9 @@ public class FileHolder implements Serializable {
    */
 
   FileHolder(String fileName, String contentType, InputStream is, boolean toMemory, int maxSize) throws IOException {
-    this.toMemory = toMemory;
-    this.fileName = fileName;
-    this.contentType = contentType;
+	this.toMemory = toMemory;
+	this.fileName = fileName;
+	this.contentType = contentType;
 
 		if(toMemory) {
 			bufferInMemory(maxSize, is);
@@ -72,7 +72,7 @@ public class FileHolder implements Serializable {
 			throw new IllegalArgumentException("tmpFile-feature not implemented yet");
 		}
 
-  }
+  }  
 
   /**
    * Returns the name that the file was stored with on the remote system,
@@ -86,8 +86,8 @@ public class FileHolder implements Serializable {
    * @see Part#getName()
    */
   public String getFileName() {
-    return fileName;
-  }
+	return fileName;
+  }  
 
   public void setFileName(String fileName) {
 		this.fileName = fileName;
@@ -99,8 +99,8 @@ public class FileHolder implements Serializable {
    * @return content type of the file data.
    */
   public String getContentType() {
-    return contentType;
-  }
+	return contentType;
+  }  
 
 
   /**
@@ -137,32 +137,32 @@ public class FileHolder implements Serializable {
 		if(!toMemory)
 		  throw new IllegalArgumentException("tmpFile-feature not implemented yet");
 
-    long written = 0;
+	long written = 0;
 
-    OutputStream fileOut = null;
-    try {
-      // Only do something if this part contains a file
-      if (fileName != null) {
-        // Check if user supplied directory
-        File file;
-        if (fileOrDirectory.isDirectory()) {
-          // Write it to that dir the user supplied,
-          // with the filename it arrived with
-          file = new File(fileOrDirectory, fileName);
-        }
-        else {
-          // Write it to the file the user supplied,
-          // ignoring the filename it arrived with
-          file = fileOrDirectory;
-        }
-        fileOut = new BufferedOutputStream(new FileOutputStream(file));
-        fileOut.write(memoryBuffer, 0, memoryBuffer.length);
-      }
-    }
-    finally {
-      if (fileOut != null) fileOut.close();
-    }
-    return written;
-  }
+	OutputStream fileOut = null;
+	try {
+	  // Only do something if this part contains a file
+	  if (fileName != null) {
+		// Check if user supplied directory
+		File file;
+		if (fileOrDirectory.isDirectory()) {
+		  // Write it to that dir the user supplied,
+		  // with the filename it arrived with
+		  file = new File(fileOrDirectory, fileName);
+		}
+		else {
+		  // Write it to the file the user supplied,
+		  // ignoring the filename it arrived with
+		  file = fileOrDirectory;
+		}
+		fileOut = new BufferedOutputStream(new FileOutputStream(file));
+		fileOut.write(memoryBuffer, 0, memoryBuffer.length);
+	  }
+	}
+	finally {
+	  if (fileOut != null) fileOut.close();
+	}
+	return written;
+  }  
 
 }

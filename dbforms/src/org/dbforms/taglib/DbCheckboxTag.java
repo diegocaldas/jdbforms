@@ -46,7 +46,7 @@ import org.apache.log4j.Category;
 
 public class DbCheckboxTag extends DbBaseHandlerTag implements DataContainer  {
 
-    static Category logCat = Category.getInstance(DbCheckboxTag.class.getName()); // logging category for this class
+	static Category logCat = Category.getInstance(DbCheckboxTag.class.getName()); // logging category for this class
 
 	private Vector embeddedData=null;
 
@@ -77,19 +77,19 @@ public class DbCheckboxTag extends DbBaseHandlerTag implements DataContainer  {
   */
   public void setEmbeddedData(Vector embeddedData) {
 	 this.embeddedData = embeddedData;
-  }
+  }  
 
   public int doStartTag() throws javax.servlet.jsp.JspException {
-    return EVAL_BODY_TAG;
-  }
+	return EVAL_BODY_TAG;
+  }  
 
 	private String generateTagString(String value, String description, boolean selected) {
 
-    StringBuffer tagBuf = new StringBuffer();
-    tagBuf.append("<input type=\"checkbox\" name=\"");
-    tagBuf.append(getFormFieldName());
-    tagBuf.append("\" value =\"");
-    tagBuf.append(value);
+	StringBuffer tagBuf = new StringBuffer();
+	tagBuf.append("<input type=\"checkbox\" name=\"");
+	tagBuf.append(getFormFieldName());
+	tagBuf.append("\" value =\"");
+	tagBuf.append(value);
 		tagBuf.append("\" ");
 
 		if(selected) tagBuf.append(" checked ");
@@ -162,9 +162,7 @@ public class DbCheckboxTag extends DbBaseHandlerTag implements DataContainer  {
 		}
 
 		return EVAL_PAGE;
-  }
+  }  
 
 
 }
-
-

@@ -45,11 +45,12 @@ import org.apache.log4j.Category;
 
 public class DbSelectTag extends DbBaseHandlerTag implements DataContainer  {
 
-    static Category logCat = Category.getInstance(DbSelectTag.class.getName()); // logging category for this class
+	static Category logCat = Category.getInstance(DbSelectTag.class.getName()); // logging category for this class
 
 	private Vector embeddedData=null;
 
 	private String selectedIndex;
+	private String customEntry;
 	private String size;
 
 
@@ -84,15 +85,15 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer  {
   */
   public void setEmbeddedData(Vector embeddedData) {
 	 this.embeddedData = embeddedData;
-  }
+  }  
 
   public int doStartTag() throws javax.servlet.jsp.JspException {
 
-    StringBuffer tagBuf = new StringBuffer();
+	StringBuffer tagBuf = new StringBuffer();
 
-    tagBuf.append("<select name=\"");
-    tagBuf.append(getFormFieldName());
-    tagBuf.append("\"");
+	tagBuf.append("<select name=\"");
+	tagBuf.append(getFormFieldName());
+	tagBuf.append("\"");
 
 		if (size != null) {
 			tagBuf.append(" size=\"");
@@ -124,24 +125,24 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer  {
 		}
 
 
-    return EVAL_BODY_TAG;
-  }
+	return EVAL_BODY_TAG;
+  }  
 
 
 
 	private String generateTagString(String value, String description, boolean selected) {
 
-    StringBuffer tagBuf = new StringBuffer();
-    tagBuf.append("<option value=\"");
-    tagBuf.append(value);
+	StringBuffer tagBuf = new StringBuffer();
+	tagBuf.append("<option value=\"");
+	tagBuf.append(value);
 		tagBuf.append("\"");
 
-    if(selected) tagBuf.append(" selected");
+	if(selected) tagBuf.append(" selected");
 
-    tagBuf.append("> ");
-    tagBuf.append(description);
+	tagBuf.append("> ");
+	tagBuf.append(description);
 
-    return tagBuf.toString();
+	return tagBuf.toString();
 	}
 
 
@@ -159,6 +160,20 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer  {
 			*/
 
 		} else {
+			
+			
+			
+			// PG, 2001-12-14
+			// Is their a custom entry? Display first...
+			String ce = null;
+			if((ce = this.getCustomEntry()) != null && ce.trim().length()>0)
+			{
+				String aKey = org.dbforms.util.ParseUtil.getEmbeddedString(ce,0,',');
+				String aValue = org.dbforms.util.ParseUtil.getEmbeddedString(ce,1,',');				
+				boolean isSelected = "true".equals(org.dbforms.util.ParseUtil.getEmbeddedString(ce,2,','));								
+				tagBuf.append(generateTagString(aKey, aValue, isSelected));				
+			}
+			
 
 			int embeddedDataSize = embeddedData.size();
 			for(int i=0; i<embeddedDataSize; i++) {
@@ -184,7 +199,7 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer  {
 		}
 
 		return EVAL_PAGE;
-  }
+  }  
 
 	// ------------------------------------------------------ Protected Methods
 
@@ -215,6 +230,19 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer  {
 
 
 
+	/**
+	 * Gets the customEntry
+	 * @return Returns a String
+	 */
+	public String getCustomEntry() {
+		return customEntry;
+	}
+	/**
+	 * Sets the customEntry
+	 * @param customEntry The customEntry to set
+	 */
+	public void setCustomEntry(String customEntry) {
+		this.customEntry = customEntry;
+	}
+
 }
-
-

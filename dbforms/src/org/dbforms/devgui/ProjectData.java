@@ -45,22 +45,22 @@ public class ProjectData implements Serializable{
 	private boolean unsavedChanges = false;
 	private Properties props;
 
-    /** Creates new Project */
-    public ProjectData() {
-      this.props = new Properties();
-      unsavedChanges = false;
-    }
+	/** Creates new Project */
+	public ProjectData() {
+	  this.props = new Properties();
+	  unsavedChanges = false;
+	}
 
-    public ProjectData(Properties props) {
-      this.props =props;
-      unsavedChanges = false;
-    }
+	public ProjectData(Properties props) {
+	  this.props =props;
+	  unsavedChanges = false;
+	}
 
-    public String getProperty(String prop) {
+	public String getProperty(String prop) {
 	  return props.getProperty(prop, ""); // return default value "" instead of null if not found
 	}
 
-    public void setProperty(String key, String value) {
+	public void setProperty(String key, String value) {
 
 	  String oldValue = getProperty(key);
 	  if(!oldValue.equals(value)) {
@@ -89,21 +89,21 @@ public class ProjectData implements Serializable{
 	}
 
 
-    public static ProjectData loadFromDisc(File f) throws IOException {
+	public static ProjectData loadFromDisc(File f) throws IOException {
 
 			Properties l_props = new Properties();
 			l_props.load(new FileInputStream(f));
 			ProjectData pd = new ProjectData(l_props);
 			pd.setFile(f);
 			return pd;
-    }
+	}
 
-    public void storeToDisc(File f) throws IOException {
+	public void storeToDisc(File f) throws IOException {
 
 		this.props.store(new FileOutputStream(f) ,"DbForms DevGUI Property File");
 		this.file = f;
 		this.unsavedChanges = false;
-    }
+	}
 
 
 

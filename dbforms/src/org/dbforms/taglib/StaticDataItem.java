@@ -43,19 +43,19 @@ public class StaticDataItem extends TagSupport {
 
   public String getKey() {
 	  return key;
-  }
+  }  
 
   public void setKey(String key) {
 	  this.key = key;
-  }
+  }  
 
   public String getValue() {
 	  return value;
-  }
+  }  
 
   public void setValue(String value) {
 	  this.value = value;
-  }
+  }  
 
 
   public int doStartTag() throws JspException {
@@ -66,11 +66,11 @@ public class StaticDataItem extends TagSupport {
 	  throw new JspException("StaticDataItem element must be placed inside a StaticData element!");
 
 	return EVAL_BODY_INCLUDE;
-  }
+  }  
 
 
   public void release() {
 	 this.key = null;
 	 this.value = null;
-  }
+  }  
 }

@@ -39,7 +39,7 @@ import org.apache.log4j.Category;
 
 public class FileServlet extends HttpServlet {
 
-    static Category logCat = Category.getInstance(FileServlet.class.getName()); // logging category for this class
+	static Category logCat = Category.getInstance(FileServlet.class.getName()); // logging category for this class
 
 	private DbFormsConfig config;
 	private FileNameMap fileNameMap;
@@ -54,7 +54,7 @@ public class FileServlet extends HttpServlet {
 		// initalized by Config-Servlet on Webapp/server-startup!
 		config = (DbFormsConfig) getServletContext().getAttribute(DbFormsConfig.CONFIG);
 		fileNameMap = URLConnection.getFileNameMap();
-  }
+  }  
 
 
 	/**
@@ -68,8 +68,6 @@ public class FileServlet extends HttpServlet {
 
 		logCat.info("writing to client:"+fileName+" ct="+contentType);
 
-		if(contentType==null) contentType = "text/plain";
-
 		response.setContentType(contentType);
 
 		ServletOutputStream out = response.getOutputStream();
@@ -82,13 +80,10 @@ public class FileServlet extends HttpServlet {
 		out.close();
 	}
 
-    //Process the HTTP Get request
-    public void doGet(HttpServletRequest request, HttpServletResponse response)
-       throws    ServletException, IOException {
+	//Process the HTTP Get request
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+	   throws    ServletException, IOException {
 
-				logCat.debug("config="+config);
-				logCat.debug("config.getDbConnection()="+config.getDbConnection());
-				logCat.debug("config.getDbConnection().getConnection()="+config.getDbConnection().getConnection());
 				Connection con = config.getDbConnection().getConnection();
 
 				String tf = request.getParameter("tf");
@@ -97,23 +92,23 @@ public class FileServlet extends HttpServlet {
 				int tableId = Integer.parseInt(ParseUtil.getEmbeddedString(tf, 0, '_'));
 			  Table table = config.getTable(tableId);
 
-        int fieldId = Integer.parseInt(ParseUtil.getEmbeddedString(tf, 1, '_'));
-        Field field = table.getField(fieldId);
+		int fieldId = Integer.parseInt(ParseUtil.getEmbeddedString(tf, 1, '_'));
+		Field field = table.getField(fieldId);
 
-        StringBuffer queryBuf = new StringBuffer();
-        queryBuf.append("SELECT ");
-        queryBuf.append(field.getName());
-        queryBuf.append(" FROM ");
-        queryBuf.append(table.getName());
-        queryBuf.append(" WHERE ");
-        queryBuf.append(table.getWhereClauseForPS());
+		StringBuffer queryBuf = new StringBuffer();
+		queryBuf.append("SELECT ");
+		queryBuf.append(field.getName());
+		queryBuf.append(" FROM ");
+		queryBuf.append(table.getName());
+		queryBuf.append(" WHERE ");
+		queryBuf.append(table.getWhereClauseForPS());
 
 				logCat.info("fs- "+queryBuf);
 
 				try {
 
-        	PreparedStatement ps = con.prepareStatement(queryBuf.toString());
-        	table.populateWhereClauseForPS(keyValuesStr, ps, 1);
+			PreparedStatement ps = con.prepareStatement(queryBuf.toString());
+			table.populateWhereClauseForPS(keyValuesStr, ps, 1);
 					ResultSet rs = ps.executeQuery();
 
 					if(rs.next()) {
@@ -193,7 +188,7 @@ public class FileServlet extends HttpServlet {
 					}
 
 
-      	}	catch(SQLException sqle) {
+	  	}	catch(SQLException sqle) {
 					sqle.printStackTrace();
 				} finally {
 					try {
@@ -202,14 +197,13 @@ public class FileServlet extends HttpServlet {
 						sqle2.printStackTrace();
 					}
 				}
-    }
+	}
 
-    //Process the HTTP Post request
-    public void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-        doGet(request,response);
-    }
+	//Process the HTTP Post request
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
+		throws ServletException, IOException {
+		doGet(request,response);
+	}
 
 
 }
-

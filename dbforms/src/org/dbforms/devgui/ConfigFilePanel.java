@@ -34,7 +34,7 @@
 	import java.awt.event.*;
 	import javax.swing.*;
 
-	/**
+		/**
 	 *
 	 * @author  Joachim Peer <j.peer@gmx.net>
 	 * @version
@@ -54,7 +54,7 @@
 			super(parent.getProjectData());
 			this.parent = parent;
 			initComponents ();
-        	doLayout();
+			doLayout();
 		}
 
 		public void setNewProjectData(ProjectData projectData) {
@@ -103,16 +103,16 @@
 
 			// 	second listener => for notification of texteditor
 
-        	tf_configFile.addFocusListener(new java.awt.event.FocusAdapter() {
-        	    public void focusLost(java.awt.event.FocusEvent e){
+			tf_configFile.addFocusListener(new java.awt.event.FocusAdapter() {
+			    public void focusLost(java.awt.event.FocusEvent e){
 
 					File f = new File(tf_configFile.getText());
 					if(f.exists() && f.isFile() && f.canRead()) {
 						panel_editor.setFile(f);
 					}
 
-        	    }
-        	});
+			    }
+			});
 
 
 

@@ -55,17 +55,24 @@ public class DbLabelTag extends TagSupport  {
   protected String fieldName;
   protected Field field;
 
+
+	/**
+	 * PG, 2001-12-14
+	 * The maximum number of characters to be displayed.
+	 */
+	protected String maxlength = null;
+
 	protected DbFormTag parentForm;
 
 
   public void setFieldName(String fieldName) {
 	this.fieldName=fieldName;
 	this.field = parentForm.getTable().getFieldByName(fieldName);
-  }
+  }  
 
   public String getFieldName() {
 	return fieldName;
-  }
+  }  
 
 
   public int doEndTag() throws javax.servlet.jsp.JspException {
@@ -76,6 +83,23 @@ public class DbLabelTag extends TagSupport  {
 			String[] currentRow = parentForm.getResultSetVector().getCurrentRow();
 			fieldValue = currentRow[field.getId()];
 		}
+		
+		// PG, 2001-12-14
+		// If maxlength was input, trim display
+		String size = null;
+		if((size = this.getMaxlength()) != null && 
+			size.trim().length()>0)
+		{
+			//convert to int
+			int count = Integer.parseInt(size);
+			// Trim and add trim indicator (...)
+			if (count < fieldValue.length())
+			{
+				fieldValue = fieldValue.substring(0,count);
+				fieldValue += "...";
+			}
+		}
+		
 		pageContext.getOut().write(fieldValue);
 
 	} 	catch(java.io.IOException ioe) {
@@ -85,7 +109,7 @@ public class DbLabelTag extends TagSupport  {
 	}
 
 	return EVAL_PAGE;
-  }
+  }  
 
 
   public void setPageContext(final javax.servlet.jsp.PageContext pageContext)  {
@@ -96,7 +120,22 @@ public class DbLabelTag extends TagSupport  {
   public void setParent(final javax.servlet.jsp.tagext.Tag parent) {
 	super.setParent(parent);
 	this.parentForm = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
-  }
+  }  
 
 
+	/**
+	 * Gets the maxlength
+	 * @return Returns a String
+	 */
+	public String getMaxlength() {
+		return maxlength;
+	}
+	/**
+	 * Sets the maxlength
+	 * @param maxlength The maxlength to set
+	 */
+	public void setMaxlength(String maxlength) {
+		this.maxlength = maxlength;
+	}
+
 }

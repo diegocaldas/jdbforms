@@ -59,26 +59,26 @@ public class BaseTag extends TagSupport {
    * @exception JspException if a JSP exception has occurred
    */
   public int doStartTag() throws JspException {
-    HttpServletRequest request = (HttpServletRequest)pageContext.getRequest();
-    StringBuffer buf = new StringBuffer("<base href=\"");
-    buf.append(request.getScheme());
-    buf.append("://");
-    buf.append(request.getServerName());
+	HttpServletRequest request = (HttpServletRequest)pageContext.getRequest();
+	StringBuffer buf = new StringBuffer("<base href=\"");
+	buf.append(request.getScheme());
+	buf.append("://");
+	buf.append(request.getServerName());
 
-    int port = request.getServerPort();
-    if(port!=80) {
+	int port = request.getServerPort();
+	if(port!=80) {
 	    buf.append(":");
 	    buf.append(port);
   	}
-    buf.append(request.getRequestURI());
-    buf.append("\">");
-    JspWriter out = pageContext.getOut();
-    try {
-        out.write(buf.toString());
-    }
-    catch (IOException e) {
-        throw new JspException(e.toString());
-    }
-    return EVAL_BODY_INCLUDE;
-  }
+	buf.append(request.getRequestURI());
+	buf.append("\">");
+	JspWriter out = pageContext.getOut();
+	try {
+		out.write(buf.toString());
+	}
+	catch (IOException e) {
+		throw new JspException(e.toString());
+	}
+	return EVAL_BODY_INCLUDE;
+  }  
 }

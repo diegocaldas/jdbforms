@@ -49,8 +49,8 @@ public class DbFooterTag extends BodyTagSupport {
 
   public int doStartTag() {
 
-    //DbFormTag parent = (DbFormTag) getParent(); // parent Tag in which this tag is embedded in
-    DbFormTag myParent = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
+	//DbFormTag parent = (DbFormTag) getParent(); // parent Tag in which this tag is embedded in
+	DbFormTag myParent = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
 	  int pCount = myParent.getCount();							// pCount==-1 => endless form, else max nr. of eval.loops is pCount
 	  int pCurrent = myParent.getCurrentCount();		// how many times renderd
 
@@ -67,17 +67,17 @@ public class DbFooterTag extends BodyTagSupport {
 
 				logCat.info("setting footerreached to true");
 
-     		myParent.setFooterReached(true); // tell parent form that there are no more loops do go and the only thing remaining to be rendered is this footerTag and its subelements
-     		return EVAL_BODY_TAG;
+	 		myParent.setFooterReached(true); // tell parent form that there are no more loops do go and the only thing remaining to be rendered is this footerTag and its subelements
+	 		return EVAL_BODY_TAG;
 		 	}
-      else
-        return SKIP_BODY;
-  }
+	  else
+		return SKIP_BODY;
+  }  
 
 
   public int doAfterBody() throws JspException {
-    return SKIP_BODY; // a footer gets onle 1 time rendered
-  }
+	return SKIP_BODY; // a footer gets onle 1 time rendered
+  }  
 
 
   public int doEndTag() throws JspException {
@@ -102,6 +102,6 @@ public class DbFooterTag extends BodyTagSupport {
 		}
 
 		return EVAL_PAGE;
-  }
+  }  
 
 }

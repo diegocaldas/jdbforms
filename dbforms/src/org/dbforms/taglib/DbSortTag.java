@@ -59,17 +59,17 @@ public class DbSortTag extends TagSupport  {
 
 
   public void setFieldName(String fieldName) {
-    this.fieldName=fieldName;
+	this.fieldName=fieldName;
 		this.field = parentForm.getTable().getFieldByName(fieldName);
-   }
+   }   
 
   public String getFieldName() {
-    return fieldName;
-  }
+	return fieldName;
+  }  
 
 /*
   public int doStartTag() throws javax.servlet.jsp.JspException {
-    return SKIP_BODY;
+	return SKIP_BODY;
   }*/
 
 
@@ -123,23 +123,21 @@ public class DbSortTag extends TagSupport  {
 			pageContext.getOut().write(tagBuf.toString());
 
 		} catch(java.io.IOException ioe) {
-      throw new JspException("IO Error: "+ioe.getMessage());
+	  throw new JspException("IO Error: "+ioe.getMessage());
 		}
 		return EVAL_PAGE;
-  }
+  }  
 
 
   public void setPageContext(final javax.servlet.jsp.PageContext pageContext)  {
-    super.setPageContext(pageContext);
+	super.setPageContext(pageContext);
 		this.config = (DbFormsConfig) pageContext.getServletContext().getAttribute(DbFormsConfig.CONFIG);
 	}
 
   public void setParent(final javax.servlet.jsp.tagext.Tag parent) {
-    super.setParent(parent);
-    this.parentForm = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
-  }
+	super.setParent(parent);
+	this.parentForm = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
+  }  
 
 
 }
-
-

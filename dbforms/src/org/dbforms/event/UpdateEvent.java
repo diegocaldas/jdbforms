@@ -89,9 +89,7 @@ public class UpdateEvent extends DatabaseEvent {
 	}
 
 	public void processEvent(Connection con)
-	throws SQLException {
-
-		Hashtable fileNamesWithOutFileHolder = new Hashtable();
+	throws SQLException, MultipleValidationException {
 
 		// Apply given security contraints (as defined in dbforms-config.xml)
 		if(!hasUserPrivileg(GrantedPrivileges.PRIVILEG_UPDATE))
@@ -111,8 +109,14 @@ public class UpdateEvent extends DatabaseEvent {
 				// synchronize data which may be changed by interceptor:
 				table.synchronizeData(fieldValues, associativeArray);
 			} catch(SQLException sqle) {
-				throw new SQLException("Exception in interceptor: " + sqle.getMessage());
-			}
+				// PG = 2001-12-04
+				// No need to add extra comments, just re-throw exceptions as SqlExceptions
+				throw new SQLException(sqle.getMessage());
+			} catch(MultipleValidationException mve) {
+		  		// PG, 2001-12-14
+		  		// Support for multiple error messages in one interceptor
+		  		throw new MultipleValidationException(mve.getMessages());
+		  }
 		}
 		// End of interceptor processing
 
@@ -136,9 +140,9 @@ public class UpdateEvent extends DatabaseEvent {
 		queryBuf.append(table.getName());
 		queryBuf.append(" SET ");
 
-    // list the names of fields and the place holder for their new values
-    // important: these are the fields which are sent throug the current request;
-    // this list may be only a subset of the field list, it is not necessarily the complete field list of a table!
+	// list the names of fields and the place holder for their new values
+	// important: these are the fields which are sent throug the current request;
+	// this list may be only a subset of the field list, it is not necessarily the complete field list of a table!
 		Vector fields = table.getFields();
 		Enumeration enum = fieldValues.keys();
 		boolean kommaNeeded = false;
@@ -179,35 +183,24 @@ public class UpdateEvent extends DatabaseEvent {
 			} else if(fieldType == FieldTypes.DISKBLOB) {
 
 				FileHolder fileHolder = ParseUtil.getFileHolder(request, "f_"+tableId+"_"+keyId+"_"+iiFieldId);
+				String fileName = fileHolder.getFileName();
 
-				if(fileHolder != null) { // upload via MULTIPART
+				// check if we need to store it encoded or not
+				if("yes".equals(curField.getEncoding())) {
 
-					String fileName = fileHolder.getFileName();
+					// encode fileName
 
-					// check if we need to store it encoded or not
-					if("yes".equals(curField.getEncoding())) {
+					int dotIndex = fileName.lastIndexOf('.');
+					String suffix = (dotIndex != -1) ? fileName.substring(dotIndex) : "";
+					fileHolder.setFileName(UniqueIDGenerator.getUniqueID()+suffix);
 
-						// encode fileName
-
-						int dotIndex = fileName.lastIndexOf('.');
-						String suffix = (dotIndex != -1) ? fileName.substring(dotIndex) : "";
-						fileHolder.setFileName(UniqueIDGenerator.getUniqueID()+suffix);
-
-						// a diskblob gets stored to db as an ordinary string (it's only the reference!)
-						value = fileHolder.getFileName();
-
-					} else {
-
-						// a diskblob gets stored to db as an ordinary string	 (it's only the reference!)
-						value = fileName;
-
-					}
+					// a diskblob gets stored to db as an ordinary string (it's only the reference!)
+					value = fileHolder.getFileName();
 
 				} else {
 
-					value = ParseUtil.getParameter(request, "fn_f_"+tableId+"_"+keyId+"_"+iiFieldId);
-					fileNamesWithOutFileHolder.put("f_"+tableId+"_"+keyId+"_"+iiFieldId, value);
-
+					// a diskblob gets stored to db as an ordinary string	 (it's only the reference!)
+					value = fileName;
 				}
 
 			} else {
@@ -274,28 +267,7 @@ public class UpdateEvent extends DatabaseEvent {
 					throw new SQLException("could not store file '"+fileHolder.getFileName()+"' to dir '"+directory+"'");
 				  }
 
-				} else {
-
-
-					String clobValue = ParseUtil.getParameter(request, "f_"+tableId+"_"+keyId+"_"+iiFieldId);
-
-
-					if(clobValue != null) {
-
-						String fileName = (String) fileNamesWithOutFileHolder.get("f_"+tableId+"_"+keyId+"_"+iiFieldId);
-
-						try {
-							File fileOut = new File(dir, fileName);
-							FileWriter fw = new FileWriter(fileOut);
-							fw.write(clobValue);
-							fw.close();
-						} catch(IOException ioe) {
-							throw new SQLException("could not store file '"+fileName+"' to dir '"+directory+"'");
-						}
-
-					}
-				 	else logCat.info("uh! empty fileHolder, no alternative clob data (coming from plain form fields or such) available");
-				}
+				} else logCat.info("uh! empty fileHolder");
 			}
 		}
 
@@ -306,17 +278,19 @@ public class UpdateEvent extends DatabaseEvent {
 				// process the interceptors associated to this table
 				table.processInterceptors(DbEventInterceptor.POST_UPDATE, request, null, config, con);
 			} catch(SQLException sqle) {
-				throw new SQLException("Exception in interceptor: " + sqle.getMessage());
+				// PG = 2001-12-04
+				// No need to add extra comments, just re-throw exceptions as SqlExceptions
+				throw new SQLException(sqle.getMessage());
 			}
 		}
 		// End of interceptor processing
 
 	}
 
-    /**
-    for use in ConditionChecker only
-    "associative" -> this hashtable works like "associative arrays" in PERL or PHP
-    */
+	/**
+	for use in ConditionChecker only
+	"associative" -> this hashtable works like "associative arrays" in PERL or PHP
+	*/
 	private Hashtable getAssociativeFieldValues(Hashtable scalarFieldValues) {
 
 		Hashtable result = new Hashtable();

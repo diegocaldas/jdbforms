@@ -38,20 +38,20 @@ public class XSLTransformer
 {
 
 
-    public static void transform(File xmlFile, File xslFile, File destinationFile)
-    throws java.io.IOException,
-           java.net.MalformedURLException,
-           org.xml.sax.SAXException
+	public static void transform(File xmlFile, File xslFile, File destinationFile)
+	throws java.io.IOException,
+		   java.net.MalformedURLException,
+		   org.xml.sax.SAXException
 	{
 
-    	// Have the XSLTProcessorFactory obtain a interface to a
-    	// new XSLTProcessor object.
-    	XSLTProcessor processor = XSLTProcessorFactory.getProcessor();
+		// Have the XSLTProcessorFactory obtain a interface to a
+		// new XSLTProcessor object.
+		XSLTProcessor processor = XSLTProcessorFactory.getProcessor();
 
-    	// Have the XSLTProcessor processor object transform "foo.xml" to
-    	// System.out, using the XSLT instructions found in "foo.xsl".
+		// Have the XSLTProcessor processor object transform "foo.xml" to
+		// System.out, using the XSLT instructions found in "foo.xsl".
 	    processor.process(new XSLTInputSource(new FileInputStream(xmlFile)),
-    	                  new XSLTInputSource(new FileInputStream(xslFile)),
+		                  new XSLTInputSource(new FileInputStream(xslFile)),
 	                      new XSLTResultTarget(new FileOutputStream(destinationFile)));
 	}
 }

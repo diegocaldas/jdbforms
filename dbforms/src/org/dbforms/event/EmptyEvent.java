@@ -46,7 +46,7 @@ import org.apache.log4j.Category;
 
 public class EmptyEvent extends WebEvent {
 
-    static Category logCat = Category.getInstance(EmptyEvent.class.getName()); // logging category for this class
+	static Category logCat = Category.getInstance(EmptyEvent.class.getName()); // logging category for this class
 
 	public EmptyEvent(String action, HttpServletRequest request) {
 		tableId = ParseUtil.getEmbeddedStringAsInteger(action, 2, '_');

@@ -49,11 +49,11 @@ public class DbNavLastButtonTag extends DbBaseButtonTag  {
 
   public int doStartTag() throws javax.servlet.jsp.JspException {
 
-    if(parentForm.getFooterReached() && ResultSetVector.isEmptyOrNull(parentForm.getResultSetVector()) ) return EVAL_PAGE;
+	if(parentForm.getFooterReached() && ResultSetVector.isEmptyOrNull(parentForm.getResultSetVector()) ) return EVAL_PAGE;
 
 		try {
 
-    	  StringBuffer tagBuf = new StringBuffer();
+		  StringBuffer tagBuf = new StringBuffer();
 				String tagName = "ac_last_"+table.getId();
 
 				if(followUp != null) {
@@ -61,9 +61,9 @@ public class DbNavLastButtonTag extends DbBaseButtonTag  {
 				}
 
 				tagBuf.append(getButtonBegin());
-    	  tagBuf.append(" name=\"");
-    	  tagBuf.append(tagName);
-    	  tagBuf.append("\">");
+		  tagBuf.append(" name=\"");
+		  tagBuf.append(tagName);
+		  tagBuf.append("\">");
 
  	  	  pageContext.getOut().write(tagBuf.toString());
 
@@ -74,8 +74,8 @@ public class DbNavLastButtonTag extends DbBaseButtonTag  {
 		if(choosenFlavor == FLAVOR_MODERN)
 			return EVAL_BODY_TAG;
 		else
-    	return SKIP_BODY;
-  }
+		return SKIP_BODY;
+  }  
 
 
   public int doEndTag() throws javax.servlet.jsp.JspException {
@@ -93,8 +93,6 @@ public class DbNavLastButtonTag extends DbBaseButtonTag  {
 		}
 
 		return EVAL_PAGE;
-  }
+  }  
 
 }
-
-

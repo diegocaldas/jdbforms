@@ -39,9 +39,9 @@ public class EditorPanel extends JPanel implements ActionListener, DocumentListe
 	boolean unsavedChanges = false;
 
 	public EditorPanel() {
-        initComponents ();
-        doLayout();
-    }
+		initComponents ();
+		doLayout();
+	}
 
 
 	public void setFile(File aFile) {

@@ -46,7 +46,7 @@ public class NavLastEvent extends NavigationEvent {
 		this.table = config.getTable(tableId);
 	}
 
-    // for call from localevent
+	// for call from localevent
 	public NavLastEvent(Table table, DbFormsConfig config) {
 	  this.table = table;
 	  this.tableId = table.getId();

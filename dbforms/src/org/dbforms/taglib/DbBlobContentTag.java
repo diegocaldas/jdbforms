@@ -33,7 +33,7 @@ import javax.servlet.jsp.*;
 import javax.servlet.jsp.tagext.*;
 
 import org.dbforms.*;
-import org.dbforms.util.*; // for FieldTYPES def
+import org.dbforms.util.*;
 
 import org.apache.log4j.Category;
 
@@ -89,8 +89,8 @@ public class DbBlobContentTag extends BodyTagSupport {
 	}
 
 	/**
-     * Release any acquired resources.
-     */
+	 * Release any acquired resources.
+	 */
 	public void release() {
 			super.release();
 	}
@@ -180,7 +180,7 @@ public class DbBlobContentTag extends BodyTagSupport {
 	}
 
 
-    // ------------------------------------------------------ Protected Methods
+	// ------------------------------------------------------ Protected Methods
 
 
 

@@ -41,7 +41,7 @@ import org.apache.log4j.Category;
 
 public class GotoEvent extends NavigationEvent {
 
-    static Category logCat = Category.getInstance(GotoEvent.class.getName()); // logging category for this class
+	static Category logCat = Category.getInstance(GotoEvent.class.getName()); // logging category for this class
 
 	private String position; // where to go in associated table
 	private Table table;

@@ -53,7 +53,7 @@ public class DbTextFieldTag extends DbBaseInputTag  {
 
   public int doStartTag() throws javax.servlet.jsp.JspException {
 	return SKIP_BODY;
-  }  
+  }    
 
 /* ===========================================================================
  * grunikiewicz.philip@hydro.qc.ca

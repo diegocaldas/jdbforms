@@ -38,7 +38,7 @@ import org.apache.log4j.Category;
 
 public class NavPrevEvent extends NavigationEvent {
 
-    static Category logCat = Category.getInstance(NavPrevEvent.class.getName()); // logging category for this class
+	static Category logCat = Category.getInstance(NavPrevEvent.class.getName()); // logging category for this class
 
 	private int stepWidth = 1;
 
@@ -52,7 +52,7 @@ public class NavPrevEvent extends NavigationEvent {
 			stepWidth = Integer.parseInt(stepWidthStr);
 	}
 
-    // for call from localevent
+	// for call from localevent
 	public NavPrevEvent(Table table, DbFormsConfig config) {
 	  this.table = table;
 	  this.tableId = table.getId();

@@ -52,17 +52,17 @@ public class DbUpdateButtonTag extends DbBaseButtonTag  {
 
 
   public void setAssociatedRadio(String associatedRadio) {
-    this.associatedRadio=associatedRadio;
-   }
+	this.associatedRadio=associatedRadio;
+   }   
 
   public String getAssociatedRadio() {
-    return associatedRadio;
-  }
+	return associatedRadio;
+  }  
 
 
   public int doStartTag() throws javax.servlet.jsp.JspException {
 
-    if(parentForm.getFooterReached() && ResultSetVector.isEmptyOrNull(parentForm.getResultSetVector()) ) return EVAL_PAGE;
+	if(parentForm.getFooterReached() && ResultSetVector.isEmptyOrNull(parentForm.getResultSetVector()) ) return EVAL_PAGE;
 
 		try {
 
@@ -73,9 +73,9 @@ public class DbUpdateButtonTag extends DbBaseButtonTag  {
 				}
 				tagNameBuf.append("_");
 				tagNameBuf.append(table.getId());
-    	  if(associatedRadio==null) {
-    	  	tagNameBuf.append("_");
-    	  	tagNameBuf.append(parentForm.getPositionPath());
+		  if(associatedRadio==null) {
+		  	tagNameBuf.append("_");
+		  	tagNameBuf.append(parentForm.getPositionPath());
 				}
 				String tagName = tagNameBuf.toString();
 
@@ -91,10 +91,10 @@ public class DbUpdateButtonTag extends DbBaseButtonTag  {
 					tagBuf.append( getDataTag(tagName, "fu", followUp) );
 				}
 
-    	  tagBuf.append(getButtonBegin());
-    	  tagBuf.append(" name=\"");
-    	  tagBuf.append(tagName);
-    	  tagBuf.append("\">");
+		  tagBuf.append(getButtonBegin());
+		  tagBuf.append(" name=\"");
+		  tagBuf.append(tagName);
+		  tagBuf.append("\">");
 
 		  	pageContext.getOut().write(tagBuf.toString());
 
@@ -105,8 +105,8 @@ public class DbUpdateButtonTag extends DbBaseButtonTag  {
 		if(choosenFlavor == FLAVOR_MODERN)
 			return EVAL_BODY_TAG;
 		else
-    	return SKIP_BODY;
-  }
+		return SKIP_BODY;
+  }  
 
 
 
@@ -127,8 +127,6 @@ public class DbUpdateButtonTag extends DbBaseButtonTag  {
 		}
 
 		return EVAL_PAGE;
-  }
+  }  
 
 }
-
-

@@ -33,14 +33,13 @@ public class DbFormTagTEI extends TagExtraInfo {
   public VariableInfo[] getVariableInfo(TagData data) {
 
 
-    StringBuffer[] varNames = {
+	StringBuffer[] varNames = {
 	 new StringBuffer("currentRow"),
 	 new StringBuffer("position"),
 	 new StringBuffer("searchFieldNames"),
 	 new StringBuffer("searchFieldModeNames"),
 	 new StringBuffer("searchFieldAlgorithmNames"),
-	 new StringBuffer("rsv"),
-	 new StringBuffer("form")
+	 new StringBuffer("rsv")
 	};
 
 	// convention for DbFroms TEI-provided variables: varName "_" tableName
@@ -58,60 +57,53 @@ public class DbFormTagTEI extends TagExtraInfo {
 	logCat.info("table="+table);
 	logCat.info("varNames[0]="+varNames[0].toString());
 
-    VariableInfo[] info =  {
+	VariableInfo[] info =  {
 
 		new VariableInfo(
 		    	varNames[0].toString(),
 		    	"java.util.Hashtable",
 		    	true,
 		    	VariableInfo.NESTED
-    	),
+		),
 
 		new VariableInfo(
 		    	varNames[1].toString(),
 		    	"java.lang.String",
 		    	true,
 		    	VariableInfo.NESTED
-    	),
+		),
 
 		new VariableInfo(
 		    	varNames[2].toString(),
 		    	"java.util.Hashtable",
 		    	true,
 		    	VariableInfo.NESTED
-    	),
+		),
 
 		new VariableInfo(
 		    	varNames[3].toString(),
 		    	"java.util.Hashtable",
 		    	true,
 		    	VariableInfo.NESTED
-    	),
+		),
 
 		new VariableInfo(
 		    	varNames[4].toString(),
 		    	"java.util.Hashtable",
 		    	true,
 		    	VariableInfo.NESTED
-    	),
+		),
 
 		new VariableInfo(
 		    	varNames[5].toString(),
 		    	"org.dbforms.util.ResultSetVector",
 		    	true,
 		    	VariableInfo.NESTED
-    	),
+		)
+	};
 
-		new VariableInfo(
-		    	varNames[6].toString(),
-		    	"org.dbforms.taglib.DbFormTag",
-		    	true,
-		    	VariableInfo.NESTED
-    	)
-    };
+	return info;
 
-    return info;
-
-  }
+  }  
 
 }

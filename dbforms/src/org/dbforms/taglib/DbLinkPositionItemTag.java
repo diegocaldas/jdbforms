@@ -53,19 +53,19 @@ public class DbLinkPositionItemTag extends TagSupport {
 
   public String getFieldName() {
 	  return fieldName;
-  }
+  }  
 
   public void setFieldName(String fieldName) {
 	  this.fieldName = fieldName;
-  }
+  }  
 
   public String getValue() {
 	  return value;
-  }
+  }  
 
   public void setValue(String value) {
 	  this.value = value;
-  }
+  }  
 
 
   public int doStartTag() throws JspException {
@@ -79,11 +79,11 @@ public class DbLinkPositionItemTag extends TagSupport {
 		throw new JspException("DbLinkPositionItem-element must be placed inside a DbLinkURL-element!");
 
 	return EVAL_BODY_INCLUDE;
-  }
+  }  
 
 
   public void release() {
 	 this.fieldName = null;
 	 this.value = null;
-  }
+  }  
 }

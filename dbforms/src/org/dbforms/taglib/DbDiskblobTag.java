@@ -37,12 +37,12 @@ public class DbDiskblobTag extends BodyTagSupport {
 
   static Category logCat = Category.getInstance(DbDiskblobTag.class.getName()); // logging category for this class
 
-    // ----------------------------------------------------- Instance Variables
+	// ----------------------------------------------------- Instance Variables
 
 
 // DbForms specific
 
-    protected DbFormsConfig config;
+	protected DbFormsConfig config;
   	protected String fieldName;
   	protected Field field;
 
@@ -63,7 +63,7 @@ public class DbDiskblobTag extends BodyTagSupport {
 	  }
 
 
-    // --------------------------------------------------------- Public Methods
+	// --------------------------------------------------------- Public Methods
 
 
 	// DbForms specific
@@ -79,18 +79,18 @@ public class DbDiskblobTag extends BodyTagSupport {
 	    parentForm = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
 	  }
 
-    /**
-     * Release any acquired resources.
-     */
-    public void release() {
+	/**
+	 * Release any acquired resources.
+	 */
+	public void release() {
 			super.release();
-    }
+	}
 
   public int doEndTag() throws javax.servlet.jsp.JspException {
 
 		try {
   	  StringBuffer tagBuf = new StringBuffer("servlet/file?tf=");
-      tagBuf.append(getTableFieldCode());
+	  tagBuf.append(getTableFieldCode());
 			tagBuf.append("&keyval=");
 			tagBuf.append(getKeyVal());
 		  pageContext.getOut().write(tagBuf.toString());
@@ -99,10 +99,10 @@ public class DbDiskblobTag extends BodyTagSupport {
 		}
 
 		return EVAL_PAGE;
-  }
+  }  
 
 
-    // ------------------------------------------------------ Protected Methods
+	// ------------------------------------------------------ Protected Methods
 
 
 
@@ -116,9 +116,9 @@ public class DbDiskblobTag extends BodyTagSupport {
   */
 	protected String getTableFieldCode() {
 		StringBuffer buf = new StringBuffer();
-    buf.append(parentForm.getTable().getId());
-    buf.append("_");
-    buf.append(field.getId());
+	buf.append(parentForm.getTable().getId());
+	buf.append("_");
+	buf.append(field.getId());
 		return buf.toString();
 	}
 

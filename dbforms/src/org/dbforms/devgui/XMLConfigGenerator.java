@@ -38,7 +38,7 @@ public class XMLConfigGenerator {
 	  Class.forName(jdbcDriver).newInstance();
 
 	  return DriverManager.getConnection(jdbcURL, username, password);
-  }
+  }  
 
   // nope, i won't use DOM for that task ;-)
   public static String createXMLOutput(ProjectData projectData) throws Exception {
@@ -69,11 +69,11 @@ public class XMLConfigGenerator {
 	  System.out.println("password="+password);
 	  System.out.println("catalog="+catalog);
 	  System.out.println("schemaPattern="+schemaPattern);
-	  System.out.println("tableNamePattern="+tableNamePattern);
+	  System.out.println("tableNamePattern="+schemaPattern);
 
 	StringBuffer result = new StringBuffer();
 
-    Connection con = null;
+	Connection con = null;
 	try {
 
 		con = createConnection(jdbcDriver, jdbcURL, username, password);
@@ -161,6 +161,6 @@ public class XMLConfigGenerator {
 	}
 
 	return result.toString();
-  }
+  }  
 
 }

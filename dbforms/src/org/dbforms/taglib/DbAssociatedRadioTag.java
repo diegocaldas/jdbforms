@@ -75,40 +75,38 @@ public class DbAssociatedRadioTag extends TagSupport  {
   private String name;
 
   public void setName(String name) {
-    this.name=name;
-  }
+	this.name=name;
+  }  
 
   public String getName() {
-    return name;
-  }
+	return name;
+  }  
 
 
   public int doEndTag() throws javax.servlet.jsp.JspException {
 
 		try {
 
-      StringBuffer tagBuf = new StringBuffer("<input type=\"radio\" name=\"");
-      tagBuf.append(name);
-      tagBuf.append("\" value=\"");
-      tagBuf.append(parentForm.getTable().getId());
-      tagBuf.append("_");
+	  StringBuffer tagBuf = new StringBuffer("<input type=\"radio\" name=\"");
+	  tagBuf.append(name);
+	  tagBuf.append("\" value=\"");
+	  tagBuf.append(parentForm.getTable().getId());
+	  tagBuf.append("_");
 			tagBuf.append(parentForm.getPositionPath());
-      tagBuf.append("\">");
+	  tagBuf.append("\">");
 
 		  pageContext.getOut().write(tagBuf.toString());
 		} catch(java.io.IOException ioe) {
-      throw new JspException("IO Error: "+ioe.getMessage());
+	  throw new JspException("IO Error: "+ioe.getMessage());
 		}
 
 		return EVAL_PAGE;
-  }
+  }  
 
 
   public void setParent(final javax.servlet.jsp.tagext.Tag parent) {
-    super.setParent(parent);
-    parentForm = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
-  }
+	super.setParent(parent);
+	parentForm = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
+  }  
 
 }
-
-

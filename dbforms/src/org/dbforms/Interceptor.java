@@ -47,11 +47,11 @@ public class Interceptor {
 
   public void setClassName(String className) {
 	  this.className = className;
-  }
+  }  
 
   public String getClassName() {
 	  return className;
-  }
+  }  
 
 
 }

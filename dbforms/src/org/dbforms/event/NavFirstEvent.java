@@ -38,7 +38,7 @@ import org.apache.log4j.Category;
 
 public class NavFirstEvent extends NavigationEvent {
 
-    static Category logCat = Category.getInstance(NavFirstEvent.class.getName()); // logging category for this class
+	static Category logCat = Category.getInstance(NavFirstEvent.class.getName()); // logging category for this class
 
 	public NavFirstEvent(String action, HttpServletRequest request, DbFormsConfig config) {
 		this.config = config;
@@ -46,7 +46,7 @@ public class NavFirstEvent extends NavigationEvent {
 		this.table = config.getTable(tableId);
 	}
 
-    // for call from localevent
+	// for call from localevent
 	public NavFirstEvent(Table table, DbFormsConfig config) {
 	  this.table = table;
 	  this.config = config;

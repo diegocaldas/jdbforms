@@ -47,17 +47,15 @@ import org.apache.log4j.Category;
  * @author Joachim Peer <j.peer@gmx.net>
  */
 
-
-
-
 public class TableData extends EmbeddedData {
 
-    static Category logCat = Category.getInstance(TableData.class.getName()); // logging category for this class
+	static Category logCat = Category.getInstance(TableData.class.getName());
+	// logging category for this class
 
 	private String foreignTable;
 	private String visibleFields;
 	private String storeField;
-
+	private String orderBy;
 
 	public void setForeignTable(String foreignTable) {
 		this.foreignTable = foreignTable;
@@ -83,14 +81,21 @@ public class TableData extends EmbeddedData {
 		return storeField;
 	}
 
+	public void setOrderBy(String orderBy) {
+		this.orderBy = orderBy;
+		logCat.info("setOrderBy(\"" + orderBy + "\")");
+	}
+
+	public String getOrderBy() {
+		return orderBy;
+	}
 
 	/**
 	returns Hashtable with data. Its keys represent the "value"-fields for the DataContainer-Tag, its values
 	represent the visible fields for the Multitags.
 	(DataContainer are: select, radio, checkbox and a special flavour of Label).
-  */
-	protected Vector fetchData(Connection con)
-	throws SQLException {
+	*/
+	protected Vector fetchData(Connection con) throws SQLException {
 
 		Vector vf = ParseUtil.splitString(visibleFields, ",;~");
 
@@ -100,33 +105,41 @@ public class TableData extends EmbeddedData {
 		queryBuf.append(storeField);
 		queryBuf.append(", ");
 
-		for(int i=0; i<vf.size(); i++) {
+		for (int i = 0; i < vf.size(); i++) {
 			queryBuf.append((String) vf.elementAt(i));
-			if(i < vf.size()-1) queryBuf.append(", ");
+			if (i < vf.size() - 1)
+				queryBuf.append(", ");
 		}
 		queryBuf.append(" FROM ");
 		queryBuf.append(foreignTable);
 
-		logCat.info("about to execute:"+queryBuf.toString());
+		if (orderBy != null) {
+			queryBuf.append(" ORDER BY ");
+			queryBuf.append(orderBy);
+		}
+
+		logCat.info("about to execute:" + queryBuf.toString());
 		PreparedStatement ps = con.prepareStatement(queryBuf.toString());
-	    ResultSetVector rsv = new ResultSetVector(ps.executeQuery());
-	    ps.close(); // #JP Jun 27, 2001
+		ResultSetVector rsv = new ResultSetVector(ps.executeQuery());
+		ps.close(); // #JP Jun 27, 2001
 
 		Vector result = new Vector();
 
 		// transforming the resultsetVector into a hashtable
-		for(int i=0; i<rsv.size(); i++) {
+		for (int i = 0; i < rsv.size(); i++) {
 			String[] currentRow = (String[]) rsv.elementAt(i);
 
 			String htKey = currentRow[0];
 			StringBuffer htValueBuf = new StringBuffer();
-			for(int j=1; j<currentRow.length; j++) {
+			for (int j = 1; j < currentRow.length; j++) {
 				htValueBuf.append(currentRow[j]);
-				if(j<currentRow.length-1) htValueBuf.append(", ");  //#checkme: this could be more generic
-		  }
-		  String htValue = htValueBuf.toString();
+				if (j < currentRow.length - 1)
+					htValueBuf.append(", "); //#checkme: this could be more generic
+			}
+			String htValue = htValueBuf.toString();
 
-		  result.addElement(new KeyValuePair(htKey, htValue)); // add current row, now well formatted, to result
+			result.addElement(new KeyValuePair(htKey, htValue));
+			// add current row, now well formatted, to result
 		}
 
 		return result;

@@ -39,7 +39,7 @@ public class DbTool {
   public DbTool(String propertyFile, String outputFile) {
 	this.propertyFile = propertyFile;
 	this.outputFile = outputFile;
-  }
+  }  
 
   private Connection createConnection()
   throws SQLException, ClassNotFoundException, InstantiationException, IOException, IllegalAccessException {
@@ -60,7 +60,7 @@ public class DbTool {
 	  Class.forName(driverClass).newInstance();
 
 	  return DriverManager.getConnection(dbURL, dbUser, dbPwd);
-  }
+  }  
 
   // nope, i won't use DOM for that task ;-)
   public void createXMLOutput() {
@@ -153,14 +153,14 @@ public class DbTool {
 		System.out.println("Error:"+e.toString());
 		e.printStackTrace();
 	}
-  }
+  }  
 
   public static void main(String[] args) {
-    if(args.length!=2) {
-      System.out.println("usage: java DbTool propertyFile outputFile\n\nexample:\njava DbTool db.properties config.xml");
-      System.exit(1);
-    }
+	if(args.length!=2) {
+	  System.out.println("usage: java DbTool propertyFile outputFile\n\nexample:\njava DbTool db.properties config.xml");
+	  System.exit(1);
+	}
 
-    new DbTool(args[0], args[1]).createXMLOutput();
-  }
+	new DbTool(args[0], args[1]).createXMLOutput();
+  }  
 }

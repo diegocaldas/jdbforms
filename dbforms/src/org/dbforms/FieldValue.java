@@ -63,7 +63,8 @@ public class FieldValue implements Cloneable {
 	public static final int FILTER_GREATER_THEN_EQUAL  = 3;
 	public static final int FILTER_SMALLER_THEN  = 2;
 	public static final int FILTER_SMALLER_THEN_EQUAL  = 4;
-
+	public static final int FILTER_LIKE  = 5;
+	public static final int FILTER_NOT_EQUAL  = 6;
 
   //--------- properties ------------------------------------------------------------
 
@@ -239,6 +240,7 @@ public class FieldValue implements Cloneable {
 				switch(fv[i].getOperator())
 				{
 					case FieldValue.FILTER_EQUAL:				buf.append(" = "); break;
+					case FieldValue.FILTER_NOT_EQUAL:			buf.append(" <> "); break;
 					case FieldValue.FILTER_GREATER_THEN:		buf.append(" > "); break;
 					case FieldValue.FILTER_SMALLER_THEN:		buf.append(" < "); break;
 					case FieldValue.FILTER_GREATER_THEN_EQUAL:	buf.append(" >= "); break;
@@ -450,7 +452,7 @@ public class FieldValue implements Cloneable {
 		}
 
 		return curCol;
- 	} 
+ 	}  
 
   /**
    * inverts the sorting direction of all FieldValue objects in the given array
@@ -516,7 +518,7 @@ public class FieldValue implements Cloneable {
 	  // should not happen
 	}
 		return null;
-  }  
+  }    
 
 
   public String toString() {
@@ -538,11 +540,9 @@ public class FieldValue implements Cloneable {
 	buf.append(searchAlgorithm);
 
 	return buf.toString();
-  }  
+  }    
 
 
-
-	public static final int FILTER_LIKE  = 5;
 	private boolean logicalOR = false;
 
   /**

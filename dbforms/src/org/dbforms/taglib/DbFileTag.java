@@ -66,8 +66,8 @@ public class DbFileTag extends DbBaseInputTag  {
 	  throw new JspException("DbFileTag is used but DbFormTag.multipart is not set (it is set to \"FALSE\"). you must set it to \"TRUE\" to enable file uploads!");
 	}
 
-    return SKIP_BODY;
-  }
+	return SKIP_BODY;
+  }  
 
   public int doEndTag() throws javax.servlet.jsp.JspException {
 
@@ -75,8 +75,8 @@ public class DbFileTag extends DbBaseInputTag  {
 		try {
 
   	    StringBuffer tagBuf = new StringBuffer("<input type=\"file\" name=\"");
-      tagBuf.append(getFormFieldName());
-      tagBuf.append("\" ");
+	  tagBuf.append(getFormFieldName());
+	  tagBuf.append("\" ");
 
 			if (accept != null) {
 			    tagBuf.append(" accept=\"");
@@ -108,9 +108,9 @@ public class DbFileTag extends DbBaseInputTag  {
 		    tagBuf.append("\"");
 			}
 
-      tagBuf.append(prepareStyles());
-      tagBuf.append(prepareEventHandlers());
-      tagBuf.append(">");
+	  tagBuf.append(prepareStyles());
+	  tagBuf.append(prepareEventHandlers());
+	  tagBuf.append(">");
 
 		  pageContext.getOut().write(tagBuf.toString());
 		} catch(java.io.IOException ioe) {
@@ -118,8 +118,6 @@ public class DbFileTag extends DbBaseInputTag  {
 		}
 
 		return EVAL_PAGE;
-  }
+  }  
 
 }
-
-

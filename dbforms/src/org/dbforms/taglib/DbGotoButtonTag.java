@@ -61,12 +61,12 @@ public class DbGotoButtonTag extends DbBaseButtonTag  {
 
 
   public void setDestination(String destination) {
-    this.destination=destination;
-   }
+	this.destination=destination;
+   }   
 
   public String getDestination() {
-    return destination;
-  }
+	return destination;
+  }  
 
 	public void setDestTable(String destTable) {
 		this.destTable = destTable;
@@ -149,8 +149,8 @@ public class DbGotoButtonTag extends DbBaseButtonTag  {
 		if(choosenFlavor == FLAVOR_MODERN)
 			return EVAL_BODY_TAG;
 		else
-    	return SKIP_BODY;
-  }
+		return SKIP_BODY;
+  }  
 
 
   public int doEndTag() throws javax.servlet.jsp.JspException {
@@ -170,7 +170,7 @@ public class DbGotoButtonTag extends DbBaseButtonTag  {
 		}
 
 		return EVAL_PAGE;
-  }
+  }  
 
 
   public void release() {
@@ -179,5 +179,3 @@ public class DbGotoButtonTag extends DbBaseButtonTag  {
 	}
 
 }
-
-

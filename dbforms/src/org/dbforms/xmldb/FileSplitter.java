@@ -41,7 +41,7 @@ public class FileSplitter {
 	this.fDestDir = d;
 
 	testFiles();
-  }
+  }  
 
   public FileSplitter(String sourceFile, String destDir) {
 
@@ -53,18 +53,18 @@ public class FileSplitter {
 
 	testFiles();
 
-  }
+  }  
 
 
   private void testFiles() {
 	// preparing INPUT
 
-    if(!fSource.exists()) {
+	if(!fSource.exists()) {
 		System.out.println("ERROR: source file not found");
 		System.exit(1);
 	}
 
-    if(!fSource.canRead()) {
+	if(!fSource.canRead()) {
 		System.out.println("ERROR: source file not readable for this process");
 		System.exit(1);
 	}
@@ -72,21 +72,21 @@ public class FileSplitter {
 	// preparing OUTPUT
 
 
-    if(!fDestDir.exists()) {
+	if(!fDestDir.exists()) {
 		System.out.println("ERROR: destination directory not found");
 		System.exit(1);
 	}
 
-    if(!fDestDir.isDirectory()) {
+	if(!fDestDir.isDirectory()) {
 		System.out.println("ERROR: destination is not a directory");
 		System.exit(1);
 	}
 
-    if(!fDestDir.canWrite()) {
+	if(!fDestDir.canWrite()) {
 		System.out.println("ERROR: destination directory not writable for this process");
 		System.exit(1);
 	}
-  }
+  }  
 
   public void splitFile() {
 
@@ -94,11 +94,11 @@ public class FileSplitter {
 
 
 	BufferedReader in = new BufferedReader(new FileReader(fSource));
-    BufferedWriter out = null;
-    String line = null;
-    String fileName = null;
+	BufferedWriter out = null;
+	String line = null;
+	String fileName = null;
 
-    while( (line = in.readLine()) != null) {
+	while( (line = in.readLine()) != null) {
 
 	  if(line.startsWith("//--file")) {
 
@@ -127,17 +127,17 @@ public class FileSplitter {
 
 
 	} catch(IOException ioe) {
-      System.out.println("ERROR: "+ioe.toString());
+	  System.out.println("ERROR: "+ioe.toString());
 	}
 
-  }
+  }  
 
   public static void main(String[] args) {
-    if(args.length!=2) {
-      System.out.println("usage: java FileSplitter sourceFile destinationDirectory\n\nexample:\njava FileSplitter source.jsp c:\\tomcat\\webapps\\your_app\\");
-      System.exit(1);
-    }
+	if(args.length!=2) {
+	  System.out.println("usage: java FileSplitter sourceFile destinationDirectory\n\nexample:\njava FileSplitter source.jsp c:\\tomcat\\webapps\\your_app\\");
+	  System.exit(1);
+	}
 
-    new FileSplitter(args[0], args[1]).splitFile();
-  }
+	new FileSplitter(args[0], args[1]).splitFile();
+  }  
 }

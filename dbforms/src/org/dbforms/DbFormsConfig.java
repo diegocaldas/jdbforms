@@ -57,7 +57,7 @@ public class DbFormsConfig {
   public DbFormsConfig() {
 		tables = new Vector();
 		tableNameHash = new Hashtable();
-  }
+  }  
 
   public void addTable(Table table) {
 		logCat.info("add table called");
@@ -65,7 +65,7 @@ public class DbFormsConfig {
 		table.initDefaultOrder();
 		tables.addElement(table);
 		tableNameHash.put(table.getName(), table);
-  }
+  }  
 
 	public Table getTable(int index) {
 		return (Table) tables.elementAt(index);
@@ -106,14 +106,14 @@ public class DbFormsConfig {
 	}
 
   public String traverse() {
-    StringBuffer buf = new StringBuffer();
-    for(int i=0; i<tables.size(); i++) {
-      Table t = (Table) tables.elementAt(i);
-      buf.append("table:\n");
-      buf.append(t.traverse());
+	StringBuffer buf = new StringBuffer();
+	for(int i=0; i<tables.size(); i++) {
+	  Table t = (Table) tables.elementAt(i);
+	  buf.append("table:\n");
+	  buf.append(t.traverse());
 		}
 		return buf.toString();
-  }
+  }  
 
 
 

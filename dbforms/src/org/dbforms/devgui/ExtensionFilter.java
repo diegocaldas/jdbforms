@@ -31,16 +31,16 @@ class ExtensionFilter implements FilenameFilter {
 
   public ExtensionFilter(String[] extensions) {
   	this.extensions = extensions;
-  }
+  }  
 
   public boolean accept(File dir, String name) {
-    for(int i=0; i<extensions.length; i++) {
-    	String anExtension = extensions[i];
-    	if("*".equals(anExtension) || name.endsWith(anExtension)) return true;
-    }
+	for(int i=0; i<extensions.length; i++) {
+		String anExtension = extensions[i];
+		if("*".equals(anExtension) || name.endsWith(anExtension)) return true;
+	}
 
-    return false;
-  }
+	return false;
+  }  
 
 
 }

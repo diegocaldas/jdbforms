@@ -33,7 +33,7 @@ import org.apache.log4j.Category;
 
 public class StaticData extends BodyTagSupport {
 
-    static Category logCat = Category.getInstance(StaticData.class.getName()); // logging category for this class
+	static Category logCat = Category.getInstance(StaticData.class.getName()); // logging category for this class
 
 	protected Vector data;
 	protected String name;
@@ -65,12 +65,12 @@ public class StaticData extends BodyTagSupport {
 
 		((DataContainer) getParent()).setEmbeddedData(data); // DbBaseMultiTag are: select, radio, checkbox!
 
-    	return EVAL_PAGE;
+		return EVAL_PAGE;
 	}
 
 	/**
 	for use from parent element [radio, select, etc.]
-    */
+	*/
 	protected Vector fetchData(Connection con)  {
 		return data;
 	}

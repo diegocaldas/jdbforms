@@ -40,7 +40,7 @@ import org.apache.log4j.Category;
 
 public class StyleTag extends BodyTagSupport {
 
-    static Category logCat = Category.getInstance(StyleTag.class.getName()); // logging category for this class
+	static Category logCat = Category.getInstance(StyleTag.class.getName()); // logging category for this class
 	private Hashtable params;
 
 
@@ -82,11 +82,11 @@ public class StyleTag extends BodyTagSupport {
 
 	public void setPart(String part) {
 	  this.part = part;
-  	}
+  	}  
 
   	public String getPart() {
 	  return part;
-    }
+	}
 
   /**
    * this method splits a string of the form
@@ -133,25 +133,25 @@ public class StyleTag extends BodyTagSupport {
 			pageContext.getRequest().setAttribute("baseDir", templateBaseDir);
 
 
-      //pageContext.forward(templateBegin);
+	  //pageContext.forward(templateBegin);
 
-      HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
-      HttpServletResponse response = (HttpServletResponse) pageContext.getResponse();
+	  HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
+	  HttpServletResponse response = (HttpServletResponse) pageContext.getResponse();
 
-      request.getRequestDispatcher(templateBegin).include(request, response);
+	  request.getRequestDispatcher(templateBegin).include(request, response);
 
-      //pageContext.getOut().flush();
+	  //pageContext.getOut().flush();
 		} catch(IOException ioe) {
 			throw new JspException("Problem 1including template begin - "+ioe.toString());
 		} catch(ServletException se) {}
 */
-    return EVAL_BODY_TAG;
-  }
+	return EVAL_BODY_TAG;
+  }  
 
 
   public int doAfterBody() throws JspException {
-    return SKIP_BODY; // gets only rendered 1 time
-  }
+	return SKIP_BODY; // gets only rendered 1 time
+  }  
 
 
   public int doEndTag() throws JspException {
@@ -165,18 +165,18 @@ public class StyleTag extends BodyTagSupport {
 		if(params!=null) request.setAttribute("styleparams", params);
 		request.setAttribute("baseDir", templateBaseDir);
 
-     	pageContext.include(templateBaseDir + template+"_"+part+".jsp");
+	 	pageContext.include(templateBaseDir + template+"_"+part+".jsp");
 
 	} catch(IOException ioe) {
 	  throw new JspException("Problem 2 including template end - "+ioe.toString());
 	} catch(ServletException se) {}
 
 	return EVAL_PAGE;
-  }
+  }  
 
 
   public void setPageContext(final javax.servlet.jsp.PageContext pageContext)  {
-    super.setPageContext(pageContext);
+	super.setPageContext(pageContext);
 
 
 

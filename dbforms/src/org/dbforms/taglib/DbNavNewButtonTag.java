@@ -53,7 +53,7 @@ public class DbNavNewButtonTag extends DbBaseButtonTag {
 
 		try {
 
-    	  StringBuffer tagBuf = new StringBuffer();
+		  StringBuffer tagBuf = new StringBuffer();
 				String tagName = "ac_new_"+table.getId();
 
 				if(followUp != null) {
@@ -61,9 +61,9 @@ public class DbNavNewButtonTag extends DbBaseButtonTag {
 				}
 
 				tagBuf.append(getButtonBegin());
-    	  tagBuf.append(" name=\"");
-    	  tagBuf.append(tagName);
-    	  tagBuf.append("\">");
+		  tagBuf.append(" name=\"");
+		  tagBuf.append(tagName);
+		  tagBuf.append("\">");
 
  	  	  pageContext.getOut().write(tagBuf.toString());
 
@@ -74,8 +74,8 @@ public class DbNavNewButtonTag extends DbBaseButtonTag {
 		if(choosenFlavor == FLAVOR_MODERN)
 			return EVAL_BODY_TAG;
 		else
-    	return SKIP_BODY;
-  }
+		return SKIP_BODY;
+  }  
 
 
   public int doEndTag() throws javax.servlet.jsp.JspException {
@@ -93,9 +93,7 @@ public class DbNavNewButtonTag extends DbBaseButtonTag {
 		}
 
 		return EVAL_PAGE;
-  }
+  }  
 
 
 }
-
-

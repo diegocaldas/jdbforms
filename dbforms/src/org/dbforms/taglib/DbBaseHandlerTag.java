@@ -27,7 +27,6 @@
 
 package org.dbforms.taglib;
 
-
 import javax.servlet.jsp.tagext.*;
 import org.dbforms.*;
 
@@ -56,7 +55,8 @@ import org.apache.log4j.Category;
 
 public abstract class DbBaseHandlerTag extends BodyTagSupport {
 
-	static Category logCat = Category.getInstance(DbBaseHandlerTag.class.getName()); // logging category for this class
+	static Category logCat = Category.getInstance(DbBaseHandlerTag.class.getName());
+	// logging category for this class
 
 	// ----------------------------------------------------- Instance Variables
 
@@ -64,30 +64,29 @@ public abstract class DbBaseHandlerTag extends BodyTagSupport {
 	public static final int SEARCHMODE_AND = 1;
 	public static final int SEARCHMODE_OR = 2;
 
-
-// DbForms specific
+	// DbForms specific
 
 	protected DbFormsConfig config;
-  	protected String fieldName;
-  	protected Field field;
+	protected String fieldName;
+	protected Field field;
 
 	//protected String searchMode;
 	//protected int parsedSearchMode = SEARCHMODE_NONE;
 
-  	// only needed/used if parent tag is in "insert-mode" (footer, etc.)
-		// otherwise this tag takes the current value from the database result!
-  	protected String value;
+	// only needed/used if parent tag is in "insert-mode" (footer, etc.)
+	// otherwise this tag takes the current value from the database result!
+	protected String value;
 
 	protected Format format;
 
 	protected DbFormTag parentForm;
 
-//  Id Management
+	//  Id Management
 
-    /** Id attribute */
-    protected String id = null;      // Fossato, 20011008
+	/** Id attribute */
+	protected String id = null; // Fossato, 20011008
 
-//  Navigation Management
+	//  Navigation Management
 
 	/** Access key character. */
 	protected String accessKey = null;
@@ -95,7 +94,7 @@ public abstract class DbBaseHandlerTag extends BodyTagSupport {
 	/** Tab index value. */
 	protected String tabIndex = null;
 
-//  Mouse Events
+	//  Mouse Events
 
 	/** Mouse click event. */
 	private String onClick = null;
@@ -118,7 +117,7 @@ public abstract class DbBaseHandlerTag extends BodyTagSupport {
 	/** Mouse released on component event. */
 	private String onMouseUp = null;
 
-//  Keyboard Events
+	//  Keyboard Events
 
 	/** Key down in component event. */
 	private String onKeyDown = null;
@@ -129,7 +128,7 @@ public abstract class DbBaseHandlerTag extends BodyTagSupport {
 	/** Key down and up together in component event. */
 	private String onKeyPress = null;
 
-// Text Events
+	// Text Events
 
 	/** Text selected in component event. */
 	private String onSelect = null;
@@ -137,7 +136,7 @@ public abstract class DbBaseHandlerTag extends BodyTagSupport {
 	/** Content changed after component lost focus event. */
 	private String onChange = null;
 
-// Focus Events
+	// Focus Events
 
 	/** Component lost focus event. */
 	private String onBlur = null;
@@ -145,7 +144,7 @@ public abstract class DbBaseHandlerTag extends BodyTagSupport {
 	/** Component has received focus event. */
 	private String onFocus = null;
 
-// CSS Style Support
+	// CSS Style Support
 
 	/** Style attribute associated with component. */
 	private String style = null;
@@ -155,35 +154,33 @@ public abstract class DbBaseHandlerTag extends BodyTagSupport {
 
 	// ------------------------------------------------------------- Properties
 
+	// dbForms - specifcs
 
-// dbForms - specifcs
+	public void setFieldName(String fieldName) {
+		this.fieldName = fieldName;
+		this.field = parentForm.getTable().getFieldByName(fieldName);
 
-	  public void setFieldName(String fieldName) {
-	    this.fieldName=fieldName;
-			this.field = parentForm.getTable().getFieldByName(fieldName);
+		if (parentForm.isSubForm()) {
+			// tell parent that _this_ class will generate the html tag, not DbBodyTag!
+			parentForm.strikeOut(this.field);
+		}
+	}
 
-			if(parentForm.isSubForm()) {
-				// tell parent that _this_ class will generate the html tag, not DbBodyTag!
-				parentForm.strikeOut(this.field);
-			}
-	  }
+	public String getFieldName() {
+		return fieldName;
+	}
 
-	  public String getFieldName() {
-	    return fieldName;
-	  }
-
-  	/**
-  	"value" is only used if parent tag is in "insert-mode" (footer, etc.)
+	/**
+	"value" is only used if parent tag is in "insert-mode" (footer, etc.)
 		otherwise this tag takes the current value from the database result!
 		*/
-		public String getValue() {
-			return value;
-		}
+	public String getValue() {
+		return value;
+	}
 
-		public void setValue(String value) {
-			this.value = value;
-		}
-
+	public void setValue(String value) {
+		this.value = value;
+	}
 
 	/**
 	formatting a value
@@ -193,47 +190,44 @@ public abstract class DbBaseHandlerTag extends BodyTagSupport {
 	}
 
 	public void setFormat(Format format) {
-	     this.format = format;
+		this.format = format;
 	}
 
+	//  Id Management                       // Fossato, 20011008
 
-//  Id Management                       // Fossato, 20011008
+	/** Sets the id attribute. */
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    /** Sets the id attribute. */
-    public void setId(String id) {
-    this.id = id;
-    }
+	/** Returns the id attribute. */
+	public String getId() {
+		return (this.id);
+	}
 
-    /** Returns the id attribute. */
-    public String getId() {
-    return (this.id);
-    }
-
-
-//  Navigation Management
+	//  Navigation Management
 
 	/** Sets the accessKey character. */
 	public void setAccessKey(String accessKey) {
-	this.accessKey = accessKey;
+		this.accessKey = accessKey;
 	}
 
 	/** Returns the accessKey character. */
 	public String getAccessKey() {
-	return (this.accessKey);
+		return (this.accessKey);
 	}
-
 
 	/** Sets the tabIndex value. */
 	public void setTabIndex(String tabIndex) {
-	this.tabIndex = tabIndex;
+		this.tabIndex = tabIndex;
 	}
 
 	/** Returns the tabIndex value. */
 	public String getTabIndex() {
-	return (this.tabIndex);
+		return (this.tabIndex);
 	}
 
-// Mouse Events
+	// Mouse Events
 
 	/** Sets the onClick event handler. */
 	public void setOnClick(String onClick) {
@@ -305,7 +299,7 @@ public abstract class DbBaseHandlerTag extends BodyTagSupport {
 		return onMouseOut;
 	}
 
-// Keyboard Events
+	// Keyboard Events
 
 	/** Sets the onKeyDown event handler. */
 	public void setOnKeyDown(String onKeyDown) {
@@ -337,7 +331,7 @@ public abstract class DbBaseHandlerTag extends BodyTagSupport {
 		return onKeyPress;
 	}
 
-// Text Events
+	// Text Events
 
 	/** Sets the onChange event handler. */
 	public void setOnChange(String onChange) {
@@ -359,7 +353,7 @@ public abstract class DbBaseHandlerTag extends BodyTagSupport {
 		return onSelect;
 	}
 
-// Focus Events
+	// Focus Events
 
 	/** Sets the onBlur event handler. */
 	public void setOnBlur(String onBlur) {
@@ -381,7 +375,7 @@ public abstract class DbBaseHandlerTag extends BodyTagSupport {
 		return onFocus;
 	}
 
-// CSS Style Support
+	// CSS Style Support
 
 	/** Sets the style attribute. */
 	public void setStyle(String style) {
@@ -405,167 +399,171 @@ public abstract class DbBaseHandlerTag extends BodyTagSupport {
 
 	// --------------------------------------------------------- Public Methods
 
-
 	// DbForms specific
 
-	  public void setPageContext(final javax.servlet.jsp.PageContext pageContext)  {
-	    super.setPageContext(pageContext);
-	    config = (DbFormsConfig) pageContext.getServletContext().getAttribute(DbFormsConfig.CONFIG);
-	  }
+	public void setPageContext(final javax.servlet.jsp.PageContext pageContext) {
+		super.setPageContext(pageContext);
+		config =
+			(DbFormsConfig) pageContext.getServletContext().getAttribute(
+				DbFormsConfig.CONFIG);
+	}
 
-	  public void setParent(final javax.servlet.jsp.tagext.Tag parent) {
-	    super.setParent(parent);
+	public void setParent(final javax.servlet.jsp.tagext.Tag parent) {
+		super.setParent(parent);
 
-	    // between this form and its parent lies a DbHeader/Body/Footer-Tag and maybe other tags (styling, logic, etc.)
-	    parentForm = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
-	  }
-
-
-
+		// between this form and its parent lies a DbHeader/Body/Footer-Tag and maybe other tags (styling, logic, etc.)
+		parentForm = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
+	}
 
 	/**
 	 * Release any acquired resources.
 	 */
 	public void release() {
-			super.release();
-			id=null; // Luca Fossato
-			accessKey = null;
-			tabIndex = null;
-			onClick = null;
-			onDblClick = null;
-			onMouseOver = null;
-			onMouseOut = null;
-			onMouseMove = null;
-			onMouseDown = null;
-			onMouseUp = null;
-			onKeyDown = null;
-			onKeyUp = null;
-			onKeyPress = null;
-			onSelect = null;
-			onChange = null;
-			onBlur = null;
-			onFocus = null;
-			style = null;
-			styleClass = null;
+		super.release();
+		id=null; // Luca Fossato		
+		accessKey = null;
+		tabIndex = null;
+		onClick = null;
+		onDblClick = null;
+		onMouseOver = null;
+		onMouseOut = null;
+		onMouseMove = null;
+		onMouseDown = null;
+		onMouseUp = null;
+		onKeyDown = null;
+		onKeyUp = null;
+		onKeyPress = null;
+		onSelect = null;
+		onChange = null;
+		onBlur = null;
+		onFocus = null;
+		style = null;
+		styleClass = null;
 	}
-
 
 	// ------------------------------------------------------ Protected Methods
 
-
-
-// DbForms specific
+	// DbForms specific
 
 	protected String typicalDefaultValue() {
-		switch(field.getType()) {
+		switch (field.getType()) {
 			//case org.dbforms.util.FieldTypes.DATE : return "0";
-			case org.dbforms.util.FieldTypes.INTEGER : return "0";
-			case org.dbforms.util.FieldTypes.NUMERIC : return "0";
-			case org.dbforms.util.FieldTypes.DOUBLE : return "0.0";
-			case org.dbforms.util.FieldTypes.FLOAT : return "0.0";
-			default : return ""; // in all other cases we just leave the formfield empty
+			case org.dbforms.util.FieldTypes.INTEGER :
+				return "0";
+			case org.dbforms.util.FieldTypes.NUMERIC :
+				return "0";
+			case org.dbforms.util.FieldTypes.DOUBLE :
+				return "0.0";
+			case org.dbforms.util.FieldTypes.FLOAT :
+				return "0.0";
+			default :
+				return ""; // in all other cases we just leave the formfield empty
 		}
 	}
 
+	/**
+	determinates value of the html-widget.
+	*/
 
+	/*****************************************************************************
+	 * grunikiewicz.philip@hydro.qc.ca
+	 * 2001-05-31
+	 *
+	 * In a jsp which contains many input fields, it may be desirable, in the event of an error, to redisplay input data.
+	 * (instead of refreshing the fields from the DB) Currently dbforms implements this functionality with INSERT fields only.
+	 * The following describes the changes I've implemented:
+	 *
+	 *	- I've added a new attribute in the Form tag which sets the functionality (redisplayFieldsOnError=true/false)
+	 *  - I've modified the code below to handle the redisplay of previously posted information
+	 *
+	 ******************************************************************************/
 
+	protected String getFormFieldValue() {
 
-/**
-determinates value of the html-widget.
-*/
+		HttpServletRequest request = (HttpServletRequest) this.pageContext.getRequest();
+		Vector errors = (Vector) request.getAttribute("errors");
 
-/*****************************************************************************
- * grunikiewicz.philip@hydro.qc.ca
- * 2001-05-31
- *
- * In a jsp which contains many input fields, it may be desirable, in the event of an error, to redisplay input data.
- * (instead of refreshing the fields from the DB) Currently dbforms implements this functionality with INSERT fields only.
- * The following describes the changes I've implemented:
- *
- *	- I've added a new attribute in the Form tag which sets the functionality (redisplayFieldsOnError=true/false)
- *  - I've modified the code below to handle the redisplay of previously posted information
- *
- ******************************************************************************/
+		// Are we in Update mode
+		if (!parentForm.getFooterReached()) {
 
-protected String getFormFieldValue() {
+			// Check if attribute 'redisplayFieldsOnError' has been set to true
+			// and is this jsp displaying an error?
+			if ("true".equals(parentForm.getRedisplayFieldsOnError())
+				&& errors != null
+				&& errors.size() > 0) {
 
-	HttpServletRequest request = (HttpServletRequest) this.pageContext.getRequest();
-	Vector errors = (Vector) request.getAttribute("errors");
-
-
-	// Are we in Update mode
-	if (!parentForm.getFooterReached()) {
-
-		// Check if attribute 'redisplayFieldsOnError' has been set to true
-		// and is this jsp displaying an error?
-		if ("true".equals(parentForm.getRedisplayFieldsOnError()) && errors != null && errors.size() > 0) {
-
-	        // Yes - redisplay posted data
-			String oldValue = ParseUtil.getParameter(request, getFormFieldName());
-			if (oldValue != null)
-				return oldValue;
-
-			// fill out empty fields so that there are no plain field-syntax errors
-	        // on database operations...
-	        return typicalDefaultValue();
-
-	    } else {
-
-		    // Business as usual - get data from DB
-			Object[] currentRow = parentForm.getResultSetVector().getCurrentRowAsObjects();
-
-			// fetch database row as java objects
-			if (currentRow == null)
-				return typicalDefaultValue();
-			else {
-				Object curVal = currentRow[field.getId()];
-				String curStr = null;
-
-				if (curVal != null) {
-					 if (this.format != null)
-						curStr = format.format(curVal);
-					 else
-						curStr = curVal.toString(); }
-
-				if (curStr != null)
-					 curStr = curStr.trim();
-
-				return (curVal != null && curStr != null && curStr.length() > 0) ? curStr : typicalDefaultValue();}
-		}
-
-	} else {
-
-	    // the form field is in 'insert-mode'
-
-
-	    //JOACHIM! CAN THE FOLLOWING LINE BE REMOVED? IT SEEMS TO BE OBSOLETE...
-
-	    if (value != null) // default value defined by jsp-developer (provided via the "value" attribute of the tag)
-			return value;
-
-
-
-
-		else { //#fixme: perform jsp/form equality check to avoid confision in cross-jsp actions
-			if (errors != null && errors.size() > 0) {
-
-				// an insert error occured. this is the typical use case for automatic field-repopulation
-  		        String oldValue = ParseUtil.getParameter(request, getFormFieldName());
-
+				// Yes - redisplay posted data
+				String oldValue = ParseUtil.getParameter(request, getFormFieldName());
 				if (oldValue != null)
-					return oldValue;} // fill out empty fields so that there are no plain field-syntax errors
+					return oldValue;
+
+				// fill out empty fields so that there are no plain field-syntax errors
+				// on database operations...
+				return typicalDefaultValue();
+
+			} else {
+
+				// Business as usual - get data from DB
+				Object[] currentRow = parentForm.getResultSetVector().getCurrentRowAsObjects();
+
+				// fetch database row as java objects
+				if (currentRow == null)
+					return typicalDefaultValue();
+				else {
+					Object curVal = currentRow[field.getId()];
+					String curStr = null;
+
+					if (curVal != null) {
+						if (this.format != null)
+							curStr = format.format(curVal);
+						else
+							curStr = curVal.toString();
+					}
+
+					if (curStr != null)
+						curStr = curStr.trim();
+
+					return (curVal != null && curStr != null && curStr.length() > 0)
+						? curStr
+						: typicalDefaultValue();
+				}
+			}
+
+		} else {
+
+			// the form field is in 'insert-mode'
+
+			//JOACHIM! CAN THE FOLLOWING LINE BE REMOVED? IT SEEMS TO BE OBSOLETE...
+
+			if (value != null)
+				// default value defined by jsp-developer (provided via the "value" attribute of the tag)
+				return value;
+
+			else { //#fixme: perform jsp/form equality check to avoid confision in cross-jsp actions
+				if (errors != null && errors.size() > 0) {
+
+					// an insert error occured. this is the typical use case for automatic field-repopulation
+					String oldValue = ParseUtil.getParameter(request, getFormFieldName());
+
+					if (oldValue != null)
+						return oldValue;
+				} // fill out empty fields so that there are no plain field-syntax errors
 
 				// on database operations...
-				 return typicalDefaultValue();}
+				return typicalDefaultValue();
+			}
+		}
 	}
-}
 
-  /**
-  generates the decoded name for the html-widget.
-  */
+	/**
+	generates the decoded name for the html-widget.
+	*/
 	protected String getFormFieldName() {
 
-		String keyIndex = (parentForm.getFooterReached()) ? "ins"+parentForm.getPositionPathCore() : parentForm.getPositionPath();
+		String keyIndex =
+			(parentForm.getFooterReached())
+				? "ins" + parentForm.getPositionPathCore()
+				: parentForm.getPositionPath();
 
 		StringBuffer buf = new StringBuffer();
 		buf.append("f_");
@@ -577,30 +575,30 @@ protected String getFormFieldValue() {
 		return buf.toString();
 	}
 
-  /**
-  generates the decoded name for the html-SEARCH widget.
-
-	protected String getSearchFieldName() {
-		StringBuffer buf = new StringBuffer();
-		buf.append("search_");
-		buf.append(parentForm.getTable().getId());
-		buf.append("_");
-		buf.append(field.getId());
-		return buf.toString();
-	}
-
-	protected String getSearchModeTag() {
-		StringBuffer buf = new StringBuffer();
-		buf.append("<input type=\"hidden\" name=\"searchmode_");
-		buf.append(parentForm.getTable().getId());
-		buf.append("_");
-		buf.append(field.getId());
-		buf.append("\" value=\"");
-		buf.append(searchMode);
-		buf.append("\">");
-		return buf.toString();
-	}
-*/
+	/**
+	generates the decoded name for the html-SEARCH widget.
+	
+		protected String getSearchFieldName() {
+			StringBuffer buf = new StringBuffer();
+			buf.append("search_");
+			buf.append(parentForm.getTable().getId());
+			buf.append("_");
+			buf.append(field.getId());
+			return buf.toString();
+		}
+	
+		protected String getSearchModeTag() {
+			StringBuffer buf = new StringBuffer();
+			buf.append("<input type=\"hidden\" name=\"searchmode_");
+			buf.append(parentForm.getTable().getId());
+			buf.append("_");
+			buf.append(field.getId());
+			buf.append("\" value=\"");
+			buf.append(searchMode);
+			buf.append("\">");
+			return buf.toString();
+		}
+	*/
 
 	/**
 	 * Prepares the style attributes for inclusion in the component's HTML tag.
@@ -627,7 +625,7 @@ protected String getFormFieldValue() {
 	 */
 	protected String prepareEventHandlers() {
 		StringBuffer handlers = new StringBuffer();
-		prepareIdEvents(handlers);                        // Fossato, 20011008
+		prepareIdEvents(handlers);                        // Fossato, 20011008		
 		prepareMouseEvents(handlers);
 		prepareKeyEvents(handlers);
 		prepareTextEvents(handlers);
@@ -635,8 +633,9 @@ protected String getFormFieldValue() {
 		return handlers.toString();
 	}
 
-
 	// -------------------------------------------------------- Private Methods
+
+
 
     /**
      * Prepares the id handlers, appending them to the the given
@@ -648,7 +647,6 @@ protected String getFormFieldValue() {
             handlers.append(" id=\"").append(id).append("\"");
         }
     }
-
 
 	/**
 	 * Prepares the mouse event handlers, appending them to the the given
@@ -764,8 +762,5 @@ protected String getFormFieldValue() {
 			handlers.append("\"");
 		}
 	}
-
-
-
 
 }

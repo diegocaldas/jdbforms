@@ -47,7 +47,7 @@ import org.apache.log4j.Category;
 
 public class DbBodyTag extends BodyTagSupport {
 
-    static Category logCat = Category.getInstance(DbBodyTag.class.getName()); // logging category for this class
+	static Category logCat = Category.getInstance(DbBodyTag.class.getName()); // logging category for this class
 
 	private String allowNew = "true"; // by default this is "true" - if so, the body is rendered at least 1 time, even if there are no data rows in the table. this enables the user to insert a new data row. - to disable this feature, allowNew has to be set to "false"
 
@@ -96,17 +96,17 @@ public class DbBodyTag extends BodyTagSupport {
 			}
 		}
 	 	return EVAL_BODY_TAG;
-  }
+  }  
 
 
   public int doAfterBody() throws JspException {
 
-    //DbFormTag myParent = (DbFormTag) getParent(); // parent Tag in which this tag is embedded in
-    DbFormTag myParent = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
+	//DbFormTag myParent = (DbFormTag) getParent(); // parent Tag in which this tag is embedded in
+	DbFormTag myParent = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
 
 		JspWriter out = pageContext.getOut();
 
-    //try {
+	//try {
 			// each rendering loop represents one row of data.
 			// for every row we need to print some data needed by the controller servlet in order to
 			// correctly dispatching and eventually modifying our data.
@@ -127,11 +127,11 @@ public class DbBodyTag extends BodyTagSupport {
 			myParent.getResultSetVector().increasePointer();
 
 		return SKIP_BODY;
-  }
+  }  
 
   public int doEndTag() throws JspException {
 
-    try {
+	try {
 	  	if(bodyContent != null) {
 				bodyContent.writeOut(bodyContent.getEnclosingWriter());
 				bodyContent.clearBody(); // workaround for duplicate rows in JRun 3.1
@@ -141,6 +141,6 @@ public class DbBodyTag extends BodyTagSupport {
 		throw new JspException("IO Error: " + e.getMessage());
 	}
 	return EVAL_PAGE;
-  }
+  }  
 
 }

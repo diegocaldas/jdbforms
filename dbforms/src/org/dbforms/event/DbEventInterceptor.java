@@ -57,23 +57,23 @@ public interface DbEventInterceptor {
   public static final int DENY_OPERATION = 1;
 
   public int preInsert(HttpServletRequest request, Hashtable fieldValues, DbFormsConfig config, Connection con)
-  throws ValidationException;
+  throws ValidationException;  
 
-  public void postInsert(HttpServletRequest request, DbFormsConfig config, Connection con);
+  public void postInsert(HttpServletRequest request, DbFormsConfig config, Connection con);  
 
   public int preUpdate(HttpServletRequest request, java.util.Hashtable fieldValues, DbFormsConfig config, Connection con)
-  throws ValidationException;;
+  throws ValidationException;  ;
 
-  public void postUpdate(HttpServletRequest request, DbFormsConfig config, Connection con);
+  public void postUpdate(HttpServletRequest request, DbFormsConfig config, Connection con);  
 
   public int preDelete(HttpServletRequest request, Hashtable fieldValues,DbFormsConfig config, Connection con)
-  throws ValidationException;;
+  throws ValidationException;  ;
 
-  public void postDelete(HttpServletRequest request, DbFormsConfig config, Connection con);
+  public void postDelete(HttpServletRequest request, DbFormsConfig config, Connection con);  
 
   public int preSelect(HttpServletRequest request, DbFormsConfig config, Connection con)
-  throws ValidationException;;
+  throws ValidationException;  ;
 
-  public void postSelect(HttpServletRequest request, DbFormsConfig config, Connection con);
+  public void postSelect(HttpServletRequest request, DbFormsConfig config, Connection con);  
 
 }

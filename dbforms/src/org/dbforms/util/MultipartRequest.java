@@ -106,51 +106,51 @@ public class MultipartRequest {
   throws IOException {
 
   // Sanity check values
-    if (request == null)
-      throw new IllegalArgumentException("request cannot be null");
+	if (request == null)
+	  throw new IllegalArgumentException("request cannot be null");
 
-    // Parse the incoming multipart, storing files in the dir provided,
-    // and populate the meta objects which describe what we found
-    logCat.info("maxpostsize="+maxPostSize);
-    parser = new MultipartParser(request, maxPostSize);
+	// Parse the incoming multipart, storing files in the dir provided,
+	// and populate the meta objects which describe what we found
+	logCat.info("maxpostsize="+maxPostSize);
+	parser = new MultipartParser(request, maxPostSize);
 
-    Part part;
-    while ((part = parser.readNextPart()) != null) {
-      String name = part.getName();
-      logCat.info("partname="+name);
-      if (part.isParam()) {
-        // It's a parameter part, add it to the vector of values
-        ParamPart paramPart = (ParamPart) part;
-        String value = paramPart.getStringValue();
+	Part part;
+	while ((part = parser.readNextPart()) != null) {
+	  String name = part.getName();
+	  logCat.info("partname="+name);
+	  if (part.isParam()) {
+		// It's a parameter part, add it to the vector of values
+		ParamPart paramPart = (ParamPart) part;
+		String value = paramPart.getStringValue();
 
-        // plain parameters get allways into parameters structure
-        Vector existingValues = (Vector)parameters.get(name);
-        if (existingValues == null) {
-          existingValues = new Vector();
-          parameters.put(name, existingValues);
-        }
-        existingValues.addElement(value);
-      }
-      else if (part.isFile()) {
-        // It's a file part
-        FilePart filePart = (FilePart) part;
-        String fileName = filePart.getFileName();
-        if (fileName != null) {
-          // The part actually contained a file
+		// plain parameters get allways into parameters structure
+		Vector existingValues = (Vector)parameters.get(name);
+		if (existingValues == null) {
+		  existingValues = new Vector();
+		  parameters.put(name, existingValues);
+		}
+		existingValues.addElement(value);
+	  }
+	  else if (part.isFile()) {
+		// It's a file part
+		FilePart filePart = (FilePart) part;
+		String fileName = filePart.getFileName();
+		if (fileName != null) {
+		  // The part actually contained a file
 
-          // #changes by joe peer:
-          // we must delay storing the file-inputstream (into database, filesystem or whatever)
-          // until we know exactly what should happen with it
+		  // #changes by joe peer:
+		  // we must delay storing the file-inputstream (into database, filesystem or whatever)
+		  // until we know exactly what should happen with it
 
 					FileHolder fileHolder = new FileHolder(fileName, filePart.getContentType(), filePart.getInputStream(), true, maxPostSize);
-          files.put(name, fileHolder);
-          logCat.info("buffered and now added as "+name+" the following fileHolder:"+fileHolder.getFileName());
+		  files.put(name, fileHolder);
+		  logCat.info("buffered and now added as "+name+" the following fileHolder:"+fileHolder.getFileName());
 
 
 
-    //      InputStream is = filePart.getInputStream();
-    //      while(is.read() != -1) logCat.info("b");
-    //      logCat.info("fin_");
+	//      InputStream is = filePart.getInputStream();
+	//      while(is.read() != -1) logCat.info("b");
+	//      logCat.info("fin_");
 
 					// #changes by joe peer:
 					// if a file parameter is not null it gets into the parameters structures as well
@@ -162,15 +162,15 @@ public class MultipartRequest {
 	        }
 	        existingValues.addElement(fileName);
 
-        }
-       /* else {
-          // The field did not contain a file
-          files.put(name, new UploadedFile(null, null, null));
-        }*/
-        logCat.info("loop end");
-      }
-    }
-  }
+		}
+	   /* else {
+		  // The field did not contain a file
+		  files.put(name, new UploadedFile(null, null, null));
+		}*/
+		logCat.info("loop end");
+	  }
+	}
+  }  
 
 
   /**
@@ -180,8 +180,8 @@ public class MultipartRequest {
    * @return the names of all the parameters as an Enumeration of Strings.
    */
   public Enumeration getParameterNames() {
-    return parameters.keys();
-  }
+	return parameters.keys();
+  }  
 
   /**
    * Returns the names of all the uploaded files as an Enumeration of
@@ -192,8 +192,8 @@ public class MultipartRequest {
    * @return the names of all the uploaded files as an Enumeration of Strings.
    */
   public Enumeration getFileNames() {
-    return files.keys();
-  }
+	return files.keys();
+  }  
 
   /**
    * Returns the value of the named parameter as a String, or null if
@@ -207,18 +207,18 @@ public class MultipartRequest {
    * @return the parameter value.
    */
   public String getParameter(String name) {
-    try {
-      Vector values = (Vector)parameters.get(name);
-      if (values == null || values.size() == 0) {
-        return null;
-      }
-      String value = (String)values.elementAt(values.size() - 1);
-      return value;
-    }
-    catch (Exception e) {
-      return null;
-    }
-  }
+	try {
+	  Vector values = (Vector)parameters.get(name);
+	  if (values == null || values.size() == 0) {
+		return null;
+	  }
+	  String value = (String)values.elementAt(values.size() - 1);
+	  return value;
+	}
+	catch (Exception e) {
+	  return null;
+	}
+  }  
 
   /**
    * Returns the values of the named parameter as a String array, or null if
@@ -231,19 +231,19 @@ public class MultipartRequest {
    * @return the parameter values.
    */
   public String[] getParameterValues(String name) {
-    try {
-      Vector values = (Vector)parameters.get(name);
-      if (values == null || values.size() == 0) {
-        return null;
-      }
-      String[] valuesArray = new String[values.size()];
-      values.copyInto(valuesArray);
-      return valuesArray;
-    }
-    catch (Exception e) {
-      return null;
-    }
-  }
+	try {
+	  Vector values = (Vector)parameters.get(name);
+	  if (values == null || values.size() == 0) {
+		return null;
+	  }
+	  String[] valuesArray = new String[values.size()];
+	  values.copyInto(valuesArray);
+	  return valuesArray;
+	}
+	catch (Exception e) {
+	  return null;
+	}
+  }  
 
   /**
    * Returns the filesystem name of the specified file, or null if the
@@ -255,16 +255,16 @@ public class MultipartRequest {
    * @return the filesystem name of the file.
    */
   public String getFilesystemName(String name) {
-    try {
-      //#changed by joe peer
-      //UploadedFile file = (UploadedFile)files.get(name);
-      FilePart filePart  = (FilePart) files.get(name);
-      return filePart.getFileName();  // may be null
-    }
-    catch (Exception e) {
-      return null;
-    }
-  }
+	try {
+	  //#changed by joe peer
+	  //UploadedFile file = (UploadedFile)files.get(name);
+	  FilePart filePart  = (FilePart) files.get(name);
+	  return filePart.getFileName();  // may be null
+	}
+	catch (Exception e) {
+	  return null;
+	}
+  }  
 
   /**
    * Returns the content type of the specified file (as supplied by the
@@ -274,16 +274,16 @@ public class MultipartRequest {
    * @return the content type of the file.
    */
   public String getContentType(String name) {
-    try {
+	try {
 			//#changed by joe peer
 			//UploadedFile file = (UploadedFile)files.get(name);
-      FilePart filePart = (FilePart)files.get(name);
-      return filePart.getContentType();  // may be null
-    }
-    catch (Exception e) {
-      return null;
-    }
-  }
+	  FilePart filePart = (FilePart)files.get(name);
+	  return filePart.getContentType();  // may be null
+	}
+	catch (Exception e) {
+	  return null;
+	}
+  }  
 
   /**
    * Returns a InputStream object for the specified file saved on the server's
@@ -293,16 +293,16 @@ public class MultipartRequest {
    * @return a InputStream object for the named file.
    */
   public InputStream getFileInputStream(String name) {
-    try {
+	try {
 			//#changed by joe peer
-      //UploadedFile file = (UploadedFile)files.get(name);
-      FilePart filePart = (FilePart)files.get(name);
-      return filePart.getInputStream();  // may be null
-    }
-    catch (Exception e) {
-      return null;
-    }
-  }
+	  //UploadedFile file = (UploadedFile)files.get(name);
+	  FilePart filePart = (FilePart)files.get(name);
+	  return filePart.getInputStream();  // may be null
+	}
+	catch (Exception e) {
+	  return null;
+	}
+  }  
 
 
   /**
@@ -313,12 +313,12 @@ public class MultipartRequest {
    * @return a FilePart object for the named file.
    */
   public FileHolder getFileHolder(String name) {
-    try {
-      return (FileHolder)files.get(name);
-    }
-    catch (Exception e) {
-      return null;
-    }
-  }
+	try {
+	  return (FileHolder)files.get(name);
+	}
+	catch (Exception e) {
+	  return null;
+	}
+  }  
 
 }

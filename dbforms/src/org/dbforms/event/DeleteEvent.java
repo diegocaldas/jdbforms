@@ -75,7 +75,7 @@ public class DeleteEvent extends DatabaseEvent {
 
 
 	public void processEvent(Connection con)
-	throws SQLException {
+	throws SQLException, MultipleValidationException {
 
 
 		// in order to process an delete, we need the key of the dataset to delete
@@ -147,8 +147,15 @@ public class DeleteEvent extends DatabaseEvent {
 			table.processInterceptors(DbEventInterceptor.PRE_DELETE, request, associativeArray, config, con);
 
 		  } catch(SQLException sqle) {
-				throw new SQLException("Exception in interceptor: " + sqle.getMessage());
+		// PG, 2001-12-04
+		// No need to add extra comments, just re-throw exceptions as SqlExceptions
+				throw new SQLException(sqle.getMessage());
+		  } catch(MultipleValidationException mve) {
+		  		// PG, 2001-12-14
+		  		// Support for multiple error messages in one interceptor
+		  		throw new MultipleValidationException(mve.getMessages());
 		  }
+		  
 		}
 		// End of interceptor processing
 
@@ -234,7 +241,9 @@ public class DeleteEvent extends DatabaseEvent {
 				// process the interceptors associated to this table
 				table.processInterceptors(DbEventInterceptor.POST_DELETE, request, null, config, con);
 			} catch(SQLException sqle) {
-				throw new SQLException("Exception in interceptor: " + sqle.getMessage());
+				// PG = 2001-12-04
+				// No need to add extra comments, just re-throw exceptions as SqlExceptions
+				throw new SQLException(sqle.getMessage());
 			}
 		}
 		// End of interceptor processing

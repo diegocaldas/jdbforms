@@ -59,53 +59,53 @@ public class ResultSetVector extends Vector {
   Vector objectVector;
 
   public ResultSetVector() {
-    super();
-    objectVector = new Vector();
-  }
+	super();
+	objectVector = new Vector();
+  }  
 
   public ResultSetVector(ResultSet rs) throws java.sql.SQLException {
-    this();
+	this();
 
-    ResultSetMetaData rsmd = rs.getMetaData();
-    int columns = rsmd.getColumnCount();
+	ResultSetMetaData rsmd = rs.getMetaData();
+	int columns = rsmd.getColumnCount();
 
 	try { // #JP Jun 27, 2001
 
    		while(rs.next()) {
 
-    		Object[] objectRow = new Object[columns];
-    		String[] stringRow = new String[columns];
+			Object[] objectRow = new Object[columns];
+			String[] stringRow = new String[columns];
 
-    		for(int i=0; i<columns; i++) {
+			for(int i=0; i<columns; i++) {
 			  Object tmpObj = rs.getObject(i+1);
 
 			  logCat.debug("col="+(i+1)+", tmpObj="+tmpObj);
 
-    		  if(tmpObj!=null) {
+			  if(tmpObj!=null) {
 				 objectRow[i] = tmpObj;
 				 stringRow[i] = tmpObj.toString();
-    		  } else {
+			  } else {
 				 objectRow[i] = null; // #checkme: really necessary?
 				 stringRow[i] = "";
 			 }
-    		}
+			}
 
-    		this.addElement(stringRow);
-    		objectVector.addElement(objectRow);
-    	}
+			this.addElement(stringRow);
+			objectVector.addElement(objectRow);
+		}
 
 	} finally {
 		rs.close();
 	}
 
-  }
+  }  
 
 
   public ResultSetVector(Vector selectFields, ResultSet rs) throws java.sql.SQLException {
-    this(rs);
-    this.selectFields = selectFields;
-    this.setupSelectFieldsHashtable();
-  }
+	this(rs);
+	this.selectFields = selectFields;
+	this.setupSelectFieldsHashtable();
+  }  
 
   private void setupSelectFieldsHashtable() {
 	if(selectFields==null) {
@@ -119,16 +119,16 @@ public class ResultSetVector extends Vector {
 		Field f = (Field) selectFields.elementAt(i);
 		selectFieldsHashtable.put(f.getName(), f);
 	}
-  }
+  }  
 
 
   public void setPointer(int pointer) {
 	this.pointer = pointer;
-  }
+  }  
 
   public int getPointer() {
 	return pointer;
-  }
+  }  
 
   public int increasePointer() {
 
@@ -138,7 +138,7 @@ public class ResultSetVector extends Vector {
 	  return pointer;
 	else
 	  return -1;
-  }
+  }  
 
   public int increasePointerBy(int stepWidth) {
 		pointer += stepWidth;
@@ -149,7 +149,7 @@ public class ResultSetVector extends Vector {
 			pointer = this.size()-1;
 		  return -1;
 		}
-  }
+  }  
 
   public int declinePointerBy(int stepWidth) {
 		pointer -= stepWidth;
@@ -160,7 +160,7 @@ public class ResultSetVector extends Vector {
 			 pointer = this.size()-1;
 		   return -1;
 	 	}
-  }
+  }  
 
   public int declinePointer() {
 
@@ -170,15 +170,15 @@ public class ResultSetVector extends Vector {
 	  return pointer;
 	else
 	  return -1;
-  }
+  }  
 
   public boolean isPointerLegal(int p) {
-    return (p>=0 && p<size());
-  }
+	return (p>=0 && p<size());
+  }  
 
   public boolean isCurrentPointerLegal() {
-    return (pointer>=0 && pointer<size());
-  }
+	return (pointer>=0 && pointer<size());
+  }  
 
 
   public String[] getCurrentRow() {
@@ -187,7 +187,7 @@ public class ResultSetVector extends Vector {
 		}
 		else
 			return null;
-  }
+  }  
 
   public Object[] getCurrentRowAsObjects() {
 		if(isPointerLegal(pointer)) {
@@ -195,14 +195,14 @@ public class ResultSetVector extends Vector {
 		}
 		else
 			return null;
-  }
+  }  
 
   public String getField(int i) {
 		if(isPointerLegal(pointer))
 			return ((String[]) elementAt(pointer))[i];
 		else
 			return null;
-  }
+  }  
 
 
   public String getField(String fieldName) {
@@ -212,14 +212,14 @@ public class ResultSetVector extends Vector {
 			return ((String[]) elementAt(pointer))[fieldIndex];
 		} else
 			return null;
-  }
+  }  
 
   public Object getFieldAsObject(int i) {
 		if(isPointerLegal(pointer))
 			return ((Object[]) elementAt(pointer))[i];
 		else
 			return null;
-  }
+  }  
 
 
   public Object getFieldAsObject(String fieldName) {
@@ -229,7 +229,7 @@ public class ResultSetVector extends Vector {
 			return ((Object[]) objectVector.elementAt(pointer))[fieldIndex];
 		} else
 			return null;
-  }
+  }  
 
 
 

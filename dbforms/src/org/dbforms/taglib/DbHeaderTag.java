@@ -56,21 +56,21 @@ public class DbHeaderTag extends BodyTagSupport {
 		}
 		else
 			return SKIP_BODY;
-  }
+  }  
 
   public int doAfterBody() throws JspException {
 		return SKIP_BODY;
-  }
+  }  
 
   public int doEndTag() throws JspException {
-    try {
+	try {
 		  if(bodyContent != null)
 		    bodyContent.writeOut(bodyContent.getEnclosingWriter());
-    }
+	}
 		catch(java.io.IOException e) {
 		  throw new JspException("IO Error: " + e.getMessage());
 		}
 	 	return EVAL_PAGE;
-  }
+  }  
 
 }

@@ -59,7 +59,7 @@ logCat.info("pos DbInsertButtonTag 2");
 
 logCat.info("pos DbInsertButtonTag 3");
 
-    	  StringBuffer tagBuf = new StringBuffer();
+		  StringBuffer tagBuf = new StringBuffer();
 				String tagName = "ac_insert_"+table.getId()+"_"+parentForm.getPositionPathCore();
 
 				if(followUp != null) {
@@ -70,9 +70,9 @@ logCat.info("pos DbInsertButtonTag 3");
 				//tagBuf.append( getDataTag(tagName, "id", Integer.toString(parentForm.getFrozenCumulatedCount())) );
 
 				tagBuf.append(getButtonBegin());
-    	  tagBuf.append(" name=\"");
-    	  tagBuf.append(tagName);
-    	  tagBuf.append("\">");
+		  tagBuf.append(" name=\"");
+		  tagBuf.append(tagName);
+		  tagBuf.append("\">");
 
  	  	  pageContext.getOut().write(tagBuf.toString());
 
@@ -83,8 +83,8 @@ logCat.info("pos DbInsertButtonTag 3");
 		if(choosenFlavor == FLAVOR_MODERN)
 			return EVAL_BODY_TAG;
 		else
-    	return SKIP_BODY;
-  }
+		return SKIP_BODY;
+  }  
 
 
   public int doEndTag() throws javax.servlet.jsp.JspException {
@@ -104,9 +104,7 @@ logCat.info("pos DbInsertButtonTag 3");
 		}
 
 		return EVAL_PAGE;
-  }
+  }  
 
 
 }
-
-

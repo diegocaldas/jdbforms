@@ -56,21 +56,15 @@ public class InsertEvent extends DatabaseEvent {
   public InsertEvent(String str, HttpServletRequest request, DbFormsConfig config) {
 		this.request = request;
 		this.config = config;
-logCat.debug ("InsertEvent str=" + str);
+
 		int firstUnderscore = str.indexOf('_');
 		int secondUnderscore = str.indexOf('_', firstUnderscore+1);
 		int thirdUnderscore = str.indexOf('_', secondUnderscore+1);
-		int trailingdot = str.indexOf('.', thirdUnderscore+1);
-		
 		String tableName = str.substring(secondUnderscore+1, thirdUnderscore);
 		this.tableId = Integer.parseInt(tableName);
 		this.table = config.getTable(tableId);
 
-		if (trailingdot == -1) {
-			this.idStr = str.substring(thirdUnderscore+1);
-		} else {
-			this.idStr = str.substring(thirdUnderscore+1,trailingdot);
-		}
+		this.idStr = str.substring(thirdUnderscore+1);
 
 		logCat.info("parsing insertevent");
 		logCat.info("tableName="+tableName);
@@ -97,10 +91,10 @@ logCat.debug ("InsertEvent str=" + str);
 		return result;
 	}
 
-    /**
-    for use in ConditionChecker only
-    "associative" -> this hashtable works like "associative arrays" in PERL or PHP
-    */
+	/**
+	for use in ConditionChecker only
+	"associative" -> this hashtable works like "associative arrays" in PERL or PHP
+	*/
 	private Hashtable getAssociativeFieldValues(Hashtable scalarFieldValues) {
 
 		Hashtable result = new Hashtable();
@@ -142,10 +136,7 @@ logCat.debug ("InsertEvent str=" + str);
 	}
 
 	public void processEvent(Connection con)
-	throws SQLException {
-
-
-		Hashtable fileNamesWithOutFileHolder = new Hashtable(); // only needed if fileuploads occur outside the fileholder-functionality (plain html upload)
+	throws SQLException, MultipleValidationException {
 
 		// Applying given security contraints (as defined in dbforms-config xml file)
 		// part 1: check if requested privilge is granted for role
@@ -165,8 +156,14 @@ logCat.debug ("InsertEvent str=" + str);
 				// synchronize data which may be changed by interceptor:
 				table.synchronizeData(fieldValues, associativeArray);
 			} catch(SQLException sqle) {
-				throw new SQLException("Exception in interceptor: " + sqle.getMessage());
-			}
+				// PG = 2001-12-04
+				// No need to add extra comments, just re-throw exceptions as SqlExceptions
+				throw new SQLException(sqle.getMessage());
+			} catch(MultipleValidationException mve) {
+		  		// PG, 2001-12-14
+		  		// Support for multiple error messages in one interceptor
+		  		throw new MultipleValidationException(mve.getMessages());
+		  }
 		}
 		// End of interceptor processing
 
@@ -179,7 +176,7 @@ logCat.debug ("InsertEvent str=" + str);
 		queryBuf.append(table.getName());
 		queryBuf.append(" (");
 
-    // list the names of fields we'll include into the insert operation
+	// list the names of fields we'll include into the insert operation
 		Vector fields = table.getFields();
 		Enumeration enum = fieldValues.keys();
 		while(enum.hasMoreElements()) {
@@ -223,26 +220,14 @@ logCat.debug ("InsertEvent str=" + str);
 				if("yes".equals(curField.getEncoding())) {
 					FileHolder fileHolder = ParseUtil.getFileHolder(request, "f_"+tableId+"_ins"+idStr+"_"+iiFieldId);
 
-					if(fileHolder != null) { // the file was uploaded via multipart..
+					// encode fileName
+					String fileName = fileHolder.getFileName();
+					int dotIndex = fileName.lastIndexOf('.');
+					String suffix = (dotIndex != -1) ? fileName.substring(dotIndex) : "";
+					fileHolder.setFileName(UniqueIDGenerator.getUniqueID()+suffix);
 
-						// encode fileName
-						String fileName = fileHolder.getFileName();
-						int dotIndex = fileName.lastIndexOf('.');
-						String suffix = (dotIndex != -1) ? fileName.substring(dotIndex) : "";
-						fileHolder.setFileName("db"+UniqueIDGenerator.getUniqueID()+suffix);
-
-						// a diskblob gets stored to db as an ordinary string (it's only the reference!)
-						value = fileHolder.getFileName();
-
-					} else { // the file was uploaded via common html form fields!
-
-						String suffix = ParseUtil.getParameter(request, "suffix_f_"+tableId+"_ins"+idStr+"_"+iiFieldId);
-						value = "db"+UniqueIDGenerator.getUniqueID() + "." + suffix;
-						fileNamesWithOutFileHolder.put("f_"+tableId+"_ins"+idStr+"_"+iiFieldId, value);
-
-					}
-
-
+					// a diskblob gets stored to db as an ordinary string (it's only the reference!)
+					value = fileHolder.getFileName();
 
 				} else {
 
@@ -312,29 +297,7 @@ logCat.debug ("InsertEvent str=" + str);
 					throw new SQLException("could not store file '"+fileHolder.getFileName()+"' to dir '"+directory+"'");
 				  }
 
-				} else {
-
-					String clobValue = ParseUtil.getParameter(request, "f_"+tableId+"_ins"+idStr+"_"+iiFieldId);
-
-					if(clobValue != null) {
-
-						String fileName = (String) fileNamesWithOutFileHolder.get("f_"+tableId+"_ins"+idStr+"_"+iiFieldId);
-
-						try {
-							File fileOut = new File(dir, fileName);
-							FileWriter fw = new FileWriter(fileOut);
-							fw.write(clobValue);
-							fw.close();
-						} catch(IOException ioe) {
-							throw new SQLException("could not store file '"+fileName+"' to dir '"+directory+"'");
-						}
-
-
-					} else {
-						logCat.info("uh! empty fileHolder, and no plain HTML form data available!");
-					}
-
-				}
+				} else logCat.info("uh! empty fileHolder");
 			}
 		}
 
@@ -345,7 +308,9 @@ logCat.debug ("InsertEvent str=" + str);
 				// process the interceptors associated to this table
 				table.processInterceptors(DbEventInterceptor.POST_INSERT, request, null, config, con);
 			} catch(SQLException sqle) {
-				throw new SQLException("Exception in interceptor: " + sqle.getMessage());
+				// PG = 2001-12-04
+				// No need to add extra comments, just re-throw exceptions as SqlExceptions
+				throw new SQLException(sqle.getMessage());
 			}
 		}
 		// End of interceptor processing

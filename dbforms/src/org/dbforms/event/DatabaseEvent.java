@@ -38,6 +38,6 @@ import org.dbforms.*;
 
 public abstract class DatabaseEvent extends WebEvent {
 
-	public abstract void processEvent(Connection con) throws SQLException;
+	public abstract void processEvent(Connection con) throws SQLException, MultipleValidationException;
 
 }

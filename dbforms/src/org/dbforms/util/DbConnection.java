@@ -128,7 +128,7 @@ public class DbConnection {
 	  // access Connection via Application Server's JNDI table
 	  if(jndi) {
 
-      try {
+	  try {
 				Context ctx = new InitialContext();
 				DataSource ds = (DataSource) ctx.lookup(name);
 				Connection con = ds.getConnection();
@@ -167,5 +167,5 @@ public class DbConnection {
 	 buf.append(",password="+password);
 	 return buf.toString();
 
-  }
+  }  
 }

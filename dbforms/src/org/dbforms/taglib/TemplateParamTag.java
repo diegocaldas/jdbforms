@@ -40,7 +40,7 @@ import org.apache.log4j.Category;
 
 public class TemplateParamTag extends TagSupport {
 
-    static Category logCat = Category.getInstance(TemplateParamTag.class.getName()); // logging category for this class
+	static Category logCat = Category.getInstance(TemplateParamTag.class.getName()); // logging category for this class
 
 	private String name, defaultValue, dir; // properties set by JSP container
 
@@ -79,8 +79,8 @@ public class TemplateParamTag extends TagSupport {
 
 
   public int doStartTag() throws JspException {
-    return SKIP_BODY;
-  }
+	return SKIP_BODY;
+  }  
 
 
   public int doEndTag() throws JspException {
@@ -112,14 +112,14 @@ public class TemplateParamTag extends TagSupport {
 			}
 
 			pageContext.getOut().flush();
-      pageContext.getOut().write( buf.toString() );
+	  pageContext.getOut().write( buf.toString() );
 
 		} catch(IOException ioe) {
 			throw new JspException("Problem including template end - "+ioe.toString());
 		}
 
 		return EVAL_PAGE;
-  }
+  }  
 
 
 

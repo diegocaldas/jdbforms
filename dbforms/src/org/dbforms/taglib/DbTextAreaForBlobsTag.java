@@ -51,7 +51,16 @@ public class DbTextAreaForBlobsTag extends DbTextAreaTag  {
 	static Category logCat = Category.getInstance(DbTextAreaForBlobsTag.class.getName()); // logging category for this class
 
 	private String suffix;
+	private String renderBody;
 
+	public void setRenderBody(String rb) {
+		this.renderBody = rb;
+	}
+
+	public String getRenderBody() {
+		return renderBody;
+	}
+	
 	public void setSuffix(String suffix) {
 		this.suffix = suffix;
 	}

@@ -82,12 +82,12 @@ public class Field {
 	}
 
   public void setName(String name) {
-    this.name = name;
-  }
+	this.name = name;
+  }  
 
   public String getName() {
 	return name;
-  }
+  }  
 
 
 	public void setFieldType(String fieldType) {
@@ -103,30 +103,30 @@ public class Field {
   we need this information in oder to call the appropriate PreparedStatement.setXxx(..) - Methods
   */
   public void setType(String aType) {
-    aType = aType.toLowerCase();
-    if(aType.startsWith("int") || aType.startsWith("smallint") || aType.startsWith("tinyint")) type = FieldTypes.INTEGER;
-    else if(aType.startsWith("char") || aType.startsWith("varchar") || aType.startsWith("nvarchar") || aType.startsWith("longchar")) type = FieldTypes.CHAR;
-    else if(aType.startsWith("numeric") || aType.startsWith("number")) type = FieldTypes.NUMERIC;
-    else if(aType.startsWith("date")) type = FieldTypes.DATE;
-    else if(aType.startsWith("timestamp")) type = FieldTypes.TIMESTAMP;
+	aType = aType.toLowerCase();
+	if(aType.startsWith("int") || aType.startsWith("smallint") || aType.startsWith("tinyint")) type = FieldTypes.INTEGER;
+	else if(aType.startsWith("char") || aType.startsWith("varchar") || aType.startsWith("nvarchar") || aType.startsWith("longchar")) type = FieldTypes.CHAR;
+	else if(aType.startsWith("numeric") || aType.startsWith("number")) type = FieldTypes.NUMERIC;
+	else if(aType.startsWith("date")) type = FieldTypes.DATE;
+	else if(aType.startsWith("timestamp")) type = FieldTypes.TIMESTAMP;
 	else if(aType.startsWith("double")) type = FieldTypes.DOUBLE;
 	else if(aType.startsWith("float") || aType.startsWith("real")) type = FieldTypes.FLOAT;
 	else if(aType.startsWith("blob") || aType.startsWith("image")) type = FieldTypes.BLOB;
 	else if(aType.startsWith("diskblob")) type = FieldTypes.DISKBLOB;
-  }
+  }  
 
   public int getType() {
 	return type;
-  }
+  }  
 
   public void setAutoInc(String autoInc) {
 		this.autoInc = autoInc;
-    this.isAutoInc = autoInc.equalsIgnoreCase("true") || autoInc.equalsIgnoreCase("yes");
-  }
+	this.isAutoInc = autoInc.equalsIgnoreCase("true") || autoInc.equalsIgnoreCase("yes");
+  }  
 
   public boolean getIsAutoInc() {
 	return isAutoInc;
-  }
+  }  
 
 	public void setIsKey(String isKey) {
 	  this.isKey = isKey;
@@ -136,24 +136,24 @@ public class Field {
 
   public boolean isKey() {
 	return key;
-  }
+  }  
 
 
   public void setDirectory(String directory) {
-    this.directory = directory;
-  }
+	this.directory = directory;
+  }  
 
   public String getDirectory() {
 	return directory;
-  }
+  }  
 
   public void setEncoding(String encoding) {
-    this.encoding = encoding;
-  }
+	this.encoding = encoding;
+  }  
 
   public String getEncoding() {
 		return encoding;
-  }
+  }  
 
 
 	public void setSortable(String sortable) {
@@ -173,13 +173,13 @@ public class Field {
 	// --------------------- utility methods -------------------------------------------------------
 
   public String toString() {
-    StringBuffer buf = new StringBuffer();
-    buf.append("name=");buf.append(name);
-    buf.append(" type=");buf.append(type);
-    buf.append(" key=");buf.append(key);
-    buf.append(" isAutoinc=");buf.append(isAutoInc);
-    buf.append(" ! issortable=");buf.append(_isSortable);
-    buf.append(" directury=");buf.append(directory	);
-    return buf.toString();
-  }
+	StringBuffer buf = new StringBuffer();
+	buf.append("name=");buf.append(name);
+	buf.append(" type=");buf.append(type);
+	buf.append(" key=");buf.append(key);
+	buf.append(" isAutoinc=");buf.append(isAutoInc);
+	buf.append(" ! issortable=");buf.append(_isSortable);
+	buf.append(" directury=");buf.append(directory	);
+	return buf.toString();
+  }  
 }

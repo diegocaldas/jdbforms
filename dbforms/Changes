@@ -2,41 +2,334 @@
 * $Revision$
 * $Date$
 
-Sat, 13-Okt-2001
+__________________________________________________________________________________________________
+Friday, January 11th, 2002
+DbForms version 0.9E
+Grunikiewicz.philip@hydro.qc.ca
 
-* added 2 new tags:
 
-   1) TextAreaForBlobTag
-   2) BlobContentTag
-   
-  the purpose of these 2 tags is to enable users to edit the content of files stored 
-  in a (disk-)blob via a TextArea. 
-  
-  The following example demonstrates the usage of these 2 tags:
-   
-<db:textAreaForBlobs fieldName="filepath" renderBody="true" suffix="jsp" rows="15" cols="60" wrap="virtual">
-  <db:blobContent fieldName="filepath" />
-</db:textAreaForBlobs>   
-  
-  NOTA BENE: renderBody must be set to true, field "filepath" is of type "DISKBLOB" !
+form - tag
+tableList - Attribute
+
+This attribute (in conjunction with the whereClause attribute) allows a developer to access fields from multiple tables.  
+This can be useful when your database does not support views or you need to retrieve fields from various tables for display 
+purposes only.
+
+In the dbForms-config.xml file, you must create an entry which contains references to the Table/Field combinations you wish to 
+access.  The table name you use is irrelevant.
+
+The value specified in the tableList attribute is used to specify the 'from' part of the Select query.  Hence the name: table list.
+
+The conditions used to define the table associations are specified in the whereClause attribute.( along with other conditions and orderBy…)
+
+Multiple table access is valid only for data retrieval. Insert, Update, and Delete are not supported.
+
+EXAMPLE
+
+ In dbForms-config.xml:
+
+       <table name="AnyName">
+           <field name="Table1.id" fieldType="VARCHAR2" isKey="true"/>
+           <field name="Table2.id" fieldType="VARCHAR2" isKey="true"/>
+           <field name="Table1.fieldName" fieldType="VARCHAR2"/>
+           <field name="Table2.OtherField" fieldType="NUMBER"/>
+       </table>
+
+ In jsp:
+
+       <db:form table="AnyName" 
+maxRows="*"  
+followUp="next.jsp" 
+          	tableList="Table1,Table2" 
+   	whereClause="Where Table1.id = Table2.id">
+            <db:header/>
+            <db:body>
+                <db:textField fieldname="Table1.fieldName"/>
+                <db:textField fieldname="Table2.otherField"/>
+            </db:body>
+            <db:footer/>
+        </db:form>
+
+
+Resulting Query:    
+
+SELECT Table1.id, Table2.id,Table1.fieldName,Table2.otherField FROM Table1,Table2 WHERE Table1.id = Table2.id
+
+------------------------------------------------------------------------------------
+
+form - tag
+whereClause - attribute
+
+Replaces the filter attribute in situations where the where clause is more complex.  Allows a developer to specify a free 
+form conditional clause (where Clause + order + etc…)
+
+EXAMPLE:
+
+<% 
+	StringBuffer whereClause = new StringBuffer();
+whereClause.append("WHERE (FIELD1>'25' AND FIELD1<'50' ) OR FIELD2 NOT NULL ORDERBY FIELD7");
+%>
+
+db:form
+	table="TABLE1"
+	followUp="this.jsp"
+	whereClause = "<%whereClause.toString()%>"
+
+
+------------------------------------------------------------------------------------
+
+form - tag
+action - attribute
+
+The action attribute in the form tag allows a developer to have a dbform submit to something other then the control servlet.  
+This can be useful when dbForms is used in read-only mode (such as a view)
+
+EXAMPLE
+
+db:form
+	table="TABLE1"
+	followUp="this.jsp"
+	action = "/exemplesWebi/servlet/ca.qc.hydro.myServlet"
+
+------------------------------------------------------------------------------------
+
+form - tag
+filter - attribute
+
+Can now also handle the <> (notNull) operator.
+
+EXAMPLE:
+
+<% 
+	StringBuffer filter = new StringBuffer();
+	filter.append("FIELD1<>5");
+%>
+
+db:form
+	table="TABLE1"
+	followUp="this.jsp"
+	filter = "<%filter.toString()%>"
+
+
+
+ ------------------------------------------------------------------------------------
+hasNoError - tag
+
+ 
+Tag which is used to verify if an error has occurred.  In cases where there are no errors and the page is in re-display mode 
+(calling page = current page), redirect to the specified url. Attribute name is used to specify the request object attribute which 
+was defined to hold errors (see xmlError tag).
+
+EXAMPLE
+       
+      <db:hasNoError name="errors" redirect="other.jsp"/>
+
+        
+------------------------------------------------------------------------------------
+
+getConnection - tag
+
+Tag which provides a jdbc connection object. 
+
+Allows other tags (and/or java scriptlets) to obtain a connection via the same settings as defined in dbForms.  If dbForms has not 
+already established a JDBC driverManager, this tag will be responsible for setting it up (using dbForms-config.xml settings) and 
+thereafter making it available to dbForms.
+ 
+The id attribute is used to specify the page context attribute in which the connection object can be referenced.
+ 
+EXAMPLE
+(using Jakarta dbTags)
+
+             <db:getConnection id="myConnection"/>
+
+             <sql: statement id="stmt" conn="myConnection">
+                 <sql:query>Select * from Table</sql:query>
+                 <sql:resultSet id="rs">
+                       Value: <sql:getColumn position="1"/>
+                 </sql:resultSet>
+             </sql:statement>
+
+------------------------------------------------------------------------------------
+hasMoreRecords - tag
+
+Tag used to determine the amount of data returned and render a message if necessary. 
+If the result Set contains >=  the number of elements specified, display the appropriate message (XML error file).  
+As with error messages, arguments may be passed to the message string via a comma delimited string.
+
+EXAMPLE
+
+ <db:form table="TABLE" 
+maxRows="200" 
+followUp="next.jsp">
+        <db:header>
+
+        <!-Message: Resultset too big, displaying first 200 records -->
+        <db:hasMoreRecords count="200" message="English-001:200" />
+        </db:header>
+
+		…
+ </db:form>
+
+ ------------------------------------------------------------------------------------
+
+label, dataLabel - tags
+maxlength - attribute
+
+Allows a developer to limit the amount of characters displayed on screen.  If the label to display exceeds the limit, 
+trim and display '...'
+
+EXAMPLE
+
+      <db:dataLabel fieldName="ABC" maxlength="10">
+                  …
+      </db:dataLabel>
+
+ ------------------------------------------------------------------------------------
+
+select - tag
+customEntry - attribute
+
+Allows the possibility of adding an entry in the select list which is independent of data retrieved via tableData, queryData or 
+staticData.  Arguments to this tag are as follows:
+
+           Key,Description,boolean (default selection?)
+
+
+EXAMPLE
+    
+    <db:select fieldName="Column1" customEntry="001,,true">
+             …
+    </db:select>
+
+
+ ------------------------------------------------------------------------------------
+
+
+textField, textArea, dateField, file, radio, checkbox, select - tags
+id - attribute
+
+added an "id"-attribute to many of the Tag handlers -> improving interoperability with JavaScript (thanks to L. Fossato)
+Note: Not supported by all browser!
+
+EXEMPLE:
+
+	<db:textField fieldName="FIELD1" maxlength="15" id="InputField1" />
+
+
+ ------------------------------------------------------------------------------------
+
+tableData - Tag
+orderBy - attribute
+
+orderBy is now supported in tableData queries.  (thanks to Martin Kraus & collegues)
+
+EXEMPLE:
+
+	<db:select name="myQuery" fieldName="FIELD3">
+		<db:tableData
+			foreignTable="TABLE7"
+			visibleFields="FIELD1,FIELD3"
+			storeField="FIELD3"
+			orderBy="FIELD10"/>
+ 	</db:select>
+
+
+ ------------------------------------------------------------------------------------
+
+
+XmlErrors - Tag 
+
+In order to manage error messages more efficiently, we introduced the new XmlError tag.  Instead of hard coding your error messages 
+within your interceptors, you can now define them in an xml file which is loaded at application start-up (in the exact same manner as 
+the dbForms-config.xml file!)  Furthermore, messages may be stored (and retrieved) for any given language.  Here is how it works…
+
+Create an xml error file called dbForms-errors.xml with the following structure:
+
+<dbforms-errors>
+<error id="001" type="WARN">
+  			<message language="Français">% - Champ est obligatoire%
+</message> 
+  		<message language="English">% - is mandatory %"</message> 
+  </error>
+</dbforms-errors>
+
+Replace the errors tag by the xmlErrors tag (in your jsp's).
+
+In your interceptor, throw a ValidationException with the following message construct:
+
+Language-MessageID:parameter,parameter,parameter
+
+Where:
+	Language = used to locate which message to return, ends with a dash (-)
+	Message ID = error ID used for lookup, ends with a colon (:)
+	Parameter(s) = separated by commas, read in sequence, 
+replaces placeholders (%) in message
+
+EXAMPLE:
+
+String messageConstruct = "English-001:param1,param2";
+throw new ValidationException(messageConstruct);
+
+Note that you may also use this mechanism to intercept error messages which are generated by the database. Ie: Oracle throws the following message: ORA-0001: blah blah blah
+
+
+<dbforms-errors>
+<error id="0001" type="WARN">
+  			<message language="ORA">Oracle message: %
+</message> 
+  </error>
+</dbforms-errors>
   
 
-* added an "id"-attribute to many of the Tag handlers -> improving interoperability with JavaScript (thanks to L. Fossato)
+ ------------------------------------------------------------------------------------
 
-* changed taglib descriptor: set all attributes to RTEXPRVALUE=TRUE
-  so every property can be set during runtime:
-  
-  <%  String max= ... %>  
-  <db:dbform tableName="test" maxRows="<%= max %>"
-      
-* corrected WEB.XML file (now it is a valid xml file again)
-            
-* MAJOR CHANGE: replaced struts-digester package by apache-commons-digester !
-  this means org.apache.struts.digester.* was replaced by org.apache.commons.digester.*;
-  the same happened for the beanutil - package. 
-  see http://jakarta.apache.org/commons/index.html for more details
-      
-* fixed some minor bugs (e.g. "alt" tag was not rendered properly in Button-Tags)
+MultipleValidationException
+
+It is now possible to accumulate error messages while validating a form in a dbForms interceptor class.  
+This is useful in situations where many fields are validated and you wish to return several errors instead of 
+just the first occurrence.
+
+In the validation process, when an error occurs, simply instantiate a new exception object and store it into a vector.  
+Do not throw this exception!
+
+Once the validation process has completed, throw an instance of the MultipleValidationException class and pass 
+the vector as an argument to its constructor.  
+
+Note that this functionality is dependant on using the xmlError tag.
+ 
+EXAMPLE
+
+public int preUpdate(HttpServletRequest req, 
+                     Hashtable fieldValues, 
+                     DbformsConfig conf, 
+                     Connection con) throws ValidationException
+{
+    Vector errors = new Vector();
+
+    // Validate, if error
+    errors.add(new SQLException("English-001:param");
+
+    // More validations, errors!…
+    errors.add(new SQLException("Français-003:param,param");
+
+    if(!errors.isEmpty)
+       throw new MultipleValidationException(errors);
+}
+
+Others changes
+
+·	changed taglib descriptor: set all attributes to RTEXPRVALUE=TRUE so every property can be set during runtime:
+
+<%  String max= ... %>  
+<db:dbform tableName="test" maxRows="<%= max %>"
+
+
+·	Proper DB connection cleanup in Table class. In our development, we sometimes set our connection object to autoCommit=false. 
+This allows us to create transactions (dbForms + our own native JDBC code).  In case of an exception, we need to rollback and 
+re-initialize the connection object.
+
+
+______________________________________________________________________________________________________
 
 Wed, 26-Sep-2001
 

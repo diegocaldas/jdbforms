@@ -50,8 +50,8 @@ public class TemplateBasedirTag extends TagSupport {
 
 
   public int doStartTag() throws JspException {
-    return SKIP_BODY;
-  }
+	return SKIP_BODY;
+  }  
 
 
   public int doEndTag() throws JspException {
@@ -61,14 +61,14 @@ public class TemplateBasedirTag extends TagSupport {
 			StringBuffer buf = new StringBuffer();
 			buf.append(baseDir);
 			pageContext.getOut().flush();
-      pageContext.getOut().write( buf.toString() );
+	  pageContext.getOut().write( buf.toString() );
 
 		} catch(IOException ioe) {
 			throw new JspException("Problem including template end - "+ioe.toString());
 		}
 
 		return EVAL_PAGE;
-  }
+  }  
 
 
 

@@ -70,7 +70,7 @@ import org.apache.log4j.Category;
 
 public class DbLinkURLTag extends BodyTagSupport {
 
-    static Category logCat = Category.getInstance(DbLinkURLTag.class.getName()); // logging category for this class
+	static Category logCat = Category.getInstance(DbLinkURLTag.class.getName()); // logging category for this class
 
 	private DbFormsConfig config;
 	private Table table;
@@ -154,8 +154,8 @@ public class DbLinkURLTag extends BodyTagSupport {
 
 			// build tag
 			StringBuffer tagBuf = new StringBuffer(200);
-			tagBuf.append( ((HttpServletRequest) pageContext.getRequest()).getContextPath() );
-			tagBuf.append("/servlet/control?ac_goto_x=t&dataac_goto_x_fu=");
+			tagBuf.append( ((HttpServletRequest) pageContext.getRequest()).getContextPath());
+			tagBuf.append("servlet/control?ac_goto_x=t&dataac_goto_x_fu=");
 			tagBuf.append(href);
 			tagBuf.append("&dataac_goto_x_destTable="); // table is required. we force to define a valid table. because we do not want the developer to use this tag instead of normal <a href="">-tags to arbitrary (static) ressources, as this would slow down the application.
 			tagBuf.append(table.getId());
@@ -177,13 +177,13 @@ public class DbLinkURLTag extends BodyTagSupport {
 	}
 
   public void setPageContext(final javax.servlet.jsp.PageContext pageContext)  {
-    super.setPageContext(pageContext);
+	super.setPageContext(pageContext);
 	this.config = (DbFormsConfig) pageContext.getServletContext().getAttribute(DbFormsConfig.CONFIG);
-  }
+  }  
 
   public void setParent(final javax.servlet.jsp.tagext.Tag parent) {
-    super.setParent(parent);
-    this.parentForm = (DbFormTag) findAncestorWithClass(this, DbFormTag.class); // may be null!
-  }
+	super.setParent(parent);
+	this.parentForm = (DbFormTag) findAncestorWithClass(this, DbFormTag.class); // may be null!
+  }  
 
 }

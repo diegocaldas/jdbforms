@@ -55,7 +55,7 @@ public class ParseUtil {
 
 		MultipartRequest multipartRequest = (MultipartRequest) request.getAttribute("multipartRequest");
 	  return (multipartRequest==null) ? request.getParameterNames() : multipartRequest.getParameterNames();
-  }
+  }  
 
 
 
@@ -73,7 +73,7 @@ public class ParseUtil {
   public static String getParameter(HttpServletRequest request, String name) {
 		MultipartRequest multipartRequest = (MultipartRequest) request.getAttribute("multipartRequest");
 		return (multipartRequest==null) ? request.getParameter(name) : multipartRequest.getParameter(name);
-  }
+  }  
 
   /**
    * Returns the values of the named parameter as a String array, or null if
@@ -88,7 +88,7 @@ public class ParseUtil {
   public static String[] getParameterValues(HttpServletRequest request, String name) {
 		MultipartRequest multipartRequest = (MultipartRequest) request.getAttribute("multipartRequest");
 		return (multipartRequest==null) ? request.getParameterValues(name) : multipartRequest.getParameterValues(name);
-  }
+  }  
 
 
 
@@ -108,7 +108,7 @@ public class ParseUtil {
 		MultipartRequest multipartRequest = (MultipartRequest) request.getAttribute("multipartRequest");
 		return (multipartRequest==null) ? null : multipartRequest.getFileNames();
 
-  }
+  }  
 
 
   /**
@@ -216,6 +216,33 @@ public class ParseUtil {
 	  	int dotIndex = str.lastIndexOf('.');
 	  	nextIndex = (dotIndex==-1) ?  str.length()  : dotIndex;
 		}
+
+		return str.substring(lastIndex, nextIndex);
+	}
+	
+	
+	
+		/**
+	<p>Method for parsing substring embedded by constant delimeters</p>
+
+	<p>consider the following string s: English-001:param1, param2</p>
+
+	<p><pre>
+	</pre></p>
+	*/
+	public static String getEmbeddedStringForErrors(String str, int afterDelims, char delim) {
+
+		int lastIndex = 0;
+		for(int i=0; i<afterDelims; i++) {
+			lastIndex = str.indexOf(delim, lastIndex) + 1;  // search end of cutting
+		}
+
+		int nextIndex = str.indexOf(delim, lastIndex);  // end of cutting
+
+
+
+	  if(nextIndex == -1) 
+	  	nextIndex = str.length();
 
 		return str.substring(lastIndex, nextIndex);
 	}
