@@ -62,6 +62,9 @@ public class Table {
 	private String name; // the name of the Table
 	private Hashtable fieldNameHash;
 	// structure for quick acessing of fields "by name"
+        private Vector foreignKeys;  
+        private Hashtable foreignKeyNameHash;  // access foreign key by name
+        
 	private Vector diskblobs;
 	// subset of "fields", containting those keys which represent DISKBLOBs (wondering about that term? -> see docu)
 
@@ -75,8 +78,11 @@ public class Table {
 	private GrantedPrivileges grantedPrivileges = null;
 	// access control list for this object (if null, then its open to all users for all operations). defined in dbforms-config.xml
 
-	private Vector interceptors; // application hookups
-
+	private Vector interceptors;  // application hookups
+        
+        /** Holds value of property defaultVisibleFields. */
+        private String defaultVisibleFields;
+        
 	public Table() {
 		fields = new Vector();
 		key = new Vector();
@@ -145,6 +151,21 @@ public class Table {
 		}
 	}
 
+         /**
+	 * adds a ForeignKey-Object to this table
+	 * and puts it into othere datastructure for further references
+	 * (this method gets called from DbFormsConfig)
+	 */
+	public void addForeignKey(ForeignKey fk) {           
+                fk.setId(foreignKeys.size());
+            
+                // add to vector containing all foreign keys:
+		foreignKeys.addElement(fk);
+		
+		// for quicker lookup by name:
+		foreignKeyNameHash.put(fk.getName(),fk);		
+	}
+        
 	/**
 	 * returns the Field-Objet with specified id
 	 *
@@ -1213,4 +1234,21 @@ public class Table {
   		Field f = (Field) fields.elementAt(fieldID);
 		return(f.getName());
 	} 
+        
+        /** Getter for property defaultVisibleFields.
+         * @return Value of property defaultVisibleFields.
+         *
+         */
+        public String getDefaultVisibleFields() {
+            return this.defaultVisibleFields;
+        }
+        
+        /** Setter for property defaultVisibleFields.
+         * @param defaultVisibleFields New value of property defaultVisibleFields.
+         *
+         */
+        public void setDefaultVisibleFields(String defaultVisibleFields) {
+            this.defaultVisibleFields = defaultVisibleFields;
+        }
+        
 }
