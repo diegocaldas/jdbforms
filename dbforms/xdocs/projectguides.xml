@@ -12,12 +12,13 @@
 
  <subsection name="User guide">
    <p> 
-     The user guide ... blah blah blah
+     The user guide contains the informations about the installation of the 
+	 DbForms environment and its usage. 
    </p>
    <p>
 	  <table width="500" border="1" cellspacing="0" cellpadding="2">
 	  <tr> 
-	    <th width="200">file type</th>
+	    <th width="100">file type</th>
 		<th>link</th>
       </tr>
       <tr> 
@@ -34,12 +35,13 @@
 
  <subsection name="Tag library reference">
    <p> 
-     The tag library reference ... blah blah blah
+     The tag library reference documents how to use the DbForms tags into 
+	 the JSP pages of your web application.
    </p>
    <p>
       <table width="500" border="1" cellspacing="0" cellpadding="2">
       <tr> 
-        <th width="200">file type</th>
+        <th width="100">file type</th>
         <th>link</th>
       </tr>
       <tr> 
