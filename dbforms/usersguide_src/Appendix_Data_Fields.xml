@@ -246,12 +246,7 @@
           <row>
             <entry>ac_prev_[tableId]_[buttonId]</entry>
             <entry></entry>
-            <entry></entry>
-          </row>
-          <row>
             <entry>navigation event for table</entry>
-            <entry></entry>
-            <entry></entry>
           </row>
           <row>
             <entry>ac_prev_[tableId]_[buttonId]_fu</entry>
@@ -281,12 +276,7 @@
           <row>
             <entry>ac_last_[tableId]_[buttonId]</entry>
             <entry></entry>
-            <entry></entry>
-          </row>
-          <row>
             <entry>navigation event for table</entry>
-            <entry></entry>
-            <entry></entry>
           </row>
           <row>
             <entry>ac_last_[tableId]_[buttonId]_fu</entry>
@@ -295,6 +285,36 @@
           </row>
           <row>
             <entry>ac_last_[tableId]_[buttonId]_fue</entry>
+            <entry></entry>
+            <entry></entry>
+          </row>
+          <row>
+            <entry>ac_reload_[tableId]_[buttonId]_fue</entry>
+            <entry></entry>
+            <entry>reload event. Reloads all data from database. Changed fields stay changed</entry>
+          </row>
+          <row>
+            <entry>ac_reload_[tableId]_[buttonId]_fu</entry>
+            <entry></entry>
+            <entry></entry>
+          </row>
+          <row>
+            <entry>ac_reload_[tableId]_[buttonId]_fue</entry>
+            <entry></entry>
+            <entry></entry>
+          </row>
+          <row>
+            <entry>ac_reload_[tableId]_ins_[buttonId]</entry>
+            <entry></entry>
+            <entry>reload event in insert mode. Reloads all data from database. Changed fields stay changed</entry>
+          </row>
+          <row>
+            <entry>ac_reload_[tableId]_ins_[buttonId]_fu</entry>
+            <entry></entry>
+            <entry></entry>
+          </row>
+          <row>
+            <entry>ac_reload_[tableId]_ins_[buttonId]_fue</entry>
             <entry></entry>
             <entry></entry>
           </row>
