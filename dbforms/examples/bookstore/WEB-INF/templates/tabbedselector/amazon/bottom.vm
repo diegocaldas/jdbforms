@@ -1,0 +1,20 @@
+    </TR>
+    </TABLE>
+    <TABLE CLASS="tabbedselector_amazon-BottomBar" WIDTH="100%" BORDER="0" CELLPADDING="0" CELLSPACING="0">
+    <TR valign="top">
+      <TD><IMG SRC="../pics/tabbedselector/amazon/bottomBar.gif" WIDTH="100%" HEIGHT="12"></TD>
+    </TR>
+    </TABLE>
+
+    <!-- content table -->
+    <TABLE WIDTH="100%" BORDER="0" CELLPADDING="0" CELLSPACING="0">
+    <TR>
+      <TD>
+        ${content}
+      </TD>
+    </TR>
+    </TABLE>
+
+  </TD>
+</TR>
+</TABLE>

@@ -1,0 +1,60 @@
+#if ($titleType == "image")
+    #set( $templateTitle = "<img class='window_pow2-Title' src='${title}'>" )    
+#else
+    #set( $templateTitle = "<span class='window_pow2-Title'>${title}</span>" )   
+#end
+
+
+#if (!$color || $color == "")
+  <TABLE WIDTH=${width}" BORDER="0" CELLPADDING="0" CELLSPACING="0">
+    <TR>
+      <TD class="window_pow2-TopL"></TD>
+      <TD class="window_pow2-Top">${templateTitle}</TD>
+      <TD class="window_pow2-TopR"></TD>
+    </TR>
+    <TR>
+      <TD class="window_pow2-Left"></TD>
+      <TD>
+       <div class="window_pow2-Content">
+         $!{windowContent}
+       </div>
+      </TD>
+      <TD class="window_pow2-Right"></TD>
+    </TR>
+    <TR>
+      <TD class="window_pow2-BotLeft"></TD>
+      <TD class="window_pow2-Bot"></TD>
+      <TD class="window_pow2-BotRight"></TD>
+    </TR>
+  </TABLE>
+
+#else
+  <table width="${width}" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td>
+      <!-- window header -->
+      <table width="100%" border="0" cellpadding="0" cellspacing="0">
+        <TR>
+          <TD class="window_pow2-TopL"></TD>
+          <TD class="window_pow2-Top">${templateTitle}</TD>
+          <TD class="window_pow2-TopR"></TD>
+        </TR>
+      </table>
+
+      <!-- window content -->
+      <table class="window_pow2-Content" bgcolor="${color}" width="100%" border="0" cellpadding="0" cellspacing="0">
+      <tr>
+        <td>
+          <div class="window_pow2-Content">
+            $!{windowContent}
+          </div>
+        </td>
+      </tr>
+      </table>
+      <!-- window conten end -->
+
+    </td>
+  </tr>
+  </table>
+#end
+

@@ -59,6 +59,23 @@
     <servlet-name>file</servlet-name>
     <servlet-class>org.dbforms.servlets.FileServlet</servlet-class>
   </servlet>
+  <!-- ===================================================================== -->
+  <!--  Pow2WebGUI configuration servlet.                                    -->
+  <!-- ===================================================================== -->
+  <servlet>
+    <servlet-name>webGui-init</servlet-name>
+    <servlet-class>com.pow2.webgui.resources.WebGuiInit</servlet-class>
+    <init-param>
+      <param-name>webGui.prototypes.properties</param-name>
+      <param-value>/WEB-INF/Pow2WebGUI-prototypes.properties</param-value>
+    </init-param>
+    <init-param>
+      <param-name>webGui.velocity.properties</param-name>
+      <param-value>/WEB-INF/velocity.properties</param-value>
+    </init-param>
+    <load-on-startup>3</load-on-startup>
+  </servlet>
+  
   <!--====== Servlett mapping ===========-->
   <servlet-mapping>
     <servlet-name>control</servlet-name>

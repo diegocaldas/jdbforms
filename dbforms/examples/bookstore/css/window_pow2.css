@@ -1,0 +1,96 @@
+TABLE.window_pow2
+{
+  font-size: 10px;
+  border:    0px;
+}
+
+
+TABLE.window_pow2-Content
+{
+  font-size:  12px;
+  border:     1px solid #708090;
+  position:   relative;
+  top:        -1px;
+}
+
+
+TD.window_pow2-TopL
+{
+  BACKGROUND: url(../pics/window/pow2/wTopL.gif) no-repeat;
+  width:  6px;
+  height: 22px;
+}
+
+
+TD.window_pow2-Top
+{
+  BACKGROUND: url(../pics/window/pow2/wT.gif) repeat-x;
+  height: 22px;
+}
+
+TD.window_pow2-TopR
+{
+  BACKGROUND: url(../pics/window/pow2/wTopR.gif) no-repeat;
+  width:  6px;
+  height: 22px;
+}
+
+TD.window_pow2-Left
+{
+  BACKGROUND: url(../pics/window/pow2/wL.gif) repeat-y;
+  width: 6px;
+}
+
+TD.window_pow2-Right
+{
+  BACKGROUND: url(../pics/window/pow2/wR.gif) repeat-y;
+  width: 6px;
+}
+
+IMG.window_pow2-Title
+{
+  position: relative;
+  left:     2px;
+  top:      1px;
+}
+
+SPAN.window_pow2-Title
+{
+  position:       relative;
+  left:           4px;
+  top:            0px;
+  font-size:      12px;
+  font-weight:    bold;
+  text-align:     right;
+  letter-spacing: 5px;
+  color:          #f0f0f0;
+}
+
+TD.window_pow2-BotLeft
+{
+  BACKGROUND: url(../pics/window/pow2/wBotL.gif) no-repeat;
+  width:      6px;
+  height:     9px;
+}
+
+TD.window_pow2-Bot
+{
+  background: url(../pics/window/pow2/wBot.gif)  repeat-x;
+  height:     9px;
+}
+
+TD.window_pow2-BotRight
+{
+  background: url(../pics/window/pow2/wBotR.gif) no-repeat;
+  width:      6px;
+  height:     9px;
+}
+
+
+DIV.window_pow2-Content
+{
+  position:   relative;
+  left:       0px;
+  top:        4px;
+  margin:     5px 5px 5px 5px;
+}

@@ -1,0 +1,92 @@
+TABLE.lister_amazon
+{
+  font-size: 12px;
+  border:    0px;
+}
+
+
+TABLE.lister_amazon-Content
+{
+  font-size:  12px;
+  border:     1px solid #708090
+}
+
+
+P.lister_amazon-ItemDesc
+{
+  font-size:      12px;
+  font-weight:    600;
+  color:          #708090;
+  letter-spacing: 2px;
+}
+
+
+UL.lister_amazon-List
+{
+  list-style-position:  outside;
+   margin: -15px 10px 10px 20px;
+}
+
+
+
+
+TD.lister_amazon-Head1
+{
+  position:   relative;
+  top:        1px;
+
+  BACKGROUND: url(../pics/lister/amazon/lister1.gif) no-repeat;
+  height:     21px;
+  width:      8px;
+}
+
+
+TD.lister_amazon-Head2
+{
+  position:   relative;
+  top:        1px;
+
+  BACKGROUND: url(../pics/lister/amazon/lister2.gif) repeat-x;
+  height:     21px;
+}
+
+
+TD.lister_amazon-Head3
+{
+  position:   relative;
+  top:        1px;
+
+  BACKGROUND: url(../pics/lister/amazon/lister3.gif) no-repeat;
+  height:     21px;
+  width:      8px;
+}
+
+
+
+
+SPAN.lister_amazon-Title
+{
+  position:       relative;
+  left:           0px;
+  top:            0px;
+  font-size:      12px;
+  letter-spacing: 1px;
+  color:          #000000;
+}
+
+
+IMG.lister_amazon-Title
+{
+  position:       relative;
+  left:           0px;
+  top:            3px;
+}
+
+
+DIV.lister_amazon-Content
+{
+  position:   relative;
+  left:       0px;
+  top:        4px;
+  margin:     5px 5px 5px 5px;
+}

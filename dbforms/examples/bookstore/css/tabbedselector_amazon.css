@@ -1,0 +1,103 @@
+TABLE.tabbedselector_amazon
+{
+  font-size: 12px;
+  border:    0px;
+}
+
+
+TABLE.tabbedselector_amazon-BottomBar
+{
+  position:  relative;
+  font-size: 12px;
+  border:    0px;
+  z-index:   1;
+}
+
+
+
+TD.tabbedselector_amazon-SelUp1
+{
+  position:   relative;
+  top:        0px;
+
+  BACKGROUND: url(../pics/tabbedselector/amazon/selUp1.gif) no-repeat;
+  height:     26px;
+  width:      9px;
+}
+
+
+TD.tabbedselector_amazon-SelUp2
+{
+  position:   relative;
+  top:        0px;
+
+  BACKGROUND: url(../pics/tabbedselector/amazon/selUp2.gif) repeat-x;
+  height:     26px;
+}
+
+
+TD.tabbedselector_amazon-SelUp3
+{
+  position:   relative;
+  top:        0px;
+
+  BACKGROUND: url(../pics/tabbedselector/amazon/selUp3.gif) no-repeat;
+  height:     26px;
+  width:      9px;
+}
+
+
+
+
+TD.tabbedselector_amazon-SelDwn1
+{
+  position:   relative;
+  top:        2px;
+
+  BACKGROUND: url(../pics/tabbedselector/amazon/selDwn1.gif) no-repeat;
+  height:     26px;
+  width:      9px;
+}
+
+
+TD.tabbedselector_amazon-SelDwn2
+{
+  position:   relative;
+  top:        2px;
+
+  BACKGROUND: url(../pics/tabbedselector/amazon/selDwn2.gif) repeat-x;
+  height:     26px;
+}
+
+
+TD.tabbedselector_amazon-SelDwn3
+{
+  position:   relative;
+  top:        2px;
+
+  BACKGROUND: url(../pics/tabbedselector/amazon/selDwn3.gif) no-repeat;
+  height:     26px;
+  width:      9px;
+}
+
+
+
+
+P.tabbedselector_amazon-SelTitle
+{
+  position:       relative;
+  left:           0px;
+  top:            4px;
+  font-size:      12px;
+  letter-spacing: 1px;
+  color:          #000000;
+}
+
+
+
+SPAN.tabbedselector_amazon-SelTitle
+{
+  position:       relative;
+  left:           0px;
+  top:            6px;
+}

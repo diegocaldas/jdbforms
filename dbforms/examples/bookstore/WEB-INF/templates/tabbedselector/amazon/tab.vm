@@ -1,0 +1,33 @@
+## titleType can be "text" or "image";
+
+#if ($titleType == "text")
+  #set( $templateTitle = "<P class='tabbedselector_amazon-SelTitle'><a href='${followUp}'>${title}</a></P>" )
+
+#elseif ($titleType == "image")
+
+  #if ($tabType == "up")
+    #set ($title = $titleImage1)
+  #else
+    #set ($title = $titleImage2)
+  #end
+
+  #set( $templateTitle = "<SPAN class='tabbedselector_amazon-SelTitle'><a href='${followUp}'><img src='${title}' border='0'></a><SPAN>" )
+
+#end
+
+#if ($tabType == "up")
+
+      <!-- selected tab -->
+      <TD class="tabbedselector_amazon-SelUp1"></TD>
+      <TD class="tabbedselector_amazon-SelUp2" align="center">
+	    $templateTitle
+      </TD>
+      <TD class="tabbedselector_amazon-SelUp3"></TD>
+#else
+      <!-- unselected tab -->
+      <TD class="tabbedselector_amazon-SelDwn1"></TD>
+      <TD class="tabbedselector_amazon-SelDwn2" align="center">
+        $templateTitle
+      </TD>
+      <TD class="tabbedselector_amazon-SelDwn3"></TD>
+#end
