@@ -36,12 +36,12 @@ To have better control of the fields written to the datebase we changed the inte
 preUpdate/preInsert/preDelete events to
          public int preXXXXXX(HttpServletRequest request,  Table table, FieldValues fieldValues,
 							  DbFormsConfig config, Connection con) throws ValidationException
-No you have full control over the fields written to the datbase, you can remove, change and add fields.
+Now you have full control over the fields written to the datbase, you can remove, change and add fields.
 
 ATTENTION: You must change the interfaces in your old interceptor code. Changing the code should'nt be necessary because the 
            interface of the FieldValues class is nearly the same as the old used hashtable.
 
-2-1) Changed filter value interface
+2-2) Changed filter value interface
 -----------------------------------
 Changed filters to use the resultset setter methods. So string and numeric value handling is done automatically.
 You must change your filter values for string to not use the ''! This is done automatically.
@@ -55,13 +55,13 @@ So
 
 3-0) Code cleanup
 ----------------------
-A big code cleanup has been done do change the navigation system and to remove duplicated code inside the tag libraries.
-This cleanup should not change any interface, but a lot of classes are touched. So please report all irregular changes
+A big code cleanup has been done to change the navigation system and to remove duplicated code inside the tag libraries.
+This cleanup should not change any interface, but a lot of classes have been touched. So please report all irregular changes
 to the list!
 
 3-1) New navigation system
 --------------------------
-An new event system has been built that DOES NOT re-execute the search query every time the client requests a subset of the hits (as the original did). 
+A new event system has been built that DOES NOT re-execute the search query every time the client requests a subset of the hits (as the original did). 
 Also, with this system it is possible to use navigation even with free form select as navigation has been made independent of filtering.
 See the UsersGuide and bookstore example for details, and how to configure it in dbforms-config.xml (the original system is the default).
 
