@@ -659,8 +659,7 @@ public class FieldValue implements Cloneable
         {
             for (int i = 0; i < fv.length; i++)
             {
-                fillPreparedStatement(fv[i], ps, curCol);
-                curCol++;
+                curCol = fillPreparedStatement(fv[i], ps, curCol);
             }
         }
 
@@ -789,18 +788,14 @@ public class FieldValue implements Cloneable
             for (int i = 0; i < fv.length; i++)
             {
                 // populate a "fi OpA(i) fi*"
-                logCat.info("setting col " + curCol);
-                fillPreparedStatement(fv[i], ps, curCol);
-                curCol++;
+                curCol = fillPreparedStatement(fv[i], ps, curCol);
 
                 // populate the "f(i-1) OpB(i-1) f(i-1)* OR f(i-2) OpB(i-2) f(i-2)* OR ... OR f1 OpB f1*"
                 if (i > 0)
                 {
                     for (int j = i - 1; j >= 0; j--)
                     {
-                        logCat.info("setting col " + curCol);
-                        fillPreparedStatement(fv[j], ps, curCol);
-                        curCol++;
+                        curCol = fillPreparedStatement(fv[j], ps, curCol);
                     }
                 }
             }
@@ -832,16 +827,18 @@ public class FieldValue implements Cloneable
      *                PreparedStatement xxx value
      * @exception  SQLException if any error occurs
      */
-    private static void fillPreparedStatement(FieldValue        cur,
+    private static int fillPreparedStatement(FieldValue        cur,
                                               PreparedStatement ps,
                                               int               curCol)
       throws SQLException
     {
         Field  curField = cur.getField();
         String valueStr = cur.getFieldValue();
-
-        logCat.info("setting " + cur.getField().getName()
-                    + " to value " + valueStr + " of type " + curField.getType());
+		
+        logCat.info("setting col " + curCol + 
+                    " with name "  + cur.getField().getName()
+                    + " to value " + valueStr + " of type " + curField.getType()
+                    + " operator " + cur.getOperator()) ;
 
         // 20020703-HKK: Extending search algorithm with WEAK_START, WEAK_END, WEAK_START_END
         //               results in like '%search', 'search%', '%search%'
@@ -849,17 +846,14 @@ public class FieldValue implements Cloneable
         {
             case FieldValue.SEARCH_ALGO_WEAK_START:
                 valueStr = '%' + valueStr;
-
                 break;
 
             case FieldValue.SEARCH_ALGO_WEAK_END:
                 valueStr = valueStr + '%';
-
                 break;
 
             case FieldValue.SEARCH_ALGO_WEAK_START_END:
                 valueStr = '%' + valueStr + '%';
-
                 break;
         }
 
@@ -873,7 +867,9 @@ public class FieldValue implements Cloneable
 
             default:
                 SqlUtil.fillPreparedStatement(ps, curCol, valueStr, curField.getType());
+        	    curCol++;
         }
+        return curCol;
     }
 
 

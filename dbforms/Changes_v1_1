@@ -1,3 +1,7 @@
+2003-01-27
+(Henner.Kollmann@gmx.de)
+	FieldValues.java:
+	   corrected bug with navigation and NOTISNULL
 2003-01-24
 (Henner.Kollmann@gmx.de)
 	taglib_docu.xml:
