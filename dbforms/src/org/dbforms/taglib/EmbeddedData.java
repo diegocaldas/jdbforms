@@ -22,10 +22,11 @@
  */
 
 package org.dbforms.taglib;
-
 import org.dbforms.*;
 import org.dbforms.util.DbConnection;
 import org.dbforms.util.SqlUtil;
+import org.dbforms.util.PrintfFormat;
+import org.dbforms.util.KeyValuePair;
 import java.io.*;
 import java.util.*;
 import java.sql.*;
@@ -58,6 +59,8 @@ public abstract class EmbeddedData extends TagSupport
     /** DOCUMENT ME! */
     protected java.lang.String format;
 
+    /** instance of helper class to create formatted output: **/
+    protected PrintfFormat printfFormat;
 
     /**
     * DOCUMENT ME!
@@ -80,35 +83,88 @@ public abstract class EmbeddedData extends TagSupport
         return format;
     }
 
-    /** DOCUMENT ME! */
-    protected ArrayList formatted;
-
 
     /**
-     *  add until this point for formating display fields.
+     * formatEmbeddedResultRows() formats a result set accornding to a eventually given format string.
+     * If no format string is given, the output format is a comma separated list of values.
+     * This method is called by subclasses TableData and QueryData
+     *
+     * @param rsv result set vector to be formatted
+     *
+     * @return a vector of key-value pairs, the values eventually formatted according to a given format string 
      */
-    public void format()
+    protected Vector formatEmbeddedResultRows(org.dbforms.util.ResultSetVector rsv)
     {
-        formatted = new ArrayList();
+        Vector result = new Vector();
+        boolean resultSuccessFullyFormated = false;
 
-        String format = getFormat();
-        int c = 0;
-
-        for (int i = 0; i >= 0;)
+        if (printfFormat != null)
         {
-            c = format.indexOf("s", i + 1);
-
-            if (c == -1)
+            try
             {
-                formatted.add(format.substring(i + 1, format.length()));
-            }
-            else
-            {
-                formatted.add(" " + format.substring(i + 1, c));
-            }
+                for (int i = 0; i < rsv.size(); i++)
+                {
+                    String[] currentRow = (String[]) rsv.elementAt(i);
+                    String htKey = currentRow[0];
+                    rsv.setPointer(i);
 
-            i = c;
+                    Object[] objs = rsv.getCurrentRowAsObjects();
+
+                    Object[] objs2 = new Object[objs.length - 1];
+
+                    for (int j = 0; j < objs2.length; j++)
+                    {
+                        if ((objs[j] instanceof String) || (objs[j] instanceof Byte) || (objs[j] instanceof java.lang.Integer) || (objs[j] instanceof Short) || (objs[j] instanceof Float) || (objs[j] instanceof Long) || (objs[j] instanceof Double))
+                        {
+                            objs2[j] = objs[(j + 1)];
+                        }
+                        else
+                        {
+                            objs2[j] = currentRow[j + 1]; // use String representation instead
+                        }
+                    }
+
+                    String htValue = printfFormat.sprintf(objs2);
+
+                    result.addElement(new KeyValuePair(htKey, htValue));
+                }
+
+                resultSuccessFullyFormated = true;
+            }
+            catch (IllegalArgumentException ex)
+            {
+                logCat.error("Could not format result using format '" + format + "', error message is " + ex.getMessage());
+                logCat.error("Using fallback method of comma separated list instead");
+                result = new Vector(); 
+            }
         }
+
+        if (!resultSuccessFullyFormated) // no format given or formatting failed
+        {
+            for (int i = 0; i < rsv.size(); i++)
+            {
+                String[] currentRow = (String[]) rsv.elementAt(i);
+
+                String htKey = currentRow[0];
+                StringBuffer htValueBuf = new StringBuffer();
+
+                for (int j = 1; j < currentRow.length; j++)
+                {
+                    htValueBuf.append(currentRow[j]);
+
+                    if (j < (currentRow.length - 1))
+                    {
+                        htValueBuf.append(", ");
+                    }
+                }
+
+                String htValue = htValueBuf.toString(); //
+
+                result.addElement(new KeyValuePair(htKey, htValue));
+            }
+        }
+
+        return result;
     }
 
 
@@ -134,6 +190,32 @@ public abstract class EmbeddedData extends TagSupport
          *  (whereClause with different parameters)
          *
          ********************************************************************************/
+        printfFormat = null;
+
+        if (format != null)
+        {
+            if (format.indexOf('%') < 0) // try cheap compatibility mode for old applications without '%' within patterns
+            {
+                StringBuffer newFormat = new StringBuffer();
+
+                for (int j = 0; j < format.length(); j++)
+                {
+                    if (format.charAt(j) == 's')
+                    {
+                        newFormat.append("%s");
+                    }
+                    else
+                    {
+                        newFormat.append(format.charAt(j));
+                    }
+                }
+
+                format = newFormat.toString(); // was 's bla bla s -- s' is now '%s blabla %s -- %s'
+            }
+
+            printfFormat = new PrintfFormat(format); // create instance of PrintfFormat class 
+        }
+
         Vector d = null;
 
         // If disableCache not activated, was the data generated by another instance on the same page yet?
@@ -150,7 +232,7 @@ public abstract class EmbeddedData extends TagSupport
             // take Config-Object from application context - this object should have been
             // initalized by Config-Servlet on Webapp/server-startup!
             DbFormsConfig config = (DbFormsConfig) pageContext.getServletContext().getAttribute(DbFormsConfig.CONFIG);
-            Connection    con    = SqlUtil.getConnection(config, dbConnectionName);
+            Connection con = SqlUtil.getConnection(config, dbConnectionName);
 
             if (con == null)
             {

@@ -100,50 +100,6 @@ public class QueryData extends EmbeddedData
         ResultSetVector rsv = new ResultSetVector(ps.executeQuery());
         ps.close(); // #JP Jun 27, 2001
 
-        Vector result = new Vector();
-
-        /*
-        *(2)Also add the following to be able to specify a format when concatenating several display fields 
-        */
-        if (format != null)
-        {
-            format();
-        } //add until this point for formating display fields.
-
-        // transforming the resultsetVector into a hashtable
-        for (int i = 0; i < rsv.size(); i++)
-        {
-            String[] currentRow = (String[]) rsv.elementAt(i);
-
-            String htKey = currentRow[0];
-            StringBuffer htValueBuf = new StringBuffer();
-            int x = currentRow.length;
-
-            for (int j = 1; j < x; j++)
-            {
-                htValueBuf.append(currentRow[j]);
-
-                /*
-                *(3) modify the original to the following to be able to specify a format when concatenating several display fields
-                */
-                if ((format != null) && (j < currentRow.length))
-                {
-                    htValueBuf.append(String.valueOf(formatted.get(j - 1)));
-                }
-                else
-                {
-                    if (j < (currentRow.length - 1))
-                    {
-                        htValueBuf.append(", ");
-                    }
-                } //(3) modify until this point for formating display fields.
-            }
-
-            result.addElement(new KeyValuePair(htKey, htValueBuf.toString()));
-
-            // add current row, now well formatted, to result
-        }
-
-        return result;
+        return formatEmbeddedResultRows(rsv);
     }
 }
