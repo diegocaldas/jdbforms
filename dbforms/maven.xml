@@ -142,6 +142,7 @@
   <goal name="dbforms:update-project" description="gets clean update from CVS">
     <j:set var="maven.scm.cvs.update.flags" value="-PdC" />
     <attainGoal name="scm:update-project" />	
+    <ant:ant antfile="build.xml" target="forcedos" />
   </goal>
   	
   <goal name="dbforms:site:deploy" description="deploys the site to the web">
