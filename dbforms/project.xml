@@ -299,6 +299,14 @@
     </dependency>          
 
     <dependency>
+      <id>commons-fileupload</id>
+      <version>1.0</version>
+      <properties>
+         <war.bundle>true</war.bundle>
+       </properties>
+    </dependency>
+
+    <dependency>
       <id>xercesImpl</id>      
       <groupId>xerces</groupId>
       <version>2.6.0</version>
@@ -392,14 +400,6 @@
          <war.bundle>true</war.bundle>
        </properties>
     </dependency>
-
-    <dependency>
-      <id>cos</id>
-      <jar>cos.jar</jar>
-      <properties>
-	      <war.bundle>true</war.bundle>
-      </properties>
-    </dependency>        
 
     
     <dependency>

@@ -25,17 +25,16 @@ import java.io.InputStream;
 import java.io.IOException;
 import java.util.Hashtable;
 import java.util.Vector;
+import java.util.List;
+import java.util.Iterator;
 import java.util.Enumeration;
+
 import javax.servlet.http.HttpServletRequest;
 
-import com.oreilly.servlet.multipart.FilePart;
-import com.oreilly.servlet.multipart.MultipartParser;
-import com.oreilly.servlet.multipart.ParamPart;
-import com.oreilly.servlet.multipart.Part;
+import org.apache.commons.fileupload.DiskFileUpload;
+import org.apache.commons.fileupload.FileItem;
 
 import org.apache.log4j.Category;
-
-
 
 /**
  * A utility class to handle <code>multipart/form-data</code> requests,
@@ -71,15 +70,12 @@ import org.apache.log4j.Category;
  * @author Geoff Soutter
  * @author Joe Peer - _changed_ it for use in DbForms (i apologize)
  */
-public class MultipartRequest
-{
-   private static Category          logCat                = Category.getInstance(MultipartRequest.class
-         .getName()); // logging category for this class
+public class MultipartRequest {
+   private static Category logCat = Category.getInstance(MultipartRequest.class.getName()); // logging category for this class
 
    //private File dir;
-   private Hashtable       parameters = new Hashtable(); // name - Vector of values
-   private Hashtable       files  = new Hashtable(); // name - UploadedFile
-   private MultipartParser parser;
+   private Hashtable parameters = new Hashtable();    // name - Vector of values
+   private Hashtable files = new Hashtable();         // name - UploadedFile
 
    /**
     * Constructs a new MultipartRequest to handle the specified request,
@@ -94,86 +90,60 @@ public class MultipartRequest
     * @exception IOException if the uploaded content is larger than
     * <tt>maxPostSize</tt> or there's a problem reading or parsing the request.
     */
-   public MultipartRequest(HttpServletRequest request, int maxPostSize)
-      throws IOException
-   {
+   public MultipartRequest(HttpServletRequest request, int maxPostSize) throws IOException {
       // Sanity check values
-      if (request == null)
-      {
+      if (request == null) {
          throw new IllegalArgumentException("request cannot be null");
       }
-
-      // Parse the incoming multipart, storing files in the dir provided,
-      // and populate the meta objects which describe what we found
-      logCat.info("maxpostsize=" + maxPostSize);
-      parser = new MultipartParser(request, maxPostSize);
-
-      Part part;
-
-      while ((part = parser.readNextPart()) != null)
-      {
-         String name = part.getName();
-         logCat.info("partname=" + name);
-
-         if (part.isParam())
-         {
-            // It's a parameter part, add it to the vector of values
-            ParamPart paramPart = (ParamPart) part;
-            String    value = paramPart.getStringValue();
-
-            // plain parameters get allways into parameters structure
-            Vector existingValues = (Vector) parameters.get(name);
-
-            if (existingValues == null)
-            {
-               existingValues = new Vector();
-               parameters.put(name, existingValues);
-            }
-
-            existingValues.addElement(value);
-         }
-         else if (part.isFile())
-         {
-            // It's a file part
-            FilePart filePart = (FilePart) part;
-            String   fileName = filePart.getFileName();
-
-            if (fileName != null)
-            {
-               // The part actually contained a file
-               // #changes by joe peer:
-               // we must delay storing the file-inputstream (into database, filesystem or whatever)
-               // until we know exactly what should happen with it
-               FileHolder fileHolder = new FileHolder(fileName,
-                     filePart.getContentType(), filePart.getInputStream(),
-                     true, maxPostSize);
-               files.put(name, fileHolder);
-               logCat.info("buffered and now added as " + name
-                  + " the following fileHolder:" + fileHolder.getFileName());
-
-               //      InputStream is = filePart.getInputStream();
-               //      while(is.read() != -1) logCat.info("b");
-               //      logCat.info("fin_");
-               // #changes by joe peer:
-               // if a file parameter is not null it gets into the parameters structures as well
-               // this is important to provide a simple access to request (no distinction between files and plain params)
+      //    Create a new file upload handler
+      DiskFileUpload upload = new DiskFileUpload();
+      //    Set upload parameters
+      upload.setSizeMax(maxPostSize);
+      upload.setSizeThreshold(1000000);
+      String tmpDir = System.getProperty("java.io.tmpdir");
+      upload.setRepositoryPath(tmpDir);
+      //    Parse the request
+      try {
+         List items = upload.parseRequest(request);
+         Iterator iter = items.iterator();
+         while (iter.hasNext()) {
+            FileItem item = (FileItem) iter.next();
+            String name = item.getFieldName();
+            if (item.isFormField()) {
+               String value = item.getString();
+               // plain parameters get allways into parameters structure
                Vector existingValues = (Vector) parameters.get(name);
-
-               if (existingValues == null)
-               {
+               if (existingValues == null) {
                   existingValues = new Vector();
                   parameters.put(name, existingValues);
                }
+               existingValues.addElement(value);
 
-               existingValues.addElement(fileName);
+            } else {
+               String fileName = item.getName();
+               String contentType = item.getContentType();
+               if (fileName != null) {
+                  // The part actually contained a file
+                  // #changes by joe peer:
+                  // we must delay storing the file-inputstream (into database, filesystem or whatever)
+                  // until we know exactly what should happen with it
+                  FileHolder fileHolder = new FileHolder(fileName, contentType, item.getInputStream(), true, maxPostSize);
+                  files.put(name, fileHolder);
+                  logCat.info("buffered and now added as " + name + " the following fileHolder:" + fileHolder.getFileName());
+                  // #changes by joe peer:
+                  // if a file parameter is not null it gets into the parameters structures as well
+                  // this is important to provide a simple access to request (no distinction between files and plain params)
+                  Vector existingValues = (Vector) parameters.get(name);
+                  if (existingValues == null) {
+                     existingValues = new Vector();
+                     parameters.put(name, existingValues);
+                  }
+                  existingValues.addElement(fileName);
+               }
             }
-
-            /* else {
-            // The field did not contain a file
-            files.put(name, new UploadedFile(null, null, null));
-            }*/
-            logCat.info("loop end");
          }
+      } catch (Exception e) {
+         logCat.error("MultipartRequest", e);
       }
    }
 
@@ -183,11 +153,9 @@ public class MultipartRequest
     *
     * @return the names of all the parameters as an Enumeration of Strings.
     */
-   public Enumeration getParameterNames()
-   {
+   public Enumeration getParameterNames() {
       return parameters.keys();
    }
-
 
    /**
     * Returns the names of all the uploaded files as an Enumeration of
@@ -197,11 +165,9 @@ public class MultipartRequest
     *
     * @return the names of all the uploaded files as an Enumeration of Strings.
     */
-   public Enumeration getFileNames()
-   {
+   public Enumeration getFileNames() {
       return files.keys();
    }
-
 
    /**
     * Returns the value of the named parameter as a String, or null if
@@ -214,27 +180,21 @@ public class MultipartRequest
     * @param name the parameter name.
     * @return the parameter value.
     */
-   public String getParameter(String name)
-   {
-      try
-      {
+   public String getParameter(String name) {
+      try {
          Vector values = (Vector) parameters.get(name);
 
-         if ((values == null) || (values.size() == 0))
-         {
+         if ((values == null) || (values.size() == 0)) {
             return null;
          }
 
          String value = (String) values.elementAt(0);
 
          return value;
-      }
-      catch (Exception e)
-      {
+      } catch (Exception e) {
          return null;
       }
    }
-
 
    /**
     * Returns the values of the named parameter as a String array, or null if
@@ -246,14 +206,11 @@ public class MultipartRequest
     * @param name the parameter name.
     * @return the parameter values.
     */
-   public String[] getParameterValues(String name)
-   {
-      try
-      {
+   public String[] getParameterValues(String name) {
+      try {
          Vector values = (Vector) parameters.get(name);
 
-         if ((values == null) || (values.size() == 0))
-         {
+         if ((values == null) || (values.size() == 0)) {
             return null;
          }
 
@@ -261,13 +218,10 @@ public class MultipartRequest
          values.copyInto(valuesArray);
 
          return valuesArray;
-      }
-      catch (Exception e)
-      {
+      } catch (Exception e) {
          return null;
       }
    }
-
 
    /**
     * Returns the filesystem name of the specified file, or null if the
@@ -278,22 +232,16 @@ public class MultipartRequest
     * @param name the file name.
     * @return the filesystem name of the file.
     */
-   public String getFilesystemName(String name)
-   {
-      try
-      {
+   public String getFilesystemName(String name) {
+      try {
          //#changed by joe peer
          //UploadedFile file = (UploadedFile)files.get(name);
-         FilePart filePart = (FilePart) files.get(name);
-
+         FileHolder filePart = (FileHolder) files.get(name);
          return filePart.getFileName(); // may be null
-      }
-      catch (Exception e)
-      {
+      } catch (Exception e) {
          return null;
       }
    }
-
 
    /**
     * Returns the content type of the specified file (as supplied by the
@@ -302,22 +250,16 @@ public class MultipartRequest
     * @param name the file name.
     * @return the content type of the file.
     */
-   public String getContentType(String name)
-   {
-      try
-      {
+   public String getContentType(String name) {
+      try {
          //#changed by joe peer
          //UploadedFile file = (UploadedFile)files.get(name);
-         FilePart filePart = (FilePart) files.get(name);
-
+         FileHolder filePart = (FileHolder) files.get(name);
          return filePart.getContentType(); // may be null
-      }
-      catch (Exception e)
-      {
+      } catch (Exception e) {
          return null;
       }
    }
-
 
    /**
     * Returns a InputStream object for the specified file saved on the server's
@@ -326,22 +268,16 @@ public class MultipartRequest
     * @param name the file name.
     * @return a InputStream object for the named file.
     */
-   public InputStream getFileInputStream(String name)
-   {
-      try
-      {
+   public InputStream getFileInputStream(String name) {
+      try {
          //#changed by joe peer
          //UploadedFile file = (UploadedFile)files.get(name);
-         FilePart filePart = (FilePart) files.get(name);
-
-         return filePart.getInputStream(); // may be null
-      }
-      catch (Exception e)
-      {
+         FileHolder filePart = (FileHolder) files.get(name);
+         return filePart.getInputStreamFromBuffer(); // may be null
+      } catch (Exception e) {
          return null;
       }
    }
-
 
    /**
     * Returns a FilePart object for the specified file
@@ -350,14 +286,10 @@ public class MultipartRequest
     * @param name the file name.
     * @return a FilePart object for the named file.
     */
-   public FileHolder getFileHolder(String name)
-   {
-      try
-      {
+   public FileHolder getFileHolder(String name) {
+      try {
          return (FileHolder) files.get(name);
-      }
-      catch (Exception e)
-      {
+      } catch (Exception e) {
          return null;
       }
    }
