@@ -1499,6 +1499,9 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
                navEvent = navEventFactory.createGotoEvent(table, request, config, whereClause, getTableList());
             } else {
                String myPosition = null;
+							 System.out.println("*** here we go again and mypos = "+myPosition);
+							 System.out.println("*** here we go again and firstPosition = "+firstPosition);
+							 System.out.println("*** here we go again and webEvent = "+webEvent);							 
                if ((webEvent != null) && 
                      ( 
                         // we have one of the update events...
@@ -1509,7 +1512,12 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
                         webEvent instanceof NavigationEvent  
                      )
                    ) {                  
-               	myPosition = firstPosition;
+										 
+										 // JPeer 03-21-2004: if maxRow is set to "*" (i.e. count==0),
+										 // then we do NOT want any other position than null.
+										 // this should fix the problem of insert operations
+										 // in endless forms
+										 myPosition = (count==0) ? null : firstPosition;
                }
                navEvent = navEventFactory.createGotoEvent(table, request, config, myPosition);
                
