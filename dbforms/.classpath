@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="var" path="TOMCAT_HOME/common/lib/servlet-api.jar"/>
+	<classpathentry kind="var" path="TOMCAT_HOME/common/lib/jasper-runtime.jar"/>
+	<classpathentry kind="var" path="TOMCAT_HOME/common/lib/jsp-api.jar"/>
+	<classpathentry kind="src" path="examples/bookstore/WEB-INF/src"/>
+	<classpathentry kind="src" path="tests/test"/>
+	<classpathentry kind="src" path="tests/test-cactus"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry output="work" kind="src" path="work"/>
+	<classpathentry kind="var" path="MAVEN_REPO/commons-digester/jars/commons-digester-1.5.jar"/>
+	<classpathentry kind="var" path="MAVEN_REPO/commons-logging/jars/commons-logging-1.0.3.jar"/>
+	<classpathentry kind="var" path="MAVEN_REPO/junit/jars/junit-3.8.1.jar"/>
+	<classpathentry kind="var" path="MAVEN_REPO/commons-validator/jars/commons-validator-1.0.2.jar"/>
+	<classpathentry kind="var" path="MAVEN_REPO/xalan/jars/xalan-2.5.1.jar"/>
+	<classpathentry kind="var" path="MAVEN_REPO/xerces/jars/xercesImpl-2.6.0.jar"/>
+	<classpathentry kind="var" path="MAVEN_REPO/xerces/jars/xmlParserAPIs-2.2.1.jar"/>
+	<classpathentry kind="var" path="MAVEN_REPO/cactus/jars/cactus-13-1.7dev20041109.jar"/>
+	<classpathentry kind="var" path="MAVEN_REPO/cewolf/jars/cewolf-0.10.a7.jar"/>
+	<classpathentry kind="var" path="MAVEN_REPO/maxq/jars/maxq-0.95dev.jar"/>
+	<classpathentry kind="var" path="MAVEN_REPO/commons-dbcp/jars/commons-dbcp-1.1.jar"/>
+	<classpathentry kind="var" path="MAVEN_REPO/commons-fileupload/jars/commons-fileupload-1.0.jar"/>
+	<classpathentry kind="var" path="MAVEN_REPO/poi/jars/poi-2.0-final-20040126.jar"/>
+	<classpathentry kind="var" path="MAVEN_REPO/jfreechart/jars/jfreechart-0.9.20.jar"/>
+	<classpathentry kind="var" path="MAVEN_REPO/jasperreports/jars/jasperreports-0.6.1.jar"/>
+	<classpathentry kind="var" path="MAVEN_REPO/commons-lang/jars/commons-lang-2.0.jar"/>
+	<classpathentry kind="var" path="MAVEN_REPO/log4j/jars/log4j-1.2.8.jar"/>
+	<classpathentry kind="var" path="MAVEN_REPO/httpunit/jars/httpunit-1.5.4.jar"/>
+	<classpathentry kind="var" path="MAVEN_REPO/commons-beanutils/jars/commons-beanutils-1.6.jar"/>
+	<classpathentry kind="var" path="MAVEN_REPO/commons-el/jars/commons-el-1.0.jar"/>
+	<classpathentry kind="output" path="examples/bookstore/WEB-INF/classes"/>
+</classpath>
