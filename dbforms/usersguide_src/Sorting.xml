@@ -361,6 +361,22 @@
                 <entry> Not is null</entry>
               </row>
               <row>
+                <entry>weak</entry>
+                <entry> like</entry>
+              </row>
+              <row>
+                <entry>weakStart</entry>
+                <entry> like,  % is added in front of value</entry>
+              </row>
+              <row>
+                <entry>weakEnd</entry>
+                <entry> like, % is appended to value</entry>
+              </row>
+              <row>
+                <entry>weakStartEnd</entry>
+                <entry> like, % is added in front of value and % is appended to value</entry>
+              </row>
+              <row>
                 <entry>sharpExtended</entry>
                 <entry morerows="7" valign="middle">In this mode the search value is parsed for special chars -- see list below. The default search operator is taken from the list above.</entry>
               </row>
@@ -385,31 +401,17 @@
               <row>
                 <entry>sharpNOTNULLExtended</entry>
               </row>
-            </tbody>
-          </tgroup>
-        </table>
-      </para>
-      <para>List of special characters that are parsed for:</para>
-      <para>
-        <table>
-          <title>special characters in searches</title>
-          <tgroup cols="2">
-            <tbody>
               <row>
-                <entry>weak</entry>
-                <entry> like</entry>
+                <entry>weakExtended</entry>
               </row>
               <row>
-                <entry>weakStart</entry>
-                <entry> like,  % is added in front of value</entry>
+                <entry>weakStartExtended</entry>
               </row>
               <row>
-                <entry>weakEnd</entry>
-                <entry> like, % is appended to value</entry>
+                <entry>weakEndExtended</entry>
               </row>
               <row>
-                <entry>weakStartEnd</entry>
-                <entry> like, % is added in front of value and % is appended to value</entry>
+                <entry>weakStartEndExtended</entry>
               </row>
             </tbody>
           </tgroup>
