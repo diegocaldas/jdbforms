@@ -1358,7 +1358,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
 				Vector errors = (Vector) request.getAttribute("errors");
 				if ((count != 0)
 					&& (webEvent != null)
-					&& webEvent.getType().equals(EventType.EVENT_DATABASE_INSERT)
+					&& EventType.EVENT_DATABASE_INSERT.equals(webEvent.getType())
 					&& (errors != null)
 					&& (errors.size() > 0)) {
 					// error in insert event, nothing to do!
