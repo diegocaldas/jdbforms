@@ -333,5 +333,75 @@ Happy coding!
        </zip>
     </target>
 
+    <!-- create dbforms-releasefiles, one zip file with dos/win lineends, one tgz file with *nix lineends: -->
+  <target name="createReleaseFiles" depends="createAllExamples,copy-devgui, build-doc"
+                    description="--> Create zip and tgz release files" >  
+          
+      <tstamp/>
+      <property name="dbforms.releaseName" value="${dbforms.version}_${DSTAMP}"/>
+      <property name="dbforms.releaseDir" value="${dist.dir}/dbforms${dbforms.releaseName}"/>
+      <property name="dbforms.zipfilename" value="${dist.dir}/dbforms${dbforms.releaseName}.zip"/>
+      <property name="dbforms.tarfilename" value="${dist.dir}/dbforms${dbforms.releaseName}.tar"/>
+      <property name="dbforms.tgzfilename" value="${dist.dir}/dbforms${dbforms.releaseName}.tgz"/>
+
+              <!-- temporary directory for release files: -->
+      <delete dir="${dbforms.releaseDir}"/>
+      <mkdir dir="${dbforms.releaseDir}"/>
+
+              <!-- copy all files needed to release directory -->
+      <copy todir="${dbforms.releaseDir}" >
+        <fileset dir="." includes="Changes_v1_0  Changes_v1_1  CommonMistakes  License"/>
+        <fileset dir="." includes="Readme  Readme_DevGui  Todo  build.xml ReleaseNotes_v1_1_3pr1.txt"/>
+        <fileset dir="." includes="doc/**/*.html,doc/**/*.png,doc/**/*.gif,doc/**/*.jpg,doc/**/*.txt,doc/**/*.pdf"/>
+        <fileset dir="." includes="dist/*.tld  dist/*.jar"/>
+        <fileset dir="." includes="etc/*.xml etc/*.xsl"/>
+        <fileset dir="." includes="examples/*.txt"/>
+        <fileset dir="." includes="src/org/**/*.java"/>
+        <fileset dir="." includes="temp/*.txt"/>
+        <fileset dir="." includes="xsl-stylesheets/*.xsl"/>
+        <fileset dir="." includes="misc/**/*.gif  misc/**/*.png  misc/**/*.js   misc/**/*.txt misc/*.css misc/**/*.html"/>
+     </copy>
+
+     <copy todir="${dbforms.releaseDir}/bin" >
+        <fileset dir="./dist/bin" includes="devgui.bat devgui.sh"/>
+     </copy>
+
+     <copy todir="${dbforms.releaseDir}/examples">
+          <fileset dir="./dist"     includes="*.war"/>
+     </copy>
+
+     <copy todir="${dbforms.releaseDir}/dist">
+          <fileset dir="./dist"     includes="*.tld,*.jar"/>
+     </copy>
+
+             <!-- modify all text files to have dos/win lineends -->
+     <property name="textfiles.patterns" value="**/*.html,**/*.xml,**/*.java,**/*.txt,**/*.xsl,**/*.bat,**/*.sh,Changes*,CommonMistakes,License,Todo" />
+
+     <echo message="modifying temporary files to contain dos/win lineends"/>
+     <fixcrlf srcDir="${dbforms.releaseDir}" eol="crlf" includes="${textfiles.patterns}" />
+
+             <!-- create zip release: -->
+     <delete file="${dbforms.zipfilename}"/>
+     <zip destfile="${dbforms.zipfilename}" >
+        <zipfileset dir="${dist.dir}"   includes="dbforms${dbforms.releaseName}/**"/>
+     </zip>
+
+             <!-- modify all text files to have unix lineends -->
+     <echo message="modifying temporary files to contain *nix/linux lineends"/>
+     <fixcrlf srcDir="${dbforms.releaseDir}" eol="lf"  includes="${textfiles.patterns}" />
+     
+             <!-- create tar release, make shell scripts executable: -->
+     <delete file="${dbforms.tarfilename}"/>
+     <tar destfile="${dbforms.tarfilename}" >
+        <tarfileset dir="${dist.dir}"   includes="dbforms${dbforms.releaseName}/**" 
+                                        excludes="dbforms${dbforms.releaseName}/**/*.sh" />
+        <tarfileset dir="${dist.dir}"   includes="dbforms${dbforms.releaseName}/**/*.sh" mode="755"/>
+     </tar>
+
+             <!-- compress tarfile using gzip, delete intermediate tar file: -->
+     <gzip zipfile="${dbforms.tgzfilename}" src="${dbforms.tarfilename}"/>
+     <delete file="${dbforms.tarfilename}" />
+
+    </target>
     
 </project>
