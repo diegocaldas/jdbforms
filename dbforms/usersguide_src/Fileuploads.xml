@@ -39,6 +39,22 @@
 </title>
       <para>Managing BLOB Fields using DbForms is a trivial task. First, you have to tell DbForms about BLOB-Fields in the xml-configuration file:
 </para>
+
+<para>NOTE: after version 2.2, interceptor based BLOB handling was introduced. The interceptor
+org.dbforms.event.BlobInterceptor is used to store the filename of an uploaded file in a
+specified column. In previous versions, the BLOB was stored as a serialized Java object in the
+database along with the file meta data. However, the disadvantage of this solution was the lack
+of long term storage (i.e. a change in the wrapper class would lead to ClassCastExceptions) and 
+the BLOB is not readable by other (non-DbForms) applications, because those apps can't de-serialize
+the java object.</para> 
+
+<para>To switch back to the old way of handling BLOBs, you can set the optional attribute "blobHandling" to "classic" in the table definition in you dbforms config file.</para>
+
+<para>More documentation on this issue will follow; until then this section is a bit outdated. meanwhile,
+please refer to the API doc for class org.dbforms.event.BlobInterceptor to see how to configure the
+BLOB interceptor.</para>
+    
+</para>
       <screen>
         <emphasis role="bold">&lt;dbforms-config&gt;</emphasis>
                 &lt;table name="pets"&gt; 
@@ -48,11 +64,7 @@
         <emphasis role="bold">fieldType ="blob"</emphasis> /&gt; 
                     &lt;field name="story" 
         <emphasis role="bold">fieldType ="blob"</emphasis> /&gt; 
-
-								&lt;interceptor className="org.dbforms.event.BlobInterceptor"&gt;<br>
-										&nbsp;&nbsp;&lt;param name="blob-column" value="file"/&gt;<br>
-										&nbsp;&nbsp;&lt;param name="name-column" value="filename"/&gt;<br>  
-								&lt;/interceptor&gt;<br>				
+		
 				&lt;/table&gt; 
             &lt;/dbforms-config&gt; 
     

@@ -34,7 +34,7 @@
 
 	</table>
 
-	<table name="pets">
+	<table name="pets" blobHandling="classic">
 		<field name="pet_id" fieldType="int" size="11" isKey="true" autoInc="true"/>
 		<field name="customer" fieldType="int" isKey="true"/>
 		<field name="name" fieldType="varchar" size="30"/>
