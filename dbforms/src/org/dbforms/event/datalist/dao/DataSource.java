@@ -333,7 +333,7 @@ public abstract class DataSource
    public ResultSetVector getLast(int count) throws SQLException
    {
       open();
-      return getResultSetVector(size() - 1, -count);
+      return getResultSetVector(size() - 1, -count + 1);
    }
 
 

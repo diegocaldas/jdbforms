@@ -73,6 +73,7 @@ public class DataSourceJDBC extends DataSource
    private FieldValue[]  filterConstraint;
    private FieldValue[]  orderConstraint;
    private DbFormsConfig config;
+   private boolean       fetchedAll = false;  
 
    /**
     * Creates a new DataSourceJDBC object.
@@ -155,7 +156,49 @@ public class DataSourceJDBC extends DataSource
       this.orderConstraint  = orderConstraint;
    }
 
+  private void closeConnection()
+  {
+		if (rs != null)
+		{
+			try
+			{
+				rs.close();
+			}
+			catch (SQLException e)
+			{
+				SqlUtil.logSqlException(e);
+			}
+			rs = null;
+		}
+/*
+		if (stmt != null)
+		{
+			try
+			{
+					stmt.close();
+			}
+			catch (SQLException e)
+			{
+				SqlUtil.logSqlException(e);
+			}
+			stmt = null;
+		}
+*/
+		if (ownCon)
+		{
+			try
+			{
+				con.close();
+			}
+			catch (SQLException e)
+			{
+				SqlUtil.logSqlException(e);
+			}
+			con = null;
+		}
 
+		ownCon = false;
+  }
    /**
     * Release all the resources holded by this datasource.
     * <br>
@@ -173,47 +216,7 @@ public class DataSourceJDBC extends DataSource
       {
          keys.clear();
       }
-
-      if (rs != null)
-      {
-         try
-         {
-            rs.close();
-         }
-         catch (SQLException e)
-         {
-				SqlUtil.logSqlException(e);
-         }
-         rs = null;
-      }
-/*
-      if (stmt != null)
-      {
-         try
-         {
-               stmt.close();
-         }
-         catch (SQLException e)
-         {
-				SqlUtil.logSqlException(e);
-         }
-         stmt = null;
-      }
-*/
-      if (ownCon)
-      {
-         try
-         {
-            con.close();
-         }
-         catch (SQLException e)
-         {
-				SqlUtil.logSqlException(e);
-         }
-         con = null;
-      }
-
-      ownCon = false;
+      closeConnection();
    }
 
 
@@ -224,7 +227,7 @@ public class DataSourceJDBC extends DataSource
     */
    protected void open() throws SQLException
    {
-      if (rs == null)
+      if (!fetchedAll && (rs == null))
       {
          ownCon = true;
          con    = SqlUtil.getConnection(config, dbConnectionName);
@@ -255,6 +258,7 @@ public class DataSourceJDBC extends DataSource
 
          ResultSetMetaData rsmd = rs.getMetaData();
          colCount = rsmd.getColumnCount();
+         fetchedAll = false;
       }
    }
 
@@ -331,7 +335,7 @@ public class DataSourceJDBC extends DataSource
             }
          }
 
-         if (result == 0)
+         if ((result == 0) && !fetchedAll)
          {
             while (rs.next())
             {
@@ -345,6 +349,11 @@ public class DataSourceJDBC extends DataSource
                   break;
                }
             }
+			if (rs.getRow() == 0) 
+			{
+				fetchedAll = true;
+				closeConnection();
+			}
          }
       }
 
@@ -373,16 +382,24 @@ public class DataSourceJDBC extends DataSource
          }
          else
          {
-            while (rs.next())
+            if (!fetchedAll) 
             {
-               result = getCurrentRowAsObject();
-               data.add(result);
-               keys.add(getTable().getKeyPositionString(getCurrentRow()));
-
-               if (i < data.size())
-               {
-                  break;
-               }
+	            while (rs.next())
+	            {
+	               result = getCurrentRowAsObject();
+	               data.add(result);
+	               keys.add(getTable().getKeyPositionString(getCurrentRow()));
+	
+	               if (i < data.size())
+	               {
+	                  break;
+	               }
+	            }
+	            if (rs.getRow() == 0) 
+	            {
+	               fetchedAll = true;
+	 			   closeConnection();
+	            }
             }
          }
       }
@@ -404,20 +421,24 @@ public class DataSourceJDBC extends DataSource
       // to next will start at the beginning of the resultset.
       // rs.next will return true, fetching data will get an NullPointerException. 
       // Catch this error and do an break!   
-      while (rs.next())
+      if (!fetchedAll) 
       {
-         try
-         {
-            data.add(getCurrentRowAsObject());
-            keys.add(getTable().getKeyPositionString(getCurrentRow()));
-         }
-         catch (Exception e)
-         {
-			getLogCat().error(e.getMessage());
-            break;
-         }
+	      while (rs.next())
+	      {
+	         try
+	         {
+	            data.add(getCurrentRowAsObject());
+	            keys.add(getTable().getKeyPositionString(getCurrentRow()));
+	         }
+	         catch (Exception e)
+	         {
+				getLogCat().error(e.getMessage());
+	            break;
+	         }
+	      }
+	      fetchedAll = true;
+	 	  closeConnection();
       }
-
       return data.size();
    }
 
