@@ -336,7 +336,8 @@
 					<rtexprvalue>true</rtexprvalue>
 					<info>
 						<p>used in sub-form: field(s) in the main form that is/are linked to this form</p>
-                                                <p>Should either be a key or set to <computeroutput>sortable="true"</computeroutput>in <computeroutput>dbforms-config.xml</computeroutput></p>
+						<p>Should either be a key or set to <computeroutput>sortable="true"</computeroutput>in <computeroutput>dbforms-config.xml</computeroutput>
+						</p>
 					</info>
 				</attribute>
 				<attribute>
@@ -345,8 +346,9 @@
 					<rtexprvalue>true</rtexprvalue>
 					<info>
 						<p>used in sub-form: field(s) in this form that is/are linked to the parent form</p>
-					<p>Should either be a key or set to <computeroutput>sortable="true"</computeroutput>in <computeroutput>dbforms-config.xml</computeroutput></p>
-                                        </info>
+						<p>Should either be a key or set to <computeroutput>sortable="true"</computeroutput>in <computeroutput>dbforms-config.xml</computeroutput>
+						</p>
+					</info>
 				</attribute>
 				<attribute>
 					<name>target</name>
@@ -426,18 +428,16 @@
 							<span style="font-size:8.0pt;font-family:Courier">&lt;<b>/db:dbform</b>&gt;</span>
 						</p>
 						<pre>Operator:          Meaning:                Example:</pre>
-    
-                                                <pre>=                  Equals                  aField=value</pre>
-                                                <pre>&lt;&gt;           Not Equal               aField&lt;&gt;value</pre>
-                                                <pre>&lt;               Smaller then            aField&lt;100</pre>
-                                                <pre>&gt;               Greater then            aField&gt;0</pre>
-                                                <pre>&lt;=              Smaller then or equal   aField&lt;=100</pre>
-                                                <pre>&gt;=              Greater then or equal   aField&gt;=0</pre>
-                                                <pre>~                  Like                    aField~%P%</pre>
-                                                <pre>Since version 1.1.3pr1:</pre>
-                                                <pre>ISNULL             is null                 aField ISNULL</pre>        
-                                                <pre>NOTISNULL          is not null             aField NOTISNULL</pre>          
-						
+						<pre>=                  Equals                  aField=value</pre>
+						<pre>&lt;&gt;           Not Equal               aField&lt;&gt;value</pre>
+						<pre>&lt;               Smaller then            aField&lt;100</pre>
+						<pre>&gt;               Greater then            aField&gt;0</pre>
+						<pre>&lt;=              Smaller then or equal   aField&lt;=100</pre>
+						<pre>&gt;=              Greater then or equal   aField&gt;=0</pre>
+						<pre>~                  Like                    aField~%P%</pre>
+						<pre>Since version 1.1.3pr1:</pre>
+						<pre>ISNULL             is null                 aField ISNULL</pre>
+						<pre>NOTISNULL          is not null             aField NOTISNULL</pre>
 						<p style="text-autospace:none">
 							By default, all filter definitions are ANDed together. 
 							  If you wish to use OR, you may prefix your filter definition with the '|' symbol. 
@@ -456,6 +456,12 @@
 						</p>
 						<p>filter will be overwritten by searching!</p>
 					</info>
+				</attribute>
+				<attribute>
+					<name>sqlFilter</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info/>
 				</attribute>
 				<attribute>
 					<name>gotoPrefix</name>
@@ -1035,12 +1041,14 @@ which is an active element - the usercan change data. it is very similar to Text
 but this class providesan extension to TextField: the additional attribute &quot;dateFormat&quot;.</summary>
 				<tagclass>org.dbforms.taglib.DbDateFieldTag</tagclass>
 				<bodycontent>empty</bodycontent>
-				<info><p>i/o text field</p>
-                                <p>To set the format that a date value is sent to the database in, add it to <b>dbforms-config.xml</b> file as follows (for example):<br/>
- 
-    <pre>&lt;date-format&gt;yyyy-MM-dd&lt;/date-format&gt;</pre></p>
-<p>To use a different format than a globally specified one, use the format attribute in the 
-dateField tag.</p></info>
+				<info>
+					<p>i/o text field</p>
+					<p>To set the format that a date value is sent to the database in, add it to <b>dbforms-config.xml</b> file as follows (for example):<br/>
+						<pre>&lt;date-format&gt;yyyy-MM-dd&lt;/date-format&gt;</pre>
+					</p>
+					<p>To use a different format than a globally specified one, use the format attribute in the 
+dateField tag.</p>
+				</info>
 				<attribute>
 					<name>id</name>
 					<required>false</required>
@@ -4809,22 +4817,21 @@ is released.</info>
 					<info>The tab order (ascending positive integers) for this element.</info>
 				</attribute>
 			</tag>
-			<!-- **************************** navCopyButton tag ***********************************-->									
-            <tag>
-                <name>navCopyButton</name>
-                <summary>this tag renders a navigation button for creating a copy of a row of data</summary>
-                <tagclass>org.dbforms.taglib.DbNavCopyButtonTag</tagclass>
-                <bodycontent>JSP</bodycontent>
-                <info>
-                    <p>navigation button to scroll to a copy of an existent dataset</p>
-                </info>
-
-                <attribute>
-                    <name>id</name>
-                    <required>false</required>
-                    <rtexprvalue>true</rtexprvalue>
-                    <info>expose id, enables interaction with JavaScript</info>
-                </attribute>
+			<!-- **************************** navCopyButton tag ***********************************-->
+			<tag>
+				<name>navCopyButton</name>
+				<summary>this tag renders a navigation button for creating a copy of a row of data</summary>
+				<tagclass>org.dbforms.taglib.DbNavCopyButtonTag</tagclass>
+				<bodycontent>JSP</bodycontent>
+				<info>
+					<p>navigation button to scroll to a copy of an existent dataset</p>
+				</info>
+				<attribute>
+					<name>id</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>expose id, enables interaction with JavaScript</info>
+				</attribute>
 				<attribute>
 					<name>showAlwaysInFooter</name>
 					<required>false</required>
@@ -4841,205 +4848,180 @@ is released.</info>
                                             </p>
 					</info>
 				</attribute>
-
-                <attribute>
-                    <name>flavor</name>
-                    <required>false</required>
-                    <rtexprvalue>true</rtexprvalue>
-                    <info>
-                        <p>styling of the button</p>
+				<attribute>
+					<name>flavor</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						<p>styling of the button</p>
                         choices:
                         <ul>
-                            <li>
-                                <b>standard</b>
+							<li>
+								<b>standard</b>
                                 a standard form button. if you use it you should specify &quot;caption&quot;
                             </li>
-                            <li>
-                                <b>image</b>
+							<li>
+								<b>image</b>
                                 an image-button. if you use it you should specify &quot;src&quot; and &quot;alt&quot;
                             </li>
-                            <li>
-                                <b>modern</b>
+							<li>
+								<b>modern</b>
                                 a fancy button according to HTML4; dont use if no all of your users have got 5th-generation browsers! You may embed any code into this tag. (see docu or www.w3.org)
                             </li>
-                        </ul>
-                    </info>
-                </attribute>
-
-                <attribute>
-                    <name>caption</name>
-                    <required>false</required>
-                    <rtexprvalue>true</rtexprvalue>
-                    <info>caption of the button (use it if the chosen flavor is "standard")</info>
-                </attribute>
-
-                <attribute>
-                    <name>src</name>
-                    <required>false</required>
-                    <rtexprvalue>true</rtexprvalue>
-                    <info>source of the image (use it if the coosen flavor is "image")</info>
-                </attribute>
-
-                <attribute>
-                    <name>alt</name>
-                    <required>false</required>
-                    <rtexprvalue>true</rtexprvalue>
-                    <info>alternative to image (use it if the coosen flavor is "image")</info>
-                </attribute>
-
-                <attribute>
-                    <name>border</name>
-                    <required>false</required>
-                    <rtexprvalue>true</rtexprvalue>
-                    <info>set html border attribute</info>
-                </attribute>
-
-                <attribute>
-                    <name>followUp</name>
-                    <info>
-                        <p>site to be invoked after this button has been clicked and the associated actions are done</p>
-                        <p>this attribute over-rules the followUp-attribute of the parent form(s)!</p>
-                    </info>
-                    <required>false</required>
-                    <rtexprvalue>true</rtexprvalue>
-                </attribute>
-
+						</ul>
+					</info>
+				</attribute>
 				<attribute>
-                    <name>followUpOnError</name>
-                    <required>false</required>
-                    <rtexprvalue>true</rtexprvalue>
-                    <info>
-                        <p>site to be invoked after this button has been clicked and the associated actions are done</p>
-                        <p>this attribute over-rules the followUpOnError-attribute of the parent form(s)!</p>
-                    </info>
-                </attribute>                
-
-                <attribute>
-                    <name>accessKey</name>
-                    <required>false</required>
-                    <rtexprvalue>true</rtexprvalue>
-                    <info>The keyboard character used to move focus immediately to this element.</info>
-                </attribute>
-
-                <attribute>
-                    <name>onBlur</name>
-                    <required>false</required>
-                    <rtexprvalue>true</rtexprvalue>
-                    <info>JavaScript event handler executed when this element loses inputfocus.</info>
-                </attribute>
-
-                <attribute>
-                    <name>onChange</name>
-                    <required>false</required>
-                    <rtexprvalue>true</rtexprvalue>
-                    <info>JavaScript event handler executed when this element loses inputfocus and its value has changed.</info>
-                </attribute>
-
-                <attribute>
-                    <name>onSelect</name>
-                    <required>false</required>
-                    <rtexprvalue>true</rtexprvalue>
-                    <info>JavaScipt event hanlder executed when the user selects some text</info>
-                </attribute>
-
-                <attribute>
-                    <name>onClick</name>
-                    <required>false</required>
-                    <rtexprvalue>true</rtexprvalue>
-                    <info>JavaScript event handler executed when this element receives amouse click.</info>
-                </attribute>
-
-                <attribute>
-                    <name>onDblClick</name>
-                    <required>false</required>
-                    <rtexprvalue>true</rtexprvalue>
-                    <info>JavaScript event handler executed when this element receives amouse double click.</info>
-                </attribute>
-				
-                <attribute>
-                    <name>onFocus</name>
-                    <required>false</required>
-                    <rtexprvalue>true</rtexprvalue>
-                    <info>JavaScript event handler executed when this element receives inputfocus.</info>
-                </attribute>
-
-                <attribute>
-                    <name>onKeyDown</name>
-                    <required>false</required>
-                    <rtexprvalue>true</rtexprvalue>
-                    <info>JavaScript event handler executed when this element has focus and akey is depressed.</info>
-                </attribute>
-
-                <attribute>
-                    <name>onKeyPress</name>
-                    <required>false</required>
-                    <rtexprvalue>true</rtexprvalue>
-                    <info>JavaScript event handler executed when this element has focus and akey is depressed and released.</info>
-                </attribute>
-
-                <attribute>
-                    <name>onKeyUp</name>
-                    <required>false</required>
-                    <rtexprvalue>true</rtexprvalue>
-                    <info>JavaScript event handler executed when this element has focus and akey is released.</info>
-                </attribute>
-
-                <attribute>
-                    <name>onMouseDown</name>
-                    <required>false</required>
-                    <rtexprvalue>true</rtexprvalue>
-                    <info>JavaScript event handler executed when this element is under the mousepointer and a mouse button is depressed.</info>
-                </attribute>
-
-                <attribute>
-                    <name>onMouseMove</name>
-                    <required>false</required>
-                    <rtexprvalue>true</rtexprvalue>
-                    <info>JavaScript event handler executed when this element is under themouse pointer and the pointer is moved.</info>
-                </attribute>
-				
-                <attribute>
-                    <name>onMouseOut</name>
-                    <required>false</required>
-                    <rtexprvalue>true</rtexprvalue>
-                    <info>JavaScript event handler executed when this element was under themouse pointer but the pointer was moved outside the element.</info>
-                </attribute>
-
-                <attribute>
-                    <name>onMouseOver</name>
-                    <required>false</required>
-                    <rtexprvalue>true</rtexprvalue>
-                    <info>JavaScript event handler executed when this element was not underthe mouse pointer but the pointer is moved inside the element.</info>
-                </attribute>
-
-                <attribute>
-                    <name>onMouseUp</name>
-                    <required>false</required>
-                    <rtexprvalue>true</rtexprvalue>
-                    <info>JavaScript event handler executed when this element is under themouse pointer and a mouse button is released.</info>
-                </attribute>
-
-                <attribute>
-                    <name>style</name>
-                    <required>false</required>
-                    <rtexprvalue>true</rtexprvalue>
-                    <info>CSS styles to be applied to this HTML element.</info>
-                </attribute>
-
-                <attribute>
-                    <name>styleClass</name>
-                    <required>false</required>
-                    <rtexprvalue>true</rtexprvalue>
-                    <info>CSS stylesheet class to be applied to this HTML element.</info>
-                </attribute>
-
-                <attribute>
-                    <name>tabIndex</name>
-                    <required>false</required>
-                    <rtexprvalue>true</rtexprvalue>
-                    <info>The tab order (ascending positive integers) for this element.</info>
-                </attribute>
-            </tag>			
+					<name>caption</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>caption of the button (use it if the chosen flavor is "standard")</info>
+				</attribute>
+				<attribute>
+					<name>src</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>source of the image (use it if the coosen flavor is "image")</info>
+				</attribute>
+				<attribute>
+					<name>alt</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>alternative to image (use it if the coosen flavor is "image")</info>
+				</attribute>
+				<attribute>
+					<name>border</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>set html border attribute</info>
+				</attribute>
+				<attribute>
+					<name>followUp</name>
+					<info>
+						<p>site to be invoked after this button has been clicked and the associated actions are done</p>
+						<p>this attribute over-rules the followUp-attribute of the parent form(s)!</p>
+					</info>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+				</attribute>
+				<attribute>
+					<name>followUpOnError</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						<p>site to be invoked after this button has been clicked and the associated actions are done</p>
+						<p>this attribute over-rules the followUpOnError-attribute of the parent form(s)!</p>
+					</info>
+				</attribute>
+				<attribute>
+					<name>accessKey</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>The keyboard character used to move focus immediately to this element.</info>
+				</attribute>
+				<attribute>
+					<name>onBlur</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>JavaScript event handler executed when this element loses inputfocus.</info>
+				</attribute>
+				<attribute>
+					<name>onChange</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>JavaScript event handler executed when this element loses inputfocus and its value has changed.</info>
+				</attribute>
+				<attribute>
+					<name>onSelect</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>JavaScipt event hanlder executed when the user selects some text</info>
+				</attribute>
+				<attribute>
+					<name>onClick</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>JavaScript event handler executed when this element receives amouse click.</info>
+				</attribute>
+				<attribute>
+					<name>onDblClick</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>JavaScript event handler executed when this element receives amouse double click.</info>
+				</attribute>
+				<attribute>
+					<name>onFocus</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>JavaScript event handler executed when this element receives inputfocus.</info>
+				</attribute>
+				<attribute>
+					<name>onKeyDown</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>JavaScript event handler executed when this element has focus and akey is depressed.</info>
+				</attribute>
+				<attribute>
+					<name>onKeyPress</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>JavaScript event handler executed when this element has focus and akey is depressed and released.</info>
+				</attribute>
+				<attribute>
+					<name>onKeyUp</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>JavaScript event handler executed when this element has focus and akey is released.</info>
+				</attribute>
+				<attribute>
+					<name>onMouseDown</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>JavaScript event handler executed when this element is under the mousepointer and a mouse button is depressed.</info>
+				</attribute>
+				<attribute>
+					<name>onMouseMove</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>JavaScript event handler executed when this element is under themouse pointer and the pointer is moved.</info>
+				</attribute>
+				<attribute>
+					<name>onMouseOut</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>JavaScript event handler executed when this element was under themouse pointer but the pointer was moved outside the element.</info>
+				</attribute>
+				<attribute>
+					<name>onMouseOver</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>JavaScript event handler executed when this element was not underthe mouse pointer but the pointer is moved inside the element.</info>
+				</attribute>
+				<attribute>
+					<name>onMouseUp</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>JavaScript event handler executed when this element is under themouse pointer and a mouse button is released.</info>
+				</attribute>
+				<attribute>
+					<name>style</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>CSS styles to be applied to this HTML element.</info>
+				</attribute>
+				<attribute>
+					<name>styleClass</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>CSS stylesheet class to be applied to this HTML element.</info>
+				</attribute>
+				<attribute>
+					<name>tabIndex</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>The tab order (ascending positive integers) for this element.</info>
+				</attribute>
+			</tag>
 			<!-- **************************** gotoButton tag ***********************************-->
 			<tag>
 				<name>gotoButton</name>
@@ -6083,6 +6065,176 @@ error manager</summary>
 					<name>style</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
+				</attribute>
+			</tag>
+			<tag>
+				<summary>
+Create a set of sql filter conditions, letting user select which one will be applied. 
+A filter tag contains one or more filterCondition tag. Each filterCondition represent a sql condition and is identified by its label.
+In the body of the filterCondition tag there is the piece of SQL code that we want to insert in the where clause, the character ? act like a placeholder, so a ? in the sql code will be substituted with the some user input. To tell the system what type of user input we want, the last tag is used, the filterValue tag. Each ? found in body will be subsituted by its corresponding filterValue tag. With the "type" attribute of this tag you can select the input more. Selecting "text", a filterValue will render an html input tag, with "select" you'll have an html select, and so on.
+An example is like this:
+&lt;db:filter>
+	&lt;db:filterCondition label="author name like">
+		NAME LIKE '%?%'
+		&lt;db:filterValue type="timestamp" useJsCalendar="true" />
+	&lt;/db:filterCondition>
+	&lt;db:filterCondition label="ID > V1 AND ID &lt; V2">
+		AUTHOR_ID >= ? AND AUTHOR_ID &lt;= ?
+		&lt;db:filterValue label="V1" type="numeric"/>
+		&lt;db:filterValue label="V2" type="numeric"/>
+	&lt;/db:filterCondition>
+	&lt;db:filterCondition label="author = ">
+		NAME = '?'
+		&lt;db:filterValue type="select">
+			&lt;db:queryData name="q1" query="select distinct name as n1, name as n2 from author where AUTHOR_ID &lt; 100 order by name"/>
+		&lt;/db:filterValue>
+	&lt;/db:filterCondition>
+	&lt;db:filterCondition label="now is after date">
+		CURRENT_DATE > ?
+		&lt;db:filterValue type="date" useJsCalendar="true" />
+	&lt;/db:filterCondition>
+ 	&lt;db:filterCondition label="filter without user input">
+		AUTHOR_ID > 10
+	&lt;/db:filterCondition>
+&lt;/db:filter>
+
+This structure will be rendered as a html select element to select the condition the you want to apply. On the onchange event there is a submit, so the page reload with the input elements of the condition that you have selected. After all input elements, there are two buttons, one to apply the condition, one to unset the current applied condition.
+				</summary>
+				<name>filter</name>
+				<tagclass>org.dbforms.taglib.DbFilterTag</tagclass>
+				<bodycontent>JSP</bodycontent>
+				<info/>
+				<attribute>
+					<name>disabledCaption</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>used to override the label of the main select's first option element</info>
+				</attribute>
+				<attribute>
+					<name>setCaption</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>caption of the SET button</info>
+				</attribute>
+				<attribute>
+					<name>unsetCaption</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>caption of the UNSET button</info>
+				</attribute>
+				<attribute>
+					<name>styleClass</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>CSS stylesheet class to be applied. This is done adding a SPAN element that contains the text.</info>
+				</attribute>
+				<attribute>
+					<name>size</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>Number of rows of select element</info>
+				</attribute>
+			</tag>
+			<tag>
+				<summary>
+				Holds an sql condition that has to be nested inside a DbFilterTag.
+				A condition is specified as sql code in the body of the tag.
+				The character ? is a placeholder for user's input substitution.
+				Every char ? found in sql code is replaced with value evalutated from 
+				corresponding filterValue tag nested. So there must be as ? as filterValue tags.
+				</summary>
+				<name>filterCondition</name>
+				<tagclass>org.dbforms.taglib.DbFilterConditionTag</tagclass>
+				<bodycontent>JSP</bodycontent>
+				<info/>
+				<attribute>
+					<name>label</name>
+					<required>true</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>Label that identified the condition in the select list</info>
+				</attribute>
+			</tag>
+			<tag>
+				<summary>
+				Map a placeholder (?) in sql code to an input tag. Used as nested tag inside filterCondition.
+				</summary>
+				<name>filterValue</name>
+				<tagclass>org.dbforms.taglib.DbFilterValueTag</tagclass>
+				<bodycontent>JSP</bodycontent>
+				<info/>
+				<attribute>
+					<name>label</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>label that will be rendered in bold before the input element</info>
+				</attribute>
+				<attribute>
+					<name>type</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>type of the input element that will be rendered, possible values are:
+					&lt;dl>
+					&lt;dt>text
+					&lt;dd>text input
+					&lt;dt>date
+					&lt;dd>input text for date type, a validation of the value will be done, and it supports the jscal object
+					&lt;dt>timestamp
+					&lt;dd>input text for timestamp type, a validation of the value will be done, and it supports the jscal object (it doesn't fit very well, anyway ...)
+					&lt;dt>numeric
+					&lt;dd>input text for number, a validation of the value will be done
+					&lt;dt>select
+					&lt;dd>render an html select element, filled with nested tags like queryData, staticData and so on.
+					&lt;/dl>
+					</info>
+				</attribute>
+				<attribute>
+					<name>customEntry</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+               Allows an additional (independant) entry into the select list&lt;br/>
+               Arguments to this tag are as follows:<br/>
+              Key,Description,boolean (default selection?)
+          </info>
+				</attribute>
+				<attribute>
+					<name>selectedIndex</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>Index that should be selected as default when form is rendered the first time</info>
+				</attribute>
+				<attribute>
+					<name>useJsCalendar</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>Place small calendar icon after input field. Clicking that icon 
+                     will popup a JavaScript calendar 
+                    that can be used to set a new value for the field. 
+         Some preparations have to be done, the
+         calendar must be copied into the web applications 
+         and must be included in current page. 
+         See dbforms manual for details.</info>
+				</attribute>
+				<attribute>
+					<name>jsCalendarDateFormat</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>Subpatterns inside date formats have sometimes different meanings in Java and inside
+             JavaScript calendar. For some date formats it may be neccessary to explicitely set a
+       date format to the calendar that corresponds to the used date format inside dbforms
+       application. See dbforms manual for details.</info>
+				</attribute>
+				<attribute>
+					<name>size</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>Number of rows of select element</info>
+				</attribute>
+				<attribute>
+					<name>styleClass</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>CSS stylesheet class to be applied. This is done adding a SPAN element that contains the text.</info>
 				</attribute>
 			</tag>
 		</taglib>

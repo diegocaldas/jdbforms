@@ -85,12 +85,12 @@ public class NavFirstEvent extends NavigationEvent
     * @throws SQLException DOCUMENT ME!
     */
    public ResultSetVector processEvent(FieldValue[] childFieldValues,
-      FieldValue[] orderConstraint, int count, String firstPosition,
+      FieldValue[] orderConstraint, String sqlFilter, int count, String firstPosition,
       String lastPosition, Connection con, String dbConnectionName)
       throws SQLException
    {
       // just select from table in given order
       return table.doConstrainedSelect(table.getFields(), childFieldValues,
-         orderConstraint, Constants.COMPARE_NONE, count, con);
+         orderConstraint, sqlFilter, Constants.COMPARE_NONE, count, con);
    }
 }

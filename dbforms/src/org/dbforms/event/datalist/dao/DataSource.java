@@ -120,7 +120,7 @@ public abstract class DataSource
     *        rules for ordering (sorting)
     */
    public abstract void setSelect(FieldValue[] filterConstraint, 
-                                  FieldValue[] orderConstraint);
+                                  FieldValue[] orderConstraint, String sqlFilter);
 
 
    /**

@@ -68,6 +68,7 @@ public class DataSourceJDBC extends DataSource
    private String        tableList;
    private FieldValue[]  filterConstraint;
    private FieldValue[]  orderConstraint;
+   private String sqlFilter;
    private DbFormsConfig config;
    private boolean       fetchedAll       = false;
 
@@ -145,10 +146,11 @@ public class DataSourceJDBC extends DataSource
     *        rules for ordering (sorting) and restricting fields.
     */
    public void setSelect(FieldValue[] filterConstraint, 
-                         FieldValue[] orderConstraint)
+                         FieldValue[] orderConstraint, String sqlFilter)
    {
       this.filterConstraint = filterConstraint;
       this.orderConstraint  = orderConstraint;
+      this.sqlFilter = sqlFilter;
    }
 
 
@@ -237,7 +239,7 @@ public class DataSourceJDBC extends DataSource
          {
             query = getTable()
                        .getSelectQuery(getTable().getFields(), filterConstraint, 
-                                       orderConstraint, Constants.COMPARE_NONE);
+                                       orderConstraint, sqlFilter, Constants.COMPARE_NONE);
 
             stmt = con.prepareStatement(query);
             rs   = getTable()
@@ -331,7 +333,7 @@ public class DataSourceJDBC extends DataSource
     */
    protected int findStartRow(String startRow) throws SQLException
    {
-      int    result = 0;
+      int result = 0;
       String s;
 
       if (startRow != null)

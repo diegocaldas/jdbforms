@@ -894,11 +894,12 @@ public class Table
     * @param fieldsToSelect  vector of fields to be selected
     * @param fvEqual         fieldValues representing values we are looking for
     * @param fvOrder         fieldValues representing needs for order clauses
+    * @param sqlFilter       sql condition to add to where clause
     * @param compareMode     and / or
     * @return the query string
     */
    public String getSelectQuery(Vector fieldsToSelect, FieldValue[] fvEqual,
-      FieldValue[] fvOrder, int compareMode)
+      FieldValue[] fvOrder, String sqlFilter, int compareMode)
    {
       StringBuffer buf = new StringBuffer();
       buf.append("SELECT ");
@@ -909,11 +910,26 @@ public class Table
       String s;
       s = getQueryWhere(fvEqual, fvOrder, compareMode);
 
+      if (s.length() > 0 || (sqlFilter != null && sqlFilter.length() > 0))
+         buf.append(" WHERE ");
+         
+      // where condition generated from searching / ordering
       if (s.length() > 0)
       {
-         buf.append(" WHERE ( ");
+         buf.append(" ( ");
          buf.append(s);
-         buf.append(")");
+         buf.append(" ) ");
+      }
+      
+      // where condition from DbFormTag's sqlFilter attribute
+      if (sqlFilter != null && sqlFilter.length() > 0)
+      {
+      	 if (s.length() > 0)
+      	    buf.append(" AND ( ");
+      	 else
+      	    buf.append(" ( ");
+      	 buf.append(sqlFilter);
+      	 buf.append(" ) ");
       }
 
       s = getQueryOrderBy(fvOrder);
@@ -1052,6 +1068,7 @@ public class Table
     *                "parentFields" in main form
     * @param fvOrder FieldValue array used to build a cumulation of rules for ordering
     *                (sorting) and restricting fields
+    * @param sqlFilter sql condition to add to where clause 
     * @param compareMode the value of the compare mode
     * @param maxRows the max number of rows to manage
     * @param con the connection object
@@ -1059,11 +1076,11 @@ public class Table
     * @throws SQLException if any error occurs
     */
    public ResultSetVector doConstrainedSelect(Vector fieldsToSelect,
-      FieldValue[] fvEqual, FieldValue[] fvOrder, int compareMode, int maxRows,
+      FieldValue[] fvEqual, FieldValue[] fvOrder, String sqlFilter, int compareMode, int maxRows,
       Connection con) throws SQLException
    {
       String            query = getSelectQuery(fieldsToSelect, fvEqual,
-            fvOrder, compareMode);
+            fvOrder, sqlFilter, compareMode);
       PreparedStatement ps = con.prepareStatement(query);
       ps.setMaxRows(maxRows); // important when quering huge tables
 

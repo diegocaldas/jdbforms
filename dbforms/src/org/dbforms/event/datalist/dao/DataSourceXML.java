@@ -97,10 +97,12 @@ public class DataSourceXML extends DataSource
     * @param orderConstraint DOCUMENT ME!
     */
    public void setSelect(FieldValue[] filterConstraint, 
-                         FieldValue[] orderConstraint)
+                         FieldValue[] orderConstraint,
+                         String sqlFilter)
    {
       this.filterConstraint = filterConstraint;
       this.orderConstraint  = orderConstraint;
+      // FIXME find a way to transform sqlFilter in a XPath query
    }
 
 

@@ -187,7 +187,7 @@ public class GotoEvent extends NavigationEvent
     * @throws SQLException DOCUMENT ME!
     */
    public ResultSetVector processEvent(FieldValue[] childFieldValues,
-      FieldValue[] orderConstraint, int count, String firstPosition,
+      FieldValue[] orderConstraint, String sqlFilter, int count, String firstPosition,
       String lastPosition, Connection con, String dbConnectionName)
       throws SQLException
    {
@@ -218,7 +218,7 @@ public class GotoEvent extends NavigationEvent
          logCat.info("gotopos = " + position);
 
          return table.doConstrainedSelect(table.getFields(), childFieldValues,
-            orderConstraint, compMode, count, con);
+            orderConstraint, sqlFilter, compMode, count, con);
       }
       else
       {

@@ -98,7 +98,7 @@ public class NavPrevEvent extends NavigationEvent
     * @exception  SQLException if any error occurs
     */
    public ResultSetVector processEvent(FieldValue[] childFieldValues,
-      FieldValue[] orderConstraint, int count, String firstPosition,
+      FieldValue[] orderConstraint, String sqlFilter, int count, String firstPosition,
       String lastPosition, Connection con, String dbConnectionName)
       throws SQLException
    {
@@ -109,7 +109,7 @@ public class NavPrevEvent extends NavigationEvent
       FieldValue.invert(orderConstraint);
 
       ResultSetVector resultSetVector = table.doConstrainedSelect(table
-            .getFields(), childFieldValues, orderConstraint,
+            .getFields(), childFieldValues, orderConstraint, sqlFilter,
             Constants.COMPARE_EXCLUSIVE, count, con);
 
       FieldValue.invert(orderConstraint);
@@ -121,8 +121,8 @@ public class NavPrevEvent extends NavigationEvent
          // just select from table in given order
          logCat.info("==>NavPrevFirstEvent");
          resultSetVector = table.doConstrainedSelect(table.getFields(),
-               childFieldValues, orderConstraint, Constants.COMPARE_NONE,
-               count, con);
+               childFieldValues, orderConstraint, sqlFilter, 
+               Constants.COMPARE_NONE, count, con);
       }
 
       return resultSetVector;

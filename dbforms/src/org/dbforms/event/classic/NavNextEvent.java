@@ -99,7 +99,7 @@ public class NavNextEvent extends NavigationEvent
     * @exception  SQLException if any error occurs
     */
    public ResultSetVector processEvent(FieldValue[] childFieldValues,
-      FieldValue[] orderConstraint, int count, String firstPosition,
+      FieldValue[] orderConstraint, String sqlFilter, int count, String firstPosition,
       String lastPosition, Connection con, String dbConnectionName)
       throws SQLException
    {
@@ -110,7 +110,7 @@ public class NavNextEvent extends NavigationEvent
       // select in given order everyting thats greater than lastpos
       table.fillWithValues(orderConstraint, lastPosition);
       rsv = table.doConstrainedSelect(table.getFields(), childFieldValues,
-            orderConstraint, Constants.COMPARE_EXCLUSIVE, count, con);
+            orderConstraint, sqlFilter, Constants.COMPARE_EXCLUSIVE, count, con);
 
       // change behavior to navLast if navNext finds no data
       // TODO: make a option to allow original "navNew" behavior if desired
@@ -119,7 +119,7 @@ public class NavNextEvent extends NavigationEvent
          logCat.info("==>NavNextLastEvent");
          FieldValue.invert(orderConstraint);
          rsv = table.doConstrainedSelect(table.getFields(), childFieldValues,
-               orderConstraint, Constants.COMPARE_NONE, count, con);
+               orderConstraint, sqlFilter, Constants.COMPARE_NONE, count, con);
          FieldValue.invert(orderConstraint);
          rsv.flip();
       }

@@ -115,12 +115,13 @@ public class DataSourceFactory
                             String        dbConnectionName,
       						Table 	      table, 
       						FieldValue[]  filterConstraint, 
-      						FieldValue[]  orderConstraint)
+      						FieldValue[]  orderConstraint,
+      						String sqlFilter)
       throws SQLException
    {
       this(table);
       dataHandler.setConnection(config, dbConnectionName);
-      dataHandler.setSelect(filterConstraint, orderConstraint);
+      dataHandler.setSelect(filterConstraint, orderConstraint, sqlFilter);
    }
 
 

@@ -94,7 +94,8 @@ public class NavCopyEvent extends NavigationEvent
     * @throws SQLException DOCUMENT ME!
     */
    public ResultSetVector processEvent(FieldValue[] childFieldValues, 
-                                       FieldValue[] orderConstraint, int count, 
+                                       FieldValue[] orderConstraint, 
+                                       String sqlFilter, int count, 
                                        String firstPost, String lastPos, 
                                        Connection con, String dbConnectionName)
                                 throws SQLException

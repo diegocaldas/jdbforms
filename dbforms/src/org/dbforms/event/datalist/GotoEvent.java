@@ -223,7 +223,9 @@ public class GotoEvent extends NavigationEvent
     * @exception SQLException if any error occurs
     */
    public ResultSetVector processEvent(FieldValue[] childFieldValues, 
-                                       FieldValue[] orderConstraint, int count, 
+                                       FieldValue[] orderConstraint,
+                                       String sqlFilter, 
+                                       int count, 
                                        String firstPosition, 
                                        String lastPosition, Connection con, 
                                        String dbConnectionName)
@@ -265,7 +267,7 @@ public class GotoEvent extends NavigationEvent
       if (Util.isNull(whereClause))
       {
          qry = new DataSourceFactory(config, dbConnectionName, table, 
-                                     childFieldValues, orderConstraint);
+                                     childFieldValues, orderConstraint, sqlFilter);
       }
       else
       {

@@ -88,7 +88,9 @@ public class NavNewEvent extends NavigationEvent
     * @throws SQLException DOCUMENT ME!
     */
    public ResultSetVector processEvent(FieldValue[] childFieldValues, 
-                                       FieldValue[] orderConstraint, int count, 
+                                       FieldValue[] orderConstraint,
+                                       String sqlFilter, 
+                                       int count,
                                        String firstPosition, 
                                        String lastPosition, Connection con, 
                                        String dbConnectionName)

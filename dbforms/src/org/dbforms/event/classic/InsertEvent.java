@@ -326,8 +326,9 @@ public class InsertEvent extends ValidationEvent
          fvEqual[i] = keyFieldValue;
       }
 
+	  //TODO nullify sqlFilter, check if is logically correct 
       ResultSetVector resultSetVector = table.doConstrainedSelect(table
-            .getFields(), fvEqual, null, Constants.COMPARE_NONE, 1, con);
+            .getFields(), fvEqual, null, "", Constants.COMPARE_NONE, 1, con);
 
       if (resultSetVector != null)
       {

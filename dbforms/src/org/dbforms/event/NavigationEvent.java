@@ -89,7 +89,8 @@ public abstract class NavigationEvent extends WebEvent
     * @exception SQLException if any error occurs
     */
    public abstract ResultSetVector processEvent(FieldValue[] childFieldValues, 
-                                                FieldValue[] orderConstraint, 
+                                                FieldValue[] orderConstraint,
+                                                String sqlFilter, 
                                                 int count, String firstPost, 
                                                 String lastPos, Connection con, 
                                                 String dbConnectionName)

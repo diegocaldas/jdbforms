@@ -177,6 +177,9 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
 
    /** filter string */
    private String filter;
+   /** SQL filter string */
+   private String sqlFilter;
+
    private String gotoPrefix;
 
    //private String gotoPos;
@@ -588,6 +591,23 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
    public String getFilter()
    {
       return filter;
+   }
+
+
+   /**
+	* @return
+	*/
+   public String getSqlFilter()
+   {
+	   return sqlFilter;
+   }
+
+   /**
+	* @param string
+	*/
+   public void setSqlFilter(String string)
+   {
+	   sqlFilter = string;
    }
 
 
@@ -1397,7 +1417,9 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
          //  Part III - fetching Data. This data is provided to all sub-
          //  elements of this form.
          // *************************************************************
-         
+
+         setSqlFilter(DbFilterTag.generateSqlFilter(request, this.getTable().getId(), this.sqlFilter));
+
          // overrules other default declarations eventually done in XML config;
          this.initOverrulingOrder(request);
 
@@ -1457,6 +1479,13 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
          if (lastPosition == null)
          {
             lastPosition = firstPosition;
+         }
+
+         if (ParseUtil.getParameter(request, "filter_" + table.getId() + "_set") != null)
+         {
+             logCat.debug("a filter set/unset is called: reset firstpos and lastpos");
+             firstPosition = null;
+             lastPosition = null;
          }
 
          // if we are in a subform we must check if the fieldvalue-list provided in the
@@ -1694,7 +1723,8 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
             logCat.info("about to process nav event:" + navEvent.getClass().getName());
             resultSetVector = 
               navEvent.processEvent(mergedFieldValues,
-                                    orderConstraint, 
+                                    orderConstraint,
+                                    sqlFilter, 
                                     count, 
                                     firstPosition, 
                                     lastPosition, 

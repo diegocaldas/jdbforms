@@ -94,7 +94,9 @@ public class NavLastEvent extends NavigationEvent
     * @exception SQLException if any error occurs
     */
    public ResultSetVector processEvent(FieldValue[] childFieldValues, 
-                                       FieldValue[] orderConstraint, int count, 
+                                       FieldValue[] orderConstraint,
+                                       String sqlFilter, 
+                                       int count, 
                                        String firstPosition, 
                                        String lastPosition, Connection con, 
                                        String dbConnectionName)
@@ -104,6 +106,11 @@ public class NavLastEvent extends NavigationEvent
 
       DataSourceList    ds  = DataSourceList.getInstance(request);
       DataSourceFactory qry = ds.get(table, request);
+      if (qry == null)
+      {
+          qry = new DataSourceFactory(config, dbConnectionName, table, childFieldValues, orderConstraint, sqlFilter);
+          ds.put(table, request, qry);
+      }
 
       return qry.getLast(count);
    }
