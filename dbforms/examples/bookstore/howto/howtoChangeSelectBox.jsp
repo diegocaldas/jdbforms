@@ -16,6 +16,9 @@
          			   This is necessary because we have no given table
            			   and needs and reload event to refetch the values of the
          			   select boxes!
+         			   Is first parameter here because we do not have a tablename. 
+         			   In this special case the hidden input field customEvent is not 
+         			   rendered!
          		   -->
           		   <input type="hidden" name="customEvent" value="re_0_0"/>
 					<db:select

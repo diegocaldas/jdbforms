@@ -57,7 +57,7 @@ public class DataSourceJDBC extends DataSource
 {
    private String       query;
    private Connection   con;
-   private boolean      ownCon           = false;
+   private String       connectionName;
    private ResultSet    rs;
    private Statement    stmt;
    private Vector       data;
@@ -104,7 +104,7 @@ public class DataSourceJDBC extends DataSource
       if (con != null)
       {
          close();
-         ownCon   = false;
+         connectionName = null; 
          this.con = con;
       }
    }
@@ -124,18 +124,9 @@ public class DataSourceJDBC extends DataSource
    public void setConnectionName(String dbConnectionName)
    {
       close();
-      ownCon = true;
-
-      try
-      {
-         this.con = SqlUtil.getConnection(DbFormsConfigRegistry.instance()
-                                                               .lookup(), 
-                                          dbConnectionName);
-      }
-      catch (Exception e)
-      {
-         getLogCat().error(e);
-      }
+      con = null;
+      // To prevent empty connection name. We always need our own connection!
+      connectionName = Util.isNull(dbConnectionName)?"default":dbConnectionName;
    }
 
 
@@ -174,6 +165,8 @@ public class DataSourceJDBC extends DataSource
 
    private void closeConnection()
    {
+		fetchedAll = true;
+
       if (rs != null)
       {
          try
@@ -202,7 +195,7 @@ public class DataSourceJDBC extends DataSource
       stmt = null;
       }
       */
-      if (ownCon && (con != null))
+      if ((con != null) && !Util.isNull(connectionName))
       {
          try
          {
@@ -236,6 +229,8 @@ public class DataSourceJDBC extends DataSource
       }
 
       closeConnection();
+      // reset fetched all flag. So DataSource can be reopened after close!
+      fetchedAll = false;
    }
 
 
@@ -247,7 +242,24 @@ public class DataSourceJDBC extends DataSource
    protected void open() throws SQLException
    {
       if (!fetchedAll && (rs == null))
-      {
+      { 
+			if (((con == null) || con.isClosed()) && !Util.isNull(connectionName)) 
+			{
+				try
+				{
+					this.con = SqlUtil.getConnection(DbFormsConfigRegistry.instance()
+																							.lookup(), 
+																connectionName);
+				}
+				catch (Exception e)
+				{
+					getLogCat().error(e);
+				}
+			}
+
+         if (con == null)
+            throw new SQLException("no connection found!"); 
+            
          if (Util.isNull(whereClause))
          {
             query = getTable()
@@ -272,7 +284,6 @@ public class DataSourceJDBC extends DataSource
 
          ResultSetMetaData rsmd = rs.getMetaData();
          colCount   = rsmd.getColumnCount();
-         fetchedAll = false;
       }
    }
 
@@ -449,7 +460,6 @@ public class DataSourceJDBC extends DataSource
 
       if ((rs.getRow() == 0) || rs.isLast())
       {
-         fetchedAll = true;
          closeConnection();
       }
    }
@@ -485,7 +495,6 @@ public class DataSourceJDBC extends DataSource
             }
          }
 
-         fetchedAll = true;
          closeConnection();
       }
 

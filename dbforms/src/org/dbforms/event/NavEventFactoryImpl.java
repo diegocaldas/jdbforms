@@ -120,7 +120,7 @@ public class NavEventFactoryImpl extends NavEventFactory
 
 
    /**
-    * Create and return a new navGoto event. Used by the view to create a
+    * Create and return a new navGoto event. Used by the view (DbFormTag) to create a
     * gotoEvent
     * 
     * @param table the Table object
@@ -149,8 +149,8 @@ public class NavEventFactoryImpl extends NavEventFactory
 
 
    /**
-    * Create and return a new navGoto event. Used by the view to create a
-    * gotoEvent
+    * Create and return a new navGoto event. Used by the view (DbFormTag) to create a
+    * gotoEvent for free form select
     * 
     * @param table the Table object
     * @param request the position string object
@@ -206,5 +206,9 @@ public class NavEventFactoryImpl extends NavEventFactory
       addEventInfo(
                new EventInfo(EventType.EVENT_NAVIGATION_PREV, 
                              "org.dbforms.event.datalist.NavPrevEvent"));
+
+		addEventInfo(
+					new EventInfo(EventType.EVENT_NAVIGATION_RELOAD, 
+									  "org.dbforms.event.datalist.ReloadEvent"));
    }
 }

@@ -247,14 +247,6 @@ public abstract class EventFactory
 
       if (config != null)
       {
-         // try to retrieve a valid  target table name from the request;
-         // if it's null, try to retrieve the table id from the action string.
-         String tableName = EventHelper.getDestinationTableName(request, action);
-
-         if (!Util.isNull(tableName))
-         {
-            table = config.getTableByName(tableName);
-         }
 
          // if a gotoButton tag like:
          //
@@ -263,13 +255,20 @@ public abstract class EventFactory
          // does not specify its destTable attribute (ie: destTable="APP_USER"),
          // the factory cannot override the goto event class; so it returns
          // the default EventType.EVENT_NAVIGATION_GOTO event id.
-         else if (eventType.equals(EventType.EVENT_NAVIGATION_GOTO))
+         if (eventType.equals(EventType.EVENT_NAVIGATION_GOTO))
          {
             //logCat.warn("::getEventIdFromDestinationTable - got an EVENT_NAVIGATION_GOTO");
             return EventType.EVENT_NAVIGATION_GOTO;
          }
          else
          {
+				// try to retrieve a valid  target table name from the request;
+				// if it's null, try to retrieve the table id from the action string.
+				String tableName = EventHelper.getDestinationTableName(request, action);
+				if (!Util.isNull(tableName))
+				{
+					table = config.getTableByName(tableName);
+				}
             int tableId = EventHelper.getTableId(action);
             table = config.getTable(tableId);
          }

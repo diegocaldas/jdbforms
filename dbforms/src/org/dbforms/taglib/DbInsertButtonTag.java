@@ -21,15 +21,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.taglib;
-import java.util.*;
-import java.sql.*;
-import java.io.*;
-import javax.servlet.jsp.*;
-import javax.servlet.jsp.tagext.*;
-import org.dbforms.validation.ValidatorConstants;
 
-import org.dbforms.util.*;
+import javax.servlet.jsp.JspException;
+import org.dbforms.util.Util;
 import org.apache.log4j.Category;
+import org.dbforms.event.eventtype.EventType;
 
 
 
@@ -66,24 +62,9 @@ public class DbInsertButtonTag extends DbBaseButtonTag
     */
    public int doStartTag() throws javax.servlet.jsp.JspException
    {
-      // ValidatorConstants.JS_CANCEL_SUBMIT is the javascript variable boolean to verify 
-      // if we do the javascript validation before submit <FORM>
-      if ((parentForm.getFormValidatorName() != null)
-               && (parentForm.getFormValidatorName().length() > 0)
-               && parentForm.getJavascriptValidation().equals("true"))
-      {
-         String onclick = (getOnClick() != null) ? getOnClick() : "";
 
-         if (onclick.lastIndexOf(";") != (onclick.length() - 1))
-         {
-            onclick += ";"; // be sure javascript end with ";"
-         }
-
-         setOnClick(onclick + ValidatorConstants.JS_CANCEL_VALIDATION
-            + "=true;" + ValidatorConstants.JS_UPDATE_VALIDATION_MODE
-            + "=false;");
-      }
-
+		super.doStartTag();
+		
       DbInsertButtonTag.uniqueID++; // make sure that we don't mix up buttons
 
       logCat.info("pos DbInsertButtonTag 1");
@@ -134,7 +115,7 @@ public class DbInsertButtonTag extends DbBaseButtonTag
          tagBuf.append(getButtonBegin());
          tagBuf.append(" name=\"");
          tagBuf.append(tagName);
-         tagBuf.append("\">");
+			tagBuf.append(getButtonEnd());
 
          pageContext.getOut().write(tagBuf.toString());
       }
@@ -151,42 +132,6 @@ public class DbInsertButtonTag extends DbBaseButtonTag
       {
          return SKIP_BODY;
       }
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    *
-    * @throws javax.servlet.jsp.JspException DOCUMENT ME!
-    * @throws JspException DOCUMENT ME!
-    */
-   public int doEndTag() throws javax.servlet.jsp.JspException
-   {
-      if (!parentForm.getFooterReached())
-      {
-         return EVAL_PAGE;
-      }
-
-      if (choosenFlavor == FLAVOR_MODERN)
-      {
-         try
-         {
-            if (bodyContent != null)
-            {
-               bodyContent.writeOut(bodyContent.getEnclosingWriter());
-            }
-
-            pageContext.getOut().write("</button>");
-         }
-         catch (java.io.IOException ioe)
-         {
-            throw new JspException("IO Error: " + ioe.getMessage());
-         }
-      }
-
-      return EVAL_PAGE;
    }
 
 

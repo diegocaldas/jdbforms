@@ -24,7 +24,7 @@
 			<db:footer>
 				<tr>
 					<td colspan="4" align="center">
-						<db:updateButton />
+						<db:updateButton caption="update" />
 					</td>
 				</tr>
 				</table>

@@ -11,12 +11,13 @@
                  maxRows="1" 
                  tableName="AUTHOR"
       >
-         <db:header>
+   		   <input type="hidden" name="customEvent" value="re_0_0"/>
+		 <db:header>
 	         <h1 align="center">Edit Authors</h1>
 
             <table class="fixed" align="center">
+	         <db:errors/>
          </db:header>
-         <db:errors/>
          <db:body>
                <tr class="even">
                      <td style="width:300px">ID</td>
@@ -68,7 +69,9 @@
 					<table>
 					<tr>
 						<td colspan="4">
+							Subform filter:&nbsp;							
 							<db:filter>
+							    <db:navReloadButton  caption="reload"/>
 								<db:filterCondition label="title like">
 									TITLE LIKE '%?%'
 									<db:filterValue/>
@@ -108,11 +111,11 @@
 		         </db:footer>
 				</db:dbform>	
 			</td></tr>
-		 </db:footer>
          </db:body>
          <db:footer>
                <tr class="button">
                <td colspan="2">
+ 			   main form form filter:&nbsp;							
 	         <db:filter>
 	         	<db:filterCondition label="author name like">
 	         		NAME LIKE '%?%'

@@ -21,15 +21,13 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.taglib;
-import java.util.*;
-import java.sql.*;
-import java.io.*;
-import javax.servlet.jsp.*;
-import javax.servlet.jsp.tagext.*;
 
-import org.dbforms.util.*;
-import org.dbforms.validation.ValidatorConstants;
+
+import javax.servlet.jsp.JspException;
+import org.dbforms.util.Util;
 import org.apache.log4j.Category;
+import org.dbforms.event.eventtype.EventType;
+
 
 
 
@@ -42,7 +40,7 @@ import org.apache.log4j.Category;
  */
 public class DbNavNextButtonTag extends DbBaseButtonTag
 {
-   static Category logCat    = Category.getInstance(DbNavNextButtonTag.class
+   private static Category logCat    = Category.getInstance(DbNavNextButtonTag.class
          .getName()); // logging category for this class
    private String  stepWidth;
 
@@ -78,22 +76,7 @@ public class DbNavNextButtonTag extends DbBaseButtonTag
     */
    public int doStartTag() throws javax.servlet.jsp.JspException
    {
-      // ValidatorConstants.JS_CANCEL_SUBMIT is the javascript variable boolean to verify 
-      // if we do the javascript validation before submit <FORM>
-      if ((parentForm.getFormValidatorName() != null)
-               && (parentForm.getFormValidatorName().length() > 0)
-               && parentForm.getJavascriptValidation().equals("true"))
-      {
-         String onclick = (getOnClick() != null) ? getOnClick() : "";
-
-         if (onclick.lastIndexOf(";") != (onclick.length() - 1))
-         {
-            onclick += ";"; // be sure javascript end with ";"
-         }
-
-         setOnClick(onclick + ValidatorConstants.JS_CANCEL_VALIDATION
-            + "=false;");
-      }
+      super.doStartTag();
 
       if (parentForm.getFooterReached()
                && Util.isNull(parentForm.getResultSetVector()))
@@ -105,7 +88,7 @@ public class DbNavNextButtonTag extends DbBaseButtonTag
       try
       {
          StringBuffer tagBuf  = new StringBuffer();
-         String       tagName = "ac_next_" + table.getId();
+         String       tagName = EventType.EVENT_NAVIGATION_TRANSFER_NEXT + table.getId();
 
          if (stepWidth != null)
          {
@@ -123,11 +106,11 @@ public class DbNavNextButtonTag extends DbBaseButtonTag
          }
 
          tagBuf.append(getButtonBegin());
-         tagBuf.append(" name=\"");
-			tagBuf.append(tagName + "\"");
 			if (parentForm.getResultSetVector().isLastPage()) 
 				tagBuf.append(" disabled=\"true\"");
-         tagBuf.append("/>");
+         tagBuf.append(" name=\"");
+			tagBuf.append(tagName);
+         tagBuf.append(getButtonEnd());
 
          pageContext.getOut().write(tagBuf.toString());
       }
@@ -147,33 +130,4 @@ public class DbNavNextButtonTag extends DbBaseButtonTag
    }
 
 
-   /**
-    * DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    *
-    * @throws javax.servlet.jsp.JspException DOCUMENT ME!
-    * @throws JspException DOCUMENT ME!
-    */
-   public int doEndTag() throws javax.servlet.jsp.JspException
-   {
-      if (choosenFlavor == FLAVOR_MODERN)
-      {
-         try
-         {
-            if (bodyContent != null)
-            {
-               bodyContent.writeOut(bodyContent.getEnclosingWriter());
-            }
-
-            pageContext.getOut().write("</button>");
-         }
-         catch (java.io.IOException ioe)
-         {
-            throw new JspException("IO Error: " + ioe.getMessage());
-         }
-      }
-
-      return EVAL_PAGE;
-   }
 }

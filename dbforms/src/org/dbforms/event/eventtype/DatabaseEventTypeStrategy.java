@@ -60,11 +60,12 @@ public class DatabaseEventTypeStrategy implements EventTypeStrategy
    {
       int eventGroup = EventType.EVENT_UNDEFINED;
 
-      if ((eventString.startsWith("ac_insert_"))
+      if (        (eventString.startsWith("ac_insert_"))
                || (eventString.startsWith("ac_update_"))
                || (eventString.startsWith("ac_updatear_"))
                || (eventString.startsWith("ac_delete_"))
-               || (eventString.startsWith("ac_deletear_")))
+               || (eventString.startsWith("ac_deletear_"))
+         )
       {
          eventGroup = EventType.EVENT_GROUP_DATABASE;
       }

@@ -26,7 +26,7 @@
  * $Date$
  *
  */
-package org.dbforms.servlets.reports;
+package org.dbforms.util;
 
 /**
  *
@@ -45,8 +45,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.JspException;
-
-
 import java.util.Hashtable;
 import java.io.IOException;
 import java.io.BufferedReader;
@@ -62,7 +60,7 @@ import java.util.Enumeration;
  * @author $author$
  * @version $Revision$
  */
-public class PageContextDummy extends PageContext
+public class PageContextBuffer extends PageContext
 {
    private Servlet         servlet;
    private ServletRequest  request;
@@ -70,18 +68,27 @@ public class PageContextDummy extends PageContext
    private HttpSession     session;
    private String          errorPageURL;
    private boolean         needsSession;
-   private int             bufferSize;
-   private boolean         autoFlush;
    private ServletConfig   servletConfig;
    private ServletContext  servletContext;
    private Hashtable       nametable;
-   private JspWriter       out;
+   private JspWriterBuffer out;
    private Exception       exception;
+
+
+	public StringBuffer getBuffer() 
+	{
+		return out.getBuffer();
+	}
+   
+	public String getResult() 
+	{
+		return out.getResult();
+	}
 
    /**
     * Creates a new PageContextDummy object.
     */
-   public PageContextDummy()
+   public PageContextBuffer()
    {
    }
 
@@ -105,8 +112,6 @@ public class PageContextDummy extends PageContext
       this.response        = response;
       this.errorPageURL    = errorPageURL;
       this.needsSession    = needsSession;
-      this.bufferSize      = bufferSize;
-      this.autoFlush       = autoFlush;
 
       if (needsSession)
       {
@@ -114,7 +119,7 @@ public class PageContextDummy extends PageContext
       }
 
       nametable    = new Hashtable();
-      out          = new JspWriterDummy(bufferSize, autoFlush, response);
+      out          = new JspWriterBuffer(bufferSize, autoFlush, response);
       exception    = null;
 
       servletConfig     = servlet.getServletConfig();

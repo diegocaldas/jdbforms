@@ -38,7 +38,7 @@ import org.dbforms.config.DbFormsConfig;
 
 import org.apache.log4j.Category;
 
-import org.dbforms.event.DatabaseEvent;
+import org.dbforms.event.ValidationEvent;
 import org.dbforms.event.MultipleValidationException;
 import org.dbforms.event.DbEventInterceptor;
 import org.dbforms.event.datalist.dao.DataSourceFactory;
@@ -52,7 +52,7 @@ import org.dbforms.event.datalist.dao.DataSourceFactory;
  *
  * @author Henner Kollmann <Henner.Kollmann@gmx.de>
  */
-public class UpdateEvent extends DatabaseEvent
+public class UpdateEvent extends ValidationEvent
 {
    // logging category for this class
    private static Category logCat = Category.getInstance(UpdateEvent.class.getName()); 

@@ -51,6 +51,7 @@ public class EventType
    /**  value of the database delete event */
    public static final String EVENT_DATABASE_DELETE = "delete";
 
+
    /**  value of the navigation first event */
    public static final String EVENT_NAVIGATION_FIRST = "navFirst";
 
@@ -71,6 +72,37 @@ public class EventType
 
    /**  value of the navigation goto event */
    public static final String EVENT_NAVIGATION_GOTO = "navGoto";
+
+	/**  value of the navigation reload event */
+	public static final String EVENT_NAVIGATION_RELOAD = "navReload";
+
+
+	
+	
+	/**  transfer value of the navigation first event */
+	public static final String EVENT_NAVIGATION_TRANSFER_FIRST = "ac_first_";
+
+	/**  transfer value of the navigation previous event */
+	public static final String EVENT_NAVIGATION_TRANSFER_PREV = "ac_prev_";
+
+	/**  transfer value of the navigation next event */
+	public static final String EVENT_NAVIGATION_TRANSFER_NEXT = "ac_next_";
+
+	/**  transfer value of the navigation last event */
+	public static final String EVENT_NAVIGATION_TRANSFER_LAST = "ac_last_";
+
+	/**  transfer value of the navigation new event */
+	public static final String EVENT_NAVIGATION_TRANSFER_NEW = "ac_new_";
+
+	/**  transfer value of the navigation new event */
+	public static final String EVENT_NAVIGATION_TRANSFER_COPY = "ac_copy_";
+
+	/**  transfer value of the navigation goto event */
+	public static final String EVENT_NAVIGATION_TRANSFER_GOTO = "ac_goto_";
+
+	/**  transfer value of the navigation reload event */
+	public static final String EVENT_NAVIGATION_TRANSFER_RELOAD = "ac_reload_";
+
 
    /** the string that identifies the event type */
    private String eventString = null;

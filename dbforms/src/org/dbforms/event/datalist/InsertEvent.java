@@ -37,7 +37,7 @@ import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.Field;
 import org.dbforms.config.GrantedPrivileges;
 
-import org.dbforms.event.DatabaseEvent;
+import org.dbforms.event.ValidationEvent;
 import org.dbforms.event.DbEventInterceptor;
 import org.dbforms.event.MultipleValidationException;
 import org.dbforms.event.datalist.dao.DataSourceFactory;
@@ -55,7 +55,7 @@ import org.dbforms.util.SqlUtil;
  *
  * @author Henner Kollmann <Henner.Kollmann@gmx.de>
  */
-public class InsertEvent extends DatabaseEvent
+public class InsertEvent extends ValidationEvent
 {
   /** logging category for this class */
   private static Category logCat = Category.getInstance(InsertEvent.class.getName());

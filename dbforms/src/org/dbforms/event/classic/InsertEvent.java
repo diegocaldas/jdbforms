@@ -53,6 +53,7 @@ import org.dbforms.config.GrantedPrivileges;
 
 import org.dbforms.event.DbEventInterceptor;
 import org.dbforms.event.MultipleValidationException;
+import org.dbforms.event.ValidationEvent;
 
 /****
  * 

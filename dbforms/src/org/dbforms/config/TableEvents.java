@@ -63,6 +63,7 @@ public class TableEvents
          addEventInfo(EventType.EVENT_NAVIGATION_COPY);
          addEventInfo(EventType.EVENT_NAVIGATION_NEXT);
          addEventInfo(EventType.EVENT_NAVIGATION_PREV);
+			addEventInfo(EventType.EVENT_NAVIGATION_RELOAD);
       }
       catch (Exception e)
       {

@@ -21,19 +21,15 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.taglib;
-import java.util.*;
-import java.sql.*;
-import java.io.*;
-import javax.servlet.jsp.*;
-import javax.servlet.jsp.tagext.*;
 
-import org.dbforms.config.*;
+import java.util.Locale;
+import org.dbforms.config.Table;
 import org.dbforms.util.MessageResources;
+import javax.servlet.jsp.JspException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.ServletContext;
 
-import org.apache.log4j.Category;
-
+import org.dbforms.validation.ValidatorConstants;
 
 
 /****
@@ -46,7 +42,6 @@ import org.apache.log4j.Category;
  */
 public abstract class DbBaseButtonTag extends DbBaseHandlerTag
 {
-   static Category logCat = Category.getInstance(DbBaseButtonTag.class.getName()); // logging category for this class
 
    /** DOCUMENT ME! */
    protected static final int FLAVOR_STANDARD = 0;
@@ -83,6 +78,42 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag
 
    /** DOCUMENT ME! */
    protected String border; // used to set html border attribute"
+
+
+
+	public int doStartTag() throws javax.servlet.jsp.JspException 
+	{
+		if ((parentForm.getFormValidatorName() != null)
+					&& (parentForm.getFormValidatorName().length() > 0)
+					&& parentForm.getJavascriptValidation().equals("true"))
+		{
+			String onclick = (getOnClick() != null) ? getOnClick() : "";
+
+			if (onclick.lastIndexOf(";") != (onclick.length() - 1))
+			{
+				onclick += ";"; // be sure javascript end with ";"
+			}
+
+			setOnClick(onclick + ValidatorConstants.JS_CANCEL_VALIDATION
+				+ "=false;");
+		}
+		return SKIP_BODY;
+	}
+	
+	public int doEndTag() throws javax.servlet.jsp.JspException {
+
+		if (choosenFlavor == FLAVOR_MODERN) {
+			try {
+				if (bodyContent != null)
+					bodyContent.writeOut(bodyContent.getEnclosingWriter());
+				pageContext.getOut().write("</button>");
+			} catch (java.io.IOException ioe) {
+				throw new JspException("IO Error: " + ioe.getMessage());
+			}
+		}
+		return EVAL_PAGE;
+	}
+
 
    /**
     * DOCUMENT ME!
@@ -312,6 +343,25 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag
       return buf.toString();
    }
 
+	/**
+	returns beginnings of tags with attributes defining type/value/[src/alt - if image]
+	*/
+	protected String getButtonEnd()
+	{
+
+		switch (choosenFlavor)
+		{
+			case FLAVOR_IMAGE:
+			   return "\"/>";
+
+			case FLAVOR_MODERN:
+				return "\">";
+
+			default: // FLAVOR_STANDARD
+				return "\"/>";
+			
+		}
+	}
 
    /**
    renders tag containing additional information about that button:

@@ -22,25 +22,11 @@
  */
 package org.dbforms.taglib;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import javax.servlet.jsp.JspException;
-
-import javax.servlet.jsp.tagext.BodyTagSupport;
-import javax.servlet.jsp.tagext.TryCatchFinally;
-
-import org.dbforms.config.DbFormsConfig;
-import org.dbforms.config.Field;
-import org.dbforms.config.Table;
-
-import org.dbforms.util.FieldValue;
-import org.dbforms.util.FieldValues;
 import org.dbforms.util.Util;
-
-import org.dbforms.validation.ValidatorConstants;
-
 import org.apache.log4j.Category;
+import org.dbforms.event.eventtype.EventType;
 
 
 
@@ -52,7 +38,7 @@ import org.apache.log4j.Category;
  */
 public class DbGotoButtonTag extends DbBaseButtonTag
 {
-   static Category    logCat            = Category.getInstance(DbGotoButtonTag.class
+   private static Category    logCat            = Category.getInstance(DbGotoButtonTag.class
          .getName()); // logging category for this class
    private String     destination;
    private String     destTable;
@@ -184,26 +170,13 @@ public class DbGotoButtonTag extends DbBaseButtonTag
     */
    public int doStartTag() throws javax.servlet.jsp.JspException
    {
+      super.doStartTag();
+
       DbGotoButtonTag.uniqueID++; // make sure that we don't mix up buttons
-
-      if ((parentForm.getFormValidatorName() != null)
-               && (parentForm.getFormValidatorName().length() > 0)
-               && parentForm.getJavascriptValidation().equals("true"))
-      {
-         String onclick = (getOnClick() != null) ? getOnClick() : "";
-
-         if (onclick.lastIndexOf(";") != (onclick.length() - 1))
-         {
-            onclick += ";"; // be sure javascript end with ";"
-         }
-
-         setOnClick(onclick + ValidatorConstants.JS_CANCEL_VALIDATION
-            + "=false;");
-      }
 
       try
       {
-         String       tagName = "ac_goto_" + uniqueID;
+			String       tagName = EventType.EVENT_NAVIGATION_TRANSFER_GOTO + table.getId();
 
          StringBuffer tagBuf = new StringBuffer();
 
@@ -242,7 +215,7 @@ public class DbGotoButtonTag extends DbBaseButtonTag
          tagBuf.append(getButtonBegin());
          tagBuf.append(" name=\"");
          tagBuf.append(tagName);
-         tagBuf.append("\">");
+         tagBuf.append(getButtonEnd());
 
          pageContext.getOut().write(tagBuf.toString());
       }
@@ -261,42 +234,6 @@ public class DbGotoButtonTag extends DbBaseButtonTag
       }
    }
 
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    *
-    * @throws javax.servlet.jsp.JspException DOCUMENT ME!
-    * @throws JspException DOCUMENT ME!
-    */
-   public int doEndTag() throws javax.servlet.jsp.JspException
-   {
-      if (choosenFlavor == FLAVOR_MODERN)
-      {
-         if (parentForm.getFooterReached()
-                  && Util.isNull(parentForm.getResultSetVector()))
-         {
-            return EVAL_PAGE;
-         }
-
-         try
-         {
-            if (bodyContent != null)
-            {
-               bodyContent.writeOut(bodyContent.getEnclosingWriter());
-            }
-
-            pageContext.getOut().write("</button>");
-         }
-         catch (java.io.IOException ioe)
-         {
-            throw new JspException("IO Error: " + ioe.getMessage());
-         }
-      }
-
-      return EVAL_PAGE;
-   }
 
 	/**
 	 * @return the attribute

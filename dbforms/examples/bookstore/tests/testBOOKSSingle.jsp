@@ -27,6 +27,7 @@
 						<td><db:navPrevButton  caption="previous"/></td>
 						<td><db:navNextButton  caption="next"/></td>
 						<td><db:navLastButton  caption="last"/></td>
+						<td><db:navReloadButton  caption="reload"/></td>
 					</tr>
 				</table>
 			</db:footer>

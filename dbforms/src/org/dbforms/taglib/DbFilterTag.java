@@ -22,19 +22,19 @@
  */
 
 package org.dbforms.taglib;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 import javax.servlet.jsp.tagext.TryCatchFinally;
-
 import org.apache.log4j.Category;
 import org.dbforms.util.ParseUtil;
+import org.dbforms.util.Util;
+
+
 
 /**
  * custom tag that build up a set of sql filters.
@@ -116,371 +116,435 @@ import org.dbforms.util.ParseUtil;
  */
 public class DbFilterTag extends BodyTagSupport implements TryCatchFinally
 {
-    protected static String FLT_COND = "_cond_";
-    protected static String FLT_PREFIX = "filter_";
-    protected static String FLT_SEL = "_sel";
-    protected static String FLT_SET = "_set";
-    protected static String FLT_VALUE = "_value_";
-    protected static String FLT_VALUETYPE = "_valuetype_";
+   /** DOCUMENT ME! */
+   protected static String FLT_COND = "_cond_";
 
-    static Category logCat = Category.getInstance(DbFilterTag.class.getName());
+   /** DOCUMENT ME! */
+   protected static String FLT_PREFIX = "filter_";
 
-    /**
-     * return the currently setted filter condition, reading it from request.
-     * Used in DbFormTag's doStartTag to set the value of the sqlFilter attribute. 
-     * 
-     * @param request
-     * @param tableId
-     * @param sqlFilter
-     * @return filter string
-     */
-    public static String generateSqlFilter(
-        HttpServletRequest request,
-        int tableId,
-        String sqlFilter)
-    {
-        String filter = "";
-        String filterCondition = null;
-        // read from request the currently active condition
-        int conditionId = getCurrentCondition(request, tableId);
-        if (conditionId > -1)
-        {
-            // if there's an active condition, build up it from request
-            filterCondition =
-                DbFilterConditionTag.generateFilterCondition(
-                    request,
-                    tableId,
-                    conditionId);
-        }
-        logCat.debug("filter condition from request : " + filterCondition);
-        if (sqlFilter != null && sqlFilter.trim().length() > 0)
-            // sqlFilter value is already defined, we AND it with out condition 
-            if (filterCondition != null && filterCondition.trim().length() > 0)
-                filter =
-                    " ( " + sqlFilter + " ) AND ( " + filterCondition + " ) ";
-            else
-                filter = sqlFilter;
-        else
-            filter = filterCondition != null ? filterCondition : "";
-        logCat.debug("filter to apply : " + filter);
-        return filter;
-    }
+   /** DOCUMENT ME! */
+   protected static String FLT_SEL = "_sel";
 
-    /**
-     * retrieve the currently active condition from request
-     * 
-     * @param request
-     * @param tableId
-     * @return the condition id
-     */
-    protected static int getCurrentCondition(
-        HttpServletRequest request,
-        int tableId)
-    {
-        int curCondId = -1;
-        // retrieve the current condition from parameters 
-        String param =
-            ParseUtil.getParameter(request, getFilterName(tableId) + FLT_SEL);
-        if (param != null)
-        {
-            // try to transform parameter string in integer
-            try
-            {
-                curCondId = Integer.parseInt(param);
-            }
-            catch (NumberFormatException e)
-            {
-            }
-        }
-        logCat.debug("setting current filter: " + curCondId);
-        return curCondId;
-    }
+   /** DOCUMENT ME! */
+   protected static String FLT_SET = "_set";
 
-    /**
-     * filter prefix
-     * 
-     * @param tableId
-     * @return
-     */
-    protected static String getFilterName(int tableId)
-    {
-        return FLT_PREFIX + tableId;
-    }
+   /** DOCUMENT ME! */
+   protected static String FLT_VALUE = "_value_";
 
-    /**
-     * list of conditions defined for this filter element
-     */
-    private ArrayList conds;
-    /**
-     * used to override the label of the main select's first option element
-     */
-    private String disabledCaption;
-    /**
-     * prefix for this filter of the request's parameters
-     */
-    private String filterName;
-    /**
-     * reference to parent dbform
-     */
-    private DbFormTag parentForm;
-    /**
-     * caption of the SET button
-     */
-    private String setCaption;
-    /** 
-     * size attribute for select element 
-     */
-    private String size;
-    /** 
-     * class style to apply to select 
-     */
-    private String styleClass;
-    /**
-     * caption of the UNSET button
-     */
-    private String unsetCaption;
+   /** DOCUMENT ME! */
+   protected static String FLT_VALUETYPE = "_valuetype_";
+   static Category         logCat = Category.getInstance(
+                                             DbFilterTag.class.getName());
 
-    /**
-     * add a condition object to the list. Called by nested DbFilterConditionTag
-     * 
-     * @param condition to add
-     * @return index of the newly added condition
-     */
-    protected int addCondition(DbFilterConditionTag condition)
-    {
-        conds.add(condition.getState());
-        return conds.size() - 1;
-    }
+   /**
+    * return the currently setted filter condition, reading it from request.
+    * Used in DbFormTag's doStartTag to set the value of the sqlFilter attribute. 
+    * 
+    * @param request
+    * @param tableId
+    * @param sqlFilter
+    * @return filter string
+    */
+   public static String generateSqlFilter(HttpServletRequest request, 
+                                          int tableId, String sqlFilter)
+   {
+      String filter          = "";
+      String filterCondition = null;
 
-    /**
-     * here we read information from nested tags and we render output to the page. 
-     * 
-     * @see javax.servlet.jsp.tagext.IterationTag#doAfterBody()
-     */
-    public int doAfterBody() throws JspException
-    {
-        // retrieve the currently active condition from request
-        int currentCondId =
-            getCurrentCondition(
-                (HttpServletRequest) pageContext.getRequest(),
-                getTableId());
-        DbFilterConditionTag currentCond = null;
-        if (currentCondId > -1)
-        {
-            currentCond = new DbFilterConditionTag();
-            // read the object's state stored in array and apply it in newly created object 
-            currentCond.setState(
-                pageContext,
-                this,
-                (DbFilterConditionTag.State) conds.get(currentCondId));
-        }
-        try
-        {
-            JspWriter out = getPreviousOut();
-            // render output
-            out.println(render(currentCond));
-            /* 
-             * @todo must bodyContent be cleared?
-             */
-            if (bodyContent != null)
-                bodyContent.clearBody();
-        }
-        catch (IOException e)
-        {
-            throw new JspException(e.getMessage());
-        }
-        return SKIP_BODY;
-    }
+      // read from request the currently active condition
+      int conditionId = getCurrentCondition(request, tableId);
 
-    /**
-     * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
-     */
-    public void doCatch(Throwable t) throws Throwable
-    {
-        logCat.error("doCatch called - " + t.toString());
-        throw t;
-    }
+      if (conditionId > -1)
+      {
+         // if there's an active condition, build up it from request
+         filterCondition = DbFilterConditionTag.generateFilterCondition(request, 
+                                                                        tableId, 
+                                                                        conditionId);
+      }
 
-    /**
-     * reset tag state
-     * 
-     * @see javax.servlet.jsp.tagext.TryCatchFinally#doFinally()
-     */
-    public void doFinally()
-    {
-        conds = null;
-        disabledCaption = null;
-        filterName = null;
-        parentForm = null;
-        setCaption = null;
-        size = null;
-        styleClass = null;
-        unsetCaption = null;
-    }
+      logCat.debug("filter condition from request : " + filterCondition);
 
-    /** 
-     * initialize  environment
-     * 
-     * @see javax.servlet.jsp.tagext.Tag#doStartTag()
-     */
-    public int doStartTag() throws JspException
-    {
-        init();
-        return EVAL_BODY_BUFFERED;
-    }
+      if ((sqlFilter != null) && (sqlFilter.trim().length() > 0))
+      {
+         // sqlFilter value is already defined, we AND it with out condition 
+         if ((filterCondition != null) && (filterCondition.trim().length() > 0))
+         {
+            filter = " ( " + sqlFilter + " ) AND ( " + filterCondition + " ) ";
+         }
+         else
+         {
+            filter = sqlFilter;
+         }
+      }
+      else
+      {
+         filter = (filterCondition != null) ? filterCondition : "";
+      }
 
-    /**
-     * filter's parameters prefix in request
-     * @return
-     */
-    protected String getFilterName()
-    {
-        return filterName;
-    }
+      logCat.debug("filter to apply : " + filter);
 
-    /**
-     * return tableId of the parent dbform tag
-     * 
-     * @return
-     */
-    protected int getTableId()
-    {
-        return parentForm.getTable().getId();
-    }
+      return filter;
+   }
 
-    /**
-     * initialize class fields.
-     */
-    private void init()
-    {
-        conds = new ArrayList();
-        parentForm = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
-        filterName = getFilterName(getTableId());
-        if (styleClass == null)
-            styleClass = "";
-        if (size == null)
-            size = "1";
-        if (disabledCaption == null)
-            disabledCaption = "";
-        if (setCaption == null)
-            setCaption = "set";
-        if (unsetCaption == null)
-            unsetCaption = "unset";
-    }
 
-    /**
-     * render output
-     * 
-     * @param currentCond
-     * @return
-     * @throws JspException
-     */
-    protected StringBuffer render(DbFilterConditionTag currentCond)
-        throws JspException
-    {
-        StringBuffer buf = new StringBuffer();
-        // render main select
-        buf.append(
-            "\n<select name=\""
-                + filterName
-                + FLT_SEL
-                + "\" class=\""
-                + styleClass
-                + "\" size=\""
-                + size
-                + "\" onchange=\"document.dbform.submit()\" >\n");
-        int cnt = 0;
-        buf.append(
-            "\t<option value=\"-1\" >" + disabledCaption + "</option>\n");
-        // render an option for each nested condition
-        DbFilterConditionTag cond = new DbFilterConditionTag();
-        for (Iterator i = conds.iterator(); i.hasNext();)
-        {
-            // read DbFilterConditionTag object's state stored in array and apply to cond object
-            cond.setState(
-                this.pageContext,
-                this,
-                (DbFilterConditionTag.State) i.next());
-            // select the currently active condition 
-            String selected =
-                currentCond != null
-                    && currentCond.equals(cond) ? "selected" : "";
-            // render option
-            buf.append(
-                "\t<option value=\""
-                    + cnt
-                    + "\" "
-                    + selected
-                    + ">"
-                    + cond.getLabel()
-                    + "</option>\n");
-            cnt++;
-        }
-        buf.append("</select>\n");
-        if (currentCond != null)
-        {
-            // render the current condition
-            buf.append(currentCond.render());
-            // render the buttons to set the filter
-            buf.append(
-                "<input type=\"submit\" value=\""
-                    + setCaption
-                    + "\" name=\""
-                    + filterName
-                    + FLT_SET
-                    + "\" />\n");
-            buf.append(
-                "<input type=\"submit\" value=\""
-                    + unsetCaption
-                    + "\" name=\""
-                    + filterName
-                    + FLT_SET
-                    + "\" onclick=\"document.dbform."
-                    + filterName
-                    + FLT_SEL
-                    + ".selectedIndex = -1;\" />\n");
-        }
-        return buf;
-    }
+   /**
+    * retrieve the currently active condition from request
+    * 
+    * @param request
+    * @param tableId
+    * @return the condition id
+    */
+   protected static int getCurrentCondition(HttpServletRequest request, 
+                                            int tableId)
+   {
+      int curCondId = -1;
 
-    /**
-     * @param string
-     */
-    public void setDisabledCaption(String string)
-    {
-        disabledCaption = string;
-    }
+      // retrieve the current condition from parameters 
+      String param = ParseUtil.getParameter(request, 
+                                            getFilterName(tableId) + FLT_SEL);
 
-    /**
-     * @param string
-     */
-    public void setSetCaption(String string)
-    {
-        setCaption = string;
-    }
+      if (param != null)
+      {
+         // try to transform parameter string in integer
+         try
+         {
+            curCondId = Integer.parseInt(param);
+         }
+         catch (NumberFormatException e)
+         {
+            ;
+         }
+      }
 
-    /**
-     * @param string
-     */
-    public void setSize(String string)
-    {
-        size = string;
-    }
+      logCat.debug("setting current filter: " + curCondId);
 
-    /**
-     * @param string
-     */
-    public void setStyleClass(String string)
-    {
-        styleClass = string;
-    }
+      return curCondId;
+   }
 
-    /**
-     * @param string
-     */
-    public void setUnsetCaption(String string)
-    {
-        unsetCaption = string;
-    }
 
+   /**
+    * filter prefix
+    * 
+    * @param tableId
+    * @return
+    */
+   protected static String getFilterName(int tableId)
+   {
+      return FLT_PREFIX + tableId;
+   }
+
+   /**
+    * list of conditions defined for this filter element
+    */
+   private ArrayList conds;
+
+   /**
+    * used to override the label of the main select's first option element
+    */
+   private String disabledCaption;
+
+   /**
+    * prefix for this filter of the request's parameters
+    */
+   private String filterName;
+
+   /**
+    * reference to parent dbform
+    */
+   private DbFormTag parentForm;
+
+   /**
+    * caption of the SET button
+    */
+   private String setCaption;
+
+   /** 
+    * size attribute for select element 
+    */
+   private String size;
+
+   /** 
+    * class style to apply to select 
+    */
+   private String styleClass;
+
+   /**
+    * caption of the UNSET button
+    */
+   private String unsetCaption;
+
+   /**
+    * add a condition object to the list. Called by nested DbFilterConditionTag
+    * 
+    * @param condition to add
+    * @return index of the newly added condition
+    */
+   protected int addCondition(DbFilterConditionTag condition)
+   {
+      conds.add(condition.getState());
+
+      return conds.size() - 1;
+   }
+
+
+   /** 
+    * initialize  environment
+    * 
+    * @see javax.servlet.jsp.tagext.Tag#doStartTag()
+    */
+   public int doStartTag() throws JspException
+   {
+      init();
+
+      return EVAL_BODY_BUFFERED;
+   }
+
+
+   /**
+    * here we read information from nested tags and we render output to the page. 
+    * 
+    * @see javax.servlet.jsp.tagext.IterationTag#doEndTag()
+    */
+   public int doEndTag() throws JspException
+   {
+      // retrieve the currently active condition from request
+      int currentCondId = getCurrentCondition(
+                                   (HttpServletRequest) pageContext.getRequest(), 
+                                   getTableId());
+      DbFilterConditionTag currentCond = null;
+
+      if (currentCondId > -1)
+      {
+         currentCond = new DbFilterConditionTag();
+
+
+         // read the object's state stored in array and apply it in newly created object 
+         currentCond.setState(pageContext, this, 
+                              (DbFilterConditionTag.State) conds.get(
+                                       currentCondId));
+      }
+      StringBuffer buf = render(currentCond);
+      try
+      {
+			// clear body content. 
+			// It's meaningless for filter tag and should not be rendered!
+			if (bodyContent != null)
+			{
+				bodyContent.clearBody();
+			}
+         JspWriter out = pageContext.getOut();
+         out.write(buf.toString());
+
+      }
+      catch (IOException e)
+      {
+         throw new JspException(e.getMessage());
+      }
+
+      return SKIP_BODY;
+   }
+
+
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable
+   {
+      logCat.error("doCatch called - " + t.toString());
+      throw t;
+   }
+
+
+   /**
+    * reset tag state
+    * 
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doFinally()
+    */
+   public void doFinally()
+   {
+      conds           = null;
+      disabledCaption = null;
+      filterName      = null;
+      parentForm      = null;
+      setCaption      = null;
+      size            = null;
+      styleClass      = null;
+      unsetCaption    = null;
+   }
+
+
+   /**
+    * filter's parameters prefix in request
+    * @return
+    */
+   protected String getFilterName()
+   {
+      return filterName;
+   }
+
+
+   /**
+    * return tableId of the parent dbform tag
+    * 
+    * @return
+    */
+   protected int getTableId()
+   {
+      return parentForm.getTable().getId();
+   }
+
+
+   /**
+    * initialize class fields.
+    */
+   private void init()
+   {
+      conds      = new ArrayList();
+      parentForm = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
+      filterName = getFilterName(getTableId());
+
+      if (styleClass == null)
+      {
+         styleClass = "";
+      }
+
+      if (size == null)
+      {
+         size = "1";
+      }
+
+      if (disabledCaption == null)
+      {
+         disabledCaption = "";
+      }
+
+      if (setCaption == null)
+      {
+         setCaption = "set";
+      }
+
+      if (unsetCaption == null)
+      {
+         unsetCaption = "unset";
+      }
+   }
+
+
+   /**
+    * render output
+    * 
+    * @param currentCond
+    * @return
+    * @throws JspException
+    */
+   protected StringBuffer render(DbFilterConditionTag currentCond)
+                          throws JspException
+   {
+
+      StringBuffer buf = new StringBuffer();
+
+
+      // render main select
+      buf.append("\n<select name=\"" + filterName + FLT_SEL + "\" class=\""
+                 + styleClass + "\" size=\"" + size
+                 + "\" onchange=\"document.dbform.submit()\" >\n");
+
+      int cnt = 0;
+      buf.append("\t<option value=\"-1\" >" + disabledCaption + "</option>\n");
+
+      // render an option for each nested condition
+      DbFilterConditionTag cond = new DbFilterConditionTag();
+
+      for (Iterator i = conds.iterator(); i.hasNext();)
+      {
+         // read DbFilterConditionTag object's state stored in array and apply to cond object
+         cond.setState(this.pageContext, this, 
+                       (DbFilterConditionTag.State) i.next());
+
+         // select the currently active condition 
+         String selected = ((currentCond != null) && currentCond.equals(cond))
+                              ? "selected" : "";
+
+
+         // render option
+         buf.append("\t<option value=\"" + cnt + "\" " + selected + ">"
+                    + cond.getLabel() + "</option>\n");
+         cnt++;
+      }
+
+      buf.append("</select>\n");
+
+      if (currentCond != null)
+      {
+         // render the current condition
+         buf.append(currentCond.render());
+
+         if (!Util.isNull(setCaption))
+         {
+            DbBaseButtonFactory btn = new DbBaseButtonFactory(this.pageContext, 
+                                                              this, 
+                                                              DbNavReloadButtonTag.class);
+            btn.getButton().setCaption(setCaption);
+            buf.append(btn.render());
+         }
+
+         if (!Util.isNull(unsetCaption))
+         {
+            DbBaseButtonFactory btn = new DbBaseButtonFactory(this.pageContext, 
+                                                              this, 
+                                                              DbNavReloadButtonTag.class);
+            btn.getButton().setCaption(unsetCaption);
+            btn.getButton()
+               .setOnClick("document.dbform." + filterName + FLT_SEL
+                           + ".selectedIndex = -1;");
+            buf.append(btn.render());
+         }
+      }
+      return buf;
+   }
+
+
+   /**
+    * @param string
+    */
+   public void setDisabledCaption(String string)
+   {
+      disabledCaption = string;
+   }
+
+
+   /**
+    * @param string
+    */
+   public void setSetCaption(String string)
+   {
+      setCaption = string;
+   }
+
+
+   /**
+    * @param string
+    */
+   public void setSize(String string)
+   {
+      size = string;
+   }
+
+
+   /**
+    * @param string
+    */
+   public void setStyleClass(String string)
+   {
+      styleClass = string;
+   }
+
+
+   /**
+    * @param string
+    */
+   public void setUnsetCaption(String string)
+   {
+      unsetCaption = string;
+   }
 }

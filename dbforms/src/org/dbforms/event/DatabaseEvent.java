@@ -171,12 +171,6 @@ public abstract class DatabaseEvent extends WebEvent
                         + (insertMode ? Constants.INSERTPREFIX : "") 
                         + keyId
                         + "_");
-    
-    /** 
-     * @todo - remove this log after the understanding process; 
-     */
-    logCat.info("::getFieldValues ----------------> paramStub =" + paramStub);
-          
     Vector params = ParseUtil.getParametersStartingWith(request, paramStub);
     boolean doIt  = insertMode || "delete".equals(getType());
     
@@ -250,12 +244,7 @@ public abstract class DatabaseEvent extends WebEvent
   protected String getKeyValues()
   {
     String key = Util.decode(ParseUtil.getParameter(request, "k_" + tableId + "_" + keyId));
-
-    /** 
-     * @todo - remove this log after the understanding process; 
-     */
     logCat.info("::getKeyValues - key: " + key);
-
     return key;
   }
 

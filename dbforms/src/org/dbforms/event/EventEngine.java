@@ -140,11 +140,10 @@ public class EventEngine
    public WebEvent generatePrimaryEvent()
    {
       WebEvent e           = null;
-      String   action      = ParseUtil.getFirstParameterStartingWith(request, 
-                             "ac_");
-      String   customEvent = request.getParameter("customEvent");
+      String   action      = ParseUtil.getFirstParameterStartingWith(request, "ac_");
+      String   customEvent = ParseUtil.getParameter(request, "customEvent");
 
-      if ((action == null) && (customEvent != null))
+      if (Util.isNull(action) && !Util.isNull(customEvent))
       {
          // 2003-07-21-HKK: fixing NS 4.79 bug! (From bug list) 
          action = customEvent.trim();
@@ -168,7 +167,9 @@ public class EventEngine
       //
       // ReloadEvent use to refresh field values from request object
       // and to allow server side manipulation for these fields
-      // Ex: Select parent -> Select child
+      //
+      // This event is created if customEvent is set to re_x_x!!
+      //
       if (action.startsWith("re_"))
       {
          logCat.info("##### RELOAD  EVENT ######");

@@ -35,7 +35,7 @@ import org.apache.log4j.Category;
 public class NavigationEventTypeStrategy implements EventTypeStrategy
 {
    /** logging category */
-   protected static Category logCat = Category.getInstance(NavigationEventTypeStrategy.class
+   private static Category logCat = Category.getInstance(NavigationEventTypeStrategy.class
          .getName());
 
    /**
@@ -60,18 +60,23 @@ public class NavigationEventTypeStrategy implements EventTypeStrategy
       int eventGroup = EventType.EVENT_UNDEFINED;
 
       // could implement this with an hash map;
-      if (eventString.startsWith("ac_first_")
-               || eventString.startsWith("ac_prev_")
-               || eventString.startsWith("ac_next_")
-               || eventString.startsWith("ac_last_")
-               || eventString.startsWith("ac_new_")
-               || eventString.startsWith("ac_copy_")
-               || eventString.startsWith("ac_goto_")
-               || eventString.equals("navFirst")
-               || eventString.equals("navPrev")
-               || eventString.equals("navNext")
-               || eventString.equals("navLast") || eventString.equals("navNew")
-               || eventString.equals("goto"))
+      if (
+					   eventString.startsWith(EventType.EVENT_NAVIGATION_TRANSFER_FIRST)
+					|| eventString.startsWith(EventType.EVENT_NAVIGATION_TRANSFER_PREV)
+					|| eventString.startsWith(EventType.EVENT_NAVIGATION_TRANSFER_NEXT)
+					|| eventString.startsWith(EventType.EVENT_NAVIGATION_TRANSFER_LAST) 
+					|| eventString.startsWith(EventType.EVENT_NAVIGATION_TRANSFER_NEW)
+					|| eventString.startsWith(EventType.EVENT_NAVIGATION_TRANSFER_RELOAD)
+					|| eventString.startsWith(EventType.EVENT_NAVIGATION_TRANSFER_GOTO)
+               || eventString.equals(EventType.EVENT_NAVIGATION_FIRST)
+               || eventString.equals(EventType.EVENT_NAVIGATION_PREV)
+               || eventString.equals(EventType.EVENT_NAVIGATION_NEXT)
+               || eventString.equals(EventType.EVENT_NAVIGATION_LAST) 
+               || eventString.equals(EventType.EVENT_NAVIGATION_NEW)
+					|| eventString.equals(EventType.EVENT_NAVIGATION_RELOAD)
+					|| eventString.equals(EventType.EVENT_NAVIGATION_GOTO)
+               || eventString.equals("goto")
+			)
       {
          eventGroup = EventType.EVENT_GROUP_NAVIGATION;
       }
@@ -90,38 +95,46 @@ public class NavigationEventTypeStrategy implements EventTypeStrategy
    {
       String eventType = String.valueOf(EventType.EVENT_UNDEFINED);
 
-      if (eventString.startsWith("ac_first_") || eventString.equals("navFirst"))
+      if (eventString.startsWith(EventType.EVENT_NAVIGATION_TRANSFER_FIRST) 
+      			|| eventString.equals(EventType.EVENT_NAVIGATION_FIRST))
       {
          eventType = EventType.EVENT_NAVIGATION_FIRST;
       }
-      else if (eventString.startsWith("ac_prev_")
-               || eventString.equals("navPrev"))
+      else if (eventString.startsWith(EventType.EVENT_NAVIGATION_TRANSFER_PREV)
+               || eventString.equals(EventType.EVENT_NAVIGATION_PREV))
       {
          eventType = EventType.EVENT_NAVIGATION_PREV;
       }
-      else if (eventString.startsWith("ac_next_")
-               || eventString.equals("navNext"))
+      else if (eventString.startsWith(EventType.EVENT_NAVIGATION_TRANSFER_NEXT)
+               || eventString.equals(EventType.EVENT_NAVIGATION_NEXT))
       {
          eventType = EventType.EVENT_NAVIGATION_NEXT;
       }
-      else if (eventString.startsWith("ac_last_")
-               || eventString.equals("navLast"))
+      else if (eventString.startsWith(EventType.EVENT_NAVIGATION_TRANSFER_LAST)
+               || eventString.equals(EventType.EVENT_NAVIGATION_LAST))
       {
          eventType = EventType.EVENT_NAVIGATION_LAST;
       }
-      else if (eventString.startsWith("ac_new_")
-               || eventString.equals("navNew"))
+      else if (eventString.startsWith(EventType.EVENT_NAVIGATION_TRANSFER_NEW)
+               || eventString.equals(EventType.EVENT_NAVIGATION_NEW))
       {
          eventType = EventType.EVENT_NAVIGATION_NEW;
       }
-      else if (eventString.startsWith("ac_copy_")
-               || eventString.equals("navCopy"))
-      {
-         eventType = EventType.EVENT_NAVIGATION_COPY;
-      }
-      else if (eventString.startsWith("ac_goto_") || eventString.equals("goto"))
+      else if (eventString.startsWith(EventType.EVENT_NAVIGATION_TRANSFER_COPY)
+               || eventString.equals(EventType.EVENT_NAVIGATION_GOTO))
       {
          eventType = EventType.EVENT_NAVIGATION_GOTO;
+      }
+		else if (eventString.startsWith(EventType.EVENT_NAVIGATION_TRANSFER_RELOAD)
+					|| eventString.equals(EventType.EVENT_NAVIGATION_RELOAD))
+		{
+			eventType = EventType.EVENT_NAVIGATION_RELOAD;
+		}
+      else if (eventString.startsWith(EventType.EVENT_NAVIGATION_TRANSFER_GOTO) 
+      			|| eventString.equals("goto")
+					|| eventString.equals(EventType.EVENT_NAVIGATION_COPY))
+      {
+         eventType = EventType.EVENT_NAVIGATION_COPY;
       }
 
       return eventType;

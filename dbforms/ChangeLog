@@ -1,6 +1,17 @@
+2003-10-03
+(Henner.Kollmann@gmx.de)
+   - bug fixed server side validation. Server side validation did not work with datalist navigation.
+   - clean up buttons: Move duplicate code into base class
+   - create new reload event to reload the entire dataset. So you can just use the reload event and do not need
+     to build an update event with special handling in DbFormsTag.
+   - create new reload button
+   - new button create factory so that you can use each button in other tags.
+   - change DbFilterTag to use button create factory to render reload buttons instead of goto buttons
+   - remove special handling for filter from DbFormTag.
+
 2003-09-29
 (Henner.Kollmann@gmx.de)
-  	Switch to maven 1.0-rc1
+    Switch to maven 1.0-rc1
   	
 2003-09-11
 (Henner.Kollmann@gmx.de)

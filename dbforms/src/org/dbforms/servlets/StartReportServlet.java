@@ -22,6 +22,7 @@
  */
 
 package org.dbforms.servlets;
+
 import org.apache.log4j.Category;
 import org.apache.commons.lang.StringUtils;
 import java.util.HashMap;
@@ -39,9 +40,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.PageContext;
 import org.dbforms.servlets.reports.JRDataSourceRSV;
-import org.dbforms.servlets.reports.PageContextDummy;
 import org.dbforms.servlets.reports.ReportParameter;
 import org.dbforms.event.WebEvent;
+import org.dbforms.util.PageContextBuffer;
 import org.dbforms.util.ResultSetVector;
 import org.dbforms.util.SqlUtil;
 import org.dbforms.util.ParseUtil;
@@ -590,7 +591,7 @@ public class StartReportServlet extends HttpServlet
                                             .getName();
 
             // Simulate call to DbFormTag to get resultsetvector
-            PageContext pageContext = new PageContextDummy();
+            PageContext pageContext = new PageContextBuffer();
             pageContext.initialize(this, request, response, null, true, 0, true);
 
             DbFormTag form = new DbFormTag();

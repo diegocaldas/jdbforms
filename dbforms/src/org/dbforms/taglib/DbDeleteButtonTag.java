@@ -21,18 +21,14 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.taglib;
-import java.util.*;
-import java.sql.*;
-import java.io.*;
-import javax.servlet.jsp.*;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.tagext.*;
 
-import org.dbforms.util.*;
-import org.dbforms.validation.ValidatorConstants;
+import javax.servlet.jsp.JspException;
+import org.dbforms.util.Util;
 import org.apache.log4j.Category;
+import org.dbforms.event.eventtype.EventType;
 
-
+import org.dbforms.util.MessageResources;
+import javax.servlet.http.HttpServletRequest;
 
 /****
  *
@@ -110,22 +106,10 @@ public class DbDeleteButtonTag extends DbBaseButtonTag
     */
    public int doStartTag() throws javax.servlet.jsp.JspException
    {
+		super.doStartTag();
+		
       DbDeleteButtonTag.uniqueID++; // make sure that we don't mix up buttons
 
-      if ((parentForm.getFormValidatorName() != null)
-               && (parentForm.getFormValidatorName().length() > 0)
-               && parentForm.getJavascriptValidation().equals("true"))
-      {
-         String onclick = (getOnClick() != null) ? getOnClick() : "";
-
-         if (onclick.lastIndexOf(";") != (onclick.length() - 1))
-         {
-            onclick += ";"; // be sure javascript end with ";"
-         }
-
-         setOnClick(onclick + ValidatorConstants.JS_CANCEL_VALIDATION
-            + "=false;");
-      }
 
       if (getConfirmMessage() != null)
       {
@@ -142,10 +126,7 @@ public class DbDeleteButtonTag extends DbBaseButtonTag
          {
             try
             {
-               Locale locale = MessageResources.getLocale((HttpServletRequest) pageContext
-                     .getRequest());
-               message = MessageResources.getMessage(getConfirmMessage(),
-                     locale, getConfirmMessage());
+               message = MessageResources.getMessage((HttpServletRequest)pageContext.getRequest(), getConfirmMessage());
             }
             catch (Exception e)
             {
@@ -210,7 +191,7 @@ public class DbDeleteButtonTag extends DbBaseButtonTag
          tagBuf.append(getButtonBegin());
          tagBuf.append(" name=\"");
          tagBuf.append(tagName);
-         tagBuf.append("\">");
+			tagBuf.append(getButtonEnd());
 
          pageContext.getOut().write(tagBuf.toString());
       }
@@ -230,39 +211,4 @@ public class DbDeleteButtonTag extends DbBaseButtonTag
    }
 
 
-   /**
-    * DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    *
-    * @throws javax.servlet.jsp.JspException DOCUMENT ME!
-    * @throws JspException DOCUMENT ME!
-    */
-   public int doEndTag() throws javax.servlet.jsp.JspException
-   {
-      if (choosenFlavor == FLAVOR_MODERN)
-      {
-         if (parentForm.getFooterReached()
-                  && Util.isNull(parentForm.getResultSetVector()))
-         {
-            return EVAL_PAGE;
-         }
-
-         try
-         {
-            if (bodyContent != null)
-            {
-               bodyContent.writeOut(bodyContent.getEnclosingWriter());
-            }
-
-            pageContext.getOut().write("</button>");
-         }
-         catch (java.io.IOException ioe)
-         {
-            throw new JspException("IO Error: " + ioe.getMessage());
-         }
-      }
-
-      return EVAL_PAGE;
-   }
 }

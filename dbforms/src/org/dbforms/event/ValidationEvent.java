@@ -20,7 +20,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-package org.dbforms.event.classic;
+package org.dbforms.event;
 import java.util.Hashtable;
 import java.util.Vector;
 import java.util.Locale;
@@ -32,8 +32,6 @@ import org.apache.commons.validator.Validator;
 import org.apache.commons.validator.ValidatorResults;
 import org.dbforms.validation.ValidatorConstants;
 import org.dbforms.config.DbFormsConfig;
-import org.dbforms.event.DatabaseEvent;
-import org.dbforms.event.MultipleValidationException;
 import org.dbforms.util.DbFormsErrors;
 import org.dbforms.util.MessageResources;
 
@@ -41,7 +39,6 @@ import org.dbforms.util.MessageResources;
 
 /**
  * 
- * @deprecated
  *
  * abstract base class for all database operations which need validation, e.g. InsertEvent and UpdateEvent
  *

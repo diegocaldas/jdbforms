@@ -1471,14 +1471,6 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
             lastPosition = firstPosition;
          }
 
-
-         if (ParseUtil.getParameter(request, "filter_" + table.getId() + "_set") != null)
-         {
-             logCat.debug("a filter set/unset is called: reset firstpos and lastpos");
-             firstPosition = null;
-             lastPosition = null;
-         }
-
          // if we are in a subform we must check if the fieldvalue-list provided in the
          // position strings is valid in the current state;
          // it might be invalid if the position of the parent form has been

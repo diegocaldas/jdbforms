@@ -294,7 +294,6 @@ public class DbFilterConditionTag extends BodyTagSupport implements TryCatchFina
      * render output, called from parent DbFilterCondition obj.
      * 
      * @return string containing html code for this obj
-     * @throws JspException
      */
     protected StringBuffer render() throws JspException
     {

@@ -26,7 +26,7 @@
  * $Date$
  *
  */
-package org.dbforms.servlets.reports;
+package org.dbforms.util;
 
 /**
  * Implementation of a JspWriter which do not write anything
@@ -44,8 +44,20 @@ import java.io.IOException;
  * @author $author$
  * @version $Revision$
  */
-public class JspWriterDummy extends JspWriter
+public class JspWriterBuffer extends JspWriter
 {
+   private StringBuffer buf = new StringBuffer();
+
+   public StringBuffer getBuffer() 
+   {
+      return buf;
+   }
+   
+   public String getResult() 
+   {
+      return buf.toString();
+   }
+   
    /**
     * Creates a new JspWriterDummy object.
     *
@@ -53,7 +65,7 @@ public class JspWriterDummy extends JspWriter
     * @param autoFlush DOCUMENT ME!
     * @param response DOCUMENT ME!
     */
-   protected JspWriterDummy(int bufferSize, boolean autoFlush,
+   protected JspWriterBuffer(int bufferSize, boolean autoFlush,
       ServletResponse response)
    {
       super(bufferSize, autoFlush);
@@ -68,6 +80,7 @@ public class JspWriterDummy extends JspWriter
     */
    public void write(int c) throws IOException
    {
+      buf.append(c);
    }
 
 
@@ -82,6 +95,7 @@ public class JspWriterDummy extends JspWriter
     */
    public void write(char[] cbuf, int off, int len) throws IOException
    {
+   	buf.append(cbuf, off, len);
    }
 
 
@@ -96,6 +110,7 @@ public class JspWriterDummy extends JspWriter
     */
    public void write(String str, int off, int len) throws IOException
    {
+   	write(str.toCharArray(), off, len);
    }
 
 
@@ -106,6 +121,7 @@ public class JspWriterDummy extends JspWriter
     */
    public void clear() throws IOException
    {
+      clearBuffer();
    }
 
 
@@ -116,6 +132,7 @@ public class JspWriterDummy extends JspWriter
     */
    public void clearBuffer() throws IOException
    {
+      buf = new StringBuffer();
    }
 
 
@@ -169,6 +186,7 @@ public class JspWriterDummy extends JspWriter
     */
    public void print(boolean b) throws IOException
    {
+   	buf.append(b);
    }
 
 
@@ -181,6 +199,7 @@ public class JspWriterDummy extends JspWriter
     */
    public void print(char c) throws IOException
    {
+		buf.append(c);
    }
 
 
@@ -193,6 +212,7 @@ public class JspWriterDummy extends JspWriter
     */
    public void print(char[] s) throws IOException
    {
+		buf.append(s);
    }
 
 
@@ -205,6 +225,7 @@ public class JspWriterDummy extends JspWriter
     */
    public void print(int i) throws IOException
    {
+		buf.append(i);
    }
 
 
@@ -217,6 +238,7 @@ public class JspWriterDummy extends JspWriter
     */
    public void print(long l) throws IOException
    {
+		buf.append(l);
    }
 
 
@@ -229,6 +251,7 @@ public class JspWriterDummy extends JspWriter
     */
    public void print(float f) throws IOException
    {
+		buf.append(f);
    }
 
 
@@ -241,6 +264,7 @@ public class JspWriterDummy extends JspWriter
     */
    public void print(double d) throws IOException
    {
+		buf.append(d);
    }
 
 
@@ -253,6 +277,7 @@ public class JspWriterDummy extends JspWriter
     */
    public void print(String s) throws IOException
    {
+		buf.append(s);
    }
 
 
@@ -265,6 +290,7 @@ public class JspWriterDummy extends JspWriter
     */
    public void print(Object obj) throws IOException
    {
+		buf.append(obj);
    }
 
 
@@ -275,6 +301,7 @@ public class JspWriterDummy extends JspWriter
     */
    public void println() throws IOException
    {
+		buf.append('\n');
    }
 
 
@@ -287,6 +314,8 @@ public class JspWriterDummy extends JspWriter
     */
    public void println(boolean x) throws IOException
    {
+      print(x);
+      println();
    }
 
 
@@ -299,6 +328,8 @@ public class JspWriterDummy extends JspWriter
     */
    public void println(char x) throws IOException
    {
+		print(x);
+		println();
    }
 
 
@@ -311,6 +342,8 @@ public class JspWriterDummy extends JspWriter
     */
    public void println(int x) throws IOException
    {
+		print(x);
+		println();
    }
 
 
@@ -323,6 +356,8 @@ public class JspWriterDummy extends JspWriter
     */
    public void println(long x) throws IOException
    {
+		print(x);
+		println();
    }
 
 
@@ -335,6 +370,8 @@ public class JspWriterDummy extends JspWriter
     */
    public void println(float x) throws IOException
    {
+		print(x);
+		println();
    }
 
 
@@ -347,6 +384,8 @@ public class JspWriterDummy extends JspWriter
     */
    public void println(double x) throws IOException
    {
+		print(x);
+		println();
    }
 
 
@@ -359,6 +398,8 @@ public class JspWriterDummy extends JspWriter
     */
    public void println(char[] x) throws IOException
    {
+		print(x);
+		println();
    }
 
 
@@ -371,6 +412,8 @@ public class JspWriterDummy extends JspWriter
     */
    public void println(String x) throws IOException
    {
+		print(x);
+		println();
    }
 
 
@@ -383,5 +426,7 @@ public class JspWriterDummy extends JspWriter
     */
    public void println(Object x) throws IOException
    {
+		print(x);
+		println();
    }
 }

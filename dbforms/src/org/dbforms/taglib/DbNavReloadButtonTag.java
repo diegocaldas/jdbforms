@@ -31,14 +31,14 @@ import org.dbforms.event.eventtype.EventType;
 
 /****
  *
- * <p>this tag renders an "last"-button.
+ * <p>this tag renders an "reload"-button.
  *
  *
- * @author Joachim Peer <j.peer@gmx.net>
+ * @author Henner Kollmann <Henner.Kollmann@gmx.de>
  */
-public class DbNavLastButtonTag extends DbBaseButtonTag
+public class DbNavReloadButtonTag extends DbBaseButtonTag
 {
-   private static Category logCat = Category.getInstance(DbNavLastButtonTag.class
+   private static Category logCat = Category.getInstance(DbNavReloadButtonTag.class
          .getName()); // logging category for this class
 
    /**
@@ -51,8 +51,8 @@ public class DbNavLastButtonTag extends DbBaseButtonTag
     */
    public int doStartTag() throws javax.servlet.jsp.JspException
    {
-	   super.doStartTag();
-	   
+		super.doStartTag();
+
       if (parentForm.getFooterReached()
                && Util.isNull(parentForm.getResultSetVector()))
       {
@@ -63,7 +63,7 @@ public class DbNavLastButtonTag extends DbBaseButtonTag
       try
       {
          StringBuffer tagBuf  = new StringBuffer();
-         String       tagName = EventType.EVENT_NAVIGATION_TRANSFER_LAST + table.getId();
+         String       tagName = EventType.EVENT_NAVIGATION_TRANSFER_RELOAD + table.getId();
 
          if (followUp != null)
          {
@@ -76,11 +76,9 @@ public class DbNavLastButtonTag extends DbBaseButtonTag
          }
 
          tagBuf.append(getButtonBegin());
-			if (parentForm.getResultSetVector().isLastPage()) 
-				tagBuf.append(" disabled=\"true\"");
          tagBuf.append(" name=\"");
-         tagBuf.append(tagName);
-         tagBuf.append(getButtonEnd());
+			tagBuf.append(tagName);
+			tagBuf.append(getButtonEnd());
 
          pageContext.getOut().write(tagBuf.toString());
       }
@@ -98,5 +96,6 @@ public class DbNavLastButtonTag extends DbBaseButtonTag
          return SKIP_BODY;
       }
    }
+
 
 }
