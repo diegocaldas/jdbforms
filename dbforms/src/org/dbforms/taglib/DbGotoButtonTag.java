@@ -176,7 +176,9 @@ public class DbGotoButtonTag extends DbBaseButtonTag implements javax.servlet.js
          }
 
          // 2004-01-13 HKK: Fix encoding
-         tagBuf.append(getDataTag(tagName, "destPos", Util.encode(destPos, pageContext.getRequest().getCharacterEncoding())));
+         // 2004-05-20 HKK: destPos should be already encoded! So do not encode it twice!
+         // tagBuf.append(getDataTag(tagName, "destPos", Util.encode(destPos, pageContext.getRequest().getCharacterEncoding())));
+         tagBuf.append(getDataTag(tagName, "destPos", destPos));
          tagBuf.append(getDataTag(tagName, "keyToDestPos", Util.encode(keyToDestPos, pageContext.getRequest().getCharacterEncoding())));
          tagBuf.append(getDataTag(tagName, "keyToKeyToDestPos", Util.encode(keyToKeyToDestPos, pageContext.getRequest().getCharacterEncoding())));
 

@@ -233,20 +233,21 @@ public class GotoEvent extends NavigationEvent
       // get the DataSourceList from the session
       logCat.info("==> GotoEvent.processEvent");
 
-      try
-      {
-         position = Util.decode(position, getRequest().getCharacterEncoding());
-      }
-      catch (UnsupportedEncodingException e)
-      {
-         logCat.error(e);
-         throw new SQLException(e.getMessage());
-      }
 
       FieldValues fv;
 
       if (!Util.isNull(position))
       {
+         try
+         {
+            position = Util.decode(position, getRequest().getCharacterEncoding());
+         }
+         catch (UnsupportedEncodingException e)
+         {
+            logCat.error(e);
+            throw new SQLException(e.getMessage());
+         }
+         
          if ((srcTable != null) && !Util.isNull(childField)
                    && !Util.isNull(parentField))
          {

@@ -186,11 +186,8 @@ public class Util {
       if (isNull(enc)) {
          enc = "UTF-8";
       }
-
       s = URLEncoder.encode(s, enc);
-
       return s;
-
    }
 
 }

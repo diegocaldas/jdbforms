@@ -979,7 +979,7 @@ public class DbFormTag
          Connection con = getConfig().getConnection(dbConnectionName);
          // *************************************************************
          //  Part I - checking user access right, processing interceptor
-         // *********ad****************************************************
+         // *************************************************************
          HttpServletRequest request =
             (HttpServletRequest) pageContext.getRequest();
          HttpServletResponse response =
