@@ -1405,8 +1405,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
                 if (gotoHt.size() > 0)
                 {
                     String positionString = table.getPositionStringFromFieldAndValueHt(gotoHt);
-                    //GotoEvent ge = new GotoEvent(positionString, table);
-                    GotoEvent ge = getGotoEvent(positionString, table);
+                    GotoEvent ge = navEventFactory.createGotoEvent(positionString, table);
                     resultSetVector = ge.processEvent(mergedFieldValues, orderConstraint, count, firstPosition, lastPosition, con);
                 }
             }
@@ -1417,8 +1416,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
                 if (gotoHt.size() > 0)
                 {
                     String positionString = table.getPositionStringFromFieldAndValueHt(gotoHt);
-                    //GotoEvent ge = new GotoEvent(positionString, table);
-                    GotoEvent ge = getGotoEvent(positionString, table);
+                    GotoEvent ge = navEventFactory.createGotoEvent(positionString, table);
                     resultSetVector = ge.processEvent(mergedFieldValues, orderConstraint, count, firstPosition, lastPosition, con);
                 }
             }
@@ -1994,56 +1992,56 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
                 int operator = FieldValue.FILTER_EQUAL;
 
                 if (!Util.isNull(aSearchAlgorithm)) {
-	                if (aSearchAlgorithm.startsWith("sharpLT"))
-	                {
-	                    operator = FieldValue.FILTER_SMALLER_THEN;
-	                }
-	                else if (aSearchAlgorithm.startsWith("sharpLE"))
-	                {
-	                    operator = FieldValue.FILTER_SMALLER_THEN_EQUAL;
-	                }
-	                else if (aSearchAlgorithm.startsWith("sharpGT"))
-	                {
-	                    operator = FieldValue.FILTER_GREATER_THEN;
-	                }
-	                else if (aSearchAlgorithm.startsWith("sharpGE"))
-	                {
-	                    operator = FieldValue.FILTER_GREATER_THEN_EQUAL;
-	                }
-	                else if (aSearchAlgorithm.startsWith("sharpNE"))
-	                {
-	                    operator = FieldValue.FILTER_NOT_EQUAL;
-	                }
-	                else if (aSearchAlgorithm.startsWith("sharpNULL"))
-	                {
-	                    operator = FieldValue.FILTER_NULL;
-	                }
-	                else if (aSearchAlgorithm.startsWith("sharpNOTNULL"))
-	                {
-	                    operator = FieldValue.FILTER_NOT_NULL;
-	                }
-	                else if (aSearchAlgorithm.startsWith("weakStartEnd"))
-	                {
-	                    algorithm = FieldValue.SEARCH_ALGO_WEAK_END;
-	                    operator = FieldValue.FILTER_LIKE;
-	                }
-	                else if (aSearchAlgorithm.startsWith("weakStart"))
-	                {
-	                    algorithm = FieldValue.SEARCH_ALGO_WEAK_START;
-	                    operator = FieldValue.FILTER_LIKE;
-	                }
-	                else if (aSearchAlgorithm.startsWith("weakEnd"))
-	                {
-	                    algorithm = FieldValue.SEARCH_ALGO_WEAK_END;
-	                    operator = FieldValue.FILTER_LIKE;
-	                }
-	                else if (aSearchAlgorithm.startsWith("weak"))
-	                {
-	                    algorithm = FieldValue.SEARCH_ALGO_WEAK;
-	                    operator = FieldValue.FILTER_LIKE;
-	                }
-                }  
-                
+                    if (aSearchAlgorithm.startsWith("sharpLT"))
+                    {
+                        operator = FieldValue.FILTER_SMALLER_THEN;
+                    }
+                    else if (aSearchAlgorithm.startsWith("sharpLE"))
+                    {
+                        operator = FieldValue.FILTER_SMALLER_THEN_EQUAL;
+                    }
+                    else if (aSearchAlgorithm.startsWith("sharpGT"))
+                    {
+                        operator = FieldValue.FILTER_GREATER_THEN;
+                    }
+                    else if (aSearchAlgorithm.startsWith("sharpGE"))
+                    {
+                        operator = FieldValue.FILTER_GREATER_THEN_EQUAL;
+                    }
+                    else if (aSearchAlgorithm.startsWith("sharpNE"))
+                    {
+                        operator = FieldValue.FILTER_NOT_EQUAL;
+                    }
+                    else if (aSearchAlgorithm.startsWith("sharpNULL"))
+                    {
+                        operator = FieldValue.FILTER_NULL;
+                    }
+                    else if (aSearchAlgorithm.startsWith("sharpNOTNULL"))
+                    {
+                        operator = FieldValue.FILTER_NOT_NULL;
+                    }
+                    else if (aSearchAlgorithm.startsWith("weakStartEnd"))
+                    {
+                        algorithm = FieldValue.SEARCH_ALGO_WEAK_END;
+                        operator = FieldValue.FILTER_LIKE;
+                    }
+                    else if (aSearchAlgorithm.startsWith("weakStart"))
+                    {
+                        algorithm = FieldValue.SEARCH_ALGO_WEAK_START;
+                        operator = FieldValue.FILTER_LIKE;
+                    }
+                    else if (aSearchAlgorithm.startsWith("weakEnd"))
+                    {
+                        algorithm = FieldValue.SEARCH_ALGO_WEAK_END;
+                        operator = FieldValue.FILTER_LIKE;
+                    }
+                    else if (aSearchAlgorithm.startsWith("weak"))
+                    {
+                        algorithm = FieldValue.SEARCH_ALGO_WEAK;
+                        operator = FieldValue.FILTER_LIKE;
+                    }
+                }
+
                 if ((aSearchAlgorithm == null) || (aSearchAlgorithm.toLowerCase().indexOf("extended") == -1))
                 {
                     // Extended not found, only append field
@@ -2808,24 +2806,5 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
     {
         logCat.info("doCatch called - " + t.toString());
         throw t;
-    }
-
-    /**
-     *  Gets the gotoEvent from the position string;
-     *
-     * @param  positionString  the position string
-     * @param  table  the table object
-     * @return  the gotoEvent object
-     */
-    private GotoEvent getGotoEvent(String position, Table table)
-    {
-        GotoEvent e = null;
-        Class[]  constructorArgsTypes = navEventFactory.gotoConstructorArgsTypes;
-        Object[] constructorArgs      = new Object[] { position, table };
-
-        e = (GotoEvent) navEventFactory.getEvent(EventType.EVENT_NAVIGATION_GOTO,
-                                                 constructorArgsTypes,
-                                                 constructorArgs);
-        return e;
     }
 }
