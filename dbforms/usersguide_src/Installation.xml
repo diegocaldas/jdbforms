@@ -17,7 +17,7 @@
     <title id="prereqs">Prerequisites</title>
     <orderedlist numeration="upperroman">
       <listitem>
-        <para>Download and install a Java2 Development Kit implementation for your operating system platform (version 1.3 or later to run a bininary distribution, version 1.4 or later to compile from source.  Compiling with 1.3 is also possible with some changes to the source code to comment out the JDBC 3.0 code in SingleConnectionWrapper[ToDo: document needed changes to compile with 1.3]).</para>
+        <para>Download and install a Java2 Development Kit implementation for your operating system platform (version 1.4 or 1.5).</para>
       </listitem>
       <listitem>
         <para>Define an environment variable JAVA_HOME that points at the base directory of your JDK installation, and add the directory "$JAVA_HOME/bin" to your PATH variable.</para>
@@ -34,11 +34,6 @@
         <para>Copy the jars in the 
           <computeroutput>dbforms/dependend</computeroutput> dir to your application's 
           <computeroutput>WEB-INF/lib</computeroutput> directory 
-        </para>
-        <para>To run under java 1.3, you will also need the jars from <computeroutput>dependend/jdk1.3/</computeroutput></para>
-        <para>Note: for Tomcat, it is not necessary to copy
-          <computeroutput>servlet.jar</computeroutput> as it is already included in Tomcat.  However, even if you do put it in your 
-          <computeroutput>lib</computeroutput> dir, the application will still function though there will be an error about the servlet.jar not being loaded logged.
         </para>
         <para>
           Also note: These prerequisites in <computeroutput>dbforms/dependend</computeroutput> specifically pertain to the current release.
@@ -512,5 +507,10 @@ log4j.appender.logFile.MaxBackupIndex=1
       </para>
     </sect2>
   </sect1>
- 
-</chapter>
+ <sect1>
+ <title>[Optional] Configure for Big Tables</title>
+ <para>Some users find that with big tables, configuring <computeroutput>dbforms-config.xml</computeroutput> to use the <computeroutput>classic </computeroutput> navigation system results in better performance since the default <computeroutput>datalist</computeroutput> navigation will store the result set in memory which may lead to memory issues.</para>
+ <para>Of course, if filters are used so that the whole table is not being loaded in one page, then this may not be an issue even with very big tables.</para>
+ <para>More information on the navigation systems and how to configure the <computeroutput>classic</computeroutput> system is in the section on <link linkend='navigation'>navigation</link>.</para>
+</sect1>
+ </chapter>

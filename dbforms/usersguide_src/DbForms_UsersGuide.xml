@@ -23,7 +23,7 @@
 	<!ENTITY plug SYSTEM "PluggableEvents.xml">
 	<!ENTITY ejbs SYSTEM "EJBs.xml">
 	<!ENTITY jasp SYSTEM "JasperReports.xml">
-	<!ENTITY tagl SYSTEM "Appendix_Tag_Library.xml">
+	<!ENTITY tagl SYSTEM "Tag_Library.xml">
 	<!ENTITY date SYSTEM "Appendix_Internationalization_of_Dates.xml">
 	<!ENTITY todo SYSTEM "Appendix_To_Do.xml">
 	<!ENTITY chan SYSTEM "Appendix_Changes.xml">
@@ -37,45 +37,33 @@
 	<!ENTITY unit-test SYSTEM "Client_Side_Unit_Testing.xml">
 	<!ENTITY how_to SYSTEM "How_To.xml">
 	<!ENTITY query_supp SYSTEM "Query_Support.xml">
-	<!ENTITY filt_tag SYSTEM "Filter_Tag.xml">
 	<!ENTITY data_fields SYSTEM "Appendix_Data_Fields.xml">
 ]>
 <book>
 	<title>DataBaseForms UsersGuide</title>
-<!--
-	<part>
-		<title>Major New features</title> 
-&navi;
-&filt_tag;
-&how_to;
-&unit-test;
-</part>
--->
-	<part>
-		<title>Installation </title>
-&comp;
-&inst;
-&how_to;
-&devg;
-&jsms;
-</part>
 <part>
 	<title>Background</title>
 &pref;
 &intr;
-&navi;
 </part>
 <part>
-		<title>Basic Use Tutorial</title>
+	<title>Installation</title>
+&comp;
+&inst;
+&devg;
+&jsms;
+</part>
+<part>
+	<title>Basic Use Tutorial</title>
 &tuto;
 </part>
 <part>
 	<title>Advanced Use and Extensions</title>
+
 &secu;
 &uplo;
 &styl;
 &sort;
-&filt_tag;
 &query_supp;
 &scri;
 &hook;
@@ -89,15 +77,19 @@
 &ejbs;
 &jasp;
 &xml;
-</part>
+&unit-test;
+&navi;                
+&how_to;
+&tagl;
+</part>                
 <part>
-		<title>UML diagrams</title>
+	<title>UML diagrams</title>
 &uml-cls;
 &uml-seq;
 </part>
 <part>
-		<title>Appendices</title>
-&tagl;
+	<title>Appendices</title>
+
 &data_fields;
 &unit-test;
 &chan;
