@@ -21,13 +21,20 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.event;
-import java.util.*;
-import javax.servlet.http.*;
+
+import java.util.Enumeration;
+import java.util.Vector;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Category;
 
-import org.dbforms.util.*;
-import org.dbforms.config.*;
+import org.dbforms.util.ParseUtil;
+import org.dbforms.util.Util;
+
+import org.dbforms.config.DbFormsConfig;
+import org.dbforms.config.Table;
+
 import org.dbforms.event.eventtype.EventType;
 import org.dbforms.event.eventtype.EventTypeUtil;
 
@@ -46,7 +53,7 @@ import org.dbforms.event.eventtype.EventTypeUtil;
 public class EventEngine
 {
    /** logging category for this class */
-   static Category logCat = Category.getInstance(EventEngine.class.getName());
+   private static Category logCat = Category.getInstance(EventEngine.class.getName());
 
    /** instance of DatabaseEventFactory */
    private DatabaseEventFactory dbEventFactory = DatabaseEventFactoryImpl
@@ -56,7 +63,7 @@ public class EventEngine
    private NavEventFactory    navEventFactory = NavEventFactoryImpl.instance();
    private HttpServletRequest request;
    private DbFormsConfig      config;
-   Vector                     involvedTables;
+   private Vector                     involvedTables;
 
    /**
     * @param  request Description of the Parameter

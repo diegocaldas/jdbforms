@@ -20,23 +20,28 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
+
 package org.dbforms.event;
-
-import org.dbforms.config.*;
-import org.dbforms.util.*;
-import javax.servlet.http.*;
-import java.sql.*;
-
+import java.sql.SQLException;
+import java.sql.Connection;
+import org.dbforms.config.DbFormsConfig;
+import org.dbforms.config.Table;
+import org.dbforms.util.FieldValue;
+import org.dbforms.util.ParseUtil;
+import org.dbforms.util.ResultSetVector;
+import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Category;
 
 
 
-/****
- *
- * <p>This event signalizes to the framework that the user wants to initializa a new dataset</p>
+/**
+ * <p>
+ * This event signalizes to the framework that the user wants to initializa a
+ * new dataset
+ * </p>
  * #fixme: lousy description
- *
- * @author Joe Peer <j.peer@gmx.net>
+ * 
+ * @author Joe Peer
  */
 public class NavNewEvent extends NavigationEvent
 {
@@ -44,13 +49,13 @@ public class NavNewEvent extends NavigationEvent
 
    /**
     * Creates a new NavNewEvent object.
-    *
+    * 
     * @param action DOCUMENT ME!
     * @param request DOCUMENT ME!
     * @param config DOCUMENT ME!
     */
-   public NavNewEvent(String action, HttpServletRequest request,
-      DbFormsConfig config)
+   public NavNewEvent(String action, HttpServletRequest request, 
+                      DbFormsConfig config)
    {
       super(action, request, config);
    }
@@ -58,32 +63,37 @@ public class NavNewEvent extends NavigationEvent
 
    /**
     * Creates a new NavNewEvent object.
-    *
+    * 
     * @param table DOCUMENT ME!
+    * @param request DOCUMENT ME!
     * @param config DOCUMENT ME!
     */
-   public NavNewEvent(Table table, HttpServletRequest request,
-      DbFormsConfig config)
+   public NavNewEvent(Table table, HttpServletRequest request, 
+                      DbFormsConfig config)
    {
       super(table, request, config);
    }
 
    /**
     * DOCUMENT ME!
-    *
+    * 
     * @param childFieldValues DOCUMENT ME!
     * @param orderConstraint DOCUMENT ME!
     * @param count DOCUMENT ME!
-    * @param firstPost DOCUMENT ME!
-    * @param lastPos DOCUMENT ME!
+    * @param firstPosition DOCUMENT ME!
+    * @param lastPosition DOCUMENT ME!
     * @param con DOCUMENT ME!
-    *
+    * @param dbConnectionName DOCUMENT ME!
+    * 
     * @return DOCUMENT ME!
+    * @throws SQLException DOCUMENT ME!
     */
-   public ResultSetVector processEvent(FieldValue[] childFieldValues,
-      FieldValue[] orderConstraint, int count, String firstPosition,
-      String lastPosition, Connection con, String dbConnectionName)
-      throws SQLException
+   public ResultSetVector processEvent(FieldValue[] childFieldValues, 
+                                       FieldValue[] orderConstraint, int count, 
+                                       String firstPosition, 
+                                       String lastPosition, Connection con, 
+                                       String dbConnectionName)
+                                throws SQLException
    {
       //	rsv.setPointer( rsv.size() ); //#fixme - this is not well thought through
       logCat.info("processed NavNewEvent");

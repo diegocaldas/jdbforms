@@ -20,97 +20,90 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
+
 package org.dbforms.event;
-
-
 import javax.servlet.http.HttpServletRequest;
-import org.dbforms.config.*;
+import org.dbforms.config.DbFormsConfig;
+import org.dbforms.config.Table;
 
 
 
 /**
- *  The NavEventFactory abstract class provides the interface for a 
- *  Navigation Event concrete class (see NavEventFactoryImpl).
- *
- * @author Luca Fossato <fossato@pow2.com>
+ * The NavEventFactory abstract class provides the interface for a  Navigation
+ * Event concrete class (see NavEventFactoryImpl).
+ * 
+ * @author Luca Fossato
  */
 public abstract class NavEventFactory extends EventFactory
 {
    /** classes used as constructor arguments types */
-   protected static Class[] actionConstructorArgsTypes = new Class[]
-      {
-         Table.class,
-         HttpServletRequest.class,
-         DbFormsConfig.class
-      };
-
+   protected static Class[] actionConstructorArgsTypes = 
+            new Class[] 
+   {
+      Table.class, HttpServletRequest.class, DbFormsConfig.class
+   };
 
    /** classes used as constructor arguments types */
-   protected static Class[] goToConstructorArgsTypes = new Class[]
-      {
-         Table.class,
-         HttpServletRequest.class,
-         DbFormsConfig.class,
-         String.class
-      };
-
+   protected static Class[] goToConstructorArgsTypes = 
+            new Class[] 
+   {
+      Table.class, HttpServletRequest.class, DbFormsConfig.class, String.class
+   };
 
    /** classes used as constructor arguments types */
-   protected static Class[] goToConstructorArgsTypes2 = new Class[]
-      {
-         Table.class,
-         HttpServletRequest.class,
-         DbFormsConfig.class,
-         String.class,
-         String.class
-      };
-
+   protected static Class[] goToConstructorArgsTypes2 = 
+            new Class[] 
+   {
+      Table.class, HttpServletRequest.class, DbFormsConfig.class, String.class, 
+      String.class
+   };
 
    /**
-    *  Create and return a new navigation event.
-    *
-    * @param  action the action string that identifies the web event
-    * @param  request the HttpServletRequest object
-    * @param  config the DbForms config object
-    * @param  table to use
-    * @return  a new navigation event
+    * Create and return a new navigation event.
+    * 
+    * @param action the action string that identifies the web event
+    * @param request the HttpServletRequest object
+    * @param config the DbForms config object
+    * @param table to use
+    * 
+    * @return a new navigation event
     */
-   public abstract NavigationEvent createEvent(String             action, 
+   public abstract NavigationEvent createEvent(String action, 
                                                HttpServletRequest request, 
-                                               DbFormsConfig      config, 
-                                               Table              table);
+                                               DbFormsConfig config, 
+                                               Table table);
 
 
    /**
-    *  Create and return a new navGoto event.
-    *
-    * @param  positionString the position string object
-    * @param  table    the Table object
-    * @param  request  the request object
-    * @param  config   the configuration object
-    * @param  positionString the position string
+    * Create and return a new navGoto event.
+    * 
+    * @param table    the Table object
+    * @param request  the request object
+    * @param config   the configuration object
+    * @param positionString the position string object
+    * 
     * @return a new navGoto event
     */
-   public abstract NavigationEvent createGotoEvent(Table              table,
+   public abstract NavigationEvent createGotoEvent(Table table, 
                                                    HttpServletRequest request, 
-                                                   DbFormsConfig      config, 
-                                                   String             positionString);
+                                                   DbFormsConfig config, 
+                                                   String positionString);
 
 
    /**
-    *  Create and return a new navGoto event.
-    *
-    * @param  positionString the position string object
-    * @param  table    the Table object
-    * @param  request  the request object
-    * @param  config   the configuration object
-    * @param  whereClause the SQL where clause
-    * @param  tableList  the list of tables involved into the event procession
+    * Create and return a new navGoto event.
+    * 
+    * @param table    the Table object
+    * @param request  the request object
+    * @param config   the configuration object
+    * @param whereClause the SQL where clause
+    * @param tableList  the list of tables involved into the event procession
+    * 
     * @return a new navGoto event
     */
-   public abstract NavigationEvent createGotoEvent(Table              table,
+   public abstract NavigationEvent createGotoEvent(Table table, 
                                                    HttpServletRequest request, 
-                                                   DbFormsConfig      config, 
-                                                   String             whereClause,
-                                                   String             tableList);
+                                                   DbFormsConfig config, 
+                                                   String whereClause, 
+                                                   String tableList);
 }

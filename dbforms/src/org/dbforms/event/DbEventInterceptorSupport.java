@@ -31,11 +31,13 @@ import org.dbforms.config.DbFormsConfig;
 
 
 /**
-convenience class
+* convenience class
+* 
+* @author Joe Peer
 */
 public class DbEventInterceptorSupport implements DbEventInterceptor
 {
-   static Category logCat = Category.getInstance(DbEventInterceptorSupport.class
+   private static Category logCat = Category.getInstance(DbEventInterceptorSupport.class
          .getName()); // logging category for this class
 
    /**

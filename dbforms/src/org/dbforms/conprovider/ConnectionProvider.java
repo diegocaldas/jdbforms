@@ -33,6 +33,9 @@ import org.apache.log4j.Category;
  *  To create a ConnectionProvider for your preferred ConnectionPooler,
  *  extend this class and implement <code>initialize</code> and
  *  <code>getConnection</code> methods.
+ * 
+ * @author Luca Fossato
+ * 
  */
 public abstract class ConnectionProvider
 {

@@ -20,22 +20,24 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
+
 package org.dbforms.event.eventtype;
 
 /**
- *  EventType utility class
- *
- * @author  Luca Fossato
- * @created  28 novembre 2002
+ * EventType utility class
+ * 
+ * @author Luca Fossato
+ * @deprecated 28 novembre 2002
  */
 public class EventTypeUtil
 {
    /**
-    *  Set the EventType class to get the event group and event type values
-    *  from the input action string.
-    *  <br>
-    *  Set the EventTypeStrategyImpl class as strategy class.
-    *
+    * Set the EventType class to get the event group and event type values from
+    * the input action string. <br>
+    * Set the EventTypeStrategyImpl class as strategy class.
+    * 
+    * @param action DOCUMENT ME!
+    * 
     * @return a configured EventType class
     */
    public static EventType getEventType(String action)

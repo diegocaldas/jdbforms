@@ -20,58 +20,52 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
+
 package org.dbforms.event.datalist;
-
-
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Connection;
 import java.sql.SQLException;
-
 import org.apache.log4j.Category;
-
 import org.dbforms.config.Table;
 import org.dbforms.config.DbFormsConfig;
-
 import org.dbforms.event.NavigationEvent;
-
 import org.dbforms.event.datalist.dao.DataSourceList;
 import org.dbforms.event.datalist.dao.DataSourceFactory;
-
 import org.dbforms.util.ResultSetVector;
 import org.dbforms.util.ParseUtil;
 import org.dbforms.util.FieldValue;
 import org.dbforms.util.Util;
 
 
+
 /**
- *  This event scrolls the current ResultSet to the previous row of data.
- *  <br>
- *  Provides bounded navigation.
- *  <br>
- *  Works with new factory classes
- *
- * @author Henner Kollmann <Henner.Kollmann@gmx.de>
+ * This event scrolls the current ResultSet to the previous row of data. <br>
+ * Provides bounded navigation. <br>
+ * Works with new factory classes
+ * 
+ * @author Henner Kollmann
  */
 public class NavPrevEvent extends NavigationEvent
 {
    // logging category for this class
-   private static Category logCat    = Category.getInstance(NavPrevEvent.class.getName());
+   private static Category logCat    = Category.getInstance(
+                                                NavPrevEvent.class.getName());
    private int             stepWidth = 1;
-   
 
    /**
-    *  Constructor.
-    *
-    * @param  action  the action string
-    * @param  request the request object
-    * @param  config  the config object
+    * Constructor.
+    * 
+    * @param action  the action string
+    * @param request the request object
+    * @param config  the config object
     */
-   public NavPrevEvent(String action, HttpServletRequest request,
-      DbFormsConfig config)
+   public NavPrevEvent(String action, HttpServletRequest request, 
+                       DbFormsConfig config)
    {
       super(action, request, config);
 
-      String stepWidthStr = ParseUtil.getParameter(request, "data" + action + "_sw");
+      String stepWidthStr = ParseUtil.getParameter(request, 
+                                                   "data" + action + "_sw");
 
       if (stepWidthStr != null)
       {
@@ -81,47 +75,49 @@ public class NavPrevEvent extends NavigationEvent
 
 
    /**
-    *  Constructor used for call from localevents.
-    *
-    * @param  table the Table object
-    * @param  config the config object
+    * Constructor used for call from localevents.
+    * 
+    * @param table the Table object
+    * @param request DOCUMENT ME!
+    * @param config the config object
     */
-   public NavPrevEvent(Table table, HttpServletRequest request,
-      DbFormsConfig config)
+   public NavPrevEvent(Table table, HttpServletRequest request, 
+                       DbFormsConfig config)
    {
       super(table, request, config);
    }
 
-
    /**
-    *  Process the current event.
-    *
-    * @param  childFieldValues FieldValue array used to restrict a set in a subform where
-    *                          all "childFields" in the  resultset match their respective
-    *                          "parentFields" in main form
-    * @param  orderConstraint FieldValue array used to build a cumulation of rules for ordering
-    *                         (sorting) and restricting fields
-    * @param  count record count
-    * @param  firstPosition a string identifying the first resultset position
-    * @param  lastPosition a string identifying the last resultset position
-    * @param  con the JDBC Connection object
-    * @return  a ResultSetVector object
-    * @exception  SQLException if any error occurs
+    * Process the current event.
+    * 
+    * @param childFieldValues FieldValue array used to restrict a set in a
+    *        subform where all "childFields" in the  resultset match their
+    *        respective "parentFields" in main form
+    * @param orderConstraint FieldValue array used to build a cumulation of
+    *        rules for ordering (sorting) and restricting fields
+    * @param count record count
+    * @param firstPosition a string identifying the first resultset position
+    * @param lastPosition a string identifying the last resultset position
+    * @param con the JDBC Connection object
+    * @param dbConnectionName DOCUMENT ME!
+    * 
+    * @return a ResultSetVector object
+    * 
+    * @exception SQLException if any error occurs
     */
-   public ResultSetVector processEvent(FieldValue[] childFieldValues,
-                                       FieldValue[] orderConstraint, 
-                                       int          count, 
-                                       String       firstPosition,
-      								   String       lastPosition, 
-      								   Connection   con, 
-      								   String       dbConnectionName)
-      throws SQLException
+   public ResultSetVector processEvent(FieldValue[] childFieldValues, 
+                                       FieldValue[] orderConstraint, int count, 
+                                       String firstPosition, 
+                                       String lastPosition, Connection con, 
+                                       String dbConnectionName)
+                                throws SQLException
    {
       logCat.info("==>NavPrevEvent.processEvent");
 
       DataSourceList    ds       = DataSourceList.getInstance(request);
       DataSourceFactory qry      = ds.get(table, request);
-      String            position = table.getKeyPositionString(table.getFieldValues(firstPosition));
+      String            position = table.getKeyPositionString(
+                                            table.getFieldValues(firstPosition));
       ResultSetVector   res      = qry.getPrev(position, count);
 
       // change behavior to navFirst if navPrev finds no data

@@ -91,7 +91,7 @@ public interface DbEventInterceptor
     *
     * @throws ValidationException DOCUMENT ME!
     */
-   public int preInsert(HttpServletRequest request, Hashtable fieldValues,
+   int preInsert(HttpServletRequest request, Hashtable fieldValues,
       DbFormsConfig config, Connection con) throws ValidationException;
 
 
@@ -102,7 +102,7 @@ public interface DbEventInterceptor
     * @param config DOCUMENT ME!
     * @param con DOCUMENT ME!
     */
-   public void postInsert(HttpServletRequest request, DbFormsConfig config,
+   void postInsert(HttpServletRequest request, DbFormsConfig config,
       Connection con);
 
 
@@ -118,7 +118,7 @@ public interface DbEventInterceptor
     *
     * @throws ValidationException DOCUMENT ME!
     */
-   public int preUpdate(HttpServletRequest request,
+   int preUpdate(HttpServletRequest request,
       java.util.Hashtable fieldValues, DbFormsConfig config, Connection con)
       throws ValidationException;
    ;
@@ -130,7 +130,7 @@ public interface DbEventInterceptor
     * @param config DOCUMENT ME!
     * @param con DOCUMENT ME!
     */
-   public void postUpdate(HttpServletRequest request, DbFormsConfig config,
+   void postUpdate(HttpServletRequest request, DbFormsConfig config,
       Connection con);
 
 
@@ -146,7 +146,7 @@ public interface DbEventInterceptor
     *
     * @throws ValidationException DOCUMENT ME!
     */
-   public int preDelete(HttpServletRequest request, Hashtable fieldValues,
+   int preDelete(HttpServletRequest request, Hashtable fieldValues,
       DbFormsConfig config, Connection con) throws ValidationException;
    ;
 
@@ -157,7 +157,7 @@ public interface DbEventInterceptor
     * @param config DOCUMENT ME!
     * @param con DOCUMENT ME!
     */
-   public void postDelete(HttpServletRequest request, DbFormsConfig config,
+   void postDelete(HttpServletRequest request, DbFormsConfig config,
       Connection con);
 
 
@@ -172,7 +172,7 @@ public interface DbEventInterceptor
     *
     * @throws ValidationException DOCUMENT ME!
     */
-   public int preSelect(HttpServletRequest request, DbFormsConfig config,
+   int preSelect(HttpServletRequest request, DbFormsConfig config,
       Connection con) throws ValidationException;
    ;
 
@@ -183,6 +183,6 @@ public interface DbEventInterceptor
     * @param config DOCUMENT ME!
     * @param con DOCUMENT ME!
     */
-   public void postSelect(HttpServletRequest request, DbFormsConfig config,
+   void postSelect(HttpServletRequest request, DbFormsConfig config,
       Connection con);
 }

@@ -22,8 +22,6 @@
  */
 
 package org.dbforms.event.datalist.dao;
-
-
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
@@ -32,10 +30,8 @@ import java.sql.PreparedStatement;
 import java.sql.Connection;
 import java.sql.Types;
 import java.sql.Clob;
-
 import java.util.Vector;
 import java.util.Enumeration;
-
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.Field;
 import org.dbforms.config.Table;
@@ -61,7 +57,7 @@ public class DataSourceJDBC extends DataSource
 {
    private String        query;
    private Connection    con;
-   private boolean       ownCon = false;
+   private boolean       ownCon           = false;
    private ResultSet     rs;
    private Statement     stmt;
    private Vector        data;
@@ -73,11 +69,11 @@ public class DataSourceJDBC extends DataSource
    private FieldValue[]  filterConstraint;
    private FieldValue[]  orderConstraint;
    private DbFormsConfig config;
-   private boolean       fetchedAll = false;  
+   private boolean       fetchedAll       = false;
 
    /**
     * Creates a new DataSourceJDBC object.
-    *
+    * 
     * @param table the inout table
     */
    public DataSourceJDBC(Table table)
@@ -87,15 +83,14 @@ public class DataSourceJDBC extends DataSource
       keys = new Vector();
    }
 
-
    /**
     * Finalize this object.
-    *
+    * 
     * @throws Throwable in any error occurs
     */
    protected void finalize() throws Throwable
    {
-	  getLogCat().info("finalize called");
+      getLogCat().info("finalize called");
       close();
    }
 
@@ -127,8 +122,8 @@ public class DataSourceJDBC extends DataSource
 
 
    /**
-    * Set the tableList and whererClause attributes used
-    * to build the SQL Select condition.
+    * Set the tableList and whererClause attributes used to build the SQL
+    * Select condition.
     * 
     * @param tableList the table list string
     * @param whereClause the SQL where clause string
@@ -141,13 +136,13 @@ public class DataSourceJDBC extends DataSource
 
 
    /**
-    * Set the filterConstraint and orderConstraint used
-    * to build the SQL Select condition.
+    * Set the filterConstraint and orderConstraint used to build the SQL Select
+    * condition.
     * 
-    * @param filterConstraint FieldValue array used to build a cumulation of rules for filtering
-	*                         fields.
-    * @param orderConstraint  FieldValue array used to build a cumulation of rules for ordering
-	*                         (sorting) and restricting fields.
+    * @param filterConstraint FieldValue array used to build a cumulation of
+    *        rules for filtering fields.
+    * @param orderConstraint  FieldValue array used to build a cumulation of
+    *        rules for ordering (sorting) and restricting fields.
     */
    public void setSelect(FieldValue[] filterConstraint, 
                          FieldValue[] orderConstraint)
@@ -156,54 +151,59 @@ public class DataSourceJDBC extends DataSource
       this.orderConstraint  = orderConstraint;
    }
 
-  private void closeConnection()
-  {
-		if (rs != null)
-		{
-			try
-			{
-				rs.close();
-			}
-			catch (SQLException e)
-			{
-				SqlUtil.logSqlException(e);
-			}
-			rs = null;
-		}
-/*
-		if (stmt != null)
-		{
-			try
-			{
-					stmt.close();
-			}
-			catch (SQLException e)
-			{
-				SqlUtil.logSqlException(e);
-			}
-			stmt = null;
-		}
-*/
-		if (ownCon)
-		{
-			try
-			{
-				con.close();
-			}
-			catch (SQLException e)
-			{
-				SqlUtil.logSqlException(e);
-			}
-			con = null;
-		}
 
-		ownCon = false;
-  }
+   private void closeConnection()
+   {
+      if (rs != null)
+      {
+         try
+         {
+            rs.close();
+         }
+         catch (SQLException e)
+         {
+            SqlUtil.logSqlException(e);
+         }
+
+         rs = null;
+      }
+
+      /*
+      if (stmt != null)
+      {
+         try
+         {
+               stmt.close();
+         }
+         catch (SQLException e)
+         {
+            SqlUtil.logSqlException(e);
+         }
+         stmt = null;
+      }
+*/
+      if (ownCon)
+      {
+         try
+         {
+            con.close();
+         }
+         catch (SQLException e)
+         {
+            SqlUtil.logSqlException(e);
+         }
+
+         con = null;
+      }
+
+      ownCon = false;
+   }
+
+
    /**
-    * Release all the resources holded by this datasource.
-    * <br>
-    * Clean the underlying data and keys vectors, then
-    * close the JDBC resultSet, statement and connection objects. 
+    * Release all the resources holded by this datasource. <br>
+    * Clean the underlying data and keys vectors, then close the JDBC
+    * resultSet, statement and connection objects.
     */
    public void close()
    {
@@ -216,6 +216,7 @@ public class DataSourceJDBC extends DataSource
       {
          keys.clear();
       }
+
       closeConnection();
    }
 
@@ -235,15 +236,12 @@ public class DataSourceJDBC extends DataSource
          if (Util.isNull(whereClause))
          {
             query = getTable()
-                       .getSelectQuery(getTable().getFields(), 
-                                       filterConstraint, 
-                                       orderConstraint, 
-                                       Constants.COMPARE_NONE);
-                                       
+                       .getSelectQuery(getTable().getFields(), filterConstraint, 
+                                       orderConstraint, Constants.COMPARE_NONE);
+
             stmt = con.prepareStatement(query);
             rs   = getTable()
-                      .getDoSelectResultSet(filterConstraint, 
-                                            orderConstraint, 
+                      .getDoSelectResultSet(filterConstraint, orderConstraint, 
                                             Constants.COMPARE_NONE, 
                                             (PreparedStatement) stmt);
          }
@@ -257,7 +255,7 @@ public class DataSourceJDBC extends DataSource
          }
 
          ResultSetMetaData rsmd = rs.getMetaData();
-         colCount = rsmd.getColumnCount();
+         colCount   = rsmd.getColumnCount();
          fetchedAll = false;
       }
    }
@@ -272,10 +270,16 @@ public class DataSourceJDBC extends DataSource
          if (rs.getMetaData().getColumnType(i + 1) == Types.CLOB)
          {
             Clob tmpObj = (Clob) rs.getObject(i + 1);
-            if (tmpObj != null)  
-            	objectRow[i] = tmpObj.getSubString((long) 1, (int) tmpObj.length());
+
+            if (tmpObj != null)
+            {
+               objectRow[i] = tmpObj.getSubString((long) 1, 
+                                                  (int) tmpObj.length());
+            }
             else
-				objectRow[i] = null;
+            {
+               objectRow[i] = null;
+            }
          }
          else
          {
@@ -296,10 +300,16 @@ public class DataSourceJDBC extends DataSource
          if (rs.getMetaData().getColumnType(i + 1) == Types.CLOB)
          {
             Clob tmpObj = (Clob) rs.getObject(i + 1);
+
             if (tmpObj != null)
-                objectRow[i] = tmpObj.getSubString((long) 1, (int) tmpObj.length());
+            {
+               objectRow[i] = tmpObj.getSubString((long) 1, 
+                                                  (int) tmpObj.length());
+            }
             else
-                objectRow[i] = null;
+            {
+               objectRow[i] = null;
+            }
          }
          else
          {
@@ -311,7 +321,7 @@ public class DataSourceJDBC extends DataSource
 
 
    /**
-    * Find the first row of the internal data vector. 
+    * Find the first row of the internal data vector.
     * 
     * @param startRow the string identifying the initial row
     * 
@@ -331,6 +341,7 @@ public class DataSourceJDBC extends DataSource
             if (startRow.equals((String) keys.elementAt(i)))
             {
                result = i;
+
                break;
             }
          }
@@ -346,14 +357,16 @@ public class DataSourceJDBC extends DataSource
                if (startRow.equals(s))
                {
                   result = data.size() - 1;
+
                   break;
                }
             }
-			if (rs.getRow() == 0) 
-			{
-				fetchedAll = true;
-				closeConnection();
-			}
+
+            if (rs.getRow() == 0)
+            {
+               fetchedAll = true;
+               closeConnection();
+            }
          }
       }
 
@@ -363,7 +376,7 @@ public class DataSourceJDBC extends DataSource
 
    /**
     * Get the requested row  as array of objects.
-    *
+    * 
     * @param i the row number
     * 
     * @return the requested row  as array of objects
@@ -382,24 +395,25 @@ public class DataSourceJDBC extends DataSource
          }
          else
          {
-            if (!fetchedAll) 
+            if (!fetchedAll)
             {
-	            while (rs.next())
-	            {
-	               result = getCurrentRowAsObject();
-	               data.add(result);
-	               keys.add(getTable().getKeyPositionString(getCurrentRow()));
-	
-	               if (i < data.size())
-	               {
-	                  break;
-	               }
-	            }
-	            if (rs.getRow() == 0) 
-	            {
-	               fetchedAll = true;
-	 			   closeConnection();
-	            }
+               while (rs.next())
+               {
+                  result = getCurrentRowAsObject();
+                  data.add(result);
+                  keys.add(getTable().getKeyPositionString(getCurrentRow()));
+
+                  if (i < data.size())
+                  {
+                     break;
+                  }
+               }
+
+               if (rs.getRow() == 0)
+               {
+                  fetchedAll = true;
+                  closeConnection();
+               }
             }
          }
       }
@@ -421,32 +435,34 @@ public class DataSourceJDBC extends DataSource
       // to next will start at the beginning of the resultset.
       // rs.next will return true, fetching data will get an NullPointerException. 
       // Catch this error and do an break!   
-      if (!fetchedAll) 
+      if (!fetchedAll)
       {
-	      while (rs.next())
-	      {
-	         try
-	         {
-	            data.add(getCurrentRowAsObject());
-	            keys.add(getTable().getKeyPositionString(getCurrentRow()));
-	         }
-	         catch (Exception e)
-	         {
-				getLogCat().error(e.getMessage());
-	            break;
-	         }
-	      }
-	      fetchedAll = true;
-	 	  closeConnection();
+         while (rs.next())
+         {
+            try
+            {
+               data.add(getCurrentRowAsObject());
+               keys.add(getTable().getKeyPositionString(getCurrentRow()));
+            }
+            catch (Exception e)
+            {
+               getLogCat().error(e.getMessage());
+
+               break;
+            }
+         }
+
+         fetchedAll = true;
+         closeConnection();
       }
+
       return data.size();
    }
 
 
    //------------------------------ DAO methods ---------------------------------
-   private int fillWithData(PreparedStatement ps, 
-                            FieldValues       fieldValues)
-     throws SQLException
+   private int fillWithData(PreparedStatement ps, FieldValues fieldValues)
+                     throws SQLException
    {
       // now we provide the values;
       // every key is the parameter name from of the form page;
@@ -462,8 +478,9 @@ public class DataSourceJDBC extends DataSource
          {
             FieldValue fv = fieldValues.get(fieldName);
 
-			getLogCat().debug("Retrieved curField:" + curField.getName() + " type:"
-                         + curField.getType());
+            getLogCat()
+               .debug("Retrieved curField:" + curField.getName() + " type:"
+                      + curField.getType());
 
             int    fieldType = curField.getType();
             Object value = null;
@@ -504,8 +521,9 @@ public class DataSourceJDBC extends DataSource
                value = fv.getFieldValue();
             }
 
-			getLogCat().info("field=" + curField.getName() + " col=" + col
-                        + " value=" + value + " type=" + fieldType);
+            getLogCat()
+               .info("field=" + curField.getName() + " col=" + col + " value="
+                     + value + " type=" + fieldType);
             SqlUtil.fillPreparedStatement(ps, col, value, fieldType);
             col++;
          }
@@ -516,69 +534,75 @@ public class DataSourceJDBC extends DataSource
 
 
    /**
-	* Performs an insert into the DataSource
-	* 
-	* @param fieldValues FieldValues to insert
-	* 
-	* @throws SQLException
-	*/
+    * Performs an insert into the DataSource
+    * 
+    * @param fieldValues FieldValues to insert
+    * 
+    * @throws SQLException
+    */
    public void doInsert(FieldValues fieldValues) throws SQLException
    {
-      PreparedStatement ps = 
-         con.prepareStatement(getTable().getInsertStatement(fieldValues));
+      PreparedStatement ps = con.prepareStatement(getTable()
+                                                     .getInsertStatement(fieldValues));
+
 
       // execute the query & throws an exception if something goes wrong
       fillWithData(ps, fieldValues);
       ps.executeUpdate();
       ps.close();
 
+
       // now handle blob files
       saveBlobFilesToDisk(fieldValues);
    }
 
 
-  /**
-   * Performs an update into the DataSource
-   * 
-   * @param fieldValues  FieldValues to update
-   * @param keyValuesStr keyValueStr to the row to update<br>
-   *        key format: FieldID ":" Length ":" Value<br>
-   *        example: if key id = 121 and field id=2 then keyValueStr contains "2:3:121"<br>
-   *        If the key consists of more than one fields, the key values are seperated through "-"<br>
-   *        example: value of field 1=12, value of field 3=1992, then we'll
-   *        get "1:2:12-3:4:1992"
-   * 
-   * @throws SQLException
-   */
+   /**
+    * Performs an update into the DataSource
+    * 
+    * @param fieldValues  FieldValues to update
+    * @param keyValuesStr keyValueStr to the row to update<br>
+    *        key format: FieldID ":" Length ":" Value<br>
+    *        example: if key id = 121 and field id=2 then keyValueStr contains "2:3:121"<br>
+    *        If the key consists of more than one fields, the key values are
+    *        seperated through "-"<br>
+    *        example: value of field 1=12, value of field 3=1992, then we'll
+    *        get "1:2:12-3:4:1992"
+    * 
+    * @throws SQLException
+    */
    public void doUpdate(FieldValues fieldValues, String keyValuesStr)
                  throws SQLException
    {
-      PreparedStatement ps 
-        = con.prepareStatement(getTable().getUpdateStatement(fieldValues));
-      int col = fillWithData(ps, fieldValues);
+      PreparedStatement ps = con.prepareStatement(getTable()
+                                                     .getUpdateStatement(fieldValues));
+      int               col = fillWithData(ps, fieldValues);
       getTable().populateWhereClauseForPS(keyValuesStr, ps, col);
+
 
       // we are now ready to execute the query
       ps.executeUpdate();
       ps.close();
 
+
       // now handle blob files
       saveBlobFilesToDisk(fieldValues);
    }
 
 
-  /**
-   * performs a delete in the DataSource
-   * 
-   * @param keyValuesStr   keyValueStr to the row to update<br>
-   *        key format: FieldID ":" Length ":" Value<br>
-   *        example: if key id = 121 and field id=2 then keyValueStr contains "2:3:121"<br>
-   *        If the key consists of more than one fields, the key values are seperated through "-"<br>
-   *        example: value of field 1=12, value of field 3=1992, then we'll
-   *        get "1:2:12-3:4:1992"
-   * 
-   * @throws SQLException
-   */
+   /**
+    * performs a delete in the DataSource
+    * 
+    * @param keyValuesStr   keyValueStr to the row to update<br>
+    *        key format: FieldID ":" Length ":" Value<br>
+    *        example: if key id = 121 and field id=2 then keyValueStr contains "2:3:121"<br>
+    *        If the key consists of more than one fields, the key values are
+    *        seperated through "-"<br>
+    *        example: value of field 1=12, value of field 3=1992, then we'll
+    *        get "1:2:12-3:4:1992"
+    * 
+    * @throws SQLException
+    */
    public void doDelete(String keyValuesStr) throws SQLException
    {
       FieldValues fieldValues = null;
@@ -592,12 +616,13 @@ public class DataSourceJDBC extends DataSource
          queryBuf.append(" WHERE ");
          queryBuf.append(getTable().getWhereClauseForPS());
 
-         PreparedStatement diskblobsPs = 
-           con.prepareStatement(queryBuf.toString());
+         PreparedStatement diskblobsPs = con.prepareStatement(
+                                                  queryBuf.toString());
          getTable().populateWhereClauseForPS(keyValuesStr, diskblobsPs, 1);
          diskblobs = diskblobsPs.executeQuery();
 
-         ResultSetVector rsv = new ResultSetVector(getTable().getDiskblobs(), diskblobs);
+         ResultSetVector rsv = new ResultSetVector(getTable().getDiskblobs(), 
+                                                   diskblobs);
 
          if (!Util.isNull(rsv))
          {
@@ -607,11 +632,14 @@ public class DataSourceJDBC extends DataSource
       }
 
       // 20021031-HKK: Build in table!!
-      PreparedStatement ps = con.prepareStatement(getTable().getDeleteStatement());
+      PreparedStatement ps = con.prepareStatement(
+                                      getTable().getDeleteStatement());
+
 
       // now we provide the values
       // of the key-fields, so that the WHERE clause matches the right dataset!
       getTable().populateWhereClauseForPS(keyValuesStr, ps, 1);
+
 
       // finally execute the query
       ps.executeUpdate();

@@ -111,6 +111,9 @@ public abstract class DatabaseEvent extends WebEvent
     * @param scalarFieldValues the hash map containing the names and values
     *                          taken from the request object
     *                          (see: <code>getFieldValues()</code>
+    * 
+    * @return hash table containing the field names and values
+    *  		  to insert into the specified database table.
     */
    public Hashtable getAssociativeFieldValues(FieldValues scalarFieldValues)
    {
@@ -131,8 +134,9 @@ public abstract class DatabaseEvent extends WebEvent
     *  DO the validation of <FORM> with Commons-Validator.
     *
     * @param  formValidatorName The form name to retreive in validation.xml
+    * @param  context The servlet context we are processing
     * @param  request The servlet request we are processing
-    * @param  e the web event
+    * 
     * @exception  MultipleValidationException The Vector of errors throwed with this exception
     */
    public void doValidation(String formValidatorName, ServletContext context,

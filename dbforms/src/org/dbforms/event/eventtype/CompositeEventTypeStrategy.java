@@ -20,17 +20,19 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-package org.dbforms.event.eventtype;
 
+package org.dbforms.event.eventtype;
 import java.util.ArrayList;
+
+
+
 //import org.apache.log4j.Category;
 
-
 /**
- *  Abstract composite EventTypeStrategy class.
- *
- * @author  Luca Fossato
- * @created  28 novembre 2002
+ * Abstract composite EventTypeStrategy class.
+ * 
+ * @author Luca Fossato
+ * @deprecated 28 novembre 2002
  */
 public abstract class CompositeEventTypeStrategy implements EventTypeStrategy
 {
@@ -38,9 +40,9 @@ public abstract class CompositeEventTypeStrategy implements EventTypeStrategy
    protected ArrayList strategyList = new ArrayList();
 
    /**
-    *  Adds an EventTypeStrategy object to the Strategy list
-    *
-    * @param  strategy the EventTypeStrategy object to add to
+    * Adds an EventTypeStrategy object to the Strategy list
+    * 
+    * @param strategy the EventTypeStrategy object to add to
     */
    public void add(EventTypeStrategy strategy)
    {
@@ -49,9 +51,10 @@ public abstract class CompositeEventTypeStrategy implements EventTypeStrategy
 
 
    /**
-    *  Remove an EventTypeStrategy object to the Strategy list
-    *
-    * @param  strategy the EventTypeStrategy object to remove to
+    * Remove an EventTypeStrategy object to the Strategy list
+    * 
+    * @param strategy the EventTypeStrategy object to remove to
+    * 
     * @return true if the object had removed from the list; false otherwise
     */
    public boolean remove(EventTypeStrategy strategy)
@@ -61,9 +64,11 @@ public abstract class CompositeEventTypeStrategy implements EventTypeStrategy
 
 
    /**
-    *  Gets the child EventTypeStrategy having the input index
-    *
-    * @return  the child EventTypeStrategy having the input index
+    * Gets the child EventTypeStrategy having the input index
+    * 
+    * @param index DOCUMENT ME!
+    * 
+    * @return the child EventTypeStrategy having the input index
     */
    public EventTypeStrategy getChild(int index)
    {

@@ -54,7 +54,7 @@ import org.dbforms.util.SqlUtil;
  */
 public class DeleteEvent extends DatabaseEvent
 {
-   static Category logCat = Category.getInstance(DeleteEvent.class.getName());
+   private static Category logCat = Category.getInstance(DeleteEvent.class.getName());
 
 
    /**

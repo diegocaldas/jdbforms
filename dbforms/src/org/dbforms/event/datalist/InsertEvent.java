@@ -53,7 +53,7 @@ import org.dbforms.event.datalist.dao.DataSourceFactory;
 public class InsertEvent extends DatabaseEvent
 {
    /** logging category for this class */
-   static Category logCat = Category.getInstance(InsertEvent.class.getName());
+   private static Category logCat = Category.getInstance(InsertEvent.class.getName());
 
 
    /**

@@ -35,6 +35,9 @@ import org.dbforms.util.Util;
  *  <br>
  *  See <code>http://jakarta.apache.org/commons/dbcp.html</code>
  *  for further informations.
+ * 
+ * @author Luca Fossato
+ * 
  */
 public class JakartaConnectionProvider extends ConnectionProvider
 {

@@ -32,6 +32,9 @@ import org.dbforms.util.Util;
  *  Connection provider for Protomatter Connection pool.
  *  <br>
  *  See <code>http://protomatter.sourceforge.net/</code> for further informations.
+ * 
+ * @author Luca Fossato
+ * 
  */
 public class ProtomatterConnectionProvider extends ConnectionProvider
 {

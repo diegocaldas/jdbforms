@@ -23,8 +23,13 @@
 package org.dbforms.event;
 
 /**
-this exception may be thrown by user code
-in classes implementing the interceptor interface
+*   this exception may be thrown by user code
+*   in classes implementing the interceptor interface
+* 
+* @author joe peer
+* 
+*
+*
 */
 public class ValidationException extends Exception
 {

@@ -35,9 +35,9 @@ import org.apache.log4j.Priority;
  */
 public class Log4jPrintWriter extends PrintWriter
 {
-   Priority     level;
-   Category     cat;
-   StringBuffer text = new StringBuffer("");
+   private Priority     level;
+   private Category     cat;
+   private StringBuffer text = new StringBuffer("");
 
    /**
     * Creates a new Log4jPrintWriter object.

@@ -23,7 +23,8 @@
 package org.dbforms.event.datalist.dao;
 
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 import org.apache.log4j.Category;
 import org.dbforms.config.DbFormsConfig;
@@ -48,7 +49,7 @@ public class DataSourceFactory
    private DataSource dataHandler;
 
    // logging category for this class;
-   static Category logCat = Category.getInstance(DataSourceFactory.class.getName());
+   private static Category logCat = Category.getInstance(DataSourceFactory.class.getName());
 
    /**
     * Creates a new DataSourceFactory object.

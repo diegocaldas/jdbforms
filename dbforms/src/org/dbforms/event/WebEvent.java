@@ -23,11 +23,12 @@
 package org.dbforms.event;
 
 import java.util.Properties;
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Category;
 
-import org.dbforms.config.*;
+import org.dbforms.config.DbFormsConfig;
+import org.dbforms.config.Table;
 
 
 
@@ -46,7 +47,7 @@ import org.dbforms.config.*;
 public abstract class WebEvent
 {
    /** logging category for this class */
-	protected static  Category logCat = Category.getInstance(WebEvent.class.getName());
+	protected Category logCat = Category.getInstance(this.getClass().getName());
 
    /** the  HttpServletRequest object */
    protected HttpServletRequest request;

@@ -30,6 +30,9 @@ import java.sql.*;
  *  Simple Connection provider.
  *  <br>
  *  provides non-pooled connections.
+ * 
+ * @author Luca Fossato
+ * 
  */
 public class SimpleConnectionProvider extends ConnectionProvider
 {

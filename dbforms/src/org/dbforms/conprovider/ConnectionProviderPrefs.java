@@ -27,6 +27,10 @@ import java.util.Properties;
 
 /**
  *  Preferences class for Connection Providers.
+ * 
+ * 
+ * @author Luca Fossato
+ * 
  */
 public class ConnectionProviderPrefs
 {

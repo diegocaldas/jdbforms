@@ -22,17 +22,12 @@
  */
 
 package org.dbforms.event.datalist.dao;
-
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Enumeration;
-
 import java.sql.Connection;
 import java.sql.SQLException;
-
 import org.apache.log4j.Category;
-
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.Field;
 import org.dbforms.config.Table;
@@ -54,8 +49,7 @@ public abstract class DataSource
 {
    /** log4j category class */
    private Category logCat = Category.getInstance(this.getClass().getName());
-   private Table      table;
-
+   private Table    table;
 
    /**
     * Creates a new DataSource object.
@@ -124,7 +118,6 @@ public abstract class DataSource
     *        resultset
     * @param orderConstraint FieldValue array used to build a cumulation of
     *        rules for ordering (sorting)
-    * @param maxRows        max rows to fetcht
     */
    public abstract void setSelect(FieldValue[] filterConstraint, 
                                   FieldValue[] orderConstraint);
@@ -149,7 +142,8 @@ public abstract class DataSource
     * @param keyValuesStr keyValueStr to the row to update<br>
     *        key format: FieldID ":" Length ":" Value<br>
     *        example: if key id = 121 and field id=2 then keyValueStr contains "2:3:121"<br>
-    *        If the key consists of more than one fields, the key values are seperated through "-"<br>
+    *        If the key consists of more than one fields, the key values are
+    *        seperated through "-"<br>
     *        example: value of field 1=12, value of field 3=1992, then we'll
     *        get "1:2:12-3:4:1992"
     * 
@@ -167,7 +161,8 @@ public abstract class DataSource
     * @param keyValuesStr   keyValueStr to the row to update<br>
     *        key format: FieldID ":" Length ":" Value<br>
     *        example: if key id = 121 and field id=2 then keyValueStr contains "2:3:121"<br>
-    *        If the key consists of more than one fields, the key values are seperated through "-"<br>
+    *        If the key consists of more than one fields, the key values are
+    *        seperated through "-"<br>
     *        example: value of field 1=12, value of field 3=1992, then we'll
     *        get "1:2:12-3:4:1992"
     * 
@@ -222,10 +217,10 @@ public abstract class DataSource
     * @param startRow  keyValueStr to the row<br>
     *        key format: FieldID ":" Length ":" Value<br>
     *        example: if key id = 121 and field id=2 then keyValueStr contains "2:3:121"<br>
-    *        If the key consists of more than one fields, the key values 
-    *        are seperated through "-"<br>
-    *        example: value of field 1=12, value of field 3=1992, then we'll get
-    *        "1:2:12-3:4:1992"
+    *        If the key consists of more than one fields, the key values  are
+    *        seperated through "-"<br>
+    *        example: value of field 1=12, value of field 3=1992, then we'll
+    *        get "1:2:12-3:4:1992"
     * 
     * @return the index of the row, 0 as first row if not found
     * 
@@ -241,9 +236,10 @@ public abstract class DataSource
     * @param position  keyValueStr to the row<br>
     *        key format: FieldID ":" Length ":" Value<br>
     *        example: if key id = 121 and field id=2 then keyValueStr contains "2:3:121"<br>
-    *        If the key consists of more than one fields, the key values are seperated through "-"<br>
-    *        example: value of field 1=12, value of field 3=1992, then we'll get
-    *        "1:2:12-3:4:1992"
+    *        If the key consists of more than one fields, the key values are
+    *        seperated through "-"<br>
+    *        example: value of field 1=12, value of field 3=1992, then we'll
+    *        get "1:2:12-3:4:1992"
     * @param count count of rows to fetch
     * 
     * @return the fetched ResultSetVector
@@ -271,12 +267,11 @@ public abstract class DataSource
     * 
     * @param position  keyValueStr to the row<br>
     *        key format: FieldID ":" Length ":" Value<br>
-    *        example: if key id = 121 and field id=2 then
-    *        keyValueStr contains "2:3:121"<br>
-    *        If the key consists of more than one fields, the key values 
-    *        are seperated through "-"<br>
-    *        example: value of field 1=12, value of field 3=1992, then we'll get
-    *        "1:2:12-3:4:1992"
+    *        example: if key id = 121 and field id=2 then keyValueStr contains "2:3:121"<br>
+    *        If the key consists of more than one fields, the key values  are
+    *        seperated through "-"<br>
+    *        example: value of field 1=12, value of field 3=1992, then we'll
+    *        get "1:2:12-3:4:1992"
     * @param count  count of rows to fetch
     * 
     * @return the fetched ResultSetVector
@@ -333,6 +328,7 @@ public abstract class DataSource
    public ResultSetVector getLast(int count) throws SQLException
    {
       open();
+
       return getResultSetVector(size() - 1, -count);
    }
 
@@ -343,10 +339,10 @@ public abstract class DataSource
     * @param position  keyValueStr to the row<br>
     *        key format: FieldID ":" Length ":" Value<br>
     *        example: if key id = 121 and field id=2 then keyValueStr contains "2:3:121"<br>
-    *        If the key consists of more than
-    *        one fields, the key values are seperated through "-"<br>
-    *        example: value of field 1=12, value of field 3=1992, then we'll get
-    *        "1:2:12-3:4:1992"
+    *        If the key consists of more than one fields, the key values are
+    *        seperated through "-"<br>
+    *        example: value of field 1=12, value of field 3=1992, then we'll
+    *        get "1:2:12-3:4:1992"
     * @param count  count of rows to fetch
     * 
     * @return the fetched ResultSetVector
@@ -370,10 +366,13 @@ public abstract class DataSource
 
 
    /**
+    * DOCUMENT ME!
     * 
     * @param startRow
     * @param count
-    * @return
+    * 
+    * @return the resultsetvector
+    * 
     * @throws SQLException
     */
    private ResultSetVector getResultSetVector(int startRow, int count)
@@ -558,11 +557,14 @@ public abstract class DataSource
       }
    }
 
+
    /**
-    * @return
+    * DOCUMENT ME!
+    * 
+    * @return the logCategory
     */
-   protected Category getLogCat() {
+   protected Category getLogCat()
+   {
       return logCat;
    }
-
 }

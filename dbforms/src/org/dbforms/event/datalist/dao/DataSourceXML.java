@@ -20,10 +20,9 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
+
 package org.dbforms.event.datalist.dao;
-
 import org.apache.log4j.Category;
-
 import java.util.Vector;
 import java.sql.SQLException;
 import java.net.URI;
@@ -51,18 +50,16 @@ import org.dbforms.util.Util;
 
 
 /**
- *
- * Special implementation of DataSource.
- * This class deals with xml data
- *
- *
+ * Special implementation of DataSource. This class deals with xml data
+ * 
  * @author hkk
  */
 public class DataSourceXML extends DataSource
 {
-   private Category logCat = Category.getInstance(this.getClass().getName());
-   private static DocumentBuilderFactory dfactory = null;
-   private static DocumentBuilder        builder = null;
+   private Category                      logCat = 
+            Category.getInstance(this.getClass().getName());
+   private static DocumentBuilderFactory dfactory         = null;
+   private static DocumentBuilder        builder          = null;
    private FieldValue[]                  filterConstraint;
    private FieldValue[]                  orderConstraint;
    private XMLDataResult                 data;
@@ -71,7 +68,7 @@ public class DataSourceXML extends DataSource
 
    /**
     * Contructor
-    *
+    * 
     * @param table
     */
    public DataSourceXML(Table table)
@@ -94,19 +91,24 @@ public class DataSourceXML extends DataSource
       }
    }
 
-   /* (non-Javadoc)
-    * @see org.dbforms.event.datalist.dao.DataSource#setSelect(org.dbforms.FieldValue[], org.dbforms.FieldValue[])
+   /**
+    * DOCUMENT ME!
+    * 
+    * @param filterConstraint DOCUMENT ME!
+    * @param orderConstraint DOCUMENT ME!
     */
-   public void setSelect(FieldValue[] filterConstraint,
-      FieldValue[] orderConstraint)
+   public void setSelect(FieldValue[] filterConstraint, 
+                         FieldValue[] orderConstraint)
    {
-      this.filterConstraint    = filterConstraint;
-      this.orderConstraint     = orderConstraint;
+      this.filterConstraint = filterConstraint;
+      this.orderConstraint  = orderConstraint;
    }
 
 
-   /* (non-Javadoc)
-    * @see org.dbforms.event.datalist.dao.DataSource#open()
+   /**
+    * DOCUMENT ME!
+    * 
+    * @throws SQLException DOCUMENT ME!
     */
    protected final void open() throws SQLException
    {
@@ -138,6 +140,7 @@ public class DataSourceXML extends DataSource
                logCat.error(e);
             }
          }
+
          data = new XMLDataResult(getResultNode(url), url.getQuery());
       }
       catch (Exception e)
@@ -145,13 +148,17 @@ public class DataSourceXML extends DataSource
          logCat.error(e);
       }
 
-      keys          = new String[size()];
-      dataObject    = new Object[size()][];
+      keys       = new String[size()];
+      dataObject = new Object[size()][];
    }
 
 
-   /* (non-Javadoc)
-    * @see org.dbforms.event.datalist.dao.DataSource#retrieveAll()
+   /**
+    * DOCUMENT ME!
+    * 
+    * @return DOCUMENT ME!
+    * 
+    * @throws SQLException DOCUMENT ME!
     */
    protected final int size() throws SQLException
    {
@@ -166,10 +173,17 @@ public class DataSourceXML extends DataSource
    }
 
 
-   /* (non-Javadoc)
-    * @see org.dbforms.event.datalist.dao.DataSource#findStartRow(java.lang.String)
+   /**
+    * DOCUMENT ME!
+    * 
+    * @param startRow DOCUMENT ME!
+    * 
+    * @return DOCUMENT ME!
+    * 
+    * @throws SQLException DOCUMENT ME!
     */
-   protected final int findStartRow(String startRow) throws SQLException
+   protected final int findStartRow(String startRow)
+                             throws SQLException
    {
       for (int i = 0; i < size(); i++)
       {
@@ -183,8 +197,14 @@ public class DataSourceXML extends DataSource
    }
 
 
-   /* (non-Javadoc)
-    * @see org.dbforms.event.datalist.dao.DataSource#fgetRow(int)
+   /**
+    * DOCUMENT ME!
+    * 
+    * @param currRow DOCUMENT ME!
+    * 
+    * @return DOCUMENT ME!
+    * 
+    * @throws SQLException DOCUMENT ME!
     */
    protected final Object[] getRow(int currRow) throws SQLException
    {
@@ -192,9 +212,14 @@ public class DataSourceXML extends DataSource
    }
 
 
-   /*
-    * returns the result of the remote query
-    *
+   /**
+    * DOCUMENT ME!
+    * 
+    * @param uri DOCUMENT ME!
+    * 
+    * @return DOCUMENT ME!
+    * 
+    * @throws Exception DOCUMENT ME!
     */
    protected Node getResultNode(URI uri) throws Exception
    {
@@ -212,8 +237,8 @@ public class DataSourceXML extends DataSource
    private String getXPath() throws Exception
    {
       StringBuffer buf = new StringBuffer();
-      buf.append(Util.replaceRealPath(getTable().getAlias(),
-            DbFormsConfigRegistry.instance().lookup()));
+      buf.append(Util.replaceRealPath(getTable().getAlias(), 
+                                      DbFormsConfigRegistry.instance().lookup()));
 
       if (filterConstraint != null)
       {
@@ -234,8 +259,8 @@ public class DataSourceXML extends DataSource
             }
 
             Field f = filterConstraint[i].getField();
-            buf.append(Util.isNull(f.getExpression()) ? f.getName()
-                                                      : f.getExpression());
+            buf.append(Util.isNull(f.getExpression())
+                          ? f.getName() : f.getExpression());
 
             // Check what type of operator is required
             switch (filterConstraint[i].getOperator())
@@ -293,9 +318,9 @@ public class DataSourceXML extends DataSource
          for (int i = 0; i < fields.size(); i++)
          {
             Field f = (Field) fields.elementAt(i);
-            objectRow[i] = data.itemValue(index,
-                  Util.isNull(f.getExpression()) ? f.getName() : f
-                  .getExpression());
+            objectRow[i] = data.itemValue(index, 
+                                          Util.isNull(f.getExpression())
+                                             ? f.getName() : f.getExpression());
          }
 
          keys[index] = getTable().getKeyPositionString(objectRow);
@@ -320,9 +345,10 @@ public class DataSourceXML extends DataSource
          for (int i = 0; i < fields.size(); i++)
          {
             Field f = (Field) fields.elementAt(i);
-            objectRow[i] = data.itemValue(index,
-                  Util.isNull(f.getExpression()) ? f.getName() : f
-                  .getExpression(), f.getType());
+            objectRow[i] = data.itemValue(index, 
+                                          Util.isNull(f.getExpression())
+                                             ? f.getName() : f.getExpression(), 
+                                          f.getType());
          }
 
          dataObject[index] = objectRow;

@@ -20,29 +20,32 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
+
 package org.dbforms.event;
-
-
-import javax.servlet.http.*;
-
-import org.dbforms.config.*;
+import javax.servlet.http.HttpServletRequest;
+import org.dbforms.config.DbFormsConfig;
 import org.apache.log4j.Category;
 
 
 
 /**
- *
- * @author Joe Peer <j.peer@gmx.net>
+ * DOCUMENT ME!
+ * 
+ * @author Joe Peer
  */
 public class NoopEvent extends WebEvent
 {
-   static Category logCat = Category.getInstance(NoopEvent.class.getName()); // logging category for this class
+   private static Category logCat = Category.getInstance(
+                                             NoopEvent.class.getName()); // logging category for this class
 
    /**
     * Creates a new NoopEvent object.
+    * @param tableId DOCUMENT ME!
+    * @param request DOCUMENT ME!
+    * @param config DOCUMENT ME!
     */
-   public NoopEvent(int tableId, HttpServletRequest request,
-      DbFormsConfig config)
+   public NoopEvent(int tableId, HttpServletRequest request, 
+                    DbFormsConfig config)
    {
       super(tableId, request, config);
    }

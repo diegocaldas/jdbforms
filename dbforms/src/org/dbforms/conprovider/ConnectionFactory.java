@@ -34,6 +34,9 @@ import org.apache.log4j.Category;
  *  <br>
  *  Provides SQL Connection objects using the
  *  underlying ConnectionProvider instance.
+ * 
+ * @author Luca Fossato
+ * 
  */
 public class ConnectionFactory
 {
