@@ -528,10 +528,6 @@ public class DbConnection implements javax.sql.DataSource {
       setName(jdbcURL);
    }
 
-   public void setUserName(String userName) {
-      setUsername(userName);
-   }
-
    /**
     *  Gets a JDBC connection object.
     *

@@ -78,7 +78,7 @@ public class ConnectionFactory
     * @param  prefs     the connection provider preferences object
     * @throws Exception if any error occurs
     */
-   public synchronized void setProvider(ConnectionProviderPrefs prefs)
+   public void setProvider(ConnectionProviderPrefs prefs)
       throws Exception
    {
       String providerClass = prefs.getConnectionProviderClass();
