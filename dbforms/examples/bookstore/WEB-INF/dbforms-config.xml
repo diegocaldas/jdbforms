@@ -103,7 +103,7 @@
 			<field 
 				name="FILE" 
 				fieldType="DISKBLOB"  
-				directory="c:\temp"
+				directory="c:/temp"
 			    encoding="false"
 			    size="1200"
 				isKey="true"

@@ -480,8 +480,8 @@ public abstract class DataSource
             }
             catch (Exception e)
             {
-			   logCat.error(e);	
-               throw new SQLException(e.getMessage());
+			   logCat.error(e.getMessage());	
+			   directory = curField.getDirectory();
             }
 
             if (fieldType == FieldTypes.DISKBLOB)
