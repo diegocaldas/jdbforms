@@ -32,7 +32,7 @@ import org.dbforms.util.MessageResources;
 import org.dbforms.util.ReflectionUtil;
 import org.dbforms.util.Util;
 import org.dbforms.util.SqlUtil;
-
+import org.dbforms.util.Escaper;
 
 import java.util.List;
 
@@ -360,4 +360,11 @@ public abstract class EmbeddedData extends DbBaseHandlerTag implements javax.ser
    public void setFormatClass(String formatClass) {
       this.formatClass = formatClass;
    }
+
+	public Escaper getEscaper() {
+		DataContainer parent = ((DataContainer) getParent());
+		Escaper res = parent.getEscaper();
+		return res;
+	}
+
 }

@@ -27,33 +27,39 @@ package org.dbforms.util;
  * 
  */
 public class DefaultEscaperImpl implements Escaper {
-   public String escapeHTML(String s) {
-      int i;
-      StringBuffer v = new StringBuffer("");
-      for (i = 0; i < s.length(); i++) {
-         switch (s.charAt(i)) {
-            case '"' :
-               v.append("&quot;");
-               break;
-            case '\'' :
-               v.append("&apos;");
-               break;
-            case '<' :
-               v.append("&lt;");
-               break;
-            case '>' :
-               v.append("&gt;");
-               break;
-            default :
-               v.append(s.charAt(i));
-               break;
-         }
-      }
-      return v.toString();
-   }
+	public String escapeHTML(String s) {
+		int i;
+		StringBuffer v = new StringBuffer("");
+		for (i = 0; i < s.length(); i++) {
+			switch (s.charAt(i)) {
+				case '"' :
+					v.append("&quot;");
+					break;
+				case '\'' :
+					v.append("&apos;");
+					break;
+				case '<' :
+					v.append("&lt;");
+					break;
+				case '>' :
+					v.append("&gt;");
+					break;
+				default :
+					v.append(s.charAt(i));
+					break;
+			}
+		}
+		return v.toString();
+	}
 
-   public String unescapeHTML(String s) {
-      return s;
-   }
+	public String unescapeHTML(String s) {
+		return s;
+	}
+	public String escapeJDBC(String s) {
+		return s;
+	}
+	public String unescapeJDBC(String s) {
+		return s;
+	}
 
 }

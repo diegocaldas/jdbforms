@@ -39,6 +39,8 @@ import org.dbforms.util.ParseUtil;
 import org.dbforms.util.SqlUtil;
 import org.dbforms.util.Util;
 import org.dbforms.util.MessageResourcesInternal;
+import org.dbforms.util.Escaper;
+import org.dbforms.util.ReflectionUtil;
 
 /**
  * This class represents a table tag in dbforms-config.xml (dbforms config xml file).
@@ -115,6 +117,8 @@ public class Table {
 	public static final int BLOB_CLASSIC = 1;
 	private String blobHandling;
 	private int blobHandlingStrategy;
+	private String escaperClass = null;
+	private Escaper escaper = null;
 
 	/**
 	 * Creates a new Table object.
@@ -200,6 +204,7 @@ public class Table {
 		if (field.getType() == 0)
 			throw new Exception("no type!");
 		field.setId(fields.size());
+		field.setTable(this);
 		fields.addElement(field);
 
 		// if the field is (part of) the key
@@ -1426,7 +1431,7 @@ public class Table {
 			Field curField = (Field) this.getKey().elementAt(i);
 			FieldValue aFieldValue = keyValuesHt.get(curField.getName());
 			Object value = aFieldValue.getFieldValueAsObject();
-			JDBCDataHelper.fillPreparedStatement(ps, col, value, curField.getType(), this);
+			JDBCDataHelper.fillWithData(ps, curField.getEscaper(), col, value, curField.getType(), this.getBlobHandlingStrategy());
 			col++;
 		}
 	}
@@ -2301,7 +2306,7 @@ public class Table {
 				break;
 
 			default :
-				JDBCDataHelper.fillPreparedStatement(ps, curCol, curValue, curField.getType(), this);
+				JDBCDataHelper.fillWithData(ps, curField.getEscaper(), curCol, curValue, curField.getType(), getBlobHandlingStrategy());
 				curCol++;
 		}
 
@@ -2416,6 +2421,41 @@ public class Table {
 		}
 
 		return result;
+	}
+
+	public Escaper getEscaper() {
+	   if (escaper == null) {
+		  String s = getEscaperClass();
+		  if (!Util.isNull(s)) {
+			 try {
+				escaper = (Escaper) ReflectionUtil.newInstance(s);
+			 } catch (Exception e) {
+				logCat.error("cannot create the new escaper [" + s + "]", e);
+			 }
+		  }
+		  if ((escaper == null)) {
+			 try {
+				escaper = DbFormsConfigRegistry.instance().lookup().getEscaper();
+			 } catch (Exception e) {
+				logCat.error("cannot create the new default escaper", e);
+			 }
+		  }
+	   }
+	   return escaper;
+	}
+
+	/**
+	 * @return
+	 */
+	public String getEscaperClass() {
+		return escaperClass;
+	}
+
+	/**
+	 * @param string
+	 */
+	public void setEscaperClass(String string) {
+		escaperClass = string;
 	}
 
 }

@@ -180,7 +180,7 @@ public class TableData extends EmbeddedData implements javax.servlet.jsp.tagext.
 		PreparedStatement ps = con.prepareStatement(queryBuf.toString());
 		ResultSetVector rsv = null;
 		try {
-			rsv = new ResultSetVector(ps.executeQuery());
+			rsv = new ResultSetVector(getEscaper(), ps.executeQuery());
 		} finally {
 			ps.close(); // #JP Jun 27, 2001
 		}

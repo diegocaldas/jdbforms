@@ -352,7 +352,6 @@ public abstract class DataSource
       {
          logCat.error(e);
          close();
-
          return new ResultSetVector();
       }
    }
@@ -379,7 +378,6 @@ public abstract class DataSource
       {
          logCat.error(e);
          close();
-
          return new ResultSetVector();
       }
    }

@@ -25,4 +25,7 @@ package org.dbforms.util;
 public interface Escaper {
    public String escapeHTML(String s);
    public String unescapeHTML(String s);
+
+   public String escapeJDBC(String s);
+   public String unescapeJDBC(String s);
 }

@@ -102,7 +102,7 @@ public class QueryData extends EmbeddedData implements javax.servlet.jsp.tagext.
 		ResultSetVector rsv = null;
 		PreparedStatement ps = con.prepareStatement(query);
 		try {
-			rsv = new ResultSetVector(ps.executeQuery());
+			rsv = new ResultSetVector(getEscaper(), ps.executeQuery());
 		} finally {
 			ps.close(); // #JP Jun 27, 2001
 		}

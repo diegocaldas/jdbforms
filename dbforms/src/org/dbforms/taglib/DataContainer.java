@@ -22,6 +22,7 @@
  */
 package org.dbforms.taglib;
 import java.util.*;
+import org.dbforms.util.Escaper;
 
 
 
@@ -39,4 +40,5 @@ public interface DataContainer
     * @param embeddedData DOCUMENT ME!
     */
    public void setEmbeddedData(List embeddedData);
+   public Escaper getEscaper();
 }

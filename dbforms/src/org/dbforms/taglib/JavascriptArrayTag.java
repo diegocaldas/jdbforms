@@ -102,7 +102,6 @@ public class JavascriptArrayTag extends TagSupportWithScriptHandler implements D
    public int doEndTag() throws javax.servlet.jsp.JspException
    {
       StringBuffer       tagBuf = new StringBuffer();
-
       if (embeddedData == null)
       { // no embedded data is nested in this tag
          logCat.warn("No EmbeddedData provide for javascriptArray TagLib "
@@ -147,5 +146,8 @@ public class JavascriptArrayTag extends TagSupportWithScriptHandler implements D
       }
 
       return EVAL_PAGE;
+   }
+   public Escaper getEscaper() {
+      return getConfig().getEscaper();
    }
 }
