@@ -10,7 +10,25 @@
  * $Date$
 -->
 <web-app>
+<!--
+	<filter>	
+		<filter-name>WebRecordFilter</filter-name>
+		<filter-class>de.oio.bugkilla.splitter.WebRecordFilter</filter-class>
+		<init-param>
+      		<param-name>host</param-name>
+      		<param-value>127.0.0.1</param-value>	
+    	</init-param>
+    	<init-param>
+    		<param-name>port</param-name>
+      		<param-value>5555</param-value>
+      	</init-param>	
+  </filter>
 
+  <filter-mapping>
+		<filter-name>WebRecordFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+  </filter-mapping>
+-->
   <!--=========== DbForms Configuration Servlet ===========-->
   <servlet>
     <servlet-name>config</servlet-name>
@@ -33,7 +51,7 @@
     -->
     <init-param>
         <param-name>resourceBundle</param-name>
-	<param-value>resources</param-value>
+		<param-value>resources</param-value>
     </init-param>  
     <init-param>
 	       	<param-name>digesterDebugLevel</param-name>
@@ -82,11 +100,6 @@
     <welcome-file>index.jsp</welcome-file>
     <welcome-file>index.html</welcome-file>
   </welcome-file-list>
-  <!--=========== DbForms Tag Library Descriptor ==========-->
-  <taglib>
-    <taglib-uri>/WEB-INF/dbforms.tld</taglib-uri>
-    <taglib-location>/WEB-INF/dbforms.tld</taglib-location>
-  </taglib>
 
   <!--==*************************************************==-->
   <!--==**=======  DBFORMS STYLING TEMPLATES  =========**==-->

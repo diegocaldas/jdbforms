@@ -14,12 +14,12 @@
 	        <field name="TITLE" fieldType="varchar" isKey="true" />
 	    </table>   
             
-            <query name="BOOK_NEW" from="BOOK">
-                <field name="BOOK_ID" fieldType="int" isKey="true" autoInc="true"/>
+        <query name="BOOK_QUERY" from="BOOK">
+            <field name="BOOK_ID" fieldType="int" isKey="true" autoInc="true"/>
 	        <field name="ISBN" fieldType="varchar" />
 	        <field name="AUTHOR_ID" fieldType="int" isKey="true" />
 	        <field name="TITLE" fieldType="varchar" isKey="true" />
-            </query> 
+        </query> 
 
 	    <query name="BOOKWITHINTERCEPTOR" from="BOOK">
 	        <field name="BOOK_ID" fieldType="int" isKey="true"/>
@@ -57,12 +57,22 @@
 	        <field 
 	        	name="ISBN" 
 	        	fieldType="varchar" 
-			expression="title"
+			expression="isbn"
 	        />
 	        <field 
-	        	name="AUTHOR" 
+	        	name="AUTHOR_NAME" 
 	        	fieldType="varchar" 
 			expression="author/name"
+	        />
+	        <field 
+	        	name="AUTHOR_SURNAME" 
+	        	fieldType="varchar" 
+			expression="author/surname"
+	        />
+	        <field 
+	        	name="AUTHOR_ID" 
+	        	fieldType="int" 
+			expression="author/authorid"
 	        />
 	    </table>
 
@@ -70,6 +80,7 @@
 	        <field name="TIME" fieldType="DATE" isKey="true"/>
 	        <field name="REMARK" fieldType="varchar" />
 	    </table>    
+
 		<table name="KEYTEST"
 	        defaultVisibleFields="key1,key2,key3,key4" >
 			<field name="KEY_1" fieldType="varchar" size="10" isKey="true"/>
