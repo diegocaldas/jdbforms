@@ -27,7 +27,7 @@ public class TestUniqueIDGenerator extends TestCase {
         String id1 = UniqueIDGenerator.getUniqueID();
         assertTrue("Make sure we got a unique id.",id1 != null);
         String id2 = UniqueIDGenerator.getUniqueID();
-        assertTrue("Make sure both id's are different",!id1.equals(id2));
+        assertTrue("Make sure both id's are different.  id1:" + id1 + ", id2:" + id2,!id1.equals(id2));
     }
 
 }
