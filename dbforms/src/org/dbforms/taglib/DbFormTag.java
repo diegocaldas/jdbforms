@@ -2444,6 +2444,7 @@ public class DbFormTag extends TagSupportWithScriptHandler implements TryCatchFi
 
 		sqlFilter = null;
 		orderFields = null;
+		overrideFieldCheck = null;
 	}
 
 	/**
