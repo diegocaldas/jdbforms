@@ -94,9 +94,7 @@ public class NavNewEvent extends NavigationEvent
                                        String dbConnectionName)
                                 throws SQLException
    {
-      //	rsv.setPointer( rsv.size() ); //#fixme - this is not well thought through
       logCat.info("processed NavNewEvent");
-
       return null;
    }
 }

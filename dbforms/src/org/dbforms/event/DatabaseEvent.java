@@ -171,7 +171,8 @@ public abstract class DatabaseEvent extends WebEvent
 			String value = ParseUtil.getParameter(request, param);
 			String oldValue = ParseUtil.getParameter(request, "o" + param);
 			doIt = !value.equals(oldValue);
-			break;
+			if (doIt)
+			   break;
 		}  
 	  }
       if (doIt) 
