@@ -10,7 +10,7 @@
       <db:dbform 
       	maxRows="*"
       	tableName="XMLBOOKS" 
-      	followUp="testPositionXML.jsp" 
+      	followUp="/tests/testPositionXML.jsp" 
       	autoUpdate="false" 
       >
 	      	<db:header>
@@ -20,7 +20,7 @@
 			<db:body allowNew="false">
                 <db:label fieldName="AUTHOR"/><br/>
                 <%=(String)currentRow_XMLBOOKS.get("AUTHOR")%><br/>
-                <db:linkURL href="/authorsEditAlias.jsp" tableName="AUTHORVIEW">
+                <db:linkURL href="/tests/testPositionAuthorEdit.jsp" tableName="AUTHORVIEW">
 						<!-- Attention: field to reference must be a key field in the target table! -->
    	                    <db:position fieldName="AUTHOR_ID" value='<%=(String)currentRow_XMLBOOKS.get("AUTHOR_ID")%>'/>
         	      </db:linkURL>

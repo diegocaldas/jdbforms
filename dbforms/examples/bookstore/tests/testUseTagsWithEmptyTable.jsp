@@ -7,7 +7,7 @@
     <body>
 	  <h1>Use Tags with empty table</h1>
  	  <db:dbform
-      	followUp="testUseTagsWithEmptyTable.jsp" 
+      	followUp="/tests/testUseTagsWithEmptyTable.jsp" 
  	  >
 			<db:select 
 					id="select"

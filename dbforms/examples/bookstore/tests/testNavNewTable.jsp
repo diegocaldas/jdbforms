@@ -27,7 +27,7 @@
 			<db:footer>
 				</table>     
 				<db:navNewButton
-						followUp="/tests/testNavNewEdit.jsp" caption="Insert new ..."/>
+						followUp="/tests/testNavNewTableEdit.jsp" caption="Insert new ..."/>
 				</db:footer>
 		</db:dbform>
 	</body>

@@ -5,7 +5,7 @@
 	</head>
    <body >
       <db:dbform autoUpdate="false" 
-                 followUp="/testBooksWithInterceptor.jsp" 
+                 followUp="/tests/testBooksWithInterceptor.jsp" 
                  maxRows="1" 
                  tableName="BOOKWITHINTERCEPTOR"
                  
@@ -46,11 +46,6 @@
                  <db:navLastButton  style="width:100" caption=">> Last"/>
                  <db:navNewButton   style="width:100" caption="New"/>
                  &nbsp;
-               </td>
-            </tr>
-            <tr class="button">
-               <td colspan="2" style="text-align:center">
-                 <db:gotoButton style="width:200" caption="Back to list" destination="/authorsList.jsp"/>
                </td>
             </tr>
             </table>

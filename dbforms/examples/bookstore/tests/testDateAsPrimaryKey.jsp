@@ -6,7 +6,7 @@
 	</head>
    <body >
       <db:dbform autoUpdate="false" 
-                 followUp="/testDateAsPrimaryKey.jsp" 
+                 followUp="/tests/testDateAsPrimaryKey.jsp" 
                  maxRows="1" 
                  tableName="TIMEPLAN"
                  
