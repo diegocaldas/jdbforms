@@ -23,9 +23,12 @@
 
 package org.dbforms;
 
-/****
+import java.util.*;
+import org.dbforms.util.*;
+
+/**
  * <p>
- * This class represents a view tag in dbforms-config.xml (dbforms config xml file)
+ * This class represents the query tag in dbforms-config.xml (dbforms config xml file)
  * </p>
  *
  * <p>
@@ -33,16 +36,6 @@ package org.dbforms;
  * </p>
  *
  * @author Henner Kollmann (Henner.Kollmann@gmx.de)
- */
-import java.util.*;
-import org.dbforms.util.*;
-
-
-/**
- * DOCUMENT ME!
- *
- * @version $Revision$
- * @author $author$
  */
 public class Query extends Table
 {

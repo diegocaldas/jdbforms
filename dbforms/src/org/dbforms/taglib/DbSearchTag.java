@@ -34,12 +34,12 @@ import org.apache.log4j.Category;
 
 
 
-/****
+/**
  * <p>renders a input field for searching with special default search modes.</p>
  * <p>example:</p>
-        <input type="hidden" name="searchalgo_0_1" value="weakEnd"/>
-        <input type="hidden" name="searchmode_0_1" value="AND"/>
-        <input type="input" name="search_0_1"/>
+        &lt;input type="hidden" name="searchalgo_0_1" value="weakEnd"/&gt;<br/>
+        &lt;input type="hidden" name="searchmode_0_1" value="AND"/&gt;<br/>
+        &lt;input type="input" name="search_0_1"/&gt;<br/>
  *
  *  searchalgo and searchmode are set by parameter.
  *
@@ -47,9 +47,8 @@ import org.apache.log4j.Category;
  */
 public class DbSearchTag extends TagSupportWithScriptHandler
 {
-    static Category logCat = Category.getInstance(DbSortTag.class.getName()); // logging category for this class
 
-    /** DOCUMENT ME! */
+    static Category logCat = Category.getInstance(DbSortTag.class.getName()); // logging category for this class
     protected DbFormTag parentForm;
     private String fieldName;
     private String searchAlgo = "sharp";
