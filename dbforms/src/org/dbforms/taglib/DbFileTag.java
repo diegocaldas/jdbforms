@@ -44,10 +44,10 @@ import org.apache.log4j.Category;
  * @author Joachim Peer <j.peer@gmx.net>
  */
 
+public class DbFileTag extends DbBaseInputTag {
 
-public class DbFileTag extends DbBaseInputTag  {
-
-  static Category logCat = Category.getInstance(DbFileTag.class.getName()); // logging category for this class
+	static Category logCat = Category.getInstance(DbFileTag.class.getName());
+	// logging category for this class
 
 	private String accept;
 
@@ -59,65 +59,67 @@ public class DbFileTag extends DbBaseInputTag  {
 		return accept;
 	}
 
-  public int doStartTag() throws javax.servlet.jsp.JspException {
+	public int doStartTag() throws javax.servlet.jsp.JspException {
 
-	if( !parentForm.hasMultipartCapability() ) {
-	  logCat.warn("DbFileTag is used but DbFormTag.multipart is not set (FALSE)");
-	  throw new JspException("DbFileTag is used but DbFormTag.multipart is not set (it is set to \"FALSE\"). you must set it to \"TRUE\" to enable file uploads!");
+		if (!parentForm.hasMultipartCapability()) {
+			logCat.warn("DbFileTag is used but DbFormTag.multipart is not set (FALSE)");
+			throw new JspException("DbFileTag is used but DbFormTag.multipart is not set (it is set to \"FALSE\"). you must set it to \"TRUE\" to enable file uploads!");
+		}
+
+		return SKIP_BODY;
 	}
 
-	return SKIP_BODY;
-  }  
-
-  public int doEndTag() throws javax.servlet.jsp.JspException {
-
+	public int doEndTag() throws javax.servlet.jsp.JspException {
 
 		try {
 
-  	    StringBuffer tagBuf = new StringBuffer("<input type=\"file\" name=\"");
-	  tagBuf.append(getFormFieldName());
-	  tagBuf.append("\" ");
+			StringBuffer tagBuf = new StringBuffer("<input type=\"file\" name=\"");
+			tagBuf.append(getFormFieldName());
+			tagBuf.append("\" ");
 
 			if (accept != null) {
-			    tagBuf.append(" accept=\"");
-			    tagBuf.append(accept);
-			    tagBuf.append("\"");
+				tagBuf.append(" accept=\"");
+				tagBuf.append(accept);
+				tagBuf.append("\"");
 			}
 
 			if (accessKey != null) {
-			    tagBuf.append(" accesskey=\"");
-			    tagBuf.append(accessKey);
-			    tagBuf.append("\"");
+				tagBuf.append(" accesskey=\"");
+				tagBuf.append(accessKey);
+				tagBuf.append("\"");
 			}
 
 			if (maxlength != null) {
-		    tagBuf.append(" maxlength=\"");
-		    tagBuf.append(maxlength);
-		    tagBuf.append("\"");
+				tagBuf.append(" maxlength=\"");
+				tagBuf.append(maxlength);
+				tagBuf.append("\"");
 			}
 
 			if (cols != null) {
-		    tagBuf.append(" size=\"");
-		    tagBuf.append(cols);
-		    tagBuf.append("\"");
+				tagBuf.append(" size=\"");
+				tagBuf.append(cols);
+				tagBuf.append("\"");
 			}
 
 			if (tabIndex != null) {
-		    tagBuf.append(" tabindex=\"");
-		    tagBuf.append(tabIndex);
-		    tagBuf.append("\"");
+				tagBuf.append(" tabindex=\"");
+				tagBuf.append(tabIndex);
+				tagBuf.append("\"");
 			}
 
-	  tagBuf.append(prepareStyles());
-	  tagBuf.append(prepareEventHandlers());
-	  tagBuf.append(">");
+			tagBuf.append(prepareStyles());
+			tagBuf.append(prepareEventHandlers());
+			tagBuf.append("/>");
 
-		  pageContext.getOut().write(tagBuf.toString());
-		} catch(java.io.IOException ioe) {
-			throw new JspException("IO Error: "+ioe.getMessage());
+			//Setup validation parameters
+			tagBuf.append(prepareValidation());
+
+			pageContext.getOut().write(tagBuf.toString());
+		} catch (java.io.IOException ioe) {
+			throw new JspException("IO Error: " + ioe.getMessage());
 		}
 
 		return EVAL_PAGE;
-  }  
+	}
 
 }

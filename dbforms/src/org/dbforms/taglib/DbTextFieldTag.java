@@ -149,7 +149,10 @@ public int doEndTag() throws javax.servlet.jsp.JspException {
 
 		tagBuf.append(prepareStyles());
 		tagBuf.append(prepareEventHandlers());
-		tagBuf.append(">");
+		tagBuf.append("/>");
+		
+		//Setup validation parameters
+		tagBuf.append(prepareValidation());
 
 		pageContext.getOut().write(tagBuf.toString());
 	} catch (java.io.IOException ioe) {

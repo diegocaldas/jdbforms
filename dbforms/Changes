@@ -3,6 +3,20 @@
 * $Date$
 
 __________________________________________________________________________________________________
+Monday, January 21, 2002
+DbForms version 1.02
+Grunikiewicz.philip@hydro.qc.ca
+
+Bug Fixes and General Maintenance
+---------------------------------
+
+Corrected the well-formed'ness of the dbforms.tld file.
+Added two new attributes to the various input tags to allow for validation.  More to come in future releases
+Fixed a problem in how dbform's allocates a database connection (Contributed by Dirk Kraemer).
+Error exceptions which are thrown, and are empty, are no longer displayed.
+
+
+__________________________________________________________________________________________________
 Friday, January 18th, 2002
 DbForms version 1.01
 Grunikiewicz.philip@hydro.qc.ca

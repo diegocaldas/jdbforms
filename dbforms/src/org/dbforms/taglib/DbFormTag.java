@@ -325,8 +325,17 @@ public class DbFormTag extends BodyTagSupport {
 		// - it may have been set there by the Controller or by another DbFormTag
 		// - if there is nothing yet (for example if the jsp is called directly, and this
 		//   is the first evaluated form) than create a new object and store it for further reference
+		
 		con = (Connection) pc.getAttribute("connection", PageContext.REQUEST_SCOPE);
-		if (con == null) {
+		
+
+		// Make sure we don't serve dead connections!  Thanks to Dirk Kraemer foy his contribution		
+		boolean createNewConnection = true;
+		try {
+			createNewConnection = ((con == null) || (con.isClosed()));
+		} catch (SQLException ignoreBecauseNewConnection) {}
+		
+		if (createNewConnection) {
 			logCat.info("no connection yet, creating new and setting to request.");
 
 			if (config == null)

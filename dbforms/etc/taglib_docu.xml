@@ -464,7 +464,21 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>Determines if the text field should be hidden or displayed.</info>
                 </attribute>
+                
+				<attribute>
+                    <name>validationType</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>Used to specify validation type</info>
+                </attribute>                
 
+				<attribute>
+                    <name>validationReference</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>used to specify a reference to the field being validated</info>
+                </attribute>                
+                
                 <attribute>
                     <name>overrideValue</name>
                     <required>false</required>
@@ -678,6 +692,20 @@
                         <p>Determines if the text field should be hidden or displayed.</p>
                     </info>
                 </attribute>
+                
+				<attribute>
+                    <name>validationType</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>Used to specify validation type</info>
+                </attribute>                
+
+				<attribute>
+                    <name>validationReference</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>used to specify a reference to the field being validated</info>
+                </attribute>                
 
                 <attribute>
                     <name>overrideValue</name>
@@ -899,6 +927,20 @@
                     </info>
                 </attribute>
 
+				<attribute>
+                    <name>validationType</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>Used to specify validation type</info>
+                </attribute>                
+
+				<attribute>
+                    <name>validationReference</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>used to specify a reference to the field being validated</info>
+                </attribute>                
+
                 <attribute>
                     <name>renderBody</name>
                     <required>false</required>
@@ -1095,6 +1137,20 @@
                         <p>Defines the textarea's default value. When this attribute is set,the value retrieved from the database is ignored.</p>
                     </info>
                 </attribute>
+
+				<attribute>
+                    <name>validationType</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>Used to specify validation type</info>
+                </attribute>                
+
+				<attribute>
+                    <name>validationReference</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>used to specify a reference to the field being validated</info>
+                </attribute>                
 
                 <attribute>
                     <name>renderBody</name>
@@ -1471,6 +1527,20 @@
                     <rtexprvalue>true</rtexprvalue>
                     <info>Maximum length of the string to be entered</info>
                 </attribute>
+
+				<attribute>
+                    <name>validationType</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>Used to specify validation type</info>
+                </attribute>                
+
+				<attribute>
+                    <name>validationReference</name>
+                    <required>false</required>
+                    <rtexprvalue>true</rtexprvalue>
+                    <info>used to specify a reference to the field being validated</info>
+                </attribute>                
 
                 <attribute>
                     <name>onBlur</name>
@@ -1964,14 +2034,10 @@
                 </attribute>
 
                 <attribute>
-                    <name>
-                        customEntry
-                        <name>
-                            <required>false</required>
+                    <name>customEntry</name>
+                           <required>false</required>
                             <rtexprvalue>true</rtexprvalue>
                             <info>Allows an additional (independant) entry into the select list</info>
-                        </name>
-                    </name>
                 </attribute>
 
                 <attribute>

@@ -101,7 +101,11 @@ public class DbXmlErrorsTag extends TagSupport {
 			while (enum.hasMoreElements()) {
 				Exception ex = (Exception) enum.nextElement();
 
-				transformedErrors.add(org.dbforms.util.XMLErrorsUtil.getXMLErrorMessage(ex.getMessage(), errors));
+				String result = org.dbforms.util.XMLErrorsUtil.getXMLErrorMessage(ex.getMessage(), errors);
+				
+				// ignore empty messages
+				if(result != null)
+					transformedErrors.add(result);
 			}
 
 			StringBuffer results = new StringBuffer();

@@ -72,6 +72,12 @@ public class XMLErrorsUtil {
 	org.dbforms.Error anError = null;
 	String xmlMessage = null;
 	
+	
+	
+	// If message is empty, return immediately
+	if(message == null || message.trim().length() == 0)
+		return null;
+	
 	// Extract Language , Error Code ID, and parameters
 	// ie: English-001:FieldName,200
 	// ie: ORA-00001:Oracle Message
@@ -111,9 +117,7 @@ public class XMLErrorsUtil {
 	} else {
 		// An error has occured, 
 		// however a custom error messages is not available		
-		StringBuffer defaultStr = new StringBuffer();
-		defaultStr.append(message);
-		return defaultStr.toString();
+		return message;
 	}
 	}
 	

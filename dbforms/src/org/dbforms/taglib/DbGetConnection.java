@@ -30,7 +30,6 @@ import org.dbforms.*;
 
 import org.apache.log4j.Category;
 
-
 /*************************************************************
  * Grunikiewicz.philip@hydro.qc.ca
  * 2001-12-18
@@ -39,7 +38,6 @@ import org.apache.log4j.Category;
  * in dbForms-config.xml file
  * 
  * ***************************************************************/
-
 
 public class DbGetConnection extends TagSupport {
 
@@ -76,42 +74,43 @@ public class DbGetConnection extends TagSupport {
 	public void setId(String id) {
 		this.id = id;
 	}
-	
+
 	public void setPageContext(PageContext pc) {
 		super.setPageContext(pc);
 		DbFormsConfig config =
 			(DbFormsConfig) pageContext.getServletContext().getAttribute(
 				DbFormsConfig.CONFIG);
 
-
 		// take connection from request
 		// - it may have been set there by the Controller or by another DbFormTag
 		// - if there is nothing yet (for example if the jsp is called directly, and this
 		//   is the first evaluated form) than create a new object and store it for further reference
 		con = (Connection) pc.getAttribute("connection", PageContext.REQUEST_SCOPE);
-		if (con == null) {
-			logCat.info("no connection yet, creating new and setting to request.");
 
+		// Make sure we don't serve dead connections!  Thanks to Dirk Kraemer foy his contribution		
+		boolean createNewConnection = true;
+		try {
+			createNewConnection = ((con == null) || (con.isClosed()));
+		} catch (SQLException ignoreBecauseNewConnection) {
+		}
+
+		if (createNewConnection) {
+			logCat.info("no connection yet, creating new and setting to request.");
 
 			if (config == null)
 				throw new IllegalArgumentException("Troubles with DbForms config xml file: can not find CONFIG object in application context! check system configuration! check if application crashes on start-up!");
 
-
 			DbConnection aDbConnection = config.getDbConnection();
-
 
 			if (aDbConnection == null)
 				throw new IllegalArgumentException("Troubles in your DbForms config xml file: DbConnection not properly included - check manual!");
 
-
 			con = aDbConnection.getConnection();
-
 
 			if (con == null)
 				throw new IllegalArgumentException(
 					"JDBC-Troubles: was not able to create connection, using the following DbConnection:"
 						+ aDbConnection.toString());
-
 
 			pc.setAttribute("connection", con, PageContext.REQUEST_SCOPE);
 		} else {

@@ -1225,4 +1225,12 @@ public class Table {
 			e.printStackTrace(System.out);
 		}
 	}
+	
+	
+	// We have the field ID - we need the field name  
+  	public String getFieldName(int fieldID) 
+  	{
+  		Field f = (Field) fields.elementAt(fieldID);
+		return(f.getName());
+	} 
 }
