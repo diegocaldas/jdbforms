@@ -372,7 +372,11 @@ public class Field {
 
 		switch (getType()) {
 			case FieldTypes.INTEGER :
-				res = java.text.NumberFormat.getIntegerInstance(locale);
+				try {
+					res = java.text.NumberFormat.getIntegerInstance(locale);
+				} catch (NoSuchMethodError nsme) {
+					res = java.text.NumberFormat.getNumberInstance(locale);
+				}
 				((java.text.DecimalFormat) res).setParseIntegerOnly(true);
 				if (!Util.isNull(pattern)) {
 					((java.text.DecimalFormat) res).applyPattern(pattern);
