@@ -1,3 +1,9 @@
+2003-05-03
+(Henner.Kollmann@gmx.de)
+   - do reformatting and integrating of jalopy to ant. So checkstyle shows only relevant errors. 
+     Now we have only 1597 errors, not more 10623 like in version 1.1.3.
+     And this errors are "true" errors which are "worth" to be reviewed! 
+
 2003-05-20
 (Henner.Kollmann@gmx.de)
    - changed dependend to xerces 2.4 version
