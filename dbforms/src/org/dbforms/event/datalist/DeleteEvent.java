@@ -76,7 +76,7 @@ public class DeleteEvent extends DatabaseEvent {
     * @return the FieldValues attribute
     */
    public FieldValues getFieldValues() {
-      return getFieldValues(false);
+      return getFieldValues(true);
    }
 
    /**
@@ -93,7 +93,7 @@ public class DeleteEvent extends DatabaseEvent {
          String s =
             MessageResourcesInternal.getMessage(
                "dbforms.events.delete.nogrant",
-               request.getLocale(),
+               getRequest().getLocale(),
                new String[] { getTable().getName()});
          throw new SQLException(s);
       }
@@ -106,9 +106,9 @@ public class DeleteEvent extends DatabaseEvent {
       // part 2: check if there are interceptors to be processed (as definied by
       // "interceptor" element embedded in table element in dbforms-config xml file)
       // process the interceptors associated to this table
-      operation = getTable().processInterceptors(DbEventInterceptor.PRE_DELETE, request, fieldValues, getConfig(), con);
+      operation = getTable().processInterceptors(DbEventInterceptor.PRE_DELETE, getRequest(), fieldValues, getConfig(), con);
 
-      if (operation != DbEventInterceptor.IGNORE_OPERATION) {
+      if (operation == DbEventInterceptor.GRANT_OPERATION) {
          // in order to process an update, we need the key of the dataset to update;
          String keyValuesStr = getKeyValues();
 
@@ -119,8 +119,8 @@ public class DeleteEvent extends DatabaseEvent {
          }
 
          // DELETE operation;
-         DataSourceList ds = DataSourceList.getInstance(request);
-         DataSourceFactory qry = ds.get(getTable(), request);
+         DataSourceList ds = DataSourceList.getInstance(getRequest());
+         DataSourceFactory qry = ds.get(getTable(), getRequest());
          boolean own = false;
          if (qry == null) {
             qry = new DataSourceFactory(getTable());
@@ -130,12 +130,12 @@ public class DeleteEvent extends DatabaseEvent {
          if (own) 
             qry.close();
          else
-            ds.remove(getTable(), request);
+            ds.remove(getTable(), getRequest());
       }
 
       // finally, we process interceptor again (post-delete)
       // process the interceptors associated to this table
-      getTable().processInterceptors(DbEventInterceptor.POST_DELETE, request, null, getConfig(), con);
+      getTable().processInterceptors(DbEventInterceptor.POST_DELETE, getRequest(), null, getConfig(), con);
 
       // End of interceptor processing
    }

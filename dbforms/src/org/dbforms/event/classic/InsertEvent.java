@@ -114,7 +114,7 @@ public class InsertEvent extends ValidationEvent
       {
          String s = MessageResourcesInternal.getMessage(
                              "dbforms.events.insert.nogrant", 
-                             request.getLocale(), 
+                             getRequest().getLocale(), 
                              new String[] 
          {
             getTable().getName()
@@ -136,10 +136,10 @@ public class InsertEvent extends ValidationEvent
 
       // process the interceptors associated to this table
       operation = getTable().processInterceptors(DbEventInterceptor.PRE_INSERT, 
-                                            request, fieldValues, getConfig(), 
+                                            getRequest(), fieldValues, getConfig(), 
                                             con);
 
-      if ((operation != DbEventInterceptor.IGNORE_OPERATION)
+      if ((operation == DbEventInterceptor.GRANT_OPERATION)
                 && (fieldValues.size() > 0))
       {
          // End of interceptor processing
@@ -266,7 +266,7 @@ public class InsertEvent extends ValidationEvent
                   }
 
                   // dir is ok so lets store the filepart
-                  FileHolder fileHolder = ParseUtil.getFileHolder(request, 
+                  FileHolder fileHolder = ParseUtil.getFileHolder(getRequest(), 
                                                                   "f_"
                                                                   + getTable().getId()
                                                                   + "_ins"
@@ -337,14 +337,14 @@ public class InsertEvent extends ValidationEvent
             firstPosition = getTable().getPositionString(resultSetVector);
          }
 
-         request.setAttribute("firstpos_" + getTable().getId(), firstPosition);
+         getRequest().setAttribute("firstpos_" + getTable().getId(), firstPosition);
       }
 
 
       //end patch
       // finally, we process interceptor again (post-insert)
       // process the interceptors associated to this table
-      getTable().processInterceptors(DbEventInterceptor.POST_INSERT, request, null, 
+      getTable().processInterceptors(DbEventInterceptor.POST_INSERT, getRequest(), null, 
                                 getConfig(), con);
    }
 

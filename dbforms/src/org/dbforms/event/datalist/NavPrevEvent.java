@@ -105,15 +105,15 @@ public class NavPrevEvent extends NavigationEvent
    {
       logCat.info("==>NavPrevEvent.processEvent");
 
-      DataSourceList    ds  = DataSourceList.getInstance(request);
-      DataSourceFactory qry = ds.get(getTable(), request);
+      DataSourceList    ds  = DataSourceList.getInstance(getRequest());
+      DataSourceFactory qry = ds.get(getTable(), getRequest());
 
       if (qry == null)
       {
          qry = new DataSourceFactory(dbConnectionName, con, getTable());
          qry.setSelect(filterFieldValues, orderConstraint, sqlFilter, 
                        sqlFilterParams);
-         ds.put(getTable(), request, qry);
+         ds.put(getTable(), getRequest(), qry);
       }
 
       String          position = getTable()

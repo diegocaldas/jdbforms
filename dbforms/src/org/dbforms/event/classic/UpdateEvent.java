@@ -82,7 +82,9 @@ public class UpdateEvent extends ValidationEvent
     */
    public FieldValues getFieldValues()
    {
-      return getFieldValues(false);
+      String s = ParseUtil.getParameter(getRequest(), Constants.FIELDNAME_OVERRIDEFIELDTEST + getTable().getId());
+      boolean flag = "true".equalsIgnoreCase(s);
+      return getFieldValues(flag);
    }
 
 
@@ -102,7 +104,7 @@ public class UpdateEvent extends ValidationEvent
       {
          String s = MessageResourcesInternal.getMessage(
                              "dbforms.events.update.nogrant", 
-                             request.getLocale(), 
+                             getRequest().getLocale(), 
                              new String[] 
          {
             getTable().getName()
@@ -127,10 +129,10 @@ public class UpdateEvent extends ValidationEvent
 
       // process the interceptors associated to this table
       getTable()
-         .processInterceptors(DbEventInterceptor.PRE_UPDATE, request, 
+         .processInterceptors(DbEventInterceptor.PRE_UPDATE, getRequest(), 
                               fieldValues, getConfig(), con);
 
-      if ((operation != DbEventInterceptor.IGNORE_OPERATION)
+      if ((operation == DbEventInterceptor.GRANT_OPERATION)
                 && (fieldValues.size() > 0))
       {
          // End of interceptor processing
@@ -276,7 +278,7 @@ public class UpdateEvent extends ValidationEvent
                   }
 
                   // dir is ok so lets store the filepart
-                  FileHolder fileHolder = ParseUtil.getFileHolder(request, 
+                  FileHolder fileHolder = ParseUtil.getFileHolder(getRequest(), 
                                                                   "f_"
                                                                   + getTable()
                                                                        .getId()
@@ -315,7 +317,7 @@ public class UpdateEvent extends ValidationEvent
       // finally, we process interceptor again (post-update)
       // process the interceptors associated to this table
       getTable()
-         .processInterceptors(DbEventInterceptor.POST_UPDATE, request, null, 
+         .processInterceptors(DbEventInterceptor.POST_UPDATE, getRequest(), null, 
                               getConfig(), con);
 
       // End of interceptor processing

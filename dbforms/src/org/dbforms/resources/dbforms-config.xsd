@@ -16,6 +16,7 @@
 						<xs:attribute name="expression" type="xs:string" use="optional"/>
 						<xs:attribute name="defaultValue" type="xs:string" use="optional"/>
 						<xs:attribute name="alias" type="xs:string" use="optional"/>
+						<xs:attribute name="escaperClass" type="xs:string" use="optional"/>
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence>
@@ -84,6 +85,7 @@
 		<xs:attribute name="name" type="xs:string" use="required"/>
 		<xs:attribute name="orderBy" type="xs:string" use="optional"/>
 		<xs:attribute name="dataAccessClass" type="xs:string" use="optional"/>
+		<xs:attribute name="escaperClass" type="xs:string" use="optional"/>
 		<xs:attribute name="alias" type="xs:string" use="optional"/>
 		<xs:attribute name="blobHandling" type="xs:string" use="optional"/>
 	</xs:complexType>
@@ -173,7 +175,8 @@
 						<xs:attribute name="orderBy" type="xs:string" use="optional"/>
 					</xs:complexType>
 				</xs:element>
-				<xs:element name="DOMFactoryClass" type="xs:string" minOccurs="0"/>
+				<xs:element name="DOMFactoryClass" type="xs:string" minOccurs="0" maxOccurs="1" />
+				<xs:element name="DefaultEscaperClass" type="xs:string" minOccurs="0" maxOccurs="1" />
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>

@@ -235,7 +235,10 @@ public class DbFormTag extends TagSupportWithScriptHandler implements TryCatchFi
 
 	/** holds id attribute */
 	private String id = null;
-
+   
+   /** true if update should be performed always */
+   private String overrideFieldCheck = null;
+   
 	/** 
 	 *
 	 * Returns the locale the form is created with. Can be readed from other tags
@@ -1187,6 +1190,10 @@ public class DbFormTag extends TagSupportWithScriptHandler implements TryCatchFi
 			if (!Util.isNull(getFollowUpOnError())) {
 				tagBuf.append("<input type=\"hidden\" name=\"fue_" + tableId + "\" value=\"" + getFollowUpOnError() + "\"/>");
 			}
+
+         if (!Util.isNull(getOverrideFieldCheck())) {
+            tagBuf.append("<input type=\"hidden\" name=\"" + Constants.FIELDNAME_OVERRIDEFIELDTEST  + tableId + "\" value=\"" + getOverrideFieldCheck() + "\"/>");
+         }
 
 			// write out the formValidatorName
 			if (!Util.isNull(getFormValidatorName())) {
@@ -2553,5 +2560,19 @@ public class DbFormTag extends TagSupportWithScriptHandler implements TryCatchFi
 	public void setAutocomplete(String string) {
 		autocomplete = string;
 	}
+
+   /**
+    * @return
+    */
+   public String getOverrideFieldCheck() {
+      return overrideFieldCheck;
+   }
+
+   /**
+    * @param string
+    */
+   public void setOverrideFieldCheck(String string) {
+      overrideFieldCheck = string;
+   }
 
 }

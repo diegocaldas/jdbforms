@@ -89,7 +89,7 @@ public class InsertEvent extends ValidationEvent {
          String s =
             MessageResourcesInternal.getMessage(
                "dbforms.events.insert.nogrant",
-               request.getLocale(),
+               getRequest().getLocale(),
                new String[] { getTable().getName()});
          throw new SQLException(s);
       }
@@ -105,17 +105,17 @@ public class InsertEvent extends ValidationEvent {
       int operation = DbEventInterceptor.GRANT_OPERATION;
 
       // process the interceptors associated to this table
-      operation = getTable().processInterceptors(DbEventInterceptor.PRE_INSERT, request, fieldValues, getConfig(), con);
+      operation = getTable().processInterceptors(DbEventInterceptor.PRE_INSERT, getRequest(), fieldValues, getConfig(), con);
 
-      if ((operation != DbEventInterceptor.IGNORE_OPERATION) && (fieldValues.size() > 0)) {
+      if ((operation == DbEventInterceptor.GRANT_OPERATION) && (fieldValues.size() > 0)) {
          // End of interceptor processing
          if (!checkSufficentValues(fieldValues)) {
             throw new SQLException("unsufficent parameters");
          }
 
          // INSERT operation;
-         DataSourceList ds = DataSourceList.getInstance(request);
-         DataSourceFactory qry = ds.get(getTable(), request);
+         DataSourceList ds = DataSourceList.getInstance(getRequest());
+         DataSourceFactory qry = ds.get(getTable(), getRequest());
          
          boolean own = false;
          if (qry == null) {
@@ -127,17 +127,17 @@ public class InsertEvent extends ValidationEvent {
          if (own) 
             qry.close();
          else
-            ds.remove(getTable(), request);
+            ds.remove(getTable(), getRequest());
 
          // Show the last record inserted
          String firstPosition = getTable().getPositionString(fieldValues);
-         request.setAttribute("firstpos_" + getTable().getId(), firstPosition);
+         getRequest().setAttribute("firstpos_" + getTable().getId(), firstPosition);
       }
 
       //end patch
       // finally, we process interceptor again (post-insert)
       // process the interceptors associated to this table
-      getTable().processInterceptors(DbEventInterceptor.POST_INSERT, request, null, getConfig(), con);
+      getTable().processInterceptors(DbEventInterceptor.POST_INSERT, getRequest(), null, getConfig(), con);
    }
 
    /**

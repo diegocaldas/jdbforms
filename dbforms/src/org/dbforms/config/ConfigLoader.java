@@ -121,6 +121,10 @@ public class ConfigLoader {
 			"dbforms-config/DOMFactoryClass",
 			"setDOMFactoryClass",
 			0);
+      digester.addCallMethod(
+         "dbforms-config/DefaultEscaperClass",
+         "setDefaultEscaperClass",
+         0);
 
 		// parse "Table" - object + add it to parent
 		digester.addObjectCreate("dbforms-config/table", tableClassName);

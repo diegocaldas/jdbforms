@@ -40,16 +40,13 @@ import org.dbforms.util.ParseUtil;
 import org.dbforms.util.Util;
 import org.dbforms.util.MessageResources;
 
-
-
 /**
  *  Abstract base class for all web-events related to database operations
  *  like inserts, updates, deletes.
  *
  * @author Joe Peer <j.peer@gmx.net>
  */
-public abstract class DatabaseEvent extends WebEvent
-{
+public abstract class DatabaseEvent extends WebEvent {
    /** key identifier */
    private String keyId;
 
@@ -61,9 +58,11 @@ public abstract class DatabaseEvent extends WebEvent
     * @param request the request object
     * @param config  the configuration object
     */
-   public DatabaseEvent(int tableId, String keyId, HttpServletRequest request, 
-                        DbFormsConfig config)
-   {
+   public DatabaseEvent(
+      int tableId,
+      String keyId,
+      HttpServletRequest request,
+      DbFormsConfig config) {
       super(tableId, request, config);
       this.keyId = keyId;
    }
@@ -73,11 +72,9 @@ public abstract class DatabaseEvent extends WebEvent
     *
     * @return keyId parameter value
     */
-   public String getKeyId()
-   {
+   public String getKeyId() {
       return keyId;
    }
-
 
    /**
     *  Get the hash table containing the form field names and values taken
@@ -94,7 +91,6 @@ public abstract class DatabaseEvent extends WebEvent
     */
    public abstract FieldValues getFieldValues();
 
-
    /**
     *  DO the validation of <FORM> with Commons-Validator.
     *
@@ -103,9 +99,9 @@ public abstract class DatabaseEvent extends WebEvent
     *
     * @exception  MultipleValidationException The Vector of errors throwed with this exception
     */
-   public void doValidation(String formValidatorName, ServletContext context) throws MultipleValidationException   {
+   public void doValidation(String formValidatorName, ServletContext context)
+      throws MultipleValidationException {
    }
-
 
    /**
     * Get the FieldValues object representing the collection
@@ -116,79 +112,80 @@ public abstract class DatabaseEvent extends WebEvent
     * @return the FieldValues object representing the collection
     *         of FieldValue objects builded from the request parameters
     */
-   protected FieldValues getFieldValues(boolean insertMode)
-   {
-      FieldValues result    = new FieldValues();
-      String      paramStub = (Constants.FIELDNAME_PREFIX + getTable().getId() + "_"
-                              + (insertMode
-                                    ? Constants.FIELDNAME_INSERTPREFIX : "")
-                              + keyId + "_");
-      Vector params = ParseUtil.getParametersStartingWith(request, paramStub);
-
+   protected FieldValues getFieldValues(boolean insertMode) {
+      FieldValues result = new FieldValues();
+      String paramStub =
+         (Constants.FIELDNAME_PREFIX
+            + getTable().getId()
+            + "_"
+            + (insertMode ? Constants.FIELDNAME_INSERTPREFIX : "")
+            + keyId
+            + "_");
+      Vector params =
+         ParseUtil.getParametersStartingWith(getRequest(), paramStub);
       // Always doit in insert or delete mode    
-      boolean doIt = insertMode || "delete".equals(getType());
-
+      boolean doIt = insertMode;
       // First check if update is necessary
-      if (!doIt)
-      {
+      if (!doIt) {
          Iterator enum = params.iterator();
-
-         while (enum.hasNext())
-         {
+         while (enum.hasNext()) {
             String param = (String) enum.next();
-
             // value of the named parameter;
-            String value = ParseUtil.getParameter(request, param);
-
+            String value = ParseUtil.getParameter(getRequest(), param);
             // old value of the named parameter;
-            String oldValue = ParseUtil.getParameter(request, 
-                                                     Constants.FIELDNAME_OLDVALUETAG
-                                                     + param);
-
-
+            String oldValue =
+               ParseUtil.getParameter(
+                  getRequest(),
+                  Constants.FIELDNAME_OLDVALUETAG + param);
             // if they are not equals, set the update flag for this field
             // and exit from the loop;
             doIt = !value.equals(oldValue);
-
-            if (doIt)
-            {
+            if (doIt) {
                break;
             }
          }
       }
 
       //  if update is necessary then do update for all data columns
-      if (doIt)
-      {
+      if (doIt) {
          Iterator enum = params.iterator();
 
-         while (enum.hasNext())
-         {
-            String     param = (String) enum.next();
+         while (enum.hasNext()) {
+            String param = (String) enum.next();
 
-            int        iiFieldId = Integer.parseInt(param.substring(
-                                                             paramStub.length()));
-            Field      f = getTable().getField(iiFieldId);
+            int iiFieldId =
+               Integer.parseInt(param.substring(paramStub.length()));
+            Field f = getTable().getField(iiFieldId);
 
-            String     value = f.getEscaper().unescapeHTML(ParseUtil.getParameter(request, param));
-            FieldValue fv    = new FieldValue(f, value);
+            String value =
+               f.getEscaper().unescapeHTML(
+                  ParseUtil.getParameter(getRequest(), param));
+            FieldValue fv = new FieldValue(f, value);
 
-            fv.setOldValue(f.getEscaper().unescapeHTML(ParseUtil.getParameter(request, 
-                                                  Constants.FIELDNAME_OLDVALUETAG + param)));
-            fv.setPattern(ParseUtil.getParameter(request, 
-                                                 Constants.FIELDNAME_PATTERNTAG + param));
-            fv.setLocale(MessageResources.getLocale(request));
+            fv.setOldValue(
+               f.getEscaper().unescapeHTML(
+                  ParseUtil.getParameter(
+                     getRequest(),
+                     Constants.FIELDNAME_OLDVALUETAG + param)));
+            fv.setPattern(
+               ParseUtil.getParameter(
+                  getRequest(),
+                  Constants.FIELDNAME_PATTERNTAG + param));
+            fv.setLocale(MessageResources.getLocale(getRequest()));
 
             if ((f.getType() == FieldTypes.BLOB)
-                      || (f.getType() == FieldTypes.DISKBLOB))
-            {
+               || (f.getType() == FieldTypes.DISKBLOB)) {
                // in case of a BLOB or DISKBLOB save get the FileHolder for later use
-               fv.setFileHolder(ParseUtil.getFileHolder(request, 
-                                                        "f_" + getTable().getId() + "_"
-                                                           + (insertMode
-                                                                 ? Constants.FIELDNAME_INSERTPREFIX
-                                                                 : "") + keyId
-                                                           + "_" + iiFieldId));
+               fv.setFileHolder(
+                  ParseUtil.getFileHolder(
+                     getRequest(),
+                     "f_"
+                        + getTable().getId()
+                        + "_"
+                        + (insertMode ? Constants.FIELDNAME_INSERTPREFIX : "")
+                        + keyId
+                        + "_"
+                        + iiFieldId));
             }
 
             result.put(fv);
@@ -198,30 +195,27 @@ public abstract class DatabaseEvent extends WebEvent
       return result;
    }
 
-
    /**
     * Return the key values string from the request object
     *
     * @return the key values string from the request object
     */
-   protected String getKeyValues()
-   {
+   protected String getKeyValues() {
       String key = null;
 
-      try
-      {
-         key = ParseUtil.getParameter(request,"k_" + getTable().getId() + "_" + keyId);
-         key = Util.decode(key, request.getCharacterEncoding());
+      try {
+         key =
+            ParseUtil.getParameter(
+               getRequest(),
+               "k_" + getTable().getId() + "_" + keyId);
+         key = Util.decode(key, getRequest().getCharacterEncoding());
          logCat.info("::getKeyValues - key: " + key);
-      }
-      catch (UnsupportedEncodingException e)
-      {
+      } catch (UnsupportedEncodingException e) {
          logCat.error(e);
       }
 
       return key;
    }
-
 
    /**
     *  Process this event.
@@ -230,6 +224,6 @@ public abstract class DatabaseEvent extends WebEvent
     * @throws SQLException if any data access error occurs
     * @throws MultipleValidationException if any validation error occurs
     */
-   public abstract void processEvent(Connection con) throws SQLException, 
-                                                            MultipleValidationException;
+   public abstract void processEvent(Connection con)
+      throws SQLException, MultipleValidationException;
 }

@@ -81,7 +81,7 @@ public class DeleteEvent extends DatabaseEvent
     */
    public FieldValues getFieldValues()
    {
-      return getFieldValues(false);
+      return getFieldValues(true);
    }
 
 
@@ -118,7 +118,7 @@ public class DeleteEvent extends DatabaseEvent
       {
          String s = MessageResourcesInternal.getMessage(
                              "dbforms.events.delete.nogrant", 
-                             request.getLocale(), 
+                             getRequest().getLocale(), 
                              new String[] 
          {
             getTable().getName()
@@ -138,12 +138,12 @@ public class DeleteEvent extends DatabaseEvent
 
          // part 2b: process the interceptors associated to this table
          operation = getTable().processInterceptors(DbEventInterceptor.PRE_DELETE, 
-                                               request, fieldValues, 
+                                               getRequest(), fieldValues, 
                                                getConfig(), con);
       }
 
       // End of interceptor processing
-      if (operation != DbEventInterceptor.IGNORE_OPERATION)
+      if (operation == DbEventInterceptor.GRANT_OPERATION)
       {
          // we check if the table the delete should be applied to contains field(s)
          // of the type "DISKBLOB"
@@ -239,7 +239,7 @@ public class DeleteEvent extends DatabaseEvent
 
       // finally, we process interceptor again (post-delete)
       // process the interceptors associated to this table
-      getTable().processInterceptors(DbEventInterceptor.POST_DELETE, request, null, 
+      getTable().processInterceptors(DbEventInterceptor.POST_DELETE, getRequest(), null, 
                                 getConfig(), con);
 
       // End of interceptor processing

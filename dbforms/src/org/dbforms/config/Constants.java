@@ -41,6 +41,8 @@ public class Constants {
 
    /** DOCUMENT ME! */
    public static final String FIELDNAME_INSERTPREFIX = "ins";
+   
+   public static final String FIELDNAME_OVERRIDEFIELDTEST = "overridefieldcheck_";
 
    /** DOCUMENT ME! */
    public static final int COMPARE_NONE = 0;

@@ -94,7 +94,7 @@ public abstract class ValidationEvent extends DatabaseEvent
       Validator     validator    = new Validator(vr, formValidatorName.trim());
       Vector        errors       = new Vector();
       DbFormsErrors dbFormErrors = (DbFormsErrors) context.getAttribute(DbFormsErrors.ERRORS);
-      Locale        locale       = MessageResources.getLocale(request);
+      Locale        locale       = MessageResources.getLocale(getRequest());
 
       // Add these resources to perform validation
       validator.addResource(Validator.BEAN_KEY, fieldValues);

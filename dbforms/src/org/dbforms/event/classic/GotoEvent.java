@@ -68,21 +68,19 @@ public class GotoEvent extends NavigationEvent
 
       String destTable = ParseUtil.getParameter(request, 
                                                 "data" + action + "_destTable");
-
       if (destTable == null)
       {
-         this.table = null;
-
+         setTable(null);
          return; // if the user wants a simple, dumb link and we want no form to be navigated through
       }
 
 
       //# fixme: decision for *1* of the 2 approaches should be met soon!! (either id- OR name-based lookup)
-      this.table = config.getTableByName(destTable);
+      setTable(config.getTableByName(destTable));
 
-      if (table == null)
+      if (getTable() == null)
       {
-         this.table = config.getTable(Integer.parseInt(destTable));
+         setTable(config.getTable(Integer.parseInt(destTable)));
       }
 
       String srcTable = ParseUtil.getParameter(request, 
@@ -205,7 +203,7 @@ public class GotoEvent extends NavigationEvent
       {
          try
          {
-            position = Util.decode(position, request.getCharacterEncoding());
+            position = Util.decode(position, getRequest().getCharacterEncoding());
          }
          catch (UnsupportedEncodingException e)
          {
@@ -238,7 +236,7 @@ public class GotoEvent extends NavigationEvent
          logCat.info("gotopos = " + position);
 
          return getTable()
-                   .doConstrainedSelect(table.getFields(), childFieldValues, 
+                   .doConstrainedSelect(getTable().getFields(), childFieldValues, 
                                         orderConstraint, sqlFilter, 
                                         sqlFilterParams, compMode, count, con);
       }

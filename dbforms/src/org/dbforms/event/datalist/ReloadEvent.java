@@ -110,14 +110,14 @@ public class ReloadEvent extends NavigationEvent {
          return null;
       else {
          logCat.info("==>NavCurrentEvent.processEvent");
-         DataSourceList ds = DataSourceList.getInstance(request);
+         DataSourceList ds = DataSourceList.getInstance(getRequest());
          DataSourceFactory qry = null;
          String position = null;
          if (isForce) {
             setType(EventType.EVENT_NAVIGATION_FORCERELOAD);
-            ds.remove(getTable(), request);
+            ds.remove(getTable(), getRequest());
          } else {
-            qry = ds.get(getTable(), request);
+            qry = ds.get(getTable(), getRequest());
          }
          if (qry == null) {
             qry = new DataSourceFactory(dbConnectionName, con, getTable());
@@ -126,7 +126,7 @@ public class ReloadEvent extends NavigationEvent {
                orderConstraint,
                sqlFilter,
                sqlFilterParams);
-            ds.put(getTable(), request, qry);
+            ds.put(getTable(), getRequest(), qry);
          }
          position =
             (count == 0)

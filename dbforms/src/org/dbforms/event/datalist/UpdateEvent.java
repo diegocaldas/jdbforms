@@ -32,6 +32,7 @@ import org.dbforms.config.DbEventInterceptor;
 import org.dbforms.config.FieldValues;
 import org.dbforms.config.GrantedPrivileges;
 import org.dbforms.config.DbFormsConfig;
+import org.dbforms.config.Constants;
 import org.apache.log4j.Category;
 import org.dbforms.event.ValidationEvent;
 import org.dbforms.event.datalist.dao.DataSourceList;
@@ -77,7 +78,9 @@ public class UpdateEvent extends ValidationEvent {
     * @return the FieldValues object
     */
    public FieldValues getFieldValues() {
-      return getFieldValues(false);
+      String s = ParseUtil.getParameter(getRequest(), Constants.FIELDNAME_OVERRIDEFIELDTEST + getTable().getId());
+      boolean flag = "true".equalsIgnoreCase(s);
+      return getFieldValues(flag);
    }
 
    /**
@@ -104,7 +107,7 @@ public class UpdateEvent extends ValidationEvent {
          String s =
             MessageResourcesInternal.getMessage(
                "dbforms.events.update.nogrant",
-               request.getLocale(),
+               getRequest().getLocale(),
                new String[] { getTable().getName()});
          throw new SQLException(s);
       }
@@ -114,7 +117,7 @@ public class UpdateEvent extends ValidationEvent {
       int operation = DbEventInterceptor.GRANT_OPERATION;
 
       // process the interceptors associated to this table
-      getTable().processInterceptors(DbEventInterceptor.PRE_UPDATE, request, fieldValues, getConfig(), con);
+      getTable().processInterceptors(DbEventInterceptor.PRE_UPDATE, getRequest(), fieldValues, getConfig(), con);
 
       if ((operation != DbEventInterceptor.IGNORE_OPERATION) && (fieldValues.size() > 0)) {
          // End of interceptor processing
@@ -128,8 +131,8 @@ public class UpdateEvent extends ValidationEvent {
          }
 
          // UPDATE operation;
-         DataSourceList ds = DataSourceList.getInstance(request);
-         DataSourceFactory qry = ds.get(getTable(), request);
+         DataSourceList ds = DataSourceList.getInstance(getRequest());
+         DataSourceFactory qry = ds.get(getTable(), getRequest());
          boolean own = false;
          if (qry == null) {
             qry = new DataSourceFactory(getTable());
@@ -139,12 +142,12 @@ public class UpdateEvent extends ValidationEvent {
          if (own) 
             qry.close();
          else
-            ds.remove(getTable(), request);
+            ds.remove(getTable(), getRequest());
       }
 
       // finally, we process interceptor again (post-update)
       // process the interceptors associated to this table
-      getTable().processInterceptors(DbEventInterceptor.POST_UPDATE, request, null, getConfig(), con);
+      getTable().processInterceptors(DbEventInterceptor.POST_UPDATE, getRequest(), null, getConfig(), con);
 
       // End of interceptor processing
    }

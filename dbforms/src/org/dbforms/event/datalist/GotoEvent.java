@@ -85,7 +85,7 @@ public class GotoEvent extends NavigationEvent
       // if the user wants a simple, dumb link and we want no form to be navigated through
       if (destTable == null)
       {
-         this.table = null;
+         setTable(null);
 
          return;
       }
@@ -93,11 +93,11 @@ public class GotoEvent extends NavigationEvent
 
       // # fixme: decision for *1* of the 2 approaches 
       //          should be met soon!! (either id- OR name-based lookup)
-      this.table = config.getTableByName(destTable);
+      setTable(config.getTableByName(destTable));
 
-      if (table == null)
+      if (getTable() == null)
       {
-         this.table = config.getTable(Integer.parseInt(destTable));
+         setTable(config.getTable(Integer.parseInt(destTable)));
       }
 
       String srcTable = ParseUtil.getParameter(request, 
@@ -235,7 +235,7 @@ public class GotoEvent extends NavigationEvent
 
       try
       {
-         position = Util.decode(position, request.getCharacterEncoding());
+         position = Util.decode(position, getRequest().getCharacterEncoding());
       }
       catch (UnsupportedEncodingException e)
       {
@@ -267,11 +267,11 @@ public class GotoEvent extends NavigationEvent
          }
       }
 
-      DataSourceList ds = DataSourceList.getInstance(request);
-      ds.remove(getTable(), request);
+      DataSourceList ds = DataSourceList.getInstance(getRequest());
+      ds.remove(getTable(), getRequest());
 
       DataSourceFactory qry = new DataSourceFactory(dbConnectionName, con, 
-                                                    table);
+                                                    getTable());
 
       if (Util.isNull(whereClause))
       {
@@ -283,7 +283,7 @@ public class GotoEvent extends NavigationEvent
          qry.setSelect(tableList, whereClause);
       }
 
-      ds.put(getTable(), request, qry);
+      ds.put(getTable(), getRequest(), qry);
 
       return qry.getCurrent(position, count);
    }
