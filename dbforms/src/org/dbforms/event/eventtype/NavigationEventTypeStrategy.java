@@ -73,6 +73,7 @@ public class NavigationEventTypeStrategy implements EventTypeStrategy
 					|| eventString.equals(EventType.EVENT_NAVIGATION_RELOAD)
 					|| eventString.equals(EventType.EVENT_NAVIGATION_GOTO)
 					|| eventString.equals(EventType.EVENT_NAVIGATION_COPY)
+               || eventString.equals(EventType.EVENT_PAGE_RELOAD)
                || eventString.equals("goto")
 			)
       {

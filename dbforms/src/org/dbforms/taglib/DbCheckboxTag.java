@@ -218,7 +218,7 @@ public class DbCheckboxTag extends DbBaseHandlerTag implements DataContainer,
 
          // select, if datadriven and data matches with current value OR if explicitly set by user
          boolean isSelected =
-            ((!getParentForm().getFooterReached() || ((we != null) && we.getType() == EventType.EVENT_NAVIGATION_RELOAD)) && (getValue() != null) && getValue().equals(currentValue)) || (getParentForm().getFooterReached() && hasCheckedSet());
+            ((!getParentForm().getFooterReached() || ((we != null) && we.getType() == EventType.EVENT_PAGE_RELOAD)) && (getValue() != null) && getValue().equals(currentValue)) || (getParentForm().getFooterReached() && hasCheckedSet());
 
          if (hasReadOnlySet() || getParentForm().hasReadOnlySet()) {
             setOnClick("this.checked=" + isSelected + ";" + onclick);

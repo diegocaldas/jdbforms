@@ -333,7 +333,7 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
       if (!getParentForm().getFooterReached()) {
          // Check if attribute 'redisplayFieldsOnError' has been set to true
          // and is this jsp displaying an error?
-         if ((getParentForm().hasRedisplayFieldsOnErrorSet() && (errors != null) && (errors.size() > 0)) || ((we != null) && (we.getType() == EventType.EVENT_NAVIGATION_RELOAD))) {
+         if ((getParentForm().hasRedisplayFieldsOnErrorSet() && (errors != null) && (errors.size() > 0)) || ((we != null) && (we.getType() == EventType.EVENT_PAGE_RELOAD))) {
             // Yes - redisplay posted data
             String oldValue = ParseUtil.getParameter(request, getFormFieldName());
             if (oldValue != null)

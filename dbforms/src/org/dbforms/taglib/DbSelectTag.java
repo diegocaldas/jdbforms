@@ -240,7 +240,7 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer,
             if ((getParentForm().hasRedisplayFieldsOnErrorSet() && (errors != null)
                          && (errors.size() > 0))
                       || ((we != null)
-                         && (we.getType() == EventType.EVENT_NAVIGATION_RELOAD)))
+                         && (we.getType() == EventType.EVENT_PAGE_RELOAD)))
             {
                isSelected = (currentValue.equals(aKey));
             }

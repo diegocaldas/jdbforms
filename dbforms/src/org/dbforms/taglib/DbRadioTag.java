@@ -217,7 +217,7 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer,
 
          // select, if datadriven and data matches with current value OR if explicitly set by user
          boolean isSelected = ((!getParentForm().getFooterReached()
-                                 || ((we != null) && we.getType() == EventType.EVENT_NAVIGATION_RELOAD))
+                                 || ((we != null) && we.getType() == EventType.EVENT_PAGE_RELOAD))
                               && (getValue() != null) && getValue().equals(currentValue))
                               || (getParentForm().getFooterReached()
                               && "true".equals(checked));

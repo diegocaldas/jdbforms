@@ -24,7 +24,6 @@ package org.dbforms.taglib;
 
 import javax.servlet.jsp.JspException;
 
-import org.dbforms.config.ResultSetVector;
 import org.dbforms.event.eventtype.EventType;
 
 
@@ -65,13 +64,6 @@ public class DbNavReloadButtonTag extends DbBaseButtonTag
    public int doStartTag() throws javax.servlet.jsp.JspException
    {
 		super.doStartTag();
-
-      if (getParentForm().getFooterReached()
-               && ResultSetVector.isNull(getParentForm().getResultSetVector()) )
-      {
-         // 20030521 HKK: Bug fixing, thanks to Michael Slack! 
-         return SKIP_BODY;
-      }
 
       try
       {

@@ -173,9 +173,9 @@ public class EventEngine
       if (action.startsWith("re_"))
       {
          logCat.info("##### RELOAD  EVENT ######");
-         e = new ReloadEvent(ParseUtil.getEmbeddedStringAsInteger(action, 2, '_'),
+         e = new PageReloadEvent(ParseUtil.getEmbeddedStringAsInteger(action, 2, '_'),
                request, config);
-         e.setType(EventType.EVENT_NAVIGATION_RELOAD);
+         e.setType(EventType.EVENT_PAGE_RELOAD);
          initializeWebEvent(e);
 
          return e;

@@ -105,22 +105,19 @@ public class SingleConnectionProvider extends ConnectionProvider {
       }
 
       protected void closeReally() throws SQLException {
-         close();
+         Iterator iter = list.iterator();
+         while (iter.hasNext()) {
+            Statement stmt = (Statement) iter.next();
+            stmt.close();
+         }
          _conn.close();
       }
 
       /**
-       * closes any Statements that were not explicitly closed.
+       * closing of the connection statements is not allowed here.
+       * closing will close all opened resultset too!
        */
-      public void close() throws SQLException {
-         /*
-               Iterator iter = list.iterator();
-               while (iter.hasNext()) {
-                  Statement stmt = (Statement) iter.next();
-                  stmt.close();
-               }
-         */
-      }
+      public void close() throws SQLException {}
 
       public Statement createStatement() throws SQLException {
          Statement res = _conn.createStatement();
