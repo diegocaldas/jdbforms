@@ -160,7 +160,7 @@ public abstract class DatabaseEvent extends WebEvent
       Vector      params    = ParseUtil.getParametersStartingWith(request,
             paramStub);
 
- 	  boolean doIt = insertMode;
+ 	  boolean doIt = insertMode || "delete".equals(getType());
 	  if (!doIt)
 	  { 
 		// First check if update is necessary
