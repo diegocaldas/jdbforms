@@ -92,11 +92,11 @@ public class DbAssociatedRadioTag extends TagSupport  {
           tagBuf.append(parentForm.getTable().getId());
           tagBuf.append("_");
           tagBuf.append(parentForm.getPositionPath());
-          // 20020705-HKK: Set checked=true for first row!  
+          // 20020705-HKK: Set defaultChecked for first row!  
+          tagBuf.append("\"");
           if ( parentForm.getCurrentCount() == 0 )
-            tagBuf.append(" checked=\"true\"");
-          tagBuf.append("\">");
-
+             tagBuf.append(" checked=\"true\"");
+          tagBuf.append(">");
           pageContext.getOut().write(tagBuf.toString());
        } catch(java.io.IOException ioe) {
             throw new JspException("IO Error: "+ioe.getMessage());
