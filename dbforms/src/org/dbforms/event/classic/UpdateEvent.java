@@ -306,14 +306,14 @@ public class UpdateEvent extends ValidationEvent
                }
             }
          }
+
+         // finally, we process interceptor again (post-update)
+         // process the interceptors associated to this table
+         getTable()
+            .processInterceptors(DbEventInterceptor.POST_UPDATE, getRequest(), fieldValues, 
+                              getConfig(), con);
       }
 
-
-      // finally, we process interceptor again (post-update)
-      // process the interceptors associated to this table
-      getTable()
-         .processInterceptors(DbEventInterceptor.POST_UPDATE, getRequest(), null, 
-                              getConfig(), con);
 
       // End of interceptor processing
    }

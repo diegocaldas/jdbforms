@@ -224,16 +224,16 @@ public class DeleteEvent extends DatabaseEvent {
                }
             }
          }
-      }
 
-      // finally, we process interceptor again (post-delete)
-      // process the interceptors associated to this table
-      getTable().processInterceptors(
-         DbEventInterceptor.POST_DELETE,
-         getRequest(),
-         null,
-         getConfig(),
-         con);
+         // finally, we process interceptor again (post-delete)
+         // process the interceptors associated to this table
+         getTable().processInterceptors(
+            DbEventInterceptor.POST_DELETE,
+            getRequest(),
+            fieldValues,
+            getConfig(),
+            con);
+      }
 
       // End of interceptor processing
    }

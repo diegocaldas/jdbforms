@@ -128,12 +128,11 @@ public class InsertEvent extends ValidationEvent {
          // Show the last record inserted
          String firstPosition = getTable().getPositionString(fieldValues);
          getRequest().setAttribute("firstpos_" + getTable().getId(), firstPosition);
-      }
 
-      //end patch
-      // finally, we process interceptor again (post-insert)
-      // process the interceptors associated to this table
-      getTable().processInterceptors(DbEventInterceptor.POST_INSERT, getRequest(), null, getConfig(), con);
+         // finally, we process interceptor again (post-insert)
+         // process the interceptors associated to this table
+         getTable().processInterceptors(DbEventInterceptor.POST_INSERT, getRequest(), fieldValues, getConfig(), con);
+      }
    }
 
    /**

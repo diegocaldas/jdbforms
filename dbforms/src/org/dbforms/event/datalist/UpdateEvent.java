@@ -139,11 +139,11 @@ public class UpdateEvent extends ValidationEvent {
             qry.close();
          else
             ds.remove(getTable(), getRequest());
-      }
 
-      // finally, we process interceptor again (post-update)
-      // process the interceptors associated to this table
-      getTable().processInterceptors(DbEventInterceptor.POST_UPDATE, getRequest(), null, getConfig(), con);
+         // finally, we process interceptor again (post-update)
+         // process the interceptors associated to this table
+         getTable().processInterceptors(DbEventInterceptor.POST_UPDATE, getRequest(), fieldValues, getConfig(), con);
+      }
 
       // End of interceptor processing
    }

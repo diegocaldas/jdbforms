@@ -333,14 +333,13 @@ public class InsertEvent extends ValidationEvent
          }
 
          getRequest().setAttribute("firstpos_" + getTable().getId(), firstPosition);
+
+         // finally, we process interceptor again (post-insert)
+         // process the interceptors associated to this table
+         getTable().processInterceptors(DbEventInterceptor.POST_INSERT, getRequest(), fieldValues, 
+                                   getConfig(), con);
       }
 
-
-      //end patch
-      // finally, we process interceptor again (post-insert)
-      // process the interceptors associated to this table
-      getTable().processInterceptors(DbEventInterceptor.POST_INSERT, getRequest(), null, 
-                                getConfig(), con);
    }
 
 
