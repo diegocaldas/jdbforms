@@ -20,13 +20,12 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-package org.dbforms.util;
 
+package org.dbforms.util;
 import java.io.*;
 import java.util.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
-
 import org.apache.log4j.Category;
 
 
@@ -39,231 +38,229 @@ import org.apache.log4j.Category;
  */
 public class ServletUtil
 {
-    /** Log4j category. */
-    private static Category cat = Category.getInstance(ServletUtil.class);
+   /** Log4j category. */
+   private static Category cat = Category.getInstance(ServletUtil.class);
 
-    /**
-     *  Dumps all the incoming HttpServletRequest informations.
-     *
-     * @param  req the input HttpServletRequest object to dump
-     * @return  a string with dumped information
-     */
-    public static String dumpRequest(HttpServletRequest req)
-    {
-        return dumpRequest(req, "\n");
-    }
-
-
-    /**
-     *  Dumps all the incoming HttpServletRequest informations.
-     *
-     * @param  req the input HttpServletRequest object to dump
-     * @return  a string with dumped information
-     */
-    public static String dumpRequest(HttpServletRequest req, String returnToken)
-    {
-        String s = null;
-
-        try
-        {
-            s = dump(req, returnToken);
-        }
-        catch (Exception e)
-        {
-            cat.error("::dumpRequest - exception: ", e);
-        }
-
-        return s;
-    }
+   /**
+    *  Dumps all the incoming HttpServletRequest informations.
+    *
+    * @param  req the input HttpServletRequest object to dump
+    * @return  a string with dumped information
+    */
+   public static String dumpRequest(HttpServletRequest req)
+   {
+      return dumpRequest(req, "\n");
+   }
 
 
-    /**
-     *  Dump the incoming HttpServletRequest object
-     *
-     * @param  req the HttpServletRequest object to dump
-     * @return  Description of the Return Value
-     * @exception  ServletException if any error occurs
-     * @exception  IOException      if any error occurs
-     */
-    private static String dump(HttpServletRequest req, String returnToken)
-                        throws ServletException, IOException
-    {
-        StringBuffer sb = new StringBuffer();
-        String s = null;
+   /**
+    *  Dumps all the incoming HttpServletRequest informations.
+    *
+    * @param  req the input HttpServletRequest object to dump
+    * @return  a string with dumped information
+    */
+   public static String dumpRequest(HttpServletRequest req, String returnToken)
+   {
+      String s = null;
 
-        sb.append("HTTP Snooper Servlet").append(returnToken).append(returnToken);
-        sb.append("Request URL:").append(returnToken);
-        sb.append(" http://" + req.getServerName() + req.getServerPort() + req.getRequestURI() +
-                  returnToken).append(returnToken);
+      try
+      {
+         s = dump(req, returnToken);
+      }
+      catch (Exception e)
+      {
+         cat.error("::dumpRequest - exception: ", e);
+      }
 
-        sb.append("Request Info:").append(returnToken);
-        sb.append(" Request Method: " + req.getMethod()).append(returnToken);
-        sb.append(" Request URI: " + req.getRequestURI()).append(returnToken);
-        sb.append(" Request Protocol: " + req.getProtocol()).append(returnToken);
-        sb.append(" Servlet Path: " + req.getServletPath()).append(returnToken);
-        sb.append(" Path Info: " + req.getPathInfo()).append(returnToken);
-        sb.append(" Path Translated: " + req.getPathTranslated()).append(returnToken);
-        sb.append(" Content Length: " + req.getContentLength()).append(returnToken);
-        sb.append(" Content Type: " + req.getContentType()).append(returnToken);
+      return s;
+   }
 
-        String queryString = req.getQueryString();
-        sb.append(" QueryString: " + queryString).append(returnToken);
 
-        if (queryString != null)
-        {
-        	// warning, this should be deprecated... servlet2.3 specs
-        	// do not have this HttpUtils method... I read somewhere...
-            Hashtable ht = HttpUtils.parseQueryString(queryString);
-            sb.append(geKeyValuesData(ht, returnToken)).append(returnToken);
-        }
+   /**
+    *  Dump the incoming HttpServletRequest object
+    *
+    * @param  req the HttpServletRequest object to dump
+    * @return  Description of the Return Value
+    * @exception  ServletException if any error occurs
+    * @exception  IOException      if any error occurs
+    */
+   private static String dump(HttpServletRequest req, String returnToken)
+                       throws ServletException, IOException
+   {
+      StringBuffer sb = new StringBuffer();
+      String       s = null;
 
-        sb.append(" Server Name: " + req.getServerName()).append(returnToken);
-        sb.append(" Server Port: " + req.getServerPort()).append(returnToken);
-        sb.append(" Remote User: " + req.getRemoteUser()).append(returnToken);
-        sb.append(" Remote Host: " + req.getRemoteHost()).append(returnToken);
-        sb.append(" Remote Address: " + req.getRemoteAddr()).append(returnToken);
-        sb.append(" Authentication Scheme: " + req.getAuthType()).append("").append(returnToken);
+      sb.append("HTTP Snooper Servlet").append(returnToken).append(returnToken);
+      sb.append("Request URL:").append(returnToken);
+      sb.append(" http://" + req.getServerName() + req.getServerPort()
+                + req.getRequestURI() + returnToken).append(returnToken);
 
-		// return parameters (name/value pairs)
-		
-        int maxParamNameLength = getElementNameMaxLength(req.getParameterNames());
-		Enumeration params     = req.getParameterNames();
-		
-        if (params.hasMoreElements())
-        {
-            sb.append(returnToken).append("Parameters:").append(returnToken);
+      sb.append("Request Info:").append(returnToken);
+      sb.append(" Request Method: " + req.getMethod()).append(returnToken);
+      sb.append(" Request URI: " + req.getRequestURI()).append(returnToken);
+      sb.append(" Request Protocol: " + req.getProtocol()).append(returnToken);
+      sb.append(" Servlet Path: " + req.getServletPath()).append(returnToken);
+      sb.append(" Path Info: " + req.getPathInfo()).append(returnToken);
+      sb.append(" Path Translated: " + req.getPathTranslated())
+        .append(returnToken);
+      sb.append(" Content Length: " + req.getContentLength())
+        .append(returnToken);
+      sb.append(" Content Type: " + req.getContentType()).append(returnToken);
 
-            while (params.hasMoreElements())
+      String queryString = req.getQueryString();
+      sb.append(" QueryString: " + queryString).append(returnToken);
+
+      if (queryString != null)
+      {
+         Map ht = req.getParameterMap();
+         sb.append(geKeyValuesData(ht, returnToken)).append(returnToken);
+      }
+
+      sb.append(" Server Name: " + req.getServerName()).append(returnToken);
+      sb.append(" Server Port: " + req.getServerPort()).append(returnToken);
+      sb.append(" Remote User: " + req.getRemoteUser()).append(returnToken);
+      sb.append(" Remote Host: " + req.getRemoteHost()).append(returnToken);
+      sb.append(" Remote Address: " + req.getRemoteAddr()).append(returnToken);
+      sb.append(" Authentication Scheme: " + req.getAuthType()).append("")
+        .append(returnToken);
+
+      // return parameters (name/value pairs)
+      int         maxParamNameLength = getElementNameMaxLength(
+                                                req.getParameterMap().keySet()
+                                                   .iterator());
+      Enumeration params = req.getParameterNames();
+
+      if (params.hasMoreElements())
+      {
+         sb.append(returnToken).append("Parameters:").append(returnToken);
+
+         while (params.hasMoreElements())
+         {
+            String name = (String) params.nextElement();
+            sb.append("  ").append(name)
+              .append(addSpaces(maxParamNameLength, name)).append(" = ");
+
+            String[] values = req.getParameterValues(name);
+
+            for (int x = 0; x < values.length; x++)
             {
-                String name = (String) params.nextElement();
-                sb.append("  ").append(name).append(addSpaces(maxParamNameLength, name)).append(" = ");
+               if (x > 0)
+               {
+                  sb.append(", ");
+               }
 
-                String[] values = req.getParameterValues(name);
-
-                for (int x = 0; x < values.length; x++)
-                {
-                    if (x > 0)
-                    {
-                        sb.append(", ");
-                    }
-
-                    sb.append(values[x]);
-                }
-
-                sb.append(returnToken);
+               sb.append(values[x]);
             }
 
             sb.append(returnToken);
-        }
+         }
 
-        // return HTTP Headers
-        Enumeration e = req.getHeaderNames();
+         sb.append(returnToken);
+      }
 
-        if (e.hasMoreElements())
-        {
-            sb.append("Request Headers:").append(returnToken);
+      // return HTTP Headers
+      Enumeration e = req.getHeaderNames();
 
-            while (e.hasMoreElements())
-            {
-                String name = (String) e.nextElement();
-                sb.append("  " + name + ": " + req.getHeader(name)).append(returnToken);
-            }
+      if (e.hasMoreElements())
+      {
+         sb.append("Request Headers:").append(returnToken);
 
-            sb.append(returnToken);
-        }
+         while (e.hasMoreElements())
+         {
+            String name = (String) e.nextElement();
+            sb.append("  " + name + ": " + req.getHeader(name))
+              .append(returnToken);
+         }
 
-        sb.append(returnToken);
-        s = sb.toString();
+         sb.append(returnToken);
+      }
 
-        return s;
-    }
+      sb.append(returnToken);
+      s = sb.toString();
 
-
-    /**
-     *  Get the data from the input hashMap where keys are string 
-     *  and key values are string arrays.
-     *
-     * @param ht  the hash table
-     * @param returnToken the return token, i.e.: "\n" or "<br>\n"
-     */
-    private static StringBuffer geKeyValuesData(Hashtable ht, String returnToken)
-    {
-        StringBuffer sb = new StringBuffer();
-        Enumeration keys = ht.keys();
-		int maxKeyNameLength = getElementNameMaxLength(ht.keys());
-		
-        while (keys.hasMoreElements())
-        {  
-            String   key    = (String)   keys.nextElement();
-            String[] values = (String[]) ht.get(key);
-
-            for (int i = 0; i < values.length; i++)
-            {
-                sb.append("  {")
-                  .append(key)
-                  .append(" [")
-                  .append(i)
-                  .append("]}")
-                  .append(addSpaces(maxKeyNameLength, key))
-                  .append(" = ")
-                  .append(values[i])
-                  .append(returnToken);
-            }
-        }
-
-        return sb;
-    }
+      return s;
+   }
 
 
-    /**
-     *  Return a String containin blank chars. 
-     *  Its length is equal to ($spacesToAdd - $fromString.length)
-     * 
-     * @param spacesToAdd number of space characters to add
-     * @param fromString  the string where to start to add chars
-     * @return a String containin blank chars whose length is equal 
-     *         to ($spacesToAdd - $fromString.length)
-     */
-    private static String addSpaces(int spacesToAdd, String fromString)
-    {
-        int len = spacesToAdd;
-        String res = "";
+   /**
+    *  Get the data from the input hashMap where keys are string 
+    *  and key values are string arrays.
+    *
+    * @param ht  the hash table
+    * @param returnToken the return token, i.e.: "\n" or "<br>\n"
+    */
+   private static StringBuffer geKeyValuesData(Map ht, String returnToken)
+   {
+      StringBuffer sb               = new StringBuffer();
+      Iterator     keys             = ht.keySet().iterator();
+      int          maxKeyNameLength = getElementNameMaxLength(keys);
 
-        if (!Util.isNull(fromString))
-        {
-            len = (spacesToAdd - fromString.length());
+      while (keys.hasNext())
+      {
+         String   key    = (String) keys.next();
+         String[] values = (String[]) ht.get(key);
 
-            for (int i = 0; i < len; i++)
-            {
-                res += " ";
-            }
-        }
+         for (int i = 0; i < values.length; i++)
+         {
+            sb.append("  {").append(key).append(" [").append(i).append("]}")
+              .append(addSpaces(maxKeyNameLength, key)).append(" = ")
+              .append(values[i]).append(returnToken);
+         }
+      }
 
-        return res;
-    }
+      return sb;
+   }
 
 
-    /**
-     *  Get the length of the element having the longer name
-     * 
-     * @param paramNames the enumeration element
-     * @return the length of the element having the longer name
-     */
-    private static int getElementNameMaxLength(Enumeration paramNames)
-    {
-        int len = 0;
+   /**
+    *  Return a String containin blank chars. 
+    *  Its length is equal to ($spacesToAdd - $fromString.length)
+    * 
+    * @param spacesToAdd number of space characters to add
+    * @param fromString  the string where to start to add chars
+    * @return a String containin blank chars whose length is equal 
+    *         to ($spacesToAdd - $fromString.length)
+    */
+   private static String addSpaces(int spacesToAdd, String fromString)
+   {
+      int    len = spacesToAdd;
+      String res = "";
 
-        while (paramNames.hasMoreElements())
-        {
-            String paramName = (String) paramNames.nextElement();
-            int tmpLen = paramName.length();
+      if (!Util.isNull(fromString))
+      {
+         len = (spacesToAdd - fromString.length());
 
-            if (tmpLen > len)
-            {
-                len = tmpLen;
-            }
-        }
+         for (int i = 0; i < len; i++)
+         {
+            res += " ";
+         }
+      }
 
-        return len;
-    }
+      return res;
+   }
+
+
+   /**
+    *  Get the length of the element having the longer name
+    * 
+    * @param paramNames the enumeration element
+    * @return the length of the element having the longer name
+    */
+   private static int getElementNameMaxLength(Iterator paramNames)
+   {
+      int len = 0;
+
+      while (paramNames.hasNext())
+      {
+         String paramName = (String) paramNames.next();
+         int    tmpLen = paramName.length();
+
+         if (tmpLen > len)
+         {
+            len = tmpLen;
+         }
+      }
+
+      return len;
+   }
 }

@@ -346,7 +346,7 @@ public class DbLinkURLTag extends BodyTagSupport implements TryCatchFinally
             .getResponse();
          String              s = tagBuf.toString();
          s    = s.substring(0, s.length() - 1);
-         s    = response.encodeUrl(s);
+         s    = response.encodeURL(s);
          pageContext.getOut().write(s);
       }
       catch (java.io.IOException ioe)
