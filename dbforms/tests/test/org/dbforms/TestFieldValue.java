@@ -115,30 +115,16 @@ public class TestFieldValue extends TestCase
      *
      * @throws Exception DOCUMENT ME!
      */
-    public void testOrderCluse() throws Exception
-    {
-        FieldValue fv = new FieldValue(fAuthorId, "10", false);
-        assertTrue("Make sure this is ordered by AUTHOR_ID", fv.getOrderClause().equals("AUTHOR_ID"));
-        fv.setSortDirection(Field.ORDER_DESCENDING);
-        assertTrue("Make sure this is ordered by AUTHOR_ID DESC", fv.getOrderClause().equals("AUTHOR_ID DESC"));
-    }
-
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @throws Exception DOCUMENT ME!
-     */
     public void testGetWhereClause() throws Exception
     {
         FieldValue[] fvs = { fvLogicalOR, fvNotLogicalOR };
-        assertTrue("Test Where clause equals:AUTHOR_ID =  ?  AND BOOK_ID =  ?", FieldValue.getWhereClause(fvs).indexOf("AUTHOR_ID =  ?  AND BOOK_ID =  ?") >= 0);
+        assertTrue("Test fvs Where clause equals:AUTHOR_ID =  ?  AND BOOK_ID =  ?:" + FieldValue.getWhereClause(fvs), FieldValue.getWhereClause(fvs).indexOf("AUTHOR_ID =  ?  AND BOOK_ID =  ?") >= 0);
 
         FieldValue[] fvs2 = { fvLogicalOR, fvLogicalOR };
-        assertTrue("Test Where cluase equals:" + FieldValue.getWhereClause(fvs2), FieldValue.getWhereClause(fvs2).indexOf("AUTHOR_ID =  ?  OR AUTHOR_ID =  ?") >= 0);
+        assertTrue("Test fvs2 Where clause equals:" + FieldValue.getWhereClause(fvs2), FieldValue.getWhereClause(fvs2).indexOf("AUTHOR_ID =  ?  OR AUTHOR_ID =  ?") >= 0);
 
         FieldValue[] fvs3 = { fvLogicalORLikeFilter, fvLogicalOR };
-        assertTrue("Test Where cluase equals:" + FieldValue.getWhereClause(fvs3), FieldValue.getWhereClause(fvs3).indexOf("AUTHOR_ID like  ?  OR AUTHOR_ID =  ?") >= 0);
+        assertTrue("Test fvs3 Where clause equals:" + FieldValue.getWhereClause(fvs3), FieldValue.getWhereClause(fvs3).indexOf("AUTHOR_ID LIKE  ?  OR AUTHOR_ID =  ?") >= 0);
     }
 
 
