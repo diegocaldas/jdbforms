@@ -167,7 +167,7 @@ public class DbTextAreaTag extends DbBaseInputTag
 
         if (!"true".equals(renderBody))
         {
-            return EVAL_BODY_TAG;
+            return EVAL_BODY_BUFFERED;
         }
         else
         {
