@@ -20,8 +20,8 @@
 			</para>
 			<para>If the user wants, for instance, the table to be ordered by <emphasis role="bold">NAME</emphasis> instead of <emphasis role="bold">ID</emphasis> then he/she has to select  ASCENDING or DESCENDING from the NAME drop-down select box.
 </para>
-		</sect1>
-		<sect1>
+		
+		<sect2>
 			<title>How to use DbForms sorting facility
 </title>
 			<para>The custom tag enabling this functionality is very easy to use:
@@ -56,9 +56,9 @@ Future versions of DbForms may be expected to provide more on sorting.
 		</programlisting>
 			</example>
 			<para/>
-		</sect1>
+		</sect2>
                 
-                
+                </sect1>
                 <!--    END OF SORTING BEGINNING OF FILTERING -->
                 
                 
