@@ -76,7 +76,7 @@
   <property name="main.infile" value="DbForms_UsersGuide.xml"/>
 
   <!-- Output Properties: Output directory -->
-  <property name="out.dir" value="doc/UsersGuide"/>
+  <property name="out.dir" value="${doc.dir}/UsersGuide"/>
 
   <!-- Output Properties: Output directory -->
   <property name="out.docfile" value="DbForms_UsersGuide.pdf"/>
@@ -175,7 +175,7 @@
     <java jar="${basedir}/usersguide_src/docbook_tools/tlddoc.jar" fork="true" >
        <arg value="-d" />
        <arg value="${taglibdoc.dir}" />
-       <arg value="${basedir}/dist/dbforms.tld"  />
+       <arg value="${dist.dir}/dbforms.tld"  />
     </java>
     <echo message="end of xsl translation "/>
   </target>
@@ -205,10 +205,10 @@
     <echo message="begin xsl translation to generate xsl-fo   "/>
     <style style = "${etc.dir}/tldoc2xsl-fo.xsl" 
            in    = "${etc.dir}/taglib_docu.xml" 
-           out   = "${etc.dir}/DbFormsTags.xsl-fo"/>
+           out   = "target/DbFormsTags.xsl-fo"/>
     <echo message="end of xsl translation "/>
-    <echo message="starting generation of ${doc.dir}/taglib/DbFormsTags.pdf using Apache FOP (FOP_HOME must be set)"/>
 
+    <echo message="starting generation of ${doc.dir}/taglib/DbFormsTags.pdf using Apache FOP (FOP_HOME must be set)"/>
     <path id="fopclasspath">
       <!-- set classpath according to FOP_HOME -->
       <fileset dir="${fopHome.dir}/lib/">
@@ -219,8 +219,8 @@
       </fileset>
     </path>
 
-    <java classname="org.apache.fop.apps.Fop" fork="true" jvm="${java.home}/bin/java">
-      <arg line=" ${etc.dir}/DbFormsTags.xsl-fo ${doc.dir}/taglib/DbFormsTags.pdf"/>
+    <java classname="org.apache.fop.apps.Fop" fork="true">
+      <arg line=" target/DbFormsTags.xsl-fo ${doc.dir}/taglib/DbFormsTags.pdf"/>
       <classpath refid="fopclasspath"/>
     </java>
     <echo message="end of PDF generation, output file is ${doc.dir}/taglib/DbFormsTags.pdf"/>
@@ -263,7 +263,7 @@
   <!-- called by Maven's "doc" goal                                        -->
   <!-- =================================================================== -->
   <target name    = "maven-build-doc"
-          depends = "generate_taglib_htmldocs, generate_taglib_pdfdocs, prepare, create_HTML, create_PDF" />
+          depends = "generate_taglib_htmldocs, generate_taglib_pdfdocs, prepare, create_HTML, create_PDF, cleanWorkspace" />
 
 
   <!-- ========================================================================== -->
@@ -345,6 +345,7 @@
   <!--(FOP docbook transform)                           -->
   <!-- ================================================ -->
   <target name="create_PDF" depends="clearWorkspace">
+    
     <java classname="${xslt.processor.class}" fork="yes" dir="${in.dir}" failonerror="true">
       <classpath refid="xslt.processor.classpath"/>
       <arg line="-o ${build.dir}/${fo.outfile}"/>
@@ -372,7 +373,7 @@
       </fileset>
     </path>
 
-    <java classname="org.apache.fop.apps.Fop" fork="true" jvm="${java.home}/bin/java">
+    <java classname="org.apache.fop.apps.Fop" fork="true" >
       <arg line="${build.dir}/${fo.outfile} ${out.dir}/pdf/${out.docfile}"/>
       <classpath refid="fopclasspath"/>
     </java>

@@ -79,6 +79,10 @@
     <mkdir dir="${dist.dir}/bin" />
   </target>
 
+  <target name="clean">
+    <delete dir="${dist.dir}" />
+  </target>
+
 
   <target name="onPath">
     <condition property="path.ok">
@@ -240,7 +244,7 @@
   </target>
 
 
-  <target name="devgui" description="--&gt; Run DevGUI tool">
+  <target name="devgui" depends="jar_classes" description="--&gt; Run DevGUI tool">
     <java classname="org.dbforms.devgui.DevGui" fork="true">
       <sysproperty key="DBFORMS_HOME" value="${basedir}" />
       <classpath>
@@ -265,6 +269,7 @@
   </target>
 
   <target name="copy-devgui">
+    <echo message="start copy-devgui" />
     <copy    file="${bin.dir}/devgui.sh" tofile="${dist.dir}/bin/devgui.sh" overwrite="true" />
     <replace file="${dist.dir}/bin/devgui.sh" token="dbforms_CURRENT_VERSION.jar" value="dbforms${dbforms.version}.jar" />
     <copy    file="${bin.dir}/devgui.bat" tofile="${dist.dir}/bin/devgui.bat" overwrite="true" />
@@ -328,10 +333,10 @@
       <fileset dir="./target/dependend" includes="*.jar" />
     </copy>
     <copy todir="${dbforms.releaseDir}/bin">
-      <fileset dir="./dist/bin" includes="devgui.bat devgui.sh" />
+      <fileset dir="${dist.dir}/bin" includes="*" />
     </copy>
-    <copy todir="${dbforms.releaseDir}/dist">
-      <fileset dir="./dist" includes="*.tld,*.jar" />
+    <copy todir="${dbforms.releaseDir}/bin">
+      <fileset dir="${dist.dir}" includes="*.tld,*.jar" />
     </copy>
     <!-- modify all text files to have dos/win lineends -->
     <property name="textfiles.patterns" value="**/*.html,**/*.xml,**/*.java,**/*.txt,**/*.xsl,**/*.bat,**/*.sh, Change*,CommonMistakes,Todo" />

@@ -33,6 +33,8 @@
   <goal name="dbforms:bookstore">
      <ant:ant antfile="build.xml" target="maven-build-bookstore" >
       	<ant:property name="dbforms.version" value="${pom.currentVersion}" />
+      	<ant:property name="dist.dir" value="target/dist" />
+      	<ant:property name="build.dir" value="target/build" />
      </ant:ant> 
   </goal>
 
@@ -53,25 +55,36 @@
 
   <goal name="dbforms:doc" description="generate dbforms documentation: taglib docu and manual">
     <ant:echo message="building the DbForms documentation user guide and jsp tag library" />
-    <ant:ant antfile="docs.xml" target="maven-build-doc" />
+    <ant:ant antfile="docs.xml" target="maven-build-doc">
+      	<ant:property name="doc.dir" value="target/docs" />
+      	<ant:property name="dist.dir" value="target/dist" />
+    </ant:ant>
+     <ant:copy todir="target/docs/img" overwrite="true">
+    	<ant:fileset dir="doc/img">
+           <ant:include name="*" />    		
+    	</ant:fileset>
+    </ant:copy>
+     <ant:copy todir="target/docs/taglib" overwrite="true">
+    	<ant:fileset dir="doc/taglib">
+           <ant:include name="*" />    		
+    	</ant:fileset>
+    </ant:copy>
   </goal>
 
   <goal name="dbforms:dist" description="generates the distribution via build.xml">
     <ant:echo message="building the distribution using ant " />
+    <deploy:copy-deps todir="target/dependend" />
     <ant:echo message="generate version ${pom.currentVersion}" />
     <ant:ant antfile="build.xml" target="maven-build-release">
-      <ant:property name="dbforms.version" value="${pom.currentVersion}" />
+	<ant:property name="dbforms.version" value="${pom.currentVersion}" />
+      	<ant:property name="dist.dir" value="target/dist" />
     </ant:ant>
-  </goal>
-
-  <goal name="dbforms:dependend">
-    <deploy:copy-deps todir="target/dependend" />
   </goal>
   
   <goal name="dbforms:weekly">
-     <ant:mkdir dir="doc/weekly"/>
-     <ant:copy todir="doc/weekly" overwrite="true">
-    	<ant:fileset dir="dist">
+     <ant:mkdir dir="target/docs/weekly"/>
+     <ant:copy todir="target/docs/weekly" overwrite="true">
+    	<ant:fileset dir="target/dist">
            <ant:include name="*.zip" />    		
            <ant:include name="*.tgz" />    		
            <ant:include name="*.war" />    		
@@ -85,14 +98,6 @@
     <attainGoal name="clean" />
     <ant:echo message="1. generate whole site" />
     <attainGoal name="site:generate" />
-    <ant:echo message="2. generate dbforms documentation via docs.xml" />
-    <attainGoal name="dbforms:doc" />
-    <ant:echo message="3. copy depended" />
-    <attainGoal name="dbforms:dependend" />
-    <ant:echo message="4. build the distribution via build.xml" />
-    <attainGoal name="dbforms:dist" />
-    <ant:echo message="5. copy weekly build" />
-    <attainGoal name="dbforms:weekly" />
   </goal>
 
 
@@ -118,7 +123,7 @@
     <ant:echo message="remove old bookstore" />
     <ant:echo message="copy bookstore.war" />
     <ant:copy tofile="${maven.appserver.conf.dir}/webapps/bookstore.war" overwrite="true">
-    	<ant:fileset dir="dist">
+    	<ant:fileset dir="target/dist">
            <ant:include name="bookstore*.war" />    		
     	</ant:fileset>
     </ant:copy>
@@ -141,10 +146,13 @@
     />
   </postGoal>
 
-  <!-- Move the $DBFORMS_HOME/target/docs/* stuff into the $DBFORMS_HOME/doc directory -->
   <postGoal name="site:generate">
-    <ant:echo message="moving the Maven docs stuff into the main DbForms doc directory" />
-    <ant:ant antfile="docs.xml" target="maven-move-doc" />
+    <ant:echo message="generate dbforms documentation" />
+    <attainGoal name="dbforms:doc" />
+    <ant:echo message="build the distribution via build.xml" />
+    <attainGoal name="dbforms:dist" />
+    <ant:echo message="copy weekly build" />
+    <attainGoal name="dbforms:weekly" />
   </postGoal>
 
   <preGoal name="site:run-reports">
@@ -159,13 +167,6 @@
     	output="target/generated-xdocs/releasenotes.xml" 
     	inputFile="ReleaseNotes_v${pom.currentVersion}.txt" 
     />
-  </postGoal>
-
-  <!-- clean doc dir too -->
-  <postGoal name="clean">
-    <ant:echo message="clean docs too" />
-    <ant:ant antfile="docs.xml" target="cleanUp" />
-    <ant:delete dir="build"/>
   </postGoal>
 
 
