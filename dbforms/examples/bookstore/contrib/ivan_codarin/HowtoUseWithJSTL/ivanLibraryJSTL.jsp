@@ -1,6 +1,6 @@
 <html>
 	<%@ taglib uri="/WEB-INF/dbforms.tld" prefix="db" %>
-	<%@ taglib uri="/WEB-INF/c.tld" prefix="c" %>
+	<%@ taglib uri="/WEB-INF/c-el.tld" prefix="c" %>
 	<head>
 		<script src ="/bookstore/jscal/calendar.js" type="text/javascript"></script>
 		<db:base />

@@ -1,6 +1,6 @@
 <html>
 	<%@ taglib uri="/WEB-INF/dbforms.tld" prefix="db" %>
-	<%@ taglib uri="/WEB-INF/c.tld" prefix="c" %>
+	<%@ taglib uri="/WEB-INF/c-el.tld" prefix="c" %>
 		
 	<jsp:useBean id="backcolor" scope="page" class="net.myPackage.IvanBackgroudColor"/>
 	<!-- To use the bean in JSTL you have to define a variable with jstl c:set var filled with the value of the bean.

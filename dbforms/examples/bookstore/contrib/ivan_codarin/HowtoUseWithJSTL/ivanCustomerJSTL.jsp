@@ -1,6 +1,6 @@
 <html>
 	<%@ taglib uri="/WEB-INF/dbforms.tld" prefix="db" %>
-		<%@ taglib uri="/WEB-INF/c.tld" prefix="c" %>
+		<%@ taglib uri="/WEB-INF/c-el.tld" prefix="c" %>
 	<head>
 		<script src ="/bookstore/jscal/calendar.js" type="text/javascript"></script>
 		<db:base />
@@ -21,7 +21,7 @@
 			</db:header>
 			<db:body allowNew="true">
 			
-			<c:if test='${currentRow_CUSTOMER.CUSTOMER_ID %2 == 1}'>
+			<c:if test="${currentRow_CUSTOMER.CUSTOMER_ID %2 == 1}" >
 				<c:set  var="backcolor" value="#dddddd" />
 			</c:if>
 			<c:if test='${currentRow_CUSTOMER.CUSTOMER_ID %2 == 0}'>
