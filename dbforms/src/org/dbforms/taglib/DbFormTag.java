@@ -1991,7 +1991,9 @@ public class DbFormTag
                   searchFieldName.substring(
                      firstUnderscore + 1,
                      secondUnderscore));
-
+            if (tableId != getTable().getId()) {
+               logCat.error("tableid not correct!");
+            }
             // is equal to tableid, off course
             int fieldId =
                Integer.parseInt(
