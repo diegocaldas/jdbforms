@@ -21,13 +21,13 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 
-package com.itp.dbforms;
+package org.dbforms;
 
 import java.util.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
-import com.itp.dbforms.util.DbConnection;
+import org.dbforms.util.DbConnection;
 
 import org.apache.log4j.Category;
 

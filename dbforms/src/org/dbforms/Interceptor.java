@@ -21,18 +21,18 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 
-package com.itp.dbforms;
+package org.dbforms;
 
 import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 
-import com.itp.dbforms.util.*;
+import org.dbforms.util.*;
 import org.apache.log4j.Category;
 
 /****
  * <p>
  * This class holds XML config data defining interceptors for tables.
- * compare com.itp.dbforms.event.DbEventInterceptor
+ * compare org.dbforms.event.DbEventInterceptor
  * </p>
  *
  * @auther Joachim Peer <joepeer@wap-force.net>

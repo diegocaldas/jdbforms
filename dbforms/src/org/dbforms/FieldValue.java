@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 
-package com.itp.dbforms;
+package org.dbforms;
 
 /****
  * <p>
@@ -41,8 +41,8 @@ package com.itp.dbforms;
 
 import java.sql.*;
 import java.util.*;
-import com.itp.dbforms.util.*;
-import com.itp.dbforms.taglib.DbBaseHandlerTag;
+import org.dbforms.util.*;
+import org.dbforms.taglib.DbBaseHandlerTag;
 import org.apache.log4j.Category;
 
 public class FieldValue implements Cloneable {

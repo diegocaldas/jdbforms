@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 
-package com.itp.dbforms;
+package org.dbforms;
 
 import java.io.*;
 import java.net.*;
@@ -192,35 +192,35 @@ public class ConfigServlet extends HttpServlet {
 
 		// parse "Table" - object + add it to parent
 
-        digester.addObjectCreate("dbforms-config/table","com.itp.dbforms.Table");
+        digester.addObjectCreate("dbforms-config/table","org.dbforms.Table");
         digester.addSetProperties("dbforms-config/table");
-        digester.addSetNext("dbforms-config/table", "addTable", "com.itp.dbforms.Table");
+        digester.addSetNext("dbforms-config/table", "addTable", "org.dbforms.Table");
 
 
 		// parse "Field" - object + add it to parent (which is "Table")
 
-        digester.addObjectCreate("dbforms-config/table/field","com.itp.dbforms.Field");
+        digester.addObjectCreate("dbforms-config/table/field","org.dbforms.Field");
         digester.addSetProperties("dbforms-config/table/field");
-        digester.addSetNext("dbforms-config/table/field", "addField", "com.itp.dbforms.Field");
+        digester.addSetNext("dbforms-config/table/field", "addField", "org.dbforms.Field");
 
 		// parse "GrantedPrivileges" - object + add it to parent (which is "Table")
 
-        digester.addObjectCreate("dbforms-config/table/granted-privileges","com.itp.dbforms.GrantedPrivileges");
+        digester.addObjectCreate("dbforms-config/table/granted-privileges","org.dbforms.GrantedPrivileges");
         digester.addSetProperties("dbforms-config/table/granted-privileges");
-        digester.addSetNext("dbforms-config/table/granted-privileges", "setGrantedPrivileges", "com.itp.dbforms.GrantedPrivileges");
+        digester.addSetNext("dbforms-config/table/granted-privileges", "setGrantedPrivileges", "org.dbforms.GrantedPrivileges");
 
 		// parse "Condition" - object + add it to parent (which is "Table")
 
-        digester.addObjectCreate("dbforms-config/table/interceptor","com.itp.dbforms.Interceptor");
+        digester.addObjectCreate("dbforms-config/table/interceptor","org.dbforms.Interceptor");
         digester.addSetProperties("dbforms-config/table/interceptor");
-        digester.addSetNext("dbforms-config/table/interceptor", "addInterceptor", "com.itp.dbforms.Interceptor");
+        digester.addSetNext("dbforms-config/table/interceptor", "addInterceptor", "org.dbforms.Interceptor");
 
 
 		// parse "DbConnecion" - object
 
-        digester.addObjectCreate("dbforms-config/dbconnection","com.itp.dbforms.util.DbConnection");
+        digester.addObjectCreate("dbforms-config/dbconnection","org.dbforms.util.DbConnection");
         digester.addSetProperties("dbforms-config/dbconnection");
-        digester.addSetNext("dbforms-config/dbconnection", "setDbConnection", "com.itp.dbforms.util.DbConnection");
+        digester.addSetNext("dbforms-config/dbconnection", "setDbConnection", "org.dbforms.util.DbConnection");
 
 
 
