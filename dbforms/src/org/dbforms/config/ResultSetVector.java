@@ -295,15 +295,7 @@ public class ResultSetVector implements java.io.Serializable {
     * @return the object
     */
    public Object getFieldAsObject(int i) {
-      if (isPointerLegal(pointer)) {
-         try {
-            return ((Object[]) objectVector.elementAt(pointer))[i];
-         } catch (Exception e) {
-            return null;
-         }
-      } else {
-         return null;
-      }
+      return getFieldAsObject(pointer, i);
    }
 
    /**
@@ -334,13 +326,7 @@ public class ResultSetVector implements java.io.Serializable {
     * @return the object
     */
    public Object getFieldAsObject(String fieldName) {
-      int fieldIndex = getFieldIndex(fieldName);
-
-      if (fieldIndex < 0) {
-         return null;
-      }
-
-      return getFieldAsObject(fieldIndex);
+      return getFieldAsObject(pointer, fieldName);
    }
 
    /**
