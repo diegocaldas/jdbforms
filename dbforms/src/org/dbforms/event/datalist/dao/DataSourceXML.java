@@ -284,7 +284,7 @@ public class DataSourceXML extends DataSource {
          }
 
          // retrieve value
-         String value = (String) sqlFilterParams[cnt].getFieldValue();
+         String value = sqlFilterParams[cnt].getFieldValue();
 
          if (!Util.isNull(value)) {
             // add value to string gbuffer

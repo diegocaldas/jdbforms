@@ -29,6 +29,7 @@ import org.w3c.dom.xpath.XPathResult;
 import org.w3c.dom.xpath.XPathEvaluator;
 import org.w3c.dom.xpath.XPathNSResolver;
 
+import org.apache.log4j.Logger;
 import org.dbforms.config.FieldTypes;
 
 import org.dbforms.dom.DOMFactory;
@@ -47,6 +48,7 @@ public class XMLDataResult {
    private XPathNSResolver resolver;
    private boolean changed = false;
    private Element root;
+   private Logger logCat = Logger.getLogger(this.getClass());
 
    /**
     * Creates a new XMLDataResult object.
@@ -165,7 +167,7 @@ public class XMLDataResult {
             }
          }
       } catch (Exception e) {
-         ;
+         logCat.error("getItemValue", e);
       }
       return result;
    }

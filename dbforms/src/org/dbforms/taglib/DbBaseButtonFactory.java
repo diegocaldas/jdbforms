@@ -27,6 +27,7 @@ import javax.servlet.Servlet;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.BodyTagSupport;
+import javax.servlet.jsp.tagext.Tag;
 import org.apache.log4j.Category;
 
 
@@ -95,7 +96,7 @@ public class DbBaseButtonFactory
     */
    public StringBuffer render() throws JspException
    {
-      if (btn.doStartTag() != BodyTagSupport.SKIP_BODY)
+      if (btn.doStartTag() != Tag.SKIP_BODY)
       {
          btn.doEndTag();
       }

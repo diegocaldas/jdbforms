@@ -103,7 +103,7 @@ public class MessageResource
          }
          catch (Exception e)
          {
-            ;
+            logCat.error("getMessage", e);
          }
 
          // Put the ResourceBundle or null value in HashMap with the key

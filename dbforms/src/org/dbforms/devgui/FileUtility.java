@@ -44,7 +44,6 @@ public class FileUtility
     * @throws IOException DOCUMENT ME!
     */
    public static String[] getFileNamesInDirectory(File dir, String[] extensions)
-      throws IOException
    {
       if (extensions == null)
       {
@@ -68,7 +67,6 @@ public class FileUtility
     * @throws IOException DOCUMENT ME!
     */
    public static File[] getFilesInDirectory(File dir, String[] extensions)
-      throws IOException
    {
       if (extensions == null)
       {

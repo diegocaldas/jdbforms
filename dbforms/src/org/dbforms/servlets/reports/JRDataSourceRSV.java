@@ -66,7 +66,7 @@ public class JRDataSourceRSV implements JRDataSource
       }
       catch (Exception e)
       {
-         ;
+         logCat.error("getFieldValue", e);
       }
 
       return o;

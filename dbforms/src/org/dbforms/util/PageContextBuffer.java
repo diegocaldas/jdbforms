@@ -457,7 +457,7 @@ public class PageContextBuffer extends PageContext
     */
    public JspWriter getOut()
    {
-      return (JspWriter) out;
+      return out;
    }
 
 

@@ -102,8 +102,6 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
 	/** the data to be rendered */
 	private ResultSetVector resultSetVector;
 
-	/** String formatted like 1:3:345-2:4:hugo */
-	private String position;
 
 	/** holds information about how many times the body of this tag has been rendered */
 	private int currentCount = 0;
@@ -1076,7 +1074,6 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
 			// and which are not reset by the jsp container trough setXxx() methods and
 			logCat.info("resetting values of tag");
 			currentCount = 0;
-			position = null;
 			footerReached = false;
 			resultSetVector = null;
 			childElementOutput = new StringBuffer();
@@ -1941,7 +1938,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
 	 * @return  the field values array
 	 * @todo Whats when there is more then one search field whith the same name?<br/>Maybe we should parse all of them ....
 	 */
-	private FieldValue[] initSearchFieldValues() throws IOException {
+	private FieldValue[] initSearchFieldValues()  {
 		FieldValue[] fieldValues;
 		HttpServletRequest request =
 			(HttpServletRequest) pageContext.getRequest();
@@ -2539,7 +2536,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
 		StringTokenizer token = new StringTokenizer(str, ";");
 
 		while (token.hasMoreTokens()) {
-			tmp = (String) token.nextToken();
+			tmp = token.nextToken();
 
 			if (tmp.indexOf("@root") != -1) {
 				arr.add(tmp);
@@ -2607,7 +2604,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
 
 		if ((webEvent != null)
 			&& (webEvent.getType() == EventType.EVENT_PAGE_RELOAD)) {
-			Field field = (Field) getTable().getFieldByName(name);
+			Field field = getTable().getFieldByName(name);
 
 			if (field == null) {
 				logCat.warn(

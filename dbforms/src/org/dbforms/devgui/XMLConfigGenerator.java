@@ -23,7 +23,6 @@
 
 package org.dbforms.devgui;
 import java.sql.*;
-import java.io.*;
 import java.util.*;
 import org.dbforms.config.ForeignKey;
 import org.dbforms.config.Reference;
@@ -102,7 +101,6 @@ public class XMLConfigGenerator implements PropertyNames
                                          throws SQLException, 
                                                 ClassNotFoundException, 
                                                 InstantiationException, 
-                                                IOException, 
                                                 IllegalAccessException
    {
       Class.forName(jdbcDriver).newInstance();

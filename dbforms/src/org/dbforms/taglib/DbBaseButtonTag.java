@@ -55,7 +55,6 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag {
    private String followUp;
    private String followUpOnError;
    private Table table;
-   private String flavor; // the user desides which html tags/constructions should be used to render this tag
    private int choosenFlavor = 0; // default = standard
    private String caption; // used if flavor is "standard"
    private String src; // used if flavor is "image"
@@ -145,8 +144,6 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag {
     * @param flavor DOCUMENT ME!
     */
    public void setFlavor(String flavor) {
-      this.flavor = flavor;
-
       if ("image".equals(flavor)) {
          choosenFlavor = FLAVOR_IMAGE;
       } else if ("modern".equals(flavor)) {
@@ -403,7 +400,6 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag {
       followUp = null;
       followUpOnError = null;
       table = null;
-      flavor = null;
       choosenFlavor = 0;
       caption = null;
       src = null;

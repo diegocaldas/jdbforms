@@ -606,7 +606,7 @@ public class ConfigServlet extends HttpServlet
       }
       catch (Exception e)
       {
-         ;
+         logCat.error("initXMLConfigFile", e);
       }
 
       if (dbFormsConfig == null)
@@ -651,7 +651,7 @@ public class ConfigServlet extends HttpServlet
     */
    protected void initXMLValidatorRules(ValidatorResources resources, 
                                         String validator_rules)
-                                 throws IOException, ServletException
+                                 throws ServletException
    {
       // Acquire an input stream validator_rules
       InputStream inputValidatorRules = getServletContext()
@@ -691,7 +691,7 @@ public class ConfigServlet extends HttpServlet
             }
             catch (Exception e)
             {
-               ;
+               logCat.error("initXMLValidatorRules", e);
             }
          }
       }
@@ -709,7 +709,7 @@ public class ConfigServlet extends HttpServlet
     */
    protected void initXMLValidatorValidation(ValidatorResources resources, 
                                              String validation)
-                                      throws IOException, ServletException
+                                      throws  ServletException
    {
       //
       // LOAD Validation & Validator_rules files
@@ -748,7 +748,7 @@ public class ConfigServlet extends HttpServlet
             }
             catch (Exception e)
             {
-               ;
+               logCat.error("initXMLValidatorValidation", e);
             }
          }
       }
@@ -761,7 +761,7 @@ public class ConfigServlet extends HttpServlet
     * @exception IOException if an input/output error is encountered
     * @exception ServletException if we cannot initialize these resources
     */
-   protected void initXMLValidator() throws IOException, ServletException
+   protected void initXMLValidator() throws ServletException
    {
       // Map the commons-logging used by commons-validator to Log4J logger
       System.setProperty("org.apache.commons.logging.Log", 
@@ -810,8 +810,7 @@ public class ConfigServlet extends HttpServlet
     * @exception IOException if an input/output error is encountered
     * @exception ServletException if we cannot initialize these resources
     */
-   protected void initApplicationResources() throws IOException, 
-                                                    ServletException
+   protected void initApplicationResources() 
    {
       logCat.info("initialize Application Resources.");
 
@@ -871,7 +870,7 @@ public class ConfigServlet extends HttpServlet
     */
    protected void process(HttpServletRequest request, 
                           HttpServletResponse response)
-                   throws IOException, ServletException
+                   throws IOException
    {
       PrintWriter out = response.getWriter();
 

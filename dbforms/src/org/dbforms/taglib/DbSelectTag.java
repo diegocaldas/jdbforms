@@ -211,17 +211,7 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer,
 
       String             currentValue = getFormFieldValue();
 
-      if (embeddedData == null)
-      {
-         ;
-
-         // no embedded data is nested in this tag
-
-         /*
-            for that case we need to render option tags!
-          */
-      }
-      else
+      if (embeddedData != null)
       {
          // PG, 2001-12-14
          // Is their a custom entry? Display first...

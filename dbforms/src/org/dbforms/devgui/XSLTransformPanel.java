@@ -103,7 +103,7 @@ public class XSLTransformPanel extends PropertyPanel implements ActionListener,
 
             list_xslStylesheets.setListData(this.availableStylesheets);
          }
-         catch (IOException ioe)
+         catch (Exception ioe)
          {
             ioe.printStackTrace();
 
@@ -133,7 +133,7 @@ public class XSLTransformPanel extends PropertyPanel implements ActionListener,
 
             list_results.setListData(this.JSPs);
          }
-         catch (IOException ioe)
+         catch (Exception ioe)
          {
             ioe.printStackTrace();
 

@@ -114,8 +114,7 @@ public class ResultSetVector
 
                   if (tmpObj != null)
                   {
-                     objectRow[i] = tmpObj.getSubString((long) 1, 
-                                                        (int) tmpObj.length());
+                     objectRow[i] = tmpObj.getSubString(1,(int) tmpObj.length());
                   }
                   else
                   {

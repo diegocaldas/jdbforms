@@ -200,7 +200,7 @@ public class DbFilterTag extends DbBaseHandlerTag
          }
          catch (NumberFormatException e)
          {
-            ;
+            logCat.error("getCurrentCondition", e);
          }
       }
 

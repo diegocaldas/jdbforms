@@ -238,7 +238,6 @@ public class Query extends Table {
       if (fvEqual != null) {
          for (int i = 0; i < fvEqual.length; i++) {
             if ((fvEqual[i].getField().getId() >= WHEREIDSTART)) {
-               ;
             } else {
                mode_having.add(fvEqual[i]);
             }

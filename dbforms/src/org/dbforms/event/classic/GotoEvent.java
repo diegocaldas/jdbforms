@@ -137,7 +137,7 @@ public class GotoEvent extends NavigationEvent
                String widgetValue = ParseUtil.getParameter(request, 
                                                            keyToKeyToDestPos); // i.e. "1_1"
 
-               this.position = (String) ParseUtil.getParameter(request, 
+               this.position = ParseUtil.getParameter(request, 
                                                                "k_"
                                                                + widgetValue); // i.e. 1:2:23
             }

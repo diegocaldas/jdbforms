@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Vector;
 
-import java.text.SimpleDateFormat;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletConfig;
@@ -56,7 +55,6 @@ public class DbFormsConfig
 
    /** DOCUMENT ME! */
    public static final String      CONFIG = "dbformsConfig";
-   private SimpleDateFormat         sdf;
    private Vector                  tables;
 
    /** for quicker lookup by name */
@@ -196,7 +194,7 @@ public class DbFormsConfig
       }
       catch (Exception ex)
       {
-         ;
+         logCat.error("getDbConnection", ex);
       }
       if (connection != null)
       {
@@ -323,7 +321,6 @@ public class DbFormsConfig
     */
    public void setDateFormatter(String pattern)
    {
-      sdf = new SimpleDateFormat(pattern);
    }
 
 

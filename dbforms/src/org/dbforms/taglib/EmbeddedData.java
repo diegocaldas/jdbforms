@@ -127,7 +127,7 @@ public abstract class EmbeddedData extends BodyTagSupport implements javax.servl
             for (int i = 0; i < rsv.size(); i++) {
                rsv.setPointer(i);
 
-               String[] currentRow = (String[]) rsv.getCurrentRow();
+               String[] currentRow = rsv.getCurrentRow();
                String htKey = currentRow[0];
                rsv.setPointer(i);
 
@@ -165,7 +165,7 @@ public abstract class EmbeddedData extends BodyTagSupport implements javax.servl
          for (int i = 0; i < rsv.size(); i++) {
             rsv.setPointer(i);
 
-            String[] currentRow = (String[]) rsv.getCurrentRow();
+            String[] currentRow = rsv.getCurrentRow();
             String htKey = currentRow[0];
             StringBuffer htValueBuf = new StringBuffer();
 

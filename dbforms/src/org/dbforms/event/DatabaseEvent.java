@@ -103,9 +103,7 @@ public abstract class DatabaseEvent extends WebEvent
     *
     * @exception  MultipleValidationException The Vector of errors throwed with this exception
     */
-   public void doValidation(String formValidatorName, ServletContext context)
-                     throws MultipleValidationException
-   {
+   public void doValidation(String formValidatorName, ServletContext context) throws MultipleValidationException   {
    }
 
 

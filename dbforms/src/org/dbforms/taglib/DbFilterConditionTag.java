@@ -170,7 +170,7 @@ public class DbFilterConditionTag extends BodyTagSupport
          }
 
          // retrieve value
-         String value = (String) values[cnt].getFieldValue();
+         String value = values[cnt].getFieldValue();
 
          if (value == null)
          {

@@ -207,7 +207,7 @@ public class DataSourceJDBC extends DataSource {
             Clob tmpObj = (Clob) rs.getObject(i + 1);
 
             if (tmpObj != null) {
-               objectRow[i] = tmpObj.getSubString((long) 1, (int) tmpObj.length());
+               objectRow[i] = tmpObj.getSubString(1, (int) tmpObj.length());
             } else {
                objectRow[i] = null;
             }
@@ -228,7 +228,7 @@ public class DataSourceJDBC extends DataSource {
             Clob tmpObj = (Clob) rs.getObject(i + 1);
 
             if (tmpObj != null) {
-               objectRow[i] = tmpObj.getSubString((long) 1, (int) tmpObj.length());
+               objectRow[i] = tmpObj.getSubString(1, (int) tmpObj.length());
             } else {
                objectRow[i] = null;
             }

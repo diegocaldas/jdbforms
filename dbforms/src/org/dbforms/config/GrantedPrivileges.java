@@ -53,10 +53,6 @@ public class GrantedPrivileges
 
    /** DOCUMENT ME! */
    public static final int PRIVILEG_DELETE = 3;
-   private String          select; // placeholders where XML digester will place the parsed values
-   private String          insert; // placeholders where XML digester will place the parsed values
-   private String          update; // placeholders where XML digester will place the parsed values
-   private String          delete; // placeholders where XML digester will place the parsed values
    private Vector[]        grantedRoles;
 
    /**
@@ -76,7 +72,6 @@ public class GrantedPrivileges
     */
    public void setSelect(String select)
    {
-      this.select = select;
       logCat.info("select");
       grantedRoles[PRIVILEG_SELECT] = ParseUtil.splitString(select, ",;~");
    }
@@ -89,7 +84,6 @@ public class GrantedPrivileges
     */
    public void setInsert(String insert)
    {
-      this.insert = insert;
       logCat.info("insert");
       grantedRoles[PRIVILEG_INSERT] = ParseUtil.splitString(insert, ",;~");
    }
@@ -102,7 +96,6 @@ public class GrantedPrivileges
     */
    public void setUpdate(String update)
    {
-      this.update = update;
       logCat.info("update");
       grantedRoles[PRIVILEG_UPDATE] = ParseUtil.splitString(update, ",;~");
    }
@@ -115,7 +108,6 @@ public class GrantedPrivileges
     */
    public void setDelete(String delete)
    {
-      this.delete = delete;
       logCat.info("delete");
       grantedRoles[PRIVILEG_DELETE] = ParseUtil.splitString(delete, ",;~");
    }

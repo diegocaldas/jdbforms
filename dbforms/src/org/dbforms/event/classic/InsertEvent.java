@@ -95,8 +95,6 @@ public class InsertEvent extends ValidationEvent
     */
    public FieldValues getFieldValues()
    {
-      ;
-
       return getFieldValues(true);
    }
 

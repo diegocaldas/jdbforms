@@ -126,9 +126,6 @@ public class DbConnection
    /** connection provider URL */
    private String connectionPoolURL;
 
-   /** connection factory flag */
-   private String isPow2 = "false";
-
    /**
     * connection factory flag. Set it to true to use connection factory
     * to get JDBC connection objects
@@ -234,8 +231,6 @@ public class DbConnection
     */
    public void setIsPow2(String isPow2)
    {
-      this.isPow2    = isPow2;
-
       pow2 = new Boolean(isPow2).booleanValue();
    }
 
