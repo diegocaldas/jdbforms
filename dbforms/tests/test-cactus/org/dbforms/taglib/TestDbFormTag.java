@@ -28,11 +28,11 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 import org.apache.cactus.JspTestCase;
 import org.apache.cactus.WebResponse;
-import org.dbforms.DbFormsConfig;
-import org.dbforms.ConfigServlet;
-import org.dbforms.Table;
+import org.dbforms.config.DbFormsConfig;
+import org.dbforms.servlets.ConfigServlet;
+import org.dbforms.config.Table;
+import org.dbforms.util.AssertUtils;
 
-import org.dbforms.AssertUtils;
 
 
 
