@@ -135,14 +135,11 @@ public class DbSearchComboTag extends DbSearchTag implements DataContainer, java
 		return EVAL_BODY_INCLUDE;
 	}
 
-	private String generateSelectHeader(int tableId, int fieldId) throws javax.servlet.jsp.JspException {
+	private String generateSelectHeader(Field f) throws javax.servlet.jsp.JspException {
 		// This method have been 
 		StringBuffer tagBuf = new StringBuffer();
 		tagBuf.append("<select name=\"");
-		tagBuf.append("search_");
-		tagBuf.append(tableId);
-		tagBuf.append("_");
-		tagBuf.append(fieldId);
+		tagBuf.append(f.getSearchFieldName());
 		tagBuf.append("\"");
 
 		if (size != null) {
@@ -186,20 +183,11 @@ public class DbSearchComboTag extends DbSearchTag implements DataContainer, java
 	public int doEndTag() throws javax.servlet.jsp.JspException {
 		HttpServletRequest request = (HttpServletRequest) this.pageContext.getRequest();
 
-		int tableId = getParentForm().getTable().getId();
 		Field field = getField();
-		int fieldId = -1;
-		if (field != null)
-			fieldId = field.getId();
 
 		StringBuffer tagBuf = new StringBuffer();
-		StringBuffer paramNameBuf = new StringBuffer();
-		paramNameBuf.append("search_");
-		paramNameBuf.append(tableId);
-		paramNameBuf.append("_");
-		paramNameBuf.append(fieldId);
 
-		String oldValue = ParseUtil.getParameter(request, paramNameBuf.toString());
+		String oldValue = ParseUtil.getParameter(request, field.getSearchFieldName());
 		if (!Util.isNull(oldValue)) {
 			selectedIndex = oldValue;
 		}
@@ -252,8 +240,9 @@ public class DbSearchComboTag extends DbSearchTag implements DataContainer, java
 		tagBuf.append("</select>");
 
 		try {
-			pageContext.getOut().write(RenderHiddenFields(tableId, fieldId));
-			pageContext.getOut().write(generateSelectHeader(tableId, fieldId));
+			pageContext.getOut().write(renderPatternHtmlInputField());
+			pageContext.getOut().write(RenderHiddenFields(field));
+			pageContext.getOut().write(generateSelectHeader(field));
 			pageContext.getOut().write(tagBuf.toString());
 		} catch (java.io.IOException ioe) {
 			throw new JspException("IO Error: " + ioe.getMessage());

@@ -69,8 +69,6 @@ public class DbSortTag extends DbBaseHandlerTag
    {
       try
       {
-         int tableId = getParentForm().getTable().getId();
-         int fieldId = getField().getId();
 
          if (!getField().getKey() && !getField().hasSortableSet())
          {
@@ -81,17 +79,11 @@ public class DbSortTag extends DbBaseHandlerTag
          HttpServletRequest request = (HttpServletRequest) pageContext
             .getRequest();
 
-         StringBuffer       paramNameBuf = new StringBuffer("sort_");
-         paramNameBuf.append(tableId);
-         paramNameBuf.append("_");
-         paramNameBuf.append(fieldId);
-
-         String       paramName = paramNameBuf.toString();
-         String       oldValue = ParseUtil.getParameter(request, paramName);
+         String       oldValue = ParseUtil.getParameter(request, getField().getSortFieldName());
 
          StringBuffer tagBuf = new StringBuffer();
          tagBuf.append("<select name=\"");
-         tagBuf.append(paramName);
+         tagBuf.append(getField().getSortFieldName());
          tagBuf.append(
             "\" size=\"0\" onChange=\"javascript:document.dbform.submit()\" >");
 

@@ -23,9 +23,7 @@
 package org.dbforms.taglib;
 import javax.servlet.jsp.JspException;
 
-import org.dbforms.config.Constants;
 import org.dbforms.config.Field;
-import org.dbforms.util.Util;
 
 /**
  * <p>renders a input field for searching with special default search modes.</p>
@@ -38,50 +36,12 @@ import org.dbforms.util.Util;
  *
  * @author Henner Kollmann  (Henner.Kollmann@gmx.de)
  */
-public class DbSearchCheckBoxTag extends DbBaseHandlerTag 
+public class DbSearchCheckBoxTag extends DbSearchTag 
    implements 
       javax.servlet.jsp.tagext.TryCatchFinally {
 
-   private String searchAlgo = "sharp";
-   private String searchMode = "and";
    private String value = null;
    private String checked = "false";
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param searchAlgo DOCUMENT ME!
-    */
-   public void setSearchAlgo(String searchAlgo) {
-      this.searchAlgo = searchAlgo;
-   }
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    */
-   public String getSearchAlgo() {
-      return searchAlgo;
-   }
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param searchMode DOCUMENT ME!
-    */
-   public void setSearchMode(String searchMode) {
-      this.searchMode = searchMode;
-   }
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    */
-   public String getSearchMode() {
-      return searchMode;
-   }
 
    /**
     * @return
@@ -112,40 +72,6 @@ public class DbSearchCheckBoxTag extends DbBaseHandlerTag
       checked = string;
    }
 
-   /**
-    * DOCUMENT ME!
-    *
-    * @param tableId DOCUMENT ME!
-    * @param fieldId DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    */
-   protected String RenderHiddenFields(int tableId, int fieldId) {
-      StringBuffer tagBuf = new StringBuffer();
-      StringBuffer paramNameBufA = new StringBuffer();
-      paramNameBufA.append("searchalgo_");
-      paramNameBufA.append(tableId);
-      paramNameBufA.append("_");
-      paramNameBufA.append(fieldId);
-      tagBuf.append("<input type=\"hidden\" name=\"");
-      tagBuf.append(paramNameBufA.toString());
-      tagBuf.append("\" value=\"");
-      tagBuf.append(getSearchAlgo());
-      tagBuf.append("\"/>\n");
-
-      StringBuffer paramNameBufB = new StringBuffer();
-      paramNameBufB.append("searchmode_");
-      paramNameBufB.append(tableId);
-      paramNameBufB.append("_");
-      paramNameBufB.append(fieldId);
-      tagBuf.append("<input type=\"hidden\" name=\"");
-      tagBuf.append(paramNameBufB.toString());
-      tagBuf.append("\" value=\"");
-      tagBuf.append(getSearchMode());
-      tagBuf.append("\"/>\n");
-
-      return tagBuf.toString();
-   }
 
    /**
     * DOCUMENT ME!
@@ -157,9 +83,7 @@ public class DbSearchCheckBoxTag extends DbBaseHandlerTag
     */
    public int doEndTag() throws javax.servlet.jsp.JspException {
       try {
-         int tableId = getParentForm().getTable().getId();
          Field field = getField();
-         int fieldId = field.getId();
 
          /*
                             <input type="hidden" name="searchalgo_0_1" value="weakEnd"/>
@@ -169,10 +93,7 @@ public class DbSearchCheckBoxTag extends DbBaseHandlerTag
          StringBuffer tagBuf = new StringBuffer();
 
          StringBuffer paramNameBuf = new StringBuffer();
-         paramNameBuf.append("search_");
-         paramNameBuf.append(tableId);
-         paramNameBuf.append("_");
-         paramNameBuf.append(fieldId);
+         paramNameBuf.append(field.getSearchFieldName());
 
          tagBuf.append("<input type=\"input\" name=\"");
          tagBuf.append(paramNameBuf.toString());
@@ -188,16 +109,8 @@ public class DbSearchCheckBoxTag extends DbBaseHandlerTag
          tagBuf.append(prepareEventHandlers());
          tagBuf.append("/>\n");
 
-         String pattern = getPattern();
-         if (!Util.isNull(pattern)) {
-            tagBuf.append("<input type=\"hidden\" name=\"");
-            tagBuf.append(Constants.FIELDNAME_PATTERNTAG + paramNameBuf.toString());
-            tagBuf.append("\" value=\"");
-            tagBuf.append(pattern);
-            tagBuf.append("\" />");
-         }
-
-         pageContext.getOut().write(RenderHiddenFields(tableId, fieldId));
+ 		 pageContext.getOut().write(renderPatternHtmlInputField());
+         pageContext.getOut().write(RenderHiddenFields(field));
          pageContext.getOut().write(tagBuf.toString());
       } catch (java.io.IOException ioe) {
          throw new JspException("IO Error: " + ioe.getMessage());
@@ -207,8 +120,6 @@ public class DbSearchCheckBoxTag extends DbBaseHandlerTag
    }
 
    public void doFinally() {
-      searchAlgo = "sharp";
-      searchMode = "and";
       checked = "false";
       value = null;
       super.doFinally();

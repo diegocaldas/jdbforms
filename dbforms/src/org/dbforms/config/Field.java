@@ -545,4 +545,29 @@ public class Field {
 		this.table = table;
 	}
 
+	public String getFieldName(String core) {
+		StringBuffer sb = new StringBuffer(core);
+		sb.append(getTable().getId());
+		sb.append("_");
+		sb.append(getId());
+		return sb.toString();
+	}
+
+	public String getSearchFieldName() {
+		return getFieldName(Constants.FIELDNAME_SEARCH);	
+	}
+
+	public String getSortFieldName() {
+		return getFieldName(Constants.FIELDNAME_SORT);	
+	}
+
+
+	public String getSearchAlgoName() {
+		return getFieldName(Constants.FIELDNAME_SEARCHALGO);	
+	}
+
+	public String getSearchModeName() {
+		return getFieldName(Constants.FIELDNAME_SEARCHMODE);	
+	}
+
 }

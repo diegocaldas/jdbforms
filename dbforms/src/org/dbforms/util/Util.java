@@ -23,6 +23,7 @@
 
 package org.dbforms.util;
 
+import java.text.Format;
 import java.net.URLEncoder;
 import java.net.URLDecoder;
 import org.dbforms.util.external.PrintfFormat;
@@ -189,5 +190,14 @@ public class Util {
       s = URLEncoder.encode(s, enc);
       return s;
    }
+
+  public static String getPattern(Format f) { 
+	if (f instanceof java.text.DecimalFormat)
+	   return ((java.text.DecimalFormat) f).toPattern();
+	else if (f instanceof java.text.SimpleDateFormat)
+	   return ((java.text.SimpleDateFormat) f).toPattern();
+	else
+	   return null;
+  }
 
 }

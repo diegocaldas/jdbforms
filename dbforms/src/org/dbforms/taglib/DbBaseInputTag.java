@@ -27,8 +27,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import org.dbforms.event.WebEvent;
 import org.dbforms.event.eventtype.EventType;
-import org.dbforms.config.Constants;
-import org.dbforms.util.Util;
 
 /**
  * Abstract base class for the various input tags. original author Craig R.
@@ -324,23 +322,6 @@ public abstract class DbBaseInputTag extends DbBaseHandlerTag {
       } catch (java.io.IOException ioe) {
          throw new JspException("IO Error: " + ioe.getMessage());
       }
-   }
-
-   /** 
-    * writes out the current used format to the page
-    * @throws JspException
-    */
-   protected String renderPatternHtmlInputField() {
-      StringBuffer tagBuf = new StringBuffer();
-      String pattern = getPattern();
-      if (!Util.isNull(pattern)) {
-         tagBuf.append("<input type=\"hidden\" name=\"");
-         tagBuf.append(Constants.FIELDNAME_PATTERNTAG + getFormFieldName());
-         tagBuf.append("\" value=\"");
-         tagBuf.append(pattern);
-         tagBuf.append("\" />");
-      }
-      return tagBuf.toString();
    }
 
    /**

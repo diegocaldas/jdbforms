@@ -1962,7 +1962,7 @@ public class DbFormTag
       HttpServletRequest request =
          (HttpServletRequest) pageContext.getRequest();
       Vector searchFieldNames =
-         ParseUtil.getParametersStartingWith(request, "search_" + this.tableId);
+         ParseUtil.getParametersStartingWith(request, Constants.FIELDNAME_SEARCH + this.tableId);
 
       if ((searchFieldNames == null) || (searchFieldNames.size() == 0)) {
          return null;
@@ -2006,15 +2006,17 @@ public class DbFormTag
                String aSearchMode =
                   ParseUtil.getParameter(
                      request,
-                     "searchmode_" + tableId + "_" + fieldId);
+                     f.getSearchModeName()
+                     );
                int mode =
-                  ("and".equals(aSearchMode))
-                     ? Constants.SEARCHMODE_AND
-                     : Constants.SEARCHMODE_OR;
+                  ("or".equals(aSearchMode))
+                     ? Constants.SEARCHMODE_OR
+                     : Constants.SEARCHMODE_AND;
                String aSearchAlgorithm =
                   ParseUtil.getParameter(
                      request,
-                     "searchalgo_" + tableId + "_" + fieldId);
+                     f.getSearchAlgoName()  
+					);
 
                // Check for operator
                int algorithm = Constants.SEARCH_ALGO_SHARP;

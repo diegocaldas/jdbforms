@@ -106,13 +106,10 @@ public class DbSearchTag extends DbBaseHandlerTag implements javax.servlet.jsp.t
     *
     * @return DOCUMENT ME!
     */
-   protected String RenderHiddenFields(int tableId, int fieldId) {
+   protected String RenderHiddenFields(Field f) {
       StringBuffer tagBuf = new StringBuffer();
       StringBuffer paramNameBufA = new StringBuffer();
-      paramNameBufA.append("searchalgo_");
-      paramNameBufA.append(tableId);
-      paramNameBufA.append("_");
-      paramNameBufA.append(fieldId);
+      paramNameBufA.append(f.getSearchAlgoName());
       tagBuf.append("<input type=\"hidden\" name=\"");
       tagBuf.append(paramNameBufA.toString());
       tagBuf.append("\" value=\"");
@@ -120,10 +117,7 @@ public class DbSearchTag extends DbBaseHandlerTag implements javax.servlet.jsp.t
       tagBuf.append("\"/>\n");
 
       StringBuffer paramNameBufB = new StringBuffer();
-      paramNameBufB.append("searchmode_");
-      paramNameBufB.append(tableId);
-      paramNameBufB.append("_");
-      paramNameBufB.append(fieldId);
+      paramNameBufB.append(f.getSearchModeName());
       tagBuf.append("<input type=\"hidden\" name=\"");
       tagBuf.append(paramNameBufB.toString());
       tagBuf.append("\" value=\"");
@@ -143,9 +137,7 @@ public class DbSearchTag extends DbBaseHandlerTag implements javax.servlet.jsp.t
     */
    public int doEndTag() throws javax.servlet.jsp.JspException {
       try {
-         int tableId = getParentForm().getTable().getId();
          Field field = getField();
-         int fieldId = field.getId();
 
          /*
                             <input type="hidden" name="searchalgo_0_1" value="weakEnd"/>
@@ -156,10 +148,7 @@ public class DbSearchTag extends DbBaseHandlerTag implements javax.servlet.jsp.t
          StringBuffer tagBuf = new StringBuffer();
 
          StringBuffer paramNameBuf = new StringBuffer();
-         paramNameBuf.append("search_");
-         paramNameBuf.append(tableId);
-         paramNameBuf.append("_");
-         paramNameBuf.append(fieldId);
+         paramNameBuf.append(field.getSearchFieldName());
 
          String oldValue = ParseUtil.getParameter(request, paramNameBuf.toString());
          tagBuf.append("<input type=\"input\" name=\"");
@@ -179,16 +168,8 @@ public class DbSearchTag extends DbBaseHandlerTag implements javax.servlet.jsp.t
          tagBuf.append(prepareEventHandlers());
          tagBuf.append("/>\n");
 
-         String pattern = getPattern();
-         if (!Util.isNull(pattern)) {
-            tagBuf.append("<input type=\"hidden\" name=\"");
-            tagBuf.append(Constants.FIELDNAME_PATTERNTAG + paramNameBuf.toString());
-            tagBuf.append("\" value=\"");
-            tagBuf.append(pattern);
-            tagBuf.append("\" />");
-         }
-
-         pageContext.getOut().write(RenderHiddenFields(tableId, fieldId));
+ 		 pageContext.getOut().write(renderPatternHtmlInputField());
+         pageContext.getOut().write(RenderHiddenFields(field));
          pageContext.getOut().write(tagBuf.toString());
       } catch (java.io.IOException ioe) {
          throw new JspException("IO Error: " + ioe.getMessage());

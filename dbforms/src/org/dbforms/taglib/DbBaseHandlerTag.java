@@ -158,12 +158,7 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
       Format f = getFormatter();
       if (f == null)
          return null;
-      if (f instanceof java.text.DecimalFormat)
-         return ((java.text.DecimalFormat) f).toPattern();
-      else if (f instanceof java.text.SimpleDateFormat)
-         return ((java.text.SimpleDateFormat) f).toPattern();
-      else
-         return null;
+      return Util.getPattern(f);
    }
 
    /**
@@ -555,6 +550,24 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
       tagBuf.append("\" />");
       return tagBuf.toString();
    }
+
+   /** 
+	* writes out the current used format to the page
+	* @throws JspException
+	*/
+   protected String renderPatternHtmlInputField() {
+	  StringBuffer tagBuf = new StringBuffer();
+	  String pattern = getPattern();
+	  if (!Util.isNull(pattern)) {
+		 tagBuf.append("<input type=\"hidden\" name=\"");
+		 tagBuf.append(Constants.FIELDNAME_PATTERNTAG + getFormFieldName());
+		 tagBuf.append("\" value=\"");
+		 tagBuf.append(pattern);
+		 tagBuf.append("\" />");
+	  }
+	  return tagBuf.toString();
+   }
+
 
    public Escaper getEscaper() {
       if (escaper == null) {

@@ -172,19 +172,20 @@ public class DbFilterValueTag
 
 			String value = ParseUtil.getParameter(request, paramValue);
 			String valueType = ParseUtil.getParameter(request, paramType);
-			
-			String aSearchAlgorithm = ParseUtil.getParameter(request, searchAlgoType);
+
+			String aSearchAlgorithm =
+				ParseUtil.getParameter(request, searchAlgoType);
 			int algorithm = Constants.SEARCH_ALGO_SHARP;
 			if (!Util.isNull(aSearchAlgorithm)) {
-			   if (aSearchAlgorithm.startsWith("weakStartEnd")) {
-				  algorithm = Constants.SEARCH_ALGO_WEAK_START_END;
-			   } else if (aSearchAlgorithm.startsWith("weakStart")) {
-				  algorithm = Constants.SEARCH_ALGO_WEAK_START;
-			   } else if (aSearchAlgorithm.startsWith("weakEnd")) {
-				  algorithm = Constants.SEARCH_ALGO_WEAK_END;
-			   } else if (aSearchAlgorithm.startsWith("weak")) {
-				  algorithm = Constants.SEARCH_ALGO_WEAK;
-			   }
+				if (aSearchAlgorithm.startsWith("weakStartEnd")) {
+					algorithm = Constants.SEARCH_ALGO_WEAK_START_END;
+				} else if (aSearchAlgorithm.startsWith("weakStart")) {
+					algorithm = Constants.SEARCH_ALGO_WEAK_START;
+				} else if (aSearchAlgorithm.startsWith("weakEnd")) {
+					algorithm = Constants.SEARCH_ALGO_WEAK_END;
+				} else if (aSearchAlgorithm.startsWith("weak")) {
+					algorithm = Constants.SEARCH_ALGO_WEAK;
+				}
 			}
 			valueType = Util.isNull(valueType) ? FLT_VALUETYPE_TEXT : valueType;
 			if (value != null) {
@@ -193,13 +194,15 @@ public class DbFilterValueTag
 				f.setName(paramValue);
 				f.setId(valueId);
 				f.setFieldType(valueType);
-            Table table = null;
-            try {
-               table = DbFormsConfigRegistry.instance().lookup().getTable(tableId);
-            } catch (Exception e) {
-               logCat.error("readValuesFromRequest", e);
-            }
-            f.setTable(table);
+				Table table = null;
+				try {
+					table =
+						DbFormsConfigRegistry.instance().lookup().getTable(
+							tableId);
+				} catch (Exception e) {
+					logCat.error("readValuesFromRequest", e);
+				}
+				f.setTable(table);
 				FieldValue fv = new FieldValue(f, value);
 				fv.setLocale(MessageResources.getLocale(request));
 				fv.setSearchAlgorithm(algorithm);
@@ -364,7 +367,7 @@ public class DbFilterValueTag
 		f.setName(state.label);
 		f.setId(state.valueId);
 		f.setFieldType(state.type);
-      f.setTable(getParentForm().getTable());
+		f.setTable(getParentForm().getTable());
 		setField(f);
 
 		if (state.label != null) {

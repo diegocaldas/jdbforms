@@ -1615,7 +1615,7 @@ public class Table {
       Vector result = null;
 
       if (request != null) {
-         String paramStub = "sort_" + this.getId();
+         String paramStub = Constants.FIELDNAME_SORT + this.getId();
          Vector sortFields =
             ParseUtil.getParametersStartingWith(request, paramStub);
 
@@ -1827,14 +1827,7 @@ public class Table {
 
       while (enum.hasNext()) {
          Field f = (Field) enum.next();
-         String fieldName = f.getName();
-         int fieldId = f.getId();
-         StringBuffer sb = new StringBuffer(core);
-         sb.append("_");
-         sb.append(getId());
-         sb.append("_");
-         sb.append(fieldId);
-         result.put(fieldName, sb.toString());
+		 result.put(f.getName(), f.getFieldName(core));
       }
 
       return result;

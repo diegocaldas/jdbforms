@@ -44,6 +44,11 @@ public class Constants {
    
    public static final String FIELDNAME_OVERRIDEFIELDTEST = "overridefieldcheck_";
 
+   public static final String FIELDNAME_SORT       = "sort_";
+   public static final String FIELDNAME_SEARCH     = "search_";
+   public static final String FIELDNAME_SEARCHALGO = "searchalgo_";
+   public static final String FIELDNAME_SEARCHMODE = "searchmode_";
+   
    /** DOCUMENT ME! */
    public static final int COMPARE_NONE = 0;
 

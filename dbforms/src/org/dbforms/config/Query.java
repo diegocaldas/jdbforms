@@ -78,7 +78,7 @@ public class Query extends Table {
       }
 
       field.setId(WHEREIDSTART + searchfields.size());
-
+   	  field.setTable(this);
       searchfields.addElement(field);
 
       // for quicker lookup by name:
@@ -549,15 +549,7 @@ public class Query extends Table {
 
       while (enum.hasMoreElements()) {
          Field f = (Field) enum.nextElement();
-         String fieldName = f.getName();
-         int fieldId = f.getId();
-         StringBuffer sb = new StringBuffer(core);
-         sb.append("_");
-         sb.append(getId());
-         sb.append("_");
-         sb.append(fieldId);
-         result.put(fieldName, sb.toString());
-
+		 result.put(f.getName(), f.getFieldName(core));
          // in PHP slang we would call that an "associative array" :=)
       }
 
