@@ -1,14 +1,34 @@
 <project name="dbforms" default="createAllExamples" basedir=".">
 
-
 <!-- 
-
-ANT BUILD.XML FOR DbForms
-=========================
 
 $Header$
 $Revision$
 $Date$
+
+ANT BUILD.XML FOR DbForms
+=========================
+
+Ant is a very handy tool that uses a build file written in XML
+(this file) as building instructions. For more information refer to
+"http://jakarta.apache.org/ant/".
+
+To build DbForms using ant, perform the following steps:
+*) install jakarte-ant properly (tested with ant Version 1.3)
+*) set environment variable JAVA_HOME pointing to your Java Installation
+*) cd to the directory containing this build.xml file
+*) type in "ant" - this should do it!!
+
+Results:
+*) a .jar file containing the DbForms library
+*) a .war file for each sample app in directory /dist
+
+Deploy the .war files to your Servlet 2.2+ compatible servlet container!
+If you are not using mysql -> you have to edit the dbforms-config.xml file to set up the database connection
+properly.
+
+Happy coding!
+~~ DbForms team ~~
 
 -->
   
