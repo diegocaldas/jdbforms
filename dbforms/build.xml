@@ -81,9 +81,26 @@ Happy coding!
         <mkdir dir="${dist.dir}"/>
     </target>
 
+    <target name="onPath">
+        <condition property="path.ok">
+            <and>
+                <available classname="javax.servlet.jsp.JspException" >
+                    <classpath refid="classpath"/>
+                </available>
+                <available classname="javax.sql.DataSource">
+                    <classpath refid="classpath"/>
+                </available>
+            </and>
+        </condition>
+    </target>
+    
+    <target name="failIfBadPath" depends="onPath" unless="path.ok">
+        <fail message="J2EE support jars are missing from the classpath.  Put the j2ee.jar into your classpath or the /dbforms/dependend directory."/>
+    </target>    
+
 
     <!-- compile dbforms core sources -->
-    <target name="compile" depends="prepare">
+    <target name="compile" depends="prepare,failIfBadPath" unless="path.ok">
 
 
         <!-- Required when building in eclipse (WSAD) -->
@@ -247,7 +264,7 @@ Happy coding!
       <replace file="${dist.dir}/bin/devgui.bat"
           token="dbforms_CURRENT_VERSION.jar"
           value="dbforms${dbforms.version}.jar"/>
-   </target>	
+   </target>    
 
 
   <!--
@@ -279,7 +296,7 @@ Happy coding!
   </target>
  
   <target name="build-doc"
-  	  depends="javadoc, generate_taglib_htmldocs"
+      depends="javadoc, generate_taglib_htmldocs"
   />
 
      <!-- create dbforms-releasefile -->
@@ -289,17 +306,17 @@ Happy coding!
         <property name="dbforms.releaseName" value="${dbforms.version}_${DSTAMP}"/>
 
       <zip destfile="dbforms${dbforms.releaseName}.zip" >
-        <zipfileset dir="."          prefix="dbforms${dbforms.releaseName}" 		includes="Changes_v1_0  Changes_v1_1  CommonMistakes  License  Readme  Readme_DevGui  Todo  build.xml"/>
-        <zipfileset dir="."          prefix="dbforms${dbforms.releaseName}" 		includes="doc/**/*.html,doc/**/*.png,doc/**/*.txt,doc/**/*.pdf"/>
-        <zipfileset dir="."          prefix="dbforms${dbforms.releaseName}" 		includes="dist/*.tld  dist/*.jar"/>
-        <zipfileset dir="./dist/bin" prefix="dbforms${dbforms.releaseName}/bin" 	includes="devgui.bat devgui.sh"/>
-        <zipfileset dir="."          prefix="dbforms${dbforms.releaseName}" 		includes="etc/*.xml etc/*.xsl"/>
-        <zipfileset dir="./dist"     prefix="dbforms${dbforms.releaseName}/examples" 	includes="*.war"/>
-        <zipfileset dir="."          prefix="dbforms${dbforms.releaseName}" 		includes="examples/*.txt"/>
-        <zipfileset dir="."          prefix="dbforms${dbforms.releaseName}" 		includes="src/org/**/*.java"/>
-        <zipfileset dir="." 	     prefix="dbforms${dbforms.releaseName}" 		includes="temp/*.txt"/>
-        <zipfileset dir="."          prefix="dbforms${dbforms.releaseName}" 		includes="xsl-stylesheets/*.xsl"/>
-        <zipfileset dir="."          prefix="dbforms${dbforms.releaseName}" 		includes="misc/**/*.gif  misc/**/*.png  misc/**/*.js   misc/**/*.txt misc/*.css misc/**/*.html"/>                     
+        <zipfileset dir="."          prefix="dbforms${dbforms.releaseName}"         includes="Changes_v1_0  Changes_v1_1  CommonMistakes  License  Readme  Readme_DevGui  Todo  build.xml"/>
+        <zipfileset dir="."          prefix="dbforms${dbforms.releaseName}"         includes="doc/**/*.html,doc/**/*.png,doc/**/*.txt,doc/**/*.pdf"/>
+        <zipfileset dir="."          prefix="dbforms${dbforms.releaseName}"         includes="dist/*.tld  dist/*.jar"/>
+        <zipfileset dir="./dist/bin" prefix="dbforms${dbforms.releaseName}/bin"     includes="devgui.bat devgui.sh"/>
+        <zipfileset dir="."          prefix="dbforms${dbforms.releaseName}"         includes="etc/*.xml etc/*.xsl"/>
+        <zipfileset dir="./dist"     prefix="dbforms${dbforms.releaseName}/examples"    includes="*.war"/>
+        <zipfileset dir="."          prefix="dbforms${dbforms.releaseName}"         includes="examples/*.txt"/>
+        <zipfileset dir="."          prefix="dbforms${dbforms.releaseName}"         includes="src/org/**/*.java"/>
+        <zipfileset dir="."          prefix="dbforms${dbforms.releaseName}"         includes="temp/*.txt"/>
+        <zipfileset dir="."          prefix="dbforms${dbforms.releaseName}"         includes="xsl-stylesheets/*.xsl"/>
+        <zipfileset dir="."          prefix="dbforms${dbforms.releaseName}"         includes="misc/**/*.gif  misc/**/*.png  misc/**/*.js   misc/**/*.txt misc/*.css misc/**/*.html"/>                     
        </zip>
     </target>
 
