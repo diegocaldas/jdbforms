@@ -884,6 +884,16 @@ or displayed.</info>
 When this attribute is set,the value retrieved from the database is ignored.</info>
 				</attribute>
 				<attribute>
+					<name>nullFieldValue</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						<p>If the value (retrieved from the database) is null, allow the user to replace 
+  the text to display by a custom value. May be used in conjunction with dbForm's 
+  I18N support.</p>
+					</info>
+				</attribute>
+				<attribute>
 					<name>accessKey</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
