@@ -549,7 +549,11 @@ public class FieldValue implements Cloneable {
          }
       }
       try {
-         return Date.valueOf(valueStr);
+         // 20031123-HKK: patch suggested by Igor Longagnani [i.longagnani@tiscali.it]:
+         //               use only the first part of date string.   
+         String[] vStr  = valueStr.split(" ");
+         String str = vStr[0];
+         return Date.valueOf(str);
       } catch (Exception e) {
          logCat.error(e.getMessage() + " <" + valueStr + ">");
       }
