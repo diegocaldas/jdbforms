@@ -31,6 +31,7 @@ import org.dbforms.servlets.ConfigServlet;
 import org.dbforms.taglib.DbFormTag;
 
 
+
 /**
  * Tests of the <code>DbFormsConfig</code> class.
  * 
@@ -38,7 +39,7 @@ import org.dbforms.taglib.DbFormTag;
  */
 public class TestTableQuery extends JspTestCase
 {
-	private DbFormTag   tag;
+   private DbFormTag tag;
 
    /**
     * Defines the testcase name for JUnit.
@@ -58,10 +59,7 @@ public class TestTableQuery extends JspTestCase
    public static void main(String[] theArgs)
    {
       junit.swingui.TestRunner.main(
-               new String[] 
-      {
-         TestTableQuery.class.getName()
-      });
+               new String[] { TestTableQuery.class.getName() });
    }
 
 
@@ -81,21 +79,33 @@ public class TestTableQuery extends JspTestCase
    /**
     * In addition to creating the tag instance and adding the pageContext to
     * it, this method creates a BodyContent object and passes it to the tag.
+    * 
     * @throws Exception DOCUMENT ME!
     */
    public void setUp() throws Exception
    {
       config.setInitParameter("dbformsConfig", "/WEB-INF/dbforms-config.xml");
-		DbFormsConfig dbFormsConfig = DbFormsConfigRegistry.instance().lookup();
-		if (dbFormsConfig == null)
-		{
-			config.setInitParameter("dbformsConfig", "/WEB-INF/dbforms-config.xml");
-			ConfigServlet configServlet = new ConfigServlet();
-			configServlet.init(config);
-		}
-		this.tag = new DbFormTag();
-		this.tag.setPageContext(this.pageContext);
 
+      DbFormsConfig dbFormsConfig = null;
+
+      try
+      {
+         dbFormsConfig = DbFormsConfigRegistry.instance().lookup();
+      }
+      catch (Exception e)
+      {
+      }
+
+      if (dbFormsConfig == null)
+      {
+         config.setInitParameter("dbformsConfig", "/WEB-INF/dbforms-config.xml");
+
+         ConfigServlet configServlet = new ConfigServlet();
+         configServlet.init(config);
+      }
+
+      this.tag = new DbFormTag();
+      this.tag.setPageContext(this.pageContext);
    }
 
 
@@ -106,20 +116,26 @@ public class TestTableQuery extends JspTestCase
     */
    public void testTable() throws Exception
    {
-		this.tag.setTableName("BOOK");
-		this.tag.setFilter("BOOK_ID=5,AUTHOR_ID=2");
-		this.tag.doStartTag();
-		assertEquals(1, this.tag.getResultSetVector().size());
+      this.tag.setTableName("BOOK");
+      this.tag.setFilter("BOOK_ID=5,AUTHOR_ID=2");
+      this.tag.doStartTag();
+      assertEquals(1, this.tag.getResultSetVector().size());
    }
 
 
-	public void testQuery() throws Exception
-	{
-		this.tag.setTableName("BOOKLISTPERAUTHOR");
-		this.tag.setFilter("BOOK_ID=5,AUTHOR_ID=2");
-		this.tag.doStartTag();
-		assertEquals(1, this.tag.getResultSetVector().size());
-	}
+   /**
+    * DOCUMENT ME!
+    * 
+    * @throws Exception DOCUMENT ME!
+    */
+   public void testQuery() throws Exception
+   {
+      this.tag.setTableName("BOOKLISTPERAUTHOR");
+      this.tag.setFilter("BOOK_ID=5,AUTHOR_ID=2");
+      this.tag.doStartTag();
+      assertEquals(1, this.tag.getResultSetVector().size());
+   }
+
 
    /**
     * DOCUMENT ME!

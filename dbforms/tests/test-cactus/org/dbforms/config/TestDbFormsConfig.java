@@ -58,10 +58,7 @@ public class TestDbFormsConfig extends ServletTestCase
    public static void main(String[] theArgs)
    {
       junit.swingui.TestRunner.main(
-               new String[] 
-      {
-         TestDbFormsConfig.class.getName()
-      });
+               new String[] { TestDbFormsConfig.class.getName() });
    }
 
 
@@ -81,19 +78,27 @@ public class TestDbFormsConfig extends ServletTestCase
    /**
     * In addition to creating the tag instance and adding the pageContext to
     * it, this method creates a BodyContent object and passes it to the tag.
+    * 
     * @throws Exception DOCUMENT ME!
     */
    public void setUp() throws Exception
    {
       config.setInitParameter("dbformsConfig", "/WEB-INF/dbforms-config.xml");
-		dbFormsConfig = DbFormsConfigRegistry.instance().lookup();
-		if (dbFormsConfig == null)
-		{
-			config.setInitParameter("dbformsConfig", "/WEB-INF/dbforms-config.xml");
-			ConfigServlet configServlet = new ConfigServlet();
-			configServlet.init(config);
+      dbFormsConfig = null;
+      try
+      {
+         dbFormsConfig = DbFormsConfigRegistry.instance().lookup();
+      }
+      catch (Exception e)
+      {
+      }
+      if (dbFormsConfig == null)
+      {
+         config.setInitParameter("dbformsConfig", "/WEB-INF/dbforms-config.xml");
+         ConfigServlet configServlet = new ConfigServlet();
+         configServlet.init(config);
 			dbFormsConfig = DbFormsConfigRegistry.instance().lookup();
-		}
+      }
    }
 
 
