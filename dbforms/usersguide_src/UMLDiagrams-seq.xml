@@ -1,15 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <chapter>
   <title>Sequence diagrams</title>
-  <para>
-    The following links points to the sequence diagrams pictures that show the interaction between
-    DbForms components (controller, view, data access objects, etc.).
-    <itemizedlist mark="opencircle">
-      <listitem>
-        <ulink url="./images/figures/">TagLib</ulink>
-      </listitem>
-      <listitem>
-      </listitem>
-    </itemizedlist>
-  </para>
+
+  <sect1>
+    <title>The controller</title>
+    <para>
+      This <ulink url="./images/figures/uml/sequence/event-servletController.usd.png">diagram</ulink>
+      shows the interaction between the Controller class that receives the incoming 
+      http request and all the other classes that manage the event creation and its procession.
+    </para>
+    <sect2>
+      <title>Steps</title>
+      <para>
+        <itemizedlist mark="opencircle">
+
+          <listitem>
+            <para>        
+            </para>
+          </listitem>
+
+          <listitem>
+            <para>
+              The EventEngine, invoked by the Controller servlet, parses a request to find out
+              which event(s) need to be instanciated.
+              The fine-grained parsing (parsing of additional data, etc) is done
+              by the WebEvent-Object itself (in order to hide complexity from this
+              class and to keep the framework open for implementations of new Event-classes)
+            </para>
+          </listitem>
+
+        </itemizedlist>
+      </para>
+    </sect2>
+  </sect1>
+
 </chapter>
