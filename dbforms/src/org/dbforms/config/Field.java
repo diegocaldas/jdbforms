@@ -136,6 +136,7 @@ public class Field
       else if (fieldType.startsWith("char") || fieldType.startsWith("varchar")
                      || fieldType.startsWith("nvarchar")
                      || fieldType.startsWith("longchar")
+					 || fieldType.startsWith("long varchar")
                      || fieldType.startsWith("text"))
       {
          type = FieldTypes.CHAR;
