@@ -21,6 +21,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.event.datalist.dao;
+
+
 import java.sql.*;
 import javax.servlet.http.HttpServletRequest;
 
@@ -157,7 +159,7 @@ public class DataSourceFactory
 
    /**
     * Return a resultSetVector object containing the next <i>count</i> records
-    * starting from the input position
+    * starting from the input position + <i>count</i> records.
     *
     * @param position the current table position
     * @param count number of records to fetch
@@ -175,14 +177,16 @@ public class DataSourceFactory
 
 
    /**
-    * DOCUMENT ME!
+    * Return a resultSetVector object containing the previous <i>count</i> records
+    * starting from the input position + <i>count</i> records.
     *
-    * @param position DOCUMENT ME!
-    * @param count DOCUMENT ME!
+    * @param position the current table position
+    * @param count number of records to fetch
     *
-    * @return DOCUMENT ME!
+    * @return a resultSetVector object containing the previous <i>count</i> records
+    *         starting from the input position
     *
-    * @throws SQLException DOCUMENT ME!
+    * @throws SQLException if any error occurs
     */
    public ResultSetVector getPrev(String position, int count)
       throws SQLException
@@ -192,14 +196,14 @@ public class DataSourceFactory
 
 
    /**
-    * DOCUMENT ME!
-    *
-    * @param count DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    *
-    * @throws SQLException DOCUMENT ME!
-    */
+	* Return a resultSetVector object containing the first <i>count</i> records.
+	*
+	* @param count number of records to fetch
+	*
+	* @return a resultSetVector object containing the first <i>count</i> records
+	*
+	* @throws SQLException if any error occurs
+	*/
    public ResultSetVector getFirst(int count) throws SQLException
    {
       return dataHandler.getFirst(count);
@@ -207,14 +211,14 @@ public class DataSourceFactory
 
 
    /**
-    * DOCUMENT ME!
-    *
-    * @param count DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    *
-    * @throws SQLException DOCUMENT ME!
-    */
+	* Return a resultSetVector object containing the last <i>count</i> records.
+	*
+	* @param count number of records to fetch
+	*
+	* @return a resultSetVector object containing the last <i>count</i> records
+	*
+	* @throws SQLException if any error occurs
+	*/
    public ResultSetVector getLast(int count) throws SQLException
    {
       return dataHandler.getLast(count);
@@ -222,15 +226,17 @@ public class DataSourceFactory
 
 
    /**
-    * DOCUMENT ME!
-    *
-    * @param position DOCUMENT ME!
-    * @param count DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    *
-    * @throws SQLException DOCUMENT ME!
-    */
+	 * Return a resultSetVector object containing <i>count</i> records
+	 * starting from the input position
+	 *
+	 * @param position the current table position
+	 * @param count number of records to fetch
+	 *
+	 * @return a resultSetVector object containing the current <i>count</i> records
+	 *         starting from the input position
+	 *
+	 * @throws SQLException if any error occurs
+	 */
    public ResultSetVector getCurrent(String position, int count)
       throws SQLException
    {
@@ -239,11 +245,11 @@ public class DataSourceFactory
 
 
    /**
-    * DOCUMENT ME!
+    * Perform an insert operation into the underlying dataSource.
     *
-    * @param fieldValues DOCUMENT ME!
+    * @param fieldValues the field values to insert
     *
-    * @throws SQLException DOCUMENT ME!
+    * @throws SQLException if any error occurs
     */
    public void doInsert(FieldValues fieldValues) throws SQLException
    {
@@ -252,12 +258,12 @@ public class DataSourceFactory
 
 
    /**
-    * DOCUMENT ME!
+    * Perform an update operation into the underlying dataSource.
     *
-    * @param fieldValues DOCUMENT ME!
-    * @param keyValuesStr DOCUMENT ME!
+    * @param fieldValues the field values to update
+    * @param keyValuesStr the key value identifying the record to update
     *
-    * @throws SQLException DOCUMENT ME!
+    * @throws SQLException if any error occurs
     */
    public void doUpdate(FieldValues fieldValues, String keyValuesStr)
       throws SQLException
@@ -266,13 +272,13 @@ public class DataSourceFactory
    }
 
 
-   /**
-    * DOCUMENT ME!
-    *
-    * @param keyValuesStr DOCUMENT ME!
-    *
-    * @throws SQLException DOCUMENT ME!
-    */
+  /**
+   * Perform a delete operation into the underlying dataSource.
+   *
+   * @param keyValuesStr the key value identifying the record to delete
+   *
+   * @throws SQLException if any error occurs
+   */
    public void doDelete(String keyValuesStr) throws SQLException
    {
       dataHandler.doDelete(keyValuesStr);
