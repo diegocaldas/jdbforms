@@ -197,9 +197,11 @@
         <include>**/Test*.java</include>
         
       </includes>
+      <resources>
+        <include>**/*.txt</include>
+      </resources>
     </unitTest>
     
-
     <resources></resources>
     <jars></jars>
   </build>
