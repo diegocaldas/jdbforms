@@ -144,7 +144,7 @@ public class DbDataContainerLabelTag extends BodyTagSupport implements DataConta
             String fieldValue = "[no data]";
 
             // "fieldValue" is the variable actually printed out
-            if (!ResultSetVector.isEmptyOrNull(parentForm.getResultSetVector()))
+            if (!Util.isNull(parentForm.getResultSetVector()))
             {
                 //String[] currentRow = parentForm.getResultSetVector().getCurrentRow();
                 //fieldValue = currentRow[field.getId()];

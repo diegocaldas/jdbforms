@@ -32,6 +32,8 @@ import org.apache.log4j.Category;
 import org.dbforms.*;
 import org.dbforms.util.ParseUtil;
 import org.dbforms.util.ReflectionUtil;
+import org.dbforms.event.classic.*;
+import org.dbforms.event.datalist.*;
 import org.dbforms.event.eventtype.EventType;
 
 
@@ -44,6 +46,15 @@ import org.dbforms.event.eventtype.EventType;
  */
 public class DatabaseEventFactoryImpl extends DatabaseEventFactory
 {
+
+
+	/** classes used as "keyInfo" constructor arguments types */
+	private static Class[] keyInfoConstructorArgsTypes = new Class[]
+	{
+		Integer.class, String.class, HttpServletRequest.class,  DbFormsConfig.class
+	};
+
+
     /** an handle to the unique DatabaseEventFactory instance */
     private static DatabaseEventFactory instance = null;
 
@@ -70,39 +81,33 @@ public class DatabaseEventFactoryImpl extends DatabaseEventFactory
      * @param  config the DbForms config object
      * @return  a new database event, or null if any error occurs
      */
-    public DatabaseEvent createEvent(String action, HttpServletRequest request, DbFormsConfig config)
+    public WebEvent createEvent(String action, HttpServletRequest request, DbFormsConfig config)
     {
-        DatabaseEvent event           = null;
+        WebEvent  event 	          = null;
         Object[]      constructorArgs = null;
-
         // get the event id of the destination table
         String    eventId = getEventIdFromDestinationTable(request, action);
         EventInfo einfo   = getEventInfo(eventId);
-
         // debug
         logCat.info("::createEvent - got event [" + einfo + "] from action [" + action + "]");
-
         // instance "normal" database events;
         if (!isKeyInfoEvent(action))
         {
             constructorArgs = new Object[] { action, request, config };
-            event = (DatabaseEvent)getEvent(einfo, constructorArgsTypes, constructorArgs);
+            event = getEvent(einfo, constructorArgsTypes, constructorArgs);
         }
         // instance "keyInfo" database events;
         else
         {
             KeyInfo kInfo = getKeyInfo(action, request, config);
-
             // args are: tableId, keyId, request, config
             constructorArgs =
               new Object[] { new Integer(kInfo.getTableId()),
                              kInfo.getKeyId(),
                              request,
                              config };
-
-            event = (DatabaseEvent)getEvent(einfo, keyInfoConstructorArgsTypes, constructorArgs);
+            event = getEvent(einfo, keyInfoConstructorArgsTypes, constructorArgs);
         }
-
         return event;
     }
 
@@ -116,24 +121,21 @@ public class DatabaseEventFactoryImpl extends DatabaseEventFactory
      * @param  config  the DbForms config object
      * @return  The updateEvent object
      */
-    public UpdateEvent createUpdateEvent(int                tableId,
+    public DatabaseEvent createUpdateEvent(int               tableId,
                                          String             keyId,
                                          HttpServletRequest request,
                                          DbFormsConfig      config)
     {
-        UpdateEvent event           = null;
+        DatabaseEvent event           = null;
         Object[]    constructorArgs = new Object[]
         {
             new Integer(tableId), keyId, request, config
         };
-
         Table       table       = config.getTable(tableId);
         TableEvents tableEvents = table.getTableEvents();
         String      eventId     = tableEvents.getEventId(EventType.EVENT_DATABASE_UPDATE);
         EventInfo   einfo       = getEventInfo(eventId);
-
-        event = (UpdateEvent)getEvent(einfo, keyInfoConstructorArgsTypes, constructorArgs);
-
+        event = (DatabaseEvent)getEvent(einfo, keyInfoConstructorArgsTypes, constructorArgs);
         return event;
     }
 
@@ -157,13 +159,11 @@ public class DatabaseEventFactoryImpl extends DatabaseEventFactory
     private boolean isKeyInfoEvent(String action)
     {
       boolean keyInfo = false;
-
       if ((action.startsWith("ac_updatear_")) ||
            action.startsWith("ac_deletear_"))
       {
           keyInfo = true;
       }
-
       //logCat.info("::isKeyInfoEvent - action [" + action + "] is related to a keyInfo event ? [" + keyInfo + "]");
       return keyInfo;
     }
@@ -188,20 +188,23 @@ public class DatabaseEventFactoryImpl extends DatabaseEventFactory
         {
             int    tableId = ParseUtil.getEmbeddedStringAsInteger(keyString, 0, '_');
             String keyId   = ParseUtil.getEmbeddedString(keyString, 1, '_');
-
             keyInfo = new KeyInfo();
             keyInfo.setTableId(tableId);
             keyInfo.setKeyId(keyId);
         }
-
-        // refactoring: MOVE THIS CODE INTO EventEngine class !!
-        //else
-        //{
-        //    logCat.info("EmptyEvent installed");
-        //    e = new EmptyEvent(action, request);
-        //    ((Vector) request.getAttribute("errors")).addElement(new WebEventException("Radio button '" + associatedRadioName + "' needs to be selected!"));
-        //}
-
         return keyInfo;
     }
+
+	/**
+	 *  Initialize the default events.
+	 *
+	 * @exception Exception if any error occurs
+	 */
+	protected void initializeEvents() throws Exception
+	{
+		addEventInfo(new EventInfo(EventType.EVENT_DATABASE_DELETE,  "org.dbforms.event.classic.DeleteEvent"));
+		addEventInfo(new EventInfo(EventType.EVENT_DATABASE_INSERT,  "org.dbforms.event.classic.InsertEvent"));
+		addEventInfo(new EventInfo(EventType.EVENT_DATABASE_UPDATE,  "org.dbforms.event.classic.UpdateEvent"));
+	}
+
 }

@@ -24,6 +24,7 @@
 package org.dbforms.util;
 
 import java.io.*;
+import java.util.*;
 import java.net.URLEncoder;
 
 import org.dbforms.DbFormsConfig;
@@ -47,8 +48,13 @@ public class Util
      */
     public final static boolean isNull(String s)
     {
-        return ((s == null) || (s.trim().length() == 0)) ? true : false;
+        return ((s == null) || (s.trim().length() == 0));
     }
+
+	public final static boolean isNull(ResultSetVector rsv)
+	{
+		return ((rsv == null) || (rsv.size() == 0));
+	}
 
 
     /**

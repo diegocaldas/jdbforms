@@ -59,6 +59,9 @@ public abstract class WebEvent
     /** table identifier that tells on which table does the event operate on */
     protected int tableId;
 
+	/** table  that tells on which table does the event operate on */
+	protected Table table;
+
     /** followUp URL string */
     protected String followUp;
 
@@ -68,6 +71,15 @@ public abstract class WebEvent
     /** event properties */
     protected Properties properties = null;
 
+	/** type of event */
+	private String type;
+
+	public WebEvent(int tableId, HttpServletRequest request, DbFormsConfig config) {
+		this.tableId = tableId;
+		this.table = config.getTable(tableId);
+		this.request = request;
+		this.config = config;
+	}
 
     /**
      *  Gets the config attribute of the WebEvent object
@@ -112,6 +124,17 @@ public abstract class WebEvent
         return request;
     }
 
+	/**
+	 *  sets the request attribute of the WebEvent object
+    *
+    *   @param  request The new request value
+	 *
+	 */
+	public void setRequest(HttpServletRequest request)
+	{
+		 this.request = request;
+	}
+
 
     /**
      *  Gets the tableId attribute of the WebEvent object
@@ -121,17 +144,6 @@ public abstract class WebEvent
     public int getTableId()
     {
         return tableId;
-    }
-
-
-    /**
-     *  Sets the config attribute of the WebEvent object
-     *
-     * @param  config The new config value
-     */
-    public void setConfig(DbFormsConfig config)
-    {
-        this.config = config;
     }
 
 
@@ -179,27 +191,6 @@ public abstract class WebEvent
     }
 
 
-    /**
-     *  Sets the request attribute of the WebEvent object
-     *
-     * @param  request The new request value
-     */
-    public void setRequest(HttpServletRequest request)
-    {
-        this.request = request;
-    }
-
-
-    /**
-     *  Sets the tableId attribute of the WebEvent object
-     *
-     * @param  tableId The new tableId value
-     */
-    public void setTableId(int tableId)
-    {
-        this.tableId = tableId;
-    }
-
 
     /**
      * Check if the current user has got the input privilege
@@ -212,4 +203,21 @@ public abstract class WebEvent
     {
         return config.getTable(tableId).hasUserPrivileg(request, privileg);
     }
+
+
+	/**
+	 * @return String
+	 */
+	public String getType() {
+		return type;
+	}
+
+	/**
+	 * Sets the type.
+	 * @param type The type to set
+	 */
+	public void setType(String type) {
+		this.type = type;
+	}
+
 }

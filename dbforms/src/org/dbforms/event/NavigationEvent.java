@@ -27,6 +27,7 @@ import java.sql.*;
 
 import org.dbforms.*;
 import org.dbforms.util.*;
+import javax.servlet.http.*;
 
 
 
@@ -37,8 +38,23 @@ import org.dbforms.util.*;
  */
 public abstract class NavigationEvent extends WebEvent
 {
-    /** the related Table object */
-    protected Table table;
+	/**
+	 *
+	 *   called by event engine
+	 * 
+	 */
+	public NavigationEvent(String action, HttpServletRequest request, DbFormsConfig config) {
+	   super(ParseUtil.getEmbeddedStringAsInteger(action, 2, '_'), request, config);
+	}
+
+	/**
+	 *
+	 *   called by DbFormsTag to create local web event
+	 * 
+	 */
+	public NavigationEvent(Table table, HttpServletRequest request, DbFormsConfig config) {
+		super(table.getId(), request, config);
+	}
 
 
     /**
@@ -61,6 +77,7 @@ public abstract class NavigationEvent extends WebEvent
                                                  int          count,
                                                  String       firstPost,
                                                  String       lastPos,
-                                                 Connection con)
+                                                 Connection con,
+                                                 String dbConnectionName)
       throws SQLException;
 }

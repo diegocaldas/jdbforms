@@ -101,7 +101,7 @@ public class DbBodyTag extends BodyTagSupport
         //
         ResultSetVector rsv = myParent.getResultSetVector();
 
-        if (!ResultSetVector.isEmptyOrNull(rsv))
+        if (!Util.isNull(rsv))
         {
             if (rsv.getPointer() < (rsv.size() - 1))
             {
@@ -151,7 +151,7 @@ public class DbBodyTag extends BodyTagSupport
         //}
         myParent.increaseCurrentCount();
 
-        if (!ResultSetVector.isEmptyOrNull(myParent.getResultSetVector()))
+        if (!Util.isNull(myParent.getResultSetVector()))
         {
             myParent.getResultSetVector().increasePointer();
         }

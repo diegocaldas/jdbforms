@@ -68,7 +68,7 @@ public class DbDateLabelTag extends DbLabelTag
         {
             Object fieldValue = NO_DATA;
 
-            if (!ResultSetVector.isEmptyOrNull(parentForm.getResultSetVector()))
+            if (!Util.isNull(parentForm.getResultSetVector()))
             {
                 Object[] currentRow = parentForm.getResultSetVector().getCurrentRowAsObjects();
 
