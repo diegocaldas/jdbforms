@@ -23,7 +23,7 @@
 
 package org.dbforms.event.datalist.dao;
 
-import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.xpath.XPathResult;
 import org.w3c.dom.xpath.XPathEvaluator;
@@ -35,46 +35,41 @@ import org.dbforms.dom.DOMFactory;
 import org.dbforms.util.TimeUtil;
 import org.dbforms.util.Util;
 
-
-
 /**
  * Delegates the whole xpath stuff to this class. Holds the result of an xpath
  * query. Do the mapping between java objects and fields.
  * 
  * @author hkk
  */
-public class XMLDataResult
-{
-   private XPathResult     data;
-   private XPathEvaluator  evaluator;
+public class XMLDataResult {
+   private XPathResult data;
+   private XPathEvaluator evaluator;
    private XPathNSResolver resolver;
    private boolean changed = false;
-   private Document doc;
+   private Element root;
+
    /**
     * Creates a new XMLDataResult object.
     * 
     * @param root xml dom object
     * @param qry xpath string to query
     */
-   public XMLDataResult(Document root, String qry)
-   {
-      this.doc = root;
+   public XMLDataResult(Element root, String qry) {
+      this.root = root;
       this.evaluator = DOMFactory.instance().newXPathEvaluator();
-      resolver  = evaluator.createNSResolver(root);
-      // Evaluate the xpath expression. 
-      data = (XPathResult) evaluator.evaluate(qry, doc, resolver, 
-                                              XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, 
-                                              null);
+      resolver = evaluator.createNSResolver(root);
+      // Evaluate the xpath expression.
+      data = (XPathResult) evaluator.evaluate(qry, this.root, resolver, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
    }
 
    public boolean hasChanged() {
       return changed;
    }
-   
-   public Document getDocument() {
-      return doc;
+
+   public Element getRoot() {
+      return root;
    }
-   
+
    /**
     * returns the result at index as dom node
     * 
@@ -82,11 +77,12 @@ public class XMLDataResult
     * 
     * @return the node at index
     */
-   public Node item(int index)
-   {
-      return data.snapshotItem(index);
+   public Node item(int index) {
+      Node res = null;
+      if (index < data.getSnapshotLength())
+         res = data.snapshotItem(index);
+      return res;
    }
-
 
    /**
     * sets the field value of a special node as string. node is decribed by
@@ -97,16 +93,14 @@ public class XMLDataResult
     * @param      objectType field type to return
     * @value       the value to set
     */
-   public void setItemValue(int i, String expression, int objectType, Object value)
-   {
+   public void setItemValue(int i, String expression, int objectType, Object value) {
 
    }
 
-   
    private String toString(Node element) {
       String result = null;
       if (element != null) {
-         if (element.getNodeType() == Node.TEXT_NODE) { 
+         if (element.getNodeType() == Node.TEXT_NODE) {
             result = element.getNodeValue();
          } else {
             for (Node tx = element.getFirstChild(); tx != null; tx = tx.getNextSibling()) {
@@ -129,61 +123,59 @@ public class XMLDataResult
     * 
     * @return value as Object of selected type
     */
-   public Object getItemValue(int i, String expression, int objectType)
-   {
+   public Object getItemValue(int i, String expression, int objectType) {
       Object result = null;
-      XPathResult data = (XPathResult) evaluator.evaluate(expression, item(i), 
-                                                           resolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+      try {
+         Node n = item(i);
+         if (n != null) {
+            XPathResult data = (XPathResult) evaluator.evaluate(expression, n, resolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
 
-    
-      if (data != null)
-      {
-         Node n = data.getSingleNodeValue();
-         if (n != null) 
-         {
-            switch (objectType)
-            {
-               case FieldTypes.CHAR:
-                  result = toString(n);
-                  break;
-   
-               case FieldTypes.FLOAT:
-               case FieldTypes.NUMERIC:
-                  result = new Double(toString(n));
-   
-                  break;
-   
-               case FieldTypes.INTEGER:
-                  result = new Integer(toString(n));
-   
-                  break;
-   
-               case FieldTypes.DATE:
-               case FieldTypes.TIMESTAMP:
-               case FieldTypes.TIME:
-                  result = TimeUtil.parseISO8601Date(toString(n));
-   
-                  break;
-   
-               default:
-                  result = toString(n);
-   
-                  break;
+            if (data != null) {
+               n = data.getSingleNodeValue();
+               if (n != null) {
+                  switch (objectType) {
+                     case FieldTypes.CHAR :
+                        result = toString(n);
+                        break;
+
+                     case FieldTypes.FLOAT :
+                     case FieldTypes.NUMERIC :
+                        result = new Double(toString(n));
+
+                        break;
+
+                     case FieldTypes.INTEGER :
+                        result = new Integer(toString(n));
+
+                        break;
+
+                     case FieldTypes.DATE :
+                     case FieldTypes.TIMESTAMP :
+                     case FieldTypes.TIME :
+                        result = TimeUtil.parseISO8601Date(toString(n));
+
+                        break;
+
+                     default :
+                        result = toString(n);
+
+                        break;
+                  }
+               }
             }
          }
+      } catch (Exception e) {
+         ;
       }
-
       return result;
    }
-
 
    /**
     * size of resultset
     * 
     * @return size of result set
     */
-   public int size()
-   {
+   public int size() {
       return data.getSnapshotLength();
    }
 }

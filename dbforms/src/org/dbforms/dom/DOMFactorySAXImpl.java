@@ -28,6 +28,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.FileInputStream;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import java.io.StringReader;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -204,9 +205,9 @@ public class DOMFactorySAXImpl extends DOMFactory
     * @param out OutputStream to write into
     * @param doc The Ddcument to write
     */
-   public void write(OutputStream out, Document doc)
+   public void write(OutputStream out, Element root)
    {
-      writer.writeNode(out, doc);
+      writer.writeNode(out, root);
    }
 
 

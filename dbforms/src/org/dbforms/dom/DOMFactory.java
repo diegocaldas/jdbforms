@@ -31,6 +31,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.xpath.XPathEvaluator;
 import org.apache.log4j.Category;
 import org.dbforms.util.Util;
@@ -57,7 +58,6 @@ public abstract class DOMFactory
    public static DOMFactory instance()
    {
       DOMFactory fact = (DOMFactory) singlePerThread.get();
-
       if (fact == null)
       {
          fact = new DOMFactorySAXImpl();
@@ -109,15 +109,24 @@ public abstract class DOMFactory
     */
    public abstract Document read(String url);
 
+	/**
+	 * Writes a DOMDocument into an OutputStream
+	 *
+	 * @param out OutputStream to write into
+	 * @param doc  doc to write
+	 */
+	public void write(OutputStream out, Document doc) throws IOException 
+	{
+		write(out, doc.getDocumentElement()); 
+	}
 
    /**
-    * Writes a DOMDocument into an OutputStream
+    * Writes a DOMElement into an OutputStream
     *
     * @param out OutputStream to write into
-    * @param doc The Ddcument to write
+    * @param root  root element to start writing
     */
-   public abstract void write(OutputStream out, Document doc) throws IOException;
-
+   public abstract void write(OutputStream out, Element root) throws IOException;
 
 	/**
 	 * Writes an DOMDocument into a file
@@ -125,9 +134,20 @@ public abstract class DOMFactory
 	 * @param url The url to write to
 	 * @param doc The document to write
 	 */
-	public final void write(String url, Document doc) throws IOException
+	public final void write(String url, Document doc) throws IOException 
 	{
-		if (!Util.isNull(url) && (doc != null))
+	   write(url, doc.getDocumentElement());
+	}
+
+	/**
+	 * Writes an DOMElement into a file
+	 *
+	 * @param url The url to write to
+	 * @param root  root element to start writing
+	 */
+	public final void write(String url, Element root) throws IOException
+	{
+		if (!Util.isNull(url) && (root != null))
 		{
 			OutputStream out = null;
 
@@ -157,7 +177,7 @@ public abstract class DOMFactory
 
 			if (out != null)
 			{
-				write(out, doc);
+				write(out, root);
 				out.close();
 			} else {
 			   throw new IOException("no target found to wich we can write");

@@ -35,6 +35,7 @@ import java.sql.SQLException;
 import java.sql.Connection;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import org.dbforms.dom.DOMFactory;
 import org.dbforms.config.Constants;
@@ -133,7 +134,9 @@ public class DataSourceXML extends DataSource {
       if (dataObject == null) {
          try {
             URI url = getURI();
-            data = new XMLDataResult(read(url), url.getQuery());
+			Document doc = read(url);
+			Element elem = doc.getDocumentElement();
+			data = new XMLDataResult(elem, url.getQuery());
          } catch (Exception e) {
             logCat.error(e);
             throw new SQLException(e.getMessage());
@@ -149,7 +152,7 @@ public class DataSourceXML extends DataSource {
    protected final void close() {
       if ((data != null) && data.hasChanged()) {
          try {
-            write(getURI(), data.getDocument());
+            write(getURI(), data.getRoot());
          } catch (Exception e) {
             logCat.error(e);
          }
@@ -258,8 +261,8 @@ public class DataSourceXML extends DataSource {
     * 
     * @throws Exception Exception during processing IO
     */
-   protected void write(URI url, Document doc) throws Exception {
-      DOMFactory.instance().write(url.getPath(), doc);
+   protected void write(URI url, Element root) throws Exception {
+      DOMFactory.instance().write(url.getPath(), root);
    }
 
    private String getSQLFilter() {
