@@ -30,7 +30,7 @@ package org.dbforms.util;
  * @author hkk
  *
  */
-import org.dbforms.util.external.*;
+import org.dbforms.util.external.PrintfFormat;
 
 
 

@@ -27,9 +27,18 @@ package org.dbforms.util;
  *
  *  @author  frederic
  */
-import java.text.*;
-import java.util.*;
-import org.apache.regexp.*;
+import java.text.SimpleDateFormat;
+
+import java.util.TimeZone;
+import java.util.Locale;
+import java.util.GregorianCalendar;
+import java.util.Date;
+import java.util.Calendar;
+
+import org.apache.regexp.RESyntaxException;
+import org.apache.regexp.RE;
+
+
 import org.apache.log4j.Category;
 
 

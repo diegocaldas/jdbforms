@@ -22,10 +22,7 @@
  */
 package org.dbforms.util;
 
-import java.io.*;
-import java.util.*;
-import java.sql.*;
-import javax.servlet.http.*;
+import java.util.Vector;
 import org.apache.log4j.Category;
 
 
@@ -159,7 +156,7 @@ public class XMLErrorsUtil
       }
 
       // Sort parameter list
-      Vector v     = org.dbforms.util.ParseUtil.splitString(paramList, ",");
+      Vector v     = ParseUtil.splitString(paramList, ",");
       int    count = 0;
 
       while (pos >= 0)

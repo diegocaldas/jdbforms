@@ -21,8 +21,16 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.util;
-import java.util.*;
-import java.sql.*;
+
+import java.util.Vector;
+import java.util.Hashtable;
+
+import java.sql.Types;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.Clob;
+
+
 
 import org.dbforms.config.Field;
 import org.apache.log4j.Category;
@@ -85,8 +93,11 @@ public class ResultSetVector {
             for (int i = 0; i < columns; i++) {
                if (rs.getMetaData().getColumnType(i + 1) == Types.CLOB) {
                   Clob tmpObj = (Clob) rs.getObject(i + 1);
-                  objectRow[i] =
-                     tmpObj.getSubString((long) 1, (int) tmpObj.length());
+                  if (tmpObj != null) 
+                  	objectRow[i] =
+                    	 tmpObj.getSubString((long) 1, (int) tmpObj.length());
+                  else
+						objectRow[i] = null;
                } else {
                   Object tmpObj = rs.getObject(i + 1);
                   objectRow[i] = tmpObj;

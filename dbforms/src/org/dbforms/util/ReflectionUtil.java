@@ -21,8 +21,19 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.util;
-import java.lang.reflect.*;
-import java.io.*;
+
+import java.lang.reflect.Modifier;
+import java.lang.reflect.Method;
+import java.lang.reflect.Field;
+import java.lang.reflect.Constructor;
+
+import java.io.Writer;
+import java.io.StringWriter;
+import java.io.PrintWriter;
+import java.io.OutputStreamWriter;
+import java.io.OutputStream;
+import java.io.BufferedWriter;
+
 import org.apache.log4j.Category;
 
 

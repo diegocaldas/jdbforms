@@ -21,9 +21,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.util;
-import java.util.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
+import java.util.Hashtable;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletConfig;
 import org.apache.log4j.Category;
 import org.dbforms.config.error.Error;
 
