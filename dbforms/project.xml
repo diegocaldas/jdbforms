@@ -9,9 +9,6 @@
     <name>DbForms</name>
     <url>http://jdbforms.sourceforge.net</url>
     <logo>http://jdbforms.sourceforge.net/img/logo.gif</logo>
-    <!-- 
-      <logo>http://www.dbforms.org/img/logo.gif</logo> 
-    -->
   </organization>
   <inceptionYear>2002</inceptionYear>
   <package>org.dbforms</package>
@@ -106,7 +103,7 @@
       <name>Luca Fossato</name>
       <id>foxat</id>
       <email>fossato@pow2.com</email>
-      <organization><a href="http://www.pow2.com" target="_new">Power Of Two S.r.l.</a></organization>
+      <organization>Power Of Two S.r.l.</organization>
       <roles>
         <role>Java Developer</role>
       </roles>
@@ -188,7 +185,7 @@
        <email>husted@netscape.com</email>
        <organization/>
        <roles>
-         <role></role>
+         <role>JavaScript Calendar contribution</role>
        </roles>
      </contributor>
 
