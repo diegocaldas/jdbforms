@@ -46,10 +46,35 @@ public class DbGetConnection extends BodyTagSupport {
 
 	private String id;
 	private Connection con;
-
+	
+        // Bradley's multiple connection stuff [fossato <fossato@pow2.com> [20021105]
+        private String dbConnectionName;
+	private DbFormsConfig config;
+        // Bradley's multiple connection stuff end
+        
 	public int doStartTag() throws JspException {
 
 		try {
+                        // ---- Bradley's multiple connection [fossato <fossato@pow2.com> [20021105] ----
+                  	DbConnection aDbConnection = config.getDbConnection(dbConnectionName);
+
+			if (aDbConnection == null) {
+			    throw new IllegalArgumentException(
+				"Troubles in your DbForms config xml file: "
+				+ "DbConnection '" + dbConnectionName + "' "
+				+ "not properly included - check manual!");
+			}
+
+			con = aDbConnection.getConnection();
+			logCat.debug("Created new connection - " + con);
+
+			if (con == null) {
+			    throw new IllegalArgumentException(
+				"JDBC-Troubles: was not able to create "
+				+ "connection, using the following DbConnection "
+				+ "- " + aDbConnection);
+			}
+                        // ---- Bradley's multiple connection stuff end ---------------------------------
 
 			// Place connection in attribute
 			pageContext.setAttribute(this.getId(), con, PageContext.PAGE_SCOPE);
@@ -86,7 +111,18 @@ public class DbGetConnection extends BodyTagSupport {
 		this.id = id;
 	}
 
-	public void release() {
+        // ---- Bradley's multiple connection stuff [fossato <fossato@pow2.com> [20021105] ---- 
+	public void setDbConnectionName(String name) {
+		dbConnectionName = name;
+	}
+
+	public String getDbConnectionName() {
+		return dbConnectionName;
+	}
+        // ---- Bradley's multiple connection stuff end ---------------------------------------
+        
+        
+        public void release() {
 		super.release();
 
 		// The connection should not be null - If it is, then you might have an infrastructure problem!
@@ -105,25 +141,28 @@ public class DbGetConnection extends BodyTagSupport {
 
 	public void setPageContext(PageContext pc) {
 		super.setPageContext(pc);
-		DbFormsConfig config =
+		//DbFormsConfig config =
+                config = 
 			(DbFormsConfig) pageContext.getServletContext().getAttribute(
 				DbFormsConfig.CONFIG);
 
 		if (config == null)
 			throw new IllegalArgumentException("Troubles with DbForms config xml file: can not find CONFIG object in application context! check system configuration! check if application crashes on start-up!");
 
-		DbConnection aDbConnection = config.getDbConnection();
-
-		if (aDbConnection == null)
-			throw new IllegalArgumentException("Troubles in your DbForms config xml file: DbConnection not properly included - check manual!");
-
-		con = aDbConnection.getConnection();
-		logCat.debug("Created new connection - " + con);
-
-		if (con == null)
-			throw new IllegalArgumentException(
-				"JDBC-Troubles: was not able to create connection, using the following DbConnection:"
-					+ aDbConnection.toString());
+                // Bradley's multiple connection stuff [fossato <fossato@pow2.com> [20021105] ---- 
+                // comment this code
+//		DbConnection aDbConnection = config.getDbConnection();
+//
+//		if (aDbConnection == null)
+//			throw new IllegalArgumentException("Troubles in your DbForms config xml file: DbConnection not properly included - check manual!");
+//
+//		con = aDbConnection.getConnection();
+//		logCat.debug("Created new connection - " + con);
+//
+//		if (con == null)
+//			throw new IllegalArgumentException(
+//				"JDBC-Troubles: was not able to create connection, using the following DbConnection:"
+//					+ aDbConnection.toString());
 	}
 
 }

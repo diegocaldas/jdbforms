@@ -57,6 +57,18 @@ public class DbBlobContentTag extends BodyTagSupport {
 	protected Field field;
 
 	protected DbFormTag parentForm;
+        
+        // ---- Bradley's multiple connection support [fossato <fossato@pow2.com> 2002/11/05] ----
+        protected String dbConnectionName;
+
+	public void setDbConnectionName(String name) {
+		dbConnectionName = name;
+	}
+
+	public String getDbConnectionName() {
+		return dbConnectionName;
+	}
+        // ---- Bradley's multiple connection support end ----------------------------------------
 
 	public void setFieldName(String fieldName) {
 		this.fieldName = fieldName;
@@ -115,9 +127,22 @@ public class DbBlobContentTag extends BodyTagSupport {
 
 			StringBuffer contentBuf = new StringBuffer();
 
-			Connection con = config.getDbConnection().getConnection();
-			logCat.debug("Created new connection - " + con);
+			//Connection con = config.getDbConnection().getConnection();
+                        // ---- Bradley's multiple connection support [fossato <fossato@pow2.com> 2002/11/05] ----
+                        DbConnection aDbConnection = config.getDbConnection(dbConnectionName);
 
+			if (aDbConnection == null) 
+                        {
+			    throw new IllegalArgumentException(
+				"Troubles in your DbForms config xml file: "
+				+ "DbConnection '" + dbConnectionName + "' "
+				+ "not properly configured - check manual!");
+			}
+
+			Connection con = aDbConnection.getConnection();
+			logCat.debug("Created new connection - " + con);
+                        // ----  Bradley's multiple connection support end ---------------------------------------
+                        
 			try {
 
 				PreparedStatement ps = con.prepareStatement(queryBuf.toString());

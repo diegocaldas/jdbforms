@@ -117,6 +117,9 @@ public class Controller extends HttpServlet {
 		// this is also true for jsp files written by the user
 		// #fixme taglib needed for convenient access to ParseUtil wrapper methods
 
+                // Bradley's multiple connection support [fossato <fossato@pow2.com> 2002/11/04]:
+                // the connections HashTable;
+                Hashtable connections = new Hashtable();
 		String contentType = request.getContentType();
 		String formValidatorName = request.getParameter(ValidatorConstants.FORM_VALIDATOR_NAME);
 
@@ -140,8 +143,14 @@ public class Controller extends HttpServlet {
 			}
 		}
 
-		Connection con = config.getDbConnection().getConnection();
-		logCat.debug("Created new connection - " + con);
+                // Bradley's multiple connection support [fossato <fossato@pow2.com> 2002/11/04]:
+                // moved the connection "initialization" into the try - catch block;
+                //
+                // previous code was:
+		// Connection con = config.getDbConnection().getConnection();
+		// logCat.debug("Created new connection - " + con);
+                
+                Connection con = null;
 
 		try {
 
@@ -150,6 +159,26 @@ public class Controller extends HttpServlet {
 
 			EventEngine engine = new EventEngine(request, config);
 			WebEvent e = engine.generatePrimaryEvent();
+                        
+                        // ---- Bradley's multiple connection support [fossato <fossato@pow2.com> 2002/11/04] ------------------------
+			
+                        String dbConnectionName = request.getParameter("invname_" + e.getTableId());
+			DbConnection aDbConnection = config.getDbConnection(dbConnectionName);
+                        
+                        if (aDbConnection == null) 
+                          throw new IllegalArgumentException("No dbconnection configured with name '" + dbConnectionName + "'.");
+			
+                        con = aDbConnection.getConnection();
+                        
+                        if (dbConnectionName == null) 
+                          dbConnectionName = "default";
+                        
+                        logCat.debug("Adding Connection '" + dbConnectionName + "' to connection cache.");
+                        connections.put(dbConnectionName, con);
+			logCat.debug("Created new connection - " + con);
+                        
+                        // ---- Bradley's multiple connection support end -------------------------------------------------------------
+
 
 			// primary event can be any kind of event (database, navigation...)
 
@@ -199,6 +228,28 @@ public class Controller extends HttpServlet {
 					while (eventEnum.hasMoreElements()) {
 						DatabaseEvent dbE = (DatabaseEvent) eventEnum.nextElement();
 	
+                                                // ---- Bradley's multiple connection support [fossato <fossato@pow2.com> 2002/11/04] ------------------------
+                                                
+                                                dbConnectionName = request.getParameter("invname_" + dbE.getTableId());
+                                                aDbConnection = config.getDbConnection(dbConnectionName);
+
+                                                if (aDbConnection == null)
+                        			  throw new IllegalArgumentException("No dbconnection configured with name '" + dbConnectionName + "'.");
+                                               
+                                                if (dbConnectionName == null)
+                                                  dbConnectionName = "default";
+                                                
+                                                if (connections.get(dbConnectionName) == null) 
+                                                {
+                                                    con = aDbConnection.getConnection();
+                                                    connections.put(dbConnectionName, con);
+                                                } 
+                                                else 
+                                                  con = (Connection) connections.get(dbConnectionName);
+                                                 
+                                                // ---- Bradley's multiple connection support end ---------------------------------- ------------------------
+                                                
+                                                
 						try {
 							// if hidden formValidatorName exist and it's an Update or Insert event, 
 							// doValidation with Commons-Validator
@@ -240,19 +291,34 @@ public class Controller extends HttpServlet {
 		} finally {
 			// The connection should not be null - If it is, then you might have an infrastructure problem!
 			// Be sure to look into this!  Hint: check out your pool manager's performance! 
+                        
+                  
+                        // ---- Bradley's multiple connection support [fossato <fossato@pow2.com> 2002/11/04] start -------------------
+                        //
+                        // must close all the connections stored into the the connections HashTable;
+                        Enumeration cons = connections.keys();
+                        while (cons.hasMoreElements()) 
+                        {
+                          String dbConnectionName = (String) cons.nextElement();
+                          con = (Connection) connections.get(dbConnectionName);
 
-			if (con != null) {
-
-				try {
-					logCat.debug("About to close connection - " + con);
-					con.close();
-					logCat.debug("Connection closed");
-				} catch (SQLException sqle3) {
-					sqle3.printStackTrace();
-				}
-			}
+                          if (con != null) 
+                          {
+                            try 
+                            {
+                              logCat.debug("About to close connection - " + con);
+                              con.close();
+                              logCat.debug("Connection closed");
+                            } 
+                            catch (SQLException sqle3) 
+                            {
+                              sqle3.printStackTrace();
+                            }
+                          }
+                        }
+                    
+                      // ---- Bradley's multiple connection support end --------------------------------------------------------------
 		}
-
 	}
 
 	private void sendErrorMessage(

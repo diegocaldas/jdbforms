@@ -105,6 +105,7 @@ public class DbFormTag extends BodyTagSupport {
 
 	private String localWebEvent;
 
+        private String dbConnectionName;   // Bradley's multiple connection stuff [fossato <fossato@pow2.com> 20021105]
 	private Connection con;
 
 	private StringBuffer childElementOutput; // #fixme: description
@@ -290,6 +291,17 @@ public class DbFormTag extends BodyTagSupport {
 			return isMultipart;
 		}*/
 
+        // Bradley's multiple connection stuff [fossato <fossato@pow2.com> 20021105]
+        public void setDbConnectionName(String dbConnectionName) {
+		this.dbConnectionName = dbConnectionName;
+	}
+
+        // Bradley's multiple connection stuff [fossato <fossato@pow2.com> 20021105]
+	public String getDbConnectionName() {
+		return dbConnectionName;
+	}
+        
+        
 	public void setConnection(Connection con) {
 		this.con = con;
 	}
@@ -422,16 +434,19 @@ public class DbFormTag extends BodyTagSupport {
 				DbFormsConfig.CONFIG);
 		if (config == null)
 			throw new IllegalArgumentException("Troubles with DbForms config xml file: can not find CONFIG object in application context! check system configuration! check if application crashes on start-up!");
-		DbConnection aDbConnection = config.getDbConnection();
-		if (aDbConnection == null)
-			throw new IllegalArgumentException("Troubles in your DbForms config xml file: DbConnection not properly included - check manual!");
-		con = aDbConnection.getConnection();
-		logCat.debug("Created new connection - " + con);
 
-		if (con == null)
-			throw new IllegalArgumentException(
-				"JDBC-Troubles: was not able to create connection, using the following DbConnection:"
-					+ aDbConnection.toString());
+
+                // Bradley's version doesn't have this code... [fossato <fossato@pow2.com> 20021105]
+//                DbConnection aDbConnection = config.getDbConnection();
+//		if (aDbConnection == null)
+//			throw new IllegalArgumentException("Troubles in your DbForms config xml file: DbConnection not properly included - check manual!");
+//		con = aDbConnection.getConnection();
+//		logCat.debug("Created new connection - " + con);
+//
+//		if (con == null)
+//			throw new IllegalArgumentException(
+//				"JDBC-Troubles: was not able to create connection, using the following DbConnection:"
+//					+ aDbConnection.toString());
 	}
 
 	/***************************************************
@@ -470,6 +485,27 @@ public class DbFormTag extends BodyTagSupport {
 	public int doStartTag() {
 
 		try {
+                        // ---- Bradley's multiple connection stuff [fossato <fossato@pow2.com> [20021105] ----
+                  	DbConnection aDbConnection 
+				= config.getDbConnection(dbConnectionName);
+
+			if (aDbConnection == null) {
+				throw new IllegalArgumentException(
+				    "DbConnection named '" + dbConnectionName
+				    + "' is not configured properly.");
+			}
+
+			con = aDbConnection.getConnection();
+			logCat.debug("Created new connection - " + con);
+
+			if (con == null) {
+				throw new IllegalArgumentException(
+				    "JDBC-Troubles:  was not able to create "
+				    + "connection, using the following "
+				    + "dbconnection - " + aDbConnection);
+			}
+                        // ---- Bradley's multiple connection stuff end ---------------------------------------
+
 
 			// *************************************************************
 			//  Part I - checking user access right, processing interceptor
@@ -608,6 +644,15 @@ public class DbFormTag extends BodyTagSupport {
 			} // write out involved table
 			tagBuf.append(
 				"<input type=\"hidden\" name=\"invtable\" value=\"" + tableId + "\">");
+                        
+                        // ---- Bradley's multiple connection stuff [fossato <fossato@pow2.com> 20021105] ----
+                        // write out the name of the involved dbconnection.
+			tagBuf.append(
+				"<input type='hidden' name='invname_"
+				+ tableId + "' value='" + dbConnectionName 
+				+ "'>");
+                        // ---- Bradley's multiple connection stuff end ---------------------------------------
+                        
 			// write out the autoupdate-policy of this form
 			tagBuf.append(
 				"<input type=\"hidden\" name=\"autoupdate_"

@@ -24,6 +24,7 @@
 package org.dbforms.taglib;
 
 import org.dbforms.*;
+import org.dbforms.util.DbConnection;
 import java.io.*;
 import java.util.*;
 import java.sql.*;
@@ -41,7 +42,8 @@ public abstract class EmbeddedData extends TagSupport {
 	
 	protected Hashtable data;
 	protected String name;
-	
+	protected String dbConnectionName;   // Bradley's multiple connection [fossato <fossato@pow2.com> [20021105]
+                
 	/*
 	*(1)add the following to be able to specify a format when concatenating several display fields 
 	*/
@@ -105,8 +107,22 @@ public abstract class EmbeddedData extends TagSupport {
 				(DbFormsConfig) pageContext.getServletContext().getAttribute(
 					DbFormsConfig.CONFIG);
 
-			Connection con = config.getDbConnection().getConnection();
-			logCat.debug("Created new connection - " + con);
+			//Connection con = config.getDbConnection().getConnection();
+			
+                        // ---- Bradley's multiple connection stuff [fossato <fossato@pow2.com> [20021105] ----
+                        DbConnection aDbConnection = config.getDbConnection(dbConnectionName);
+
+			if (aDbConnection == null) {
+			    throw new IllegalArgumentException(
+				"Troubles in your DbForms config xml file: "
+				+ "DbConnection '" + dbConnectionName + "' "
+				+ "not properly included - check manual!");
+			}
+
+			Connection con = aDbConnection.getConnection();
+                        // ---- Bradley's multiple connection stuff end ---------------------------------------
+                        
+                        logCat.debug("Created new connection - " + con);
 			if (con == null) {
 				throw new JspException("EmbeddedData has got no database connection!");
 			}
@@ -169,7 +185,19 @@ public abstract class EmbeddedData extends TagSupport {
 		this.name = name;
 	}
 
-	protected String disableCache = "false";
+
+        // ---- Bradley's multiple connection stuff [fossato <fossato@pow2.com> [20021105] ----
+        public void setDbConnectionName(String name) {
+		dbConnectionName = name;
+	}
+
+	public String getDbConnectionName() {
+		return dbConnectionName;
+	}
+        // ---- Bradley's multiple connection stuff end ---------------------------------------
+        
+        
+        protected String disableCache = "false";
 
 	/**
 	 * Insert the method's description here.
