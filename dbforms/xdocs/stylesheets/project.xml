@@ -22,7 +22,7 @@
       <!--
         <item name="Contributions"           href="/contributed.html"/>
       -->
-        <item name="Powered by"              href="/poweredby.html"/>
+        <item name="Powered by &amp; screenshots"  href="/poweredby.html"/>
       <item name="SourceForge's Summary Page"  href="http://sourceforge.net/projects/jdbforms"/>
     </menu>
 
