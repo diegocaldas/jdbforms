@@ -1,3 +1,13 @@
+2003-08-06
+(Henner.Kollmann@gmx.de)
+   - new fields holding the old values are generated with an prefixed o. So it's possible to compare
+     changes of form field values.
+   - update will only lead to sql update if values in the row are changed.
+   - new message resources in the org.dbforms.resources path
+   - New class to handle internal messages
+   - Internal generated error messages while getting privileges errors are generated from the resources
+   - new weekly build on the web page 
+
 2003-07-29
 (Henner.Kollmann@gmx.de)
    - integrated junit tesing for the client side. Now we can test the results of dbforms.
