@@ -60,7 +60,7 @@ public class FileHolder implements Serializable
      * - inputstream, coming from servletinputstream - we must read it out _now_
      * - toMemory: true->write it to memory (implemented), false->write it to tempfile (not implemented yet)
      */
-    FileHolder(String fileName, String contentType, InputStream is, boolean toMemory, int maxSize) throws IOException
+    public FileHolder(String fileName, String contentType, InputStream is, boolean toMemory, int maxSize) throws IOException
     {
         this.toMemory = toMemory;
         this.fileName = fileName;
@@ -94,7 +94,7 @@ public class FileHolder implements Serializable
 
 
     /**
-     * DOCUMENT ME!
+     * Set the name of the file.
      *
      * @param fileName DOCUMENT ME!
      */
@@ -167,23 +167,21 @@ public class FileHolder implements Serializable
 
 
     /**
-     * DOCUMENT ME!
+     * Writes out the the file in memory to disk.
      *
-     * @param fileOrDirectory DOCUMENT ME!
+     * @param fileOrDirectory The file, or directory to write the file to.  If it is a directory, you must provide a file already.
      *
-     * @return DOCUMENT ME!
-     *
-     * @throws IOException DOCUMENT ME!
-     * @throws IllegalArgumentException DOCUMENT ME!
+     * @throws IOException Thrown if there are rpoblems writing the file.
+     * @throws IllegalArgumentException Throw in you attempt to load a file to disk, not to memory.
      */
-    public long writeBufferToFile(File fileOrDirectory) throws IOException
+    public void writeBufferToFile(File fileOrDirectory) throws IOException
     {
         if (!toMemory)
         {
             throw new IllegalArgumentException("tmpFile-feature not implemented yet");
         }
 
-        long written = 0;
+
 
         OutputStream fileOut = null;
 
@@ -220,6 +218,6 @@ public class FileHolder implements Serializable
             }
         }
 
-        return written;
+
     }
 }
