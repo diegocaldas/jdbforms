@@ -7,13 +7,12 @@
 	<xs:element name="dbforms-config">
 		<xs:complexType>
 			<xs:all>
-		
 				<xs:element name="date-format" type="xs:string" minOccurs="0" maxOccurs="1"/>
-			
 				<xs:element name="table" minOccurs="1" maxOccurs="unbounded">
 					<xs:complexType>
 						<xs:all>
 							<xs:element name="field" type="xs:string" minOccurs="1" maxOccurs="unbounded">
+								<xs:complexType>
 								<xs:attribute name="name" type="xs:string" use="required"/>
 								<xs:attribute name="fieldType" type="xs:string" use="required"/>
 								<xs:attribute name="size" type="xs:string" use="optional"/>
@@ -21,14 +20,17 @@
 								<xs:attribute name="sortable" type="xs:string" use="optional"/>
 								<xs:attribute name="autoInc" type="xs:string" use="optional"/>
 								<xs:attribute name="directory" type="xs:string" use="optional"/>
+								</xs:complexType>
 							</xs:element>
 			
 							<xs:element name="foreign-key" type="xs:string" minOccurs="0" maxOccurs="unbounded">
 								<xs:complexType>
 									<xs:all>
 										<xs:element name="reference" type="xs:string" minOccurs="1" maxOccurs="unbounded">
+											<xs:complexType>
 											<xs:attribute name="local" type="xs:string" use="required"/>
 											<xs:attribute name="foreign" type="xs:string" use="required"/>
+											</xs:complexType>
 										</xs:element>
 									</xs:all>
 									<xs:attribute name="foreignTable" type="xs:string" use="required"/>
@@ -43,8 +45,10 @@
 											<xs:complexType>
 												<xs:all>
 													<xs:element name="param" type="xs:string" minOccurs="0" maxOccurs="unbounded">
-														<xs:attribute name="name" type="xs:string" use="required"/>
-														<xs:attribute name="value" type="xs:string" use="required"/>
+														<xs:complexType>
+															<xs:attribute name="name" type="xs:string" use="required"/>
+															<xs:attribute name="value" type="xs:string" use="required"/>
+														</xs:complexType>
 													</xs:element>
 												</xs:all>
 												<xs:attribute name="type" type="xs:string" use="required"/>
@@ -56,20 +60,22 @@
 							</xs:element>
 			
 							<xs:element name="interceptor" type="xs:string" minOccurs="0" maxOccurs="unbounded">
-								<xs:attribute name="className" type="xs:string" use="required"/>
+								<xs:complexType>
+ 									<xs:attribute name="className" type="xs:string" use="required"/>
+								</xs:complexType>
 							</xs:element>
 			
 							<xs:element name="granted-privileges" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
 								<xs:attribute name="select" type="xs:string" use="optional"/>
 								<xs:attribute name="insert" type="xs:string" use="optional"/>
 								<xs:attribute name="update" type="xs:string" use="optional"/>
 								<xs:attribute name="delete" type="xs:string" use="optional"/>
+								</xs:complexType>
 							</xs:element>
-			
 						</xs:all>
 						<xs:attribute name="name" 	 type="xs:string" use="required"/>
 						<xs:attribute name="orderBy" type="xs:string" use="optional"/>
-			
 					</xs:complexType>
 				</xs:element>
 				<!--END "table" -->
@@ -78,28 +84,36 @@
 					<xs:complexType>
 						<xs:all>
 							<xs:element name="field" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
 								<xs:attribute name="name" type="xs:string" use="optional"/>
 								<xs:attribute name="fieldType" type="xs:string" use="optional"/>
 								<xs:attribute name="autoInc" type="xs:string" use="optional"/>
 								<xs:attribute name="sortable" type="xs:string" use="optional"/>
 								<xs:attribute name="expression" type="xs:string" use="optional"/>
+								</xs:complexType>
 							</xs:element>
 			
 							<xs:element name="search" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
 								<xs:attribute name="name" type="xs:string" use="optional"/>
 								<xs:attribute name="type" type="xs:string" use="optional"/>
 								<xs:attribute name="expression" type="xs:string" use="optional"/>
+								</xs:complexType>
 							</xs:element>
 			
 							<xs:element name="interceptor" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
 								<xs:attribute name="className" type="xs:string" use="required"/>
+								</xs:complexType>
 							</xs:element>
 			
 							<xs:element name="granted-privileges" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
 								<xs:attribute name="select" type="xs:string" use="optional"/>
 								<xs:attribute name="insert" type="xs:string" use="optional"/>
 								<xs:attribute name="update" type="xs:string" use="optional"/>
 								<xs:attribute name="delete" type="xs:string" use="optional"/>
+								</xs:complexType>
 							</xs:element>
 						</xs:all>
 						<xs:attribute name="name" type="xs:string" use="required"/>
@@ -119,8 +133,10 @@
 								<xs:complexType>
 									<xs:all>
 										<xs:element name="database-event" type="xs:string" minOccurs="1" maxOccurs="unbounded">
+											<xs:complexType>
 											<xs:attribute name="type" type="xs:string" use="required"/>
 											<xs:attribute name="className" type="xs:string" use="requird"/>
+											</xs:complexType>
 										</xs:element>
 									</xs:all>
 								</xs:complexType>
@@ -129,9 +145,11 @@
 							<xs:element name="navigation-events" type="xs:string" minOccurs="1" maxOccurs="unbounded">
 								<xs:complexType>
 									<xs:all>
-										<xs:element name="navigation-event" type="xs:string" minOccurs="1" maxOccurs="unbounded"/>
-											<xs:attribute name="type" type="xs:string" use="required"/>
-											<xs:attribute name="className" type="xs:string" use="requird"/>
+										<xs:element name="navigation-event" type="xs:string" minOccurs="1" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:attribute name="type" type="xs:string" use="required"/>
+												<xs:attribute name="className" type="xs:string" use="requird"/>
+											</xs:complexType>
 										</xs:element>
 									</xs:all>
 								</xs:complexType>
@@ -145,14 +163,18 @@
 				    <xs:complexType>
 				    	<xs:all>
 							<xs:element name="property" type="xs:string" minOccurs="0" maxOccurs="unbounded">
-								<xs:attribute name="name" type="xs:string" use="required"/>
-								<xs:attribute name="value" type="xs:string" use="required"/>
+								<xs:complexType>
+									<xs:attribute name="name" type="xs:string" use="required"/>
+									<xs:attribute name="value" type="xs:string" use="required"/>
+								</xs:complexType>
 							</xs:element>
 							<xs:element name="pool-property" type="xs:string" minOccurs="0" maxOccurs="unbounded">
-								<xs:attribute name="name" type="xs:string" use="required"/>
-								<xs:attribute name="value" type="xs:string" use="required"/>
-							</xs:element>
-						</xs:all>
+								<xs:complexType>
+									<xs:attribute name="name" type="xs:string" use="required"/>
+									<xs:attribute name="value" type="xs:string" use="required"/>
+							</xs:complexType>
+						</xs:element>
+					</xs:all>
 						<xs:attribute name="id" type="xs:string" use="optional"/>
 						<xs:attribute name="name" type="xs:string" use="required"/>
 						<xs:attribute name="type" type="xs:string" use="optional"/>
