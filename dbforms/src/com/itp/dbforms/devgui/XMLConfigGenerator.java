@@ -109,7 +109,7 @@ public class XMLConfigGenerator {
 			  result.append("\t\t<field name=\"");
 			  result.append(columnName);
 			  result.append("\" fieldType=\"");
-			  result.append(typeName);
+			  result.append(typeName.toLowerCase());
 			  result.append("\" size=\"");
 			  result.append(columnSize);
 			  result.append("\"");
