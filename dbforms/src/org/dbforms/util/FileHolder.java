@@ -147,6 +147,7 @@ public class FileHolder {
     */
    public InputStream getInputStreamFromBuffer() {
       if (toMemory) {
+				 if(memoryBuffer==null) return null;
          return new ByteArrayInputStream(memoryBuffer);
       } else {
          throw new IllegalArgumentException("tmpFile-feature not implemented yet");
