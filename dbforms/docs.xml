@@ -147,12 +147,10 @@
 
     <delete file = "${taglibdoc.dir}/DbFormsTags.html"/>
     <echo message="style 1"/>
-    <style 
-           style = "${etc.dir}/tldoc2html.xsl" 
+    <style style = "${etc.dir}/tldoc2html.xsl" 
            in    = "${etc.dir}/taglib_docu.xml" 
-           out   = "${taglibdoc.dir}/DbFormsTags.html"
-     >
-     </style>
+           out   = "${taglibdoc.dir}/DbFormsTags.html">
+    </style>
 
     <delete file="${taglibdoc.dir}/DbFormsTags_TocSem.html"/>
     <echo message="style 2"/>
@@ -194,7 +192,7 @@
     <!--Generate PDF reference documentation from taglib-docu.xml (FOP_HOME must be set)" -->
     <echo message="begin xsl translation to generate xsl-fo   "/>
     <style style = "${etc.dir}/tldoc2xsl-fo.xsl" 
-       in    = "${etc.dir}/taglib_docu.xml" 
+           in    = "${etc.dir}/taglib_docu.xml" 
            out   = "${etc.dir}/DbFormsTags.xsl-fo"/>
     <echo message="end of xsl translation "/>
     <echo message="starting generation of ${doc.dir}/taglib/DbFormsTags.pdf using Apache FOP (FOP_HOME must be set)"/>
@@ -282,8 +280,12 @@
      -  to build the docbooki user's guide (excepts for the ones 
      -  listed into the 'excludes' attribute of the syle element).
      -
-     -  The resulting pretty printed exml files are saved into the
+     -  The resulting pretty printed xml files are saved into the
      -  the user's guide build directory.
+     -
+     -  WARNING: you could loose the layout of the text 
+     -           enclosed into <screen> docbook elements.
+     -           Use at your own risk ;^)
      -->
   <target name="docbook_pretty-printing">
 
@@ -322,7 +324,7 @@
       <fileset dir="${cvs.workingdir}/xdocs/stylesheets" includes="*.css"/>
     </copy>
     <copy todir="${out.dir}/html/images/figures">
-      <fileset dir="${in.dir}/images/figures" includes="*.png"/>
+      <fileset dir="${in.dir}/images/figures" includes="**/*.png"/>
     </copy>
   </target>
 
