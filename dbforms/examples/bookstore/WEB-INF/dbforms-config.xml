@@ -57,7 +57,7 @@
 	    <table 
 	    	name="XMLBOOKS"
 		   dataAccessClass="org.dbforms.event.datalist.dao.DataSourceXML" 
-		   alias="file:///$(SERVLETCONTEXT_REALPATH)/WEB-INF/db_xml/books.xml?/books/book"
+		   readAlias="file:///$(SERVLETCONTEXT_REALPATH)/WEB-INF/db_xml/books.xml?/books/book"
 	    >	
 	        <field name="BOOK_ID" 
 	        	fieldType="int" 
@@ -150,5 +150,4 @@
 				password  = ""
 	    /> 
 
-	<date-format>dd.MM.yyyy</date-format>
 </dbforms-config>
