@@ -70,6 +70,26 @@ public class SqlUtil {
 			}
 		return result;
 	}
+          //2002/10/01-HKK: Do the same for timestamp!
+        private static java.sql.Timestamp createAppropriateTimeStamp(Object value) {
+
+            if (value == null)
+                    return null;
+            String valueStr = ((String) value).trim();
+            if (valueStr.length() == 0)
+                    return null;
+            SimpleDateFormat sdf = DbFormsConfig.getDateFormatter();
+            Timestamp result = null;
+            try {
+                    result = new java.sql.Timestamp(sdf.parse(valueStr).getTime());
+            } catch (Exception exc) {
+                    result = null;
+            }
+            if (result == null)
+                    // Maybe date has been returned as a timestamp?
+                result = java.sql.Timestamp.valueOf(valueStr);
+            return result;
+	}
 
 	private static java.math.BigDecimal createAppropriateNumeric(Object value) {
 
@@ -107,7 +127,6 @@ public class SqlUtil {
 				value = val;
 
 			if (value != null) {
-
 				switch (fieldType) {
 					case FieldTypes.INTEGER :
 						ps.setInt(col, Integer.parseInt((String) value));
@@ -120,9 +139,9 @@ public class SqlUtil {
 						break;
 					case FieldTypes.DATE :
 						ps.setDate(col, createAppropriateDate(value));
-						break; //#checkme
+						break; //2002/10/01-HKK: Do the same for timestamp!
 					case FieldTypes.TIMESTAMP :
-						ps.setTimestamp(col, java.sql.Timestamp.valueOf((String) value));
+						ps.setTimestamp(col,  createAppropriateTimeStamp(value));
 						break;
 					case FieldTypes.DOUBLE :
 						ps.setDouble(col, Double.valueOf((String) value).doubleValue());
