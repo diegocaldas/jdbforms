@@ -82,6 +82,17 @@ public class TimeUtil
       return seconds2String(seconds.intValue());
    }
 
+	/**
+	 * Reformats seconds to time string with format: dd:hh:mm:ss
+	 * 
+	 * @param seconds
+	 * 
+	 * @return String
+	 */
+	public static final String seconds2String(Long seconds)
+	{
+		return seconds2String(seconds.longValue());
+	}
 
    /**
     * Reformats seconds to time string with format: dd:hh:mm:ss

@@ -46,6 +46,7 @@ import org.dbforms.util.ResultSetVector;
 import org.dbforms.util.SqlUtil;
 import org.dbforms.util.ParseUtil;
 import org.dbforms.util.Util;
+import org.dbforms.util.MessageResourcesInternal;
 import org.dbforms.util.external.FileUtil;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.taglib.DbFormTag;
@@ -94,7 +95,7 @@ public class StartReportServlet extends HttpServlet {
    public static final String REPORTCONFIGDIR = "reportdirs";
 
    private String[] reportdirs;
-
+   
    /**
     * Initialize this servlet.
     * 
@@ -162,12 +163,13 @@ public class StartReportServlet extends HttpServlet {
             checkIfNeedToCompile(getServletContext(), reportFile);
             JRDataSource dataSource =
                getDataFromForm(getServletContext(), request, response);
-            processReport(
-               reportFile,
-               dataSource,
-               getServletContext(),
-               request,
-               response);
+            if (!response.isCommitted())
+				processReport(
+					reportFile,
+					dataSource,
+					getServletContext(),
+					request,
+					response);
          }
       } catch (Exception e) {
          logCat.error(e);
@@ -236,7 +238,6 @@ public class StartReportServlet extends HttpServlet {
 
             if (jPrint.getPages().size() == 0) {
                handleNoData(request, response);
-
                return;
             } else {
                String outputFormat =
@@ -263,19 +264,16 @@ public class StartReportServlet extends HttpServlet {
          if ((bytes != null) && (bytes.length > 0)) {
             // Send the output stream to the client
             response.setContentLength(bytes.length);
-
             ServletOutputStream ouputStream = response.getOutputStream();
             ouputStream.write(bytes, 0, bytes.length);
             ouputStream.flush();
             ouputStream.close();
          } else {
             handleEmptyResponse(request, response);
-
             return;
          }
       } catch (Exception e) {
          handleException(request, response, e);
-
          return;
       }
    }
@@ -357,7 +355,10 @@ public class StartReportServlet extends HttpServlet {
       sendErrorMessage(
          request,
          response,
-         "JasperReport Error<BR>" + e.toString() + "<BR>");
+		 MessageResourcesInternal.getMessage("dbforms.reports.exception", 
+																		  request.getLocale(),
+																		  new String[]{e.toString()}) 
+	                  );
    }
 
    /**
@@ -369,7 +370,7 @@ public class StartReportServlet extends HttpServlet {
    public static void handleNoData(
       HttpServletRequest request,
       HttpServletResponse response) {
-      sendErrorMessage(request, response, "no data found to print");
+      sendErrorMessage(request, response, MessageResourcesInternal.getMessage("dbforms.reports.nodata", request.getLocale()));
    }
 
    private static void sendErrorMessage(
@@ -379,7 +380,6 @@ public class StartReportServlet extends HttpServlet {
       try {
          Vector errors = (Vector) request.getAttribute("errors");
          errors.add(new Exception(message));
-
          String fue = ParseUtil.getParameter(request, "source");
          String contextPath = request.getContextPath();
          fue = fue.substring(contextPath.length());
@@ -391,6 +391,8 @@ public class StartReportServlet extends HttpServlet {
             out.println("<html><body><h1>ERROR</h1><p>");
             out.println(message);
             out.println("</p></body></html>");
+			out.flush();
+			out.close();
          } catch (IOException ioe2) {
             logCat.error("!!!senderror message crashed!!!" + ioe2.getMessage());
          }
@@ -400,19 +402,19 @@ public class StartReportServlet extends HttpServlet {
    private static void handleNoReport(
       HttpServletRequest request,
       HttpServletResponse response) {
-      sendErrorMessage(
-         request,
-         response,
-         "report " + request.getPathInfo() + " not found");
+			sendErrorMessage(
+				request,
+				response,
+			 MessageResourcesInternal.getMessage("dbforms.reports.noreport", 
+																			  request.getLocale(),
+																			  new String[]{request.getPathInfo()}) 
+								);
    }
 
    private static void handleEmptyResponse(
       HttpServletRequest request,
       HttpServletResponse response) {
-      sendErrorMessage(
-         request,
-         response,
-         "JasperReport Error<BR>No output generated");
+	  sendErrorMessage(request, response, MessageResourcesInternal.getMessage("dbforms.reports.nooutput", request.getLocale()));
    }
 
    private static byte[] exportToPDF(JasperPrint jasperPrint)
