@@ -41,7 +41,7 @@
     <para>The new datalist based navigation has following advantages:</para>
     <itemizedlist>
       <listitem>
-        <para>Data source is not only jdbc. It should be possible to write data source handlers for all other data, e.g. xml.</para>
+        <para>Data source is not only jdbc. It should be possible to write data source handlers for all other data, e.g.<link linkend='xml_data'>xml</link>.</para>
       </listitem>
       <listitem>
         <para>Navigation should be independent from filtering. Navigation should be possible with free form select, too --i.e. use of a <computeroutput>whereClause</computeroutput> should be ok.</para>
@@ -127,7 +127,7 @@
       <title>HowTo use DataList navigation</title>
       <para>
          To use DataList navigation you must define custom events in your dbforms-config.xml:
-         <progamlisting>
+         <programlisting>
           &lt;!-- ========== custom events =================================== --&gt;
 	  &lt;events&gt;
 	    &lt;database-events&gt;
@@ -143,25 +143,21 @@
 	      &lt;navigation-event type="navLast" className="org.dbforms.event.datalist.NavLastEvent" /&gt;
 	    &lt;/navigation-events&gt;
 	  &lt;/events&gt;
-         </progamlisting>
+         </programlisting>
          This will change in further versions, where datalist navigation will be uses as default.
       </para>
     </sect2>
   </sect1>
   <sect1>
     <title>ToDo</title>
-    <para>Some points are missing in the new system:</para>
+    <para>There is a missing point in the new system:</para>
     <itemizedlist>
       <listitem>
         <para>
         	Greate a thread that will throw away unused DataSources when the user navigate to another page.
         </para>
       </listitem>
-      <listitem>
-        <para>
-            Create an DataSource that retrieves the data from XML instead of JDBC.
-        </para>
-      </listitem>
+     
       <listitem>
         <para>
             What do you think?
