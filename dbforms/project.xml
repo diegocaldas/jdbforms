@@ -359,7 +359,7 @@
     <!-- testing only -->
     <dependency>
       <id>hsqldb</id>
-      <version>1.7.0</version>
+      <version>1.7.1</version>
       <properties>
          <war.bundle.jar>true</war.bundle.jar>
        </properties>
