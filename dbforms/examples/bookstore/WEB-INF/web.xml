@@ -84,6 +84,25 @@
       <param-value>/WEB-INF/custom/reports/,/WEB-INF/reports/</param-value>
     </init-param>
   </servlet>
+  <!--============= Excel output servlet =============================== -->
+   <servlet>
+    <servlet-name>startexcelreport</servlet-name>
+    <servlet-class>org.dbforms.servlets.StartServletExcel</servlet-class>
+    <init-param>
+      <param-name>reportdirs</param-name>
+      <param-value>/WEB-INF/custom/reports/,/WEB-INF/reports/</param-value>
+    </init-param>
+  </servlet>
+   <!--============= csv output servlet =============================== -->
+   <servlet>
+    <servlet-name>startcsvreport</servlet-name>
+    <servlet-class>org.dbforms.servlets.StartServletCSV</servlet-class>
+    <init-param>
+      <param-name>reportdirs</param-name>
+      <param-value>/WEB-INF/custom/reports/,/WEB-INF/reports/</param-value>
+    </init-param>
+   </servlet>
+
   <!-- ===================================================================== -->
   <!--  Pow2WebGUI configuration servlet.                                    -->
   <!-- ===================================================================== -->
@@ -113,6 +132,14 @@
   <servlet-mapping>
     <servlet-name>startreport</servlet-name>
     <url-pattern>/reports/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+     <servlet-name>startexcelreport</servlet-name>
+     <url-pattern>/excelReport/*</url-pattern>
+  </servlet-mapping>
+    <servlet-mapping>
+     <servlet-name>startcsvreport</servlet-name>
+     <url-pattern>/cvsreport/*</url-pattern>
   </servlet-mapping>
   <!--*************************************************-->
   <!--**======= Other configuration items, not=======**-->
