@@ -224,7 +224,7 @@ Three &lt;servlet&gt; elements to define the controller, the config and the file
 	
         &lt;init-param&gt; 
             &lt;param-name&gt;log4j.configuration&lt;/param-name&gt; <co id="log4j"/>
-            &lt;param-value&gt;log4j.properties&lt;/param-value&gt; 
+            &lt;param-value&gt;/WEB-INF/log4j.properties&lt;/param-value&gt; 
 	&lt;/init-param&gt;
         &lt;init-param&gt; 
             &lt;param-name&gt;digesterDebugLevel&lt;/param-name&gt; 
@@ -268,12 +268,12 @@ Three &lt;servlet&gt; elements to define the controller, the config and the file
     
      <emphasis role="bold">&lt;servlet-mapping&gt;</emphasis> 
         &lt;servlet-name&gt;control&lt;/servlet-name&gt; 
-            &lt;url-pattern&gt;servlet/control&lt;/url-pattern&gt; 
+            &lt;url-pattern&gt;/servlet/control&lt;/url-pattern&gt; 
     &lt;/servlet-mapping&gt;  
 		
      <emphasis role="bold">&lt;servlet-mapping&gt;</emphasis>
 	&lt;servlet-name&gt;file&lt;/servlet-name&gt; 
-	&lt;url-pattern&gt;servlet/file&lt;/url-pattern&gt; 
+	&lt;url-pattern&gt;/servlet/file&lt;/url-pattern&gt; 
     &lt;/servlet-mapping&gt; 
                 </screen>
          <calloutlist>
