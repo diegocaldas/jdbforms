@@ -1,3 +1,11 @@
+2004-03-25
+(Henner.Kollmann@gmx.de)
+  - Make date/time parsing more tolerant
+  - Added possibility to put null values into the database for string fields.
+    Therefore the special value [NULL] is parsed and stored as null.
+  - bug fixed navigation
+  - added new tag HasRecordsTag  
+
 2004-03-21
 (Henner.Kollmann@gmx.de)
   Removed dependency from cos.jar to commons-fileupload.jar from the jakarta apache group.
