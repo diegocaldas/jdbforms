@@ -37,6 +37,9 @@ public class ForeignKey {
     /** Holds value of property referencesVector. */
     private java.util.Vector referencesVector;
     
+    /** Holds value of property id. */
+    private int id;
+    
     /** Creates a new instance of ForeignKeyInfo */
     public ForeignKey() {
         referencesVector = new java.util.Vector();
@@ -117,4 +120,21 @@ public class ForeignKey {
     public java.util.Vector getReferencesVector() {
         return this.referencesVector;
     }
+    
+    /** Getter for property id.
+     * @return Value of property id.
+     *
+     */
+    public int getId() {
+        return this.id;
+    }
+    
+    /** Setter for property id.
+     * @param id New value of property id.
+     *
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
+    
 }
