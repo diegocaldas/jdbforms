@@ -23,6 +23,7 @@
 package org.dbforms.taglib;
 
 import org.dbforms.config.DbFormsConfig;
+import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.ResultSetVector;
 
 import org.dbforms.util.KeyValuePair;
@@ -315,8 +316,13 @@ public abstract class EmbeddedData extends BodyTagSupport
 
          // take Config-Object from application context - this object should have been
          // initalized by Config-Servlet on Webapp/server-startup!
-         DbFormsConfig config = (DbFormsConfig) pageContext.getServletContext()
-                                                           .getAttribute(DbFormsConfig.CONFIG);
+         DbFormsConfig   config = null;
+         try {
+            config = DbFormsConfigRegistry.instance().lookup();
+         }  catch (Exception e) {
+            logCat.error(e);
+            throw new JspException (e);
+         }
          Connection    con = config.getConnection(dbConnectionName);
 
          if (con == null)

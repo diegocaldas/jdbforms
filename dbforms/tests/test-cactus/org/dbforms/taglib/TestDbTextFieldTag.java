@@ -69,6 +69,8 @@ public class TestDbTextFieldTag extends JspTestCase {
     */
    public void setUp() throws Exception {
       synchronized (syncHelper) {
+         initConfig();
+
          form = new DbFormTag();
          form.setPageContext(this.pageContext);
          form.setTableName("TIMEPLAN");
@@ -91,7 +93,6 @@ public class TestDbTextFieldTag extends JspTestCase {
 
    public void testOutputDE() throws Exception {
       synchronized (syncHelper) {
-         initConfig();
 
          MessageResources.setLocale(request, Locale.GERMAN);
          form.doStartTag();
@@ -142,7 +143,6 @@ public class TestDbTextFieldTag extends JspTestCase {
    public void testOutputEN() throws Exception {
       synchronized (syncHelper) {
 
-         initConfig();
 
          MessageResources.setLocale(request, Locale.ENGLISH);
          form.doStartTag();

@@ -93,7 +93,7 @@ public class DbFormsConfigRegistry
     * @param  name the DbFormsConfig name used as the registry key
     * @param  config the DbFormsConfig object
     */
-   public void register(String name, DbFormsConfig config)
+   private void register(String name, DbFormsConfig config)
    {
       if (servletContext != null)
       {

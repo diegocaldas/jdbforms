@@ -41,6 +41,7 @@ import java.sql.SQLException;
 import java.net.FileNameMap;
 import java.net.URLConnection;
 import org.dbforms.config.DbFormsConfig;
+import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.Field;
 import org.dbforms.config.FieldTypes;
 import org.dbforms.config.Table;
@@ -74,8 +75,12 @@ public class FileServlet extends HttpServlet
    {
       // take Config-Object from application context - this object should have been
       // initalized by Config-Servlet on Webapp/server-startup!
-      config      = (DbFormsConfig) getServletContext()
-                                       .getAttribute(DbFormsConfig.CONFIG);
+      try {
+         config = DbFormsConfigRegistry.instance().lookup();
+      }  catch (Exception e) {
+         logCat.error(e);
+         throw new ServletException (e);
+      }
       fileNameMap = URLConnection.getFileNameMap();
    }
 

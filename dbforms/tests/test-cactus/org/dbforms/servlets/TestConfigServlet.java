@@ -27,6 +27,7 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 import org.apache.cactus.ServletTestCase;
 import org.dbforms.config.DbFormsConfig;
+import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.Table;
 
 
@@ -94,9 +95,9 @@ public class TestConfigServlet extends ServletTestCase
         ConfigServlet configServlet = new ConfigServlet();
         configServlet.init(config);
 
-        DbFormsConfig dbFormsConfig = (DbFormsConfig) configServlet.getServletContext().getAttribute(DbFormsConfig.CONFIG);
+       DbFormsConfig   config = DbFormsConfigRegistry.instance().lookup();
 
-        Table tblAuthor = dbFormsConfig.getTableByName("AUTHOR");
+        Table tblAuthor = config.getTableByName("AUTHOR");
         assertTrue("Found tblAuthor", tblAuthor.getName().equals("AUTHOR"));
         
     }

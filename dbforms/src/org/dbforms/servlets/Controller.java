@@ -42,6 +42,7 @@ import org.dbforms.util.ParseUtil;
 import org.dbforms.util.Util;
 import org.dbforms.util.SqlUtil;
 import org.dbforms.config.DbFormsConfig;
+import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.MultipleValidationException;
 import org.dbforms.config.Table;
 import org.dbforms.event.EventEngine;
@@ -79,8 +80,13 @@ public class Controller extends HttpServlet
    {
       // take Config-Object from application context - this object should have been
       // initalized by Config-Servlet on Webapp/server-startup!
-      config = (DbFormsConfig) getServletContext()
-                                  .getAttribute(DbFormsConfig.CONFIG);
+      try {
+         config = DbFormsConfigRegistry.instance().lookup();
+      }  catch (Exception e) {
+         logCat.error(e);
+         throw new ServletException (e);
+      }
+      
 
       // if existing and valid, override default maxUploadSize, which determinates how
       // big the http/multipart uploads may get

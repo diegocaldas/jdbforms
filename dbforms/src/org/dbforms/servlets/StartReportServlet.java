@@ -47,6 +47,7 @@ import org.dbforms.util.Util;
 import org.dbforms.util.MessageResourcesInternal;
 import org.dbforms.util.external.FileUtil;
 import org.dbforms.config.DbFormsConfig;
+import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.ResultSetVector;
 import org.dbforms.taglib.DbFormTag;
 import dori.jasper.engine.JasperCompileManager;
@@ -214,8 +215,15 @@ public class StartReportServlet extends HttpServlet
          }
 
          // generate parameter map
-         DbFormsConfig   config = (DbFormsConfig) context.getAttribute(
-                                           DbFormsConfig.CONFIG);
+
+         DbFormsConfig   config = null;
+         try {
+            config = DbFormsConfigRegistry.instance().lookup();
+         }  catch (Exception e) {
+            logCat.error(e);
+            throw new ServletException (e);
+         }
+
          ReportParameter repParam = new ReportParameter(request, 
                                                         config.getConnection(
                                                                  getConnectionName(
@@ -586,8 +594,13 @@ public class StartReportServlet extends HttpServlet
          if ((webEvent != null) && (webEvent.getTableId() != -1))
          {
             // Generate DataSource for JasperReports from call to DbForm
-            DbFormsConfig config = (DbFormsConfig) context.getAttribute(
-                                            DbFormsConfig.CONFIG);
+            DbFormsConfig   config = null;
+            try {
+               config = DbFormsConfigRegistry.instance().lookup();
+            }  catch (Exception e) {
+               logCat.error(e);
+               throw new ServletException (e);
+            }
             String        tableName = config.getTable(webEvent.getTableId())
                                             .getName();
 

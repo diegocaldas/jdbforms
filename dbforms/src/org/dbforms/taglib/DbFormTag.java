@@ -53,6 +53,7 @@ import org.dbforms.util.TimeUtil;
 import org.dbforms.config.Constants;
 import org.dbforms.config.DbEventInterceptor;
 import org.dbforms.config.DbFormsConfig;
+import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.DbFormsErrors;
 import org.dbforms.config.FieldTypes;
 import org.dbforms.config.FieldValue;
@@ -963,10 +964,10 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
     */
    public void setPageContext(PageContext pc) {
       super.setPageContext(pc);
-      config = (DbFormsConfig) pageContext.getServletContext().getAttribute(DbFormsConfig.CONFIG);
-
-      if (config == null) {
-         throw new IllegalArgumentException("Troubles with DbForms config xml file: can not find CONFIG object in application context! check system configuration! check if application crashes on start-up!");
+      try {
+         config = DbFormsConfigRegistry.instance().lookup();
+      }  catch (Exception e) {
+         logCat.error(e);
       }
    }
 
