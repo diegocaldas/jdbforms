@@ -1214,7 +1214,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
             }
             catch (Exception sqle)
             {  
-               logCat.debug("pos6");
+               logCat.error("pos6");
                String str = ("Sorry, viewing data from table " + table.getName()
                              + " would violate a condition: " 
                              + sqle.getMessage());
@@ -2931,7 +2931,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
     */
    public void doCatch(Throwable t) throws Throwable
    {
-      logCat.info("doCatch called - " + t.toString());
+      logCat.error("doCatch called - " + t.toString());
       throw t;
    }
 }
