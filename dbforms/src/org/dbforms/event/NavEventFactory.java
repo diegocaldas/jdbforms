@@ -41,35 +41,34 @@ import org.dbforms.event.eventtype.EventType;
  */
 public abstract class NavEventFactory extends EventFactory
 {
-    /** classes used as GotoEvent constructor arguments types */
-    protected static Class[] gotoConstructorArgsTypes = new Class[]
-    {
-        String.class, Table.class
-    };
+	/** classes used as constructor arguments types */
+	protected static Class[] actionConstructorArgsTypes = new Class[]
+	{
+		Table.class, HttpServletRequest.class, DbFormsConfig.class
+	};
 
+	/** classes used as constructor arguments types */
+	protected static Class[] goToConstructorArgsTypes = new Class[]
+	{
+		Table.class, HttpServletRequest.class, DbFormsConfig.class, String.class 
+	};
 
-    /**
-     *  Create and return a new navigation event.
-     *
-     * @param  action the action string that identifies the web event
-     * @param  request the HttpServletRequest object
-     * @param  config the DbForms config object
-     * @return  a new navigation event
-     */
-    public abstract NavigationEvent createEvent(String             action,
-                                                HttpServletRequest request,
-                                                DbFormsConfig      config);
+	/** classes used as constructor arguments types */
+	protected static Class[] goToConstructorArgsTypes2 = new Class[]
+	{
+		Table.class, HttpServletRequest.class, DbFormsConfig.class, String.class, String.class
+	};
 
-    /**
-     *  Create and return a new navigation event.
-     *
-     * @param  action the action string that identifies the web event
-     * @param  table the Table object
-     * @param  config the DbForms config object
-     * @return  a new navigation event
-     */
-    public abstract NavigationEvent createEvent(String action, Table table, DbFormsConfig config);
-
+	/**
+	 *  Create and return a new navigation event.
+	 *
+	 * @param  action the action string that identifies the web event
+	 * @param  request the HttpServletRequest object
+	 * @param  config the DbForms config object
+	 * @table  table to use
+	 * @return  a new navigation event
+	 */
+	public abstract NavigationEvent createEvent(String action, HttpServletRequest request, DbFormsConfig config, Table table);
 
     /**
      *  Create and return a new navGoto event.
@@ -78,21 +77,16 @@ public abstract class NavEventFactory extends EventFactory
      * @param  table the Table object
      * @return a new navGoto event
      */
-    public abstract GotoEvent createGotoEvent(String positionString, Table table);
+    public abstract NavigationEvent createGotoEvent(Table table, HttpServletRequest request, DbFormsConfig config, String positionString);
 
 
-    /**
-     *  Initialize the default events.
-     *
-     * @exception Exception if any error occurs
-     */
-    protected void initializeEvents() throws Exception
-    {
-         addEventInfo(new EventInfo(EventType.EVENT_NAVIGATION_FIRST, "org.dbforms.event.NavFirstEvent"));
-         addEventInfo(new EventInfo(EventType.EVENT_NAVIGATION_GOTO,  "org.dbforms.event.GotoEventImpl"));
-         addEventInfo(new EventInfo(EventType.EVENT_NAVIGATION_LAST,  "org.dbforms.event.NavLastEvent"));
-         addEventInfo(new EventInfo(EventType.EVENT_NAVIGATION_NEW,   "org.dbforms.event.NavNewEvent"));
-         addEventInfo(new EventInfo(EventType.EVENT_NAVIGATION_NEXT,  "org.dbforms.event.BoundedNavNextEventImpl"));
-         addEventInfo(new EventInfo(EventType.EVENT_NAVIGATION_PREV,  "org.dbforms.event.BoundedNavPrevEventImpl"));
-    }
+	/**
+	 *  Create and return a new navGoto event.
+	 *
+	 * @param  positionString the position string object
+	 * @param  table the Table object
+	 * @return a new navGoto event
+	 */
+    public abstract NavigationEvent createGotoEvent(Table table, HttpServletRequest request, DbFormsConfig config, String whereClause, String tableList);
+
 }
