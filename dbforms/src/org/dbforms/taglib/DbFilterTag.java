@@ -25,11 +25,14 @@ package org.dbforms.taglib;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Locale;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import org.apache.log4j.Category;
 import org.dbforms.config.FieldValue;
+import org.dbforms.util.MessageResources;
 import org.dbforms.util.ParseUtil;
 import org.dbforms.util.Util;
 
@@ -409,14 +412,38 @@ public class DbFilterTag
                ? "selected"
                : "";
 
-         // render option
-         buf.append(
+		  // NAK  Added support for localization of option label         
+		  // If the caption is not null and the resources="true" attribute
+		  String label = cond.getLabel();
+			if ((label != null) && getParentForm().hasCaptionResourceSet()) {
+				try {
+					Locale locale = null;
+					Object obj = pageContext
+							.findAttribute("org.dbforms.LOCALE");
+					if ((obj != null) && (obj instanceof Locale)) {
+						locale = (Locale) obj;
+					} else {
+						locale = MessageResources
+								.getLocale((HttpServletRequest) pageContext
+										.getRequest());
+					}
+					String message = MessageResources.getMessage(label, locale);
+
+					if (message != null) {
+						label = message;
+					}
+				} catch (Exception e) {
+					logCat.debug("setCaption(" + label + ") Exception : "
+							+ e.getMessage());
+				}
+			} // render option
+			buf.append(
             "\t<option value=\""
                + cnt
                + "\" "
                + selected
                + ">"
-               + cond.getLabel()
+               + label
                + "</option>\n");
          cnt++;
       }
