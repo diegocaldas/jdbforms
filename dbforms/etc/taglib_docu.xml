@@ -335,6 +335,9 @@ then DbForms will redisplay entered values even with UPDATES.</info>
 						</ul>
 						<b>important:</b>
 						<ul>
+                                                <li>if you use a non-primary key, you MUST specify
+sortable="true" within your dbforms-config.xml file for the key you want to sort by
+                                                </li>
 							<li>if you do not specify it here, you may define it globally in your dbforms-config.xml 
     file. If you do not specify any information, DbForms automatically takes the 
     key-fields for sorting.</li>
