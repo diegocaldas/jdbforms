@@ -83,6 +83,7 @@
 			<para/>
 			<para>By default, filter elements are interpreted by dbforms and ANDed together to build a final where Clause.  In certain situations, a logical OR is required between individual elements.  This is achieved by using the pipe(|) symbol:
 </para>
+<blockquote>
 			<para>aField&lt;10,aField=1,|aField=3
 </para>
 			<para>will render the following where Clause
@@ -90,7 +91,7 @@
 			<para>WHERE aField&lt;10 AND aField=1 OR aField=3
 </para>
 			<para>Dynamic filtering is possible as well, as the filter-attribute gets dynamically evaluated by the jsp container.
-</para>
+</para></blockquote>
 			<example>
 				<title>Listing 25 Example for dynamic filtering
 </title>
@@ -156,7 +157,7 @@
 			
 			<para>In many cases, this would be sufficient, but to make things really secure and to prevent malicious users from emulating form request using telnet, etc. we need to define these rules in a more secure way.
 </para>
-			<para>This approach is described in chapter 0, 11.        Application .
+			<para>This approach is described in the chapter on Application Hookups.
 </para>
 			<para/>
 		</sect1>
