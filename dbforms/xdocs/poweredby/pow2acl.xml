@@ -23,28 +23,28 @@
     <p>
       The following screenshots show the backoffice interface that's used to
       manage the ACL database:
-	  <br/>&amp;nbsp;
+	  <br/>
     </p>
     <center>
     <p>
       <a href="../images/poweredby/pow2acl/users.png" target="_new"><img src="../images/poweredby/pow2acl/users-small.png" border="0"/></a>
       <br/>
       <div style="position:relative; width:480px; top:-10px; text-align:left">
-        user list - shows all the application users.<br/>&amp;nbsp;
+        user list - shows all the application users.<br/>
       </div>
     </p>
     <p>
       <a href="../images/poweredby/pow2acl/user.png" target="_new"><img src="../images/poweredby/pow2acl/user-small.png" border="0"/></a>
       <br/>
       <div style="position:relative; width:480px; top:-10px; text-align:left">
-        user detail.<br/>&amp;nbsp;
+        user detail.<br/>
       </div>
     </p>
     <p>
       <a href="../images/poweredby/pow2acl/rolePermissions.png" target="_new"><img src="../images/poweredby/pow2acl/rolePermissions-small.png" border="0"/></a>
       <br/>
       <div style="position:relative; width:480px; top:-10px; text-align:left">
-        permissions associated to a given role.<br/>&amp;nbsp;
+        permissions associated to a given role.<br/>
       </div>
     </p>
     <p>
@@ -54,7 +54,7 @@
         ternary relations between users, groups and roles. This <a href="../images/poweredby/pow2acl/userGroupRole-src.png" target="_new">link</a> 
         shows a fragment of the JSP source code.
       </div>
-      <br/>&amp;nbsp;
+      <br/>
     </p>
     </center>
   </subsection>

@@ -22,7 +22,7 @@
     <p>
       The following screenshots show the backoffice interface that's used to
       manage the contents database:
-	  <br/>&amp;nbsp;
+	  <br/>
     </p>
     <center>
     <p>
@@ -31,36 +31,36 @@
       <br/>
       <div style="position:relative; width:480px; top:0px; text-align:left">
         categories tree and category form - this screenshot shows all the categories managed by the
-        application and the data of the selected one.<br/>&amp;nbsp;
+        application and the data of the selected one.<br/>
       </div>
-      <br/>&amp;nbsp;
+      <br/>
     </p>
     <p>
       <a href="../images/poweredby/pow2cm/editCategory-article.png" target="_new">
         <img src="../images/poweredby/pow2cm/editCategory-article-small.png" border="0"/></a>
       <br/>
       <div style="position:relative; width:480px; top:0px; text-align:left">
-        category items - shows all the items that belongs to the selected category.<br/>&amp;nbsp;
+        category items - shows all the items that belongs to the selected category.<br/>
       </div>
-      <br/>&amp;nbsp;
+      <br/>
     </p>
     <p>
       <a href="../images/poweredby/pow2cm/articleDetail.png" target="_new">
         <img src="../images/poweredby/pow2cm/articleDetail-small.png" border="0"/></a>
       <br/>
       <div style="position:relative; width:480px; top:0px; text-align:left">
-        article detail - shows the detail fields of the selected article.<br/>&amp;nbsp;
+        article detail - shows the detail fields of the selected article.<br/>
       </div>
-      <br/>&amp;nbsp;
+      <br/>
     </p>
     <p>
       <a href="../images/poweredby/pow2cm/groupItems.png" target="_new">
         <img src="../images/poweredby/pow2cm/groupItems-small.png" border="0"/></a>
       <br/>
       <div style="position:relative; width:480px; top:0px; text-align:left">
-        group items - show all the items that belong to the selected group.<br/>&amp;nbsp;
+        group items - show all the items that belong to the selected group.<br/>
       </div>
-      <br/>&amp;nbsp;
+      <br/>
     </p>
     </center>
   </subsection>
