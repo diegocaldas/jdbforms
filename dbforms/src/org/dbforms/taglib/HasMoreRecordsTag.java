@@ -93,7 +93,7 @@ public class HasMoreRecordsTag extends DbBaseHandlerTag
                bodyContent.clearBody();
             }
 
-            String message = errors.getXMLErrorMessage(getMessage());
+			String message = (errors != null)? errors.getXMLErrorMessage(getMessage()): getMessage();
 
             if (!Util.isNull(message))
             {
