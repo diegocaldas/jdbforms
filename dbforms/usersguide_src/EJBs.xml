@@ -1,16 +1,16 @@
-<?xml version="1.0" encoding="UTF-8" ?>
- <chapter lang="en-US">
-    <title>
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter lang="en-US">
+  <title>
    EJBs and JBoss
     </title>
-     
-      <sect1><title>The Easy Way</title>
+  <sect1>
+    <title>The Easy Way</title>
     <para>John Gagon who consulted developers on how to alter the code to use EJBs with DbForms finally reported that:</para>
-     <para>I have Session EJBs working with DBForms....I didn't change any source code to DBForms either.</para>
-
-<para>What I did was within an interceptor.  Lets say we have:
+    <para>I have Session EJBs working with DBForms....I didn't change any source code to DBForms either.</para>
+    <para>What I did was within an interceptor.  Lets say we have:
  
-<screen> 
+
+      <screen> 
 
 preInsert(HttpServletRequest request, DBFormsConfig config, Hashtable fieldValues, Connection con)
 {
@@ -35,237 +35,241 @@ preInsert(HttpServletRequest request, DBFormsConfig config, Hashtable fieldValue
         {
            //based on what is caught, you can ... rethrow ValidationExceptions, return DENY, 
            //throw blank ValidationExceptions(), log stuff, or simply decide to return GRANT anyway.
-           //catch transactional exceptions, you could &quot;recheck&quot;.
+           //catch transactional exceptions, you could "recheck".
         }
 
 
 }
 
-</screen></para>
-<para>In this way, the interceptors are thin adapters that can do little extra dbforms and web based work without doing a lot of business logic (like I used to do). The session bean does business work on the fieldValues and can work with other servers, track certain rules, calculate.</para>
-
-<para>I think you can even do some transactional locking ie: between an inserts/selects and updates by throwing
-these exceptions or waiting &quot;while(not_finished)&quot;...of course, that can reduce performance. You could also session flag so that other interceptor methods cannot do that. (or you can put transactions in your database
+</screen>
+    </para>
+    <para>In this way, the interceptors are thin adapters that can do little extra dbforms and web based work without doing a lot of business logic (like I used to do). The session bean does business work on the fieldValues and can work with other servers, track certain rules, calculate.</para>
+    <para>I think you can even do some transactional locking ie: between an inserts/selects and updates by throwing
+these exceptions or waiting "while(not_finished)"...of course, that can reduce performance. You could also session flag so that other interceptor methods cannot do that. (or you can put transactions in your database
 functions if your database supports it. (you could use the stateful session bean and declare a level of transactional thread safety on those session beans I think too)</para>
- </sect1>
- <sect1><title>Example</title>
- 
- <para>This example was tested on JBoss 3.0.0-Tomcat 4.0.6</para>
- 
- <itemizedlist mark="opencircle">
-<listitem>
-<para>
+  </sect1>
+  <sect1>
+    <title>Example</title>
+    <para>This example was tested on JBoss 3.0.0-Tomcat 4.0.6</para>
+    <itemizedlist mark="opencircle">
+      <listitem>
+        <para>
  In application.xml, make sure you have
  
-<screen> 
+
+          <screen> 
  &lt;!DOCTYPE web-app
-     PUBLIC &quot;-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN&quot;
-     &quot;http://java.sun.com/dtd/web-app_2_3.dtd&quot;&gt;
+     PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+     "http://java.sun.com/dtd/web-app_2_3.dtd"&gt;
  </screen>
-</para>
-</listitem>
-<listitem>
-<para>
+        </para>
+      </listitem>
+      <listitem>
+        <para>
  Make sure you have the jar you compiled
 </para>
-</listitem>
-<listitem>
-<para>
+      </listitem>
+      <listitem>
+        <para>
  do not play with jndi.properties
 </para>
-</listitem>
-<listitem>
-<para>
+      </listitem>
+      <listitem>
+        <para>
  don't need jboss-web.xml
 </para>
-</listitem>
-</itemizedlist>
- 
- <sect2><title>Example interceptor</title>
- <screen>
+      </listitem>
+    </itemizedlist>
+    <sect2>
+      <title>Example interceptor</title>
+      <screen>
  public class BasicTestInterceptor extends DbEventInterceptorSupport
  {
  
- 	static Category log = Category.getInstance(BasicTestInterceptor.class.getName());
+  static Category log = Category.getInstance(BasicTestInterceptor.class.getName());
  
- 	/**
- 	 * Checks to see if a number is in range inclusively given three Strings.
- 	 * @param check String representing a number.
- 	 * @param low String representing the low number of the range.
- 	 * @param high String representing the high number of the range
- 	 * @param inclusive set to true if you want the low &lt;= check and check &lt;= high .
- 	 * @param digits the number in digits to the left of the decimal to round.
+  /**
+   * Checks to see if a number is in range inclusively given three Strings.
+   * @param check String representing a number.
+   * @param low String representing the low number of the range.
+   * @param high String representing the high number of the range
+   * @param inclusive set to true if you want the low &lt;= check and check &lt;= high .
+   * @param digits the number in digits to the left of the decimal to round.
          *  positive, non-zero int
- 	 * @return value converted to a string.
- 	 * @throws ValidationException when encountering other exceptions like
+   * @return value converted to a string.
+   * @throws ValidationException when encountering other exceptions like
          *  NumberFormatException.
- 	 *
- 	 */
- 	public static boolean inRange(String check, String low, String high, boolean inclusive)
- 		throws ValidationException
- 	{
- 	  try
- 	  {
- 		 NumericValidationLocal numericValidation = EjbUtil.getNumericValdiationBean();
- 		 if(numericValidation==null)
- 		 {
- 			 System.out.println(&quot;Null numericValidation&quot;);
- 		 	 return false;
- 		 }
- 		 return numericValidation.inRange(check,low,high,inclusive);		 
-   	  }
-   	  catch(MathException me)
-   	  {
- 		  throw new ValidationException(me.getMessage());
- 	  }
- 	  catch(Exception e)
- 	  {
- 		  throw new ValidationException(&quot;&quot;);
- 	  }
+   *
+   */
+  public static boolean inRange(String check, String low, String high, boolean inclusive)
+    throws ValidationException
+  {
+    try
+    {
+     NumericValidationLocal numericValidation = EjbUtil.getNumericValdiationBean();
+     if(numericValidation==null)
+     {
+       System.out.println("Null numericValidation");
+       return false;
+     }
+     return numericValidation.inRange(check,low,high,inclusive);     
+      }
+      catch(MathException me)
+      {
+      throw new ValidationException(me.getMessage());
+    }
+    catch(Exception e)
+    {
+      throw new ValidationException("");
+    }
  
      }//inRange(...)
  
- 	...
+  ...
  }//BasicTestInterceptor
  
  </screen>
-<sect3><title>NumericValidationLocal</title>
-<screen>
+      <sect3>
+        <title>NumericValidationLocal</title>
+        <screen>
  package com.atser.sejb.math;
  
 
  public interface NumericValidationLocal 
- 	extends javax.ejb.EJBLocalObject
+  extends javax.ejb.EJBLocalObject
  {
  
- 	/**
- 	 * Checks to see if a number is in range.
- 	 * Range is inclusive given three Strings.
- 	 * @param check String representing a number.
- 	 * @param low String representing the low number of the range.
- 	 * @param high String representing the high number of the range
- 	 * @param inclusive set to true 
- 	 *  if you want the low &lt;= check and check &lt;= high .
- 	 * @param digits the number in digits to the 
- 	 *  left of the decimal to round. positive, non-zero integer only. 
+  /**
+   * Checks to see if a number is in range.
+   * Range is inclusive given three Strings.
+   * @param check String representing a number.
+   * @param low String representing the low number of the range.
+   * @param high String representing the high number of the range
+   * @param inclusive set to true 
+   *  if you want the low &lt;= check and check &lt;= high .
+   * @param digits the number in digits to the 
+   *  left of the decimal to round. positive, non-zero integer only. 
          *  For example: 1438 with 1 passed in will give us 1440.
- 	 * @return value converted to a string.
- 	 * @throws ValidationException for any number format problems.
- 	 */
- 	public boolean inRange(
- 			String check, 
- 			String low, 
- 			String high, 
- 			boolean inclusive
- 			)
- 		throws MathException;	
+   * @return value converted to a string.
+   * @throws ValidationException for any number format problems.
+   */
+  public boolean inRange(
+      String check, 
+      String low, 
+      String high, 
+      boolean inclusive
+      )
+    throws MathException; 
  
  
  }//NumericValidationLocal
  </screen>
- </sect3>
- <sect3><title>NumericValidationLocalHome</title>
- <screen>
+      </sect3>
+      <sect3>
+        <title>NumericValidationLocalHome</title>
+        <screen>
  package com.atser.sejb.math;
  
  
  public interface NumericValidationLocalHome
- 	extends javax.ejb.EJBLocalHome
+  extends javax.ejb.EJBLocalHome
  {
  
- 	NumericValidationLocal create() throws javax.ejb.CreateException;
+  NumericValidationLocal create() throws javax.ejb.CreateException;
  
  }//NumericValidationLocal
  </screen>
- </sect3>
- <sect3><title>NumericValidationStatelessBean</title>
- <screen>
+      </sect3>
+      <sect3>
+        <title>NumericValidationStatelessBean</title>
+        <screen>
  import javax.ejb.*;//SessionContext
  import org.apache.log4j.*;//Category
  
  
  public class NumericValidationStatelessBean  
- 	implements javax.ejb.SessionBean
+  implements javax.ejb.SessionBean
  {
  
- 	private static Category log = 
- 			Category.getInstance(&quot;NumericValidationStatefulBean&quot;);
+  private static Category log = 
+      Category.getInstance("NumericValidationStatefulBean");
  
  
- 	private javax.ejb.SessionContext ctx;
+  private javax.ejb.SessionContext ctx;
  
- 	/**
- 	 * Provides generic range checking. 
- 	 * Checks to see if a number is in range.
- 	 * Range is inclusive given three Strings.
- 	 * and returns true if in range or false if out of
- 	 * specified range.
- 	 */
- 	public static boolean inRange(String check, 
- 			String low, String high, boolean inclusive)
- 		throws MathException
- 	{
- 		try
- 		{
- 			double c = Double.parseDouble(check);
- 			double l = Double.parseDouble(low);
- 			double h = Double.parseDouble(high);
- 			if(inclusive)
- 				return (l&lt;=c &amp;&amp; c&lt;=h);
- 			else
- 				return (l&lt;c &amp;&amp; c&lt;h);
- 		}
- 		catch(NumberFormatException nfe)
- 		{
- 			throw new MathException(&quot;Invalid arguements to method:
+  /**
+   * Provides generic range checking. 
+   * Checks to see if a number is in range.
+   * Range is inclusive given three Strings.
+   * and returns true if in range or false if out of
+   * specified range.
+   */
+  public static boolean inRange(String check, 
+      String low, String high, boolean inclusive)
+    throws MathException
+  {
+    try
+    {
+      double c = Double.parseDouble(check);
+      double l = Double.parseDouble(low);
+      double h = Double.parseDouble(high);
+      if(inclusive)
+        return (l&lt;=c &amp;&amp; c&lt;=h);
+      else
+        return (l&lt;c &amp;&amp; c&lt;h);
+    }
+    catch(NumberFormatException nfe)
+    {
+      throw new MathException("Invalid arguements to method:
                             inRange(String check, String low, String high,
-                            boolean inclusive):&quot;+check+&quot;,&quot;+low+&quot;
-                            ,&quot;+high+&quot;,&quot;+inclusive);
- 		}
+                            boolean inclusive):"+check+","+low+"
+                            ,"+high+","+inclusive);
+    }
  
  
-   	}//inRange(...)
+    }//inRange(...)
  
  
- 	public void ejbCreate()
- 	{
- 		log.debug(&quot;ejbCreate()&quot;);
- 	}//ejbCreate()
+  public void ejbCreate()
+  {
+    log.debug("ejbCreate()");
+  }//ejbCreate()
  
  
- 	public void ejbRemove()
- 	{
- 		log.debug(&quot;ejbRemove()&quot;);
- 	}//ejbRemove()
+  public void ejbRemove()
+  {
+    log.debug("ejbRemove()");
+  }//ejbRemove()
  
  
- 	public void ejbActivate()
- 	{
- 		log.debug(&quot;ejbActivate()&quot;);
- 	}//ejbActivate()
+  public void ejbActivate()
+  {
+    log.debug("ejbActivate()");
+  }//ejbActivate()
  
  
- 	public void ejbPassivate()
- 	{
- 		log.debug(&quot;ejbPassivate()&quot;);
- 	}//ejbPassivate()
+  public void ejbPassivate()
+  {
+    log.debug("ejbPassivate()");
+  }//ejbPassivate()
  
  
- 	public void setSessionContext(javax.ejb.SessionContext ctx)
- 	{
- 		this.ctx = ctx;
- 		log.debug(&quot;setSessionContext(..)&quot;);
- 		return;
- 	}//setSessionContext(..)
+  public void setSessionContext(javax.ejb.SessionContext ctx)
+  {
+    this.ctx = ctx;
+    log.debug("setSessionContext(..)");
+    return;
+  }//setSessionContext(..)
  
-   	
+    
  }//NumericValidationStatefulBean
  </screen>
- </sect3>
- </sect2>
- <sect2><title>jboss.xml</title>
- <screen>
-&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+      </sect3>
+    </sect2>
+    <sect2>
+      <title>jboss.xml</title>
+      <screen>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;jboss&gt;
    &lt;enterprise-beans&gt;
      &lt;session&gt;
@@ -275,9 +279,10 @@ functions if your database supports it. (you could use the stateful session bean
    &lt;/enterprise-beans&gt;
  &lt;/jboss&gt;
  </screen>
- </sect2>
- <sect2><title>ejb-jar.xml</title>
-<screen>
+    </sect2>
+    <sect2>
+      <title>ejb-jar.xml</title>
+      <screen>
  &lt;!DOCTYPE ejb-jar
    PUBLIC '-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 2.0//EN'
    'http://java.sun.com/j2ee/dtds/ejb-jar_2_0.dtd'&gt;
@@ -297,9 +302,10 @@ functions if your database supports it. (you could use the stateful session bean
    &lt;/enterprise-beans&gt;
  &lt;/ejb-jar&gt;
  </screen>
- </sect2>
- <sect2><title>web.xml</title>
- <screen>
+    </sect2>
+    <sect2>
+      <title>web.xml</title>
+      <screen>
  &lt;ejb-local-ref&gt;
          &lt;ejb-ref-name&gt;ejb/NumericValidation&lt;/ejb-ref-name&gt;
          &lt;ejb-ref-type&gt;Session&lt;/ejb-ref-type&gt;
@@ -309,28 +315,27 @@ functions if your database supports it. (you could use the stateful session bean
    &lt;/ejb-local-ref&gt;
    
    </screen>
- </sect2>
- </sect1>
- <sect1>
- <title>JBoss dbconnection configuration -JNDI name
+    </sect2>
+  </sect1>
+  <sect1>
+    <title>JBoss dbconnection configuration -JNDI name
  </title>
-<para>For JBoss-3.2.0 the configuration goes as follows:</para>
-<orderedlist numeration="lowerroman">
-<listitem>
-<para>Copy the proper database description file from
+    <para>For JBoss-3.2.0 the configuration goes as follows:</para>
+    <orderedlist numeration="lowerroman">
+      <listitem>
+        <para>Copy the proper database description file from
 "&lt;JBoss-dir&gt;/docs/examples/jca" to the deployment directory of your
 configured JBoss profile (for example
 "&lt;JBoss-dir&gt;/server/default/deploy") and customize it.</para>
-</listitem>
-<listitem>
-<para>Restart JBoss</para>
-</listitem>
-<listitem>
-<para>After that, the running JNDI 'nodes' can be checked using the
+      </listitem>
+      <listitem>
+        <para>Restart JBoss</para>
+      </listitem>
+      <listitem>
+        <para>After that, the running JNDI 'nodes' can be checked using the
 JMX-Console (http://localhost:&lt;port&gt;/jmx-console), using the "listXML"
 operation. In my case, I had an entry saying</para>
- 
-<screen>
+        <screen>
 --- listXML results ---
 java:
 
@@ -338,13 +343,11 @@ DB2DS
 org.jboss.resource.adapter.jdbc.WrapperDataSource
 --- /listXML results ---
 </screen>
- 
- 
-</listitem>
-<listitem>
-<para>From this I could easily derive the correct JNDI-name, which I
+      </listitem>
+      <listitem>
+        <para>From this I could easily derive the correct JNDI-name, which I
 configured as:</para>
-<screen>
+        <screen>
 --- dbforms-config.xml ---
 &lt;dbconnection
     id = "1"
@@ -357,8 +360,7 @@ configured as:</para>
         "org.jboss.resource.connectionmanager.LocalTxConnectionManager"
     conClass  = "COM.ibm.db2.jdbc.app.DB2Driver"/&gt;
 -- /dbforms-config.xml ---</screen>
-</listitem>
-</orderedlist>
-  
- </sect1>
+      </listitem>
+    </orderedlist>
+  </sect1>
 </chapter>
