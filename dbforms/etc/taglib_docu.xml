@@ -1881,7 +1881,7 @@ in functionality and performance can be expected.
 <attribute>
     <name>selectedIndex</name>
     <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
+    <rtexprvalue>true</rtexprvalue>
   </attribute>
 
 

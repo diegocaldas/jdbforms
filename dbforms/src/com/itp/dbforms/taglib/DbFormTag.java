@@ -848,7 +848,11 @@ public class DbFormTag extends BodyTagSupport {
 		if(con!=null && parentForm == null) {
 			try {
 				logCat.info("cleaning up DbFormTag!");
-				this.pageContext.removeAttribute("connection", PageContext.REQUEST_SCOPE); // make sure that nobody accidently reads this attribute and uses a closed connection
+
+				//14,5,2001: must remove this as it produces error on orionserver
+				//if(this.pageContext!=null) {
+				//	this.pageContext.removeAttribute("connection", PageContext.REQUEST_SCOPE); // make sure that nobody accidently reads this attribute and uses a closed connection
+				//}
 				logCat.info("...shutting down db connection...");
 				con.close();
 				logCat.info("...done...");
