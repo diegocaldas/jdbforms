@@ -103,7 +103,7 @@ public class TestFileSplitter extends TestCase
     public void testConstructorWithStrings() throws Exception
     {
         String srcFile = TestFileSplitter.class.getResource("fileA.txt").getPath();
-        assertTrue(Util.isNull(srcFile));
+        assertTrue(!Util.isNull(srcFile));
 
     }
 }
