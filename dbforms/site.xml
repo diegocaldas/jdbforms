@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="build-site" default="docs">
+
+    <!-- Initialization properties -->
+    <property name="project.name"    value="site"/>
+    <property name="docs.src"        value="${basedir}/xdocs"/>
+    <property name="docs.dest"       value="${basedir}/xdocs_target"/>
+    <property name="docs.dest.print" value="${basedir}/xdocs_print"/>
+    <property name="xslt.dest"       value="${basedir}/xslt"/>
+    <property name="libs"            value="${basedir}/dependend"/>
+
+    <!-- Build classpath -->
+    <path id="project.class.path">
+      <fileset dir="${libs}">
+        <include name="**/*.jar"/>
+      </fileset>
+    </path>
+
+    <target name="prepare">
+      <available classname="org.apache.velocity.anakia.AnakiaTask" property="AnakiaTask.present">
+        <classpath refid="project.class.path"/>
+      </available>
+
+      <!-- mkdir dir="${docs.dest}/css"/ -->
+    </target>
+
+    <target depends="prepare" name="prepare-error" unless="AnakiaTask.present">
+      <echo>
+        AnakiaTask (org.apache.velocity.anakia.AnakiaTask class) is not present! 
+        Please check to make sure that velocity.jar is in your classpath.
+      </echo>
+    </target>
+
+
+    <!-- 
+       -  This Target is for output of HTML pages for the web site 
+       -->
+    <target name="docs" 
+            depends="prepare-error" 
+            if="AnakiaTask.present"
+            description="Render HTML Pages via Anakia">
+
+        <taskdef name="anakia" classname="org.apache.velocity.anakia.AnakiaTask">
+          <classpath refid="project.class.path"/>
+        </taskdef>
+
+        <anakia basedir="${docs.src}" 
+                destdir="${docs.dest}/"
+                extension=".html" style="./site.vsl"
+                projectFile="stylesheets/project.xml"
+                excludes="**/stylesheets/** empty.xml"
+                includes="**/*.xml"
+                lastModifiedCheck="true"
+                templatePath="${docs.src}/stylesheets/">
+        </anakia>
+
+        <copy todir="${docs.dest}/images" filtering="no">
+          <fileset dir="${docs.src}/images">
+            <include name="**/*.gif"/>
+            <include name="**/*.jpeg"/>
+            <include name="**/*.jpg"/>
+          </fileset>
+        </copy>
+
+        <!-- copy the  CSS files -->
+        <!--
+        <copy todir="${docs.dest}/css" filtering="no">
+          <fileset dir="${docs.src}/css">
+            <include name="**/*.css"/>
+          </fileset>
+        </copy>
+        -->
+
+    </target>
+    
+    <!-- 
+       -  This Target is for output of documentation that can be printed 
+       -->
+    <target name="docs_print" 
+            depends="prepare-error" 
+            if="AnakiaTask.present"
+            description="Render Printable Pages via Anakia">
+
+      <taskdef name="anakia" classname="org.apache.velocity.anakia.AnakiaTask">
+        <classpath refid="project.class.path"/>
+      </taskdef>
+
+      <anakia basedir="${docs.src}" 
+              destdir="${docs.dest.print}/"
+              extension=".html" style="./site_printable.vsl"
+              projectFile="stylesheets/project.xml"
+              excludes="**/stylesheets/** empty.xml"
+              includes="**/*.xml"
+              lastModifiedCheck="true"
+              templatePath="./xdocs/stylesheets">
+      </anakia>
+
+      <copy todir="${docs.dest.print}/images" filtering="no">
+        <fileset dir="${docs.src}/images">
+          <include name="**/*.gif"/>
+          <include name="**/*.jpeg"/>
+          <include name="**/*.jpg"/>
+        </fileset>
+      </copy>
+  </target> 
+
+
+  <!-- This target is for output of HTML pages via XSLT -->
+  <!-- Requires JAXP/1.1 (all three JARs) or Xerces+Xalan -->
+  <target name="xslt" description="Render HTML Pages via XSLT">
+
+    <!-- Create destination directory if necessary -->
+    <mkdir dir="${xslt.dest}"/>
+
+    <!-- Transform the top-level directory -->
+    <style basedir="${docs.src}"
+           destdir="${xslt.dest}"
+           extension=".html"
+           style="stylesheets/site.xsl"
+           excludes="empty.xml"
+           includes="*.xml">
+      <param name="relative-path" expression="."/>
+    </style>
+
+    <!-- Transform the "site" subdirectory -->
+    <style basedir="${docs.src}/site"
+           destdir="${xslt.dest}/site"
+           extension=".html"
+           style="../stylesheets/site.xsl"
+           includes="*.xml">
+      <param name="relative-path" expression=".."/>
+    </style>
+
+    <!-- Copy static resource files -->
+    <copy todir="${xslt.dest}/images" filtering="no">
+      <fileset dir="${docs.src}/images">
+        <include name="**/*.gif"/>
+        <include name="**/*.jpeg"/>
+        <include name="**/*.jpg"/>
+      </fileset>
+    </copy>
+
+    <!-- Copy CSS stylesheets -->
+    <!--
+    <copy    todir="${xslt.dest}" filtering="no">
+      <fileset dir="${docs.src}">
+        <include name="**/*.css"/>
+      </fileset>
+    </copy>
+    -->
+
+  </target>
+
+  <target name="javadocs" description="Javadocs is a noop">
+
+    <echo>
+        This project has no Java code, therefore, it has no
+        javadocs. This target is here to make Gumpy happy.
+    </echo>
+  </target>
+
+</project>
