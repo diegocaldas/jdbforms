@@ -36,8 +36,7 @@ Happy coding!
 ~~ DbForms team ~~
 
 -->
-
-    <property name="dbforms.version" value="_v1_1_3pr2"/>
+    <property name="dbforms.version" value="_v1_1_x"/>
 
     <property name="cvs.workingdir" value="."/>
 
@@ -324,5 +323,14 @@ Happy coding!
      <delete file="${dbforms.tarfilename}" />
 
     </target>
+
+  <!-- =================================================================== -->
+  <!-- Maven integration: generate project documentation and copy it into  -->
+  <!-- the target directory                                                -->
+  <!--                                                                     -->
+  <!-- called by Maven's "dist" goal                                        -->
+  <!-- =================================================================== -->
+  <target name    = "maven-build-release"  depends = "createReleaseFiles" />
+	
     
 </project>
