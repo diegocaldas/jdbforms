@@ -32,9 +32,7 @@ import java.util.Locale;
  */
 public class MessageResourcesInternal
 {
-	/** DOCUMENT ME! */
-
-    private static String RESOURCE =  "org.dbforms.resources.messages";
+   private static String RESOURCE =  "org.dbforms.resources.messages";
 	private static MessageResource msgRes =  new MessageResource(RESOURCE);
 
 	/*********************************************************************************************
