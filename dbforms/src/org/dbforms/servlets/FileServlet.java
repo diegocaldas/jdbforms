@@ -38,8 +38,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.net.FileNameMap;
-import java.net.URLConnection;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.Field;
@@ -62,7 +60,6 @@ public class FileServlet extends HttpServlet {
    private static Category logCat =
       Category.getInstance(FileServlet.class.getName());
    private DbFormsConfig config;
-   private FileNameMap fileNameMap;
 
    /**
     * Initialize this servlet.
@@ -78,7 +75,6 @@ public class FileServlet extends HttpServlet {
          logCat.error(e);
          throw new ServletException(e);
       }
-      fileNameMap = URLConnection.getFileNameMap();
    }
 
    /**
@@ -158,7 +154,7 @@ public class FileServlet extends HttpServlet {
                if (nameField != null) {
                   fileName = rs.getString(2);
                }
-               readDbFieldBlob(rs, fileName, response);
+               readDbFieldBlob(rs, fileName, request, response);
             }
          } else {
             logCat.info(
@@ -184,6 +180,7 @@ public class FileServlet extends HttpServlet {
    private void readDbFieldBlob(
       ResultSet rs,
       String fileName,
+	  HttpServletRequest request,
       HttpServletResponse response)
       throws IOException, SQLException {
       logCat.info("READING BLOB");
@@ -206,13 +203,14 @@ public class FileServlet extends HttpServlet {
 
                   FileHolder fh = (FileHolder) ois.readObject();
                   writeToClient(
+                     request,
                      response,
                      fh.getFileName(),
                      fh.getInputStreamFromBuffer());
                }
                // new mode
                else {
-                  writeToClient(response, fileName, blob.getBinaryStream());
+                  writeToClient(request, response, fileName, blob.getBinaryStream());
                }
             }
 
@@ -234,13 +232,14 @@ public class FileServlet extends HttpServlet {
                   ObjectInputStream ois = new ObjectInputStream(blobIS);
                   FileHolder fh = (FileHolder) ois.readObject();
                   writeToClient(
+                     request,
                      response,
                      fh.getFileName(),
                      fh.getInputStreamFromBuffer());
                } else {
                   // new mode
                   InputStream blobIS = rs.getBinaryStream(1);
-                  writeToClient(response, fileName, blobIS);
+                  writeToClient(request, response, fileName, blobIS);
                }
             }
          } else {
@@ -301,7 +300,7 @@ public class FileServlet extends HttpServlet {
                "::readDiskBlob - file found [" + file.getAbsoluteFile() + "]");
 
             FileInputStream fis = new FileInputStream(file);
-            writeToClient(response, fileName, fis);
+            writeToClient(request, response, fileName, fis);
          } else {
             logCat.error(
                "::readDiskBlob - file ["
@@ -322,11 +321,13 @@ public class FileServlet extends HttpServlet {
     * @exception  IOException Description of the Exception
     */
    private void writeToClient(
+   HttpServletRequest request,
       HttpServletResponse response,
       String fileName,
       InputStream is)
       throws IOException {
-      String contentType = fileNameMap.getContentTypeFor(fileName);
+		String contentType =
+			request.getSession().getServletContext().getMimeType(fileName);
       logCat.info(
          "::writeToClient- writing to client:"
             + fileName
