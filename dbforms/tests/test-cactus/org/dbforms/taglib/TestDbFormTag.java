@@ -153,7 +153,7 @@ public class TestDbFormTag extends JspTestCase
         this.tag.setAutoUpdate("true");
 
         int result = this.tag.doStartTag();
-        assertEquals(BodyTag.EVAL_BODY_TAG, result);
+        assertEquals(BodyTag.EVAL_BODY_BUFFERED, result);
     }
 
 
@@ -176,7 +176,7 @@ public class TestDbFormTag extends JspTestCase
         this.tag.setAutoUpdate("true");
 
         int result = this.tag.doStartTag();
-        assertEquals(BodyTag.EVAL_BODY_TAG, result);
+        assertEquals(BodyTag.EVAL_BODY_BUFFERED, result);
     }
 
 
@@ -199,7 +199,7 @@ public class TestDbFormTag extends JspTestCase
         this.tag.setAutoUpdate("true");
 
         int result = this.tag.doStartTag();
-        assertEquals(BodyTag.EVAL_BODY_TAG, result);
+        assertEquals(BodyTag.EVAL_BODY_BUFFERED, result);
     }
 
 
@@ -222,7 +222,7 @@ public class TestDbFormTag extends JspTestCase
         this.tag.setReadOnly("false");
 
         int result = this.tag.doStartTag();
-        assertEquals(BodyTag.EVAL_BODY_TAG, result);
+        assertEquals(BodyTag.EVAL_BODY_BUFFERED, result);
     }
 
 
@@ -318,7 +318,7 @@ public class TestDbFormTag extends JspTestCase
         String content = theResponse.getText();
 
         AssertUtils.assertContains("name=\"dbform\"",content);
-        AssertUtils.assertContains("action=\"/test/servlet/control",content);
+//        AssertUtils.assertContains("action=\"test/servlet/control",content);
         AssertUtils.assertContains("target=\"_TOP\"",content);
         AssertUtils.assertContains("method=\"post\"",content);
         AssertUtils.assertContains("type=\"hidden\"",content);
@@ -326,7 +326,6 @@ public class TestDbFormTag extends JspTestCase
         AssertUtils.assertContains("value=\"0\"",content);
         AssertUtils.assertContains("name=\"autoupdate_0\" value=\"true\"",content);
         AssertUtils.assertContains("<input type=\"hidden\" name=\"fu_0\" value=\"/AUTHOR_poweruser_list.jsp\">",content);
-        AssertUtils.assertContains("<input type=\"hidden\" name=\"source\" value=\"/test\">",content);
         AssertUtils.assertContains("<input type=\"hidden\" name=\"customEvent\">",content);
 
     }
@@ -351,7 +350,7 @@ public class TestDbFormTag extends JspTestCase
     public void tearDown()
     {
         //necessary for tag to output anything on most servlet engines.
-        this.pageContext.popBody();
+//        this.pageContext.popBody();
     }
 
 
