@@ -11,6 +11,10 @@
 -->
 <xsl:output indent="yes"/>
 <xsl:param name="useCalendar"/> 
+
+<!-- foreignkeys is a hash for use later to determine requirements (all foreign keys ought to be required) -->
+<xsl:key name="foreignkeys" match="/dbforms-config/table//foreign-key" use="concat(parent::node()/name, reference/@local)" />
+
 <!--
 definition of variables
 choose appropriate values that fit your needs
@@ -105,14 +109,23 @@ choose appropriate values that fit your needs
 					</xsl:choose>
 				</xsl:variable>
 		<tr class="{$customClass}">
-			<td align="left" style="font-weight: bold"><xsl:value-of select="@name"/></td>
+			<td align="left" style="font-weight: bold"><db:message><xsl:attribute name="key"><xsl:value-of select='@name'/></xsl:attribute></db:message></td>
 			<td align="left">
 			<xsl:choose>
+				<xsl:when test="count(key('foreignkeys', concat(parent::node()/name, @name)))>0">
+					<xsl:call-template name="foreignKeyField">
+						<xsl:with-param name="thisField" select="key('foreignkeys', concat(parent::node()/name, @name))" />
+						<xsl:with-param name="tableName" select="$origTableName" />
+					</xsl:call-template>
+				</xsl:when>
 				<xsl:when test="@fieldType='int' or @fieldType='smallint'  or @fieldType='tinyint' or @fieldType='integer'">
 					<db:textField fieldName="{@name}" size="{@size}" styleClass="clsInputStyle"/>
 				</xsl:when>
 				<xsl:when test="@fieldType='char' or @fieldType='varchar' or @fieldType='varchar2'  or @fieldType='nvarchar'  or @fieldType='longvarchar' or @fieldType='character'">
 					<xsl:choose>
+						<xsl:when test="@size=1">
+							<db:checkbox fieldName="{@name}" value="Y" novalue="N" checked="false"/>
+						</xsl:when>
 						<xsl:when test="@size>80">
 					<db:textArea fieldName="{@name}" cols="40" rows="3" wrap="virtual" styleClass="clsInputStyle"/>
 						</xsl:when>
@@ -184,4 +197,14 @@ choose appropriate values that fit your needs
 </body>
 </html>
 </xsl:template>
+	
+<!-- "Subroutine" for foreignKey Fields -->
+	<xsl:template name="foreignKeyField">
+		<xsl:param name="thisField" />
+		<xsl:param name="tableName" />
+		<db:select fieldName="{$thisField/reference/@local}">
+			<db:tableData name="{$tableName}" foreignTable="{$thisField/@foreignTable}" visibleFields="{$thisField/@visibleFields}" format="{$thisField/@format}" storeField="{$thisField/reference/@foreign}" />
+		</db:select>
+	</xsl:template>
+
 </xsl:stylesheet>
