@@ -6,44 +6,57 @@
 		<sect1>
 			<title>Multiple Database Connections</title>
 			<para>This is still being tested and debugged but to use this feature:
+</para><orderedlist numeration="upperroman">
+<listitem>
+<para>specify multiple &lt;dbconnection&gt; elements in the dbforms-config.xml
 </para>
-			<para>specify multiple &lt;dbconnection&gt; elements in the dbforms-config.xml
-</para>
-			<para>Specify the dbConnectionName to be the id of the dbconnection you wish to use in  relevant tags including: <emphasis role="bold">dbform, tableData, queryData, getConnection, blobContent</emphasis>
+<para>It is allowed to have at most 1 connection without an id
+    within a config file. That will be the default connection.</para>
+ <para>For connections using <emphasis role="bold">JNDI</emphasis> or a <emphasis role="bold">direct JDBC</emphasis> connection, an arbitrary id attribute <emphasis role="bold">must</emphasis> be added:</para>
+<screen>
+&lt;dbconnection
+    id = choose&lt;&lt;&lt;&lt;&lt;&lt; add the connectionName here!!!!!
+    name = "jdbc:mysql://localhost/test?useUnicode=true&amp;amp;characterEncoding=Shift_JIS"
+    isJndi = "false"
+    conClass = "org.gjt.mm.mysql.Driver"
+    username = "directConnectionExample"
+    password = "mustUseAnId"
+</screen>
+			 
+</listitem>
+<listitem>
+<para>Specify the dbConnectionName to be the id of the dbconnection you wish to use in  relevant tags including: <emphasis role="bold">dbform, tableData, queryData, getConnection, blobContent</emphasis>
 			</para>
-			<para>&lt;db:select fieldName="tc"&gt;</para>
-			<para>&lt;db:queryData name ="combinations" query="SELECT DISTINCT tc, tier, course FROM coursesORDER BY tc" disableCache="true" dbConnectionName="simple"/&gt;</para>
-			<para>&lt;/db:select&gt;</para>
-			<para>would be used with a connection such as the following:
+                 <screen>
+&lt;db:select fieldName="tc"&gt;
+     
+    &lt;db:queryData name ="combinations" query="SELECT DISTINCT tc, tier, course FROM coursesORDER BY tc"
+    disableCache="true" dbConnectionName="simple"/&gt;
+           
+&lt;/db:select&gt; 
+</screen>
+  <para>would be used with a connection such as the following:
 </para>
-			<para>
-				<computeroutput>&lt;dbconnection</computeroutput>
-			</para>
-			<para>
-				<computeroutput>  id                     = "simple"&lt;&lt;&lt;&lt;&lt; this will be used for the connectionName!!!!! isJndi                     = "false" isPow2                                   = "true" connectionProviderClass         = "org.dbforms.conprovider.SimpleConnectionProvider" connectionPoolURL         = "" conClass= "org.postgresql.Driver" name                      ="jdbc:postgresql://localhost/myDatabase?charSet=ISO-8859-1"</computeroutput>
-			</para>
-			<para>
-				<computeroutput> username= "postgres" password                 = ""/&gt;</computeroutput>
-			</para>
-			<para>For connections using JNDI or a direct JDBC connection:
-</para>
-			<para>An arbitrary id attribute must be added:
-</para>
-			<para>&lt;dbconnection
-</para>
-			<para>id                             = choose&lt;&lt;&lt;&lt;&lt;&lt; add the connectionName here!!!!!
-</para>
-			<para>        name                   = "jdbc:mysql://localhost/test?useUnicode=trueamp;characterEncoding=Shift_JIS"
-</para>
-			<para>        isJndi                     = "false"
-</para>
-			<para>        conClass              = "org.gjt.mm.mysql.Driver"
-</para>
-			<para>        username             = "topgun"
-</para>
-			<para>        password              = "coolbike"
-</para>
-			<para/>
+<screen>
+&lt;dbconnection 
+    id = "simple" &lt;&lt;&lt;&lt;&lt; this will be used for the connectionName!!!!!
+    isJndi = "false"
+    isPow2 = "true" 
+    connectionProviderClass = "org.dbforms.conprovider.SimpleConnectionProvider" 
+    connectionPoolURL = "" 
+    conClass = "org.postgresql.Driver" 
+    name ="jdbc:postgresql://localhost/myDatabase?charSet=ISO-8859-1"
+    username = "postgres" 
+    password = ""
+/&gt;
+</screen>                     
+</listitem>
+ 
+</orderedlist>
+			
+			
+			
+			 
 		</sect1>
 	</chapter>
  
