@@ -65,14 +65,20 @@
 				expression="id"
 	        />
 	        <field 
-	        	name="TITLE" 
-	        	fieldType="varchar"
-				expression="title"
-	        />
-	        <field 
 	        	name="ISBN" 
 	        	fieldType="varchar" 
 				expression="isbn"
+	        />
+	        <field 
+	        	name="AUTHOR_ID" 
+	        	fieldType="int" 
+				expression="author/authorid"
+				isKey="true" 
+	        />
+	        <field 
+	        	name="TITLE" 
+	        	fieldType="varchar"
+				expression="title"
 	        />
 	        <field 
 	        	name="AUTHOR_NAME" 
@@ -83,12 +89,6 @@
 	        	name="AUTHOR_SURNAME" 
 	        	fieldType="varchar" 
 				expression="author/surname"
-	        />
-	        <field 
-	        	name="AUTHOR_ID" 
-	        	fieldType="int" 
-				expression="author/authorid"
-				isKey="true" 
 	        />
 	    </table>
 
