@@ -14,6 +14,15 @@
 	        <field name="TITLE" fieldType="varchar" size="255"/>
 	    </table>    
 
+	    <query name="BOOKWITHINTERCEPTOR" from="BOOK">
+	        <field name="BOOK_ID" fieldType="int" size="10" isKey="true"/>
+	        <field name="ISBN" fieldType="varchar" size="15"/>
+	        <field name="AUTHOR_ID" fieldType="int" size="10" isKey="true"/>
+	        <field name="TITLE" fieldType="varchar" size="255"/>
+            <interceptor className = "interceptors.BookstoreWithInterceptorTest"/>                
+	    </query>    
+	    
+
 	    <query name="AUTHORVIEW" from="AUTHOR" >
 	    </query>
 	    
