@@ -1930,22 +1930,13 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
         if (localRequest != null)
         {
             String refSource = localRequest.getRequestURI();
-
             if (request.getQueryString() != null)
             {
                 refSource += ("?" + request.getQueryString());
             }
-
             String sourceTag = ParseUtil.getParameter(localRequest, "source");
-
             logCat.info("!comparing page " + refSource + " TO " + sourceTag);
-
-            /*
-              if(sourceTag==null || !sourceTag.equals(refSource)) {
-                localRequest = null;
-              }
-            */
-            if ((sourceTag != null) && !refSource.equals(sourceTag))
+            if (!Util.isNull(sourceTag) && !refSource.equals(sourceTag))
             {
                 localRequest = null;
             }

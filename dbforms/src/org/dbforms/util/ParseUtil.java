@@ -73,13 +73,12 @@ public class ParseUtil
      */
     public static String getParameter(ServletRequest request, String name, String def)
     {
+        String t = ((HttpServletRequest)request).getQueryString();
         String s = getParameter(request, name);
-
-        if (s == null)
+        if (Util.isNull(s))
         {
             s = def;
         }
-
         return s;
     }
 
