@@ -776,9 +776,12 @@ public class DbFormTag extends BodyTagSupport {
 			}
 
 			// construct TEI variables for access from JSP
-			pageContext.setAttribute("searchFieldNames_"+tableName, getNamesHashtable("search"));
-			pageContext.setAttribute("searchFieldModeNames_"+tableName, getNamesHashtable("searchmode"));
-			pageContext.setAttribute("searchFieldAlgorithmNames_"+tableName, getNamesHashtable("searchalgo"));
+
+			// # jp 27-06-2001: replacing "." by "_", so that SCHEMATA can be used
+
+			pageContext.setAttribute("searchFieldNames_"+tableName.replace('.', '_'), getNamesHashtable("search"));
+			pageContext.setAttribute("searchFieldModeNames_"+tableName.replace('.', '_'), getNamesHashtable("searchmode"));
+			pageContext.setAttribute("searchFieldAlgorithmNames_"+tableName.replace('.', '_'), getNamesHashtable("searchalgo"));
 
 
 			// #fixme:
@@ -788,9 +791,9 @@ public class DbFormTag extends BodyTagSupport {
 
 			if(!ResultSetVector.isEmptyOrNull(resultSetVector)) {
 
-					pageContext.setAttribute("rsv_"+tableName, resultSetVector);
-					pageContext.setAttribute("currentRow_"+tableName, resultSetVector.getCurrentRowAsHashtable());
-					pageContext.setAttribute("position_"+tableName, table.getPositionString(resultSetVector) );
+					pageContext.setAttribute("rsv_"+tableName.replace('.', '_'), resultSetVector);
+					pageContext.setAttribute("currentRow_"+tableName.replace('.', '_'), resultSetVector.getCurrentRowAsHashtable());
+					pageContext.setAttribute("position_"+tableName.replace('.', '_'), table.getPositionString(resultSetVector) );
 			}
 
 			out.println(tagBuf.toString());

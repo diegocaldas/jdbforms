@@ -87,8 +87,11 @@ public class DbBodyTag extends BodyTagSupport {
 		if(!ResultSetVector.isEmptyOrNull(rsv)) {
 			if(rsv.getPointer() < rsv.size()-1 ) {
 				rsv.increasePointer(); // teleport us to future...
-				pageContext.setAttribute("currentRow_"+myParent.getTableName(), rsv.getCurrentRowAsHashtable());
-				pageContext.setAttribute("position_"+myParent.getTableName(), myParent.getTable().getPositionString(rsv) );
+
+				// # jp 27-06-2001: replacing "." by "_", so that SCHEMATA can be used
+				pageContext.setAttribute("currentRow_"+myParent.getTableName().replace('.', '_'), rsv.getCurrentRowAsHashtable());
+				pageContext.setAttribute("position_"+myParent.getTableName().replace('.', '_'), myParent.getTable().getPositionString(rsv) );
+
 				rsv.declinePointer(); // ...and back to present ;=)
 			}
 		}

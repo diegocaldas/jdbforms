@@ -49,7 +49,7 @@ public class DbFormTagTEI extends TagExtraInfo {
 	if( table != null ) {
 		for(int i=0; i<varNames.length; i++) {
 			varNames[i].append("_");
-			varNames[i].append(table);
+			varNames[i].append(table.replace('.', '_')); // # jp 27-06-2001
 		}
 	}
 
