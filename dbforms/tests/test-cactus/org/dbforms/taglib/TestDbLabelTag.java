@@ -43,6 +43,8 @@ import org.dbforms.util.MessageResources;
 public class TestDbLabelTag extends JspTestCase {
    private DbLabelTag doubleTag;
    private DbLabelTag timeTag;
+   private DbLabelTag nullTag;
+   private DbLabelTag nullTagWithNoData;
    private DbFormTag form;
 
    /**
@@ -71,6 +73,16 @@ public class TestDbLabelTag extends JspTestCase {
       timeTag.setParent(form);
       timeTag.setFieldName("TIME");
 
+      nullTag = new DbLabelTag();
+      nullTag.setPageContext(this.pageContext);
+      nullTag.setParent(form);
+      nullTag.setFieldName("REMARK");
+      nullTag.setNullFieldValue("[]");
+
+      nullTagWithNoData = new DbLabelTag();
+      nullTagWithNoData.setPageContext(this.pageContext);
+      nullTagWithNoData.setParent(form);
+      nullTagWithNoData.setFieldName("REMARK");
    }
 
    //-------------------------------------------------------------------------
@@ -82,6 +94,10 @@ public class TestDbLabelTag extends JspTestCase {
       assertEquals(BodyTag.EVAL_PAGE, result);
       result = timeTag.doEndTag();
       assertEquals(BodyTag.EVAL_PAGE, result);
+      result = nullTag.doEndTag();
+      assertEquals(BodyTag.EVAL_PAGE, result);
+      result = nullTagWithNoData.doEndTag();
+      assertEquals(BodyTag.EVAL_PAGE, result);
       form.doEndTag();
 
    }
@@ -89,9 +105,13 @@ public class TestDbLabelTag extends JspTestCase {
    public void endOutputDE(WebResponse theResponse) throws Exception {
       String s = theResponse.getText();
       boolean res = s.indexOf("2,3") > -1;
-      assertTrue(res);
+      assertTrue("wrong number",res);
       res = s.indexOf("01.01.1900") > -1;
-      assertTrue(res);
+      assertTrue("wrong date", res);
+      res = s.indexOf("[]") > -1;
+      assertTrue("wrong setted null field", res);
+      res = s.indexOf("[NULL]") > -1;
+      assertTrue("wrong null field", res);
    }
 
    public void testOutputEN() throws Exception {
@@ -101,16 +121,23 @@ public class TestDbLabelTag extends JspTestCase {
       assertEquals(BodyTag.EVAL_PAGE, result);
       result = timeTag.doEndTag();
       assertEquals(BodyTag.EVAL_PAGE, result);
+      result = nullTag.doEndTag();
+      assertEquals(BodyTag.EVAL_PAGE, result);
+      result = nullTagWithNoData.doEndTag();
+      assertEquals(BodyTag.EVAL_PAGE, result);
       form.doEndTag();
-
    }
 
    public void endOutputEN(WebResponse theResponse) throws Exception {
       String s = theResponse.getText();
       boolean res = s.indexOf("2.3") > -1;
-      assertTrue(res);
+      assertTrue("wrong number", res);
       res = s.indexOf("Jan 1, 1900") > -1;
-      assertTrue(res);
+      assertTrue("wrong date", res);
+      res = s.indexOf("[]") > -1;
+      assertTrue("wrong setted null field", res);
+      res = s.indexOf("[No Data]") > -1;
+      assertTrue("wrong null field", res);
    }
 
 	public void testOutputJPN() throws Exception {
@@ -120,6 +147,10 @@ public class TestDbLabelTag extends JspTestCase {
 		assertEquals(BodyTag.EVAL_PAGE, result);
 		result = timeTag.doEndTag();
 		assertEquals(BodyTag.EVAL_PAGE, result);
+      result = nullTag.doEndTag();
+      assertEquals(BodyTag.EVAL_PAGE, result);
+      result = nullTagWithNoData.doEndTag();
+      assertEquals(BodyTag.EVAL_PAGE, result);
 		form.doEndTag();
 
 	}
@@ -127,8 +158,14 @@ public class TestDbLabelTag extends JspTestCase {
 	public void endOutputJPN(WebResponse theResponse) throws Exception {
       String s = theResponse.getText();
       boolean res = s.indexOf("2.3") > -1;
-      assertTrue(res);
+      assertTrue("wrong number", res);
       res = s.indexOf("1900/01/01") > -1;
-      assertTrue(res);
+      assertTrue("wrong date", res);
+      res = s.indexOf("[]") > -1;
+      assertTrue("wrong setted null field", res);
+/* can not be tested! We have no japanese resource bundle! 
+      res = s.indexOf("[No Data]") > -1;
+      assertTrue("wrong null field", res);
+*/      
 	}
 }

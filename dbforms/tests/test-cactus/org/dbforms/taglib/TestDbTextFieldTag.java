@@ -53,6 +53,8 @@ import org.dbforms.util.ParseUtil;
 public class TestDbTextFieldTag extends JspTestCase {
    private DbTextFieldTag doubleTag;
    private DbTextFieldTag timeTag;
+   private DbTextFieldTag nullTag;
+   private DbTextFieldTag nullTagWithNoData;
    private DbFormTag form;
 
    private static DbFormsConfig dbconfig;
@@ -83,6 +85,17 @@ public class TestDbTextFieldTag extends JspTestCase {
       timeTag.setParent(form);
       timeTag.setFieldName("TIME");
 
+      nullTag = new DbTextFieldTag();
+      nullTag.setPageContext(this.pageContext);
+      nullTag.setParent(form);
+      nullTag.setFieldName("REMARK");
+      nullTag.setNullFieldValue("");
+
+      nullTagWithNoData = new DbTextFieldTag();
+      nullTagWithNoData.setPageContext(this.pageContext);
+      nullTagWithNoData.setParent(form);
+      nullTagWithNoData.setFieldName("REMARK");
+
       String s = ParseUtil.getParameter(request, "lang");
       MessageResources.setLocale(request, new Locale(s));
 
@@ -92,13 +105,16 @@ public class TestDbTextFieldTag extends JspTestCase {
 
    public void beginOutputDE(WebRequest theRequest) throws Exception {
       theRequest.addParameter("lang", Locale.GERMAN.toString());
+      // set startvalues that will be interpreted in testOutput!
+      // this values are compared to the values in the database
+      // see doTheTest()
       theRequest.addParameter("f_8_null_1", "2,3");
       theRequest.addParameter("of_8_null_1", "2,3");
       theRequest.addParameter("pf_8_null_1", "#,##0.###");
       theRequest.addParameter("f_8_null_0", "01.01.1900");
       theRequest.addParameter("of_8_null_0", "01.01.1900");
       theRequest.addParameter("pf_8_null_0", "dd.MM.yyyy");
-   }
+      }
 
    public void testOutputDE() throws Exception {
       Locale locale = MessageResources.getLocale(request);
@@ -112,10 +128,17 @@ public class TestDbTextFieldTag extends JspTestCase {
       assertTrue("not found: " + "value=\"2,3\"", res);
       res = s.indexOf("value=\"01.01.1900\"") > -1;
       assertTrue("not found: " + "value=\"01.01.1900\"", res);
+      res = s.indexOf("name=\"of_8_null_3\" value=\"\"") > -1;
+      assertTrue("no blank null value", res);
+      res = s.indexOf("name=\"of_8_null_3\" value=\"[NULL]\"") > -1;
+      assertTrue("no null value", res);
    }
 
    public void beginOutputEN(WebRequest theRequest) throws Exception {
       theRequest.addParameter("lang", Locale.ENGLISH.toString());
+      // set startvalues that will be interpreted in testOutput!
+      // this values are compared to the values in the database
+      // see doTheTest()
       theRequest.addParameter("f_8_null_1", "2.3");
       theRequest.addParameter("of_8_null_1", "2.3");
       theRequest.addParameter("pf_8_null_1", "#,##0.###");
@@ -136,10 +159,17 @@ public class TestDbTextFieldTag extends JspTestCase {
       assertTrue("not found: " + "value=\"2.3\"", res);
       res = s.indexOf("value=\"Jan 1, 1900\"") > -1;
       assertTrue("not found : " + "value=\"Jan 1, 1900\"", res);
+      res = s.indexOf("name=\"of_8_null_3\" value=\"\"") > -1;
+      assertTrue("no blank null value", res);
+      res = s.indexOf("name=\"of_8_null_3\" value=\"[No Data]\"") > -1;
+      assertTrue("no null value", res);
    }
 
    public void beginOutputJPN(WebRequest theRequest) throws Exception {
       theRequest.addParameter("lang", Locale.JAPANESE.toString());
+      // set startvalues that will be interpreted in testOutput!
+      // this values are compared to the values in the database
+      // see doTheTest()
       theRequest.addParameter("f_8_null_1", "2.3");
       theRequest.addParameter("of_8_null_1", "2.3");
       theRequest.addParameter("pf_8_null_1", "#,##0.###");
@@ -160,6 +190,12 @@ public class TestDbTextFieldTag extends JspTestCase {
       assertTrue("not found: " + "value=\"2.3\"", res);
       res = s.indexOf("value=\"1900/01/01\"") > -1;
       assertTrue("not found : " + "value=\"1900/01/01\"", res);
+      res = s.indexOf("name=\"of_8_null_3\" value=\"\"") > -1;
+      assertTrue("no blank null value", res);
+/* can not be tested! We have no japanese resource bundle! 
+      res = s.indexOf("name=\"of_8_null_3\" value=\"[NULL]\"") > -1;
+      assertTrue("no null value", res);
+*/      
    }
 
    private void initConfig() throws Exception {
@@ -197,6 +233,12 @@ public class TestDbTextFieldTag extends JspTestCase {
       assertEquals(BodyTag.EVAL_PAGE, result);
 
       result = timeTag.doEndTag();
+      assertEquals(BodyTag.EVAL_PAGE, result);
+
+      result = nullTag.doEndTag();
+      assertEquals(BodyTag.EVAL_PAGE, result);
+
+      result = nullTagWithNoData.doEndTag();
       assertEquals(BodyTag.EVAL_PAGE, result);
 
       form.doEndTag();

@@ -1934,7 +1934,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
                   Date d = (Date) fv.getFieldValueAsObject();
 
                   if (d == null) {
-                     errors.add(new Exception(MessageResourcesInternal.getMessage("dbforms.error.filter.invalidate.date", getLocale())));
+                     errors.add(new Exception(MessageResourcesInternal.getMessage("dbforms.error.filter.invalid.date", getLocale())));
                   } else {
                      if (mode == Constants.SEARCHMODE_AND) {
                         mode_and.addElement(fv);
@@ -1961,7 +1961,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
                   Object obj = fv.getFieldValueAsObject();
 
                   if (obj == null) {
-                     errors.add(new Exception(MessageResourcesInternal.getMessage("dbforms.error.filter.invalidate", getLocale())));
+                     errors.add(new Exception(MessageResourcesInternal.getMessage("dbforms.error.filter.invalid", getLocale())));
                   } else {
                      if (mode == Constants.SEARCHMODE_AND) {
                         mode_and.addElement(fv);
