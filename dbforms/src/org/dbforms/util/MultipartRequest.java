@@ -29,10 +29,12 @@ import java.util.Vector;
 import java.util.Enumeration;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
-import com.oreilly.servlet.*;
-import com.oreilly.servlet.multipart.*;
+import com.oreilly.servlet.multipart.FilePart;
+import com.oreilly.servlet.multipart.MultipartParser;
+import com.oreilly.servlet.multipart.ParamPart;
+import com.oreilly.servlet.multipart.Part;
 import org.apache.log4j.Category;
-import org.dbforms.util.external.*;
+import org.dbforms.util.external.FileHolder;
 
 
 
