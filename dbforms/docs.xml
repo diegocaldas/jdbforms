@@ -346,6 +346,9 @@
     <copy todir="${out.dir}/html/images/figures">
       <fileset dir="${in.dir}/images/figures" includes="**/*.png"/>
     </copy>
+    <copy todir="${out.dir}/html/articles">
+      <fileset dir="${basedir}/articles/about_dbforms" includes="*.pdf"/>
+    </copy>
   </target>
 
 

@@ -14,12 +14,12 @@
     <para>The following pdf articles describe extensions to DbForms:</para>
     <para/>
     <para>
-      <ulink url="/non-cvs/docs/articles/DbForms_DevGui.pdf">
+      <ulink url="articles/DbForms_DevGui.pdf">
         <citetitle>DbFormsDevelopersGUI</citetitle>
       </ulink>, J. Peer, Vienna, 2001 
     </para>
     <para>
-      <ulink url="/non-cvs/docs/articles/XSL_DbForms.pdf">
+      <ulink url="articles/XSL_DbForms.pdf">
         <citetitle>XSLPreprocessingLayerforDbForms</citetitle>
       </ulink>, J. Peer, Vienna, 2001
     </para>

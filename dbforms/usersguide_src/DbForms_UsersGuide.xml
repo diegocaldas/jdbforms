@@ -42,6 +42,7 @@
 ]>
 <book>
 	<title>DataBaseForms UsersGuide</title>
+<!--
 	<part>
 		<title>Major New features</title> 
 &navi;
@@ -49,10 +50,12 @@
 &how_to;
 &unit-test;
 </part>
+-->
 	<part>
 		<title>Installation </title>
 &comp;
 &inst;
+&how_to;
 &devg;
 &jsms;
 </part>
