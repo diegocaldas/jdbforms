@@ -624,7 +624,7 @@ public class Table {
 
 		int controlIndex = secondColon+1+valueLength;
 
-		String valueStr = position.substring(secondColon+1, controlIndex);
+		//String valueStr = position.substring(secondColon+1, controlIndex);
 
 /*
 		FieldValue fv = new FieldValue();
