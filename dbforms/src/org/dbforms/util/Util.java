@@ -142,22 +142,30 @@ public class Util
     public static final String encode (String s, String enc)
     throws UnsupportedEncodingException 
     {  
+        
         if (!Util.isNull (s))
         {
             try
                 {
-                    s = Util.encCheck(s, enc);
-                } 
-    
+                    if (Util.isNull(enc))
+                    {
+                        s = encode (s);
+                    }
+                    
+                    else
+                    {
+                        s = Util.encCheck(s, enc);
+                    } 
+                }
             catch (NoSuchMethodException nsme)
                 {
                     s = encode (s);
                 }
            
-         }
+        }
        return s;
+   
     }
-    
     /**
      *checks to see if URLEncoder.encode(String s, String enc) is available (from jdk 1.4)
      *@throws NoSuchMethodException to signal that jdk 1.3 is being used 
