@@ -95,7 +95,7 @@ public class DbSearchCheckBoxTag extends DbSearchTag
          StringBuffer paramNameBuf = new StringBuffer();
          paramNameBuf.append(field.getSearchFieldName());
 
-         tagBuf.append("<input type=\"input\" name=\"");
+         tagBuf.append("<input type=\"checkbox\" name=\"");
          tagBuf.append(paramNameBuf.toString());
          tagBuf.append("\" ");
          tagBuf.append("value=\"");
