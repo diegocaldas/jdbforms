@@ -33,9 +33,9 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 
 import org.apache.log4j.Category;
-import org.dbforms.config.*;
-import org.dbforms.event.*;
-import org.dbforms.util.external.*;
+import org.dbforms.config.DbFormsConfigRegistry;
+import org.dbforms.config.DbFormsConfig;
+import org.dbforms.config.DbConnection;
 
 
 
@@ -83,16 +83,9 @@ public class SqlUtil
       if (result == null)
       {
          // Maybe date has been returned as a timestamp?
-         try
-         {
-            ;
-         }
-         catch (java.lang.IllegalArgumentException ex)
-         {
-            // Try date
-            result = java.sql.Date.valueOf(valueStr);
-         }
+				result = new Date(Timestamp.valueOf(valueStr).getTime());
       }
+		String s = result.toString();
 
       return result;
    }
@@ -128,7 +121,7 @@ public class SqlUtil
       if (result == null)
       {
          // Maybe date has been returned as a timestamp?
-         result = java.sql.Timestamp.valueOf(valueStr);
+         result = Timestamp.valueOf(valueStr);
       }
 
       return result;
