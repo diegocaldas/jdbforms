@@ -21,7 +21,7 @@
 			<para>This interface provides the following methods
 </para>
 			<example>
-				<title>Listing 26  methods defined in interface DbEventInterceptor
+				<title>Methods defined in interface DbEventInterceptor
 </title>
 				<programlisting>
     public int preInsert(HttpServletRequest request, Hashtable fieldValues,
@@ -108,7 +108,8 @@ The postXxx() methods get called <emphasis role="bold">after</emphasis> the oper
 			<para/>
 			<para>
 				<table>
-					<title/>
+					<title>Parameters available in methods of DbEventInterceptor</title>
+ 
 					<tgroup cols="2">
 						<tbody>
 							<row>
@@ -152,8 +153,7 @@ will ensure that the value smith be stored in the lastname field in the data
 					</tgroup>
 				</table>
 			</para>
-			<para>Table 5  parameters available in the methods of DbEventInterceptor
-</para>
+			
 		</sect1>
 		<sect1>
 			<title>Installing Interceptors
@@ -163,7 +163,7 @@ will ensure that the value smith be stored in the lastname field in the data
 			<para>This information is provided in the dbForms XML configuration file. Similar to the granted-privileges security-constraint, (described in the security chapter) the XML tag which defines an Interceptor has to be placed inside a &lt;table&gt; element.
 </para>
 			<example>
-				<title/>
+				<title>interceptor in dbforms-config.xml</title>
 				<programlisting>
     &lt;table name="customer"&gt;
         &lt;field name="id" fieldType="int" isKey="true"/&gt; 
@@ -197,6 +197,7 @@ will ensure that the value smith be stored in the lastname field in the data
 </title>
 			<para>In this example, we override 2 methods (preInsert and preUpdate) to do some basic validation checking.
 </para>
+<example><title>Validation checking in interceptor</title>
 <screen>
 
     public class CheckCustomerData extends DbEventInterceptorSupport {
@@ -242,15 +243,13 @@ will ensure that the value smith be stored in the lastname field in the data
     }
 
 </screen>			
-			<para>Remarks:
+	</example>		<para>Remarks:
 </para>
 			<para>There is an Exception ValidationException which may be thrown to signal a message to the end-user. In fact, returning the integer constant <computeroutput>DENY_OPERATION</computeroutput> defined in <computeroutput>DbEventInterceptor</computeroutput> leads to similar results (but with an unspecific error message and no generic message)
 </para>
 			<para>It is now possible to accumulate error messages while validating a form in a dbForms interceptor class.  This is useful in situations where many fields are validated and you wish to return several errors instead of just the first occurrence. In the validation process, when an error occurs, simply instantiate a new exception object and store it into a vector.  Do not throw this exception!  Once the validation process has completed, throw an instance of the MultipleValidationException class and pass the vector as an argument to its constructor.  Note that this functionality is dependant on using the xmlError tag. (refer to the section: DbForms Custom Tag Library for more information on using the xmlError  tag)
 </para>
-			<para>
-				<computeroutput>Example:</computeroutput>
-			</para>
+			<example><title>accumlating error messages</title> 
 			<screen>
     public int preUpdate(HttpServletRequest req, Hashtable fieldValues, DbformsConfig conf, 
       Connection con)
@@ -271,7 +270,7 @@ will ensure that the value smith be stored in the lastname field in the data
 			
         }                    
                         
-                        </screen>
+                        </screen></example>
 			<para/>
 		</sect1>
                    <sect1> <title>Changing Key Values in an Interceptor</title>
