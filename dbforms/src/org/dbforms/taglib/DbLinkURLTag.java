@@ -323,9 +323,9 @@ public class DbLinkURLTag extends BodyTagSupport implements TryCatchFinally
             tagBuf.append(getDataTag(tagName, "srcTable",
                   parentForm.getTable().getName()));
             tagBuf.append(getDataTag(tagName, "childField",
-                  Util.encode(childField)));
+                  Util.encode(childField, null)));
             tagBuf.append(getDataTag(tagName, "parentField",
-                  Util.encode(parentField)));
+                  Util.encode(parentField, null)));
          }
 
          HttpServletResponse response = (HttpServletResponse) pageContext

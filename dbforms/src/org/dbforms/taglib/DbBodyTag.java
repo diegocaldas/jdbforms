@@ -30,7 +30,7 @@ import javax.servlet.jsp.tagext.BodyTagSupport;
 import org.dbforms.util.ResultSetVector;
 import org.dbforms.util.Util;
 import org.apache.log4j.Category;
-
+import java.io.UnsupportedEncodingException;
 
 
 /****
@@ -139,7 +139,7 @@ public class DbBodyTag extends BodyTagSupport
 
       JspWriter out = pageContext.getOut();
 
-      //try {
+     try {
       // each rendering loop represents one row of data.
       // for every row we need to print some data needed by the controller servlet in order to
       // correctly dispatching and eventually modifying our data.
@@ -147,15 +147,15 @@ public class DbBodyTag extends BodyTagSupport
       // now the key of the current dataset is printed out (always)
       // this key will be used by actions such as delete or update.
       String curKeyString = Util.encode(myParent.getTable().getKeyPositionString(myParent
-            .getResultSetVector()));
+            .getResultSetVector()), null);
 
       myParent.appendToChildElementOutput("<input type=\"hidden\" name=\"k_"
          + myParent.getTable().getId() + "_" + myParent.getPositionPath()
          + "\" value=\"" + curKeyString + "\">");
 
-      //} catch(IOException ioe) {
-      //	throw new JspException(ioe.toString());
-      //}
+      } catch(UnsupportedEncodingException uee) {
+      	throw new JspException(uee.toString());
+      }
       myParent.increaseCurrentCount();
 
       if (!Util.isNull(myParent.getResultSetVector()))

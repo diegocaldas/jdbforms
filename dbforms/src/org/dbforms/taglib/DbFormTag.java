@@ -1617,7 +1617,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
             // we need to parse request using the given goto prefix
             if (!Util.isNull(gotoPrefix))
             {
-               logCat.info("§§§ NAV GOTO §§§");
+               logCat.info("ï¿½ï¿½ï¿½ NAV GOTO ï¿½ï¿½ï¿½");
 
                Vector v = ParseUtil.getParametersStartingWith(request, gotoPrefix);
                gotoHt = new Hashtable();
@@ -1688,7 +1688,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
 
 
          // Now we have a NAVIGATION event to process
-         logCat.info("§§§ NAV/I §§§");
+         logCat.info("ï¿½ï¿½ï¿½ NAV/I ï¿½ï¿½ï¿½");
 
          if (navEvent != null)
          {
@@ -1763,13 +1763,13 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
             if (firstPosition != null)
             {
                tagBuf.append("<input type=\"hidden\" name=\"firstpos_"
-                  + tableId + "\" value=\"" + Util.encode(firstPosition) + "\">");
+                  + tableId + "\" value=\"" + Util.encode(firstPosition, null) + "\">");
             }
 
             if (lastPosition != null)
             {
                tagBuf.append("<input type=\"hidden\" name=\"lastpos_" + tableId
-                  + "\" value=\"" + Util.encode(lastPosition) + "\">");
+                  + "\" value=\"" + Util.encode(lastPosition, null) + "\">");
             }
          }
 
