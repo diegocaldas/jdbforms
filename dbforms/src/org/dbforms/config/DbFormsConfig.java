@@ -26,17 +26,15 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Vector;
 
-
 import javax.servlet.ServletContext;
 import javax.servlet.ServletConfig;
 
 import org.apache.log4j.Category;
 
 import org.dbforms.util.Util;
+import org.dbforms.dom.DOMFactory; 
 
 import java.sql.Connection;
-
-
 
 /****
  * <p>
@@ -49,167 +47,146 @@ import java.sql.Connection;
  *
  * @author Joe Peer <joepeer@excite.com>
  */
-public class DbFormsConfig
-{
-   private Category logCat = Category.getInstance(this.getClass().getName());
+public class DbFormsConfig {
+	private Category logCat = Category.getInstance(this.getClass().getName());
 
-   /** DOCUMENT ME! */
-   public static final String      CONFIG = "dbformsConfig";
-   private Vector                  tables;
+	/** DOCUMENT ME! */
+	public static final String CONFIG = "dbformsConfig";
+	private Vector tables;
 
-   /** for quicker lookup by name */
-   private Hashtable tableNameHash;
+	/** for quicker lookup by name */
+	private Hashtable tableNameHash;
 
-   /** the default db connection */
-   private DbConnection defaultDbConnection;
+	/** the default db connection */
+	private DbConnection defaultDbConnection;
 
-   /** contains connection put by addDbConnection */
-   private ArrayList dbConnectionsList;
-   private Hashtable dbConnectionsHash;
-   private String    realPath;
+	/** contains connection put by addDbConnection */
+	private ArrayList dbConnectionsList;
+	private Hashtable dbConnectionsHash;
+	private String realPath;
 
-   //private DbConnection dbConnection;
-   private ServletConfig servletConfig;
+	private ServletConfig servletConfig;
 
-   /**
-    * Creates a new DbFormsConfig object.
-    * 
-    * @param realPath local path to the application on local server
-    */
-   public DbFormsConfig(String realPath)
-   {
-      setRealPath(realPath);
-      tables               = new Vector();
-      tableNameHash        = new Hashtable();
-      dbConnectionsHash    = new Hashtable();
-      dbConnectionsList    = new ArrayList();
-   }
+	/**
+	 * Creates a new DbFormsConfig object.
+	 * 
+	 * @param realPath local path to the application on local server
+	 */
+	public DbFormsConfig(String realPath) {
+		setRealPath(realPath);
+		tables = new Vector();
+		tableNameHash = new Hashtable();
+		dbConnectionsHash = new Hashtable();
+		dbConnectionsList = new ArrayList();
+	}
 
-   /**
-    * DOCUMENT ME!
-    *
-    * @param table DOCUMENT ME!
-    */
-   public void addTable(Table table)
-   {
-      logCat.info("add table called");
-      table.setId(tables.size());
-      table.setConfig(this);
-      table.initDefaultOrder();
-      tables.addElement(table);
-      tableNameHash.put(table.getName(), table);
-   }
+	/**
+	 * DOCUMENT ME!
+	 *
+	 * @param table DOCUMENT ME!
+	 */
+	public void addTable(Table table) {
+		logCat.info("add table called");
+		table.setId(tables.size());
+		table.setConfig(this);
+		table.initDefaultOrder();
+		tables.addElement(table);
+		tableNameHash.put(table.getName(), table);
+	}
 
+	/**
+	 * DOCUMENT ME!
+	 *
+	 * @param index DOCUMENT ME!
+	 *
+	 * @return DOCUMENT ME!
+	 */
+	public Table getTable(int index) {
+		try {
+			return (Table) tables.elementAt(index);
+		} catch (Exception e) {
+			return null;
+		}
+	}
 
-   /**
-    * DOCUMENT ME!
-    *
-    * @param index DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    */
-   public Table getTable(int index)
-   {
-      try
-      {
-         return (Table) tables.elementAt(index);
-      }
-      catch (Exception e)
-      {
-         return null;
-      }
-   }
+	/**
+	 * DOCUMENT ME!
+	 *
+	 * @param name DOCUMENT ME!
+	 *
+	 * @return DOCUMENT ME!
+	 */
+	public Table getTableByName(String name) {
+		try {
+			return (Table) tableNameHash.get(name);
+		} catch (Exception e) {
+			return null;
+		}
+	}
 
+	/**
+	 * DOCUMENT ME!
+	 *
+	 * @param dbConnection DOCUMENT ME!
+	 */
+	public void addDbConnection(DbConnection dbConnection) {
+		dbConnection.setName(
+			Util.replaceRealPath(dbConnection.getName(), realPath));
+		dbConnectionsList.add(dbConnection);
 
-   /**
-    * DOCUMENT ME!
-    *
-    * @param name DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    */
-   public Table getTableByName(String name)
-   {
-      try
-      {
-         return (Table) tableNameHash.get(name);
-      }
-      catch (Exception e)
-      {
-         return null;
-      }
-   }
+		if (!Util.isNull(dbConnection.getId())) {
+			dbConnectionsHash.put(dbConnection.getId(), dbConnection);
+		}
 
+		// if a default connection does not exist yet,
+		// use the input connection as the default one;
+		if ((dbConnection.isDefaultConnection()
+			&& ((defaultDbConnection == null)
+				|| !defaultDbConnection.isDefaultConnection()))
+			|| (defaultDbConnection == null)) {
+			defaultDbConnection = dbConnection;
+			dbConnection.setDefaultConnection(true);
+		}
 
-   /**
-    * DOCUMENT ME!
-    *
-    * @param dbConnection DOCUMENT ME!
-    */
-   public void addDbConnection(DbConnection dbConnection)
-   {
-      dbConnection.setName(Util.replaceRealPath(dbConnection.getName(), realPath));
-      dbConnectionsList.add(dbConnection);
+		logCat.info(
+			"::addDbConnection - added the dbConnection ["
+				+ dbConnection
+				+ "]");
+	}
 
-      if (!Util.isNull(dbConnection.getId()))
-      {
-         dbConnectionsHash.put(dbConnection.getId(), dbConnection);
-      }
+	/**
+	 * DOCUMENT ME!
+	 *
+	 * @param dbConnectionName DOCUMENT ME!
+	 *
+	 * @return DOCUMENT ME!
+	 */
+	public DbConnection getDbConnection(String dbConnectionName) {
+		DbConnection connection = null;
 
-      // if a default connection does not exist yet,
-      // use the input connection as the default one;
-      if ((dbConnection.isDefaultConnection()
-               && ((defaultDbConnection == null)
-               || !defaultDbConnection.isDefaultConnection()))
-               || (defaultDbConnection == null))
-      {
-         defaultDbConnection = dbConnection;
-         dbConnection.setDefaultConnection(true);
-      }
+		if (Util.isNull(dbConnectionName)) {
+			return defaultDbConnection;
+		}
 
-      logCat.info("::addDbConnection - added the dbConnection [" + dbConnection
-         + "]");
-   }
+		try {
+			connection =
+				(DbConnection) dbConnectionsList.get(
+					Integer.parseInt(dbConnectionName));
+		} catch (Exception ex) {
+			// wanted! logCat.error("getDbConnection", ex);
+		}
+		if (connection != null) {
+			return connection;
+		}
 
+		connection = (DbConnection) dbConnectionsHash.get(dbConnectionName);
 
-   /**
-    * DOCUMENT ME!
-    *
-    * @param dbConnectionName DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    */
-   public DbConnection getDbConnection(String dbConnectionName)
-   {
-      DbConnection connection = null;
+		if (connection == null) {
+			connection = defaultDbConnection;
+		}
 
-      if (Util.isNull(dbConnectionName))
-      {
-         return defaultDbConnection;
-      }
-
-      try
-      {
-         connection = (DbConnection) dbConnectionsList.get(Integer.parseInt(dbConnectionName));
-      }
-      catch (Exception ex)
-      {
-		// wanted! logCat.error("getDbConnection", ex);
-      }
-      if (connection != null)
-      {
-	      return connection;
-      }
-
-      connection = (DbConnection) dbConnectionsHash.get(dbConnectionName);
-
-      if (connection == null)
-      {
-         connection = defaultDbConnection;
-      }
-
-      return connection;
-   }
+		return connection;
+	}
 
 	/**
 	 * 
@@ -219,152 +196,114 @@ public class DbFormsConfig
 	 * 
 	 * @throws IllegalArgumentException if any error occurs
 	 */
-	public Connection getConnection()
-		 throws IllegalArgumentException
-	{
-	   return getConnection(null);
+	public Connection getConnection() throws IllegalArgumentException {
+		return getConnection(null);
 	}
-	
-   /**
-    * Get a connection using the connection name specified into the xml
-    * configuration file.
-    * 
-    * @param dbConnectionName  the name of the DbConnection element
-    * 
-    * @return a JDBC connection object
-    * 
-    * @throws IllegalArgumentException if any error occurs
-    */
-   public Connection getConnection(String dbConnectionName)
-       throws IllegalArgumentException
-   {
-       DbConnection dbConnection = null;
-       Connection con = null;
-       //  get the DbConnection object having the input name;
-       if ((dbConnection = getDbConnection(dbConnectionName)) == null)
-       {
-           throw new IllegalArgumentException(
-               "No DbConnection object configured with name '"
-                   + dbConnectionName
-                   + "'");
-       }
 
-       // now try to get the JDBC connection from the retrieved DbConnection object;
-       if ((con = dbConnection.getConnection()) == null)
-       {
-           throw new IllegalArgumentException(
-               "JDBC-Troubles:  was not able to create connection from "
-                   + dbConnection);
-       }
+	/**
+	 * Get a connection using the connection name specified into the xml
+	 * configuration file.
+	 * 
+	 * @param dbConnectionName  the name of the DbConnection element
+	 * 
+	 * @return a JDBC connection object
+	 * 
+	 * @throws IllegalArgumentException if any error occurs
+	 */
+	public Connection getConnection(String dbConnectionName)
+		throws IllegalArgumentException {
+		DbConnection dbConnection = null;
+		Connection con = null;
+		//  get the DbConnection object having the input name;
+		if ((dbConnection = getDbConnection(dbConnectionName)) == null) {
+			throw new IllegalArgumentException(
+				"No DbConnection object configured with name '"
+					+ dbConnectionName
+					+ "'");
+		}
 
-       return con;
-   }
+		// now try to get the JDBC connection from the retrieved DbConnection object;
+		if ((con = dbConnection.getConnection()) == null) {
+			throw new IllegalArgumentException(
+				"JDBC-Troubles:  was not able to create connection from "
+					+ dbConnection);
+		}
 
+		return con;
+	}
 
-   /**
-    * DOCUMENT ME!
-    *
-    * @param servletConfig DOCUMENT ME!
-    */
-   public void setServletConfig(ServletConfig servletConfig)
-   {
-      this.servletConfig = servletConfig;
-   }
+	/**
+	 * DOCUMENT ME!
+	 *
+	 * @param servletConfig DOCUMENT ME!
+	 */
+	public void setServletConfig(ServletConfig servletConfig) {
+		this.servletConfig = servletConfig;
+	}
 
+	/**
+	*   get access to configuration of config servlet
+	* 
+	*  @return the store config 
+	* 
+	*/
+	public ServletConfig getServletConfig() {
+		return servletConfig;
+	}
 
-   /**
-   *   get access to configuration of config servlet
-   * 
-   *  @return the store config 
-   * 
-   */
-   public ServletConfig getServletConfig()
-   {
-      return servletConfig;
-   }
+	/**
+	 *  Get access to servlet context in order to interoperate with
+	 *  other components of the web application
+	 * 
+	 * @return the stored context
+	 * 
+	 */
+	public ServletContext getServletContext() {
+		return servletConfig.getServletContext();
+	}
 
+	/**
+	 *  Returns the realPath.
+	 *
+	 * @return the realPath
+	 */
+	public String getRealPath() {
+		return realPath;
+	}
 
-   /**
-    *  Get access to servlet context in order to interoperate with
-    *  other components of the web application
-    * 
-    * @return the stored context
-    * 
-    */
-   public ServletContext getServletContext()
-   {
-      return servletConfig.getServletContext();
-   }
+	/**
+	 *  Sets the realPath.
+	 *
+	 * @param realPath The realPath to set
+	 */
+	public void setRealPath(String realPath) {
+		if (!Util.isNull(realPath)) {
+			realPath = realPath.replace('\\', '/');
+		}
+		this.realPath = realPath;
+	}
 
+	/**
+	 * DOCUMENT ME!
+	 *
+	 * @return DOCUMENT ME!
+	 */
+	public String toString() {
+		StringBuffer buf = new StringBuffer();
 
-   /**
-    *  DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    */
-/*
-   private SimpleDateFormat getDateFormatter()
-   {
-      if (sdf == null)
-      {
-         sdf = new SimpleDateFormat();
-      }
+		for (int i = 0; i < tables.size(); i++) {
+			Table t = (Table) tables.elementAt(i);
+			buf.append("table:\n");
+			buf.append(t.toString());
+		}
 
-      return sdf;
-   }
-*/
+		return buf.toString();
+	}
+	/**
+	 * @param string
+	 */
+	public void setDOMFactoryClass(String string) {
+		DOMFactory.setFactoryClass(string);
+	}
 
-   /**
-    * DOCUMENT ME!
-    *
-    * @param pattern DOCUMENT ME!
-    */
-   public void setDateFormatter(String pattern)
-   {
-   }
-
-
-   /**
-    *  Returns the realPath.
-    *
-    * @return the realPath
-    */
-   public String getRealPath()
-   {
-      return realPath;
-   }
-
-
-   /**
-    *  Sets the realPath.
-    *
-    * @param realPath The realPath to set
-    */
-   public void setRealPath(String realPath)
-   {
-      if (!Util.isNull(realPath)) {
-		realPath = realPath.replace('\\', '/');
-      }
-      this.realPath = realPath;
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    */
-   public String toString()
-   {
-      StringBuffer buf = new StringBuffer();
-
-      for (int i = 0; i < tables.size(); i++)
-      {
-         Table t = (Table) tables.elementAt(i);
-         buf.append("table:\n");
-         buf.append(t.toString());
-      }
-
-      return buf.toString();
-   }
 }

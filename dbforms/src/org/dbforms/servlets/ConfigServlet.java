@@ -231,8 +231,8 @@ public class ConfigServlet extends HttpServlet
 
 
       // Configure the processing rules
-      // parse "DateFormatter"
-      digester.addCallMethod("dbforms-config/date-format", "setDateFormatter", 0);
+      // parse "DOMFactoryClass"
+      digester.addCallMethod("dbforms-config/DOMFactoryClass", "setDOMFactoryClass", 0);
 
 
       // parse "Table" - object + add it to parent
