@@ -172,7 +172,9 @@ public abstract class DatabaseEvent extends WebEvent
                         + keyId
                         + "_");
     
-    // TODO - remove this log after the understanding process;
+    /** 
+     * @todo - remove this log after the understanding process; 
+     */
     logCat.info("::getFieldValues ----------------> paramStub =" + paramStub);
           
     Vector params = ParseUtil.getParametersStartingWith(request, paramStub);
@@ -249,7 +251,9 @@ public abstract class DatabaseEvent extends WebEvent
   {
     String key = Util.decode(ParseUtil.getParameter(request, "k_" + tableId + "_" + keyId));
 
-    // TODO - remove this log after the understanding process;
+    /** 
+     * @todo - remove this log after the understanding process; 
+     */
     logCat.info("::getKeyValues - key: " + key);
 
     return key;

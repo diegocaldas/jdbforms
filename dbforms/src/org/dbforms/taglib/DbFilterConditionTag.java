@@ -91,6 +91,7 @@ public class DbFilterConditionTag extends BodyTagSupport implements TryCatchFina
      * @param tableId
      * @param conditionId
      * @return string containing sql condition code
+     * @todo search for \? to let use the ? char in condition
      */
     protected static String generateFilterCondition(
         HttpServletRequest request,
@@ -120,8 +121,11 @@ public class DbFilterConditionTag extends BodyTagSupport implements TryCatchFina
                 + filterCondition
                 + ", values : "
                 + values);
-        // TODO search for \? to let use the ? char in condition
-        // substitute ? with corresponding value in list 
+        /**
+         * substitute ? with corresponding value in list 
+         *
+         * @todo search for \? to let use the ? char in condition
+         */
         int p1 = 0;
         int p2 = filterCondition.indexOf('?', p1);
         StringBuffer buf = new StringBuffer();

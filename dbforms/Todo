@@ -17,11 +17,11 @@ TO DO
 
 * Make the resultSetVector class more accessible.  Allow it to be cached and manipulated.
 
-* Generate DTD files for dbForms-config.xml and dbForms-errors.xml.
+* Generate DTD files for dbForms-config.xml and dbForms-errors.xml.  (done in v.1.1.4)
 
 * Include support for DBCS. 
 
-* On multiple-row updates, update only the rows for which fields have been modified.
+* On multiple-row updates, update only the rows for which fields have been modified. (done in v.1.1.4)
 
 
 If you wish to participate in the development of any of the above tasks, or have your own dbForms wish list.

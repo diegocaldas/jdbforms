@@ -105,6 +105,10 @@ public class NavNextEvent extends NavigationEvent
 	 * @return a ResultSetVector object
 	 * 
 	 * @exception SQLException if any error occurs
+         *
+         * @todo change behavior to navLast if navNext finds no data
+         * @todo make a option to allow original "navNew" behavior if desired
+         * @todo change behavior to navFirst if navPrev finds no data
 	 */
    public ResultSetVector processEvent(FieldValue[] filterFieldValues, 
                                        FieldValue[] orderConstraint,
@@ -129,9 +133,12 @@ public class NavNextEvent extends NavigationEvent
                                             table.getFieldValues(lastPosition));
       ResultSetVector   res      = qry.getNext(position, count);
 
-      // change behavior to navLast if navNext finds no data
-      /// TODO: make a option to allow original "navNew" behavior if desired
-      // change behavior to navFirst if navPrev finds no data
+      /**
+       * @todo change behavior to navLast if navNext finds no data
+       * @todo make a option to allow original "navNew" behavior if desired
+       * @todo change behavior to navFirst if navPrev finds no data
+       */
+      // 
       if (Util.isNull(res))
       {
          res = qry.getLast(count);

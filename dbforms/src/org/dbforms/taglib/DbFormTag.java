@@ -2053,6 +2053,8 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
     * Initialize the value of the search fields.
     *
     * @return  the field values array
+    * @todo Whats when there is more then onesearch field whith the same name?
+    * @todo Maybe we should parse all of them ....
     */
    private FieldValue[] initSearchFieldValues() throws IOException
    {
@@ -2074,9 +2076,10 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
       {
          String searchFieldName = (String) searchFieldNames.elementAt(i);
 
-         //. i.e search_1_12
-         // 20020927-HKK-TODO: Whats when there is more then onesearch field whith the same name?
-         //                    Maybe we should parse all of them ....
+         /** 
+          * @todo Whats when there is more then onesearch field whith the same name?
+          * @todo Maybe we should parse all of them ....
+          */
          String aSearchFieldValue = ParseUtil.getParameter(request,
                searchFieldName);
 

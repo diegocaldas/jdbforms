@@ -3,11 +3,7 @@
   <ant:echo message="Hack to use xalan transformer!" />
   ${systemScope.setProperty('javax.xml.transform.TransformerFactory','org.apache.xalan.processor.TransformerFactoryImpl')}
   <ant:property environment="env" />
-  <!--
-     -  Build the additional DbForms documentation:
-     -    tag library
-     -    docbook guide 
-     -->
+
   <goal name="maxq:start">
      <ant:echo message="please setup your browser to use localhost:8090 as proxy port!" />
      <ant:java  classname="com.bitmechanic.maxq.Main" fork="yes">
@@ -99,59 +95,57 @@
     <attainGoal name="dbforms:weekly" />
   </goal>
 
+
+  <!-- change crlf before jalopy task -->
   <preGoal name="jalopy:format">
     <ant:echo message="fixcrlf" />
     <ant:ant antfile="build.xml" target="forcedos" />
   </preGoal>
 
-  <postGoal name="maven-changes-plugin:report">
+
+  <!-- neccesary to get cactus report!!! -->
+  <preGoal name="cactus:report">
+    	<ant:echo message="run cactus tests" />
+    	<attainGoal name="cactus:test"/>
+  </preGoal>
+
+  <!-- to init the appserver with bookstore example -->
+  <preGoal name="appserver:init">
+     <ant:copy todir="${maven.appserver.conf.dir}/conf/" overwrite="true">
+    	<ant:fileset dir="${maven.conf.dir}/${maven.appserver.name}-${maven.appserver.version}" />
+    </ant:copy>
+    <ant:copy tofile="${maven.appserver.conf.dir}/webapps/bookstore.war" overwrite="true">
+    	<ant:fileset dir="dist">
+           <ant:include name="bookstore*.war" />    		
+    	</ant:fileset>
+    </ant:copy>
+  </preGoal>
+
+  <!-- to start the appserver before junit test starts. So httpclient tests could be done! -->
+  <preGoal name="test:test">
+     <attainGoal name="dbforms:startweb" />
+     <ant:sleep seconds="30" />
+  </preGoal>
+
+  <!-- We have our own ChangeLog file! -->
+  <postGoal name="changes:report">
     <ant:echo message="build changes.xml" />
     <doc:text-xdoc title="Changes" section="CHANGES" output="target/generated-xdocs/changes-report.xml" inputFile="ChangeLog" />
   </postGoal>
 
-  <preGoal name="xdoc:jelly-transform">
-    <attainGoal name="cactus:test" />
-    <attainGoal name="cactus:report" />
-    <ant:copy file="${maven.build.dir}/generated-xdocs/cactus-report.xml" tofile="${maven.build.dir}/generated-xdocs/junit-report.xml" overwrite="true" />
-    <ant:delete file="${maven.build.dir}/generated-xdocs/cactus-report.xml" />
-  </preGoal>
-  <!--
-     -  Move the $DBFORMS_HOME/target/docs/* stuff into the 
-     -  $DBFORMS_HOME/doc directory
-     -->
-
+  <!-- Move the $DBFORMS_HOME/target/docs/* stuff into the $DBFORMS_HOME/doc directory -->
   <postGoal name="site:generate">
     <ant:echo message="moving the Maven docs stuff into the main DbForms doc directory" />
     <ant:ant antfile="docs.xml" target="maven-move-doc" />
   </postGoal>
 
-  <!--
-      clean doc dir too
-     -->
+  <!-- clean doc dir too -->
   <postGoal name="clean">
     <ant:echo message="clean docs too" />
     <ant:ant antfile="docs.xml" target="cleanUp" />
     <ant:delete dir="build"/>
   </postGoal>
 
-  <postGoal name="appserver:install">
-    <ant:copy file="${maven.conf.dir}/${maven.appserver.fullname}/web.xml" tofile="${maven.appserver.dir}/conf/web.xml" overwrite="true"/>
-    <ant:copy tofile="${maven.appserver.dir}/webapps/bookstore.war" overwrite="true">
-    	<ant:fileset dir="dist">
-           <ant:include name="bookstore*.war" />    		
-    	</ant:fileset>
-    </ant:copy>
-    <ant:copy file="${maven.conf.dir}/root/index.html" todir="${maven.appserver.dir}/webapps/ROOT" overwrite="true"/>
-  </postGoal>
 
-  <preGoal name="test:test">
-     <attainGoal name="dbforms:startweb" />
-     <ant:sleep seconds="30" />
-  </preGoal>
-
-  <postGoal name="test:test">
-     <ant:echo message="stop tomcat" />
-     <attainGoal name="appserver:stop" />
-  </postGoal>
 </project>
 

@@ -314,7 +314,9 @@ public class InsertEvent extends ValidationEvent
 
       //Patch insert nav by Stefano Borghi
       //Show the last record inserted
-      // TODO: Will not work if key field is autoinc!!
+      /** 
+       * @todo Will not work if key field is autoinc!!
+       */
       String       firstPosition = null;
       Vector       key     = table.getKey();
       FieldValue[] fvEqual = new FieldValue[key.size()];
@@ -335,7 +337,9 @@ public class InsertEvent extends ValidationEvent
          fvEqual[i] = keyFieldValue;
       }
 
-	  //TODO nullify sqlFilter, check if is logically correct 
+	  /* 
+	   * @todo nullify sqlFilter, check if is logically correct
+	   */ 
       ResultSetVector resultSetVector = table.doConstrainedSelect(table
             .getFields(), fvEqual, null, "", Constants.COMPARE_NONE, 1, con);
 

@@ -404,7 +404,7 @@ public class ParseUtil
    * @param filter the filter string
    *
    * @return an initialized FieldValue array
-   *         #TODO add MORE docs here !!!
+   * @todo    add MORE docs here !!!
    */
   public static FieldValue[] initFilterFieldValues(Table  table,
                                                    String filter)

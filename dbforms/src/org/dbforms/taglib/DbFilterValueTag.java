@@ -130,6 +130,7 @@ public class DbFilterValueTag extends BodyTagSupport implements DataContainer, T
      * retrieve the format object to use to convert date or timestamp to string
      * @param type attribute of DbFilterValue object
      * @return format object
+     * @todo better handling of  timestamp format
      */
     protected static DateFormat getDateFormat(String type)
     {
@@ -150,7 +151,9 @@ public class DbFilterValueTag extends BodyTagSupport implements DataContainer, T
         }
         else if (FLT_VALUETYPE_TIMESTAMP.equalsIgnoreCase(type))
         {
-            // TODO better handling of  timestamp format
+            /** 
+             * @todo better handling of  timestamp format
+             */
             format = new SimpleDateFormat();
         }
         return format;
@@ -413,13 +416,15 @@ public class DbFilterValueTag extends BodyTagSupport implements DataContainer, T
      * 
      * @return
      * @throws JspException
+     * @todo better handling of timestamp
      */
     protected StringBuffer render() throws JspException
     {
         StringBuffer buf = new StringBuffer();
         if (state.label != null)
             buf.append("<b>" + state.label + "</b>\n");
-        // TODO better handling of timestamp
+
+        /// @todo better handling of timestamp
         if (state.type.equalsIgnoreCase(FLT_VALUETYPE_TEXT)
             || state.type.equalsIgnoreCase(FLT_VALUETYPE_NUMERIC))
         {

@@ -106,9 +106,9 @@ import org.dbforms.util.ParseUtil;
  * (.i.e. when user press the set button, and so the filter_<tableId>_set parameter is found in request).
  * This is needed because here we must force the goto event to move to the first avalilable row. 
  * <p>   
- * TODO can I extends this tag from TagSupportWithScriptHandler to inherit attributes?
- * TODO I have to find a way to apply filter only when "set" button is pressed (problem with goto to current position that is anymore visible)
- * TODO add internationalization support
+ * @todo can I extends this tag from TagSupportWithScriptHandler to inherit attributes?
+ * @todo I have to find a way to apply filter only when "set" button is pressed (problem with goto to current position that is anymore visible)
+ * @todo add internationalization support
  *  
  * @author Sergio Moretti <s.moretti@nsi-mail.it>
  * 
@@ -256,6 +256,7 @@ public class DbFilterTag extends BodyTagSupport implements TryCatchFinally
      * here we read information from nested tags and we render output to the page. 
      * 
      * @see javax.servlet.jsp.tagext.IterationTag#doAfterBody()
+     * @todo must bodyContent be cleared?
      */
     public int doAfterBody() throws JspException
     {
@@ -279,7 +280,9 @@ public class DbFilterTag extends BodyTagSupport implements TryCatchFinally
             JspWriter out = getPreviousOut();
             // render output
             out.println(render(currentCond));
-            // TODO must bodyContent be cleared?
+            /* 
+             * @todo must bodyContent be cleared?
+             */
             if (bodyContent != null)
                 bodyContent.clearBody();
         }
