@@ -20,8 +20,10 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.taglib;
+import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.dbforms.config.Field;
 import org.dbforms.config.FieldValue;
@@ -39,11 +41,12 @@ import javax.servlet.jsp.JspException;
  */
 public class TextFormatTag extends DbBaseHandlerTag
    implements javax.servlet.jsp.tagext.TryCatchFinally {
-   private Object fieldObject; // Holds the object to retrieve.
-   private String pattern;
-   private String type;
-   private String value;
-   private String variable;
+   private static Log logCat      = LogFactory.getLog(TextFormatTag.class);
+   private Object     fieldObject; // Holds the object to retrieve.
+   private String     pattern;
+   private String     type;
+   private String     value;
+   private String     contextVar;
 
    /**
     * DOCUMENT ME!
@@ -132,7 +135,7 @@ public class TextFormatTag extends DbBaseHandlerTag
     * @throws JspException DOCUMENT ME!
     */
    public int doEndTag() throws javax.servlet.jsp.JspException {
-      if (Util.isNull(getVariable()) && Util.isNull(getValue())) {
+      if (Util.isNull(getContextVar()) && Util.isNull(getValue())) {
          throw new JspException("either var or value must be setted!");
       }
 
@@ -149,7 +152,28 @@ public class TextFormatTag extends DbBaseHandlerTag
          fv.setPattern(getPattern());
          fieldObject = fv.getFieldValueAsObject();
       } else {
-         fieldObject = pageContext.findAttribute(getVariable());
+         String search = getContextVar();
+         int    pos = search.indexOf(".");
+
+         if (pos == -1) {
+            // simple type, 'search' is an object in the session
+            fieldObject = pageContext.findAttribute(search);
+         } else {
+            try {
+               // complex, 'search' is really a bean
+               String search_bean = search.substring(0, pos);
+               search = search.substring(pos + 1);
+               Object   bean = pageContext.findAttribute(search_bean);
+
+               if (bean != null) {
+                  logCat.debug("calling PropertyUtils.getProperty " + search_bean
+                     + " " + search);
+                  fieldObject = PropertyUtils.getProperty(bean, search);
+               }
+            } catch (Exception e) {
+               throw new JspException(e.getMessage());
+            }
+         }
 
          if (fieldObject == null) {
             throw new JspException("object not found in context!");
@@ -164,8 +188,7 @@ public class TextFormatTag extends DbBaseHandlerTag
       fieldValue = escapeHTML(fieldValue);
 
       try {
-         pageContext.getOut()
-                    .write(fieldValue);
+         pageContext.getOut().write(fieldValue);
       } catch (java.io.IOException ioe) {
          // better to KNOW what happended !
          throw new JspException("IO Error: " + ioe.getMessage());
@@ -179,10 +202,10 @@ public class TextFormatTag extends DbBaseHandlerTag
     * DOCUMENT ME!
     */
    public void doFinally() {
-      pattern  = null;
-      type     = null;
-      value    = null;
-      variable = null;
+      pattern       = null;
+      type          = null;
+      value         = null;
+      contextVar    = null;
       super.doFinally();
    }
 
@@ -200,19 +223,19 @@ public class TextFormatTag extends DbBaseHandlerTag
    /**
     * DOCUMENT ME!
     *
-    * @param variable DOCUMENT ME!
+    * @return DOCUMENT ME!
     */
-   public void setVariable(String variable) {
-      this.variable = variable;
+   public String getContextVar() {
+      return contextVar;
    }
 
 
    /**
     * DOCUMENT ME!
     *
-    * @return DOCUMENT ME!
+    * @param contextVar DOCUMENT ME!
     */
-   public String getVariable() {
-      return variable;
+   public void setContextVar(String contextVar) {
+      this.contextVar = contextVar;
    }
 }

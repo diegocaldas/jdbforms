@@ -156,13 +156,15 @@ public abstract class LineReportServletAbstract extends ReportServletAbstract {
 				obj = request.getAttribute(search);
 			} else {
 				// complex, 'search' is really a bean
-				String[] sa = search.split(".", 2);
-				Object bean = request.getAttribute(sa[0]);
-				if (obj != null) {
-					logCat.debug("calling PropertyUtils.getProperty " + sa[0]
-							+ " " + sa[1]);
-					obj = PropertyUtils.getProperty(bean, sa[1]);
-				}
+	               // complex, 'search' is really a bean
+	               String search_bean = search.substring(0, pos);
+	               search = search.substring(pos + 1);
+	               Object   bean = request.getAttribute(search_bean);
+	               if (bean != null) {
+	                  logCat.debug("calling PropertyUtils.getProperty " + search_bean
+	                     + " " + search);
+	                  obj = PropertyUtils.getProperty(bean, search);
+	               }
 			}
 		} catch (Exception e) {
 			logCat.error("getPageContextValue: " + e);
@@ -180,14 +182,15 @@ public abstract class LineReportServletAbstract extends ReportServletAbstract {
 				// simple type, 'search' is an object in the session
 				obj = session.getAttribute(search);
 			} else {
-				// complex, 'search' is really a bean
-				String[] sa = search.split(".", 2);
-				Object bean = session.getAttribute(sa[0]);
-				if (obj != null) {
-					logCat.debug("calling PropertyUtils.getProperty " + sa[0]
-							+ " " + sa[1]);
-					obj = PropertyUtils.getProperty(bean, sa[1]);
-				}
+	               // complex, 'search' is really a bean
+	               String search_bean = search.substring(0, pos);
+	               search = search.substring(pos + 1);
+	               Object   bean = session.getAttribute(search_bean);
+	               if (bean != null) {
+	                  logCat.debug("calling PropertyUtils.getProperty " + search_bean
+	                     + " " + search);
+	                  obj = PropertyUtils.getProperty(bean, search);
+	               }
 			}
 		} catch (Exception e) {
 			logCat.error("getSessionValue: " + e);
@@ -287,5 +290,6 @@ public abstract class LineReportServletAbstract extends ReportServletAbstract {
 			return null;
 		}
 	}
+	
 
 }
