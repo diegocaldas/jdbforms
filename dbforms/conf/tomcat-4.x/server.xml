@@ -1,4 +1,7 @@
-<Server port="8005" shutdown="SHUTDOWN" debug="0">
+<!-- change from standard port. so cactus tests can run later. 
+	appserver:stop do not stop tomcat!
+-->
+<Server port="8042" shutdown="SHUTDOWN" debug="0">
 
   <Service name="Tomcat-Standalone">
 
