@@ -1677,7 +1677,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
          {
             navEvent = (NavigationEvent) webEvent;
 
-            if (navEvent.getTable().getId() != tableId)
+            if ((navEvent.getTable() == null) || (navEvent.getTable().getId() != tableId))
             {
                // navigation event is not for this table,
                // then just navigate to a position (if it exists) or just select all data
