@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
- 
-	<appendix>
-		<title>Changes
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Luca (H3G) -->
+<appendix>
+  <title>Changes
 </title>
-		 
- 
-			<para>Please see the changes file in the release or cvs for updated information.
+  <para>Please see the changes file in the release or cvs for updated information.
 </para>
-		 
-	</appendix>
- 
+</appendix>

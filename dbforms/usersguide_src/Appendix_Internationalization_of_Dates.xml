@@ -1,22 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
- 
-	<appendix>
-		<title>Internationalization of Dates
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Luca (H3G) -->
+<appendix>
+  <title>Internationalization of Dates
 </title>
-		 
-			<para>Currently, a date value sent to the database is converted into the yyyy-MM-dd format.  This is fine if you have configured your database to support this format but chances are, you may need to use a different format.  This format can now be set in the dbforms-config.xml file as follows:
+  <para>Currently, a date value sent to the database is converted into the yyyy-MM-dd format.  This is fine if you have configured your database to support this format but chances are, you may need to use a different format.  This format can now be set in the dbforms-config.xml file as follows:
 </para>
-			<para>
-				<computeroutput>&lt;dbforms-config&gt;</computeroutput>
-			</para>
-			<para>
-				<computeroutput>&lt;date-format&gt;dd/MM/yyyy&lt;/date-format&gt;</computeroutput>
-			</para>
-			<para>
-				<computeroutput>&lt;table name=...</computeroutput>
-			</para>
-			<para>The format you specify, is the format in which you are expected to input your dates.  A conversion takes place within dbForms to convert your date value to the format expected by your database.  If you wish to DISPLAY dates in a format other then yyyy-MM-dd, then you are required to use the 'format' attribute as documented in the user manual.
+  <para>
+    <computeroutput>&lt;dbforms-config&gt;</computeroutput>
+  </para>
+  <para>
+    <computeroutput>&lt;date-format&gt;dd/MM/yyyy&lt;/date-format&gt;</computeroutput>
+  </para>
+  <para>
+    <computeroutput>&lt;table name=...</computeroutput>
+  </para>
+  <para>The format you specify, is the format in which you are expected to input your dates.  A conversion takes place within dbForms to convert your date value to the format expected by your database.  If you wish to DISPLAY dates in a format other then yyyy-MM-dd, then you are required to use the 'format' attribute as documented in the user manual.
 </para>
-		 
-	</appendix>
- 
+</appendix>
