@@ -226,7 +226,6 @@ public class TestDbTextFieldTag extends JspTestCase {
 
       f = fv.get("D");
       Double testNumber = (Double) f.getFieldValueAsObject();
-      assertTrue(testNumber instanceof Double);
       assertTrue(testNumber.equals(doubleTag.getFieldObject()));
 
       int result = doubleTag.doEndTag();
