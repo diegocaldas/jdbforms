@@ -31,6 +31,7 @@ import javax.servlet.http.*;
 
 //import org.apache.struts.digester.Digester;
 import org.apache.commons.digester.Digester;
+import org.apache.commons.digester.AbstractObjectCreationFactory;
 
 //import org.apache.struts.taglib.form.Constants;
 import org.xml.sax.SAXException;
@@ -39,18 +40,20 @@ import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.commons.validator.ValidatorResources;
 import org.apache.commons.validator.ValidatorResourcesInitializer;
+
 import org.dbforms.validation.ValidatorConstants;
 import org.dbforms.util.MessageResources;
+import org.dbforms.event.DatabaseEventFactoryImpl;
+import org.dbforms.util.SingletonClassFactoryCreate;
 
+import org.dbforms.event.DatabaseEventFactoryImpl;
+import org.dbforms.event.NavEventFactoryImpl;
 
 
 /****
- * <p>
  * This Servlet runs at application startup and reads the XML configuration in
  * dbforms-config.xml, populates a DbFormsConfig - Object and stores it in application
  * context.
- * </p>
- *
  *
  * @author Joe Peer <joepeer@excite.com>
  */
@@ -324,10 +327,28 @@ public class ConfigServlet extends HttpServlet
         digester.addSetProperties("dbforms-config/dbconnection/property");
         digester.addSetNext("dbforms-config/dbconnection/property", "addProperty", "org.dbforms.util.DbConnectionProperty");
 
+
         // parse "pool-property" - object + add it to parent (which is "DbConnection")
         digester.addObjectCreate("dbforms-config/dbconnection/pool-property", "org.dbforms.util.DbConnectionProperty");
         digester.addSetProperties("dbforms-config/dbconnection/pool-property");
         digester.addSetNext("dbforms-config/dbconnection/pool-property", "addPoolProperty", "org.dbforms.util.DbConnectionProperty");
+
+
+        // parse "database-events/database-event" - object and register them into the DatabaseEventsFactory
+        digester.addFactoryCreate("dbforms-config/events/database-events",
+            new SingletonClassFactoryCreate(DatabaseEventFactoryImpl.class.getName()));
+        digester.addObjectCreate("dbforms-config/events/database-events/database-event", "org.dbforms.event.EventInfo");
+        digester.addSetProperties("dbforms-config/events/database-events/database-event");
+        digester.addSetNext("dbforms-config/events/database-events/database-event", "addEventInfo", "org.dbforms.event.EventInfo");
+
+
+        // parse "database-events/navigation-event" - object and register them into the NavigationEventsFactory
+        digester.addFactoryCreate("dbforms-config/events/navigation-events",
+            new SingletonClassFactoryCreate(NavEventFactoryImpl.class.getName()));
+        digester.addObjectCreate("dbforms-config/events/navigation-events/navigation-event", "org.dbforms.event.EventInfo");
+        digester.addSetProperties("dbforms-config/events/navigation-events/navigation-event");
+        digester.addSetNext("dbforms-config/events/navigation-events/navigation-event", "addEventInfo", "org.dbforms.event.EventInfo");
+
 
         return digester;
     }
@@ -469,6 +490,7 @@ public class ConfigServlet extends HttpServlet
         }
         catch (SAXException e)
         {
+            logCat.error("::initXMLConfig - SaxException", e);
             throw new ServletException(e.toString());
         }
     }
