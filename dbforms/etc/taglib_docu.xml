@@ -4871,6 +4871,18 @@
                     <info>name of the key-field.
                     </info>
                 </attribute>
+		<attribute>
+			<name>param</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+	                <info>
+	                	 parameterlist for the message. Format: param1, param2, param3
+	                	 message must be of the form: 'this is a message with parameter: {0}, {1}, {3}
+	                         each occurence of {0} will be replaced with param1 and so on.
+	                         This is the same mechanism wich is used in xmlErrors!
+         	        </info>
+		</attribute>
+                
             </tag>
 
 			<!-- **************************** javascriptArray tag ***********************************-->									
