@@ -522,6 +522,14 @@ public class FieldValue implements Cloneable {
             return new Time(result.getTime().getTime());
          } catch (Exception e) {
             logCat.error(e.getMessage() + " <" + valueStr + "/" + pattern + ">");
+			// Make it more tolerant and try short format too
+			SimpleDateFormat f = (SimpleDateFormat) getField().getFormat("short", getLocale());
+			pattern = f.toPattern();
+			try {
+			   return parseTIME(value);
+			} catch (Exception ex) {
+				logCat.error(ex.getMessage() + " <" + valueStr + "/" + pattern + ">");
+			} 
          }
       }
       try {
@@ -547,6 +555,14 @@ public class FieldValue implements Cloneable {
             return new Date(result.getTime().getTime());
          } catch (Exception e) {
             logCat.error(e.getMessage() + " <" + valueStr + "/" + pattern + ">");
+			// Make it more tolerant and try short format too
+			SimpleDateFormat f = (SimpleDateFormat) getField().getFormat("short", getLocale());
+			pattern = f.toPattern();
+			try {
+			   return parseDATE(value);
+			} catch (Exception ex) {
+				logCat.error(ex.getMessage() + " <" + valueStr + "/" + pattern + ">");
+			} 
          }
       }
       try {
@@ -573,6 +589,14 @@ public class FieldValue implements Cloneable {
             return new Timestamp(result.getTime().getTime());
          } catch (Exception e) {
             logCat.error(e.getMessage() + " <" + valueStr + "/" + pattern + ">");
+			// Make it more tolerant and try short format too
+			SimpleDateFormat f = (SimpleDateFormat) getField().getFormat("short", getLocale());
+			pattern = f.toPattern();
+			try {
+			   return parseTIMESTAMP(value);
+			} catch (Exception ex) {
+				logCat.error(ex.getMessage() + " <" + valueStr + "/" + pattern + ">");
+			} 
          }
       }
       try {

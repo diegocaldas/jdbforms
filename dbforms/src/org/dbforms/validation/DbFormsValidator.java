@@ -302,7 +302,7 @@ public class DbFormsValidator implements Serializable {
                } else if (!Util.isNull(datePatternStrict)) {
                   bValid = GenericValidator.isDate(value, datePatternStrict, true);
                } else {
-                  bValid = GenericValidator.isDate(value, locale);
+ 				  bValid = getValue(bean, field) != null;
                }
             } catch (Exception e) {
                errors.add(new ValidationException(dbFormsErrorMessage(DATE, va, field, locale, dbFormsErrors)));

@@ -391,7 +391,7 @@ public class Field
    public Format getFormat(String pattern, Locale locale)
    {
       Format res       = null;
-      int    dateStyle = DateFormat.MEDIUM;
+      int    dateStyle = DateFormat.SHORT;
       int    timeStyle = DateFormat.SHORT;
 
       if (!Util.isNull(pattern))
