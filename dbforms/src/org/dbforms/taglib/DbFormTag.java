@@ -1506,8 +1506,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
 					navEvent = navEventFactory.createGotoEvent(table, request, config, whereClause, getTableList());
 				} else {
 					String myPosition = (count == 0) ? null : firstPosition;
-					if ((webEvent != null)
-//						&& (webEvent instanceof org.dbforms.event.DatabaseEvent)
+					if ((webEvent != null) //						&& (webEvent instanceof org.dbforms.event.DatabaseEvent)
 						&& (webEvent instanceof org.dbforms.event.NoopEvent)) {
 						myPosition = null;
 					}
@@ -1858,240 +1857,52 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
 
 				// is equal to tableid, off course
 				int fieldId = Integer.parseInt(searchFieldName.substring(secondUnderscore + 1));
-				Field f = table.getField(fieldId);
-				String aSearchMode = ParseUtil.getParameter(request, "searchmode_" + tableId + "_" + fieldId);
-				int mode = ("and".equals(aSearchMode)) ? Constants.SEARCHMODE_AND : Constants.SEARCHMODE_OR;
-				String aSearchAlgorithm = ParseUtil.getParameter(request, "searchalgo_" + tableId + "_" + fieldId);
-
-				// Check for operator
-				int algorithm = Constants.SEARCH_ALGO_SHARP;
-				int operator = Constants.FILTER_EQUAL;
-				if (!Util.isNull(aSearchAlgorithm)) {
-					if (aSearchAlgorithm.startsWith("sharpLT")) {
-						operator = Constants.FILTER_SMALLER_THEN;
-					} else if (aSearchAlgorithm.startsWith("sharpLE")) {
-						operator = Constants.FILTER_SMALLER_THEN_EQUAL;
-					} else if (aSearchAlgorithm.startsWith("sharpGT")) {
-						operator = Constants.FILTER_GREATER_THEN;
-					} else if (aSearchAlgorithm.startsWith("sharpGE")) {
-						operator = Constants.FILTER_GREATER_THEN_EQUAL;
-					} else if (aSearchAlgorithm.startsWith("sharpNE")) {
-						operator = Constants.FILTER_NOT_EQUAL;
-					} else if (aSearchAlgorithm.startsWith("sharpNULL")) {
-						operator = Constants.FILTER_NULL;
-					} else if (aSearchAlgorithm.startsWith("sharpNOTNULL")) {
-						operator = Constants.FILTER_NOT_NULL;
-					} else if (aSearchAlgorithm.startsWith("weakStartEnd")) {
-						algorithm = Constants.SEARCH_ALGO_WEAK_START_END;
-						operator = Constants.FILTER_LIKE;
-					} else if (aSearchAlgorithm.startsWith("weakStart")) {
-						algorithm = Constants.SEARCH_ALGO_WEAK_START;
-						operator = Constants.FILTER_LIKE;
-					} else if (aSearchAlgorithm.startsWith("weakEnd")) {
-						algorithm = Constants.SEARCH_ALGO_WEAK_END;
-						operator = Constants.FILTER_LIKE;
-					} else if (aSearchAlgorithm.startsWith("weak")) {
-						algorithm = Constants.SEARCH_ALGO_WEAK;
-						operator = Constants.FILTER_LIKE;
-					}
+				Field f = null;
+				try {
+					f = table.getField(fieldId);
+				} catch (Exception e) {
+					logCat.error("initSearchFieldValues", e);
 				}
+				if (f != null) {
+					String aSearchMode = ParseUtil.getParameter(request, "searchmode_" + tableId + "_" + fieldId);
+					int mode = ("and".equals(aSearchMode)) ? Constants.SEARCHMODE_AND : Constants.SEARCHMODE_OR;
+					String aSearchAlgorithm = ParseUtil.getParameter(request, "searchalgo_" + tableId + "_" + fieldId);
 
-				if ((aSearchAlgorithm == null) || (aSearchAlgorithm.toLowerCase().indexOf("extended") == -1)) {
-					// Extended not found, only append field
-					FieldValue fv =
-						FieldValue.createFieldValueForSearching(
-							f,
-							aSearchFieldValue,
-							getLocale(),
-							operator,
-							mode,
-							algorithm,
-							false);
-					if (!Util.isNull(aSearchFieldPattern)) {
-						fv.setPattern(aSearchFieldPattern);
-					}
-
-					if (mode == Constants.SEARCHMODE_AND) {
-						mode_and.addElement(fv);
-					} else {
-						mode_or.addElement(fv);
-					}
-				} else if (aSearchFieldValue.indexOf("-") != -1) {
-					// is extended searching and delimiter found in SearchFieldValue
-					// create 2 searchfields
-					algorithm = Constants.SEARCH_ALGO_EXTENDED;
-
-					StringTokenizer st = new StringTokenizer(" " + aSearchFieldValue + " ", "-");
-					int tokenCounter = 0;
-
-					while (st.hasMoreTokens()) {
-						aSearchFieldValue = st.nextToken().trim();
-						tokenCounter++;
-
-						if (aSearchFieldValue.length() > 0) {
-							switch (tokenCounter) {
-								case 1 :
-									operator = Constants.FILTER_GREATER_THEN_EQUAL;
-									break;
-
-								case 2 :
-									operator = Constants.FILTER_SMALLER_THEN_EQUAL;
-									break;
-
-								default :
-									operator = -1;
-									break;
-							}
-
-							if (operator != -1) {
-								FieldValue fv =
-									FieldValue.createFieldValueForSearching(
-										f,
-										aSearchFieldValue,
-										getLocale(),
-										operator,
-										mode,
-										algorithm,
-										false);
-								if (!Util.isNull(aSearchFieldPattern)) {
-									fv.setPattern(aSearchFieldPattern);
-								}
-								if (mode == Constants.SEARCHMODE_AND) {
-									mode_and.addElement(fv);
-								} else {
-									mode_or.addElement(fv);
-								}
-							}
-						}
-					}
-				} else {
-					// parse special chars in SearchFieldValue
-					int jump = 0;
-
-					// Check for Not Equal
-					if (aSearchFieldValue.startsWith("<>")) {
-						algorithm = Constants.SEARCH_ALGO_EXTENDED;
-						operator = Constants.FILTER_NOT_EQUAL;
-						jump = 2;
-
-						// Check for not equal
-					} else if (aSearchFieldValue.startsWith("!=")) {
-						// GreaterThenEqual found! - Store the operation for use later on
-						algorithm = Constants.SEARCH_ALGO_EXTENDED;
-						operator = Constants.FILTER_NOT_EQUAL;
-						jump = 2;
-
-						// Check for GreaterThanEqual
-					} else if (aSearchFieldValue.startsWith(">=")) {
-						// GreaterThenEqual found! - Store the operation for use later on
-						algorithm = Constants.SEARCH_ALGO_EXTENDED;
-						operator = Constants.FILTER_GREATER_THEN_EQUAL;
-						jump = 2;
-
-						// Check for GreaterThan
-					} else if (aSearchFieldValue.startsWith(">")) {
-						// GreaterThen found! - Store the operation for use later on
-						algorithm = Constants.SEARCH_ALGO_EXTENDED;
-						operator = Constants.FILTER_GREATER_THEN;
-
-						// Check for SmallerThenEqual
-					} else if (aSearchFieldValue.startsWith("<=")) {
-						// SmallerThenEqual found! - Store the operation for use later on
-						algorithm = Constants.SEARCH_ALGO_EXTENDED;
-						operator = Constants.FILTER_SMALLER_THEN_EQUAL;
-						jump = 2;
-
-						// Check for SmallerThen
-					} else if (aSearchFieldValue.startsWith("<")) {
-						// SmallerThen found! - Store the operation for use later on
-						algorithm = Constants.SEARCH_ALGO_EXTENDED;
-						operator = Constants.FILTER_SMALLER_THEN;
-						jump = 1;
-
-						// Check for equal
-					} else if (aSearchFieldValue.startsWith("=")) {
-						// Equal found! - Store the operator for use later on
-						algorithm = Constants.SEARCH_ALGO_EXTENDED;
-						operator = Constants.FILTER_EQUAL;
-						jump = 1;
-					} else if (aSearchFieldValue.startsWith("[NULL]")) {
-						algorithm = Constants.SEARCH_ALGO_EXTENDED;
-						operator = Constants.FILTER_NULL;
-						jump = 0;
-					} else if (aSearchFieldValue.startsWith("[!NULL]")) {
-						algorithm = Constants.SEARCH_ALGO_EXTENDED;
-						operator = Constants.FILTER_NOT_NULL;
-						jump = 0;
-					} else if (aSearchFieldValue.startsWith("[EMPTY]")) {
-						algorithm = Constants.SEARCH_ALGO_EXTENDED;
-						operator = Constants.FILTER_EMPTY;
-						jump = 0;
-					} else if (aSearchFieldValue.startsWith("[!EMPTY]")) {
-						algorithm = Constants.SEARCH_ALGO_EXTENDED;
-						operator = Constants.FILTER_NOT_EMPTY;
-						jump = 0;
-					}
-
-					if (jump > 0) {
-						aSearchFieldValue = aSearchFieldValue.substring(jump).trim();
-					}
-
-					Vector errors = (Vector) request.getAttribute("errors");
-
-					if ((operator == Constants.FILTER_EQUAL) && (jump == 0) && (f.getType() == FieldTypes.TIMESTAMP)) {
-						// found a single timestamp value. Extend it to >value and <end of day of value
-						operator = Constants.FILTER_GREATER_THEN_EQUAL;
-
-						FieldValue fv =
-							FieldValue.createFieldValueForSearching(
-								f,
-								aSearchFieldValue,
-								getLocale(),
-								operator,
-								mode,
-								algorithm,
-								false);
-						if (!Util.isNull(aSearchFieldPattern)) {
-							fv.setPattern(aSearchFieldPattern);
-						}
-						Date d = (Date) fv.getFieldValueAsObject();
-
-						if (d == null) {
-							errors.add(
-								new Exception(
-									MessageResourcesInternal.getMessage("dbforms.error.filter.invalid.date", getLocale())));
-						} else {
-							if (mode == Constants.SEARCHMODE_AND) {
-								mode_and.addElement(fv);
-							} else {
-								mode_or.addElement(fv);
-							}
-
+					// Check for operator
+					int algorithm = Constants.SEARCH_ALGO_SHARP;
+					int operator = Constants.FILTER_EQUAL;
+					if (!Util.isNull(aSearchAlgorithm)) {
+						if (aSearchAlgorithm.startsWith("sharpLT")) {
+							operator = Constants.FILTER_SMALLER_THEN;
+						} else if (aSearchAlgorithm.startsWith("sharpLE")) {
 							operator = Constants.FILTER_SMALLER_THEN_EQUAL;
-							d = TimeUtil.findEndOfDay(d);
-							aSearchFieldValue = d.toString();
-
-							if (d != null) {
-								fv =
-									FieldValue.createFieldValueForSearching(
-										f,
-										aSearchFieldValue,
-										getLocale(),
-										operator,
-										mode,
-										algorithm,
-										false);
-								if (!Util.isNull(aSearchFieldPattern)) {
-									fv.setPattern(aSearchFieldPattern);
-								}
-								if (mode == Constants.SEARCHMODE_AND) {
-									mode_and.addElement(fv);
-								} else {
-									mode_or.addElement(fv);
-								}
-							}
+						} else if (aSearchAlgorithm.startsWith("sharpGT")) {
+							operator = Constants.FILTER_GREATER_THEN;
+						} else if (aSearchAlgorithm.startsWith("sharpGE")) {
+							operator = Constants.FILTER_GREATER_THEN_EQUAL;
+						} else if (aSearchAlgorithm.startsWith("sharpNE")) {
+							operator = Constants.FILTER_NOT_EQUAL;
+						} else if (aSearchAlgorithm.startsWith("sharpNULL")) {
+							operator = Constants.FILTER_NULL;
+						} else if (aSearchAlgorithm.startsWith("sharpNOTNULL")) {
+							operator = Constants.FILTER_NOT_NULL;
+						} else if (aSearchAlgorithm.startsWith("weakStartEnd")) {
+							algorithm = Constants.SEARCH_ALGO_WEAK_START_END;
+							operator = Constants.FILTER_LIKE;
+						} else if (aSearchAlgorithm.startsWith("weakStart")) {
+							algorithm = Constants.SEARCH_ALGO_WEAK_START;
+							operator = Constants.FILTER_LIKE;
+						} else if (aSearchAlgorithm.startsWith("weakEnd")) {
+							algorithm = Constants.SEARCH_ALGO_WEAK_END;
+							operator = Constants.FILTER_LIKE;
+						} else if (aSearchAlgorithm.startsWith("weak")) {
+							algorithm = Constants.SEARCH_ALGO_WEAK;
+							operator = Constants.FILTER_LIKE;
 						}
-					} else {
+					}
+
+					if ((aSearchAlgorithm == null) || (aSearchAlgorithm.toLowerCase().indexOf("extended") == -1)) {
+						// Extended not found, only append field
 						FieldValue fv =
 							FieldValue.createFieldValueForSearching(
 								f,
@@ -2104,17 +1915,212 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
 						if (!Util.isNull(aSearchFieldPattern)) {
 							fv.setPattern(aSearchFieldPattern);
 						}
-						Object obj = fv.getFieldValueAsObject();
 
-						if (obj == null) {
-							errors.add(
-								new Exception(
-									MessageResourcesInternal.getMessage("dbforms.error.filter.invalid", getLocale())));
+						if (mode == Constants.SEARCHMODE_AND) {
+							mode_and.addElement(fv);
 						} else {
-							if (mode == Constants.SEARCHMODE_AND) {
-								mode_and.addElement(fv);
+							mode_or.addElement(fv);
+						}
+					} else if (aSearchFieldValue.indexOf("-") != -1) {
+						// is extended searching and delimiter found in SearchFieldValue
+						// create 2 searchfields
+						algorithm = Constants.SEARCH_ALGO_EXTENDED;
+
+						StringTokenizer st = new StringTokenizer(" " + aSearchFieldValue + " ", "-");
+						int tokenCounter = 0;
+
+						while (st.hasMoreTokens()) {
+							aSearchFieldValue = st.nextToken().trim();
+							tokenCounter++;
+
+							if (aSearchFieldValue.length() > 0) {
+								switch (tokenCounter) {
+									case 1 :
+										operator = Constants.FILTER_GREATER_THEN_EQUAL;
+										break;
+
+									case 2 :
+										operator = Constants.FILTER_SMALLER_THEN_EQUAL;
+										break;
+
+									default :
+										operator = -1;
+										break;
+								}
+
+								if (operator != -1) {
+									FieldValue fv =
+										FieldValue.createFieldValueForSearching(
+											f,
+											aSearchFieldValue,
+											getLocale(),
+											operator,
+											mode,
+											algorithm,
+											false);
+									if (!Util.isNull(aSearchFieldPattern)) {
+										fv.setPattern(aSearchFieldPattern);
+									}
+									if (mode == Constants.SEARCHMODE_AND) {
+										mode_and.addElement(fv);
+									} else {
+										mode_or.addElement(fv);
+									}
+								}
+							}
+						}
+					} else {
+						// parse special chars in SearchFieldValue
+						int jump = 0;
+
+						// Check for Not Equal
+						if (aSearchFieldValue.startsWith("<>")) {
+							algorithm = Constants.SEARCH_ALGO_EXTENDED;
+							operator = Constants.FILTER_NOT_EQUAL;
+							jump = 2;
+
+							// Check for not equal
+						} else if (aSearchFieldValue.startsWith("!=")) {
+							// GreaterThenEqual found! - Store the operation for use later on
+							algorithm = Constants.SEARCH_ALGO_EXTENDED;
+							operator = Constants.FILTER_NOT_EQUAL;
+							jump = 2;
+
+							// Check for GreaterThanEqual
+						} else if (aSearchFieldValue.startsWith(">=")) {
+							// GreaterThenEqual found! - Store the operation for use later on
+							algorithm = Constants.SEARCH_ALGO_EXTENDED;
+							operator = Constants.FILTER_GREATER_THEN_EQUAL;
+							jump = 2;
+
+							// Check for GreaterThan
+						} else if (aSearchFieldValue.startsWith(">")) {
+							// GreaterThen found! - Store the operation for use later on
+							algorithm = Constants.SEARCH_ALGO_EXTENDED;
+							operator = Constants.FILTER_GREATER_THEN;
+
+							// Check for SmallerThenEqual
+						} else if (aSearchFieldValue.startsWith("<=")) {
+							// SmallerThenEqual found! - Store the operation for use later on
+							algorithm = Constants.SEARCH_ALGO_EXTENDED;
+							operator = Constants.FILTER_SMALLER_THEN_EQUAL;
+							jump = 2;
+
+							// Check for SmallerThen
+						} else if (aSearchFieldValue.startsWith("<")) {
+							// SmallerThen found! - Store the operation for use later on
+							algorithm = Constants.SEARCH_ALGO_EXTENDED;
+							operator = Constants.FILTER_SMALLER_THEN;
+							jump = 1;
+
+							// Check for equal
+						} else if (aSearchFieldValue.startsWith("=")) {
+							// Equal found! - Store the operator for use later on
+							algorithm = Constants.SEARCH_ALGO_EXTENDED;
+							operator = Constants.FILTER_EQUAL;
+							jump = 1;
+						} else if (aSearchFieldValue.startsWith("[NULL]")) {
+							algorithm = Constants.SEARCH_ALGO_EXTENDED;
+							operator = Constants.FILTER_NULL;
+							jump = 0;
+						} else if (aSearchFieldValue.startsWith("[!NULL]")) {
+							algorithm = Constants.SEARCH_ALGO_EXTENDED;
+							operator = Constants.FILTER_NOT_NULL;
+							jump = 0;
+						} else if (aSearchFieldValue.startsWith("[EMPTY]")) {
+							algorithm = Constants.SEARCH_ALGO_EXTENDED;
+							operator = Constants.FILTER_EMPTY;
+							jump = 0;
+						} else if (aSearchFieldValue.startsWith("[!EMPTY]")) {
+							algorithm = Constants.SEARCH_ALGO_EXTENDED;
+							operator = Constants.FILTER_NOT_EMPTY;
+							jump = 0;
+						}
+
+						if (jump > 0) {
+							aSearchFieldValue = aSearchFieldValue.substring(jump).trim();
+						}
+
+						Vector errors = (Vector) request.getAttribute("errors");
+
+						if ((operator == Constants.FILTER_EQUAL) && (jump == 0) && (f.getType() == FieldTypes.TIMESTAMP)) {
+							// found a single timestamp value. Extend it to >value and <end of day of value
+							operator = Constants.FILTER_GREATER_THEN_EQUAL;
+
+							FieldValue fv =
+								FieldValue.createFieldValueForSearching(
+									f,
+									aSearchFieldValue,
+									getLocale(),
+									operator,
+									mode,
+									algorithm,
+									false);
+							if (!Util.isNull(aSearchFieldPattern)) {
+								fv.setPattern(aSearchFieldPattern);
+							}
+							Date d = (Date) fv.getFieldValueAsObject();
+
+							if (d == null) {
+								errors.add(
+									new Exception(
+										MessageResourcesInternal.getMessage("dbforms.error.filter.invalid.date", getLocale())));
 							} else {
-								mode_or.addElement(fv);
+								if (mode == Constants.SEARCHMODE_AND) {
+									mode_and.addElement(fv);
+								} else {
+									mode_or.addElement(fv);
+								}
+
+								operator = Constants.FILTER_SMALLER_THEN_EQUAL;
+								d = TimeUtil.findEndOfDay(d);
+								aSearchFieldValue = d.toString();
+
+								if (d != null) {
+									fv =
+										FieldValue.createFieldValueForSearching(
+											f,
+											aSearchFieldValue,
+											getLocale(),
+											operator,
+											mode,
+											algorithm,
+											false);
+									if (!Util.isNull(aSearchFieldPattern)) {
+										fv.setPattern(aSearchFieldPattern);
+									}
+									if (mode == Constants.SEARCHMODE_AND) {
+										mode_and.addElement(fv);
+									} else {
+										mode_or.addElement(fv);
+									}
+								}
+							}
+						} else {
+							FieldValue fv =
+								FieldValue.createFieldValueForSearching(
+									f,
+									aSearchFieldValue,
+									getLocale(),
+									operator,
+									mode,
+									algorithm,
+									false);
+							if (!Util.isNull(aSearchFieldPattern)) {
+								fv.setPattern(aSearchFieldPattern);
+							}
+							Object obj = fv.getFieldValueAsObject();
+
+							if (obj == null) {
+								errors.add(
+									new Exception(
+										MessageResourcesInternal.getMessage("dbforms.error.filter.invalid", getLocale())));
+							} else {
+								if (mode == Constants.SEARCHMODE_AND) {
+									mode_and.addElement(fv);
+								} else {
+									mode_or.addElement(fv);
+								}
 							}
 						}
 					}
