@@ -108,8 +108,6 @@
 
   <!-- compile dbforms core sources -->
   <target name="compile" depends="prepare,failIfBadPath">
-    <!-- Required when building in eclipse (WSAD) -->
-    <available classname="org.eclipse.core.launcher.Main" property="build.compiler" value="org.eclipse.pde.internal.core.JDTCompilerAdapter" classpath="${java.class.path}" />
     <javac 
     	srcdir="${javasrc.dir}/org/dbforms" 
     	destdir="${build.dir}" 
@@ -121,7 +119,6 @@
     <copy todir="${build.dir}/org/dbforms/resources">
       <fileset dir="${javasrc.dir}/org/dbforms/resources" />
     </copy>
-    
   </target>
 
 

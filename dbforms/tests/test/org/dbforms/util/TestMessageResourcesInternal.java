@@ -20,8 +20,10 @@ public class TestMessageResourcesInternal extends TestCase
 
 	public void testMessageResourceInternal() throws Exception
 	{
-		assertTrue(MessageResourcesInternal.getMessage("dbforms.testmessage", Locale.ENGLISH).equals("this is a test"));
-		assertTrue(MessageResourcesInternal.getMessage("dbforms.testmessage", Locale.GERMAN).equals("dies ist ein test"));
+		String s = MessageResourcesInternal.getMessage("dbforms.testmessage", Locale.ENGLISH);
+		assertTrue(s.equals("this is a test"));
+		s = MessageResourcesInternal.getMessage("dbforms.testmessage", Locale.GERMAN);
+		assertTrue(s.equals("dies ist ein test"));
 	}
 
 }

@@ -396,12 +396,12 @@
     <unitTestSourceDirectory>tests/test</unitTestSourceDirectory>
     <aspectSourceDirectory></aspectSourceDirectory>
     <integrationUnitTestSourceDirectory>tests/test-bookstore</integrationUnitTestSourceDirectory>
+
     <unitTest>
       <includes>
         <include>**/*Test.java</include>
         <include>**/Test*.java</include>        
       </includes>
-
       <!-- Test resources -->      
       <resources>
         <resource>
@@ -412,7 +412,15 @@
         </resource>
       </resources>  
     </unitTest>
-        
+      <resources>
+        <resource>
+          <directory>src</directory>
+          <includes>
+            <include>**/*.properties</include>
+            <include>**/*.x*</include>
+          </includes>
+        </resource>
+      </resources>  
     <jars></jars>
   </build>
 </project>
