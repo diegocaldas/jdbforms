@@ -1,52 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <chapter>
+
   <title>Class diagrams</title>
   <sect1>
     <title>DAO package</title>
     <para>
       The DAO (data access object) package provides the DataSource* classes
       that manage the database operations (insert, update, delete).
-	</para>
-	<para>
-      Click here for the <ulink url="./images/figures/uml/class/dao.ucd.png">diagram</ulink> picture.
-	</para>
-	<sect2>
-	  <title>DataSourceList</title>
-	  <para> 
-        	DataSourceList holds a list of DataSourceFactory objects in the session context.
-        	It's needed by the navigation events to store the datasource by a per session mode.
-        	So it is possible to reuse the data between different calls 
-        	and it's not neccessary to refetch again.
-	  </para>
-	</sect2>
-	<sect2>
-	  <title>DataSourceFactory</title>
-	  <para>
-	    The DataSourceFactory class holds internally a DataSource object
-		as dataHandler. The dataSource object type is specified by 
-		the dataAccess class name * for the given table. 
-	  </para>
-	</sect2>
-<!--
-        </listitem>
-        <listitem>        
-          DataSourceFactory 
-        </listitem>
-        <listitem>
-          DataSource
-        </listitem>
-        <listitem>
-          DataSourceJDBC
-        </listitem>
-        <listitem>
-          DataSourceXML
-        </listitem>
-        <listitem>
-          org.dbforms.util.ResultSetVector
-        </listitem>
-      </itemizedlist>
     </para>
--->
-
+    <para>
+      Click here for the <ulink url="./images/figures/uml/class/dao.ucd.png">diagram</ulink> picture.
+    </para>
+    <sect2>
+      <title>DataSourceList</title>
+      <para> 
+        DataSourceList holds a list of DataSourceFactory objects in the session context.
+        It's needed by the navigation events to store the datasource by a per session mode.
+        So it is possible to reuse the data between different calls 
+        and it's not neccessary to refetch again.
+      </para>
+    </sect2>
+    <sect2>
+      <title>DataSourceFactory</title>
+      <para>
+        The DataSourceFactory class creates and holds internally a 
+        DataSource object as dataHandler. 
+        The dataSource object type is specified by the dataAccess class name 
+        for the given table. 
+      </para>
+    </sect2>
+    <sect2>
+      <title>DataSource</title>
+      <para>
+        The DataSource abstract class provides the interface for the objects that do
+        data access operations. Specialized subclasses must implement abstract methods
+        for a given data source type (i.e.: JDBC data source, XML datasource and so on). 
+      </para>
+    </sect2>
+    <sect2>
+      <title>DataSourceJDBC</title>
+      <para>
+        Concrete DataSource class; uses JDBC to manage data form relational databases.
+      </para>
+    </sect2>
+    <sect2>
+      <title>DataSourceXML</title>
+      <para>
+        Concrete DataSource class; manages XML data.
+      </para>
+    </sect2>
+    <sect2>
+      <title>org.dbforms.util.ResultSetVector</title>
+      <para>
+        ResultSetVector class is an object wrapper for the data retrieved from a
+        given data source.
+      </para>
+    </sect2>
   </sect1>
+
 </chapter>
