@@ -118,7 +118,7 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag
    {
       if ((getParentForm().getFormValidatorName() != null)
                 && (getParentForm().getFormValidatorName().length() > 0)
-                && getParentForm().isJavascriptValidation())
+                && getParentForm().hasJavascriptValidationSet())
       {
          String onclick = (getOnClick() != null) ? getOnClick() : "";
 
@@ -225,7 +225,7 @@ public abstract class DbBaseButtonTag extends DbBaseHandlerTag
 
       // If the caption is not null and the resources="true" attribut
       if ((caption != null)
-                && getParentForm().isCaptionResource())
+                && getParentForm().hasCaptionResourceSet())
       {
          try
          {

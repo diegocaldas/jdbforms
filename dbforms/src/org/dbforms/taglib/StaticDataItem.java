@@ -76,7 +76,7 @@ public class StaticDataItem extends DbBaseHandlerTag implements javax.servlet.js
       if ((value != null)
                && (getParent() instanceof StaticData
                && getParent().getParent() instanceof DbBaseHandlerTag
-               && getParentForm().isCaptionResource()))
+               && getParentForm().hasCaptionResourceSet()))
       {
          try
          {

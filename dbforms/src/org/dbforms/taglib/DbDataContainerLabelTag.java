@@ -142,7 +142,7 @@ public class DbDataContainerLabelTag
             else
             {
                 pageContext.getOut().write(
-                    "<span class=\""
+                    "<span "
                         + s
                         + "\">"
                         + fieldValue

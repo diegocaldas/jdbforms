@@ -79,8 +79,7 @@ public class DbDateFieldTag extends DbBaseInputTag
          // if property useJSCalendar is set to 'true' we will now add a little
          // image that can be clicked to popup a small JavaScript Calendar
          // written by Robert W. Husted to edit the field:
-         if (!("true".equals(this.getHidden()))
-                  && ("true".equals(this.getUseJsCalendar())))
+         if (!hasHiddenSet() && ("true".equals(this.getUseJsCalendar())))
          {
             tagBuf.append(" <A HREF=\"javascript:doNothing()\" ").append(" onclick=\"");
 

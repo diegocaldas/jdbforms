@@ -218,11 +218,11 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer , TryC
          // select, if datadriven and data matches with current value OR if explicitly set by user
          boolean isSelected = ((!getParentForm().getFooterReached()
                                  || ((we != null) && we.getType() == EventType.EVENT_NAVIGATION_RELOAD))
-                              && (getDefaultValue() != null) && getDefaultValue().equals(currentValue))
+                              && (getValue() != null) && getValue().equals(currentValue))
                               || (getParentForm().getFooterReached()
                               && "true".equals(checked));
 
-         tagBuf.append(generateTagString(getDefaultValue(), "", isSelected));
+         tagBuf.append(generateTagString(getValue(), "", isSelected));
       }
       else
       {
@@ -231,8 +231,8 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer , TryC
          // If radio is in read-only, retrieve selectedIndex and set the onclick of all radio with
          // "document.formName['radioName'][selectedIndex].checked=true"
          //
-         if (isReadOnly()
-                   || getParentForm().isReadOnly())
+         if (hasReadOnlySet()
+                   || getParentForm().hasReadOnlySet())
          {
             // First pass to retreive radio selectedIndex, because in Javascript it use only this index (Netscape 4.x)
             for (int i = 0; i < embeddedDataSize; i++)
@@ -260,7 +260,7 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer , TryC
          int maxSize = growSize();
 
          tagBuf.append(
-                  "<TABLE BORDER=0 cellspacing=0 cellpadding=0><TR valign=top>");
+                  "<TABLE  BORDER=0 cellspacing=0 cellpadding=0><TR valign=top>");
 
          for (int i = 0; i < embeddedDataSize; i++)
          {

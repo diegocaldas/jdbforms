@@ -237,7 +237,7 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer, TryC
 
             // Check if we are in redisplayFieldsOnError mode and errors have occured
             // If so, only set to selected if currentRow is equal to custom row.
-            if ((getParentForm().isRedisplayFieldsOnError() && (errors != null)
+            if ((getParentForm().hasRedisplayFieldsOnErrorSet() && (errors != null)
                          && (errors.size() > 0))
                       || ((we != null)
                          && (we.getType() == EventType.EVENT_NAVIGATION_RELOAD)))
@@ -286,7 +286,7 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer, TryC
       // Reset to the default selected values (in case of multiselection)
       // using javascript function on client side.
       //
-      if (isReadOnly() || getParentForm().isReadOnly())
+      if (hasReadOnlySet() || getParentForm().hasReadOnlySet())
       {
          selectedOptions.append("-");
 

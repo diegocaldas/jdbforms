@@ -122,7 +122,7 @@ public class DbDeleteButtonTag extends DbBaseButtonTag
 
          String message = getConfirmMessage();
 
-         if (getParentForm().isCaptionResource())
+         if (getParentForm().hasCaptionResourceSet())
          {
             try
             {

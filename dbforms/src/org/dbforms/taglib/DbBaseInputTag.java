@@ -155,7 +155,7 @@ public abstract class DbBaseInputTag extends DbBaseHandlerTag
     */
    public int doStartTag() throws JspException
    {
-      if (isReadOnly() || getParentForm().isReadOnly())
+      if (hasReadOnlySet() || getParentForm().hasReadOnlySet())
       {
          String onFocus = (getOnFocus() != null) ? getOnFocus() : "";
 
@@ -218,9 +218,9 @@ public abstract class DbBaseInputTag extends DbBaseHandlerTag
     *
     * @return java.lang.String
     */
-   public java.lang.String getHidden()
+   public boolean hasHiddenSet()
    {
-      return hidden;
+      return "true".equalsIgnoreCase(hidden);
    }
 
 
@@ -254,7 +254,7 @@ public abstract class DbBaseInputTag extends DbBaseHandlerTag
 
       if ( (this.getOverrideValue() != null) && 
             !(
-               (getParentForm().isRedisplayFieldsOnError() && (errors != null) && (errors.size() > 0))
+               (getParentForm().hasRedisplayFieldsOnErrorSet() && (errors != null) && (errors.size() > 0))
               || ((we != null) && (we.getType() == EventType.EVENT_NAVIGATION_RELOAD))
              )
          )
@@ -332,8 +332,7 @@ public abstract class DbBaseInputTag extends DbBaseHandlerTag
     */
    protected String prepareType()
    {
-      return ("true".equals(this.getHidden()))
-                ? "type=\"hidden\" " : "type=\"text\" ";
+      return hasHiddenSet()? "type=\"hidden\" " : "type=\"text\" ";
    }
 
 

@@ -77,7 +77,7 @@ public class DbFileTag extends DbBaseInputTag
    {
       super.doStartTag();
 
-      if (!getParentForm().hasMultipartCapability())
+      if (!getParentForm().hasMultipartSet())
       {
          logCat.warn(
             "DbFileTag is used but DbFormTag.multipart is not set (FALSE)");
@@ -103,8 +103,8 @@ public class DbFileTag extends DbBaseInputTag
       {
          StringBuffer tagBuf = new StringBuffer();
 
-         if (isReadOnly()
-                  || getParentForm().isReadOnly())
+         if (hasReadOnlySet()
+                  || getParentForm().hasReadOnlySet())
          {
             // if read-only, remove the browse button (for netscape problem)
             tagBuf.append("<input type=\"text\"");

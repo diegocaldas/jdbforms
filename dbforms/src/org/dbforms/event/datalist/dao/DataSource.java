@@ -471,7 +471,7 @@ public abstract class DataSource
             }
             catch (Exception e)
             {
-               logCat.error(e.getMessage());
+               logCat.error(e);
                directory = curField.getDirectory();
             }
 

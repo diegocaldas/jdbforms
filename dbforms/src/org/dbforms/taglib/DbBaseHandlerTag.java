@@ -117,7 +117,7 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler
 
 
    /** Returns the read-only attribute. */
-   public boolean isReadOnly()
+   public boolean hasReadOnlySet()
    {
       return "true".equalsIgnoreCase(readOnly);
    }
@@ -382,7 +382,7 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler
          // Check if attribute 'redisplayFieldsOnError' has been set to true
          // and is this jsp displaying an error?
          if (
-             (getParentForm().isRedisplayFieldsOnError() && (errors != null)
+             (getParentForm().hasRedisplayFieldsOnErrorSet() && (errors != null)
                       && (errors.size() > 0))
                    || ((we != null) && (we.getType() == EventType.EVENT_NAVIGATION_RELOAD))
              )
@@ -505,7 +505,7 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler
       if (res == null)
          res = "[No Data]";
       // Resolve message if captionResource=true in the Form Tag
-      if (getParentForm().isCaptionResource())
+      if (getParentForm().hasCaptionResourceSet())
       {
          res = MessageResources.getMessage(
                         (HttpServletRequest) pageContext.getRequest(), res);
@@ -545,29 +545,14 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler
       this.maxlength = maxlength;
    }
 
-
-   /**
-    * Prepares the style attributes for inclusion in the component's HTML tag.
-    * @return The prepared String for inclusion in the HTML tag.
-    */
-   protected String prepareStyles()
-   {
-      boolean readonly = isReadOnly() || getParentForm().isReadOnly();
-
-      if (readonly && !Util.isNull(getReadOnlyStyleClass()))
-      {
-         StringBuffer styles = new StringBuffer();
-         styles.append(" class=\"");
-         styles.append(getReadOnlyStyleClass());
-         styles.append("\"");
-
-         return styles.toString();
-      }
-      else
-      {
-         return super.prepareStyles();
-      }
-   }
+	public String getStyleClass()
+	{
+		boolean readonly = hasReadOnlySet() || getParentForm().hasReadOnlySet();
+		if (readonly && !Util.isNull(getReadOnlyStyleClass()))
+		   return getReadOnlyStyleClass();
+		else
+		   return super.getStyleClass();
+	}
 
 
    /**

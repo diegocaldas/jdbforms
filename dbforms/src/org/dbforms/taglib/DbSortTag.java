@@ -89,7 +89,7 @@ public class DbSortTag extends DbBaseHandlerTag
          String strNone = "None";
 
          // Internationalization			
-         if (getParentForm().isCaptionResource())
+         if (getParentForm().hasCaptionResourceSet())
          {
             Locale reqLocale = MessageResources.getLocale(request);
 

@@ -732,7 +732,7 @@ public class ConfigServlet extends HttpServlet
 
       try
       {
-         ValidatorResourcesInitializer.initialize(resources, inputValidation);
+		ValidatorResourcesInitializer.initialize(resources, inputValidation);
       }
       catch (IOException e)
       {
