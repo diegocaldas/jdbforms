@@ -37,6 +37,7 @@ import org.apache.log4j.Category;
 
 import org.dbforms.util.ParseUtil;
 import org.dbforms.util.Util;
+import org.dbforms.util.MessageResourcesInternal;
 
 
 
@@ -1914,30 +1915,36 @@ public class Table
     * @throws SQLException if any error occurs
     * @throws MultipleValidationException if any validation error occurs
     */
-   public void processInterceptors(int action, HttpServletRequest request,
+   public int processInterceptors(int action, HttpServletRequest request,
       Hashtable associativeArray, DbFormsConfig config, Connection con)
-      throws SQLException, MultipleValidationException
+      throws SQLException
    {
+      String s;
       try
       {
          int interceptorsCnt = interceptors.size();
 
          for (int i = 0; i < interceptorsCnt; i++)
          {
-            Interceptor        interceptor      = (Interceptor) interceptors
-               .elementAt(i);
-            Class              interceptorClass = Class.forName(interceptor
-                  .getClassName());
-            DbEventInterceptor dbi              = (DbEventInterceptor) interceptorClass
-               .newInstance();
+            Interceptor interceptor = (Interceptor) interceptors.elementAt(i);
+            Class interceptorClass = Class.forName(interceptor.getClassName());
+            DbEventInterceptor dbi = (DbEventInterceptor) interceptorClass.newInstance();
+
+            // (Sunil_Mishra@adp.com) - The return type to check for the
+            // IGNORE_OPERATION
+            int operation;
 
             if (action == DbEventInterceptor.PRE_INSERT)
             {
-               if (dbi.preInsert(request, associativeArray, config, con) == DbEventInterceptor.DENY_OPERATION)
-               {
-                  throw new SQLException("Sorry, adding data to table "
-                     + this.getName()
-                     + " was not granted this time. Your request violated a condition.");
+               operation = dbi.preInsert(request, associativeArray, config, con);
+               switch (operation) {
+                  case DbEventInterceptor.DENY_OPERATION:
+                     s = MessageResourcesInternal.getMessage("dbforms.events.insert.nogrant",
+                                                                request.getLocale(),
+                                                                new String[] { getName() });
+                     throw new SQLException(s);
+                  case DbEventInterceptor.IGNORE_OPERATION:
+                     return operation;
                }
             }
             else if (action == DbEventInterceptor.POST_INSERT)
@@ -1946,11 +1953,16 @@ public class Table
             }
             else if (action == DbEventInterceptor.PRE_UPDATE)
             {
-               if (dbi.preUpdate(request, associativeArray, config, con) == DbEventInterceptor.DENY_OPERATION)
-               {
-                  throw new SQLException("Sorry, updating data in table "
-                     + this.getName()
-                     + " was not granted this time. Your request violated a condition.");
+               operation = dbi.preUpdate(request, associativeArray, config, con);
+               switch (operation) {
+                  case DbEventInterceptor.DENY_OPERATION:
+                     s = MessageResourcesInternal.getMessage("dbforms.events.update.nogrant", 
+                                                                 request.getLocale(),
+                                                                 new String[]{getName()} 
+                                                                 );
+                     throw new SQLException(s);
+                  case DbEventInterceptor.IGNORE_OPERATION:
+                     return operation;
                }
             }
             else if (action == DbEventInterceptor.POST_UPDATE)
@@ -1959,11 +1971,16 @@ public class Table
             }
             else if (action == DbEventInterceptor.PRE_DELETE)
             {
-               if (dbi.preDelete(request, associativeArray, config, con) == DbEventInterceptor.DENY_OPERATION)
-               {
-                  throw new SQLException("Sorry, deleting data from table "
-                     + this.getName()
-                     + " was not granted this time. Your request violated a condition.");
+               operation = dbi.preDelete(request, associativeArray, config, con);
+               switch (operation) {
+                  case DbEventInterceptor.DENY_OPERATION:
+                     s = MessageResourcesInternal.getMessage("dbforms.events.delete.nogrant", 
+                                                                 request.getLocale(),
+                                                                 new String[]{getName()} 
+                                                                 );
+                     throw new SQLException(s);
+                  case DbEventInterceptor.IGNORE_OPERATION:
+                     return operation;
                }
             }
             else if (action == DbEventInterceptor.POST_DELETE)
@@ -1972,11 +1989,16 @@ public class Table
             }
             else if (action == DbEventInterceptor.PRE_SELECT)
             {
-               if (dbi.preSelect(request, config, con) == DbEventInterceptor.DENY_OPERATION)
-               {
-                  throw new SQLException("Sorry, selecting data from table "
-                     + this.getName()
-                     + " was not granted this time. Your request violated a condition.");
+               operation = dbi.preSelect(request, config, con);
+               switch (operation) {
+                  case DbEventInterceptor.DENY_OPERATION:
+                     s = MessageResourcesInternal.getMessage("dbforms.events.view.nogrant", 
+                                                                 request.getLocale(),
+                                                                 new String[]{getName()} 
+                                                                 );
+                     throw new SQLException(s);
+                  case DbEventInterceptor.IGNORE_OPERATION:
+                     return operation;
                }
             }
             else if (action == DbEventInterceptor.POST_SELECT)
@@ -1984,9 +2006,6 @@ public class Table
                dbi.postSelect(request, config, con);
             }
          }
-
-         // PG = 2001-12-04
-         // No need to add extra comments, just re-throw exceptions as SqlExceptions
       }
       catch (ClassNotFoundException cnfe)
       {
@@ -2007,14 +2026,11 @@ public class Table
       {
          throw new SQLException(sqle.getMessage());
       }
-      catch (MultipleValidationException mve)
-      {
-         throw new MultipleValidationException(mve.getMessages());
-      }
       catch (ValidationException ve)
       {
          throw new SQLException(ve.getMessage());
       }
+      return DbEventInterceptor.GRANT_OPERATION;
    }
 
 

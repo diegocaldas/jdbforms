@@ -20,12 +20,12 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
+
 package org.dbforms.event.classic;
 import java.io.*;
 import java.util.*;
 import java.sql.*;
 import javax.servlet.http.*;
-
 import org.dbforms.util.*;
 import org.apache.log4j.Category;
 import org.dbforms.config.*;
@@ -40,7 +40,7 @@ import org.dbforms.event.*;
  *
  * <p>This event prepares and performs a SQL-Update operation</p>
  *
- * @author Joe Peer <j.peer@gmx.net>
+ * @author Joe Peer 
  */
 public class UpdateEvent extends ValidationEvent
 {
@@ -54,8 +54,8 @@ public class UpdateEvent extends ValidationEvent
     * @param request DOCUMENT ME!
     * @param config DOCUMENT ME!
     */
-   public UpdateEvent(Integer tableId, String keyId,
-      HttpServletRequest request, DbFormsConfig config)
+   public UpdateEvent(Integer tableId, String keyId, HttpServletRequest request, 
+                      DbFormsConfig config)
    {
       super(tableId.intValue(), keyId, request, config);
    }
@@ -68,11 +68,11 @@ public class UpdateEvent extends ValidationEvent
     * @param request DOCUMENT ME!
     * @param config DOCUMENT ME!
     */
-   public UpdateEvent(String action, HttpServletRequest request,
-      DbFormsConfig config)
+   public UpdateEvent(String action, HttpServletRequest request, 
+                      DbFormsConfig config)
    {
-      super(ParseUtil.getEmbeddedStringAsInteger(action, 2, '_'),
-         ParseUtil.getEmbeddedString(action, 3, '_'), request, config);
+      super(ParseUtil.getEmbeddedStringAsInteger(action, 2, '_'), 
+            ParseUtil.getEmbeddedString(action, 3, '_'), request, config);
    }
 
    /**
@@ -95,16 +95,18 @@ public class UpdateEvent extends ValidationEvent
     * @throws MultipleValidationException DOCUMENT ME!
     * @throws IllegalArgumentException DOCUMENT ME!
     */
-   public void processEvent(Connection con)
-      throws SQLException, MultipleValidationException
+   public void processEvent(Connection con) throws SQLException 
    {
       // Apply given security contraints (as defined in dbforms-config.xml)
       if (!hasUserPrivileg(GrantedPrivileges.PRIVILEG_UPDATE))
       {
-         String s = MessageResourcesInternal.getMessage("dbforms.events.update.nogrant", 
-                 													  request.getLocale(),
-                 													  new String[]{table.getName()} 
-                 													  );
+         String s = MessageResourcesInternal.getMessage(
+                             "dbforms.events.update.nogrant", 
+                             request.getLocale(), 
+                             new String[] 
+         {
+            table.getName()
+         });
          throw new SQLException(s);
       }
 
@@ -113,218 +115,231 @@ public class UpdateEvent extends ValidationEvent
 
       if (fieldValues.size() == 0)
       {
-         return;
+         throw new SQLException("no parameters");
       }
 
       // part 2: check if there are interceptors to be processed (as definied by
       // "interceptor" element embedded in table element in dbforms-config xml file)
-      if (table.hasInterceptors())
+      int operation = DbEventInterceptor.GRANT_OPERATION;
+
+      try
       {
-         try
-         {
-            Hashtable associativeArray = getAssociativeFieldValues(fieldValues);
+         Hashtable associativeArray = getAssociativeFieldValues(fieldValues);
 
-            // process the interceptors associated to this table
-            table.processInterceptors(DbEventInterceptor.PRE_UPDATE, request,
-               associativeArray, config, con);
 
-            // synchronize data which may be changed by interceptor:
-            table.synchronizeData(fieldValues, associativeArray);
-         }
-         catch (SQLException sqle)
-         {
-            // PG = 2001-12-04
-            // No need to add extra comments, just re-throw exceptions as SqlExceptions
-            throw new SQLException(sqle.getMessage());
-         }
-         catch (MultipleValidationException mve)
-         {
-            // PG, 2001-12-14
-            // Support for multiple error messages in one interceptor
-            throw new MultipleValidationException(mve.getMessages());
-         }
+         // process the interceptors associated to this table
+         table.processInterceptors(DbEventInterceptor.PRE_UPDATE, request, 
+                                   associativeArray, config, con);
+
+
+         // synchronize data which may be changed by interceptor:
+         table.synchronizeData(fieldValues, associativeArray);
+      }
+      catch (SQLException sqle)
+      {
+         // PG = 2001-12-04
+         // No need to add extra comments, just re-throw exceptions as SqlExceptions
+         throw new SQLException(sqle.getMessage());
       }
 
-      // End of interceptor processing
-      // in order to process an update, we need the key of the dataset to update
-      //
-      // new since version 0.9:
-      // key format: FieldID ":" Length ":" Value
-      // example: if key id = 121 and field id=2 then keyValueStr contains "2:3:121"
-      //
-      // if the key consists of more than one fields, the key values are seperated through "-"
-      // example: value of field 1=12, value of field 3=1992, then we'll get "1:2:12-3:4:1992"
-      String keyValuesStr = getKeyValues();
-
-      if ((keyValuesStr == null) || (keyValuesStr.trim().length() == 0))
+      if ((operation != DbEventInterceptor.IGNORE_OPERATION)
+                && (fieldValues.size() > 0))
       {
-         logCat.error(
-            "At least one key is required per table, check your dbforms-config.xml");
+         // End of interceptor processing
+         // in order to process an update, we need the key of the dataset to update
+         //
+         // new since version 0.9:
+         // key format: FieldID ":" Length ":" Value
+         // example: if key id = 121 and field id=2 then keyValueStr contains "2:3:121"
+         //
+         // if the key consists of more than one fields, the key values are seperated through "-"
+         // example: value of field 1=12, value of field 3=1992, then we'll get "1:2:12-3:4:1992"
+         String keyValuesStr = getKeyValues();
 
-         return;
-      }
-
-      // now we start building the UPDATE statement
-      // 20021031-HKK: Moved into table
-      PreparedStatement ps = con.prepareStatement(table.getUpdateStatement(
-               fieldValues));
-
-      // now we provide the values
-      // first, we provide the "new" values for fields
-      Enumeration enum = fieldValues.keys();
-      int         col = 1;
-
-      while (enum.hasMoreElements())
-      {
-         String fieldName = (String) enum.nextElement();
-         Field  curField = table.getFieldByName(fieldName);
-
-         if (curField != null)
+         if ((keyValuesStr == null) || (keyValuesStr.trim().length() == 0))
          {
-            int    fieldType = curField.getType();
-            Object value = null;
+            logCat.error(
+                     "At least one key is required per table, check your dbforms-config.xml");
 
-            if (fieldType == FieldTypes.BLOB)
-            {
-               // in case of a BLOB we supply the FileHolder object to SqlUtils for further operations
-               logCat.info("we are looking for fileholder with name: f_"
-                  + tableId + "_" + keyId + "_" + curField.getId());
-               value = ParseUtil.getFileHolder(request,
-                     "f_" + tableId + "_" + keyId + "_" + curField.getId());
-               logCat.info("and found a value=" + value);
-            }
-            else if (fieldType == FieldTypes.DISKBLOB)
-            {
-               FileHolder fileHolder = ParseUtil.getFileHolder(request,
-                     "f_" + tableId + "_" + keyId + "_" + curField.getId());
-               String     fileName = fileHolder.getFileName();
-
-               // check if we need to store it encoded or not
-               if ("yes".equals(curField.getEncoding()))
-               {
-                  // encode fileName
-                  int    dotIndex = fileName.lastIndexOf('.');
-                  String suffix = (dotIndex != -1)
-                     ? fileName.substring(dotIndex) : "";
-                  fileHolder.setFileName(UniqueIDGenerator.getUniqueID()
-                     + suffix);
-
-                  // a diskblob gets stored to db as an ordinary string (it's only the reference!)
-                  value = fileHolder.getFileName();
-               }
-               else
-               {
-                  // a diskblob gets stored to db as an ordinary string	 (it's only the reference!)
-                  value = fileName;
-               }
-            }
-            else
-            {
-               // in case of simple db types we just supply a string representing the value of the fields
-               value = fieldValues.get(curField.getName()).getFieldValue();
-            }
-
-            SqlUtil.fillPreparedStatement(ps, col, value, curField.getType());
-            col++;
+            return;
          }
-      }
 
-      table.populateWhereClauseForPS(keyValuesStr, ps, col);
+         // now we start building the UPDATE statement
+         // 20021031-HKK: Moved into table
+         PreparedStatement ps = con.prepareStatement(table.getUpdateStatement(
+                                                              fieldValues));
 
-      // we are now ready to execute the query
-      ps.executeUpdate();
-      ps.close(); // #JP Jun 27, 2001
+         // now we provide the values
+         // first, we provide the "new" values for fields
+         Enumeration enum = fieldValues.keys();
+         int         col = 1;
 
-      enum = fieldValues.keys();
-
-      while (enum.hasMoreElements())
-      {
-         String fieldName = (String) enum.nextElement();
-         Field  curField = table.getFieldByName(fieldName);
-
-         if (curField != null)
+         while (enum.hasMoreElements())
          {
-            int    fieldType = curField.getType();
+            String fieldName = (String) enum.nextElement();
+            Field  curField = table.getFieldByName(fieldName);
 
-				String directory = null;
-				try {
-					directory = Util.replaceRealPath(curField.getDirectory(), 
-																  DbFormsConfigRegistry.instance().lookup().getRealPath());
-				} catch (Exception e) {
-					throw new SQLException(e.getMessage());
-				}
-
-
-            if (fieldType == FieldTypes.DISKBLOB)
+            if (curField != null)
             {
-               // check if directory-attribute was provided
-               if (directory == null)
+               int    fieldType = curField.getType();
+               Object value = null;
+
+               if (fieldType == FieldTypes.BLOB)
                {
-                  throw new IllegalArgumentException(
-                     "directory-attribute needed for fields of type DISKBLOB");
+                  // in case of a BLOB we supply the FileHolder object to SqlUtils for further operations
+                  logCat.info("we are looking for fileholder with name: f_"
+                              + tableId + "_" + keyId + "_" + curField.getId());
+                  value = ParseUtil.getFileHolder(request, 
+                                                  "f_" + tableId + "_" + keyId
+                                                  + "_" + curField.getId());
+                  logCat.info("and found a value=" + value);
                }
-
-               // instanciate file object for that dir
-               File dir = new File(directory);
-
-               // Check saveDirectory is truly a directory
-               if (!dir.isDirectory())
+               else if (fieldType == FieldTypes.DISKBLOB)
                {
-                  throw new IllegalArgumentException("Not a directory: "
-                     + directory);
-               }
+                  FileHolder fileHolder = ParseUtil.getFileHolder(request, 
+                                                                  "f_"
+                                                                  + tableId
+                                                                  + "_" + keyId
+                                                                  + "_"
+                                                                  + curField.getId());
+                  String     fileName = fileHolder.getFileName();
 
-               // Check saveDirectory is writable
-               if (!dir.canWrite())
-               {
-                  throw new IllegalArgumentException("Not writable: "
-                     + directory);
-               }
-
-               // dir is ok so lets store the filepart
-               FileHolder fileHolder = ParseUtil.getFileHolder(request,
-                     "f_" + tableId + "_" + keyId + "_" + curField.getId());
-
-               if (fileHolder != null)
-               {
-                  try
+                  // check if we need to store it encoded or not
+                  if ("yes".equals(curField.getEncoding()))
                   {
-                     fileHolder.writeBufferToFile(dir);
+                     // encode fileName
+                     int    dotIndex = fileName.lastIndexOf('.');
+                     String suffix = (dotIndex != -1)
+                                        ? fileName.substring(dotIndex) : "";
+                     fileHolder.setFileName(UniqueIDGenerator.getUniqueID()
+                                            + suffix);
 
-                     //filePart.getInputStream().close();
-                     logCat.info("fin + closedy");
+
+                     // a diskblob gets stored to db as an ordinary string (it's only the reference!)
+                     value = fileHolder.getFileName();
                   }
-                  catch (IOException ioe)
+                  else
                   {
-                     //#checkme: this would be a good place for rollback in database!!
-                     throw new SQLException("could not store file '"
-                        + fileHolder.getFileName() + "' to dir '" + directory
-                        + "'");
+                     // a diskblob gets stored to db as an ordinary string	 (it's only the reference!)
+                     value = fileName;
                   }
                }
                else
                {
-                  logCat.info("uh! empty fileHolder");
+                  // in case of simple db types we just supply a string representing the value of the fields
+                  value = fieldValues.get(curField.getName()).getFieldValue();
+               }
+
+               SqlUtil.fillPreparedStatement(ps, col, value, curField.getType());
+               col++;
+            }
+         }
+
+         table.populateWhereClauseForPS(keyValuesStr, ps, col);
+
+
+         // we are now ready to execute the query
+         ps.executeUpdate();
+         ps.close(); // #JP Jun 27, 2001
+
+         enum = fieldValues.keys();
+
+         while (enum.hasMoreElements())
+         {
+            String fieldName = (String) enum.nextElement();
+            Field  curField = table.getFieldByName(fieldName);
+
+            if (curField != null)
+            {
+               int    fieldType = curField.getType();
+
+               String directory = null;
+
+               try
+               {
+                  directory = Util.replaceRealPath(curField.getDirectory(), 
+                                                   DbFormsConfigRegistry.instance()
+                                                                        .lookup()
+                                                                        .getRealPath());
+               }
+               catch (Exception e)
+               {
+                  throw new SQLException(e.getMessage());
+               }
+
+               if (fieldType == FieldTypes.DISKBLOB)
+               {
+                  // check if directory-attribute was provided
+                  if (directory == null)
+                  {
+                     throw new IllegalArgumentException(
+                              "directory-attribute needed for fields of type DISKBLOB");
+                  }
+
+                  // instanciate file object for that dir
+                  File dir = new File(directory);
+
+                  // Check saveDirectory is truly a directory
+                  if (!dir.isDirectory())
+                  {
+                     throw new IllegalArgumentException("Not a directory: "
+                                                        + directory);
+                  }
+
+                  // Check saveDirectory is writable
+                  if (!dir.canWrite())
+                  {
+                     throw new IllegalArgumentException("Not writable: "
+                                                        + directory);
+                  }
+
+                  // dir is ok so lets store the filepart
+                  FileHolder fileHolder = ParseUtil.getFileHolder(request, 
+                                                                  "f_"
+                                                                  + tableId
+                                                                  + "_" + keyId
+                                                                  + "_"
+                                                                  + curField.getId());
+
+                  if (fileHolder != null)
+                  {
+                     try
+                     {
+                        fileHolder.writeBufferToFile(dir);
+
+
+                        //filePart.getInputStream().close();
+                        logCat.info("fin + closedy");
+                     }
+                     catch (IOException ioe)
+                     {
+                        //#checkme: this would be a good place for rollback in database!!
+                        throw new SQLException("could not store file '"
+                                               + fileHolder.getFileName()
+                                               + "' to dir '" + directory + "'");
+                     }
+                  }
+                  else
+                  {
+                     logCat.info("uh! empty fileHolder");
+                  }
                }
             }
          }
       }
 
       // finally, we process interceptor again (post-update)
-      if (table.hasInterceptors())
+      try
       {
-         try
-         {
-            // process the interceptors associated to this table
-            table.processInterceptors(DbEventInterceptor.POST_UPDATE, request,
-               null, config, con);
-         }
-         catch (SQLException sqle)
-         {
-            // PG = 2001-12-04
-            // No need to add extra comments, just re-throw exceptions as SqlExceptions
-            throw new SQLException(sqle.getMessage());
-         }
+         // process the interceptors associated to this table
+         table.processInterceptors(DbEventInterceptor.POST_UPDATE, request, 
+                                   null, config, con);
+      }
+      catch (SQLException sqle)
+      {
+         // PG = 2001-12-04
+         // No need to add extra comments, just re-throw exceptions as SqlExceptions
+         throw new SQLException(sqle.getMessage());
       }
 
       // End of interceptor processing

@@ -45,6 +45,7 @@ import org.apache.log4j.Category;
 import org.dbforms.util.ParseUtil;
 import org.dbforms.util.Util;
 import org.dbforms.util.MessageResources;
+import org.dbforms.util.MessageResourcesInternal;
 import org.dbforms.config.Constants;
 import org.dbforms.config.DbEventInterceptor;
 import org.dbforms.config.DbFormsConfig;
@@ -52,7 +53,6 @@ import org.dbforms.config.DbFormsErrors;
 import org.dbforms.config.FieldTypes;
 import org.dbforms.config.FieldValue;
 import org.dbforms.config.FieldValues;
-import org.dbforms.config.MultipleValidationException;
 import org.dbforms.config.ResultSetVector;
 import org.dbforms.config.SqlUtil;
 import org.dbforms.config.Table;
@@ -1205,11 +1205,12 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
          {
             logCat.debug("pos3");
 
-            String str = ("Sorry, viewing data from table " + table.getName()
-                         + " is not granted for this session.");
+            String str = MessageResourcesInternal.getMessage("dbforms.events.view.nogrant", 
+                                                           request.getLocale(),
+                                                           new String[]{table.getName()} 
+                                                           );
             logCat.warn(str);
-            out.println(str + "<br><br>");
-
+            out.println(str);
             return SKIP_BODY;
          }
 
@@ -1227,13 +1228,8 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
             catch (Exception sqle)
             {
                logCat.error("pos6");
-
-               String str = ("Sorry, viewing data from table "
-                            + table.getName() + " would violate a condition: "
-                            + sqle.getMessage());
-               logCat.error(str, sqle);
-               out.println(str + "<br><br>");
-
+               logCat.error(sqle.getMessage(), sqle);
+               out.println(sqle.getMessage());
                return SKIP_BODY;
             }
          }
@@ -1795,13 +1791,6 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
                SqlUtil.logSqlException(sqle);
                throw sqle;
             }
-            catch (MultipleValidationException mve)
-            {
-               // PG, 2001-12-14
-               // Support for multiple error messages in one interceptor
-               logCat.error("::doStartTag() - MultipleValidationException", mve);
-               throw mve;
-            }
          }
 
          // End of interceptor processing
@@ -1872,12 +1861,6 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
       catch (SQLException ne)
       {
          SqlUtil.logSqlException(ne);
-
-         return SKIP_BODY;
-      }
-      catch (MultipleValidationException mve)
-      {
-         logCat.error("::doStartTag - MultipleValidationException", mve);
 
          return SKIP_BODY;
       }

@@ -2,6 +2,8 @@
 (Henner.Kollmann@gmx.de)
    - bug fix: Making the fieldValues.remove("something_I_dont_want_updated") work? It gets ignored now.  unassigned  open  
               will work now!!!!
+   - added patches from Sunil Mishra [sunil_mishra@adp.com]: IGNORE_OPERATION for process interceptors
+             
               
 2003-10-10
 (Henner.Kollmann@gmx.de)

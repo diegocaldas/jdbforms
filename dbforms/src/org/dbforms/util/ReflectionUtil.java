@@ -65,7 +65,6 @@ public class ReflectionUtil
                              throws Exception
    {
       Class myClass = Class.forName(className);
-
       return newInstance(myClass, constructorArgsTypes, constructorArgs);
    }
 

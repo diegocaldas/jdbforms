@@ -79,6 +79,12 @@ public interface DbEventInterceptor
    public static final int DENY_OPERATION = 1;
 
    /**
+    * The constant defined for ignoring an operation after processing
+    * interceptors.
+    */
+   public static final int IGNORE_OPERATION = 2;
+
+   /**
     * DOCUMENT ME!
     *
     * @param request DOCUMENT ME!

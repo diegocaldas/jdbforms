@@ -20,12 +20,12 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
+
 package org.dbforms.event.classic;
 import java.io.*;
 import java.util.*;
 import java.sql.*;
 import javax.servlet.http.*;
-
 import org.dbforms.util.*;
 import org.apache.log4j.Category;
 import org.dbforms.config.*;
@@ -38,7 +38,7 @@ import org.dbforms.event.DatabaseEvent;
  *
  * <p>This event prepares and performs a SQL-Delete operation</p>
  *
- * @author Joe Peer <j.peer@gmx.net>
+ * @author Joe Peer 
  */
 public class DeleteEvent extends DatabaseEvent
 {
@@ -53,8 +53,8 @@ public class DeleteEvent extends DatabaseEvent
     * @param request DOCUMENT ME!
     * @param config DOCUMENT ME!
     */
-   public DeleteEvent(Integer tableId, String keyId,
-      HttpServletRequest request, DbFormsConfig config)
+   public DeleteEvent(Integer tableId, String keyId, HttpServletRequest request, 
+                      DbFormsConfig config)
    {
       super(tableId.intValue(), keyId, request, config);
    }
@@ -67,11 +67,11 @@ public class DeleteEvent extends DatabaseEvent
     * @param request DOCUMENT ME!
     * @param config DOCUMENT ME!
     */
-   public DeleteEvent(String action, HttpServletRequest request,
-      DbFormsConfig config)
+   public DeleteEvent(String action, HttpServletRequest request, 
+                      DbFormsConfig config)
    {
-      super(ParseUtil.getEmbeddedStringAsInteger(action, 2, '_'),
-         ParseUtil.getEmbeddedString(action, 3, '_'), request, config);
+      super(ParseUtil.getEmbeddedStringAsInteger(action, 2, '_'), 
+            ParseUtil.getEmbeddedString(action, 3, '_'), request, config);
    }
 
    /**
@@ -93,8 +93,7 @@ public class DeleteEvent extends DatabaseEvent
     * @throws SQLException DOCUMENT ME!
     * @throws MultipleValidationException DOCUMENT ME!
     */
-   public void processEvent(Connection con)
-      throws SQLException, MultipleValidationException
+   public void processEvent(Connection con) throws SQLException
    {
       // in order to process an delete, we need the key of the dataset to delete
       //
@@ -109,7 +108,7 @@ public class DeleteEvent extends DatabaseEvent
       if ((keyValuesStr == null) || (keyValuesStr.trim().length() == 0))
       {
          logCat.error(
-            "At least one key is required per table, check your dbforms-config.xml");
+                  "At least one key is required per table, check your dbforms-config.xml");
 
          return;
       }
@@ -117,15 +116,20 @@ public class DeleteEvent extends DatabaseEvent
       // Apply given security contraints (as defined in dbforms-config.xml)
       if (!hasUserPrivileg(GrantedPrivileges.PRIVILEG_DELETE))
       {
-			String s = MessageResourcesInternal.getMessage("dbforms.events.delete.nogrant", 
-																		  request.getLocale(),
-																		  new String[]{table.getName()} 
-																		  );
-			throw new SQLException(s);
+         String s = MessageResourcesInternal.getMessage(
+                             "dbforms.events.delete.nogrant", 
+                             request.getLocale(), 
+                             new String[] 
+         {
+            table.getName()
+         });
+         throw new SQLException(s);
       }
 
       // part 2: check if there are interceptors to be processed (as definied by
       // "interceptor" element embedded in table element in dbforms-config xml file)
+      int operation = DbEventInterceptor.GRANT_OPERATION;
+
       if (table.hasInterceptors())
       {
          try
@@ -139,7 +143,7 @@ public class DeleteEvent extends DatabaseEvent
             queryBuf.append(table.getWhereClauseForPS());
 
             logCat.info("doing interceptor before delete:"
-               + queryBuf.toString());
+                        + queryBuf.toString());
 
             PreparedStatement ps = con.prepareStatement(queryBuf.toString());
             table.populateWhereClauseForPS(keyValuesStr, ps, 1);
@@ -169,16 +173,18 @@ public class DeleteEvent extends DatabaseEvent
             else
             {
                throw new SQLException("Sorry, deleting data from table "
-                  + table.getName()
-                  + " is not granted this time. Your request could have been violating a condition or there is a weird database error. Contact system administrator if problem persists.");
+                                      + table.getName()
+                                      + " is not granted this time. Your request could have been violating a condition or there is a weird database error. Contact system administrator if problem persists.");
             }
 
             rowToDelete.close();
             ps.close(); // #JP Jun 27, 2001
 
+
             // part 2b: process the interceptors associated to this table
-            table.processInterceptors(DbEventInterceptor.PRE_DELETE, request,
-               associativeArray, config, con);
+            operation = table.processInterceptors(DbEventInterceptor.PRE_DELETE, 
+                                                  request, associativeArray, 
+                                                  config, con);
          }
          catch (SQLException sqle)
          {
@@ -186,87 +192,95 @@ public class DeleteEvent extends DatabaseEvent
             // No need to add extra comments, just re-throw exceptions as SqlExceptions
             throw new SQLException(sqle.getMessage());
          }
-         catch (MultipleValidationException mve)
-         {
-            // PG, 2001-12-14
-            // Support for multiple error messages in one interceptor
-            throw new MultipleValidationException(mve.getMessages());
-         }
       }
 
       // End of interceptor processing
-      // we check if the table the delete should be applied to contains field(s)
-      // of the type "DISKBLOB"
-      // if so, we have to select the filename+dirs from the db before we can delete
-      ResultSet diskblobs = null;
-
-      if (table.containsDiskblob())
+      if (operation != DbEventInterceptor.IGNORE_OPERATION)
       {
-         StringBuffer queryBuf = new StringBuffer();
-         queryBuf.append(table.getDisblobSelectStatement());
-         queryBuf.append(" WHERE ");
-         queryBuf.append(table.getWhereClauseForPS());
+         // we check if the table the delete should be applied to contains field(s)
+         // of the type "DISKBLOB"
+         // if so, we have to select the filename+dirs from the db before we can delete
+         ResultSet diskblobs = null;
 
-         PreparedStatement diskblobsPs = con.prepareStatement(queryBuf.toString());
-         table.populateWhereClauseForPS(keyValuesStr, diskblobsPs, 1);
-         diskblobs = diskblobsPs.executeQuery();
-         diskblobsPs.close();
-      }
-
-      // 20021031-HKK: build in table!!
-      PreparedStatement ps = con.prepareStatement(table.getDeleteStatement());
-
-      // now we provide the values
-      // of the key-fields, so that the WHERE clause matches the right dataset!
-      table.populateWhereClauseForPS(keyValuesStr, ps, 1);
-
-      // finally execute the query
-      ps.executeUpdate();
-      ps.close();
-
-      // if we came here, we can delete the diskblob files (if any)
-      // #checkme: rollback if file problem (?? not sure!)
-      if (diskblobs != null)
-      { // if resultset exists
-
-         if (diskblobs.next())
+         if (table.containsDiskblob())
          {
-            // if a row in the resultset exists (can be only 1 row !)
-            Vector diskblobFields = table.getDiskblobs();
+            StringBuffer queryBuf = new StringBuffer();
+            queryBuf.append(table.getDisblobSelectStatement());
+            queryBuf.append(" WHERE ");
+            queryBuf.append(table.getWhereClauseForPS());
 
-            // get fields we're interested in
-            for (int i = 0; i < diskblobFields.size(); i++)
+            PreparedStatement diskblobsPs = con.prepareStatement(
+                                                     queryBuf.toString());
+            table.populateWhereClauseForPS(keyValuesStr, diskblobsPs, 1);
+            diskblobs = diskblobsPs.executeQuery();
+            diskblobsPs.close();
+         }
+
+         // 20021031-HKK: build in table!!
+         PreparedStatement ps = con.prepareStatement(table.getDeleteStatement());
+
+
+         // now we provide the values
+         // of the key-fields, so that the WHERE clause matches the right dataset!
+         table.populateWhereClauseForPS(keyValuesStr, ps, 1);
+
+
+         // finally execute the query
+         ps.executeUpdate();
+         ps.close();
+
+         // if we came here, we can delete the diskblob files (if any)
+         // #checkme: rollback if file problem (?? not sure!)
+         if (diskblobs != null)
+         { // if resultset exists
+
+            if (diskblobs.next())
             {
-               Field  aField   = (Field) diskblobFields.elementAt(i);
-               String fileName = diskblobs.getString(i + 1); // get a filename
+               // if a row in the resultset exists (can be only 1 row !)
+               Vector diskblobFields = table.getDiskblobs();
 
-               if (fileName != null)
-               { // may be SQL NULL, in that case we'll skip it
-                  fileName = fileName.trim(); // remove whitespace
+               // get fields we're interested in
+               for (int i = 0; i < diskblobFields.size(); i++)
+               {
+                  Field  aField   = (Field) diskblobFields.elementAt(i);
+                  String fileName = diskblobs.getString(i + 1); // get a filename
 
-                  if (fileName.length() > 0)
-                  {
-							String directory = null;
-							try {
-								directory = Util.replaceRealPath(aField.getDirectory(), 
-																			  DbFormsConfigRegistry.instance().lookup().getRealPath());
-							} catch (Exception e) {
-								throw new SQLException(e.getMessage());
-							}
+                  if (fileName != null)
+                  { // may be SQL NULL, in that case we'll skip it
+                     fileName = fileName.trim(); // remove whitespace
 
-                     // remember: every field may have its own storing dir!
-                     File file = new File(directory, fileName);
-
-                     if (file.exists())
+                     if (fileName.length() > 0)
                      {
-                        file.delete();
-                        logCat.info("deleted file " + fileName + " from dir "
-                           + directory);
-                     }
-                     else
-                     {
-                        logCat.info("delete of file " + fileName + " from dir "
-                           + directory + " failed because file not found");
+                        String directory = null;
+
+                        try
+                        {
+                           directory = Util.replaceRealPath(
+                                                aField.getDirectory(), 
+                                                DbFormsConfigRegistry.instance()
+                                                                     .lookup()
+                                                                     .getRealPath());
+                        }
+                        catch (Exception e)
+                        {
+                           throw new SQLException(e.getMessage());
+                        }
+
+                        // remember: every field may have its own storing dir!
+                        File file = new File(directory, fileName);
+
+                        if (file.exists())
+                        {
+                           file.delete();
+                           logCat.info("deleted file " + fileName
+                                       + " from dir " + directory);
+                        }
+                        else
+                        {
+                           logCat.info("delete of file " + fileName
+                                       + " from dir " + directory
+                                       + " failed because file not found");
+                        }
                      }
                   }
                }
@@ -275,20 +289,17 @@ public class DeleteEvent extends DatabaseEvent
       }
 
       // finally, we process interceptor again (post-delete)
-      if (table.hasInterceptors())
+      try
       {
-         try
-         {
-            // process the interceptors associated to this table
-            table.processInterceptors(DbEventInterceptor.POST_DELETE, request,
-               null, config, con);
-         }
-         catch (SQLException sqle)
-         {
-            // PG = 2001-12-04
-            // No need to add extra comments, just re-throw exceptions as SqlExceptions
-            throw new SQLException(sqle.getMessage());
-         }
+         // process the interceptors associated to this table
+         table.processInterceptors(DbEventInterceptor.POST_DELETE, request, 
+                                   null, config, con);
+      }
+      catch (SQLException sqle)
+      {
+         // PG = 2001-12-04
+         // No need to add extra comments, just re-throw exceptions as SqlExceptions
+         throw new SQLException(sqle.getMessage());
       }
 
       // End of interceptor processing
