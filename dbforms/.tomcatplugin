@@ -8,4 +8,51 @@
     <warLocation></warLocation>
     <extraInfo>%3CValve++className%3D%22org.apache.catalina.authenticator.NonLoginAuthenticator%22++disableProxyCaching%3D%22false%22++%2F%3E%0D%0A</extraInfo>
     <webPath>/bookstore</webPath>
+    <webClassPathEntries>
+        <webClassPathEntry>/dbforms/dependend/cactus-13-1.7dev20041109.jar</webClassPathEntry>
+        <webClassPathEntry>/dbforms/dependend/cewolf.jar</webClassPathEntry>
+        <webClassPathEntry>/dbforms/dependend/commons-beanutils-1.6.jar</webClassPathEntry>
+        <webClassPathEntry>/dbforms/dependend/commons-collections-2.1.jar</webClassPathEntry>
+        <webClassPathEntry>/dbforms/dependend/commons-dbcp-1.1.jar</webClassPathEntry>
+        <webClassPathEntry>/dbforms/dependend/commons-digester-1.5.jar</webClassPathEntry>
+        <webClassPathEntry>/dbforms/dependend/commons-el-1.0.jar</webClassPathEntry>
+        <webClassPathEntry>/dbforms/dependend/commons-fileupload-1.0.jar</webClassPathEntry>
+        <webClassPathEntry>/dbforms/dependend/commons-httpclient-2.0.jar</webClassPathEntry>
+        <webClassPathEntry>/dbforms/dependend/commons-lang-2.0.jar</webClassPathEntry>
+        <webClassPathEntry>/dbforms/dependend/commons-logging-1.0.3.jar</webClassPathEntry>
+        <webClassPathEntry>/dbforms/dependend/commons-pool-1.1.jar</webClassPathEntry>
+        <webClassPathEntry>/dbforms/dependend/commons-validator-1.0.2.jar</webClassPathEntry>
+        <webClassPathEntry>/dbforms/dependend/hsqldb-1.7.1.jar</webClassPathEntry>
+        <webClassPathEntry>/dbforms/dependend/httpunit-1.5.4.jar</webClassPathEntry>
+        <webClassPathEntry>/dbforms/dependend/itext-1.01.jar</webClassPathEntry>
+        <webClassPathEntry>/dbforms/dependend/jasperreports-0.6.1.jar</webClassPathEntry>
+        <webClassPathEntry>/dbforms/dependend/jcommon-0.9.5.jar</webClassPathEntry>
+        <webClassPathEntry>/dbforms/dependend/jfreechart-0.9.20.jar</webClassPathEntry>
+        <webClassPathEntry>/dbforms/dependend/junit-3.8.1.jar</webClassPathEntry>
+        <webClassPathEntry>/dbforms/dependend/log4j-1.2.8.jar</webClassPathEntry>
+        <webClassPathEntry>/dbforms/dependend/maxq-0.95dev.jar</webClassPathEntry>
+        <webClassPathEntry>/dbforms/dependend/nekohtml-0.9.3.jar</webClassPathEntry>
+        <webClassPathEntry>/dbforms/dependend/oro-2.0.8.jar</webClassPathEntry>
+        <webClassPathEntry>/dbforms/dependend/poi-2.0-final-20040126.jar</webClassPathEntry>
+        <webClassPathEntry>/dbforms/dependend/protomatter-1.1.8-pre5.jar</webClassPathEntry>
+        <webClassPathEntry>/dbforms/dependend/rhino-1.5R4.1.jar</webClassPathEntry>
+        <webClassPathEntry>/dbforms/dependend/servletapi2.4/jsp-api-2.0-20040521.jar</webClassPathEntry>
+        <webClassPathEntry>/dbforms/dependend/servletapi2.4/servletapi-2.4-20040521.jar</webClassPathEntry>
+        <webClassPathEntry>/dbforms/dependend/xalan-2.5.1.jar</webClassPathEntry>
+        <webClassPathEntry>/dbforms/dependend/xercesImpl-2.6.0.jar</webClassPathEntry>
+        <webClassPathEntry>/dbforms/dependend/xmlParserAPIs-2.2.1.jar</webClassPathEntry>
+        <webClassPathEntry>/dbforms/examples/bookstore/WEB-INF/classes</webClassPathEntry>
+        <webClassPathEntry>/dbforms/examples/bookstore/WEB-INF/lib/batik-awt-util.jar</webClassPathEntry>
+        <webClassPathEntry>/dbforms/examples/bookstore/WEB-INF/lib/batik-dom.jar</webClassPathEntry>
+        <webClassPathEntry>/dbforms/examples/bookstore/WEB-INF/lib/batik-svggen.jar</webClassPathEntry>
+        <webClassPathEntry>/dbforms/examples/bookstore/WEB-INF/lib/batik-util.jar</webClassPathEntry>
+        <webClassPathEntry>/dbforms/examples/bookstore/WEB-INF/lib/batik-xml.jar</webClassPathEntry>
+        <webClassPathEntry>/dbforms/examples/bookstore/WEB-INF/lib/jstl.jar</webClassPathEntry>
+        <webClassPathEntry>/dbforms/examples/bookstore/WEB-INF/lib/pow2toolkit-1.0.jar</webClassPathEntry>
+        <webClassPathEntry>/dbforms/examples/bookstore/WEB-INF/lib/pow2webgui-1.0.jar</webClassPathEntry>
+        <webClassPathEntry>/dbforms/examples/bookstore/WEB-INF/lib/standard.jar</webClassPathEntry>
+        <webClassPathEntry>/dbforms/examples/bookstore/WEB-INF/lib/velocity-dep-1.3.1-rc2.jar</webClassPathEntry>
+        <webClassPathEntry>/dbforms/examples/bugtracker/WEB-INF/lib/taglibs-request.jar</webClassPathEntry>
+        <webClassPathEntry>com.genuitec.eclipse.j2eedt.core.J2EE14_CONTAINER</webClassPathEntry>
+    </webClassPathEntries>
 </tomcatProjectProperties>
