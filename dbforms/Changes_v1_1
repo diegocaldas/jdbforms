@@ -1,3 +1,53 @@
+2002-11-09
+(fossato@pow2.com)
+        Multiple Connection support and connectionPool factory:
+        -------------------------------------------------------
+        added "multiple connection support" stuff by Bradley M. Handy (bhandy@arbor.edu)
+        and connectionPool factory by Power Of Two S.r.l. (fossato@pow2.com)
+            org/dbforms/ConfigServlet.java
+            org/dbforms/Controller.java
+            org/dbforms/DbFormsConfig.java
+            org/dbforms/taglib/DbFormTag.java
+            org/dbforms/taglib/DbGetConnection.java
+            org/dbforms/taglib/EmbeddedData.java
+            org/dbforms/util/DbConnection.java
+              
+        added the dependency jar library:
+            depends/pow2ConnectionFactory.jar
+
+        added the "dbConnectionName" attribute into the etc/taglib_docu.xml file
+        to the following elements:
+            dbform
+            tableData
+            queryData
+            getConnection
+            blobContent
+
+        File servlet and the related BlobContent tag:
+        ---------------------------------------------
+        Filse servlet: 
+        fixed a null pointer exception for Disk Blob data management 
+        (generated when the selected file does not exist) and used 
+        "extract method" refactoring to get "readDiskBlob" method to handle
+        Disk Blob data and "readDbFieldBlob" to handle Database Blob data;
+              org/dbforms/util/FileServlet.java 
+        
+        BlobContent tag: 
+        added the "defaultValue" attribute (useful for Disk Blob data)
+              org/dbforms/taglib/DbBlobContentTag.java
+              etc/taglib_docu.xml
+
+        Format attribute for DbLabelTag:
+        --------------------------------
+        moved the "format" attribute and the related accessor methods from DbDateLabelTag 
+        to its superclass: DbLabelTag;
+        format attribute for DbLabelTag is initialized to NULL;
+        format attribute for DbDateLabelTag is initialized to DbFormsConfig.getDateFormatter(),
+        using the date format specified into the xml config file.
+              org/dbforms/taglib/DbDateLabelTag
+              org/dbforms/taglib/DbLabelTag
+              etc/taglib_docu.xml
+
 2002-11-07
 (Henner.Kollmann@gmx.de):
 	added properties to DbConnection:
