@@ -5,7 +5,7 @@
 <chapter><title>Installation</title>
 <para>You can utilize a binary distribution of DbForms in your own web applications
 by following these steps.</para>
-<para>Users of MS SQL Server should refer instead to <link linkend='mssql'>JumpStart MS Server Database</link></para>
+<para>Users of MS SQL Server should refer instead to <link linkend='mssql'>JumpStart MS Server Database(click here)</link></para>
 <para>If you have questions, please drop a line to our <ulink url="http://lists.sourceforge.net/lists/listinfo/jdbforms-interest"><citetitle>mailing list</citetitle></ulink></para>
 <sect1><title id="prereqs">Prerequisites</title>
 <orderedlist numeration="upperroman">
@@ -17,6 +17,7 @@ by following these steps.</para>
 <para>Download and install a Java2 (version 1.2 or later) Java Development Kit implementation for your operating system platform.  Define an environment variable JAVA_HOME that points at the base directory of your JDK installation, and add the directory "$JAVA_HOME/bin" to your PATH variable.</para>
 </listitem>
 <listitem>
+<para>(If your JDK is 1.4.x or later, you can skip this step)</para>
 <para>Download and install an XML parser that is compatible with the Java API for XML Parsing (JAXP) specification.  A useful XML parser is the <ulink url="http://java.sun.com/xml"><citetitle>JAXP Reference Implementation</citetitle></ulink>, version 1.1 or later. Version 1.1 of DbForms has been upgraded to use the Apache commons framework.  
 This framework required Java XML Parser (JAXP) v1.1.  Older Web containers 
 (such as Tomcat v3.2.x) are still using JAXP v1.0 technology and are therefore 
@@ -75,16 +76,11 @@ commons-validator.jar
 <listitem>
 <para>Download <ulink url="http://jakarta.apache.org"><citetitle>jakarta-oro-2.0.6.jar </citetitle></ulink>which is in the ORO project </para>
 </listitem>
-  <listitem>
-<para>Download <ulink url="http://jakarta.apache.org"><citetitle>log4j.jar </citetitle></ulink>which is in the Log4j project </para>
-</listitem>
+   
 <listitem>
-<para>Download <ulink url="http://www.oreilly.com"><citetitle>cos.jar </citetitle></ulink> </para>
-</listitem>
-<listitem>
-<para>Download Download and install a servlet container that supports the Servlet API Specification, version 2.2 or later, and the JavaServer Pages (JSP) Specification, version 1.1 or later.
+<para>Download Download and install a servlet container that supports the Servlet API Specification, version 2.3 or later, and the JavaServer Pages (JSP) Specification, version 1.2 or later.
 </para>
-<para>A useful servlet container is <ulink url="http://jakarta.apache.org"><citetitle>Tomcat</citetitle></ulink>, version 3.2 or later for dbforms 1.07 and version 4.0.x or later for dbforms v1.1 and on</para>
+<para>A useful servlet container is <ulink url="http://jakarta.apache.org"><citetitle>Tomcat</citetitle></ulink>,  version 4.0.x or later.  Tomcat 3.3.x is only compatible until dbforms v1.1.2.  </para>
 </listitem>
 <listitem>
 <para>
@@ -104,7 +100,7 @@ commons-validator.jar
 <para>create the database by executing the SQL commands listed in example/*/WEB-INF/*.sql</para>
 </listitem>
 <listitem>
-<para> OPTIONAL: configure a database connection pool for that new created database using your favorite technique (either the connection pool built into your application server or codestudio's poolman or another database connection tool) connection pools are important to speed-up your application. See <link linkend='dbConn'>examples</link></para>
+<para> OPTIONAL: configure a database connection pool for that new created database using your favorite technique (either the connection pool built into your application server or codestudio's poolman or another database connection tool) connection pools are important to speed-up your application. See <link linkend='dbConn'> examples (click here)</link></para>
 </listitem>
 <listitem>
 <para>Install the DbForms example applications by deploying the directory of the application into your servlet container, using the standard techniques supported by that container.</para><para> (For Tomcat, simply copy this
@@ -112,7 +108,7 @@ commons-validator.jar
  
 </listitem>
 <listitem>
-<para>Do not forget to point the db-connection entry in <computeroutput>/WEB-INF/dbforms-config.xml</computeroutput> to the datasource or connection pool you established! See <link linkend='dbConn'>examples</link>.</para>
+<para>Do not forget to point the db-connection entry in <computeroutput>/WEB-INF/dbforms-config.xml</computeroutput> to the datasource or connection pool you established! See <link linkend='dbConn'> three examples (click here)</link>.</para>
 </listitem>
 <listitem>
 <para>Take a look into /example/README.txt and the other README_XXX files in the examples-directory!
@@ -139,23 +135,31 @@ NOTE: the file "dbforms.tld" was named "taglib.tld" in some prior versions. this
   "<computeroutput>WEB-INF/lib</computeroutput>" directory of your web application</para>
 </listitem>
 <listitem>
-<para>Copy the jars (listed in <link linkend='prereqs'>prerequisites</link> section) into the
+<para>Copy the jars (listed in <link linkend='prereqs'>prerequisites (click)</link> section) into the
   "<computeroutput>WEB-INF/lib</computeroutput>" directory of your web application.</para><para>Note: only <computeroutput>stuts.jar</computeroutput> is needed and not the whole Struts distribution</para>
 </listitem>
 <listitem>
-<para>Modify your "<computeroutput>WEB-INF/web.xml</computeroutput>" file to include 3 &lt;servlet&gt; element to define the controller, the config and the file-servlet (<link linkend='depldesc'>see below</link>) </para>
+<para>Modify your "<computeroutput>WEB-INF/web.xml</computeroutput>" file to include:</para>
+<itemizedlist mark="opencircle">
+<listitem><para>
+Three &lt;servlet&gt; elements to define the controller, the config and the file-servlet and mappings(<link linkend='depldesc'>click to see below</link>) </para>
 </listitem>
 <listitem>
-<para>Modify the "<computeroutput>WEB-INF/web.xml</computeroutput>" file for your web application to include a tag library declaration for the Dbforms tag library (<link linkend='taglibdesc'>see below</link>)and a TEMPLATE-Basedir</para>
-<para>See <link linkend='tempbasedir'>templates base directory</link> for more info on that.</para>
+<para>a tag library declaration for the Dbforms tag library (<link linkend='taglibdesc'>click to see below</link>)</para>
 </listitem>
 <listitem>
-<para>Create a file "<computeroutput>WEB-INF/dbforms-config.xml</computeroutput>" that defines the tables, fields
-  and the database connection to use. See a simple sample <link linkend='sampConfig'>here</link>. <emphasis role="bold">This can be GENERATED AUTOMATICALLY (along with jsp pages) by using <link linkend='devgui'>DEVGUI</link></emphasis></para>
+<para>security measures for your application(<link linkend='secr'>click to see below</link>)</para>
+</listitem>
+</itemizedlist>
+
+ 
+</listitem>
+<listitem>
+<para>Create a file "<computeroutput>WEB-INF/dbforms-config.xml</computeroutput>" that defines the tables, fields and the database connection to use. See a <link linkend='sampConfig'> simple sample here (click)</link>. This can be GENERATED AUTOMATICALLY (along with jsp pages) by using <link linkend='devgui'>DEVGUI(click)</link></para>
 </listitem>
 <listitem>
 <para>Optionally, create a file "<computeroutput>WEB-INF/dbforms-errors.xml</computeroutput>" that defines error messages</para>
-<para>See the <computeroutput>xmlErrors</computeroutput> tag in the TagLib for more information.</para>
+<para>See the <computeroutput>xmlErrors</computeroutput> tag in the <ulink url="../../taglib/DbFormsTags_Frame.html"><citetitle>TagLib </citetitle></ulink> for more information.</para>
 </listitem>
 <listitem>
 <para>In each JSP page that will use the DbForms custom tags, add a line at
@@ -167,9 +171,9 @@ NOTE: the file "dbforms.tld" was named "taglib.tld" in some prior versions. this
   taglib descriptor to an other place as well!)</para>
 </listitem>
 <listitem>
- <para>Finally, make sure that the database configuration you're pointing to in <computeroutput>dbforms-config.xml See <link linkend='dbConn'>examples</link>. </computeroutput>is really working. Whether this is an easy task or not, depends heavily on the server you are using.
-</para><para>One way to do this is to use <link linkend='dbtab'><computeroutput>the database tab in DevGui</computeroutput></link>(for simple, non-jndi and non-connection pool connections)</para>
- 
+ <para>Finally, <link linkend='typStruc'>verify the structure</link> of your deployment, and make sure that the database configuration you're pointing to in <computeroutput>dbforms-config.xml</computeroutput>is really working. Whether this is an easy task or not, depends heavily on the server you are using.
+</para><para>One way to do this is to use <link linkend='dbtab'>the database tab in DevGui (click)</link>(for simple, non-jndi and non-connection pool connections).  Better yet, why not just try out a few of the pages you generated with DEVGUI!!!!</para>
+
 			<para>Common reasons for database-related problems are:
 </para>
     <itemizedlist mark="opencircle">
@@ -204,14 +208,22 @@ NOTE: the file "dbforms.tld" was named "taglib.tld" in some prior versions. this
 <sect2 id="depldesc">
 			<title>Edit deployment descriptor web.xml
 </title>
-			<para>Add the following &lt;<computeroutput>servlet</computeroutput>&gt;, &lt;<computeroutput>context-param</computeroutput>&gt; and &lt;<computeroutput>taglib</computeroutput>&gt; - elements to the &lt;<computeroutput>web</computeroutput>-<computeroutput>app</computeroutput>&gt; element in your applications  <computeroutput>/WEB-INF/web.xml</computeroutput> file
+			<para>Add the following &lt;<computeroutput>servlet</computeroutput>&gt;  and (optionally) &lt;<computeroutput>context-param</computeroutput>&gt; elements to the &lt;<computeroutput>web</computeroutput>-<computeroutput>app</computeroutput>&gt; element in your applications  <computeroutput>/WEB-INF/web.xml</computeroutput> file
 </para>
 			<example>
 				<title>Changes in web.xml to enable DbForms(1)
 </title>
 				<screen>
-&lt;web-app&gt;&lt;!--=========== DbForms Configuration Servlet ===========--&gt; 
-    &lt;servlet&gt; 
+&lt;web-app&gt;
+    &lt;!--============= DBFORMS STYLING TEMPLATES =============--&gt; 
+    &lt;context-param&gt; 
+	&lt;param-name&gt;templateBase&lt;/param-name&gt;  <co id="templ"/>
+	&lt;param-value&gt;templates&lt;/param-value&gt; 
+    &lt;/context-param&gt;
+
+
+    &lt;!--=========== DbForms Configuration Servlet ===========--&gt; 
+    <emphasis role="bold">&lt;servlet&gt;</emphasis> 
         &lt;servlet-name&gt;org.dbforms.ConfigServlet&lt;/servlet-name&gt; 
         &lt;servlet-class&gt;org.dbforms.ConfigServlet&lt;/servlet-class&gt; 
 	
@@ -238,9 +250,10 @@ NOTE: the file "dbforms.tld" was named "taglib.tld" in some prior versions. this
 	
         &lt;load-on-startup&gt;1&lt;/load-on-startup&gt; 
                 
-    &lt;/servlet&gt;&lt;!--=========== DbForms Controller Servlet ==============--&gt; 
-		
-    &lt;servlet&gt; 
+    &lt;/servlet&gt; 
+    
+    &lt;!--=========== DbForms Controller Servlet ==============--&gt; 		
+    <emphasis role="bold">&lt;servlet&gt;</emphasis> 
 	&lt;servlet-name&gt;control&lt;/servlet-name&gt; 
 	&lt;servlet-class&gt;org.dbforms.Controller&lt;/servlet-class&gt; 
             &lt;init-param&gt; 
@@ -248,39 +261,68 @@ NOTE: the file "dbforms.tld" was named "taglib.tld" in some prior versions. this
 		&lt;param-value&gt;80000&lt;/param-value&gt; 
             &lt;/init-param&gt; 
     &lt;/servlet&gt; 
-		
-    &lt;servlet-mapping&gt; 
-        &lt;servlet-name&gt;control&lt;/servlet-name&gt; 
-            &lt;url-pattern&gt;servlet/control&lt;/url-pattern&gt; 
-    &lt;/servlet-mapping&gt; 
 
     &lt;!--=========== DbForms FileServlet =====================--&gt; 
-    &lt;servlet&gt; 
+     <emphasis role="bold">&lt;servlet&gt;</emphasis>
         &lt;servlet-name&gt;file&lt;/servlet-name&gt; 
 	&lt;servlet-class&gt;org.dbforms.util.FileServlet&lt;/servlet-class&gt; 		
         &lt;load-on-startup&gt;2&lt;/load-on-startup&gt; 
-    &lt;/servlet&gt; 
+    &lt;/servlet&gt;
+    
+    &lt;!--==== Controller Servlet and FileServlet Mappings========--&gt;
+    
+     <emphasis role="bold">&lt;servlet-mapping&gt;</emphasis> 
+        &lt;servlet-name&gt;control&lt;/servlet-name&gt; 
+            &lt;url-pattern&gt;servlet/control&lt;/url-pattern&gt; 
+    &lt;/servlet-mapping&gt;  
 		
-    &lt;servlet-mapping&gt; 
+     <emphasis role="bold">&lt;servlet-mapping&gt;</emphasis>
 	&lt;servlet-name&gt;file&lt;/servlet-name&gt; 
 	&lt;url-pattern&gt;servlet/file&lt;/url-pattern&gt; 
     &lt;/servlet-mapping&gt; 
                 </screen>
          <calloutlist>
+<callout arearefs="templ">
+<para>This is optional.  See <link linkend='tempbasedir'> templates base directory (click)</link> for more info.</para>
+</callout>         
 <callout arearefs="log4j">
 <para>The init-parameter <computeroutput>log4j.configuration</computeroutput> should point to a valid log4j-property file. If this parameter is not defined, the log4j standard configuration will be used for logging.
 </para>
 			<para>Now that log4j handles all console output, you would think that by setting log4jto display fatal errors only, your console would be virtually empty.  Well, no!The current version of dbForms uses the struts digester class to parse xml filesat startup.  This class sends info to System.out.  The init-parameter "digesterDebugLevel" setting can be used to specify (to the digester) the amount of detail to display.  Values can range from 0  (no debug) to 10 (Show all).
 </para>
+<para>sample log4j.properties file:
+<screen>
+#begin log4j.props
+#IMPORTANT -  Watch for trailing whitespaces after each statement!!!
+ 
+#log4j.rootCategory=debug, stdout, logFile
+#log4j.rootCategory=warn, stdout
+log4j.rootCategory=warn, stdout
+log4j.category.org.dbforms=warn
+
+#out to console 
+log4j.appender.stdout=org.apache.log4j.ConsoleAppender
+log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
+
+# Pattern to output the caller's file name and line number. 
+log4j.appender.stdout.layout.ConversionPattern=%-4r [%t] %-5p %c %x - %m%n
+
+#out to file 
+log4j.appender.logFile=org.apache.log4j.RollingFileAppender
+#tomcat uses bin as current directory when writing log 
+log4j.appender.logFile.File=c:\log4j\log4j_log.txt
+log4j.appender.logFile.MaxFileSize=100KB
+log4j.appender.logFile.MaxBackupIndex=1
+</screen></para>
 </callout>
 
 <callout arearefs="i18n">
-<para>DbForms v1.1 introduced support for internationalization (i18n).  Labels, messages, etc. can be stored in 'resource bundle' files and retrieved using appropriate DbForm tags.  The (optional) init-parameter 'resourceBundle' setting is used to specify the resource bundle root name.  Refer to the section on <link linkend="intern">internationalization</link>.
+<para>DbForms v1.1 introduced support for internationalization (i18n).  Labels, messages, etc. can be stored in 'resource bundle' files and retrieved using appropriate DbForm tags.  The (optional) init-parameter 'resourceBundle' setting is used to specify the resource bundle root name.  Refer to the section on <link linkend="intern">internationalization (click)</link>.
 </para>
 </callout>
 
 <callout arearefs="vald">
-<para>Enhanced validation features results from the integration of the Commons-Validator framework into dbForms v1.1.  This framework requires the use of two distinct xml descriptor files. The (optional) init-parameters 'validator-rules' and 'validation' are used to specify these files.  Refer to the section on <link linkend="valid">validation</link>.
+<para>Enhanced validation features results from the integration of the Commons-Validator framework into dbForms v1.1.  This framework requires the use of two distinct xml descriptor files. The (optional) init-parameters 'validator-rules' and 'validation' are used to specify these files.  Refer to the section on <link linkend="valid">validation (click)</link>.
 </para>
 </callout>
 
@@ -297,41 +339,93 @@ NOTE: the file "dbforms.tld" was named "taglib.tld" in some prior versions. this
                 
                 </example>
                 <example id="taglibdesc"><title>Changes in web.xml to enable DbForms(2)</title>
-                <programlisting>
+            <para>Add the following &lt;<computeroutput>taglib</computeroutput>&gt; - elements to the &lt;<computeroutput>web</computeroutput>-<computeroutput>app</computeroutput>&gt; element in your applications  <computeroutput>/WEB-INF/web.xml</computeroutput> file
+</para>   
+                 <screen>
     &lt;!--=========== DbForms Tag Library Descriptor ==========--&gt; 
-    &lt;taglib&gt; 
+    <emphasis role="bold">&lt;taglib&gt;</emphasis><co id="dtd"/> 
 	&lt;taglib-uri&gt;/WEB-INF/dbforms.tld&lt;/taglib-uri&gt; 
 	&lt;taglib-location&gt;/WEB-INF/dbforms.tld&lt;/taglib-location&gt; 
     &lt;/taglib&gt; 
-		
-    &lt;!--============= DBFORMS STYLING TEMPLATES =============--&gt; 
-    &lt;context-param&gt; 
-	&lt;param-name&gt;templateBase&lt;/param-name&gt; 
-	&lt;param-value&gt;templates&lt;/param-value&gt; 
-    &lt;/context-param&gt; 
-		
-    &lt;/web-app&gt; 
-		</programlisting>
-			</example>
-			<para>
-				<emphasis role="bold">Remarks</emphasis>
-			</para>
+		</screen>
+  <calloutlist>
+<callout arearefs="dtd">              
+   <para>       
+<emphasis role="bold">&lt;!--Order in web.xml is important please make sure you follow the DTD</emphasis></para>
+   <screen>		
+   &lt;!ELEMENT web-app (icon?, display-name?, description?, distributable?,
+context-param*, filter*, filter-mapping*, listener*, servlet*,
+servlet-mapping*, session-config?, mime-mapping*, welcome-file-list?,
+error-page*, <emphasis role="bold">taglib*</emphasis>, resource-env-ref*, resource-ref*, security-constraint*,
+login-config?, security-role*, env-entry*, ejb-ref*,  ejb-local-ref*)&gt;
+--&gt;	
+</screen>
+</callout>
+</calloutlist>
+		</example>
+			<para/>
+				 
 			
 			
 			
 			
-			<para>Please refer to the examples and descriptions in DbForms-distribution, your Applications Servers manual and Java Servlet Specification 2.2 (especially chapters 11.5 and 13.3.2) for information about web-application security.
-</para>
-			<para>However, a typical security-aware web application deployment descriptor has the following elements inside its &lt;<computeroutput>web</computeroutput>-<computeroutput>app</computeroutput>&gt; element:
-</para>
-			<example>
+			<example id="secr">
 				<title>Deploying a security aware application
 </title>
+<para>Please refer to the examples and descriptions in DbForms-distribution, your Applications Servers manual and Java Servlet Specification 2.2 (especially chapters 11.5 and 13.3.2) for information about web-application security.
+</para>
+<para>Also see how DbForms provides <link linkend='security'>fine-grained definition of rights for data-access and manipulation</link></para>
+			<para>A typical security-aware web application deployment descriptor has the following elements inside its &lt;<computeroutput>web</computeroutput>-<computeroutput>app</computeroutput>&gt; element:
+</para>
 				<programlisting>
                                 
 &lt;!--==*************************************************==--&gt;
 &lt;!--==**======= YOUR APPLICATION's SECURITY =========**==--&gt; 
 &lt;!--==*************************************************==--&gt; 
+
+ &lt;!--=================== authentification   ==============--&gt; --&gt;
+    &lt;!--
+ 
+		we protect everything in directory <emphasis role="italic">/protected</emphasis> 
+		however, be sure NOT to protect login.jsp/logout.jsp
+ 
+		in most containers this would lead to endless recursion
+ 
+		which end with a crash of the Java Virtual Machine
+ 
+		("StackOverFlow")
+    --&gt; 
+    
+&lt;security-constraint&gt; 
+	&lt;web-resource-collection&gt; 
+            &lt;web-resource-name&gt;myapp&lt;/web-resource-name&gt; 
+            &lt;url-pattern&gt;/protected/*&lt;/url-pattern&gt; 
+        &lt;/web-resource-collection&gt; 
+	
+        &lt;auth-constraint&gt; 
+            &lt;role-name&gt;a_users&lt;/role-name&gt; 
+            &lt;role-name&gt;b_users&lt;/role-name&gt; 
+            &lt;role-name&gt;guests&lt;/role-name&gt; 
+	&lt;/auth-constraint&gt; 
+    &lt;/security-constraint&gt;
+
+&lt;!--=================== login config ====================--&gt; 
+    &lt;login-config&gt; 
+	&lt;auth-method&gt;FORM&lt;/auth-method&gt; 
+	&lt;realm-name&gt;Form-Based Authentication Area&lt;/realm-name&gt; 
+            
+        &lt;form-login-config&gt; 
+            &lt;form-login-page&gt;/login.jsp&lt;/form-login-page&gt; 
+            &lt;form-error-page&gt;/login.jsp&lt;/form-error-page&gt; 
+        &lt;/form-login-config&gt; 
+    &lt;/login-config&gt; 
+    
+    
+    &lt;!--&lt;login-config&gt; 
+        &lt;auth-method&gt;BASIC&lt;/auth-method&gt; 
+	&lt;realm-name&gt;Example Basic Authentication Area&lt;/realm-name&gt; 
+    &lt;/login-config&gt;--&gt;
+    
     
 &lt;!--=================== roles ===========================--&gt;
  
@@ -348,56 +442,14 @@ NOTE: the file "dbforms.tld" was named "taglib.tld" in some prior versions. this
     &lt;security-role&gt; 
         &lt;description&gt;Registered users can do less then users_a&lt;/description&gt; 
 	&lt;role-name&gt;b_users&lt;/role-name&gt; 
-    &lt;/security-role&gt; 
-		
-    &lt;!--=================== login config ====================--&gt; 
-    &lt;login-config&gt; 
-	&lt;auth-method&gt;FORM&lt;/auth-method&gt; 
-	&lt;realm-name&gt;Form-Based Authentication Area&lt;/realm-name&gt; 
-            
-        &lt;form-login-config&gt; 
-            &lt;form-login-page&gt;/login.jsp&lt;/form-login-page&gt; 
-            &lt;form-error-page&gt;/login.jsp&lt;/form-error-page&gt; 
-        &lt;/form-login-config&gt; 
-    &lt;/login-config&gt; 
+    &lt;/security-role&gt;    
     
-    
-    &lt;!--&lt;login-config&gt; 
-        &lt;auth-method&gt;BASIC&lt;/auth-method&gt; 
-	&lt;realm-name&gt;Example Basic Authentication Area&lt;/realm-name&gt; 
-    &lt;/login-config&gt;--&gt;
-     
-		
-    &lt;!--=================== authentification   ==============--&gt; 
-    &lt;!--
- 
-		we protect everything in directory <emphasis role="italic">/protected</emphasis> 
-		however, be sure NOT to protect login.jsp/logout.jsp
- 
-		in most containers this would lead to endless recursion
- 
-		which end with a crash of the Java Virtual Machine
- 
-		("StackOverFlow")
-    --&gt; 
-        
-    &lt;security-constraint&gt; 
-	&lt;web-resource-collection&gt; 
-            &lt;web-resource-name&gt;myapp&lt;/web-resource-name&gt; 
-            &lt;url-pattern&gt;/protected/*&lt;/url-pattern&gt; 
-        &lt;/web-resource-collection&gt; 
-	
-        &lt;auth-constraint&gt; 
-            &lt;role-name&gt;a_users&lt;/role-name&gt; 
-            &lt;role-name&gt;b_users&lt;/role-name&gt; 
-            &lt;role-name&gt;guests&lt;/role-name&gt; 
-	&lt;/auth-constraint&gt; 
-    &lt;/security-constraint&gt; 
+&lt;/web-app&gt;      
 		</programlisting>
 			</example>
 		</sect2>
  
- <sect2>
+ <sect2 id="typStruc">
 			<title>Typical deployment structure of Web-Apps using DbForms
 </title>
 			<para>Finally, here a short list of files to check when deploying a web-application using DbForms:
@@ -405,7 +457,8 @@ NOTE: the file "dbforms.tld" was named "taglib.tld" in some prior versions. this
 			<example>
 <title>Structure of a typical DbForm application
 </title>
-<programlisting>
+<para><emphasis role="bold">Bold items</emphasis> are required</para> 
+<screen>
                 /yourfile1.jsp
                 /yourfile2.jsp
                 /yourfile1.html
@@ -417,22 +470,36 @@ NOTE: the file "dbforms.tld" was named "taglib.tld" in some prior versions. this
 		../templates/templateB/templateB_end.jsp
  
 		/WEB-INF/<emphasis role="bold">web.xml</emphasis> 
-		/WEB-INF/dbforms-config.xml
-		/WEB-INF/dbforms.tld
+		/WEB-INF/<emphasis role="bold">dbforms-config.xml</emphasis>
+		/WEB-INF/<emphasis role="bold">dbforms.tld</emphasis>
+                /WEB-INF/log4j.properties
+                /WEB-INF/validation.xml
+                /WEB-INF/validator-rules.xml
  
 		/WEB-INF/lib/<emphasis role="bold">dbforms.jar</emphasis> 
 		/WEB-INF/lib/<emphasis role="bold">struts.jar</emphasis> 
 		/WEB-INF/lib/<emphasis role="bold">cos.jar</emphasis>
-                /WEB-INF/lib/<emphasis role="bold">...etc</emphasis>
-		
-                /WEB-INF/classes/yourservlet1.class
-		/WEB-INF/classes/yourservlet2.class
+                /WEB-INF/lib/<emphasis role="bold">log4j.jar </emphasis>
+		/WEB-INF/lib/<emphasis role="bold">commons-beanutils.jar</emphasis>
+                /WEB-INF/lib/<emphasis role="bold">commons-collections.jar </emphasis>
+                /WEB-INF/lib/<emphasis role="bold">commons-digester.jar </emphasis>
+                /WEB-INF/lib/<emphasis role="bold">commons-lang.jar </emphasis>
+                /WEB-INF/lib/<emphasis role="bold">commons-logging.jar </emphasis>
+                /WEB-INF/lib/<emphasis role="bold">commons-util.jar </emphasis>
+                /WEB-INF/lib/<emphasis role="bold">commons-validator.jar </emphasis>
+                /WEB-INF/lib/<emphasis role="bold">jakarta-oro.jar </emphasis>
+            
+              
+ 
+                /WEB-INF/classes/your_package/yourservlet1.class
+		/WEB-INF/classes/your_package/yourservlet2.class
                 
-		/WEB-INF/classes/yourinterceptorI.class
-		/WEB-INF/classes/yourinterceptorII.class
+		/WEB-INF/classes/your_package/yourinterceptorI.class
+		/WEB-INF/classes/your_package/yourinterceptorII.class
 
 		/WEB-INF/classes/...
-                </programlisting>
+                </screen>
+                 
                 </example>
                 <para>Info: a complete example of a deployment structure of a <emphasis role="bold">security-aware</emphasis> DbForms-Applications can be found in the example-apps included in various DbForms-distributions (version 0.7 or higher)
 </para></sect2>
