@@ -445,7 +445,7 @@ public class DbFormTag extends BodyTagSupport {
 
 			  positionPathCore = "root";
 
-			} else { // if sub-form, we dont do this, it has been already done by a parent form
+			} else { // if sub-form, we dont write out html tags; this has been done already by a parent form
 				this.isSubForm = true;
 
 				positionPathCore =  parentForm.getPositionPath();
@@ -842,9 +842,13 @@ public class DbFormTag extends BodyTagSupport {
   public void release() {
 		super.release();
 		followUp = null;
-		logCat.info("cleaning up DbFormTag!");
-		if(con!=null) {
+
+		// to speed things up, allow connection clearing only on end of root form (if there are
+		// nested forms)
+		if(con!=null && parentForm == null) {
 			try {
+				logCat.info("cleaning up DbFormTag!");
+				this.pageContext.removeAttribute("connection", PageContext.REQUEST_SCOPE); // make sure that nobody accidently reads this attribute and uses a closed connection
 				logCat.info("...shutting down db connection...");
 				con.close();
 				logCat.info("...done...");
@@ -873,7 +877,7 @@ public class DbFormTag extends BodyTagSupport {
 			HttpServletRequest localRequest = request;
 
 			// if page A links to page B (via a gotoButton, for instance) then we do not
-			// want  A's order constraints be applied to B
+			// want  A's order constraints get applied to B
 			if(localRequest!=null) {
 
 				String refSource = localRequest.getRequestURI();
@@ -891,16 +895,25 @@ public class DbFormTag extends BodyTagSupport {
 
 			}
 
+
+		  logCat.debug("orderBy="+orderBy);
+		  logCat.debug("localRequest="+localRequest);
+
 			// if we have neither an orderby clause nor a request we may use then we cant create orderconstraint
 		  if(orderBy==null && localRequest==null) return;
 
 
+
+
 			// otherwise we can:
-  		overrulingOrder = table.createOrderFieldValues(orderBy, localRequest);
+  			overrulingOrder = table.createOrderFieldValues(orderBy, localRequest, false);
 
 			overrulingOrderFields = new Vector();
-			for(int i=0; i<overrulingOrder.length; i++)
-			overrulingOrderFields.addElement(overrulingOrder[i].getField());
+
+			if(overrulingOrder!=null) {
+				for(int i=0; i<overrulingOrder.length; i++)
+					overrulingOrderFields.addElement(overrulingOrder[i].getField());
+			}
 	}
 
 	/**
@@ -1206,12 +1219,37 @@ public void initFilterFieldValues() {
 		// at first build a hashtable of the provided values
 	    Hashtable ht = table.getFieldValuesFromPositionAsHt(aPosition);
 
+/* just for debugging...
+	    if(ht==null) {
+			logCat.debug("cl hashtable  null");
+		}
+		else {
+			logCat.debug("cl hashtable  not null");
+			Enumeration enum = ht.keys();
+			while(enum.hasMoreElements()) {
+				Integer aKey = (Integer) enum.nextElement();
+				logCat.debug("cl key="+aKey.intValue());
+				FieldValue aFV = (FieldValue) ht.get(aKey);
+				logCat.debug("cl fieldValue="+aFV.getField().getName()+", "+aFV.getFieldValue());
+			}
+		}
+*/
+
 		for(int i=0; i<childFieldValues.length; i++) {
 
 			String actualValue = childFieldValues[i].getFieldValue();
+
+			logCat.debug("actualValue="+actualValue);
+
 			Field f = childFieldValues[i].getField();
 
+			logCat.debug("f.getName="+f.getName());
+			logCat.debug("f.getId="+f.getId());
+
 			FieldValue aFieldValue = (FieldValue) ht.get( new Integer(f.getId()) );
+
+			if(aFieldValue==null) throw new IllegalArgumentException("ERROR: Make sure that field "+f.getName()+" is a KEY of the table "+table.getName()+"! Otherwise you can not use it as PARENT/CHILD LINK argument!");
+
 			String valueInPos = aFieldValue.getFieldValue();
 
 			logCat.info("comparing "+actualValue+" TO "+valueInPos);

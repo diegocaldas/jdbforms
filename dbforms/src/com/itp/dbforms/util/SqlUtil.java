@@ -64,7 +64,7 @@ logCat.debug("pos3..."+result.toString());
 	throws SQLException {
 		try {
 
-			logCat.info(value.toString());
+			logCat.debug("fillPreparedStatement( ps, "+col+", "+value+", "+fieldType+")...");
 
 			switch(fieldType) {
 				case FieldTypes.INTEGER: ps.setInt(col, Integer.parseInt((String)value)); break;

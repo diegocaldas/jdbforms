@@ -221,12 +221,12 @@ public class Table {
 	public void initDefaultOrder() {
 
 		if(orderBy==null) { // if developer specified no orderBy in XML, then we set the KEYs as DEFAULT ORDER
-			initDefaultOrderFromKeys();
+		  initDefaultOrderFromKeys();
 		  return;
 		}
 
 		// build the datastructure, containing Fields, and infos about sort
-		defaultOrder = this.createOrderFieldValues(orderBy, null);
+		defaultOrder = this.createOrderFieldValues(orderBy, null, true);
 
 		// building a list of the fields contained in the defaultOrder structure
 		defaultOrderFields = new Vector();
@@ -366,15 +366,19 @@ public class Table {
 		ps.setMaxRows(maxRows); // important when quering huge tables
 
 		int curCol = 1;
-
+		logCat.debug("###getDoSelectResultSet pos1");
 		if(fvEqual != null && fvEqual.length > 0) {
+					logCat.debug("###getDoSelectResultSet pos2");
 			curCol = FieldValue.populateWhereEqualsClause(fvEqual, ps, curCol);
+					logCat.debug("###getDoSelectResultSet pos3");
 		}
-
+		logCat.debug("###getDoSelectResultSet pos4");
 		if(compareMode!=FieldValue.COMPARE_NONE && fvOrder != null && fvOrder.length > 0) {
+					logCat.debug("###getDoSelectResultSet pos5");
 			FieldValue.populateWhereAfterClause(fvOrder, ps, curCol);
+					logCat.debug("###getDoSelectResultSet pos6");
 		}
-
+		logCat.debug("###getDoSelectResultSet pos7");
 		return ps.executeQuery();
   }
 
@@ -758,7 +762,7 @@ public class Table {
 	}
 
 	/**
-	@param order - a String from JSP/XML. provided by the user in SQL-Style:
+	@param order - a String from JSP provided by the user in SQL-Style:
 
 	Column ["ASC" | "DESC"] {"," Column ["ASC" | "DESC"] }*
 	(if neither ASC nor DESC follow "Col", then ASC is choosen as default)
@@ -773,7 +777,7 @@ public class Table {
 	#fixme - determinate illegal input and throw IllegalArgumentException
 	*/
 
-	public FieldValue[] createOrderFieldValues(String order, HttpServletRequest request) {
+	public FieldValue[] createOrderFieldValues(String order, HttpServletRequest request, boolean includeKeys) {
 		Vector result = null;
 
 		if(request != null) {
@@ -782,12 +786,15 @@ public class Table {
 
 			if(sortFields.size() > 0)
 				result = createOrderFVFromRequest(request, paramStub, sortFields);
-			else
-			  result = new Vector();
+			//else
+			//  result = new Vector();
 
-			logCat.info("result="+result.size());
+			//logCat.info("result="+result.size());
 
-		} else if(order!=null) {
+		}
+
+
+		if(result==null && order!=null) {
 			result = createOrderFVFromAttribute(order);
 
 			logCat.debug("@@@ 1");
@@ -796,6 +803,8 @@ public class Table {
 				logCat.debug("fieldValue "+fieldVal.toString());
 			}
 		}
+
+		if(result==null && !includeKeys) return null; // then we've got definitely no over
 
     // scroll through keys and append to order criteria, if not already included
 		for(int i=0; i<this.key.size(); i++) {
