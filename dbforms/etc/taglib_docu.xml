@@ -352,12 +352,11 @@ then DbForms will redisplay entered values even with UPDATES.</info>
 						<ul>
 							<li>filter="id=2"</li>
 							<li>filter="id=2;name=Hugo Berger"</li>
-							<li>filter="deptno=101,salery>=30000,name~Peter"</li>
+							<li>filter="deptno=101,salery>=30000,name~Peter"
 							<br/>
-							<p>the ~ symbol is an aquivalant to the SQL keyword "LIKE" used in SELECT statements!</p>
+							<p>the ~ symbol is an aquivalant to the SQL keyword "LIKE" used in SELECT statements!</p></li>
 						</ul>
 						<p>since version 0.9, you can use &lt;, &gt; &lt;= and &gt;= operators, too!</p>
-						<ul>
 							<p>
 								<b>
 									<span style="font-size:8.0pt;font-family:Courier">&lt;db:dbform</span>
@@ -368,7 +367,6 @@ then DbForms will redisplay entered values even with UPDATES.</info>
 								<br/>
 								<span style="font-size:8.0pt;font-family:Courier">&lt;<b>/db:dbform</b>&gt;</span>
 							</p>
-						</ul>
 
 
 						<pre>Operator:       Meaning:                Example:
