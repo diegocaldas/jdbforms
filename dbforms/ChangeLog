@@ -1,3 +1,12 @@
+2003-05-20
+(Henner.Kollmann@gmx.de)
+   - changed dependend to xerces 2.4 version
+   - added a new example bookstore to show some special features to dbforms
+   - added support for xml data, example see bookstore example
+   - added documentation for xml data
+   - added new attributes to schemata file
+         
+
 2003-04-01
 (Henner.Kollmann@gmx.de)
    new navigation system

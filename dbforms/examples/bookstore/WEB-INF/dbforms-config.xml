@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<dbforms-config>
+	    <table name="AUTHOR">
+	        <field name="AUTHOR_ID" fieldType="int" size="10" isKey="true" autoInc="true"/>
+	        <field name="NAME" fieldType="varchar" size="50" sortable="true"/>
+	        <field name="ORGANISATION" fieldType="varchar" size="50" sortable="true"/>
+	    </table>    
+	    
+	    <table name="BOOK">
+	        <field name="BOOK_ID" fieldType="int" size="10" isKey="true" autoInc="true"/>
+	        <field name="ISBN" fieldType="varchar" size="15"/>
+	        <field name="AUTHOR_ID" fieldType="int" size="10" isKey="true"/>
+	        <field name="TITLE" fieldType="varchar" size="255"/>
+	    </table>    
+
+	    <query name="AUTHORVIEW" from="AUTHOR" >
+	    </query>
+	    
+	    <query 	name="BOOKSPERAUTHOR" 
+		    	from="AUTHOR, BOOK"
+		    	where="BOOK.AUTHOR_ID = AUTHOR.AUTHOR_ID" >
+	        <field name="AUTHOR_ID" fieldType="int" size="10" isKey="true" autoInc="true"/>
+	        <field name="NAME" fieldType="varchar" size="50"/>
+	        <field name="ORGANISATION" fieldType="varchar" size="50"/>
+	        <field name="BOOK_ID" fieldType="int" size="10" isKey="true" autoInc="true"/>
+	        <field name="ISBN" fieldType="varchar" size="15"/>
+	        <field name="TITLE" fieldType="varchar" size="255"/>
+	    </query>
+	    
+	    <table 
+	    	name="XMLBOOKS"
+		   dataAccessClass="org.dbforms.event.datalist.dao.DataSourceXML" 
+		   alias="file:///$(SERVLETCONTEXT_REALPATH)/WEB-INF/db_xml/books.xml?/books/book"
+	    >	
+	        <field 
+	        	name="TITLE" 
+	        	fieldType="varchar"
+			expression="title"
+	        />
+	        <field 
+	        	name="ISBN" 
+	        	fieldType="varchar" 
+			expression="title"
+	        />
+	        <field 
+	        	name="AUTHOR" 
+	        	fieldType="varchar" 
+			expression="author/name"
+	        />
+	    </table>
+
+	  <events>
+	    <database-events>
+	      <database-event type="insert"   className="org.dbforms.event.datalist.InsertEvent" />
+	      <database-event type="update"   className="org.dbforms.event.datalist.UpdateEvent" />
+	      <database-event type="delete"   className="org.dbforms.event.datalist.DeleteEvent" />
+	    </database-events>
+	    <navigation-events>
+	      <navigation-event type="navGoto"   className="org.dbforms.event.datalist.GotoEvent" />
+	      <navigation-event type="navPrev"   className="org.dbforms.event.datalist.NavPrevEvent" />
+	      <navigation-event type="navNext"   className="org.dbforms.event.datalist.NavNextEvent" />
+	      <navigation-event type="navFirst"  className="org.dbforms.event.datalist.NavFirstEvent" />
+	      <navigation-event type="navLast"   className="org.dbforms.event.datalist.NavLastEvent" />
+	    </navigation-events>
+	  </events>
+	<!-- ========== Connection =================================== -->
+	    <dbconnection
+		    isPow2		   			= "true"
+		    connectionProviderClass = "org.dbforms.conprovider.JakartaConnectionProvider"
+			name   = "jdbc:hsqldb:$(SERVLETCONTEXT_REALPATH)/WEB-INF/db_hsqldb/bookstore"
+			isJndi = "false"
+			conClass  = "org.hsqldb.jdbcDriver"
+			username = "sa"
+			password  = ""
+		/>
+	<date-format>dd.MM.yyyy</date-format>
+</dbforms-config>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter>
+  <title>Using XML for Datainput</title>
+  <sect1>
+    <title>Introduction</title>
+    <para>	
+       With the new event system it is possible to add different (other then JDBC!) datasources to dbforms.
+       To do so you must tell dbforms which dataAccessClass it should use in the config file (see below). 
+       Data retrieving is done by xpath expressions for the data itselfs and for the fields.
+       The new table attribute alias is used to retrieve the data from the system via an url. The query part is used
+       to build an xpath expression to get the data.
+       <example>
+          url is given by file:///books.xml?/books/book[@ISBN="42"]
+          This will retrieve the book from the booklist in the data file books.xml with the ISBN 42. For more see the documentation
+          of xpath.
+       </example>
+       Fields will be retrieved by the resulting dataset using the relative xpath expression in the attribute expression of the field.
+    </para>
+    <para>
+       Data access is read only up to now. Idea's how to build an generic read/write data access are welcomed.
+       Maybe we should integrate support for an xml data base like jindice from apache?
+    </para>
+  </sect1>
+  <sect1>
+    <title>xml data file example</title>
+    <para>	
+  	<programlisting>
+		&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;
+		&lt;books&gt;
+   			&lt;book&gt;
+   				&lt;title&gt;This is a test&lt;/title&gt;
+   				&lt;ISBN&gt;42&lt;/ISBN&gt;
+   				&lt;author&gt;
+   					&lt;name&gt;Douglas&lt;/name&gt;
+   					&lt;surname&gt;Adman&lt;/surname&gt;
+	   			&lt;/author&gt;
+	   		&lt;/book&gt;	
+		&lt;/books&gt;
+  	</programlisting>
+    </para>
+  </sect1>
+  <sect1>
+    <title>xml data file example</title>
+    <para>	
+    </para>
+  <sect1>
+  </sect1>
+    <title>definig a xml table in dbforms-config.xml</title>
+    <para>	
+  	<programlisting>
+	    &lt;table 
+	    	name="XMLBOOKS"
+		   dataAccessClass="org.dbforms.event.datalist.dao.DataSourceXML" 
+		   alias="file:///$(SERVLETCONTEXT_REALPATH)/WEB-INF/db_xml/books.xml?/books/book"
+	    &gt;	
+	        &lt;field 
+	        	name="TITLE" 
+	        	fieldType="varchar"
+			expression="title"
+	        /&gt;
+	        &lt;field 
+	        	name="ISBN" 
+	        	fieldType="varchar" 
+			expression="title"
+	        /&gt;
+	        &lt;field 
+	        	name="AUTHOR" 
+	        	fieldType="varchar" 
+			expression="author/name"
+	        /&gt;
+	    &lt;/table&gt;
+  	</programlisting>
+    </para>
+  </sect1>
+</chapter>
+

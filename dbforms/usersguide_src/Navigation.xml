@@ -123,6 +123,30 @@
         </itemizedlist>
       </para>
     </sect2>
+    <sect2>
+      <title>HowTo use DataList navigation</title>
+      <para>
+         To use DataList navigation you must define custom events in your dbforms-config.xml:
+         <progamlisting>
+          &lt;!-- ========== custom events =================================== --&gt;
+	  &lt;events&gt;
+	    &lt;database-events&gt;
+	      &lt;database-event type="insert" className="org.dbforms.event.datalist.InsertEvent" /&gt;
+	      &lt;database-event type="update" className="org.dbforms.event.datalist.UpdateEvent" /&gt;
+	      &lt;database-event type="delete" className="org.dbforms.event.datalist.DeleteEvent" /&gt;
+	    &lt;/database-events&gt;
+	    &lt;navigation-events&gt;
+	      &lt;navigation-event type="navGoto" className="org.dbforms.event.datalist.GotoEvent" /&gt;
+	      &lt;navigation-event type="navPrev" className="org.dbforms.event.datalist.NavPrevEvent" /&gt;
+	      &lt;navigation-event type="navNext" className="org.dbforms.event.datalist.NavNextEvent" /&gt;
+	      &lt;navigation-event type="navFirst" className="org.dbforms.event.datalist.NavFirstEvent" /&gt;
+	      &lt;navigation-event type="navLast" className="org.dbforms.event.datalist.NavLastEvent" /&gt;
+	    &lt;/navigation-events&gt;
+	  &lt;/events&gt;
+         </progamlisting>
+         This will change in further versions, where datalist navigation will be uses as default.
+      </para>
+    </sect2>
   </sect1>
   <sect1>
     <title>ToDo</title>
@@ -147,7 +171,7 @@
   </sect1>
   <sect1><title>DataList Configuration in Dbforms-config.xml</title>
   <para>To enable the new navigation system, please add the following within dbforms-config.xml:</para>
-  <screen>
+  <programlisting>
 &lt;events&gt;
     &lt;database-events&gt;
       &lt;database-event type=&quot;insert&quot; className=&quot;org.dbforms.event.datalist.InsertEvent&quot; /&gt;
@@ -163,7 +187,7 @@
        &lt;navigation-event type=&quot;navLast&quot; className=&quot;org.dbforms.event.datalist.NavLastEvent&quot; /&gt;
      &lt;/navigation-events&gt;
 &lt;/events&gt;
-  </screen>
+  </programlisting>
   <para>The new navigation system can also be enabled on a table by table basis by:</para>
   <itemizedlist mark="opencircle">
  

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<books>
+   <book>
+   	<title>This is a test</title>
+   	<ISBN>42</ISBN>
+   	<author>
+   		<name>Douglas</name>
+   		<surname>Adman</surname>
+   	</author>
+   </book>	
+</books>
