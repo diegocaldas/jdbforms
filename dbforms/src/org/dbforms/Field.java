@@ -22,43 +22,63 @@
  */
 
 package org.dbforms;
+
 import java.util.*;
-import org.dbforms.util.*;
 import org.apache.log4j.Category;
+import org.dbforms.util.*;
 
 
 
-/****
- * <p>
- * This class represents a field tag in dbforms-config.xml
- * </p>
+/**
+ * This class represents a field tag in dbforms-config.xml.
  *
+ * @author  foxat
+ * @created  23 dicembre 2002
  */
 public class Field
 {
+    /** logging category for this class */
     static Category logCat = Category.getInstance(Field.class.getName());
 
-    // logging category for this class
-    //------------------------ Properties ---------------------------------------------------------
-    private int id; // the id of this field (for dbforms-internal use)
-    private String name; // the field-name, as provided in xml-config file
-    private int type; // integer representation of the "fieldType"-value
-    private boolean isAutoInc; // stores if the field is AUTOINCremental
-    private boolean key = false; // stores if the field is a KEY
-    private boolean isSortable = false; // stores if the field is sortable
+    /** the id of this field (for dbforms-internal use) */
+    private int id;
+
+    /** the field-name, as provided in xml-config file */
+    private String name;
+
+    /** integer representation of the "fieldType"-value */
+    private int type;
+
+    /** stores if the field is AUTOINCremental */
+    private boolean isAutoInc;
+
+    /** stores if the field is a KEY */
+    private boolean key = false;
+
+    /** stores if the field is sortable */
+    private boolean isSortable = false;
+
+    /**
+     * used only for DISKBLOB: holds the directory uploaded files should be stored to
+     */
     private String directory;
 
-    // used only for DISKBLOB: holds the directory uploaded files should be stored to
+    /**
+     * used only for DISKBLOB: if "true" -> then files will be renamed to ensure that
+     * every file is unique and no file overwrites another. default is "false"
+     * (keep original names)
+     */
     private String encoding;
 
-    // used only for DISKBLOB: if "true" -> then files will be renamed to ensure that every file is unique and no file overwrites another. default is "false" (keep original names)
+    /** */
     private String expression;
 
-    //------------------------ property access methods --------------------------------------------
 
     /**
      * sets the id of this field-object
-     * (this method is called by Table on init.)
+     * (this method is called by Table on init).
+     *
+     * @param  id The new id value
      */
     public void setId(int id)
     {
@@ -67,9 +87,9 @@ public class Field
 
 
     /**
-     * DOCUMENT ME!
+     *  Gets the id attribute of the Field object
      *
-     * @return DOCUMENT ME!
+     * @return  The id value
      */
     public int getId()
     {
@@ -78,9 +98,9 @@ public class Field
 
 
     /**
-     * DOCUMENT ME!
+     *  Sets the name attribute of the Field object
      *
-     * @param name DOCUMENT ME!
+     * @param  name The new name value
      */
     public void setName(String name)
     {
@@ -89,9 +109,9 @@ public class Field
 
 
     /**
-     * DOCUMENT ME!
+     *  Gets the name attribute of the Field object
      *
-     * @return DOCUMENT ME!
+     * @return  The name value
      */
     public String getName()
     {
@@ -100,9 +120,9 @@ public class Field
 
 
     /**
-     * DOCUMENT ME!
+     *  Sets the fieldType attribute of the Field object
      *
-     * @param fieldType DOCUMENT ME!
+     * @param  fieldType The new fieldType value
      */
     public void setFieldType(String fieldType)
     {
@@ -111,9 +131,13 @@ public class Field
 
 
     /**
-    maps the field type description to internal value
-    we need this information in oder to call the appropriate PreparedStatement.setXxx(..) - Methods
-    */
+     *  Maps the field type description to internal value.
+     *  <br>
+     *  We need this information in oder to call the appropriate
+     *  PreparedStatement.setXxx(..) methods
+     *
+     * @param  aType the type string value (example: "int", "char", "numeric", etc)
+     */
     public void setType(String aType)
     {
         aType = aType.toLowerCase();
@@ -158,9 +182,9 @@ public class Field
 
 
     /**
-     * DOCUMENT ME!
+     *  Gets the type attribute of the Field object
      *
-     * @return DOCUMENT ME!
+     * @return  The type value
      */
     public int getType()
     {
@@ -169,9 +193,9 @@ public class Field
 
 
     /**
-     * DOCUMENT ME!
+     *  Sets the autoInc attribute of the Field object
      *
-     * @param autoInc DOCUMENT ME!
+     * @param  autoInc The new autoInc value
      */
     public void setAutoInc(String autoInc)
     {
@@ -180,9 +204,9 @@ public class Field
 
 
     /**
-     * DOCUMENT ME!
+     *  Gets the isAutoInc attribute of the Field object
      *
-     * @return DOCUMENT ME!
+     * @return  The isAutoInc value
      */
     public boolean getIsAutoInc()
     {
@@ -191,9 +215,9 @@ public class Field
 
 
     /**
-     * DOCUMENT ME!
+     *  Sets the isKey attribute of the Field object
      *
-     * @param isKey DOCUMENT ME!
+     * @param  isKey The new isKey value
      */
     public void setIsKey(String isKey)
     {
@@ -202,9 +226,9 @@ public class Field
 
 
     /**
-     * DOCUMENT ME!
+     *  Gets the key attribute of the Field object
      *
-     * @return DOCUMENT ME!
+     * @return  The key value
      */
     public boolean isKey()
     {
@@ -213,9 +237,9 @@ public class Field
 
 
     /**
-     * DOCUMENT ME!
+     *  Sets the directory attribute of the Field object
      *
-     * @param directory DOCUMENT ME!
+     * @param  directory The new directory value
      */
     public void setDirectory(String directory)
     {
@@ -224,9 +248,9 @@ public class Field
 
 
     /**
-     * DOCUMENT ME!
+     *  Gets the directory attribute of the Field object
      *
-     * @return DOCUMENT ME!
+     * @return  The directory value
      */
     public String getDirectory()
     {
@@ -235,9 +259,9 @@ public class Field
 
 
     /**
-     * DOCUMENT ME!
+     *  Sets the encoding attribute of the Field object
      *
-     * @param encoding DOCUMENT ME!
+     * @param  encoding The new encoding value
      */
     public void setEncoding(String encoding)
     {
@@ -246,9 +270,9 @@ public class Field
 
 
     /**
-     * DOCUMENT ME!
+     *  Gets the encoding attribute of the Field object
      *
-     * @return DOCUMENT ME!
+     * @return  The encoding value
      */
     public String getEncoding()
     {
@@ -257,9 +281,9 @@ public class Field
 
 
     /**
-     * DOCUMENT ME!
+     *  Sets the sortable attribute of the Field object
      *
-     * @param sortable DOCUMENT ME!
+     * @param  sortable The new sortable value
      */
     public void setSortable(String sortable)
     {
@@ -269,9 +293,9 @@ public class Field
 
 
     /**
-     * DOCUMENT ME!
+     *  Gets the fieldSortable attribute of the Field object
      *
-     * @return DOCUMENT ME!
+     * @return  The fieldSortable value
      */
     public boolean isFieldSortable()
     {
@@ -280,9 +304,9 @@ public class Field
 
 
     /**
-     * DOCUMENT ME!
+     *  Sets the expression attribute of the Field object
      *
-     * @param expression DOCUMENT ME!
+     * @param  expression The new expression value
      */
     public void setExpression(String expression)
     {
@@ -291,9 +315,9 @@ public class Field
 
 
     /**
-     * DOCUMENT ME!
+     *  Gets the expression attribute of the Field object
      *
-     * @return DOCUMENT ME!
+     * @return  The expression value
      */
     public String getExpression()
     {
@@ -302,13 +326,14 @@ public class Field
 
 
     /**
-     * DOCUMENT ME!
+     *  Get the String representation of this Field object.
      *
-     * @return DOCUMENT ME!
+     * @return  the String representation of this Field object
      */
     public String toString()
     {
         StringBuffer buf = new StringBuffer();
+
         buf.append("name=");
         buf.append(name);
         buf.append(" type=");
