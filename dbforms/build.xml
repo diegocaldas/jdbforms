@@ -209,6 +209,7 @@
         <delete file="${build.dir}/${example.name}/WEB-INF/lib/xerces.jar"/>
         <delete file="${build.dir}/${example.name}/WEB-INF/lib/xalan.jar"/>
         -->
+    <delete file="${build.dir}/${example.name}/WEB-INF/lib/servletapi-2.3.jar"/>
     <!-- compile example-specific Java code -->
     <echo message="compiling example specific code" />
     <mkdir dir="${build.dir}/${example.name}/WEB-INF/classes" />
