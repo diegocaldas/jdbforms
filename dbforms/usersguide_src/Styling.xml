@@ -117,7 +117,7 @@
 </para>
 </listitem>
 <listitem>
-<para>It should be easy to <emphasis role="bold">use</emphasis>. Application-designers using predefined templates should not need to do any complicated coding. They should just specify which template to use and eventually specify attributes for customizing the templates  this leads to the next point:
+<para>It should be easy to use. Application-designers using predefined templates should not need to do any complicated coding. They should just specify which template to use and eventually specify attributes for customizing the templates  this leads to the next point:
 </para>
 </listitem>
 <listitem>
@@ -141,7 +141,7 @@
 </para>
 				 
 					<programlisting>
-    &lt;db:style
+    <emphasis role="bold">&lt;db:style</emphasis>
         <emphasis role="bold">template</emphasis>="templateName"
  
 	<emphasis role="bold">paramList</emphasis>="param1='value1',param2='value2',. . .,paramN='valueN'"
@@ -181,9 +181,9 @@
                                 
             &lt;html&gt;
                 &lt;body&gt;
-                    &lt;db:style template="center" part="begin" /&gt;
+                     <emphasis role="bold">&lt;db:style</emphasis> template="center" part="begin" /&gt;
                     
-                    &lt;db:style template="sourceforge" paramList="width='300' 
+                     <emphasis role="bold">&lt;db:style</emphasis> template="sourceforge" paramList="width='300' 
                     bg='steel3.jpg'" part="begin"/&gt;
 				
                         &lt;form method="POST"&gt;
@@ -214,10 +214,10 @@
                         
                         &lt;/form&gt;
 
-                    &lt;db:style part="end"/&gt;
+                     <emphasis role="bold">&lt;db:style</emphasis> part="end"/&gt;
 				
 				
-                    &lt;db:style part="end"/&gt;
+                     <emphasis role="bold">&lt;db:style</emphasis> part="end"/&gt;
 				
                 &lt;/body&gt;
 				
@@ -278,9 +278,9 @@
 					 
 						<programlisting>
                                                 
-            &lt;context-param&gt;
+             <emphasis role="bold">&lt;context-param&gt; </emphasis>
             
-                &lt;param-name&gt;templateBase&lt;/param-name&gt; 
+                &lt;param-name&gt; <emphasis role="bold">templateBase</emphasis>&lt;/param-name&gt; 
 		
                 &lt;param-value&gt;mytemplates&lt;/param-value&gt; 
             
@@ -366,13 +366,13 @@
 &lt;%@ taglib uri="/WEB-INF/taglib.tld" prefix="db" %&gt;[...]
  
     &lt;table cellpadding="0" cellspacing="0" border="0" 
-    width<emphasis role="bold">="&lt;db:templateParam name="width" defaultValue="99%" /&gt;</emphasis>"&gt; 
+    width<emphasis role="bold">="&lt;db:templateParam</emphasis> name="width" defaultValue="99%" /&gt;"&gt; 
      [...]
  
         &lt;td background<emphasis role="bold">="&lt;db:templateBasedir/&gt;</emphasis>images/tbar1.png" width="1%" height="17"&gt; 
          [...]
  
-            &lt;db:templateParam name="bg" defaultValue="steel.jpg" dir="images" /&gt;" &gt; 
+            <emphasis role="bold">&lt;db:templateParam</emphasis> name="bg" defaultValue="steel.jpg" dir="images" /&gt;" &gt; 
              [...]
  
 		</programlisting>

@@ -24,9 +24,9 @@
 </mediaobject> 
 				</figure>
 			</para>
-			<para>The user is able to define the sorting of the table by choosing a value Ascending, Descending or None from the sorting-select-boxes below <emphasis role="bold">ID</emphasis> or below <emphasis role="bold">NAME</emphasis>
+			<para>The user is able to define the sorting of the table by choosing a value Ascending, Descending or None from the sorting-select-boxes below ID or below NAME
 			</para>
-			<para>If the user wants, for instance, the table to be ordered by <emphasis role="bold">NAME</emphasis> instead of <emphasis role="bold">ID</emphasis> then he/she has to select  ASCENDING or DESCENDING from the NAME drop-down select box.
+			<para>If the user wants, for instance, the table to be ordered by NAME instead of ID then he/she has to select  ASCENDING or DESCENDING from the NAME drop-down select box.
 </para>
 		
 		<sect2>
@@ -38,7 +38,7 @@
 				<title>Instantiating a sort - tag
 </title>
 				<programlisting>
-            &lt;db:sort fieldName="id" /&gt;</programlisting>
+            <emphasis role="bold">&lt;db:sort</emphasis> fieldName="id" /&gt;</programlisting>
 			</example>
 			<para>Basically, this is all you need to write! This functionality even works within nested forms. But there is one important configuration issue you should be aware of: <emphasis role="bold">all non-key-fields</emphasis> you want to be sortable should be declared sortable in the XML-config file:
 </para>
@@ -47,9 +47,9 @@
 </title>
 				<programlisting>
                                 
-            &lt;table name="service"&gt;
+            <emphasis role="bold">&lt;table</emphasis> name="service"&gt;
                 &lt;field name="id" fieldType="int" isKey="true"/&gt; 
-		&lt;field name="name" fieldType="char" <emphasis role="bold">sortable="true"</emphasis>/&gt; 
+		<emphasis role="bold">&lt;field</emphasis> name="name" fieldType="char" <emphasis role="bold">sortable="true"</emphasis>/&gt; 
 		&lt;field name="description" fieldType="char" /&gt; 
             &lt;/table&gt; 
 		</programlisting>
@@ -66,8 +66,11 @@ Future versions of DbForms may be expected to provide more on sorting.</para>
                 <sect2><title>Alternative method to order query results</title>
  
  <para>An alternative to sorting is to use a<computeroutput>orderBy</computeroutput>attribute in the dbform tag of your jsp page.</para>
-<para>Similar to sorting, if you use a non-primary key with orderBy, you MUST specify
-sortable=&quot;true&quot; within your dbforms-config.xml file.</para>
+<screen>
+    <emphasis role="bold">&lt;db:dbform</emphasis> table="TABLE1" followUp="this.jsp" orderBy="id"/&gt;
+</screen>
+ <para>Similar to sorting, if you use a non-primary key with orderBy, you MUST specify
+<computeroutput>sortable=&quot;true&quot;</computeroutput> within your dbforms-config.xml file.</para>
 <para>If you use orderBy with a non primary key and you don't specify that in the config file, then navNext/navPrev buttons will function like navLast/navFirst buttons and you will skip over results.
  </para>
  <para>See the <ulink url="../../taglib/DbFormsTags_Frame.html"><citetitle>TagLib </citetitle></ulink>for more information.</para>
@@ -239,20 +242,18 @@ sortable=&quot;true&quot; within your dbforms-config.xml file.</para>
 		</sect2>
                 <sect2>
                 <title>Alternative way to restrict queries</title>
-<para>It is also possible to use a  <computeroutput>whereClause</computeroutput> within a dbform tag for situations where you need more complexity than filtering can handle.  See the <ulink url="../../taglib/DbFormsTags_Frame.html"><citetitle>TagLib </citetitle></ulink> from more info.</para>
+<para>It is also possible to use a  <computeroutput>whereClause</computeroutput> within a dbform tag for situations where you need more complexity than filtering can handle.  </para>
      <para>However, if you want to use navigation (eg. navNext/navPrev buttons), you should use orderBy
 and filter attributes instead of a whereClause because using a whereClause renders navigation impossible! 
 For instance, if you specify whereClause=&quot;where n&gt;3&quot; and your user views the page and then clicks the navNext button, the next page may show values
 where n is not greater than 3.</para>
 
-<para>Also, the whereClause attribute can not be used with <computeroutput>orderBy</computeroutput> or <computeroutput>filter</computeroutput> attributes.
+<para>Also, the whereClause attribute <emphasis role="bold">can not be used with</emphasis> <computeroutput>orderBy</computeroutput> or <computeroutput>filter</computeroutput> attributes.
 They will be ignored. Order by should be used within the whereClause instead:</para>
  
- <para>
- <screen>
- whereClause=&quot;WHERE (FIELD1 &gt;'25' AND FIELD1 &lt;'50' ) OR FIELD2 NOT NULL ORDERBY FIELD7&quot;
-</screen>
-</para>
+ 
+  
+<para>See the <ulink url="../../taglib/DbFormsTags_Frame.html"><citetitle>Tag Library </citetitle></ulink> from more info.</para>
                 </sect2>
                 </sect1>
                 
@@ -526,47 +527,47 @@ You may also test it on the running live samples at the DbForms Website.</para>
 		&lt;td&gt;First name&lt;/td&gt; 
 		&lt;td&gt;
                     &lt;input type="text"
-                              name="&lt;%=searchFieldNames_customer.get("firstname") %&gt;" 
+                              name="&lt;%=<emphasis role="bold">searchFieldNames_customer.get("firstname")</emphasis> %&gt;" 
                               size="17"
                     /&gt;
                 &lt;/td&gt; 
 		&lt;td&gt; 
                     &lt;input type="radio" checked
-                              name="&lt;%= searchFieldModeNames_customer.get("firstname") %&gt;"
-                              value="and"&gt; AND
+                              name="&lt;%= <emphasis role="bold">searchFieldModeNames_customer.get("firstname")</emphasis> %&gt;"
+                              value="<emphasis role="bold">and</emphasis>"&gt; AND
                     &lt;input type="radio" 
-                              name="&lt;%= searchFieldModeNames_customer.get("firstname") %&gt;
-                              value="or"&gt; OR
+                              name="&lt;%= <emphasis role="bold">searchFieldModeNames_customer.get("firstname")</emphasis> %&gt;
+                              value="<emphasis role="bold">or</emphasis>"&gt; OR
 		&lt;/td&gt; 
 		&lt;td&gt; 
                     &lt;input type="checkbox" 
-                              name="&lt;%= searchFieldAlgorithmNames_customer.get("firstname") %&gt;"
+                              name="&lt;%= <emphasis role="bold">searchFieldAlgorithmNames_customer.get("firstname")</emphasis> %&gt;"
                               size="30" 
-                              value="weak"&gt;Weak
-		&lt;/td&gt; 
+                              value="<emphasis role="bold">weak</emphasis>"&gt;Weak
+		&lt;/td&gt; .
             &lt;/tr&gt; 
             &lt;tr bgcolor="#BBCCBB"&gt; 
                 &lt;td&gt;Last name&lt;/td&gt; 
 		&lt;td&gt;
                 &lt;input type="text"
-                          name="&lt;%= searchFieldNames_customer.get("lastname") %&gt;"
+                          name="&lt;%= <emphasis role="bold">searchFieldNames_customer.get("lastname")</emphasis> %&gt;"
                           size="17"/&gt;
                 &lt;/td&gt; 
 		&lt;td&gt;
                     &lt;input type="radio" checked  
-                              name="&lt;%= searchFieldModeNames_customer.get("lastname") %&gt;"
-                              value="and"          
+                              name="&lt;%= <emphasis role="bold">searchFieldModeNames_customer.get("lastname")</emphasis> %&gt;"
+                              value="<emphasis role="bold">and</emphasis>"          
                     &gt; AND
                     &lt;input type="radio" 
-                              name="&lt;%= searchFieldModeNames_customer.get("lastname") %&gt;
-                              value="or"
+                              name="&lt;%= <emphasis role="bold">searchFieldModeNames_customer.get("lastname")</emphasis> %&gt;
+                              value="<emphasis role="bold">or</emphasis>"
                     &gt; OR
 		&lt;/td&gt; 
 		&lt;td&gt; 
                     &lt;input type="checkbox" 
-                              name="&lt;%= searchFieldAlgorithmNames_customer.get("lastname") %&gt;"
+                              name="&lt;%= <emphasis role="bold">searchFieldAlgorithmNames_customer.get("lastname")</emphasis> %&gt;"
                               size="30"
-                              value="weak"
+                              value="<emphasis role="bold">weak</emphasis>"
                     &gt;Weak
 		&lt;/td&gt; 
             &lt;/tr&gt; 
@@ -614,7 +615,7 @@ You may also test it on the running live samples at the DbForms Website.</para>
 				<para>In a table with:
 </para><blockquote>
 <screen>
-create table values
+create table <emphasis role="bold">values</emphasis>
 
     (cno integer not null primary key,
 
@@ -640,7 +641,9 @@ group by type having sumValue &gt; ?
 				<para>Because the date should be selected by the user, you can not use a fixed view in the database. However, this is possible using the <emphasis role="bold">query</emphasis> element in dbforms_config.xml:</para>
 <blockquote>
 <screen>
-&lt;query name="valuesGroup" from="values" groupBy=type&gt;
+<emphasis role="bold">&lt;dbforms-config&gt;</emphasis>
+...
+<emphasis role="bold">&lt;query</emphasis> name="valuesGroup" from="values" groupBy=type&gt;
     &lt;field="type" type="char"&gt;
     &lt;field="sumValue" expression=sum(value) type="number"&gt;
     
@@ -654,7 +657,9 @@ group by type having sumValue &gt; ?
 </title>
 <blockquote>
 <screen>
-&lt;query name="viewname" from="table1 left join table2 on table1.id = table2.id"&gt;
+<emphasis role="bold">&lt;dbforms-config&gt;</emphasis>
+...
+<emphasis role="bold">&lt;query</emphasis> name="viewname" from="table1 left join table2 on table1.id = table2.id"&gt;
     &lt;field1 type=char&gt;
 &lt;/query&gt;			
 </screen></blockquote>	</sect3>
@@ -663,7 +668,9 @@ group by type having sumValue &gt; ?
 </title>
 <blockquote>
 <screen>
-&lt;query name="aliasname" from="table" /&gt;
+<emphasis role="bold">&lt;dbforms-config&gt;</emphasis>
+...
+<emphasis role="bold">&lt;query</emphasis> name="aliasname" from="table" /&gt;
 </screen></blockquote>
 <itemizedlist mark="opencircle">
 <listitem>

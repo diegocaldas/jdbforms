@@ -40,8 +40,9 @@
 			<para>To define that the validation framework is to be used within a dbForms application, the associated XML files must be specified in the web.xml deployment descriptor (associated to the dbForms config servlet):
 </para>
 			<screen>
-    &lt;web-app&gt;&lt;!--=========== DbForms Configuration Servlet ===========--&gt; 
-        &lt;servlet&gt; 
+    <emphasis role="bold">&lt;web-app&gt;</emphasis>
+        &lt;!--=========== DbForms Configuration Servlet ===========--&gt; 
+        <emphasis role="bold">&lt;servlet&gt;</emphasis> 
             &lt;servlet-name&gt;org.dbforms.ConfigServlet&lt;/servlet-name&gt; 
             &lt;servlet-class&gt;org.dbforms.ConfigServlet&lt;/servlet-class&gt; 
 		&lt;init-param&gt; 
@@ -51,14 +52,14 @@
                     &lt;param-name&gt;resourceBundle&lt;/param-name&gt; 
                     &lt;param-value&gt;ApplicationResources&lt;/param-value&gt; 
 		&lt;/init-param&gt; 
-		&lt;init-param&gt; 
-                    &lt;param-name&gt;validation&lt;/param-name&gt; 
-                    &lt;param-value&gt;/WEB-INF/validation.xml&lt;/param-value&gt; 
-		&lt;/init-param&gt; 
-		&lt;init-param&gt; 
-                    &lt;param-name&gt;validator-rules&lt;/param-name&gt; 
+		<emphasis role="bold">&lt;init-param&gt;</emphasis> 
+                    &lt;param-name&gt;<emphasis role="bold">validation</emphasis>&lt;/param-name&gt; 
+                    &lt;param-value&gt;<emphasis role="bold">/WEB-INF/validation.xml</emphasis>&lt;/param-value&gt; 
+		<emphasis role="bold">&lt;/init-param&gt;</emphasis> 
+		<emphasis role="bold">&lt;init-param&gt;</emphasis> 
+                    &lt;param-name&gt;<emphasis role="bold">validator-rules</emphasis>&lt;/param-name&gt; 
                     &lt;param-value&gt;/WEB-INF/validator-rules.xml&lt;/param-value&gt; 
-		&lt;/init-param&gt; 
+		<emphasis role="bold">&lt;/init-param&gt;</emphasis> 
             &lt;load-on-startup&gt;1&lt;/load-on-startup&gt; 
         &lt;/servlet&gt; 
 		</screen>
@@ -207,29 +208,29 @@ name
 					</tgroup>
 				</table>
 			</para><para>Building the Validation.xml file</para>
-<para>In a previous section, we defined that our (dbform) form would be associated to an [entry] called 'bugs'.  The 'bugs' form contained a single textField entry (referring to 'title').  Let's take a look at the resulting Validation.xml file:
+<para>In a previous section, we defined that our (dbform) form would be associated to an [entry] called 'bugs'.  The 'bugs' form contained a single textField entry (referring to 'title').  Let's take a look at the resulting <emphasis role="bold">Validation.xml</emphasis> file:
 </para>
 			<screen>
-    &lt;formset&gt;
-        &lt;form name="bugs"&gt; 
-            &lt;field property="title" depends="required,mask,maxlength"&gt; 
-		&lt;msg name="required" key="errors.required" resource="true"/&gt; 
-                    &lt;arg0 name="required" key="bugsForm.title.displayname" resource="true"/&gt;
+    <emphasis role="bold">&lt;formset&gt;</emphasis>
+        <emphasis role="bold">&lt;form</emphasis> name="bugs"&gt; 
+            <emphasis role="bold">&lt;field</emphasis> property="title" depends="required,mask,maxlength"&gt; 
+		<emphasis role="bold">&lt;msg</emphasis> name="required" key="errors.required" resource="true"/&gt; 
+                    <emphasis role="bold">&lt;arg0</emphasis> name="required" key="bugsForm.title.displayname" resource="true"/&gt;
                      
-		&lt;msg name="mask" key="bugsForm.error.title.mask" resource="true"/&gt; 
+		<emphasis role="bold">&lt;msg</emphasis> name="mask" key="bugsForm.error.title.mask" resource="true"/&gt; 
 		 
-		&lt;msg name="maxlength" key="errors.maxlength" resource="true"/&gt; 
-                    &lt;arg0 name="maxlength" key="bugsForm.title.displayname" resource="true"/&gt; 
-                    &lt;arg1 name="maxlength" key="${var:maxlength}" resource="false"/&gt; 
+		<emphasis role="bold">&lt;msg</emphasis> name="maxlength" key="errors.maxlength" resource="true"/&gt; 
+                    <emphasis role="bold">&lt;arg0</emphasis> name="maxlength" key="bugsForm.title.displayname" resource="true"/&gt; 
+                    <emphasis role="bold">&lt;arg1</emphasis> name="maxlength" key="${var:maxlength}" resource="false"/&gt; 
 		
-                &lt;var&gt; 
+                <emphasis role="bold">&lt;var&gt;</emphasis> 
                     &lt;var-name&gt;mask&lt;/var-name&gt; 
                     &lt;var-value&gt;^[A-Z][A-Za-z0-9\s]*$&lt;/var-value&gt; 
-		&lt;/var&gt; 
-		&lt;var&gt; 
+		<emphasis role="bold">&lt;/var&gt;</emphasis>
+		<emphasis role="bold">&lt;var&gt;</emphasis>
                     &lt;var-name&gt;maxlength&lt;/var-name&gt; 
                     &lt;var-value&gt;10&lt;/var-value&gt; 
-		&lt;/var&gt;
+		<emphasis role="bold">&lt;/var&gt;</emphasis>
                  
             &lt;/field&gt; 
 	&lt;/form&gt; 

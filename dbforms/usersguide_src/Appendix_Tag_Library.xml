@@ -9,19 +9,27 @@
 </para>
 			<para>Hints for using this API:
 </para>
-			<para>Please keep in mind that all tag-names and attribute-names are case sensitive.
+<itemizedlist mark="opencircle">
+<listitem>
+<para>Please keep in mind that all tag-names and attribute-names are case sensitive.
 </para>
-			<para>The annotation [Required] means that the application developer <emphasis role="bold">must</emphasis> provide a value for that attribute. Other attributes may be left out, default values will be provided instead.
+</listitem>
+<listitem>
+<para>The annotation [Required] means that the application developer <emphasis role="bold">must</emphasis> provide a value for that attribute. Other attributes may be left out, default values will be provided instead.
 </para>
-			<para>The annotation [RT Expr] means that an attribute get evaluated by the JSP container at runtime and therefore JSP expressions are allowed in that attribute values.
+</listitem>
+<listitem>
+<para>The annotation [RT Expr] means that an attribute get evaluated by the JSP container at runtime and therefore JSP expressions are allowed in that attribute values.
 </para>
-			<para>P<emphasis role="bold">lease view it here.</emphasis>
+</listitem>
+</itemizedlist>			
+			
+			
+			<para><emphasis role="bold"><ulink url="../../taglib/DbFormsTags_Frame.html"><citetitle>View the Tag Library</citetitle></ulink></emphasis>
 			</para>
-			<example>
-				<title/>
-				<programlisting>It can also be built via cvs and is included in distributions in the doc directory
-</programlisting>
-			</example>
+			 
+				 
+			 
 			<para>
 				<emphasis role="bold">Nota bene:</emphasis> As of version 1.0, all attributes have been defined as runtime expressions.
 </para>

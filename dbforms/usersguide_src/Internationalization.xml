@@ -79,8 +79,9 @@
 </para>
 			 
 				<screen>
-    &lt;web-app&gt;&lt;!--=========== DbForms Configuration Servlet ===========--&gt;
-        &lt;servlet&gt; 
+    <emphasis role="bold">&lt;web-app&gt;</emphasis>
+        &lt;!--=========== DbForms Configuration Servlet ===========--&gt;
+        <emphasis role="bold">&lt;servlet&gt;</emphasis> 
             &lt;servlet-name&gt;org.dbforms.ConfigServlet&lt;/servlet-name&gt; 
             &lt;servlet-class&gt;org.dbforms.ConfigServlet&lt;/servlet-class&gt; 
 		&lt;init-param&gt; 
@@ -88,9 +89,9 @@
                     &lt;param-value&gt;log4j.properties&lt;/param-value&gt; 
 		&lt;/init-param&gt;
                 <emphasis role="bold">&lt;init-param&gt;</emphasis> 
-                    &lt;param-name&gt;resourceBundle&lt;/param-name&gt; 
-                    &lt;param-value&gt;ApplicationResources&lt;/param-value&gt; 
-		&lt;/init-param&gt; 
+                    &lt;param-name&gt;<emphasis role="bold">resourceBundle</emphasis>&lt;/param-name&gt; 
+                    &lt;param-value&gt;<emphasis role="bold">ApplicationResources</emphasis>&lt;/param-value&gt; 
+		<emphasis role="bold">&lt;/init-param&gt;</emphasis>
             &lt;load-on-startup&gt;1&lt;/load-on-startup&gt; 
 	&lt;/servlet&gt; 
 		</screen>
@@ -106,11 +107,11 @@
     
         &lt;! - - Retrieving a message  - - &gt; 
         
-        &lt;db:message key="msg.bienvenue.1"/&gt; 
+        <emphasis role="bold">&lt;db:message</emphasis> key="msg.bienvenue.1"/&gt; 
 		
         &lt;BR&gt;&lt;BR&gt; 
 		
-        &lt;center&gt;&lt;db:message key="msg.bienvenue.2"/&gt;&lt;/center&gt; 
+        &lt;center&gt;<emphasis role="bold">&lt;db:message</emphasis> key="msg.bienvenue.2"/&gt;&lt;/center&gt; 
 		
         &lt;BR&gt;&lt;BR&gt; 
 		</screen>

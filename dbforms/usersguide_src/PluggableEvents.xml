@@ -137,23 +137,23 @@ Registration of the event classes
  <informalexample>
     <screen>
    
-    &lt;dbforms-config&gt;
+    <emphasis role="bold">&lt;dbforms-config&gt;</emphasis>
 
         &lt;!-- dbforms config stuff here... --&gt;
 
             &lt;!-- define custom events --&gt;
-            &lt;events&gt;
+            <emphasis role="bold">&lt;events&gt;</emphasis>
         
                &lt;!-- define database custom events here --&gt;
-               &lt;database-events&gt;<co id="db-event"/>
+               <emphasis role="bold">&lt;database-events&gt;</emphasis><co id="db-event"/>
                   &lt;database-event id=&quot;insert2&quot; type=&quot;insert&quot; className=&quot;org.foo.bar.MyInsertEvent&quot; /&gt; 
                   &lt;database-event id=&quot;update2&quot; type=&quot;update&quot; className=&quot;org.foo.bar.MyUpdateEvent&quot; /&gt; 
-               &lt;/database-events&gt;
+               <emphasis role="bold">&lt;/database-events&gt;</emphasis>
 
                &lt;!-- define navigation custom events here --&gt;
-                  &lt;navigation-events&gt; <co id="nav-event"/>  
+                  <emphasis role="bold">&lt;navigation-events&gt;</emphasis> <co id="nav-event"/>  
                   &lt;navigation-event id=&quot;new2&quot; type=&quot;navNew&quot;   className=&quot;org.foo.bar.MyNavNewEvent&quot; /&gt;
-               &lt;/navigation-events&gt;
+               <emphasis role="bold">&lt;/navigation-events&gt;</emphasis>
     
             &lt;/events&gt;
   
@@ -167,12 +167,12 @@ Registration of the event classes
     <itemizedlist mark="opencircle">
 <listitem>
 <para>
-add a new /dbforms-config/events/database-events element, if it does not exist yet 
+add a new <computeroutput>/dbforms-config/events/database-events</computeroutput> element, if it does not exist yet 
 </para>
 </listitem>
 <listitem>
 <para>
-add a new /dbforms-config/events/database-events/database-event element for every database custom event to register into the system
+add a new <computeroutput>/dbforms-config/events/database-events/database-event</computeroutput> element for every database custom event to register into the system
 </para> 
 </listitem>
  
@@ -186,12 +186,12 @@ add a new /dbforms-config/events/database-events/database-event element for ever
  <itemizedlist mark="opencircle">
 <listitem>
 <para>
-add a new /dbforms-config/events/navigation-events element, if it does not exist yet 
+add a new <computeroutput>/dbforms-config/events/navigation-events</computeroutput> element, if it does not exist yet 
 </para>
 </listitem>
 <listitem>
 <para>
-add a new /dbforms-config/events/navigation-events/navigation-event element for every navigation custom event to register into the system 
+add a new <computeroutput>/dbforms-config/events/navigation-events/navigation-event</computeroutput> element for every navigation custom event to register into the system 
 </para>
 </listitem>
  
@@ -255,7 +255,7 @@ with custom ones.  In this manner, every table element uses those event classes 
 <itemizedlist mark="opencircle">
 <listitem>
 <para>
-declare a new database-event or navigation-event element
+declare a new <computeroutput>database-event</computeroutput> or <computeroutput>navigation-event</computeroutput> element
 </para>
 </listitem>
 <listitem>
@@ -277,11 +277,11 @@ set the value of its className attribute with the full qualified class name of y
  <!--
     -  Events configuration
     -->
-    &lt;events&gt;
-        &lt;database-events&gt;
-            &lt;database-event type=&quot;update&quot; className=&quot;org.foo.bar.MyUpdateEvent&quot; /&gt;
-        &lt;/database-events&gt;
-    &lt;/events&gt;
+    <emphasis role="bold">&lt;events&gt;</emphasis>
+        <emphasis role="bold">&lt;database-events&gt;</emphasis>
+            <emphasis role="bold">&lt;database-event</emphasis> <emphasis role="bold">type</emphasis>=&quot;update&quot; <emphasis role="bold">className</emphasis>=&quot;org.foo.bar.MyUpdateEvent&quot; /&gt;
+        <emphasis role="bold">&lt;/database-events&gt;</emphasis>
+    <emphasis role="bold">&lt;/events&gt;</emphasis>
 
  </programlisting>
  </informalexample>
@@ -314,15 +314,15 @@ overrides the default "org.dbforms.event.UpdateEvent" one.</para>
      
      <title>Override the event classes on a table-by-table basis </title>
      
-     <para>Every table object specified by a /dbforms-config/table element uses by default the standard event configuration. A developer can choose to override the event class associated to a certain event type, by adding and configuring the events element in the dbforms-config file as shown below:</para>
+     <para>Every table object specified by a <computeroutput>/dbforms-config/table</computeroutput> element uses by default the standard event configuration. A developer can choose to override the event class associated to a certain event type, by adding and configuring the events element in the dbforms-config file as shown below:</para>
     
 <informalexample>
  <screen>
-    &lt;dbforms-config&gt;
+   <emphasis role="bold"> &lt;dbforms-config&gt;</emphasis>
 
         ...
 
-        &lt;table name=&quot;MYTABLE&quot;&gt;
+        <emphasis role="bold">&lt;table</emphasis> name=&quot;MYTABLE&quot;&gt;
 
                 &lt;field name=&quot;TABLEID&quot;  fieldType=&quot;varchar&quot; size=&quot;10&quot; isKey=&quot;true&quot;/&gt;
                 &lt;field name=&quot;NAME&quot;     fieldType=&quot;varchar&quot; size=&quot;16&quot;/&gt;
@@ -334,20 +334,20 @@ overrides the default "org.dbforms.event.UpdateEvent" one.</para>
                 -  Here you can specify custom event classes that override the default ones.
                 -  Event properties can be configured using &quot;property&quot; elements.
                 --&gt;
-                &lt;events&gt;<co id="events"/>
+                <emphasis role="bold">&lt;events&gt;</emphasis><co id="events"/>
                     &lt;event type=&quot;insert&quot; id=&quot;insert2&quot;&gt;
   
                         &lt;!-- event properties configuration --&gt;
                         &lt;property name=&quot;sourceView&quot;  value=&quot;VIEW_USER&quot; /&gt;
                         &lt;property name=&quot;targetTable&quot; value=&quot;USER&quot; /&gt;
                     &lt;/event&gt;
-                &lt;/events&gt;
+                <emphasis role="bold">&lt;/events&gt;</emphasis>
 
-        &lt;/table&gt;
+        <emphasis role="bold">&lt;/table&gt;</emphasis>
 
         ...
 
-    &lt;/dbforms-config&gt;
+    <emphasis role="bold">&lt;/dbforms-config&gt;</emphasis>
 
 </screen>
 <calloutlist>
@@ -357,12 +357,12 @@ overrides the default "org.dbforms.event.UpdateEvent" one.</para>
      <itemizedlist mark="opencircle">
 <listitem>
 <para>
-add a new /dbforms-config/table/events element, if it does not exist yet
+add a new <computeroutput>/dbforms-config/table/events</computeroutput> element, if it does not exist yet
 </para>
 </listitem>
 <listitem>
 <para>
-add a new /dbforms-config/table/events/event element for every event class to override
+add a new <computeroutput>/dbforms-config/table/events/event</computeroutput> element for every event class to override
 </para>
 </listitem>
 </itemizedlist>
@@ -375,7 +375,7 @@ add a new /dbforms-config/table/events/event element for every event class to ov
 
 <sect2><title>Event attributes</title>
 
-    <para>Every /dbforms-config/table/events/event element uses the following mandatory attributes:</para>
+    <para>Every <computeroutput>/dbforms-config/table/events/event</computeroutput> element uses the following mandatory attributes:</para>
 
     <informaltable frame="all">
 <tgroup cols="3" align="left" colsep="1" rowsep="1">
@@ -399,7 +399,7 @@ add a new /dbforms-config/table/events/event element for every event class to ov
 </row>
 <row>
   <entry>id</entry>
- <entry namest="c2" nameend="c3" align="center">the event identifier. Must be equal to the identifier attribute of an event specified by a /dbforms-config/events/database-events/database-event or /dbforms-config/events/navigation-events/navigation-event element.</entry>
+ <entry namest="c2" nameend="c3" align="center">the event identifier. Must be equal to the identifier attribute of an event specified by a <computeroutput>/dbforms-config/events/database-events/database-event</computeroutput> or <computeroutput>/dbforms-config/events/navigation-events/navigation-event element.</computeroutput></entry>
    
 </row>
  
@@ -412,14 +412,14 @@ add a new /dbforms-config/table/events/event element for every event class to ov
     
     <title>Event properties configuration</title>
 
-    <para>Every /dbforms-config/table/events/event can be configured using a set of properties (obviously, those properties are useful only if the event class support them). To declare the properties, the developer must add to the  element a set of children  elements and configure their attributes.</para>
+    <para>Every <computeroutput>/dbforms-config/table/events/event</computeroutput> can be configured using a set of properties (obviously, those properties are useful only if the event class support them). To declare the properties, the developer must add to the  element a set of children  elements and configure their attributes.</para>
 
      </sect2>
      
      <sect2>
     <title>Properties attributes</title>
 
-    <para>Every /dbforms-config/table/events/event element uses the following mandatory attributes: </para>
+    <para>Every <computeroutput>/dbforms-config/table/events/event</computeroutput> element uses the following mandatory attributes: </para>
 
     
 	 

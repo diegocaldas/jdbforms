@@ -15,19 +15,19 @@
 &lt;!-- ==========Non-ConnectionFactory Connections================= --&gt;
 	&lt;!--
 	uncomment this for JNDI connections
-	&lt;dbconnection
+	 &lt;dbconnection 
 		name = &quot;jdbc/dbformstest&quot;
 		isJndi = &quot;true&quot;
 	/&gt;
 	--&gt;
 
-	&lt;dbconnection
+	<emphasis role="bold">&lt;dbconnection</emphasis>
 		name   = &quot;jdbc:mysql://localhost/test&quot;
 		isJndi = &quot;false&quot;
 		conClass  = &quot;org.gjt.mm.mysql.Driver&quot;
 		username = &quot;somename&quot;
 		password  = &quot;somepass&quot;
-	/&gt;
+	<emphasis role="bold">/&gt;</emphasis>
 </screen> 
 
 			<sect2>
@@ -97,7 +97,7 @@
     -  see http://protomatter.sourceforge.net/ for further information
     --&gt;
 
-&lt;dbconnection
+<emphasis role="bold">&lt;dbconnection</emphasis>
 
     id                      = "protomatter"
 
@@ -119,7 +119,7 @@
 
     password                = ""
 
-/&gt;
+<emphasis role="bold">/&gt;</emphasis>
 </screen>					
 </blockquote>				</sect3>
 				<sect3>
@@ -136,7 +136,7 @@
     --&gt;
 
 
-&lt;dbconnection
+<emphasis role="bold">&lt;dbconnection</emphasis>
 
     id                      = "jakarta-commons-dbcp"
 
@@ -158,7 +158,7 @@
 
     password                = ""
 
-/&gt;
+<emphasis role="bold">/&gt;</emphasis>
 
 </screen></blockquote>			</sect3>
 				<sect3><title>SimpleConnectionProvider
@@ -171,7 +171,7 @@
     -  Note: this provider does NOT use the connectionPoolURL attribute.
     --&gt;
 
-&lt;dbconnection
+<emphasis role="bold">&lt;dbconnection</emphasis>
 
     id                      = "simple"
 
@@ -191,7 +191,7 @@
 
     password                = ""
 
-/&gt;
+<emphasis role="bold">/&gt;</emphasis>
 
 </screen></blockquote>
 </sect3>
@@ -256,9 +256,9 @@ Used by ProtomatterConnectionProvider class.</entry>
  
 <blockquote>
 <screen>
-    &lt;dbconnection&gt; 
-            &lt;property name="charSet" value="8859_1" /&gt; 
-    &lt;/dbconnection&gt; 
+    <emphasis role="bold">&lt;dbconnection&gt;</emphasis> 
+            <emphasis role="bold">&lt;property</emphasis> name="charSet" value="8859_1" /&gt; 
+    <emphasis role="bold">&lt;/dbconnection&gt;</emphasis>
 </screen>
 </blockquote>
 					
@@ -270,7 +270,7 @@ Used by ProtomatterConnectionProvider class.</entry>
 </para> 
 
 <blockquote><screen>
-&lt;dbconnection
+<emphasis role="bold">&lt;dbconnection</emphasis>
     id                      = "simple"
     isPow2                  = "true"
     connectionProviderClass = "org.dbforms.conprovider.SimpleConnectionProvider"
@@ -285,7 +285,7 @@ Used by ProtomatterConnectionProvider class.</entry>
 
         <emphasis role="bold">&lt;property</emphasis> name="characterEncoding" value="Shift_JIS" /&gt;
 
-&lt;/dbconnection&gt;
+<emphasis role="bold">&lt;/dbconnection&gt;</emphasis>
 </screen></blockquote>					
 				
 			</sect2>
@@ -356,7 +356,7 @@ http://protomatter.sourceforge.net/1.1.8-pre5/javadoc/com/protomatter/jdbc/pool/
 </title>
 <blockquote>
 <screen>
-    &lt;dbconnection
+    <emphasis role="bold">&lt;dbconnection</emphasis>
         id                      = "protomatter"
         isJndi                  = "false"
         isPow2                   = "true"
@@ -367,10 +367,10 @@ http://protomatter.sourceforge.net/1.1.8-pre5/javadoc/com/protomatter/jdbc/pool/
         name                    = "jdbc:postgresql://myHost/myDb"
         username                = "postgres"
         password                = ""&gt;
-        &lt;!-- jdbc properties --&gt;
+        <emphasis role="bold">&lt;!-- jdbc properties --&gt;</emphasis>
             &lt;property name="charSet" value="ISO-8859-1" /&gt;
 
-        &lt;!-- Connection pool dataSource properties --&gt;
+        <emphasis role="bold">&lt;!-- Connection pool dataSource properties --&gt;</emphasis>
             &lt;pool-property name="pool.initialSize"             value="4"   /&gt;
             &lt;pool-property name="pool.maxSize"                 value="10"  /&gt;
             &lt;pool-property name="pool.growBlock"               value="2"   /&gt;
@@ -378,7 +378,7 @@ http://protomatter.sourceforge.net/1.1.8-pre5/javadoc/com/protomatter/jdbc/pool/
             &lt;pool-property name="pool.maxConnectionIdleTime"   value=""    /&gt;
             &lt;pool-property name="pool.maidThreadCheckInterval" value=""    /&gt;
             &lt;pool-property name="jdbc.validityCheckStatement"  value=""    /&gt;
-    &lt;/dbconnection&gt;
+    <emphasis role="bold">&lt;/dbconnection&gt;</emphasis>
 </screen>	</blockquote>			
 			</sect2>
 			<sect2>
@@ -426,7 +426,7 @@ http://jakarta.apache.org/commons/dbcp/api/org/apache/commons/dbcp/BasicDataSour
 </title>
 <blockquote>
 <screen>
-    &lt;dbconnection
+    <emphasis role="bold">&lt;dbconnection</emphasis>
         id                      = "jakarta-commons-dbcp"
         isJndi                  = "false"
         isPow2                  = "true"
@@ -438,16 +438,16 @@ http://jakarta.apache.org/commons/dbcp/api/org/apache/commons/dbcp/BasicDataSour
         username                = "postgres"
         password                = ""&gt;
 
-            &lt;!-- jdbc properties --&gt;
+            <emphasis role="bold">&lt;!-- jdbc properties --&gt;</emphasis>
                 &lt;property name="charSet" value="ISO-8859-1" /&gt;
                 
-            &lt;!-- connection pool dataSource properties --&gt;
+            <emphasis role="bold">&lt;!-- connection pool dataSource properties --&gt;</emphasis>
                 &lt;pool-property name="validationQuery" value=""     /&gt;
                 &lt;pool-property name="maxActive"       value="10"   /&gt;
                 &lt;pool-property name="maxIdle"         value="5"    /&gt;
                 &lt;pool-property name="maxWait"         value="-1"   /&gt;
                 &lt;pool-property name="useLog"          value="true" /&gt;
-    &lt;/dbconnection&gt;
+    <emphasis role="bold">&lt;/dbconnection&gt;</emphasis>
 </screen></blockquote>
 			</sect2>
 		</sect1>
@@ -623,7 +623,7 @@ public class MyOwnConnectionProvider extends ConnectionProvider	{
 </para>
 <blockquote>
 <screen>
-&lt;dbconnection
+<emphasis role="bold">&lt;dbconnection</emphasis>
 
    id                      = "protomatter"
 
@@ -644,9 +644,9 @@ public class MyOwnConnectionProvider extends ConnectionProvider	{
    username                = "secret"
 
    password                = "moreSecret"&gt;
-        &lt;!-- jdbc properties --&gt;
+        <emphasis role="bold">&lt;!-- jdbc properties --&gt;</emphasis>
             &lt;property name="charSet" value="ISO-8859-1" /&gt;
-        &lt;!-- Connection pool dataSource properties --&gt;
+        <emphasis role="bold">&lt;!-- Connection pool dataSource properties --&gt;</emphasis>
             &lt;pool-property name="pool.initialSize"             value="4"   /&gt;
             &lt;pool-property name="pool.maxSize"                 value="10"  /&gt;
             &lt;pool-property name="pool.growBlock"               value="2"   /&gt;
@@ -654,7 +654,7 @@ public class MyOwnConnectionProvider extends ConnectionProvider	{
             &lt;pool-property name="pool.maxConnectionIdleTime"   value=""    /&gt;
             &lt;pool-property name="pool.maidThreadCheckInterval" value=""    /&gt;
             &lt;pool-property name="jdbc.validityCheckStatement"  value=""    /&gt;
-&lt;/dbconnection&gt;
+<emphasis role="bold">&lt;/dbconnection&gt;</emphasis>
 </screen></blockquote>
 				
 				<para>When a ConnectionProvider class is instantiated, it can access to the connection pool properties using the following statement:

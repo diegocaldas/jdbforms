@@ -26,7 +26,7 @@
 			
 			
 			
-			<para>DbForms addresses <emphasis role="bold">all of these situations:</emphasis> On the one hand, it supports the upload (and download) of files into classical BLOB fields, and on the other, it supports a file-system approach, allowing database-driven management of  files outside of the database. (Depending on your RDBMS, a binary large object is called a BLOB, IMAGE, etc.)
+			<para>DbForms addresses <emphasis role="italic">all of these situations:</emphasis> On the one hand, it supports the upload (and download) of files into classical BLOB fields, and on the other, it supports a file-system approach, allowing database-driven management of  files outside of the database. (Depending on your RDBMS, a binary large object is called a BLOB, IMAGE, etc.)
 </para>
 		</sect1>
 		<sect1>
@@ -38,7 +38,7 @@
 				<para>Managing BLOB Fields using DbForms is a trivial task. First, you have to tell DbForms about BLOB-Fields in the xml-configuration file:
 </para>
 				<screen>
-            &lt;dbforms-config&gt;
+            <emphasis role="bold">&lt;dbforms-config&gt;</emphasis>
                 &lt;table name="pets"&gt; 
                     &lt;field name="pet_id" fieldType="int" isKey="true" autoInc="true" /&gt; 
                     &lt;field name="name" fieldType ="char" /&gt; 
@@ -78,7 +78,7 @@
 				<para>This HTML-element enables multipart-enabled browsers to submit files to the server. Be aware that not all browsers support this functionality.
 </para>
 				<para>
-					<emphasis role="bold">Important</emphasis>: the multipart-attribute of the &lt;dbforms&gt; element must be set to true to support multipart requests!
+					<emphasis role="bold">Important</emphasis>: the multipart-attribute of the &lt;dbforms&gt; element must be set to <computeroutput>true</computeroutput> to support multipart requests!
 </para>
 			</sect2>
 			<sect2>
@@ -94,7 +94,7 @@
 			<sect2>
 				<title>Retrieving BLOBs
 </title>
-				<para>Managing BLOBs as described above may be sufficient in most cases. But sometimes, we may want to reverse the process: we may want to <emphasis role="bold">retrieve</emphasis> BLOBs. (for instance, to provide users the ability of visualizing uploaded images, etc.)
+				<para>Managing BLOBs as described above may be sufficient in most cases. But sometimes, we may want to reverse the process: we may want to <emphasis role="italic">retrieve</emphasis> BLOBs. (for instance, to provide users the ability of visualizing uploaded images, etc.)
 </para>
 				<para>DbForms provides a simple way of retrieving BLOBs from the database. You are, however not required to use it.  Again, using dbForms is meant to help you increase your productivity, if another tool or techniques is better for a given task  include it!
 </para>
@@ -138,13 +138,13 @@
 <para>As the following example and table show/explain, there are additional attributes available for defining a diskblob-field:
 </para>				 
 <programlisting>
-            &lt;dbforms-config&gt;
+            <emphasis role="bold">&lt;dbforms-config&gt;</emphasis>
                 &lt;table name="pets"&gt; 
                     &lt;field name="pet_id" fieldType="int" isKey="true" autoInc="true" /&gt; 
                     &lt;field name="name" fieldType ="char" /&gt; 
-                    &lt;field name="portrait_pic" <emphasis role="bold">fieldType ="diskblob"</emphasis>
+                    &lt;field name="portrait_pic" <emphasis role="bold">fieldType</emphasis> ="diskblob"
 						<emphasis role="bold">directory</emphasis>=c:\uploads\pets <emphasis role="bold">encoding</emphasis>=true  /&gt; 
-                    &lt;field name="story" <emphasis role="bold">fieldType ="diskblob"</emphasis>
+                    &lt;field name="story" <emphasis role="bold">fieldType</emphasis> ="diskblob" 
 						<emphasis role="bold">directory</emphasis>=x:\stories /&gt; 
 		&lt;/table&gt;
             &lt;/dbforms-config&gt; 
@@ -225,7 +225,7 @@ b) must be writeable by the web-server </entry>
 </para>
 			 
 				<programlisting>
-                CREATE TABLE pets (
+                CREATE TABLE <emphasis role="bold">pets</emphasis> (
 
                 pet_id int AUTO_INCREMENT NOT NULL PRIMARY KEY ,
  
@@ -245,7 +245,7 @@ b) must be writeable by the web-server </entry>
 &lt;%@ taglib uri="/WEB-INF/dbForms.tld" prefix="db" %&gt;
  &lt;html&gt;             
   &lt;head&gt;
-    &lt;db:base/&gt;
+    <emphasis role="bold">&lt;db:base/&gt;</emphasis>
     &lt;link rel="stylesheet" href="dbforms.css"&gt;
 
     &lt;SCRIPT&gt;
@@ -256,10 +256,10 @@ b) must be writeable by the web-server </entry>
   &lt;/head&gt;
   
   &lt;body&gt;
-    &lt;db:errors/&gt;
-    &lt;db:dbform tableName="pets" maxRows="*" followUp="/petportraits.jsp" multipart=true&gt;
+    <emphasis role="bold">&lt;db:errors/&gt;</emphasis>
+    <emphasis role="bold">&lt;db:dbform</emphasis> tableName="pets" maxRows="*" followUp="/petportraits.jsp" multipart=true&gt;
         &lt;db:header&gt;
-            &lt;db:gotoButton caption="Menu" destination="/menu.jsp" /&gt;
+            <emphasis role="bold">&lt;db:gotoButton</emphasis> caption="Menu" destination="/menu.jsp" /&gt;
             
             &lt;hr&gt;
             &lt;h1&gt;Funny pets page (1)&lt;/h1&gt;
@@ -272,33 +272,33 @@ b) must be writeable by the web-server </entry>
                     &lt;th&gt;story&lt;/th&gt;
                     &lt;th&gt;actions&lt;/th&gt;
                 &lt;/tr&gt;
-                      &lt;/db:header&gt;
+                      <emphasis role="bold">&lt;/db:header&gt;</emphasis>
  
-        &lt;db:body allowNew="false"&gt;
+        <emphasis role="bold">&lt;db:body</emphasis> allowNew="false"&gt;
                 &lt;tr&gt;
-                    &lt;td&gt;&lt;db:textField fieldName="name" size="20" maxlength="30"/&gt;
+                    &lt;td&gt;<emphasis role="bold">&lt;db:textField</emphasis> fieldName="name" size="20" maxlength="30"/&gt;
                     &lt;/td&gt;
                     &lt;td&gt;
-                        &lt;a href="javascript:openWin('/example_v06/&lt;db:blobURL
+                        &lt;a href="javascript:openWin('/example_v06/<emphasis role="bold">&lt;db:blobURL</emphasis>
                             fieldName="portrait_pic"/&gt;')"&gt;
-                            &lt;img src="&lt;db:blobURL fieldName="portrait_pic"/&gt;" border="0" 
+                            &lt;img src="<emphasis role="bold">&lt;db:blobURL</emphasis> fieldName="portrait_pic"/&gt;" border="0" 
                             width="60" height="60" alt="pet portrait (click to see full size)"&gt;
                         &lt;/a&gt;
                         &lt;br&gt;
                     &lt;/td&gt;
                     &lt;td&gt;
-                        For a funny story about &lt;db:label fieldName="name"/&gt; click
-                        &lt;a href="javascript:openWin('/example_v06/&lt;db:blobURL fieldName="story"/&gt;')"&gt;
+                        For a funny story about <emphasis role="bold">&lt;db:label</emphasis> fieldName="name"/&gt; click
+                        &lt;a href="javascript:openWin('/example_v06/<emphasis role="bold">&lt;db:blobURL</emphasis> fieldName="story"/&gt;')"&gt;
                         [here]
                     &lt;/td&gt;
                     &lt;td&gt;
-                        &lt;db:updateButton caption="Update"/&gt;
-                        &lt;db:deleteButton caption="Delete"/&gt;
+                        <emphasis role="bold">&lt;db:updateButton</emphasis> caption="Update"/&gt;
+                        <emphasis role="bold">&lt;db:deleteButton</emphasis> caption="Delete"/&gt;
                     &lt;/td&gt;
                 &lt;/tr&gt;
-        &lt;/db:body&gt;
+        <emphasis role="bold">&lt;/db:body&gt;</emphasis>
  
-        &lt;db:footer&gt;
+        <emphasis role="bold">&lt;db:footer&gt;</emphasis>
             &lt;/table&gt;
 			
             &lt;center&gt;&lt;h3&gt;upload new pet portrait:&lt;/h3&gt;&lt;/center&gt;
@@ -310,13 +310,13 @@ b) must be writeable by the web-server </entry>
                 &lt;tr&gt;
                     &lt;td&gt;Pet's Name:&lt;/td&gt;
                     &lt;td&gt;
-                        &lt;db:textField size="20" maxlength="30" fieldName="name"/&gt;
+                        <emphasis role="bold">&lt;db:textField</emphasis> size="20" maxlength="30" fieldName="name"/&gt;
                     &lt;/td&gt;
                 &lt;/tr&gt;
                 &lt;tr&gt;
                     &lt;td&gt;Picture:&lt;/td&gt;
                     &lt;td&gt;
-                        &lt;db:file fieldName="portrait_pic" accept="image/*" /&gt;
+                        <emphasis role="bold">&lt;db:file</emphasis> fieldName="portrait_pic" accept="image/*" /&gt;
                     &lt;/td&gt;
                 &lt;tr&gt;
                 &lt;tr&gt;
@@ -324,25 +324,25 @@ b) must be writeable by the web-server </entry>
                         Funny story&lt;br&gt;(any format: html, pdf, txt, word,...)
                     &lt;/td&gt;
                     &lt;td&gt;
-                        &lt;db:file fieldName="story" /&gt;
+                        <emphasis role="bold">&lt;db:file</emphasis> fieldName="story" /&gt;
                     &lt;/td&gt;
                 &lt;tr&gt;
             &lt;/table&gt;
                                         
             &lt;br&gt;
             &lt;center&gt;
-                &lt;db:insertButton caption="Right, load the portrait to server..!!"/&gt;
+                <emphasis role="bold">&lt;db:insertButton</emphasis> caption="Right, load the portrait to server..!!"/&gt;
             &lt;/center&gt;	
 			
             &lt;hr&gt;
 			
-        &lt;/db:footer&gt;
-    &lt;/db:dbform&gt;
+        <emphasis role="bold">&lt;/db:footer&gt;</emphasis>
+    <emphasis role="bold">&lt;/db:dbform&gt;</emphasis>
 			
   &lt;/body&gt;
  &lt;/html&gt;
                         </programlisting>
-			<para>You have now seen &lt;blobURL&gt; and &lt;file&gt; in action!  As you can see, it is pretty easy to handle files with DbForms. Most of the code is about laying out the html-view and playing around with JavaScripts to create pop-up windows for showing the pet-stories and portraits in an attractive way.
+			<para>You have now seen <computeroutput>&lt;blobURL&gt;</computeroutput> and <computeroutput>&lt;file&gt;</computeroutput> in action!  As you can see, it is pretty easy to handle files with DbForms. Most of the code is about laying out the html-view and playing around with JavaScripts to create pop-up windows for showing the pet-stories and portraits in an attractive way.
 </para>
 			<para>The final result of our efforts looks like this:
 </para>

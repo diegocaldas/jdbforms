@@ -41,7 +41,7 @@ Foreign key information is available within running web application to be used b
 			<sect2>
 				<title>Here is an excerpt from the <emphasis role="bold">DTD</emphasis>:
 </title> 
-<screen><computeroutput>
+<screen> 
     &lt;!ELEMENT foreign-key (reference+)&gt;
 
     &lt;!ATTLIST foreign-key
@@ -60,15 +60,15 @@ Foreign key information is available within running web application to be used b
         foreign         CDATA #REQUIRED
     &gt;
 
-</computeroutput></screen>
+ </screen>
  
 			</sect2>
 			<sect2>
 				<title> Let's say you have created a <emphasis role="bold">database containing tables</emphasis>:
  
 </title> 
-<screen><computeroutput> 
-        create table customer
+<screen> 
+        create table <emphasis role="bold">customer</emphasis>
             (cno integer not null primary key,
             first_name char(20) not null,
             last_name  char(20) not null
@@ -76,7 +76,7 @@ Foreign key information is available within running web application to be used b
             ...
             )
 
-        create table order
+        create table <emphasis role="bold">order</emphasis>
             (orderno integer not null primary key,
             cust_no integer not null,
             order_date date not null,
@@ -85,10 +85,10 @@ Foreign key information is available within running web application to be used b
                 foreign key (cust_no)
                 references customer(cno)
             )
- </computeroutput></screen></sect2>   			
+  </screen></sect2>   			
 			<sect2>
 				<title>Then within <emphasis role="bold">dbforms-config.xml</emphasis> you could write:</title>
-<screen><computeroutput>
+<screen> 
     &lt;table name="customer"&gt;
         &lt;field name="cno" fieldType="integer" isKey="true"/&gt;
         &lt;field name="first_name" fieldType="char" size="20"/&gt;
@@ -103,7 +103,7 @@ Foreign key information is available within running web application to be used b
         &lt;field name="order_date" fieldType="date"/&gt;
         ...
 
-        &lt;foreign-key foreignTable="customer"
+        <emphasis role="bold">&lt;foreign-key</emphasis> foreignTable="customer"
 
                   name="customer_in_order"
 
@@ -113,11 +113,11 @@ Foreign key information is available within running web application to be used b
 
                   format="%s %s (Phone %s)" &gt;
                   
-            &lt;reference local="cust_no" foreign="cno"/&gt;
-        &lt;/foreign-key&gt;
+            <emphasis role="bold">&lt;reference</emphasis> local="cust_no" foreign="cno"/&gt;
+        <emphasis role="bold">&lt;/foreign-key&gt;</emphasis>
     &lt;/table&gt;
  
-</computeroutput></screen>
+ </screen>
 <itemizedlist mark="opencircle">
 <listitem>
 <para>the foreign-key has to be nested within the referencing table
@@ -177,12 +177,12 @@ Foreign key information is available within running web application to be used b
     <blockquote>
         <para>If a key consists of more than one column, there will be more than one nested tag, e.g. if the customer is just unique within an area, we'd have:
         <screen>
-        <computeroutput>
-    &lt;foreign-key foreignTable="customer" ...&gt;
-        &lt;reference local="area_id" foreign="area_id"/&gt;
-        &lt;reference local="cust_no" foreign="cno"/&gt;
+         
+    <emphasis role="bold">&lt;foreign-key</emphasis> foreignTable="customer" ...&gt;
+        <emphasis role="bold">&lt;reference</emphasis> local="area_id" foreign="area_id"/&gt;
+        <emphasis role="bold">&lt;reference</emphasis> local="cust_no" foreign="cno"/&gt;
     &lt;/foreign-key&gt;        
-        </computeroutput>
+         
         </screen>
         </para>
   </blockquote>
@@ -205,17 +205,17 @@ Foreign key information is available within running web application to be used b
 </para>
 <blockquote>
 <screen>
-<computeroutput>
-    &lt;db:select fieldName="cust_no"&gt;
-        &lt;db:tableData
+ 
+    <emphasis role="bold">&lt;db:select</emphasis> fieldName="cust_no"&gt;
+        <emphasis role="bold">&lt;db:tableData</emphasis>
             name="customer_in_order"
             foreignTable="customer"
             visibleFields="first_name,last_name,phone"
             format="%s %s (Phone %s)"
             storeField="cno" 
-        /&gt;
-    &lt;/db:select&gt;
-</computeroutput>
+        <emphasis role="bold">/&gt;</emphasis>
+    <emphasis role="bold">&lt;/db:select&gt;</emphasis>
+ 
 </screen>
 </blockquote>			 
 			
@@ -261,11 +261,11 @@ Foreign key information is available within running web application to be used b
         &lt;field name="cust_no" fieldType="integer"/&gt;
         &lt;field name="order_date" fieldType="date"/&gt;
         ...
-            &lt;foreign-key foreignTable="customer"
+            <emphasis role="bold">&lt;foreign-key</emphasis> foreignTable="customer"
                 name="customer_in_order"
                 displayType="select"  &gt;
-            &lt;reference local="cust_no" foreign="cno"/&gt;
-            &lt;/foreign-key&gt;
+            <emphasis role="bold">&lt;reference</emphasis> local="cust_no" foreign="cno"/&gt;
+            <emphasis role="bold">&lt;/foreign-key&gt;</emphasis>
 &lt;/table&gt;
 
  

@@ -24,34 +24,34 @@
 				<title>Methods defined in interface DbEventInterceptor
 </title>
 				<programlisting>
-    public int preInsert(HttpServletRequest request, Hashtable fieldValues,
-       DbFormsConfig config, <emphasis role="bold">Connection</emphasis> con)
+    public int <emphasis role="bold">preInsert</emphasis>(HttpServletRequest request, Hashtable fieldValues,
+       DbFormsConfig config, Connection con)
                 throws ValidationException;
  
 
-    public void postInsert(HttpServletRequest request, DbFormsConfig config, Connection con);
+    public void <emphasis role="bold">postInsert</emphasis>(HttpServletRequest request, DbFormsConfig config, Connection con);
  
 
     public int <emphasis role="bold">preUpdate</emphasis>(HttpServletRequest request, 
-       <emphasis role="bold">Hashtable</emphasis> fieldValues, <emphasis role="bold">DbFormsConfig</emphasis> config, <emphasis role="bold">Connection</emphasis> con)
+        Hashtable fieldValues, DbFormsConfig config, Connection con)
 		throws ValidationException;;
  
 
-    public void postUpdate(HttpServletRequest request, DbFormsConfig config, Connection con);
+    public void <emphasis role="bold">postUpdate</emphasis>(HttpServletRequest request, DbFormsConfig config, Connection con);
  
 
-    public int preDelete(HttpServletRequest request, 
-       Hashtable fieldValues,DbFormsConfig config, <emphasis role="bold">Connection</emphasis> con)
+    public int <emphasis role="bold">preDelete</emphasis>(HttpServletRequest request, 
+       Hashtable fieldValues,DbFormsConfig config, Connection  con)
                 throws ValidationException;;
  
 
-    public void postDelete(HttpServletRequest request, DbFormsConfig config, Connection con);
+    public void <emphasis role="bold">postDelete</emphasis>(HttpServletRequest request, DbFormsConfig config, Connection con);
 
      
-    public int preSelect(HttpServletRequest request, DbFormsConfig config, Connection con)
+    public int <emphasis role="bold">preSelect</emphasis>(HttpServletRequest request, DbFormsConfig config, Connection con)
 		throws ValidationException;;
  
-    public void postSelect(HttpServletRequest request, DbFormsConfig config, Connection con);
+    public void <emphasis role="bold">postSelect</emphasis>(HttpServletRequest request, DbFormsConfig config, Connection con);
  
 		</programlisting>
 			</example>
@@ -60,7 +60,7 @@
                         <itemizedlist mark="opencircle">
 <listitem>
 <para>
-The preXxx() methods get called <emphasis role="bold">before</emphasis> the respective database operation is performed, and <emphasis role="bold">return a value</emphasis> indicating if the operation should be performed or not
+The <emphasis role="bold">preXxx() methods</emphasis> get called BEFORE the respective database operation is performed, and <emphasis role="bold">return a value</emphasis> indicating if the operation should be performed or not
 <blockquote>
  <para>DbEventInterceptor.GRANT_OPERATION</para>
  <para>DbEventInterceptor.DENY_OPERATION</para>
@@ -69,7 +69,7 @@ The preXxx() methods get called <emphasis role="bold">before</emphasis> the resp
 </listitem>
 <listitem>
 <para>
-The postXxx() methods get called <emphasis role="bold">after</emphasis> the operation has finished, and <emphasis role="bold">do not return a value</emphasis>, as the operation has already completed.
+The <emphasis role="bold">postXxx()</emphasis> methods get called AFTER the operation has finished, and <emphasis role="bold">do not return a value</emphasis>, as the operation has already completed.
 </para>
 </listitem>
  
@@ -165,7 +165,7 @@ will ensure that the value smith be stored in the lastname field in the data
 			<example>
 				<title>interceptor in dbforms-config.xml</title>
 				<programlisting>
-    &lt;table name="customer"&gt;
+    <emphasis role="bold">&lt;table</emphasis> name="customer"&gt;
         &lt;field name="id" fieldType="int" isKey="true"/&gt; 
 	&lt;field name="firstname" fieldType="char" /&gt; 
 	&lt;field name="lastname" fieldType="char" /&gt; 
@@ -173,9 +173,9 @@ will ensure that the value smith be stored in the lastname field in the data
 	&lt;field name="pcode" fieldType="char" /&gt; 
 	&lt;field name="city" fieldType="char" /&gt; 
             
-            &lt;interceptor className = "com.foo.bar.CustomerValidatonChecker"/&gt; 
+            <emphasis role="bold">&lt;interceptor</emphasis> className = "com.foo.bar.CustomerValidatonChecker"/&gt; 
 		
-            &lt;interceptor className = "com.foo.bar.TransactionLogger"/&gt;
+            <emphasis role="bold">&lt;interceptor</emphasis> className = "com.foo.bar.TransactionLogger"/&gt;
              
     &lt;/table&gt; 
 		</programlisting>
@@ -200,9 +200,9 @@ will ensure that the value smith be stored in the lastname field in the data
 <example><title>Validation checking in interceptor</title>
 <screen>
 
-    public class CheckCustomerData extends DbEventInterceptorSupport {
+    public class CheckCustomerData <emphasis role="bold">extends DbEventInterceptorSupport</emphasis> {
 
-        private int checkCustomer(Hashtable fieldValues) // method invented by developer    
+        private int <emphasis role="bold">checkCustomer</emphasis>(Hashtable fieldValues) // method invented by developer    
             throws ValidationException {
 
                 String lastName = (String) fieldValues.get("lastname");
@@ -223,20 +223,20 @@ will ensure that the value smith be stored in the lastname field in the data
             }
 
 
-        public int preInsert(HttpServletRequest request, Hashtable fieldValues, 
+        public int <emphasis role="bold">preInsert</emphasis>(HttpServletRequest request, Hashtable fieldValues, 
           DbFormsConfig config, Connection con)
             throws ValidationException {
 
-                return checkCustomer(fieldValues);
+                <emphasis role="bold">return checkCustomer(fieldValues);</emphasis>
                 
             }
 
 
-        public int preUpdate(HttpServletRequest request, Hashtable fieldValues, 
+        public int <emphasis role="bold">preUpdate</emphasis>(HttpServletRequest request, Hashtable fieldValues, 
           DbFormsConfig config, Connection con)
             throws ValidationException {
 
-                return checkCustomer(fieldValues);
+                r<emphasis role="bold">eturn checkCustomer(fieldValues);</emphasis>
             }
 
 
@@ -253,21 +253,21 @@ will ensure that the value smith be stored in the lastname field in the data
 </para>
 			<example><title>accumlating error messages</title> 
 			<screen>
-    public int preUpdate(HttpServletRequest req, Hashtable fieldValues, DbformsConfig conf, 
+    public int <emphasis role="bold">preUpdate</emphasis>(HttpServletRequest req, Hashtable fieldValues, DbformsConfig conf, 
       Connection con)
         throws ValidationException{
 			
-            Vector errors = new Vector();
+            Vector <emphasis role="bold">errors</emphasis> = new Vector();
             
              // Validate, if error		
-            errors.add(new SQLException("English-001:param");
+            <emphasis role="bold">errors.add</emphasis>(new SQLException("English-001:param");
             
             
              // More validations, errors		
-            errors.add(new SQLException("Franais-003:param,param");
+            <emphasis role="bold">errors.add</emphasis>(new SQLException("Franais-003:param,param");
 			
 			
-            if(!errors.isEmpty) throw new MultipleValidationException(errors);
+            if(!errors.isEmpty) <emphasis role="bold">throw new MultipleValidationException(errors)</emphasis>;
 			
 			
         }                    

@@ -18,18 +18,18 @@
 <para>Specify the dbConnectionName to be the id of the dbconnection you wish to use in  relevant tags including: <emphasis role="bold">dbform, tableData, queryData, getConnection, blobContent</emphasis>
 			</para>
                  <screen>
-&lt;db:select fieldName="tc"&gt;
+<emphasis role="bold">&lt;db:select</emphasis> fieldName="tc"&gt;
      
-    &lt;db:queryData name ="combinations" query="SELECT DISTINCT tc, tier, course FROM coursesORDER BY tc"
-    disableCache="true" dbConnectionName="simple"/&gt;
+    <emphasis role="bold">&lt;db:queryData</emphasis> name ="combinations" query="SELECT DISTINCT tc, tier, course FROM coursesORDER BY tc"
+    disableCache="true" <emphasis role="bold">dbConnectionName</emphasis>="simple"/&gt;
            
-&lt;/db:select&gt; 
+<emphasis role="bold">&lt;/db:select&gt;</emphasis> 
 </screen>
   <para>would be used with a connection such as the following:
 </para>
 <screen>
-&lt;dbconnection 
-    id = "simple" &lt;&lt;&lt; this will be used for the connectionName (your arbitrary choice)
+<emphasis role="bold">&lt;dbconnection</emphasis> 
+    <emphasis role="bold">id = "simple"</emphasis> &lt;&lt;&lt; this will be used for the connectionName (your arbitrary choice)
     isJndi = "false"
     isPow2 = "true" 
     connectionProviderClass = "org.dbforms.conprovider.SimpleConnectionProvider" 
@@ -38,7 +38,7 @@
     name ="jdbc:postgresql://localhost/myDatabase?charSet=ISO-8859-1"
     username = "postgres" 
     password = ""
-/&gt;
+<emphasis role="bold">/&gt;</emphasis>
 </screen>                     
 </listitem>
  

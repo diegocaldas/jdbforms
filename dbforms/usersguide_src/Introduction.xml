@@ -37,32 +37,32 @@
                 &lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;
                 &lt;!DOCTYPE dbforms-config PUBLIC "http://www.dbforms.org/dtd/dbf_conf.dtd"&gt; 
 		
-                &lt;dbforms-config&gt; 
+                 &lt;<emphasis role="bold">dbforms-config</emphasis>&gt; 
                     
-                    &lt;table name="customer"&gt;  <co id="table"/>
-                        &lt;field name="id" fieldType="int" isKey="true" /&gt;<co id="field"/> 
+                    &lt;<emphasis role="bold">table</emphasis> name="customer"&gt;  <co id="table"/>
+                        &lt;<emphasis role="bold">field</emphasis> name="id" fieldType="int" isKey="true" /&gt;<co id="field"/> 
                         &lt;field name="firstname" fieldType="char" /&gt; 
                         &lt;field name="lastname" fieldType="char" /&gt; 
                         &lt;field name="address" fieldType="char" /&gt; 
-                    &lt;/table&gt; 
+                   <emphasis role="bold">&lt;/table&gt;</emphasis> 
 		    
-                    &lt;table name="orders"&gt; <co id="table2"/>
-                        &lt;field name="orderid" fieldType="int" isKey="true" /&gt;<co id="field2"/> 
+                    &lt;<emphasis role="bold">table</emphasis> name="orders"&gt; <co id="table2"/>
+                        &lt;<emphasis role="bold">field</emphasis> name="orderid" fieldType="int" isKey="true" /&gt;<co id="field2"/> 
                         &lt;field name="customerid" fieldType="int" isKey="true" autoInc="true" /&gt; 
                         &lt;field name="date" fieldType="char" /&gt; 
                         &lt;field name="annotation" fieldType="char" /&gt; 
                         &lt;field name="amount" fieldType="int" /&gt; 
-                    &lt;/table&gt;
+                    <emphasis role="bold">&lt;/table&gt;</emphasis>
                      
-                    &lt;dbconnection
+                    <emphasis role="bold">&lt;dbconnection</emphasis>
  
                         name = "jdbc/dbformstest"
  
                         isJndi = "true"
  
-                    /&gt;
+                    <emphasis role="bold">/&gt;</emphasis>
                  
-		&lt;/dbforms-config&gt;
+		<emphasis role="bold">&lt;/dbforms-config&gt;</emphasis>
                 </screen>
                 <calloutlist>
 <callout arearefs="table table2">
@@ -88,7 +88,7 @@ All relevant table fields need to be declared inside a <computeroutput>&lt;field
                                         </sect4>
 				<sect4 id="dbConn">
 					<title >Defining physical access to the model</title>
-					<para>DbForms needs to be able to create connections to the database which contains the tables and fields declared in the dbforms-config.xml file.</para>
+					<para>DbForms needs to be able to create connections to the database which contains the tables and fields declared in the dbforms-config.xml file, and following are three examples</para>
 					<para>Versions up to 1.1.2 restrict you to use only <emphasis role="italic">one</emphasis> database per Web-Application. 1.1.2pr1 and after support multiple databases in a single application. <link linkend='multdbcon'>See Multiple Database Connections</link> for more info on that.</para>
                                        <sect5><title>Accessing the Application Servers connection pool via JNDI 
                                         </title>
@@ -97,24 +97,24 @@ All relevant table fields need to be declared inside a <computeroutput>&lt;field
 						<title>Defining the database connection (1)</title>
 						<programlisting>
                                                 
-                        &lt;dbconnection
+                        &lt;<emphasis role="bold">dbconnection</emphasis>
                         
                             name   = "jdbc/dbformstest"
  
                             isJndi = "true"
  
-                        /&gt;   
+                        <emphasis role="bold">/&gt;</emphasis>   
                 </programlisting>
 					</example>
 					<para>In the example above DbForms assumes that the JNDI-entry "jdbc/dbformstest" is configured correctly in the Application-Server's database configuration [i.e. data-sources.xml]) and takes all the connections it needs from that JNDI-entry.</para>
 				</sect5>
-				<sect5>
+				<sect5 id="dbConn2">
 					<title>Using arbitrary connection pool</title>
 					<para>If you are not using an Application Server but a JSP-Engine like Apache Tomcat or Caucho Resin in conjunction with a Connection-Pool-Manager like poolman [Poolman], you have to tell DbForms which class it has to load in order to access the connection-pool manager. As an analogy to the JNDI  key, you have to tell DbForms how the Connection-Pool should be called.</para>
 					<example>
 						<title>Defining the database connection (2)</title>
 						<programlisting>
-                        &lt;dbconnection
+                        &lt;<emphasis role="bold">dbconnection</emphasis>
                         
                             name   = "jdbc:poolman://dbformstest"
  
@@ -122,11 +122,11 @@ All relevant table fields need to be declared inside a <computeroutput>&lt;field
  
                             class  = "com.codestudio.sql.PoolMan"
  
-                        /&gt;</programlisting>
+                        <emphasis role="bold">/&gt;</emphasis></programlisting>
 					</example>
 					<para>In the example above DbForms assumes that the connection pool-entry called "jdbc:poolman://dbformstest" is correctly configured in the associated connection pool managers properties file and takes all the connections it needs from that connection pool.</para>
-                                        <para>The actual configuration of data-sources (how many pooled instances to create, duration of invalidation timeouts, etc.) <emphasis role="bold">is not in the scope of this user's guide</emphasis>. Please refer to your Application Server/JSP-engine documentation for more details.</para>
-				<para><emphasis role="bold">DbForms now makes is easier to use connection pooling with the Protomatter and Jakarta connection pools. See the section on Connection Support for <link linkend="connSupp">more information on using them or other pools</link>.</emphasis></para>
+                                        <para>The actual configuration of data-sources (how many pooled instances to create, duration of invalidation timeouts, etc.) is not in the scope of this user's guide. Please refer to your Application Server/JSP-engine documentation for more details.</para>
+				<para><emphasis role="bold">DbForms now makes is easier to use connection pooling with the Protomatter and Jakarta connection pools. See the section on Connection Support for <link linkend="connSupp">more information (click></link> on using those or other pools.</emphasis></para>
                                         </sect5>
                                
 				<sect5>
@@ -135,7 +135,7 @@ All relevant table fields need to be declared inside a <computeroutput>&lt;field
 					<example>
 						<title>Defining the database connection (3)</title>
 						<programlisting>
-                        &lt;dbconnection
+                        &lt;<emphasis role="bold">dbconnection</emphasis>
 
                             name   = "jdbc:mysql://localhost/fashion"
  
@@ -147,17 +147,17 @@ All relevant table fields need to be declared inside a <computeroutput>&lt;field
  
                             password = "tiger"
  
-                        /&gt;</programlisting>
+                        <emphasis role="bold">/&gt;</emphasis></programlisting>
                         <blockquote>
                         <para>Note:  Many drivers pass in JDBC properties using the URL such as:</para>
                         <screen>
-                        &lt;dbconnection
+                        &lt;<emphasis role="bold">dbconnection</emphasis>
 
-                            name   = "jdbc:mysql://localhost/fashion?charSet=ISO-8859-1"
+                            name   = "jdbc:mysql://localhost/fashion<emphasis role="bold">?charSet=ISO-8859-1</emphasis>"
                             
                             ....
                             </screen>
-                            <para>If your driver does not allow this and you need to pass in a property, please see <link linkend="jdbcProps">another way to set JDBC properties</link></para></blockquote>
+                            <para>If your driver does not allow this and you need to pass in a property, please see <link linkend="jdbcProps">another way to set JDBC properties (click)</link></para></blockquote>
 					</example>
 				</sect5>
                                 </sect4>

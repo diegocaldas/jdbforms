@@ -128,7 +128,7 @@ bash,ksh:  export DBFORMS_HOME=/home/user123/dbforms
 <listitem>
 <para>libraries for Xalan-Java XSLT processor and a XML parser like Xerxes.
 </para>
-<para>If your JDK is 1.4.x or later, you may skip this step</para>
+<para><emphasis role="bold">If your JDK is 1.4.x or later, you may skip this step</emphasis></para>
 <blockquote><para>Please download a binary<ulink url="http://xml.apache.org/xalan-j/"><citetitle> xalan distribution</citetitle></ulink> and include xalan.jar and xercesImpl.jar (both included) in your CLASSPATH.
 </para>
 <para>example(win):</para>
