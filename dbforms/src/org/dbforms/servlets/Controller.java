@@ -39,6 +39,7 @@ import org.dbforms.util.SqlUtil;
 import org.dbforms.util.MultipartRequest;
 import org.dbforms.util.MessageResources;
 import org.dbforms.util.ParseUtil;
+import org.dbforms.util.Util;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.Table;
 import org.dbforms.event.EventEngine;
@@ -469,7 +470,7 @@ public class Controller extends HttpServlet
       {
          connectionName = ParseUtil.getParameter(request, "invname_" + tableId);
       }
-
+      connectionName = Util.isNull(connectionName)?"default":connectionName; 
       if ((con = (Connection) connectionsTable.get(connectionName)) == null)
       {
          con = SqlUtil.getConnection(config, connectionName);
