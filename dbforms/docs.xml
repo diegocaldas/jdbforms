@@ -191,10 +191,10 @@ Modified by SAB.
 
         <java classname="org.apache.fop.apps.Fop" 
            fork="true" jvm="${java.home}/bin/java" >
-           <arg line=" ${etc.dir}/DbFormsTags.xsl-fo ${doc.dir}/DbFormsTags.pdf"/>
+           <arg line=" ${etc.dir}/DbFormsTags.xsl-fo ${doc.dir}/taglib/DbFormsTags.pdf"/>
            <classpath refid="fopclasspath"/>
         </java>
-        <echo message="end of PDF generation, output file is ${doc.dir}/DbFormsTags.pdf"/>
+        <echo message="end of PDF generation, output file is ${doc.dir}/taglib/DbFormsTags.pdf"/>
      </target>
     
     
