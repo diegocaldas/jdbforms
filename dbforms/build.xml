@@ -110,6 +110,12 @@ Happy coding!
                     description="--> Generate  HTML reference documentation within doc/html from taglib-docu.xml" >
         <echo message="begin xsl translation to generate HTML documentation  "/>
         <style style="${etc.dir}/tldoc2html.xsl" in="${etc.dir}/taglib_docu.xml" out="${htmldoc.dir}/DbFormsTags.html"/>
+        <style style="${etc.dir}/tldoc2html_toc.xsl" in="${etc.dir}/taglib_docu.xml" 
+               out="${htmldoc.dir}/DbFormsTags_TocSem.html"/>
+        <style style="${etc.dir}/tldoc2html_toc.xsl" in="${etc.dir}/taglib_docu.xml" 
+               out="${htmldoc.dir}/DbFormsTags_TocAlph.html">
+            <param name="sortTagsAlphabetically" expression="true"/>
+        </style>
         <echo message="end of xsl translation "/>
     </target>
 
