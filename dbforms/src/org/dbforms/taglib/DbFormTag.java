@@ -1172,18 +1172,15 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
          // *************************************************************
          //  Part I - checking user access right, processing interceptor
          // *************************************************************
-         HttpServletRequest  request  = (HttpServletRequest) pageContext
-            .getRequest();
-         HttpServletResponse response = (HttpServletResponse) pageContext
-            .getResponse();
+         HttpServletRequest  request  = (HttpServletRequest)  pageContext.getRequest();
+         HttpServletResponse response = (HttpServletResponse) pageContext.getResponse();
 
          logCat.info("servlet path = " + request.getServletPath());
          logCat.info("servlet getPathInfo = " + request.getPathInfo());
-// 20030604-HKK: Removed because of bug in current cactus enviroment! 
-//               getPathTranslated() will get an null exception! 
-
-//         logCat.info("servlet getPathTranslated = "
-//            + request.getPathTranslated());
+         
+         // 20030604-HKK: Removed because of bug in current cactus enviroment! 
+  		 //               getPathTranslated() will get an null exception! 
+         //  logCat.info("servlet getPathTranslated = " + request.getPathTranslated());
          logCat.info("servlet getContextPath = " + request.getContextPath());
          logCat.debug("pos1");
 
@@ -1194,12 +1191,13 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
 
          // check user privilege
          if ((table != null)
-                  && !table.hasUserPrivileg(request,
-                     GrantedPrivileges.PRIVILEG_SELECT))
+                  && !table.hasUserPrivileg(request, GrantedPrivileges.PRIVILEG_SELECT))
          {
             logCat.debug("pos3");
-            out.println("Sorry, viewing data from table " + table.getName()
-               + " is not granted for this session.");
+            String str = ("Sorry, viewing data from table " + table.getName()
+                          + " is not granted for this session.");
+            logCat.warn(str);
+            out.println(str + "<br><br>");
 
             return SKIP_BODY;
          }
@@ -1212,14 +1210,16 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
             try
             {
                logCat.debug("pos5");
-               table.processInterceptors(DbEventInterceptor.PRE_SELECT,
-                  request, null, config, con);
+               table.processInterceptors(DbEventInterceptor.PRE_SELECT, request, null, config, con);
             }
             catch (Exception sqle)
-            {
+            {  
                logCat.debug("pos6");
-               out.println("Sorry, viewing data from table " + table.getName()
-                  + " would violate a condition.<BR><BR>" + sqle.getMessage());
+               String str = ("Sorry, viewing data from table " + table.getName()
+                             + " would violate a condition: " 
+                             + sqle.getMessage());
+			   logCat.error(str, sqle);
+			   out.println(str + "<br><br>");
 
                return SKIP_BODY;
             }
@@ -1400,10 +1400,13 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
          // Allow to send action dynamicaly from javascript
          tagBuf.append("<input type=\"hidden\" name=\"customEvent\">");
 
+
          // *************************************************************
          //  Part III - fetching Data. This data is provided to all sub-
          //  elements of this form.
          // *************************************************************
+         
+         // overrules other default declarations eventually done in XML config;
          this.initOverrulingOrder(request);
 
          // III/1: first we must determinate the ORDER clause to apply to the query
@@ -1420,7 +1423,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
             orderConstraint    = overrulingOrder;
             orderFields        = overrulingOrderFields;
             useDefaultOrder    = false;
-            logCat.info("using OverrulingOrder");
+            logCat.info("using OverrulingOrder (dbform tag attribute)");
          }
 
          // if developer provided orderBy - Attribute globally in dbforms-config.xml - tag
@@ -1437,7 +1440,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
             }
 
             orderFields = table.getDefaultOrderFields();
-            logCat.info("using DefaultOrder");
+            logCat.info("using DefaultOrder (from config file)");
          }
 
          // an orderBY - clause is a MUST. we can't query well without it.
@@ -1451,10 +1454,8 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
          // is there a POSITION we are supposed to navigate to?
          // positions are key values: for example "2", oder "2~454"
          //String position = pageContext.getRequest().getParameter("pos_"+tableId);
-         String firstPosition = Util.decode(ParseUtil.getParameter(request,
-               "firstpos_" + tableId));
-         String lastPosition = Util.decode(ParseUtil.getParameter(request,
-               "lastpos_" + tableId));
+         String firstPosition = Util.decode(ParseUtil.getParameter(request, "firstpos_" + tableId));
+         String lastPosition = Util.decode(ParseUtil.getParameter(request, "lastpos_" + tableId));
 
          if (firstPosition == null)
          {
@@ -1497,12 +1498,10 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
          }
          else
          {
-            mergedFieldValues = new FieldValue[childFieldValues.length
-               + filterFieldValues.length];
-            System.arraycopy(childFieldValues, 0, mergedFieldValues, 0,
-               childFieldValues.length);
-            System.arraycopy(filterFieldValues, 0, mergedFieldValues,
-               childFieldValues.length, filterFieldValues.length);
+            mergedFieldValues = new FieldValue[childFieldValues.length + filterFieldValues.length];
+            System.arraycopy(childFieldValues, 0, mergedFieldValues, 0, childFieldValues.length);
+            System.arraycopy(filterFieldValues, 0, mergedFieldValues, 
+                             childFieldValues.length, filterFieldValues.length);
          }
 
          // if we just habe a search request we do not need any other constraints
@@ -1511,7 +1510,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
          if (searchFieldValues != null)
          {
             mergedFieldValues = searchFieldValues;
-         }
+         } 
 
          /*
              in the code above we examined lots of information which determinates  _which_ resultset
@@ -1566,6 +1565,8 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
              need to be performed differently if count==0, which means the form is an
              "endless form".
          */
+         
+         
          // III/3: fetching data (compare description above)
          // this code is still expermintal, pre alpha! We need to put this logic into
          // etter (more readable, maintainable) code  (evt. own method or class)!
@@ -1573,23 +1574,20 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
          // if so...
          webEvent = (WebEvent) request.getAttribute("webEvent");
 
+		// set actual request to webEvent. Otherwise webEvent will not reflect current requestURI!
          if (webEvent != null)
          {
-            // set actual request to webEvent. Otherwise webEvent will not reflect current requestURI!
             webEvent.setRequest(request);
          }
 
-         // if there comes no web event from controller, then we check if there is
-         // a local event defined on the jsp
-         // #fixme!
-         // Interimistic solution
-         // must be more flexible in final version
-         // # added an event factory (fossato 2002.11.xx)
-         // 20030320-HKK: Rewrite to use navEvent only
+		 // if there comes no web event from controller, 
+		 // then create a new NAVIGATION event;
+	     //
+         // # 2002.11.xx-fossato added an event factory 
+         // # 20030320-HKK:      Rewrite to use navEvent only
          if ((webEvent == null) && (localWebEvent != null))
          {
-            webEvent = navEventFactory.createEvent(localWebEvent, request,
-                  config, table);
+            webEvent = navEventFactory.createEvent(localWebEvent, request, config, table);
 
             // Setted with localWebEvent attribute.
             if (webEvent != null)
@@ -1598,11 +1596,15 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
             }
          }
 
+         // will be used to cast the webEvent to a navigation event;
          NavigationEvent navEvent = null;
 
+
+         //
+		 // 1. possibility: webEvent is a navigation event ?
+         //
          if ((webEvent != null) && webEvent instanceof NavigationEvent)
          {
-            // 1. posibility: webEvent is a navigation event
             navEvent = (NavigationEvent) webEvent;
 
             if (navEvent.getTableId() != tableId)
@@ -1615,16 +1617,17 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
             }
          }
 
+         //
+         // 2. possibility: webEvent is a goto event ?
+         //
          if (navEvent == null)
          {
-            // is there a possibiliy of a GOTO EVENT?
             // we need to parse request using the given goto prefix
             if (!Util.isNull(gotoPrefix))
             {
                logCat.info("§§§ NAV GOTO §§§");
 
-               Vector v = ParseUtil.getParametersStartingWith(request,
-                     gotoPrefix);
+               Vector v = ParseUtil.getParametersStartingWith(request, gotoPrefix);
                gotoHt = new Hashtable();
 
                for (int i = 0; i < v.size(); i++)
@@ -1643,22 +1646,28 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
                }
             }
 
+            // try to create a new GOTO event
             if ((gotoHt != null) && (gotoHt.size() > 0))
             {
                String positionString = table.getPositionString(gotoHt);
-               navEvent = navEventFactory.createGotoEvent(table, request,
-                     config, positionString);
+               navEvent = navEventFactory.createGotoEvent(table, request, config, positionString);
             }
          }
 
+  		 //
+  		 // 3. a) error in insert event ?
+  		 //    b) create a GOTO event using a whereClause (free form select)
+  		 //    c) create a GOTO event using.. another constructor ;^)
+         //
          if (navEvent == null)
          {
             Vector errors = (Vector) request.getAttribute("errors");
 
-            if ((count != 0) && (webEvent != null)
-                     && EventType.EVENT_DATABASE_INSERT.equals(
-                        webEvent.getType()) && (errors != null)
-                     && (errors.size() > 0))
+            if ((count != 0)        
+                && (webEvent != null)  
+                &&  EventType.EVENT_DATABASE_INSERT.equals(webEvent.getType()) 
+                && (errors != null)
+                && (errors.size() > 0))
             {
                // error in insert event, nothing to do!
                navEvent           = null;
@@ -1668,31 +1677,35 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
             else if (!Util.isNull(getWhereClause()))
             {
                // We should do a free form select
-               navEvent = navEventFactory.createGotoEvent(table, request,
-                     config, whereClause, getTableList());
+               navEvent = navEventFactory
+                            .createGotoEvent(table, request, config, whereClause, getTableList());
             }
             else
             {
-               navEvent = navEventFactory.createGotoEvent(table, request,
-                     config,
-                     (((count == 0) || ("true".equals(getBypassNavigation())))
-                     ? null : firstPosition));
+               String myPosition = (((count == 0) || "true".equals(getBypassNavigation()))
+                                      ? null : firstPosition);
+               navEvent = navEventFactory.createGotoEvent(table, request, config, myPosition);
             }
          }
 
-         // Now we have a navigation event to process
+
+         // Now we have a NAVIGATION event to process
          logCat.info("§§§ NAV/I §§§");
 
          if (navEvent != null)
          {
-            logCat.info("about to process nav event:"
-               + navEvent.getClass().getName());
-            resultSetVector = navEvent.processEvent(mergedFieldValues,
-                  orderConstraint, count, firstPosition, lastPosition, con,
-                  dbConnectionName);
+            logCat.info("about to process nav event:" + navEvent.getClass().getName());
+            resultSetVector = 
+              navEvent.processEvent(mergedFieldValues,
+                                    orderConstraint, 
+                                    count, 
+                                    firstPosition, 
+                                    lastPosition, 
+                                    con,
+                                    dbConnectionName);
 
             
-//            if (navEvent instanceof NavNewEvent)
+            // if (navEvent instanceof NavNewEvent)
 			if (Util.isNull(resultSetVector))
             {
                setFooterReached(true);
