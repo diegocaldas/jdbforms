@@ -216,6 +216,8 @@
            out   = "target/DbFormsTags.xsl-fo"/>
     <echo message="end of xsl translation "/>
 
+    <replace file="target/DbFormsTags.xsl-fo" token="CURRENT_VERSION" value="${dbforms.version}" />
+
     <echo message="starting generation of ${doc.dir}/taglib/DbFormsTags.pdf using Apache FOP (FOP_HOME must be set)"/>
     <path id="fopclasspath">
       <!-- set classpath according to FOP_HOME -->
@@ -357,7 +359,7 @@
   <!-- ================================================ -->
   <target name="create_PDF" depends="clearWorkspace">
     
-    <java classname="${xslt.processor.class}" fork="yes" dir="${in.dir}" failonerror="true">
+    <java classname="${xslt.processor.class}" fork="yes" dir="${in.dir}" failonerror="true" maxmemory="512m">
       <classpath refid="xslt.processor.classpath"/>
       <arg line="-o ${build.dir}/${fo.outfile}"/>
       <arg line="-l"/>
@@ -384,7 +386,7 @@
       </fileset>
     </path>
 
-    <java classname="org.apache.fop.apps.Fop" fork="true" >
+    <java classname="org.apache.fop.apps.Fop" fork="true"  maxmemory="512m">
       <arg line="${build.dir}/${fo.outfile} ${out.dir}/pdf/${out.docfile}"/>
       <classpath refid="fopclasspath"/>
     </java>
