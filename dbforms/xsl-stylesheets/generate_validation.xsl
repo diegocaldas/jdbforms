@@ -26,18 +26,19 @@ conflicts.
 	<xsl:key name="foreignkeys" match="/dbforms-config/table//foreign-key" use="reference/@local"/>
 	<!-- stuffing date-format into a global variable is for use in the table subroutines -->
 	<xsl:variable name="dateFmt" select="/dbforms-config/date-format"/>
+ 	<xsl:strip-space elements="*"/>
  	<xsl:output method="xml" 
               encoding="UTF-8"
               indent="yes" 
               xalan:indent-amount="3"/>
 	<xsl:template match="dbforms-config">
 //--file "WEB-INF/validation.xml" -------------------------------------------
-<form-validation>
-   <formset>
-      <xsl:apply-templates select="table"/>
-   </formset>
-</form-validation>
-</xsl:template>
+		<form-validation>
+   			<formset>
+      				<xsl:apply-templates select="table"/>
+   			</formset>
+		</form-validation>
+	</xsl:template>
 	<!-- table -->
 	<xsl:template match="table">
 		<xsl:if test="not(@generate-jsp='false')">
