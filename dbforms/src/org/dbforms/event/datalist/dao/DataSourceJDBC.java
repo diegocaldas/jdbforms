@@ -65,6 +65,8 @@ public class DataSourceJDBC extends DataSource {
    private FieldValue[] filterConstraint;
    private FieldValue[] orderConstraint;
    private DbFormsConfig config;
+   private boolean endReached;
+   // To overcome a bug in firebird driver: next after lastStatement will restart!
 
    public DataSourceJDBC(Table table) {
       super(table);
@@ -125,29 +127,28 @@ public class DataSourceJDBC extends DataSource {
 
    protected void open() throws SQLException {
       if (rs == null) {
- 		 ownCon = true;
-		 con = SqlUtil.getConnection(config, dbConnectionName);
+         ownCon = true;
+         con = SqlUtil.getConnection(config, dbConnectionName);
          if (Util.isNull(whereClause)) {
             query =
                getTable().getSelectQuery(
-				getTable().getFields(),
-				  filterConstraint,
+                  getTable().getFields(),
+                  filterConstraint,
                   orderConstraint,
                   Constants.COMPARE_NONE);
             stmt = con.prepareStatement(query);
             rs =
-				getTable().getDoSelectResultSet(
-				  filterConstraint,
+               getTable().getDoSelectResultSet(
+                  filterConstraint,
                   orderConstraint,
                   Constants.COMPARE_NONE,
                   (PreparedStatement) stmt);
          } else {
             query =
-				getTable().getFreeFormSelectQuery(
-				getTable().getFields(),
-				  whereClause,
-				  tableList
-                  );
+               getTable().getFreeFormSelectQuery(
+                  getTable().getFields(),
+                  whereClause,
+                  tableList);
             stmt = con.createStatement();
             rs = stmt.executeQuery(query);
          }
@@ -158,8 +159,10 @@ public class DataSourceJDBC extends DataSource {
 
    private Object[] getCurrentRowAsObject() throws SQLException {
       Object[] objectRow = new Object[colCount];
-      for (int i = 0; i < colCount; i++)
-         objectRow[i] = rs.getObject(i + 1);
+      for (int i = 0; i < colCount; i++) {
+         Object obj = rs.getObject(i + 1);
+         objectRow[i] = obj;
+      }
       return objectRow;
    }
 
@@ -215,13 +218,19 @@ public class DataSourceJDBC extends DataSource {
    }
 
    protected int size() throws SQLException {
+      // Workaround for bug in firebird driver: After reaching next the next call to next will start at the beginning of the resultset.
+      // rs.next will return true, fetching data will get an NullPointerException. Catch this error and do an break!   
       while (rs.next()) {
-         data.add(getCurrentRowAsObject());
-         keys.add(getTable().getKeyPositionString(getCurrentRow()));
+         try {
+            data.add(getCurrentRowAsObject());
+            keys.add(getTable().getKeyPositionString(getCurrentRow()));
+         } catch (Exception e) {
+            logCat.error(e.getMessage());
+            break;
+         }
       }
       return data.size();
    }
-
 
    //------------------------------ DAO methods ---------------------------------
    private int fillWithData(PreparedStatement ps, FieldValues fieldValues)
@@ -294,7 +303,7 @@ public class DataSourceJDBC extends DataSource {
       PreparedStatement ps =
          con.prepareStatement(getTable().getUpdateStatement(fieldValues));
       int col = fillWithData(ps, fieldValues);
-		getTable().populateWhereClauseForPS(keyValuesStr, ps, col);
+      getTable().populateWhereClauseForPS(keyValuesStr, ps, col);
       // we are now ready to execute the query
       ps.executeUpdate();
       ps.close();
@@ -313,7 +322,7 @@ public class DataSourceJDBC extends DataSource {
          queryBuf.append(getTable().getWhereClauseForPS());
          PreparedStatement diskblobsPs =
             con.prepareStatement(queryBuf.toString());
-			getTable().populateWhereClauseForPS(keyValuesStr, diskblobsPs, 1);
+         getTable().populateWhereClauseForPS(keyValuesStr, diskblobsPs, 1);
          diskblobs = diskblobsPs.executeQuery();
          ResultSetVector rsv =
             new ResultSetVector(getTable().getDiskblobs(), diskblobs);
@@ -323,10 +332,11 @@ public class DataSourceJDBC extends DataSource {
          }
       }
       // 20021031-HKK: Build in table!!
-      PreparedStatement ps = con.prepareStatement(getTable().getDeleteStatement());
+      PreparedStatement ps =
+         con.prepareStatement(getTable().getDeleteStatement());
       // now we provide the values
       // of the key-fields, so that the WHERE clause matches the right dataset!
-		getTable().populateWhereClauseForPS(keyValuesStr, ps, 1);
+      getTable().populateWhereClauseForPS(keyValuesStr, ps, 1);
       // finally execute the query
       ps.executeUpdate();
       if (fieldValues != null)
