@@ -256,7 +256,7 @@ public class EventEngine
 
                     if (!collissionDanger || (excludeTableId != tableId) || !keyId.equals(excludeKeyId))
                     {
-                        UpdateEvent e = getUpdateEvent(tableId, keyId);
+                        UpdateEvent e = dbEventFactory.createUpdateEvent(tableId, keyId, request, config);
                         result.addElement(e);
                     }
                 }
@@ -384,29 +384,5 @@ public class EventEngine
 
         logCat.info("setting follow up on Error to:" + followUpOnError);
         e.setFollowUpOnError(followUpOnError);
-    }
-
-
-    /**
-     *  Gets the updateEvent as secondary event
-     *
-     * @param  tableId the table identifier
-     * @param  keyId   the key identifier
-     * @return  The updateEvent object
-     */
-    private UpdateEvent getUpdateEvent(int tableId, String keyId)
-    {
-        UpdateEvent e = null;
-        Class[]  constructorArgsTypes = dbEventFactory.keyInfoConstructorArgsTypes;
-        Object[] constructorArgs      = new Object[]
-        {
-            new Integer(tableId), keyId, request, config
-        };
-
-        e = (UpdateEvent) dbEventFactory.getEvent(EventType.EVENT_DATABASE_UPDATE,
-                                                  constructorArgsTypes,
-                                                  constructorArgs);
-
-        return e;
     }
 }
