@@ -141,7 +141,6 @@ public class JRDataSourceIter implements JRDataSource, IGetSession {
     */
    private Object getCurrentValue(String search) {
       Object obj = null;
-      int    pos;
 
       try {
          if (current != null) {
@@ -169,7 +168,6 @@ public class JRDataSourceIter implements JRDataSource, IGetSession {
     */
    private Object getInternalValue(String search) {
       Object obj = null;
-      int    pos;
 
       try {
          search = search.substring(search.indexOf("__") + 2);

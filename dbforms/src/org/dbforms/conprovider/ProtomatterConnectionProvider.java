@@ -23,7 +23,6 @@
 
 package org.dbforms.conprovider;
 
-import com.protomatter.jdbc.pool.JdbcConnectionPool;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -102,7 +101,6 @@ public class ProtomatterConnectionProvider extends ConnectionProvider {
    private static final String CP_DRIVER = "com.protomatter.jdbc.pool.JdbcConnectionPoolDriver";
 
    /** Protomatter connectionPool */
-   private static JdbcConnectionPool connectionPool = null;
    private static Log                logCat = LogFactory.getLog(ProtomatterConnectionProvider.class);
 
    /**
@@ -183,10 +181,7 @@ public class ProtomatterConnectionProvider extends ConnectionProvider {
       setIntegerArg(args, props, CP_PROPS_MAIDTHREADCHECKINTERVAL, null);
 
       // finally create the pool and we're ready to go!
-      Class.forName(CP_DRIVER)
-           .newInstance();
-      connectionPool = new JdbcConnectionPool(getLastToken(getPrefs().getConnectionPoolURL(),
-                                                           ":"), args);
+      Class.forName(CP_DRIVER).newInstance();
    }
 
 

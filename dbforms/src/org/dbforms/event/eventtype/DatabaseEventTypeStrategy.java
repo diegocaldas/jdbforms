@@ -23,10 +23,6 @@
 
 package org.dbforms.event.eventtype;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-
 
 /**
  * Database EventTypeStrategy class. Provides implementations of the super
@@ -36,8 +32,6 @@ import org.apache.commons.logging.LogFactory;
  *
  */
 public class DatabaseEventTypeStrategy implements EventTypeStrategy {
-   /** logging category */
-   private static Log logCat = LogFactory.getLog(DatabaseEventTypeStrategy.class);
 
    /**
     * Gets the eventGroup attribute of the EventTypeStrategyImpl object

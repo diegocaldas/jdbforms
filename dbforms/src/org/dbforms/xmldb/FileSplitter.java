@@ -36,8 +36,6 @@ import java.io.*;
 public class FileSplitter {
    File           fDestDir;
    File           fSource;
-   private String destDir;
-   private String sourceFile;
 
    /**
     * Creates a new FileSplitter object.
@@ -62,9 +60,6 @@ public class FileSplitter {
     */
    public FileSplitter(String sourceFile,
                        String destDir) {
-      this.sourceFile = sourceFile;
-      this.destDir    = destDir;
-
       this.fSource  = new File(sourceFile);
       this.fDestDir = new File(destDir);
 
