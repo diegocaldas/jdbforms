@@ -41,6 +41,7 @@ import org.dbforms.DbFormsConfig;
  * <p>this utility-class provides convenience methods for SQL related tasks</p>
  *
  * @author Joe Peer <j.peer@gmx.net>
+ * @author Eric Pugh <epugh@upstate.com>
  */
 public class SqlUtil {
   // logging category for this class
@@ -83,9 +84,7 @@ public class SqlUtil {
     return result;
   }
 
-  /**
-   * 2002/10/01-HKK: Do the same for timestamp!
-   */
+
   private static java.sql.Timestamp createAppropriateTimeStamp(
     Object value) {
     if (value == null) {
@@ -139,7 +138,7 @@ public class SqlUtil {
    *  it tries to find the correct setXxx() value, accoring to the field-type information
    *  represented by "fieldType".
    *
-   *  quality: this method is bloody alpha (as you migth see :=)
+   *  quality: this method is bloody alpha (as you might see :=)
    */
   public static void fillPreparedStatement(
     PreparedStatement ps,
@@ -294,7 +293,7 @@ public class SqlUtil {
     } catch (Exception e) {
       StringBuffer msgSB = new StringBuffer("Field type seems to be incorrect - " + e.toString());
       if (fieldType==0){
-        msgSB.append(".  Double check your dbforms-config.xml, as the field type was not populated.");
+        msgSB.append(" Double check your dbforms-config.xml, as the field type was not populated.");
 
       }
       throw new SQLException(
