@@ -907,12 +907,12 @@ public class DbFormTag extends TagSupportWithScriptHandler
       this.table     = getConfig()
                           .getTableByName(tableName);
 
-      if (table == null) {
+      if (getTable() == null) {
          throw new Exception("Table " + tableName
                              + " not found in configuration");
       }
 
-      this.tableId = table.getId();
+      this.tableId = getTable().getId();
    }
 
 
@@ -1272,15 +1272,15 @@ public class DbFormTag extends TagSupportWithScriptHandler
          logCat.debug("pos2");
 
          // check user privilege
-         if ((table != null)
-                   && !table.hasUserPrivileg(request,
+         if ((getTable() != null)
+                   && !getTable().hasUserPrivileg(request,
                                                    GrantedPrivileges.PRIVILEG_SELECT)) {
             logCat.debug("pos3");
 
             String str = MessageResourcesInternal.getMessage("dbforms.events.view.nogrant",
                                                              getLocale(),
                                                              new String[] {
-                                                                table.getName()
+            		getTable().getName()
                                                              });
             logCat.warn(str);
             out.println(str);
@@ -1293,17 +1293,17 @@ public class DbFormTag extends TagSupportWithScriptHandler
          DbEventInterceptorData interceptorData = new DbEventInterceptorData(request,
                                                                              getConfig(),
                                                                              con,
-                                                                             table);
+                                                                             getTable());
          interceptorData.setAttribute(DbEventInterceptorData.CONNECTIONNAME,
                                       dbConnectionName);
          interceptorData.setAttribute(DbEventInterceptorData.PAGECONTEXT,
                                       pageContext);
 
          // part II/b - processing interceptors
-         if ((table != null) && table.hasInterceptors()) {
+         if ((getTable() != null) && getTable().hasInterceptors()) {
             try {
                logCat.debug("pos5");
-               table.processInterceptors(DbEventInterceptor.PRE_SELECT,
+               getTable().processInterceptors(DbEventInterceptor.PRE_SELECT,
                                          interceptorData);
             } catch (Exception sqle) {
                logCat.error("pos6");
@@ -1565,7 +1565,7 @@ public class DbFormTag extends TagSupportWithScriptHandler
          // if developer provided orderBy - Attribute globally in
          // dbforms-config.xml - tag
          else {
-            FieldValue[] tmpOrderConstraint = table.getDefaultOrder();
+            FieldValue[] tmpOrderConstraint = getTable().getDefaultOrder();
             orderConstraint = new FieldValue[tmpOrderConstraint.length];
 
             // cloning is necessary to keep things thread-safe!
@@ -1585,7 +1585,7 @@ public class DbFormTag extends TagSupportWithScriptHandler
          FieldValue[] filterFieldValues = null;
 
          if (!Util.isNull(filter)) {
-            filterFieldValues = table.getFilterFieldArray(filter, locale);
+            filterFieldValues = getTable().getFilterFieldArray(filter, locale);
          }
 
          FieldValue[] mergedFieldValues = null;
@@ -1728,7 +1728,7 @@ public class DbFormTag extends TagSupportWithScriptHandler
                    || webEvent instanceof org.dbforms.event.NoopEvent)
                    && (getLocalWebEvent() != null)) {
             webEvent = navEventFactory.createEvent(localWebEvent, request,
-                                                   getConfig(), table);
+                                                   getConfig(), getTable());
 
             // Setted with localWebEvent attribute.
             if (webEvent != null) {
@@ -1786,8 +1786,8 @@ public class DbFormTag extends TagSupportWithScriptHandler
 
             // try to create a new GOTO event
             if ((gotoHt != null) && (gotoHt.size() > 0)) {
-               String positionString = table.getPositionString(gotoHt);
-               navEvent = navEventFactory.createGotoEvent(table, request,
+               String positionString = getTable().getPositionString(gotoHt);
+               navEvent = navEventFactory.createGotoEvent(getTable(), request,
                                                           getConfig(),
                                                           positionString);
             }
@@ -1828,7 +1828,7 @@ public class DbFormTag extends TagSupportWithScriptHandler
                setFooterReached(true);
             } else if (!Util.isNull(getWhereClause())) {
                // We should do a free form select
-               navEvent = navEventFactory.createGotoEvent(table, request,
+               navEvent = navEventFactory.createGotoEvent(getTable(), request,
                                                           getConfig(),
                                                           whereClause,
                                                           getTableList());
@@ -1843,7 +1843,7 @@ public class DbFormTag extends TagSupportWithScriptHandler
                   myPosition = null;
                }
 
-               navEvent = navEventFactory.createGotoEvent(table, request,
+               navEvent = navEventFactory.createGotoEvent(getTable(), request,
                                                           getConfig(),
                                                           myPosition);
             }
@@ -1883,12 +1883,12 @@ public class DbFormTag extends TagSupportWithScriptHandler
          // we process interceptor again (post-select)
          // #checkme: is the overhead of a POST_SELECT interceptor necessary
          // or a luxury? => use cases!
-         if ((table != null) && table.hasInterceptors()) {
+         if ((getTable() != null) && getTable().hasInterceptors()) {
             // process the interceptors associated to this table
             try {
                interceptorData.setAttribute(DbEventInterceptorData.RESULTSET,
                                             resultSetVector);
-               table.processInterceptors(DbEventInterceptor.POST_SELECT,
+               getTable().processInterceptors(DbEventInterceptor.POST_SELECT,
                                          interceptorData);
             } catch (SQLException sqle) {
                // PG = 2001-12-04
@@ -1905,9 +1905,9 @@ public class DbFormTag extends TagSupportWithScriptHandler
          // last row of the current view)
          if (!ResultSetVector.isNull(resultSetVector)) {
             resultSetVector.moveFirst();
-            firstPosition = table.getPositionString(resultSetVector);
+            firstPosition = getTable().getPositionString(resultSetVector);
             resultSetVector.moveLast();
-            lastPosition = table.getPositionString(resultSetVector);
+            lastPosition = getTable().getPositionString(resultSetVector);
             resultSetVector.moveFirst();
          }
 
@@ -1935,14 +1935,14 @@ public class DbFormTag extends TagSupportWithScriptHandler
          }
 
          Map           dbforms   = (Map) pageContext.getAttribute("dbforms");
-         DbFormContext dbContext = new DbFormContext(table.getNamesHashtable(Constants.FIELDNAME_SEARCH),
-                                                     table.getNamesHashtable(Constants.FIELDNAME_SEARCHMODE),
-                                                     table.getNamesHashtable(Constants.FIELDNAME_SEARCHALGO),
+         DbFormContext dbContext = new DbFormContext(getTable().getNamesHashtable(Constants.FIELDNAME_SEARCH),
+         		getTable().getNamesHashtable(Constants.FIELDNAME_SEARCHMODE),
+         		getTable().getNamesHashtable(Constants.FIELDNAME_SEARCHALGO),
                                                      resultSetVector);
 
          if (!ResultSetVector.isNull(resultSetVector)) {
             dbContext.setCurrentRow(resultSetVector.getCurrentRowAsMap());
-            dbContext.setPosition(Util.encode(table.getPositionString(resultSetVector),
+            dbContext.setPosition(Util.encode(getTable().getPositionString(resultSetVector),
                                               pageContext.getRequest().getCharacterEncoding()));
          }
 
@@ -1953,13 +1953,13 @@ public class DbFormTag extends TagSupportWithScriptHandler
          // used
          pageContext.setAttribute("searchFieldNames_"
                                   + tableName.replace('.', '_'),
-                                  table.getNamesHashtable(Constants.FIELDNAME_SEARCH));
+                                  getTable().getNamesHashtable(Constants.FIELDNAME_SEARCH));
          pageContext.setAttribute("searchFieldModeNames_"
                                   + tableName.replace('.', '_'),
-                                  table.getNamesHashtable(Constants.FIELDNAME_SEARCHMODE));
+                                  getTable().getNamesHashtable(Constants.FIELDNAME_SEARCHMODE));
          pageContext.setAttribute("searchFieldAlgorithmNames_"
                                   + tableName.replace('.', '_'),
-                                  table.getNamesHashtable(Constants.FIELDNAME_SEARCHALGO));
+                                  getTable().getNamesHashtable(Constants.FIELDNAME_SEARCHALGO));
 
          // #fixme:
          // this is a weired crazy workaround [this code is also used in
@@ -1974,7 +1974,7 @@ public class DbFormTag extends TagSupportWithScriptHandler
                                      + tableName.replace('.', '_'),
                                      resultSetVector.getCurrentRowAsMap());
             pageContext.setAttribute("position_" + tableName.replace('.', '_'),
-                                     Util.encode(table.getPositionString(resultSetVector),
+                                     Util.encode(getTable().getPositionString(resultSetVector),
                                                  pageContext.getRequest().getCharacterEncoding()));
          }
 
@@ -2202,7 +2202,7 @@ public class DbFormTag extends TagSupportWithScriptHandler
                                 String       aPosition) {
       // at first build a hashtable of the provided values
       // 2003-03-29 HKK: Change from Hashtable to FieldValueTable
-      FieldValues ht = table.getFieldValues(aPosition);
+      FieldValues ht = getTable().getFieldValues(aPosition);
 
       for (int i = 0; i < childFieldValues.length; i++) {
          String actualValue = childFieldValues[i].getFieldValue();
@@ -2218,7 +2218,7 @@ public class DbFormTag extends TagSupportWithScriptHandler
             throw new IllegalArgumentException("ERROR: Make sure that field "
                                                + f.getName()
                                                + " is a KEY of the table "
-                                               + table.getName()
+                                               + getTable().getName()
                                                + "! Otherwise you can not use it as PARENT/CHILD LINK argument!");
          }
 
@@ -2432,7 +2432,7 @@ public class DbFormTag extends TagSupportWithScriptHandler
       }
 
       // otherwise we can:
-      FieldValue[] overrulingOrder = table.createOrderFieldValues(orderBy,
+      FieldValue[] overrulingOrder = getTable().createOrderFieldValues(orderBy,
                                                                   request, false);
       overrulingOrderFields = new Vector();
 
@@ -2485,23 +2485,14 @@ public class DbFormTag extends TagSupportWithScriptHandler
             int tableId = Integer.parseInt(searchFieldName.substring(firstUnderscore
                                                                      + 1,
                                                                      secondUnderscore));
-
-            if (tableId != getTable()
-                                    .getId()) {
-               logCat.error("tableid not correct!");
-            }
-
-            // is equal to tableid, off course
             int   fieldId = Integer.parseInt(searchFieldName.substring(secondUnderscore
-                                                                       + 1));
-            Field f = null;
-
-            try {
-               f = table.getField(fieldId);
-            } catch (Exception e) {
-               logCat.error("initSearchFieldValues", e);
+                    + 1));
+            
+            Table table = getConfig().getTable(tableId);           
+            Field f = table.getField(fieldId);
+            if (table.getId() != getTable().getId()) {
+            	// Table from request is different to table of form
             }
-
             if (f != null) {
                String aSearchMode = ParseUtil.getParameter(request,
                                                            f.getSearchModeName());
