@@ -45,6 +45,11 @@
   <property name="build.dir"      value="${UsersGuide.dir}/build"/>
   <property name="tools.dir"      value="${UsersGuide.dir}/docbook_tools"/>
 
+  <!-- Maven integration stuff -->
+  <property name="maven.target"   value="${basedir}/target"/>  
+  <property name="maven.docs"     value="${maven.target}/docs"/>  
+
+
   <!-- Main stylesheets -->
   <property name="sSheetHome.dir" value="${docbookHome.dir}"/>
 
@@ -232,18 +237,33 @@
   </target>
 
 
+  <!-- =================================================================== -->
+  <!-- Maven integration: generate project documentation and copy it into  -->
+  <!-- the target directory                                                -->
+  <!--                                                                     -->
+  <!-- called by Maven's "doc" goal                                        -->
+  <!-- =================================================================== -->
+  <target name    = "maven-build-doc"
+          depends = "generate_taglib_htmldocs, generate_taglib_pdfdocs, prepare, create_HTML, create_PDF, run-j" />
+
+
+  <!-- ========================================================================== -->
+  <!-- Maven integration: move the site docs into the $DBFORMS_HOME/doc directory -->
+  <!--                                                                            -->
+  <!-- called by Maven's "site:generate" postGoal                                 -->
+  <!-- ========================================================================== -->
+  <target name="maven-move-doc">
+    <copy todir="${doc.dir}">
+      <fileset dir="${maven.docs}/" includes="**/*"/>
+    </copy>
+  </target>
+
+
   <!-- ================================================ -->
   <!-- Generate output (select as needed)               -->
   <!-- ================================================ -->
   <target name    = "build-doc" 
           depends = "javadoc, generate_taglib_htmldocs, generate_taglib_pdfdocs, prepare, create_HTML, create_PDF, run-j"/>
-
-
-  <!-- ======================================================================== -->
-  <!-- Maven integration: generate output and copy it into the target directory -->
-  <!-- ======================================================================== -->
-  <target name    = "maven-build-doc" 
-          depends = "generate_taglib_htmldocs, generate_taglib_pdfdocs, prepare, create_HTML, create_PDF, run-j"/>
 
 
   <!-- ==================================================== -->
