@@ -219,21 +219,25 @@ public class StartReportServlet extends HttpServlet
          {
             // Fill the report with data
             JasperPrint jPrint;
-
-            if (dataSource == null)
-            {
-               jPrint = JasperFillManager.fillReport(reportFileFullName
-                                                     + ".jasper", map, 
-                                                     repParam.getConnection());
-            }
-            else
-            {
-               jPrint = JasperFillManager.fillReport(reportFileFullName
-                                                     + ".jasper", map, 
-                                                     dataSource);
-            }
-
-            repParam.getConnection().close();
+            try 
+            {   
+	            if (dataSource == null)
+	            {
+	               jPrint = JasperFillManager.fillReport(reportFileFullName
+	                                                     + ".jasper", map, 
+	                                                     repParam.getConnection());
+	            }
+	            else
+	            {
+	               jPrint = JasperFillManager.fillReport(reportFileFullName
+	                                                     + ".jasper", map, 
+	                                                     dataSource);
+	            }
+           } 
+           finally 
+           {  
+		     repParam.getConnection().close();
+           }
 
             if (jPrint.getPages().size() == 0)
             {
@@ -264,7 +268,6 @@ public class StartReportServlet extends HttpServlet
          {
             logCat.error("jasper error: " + e.getMessage());
             handleException(request, response, e);
-
             return;
          }
 
