@@ -4936,6 +4936,18 @@ the toplevel form to jump to [may be deprecated soon]</description>
 					</description>
 </attribute>
 <attribute>
+<name>parentField</name>
+<required>false</required>
+<rtexprvalue>true</rtexprvalue>
+<description>used in sub-form: field(s) in the main form that is/are linked to this formShould either be a key or set to sortable="true"in dbforms-config.xml</description>
+</attribute>
+<attribute>
+<name>childField</name>
+<required>false</required>
+<rtexprvalue>true</rtexprvalue>
+<description>used in sub-form: field(s) in this form that is/are linked to the parent formShould either be a key or set to sortable="true"in dbforms-config.xml</description>
+</attribute>
+<attribute>
 <name>accessKey</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
@@ -5811,14 +5823,23 @@ This structure will be rendered as a html select element to select the condition
 					texttext inputdateinput text for date type, a validation of the value will be done, and it supports the jscal objecttimestampinput text for timestamp type, a validation of the value will be done, and it supports the jscal object (it doesn't fit very well, anyway ...)numericinput text for number, a validation of the value will be doneselectrender an html select element, filled with nested tags like queryData, staticData and so on.</description>
 </attribute>
 <attribute>
+<name>searchAlgo</name>
+<required>false</required>
+<rtexprvalue>true</rtexprvalue>
+<description>
+						The search algorithm.
+						possible values:
+						sharpthis is the default behavior, do nothing.weakStartlike, % is added in front of valueweakEndlike, % is appended to valueweakStartEndlike, % is added in front of value and % is appended to value</description>
+</attribute>
+<attribute>
 <name>customEntry</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-               Allows an additional (independant) entry into the select list&lt;br/&gt;
-               Arguments to this tag are as follows:
-              Key,Description,boolean (default selection?)
-          </description>
+               					Allows an additional (independant) entry into the select list&lt;br/&gt;
+               					Arguments to this tag are as follows:
+              					Key,Description,boolean (default selection?)
+          				</description>
 </attribute>
 <attribute>
 <name>selectedIndex</name>
@@ -5830,22 +5851,26 @@ This structure will be rendered as a html select element to select the condition
 <name>useJsCalendar</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
-<description>Place small calendar icon after input field. Clicking that icon 
-                     will popup a JavaScript calendar 
-                    that can be used to set a new value for the field. 
-         Some preparations have to be done, the
-         calendar must be copied into the web applications 
-         and must be included in current page. 
-         See dbforms manual for details.</description>
+<description>
+						Place small calendar icon after input field. Clicking that icon 
+                    				will popup a JavaScript calendar 
+                    				that can be used to set a new value for the field. 
+					         Some preparations have to be done, the
+					         calendar must be copied into the web applications 
+					         and must be included in current page. 
+					         See dbforms manual for details.
+					 </description>
 </attribute>
 <attribute>
 <name>jsCalendarDateFormat</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
-<description>Subpatterns inside date formats have sometimes different meanings in Java and inside
-             JavaScript calendar. For some date formats it may be neccessary to explicitely set a
-       date format to the calendar that corresponds to the used date format inside dbforms
-       application. See dbforms manual for details.</description>
+<description>
+						Subpatterns inside date formats have sometimes different meanings in Java and inside
+             					JavaScript calendar. For some date formats it may be neccessary to explicitely set a
+       						date format to the calendar that corresponds to the used date format inside dbforms
+       						application. See dbforms manual for details.
+       					</description>
 </attribute>
 <attribute>
 <name>size</name>
