@@ -24,6 +24,7 @@
 package org.dbforms.event;
 
 import java.util.HashMap;
+import java.util.Properties;
 import javax.servlet.http.*;
 
 import org.apache.log4j.Category;
@@ -143,7 +144,7 @@ public abstract class EventFactory
 
 
     /**
-     *  Instance a new DatabaseEvent object
+     *  Instance a new DatabaseEvent object.
      *
      * @param  einfo the EventInfo object
      * @param  constructorArgsTypes array of constructor argument classes
@@ -161,6 +162,9 @@ public abstract class EventFactory
                 event = (WebEvent) ReflectionUtil.newInstance(einfo.getClassName(),
                                                               constructorArgsTypes,
                                                               constructorArgs);
+
+                // set a new Properties object into the event;
+                event.setProperties(new Properties(einfo.getProperties()));
             }
             catch (Exception e)
             {
