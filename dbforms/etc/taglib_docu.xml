@@ -6693,14 +6693,33 @@ This structure will be rendered as a html select element to select the condition
 					</info>
 				</attribute>
 				<attribute>
+					<name>searchAlgo</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						The search algorithm.
+						possible values:
+						<dl>
+							<dt>sharp</dt>
+							<dd>this is the default behavior, do nothing.</dd>
+							<dt>weakStart</dt>
+							<dd>like, % is added in front of value</dd>
+							<dt>weakEnd</dt>
+							<dd>like, % is appended to value</dd>
+							<dt>weakStartEnd</dt>
+							<dd>like, % is added in front of value and % is appended to value</dd>
+						</dl>
+					</info>
+				</attribute>
+				<attribute>
 					<name>customEntry</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
 					<info>
-               Allows an additional (independant) entry into the select list&lt;br/>
-               Arguments to this tag are as follows:<br/>
-              Key,Description,boolean (default selection?)
-          </info>
+               					Allows an additional (independant) entry into the select list&lt;br/>
+               					Arguments to this tag are as follows:<br/>
+              					Key,Description,boolean (default selection?)
+          				</info>
 				</attribute>
 				<attribute>
 					<name>selectedIndex</name>
@@ -6712,22 +6731,26 @@ This structure will be rendered as a html select element to select the condition
 					<name>useJsCalendar</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
-					<info>Place small calendar icon after input field. Clicking that icon 
-                     will popup a JavaScript calendar 
-                    that can be used to set a new value for the field. 
-         Some preparations have to be done, the
-         calendar must be copied into the web applications 
-         and must be included in current page. 
-         See dbforms manual for details.</info>
+					<info>
+						Place small calendar icon after input field. Clicking that icon 
+                    				will popup a JavaScript calendar 
+                    				that can be used to set a new value for the field. 
+					         Some preparations have to be done, the
+					         calendar must be copied into the web applications 
+					         and must be included in current page. 
+					         See dbforms manual for details.
+					 </info>
 				</attribute>
 				<attribute>
 					<name>jsCalendarDateFormat</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
-					<info>Subpatterns inside date formats have sometimes different meanings in Java and inside
-             JavaScript calendar. For some date formats it may be neccessary to explicitely set a
-       date format to the calendar that corresponds to the used date format inside dbforms
-       application. See dbforms manual for details.</info>
+					<info>
+						Subpatterns inside date formats have sometimes different meanings in Java and inside
+             					JavaScript calendar. For some date formats it may be neccessary to explicitely set a
+       						date format to the calendar that corresponds to the used date format inside dbforms
+       						application. See dbforms manual for details.
+       					</info>
 				</attribute>
 				<attribute>
 					<name>size</name>
