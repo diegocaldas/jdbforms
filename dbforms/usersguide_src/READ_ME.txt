@@ -1,4 +1,4 @@
-The DocBook_UsersGuide is still under construction.
+Note: The DocBook_UsersGuide has relative links to the Tag Library that will be broken if either resource is moved.  Specifically, there are 3-4 places (in sorting, taglib apendix etc) where ../../taglib/DbFormsTags_Frame.html is used within the UsersGuide to link to the tag library.
 
 To build it, you will need to do four things:
 
