@@ -168,6 +168,17 @@
         <role>Java Developer</role>
       </roles>
     </developer>
+
+    <developer>
+      <name>Sergio Moretti</name>
+      <id>mrsermore</id>
+      <email>s.moretti@nsi-mail.it</email>
+      <organization/>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+
   </developers>
 
   <contributors>
