@@ -1697,14 +1697,14 @@ public class Table {
 
 
 	/**
-	 * DOCUMENT ME!
+	 * maps chield fields to parent fields
 	 *
-	 * @param parentTable DOCUMENT ME!
-	 * @param parentFieldString DOCUMENT ME!
-	 * @param childFieldString DOCUMENT ME!
-	 * @param aPosition DOCUMENT ME!
+	 * @param parentTable the parent table
+	 * @param parentFieldString field names in parent table
+	 * @param childFieldString  field names in child table
+	 * @param aPosition         position to map as position string 
 	 *
-	 * @return DOCUMENT ME!
+	 * @return FieldValue[] with result
 	 */
 	public FieldValue[] mapChildFieldValues(
 		Table parentTable,
