@@ -5,13 +5,15 @@
 	        <field name="AUTHOR_ID" fieldType="int" isKey="true" autoInc="true"/>
 	        <field name="NAME" fieldType="varchar"  sortable="true"/>
 	        <field name="ORGANISATION" fieldType="varchar"  sortable="true"/>
+            <interceptor className = "interceptors.BookstoreInsertDataInterceptor"/>                
 	    </table>    
 	    
 	    <table name="BOOK">
-	        <field name="BOOK_ID" fieldType="int" isKey="true" autoInc="true"/>
+	        <field name="BOOK_ID" fieldType="int" isKey="true" />
 	        <field name="ISBN" fieldType="varchar" />
 	        <field name="AUTHOR_ID" fieldType="int" isKey="true" />
 	        <field name="TITLE" fieldType="varchar" />
+            <interceptor className = "interceptors.BookstoreInsertDataInterceptor"/>                
 	    </table>   
 
 		<query 	name="BOOKLISTPERAUTHOR" 
@@ -133,10 +135,10 @@
 	    <dbconnection
 		    isPow2		   			= "true"
 		    connectionProviderClass = "org.dbforms.conprovider.SingleConnectionProvider"
-			name   = "jdbc:hsqldb:$(SERVLETCONTEXT_REALPATH)/WEB-INF/db_hsqldb/bookstore"
-			isJndi = "false"
+			name      = "jdbc:hsqldb:$(SERVLETCONTEXT_REALPATH)/WEB-INF/db_hsqldb/bookstore"
+			isJndi    = "false"
 			conClass  = "org.hsqldb.jdbcDriver"
-			username = "sa"
+			username  = "sa"
 			password  = ""
 		/>
 
