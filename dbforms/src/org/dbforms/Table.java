@@ -1973,57 +1973,67 @@ public class Table
     }
 
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param parentTable DOCUMENT ME!
-     * @param parentFieldString DOCUMENT ME!
-     * @param childFieldString DOCUMENT ME!
-     * @param aPosition DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
-    public FieldValue[] mapChildFieldValues(Table  parentTable,
-                                            String parentFieldString,
-                                            String childFieldString,
-                                            String aPosition)
-    {
-        // 1 to n fields may be mapped
-        Vector childFieldNames = ParseUtil.splitString(childFieldString, ",;~");
-        Vector parentFieldNames = ParseUtil.splitString(parentFieldString, ",;~");
-
-        // do some basic checks
-        // deeper checks like Datatyp-compatibility,etc not done yet
-        int len = childFieldNames.size();
-
-        if ((len == 0) || (len != parentFieldNames.size()))
-        {
-            return null;
-        }
-
-        Hashtable ht = parentTable.getFieldValuesFromPositionAsHt(aPosition);
+    public FieldValue[] getFieldValuesFromPosition(String aPosition) {
+        Hashtable ht = getFieldValuesFromPositionAsHt(aPosition);
         if (ht == null)
           return null;
-
-        FieldValue[] childFieldValues = new FieldValue[len];
-
-        for (int i = 0; i < len; i++)
-        {
-            String parentFieldName = (String) parentFieldNames.elementAt(i);
-            Field parentField = parentTable.getFieldByName(parentFieldName);
-            String childFieldName = (String) childFieldNames.elementAt(i);
-            Field childField = this.getFieldByName(childFieldName);
-            FieldValue aFieldValue = (FieldValue) ht.get(new Integer(parentField.getId()));
-
-            if (aFieldValue == null)
-            {
-                throw new IllegalArgumentException("ERROR: Make sure that field " + parentField.getName() + " is a KEY of the table " + this.getName() + "! Otherwise you can not use it as PARENT/CHILD LINK argument!");
-            }
-
-            String currentParentFieldValue = aFieldValue.getFieldValue();
-            childFieldValues[i] = new FieldValue(childField, currentParentFieldValue, true);
-        }
-
-        return childFieldValues;
+        FieldValue[] f = new FieldValue[1];   
+	   	f = (FieldValue[]) ht.values().toArray(f);
+        return f;
     }
+
+
+	/**
+	 * DOCUMENT ME!
+	 *
+	 * @param parentTable DOCUMENT ME!
+	 * @param parentFieldString DOCUMENT ME!
+	 * @param childFieldString DOCUMENT ME!
+	 * @param aPosition DOCUMENT ME!
+	 *
+	 * @return DOCUMENT ME!
+	 */
+	public FieldValue[] mapChildFieldValues(Table  parentTable,
+											String parentFieldString,
+											String childFieldString,
+											String aPosition)
+	{
+		// 1 to n fields may be mapped
+		Vector childFieldNames = ParseUtil.splitString(childFieldString, ",;~");
+		Vector parentFieldNames = ParseUtil.splitString(parentFieldString, ",;~");
+
+		// do some basic checks
+		// deeper checks like Datatyp-compatibility,etc not done yet
+		int len = childFieldNames.size();
+
+		if ((len == 0) || (len != parentFieldNames.size()))
+		{
+			return null;
+		}
+
+		Hashtable ht = parentTable.getFieldValuesFromPositionAsHt(aPosition);
+		if (ht == null)
+		  return null;
+
+		FieldValue[] childFieldValues = new FieldValue[len];
+
+		for (int i = 0; i < len; i++)
+		{
+			String parentFieldName = (String) parentFieldNames.elementAt(i);
+			Field parentField = parentTable.getFieldByName(parentFieldName);
+			String childFieldName = (String) childFieldNames.elementAt(i);
+			Field childField = this.getFieldByName(childFieldName);
+			FieldValue aFieldValue = (FieldValue) ht.get(new Integer(parentField.getId()));
+
+			if (aFieldValue == null)
+			{
+				throw new IllegalArgumentException("ERROR: Make sure that field " + parentField.getName() + " is a KEY of the table " + this.getName() + "! Otherwise you can not use it as PARENT/CHILD LINK argument!");
+			}
+
+			String currentParentFieldValue = aFieldValue.getFieldValue();
+			childFieldValues[i] = new FieldValue(childField, currentParentFieldValue, true);
+		}
+
+		return childFieldValues;
+	}
 }
