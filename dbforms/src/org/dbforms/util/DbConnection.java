@@ -83,7 +83,7 @@ public class DbConnection {
 	private String username;
 	private String password;
 	private Properties properties;
-	private boolean useProp = false;
+	private boolean isPropSetup = false;
 	private String connectionProviderClass;
 	private String connectionPoolURL;
 	private String isPow2 = "false";
@@ -99,7 +99,6 @@ public class DbConnection {
 	 */
 	public void addProperty(DbConnectionProperty prop) {
 		properties.put(prop.getName(), prop.getValue());
-		useProp = true;
 	}
 
 	/**
@@ -256,7 +255,6 @@ public class DbConnection {
 	 */
 	public void setUsername(String newuser) {
 		this.username = newuser;
-		properties.put("user", newuser);
 	}
 
 	/**
@@ -275,7 +273,6 @@ public class DbConnection {
 	 */
 	public void setPassword(String newpass) {
 		this.password = newpass;
-		properties.put("password", newpass);
 	}
 
 	/**
@@ -290,11 +287,9 @@ public class DbConnection {
 
 		// access Connection via Application Server's JNDI table
 		if (jndi) {
-
 			try {
 				Context ctx = new InitialContext();
 				DataSource ds = (DataSource) ctx.lookup(name);
-
 				con = ds.getConnection();
 			} catch (NamingException ne) {
 				ne.printStackTrace();
@@ -303,8 +298,7 @@ public class DbConnection {
 				e.printStackTrace();
 				return null;
 			}
-
-			// access the connection using the pow2 library by Luca Fossato.
+   	// access the connection using the pow2 library by Luca Fossato.
 		} else if (pow2) {
 			try {
 				if (!isFactorySetup) {
@@ -315,12 +309,16 @@ public class DbConnection {
 				logCat.error("::getConnection - cannot retrieve " + "a connection from the " + "connectionFactory", se);
 				return null;
 			}
-
-			// access connection directly from db or from a connectionpool-manager like "Poolman"
+		// access connection directly from db or from a connectionpool-manager like "Poolman"
 		} else
 			try {
 				Class.forName(conClass).newInstance();
-				if (useProp) {
+				if (!properties.isEmpty()) {
+               if (!isPropSetup) {
+                  properties.put("user", getUsername());
+                  properties.put("password", getPassword());
+                  isPropSetup = true;
+               }
 					con = DriverManager.getConnection(name, properties);
 				} else if (username != null) {
 					con = DriverManager.getConnection(name, username, password);
@@ -348,9 +346,8 @@ public class DbConnection {
 		prefs.setJdbcURL(name);
 		prefs.setUser(username);
 		prefs.setPassword(password);
-
+ 		prefs.setProperties(properties);
 		connectionFactory.setProvider(prefs);
-
 		isFactorySetup = true;
 	}
 
@@ -361,7 +358,6 @@ public class DbConnection {
 	 */
 	public String toString() {
 		StringBuffer buf = new StringBuffer("DbConnection = ");
-
 		buf.append("id=" + id);
 		buf.append(",name=" + name);
 		buf.append(",jndi=" + isJndi);
@@ -372,9 +368,8 @@ public class DbConnection {
 			buf.append(",connectionProviderClass" + connectionProviderClass);
 			buf.append(",connectionPoolURL" + connectionPoolURL);
 		}
-
-		if (useProp)
-			buf.append(properties);
+		if (!properties.isEmpty())
+   		buf.append(properties);
 		//buf.append(",password="+password);  Not such a good idea!
 		return buf.toString();
 	}
