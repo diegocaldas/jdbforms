@@ -59,6 +59,15 @@
     <servlet-name>file</servlet-name>
     <servlet-class>org.dbforms.servlets.FileServlet</servlet-class>
   </servlet>
+  <!--============= JasperReport starter servlet =============================== -->
+  <servlet>
+    <servlet-name>startreport</servlet-name>
+    <servlet-class>org.dbforms.servlets.StartReportServlet</servlet-class>
+    <init-param>
+      <param-name>reportdirs</param-name>
+      <param-value>/WEB-INF/custom/reports/,/WEB-INF/reports/</param-value>
+    </init-param>
+  </servlet>
   <!-- ===================================================================== -->
   <!--  Pow2WebGUI configuration servlet.                                    -->
   <!-- ===================================================================== -->
@@ -84,6 +93,10 @@
   <servlet-mapping>
     <servlet-name>file</servlet-name>
     <url-pattern>/servlet/file</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>startreport</servlet-name>
+    <url-pattern>/reports/*</url-pattern>
   </servlet-mapping>
   <!--*************************************************-->
   <!--**======= Other configuration items, not=======**-->
