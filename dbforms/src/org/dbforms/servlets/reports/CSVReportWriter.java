@@ -23,8 +23,8 @@
 
 package org.dbforms.servlets.reports;
 
-import dori.jasper.engine.JRDataSource;
-import dori.jasper.engine.JRException;
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JRException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

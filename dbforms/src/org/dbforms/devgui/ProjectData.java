@@ -232,18 +232,18 @@ public class ProjectData implements Serializable, PropertyNames {
    public String toString() {
       StringBuffer buf = new StringBuffer();
 
-      Enumeration  enum = props.propertyNames();
+      Enumeration  e = props.propertyNames();
 
       boolean      first = true;
 
-      while (enum.hasMoreElements()) {
+      while (e.hasMoreElements()) {
          if (first) {
             first = false;
          } else {
             buf.append(", ");
          }
 
-         String aPropsName = (String) enum.nextElement();
+         String aPropsName = (String) e.nextElement();
 
          buf.append(aPropsName);
 

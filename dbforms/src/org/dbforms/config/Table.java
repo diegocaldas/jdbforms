@@ -801,13 +801,13 @@ public class Table {
       queryBuf.append(" (");
 
       // list the names of fields we'll include into the insert operation
-      Iterator enum = fieldValues.keys();
+      Iterator e = fieldValues.keys();
 
-      while (enum.hasNext()) {
-         String fieldName = (String) enum.next();
+      while (e.hasNext()) {
+         String fieldName = (String) e.next();
          queryBuf.append(fieldName);
 
-         if (enum.hasNext()) {
+         if (e.hasNext()) {
             queryBuf.append(",");
          }
       }
@@ -984,11 +984,11 @@ public class Table {
     */
    public Hashtable getNamesHashtable(String core) {
       Hashtable result = new Hashtable();
-      Iterator  enum = getFields()
+      Iterator  e = getFields()
                           .iterator();
 
-      while (enum.hasNext()) {
-         Field f = (Field) enum.next();
+      while (e.hasNext()) {
+         Field f = (Field) e.next();
          result.put(f.getName(), f.getFieldName(core));
       }
 
@@ -1094,11 +1094,11 @@ public class Table {
    public String getPositionString(Hashtable ht) {
       StringBuffer buf  = new StringBuffer();
       int          cnt  = 0;
-      Iterator     enum = ht.keySet()
+      Iterator     e = ht.keySet()
                             .iterator();
 
-      while (enum.hasNext()) {
-         String fieldName = (String) enum.next();
+      while (e.hasNext()) {
+         String fieldName = (String) e.next();
          Field  aField = getFieldByName(fieldName);
 
          if (aField != null) {
@@ -1135,10 +1135,10 @@ public class Table {
       if (fvHT != null) {
          StringBuffer buf  = new StringBuffer();
          int          cnt  = 0;
-         Iterator     enum = fvHT.keys();
+         Iterator     e = fvHT.keys();
 
-         while (enum.hasNext()) {
-            String     fieldName = (String) enum.next();
+         while (e.hasNext()) {
+            String     fieldName = (String) e.next();
             FieldValue fv = fvHT.get(fieldName);
             Field      f  = fv.getField();
 
@@ -1336,10 +1336,10 @@ public class Table {
       // this list may be only a subset of the field list,
       //  it is not necessarily the complete field list of a table!
       boolean  kommaNeeded = false;
-      Iterator enum = fieldValues.keys();
+      Iterator e = fieldValues.keys();
 
-      while (enum.hasNext()) {
-         String fieldName = (String) enum.next();
+      while (e.hasNext()) {
+         String fieldName = (String) e.next();
 
          if (kommaNeeded) {
             queryBuf.append(", ");

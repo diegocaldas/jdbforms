@@ -23,9 +23,7 @@
 
 package org.dbforms.util;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -154,12 +152,11 @@ public class FileHolder {
                // ignoring the filename it arrived with
                file = fileOrDirectory;
             }
-
-            fileOut = new BufferedOutputStream(new FileOutputStream(file));
-            InputStream input = fileItem.getInputStream();
-            int b;
-            while ((b = input.read()) != -1) 
-               fileOut.write(b);
+            try {
+            	fileItem.write(file);
+            } catch (Exception e) {
+			   throw new IOException(e.getMessage());
+            }
          }
       } finally {
          if (fileOut != null) {

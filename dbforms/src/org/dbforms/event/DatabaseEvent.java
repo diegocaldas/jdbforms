@@ -151,10 +151,10 @@ public abstract class DatabaseEvent extends WebEvent {
 
       // First check if update is necessary
       if (!doIt) {
-         Iterator enum = params.iterator();
+         Iterator e = params.iterator();
 
-         while (enum.hasNext()) {
-            String param = (String) enum.next();
+         while (e.hasNext()) {
+            String param = (String) e.next();
 
             // value of the named parameter;
             String value = ParseUtil.getParameter(getRequest(), param);
@@ -176,10 +176,10 @@ public abstract class DatabaseEvent extends WebEvent {
 
       //  if update is necessary then do update for all data columns
       if (doIt) {
-         Iterator enum = params.iterator();
+         Iterator e = params.iterator();
 
-         while (enum.hasNext()) {
-            String param = (String) enum.next();
+         while (e.hasNext()) {
+            String param = (String) e.next();
 
             int    iiFieldId = Integer.parseInt(param.substring(paramStub
                                                                 .length()));

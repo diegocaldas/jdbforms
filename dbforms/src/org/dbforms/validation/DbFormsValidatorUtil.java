@@ -301,10 +301,10 @@ public class DbFormsValidatorUtil {
                   if (!field.isIndexed() && field.isDependency(va.getName())) {
                      String      message = getMessage(functionName, va, locale,
                                                       field, errors);
-                     Enumeration enum = fieldsName.keys();
+                     Enumeration e = fieldsName.keys();
 
-                     while (enum.hasMoreElements()) {
-                        String fieldName = (String) enum.nextElement();
+                     while (e.hasMoreElements()) {
+                        String fieldName = (String) e.nextElement();
                         String val = (String) fieldsName.get(fieldName);
 
                         if (field.getKey()

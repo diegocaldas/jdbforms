@@ -173,22 +173,22 @@ public class ParseUtil {
       MultipartRequest multipartRequest = (MultipartRequest) request
                                           .getAttribute("multipartRequest");
 
-      Enumeration      enum = (multipartRequest == null)
+      Enumeration      e = (multipartRequest == null)
                               ? request.getParameterNames()
                               : multipartRequest.getParameterNames();
 
-      while (enum.hasMoreElements()) {
-         String param = (String) enum.nextElement();
+      while (e.hasMoreElements()) {
+         String param = (String) e.nextElement();
 
          if (param.startsWith(str)) {
             return param;
          }
       }
 
-      enum = request.getAttributeNames();
+      e = request.getAttributeNames();
 
-      while (enum.hasMoreElements()) {
-         String param = (String) enum.nextElement();
+      while (e.hasMoreElements()) {
+         String param = (String) e.nextElement();
 
          if (param.startsWith(str)) {
             return param;
@@ -314,12 +314,12 @@ public class ParseUtil {
       MultipartRequest multipartRequest = (MultipartRequest) request
                                           .getAttribute("multipartRequest");
       Vector           result = new Vector();
-      Enumeration      enum   = (multipartRequest == null)
+      Enumeration      e   = (multipartRequest == null)
                                 ? request.getParameterNames()
                                 : multipartRequest.getParameterNames();
 
-      while (enum.hasMoreElements()) {
-         String param = (String) enum.nextElement();
+      while (e.hasMoreElements()) {
+         String param = (String) e.nextElement();
 
          if (param.startsWith(str)) {
             if (!result.contains(param)) {
@@ -328,10 +328,10 @@ public class ParseUtil {
          }
       }
 
-      enum = request.getAttributeNames();
+      e = request.getAttributeNames();
 
-      while (enum.hasMoreElements()) {
-         String param = (String) enum.nextElement();
+      while (e.hasMoreElements()) {
+         String param = (String) e.nextElement();
 
          if (param.startsWith(str)) {
             if (!result.contains(param)) {

@@ -23,16 +23,16 @@
 
 package org.dbforms.servlets;
 
-import dori.jasper.engine.JRDataSource;
-import dori.jasper.engine.JRException;
-import dori.jasper.engine.JRExporter;
-import dori.jasper.engine.JRExporterParameter;
-import dori.jasper.engine.JasperCompileManager;
-import dori.jasper.engine.JasperFillManager;
-import dori.jasper.engine.JasperPrint;
-import dori.jasper.engine.export.JRCsvExporter;
-import dori.jasper.engine.export.JRPdfExporter;
-import dori.jasper.engine.export.JRXlsExporter;
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRExporter;
+import net.sf.jasperreports.engine.JRExporterParameter;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.export.JRCsvExporter;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.engine.export.JRXlsExporter;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;

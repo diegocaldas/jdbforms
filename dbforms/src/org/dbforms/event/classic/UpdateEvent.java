@@ -159,11 +159,11 @@ public class UpdateEvent extends ValidationEvent {
 
          // now we provide the values
          // first, we provide the "new" values for fields
-         Iterator enum = fieldValues.elements();
+         Iterator iter = fieldValues.elements();
          int      col = 1;
 
-         while (enum.hasNext()) {
-            FieldValue fv = (FieldValue) enum.next();
+         while (iter.hasNext()) {
+            FieldValue fv = (FieldValue) iter.next();
 
             if (fv != null) {
                Field  curField  = fv.getField();
@@ -216,10 +216,10 @@ public class UpdateEvent extends ValidationEvent {
          ps.executeUpdate();
          ps.close(); // #JP Jun 27, 2001
 
-         enum = fieldValues.keys();
+         iter = fieldValues.keys();
 
-         while (enum.hasNext()) {
-            String fieldName = (String) enum.next();
+         while (iter.hasNext()) {
+            String fieldName = (String) iter.next();
             Field  curField = getTable()
                                  .getFieldByName(fieldName);
 

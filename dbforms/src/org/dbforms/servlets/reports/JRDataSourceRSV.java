@@ -23,9 +23,9 @@
 
 package org.dbforms.servlets.reports;
 
-import dori.jasper.engine.JRDataSource;
-import dori.jasper.engine.JRException;
-import dori.jasper.engine.JRField;
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRField;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.logging.Log;
@@ -79,7 +79,7 @@ public class JRDataSourceRSV implements JRDataSource, IGetSession {
    }
 
    /**
-    * @see dori.jasper.engine.JRDataSource#getFieldValue(dori.jasper.engine.JRField)
+    * @see net.sf.jasperreports.engine.JRDataSource#getFieldValue(net.sf.jasperreports.engine.JRField)
     *      Philip Grunikiewicz 2004-01-13  Because I had fields defined
     *      (dbforms-config.xml) in mix case (ie: creditLimit) and in my XML
     *      file, my field was in uppercase (ie: CREDITLIMIT), my field could
@@ -154,7 +154,7 @@ public class JRDataSourceRSV implements JRDataSource, IGetSession {
 
 
    /**
-    * @see dori.jasper.engine.JRDataSource#next()
+    * @see net.sf.jasperreports.engine.JRDataSource#next()
     */
    public boolean next() throws JRException {
       if (ResultSetVector.isNull(rsv)) {

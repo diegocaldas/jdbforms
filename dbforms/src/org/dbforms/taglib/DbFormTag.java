@@ -1124,10 +1124,10 @@ public class DbFormTag extends TagSupportWithScriptHandler
          if (javascriptDistinctFunctions.size() > 0) {
             jspOut.println("\n<SCRIPT language=\"javascript\">\n");
 
-            Enumeration enum = javascriptDistinctFunctions.keys();
+            Enumeration e = javascriptDistinctFunctions.keys();
 
-            while (enum.hasMoreElements()) {
-               String       aKey       = (String) enum.nextElement();
+            while (e.hasMoreElements()) {
+               String       aKey       = (String) e.nextElement();
                StringBuffer sbFonction = (StringBuffer) javascriptDistinctFunctions
                                          .get(aKey);
 
@@ -2211,14 +2211,14 @@ public class DbFormTag extends TagSupportWithScriptHandler
       String       values = "";
 
       Hashtable    fields = new Hashtable();
-      Enumeration  enum   = childFieldNames.keys();
+      Enumeration  e   = childFieldNames.keys();
 
       //
       // Loop in each keys "f_0_0@root_2" and create hashtable of unique
       // fieldnames
       //
-      while (enum.hasMoreElements()) {
-         key    = (String) enum.nextElement();
+      while (e.hasMoreElements()) {
+         key    = (String) e.nextElement();
          val    = (String) childFieldNames.get(key);
          values = "";
 
@@ -2239,7 +2239,7 @@ public class DbFormTag extends TagSupportWithScriptHandler
          result.append("<SCRIPT language=\"javascript\">\n");
          result.append("<!-- \n\n");
          result.append("    var dbFormFields = new Array();\n");
-         enum = fields.keys();
+         e = fields.keys();
 
          //
          // Loop for each fieldname and generate text for javascript Array
@@ -2247,8 +2247,8 @@ public class DbFormTag extends TagSupportWithScriptHandler
          // Ex: dbFormFields["DESCRIPTIONDEMANDE"] = new
          // Array("f_0_0@root_4", "f_0_1@root_4", "f_0_insroot_4");
          //
-         while (enum.hasMoreElements()) {
-            key = (String) enum.nextElement();
+         while (e.hasMoreElements()) {
+            key = (String) e.nextElement();
             val = (String) fields.get(key);
             result.append("    dbFormFields[\"")
                   .append(key)

@@ -413,10 +413,10 @@ public abstract class DataSource {
     */
    protected void deleteBlobFilesFromDisk(FieldValues fieldValues)
                                    throws SQLException {
-      Iterator enum = fieldValues.keys();
+      Iterator iter = fieldValues.keys();
 
-      while (enum.hasNext()) {
-         String fieldName = (String) enum.next();
+      while (iter.hasNext()) {
+         String fieldName = (String) iter.next();
          Field  curField = table.getFieldByName(fieldName);
 
          if (curField != null) {
@@ -467,10 +467,10 @@ public abstract class DataSource {
     */
    protected void saveBlobFilesToDisk(FieldValues fieldValues)
                                throws SQLException {
-      Iterator enum = fieldValues.keys();
+      Iterator iter = fieldValues.keys();
 
-      while (enum.hasNext()) {
-         String fieldName = (String) enum.next();
+      while (iter.hasNext()) {
+         String fieldName = (String) iter.next();
          Field  curField = table.getFieldByName(fieldName);
 
          if (curField != null) {

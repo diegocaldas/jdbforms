@@ -261,11 +261,11 @@ public class Query extends Table {
     */
    public Hashtable getNamesHashtable(String core) {
       Hashtable   result = super.getNamesHashtable(core);
-      Enumeration enum = getSearchFields()
+      Enumeration e = getSearchFields()
                             .elements();
 
-      while (enum.hasMoreElements()) {
-         Field f = (Field) enum.nextElement();
+      while (e.hasMoreElements()) {
+         Field f = (Field) e.nextElement();
          result.put(f.getName(), f.getFieldName(core));
 
          // in PHP slang we would call that an "associative array" :=)

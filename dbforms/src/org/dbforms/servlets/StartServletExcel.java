@@ -23,7 +23,7 @@
 
 package org.dbforms.servlets;
 
-import dori.jasper.engine.JRDataSource;
+import net.sf.jasperreports.engine.JRDataSource;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -286,17 +286,6 @@ public class StartServletExcel extends HttpServlet {
 
          if (Util.isNull(reportFileFullName)) {
             return;
-         }
-
-         // generate parameter map
-         DbFormsConfig config = null;
-
-         try {
-            config = DbFormsConfigRegistry.instance()
-                                          .lookup();
-         } catch (Exception e) {
-            logCat.error("processReport", e);
-            throw new ServletException(e);
          }
 
          ExcelReportWriter cw = new ExcelReportWriter();

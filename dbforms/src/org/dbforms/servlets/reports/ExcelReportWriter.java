@@ -23,8 +23,8 @@
 
 package org.dbforms.servlets.reports;
 
-import dori.jasper.engine.JRDataSource;
-import dori.jasper.engine.JRException;
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JRException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -56,7 +56,6 @@ public class ExcelReportWriter {
    HSSFWorkbook          wb;
    String                sheetName;
    private String[]      headerFields;
-   private boolean       useHeaders   = false;
 
    /**
                                                                                                                             *
@@ -74,7 +73,6 @@ public class ExcelReportWriter {
    public void setHeaders(String[] hFields) {
       headerFields = new String[hFields.length];
       System.arraycopy(hFields, 0, headerFields, 0, hFields.length);
-      useHeaders = true;
    }
 
 

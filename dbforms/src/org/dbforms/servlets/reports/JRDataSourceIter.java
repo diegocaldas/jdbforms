@@ -37,9 +37,9 @@
  */
 package org.dbforms.servlets.reports;
 
-import dori.jasper.engine.JRDataSource;
-import dori.jasper.engine.JRException;
-import dori.jasper.engine.JRField;
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRField;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.logging.Log;
@@ -84,7 +84,7 @@ public class JRDataSourceIter implements JRDataSource, IGetSession {
    }
 
    /**
-    * @see dori.jasper.engine.JRDataSource#getFieldValue(dori.jasper.engine.JRField)
+    * @see net.sf.jasperreports.engine.JRDataSource#getFieldValue(net.sf.jasperreports.engine.JRField)
     */
    public Object getFieldValue(JRField field) throws JRException {
       Object o;
@@ -118,7 +118,7 @@ public class JRDataSourceIter implements JRDataSource, IGetSession {
 
 
    /**
-    * @see dori.jasper.engine.JRDataSource#next()
+    * @see net.sf.jasperreports.engine.JRDataSource#next()
     */
    public boolean next() throws JRException {
       if (!iter.hasNext()) {

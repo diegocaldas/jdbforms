@@ -206,10 +206,10 @@ public class ErrorsTag extends TagSupportWithScriptHandler
       String delimiter = this.getMessagePrefix();
 
       if (errors != null) {
-         Enumeration enum = errors.elements();
+         Enumeration e = errors.elements();
 
-         while (enum.hasMoreElements()) {
-            message = ((Exception) enum.nextElement()).getMessage();
+         while (e.hasMoreElements()) {
+            message = ((Exception) e.nextElement()).getMessage();
 
             //Check for delimiter
             if ((delimiter != null)

@@ -36,7 +36,7 @@ import org.dbforms.config.DbFormsErrors;
 
 import java.io.IOException;
 
-import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.Vector;
 
 import javax.servlet.jsp.JspException;
@@ -158,10 +158,10 @@ public class DbXmlErrorsTag extends TagSupportWithScriptHandler
       }
 
       if ((originalErrors != null) && (originalErrors.size() > 0)) {
-         Enumeration enum = originalErrors.elements();
+         Iterator iter = originalErrors.iterator();
 
-         while (enum.hasMoreElements()) {
-            Exception ex = (Exception) enum.nextElement();
+         while (iter.hasNext()) {
+            Exception ex = (Exception) iter.next();
 
             String    result = errors.getXMLErrorMessage(ex.getMessage());
 

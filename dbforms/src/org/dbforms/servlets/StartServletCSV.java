@@ -23,7 +23,7 @@
 
 package org.dbforms.servlets;
 
-import dori.jasper.engine.JRDataSource;
+import net.sf.jasperreports.engine.JRDataSource;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -328,17 +328,6 @@ public class StartServletCSV extends HttpServlet {
       try {
          if (Util.isNull(reportFileFullName)) {
             return;
-         }
-
-         // generate parameter map
-         DbFormsConfig config = null;
-
-         try {
-            config = DbFormsConfigRegistry.instance()
-                                          .lookup();
-         } catch (Exception e) {
-            logCat.error("processReport", e);
-            throw new ServletException(e);
          }
 
          CSVReportWriter cw = new CSVReportWriter();

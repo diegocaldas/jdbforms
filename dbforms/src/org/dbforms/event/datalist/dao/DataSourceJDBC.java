@@ -569,11 +569,11 @@ public class DataSourceJDBC extends DataSource {
                      throws SQLException {
       // now we provide the values;
       // every key is the parameter name from of the form page;
-      Iterator enum = fieldValues.keys();
+      Iterator e = fieldValues.keys();
       int      col = 1;
 
-      while (enum.hasNext()) {
-         String fieldName = (String) enum.next();
+      while (e.hasNext()) {
+         String fieldName = (String) e.next();
          Field  curField = getTable()
                               .getFieldByName(fieldName);
 

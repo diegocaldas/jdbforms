@@ -473,10 +473,10 @@ public class Controller extends HttpServlet {
       logCat.error("::processMultipleValidationException - exception", mve);
 
       if ((v = mve.getMessages()) != null) {
-         Enumeration enum = v.elements();
+         Enumeration e = v.elements();
 
-         while (enum.hasMoreElements()) {
-            errors.addElement(enum.nextElement());
+         while (e.hasMoreElements()) {
+            errors.addElement(e.nextElement());
          }
       }
 

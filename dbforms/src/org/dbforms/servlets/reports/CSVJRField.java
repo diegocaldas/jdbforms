@@ -23,7 +23,7 @@
 
 package org.dbforms.servlets.reports;
 
-import dori.jasper.engine.JRField;
+import net.sf.jasperreports.engine.JRField;
 
 
 
@@ -65,7 +65,7 @@ public class CSVJRField implements JRField {
    }
 
    /* (non-Javadoc)
-    * @see dori.jasper.engine.JRField#setDescription(java.lang.String)
+    * @see net.sf.jasperreports.engine.JRField#setDescription(java.lang.String)
     */
    public void setDescription(String arg0) {
       description = arg0;
@@ -73,7 +73,7 @@ public class CSVJRField implements JRField {
 
 
    /* (non-Javadoc)
-    * @see dori.jasper.engine.JRField#getDescription()
+    * @see net.sf.jasperreports.engine.JRField#getDescription()
     */
    public String getDescription() {
       return description;
@@ -81,7 +81,7 @@ public class CSVJRField implements JRField {
 
 
    /* (non-Javadoc)
-    * @see dori.jasper.engine.JRField#getName()
+    * @see net.sf.jasperreports.engine.JRField#getName()
     */
    public String getName() {
       return name;
@@ -89,7 +89,7 @@ public class CSVJRField implements JRField {
 
 
    /* (non-Javadoc)
-    * @see dori.jasper.engine.JRField#getValueClass()
+    * @see net.sf.jasperreports.engine.JRField#getValueClass()
     */
    public Class getValueClass() {
       return valueClass;
@@ -97,7 +97,7 @@ public class CSVJRField implements JRField {
 
 
    /* (non-Javadoc)
-    * @see dori.jasper.engine.JRField#getValueClassName()
+    * @see net.sf.jasperreports.engine.JRField#getValueClassName()
     */
    public String getValueClassName() {
       return valueClass.getName();
