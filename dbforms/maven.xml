@@ -1,17 +1,19 @@
-<project
-  default="documentation"
-  xmlns:m="maven"
-  xmlns:j="jelly:core"
-  xmlns:u="jelly:util">
+<project default = ""
+         xmlns:m = "maven"
+         xmlns:j = "jelly:core"
+         xmlns:u = "jelly:util"
+         xmlns:w = "jelly:werkz" >
 
   <!--
-     -  Build the DbForms docbook guide
-	 -->
-  <goal name="documentation">
+     -  Build the additional DbForms documentation:
+     -    tag library
+     -    docbook guide 
+     -->
+  <w:postGoal name="site:generate">
     <j:jelly xmlns:j="jelly:core" xmlns="jelly:ant">
-	  <echo message="building the DbForms docbook user guide"/>          
-	  <ant antfile="docs.xml"/>
+      <echo message="building the DbForms documentation: user guide and jsp tag library"/>          
+      <ant antfile="docs.xml" target="maven-build-doc"/>
     </j:jelly>
-  </goal>
+  </w:postGoal>
 
 </project>
