@@ -1,4 +1,4 @@
-<project name="dbforms" default="createReleaseFile" basedir=".">
+<project name="dbforms" default="createReleaseFiles" basedir=".">
 
     <!-- 
 
