@@ -39,9 +39,10 @@ import org.dbforms.util.AssertUtils;
 
 
 /**
- * Tests of the <code>DbFormTag</code> class.
+ * Tests of the <code>Validation Event</code> class.
  * 
- * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
+ * @author Henner Kollmann
+ * 
  */
 public class TestValidationEvent extends JspTestCase
 {
@@ -160,12 +161,4 @@ public class TestValidationEvent extends JspTestCase
         }
    }
 
-   /**
-    * DOCUMENT ME!
-    */
-   public void tearDown()
-   {
-      //necessary for tag to output anything on most servlet engines.
-      //        this.pageContext.popBody();
-   }
 }
