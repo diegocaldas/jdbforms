@@ -11,8 +11,8 @@
 <!ENTITY uplo SYSTEM "Fileuploads.xml">
 <!ENTITY styl SYSTEM "Styling.xml">
 <!ENTITY sort SYSTEM "Sorting.xml">
-<!ENTITY filt SYSTEM "Filtering.xml">
-<!ENTITY sear SYSTEM "Searching.xml">
+<!--ENTITY filt SYSTEM "Filtering.xml"-->
+<!--ENTITY sear SYSTEM "Searching.xml"-->
 <!ENTITY scri SYSTEM "Scripting_Variables.xml">
 <!ENTITY hook SYSTEM "Application_Hookups.xml">
 <!ENTITY devg SYSTEM "DevGui.xml">
@@ -21,7 +21,7 @@
 <!ENTITY jscr SYSTEM "Javascript_Calendar.xml">
 <!ENTITY fkey SYSTEM "Foreign_Keys.xml">
 <!ENTITY cons SYSTEM "Connection_Support.xml">
-<!ENTITY quer SYSTEM "Query_Support.xml">
+<!--ENTITY quer SYSTEM "Query_Support.xml"-->
 <!ENTITY mult SYSTEM "Multiple_Database_Connections.xml">
 <!ENTITY plug SYSTEM "PluggableEvents.xml">
 <!ENTITY ejbs SYSTEM "EJBs.xml">
@@ -61,8 +61,7 @@
 &uplo;
 &styl;
 &sort;
-&filt;
-&sear;
+ 
 &scri;
 &hook;
 &inte;
@@ -70,7 +69,7 @@
 &jscr;
 &fkey;
 &cons;
-&quer;
+ 
 &mult;
 &plug;
 &ejbs;
