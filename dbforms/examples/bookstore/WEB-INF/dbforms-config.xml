@@ -2,23 +2,23 @@
 
 <dbforms-config>
 	    <table name="AUTHOR">
-	        <field name="AUTHOR_ID" fieldType="int" size="10" isKey="true" autoInc="true"/>
-	        <field name="NAME" fieldType="varchar" size="50" sortable="true"/>
-	        <field name="ORGANISATION" fieldType="varchar" size="50" sortable="true"/>
+	        <field name="AUTHOR_ID" fieldType="int" isKey="true" autoInc="true"/>
+	        <field name="NAME" fieldType="varchar"  sortable="true"/>
+	        <field name="ORGANISATION" fieldType="varchar"  sortable="true"/>
 	    </table>    
 	    
 	    <table name="BOOK">
-	        <field name="BOOK_ID" fieldType="int" size="10" isKey="true" autoInc="true"/>
-	        <field name="ISBN" fieldType="varchar" size="15"/>
-	        <field name="AUTHOR_ID" fieldType="int" size="10" isKey="true"/>
-	        <field name="TITLE" fieldType="varchar" size="255"/>
+	        <field name="BOOK_ID" fieldType="int" isKey="true" autoInc="true"/>
+	        <field name="ISBN" fieldType="varchar" />
+	        <field name="AUTHOR_ID" fieldType="int" isKey="true"/>
+	        <field name="TITLE" fieldType="varchar" />
 	    </table>    
 
 	    <query name="BOOKWITHINTERCEPTOR" from="BOOK">
-	        <field name="BOOK_ID" fieldType="int" size="10" isKey="true"/>
-	        <field name="ISBN" fieldType="varchar" size="15"/>
-	        <field name="AUTHOR_ID" fieldType="int" size="10" isKey="true"/>
-	        <field name="TITLE" fieldType="varchar" size="255"/>
+	        <field name="BOOK_ID" fieldType="int" isKey="true"/>
+	        <field name="ISBN" fieldType="varchar" />
+	        <field name="AUTHOR_ID" fieldType="int" isKey="true"/>
+	        <field name="TITLE" fieldType="varchar"/>
             <interceptor className = "interceptors.BookstoreWithInterceptorTest"/>                
 	    </query>    
 	    
@@ -29,12 +29,12 @@
 	    <query 	name="BOOKSPERAUTHOR" 
 		    	from="AUTHOR, BOOK"
 		    	where="BOOK.AUTHOR_ID = AUTHOR.AUTHOR_ID" >
-	        <field name="AUTHOR_ID" fieldType="int" size="10" isKey="true" autoInc="true"/>
-	        <field name="NAME" fieldType="varchar" size="50"/>
-	        <field name="ORGANISATION" fieldType="varchar" size="50"/>
-	        <field name="BOOK_ID" fieldType="int" size="10" isKey="true" autoInc="true"/>
-	        <field name="ISBN" fieldType="varchar" size="15"/>
-	        <field name="TITLE" fieldType="varchar" size="255"/>
+	        <field name="AUTHOR_ID" fieldType="int" isKey="true" autoInc="true"/>
+	        <field name="NAME" fieldType="varchar" />
+	        <field name="ORGANISATION" fieldType="varchar" />
+	        <field name="BOOK_ID" fieldType="int" isKey="true" autoInc="true"/>
+	        <field name="ISBN" fieldType="varchar"/>
+	        <field name="TITLE" fieldType="varchar"/>
 	    </query>
 	    
 	    <table 
@@ -58,6 +58,11 @@
 			expression="author/name"
 	        />
 	    </table>
+
+	    <table name="TIMEPLAN">
+	        <field name="TIME" fieldType="DATE" isKey="true"/>
+	        <field name="REMARK" fieldType="varchar" />
+	    </table>    
 
 	  <events>
 	    <database-events>

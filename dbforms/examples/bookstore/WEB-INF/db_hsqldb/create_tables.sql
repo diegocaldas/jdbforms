@@ -24,6 +24,12 @@ create table book
 );
 CREATE INDEX book_isbn ON book (isbn);
 
+CREATE TABLE TIMEPLAN 
+(
+   time TIMESTAMP PRIMARY KEY, 
+   REMARK VARCHAR(255)
+);
+
 -- -----------------------------------------------------------------------
 -- insert some data
 -- -----------------------------------------------------------------------
@@ -36,4 +42,6 @@ INSERT INTO BOOK  (book_id, isbn, author_id, title) VALUES(4, '42-2',2,'Hijackin
 INSERT INTO BOOK  (book_id, isbn, author_id, title) VALUES(5, '42-3',2,'Hijacking through the Galaxy 3');
 INSERT INTO BOOK  (book_id, isbn, author_id, title) VALUES(6, '42-4',2,'Hijacking through the Galaxy 4');
 INSERT INTO BOOK  (book_id, isbn, author_id, title) VALUES(7, '42-5',2,'Hijacking through the Galaxy 5');
+INSERT INTO TIMEPLAN (time, remark) values ('2001-10-10', '1. Testvalue');
+INSERT INTO TIMEPLAN (time, remark) values ('2001-10-11', '2. Testvalue');
 
