@@ -103,7 +103,7 @@
 		      		autoUpdate="false" 
 		      		followUp="/tests/testAuthorBooksSubFormWithFilter.jsp"   
 		      		maxRows="*" 
-		      		tableName="BOOK"
+		      		tableName="BOOK_QUERY"
 		     		parentField="AUTHOR_ID"
 		     		childField="AUTHOR_ID"	 			
 			      	orderBy="ISBN" 
