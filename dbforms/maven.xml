@@ -45,7 +45,7 @@
     <ant:cvspass cvsroot=":${scmTokens[2]}:${scmTokens[3]}:${scmTokens[4]}" password="" />
     <ant:cvs
      	cvsRoot=":${scmTokens[2]}:${scmTokens[3]}:${scmTokens[4]}" 
-     	command="co -P" 
+     	command="--lf co -P" 
      	compression="true" 
      	package="${scmTokens[5]}" 
      	dest="temp/release" 
@@ -138,6 +138,7 @@
            <ant:include name="bookstore*.war" />    		
     	</ant:fileset>
     </ant:copy>
+    <ant:copy file="${maven.conf.dir}/root/index.html" todir="${maven.appserver.dir}/webapps/ROOT" overwrite="true"/>
   </postGoal>
 
   <preGoal name="test:test">
