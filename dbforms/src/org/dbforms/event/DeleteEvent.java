@@ -47,7 +47,7 @@ public class DeleteEvent extends DatabaseEvent
     private String keyId;
 
     /**
-                
+
     */
     public String getKeyId()
     {
@@ -62,13 +62,14 @@ public class DeleteEvent extends DatabaseEvent
      * @param request DOCUMENT ME!
      * @param config DOCUMENT ME!
      */
-    public DeleteEvent(int tableId, String keyId, HttpServletRequest request, DbFormsConfig config)
+    //public DeleteEvent(int tableId, String keyId, HttpServletRequest request, DbFormsConfig config)
+    public DeleteEvent(Integer tableId, String keyId, HttpServletRequest request, DbFormsConfig config)
     {
         logCat.info("new DeleteEvent with tableid=" + tableId + " keyId=" + keyId);
         this.request = request;
         this.config = config;
-        this.tableId = tableId;
-        this.table = config.getTable(tableId);
+        this.tableId = tableId.intValue();   // !
+        this.table = config.getTable(tableId.intValue());
         this.keyId = keyId;
     }
 

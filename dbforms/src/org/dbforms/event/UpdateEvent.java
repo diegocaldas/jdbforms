@@ -45,7 +45,7 @@ public class UpdateEvent extends DatabaseEvent
     private String keyId;
 
     /**
-        
+
     */
     public String getKeyId()
     {
@@ -60,13 +60,14 @@ public class UpdateEvent extends DatabaseEvent
      * @param request DOCUMENT ME!
      * @param config DOCUMENT ME!
      */
-    public UpdateEvent(int tableId, String keyId, HttpServletRequest request, DbFormsConfig config)
+    //public UpdateEvent(int tableId, String keyId, HttpServletRequest request, DbFormsConfig config)
+    public UpdateEvent(Integer tableId, String keyId, HttpServletRequest request, DbFormsConfig config)
     {
-        logCat.info("new UpdateEvent with tableid=" + tableId + " keyId=" + keyId);
+        logCat.info("new UpdateEvent with tableid=" + tableId.intValue() + " keyId=" + keyId);
         this.request = request;
         this.config = config;
-        this.tableId = tableId;
-        this.table = config.getTable(tableId);
+        this.tableId = tableId.intValue();
+        this.table = config.getTable(tableId.intValue());
         this.keyId = keyId;
     }
 
@@ -187,7 +188,7 @@ public class UpdateEvent extends DatabaseEvent
         }
 
         // now we start building the UPDATE statement
-        // 20021031-HKK: Moved into table      
+        // 20021031-HKK: Moved into table
         PreparedStatement ps = con.prepareStatement(table.getUpdateStatement(fieldValues));
 
         // now we provide the values
