@@ -59,7 +59,7 @@
 </part>
 <part>
 	<title>Advanced Use and Extensions</title>
-
+&how_to;
 &secu;
 &uplo;
 &styl;
@@ -79,7 +79,6 @@
 &xml;
 &unit-test;
 &navi;                
-&how_to;
 &tagl;
 </part>                
 <part>
