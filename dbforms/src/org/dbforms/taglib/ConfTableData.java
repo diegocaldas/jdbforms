@@ -188,6 +188,7 @@ public class ConfTableData extends EmbeddedData
 			DataSourceFactory qry = new DataSourceFactory(null, con, table);
 			qry.setSelect(childFieldValues, orderConstraint, null, null);
 			ResultSetVector rsv = qry.getCurrent(null, 0);
+         qry.close();
 			return formatEmbeddedResultRows(rsv);
 		} catch (Exception e) {
 			throw new SQLException(e.getMessage());
