@@ -1262,7 +1262,6 @@ public class DbFormTag extends BodyTagSupport {
 		// The connection should not be null - If it is, then you might have an infrastructure problem!
 		// Be sure to look into this!  Hint: check out your pool manager's performance! 
 		if (con != null) {
-
 			try {
 				logCat.debug("About to close connection - " + con);
 				con.close();
@@ -1524,32 +1523,32 @@ public class DbFormTag extends BodyTagSupport {
                  // Check for operator 
                  int algorithm = FieldValue.SEARCH_ALGO_SHARP;
                  int operator = FieldValue.FILTER_EQUAL;
-                 if         ("sharpLT".equals(aSearchAlgorithm)) {
+                 if         (aSearchAlgorithm.startsWith("sharpLT")) {
                     operator = FieldValue.FILTER_SMALLER_THEN;
-                 } else if ("sharpLE".equals(aSearchAlgorithm)) {
+                 } else if (aSearchAlgorithm.startsWith("sharpLE")) {
                     operator = FieldValue.FILTER_SMALLER_THEN_EQUAL;
-                 } else if ("sharpGT".equals(aSearchAlgorithm)) {
+                 } else if (aSearchAlgorithm.startsWith("sharpGT")) {
                     operator = FieldValue.FILTER_GREATER_THEN;
-                 } else if ("sharpGE".equals(aSearchAlgorithm)) {
+                 } else if (aSearchAlgorithm.startsWith("sharpGE")) {
                     operator = FieldValue.FILTER_GREATER_THEN_EQUAL;
-                 } else if ("sharpNE".equals(aSearchAlgorithm)) {
+                 } else if (aSearchAlgorithm.startsWith("sharpNE")) {
                     operator = FieldValue.FILTER_NOT_EQUAL;
-                 } else if ("sharpNULL".equals(aSearchAlgorithm)) {
+                 } else if (aSearchAlgorithm.startsWith("sharpNULL")) {
                     operator = FieldValue.FILTER_NULL;
-                 } else if ("sharpNOTNULL".equals(aSearchAlgorithm)) {
+                 } else if (aSearchAlgorithm.startsWith("sharpNOTNULL")) {
                     operator = FieldValue.FILTER_NOT_NULL;
-                 } else if ("weak".equals(aSearchAlgorithm)) {
-                    algorithm = FieldValue.SEARCH_ALGO_WEAK;
-                    operator = FieldValue.FILTER_LIKE;
-					  } else if ("weakStart".equals(aSearchAlgorithm)) {
-	                 algorithm = FieldValue.SEARCH_ALGO_WEAK_START;
-	                 operator = FieldValue.FILTER_LIKE;
-  		           } else if ("weakEnd".equals(aSearchAlgorithm)) {
-	              	  algorithm = FieldValue.SEARCH_ALGO_WEAK_END;
-	                 operator = FieldValue.FILTER_LIKE;
-		           } else if ("weakStartEnd".equals(aSearchAlgorithm)) {
+		           } else if (aSearchAlgorithm.startsWith("weakStartEnd")) {
 	                 algorithm = FieldValue.SEARCH_ALGO_WEAK_END;
 	                 operator = FieldValue.FILTER_LIKE;
+					  } else if (aSearchAlgorithm.startsWith("weakStart")) {
+	                 algorithm = FieldValue.SEARCH_ALGO_WEAK_START;
+	                 operator = FieldValue.FILTER_LIKE;
+  		           } else if (aSearchAlgorithm.startsWith("weakEnd")) {
+	              	  algorithm = FieldValue.SEARCH_ALGO_WEAK_END;
+	                 operator = FieldValue.FILTER_LIKE;
+                 } else if (aSearchAlgorithm.startsWith("weak")) {
+                    algorithm = FieldValue.SEARCH_ALGO_WEAK;
+                    operator = FieldValue.FILTER_LIKE;
 					  }   
                  if ((aSearchAlgorithm == null) || (aSearchAlgorithm.toLowerCase().indexOf("extended") == -1)) {
 	                 // Extended not found, only append field 	
