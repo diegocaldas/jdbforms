@@ -28,6 +28,10 @@ import java.net.URLConnection;
 
 import java.io.OutputStream;
 import java.io.FileOutputStream;
+
+import java.io.InputStream;
+import java.io.FileInputStream;
+
 import java.io.IOException;
 
 import org.w3c.dom.Document;
@@ -35,8 +39,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.xpath.XPathEvaluator;
 import org.apache.log4j.Category;
 import org.dbforms.util.Util;
-
-
+import org.dbforms.util.ReflectionUtil;
 
 /**
  * abstract class to hide the implemtation details of the various dom
@@ -44,43 +47,46 @@ import org.dbforms.util.Util;
  * 
  * @author Henner Kollmann
  */
-public abstract class DOMFactory
-{
-   private final static ThreadLocal singlePerThread = new ThreadLocal();
-   private Category                 logCat = Category.getInstance(
-                                                      this.getClass().getName());
+public abstract class DOMFactory {
+	private final static ThreadLocal singlePerThread = new ThreadLocal();
+	private static Category logCat =
+		Category.getInstance(DOMFactory.class.getName());
 
-   /**
-    * Get the thread singelton instance
-    *
-    * @return a DOMFactory instance per thread
-    */ 
-   public static DOMFactory instance()
-   {
-      DOMFactory fact = (DOMFactory) singlePerThread.get();
-      if (fact == null)
-      {
-         fact = new DOMFactorySAXImpl();
-         singlePerThread.set(fact);
-      }
+	private static String factoryClass = "org.dbforms.dom.DOMFactoryXALANImpl";
 
-      return fact;
-   }
+	/**
+	 * Get the thread singelton instance
+	 *
+	 * @return a DOMFactory instance per thread
+	 */
+	public static DOMFactory instance() {
+		DOMFactory fact = (DOMFactory) singlePerThread.get();
+		if (fact == null) {
+			try {
+				fact = (DOMFactory) ReflectionUtil.newInstance(factoryClass);
+			} catch (Exception e) {
+				logCat.error("instance", e);
+			}
+			if (fact == null) {
+				fact = new DOMFactoryXALANImpl();
+			}
+			singlePerThread.set(fact);
+		}
+		return fact;
+	}
 
-   /**
-    * Creates a new DOMFactory object.
-    */
-   protected DOMFactory()
-   {
-   }
+	/**
+	 * Creates a new DOMFactory object.
+	 */
+	protected DOMFactory() {
+	}
 
-   /**
-    * Creates a new empty DOMDocument
-    *
-    * @return An empty DOMDocument
-    */
-   public abstract Document newDOMDocument();
-
+	/**
+	 * Creates a new empty DOMDocument
+	 *
+	 * @return An empty DOMDocument
+	 */
+	public abstract Document newDOMDocument();
 
 	/**
 	 * Creates an new DOMDocument from the given string
@@ -91,23 +97,72 @@ public abstract class DOMFactory
 	 */
 	public abstract Document String2DOM(String data);
 
-   /**
-    * Creates a string representation of the given DOMDocument 
-    *
-    * @param doc The document to transform
-    *
-    * @return string representation
-    */
-   public abstract String DOM2String(Document doc);
+	/**
+	 * Creates a string representation of the given DOMDocument 
+	 *
+	 * @param doc The document to transform
+	 *
+	 * @return string representation
+	 */
+	public abstract String DOM2String(Document doc);
 
-   /**
-    * Reads a DOMDocument from given url
-    *
-    * @param url the url to read from
-    *
-    * @return The new parsed DOMDocument 
-    */
-   public abstract Document read(String url);
+	/**
+	 * Reads a DOMDocument from given InputStream
+	 *
+	 * @param in The InputStream to read
+	 *
+	 * @return The new parsed DOMDocument 
+	 */
+	public abstract Document read(InputStream in);
+
+	/**
+	 * Reads a DOMDocument from given url
+	 *
+	 * @param url the url to read from
+	 *
+	 * @return The new parsed DOMDocument 
+	 */
+	public Document read(String url) {
+		Document doc = null;
+		if (!Util.isNull(url)) {
+			InputStream in = null;
+			try {
+				// Try to parse via URL connection
+				URL u = new URL(url);
+				URLConnection con = u.openConnection();
+				con.connect();
+				in = con.getInputStream();
+			} catch (Exception e) {
+				logCat.error("read", e);
+			}
+			if (in == null) {
+				try {
+					in = new FileInputStream(url);
+				} catch (Exception e) {
+					logCat.error("read", e);
+				}
+			}
+			if (in != null) {
+				doc = read(in);
+				try {
+					in.close();
+				} catch (Exception e) {
+               logCat.error("read", e); 
+				}
+
+			}
+		}
+		return doc;
+	}
+
+	/**
+	 * Writes a DOMElement into an OutputStream
+	 *
+	 * @param out OutputStream to write into
+	 * @param root  root element to start writing
+	 */
+	public abstract void write(OutputStream out, Element root)
+		throws IOException;
 
 	/**
 	 * Writes a DOMDocument into an OutputStream
@@ -115,18 +170,9 @@ public abstract class DOMFactory
 	 * @param out OutputStream to write into
 	 * @param doc  doc to write
 	 */
-	public void write(OutputStream out, Document doc) throws IOException 
-	{
-		write(out, doc.getDocumentElement()); 
+	public void write(OutputStream out, Document doc) throws IOException {
+		write(out, doc.getDocumentElement());
 	}
-
-   /**
-    * Writes a DOMElement into an OutputStream
-    *
-    * @param out OutputStream to write into
-    * @param root  root element to start writing
-    */
-   public abstract void write(OutputStream out, Element root) throws IOException;
 
 	/**
 	 * Writes an DOMDocument into a file
@@ -134,9 +180,8 @@ public abstract class DOMFactory
 	 * @param url The url to write to
 	 * @param doc The document to write
 	 */
-	public final void write(String url, Document doc) throws IOException 
-	{
-	   write(url, doc.getDocumentElement());
+	public final void write(String url, Document doc) throws IOException {
+		write(url, doc.getDocumentElement());
 	}
 
 	/**
@@ -145,53 +190,48 @@ public abstract class DOMFactory
 	 * @param url The url to write to
 	 * @param root  root element to start writing
 	 */
-	public final void write(String url, Element root) throws IOException
-	{
-		if (!Util.isNull(url) && (root != null))
-		{
+	public final void write(String url, Element root) throws IOException {
+		if (!Util.isNull(url) && (root != null)) {
 			OutputStream out = null;
 
-			try
-			{
-				URL           u   = new URL(url);
+			try {
+				URL u = new URL(url);
 				URLConnection con = u.openConnection();
 				con.connect();
 				out = con.getOutputStream();
-			}
-			catch (Exception e)
-			{
-				logCat.error(e);
+			} catch (Exception e) {
+				logCat.error("write", e);
 			}
 
-			if (out == null)
-			{
-				try
-				{
+			if (out == null) {
+				try {
 					out = new FileOutputStream(url);
-				}
-				catch (Exception e)
-				{
-					logCat.error(e);
+				} catch (Exception e) {
+					logCat.error("write", e);
 				}
 			}
 
-			if (out != null)
-			{
+			if (out != null) {
 				write(out, root);
 				out.close();
 			} else {
-			   throw new IOException("no target found to wich we can write");
+				throw new IOException("no target found to wich we can write");
 			}
 		}
 	}
 
-  /**
-    * returns an new created XPathEvaluator
-    *
-    * @return the new XPathEvaluator
-    */
-   public abstract XPathEvaluator newXPathEvaluator();
+	/**
+	  * returns an new created XPathEvaluator
+	  *
+	  * @return the new XPathEvaluator
+	  */
+	public abstract XPathEvaluator newXPathEvaluator();
 
+	/**
+	 * @param string
+	 */
+	public static void setFactoryClass(String string) {
+		factoryClass = string;
+	}
 
 }
- 
