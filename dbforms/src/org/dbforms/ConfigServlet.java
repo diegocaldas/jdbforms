@@ -60,7 +60,7 @@ import org.dbforms.event.NavEventFactoryImpl;
  */
 public class ConfigServlet extends HttpServlet
 {
-    Category logCat;
+    protected Category logCat;
 
     // ----------------------------------------------------- Instance Variables
 
@@ -476,6 +476,10 @@ public class ConfigServlet extends HttpServlet
         {
             config = value;
         }
+        initXMLConfigFile(config, digesterDebugLevel);
+    } 
+
+    protected void initXMLConfigFile(String config, int digesterDebugLevel) throws IOException, ServletException {
 
         // Acquire an input stream to our configuration resource
         InputStream input = getServletContext().getResourceAsStream(config);
