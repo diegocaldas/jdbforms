@@ -22,16 +22,17 @@
               to instantiate and execute.
             </para>
             <para>
-              Then, the controller instantiates the EventEngine object.
+              Then, the controller instantiates the  <computeroutput>EventEngine</computeroutput> object.
             </para>
           </listitem>
 
           <listitem>
             <para>
-              The controller servlet calls the eventEngine.generatePrimaryEvent() method.
-              generatePrimaryEvent() gets the action parameter from the request, try to 
+              The controller servlet calls the <computeroutput>eventEngine.generatePrimaryEvent()</computeroutput> method.
+              <computeroutput>generatePrimaryEvent()</computeroutput> gets the <computeroutput>action</computeroutput> 
+			  parameter from the <computeroutput>request</computeroutput>, try to 
               identify the related event type (database or navigation) and then uses the appropriate factory
-              to create the related event object. generatePrimaryEvent() returns the event 
+              to create the related event object. <computeroutput>generatePrimaryEvent()</computeroutput> returns the event 
               object to the controller.
             </para>         
           </listitem>
@@ -39,27 +40,48 @@
           <listitem>
             <para>
               The controller servlet checks if the returned event object is an instance of a
-              Database event (i.e.: insert, delete, update events).
+              <computeroutput>Database event</computeroutput> (i.e.: insert, delete, update events).
               If yes, validate the incoming data 
-              (optional: if hidden formValidatorName exist and it's an Update or Insert event,
-               execute the doValidation with Commons-Validator) and process the event object.
+              (the validation step occurs only if the <computeroutput>formValidatorName</computeroutput> request parameter 
+			  exist and the current event is an <computeroutput>Update</computeroutput> 
+              or <computeroutput>Insert</computeroutput> event.
+			  The controller executes the <computeroutput>doValidation()</computeroutput> method 
+			  that uses the <computeroutput>Commons-Validator</computeroutput> Jakarta component) 
+               and process the event object.
             </para>
-			<para>
-			  Note: the Navigation events are managed by the DbFormsTag class.
-			  The controller manages only the database event type.
-			</para>
+            <para>
+              Note: the Navigation events are managed by the <computeroutput>DbFormsTag</computeroutput> class.
+              The controller manages only the database event type.
+            </para>
+          </listitem>
+
+          <listitem>
+            <para>
+              The controller servlet stores the event reference into the session context.
+              MUST UPDATE the diagram picture...
+            </para>         
           </listitem>
 
           <listitem>
             <para>
               The controller servlet checks if the evetEngine has got involved tables:
-			  it find out which tables where on the jsp page (the view); 
-			  one jsp file may contain multiple (db)forms, and each forms could contain many
-			  subforms nested inside.
+              it find out which tables where on the jsp page (the view); 
+              one jsp file may contain multiple (db)forms, and each forms could contain many
+              subforms nested inside.
             </para>         
-			<para>
-			  If yes, the controller executes the 
-			</para>
+            <para>
+              If yes, the controller gets the list of all the involved tables, generates 
+              and executes update events for all of them.
+            </para>
+          </listitem>
+
+          <listitem>
+            <para>
+              The controller servlet forwards the client to the target resource referred from the 
+              <computeroutput>followUp</computeroutput>
+              attribute of the jsp form if there are no errors.
+              Else redirects to the resource specified by the <computeroutput>followUpOnError</computeroutput> form attribute.
+            </para>         
           </listitem>
 
         </itemizedlist>
