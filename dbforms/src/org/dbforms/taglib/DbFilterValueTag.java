@@ -132,8 +132,7 @@ public class DbFilterValueTag extends DbBaseHandlerTag implements DataContainer,
 
    static Category         logCat = Category.getInstance(
                                              DbFilterValueTag.class.getName());
-
-
+  
    /**
     * read from request all values associated to the condition identified with <tableId>, <conditionId>.
     * It try to read the value with identifier 0, if succeded go on with identifier 1, and so on.
@@ -323,26 +322,36 @@ public class DbFilterValueTag extends DbBaseHandlerTag implements DataContainer,
       state.embeddedData = null;
    }
 
+   protected Object getFieldObject() {
+      FieldValue fv = new FieldValue(getField(), state.value);
+      fv.setLocale(MessageResources.getLocale((HttpServletRequest)pageContext.getRequest()));  
+      return fv.getFieldValueAsObject();
+   }
 
    /**
     * render output of this value object. This is called only if its parent's condition is selected
     * 
     * @return
     * @throws JspException
-    * @todo better handling of timestamp
     */
    protected StringBuffer render() throws JspException
    {
       StringBuffer buf = new StringBuffer();
 
+      Field f = new Field();
+      f.setName(state.label);
+      f.setId(state.valueId);
+      f.setFieldType(state.type);
+      setField(f);
+   
       if (state.label != null)
       {
          buf.append("<b>" + state.label + "</b>\n");
       }
 
       if (state.type.equalsIgnoreCase(FLT_VALUETYPE_TEXT)
-                || state.type.equalsIgnoreCase(FLT_VALUETYPE_NUMERIC))
-      {
+                || state.type.equalsIgnoreCase(FLT_VALUETYPE_NUMERIC)
+      ) {
          renderTextElement(buf);
       }
       else if (state.type.equalsIgnoreCase(FLT_VALUETYPE_DATE)
@@ -381,16 +390,8 @@ public class DbFilterValueTag extends DbBaseHandlerTag implements DataContainer,
          buf.append(" <a href=\"javascript:doNothing()\" ")
             .append(" onclick=\"");
 
-         if (state.jsCalendarDateFormat == null)
-         {
-            // get date format from config
-            SimpleDateFormat format = (java.text.SimpleDateFormat) getFormat();
-
-            if (format != null)
-            {
-               state.jsCalendarDateFormat = format.toPattern();
-            }
-         }
+         setPattern(state.jsCalendarDateFormat);
+         state.jsCalendarDateFormat = ((SimpleDateFormat)getFormat()).toPattern();
 
          if (state.jsCalendarDateFormat != null) // JS Date Format set ?
          {
@@ -400,10 +401,10 @@ public class DbFilterValueTag extends DbBaseHandlerTag implements DataContainer,
          buf.append("setDateField(document.dbform['").append(getValueName())
             .append("']);").append(" top.newWin = window.open('")
             .append(((HttpServletRequest) pageContext.getRequest()).getContextPath())
-            .append("/dbformslib/jscal/calendar.html','cal','WIDTH=270,HEIGHT=280')\">")
+            .append("/jscal/calendar.html','cal','WIDTH=270,HEIGHT=280')\">")
             .append("<IMG SRC=\"")
             .append(((HttpServletRequest) pageContext.getRequest()).getContextPath())
-            .append("/dbformslib/jscal/calendar.gif\" WIDTH=\"32\" HEIGHT=\"32\" ")
+            .append("/jscal/calendar.gif\" WIDTH=\"32\" HEIGHT=\"32\" ")
             .append(" BORDER=0  alt=\"Click on the Calendar to activate the Pop-Up Calendar Window.\">")
             .append("</a>");
       }
@@ -478,7 +479,7 @@ public class DbFilterValueTag extends DbBaseHandlerTag implements DataContainer,
       }
 
       buf.append("<input type=\"text\" name=\"" + getValueName()
-                 + "\" value=\"" + state.value + "\"" + sizestr + " class=\""
+                 + "\" value=\"" + this.getFormattedFieldValue() + "\"" + sizestr + " class=\""
                  + state.styleClass + "\"/>\n");
       buf.append("<input type=\"hidden\" name=\"" + getValueType()
                  + "\" value=\"" + state.type.toLowerCase() + "\"/>\n");
@@ -555,7 +556,7 @@ public class DbFilterValueTag extends DbBaseHandlerTag implements DataContainer,
    /**
     * @param state
     */
-   protected void setState(PageContext pg, DbFilterConditionTag parent, 
+   public void setState(PageContext pg, DbFilterConditionTag parent, 
                            State state)
    {
       setPageContext(pg);
