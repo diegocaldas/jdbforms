@@ -170,49 +170,45 @@ public class SqlUtil
                 value = val;
             }
 
+				// 20021128-hKK:Check for empty string!
+				if ( (fieldType != FieldTypes.BLOB) && Util.isNull((String) value))
+				    value = null;
+				
             if (value != null)
             {
                 switch (fieldType)
                 {
                     case FieldTypes.INTEGER:
                         ps.setInt(col, Integer.parseInt((String) value));
-
                         break;
 
                     case FieldTypes.NUMERIC:
                         ps.setBigDecimal(col, createAppropriateNumeric(value));
-
                         break;
 
                     case FieldTypes.CHAR:
                         ps.setString(col, (String) value);
-
                         break;
 
                     case FieldTypes.DATE:
                         ps.setDate(col, createAppropriateDate(value));
+                        break; 
 
-                        break; //2002/10/01-HKK: Do the same for timestamp!
-
+                    //2002/10/01-HKK: Do the same for timestamp!
                     case FieldTypes.TIMESTAMP:
                         ps.setTimestamp(col, createAppropriateTimeStamp(value));
-
                         break;
 
                     case FieldTypes.DOUBLE:
                         ps.setDouble(col, Double.valueOf((String) value).doubleValue());
-
                         break;
 
                     case FieldTypes.FLOAT:
                         ps.setFloat(col, Float.valueOf((String) value).floatValue());
-
                         break;
 
                     case FieldTypes.BLOB:
-
                         FileHolder fileHolder = (FileHolder) value;
-
                         try
                         {
                             ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
@@ -241,7 +237,6 @@ public class SqlUtil
 
                     case FieldTypes.DISKBLOB:
                         ps.setString(col, (String) value);
-
                         break;
 
                     default:
