@@ -37,7 +37,7 @@
 	<!ENTITY unit-test SYSTEM "Client_Side_Unit_Testing.xml">
 	<!ENTITY how_to SYSTEM "How_To.xml">
 	<!ENTITY query_supp SYSTEM "Query_Support.xml">
-	<!ENTITY data_fields SYSTEM "Appendix_Data_Fields.xml">
+	<!ENTITY data_fields SYSTEM "Data_Fields.xml">
 ]>
 <book>
 	<title>DataBaseForms UsersGuide</title>
@@ -59,7 +59,6 @@
 </part>
 <part>
 	<title>Advanced Use and Extensions</title>
-&how_to;
 &secu;
 &uplo;
 &styl;
@@ -77,10 +76,16 @@
 &ejbs;
 &jasp;
 &xml;
-&unit-test;
 &navi;                
+
+</part>
+<part>
+        <title>Additional Information</title>
+&how_to;
 &tagl;
-</part>                
+&data_fields;
+&unit-test;        
+</part>
 <part>
 	<title>UML diagrams</title>
 &uml-cls;
@@ -88,9 +93,6 @@
 </part>
 <part>
 	<title>Appendices</title>
-
-&data_fields;
-&unit-test;
 &chan;
 &todo;
 &ackn;
