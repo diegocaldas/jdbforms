@@ -46,7 +46,6 @@ import org.dbforms.validation.DbFormsValidatorUtil;
  * This is the root element of a data manipulation form
  *
  * @author  Joachim Peer <j.peer@gmx.net>
- * @created  16 novembre 2002
  */
 public class DbFormTag extends BodyTagSupport implements TryCatchFinally
 {
@@ -128,9 +127,19 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
      *  and their current values it/they derive from the main form
      */
     private FieldValue[] childFieldValues;
+
+    /**
+     *  this data structure holds the filters values
+     */
     private FieldValue[] filterFieldValues;
+
+    /** subform flag */
     private boolean isSubForm = false;
+
+    /** SQL order by string */
     private String orderBy;
+
+    /** filter string */
     private String filter;
     private String gotoPrefix;
 
@@ -169,7 +178,10 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
     /** support caption name resolution with ApplicationResources. */
     private String javascriptFieldsArray = "false";
 
-    /** List of all child field name with assosciate generated name. Ex:  "champ1" : "f_0_3@root_3" */
+    /**
+     *  List of all child field name with assosciate generated name.
+     *  Ex: "champ1" : "f_0_3@root_3"
+     */
     private Hashtable childFieldNames = new Hashtable();
 
     /** Used to avoid creation of same javascript function. */
@@ -183,6 +195,18 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
 
     /** NavigationEvent factory */
     private static NavEventFactory navEventFactory = NavEventFactoryImpl.instance();
+
+    /** redisplayFieldsOnError flag */
+    private String redisplayFieldsOnError = "false";
+
+    /** bypassNavigation flag */
+    private java.lang.String bypassNavigation = "false";
+
+    /** onSubmit form field  (20020703-HKK) */
+    private String onSubmit;
+
+    /** form's action attribute */
+    private String action;
 
 
     /**
@@ -273,14 +297,20 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
     }
 
 
-    /**  Description of the Method */
+    /**
+     *  Increase the current count attribute
+     */
     public void increaseCurrentCount()
     {
         currentCount++;
     }
 
 
-    /**  Description of the Method */
+    /**
+     *  Update the position path.
+     *  <br>
+     *   Ie: "5" + "@" + "root", "5" + "@" + "123@35@root"
+     */
     public void updatePositionPath()
     {
         StringBuffer positionPathBuf = new StringBuffer();
@@ -289,8 +319,6 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
         positionPathBuf.append("@");
         positionPathBuf.append(this.positionPathCore);
         this.positionPath = positionPathBuf.toString();
-
-        // ie. "5" + "@" + "root", "5" + "@" + "123@35@root"
     }
 
 
@@ -306,13 +334,14 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
 
 
     /**
-     *  Gets the positionPathCore attribute of the DbFormTag object
+     *  Gets the positionPathCore attribute of the DbFormTag object.
+     *  <br>
+     *  Ie.  "root",  "123@35@root"
      *
      * @return  The positionPathCore value
      */
     public String getPositionPathCore()
     {
-        // ie.  "root",  "123@35@root"
         return positionPathCore;
     }
 
@@ -402,6 +431,18 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
     public String getParentField()
     {
         return parentField;
+    }
+
+
+    /**
+     * Set the parent tag
+     *
+     * @param  p the parent tag
+     */
+    public void setParent(Tag p)
+    {
+        super.setParent(p);
+        this.parentForm = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
     }
 
 
@@ -502,7 +543,6 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
     public void setGotoHt(Hashtable gotoHt)
     {
         this.gotoHt = gotoHt;
-
         //this.gotoHt = (Hashtable) pageContext.getAttribute(gotoPos);
     }
 
@@ -843,10 +883,10 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
 
 
     /**
-     *  Description of the Method
+     *  Check if the input name of the JavaScript function exists.
      *
-     * @param  jsFctName Description of the Parameter
-     * @return  Description of the Return Value
+     * @param  jsFctName the name of the JS function
+     * @return  true     if the function exists, false otherwise
      */
     public boolean existJavascriptFunction(String jsFctName)
     {
@@ -868,13 +908,152 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
 
 
     /**
-     *  Description of the Method
+     *  Append the input string to the childElementOutput stringBuffer.
      *
-     * @param  str Description of the Parameter
+     * @param  str the string to append
      */
     public void appendToChildElementOutput(String str)
     {
         this.childElementOutput.append(str);
+    }
+
+
+    /**
+     * Get the redisplayFieldsOnError attribute.
+     * <br>
+     * author: grunikiewicz.philip@hydro.qc.ca<br>
+     * creation date: (2001-05-31 13:11:00)<br>
+     *
+     * @return  the redisplayFieldsOnError
+     */
+    public String getRedisplayFieldsOnError()
+    {
+        return redisplayFieldsOnError;
+    }
+
+
+    /**
+     * Set the redisplayFieldsOnError attribute
+     *
+     * @param  newRedisplayFieldsOnError the new redisplayFieldsOnError value
+     */
+    public void setRedisplayFieldsOnError(java.lang.String newRedisplayFieldsOnError)
+    {
+        redisplayFieldsOnError = newRedisplayFieldsOnError;
+    }
+
+
+
+    /**
+     *  Get the getBypassNavigation attribute.
+     *  <br>
+     *  author: grunikiewicz.philip@hydro.qc.ca<br>
+     *  creation date: (2001-08-17 10:25:56)
+     *
+     * @return  the getBypassNavigation attribute
+     */
+    public String getBypassNavigation()
+    {
+        return bypassNavigation;
+    }
+
+
+    /**
+     * Set the bypassNavigation attribute
+     *
+     * @param  newBypassNavigation the new bypassNavigation value
+     */
+    public void setBypassNavigation(String newBypassNavigation)
+    {
+        bypassNavigation = newBypassNavigation;
+    }
+
+
+    /**
+     *  Get the onSubmit attribute.
+     *
+     * @return the onSubmit attribute
+     */
+    public java.lang.String getOnSubmit()
+    {
+        return onSubmit;
+    }
+
+
+    /**
+     *  Set the onSubmit attribute value
+     *
+     * @param  newonSubmit the new onSubmit value
+     */
+    public void setOnSubmit(String newonSubmit)
+    {
+        onSubmit = newonSubmit;
+    }
+
+
+    /**
+     * Get the action attribute value.
+     *
+     * @return the action attribute value
+     */
+    public java.lang.String getAction()
+    {
+        return action;
+    }
+
+
+    /**
+     * Set the action attribute value.
+     *
+     * @param  newAction the new attribute value
+     */
+    public void setAction(java.lang.String newAction)
+    {
+        action = newAction;
+    }
+
+
+    /**
+     * Get the table list attribute.
+     *
+     * @return  the table list string
+     */
+    public String getTableList()
+    {
+        return tableList;
+    }
+
+
+    /**
+     *  Set the table list attribute value
+     *
+     * @param  tableList the new tableList value
+     */
+    public void setTableList(String tableList)
+    {
+        this.tableList = tableList;
+    }
+
+
+    /**
+     * Gets the followUpOnError
+     *
+     * @return  Returns a String
+     */
+    public String getFollowUpOnError()
+    {
+        return followUpOnError;
+    }
+
+
+    /**
+     * Sets the followUpOnError attribute
+     *
+     * @param  followUpOnError The followUpOnError to set
+     */
+    public void setFollowUpOnError(String followUpOnError)
+    {
+        this.followUpOnError = followUpOnError;
     }
 
 
@@ -1035,7 +1214,8 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
                 if (getJavascriptValidation().equals("true"))
                 {
                     validationFct = getFormValidatorName();
-                    validationFct = Character.toUpperCase(validationFct.charAt(0)) + validationFct.substring(1, validationFct.length());
+                    validationFct = Character.toUpperCase(validationFct.charAt(0)) +
+                                      validationFct.substring(1, validationFct.length());
                     validationFct = "validate" + validationFct + "(this);";
                 }
 
@@ -1080,7 +1260,6 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
                 {
                     // if form is an emptyform -> we've fineshed yet - cancel all further activities!
                     out.println(tagBuf.toString());
-
                     return EVAL_BODY_TAG;
                 }
 
@@ -1156,22 +1335,23 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
             FieldValue[] orderConstraint;
             Vector orderFields;
 
+            // if developer provided orderBy - Attribute in <db:dbform> - tag
             if (this.overrulingOrder != null)
             {
-                // if developer provided orderBy - Attribute in <db:dbform> - tag
                 orderConstraint = overrulingOrder;
                 orderFields = overrulingOrderFields;
                 useDefaultOrder = false;
                 logCat.info("using OverrulingOrder");
             }
+
+            // if developer provided orderBy - Attribute globally in dbforms-config.xml - tag
             else
             {
-                // if developer provided orderBy - Attribute globally in dbforms-config.xml - tag
                 FieldValue[] tmpOrderConstraint = table.getDefaultOrder();
-
                 orderConstraint = new FieldValue[tmpOrderConstraint.length];
 
-                // cloning is necessary to keep things thread-safe! (we manipulate some fields in this structure.)
+                // cloning is necessary to keep things thread-safe!
+                // (we manipulate some fields in this structure.)
                 for (int i = 0; i < tmpOrderConstraint.length; i++)
                 {
                     orderConstraint[i] = (FieldValue) tmpOrderConstraint[i].clone();
@@ -1205,8 +1385,9 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
             }
 
             // if we are in a subform we must check if the fieldvalue-list provided in the
-            // position strings is valid in the current state
-            // it might be invalid if the position of the parent form has been changed (by a navigation event)
+            // position strings is valid in the current state;
+            // it might be invalid if the position of the parent form has been
+            // changed (by a navigation event)
             // (=> the position-strings of childforms arent valid anymore)
             if ((childFieldValues != null) && (firstPosition != null))
             {
@@ -1369,7 +1550,9 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
                     else
                     {
                         // PG - Check if developer specified to bypass Navigation infrastructure
-                        resultSetVector = table.doConstrainedSelect(table.getFields(), mergedFieldValues, orderConstraint, ((firstPosition == null) || (count == 0) || ("true".equals(getBypassNavigation()))) ? FieldValue.COMPARE_NONE : FieldValue.COMPARE_INCLUSIVE, count, con);
+                        int compareMode = ((firstPosition == null) || (count == 0) || ("true".equals(getBypassNavigation()))) ?
+                            FieldValue.COMPARE_NONE : FieldValue.COMPARE_INCLUSIVE;
+                        resultSetVector = table.doConstrainedSelect(table.getFields(), mergedFieldValues, orderConstraint, compareMode, count, con);
                     }
                 }
             }
@@ -1378,11 +1561,9 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
             // we need to parse request using the given goto prefix
             else if ((gotoPrefix != null) && (gotoPrefix.length() > 0))
             {
-                logCat.info("::doStartTag - CREATING A LOCAL GO-TO EVENT !! ... ... ... ... ...");
                 logCat.info("§§§ NAV GOTO §§§");
 
                 Vector v = ParseUtil.getParametersStartingWith(request, gotoPrefix);
-
                 gotoHt = new Hashtable();
 
                 for (int i = 0; i < v.size(); i++)
@@ -1444,7 +1625,6 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
                      *
                      * If the whereClause attribute has been specified, ignore all and
                      * apply the whereClause directly in the query.
-                     *
                      */
                     if ((this.getWhereClause() != null) && (this.getWhereClause().trim().length() > 0))
                     {
@@ -1463,12 +1643,17 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
                 }
                 else
                 {
-                    // we have no navigation object and no position we are supposed to go. so let's go to the first row.
+                    // we have no navigation object and no position we are supposed to go.
+                    // So let's go to the first row.
                     logCat.info("§§§ B/II §§§");
 
                     Vector errors = (Vector) request.getAttribute("errors");
 
-                    if ((count != 0) && (webEvent != null) && webEvent instanceof InsertEvent && (errors != null) && (errors.size() > 0))
+                    if ((count != 0)                    &&
+                        (webEvent != null)              &&
+                        webEvent instanceof InsertEvent &&
+                        (errors != null)                &&
+                        (errors.size() > 0))
                     {
                         logCat.info("B/II/1 redirecting to insert mode after faild db operation");
 
@@ -1494,7 +1679,10 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
                 }
             }
 
-            // *** DONE! We have now the underlying data, and this data is accessible to all sub-elements (labels, textFields, etc. of this form ***
+            // *** DONE! ***
+            //  We have now the underlying data, and this data is accessible to all sub-elements
+            // (labels, textFields, etc. of this form
+            //
             // *************************************************************
             //  Part IV - Again, some WebEvent infrastructural stuff:
             //  write out data indicating the position we have
@@ -1504,9 +1692,9 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
             // #checkme: is the overhead of a POST_SELECT interceptor necessary or a luxury? => use cases!
             if ((table != null) && table.hasInterceptors())
             {
+                // process the interceptors associated to this table
                 try
                 {
-                    // process the interceptors associated to this table
                     table.processInterceptors(DbEventInterceptor.POST_SELECT, request, null, config, con);
                 }
                 catch (SQLException sqle)
@@ -1697,27 +1885,17 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
     }
 
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param  p DOCUMENT ME!
-     */
-    public void setParent(Tag p)
-    {
-        super.setParent(p);
-        this.parentForm = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
-    }
 
 
     //------------------------ business, helper & utility methods --------------------------------
 
     /**
-     * initialise datastructures containing informations about how table should be orderd
-     * the information is specified in the JSP this tags lives in. this declaration OVERRULES
-     * other default declarations eventually done in XML config!
-     * (compara Table.java !)
+     *  Initialise datastructures containing informations about how table should be ordered.
+     *  The information is specified in the JSP this tags lives in.
+     *  This declaration OVERRULES other default declarations eventually done in XML config!
+     *  (compara Table.java !)
      *
-     * @param  request Description of the Parameter
+     * @param  request the request object
      */
     private void initOverrulingOrder(HttpServletRequest request)
     {
@@ -1770,7 +1948,9 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
     }
 
 
-    /** DOCUMENT ME! */
+    /**
+     *  Initialize child values
+     */
     private void initChildFieldValues()
     {
         // if parent form has no data, we can not render a subform!
@@ -1783,52 +1963,13 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
         }
 
         String aPosition = parentForm.getTable().getPositionString(parentForm.getResultSetVector());
-
         childFieldValues = getTable().mapChildFieldValues(parentForm.getTable(), parentField, childField, aPosition);
-
-        /* 20021120-HKK: Split in new function FieldValue.mapChildFieldValues
-
-                // 1 to n fields may be mapped
-                Vector childFieldNames = ParseUtil.splitString(childField, ",;~");
-                Vector parentFieldNames = ParseUtil.splitString(parentField, ",;~");
-
-                // do some basic checks
-                // deeper checks like Datatyp-compatibility,etc not done yet
-                int len = childFieldNames.size();
-
-                if ((len == 0) || (len != parentFieldNames.size()))
-                {
-                    return;
-                }
-
-                // get parent-table
-                // we need it in order to fetch the actual values of the mapped fields
-                // for example if we mapped child::cust_id to parent::id, then we need
-                // to know the current value of parent::id in order to do a contrained select
-                // for our subform
-                Table parentTable = parentForm.getTable();
-
-                childFieldValues = new FieldValue[len];
-
-                for (int i = 0; i < len; i++)
-                {
-                    String parentFieldName = (String) parentFieldNames.elementAt(i);
-                    Field parentField = parentTable.getFieldByName(parentFieldName);
-                    String childFieldName = (String) childFieldNames.elementAt(i);
-                    Field childField = this.table.getFieldByName(childFieldName);
-                    String currentParentFieldValue = null;
-
-                    if (!ResultSetVector.isEmptyOrNull(parentForm.getResultSetVector()))
-                    {
-                        currentParentFieldValue = parentForm.getResultSetVector().getField(parentField.getId());
-                    }
-                    childFieldValues[i] = new FieldValue(childField, currentParentFieldValue, true);
-                }
-        */
     }
 
 
-    /** DOCUMENT ME! */
+    /**
+     *  Initialize the filterFieldValues array.
+     */
     private void initFilterFieldValues()
     {
         // 1 to n fields may be mapped
@@ -1943,9 +2084,9 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
 
 
     /**
-     * DOCUMENT ME!
+     * Initialize the value of the search fields.
      *
-     * @return  DOCUMENT ME!
+     * @return  the field values array
      */
     private FieldValue[] initSearchFieldValues()
     {
@@ -2240,14 +2381,15 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
 
 
     /**
-     * This method is only used if this class is instantiated as sub-form (== embedded in another
-     * form's body tag)
+     *  This method gets called by input-tags like "DbTextFieldTag" and others. they signalize that
+     *  _they_ will generate the tag for the controller, not this form.
+     *  <br>
+     *  see produceLinkedTags().
+     *  <br>
+     *  This method is only used if this class is instantiated as sub-form (== embedded in another
+     *  form's body tag)
      *
-     * this method gets called by input-tags like "DbTextFieldTag" and others. they signalize that
-     * _they_ will generate the tag for the controller, not this form.
-     * see produceLinkedTags()
-     *
-     * @param  f Description of the Parameter
+     * @param  f  the Field object
      */
     public void strikeOut(Field f)
     {
@@ -2313,8 +2455,8 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
 
     /**
      * if we are in a subform we must check if the fieldvalue-list provided in the
-     * position strings is valid in the current state
-     * it might be invalid if the position of the parent form has been changed (by a navigation event)
+     * position strings is valid in the current state it might be invalid
+     * if the position of the parent form has been changed (by a navigation event)
      * (=> the position-strings of childforms arent valid anymore)
      *
      * @param  childFieldValues Description of the Parameter
@@ -2341,14 +2483,13 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
         }
         }
         */
+
         for (int i = 0; i < childFieldValues.length; i++)
         {
             String actualValue = childFieldValues[i].getFieldValue();
-
             logCat.debug("actualValue=" + actualValue);
 
             Field f = childFieldValues[i].getField();
-
             logCat.debug("f.getName=" + f.getName());
             logCat.debug("f.getId=" + f.getId());
 
@@ -2370,161 +2511,6 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
         }
 
         return true;
-    }
-
-    private java.lang.String redisplayFieldsOnError = "false";
-
-    /**
-     * grunikiewicz.philip@hydro.qc.ca
-     * Creation date: (2001-05-31 13:11:00)
-     *
-     * @return  java.lang.String
-     */
-    public java.lang.String getRedisplayFieldsOnError()
-    {
-        return redisplayFieldsOnError;
-    }
-
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @param  newRedisplayFieldsOnError DOCUMENT ME!
-     */
-    public void setRedisplayFieldsOnError(java.lang.String newRedisplayFieldsOnError)
-    {
-        redisplayFieldsOnError = newRedisplayFieldsOnError;
-    }
-
-    private java.lang.String bypassNavigation = "false";
-
-    /**
-     * grunikiewicz.philip@hydro.qc.ca
-     * Creation date: (2001-08-17 10:25:56)
-     *
-     * @return  java.lang.String
-     */
-    public java.lang.String getBypassNavigation()
-    {
-        return bypassNavigation;
-    }
-
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @param  newBypassNavigation DOCUMENT ME!
-     */
-    public void setBypassNavigation(java.lang.String newBypassNavigation)
-    {
-        bypassNavigation = newBypassNavigation;
-    }
-
-    // 20020703-HKK: Added onSubmit
-    private java.lang.String onSubmit;
-
-    /**
-     * Insert the method's description here.
-     * Creation date: (2001-10-22 18:17:25)
-     *
-     * @return  java.lang.String
-     */
-    public java.lang.String getOnSubmit()
-    {
-        return onSubmit;
-    }
-
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @param  newonSubmit DOCUMENT ME!
-     */
-    public void setOnSubmit(java.lang.String newonSubmit)
-    {
-        onSubmit = newonSubmit;
-    }
-
-    private java.lang.String action;
-
-    /**
-     * Insert the method's description here.
-     * Creation date: (2001-10-22 18:17:25)
-     *
-     * @return  java.lang.String
-     */
-    public java.lang.String getAction()
-    {
-        return action;
-    }
-
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @param  newAction DOCUMENT ME!
-     */
-    public void setAction(java.lang.String newAction)
-    {
-        action = newAction;
-    }
-
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @return  DOCUMENT ME!
-     */
-    public String getTableList()
-    {
-        // if tableList is null, use the tableName attribute (fossato@pow2.com [2002.11.16] HKK 2002.11.16)
-
-        /*
-        String myTables = tableList;
-        if (Util.isNull(myTables))
-            myTables = tableName;
-        return myTables;
-        */
-
-        // or we could rewite as:
-        // return Util.isNull(myTables) ? tableName : tableList;
-        // or we could rewite as:
-        // return Util.isNull(tableList) ? tableName : tableList;
-        // nevertheless moved the whole stuff to table.getFreeFormSelectQuery so using query tag will work!
-        return tableList;
-    }
-
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @param  tableList DOCUMENT ME!
-     */
-    public void setTableList(String tableList)
-    {
-        this.tableList = tableList;
-    }
-
-
-    /**
-     * Gets the followUpOnError
-     *
-     * @return  Returns a String
-     */
-    public String getFollowUpOnError()
-    {
-        return followUpOnError;
-    }
-
-
-    /**
-     * Sets the followUpOnError
-     *
-     * @param  followUpOnError The followUpOnError to set
-     */
-    public void setFollowUpOnError(String followUpOnError)
-    {
-        this.followUpOnError = followUpOnError;
     }
 
 
@@ -2727,7 +2713,6 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
     /**
      *  This method allow to retreive value from resultsetVector
      *  from current Form, parentForm or from request.
-     *
      *
      * @param  name Description of the Parameter
      * @return  The childFieldValue value
