@@ -2134,7 +2134,7 @@ public class Table
          {
             throw new IllegalArgumentException("ERROR: Make sure that field "
                + parentField.getName() + " is a KEY of the table "
-               + this.getName()
+               + parentTable.getName()
                + "! Otherwise you can not use it as PARENT/CHILD LINK argument!");
          }
 
