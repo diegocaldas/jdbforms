@@ -95,6 +95,13 @@
 	      		<td>unassigned</td>
 	      		<td>open</td>
 	      	</tr>
+	      	<tr>
+	    	  	<td>
+		      		remove depency from cos.jar. This jar could not be used for commercial applications without "problems"
+			</td>
+	      		<td>unassigned</td>
+	      		<td>open</td>
+	      	</tr>
 	    </table>
 	  </p>
   	
