@@ -1,6 +1,0 @@
-//--file "FileSplitterResultA.txt" ------------------------------------------------
-This is part of FileSplitterResultA.txt
-
-
-//--file "FileSplitterResultB.txt" ------------------------------------------------
-This is part of FileSplitterResultB.xml
