@@ -8,7 +8,6 @@
    <body>
    
       <db:dbform autoUpdate="false" 
-                 followUp="/tests/testAuthorBooksSubFormWithFilter.jsp" 
                  maxRows="1" 
                  tableName="AUTHOR"
       >
@@ -59,7 +58,6 @@
 		    <tr><td colspan="2" style="text-align:center">
 			    <db:dbform 
 		      		autoUpdate="false" 
-		      		followUp="/tests/testAuthorBooksSubFormWithFilter.jsp"   
 		      		maxRows="*" 
 		      		tableName="BOOK_QUERY"
 		     		parentField="AUTHOR_ID"
