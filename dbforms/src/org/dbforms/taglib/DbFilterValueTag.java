@@ -749,7 +749,6 @@ public class DbFilterValueTag extends BodyTagSupport implements DataContainer,
     */
    public void doCatch(Throwable t) throws Throwable
    {
-      logCat.error("doCatch called - " + t.toString());
       throw t;
    }
 

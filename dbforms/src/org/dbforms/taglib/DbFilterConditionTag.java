@@ -397,7 +397,6 @@ public class DbFilterConditionTag extends BodyTagSupport
     */
    public void doCatch(Throwable t) throws Throwable
    {
-      logCat.error("doCatch called - " + t.toString());
       throw t;
    }
 
@@ -409,7 +408,6 @@ public class DbFilterConditionTag extends BodyTagSupport
     */
    public void doFinally()
    {
-      //logCat.debug("doFinally called");
       state = new State();
    }
 }

@@ -514,7 +514,6 @@ public class DbLinkURLTag extends BodyTagSupport implements TryCatchFinally
     */
    public void doCatch(Throwable t) throws Throwable
    {
-      logCat.info("doCatch called - " + t.toString());
       throw t;
    }
 
