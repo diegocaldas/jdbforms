@@ -287,7 +287,7 @@ public class XSLTransformPanel extends PropertyPanel implements ActionListener, 
 
         java.awt.GridBagConstraints gridBagConstraints2;
 
-        jLabel1.setText("DbForms-Config File:   ");
+        jLabel1.setText("Stylesheet Directory:   ");
 
         gridBagConstraints2 = new java.awt.GridBagConstraints();
 
