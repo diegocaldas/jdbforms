@@ -131,8 +131,9 @@ public class NavEventFactoryImpl extends NavEventFactory
      */
     public GotoEvent createGotoEvent(String positionString, Table table)
     {
+        String    eventId = table.getTableEvents().getEventId(EventType.EVENT_NAVIGATION_GOTO);
+        EventInfo einfo   = getEventInfo(eventId);
         Object[] constructorArgs = new Object[] { positionString, table };
-        EventInfo einfo = table.getTableEvents().getEventInfo(EventType.EVENT_NAVIGATION_GOTO);
 
         return (GotoEvent) getEvent(einfo, goToConstructorArgsTypes, constructorArgs);
     }
