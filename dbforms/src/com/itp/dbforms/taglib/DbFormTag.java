@@ -101,25 +101,25 @@ public class DbFormTag extends BodyTagSupport {
 
   public void setTableName(String tableName) {
 		this.tableName = tableName;
-    this.table = config.getTableByName(tableName);
-    this.tableId = table.getId();
-  }
+	this.table = config.getTableByName(tableName);
+	this.tableId = table.getId();
+  }  
 
   public String getTableName() {
 		return tableName;
-  }
+  }  
 
   public Table getTable() {
 		return table;
-  }
+  }  
 
   public void setMaxRows(String maxRows) {
 		this.maxRows = maxRows;
 		if(maxRows.trim().equals("*"))
 		  this.count = 0;
-    else
+	else
 		  this.count = Integer.parseInt(maxRows);
-  }
+  }  
 
   public String getMaxRows() {
 		return maxRows;
@@ -129,15 +129,15 @@ public class DbFormTag extends BodyTagSupport {
 
   public int getCount() {
 	 	return count;
-  }
+  }  
 
   public int getCurrentCount() {
 	 	return currentCount;
-  }
+  }  
 
   public void increaseCurrentCount() {
 		  currentCount++;
-  }
+  }  
 
   // this method gets called at every body-evaluation in order to keep pos.path up-to-date
   public void updatePositionPath() {
@@ -146,18 +146,18 @@ public class DbFormTag extends BodyTagSupport {
 	positionPathBuf.append("@");
 	positionPathBuf.append(this.positionPathCore);
 	this.positionPath = positionPathBuf.toString(); // ie. "5" + "@" + "root", "5" + "@" + "123@35@root"
-  }
+  }  
 
 
   public String getPositionPath() {
 	   return positionPath;
-  }
+  }  
 
   public String getPositionPathCore() {
 
 	   return  positionPathCore; // ie.  "root",  "123@35@root"
 
-  }
+  }  
 
 
 
@@ -191,19 +191,19 @@ public class DbFormTag extends BodyTagSupport {
 
   public void setParentField(String parentField) {
 		this.parentField = parentField;
-  }
+  }  
 
   public String getParentField() {
-    return parentField;
-  }
+	return parentField;
+  }  
 
   public void setChildField(String childField) {
 	this.childField = childField;
-  }
+  }  
 
   public String getChildField() {
-    return childField;
-  }
+	return childField;
+  }  
 
 
 
@@ -296,8 +296,8 @@ public class DbFormTag extends BodyTagSupport {
 
 
   public ResultSetVector getResultSetVector() {
-    return resultSetVector;
-  }
+	return resultSetVector;
+  }  
 
 	public boolean isSubForm() {
 		return isSubForm;
@@ -306,13 +306,13 @@ public class DbFormTag extends BodyTagSupport {
 
    public StringBuffer getChildElementOutput() {
 	   return childElementOutput;
-   }
+   }   
 
    // this method is called by child elements (i.e. <db:body>, etc.) to append some tags
    // the cumulated string gets written at DbFormTag:doEndTag()
    public void appendToChildElementOutput(String str) {
 	  this.childElementOutput.append(str);
-   }
+   }   
 
 
 	//----------------- Taglib Lifecyle + infrastructural methods --------------------------------
@@ -497,7 +497,7 @@ public class DbFormTag extends BodyTagSupport {
 				logCat.info("using DefaultOrder");
 			}
 
-      // an orderBY - clause is a MUST. we can't query well without it.
+	  // an orderBY - clause is a MUST. we can't query well without it.
 			if(orderConstraint==null)
 				throw new IllegalArgumentException("OrderBy-Clause must be specified either in table-element in config.xml or in dbform-tag on jsp view");
 
@@ -686,7 +686,7 @@ public class DbFormTag extends BodyTagSupport {
 				if(gotoHt.size()>0) {
 					String positionString = table.getPositionStringFromFieldAndValueHt(gotoHt);
 					GotoEvent ge = new GotoEvent(positionString, table);
-                	resultSetVector = ge.processEvent(mergedFieldValues, orderConstraint, count, firstPosition, lastPosition, con);
+					resultSetVector = ge.processEvent(mergedFieldValues, orderConstraint, count, firstPosition, lastPosition, con);
 				}
 
 			}
@@ -697,7 +697,7 @@ public class DbFormTag extends BodyTagSupport {
 				if(gotoHt.size()>0) {
 					String positionString = table.getPositionStringFromFieldAndValueHt(gotoHt);
 					GotoEvent ge = new GotoEvent(positionString, table);
-                	resultSetVector = ge.processEvent(mergedFieldValues, orderConstraint, count, firstPosition, lastPosition, con);
+					resultSetVector = ge.processEvent(mergedFieldValues, orderConstraint, count, firstPosition, lastPosition, con);
 				}
 
 			}
@@ -735,7 +735,7 @@ public class DbFormTag extends BodyTagSupport {
 
 			}
 
-            // *** DONE! We have now the underlying data, and this data is accessible to all sub-elements (labels, textFields, etc. of this form ***
+			// *** DONE! We have now the underlying data, and this data is accessible to all sub-elements (labels, textFields, etc. of this form ***
 
 
 			// *************************************************************
@@ -801,7 +801,7 @@ public class DbFormTag extends BodyTagSupport {
 		  return SKIP_BODY;
   	}
 
-    return EVAL_BODY_TAG;
+	return EVAL_BODY_TAG;
 	}
 
 
@@ -811,22 +811,22 @@ public class DbFormTag extends BodyTagSupport {
 		if(resultSetVector==null || resultSetVector.size() == 0) return SKIP_BODY; // rsv may be null in empty-forms (where not tableName attribute is provided)
 
 		if(!footerReached) {
-    	return EVAL_BODY_TAG;
+		return EVAL_BODY_TAG;
 		}	else {
 			return SKIP_BODY;
 		}
-  }
+  }  
 
   public int doEndTag() throws JspException {
-    try {
+	try {
 	  	if(bodyContent != null)
 	  	  bodyContent.writeOut(bodyContent.getEnclosingWriter());
 
 			logCat.debug("pageContext.getOut()="+pageContext.getOut());
 			logCat.debug("childElementOutput="+childElementOutput);
 
-           // hidden fields and other stuff coming from child elements get written out
-           pageContext.getOut().println(childElementOutput.toString());
+		   // hidden fields and other stuff coming from child elements get written out
+		   pageContext.getOut().println(childElementOutput.toString());
 
 			if(parentForm == null)
 	 			pageContext.getOut().println("</form>");
@@ -837,7 +837,7 @@ public class DbFormTag extends BodyTagSupport {
 
 		logCat.info("end reached of "+tableName);
  		return EVAL_PAGE;
-  }
+  }  
 
   public void release() {
 		super.release();
@@ -935,7 +935,7 @@ public class DbFormTag extends BodyTagSupport {
 		 return;
 	 	}
 
-    	// 1 to n fields may be mapped
+		// 1 to n fields may be mapped
 		Vector childFieldNames = ParseUtil.splitString(childField, ",;~");
 		Vector parentFieldNames = ParseUtil.splitString(parentField, ",;~");
 
@@ -988,12 +988,24 @@ as follows...
 		getWhereClause() method to support the new set of operators.
 
 
+grunikiewicz.philip@hydro.qc.ca
+2001-05-17
+
+Added support for the LIKE operator
+Removed ~ (tilde) as a separator value
+~ (tilde) can be used to specify a LIKE operation.
+
+ie:
+	aFieldVal~startWith%
+	
+
 ========================================================*/
 
 public void initFilterFieldValues() {
 
 	// 1 to n fields may be mapped
-	Vector keyValPairs = ParseUtil.splitString(filter, ",;~");
+	Vector keyValPairs = ParseUtil.splitString(filter, ",;");
+	// ~ no longer used as separator!
 	int len = keyValPairs.size();
 
 	filterFieldValues = new FieldValue[len];
@@ -1010,7 +1022,8 @@ public void initFilterFieldValues() {
 		// Check for GreaterThanEqual
 		if ((n = aKeyValPair.indexOf(">=")) != -1) {
 			// GreaterThenEqual found! - Store the operation for use later on
-			operator = FieldValue.FILTER_GREATER_THEN_EQUAL; jump=2;
+			operator = FieldValue.FILTER_GREATER_THEN_EQUAL;
+			jump = 2;
 		} else {
 			// Check for GreaterThan
 			if ((n = aKeyValPair.indexOf('>')) != -1) {
@@ -1020,7 +1033,8 @@ public void initFilterFieldValues() {
 				// Check for SmallerThenEqual
 				if ((n = aKeyValPair.indexOf("<=")) != -1) {
 					// SmallerThenEqual found! - Store the operation for use later on
-					operator = FieldValue.FILTER_SMALLER_THEN_EQUAL; jump=2;
+					operator = FieldValue.FILTER_SMALLER_THEN_EQUAL;
+					jump = 2;
 				} else {
 					// Check for SmallerThen
 					if ((n = aKeyValPair.indexOf('<')) != -1) {
@@ -1031,7 +1045,14 @@ public void initFilterFieldValues() {
 						if ((n = aKeyValPair.indexOf('=')) != -1) {
 							// Equal found! - Store the operator for use later on
 							operator = FieldValue.FILTER_EQUAL;
+						} else {
+							// Check for LIKE
+							if ((n = aKeyValPair.indexOf('~')) != -1) {
+								// LIKE found! - Store the operator for use later on
+								operator = FieldValue.FILTER_LIKE;
+							}
 						}
+
 					}
 				}
 

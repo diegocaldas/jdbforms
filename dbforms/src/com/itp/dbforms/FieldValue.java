@@ -47,7 +47,7 @@ import org.apache.log4j.Category;
 
 public class FieldValue implements Cloneable {
 
-    static Category logCat = Category.getInstance(FieldValue.class.getName()); // logging category for this class
+	static Category logCat = Category.getInstance(FieldValue.class.getName()); // logging category for this class
 
 	//--------- constants -------------------------------------------------------------
 
@@ -230,6 +230,7 @@ public class FieldValue implements Cloneable {
 					case FieldValue.FILTER_SMALLER_THEN:		buf.append(" < "); break;
 					case FieldValue.FILTER_GREATER_THEN_EQUAL:	buf.append(" >= "); break;
 					case FieldValue.FILTER_SMALLER_THEN_EQUAL:	buf.append(" <= "); break;
+					case FieldValue.FILTER_LIKE:				buf.append(" like "); break;
 
 				}
 				buf.append(" ? ");
@@ -501,7 +502,7 @@ public class FieldValue implements Cloneable {
 	try {
 		return super.clone(); // shallow copy ;=)
 	} catch ( CloneNotSupportedException e ) {
-      // should not happen
+	  // should not happen
 	}
 		return null;
   }
@@ -530,4 +531,5 @@ public class FieldValue implements Cloneable {
 
 
 
+	public static final int FILTER_LIKE  = 5;
 }
