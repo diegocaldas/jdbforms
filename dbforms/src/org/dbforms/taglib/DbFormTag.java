@@ -1011,7 +1011,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
          // *************************************************************
          HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
          HttpServletResponse response = (HttpServletResponse) pageContext.getResponse();
-
+         
          locale = MessageResources.getLocale(request);
 
          logCat.info("servlet path = " + request.getServletPath());
@@ -1179,6 +1179,9 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
 
          // write out the followup-default for this table
          tagBuf.append("<input type=\"hidden\" name=\"fu_" + tableId + "\" value=\"" + followUp + "\"/>");
+
+         // write out the locale
+         tagBuf.append("<input type=\"hidden\" name=\"lang" + "\" value=\"" + locale.toString() + "\"/>");
 
          // write out the followupOnError-default for this table
          if (!Util.isNull(getFollowUpOnError())) {

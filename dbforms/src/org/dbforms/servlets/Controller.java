@@ -27,6 +27,7 @@ import java.io.PrintWriter;
 import java.util.Hashtable;
 import java.util.Enumeration;
 import java.util.Vector;
+import java.util.Locale;
 import java.sql.Connection;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
@@ -438,11 +439,13 @@ public class Controller extends HttpServlet
     */
    private void processLocale(HttpServletRequest request)
    {
-      HttpSession session = request.getSession();
-
-      if (session.getAttribute(MessageResources.LOCALE_KEY) == null)
+      String loc = ParseUtil.getParameter(request, "lang");
+      if (!Util.isNull(loc)) {
+         Locale locale = new Locale(loc);
+         MessageResources.setLocale(request, locale);      
+      } else if (MessageResources.getLocale(request) == null)
       {
-         session.setAttribute(MessageResources.LOCALE_KEY, request.getLocale());
+         MessageResources.setLocale(request, request.getLocale());
       }
    }
 

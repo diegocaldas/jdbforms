@@ -16,6 +16,11 @@
         </theader>
         <tbody>
           <row>
+            <entry>lang</entry>
+            <entry>otuput from Locale.toString(), see java doc</entry>
+            <entry>the locale setted inside dbforms</entry>
+          </row>
+          <row>
             <entry>invtable</entry>
             <entry>tableId</entry>
             <entry>table</entry>
