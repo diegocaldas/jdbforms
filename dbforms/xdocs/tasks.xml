@@ -92,8 +92,8 @@
 		      		Use information of config file in select/radio/searchcombo tags so that xml tables could be used.
 		      		Best would be to create a new tag.
 				</td>
-	      		<td>unassigned</td>
-	      		<td>open</td>
+	      		<td>Henner Kollmann (Henner.Kollmann@gmx.de)</td>
+	      		<td>done</td>
 	      	</tr>
 	      	<tr>
 	    	  	<td>
