@@ -2,7 +2,6 @@
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
                     "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd"
 [
- 
 <!ENTITY pref SYSTEM "Preface.xml">
 <!ENTITY intr SYSTEM "Introduction.xml">
 <!ENTITY comp SYSTEM "Compatibility.xml">
@@ -40,6 +39,7 @@
 <!ENTITY how_to SYSTEM "How_To.xml">
 <!ENTITY query_supp SYSTEM "Query_Support.xml">
 <!ENTITY filt_tag SYSTEM "Filter_Tag.xml">
+<!ENTITY data_fields SYSTEM "Appendix_Data_Fields.xml">
 ]>
 <book>
 <title>DataBaseForms UsersGuide</title>
@@ -95,12 +95,12 @@
 <part><title>Appendices</title>
 &tagl;
 &date;
+&data_fields;
 &chan;
 &todo;
 &ackn;
 &auth;
 &refe;
-
 </part>
 
 </book>
