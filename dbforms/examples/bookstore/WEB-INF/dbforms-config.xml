@@ -8,10 +8,10 @@
 	    </table>    
 	    
 	    <table name="BOOK">
-	        <field name="BOOK_ID" fieldType="int" isKey="true" autoInc="true"/>
+	        <field name="BOOK_ID" fieldType="int" isKey="true" />
 	        <field name="ISBN" fieldType="varchar" />
 	        <field name="AUTHOR_ID" fieldType="int" isKey="true" />
-	        <field name="TITLE" fieldType="varchar" isKey="true" />
+	        <field name="TITLE" fieldType="varchar" />
 	    </table>   
 
 		<query 	name="BOOKLISTPERAUTHOR" 
@@ -88,6 +88,7 @@
 	        	name="AUTHOR_ID" 
 	        	fieldType="int" 
 				expression="author/authorid"
+				isKey="true" 
 	        />
 	    </table>
 
