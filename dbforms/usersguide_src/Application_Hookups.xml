@@ -26,7 +26,7 @@
 </title>
       <programlisting>
     public int 
-        <emphasis role="bold">preInsert</emphasis>(HttpServletRequest request, Hashtable fieldValues,
+        <emphasis role="bold">preInsert</emphasis>(HttpServletRequest request, FieldValues fieldValues,
        DbFormsConfig config, Connection con)
                 throws ValidationException;
  
@@ -37,7 +37,7 @@
 
     public int 
         <emphasis role="bold">preUpdate</emphasis>(HttpServletRequest request, 
-        Hashtable fieldValues, DbFormsConfig config, Connection con)
+        FieldValues fieldValues, DbFormsConfig config, Connection con)
     throws ValidationException;;
  
 
@@ -47,7 +47,7 @@
 
     public int 
         <emphasis role="bold">preDelete</emphasis>(HttpServletRequest request, 
-       Hashtable fieldValues,DbFormsConfig config, Connection  con)
+       FieldValues fieldValues,DbFormsConfig config, Connection  con)
                 throws ValidationException;;
  
 
@@ -148,14 +148,14 @@ gives access to various types of information, including the current user&#146;s 
 </entry>
             </row>
             <row>
-              <entry>Hashtable fieldValues:
+              <entry>FieldValues fieldValues:
 </entry>
               <entry>in the preInsert(), preUpdate() and preDelete()-methods:
-hashtable which gives access to the fields contained in the current (selected) row.
+FieldValues which gives access to the fields contained in the current (selected) row.
 As the example below will demonstrate:
 (String) fieldValues.get("lastname");
 will return the field value of the field &#147;lastName&#148; of the row DbForm's is about to insert, to update or to delete.
-In preInsert() and preUpdate() any changes to this hashtable are automatically reflected in the database. This means that the expression:
+In preInsert() and preUpdate() any changes to this FieldValues are automatically reflected in the database. This means that the expression:
 fieldValues.put("lastname", &#147;smith&#148;);
 will ensure that the value &#147;smith&#148; be stored in the lastname field in the database. (column lastname must exist!)
 </entry>
@@ -226,7 +226,7 @@ import javax.servlet.http.*;
         <emphasis role="bold">extends DbEventInterceptorSupport</emphasis> {
 
         private int 
-        <emphasis role="bold">checkCustomer</emphasis>(Hashtable fieldValues) // method invented by developer    
+        <emphasis role="bold">checkCustomer</emphasis>(FieldValue fieldValues) // method invented by developer    
             throws ValidationException {
 
                 String lastName = (String) fieldValues.get("lastname");
@@ -248,7 +248,7 @@ import javax.servlet.http.*;
 
 
         public int 
-        <emphasis role="bold">preInsert</emphasis>(HttpServletRequest request, Hashtable fieldValues, 
+        <emphasis role="bold">preInsert</emphasis>(HttpServletRequest request, FieldValues fieldValues, 
           DbFormsConfig config, Connection con)
             throws ValidationException {
 
@@ -259,7 +259,7 @@ import javax.servlet.http.*;
 
 
         public int 
-        <emphasis role="bold">preUpdate</emphasis>(HttpServletRequest request, Hashtable fieldValues, 
+        <emphasis role="bold">preUpdate</emphasis>(HttpServletRequest request, FieldValues fieldValues, 
           DbFormsConfig config, Connection con)
             throws ValidationException {
 
@@ -289,7 +289,7 @@ import javax.servlet.http.*;
       <title>accumlating error messages</title>
       <screen>
     public int 
-        <emphasis role="bold">preUpdate</emphasis>(HttpServletRequest req, Hashtable fieldValues, DbformsConfig conf, 
+        <emphasis role="bold">preUpdate</emphasis>(HttpServletRequest req, FieldValues fieldValues, DbformsConfig conf, 
       Connection con)
         throws ValidationException{
       
@@ -325,7 +325,7 @@ the preDelete and preUpdate methods disregard any changes to it.</para>
     <para>Carlos Anjos pointed out:</para>
     <para>I had a situation where I did some processing in the preDelete method
 and then I wanted to allow the operation, but on a different row.
-So I changed the values in the fieldValues hashtable, but still the
+So I changed the values in fieldValues, but still the
 orginal row got deleted.</para>
     <para>After banging my head for where in my code the error was, I finally
 understood that dbforms was ignoring the change to that attribute.
