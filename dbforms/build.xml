@@ -36,7 +36,7 @@ Happy coding!
 ~~ DbForms team ~~
 
 -->
-    <property name="dbforms.version" value="_v1_1_x"/>
+    <property name="dbforms.version" value="v1_1_x"/>
 
     <property name="cvs.workingdir" value="."/>
 
@@ -377,7 +377,7 @@ Happy coding!
              <!-- create zip release: -->
      <delete file="${dbforms.zipfilename}"/>
      <zip destfile="${dbforms.zipfilename}" >
-        <zipfileset dir="${dist.dir}"   includes="dbforms${dbforms.releaseName}/**"/>
+        <zipfileset dir="${dist.dir}"   includes="dbforms_${dbforms.releaseName}/**"/>
      </zip>
 
              <!-- modify all text files to have unix lineends -->
@@ -387,9 +387,9 @@ Happy coding!
              <!-- create tar release, make shell scripts executable: -->
      <delete file="${dbforms.tarfilename}"/>
      <tar destfile="${dbforms.tarfilename}" >
-        <tarfileset dir="${dist.dir}"   includes="dbforms${dbforms.releaseName}/**" 
-                                        excludes="dbforms${dbforms.releaseName}/**/*.sh" />
-        <tarfileset dir="${dist.dir}"   includes="dbforms${dbforms.releaseName}/**/*.sh" mode="755"/>
+        <tarfileset dir="${dist.dir}"   includes="dbforms_${dbforms.releaseName}/**" 
+                                        excludes="dbforms_${dbforms.releaseName}/**/*.sh" />
+        <tarfileset dir="${dist.dir}"   includes="dbforms_${dbforms.releaseName}/**/*.sh" mode="755"/>
      </tar>
 
              <!-- compress tarfile using gzip, delete intermediate tar file: -->
