@@ -228,7 +228,7 @@ public abstract class WebEvent
     * 
     * @param type The type to set
     */
-   public void setTypeByObject(String type)
+   public void setType(String type)
    {
       this.type = type;
    }

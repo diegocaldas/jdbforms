@@ -175,7 +175,7 @@ public class EventEngine
          logCat.info("##### RELOAD  EVENT ######");
          e = new ReloadEvent(ParseUtil.getEmbeddedStringAsInteger(action, 2, '_'),
                request, config);
-         e.setTypeByObject(EventType.EVENT_NAVIGATION_RELOAD);
+         e.setType(EventType.EVENT_NAVIGATION_RELOAD);
          initializeWebEvent(e);
 
          return e;

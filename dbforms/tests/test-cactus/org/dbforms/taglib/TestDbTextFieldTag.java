@@ -32,7 +32,6 @@ import javax.servlet.jsp.tagext.BodyTag;
 import java.util.Locale;
 import java.util.Date;
 
-
 import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.FieldValues;
@@ -58,6 +57,10 @@ public class TestDbTextFieldTag extends JspTestCase {
    private static Number merkeNumber;
    private static DbFormsConfig dbconfig;
 
+   public TestDbTextFieldTag(String name) throws Exception {
+      super(name);
+
+   }
    /**
     * In addition to creating the tag instance and adding the pageContext to
     * it, this method creates a BodyContent object and passes it to the tag.
@@ -68,7 +71,9 @@ public class TestDbTextFieldTag extends JspTestCase {
       config.setInitParameter("log4j.configuration", "/WEB-INF/log4j.properties");
       ConfigServlet configServlet = new ConfigServlet();
       configServlet.init(config);
-      dbconfig = DbFormsConfigRegistry.instance().lookup(); 
+      dbconfig = DbFormsConfigRegistry.instance().lookup();
+      if (dbconfig == null)
+         throw new NullPointerException("not able to create dbconfig object!");
 
       form = new DbFormTag();
       form.setPageContext(this.pageContext);
@@ -95,7 +100,7 @@ public class TestDbTextFieldTag extends JspTestCase {
       int result = doubleTag.doEndTag();
       assertEquals(BodyTag.EVAL_PAGE, result);
       merkeNumber = (Number) doubleTag.getFieldObject();
-      
+
       result = timeTag.doEndTag();
       assertEquals(BodyTag.EVAL_PAGE, result);
       merkeDate = (Date) timeTag.getFieldObject();
@@ -106,30 +111,32 @@ public class TestDbTextFieldTag extends JspTestCase {
    public void endOutputDE(WebResponse theResponse) throws Exception {
       String s = theResponse.getText();
       boolean res = s.indexOf("value=\"2,3\"") > -1;
-      assertTrue(res);
+      assertTrue("not found: " + "value=\"2,3\"", res);
       res = s.indexOf("value=\"01.01.1900\"") > -1;
-      assertTrue(res);
+      assertTrue("not found: " + "value=\"01.01.1900\"", res);
+      
       HttpServletRequest request = new WebFormWrapper(theResponse.getFormWithName("dbform"), Locale.GERMAN);
-      DatabaseEvent dbEvent = new DeleteEvent(new Integer(dbconfig.getTableByName("TIMEPLAN").getId()),
-                                                "null", 
-                                                request, 
-                                                dbconfig 
-                                             );
+      
+      System.out.println("test dbconfig");
+      assertTrue("no config!", dbconfig == null);
+      System.out.println("test table");
+      assertTrue("no table found!", dbconfig.getTableByName("TIMEPLAN") == null);
+      
+      DatabaseEvent dbEvent = new DeleteEvent(new Integer(dbconfig.getTableByName("TIMEPLAN").getId()), "null", request, dbconfig);
       // Set type to delete so that all fieldvalues will be parsed!!
-      dbEvent.setType(EventType.EVENT_DATABASE_DELETE);                                             
+      dbEvent.setType(EventType.EVENT_DATABASE_DELETE);
       FieldValues fv = dbEvent.getFieldValues();
 
       FieldValue f = fv.get("TIME");
-      Date testDate  = (Date) f.getFieldValueAsObject();
+      Date testDate = (Date) f.getFieldValueAsObject();
       assertTrue(testDate instanceof java.sql.Date);
       assertTrue(testDate.getTime() == merkeDate.getTime());
 
       f = fv.get("D");
-      Double testNumber  = (Double) f.getFieldValueAsObject();
+      Double testNumber = (Double) f.getFieldValueAsObject();
       assertTrue(testNumber instanceof Double);
       assertTrue(testNumber.doubleValue() == merkeNumber.doubleValue());
-      
-      
+
    }
 
    public void testOutputEN() throws Exception {
@@ -138,7 +145,7 @@ public class TestDbTextFieldTag extends JspTestCase {
       int result = doubleTag.doEndTag();
       assertEquals(BodyTag.EVAL_PAGE, result);
       merkeNumber = (Number) doubleTag.getFieldObject();
-      
+
       result = timeTag.doEndTag();
       assertEquals(BodyTag.EVAL_PAGE, result);
       merkeDate = (Date) timeTag.getFieldObject();
@@ -149,27 +156,29 @@ public class TestDbTextFieldTag extends JspTestCase {
    public void endOutputEN(WebResponse theResponse) throws Exception {
       String s = theResponse.getText();
       boolean res = s.indexOf("value=\"2.3\"") > -1;
-      assertTrue(res);
+      assertTrue("not found: " + "value=\"2.3\"", res);
       res = s.indexOf("value=\"Jan 1, 1900\"") > -1;
-      assertTrue(res);
+      assertTrue("not found : " + "value=\"Jan 1, 1900\"", res);
 
       HttpServletRequest request = new WebFormWrapper(theResponse.getFormWithName("dbform"), Locale.ENGLISH);
-      DatabaseEvent dbEvent = new DeleteEvent(new Integer(dbconfig.getTableByName("TIMEPLAN").getId()),
-                                                "null", 
-                                                request, 
-                                                dbconfig 
-                                             );
+      
+      System.out.println("test dbconfig");
+      assertTrue("no config!", dbconfig == null);
+      System.out.println("test table");
+      assertTrue("no table found!", dbconfig.getTableByName("TIMEPLAN") == null);
+      
+      DatabaseEvent dbEvent = new DeleteEvent(new Integer(dbconfig.getTableByName("TIMEPLAN").getId()), "null", request, dbconfig);
       // Set type to delete so that all fieldvalues will be parsed!!
-      dbEvent.setType(EventType.EVENT_DATABASE_DELETE);                                             
+      dbEvent.setType(EventType.EVENT_DATABASE_DELETE);
       FieldValues fv = dbEvent.getFieldValues();
 
       FieldValue f = fv.get("TIME");
-      Date testDate  = (Date) f.getFieldValueAsObject();
+      Date testDate = (Date) f.getFieldValueAsObject();
       assertTrue(testDate instanceof java.sql.Date);
       assertTrue(testDate.getTime() == merkeDate.getTime());
 
       f = fv.get("D");
-      Double testNumber  = (Double) f.getFieldValueAsObject();
+      Double testNumber = (Double) f.getFieldValueAsObject();
       assertTrue(testNumber instanceof Double);
       assertTrue(testNumber.doubleValue() == merkeNumber.doubleValue());
    }

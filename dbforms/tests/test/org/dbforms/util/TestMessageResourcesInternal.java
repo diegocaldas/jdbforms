@@ -19,7 +19,8 @@ public class TestMessageResourcesInternal extends AbstractTestCase
 
 	public void testMessageResourceInternal() throws Exception
 	{
-		String s = MessageResourcesInternal.getMessage("dbforms.testmessage", Locale.ENGLISH);
+      MessageResources.setSubClass("resources");
+      String s = MessageResourcesInternal.getMessage("dbforms.testmessage", Locale.ENGLISH);
 		assertTrue(s.equals("this is a test"));
 		s = MessageResourcesInternal.getMessage("dbforms.testmessage", Locale.GERMAN);
 		assertTrue(s.equals("dies ist ein test"));

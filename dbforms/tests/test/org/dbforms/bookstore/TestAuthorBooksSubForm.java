@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import org.dbforms.util.MessageResourcesInternal;
+import org.dbforms.util.MessageResources;
 
 import HTTPClient.NVPair;
 
@@ -21,6 +22,7 @@ public class TestAuthorBooksSubForm extends AbstractTestBase
 	{
       super(name);
       if (nodata == null) {
+         MessageResources.setSubClass("resources");
          nodata = MessageResourcesInternal.getMessage("dbforms.nodata", Locale.getDefault());
       }
 	}

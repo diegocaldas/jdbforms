@@ -88,7 +88,7 @@ public class TestQuery extends org.dbforms.util.AbstractTestCase {
       s = table.getSelectQuery(null, fvs, null, "f1 >= ?", Constants.COMPARE_NONE);
       assertTrue(
          "Test fvs Where clause equals:" + s,
-         s.indexOf("SELECT * FROM td WHERE ( td.id = td1.id and td.id1 = td1.id1 ) AND ( f1 >= ? )  AND (  (  ( AUTHOR_ID =  ?  ) AND ( BOOK_ID =  ?  )  ) )") >= 0);
+         s.indexOf("SELECT * FROM td WHERE ( td.id = td1.id and td.id1 = td1.id1 ) AND ( f1 >= ? )  AND ( (  ( AUTHOR_ID =  ?  ) AND ( BOOK_ID =  ?  )  ) )") >= 0);
    }
 
 

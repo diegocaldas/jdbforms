@@ -186,28 +186,28 @@ public class TestField extends AbstractTestCase
    public void testType2() throws Exception
    {
       Field f = new Field();
-      f.setFieldType(java.lang.Integer.class);
+      f.setTypeByObject(java.lang.Integer.class);
       assertTrue("Should be FieldTypes.INTEGER", 
                  f.getType() == FieldTypes.INTEGER);
-      f.setFieldType(java.lang.Long.class);
+      f.setTypeByObject(java.lang.Long.class);
       assertTrue("Should be FieldTypes.INTEGER", 
                  f.getType() == FieldTypes.INTEGER);
-      f.setFieldType(java.lang.String.class);
+      f.setTypeByObject(java.lang.String.class);
       assertTrue("Should be FieldTypes.CHAR", f.getType() == FieldTypes.CHAR);
-      f.setFieldType(java.math.BigDecimal.class);
+      f.setTypeByObject(java.math.BigDecimal.class);
       assertTrue("Should be FieldTypes.NUMERIC", 
                  f.getType() == FieldTypes.NUMERIC);
-      f.setFieldType(java.sql.Date.class);
+      f.setTypeByObject(java.sql.Date.class);
       assertTrue("Should be FieldTypes.DATE", f.getType() == FieldTypes.DATE);
-      f.setFieldType(java.sql.Time.class);
+      f.setTypeByObject(java.sql.Time.class);
       assertTrue("Should be FieldTypes.TIME", f.getType() == FieldTypes.TIME);
-      f.setFieldType(java.sql.Timestamp.class);
+      f.setTypeByObject(java.sql.Timestamp.class);
       assertTrue("Should be FieldTypes.TIMESTAMP", 
                  f.getType() == FieldTypes.TIMESTAMP);
-      f.setFieldType(java.lang.Double.class);
+      f.setTypeByObject(java.lang.Double.class);
       assertTrue("Should be FieldTypes.DOUBLE", 
                  f.getType() == FieldTypes.DOUBLE);
-      f.setFieldType(java.lang.Float.class);
+      f.setTypeByObject(java.lang.Float.class);
       assertTrue("Should be FieldTypes.FLOAT", f.getType() == FieldTypes.FLOAT);
    }
 }
