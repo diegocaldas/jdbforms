@@ -328,7 +328,10 @@ public abstract class DataSource {
                result.addRow(row);
             }
          } else if (count < 0) {
-            for (int i = startRow + count + 1; i <= startRow; i++) {
+         	startRow = startRow + count + 1;
+         	if (startRow < 0) 
+         	   startRow = 0;
+            for (int i = startRow; i <= startRow; i++) {
                row = getRow(i);
                if (row == null) {
                   break;
