@@ -137,7 +137,7 @@ public class EventEngine
       // NOOP EVENT
       //
       // family: web event
-      if (action.equals(""))
+      if (Util.isNull(action))
       {
          logCat.info("##### N O O P   ELEMENT ######");
          e = new NoopEvent(-1, request, config);
