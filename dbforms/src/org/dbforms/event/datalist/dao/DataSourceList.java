@@ -32,12 +32,12 @@ import org.dbforms.config.Table;
 
 /**
  * Holds a list of DataSourceFactory object in the session context.
- * Needed by the navigation events to store the datasource by a per session mode.
- * So it is possible to reuse the data between different calls and it's not neccessary
- * to refetch again.
+ * Needed by the navigation events to store the datasource 
+ * by a per session mode.
+ * So it is possible to reuse the data between different calls 
+ * and it's not neccessary to refetch again.
  *
  * @author hkk
- *
  */
 public class DataSourceList
 {
@@ -47,12 +47,29 @@ public class DataSourceList
     */
    private Hashtable ht;
 
+
    /**
-    * returns an unique instance of this class for each session
+	* Private constructor.
+	* <br>
+	* Use <code>getInstance</code> to get an instance of 
+	* the DataSourceList object.
+	*/
+   private DataSourceList()
+   {
+	  super();
+	  ht = new Hashtable();
+   }
+
+
+   /**
+    * Returns an unique instance of this class for each session
+    * 
+    * @param request the request object
     */
    public static DataSourceList getInstance(HttpServletRequest request)
    {
-      DataSourceList ds = (DataSourceList) request.getSession().getAttribute("DataSourceList");
+      DataSourceList ds = 
+        (DataSourceList)request.getSession().getAttribute("DataSourceList");
 
       if (ds == null)
       {
@@ -63,22 +80,14 @@ public class DataSourceList
       return ds;
    }
 
-   private DataSourceList()
-   {
-      super();
-      ht = new Hashtable();
-   }
-
-   private String getKey(Table table, HttpServletRequest request)
-   {
-      String refSource = request.getRequestURI();
-      refSource = refSource + "?" + table.getName();
-      return refSource;
-   }
-
 
    /**
-    * adds a DataSource object. If object exists in the Hashtable close first!
+    * Adds a DataSource object to the list. 
+    * If object exists in the Hashtable close first!
+    * 
+    * @param table the table object
+    * @param request the request object
+    * @param ds  the DataSourceFactory object to store into the list
     */
    public void put(Table table, HttpServletRequest request, DataSourceFactory ds)
       throws SQLException
@@ -88,12 +97,12 @@ public class DataSourceList
 
 
    /**
-    * DOCUMENT ME!
+    * Get a DataSource object. 
     *
-    * @param table DOCUMENT ME!
-    * @param request DOCUMENT ME!
+    * @param table   the table object
+    * @param request the request object
     *
-    * @return DOCUMENT ME!
+    * @return the DataSource object related to the input table
     */
    public DataSourceFactory get(Table table, HttpServletRequest request)
    {
@@ -104,19 +113,21 @@ public class DataSourceList
 
 
    /**
-    * DOCUMENT ME!
+    * Remove a DataSource object from the list. 
     *
-    * @param table DOCUMENT ME!
-    * @param request DOCUMENT ME!
+    * @param table  the table object
+    * @param request the request object
     *
-    * @return DOCUMENT ME!
+    * @return the DataSource object related to the input table.
+    *         Note that the returned DataSource object has just been closed
+    *         by this method.
     *
     * @throws SQLException DOCUMENT ME!
     */
    public DataSourceFactory remove(Table table, HttpServletRequest request)
    {
-      DataSourceFactory result = (DataSourceFactory) ht.remove(getKey(
-               table, request));
+      DataSourceFactory result = 
+         (DataSourceFactory) ht.remove(getKey(table, request));
 
       if (result != null)
       {
@@ -124,5 +135,20 @@ public class DataSourceList
       }
 
       return result;
+   }
+   
+   
+   /**
+	* Get the key string.
+	* 
+	* @param table  the table object
+	* @param request the request object
+	* @return the key string (a.k.a. the queryString)
+	*/
+   private String getKey(Table table, HttpServletRequest request)
+   {
+	  String refSource = request.getRequestURI();
+	  refSource = refSource + "?" + table.getName();
+	  return refSource;
    }
 }

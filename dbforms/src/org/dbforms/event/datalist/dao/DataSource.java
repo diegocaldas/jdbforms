@@ -153,7 +153,7 @@ public abstract class DataSource
     *        example: value of field 1=12, value of field 3=1992, then we'll
     *        get "1:2:12-3:4:1992"
     * 
-    * @throws SQLException
+    * @throws SQLException if any error occurs
     */
    public void doUpdate(FieldValues fieldValues, String keyValuesStr)
                  throws SQLException
@@ -171,7 +171,7 @@ public abstract class DataSource
     *        example: value of field 1=12, value of field 3=1992, then we'll
     *        get "1:2:12-3:4:1992"
     * 
-    * @throws SQLException
+    * @throws SQLException if any error occurs
     */
    public void doDelete(String keyValuesStr) throws SQLException
    {
