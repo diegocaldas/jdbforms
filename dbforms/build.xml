@@ -328,7 +328,7 @@
       <fileset dir="." includes="Readme  Todo  build.xml ReleaseNotes*.txt" />
       <fileset dir="." includes="doc/**/*.html,doc/**/*.png,doc/**/*.gif,doc/**/*.jpg,doc/**/*.txt,doc/**/*.pdf,doc/**/*.css" />
       <fileset dir="." includes="dist/*.tld  dist/*.jar" />
-      <fileset dir="." includes="etc/*.xml etc/*.xsl" />
+      <fileset dir="." includes="etc/dbforms_manifest etc/*.xml etc/*.xsl" />
       <fileset dir="." includes="examples/**/*" excludes="**/tools.jar" />
       <fileset dir="." includes="src/org/**/*.java,src/org/**/*.properties,src/org/**/*.xsd,src/org/**/*.xml" />
       <fileset dir="." includes="temp/*.txt" />
