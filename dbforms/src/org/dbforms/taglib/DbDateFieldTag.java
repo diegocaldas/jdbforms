@@ -122,7 +122,7 @@ public class DbDateFieldTag extends DbBaseInputTag
          pageContext.getOut().write(tagBuf.toString());
 
 			// Writes out the old field value
-			writeOutOldValue();
+         writeOutSpecialValues();
 
       }
       catch (java.io.IOException ioe)

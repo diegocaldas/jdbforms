@@ -131,16 +131,23 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler
 	 * 
 	 * @return String
 	 */
-	protected String getFormFieldNameOld()
+	private String getFormFieldNameOld()
 	{
 		return "o" + getFormFieldName();
 	}
 
 
+   /**
+    * writes out all hidden fields for the input fields
+    */
+   protected void writeOutSpecialValues() throws JspException {
+      writeOutOldValue();
+   }
+   
 	/**
 	 * writes out the field value in hidden field _old
 	 */
-	protected void writeOutOldValue() throws JspException
+	private void writeOutOldValue() throws JspException
 	{
 		try
 		{

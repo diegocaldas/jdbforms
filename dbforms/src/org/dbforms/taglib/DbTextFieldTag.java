@@ -85,7 +85,7 @@ public class DbTextFieldTag extends DbBaseInputTag
          pageContext.getOut().write(tagBuf.toString());
          
 			// Writes out the old field value
-			writeOutOldValue();
+         writeOutSpecialValues();
 
          // For generation Javascript Validation.  Need all original and modified fields name
 			getParentForm().addChildName(getFieldName(), getFormFieldName());

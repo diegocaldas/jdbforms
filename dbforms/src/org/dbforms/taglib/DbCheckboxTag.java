@@ -306,8 +306,8 @@ public class DbCheckboxTag extends DbBaseHandlerTag
       try
       {
          pageContext.getOut().write(tagBuf.toString());
-	// Writes out the old field value
-	writeOutOldValue();
+	        // Writes out the old field value
+          writeOutSpecialValues();
       }
       catch (java.io.IOException ioe)
       {
