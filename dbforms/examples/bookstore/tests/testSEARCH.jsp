@@ -1,5 +1,5 @@
 <html>
-	<%@ taglib uri="/WEB-INF/dbForms.tld" prefix="db" %>
+	<%@ taglib uri="/WEB-INF/dbforms.tld" prefix="db" %>
 	<head>
 		<db:base/>
 	</head>
