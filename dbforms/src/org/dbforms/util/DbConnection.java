@@ -85,6 +85,8 @@ public class DbConnection {
 	private String conClass;
 	private String username;
 	private String password;
+	private Properties properties;
+	private boolean useProp = false;
 
 
 	private static final String CONNECTION_FACTORY_CLASS 
@@ -98,6 +100,16 @@ POW2 FUNCTIONALITY */
 	private String isPow2 = "false";
 	private boolean pow2 = false;
 	private boolean isFactorySetup = false;
+	
+	public DbConnection() {
+		properties = new java.util.Properties();
+	}
+	
+	public void addProperty(DbConnectionProperty prop) {
+		properties.put(prop.getName(), prop.getValue());
+		useProp = true;
+	}
+		
 
 	public void setConnectionProviderClass(String cpc) {
 		connectionProviderClass = cpc;
@@ -173,6 +185,7 @@ POW2 FUNCTIONALITY */
 
 	public void setUsername(String newuser) {
 		this.username = newuser;
+		properties.put("user", newuser);
 	}
 
 	public String getPassword() {
@@ -181,6 +194,7 @@ POW2 FUNCTIONALITY */
 
 	public void setPassword(String newpass) {
 		this.password = newpass;
+		properties.put("password", newpass);
 	}
 
 	public Connection getConnection() {
@@ -223,19 +237,19 @@ POW2 FUNCTIONALITY */
 
 		// access connection directly from db or from a connectionpool-manager like "Poolman"
 		} else {
-
 			try {
  	  			Class.forName(conClass).newInstance();
-				if (username != null) {
-					return DriverManager
-						 .getConnection(name, 
-								username, 
-								password);
+				if (useProp) {
+               con = DriverManager.getConnection(name, properties);
+				} else if (username != null) {
+					con = DriverManager.getConnection(name, username, password);
+				} else {
+			  		con = DriverManager.getConnection(name);
 				}
-		  		con = DriverManager.getConnection(name);
+				return con;
 	  		} catch(Exception e) {
 				e.printStackTrace();
-   	    			return null;
+   	    	return null;
 	  		}
 
 		}
@@ -273,6 +287,7 @@ POW2 FUNCTIONALITY */
 		buf.append(",connectionProviderClass"+connectionProviderClass);
 		buf.append(",connectionPoolURL"+connectionPoolURL);
 	 }
+	 buf.append(",properties="+properties.toString());
 
 	 //buf.append(",password="+password);  Not such a good idea!
 	 return buf.toString();

@@ -1,5 +1,5 @@
 /*
- * View.java
+ * Query.java
  * $Header$
  * $Revision$
  * $Date$

@@ -211,41 +211,34 @@ public class ConfigServlet extends HttpServlet {
 		// Configure the processing rules
 
 		// parse "DateFormatter" 
-
 		digester.addCallMethod("dbforms-config/date-format", "setDateFormatter", 0);
 
 		// parse "Table" - object + add it to parent
-
 		digester.addObjectCreate("dbforms-config/table", "org.dbforms.Table");
 		digester.addSetProperties("dbforms-config/table");
 		digester.addSetNext("dbforms-config/table", "addTable", "org.dbforms.Table");
 
 		// parse "Field" - object + add it to parent (which is "Table")
-
 		digester.addObjectCreate("dbforms-config/table/field", "org.dbforms.Field");
 		digester.addSetProperties("dbforms-config/table/field");
 		digester.addSetNext("dbforms-config/table/field", "addField", "org.dbforms.Field");
 
-                // parse "Foreign-Key" - object + add it to parent (which is "Table")
-
+      // parse "Foreign-Key" - object + add it to parent (which is "Table")
 		digester.addObjectCreate("dbforms-config/table/foreign-key","org.dbforms.ForeignKey");
 		digester.addSetProperties("dbforms-config/table/foreign-key");
 		digester.addSetNext("dbforms-config/table/foreign-key", "addForeignKey", "org.dbforms.ForeignKey");
                 
-                // parse "Reference" - object + add it to parent (which is "ForeignKey")
-
+      // parse "Reference" - object + add it to parent (which is "ForeignKey")
 		digester.addObjectCreate("dbforms-config/table/foreign-key/reference","org.dbforms.Reference");
 		digester.addSetProperties("dbforms-config/table/foreign-key/reference");
 		digester.addSetNext("dbforms-config/table/foreign-key/reference", "addReference", "org.dbforms.Reference");
                 
 		// parse "GrantedPrivileges" - object + add it to parent (which is "Table")
-
 		digester.addObjectCreate("dbforms-config/table/granted-privileges", "org.dbforms.GrantedPrivileges");
 		digester.addSetProperties("dbforms-config/table/granted-privileges");
 		digester.addSetNext("dbforms-config/table/granted-privileges",	"setGrantedPrivileges",	"org.dbforms.GrantedPrivileges");
 
 		// parse "Condition" - object + add it to parent (which is "Table")
-
 		digester.addObjectCreate("dbforms-config/table/interceptor", "org.dbforms.Interceptor");
 		digester.addSetProperties("dbforms-config/table/interceptor");
 		digester.addSetNext("dbforms-config/table/interceptor", "addInterceptor", "org.dbforms.Interceptor");
@@ -265,6 +258,16 @@ public class ConfigServlet extends HttpServlet {
 		digester.addSetProperties("dbforms-config/query/search");
 		digester.addSetNext("dbforms-config/query/search", "addSearchField", "org.dbforms.Field");
 
+      // parse "Foreign-Key" - object + add it to parent (which is "Table")
+		digester.addObjectCreate("dbforms-config/query/foreign-key","org.dbforms.ForeignKey");
+		digester.addSetProperties("dbforms-config/query/foreign-key");
+		digester.addSetNext("dbforms-config/query/foreign-key", "addForeignKey", "org.dbforms.ForeignKey");
+                
+      // parse "Reference" - object + add it to parent (which is "ForeignKey")
+		digester.addObjectCreate("dbforms-config/query/foreign-key/reference","org.dbforms.Reference");
+		digester.addSetProperties("dbforms-config/query/foreign-key/reference");
+		digester.addSetNext("dbforms-config/query/foreign-key/reference", "addReference", "org.dbforms.Reference");
+
 		// parse "GrantedPrivileges" - object + add it to parent (which is "Query")
 		digester.addObjectCreate("dbforms-config/query/granted-privileges", "org.dbforms.GrantedPrivileges");
 		digester.addSetProperties("dbforms-config/query/granted-privileges");
@@ -277,8 +280,13 @@ public class ConfigServlet extends HttpServlet {
 
 		// parse "DbConnecion" - object
 		digester.addObjectCreate("dbforms-config/dbconnection", "org.dbforms.util.DbConnection");
-                digester.addSetProperties("dbforms-config/dbconnection");
+      digester.addSetProperties("dbforms-config/dbconnection");
 		digester.addSetNext("dbforms-config/dbconnection", "addDbConnection", "org.dbforms.util.DbConnection");
+
+		// parse "property" - object + add it to parent (which is "DbConnection")
+		digester.addObjectCreate("dbforms-config/dbconnection/property", "org.dbforms.util.DbConnectionProperty");
+      digester.addSetProperties("dbforms-config/dbconnection/property");
+		digester.addSetNext("dbforms-config/dbconnection/property", "addProperty", "org.dbforms.util.DbConnectionProperty");
 
 		return digester;
 
