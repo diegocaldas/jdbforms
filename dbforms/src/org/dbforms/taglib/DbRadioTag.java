@@ -49,6 +49,7 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer
     private String checked; // only needed if parentForm is in "insert-mode", otherwise the DbForms-Framework determinates whether a radio should be selected or not.
     private String growDirection; // only needed if we have a whole "group" of DbRadioTags; default = null == horizontal
     private String growSize = "0"; // limit the number of elements per row (growDirection="horizontal")
+	private String noValue;
 
     /**
      * DOCUMENT ME!
@@ -216,9 +217,17 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer
         { // no embedded data is nested in this tag
 
             // select, if datadriven and data matches with current value OR if explicitly set by user
-            boolean isSelected = ((!parentForm.getFooterReached() || we instanceof ReloadEvent) && (value != null) && value.equals(currentValue)) || "true".equals(checked);
+            boolean isSelected = ((!parentForm.getFooterReached() || we instanceof ReloadEvent) && (value != null) && value.equals(currentValue)) ||  (parentForm.getFooterReached() && "true".equals(checked));
 
             tagBuf.append(generateTagString(value, "", isSelected));
+        	if (!Util.isNull(getNovalue())) {
+        		tagBuf.append("<input type=\"hidden\" name=\"");
+        		tagBuf.append(getFormFieldName());
+        		tagBuf.append("\" value =\"");
+        		tagBuf.append(getNovalue());
+        		tagBuf.append("\" ");
+        		tagBuf.append("/>");
+        	}
         }
         else
         {
@@ -298,4 +307,20 @@ public class DbRadioTag extends DbBaseHandlerTag implements DataContainer
 
         return EVAL_PAGE;
     }
+
+	/**
+	 * Returns the noValue.
+	 * @return String
+	 */
+	public String getNovalue() {
+		return noValue;
+	}
+
+	/**
+	 * Sets the noValue.
+	 * @param noValue The noValue to set
+	 */
+	public void setNovalue(String noValue) {
+		this.noValue = noValue;
+	}
 }
