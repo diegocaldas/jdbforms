@@ -72,7 +72,7 @@ public abstract class WebEvent
     protected Properties properties = null;
 
 	/** type of event */
-	private String type;
+	private String type = "UNDEFINED";
 
 	public WebEvent(int tableId, HttpServletRequest request, DbFormsConfig config) {
 		this.tableId = tableId;
