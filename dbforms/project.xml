@@ -51,10 +51,11 @@
 
     <developer>
       <name>Joachim Peer</name>
-      <id>jpeer</id>
+      <id>joepeer</id>
       <email></email>
       <organization/>
       <roles>
+	    <role>Project founder</role>
         <role>Java Developer</role>
       </roles>
     </developer>
@@ -111,7 +112,7 @@
 
     <developer>
       <name>John Gagon</name>
-      <id>jgagon</id>
+      <id>johngagon</id>
       <email></email>
       <organization/>
       <roles>
@@ -120,21 +121,12 @@
     </developer>
 
     <developer>
-      <name>Bradley M. Handy</name>
-      <id>bmhandy</id>
-      <email>Henner.Kollmann@gmx.de</email>
-      <organization/>
-      <roles>
-        <role>Java Developer</role>
-      </roles>
-    </developer>
-
-    <developer>
-      <name>Robert W. Husted</name>
-      <id>rwhusted</id>
+      <name>Philip Grunikiewicz</name>
+      <id>pgrunik</id>
       <email></email>
       <organization/>
       <roles>
+	    <role>Project founder</role>
         <role>Java Developer</role>
       </roles>
     </developer>
@@ -151,7 +143,7 @@
 
     <developer>
       <name>Dirk Kraemer</name>
-      <id>dkraemer</id>
+      <id>dikr</id>
       <email>kraemer@rz.uni-kiel.de</email>
       <organization/>
       <roles>
@@ -160,8 +152,18 @@
     </developer>
 
     <developer>
+      <name>John Peterson</name>
+      <id>jdp1120</id>
+      <email></email>
+      <organization/>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+
+    <developer>
       <name>Eric Pugh</name>
-      <id>epugh</id>
+      <id>dep4b</id>
       <email>epugh@upstate.com</email>
       <organization/>
       <roles>
@@ -170,6 +172,19 @@
     </developer>
 
   </developers>
+
+  <contributors>
+     <contributor>
+       <name>Robert W. Husted</name>
+       <email>husted@netscape.com</email>
+     </contributor>
+
+     <contributor>
+       <name>Bradley M. Handy</name>
+       <email></email>
+     </contributor>
+  </contributors>
+
 
   <dependencies>       
 
