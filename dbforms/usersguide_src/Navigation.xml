@@ -7,14 +7,14 @@
     <para>Since version 1.1.4 DbForms contains two different navigation systems:</para>
     <itemizedlist>
       <listitem>
-        <para>A new one - in the datalist package - which implements a simplified data list pattern described by Claudio Fratarcangeli,Data List Handler: A Pattern for Large Search Result Sets, published on TheServerSide.com. THE NEW SYSTEM NEEDS TO BE CONFIGURED IN DBFORMS-CONFIG.XML, WORKS WITH A 
+        <para>A new one - in the datalist package - which implements a simplified data list pattern described by Claudio Fratarcangeli,Data List Handler: A Pattern for Large Search Result Sets, published on TheServerSide.com. The new system WORKS WITH A 
           <computeroutput>whereClause</computeroutput>, AND DOES NOT RE-EXECUTE THE SEARCH QUERY EVERY TIME.
         </para>
       </listitem>
       <listitem>
         <para>The original one - in the classic package. The original code re-executes the search query every time the client requests a subset of the hits. THIS DOES NOT WORK WHEN A 
           <computeroutput>whereClause</computeroutput> ATTRIBUTE IS USED IN THE 
-          <computeroutput>dbForm</computeroutput> TAG!
+          <computeroutput>dbForm</computeroutput> TAG!  THE OLD SYSTEM NEEDS TO BE CONFIGURED IN DBFORMS-CONFIG.XML AS IT IS NO LONGER THE DEFAULT.
         </para>
         <para>See the 
           <computeroutput>dbform</computeroutput>tag in 
