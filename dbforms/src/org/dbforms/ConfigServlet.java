@@ -487,12 +487,13 @@ public class ConfigServlet extends HttpServlet
     {
         // Initialize the context-relative path to our configuration resources
         String value = getServletConfig().getInitParameter(DbFormsConfig.CONFIG);
-
         if (value != null)
         {
             config = value;
         }
-        initXMLConfigFile(config, digesterDebugLevel);
+     	  String[] s = config.split(",");
+    	  for (int i = 0; i < s.length; i++)
+    	     initXMLConfigFile(s[i], digesterDebugLevel);
     } 
 
     protected void initXMLConfigFile(String config, int digesterDebugLevel) throws IOException, ServletException {
@@ -616,7 +617,9 @@ public class ConfigServlet extends HttpServlet
 		if (value != null) {
 			validation = value;
 		}
-		initXMLValidatorValidation(resources, validation);
+		String[] s = validation.split(",");
+		for (int i = 0; i < s.length; i++)
+			initXMLValidatorValidation(resources, s[i]);
 
 		// store this errors object in the servlet context ("application")
 		getServletContext().setAttribute(ValidatorConstants.VALIDATOR, resources);
