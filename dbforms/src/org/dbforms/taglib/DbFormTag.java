@@ -1142,8 +1142,11 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally
 
          logCat.info("servlet path = " + request.getServletPath());
          logCat.info("servlet getPathInfo = " + request.getPathInfo());
-         logCat.info("servlet getPathTranslated = "
-            + request.getPathTranslated());
+// 20030604-HKK: Removed because of bug in current cactus enviroment! 
+//               getPathTranslated() will get an null exception! 
+
+//         logCat.info("servlet getPathTranslated = "
+//            + request.getPathTranslated());
          logCat.info("servlet getContextPath = " + request.getContextPath());
          logCat.debug("pos1");
 
