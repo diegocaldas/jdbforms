@@ -24,11 +24,13 @@ package org.dbforms.event;
 import java.util.HashMap;
 import java.util.Properties;
 import javax.servlet.http.*;
+
+import org.CVS.*;
 import org.apache.log4j.Category;
 import org.dbforms.*;
 import org.dbforms.util.Util;
-import org.dbforms.util.EventUtil;
 import org.dbforms.util.ReflectionUtil;
+import org.dbforms.config.*;
 import org.dbforms.event.eventtype.EventType;
 import org.dbforms.event.eventtype.EventTypeUtil;
 
@@ -233,7 +235,7 @@ public abstract class EventFactory
       {
          // try to retrieve a valid  target table name from the request;
          // if it's null, try to retrieve the table id from the action string.
-         String tableName = EventUtil.getDestinationTableName(request, action);
+         String tableName = EventHelper.getDestinationTableName(request, action);
 
          if (!Util.isNull(tableName))
          {
@@ -254,7 +256,7 @@ public abstract class EventFactory
          }
          else
          {
-            int tableId = EventUtil.getTableId(action);
+            int tableId = EventHelper.getTableId(action);
             table = config.getTable(tableId);
          }
 
