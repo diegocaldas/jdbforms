@@ -341,6 +341,7 @@ public class SqlUtil
         DbConnection aDbConnection = null;
         Connection con = null;
 
+        logCat.debug("About to get connection - " + dbConnectionName);
         if ((aDbConnection = config.getDbConnection(dbConnectionName)) == null)
         {
             throw new IllegalArgumentException("DbConnection named [" + dbConnectionName + "] is not configured properly.");
@@ -350,7 +351,7 @@ public class SqlUtil
         {
             throw new IllegalArgumentException("JDBC-Troubles:  was not able to create connection using the following dbconnection: " + aDbConnection);
         }
-
+        logCat.debug("got connection - " + con);
         return con;
     }
 
