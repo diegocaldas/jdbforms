@@ -56,33 +56,33 @@ import java.io.InputStreamReader;
 import java.io.InputStream;
 import java.util.Enumeration;
 
-/* 
-import javax.servlet.jsp.el.VariableResolver;
-import javax.servlet.jsp.el.ExpressionEvaluator;
-
-import org.apache.commons.el.ExpressionEvaluatorImpl;
-import org.apache.commons.el.VariableResolverImpl;
-
-**/
-
-
 /**
  * DOCUMENT ME!
- *
+ * 
  * @author $author$
  * @version $Revision$
  */
 public class PageContextBuffer extends PageContext {
 	private Servlet servlet;
+
 	private ServletRequest request;
+
 	private ServletResponse response;
+
 	private HttpSession session;
+
 	private String errorPageURL;
+
 	private boolean needsSession;
+
 	private ServletConfig servletConfig;
+
 	private ServletContext servletContext;
+
 	private Hashtable nametable;
+
 	private JspWriterBuffer out;
+
 	private Exception exception;
 
 	public StringBuffer getBuffer() {
@@ -101,23 +101,25 @@ public class PageContextBuffer extends PageContext {
 
 	/**
 	 * DOCUMENT ME!
-	 *
-	 * @param servlet DOCUMENT ME!
-	 * @param request DOCUMENT ME!
-	 * @param response DOCUMENT ME!
-	 * @param errorPageURL DOCUMENT ME!
-	 * @param needsSession DOCUMENT ME!
-	 * @param bufferSize DOCUMENT ME!
-	 * @param autoFlush DOCUMENT ME!
+	 * 
+	 * @param servlet
+	 *            DOCUMENT ME!
+	 * @param request
+	 *            DOCUMENT ME!
+	 * @param response
+	 *            DOCUMENT ME!
+	 * @param errorPageURL
+	 *            DOCUMENT ME!
+	 * @param needsSession
+	 *            DOCUMENT ME!
+	 * @param bufferSize
+	 *            DOCUMENT ME!
+	 * @param autoFlush
+	 *            DOCUMENT ME!
 	 */
-	public void initialize(
-		Servlet servlet,
-		ServletRequest request,
-		ServletResponse response,
-		String errorPageURL,
-		boolean needsSession,
-		int bufferSize,
-		boolean autoFlush) {
+	public void initialize(Servlet servlet, ServletRequest request,
+			ServletResponse response, String errorPageURL,
+			boolean needsSession, int bufferSize, boolean autoFlush) {
 		this.servlet = servlet;
 		this.request = request;
 		this.response = response;
@@ -155,9 +157,11 @@ public class PageContextBuffer extends PageContext {
 
 	/**
 	 * DOCUMENT ME!
-	 *
-	 * @param name DOCUMENT ME!
-	 * @param attribute DOCUMENT ME!
+	 * 
+	 * @param name
+	 *            DOCUMENT ME!
+	 * @param attribute
+	 *            DOCUMENT ME!
 	 */
 	public void setAttribute(String name, Object attribute) {
 		if ((name == null) || (attribute == null)) {
@@ -169,10 +173,13 @@ public class PageContextBuffer extends PageContext {
 
 	/**
 	 * DOCUMENT ME!
-	 *
-	 * @param name DOCUMENT ME!
-	 * @param attribute DOCUMENT ME!
-	 * @param scope DOCUMENT ME!
+	 * 
+	 * @param name
+	 *            DOCUMENT ME!
+	 * @param attribute
+	 *            DOCUMENT ME!
+	 * @param scope
+	 *            DOCUMENT ME!
 	 */
 	public void setAttribute(String name, Object attribute, int scope) {
 		if ((name == null) || (attribute == null)) {
@@ -180,35 +187,37 @@ public class PageContextBuffer extends PageContext {
 		}
 
 		switch (scope) {
-			case APPLICATION_SCOPE :
-				break;
+		case APPLICATION_SCOPE:
+			break;
 
-			case PAGE_SCOPE :
-				setAttribute(name, attribute);
+		case PAGE_SCOPE:
+			setAttribute(name, attribute);
 
-				break;
+			break;
 
-			case REQUEST_SCOPE :
-				break;
+		case REQUEST_SCOPE:
+			break;
 
-			case SESSION_SCOPE :
+		case SESSION_SCOPE:
 
-				if (!needsSession) {
-					throw new IllegalArgumentException("Invalid scope - Page does not participate in a session");
-				}
+			if (!needsSession) {
+				throw new IllegalArgumentException(
+						"Invalid scope - Page does not participate in a session");
+			}
 
-				break;
+			break;
 
-			default :
-				throw new IllegalArgumentException("Invalid scope");
+		default:
+			throw new IllegalArgumentException("Invalid scope");
 		}
 	}
 
 	/**
 	 * DOCUMENT ME!
-	 *
-	 * @param name DOCUMENT ME!
-	 *
+	 * 
+	 * @param name
+	 *            DOCUMENT ME!
+	 * 
 	 * @return DOCUMENT ME!
 	 */
 	public Object getAttribute(String name) {
@@ -221,10 +230,12 @@ public class PageContextBuffer extends PageContext {
 
 	/**
 	 * DOCUMENT ME!
-	 *
-	 * @param name DOCUMENT ME!
-	 * @param scope DOCUMENT ME!
-	 *
+	 * 
+	 * @param name
+	 *            DOCUMENT ME!
+	 * @param scope
+	 *            DOCUMENT ME!
+	 * 
 	 * @return DOCUMENT ME!
 	 */
 	public Object getAttribute(String name, int scope) {
@@ -235,34 +246,35 @@ public class PageContextBuffer extends PageContext {
 		}
 
 		switch (scope) {
-			case PAGE_SCOPE :
-				obj = getAttribute(name);
+		case PAGE_SCOPE:
+			obj = getAttribute(name);
 
-				break;
+			break;
 
-			case REQUEST_SCOPE :
-				obj = request.getAttribute(name);
+		case REQUEST_SCOPE:
+			obj = request.getAttribute(name);
 
-				break;
+			break;
 
-			case SESSION_SCOPE :
+		case SESSION_SCOPE:
 
-				if (needsSession) {
-					/* Throws IllegalStateException */
-					obj = session.getAttribute(name);
-				} else {
-					throw new IllegalArgumentException("Invalid scope - Page does not participate in a session");
-				}
+			if (needsSession) {
+				/* Throws IllegalStateException */
+				obj = session.getAttribute(name);
+			} else {
+				throw new IllegalArgumentException(
+						"Invalid scope - Page does not participate in a session");
+			}
 
-				break;
+			break;
 
-			case APPLICATION_SCOPE :
-				obj = servletContext.getAttribute(name);
+		case APPLICATION_SCOPE:
+			obj = servletContext.getAttribute(name);
 
-				break;
+			break;
 
-			default :
-				throw new IllegalArgumentException("Invalid scope");
+		default:
+			throw new IllegalArgumentException("Invalid scope");
 		}
 
 		return obj;
@@ -270,9 +282,10 @@ public class PageContextBuffer extends PageContext {
 
 	/**
 	 * DOCUMENT ME!
-	 *
-	 * @param name DOCUMENT ME!
-	 *
+	 * 
+	 * @param name
+	 *            DOCUMENT ME!
+	 * 
 	 * @return DOCUMENT ME!
 	 */
 	public Object findAttribute(String name) {
@@ -302,8 +315,9 @@ public class PageContextBuffer extends PageContext {
 
 	/**
 	 * DOCUMENT ME!
-	 *
-	 * @param name DOCUMENT ME!
+	 * 
+	 * @param name
+	 *            DOCUMENT ME!
 	 */
 	public void removeAttribute(String name) {
 		nametable.remove(name);
@@ -311,39 +325,44 @@ public class PageContextBuffer extends PageContext {
 
 	/**
 	 * DOCUMENT ME!
-	 *
-	 * @param name DOCUMENT ME!
-	 * @param scope DOCUMENT ME!
+	 * 
+	 * @param name
+	 *            DOCUMENT ME!
+	 * @param scope
+	 *            DOCUMENT ME!
 	 */
 	public void removeAttribute(String name, int scope) {
 		switch (scope) {
-			case PAGE_SCOPE :
-				break;
+		case PAGE_SCOPE:
+			break;
 
-			case REQUEST_SCOPE :
-				throw new IllegalArgumentException("Invalid scope - Can't remove attribute from REQUEST_SCOPE");
+		case REQUEST_SCOPE:
+			throw new IllegalArgumentException(
+					"Invalid scope - Can't remove attribute from REQUEST_SCOPE");
 
-			case SESSION_SCOPE :
+		case SESSION_SCOPE:
 
-				if (!needsSession) {
-					throw new IllegalArgumentException("Invalid Scope - Page does not participate in an HTTP session");
-				}
+			if (!needsSession) {
+				throw new IllegalArgumentException(
+						"Invalid Scope - Page does not participate in an HTTP session");
+			}
 
-				break;
+			break;
 
-			case APPLICATION_SCOPE :
-				break;
+		case APPLICATION_SCOPE:
+			break;
 
-			default :
-				throw new IllegalArgumentException("Invalid Scope");
+		default:
+			throw new IllegalArgumentException("Invalid Scope");
 		}
 	}
 
 	/**
 	 * DOCUMENT ME!
-	 *
-	 * @param name DOCUMENT ME!
-	 *
+	 * 
+	 * @param name
+	 *            DOCUMENT ME!
+	 * 
 	 * @return DOCUMENT ME!
 	 */
 	public int getAttributesScope(String name) {
@@ -373,40 +392,42 @@ public class PageContextBuffer extends PageContext {
 
 	/**
 	 * DOCUMENT ME!
-	 *
-	 * @param scope DOCUMENT ME!
-	 *
+	 * 
+	 * @param scope
+	 *            DOCUMENT ME!
+	 * 
 	 * @return DOCUMENT ME!
 	 */
 	public Enumeration getAttributeNamesInScope(int scope) {
 
 		switch (scope) {
-			case PAGE_SCOPE :
-				return nametable.keys();
+		case PAGE_SCOPE:
+			return nametable.keys();
 
-			case REQUEST_SCOPE :
-				return request.getAttributeNames();
+		case REQUEST_SCOPE:
+			return request.getAttributeNames();
 
-			case SESSION_SCOPE :
+		case SESSION_SCOPE:
 
-				if (!needsSession) {
-					throw new IllegalArgumentException("Invalid scope - Page does not participate in a session");
-				} else {
-					/* HttpSession should have get/setAttributeNames too :) */
-					return session.getAttributeNames();
-				}
+			if (!needsSession) {
+				throw new IllegalArgumentException(
+						"Invalid scope - Page does not participate in a session");
+			} else {
+				/* HttpSession should have get/setAttributeNames too :) */
+				return session.getAttributeNames();
+			}
 
-			case APPLICATION_SCOPE :
-				return servletContext.getAttributeNames();
+		case APPLICATION_SCOPE:
+			return servletContext.getAttributeNames();
 
-			default :
-				throw new IllegalArgumentException("Invalid scope");
+		default:
+			throw new IllegalArgumentException("Invalid scope");
 		}
 	}
 
 	/**
 	 * DOCUMENT ME!
-	 *
+	 * 
 	 * @return DOCUMENT ME!
 	 */
 	public JspWriter getOut() {
@@ -415,7 +436,7 @@ public class PageContextBuffer extends PageContext {
 
 	/**
 	 * DOCUMENT ME!
-	 *
+	 * 
 	 * @return DOCUMENT ME!
 	 */
 	public HttpSession getSession() {
@@ -424,7 +445,7 @@ public class PageContextBuffer extends PageContext {
 
 	/**
 	 * DOCUMENT ME!
-	 *
+	 * 
 	 * @return DOCUMENT ME!
 	 */
 	public Object getPage() {
@@ -433,7 +454,7 @@ public class PageContextBuffer extends PageContext {
 
 	/**
 	 * DOCUMENT ME!
-	 *
+	 * 
 	 * @return DOCUMENT ME!
 	 */
 	public ServletRequest getRequest() {
@@ -442,7 +463,7 @@ public class PageContextBuffer extends PageContext {
 
 	/**
 	 * DOCUMENT ME!
-	 *
+	 * 
 	 * @return DOCUMENT ME!
 	 */
 	public ServletResponse getResponse() {
@@ -451,7 +472,7 @@ public class PageContextBuffer extends PageContext {
 
 	/**
 	 * DOCUMENT ME!
-	 *
+	 * 
 	 * @return DOCUMENT ME!
 	 */
 	public Exception getException() {
@@ -460,7 +481,7 @@ public class PageContextBuffer extends PageContext {
 
 	/**
 	 * DOCUMENT ME!
-	 *
+	 * 
 	 * @return DOCUMENT ME!
 	 */
 	public ServletConfig getServletConfig() {
@@ -469,7 +490,7 @@ public class PageContextBuffer extends PageContext {
 
 	/**
 	 * DOCUMENT ME!
-	 *
+	 * 
 	 * @return DOCUMENT ME!
 	 */
 	public ServletContext getServletContext() {
@@ -478,55 +499,61 @@ public class PageContextBuffer extends PageContext {
 
 	/**
 	 * DOCUMENT ME!
-	 *
-	 * @param relativeURLPath DOCUMENT ME!
-	 *
-	 * @throws ServletException DOCUMENT ME!
-	 * @throws IOException DOCUMENT ME!
+	 * 
+	 * @param relativeURLPath
+	 *            DOCUMENT ME!
+	 * 
+	 * @throws ServletException
+	 *             DOCUMENT ME!
+	 * @throws IOException
+	 *             DOCUMENT ME!
 	 */
-	public void forward(String relativeURLPath)
-		throws ServletException, IOException {
+	public void forward(String relativeURLPath) throws ServletException,
+			IOException {
 		if (relativeURLPath == null) {
 			throw new ServletException(
-				"[PageContext.forward()] Got 'null' URL - Probably caused "
-					+ "by a non-existent Request Time Attribute Value.");
+					"[PageContext.forward()] Got 'null' URL - Probably caused "
+							+ "by a non-existent Request Time Attribute Value.");
 		}
 
 		String path = decodePath(relativeURLPath);
 
-		RequestDispatcher requestDispatcher =
-			servletContext.getRequestDispatcher(path);
+		RequestDispatcher requestDispatcher = servletContext
+				.getRequestDispatcher(path);
 
 		requestDispatcher.forward(request, response);
 	}
 
 	/**
 	 * DOCUMENT ME!
-	 *
-	 * @param relativeURLPath DOCUMENT ME!
-	 *
-	 * @throws ServletException DOCUMENT ME!
-	 * @throws IOException DOCUMENT ME!
+	 * 
+	 * @param relativeURLPath
+	 *            DOCUMENT ME!
+	 * 
+	 * @throws ServletException
+	 *             DOCUMENT ME!
+	 * @throws IOException
+	 *             DOCUMENT ME!
 	 */
-	public void include(String relativeURLPath)
-		throws ServletException, IOException {
+	public void include(String relativeURLPath) throws ServletException,
+			IOException {
 		if (relativeURLPath == null) {
 			throw new ServletException(
-				"[PageContext.include()] Got 'null' URL. Probably caused "
-					+ " by a non-existent Request Time Attribute Value.");
+					"[PageContext.include()] Got 'null' URL. Probably caused "
+							+ " by a non-existent Request Time Attribute Value.");
 		}
 		out.flush();
 		String path = decodePath(relativeURLPath);
-		RequestDispatcher requestDispatcher =
-			servletContext.getRequestDispatcher(path);
+		RequestDispatcher requestDispatcher = servletContext
+				.getRequestDispatcher(path);
 		if (requestDispatcher == null) {
-			InputStream is =
-				servletContext.getResourceAsStream(relativeURLPath);
+			InputStream is = servletContext
+					.getResourceAsStream(relativeURLPath);
 
 			if (is == null) {
 				throw new ServletException(
-					"[PageContext.include()] Unable to obtain include resource "
-						+ relativeURLPath);
+						"[PageContext.include()] Unable to obtain include resource "
+								+ relativeURLPath);
 			}
 			BufferedReader in = new BufferedReader(new InputStreamReader(is));
 
@@ -542,15 +569,13 @@ public class PageContextBuffer extends PageContext {
 			String attrib;
 
 			if ((attrib = httpReq.getRequestURI()) != null) {
-				request.setAttribute(
-					"javax.servlet.include.request_uri",
-					attrib);
+				request.setAttribute("javax.servlet.include.request_uri",
+						attrib);
 			}
 
 			if ((attrib = httpReq.getServletPath()) != null) {
-				request.setAttribute(
-					"javax.servlet.include.servlet_path",
-					attrib);
+				request.setAttribute("javax.servlet.include.servlet_path",
+						attrib);
 			}
 
 			if ((attrib = httpReq.getPathInfo()) != null) {
@@ -558,9 +583,8 @@ public class PageContextBuffer extends PageContext {
 			}
 
 			if ((attrib = httpReq.getQueryString()) != null) {
-				request.setAttribute(
-					"javax.servlet.include.query_string",
-					attrib);
+				request.setAttribute("javax.servlet.include.query_string",
+						attrib);
 			}
 
 			requestDispatcher.include(request, response);
@@ -568,7 +592,7 @@ public class PageContextBuffer extends PageContext {
 	}
 
 	public void include(String relativeURLPath, boolean flush)
-		throws ServletException, IOException {
+			throws ServletException, IOException {
 		include(relativeURLPath);
 		out.flush();
 	}
@@ -590,14 +614,17 @@ public class PageContextBuffer extends PageContext {
 
 	/**
 	 * DOCUMENT ME!
-	 *
-	 * @param t DOCUMENT ME!
-	 *
-	 * @throws IOException DOCUMENT ME!
-	 * @throws ServletException DOCUMENT ME!
+	 * 
+	 * @param t
+	 *            DOCUMENT ME!
+	 * 
+	 * @throws IOException
+	 *             DOCUMENT ME!
+	 * @throws ServletException
+	 *             DOCUMENT ME!
 	 */
-	public void handlePageException(Throwable t)
-		throws IOException, ServletException {
+	public void handlePageException(Throwable t) throws IOException,
+			ServletException {
 		// set the request attribute with the Throwable.
 		request.setAttribute("javax.servlet.jsp.jspException", t);
 
@@ -639,14 +666,17 @@ public class PageContextBuffer extends PageContext {
 
 	/**
 	 * DOCUMENT ME!
-	 *
-	 * @param e DOCUMENT ME!
-	 *
-	 * @throws ServletException DOCUMENT ME!
-	 * @throws IOException DOCUMENT ME!
+	 * 
+	 * @param e
+	 *            DOCUMENT ME!
+	 * 
+	 * @throws ServletException
+	 *             DOCUMENT ME!
+	 * @throws IOException
+	 *             DOCUMENT ME!
 	 */
-	public void handlePageException(Exception e)
-		throws ServletException, IOException {
+	public void handlePageException(Exception e) throws ServletException,
+			IOException {
 		//		System.out.println("[PageContext] handling page exception");
 		//		e.printStackTrace();
 		if (!errorPageURL.equals("")) {
@@ -659,23 +689,25 @@ public class PageContextBuffer extends PageContext {
 		}
 	}
 
-	// The variable resolver, for evaluating EL expressions.
-	/*
-	   private VariableResolverImpl variableResolver;
-	   public VariableResolver getVariableResolver() {
-	   		return variableResolver;
-	   }
-	*/
+
+
+
+    // The variable resolver, for evaluating EL expressions.
+    private org.apache.commons.el.VariableResolverImpl variableResolver = 
+    				new org.apache.commons.el.VariableResolverImpl(this);
+	public javax.servlet.jsp.el.VariableResolver getVariableResolver() {
+		return variableResolver;
+	}
+
 	/**
-		* Provides programmatic access to the ExpressionEvaluator.
-		* The JSP Container must return a valid instance of an
-		* ExpressionEvaluator that can parse EL expressions.
-		*/
+	 * Provides programmatic access to the ExpressionEvaluator. The JSP
+	 * Container must return a valid instance of an ExpressionEvaluator that can
+	 * parse EL expressions.
+	 */
 	// The expression evaluator, for evaluating EL expressions.
-	/*   
-	   private static ExpressionEvaluatorImpl elExprEval = new ExpressionEvaluatorImpl(false);
-	   public ExpressionEvaluator getExpressionEvaluator() {
-		   return elExprEval;
-	   }
-	*/
+    private org.apache.commons.el.ExpressionEvaluatorImpl elExprEval = 
+    				new org.apache.commons.el.ExpressionEvaluatorImpl();
+	public javax.servlet.jsp.el.ExpressionEvaluator getExpressionEvaluator() {
+		return elExprEval;
+	}
 }
