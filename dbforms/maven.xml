@@ -179,6 +179,7 @@
 
   <postGoal name="site:run-reports">
     <ant:echo message="generate releasenotes" />
+    <ant:mkdir dir="target/generated-xdocs" />
     <doc:text-xdoc 
     	title="Release Notes for ${pom.currentVersion}" 
     	section="Release Notes" 
