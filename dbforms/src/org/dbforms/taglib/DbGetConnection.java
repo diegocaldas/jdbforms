@@ -59,7 +59,7 @@ public class DbGetConnection extends BodyTagSupport {
 		}
 
 		return EVAL_BODY_TAG;
-		;
+		
 	}
 
 	public int doAfterBody() {

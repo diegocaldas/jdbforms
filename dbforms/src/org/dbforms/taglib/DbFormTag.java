@@ -579,7 +579,7 @@ public class DbFormTag extends BodyTagSupport {
 					// if form is an emptyform -> we've fineshed yet - cancel all further activities!
 					out.println(tagBuf.toString());
 					return EVAL_BODY_TAG;
-					;
+					
 				}
 
 				positionPathCore = "root";
