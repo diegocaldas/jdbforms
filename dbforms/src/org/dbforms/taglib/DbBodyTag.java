@@ -116,7 +116,7 @@ public class DbBodyTag extends BodyTagSupport
             }
         }
 
-        return EVAL_BODY_TAG;
+        return EVAL_BODY_BUFFERED;
     }
 
 
