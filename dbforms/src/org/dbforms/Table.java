@@ -796,8 +796,14 @@ public class Table
         }
 
         logCat.debug("###getDoSelectResultSet pos7");
-
-        return ps.executeQuery();
+        ResultSet result = null;
+		try {
+	       result  = ps.executeQuery();
+		}  catch (SQLException sqle)  {
+			SqlUtil.logSqlException(sqle);
+            throw new SQLException(sqle.getMessage());
+        }
+      	return result;
     }
 
 
@@ -845,9 +851,14 @@ public class Table
 
         String query = getFreeFormSelectQuery(fieldsToSelect, whereClause, tableList);
         stmt.setMaxRows(maxRows); // important when quering huge tables
-        rs = stmt.executeQuery(query);
+		try {
+	        rs = stmt.executeQuery(query);
+		}  catch (SQLException sqle)  {
+			SqlUtil.logSqlException(sqle);
+            throw new SQLException(sqle.getMessage());
+        }
         result = new ResultSetVector(fieldsToSelect, rs);
-		// 20021115-HKK: statement is closed in ResultSetVector()
+		// 20021115-HKK: resultset is closed in ResultSetVector()
         // rs.close();
         stmt.close();
         logCat.info("rsv size=" + result.size());
