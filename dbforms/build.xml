@@ -95,7 +95,7 @@ Happy coding!
         <echo message="end of xsl translation "/>
     </target>
 
-    <!-- generate HTM reference documentaion from taglib-docu using XSL transformation -->
+    <!-- generate HTM reference documentation from taglib-docu using XSL transformation -->
     <target name="generate_taglib_htmldocs" 
                     description="--> Generate  HTML reference documentation within doc/html from taglib-docu.xml" >
         <echo message="begin xsl translation to generate HTML documentation  "/>
@@ -103,6 +103,17 @@ Happy coding!
         <echo message="end of xsl translation "/>
     </target>
 
+    <!-- generate PDF reference documentation from taglib-docu using XSL transformation and FOP -->
+    <target name="generate_taglib_pdfdocs" 
+                    description="--> Generate  PDF reference documentation from taglib-docu.xml" >
+        <echo message="begin xsl translation to generate xsl-fo   "/>
+        <style style="${etc.dir}/tldoc2xsl-fo.xsl" in="${etc.dir}/taglib_docu.xml" out="${etc.dir}/DbFormsTags.xsl-fo"/>
+        <echo message="end of xsl translation "/>
+        <echo message="Warning: transformation process not complete."/>
+        <echo message="TODO: transform  DbFormsTags.xsl-fo to PDF"/>
+    </target>
+    
+    
     <!-- make an example app -->
 
     <target name="createExample">
