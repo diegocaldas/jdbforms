@@ -63,6 +63,15 @@ Future versions of DbForms may be expected to provide more on sorting.</para>
 
 			<para/>
 		</sect2>
+                <sect2><title>Alternative method to order query results</title>
+ 
+ <para>An alternative to sorting is to use a<computeroutput>orderBy</computeroutput>attribute in the dbform tag of your jsp page.  See the TagLib for more information.</para>
+<para>Similar to sorting, if you use a non-primary key with orderBy, you MUST specify
+sortable=&quot;true&quot; within your dbforms-config.xml file.</para>
+<para>If you use orderBy with a non primary key and you don't specify that in the config file, then navNext/navPrev buttons will function like navLast/navFirst buttons and you will skip over results.
+ </para>
+                
+                </sect2>
                 
                 </sect1>
                 <!--    END OF SORTING BEGINNING OF FILTERING -->
@@ -227,6 +236,23 @@ Future versions of DbForms may be expected to provide more on sorting.</para>
 </para>
 			<para/>
 		</sect2>
+                <sect2>
+                <title>Alternative way to restrict queries</title>
+<para>It is also possible to use a  <computeroutput>whereClause</computeroutput> within a dbform tag for situations where you need more complexity than filtering can handle.  See the TagLib from more info.</para>
+     <para>However, if you want to use navigation (eg. navNext/navPrev buttons), you should use orderBy
+and filter attributes instead of a whereClause because using a whereClause renders navigation impossible! 
+For instance, if you specify whereClause=&quot;where n&gt;3&quot; and your user views the page and then clicks the navNext button, the next page may show values
+where n is not greater than 3.</para>
+
+<para>Also, the whereClause attribute can not be used with <computeroutput>orderBy</computeroutput> or <computeroutput>filter</computeroutput> attributes.
+They will be ignored. Order by should be used within the whereClause instead:</para>
+ 
+ <para>
+ <screen>
+ whereClause=&quot;WHERE (FIELD1 &gt;'25' AND FIELD1 &lt;'50' ) OR FIELD2 NOT NULL ORDERBY FIELD7&quot;
+</screen>
+</para>
+                </sect2>
                 </sect1>
                 
                 
@@ -551,7 +577,7 @@ You may also test it on the running live samples at the DbForms Website.</para>
                 <!-- END OF SEARCHING, BEGGINING OF QUERY SUPPORT -->
                 
                 <sect1>
-			<title>Query Support
+			<title id="qSupp">Query Support
 </title>
 			<para>To make the usage of sql queries more flexible in dbforms you can use the query element which can be used to:
 </para><itemizedlist mark="opencircle">
