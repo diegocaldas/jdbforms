@@ -55,7 +55,7 @@
             <imagedata fileref="images/figures/event.datalist.png" format="PNG" />
           </imageobject>
           <imageobject role="fo">
-            <imagedata fileref="../images/figures/event.datalist.png" format="PNG" />
+            <imagedata fileref="../images/figures/event.datalist_pdf.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
@@ -75,7 +75,14 @@
       <para>All navigation and database events use the DataSourceFactory class to retrieve an concrete implementation of the abstract DataSource class. The DataSourceFactory class gets takes the DataAccessClass attribute of the table class uses reflection to instanciate a new concrete implementation. If no DataAccessClass is given in table the DataSourceJDBC class is used. DataSourceJDBC is an implementation wich uses jdbc database access to get the data.</para>
       <para>You can override this behaviour if you set the DataAccessClass in dbforms to another class.</para>
       <para>Example:</para>
-      <programlisting>&lt;table name="line_flightbars" dataAccessClass="de.aucos.linedata.LineData" &gt; &lt;field name="flightbar_id" fieldType="integer" isKey="true" /&gt; &lt;field name="flightbartype" fieldType="char" /&gt; &lt;field name="flightbarstatus" fieldType="char" /&gt; &lt;field name="stationid" fieldType="integer" /&gt; &lt;field name="shuttleid" fieldType="integer" /&gt; &lt;/table&gt;</programlisting>
+      <programlisting>
+      &lt;table name="line_flightbars" dataAccessClass="de.aucos.linedata.LineData" &gt; 
+          &lt;field name="flightbar_id" fieldType="integer" isKey="true" /&gt; 
+          &lt;field name="flightbartype" fieldType="char" /&gt; 
+          &lt;field name="flightbarstatus" fieldType="char" /&gt; 
+          &lt;field name="stationid" fieldType="integer" /&gt; 
+          &lt;field name="shuttleid" fieldType="integer" /&gt; 
+      &lt;/table&gt;</programlisting>
     </sect2>
     <sect2>
       <title>abstract class DataSource</title>
