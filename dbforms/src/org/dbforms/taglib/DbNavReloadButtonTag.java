@@ -39,7 +39,7 @@ import org.dbforms.event.eventtype.EventType;
 public class DbNavReloadButtonTag extends DbBaseButtonTag
 {
    /** Holds value of property showAlwaysInFooter. */
-   private String showAlwaysInFooter = "true";
+   private String showAlwaysInFooter = "false";
 
    /**
     * DOCUMENT ME!
