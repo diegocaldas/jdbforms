@@ -2753,7 +2753,13 @@ field</info>
                                         <name>showAlways</name>
                                         <required>false</required>
                                         <rtexprvalue>true</rtexprvalue>
-                                     <info>if false input button will be rendered only in insert mode!</info>
+                                     <info><p><b>From v_1_1_3pr1:</b></p>
+                                    <p>If false (which is the default setting), the input button will be rendered<br/>
+                                     only in insert mode -- such as through a NavNewEvent.<br/></p>
+                                    <p>For previously generated list_and_single.jsp or self coded pages,<br/>
+                                    the attribute showAlways="true" should be added to the insertButtonTag,<br/>
+                                    unless it will be used in insert mode.</p>
+                                    <p>&lt;db:insertButton caption=&quot;Insert new ...&quot; styleClass=&quot;clsButtonStyle&quot; showAlways=&quot;true&quot;/&gt; </p></info>
                                </attribute>
 				<attribute>
 					<name>caption</name>
