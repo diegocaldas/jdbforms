@@ -29,7 +29,6 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,9 +40,14 @@ import javax.servlet.jsp.tagext.TryCatchFinally;
 import org.apache.log4j.Category;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.DbFormsConfigRegistry;
+
+import org.dbforms.config.Field; 
+import org.dbforms.config.FieldValue; 
+import org.dbforms.config.FieldValues; 
+
 import org.dbforms.util.KeyValuePair;
 import org.dbforms.util.ParseUtil;
-
+import org.dbforms.util.Util;
 /**
  * Map a placeholder (?) in sql code to an input tag. 
  * Used as nested tag inside filterCondition.
@@ -81,10 +85,7 @@ public class DbFilterValueTag extends BodyTagSupport implements DataContainer, T
          * label showed before input tag
          */
         protected String label = null;
-        /**
-         * parent DbCFilterConditionTag
-         */
-        //protected DbFilterConditionTag parentCondition = null;
+
         /**
          * currently selected index, valid only when type = select
          */
@@ -116,11 +117,11 @@ public class DbFilterValueTag extends BodyTagSupport implements DataContainer, T
     }
 
     // types value write in request's parameter ..._valuetype_<valueId> 
-    protected static String FLT_VALUETYPE_DATE = "date";
-    protected static String FLT_VALUETYPE_NUMERIC = "numeric";
+    protected static String FLT_VALUETYPE_DATE 		= "date";
+    protected static String FLT_VALUETYPE_NUMERIC 	= "numeric";
     // this is not a value type, but it tells that this value object is mapped to a select element
-    protected static String FLT_VALUETYPE_SELECT = "select";
-    protected static String FLT_VALUETYPE_TEXT = "text";
+    protected static String FLT_VALUETYPE_SELECT 	= "select";
+    protected static String FLT_VALUETYPE_TEXT 		= "text";
     protected static String FLT_VALUETYPE_TIMESTAMP = "timestamp";
 
     static Category logCat =
@@ -240,12 +241,13 @@ public class DbFilterValueTag extends BodyTagSupport implements DataContainer, T
      * @param request
      * @return list of all values readed from request
      */
-    protected static ArrayList readValuesFromRequest(
+    protected static FieldValue[] readValuesFromRequest(
         int tableId,
         int conditionId,
         HttpServletRequest request)
     {
-        ArrayList values = new ArrayList();
+        FieldValues values = new FieldValues();
+        
         for (int valueId = 0; true; ++valueId)
         {
             // read from parameter's request the value and the type having this id
@@ -257,13 +259,15 @@ public class DbFilterValueTag extends BodyTagSupport implements DataContainer, T
                 DbFilterConditionTag.getConditionName(tableId, conditionId)
                     + DbFilterTag.FLT_VALUETYPE
                     + valueId;
+            
             String value = ParseUtil.getParameter(request, paramValue);
             String valueType = ParseUtil.getParameter(request, paramType);
+            valueType = Util.isNull(valueType)?FLT_VALUETYPE_TEXT:valueType;
             if (value != null)
             {
                 // check if value is a valid instance of type
                 String realvalue = parseValue(value, valueType);
-                if (realvalue == null)
+                if (Util.isNull(realvalue))
                 {
                     // error in parsing value, abort
                     logCat.debug(
@@ -273,14 +277,20 @@ public class DbFilterValueTag extends BodyTagSupport implements DataContainer, T
                             + value);
                     return null;
                 }
+
                 // add value, possibly converted, to list
-                values.add(realvalue);
+                Field f = new Field();
+                f.setName(paramValue);
+                f.setId(valueId);
+                f.setFieldType(valueType);
+                
+                values.put(new FieldValue(f, realvalue));
             }
             else
                 // didn't find any parameter with this id, so we have finished
                 break;
         }
-        return values;
+        return values.toArr();
     }
 
     /**

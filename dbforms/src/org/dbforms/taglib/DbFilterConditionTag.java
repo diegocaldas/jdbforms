@@ -33,8 +33,12 @@ import javax.servlet.jsp.tagext.BodyTagSupport;
 import javax.servlet.jsp.tagext.TryCatchFinally;
 
 import org.apache.log4j.Category;
+
+import org.dbforms.config.FieldValue;
+
 import org.dbforms.util.ParseUtil;
 import org.dbforms.util.Util;
+
 
 /**
  * Holds an sql condition that has to be nested inside a DbFilterTag.
@@ -108,19 +112,17 @@ public class DbFilterConditionTag extends BodyTagSupport implements TryCatchFina
         if (Util.isNull(filterCondition))
             return null;
         // build up the list of the values of the nested filterValue's parameters 
-        ArrayList values =
+        FieldValue [] values =
             DbFilterValueTag.readValuesFromRequest(
                 tableId,
                 conditionId,
                 request);
-        // if list is null, then a parse error is occurred, abort 
-        if (values == null)
-            return null;
+
         logCat.debug(
             "init parse filterCondition : "
                 + filterCondition
                 + ", values : "
-                + values);
+                + FieldValue.toString(values));
         /**
          * substitute ? with corresponding value in list 
          */
@@ -133,14 +135,14 @@ public class DbFilterConditionTag extends BodyTagSupport implements TryCatchFina
             // add the string before the next ?
             buf.append(filterCondition.substring(p1, p2));
             // if values are exausted, then abort
-            if (cnt >= values.size())
+            if (cnt >= values.length)
             {
                 logCat.error(
                     "reference to a missing filterValue in " + filterCondition);
                 return null;
             }
             // retrieve value
-            String value = (String) values.get(cnt);
+            String value = (String) values[cnt].getFieldValue();
             if (value == null)
             {
                 value = "";
