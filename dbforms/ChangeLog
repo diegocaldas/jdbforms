@@ -1,3 +1,8 @@
+2004-10-15
+(Henner.Kollmann@gmx.de)
+   - Clean up and simplify reporting/export stuff
+     Added test code to test this
+
 2004-10-12
 (Henner.Kollmann@gmx.de)
    - Clean up the CustomFormatter code, separate the interfaces.
