@@ -1173,7 +1173,7 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
 
             // If whereClause is not supplied by developer
             // determine the value(s) of the linked field(s)
-            if ((this.getWhereClause() == null) || (this.getWhereClause().trim().length() == 0)) {
+            if (Util.isNull(getWhereClause())) {
                initChildFieldValues();
 
                if (childFieldValues == null) {
@@ -1415,7 +1415,6 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
          //
          if ((webEvent != null) && webEvent instanceof NavigationEvent) {
             navEvent = (NavigationEvent) webEvent;
-
             if ((navEvent.getTable() == null) || (navEvent.getTable().getId() != tableId)) {
                // navigation event is not for this table,
                // then just navigate to a position (if it exists) or just select all data
@@ -1463,21 +1462,21 @@ public class DbFormTag extends BodyTagSupport implements TryCatchFinally {
          //    c) create a GOTO event using.. another constructor ;^)
          //
          if (navEvent == null) {
-            Vector errors = (Vector) request.getAttribute("errors");
 
-// grunikiewicz.philip@hydro.qc.ca
-// 2003-12-16
-// Commented code to fix the following problem:
-// Insert invoked in sub-form, validation error, suppose to re-populate all fields (parent and child)
-// Commented code changes all field names to INSERT type - making repopulate impossible! 
+            // grunikiewicz.philip@hydro.qc.ca
+            // 2003-12-16
+            // Commented code to fix the following problem:
+            // Insert invoked in sub-form, validation error, suppose to re-populate all fields (parent and child)
+            // Commented code changes all field names to INSERT type - making repopulate impossible! 
 
-//            if ((count != 0) && (webEvent != null) && EventType.EVENT_DATABASE_INSERT.equals(webEvent.getType()) && (errors != null) && (errors.size() > 0)) {
-//               // error in insert event, nothing to do!
-//               navEvent = null;
-//               resultSetVector = null;
-//               setFooterReached(true);
-//            } else 
-            
+            //		Vector errors = (Vector) request.getAttribute("errors");
+            //            if ((count != 0) && (webEvent != null) && EventType.EVENT_DATABASE_INSERT.equals(webEvent.getType()) && (errors != null) && (errors.size() > 0)) {
+            //               // error in insert event, nothing to do!
+            //               navEvent = null;
+            //               resultSetVector = null;
+            //               setFooterReached(true);
+            //            } else 
+
             if (!Util.isNull(getWhereClause())) {
                // We should do a free form select
                navEvent = navEventFactory.createGotoEvent(table, request, config, whereClause, getTableList());
