@@ -1,4 +1,6 @@
 <project default = ""
+	 xmlns:deploy="deploy"
+	 xmlns:doc="doc" 
          xmlns:m = "maven"
          xmlns:j = "jelly:core"
          xmlns:u = "jelly:util"
@@ -28,16 +30,31 @@ ${systemScope.setProperty('javax.xml.transform.TransformerFactory','org.apache.x
      </ant>
   </goal>
 
+  <goal name="dbforms:dependend">
+    <deploy:copy-deps todir="dist/dependend" excludes="servletapi" />
+  </goal>
+
   <goal name="dbforms:deploy" description="do the whole deployment: generates site, generates doc, generates distribution">
      <echo message="starting deploying site"/>
+     <echo message="generate changes"/>
      <echo message="1. generate whole site"/>
      <attainGoal name="site:generate"/>
      <echo message="2. generate dbforms documentation via docs.xml"/>
      <attainGoal name="dbforms:doc"/>
-     <echo message="3. build the distribution via build.xml"/>
+     <echo message="3. copy depended"/>
+     <attainGoal name="dbforms:dependend"/>
+     <echo message="4. build the distribution via build.xml"/>
      <attainGoal name="dbforms:dist"/>
   </goal>
 
+
+  <postGoal name="maven-changes-plugin:report">
+      <echo message="build changes.xml"/>
+     <doc:text-xdoc  title="Changes"
+	    section="CHANGES"
+            output="target/generated-xdocs/changes-report.xml"
+            inputFile="ChangeLog"/>
+  </postGoal>
   <!--
      -  Move the $DBFORMS_HOME/target/docs/* stuff into the 
      -  $DBFORMS_HOME/doc directory
@@ -48,5 +65,7 @@ ${systemScope.setProperty('javax.xml.transform.TransformerFactory','org.apache.x
       <ant antfile="docs.xml" target="maven-move-doc"/>
     </j:jelly>
   </postGoal>
+
+
 
 </project>
