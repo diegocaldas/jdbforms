@@ -281,4 +281,86 @@
     </sect2>
   </sect1>
 
+  <sect1>
+    <title>The NavNextEvent</title>
+    <para>
+      This <ulink url="./images/figures/uml/sequence/datalist-navNextEvent.processEvent.usd.png">diagram</ulink>
+      shows the interaction between the <computeroutput>Controller</computeroutput> object, the 
+      <computeroutput>NavNextEvent</computeroutput> object and all the other actors that are used 
+      to process this database event.
+    </para>
+    <para>
+      <emphasis role="bold">Note</emphasis>: 
+      <computeroutput>NavNextEvent</computeroutput> works similar to
+      <computeroutput>NavFirstEvent</computeroutput>, <computeroutput>NavLastEvent</computeroutput> and
+      <computeroutput>NavPrevEvent</computeroutput>, so the diagram above should explain the sequence
+      of class messages for all those events. For further details, see the
+      <screen>
+  public ResultSetVector processEvent(FieldValue[] childFieldValues, 
+                                      FieldValue[] orderConstraint, 
+                                      int          count, 
+                                      String       firstPosition, 
+                                      String       lastPosition, 
+                                      Connection   con, 
+                                      String       dbConnectionName)
+                               throws SQLException
+       </screen>
+       method of the selected NavigationEvent class.
+    </para>
+    <sect2>
+      <title>Steps</title>
+      <para>
+        <itemizedlist mark="opencircle">
+
+          <listitem>
+            <para>
+              The <computeroutput>Controller</computeroutput> servlet calls the NavNextEvent's
+              <computeroutput>processEvent</computeroutput> method.
+            </para>         
+          </listitem>
+
+          <listitem>
+            <para>
+              The <computeroutput>NavNextEvent</computeroutput> object retrieve the instance of 
+              the <computeroutput>DataSourceList</computeroutput> object.
+            </para>         
+          </listitem>
+
+          <listitem>
+            <para>
+              The <computeroutput>NavNextEvent</computeroutput> object get the 
+              <computeroutput>DataSourceFactory</computeroutput> related to the current table and
+              to the current request URI.
+            </para>         
+          </listitem>
+
+          <listitem>
+            <para>
+              The <computeroutput>NavNextEvent</computeroutput> object retrieve the 
+              <computeroutput>FieldValues</computeroutput> object 
+              (a data structure representing the values of the fields decoded from a given position string)
+              related to the the last resultset position string. [ADD A NEW MESSAGE INTO THE DIAGRAM]
+              Then it get the key position string
+              for the current table from that <computeroutput>FieldValues</computeroutput>.
+            </para>         
+          </listitem>
+
+          <listitem>
+            <para>
+              The <computeroutput>NavNextEvent</computeroutput> object calls the
+              <computeroutput>DataSourceFactory.getNext</computeroutput> method to 
+              obtain the <computeroutput>ResultSetVector</computeroutput> object. 
+              If that <computeroutput>ResultSetVector</computeroutput> is null, 
+              <computeroutput>NavNextEvent</computeroutput> calls
+              <computeroutput>DataSourceFactory.getLast</computeroutput> to obtain
+              the last records from the current table 
+              (it simulates a <computeroutput>NavLastEvent</computeroutput> event).
+            </para>         
+          </listitem>
+
+        </itemizedlist>
+      </para>
+    </sect2>
+  </sect1>
+
 </chapter>
