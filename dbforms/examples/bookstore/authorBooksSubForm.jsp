@@ -30,29 +30,6 @@
                     <td><db:textField size="25" fieldName="ORGANISATION"/>
                     </td>
                </tr>
-		    <db:dbform 
-		      		autoUpdate="false" 
-		      		followUp=""  
-		      		maxRows="*" 
-		      		tableName="BOOK"
-		     		parentField="AUTHOR_ID"
-		     		childField="AUTHOR_ID"	 			
-			      	orderBy="ISBN" 
-		    >
-		         <db:header>
-				 </db:header>
-		         <db:body allowNew="false">
-    	           <tr>
-        	          <td style="width:145px"><db:label fieldName="BOOK_ID"/>&nbsp;</td>
-            	      <td style="width:130px"><db:label fieldName="ISBN"/>&nbsp;</td>
-                	  <td style="width:145px"><db:label fieldName="TITLE" /> </td>
-	               </tr>			              		 				
-				 </db:body>
-		         <db:footer>
-				 </db:footer>
-			</db:dbform>	
-         </db:body>
-         <db:footer>
             <tr class="button">
                <td colspan="2" style="text-align:center">
                  <db:updateButton style="width:100" caption="Save"/>
@@ -70,12 +47,50 @@
                  &nbsp;
                </td>
             </tr>
+		    <db:dbform 
+		      		autoUpdate="false" 
+		      		followUp="/authorBooksSubForm.jsp"   
+		      		maxRows="2" 
+		      		tableName="BOOK"
+		     		parentField="AUTHOR_ID"
+		     		childField="AUTHOR_ID"	 			
+			      	orderBy="ISBN" 
+		    >
+		         <db:header>
+				 </db:header>
+		         <db:body allowNew="true">
+    	           <tr>
+        	          <td style="width:145px"><db:label fieldName="BOOK_ID"/>&nbsp;</td>
+            	      <td style="width:130px"><db:textField fieldName="ISBN"/>&nbsp;</td>
+                	  <td style="width:145px"><db:textField fieldName="TITLE" /> </td>
+                	  <td>
+							 <db:updateButton style="width:100" caption="Save"/>
+							 <db:deleteButton style="width:100" caption="Delete"/>
+							 <db:insertButton style="width:100" caption="Insert" showAlways="false" />
+					  </td>
+	               </tr>			              		 				
+				 </db:body>
+		         <db:footer>
+					<tr class="button">
+					   <td colspan="2" style="text-align:center">
+						 <db:navFirstButton style="width:100" caption="<< First"/>
+						 <db:navPrevButton  style="width:100" caption="<  Previous"/>
+						 <db:navNextButton  style="width:100" caption=">  Next"/>
+						 <db:navLastButton  style="width:100" caption=">> Last"/>
+						 <db:navNewButton   style="width:100" caption="New"/>
+						 &nbsp;
+					   </td>
+					</tr>
+				 </db:footer>
+			</db:dbform>	
+         </db:body>
+         <db:footer>
             <tr class="button">
                <td colspan="2" style="text-align:center">
                  <db:gotoButton style="width:200" caption="Back to list" destination="/authorsList.jsp"/>
                </td>
             </tr>
-            </table>
+           </table>
          </db:footer>
       </db:dbform>
    </body>
