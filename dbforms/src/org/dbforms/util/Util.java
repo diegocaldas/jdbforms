@@ -24,8 +24,8 @@ package org.dbforms.util;
 import java.io.*;
 import java.util.*;
 import java.net.URLEncoder;
-import org.dbforms.DbFormsConfig;
-import org.dbforms.FieldValue;
+
+import org.dbforms.config.DbFormsConfig;
 
 
 
