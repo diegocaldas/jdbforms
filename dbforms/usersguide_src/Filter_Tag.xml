@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <chapter>
- <title>Filter Tag (from 1.1.4pr1) </title>
+ <title>Filter Tag</title>
     
     <para>There now exist three main ways to filter information</para>
     <orderedlist numeration="lowerroman">
