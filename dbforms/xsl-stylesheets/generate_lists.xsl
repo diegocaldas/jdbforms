@@ -81,7 +81,10 @@ choose appropriate values that fit your needs
 		</xsl:otherwise>
 	</xsl:choose>
 </xsl:variable>
-<db:dbform tableName="{$origTableName}" maxRows="{$maxRows}" followUp="/{$fileName}" autoUpdate="false" multipart="{$MultiPart}">
+
+<xsl:variable name="dbConnectionName"><xsl:value-of select="@dbConnectionName"/></xsl:variable>
+
+<db:dbform tableName="{$origTableName}" maxRows="{$maxRows}" followUp="/{$fileName}" autoUpdate="false" multipart="{$MultiPart}" dbConnectionName="{$dbConnectionName}">
 <!-- so now multiparts are ok -->
 
 <db:header>
