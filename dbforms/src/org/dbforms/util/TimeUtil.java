@@ -26,8 +26,6 @@ package org.dbforms.util;
 /**
  *  Helper classes for dealing with time values
  *
- *
- *
  *  @author  frederic
  */
 import java.text.*;
@@ -35,12 +33,6 @@ import java.util.*;
 import org.apache.regexp.*;
 import org.apache.log4j.Category;
 
-/**
- * DOCUMENT ME!
- *
- * @version $Revision$
- * @author $author$
- */
 public class TimeUtil {
    static Category logCat = Category.getInstance(TimeUtil.class.getName());
    static final int SECSPERDAY = 24 * 60 * 60;
@@ -65,16 +57,17 @@ public class TimeUtil {
       return Seconds2String(seconds.intValue());
    }
 
+
    /**
     * Reformats seconds to time string with format: dd:hh:mm:ss
     *
     * @param seconds
     * @return String
     */
-   public final static String Seconds2String(int seconds) {
-      int d;
-      int h;
-      int m;
+   public final static String Seconds2String(long seconds) {
+      long d;
+      long h;
+      long m;
       String zeit;
       d = (seconds / SECSPERDAY);
       seconds = seconds - (d * SECSPERDAY);
@@ -85,13 +78,13 @@ public class TimeUtil {
       if (d > 0) {
          Object[] o =
             {
-               new Integer(d),
-               new Integer(h),
-               new Integer(m),
-               new Integer(seconds)};
+               new Long(d),
+               new Long(h),
+               new Long(m),
+               new Long(seconds)};
          zeit = StringUtil.sprintf("%i:%02i:%02i:%02i", o);
       } else {
-         Object[] o = { new Integer(h), new Integer(m), new Integer(seconds)};
+         Object[] o = { new Long(h), new Long(m), new Long(seconds)};
          zeit = StringUtil.sprintf("%i:%02i:%02i", o);
       }
       return zeit;
@@ -152,7 +145,6 @@ public class TimeUtil {
          now.set(Calendar.SECOND, 0);
          d = now.getTime().getTime();
       }
-
       return d;
    }
 
@@ -163,19 +155,15 @@ public class TimeUtil {
          SimpleDateFormat sdf;
          sdf = new SimpleDateFormat(format, loc);
          sdf.setLenient(false);
-
          try {
             sdf.parse(s);
          } catch (Exception e) {
          }
-
          Calendar cal = sdf.getCalendar();
-
          if (!cal.isSet(Calendar.HOUR_OF_DAY)
             && !cal.isSet(Calendar.HOUR_OF_DAY)) {
             cal.set(Calendar.HOUR_OF_DAY, 0);
          }
-
          if (!cal.isSet(Calendar.MINUTE)) {
             cal.set(Calendar.MINUTE, 0);
          }
