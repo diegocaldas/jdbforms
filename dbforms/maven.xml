@@ -11,7 +11,7 @@
      <ant:echo message="please setup your browser to use localhost:8090 as proxy port!" />
      <ant:java  classname="com.bitmechanic.maxq.Main" fork="yes">
         <ant:classpath>
-          <ant:pathelement path="dependend/maxq-0.94x.jar"/>
+          <ant:pathelement path="dependend/maxq-0.95dev.jar"/>
 	      <ant:pathelement path="target/dist/dbforms${pom.currentVersion}.jar"/>
 	      <ant:pathelement path="${pom.getDependencyClasspath()}"/>
         </ant:classpath>
