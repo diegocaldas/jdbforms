@@ -259,7 +259,7 @@ public class Field
     * 
     * @return The isAutoInc value
     */
-   public boolean isAutoInc()
+   public boolean hasAutoIncSet()
    {
       return isAutoInc;
    }
@@ -327,7 +327,7 @@ public class Field
     * 
     * @return The encoding value
     */
-   public boolean isEncoded()
+   public boolean hasEncodedSet()
    {
       return encoded;
    }
@@ -350,7 +350,7 @@ public class Field
     * 
     * @return The fieldSortable value
     */
-   public boolean isSortable()
+   public boolean hasSortableSet()
    {
       return isSortable;
    }

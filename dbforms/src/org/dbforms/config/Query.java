@@ -325,7 +325,7 @@ public class Query extends Table {
 
       buf.append("SELECT ");
 
-      if (hasDistinct()) {
+      if (hasDistinctSet()) {
          buf.append(" DISTINCT ");
       }
 
@@ -598,7 +598,7 @@ public class Query extends Table {
     * 
     * @return DOCUMENT ME!
     */
-   public boolean hasDistinct() {
+   public boolean hasDistinctSet() {
       return "true".equalsIgnoreCase(distinct) || "yes".equalsIgnoreCase(distinct);
    }
 }

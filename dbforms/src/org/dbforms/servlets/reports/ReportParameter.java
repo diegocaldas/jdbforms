@@ -47,7 +47,6 @@ public class ReportParameter {
    private HttpServletRequest request;
    private Connection connection;
    private String reportPath;
-   private String contextPath;
    private Locale locale;
    private Logger logCat = Logger.getLogger(this.getClass().getName());
 
@@ -59,11 +58,10 @@ public class ReportParameter {
     * @param reportPath DOCUMENT ME!
     * @param contextPath DOCUMENT ME!
     */
-   public ReportParameter(HttpServletRequest request, Connection connection, String reportPath, String contextPath) {
+   public ReportParameter(HttpServletRequest request, Connection connection, String reportPath) {
       this.request = request;
       this.connection = connection;
       this.reportPath = reportPath;
-      this.contextPath = contextPath;
       this.locale = MessageResources.getLocale(request);
    }
 
@@ -140,16 +138,7 @@ public class ReportParameter {
       return reportPath;
    }
 
-   /**
-    * DOCUMENT ME!
-    * 
-    * @return String
-    */
-   public String getContextPath() {
-      return contextPath;
-   }
-
-   private class TextFormatter extends DbBaseHandlerTag {
+    private class TextFormatter extends DbBaseHandlerTag {
       private Object obj;
       private Locale locale;
 

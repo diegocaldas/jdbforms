@@ -201,7 +201,7 @@ public class FieldValue implements Cloneable {
     * 
     * @param sortDirection The new sortDirection value
     */
-   private void setSortDirection(int sortDirection) {
+   public void setSortDirection(int sortDirection) {
       this.sortDirection = sortDirection;
    }
 
@@ -579,7 +579,7 @@ public class FieldValue implements Cloneable {
    }
 
    private String parseDISKBLOB() {
-      if (getField().isEncoded()) {
+      if (getField().hasEncodedSet()) {
          String fileName = getFileHolder().getFileName();
          int dotIndex = fileName.lastIndexOf('.');
          String suffix = (dotIndex != -1) ? fileName.substring(dotIndex) : "";

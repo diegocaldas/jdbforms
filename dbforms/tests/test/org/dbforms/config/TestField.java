@@ -70,7 +70,7 @@ public class TestField extends AbstractTestCase
    {
       Field f = new Field();
       f.setAutoInc("true");
-      assertTrue("Field should be autoinc", f.isAutoInc());
+      assertTrue("Field should be autoinc", f.hasAutoIncSet());
    }
 
 
@@ -83,7 +83,7 @@ public class TestField extends AbstractTestCase
    {
       Field f = new Field();
       f.setAutoInc("YES");
-      assertTrue("Field should be autoinc", f.isAutoInc());
+      assertTrue("Field should be autoinc", f.hasAutoIncSet());
    }
 
 
@@ -96,15 +96,15 @@ public class TestField extends AbstractTestCase
    {
       Field f = new Field();
       f.setSortable("true");
-      assertTrue("Should be True", f.isSortable());
+      assertTrue("Should be True", f.hasSortableSet());
       f.setSortable("TRUE");
-      assertTrue("Should be True", f.isSortable());
+      assertTrue("Should be True", f.hasSortableSet());
       f.setSortable("yes");
-      assertTrue("Should be True", f.isSortable());
+      assertTrue("Should be True", f.hasSortableSet());
       f.setSortable("FALSE");
-      assertTrue("Should be false", !f.isSortable());
+      assertTrue("Should be false", !f.hasSortableSet());
       f.setSortable("NO");
-      assertTrue("Should be false", !f.isSortable());
+      assertTrue("Should be false", !f.hasSortableSet());
    }
 
 

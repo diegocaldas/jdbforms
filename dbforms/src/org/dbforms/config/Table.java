@@ -315,18 +315,6 @@ public class Table {
    }
 
    /**
-    *  Returns readOnly mode for table needed in DbFormTag.
-    *  <br>
-    *  In case of table returns always false.
-    *  Should be overloaded from e.g. view!.
-    *
-    * @return true if the table is in readOnly mode; false otherwise
-    */
-   public boolean isReadOnly() {
-      return false;
-   }
-
-   /**
     *  Returns the vector of fields this table constists of
     *
     * @return the vector of fields this table constists of
@@ -1112,7 +1100,7 @@ public class Table {
       for (int i = 0; i < getFields().size(); i++) {
          Field f = (Field) getFields().elementAt(i);
 
-         if (f.getKey() || f.isSortable()) {
+         if (f.getKey() || f.hasSortableSet()) {
             if (cnt > 0) {
                buf.append("-"); // control byte
             }
@@ -1142,7 +1130,7 @@ public class Table {
          String fieldName = (String) enum.next();
          Field aField = getFieldByName(fieldName);
 
-         if ((aField != null) && (aField.getKey() || aField.isSortable())) {
+         if ((aField != null) && (aField.getKey() || aField.hasSortableSet())) {
             String fieldValue = (String) ht.get(fieldName);
 
             if (cnt > 0) {
@@ -1177,7 +1165,7 @@ public class Table {
             FieldValue fv = fvHT.get(fieldName);
             Field f = fv.getField();
 
-            if (f.getKey() || f.isSortable()) {
+            if (f.getKey() || f.hasSortableSet()) {
                String value = fv.getFieldValue();
 
                if (value == null) {

@@ -69,15 +69,40 @@ public class TestDbFormsConfig extends ServletTestCase
     * 
     * @throws Exception DOCUMENT ME!
     */
-   public void testStandardDbFormsConfig() throws Exception
+   public void testTables() throws Exception
    {
-      Table tblAuthor = dbFormsConfig.getTableByName("AUTHOR");
-      assertTrue("Found tblAuthor", tblAuthor.getName().equals("AUTHOR"));
+      Table tbl = dbFormsConfig.getTableByName("AUTHOR");
+      assertTrue("Found tblAuthor", tbl.getName().equals("AUTHOR"));
       assertTrue("Found tblBook", 
                  dbFormsConfig.getTableByName("BOOK").getName().equals("BOOK"));
       assertTrue("Make sure table names ARE casesensitve", 
                  dbFormsConfig.getTableByName("book") == null);
+	  Query qry = (Query)dbFormsConfig.getTableByName("BOOKLISTPERAUTHOR");
+	  assertTrue("Found BOOKLISTPERAUTHOR", qry.getName().equals("BOOKLISTPERAUTHOR"));
+	  assertTrue("BOOKLISTPERAUTHOR has set distinct", qry.hasDistinctSet());	
    }
+
+	public void testFieldParameter() throws Exception
+	{
+		Table tbl = dbFormsConfig.getTableByName("AUTHOR");
+		assertTrue("Found tblAuthor", tbl.getName().equals("AUTHOR"));
+		Field field = tbl.getFieldByName("AUTHOR_ID");
+		assertTrue("Found field AUTHOR_ID", field != null);
+		assertTrue("Make sure field names names ARE casesensitve", 
+					  dbFormsConfig.getTableByName("author_id") == null);
+		assertTrue("field is key field", field.getKey());
+		assertTrue("field is autoinc", field.hasAutoIncSet());
+		field = tbl.getFieldByName("NAME");
+		assertTrue("Found field NAME", field != null);
+		assertTrue("field is sortable", field.hasSortableSet());
+
+		tbl = dbFormsConfig.getTableByName("BLOBTEST");
+		assertTrue("Found BLOBTEST", tbl.getName().equals("BLOBTEST"));
+		field = tbl.getFieldByName("FILE");
+		assertTrue("Found field FILE", field != null);
+		assertTrue("field is encoded", field.hasEncodedSet());
+
+	}
 
 
 

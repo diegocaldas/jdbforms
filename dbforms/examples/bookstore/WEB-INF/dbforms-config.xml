@@ -112,7 +112,7 @@
 				name="FILE" 
 				fieldType="DISKBLOB"  
 				directory="c:/temp"
-			    encoding="false"
+			    encoding="true"
 			    size="1200"
 				isKey="true"
 			/>

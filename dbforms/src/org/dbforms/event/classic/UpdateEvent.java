@@ -187,7 +187,7 @@ public class UpdateEvent extends ValidationEvent
                   String     fileName = fileHolder.getFileName();
 
                   // check if we need to store it encoded or not
-                  if (curField.isEncoded())
+                  if (curField.hasEncodedSet())
                   {
                      // encode fileName
                      int    dotIndex = fileName.lastIndexOf('.');

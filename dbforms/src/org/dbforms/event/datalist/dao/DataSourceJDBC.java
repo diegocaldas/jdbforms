@@ -406,7 +406,7 @@ public class DataSourceJDBC extends DataSource {
                // encode fileName
                String fileName = fileHolder.getFileName();
                // check if we need to store it encoded or not
-               if (curField.isEncoded()) {
+               if (curField.hasEncodedSet()) {
                   int dotIndex = fileName.lastIndexOf('.');
                   String suffix = (dotIndex != -1) ? fileName.substring(dotIndex) : "";
                   fileHolder.setFileName(UniqueIDGenerator.getUniqueID() + suffix);

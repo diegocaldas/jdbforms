@@ -44,6 +44,7 @@ import org.dbforms.event.WebEvent;
 import org.dbforms.util.PageContextBuffer;
 import org.dbforms.util.ParseUtil;
 import org.dbforms.util.Util;
+import org.dbforms.util.SqlUtil;
 import org.dbforms.util.MessageResourcesInternal;
 import org.dbforms.util.external.FileUtil;
 import org.dbforms.config.DbFormsConfig;
@@ -59,6 +60,7 @@ import dori.jasper.engine.JRExporterParameter;
 import dori.jasper.engine.JRExporter;
 import dori.jasper.engine.export.JRPdfExporter;
 import dori.jasper.engine.export.JRXlsExporter;
+import java.sql.Connection;
 
 
 
@@ -227,27 +229,22 @@ public class StartReportServlet extends HttpServlet
             throw new ServletException(e);
          }
 
-         ReportParameter repParam = new ReportParameter(request, 
-                                                        config.getConnection(
-                                                                 getConnectionName(
-                                                                          request)), 
-                                                        FileUtil.dirname(
-                                                                 reportFileFullName)
-                                                        + File.separator, 
-                                                        context.getRealPath("")
-                                                        + File.separator);
-         Map             map = new HashMap();
-         map.put("PARAM", repParam);
-
          byte[] bytes = null;
 
          try
          {
             // Fill the report with data
-            JasperPrint jPrint;
-
+            JasperPrint jPrint = null;
+            Connection con = config.getConnection(getConnectionName(request));
             try
             {
+               ReportParameter repParam = new ReportParameter(request, 
+                                                              con, 
+                                                              FileUtil.dirname(reportFileFullName) + File.separator
+                                                              );
+               Map             map = new HashMap();
+               map.put("PARAM", repParam);
+
                if (dataSource == null)
                {
                   jPrint = JasperFillManager.fillReport(reportFileFullName
@@ -263,10 +260,10 @@ public class StartReportServlet extends HttpServlet
             }
             finally
             {
-               repParam.getConnection().close();
+               SqlUtil.closeConnection(con);
             }
 
-            if (jPrint.getPages().size() == 0)
+            if ((jPrint == null) || (jPrint.getPages().size() == 0))
             {
                handleNoData(request, response);
 

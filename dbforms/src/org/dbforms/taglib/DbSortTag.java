@@ -72,7 +72,7 @@ public class DbSortTag extends DbBaseHandlerTag
          int tableId = getParentForm().getTable().getId();
          int fieldId = getField().getId();
 
-         if (!getField().getKey() && !getField().isSortable())
+         if (!getField().getKey() && !getField().hasSortableSet())
          {
             logCat.warn("you should declare " + getField().getName()
                + " as key or as sortable in your config file, if you use it as ordering field!");

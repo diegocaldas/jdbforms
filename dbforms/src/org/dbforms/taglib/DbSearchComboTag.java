@@ -20,52 +20,39 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
+
 package org.dbforms.taglib;
 import java.util.*;
 import javax.servlet.jsp.*;
 import javax.servlet.http.*;
-
 import org.dbforms.config.*;
 import org.dbforms.util.*;
 
 
 
 /**
- * <p>renders a select field for searching with special default search modes.</p>
- * <p>example:</p>
-        &lt;input type="hidden" name="searchalgo_0_1" value="weakEnd"/&gt;<br/>
-        &lt;input type="hidden" name="searchmode_0_1" value="AND"/&gt;<br/>
-        &lt;select name="search_0_1"/&gt;<br/>
-        &lt;/select&gt;<br/>
- *
- *  searchalgo and searchmode are set by parameter.
- *
- * @author Henner Kollmann  (Henner.Kollmann@gmx.de)
+ * <p>
+ * renders a select field for searching with special default search modes.
+ * </p>
+ * 
+ * <p>
+ * example:
+ * </p>
+ * &lt;input type="hidden" name="searchalgo_0_1" value="weakEnd"/&gt;<br/
+ * > &lt;input type="hidden" name="searchmode_0_1" value="AND"/&gt;<br/
+ * > &lt;select name="search_0_1"/&gt;<br/
+ * > &lt;/select&gt;<br/
+ * > searchalgo and searchmode are set by parameter.
+ * 
+ * @author Henner Kollmann
  */
-public class DbSearchComboTag extends DbSearchTag implements DataContainer,
-   javax.servlet.jsp.tagext.TryCatchFinally
+public class DbSearchComboTag extends DbSearchTag
+   implements DataContainer, javax.servlet.jsp.tagext.TryCatchFinally
 {
-   private Vector  embeddedData  = null;
-   private String  selectedIndex;
-   private String  customEntry;
-   private String  size          = "1";
-
-	public void doFinally()
-	{
-		embeddedData  = null;
-		selectedIndex  = null;
-		customEntry  = null;
-		size          = "1";
-		super.doFinally();
-	}
-
-   /**
-    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
-    */
-   public void doCatch(Throwable t) throws Throwable
-   {
-      throw t;
-   }
+   private Vector embeddedData  = null;
+   private String selectedIndex;
+   private String customEntry;
+   private String size = "1";
 
    /**
     * Creates a new DbSearchComboTag object.
@@ -77,7 +64,29 @@ public class DbSearchComboTag extends DbSearchTag implements DataContainer,
 
    /**
     * DOCUMENT ME!
-    *
+    */
+   public void doFinally()
+   {
+      embeddedData  = null;
+      selectedIndex = null;
+      customEntry   = null;
+      size          = "1";
+      super.doFinally();
+   }
+
+
+   /**
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+    */
+   public void doCatch(Throwable t) throws Throwable
+   {
+      throw t;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    * 
     * @param selectedIndex DOCUMENT ME!
     */
    public void setSelectedIndex(String selectedIndex)
@@ -88,7 +97,7 @@ public class DbSearchComboTag extends DbSearchTag implements DataContainer,
 
    /**
     * DOCUMENT ME!
-    *
+    * 
     * @return DOCUMENT ME!
     */
    public String getSelectedIndex()
@@ -99,7 +108,7 @@ public class DbSearchComboTag extends DbSearchTag implements DataContainer,
 
    /**
     * DOCUMENT ME!
-    *
+    * 
     * @return DOCUMENT ME!
     */
    public String getCustomEntry()
@@ -110,7 +119,7 @@ public class DbSearchComboTag extends DbSearchTag implements DataContainer,
 
    /**
     * DOCUMENT ME!
-    *
+    * 
     * @param customEntry DOCUMENT ME!
     */
    public void setCustomEntry(String customEntry)
@@ -120,11 +129,12 @@ public class DbSearchComboTag extends DbSearchTag implements DataContainer,
 
 
    /**
-   This method is a "hookup" for EmbeddedData - Tags which can assign the lines of data they loaded
-   (by querying a database, or by rendering data-subelements, etc. etc.) and make the data
-   available to this tag.
-   [this method is defined in Interface DataContainer]
-   */
+    * This method is a "hookup" for EmbeddedData - Tags which can assign the
+    * lines of data they loaded (by querying a database, or by rendering
+    * data-subelements, etc. etc.) and make the data available to this tag.
+    * [this method is defined in Interface DataContainer]
+    * @param embeddedData DOCUMENT ME!
+    */
    public void setEmbeddedData(Vector embeddedData)
    {
       this.embeddedData = embeddedData;
@@ -133,9 +143,9 @@ public class DbSearchComboTag extends DbSearchTag implements DataContainer,
 
    /**
     * DOCUMENT ME!
-    *
+    * 
     * @return DOCUMENT ME!
-    *
+    * 
     * @throws javax.servlet.jsp.JspException DOCUMENT ME!
     */
    public int doStartTag() throws javax.servlet.jsp.JspException
@@ -145,7 +155,7 @@ public class DbSearchComboTag extends DbSearchTag implements DataContainer,
 
 
    private String generateSelectHeader(int tableId, int fieldId)
-      throws javax.servlet.jsp.JspException
+                                throws javax.servlet.jsp.JspException
    {
       // This method have been 
       StringBuffer tagBuf = new StringBuffer();
@@ -171,8 +181,8 @@ public class DbSearchComboTag extends DbSearchTag implements DataContainer,
    }
 
 
-   private String generateTagString(String value, String description,
-      boolean selected)
+   private String generateTagString(String value, String description, 
+                                    boolean selected)
    {
       StringBuffer tagBuf = new StringBuffer();
       tagBuf.append("<option value=\"");
@@ -194,16 +204,15 @@ public class DbSearchComboTag extends DbSearchTag implements DataContainer,
 
    /**
     * DOCUMENT ME!
-    *
+    * 
     * @return DOCUMENT ME!
-    *
+    * 
     * @throws javax.servlet.jsp.JspException DOCUMENT ME!
     * @throws JspException DOCUMENT ME!
     */
    public int doEndTag() throws javax.servlet.jsp.JspException
    {
-      HttpServletRequest request = (HttpServletRequest) this.pageContext
-         .getRequest();
+      HttpServletRequest request = (HttpServletRequest) this.pageContext.getRequest();
 
       int                tableId = getParentForm().getTable().getId();
       Field              field   = getField();
@@ -222,21 +231,24 @@ public class DbSearchComboTag extends DbSearchTag implements DataContainer,
       {
          selectedIndex = oldValue;
       }
-		boolean isSelected = false;
+
+      boolean isSelected = false;
+
       if (embeddedData != null)
       { // no embedded data is nested in this tag
 
          if (!Util.isNull(customEntry))
          {
-            String  aKey       = org.dbforms.util.ParseUtil
-               .getEmbeddedStringWithoutDots(customEntry, 0, ',');
-            String  aValue     = org.dbforms.util.ParseUtil
-               .getEmbeddedStringWithoutDots(customEntry, 1, ',');
+            String aKey = org.dbforms.util.ParseUtil.getEmbeddedStringWithoutDots(
+                                   customEntry, 0, ',');
+            String aValue = org.dbforms.util.ParseUtil.getEmbeddedStringWithoutDots(
+                                     customEntry, 1, ',');
 
             if (Util.isNull(selectedIndex))
             {
-               isSelected = "true".equals(org.dbforms.util.ParseUtil
-                     .getEmbeddedStringWithoutDots(customEntry, 2, ','));
+               isSelected = "true".equals(
+                                     org.dbforms.util.ParseUtil.getEmbeddedStringWithoutDots(
+                                              customEntry, 2, ','));
             }
 
             tagBuf.append(generateTagString(aKey, aValue, isSelected));
@@ -251,10 +263,15 @@ public class DbSearchComboTag extends DbSearchTag implements DataContainer,
             String       aValue = aKeyValuePair.getValue();
 
             // select, if datadriven and data matches with current value OR if explicitly set by user
-			if (Util.isNull(selectedIndex) && !isSelected)
-			   isSelected = i == 0;
-			else 
+            if (Util.isNull(selectedIndex) && !isSelected)
+            {
+               isSelected = i == 0;
+            }
+            else
+            {
                isSelected = aKey.equals(selectedIndex);
+            }
+
             tagBuf.append(generateTagString(aKey, aValue, isSelected));
          }
       }

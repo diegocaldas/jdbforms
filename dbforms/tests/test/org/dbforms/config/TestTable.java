@@ -113,33 +113,4 @@ public class TestTable extends org.dbforms.util.AbstractTestCase {
    }
 
 
-   /**
-    * DOCUMENT ME!
-    *
-    * @throws Exception DOCUMENT ME!
-    */
-   public void testClose() throws Exception {
-      FieldValue fv = new FieldValue(fAuthorId, "10");
-
-      FieldValue fvClone = (FieldValue) fv.clone();
-      assertTrue("Make sure toStrings match", fv.toString().equals(fvClone.toString()));
-   }
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @throws Exception DOCUMENT ME!
-    */
-   public void testInvert() throws Exception {
-      FieldValue fvLogicalOROrig = (FieldValue) fvLogicalOR.clone();
-      FieldValue fvNotLogicalOROrig = (FieldValue) fvNotLogicalOR.clone();
-      FieldValue fvLogicalORLikeFilterOrig = (FieldValue) fvLogicalORLikeFilter.clone();
-
-      FieldValue[] fvs = { fvLogicalOR, fvNotLogicalOR, fvLogicalORLikeFilter };
-
-      FieldValue.invert(fvs);
-      assertTrue("fv was flipped", fvLogicalOR.getSortDirection() == (!fvLogicalOROrig.getSortDirection()));
-      assertTrue("fv was flipped", fvNotLogicalOR.getSortDirection() == (!fvNotLogicalOROrig.getSortDirection()));
-      assertTrue("fv was flipped", fvLogicalORLikeFilter.getSortDirection() == (!fvLogicalORLikeFilterOrig.getSortDirection()));
-   }
 }

@@ -64,7 +64,6 @@ public class TestFieldValue extends AbstractTestCase {
       fvLogicalORLikeFilter.setLogicalOR(true);
    }
 
-
    /**
     * DOCUMENT ME!
     *
@@ -106,6 +105,10 @@ public class TestFieldValue extends AbstractTestCase {
     * @throws Exception DOCUMENT ME!
     */
    public void testInvert() throws Exception {
+      fvLogicalOR.setSortDirection(Constants.ORDER_ASCENDING);
+      fvNotLogicalOR.setSortDirection(Constants.ORDER_ASCENDING);
+      fvLogicalORLikeFilter.setSortDirection(Constants.ORDER_ASCENDING);
+
       FieldValue fvLogicalOROrig = (FieldValue) fvLogicalOR.clone();
       FieldValue fvNotLogicalOROrig = (FieldValue) fvNotLogicalOR.clone();
       FieldValue fvLogicalORLikeFilterOrig = (FieldValue) fvLogicalORLikeFilter.clone();
@@ -113,12 +116,11 @@ public class TestFieldValue extends AbstractTestCase {
       FieldValue[] fvs = { fvLogicalOR, fvNotLogicalOR, fvLogicalORLikeFilter };
 
       FieldValue.invert(fvs);
-      assertTrue("fv was flipped", fvLogicalOR.getSortDirection() == (!fvLogicalOROrig.getSortDirection()));
-      assertTrue("fv was flipped", fvNotLogicalOR.getSortDirection() == (!fvNotLogicalOROrig.getSortDirection()));
-      assertTrue("fv was flipped", fvLogicalORLikeFilter.getSortDirection() == (!fvLogicalORLikeFilterOrig.getSortDirection()));
+      assertTrue("fv was flipped", fvLogicalOR.getSortDirection() != fvLogicalOROrig.getSortDirection());
+      assertTrue("fv was flipped", fvNotLogicalOR.getSortDirection() != fvNotLogicalOROrig.getSortDirection());
+      assertTrue("fv was flipped", fvLogicalORLikeFilter.getSortDirection() != fvLogicalORLikeFilterOrig.getSortDirection());
    }
-   
-   
+
    public void testNull() {
       Field f = new Field();
       f.setName("TESTINT");
@@ -127,7 +129,7 @@ public class TestFieldValue extends AbstractTestCase {
       fv.setLocale(Locale.ENGLISH);
       Integer i = (Integer) fv.getFieldValueAsObject();
       assertTrue(i == null);
-   
+
    }
-   
+
 }
