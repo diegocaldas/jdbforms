@@ -353,10 +353,8 @@ public class DbLinkURLTag extends DbBaseHandlerTag
 
     tagBuf.append(getDataTag(tagName, "singleRow", getSingleRow()));
 
-    HttpServletResponse response = (HttpServletResponse) pageContext.getResponse();
     String              s = tagBuf.toString();
     s = s.substring(0, s.length() - 1);
-    s = response.encodeURL(s);
     return s;
    }
 
