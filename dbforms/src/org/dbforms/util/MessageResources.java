@@ -35,7 +35,7 @@ import javax.servlet.http.HttpServletRequest;
 public class MessageResources
 {
    /** DOCUMENT ME! */
-   public static String LOCALE_KEY = "org.dbforms.LOCALE";
+   public static String LOCALE_KEY = "org_dbforms_LOCALE";
 
    private static MessageResource msgRes = null;
 
