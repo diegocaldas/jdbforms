@@ -22,15 +22,17 @@
  */
 
 package org.dbforms.servlets;
-import org.apache.log4j.Category;
-import org.apache.commons.lang.StringUtils;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Vector;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.File;
-import java.io.PrintWriter;
+
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -38,29 +40,35 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.PageContext;
-import org.dbforms.servlets.reports.JRDataSourceRSV;
-import org.dbforms.servlets.reports.ReportParameter;
-import org.dbforms.event.WebEvent;
-import org.dbforms.util.PageContextBuffer;
-import org.dbforms.util.ParseUtil;
-import org.dbforms.util.Util;
-import org.dbforms.util.SqlUtil;
-import org.dbforms.util.MessageResourcesInternal;
-import org.dbforms.util.external.FileUtil;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Category;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.ResultSetVector;
+import org.dbforms.config.Table;
+import org.dbforms.event.WebEvent;
+import org.dbforms.servlets.reports.JRDataSourceIter;
+import org.dbforms.servlets.reports.JRDataSourceRSV;
+import org.dbforms.servlets.reports.ReportParameter;
 import org.dbforms.taglib.DbFormTag;
+import org.dbforms.util.MessageResourcesInternal;
+import org.dbforms.util.PageContextBuffer;
+import org.dbforms.util.ParseUtil;
+import org.dbforms.util.SqlUtil;
+import org.dbforms.util.Util;
+import org.dbforms.util.external.FileUtil;
+
+import dori.jasper.engine.JRDataSource;
+import dori.jasper.engine.JRException;
+import dori.jasper.engine.JRExporter;
+import dori.jasper.engine.JRExporterParameter;
 import dori.jasper.engine.JasperCompileManager;
 import dori.jasper.engine.JasperFillManager;
 import dori.jasper.engine.JasperPrint;
-import dori.jasper.engine.JRDataSource;
-import dori.jasper.engine.JRException;
-import dori.jasper.engine.JRExporterParameter;
-import dori.jasper.engine.JRExporter;
+import dori.jasper.engine.export.JRCsvExporter;
 import dori.jasper.engine.export.JRPdfExporter;
 import dori.jasper.engine.export.JRXlsExporter;
-import java.sql.Connection;
 
 /**
  * This servlet starts a JasperReport. Data is read from the current dbForm.
@@ -81,13 +89,21 @@ import java.sql.Connection;
  * &lt;servlet-name/&gt;startreport&lt;/servlet-name/&gt;
  * &lt;url-pattern/&gt;/reports/&lt;/url-pattern/&gt; &lt;/servlet-mapping&gt;
  *
+ * changes by neal katz
+ *  added support for grabbing data from a Collection or an existing ResultSetVector
+ *  set session variable "jasper.input" to use a Collection object
+ *  set session variable "jasper.rsv" to use a ResultSetVector object
+ *      ex &ltc:set var="jasper.rsv" value="${rsv_xxxxx}" scope="session" /&gt
+ *
+ *
  * @author Henner Kollmann
  */
 public class StartReportServlet extends HttpServlet {
+	/** DOCUMENT ME! */
 	private static Category logCat = Category.getInstance("StartReportServlet");
 
-    private static final String REPORTFILEEXTENSION = "jrxml";
-    
+	private static final String REPORTFILEEXTENSION = "jrxml";
+
 	/** DOCUMENT ME! */
 	public static final String REPORTNAMEPARAM = "reportname";
 
@@ -167,7 +183,7 @@ public class StartReportServlet extends HttpServlet {
 				checkIfNeedToCompile(getServletContext(), reportFile);
 
 				JRDataSource dataSource =
-					getDataFromForm(request, response);
+					getDataForReport(getServletContext(), request, response);
 
 				if (!response.isCommitted()) {
 					processReport(
@@ -184,7 +200,20 @@ public class StartReportServlet extends HttpServlet {
 		}
 	}
 
-	private  static void processReport(
+	/**
+	 * generates a report.
+	 *
+	 * @param reportFileFullName filename of report to process
+	 *        reportHTTPServletRequest generated                by
+	 *        getReportFile! getReportFile should be called before fetching
+	 *        data, so that error handling of report not found e.g. could be
+	 *        processed first!
+	 * @param dataSource data for the report
+	 * @param context ServletContext
+	 * @param request HTTPServletRequest
+	 * @param response HTTPServletResponse
+	 */
+	public static void processReport(
 		String reportFileFullName,
 		JRDataSource dataSource,
 		ServletContext context,
@@ -219,8 +248,13 @@ public class StartReportServlet extends HttpServlet {
 			try {
 				// Fill the report with data
 				JasperPrint jPrint = null;
-				Connection con =
-					config.getConnection(getConnectionName(request));
+				WebEvent webEvent = (WebEvent) request.getAttribute("webEvent");
+				Connection con = null;
+				if ((webEvent != null) && (webEvent.getTable() == null)) {
+					con = config.getConnection();
+				} else {
+					con = config.getConnection(getConnectionName(request));
+				}
 				try {
 					ReportParameter repParam =
 						new ReportParameter(
@@ -246,6 +280,7 @@ public class StartReportServlet extends HttpServlet {
 								dataSource);
 					}
 				} catch (Exception e) {
+					logCat.error(e);
 					e.printStackTrace(System.out);
 				} finally {
 					SqlUtil.closeConnection(con);
@@ -261,6 +296,8 @@ public class StartReportServlet extends HttpServlet {
 							request,
 							StartReportServlet.REPORTTYPEPARAM,
 							"PDF");
+					String filename =
+						ParseUtil.getParameter(request, REPORTNAMEPARAM);
 
 					// create header
 					response.setHeader("Expires", "0");
@@ -268,6 +305,11 @@ public class StartReportServlet extends HttpServlet {
 						"Cache-Control",
 						"must-revalidate, post-check=0, pre-check=0");
 					response.setHeader("Pragma", "public");
+					if (filename != null) {
+						response.setHeader(
+							"Content-disposition",
+							"inline; filename=" + filename);
+					}
 
 					// create the output stream
 					if ("PDF".equals(outputFormat)) {
@@ -276,10 +318,15 @@ public class StartReportServlet extends HttpServlet {
 					} else if ("XLS".equals(outputFormat)) {
 						response.setContentType("application/msexcel");
 						baos = exportToXLS(jPrint);
+					} else if ("CSV".equalsIgnoreCase(outputFormat)) {
+						response.setContentType("text/comma-separated-values");
+						baos = exportToCSV(jPrint);
 					}
+
+					jPrint = null;
 				}
 			} catch (JRException e) {
-				logCat.error("processReport",  e);
+				logCat.error("processReport", e);
 				handleException(request, response, e);
 
 				return;
@@ -308,7 +355,17 @@ public class StartReportServlet extends HttpServlet {
 		}
 	}
 
-	private String getReportFileFullName(
+	/**
+	 * DOCUMENT ME!
+	 *
+	 * @param reportFileName DOCUMENT ME!
+	 * @param context DOCUMENT ME!
+	 * @param request DOCUMENT ME!
+	 * @param response DOCUMENT ME!
+	 *
+	 * @return DOCUMENT ME!
+	 */
+	public String getReportFileFullName(
 		String reportFileName,
 		ServletContext context,
 		HttpServletRequest request,
@@ -322,7 +379,8 @@ public class StartReportServlet extends HttpServlet {
 				reportFile =
 					context.getRealPath(reportdirs[i] + reportFileName);
 
-				if (FileUtil.fileExists(reportFile + "." + REPORTFILEEXTENSION)) {
+				if (FileUtil
+					.fileExists(reportFile + "." + REPORTFILEEXTENSION)) {
 					found = true;
 
 					break;
@@ -361,7 +419,14 @@ public class StartReportServlet extends HttpServlet {
 		return res;
 	}
 
-	private static void handleException(
+	/**
+	 * DOCUMENT ME!
+	 *
+	 * @param request DOCUMENT ME!
+	 * @param response DOCUMENT ME!
+	 * @param e DOCUMENT ME!
+	 */
+	public static void handleException(
 		HttpServletRequest request,
 		HttpServletResponse response,
 		Exception e) {
@@ -374,7 +439,13 @@ public class StartReportServlet extends HttpServlet {
 				new String[] { e.getMessage()}));
 	}
 
-	private static void handleNoData(
+	/**
+	 * DOCUMENT ME!
+	 *
+	 * @param request DOCUMENT ME!
+	 * @param response DOCUMENT ME!
+	 */
+	public static void handleNoData(
 		HttpServletRequest request,
 		HttpServletResponse response) {
 		sendErrorMessage(
@@ -469,6 +540,15 @@ public class StartReportServlet extends HttpServlet {
 		exporter.exportReport();
 		return baos;
 	}
+	private static ByteArrayOutputStream exportToCSV(JasperPrint jasperPrint)
+		throws JRException {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		JRExporter exporter = new JRCsvExporter();
+		exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+		exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, baos);
+		exporter.exportReport();
+		return baos;
+	}
 
 	private static void compileJasper(
 		ServletContext context,
@@ -501,7 +581,8 @@ public class StartReportServlet extends HttpServlet {
 			String s = FileUtil.removeExtension(list[i].getPath());
 			String ext = FileUtil.getExtension(list[i].getPath());
 
-			if (s.startsWith(reportFile) && (ext.equals(REPORTFILEEXTENSION))) {
+			if (s.startsWith(reportFile)
+				&& (ext.equals(REPORTFILEEXTENSION))) {
 				File xmlFile = list[i];
 				File jasperFile = FileUtil.getFile(s + ".jasper");
 
@@ -512,17 +593,65 @@ public class StartReportServlet extends HttpServlet {
 			}
 		}
 	}
-
-	private JRDataSource getDataFromForm(
+	/** get a JRDataSource for report data.
+	 * Source can be a Collection, an rsv, or dbform
+	 * if session variable "jasper.input" is set, it must point to a Collection object
+	 * if session variable "jasper.rsv" is set, it must point to a ResultSetVector object
+	 * otherwise the enclosing dbform is used for data	
+	 * @param context
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	private JRDataSource getDataForReport(
+		ServletContext context,
 		HttpServletRequest request,
 		HttpServletResponse response) {
 		JRDataSource dataSource = null;
+		Table table = null;
+		ResultSetVector rsv = null;
 
-		// Create form to get the resultsetvector
 		try {
-			WebEvent webEvent = (WebEvent) request.getAttribute("webEvent");
+			PageContext pageContext = new PageContextBuffer();
+			pageContext.initialize(
+				this,
+				request,
+				response,
+				null,
+				true,
+				0,
+				true);
+			
+			// is the datasource a Collection ?
+			Object input = pageContext.findAttribute("jasper.input");
+			if ((input != null) && (input instanceof Collection)) {
+				Iterator iter = ((Collection) input).iterator();
+				dataSource = new JRDataSourceIter(iter, pageContext);
+				return dataSource;
+			}
 
-			if ((webEvent != null) && (webEvent.getTable().getId() != -1)) {
+			// Create form to get the resultsetvector
+			WebEvent webEvent = (WebEvent) request.getAttribute("webEvent");
+			table = webEvent.getTable();
+			if (table == null) {
+				logCat.error("table==null");
+			}
+
+			// check if we are using a ResultSetVector passed by user
+			rsv = (ResultSetVector) pageContext.findAttribute("jasper.rsv");
+			if (rsv != null) {
+				logCat.info("get resultsetvector rsv= " + rsv.size());
+
+				if (rsv.size() == 0) {
+					handleNoData(request, response);
+				} else {
+					dataSource = new JRDataSourceRSV(rsv, pageContext);
+				}
+				return dataSource;
+			}
+			if ((webEvent != null)
+				&& (table != null)
+				&& (table.getId() != -1)) {
 				// Generate DataSource for JasperReports from call to DbForm
 				DbFormsConfig config = null;
 
@@ -537,15 +666,6 @@ public class StartReportServlet extends HttpServlet {
 					config.getTable(webEvent.getTable().getId()).getName();
 
 				// Simulate call to DbFormTag to get resultsetvector
-				PageContext pageContext = new PageContextBuffer();
-				pageContext.initialize(
-					this,
-					request,
-					response,
-					null,
-					true,
-					0,
-					true);
 
 				DbFormTag form = new DbFormTag();
 				form.setPageContext(pageContext);
@@ -571,21 +691,19 @@ public class StartReportServlet extends HttpServlet {
 				form.doStartTag();
 				request.setAttribute("source", saveSource);
 
-				ResultSetVector rsv = form.getResultSetVector();
+				rsv = form.getResultSetVector();
 				logCat.info("get resultsetvector rsv= " + rsv.size());
 
 				if (rsv.size() == 0) {
 					handleNoData(request, response);
 				} else {
-					dataSource = new JRDataSourceRSV(rsv);
+					dataSource = new JRDataSourceRSV(rsv, pageContext);
 				}
-
 				form.doFinally();
 			}
 		} catch (Exception e) {
 			logCat.error(e);
 		}
-
 		return dataSource;
 	}
 }
