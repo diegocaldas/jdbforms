@@ -34,13 +34,13 @@ import org.dbforms.event.*;
 
 
 /****
- * 
+ *
  * @deprecated
- * 
+ *
  *
  * <p>This event prepares and performs a SQL-Update operation</p>
  *
- * @author Joe Peer 
+ * @author Joe Peer
  */
 public class UpdateEvent extends ValidationEvent
 {
@@ -95,7 +95,7 @@ public class UpdateEvent extends ValidationEvent
     * @throws MultipleValidationException DOCUMENT ME!
     * @throws IllegalArgumentException DOCUMENT ME!
     */
-   public void processEvent(Connection con) throws SQLException 
+   public void processEvent(Connection con) throws SQLException
    {
       // Apply given security contraints (as defined in dbforms-config.xml)
       if (!hasUserPrivileg(GrantedPrivileges.PRIVILEG_UPDATE))
@@ -105,7 +105,7 @@ public class UpdateEvent extends ValidationEvent
                              request.getLocale(), 
                              new String[] 
          {
-            table.getName()
+            getTable().getName()
          });
          throw new SQLException(s);
       }
@@ -115,16 +115,20 @@ public class UpdateEvent extends ValidationEvent
 
       if (fieldValues.size() == 0)
       {
-      	logCat.info("no parameters to update found");
-      	return;
+         logCat.info("no parameters to update found");
+
+         return;
       }
 
       // part 2: check if there are interceptors to be processed (as definied by
       // "interceptor" element embedded in table element in dbforms-config xml file)
       int operation = DbEventInterceptor.GRANT_OPERATION;
 
+
       // process the interceptors associated to this table
-      table.processInterceptors(DbEventInterceptor.PRE_UPDATE, request, fieldValues, config, con);
+      getTable()
+         .processInterceptors(DbEventInterceptor.PRE_UPDATE, request, 
+                              fieldValues, getConfig(), con);
 
       if ((operation != DbEventInterceptor.IGNORE_OPERATION)
                 && (fieldValues.size() > 0))
@@ -150,13 +154,13 @@ public class UpdateEvent extends ValidationEvent
 
          // now we start building the UPDATE statement
          // 20021031-HKK: Moved into table
-         PreparedStatement ps = con.prepareStatement(table.getUpdateStatement(
-                                                              fieldValues));
+         PreparedStatement ps = con.prepareStatement(getTable()
+                                                        .getUpdateStatement(fieldValues));
 
          // now we provide the values
          // first, we provide the "new" values for fields
          Iterator enum = fieldValues.elements();
-         int         col = 1;
+         int      col = 1;
 
          while (enum.hasNext())
          {
@@ -164,15 +168,16 @@ public class UpdateEvent extends ValidationEvent
 
             if (fv != null)
             {
-               Field  curField = fv.getField();
+               Field  curField  = fv.getField();
                int    fieldType = curField.getType();
-               Object value = null;
+               Object value     = null;
 
                if (fieldType == FieldTypes.BLOB)
                {
                   // in case of a BLOB we supply the FileHolder object to SqlUtils for further operations
                   logCat.info("we are looking for fileholder with name: f_"
-                              + tableId + "_" + keyId + "_" + curField.getId());
+                              + getTable().getId() + "_" + keyId + "_"
+                              + curField.getId());
                   value = fv.getFileHolder();
                   logCat.info("and found a value=" + value);
                }
@@ -206,12 +211,13 @@ public class UpdateEvent extends ValidationEvent
                   // in case of simple db types we just supply a string representing the value of the fields
                   value = fv.getFieldValueAsObject();
                }
+
                JDBCDataHelper.fillPreparedStatement(ps, col, value, fieldType);
                col++;
             }
          }
 
-         table.populateWhereClauseWithKeyFields(keyValuesStr, ps, col);
+         getTable().populateWhereClauseWithKeyFields(keyValuesStr, ps, col);
 
 
          // we are now ready to execute the query
@@ -223,7 +229,7 @@ public class UpdateEvent extends ValidationEvent
          while (enum.hasNext())
          {
             String fieldName = (String) enum.next();
-            Field  curField = table.getFieldByName(fieldName);
+            Field  curField = getTable().getFieldByName(fieldName);
 
             if (curField != null)
             {
@@ -272,7 +278,8 @@ public class UpdateEvent extends ValidationEvent
                   // dir is ok so lets store the filepart
                   FileHolder fileHolder = ParseUtil.getFileHolder(request, 
                                                                   "f_"
-                                                                  + tableId
+                                                                  + getTable()
+                                                                       .getId()
                                                                   + "_" + keyId
                                                                   + "_"
                                                                   + curField.getId());
@@ -304,10 +311,12 @@ public class UpdateEvent extends ValidationEvent
          }
       }
 
+
       // finally, we process interceptor again (post-update)
-     // process the interceptors associated to this table
-     table.processInterceptors(DbEventInterceptor.POST_UPDATE, request, 
-                                   null, config, con);
+      // process the interceptors associated to this table
+      getTable()
+         .processInterceptors(DbEventInterceptor.POST_UPDATE, request, null, 
+                              getConfig(), con);
 
       // End of interceptor processing
    }

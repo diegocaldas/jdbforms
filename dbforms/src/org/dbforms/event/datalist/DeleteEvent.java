@@ -99,7 +99,7 @@ public class DeleteEvent extends DatabaseEvent
     * @throws SQLException  if any SQL error occurs
     * @throws MultipleValidationException if any validation error occurs
     */
-   public void processEvent(Connection con) throws SQLException 
+   public void processEvent(Connection con) throws SQLException
    {
       // Apply given security contraints (as defined in dbforms-config.xml)
       if (!hasUserPrivileg(GrantedPrivileges.PRIVILEG_DELETE))
@@ -109,7 +109,7 @@ public class DeleteEvent extends DatabaseEvent
                              request.getLocale(), 
                              new String[] 
          {
-            table.getName()
+            getTable().getName()
          });
          throw new SQLException(s);
       }
@@ -117,14 +117,16 @@ public class DeleteEvent extends DatabaseEvent
       // which values do we find in request
       FieldValues fieldValues = getFieldValues();
 
-      int operation = DbEventInterceptor.GRANT_OPERATION;
+      int         operation = DbEventInterceptor.GRANT_OPERATION;
+
 
       // part 2: check if there are interceptors to be processed (as definied by
       // "interceptor" element embedded in table element in dbforms-config xml file)
       // process the interceptors associated to this table
-      operation = table.processInterceptors(DbEventInterceptor.PRE_DELETE, 
-                                               request, fieldValues, 
-                                               config, con);
+      operation = getTable()
+                     .processInterceptors(DbEventInterceptor.PRE_DELETE, 
+                                          request, fieldValues, getConfig(), 
+                                          con);
 
       if (operation != DbEventInterceptor.IGNORE_OPERATION)
       {
@@ -142,11 +144,11 @@ public class DeleteEvent extends DatabaseEvent
          // DELETE operation;
          boolean           mustClose = false;
          DataSourceList    ds  = DataSourceList.getInstance(request);
-         DataSourceFactory qry = ds.get(table, request);
+         DataSourceFactory qry = ds.get(getTable(), request);
 
          if (qry == null)
          {
-            qry       = new DataSourceFactory(table);
+            qry       = new DataSourceFactory(getTable());
             mustClose = true;
          }
 
@@ -158,10 +160,12 @@ public class DeleteEvent extends DatabaseEvent
          }
       }
 
+
       // finally, we process interceptor again (post-delete)
       // process the interceptors associated to this table
-      table.processInterceptors(DbEventInterceptor.POST_DELETE, request, 
-                                   null, config, con);
+      getTable()
+         .processInterceptors(DbEventInterceptor.POST_DELETE, request, null, 
+                              getConfig(), con);
 
       // End of interceptor processing
    }

@@ -53,10 +53,7 @@ public abstract class WebEvent
    protected HttpServletRequest request;
 
    /** the configuration object */
-   protected DbFormsConfig config;
-
-   /** table identifier that tells on which table does the event operate on */
-   protected int tableId;
+   private DbFormsConfig config;
 
    /** table  that tells on which table does the event operate on */
    protected Table table;
@@ -82,7 +79,6 @@ public abstract class WebEvent
     */
    public WebEvent(int tableId, HttpServletRequest request, DbFormsConfig config)
    {
-      this.tableId = tableId;
       this.table   = config.getTable(tableId);
       this.request = request;
       this.config  = config;
@@ -145,17 +141,6 @@ public abstract class WebEvent
 
 
    /**
-    *  Gets the tableId attribute of the WebEvent object
-    *
-    * @return  The tableId value
-    */
-   public int getTableId()
-   {
-      return tableId;
-   }
-
-
-   /**
     *  Sets the followUp attribute of the WebEvent object
     *
     * @param  followUp The new followUp value
@@ -208,7 +193,7 @@ public abstract class WebEvent
     */
    protected boolean hasUserPrivileg(int privileg)
    {
-      return config.getTable(tableId).hasUserPrivileg(request, privileg);
+      return config.getTable(getTable().getId()).hasUserPrivileg(request, privileg);
    }
 
 
@@ -232,4 +217,11 @@ public abstract class WebEvent
    {
       this.type = type;
    }
+   /**
+    * @return
+    */
+   public Table getTable() {
+      return table;
+   }
+
 }

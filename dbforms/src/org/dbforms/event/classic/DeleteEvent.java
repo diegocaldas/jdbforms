@@ -38,7 +38,7 @@ import org.dbforms.event.DatabaseEvent;
  *
  * <p>This event prepares and performs a SQL-Delete operation</p>
  *
- * @author Joe Peer 
+ * @author Joe Peer
  */
 public class DeleteEvent extends DatabaseEvent
 {
@@ -121,7 +121,7 @@ public class DeleteEvent extends DatabaseEvent
                              request.getLocale(), 
                              new String[] 
          {
-            table.getName()
+            getTable().getName()
          });
          throw new SQLException(s);
       }
@@ -130,15 +130,16 @@ public class DeleteEvent extends DatabaseEvent
       // "interceptor" element embedded in table element in dbforms-config xml file)
       int operation = DbEventInterceptor.GRANT_OPERATION;
 
-      if (table.hasInterceptors())
+      if (getTable().hasInterceptors())
       {
          // which values do we find in request
          FieldValues fieldValues = getFieldValues();
 
+
          // part 2b: process the interceptors associated to this table
-         operation = table.processInterceptors(DbEventInterceptor.PRE_DELETE, 
-                                                  request, fieldValues, 
-                                                  config, con);
+         operation = getTable().processInterceptors(DbEventInterceptor.PRE_DELETE, 
+                                               request, fieldValues, 
+                                               getConfig(), con);
       }
 
       // End of interceptor processing
@@ -149,27 +150,27 @@ public class DeleteEvent extends DatabaseEvent
          // if so, we have to select the filename+dirs from the db before we can delete
          ResultSet diskblobs = null;
 
-         if (table.containsDiskblob())
+         if (getTable().containsDiskblob())
          {
             StringBuffer queryBuf = new StringBuffer();
-            queryBuf.append(table.getDisblobSelectStatement());
+            queryBuf.append(getTable().getDisblobSelectStatement());
             queryBuf.append(" WHERE ");
-            queryBuf.append(table.getWhereClauseForKeyFields());
+            queryBuf.append(getTable().getWhereClauseForKeyFields());
 
             PreparedStatement diskblobsPs = con.prepareStatement(
                                                      queryBuf.toString());
-            table.populateWhereClauseWithKeyFields(keyValuesStr, diskblobsPs, 1);
+            getTable().populateWhereClauseWithKeyFields(keyValuesStr, diskblobsPs, 1);
             diskblobs = diskblobsPs.executeQuery();
             diskblobsPs.close();
          }
 
          // 20021031-HKK: build in table!!
-         PreparedStatement ps = con.prepareStatement(table.getDeleteStatement());
+         PreparedStatement ps = con.prepareStatement(getTable().getDeleteStatement());
 
 
          // now we provide the values
          // of the key-fields, so that the WHERE clause matches the right dataset!
-         table.populateWhereClauseWithKeyFields(keyValuesStr, ps, 1);
+         getTable().populateWhereClauseWithKeyFields(keyValuesStr, ps, 1);
 
 
          // finally execute the query
@@ -184,7 +185,7 @@ public class DeleteEvent extends DatabaseEvent
             if (diskblobs.next())
             {
                // if a row in the resultset exists (can be only 1 row !)
-               Vector diskblobFields = table.getDiskblobs();
+               Vector diskblobFields = getTable().getDiskblobs();
 
                // get fields we're interested in
                for (int i = 0; i < diskblobFields.size(); i++)
@@ -235,10 +236,11 @@ public class DeleteEvent extends DatabaseEvent
          }
       }
 
+
       // finally, we process interceptor again (post-delete)
       // process the interceptors associated to this table
-      table.processInterceptors(DbEventInterceptor.POST_DELETE, request, 
-                                   null, config, con);
+      getTable().processInterceptors(DbEventInterceptor.POST_DELETE, request, null, 
+                                getConfig(), con);
 
       // End of interceptor processing
    }

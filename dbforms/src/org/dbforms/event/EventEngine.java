@@ -20,21 +20,16 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-package org.dbforms.event;
 
+package org.dbforms.event;
 import java.util.Enumeration;
 import java.util.Vector;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.apache.log4j.Category;
-
 import org.dbforms.util.ParseUtil;
 import org.dbforms.util.Util;
-
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.Table;
-
 import org.dbforms.event.eventtype.EventType;
 import org.dbforms.event.eventtype.EventTypeUtil;
 
@@ -53,17 +48,17 @@ import org.dbforms.event.eventtype.EventTypeUtil;
 public class EventEngine
 {
    /** logging category for this class */
-   private static Category logCat = Category.getInstance(EventEngine.class.getName());
+   private static Category logCat = Category.getInstance(
+                                             EventEngine.class.getName());
 
    /** instance of DatabaseEventFactory */
-   private DatabaseEventFactory dbEventFactory = 
-   	         DatabaseEventFactoryImpl.instance();
+   private DatabaseEventFactory dbEventFactory = DatabaseEventFactoryImpl.instance();
 
    /** instance of NavigationEventFactory */
    private NavEventFactory    navEventFactory = NavEventFactoryImpl.instance();
    private HttpServletRequest request;
    private DbFormsConfig      config;
-   
+
    /**
     * this vector will contain which tables where on the jsp page:
     * one jsp file may contain multiple dbforms, and each forms could contain many
@@ -71,10 +66,9 @@ public class EventEngine
     */
    private Vector involvedTables;
 
-
    /**
     *  Constructor.
-    * 
+    *
     * @param  request the request object
     * @param  config the configuration object
     */
@@ -82,11 +76,11 @@ public class EventEngine
    {
       this.request = request;
       this.config  = config;
-      
-	  // find out which tables where on the jsp
+
+
+      // find out which tables where on the jsp
       involvedTables = parseInvolvedTables();
    }
-
 
    /**
     * Find out which tables where on the jsp
@@ -94,7 +88,7 @@ public class EventEngine
     * subforms nested inside!)
     *
     * @return  the vector object containing the Table objects involved with the
-    * 	       main table
+    *           main table
     */
    private Vector parseInvolvedTables()
    {
@@ -132,7 +126,7 @@ public class EventEngine
 
 
    /**
-    * Generate the primary event object, depending on the data contained into the 
+    * Generate the primary event object, depending on the data contained into the
     * incoming http request object.
     *
     * @return a new WebEvent object
@@ -140,7 +134,8 @@ public class EventEngine
    public WebEvent generatePrimaryEvent()
    {
       WebEvent e           = null;
-      String   action      = ParseUtil.getFirstParameterStartingWith(request, "ac_");
+      String   action      = ParseUtil.getFirstParameterStartingWith(request, 
+                                                                     "ac_");
       String   customEvent = ParseUtil.getParameter(request, "customEvent");
 
       if (Util.isNull(action) && !Util.isNull(customEvent))
@@ -173,13 +168,15 @@ public class EventEngine
       if (action.startsWith("re_"))
       {
          logCat.info("##### RELOAD  EVENT ######");
-         e = new PageReloadEvent(ParseUtil.getEmbeddedStringAsInteger(action, 2, '_'),
-               request, config);
+         e = new PageReloadEvent(ParseUtil.getEmbeddedStringAsInteger(action, 2, 
+                                                                      '_'), 
+                                 request, config);
          e.setType(EventType.EVENT_PAGE_RELOAD);
          initializeWebEvent(e);
 
          return e;
       }
+
 
       // make the image button data (if any) look like a submit button;
       action = getImageButtonAction(action);
@@ -201,7 +198,7 @@ public class EventEngine
          case EventType.EVENT_GROUP_NAVIGATION:
          {
             logCat.info(
-               "::generatePrimaryEvent - generating a navigation event");
+                     "::generatePrimaryEvent - generating a navigation event");
             e = navEventFactory.createEvent(action, request, config);
 
             break;
@@ -210,11 +207,12 @@ public class EventEngine
          default:
          {
             logCat.error(
-               "::generatePrimaryEvent - WARNING: generating NO event. Why ?");
+                     "::generatePrimaryEvent - WARNING: generating NO event. Why ?");
 
             break;
          }
       }
+
 
       // setting the followUp attributes for the generated event
       setEventFollowUp(e, action);
@@ -231,9 +229,8 @@ public class EventEngine
     */
    public Enumeration generateSecundaryEvents(WebEvent exclude)
    {
-      Vector  result           = new Vector();
-      Vector  vAc              = ParseUtil.getParametersStartingWith(request,
-                                 "autoupdate_");
+      Vector  result = new Vector();
+      Vector  vAc = ParseUtil.getParametersStartingWith(request, "autoupdate_");
       int     excludeTableId   = -1;
       String  excludeKeyId     = null;
       boolean collissionDanger = false;
@@ -242,7 +239,7 @@ public class EventEngine
       if (exclude instanceof DatabaseEvent)
       {
          collissionDanger = true;
-         excludeTableId   = exclude.getTableId();
+         excludeTableId   = exclude.getTable().getId();
          excludeKeyId     = ((DatabaseEvent) exclude).getKeyId();
       }
 
@@ -255,12 +252,13 @@ public class EventEngine
          {
             // let's find the id of the next table we may update
             int tableId = Integer.parseInt(param.substring(
-                                  "autoupdate_".length()));
+                                                    "autoupdate_".length()));
 
             // we can only update existing rowsets. so we just look for key-values
             String      paramStub          = "k_" + tableId + "_";
-            Enumeration keysOfCurrentTable = ParseUtil.getParametersStartingWith(request,
-                                               paramStub).elements();
+            Enumeration keysOfCurrentTable = ParseUtil.getParametersStartingWith(
+                                                      request, paramStub)
+                                                      .elements();
 
             while (keysOfCurrentTable.hasMoreElements())
             {
@@ -268,13 +266,15 @@ public class EventEngine
                String keyId = aKeyParam.substring(paramStub.length());
 
                logCat.info("autoaupdate debug info: keyId=" + keyId
-                  + " excludeKeyId=" + excludeKeyId);
+                           + " excludeKeyId=" + excludeKeyId);
 
                if (!collissionDanger || (excludeTableId != tableId)
-                                     || !keyId.equals(excludeKeyId))
+                         || !keyId.equals(excludeKeyId))
                {
-                  DatabaseEvent e = dbEventFactory.createUpdateEvent(tableId,
-                                                   keyId, request, config);
+                  DatabaseEvent e = dbEventFactory.createUpdateEvent(tableId, 
+                                                                     keyId, 
+                                                                     request, 
+                                                                     config);
                   result.addElement(e);
                }
             }
@@ -375,21 +375,22 @@ public class EventEngine
       // ...then check if §2-followup exists (should always exist!)
       if (followUp == null)
       {
-         followUp = ParseUtil.getParameter(request, "fu_" + e.getTableId());
+         followUp = ParseUtil.getParameter(request, 
+                                           "fu_" + e.getTable().getId());
       }
 
       logCat.info("setting follow up to:" + followUp);
       e.setFollowUp(followUp);
 
-      String followUpOnError = ParseUtil.getParameter(request,
-            "data" + action + "_fue");
+      String followUpOnError = ParseUtil.getParameter(request, 
+                                                      "data" + action + "_fue");
 
       // if not...
       // ...then check if §2-followup exists
       if (followUpOnError == null)
       {
-         followUpOnError = ParseUtil.getParameter(request,
-               "fue_" + e.getTableId());
+         followUpOnError = ParseUtil.getParameter(request, 
+                                                  "fue_" + e.getTable().getId());
       }
 
       // Still no followup on error - use general followup

@@ -55,12 +55,12 @@ public class GotoEvent extends NavigationEvent
    private String tableList   = null;
 
    /**
-   * <p>constructor - parses the event details</p>
-   * <p>Depending on the way the attributes where provided by the developer,  different
-   * ways are used for resolving the dispatcher the user wants to get called and the position
-   * he wants the ResultSet to be scrolled to.
-   * </p>
-   */
+    * <p>constructor - parses the event details</p>
+    * <p>Depending on the way the attributes where provided by the developer,  different
+    * ways are used for resolving the dispatcher the user wants to get called and the position
+    * he wants the ResultSet to be scrolled to.
+    * </p>
+    */
    public GotoEvent(String action, HttpServletRequest request, 
                     DbFormsConfig config)
    {
@@ -71,7 +71,7 @@ public class GotoEvent extends NavigationEvent
 
       if (destTable == null)
       {
-         this.tableId = -1;
+         this.table = null;
 
          return; // if the user wants a simple, dumb link and we want no form to be navigated through
       }
@@ -84,8 +84,6 @@ public class GotoEvent extends NavigationEvent
       {
          this.table = config.getTable(Integer.parseInt(destTable));
       }
-
-      this.tableId = table.getId();
 
       String srcTable = ParseUtil.getParameter(request, 
                                                "data" + action + "_srcTable");
@@ -177,21 +175,21 @@ public class GotoEvent extends NavigationEvent
 
    /**
     * Process the current event.
-    * 
+    *
     * @param filterFieldValues    FieldValue array used to restrict a set of data
     * @param orderConstraint    FieldValue array used to build a cumulation of
     *                       rules for ordering (sorting) and restricting fields
-    *                      to the actual block of data 
+    *                      to the actual block of data
     * @param count              record count
     * @param firstPost         a string identifying the first resultset position
     * @param lastPos          a string identifying the last resultset position
     * @param dbConnectionName   name of the used db connection. Can be used to
-    *                           get an own db connection, e.g. to hold it during the 
-    *                           session (see DataSourceJDBC for example!) 
+    *                           get an own db connection, e.g. to hold it during the
+    *                           session (see DataSourceJDBC for example!)
     * @param con                the JDBC Connection object
-    * 
+    *
     * @return a ResultSetVector object
-    * 
+    *
     * @exception SQLException if any error occurs
     */
    public ResultSetVector processEvent(FieldValue[] childFieldValues, 
@@ -222,8 +220,9 @@ public class GotoEvent extends NavigationEvent
          if (!Util.isNull(position) && (srcTable != null)
                    && !Util.isNull(childField) && !Util.isNull(parentField))
          {
-            FieldValues fv = table.mapChildFieldValues(srcTable, parentField, 
-                                                       childField, position);
+            FieldValues fv = getTable()
+                                .mapChildFieldValues(srcTable, parentField, 
+                                                     childField, position);
 
             if (fv != null)
             {
@@ -233,20 +232,22 @@ public class GotoEvent extends NavigationEvent
          }
          else if (!Util.isNull(position))
          {
-            table.fillWithValues(orderConstraint, position);
+            getTable().fillWithValues(orderConstraint, position);
          }
 
          logCat.info("gotopos = " + position);
 
-         return table.doConstrainedSelect(table.getFields(), childFieldValues, 
-                                          orderConstraint, sqlFilter, 
-                                          sqlFilterParams, compMode, count, con);
+         return getTable()
+                   .doConstrainedSelect(table.getFields(), childFieldValues, 
+                                        orderConstraint, sqlFilter, 
+                                        sqlFilterParams, compMode, count, con);
       }
       else
       {
          // free form select
-         return table.doFreeFormSelect(table.getFields(), whereClause, 
-                                       tableList, count, con);
+         return getTable()
+                   .doFreeFormSelect(getTable().getFields(), whereClause, 
+                                     tableList, count, con);
       }
    }
 }

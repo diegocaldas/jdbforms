@@ -29,7 +29,6 @@ import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.FieldValue;
 import org.dbforms.config.ResultSetVector;
 import org.dbforms.config.Table;
-import org.dbforms.util.ParseUtil;
 
 
 
@@ -39,7 +38,7 @@ import org.dbforms.util.ParseUtil;
  * new dataset  with values coming from current row
  * </p>
  * #fixme: lousy description
- * 
+ *
  * @version $Revision$
  * @author Stefano Borghi
  */
@@ -47,7 +46,7 @@ public class NavCopyEvent extends NavigationEvent
 {
    /**
     * Creates a new NavCopyEvent object.
-    * 
+    *
     * @param action DOCUMENT ME!
     * @param request DOCUMENT ME!
     * @param config DOCUMENT ME!
@@ -56,15 +55,12 @@ public class NavCopyEvent extends NavigationEvent
                        DbFormsConfig config)
    {
       super(action, request, config);
-      this.config = config;
-      tableId     = ParseUtil.getEmbeddedStringAsInteger(action, 2, '_');
-      this.table  = config.getTable(tableId);
    }
 
 
    /**
     * Creates a new NavCopyEvent object.
-    * 
+    *
     * @param table DOCUMENT ME!
     * @param request DOCUMENT ME!
     * @param config DOCUMENT ME!
@@ -73,41 +69,34 @@ public class NavCopyEvent extends NavigationEvent
                        DbFormsConfig config)
    {
       super(table, request, config);
-      this.table   = table;
-      this.tableId = table.getId();
-      this.config  = config;
    }
 
-	/**
-	 * Process the current event.
-	 * 
-	 * @param filterFieldValues 	FieldValue array used to restrict a set of data
-	 * @param orderConstraint 	FieldValue array used to build a cumulation of
-	 *        					rules for ordering (sorting) and restricting fields
-	 * 							to the actual block of data 
-	 * @param count           	record count
-	 * @param firstPosition   		a string identifying the first resultset position
-	 * @param lastPosition    		a string identifying the last resultset position
-	 * @param dbConnectionName   name of the used db connection. Can be used to
-	 *                           get an own db connection, e.g. to hold it during the 
-	 *                           session (see DataSourceJDBC for example!) 
-	 * @param con             	the JDBC Connection object
-	 * 
-	 * @return a ResultSetVector object
-	 * 
-	 * @exception SQLException if any error occurs
-	 */
-   public ResultSetVector processEvent(
-						FieldValue[] childFieldValues,
-						FieldValue[] orderConstraint, 
-						String sqlFilter, 
-						FieldValue[] sqlFilterParams,
-						int count, 
-						String firstPosition,
-						String lastPosition, 
-						String dbConnectionName,
-						Connection con
-					)
+   /**
+    * Process the current event.
+    *
+    * @param filterFieldValues    FieldValue array used to restrict a set of data
+    * @param orderConstraint    FieldValue array used to build a cumulation of
+    *                       rules for ordering (sorting) and restricting fields
+    *                      to the actual block of data
+    * @param count              record count
+    * @param firstPosition         a string identifying the first resultset position
+    * @param lastPosition          a string identifying the last resultset position
+    * @param dbConnectionName   name of the used db connection. Can be used to
+    *                           get an own db connection, e.g. to hold it during the
+    *                           session (see DataSourceJDBC for example!)
+    * @param con                the JDBC Connection object
+    *
+    * @return a ResultSetVector object
+    *
+    * @exception SQLException if any error occurs
+    */
+   public ResultSetVector processEvent(FieldValue[] childFieldValues, 
+                                       FieldValue[] orderConstraint, 
+                                       String sqlFilter, 
+                                       FieldValue[] sqlFilterParams, int count, 
+                                       String firstPosition, 
+                                       String lastPosition, 
+                                       String dbConnectionName, Connection con)
                                 throws SQLException
    {
       logCat.info("processed NavCopyEvent");

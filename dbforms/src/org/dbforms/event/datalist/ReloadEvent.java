@@ -20,12 +20,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-package org.dbforms.event.datalist;
 
+package org.dbforms.event.datalist;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Connection;
 import java.sql.SQLException;
-
 import org.dbforms.config.FieldValue;
 import org.dbforms.config.ResultSetVector;
 import org.dbforms.config.Table;
@@ -34,86 +33,90 @@ import org.dbforms.event.NavigationEvent;
 import org.dbforms.event.datalist.dao.DataSourceList;
 import org.dbforms.event.datalist.dao.DataSourceFactory;
 
+
+
 /**
  *
  * This event reloads the current dataset and moves to the first row of data
  * Works with new factory classes.
- * 
- * 
+ *
+ *
  * @author Henner Kollmann <Henner.Kollmann@gmx.de>
  *
  */
 public class ReloadEvent extends NavigationEvent
 {
-	/**
-		 * Creates a new ReloadEvent object.
-		 * 
-		 * @param action  the action string
-		 * @param request the request object
-		 * @param config  the configuration object
-		 */
-		public ReloadEvent(String action, HttpServletRequest request, 
-									DbFormsConfig config)
-		{
-			super(action, request, config);
-		}
+   /**
+    * Creates a new ReloadEvent object.
+    *
+    * @param action  the action string
+    * @param request the request object
+    * @param config  the configuration object
+    */
+   public ReloadEvent(String action, HttpServletRequest request, 
+                      DbFormsConfig config)
+   {
+      super(action, request, config);
+   }
 
 
-		/**
-		 * Creates a new ReloadEvent object.
-		 * 
-		 * @param table the input table object
-		 * @param request the request object
-		 * @param config the configuration object
-		 */
-		public ReloadEvent(Table table, HttpServletRequest request, 
-									DbFormsConfig config)
-		{
-			super(table, request, config);
-		}
+   /**
+    * Creates a new ReloadEvent object.
+    *
+    * @param table the input table object
+    * @param request the request object
+    * @param config the configuration object
+    */
+   public ReloadEvent(Table table, HttpServletRequest request, 
+                      DbFormsConfig config)
+   {
+      super(table, request, config);
+   }
 
-		/**
-		 * Process the current event.
-		 * 
-		 * @param filterFieldValues 	FieldValue array used to restrict a set of data
-		 * @param orderConstraint 	FieldValue array used to build a cumulation of
-		 *        					rules for ordering (sorting) and restricting fields
-		 * 							to the actual block of data 
-		 * @param count           	record count
-		 * @param firstPosition   		a string identifying the first resultset position
-		 * @param lastPosition    		a string identifying the last resultset position
-		 * @param dbConnectionName   name of the used db connection. Can be used to
-		 *                           get an own db connection, e.g. to hold it during the 
-		 *                           session (see DataSourceJDBC for example!) 
-		 * @param con             	the JDBC Connection object
-		 * 
-		 * @return a ResultSetVector object
-		 * 
-		 * @exception SQLException if any error occurs
-		 */
-		public ResultSetVector processEvent(
-							FieldValue[] filterFieldValues,
-							FieldValue[] orderConstraint, 
-							String sqlFilter, 
-							FieldValue[] sqlFilterParams,
-							int count, 
-							String firstPosition,
-							String lastPosition, 
-							String dbConnectionName,
-							Connection con
-						)
-											  throws SQLException
-		{
-			DataSourceList    ds  = DataSourceList.getInstance(request);
-		   DataSourceFactory qry = ds.get(table, request);
-			if (qry == null)
-			{
-			   qry = new DataSourceFactory(dbConnectionName, con, table);
-			   ds.put(table, request, qry);
-			} else {
-			   qry.close();
-			}
-			qry.setSelect(filterFieldValues, orderConstraint, sqlFilter, sqlFilterParams);
-			return qry.getCurrent(null, count);
-		}
+   /**
+    * Process the current event.
+    *
+    * @param filterFieldValues    FieldValue array used to restrict a set of data
+    * @param orderConstraint    FieldValue array used to build a cumulation of
+    *                       rules for ordering (sorting) and restricting fields
+    *                      to the actual block of data
+    * @param count              record count
+    * @param firstPosition         a string identifying the first resultset position
+    * @param lastPosition          a string identifying the last resultset position
+    * @param dbConnectionName   name of the used db connection. Can be used to
+    *                           get an own db connection, e.g. to hold it during the
+    *                           session (see DataSourceJDBC for example!)
+    * @param con                the JDBC Connection object
+    *
+    * @return a ResultSetVector object
+    *
+    * @exception SQLException if any error occurs
+    */
+   public ResultSetVector processEvent(FieldValue[] filterFieldValues, 
+                                       FieldValue[] orderConstraint, 
+                                       String sqlFilter, 
+                                       FieldValue[] sqlFilterParams, int count, 
+                                       String firstPosition, 
+                                       String lastPosition, 
+                                       String dbConnectionName, Connection con)
+                                throws SQLException
+   {
+      DataSourceList    ds  = DataSourceList.getInstance(request);
+      DataSourceFactory qry = ds.get(getTable(), request);
+
+      if (qry == null)
+      {
+         qry = new DataSourceFactory(dbConnectionName, con, getTable());
+         ds.put(getTable(), request, qry);
+      }
+      else
+      {
+         qry.close();
+      }
+
+      qry.setSelect(filterFieldValues, orderConstraint, sqlFilter, 
+                    sqlFilterParams);
+
+      return qry.getCurrent(null, count);
+   }
 }

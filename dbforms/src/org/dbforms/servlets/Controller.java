@@ -207,7 +207,7 @@ public class Controller extends HttpServlet
             request.setAttribute("webEvent", e);
          }
 
-         con = getConnection(request, e.getTableId(), connections);
+         con = getConnection(request, e.getTable().getId(), connections);
 
          // primary event can be any kind of event (database, navigation...)
          if (e instanceof DatabaseEvent)
@@ -218,7 +218,7 @@ public class Controller extends HttpServlet
                // doValidation with Commons-Validator
                String formValidatorName = request.getParameter(ValidatorConstants.FORM_VALIDATOR_NAME
                                                                + "_"
-                                                               + e.getTableId());
+                                                               + e.getTable().getId());
 
                if (formValidatorName != null)
                {
@@ -316,14 +316,14 @@ public class Controller extends HttpServlet
 
             // 2003-02-03 HKK: do not do the work twice - without this every event 
             // would be generated for each table and event
-            if (t.getId() == dbE.getTableId())
+            if (t.getId() == dbE.getTable().getId())
             {
-               con = getConnection(request, dbE.getTableId(), connections);
+               con = getConnection(request, dbE.getTable().getId(), connections);
 
                // 2003-02-03 HKK: do not do the work twice!!!
                String formValidatorName = request.getParameter(ValidatorConstants.FORM_VALIDATOR_NAME
                                                                + "_"
-                                                               + dbE.getTableId());
+                                                               + dbE.getTable().getId());
 
                try
                {

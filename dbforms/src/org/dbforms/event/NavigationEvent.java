@@ -22,24 +22,20 @@
  */
 
 package org.dbforms.event;
-
 import java.sql.SQLException;
 import java.sql.Connection;
-
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.FieldValue;
 import org.dbforms.config.ResultSetVector;
 import org.dbforms.config.Table;
 import org.dbforms.util.ParseUtil;
-
-
 import javax.servlet.http.HttpServletRequest;
 
 
 
 /**
  * Abstract base class for all web-events related to navigation.
- * 
+ *
  * @author Joe Peer
  */
 public abstract class NavigationEvent extends WebEvent
@@ -70,33 +66,32 @@ public abstract class NavigationEvent extends WebEvent
       super(table.getId(), request, config);
    }
 
-	/**
-	 * Process the current event.
-	 * 
-	 * @param filterFieldValues 	FieldValue array used to restrict a set of data
-	 * @param orderConstraint 	FieldValue array used to build a cumulation of
-	 *        					rules for ordering (sorting) and restricting fields
-	 * 							to the actual block of data 
-	 * @param count           	record count
-	 * @param firstPosition   		a string identifying the first resultset position
-	 * @param lastPosition    		a string identifying the last resultset position
-	 * @param dbConnectionName   name of the used db connection. Can be used to
-	 *                           get an own db connection, e.g. to hold it during the 
-	 *                           session (see DataSourceJDBC for example!) 
-	 * @param con             	the JDBC Connection object
-	 * 
-	 * @return a ResultSetVector object
-	 * 
-	 * @exception SQLException if any error occurs
-	 */
+   /**
+    * Process the current event.
+    *
+    * @param filterFieldValues    FieldValue array used to restrict a set of data
+    * @param orderConstraint    FieldValue array used to build a cumulation of
+    *                       rules for ordering (sorting) and restricting fields
+    *                      to the actual block of data
+    * @param count              record count
+    * @param firstPosition         a string identifying the first resultset position
+    * @param lastPosition          a string identifying the last resultset position
+    * @param dbConnectionName   name of the used db connection. Can be used to
+    *                           get an own db connection, e.g. to hold it during the
+    *                           session (see DataSourceJDBC for example!)
+    * @param con                the JDBC Connection object
+    *
+    * @return a ResultSetVector object
+    *
+    * @exception SQLException if any error occurs
+    */
    public abstract ResultSetVector processEvent(FieldValue[] filterFieldValues, 
-                                                FieldValue[] orderConstraint,
+                                                FieldValue[] orderConstraint, 
                                                 String sqlFilter, 
-																FieldValue[] sqlFilterParams,
-                                                int count, 
-                                                String firstPosition, 
+                                                FieldValue[] sqlFilterParams, 
+                                                int count, String firstPosition, 
                                                 String lastPosition, 
-                                                String dbConnectionName,
+                                                String dbConnectionName, 
                                                 Connection con)
                                          throws SQLException;
 }

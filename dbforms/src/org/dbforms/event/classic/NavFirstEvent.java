@@ -20,19 +20,18 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-package org.dbforms.event.classic;
 
+package org.dbforms.event.classic;
 import org.dbforms.config.*;
 import org.dbforms.event.NavigationEvent;
 import java.sql.*;
 import javax.servlet.http.*;
-
 import org.apache.log4j.Category;
 
 
 
 /****
- * 
+ *
  * @deprecated
  *
  * <p>This event scrolls the current ResultSet to its first row of data</p>
@@ -50,8 +49,8 @@ public class NavFirstEvent extends NavigationEvent
     * @param request DOCUMENT ME!
     * @param config DOCUMENT ME!
     */
-   public NavFirstEvent(String action, HttpServletRequest request,
-      DbFormsConfig config)
+   public NavFirstEvent(String action, HttpServletRequest request, 
+                        DbFormsConfig config)
    {
       super(action, request, config);
    }
@@ -63,46 +62,45 @@ public class NavFirstEvent extends NavigationEvent
     * @param table DOCUMENT ME!
     * @param config DOCUMENT ME!
     */
-   public NavFirstEvent(Table table, HttpServletRequest request,
-      DbFormsConfig config)
+   public NavFirstEvent(Table table, HttpServletRequest request, 
+                        DbFormsConfig config)
    {
       super(table, request, config);
    }
 
-	/**
-	 * Process the current event.
-	 * 
-	 * @param filterFieldValues 	FieldValue array used to restrict a set of data
-	 * @param orderConstraint 	FieldValue array used to build a cumulation of
-	 *        					rules for ordering (sorting) and restricting fields
-	 * 							to the actual block of data 
-	 * @param count           	record count
-	 * @param firstPost   		a string identifying the first resultset position
-	 * @param lastPos    		a string identifying the last resultset position
-	 * @param dbConnectionName   name of the used db connection. Can be used to
-	 *                           get an own db connection, e.g. to hold it during the 
-	 *                           session (see DataSourceJDBC for example!) 
-	 * @param con             	the JDBC Connection object
-	 * 
-	 * @return a ResultSetVector object
-	 * 
-	 * @exception SQLException if any error occurs
-	 */
-   public ResultSetVector processEvent(					
-				   FieldValue[] childFieldValues,
-					FieldValue[] orderConstraint, 
-					String sqlFilter, 
-					FieldValue[] sqlFilterParams,
-					int count, 
-					String firstPosition,
-					String lastPosition, 
-					String dbConnectionName,
-					Connection con
-				)
-      throws SQLException
+   /**
+    * Process the current event.
+    *
+    * @param filterFieldValues    FieldValue array used to restrict a set of data
+    * @param orderConstraint    FieldValue array used to build a cumulation of
+    *                       rules for ordering (sorting) and restricting fields
+    *                      to the actual block of data
+    * @param count              record count
+    * @param firstPost         a string identifying the first resultset position
+    * @param lastPos          a string identifying the last resultset position
+    * @param dbConnectionName   name of the used db connection. Can be used to
+    *                           get an own db connection, e.g. to hold it during the
+    *                           session (see DataSourceJDBC for example!)
+    * @param con                the JDBC Connection object
+    *
+    * @return a ResultSetVector object
+    *
+    * @exception SQLException if any error occurs
+    */
+   public ResultSetVector processEvent(FieldValue[] childFieldValues, 
+                                       FieldValue[] orderConstraint, 
+                                       String sqlFilter, 
+                                       FieldValue[] sqlFilterParams, int count, 
+                                       String firstPosition, 
+                                       String lastPosition, 
+                                       String dbConnectionName, Connection con)
+                                throws SQLException
    {
       // just select from table in given order
-      return table.doConstrainedSelect(table.getFields(), childFieldValues,
-         orderConstraint, sqlFilter, sqlFilterParams, Constants.COMPARE_NONE, count, con);
+      return getTable()
+                .doConstrainedSelect(getTable().getFields(), childFieldValues, 
+                                     orderConstraint, sqlFilter, 
+                                     sqlFilterParams, Constants.COMPARE_NONE, 
+                                     count, con);
    }
 }

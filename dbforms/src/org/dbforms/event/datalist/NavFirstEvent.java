@@ -39,7 +39,7 @@ import org.dbforms.event.datalist.dao.DataSourceFactory;
 /**
  * This event scrolls the current ResultSet to its first row of data. <br>
  * Works with new factory classes.
- * 
+ *
  * @author Henner Kollmann
  */
 public class NavFirstEvent extends NavigationEvent
@@ -50,7 +50,7 @@ public class NavFirstEvent extends NavigationEvent
 
    /**
     * Creates a new NavFirstEvent object.
-    * 
+    *
     * @param action  the action string
     * @param request the request object
     * @param config  the configuration object
@@ -64,7 +64,7 @@ public class NavFirstEvent extends NavigationEvent
 
    /**
     * Creates a new NavFirstEvent object.
-    * 
+    *
     * @param table the input table object
     * @param request the request object
     * @param config the configuration object
@@ -75,47 +75,45 @@ public class NavFirstEvent extends NavigationEvent
       super(table, request, config);
    }
 
-	/**
-	 * Process the current event.
-	 * 
-	 * @param filterFieldValues 	FieldValue array used to restrict a set of data
-	 * @param orderConstraint 	FieldValue array used to build a cumulation of
-	 *        					rules for ordering (sorting) and restricting fields
-	 * 							to the actual block of data 
-	 * @param count           	record count
-	 * @param firstPosition   		a string identifying the first resultset position
-	 * @param lastPosition    		a string identifying the last resultset position
-	 * @param dbConnectionName   name of the used db connection. Can be used to
-	 *                           get an own db connection, e.g. to hold it during the 
-	 *                           session (see DataSourceJDBC for example!) 
-	 * @param con             	the JDBC Connection object
-	 * 
-	 * @return a ResultSetVector object
-	 * 
-	 * @exception SQLException if any error occurs
-	 */
-   public ResultSetVector processEvent(
-						FieldValue[] filterFieldValues,
-						FieldValue[] orderConstraint, 
-						String sqlFilter, 
-						FieldValue[] sqlFilterParams,
-						int count, 
-						String firstPosition,
-						String lastPosition, 
-						String dbConnectionName,
-						Connection con
-					)
+   /**
+    * Process the current event.
+    *
+    * @param filterFieldValues    FieldValue array used to restrict a set of data
+    * @param orderConstraint    FieldValue array used to build a cumulation of
+    *                       rules for ordering (sorting) and restricting fields
+    *                      to the actual block of data
+    * @param count              record count
+    * @param firstPosition         a string identifying the first resultset position
+    * @param lastPosition          a string identifying the last resultset position
+    * @param dbConnectionName   name of the used db connection. Can be used to
+    *                           get an own db connection, e.g. to hold it during the
+    *                           session (see DataSourceJDBC for example!)
+    * @param con                the JDBC Connection object
+    *
+    * @return a ResultSetVector object
+    *
+    * @exception SQLException if any error occurs
+    */
+   public ResultSetVector processEvent(FieldValue[] filterFieldValues, 
+                                       FieldValue[] orderConstraint, 
+                                       String sqlFilter, 
+                                       FieldValue[] sqlFilterParams, int count, 
+                                       String firstPosition, 
+                                       String lastPosition, 
+                                       String dbConnectionName, Connection con)
                                 throws SQLException
    {
       logCat.info("==>NavFirstEvent.processEvent");
 
       DataSourceList    ds  = DataSourceList.getInstance(request);
-      DataSourceFactory qry = ds.get(table, request);
+      DataSourceFactory qry = ds.get(getTable(), request);
+
       if (qry == null)
       {
-          qry = new DataSourceFactory(dbConnectionName, con, table);
-          qry.setSelect(filterFieldValues, orderConstraint, sqlFilter, sqlFilterParams);
-          ds.put(table, request, qry);
+         qry = new DataSourceFactory(dbConnectionName, con, getTable());
+         qry.setSelect(filterFieldValues, orderConstraint, sqlFilter, 
+                       sqlFilterParams);
+         ds.put(getTable(), request, qry);
       }
 
       return qry.getFirst(count);

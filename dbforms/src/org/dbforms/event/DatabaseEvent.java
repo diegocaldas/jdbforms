@@ -103,7 +103,8 @@ public abstract class DatabaseEvent extends WebEvent
     *
     * @exception  MultipleValidationException The Vector of errors throwed with this exception
     */
-   public void doValidation(String formValidatorName, ServletContext context) throws MultipleValidationException
+   public void doValidation(String formValidatorName, ServletContext context)
+                     throws MultipleValidationException
    {
    }
 
@@ -120,10 +121,11 @@ public abstract class DatabaseEvent extends WebEvent
    protected FieldValues getFieldValues(boolean insertMode)
    {
       FieldValues result    = new FieldValues();
-      String      paramStub = (Constants.FIELDNAME_PREFIX + tableId + "_"
-                              + (insertMode ? Constants.FIELDNAME_INSERTPREFIX : "")
+      String      paramStub = (Constants.FIELDNAME_PREFIX + getTable().getId() + "_"
+                              + (insertMode
+                                    ? Constants.FIELDNAME_INSERTPREFIX : "")
                               + keyId + "_");
-      Vector  params = ParseUtil.getParametersStartingWith(request, paramStub);
+      Vector params = ParseUtil.getParametersStartingWith(request, paramStub);
 
       // Always doit in insert or delete mode    
       boolean doIt = insertMode || "delete".equals(getType());
@@ -141,7 +143,9 @@ public abstract class DatabaseEvent extends WebEvent
             String value = ParseUtil.getParameter(request, param);
 
             // old value of the named parameter;
-            String oldValue = ParseUtil.getParameter(request, Constants.FIELDNAME_OLDVALUETAG + param);
+            String oldValue = ParseUtil.getParameter(request, 
+                                                     Constants.FIELDNAME_OLDVALUETAG
+                                                     + param);
 
 
             // if they are not equals, set the update flag for this field
@@ -166,13 +170,15 @@ public abstract class DatabaseEvent extends WebEvent
 
             int        iiFieldId = Integer.parseInt(param.substring(
                                                              paramStub.length()));
-            Field      f         = table.getField(iiFieldId);
+            Field      f = getTable().getField(iiFieldId);
 
             String     value = ParseUtil.getParameter(request, param);
             FieldValue fv    = new FieldValue(f, value);
 
-            fv.setOldValue(ParseUtil.getParameter(request, Constants.FIELDNAME_OLDVALUETAG + param));
-            fv.setPattern(ParseUtil.getParameter(request,  Constants.FIELDNAME_PATTERNTAG + param));
+            fv.setOldValue(ParseUtil.getParameter(request, 
+                                                  Constants.FIELDNAME_OLDVALUETAG + param));
+            fv.setPattern(ParseUtil.getParameter(request, 
+                                                 Constants.FIELDNAME_PATTERNTAG + param));
             fv.setLocale(MessageResources.getLocale(request));
 
             if ((f.getType() == FieldTypes.BLOB)
@@ -180,7 +186,7 @@ public abstract class DatabaseEvent extends WebEvent
             {
                // in case of a BLOB or DISKBLOB save get the FileHolder for later use
                fv.setFileHolder(ParseUtil.getFileHolder(request, 
-                                                        "f_" + tableId + "_"
+                                                        "f_" + getTable().getId() + "_"
                                                            + (insertMode
                                                                  ? Constants.FIELDNAME_INSERTPREFIX
                                                                  : "") + keyId
@@ -207,7 +213,7 @@ public abstract class DatabaseEvent extends WebEvent
       try
       {
          key = Util.decode(ParseUtil.getParameter(request, 
-                                                  "k_" + tableId + "_" + keyId));
+                                                  "k_" + getTable().getId() + "_" + keyId));
          logCat.info("::getKeyValues - key: " + key);
       }
       catch (UnsupportedEncodingException e)

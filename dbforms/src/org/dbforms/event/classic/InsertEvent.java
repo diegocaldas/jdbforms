@@ -52,9 +52,9 @@ import org.dbforms.event.ValidationEvent;
 
 
 /****
- * 
+ *
  * @deprecated
- * 
+ *
  *  This event prepares and performs a SQL-Insert operation.
  *
  * @author Joe Peer
@@ -119,7 +119,7 @@ public class InsertEvent extends ValidationEvent
                              request.getLocale(), 
                              new String[] 
          {
-            table.getName()
+            getTable().getName()
          });
          throw new SQLException(s);
       }
@@ -135,10 +135,11 @@ public class InsertEvent extends ValidationEvent
       // "interceptor" element embedded in table element in dbforms-config xml file)
       int operation = DbEventInterceptor.GRANT_OPERATION;
 
+
       // process the interceptors associated to this table
-      operation = table.processInterceptors(DbEventInterceptor.PRE_INSERT, 
-                                               request, fieldValues, 
-                                               config, con);
+      operation = getTable().processInterceptors(DbEventInterceptor.PRE_INSERT, 
+                                            request, fieldValues, getConfig(), 
+                                            con);
 
       if ((operation != DbEventInterceptor.IGNORE_OPERATION)
                 && (fieldValues.size() > 0))
@@ -149,13 +150,13 @@ public class InsertEvent extends ValidationEvent
             throw new SQLException("unsufficent parameters");
          }
 
-         PreparedStatement ps = con.prepareStatement(table.getInsertStatement(
+         PreparedStatement ps = con.prepareStatement(getTable().getInsertStatement(
                                                               fieldValues));
 
          // now we provide the values;
          // every key is the parameter name from of the form page;
          Iterator enum = fieldValues.elements();
-         int         col = 1;
+         int      col = 1;
 
          while (enum.hasNext())
          {
@@ -164,7 +165,9 @@ public class InsertEvent extends ValidationEvent
             if (fv != null)
             {
                Field curField = fv.getField();
-               logCat.debug("Retrieved curField:" + curField.getName() + " type:" + curField.getType());
+               logCat.debug("Retrieved curField:" + curField.getName()
+                            + " type:" + curField.getType());
+
                int    fieldType = curField.getType();
                Object value = null;
 
@@ -182,10 +185,12 @@ public class InsertEvent extends ValidationEvent
                   if (curField.isEncoded())
                   {
                      int    dotIndex = fileName.lastIndexOf('.');
-                     String suffix   = (dotIndex != -1)
-                                          ? fileName.substring(dotIndex) : "";
+                     String suffix = (dotIndex != -1)
+                                        ? fileName.substring(dotIndex) : "";
                      fileHolder.setFileName(UniqueIDGenerator.getUniqueID()
                                             + suffix);
+
+
                      // a diskblob gets stored to db as an ordinary string (it's only the reference!)
                      value = fileHolder.getFileName();
                   }
@@ -216,7 +221,7 @@ public class InsertEvent extends ValidationEvent
          while (enum.hasNext())
          {
             String fieldName = (String) enum.next();
-            Field  curField = table.getFieldByName(fieldName);
+            Field  curField = getTable().getFieldByName(fieldName);
 
             if (curField != null)
             {
@@ -265,7 +270,7 @@ public class InsertEvent extends ValidationEvent
                   // dir is ok so lets store the filepart
                   FileHolder fileHolder = ParseUtil.getFileHolder(request, 
                                                                   "f_"
-                                                                  + tableId
+                                                                  + getTable().getId()
                                                                   + "_ins"
                                                                   + keyId + "_"
                                                                   + curField.getId());
@@ -303,7 +308,7 @@ public class InsertEvent extends ValidationEvent
           * @todo Will not work if key field is autoinc!!
           */
          String       firstPosition = null;
-         Vector       key     = table.getKey();
+         Vector       key     = getTable().getKey();
          FieldValue[] fvEqual = new FieldValue[key.size()];
 
          for (int i = 0; i < key.size(); i++)
@@ -322,8 +327,8 @@ public class InsertEvent extends ValidationEvent
             fvEqual[i] = keyFieldValue;
          }
 
-         ResultSetVector resultSetVector = table.doConstrainedSelect(
-                                                    table.getFields(), fvEqual, 
+         ResultSetVector resultSetVector = getTable().doConstrainedSelect(
+         getTable().getFields(), fvEqual, 
                                                     null, null, null, 
                                                     Constants.COMPARE_NONE, 1, 
                                                     con);
@@ -331,17 +336,18 @@ public class InsertEvent extends ValidationEvent
          if (resultSetVector != null)
          {
             resultSetVector.setPointer(0);
-            firstPosition = table.getPositionString(resultSetVector);
+            firstPosition = getTable().getPositionString(resultSetVector);
          }
 
-         request.setAttribute("firstpos_" + tableId, firstPosition);
+         request.setAttribute("firstpos_" + getTable().getId(), firstPosition);
       }
+
 
       //end patch
       // finally, we process interceptor again (post-insert)
       // process the interceptors associated to this table
-      table.processInterceptors(DbEventInterceptor.POST_INSERT, request, 
-                                   null, config, con);
+      getTable().processInterceptors(DbEventInterceptor.POST_INSERT, request, null, 
+                                getConfig(), con);
    }
 
 
@@ -357,7 +363,7 @@ public class InsertEvent extends ValidationEvent
    private boolean checkSufficentValues(FieldValues fieldValues)
                                  throws SQLException
    {
-      Vector fields = table.getFields();
+      Vector fields = getTable().getFields();
 
       for (int i = 0; i < fields.size(); i++)
       {

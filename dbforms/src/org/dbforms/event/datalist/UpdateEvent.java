@@ -56,7 +56,7 @@ public class UpdateEvent extends ValidationEvent
     * Creates a new UpdateEvent object.
     *
     * @param tableId the table identifier
-    * @param keyId   the key 
+    * @param keyId   the key
     * @param request the request object
     * @param config  the configuration object
     */
@@ -100,7 +100,7 @@ public class UpdateEvent extends ValidationEvent
     * @throws SQLException                if any SQL error occurs
     * @throws MultipleValidationException if any validation error occurs
     */
-   public void processEvent(Connection con) throws SQLException 
+   public void processEvent(Connection con) throws SQLException
    {
       // 2003-08-05-HKK: first check if update is necessary before check security
       // which values do we find in request
@@ -108,7 +108,8 @@ public class UpdateEvent extends ValidationEvent
 
       if (fieldValues.size() == 0)
       {
- 		 logCat.info("no parameters to update found");
+         logCat.info("no parameters to update found");
+
          return;
       }
 
@@ -120,7 +121,7 @@ public class UpdateEvent extends ValidationEvent
                              request.getLocale(), 
                              new String[] 
          {
-            table.getName()
+            getTable().getName()
          });
          throw new SQLException(s);
       }
@@ -129,8 +130,11 @@ public class UpdateEvent extends ValidationEvent
       // "interceptor" element embedded in table element in dbforms-config xml file)
       int operation = DbEventInterceptor.GRANT_OPERATION;
 
+
       // process the interceptors associated to this table
-      table.processInterceptors(DbEventInterceptor.PRE_UPDATE, request, fieldValues, config, con);
+      getTable()
+         .processInterceptors(DbEventInterceptor.PRE_UPDATE, request, 
+                              fieldValues, getConfig(), con);
 
       if ((operation != DbEventInterceptor.IGNORE_OPERATION)
                 && (fieldValues.size() > 0))
@@ -150,11 +154,11 @@ public class UpdateEvent extends ValidationEvent
          // UPDATE operation;
          boolean           mustClose = false;
          DataSourceList    ds  = DataSourceList.getInstance(request);
-         DataSourceFactory qry = ds.get(table, request);
+         DataSourceFactory qry = ds.get(getTable(), request);
 
          if (qry == null)
          {
-            qry       = new DataSourceFactory(table);
+            qry       = new DataSourceFactory(getTable());
             mustClose = true;
          }
 
@@ -166,10 +170,12 @@ public class UpdateEvent extends ValidationEvent
          }
       }
 
+
       // finally, we process interceptor again (post-update)
       // process the interceptors associated to this table
-      table.processInterceptors(DbEventInterceptor.POST_UPDATE, request, 
-                                   null, config, con);
+      getTable()
+         .processInterceptors(DbEventInterceptor.POST_UPDATE, request, null, 
+                              getConfig(), con);
 
       // End of interceptor processing
    }

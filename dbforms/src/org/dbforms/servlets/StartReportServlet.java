@@ -80,7 +80,7 @@ import dori.jasper.engine.export.JRXlsExporter;
  * &lt;/servlet&gt; &lt;servlet-mapping/&gt;
  * &lt;servlet-name/&gt;startreport&lt;/servlet-name/&gt;
  * &lt;url-pattern/&gt;/reports/&lt;/url-pattern/&gt; &lt;/servlet-mapping&gt;
- * 
+ *
  * @author Henner Kollmann
  */
 public class StartReportServlet extends HttpServlet
@@ -100,7 +100,7 @@ public class StartReportServlet extends HttpServlet
 
    /**
     * Initialize this servlet.
-    * 
+    *
     * @exception ServletException if we cannot configure ourselves correctly
     */
    public void init() throws ServletException
@@ -118,10 +118,10 @@ public class StartReportServlet extends HttpServlet
 
    /**
     * Basic servlet method, answers requests from the browser.
-    * 
+    *
     * @param request HTTPServletRequest
     * @param response HTTPServletResponse
-    * 
+    *
     * @throws ServletException if there is a servlet problem.
     * @throws IOException if there is an I/O problem.
     */
@@ -134,10 +134,10 @@ public class StartReportServlet extends HttpServlet
 
    /**
     * Basic servlet method, answers requests fromt the browser.
-    * 
+    *
     * @param request HTTPServletRequest
     * @param response HTTPServletResponse
-    * 
+    *
     * @throws ServletException if there is a servlet problem.
     * @throws IOException if there is an I/O problem.
     */
@@ -150,7 +150,7 @@ public class StartReportServlet extends HttpServlet
 
    /**
     * generates a report from request. Tries to get data from DbForms.
-    * 
+    *
     * @param request HTTPServletRequest
     * @param response HTTPServletResponse
     */
@@ -190,7 +190,7 @@ public class StartReportServlet extends HttpServlet
 
    /**
     * generates a report.
-    * 
+    *
     * @param reportFileFullName filename of report to process
     *        reportHTTPServletRequest generated                by
     *        getReportFile! getReportFile should be called before fetching
@@ -215,13 +215,16 @@ public class StartReportServlet extends HttpServlet
          }
 
          // generate parameter map
+         DbFormsConfig config = null;
 
-         DbFormsConfig   config = null;
-         try {
+         try
+         {
             config = DbFormsConfigRegistry.instance().lookup();
-         }  catch (Exception e) {
+         }
+         catch (Exception e)
+         {
             logCat.error(e);
-            throw new ServletException (e);
+            throw new ServletException(e);
          }
 
          ReportParameter repParam = new ReportParameter(request, 
@@ -233,7 +236,7 @@ public class StartReportServlet extends HttpServlet
                                                         + File.separator, 
                                                         context.getRealPath("")
                                                         + File.separator);
-         Map map = new HashMap();
+         Map             map = new HashMap();
          map.put("PARAM", repParam);
 
          byte[] bytes = null;
@@ -324,12 +327,12 @@ public class StartReportServlet extends HttpServlet
 
    /**
     * DOCUMENT ME!
-    * 
+    *
     * @param reportFileName DOCUMENT ME!
     * @param context DOCUMENT ME!
     * @param request DOCUMENT ME!
     * @param response DOCUMENT ME!
-    * 
+    *
     * @return DOCUMENT ME!
     */
    public String getReportFileFullName(String reportFileName, 
@@ -372,9 +375,9 @@ public class StartReportServlet extends HttpServlet
 
    /**
     * DOCUMENT ME!
-    * 
+    *
     * @param request DOCUMENT ME!
-    * 
+    *
     * @return DOCUMENT ME!
     */
    public static String getConnectionName(HttpServletRequest request)
@@ -382,10 +385,10 @@ public class StartReportServlet extends HttpServlet
       WebEvent webEvent = (WebEvent) request.getAttribute("webEvent");
       String   res = null;
 
-      if ((webEvent != null) && (webEvent.getTableId() != -1))
+      if ((webEvent != null) && (webEvent.getTable().getId() != -1))
       {
          res = ParseUtil.getParameter(request, 
-                                      "invname_" + webEvent.getTableId());
+                                      "invname_" + webEvent.getTable().getId());
       }
 
       return res;
@@ -394,7 +397,7 @@ public class StartReportServlet extends HttpServlet
 
    /**
     * DOCUMENT ME!
-    * 
+    *
     * @param request DOCUMENT ME!
     * @param response DOCUMENT ME!
     * @param e DOCUMENT ME!
@@ -415,7 +418,7 @@ public class StartReportServlet extends HttpServlet
 
    /**
     * DOCUMENT ME!
-    * 
+    *
     * @param request DOCUMENT ME!
     * @param response DOCUMENT ME!
     */
@@ -591,18 +594,23 @@ public class StartReportServlet extends HttpServlet
       {
          WebEvent webEvent = (WebEvent) request.getAttribute("webEvent");
 
-         if ((webEvent != null) && (webEvent.getTableId() != -1))
+         if ((webEvent != null) && (webEvent.getTable().getId() != -1))
          {
             // Generate DataSource for JasperReports from call to DbForm
-            DbFormsConfig   config = null;
-            try {
+            DbFormsConfig config = null;
+
+            try
+            {
                config = DbFormsConfigRegistry.instance().lookup();
-            }  catch (Exception e) {
-               logCat.error(e);
-               throw new ServletException (e);
             }
-            String        tableName = config.getTable(webEvent.getTableId())
-                                            .getName();
+            catch (Exception e)
+            {
+               logCat.error(e);
+               throw new ServletException(e);
+            }
+
+            String tableName = config.getTable(webEvent.getTable().getId())
+                                     .getName();
 
             // Simulate call to DbFormTag to get resultsetvector
             PageContext pageContext = new PageContextBuffer();

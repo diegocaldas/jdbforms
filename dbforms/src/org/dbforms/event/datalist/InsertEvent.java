@@ -71,10 +71,10 @@ public class InsertEvent extends ValidationEvent
    }
 
    /**
-    * Get the FieldValues object representing the collection 
+    * Get the FieldValues object representing the collection
     * of FieldValue objects builded from the request parameters
     *
-    * @return the FieldValues object representing the collection 
+    * @return the FieldValues object representing the collection
     *         of FieldValue objects builded from the request parameters
     */
    public FieldValues getFieldValues()
@@ -90,7 +90,7 @@ public class InsertEvent extends ValidationEvent
     * @throws SQLException if any data access error occurs
     * @throws MultipleValidationException if any validation error occurs
     */
-   public void processEvent(Connection con) throws SQLException 
+   public void processEvent(Connection con) throws SQLException
    {
       // Applying given security contraints (as defined in dbforms-config xml file)
       // part 1: check if requested privilge is granted for role
@@ -101,7 +101,7 @@ public class InsertEvent extends ValidationEvent
                              request.getLocale(), 
                              new String[] 
          {
-            table.getName()
+            getTable().getName()
          });
          throw new SQLException(s);
       }
@@ -117,11 +117,12 @@ public class InsertEvent extends ValidationEvent
       // "interceptor" element embedded in table element in dbforms-config xml file)
       int operation = DbEventInterceptor.GRANT_OPERATION;
 
+
       // process the interceptors associated to this table
-      operation = table.processInterceptors(DbEventInterceptor.PRE_INSERT, 
-                                               request, 
-                                                fieldValues, 
-                                               config, con);
+      operation = getTable()
+                     .processInterceptors(DbEventInterceptor.PRE_INSERT, 
+                                          request, fieldValues, getConfig(), 
+                                          con);
 
       if ((operation != DbEventInterceptor.IGNORE_OPERATION)
                 && (fieldValues.size() > 0))
@@ -135,11 +136,11 @@ public class InsertEvent extends ValidationEvent
          // INSERT operation;
          boolean           mustClose = false;
          DataSourceList    ds  = DataSourceList.getInstance(request);
-         DataSourceFactory qry = ds.get(table, request);
+         DataSourceFactory qry = ds.get(getTable(), request);
 
          if (qry == null)
          {
-            qry       = new DataSourceFactory(table);
+            qry       = new DataSourceFactory(getTable());
             mustClose = true;
          }
 
@@ -151,15 +152,17 @@ public class InsertEvent extends ValidationEvent
          }
 
          // Show the last record inserted
-         String firstPosition = table.getPositionString(fieldValues);
-         request.setAttribute("firstpos_" + tableId, firstPosition);
+         String firstPosition = getTable().getPositionString(fieldValues);
+         request.setAttribute("firstpos_" + getTable().getId(), firstPosition);
       }
+
 
       //end patch
       // finally, we process interceptor again (post-insert)
       // process the interceptors associated to this table
-      table.processInterceptors(DbEventInterceptor.POST_INSERT, request, 
-                                   null, config, con);
+      getTable()
+         .processInterceptors(DbEventInterceptor.POST_INSERT, request, null, 
+                              getConfig(), con);
    }
 
 
@@ -172,7 +175,7 @@ public class InsertEvent extends ValidationEvent
     *      parameter) because that field value must be calculated by the underlying RDBMS
     *    </li>
     *  </ul>
-    * 
+    *
     * @param fieldValues the FieldValues object containing the Field elements to check
     * @return true  if the  all the above conditions are true, false otherwise
     * @throws SQLException  if any check condition fails
@@ -180,7 +183,7 @@ public class InsertEvent extends ValidationEvent
    private boolean checkSufficentValues(FieldValues fieldValues)
                                  throws SQLException
    {
-      Vector fields = table.getFields();
+      Vector fields = getTable().getFields();
 
       for (int i = 0; i < fields.size(); i++)
       {
