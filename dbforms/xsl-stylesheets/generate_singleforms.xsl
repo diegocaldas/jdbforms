@@ -2,8 +2,16 @@
 
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0" xmlns:db="http://www.wap-force.com/dbforms">
 
-
 <xsl:output indent="yes"/>
+
+<!--
+definition of variables
+choose appropriate values that fit your needs
+-->
+
+<xsl:variable name="maxRows">*</xsl:variable>
+<xsl:variable name="pageBgColor">99CCFF</xsl:variable>
+
 
 <xsl:template match="table">
 
@@ -18,25 +26,25 @@
       <db:base/>
       <link rel="stylesheet" href="dbforms.css"/>
     </head>
-    <body>
+    <body bgcolor="#{$pageBgColor}">
 
-	<table bgcolor="#0000FF" cellpadding="1" cellspacing="0" width="100%" border="0" align="center">
+	<table bgcolor="#999900" cellpadding="1" cellspacing="0" width="100%" border="0" align="center">
 	  <tr><td>
-	  <table bgcolor="#DDCCDD" cellpadding="3" cellspacing="0" width="100%" border="0">
-	    <tr>
-		<td bgcolor="#00CCAA" align="right">
+	  <table bgcolor="#999900" cellpadding="3" cellspacing="0" width="100%" border="0">
+	    <tr bgcolor="#CCCC00">
+	        <td><h1><xsl:value-of select="@name"/></h1></td>	    
+		<td align="right">
 		<a href="{@name}_list.jsp">[List]</a>
 		<a href="menu.jsp">[Menu]</a>
 		<a href="logout.jsp">[Log out]</a>		
 		</td>
 	      </tr>
 	   </table>
-	   </td></tr>
+	   </td></tr>	 		   
 	</table>
 
      <db:dbform tableName="{@name}" maxRows="1" followUp="/{@name}_single.jsp" autoUpdate="false">
-       <db:header>
-	<h1><xsl:value-of select="@name"/></h1>
+       <db:header>	
        </db:header>				
        <db:errors/>		
        <db:body>
@@ -50,8 +58,8 @@
 
            <xsl:variable name="bgcolor">
              <xsl:choose>
-               <xsl:when test="position() mod 2 = 0">fee9aa</xsl:when>
-               <xsl:otherwise>fee9ce</xsl:otherwise>
+               <xsl:when test="position() mod 2 = 0">FFFFCC</xsl:when>
+               <xsl:otherwise>FFFF99</xsl:otherwise>
              </xsl:choose>
            </xsl:variable>
 
@@ -76,7 +84,7 @@
                    </xsl:choose>
                  </xsl:when>
                  <xsl:when test="@fieldType='date'">
-                   <db:textField fieldName="{@name}" size="{@size}" />
+                   <db:dateField fieldName="{@name}" size="{@size}" />
                  </xsl:when>
                  <xsl:when test="@fieldType='timestamp'">
                    <db:textField fieldName="{@name}" size="{@size}" />

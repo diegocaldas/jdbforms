@@ -2,6 +2,14 @@
 
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0" xmlns:db="http://www.wap-force.com/dbforms">
 
+<!--
+definition of variables
+choose appropriate values that fit your needs
+-->
+
+<xsl:variable name="maxRows">*</xsl:variable>
+<xsl:variable name="pageBgColor">99CCFF</xsl:variable>
+
   <xsl:template match="table">
 //--file "<xsl:value-of select="@name"/>_list.jsp" -------------------------------------------
   <xsl:text disable-output-escaping="yes">
@@ -14,22 +22,23 @@
 	&lt;link rel="stylesheet" href="dbforms.css"&gt;
       &lt;/head&gt;
 
-      &lt;body&gt;
+      &lt;body bgcolor="#99CCFF" &gt;
 </xsl:text>
-
-
-	<table bgcolor="#0000FF" cellpadding="1" cellspacing="0" width="100%" border="0" align="center">
+   
+	<table bgcolor="#999900" cellpadding="1" cellspacing="0" width="100%" border="0" align="center">
 	  <tr><td>
-	  <table bgcolor="#DDCCDD" cellpadding="3" cellspacing="0" width="100%" border="0">
-	    <tr>
-	<td bgcolor="#00FF00" align="right">
+	  <table bgcolor="#999900" cellpadding="3" cellspacing="0" width="100%" border="0">
+	    <tr bgcolor="#CCCC00">
+	        <td><h1><xsl:value-of select="@name"/></h1></td>	    
+		<td align="right">
+		<a href="{@name}_list.jsp">[List]</a>
 		<a href="menu.jsp">[Menu]</a>
 		<a href="logout.jsp">[Log out]</a>		
-	</td>
-      </tr>
-   </table>
-   </td></tr>
-</table>
+		</td>
+	      </tr>
+	   </table>
+	   </td></tr>	 		   
+	</table>
 
 <xsl:text disable-output-escaping="yes">
       &lt;% int i=0; %&gt;			
@@ -40,7 +49,7 @@
           &lt;db:errors/&gt;			
 
           &lt;table align="center" cellspacing=0 cellpadding=2 bgcolor="#ffffff" width="100%"&gt;
-          &lt;tr bgcolor="#F7A629"&gt;
+          &lt;tr bgcolor="#CCCC00"&gt;
 
 
 
@@ -58,7 +67,7 @@
         &lt;/db:header&gt;		
 
         &lt;db:body allowNew="false"&gt;
-          &lt;% String bgcolor = (i % 2 == 0) ? "#FEE9CE" : "#FEE9AA"; i++; %&gt;		
+          &lt;% String bgcolor = (i % 2 == 0) ? "#FFFFCC" : "#FFFF99"; i++; %&gt;		
           &lt;tr bgcolor="&lt;%= bgcolor %&gt;"&gt;
     </xsl:text>
 
