@@ -25,9 +25,13 @@ package org.dbforms.event;
 
 import java.util.*;
 import javax.servlet.http.*;
+
+import org.apache.log4j.Category;
+
 import org.dbforms.*;
 import org.dbforms.util.*;
-import org.apache.log4j.Category;
+import org.dbforms.event.eventtype.EventType;
+import org.dbforms.event.eventtype.EventTypeUtil;
 
 
 
@@ -45,17 +49,6 @@ public class EventEngine
     /** logging category for this class */
     static Category logCat = Category.getInstance(EventEngine.class.getName());
 
-    /**  value for database event type */
-    private static final int EVENT_TYPE_DATABASE = 0;
-
-    /**  value for navigation event type */
-    private static final int EVENT_TYPE_NAVIGATION = 1;
-
-    /**  value for web event type */
-    private static final int EVENT_TYPE_WEB = 2;
-
-    /**  value for unknown event type */
-    private static final int EVENT_TYPE_UNKNOWN = 3;
 
     /** instance of DatabaseEventFactory */
     private DatabaseEventFactory dbEventFactory = DatabaseEventFactoryImpl.instance();
@@ -174,18 +167,20 @@ public class EventEngine
         // make the image button data (if any) look like a submit button;
         action = getImageButtonAction(action);
 
-        // identify the event type and use the related factory class to
-        // create the event;
-        switch (getEventType(action))
+        // get the EventType class and identify the event type
+        // and use the related factory class to create the event;
+        EventType eventType = EventTypeUtil.getEventType(action);
+
+        switch (eventType.getEventGroup())
         {
-            case EVENT_TYPE_DATABASE:
+            case EventType.EVENT_GROUP_DATABASE:
             {
                 logCat.info("::generatePrimaryEvent - generating a database event");
                 e = dbEventFactory.createEvent(action, request, config);
                 break;
             }
 
-            case EVENT_TYPE_NAVIGATION:
+            case EventType.EVENT_GROUP_NAVIGATION:
             {
                 logCat.info("::generatePrimaryEvent - generating a navigation event");
                 e = navEventFactory.createEvent(action, request, config);
@@ -278,38 +273,6 @@ public class EventEngine
         }
 
         return result.elements();
-    }
-
-
-    /**
-     *  Get the event type
-     *
-     * @param  action theaction string
-     * @return  the event type
-     */
-    private int getEventType(String action)
-    {
-        int eventType = EVENT_TYPE_UNKNOWN;
-
-        if ((action.startsWith("ac_insert_"))   ||
-            (action.startsWith("ac_update_"))   ||
-            (action.startsWith("ac_updatear_")) ||
-            (action.startsWith("ac_delete_"))   ||
-            (action.startsWith("ac_deletear_")))
-        {
-            eventType = EVENT_TYPE_DATABASE;
-        }
-        else if ((action.startsWith("ac_first_")) ||
-                 (action.startsWith("ac_prev_"))  ||
-                 (action.startsWith("ac_next_"))  ||
-                 (action.startsWith("ac_last_"))  ||
-                 (action.startsWith("ac_new_"))   ||
-                 (action.startsWith("ac_goto_")))
-        {
-            eventType = EVENT_TYPE_NAVIGATION;
-        }
-
-        return eventType;
     }
 
 

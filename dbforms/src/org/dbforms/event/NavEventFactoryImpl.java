@@ -23,11 +23,16 @@
 
 package org.dbforms.event;
 
-import org.dbforms.*;
-import org.dbforms.util.*;
+
 import javax.servlet.http.*;
 import java.sql.*;
+
 import org.apache.log4j.Category;
+
+import org.dbforms.*;
+import org.dbforms.util.*;
+import org.dbforms.event.eventtype.EventType;
+import org.dbforms.event.eventtype.EventTypeUtil;
 
 
 
@@ -116,65 +121,13 @@ public class NavEventFactoryImpl extends NavEventFactory
      */
     private NavigationEvent createEvent(String action, Class[] constructorArgsTypes, Object[] constructorArgs)
     {
-        String param = getEventParameter(action);
-        EventInfo einfo = getEventInfo(param); // param should be the ID !!
+        // identify the event type from the action string;
+        EventType eventType = EventTypeUtil.getEventType(action);
+        EventInfo einfo = getEventInfo(eventType.getEventType());  // should be the ID !!
 
-        logCat.info("::createEvent - got event [" + einfo + "] from param [" + param + "]");
+        // debug
+        logCat.info("::createEvent - got event [" + einfo + "] from action [" + action + "]");
 
         return (NavigationEvent) getEvent(einfo, constructorArgsTypes, constructorArgs);
     }
-
-    // -------------------------------------------------------------------------------------------------
-    //  /**
-    //   *  Create the NavNextEvent object.
-    //   *
-    //   * @param  action Description of the Parameter
-    //   * @param  request Description of the Parameter
-    //   * @param  config Description of the Parameter
-    //   * @return  the NavNextEvent object.
-    //   */
-    //  public NavNextEvent createNavNextEvent(String action, HttpServletRequest request, DbFormsConfig config)
-    //  {
-    //    return new BoundedNavNextEventImpl(action, request, config);
-    //  }
-    //
-    //
-    //  /**
-    //   * DOCUMENT ME!
-    //   *
-    //   * @param  table DOCUMENT ME!
-    //   * @param  config DOCUMENT ME!
-    //   * @return  DOCUMENT ME!
-    //   */
-    //  public NavNextEvent createNavNextEvent(Table table, DbFormsConfig config)
-    //  {
-    //    return new BoundedNavNextEventImpl(table, config);
-    //  }
-    //
-    //
-    //  /**
-    //   *  Create the NavNextEvent object.
-    //   *
-    //   * @param  action Description of the Parameter
-    //   * @param  request Description of the Parameter
-    //   * @param  config Description of the Parameter
-    //   * @return  the NavNextEvent object.
-    //   */
-    //  public NavPrevEvent createNavPrevEvent(String action, HttpServletRequest request, DbFormsConfig config)
-    //  {
-    //    return new BoundedNavPrevEventImpl(action, request, config);
-    //  }
-    //
-    //
-    //  /**
-    //   * DOCUMENT ME!
-    //   *
-    //   * @param  table DOCUMENT ME!
-    //   * @param  config DOCUMENT ME!
-    //   * @return  DOCUMENT ME!
-    //   */
-    //  public NavPrevEvent createNavPrevEvent(Table table, DbFormsConfig config)
-    //  {
-    //    return new BoundedNavPrevEventImpl(table, config);
-    //  }
 }

@@ -52,10 +52,19 @@ public abstract class DatabaseEventFactory extends EventFactory
      *
      * @param  action the action string that identifies the web event
      * @param  request the HttpServletRequest object
-     * @config the DbForms config object
+     * @param  config the DbForms config object
      * @return  a new database event
      */
     public abstract DatabaseEvent createEvent(String             action,
                                               HttpServletRequest request,
                                               DbFormsConfig      config);
+
+
+    /**
+     *
+     * @param positionString the
+     * @param table          the table object
+     * @return               the goto event
+     */
+    //public abstract GotoEvent createGotoEvent(String positionString, Table table);
 }

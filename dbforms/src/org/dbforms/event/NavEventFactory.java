@@ -43,7 +43,7 @@ public abstract class NavEventFactory extends EventFactory
      *
      * @param  action the action string that identifies the web event
      * @param  request the HttpServletRequest object
-     * @config the DbForms config object
+     * @param  config the DbForms config object
      * @return  a new navigation event
      */
     public abstract NavigationEvent createEvent(String             action,

@@ -65,25 +65,29 @@ public abstract class EventFactory
 
 
     /**
+     * DEPRECATED !!
+     *
      *  Gets the eventInfoMap attribute of the DatabaseEventFactory object
      *
      * @return  The eventInfoMap value
      */
-    public HashMap getEventInfoMap()
-    {
-        return eventInfoMap;
-    }
+    //public HashMap getEventInfoMap()
+    //{
+    //    return eventInfoMap;
+    //}
 
 
     /**
+     * DEPRECATED !!
+     *
      *  Sets the eventInfoMap attribute of the DatabaseEventFactory object
      *
      * @param  eventInfoMap The new eventInfoMap value
      */
-    public void setEventInfoMap(HashMap eventInfoMap)
-    {
-        this.eventInfoMap = eventInfoMap;
-    }
+    //public void setEventInfoMap(HashMap eventInfoMap)
+    //{
+    //    this.eventInfoMap = eventInfoMap;
+    //}
 
 
     /**
@@ -130,7 +134,7 @@ public abstract class EventFactory
             }
 
             eventInfoMap.put(id, einfo);
-            logCat.info("::addEventInfo - event info having id [" + id + "] registered");
+            logCat.info("::addEventInfo - event info having id, type [" + id + ", " + einfo.getType() + "] registered");
         }
     }
 
@@ -160,31 +164,5 @@ public abstract class EventFactory
         }
 
         return event;
-    }
-
-
-    /**
-     *  Get the event parameter from the input action.
-     *  <br>
-     *  An action string can have the following form: "ac_insert_4_root_2";
-     *  the related parameter is "ac_insert".
-     *
-     * @param action the action string
-     * @return the event parameter from the input action
-     */
-    protected String getEventParameter(String action)
-    {
-       String param = null;
-
-       // if the input action has got the "ac_insert_4_root_2" form,
-       // try to extract the "ac_insert" parameter; else use the input action;
-       if (!Util.isNull(action) && (action.indexOf('_', 3) != -1))
-         param = action.substring(0, action.indexOf('_', 3));
-       else
-         param = action;
-
-       logCat.info("::getEventParameter - got the parameter [" + param + "]");
-
-       return param;
     }
 }

@@ -33,9 +33,9 @@ package org.dbforms.event;
 public class EventInfo
 {
     private String id = null;
-    private String param = null;
     private String className = null;
-    private int type;
+    private String type = null;
+
 
     /**
      *  Constructor for the EventInfo object
@@ -53,18 +53,7 @@ public class EventInfo
     public String getId()
     {
         //return id;
-        return (id != null) ? id : param;
-    }
-
-
-    /**
-     *  Gets the param attribute of the EventInfo object
-     *
-     * @return  The param value
-     */
-    public String getParam()
-    {
-        return param;
+        return (id != null) ? id : type;
     }
 
 
@@ -73,7 +62,7 @@ public class EventInfo
      *
      * @return  The type value
      */
-    public int getType()
+    public String getType()
     {
         return type;
     }
@@ -102,22 +91,11 @@ public class EventInfo
 
 
     /**
-     *  Sets the param attribute of the EventInfo object
-     *
-     * @param  param The new param value
-     */
-    public void setParam(String param)
-    {
-        this.param = param;
-    }
-
-
-    /**
      *  Sets the type attribute of the EventInfo object
      *
      * @param  type The new type value
      */
-    public void setType(int type)
+    public void setType(String type)
     {
         this.type = type;
     }
@@ -143,7 +121,7 @@ public class EventInfo
     {
         StringBuffer sb = new StringBuffer();
 
-        sb.append("event: id = ").append(getId()).append("; param = ").append(param).append("; className = ").append(className);
+        sb.append("event: id = ").append(getId()).append("; type = ").append(type).append("; className = ").append(className);
 
         return sb.toString();
     }
