@@ -7,9 +7,9 @@
       <db:dbform
       multipart="true"
       autoUpdate="false"
-      followUp="/tests/testDISKBLOBS.jsp"
+      followUp="/tests/testBLOBINTERCEPTOR.jsp"
       maxRows="*"
-      tableName="BLOBTEST">
+      tableName="BLOBINTERCEPTORTEST">
          <db:header>
             <table>
             </db:header>
@@ -17,9 +17,8 @@
                <tr>
                   <td>
                      <db:textField  fieldName="NAME" />
-                     <db:file  fieldName="FILE" />
-                     <db:label  fieldName="FILE" />
-                     <db:checkbox id="delete_image1" fieldName="delete_image1" value="true" />
+                     <db:label  fieldName="FILENAME" />
+                     <db:file  fieldName="FILEDATA" />
                   </td>
                   <td>
                      <db:updateButton
@@ -32,7 +31,7 @@
                <tr>
                   <td>
                      <db:textField  fieldName="NAME" />
-                     <db:file  fieldName="FILE"/>
+                     <db:file  fieldName="FILEDATA"/>
                   </td>
                   <td>
                      <db:insertButton

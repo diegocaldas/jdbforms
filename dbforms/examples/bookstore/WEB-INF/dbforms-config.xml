@@ -180,6 +180,18 @@
     	   <field name="C" fieldType="integer" expression="count(ISBN)"/>
 		</query>
 	    
+		<query 
+			name="BLOBINTERCEPTORTEST" 
+		    from="BLOBTEST" 
+		>
+			<field name="NAME" fieldType="varchar" isKey="true" />
+			<field name="FILENAME" fieldType="varchar"  />
+			<field name="FILEDATA" fieldType="BLOB"  />
+            <interceptor className = "org.dbforms.event.BlobInterceptor">                
+			   <param name="blob-column" value="FILEDATA"/>
+			   <param name="name-column" value="FILENAME"/>
+            </interceptor>
+		</query>
 
 	<!-- ========== event definition for classic data access =================================== -->
         <events>
