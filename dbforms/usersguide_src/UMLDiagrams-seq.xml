@@ -30,7 +30,7 @@
             <para>
               The controller servlet calls the <computeroutput>eventEngine.generatePrimaryEvent()</computeroutput> method.
               <computeroutput>generatePrimaryEvent()</computeroutput> gets the <computeroutput>action</computeroutput> 
-			  parameter from the <computeroutput>request</computeroutput>, try to 
+              parameter from the <computeroutput>request</computeroutput>, try to 
               identify the related event type (database or navigation) and then uses the appropriate factory
               to create the related event object. <computeroutput>generatePrimaryEvent()</computeroutput> returns the event 
               object to the controller.
@@ -43,20 +43,20 @@
               <computeroutput>Database event</computeroutput> (i.e.: insert, delete, update events).
               If yes, validate the incoming data 
               (the validation step occurs only if the <computeroutput>formValidatorName</computeroutput> request parameter 
-			  exist and the current event is an <computeroutput>Update</computeroutput> 
+              exist and the current event is an <computeroutput>Update</computeroutput> 
               or <computeroutput>Insert</computeroutput> event.
-			  The controller executes the <computeroutput>doValidation()</computeroutput> method 
-			  that uses the <computeroutput>Commons-Validator</computeroutput> Jakarta component) 
+              The controller executes the <computeroutput>doValidation()</computeroutput> method 
+              that uses the <computeroutput>Commons-Validator</computeroutput> Jakarta component) 
                and process the event object.
             </para>
             <para>
               Note: the Navigation events are managed by the <computeroutput>DbFormsTag</computeroutput> class.
-              The controller manages only the database event type.
+              The controller manages only the database events.
             </para>
           </listitem>
 
           <listitem>
-            <para>
+            <para id="controller-WebEvent">
               The controller servlet stores the event reference into the session context.
               MUST UPDATE the diagram picture...
             </para>         
@@ -81,6 +81,110 @@
               <computeroutput>followUp</computeroutput>
               attribute of the jsp form if there are no errors.
               Else redirects to the resource specified by the <computeroutput>followUpOnError</computeroutput> form attribute.
+            </para>         
+          </listitem>
+
+        </itemizedlist>
+      </para>
+    </sect2>
+  </sect1>
+
+
+  <sect1>
+    <title>DbFormTag class</title>
+    <para>
+      This <ulink url="./images/figures/uml/sequence/taglib-DbFormTag.doStartTag.usd.png">diagram</ulink>
+      shows the interaction between the <computeroutput>DbFormTag</computeroutput> class 
+      and all the other classes that are used to render the data into the target jsp page.
+    </para>
+    <sect2>
+      <title>Steps</title>
+      <para>
+        <itemizedlist mark="opencircle">
+
+          <listitem>
+            <para>
+              The controller servlet forwards the client to the target jsp resource.
+              The jsp page containing the <computeroutput>dbform</computeroutput> tag
+              instantiates and initializes the <computeroutput>DbFormTag</computeroutput> class.
+            </para>         
+            <para>
+              The <computeroutput>DbFormTag</computeroutput> object gets the main table object, 
+              and checks if it has granted-privileges that make queries possible. 
+            </para>
+          </listitem>
+
+          <listitem>
+            <para>
+              The <computeroutput>DbFormTag</computeroutput> object checks if the main table 
+              contains interceptor objects. 
+              If yes, process those objects calling their <computeroutput>PRE_SELECT</computeroutput> 
+              hook up method.             
+            </para>         
+          </listitem>
+
+          <listitem>
+            <para>
+              The <computeroutput>DbFormTag</computeroutput> object writes the data regarding the
+              HTML form to its standard output - the jsp page itself.
+            </para>         
+          </listitem>
+
+          <listitem>
+            <para>
+              The <computeroutput>DbFormTag</computeroutput> executes the 
+              <computeroutput>initOverrulingOrder()</computeroutput> method to 
+              overrule other default declarations eventually done into the XML configuration file.
+              <computeroutput>initOverrulingOrder()</computeroutput> 
+              initialises the datastructures containing informations about how table should be ordered.
+              The information is specified in the JSP this tags lives in.
+              This declaration OVERRULES other default declarations eventually done into the 
+              XML configuration file.
+            </para>
+          </listitem>
+
+          <listitem>
+            <para>
+              The <computeroutput>DbFormTag</computeroutput> object sets the initial navigation position.
+            </para>         
+          </listitem>
+
+          <listitem>
+            <para>
+              The <computeroutput>DbFormTag</computeroutput> object executes the 
+              <computeroutput>checkLinkage()</computeroutput> method to check 
+              if the fieldvalue-list related to the position strings for a certain subform
+              is valid in the current state.
+            </para>         
+          </listitem>
+
+          <listitem>
+            <para>
+              The <computeroutput>DbFormTag</computeroutput> object tries to retrieve from the 
+              <computeroutput>request</computeroutput> context the any previously instantiated
+              <computeroutput>WebEvent</computeroutput> object.
+              If the event doesn't exist, the <computeroutput>DbFormTag</computeroutput> object
+              generates a new <emphasis role="bold">navigation</emphasis> event
+              and then processes it.
+            </para>
+            <para>
+              Note: the member <computeroutput>localWebEvent</computeroutput> action string is used to 
+              identify the navigation event type to instantiate.
+            </para>
+          </listitem>
+
+          <listitem>
+            <para>
+              The <computeroutput>DbFormTag</computeroutput> object checks if the main table 
+              contains interceptor objects. 
+              If yes, process those objects calling their <computeroutput>POST_SELECT</computeroutput> 
+              hook up method.             
+            </para>         
+          </listitem>
+
+          <listitem>
+            <para>
+              The <computeroutput>DbFormTag</computeroutput> object recalculates its cursor position.
             </para>         
           </listitem>
 
