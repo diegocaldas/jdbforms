@@ -257,7 +257,7 @@ public abstract class DbBaseInputTag extends DbBaseHandlerTag
          //If the redisplayFieldsOnError attribute is set and we are in error mode, forget override!
          if (("true".equals(getParentForm().getRedisplayFieldsOnError())
                       && (errors != null) && (errors.size() > 0))
-                   || (we.getType() == EventType.EVENT_NAVIGATION_RELOAD))
+                   || ((we != null) && we.getType() == EventType.EVENT_NAVIGATION_RELOAD))
          {
             res = super.getFormFieldValue();
          }
@@ -268,10 +268,9 @@ public abstract class DbBaseInputTag extends DbBaseHandlerTag
       }
       else
       {
-         if (we.getType() == EventType.EVENT_NAVIGATION_RELOAD)
+         if ((we != null) && (we.getType() == EventType.EVENT_NAVIGATION_RELOAD))
          {
-            String oldValue = ParseUtil.getParameter(request, 
-                                                     getFormFieldName());
+            String oldValue = ParseUtil.getParameter(request, getFormFieldName());
 
             if (oldValue != null)
             {

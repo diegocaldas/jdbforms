@@ -240,7 +240,7 @@ public class DbSelectTag extends DbBaseHandlerTag implements DataContainer
             // If so, only set to selected if currentRow is equal to custom row.
             if (("true".equals(getParentForm().getRedisplayFieldsOnError())
                      && (errors != null) && (errors.size() > 0))
-                     || (we.getType() == EventType.EVENT_NAVIGATION_RELOAD))
+                     || ((we != null) && (we.getType() == EventType.EVENT_NAVIGATION_RELOAD)))
             {
                isSelected = (currentValue.equals(aKey));
             }

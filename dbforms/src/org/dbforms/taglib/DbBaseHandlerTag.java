@@ -322,7 +322,7 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler
          // and is this jsp displaying an error?
          if (("true".equals(getParentForm().getRedisplayFieldsOnError())
                   && (errors != null) && (errors.size() > 0))
-                  || (we.getType() == EventType.EVENT_NAVIGATION_RELOAD))
+                  || ((we != null) && (we.getType() == EventType.EVENT_NAVIGATION_RELOAD)))
          {
             // Yes - redisplay posted data
             String oldValue = ParseUtil.getParameter(request, getFormFieldName());
@@ -343,7 +343,7 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler
 		   } 
 
          // the form field is in 'insert-mode'
-         if (we.getType() == EventType.EVENT_NAVIGATION_RELOAD)
+         if ((we != null) && (we.getType() == EventType.EVENT_NAVIGATION_RELOAD))
          {
             String oldValue = ParseUtil.getParameter(request, getFormFieldName());
 
