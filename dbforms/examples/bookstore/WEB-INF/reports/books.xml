@@ -17,8 +17,8 @@
 		 whenNoDataType="NoPages"
 		 isTitleNewPage="false"
 		 isSummaryNewPage="false">
-	<queryString><![CDATA[select * from book order by isbn]]></queryString>
 	<parameter name="PARAM" isForPrompting="true" class="org.dbforms.servlets.reports.ReportParameter"/>
+	<queryString><![CDATA[select * from book order by isbn]]></queryString>
 	<field name="BOOK_ID" class="java.lang.Integer"/>
 	<field name="AUTHOR_ID" class="java.lang.Integer"/>
 	<field name="ISBN" class="java.lang.String"/>
