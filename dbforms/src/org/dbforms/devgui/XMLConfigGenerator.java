@@ -24,8 +24,9 @@ package org.dbforms.devgui;
 import java.sql.*;
 import java.io.*;
 import java.util.*;
-import org.dbforms.ForeignKey;
-import org.dbforms.Reference;
+
+import org.dbforms.config.ForeignKey;
+import org.dbforms.config.Reference;
 
 
 
