@@ -2962,8 +2962,7 @@ hanlder executed when the user selects some text</info>
 			<!-- **************************** select tag ***********************************-->
 			<tag>
 				<name>select</name>
-				<summary>This tag renders a html SELECT element including 
-embedded OPTION elements.</summary>
+				<summary>This tag renders a html SELECT element including embedded OPTION elements.</summary>
 				<tagclass>org.dbforms.taglib.DbSelectTag</tagclass>
 				<bodycontent>JSP</bodycontent>
 				<info>
@@ -3052,6 +3051,19 @@ character used to move focus immediately to thiselement.</info>
 					<info>
 						<p>Rendering of read-only html widgets</p>
 					</info>
+				</attribute>
+				<attribute>
+					<name>pattern</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						When dealing with numeric or date/time values, you could use the Java API to format the
+						output of the text field expressions yourself using the format attribute. 
+						But there is a more convenient way to do it: by using the
+						pattern attribute.
+						Useful in select if you have a 4 digit lookup value and want to avoid it being reformatted
+						with the default locale as #,###. Use pattern="#" to avoid this. 
+					</info> 
 				</attribute>
 				<attribute>
 					<name>onBlur</name>
