@@ -121,11 +121,13 @@ public abstract class DataSource
    /**
     * performs an insert into the DataSource
     * 
+    * @param con DOCUMENT ME!
     * @param fieldValues FieldValues to insert
     * 
     * @throws SQLException
     */
-   public void doInsert(Connection con, FieldValues fieldValues) throws SQLException
+   public void doInsert(Connection con, FieldValues fieldValues)
+                 throws SQLException
    {
    }
 
@@ -133,6 +135,7 @@ public abstract class DataSource
    /**
     * performs an update into the DataSource
     * 
+    * @param con DOCUMENT ME!
     * @param fieldValues  FieldValues to update
     * @param keyValuesStr keyValueStr to the row to update<br>
     *        key format: FieldID ":" Length ":" Value<br>
@@ -144,8 +147,8 @@ public abstract class DataSource
     * 
     * @throws SQLException if any error occurs
     */
-   public void doUpdate(Connection con, FieldValues fieldValues, String keyValuesStr)
-                 throws SQLException
+   public void doUpdate(Connection con, FieldValues fieldValues, 
+                        String keyValuesStr) throws SQLException
    {
    }
 
@@ -153,6 +156,7 @@ public abstract class DataSource
    /**
     * performs an delete in the DataSource
     * 
+    * @param con DOCUMENT ME!
     * @param keyValuesStr   keyValueStr to the row to update<br>
     *        key format: FieldID ":" Length ":" Value<br>
     *        example: if key id = 121 and field id=2 then keyValueStr contains "2:3:121"<br>
@@ -163,7 +167,8 @@ public abstract class DataSource
     * 
     * @throws SQLException if any error occurs
     */
-   public void doDelete(Connection con, String keyValuesStr) throws SQLException
+   public void doDelete(Connection con, String keyValuesStr)
+                 throws SQLException
    {
    }
 
@@ -256,16 +261,26 @@ public abstract class DataSource
    public ResultSetVector getNext(String position, int count)
                            throws SQLException
    {
-      open();
-
-      int start = findStartRow(position) + 1;
-
-      if (count == 0)
+      try
       {
-         count = size() - start;
-      }
+         open();
 
-      return getResultSetVector(start, count);
+         int start = findStartRow(position) + 1;
+
+         if (count == 0)
+         {
+            count = size() - start;
+         }
+
+         return getResultSetVector(start, count);
+      }
+      catch (Exception e)
+      {
+         logCat.error(e);
+         close();
+
+         return new ResultSetVector();
+      }
    }
 
 
@@ -288,16 +303,26 @@ public abstract class DataSource
    public ResultSetVector getPrev(String position, int count)
                            throws SQLException
    {
-      open();
-
-      int start = findStartRow(position) - 1;
-
-      if (count == 0)
+      try
       {
-         count = start;
-      }
+         open();
 
-      return getResultSetVector(start, -count);
+         int start = findStartRow(position) - 1;
+
+         if (count == 0)
+         {
+            count = start;
+         }
+
+         return getResultSetVector(start, -count);
+      }
+      catch (Exception e)
+      {
+         logCat.error(e);
+         close();
+
+         return new ResultSetVector();
+      }
    }
 
 
@@ -312,14 +337,24 @@ public abstract class DataSource
     */
    public ResultSetVector getFirst(int count) throws SQLException
    {
-      open();
-
-      if (count == 0)
+      try
       {
-         count = size();
-      }
+         open();
 
-      return getResultSetVector(0, count);
+         if (count == 0)
+         {
+            count = size();
+         }
+
+         return getResultSetVector(0, count);
+      }
+      catch (Exception e)
+      {
+         logCat.error(e);
+         close();
+
+         return new ResultSetVector();
+      }
    }
 
 
@@ -334,9 +369,19 @@ public abstract class DataSource
     */
    public ResultSetVector getLast(int count) throws SQLException
    {
-      open();
+      try
+      {
+         open();
 
-      return getResultSetVector(size() - 1, -count);
+         return getResultSetVector(size() - 1, -count);
+      }
+      catch (Exception e)
+      {
+         logCat.error(e);
+         close();
+
+         return new ResultSetVector();
+      }
    }
 
 
@@ -359,16 +404,26 @@ public abstract class DataSource
    public ResultSetVector getCurrent(String position, int count)
                               throws SQLException
    {
-      open();
-
-      int start = findStartRow(position);
-
-      if (count == 0)
+      try
       {
-         count = size() - start;
-      }
+         open();
 
-      return getResultSetVector(start, count);
+         int start = findStartRow(position);
+
+         if (count == 0)
+         {
+            count = size() - start;
+         }
+
+         return getResultSetVector(start, count);
+      }
+      catch (Exception e)
+      {
+         logCat.error(e);
+         close();
+
+         return new ResultSetVector();
+      }
    }
 
 
@@ -458,23 +513,25 @@ public abstract class DataSource
 
          if (curField != null)
          {
-            int    fieldType = curField.getType();
+            int fieldType = curField.getType();
 
             if (fieldType == FieldTypes.DISKBLOB)
             {
                String directory = curField.getDirectory();
+
                // check if directory-attribute was provided
                if (directory == null)
                {
                   throw new IllegalArgumentException(
                            "directory-attribute needed for fields of type DISKBLOB");
                }
+
                try
                {
                   directory = Util.replaceRealPath(directory, 
-                                                DbFormsConfigRegistry.instance()
-                                                                     .lookup()
-                                                                     .getRealPath());
+                                                   DbFormsConfigRegistry.instance()
+                                                                        .lookup()
+                                                                        .getRealPath());
                }
                catch (Exception e)
                {
