@@ -25,15 +25,19 @@ package org.dbforms.taglib;
 
 import javax.servlet.jsp.JspException;
 import java.text.Format;
+import java.util.HashMap;
 import java.util.Vector;
 import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.dbforms.config.Constants;
 import org.dbforms.config.Field;
 import org.dbforms.config.FieldTypes;
 import org.dbforms.config.ResultSetVector;
 import org.dbforms.event.WebEvent;
 import org.dbforms.event.eventtype.EventType;
+import org.dbforms.util.Formatter;
 import org.dbforms.util.ParseUtil;
 import org.dbforms.util.MessageResources;
 import org.dbforms.util.MessageResourcesInternal;
@@ -53,6 +57,12 @@ import org.apache.commons.lang.StringEscapeUtils;
  *
  * <p>the html/css releated properties and methods where originally done by Don Clasen for
  * Apache Groups's Jakarta-Struts project.</p>
+ *
+ * <p>Added support for Custom Formatter class, see SetCustomFormatter.java
+ * Author Neal Katz .</p>
+ * <p>Added support for overrideFormFieldName attribute. 
+ * useful when working with customcontrollers.
+ * Author Neal Katz .</p>
  *
  * orginally done by Don Clasen
  * @author Joe Peer (modified and extended this class for use in DbForms-Project)
@@ -75,6 +85,12 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
    private String readOnly = "false";
    private String escaperClass = null;
    private Escaper escaper = null;
+
+	// n.k. allow the FormFieldName to be overridden
+	private String overrideFormFieldName;
+
+	// n.k. Support for CustomFormatter attribute - neal katz
+	private String customFormatter = null;
 
    /**
     * DOCUMENT ME!
@@ -336,7 +352,8 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
             res = fieldValueObj.toString();
          }
       }
-
+      // add support for custom formatting - neal katz
+      res = customFormat(res);
       return res;
    }
 
@@ -415,6 +432,9 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
       generates the decoded name for the html-widget.
     */
    protected String getFormFieldName() {
+       if (hasOverrideFormFieldNameSet()) {
+      	return getOverrideFormFieldName();
+      }
       StringBuffer buf = new StringBuffer();
       if ((getParentForm().getTable() != null) && (getField() != null)) {
          String keyIndex =
@@ -598,28 +618,87 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
    /**
     * DOCUMENT ME!
    */
-   public void doFinally() {
-      formatter = null;
-      field = null;
-      defaultValue = null;
-      pattern = null;
-      nullFieldValue = null;
-      maxlength = null;
-      readOnlyStyleClass = null;
-      readOnly = "false";
-      escaperClass = null;
-      escaper = null;
-      super.doFinally();
-   } /**
-             * @return
-             */
+	public void doFinally() {
+		formatter = null;
+		field = null;
+		defaultValue = null;
+		pattern = null;
+		nullFieldValue = null;
+		maxlength = null;
+		readOnlyStyleClass = null;
+		readOnly = "false";
+		escaperClass = null;
+		escaper = null;
+		customFormatter = null;
+		overrideFormFieldName = null;
+		super.doFinally();
+	} 
+   /**
+   * @return
+  */
    public String getEscaperClass() {
       return escaperClass;
-   } /**
-             * @param string
-             */
+   } 
+   /**
+   * @param string
+   */
    public void setEscaperClass(String string) {
       escaperClass = string;
    }
+	/**
+	 * @return
+	 */
+	protected String getCustomFormatter() {
+		return customFormatter;
+	}
+
+	/**
+	 * @param string
+	 */
+	public void setCustomFormatter(String string) {
+		customFormatter = string;
+	}
+
+	/**
+	 * @param s
+	 * @return
+	 */
+	public String customFormat(String s) {
+		if ((customFormatter != null) && (customFormatter.length() > 0)) {
+			HttpSession session = pageContext.getSession();
+			HashMap hm =
+				(HashMap) session.getAttribute(
+					SetCustomFormatterTag.sessionKey);
+			if (hm != null) {
+				Object obj = hm.get(customFormatter);
+				if (obj instanceof Formatter) {
+					Formatter cf = (Formatter) obj;
+					Object[] o = new Object[] {s, field, this};
+					cf.setLocale(getLocale());
+					s = cf.sprintf(o);
+				}
+			}
+		}
+		return s;
+	}
+	/**
+	 * @return
+	 */
+	protected String getOverrideFormFieldName() {
+		return overrideFormFieldName;
+	}
+
+	/**
+	 * @param string
+	 */
+	public void setOverrideFormFieldName(String string) {
+		overrideFormFieldName = string;
+	}
+	/**
+	 * @return
+	 */
+	protected boolean hasOverrideFormFieldNameSet() {
+		return overrideFormFieldName != null;
+	}
 
 }
