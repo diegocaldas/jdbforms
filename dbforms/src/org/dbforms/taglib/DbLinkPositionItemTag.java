@@ -20,7 +20,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.taglib;
 import java.io.*;
 import java.util.*;
@@ -44,80 +43,80 @@ import org.apache.log4j.Category;
  */
 public class DbLinkPositionItemTag extends TagSupport
 {
-    static Category logCat = Category.getInstance(DbLinkPositionItemTag.class.getName()); // logging category for this class
-    private String fieldName;
-    private String value;
+   static Category logCat    = Category.getInstance(DbLinkPositionItemTag.class
+         .getName()); // logging category for this class
+   private String  fieldName;
+   private String  value;
 
-    /**
-     * Return the name of the field being linked to
-     *
-     * @return The field name
-     */
-    public String getFieldName()
-    {
-        return fieldName;
-    }
-
-
-    /**
-     * The name of the field being linked to
-     *
-     * @param fieldName The name of the Field
-     */
-    public void setFieldName(String fieldName)
-    {
-        this.fieldName = fieldName;
-    }
+   /**
+    * Return the name of the field being linked to
+    *
+    * @return The field name
+    */
+   public String getFieldName()
+   {
+      return fieldName;
+   }
 
 
-    /**
-     * Return the value of the field being linked
-     *
-     * @return The value
-     */
-    public String getValue()
-    {
-        return value;
-    }
+   /**
+    * The name of the field being linked to
+    *
+    * @param fieldName The name of the Field
+    */
+   public void setFieldName(String fieldName)
+   {
+      this.fieldName = fieldName;
+   }
 
 
-    /**
-     * Set the value of the field being linked to
-     *
-     * @param value The value of the field being linked to
-     */
-    public void setValue(String value)
-    {
-        this.value = value;
-    }
+   /**
+    * Return the value of the field being linked
+    *
+    * @return The value
+    */
+   public String getValue()
+   {
+      return value;
+   }
 
 
-    /**
-     * Set up the tag with parent tag's table and link to the field.  Then add the data to the
-     * enclosing linkURL tag.
-     *
-     * @return DOCUMENT ME!
-     *
-     * @throws JspException  thrown when error occurs in processing the body of
-     *                       this method
-     */
-    public int doStartTag() throws JspException
-    {
-        DbLinkURLTag parentTag = (DbLinkURLTag) this.getParent();
-
-        if (parentTag != null)
-        {
-            Table table = parentTag.getTable();
-            Field field = table.getFieldByName(fieldName);
-            parentTag.addPositionPart(field, value);
-        }
-        else
-        {
-            throw new JspException("DbLinkPositionItem-element must be placed inside a DbLinkURL-element!");
-        }
-
-        return EVAL_BODY_INCLUDE;
-    }
+   /**
+    * Set the value of the field being linked to
+    *
+    * @param value The value of the field being linked to
+    */
+   public void setValue(String value)
+   {
+      this.value = value;
+   }
 
 
+   /**
+    * Set up the tag with parent tag's table and link to the field.  Then add the data to the
+    * enclosing linkURL tag.
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws JspException  thrown when error occurs in processing the body of
+    *                       this method
+    */
+   public int doStartTag() throws JspException
+   {
+      DbLinkURLTag parentTag = (DbLinkURLTag) this.getParent();
+
+      if (parentTag != null)
+      {
+         Table table = parentTag.getTable();
+         Field field = table.getFieldByName(fieldName);
+         parentTag.addPositionPart(field, value);
+      }
+      else
+      {
+         throw new JspException(
+            "DbLinkPositionItem-element must be placed inside a DbLinkURL-element!");
+      }
+
+      return EVAL_BODY_INCLUDE;
+   }
 }

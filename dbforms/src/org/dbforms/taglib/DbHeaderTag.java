@@ -20,7 +20,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.taglib;
 import java.util.*;
 import java.sql.*;
@@ -42,64 +41,64 @@ import org.apache.log4j.Category;
  */
 public class DbHeaderTag extends BodyTagSupport
 {
-    static Category logCat = Category.getInstance(DbHeaderTag.class.getName()); // logging category for this class
+   static Category logCat = Category.getInstance(DbHeaderTag.class.getName()); // logging category for this class
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
-    public int doStartTag()
-    {
-        DbFormTag myParent = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public int doStartTag()
+   {
+      DbFormTag myParent = (DbFormTag) findAncestorWithClass(this,
+            DbFormTag.class);
 
-        if (myParent.getCurrentCount() == 0)
-        {
-            return EVAL_BODY_BUFFERED;
-        }
-        else
-        {
-            return SKIP_BODY;
-        }
-    }
-
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     *
-     * @throws JspException DOCUMENT ME!
-     */
-    public int doAfterBody() throws JspException
-    {
-        return SKIP_BODY;
-    }
+      if (myParent.getCurrentCount() == 0)
+      {
+         return EVAL_BODY_BUFFERED;
+      }
+      else
+      {
+         return SKIP_BODY;
+      }
+   }
 
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     *
-     * @throws JspException DOCUMENT ME!
-     */
-    public int doEndTag() throws JspException
-    {
-        try
-        {
-            if (bodyContent != null)
-            {
-                bodyContent.writeOut(bodyContent.getEnclosingWriter());
-                bodyContent.clearBody(); // 2002116-HKK: workaround for duplicate rows in Tomcat 4.1
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws JspException DOCUMENT ME!
+    */
+   public int doAfterBody() throws JspException
+   {
+      return SKIP_BODY;
+   }
 
-            }
-        }
-        catch (java.io.IOException e)
-        {
-            throw new JspException("IO Error: " + e.getMessage());
-        }
 
-        return EVAL_PAGE;
-    }
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws JspException DOCUMENT ME!
+    */
+   public int doEndTag() throws JspException
+   {
+      try
+      {
+         if (bodyContent != null)
+         {
+            bodyContent.writeOut(bodyContent.getEnclosingWriter());
+            bodyContent.clearBody(); // 2002116-HKK: workaround for duplicate rows in Tomcat 4.1
+         }
+      }
+      catch (java.io.IOException e)
+      {
+         throw new JspException("IO Error: " + e.getMessage());
+      }
+
+      return EVAL_PAGE;
+   }
 }

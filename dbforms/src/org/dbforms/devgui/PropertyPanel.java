@@ -20,7 +20,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 /*
  * DbPanel.java
  *
@@ -36,56 +35,59 @@ import javax.swing.*;
  * @author  Joachim Peer <j.peer@gmx.net>
  * @version
  */
-public abstract class PropertyPanel extends javax.swing.JPanel implements PropertyNames
+public abstract class PropertyPanel extends javax.swing.JPanel
+   implements PropertyNames
 {
-    /** DOCUMENT ME! */
-    protected ProjectData projectData;
+   /** DOCUMENT ME! */
+   protected ProjectData projectData;
 
-    /**
-     * Creates a new PropertyPanel object.
-     *
-     * @param projectData DOCUMENT ME!
-     */
-    public PropertyPanel(ProjectData projectData)
-    {
-        this.projectData = projectData;
+   /**
+    * Creates a new PropertyPanel object.
+    *
+    * @param projectData DOCUMENT ME!
+    */
+   public PropertyPanel(ProjectData projectData)
+   {
+      this.projectData = projectData;
 
-        //ToolTipManager.sharedInstance().registerComponent(this);
-    }
+      //ToolTipManager.sharedInstance().registerComponent(this);
+   }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param tf DOCUMENT ME!
-     * @param p DOCUMENT ME!
-     */
-    protected void addAFocusListener(final JTextField tf, final String p)
-    {
-        tf.addFocusListener(new java.awt.event.FocusAdapter()
-        {
+   /**
+    * DOCUMENT ME!
+    *
+    * @param tf DOCUMENT ME!
+    * @param p DOCUMENT ME!
+    */
+   protected void addAFocusListener(final JTextField tf, final String p)
+   {
+      tf.addFocusListener(new java.awt.event.FocusAdapter()
+         {
             public void focusLost(java.awt.event.FocusEvent e)
             {
-                projectData.setProperty(p, tf.getText());
+               projectData.setProperty(p, tf.getText());
             }
-        });
-    }
+         });
+   }
 
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param projectData DOCUMENT ME!
-     */
-    public abstract void setNewProjectData(ProjectData projectData);
+   /**
+    * DOCUMENT ME!
+    *
+    * @param projectData DOCUMENT ME!
+    */
+   public abstract void setNewProjectData(ProjectData projectData);
 
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param e DOCUMENT ME!
-     */
-    protected void showExceptionDialog(Exception e)
-    {
-        JOptionPane.showMessageDialog(this, "An exception occurred:\n\n" + e.toString() + "\n", "Exception", JOptionPane.ERROR_MESSAGE);
-    }
+   /**
+    * DOCUMENT ME!
+    *
+    * @param e DOCUMENT ME!
+    */
+   protected void showExceptionDialog(Exception e)
+   {
+      JOptionPane.showMessageDialog(this,
+         "An exception occurred:\n\n" + e.toString() + "\n", "Exception",
+         JOptionPane.ERROR_MESSAGE);
+   }
 }

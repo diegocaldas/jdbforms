@@ -20,14 +20,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.event;
-
 import java.sql.*;
 import java.util.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
-
 import org.dbforms.DbFormsConfig;
 import org.dbforms.Field;
 import org.dbforms.FieldValue;
@@ -36,23 +33,44 @@ import org.dbforms.util.Constants;
 import org.dbforms.util.FieldValues;
 import org.dbforms.util.FieldTypes;
 
+
+
 /**
  *  Abstract base class for all web-events related to database operations
  *  like inserts, updates, deletes.
  *
  * @author Joe Peer <j.peer@gmx.net>
  */
-public abstract class DatabaseEvent extends WebEvent {
+public abstract class DatabaseEvent extends WebEvent
+{
+   /** DOCUMENT ME! */
    protected String keyId;
 
-   public DatabaseEvent(int tableId, String keyId, HttpServletRequest request, DbFormsConfig config) {
+   /**
+    * Creates a new DatabaseEvent object.
+    *
+    * @param tableId DOCUMENT ME!
+    * @param keyId DOCUMENT ME!
+    * @param request DOCUMENT ME!
+    * @param config DOCUMENT ME!
+    */
+   public DatabaseEvent(int tableId, String keyId, HttpServletRequest request,
+      DbFormsConfig config)
+   {
       super(tableId, request, config);
       this.keyId = keyId;
    }
 
-   public String getKeyId() {
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String getKeyId()
+   {
       return keyId;
    }
+
 
    /**
    *  Get the hash table containing the form field names and values taken
@@ -68,6 +86,7 @@ public abstract class DatabaseEvent extends WebEvent {
    *         the request object
    */
    public abstract FieldValues getFieldValues();
+
 
    /**
     *  Get the hash table containing the field names and values
@@ -86,15 +105,20 @@ public abstract class DatabaseEvent extends WebEvent {
     *                          taken from the request object
     *                          (see: <code>getFieldValues()</code>
     */
-   public Hashtable getAssociativeFieldValues(FieldValues scalarFieldValues) {
-      Hashtable result = new Hashtable();
+   public Hashtable getAssociativeFieldValues(FieldValues scalarFieldValues)
+   {
+      Hashtable   result  = new Hashtable();
       Enumeration scalars = scalarFieldValues.keys();
-      while (scalars.hasMoreElements()) {
+
+      while (scalars.hasMoreElements())
+      {
          String fieldName = (String) scalars.nextElement();
          result.put(fieldName, scalarFieldValues.get(fieldName).getFieldValue());
       }
+
       return result;
    }
+
 
    /**
     *  DO the validation of <FORM> with Commons-Validator.
@@ -104,37 +128,65 @@ public abstract class DatabaseEvent extends WebEvent {
     * @param  e the web event
     * @exception  MultipleValidationException The Vector of errors throwed with this exception
     */
-   public void doValidation(String formValidatorName, ServletContext context, HttpServletRequest request)
-      throws MultipleValidationException {
+   public void doValidation(String formValidatorName, ServletContext context,
+      HttpServletRequest request) throws MultipleValidationException
+   {
    }
 
-   protected FieldValues getFieldValues(boolean insertMode) {
-      FieldValues result = new FieldValues();
-      String paramStub = "f_" + tableId + "_" + (insertMode ? Constants.INSERTPREFIX : "") + keyId + "_";
-      Vector params = ParseUtil.getParametersStartingWith(request, paramStub);
-      Enumeration enum = params.elements();
-      while (enum.hasMoreElements()) {
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param insertMode DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   protected FieldValues getFieldValues(boolean insertMode)
+   {
+      FieldValues result    = new FieldValues();
+      String      paramStub = "f_" + tableId + "_"
+         + (insertMode ? Constants.INSERTPREFIX : "") + keyId + "_";
+      Vector      params    = ParseUtil.getParametersStartingWith(request,
+            paramStub);
+      Enumeration enum      = params.elements();
+
+      while (enum.hasMoreElements())
+      {
          String param = (String) enum.nextElement();
          String value = ParseUtil.getParameter(request, param);
          logCat.info("::getFieldValues - param=" + param + " value=" + value);
-         int iiFieldId = Integer.parseInt(param.substring(paramStub.length()));
-         Field f = table.getField(iiFieldId);
+
+         int        iiFieldId = Integer.parseInt(param.substring(
+                  paramStub.length()));
+         Field      f  = table.getField(iiFieldId);
          FieldValue fv = new FieldValue(f, value);
-         if ((f.getType() == FieldTypes.BLOB) || f.getType() == FieldTypes.DISKBLOB) {
+
+         if ((f.getType() == FieldTypes.BLOB)
+                  || (f.getType() == FieldTypes.DISKBLOB))
+         {
             // in case of a BLOB or DISKBLOB save get the FileHolder for later use
-            fv.setFileHolder(
-               ParseUtil.getFileHolder(
-                  request,
-                  "f_" + tableId + (insertMode ? Constants.INSERTPREFIX : "") + keyId + "_" + iiFieldId));
+            fv.setFileHolder(ParseUtil.getFileHolder(request,
+                  "f_" + tableId + (insertMode ? Constants.INSERTPREFIX : "")
+                  + keyId + "_" + iiFieldId));
          }
+
          result.put(f.getName(), fv);
       }
+
       return result;
    }
 
-   protected String getKeyValues() {
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   protected String getKeyValues()
+   {
       return ParseUtil.getParameter(request, "k_" + tableId + "_" + keyId);
    }
+
 
    /**
     *  Process this event.
@@ -143,5 +195,6 @@ public abstract class DatabaseEvent extends WebEvent {
     * @throws SQLException if any data access error occurs
     * @throws MultipleValidationException if any validation error occurs
     */
-   public abstract void processEvent(Connection con) throws SQLException, MultipleValidationException;
+   public abstract void processEvent(Connection con)
+      throws SQLException, MultipleValidationException;
 }

@@ -20,7 +20,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-
 package org.dbforms.taglib;
 import java.util.*;
 import java.sql.*;
@@ -42,89 +41,93 @@ import org.apache.log4j.Category;
  */
 public class DbFooterTag extends BodyTagSupport
 {
-    static Category logCat = Category.getInstance(DbFooterTag.class.getName()); // logging category for this class
+   static Category logCat = Category.getInstance(DbFooterTag.class.getName()); // logging category for this class
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
-    public int doStartTag()
-    {
-        //DbFormTag parent = (DbFormTag) getParent(); // parent Tag in which this tag is embedded in
-        DbFormTag myParent = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
-        int pCount = myParent.getCount(); // pCount==-1 => endless form, else max nr. of eval.loops is pCount
-        int pCurrent = myParent.getCurrentCount(); // how many times renderd
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public int doStartTag()
+   {
+      //DbFormTag parent = (DbFormTag) getParent(); // parent Tag in which this tag is embedded in
+      DbFormTag myParent = (DbFormTag) findAncestorWithClass(this,
+            DbFormTag.class);
+      int       pCount   = myParent.getCount(); // pCount==-1 => endless form, else max nr. of eval.loops is pCount
+      int       pCurrent = myParent.getCurrentCount(); // how many times renderd
 
-        logCat.info("we are talking about=" + myParent.getTableName());
-        logCat.info("pcount=" + pCount);
-        logCat.info("pcurrent=" + pCurrent);
+      logCat.info("we are talking about=" + myParent.getTableName());
+      logCat.info("pcount=" + pCount);
+      logCat.info("pcurrent=" + pCurrent);
 
-        if ((pCount != -1 && pCurrent == pCount) || // if the max-count is reached
-            (myParent.getResultSetVector() == null) || (pCurrent == myParent.getResultSetVector().size()) || // or if end of resultsetvector is reached #checkme: can we dispose this condition?
-            (myParent.getResultSetVector().size() == 0) || // or if there is no resultSet data
-            (myParent.getResultSetVector().size() == myParent.getResultSetVector().getPointer()))
-        {
-            logCat.info("setting footerreached to true");
+      if (((pCount != -1) && (pCurrent == pCount)) // if the max-count is reached
+               || (myParent.getResultSetVector() == null)
+               || (pCurrent == myParent.getResultSetVector().size()) // or if end of resultsetvector is reached #checkme: can we dispose this condition?
+               || (myParent.getResultSetVector().size() == 0) // or if there is no resultSet data
+               || (myParent.getResultSetVector().size() == myParent.getResultSetVector()
+                                                                         .getPointer()))
+      {
+         logCat.info("setting footerreached to true");
 
-            myParent.setFooterReached(true); // tell parent form that there are no more loops do go and the only thing remaining to be rendered is this footerTag and its subelements
+         myParent.setFooterReached(true); // tell parent form that there are no more loops do go and the only thing remaining to be rendered is this footerTag and its subelements
 
-            return EVAL_BODY_BUFFERED;
-        }
-        else
-        {
-            return SKIP_BODY;
-        }
-    }
-
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     *
-     * @throws JspException DOCUMENT ME!
-     */
-    public int doAfterBody() throws JspException
-    {
-        return SKIP_BODY; // a footer gets onle 1 time rendered
-    }
+         return EVAL_BODY_BUFFERED;
+      }
+      else
+      {
+         return SKIP_BODY;
+      }
+   }
 
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     *
-     * @throws JspException DOCUMENT ME!
-     */
-    public int doEndTag() throws JspException
-    {
-        //DbFormTag myParent = (DbFormTag) getParent(); // parent Tag in which this tag is embedded in
-        DbFormTag myParent = (DbFormTag) findAncestorWithClass(this, DbFormTag.class);
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws JspException DOCUMENT ME!
+    */
+   public int doAfterBody() throws JspException
+   {
+      return SKIP_BODY; // a footer gets onle 1 time rendered
+   }
 
-        JspWriter out = pageContext.getOut();
 
-        // field values that have not been rendered by html tags but that is determinated by field
-        // mapping between main- and subform are rendered now:
-        try
-        {
-            if (myParent.isSubForm())
-            {
-                myParent.appendToChildElementOutput(myParent.produceLinkedTags()); // print hidden-fields for missing insert-fields we can determinated
-            }
+   /**
+    * DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    *
+    * @throws JspException DOCUMENT ME!
+    */
+   public int doEndTag() throws JspException
+   {
+      //DbFormTag myParent = (DbFormTag) getParent(); // parent Tag in which this tag is embedded in
+      DbFormTag myParent = (DbFormTag) findAncestorWithClass(this,
+            DbFormTag.class);
 
-            if (bodyContent != null)
-            {
-                bodyContent.writeOut(bodyContent.getEnclosingWriter());
-                bodyContent.clearBody(); // 2002116-HKK: workaround for duplicate rows in Tomcat 4.1
-            }
-        }
-        catch (java.io.IOException e)
-        {
-            throw new JspException("IO Error: " + e.getMessage());
-        }
+      JspWriter out = pageContext.getOut();
 
-        return EVAL_PAGE;
-    }
+      // field values that have not been rendered by html tags but that is determinated by field
+      // mapping between main- and subform are rendered now:
+      try
+      {
+         if (myParent.isSubForm())
+         {
+            myParent.appendToChildElementOutput(myParent.produceLinkedTags()); // print hidden-fields for missing insert-fields we can determinated
+         }
+
+         if (bodyContent != null)
+         {
+            bodyContent.writeOut(bodyContent.getEnclosingWriter());
+            bodyContent.clearBody(); // 2002116-HKK: workaround for duplicate rows in Tomcat 4.1
+         }
+      }
+      catch (java.io.IOException e)
+      {
+         throw new JspException("IO Error: " + e.getMessage());
+      }
+
+      return EVAL_PAGE;
+   }
 }
