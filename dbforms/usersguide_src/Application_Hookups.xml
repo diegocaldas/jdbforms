@@ -38,7 +38,7 @@
     public int 
         <emphasis role="bold">preUpdate</emphasis>(HttpServletRequest request, Table table, FieldValues fieldValues,
        DbFormsConfig config, Connection con)
-    throws ValidationException;;
+    throws ValidationException;
  
 
     public void 
@@ -48,8 +48,8 @@
     public int 
         <emphasis role="bold">preDelete</emphasis>(HttpServletRequest request, Table table, FieldValues fieldValues,
        DbFormsConfig config, Connection  con)
-                throws ValidationException;;
- 
+                throws ValidationException;
+
 
     public void 
         <emphasis role="bold">postDelete</emphasis>(HttpServletRequest request, DbFormsConfig config, Connection con);
@@ -57,7 +57,7 @@
      
     public int 
         <emphasis role="bold">preSelect</emphasis>(HttpServletRequest request, DbFormsConfig config, Connection con)
-    throws ValidationException;;
+    throws ValidationException;
  
     public void 
         <emphasis role="bold">postSelect</emphasis>(HttpServletRequest request, DbFormsConfig config, Connection con);
@@ -167,13 +167,12 @@ gives access to various types of information, including the current user&#146;s 
               <entry>FieldValues fieldValues:
 </entry>
               <entry><para>in the preInsert(), preUpdate() and preDelete()-methods:
-FieldValues which gives access to the fields contained in the current (selected) row.
-As the examples below will demonstrate:</para><para>
-<computeroutput>(String) fieldValues.get("lastname").getFieldValueAsObject();</computeroutput> -or- <computeroutput>fieldValues.get("lastname").getFieldValue();</computeroutput>
-will return the field value of the field &#147;lastName&#148; of the row DbForm's is about to insert, to update or to delete.  Note: <computeroutput>...getFieldValue();</computeroutput> always returns a String.</para>
-<para>In preInsert() and preUpdate() any changes to this FieldValues are automatically reflected in the database. This means that the expression:</para>
-<para><computeroutput>fieldValues.put("lastname", &#147;smith&#148;);</computeroutput>
-will ensure that the value &#147;smith&#148; be stored in the lastname field in the database. (column lastname must exist!)</para>
+FieldValues which gives access to the fields contained in the current (selected) row.</para><para>
+<computeroutput>(String) fieldValues.get("lastname").getFieldValueAsObject();</computeroutput></para><para> -or-</para><para> <computeroutput>fieldValues.get("lastname").getFieldValue();</computeroutput></para>
+<para>will return the field value of the field &#147;lastName&#148; of the row DbForm's is about to insert, to update or to delete.  Note: <computeroutput>...getFieldValue();</computeroutput> always returns a String.</para>
+<para>To make changes in preInsert() and preUpdate() so that changes in the FieldValues are reflected in the database, use <computeroutput> setValue(Table table, FieldValues fieldValues, String fieldName, String value)</computeroutput> as shown below:</para>
+<para><computeroutput>this.setValue(table, fieldValues, "lastname", "smith");</computeroutput></para>
+<para>will ensure that the value &#147;smith&#148; be stored in the lastname field in the database. (column lastname must exist!)</para>
 </entry>
             </row>
           </tbody>
@@ -264,8 +263,8 @@ import javax.servlet.http.*;
 
 
         public int 
-        <emphasis role="bold">preInsert</emphasis>(HttpServletRequest request, FieldValues fieldValues, 
-          Table table, DbFormsConfig config, Connection con)
+        <emphasis role="bold">preInsert</emphasis>(HttpServletRequest request,  Table table, FieldValues fieldValues, 
+         DbFormsConfig config, Connection con)
             throws ValidationException {
 
                 
@@ -275,8 +274,8 @@ import javax.servlet.http.*;
 
 
         public int 
-        <emphasis role="bold">preUpdate</emphasis>(HttpServletRequest request, FieldValues fieldValues, 
-          Table table, DbFormsConfig config, Connection con)
+        <emphasis role="bold">preUpdate</emphasis>(HttpServletRequest request, Table table, FieldValues fieldValues, 
+           DbFormsConfig config, Connection con)
             throws ValidationException {
 
                 
@@ -291,7 +290,7 @@ import javax.servlet.http.*;
     </example>
     <para>Remarks:
 </para>
-    <para>There is an Exception ValidationException which may be thrown to signal a message to the end-user. In fact, returning the integer constant 
+    <para>There is an Exception -- <computeroutput>org.dbforms.config.ValidationException</computeroutput> which may be thrown to signal a message to the end-user. In fact, returning the integer constant 
       <computeroutput>DENY_OPERATION</computeroutput> defined in 
       <computeroutput>DbEventInterceptor</computeroutput> leads to similar results (but with an unspecific error message and no generic message)
 
