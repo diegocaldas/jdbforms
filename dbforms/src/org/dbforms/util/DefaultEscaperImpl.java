@@ -46,10 +46,10 @@ public class DefaultEscaperImpl implements Escaper {
 				case '>' :
 					v.append("&gt;");
 					break;
-            case '&' :
-               v.append("&amp;");
-               break;
-            default :
+				case '&' :
+					v.append("&amp;");
+					break;
+				default :
 					v.append(s.charAt(i));
 					break;
 			}
