@@ -16,18 +16,50 @@
         <itemizedlist mark="opencircle">
 
           <listitem>
-            <para>        
+            <para>
+              The controller servlet gets the incoming http request that contains the data
+              to process; the request object contains also the data that identify the event 
+              to instantiate and execute.
+            </para>
+            <para>
+              Then, the controller instantiates the EventEngine object.
             </para>
           </listitem>
 
           <listitem>
             <para>
-              The EventEngine, invoked by the Controller servlet, parses a request to find out
-              which event(s) need to be instanciated.
-              The fine-grained parsing (parsing of additional data, etc) is done
-              by the WebEvent-Object itself (in order to hide complexity from this
-              class and to keep the framework open for implementations of new Event-classes)
+              The controller servlet calls the eventEngine.generatePrimaryEvent() method.
+              generatePrimaryEvent() gets the action parameter from the request, try to 
+              identify the related event type (database or navigation) and then uses the appropriate factory
+              to create the related event object. generatePrimaryEvent() returns the event 
+              object to the controller.
+            </para>         
+          </listitem>
+
+          <listitem>
+            <para>
+              The controller servlet checks if the returned event object is an instance of a
+              Database event (i.e.: insert, delete, update events).
+              If yes, validate the incoming data 
+              (optional: if hidden formValidatorName exist and it's an Update or Insert event,
+               execute the doValidation with Commons-Validator) and process the event object.
             </para>
+			<para>
+			  Note: the Navigation events are managed by the DbFormsTag class.
+			  The controller manages only the database event type.
+			</para>
+          </listitem>
+
+          <listitem>
+            <para>
+              The controller servlet checks if the evetEngine has got involved tables:
+			  it find out which tables where on the jsp page (the view); 
+			  one jsp file may contain multiple (db)forms, and each forms could contain many
+			  subforms nested inside.
+            </para>         
+			<para>
+			  If yes, the controller executes the 
+			</para>
           </listitem>
 
         </itemizedlist>
