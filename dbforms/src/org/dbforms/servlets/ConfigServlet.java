@@ -486,17 +486,17 @@ public class ConfigServlet extends HttpServlet
       // Configure the processing rules
       // parse "Error" - object
       digester.addObjectCreate("dbforms-errors/error", 
-                               "org.dbforms.config.error.Error");
+                               "org.dbforms.config.Error");
       digester.addSetProperties("dbforms-errors/error");
       digester.addSetNext("dbforms-errors/error", "addError", 
-                          "org.dbforms.config.error.Error");
+                          "org.dbforms.config.Error");
 
 
       // parse "Message" - object + add it to parent (which is "Error")
       digester.addObjectCreate("dbforms-errors/error/message", 
-                               "org.dbforms.config.error.Message");
+                               "org.dbforms.config.Message");
       digester.addSetNext("dbforms-errors/error/message", "addMessage", 
-                          "org.dbforms.config.error.Message");
+                          "org.dbforms.config.Message");
       digester.addSetProperties("dbforms-errors/error/message");
       digester.addCallMethod("dbforms-errors/error/message", "setMessage", 0);
 
