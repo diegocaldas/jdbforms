@@ -10902,7 +10902,7 @@
 					</info>
 				</attribute>
 				<attribute>
-					<name>variable</name>
+					<name>contextVar</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
 					<info>

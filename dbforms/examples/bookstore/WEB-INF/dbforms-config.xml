@@ -7,12 +7,14 @@
 	        <field name="ORGANISATION" fieldType="varchar"  sortable="true"/>
 	    </table>    
 	    
-	    <table name="BOOK">
+	    <table name="BOOK"
+		    dataAccessClass="dataaccess.DataSourceJDBCWithRowCount"
+	    >
 	        <field name="BOOK_ID" fieldType="int" isKey="true" />
 	        <field name="ISBN" fieldType="varchar" />
 	        <field name="AUTHOR_ID" fieldType="int" isKey="true" />
 	        <field name="TITLE" fieldType="varchar" />
-            <interceptor className = "interceptors.BookstoreInsertDataInterceptor"/>                
+            <interceptor className = "interceptors.BookstoreInsertDataInterceptor"/>      
 	    </table>   
 
 		<query 	name="BOOKLISTPERAUTHOR" 

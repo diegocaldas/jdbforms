@@ -203,12 +203,12 @@ public class TextFormatTag extends DbBaseHandlerTag
                Object bean = null;
 
                if (rsv != null) {
-                  bean = rsv.getAttribute(search);
+                  bean = rsv.getAttribute(search_bean);
                }
 
                if (bean == null) {
                   // simple type, 'search' is an object in the session
-                  bean = pageContext.findAttribute(search);
+                  bean = pageContext.findAttribute(search_bean);
                }
 
                if (bean != null) {

@@ -27,6 +27,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.dbforms.config.Constants;
+import org.dbforms.config.DbEventInterceptorData;
 import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.Field;
 import org.dbforms.config.FieldTypes;
@@ -34,7 +35,6 @@ import org.dbforms.config.FieldValue;
 import org.dbforms.config.FieldValues;
 import org.dbforms.config.JDBCDataHelper;
 import org.dbforms.config.ResultSetVector;
-import org.dbforms.config.DbEventInterceptorData;
 
 import org.dbforms.util.FileHolder;
 import org.dbforms.util.UniqueIDGenerator;
@@ -52,6 +52,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 
 
@@ -76,18 +77,38 @@ public class DataSourceJDBC extends DataSource {
    private FieldValue[] filterConstraint;
    private FieldValue[] orderConstraint;
    private FieldValue[] sqlFilterParams;
-   private boolean      fetchedAll = false;
+   private boolean      calcRowCount = false;
+   private boolean      fetchedAll   = false;
    private int          colCount;
+   private int          rowCount     = 0;
 
    /**
     * Creates a new DataSourceJDBC object.
-    *
-    * @param table the inout table
     */
    public DataSourceJDBC() {
       data = new ArrayList();
       keys = new HashMap();
    }
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param calcRowCount The calcRowCount to set.
+    */
+   public void setCalcRowCount(boolean calcRowCount) {
+      this.calcRowCount = calcRowCount;
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return Returns the calcRowCount.
+    */
+   public boolean isCalcRowCount() {
+      return calcRowCount;
+   }
+
 
    /**
     * Set the tableList and whererClause attributes used to build the SQL
@@ -128,7 +149,7 @@ public class DataSourceJDBC extends DataSource {
    /**
     * performs a delete in the DataSource
     *
-    * @param con DOCUMENT ME!
+    * @param interceptorData DOCUMENT ME!
     * @param keyValuesStr keyValueStr to the row to update <br>
     *        key format: FieldID ":" Length ":" Value <br>
     *        example: if key id = 121 and field id=2 then keyValueStr contains
@@ -141,7 +162,8 @@ public class DataSourceJDBC extends DataSource {
     * @throws SQLException
     */
    public void doDelete(DbEventInterceptorData interceptorData,
-                        String     keyValuesStr) throws SQLException {
+                        String                 keyValuesStr)
+                 throws SQLException {
       FieldValues fieldValues = null;
 
       // get current blob files from database
@@ -153,7 +175,9 @@ public class DataSourceJDBC extends DataSource {
          queryBuf.append(" WHERE ");
          queryBuf.append(getTable().getWhereClauseForKeyFields());
 
-         PreparedStatement diskblobsPs = interceptorData.getConnection().prepareStatement(queryBuf.toString());
+         PreparedStatement diskblobsPs = interceptorData.getConnection()
+                                                        .prepareStatement(queryBuf
+                                                                          .toString());
 
          try {
             getTable()
@@ -162,7 +186,8 @@ public class DataSourceJDBC extends DataSource {
             diskblobs = diskblobsPs.executeQuery();
 
             try {
-               ResultSetVector rsv = new ResultSetVector(getTable(), getTable().getDiskblobs());
+               ResultSetVector rsv = new ResultSetVector(getTable(),
+                                                         getTable().getDiskblobs());
                rsv.addResultSet(interceptorData, diskblobs);
 
                if (!ResultSetVector.isNull(rsv)) {
@@ -178,7 +203,8 @@ public class DataSourceJDBC extends DataSource {
       }
 
       // 20021031-HKK: Build in table!!
-      PreparedStatement ps = interceptorData.getConnection().prepareStatement(getTable().getDeleteStatement());
+      PreparedStatement ps = interceptorData.getConnection()
+                                            .prepareStatement(getTable().getDeleteStatement());
 
       try {
          // now we provide the values
@@ -202,14 +228,16 @@ public class DataSourceJDBC extends DataSource {
    /**
     * Performs an insert into the DataSource
     *
-    * @param con DOCUMENT ME!
+    * @param interceptorData DOCUMENT ME!
     * @param fieldValues FieldValues to insert
     *
     * @throws SQLException
     */
    public void doInsert(DbEventInterceptorData interceptorData,
-                        FieldValues fieldValues) throws SQLException {
-      PreparedStatement ps = interceptorData.getConnection().prepareStatement(getTable().getInsertStatement(fieldValues));
+                        FieldValues            fieldValues)
+                 throws SQLException {
+      PreparedStatement ps = interceptorData.getConnection()
+                                            .prepareStatement(getTable().getInsertStatement(fieldValues));
 
       try {
          // execute the query & throws an exception if something goes wrong
@@ -227,7 +255,7 @@ public class DataSourceJDBC extends DataSource {
    /**
     * Performs an update into the DataSource
     *
-    * @param con DOCUMENT ME!
+    * @param interceptorData DOCUMENT ME!
     * @param fieldValues FieldValues to update
     * @param keyValuesStr keyValueStr to the row to update <br>
     *        key format: FieldID ":" Length ":" Value <br>
@@ -241,9 +269,11 @@ public class DataSourceJDBC extends DataSource {
     * @throws SQLException
     */
    public void doUpdate(DbEventInterceptorData interceptorData,
-                        FieldValues fieldValues,
-                        String      keyValuesStr) throws SQLException {
-      PreparedStatement ps = interceptorData.getConnection().prepareStatement(getTable().getUpdateStatement(fieldValues));
+                        FieldValues            fieldValues,
+                        String                 keyValuesStr)
+                 throws SQLException {
+      PreparedStatement ps = interceptorData.getConnection()
+                                            .prepareStatement(getTable().getUpdateStatement(fieldValues));
 
       try {
          int col = fillWithData(ps, fieldValues);
@@ -399,13 +429,13 @@ public class DataSourceJDBC extends DataSource {
     *
     * @throws SQLException if any error occurs
     */
-   protected final void open() throws SQLException {
+   protected void open() throws SQLException {
       if (!fetchedAll && (rs == null)) {
          if ((connection == null) || connection.isClosed()) {
             try {
                this.connection = DbFormsConfigRegistry.instance()
-                                               .lookup()
-                                               .getConnection(connectionName);
+                                                      .lookup()
+                                                      .getConnection(connectionName);
             } catch (Exception e) {
                logCat.error("open", e);
             }
@@ -442,11 +472,50 @@ public class DataSourceJDBC extends DataSource {
             if (stmt == null) {
                throw new SQLException("no statement");
             }
+
             rs = stmt.executeQuery(query);
          }
 
          ResultSetMetaData rsmd = rs.getMetaData();
          colCount = rsmd.getColumnCount();
+         
+         if (isCalcRowCount()) {
+            Field f = new Field();
+            f.setName("count(*) cnt");
+            Vector v = new Vector();
+            v.add(f);
+         	ResultSet rs = null;
+            if (Util.isNull(whereClause)) {
+                String query = getTable()
+                           .getSelectQuery(v,
+                                           filterConstraint, orderConstraint,
+                                           sqlFilter, Constants.COMPARE_NONE);
+                Statement stmt = connection.prepareStatement(query);
+
+                if (stmt == null) {
+                   throw new SQLException("no statement: " + query);
+                }
+
+                rs = getTable()
+                        .getDoSelectResultSet(filterConstraint, orderConstraint,
+                                              sqlFilterParams,
+                                              Constants.COMPARE_NONE,
+                                              (PreparedStatement) stmt);
+             } else {
+                String query = getTable()
+                           .getFreeFormSelectQuery(v,
+                                                   whereClause, tableList);
+                Statement stmt = connection.createStatement();
+
+                if (stmt == null) {
+                   throw new SQLException("no statement");
+                }
+
+                rs = stmt.executeQuery(query);
+             }
+            rs.next(); 
+            rowCount = rs.getInt(rs.findColumn("cnt"));           	
+         }
       }
    }
 
@@ -480,6 +549,16 @@ public class DataSourceJDBC extends DataSource {
       }
 
       return data.size();
+   }
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @return Returns the rowCount.
+    */
+   protected int getRowCount() {
+      return rowCount;
    }
 
 
@@ -547,7 +626,7 @@ public class DataSourceJDBC extends DataSource {
       if (connection != null) {
          try {
             if (!connection.isClosed()) {
-            	connection.close();
+               connection.close();
             }
          } catch (SQLException e) {
             logCat.info("closeConnection", e);

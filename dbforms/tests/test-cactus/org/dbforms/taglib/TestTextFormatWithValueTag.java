@@ -74,7 +74,7 @@ public class TestTextFormatWithValueTag extends JspTestCase {
       doubleTag.setPageContext(this.pageContext);
       doubleTag.setParent(form);
       pageContext.setAttribute("TESTVAR", new Double(2.3));
-      doubleTag.setVariable("TESTVAR");
+      doubleTag.setContextVar("TESTVAR");
    }
 
 

@@ -544,7 +544,7 @@ public abstract class DataSource {
     *
     * @throws SQLException
     */
-   private ResultSetVector getResultSetVector(
+   protected ResultSetVector getResultSetVector(
       DbEventInterceptorData interceptorData, int startRow, int count)
       throws SQLException {
       ResultSetVector result = null;
