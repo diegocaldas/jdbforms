@@ -88,7 +88,7 @@ public class DbFormsValidator implements Serializable {
        * When a validation returns multiple errors and the user corrects these problems one at a time,
        * it is important to verify that the old value is not null or empty.
        */   
-      if (f.getFieldValue().equals(f.getOldValue())) // && !(Util.isNull(f.getFieldValue())))
+      if (f.getFieldValue().equals(f.getOldValue()) && !(Util.isNull(f.getFieldValue())))
          // Check only if new value != old value!
          return true;
 
