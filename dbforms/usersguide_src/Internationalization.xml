@@ -138,4 +138,30 @@
     </screen>
     <para/>
   </sect1>
+  <sect1>
+    <title>Setting the Pattern Attribue</title>
+    <para>Many tags make use of the <computeroutput>pattern</computeroutput> attribute.  For example,<screen>
+    &lt;dateField pattern=&quot;date&quot;
+    </screen>  To set values globally for 
+each type and language, you can define <computeroutput>dbforms.pattern.timestamp</computeroutput> <computeroutput>dbforms.pattern.date</computeroutput> etc. For Example:
+</para> <para>
+      <emphasis role="bold">ApplicationResources.properties</emphasis>
+</para><para>    
+<screen>
+dbforms.pattern.date=yyyy-MM-dd
+dbforms.pattern.timestamp=yyyy-MM-dd HH:mm
+</screen></para>
+ 
+<para>If you use the abbriviations SHORT, MEDIUM, FULL you can define them too:<screen>
+dbforms.pattern.timestamp.short
+dbforms.pattern.date.full.
+</screen></para>
+<para> 
+As defaults, Dbforms is using the following if you do not specify the patterns for each field individually.<screen>
+   public static final int DATE_STYLE_DEFAULT = java.text.DateFormat.MEDIUM;
+   public static final int TIME_STYLE_DEFAULT = java.text.DateFormat.SHORT;
+ </screen>
+ </para>
+
+  </sect1>
 </chapter>

@@ -1164,15 +1164,21 @@ of the input field</info>
 			<tag>
 				<name>dateField</name>
 				<summary>this tag renders a dabase-datadriven DATE-FIELD, 
-which is an active element - the usercan change data. it is very similar to TextField, 
-but this class providesan extension to TextField: the additional attribute &quot;dateFormat&quot;.</summary>
+which is an active element - the usercan change data. it is very similar to TextField, especially since they now both support global setting for 
+each type and language.</summary>
 				<tagclass>org.dbforms.taglib.DbDateFieldTag</tagclass>
 				<bodycontent>empty</bodycontent>
 				<info>
-					<p>i/o text field</p>
-					<p>To set the format that a date value is sent to the database in, add it to <b>dbforms-config.xml</b> file as follows (for example):<br/>
-						<pre>&lt;date-format&gt;yyyy-MM-dd&lt;/date-format&gt;</pre>
-					</p>
+					<p>Example:<pre>
+&lt;dateField pattern=&quot;date&quot;
+                                        </pre>
+                                        </p>
+                                        <p>To set the pattern which data is displayed in use a resource bundle (See the UsersGuide chapter on Internationalization).</p>
+                                        <p>Example of ApplicationResources.properties:</p>
+                                        <pre>
+dbforms.pattern.date=yyyy-MM-dd
+dbforms.pattern.timestamp=yyyy-MM-dd HH:mm</pre>
+					 
 				</info>
 				<attribute>
 					<name>id</name>

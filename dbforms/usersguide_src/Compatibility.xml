@@ -163,4 +163,10 @@ must be changed to
        </para>
 </sect1>
 
+<sect1><title>2.4.rc1</title>
+  <para>The <computeroutput>pattern</computeroutput> attribute for <computeroutput>textField</computeroutput>, <computeroutput>dateField</computeroutput>, <computeroutput>dateLabel</computeroutput>, <computeroutput>textArea</computeroutput>, and <computeroutput>textAreaForBlobs</computeroutput> now support both global setting for 
+each type and language.</para>
+  <para>Previously, the <computeroutput>dateField</computeroutput> was set via the <computeroutput>&lt;date-format&gt;</computeroutput> attribute in <computeroutput> dbforms-config.xml</computeroutput>. Now, all <computeroutput>pattern</computeroutput> attributes are set via message resources.  Please see <link linkend='intern'>Internationalization</link> for details.</para>
+        
+</sect1>
   </chapter>
