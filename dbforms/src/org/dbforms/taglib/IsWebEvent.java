@@ -27,101 +27,107 @@ import javax.servlet.jsp.JspException;
 
 import org.apache.log4j.Category;
 
-
-
 /**
  * DOCUMENT ME!
  *
  * @version $Revision$
  * @author $author$
  */
-public class IsWebEvent extends DbBaseHandlerTag
-      implements javax.servlet.jsp.tagext.TryCatchFinally
-{
-   // logging category for this class
-   private static Category logCat = Category.getInstance(IsWebEvent.class.getName());
-   private Boolean value;
-   private String  event;
+public class IsWebEvent
+	extends DbBaseHandlerTag
+	implements javax.servlet.jsp.tagext.TryCatchFinally {
 
-	public void doFinally()
-	{
-		value    = new Boolean("true");
+	// logging category for this class
+	private static Category logCat =
+		Category.getInstance(IsWebEvent.class.getName());
+	private String value;
+	private String event;
+
+	public void doFinally() {
+		value = "true";
 		event = null;
 		super.doFinally();
 	}
 
+	/**
+	 * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+	 */
+	public void doCatch(Throwable t) throws Throwable {
+		throw t;
+	}
 
-   /**
-    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
-    */
-   public void doCatch(Throwable t) throws Throwable
-   {
-      throw t;
-   }
+	/**
+	 * Creates a new IsWebEvent object.
+	 */
+	public IsWebEvent() {
+		value = "true";
+		event = null;
+	}
 
-   /**
-    * Creates a new IsWebEvent object.
-    */
-   public IsWebEvent()
-   {
-      value    = new Boolean("true");
-      event    = null;
-   }
+	/**
+	 * DOCUMENT ME!
+	 *
+	 * @return DOCUMENT ME!
+	 *
+	 * @throws JspException DOCUMENT ME!
+	 */
+	public int doStartTag() throws JspException {
+		WebEvent we = getParentForm().getWebEvent();
+		if ((we == null) || (event == null) || (value == null)) {
+			logCat.debug(
+				"Can't do IsWebEvent with  webEvent: "
+					+ we
+					+ "  event: "
+					+ event
+					+ "   value: "
+					+ value);
 
-   /**
-    * DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    *
-    * @throws JspException DOCUMENT ME!
-    */
-   public int doStartTag() throws JspException
-   {
-      WebEvent           we = getParentForm().getWebEvent();
-      if ((we == null) || (event == null) || (value == null))
-      {
-         logCat.debug("Can't do IsWebEvent with  webEvent: " + we
-            + "  event: " + event + "   value: " + value);
+			return SKIP_BODY;
+		}
 
-         return SKIP_BODY;
-      }
+		
+		String className = we.getType();
 
-      String className = we.getClass().getName();
-      className = className.substring("org.dbforms.event.".length(),
-            className.length());
+		boolean eventNameMatch =
+			className.toUpperCase().indexOf(event.toUpperCase()) != -1;
 
-      boolean eventNameMatch = className.toUpperCase().indexOf(event
-            .toUpperCase()) != -1;
+		if (logCat.isDebugEnabled()) {
+			logCat.debug(
+				" IsLocalWebEvent webEvent className: "
+					+ className
+					+ "    event: "
+					+ event
+					+ "  value: "
+					+ value);
+		}
 
-      if (logCat.isDebugEnabled())
-      {
-         logCat.debug(" IsLocalWebEvent webEvent className: " + className
-            + "    event: " + event + "  value: " + value);
-      }
+		return ("true".equalsIgnoreCase(value) == eventNameMatch)
+			? EVAL_BODY_INCLUDE
+			: SKIP_BODY;
+	}
 
-      return (value.booleanValue() == eventNameMatch) ? EVAL_BODY_INCLUDE
-                                                      : SKIP_BODY;
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param str DOCUMENT ME!
-    */
-   public final void setEvent(String str)
-   {
-      event = str;
-   }
+	/**
+	 * DOCUMENT ME!
+	 *
+	 * @param str DOCUMENT ME!
+	 */
+	public final void setEvent(String str) {
+		event = str;
+	}
 
 
-   /**
-    * DOCUMENT ME!
-    *
-    * @param str DOCUMENT ME!
-    */
-   public final void setDefaultValue(String str)
-   {
-      value = new Boolean(str);
-   }
+	/**
+	 * @return
+	 */
+	public String getValue() {
+		return value;
+	}
+
+	/**
+	 * @param string
+	 */
+	public void setValue(String string) {
+		value = string;
+	}
+
 }
