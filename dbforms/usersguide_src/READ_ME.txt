@@ -1,22 +1,21 @@
 Note: The DocBook_UsersGuide has relative links to the Tag Library that will be broken if either resource is moved.  Specifically, there are 3-4 places (in sorting, taglib apendix etc) where ../../taglib/DbFormsTags_Frame.html is used within the UsersGuide to link to the tag library.
 
-To build it, you will need to do four things:
+To build it, you will need to do three things:
 
-1)  in dbforms/docs.xml set  <property name="UsersGuide.dir" value="your-path-to/dbforms/usersguide_src"/> 
-
-2)  in your environment set DOCBOOK_HOME
+ 
+1)  in your environment set DOCBOOK_HOME
 
     -or-
     
     in dbforms/docs.xml set <property name="docbookHome.dir" value="your-path-to-your/DOCBOOK_HOME"/>
 
-3)  in your environment set FOP_HOME
+2)  in your environment set FOP_HOME
 
     -or-
 
     in dbforms/docs.xml set <property name="fopHome.dir" value="your-path-to-your/FOP-HOME"/>                
 
-4)  Add image support for FOP. The Jimi image library, which is by default used for processing images in PNG and other formats, was removed from the distribution for licensing reasons. So...:
+3)  Add image support for FOP. The Jimi image library, which is by default used for processing images in PNG and other formats, was removed from the distribution for licensing reasons. So...:
 
     Either
 
