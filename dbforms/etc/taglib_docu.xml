@@ -6562,7 +6562,7 @@ An example is like this:
 <pre>
 &lt;db:filter>
 	&lt;db:filterCondition label="author name like">
-		NAME LIKE '%?%'
+		NAME LIKE %?%
 		&lt;db:filterValue/>
 	&lt;/db:filterCondition>
 	&lt;db:filterCondition label="ID > V1 AND ID &lt; V2">
@@ -6571,7 +6571,7 @@ An example is like this:
 		&lt;db:filterValue label="V2" type="numeric"/>
 	&lt;/db:filterCondition>
 	&lt;db:filterCondition label="author equal to">
-		NAME = '?'
+		NAME = ?
 		&lt;db:filterValue type="select">
 			&lt;db:queryData name="q1" query="select distinct name as n1, name as n2 from author where AUTHOR_ID &lt; 100 order by name"/>
 		&lt;/db:filterValue>
