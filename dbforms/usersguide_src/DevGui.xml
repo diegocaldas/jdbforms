@@ -426,6 +426,11 @@
         org.dbforms.devgui.DevGui.main(pars);
         </screen>
         <para>The other DevGui functionality (XSL transformation) can currently not be called via command line, maybe later.</para>
+		<para>Gui mode Command Line parametes:</para>
+        <screen>[-propertyfile &lt;propertyfilename&gt;]</screen>
+		<para>loading the property file where &lt;propertyfilename&gt; is an absolute or relative path to an existing file.</para>
+	    <screen>example: $ java org.dbforms.devgui.DevGui -propertyfile ./dbforms_devgui.config </screen>
+		<para>Gui mode Command Line parameters can't be used along with "createconfigfile".</para>
       </listitem>
     </orderedlist>
   </sect1>
