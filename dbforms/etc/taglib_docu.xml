@@ -5646,7 +5646,19 @@ the toplevel form to jump to [may be deprecated soon]</info>
                                                 destination=&quot;/viewSample.jsp&quot;<br/>
                         destTable=&quot;Sample&quot; 
                         keyToKeyDestPos=&quot;test&quot;/&gt;</p>
-                        Check "customerlist.jsp" in example!
+                        <p>Check "customerlist.jsp" in example!</p>
+                        <p>Example for single form (works with mutilple key columns):</p>
+                        <p>&lt;db:body&gt;<br/>
+   &lt;input type=&quot;hidden&quot; name=&quot;currentRow&quot; value=&quot;&lt;db:pos&gt;&quot;/&gt;<br/>
+&lt;/db:body&gt;<br/>
+
+&lt;db:footer&gt;<br/>
+ 
+            &lt;db:gotoButton  <br/> 
+                             caption=&quot;View Sample Details&quot;  
+                             destination=&quot;/viewSample.jsp&quot;<br/>
+                             destTable=&quot;Sample&quot; 
+                             keyToDestPos=&quot;currentRow&quot;/&gt;</p>
                      </info>
 				</attribute>
 				<attribute>
