@@ -17,7 +17,7 @@
     <title id="prereqs">Prerequisites</title>
     <orderedlist numeration="upperroman">
       <listitem>
-        <para>Download and install a Java2 Development Kit implementation for your operating system platform (version 1.3 or later to run a bininary distribution, version 1.4 or later to compile from source.  Compiling with 1.3 is also possible with some changes to the source code [ToDo: document needed changes to compile with 1.3]).</para>
+        <para>Download and install a Java2 Development Kit implementation for your operating system platform (version 1.3 or later to run a bininary distribution, version 1.4 or later to compile from source.  Compiling with 1.3 is also possible with some changes to the source code to comment out the JDBC 3.0 code in SingleConnectionWrapper[ToDo: document needed changes to compile with 1.3]).</para>
       </listitem>
       <listitem>
         <para>Define an environment variable JAVA_HOME that points at the base directory of your JDK installation, and add the directory "$JAVA_HOME/bin" to your PATH variable.</para>
@@ -35,7 +35,7 @@
           <computeroutput>dbforms/dependend</computeroutput> dir to your application's 
           <computeroutput>WEB-INF/lib</computeroutput> directory 
         </para>
-
+        <para>To run under java 1.3, you will also need the jars from <computeroutput>dependend/jdk1.3/</computeroutput></para>
         <para>Note: for Tomcat, it is not necessary to copy
           <computeroutput>servlet.jar</computeroutput> as it is already included in Tomcat.  However, even if you do put it in your 
           <computeroutput>lib</computeroutput> dir, the application will still function though there will be an error about the servlet.jar not being loaded logged.
