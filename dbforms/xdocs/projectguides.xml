@@ -3,131 +3,57 @@
 
   <properties>
     <author email="fossato@pow2.com">Luca Fossato</author>
-    <title>DbForms: user guide</title>
+    <title>DbForms: project guides</title>
   </properties>
 
 <body>
 
 <section name="Project guides">
- <subsection name="User Guide">
+
+ <subsection name="User guide">
    <p> 
-     The user's guide ... blah blah blah
-	 <br/>
-	 <a href="usersguide/html/index.html" target="_top">here</a>
+     The user guide ... blah blah blah
+   </p>
+   <p>
+	  <table width="500" border="1" cellspacing="0" cellpadding="2">
+	  <tr> 
+	    <th width="200">file type</th>
+		<th>link</th>
+      </tr>
+      <tr> 
+	    <td>HTML</td>
+		<td><a href="usersguide/html/index.html" target="_top">here</a></td>
+	  </tr>
+      <tr> 
+	    <td>PDF</td>
+		<td><a href="usersguide/pdf/DbForms_UsersGuide.pdf" target="_top">here</a></td>
+	  </tr>
+	  </table>
    </p>
  </subsection>
 
  <subsection name="Tag library reference">
    <p> 
      The tag library reference ... blah blah blah
-	 <br/>
-	 <a href="taglib/DbFormsTags_Frame.html" target="_top">here</a>
+   </p>
+   <p>
+      <table width="500" border="1" cellspacing="0" cellpadding="2">
+      <tr> 
+        <th width="200">file type</th>
+        <th>link</th>
+      </tr>
+      <tr> 
+        <td>HTML</td>
+        <td><a href="taglib/DbFormsTags_Frame.html" target="_top">here</a></td>
+      </tr>
+      <tr> 
+        <td>PDF</td>
+        <td><a href="taglib/DbFormsTags.pdf" target="_top">here</a></td>
+      </tr>
+      </table>
    </p>
  </subsection>
 </section>
-
-<!--
-<section name="User guide">
- <subsection name="Guide v1.1.3 pr1">
-    <p>
-	  This is the main DbForms guide (Files are zip compressed)
-	  <br/>
-
-	  <table width="500" border="1" cellspacing="0" cellpadding="2">
-	  <tr> 
-	    <th width="200">file type</th>
-		<th>file size</th>
-		<th>date</th>
-		<th>download</th>
-      </tr>
-      <tr> 
-	    <td>Microsoft Word</td>
-		<td>740 Kbytes</td>
-		<td>23-Nov-2002</td>
-		<td>
-		  <a href="http://jdbforms.sourceforge.net/non-cvs/docs/usersguide/word/current/DbForms_UserGuide_v1_1_3pr1.zip">
-		    download</a>
-		</td>
-	  </tr>
-	  <tr>
-	    <td>Adobe PDF <font size="-1"><b>clickable links</b></font></td>		
-	    <td>713 Kbytes</td>
-	    <td>23-Nov-2002</td>		
-	    <td>
-          <a href="http://prdownloads.sourceforge.net/jdbforms/DbForms_UserGuide_v1_1_3pr1_pdf.zip?download">
-	      download</a>
-        </td>
-	  </tr>
-	  </table>
-    </p>
-  </subsection>
-
-  <subsection name="Guide 1.1.3pr1's suppliment">
-    <p>
-	  This guide contains info on:<br/>
-	  <ul>
-	    <li>Avoiding Navigation Errors</li>
-		<li>Changing Key Values in Interceptors</li>
-		<li>Pluggable Events system</li>
-		<li>EJBs integration</li>
-		<li>Jump-Starting a MS SQL Server Database</li>
-	  </ul>
-    </p>
-    <p>
-	  <table width="500" border="1" cellspacing="0" cellpadding="2">
-	  <tr> 
-	    <th width="200">file type</th>
-		<th>file size</th>
-		<th>date</th>
-		<th>download</th>
-      </tr>
-      <tr> 
-        <td>
-          Adobe PDF <font size="-1"><b>clickable Links</b></font>
-        </td>
-		<td>33 Kbytes</td>
-		<td>29-Jan-2003</td>
-		<td>
-		  <a href="http://prdownloads.sourceforge.net/jdbforms/DbForms_UsersGuide_Suppliment.pdf.zip?download">
-		    download</a>
-        </td>
-      </tr>
-	  </table>
-    </p>
-  </subsection>
-
-  <subsection name="Guide v1.1">
-    <p>
-	  <table width="500" border="1" cellspacing="0" cellpadding="2">
-	  <tr width="200"> 
-	    <th>file type</th>
-		<th>file size</th>
-		<th>date</th>
-		<th>download</th>
-      </tr>
-	  <tr>
-		<td>Microsoft Word</td>
-		<td>2.95 Mbytes</td>
-		<td>19-Apr-2002</td>
-		<td>
-          <a href="http://jdbforms.sourceforge.net/non-cvs/docs/usersguide/word/DbForms_UserGuide_v1_1.doc">download</a>
-        </td>
-	  </tr>
-	  <tr>
-		<td>Adobe PDF</td>
-		<td>0.63 Mbytes</td>
-		<td></td>
-		<td>
-		  <a href="http://prdownloads.sourceforge.net/jdbforms/DbForms_UserGuide_v1_1_pdf.zip?download">download</a>
-		</td>
-	  </tr>
-	  </table>
-	</p>
-  </subsection>
-
-</section>
--->
-
 
 </body>
 </document>
