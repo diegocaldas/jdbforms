@@ -1,4 +1,5 @@
 <%@ taglib uri="/WEB-INF/dbforms.tld" prefix="db" %>
+<%@ taglib uri="/WEB-INF/c-el.tld" prefix="c" %>
 <%@ page import="org.dbforms.taglib.DbFormContext" %>
 <%@ page import="org.dbforms.config.ResultSetVector" %>
 <%
@@ -17,6 +18,7 @@
 			<tr><td>--></td><td colspan="3">: DbFormContext.getCurrentRow()</td></tr>
 			<tr><td>==></td><td colspan="3">: DbFormContext.getRsv().getCurrentRow()</td></tr>
 			<tr><td>>>></td><td colspan="3">: currentRow_BOOK</td></tr>
+			<tr><td>++></td><td colspan="3">: c:out</td></tr>
 			<tr><td>**></td><td colspan="3">: rsv_BOOK</td></tr>
 			<tr><td colspan="4">--------------------------------------------------------------------------------</td></tr>
 			<db:dbform
@@ -58,6 +60,13 @@
 						<td> <%= currentRow_BOOK.get("ISBN") %>&nbsp;</td>
 						<td> <%= currentRow_BOOK.get("AUTHOR_ID") %>&nbsp;</td>
 						<td> <%= currentRow_BOOK.get("TITLE") %>&nbsp;</td>
+					</tr>
+					<tr>
+						<td>++><c:out value="${position_BOOK}"/>&nbsp;</td>
+						<td> <c:out value="${currentRow_BOOK.BOOK_ID}" />&nbsp;</td>
+						<td> <c:out value="${currentRow_BOOK.ISBN}" />&nbsp;</td>
+						<td> <c:out value="${currentRow_BOOK.AUTHOR_ID}" />&nbsp;</td>
+						<td> <c:out value="${currentRow_BOOK.TITLE}" />&nbsp;</td>
 					</tr>
 					<tr>
 						<td>**>&nbsp;</td>
