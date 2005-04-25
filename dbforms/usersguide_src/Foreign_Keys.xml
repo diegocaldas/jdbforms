@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <chapter>
-  <title>Foreign Key support within dbforms
+  <title id="foreign">Foreign Key support within dbforms
 </title>
   <sect1>
     <title>Introduction
@@ -41,23 +41,23 @@ Foreign key information is available within running web application to be used b
 
       </title>
       <screen> 
-    &lt;!ELEMENT foreign-key (reference+)&gt;
+   &lt;!ELEMENT foreign-key (reference+)&gt;
 
-    &lt;!ATTLIST foreign-key
-        foreignTable    CDATA #REQUIRED
-        name            CDATA #REQUIRED
-        visibleFields   CDATA #IMPLIED
-        format          CDATA #IMPLIED
-        displayType (select|radio|none) "none"
-    &gt;
+   &lt;!ATTLIST foreign-key
+       foreignTable    CDATA #REQUIRED
+       name            CDATA #REQUIRED
+       visibleFields   CDATA #IMPLIED
+       format          CDATA #IMPLIED
+       displayType (select|radio|none) "none"
+   &gt;
 
 
-    &lt;!ELEMENT reference EMPTY&gt;
+   &lt;!ELEMENT reference EMPTY&gt;
 
-    &lt;!ATTLIST reference
-        local           CDATA #REQUIRED
-        foreign         CDATA #REQUIRED
-    &gt;
+   &lt;!ATTLIST reference
+       local           CDATA #REQUIRED
+       foreign         CDATA #REQUIRED
+   &gt;
 
  </screen>
     </sect2>
@@ -68,25 +68,25 @@ Foreign key information is available within running web application to be used b
 
       </title>
       <screen> 
-        create table 
-        <emphasis role="bold">customer</emphasis>
-            (cno integer not null primary key,
-            first_name char(20) not null,
-            last_name  char(20) not null
-            phone      char(20) not null,
-            ...
-            )
+   create table 
+   <emphasis role="bold">customer</emphasis>
+       (cno integer not null primary key,
+       first_name char(20) not null,
+       last_name  char(20) not null
+       phone      char(20) not null,
+       ...
+       )
 
-        create table 
-        <emphasis role="bold">order</emphasis>
-            (orderno integer not null primary key,
-            cust_no integer not null,
-            order_date date not null,
-            ...
-            constraint customer_known_in_order
-                foreign key (cust_no)
-                references customer(cno)
-            )
+   create table 
+   <emphasis role="bold">order</emphasis>
+       (orderno integer not null primary key,
+       cust_no integer not null,
+       order_date date not null,
+       ...
+       constraint customer_known_in_order
+           foreign key (cust_no)
+           references customer(cno)
+       )
   
       </screen>
     </sect2>
@@ -95,38 +95,36 @@ Foreign key information is available within running web application to be used b
         <emphasis role="bold">dbforms-config.xml</emphasis> you could write:
       </title>
       <screen> 
-    &lt;table name="customer"&gt;
-        &lt;field name="cno" fieldType="integer" isKey="true"/&gt;
-        &lt;field name="first_name" fieldType="char" size="20"/&gt;
-        &lt;field name="last_name" fieldType="char" size="20"/&gt;
-        &lt;field name="phone" fieldType="char" size="20"/&gt;
-        ...
-    &lt;table&gt;
+   &lt;table name="customer"&gt;
+       &lt;field name="cno" fieldType="integer" isKey="true"/&gt;
+       &lt;field name="first_name" fieldType="char" size="20"/&gt;
+       &lt;field name="last_name" fieldType="char" size="20"/&gt;
+       &lt;field name="phone" fieldType="char" size="20"/&gt;
+       ...
+   &lt;table&gt;
 
-    &lt;table name="order"&gt;
-        &lt;field name="cno" fieldType="integer" isKey="true"/&gt;
-        &lt;field name="cust_no" fieldType="integer"/&gt;
-        &lt;field name="order_date" fieldType="date"/&gt;
-        ...
+   &lt;table name="order"&gt;
+       &lt;field name="cno" fieldType="integer" isKey="true"/&gt;
+       &lt;field name="cust_no" fieldType="integer"/&gt;
+       &lt;field name="order_date" fieldType="date"/&gt;
+       ...
 
-        
-        <emphasis role="bold">&lt;foreign-key</emphasis> foreignTable="customer"
 
-                  name="customer_in_order"
+       <emphasis role="bold">&lt;foreign-key</emphasis> foreignTable="customer"
 
-                  displayType="select"
+                 name="customer_in_order"
 
-                  visibleFields="first_name,last_name,phone"
+                 displayType="select"
 
-                  format="%s %s (Phone %s)" &gt;
-                  
-            
-        <emphasis role="bold">&lt;reference</emphasis> local="cust_no" foreign="cno"/&gt;
-        
-        <emphasis role="bold">&lt;/foreign-key&gt;</emphasis>
-    &lt;/table&gt;
- 
- 
+                 visibleFields="first_name,last_name,phone"
+
+                 format="%s %s (Phone %s)" &gt;
+
+
+       <emphasis role="bold">&lt;reference</emphasis> local="cust_no" foreign="cno"/&gt;
+
+       <emphasis role="bold">&lt;/foreign-key&gt;</emphasis>
+   &lt;/table&gt;
       </screen>
       <itemizedlist mark="opencircle">
         <listitem>
@@ -192,14 +190,12 @@ Foreign key information is available within running web application to be used b
                     <para>If a key consists of more than one column, there will be more than one nested tag, e.g. if the customer is just unique within an area, we'd have:
         
                       <screen>
-                        <emphasis role="bold">&lt;foreign-key</emphasis> foreignTable="customer" ...&gt;
+   <emphasis role="bold">&lt;foreign-key</emphasis> foreignTable="customer" ...&gt;
         
-                        <emphasis role="bold">&lt;reference</emphasis> local="area_id" foreign="area_id"/&gt;
+     <emphasis role="bold">&lt;reference</emphasis> local="area_id" foreign="area_id"/&gt;
         
-                        <emphasis role="bold">&lt;reference</emphasis> local="cust_no" foreign="cno"/&gt;
+     <emphasis role="bold">&lt;reference</emphasis> local="cust_no" foreign="cno"/&gt;
     &lt;/foreign-key&gt;        
-         
-        
                       </screen>
                     </para>
                   </blockquote>
@@ -222,17 +218,17 @@ Foreign key information is available within running web application to be used b
 </para>
     <blockquote>
       <screen>
-        <emphasis role="bold">&lt;db:select</emphasis> fieldName="cust_no"&gt;
+   <emphasis role="bold">&lt;db:select</emphasis> fieldName="cust_no"&gt;
         
-        <emphasis role="bold">&lt;db:tableData</emphasis>
-            name="customer_in_order"
-            foreignTable="customer"
-            visibleFields="first_name,last_name,phone"
-            format="%s %s (Phone %s)"
-            storeField="cno" 
-        
-        <emphasis role="bold">/&gt;</emphasis>
-        <emphasis role="bold">&lt;/db:select&gt;</emphasis>
+   <emphasis role="bold">&lt;db:tableData</emphasis>
+       name="customer_in_order"
+       foreignTable="customer"
+       visibleFields="first_name,last_name,phone"
+       format="%s %s (Phone %s)"
+       storeField="cno" 
+
+   <emphasis role="bold">/&gt;</emphasis>
+   <emphasis role="bold">&lt;/db:select&gt;</emphasis>
       </screen>
     </blockquote>
   </sect1>
@@ -265,7 +261,7 @@ Foreign key information is available within running web application to be used b
       <blockquote>
         <screen>
  
-&lt;table name="customer"
+   &lt;table name="customer"
     
           <emphasis role="bold">defaultVisibleFields</emphasis>="first_name,last_name,phone"
     
@@ -277,26 +273,22 @@ Foreign key information is available within running web application to be used b
         &lt;field name="phone" fieldType="char" size="20"/&gt;
       ...
 
-&lt;table&gt;
+   &lt;table&gt;
 
-&lt;table name="order"&gt;
-        &lt;field name="cno" fieldType="integer" isKey="true"/&gt;
-        &lt;field name="cust_no" fieldType="integer"/&gt;
-        &lt;field name="order_date" fieldType="date"/&gt;
-        ...
+   &lt;table name="order"&gt;
+      &lt;field name="cno" fieldType="integer" isKey="true"/&gt;
+      &lt;field name="cust_no" fieldType="integer"/&gt;
+      &lt;field name="order_date" fieldType="date"/&gt;
+      ...
             
-          <emphasis role="bold">&lt;foreign-key</emphasis> foreignTable="customer"
-                name="customer_in_order"
-                displayType="select"  &gt;
+      <emphasis role="bold">&lt;foreign-key</emphasis> foreignTable="customer"
+         name="customer_in_order"
+         displayType="select"  &gt;
             
-          <emphasis role="bold">&lt;reference</emphasis> local="cust_no" foreign="cno"/&gt;
+      <emphasis role="bold">&lt;reference</emphasis> local="cust_no" foreign="cno"/&gt;
             
-          <emphasis role="bold">&lt;/foreign-key&gt;</emphasis>
-&lt;/table&gt;
-
- 
- 
-
+      <emphasis role="bold">&lt;/foreign-key&gt;</emphasis>
+   &lt;/table&gt;
         </screen>
       </blockquote>
     </sect2>

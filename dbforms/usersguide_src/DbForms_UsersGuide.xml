@@ -7,6 +7,7 @@
 	<!ENTITY inst SYSTEM "Installation.xml">
 	<!ENTITY jsms SYSTEM "JumpStart_MS_Server_Database.xml">
 	<!ENTITY tuto SYSTEM "Tutorial.xml">
+	<!ENTITY conf SYSTEM "Configuration.xml">
 	<!ENTITY secu SYSTEM "Security.xml">
 	<!ENTITY uplo SYSTEM "Fileuploads.xml">
 	<!ENTITY styl SYSTEM "Styling.xml">
@@ -40,7 +41,8 @@
 	<!ENTITY data_fields SYSTEM "Data_Fields.xml">
 ]>
 <book>
-	<title>DataBaseForms UsersGuide</title>
+	<title>DbForms User's Guide</title>
+        <subtitle>Version 2.5</subtitle>
 <part>
 	<title>Background</title>
 &pref;
@@ -59,6 +61,7 @@
 </part>
 <part>
 	<title>Advanced Use and Extensions</title>
+&conf;    
 &secu;
 &uplo;
 &styl;

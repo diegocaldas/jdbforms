@@ -47,7 +47,7 @@
     </orderedlist>
   </sect1>
   <sect1>
-    <title>running the examples</title>
+    <title>Running the examples</title>
     <orderedlist numeration="lowerroman">
       <listitem>
         <para>create the database by executing the SQL commands listed in example/*/WEB-INF/*.sql</para>
@@ -78,99 +78,118 @@
     </orderedlist>
   </sect1>
   <sect1>
-    <title>Building your own DbForms- capable applications</title>
+    <title id="building-appls">
+      Building your own DbForms-capable applications
+    </title>
+    <para>
+Use the checklist below as a guide for setting up a DbForms application.
+    </para>
     <orderedlist numeration="lowerroman">
       <listitem>
-        <para>Copy the files "
-          <computeroutput>dist/dbforms.tld</computeroutput>" from the DbForms distribution into the "
-          <computeroutput>WEB-INF</computeroutput>" directory of your web application.
-          <footnote>
+        <para>
+Copy the file <computeroutput>dist/dbforms.tld</computeroutput> from
+the DbForms distribution into the
+<computeroutput>WEB-INF</computeroutput> directory of your web
+application.
+          <note>
             <para>
-              NOTE: the file "dbforms.tld" was named "taglib.tld" in some prior versions. this name was too generic and the risk of naming conflicts was too big, therefore we changed the name. Be sure to use "dbforms.tld"!
+The file <computeroutput>dbforms.tld</computeroutput> was named
+<computeroutput>taglib.tld</computeroutput> in some prior
+versions. The name <computeroutput>taglib.tld</computeroutput> was
+changed because the name was too generic and the risk of naming
+conflicts too great.
             </para>
-          </footnote>
+          </note>
         </para>
       </listitem>
       <listitem>
         <para>
-         Copy the file "<computeroutput>dist/dbforms_v?.jar</computeroutput>"
-         from the DbForms distribution into the "<computeroutput>WEB-INF/lib</computeroutput>" 
+         Copy the file <computeroutput>dist/dbforms_v?.jar</computeroutput>
+         from the DbForms distribution into the "<computeroutput>WEB-INF/lib</computeroutput> 
          directory of your web application
         </para>
       </listitem>
       <listitem>
         <para>
-          Copy the jars (listed in 
-          <link linkend="prereqs">prerequisites</link> section) into the 
-          "<computeroutput>WEB-INF/lib</computeroutput>" directory of your web application.
+          Copy the jars listed in the 
+          <link linkend="prereqs">prerequisites</link> section into the 
+          <computeroutput>WEB-INF/lib</computeroutput> directory of your web application.
         </para>
       </listitem>
       <listitem>
-        <para>Modify your "<computeroutput>WEB-INF/web.xml</computeroutput>" file to include:</para>
+        <para>Modify your <computeroutput>WEB-INF/web.xml</computeroutput> file to include:</para>
         <itemizedlist mark="opencircle">
           <listitem>
             <para>
-              Three &lt;servlet&gt; elements to define the controller -- (
-              <link linkend="depldesc">the config and the file-servlet and mappings</link>) 
+Three &lt;servlet&gt; elements to define the control, <link
+linkend="depldesc">config, and file servlets and their URL
+mappings</link>.  Other servlets may also be needed for additional
+capabilities such as JasperReports, Excel output, and CSV output.
             </para>
           </listitem>
           <listitem>
             <para>
-              
-              <link linkend="taglibdesc"> a tag library declaration</link> for the Dbforms tag library 
+              <link linkend="taglibdesc">A tag library declaration</link> for the Dbforms tag library.
             </para>
           </listitem>
           <listitem>
-            <para><link linkend="secr">security measures </link> for your application(
-              
+            <para><link linkend="secr">Security measures </link> for your application.
             </para>
           </listitem>
         </itemizedlist>
       </listitem>
       <listitem>
         <para>
-          Create a file "<computeroutput>WEB-INF/dbforms-config.xml</computeroutput>" 
-          that defines the tables, fields and the database connection to use. See a 
-          <link linkend="sampConfig"> simple sample here </link>. This can be GENERATED AUTOMATICALLY (along with jsp pages) by using 
-          <link linkend="devgui">DEVGUI</link>
+          Create a file
+          <computeroutput>WEB-INF/dbforms-config.xml</computeroutput>
+          that defines the tables, fields and the database connection
+          to use. See <xref linkend="config"/> for details of the contents
+          of this file. This can be generated AUTOMATICALLY (along with jsp
+          pages) by using <link linkend="devgui">DEVGUI</link>.
         </para>
-        <para>It is also possible to use more then one config file as the init param of the <computeroutput>ConfigServlet</computeroutput> in 
+        <para>
+It is also possible to use more than one configuration file.  Simply
+list them with commas between them in the
+<computeroutput>dbformsConfig</computeroutput> init param of the
+<computeroutput>ConfigServlet</computeroutput> in
 <computeroutput>web.xml</computeroutput>:
   <screen>
-    &lt;init-param&gt;
-      &lt;param-name&gt;dbformsConfig&lt;/param-name&gt;
-      &lt;param-value&gt;/WEB-INF/dbforms-config.xml,/WEB-INF/custom/dbforms-config.xml&lt;/param-value&gt;
-    &lt;/init-param&gt;
+&lt;init-param&gt;
+  &lt;param-name&gt;dbformsConfig&lt;/param-name&gt;
+  &lt;param-value&gt;
+    /WEB-INF/dbforms-config.xml,/WEB-INF/custom/dbforms-config.xml
+  &lt;/param-value&gt;
+&lt;/init-param&gt;
     </screen>
         </para>
       </listitem>
       <listitem>
-        <para>Optionally, create a file "
-          <computeroutput>WEB-INF/dbforms-errors.xml</computeroutput>" that defines error messages
-        </para>
         <para>
-          See the 
-          <computeroutput>xmlErrors</computeroutput> tag in the 
-          <ulink url="../../taglib/DbFormsTags_Frame.html">
-            <citetitle>TagLib </citetitle>
-          </ulink> for more information.
+Optionally, create a file 
+<computeroutput>WEB-INF/dbforms-errors.xml</computeroutput> 
+that defines error messages. See the 
+<computeroutput>xmlErrors</computeroutput> tag in the 
+<ulink url="../../taglib/DbFormsTags_Frame.html">
+<citetitle>TagLib </citetitle> </ulink> for more information.
         </para>
       </listitem>
       <listitem>
         <para>
           In each JSP page that will use the DbForms custom tags, add a line at
-          the top of the page like this (for each Struts tag library needed):</para>
-        <screen>
-  &lt;%@ taglib uri="/WEB-INF/dbforms.tld" prefix="db" %&gt;
-        </screen>
-        <para>
-          (If you wish, you can use a prefix other that "db" and you can place the 
-          taglib descriptor to an other place as well!)
+          the top of the page like this (for each Struts tag library needed):
         </para>
-      </listitem>
+        <screen>
+   &lt;%@ taglib uri="/WEB-INF/dbforms.tld" prefix="db" %&gt;
+        </screen>
+<para/><para/>  <!-- Hack to get around bad footnote area  -->
+        <para>
+          If you wish, you can use a prefix other that "db" and you can 
+          place the taglib descriptor in an other place as well!
+        </para>
+     </listitem>
       <listitem>
         <para>Finally, 
-          <link linkend="typStruc">verify the structure</link> of your deployment, and make sure that the database configuration you're pointing to in 
+          <link linkend="typStruc">Verify the structure</link> of your deployment, and make sure that the database configuration you are pointing to in 
           <computeroutput>dbforms-config.xml</computeroutput>is really working. Whether this is an easy task or not, depends heavily on the server you are using.
         </para>
         <para>

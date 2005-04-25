@@ -20,21 +20,23 @@
       previous means such as:
     </para>
     <screen>
-  &lt;!-- ========== non-connectionFactory connections ================= --&gt;
-  &lt;!--
-    uncomment this for JNDI connections
-    &lt;dbconnection 
-      name = "jdbc/dbformstest"
-      isJndi = "true"
-    /&gt;
-  --&gt;
+  &lt;dbconnection 
+     name = "java:comp/env/jdbc/resource"
+     isJndi = "true" /&gt;
+    </screen>
+<para>
+where <computeroutput>jdbc/resource</computeroutput> should match a
+resource defined in the servlet container and 
+</para>
+
+    <screen>
   
-  <emphasis role="bold">&lt;dbconnection</emphasis>
-    name     = "jdbc:mysql://localhost/test"
-    isJndi   = "false"
-    conClass = "org.gjt.mm.mysql.Driver"
-    username = "somename"
-    password = "somepass"<emphasis role="bold">/&gt;</emphasis>
+  &lt;dbconnection
+     name     = "jdbc:mysql://localhost/test"
+     isJndi   = "false"
+     conClass = "org.gjt.mm.mysql.Driver"
+     username = "somename"
+     password = "somepass" /&gt;
     </screen>
     <sect2>
       <title>Included ConnectionProvider classes</title>

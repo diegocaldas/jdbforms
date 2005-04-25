@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <chapter>
-  <title>Security
-</title>
+  <title id="security">Security</title>
   <sect1>
     <title>Introduction</title>
     <para>
@@ -62,7 +61,7 @@
     </para>
     <para>This is where DbForms security concept steps in:</para>
   </sect1>
-  <sect1 id="security">
+  <sect1 id="security-concept">
     <title>Security concept of DbForms</title>
     <para>
       DbForms provides fine-grained definition of rights for data-access and manipulation. 
