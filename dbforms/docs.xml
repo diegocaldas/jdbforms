@@ -53,7 +53,10 @@
 
 
   <!-- Main stylesheets -->
+<!--
   <property name="sSheetHome.dir" value="${docbookHome.dir}"/>
+-->
+  <property name="sSheetHome.dir" value="${basedir}/xsl-stylesheets"/>
 
   <!-- 
      -  Main Docbook stylesheet
