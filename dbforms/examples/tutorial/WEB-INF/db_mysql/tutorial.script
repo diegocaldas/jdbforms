@@ -1,0 +1,131 @@
+DROP TABLE services;
+CREATE TABLE services 
+(
+  id          int        NOT NULL PRIMARY KEY,
+  name        char (30)  NULL,
+  description char (255) NULL
+);
+
+DROP TABLE customers;
+CREATE TABLE customers 
+(
+  id        int       NOT NULL PRIMARY KEY,
+  firstname char (50) NULL,
+  lastname  char (50) NULL,
+  address   char (30) NULL,
+  pcode     char (10) NULL,
+  city      char (40) NULL
+);
+
+DROP TABLE orders;
+CREATE TABLE orders
+(
+  order_id     int       AUTO_INCREMENT,
+  customer_id  int       NOT NULL,
+  service_id   int       NULL,
+  orderdate    char (20) NULL,
+  PRIMARY KEY ( order_id, customer_id )
+);
+
+DROP TABLE complaints;
+CREATE TABLE complaints 
+(
+  complaint_id int        AUTO_INCREMENT,
+  customer_id  int        NOT NULL,
+  usermessage  char (255) NULL,
+  incomingdate char (20)  NULL,
+  priority     int        NULL,
+  PRIMARY KEY ( complaint_id, customer_id )
+);
+
+DROP TABLE priorities;
+CREATE TABLE priorities
+(
+  id          int        NOT NULL PRIMARY KEY,
+  shortname   char (12)  NULL,
+  description char (100) NULL
+);
+
+INSERT INTO services (id, name, description) VALUES
+(100, 'catching dogs', 'Your dog ran away?  We can find him');
+INSERT INTO services (id, name, description) VALUES
+(101, 'catching cats', 'Your kitty ran away? We can find her');
+INSERT INTO services (id, name, description) VALUES
+(102, 'catching parrots', 'You can''t find your parrot?  We can find it');
+INSERT INTO services  (id, name, description) VALUES
+(103, 'snake elimination', 'Found a snake?  We can take care of it');
+
+INSERT INTO customers (id, firstname, lastname, address, pcode, city) 
+VALUES (1, 'Jeff', 'Clever', 'Picadilly Circus 12', '1212', 'London');
+INSERT INTO customers (id, firstname, lastname, address, pcode, city) 
+VALUES (2, 'Frank', 'Berger', 'Am Graben 12', '1010', 'Vienna');
+INSERT INTO customers (id, firstname, lastname, address, pcode, city) 
+VALUES (3, 'Charles', 'Peterson', 'Baker Street 2', '2563', 'Manchester');
+INSERT INTO customers (id, firstname, lastname, address, pcode, city) 
+VALUES (4, 'Susan', 'Miller', 'Bourbon Street 689/1', '6789', 'Glasgow');
+
+INSERT INTO orders (order_id, customer_id, service_id, orderdate)
+VALUES (1, 1, 101, '2000-10-10');
+INSERT INTO orders (order_id, customer_id, service_id, orderdate)
+VALUES (2, 1, 100, '2000-12-10');
+INSERT INTO orders (order_id, customer_id, service_id, orderdate)
+VALUES(3,1,103,'2000-08-31');
+INSERT INTO orders (order_id, customer_id, service_id, orderdate)
+VALUES(4,1,102,'2001-02-10');
+INSERT INTO orders (order_id, customer_id, service_id, orderdate)
+VALUES(5,2,100,'2002-03-04');
+INSERT INTO orders (order_id, customer_id, service_id, orderdate)
+VALUES(6,2,100,'2001-12-25');
+INSERT INTO orders (order_id, customer_id, service_id, orderdate)
+VALUES(7,2,103,'2002-01-01');
+INSERT INTO orders (order_id, customer_id, service_id, orderdate)
+VALUES(8,2,102,'2003-10-30');
+INSERT INTO orders (order_id, customer_id, service_id, orderdate)
+VALUES(9,4,102,'2000-06-01');
+INSERT INTO orders (order_id, customer_id, service_id, orderdate)
+VALUES(10,4,102,'2001-01-01');
+
+INSERT INTO complaints (complaint_id, customer_id, usermessage, 
+                        incomingdate, priority)
+VALUES (1, 1, 'you gave me the wrong cat', '2001-01-01', 4);
+INSERT INTO complaints (complaint_id, customer_id, usermessage, 
+                        incomingdate, priority)
+VALUES (2, 1, 'my dog has been lost for over a week', '2001-02-01', 3);
+INSERT INTO complaints (complaint_id, customer_id, usermessage, 
+                        incomingdate, priority)
+VALUES (3, 1, 'I already paid my bill but you sent me another bill', 
+        '2000-08-07', 1);
+INSERT INTO complaints (complaint_id, customer_id, usermessage, 
+                        incomingdate, priority)
+VALUES (4, 1, 'I called 2 days ago but no one has come out to help me yet', 
+        '2000-11-25', 5);
+INSERT INTO complaints (complaint_id, customer_id, usermessage, 
+                        incomingdate, priority)
+VALUES (5, 3, 'my dog is still missing', '2002-02-02', 1);
+INSERT INTO complaints (complaint_id, customer_id, usermessage, 
+                        incomingdate, priority)
+VALUES (6, 3, 'you gave me a cat,  but I lost a dog', '2002-04-01', 2);
+INSERT INTO complaints (complaint_id, customer_id, usermessage, 
+                        incomingdate, priority)
+VALUES (7, 3, 'I just got a bill for both a cat and a dog', '2002-06-01', 4);
+INSERT INTO complaints (complaint_id, customer_id, usermessage, 
+                        incomingdate, priority)
+VALUES (8, 3, 'I haven''t lost anything in a long time', '2002-09-07', 1);
+INSERT INTO complaints (complaint_id, customer_id, usermessage, 
+                        incomingdate, priority)
+VALUES (9, 4, 'you haven''t returned my call', '2000-01-31', 1);
+INSERT INTO complaints (complaint_id, customer_id, usermessage, 
+                        incomingdate, priority)
+VALUES (10, 4, 'my parrot has been stuck in the maple tree for 2 days',
+        '2001-02-03', 3);
+
+INSERT INTO priorities (id, shortname, description)
+VALUES (1, 'relaxed', 'Just letting us know');
+INSERT INTO priorities (id, shortname, description)
+VALUES (2, 'irritated', 'We are on probation');
+INSERT INTO priorities (id, shortname, description)
+VALUES (3, 'upset', 'Thinks we owe compensation');
+INSERT INTO priorities (id, shortname, description)
+VALUES (4, 'angry', 'Probable loss of future business');
+INSERT INTO priorities (id, shortname, description)
+VALUES (5, 'enraged', 'Threatens legal action');
