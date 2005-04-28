@@ -4,9 +4,9 @@
   <title>Introduction</title>
   <sect1>
     <title>Technical background</title>
-    <para>DbForms is based on the following specifications: Java Servlets 2.3 and Java Server Pages 1.2 by Sun Microsystems. For more information on server-side Java technology please see [Servlet]</para>
-    <para>DbForms makes extensively use of the JSP Tag Library Extension included in the JSP 1.2 specification. [Taglib]</para>
-    <para>XML parsing facilities and other parts of DbForms are based on code taken from Apache Groups Jakarta-Struts project. [Struts]</para>
+    <para>DbForms is based on the following specifications: Java Servlets 2.3 and Java Server Pages 1.2 by Sun Microsystems. For more information on server-side Java technology please see [Servlet].</para>
+    <para>DbForms makes extensive use of the JSP Tag Library Extension included in the JSP 1.2 specification [Taglib].</para>
+    <para>XML parsing facilities and other parts of DbForms are based on code taken from Apache Groups Jakarta-Struts project [Struts].</para>
   </sect1>
   <sect1>
     <title>DbForms concepts</title>
@@ -27,8 +27,13 @@
           </mediaobject>
         </figure>
       </para>
-      <para>Just like most applications and application frameworks, DbForms does not completely separate these three components. For instance, the 
-        <emphasis role="bold">Controller Servlet</emphasis> is declared to be the Controller Component of DbForms, however, consider the use of a hyperlink rendered by the users web browser: clicking on it will trigger some operation  hence controller functionality.  It is not my intention to set off into an in-depth discussion of the MVC-paradigm, but rather to use its concepts as a useful metaphor for explaining the components of DbForms.
+      <para>Like most applications and application frameworks,
+        DbForms does not completely separate these three
+        components. For instance, the <emphasis role="bold">Controller
+        Servlet</emphasis> is the Controller Component
+        of DbForms.  Consider, however, the use of a hyperlink rendered
+        by the user's web browser: clicking on it will trigger some
+        operation hence implementing some controller functionality.
       </para>
       <sect3>
         <title>The Model: database objects described by database metadata</title>
@@ -78,16 +83,35 @@
           </calloutlist>
         </example>
         <sect4>
-          <title>Defining the logical model</title>
-          <para>DbForms makes no difference whether a table tag really represents a table or just a logical view to one or more (joined) tables. If and under which circumstances you may use views instead of simple tables depends entirely on the RDBMS you use. Before you plan to use views, you should check if your RDBMS support them. DbForms makes no difference between tables and views; therefore this document will refer to only tables from now on.</para>
-          <para>Please see the section on 
-            <link linkend="qSupp">Query Support</link> for more information on how to use 
-            <computeroutput>dbforms-config.xml</computeroutput> to make flexible joins, dynamic queries (which prevents the use of a view in the db) and aliases.
+          <title>Defining the logical model</title> 
+          <para>In DbForms, it makes no difference whether a table tag 
+          really represents a table or just a logical view to one or 
+          more (joined) tables. The circumstances underwhich views may be
+          used instead of simple tables depends entirely on the RDBMS being
+          used. Before using views, check that the RDBMS supports them. 
+          When tables are mentioned in this document in connection to some
+          capability, the same capability may also work with views or 
+          joined tables.</para>
+
+          <para>Please see the section on <link linkend="qSupp">Query
+          Support</link> for more information on how to use the DbForms
+          configuration file
+          <computeroutput>dbforms-config.xml</computeroutput> to specify
+          flexible joins, dynamic queries (which are alternatives for 
+          views in the database) and aliases.
           </para>
         </sect4>
         <sect4 id="dbConn">
           <title>Defining physical access to the model</title>
-          <para>DbForms needs to be able to create connections to the database which contains the tables and fields declared in the dbforms-config.xml file, and following are three examples</para>
+
+          <para>
+            DbForms needs to be able to create connections to the
+            database containing the tables and fields declared in
+            the <computeroutput>dbforms-config.xml</computeroutput> file, 
+            The following subsections show three different examples
+            of these connections.
+          </para>
+
           <para>Versions up to 1.1.2 restrict you to use only 
             <emphasis role="italic">one</emphasis> database per Web-Application. 1.1.2pr1 and after support multiple databases in a single application. 
             <link linkend="multdbcon">See Multiple Database Connections</link> for more info on that.
@@ -102,7 +126,13 @@
     isJndi = "true"<emphasis role="bold">/&gt;</emphasis>
               </programlisting>
             </example>
-            <para>In the example above DbForms assumes that the JNDI-entry "jdbc/dbformstest" is configured correctly in the Application-Server's database configuration [i.e. data-sources.xml]) and takes all the connections it needs from that JNDI-entry.</para>
+            <para>
+              In the example above DbForms assumes that the JNDI-entry
+              "jdbc/dbformstest" is configured correctly in the
+              Application Server or Servlet engine's configuration
+              [i.e. data-sources.xml]) and takes all the connections
+              it needs from that JNDI entry.
+            </para>
           </sect5>
           <sect5 id="dbConn2">
             <title>Using arbitrary connection pool</title>
@@ -116,12 +146,28 @@
     class  = "com.codestudio.sql.PoolMan"<emphasis role="bold">/&gt;</emphasis>
               </programlisting>
             </example>
-            <para>In the example above DbForms assumes that the connection pool-entry called "jdbc:poolman://dbformstest" is correctly configured in the associated connection pool managers properties file and takes all the connections it needs from that connection pool.</para>
-            <para>The actual configuration of data-sources (how many pooled instances to create, duration of invalidation timeouts, etc.) is not in the scope of this user's guide. Please refer to your Application Server/JSP-engine documentation for more details.</para>
+
             <para>
-              <emphasis role="bold">DbForms now makes is easier to use connection pooling with the Protomatter and Jakarta connection pools. See the section on Connection Support for 
-                <link linkend="connSupp">more information (click&gt;</link> on using those or other pools.
-              </emphasis>
+              In the example above DbForms assumes that the connection
+              pool entry called
+              <computeroutput>jdbc:poolman://dbformstest</computeroutput>
+              is correctly configured in the associated connection
+              pool managers properties file and takes all the
+              connections it needs from that connection pool.
+            </para>
+
+            <para>
+              The actual configuration of data sources (how many
+              pooled instances to create, duration of invalidation
+              timeouts, etc.) is not in the scope of this user's
+              guide. Please refer to your Application
+              Server or Servlet engine documentation for more details.
+            </para>
+            <para>
+              DbForms now makes is easier to use connection pooling
+              with the Protomatter and Jakarta connection pools. See
+              <xref linkend="connSupp"/> for more information on using
+              these or other pools.
             </para>
           </sect5>
           <sect5>
@@ -137,18 +183,21 @@
     username = "scott"
     password = "tiger"<emphasis role="bold">/&gt;</emphasis>
               </programlisting>
-              <blockquote>
-                <para>Note:  Many drivers pass in JDBC properties using the URL such as:</para>
-                <screen>
-  &lt;<emphasis role="bold">dbconnection</emphasis> name = "jdbc:mysql://localhost/fashion<emphasis role="bold">?charSet=ISO-8859-1</emphasis>"                            
 
-  ....
+              <para>
+                Note: Many drivers pass in JDBC properties using the
+                URL such as:
+                <screen>
+&lt;<emphasis role="bold">dbconnection</emphasis> name = "jdbc:mysql://localhost/fashion<emphasis role="bold">?charSet=ISO-8859-1</emphasis>"
+
+   ...
                             
                 </screen>
-                <para>If your driver does not allow this and you need to pass in a property, please see 
-                  <link linkend="jdbcProps">another way to set JDBC properties (click)</link>
-                </para>
-              </blockquote>
+                If your driver does not allow this and you need to
+                pass in a property, please see <xref linkend="jdbcProps"/> 
+                for another way to set JDBC
+                properties.
+              </para>
             </example>
           </sect5>
         </sect4>
@@ -160,62 +209,107 @@
           <emphasis role="bold">Controller-Servlet</emphasis>: this servlet is the single-point-of-entry for all incoming HTTP-requests.
         </para>
         <para>
-          <emphasis role="bold">EventEngine</emphasis>: a kind of assistant to the Controller-servlet - it focuses on filtering requests for WebEvents and instantiates them.
+          <emphasis role="bold">EventEngine</emphasis>: a kind of
+          assistant to the Controller-servlet.  It focuses on
+          filtering requests for WebEvents and instantiates them.
         </para>
         <para>
-          <emphasis role="bold">WebEvent-Objects</emphasis>: all Objects derived from this abstract super-class have the ability to initialize themselves by reading a given request. These events get executed either by the controller directly or by the View.
+          <emphasis role="bold">WebEvent Objects</emphasis>: all
+          Objects derived from this abstract super-class have the
+          ability to initialize themselves by reading a given
+          request. These events get executed either by the controller
+          directly or by the View.
         </para>
-        <para>The following should give you a better picture of what the controller does and how it interacts with other components:</para>
+        <para>
+          The following example should give you a better picture of
+          what the controller does and how it interacts with other
+          components:
+        </para>
         <orderedlist numeration="lowerroman">
           <listitem>
-            <para>A user presses the delete row button on his/her DbForms  application.</para>
+            A user presses the delete row button on the DbForms application.
           </listitem>
           <listitem>
-            <para>The client's browser submits data via an HTTP-POST to the Controller-servlet.</para>
+            The user's browser submits data via an HTTP POST command
+            to the Controller servlet.
           </listitem>
           <listitem>
-            <para>The Controller-servlet delegates the incoming request to the EventEngine which determines the main-event. (the event, the user 
-              <emphasis role="italic">explicitly</emphasis> triggered by clicking a button) Secondary - 
-              <emphasis role="italic">implicit</emphasis> events may also have been requested  i.e. automatic updating of all changed input fields of all data rows.
+            <para>The Controller servlet delegates the incoming
+              request to the EventEngine which determines the main or
+              primary event, (the event, the user <emphasis
+              role="italic">explicitly</emphasis> triggered by
+              clicking a button).  Secondary <emphasis
+              role="italic">implicit</emphasis> events may also be
+              generated.  For example, under some circumstances,
+              automatic updates of all changed input fields of all
+              data rows will be generated.
             </para>
           </listitem>
           <listitem>
-            <para>The EventEngine-component parses the request and determines the kind of action the user wants to execute.</para>
+            The EventEngine component parses the request and
+            determines the kind of action the user wants to execute.
           </listitem>
           <listitem>
-            <para>The EventEngine creates the appropriate WebEvent (in our case: a DeleteEvent) and delegates the Request-Object to this newly created WebEvent which finalizes its own initialization. After that, the EventEngine returns the event back to the Controller.</para>
+            The EventEngine creates the appropriate WebEvent (in this
+            case, a DeleteEvent) and delegates the Request object to
+            this newly created WebEvent which performs initializes itself.
+            After that, the EventEngine returns the
+            event back to the Controller.
           </listitem>
           <listitem>
-            <para>The Controller tells the event, if it is a Database-Event, to execute its built-in operation.  Else (Navigation-Events, .etc.), events are delegated to the appropriate View-component.</para>
+            The Controller tells the event, if it is a Database Event,
+            to execute its built-in operation.  Other types of event,
+            e.g. Navigation Events, are delegated to the appropriate
+            View component.
           </listitem>
           <listitem>
-            <para>The controller invokes EventEngine again to check if there are additional (implicit) events to be executed. If so, the appropriate WebEvents-Objects are created and executed in the same manner as the main event described above.</para>
+            The controller invokes EventEngine again to check if there
+            are additional Secondary (implicit) events to be
+            executed. If so, the appropriate WebEvents-Objects are
+            created and executed in the same manner as the main event
+            described above.
           </listitem>
           <listitem>
-            <para>The controller determines the View-component the request should be forwarded to. If found, the controller invokes it and forwards the request to it.</para>
+            The controller determines the View component to which the
+            request should be forwarded.
           </listitem>
           <listitem>
-            <para>If the view-component is a JSP-page containing DbForms  tags, those tags will search for navigation- events to be executed, once completed, a response will be generated.</para>
+            If the View component is a JSP-page containing DbForms
+            tags, those tags will search for Navigation Events to be
+            executed.  Once these are completed, a response will be
+            generated.
           </listitem>
           <listitem>
-            <para>This response is then rendered by the users web browser.</para>
+            This response is then rendered by the user's web browser.
           </listitem>
         </orderedlist>
       </sect3>
       <sect3>
-        <title>The View: JSP templates provided by the Application developer</title>
-        <para>The view-portion of a DbForms- Application is generally constructed using 
-          <emphasis role="bold">JSP-technology</emphasis>. JSP-files may contain static HTML-Elements as well as dynamic elements containing Java-Code (definitions, statements, expressions). For more information about JSP please look into [JSP]
+        <title>The View: JSP templates provided by the application developer</title>
+        <para>
+          The view-portion of a DbForms application is constructed
+          using JSP technology. JSP files may contain static HTML
+          elements as well as dynamic elements containing Java code
+          (definitions, statements, expressions). For more information
+          about JSP, refer to [JSP].
         </para>
-        <para>With release 1.1 of the JSP-API, the concept of 
-          <emphasis role="bold">Custom tag libraries</emphasis> [Taglib] was introduced. Custom tags allow a developer the ability to encapsulate even the most sophisticated Java-code into an easy-to-use lightweight JSP-tag. You may think of Tag libraries as a sort of advanced macro.
+        <para>
+          With release 1.1 of the JSP API, the concept of <emphasis
+          role="bold">Custom tag libraries</emphasis> [Taglib] was
+          introduced. Custom tags allow a developer to encapsulate
+          even the most sophisticated Java code into an easy-to-use
+          lightweight JSP tag. You may think of Tag libraries as a
+          sort of advanced macro.
         </para>
-        <para>DbForms is, essentially, a collection of custom tags for placing data-forms and data-fields on JSP-pages.</para>
-        <sect4>
-          <title>The structure of a DBForms - view</title>
+        <para>
+          DbForms is, essentially, a collection of custom tags for
+          placing data forms and data fields on JSP pages.
+        </para>
+        <sect4 id="DbFormsStructure">
+          <title>The structure of a DBForms View</title>
           <para>
             <figure>
-              <title>main components of a typical view</title>
+              <title>Main components of a typical view</title>
               <mediaobject id="overall_structure_simple_view">
                 <imageobject role="html">
                   <imagedata format="PNG" fileref="images/figures/overall_structure_simple_view.png"/>
@@ -229,22 +323,51 @@
         </sect4>
         <sect4>
           <title>The basic concepts of a dbform</title>
-          <para>Each DbForms-View-JSP may have one or more root tags of the type 
-            <emphasis role="bold">dbform</emphasis>.  Every dbform-tag has to contain exactly 1 header tag, exactly 1 body tag and exactly 1 footer-tag, in exactly that order.
+          <para>
+            Each DbForms View JSP may have one or more root tags of
+            the type <emphasis role="bold">dbform</emphasis>.  Every
+            dbform tag has to contain exactly 1 header tag, exactly 1
+            body tag and exactly 1 footer tag, in exactly that order.
           </para>
-          <para>Each of those tags may contain sub-elements like Data-Fields, Input-Fields, Action-Buttons, and - of course - plain HTML text and JSP code.</para>
-          <para>Header and footer- tags are commonly used for titles of pages, for labeling tables, for placing action and navigation- buttons, input-fields to enter new data, etc.</para>
-          <para>Header and footer- tags get evaluated only once.</para>
-          <para>The body tag is used for showing data-rows coming from the database, and for providing the user with functionality to edit that data. How many times the body tag and its sub-elements get executed (evaluated  rendered) depends on the value of the 
-            <emphasis role="bold">maxRows</emphasis> attribute of the form  element (and of course, on the number of datasets actually stored in the table)
+          <para>
+            Each of those tags may contain subelements such as
+            data fields, input fields, action buttons, and, of course,
+            plain HTML text and JSP code.
           </para>
-          <para>maxRows = n =&gt; body gets executed n times at maximum (with n ( ()</para>
-          <para>maxRows = * =&gt; body gets executed for every row in the table (=&gt;endless form)</para>
+          <para>
+            Header and footer tags are commonly used for titles of
+            pages, for labeling tables, for placing action and
+            navigation buttons, input fields to enter new data, etc.
+          </para>
+          <para>Header and footer tags get evaluated only once.</para>
+          <para>
+            The body tag is used for showing data rows coming from the
+            database, and for providing the user with functionality to
+            edit that data. How many times the body tag and its
+            subelements get executed (i.e., evaluated and rendered)
+            depends on the value of the
+            <computeroutput>maxRows</computeroutput> attribute of the
+            form element (and of course, on the number of rows
+            actually stored in the table).  
+          </para>
+          <para>
+            If <computeroutput>maxRows</computeroutput> is set to a
+            number, the body gets executed up to that many times,
+            limited by the number of rows in the database table.
+          </para>
+          <para>
+            If <computeroutput>maxRows</computeroutput> is set "*",
+            the body gets executed an indefinite number of times,
+            limited only by the number of rows in the database table.  This
+            should be used with caution lest the page become very large.
+          </para>
           <para>
             <emphasis role="bold">Nested forms</emphasis>
           </para>
-          <para>Every form may contain (one or more) nested sub-forms inside its body tag.</para>
-          <para/>
+          <para>
+            Every form may contain (one or more) nested subforms
+            inside its body tag.
+          </para>
           <para>
             <figure>
               <title>Example of a nested form</title>
@@ -258,9 +381,15 @@
               </mediaobject>
             </figure>
           </para>
-          <para>The orders form is nested within the body-element of the customer-form, as shown in Figure 3. The user will see 
-            <emphasis role="italic">one</emphasis> customer per page (because maxRows is set to 1) and 
-            <emphasis role="italic">all</emphasis> the orders (because maxRows = *!) the customer has pending. The user may navigate through the list of customers by clicking the navigation buttons.
+          <para>
+            The orders form is nested within the body element of the
+            customer form. The user will see 
+            <emphasis role="italic">one</emphasis> customer per page 
+            (because <computeroutput>maxRows</computeroutput> is set to 1) 
+            and <emphasis role="italic">all</emphasis> the orders (because
+            <computeroutput>maxRows</computeroutput> = *!) the
+            customer has pending. The user may navigate through the
+            list of customers by clicking the navigation buttons.
           </para>
         </sect4>
       </sect3>
