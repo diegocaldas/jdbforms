@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<%@ taglib uri="/WEB-INF/dbforms.tld" prefix="db" %>
+		<%@ taglib uri="WEB-INF/dbforms.tld" prefix="db" %>
 	</head>
     <body>
 	    <h1>
