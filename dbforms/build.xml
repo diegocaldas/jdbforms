@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 
 <!-- 
 
@@ -215,6 +215,9 @@
     </antcall>
     <antcall target="createExample">
       <param name="example.name" value="bookstore" />
+    </antcall>
+    <antcall target="createExample">
+      <param name="example.name" value="tutorial" />
     </antcall>
     <!-- clean up temporary directories -->
     <antcall target="cleanWorkspace" />

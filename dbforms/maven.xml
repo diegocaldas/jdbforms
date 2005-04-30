@@ -121,6 +121,7 @@
                <include name="bookstore*"/> 
                <include name="testsuite*"/> 
                <include name="bugtracker*"/> 
+               <include name="tutorial*"/> 
             </patternset>
           </fileset>
       </fileScanner>
