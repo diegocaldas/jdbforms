@@ -201,20 +201,20 @@
       </classpath>
     </javac>
     <echo message="finished compiling example specific code" />
-    <!-- creating WAR file for this example -->
+    <copy tofile="${build.dir}/${example.name}/tests/index.html" file="${build.dir}/${example.name}/tests/package.html" failonerror="false" />
     <jar jarfile="${dist.dir}/${example.name}_${dbforms.releaseName}.war" basedir="${build.dir}/${example.name}" includes="*/**" />
   </target>
 
 
   <target name="createAllExamples" depends="generate_taglib" description="--&gt; Create all the examples">
     <antcall target="createExample">
+      <param name="example.name" value="bookstore" />
+    </antcall>
+    <antcall target="createExample">
       <param name="example.name" value="bugtracker" />
     </antcall>
     <antcall target="createExample">
       <param name="example.name" value="testsuite" />
-    </antcall>
-    <antcall target="createExample">
-      <param name="example.name" value="bookstore" />
     </antcall>
     <antcall target="createExample">
       <param name="example.name" value="tutorial" />
