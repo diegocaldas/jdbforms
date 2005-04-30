@@ -1607,7 +1607,7 @@ public class DbFormTag extends TagSupportWithScriptHandler implements
             // it might be invalid if the position of the parent form has been
             // changed (by a navigation event)
             // (=> the position-strings of childforms arent valid anymore)
-            if ((childFieldValues != null) && (firstPosition != null)) {
+            if ((childFieldValues != null) && (!Util.isNull(firstPosition))) {
                 if (!checkLinkage(childFieldValues, firstPosition)) {
                     // checking one of the 2 strings is sufficient
                     // the position info is out of date. we dont use it.
