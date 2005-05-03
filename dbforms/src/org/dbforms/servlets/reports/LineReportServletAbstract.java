@@ -63,9 +63,10 @@ import javax.servlet.http.HttpSession;
  * &lt;servlet-name/&gt;startreport&lt;/servlet-name/&gt;
  * &lt;url-pattern/&gt;/reports/&lt;/url-pattern/&gt; &lt;/servlet-mapping&gt;
  * web.xml optional parameters reportdirs list of directories to search for
- * report file reportMimeType mime type to send to browser Parameters
- * filename=xyz.csv name the output file Support for grabbing data from a
- * Collection or an existing ResultSetVector set session variable "jasper.input"
+ * report file reportMimeType mime type 
+ * to send to browser Parameters filename=xyz.csv name the output file 
+ * Support for grabbing data from a Collection or an existing ResultSetVector 
+ * set session variable "jasper.input"
  * to use a Collection object set session variable "jasper.rsv" to use a
  * ResultSetVector object ex &ltc:set var="jasper.rsv" value="${rsv_xxxxx}"
  * scope="session" /&gt
@@ -199,14 +200,11 @@ public abstract class LineReportServletAbstract extends ReportServletAbstract {
 		return obj;
 	}
 
-	private ReportWriter fillReport(HttpServletRequest request,
+	private ByteArrayOutputStream fillReport(HttpServletRequest request,
 			String[] header, String[] fields, JRDataSourceAbstract dataSource)
 			throws Exception {
-		ReportWriter res = new ReportWriter();
-		res.mimeType = mimeType;
-		res.data = new ByteArrayOutputStream();
-		res.fileName = getFileExtension();
-		openStream(res.data);
+        ByteArrayOutputStream res = new ByteArrayOutputStream();
+		openStream(res);
 		writeHeader(header);
 		// Write out the data
 		Object[] data = new Object[fields.length];
@@ -217,7 +215,7 @@ public abstract class LineReportServletAbstract extends ReportServletAbstract {
 			}
 			writeData(data);
 		}
-		closeStream(res.data);
+		closeStream(res);
 		return res;
 	}
 
@@ -275,15 +273,14 @@ public abstract class LineReportServletAbstract extends ReportServletAbstract {
 				return null;
 			}
 
-			ReportWriter res = fillReport(request, headerFields, reportFields,
+            ReportWriter res = new ReportWriter();
+			res.data = fillReport(request, headerFields, reportFields,
 					dataSource);
-			if (res != null) {
-				StringBuffer buf = new StringBuffer();
-				buf.append(FileUtil.filename(reportFileFullName));
-				buf.append(res.fileName);
-				res.fileName = buf.toString();
+			if (res.data != null) {
+				res.fileName = FileUtil.filename(reportFileFullName) + getFileExtension();
+                res.mimeType = mimeType;
 			}
-			return res;
+            return res;
 		} catch (Exception e) {
 			logCat.error("read report file", e);
 			handleException(request, response, e);

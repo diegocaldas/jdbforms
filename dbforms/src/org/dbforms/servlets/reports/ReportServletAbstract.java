@@ -69,6 +69,7 @@ public abstract class ReportServletAbstract extends HttpServlet {
 			.getName());
 
 	private static final String REPORTCONFIGDIR = "reportdirs";
+    private static final String REPORTNAMEPARAM = "reportname";
 
 	private String[] reportdirs;
 
@@ -249,7 +250,8 @@ public abstract class ReportServletAbstract extends HttpServlet {
 		response.setHeader("Cache-Control",
 				"must-revalidate, post-check=0, pre-check=0");
 		response.setHeader("Pragma", "public");
-		if (!Util.isNull(out.fileName)) {
+		out.fileName = ParseUtil.getParameter(request, REPORTNAMEPARAM, out.fileName);
+        if (!Util.isNull(out.fileName)) {
 			response.setHeader("Content-disposition", "inline; filename="
 					+ out.fileName);
 		}

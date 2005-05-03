@@ -76,8 +76,6 @@ public class JasperReportServlet extends ReportServletAbstract {
                                                  .getName());
    private static final String REPORTFILEEXTENSION = ".jrxml";
 
-   /** DOCUMENT ME! */
-   private static final String REPORTNAMEPARAM = "reportname";
 
    /** DOCUMENT ME! */
    private static final String REPORTTYPEPARAM = "reporttype";
@@ -205,25 +203,19 @@ public class JasperReportServlet extends ReportServletAbstract {
                                                             JasperReportServlet.REPORTTYPEPARAM,
                                                             "PDF");
 
-               // create the output stream
-               String fName = "";
-
                if ("PDF".equals(outputFormat)) {
                   res.mimeType = "application/pdf";
                   res.data     = exportToPDF(jPrint);
-                  fName        = FileUtil.filename(reportFileFullName) + ".pdf";
+                  res.fileName = FileUtil.filename(reportFileFullName) + ".pdf";
                } else if ("XLS".equals(outputFormat)) {
                   res.mimeType = "application/msexcel";
                   res.data     = exportToXLS(jPrint);
-                  fName        = FileUtil.filename(reportFileFullName) + ".xls";
+                  res.fileName = FileUtil.filename(reportFileFullName) + ".xls";
                } else if ("CSV".equalsIgnoreCase(outputFormat)) {
                   res.mimeType = "text/comma-separated-values";
                   res.data     = exportToCSV(jPrint);
-                  fName        = FileUtil.filename(reportFileFullName) + ".csv";
+                  res.fileName = FileUtil.filename(reportFileFullName) + ".csv";
                }
-
-               res.fileName = ParseUtil.getParameter(request, REPORTNAMEPARAM,
-                                                     fName);
                jPrint       = null;
 
                return res;

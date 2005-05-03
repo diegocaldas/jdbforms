@@ -78,7 +78,7 @@ public class ExcelReportServlet extends LineReportServletAbstract {
 	}
 
 	protected String getFileExtension() {
-		return ".csv";
+		return ".xls";
 	}
 
 	protected void openStream(OutputStream out)  throws Exception  {

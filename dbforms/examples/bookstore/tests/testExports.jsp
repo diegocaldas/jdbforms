@@ -29,7 +29,7 @@
 								destTable="BOOK"
 								keyToKeyToDestPos="currentRow"
         	          			singleRow="true"
-        	          			destination="/jasperreport/books"
+        	          			destination="/jasperreport/books?filename=jasper_testExports.pdf"
                 	  	/>
 					</td>
 					<td>
@@ -38,21 +38,21 @@
 								destTable="BOOK"
 								keyToKeyToDestPos="currentRow"
         	          			singleRow="true"
-        	          			destination="/jasperreport/books?reporttype=CSV"
+        	          			destination="/jasperreport/books?filename=jasper_testExports.xls&reporttype=CSV"
                 	  	/>
 	                  	<db:gotoButton 
     	              			caption="export current as CSV"
 								destTable="BOOK"
 								keyToKeyToDestPos="currentRow"
         	          			singleRow="true"
-        	          			destination="/csvreport/books?filenname=books.csv"
+        	          			destination="/csvreport/books?filename=testExports.csv"
                 	  	/>
 	                  	<db:gotoButton 
     	              			caption="export current as EXCEL"
 								destTable="BOOK"
 								keyToKeyToDestPos="currentRow"
         	          			singleRow="true"
-        	          			destination="/excelreport/books?filenname=books.csv?sheetname=BOOKLISTS"
+        	          			destination="/excelreport/books?filename=testExports.xls&sheetname=BOOKLISTS"
                 	  	/>
 					</td>
 				</tr>
@@ -76,13 +76,13 @@
     	              			caption="export all as CSV"
 								destTable="BOOK"
         	          			singleRow="false"
-        	          			destination="/csvreport/books?filenname=books.csv"
+        	          			destination="/csvreport/books?filenname=textExportsAll.csv"
                 	  	/>
 	                  	<db:gotoButton 
     	              			caption="export all as EXCEL"
 								destTable="BOOK"
         	          			singleRow="false"
-        	          			destination="/excelreport/books?filenname=books.csv?sheetname=BOOKLISTS"
+        	          			destination="/excelreport/books?filename=testExportsAll.xls&sheetname=BOOKLISTS"
                 	  	/>
 					</td>
 				</tr>

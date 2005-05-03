@@ -27,7 +27,6 @@
         <webClassPathEntry>/dbforms/dependend/itext-1.01.jar</webClassPathEntry>
         <webClassPathEntry>/dbforms/dependend/jasperreports-0.6.4.jar</webClassPathEntry>
         <webClassPathEntry>/dbforms/dependend/jcommon-0.9.6.jar</webClassPathEntry>
-        <webClassPathEntry>/dbforms/dependend/jdt-compiler.jar</webClassPathEntry>
         <webClassPathEntry>/dbforms/dependend/jfreechart-0.9.21.jar</webClassPathEntry>
         <webClassPathEntry>/dbforms/dependend/junit-3.8.1.jar</webClassPathEntry>
         <webClassPathEntry>/dbforms/dependend/log4j-1.2.8.jar</webClassPathEntry>
@@ -47,6 +46,8 @@
         <webClassPathEntry>/dbforms/examples/bookstore/WEB-INF/lib/batik-util.jar</webClassPathEntry>
         <webClassPathEntry>/dbforms/examples/bookstore/WEB-INF/lib/batik-xml.jar</webClassPathEntry>
         <webClassPathEntry>/dbforms/examples/bookstore/WEB-INF/lib/jstl.jar</webClassPathEntry>
+        <webClassPathEntry>/dbforms/examples/bookstore/WEB-INF/lib/pow2toolkit-1.0.jar</webClassPathEntry>
+        <webClassPathEntry>/dbforms/examples/bookstore/WEB-INF/lib/pow2webgui-1.0.jar</webClassPathEntry>
         <webClassPathEntry>/dbforms/examples/bookstore/WEB-INF/lib/standard.jar</webClassPathEntry>
         <webClassPathEntry>/dbforms/examples/bookstore/WEB-INF/lib/velocity-dep-1.3.1-rc2.jar</webClassPathEntry>
         <webClassPathEntry>/dbforms/examples/bugtracker/WEB-INF/lib/taglibs-request.jar</webClassPathEntry>
