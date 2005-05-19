@@ -618,8 +618,11 @@ public class Table implements Serializable {
     */
    public FieldValue[] getFilterFieldArray(String filter,
                                            Locale locale) {
-      // 1 to n fields may be mapped
-      Vector keyValPairs = StringUtil.splitString(filter, ",;");
+	  if (Util.isNull(filter)) {
+		  return null;
+	  }
+	   // 1 to n fields may be mapped
+	   Vector keyValPairs = StringUtil.splitString(filter, ",;");
 
       // ~ no longer used as separator!
       int          len = keyValPairs.size();

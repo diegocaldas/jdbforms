@@ -340,7 +340,9 @@ public class DataSourceXML extends DataSource {
 
 
    private String getSQLFilter() {
-      /** substitute ? with corresponding value in list */
+      if (sqlFilter == null)
+		   return null;
+	   /** substitute ? with corresponding value in list */
       int          p1  = 0;
       int          p2  = sqlFilter.indexOf('?', p1);
       StringBuffer buf = new StringBuffer();
