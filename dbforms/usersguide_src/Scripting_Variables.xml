@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<chapter>
-  <title id="scrip_var">Scripting Variables
+<chapter id="scrip_var">
+  <title>Scripting Variables
 </title>
   <para>Various DbForms tags such as &lt;dbform&gt; and &lt;body&gt;, make internal information available to the embedded JSP code via 
     <emphasis role="bold">scripting variables.</emphasis>

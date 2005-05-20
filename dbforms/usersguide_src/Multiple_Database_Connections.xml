@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Luca (H3G) -->
-<chapter>
-  <title id="multdbcon">Multiple Database Connections
+<chapter id="multdbcon">
+  <title>Multiple Database Connections
 </title>
   <para>This is still being tested and debugged but to use this feature:
 </para>

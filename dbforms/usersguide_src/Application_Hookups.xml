@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<chapter>
-  <title id="app_hooks">Application hook-ups (Interceptors)
+<chapter id="app_hooks">
+  <title>Application hook-ups (Interceptors)
 </title>
   <sect1>
     <title>Introduction

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<chapter lang="en-US">
-  <title id="plug-events">Pluggable events</title>
+<chapter id="plug-events" lang="en-US">
+  <title>Pluggable events</title>
   <sect1>
     <title>Introduction</title>
     <para>
@@ -97,8 +97,8 @@
       </informaltable>
     </sect2>
   </sect1>
-  <sect1>
-    <title id="regi">Registration of the event classes</title>
+  <sect1 id="regi">
+    <title>Registration of the event classes</title>
     <para>
       Database and Navigation event factories automatically register the default event classes into the system.  
       Developers can register additional event classes by declaring and configuring elements into the 

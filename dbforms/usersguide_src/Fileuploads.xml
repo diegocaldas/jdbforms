@@ -6,29 +6,34 @@
   <sect1>
     <title>Introduction
 </title>
-    <para>In the past, most database applications dealt with data-rows stored in simple alphanumerical fields.  But today, there is an increasing demand to be able to store and manipulate 
+    <para>In the past, most database applications dealt with data rows consisting of simple alphanumerical fields.  But today, there is an increasing demand to be able to store and manipulate 
       <emphasis role="italic">complex</emphasis> data. Complex data is imminent not only in multimedia applications for the Web, but also in specialized application domains such as document- and workflow management.
 
     </para>
     <para>Most relational DBMS vendors have added the capabilities to manipulate binary large objects (BLOBs) in the database. However, in many cases BLOBs are still not a viable option:
-</para>
     <itemizedlist mark="opencircle">
       <listitem>
-        <para>if the application uses a RDBMS or JDBC-driver without BLOB-support
-</para>
+        If the application uses a RDBMS or JDBC-driver without BLOB-support,
       </listitem>
       <listitem>
-        <para>if BLOB-support is too slow or even buggy
-</para>
+        If BLOB-support is too slow or even buggy, or
       </listitem>
       <listitem>
-        <para>if the files should be accessible without using a database layer. For instance, imagine a web content management system placing files (images, pdf's, applets, etc) directly into the Http-Root of the server.
-</para>
+        If the files should be accessible without using a database
+        layer. For instance, imagine a web content management system
+        placing files (images, pdf's, applets, etc) directly into the
+        Http-Root of the server.
       </listitem>
     </itemizedlist>
-    <para>DbForms addresses 
-      <emphasis role="italic">all of these situations:</emphasis> On the one hand, it supports the upload (and download) of files into classical BLOB fields, and on the other, it supports a file-system approach, allowing database-driven management of  files outside of the database. (Depending on your RDBMS, a binary large object is called a BLOB, IMAGE, etc.)
-
+    </para>
+    <para>
+      DbForms addresses <emphasis role="italic">all of these
+      situations:</emphasis> On the one hand, it supports the upload
+      (and download) of files into classical BLOB fields, and on the
+      other, it supports a file-system approach, allowing
+      database-driven management of files outside of the
+      database. (Depending on your RDBMS, a binary large object is
+      called a BLOB, IMAGE, etc.)
     </para>
   </sect1>
   <sect1>
@@ -67,7 +72,8 @@ BLOB interceptor the new way.  The following example is for the "classic" way.</
       <screen>
         <emphasis role="bold">&lt;dbforms-config&gt;</emphasis>
                 &lt;table name="pets" <emphasis role="bold">blobHandling="classic"</emphasis>&gt;
-                    &lt;field name="pet_id" fieldType="int" isKey="true" autoInc="true" /&gt;
+                    &lt;field name="pet_id" fieldType="int" 
+                          isKey="true" autoInc="true" /&gt;
                     &lt;field name="name" fieldType ="char" /&gt;
                     &lt;field name="portrait_pic" 
         <emphasis role="bold">fieldType ="blob"</emphasis> /&gt;
@@ -78,7 +84,7 @@ BLOB interceptor the new way.  The following example is for the "classic" way.</
             &lt;/dbforms-config&gt;
     
       </screen>
-      <para>The configuration-code-snippet shown above in Listing 6 tells DbForms that the fields portrait_pic and story are of type BLOB. As you can see, DbForms allows more than one field defined in a table to be of type BLOB.
+      <para>The configuration-code-snippet shown above tells DbForms that the fields portrait_pic and story are of type BLOB. As you can see, DbForms allows more than one field defined in a table to be of type BLOB.
 </para>
     </sect2>
     <sect2>
@@ -114,13 +120,27 @@ BLOB interceptor the new way.  The following example is for the "classic" way.</
         <computeroutput>true</computeroutput> to support multipart requests!
 
       </para>
+      <para>
+        It is possible to save the MIME type and file size of a BLOB.  This is done by providing column names for the <computeroutput>BlobInterceptor</computeroutput> to use.  The example shown below shows how this is done.
+<programlisting><![CDATA[
+   <interceptor className="org.dbforms.event.BlobInterceptor">
+      <param name="blob-column" value="BODY"/>
+      <param name="name-column" value="FILE_NAME"/>
+      <param name="mime-column" value="MIME_TYPE"/>
+      <param name="size-column" value="BODY_SIZE"/>
+   </interceptor>
+]]></programlisting>
+        The above code would be added to a 
+        <computeroutput>table</computeroutput> element in 
+        <computeroutput>dbforms-config.xml</computeroutput>.
+      </para>
     </sect2>
     <sect2>
       <title>Updating and deleting BLOBs
 </title>
       <para>Regarding update and delete operations, BLOB fields may be treated similar to common (alphanumerical) fields:
 </para>
-      <para>if a user hits the DELETE-button, the BLOB fields of the selected row will be deleted. (this is done automatically by the RDMB)
+      <para>if a user hits the DELETE-button, the BLOB fields of the selected row will be deleted. (this is done automatically by the RDBMS)
 </para>
       <para>If a user hits the UPDATE and no new file is uploaded, the existing BLOB will NOT be modified. If a user has chosen a new file, (using the Browse- Button or by entering a valid file-path into the text-field left to the button) any existing BLOB at the selected row will be overwritten with the new value.
 </para>
@@ -137,27 +157,22 @@ BLOB interceptor the new way.  The following example is for the "classic" way.</
       <para>For retrieving a BLOB using DbForms BLOB-retrieving facility, you need to use the following tag:
 </para>
       <programlisting>
-        &lt;db:
-        <emphasis role="bold">blobURL</emphasis> fieldName="portrait_pic"/&gt;
+   &lt;db:<emphasis role="bold">blobURL</emphasis> fieldName="portrait_pic"/&gt;
       </programlisting>
       <para>This tag renders an URL pointing to a servlet built into DbForms. This servlet retrieves the specified field from the database, tries to figure out the MIME type of the file, assigns it to the response and finally returns a stream of bytes containing the data of the BLOB.
 </para>
       <para>To retrieve and render an image, the following JSP-code would need to be specified:
 </para>
       <programlisting>
-        &lt;
-        <emphasis role="bold">img</emphasis> src=&lt;db:
-        <emphasis role="bold">blobURL</emphasis> fieldName="portrait_pic"/&gt;width=100 height=80 border=0&gt;
-    
+   &lt;<emphasis role="bold">img</emphasis> src=&lt;db:<emphasis role="bold">blobURL</emphasis> fieldName="portrait_pic"/&gt; 
+        width=100 height=80 border=0&gt;
       </programlisting>
       <para/>
       <para>To establish a link to a BLOB (for example to a word or pdf document) you could write:
 </para>
       <programlisting>
-        &lt;
-        <emphasis role="bold">a</emphasis> href=&lt;db:
-        <emphasis role="bold">blobURL</emphasis> fieldName="portrait_pic"/&gt;&gt;Click to download&lt;/
-        <emphasis role="bold">a</emphasis>&gt;
+   &lt;<emphasis role="bold">a</emphasis> href=&lt;db:<emphasis role="bold">blobURL</emphasis> fieldName="portrait_pic"/&gt;&gt;
+     Click to download&lt;/<emphasis role="bold">a</emphasis>&gt;
       </programlisting>
       <para>Dependent of the installed plug-ins and other browser-and system properties, either the MIME-matching plug-in (or helper application) will be opened, a save-as dialog will pop up or a download manager like 
         <emphasis role="italic">Gozilla!</emphasis> will be started.
@@ -183,22 +198,20 @@ BLOB interceptor the new way.  The following example is for the "classic" way.</
       <para>As the following example and table show/explain, there are additional attributes available for defining a diskblob-field:
 </para>
       <programlisting>
-        <emphasis role="bold">&lt;dbforms-config&gt;</emphasis>
-                &lt;table name="pets"&gt;
-                    &lt;field name="pet_id" fieldType="int" isKey="true" autoInc="true" /&gt;
-                    &lt;field name="name" fieldType ="char" /&gt;
-                    &lt;field name="portrait_pic" 
-        <emphasis role="bold">fieldType</emphasis> ="diskblob"
-            
-        <emphasis role="bold">directory</emphasis>=c:\uploads\pets 
-        <emphasis role="bold">encoding</emphasis>=true  /&gt;
-                    &lt;field name="story" 
-        <emphasis role="bold">fieldType</emphasis> ="diskblob" 
-            
-        <emphasis role="bold">directory</emphasis>=x:\stories /&gt;
-    &lt;/table&gt;
-            &lt;/dbforms-config&gt;
-    
+   <emphasis role="bold">&lt;dbforms-config&gt;</emphasis>
+           &lt;table name="pets"&gt;
+               &lt;field name="pet_id" fieldType="int" 
+                     isKey="true" autoInc="true" /&gt;
+               &lt;field name="name" fieldType ="char" /&gt;
+               &lt;field name="portrait_pic" 
+                      <emphasis role="bold">fieldType</emphasis> ="diskblob"
+                      <emphasis role="bold">directory</emphasis>="c:\uploads\pets"
+                      <emphasis role="bold">encoding</emphasis>="true" /&gt;
+               &lt;field name="story" 
+                      <emphasis role="bold">fieldType</emphasis> ="diskblob" 
+                      <emphasis role="bold">directory</emphasis>="x:\stories" /&gt;
+           &lt;/table&gt;
+   &lt;/dbforms-config&gt;
       </programlisting>
       <table>
         <title>define a table capable of Blobs (depends on SQL dialect implemented by RDBM vendor)</title>
@@ -230,26 +243,29 @@ b) must be writeable by the web-server </entry>
     <sect2>
       <title>What goes on behind the scenes
 </title>
-      <para>You might ask: How does DbForms remember where it stores the files? The answer is simple: the references to the actual physical files are stored in the specified DISKBLOB field, which turns out to be an ordinary alphanumerical (CHAR, VARCHAR, or similar) field.
-</para>
-      <para>Following our example, the pets table would now contain a row such as the one displayed below:
-</para>
-      <para/>
-      <para/>
       <para>
-        <figure>
-          <title>Physical representation of our example
-</title>
-          <mediaobject id="MousePicture">
-            <imageobject role="html">
-              <imagedata format="PNG" fileref="images/figures/physical_representation.png"/>
-            </imageobject>
-            <imageobject role="fo">
-              <imagedata format="PNG" fileref="../images/figures/physical_representation.png"/>
-            </imageobject>
-          </mediaobject>
-        </figure>
+        You might ask: How does DbForms remember where it stores the
+        files? The answer is simple: the references to the actual
+        physical files are stored in the specified DISKBLOB field,
+        which turns out to be an ordinary alphanumerical (CHAR,
+        VARCHAR, or similar) field.
       </para>
+      <para>
+        Following our example, the pets table would now contain a row
+        such as the one displayed below:
+      </para>
+      <figure>
+        <title>Physical representation of our example
+</title>
+        <mediaobject id="MousePicture">
+          <imageobject role="html">
+            <imagedata format="PNG" fileref="images/figures/physical_representation.png"/>
+          </imageobject>
+          <imageobject role="fo">
+            <imagedata format="PNG" fileref="../images/figures/physical_representation.png"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
       <para>Both files are stored in their respective directories (c:\upload\pets  x:\stories). The directory names are not included in the references for two reasons (please email me any arguments to the contrary):
 </para>
       <para>It is not necessary because this information is managed by the XML-configuration
@@ -271,148 +287,141 @@ b) must be writeable by the web-server </entry>
     <para>Using mySQL, this table could have been created as follows: (check your RDBMS-SQL-manual if you are not sure how your database handles auto incremental fields or BLOBs )
 </para>
     <programlisting>
-                CREATE TABLE 
-      <emphasis role="bold">pets</emphasis> (
-
-                pet_id int AUTO_INCREMENT NOT NULL PRIMARY KEY ,
-
-    name char (30) NULL ,
-
-    portrait_pic BLOB NULL ,
-
-    story BLOB NULL ,
-
+   CREATE TABLE <emphasis role="bold">pets</emphasis> (
+      pet_id int AUTO_INCREMENT NOT NULL PRIMARY KEY,
+      name char (30) NULL,
+      portrait_pic BLOB NULL,
+      story BLOB NULL,
     );
-
-    
     </programlisting>
     <para>Here is the source code we need to create the application:
 </para>
     <programlisting>
-&lt;%@ taglib uri="/WEB-INF/dbForms.tld" prefix="db" %&gt;
- &lt;html&gt;             
-  &lt;head&gt;
-    
-      <emphasis role="bold">&lt;db:base/&gt;</emphasis>
-    &lt;link rel="stylesheet" href="dbforms.css"&gt;
+   &lt;%@ taglib uri="/WEB-INF/dbForms.tld" prefix="db" %&gt;
+    &lt;html&gt;             
+     &lt;head&gt;
 
-    &lt;SCRIPT&gt;
-        &lt;!-- function openWin(s) {
-        window.open(s,"littlewin","width=450,height=350,resizable=yes");
-        }--&gt;
-    &lt;/SCRIPT&gt;
-  &lt;/head&gt;
-  
-  &lt;body&gt;
-    
-      <emphasis role="bold">&lt;db:errors/&gt;</emphasis>
-      <emphasis role="bold">&lt;db:dbform</emphasis> tableName="pets" maxRows="*" followUp="/petportraits.jsp" multipart=true&gt;
-        &lt;db:header&gt;
-            
-      <emphasis role="bold">&lt;db:gotoButton</emphasis> caption="Menu" destination="/menu.jsp" /&gt;
-            
-            &lt;hr&gt;
-            &lt;h1&gt;Funny pets page (1)&lt;/h1&gt;
-            &lt;center&gt;&lt;h3&gt;very important creatures&lt;/h3&gt;&lt;/center&gt;
-            
-            &lt;table border="5" width="60%" align="CENTER"&gt;
-                &lt;tr&gt;
-                    &lt;th&gt;name&lt;/th&gt;
-                    &lt;th&gt;portrait-pic&lt;/th&gt;
-                    &lt;th&gt;story&lt;/th&gt;
-                    &lt;th&gt;actions&lt;/th&gt;
-                &lt;/tr&gt;
-                      
-      <emphasis role="bold">&lt;/db:header&gt;</emphasis>
-      <emphasis role="bold">&lt;db:body</emphasis> allowNew="false"&gt;
-                &lt;tr&gt;
-                    &lt;td&gt;
-      <emphasis role="bold">&lt;db:textField</emphasis> fieldName="name" size="20" maxlength="30"/&gt;
-                    &lt;/td&gt;
-                    &lt;td&gt;
-                        &lt;a href="javascript:openWin('/example_v06/
-      <emphasis role="bold">&lt;db:blobURL</emphasis>
-                            fieldName="portrait_pic"/&gt;')"&gt;
-                            &lt;img src="
-      <emphasis role="bold">&lt;db:blobURL</emphasis> fieldName="portrait_pic"/&gt;" border="0" 
-                            width="60" height="60" alt="pet portrait (click to see full size)"&gt;
-                        &lt;/a&gt;
-                        &lt;br&gt;
-                    &lt;/td&gt;
-                    &lt;td&gt;
-                        For a funny story about 
-      <emphasis role="bold">&lt;db:label</emphasis> fieldName="name"/&gt; click
-                        &lt;a href="javascript:openWin('/example_v06/
-      <emphasis role="bold">&lt;db:blobURL</emphasis> fieldName="story"/&gt;')"&gt;
-                        [here]
-                    &lt;/td&gt;
-                    &lt;td&gt;
-                        
-      <emphasis role="bold">&lt;db:updateButton</emphasis> caption="Update"/&gt;
-                        
-      <emphasis role="bold">&lt;db:deleteButton</emphasis> caption="Delete"/&gt;
-                    &lt;/td&gt;
-                &lt;/tr&gt;
-        
-      <emphasis role="bold">&lt;/db:body&gt;</emphasis>
-      <emphasis role="bold">&lt;db:footer&gt;</emphasis>
-            &lt;/table&gt;
-      
-            &lt;center&gt;&lt;h3&gt;upload new pet portrait:&lt;/h3&gt;&lt;/center&gt;
-            &lt;p&gt;
-            &lt;center&gt;Please fill out the following form!&lt;/center&gt;
-            &lt;/p&gt;
-                                        
-             &lt;table align="center" border="3"&gt;
-                &lt;tr&gt;
-                    &lt;td&gt;Pet's Name:&lt;/td&gt;
-                    &lt;td&gt;
-                        
-      <emphasis role="bold">&lt;db:textField</emphasis> size="20" maxlength="30" fieldName="name"/&gt;
-                    &lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;tr&gt;
-                    &lt;td&gt;Picture:&lt;/td&gt;
-                    &lt;td&gt;
-                        
-      <emphasis role="bold">&lt;db:file</emphasis> fieldName="portrait_pic" accept="image/*" /&gt;
-                    &lt;/td&gt;
-                &lt;tr&gt;
-                &lt;tr&gt;
-                    &lt;td&gt;
-                        Funny story&lt;br&gt;(any format: html, pdf, txt, word,...)
-                    &lt;/td&gt;
-                    &lt;td&gt;
-                        
-      <emphasis role="bold">&lt;db:file</emphasis> fieldName="story" /&gt;
-                    &lt;/td&gt;
-                &lt;tr&gt;
-            &lt;/table&gt;
-                                        
-            &lt;br&gt;
-            &lt;center&gt;
-                
-      <emphasis role="bold">&lt;db:insertButton</emphasis> caption="Right, load the portrait to server..!!"/&gt;
-            &lt;/center&gt; 
-      
-            &lt;hr&gt;
-      
-        
-      <emphasis role="bold">&lt;/db:footer&gt;</emphasis>
-      <emphasis role="bold">&lt;/db:dbform&gt;</emphasis>
-      
-  &lt;/body&gt;
- &lt;/html&gt;
-                        
+         <emphasis role="bold">&lt;db:base/&gt;</emphasis>
+       &lt;link rel="stylesheet" href="dbforms.css"&gt;
+
+       &lt;SCRIPT&gt;
+           &lt;!-- function openWin(s) {
+           window.open(s,"littlewin","width=450,height=350,resizable=yes");
+           }--&gt;
+       &lt;/SCRIPT&gt;
+     &lt;/head&gt;
+
+     &lt;body&gt;
+
+         <emphasis role="bold">&lt;db:errors/&gt;</emphasis>
+         <emphasis role="bold">&lt;db:dbform</emphasis> tableName="pets" maxRows="*" 
+                    followUp="/petportraits.jsp" multipart=true&gt;
+           &lt;db:header&gt;
+
+         <emphasis role="bold">&lt;db:gotoButton</emphasis> caption="Menu" destination="/menu.jsp" /&gt;
+
+               &lt;hr&gt;
+               &lt;h1&gt;Funny pets page (1)&lt;/h1&gt;
+               &lt;center&gt;&lt;h3&gt;very important creatures&lt;/h3&gt;&lt;/center&gt;
+
+               &lt;table border="5" width="60%" align="CENTER"&gt;
+                   &lt;tr&gt;
+                       &lt;th&gt;name&lt;/th&gt;
+                       &lt;th&gt;portrait-pic&lt;/th&gt;
+                       &lt;th&gt;story&lt;/th&gt;
+                       &lt;th&gt;actions&lt;/th&gt;
+                   &lt;/tr&gt;
+
+         <emphasis role="bold">&lt;/db:header&gt;</emphasis>
+         <emphasis role="bold">&lt;db:body</emphasis> allowNew="false"&gt;
+                   &lt;tr&gt;
+                       &lt;td&gt;
+         <emphasis role="bold">&lt;db:textField</emphasis> fieldName="name" size="20" maxlength="30"/&gt;
+                       &lt;/td&gt;
+                       &lt;td&gt;
+                           &lt;a href="javascript:openWin('/example_v06/
+         <emphasis role="bold">&lt;db:blobURL</emphasis>
+                               fieldName="portrait_pic"/&gt;')"&gt;
+                               &lt;img src="
+         <emphasis role="bold">&lt;db:blobURL</emphasis> fieldName="portrait_pic"/&gt;" border="0" 
+                    width="60" height="60" alt="pet portrait (click to see full size)"&gt;
+                           &lt;/a&gt;
+                           &lt;br&gt;
+                       &lt;/td&gt;
+                       &lt;td&gt;
+                           For a funny story about 
+         <emphasis role="bold">&lt;db:label</emphasis> fieldName="name"/&gt; click
+                           &lt;a href="javascript:openWin('/example_v06/
+         <emphasis role="bold">&lt;db:blobURL</emphasis> fieldName="story"/&gt;')"&gt;
+                           [here]
+                       &lt;/td&gt;
+                       &lt;td&gt;
+
+         <emphasis role="bold">&lt;db:updateButton</emphasis> caption="Update"/&gt;
+
+         <emphasis role="bold">&lt;db:deleteButton</emphasis> caption="Delete"/&gt;
+                       &lt;/td&gt;
+                   &lt;/tr&gt;
+
+         <emphasis role="bold">&lt;/db:body&gt;</emphasis>
+         <emphasis role="bold">&lt;db:footer&gt;</emphasis>
+               &lt;/table&gt;
+
+               &lt;center&gt;&lt;h3&gt;upload new pet portrait:&lt;/h3&gt;&lt;/center&gt;
+               &lt;p&gt;
+               &lt;center&gt;Please fill out the following form!&lt;/center&gt;
+               &lt;/p&gt;
+
+                &lt;table align="center" border="3"&gt;
+                   &lt;tr&gt;
+                       &lt;td&gt;Pet's Name:&lt;/td&gt;
+                       &lt;td&gt;
+
+         <emphasis role="bold">&lt;db:textField</emphasis> size="20" maxlength="30" fieldName="name"/&gt;
+                       &lt;/td&gt;
+                   &lt;/tr&gt;
+                   &lt;tr&gt;
+                       &lt;td&gt;Picture:&lt;/td&gt;
+                       &lt;td&gt;
+
+         <emphasis role="bold">&lt;db:file</emphasis> fieldName="portrait_pic" accept="image/*" /&gt;
+                       &lt;/td&gt;
+                   &lt;tr&gt;
+                   &lt;tr&gt;
+                       &lt;td&gt;
+                           Funny story&lt;br&gt;(any format: html, pdf, txt, word,...)
+                       &lt;/td&gt;
+                       &lt;td&gt;
+
+         <emphasis role="bold">&lt;db:file</emphasis> fieldName="story" /&gt;
+                       &lt;/td&gt;
+                   &lt;tr&gt;
+               &lt;/table&gt;
+
+               &lt;br&gt;
+               &lt;center&gt;
+
+         <emphasis role="bold">&lt;db:insertButton</emphasis> caption="Right, load the portrait to server..!!"/&gt;
+               &lt;/center&gt; 
+
+               &lt;hr&gt;
+
+         <emphasis role="bold">&lt;/db:footer&gt;</emphasis>
+         <emphasis role="bold">&lt;/db:dbform&gt;</emphasis>
+
+   &lt;/body&gt;
+   &lt;/html&gt;
     </programlisting>
-    <para>You have now seen 
-      <computeroutput>&lt;blobURL&gt;</computeroutput> and 
-      <computeroutput>&lt;file&gt;</computeroutput> in action!  As you can see, it is pretty easy to handle files with DbForms. Most of the code is about laying out the html-view and playing around with JavaScripts to create pop-up windows for showing the pet-stories and portraits in an attractive way.
-
+    <para>
+      You have now seen
+      <computeroutput>&lt;blobURL&gt;</computeroutput> and
+      <computeroutput>&lt;file&gt;</computeroutput> in action!  As you
+      can see, it is pretty easy to handle files with DbForms. Most of
+      the code is about laying out the html-view and playing around
+      with JavaScripts to create pop-up windows for showing the
+      pet-stories and portraits in an attractive way.
     </para>
-    <para>The final result of our efforts looks like this:
-</para>
-    <para/>
+    <para>The final result of our efforts looks like this:</para>
     <para>
       <figure>
         <title>our little BLOB-App in action

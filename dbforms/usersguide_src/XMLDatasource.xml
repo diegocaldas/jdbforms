@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<chapter>
-  <title id="xml_data">Using XML for Data input</title>
+<chapter id="xml_data">
+  <title>Using XML for Data input</title>
   <sect1>
     <title>Introduction</title>
     <para>  

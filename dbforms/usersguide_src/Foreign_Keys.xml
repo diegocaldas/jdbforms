@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<chapter>
-  <title id="foreign">Foreign Key support within dbforms
-</title>
+<chapter id="foreign">
+  <title>Foreign Key support within DbForms</title>
   <sect1>
     <title>Introduction
 </title>

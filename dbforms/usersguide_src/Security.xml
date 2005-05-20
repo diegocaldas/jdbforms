@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<chapter>
-  <title id="security">Security</title>
+<chapter id="security">
+  <title>Security</title>
   <sect1>
     <title>Introduction</title>
     <para>

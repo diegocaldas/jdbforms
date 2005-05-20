@@ -1,40 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<chapter>
+<chapter id="Tutorial">
   <title>Tutorial: A sample application</title>
-  <sect1>
-    <title>About the application: requirements specification</title>
-    <para>Lets imagine were supposed to write a little Customer-Care application for an agency which sells services to customers. The application is used mainly by sales people.</para>
-    <para>The users of this application should be able to perform the following tasks:</para>
+
+  <sect1 id="T_Requirements">
+    <title>Application requirements</title> 
+    <para>Let's imagine we're
+    supposed to write a little Customer Care application for a company
+    which sells services to customers. The application is used mainly
+    by sales people.</para> <para>The users of this application should
+    be able to perform the following tasks:
     <itemizedlist mark="opencircle">
       <listitem>
-        <para>add and modify services that are sold to customers</para>
+        Add and/or modify services that are sold to customers
       </listitem>
       <listitem>
-        <para>add and modify customer data</para>
+        Add and/or modify customer information
       </listitem>
       <listitem>
-        <para>input customer orders</para>
+        Input customer orders
       </listitem>
       <listitem>
-        <para>register customer complaints</para>
+        Register customer complaints
       </listitem>
       <listitem>
-        <para>assign a 'priority level' to a customer complaint</para>
+        Assign a 'priority level' to a customer complaint
       </listitem>
     </itemizedlist>
-    <para>The application should be capable of supporting concurrent users and should be web-based. Also, lets imagine our boss wants this application done in say, two days!</para>
-    <para>No problem! As youll see, we will complete this application in less than two hours.  What to do with the rest of the time allocated to this project?  Take a mini vacation (</para>
+    The application should be capable of supporting concurrent users
+    and should be web-based. Also, let's imagine our boss wants this
+    application done in say, two days!  No problem! As you'll see, we
+    will complete this application in less than two hours.  What to do
+    with the rest of the time allocated to this project?  Take a mini
+    vacation. 
+    </para>
   </sect1>
-  <sect1>
-    <title>Defining the database model and the database connection</title>
-    <para>First of all, we should design the database model. (If a database model would have already existed, then we could have skipped this task and simply re-use the existing model ).  DbForms has no special requirements on the database model.</para>
-    <para>In our case were forced to do all design work from scratch. Here is a simple model which addresses the requirements defined above</para>
-    <sect2>
+
+  <sect1 id="T_DBModel">
+    <title>Defining the database model and database connection</title>
+    <para>
+    First of all, we will design the database model. (If a database
+    model already existed, then we could skip this task and simply
+    re-use the existing model).  DbForms has no special requirements
+    for the database model.  Here is a simple model which addresses the
+    requirements defined above.
+    </para>
+
+    <sect2 id="T_DBConceptual">
       <title>Conceptual design</title>
-      <para/>
-      <para>
+      <para>The following database model will be used in this tutorial.
         <figure id="conceptual_diagram_database">
-          <title>A conceptual diagram of the database we are planning</title>
+          <title>Conceptual diagram of the database</title>
           <mediaobject>
             <imageobject role="html">
               <imagedata format="PNG" fileref="images/figures/conceptual_diagram_database.png"/>
@@ -45,264 +60,349 @@
           </mediaobject>
         </figure>
       </para>
-      <para>This database model will be used during the tutorial.</para>
     </sect2>
-    <sect2>
-      <title>Physical table creation</title>
-      <para>Here is the SQL code for creating the database model shown in the preceeding Figure:</para>
-      <programlisting>
-  CREATE TABLE <emphasis role="bold">service</emphasis> 
-  (
-    id          int        NOT NULL PRIMARY KEY,
-    name        char (30)  NULL ,
-    description char (255) NULL
-  )
-                
-  CREATE TABLE <emphasis role="bold">customer</emphasis> 
-  (
-    id        int       NOT NULL PRIMARY KEY,
-    firstname char (50) NULL ,
-    lastname  char (50) NULL ,
-    address   char (30) NULL ,
-    pcode     char (10) NULL ,
-    city      char (40) NULL
-  )
- 
-  CREATE TABLE <emphasis role="bold">order</emphasis>
-  (
-    order_id     int       IDENTITY  NOT NULL ,
-    customer_id  int       NOT NULL ,
-    service_id   int       NULL ,
-    orderdate    char (20) NULL ,
 
-    PRIMARY KEY ( order_id, customer_id )
-  )
-                
-  CREATE TABLE <emphasis role="bold">complaint</emphasis> 
-  (
-    complaint_id int        IDENTITY NOT NULL ,
-    customer_id  int        NOT NULL ,
-    usermessage  char (255) NULL ,
-    incomingdate char (20)  NULL ,
-    priority     int        NULL ,
- 
-    PRIMARY KEY ( complaint_id, customer_id ) 
-  )
- 
-  CREATE TABLE <emphasis role="bold">priority</emphasis>
-  ( 
-    id          char (10)  NOT NULL PRIMARY KEY,
-    shortname   char (30)  NULL ,
-    description char (100) NULL 
-   )
-    
-      </programlisting>
-      <para>It would be desirable to add referential integrity, (by adding foreign keys and/or triggers) but to keep things simple</para>
-    </sect2>
-    <sect2>
-      <title>Defining a database description for DbForms</title>
-      <para>The next step is to create the XML-based description of this model, as follows.</para>
+    <sect2 id="T_DBPhysical">
+      <title>Physical table creation</title>
+      <para>
+      Here is the SQL code for creating the database model shown in
+      the preceeding section.  The example is for a MySQL database.
       <example>
-        <title>tables in dbforms-config.xml</title>
-        <programlisting>
-  &lt;table name="<emphasis role="bold">service</emphasis>"&gt;
-    &lt;field name="id"          fieldType="int" isKey="true" /&gt; 
-    &lt;field name="name"        fieldType="char" /&gt; 
-    &lt;field name="description" fieldType="char" /&gt; 
-  &lt;/table&gt;
-             
-  &lt;table name="<emphasis role="bold">customer</emphasis>"&gt; 
-    &lt;field name="id"        fieldType="int" isKey="true"/&gt; 
-    &lt;field name="firstname" fieldType="char" /&gt; 
-    &lt;field name="lastname"  fieldType="char" /&gt; 
-    &lt;field name="address"   fieldType="char" /&gt; 
-    &lt;field name="pcode"     fieldType="char" /&gt; 
-    &lt;field name="city"      fieldType="char" /&gt;
-  &lt;/table&gt;
-             
-  &lt;table name="<emphasis role="bold">orders</emphasis>"&gt; 
-    &lt;field name="order_id"    fieldType="int" isKey="true" identity="true" /&gt; 
-    &lt;field name="customer_id" fieldType="int" isKey="true" /&gt; 
-    &lt;field name="service_id"  fieldType="char" /&gt; 
-    &lt;field name="orderdate"   fieldType="char" /&gt; 
-  &lt;/table&gt;
-                 
-  &lt;table name="<emphasis role="bold">complaint</emphasis>"&gt; 
-    &lt;field name="complaint_id" fieldType="int" isKey="true" identity="true" /&gt; 
-    &lt;field name="customer_id"  fieldType="int" isKey="true" /&gt; 
-    &lt;field name="usermessage"  fieldType="char" /&gt; 
-    &lt;field name="incomingdate" fieldType="char" /&gt; 
-    &lt;field name="priority"     fieldType="int" /&gt; 
-  &lt;/table&gt;
-             
-  &lt;table name="<emphasis role="bold">priority</emphasis>"&gt; 
-    &lt;field name="id"          fieldType="int" isKey="true" /&gt; 
-    &lt;field name="shortname"   fieldType="char" /&gt; 
-    &lt;field name="description" fieldType="char" /&gt; 
-  &lt;/table&gt;     
-        </programlisting>
+        <title>SQL code for creating the database tables</title>
+<programlisting><![CDATA[
+   CREATE TABLE services 
+   (
+     id          int        NOT NULL PRIMARY KEY,
+     name        char (30)  NULL,
+     description char (255) NULL
+   );
+
+   CREATE TABLE customers 
+   (
+     id        int       NOT NULL PRIMARY KEY,
+     firstname char (50) NULL,
+     lastname  char (50) NULL,
+     address   char (30) NULL,
+     pcode     char (10) NULL,
+     city      char (40) NULL
+   );
+
+   CREATE TABLE orders
+   (
+     order_id     int       AUTO_INCREMENT,
+     customer_id  int       NOT NULL,
+     service_id   int       NULL,
+     orderdate    char (20) NULL,
+     PRIMARY KEY ( order_id, customer_id )
+   );
+
+   CREATE TABLE complaints 
+   (
+     complaint_id int        AUTO_INCREMENT,
+     customer_id  int        NOT NULL,
+     usermessage  char (255) NULL,
+     incomingdate char (20)  NULL,
+     priority     int        NULL,
+     PRIMARY KEY ( complaint_id, customer_id )
+   );
+
+   CREATE TABLE priorities
+   (
+     id          int        NOT NULL PRIMARY KEY,
+     shortname   char (12)  NULL,
+     description char (100) NULL
+   );
+]]></programlisting>
       </example>
-      <para>There exists a little tool which does all the painful work of transferring a database scheme into XML. See 
-        <link linkend="devgui">
-          <emphasis role="bold">DevGui</emphasis> (click here)
-        </link> for more information.        
+      <emphasis role="bold">Remarks</emphasis>    
+    </para>
+    <para>
+    It would be desirable to add referential integrity, by adding
+    foreign keys and/or triggers) but to keep things simple for this
+    tutorial on DbForms capabilities, we have not included them.
+    </para>
+    </sect2>
+
+    <sect2 id="T_DBConfig">
+      <title>Defining a database description for DbForms</title>
+      <para>
+      The next step is to create the XML-based description of this
+      model, as follows.
+      <example>
+        <title>Defining tables in <computeroutput>dbforms-config.xml</computeroutput></title>
+        <programlisting><![CDATA[
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<dbforms-config>
+
+  <table name="services">
+    <field name="id"          fieldType="int" isKey="true" />
+    <field name="name"        fieldType="char" />
+    <field name="description" fieldType="char" />
+  </table>
+            
+  <table name="customers">
+    <field name="id"        fieldType="int" isKey="true" />
+    <field name="firstname" fieldType="char" />
+    <field name="lastname"  fieldType="char" />
+    <field name="address"   fieldType="char" />
+    <field name="pcode"     fieldType="char" />
+    <field name="city"      fieldType="char" />
+  </table>
+            
+  <table name="orders">
+    <field name="order_id"    fieldType="int" isKey="true"
+                              autoInc="true" />
+    <field name="customer_id" fieldType="int" isKey="true" />
+    <field name="service_id"  fieldType="char" sortable="true"/>
+    <field name="orderdate"   fieldType="char" sortable="true"/>
+  </table>
+                
+  <table name="complaints">
+    <field name="complaint_id" fieldType="int" isKey="true"
+                               autoInc="true" />
+    <field name="customer_id"  fieldType="int" isKey="true" />
+    <field name="usermessage"  fieldType="char" />
+    <field name="incomingdate" fieldType="char" sortable="true"/>
+    <field name="priority"     fieldType="int"  sortable="true"/>
+  </table>
+            
+  <table name="priorities">
+    <field name="id"          fieldType="int" isKey="true" />
+    <field name="shortname"   fieldType="char" />
+    <field name="description" fieldType="char" />
+  </table>    
+
+<!--
+  <dbconnection
+    name = "java:comp/env/jdbc/tutorial"
+    isJndi = "true"
+  />
+-->
+   <dbconnection
+     isPow2 = "true"
+     connectionProviderClass = 
+       "org.dbforms.conprovider.SingleConnectionProvider"
+     name = 
+       "jdbc:hsqldb:$(SERVLETCONTEXT_REALPATH)/WEB-INF/db_hsql/tutorial"
+     isJndi = "false"
+     conClass = "org.hsqldb.jdbcDriver"
+     username = "sa"
+     password = ""
+   />
+
+</dbforms-config>
+]]></programlisting>
+      </example>
+      <emphasis role="bold">Remarks</emphasis>    
       </para>
       <para>
-        NOTE: If we would want to use advanced DbForms-features like fine-grained-security, sorting facility, etc. We would need to add additional information to the XML-description. This will be shown in the advanced tutorial mentioned earlier.
+      There exists a DbForms tool which does all the painful work of
+      transferring a database schema into XML format. See
+        <emphasis role="underline">
+          <xref linkend="devgui"/>
+        </emphasis>
+        for more information.        
+      </para>
+      <para>
+      This example includes samples of two 
+      <emphasis role="bold"><computeroutput>db:dbconnection</computeroutput></emphasis>
+      elements.  Refer to 
+        <emphasis role="underline">
+          <xref linkend="dbforms_concepts"/>
+        </emphasis>
+      for a discussion of the dbconnection element.  The example
+      that is not commented out uses an in-memory HSQL database that
+      requires no setup time to run.
       </para>
     </sect2>
   </sect1>
-  <sect1>
-    <title>Planning the overall structure and screen-flow of the application</title>
-    <para>To fulfill the requirements, we need to implements at least the following JSP  views:</para>
+
+  <sect1 id="T_Structure">
+    <title>Structure and screen flow of the application</title>
+    <para>
+    To fulfill the requirements, we need to implement at minimum the
+    following forms.
     <table>
       <title>Core requirements for our sample application</title>
       <tgroup cols="2">
+      <colspec colnum="1" colwidth="140pt"/>
         <tbody>
-          <row>
-            <entry>Services</entry>
-            <entry>Manage the services &amp; products the agency offers</entry>
-          </row>
-          <row>
-            <entry>Orders</entry>
-            <entry>Manage customer orders</entry>
-          </row>
-          <row>
-            <entry>Complaints</entry>
-            <entry>Manage customer complaints</entry>
-          </row>
+        <row>
+          <entry>Edit services table</entry> <entry>Maintain an
+          inventory of the services the company offers.</entry>
+        </row>
+        <row>
+          <entry>Customer orders</entry>
+          <entry>Maintain a record of customer orders.</entry>
+        </row>
+        <row>
+          <entry>Customer complaints</entry>
+          <entry>Maintain a record of customer complaints.</entry>
+        </row>
         </tbody>
       </tgroup>
     </table>
-    <para>In addition to the core requirements, well implement the following views for users convenience:</para>
+    In addition to developing a page for each of the core
+    requirements, we'll implement the following pages for user
+    convenience.
     <table>
       <title>Additional features for our sample application</title>
       <tgroup cols="2">
+      <colspec colnum="1" colwidth="140pt"/>
         <tbody>
-          <row>
-            <entry>Main Menu</entry>
-            <entry>The point of entry for the application that links to all other views</entry>
-          </row>
-          <row>
-            <entry>List of customers</entry>
-            <entry>This page provides a listing (overview) of all customers enables the user to select a customer and jump to the appropriate input-page</entry>
-          </row>
-          <row>
-            <entry>All info about customers</entry>
-            <entry>This page shows all orders and all complaints for a given customer &#150; displayed data may be edited from this page.</entry>
-          </row>
-          <row>
-            <entry>Priorities</entry>
-            <entry>Every complaint has to be assigned to a certain level of &#147;priority&#148;. This page gives the user the ability to edit the valid priority &#150; codes that may be used at the complaints-view</entry>
-          </row>
-        </tbody>
-      </tgroup>
-    </table>
-    <para>
-      <figure id="screen_flow">
-        <title>Screen flow of our application</title>
-        <mediaobject>
-          <imageobject role="html">
-            <imagedata format="PNG" fileref="images/figures/screen_flow.png"/>
-          </imageobject>
-          <imageobject role="fo">
-            <imagedata format="PNG" fileref="../images/figures/screen_flow.png"/>
-          </imageobject>
-        </mediaobject>
-      </figure>
-    </para>
+        <row>
+          <entry>Main Menu</entry> <entry>The point of entry for the
+          application that links to all other pages.</entry>
+        </row>
+        <row>
+          <entry>Edit priority table</entry> <entry>Every complaint
+          must be assigned a priority level. This page allows the user
+          to edit the valid priority codes that may be used in the
+          complaints page.</entry>
+        </row>
+        <row>
+          <entry>Customer list</entry> <entry>This page provides a
+          listing (overview) of all customers and enables the user to
+          select a customer and jump to the appropriate input
+          page.</entry>
+        </row>
+        <row>
+          <entry>All information about customers</entry> <entry>This
+          page shows all orders and all complaints for a given
+          customer on one page.</entry>
+        </row>
+      </tbody>
+    </tgroup>
+  </table>
+    The user should be able to navigate from page to page as shown in
+    the screen flow diagram below.
+  <figure id="screen_flow">
+    <title>Screen flow of our application</title>
+    <mediaobject>
+      <imageobject role="html">
+        <imagedata format="PNG" fileref="images/figures/screen_flow.png"/>
+      </imageobject>
+      <imageobject role="fo">
+        <imagedata format="PNG" fileref="../images/figures/screen_flow.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  </para>
   </sect1>
-  <sect1>
-    <title>Implementing the Forms</title>
+
+  <sect1 id="T_Implementing">
+    <title>Implementing the forms</title>
     <para>
-      The following sections will demonstrate how to create our sample-application using some basic and some more advanced elements of DbForms.
+    The following sections will demonstrate how to create our sample
+    application using some basic and some more advanced elements of
+    DbForms.
     </para>
     <para>
-      For each JSP view we are going to discuss here, I will show the JSP source containing DbForms-elements (printed in 
-      <emphasis role="bold">bold</emphasis> style) and then show a representative screenshot of the resulting JSP page.
+    For each form we are going to discuss here, we have included the
+    JSP source code containing the DbForms elements followed by a
+    representative screenshot of the resulting HTML page.
     </para>
     <para>
-      I highly suggest installing the dbForms example application and taking a detailed look at it  you will quickly find out how the elements behave and which pattern of combined DbForms-elements is used best for each purpose.
+    We suggest installing this tutorial application from the 
+    <computeroutput>examples/tutorial</computeroutput>
+    directory in the distribution and taking a detailed look at it.
+    You will quickly find out how the elements behave and which
+    pattern of combined DbForms elements is best for each purpose.
+    Instructions for quickly installing the tutorial are described in
+      <emphasis role="underline">
+        <xref linkend="T_InstallTut"/>
+      </emphasis>.
     </para>
     <para>
-      For more detailed information about each DbForms-Custom Tag, please refer to the See the 
-      <ulink url="../../taglib/DbFormsTags_Frame.html">
-        <citetitle>DbForms Custom Tag Library</citetitle>
-      </ulink> chapter, which contains a complete description of all DbForms-Tags and their attributes.
+    For more detailed information about each DbForms custom element,
+    please refer to the DbForms Custom Tag Library document in the
+    <computeroutput>docs/taglib</computeroutput> directory.  This
+    document contains a complete description of all DbForms tags and
+    their attributes.
     </para>
-    <para/>
-    <sect2>
-      <title>Main-Menu</title>
+
+    <sect2 id="T_Menu">
+      <title>Main Menu</title>
       <para>
-        The main menus only purpose is to link to the other pages. Of course, this could be done by simply coding html-hyperlinks, but I would like to demonstrate how to use an empty 
-        <emphasis role="bold">dbform</emphasis>  element and how to use 
-        <emphasis role="bold">gotoButton</emphasis> elements:
-      </para>
-      <example>
-        <title>menu.jsp code</title>
-        <programlisting>
-  &lt;%@ taglib uri="/WEB-INF/dbForms.tld" prefix="db" %&gt;
-  &lt;html&gt;
-  &lt;head&gt;
-    <emphasis role="bold">&lt;db:base/&gt;</emphasis> 
-  &lt;/head&gt;
-     
-  &lt;body&gt; 
-    &lt;h1&gt;Menu&lt;/h1&gt; 
-    <emphasis role="bold">&lt;db:dbform</emphasis> followUp="/menu.jsp"&gt; 
-    &lt;center&gt;     
-    &lt;p&gt;
-      <emphasis role="bold">&lt;db:gotoButton</emphasis> caption="Edit services" destination="/service.jsp" destTable="services"/&gt;
-    &lt;/p&gt; 
-    &lt;p&gt;        
-      <emphasis role="bold">&lt;db:gotoButton</emphasis> caption="Customer-List" destination="/customerlist.jsp" destTable="customer" /&gt;
-    &lt;/p&gt; 
-    &lt;p&gt;        
-      <emphasis role="bold">&lt;db:gotoButton</emphasis> caption="Edit Orders" destination="/customer_orders.jsp" destTable="customer"/&gt;
-    &lt;/p&gt; 
-    &lt;p&gt;        
-      <emphasis role="bold">&lt;db:gotoButton</emphasis> caption="Edit Complaints" destination="/customer_complaints.jsp" destTable="customer"/&gt;
-    &lt;/p&gt; 
-    &lt;p&gt;        
-      <emphasis role="bold">&lt;db:gotoButton</emphasis> caption="View all customer info" destination="/customer_all.jsp" destTable="customer"/&gt;
-    &lt;/p&gt; 
-    &lt;p&gt;        
-      <emphasis role="bold">&lt;db:gotoButton</emphasis> caption="Edit priority-table" destination="/priorities.jsp" destTable="priorities" /&gt;
-    &lt;/p&gt; 
-    &lt;/center&gt;
-    <emphasis role="bold">&lt;/db:dbform&gt;</emphasis>
-  &lt;/body&gt;
-  &lt;/html&gt;     
-        </programlisting>
-      </example>
-      <para>
+      The main menu's only purpose is to link to the other pages. Of
+      course, this could be done by simply coding html hyperlinks, but
+      this section demonstrates how to use an empty element and how to
+      use gotoButton elements.
+        <example>
+          <title>Code for <computeroutput>menu.jsp</computeroutput></title>
+<programlisting><![CDATA[
+<%@ taglib uri="/WEB-INF/dbforms.tld" prefix="db" %>
+<html>
+<head>
+  <db:base/>
+</head>
+
+<body>
+
+  <h1>Menu</h1>
+
+  <db:dbform followUp="/menu.jsp">
+  <center>
+  <p>
+    <db:gotoButton caption="Edit Services Table"
+                   destination="/services.jsp"/>
+  </p>
+  <p>
+    <db:gotoButton caption="Edit Priority Table"
+                   destination="/priorities.jsp"/>
+  </p>
+  <p>
+    <db:gotoButton caption="Customer List"
+                   destination="/customer_list.jsp"/>
+  </p>
+  <p>
+    <db:gotoButton caption="Browse Customer Orders"
+                   destination="/customer_orders.jsp"/>
+  </p>
+  <p>
+    <db:gotoButton caption="Browse Customer Complaints"
+                   destination="/customer_complaints.jsp"/>
+  </p>
+  <p>
+    <db:gotoButton caption="All Info about Customers"
+                   destination="/customer_all.jsp"/>
+  </p>
+  </center>
+  </db:dbform>
+
+</body>
+</html>
+]]></programlisting>
+        </example>
         <emphasis role="bold">Remarks</emphasis>
       </para>
-      <para>The 
-        <emphasis role="bold">&lt;%@ taglib uri="/WEB-INF/dbForms.tld" prefix="db" %&gt; - </emphasis>element refers to the Taglib Descriptor (tld) of DbForms and defines the prefix used to identify the elements of the tag library (in our sample application we are using 
-        <emphasis role="bold">db</emphasis>, but you could use any other namespace as well)
-      </para>
-      <para>We used the following attributes of  
-        <emphasis role="bold">gotoButton :</emphasis>
+      <para>
+      The 
+      <emphasis role="bold"><computeroutput>&lt;%@taglib uri="/WEB-INF/dbForms.tld" prefix="db" %&gt;</computeroutput></emphasis>
+      element refers to the Taglib Descriptor (tld) of DbForms
+      and defines the prefix used to identify the elements of
+      the tag library.  (In our sample application we are using 
+      <emphasis role="bold"><computeroutput>db</computeroutput></emphasis>,
+      but you could use a different prefix.)  
+      </para> 
+      <para>
+      We used the following attributes of
+      <emphasis role="bold"><computeroutput>db:gotoButton</computeroutput></emphasis>:
+      <itemizedlist>
+        <listitem>
+          <emphasis role="bold">caption</emphasis>: the caption of the button
+        </listitem>
+        <listitem>
+          <emphasis role="bold">destination</emphasis>: the URL of the page to jump to
+        </listitem>
+      </itemizedlist>
       </para>
       <para>
-        <emphasis role="bold">caption</emphasis>: the caption of the button
-      </para>
-      <para>
-        <emphasis role="bold">destination</emphasis>: the URL of the view to jump to
-      </para>
-      <para>
-        <emphasis role="bold">destTable</emphasis>: the table of the top-level form to jump to
-      </para>
-      <para>
-        Please note: destTable was introduced as a workaround during transition from 0.6 to 0.7. It's very likely that this (a little bit annoying) attribute will be removed again!
-      </para>
-      <para>
-        The 
-        <emphasis role="bold">&lt;db:base/&gt;</emphasis>- tag should be included in every JSP-view containing DbForms-elements. It ensures that images, Cascade Style-Sheets and relative links to other pages are found.
-      </para>
-      <para>
-        <computeroutput/>
+      The 
+      <emphasis role="bold"><computeroutput>db:base</computeroutput></emphasis>
+      element should be included in every JSP that contains DbForms 
+      elements. It ensures that images, Cascading Style Sheets and 
+      relative links to other pages are found.
       </para>
       <para>
         <figure>
@@ -317,113 +417,147 @@
           </mediaobject>
         </figure>
       </para>
-      <para/>
     </sect2>
-    <sect2>
+
+    <sect2 id="T_Services">
       <title>Services</title>
-      <para/>
-      <para>This page enables the user(s) to administer the services the agency sells to its customers. The user should get a list of all the existing services along with text fields and buttons to update and delete rows. Finally an empty input mask for inserting new services is also presented. </para>
+      <para>
+      This page enables the user to administer an inventory of the
+      services the company sells to its customers. The user will get a
+      list of all the existing services along with text fields and
+      buttons to update and delete rows. Finally an empty input form
+      for inserting new services is also presented.
       <example>
-        <title>service.jsp code</title>
-        <programlisting>
-  &lt;%@ taglib uri="/WEB-INF/dbForms.tld" prefix="db" %&gt;
-  &lt;html&gt;             
-  &lt;head&gt; 
-    <emphasis role="bold">&lt;db:base/&gt;</emphasis> 
-  &lt;/head&gt;
-                 
-  &lt;body&gt;
-    <emphasis role="bold">&lt;db:errors/&gt;</emphasis>                                                             
+        <title>Code for <computeroutput>services.jsp</computeroutput></title>
+        <programlisting><![CDATA[
+<%@ taglib uri="/WEB-INF/dbforms.tld" prefix="db" %>
+<html>            
+<head>
+  <db:base/>
+</head>
 
-    <emphasis role="bold">&lt;db:dbform</emphasis> tableName="service" maxRows="*" followUp="/service.jsp"&gt; 
-      <emphasis role="bold">&lt;db:header&gt;</emphasis>                         
-      <emphasis role="bold">&lt;db:gotoButton</emphasis> caption="Menu" destination="/menu.jsp" /&gt; 
-      &lt;h1&gt;Services we provide&lt;/h1&gt; 
-      &lt;center&gt;
-        &lt;h3&gt;Our existing services&lt;/h3&gt;
-      &lt;/center&gt;
-                         
-      &lt;table border="5" width="60%" align="CENTER"&gt; 
-      &lt;tr&gt; 
-        &lt;th&gt;ID&lt;/th&gt; 
-        &lt;th&gt;Name&lt;/th&gt; 
-        &lt;th&gt;Description&lt;/th&gt; 
-        &lt;th&gt;Actions&lt;/th&gt; 
-      &lt;/tr&gt;                                                    
-      <emphasis role="bold">&lt;/db:header&gt;</emphasis>
-      <emphasis role="bold">&lt;db:body&gt;</emphasis>
-      &lt;tr&gt; 
-        &lt;td&gt;
-          <emphasis role="bold">&lt;db:textField</emphasis> fieldName="id" size="5"/&gt;
-        &lt;/td&gt; 
-        &lt;td&gt;
-          <emphasis role="bold">&lt;db:textField</emphasis> fieldName="name" size="20" maxlength="30"/&gt;
-        &lt;/td&gt; 
-        &lt;td&gt;
-          <emphasis role="bold">&lt;db:textField</emphasis> fieldName="description" size="24" maxlength="255"/&gt;
-        &lt;/td&gt; 
-        &lt;td&gt;                                    
-          <emphasis role="bold">&lt;db:updateButton</emphasis> caption="Update"/&gt;                                    
-          <emphasis role="bold">&lt;db:deleteButton</emphasis> caption="Delete"/&gt;
-        &lt;/td&gt; 
-      &lt;/tr&gt;
-      <emphasis role="bold">&lt;/db:body&gt;</emphasis>
-      <emphasis role="bold">&lt;db:footer&gt;</emphasis>
-      &lt;/table&gt;
+<body>
+  <db:errors/>                                                            
 
-      &lt;center&gt;&lt;h3&gt;Enter new service:&lt;/h3&gt;&lt;/center&gt;
-                     
-      &lt;table align="center" border="3"&gt;     
-      &lt;tr&gt; 
-        &lt;td&gt;Id&lt;/td&gt; 
-        &lt;td&gt;
-          <emphasis role="bold">&lt;db:textField</emphasis> size="5" fieldName="id"/&gt;
-        &lt;/td&gt; 
-      &lt;/tr&gt; 
-      &lt;tr&gt; 
-        &lt;td&gt;Name&lt;/td&gt; 
-        &lt;td&gt;
-          <emphasis role="bold">&lt;db:textField</emphasis> size="20" maxlength="30" fieldName="name"/&gt;
-        &lt;/td&gt; 
-      &lt;/tr&gt; 
-      &lt;tr&gt; 
-        &lt;td&gt;Description&lt;/td&gt; 
-        &lt;td&gt;         
-          <emphasis role="bold">&lt;db:textArea</emphasis> rows="4" cols="20" wrap="virtual" fieldName="description"/&gt;
-        &lt;/td&gt; 
-      &lt;tr&gt; 
-      &lt;/table&gt;&lt;br&gt;
-                        
-      &lt;center&gt;
-      <emphasis role="bold">&lt;db:insertButton</emphasis> caption="Insert new service!"/&gt;&lt;/center&gt; 
-      <emphasis role="bold">&lt;/db:footer&gt;</emphasis> 
-      <emphasis role="bold">&lt;/db:dbform&gt;</emphasis>
-    &lt;/body&gt; 
-    &lt;/html&gt;     
-        </programlisting>
+  <db:dbform tableName="services" maxRows="*" 
+             followUp="/services.jsp">
+
+    <db:header>                        
+      <db:gotoButton caption="Menu" destination="/menu.jsp" />
+      <h1>Services We Provide</h1>
+      <center>
+        <h3>Existing Service Definitions</h3>
+      </center>
+
+      <table border="5" width="60%" align="CENTER">
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Actions</th>
+      </tr>                                                   
+    </db:header>
+
+    <db:body>
+    <tr>
+      <td>
+        <db:textField fieldName="id" size="5"/>
+      </td>
+      <td>
+        <db:textField fieldName="name" size="20" 
+                      maxlength="30"/>
+      </td>
+      <td>
+        <db:textField fieldName="description" size="24" 
+                      maxlength="255"/>
+      </td>
+      <td>                                    
+        <db:updateButton caption="Update"/>
+        <db:deleteButton caption="Delete"/>
+      </td>
+    </tr>
+    </db:body>
+
+    <db:footer>
+    </table>
+
+    <center><h3>Enter New Service Definition</h3></center>
+
+    <table align="center" border="3">    
+    <tr>
+      <td>Id</td>
+      <td>
+        <db:textField size="5" fieldName="id"/>
+      </td>
+    </tr>
+    <tr>
+      <td>Name</td>
+      <td>
+        <db:textField size="20" maxlength="30" fieldName="name"/>
+      </td>
+    </tr>
+    <tr>
+      <td>Description</td>
+      <td>         
+        <db:textArea rows="4" cols="20" wrap="virtual" 
+                     fieldName="description"/>
+      </td>
+    </tr>
+    </table>
+    <br>
+    <center>
+      <db:insertButton caption="Store New Service Definition"
+                       showAlways="true"/>
+    </center>
+    </db:footer>
+  </db:dbform>
+</body>
+</html>    
+]]></programlisting>
       </example>
-      <para>
-        <emphasis role="bold">Remarks</emphasis>
+      <emphasis role="bold">Remarks</emphasis>
       </para>
       <para>
-        We have set 
-        <emphasis role="bold">maxRows</emphasis> to 
-        <emphasis role="bold">*</emphasis> which is equivalent to 'get all rows'. If the data requested contains a great number of rows, we might consider setting 
-        <emphasis role="bold">maxRows</emphasis> to 10, 20 or another limited number.  In this situation, we would instantiate navigation  buttons for scrolling between the pages. We will use that pattern later on.
+      There is one HTML table for headings and rows of data.  The 
+      <emphasis role="bold">td</emphasis>
+      elements that define the column headings are in the 
+      <emphasis role="bold"><computeroutput>db:header</computeroutput></emphasis>
+      element because the header is rendered  only once on the page.  The 
+      <emphasis role="bold"><computeroutput>td</computeroutput></emphasis>
+      elements that define the rows of data are in the 
+      <emphasis role="bold"><computeroutput>db:body</computeroutput></emphasis>
+      element becase the row will be rendered many times if
+      multiple rows of data are retrieved from the database.
       </para>
       <para>
-        The 
-        <emphasis role="bold">&lt;errors/&gt;</emphasis> tag shows a list of errors, if any occurred (i.e. duplicate key error, etc.)
+      <emphasis role="bold"><computeroutput>maxRows</computeroutput></emphasis>
+      is set to 
+      <emphasis role="bold"><computeroutput>*</computeroutput></emphasis>
+      which is equivalent to 'get all rows'. If the data
+      requested contains a great number of rows, we might
+      consider setting 
+      <computeroutput>maxRows</computeroutput>
+      to 10, 20 or another limited number.  If so, we would
+      instantiate navigation buttons for scrolling between the
+      pages. We will use that pattern later on.
       </para>
       <para>
-        The 
-        <emphasis role="bold">&lt;db:updateButton&gt;</emphasis>and
-        <emphasis role="bold">&lt;db:deleteButton&gt;</emphasis> - tags are placed in the body and are therefore rendered for each row.
+      The 
+      <emphasis role="bold"><computeroutput>db:errors</computeroutput></emphasis>
+      element shows a list of errors, if any occurred (i.e.
+      duplicate key error, etc.).  The placement of this 
+      element determines where the messages will be displayed.
       </para>
-      <para/>
+      <para>
+      The 
+      <emphasis role="bold"><computeroutput>db:updateButton</computeroutput></emphasis>
+      and
+      <emphasis role="bold"><computeroutput>db:deleteButton</computeroutput></emphasis>
+      elements are placed in the body and are therefore rendered for each row.
+      </para>
       <para>
         <figure id="Managing_services">
-          <title>Managing services (service.jsp)</title>
+          <title>Managing services (services.jsp)</title>
           <mediaobject>
             <imageobject role="html">
               <imagedata format="PNG" fileref="images/figures/managing_services.png"/>
@@ -434,92 +568,124 @@
           </mediaobject>
         </figure>
       </para>
-      <para/>
     </sect2>
-    <sect2>
+
+    <sect2 id="T_Priorities">
       <title> Priorities</title>
-      <para/>
       <para>
-        This page enables the user to manage a list of priorities we will use this data later in the 
-        <computeroutput>complaints</computeroutput> page where we will prompt the user to select the appropriate priority for a user's complaint. This setting could be used to help prioritize a to-do list or something similar  (however, that functionality is not included in the sample application)
-      </para>
+      This page enables the user to manage a list of priorities we
+      will use this data later in the
+      <computeroutput>complaints</computeroutput>
+      page where we will prompt the user to select the appropriate
+      priority for a user's complaint.
       <example>
-        <title>priorities.jsp code</title>
-        <programlisting>
-  &lt;html&gt;
-  &lt;head&gt; 
-    <emphasis role="bold">&lt;db:base/&gt;</emphasis> 
-  &lt;/head&gt; 
-    
-  &lt;body&gt; 
-                    
-  <emphasis role="bold">&lt;db:errors/&gt;</emphasis> 
-                   
-  <emphasis role="bold">&lt;db:dbform</emphasis> tableName="priority" maxRows="*" 
-    followUp="/priorities.jsp" autoUpdate="true"&gt; 
-                        
-  <emphasis role="bold">&lt;db:header&gt;</emphasis>                            
-    <emphasis role="bold">&lt;db:gotoButton</emphasis> caption="Menu" destination="/menu.jsp" /&gt; 
-    &lt;h1&gt;Priority Definitions&lt;/h1&gt; 
-    &lt;center&gt;&lt;h3&gt;Existing Priority Definitions:&lt;/h3&gt;&lt;/center&gt; 
-    &lt;table border="5" width="60%" align="CENTER"&gt; 
-    &lt;tr&gt; 
-      &lt;th&gt;Id&lt;/th&gt; 
-      &lt;th&gt;Short Name&lt;/th&gt; 
-      &lt;th&gt;Description&lt;/th&gt; 
-      &lt;th&gt;Actions&lt;/th&gt; 
-    &lt;/tr&gt;                         
-  <emphasis role="bold">&lt;/db:header&gt;</emphasis>
+        <title>Code for <computeroutput>priorities.jsp</computeroutput></title>
+        <programlisting><![CDATA[
+<%@ taglib uri="/WEB-INF/dbforms.tld" prefix="db" %>
+<html>
+<head>
+  <db:base/>
+</head>
 
-  <emphasis role="bold">&lt;db:body&gt;</emphasis> 
-    &lt;tr&gt; 
-      &lt;td&gt;<emphasis role="bold">&lt;db:label</emphasis> fieldName="id"/&gt;&lt;/td&gt; 
-      &lt;td&gt;<emphasis role="bold">&lt;db:textField</emphasis> fieldName="shortname"/&gt;&lt;/td&gt; 
-      &lt;td&gt;<emphasis role="bold">&lt;db:textField</emphasis> fieldName="description"/&gt;&lt;/td&gt; 
-      &lt;td&gt;
-        <emphasis role="bold">&lt;db:updateButton</emphasis> caption="update"/&gt; 
-        <emphasis role="bold">&lt;db:deleteButton</emphasis> caption="delete"/&gt; 
-      &lt;/td&gt; 
-    &lt;/tr&gt; 
-  <emphasis role="bold">&lt;/db:body&gt;</emphasis>
+<body>
+<db:errors/>
 
-  <emphasis role="bold">&lt;db:footer&gt;</emphasis> 
-    &lt;/table&gt; 
+<db:dbform tableName="priorities" maxRows="*" 
+  followUp="/priorities.jsp" autoUpdate="true">
 
-    &lt;center&gt;&lt;h3&gt;Enter new Priority Definitions:&lt;/h3&gt;&lt;/center&gt; 
+  <db:header>                            
+    <db:gotoButton caption="Menu" destination="/menu.jsp" />
+    <h1>Priority Definitions</h1>
+    <center><h3>Existing Priority Definitions</h3></center>
+    <table border="5" width="60%" align="CENTER">
+    <tr>
+      <th>Id</th>
+      <th>Short Name</th>
+      <th>Description</th>
+      <th>Actions</th>
+    </tr>                        
+  </db:header>
 
-    &lt;table border="3" align="center"&gt; 
-    &lt;tr&gt; 
-      &lt;td&gt;Id&lt;/td&gt; 
-      &lt;td&gt;<emphasis role="bold">&lt;db:textField</emphasis> size="3" fieldName="id"/&gt;&lt;/td&gt;
-    &lt;/tr&gt; 
-    &lt;tr&gt; 
-      &lt;td&gt;Short-Name&lt;/td&gt;
-      &lt;td&gt;<emphasis role="bold">&lt;db:textField</emphasis> fieldName="shortname"/&gt;&lt;/td&gt; 
-    &lt;/tr&gt; 
-    &lt;tr&gt; 
-      &lt;td&gt;Description&lt;/td&gt;
-      &lt;td&gt;<emphasis role="bold">&lt;db:textArea</emphasis> rows="3" cols="20" fieldName="description"/&gt;&lt;/td&gt; 
-    &lt;/tr&gt; 
-    &lt;/table&gt; 
+  <db:body>
+    <tr>
+      <td><db:label fieldName="id"/></td>
+      <td><db:textField fieldName="shortname"/></td>
+      <td><db:textField fieldName="description"/></td>
+      <td>
+        <db:updateButton caption="Update"/>
+        <db:deleteButton caption="Delete"/>
+      </td>
+    </tr>
+  </db:body>
 
-    &lt;br&gt;
-    &lt;center&gt;                                    
-      <emphasis role="bold">&lt;db:insertButton</emphasis> caption="Insert new Priority Definition"/&gt;
-    &lt;/center&gt; 
-                        
-  <emphasis role="bold">&lt;/db:footer&gt;</emphasis>
-  <emphasis role="bold">&lt;/db:dbform&gt;</emphasis> 
-  &lt;/body&gt; 
-  &lt;/html&gt;     
-        </programlisting>
+  <db:footer>
+    </table>
+
+    <center><h3>Enter New Priority Definition</h3></center>
+
+    <table border="3" align="center">
+    <tr>
+      <td>Id</td>
+      <td><db:textField size="3" fieldName="id"/></td>
+    </tr>
+    <tr>
+      <td>Short-Name</td>
+      <td><db:textField fieldName="shortname"/></td>
+    </tr>
+    <tr>
+      <td>Description</td>
+      <td><db:textArea rows="3" cols="20" 
+                       fieldName="description"/></td>
+    </tr>
+    </table>
+
+    <br>
+    <center>                                    
+      <db:insertButton caption="Store New Priority Definition"
+                       showAlways="true"/>
+    </center>
+  </db:footer>
+
+</db:dbform>
+</body>
+</html>    
+]]></programlisting>
       </example>
+      <emphasis role="bold">Remarks</emphasis>
+      </para>
       <para>
-        <computeroutput/>
+      As you may have noticed, we have used a pattern for this page
+      that is similar to the pattern for
+      <computeroutput>services.jsp</computeroutput>.
+      </para>
+      <para>
+      The only real difference can be found in the 
+      <emphasis role="bold"><computeroutput>autoUpdate</computeroutput></emphasis>
+      attribute in the
+      <emphasis role="bold"><computeroutput>db:form</computeroutput></emphasis>
+      element, which is set to 
+      <emphasis role="bold"><computeroutput>true</computeroutput></emphasis>
+      in
+      <computeroutput>priorities.jsp</computeroutput>.
+      This means, that all rows will be updated if their text fields
+      (and other data-sensitive elements such as pick lists)
+      have been edited by the
+      user. For example, if the user edits data in priorities numbered
+      1, 2 and 3 and then clicks a single update (or any other action
+      button),
+      <emphasis role="bold">all</emphasis>
+      changes will be stored 
+      <emphasis role="bold">automatically</emphasis>
+      in the database! (These automatically triggered
+      events are called 
+      <emphasis role="italic">implicit</emphasis>,
+      or 
+      <emphasis role="italic">secondary</emphasis>
+      events.)x
       </para>
       <para>
         <figure id="Defining_and_editing_priority_levels">
-          <title>Defining and editing priority levels</title>
+          <title>Defining priority levels (priorities.jsp)</title>
           <mediaobject>
             <imageobject role="html">
               <imagedata format="PNG" fileref="images/figures/priority_levels.png"/>
@@ -530,105 +696,136 @@
           </mediaobject>
         </figure>
       </para>
-      <para>
-        <emphasis role="bold">Remarks</emphasis>
-      </para>
-      <para>As you may have noticed, we have used the same pattern for this page as we have used for services.jsp</para>
-      <para>
-        The only real difference can be found in the 
-        <emphasis role="bold">autoUpdate</emphasis> attribute, which is set to 
-        <emphasis role="bold">true</emphasis> in priorities.jsp. This means, that all rows will be updated if their text-fields (and other data-sensitive elements) have been edited by the user.Example:
-      </para>
-      <para>
-        If the user edits data in priorities number 1, 2 and 3 and then clicks update, (or any other action button) 
-        <emphasis role="bold">all</emphasis> changes will be stored 
-        <emphasis role="bold">automatically</emphasis> in the database! (These automatically triggered events are called 
-        <emphasis role="italic">implicit</emphasis>, or 
-        <emphasis role="italic">secondary</emphasis> events)
-      </para>
-      <para/>
     </sect2>
-    <sect2>
-      <title>Customer list</title>
-      <para/>
-      <para>
-        This convenience page provides the user with a listing of all agency customers. 
-        The user is able to select a customer from the list and perform a given operation 
-        (edit orders,  view complaints submitted by the customer)
-        The user should be able to delete existing customers, as well.
-      </para>
-      <example>
-        <title>customerlist.jsp code</title>
-        <programlisting>
-  &lt;html&gt;
-  &lt;head&gt;                     
-    <emphasis role="bold">&lt;db:base/&gt;</emphasis> 
-  &lt;/head&gt;                 
-  &lt;body&gt;                     
-    <emphasis role="bold">&lt;db:errors/&gt;</emphasis>                                        
 
-    <emphasis role="bold">&lt;db:dbform</emphasis> tableName="customer" maxRows="*" followUp="/customerlist.jsp"
-      autoUpdate="false" allowNew=false&gt; 
-                                                
-    <emphasis role="bold">&lt;db:header&gt;</emphasis>
-    <emphasis role="bold">&lt;db:gotoButton</emphasis> caption="Menu" destination="/menu.jsp" /&gt; 
-      &lt;h1&gt;Customer-list&lt;/h1&gt; 
-      &lt;table align="center"&gt; 
-      &lt;tr&gt; 
-        &lt;td&gt;&lt;/td&gt; 
-        &lt;td&gt;First Name&lt;/td&gt; 
-        &lt;td&gt;Last Name&lt;/td&gt; 
-        &lt;td&gt;Address&lt;/td&gt; 
-        &lt;td&gt;P-Code&lt;/td&gt; 
-        &lt;td&gt;City&lt;/td&gt; 
-        &lt;td&gt;Action&lt;/td&gt; 
-      &lt;/tr&gt;                        
-    <emphasis role="bold">&lt;/db:header&gt;</emphasis>                                                 
-    <emphasis role="bold">&lt;db:body&gt;</emphasis> 
-      &lt;tr&gt; 
-        &lt;td&gt;<emphasis role="bold">&lt;db:associatedRadio</emphasis> name="r_customerkey" /&gt;&lt;/td&gt; 
-        &lt;td&gt;<emphasis role="bold">&lt;db:label</emphasis> fieldName="firstname"/&gt;&lt;/td&gt; 
-        &lt;td&gt;<emphasis role="bold">&lt;db:label</emphasis> fieldName="lastname"/&gt;&lt;/td&gt;                                 
-        &lt;td&gt;<emphasis role="bold">&lt;db:label</emphasis> fieldName="address"/&gt;&lt;/td&gt; 
-        &lt;td&gt;<emphasis role="bold">&lt;db:label</emphasis> fieldName="pcode"/&gt;&lt;/td&gt; 
-        &lt;td&gt;<emphasis role="bold">&lt;db:label</emphasis> fieldName="city"/&gt;&lt;/td&gt; 
-        &lt;td&gt;<emphasis role="bold">&lt;db:deleteButton</emphasis> caption="delete"/&gt;&lt;/td&gt; 
-      &lt;/tr&gt; 
-    <emphasis role="bold">&lt;/db:body&gt;</emphasis>                         
-    <emphasis role="bold">&lt;db:footer&gt;</emphasis> 
-      &lt;/table&gt; 
-      &lt;p&gt;
-      &lt;center&gt;
+    <sect2 id="T_CustList">
+      <title>Customer list</title>
+      <para>
+      This convenience page provides the user with a listing of all
+      customers.  The user is able to select a customer from the
+      list and perform a given operation (edit orders, edit
+      complaints submitted by the customer).  The user will be able
+      to delete existing customers, as well.
+      <example>
+        <title>Code for <computeroutput>customer_list.jsp</computeroutput></title>
+        <programlisting><![CDATA[
+<%@ taglib uri="/WEB-INF/dbforms.tld" prefix="db" %>
+<html>
+<head>                    
+  <db:base/>
+</head>                
+<body>                    
+  <db:errors/>                                       
+
+  <db:dbform tableName="customers" maxRows="*" 
+             followUp="/customer_list.jsp"
+             autoUpdate="false">
+
+    <db:header>
+    <db:gotoButton caption="Menu" destination="/menu.jsp" />
+      <h1>Customer List</h1>
+      <table align="center" cellspacing="6">
+      <tr>
+        <td><b></b></td>
+        <td><b>First Name</b></td>
+        <td><b>Last Name</b></td>
+        <td><b>Address</b></td>
+        <td><b>P-Code</b></td>
+        <td><b>City</b></td>
+        <td><b>Action</b></td>
+      </tr>                       
+    </db:header>                                                
+
+    <db:body allowNew="false">
+      <tr>
+        <td><db:associatedRadio name="r_customerkey" /></td>
+        <td><db:label fieldName="firstname"/></td>
+        <td><db:label fieldName="lastname"/></td>                                
+        <td><db:label fieldName="address"/></td>
+        <td><db:label fieldName="pcode"/></td>
+        <td><db:label fieldName="city"/></td>
+        <td><db:deleteButton caption="delete"/></td>
+      </tr>
+    </db:body>                        
+
+    <db:footer>
+      </table>
+      <p>
+      <center>
 
       Show
 
-      <emphasis role="bold">&lt;db:gotoButton</emphasis> caption="orders" 
-        destination="/customer_orders.jsp" destTable="customer" 
-        keyToKeyToDestPos="r_customerkey"/&gt;
-                                                             
-      <emphasis role="bold">&lt;db:gotoButton</emphasis> caption=" complaints " 
+      <db:gotoButton caption="Orders" 
+                     destination="/customer_orders.jsp" 
+                     destTable="customers" 
+                     keyToKeyToDestPos="r_customerkey"/>
+
+      <db:gotoButton caption="Complaints" 
         destination="/customer_complaints.jsp"
-        destTable="customer" 
-        keyToKeyToDestPos="r_customerkey"/&gt; 
-     
-      <emphasis role="bold">&lt;db:gotoButton</emphasis> caption=" all information "
-        destination="/customer_all.jsp" destTable="customer"
-        keyToKeyToDestPos="r_customerkey"/&gt;
-                                 
+        destTable="customers" 
+        keyToKeyToDestPos="r_customerkey"/>
+
+      <db:gotoButton caption="All Information"
+                     destination="/customer_all.jsp" 
+                     destTable="customers"
+                     keyToKeyToDestPos="r_customerkey"/>
+
       of the selected customer!
- 
-      &lt;/center&gt;
-      &lt;/p&gt;                        
-    <emphasis role="bold">&lt;/db:footer&gt;</emphasis> 
-    <emphasis role="bold">&lt;/db:dbform&gt;</emphasis> 
-  &lt;/body&gt;
-  &lt;/html&gt; 
-        </programlisting>
+
+      </center>
+      </p>                        
+    </db:footer>
+
+  </db:dbform>
+</body>
+</html>
+]]></programlisting>
       </example>
-      <para/>
+      <emphasis role="bold">Remarks</emphasis>
+      </para>
+      <para>
+      In this page, we introduce a new pattern, the use of 
+      <emphasis role="bold"><computeroutput>db:associatedRadio</computeroutput></emphasis>
+      elements.  To demonstrate the difference between this new
+      pattern and the old pattern, we have used
+      <emphasis role="italic">both</emphasis>
+
+      patterns in the customer list page. The delete buttons follow
+      the old pattern and the buttons for orders, complaints and all
+      information are implemented using the new pattern.  Using
+      <emphasis role="bold"><computeroutput>db:associatedRadio</computeroutput></emphasis>
+      elements to mark a row for certain actions (in
+      our case navigating to orders, complaints and all information)
+      saves a lot of space and makes for a cleaner interface. If we
+      had to include a button for all possible actions, the page would
+      not look very user-friendly.
+      </para>
+      <para>
+      You may have noticed that the 
+      <emphasis role="bold"><computeroutput>db:gotoButton</computeroutput></emphasis> 
+      element has a strange sounding attribute 
+      <emphasis role="bold"><computeroutput>keyToKeyToDestPos</computeroutput></emphasis>.
+
+      The value of this attribute is generated by DbForms and links
+      the row in the page that is associated with the radio button
+      with the corresponding row in the Customers table.  It refers to
+      the primary key in the Customers table and is used to identify
+      the row the system will jump to when the user clicks an action
+      button.
+      </para>
+      <para>
+      Another interesting item is that the attribute 
+      <emphasis role="bold"><computeroutput>allowNew</computeroutput></emphasis> 
+      in the 
+      <computeroutput>db:body</computeroutput>
+      element is set to a value of 
+      <emphasis role="bold"><computeroutput>false</computeroutput></emphasis>.  
+      This has the effect, in the case of an empty result set (no
+      customers), of bypassing the body element altogether.
+      </para>
       <para>
         <figure id="List_of_existing_customers">
-          <title>List of existing customers</title>
+          <title>List of customers (customer_list.jsp)</title>
           <mediaobject>
             <imageobject role="html">
               <imagedata format="PNG" fileref="images/figures/existing_customers.png"/>
@@ -639,274 +836,286 @@
           </mediaobject>
         </figure>
       </para>
-      <para>
-        <emphasis role="bold">Remarks</emphasis>
-      </para>
-      <para>
-        In this page, we introduce a new pattern: 
-        <emphasis role="bold">associatedRadio</emphasis> elements!To demonstrate the difference between this new pattern and the old pattern, we have used 
-        <emphasis role="italic">both</emphasis> patterns in the customerlist-page:- the delete-buttons follow the old pattern- the orders, complaints and all information buttons implement the new pattern
-      </para>
-      <para>
-        Using associatedRadio-Elements to mark a row for certain actions (in our case navigating to orders, complaints and all information) saves a lot of space and makes for a cleaner interface. If we had to draw a button for all possible actions, the page would not look very user-friendly.
-      </para>
-      <para>
-        You may have noticed, that the <emphasis role="bold">gotoButton</emphasis> - tag has a strange-sounding attribute: 
-      </para>
-      <para>
-        <emphasis role="bold">keyToKeyToDestPos</emphasis> This attribute refers to the associatedRadio button. And, in fact, nomen est omen, it refers to a field  (
-        <emphasis role="bold">customerkey</emphasis>), which has a key as its value. (i.e. 
-        <emphasis role="bold">k_2</emphasis>, if the user selected the third row) This key is used to identify the row the system will jump to (
-        <emphasis role="bold">Dest</emphasis>ination-
-        <emphasis role="bold">Pos</emphasis>ition), if the user clicks an action-button.
-      </para>
-      <para>
-        Another interesting item worth mentioning, is that the attribute 
-        <emphasis role="bold">allowNew</emphasis> is set to a value of 
-        <emphasis role="bold">false</emphasis> this has the effect, in the case of an empty result Set (no customers), of bypassing the body-tag altogether.
-      </para>
-      <para/>
     </sect2>
-    <sect2>
+
+    <sect2 id="T_Orders">
       <title>Orders</title>
       <para>
-        This page provides the user with the ability to manage incoming orders for a given customer. The user is able to edit customer orders, as well as customer-data. The user should not be required to 'struggle' with item-numbers, but instead, should be able to simply select (from a drop down select box) the services the customer has indicated he/she is willing to purchase.
+      This page provides the user with the ability to manage new
+      orders for a given customer.  The user is able to edit customer
+      orders, as well as customer data. The user should not be
+      required to 'struggle' with item numbers, but instead, should be
+      able to simply select (from a drop down select box) the services
+      the customer has indicated they wish to purchase.
       </para>
-      <para/>
       <para>
-        <figure id="Underlying_data_for_customer_order.jsp">
-          <title>Underlying data for customer_order.jsp</title>
+        <figure id="Underlying_data_for_customer_orders.jsp">
+          <title>
+          Underlying data for 
+          <computeroutput>customer_orders.jsp
+          </computeroutput>
+          </title>
           <mediaobject>
             <imageobject role="html">
-              <imagedata format="PNG" fileref="images/figures/customer_order.png"/>
+              <imagedata format="PNG" fileref="images/figures/customer_order_relationships.png"/>
             </imageobject>
             <imageobject role="fo">
-              <imagedata format="PNG" fileref="../images/figures/customer_order.png"/>
+              <imagedata format="PNG" fileref="../images/figures/customer_order_relationships.png"/>
             </imageobject>
           </mediaobject>
         </figure>
-      </para>
-      <para>
-        <emphasis role="bold">&lt;%@ taglib uri="/WEB-INF/dbForms.tld" prefix="db" %&gt;</emphasis>
-      </para>
       <example>
-        <title>customer_orders.jsp code</title>
-        <programlisting>
-  &lt;html&gt;
-  &lt;head&gt; 
-    <emphasis role="bold">&lt;db:base/&gt;</emphasis> 
-  &lt;/head&gt;
- 
-  &lt;body&gt; 
-    &lt;!-- show eventually occurred errors --&gt;     
-    <emphasis role="bold">&lt;db:errors/&gt;</emphasis>
-    <emphasis role="bold">&lt;db:dbform</emphasis>  tableName="customer" maxRows="1" followUp="/customer_orders.jsp" autoUpdate="false"&gt;
-    <emphasis role="bold">&lt;db:header&gt;</emphasis> 
-      <emphasis role="bold">&lt;db:gotoButton</emphasis>  caption="Menu" destination="/menu.jsp" /&gt;  
-      &lt;h1&gt;Customer&lt;/h1&gt; 
-    <emphasis role="bold">&lt;/db:header&gt;</emphasis>
-    <emphasis role="bold">&lt;db:body&gt;</emphasis>         
-      &lt;table align="center"&gt; 
-      &lt;tr&gt; 
-        &lt;td&gt;Id &lt;/td&gt; 
-        &lt;td&gt;                            
-          <emphasis role="bold">&lt;db:textField</emphasis> fieldName="id" size="4"/&gt;
-        &lt;/td&gt; 
-      &lt;/tr&gt; 
-      &lt;tr&gt; 
-        &lt;td&gt;First Name&lt;/td&gt;
-        &lt;td&gt;                 
-          <emphasis role="bold">&lt;db:textField</emphasis> fieldName="firstname" size="18"/&gt;
-        &lt;/td&gt; 
-      &lt;/tr&gt; 
-      &lt;tr&gt; 
-        &lt;td&gt;Last Name&lt;/td&gt; 
-        &lt;td&gt;                        
-          <emphasis role="bold">&lt;db:textField</emphasis> fieldName="lastname" size="18"/&gt;
-        &lt;/td&gt; 
-      &lt;/tr&gt; 
-      &lt;tr&gt; 
-        &lt;td&gt;Address:&lt;/td&gt; 
-        &lt;td&gt;                        
-          <emphasis role="bold">&lt;db:textField</emphasis> fieldName="address" size="25" /&gt;
-        &lt;/td&gt; 
-      &lt;/tr&gt; 
-      &lt;tr&gt; 
-        &lt;td&gt;Postal code/City&lt;/td&gt; 
-        &lt;td&gt;                        
-          <emphasis role="bold">&lt;db:textField fieldName="pcode" size="6"/&gt;</emphasis> -                        
-          <emphasis role="bold">&lt;db:textField fieldName="city" size="16"/&gt;</emphasis>
-        &lt;/td&gt; 
-      &lt;/tr&gt; 
-      &lt;/table&gt; 
-      &lt;br&gt;
-             
-      &lt;!-- table embedding the sub form --&gt; 
-      &lt;table align="center" border="1"&gt; 
-      &lt;tr&gt; 
-        &lt;td&gt; 
-          &lt;center&gt;&lt;p&gt;&lt;b&gt;Orders&lt;/b&gt;&lt;/p&gt;&lt;/center&gt; 
-                    
-          &lt;!-------- sub form begin -------&gt;                         
-          <emphasis role="bold">&lt;db:dbform</emphasis> tableName="orders" maxRows="3" parentField="id"                           
-            <emphasis role="bold">childField="customer_id"</emphasis> followUp="/customer_orders.jsp" autoUpdate="false"&gt;                             
-          <emphasis role="bold">&lt;db:header&gt;</emphasis> 
-            &lt;!-- code for showing existing orders of services for that customer --&gt; 
-            &lt;table&gt; 
-            &lt;tr&gt; 
-              &lt;td width="40"&gt;&lt;/td&gt; 
-              &lt;td&gt;service&lt;/td&gt; 
-              &lt;td&gt;orderdate&lt;/td&gt; 
-            &lt;/tr&gt;                             
-          <emphasis role="bold">&lt;/db:header&gt;</emphasis>                           
-          <emphasis role="bold">&lt;db:body</emphasis> allowNew="false"&gt; 
-            &lt;tr&gt; 
-              &lt;td width="40"&gt;
-                <emphasis role="bold">&lt;db:associatedRadio</emphasis> name="radio_order"/&gt; 
-              &lt;/td&gt; 
-              &lt;td&gt; 
-                <emphasis role="bold">&lt;db:select</emphasis> fieldName="service_id"&gt;                                                 
-                  <emphasis role="bold">&lt;db:tableData</emphasis> 
-                    name          = "our_services" 
-                    foreignTable  = "service" 
-                    visibleFields = "name" 
+        <title>
+        Code for 
+        <computeroutput>customer_orders.jsp</computeroutput>
+        </title>
+        <programlisting><![CDATA[
+<%@ taglib uri="/WEB-INF/dbforms.tld" prefix="db" %>
+<html>
+<head>
+  <db:base/>
+</head>
+
+<body>
+
+  <!-- show any database errors here -->
+  <db:errors/>
+
+  <db:dbform tableName="customers" maxRows="1"
+             followUp="/customer_orders.jsp" autoUpdate="false">
+
+  <db:header>
+    <db:gotoButton caption="Menu" destination="/menu.jsp" />
+    <h1>Customer Orders</h1>
+  </db:header>
+
+  <db:body>
+    <table align="center">
+    <tr>
+      <td>Id</td>
+      <td>
+        <db:textField fieldName="id" size="4"/>
+      </td>
+    </tr>
+    <tr>
+      <td>First Name</td>
+      <td>
+        <db:textField fieldName="firstname" size="18"/>
+      </td>
+    </tr>
+    <tr>
+      <td>Last Name</td>
+      <td>
+        <db:textField fieldName="lastname" size="18"/>
+      </td>
+    </tr>
+    <tr>
+      <td>Address:</td>
+      <td>
+        <db:textField fieldName="address" size="25" />
+      </td>
+    </tr>
+    <tr>
+      <td>Postal Code - City</td>
+      <td>
+        <db:textField fieldName="pcode" size="6"/> -
+        <db:textField fieldName="city" size="16"/>
+      </td>
+    </tr>
+    </table>
+    <br>
+
+    <!-- table embedding the sub form -->
+    <table align="center" border="1">
+    <tr>
+      <td>
+        <center><p><b>Orders</b></p></center>
+
+        <!-------- sub form begin ------->
+        <db:dbform tableName="orders" maxRows="2" 
+                   parentField="id" childField="customer_id" 
+                   followUp="/customer_orders.jsp"
+                   autoUpdate="false">
+
+          <db:header>
+            <!-- Show existing orders of services for the customer -->
+            <table width="100%">
+            <tr>
+              <td width="40"></td>
+              <td>Service</td>
+              <td>Order Date</td>
+            </tr>
+          </db:header>
+
+          <db:body allowNew="true">
+            <tr>
+              <td width="40">
+                <db:associatedRadio name="radio_order"/>
+              </td>
+              <td>
+                <db:select fieldName="service_id">
+                  <db:tableData
+                    name          = "our_services"
+                    foreignTable  = "services"
+                    visibleFields = "name"
                     storeField    = "id"
-                  <emphasis role="bold">/&gt;</emphasis>                                             
-                <emphasis role="bold">&lt;/db:select&gt;</emphasis> 
-              &lt;/td&gt; 
-              &lt;td&gt;
-                <emphasis role="bold">&lt;db:textField</emphasis> fieldName="orderdate" size="14"/&gt; 
-              &lt;/td&gt; 
-            &lt;/tr&gt;                             
-          <emphasis role="bold">&lt;/db:body&gt;</emphasis>                           
-          <emphasis role="bold">&lt;db:footer&gt;</emphasis> 
-            &lt;tr&gt; 
-              &lt;td width="40"&gt;&lt;/td&gt; 
-              &lt;td&gt;                                            
-                <emphasis role="bold">&lt;db:updateButton</emphasis> caption="Update Order"
-                  associatedRadio="radio_order"/&gt; 
-              &lt;/td&gt; 
-              &lt;td&gt;                                            
-                <emphasis role="bold">&lt;db:deleteButton</emphasis> caption="Delete Order"
-                  associatedRadio="radio_order"/&gt; 
-              &lt;/td&gt; 
-            &lt;/tr&gt; 
-            &lt;/table&gt;
+                  />
+                </db:select>
+              </td>
+              <td>
+                <db:textField fieldName="orderdate" size="14"/>
+              </td>
+            </tr>
+          </db:body>
 
-            &lt;br&gt;&lt;hr&gt;                      
+          <db:footer>
+            <tr>
+              <td colspan="3" align="CENTER">
+                <db:updateButton caption="Update Order"
+                                 associatedRadio="radio_order"/>
+                <db:deleteButton caption="Delete Order"
+                                 associatedRadio="radio_order"/>
+                <db:insertButton caption="Store New Order"
+                                 showAlways="false" />
+                <db:navNewButton caption="New Order" 
+                                 showAlwaysInFooter="false" />
+              </td>
+            </tr>
+            </table>
 
-            &lt;!-- code for entering new orders and services --&gt;             
-            &lt;table&gt; 
-            &lt;tr&gt; 
-              &lt;td&gt;service&lt;/td&gt; 
-              &lt;td&gt;date&lt;/td&gt; 
-              &lt;td&gt;&lt;/td&gt; 
-            &lt;/tr&gt; 
-            &lt;tr&gt; 
-              &lt;td&gt;                                         
-                <emphasis role="bold">&lt;db:select</emphasis> fieldName="service_id"&gt;                                              
-                  <emphasis role="bold">&lt;db:tableData</emphasis>
-                    name          = "our_services" 
-                    foreignTable  = "service" 
-                    visibleFields = "name" 
-                    storeField    = "id"                                              
-                  <emphasis role="bold">/&gt;</emphasis>                                         
-                <emphasis role="bold">&lt;/db:select&gt;</emphasis> 
-              &lt;/td&gt; 
-              &lt;td&gt;                                            
-                <emphasis role="bold">&lt;db:textField</emphasis> fieldName="orderdate" size="10" /&gt;
-              &lt;/td&gt; 
-              &lt;td&gt;                                            
-                <emphasis role="bold">&lt;db:insertButton</emphasis> caption="insert order" /&gt;
-              &lt;/td&gt; 
-            &lt;/tr&gt; 
-            &lt;/table&gt;
-                                 
-            &lt;center&gt;                                  
-              <emphasis role="bold">&lt;db:navFirstButton</emphasis> caption="lt;lt; First" /&gt;
-              <emphasis role="bold">&lt;db:navPrevButton</emphasis> caption="lt; Previous" /&gt;
-              <emphasis role="bold">&lt;db:navNextButton</emphasis> caption="Next gt;" /&gt;                                 
-              <emphasis role="bold">&lt;db:navLastButton</emphasis> caption="Last gt;gt;" /&gt;  
-            &lt;/center&gt; 
-                            
-          <emphasis role="bold">&lt;/db:footer&gt;</emphasis>                         
-          <emphasis role="bold">&lt;/db:dbform&gt;</emphasis> 
-          &lt;!-------- sub form end --------&gt; 
+            <br>
+            <center>
+              <db:navFirstButton caption="&lt;&lt; First" />
+              <db:navPrevButton caption="&lt; Previous" />
+              <db:navNextButton caption="Next &gt;" />
+              <db:navLastButton caption="Last &gt;&gt;" />
+            </center>
 
-        &lt;/td&gt; 
-      &lt;/tr&gt; 
-      &lt;/table&gt; 
-      &lt;!-- end of table embedding the sub form --&gt; 
-            
-      &lt;br&gt;
-      &lt;center&gt; 
-        <emphasis role="bold">&lt;db:insertButton</emphasis> caption="Store this new Customer!"  /&gt;              
-        <emphasis role="bold">&lt;db:updateButton</emphasis> caption="Update Customer"  /&gt;               
-        <emphasis role="bold">&lt;db:deleteButton</emphasis> caption="Delete Customer"  /&gt; 
-      &lt;/center&gt; 
-    &lt;/db:body&gt;
-    <emphasis role="bold">&lt;db:footer&gt;</emphasis> 
-      &lt;br&gt;
-      &lt;center&gt;             
-        <emphasis role="bold">&lt;db:navFirstButton</emphasis> caption="lt;lt; First" /&gt; 
-        <emphasis role="bold">&lt;db:navPrevButton</emphasis> caption="lt; Previous" /&gt; 
-        <emphasis role="bold">&lt;db:navNextButton</emphasis> caption="Next gt;"  /&gt; 
-        <emphasis role="bold">&lt;db:navLastButton</emphasis> caption="Last gt;gt;" /&gt; 
-        <emphasis role="bold">&lt;db:navNewButton</emphasis> caption="nbsp;nbsp;*nbsp;nbsp;"/&gt;  
-      &lt;/center&gt; 
-    <emphasis role="bold">&lt;/db:footer&gt;</emphasis> 
-    <emphasis role="bold">&lt;/db:dbform&gt;</emphasis>
-  &lt;/body&gt; 
-  &lt;/html&gt;
-        </programlisting>
+          </db:footer>
+
+        </db:dbform>
+        <!-------- sub form end -------->
+
+      </td>
+    </tr>
+    </table>
+    <!-- end of table embedding the sub form -->
+
+    <br>
+    <center>
+      <db:insertButton caption="Store New Customer" />
+      <db:updateButton caption="Update Customer" />
+      <db:deleteButton caption="Delete Customer" />
+      <db:navNewButton caption="New Customer" 
+                       showAlwaysInFooter="false" />
+    </center>
+  </db:body>
+
+  <db:footer>
+    <br>
+    <center>
+      <db:navFirstButton caption="&lt;&lt; First" />
+      <db:navPrevButton caption="&lt; Previous" />
+      <db:navNextButton caption="Next &gt;"  />
+      <db:navLastButton caption="Last &gt;&gt;" />
+    </center>
+  </db:footer>
+
+  </db:dbform>
+</body>
+</html>
+]]></programlisting>
       </example>
-      <para>
-        <emphasis role="bold">Remarks</emphasis>
-      </para>
-      <para>Within this page, we have introduced several new DbForm features:</para>
-      <para>
-        Nested Forms: The structure of this page is similar to the structure shown in Figure 3  a main form has a sub-form in its body. The sub-form is linked to its parent by the equality of data-fields [if there is more than one field to define for correct mapping, a 
-        <emphasis role="bold">field-list</emphasis> may be provided, with each field separated from the other by commas or semicolons (
-        <emphasis role="bold">,</emphasis> or 
-        <emphasis role="bold">;</emphasis>)] defined in the child - forms 
-        <emphasis role="bold">parentField</emphasis> and 
-        <emphasis role="bold">childField</emphasis> attributes.
+      <emphasis role="bold">Remarks</emphasis>
       </para>
       <para>
-        Navigation-Buttons: Because only 
-        <emphasis role="italic">one</emphasis> customer is visible at once, the user needs a means of navigating between records. This functionality is provided by 
-        <emphasis role="bold">navFirst</emphasis>
-        <emphasis role="bold">Button, navLastButton, navPrevButton, navNextButton</emphasis> tags.
+      In this page, we have introduced several new DbForm features.
       </para>
       <para>
-        Insert-Button: the 
-        <emphasis role="bold">navNewButton</emphasis> tag navigates the user to an empty form.
+      Nested Forms: The structure of this page is similar
+      to the structure shown in
+        <emphasis role="underline">
+          <xref linkend="DbFormsStructure"/>
+        </emphasis>
+      where a main form has a subform in its body. The subform 
+      is linked to its parent by the equality of one or more
+      data fields defined in the child form's 
+      <emphasis role="bold"><computeroutput>parentField</computeroutput></emphasis> 
+      and 
+      <emphasis role="bold"><computeroutput>childField</computeroutput></emphasis> 
+      attributes. If there is more than one field to define for
+      correct mapping, a field list may be provided, with each field
+      separated from the other by commas or semicolons.
       </para>
       <para>
-        Select-Tag: In addition to textField and textArea  tags, more complex elements like 
-        <emphasis role="bold">select</emphasis>, 
-        <emphasis role="bold">radio</emphasis> and 
-        <emphasis role="bold">checkbox</emphasis> can be used for data-visualization and manipulation. I have chosen a 
-        <emphasis role="bold">select</emphasis> - tag to display the type of services available.
+      Select Element: In addition to 
+      <emphasis role="bold"><computeroutput>db:textField:</computeroutput></emphasis> 
+      and 
+      <emphasis role="bold"><computeroutput>db:textArea</computeroutput></emphasis>
+      elements, more complex elements like 
+      <emphasis role="bold"><computeroutput>db:select</computeroutput></emphasis>, 
+      <emphasis role="bold"><computeroutput>db:radio</computeroutput></emphasis> and 
+      <emphasis role="bold"><computeroutput>db:checkbox</computeroutput></emphasis> 
+      can be used for data visualization and manipulation. The 
+      <emphasis role="bold"><computeroutput>db:select</computeroutput></emphasis>
+      element to allows the user to choose the type of services
+      available from a pulldown list.
       </para>
       <para>
-        External data is fetched by a 
-        <emphasis role="bold">tableData</emphasis>-tag: This tag provides external data to 
-        <emphasis role="bold">radio</emphasis>, 
-        <emphasis role="bold">checkbox</emphasis> or 
-        <emphasis role="bold">select</emphasis> - tags. It may be used for cross references to other tables. In our case, we initialized the select-box with external data from the service table.Be aware that you have to distinguish between the field(s) to be 
-        <emphasis role="italic">shown</emphasis> to the user and the field to be 
-        <emphasis role="italic">stored</emphasis> in the associated field in the table. In our case we 
-        <emphasis role="italic">showed</emphasis> the field service.name and 
-        <emphasis role="italic">stored</emphasis> the value service.id in the associated field orders.service_id! The name 
-        <emphasis role="bold">our_services</emphasis> was defined to enable internal caching of the data, which increases performance.
+      External data fetched by a 
+      <emphasis role="bold"><computeroutput>db:tableData</computeroutput></emphasis>
+      element: This element provides external data for 
+      <emphasis role="bold"><computeroutput>db:radio</computeroutput></emphasis>, 
+      <emphasis role="bold"><computeroutput>db:checkbox</computeroutput></emphasis> or 
+      <emphasis role="bold"><computeroutput>db:select</computeroutput></emphasis> 
+      elements. It may be used for cross references to other
+      tables. In our case, we initialized the select box with external
+      data from the service table.  Be aware that you have to
+      distinguish between the field(s) to be
+      <emphasis role="italic">shown</emphasis> 
+      to the user and the field to be 
+      <emphasis role="italic">stored</emphasis> 
+      in the associated field in the table. In our case we 
+      <emphasis role="italic">showed</emphasis> 
+      the field 
+      <computeroutput>service.name</computeroutput> 
+      and 
+      <emphasis role="italic">stored</emphasis>
+      the value 
+      <computeroutput>service.id</computeroutput> 
+      in the associated field 
+      <computeroutput>orders.service_id</computeroutput>!
+      The name 
+      <emphasis role="bold">our_services</emphasis> 
+      was defined to enable internal caching of the data, 
+      which increases performance.
       </para>
       <para>
-        <computeroutput/>
+      Navigation Buttons: Because only 
+      <emphasis role="italic">one</emphasis>
+      customer is visible at once, the user needs a means of
+      navigating between records. This functionality is provided by the
+      <emphasis role="bold"><computeroutput>db:navFirstButton</computeroutput></emphasis>, 
+      <emphasis role="bold"><computeroutput>db:navLastButton</computeroutput></emphasis>, 
+      <emphasis role="bold"><computeroutput>db:navPrevButton</computeroutput></emphasis>,
+      and 
+      <emphasis role="bold"><computeroutput>db:navNextButton</computeroutput></emphasis>
+      elements.  In addition, using the second set of navigation
+      buttons, the user can navigate through a list of orders if there
+      are more than the maxRows that are displayed in the subform.
+      </para>
+      <para>
+      The 
+      <emphasis role="bold"><computeroutput>db:navNewButton</computeroutput></emphasis>
+      element navigates the user to an empty form.  This form is
+      automatically created by DbForms.  It is the same as this page,
+      but the fields are not populated and the insert button that we
+      defined in this JSP is present but the update and delete buttons
+      are not present.
       </para>
       <para>
         <figure id="Managing_orders_and_customers_with_one_single_page">
-          <title>Managing orders and customers with one single page</title>
+          <title>Managing customers and their orders on a single page (customer_orders.jsp)</title>
           <mediaobject>
             <imageobject role="html">
               <imagedata format="PNG" fileref="images/figures/managing_orders_and_customers_single.png"/>
@@ -917,234 +1126,223 @@
           </mediaobject>
         </figure>
       </para>
-      <para/>
     </sect2>
-    <sect2>
+
+    <sect2 id="T_Complaints">
       <title>Complaints </title>
       <para>
-        This page is conceptually similar to the previous file (customer_orders.jsp) It provides the user with the ability to manage customer complaints. The user is, once again, able to edit  customer complaints as well as customer-data, all from the same page.
+      This page is conceptually similar to the previous JSP
+      (<computeroutput>customer_orders.jsp</computeroutput>).
+      It provides the user with the ability to manage customer
+      complaints. The user is, once again, able to edit customer
+      complaints as well as customer data, all from the same page.
       </para>
       <para>
-        To establish an order of importance, every reported complaint must be associated with a certain level of priority. To make life easier for our users, he/she should be able to simply pick a priority level from a maintainable list of predefined priority levels.
+      To establish an order of importance, every reported complaint
+      must be associated with a priority level. To make
+      life easier for our users, they are able to simply pick a
+      priority level from a maintainable list of predefined priority
+      levels.
       </para>
-      <para/>
       <para>
-        <figure id="Underlying_data_for_customer_order">
-          <title>Underlying data for customer_order.jsp</title>
+        <figure id="Underlying_data_for_customer_complaints">
+          <title>Underlying data for <computeroutput>customer_complaints.jsp</computeroutput></title>
           <mediaobject>
             <imageobject role="html">
-              <imagedata format="PNG" fileref="images/figures/customer_order_(priority).png"/>
+              <imagedata format="PNG" fileref="images/figures/customer_complaint_relationships.png"/>
             </imageobject>
             <imageobject role="fo">
-              <imagedata format="PNG" fileref="../images/figures/customer_order_(priority).png"/>
+              <imagedata format="PNG" fileref="../images/figures/customer_complaint_relationships.png"/>
             </imageobject>
           </mediaobject>
         </figure>
-      </para>
       <example>
-        <title>customer_order.jsp code</title>
-        <programlisting>
-  &lt;%@ taglib uri="/WEB-INF/dbForms.tld" prefix="db" %&gt;
-  &lt;html&gt; 
-  &lt;head&gt;     
-    <emphasis role="bold">&lt;db:base/&gt;</emphasis> 
-  &lt;/head&gt;   
-  &lt;body&gt; 
-    &lt;!-- show eventually occurred errors --&gt; 
-    <emphasis role="bold">&lt;db:errors/&gt;</emphasis>         
-    <emphasis role="bold">&lt;db:dbform</emphasis> tableName="customer" maxRows="1" 
-      followUp="/customer_complaints.jsp" autoUpdate="false"&gt;     
-    <emphasis role="bold">&lt;db:header&gt;</emphasis> 
-      <emphasis role="bold">&lt;db:gotoButton</emphasis> caption="Menu" destination="/menu.jsp" /&gt; 
-      &lt;h1&gt;Customer&lt;/h1&gt; 
-    <emphasis role="bold">&lt;/db:header&gt;</emphasis>
-    <emphasis role="bold">&lt;db:body&gt;</emphasis> 
-      &lt;table align="center"&gt; 
-      &lt;tr&gt; 
-        &lt;td&gt;Id &lt;/td&gt; 
-        &lt;td&gt;<emphasis role="bold">&lt;db:textField</emphasis> fieldName="id" size="4"/&gt;&lt;/td&gt; 
-      &lt;/tr&gt; 
-      &lt;tr&gt; 
-        &lt;td&gt;First Name&lt;/td&gt; 
-        &lt;td&gt;<emphasis role="bold">&lt;db:textField</emphasis> fieldName="firstname" size="18"/&gt;&lt;/td&gt; 
-      &lt;/tr&gt; 
-      &lt;tr&gt; 
-        &lt;td&gt;Last Name&lt;/td&gt; 
-        &lt;td&gt;<emphasis role="bold">&lt;db:textField</emphasis> fieldName="lastname" size="18"/&gt;&lt;/td&gt; 
-      &lt;/tr&gt; 
-      &lt;tr&gt; 
-        &lt;td&gt;Address:&lt;/td&gt; 
-        &lt;td&gt;<emphasis role="bold">&lt;db:textField</emphasis> fieldName="address" size="25" /&gt;&lt;/td&gt; 
-      &lt;/tr&gt; 
-      &lt;tr&gt; 
-        &lt;td&gt;Postal code/City&lt;/td&gt; 
-        &lt;td&gt;                     
-          <emphasis role="bold">&lt;db:textField</emphasis> fieldName="pcode" size="6"/&gt; -                    
-          <emphasis role="bold">&lt;db:textField</emphasis> fieldName="city" size="16"/&gt; 
-        &lt;/td&gt; 
-      &lt;/tr&gt; 
-      &lt;/table&gt; 
-      &lt;br&gt;
-         
-      &lt;!-- table embedding the sub form --&gt;
-      &lt;table align="center" border="1"&gt; 
-      &lt;tr&gt; 
-        &lt;td&gt; 
-          &lt;center&gt;&lt;p&gt;&lt;b&gt;Complaints&lt;/b&gt;&lt;/p&gt;&lt;/center&gt; 
-                   
-          &lt;!-------- sub form begin -------&gt; 
-          <emphasis role="bold">&lt;db:dbform</emphasis> tableName="complaint" maxRows="3" parentField="id" 
-            childField="customer_id" followUp="/customer_complaints.jsp" 
-            autoUpdate="false"&gt;                                         
-          <emphasis role="bold">&lt;db:header&gt;</emphasis> 
-            &lt;!-- code for showing existing complaints of the customer --&gt; 
-            &lt;table&gt; 
-            &lt;tr&gt; 
-              &lt;td width="40"&gt;&lt;/td&gt; 
-              &lt;td&gt;users' message&lt;/td&gt; 
-              &lt;td&gt;priority&lt;/td&gt; 
-              &lt;td&gt;incoming date&lt;/td&gt; 
-            &lt;/tr&gt;                    
-          <emphasis role="bold">&lt;/db:header&gt;</emphasis>
-          <emphasis role="bold">&lt;db:body</emphasis> allowNew="false"&gt; 
-            &lt;tr&gt; 
-              &lt;td width="40"&gt;                                    
-                <emphasis role="bold">&lt;db:associatedRadio</emphasis> name="radio_complaint" /&gt;
-              &lt;/td&gt; 
-              &lt;td&gt;                                    
-                <emphasis role="bold">&lt;db:textField</emphasis> fieldName="usermessage" size="14"/&gt;
-              &lt;/td&gt; 
-              &lt;td&gt;                                     
-                <emphasis role="bold">&lt;db:select</emphasis> fieldName="priority"&gt;                                         
-                  <emphasis role="bold">&lt;db:tableData</emphasis>
-                    name          = "some_priorities"
-                    foreignTable  = "priority"
-                    visibleFields = "shortname"
-                    storeField    = "id"                                        
-                  <emphasis role="bold">/&gt;</emphasis>                                     
-                <emphasis role="bold">&lt;/db:select&gt;</emphasis>
-              &lt;/td&gt; 
-              &lt;td&gt;                                    
-                <emphasis role="bold">&lt;db:textField</emphasis> fieldName="incomingdate" size="14"/&gt;
-              &lt;/td&gt; 
-            &lt;/tr&gt;                     
-          <emphasis role="bold">&lt;/db:body&gt;</emphasis>                    
-          <emphasis role="bold">&lt;db:footer&gt;</emphasis> 
-            &lt;tr&gt; 
-              &lt;td width="40"&gt;&lt;/td&gt; 
-              &lt;td&gt;                                    
-                <emphasis role="bold">&lt;db:updateButton</emphasis> caption="Update Complaint" 
-                  associatedRadio="radio_complaint"/&gt; 
-              &lt;/td&gt; 
-              &lt;td&gt;                                     
-                <emphasis role="bold">&lt;db:deleteButton</emphasis> caption="Delete Complaint" 
-                  associatedRadio="radio_complaint "/&gt; 
-              &lt;/td&gt; 
-            &lt;/tr&gt; 
-            &lt;/table&gt;
-                       
-            &lt;br&gt;&lt;hr&gt; 
-            &lt;!-- code for entering new complaints --&gt;             
-            &lt;table align="center"&gt; 
-            &lt;tr&gt; 
-              &lt;td&gt;user's message&lt;/td&gt; 
-              &lt;td&gt;priority&lt;/td&gt; 
-              &lt;td&gt;date&lt;/td&gt; 
-            &lt;/tr&gt; 
-            &lt;tr&gt; 
-              &lt;td&gt;                                    
-                <emphasis role="bold">&lt;db:textArea</emphasis> wrap="virtual" cols="20" rows="6" 
-                  fieldName="usermessage"/&gt;
-              &lt;/td&gt; 
-              &lt;td&gt;                                     
-                <emphasis role="bold">&lt;db:radio</emphasis> fieldName="priority" growDirection="vertical"&gt;                                         
-                  <emphasis role="bold">&lt;db:tableData</emphasis>
-                    name          = "some_priorities"
-                    foreignTable  = "priority"
-                    visibleFields = "shortname"
-                    storeField    = "id"                                        
-                  <emphasis role="bold">/&gt;</emphasis>                                     
-                <emphasis role="bold">&lt;/db:radio&gt;</emphasis> 
-              &lt;/td&gt; 
-              &lt;td valign="top"&gt;                                    
-                <emphasis role="bold">&lt;db:textField</emphasis> fieldName="incomingdate" size="14" /&gt;
-              &lt;/td&gt; 
-            &lt;/tr&gt; 
-            &lt;/table&gt;
-   
-            &lt;p&gt;
-            &lt;center&gt;                            
-              <emphasis role="bold">&lt;db:insertButton</emphasis> caption="insert new complaint" /&gt;
-            &lt;/center&gt;
-            &lt;/p&gt; 
+        <title>
+        Code for 
+        <computeroutput>customer_complaints.jsp</computeroutput>
+        </title>
+        <programlisting><![CDATA[
+<%@ taglib uri="/WEB-INF/dbforms.tld" prefix="db" %>
+<html>
+<head>
+  <db:base/>
+</head>
 
-            &lt;p&gt;
-            &lt;center&gt;                             
-              <emphasis role="bold">&lt;db:navFirstButton</emphasis> caption="lt;lt; First" /&gt; 
-              <emphasis role="bold">&lt;db:navPrevButton</emphasis> caption="lt; Previous" /&gt;                             
-              <emphasis role="bold">&lt;db:navNextButton</emphasis> caption="Next gt;" /&gt;                         
-              <emphasis role="bold">&lt;db:navLastButton</emphasis> caption="Last gt;gt;" /&gt; 
-            &lt;/center&gt;
-            &lt;/p&gt;                     
-          <emphasis role="bold">&lt;/db:footer&gt;</emphasis>                                         
-          <emphasis role="bold">&lt;/db:dbform&gt;</emphasis> 
-          &lt;!-------- sub form end --------&gt;
-                     
-        &lt;/td&gt; 
-      &lt;/tr&gt; 
-      &lt;/table&gt; 
-      &lt;!-- end of table embedding the sub form --&gt;
-         
-      &lt;br&gt;
-      &lt;center&gt;             
-        <emphasis role="bold">&lt;db:insertButton</emphasis> caption="Store this new Customer!"  /&gt; 
-        <emphasis role="bold">&lt;db:updateButton</emphasis> caption="Update Customer"  /&gt; 
-        <emphasis role="bold">&lt;db:deleteButton</emphasis> caption="Delete Customer"  /&gt; 
-      &lt;/center&gt; 
-    <emphasis role="bold">&lt;/db:body&gt;</emphasis>
-    <emphasis role="bold">&lt;db:footer&gt;</emphasis> 
-    &lt;br&gt;
-    &lt;center&gt;           
-      <emphasis role="bold">&lt;db:navFirstButton</emphasis> caption="lt;lt; First" /&gt; 
-      <emphasis role="bold">&lt;db:navPrevButton</emphasis> caption="lt; Previous" /&gt; 
-      <emphasis role="bold">&lt;db:navNextButton</emphasis> caption="Next gt;"  /&gt; 
-      <emphasis role="bold">&lt;db:navLastButton</emphasis> caption="Last gt;gt;" /&gt; 
-      <emphasis role="bold"> &lt;db:navNewButton</emphasis> caption="nbsp;nbsp;*nbsp;nbsp;"/&gt; 
-    &lt;/center&gt; 
-    
-    <emphasis role="bold">&lt;/db:footer&gt;</emphasis>
-    <emphasis role="bold">&lt;/db:dbform&gt;</emphasis>     
-  &lt;/body&gt; 
-  &lt;/html&gt;           
-        </programlisting>
+<body>
+
+  <!-- show any database errors here -->
+  <db:errors/>
+
+  <db:dbform tableName="customers" maxRows="1"
+    followUp="/customer_complaints.jsp" autoUpdate="false">
+
+  <db:header>
+    <db:gotoButton caption="Menu" destination="/menu.jsp" />
+    <h1>Customer Complaints</h1>
+  </db:header>
+
+  <db:body>
+    <table align="center">
+      <tr>
+        <td>Id</td>
+        <td>
+          <db:textField fieldName="id" size="4"/>
+        </td>
+      </tr>
+    <tr>
+      <td>First Name</td>
+      <td><db:textField fieldName="firstname" size="18"/></td>
+    </tr>
+    <tr>
+      <td>Last Name</td>
+      <td><db:textField fieldName="lastname" size="18"/></td>
+    </tr>
+    <tr>
+      <td>Address:</td>
+      <td><db:textField fieldName="address" size="25" /></td>
+    </tr>
+    <tr>
+      <td>Postal Code - City</td>
+      <td>
+        <db:textField fieldName="pcode" size="6"/> -
+        <db:textField fieldName="city" size="16"/>
+      </td>
+    </tr>
+    </table>
+    <br>
+
+    <!-- table embedding the sub form -->
+    <table align="center" border="1">
+    <tr>
+      <td>
+        <center><p><b>Complaints</b></p></center>
+
+        <!-------- sub form begin ------->
+        <db:dbform tableName="complaints" maxRows="2" 
+                   parentField="id" childField="customer_id" 
+                   followUp="/customer_complaints.jsp"
+                   autoUpdate="false">
+
+        <db:header>
+          <!-- Show existing complaints of the customer -->
+          <table>
+          <tr>
+            <td width="40"></td>
+            <td valign="top">User's Message</td>
+            <td>Priority<br/><db:sort fieldName="priority"/></td>
+            <td>Incoming Date<br/><db:sort 
+                                    fieldName="incomingdate"/></td>
+          </tr>
+        </db:header>
+
+        <db:body allowNew="true">
+          <tr>
+            <td width="40" valign="top">
+              <db:associatedRadio name="radio_complaint" />
+            </td>
+            <td valign="top">
+              <db:textArea fieldName="usermessage" 
+                           cols="32" rows="3" wrap="virtual"/>
+            </td>
+            <td valign="top">
+              <db:select fieldName="priority">
+                <db:tableData
+                  name          = "some_priorities"
+                  foreignTable  = "priorities"
+                  visibleFields = "shortname"
+                  storeField    = "id"
+                />
+              </db:select>
+            </td>
+            <td valign="top">
+              <db:textField fieldName="incomingdate" size="14"/>
+            </td>
+          </tr>
+        </db:body>
+
+        <db:footer>
+          <tr>
+            <td colspan="4" align="CENTER">
+              <db:updateButton caption="Update Complaint"
+                               associatedRadio="radio_complaint"/>
+              <db:deleteButton caption="Delete Complaint"
+                               associatedRadio="radio_complaint "/>
+              <db:insertButton caption="Store New Complaint"
+                               showAlways="false" />
+              <db:navNewButton caption="New Complaint"
+                               showAlwaysInFooter="false" />
+            </td>
+          </tr>
+          </table>
+
+          <br/>
+          <center>
+            <db:navFirstButton caption="&lt;&lt; First" />
+            <db:navPrevButton caption="&lt; Previous" />
+            <db:navNextButton caption="Next &gt;" />
+            <db:navLastButton caption="Last &gt;&gt;" />
+          </center>
+        </db:footer>
+
+        </db:dbform>
+        <!-------- sub form end -------->
+
+      </td>
+    </tr>
+    </table>
+    <!-- end of table embedding the sub form -->
+
+    <br>
+    <center>
+      <db:insertButton caption="Store New Customer"  />
+      <db:updateButton caption="Update Customer"  />
+      <db:deleteButton caption="Delete Customer"  />
+      <db:navNewButton caption="New Customer"
+                       showAlwaysInFooter="false"/>
+    </center>
+  </db:body>
+
+  <db:footer>
+    <br>
+    <center>
+      <db:navFirstButton caption="&lt;&lt; First" />
+      <db:navPrevButton caption="&lt; Previous" />
+      <db:navNextButton caption="Next &gt;"  />
+      <db:navLastButton caption="Last &gt;&gt;" />
+    </center>
+  </db:footer>
+
+  </db:dbform>
+</body>
+</html>
+]]></programlisting>
       </example>
-      <para>
-        <emphasis role="bold">Remarks</emphasis>
+      <emphasis role="bold">Remarks</emphasis>
       </para>
       <para>
-        We have not used any new tags or patterns, however, we introduce some new variations of already known patterns:
+      In this page, the user can sort the complaints by either
+      priority or by date.  The sort control boxes are placed under
+      the column headings using the
+      <emphasis role="bold"><computeroutput>db:sort</computeroutput></emphasis>
+      element.  To use this feature on a field, the field must be defined
+      as 
+      <emphasis role="bold"><computeroutput>isKey</computeroutput></emphasis>
+      or 
+      <emphasis role="bold"><computeroutput>sortable</computeroutput></emphasis>
+      in the
+      <computeroutput>dbforms-config.xml</computeroutput> file.
       </para>
-      <itemizedlist mark="opencircle">
-        <listitem>
-          <para>A group of radio-buttons, retrieved via the 
-            <emphasis role="bold">tableData</emphasis> tag, defined as 
-            <emphasis role="bold">some_priorities</emphasis>
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            <emphasis role="bold">associatedRadio</emphasis> buttons for selecting existing complaints.
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            Navigation buttons for both, the main and the sub-form.
-          </para>
-        </listitem>
-      </itemizedlist>
+      <para>
+      The 
+      <computeroutput>usermessage</computeroutput> 
+      field is very long, 255 characters.  The 
+      <emphasis role="bold"><computeroutput>db:textArea</computeroutput></emphasis>
+      element is used to display this field.  In our example, up to 96
+      characters is displayed on three lines.
+      </para>
       <para>
         <figure id="Managing_customers_and_their_complaints_with_one_single_page">
-          <title>Managing customers and their complaints with one single page</title>
+          <title>Managing customers and their complaints on a single page (customer_complaints.jsp)</title>
           <mediaobject>
             <imageobject role="html">
               <imagedata format="PNG" fileref="images/figures/managing_customers_complaints.png"/>
@@ -1155,14 +1353,263 @@
           </mediaobject>
         </figure>
       </para>
-      <para/>
     </sect2>
-    <sect2>
-      <title>Customers information</title>
+
+    <sect2 id="T_CustInfo">
+      <title>Customer information</title>
       <para>
-        This page is the result of merging customer_orders.jsp and customer_complaints.jsp into one big file. 
-        Given that this page does not introduce any new patterns or tags,  its code has not been included in this document.  Please refer to the example application for a complete listing .
+      This page was created by merging 
+      <computeroutput>customer_orders.jsp</computeroutput>
+      and 
+      <computeroutput>customer_complaints.jsp</computeroutput> 
+      into one file and then removing the update capabilities
+      (radio buttons and update, etc. buttons).
+      </para>
+      <para> A new technique was used in this form.  Only excerpts of
+      the code are shown in the examples below.  The complete JSP
+      source code is available in the tutorial application in the
+      <computeroutput>examples/tutorial</computeroutput>
+      directory of the distribution.
+      <example>
+        <title>
+        Defining a query with data from more than one table in 
+        <computeroutput>dbforms-config.xml</computeroutput>
+        </title>
+        <programlisting><![CDATA[
+   <query name="orders_and_servicenames"
+          from="orders,services"
+          where="orders.service_id=services.id"
+          orderBy="orderdate">
+     <field name="customer_id"  fieldType="int"/>
+     <field name="name"         fieldType="char"/>
+     <field name="orderdate"    fieldType="char"/>
+   </query>
+]]></programlisting>
+      </example>
+      <example>
+        <title>
+        Displaying data from more than one table in a single form 
+        (<computeroutput>customers_all.jsp</computeroutput>)
+        </title>
+        <programlisting><![CDATA[
+
+        <!-------- first sub form begin ------->
+        <db:dbform tableName="orders_and_servicenames"
+                   maxRows="2" parentField="id"
+                   childField="customer_id"
+                   followUp="/customer_all.jsp">
+
+          <db:header>
+            <!-- Show existing orders of services for the customer -->
+            <table width="100%">
+            <tr>
+              <td>Service</td>
+              <td>Order Date</td>
+            </tr>
+          </db:header>
+
+          <db:body allowNew="false">
+            <tr>
+              <td>
+                <db:textField fieldName="name"/>
+              </td>
+              <td>
+                <db:textField fieldName="orderdate" size="14"/>
+              </td>
+            </tr>
+          </db:body>
+
+          <db:footer>
+            </table>
+]]></programlisting>
+      </example>
+      <emphasis role="bold">Remarks</emphasis>
+      </para>
+      <para>
+      In a previous example, we used the 
+      <computeroutput>db:select</computeroutput>
+      element along with a
+      <computeroutput>db:radioButton</computeroutput>
+      element to get the names for the types of services from the
+      Services table and display them in a pulldown list.  This 
+      displays the name of the current value of the service
+      <computeroutput>id</computeroutput>
+      and allows the user to change the value.  But in
+      <computeroutput>customers_all.jsp</computeroutput>
+      we only want to display data rather than provide a capability 
+      to update it.  We cannot use the 
+      <computeroutput>db:select</computeroutput>
+      and
+      <computeroutput>db:radioButton</computeroutput>
+      elements.  We need to use a different technique to get and
+      display the names of the types of services.
+      </para>
+      <para>
+      This technique requires an addition in the
+      <computeroutput>dbforms-config.xml</computeroutput>
+      file.   The
+      <emphasis role="bold"><computeroutput>query</computeroutput></emphasis>
+      element called
+      <emphasis role="bold"><computeroutput>orders_and_servicename</computeroutput></emphasis>. 
+      contains an SQL query that joins the Orders and Services tables.
+      We get the data from the Orders table and the service names from
+      the Services table.  Then, in the JSP, we use 
+      <computeroutput>query</computeroutput> 
+      in the same way that we have been using 
+      <computeroutput>table</computeroutput>.  
+      We reference this query in the 
+      <emphasis role="bold"><computeroutput>db:dbform</computeroutput></emphasis>
+      element and the field 
+      <computeroutput>name</computeroutput>
+      in the 
+      <emphasis role="bold"><computeroutput>db:textField</computeroutput></emphasis>
+      element. 
       </para>
     </sect2>
   </sect1>
+
+  <sect1 id="T_InstallTut">
+    <title>Installing the tutorial application</title>
+    <para>
+     A skeleton of this tutorial is located in the
+     <computeroutput>examples/tutorial</computeroutput>
+     directory of the distribution.  The example, however, is not
+     ready to run.  This section gives the steps needed to make the
+     tutorial functional. Begin by checking that all of the
+     prerequisites listed in
+      <emphasis role="underline"><xref linkend="prereqs"/></emphasis> 
+    have been accomplished.
+    </para>
+
+  <sect2 id="T_contextTut">
+    <title>Setting up the servlet context</title>
+    <para>
+     The tutorial needs to be included in the servlet engine's
+     configuration file.  For Tomcat, a
+     <computeroutput>Context</computeroutput> element has to
+     be added to the <computeroutput>conf/server.xml</computeroutput>
+     file.
+    </para>
+  </sect2>
+
+  <sect2 id="T_dbtablesTut">
+    <title>Creating database tables and loading sample data</title>
+    <para>
+      Next, the tables must be defined in the RDBMS and a user account
+      created.  The tutorial has three subdirectories under
+      <computeroutput>examples/tutorial/WEB-INF</computeroutput>
+      called 
+      <computeroutput>db_hsql</computeroutput>,
+      <computeroutput>db_pgsql</computeroutput>,
+      and
+      <computeroutput>db_mysql</computeroutput>
+      that provide scripts for the HSQL, PostgreSQL, and MySQL databases.
+      The HSQL database is provided as a shortcut for executing the tutorial.
+      By specifying that database (already specified in the tutorial
+      <computeroutput>dbforms-config.xml</computeroutput>
+      file), the tutorial application can be run without using any 
+      other database system.
+    </para>
+    <para>
+      To use the PostgreSQL or MySQL RDBMSs, create a tutorial
+      database and a tutorial user using database tools.  Then,
+      execute the appropriate
+      <computeroutput>tutorial.script</computeroutput>
+      file to define tables and populate some initial data for the
+      application.  Changes will probably be required to use another RDBMS 
+      because the 
+      <computeroutput>orders</computeroutput>
+      and
+      <computeroutput>complaints</computeroutput>
+      tables use generated keys which are non-standard.
+    </para>
+    <para>
+      Once the database tables are created and populated, the
+      <computeroutput>dbconnection</computeroutput>
+      element needs to be updated to use the selected RDBMS.  Using
+      the DevGui program is a good way to configure and debug this
+      portion.  Once the database is reachable via DevGui, let DevGui
+      write a configuration file.  The database connection element can
+      then be extracted and copied to the tutorial configration file.
+      Otherwise, changes to the 
+      <computeroutput>dbforms-config.xml</computeroutput>
+      can be made by hand.
+    </para>
+  </sect2>
+
+  <sect2 id="T_dependTut">
+    <title>Copying DbForms tag library and dependencies</title>
+    <para>
+      The final step is to copy the DbForms tag library and
+      dependencies to <computeroutput>WEB-INF</computeroutput>
+      directory.  The file
+      <computeroutput>bin/dbforms.tld</computeroutput>
+      must be copied to the 
+      <computeroutput>WEB-INF</computeroutput>
+      directory itself.  The file
+      <computeroutput>bin/dbforms</computeroutput>
+      X.Y
+      <computeroutput>.jar</computeroutput>
+      (where X.Y is the release number) must be copied to the
+      <computeroutput>WEB-INF/lib</computeroutput>
+      directory.  The contents of the
+      <computeroutput>dependend</computeroutput>
+      directory must also be copied to the
+      <computeroutput>WEB-INF/lib</computeroutput>
+      directory.
+    </para>
+    <para>
+      The application should now be ready to run.  As a check, review
+      the typical directory structure in 
+        <emphasis role="underline">
+          <xref linkend="typStruc"/>
+        </emphasis>
+      and compare it to the structure of the tutorial as you've
+      modified it.
+    </para>
+  </sect2>
+
+  <sect2 id="T_cautionsTut">
+    <title>Final remarks</title>
+    <para>
+       Errors in the
+       <computeroutput>dbforms-config.xml</computeroutput> file often
+       cause errors in the execution of the DbForms web application.
+    </para>
+    <para>
+       Whenever a change is made to the configuration file, it is wise
+       to check the servlet engine log files for any errors listed
+       there.  In particular, if an error occurs in parsing the
+       configuration file, it is often the case that the database
+       connection is not processed since it occurs near the end of the
+       configuration file.  This means that when the application is
+       executed, a database error will be reported (usually mentioning
+       name=null) when the real error occurred earlier in the
+       configuration file.
+    </para>
+    <para>
+      Once there are no parse errors in the configuration file, try
+      the DbForms application. The most common type of problem at this
+      point is a non-working database connection.  The error reported,
+      however, will be different than those described in the previous
+      paragraph.
+    </para>
+    <para>
+      If the database connection is not working, check the servlet
+      engine log.  For Tomcat, this will be the
+      <computeroutput>catalina.out</computeroutput>
+      file.  In the case
+      of Tomcat, there will usually be two tracebacks in the log.  The
+      first traceback is immediately preceded by another error message that
+      indicates the source of the problem such as an authentication
+      error or a class-not-found error.
+    </para>
+    <para>
+      When the configuration file is error free and the database
+      connection is working, the application should come together very
+      quickly.
+    </para>
+  </sect2>
+  </sect1>
+
 </chapter>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<chapter>
-  <title id="navigation">Navigation</title>
+<chapter id="navigation">
+  <title>Navigation</title>
   <sect1>
     <title>Introduction</title>
     <para>Since version 1.1.4 DbForms contains two different navigation systems:</para>

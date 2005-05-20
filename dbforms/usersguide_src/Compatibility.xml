@@ -8,33 +8,33 @@
 -->
 <chapter>
   <title>Compatibility notes</title>
-  <para>Please see the release notes for a full list of changes</para>
+  <para>Please see the release notes for a full list of changes.</para>
   <para>Also, please note that all changes here are cumulative, meaning that (for example) if you upgrade from <computeroutput>1.1.2</computeroutput> to <computeroutput>1.1.4pr2</computeroutput>, you would need to read the sections for <computeroutput>1.1.3</computeroutput>, <computeroutput>1.1.4pr1</computeroutput>, and <computeroutput>1.1.4pr2</computeroutput>.</para>
+
   <sect1><title>From Earlier Versions to DbForms 1.1.3</title>
   <para>The 
     <computeroutput>format</computeroutput> attributes of tags 
     <computeroutput>queryData</computeroutput> and 
     <computeroutput>tableData</computeroutput> have different
-semantics now that are not 100% backwards compatible to the 1.1.2 and earlier releases.
-  </para>
-  <para>See the 
+semantics now that are not 100% backwards compatible to the 1.1.2 and earlier releases.  
+    See the 
     <ulink url="../../taglib/DbFormsTags_Frame.html">
       <citetitle>Tag Library </citetitle>
-    </ulink> from more info.
+    </ulink> for more information.
   </para>
-  <para>Also, the insert button on previously generated list_and_single.jsp pages
+  <para>The insert button on JSP pages
 will not appear unless the attribute 
     <computeroutput>showAlways="true"</computeroutput> is added to the 
-
-    <computeroutput>insertButtonTag</computeroutput>. Otherwise, it will only appear in insert mode such as through a NavNewEvent.
- 
+    <computeroutput>insertButtonTag</computeroutput>. Otherwise, it will only appear in insert mode such as through a 
+    <computeroutput>navNewEvent</computeroutput>. 
   </para>
   </sect1>
+
   <sect1> 
     <title>From Earlier Versions to DbForms 1.1.4pr1</title>
     <para>
       If you are upgrading from 1.1.3 or from 1.1.4dev (first dev release), you must make three changes to 
-      <computeroutput>dbforms-config.xml</computeroutput></para>
+      <computeroutput>dbforms-config.xml</computeroutput>.</para>
       <para>These changes need to be made to the 
         <computeroutput>&lt;servlet-class&gt;</computeroutput> element only and the  
         <computeroutput>&lt;servlet-name&gt; </computeroutput>can remain as it is in your 
@@ -100,14 +100,14 @@ will not appear unless the attribute
     &lt;/servlet&gt;
      </screen>
     </para>
-   
   </sect1>
+
   <sect1> 
     <title>From Earlier Versions to DbForms 1.1.4pr2</title>
     <sect2><title>From all versions</title>
     <para>(also see note for 1.1.4pr1 above)  <emphasis role="italic">When upgrading from any previous release please note that:</emphasis>
-    To have better control of the fields written to the datebase we changed the interceptor interface of the 
-preUpdate/preInsert/preDelete events to: 
+    To have better control of the fields written to the database, we changed the interceptor interface of the 
+preUpdate, preInsert, and preDelete events to: 
     <screen>
    public int preXXXXXX(HttpServletRequest request,  
                         <emphasis role="bold">Table table</emphasis>, <emphasis role="bold">FieldValues</emphasis> fieldValues,
@@ -167,8 +167,8 @@ String kanji = fieldValues.get("kanji").getFieldValue();
     <computeroutput>fieldValues.remove("yourNameOfTheField");</computeroutput>
     which was not previously possible</emphasis>.
   </para>
-    
            </sect2>
+
            <sect2><title>From 1.1.4pr1</title>
            <para><emphasis role="italic"> If you are upgrading from 1.1.4pr1,</emphasis> please adjust the following for the <computeroutput>&lt;filterCondition&gt;</computeroutput> tag (used embedded within the new <computeroutput>&lt;filter&gt;</computeroutput> tag).
 You must change your filter values for strings to not use the apostrophe. This is now done automatically.</para>
@@ -183,7 +183,9 @@ must be changed to
   <para>To upgrade to 2.0 please see the sections on 1.1.4pr1 and 1.1.4pr2 as they were the basis for this release.</para>
 </sect1>
    <sect1><title>From Earlier Versions to Dbforms 2.3</title>
-  <para>To upgrade from any previous versions, an adjustment needs to be made in the <computeroutput>dbforms-config.xml</computeroutput> file if you are using BLOB-fields stored in your database and wish to retain the original way of storing that data. To do that, set the optional attribute <computeroutput>"blobHandling"</computeroutput> to <computeroutput>"classic"</computeroutput>. Please see <link linkend='blob_def'>BLOB-fields</link> for details.</para>
+  <para>To upgrade from any previous versions, an adjustment needs to be made in the 
+  <computeroutput>dbforms-config.xml</computeroutput> 
+  file if you are using BLOB-fields stored in your database and wish to retain the original way of storing that data. To do that, set the optional attribute <computeroutput>"blobHandling"</computeroutput> to <computeroutput>"classic"</computeroutput>. Please see <link linkend='blob_def'>BLOB-fields</link> for details.</para>
        <para>
            <screen>
    <emphasis role="bold">&lt;dbforms-config&gt;</emphasis>
@@ -194,8 +196,8 @@ must be changed to
 </sect1>
 
 <sect1><title>From Earlier Versions to DbForms 2.4.rc1</title>
-  <para>The <computeroutput>pattern</computeroutput> attribute for <computeroutput>textField</computeroutput>, <computeroutput>dateField</computeroutput>, <computeroutput>dateLabel</computeroutput>, <computeroutput>textArea</computeroutput>, and <computeroutput>textAreaForBlobs</computeroutput> now support both global setting for 
-each type and language.</para>
+  <para>The <computeroutput>pattern</computeroutput> attribute for <computeroutput>textField</computeroutput>, <computeroutput>dateField</computeroutput>, <computeroutput>dateLabel</computeroutput>, <computeroutput>textArea</computeroutput>, and <computeroutput>textAreaForBlobs</computeroutput> now support global settings for 
+both type and language.</para>
   <para>Previously, the <computeroutput>dateField</computeroutput> was set via the <computeroutput>&lt;date-format&gt;</computeroutput> attribute in <computeroutput> dbforms-config.xml</computeroutput>. Now, all <computeroutput>pattern</computeroutput> attributes are set via message resources.  Please see <link linkend='intern'>Internationalization</link> for details.</para>
         
 </sect1>

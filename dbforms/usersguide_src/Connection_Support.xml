@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<chapter>
-  <title id="connSupp">Connection Support</title>
+<chapter id="connSupp">
+  <title>Connection Support</title>
   <sect1>
     <title>ConnectionFactory
    </title>

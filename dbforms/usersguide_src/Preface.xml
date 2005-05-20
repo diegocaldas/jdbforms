@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <chapter>
-  <title>Preface</title>
+  <title>Introduction</title>
   <sect1>
     <title>About this document</title>
     <para/>
@@ -78,7 +78,7 @@
       <para>
         An important benefit of using DbForms is its openness to other
         systems. You may use DbForms in conjunction with common
-        JSP-pages, Struts-based pages, etc. This means that you are
+        JSP pages, Struts-based pages, etc. This means that you are
         free to use DbForms where it brings you the most benefits
         (dramatically reduce development efforts, etc.) and to use
         other techniques if you think that they offer a better

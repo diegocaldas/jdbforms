@@ -1,31 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<chapter>
-<title id="config">Configuration Files</title>
+<chapter id="config">
+<title>Configuration Files</title>
 <sect1>
 <title>Overview</title>
+
+<para>
+DbForms application JSPs contain tags for building the
+application functionality.  These tags are defined in the tag library
+document, not in this section.
+</para>
     
 <para>
 The application web deployment descriptor file
-<computeroutput>web.xml</computeroutput> has to contain specific content
-for DbForms.  See <xref linkend="building-appls"/> and, in particular,
-<xref linkend="depldesc"/> for more information
+<computeroutput>web.xml</computeroutput> must contain specific content
+for DbForms.  See 
+<emphasis role="underline"><xref linkend="building-appls"/></emphasis>
+and, in particular,
+<emphasis role="underline"><xref linkend="depldesc"/></emphasis> 
+for more information
 about the requirements for <computeroutput>web.xml</computeroutput>.
 </para>
 
 <para>
 The other key application configuration file is <computeroutput>dbforms-config.xml</computeroutput> which is the subject of the remainder of this chapter.
-Errors in this file often cause errors in the execution of the DbForms web application.  Whenever a change is made to this file, it is wise to check the servlet engine log files for any errors listed there.
+Errors in this file often cause errors in the execution of a DbForms web application.  Whenever a change is made to this file, it is wise to check the servlet engine log files for any errors listed there.
 </para>
 
 <para>
 The <computeroutput>dbforms-config.xml</computeroutput> is read when
-the servlet container is atrted or when the web application is
+the servlet container is started or when the web application is
 reloaded.  If there are any errors in this file, the DbForms parser
 will abort with an exception.  The web application will then be left
 in an indeterminate state.  Typically, the servlet engine (such as
 Tomcat) will continue to service requests for the web application but
-these will encounter a error such as "No DbConnection object
+these will encounter a error such as a Java "No DbConnection object
 configured with name 'null'" exception.
 </para>
 
@@ -34,19 +43,18 @@ configured with name 'null'" exception.
 Setting up the configuration file
 <computeroutput>dbforms-config.xml</computeroutput> is an important
 part of creating a DbForms application.  This file defines the set of
-database tables to be used, the database connectivity needed to
-perform operations, and to set up more advanced capabilities such as
+database tables to be used, defines the database connectivity needed to
+perform operations, and supplies information and parameters for 
+more advanced capabilities such as
 interceptors and defined queries.  The
-<computeroutput>devgui</computeroutput> application provides an easy
+DevGui tool described in 
+<emphasis role="underline"><xref linkend="devgui"/></emphasis> 
+ provides an easy
 way to create an initial version of
 <computeroutput>dbforms-config.xml</computeroutput>.
-<computeroutput>devgui</computeroutput> uses JDBC to connect with your
+DevGui uses JDBC to connect with your
 database and automatically extract table definitions needed for
 DbForms.
-
-DBForms application JSPs contain additional tags for building the
-application functionality.  These tags are defined in the tag library
-document, not in this section.
 </para>
 
 <para>
@@ -54,9 +62,8 @@ The top level structure of the
 <computeroutput>dbforms-config.xml</computeroutput> file is shown
 below.  The root element is
 <computeroutput>&lt;dbforms-config&gt;</computeroutput> and this, of
-course, occurs only one time.  The seven elements shown inside of the
-root element must appear in the order shown for the configuration file
-to be valid.  
+course, occurs only one time.  The seven subelements shown inside of the
+root element must appear in the order shown.
 </para>
 
 <programlisting>
@@ -72,13 +79,14 @@ to be valid.
 </programlisting>
 
 <para>
-The first four elements, with tags
+The first four subelements, with tags
 <computeroutput>&lt;table&gt;</computeroutput> through
 <computeroutput>&lt;dbconnection&gt;</computeroutput>, can appear zero
-or more times.  The remaining elements, tags
+or more times.  The remaining subelements, tags
 <computeroutput>&lt;DOMFactoryClass&gt;</computeroutput> through
-<computeroutput>&lt;interceptors&gt;</computeroutput>, may occur only
-once (or not at all).
+<computeroutput>&lt;interceptors&gt;</computeroutput>, may occur zero
+or one time.  Since all subelements are optional, an empty root tag is 
+valid although not useful.
 </para>
 
 </sect1>
@@ -90,12 +98,11 @@ once (or not at all).
 </sect1>
 
 <para>
-This element is the root element.  It surrounds the other elements.
+The root element surrounds the other elements.
 Only one <computeroutput>dbforms-config</computeroutput> element
 can appear in a file.  XML namespaces are not used.  The root
 element may be preceded by an XML declaration such as
-<programlisting>
-   &lt;?xml version="1.0" encoding="UTF-8" ?&gt;
+<programlisting>   &lt;?xml version="1.0" encoding="UTF-8" ?&gt;
 </programlisting>
 or an XML comment.
 </para>
@@ -108,7 +115,7 @@ schema is located at
 relative to the root directory of the source distribution.  The JEdit
 editor (<ulink url="www.jedit.org">www.jedit.org</ulink>) with the XML
 plugin may be used for this purpose.  The Apache Xerces project 
-(<ulink url="xml.apache.org/zerces2-j">xml.apache.org/zerces2-j</ulink>)
+(<ulink url="xml.apache.org/xerces2-j">xml.apache.org/xerces2-j</ulink>)
 also provides capabilities to validate an XML document against a
 schema.  Two attributes may be needed in the
 <computeroutput>dbforms-config</computeroutput> element tag to allow
@@ -135,14 +142,15 @@ table to be used with DbForms.
 <para>
 A starting set of <computeroutput>table</computeroutput> elements as
 well as a basic <computeroutput>dbconnection</computeroutput> element
-can be generated using the DevGui tool.  This tool, which is described
-in <xref linkend="devgui"/>, verifies database connectivity and then used JDBC
+can be generated using the DevGui tool.  This tool, which is described in 
+<emphasis role="underline"><xref linkend="devgui"/></emphasis>, 
+verifies database connectivity and then uses JDBC
 capabilities to query the metadata for tables in the database.  This
 can be a signficant time-saving step.
 </para>
 
 <para>
-The nesting of elements within each
+The nesting and ordering of subelements within each
 <computeroutput>table</computeroutput> tag is shown below.
 </para>
 
@@ -162,21 +170,23 @@ The nesting of elements within each
 </programlisting>
 
 <para>
-The top level elements, <computeroutput>field</computeroutput> through
+The top level subelements, <computeroutput>field</computeroutput> through
 <computeroutput>granted-privileges</computeroutput> may each occur
 zero or more times except <computeroutput>events</computeroutput>
-which is optional but may only appear once.
+which is optional but may appear a maximum of one time.
 </para>
 
 <para>
 There is no element content in the any of the elements.  All
-information is supplied in attributes and attributes of subelements.
+information is supplied in the attributes of these elements and 
+the attributes of their subelements.
 </para>
 
 <!-- table  -->
 
 <para>
-The table element itself has one required attribute,
+The <computeroutput>table</computeroutput> element itself has one 
+required attribute,
 <computeroutput>name</computeroutput>, giving the name of the table
 and a number of optional attributes.  All of the attributes are listed below.
 <variablelist>
@@ -201,9 +211,10 @@ and a number of optional attributes.  All of the attributes are listed below.
     <listitem>
       This is the fully-qualified name of a Java class that implements
       the data access functionality for the table, replacing JDBC.
-      Currently, this is used for XML as discussed in <xref
-      linkend="xml_data"/> but developers may define other data access
-      classes.  All data access classses must extent the DbForms class
+      Currently, this is used for XML as discussed in 
+      <emphasis role="underline"><xref linkend="xml_data"/></emphasis>
+      but developers may define other data access
+      classes.  All data access classses must extend the DbForms class
       <computeroutput>org.dbforms.event.datalist.dao.DataSource</computeroutput>.
       Optional.
     </listitem>
@@ -214,7 +225,7 @@ and a number of optional attributes.  All of the attributes are listed below.
       This is the fully-qualified name of a Java class that implements
       functionality to place escape characters in column data so the
       HTML display is as desired and to place escape characters in a
-      data value before storage in the database.  The Java class must
+      field value before it is stored in the database.  The Java class must
       implement DbForms interface
       <computeroutput>org.dforms.util.IEscaper</computeroutput>.
       Optional.
@@ -226,7 +237,8 @@ and a number of optional attributes.  All of the attributes are listed below.
       This attribute is used for XML data sources.  It provides a URL
       to access data for an XML "table".  The URL includes a query
       portion (following the '?' in the URL) that is used as an XPath
-      expression to obtain the data.  See <xref linkend="xml_data"/>
+      expression to obtain the data.  See 
+      <emphasis role="underline"><xref linkend="xml_data"/></emphasis>
       for more details.  Optional.
     </listitem>
   </varlistentry>
@@ -235,7 +247,7 @@ and a number of optional attributes.  All of the attributes are listed below.
     <listitem>
       If this attribute is set to
       "<computeroutput>classic</computeroutput>", DbForms will use its
-      original method of handling BLOBS which involved storing BLOB
+      original method of handling BLOBs which involved storing BLOB
       data in individual disk files.  When this attribute is omitted
       or has any other value, the database management system is used
       to store BLOBs in appropriate table columns.  When classic BLOB
@@ -252,8 +264,8 @@ and a number of optional attributes.  All of the attributes are listed below.
       <computeroutput>foreign-key</computeroutput> attribute
       <computeroutput>format</computeroutput> as a convenience
       when fields from the table are referenced as foreign keys.  See
-      <xref linkend="foreign"/> for more information.  Optional.
-
+      <emphasis role="underline"><xref linkend="foreign"/></emphasis>
+      for more information.  Optional.
     </listitem>
   </varlistentry>
   <varlistentry>
@@ -263,7 +275,8 @@ and a number of optional attributes.  All of the attributes are listed below.
       <computeroutput>foreign-key</computeroutput> attribute
       <computeroutput>visibleFields</computeroutput> as a convenience
       when fields from the table are referenced as foreign keys.  See
-      <xref linkend="foreign"/> for more information.  Optional.
+      <emphasis role="underline"><xref linkend="foreign"/></emphasis>
+      for more information.  Optional.
     </listitem>
   </varlistentry>
 </variablelist>
@@ -290,13 +303,14 @@ All of the attributes are listed below.
     <term><computeroutput>fieldType</computeroutput></term>
     <listitem>
       This is the type of the field.  The list of valid values is
-      shown below.  Required.  The comparison within DbForms used the
+      shown below.  Required.  The comparison within DbForms uses the
       Java method <computeroutput>String.startsWith()</computeroutput> so,
       for example,  Oracle's <computeroutput>varchar2</computeroutput>
       matches the <computeroutput>varchar</computeroutput> type listed below.
-      Use of an unsupported column type will result in an exception processing
-      the <computeroutput>dbforms-config.xml</computeroutput> file which will
-      generally render the application unusable.
+      Use of an unsupported column type will result in a Java exception 
+      while reading the 
+      <computeroutput>dbforms-config.xml</computeroutput> 
+      file which will generally render the application unusable.
       <variablelist>
         <varlistentry>
           <term>Character Types</term>
@@ -396,9 +410,9 @@ All of the attributes are listed below.
     <listitem>
       This attribute is used with classic BLOB handling where DbForms
       stores BLOB data in individual files.  The value of this
-      attribute gived the directory where the BLOB file will be
+      attribute indicates the directory where the BLOB file will be
       stored.  This directory must exist and be must be writeable by
-      the servlet engine.
+      the servlet engine.  Optional.
     </listitem>
   </varlistentry>
   <varlistentry>
@@ -408,19 +422,20 @@ All of the attributes are listed below.
       relative XPath expression that is attached to the URL given by the 
       <computeroutput>alias</computeroutput> attribute in the 
       enclosing <computeroutput>table</computeroutput> element.
+      Optional.
     </listitem>
   </varlistentry>
   <varlistentry>
     <term><computeroutput>defaultValue</computeroutput></term>
     <listitem>
       This value is used to supply a default for the given field when a row
-      is inserted into the database.
+      is inserted into the database.  Optional.
     </listitem>
   </varlistentry>
   <varlistentry>
     <term><computeroutput>alias</computeroutput></term>
     <listitem>
-      Reserved.
+      Not currently used.
     </listitem>
   </varlistentry>
   <varlistentry>
@@ -429,7 +444,7 @@ All of the attributes are listed below.
       This is the fully-qualified name of a Java class that implements
       functionality to place escape characters in column data so the
       HTML display is as desired and to place escape characters in a
-      data value before storage in the database.  The Java class must
+      field value before it is stored in the database.  The Java class must
       implement DbForms interface
       <computeroutput>org.dforms.util.IEscaper</computeroutput>.
       Optional.
@@ -445,7 +460,7 @@ All of the attributes are listed below.
     names for BLOB objects are generated by DbForms so there is no
     possibility of one BLOB object overwriting another.  If
     <computeroutput>encoding</computeroutput> is false or is omitted,
-    the remote file name of an uploaded BLOB file is used in by
+    the remote file name of an uploaded BLOB file is used by
     DbForms.  This means that files of the same name will overwrite
     each other.  Optional.
     </listitem>
@@ -459,26 +474,27 @@ The <computeroutput>calc</computeroutput> element is similar to the
 <computeroutput>field</computeroutput> element except that the
 <computeroutput>encoding</computeroutput> attribute is not allowed.  A
 field defined within a <computeroutput>calc</computeroutput> element
-is not populated by the user.  Rather, the value is generated by the
-DBMS or by an interceptor.
+is not populated by the user.  Rather, the value is generated by 
+an interceptor.
 </para>
 
 <para>
 Columns in a table that are foreign keys in the SQL sense should be
-described in using the <computeroutput>foreign-key</computeroutput>
-element rather than the <computeroutput>field</computeroutput>
+described in using the element <computeroutput>foreign-key</computeroutput>
+rather than the <computeroutput>field</computeroutput>
 element.  This allows DbForms to handle the field differently.  There
-are limitations, however, on DbForms foreign key handling.  See <xref
-linkend="foreign"/> for more details.
+are limitations, however, on DbForms foreign key handling.  See 
+<emphasis role="underline"><xref linkend="foreign"/></emphasis>
+for more details.
 </para>
 
 <para>
-Every table uses by default the standard event configuration
-established in the <computeroutput>events</computeroutput> element
+Every table uses, by default, the standard event configuration
+established in the <computeroutput>events</computeroutput> subelement
 nested directly within the root
 <computeroutput>dbforms-config</computeroutput> element. A developer
-can choose, however, to override the event class associated to a
-certain event type, by adding and configuring the
+can choose, however, to override the event class associated with a
+certain type of event, by adding and configuring the
 <computeroutput>events</computeroutput> element within a
 <computeroutput>table</computeroutput> element.
 </para>
@@ -486,16 +502,15 @@ certain event type, by adding and configuring the
 <para>
 The <computeroutput>events</computeroutput> element itself is merely a
 container for one or more <computeroutput>event</computeroutput>
-elements within it.  Element <computeroutput>events</computeroutput>
+subelements within it.  Element <computeroutput>events</computeroutput>
 has no attributes.
-</para>
-
-<para>
 Each <computeroutput>event</computeroutput> element may have a number
 of attributes and may enclose nested
-<computeroutput>param</computeroutput> elements.  See <xref
-linkend="plug-events"/> and especially <xref linkend="tbyt"/> for more
-details.
+<computeroutput>param</computeroutput> subelements.  See 
+<emphasis role="underline"><xref linkend="plug-events"/></emphasis>
+and especially 
+<emphasis role="underline"><xref linkend="tbyt"/></emphasis>
+for more details.
 </para>
 
 <para>
@@ -505,10 +520,9 @@ discussion later in this chapter on the
 <computeroutput>interceptor</computeroutput> element for details of
 the attributes and the <computeroutput>param</computeroutput>
 subelement.
-</para>
-
-<para>
-As mentioned in the section on interceptors, it is also possible to
+As mentioned in 
+<emphasis role="underline"><xref linkend="app_hooks"/></emphasis>,
+it is also possible to
 declare interceptors globally to apply to all tables.  Globally
 declared iterceptors are invoked for all tables but interceptors
 declared for specific tables are invoked only for that table.  If both
@@ -528,7 +542,8 @@ The attributes are <computeroutput>select</computeroutput>,
 <computeroutput>update</computeroutput>, and
 <computeroutput>delete</computeroutput>.  User roles are those defined
 in the application <computeroutput>web.xml</computeroutput> file. See
-<xref linkend="security"/> for more details.
+<emphasis role="underline"><xref linkend="security"/></emphasis>
+for more details.
 </para>
 
 </sect1>
@@ -543,13 +558,11 @@ A <computeroutput>query</computeroutput> is a defined SQL SELECT such as a
 SQL join that can be referenced as if it were a table.  A query is
 defined within a <computeroutput>query</computeroutput> element.  The
 <computeroutput>query</computeroutput> element has the same structure
+(attributes and subelements)
 as a <computeroutput>table</computeroutput> element but with
-extensions.
-</para>
-
-<para>
-The <computeroutput>query</computeroutput> element itself has a number
-of attributes to define the query by supplying portions of the SQL SELECT
+some additional subelements and additional attributes on the 
+<computeroutput>query</computeroutput> element itself to
+define the query by supplying portions of the SQL SELECT
 statement.
 </para>
 
@@ -592,7 +605,8 @@ the user-entered data value.  The attributes are listed below.
 </para>
 
 <para>
-See <xref linkend="qSupp"/> for more information.
+See <emphasis role="underline"><xref linkend="qSupp"/></emphasis> 
+for more information.
 </para>
 
 </sect1>
@@ -609,12 +623,12 @@ It is optional but may occur as many times as desired.
 </para>
 
 <para>
-See <xref linkend="plug-events"/> for a more complete explanation of the use of
-this element.
+See <emphasis role="underline"><xref linkend="plug-events"/></emphasis> 
+for a more complete explanation of the use of this element.
 </para>
 
 <para>
-The nesting of elements within the
+The nesting of subelements within the
 <computeroutput>events</computeroutput> tag is shown below.
 </para>
 
@@ -664,12 +678,17 @@ attributes <computeroutput>type</computeroutput> and
 </title>
 
 <para>
-See <xref linkend="connSupp"/> and <xref linkend="multdbcon"/> for more
-detail about this element.
+This element is used to specify a connection that DbForms will use to
+access the database.  It is possible to define more than one
+connection.  There are attributes for some DbForms tags that allow a
+specific connection to be specified.  If there are multiple
+connections, one should be designated as the default.  The default
+connection is used unless a specific connection is specified in a
+DbForms JSP tag.
 </para>
 
 <para>
-The nesting of elements within the
+The nesting of subelements within the
 <computeroutput>dbconnection</computeroutput> tag is shown below.
 </para>
 
@@ -693,9 +712,14 @@ simple strings.
 <para>
 The <computeroutput>dbconnection</computeroutput> element itself has a
 number of attributes.  All of the attributes except
-<computeroutput>name</computeroutput> are optional.  See
-<xref linkend="connSupp"/> and <xref linkend="multdbcon"/> for a discussion of
-the attributes of this element.
+<computeroutput>name</computeroutput> are optional.  
+</para>
+
+<para>
+See <emphasis role="underline"><xref linkend="dbforms_concepts"/></emphasis>,
+<emphasis role="underline"><xref linkend="connSupp"/></emphasis>,
+and <emphasis role="underline"><xref linkend="multdbcon"/></emphasis>
+for more detail about this element and for examples of its use.
 </para>
 
 </sect1>
@@ -739,11 +763,12 @@ name.  There are no attributes for the element.
 </sect1>
 
 <para>
-See <xref linkend="app_hooks"/> for a more complete explanation of the
+See <emphasis role="underline"><xref linkend="app_hooks"/></emphasis> 
+for a more complete explanation of the
 use of this element.  This element is used for declaring interceptor
 classes globally.  It is also possible to declare interceptors within
-each table.  Set the <computeroutput>table</computeroutput> element
-earlier in this chapter.  Globally declared iterceptors are invoked
+each table.  See the <computeroutput>table</computeroutput> element
+earlier in this chapter.  Globally declared interceptors are invoked
 for all tables but interceptors declared for specific tables are
 invoked only for that table.  If both table-specific and global
 interceptors are defined, the table-specific iterceptor is invoked
@@ -751,7 +776,7 @@ first and, if it signals success, the global interceptor is then invoked.
 </para>
 
 <para>
-The nesting of elements within the
+The nesting of subelements within the
 <computeroutput>interceptors</computeroutput> tag is shown below.
 </para>
 
@@ -764,7 +789,7 @@ The nesting of elements within the
 </programlisting>
 
 <para>
-The <computeroutput>interceptors</computeroutput> element is optional
+The <computeroutput>interceptors</computeroutput> subelement is optional
 but, if present, can only occur once.  The
 <computeroutput>&lt;interceptors&gt;</computeroutput> tag encloses one
 or more <computeroutput>interceptor</computeroutput> elements.  Within
@@ -785,7 +810,7 @@ The <computeroutput>interceptor</computeroutput> element has a single
 required attribute <computeroutput>className</computeroutput> that
 gives the fully-qualified Java class name of the interceptor class.
 This class must implement the
-<computeroutput>DbEventInterceptor</computeroutput> interface.
+<computeroutput>org.dbforms.config.DbEventInterceptor</computeroutput> interface.
 </para>
 
 <para>

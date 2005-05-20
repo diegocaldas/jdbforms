@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<chapter lang="en-US">
+<chapter id="mssql" lang="en-US">
   <title>
    Jump-start a MS SQL Server 
     </title>
-  <sect1 id="mssql">
+  <sect1>
     <title>Introduction</title>
     <para>
       <screen>
