@@ -50,6 +50,7 @@ import org.dbforms.util.Util;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -325,7 +326,13 @@ public class InsertEvent extends ValidationEvent {
             firstPosition = getTable()
                                .getPositionString(resultSetVector);
          }
-
+         // CAPIO - must encode the position as it gets decoded when read.
+         try {
+         	firstPosition = Util.encode(firstPosition, getRequest().getCharacterEncoding());
+		 } catch (UnsupportedEncodingException ex) {
+		    logCat.error(ex);
+			throw new SQLException(ex.getMessage());
+		 }
          getRequest()
             .setAttribute("firstpos_" + getTable().getId(), firstPosition);
 

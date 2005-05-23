@@ -166,6 +166,12 @@ public class GotoEvent extends NavigationEvent {
                     String             position) {
       super(table, request, config);
       this.position = position;
+      // CAPIO - encode the position string, cause processing it will decode it.
+      try {
+         this.position = Util.encode(this.position, getRequest().getCharacterEncoding());
+	  } catch (UnsupportedEncodingException e) {
+		 logCat.error(e);
+	  }
    }
 
 

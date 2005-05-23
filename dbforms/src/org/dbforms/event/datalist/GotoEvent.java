@@ -167,6 +167,12 @@ public class GotoEvent extends NavigationEvent {
       DbFormsConfig config, String position) {
       super(table, request, config);
       this.position = table.getKeyPositionString(table.getFieldValues(position));
+      // CAPIO - encode the position string, cause processing it will decode it.
+      try {
+         this.position = Util.encode(this.position, getRequest().getCharacterEncoding());
+	  } catch (UnsupportedEncodingException e) {
+		 logCat.error(e);
+	  }
    }
 
 

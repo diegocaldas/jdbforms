@@ -21,6 +21,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.event.datalist;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.dbforms.config.DbEventInterceptor;
 import org.dbforms.config.DbEventInterceptorData;
 import org.dbforms.config.DbFormsConfig;
@@ -34,11 +36,14 @@ import org.dbforms.event.datalist.dao.DataSourceSessionList;
 
 import org.dbforms.util.MessageResourcesInternal;
 import org.dbforms.util.StringUtil;
+import org.dbforms.util.Util;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
 import java.util.Vector;
+
+import java.io.UnsupportedEncodingException;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -51,7 +56,10 @@ import javax.servlet.http.HttpServletRequest;
  * @author Henner Kollmann
  */
 public class InsertEvent extends ValidationEvent {
-   /**
+
+	private static Log logCat = LogFactory.getLog(InsertEvent.class.getName()); // logging category for this class
+   
+	/**
     * Creates a new InsertEvent object.
     *
     * @param tableId the table identifier
@@ -160,7 +168,14 @@ public class InsertEvent extends ValidationEvent {
 
          // Show the last record inserted
          String firstPosition = getTable().getPositionString(fieldValues);
-         getRequest().setAttribute("firstpos_" + getTable().getId(),
+         // CAPIO - must encode the position as it gets decoded when read.
+         try {
+         	firstPosition = Util.encode(firstPosition, getRequest().getCharacterEncoding());
+		 } catch (UnsupportedEncodingException ex) {
+		    logCat.error(ex);
+			throw new SQLException(ex.getMessage());
+		 }
+		 getRequest().setAttribute("firstpos_" + getTable().getId(),
             firstPosition);
 
          // finally, we process interceptor again (post-insert)
