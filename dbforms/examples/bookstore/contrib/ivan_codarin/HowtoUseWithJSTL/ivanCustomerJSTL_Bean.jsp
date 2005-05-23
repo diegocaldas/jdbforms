@@ -9,9 +9,8 @@
 	<c:set var="currentRow_CUSTOMER" value="${currentRow_CUSTOMER}"/>
 	
 	<head>
-		<script src ="/bookstore/jscal/calendar.js" type="text/javascript"></script>
+		<script src ="/jscal/calendar.js" type="text/javascript"></script>
 		<db:base />
-		<target="_top">
 	</head>
 	<body>
 		<db:dbform

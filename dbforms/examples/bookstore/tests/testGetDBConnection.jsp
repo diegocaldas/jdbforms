@@ -5,7 +5,7 @@
 <%@ taglib uri="/WEB-INF/sql.tld" prefix="sql" %>
 <%@ taglib uri="/WEB-INF/c-el.tld" prefix="c" %>
 <head>
-   <dbE:base/>
+   <db:base/>
 </head>
 <html>
    <body>

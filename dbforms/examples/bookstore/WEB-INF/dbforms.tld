@@ -8876,7 +8876,7 @@
 <tag>
 <name>javascriptArray</name>
 <tag-class>org.dbforms.taglib.JavascriptArrayTag</tag-class>
-<body-content>jsp</body-content>
+<body-content></body-content>
 <description>
 					This tag was added to allow the generation of a
 					javascript array from EmbeddedData.

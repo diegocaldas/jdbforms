@@ -2,7 +2,6 @@
 <html>
 	<head>
 	   <db:base />
-	   <target="_top">
 	</head>
    <body>
       <% int i=1; %>			

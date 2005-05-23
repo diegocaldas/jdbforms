@@ -40,11 +40,17 @@
 			<arguments>
 			</arguments>
 		</buildCommand>
+		<buildCommand>
+			<name>com.m7.nitrox.nitroxbuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
 	</buildSpec>
 	<natures>
 		<nature>com.genuitec.eclipse.ast.deploy.core.deploymentnature</nature>
 		<nature>com.genuitec.eclipse.j2eedt.core.webnature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>com.sysdeo.eclipse.tomcat.tomcatnature</nature>
+		<nature>com.m7.nitrox.webProjectNature</nature>
 	</natures>
 </projectDescription>

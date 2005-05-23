@@ -1,9 +1,8 @@
 <html>
 	<%@ taglib uri="/WEB-INF/dbforms.tld" prefix="db" %>
 	<head>
-	   <script src ="/bookstore/jscal/calendar.js" type="text/javascript"></script>
+	   <script src ="/jscal/calendar.js" type="text/javascript"></script>
 	   <db:base />
-	   <target="_top">
 	</head>
    <body>
    

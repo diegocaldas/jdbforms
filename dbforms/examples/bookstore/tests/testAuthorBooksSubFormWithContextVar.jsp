@@ -3,7 +3,6 @@
 <html>
 	<head>
 	   <db:base />
-	   <target="_top">
 	</head>
    <body>
       <db:dbform autoUpdate="false" 

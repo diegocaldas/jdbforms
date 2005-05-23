@@ -1,7 +1,6 @@
 	<%@ taglib uri="/WEB-INF/dbforms.tld" prefix="db" %>
 	<head>
 	   <db:base />
-	   <target="_top">
 	</head>
     <body >
        <db:dbform autoUpdate="false"

@@ -9699,7 +9699,7 @@
 					javascript array from EmbeddedData.
 				</summary>
 				<tagclass>org.dbforms.taglib.JavascriptArrayTag</tagclass>
-				<bodycontent>jsp</bodycontent>
+				<bodycontent>JSP</bodycontent>
 				<attribute>
 					<name>name</name>
 					<required>true</required>
@@ -9718,7 +9718,7 @@
 					noop, goto, insert, update, delete
 				</summary>
 				<tagclass>org.dbforms.taglib.IsWebEvent</tagclass>
-				<bodycontent>jsp</bodycontent>
+				<bodycontent>JSP</bodycontent>
 				<attribute>
 					<name>event</name>
 					<required>true</required>
@@ -9786,15 +9786,6 @@
 					<info>
 						Name of the field in the table for which the
 						searching should be done
-					</info>
-				</attribute>
-				<attribute>
-					<name>id</name>
-					<required>false</required>
-					<rtexprvalue>true</rtexprvalue>
-					<info>
-						expose id, enables interaction with JavaScript
-						(not supported by all browsers!)
 					</info>
 				</attribute>
 				<attribute>

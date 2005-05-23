@@ -2,7 +2,6 @@
 <html>
 	<head>
 	   <db:base />
-	   <target="_top">
 	</head>
     <body>
 	  <h1>Use Tags with empty table</h1>
