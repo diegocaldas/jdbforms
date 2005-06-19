@@ -141,7 +141,6 @@ public class JDBCDataHelper {
             throw new SQLException("illegal type!");
 
         case FieldTypes.BLOB:
-
             if (value == null) {
                 ps.setNull(col, java.sql.Types.BLOB);
             } else if (blobStrategy == Table.BLOB_CLASSIC) {
@@ -200,20 +199,30 @@ public class JDBCDataHelper {
             break;
 
         case FieldTypes.DISKBLOB:
+            if (value == null) {
+                ps.setNull(col, FieldTypes.CHAR);
+            } else {
             ps.setObject(col, (escaper == null) ? value : escaper
                     .escapeJDBC((String) value), FieldTypes.CHAR);
-
+            }
             break;
 
         case FieldTypes.CHAR:
+            if (value == null) {
+                ps.setNull(col, FieldTypes.CHAR);
+            } else {
             ps.setObject(col, (escaper == null) ? value : escaper
                     .escapeJDBC((String) value), FieldTypes.CHAR);
 
+            }
             break;
 
         default:
+            if (value == null) {
+                ps.setNull(col, fieldType);
+            } else {
             ps.setObject(col, value, fieldType);
-
+            }
             break;
         }
     }
