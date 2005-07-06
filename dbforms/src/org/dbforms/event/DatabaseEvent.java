@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.event;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -49,184 +50,193 @@ import java.util.Vector;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
-
-
 /**
  * Abstract base class for all web-events related to database operations like
  * inserts, updates, deletes.
- *
+ * 
  * @author Joe Peer
  */
 public abstract class DatabaseEvent extends WebEvent {
-   private static Log logCat = LogFactory.getLog(DatabaseEvent.class.getName()); // logging category for this class
+	private static Log logCat = LogFactory
+			.getLog(DatabaseEvent.class.getName()); // logging category for this
+													// class
 
-   /** key identifier */
-   private String keyId;
+	/** key identifier */
+	private String keyId;
 
-   /**
-    * Creates a new DatabaseEvent object.
-    *
-    * @param tableId the table id
-    * @param keyId the key id
-    * @param request the request object
-    * @param config the configuration object
-    */
-   public DatabaseEvent(int tableId, String keyId, HttpServletRequest request,
-      DbFormsConfig config) {
-      super(tableId, request, config);
-      this.keyId = keyId;
-   }
+	/**
+	 * Creates a new DatabaseEvent object.
+	 * 
+	 * @param tableId
+	 *            the table id
+	 * @param keyId
+	 *            the key id
+	 * @param request
+	 *            the request object
+	 * @param config
+	 *            the configuration object
+	 */
+	public DatabaseEvent(int tableId, String keyId, HttpServletRequest request,
+			DbFormsConfig config) {
+		super(tableId, request, config);
+		this.keyId = keyId;
+	}
 
-   /**
-    * Get the hash table containing the form field names and values taken from
-    * the request object. <br>
-    * Example of a request parameter:<br>
-    * <code>name  = f_0_insroot_6 value = foo-bar </code>
-    *
-    * @return the hash map containing the names and values taken from the
-    *         request object
-    */
+	/**
+	 * Get the hash table containing the form field names and values taken from
+	 * the request object. <br>
+	 * Example of a request parameter:<br>
+	 * <code>name  = f_0_insroot_6 value = foo-bar </code>
+	 * 
+	 * @return the hash map containing the names and values taken from the
+	 *         request object
+	 */
 
-   // must be public because protected will break cactus testing!
-   public abstract FieldValues getFieldValues();
+	// must be public because protected will break cactus testing!
+	public abstract FieldValues getFieldValues();
 
+	/**
+	 * Get the keyId parameter value
+	 * 
+	 * @return keyId parameter value
+	 */
+	public String getKeyId() {
+		return keyId;
+	}
 
-   /**
-    * Get the keyId parameter value
-    *
-    * @return keyId parameter value
-    */
-   public String getKeyId() {
-      return keyId;
-   }
+	/**
+	 * DO the validation of the form with Commons-Validator.
+	 * 
+	 * @param formValidatorName
+	 *            The form name to retreive in validation.xml
+	 * @param context
+	 *            The servlet context we are processing
+	 * 
+	 * @exception MultipleValidationException
+	 *                The Vector of errors throwed with this exception
+	 */
+	public void doValidation(String formValidatorName, ServletContext context)
+			throws MultipleValidationException {
+	}
 
+	/**
+	 * Process this event.
+	 * 
+	 * @param con
+	 *            the jdbc connection object
+	 * 
+	 * @throws SQLException
+	 *             if any data access error occurs
+	 * @throws MultipleValidationException
+	 *             if any validation error occurs
+	 */
+	public abstract void processEvent(Connection con) throws SQLException,
+			MultipleValidationException;
 
-   /**
-    * DO the validation of the form with Commons-Validator.
-    *
-    * @param formValidatorName The form name to retreive in validation.xml
-    * @param context The servlet context we are processing
-    *
-    * @exception MultipleValidationException The Vector of errors throwed with
-    *            this exception
-    */
-   public void doValidation(String formValidatorName, ServletContext context)
-      throws MultipleValidationException {
-   }
+	/**
+	 * Get the FieldValues object representing the collection of FieldValue
+	 * objects builded from the request parameters
+	 * 
+	 * @param insertMode
+	 *            true DOCUMENT ME!
+	 * 
+	 * @return the FieldValues object representing the collection of FieldValue
+	 *         objects builded from the request parameters
+	 */
+	protected FieldValues getFieldValues(boolean insertMode) {
+		FieldValues result = new FieldValues();
+		String paramStub = (Constants.FIELDNAME_PREFIX
+				+ getTable().getId()
+				+ "_"
+				+ (EventType.EVENT_DATABASE_INSERT.equals(getType()) ? Constants.FIELDNAME_INSERTPREFIX
+						: "") + keyId + "_");
+		Vector params = ParseUtil.getParametersStartingWith(getRequest(),
+				paramStub);
 
+		// Always doit in insert or delete mode
+		boolean doIt = insertMode;
 
-   /**
-    * Process this event.
-    *
-    * @param con the jdbc connection object
-    *
-    * @throws SQLException if any data access error occurs
-    * @throws MultipleValidationException if any validation error occurs
-    */
-   public abstract void processEvent(Connection con)
-      throws SQLException, MultipleValidationException;
+		// First check if update is necessary
+		if (!doIt) {
+			Iterator e = params.iterator();
 
+			while (e.hasNext()) {
+				String param = (String) e.next();
 
-   /**
-    * Get the FieldValues object representing the collection of FieldValue
-    * objects builded from the request parameters
-    *
-    * @param insertMode true DOCUMENT ME!
-    *
-    * @return the FieldValues object representing the collection of FieldValue
-    *         objects builded from the request parameters
-    */
-   protected FieldValues getFieldValues(boolean insertMode) {
-      FieldValues result    = new FieldValues();
-      String      paramStub = (Constants.FIELDNAME_PREFIX + getTable().getId()
-         + "_"
-         + (EventType.EVENT_DATABASE_INSERT.equals(getType())
-         ? Constants.FIELDNAME_INSERTPREFIX : "") + keyId + "_");
-      Vector params = ParseUtil.getParametersStartingWith(getRequest(),
-            paramStub);
+				// value of the named parameter;
+				String value = ParseUtil.getParameter(getRequest(), param);
 
-      // Always doit in insert or delete mode    
-      boolean doIt = insertMode;
+				// old value of the named parameter;
+				String oldValue = ParseUtil.getParameter(getRequest(),
+						Constants.FIELDNAME_OLDVALUETAG + param);
 
-      // First check if update is necessary
-      if (!doIt) {
-         Iterator e = params.iterator();
+				// if they are not equals, set the update flag for this field
+				// and exit from the loop;
+				doIt = !value.equals(oldValue);
 
-         while (e.hasNext()) {
-            String param = (String) e.next();
+				if (doIt) {
+					break;
+				}
+			}
+		}
 
-            // value of the named parameter;
-            String value = ParseUtil.getParameter(getRequest(), param);
+		// if update is necessary then do update for all data columns
+		if (doIt) {
+			Iterator e = params.iterator();
 
-            // old value of the named parameter;
-            String oldValue = ParseUtil.getParameter(getRequest(),
-                  Constants.FIELDNAME_OLDVALUETAG + param);
+			while (e.hasNext()) {
+				String param = (String) e.next();
 
-            // if they are not equals, set the update flag for this field
-            // and exit from the loop;
-            doIt = !value.equals(oldValue);
+				int iiFieldId = Integer.parseInt(param.substring(paramStub
+						.length()));
+				Field f = getTable().getField(iiFieldId);
 
-            if (doIt) {
-               break;
-            }
-         }
-      }
+				String value = f.getEscaper().unescapeHTML(
+						ParseUtil.getParameter(getRequest(), param));
+				FieldValue fv = new FieldValue(f, value);
 
-      //  if update is necessary then do update for all data columns
-      if (doIt) {
-         Iterator e = params.iterator();
+				fv.setOldValue(f.getEscaper().unescapeHTML(
+						ParseUtil.getParameter(getRequest(),
+								Constants.FIELDNAME_OLDVALUETAG + param)));
+				fv.setPattern(ParseUtil.getParameter(getRequest(),
+						Constants.FIELDNAME_PATTERNTAG + param));
+				fv.setLocale(MessageResources.getLocale(getRequest()));
 
-         while (e.hasNext()) {
-            String param = (String) e.next();
+				if ((f.getType() == FieldTypes.BLOB)
+						|| (f.getType() == FieldTypes.DISKBLOB)) {
+					// in case of a BLOB or DISKBLOB save get the FileHolder for
+					// later use
+					fv.setFileHolder(ParseUtil.getFileHolder(getRequest(), "f_"
+							+ getTable().getId()
+							+ "_"
+							+ (insertMode ? Constants.FIELDNAME_INSERTPREFIX
+									: "") + keyId + "_" + iiFieldId));
+				}
 
-            int    iiFieldId = Integer.parseInt(param.substring(
-                     paramStub.length()));
-            Field  f = getTable().getField(iiFieldId);
+				result.put(fv);
+			}
+		}
 
-            String value = f.getEscaper().unescapeHTML(ParseUtil.getParameter(
-                     getRequest(), param));
-            FieldValue fv = new FieldValue(f, value);
+		return result;
+	}
 
-            fv.setOldValue(f.getEscaper().unescapeHTML(ParseUtil.getParameter(
-                     getRequest(), Constants.FIELDNAME_OLDVALUETAG + param)));
-            fv.setPattern(ParseUtil.getParameter(getRequest(),
-                  Constants.FIELDNAME_PATTERNTAG + param));
-            fv.setLocale(MessageResources.getLocale(getRequest()));
+	/**
+	 * Return the key values string from the request object
+	 * 
+	 * @return the key values string from the request object
+	 */
+	protected String getKeyValues() {
+		String key = null;
 
-            if ((f.getType() == FieldTypes.BLOB)
-                     || (f.getType() == FieldTypes.DISKBLOB)) {
-               // in case of a BLOB or DISKBLOB save get the FileHolder for later use
-               fv.setFileHolder(ParseUtil.getFileHolder(getRequest(),
-                     "f_" + getTable().getId() + "_"
-                     + (insertMode ? Constants.FIELDNAME_INSERTPREFIX : "")
-                     + keyId + "_" + iiFieldId));
-            }
+		try {
+			key = ParseUtil.getParameter(getRequest(), "k_"
+					+ getTable().getId() + "_" + keyId);
+			key = Util.decode(key, getRequest().getCharacterEncoding());
+			logCat.info("::getKeyValues - key: " + key);
+		} catch (UnsupportedEncodingException e) {
+			logCat.error(e);
+		}
 
-            result.put(fv);
-         }
-      }
-
-      return result;
-   }
-
-
-   /**
-    * Return the key values string from the request object
-    *
-    * @return the key values string from the request object
-    */
-   protected String getKeyValues() {
-      String key = null;
-
-      try {
-         key    = ParseUtil.getParameter(getRequest(),
-               "k_" + getTable().getId() + "_" + keyId);
-         key = Util.decode(key, getRequest().getCharacterEncoding());
-         logCat.info("::getKeyValues - key: " + key);
-      } catch (UnsupportedEncodingException e) {
-         logCat.error(e);
-      }
-
-      return key;
-   }
+		return key;
+	}
 }
