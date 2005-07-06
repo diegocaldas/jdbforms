@@ -219,9 +219,9 @@ public class JDBCDataHelper {
 
         default:
             if (value == null) {
-                ps.setNull(col, fieldType);
+               ps.setNull(col, fieldType);
             } else {
-            ps.setObject(col, value, fieldType);
+               ps.setObject(col, value, fieldType);
             }
             break;
         }

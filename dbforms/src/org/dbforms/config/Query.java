@@ -53,7 +53,7 @@ public class Query extends Table {
    /** log4j category */
    private static Log       logCat           = LogFactory.getLog(Query.class);
    private String           distinct         = "false";
-   private String           followAfterWhere = " AND ";
+   private String           followAfterWhere = "AND";
    private String           from;
    private String           groupBy;
    private String           having;
@@ -399,7 +399,9 @@ public class Query extends Table {
          if (!Util.isNull(sqlFilter)) {
             if (!Util.isNull(where)) {
                hatSchonFollowAfterWhere = true;
+               buf.append(" ");
                buf.append(followAfterWhere);
+               buf.append(" ");
             }
 
             buf.append(" ( ");
@@ -413,7 +415,9 @@ public class Query extends Table {
                buf.append(" AND ");
             } else if (!Util.isNull(where)) {
                hatSchonFollowAfterWhere = true;
+               buf.append(" ");
                buf.append(followAfterWhere);
+               buf.append(" ");
             }
 
             // parents are inserted in getQueryWhere method
@@ -496,7 +500,7 @@ public class Query extends Table {
     */
    public void addSearchField(Field field) throws Exception {
       if (field.getType() == 0) {
-         throw new Exception("no type!");
+          throw new Exception("Table " + getName() + " Field " + field.getName() + ": no type!");
       }
 
       field.setId(encodeFieldId(SEARCH_FIELD, searchfields.size()));
