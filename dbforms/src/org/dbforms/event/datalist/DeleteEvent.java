@@ -147,7 +147,8 @@ public class DeleteEvent extends DatabaseEvent {
             own    = true;
          }
 
-         qry.doDelete(interceptorData, keyValuesStr);
+         int i = qry.doDelete(interceptorData, keyValuesStr);
+         interceptorData.setAttribute(DbEventInterceptorData.ROWSAFFECTED, new Integer(i));
 
          if (own) {
             qry.close();

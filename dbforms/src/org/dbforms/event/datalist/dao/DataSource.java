@@ -279,8 +279,9 @@ public abstract class DataSource {
     *
     * @throws SQLException if any error occurs
     */
-   public void doDelete(DbEventInterceptorData interceptorData,
+   public int doDelete(DbEventInterceptorData interceptorData,
       String keyValuesStr) throws SQLException {
+	   return 0;
    }
 
 
@@ -292,8 +293,9 @@ public abstract class DataSource {
     *
     * @throws SQLException
     */
-   public void doInsert(DbEventInterceptorData interceptorData,
+   public int doInsert(DbEventInterceptorData interceptorData,
       FieldValues fieldValues) throws SQLException {
+	   return 0;
    }
 
 
@@ -312,8 +314,9 @@ public abstract class DataSource {
     *
     * @throws SQLException if any error occurs
     */
-   public void doUpdate(DbEventInterceptorData interceptorData,
+   public int doUpdate(DbEventInterceptorData interceptorData,
       FieldValues fieldValues, String keyValuesStr) throws SQLException {
+	   return 0;
    }
 
 

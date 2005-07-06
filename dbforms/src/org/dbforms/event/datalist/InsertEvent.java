@@ -158,7 +158,8 @@ public class InsertEvent extends ValidationEvent {
             own    = true;
          }
 
-         qry.doInsert(interceptorData, fieldValues);
+         int i = qry.doInsert(interceptorData, fieldValues);
+         interceptorData.setAttribute(DbEventInterceptorData.ROWSAFFECTED, new Integer(i));
 
          if (own) {
             qry.close();

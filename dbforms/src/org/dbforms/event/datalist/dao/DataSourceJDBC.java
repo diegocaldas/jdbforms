@@ -161,10 +161,11 @@ public class DataSourceJDBC extends DataSource {
     *
     * @throws SQLException
     */
-   public void doDelete(DbEventInterceptorData interceptorData,
+   public int doDelete(DbEventInterceptorData interceptorData,
                         String                 keyValuesStr)
                  throws SQLException {
-      FieldValues fieldValues = null;
+      int res = 0;
+	  FieldValues fieldValues = null;
 
       // get current blob files from database
       if (getTable()
@@ -214,7 +215,7 @@ public class DataSourceJDBC extends DataSource {
             .populateWhereClauseWithKeyFields(keyValuesStr, ps, 1);
 
          // finally execute the query
-         ps.executeUpdate();
+         res = ps.executeUpdate();
 
          if (fieldValues != null) {
             deleteBlobFilesFromDisk(fieldValues);
@@ -222,6 +223,7 @@ public class DataSourceJDBC extends DataSource {
       } finally {
          ps.close();
       }
+      return res;
    }
 
 
@@ -233,22 +235,24 @@ public class DataSourceJDBC extends DataSource {
     *
     * @throws SQLException
     */
-   public void doInsert(DbEventInterceptorData interceptorData,
+   public int doInsert(DbEventInterceptorData interceptorData,
                         FieldValues            fieldValues)
                  throws SQLException {
       PreparedStatement ps = interceptorData.getConnection()
                                             .prepareStatement(getTable().getInsertStatement(fieldValues));
 
+      int res = 0;
       try {
          // execute the query & throws an exception if something goes wrong
          fillWithData(ps, fieldValues);
-         ps.executeUpdate();
+         res = ps.executeUpdate();
       } finally {
          ps.close();
       }
 
       // now handle blob files
       saveBlobFilesToDisk(fieldValues);
+      return res;
    }
 
 
@@ -268,26 +272,29 @@ public class DataSourceJDBC extends DataSource {
     *
     * @throws SQLException
     */
-   public void doUpdate(DbEventInterceptorData interceptorData,
+   public int doUpdate(DbEventInterceptorData interceptorData,
                         FieldValues            fieldValues,
                         String                 keyValuesStr)
                  throws SQLException {
-      PreparedStatement ps = interceptorData.getConnection()
+      int res = 0;
+	  PreparedStatement ps = interceptorData.getConnection()
                                             .prepareStatement(getTable().getUpdateStatement(fieldValues));
-
       try {
          int col = fillWithData(ps, fieldValues);
          getTable()
             .populateWhereClauseWithKeyFields(keyValuesStr, ps, col);
 
          // we are now ready to execute the query
-         ps.executeUpdate();
+         res = ps.executeUpdate();
+         logCat.info("update rows: " + String.valueOf(res));
+
       } finally {
          ps.close();
       }
 
       // now handle blob files
       saveBlobFilesToDisk(fieldValues);
+      return res;
    }
 
 
@@ -653,7 +660,7 @@ public class DataSourceJDBC extends DataSource {
          Field  curField = getTable()
                               .getFieldByName(fieldName);
 
-         if (curField != null) {
+         if ((curField != null) && !getTable().isCalcField(curField.getId()) ) {
             FieldValue fv = fieldValues.get(fieldName);
 
             logCat.debug("Retrieved curField:" + curField.getName() + " type:"

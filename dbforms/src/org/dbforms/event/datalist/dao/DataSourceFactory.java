@@ -223,9 +223,9 @@ public class DataSourceFactory {
     *
     * @throws SQLException if any error occurs
     */
-   public void doDelete(DbEventInterceptorData interceptorData,
+   public int doDelete(DbEventInterceptorData interceptorData,
       String keyValuesStr) throws SQLException {
-      dataHandler.doDelete(interceptorData, keyValuesStr);
+      return dataHandler.doDelete(interceptorData, keyValuesStr);
    }
 
 
@@ -237,9 +237,9 @@ public class DataSourceFactory {
     *
     * @throws SQLException if any error occurs
     */
-   public void doInsert(DbEventInterceptorData interceptorData,
+   public int doInsert(DbEventInterceptorData interceptorData,
       FieldValues fieldValues) throws SQLException {
-      dataHandler.doInsert(interceptorData, fieldValues);
+      return dataHandler.doInsert(interceptorData, fieldValues);
    }
 
 
@@ -252,8 +252,8 @@ public class DataSourceFactory {
     *
     * @throws SQLException if any error occurs
     */
-   public void doUpdate(DbEventInterceptorData interceptorData,
+   public int doUpdate(DbEventInterceptorData interceptorData,
       FieldValues fieldValues, String keyValuesStr) throws SQLException {
-      dataHandler.doUpdate(interceptorData, fieldValues, keyValuesStr);
+      return dataHandler.doUpdate(interceptorData, fieldValues, keyValuesStr);
    }
 }

@@ -55,6 +55,9 @@ public class DbEventInterceptorData {
    /** filled with the pageContext during select events */
    public static final String PAGECONTEXT = "pageContext";
 
+   /** filled with affected rows during insert/update/delete event */
+   public static final String ROWSAFFECTED = "rowsAffected";
+
    
    private HttpServletRequest request;
    private DbFormsConfig      config;
