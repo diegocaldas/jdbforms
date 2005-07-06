@@ -2042,6 +2042,7 @@ public class DbFormTag extends TagSupportWithScriptHandler implements
                     buf.append("\" value=\"");
                     buf.append(formatter.getFormattedFieldValue());
                     buf.append("\" />");
+                    buf.append(formatter.renderOldValueHtmlInputField());
                     buf.append(formatter.renderPatternHtmlInputField());
                 }
             }
