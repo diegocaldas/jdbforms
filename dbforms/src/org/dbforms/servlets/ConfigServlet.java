@@ -181,22 +181,14 @@ public class ConfigServlet extends HttpServlet {
          }
 
          logCat = LogFactory.getLog(ConfigServlet.class.getName());
-
          // logging category for this class
          logCat.info("### LOGGING INITALIZED, USING URL: " + usingURL + " ###"
                      + configurationStr);
-      }
-
-      /* remove default - use tomcats instead!
-            else {
-               BasicConfigurator.configure();
-               logCat = LogFactory.getLog(ConfigServlet.class.getName());
-               // logging category for this class
-               logCat.info("### LOGGING INITALIZED, USING BASIC CONFIGURATION.");
-               logCat.info(
-                  "### You can use init-parameter \"log4j.configuration\" in web.xml for defining individual properties, if you want. Check DbForms manual!");
-            }
-      */
+      }  else {
+          logCat = LogFactory.getLog(ConfigServlet.class.getName());
+          // logging category for this class
+          logCat.info("### LOGGING INITALIZED, USING DEFAULT CONFIGURATION.");
+       }
    }
 
 
