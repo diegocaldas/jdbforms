@@ -38,6 +38,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.dbforms.util.external.FileUtil;
 /**
  * <p>
  * this utility-class provides convenience methods for SQL related tasks
@@ -217,6 +218,13 @@ public class SqlUtil {
                 logCat
                         .info("::readDiskBlob - database data is null; use the default value ["
                                 + fileName + "]");
+               	fileName = fileName.replace('/', File.separatorChar);
+               	fileName = fileName.replace('\\', File.separatorChar);
+                String s = FileUtil.dirname(fileName);
+                if (!Util.isNull(s)) {
+                	directory = s;
+                	fileName = FileUtil.removePath(fileName);
+                }
             }
         }
 

@@ -32,6 +32,7 @@ import org.dbforms.util.IEscaper;
 import org.dbforms.util.ReflectionUtil;
 import org.dbforms.util.Util;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -266,9 +267,9 @@ public class DbFormsConfig {
     */
    public void setRealPath(String realPath) {
       if (!Util.isNull(realPath)) {
-         realPath = realPath.replace('\\', '/');
+         realPath = realPath.replace('/', File.separatorChar);
+         realPath = realPath.replace('\\', File.separatorChar);
       }
-
       this.realPath = realPath;
    }
 
