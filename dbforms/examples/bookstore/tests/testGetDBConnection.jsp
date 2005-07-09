@@ -3,7 +3,7 @@
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"-->
 <%@ taglib uri="/WEB-INF/dbforms.tld" prefix="db" %>
 <%@ taglib uri="/WEB-INF/sql.tld" prefix="sql" %>
-<%@ taglib uri="/WEB-INF/c-el.tld" prefix="c" %>
+<%@ taglib uri="/WEB-INF/c-rt.tld" prefix="c" %>
 <head>
    <db:base/>
 </head>
