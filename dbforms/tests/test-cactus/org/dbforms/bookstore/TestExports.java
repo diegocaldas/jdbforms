@@ -44,7 +44,6 @@ public class TestExports extends HttpTestCase {
 
         List list;
         list = new ArrayList();
-        list = new ArrayList();
         list.add(new KeyValuePair("invtable", "1"));
         list.add(new KeyValuePair("invname_1", ""));
         list.add(new KeyValuePair("autoupdate_1", "false"));
