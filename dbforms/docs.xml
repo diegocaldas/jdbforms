@@ -354,6 +354,9 @@
     <copy todir="${out.dir}/html/articles">
       <fileset dir="${basedir}/articles/about_dbforms" includes="*.pdf"/>
     </copy>
+    <copy todir="${out.dir}/html/articles">
+      <fileset dir="${basedir}/articles/usefull" includes="*.pdf"/>
+    </copy>
   </target>
 
 

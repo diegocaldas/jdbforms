@@ -637,7 +637,7 @@ name
       <computeroutput>dbform </computeroutput>tag.
     </para>
     <para>Finally, since DBF's validation was based on Struts, you can also check out 
-      <ulink url="http://jdbforms.sourceforge.net/non-cvs/docs/usersguide/pdf/validation/ch12.pdf">
+      <ulink url="articels/validating_user_input.pdf">
         <citetitle>the validation chapter from "Struts In Action"</citetitle>
       </ulink>
     </para>

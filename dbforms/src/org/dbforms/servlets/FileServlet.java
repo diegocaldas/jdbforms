@@ -137,8 +137,18 @@ public class FileServlet extends HttpServlet {
 					// use the filesystem;
 					if (field.getType() == FieldTypes.DISKBLOB) {
 						fileName = rs.getString(1);
-						is = SqlUtil.readDiskBlob(fileName, field
-								.getDirectory(), request
+						String directory = field.getDirectory();
+						try {
+							directory = Util.replaceRealPath(directory,
+									DbFormsConfigRegistry.instance().lookup()
+											.getRealPath());
+						} catch (Exception ex) {
+							logCat
+									.error(
+											"::doGet  - error replacing REALPATH on diskblob directory",
+											ex);
+						}
+						is = SqlUtil.readDiskBlob(fileName, directory, request
 								.getParameter("defaultValue"));
 					}
 					// use the rdbms;
