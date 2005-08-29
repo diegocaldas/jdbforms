@@ -603,7 +603,15 @@ public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
 				if (this instanceof DbCheckboxTag) {
 					return typicalDefaultValue() + "_";
 				}
-			}
+			} 
+			if (getField() == null) {
+				String oldValue = ParseUtil.getParameter(request,
+						getFormFieldName());
+
+				if (oldValue != null) {
+					return oldValue;
+				}
+			}	
 
 			return getFormFieldDefaultValue();
 		}
