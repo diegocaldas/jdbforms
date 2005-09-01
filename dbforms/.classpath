@@ -43,7 +43,6 @@
 	<classpathentry kind="lib" path="dependend/nekohtml-0.9.3.jar"/>
 	<classpathentry kind="lib" path="dependend/jcommon-0.9.6.jar"/>
 	<classpathentry kind="lib" path="dependend/jfreechart-0.9.21.jar"/>
-	<classpathentry sourcepath="D:/Projekte/webapps/cewolf-0.10.1/src" kind="lib" path="dependend/cewolf-0.10.1.jar"/>
 	<classpathentry kind="lib" path="examples/bookstore/WEB-INF/lib/pow2toolkit-1.0.jar"/>
 	<classpathentry kind="lib" path="examples/bookstore/WEB-INF/lib/pow2webgui-1.0.jar"/>
 	<classpathentry kind="lib" path="dependend/jasperreports-0.6.7.jar"/>
@@ -51,5 +50,6 @@
 	<classpathentry kind="var" path="TOMCAT_HOME/common/lib/servlet-api.jar"/>
 	<classpathentry kind="var" path="TOMCAT_HOME/common/lib/jasper-runtime.jar"/>
 	<classpathentry kind="var" path="TOMCAT_HOME/common/lib/jsp-api.jar"/>
+	<classpathentry kind="lib" path="dependend/cewolf-0.10.3.jar"/>
 	<classpathentry kind="output" path="examples/bookstore/WEB-INF/classes"/>
 </classpath>

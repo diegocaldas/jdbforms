@@ -376,7 +376,7 @@
       </dependency>
       <dependency>
          <id>cewolf</id>
-         <version>0.10.1</version>
+         <version>0.10.3</version>
          <properties>
             <war.bundle>true</war.bundle>
          </properties>
