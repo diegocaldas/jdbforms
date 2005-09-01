@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.event.datalist;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -38,93 +39,113 @@ import java.sql.SQLException;
 
 import javax.servlet.http.HttpServletRequest;
 
-
-
 /**
  * This event scrolls the current ResultSet to the previous row of data. <br>
  * Provides bounded navigation. <br>
  * Works with new factory classes
- *
+ * 
  * @author Henner Kollmann
  */
 public class NavPrevEvent extends NavigationEvent {
-   // logging category for this class
-   private static Log logCat = LogFactory.getLog(NavPrevEvent.class.getName());
+	// logging category for this class
+	private static Log logCat = LogFactory.getLog(NavPrevEvent.class.getName());
 
-   /**
-    * Constructor.
-    *
-    * @param action the action string
-    * @param request the request object
-    * @param config the config object
-    */
-   public NavPrevEvent(String action, HttpServletRequest request,
-      DbFormsConfig config) {
-      super(action, request, config);
-   }
+	/**
+	 * Constructor.
+	 * 
+	 * @param action
+	 *            the action string
+	 * @param request
+	 *            the request object
+	 * @param config
+	 *            the config object
+	 */
+	public NavPrevEvent(String action, HttpServletRequest request,
+			DbFormsConfig config) {
+		super(action, request, config);
+	}
 
+	/**
+	 * Constructor used for call from localevents.
+	 * 
+	 * @param table
+	 *            the Table object
+	 * @param request
+	 *            DOCUMENT ME!
+	 * @param config
+	 *            the config object
+	 */
+	public NavPrevEvent(Table table, HttpServletRequest request,
+			DbFormsConfig config) {
+		super(table, request, config);
+	}
 
-   /**
-    * Constructor used for call from localevents.
-    *
-    * @param table the Table object
-    * @param request DOCUMENT ME!
-    * @param config the config object
-    */
-   public NavPrevEvent(Table table, HttpServletRequest request,
-      DbFormsConfig config) {
-      super(table, request, config);
-   }
+	/**
+	 * Process the current event.
+	 * 
+	 * @param filterFieldValues
+	 *            FieldValue array used to restrict a set of data
+	 * @param orderConstraint
+	 *            FieldValue array used to build a cumulation of rules for
+	 *            ordering (sorting) and restricting fields to the actual block
+	 *            of data
+	 * @param sqlFilter
+	 *            DOCUMENT ME!
+	 * @param sqlFilterParams
+	 *            DOCUMENT ME!
+	 * @param count
+	 *            record count
+	 * @param firstPosition
+	 *            a string identifying the first resultset position
+	 * @param lastPosition
+	 *            a string identifying the last resultset position
+	 * @param dbConnectionName
+	 *            name of the used db connection. Can be used to get an own db
+	 *            connection, e.g. to hold it during the session (see
+	 *            DataSourceJDBC for example!)
+	 * @param con
+	 *            the JDBC Connection object
+	 * 
+	 * @return a ResultSetVector object
+	 * 
+	 * @exception SQLException
+	 *                if any error occurs
+	 */
+	public ResultSetVector processEvent(FieldValue[] filterFieldValues,
+			FieldValue[] orderConstraint, String sqlFilter,
+			FieldValue[] sqlFilterParams, int count, String firstPosition,
+			String lastPosition, DbEventInterceptorData interceptorData)
+			throws SQLException {
+		logCat.info("==>NavPrevEvent.processEvent");
 
-   /**
-    * Process the current event.
-    *
-    * @param filterFieldValues FieldValue array used to restrict a set of data
-    * @param orderConstraint FieldValue array used to build a cumulation of
-    *        rules for ordering (sorting) and restricting fields to the actual
-    *        block of data
-    * @param sqlFilter DOCUMENT ME!
-    * @param sqlFilterParams DOCUMENT ME!
-    * @param count record count
-    * @param firstPosition a string identifying the first resultset position
-    * @param lastPosition a string identifying the last resultset position
-    * @param dbConnectionName name of the used db connection. Can be used to
-    *        get an own db connection, e.g. to hold it during the session (see
-    *        DataSourceJDBC for example!)
-    * @param con the JDBC Connection object
-    *
-    * @return a ResultSetVector object
-    *
-    * @exception SQLException if any error occurs
-    */
-   public ResultSetVector processEvent(FieldValue[] filterFieldValues,
-      FieldValue[] orderConstraint, String sqlFilter,
-      FieldValue[] sqlFilterParams, int count, String firstPosition,
-      String lastPosition, DbEventInterceptorData interceptorData)
-      throws SQLException {
-      logCat.info("==>NavPrevEvent.processEvent");
+		DataSourceSessionList ds = DataSourceSessionList
+				.getInstance(getRequest());
+		DataSourceFactory qry = ds.get(getTable(), getRequest());
+		boolean force = getRequest().getAttribute("forceUpdate") != null;
+		if (force) {
+			ds.remove(getTable(), getRequest());
+		} else {
+			qry = ds.get(getTable(), getRequest());
+		}
 
-      DataSourceSessionList ds  = DataSourceSessionList.getInstance(getRequest());
-      DataSourceFactory     qry = ds.get(getTable(), getRequest());
+		if (qry == null) {
+			qry = new DataSourceFactory((String) interceptorData
+					.getAttribute(DbEventInterceptorData.CONNECTIONNAME),
+					interceptorData.getConnection(), getTable());
+			qry.setSelect(filterFieldValues, orderConstraint, sqlFilter,
+					sqlFilterParams);
+			ds.put(getTable(), getRequest(), qry);
+		}
 
-      if (qry == null) {
-         qry = new DataSourceFactory((String) interceptorData.getAttribute(
-                  DbEventInterceptorData.CONNECTIONNAME),
-               interceptorData.getConnection(), getTable());
-         qry.setSelect(filterFieldValues, orderConstraint, sqlFilter,
-            sqlFilterParams);
-         ds.put(getTable(), getRequest(), qry);
-      }
+		String position = getTable().getKeyPositionString(
+				getTable().getFieldValues(firstPosition));
+		ResultSetVector res = qry.getPrev(interceptorData, position, count);
 
-      String          position = getTable().getKeyPositionString(getTable()
-                                                                    .getFieldValues(firstPosition));
-      ResultSetVector res = qry.getPrev(interceptorData, position, count);
+		// change behavior to navFirst if navPrev finds no data
+		if (ResultSetVector.isNull(res)) {
+			res = qry.getFirst(interceptorData, count);
+		}
 
-      // change behavior to navFirst if navPrev finds no data
-      if (ResultSetVector.isNull(res)) {
-         res = qry.getFirst(interceptorData, count);
-      }
-
-      return res;
-   }
+		return res;
+	}
 }

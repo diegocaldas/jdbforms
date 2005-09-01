@@ -38,167 +38,171 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionBindingListener;
 
-
-
 /**
  * Holds a list of DataSourceFactory object in the session context. Needed by
- * the navigation events to store the datasource  by a per session mode. So it
- * is possible to reuse the data between different calls  and it's not
- * neccessary to refetch again.
- *
+ * the navigation events to store the datasource by a per session mode. So it is
+ * possible to reuse the data between different calls and it's not neccessary to
+ * refetch again.
+ * 
  * @author hkk
  */
 public class DataSourceSessionList implements HttpSessionBindingListener {
-   /** Hashtable to hold all DataSource objects. Key is queryString. */
+	/** Hashtable to hold all DataSource objects. Key is queryString. */
 
-   // logging category for this class;
-   private static Log logCat = LogFactory.getLog(DataSourceSessionList.class.getName());
-   private Map        ht = new HashMap();
+	// logging category for this class;
+	private static Log logCat = LogFactory.getLog(DataSourceSessionList.class
+			.getName());
 
-   /**
-    * Private constructor. <br>
-    * Use <code>getInstance</code> to get an instance of  the DataSourceList
-    * object.
-    */
-   private DataSourceSessionList() {
-      super();
-   }
+	private Map ht = new HashMap();
 
-   /**
-    * Returns an unique instance of this class for each session
-    *
-    * @param request the request object
-    *
-    * @return DOCUMENT ME!
-    */
-   public static synchronized DataSourceSessionList getInstance(HttpServletRequest request) {
-      // try to retrieve an existant dataSourceList object from the session
-      // context;
-      DataSourceSessionList ds = (DataSourceSessionList) request.getSession()
-                                                  .getAttribute("org.dbforms.event.datalist.dao.DataSourceSessionList");
+	/**
+	 * Private constructor. <br>
+	 * Use <code>getInstance</code> to get an instance of the DataSourceList
+	 * object.
+	 */
+	private DataSourceSessionList() {
+		super();
+	}
 
-      // if it does not exist, createn a new one and store
-      // its reference into the session;
-      if (ds == null) {
-         ds = new DataSourceSessionList();
-         request.getSession()
-                .setAttribute("org.dbforms.event.datalist.dao.DataSourceSessionList",
-                              ds);
-      }
+	/**
+	 * Returns an unique instance of this class for each session
+	 * 
+	 * @param request
+	 *            the request object
+	 * 
+	 * @return DOCUMENT ME!
+	 */
+	public static synchronized DataSourceSessionList getInstance(
+			HttpServletRequest request) {
+		// try to retrieve an existant dataSourceList object from the session
+		// context;
+		DataSourceSessionList ds = (DataSourceSessionList) request.getSession()
+				.getAttribute(
+						"org.dbforms.event.datalist.dao.DataSourceSessionList");
 
-      return ds;
-   }
+		// if it does not exist, createn a new one and store
+		// its reference into the session;
+		if (ds == null) {
+			ds = new DataSourceSessionList();
+			request.getSession().setAttribute(
+					"org.dbforms.event.datalist.dao.DataSourceSessionList", ds);
+		}
 
+		return ds;
+	}
 
-   /**
-    * Get a DataSourceFactory object.
-    *
-    * @param table the table object
-    * @param request the request object
-    *
-    * @return the DataSourceFactory object related to the input table
-    */
-   public DataSourceFactory get(Table              table,
-                                HttpServletRequest request) {
-      synchronized (ht) {
-         DataSourceFactory result = (DataSourceFactory) ht.get(getKey(table,
-                                                                      request));
+	/**
+	 * Get a DataSourceFactory object.
+	 * 
+	 * @param table
+	 *            the table object
+	 * @param request
+	 *            the request object
+	 * 
+	 * @return the DataSourceFactory object related to the input table
+	 */
+	public DataSourceFactory get(Table table, HttpServletRequest request) {
+		synchronized (ht) {
+			DataSourceFactory result = (DataSourceFactory) ht.get(getKey(table,
+					request));
 
-         return result;
-      }
-   }
+			return result;
+		}
+	}
 
+	/**
+	 * Adds a DataSourceFactory object to the list. If object exists in the
+	 * Hashtable close first!
+	 * 
+	 * @param table
+	 *            the table object
+	 * @param request
+	 *            the request object
+	 * @param ds
+	 *            the DataSourceFactory object to store into the list
+	 * 
+	 * @throws SQLException
+	 *             DOCUMENT ME!
+	 */
+	public void put(Table table, HttpServletRequest request,
+			DataSourceFactory ds) throws SQLException {
+		synchronized (ht) {
+			ht.put(getKey(table, request), ds);
+		}
+	}
 
-   /**
-    * Adds a DataSourceFactory object to the list.  If object exists in the
-    * Hashtable close first!
-    *
-    * @param table the table object
-    * @param request the request object
-    * @param ds the DataSourceFactory object to store into the list
-    *
-    * @throws SQLException DOCUMENT ME!
-    */
-   public void put(Table              table,
-                   HttpServletRequest request,
-                   DataSourceFactory  ds) throws SQLException {
-      synchronized (ht) {
-         ht.put(getKey(table, request), ds);
-      }
-   }
+	/**
+	 * Remove a DataSource object from the list.
+	 * 
+	 * @param table
+	 *            the table object
+	 * @param request
+	 *            the request object
+	 * 
+	 * @return the DataSource object related to the input table. Note that the
+	 *         returned DataSource object has just been closed by this method.
+	 */
+	public DataSourceFactory remove(Table table, HttpServletRequest request) {
+		synchronized (ht) {
+			DataSourceFactory result = (DataSourceFactory) ht.remove(getKey(
+					table, request));
 
+			if (result != null) {
+				result.close();
+			}
 
-   /**
-    * Remove a DataSource object from the list.
-    *
-    * @param table the table object
-    * @param request the request object
-    *
-    * @return the DataSource object related to the input table. Note that the
-    *         returned DataSource object has just been closed by this method.
-    */
-   public DataSourceFactory remove(Table              table,
-                                   HttpServletRequest request) {
-      synchronized (ht) {
-         DataSourceFactory result = (DataSourceFactory) ht.remove(getKey(table,
-                                                                         request));
+			return result;
+		}
+	}
 
-         if (result != null) {
-            result.close();
-         }
+	/**
+	 * Receive notification that this session will be passivated.
+	 * 
+	 * @param event
+	 *            The session event that has occurred
+	 */
+	public void valueBound(HttpSessionBindingEvent event) {
+	}
 
-         return result;
-      }
-   }
+	/**
+	 * Receive notification that this session was activated.
+	 * 
+	 * @param event
+	 *            The session event that has occurred
+	 */
+	public void valueUnbound(HttpSessionBindingEvent event) {
+		synchronized (ht) {
+			logCat.info("valueUnbound called");
 
+			Iterator iter = ht.values().iterator();
 
-   /**
-    * Receive notification that this session will be passivated.
-    *
-    * @param event The session event that has occurred
-    */
-   public void valueBound(HttpSessionBindingEvent event) {
-   }
+			while (iter.hasNext()) {
+				Object obj = iter.next();
+				DataSourceFactory qry = (DataSourceFactory) obj;
+				qry.close();
+			}
 
+			ht.clear();
+		}
+	}
 
-   /**
-    * Receive notification that this session was activated.
-    *
-    * @param event The session event that has occurred
-    */
-   public void valueUnbound(HttpSessionBindingEvent event) {
-      synchronized (ht) {
-         logCat.info("valueUnbound called");
+	/**
+	 * Get the key string used to retrieve the DataSource object from the
+	 * internal hash table.
+	 * 
+	 * @param table
+	 *            the table object
+	 * @param request
+	 *            the request object
+	 * 
+	 * @return the key string (a.k.a. the queryString) used to retrieve the
+	 *         DataSource object from the internal hash table
+	 */
+	private String getKey(Table table, HttpServletRequest request) {
+		String refSource = request.getRequestURI();
+		refSource = refSource + "?" + table.getName();
 
-         Iterator iter = ht.values()
-                           .iterator();
+		return refSource;
+	}
 
-         while (iter.hasNext()) {
-            Object            obj = iter.next();
-            DataSourceFactory qry = (DataSourceFactory) obj;
-            qry.close();
-         }
-
-         ht.clear();
-      }
-   }
-
-
-   /**
-    * Get the key string used to retrieve the DataSource object  from the
-    * internal hash table.
-    *
-    * @param table the table object
-    * @param request the request object
-    *
-    * @return the key string (a.k.a. the queryString) used to retrieve  the
-    *         DataSource object from the internal hash table
-    */
-   private String getKey(Table              table,
-                         HttpServletRequest request) {
-      String refSource = request.getRequestURI();
-      refSource = refSource + "?" + table.getName();
-
-      return refSource;
-   }
 }

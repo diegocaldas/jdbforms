@@ -107,8 +107,14 @@ public class NavNextEvent extends NavigationEvent {
       logCat.info("==>NavNextEvent.processEvent");
 
       DataSourceSessionList ds  = DataSourceSessionList.getInstance(getRequest());
-      DataSourceFactory     qry = ds.get(getTable(), getRequest());
-
+      DataSourceFactory     qry = null;
+      boolean force = getRequest().getAttribute("forceUpdate") != null;
+		if (force) {
+			ds.remove(getTable(), getRequest());
+		} else {
+			qry = ds.get(getTable(), getRequest());
+		}
+    	  
       if (qry == null) {
          qry = new DataSourceFactory((String) interceptorData.getAttribute(
                   DbEventInterceptorData.CONNECTIONNAME),

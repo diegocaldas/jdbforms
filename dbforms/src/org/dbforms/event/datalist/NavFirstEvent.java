@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.event.datalist;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -38,83 +39,104 @@ import java.sql.SQLException;
 
 import javax.servlet.http.HttpServletRequest;
 
-
-
 /**
  * This event scrolls the current ResultSet to its first row of data. <br>
  * Works with new factory classes.
- *
+ * 
  * @author Henner Kollmann
  */
 public class NavFirstEvent extends NavigationEvent {
-   // logging category for this class
-   private static Log logCat = LogFactory.getLog(NavFirstEvent.class.getName());
+	// logging category for this class
+	private static Log logCat = LogFactory
+			.getLog(NavFirstEvent.class.getName());
 
-   /**
-    * Creates a new NavFirstEvent object.
-    *
-    * @param action the action string
-    * @param request the request object
-    * @param config the configuration object
-    */
-   public NavFirstEvent(String action, HttpServletRequest request,
-      DbFormsConfig config) {
-      super(action, request, config);
-   }
+	/**
+	 * Creates a new NavFirstEvent object.
+	 * 
+	 * @param action
+	 *            the action string
+	 * @param request
+	 *            the request object
+	 * @param config
+	 *            the configuration object
+	 */
+	public NavFirstEvent(String action, HttpServletRequest request,
+			DbFormsConfig config) {
+		super(action, request, config);
+	}
 
+	/**
+	 * Creates a new NavFirstEvent object.
+	 * 
+	 * @param table
+	 *            the input table object
+	 * @param request
+	 *            the request object
+	 * @param config
+	 *            the configuration object
+	 */
+	public NavFirstEvent(Table table, HttpServletRequest request,
+			DbFormsConfig config) {
+		super(table, request, config);
+	}
 
-   /**
-    * Creates a new NavFirstEvent object.
-    *
-    * @param table the input table object
-    * @param request the request object
-    * @param config the configuration object
-    */
-   public NavFirstEvent(Table table, HttpServletRequest request,
-      DbFormsConfig config) {
-      super(table, request, config);
-   }
+	/**
+	 * Process the current event.
+	 * 
+	 * @param filterFieldValues
+	 *            FieldValue array used to restrict a set of data
+	 * @param orderConstraint
+	 *            FieldValue array used to build a cumulation of rules for
+	 *            ordering (sorting) and restricting fields to the actual block
+	 *            of data
+	 * @param sqlFilter
+	 *            DOCUMENT ME!
+	 * @param sqlFilterParams
+	 *            DOCUMENT ME!
+	 * @param count
+	 *            record count
+	 * @param firstPosition
+	 *            a string identifying the first resultset position
+	 * @param lastPosition
+	 *            a string identifying the last resultset position
+	 * @param dbConnectionName
+	 *            name of the used db connection. Can be used to get an own db
+	 *            connection, e.g. to hold it during the session (see
+	 *            DataSourceJDBC for example!)
+	 * @param con
+	 *            the JDBC Connection object
+	 * 
+	 * @return a ResultSetVector object
+	 * 
+	 * @exception SQLException
+	 *                if any error occurs
+	 */
+	public ResultSetVector processEvent(FieldValue[] filterFieldValues,
+			FieldValue[] orderConstraint, String sqlFilter,
+			FieldValue[] sqlFilterParams, int count, String firstPosition,
+			String lastPosition, DbEventInterceptorData interceptorData)
+			throws SQLException {
+		logCat.info("==>NavFirstEvent.processEvent");
 
-   /**
-    * Process the current event.
-    *
-    * @param filterFieldValues FieldValue array used to restrict a set of data
-    * @param orderConstraint FieldValue array used to build a cumulation of
-    *        rules for ordering (sorting) and restricting fields to the actual
-    *        block of data
-    * @param sqlFilter DOCUMENT ME!
-    * @param sqlFilterParams DOCUMENT ME!
-    * @param count record count
-    * @param firstPosition a string identifying the first resultset position
-    * @param lastPosition a string identifying the last resultset position
-    * @param dbConnectionName name of the used db connection. Can be used to
-    *        get an own db connection, e.g. to hold it during the session (see
-    *        DataSourceJDBC for example!)
-    * @param con the JDBC Connection object
-    *
-    * @return a ResultSetVector object
-    *
-    * @exception SQLException if any error occurs
-    */
-   public ResultSetVector processEvent(FieldValue[] filterFieldValues,
-      FieldValue[] orderConstraint, String sqlFilter,
-      FieldValue[] sqlFilterParams, int count, String firstPosition,
-      String lastPosition, DbEventInterceptorData interceptorData)
-      throws SQLException {
-      logCat.info("==>NavFirstEvent.processEvent");
+		DataSourceSessionList ds = DataSourceSessionList
+				.getInstance(getRequest());
+		DataSourceFactory qry = null;
+		boolean force = getRequest().getAttribute("forceUpdate") != null;
+		if (force) {
+			ds.remove(getTable(), getRequest());
+		} else {
+			qry = ds.get(getTable(), getRequest());
+		}
 
-      DataSourceSessionList ds  = DataSourceSessionList.getInstance(getRequest());
-      DataSourceFactory     qry = ds.get(getTable(), getRequest());
+		if (qry == null) {
+			qry = new DataSourceFactory((String) interceptorData
+					.getAttribute(DbEventInterceptorData.CONNECTIONNAME),
+					interceptorData.getConnection(), getTable());
+			qry.setSelect(filterFieldValues, orderConstraint, sqlFilter,
+					sqlFilterParams);
+			ds.put(getTable(), getRequest(), qry);
+		}
 
-      if (qry == null) {
-         qry = new DataSourceFactory((String) interceptorData.getAttribute(
-                  DbEventInterceptorData.CONNECTIONNAME),
-               interceptorData.getConnection(), getTable());
-         qry.setSelect(filterFieldValues, orderConstraint, sqlFilter,
-            sqlFilterParams);
-         ds.put(getTable(), getRequest(), qry);
-      }
-
-      return qry.getFirst(interceptorData, count);
-   }
+		return qry.getFirst(interceptorData, count);
+	}
 }

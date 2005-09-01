@@ -158,6 +158,7 @@ public class InsertEvent extends ValidationEvent {
             own    = true;
          }
 
+         getRequest().setAttribute("forceUpdate", "true");
          int i = qry.doInsert(interceptorData, fieldValues);
          interceptorData.setAttribute(DbEventInterceptorData.ROWSAFFECTED, new Integer(i));
 

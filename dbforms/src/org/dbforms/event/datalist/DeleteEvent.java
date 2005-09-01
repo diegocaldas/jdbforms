@@ -147,6 +147,7 @@ public class DeleteEvent extends DatabaseEvent {
             own    = true;
          }
 
+         getRequest().setAttribute("forceUpdate", "true");
          int i = qry.doDelete(interceptorData, keyValuesStr);
          interceptorData.setAttribute(DbEventInterceptorData.ROWSAFFECTED, new Integer(i));
 

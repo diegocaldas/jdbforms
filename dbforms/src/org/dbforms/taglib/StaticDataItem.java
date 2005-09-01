@@ -86,8 +86,7 @@ public class StaticDataItem extends DbBaseHandlerTag
 
       if ((value != null)
                 && (getParent() instanceof StaticData
-                && getParent()
-                            .getParent() instanceof DbBaseHandlerTag
+                && (getParentForm() != null)
                 && getParentForm()
                             .hasCaptionResourceSet())) {
          try {
