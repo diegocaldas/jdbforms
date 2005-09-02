@@ -63,12 +63,23 @@
      -  use "http://docbook.sourceforge.net/release/xsl/current/html/chunk.xsl" if not available locally
      -->
   <property name="main.stylesheet" value="${sSheetHome.dir}/html/chunk.xsl"/>
+<!--
+-->
+<!--
+  <property name="main.stylesheet" value="http://docbook.sourceforge.net/release/xsl/current/html/chunk.xsl"/>
+-->
 
   <!-- 
      -  Stylesheet to use for fo processing 
      -  use "http://docbook.sourceforge.net/release/xsl/current/fo/docbook.xsl" if not available locally
      -->
   <property name="fo.stylesheet" value="${sSheetHome.dir}/fo/docbook.xsl"/>
+<!--
+-->
+<!--
+  <property name="fo.stylesheet" value="http://docbook.sourceforge.net/release/xsl/current/fo/docbook.xsl" />
+-->
+
 
   <!-- 
      -  Input properties:

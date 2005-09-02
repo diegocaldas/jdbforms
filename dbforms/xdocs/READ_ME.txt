@@ -56,8 +56,24 @@ We have integrated some special goals for dbforms:
     generate dbforms documentation: taglib docu and manual
   - dbforms:dist
     generates the distribution via build.xml
-  - dbforms:deploy
-    do the whole deployment: generates site, generates doc, generates distribution
+	-dbforms:release
+	  generates a new release on SF
+  -dbforms:update-project
+    gets a fresh copy from the CVS
+
+And the masters:
+
+  - dbforms:site:generate
+    This goals gets a fresh copy of all sources from the CVS, builds a new 
+    version locally
+	
+  - dbforms:site:deploy
+    This goals gets a fresh copy of all sources from the CVS, builds a new 
+    version and sends it to the SF web server.      
+
+  - dbforms:site:release
+    Same as dbforms:site:deploy. After renewing dbforms website a new version
+    of dbforms is released to SF.
 
 
 needed MAVEN plugins
