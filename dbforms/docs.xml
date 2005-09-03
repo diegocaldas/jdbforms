@@ -52,33 +52,20 @@
   <property name="maven.docs"     value="${maven.target}/docs"/>  
 
 
-  <!-- Main stylesheets -->
+<!-- 
+ -  Main Docbook stylesheets
+ -  use "http://docbook.sourceforge.net/release/xsl/current" if not available locally
+ -->
 <!--
+-->
   <property name="sSheetHome.dir" value="${docbookHome.dir}"/>
+<!--
+  <property name="sSheetHome.dir" value="http://docbook.sourceforge.net/release/xsl/current"/>
 -->
-  <property name="sSheetHome.dir" value="${basedir}/xsl-stylesheets"/>
 
-  <!-- 
-     -  Main Docbook stylesheet
-     -  use "http://docbook.sourceforge.net/release/xsl/current/html/chunk.xsl" if not available locally
-     -->
+
   <property name="main.stylesheet" value="${sSheetHome.dir}/html/chunk.xsl"/>
-<!--
--->
-<!--
-  <property name="main.stylesheet" value="http://docbook.sourceforge.net/release/xsl/current/html/chunk.xsl"/>
--->
-
-  <!-- 
-     -  Stylesheet to use for fo processing 
-     -  use "http://docbook.sourceforge.net/release/xsl/current/fo/docbook.xsl" if not available locally
-     -->
-<!--
--->
-  <property name="fo.stylesheet" value="${sSheetHome.dir}/fo/docbook.xsl"/>
-<!--
-  <property name="fo.stylesheet" value="http://docbook.sourceforge.net/release/xsl/current/fo/docbook.xsl" />
--->
+  <property name="fo.stylesheet"   value="${sSheetHome.dir}/fo/docbook.xsl"/>
 
 
   <!-- 
