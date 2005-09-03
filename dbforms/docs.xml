@@ -74,11 +74,11 @@
      -  use "http://docbook.sourceforge.net/release/xsl/current/fo/docbook.xsl" if not available locally
      -->
 <!--
+-->
   <property name="fo.stylesheet" value="${sSheetHome.dir}/fo/docbook.xsl"/>
--->
 <!--
--->
   <property name="fo.stylesheet" value="http://docbook.sourceforge.net/release/xsl/current/fo/docbook.xsl" />
+-->
 
 
   <!-- 
