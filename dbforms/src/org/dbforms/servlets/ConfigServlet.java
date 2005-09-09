@@ -27,7 +27,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-// import org.apache.log4j.BasicConfigurator;
 import org.apache.commons.validator.ValidatorResources;
 import org.apache.commons.validator.ValidatorResourcesInitializer;
 
@@ -382,13 +381,16 @@ public class ConfigServlet extends HttpServlet {
     */
    protected void initXMLValidator() throws ServletException {
       // Map the commons-logging used by commons-validator to Log4J logger
-      try {
+/* 200050906-HKK Not neccesary to configure logging here. 
+ *               Use the global logging configuration in init logging instead!!!   
+	   try {
          System.setProperty("org.apache.commons.logging.Log",
                             "org.apache.commons.logging.impl.Log4JCategoryLog");
       } catch (java.security.AccessControlException e) {
          logCat.warn("Unable map commons-logging to Log4j, due to SecurityManager",
                      e);
       }
+*/
 
       ValidatorResources resources = new ValidatorResources();
       logCat.info("initialize XML Validator.");
