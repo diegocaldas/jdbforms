@@ -2450,6 +2450,10 @@ public class DbFormTag extends TagSupportWithScriptHandler implements
                                 // check fieldtype!
                                 if (fTest.getType() != f.getType()) {
                                     f = null;
+                                // Do this only if there is no original searchfield in the 
+                                // request
+                                } else if (searchFieldNames.contains(f.getSearchFieldName())){
+                                    f = null;
                                 } else {
                                     // put the value into the request so that
                                     // the SearchTag will find
