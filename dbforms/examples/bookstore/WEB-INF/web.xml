@@ -10,7 +10,7 @@
  * $Date$
 -->
 
-<web-app version="2.4">
+<web-app>
    <filter>
       	<filter-name>Set Character Encoding</filter-name>
       	<filter-class>org.dbforms.util.external.SetCharacterEncodingFilter</filter-class>
