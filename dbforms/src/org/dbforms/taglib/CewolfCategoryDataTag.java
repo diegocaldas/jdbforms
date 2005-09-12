@@ -30,36 +30,51 @@ import javax.servlet.jsp.JspException;
 import de.laures.cewolf.taglib.DataAware;
 import de.laures.cewolf.DatasetProducer;
 
-import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.data.category.DefaultCategoryDataset;
 
 import org.dbforms.util.CewolfDatasetProducer;
 import org.dbforms.config.ResultSetVector;
 
-/**
+/** 
  * Tag &lt;producer&gt; which defines a DatasetProducer.
- * 
  * @see DataTag
- * @author Guido Laures
+ * @author  Guido Laures 
  */
-public class CewolfPieDataTag extends DbBaseHandlerTag {
+public class CewolfCategoryDataTag extends DbBaseHandlerTag  {
 	private String categoryField;
-
 	private String dataField;
+	private String seriesField;
+	
+
+    public String getSeriesField() {
+		return seriesField;
+	}
+
+
+	public void setSeriesField(String seriesField) {
+		this.seriesField = seriesField;
+	}
+
 
 	public int doEndTag() throws JspException {
-		DefaultPieDataset ds = new DefaultPieDataset();
-		ResultSetVector rsv = getParentForm().getResultSetVector();
-		for (int i = 0; i < rsv.size(); i++) {
-			Comparable c = (Comparable) rsv.getFieldAsObject(i,
-					getCategoryField());
-			Number n = (Number) rsv.getFieldAsObject(i, getDataField());
-			ds.setValue(c, n);
-		}
-		DatasetProducer dataProducer = new CewolfDatasetProducer(ds);
-		DataAware dw = (DataAware) findAncestorWithClass(this, DataAware.class);
-		dw.setDataProductionConfig(dataProducer, new HashMap(), false);
-		return SKIP_BODY;
-	}
+    	DefaultCategoryDataset ds = new DefaultCategoryDataset();
+    	ResultSetVector rsv = getParentForm().getResultSetVector();
+    	for (int i = 0; i < rsv.size(); i++) {
+        	Comparable c = (Comparable) rsv.getFieldAsObject(i, getCategoryField());
+    		if (c == null)
+     		   c = new String("");	
+        	Comparable s = (Comparable) rsv.getFieldAsObject(i, getSeriesField());
+    		Number n = (Number) rsv.getFieldAsObject(i, getDataField());
+    		if (s == null)
+    		   s = new String("");	
+    		ds.addValue(n, s, c);
+    	}
+    	DatasetProducer dataProducer = new CewolfDatasetProducer(ds);
+        DataAware dw = (DataAware) findAncestorWithClass(this, DataAware.class);
+        dw.setDataProductionConfig(dataProducer, new HashMap(), false);
+        return SKIP_BODY;
+    }
+
 
 	/**
 	 * @return Returns the categoryField.
@@ -67,25 +82,20 @@ public class CewolfPieDataTag extends DbBaseHandlerTag {
 	public String getCategoryField() {
 		return categoryField;
 	}
-
 	/**
-	 * @param categoryField
-	 *            The categoryField to set.
+	 * @param categoryField The categoryField to set.
 	 */
 	public void setCategoryField(String categoryField) {
 		this.categoryField = categoryField;
 	}
-
 	/**
 	 * @return Returns the dataField.
 	 */
 	public String getDataField() {
 		return dataField;
 	}
-
 	/**
-	 * @param dataField
-	 *            The dataField to set.
+	 * @param dataField The dataField to set.
 	 */
 	public void setDataField(String dataField) {
 		this.dataField = dataField;
@@ -95,6 +105,7 @@ public class CewolfPieDataTag extends DbBaseHandlerTag {
 		super.doFinally();
 		categoryField = null;
 		dataField = null;
+		seriesField = null;
 	}
-
+	
 }

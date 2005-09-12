@@ -10835,6 +10835,48 @@ pageContext or pass in a value directly and then use the textFormat tag to forma
 					</info>
 				</attribute>
 			</tag>
+			<!-- **************************** CewolfCategoryData tag ***********************************-->
+			<tag>
+				<name>categoryData</name>
+				<summary>
+					This datatag generates a cewolf DatasetProducer with CategoryDataSet included.
+					Data is taken from the dbforms resultsetvector.
+				</summary>
+				<tagclass>org.dbforms.taglib.CewolfCategoryDataTag</tagclass>
+				<bodycontent>empty</bodycontent>
+				<info>
+				   You need to install batik jars to use this tag!
+				   You can copy them from the bookstore example!
+				</info>
+				<attribute>
+					<name>categoryField</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+					   Name of the field in the resultsetvector which should be 
+					   used as the category field in the dataset.
+					</info>
+				</attribute>
+				<attribute>
+					<name>seriesField</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+					   Name of the field in the resultsetvector which should be 
+					   used as the series field in the dataset.
+					</info>
+				</attribute>
+				<attribute>
+					<name>dataField</name>
+					<required>true</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+					   Name of the field in the resultsetvector which should be 
+					   used for getting the values for the dataset.
+					   This field must be a numeric value!
+					</info>
+				</attribute>
+			</tag>
 		</taglib>
 	</body>
 </document>
