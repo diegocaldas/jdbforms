@@ -102,6 +102,11 @@
            <ant:include name="*.war" />
       </ant:fileset>
     </ant:copy>
+     <ant:copy todir="target/docs" overwrite="true">
+      <ant:fileset dir="src/org/dbforms/resources">
+           <ant:include name="dbforms-config.xsd" />
+      </ant:fileset>
+    </ant:copy>
   </goal>
 
   <goal name="dbforms:fileset:dbforms">
