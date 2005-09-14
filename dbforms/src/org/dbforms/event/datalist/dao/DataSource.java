@@ -431,8 +431,7 @@ public abstract class DataSource {
             String directory = null;
 
             try {
-               directory = Util.replaceRealPath(curField.getDirectory(),
-                     DbFormsConfigRegistry.instance().lookup().getRealPath());
+               directory = DbFormsConfigRegistry.instance().lookup().replaceRealPath(curField.getDirectory());
             } catch (Exception e) {
                logCat.error("deleteBlobFilesFromDisk", e);
                throw new SQLException(e.getMessage());
@@ -491,8 +490,7 @@ public abstract class DataSource {
                }
 
                try {
-                  directory = Util.replaceRealPath(directory,
-                        DbFormsConfigRegistry.instance().lookup().getRealPath());
+                  directory = DbFormsConfigRegistry.instance().lookup().replaceRealPath(directory);
                } catch (Exception e) {
                   logCat.error("saveBlobFilesToDisk", e);
                }

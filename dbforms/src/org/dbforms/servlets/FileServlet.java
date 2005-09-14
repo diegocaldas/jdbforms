@@ -139,9 +139,7 @@ public class FileServlet extends HttpServlet {
 						fileName = rs.getString(1);
 						String directory = field.getDirectory();
 						try {
-							directory = Util.replaceRealPath(directory,
-									DbFormsConfigRegistry.instance().lookup()
-											.getRealPath());
+							directory = DbFormsConfigRegistry.instance().lookup().replaceRealPath(directory);
 						} catch (Exception ex) {
 							logCat
 									.error(

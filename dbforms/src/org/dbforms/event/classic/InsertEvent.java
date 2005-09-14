@@ -233,8 +233,7 @@ public class InsertEvent extends ValidationEvent {
                String directory = null;
 
                try {
-                  directory = Util.replaceRealPath(curField.getDirectory(),
-                                                   DbFormsConfigRegistry.instance().lookup().getRealPath());
+                  directory = DbFormsConfigRegistry.instance().lookup().replaceRealPath(curField.getDirectory());
                } catch (Exception e) {
                   throw new SQLException(e.getMessage());
                }

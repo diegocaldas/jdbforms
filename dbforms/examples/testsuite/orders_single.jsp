@@ -48,7 +48,7 @@ java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd-MM-yyyy");
                     <tr bgcolor="#FFFFCC">
                         <td>orderdate</td>
                         <td>
-                            <db:dateLabel fieldName="orderdate" formatter="<%= sdf %>" />
+                            <db:dateLabel fieldName="orderdate" pattern="yyyy-MM-dd" />
                             <db:dateField size="10" fieldName="orderdate" />
                         </td>
                     </tr>

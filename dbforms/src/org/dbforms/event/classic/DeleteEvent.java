@@ -217,8 +217,7 @@ public class DeleteEvent extends DatabaseEvent {
                         String directory = null;
 
                         try {
-                           directory = Util.replaceRealPath(aField.getDirectory(),
-                                                            DbFormsConfigRegistry.instance().lookup().getRealPath());
+                           directory = DbFormsConfigRegistry.instance().lookup().replaceRealPath(aField.getDirectory());
                         } catch (Exception e) {
                            throw new SQLException(e.getMessage());
                         }

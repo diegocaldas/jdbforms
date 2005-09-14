@@ -40,8 +40,6 @@ import javax.servlet.http.HttpServletRequest;
  * Simple general utility class
  */
 public class Util {
-   private static final String REALPATH = "$(SERVLETCONTEXT_REALPATH)";
-
    /**
     * Test if the input string is null or empty (does not contain any
     * character)
@@ -100,42 +98,6 @@ public class Util {
             s = encCheck(s, enc);
          } catch (NoSuchMethodError nsme) {
             s = URLEncoder.encode(s);
-         }
-      }
-
-      return s;
-   }
-
-
-   /**
-    * Replaces the occurens from REALPATH in s with realpath.
-    *
-    * @param s
-    *            the string containing the REALPATH token
-    * @param realpath
-    *            the value used to replace the REALPATH token
-    *
-    * @return the input string, with the REALPATH token replaced with the
-    *         realpath value
-    */
-   public static final String replaceRealPath(String s,
-                                              String realpath) {
-      if (!isNull(s) && !isNull(realpath)) {
-         // 20030604-HKK: Bugfixing for different engine, e.g. cactus. Path
-         // maybe without trailing '/'!!!
-         if (realpath.charAt(realpath.length() - 1) != '/') {
-            realpath = realpath + '/';
-         }
-
-         int i = s.indexOf(REALPATH);
-
-         while (i >= 0) {
-            StringBuffer buf = new StringBuffer();
-            buf.append(s.substring(0, i));
-            buf.append(realpath);
-            buf.append(s.substring(i + REALPATH.length() + 1));
-            s = buf.toString();
-            i = s.indexOf(REALPATH);
          }
       }
 

@@ -309,8 +309,7 @@ public class DataSourceXML extends DataSource {
 
 
    private String getFilePath() throws Exception {
-      return Util.replaceRealPath(getTable().getAlias(),
-                                  DbFormsConfigRegistry.instance().lookup().getRealPath());
+      return DbFormsConfigRegistry.instance().lookup().replaceRealPath(getTable().getAlias());
    }
 
 

@@ -20,37 +20,37 @@
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="table">
-		<xs:sequence>
+        <xs:sequence>
 			<xs:element name="field" minOccurs="0" maxOccurs="unbounded">
 				<xs:complexType>
 					<xs:complexContent>
 						<xs:extension base="field">
-							<xs:attribute name="encoding" type="xs:string" use="optional"/>
+							<xs:attribute name="encoding" type="xs:string" use="optional" />
 						</xs:extension>
 					</xs:complexContent>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="calc" type="calc" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="calc" type="calc" minOccurs="0" maxOccurs="unbounded" />
 			<xs:element name="foreign-key" minOccurs="0" maxOccurs="unbounded">
 				<xs:complexType>
 					<xs:sequence>
 						<xs:element name="reference" maxOccurs="unbounded">
 							<xs:complexType>
-								<xs:attribute name="local" type="xs:string" use="required"/>
-								<xs:attribute name="foreign" type="xs:string" use="required"/>
+								<xs:attribute name="local" type="xs:string" use="required" />
+								<xs:attribute name="foreign" type="xs:string" use="required" />
 							</xs:complexType>
 						</xs:element>
 					</xs:sequence>
-					<xs:attribute name="foreignTable" type="xs:string" use="required"/>
-					<xs:attribute name="name" type="xs:string" use="required"/>
-					<xs:attribute name="format" type="xs:string" use="optional"/>
-					<xs:attribute name="visibleFields" type="xs:string" use="optional"/>
+					<xs:attribute name="foreignTable" type="xs:string" use="required" />
+					<xs:attribute name="name" type="xs:string" use="required" />
+					<xs:attribute name="format" type="xs:string" use="optional" />
+					<xs:attribute name="visibleFields" type="xs:string" use="optional" />
 					<xs:attribute name="displayType" use="optional" default="none">
 						<xs:simpleType>
 							<xs:restriction base="xs:string">
-								<xs:enumeration value="select"/>
-								<xs:enumeration value="radio"/>
-								<xs:enumeration value="none"/>
+								<xs:enumeration value="select" />
+								<xs:enumeration value="radio" />
+								<xs:enumeration value="none" />
 							</xs:restriction>
 						</xs:simpleType>
 					</xs:attribute>
@@ -64,13 +64,13 @@
 								<xs:sequence>
 									<xs:element name="param" minOccurs="0" maxOccurs="unbounded">
 										<xs:complexType>
-											<xs:attribute name="name" type="xs:string" use="required"/>
-											<xs:attribute name="value" type="xs:string" use="required"/>
+											<xs:attribute name="name" type="xs:string" use="required" />
+											<xs:attribute name="value" type="xs:string" use="required" />
 										</xs:complexType>
 									</xs:element>
 								</xs:sequence>
-								<xs:attribute name="type" type="xs:string" use="required"/>
-								<xs:attribute name="id" type="xs:string" use="required"/>
+								<xs:attribute name="type" type="xs:string" use="required" />
+								<xs:attribute name="id" type="xs:string" use="required" />
 							</xs:complexType>
 						</xs:element>
 					</xs:sequence>
@@ -81,20 +81,20 @@
 					<xs:sequence>
 						<xs:element name="param" minOccurs="0" maxOccurs="unbounded">
 							<xs:complexType>
-								<xs:attribute name="name" type="xs:string" use="required"/>
-								<xs:attribute name="value" type="xs:string" use="required"/>
+								<xs:attribute name="name" type="xs:string" use="required" />
+								<xs:attribute name="value" type="xs:string" use="required" />
 							</xs:complexType>
 						</xs:element>
 					</xs:sequence>
-					<xs:attribute name="className" type="xs:string" use="required"/>
+					<xs:attribute name="className" type="xs:string" use="required" />
 				</xs:complexType>
 			</xs:element>
 			<xs:element name="granted-privileges" minOccurs="0" maxOccurs="unbounded">
 				<xs:complexType>
-					<xs:attribute name="select" type="xs:string" use="optional"/>
-					<xs:attribute name="insert" type="xs:string" use="optional"/>
-					<xs:attribute name="update" type="xs:string" use="optional"/>
-					<xs:attribute name="delete" type="xs:string" use="optional"/>
+					<xs:attribute name="select" type="xs:string" use="optional" />
+					<xs:attribute name="insert" type="xs:string" use="optional" />
+					<xs:attribute name="update" type="xs:string" use="optional" />
+					<xs:attribute name="delete" type="xs:string" use="optional" />
 				</xs:complexType>
 			</xs:element>
 		</xs:sequence>
@@ -109,8 +109,8 @@
 	</xs:complexType>
 	<xs:element name="dbforms-config">
 		<xs:complexType>
-			<xs:sequence>
-				<xs:element name="table" type="table" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:sequence>
+				<xs:element name="table" type="table" minOccurs="0" maxOccurs="unbounded" />
 				<xs:element name="query" minOccurs="0" maxOccurs="unbounded">
 					<xs:complexType>
 						<xs:complexContent>
@@ -118,19 +118,19 @@
 								<xs:sequence>
 									<xs:element name="search" minOccurs="0" maxOccurs="unbounded">
 										<xs:complexType>
-											<xs:attribute name="name" type="xs:string" use="optional"/>
-											<xs:attribute name="fieldType" type="xs:string" use="optional"/>
-											<xs:attribute name="expression" type="xs:string" use="optional"/>
+											<xs:attribute name="name" type="xs:string" use="optional" />
+											<xs:attribute name="fieldType" type="xs:string" use="optional" />
+											<xs:attribute name="expression" type="xs:string" use="optional" />
 										</xs:complexType>
 									</xs:element>
 								</xs:sequence>
-								<xs:attribute name="from" type="xs:string" use="optional"/>
-								<xs:attribute name="where" type="xs:string" use="optional"/>
-								<xs:attribute name="followAfterWhere" type="xs:string" use="optional"/>
-								<xs:attribute name="orderWithPos" type="xs:string" use="optional"/>
-								<xs:attribute name="distinct" type="xs:string" use="optional"/>
-								<xs:attribute name="groupBy" type="xs:string" use="optional"/>
-								<xs:attribute name="having" type="xs:string" use="optional"/>
+								<xs:attribute name="from" type="xs:string" use="optional" />
+								<xs:attribute name="where" type="xs:string" use="optional" />
+								<xs:attribute name="followAfterWhere" type="xs:string" use="optional" />
+								<xs:attribute name="orderWithPos" type="xs:string" use="optional" />
+								<xs:attribute name="distinct" type="xs:string" use="optional" />
+								<xs:attribute name="groupBy" type="xs:string" use="optional" />
+								<xs:attribute name="having" type="xs:string" use="optional" />
 							</xs:extension>
 						</xs:complexContent>
 					</xs:complexType>
@@ -143,9 +143,9 @@
 									<xs:sequence>
 										<xs:element name="database-event" maxOccurs="unbounded">
 											<xs:complexType>
-												<xs:attribute name="id" type="xs:string" use="optional"/>
-												<xs:attribute name="type" type="xs:string" use="required"/>
-												<xs:attribute name="className" type="xs:string" use="required"/>
+												<xs:attribute name="id" type="xs:string" use="optional" />
+												<xs:attribute name="type" type="xs:string" use="required" />
+												<xs:attribute name="className" type="xs:string" use="required" />
 											</xs:complexType>
 										</xs:element>
 									</xs:sequence>
@@ -156,9 +156,9 @@
 									<xs:sequence>
 										<xs:element name="navigation-event" maxOccurs="unbounded">
 											<xs:complexType>
-												<xs:attribute name="id" type="xs:string" use="optional"/>
-												<xs:attribute name="type" type="xs:string" use="required"/>
-												<xs:attribute name="className" type="xs:string" use="required"/>
+												<xs:attribute name="id" type="xs:string" use="optional" />
+												<xs:attribute name="type" type="xs:string" use="required" />
+												<xs:attribute name="className" type="xs:string" use="required" />
 											</xs:complexType>
 										</xs:element>
 									</xs:sequence>
@@ -172,34 +172,34 @@
 						<xs:sequence>
 							<xs:element name="property" minOccurs="0" maxOccurs="unbounded">
 								<xs:complexType>
-									<xs:attribute name="name" type="xs:string" use="required"/>
-									<xs:attribute name="value" type="xs:string" use="required"/>
+									<xs:attribute name="name" type="xs:string" use="required" />
+									<xs:attribute name="value" type="xs:string" use="required" />
 								</xs:complexType>
 							</xs:element>
 							<xs:element name="pool-property" minOccurs="0" maxOccurs="unbounded">
 								<xs:complexType>
-									<xs:attribute name="name" type="xs:string" use="required"/>
-									<xs:attribute name="value" type="xs:string" use="required"/>
+									<xs:attribute name="name" type="xs:string" use="required" />
+									<xs:attribute name="value" type="xs:string" use="required" />
 								</xs:complexType>
 							</xs:element>
 						</xs:sequence>
-						<xs:attribute name="id" type="xs:string" use="optional"/>
-						<xs:attribute name="name" type="xs:string" use="required"/>
-						<xs:attribute name="type" type="xs:string" use="optional"/>
-						<xs:attribute name="isJndi" type="xs:string" use="optional"/>
-						<xs:attribute name="isPow2" type="xs:string" use="optional"/>
-						<xs:attribute name="defaultConnection" type="xs:string" use="optional"/>
-						<xs:attribute name="connectionProviderClass" type="xs:string" use="optional"/>
-						<xs:attribute name="connectionPoolURL" type="xs:string" use="optional"/>
-						<xs:attribute name="conClass" type="xs:string" use="optional"/>
-						<xs:attribute name="username" type="xs:string" use="optional"/>
-						<xs:attribute name="password" type="xs:string" use="optional"/>
-						<xs:attribute name="orderBy" type="xs:string" use="optional"/>
-						<xs:attribute name="contextDataSource" type="xs:string" use="optional"/>
+						<xs:attribute name="id" type="xs:string" use="optional" />
+						<xs:attribute name="name" type="xs:string" use="required" />
+						<xs:attribute name="type" type="xs:string" use="optional" />
+						<xs:attribute name="isJndi" type="xs:string" use="optional" />
+						<xs:attribute name="isPow2" type="xs:string" use="optional" />
+						<xs:attribute name="defaultConnection" type="xs:string" use="optional" />
+						<xs:attribute name="connectionProviderClass" type="xs:string" use="optional" />
+						<xs:attribute name="connectionPoolURL" type="xs:string" use="optional" />
+						<xs:attribute name="conClass" type="xs:string" use="optional" />
+						<xs:attribute name="username" type="xs:string" use="optional" />
+						<xs:attribute name="password" type="xs:string" use="optional" />
+						<xs:attribute name="orderBy" type="xs:string" use="optional" />
+						<xs:attribute name="contextDataSource" type="xs:string" use="optional" />
 					</xs:complexType>
 				</xs:element>
-				<xs:element name="DOMFactoryClass" type="xs:string" minOccurs="0"/>
-				<xs:element name="DefaultEscaperClass" type="xs:string" minOccurs="0"/>
+				<xs:element name="DOMFactoryClass" type="xs:string" minOccurs="0" />
+				<xs:element name="DefaultEscaperClass" type="xs:string" minOccurs="0" />
 				<xs:element name="interceptors" minOccurs="0">
 					<xs:complexType>
 						<xs:sequence minOccurs="0" maxOccurs="unbounded">
@@ -208,12 +208,12 @@
 									<xs:sequence>
 										<xs:element name="param" minOccurs="0" maxOccurs="unbounded">
 											<xs:complexType>
-												<xs:attribute name="name" type="xs:string" use="required"/>
-												<xs:attribute name="value" type="xs:string" use="required"/>
+												<xs:attribute name="name" type="xs:string" use="required" />
+												<xs:attribute name="value" type="xs:string" use="required" />
 											</xs:complexType>
 										</xs:element>
 									</xs:sequence>
-									<xs:attribute name="className" type="xs:string" use="required"/>
+									<xs:attribute name="className" type="xs:string" use="required" />
 								</xs:complexType>
 							</xs:element>
 						</xs:sequence>

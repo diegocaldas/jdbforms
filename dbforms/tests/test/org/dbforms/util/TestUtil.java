@@ -24,6 +24,7 @@
 package org.dbforms.util;
 
 
+
 /**
  *  Test the Util.java class
  *
@@ -104,20 +105,4 @@ public class TestUtil extends AbstractTestCase {
    }
 
 
-   /**
-    *  A unit test for JUnit
-    *
-    * @exception  Exception  Description of the Exception
-    */
-   public void testRealPath() throws Exception {
-      String REALPATH = "c:/java/dbforms/" + "$(SERVLETCONTEXT_REALPATH)"
-                        + "/target";
-
-      String TRANSLATED_PATH = "c:/java/dbforms/bob/target";
-
-      String result = Util.replaceRealPath(REALPATH, "bob/");
-
-      assertTrue("Make sure path is translated. " + result,
-                 result.equals(TRANSLATED_PATH));
-   }
 }

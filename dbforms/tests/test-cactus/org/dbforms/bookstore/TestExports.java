@@ -408,7 +408,7 @@ public class TestExports extends HttpTestCase {
         post("http://localhost/bookstore/servlet/control", list);
         printResponse();
         assertTrue(responseContains("BOOKSTORE list of books,,,,"));
-        assertTrue(responseContains(",ID,,ISBN,TITLE"));
+        assertTrue(responseContains(",ID	,,ISBN,TITLE"));
         assertTrue(responseContains(",1,3-423-12445-4,,Die Insel des vorigen Tages"));
         assertTrue(responseContains(",2,3-423-12445-5,,Das Foucaltsche Pendel"));
         assertTrue(responseContains(",3,42-1,,Hijacking through the Galaxy 1"));
@@ -1174,7 +1174,7 @@ public class TestExports extends HttpTestCase {
 
         printResponse();
         assertTrue(responseContains("BOOKSTORE list of books,,,,"));
-        assertTrue(responseContains(",ID,,ISBN,TITLE"));
+        assertTrue(responseContains(",ID	,,ISBN,TITLE"));
         assertFalse(responseContains(",1,3-423-12445-4,,Die Insel des vorigen Tages"));
         assertFalse(responseContains(",2,3-423-12445-5,,Das Foucaltsche Pendel"));
         assertFalse(responseContains(",3,42-1,,Hijacking through the Galaxy 1"));

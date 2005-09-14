@@ -63,6 +63,8 @@ public class DbFormsConfig {
    /** DOCUMENT ME! */
    public static final String CONFIG = "dbformsConfig";
 
+   private final String REALPATH = "$(SERVLETCONTEXT_REALPATH)";
+
    /** contains connection put by addDbConnection */
    private ArrayList dbConnectionsList = new ArrayList();
 
@@ -269,18 +271,13 @@ public class DbFormsConfig {
       if (!Util.isNull(realPath)) {
          realPath = realPath.replace('/', File.separatorChar);
          realPath = realPath.replace('\\', File.separatorChar);
+         // 20030604-HKK: Bugfixing for different engine, e.g. cactus. Path
+         // maybe without trailing '/'!!!
+         if (realPath.charAt(realPath.length() - 1) != File.separatorChar) {
+        	 realPath = realPath + File.separatorChar;
+         }
       }
       this.realPath = realPath;
-   }
-
-
-   /**
-    * Returns the realPath.
-    *
-    * @return the realPath
-    */
-   public String getRealPath() {
-      return realPath;
    }
 
 
@@ -353,7 +350,7 @@ public class DbFormsConfig {
     * @param dbConnection DOCUMENT ME!
     */
    public void addDbConnection(DbConnection dbConnection) {
-      dbConnection.setName(Util.replaceRealPath(dbConnection.getName(), realPath));
+      dbConnection.setName(replaceRealPath(dbConnection.getName()));
       dbConnectionsList.add(dbConnection);
 
       if (!Util.isNull(dbConnection.getId())) {
@@ -424,5 +421,33 @@ public class DbFormsConfig {
       }
 
       return buf.toString();
+   }
+
+/**
+    * Replaces the occurens from REALPATH in s with realpath.
+    *
+    * @param s
+    *            the string containing the REALPATH token
+    * @param realpath
+    *            the value used to replace the REALPATH token
+    *
+    * @return the input string, with the REALPATH token replaced with the
+    *         realpath value
+    */
+   public String replaceRealPath(String s) {
+      if (!Util.isNull(s) && !Util.isNull(realPath)) {
+         int i = s.indexOf(REALPATH);
+
+         while (i >= 0) {
+            StringBuffer buf = new StringBuffer();
+            buf.append(s.substring(0, i));
+            buf.append(realPath);
+            buf.append(s.substring(i + REALPATH.length() + 1));
+            s = buf.toString();
+            i = s.indexOf(REALPATH);
+         }
+      }
+
+      return s;
    }
 }
