@@ -107,7 +107,7 @@ public class DatabaseEventFactoryImpl extends DatabaseEventFactory {
 				int tableId = StringUtil.getEmbeddedStringAsInteger(action, 2,
 						'_');
 				event = new PageReloadEvent(tableId, request, config);
-				event.setType(EventType.EVENT_NAVIGATION_RELOAD);
+//				event.setType(EventType.EVENT_NAVIGATION_RELOAD);
 			} else {
 				// args are: tableId, keyId, request, config
 				constructorArgs = new Object[] {
