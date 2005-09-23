@@ -353,6 +353,7 @@
       <dependency>
          <id>jasperreports</id>
          <version>1.0.2</version>
+         <url>http://jasperreports.sourceforge.net</url>
          <properties>
             <war.bundle>true</war.bundle>
          </properties>
@@ -377,6 +378,7 @@
       <dependency>
          <id>cewolf</id>
          <version>0.10.3</version>
+         <url>http://cewolf.sourceforge.net</url>
          <properties>
             <war.bundle>true</war.bundle>
          </properties>
@@ -384,6 +386,7 @@
       <dependency>
          <id>jfreechart</id>
          <version>0.9.21</version>
+         <url>http://www.jfree.org/jfreechart/</url>
          <properties>
             <war.bundle>true</war.bundle>
          </properties>
