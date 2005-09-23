@@ -1783,7 +1783,8 @@ public class DbFormTag extends TagSupportWithScriptHandler implements
                         && EventType.EVENT_DATABASE_INSERT.equals(webEvent
                                 .getType()) && (errors != null)
                         && (errors.size() > 0)
-                        && (webEvent.getTable().getId() == getTable().getId())) {
+                        && (webEvent.getTable().getId() == getTable().getId())
+                        && !hasRedisplayFieldsOnErrorSet()) {
                     // error in insert event, nothing to do!
                     navEvent = null;
                     resultSetVector = null;
