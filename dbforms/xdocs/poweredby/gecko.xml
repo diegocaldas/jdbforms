@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <author email="contacta@gecko-soft.com">Alfred Certain</author>
+    <title>DbForms Powered By - CRM System</title>
+  </properties>
+
+<body>
+
+<section name="Powered By - CRM System">
+
+  <subsection name="Description">
+    <p>
+      The following screenshots are from an CRM system based on dbforms
+    </p>
+  </subsection>
+
+  <subsection name="Screenshots">
+    <center>
+    <p>
+        <img src="../images/poweredby/gecko/accounts.gif" border="0"/>
+      <br/>
+      <br/>
+    </p>
+    <p>
+        <img src="../images/poweredby/gecko/account_detail.gif" border="0"/>
+      <br/>
+      <br/>
+    </p>
+    <p>
+        <img src="../images/poweredby/gecko/contact_detail.gif" border="0"/>
+      <br/>
+      <br/>
+    </p>
+    <p>
+        <img src="../images/poweredby/gecko/case_detail.gif" border="0"/>
+      <br/>
+      <br/>
+    </p>
+    <p>
+        <img src="../images/poweredby/gecko/knowledge-base.gif" border="0"/>
+      <br/>
+      <br/>
+    </p>
+    <p>
+        <img src="../images/poweredby/gecko/user_admin.gif" border="0"/>
+      <br/>
+      <br/>
+    </p>
+    <p>
+        <img src="../images/poweredby/gecko/reports_list.gif" border="0"/>
+      <br/>
+      <br/>
+    </p>
+    </center>
+  </subsection>
+
+</section>
+
+</body>
+</document>
