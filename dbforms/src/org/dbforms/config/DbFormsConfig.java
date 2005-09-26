@@ -450,4 +450,8 @@ public class DbFormsConfig {
 
       return s;
    }
+
+public String getRealPath() {
+	return realPath;
+}
 }
