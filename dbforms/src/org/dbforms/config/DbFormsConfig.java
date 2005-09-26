@@ -452,6 +452,6 @@ public class DbFormsConfig {
    }
 
 public String getRealPath() {
-	return realPath;
+	return replaceRealPath(realPath);
 }
 }
