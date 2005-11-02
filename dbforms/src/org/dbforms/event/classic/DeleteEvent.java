@@ -40,79 +40,72 @@ import java.util.*;
 
 import javax.servlet.http.*;
 
-
-
 /**
  * DOCUMENT ME!
- *
+ * 
  * @author Joe Peer
- *
+ * 
  * @deprecated
  * <p>
  */
 public class DeleteEvent extends DatabaseEvent {
-   // logging category for this class
-   static Log logCat = LogFactory.getLog(DeleteEvent.class.getName());
+	// logging category for this class
+	static Log logCat = LogFactory.getLog(DeleteEvent.class.getName());
 
-   /**
-    * Creates a new DeleteEvent object.
-    *
-    * @param tableId
-    *            DOCUMENT ME!
-    * @param keyId
-    *            DOCUMENT ME!
-    * @param request
-    *            DOCUMENT ME!
-    * @param config
-    *            DOCUMENT ME!
-    */
-   public DeleteEvent(Integer            tableId,
-                      String             keyId,
-                      HttpServletRequest request,
-                      DbFormsConfig      config) {
-      super(tableId.intValue(), keyId, request, config);
-   }
+	/**
+	 * Creates a new DeleteEvent object.
+	 * 
+	 * @param tableId
+	 *            DOCUMENT ME!
+	 * @param keyId
+	 *            DOCUMENT ME!
+	 * @param request
+	 *            DOCUMENT ME!
+	 * @param config
+	 *            DOCUMENT ME!
+	 */
+	public DeleteEvent(Integer tableId, String keyId,
+			HttpServletRequest request, DbFormsConfig config) {
+		super(tableId.intValue(), keyId, request, config);
+	}
 
+	/**
+	 * Creates a new DeleteEvent object.
+	 * 
+	 * @param action
+	 *            DOCUMENT ME!
+	 * @param request
+	 *            DOCUMENT ME!
+	 * @param config
+	 *            DOCUMENT ME!
+	 */
+	public DeleteEvent(String action, HttpServletRequest request,
+			DbFormsConfig config) {
+		super(StringUtil.getEmbeddedStringAsInteger(action, 2, '_'), StringUtil
+				.getEmbeddedString(action, 3, '_'), request, config);
+	}
 
-   /**
-    * Creates a new DeleteEvent object.
-    *
-    * @param action
-    *            DOCUMENT ME!
-    * @param request
-    *            DOCUMENT ME!
-    * @param config
-    *            DOCUMENT ME!
-    */
-   public DeleteEvent(String             action,
-                      HttpServletRequest request,
-                      DbFormsConfig      config) {
-      super(StringUtil.getEmbeddedStringAsInteger(action, 2, '_'),
-            StringUtil.getEmbeddedString(action, 3, '_'), request, config);
-   }
+	/**
+	 * DOCUMENT ME!
+	 * 
+	 * @return DOCUMENT ME!
+	 */
+	public FieldValues getFieldValues() {
+		return getFieldValues(true);
+	}
 
-   /**
-    * DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    */
-   public FieldValues getFieldValues() {
-      return getFieldValues(true);
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param con
-    *            DOCUMENT ME!
-    *
-    * @throws SQLException
-    *             DOCUMENT ME!
-    * @throws MultipleValidationException
-    *             DOCUMENT ME!
-    */
-   public void processEvent(Connection con) throws SQLException {
+	/**
+	 * DOCUMENT ME!
+	 * 
+	 * @param con
+	 *            DOCUMENT ME!
+	 * 
+	 * @throws SQLException
+	 *             DOCUMENT ME!
+	 * @throws MultipleValidationException
+	 *             DOCUMENT ME!
+	 */
+public void processEvent(Connection con) throws SQLException {
       // Apply given security contraints (as defined in dbforms-config.xml)
       if (!hasUserPrivileg(GrantedPrivileges.PRIVILEG_DELETE)) {
          String s = MessageResourcesInternal.getMessage("dbforms.events.delete.nogrant",
@@ -165,7 +158,7 @@ public class DeleteEvent extends DatabaseEvent {
          // if so, we have to select the filename+dirs from the db before we
          // can delete
          ResultSet diskblobs = null;
-
+         PreparedStatement diskblobsPs = null;
          if (getTable()
                       .containsDiskblob()) {
             StringBuffer queryBuf = new StringBuffer();
@@ -173,12 +166,10 @@ public class DeleteEvent extends DatabaseEvent {
             queryBuf.append(" WHERE ");
             queryBuf.append(getTable().getWhereClauseForKeyFields());
 
-            PreparedStatement diskblobsPs = con.prepareStatement(queryBuf
-                                                                 .toString());
+            diskblobsPs = con.prepareStatement(queryBuf.toString());
             getTable()
                .populateWhereClauseWithKeyFields(keyValuesStr, diskblobsPs, 1);
             diskblobs = diskblobsPs.executeQuery();
-            diskblobsPs.close();
          }
 
          // 20021031-HKK: build in table!!
@@ -239,6 +230,8 @@ public class DeleteEvent extends DatabaseEvent {
                   }
                }
             }
+            diskblobsPs.close();
+            
          }
 
          // finally, we process interceptor again (post-delete)
@@ -248,5 +241,4 @@ public class DeleteEvent extends DatabaseEvent {
       }
 
       // End of interceptor processing
-   }
-}
+   }}
