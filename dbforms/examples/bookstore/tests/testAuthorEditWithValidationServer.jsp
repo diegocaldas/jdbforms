@@ -5,15 +5,16 @@
 	</head>
    <body >
       <db:dbform autoUpdate="false" 
-                 followUp="/tests/testAuthorEditWithValidation.jsp" 
+                 followUp="/tests/testAuthorEditWithValidationServer.jsp" 
                  maxRows="1" 
                  tableName="AUTHOR"
+                 autoUpdate="TRUE"
                  formValidatorName="AUTHOR"
-                 javascriptValidation="true"
+                 javascriptValidation="false"
       >
          <db:header>
 	         <h1 align="center">Edit Authors</h1>
-             <db:errors/>
+	         <db:errors/>
          </db:header>
          <db:body>
             <table>
