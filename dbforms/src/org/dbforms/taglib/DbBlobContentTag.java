@@ -99,7 +99,7 @@ public class DbBlobContentTag extends DbBaseHandlerTag implements
             queryBuf.append("SELECT ");
             queryBuf.append(getField().getName());
             queryBuf.append(" FROM ");
-            queryBuf.append(getParentForm().getTable().getName());
+            queryBuf.append(getParentForm().getTable().getQueryFrom());
             queryBuf.append(" WHERE ");
             queryBuf.append(getParentForm().getTable()
                     .getWhereClauseForKeyFields());

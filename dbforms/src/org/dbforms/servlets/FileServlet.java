@@ -119,7 +119,7 @@ public class FileServlet extends HttpServlet {
 				}
 
 				queryBuf.append(" FROM ");
-				queryBuf.append(table.getName());
+				queryBuf.append(table.getQueryFrom());
 				queryBuf.append(" WHERE ");
 				queryBuf.append(table.getWhereClauseForKeyFields());
 
