@@ -23,8 +23,9 @@
 
 package org.dbforms.taglib;
 
-import javax.servlet.http.*;
-import javax.servlet.jsp.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.jsp.JspException;
+import org.dbforms.util.Util;
 
 
 
@@ -100,6 +101,13 @@ public class DbBlobURLTag extends DbBaseHandlerTag
             //logCat.info("::doEndTag - defaultValue set to [" + defaultValue + "]");
          }
 
+		 // fix issue where DbBlobURLTag does not work properly when more 
+		 // than 1 connection defined in dbforms-config.xml . Nic Parise 10/2005
+		 String dbConnectionName = getParentForm().getDbConnectionName();         
+		 if (!Util.isNull(dbConnectionName)) {
+	       tagBuf.append("&invname_"+getParentForm().getTable().getId());
+		   tagBuf.append("=").append(dbConnectionName);
+		 }
          pageContext.getOut()
                     .write(tagBuf.toString());
       } catch (java.io.IOException ioe) {
