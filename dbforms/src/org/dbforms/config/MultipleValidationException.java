@@ -118,7 +118,6 @@ public class MultipleValidationException extends ValidationException {
       if (messages == null) {
          messages = new Vector();
       }
-
-      messages.add(message);
+      messages.add(new Exception(message));
    }
 }
