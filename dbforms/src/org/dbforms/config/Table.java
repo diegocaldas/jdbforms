@@ -2040,6 +2040,8 @@ public class Table implements Serializable {
 		} catch (IllegalAccessException iae) {
 			logCat.warn(" IllegalAccessException : " + iae.getMessage());
 			throw new MultipleValidationException(iae.getMessage());
+		} catch (MultipleValidationException mve) {
+			throw mve;
 		} catch (ValidationException ve) {
 			throw new MultipleValidationException(ve.getMessage());
 		}
