@@ -32,6 +32,7 @@ import org.dbforms.config.DbEventInterceptorData;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.FieldValues;
 import org.dbforms.config.GrantedPrivileges;
+import org.dbforms.config.MultipleValidationException;
 
 import org.dbforms.event.ValidationEvent;
 import org.dbforms.event.datalist.dao.DataSourceFactory;
@@ -114,7 +115,7 @@ public class UpdateEvent extends ValidationEvent {
     * @throws SQLException if any SQL error occurs
     * @throws MultipleValidationException if any validation error occurs
     */
-   public void processEvent(Connection con) throws SQLException {
+   public void processEvent(Connection con) throws SQLException, MultipleValidationException {
       // Apply given security contraints (as defined in dbforms-config.xml)
       if (!hasUserPrivileg(GrantedPrivileges.PRIVILEG_UPDATE)) {
          String s = MessageResourcesInternal.getMessage("dbforms.events.update.nogrant",

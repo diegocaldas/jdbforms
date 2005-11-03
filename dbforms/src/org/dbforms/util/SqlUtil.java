@@ -92,7 +92,7 @@ public class SqlUtil {
         SqlUtil.logCat.error(excDesc, e);
 
         while ((e = e.getNextException()) != null)
-            SqlUtil.logCat.error("::logSqlException - nested SQLException ("
+            SqlUtil.logCat.error("::logSqlException - nested Exception ("
                     + (i++) + ")", e);
     }
 

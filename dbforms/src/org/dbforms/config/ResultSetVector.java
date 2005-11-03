@@ -26,6 +26,8 @@ package org.dbforms.config;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.dbforms.config.MultipleValidationException;
+
 import org.dbforms.util.IEscaper;
 import org.dbforms.util.Util;
 
@@ -574,7 +576,7 @@ public class ResultSetVector implements java.io.Serializable {
 				try {
 					res = interceptorData.getTable().processInterceptors(
 							DbEventInterceptor.PRE_ADDROW, interceptorData);
-				} catch (SQLException e) {
+				} catch (MultipleValidationException e) {
 					;
 				}
 
@@ -591,7 +593,7 @@ public class ResultSetVector implements java.io.Serializable {
 								.processInterceptors(
 										DbEventInterceptor.POST_ADDROW,
 										interceptorData);
-					} catch (SQLException e) {
+					} catch (MultipleValidationException e) {
 						;
 					}
 				}

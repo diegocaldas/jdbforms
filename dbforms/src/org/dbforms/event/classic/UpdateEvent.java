@@ -106,7 +106,7 @@ public class UpdateEvent extends ValidationEvent {
     * @throws MultipleValidationException DOCUMENT ME!
     * @throws IllegalArgumentException DOCUMENT ME!
     */
-   public void processEvent(Connection con) throws SQLException {
+   public void processEvent(Connection con) throws SQLException, MultipleValidationException {
       // Apply given security contraints (as defined in dbforms-config.xml)
       if (!hasUserPrivileg(GrantedPrivileges.PRIVILEG_UPDATE)) {
          String s = MessageResourcesInternal.getMessage("dbforms.events.update.nogrant",

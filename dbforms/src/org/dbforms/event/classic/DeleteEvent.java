@@ -100,12 +100,10 @@ public class DeleteEvent extends DatabaseEvent {
 	 * @param con
 	 *            DOCUMENT ME!
 	 * 
-	 * @throws SQLException
-	 *             DOCUMENT ME!
 	 * @throws MultipleValidationException
 	 *             DOCUMENT ME!
 	 */
-public void processEvent(Connection con) throws SQLException {
+public void processEvent(Connection con) throws SQLException, MultipleValidationException {
       // Apply given security contraints (as defined in dbforms-config.xml)
       if (!hasUserPrivileg(GrantedPrivileges.PRIVILEG_DELETE)) {
          String s = MessageResourcesInternal.getMessage("dbforms.events.delete.nogrant",
@@ -114,7 +112,7 @@ public void processEvent(Connection con) throws SQLException {
                                                            getTable()
                                                               .getName()
                                                         });
-         throw new SQLException(s);
+         throw new MultipleValidationException(s);
       }
 
       // in order to process an delete, we need the key of the dataset to

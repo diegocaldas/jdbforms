@@ -1967,9 +1967,8 @@ public class Table implements Serializable {
 	 *             if any error occurs
 	 */
 	public int processInterceptors(int action, DbEventInterceptorData data)
-			throws SQLException {
+			throws MultipleValidationException {
 		String s;
-
 		try {
 			Vector allInterceptors = getInterceptors();
 			int interceptorsCnt = allInterceptors.size();
@@ -2023,7 +2022,7 @@ public class Table implements Serializable {
 					s = MessageResourcesInternal.getMessage(denyMessage, data
 							.getRequest().getLocale(),
 							new String[] { getName() });
-					throw new SQLException(s);
+					throw new MultipleValidationException(s);
 
 				case DbEventInterceptor.IGNORE_OPERATION:
 					return operation;
@@ -2033,20 +2032,16 @@ public class Table implements Serializable {
 				}
 			}
 		} catch (ClassNotFoundException cnfe) {
-			logCat.warn(" ClassNotFoundException : " + cnfe.getMessage());
-			throw new SQLException(cnfe.getMessage());
+			logCat.warn("ClassNotFoundException: " + cnfe.getMessage());
+			throw new MultipleValidationException(cnfe.getMessage());
 		} catch (InstantiationException ie) {
 			logCat.warn(" InstantiationException : " + ie.getMessage());
-			throw new SQLException(ie.getMessage());
+			throw new MultipleValidationException(ie.getMessage());
 		} catch (IllegalAccessException iae) {
 			logCat.warn(" IllegalAccessException : " + iae.getMessage());
-			throw new SQLException(iae.getMessage());
-		} catch (SQLException sqle) {
-			throw sqle;
-		} catch (MultipleValidationException ve) {
-			throw new SQLException(ve.getMessage());
+			throw new MultipleValidationException(iae.getMessage());
 		} catch (ValidationException ve) {
-			throw new SQLException(ve.getMessage());
+			throw new MultipleValidationException(ve.getMessage());
 		}
 
 		return DbEventInterceptor.GRANT_OPERATION;
