@@ -22,8 +22,11 @@
                      <db:checkbox id="delete_image1" fieldName="delete_image1" value="true" />
                   </td>
                   <td>
-                     <db:updateButton
+                    <db:updateButton
                 caption="update"
+              />
+                    <db:navCopyButton
+                caption="copy"
               />
                   </td>
                </tr>

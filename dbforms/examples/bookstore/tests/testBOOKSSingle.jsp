@@ -44,6 +44,8 @@
 							<db:navNextButton  caption="next"/>
 							<db:navLastButton  caption="last"/>
 		                	<db:navNewButton   caption="New" showAlwaysInFooter="false" />
+							<db:navCopyButton  caption="Copy"/>
+							<db:navReloadButton  caption="reload" />
                             <db:gotoButton     
                                caption="goto same record" 
                                keyToKeyToDestPos="currentRow" 
