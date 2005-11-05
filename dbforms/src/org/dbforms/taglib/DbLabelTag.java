@@ -62,7 +62,7 @@ public class DbLabelTag extends DbBaseHandlerTag
     */
    public int doEndTag() throws javax.servlet.jsp.JspException {
       try {
-         String fieldValue = getFormattedFieldValue();
+         String fieldValue = getFormFieldValue();
 
          // PG, 2001-12-14
          // If maxlength was input, trim display

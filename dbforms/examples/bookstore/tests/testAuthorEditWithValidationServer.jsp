@@ -11,6 +11,7 @@
                  autoUpdate="TRUE"
                  formValidatorName="AUTHOR"
                  javascriptValidation="false"
+                 redisplayFieldsOnError="true"
       >
          <db:header>
 	         <h1 align="center">Edit Authors</h1>

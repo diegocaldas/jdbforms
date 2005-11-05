@@ -1764,6 +1764,11 @@ public class DbFormTag extends TagSupportWithScriptHandler implements
 			// b) create a GOTO event using a whereClause (free form select)
 			// c) create a GOTO event using.. another constructor ;^)
 			//
+			Vector errors = (Vector) request.getAttribute("errors");
+			if ((errors != null) && (errors.size() > 0)) {
+				navEvent = null;
+			}
+			
 			if (navEvent == null) {
 				// philip grunikiewicz
 				// 2003-12-16
@@ -1778,12 +1783,10 @@ public class DbFormTag extends TagSupportWithScriptHandler implements
 				// forms are not displayed then!
 				// Check if table of event and table of form matches should do
 				// the work!
-				Vector errors = (Vector) request.getAttribute("errors");
 
 				if ((webEvent != null)
 						&& EventType.EVENT_DATABASE_INSERT.equals(webEvent
-								.getType()) && (errors != null)
-						&& (errors.size() > 0)
+								.getType()) 
 						&& (webEvent.getTable().getId() == getTable().getId())
 						&& !hasRedisplayFieldsOnErrorSet()) {
 					// error in insert event, nothing to do!
