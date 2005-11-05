@@ -1768,7 +1768,7 @@ public class DbFormTag extends TagSupportWithScriptHandler implements
 			if ((errors != null) && (errors.size() > 0)) {
 				navEvent = null;
 			}
-			
+
 			if (navEvent == null) {
 				// philip grunikiewicz
 				// 2003-12-16
@@ -1786,7 +1786,8 @@ public class DbFormTag extends TagSupportWithScriptHandler implements
 
 				if ((webEvent != null)
 						&& EventType.EVENT_DATABASE_INSERT.equals(webEvent
-								.getType()) 
+								.getType()) && (errors != null)
+						&& (errors.size() > 0)
 						&& (webEvent.getTable().getId() == getTable().getId())
 						&& !hasRedisplayFieldsOnErrorSet()) {
 					// error in insert event, nothing to do!
