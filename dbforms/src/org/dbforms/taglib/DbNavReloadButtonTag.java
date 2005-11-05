@@ -99,7 +99,7 @@ public class DbNavReloadButtonTag extends DbBaseButtonTag
             tagName.append("_force");
          } else if (getParentForm()
                              .isFooterReached()) {
-            tagName.append("_ins");
+//            tagName.append("_ins");
          }
 
          tagName.append("_");
