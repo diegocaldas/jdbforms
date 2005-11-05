@@ -59,7 +59,7 @@
                   </td>
                </tr>
             </table>
-            <br><br><table borader="5" width="60%">
+            <br><br><table border="5" width="60%">
                <tr bgcolor="#CCBBCC">
                   <td>
                      ID
