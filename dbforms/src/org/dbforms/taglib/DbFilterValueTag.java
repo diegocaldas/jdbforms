@@ -441,6 +441,17 @@ public class DbFilterValueTag extends DbBaseHandlerTag implements DataContainer,
       setField(f);
 
       if (state.label != null) {
+    	  if (getParentForm().hasCaptionResourceSet()) {
+    		  try {
+    			  String message = MessageResources.getMessage((HttpServletRequest)pageContext.getRequest(), state.label);
+    			  if (message != null) {
+    				  state.label = message;
+    			  }
+    		  } catch (Exception e) {
+    			  logCat.debug("setCaption(" + state.label + ") Exception : "
+    					  + e.getMessage());
+    		  }
+    	  }
          buf.append("<b>" + state.label + "</b>\n");
       }
 
