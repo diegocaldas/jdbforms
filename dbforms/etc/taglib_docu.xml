@@ -9789,6 +9789,12 @@
 					</info>
 				</attribute>
 				<attribute>
+							<name>hidden</name>
+							<required>false</required>
+							<rtexprvalue>true</rtexprvalue>
+							<description>A true value will render the search field hidden.</description>
+				</attribute>
+				<attribute>
 					<name>searchAlgo</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
@@ -10323,6 +10329,24 @@
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
 					<info>Number of rows of select element</info>
+				</attribute>
+				<attribute>
+					<name>setStyleClass</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						CSS stylesheet class to be applied to the SET button.
+						If not provided, the styleClass attribute is used.
+					</info>
+				</attribute>
+				<attribute>
+					<name>unsetStyleClass</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						CSS stylesheet class to be applied to the UNSET button.
+						If not provided, the styleClass attribute is used.
+					</info>
 				</attribute>
 			</tag>
 			<tag>

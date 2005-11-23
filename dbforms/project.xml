@@ -54,6 +54,7 @@
          <roles>
             <role>Project founder</role>
             <role>Java Developer</role>
+            <role>Adminstrator</role>
          </roles>
       </developer>
       <developer>
@@ -117,6 +118,7 @@
          <organization/>
          <roles>
             <role>Java Developer</role>
+            <role>Adminstrator</role>
          </roles>
       </developer>
       <developer>
@@ -126,6 +128,7 @@
          <organization/>
          <roles>
             <role>Java Developer</role>
+            <role>Adminstrator</role>
          </roles>
       </developer>
       <developer>
@@ -135,6 +138,7 @@
          <organization/>
          <roles>
             <role>Java Developer</role>
+            <role>Adminstrator</role>
          </roles>
       </developer>
       <developer>
@@ -144,6 +148,7 @@
          <organization/>
          <roles>
             <role>Java Developer</role>
+            <role>Adminstrator</role>
          </roles>
       </developer>
       <developer>
@@ -186,6 +191,15 @@
          <name>Ivan Francolin Martinez</name>
          <id>ivanfm</id>
          <email>ivanfm@users.sourceforge.net</email>
+         <organization/>
+         <roles>
+            <role>Java Developer</role>
+         </roles>
+      </developer>
+      <developer>
+         <name>Nicolas Parise</name>
+         <id> nicparise</id>
+         <email> nicparise@users.sourceforge.net</email>
          <organization/>
          <roles>
             <role>Java Developer</role>
