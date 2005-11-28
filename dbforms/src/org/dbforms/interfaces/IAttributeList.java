@@ -27,7 +27,7 @@ package org.dbforms.interfaces;
  * Tags implementing this interface can be paramterized by a nested &lt;param&gt;
  * tag.
  * @see AttributeTag
- * @author  Guido Laures 
+ * @author  Henner Kollmann 
  */
 public interface IAttributeList {
 

@@ -32,7 +32,7 @@ import javax.servlet.jsp.JspException;
  * Tag &lt;param&gt; which defines a key/value pair which is set in the parent
  * tag. This must implement the Parameterized interface.
  * @see IAttributeList
- * @author  Guido Laures 
+ * @author  Henner Kollmann 
  */
 public class AttributeTag extends AbstractDbBaseHandlerTag
 	implements javax.servlet.jsp.tagext.TryCatchFinally {
