@@ -21,9 +21,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 
-package org.dbforms.taglib;
+package org.dbforms.interfaces;
 
 import org.dbforms.util.KeyValuePair;
+
 
 
 
@@ -32,6 +33,6 @@ import org.dbforms.util.KeyValuePair;
  *
  * @author hkk
  */
-public interface StaticDataAddInterface {
+public interface IKeyValuePairList {
    void addElement(KeyValuePair pair);
 }

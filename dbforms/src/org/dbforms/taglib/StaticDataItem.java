@@ -26,6 +26,7 @@ package org.dbforms.taglib;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.dbforms.interfaces.IKeyValuePairList;
 import org.dbforms.util.KeyValuePair;
 import org.dbforms.util.MessageResources;
 import org.dbforms.util.Util;
@@ -132,8 +133,8 @@ public class StaticDataItem extends DbBaseHandlerTag
     */
    public int doStartTag() throws JspException {
       if ((getParent() != null)
-                && getParent() instanceof StaticDataAddInterface) {
-         ((StaticDataAddInterface) getParent()).addElement(new KeyValuePair(key,
+                && getParent() instanceof IKeyValuePairList) {
+         ((IKeyValuePairList) getParent()).addElement(new KeyValuePair(key,
                                                                             getValue()));
       } else {
          throw new JspException("StaticDataItem element must be placed inside a AddStaticData element!");

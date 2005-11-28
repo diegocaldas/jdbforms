@@ -21,52 +21,47 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 
-package org.dbforms.util;
+package org.dbforms.interfaces;
+
+import java.util.Locale;
+
 
 
 /**
- * DOCUMENT ME!
- *
- * @author $author$
- * @version $Revision$
+ * Interface describing an formatter used in EmbeddedData
  */
-public interface IEscaper {
+public interface ICustomFormat {
    /**
     * DOCUMENT ME!
     *
-    * @param s DOCUMENT ME!
+    * @param fmtArg DOCUMENT ME!
     *
-    * @return DOCUMENT ME!
     */
-   public String escapeHTML(String s);
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param s DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    */
-   public String escapeJDBC(String s);
+   public void setArg(String fmtArg);
 
 
    /**
     * DOCUMENT ME!
     *
-    * @param s DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
+    * @param locale DOCUMENT ME!
     */
-   public String unescapeHTML(String s);
+   public void setLocale(Locale locale);
 
 
    /**
     * DOCUMENT ME!
     *
-    * @param s DOCUMENT ME!
+    * @return DOCUMENT ME!
+    */
+   public Locale getLocale();
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param o DOCUMENT ME!
     *
     * @return DOCUMENT ME!
     */
-   public String unescapeJDBC(String s);
+   public String sprintf(String s);
 }

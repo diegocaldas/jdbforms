@@ -26,7 +26,7 @@ package org.dbforms.config;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.dbforms.util.IEscaper;
+import org.dbforms.interfaces.IEscaper;
 import org.dbforms.util.MessageResourcesInternal;
 import org.dbforms.util.ReflectionUtil;
 import org.dbforms.util.StringUtil;

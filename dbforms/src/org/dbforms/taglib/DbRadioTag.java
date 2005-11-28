@@ -26,6 +26,7 @@ package org.dbforms.taglib;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.dbforms.interfaces.IDataContainer;
 import org.dbforms.util.*;
 
 import java.util.List;
@@ -41,7 +42,7 @@ import javax.servlet.jsp.*;
  *
  * @author Joachim Peer
  */
-public class DbRadioTag extends DbBaseHandlerTag implements DataContainer,
+public class DbRadioTag extends DbBaseHandlerTag implements IDataContainer,
                                                             javax.servlet.jsp.tagext.TryCatchFinally {
    private static Log logCat = LogFactory.getLog(DbRadioTag.class.getName()); // logging category for this class
    private List       embeddedData  = null;

@@ -27,8 +27,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.dbforms.config.MultipleValidationException;
+import org.dbforms.interfaces.IEscaper;
 
-import org.dbforms.util.IEscaper;
 import org.dbforms.util.Util;
 
 import java.sql.ResultSet;

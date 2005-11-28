@@ -21,31 +21,26 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 
-package org.dbforms.util;
+package org.dbforms.interfaces;
 
-import java.util.Locale;
+
+import java.util.*;
 
 
 
 /**
- * Interface describing an formatter used in EmbeddedData
+ * DOCUMENT ME!
+ *
+ * @author $author$
+ * @version $Revision$
  */
-public interface ICustomFormat {
+public interface IDataContainer {
    /**
     * DOCUMENT ME!
     *
-    * @param fmtArg DOCUMENT ME!
-    *
+    * @param embeddedData DOCUMENT ME!
     */
-   public void setArg(String fmtArg);
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param locale DOCUMENT ME!
-    */
-   public void setLocale(Locale locale);
+   public void setEmbeddedData(List embeddedData);
 
 
    /**
@@ -53,15 +48,5 @@ public interface ICustomFormat {
     *
     * @return DOCUMENT ME!
     */
-   public Locale getLocale();
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param o DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    */
-   public String sprintf(String s);
+   public IEscaper getEscaper();
 }

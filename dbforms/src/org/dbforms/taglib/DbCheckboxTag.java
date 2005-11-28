@@ -28,6 +28,7 @@ import org.apache.commons.logging.LogFactory;
 
 import org.dbforms.event.WebEvent;
 import org.dbforms.event.eventtype.EventType;
+import org.dbforms.interfaces.IDataContainer;
 
 import org.dbforms.util.*;
 
@@ -44,7 +45,7 @@ import javax.servlet.jsp.*;
  *
  * @author Joachim Peer
  */
-public class DbCheckboxTag extends DbBaseHandlerTag implements DataContainer,
+public class DbCheckboxTag extends DbBaseHandlerTag implements IDataContainer,
                                                                javax.servlet.jsp.tagext.TryCatchFinally {
    private static Log logCat        = LogFactory.getLog(DbCheckboxTag.class); // logging category for this class
    private List       embeddedData  = null;

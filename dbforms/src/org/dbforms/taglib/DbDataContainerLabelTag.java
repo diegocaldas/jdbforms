@@ -27,6 +27,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.dbforms.config.ResultSetVector;
+import org.dbforms.interfaces.IDataContainer;
 
 import org.dbforms.util.KeyValuePair;
 import org.dbforms.util.Util;
@@ -49,7 +50,7 @@ import javax.servlet.jsp.JspException;
  * @author Joachim Peer
  */
 public class DbDataContainerLabelTag extends DbBaseHandlerTag
-   implements DataContainer, javax.servlet.jsp.tagext.TryCatchFinally {
+   implements IDataContainer, javax.servlet.jsp.tagext.TryCatchFinally {
    // logging category for this class
    private List   embeddedData = null;
    private static Log    logCat = LogFactory.getLog(DbDataContainerLabelTag.class);

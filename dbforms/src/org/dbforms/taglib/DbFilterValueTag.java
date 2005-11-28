@@ -32,6 +32,7 @@ import org.dbforms.config.Field;
 import org.dbforms.config.FieldValue;
 import org.dbforms.config.FieldValues;
 import org.dbforms.config.Table;
+import org.dbforms.interfaces.IDataContainer;
 
 import org.dbforms.util.KeyValuePair;
 import org.dbforms.util.MessageResources;
@@ -57,7 +58,7 @@ import javax.servlet.jsp.PageContext;
  * @author Sergio Moretti
  * @version $Revision$
  */
-public class DbFilterValueTag extends DbBaseHandlerTag implements DataContainer,
+public class DbFilterValueTag extends DbBaseHandlerTag implements IDataContainer,
                                                                   javax.servlet.jsp.tagext.TryCatchFinally {
    /** DOCUMENT ME! */
    private static String FLT_VALUETYPE_DATE = "date";

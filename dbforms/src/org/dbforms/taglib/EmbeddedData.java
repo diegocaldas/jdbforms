@@ -27,9 +27,10 @@ import org.apache.commons.logging.LogFactory;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.ResultSetVector;
+import org.dbforms.interfaces.IDataContainer;
+import org.dbforms.interfaces.IEscaper;
+import org.dbforms.interfaces.IFormatEmbeddedData;
 
-import org.dbforms.util.IEscaper;
-import org.dbforms.util.IFormatEmbeddedData;
 import org.dbforms.util.KeyValuePair;
 import org.dbforms.util.MessageResources;
 import org.dbforms.util.ReflectionUtil;
@@ -54,7 +55,7 @@ import javax.servlet.jsp.PageContext;
  * @version $Revision$
  */
 public abstract class EmbeddedData extends DbBaseHandlerTag
-   implements javax.servlet.jsp.tagext.TryCatchFinally, StaticDataAddInterface {
+   implements javax.servlet.jsp.tagext.TryCatchFinally  {
    private static Log          logCat           = LogFactory.getLog(EmbeddedData.class
          .getName());
    private IFormatEmbeddedData printfFormat;
@@ -113,7 +114,7 @@ public abstract class EmbeddedData extends DbBaseHandlerTag
     * @return DOCUMENT ME!
     */
    public IEscaper getEscaper() {
-      DataContainer parent = ((DataContainer) getParent());
+      IDataContainer parent = ((IDataContainer) getParent());
       IEscaper      res = parent.getEscaper();
 
       return res;
@@ -171,16 +172,6 @@ public abstract class EmbeddedData extends DbBaseHandlerTag
     */
    public String getName() {
       return name;
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param pair DOCUMENT ME!
-    */
-   public void addElement(KeyValuePair pair) {
-      data.add(pair);
    }
 
 
@@ -313,7 +304,7 @@ public abstract class EmbeddedData extends DbBaseHandlerTag
          logCat.info(" Embeddeddata " + name + " already generated");
       }
 
-      ((DataContainer) getParent()).setEmbeddedData(data);
+      ((IDataContainer) getParent()).setEmbeddedData(data);
 
       // DbBaseMultiTag are: select, radio, checkbox!
       return result;

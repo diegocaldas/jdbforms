@@ -23,6 +23,7 @@
 
 package org.dbforms.util;
 
+import org.dbforms.interfaces.IFormatEmbeddedData;
 import org.dbforms.util.external.PrintfFormat;
 
 

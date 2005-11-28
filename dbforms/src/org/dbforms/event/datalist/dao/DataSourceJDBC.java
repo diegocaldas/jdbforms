@@ -191,7 +191,7 @@ public class DataSourceJDBC extends DataSource {
 			queryBuf.append(getTable().getDisblobSelectStatement());
 			queryBuf.append(" WHERE ");
 			queryBuf.append(getTable().getWhereClauseForKeyFields());
-
+            
 			PreparedStatement diskblobsPs = interceptorData.getConnection()
 					.prepareStatement(queryBuf.toString());
 
@@ -252,8 +252,9 @@ public class DataSourceJDBC extends DataSource {
 	 */
 	public int doInsert(DbEventInterceptorData interceptorData,
 			FieldValues fieldValues) throws SQLException {
-		PreparedStatement ps = interceptorData.getConnection()
-				.prepareStatement(getTable().getInsertStatement(fieldValues));
+        String query = getTable().getInsertStatement(fieldValues);
+        
+		PreparedStatement ps = interceptorData.getConnection().prepareStatement(query);
 
 		int res = 0;
 		try {
@@ -291,8 +292,9 @@ public class DataSourceJDBC extends DataSource {
 	public int doUpdate(DbEventInterceptorData interceptorData,
 			FieldValues fieldValues, String keyValuesStr) throws SQLException {
 		int res = 0;
-		PreparedStatement ps = interceptorData.getConnection()
-				.prepareStatement(getTable().getUpdateStatement(fieldValues));
+        
+        String query = getTable().getUpdateStatement(fieldValues);
+		PreparedStatement ps = interceptorData.getConnection().prepareStatement(query);
 		try {
 			int col = fillWithData(ps, fieldValues);
 			getTable().populateWhereClauseWithKeyFields(keyValuesStr, ps, col);

@@ -24,6 +24,7 @@
 package org.dbforms.taglib;
 
 import org.dbforms.config.*;
+import org.dbforms.interfaces.IDataContainer;
 
 import org.dbforms.util.*;
 
@@ -49,7 +50,7 @@ import javax.servlet.jsp.*;
  *
  * @author Henner Kollmann
  */
-public class DbSearchComboTag extends DbSearchTag implements DataContainer,
+public class DbSearchComboTag extends DbSearchTag implements IDataContainer,
                                                              javax.servlet.jsp.tagext.TryCatchFinally {
    private List   embeddedData  = null;
    private String compareWith   = "key";

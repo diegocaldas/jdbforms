@@ -21,27 +21,32 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 
-package org.dbforms.taglib;
+package org.dbforms.interfaces;
 
-import org.dbforms.util.IEscaper;
-
-import java.util.*;
+import java.util.Locale;
 
 
 
 /**
- * DOCUMENT ME!
- *
- * @author $author$
- * @version $Revision$
+ * Interface describing an formatter used in EmbeddedData
  */
-public interface DataContainer {
+public interface IFormatEmbeddedData {
    /**
     * DOCUMENT ME!
     *
-    * @param embeddedData DOCUMENT ME!
+    * @param fmtArg DOCUMENT ME!
+    *
+    * @throws IllegalArgumentException DOCUMENT ME!
     */
-   public void setEmbeddedData(List embeddedData);
+   public void setFormat(String fmtArg) throws IllegalArgumentException;
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param locale DOCUMENT ME!
+    */
+   public void setLocale(Locale locale);
 
 
    /**
@@ -49,5 +54,15 @@ public interface DataContainer {
     *
     * @return DOCUMENT ME!
     */
-   public IEscaper getEscaper();
+   public Locale getLocale();
+
+
+   /**
+    * DOCUMENT ME!
+    *
+    * @param o DOCUMENT ME!
+    *
+    * @return DOCUMENT ME!
+    */
+   public String sprintf(Object[] o);
 }

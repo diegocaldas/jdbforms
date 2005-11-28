@@ -26,7 +26,7 @@ package org.dbforms.config;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.dbforms.util.IEscaper;
+import org.dbforms.interfaces.IEscaper;
 import org.dbforms.util.MessageResourcesInternal;
 import org.dbforms.util.ParseUtil;
 import org.dbforms.util.ReflectionUtil;
@@ -295,8 +295,8 @@ public class Table implements Serializable {
 		queryBuf.append(getQueryToChange());
 		queryBuf.append(" WHERE ");
 		queryBuf.append(getWhereClauseForKeyFields());
-		logCat.info(queryBuf.toString());
 
+		logCat.info("::deleteQuery - [" + queryBuf.toString() + "]");
 		return queryBuf.toString();
 	}
 
@@ -842,7 +842,7 @@ public class Table implements Serializable {
 		}
 
 		queryBuf.append(")");
-		logCat.info(queryBuf.toString());
+		logCat.info("::insertQuery - [" + queryBuf.toString() + "]");
 
 		return queryBuf.toString();
 	}
@@ -1379,7 +1379,7 @@ public class Table implements Serializable {
 		}
 		queryBuf.append(" WHERE ");
 		queryBuf.append(getWhereClauseForKeyFields());
-		logCat.info(queryBuf.toString());
+		logCat.info("::updateQuery - [" + queryBuf.toString() + "]");
 
 		return queryBuf.toString();
 	}

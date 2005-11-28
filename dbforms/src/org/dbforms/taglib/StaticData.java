@@ -23,6 +23,8 @@
 
 package org.dbforms.taglib;
 
+import org.dbforms.interfaces.IDataContainer;
+import org.dbforms.interfaces.IKeyValuePairList;
 import org.dbforms.util.KeyValuePair;
 
 import java.sql.Connection;
@@ -42,7 +44,7 @@ import javax.servlet.jsp.PageContext;
  * @version $Revision$
  */
 public class StaticData extends TagSupportWithScriptHandler
-   implements javax.servlet.jsp.tagext.TryCatchFinally, StaticDataAddInterface {
+   implements javax.servlet.jsp.tagext.TryCatchFinally, IKeyValuePairList {
    private String name;
    private Vector data;
 
@@ -115,7 +117,7 @@ public class StaticData extends TagSupportWithScriptHandler
     * @throws JspException DOCUMENT ME!
     */
    public int doEndTag() throws JspException {
-      ((DataContainer) getParent()).setEmbeddedData(data); // DbBaseMultiTag are: select, radio, checkbox!
+      ((IDataContainer) getParent()).setEmbeddedData(data); // DbBaseMultiTag are: select, radio, checkbox!
 
       return EVAL_PAGE;
    }

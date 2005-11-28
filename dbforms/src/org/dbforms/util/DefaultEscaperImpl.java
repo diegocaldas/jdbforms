@@ -25,6 +25,8 @@ package org.dbforms.util;
 
 import java.io.Serializable;
 
+import org.dbforms.interfaces.IEscaper;
+
 
 /**
  * DefaultEscaper

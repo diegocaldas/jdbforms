@@ -33,9 +33,9 @@ import org.dbforms.config.ResultSetVector;
 
 import org.dbforms.event.WebEvent;
 import org.dbforms.event.eventtype.EventType;
+import org.dbforms.interfaces.ICustomFormat;
+import org.dbforms.interfaces.IEscaper;
 
-import org.dbforms.util.ICustomFormat;
-import org.dbforms.util.IEscaper;
 import org.dbforms.util.MessageResources;
 import org.dbforms.util.MessageResourcesInternal;
 import org.dbforms.util.ParseUtil;

@@ -23,7 +23,7 @@
 
 package org.dbforms.taglib;
 
-import org.dbforms.util.ICustomFormat;
+import org.dbforms.interfaces.ICustomFormat;
 
 import java.util.HashMap;
 

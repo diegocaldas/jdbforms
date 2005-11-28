@@ -26,6 +26,8 @@ package org.dbforms.taglib;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.dbforms.interfaces.IDataContainer;
+import org.dbforms.interfaces.IEscaper;
 import org.dbforms.util.*;
 
 import java.util.List;
@@ -44,7 +46,7 @@ import javax.servlet.jsp.*;
  * @author Eric Beaumier
  */
 public class JavascriptArrayTag extends TagSupportWithScriptHandler
-   implements DataContainer, javax.servlet.jsp.tagext.TryCatchFinally {
+   implements IDataContainer, javax.servlet.jsp.tagext.TryCatchFinally {
    private static Log logCat = LogFactory.getLog(JavascriptArrayTag.class
                                                  .getName()); // logging category for this class
    private List       embeddedData = null;

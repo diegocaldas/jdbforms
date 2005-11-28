@@ -25,6 +25,7 @@ package org.dbforms.taglib;
 
 import org.dbforms.event.WebEvent;
 import org.dbforms.event.eventtype.EventType;
+import org.dbforms.interfaces.IDataContainer;
 
 import org.dbforms.util.*;
 
@@ -43,7 +44,7 @@ import javax.servlet.jsp.*;
  * @author Joachim Peer
  * @author Philip Grunikiewicz
  */
-public class DbSelectTag extends DbBaseHandlerTag implements DataContainer,
+public class DbSelectTag extends DbBaseHandlerTag implements IDataContainer,
                                                              javax.servlet.jsp.tagext.TryCatchFinally {
    private List   embeddedData     = null;
    private String customEntry;
