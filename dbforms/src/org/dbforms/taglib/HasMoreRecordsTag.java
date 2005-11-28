@@ -38,7 +38,7 @@ import javax.servlet.jsp.JspWriter;
  * Grunikiewicz.philip 2001-12-18 Display a custom message if the developer has
  * set a limit on the number of rows to display
  */
-public class HasMoreRecordsTag extends DbBaseHandlerTag
+public class HasMoreRecordsTag extends AbstractDbBaseHandlerTag
    implements javax.servlet.jsp.tagext.TryCatchFinally {
    private transient DbFormsErrors errors;
    private String                  count   = null;

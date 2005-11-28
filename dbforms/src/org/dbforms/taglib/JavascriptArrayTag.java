@@ -45,7 +45,7 @@ import javax.servlet.jsp.*;
  *
  * @author Eric Beaumier
  */
-public class JavascriptArrayTag extends TagSupportWithScriptHandler
+public class JavascriptArrayTag extends AbstractTagSupportWithScriptHandler
    implements IDataContainer, javax.servlet.jsp.tagext.TryCatchFinally {
    private static Log logCat = LogFactory.getLog(JavascriptArrayTag.class
                                                  .getName()); // logging category for this class

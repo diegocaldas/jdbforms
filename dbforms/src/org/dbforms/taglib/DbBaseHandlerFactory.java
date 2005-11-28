@@ -40,7 +40,7 @@ import javax.servlet.jsp.tagext.Tag;
  * @author Henner Kollmann
  */
 public class DbBaseHandlerFactory {
-   private DbBaseHandlerTag  tag;
+   private AbstractDbBaseHandlerTag  tag;
    private PageContextBuffer pageContext;
 
    /**
@@ -56,7 +56,7 @@ public class DbBaseHandlerFactory {
                                BodyTagSupport parent,
                                Class          clazz) throws JspException {
       try {
-         tag         = (DbBaseHandlerTag) clazz.newInstance();
+         tag         = (AbstractDbBaseHandlerTag) clazz.newInstance();
          pageContext = new PageContextBuffer();
          pageContext.initialize((Servlet) parentContext.getPage(),
                                 parentContext.getRequest(),
@@ -73,7 +73,7 @@ public class DbBaseHandlerFactory {
     *
     * @return the button tag
     */
-   public DbBaseHandlerTag getTag() {
+   public AbstractDbBaseHandlerTag getTag() {
       return tag;
    }
 

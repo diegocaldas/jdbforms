@@ -84,8 +84,8 @@ import javax.servlet.jsp.JspException;
  * @author Joe Peer (modified and extended this class for use in
  *         DbForms-Project)
  */
-public abstract class DbBaseHandlerTag extends TagSupportWithScriptHandler {
-	private static Log logCat = LogFactory.getLog(DbBaseHandlerTag.class
+public abstract class AbstractDbBaseHandlerTag extends AbstractTagSupportWithScriptHandler {
+	private static Log logCat = LogFactory.getLog(AbstractDbBaseHandlerTag.class
 			.getName());
 
 	private DbFormTag parentForm;

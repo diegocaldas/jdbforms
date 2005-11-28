@@ -36,7 +36,7 @@ import javax.servlet.jsp.PageContext;
  * Grunikiewicz.philip 2001-12-18 Obtain a connection (from the connection
  * pool) using same settings defined in dbForms-config.xml file
  */
-public class DbGetConnection extends TagSupportWithScriptHandler
+public class DbGetConnection extends AbstractTagSupportWithScriptHandler
    implements javax.servlet.jsp.tagext.TryCatchFinally {
    private transient Connection conn;
    private String               dbConnectionName;

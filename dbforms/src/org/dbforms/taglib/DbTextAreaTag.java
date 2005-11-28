@@ -36,7 +36,7 @@ import javax.servlet.jsp.JspException;
  *
  * @author Joachim Peer
  */
-public class DbTextAreaTag extends DbBaseInputTag
+public class DbTextAreaTag extends AbstractDbBaseInputTag
    implements javax.servlet.jsp.tagext.TryCatchFinally {
    /** DOCUMENT ME! */
    protected String renderBody;

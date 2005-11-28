@@ -34,7 +34,7 @@ import javax.servlet.jsp.JspException;
  *
  * @author Joe Peer
  */
-public class TemplateBasedirTag extends TagSupportWithScriptHandler
+public class TemplateBasedirTag extends AbstractTagSupportWithScriptHandler
    implements javax.servlet.jsp.tagext.TryCatchFinally {
    private String baseDir;
 

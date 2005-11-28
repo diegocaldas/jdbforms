@@ -58,7 +58,7 @@ import javax.servlet.jsp.PageContext;
  * @author Sergio Moretti
  * @version $Revision$
  */
-public class DbFilterValueTag extends DbBaseHandlerTag implements IDataContainer,
+public class DbFilterValueTag extends AbstractDbBaseHandlerTag implements IDataContainer,
                                                                   javax.servlet.jsp.tagext.TryCatchFinally {
    /** DOCUMENT ME! */
    private static String FLT_VALUETYPE_DATE = "date";

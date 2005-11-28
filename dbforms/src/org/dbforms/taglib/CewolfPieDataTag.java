@@ -41,7 +41,7 @@ import org.dbforms.config.ResultSetVector;
  * @see DataTag
  * @author Guido Laures
  */
-public class CewolfPieDataTag extends DbBaseHandlerTag {
+public class CewolfPieDataTag extends AbstractDbBaseHandlerTag {
 	private String categoryField;
 
 	private String dataField;

@@ -39,7 +39,7 @@ import javax.servlet.jsp.JspException;
  * @author Stefano Borghi
  * @version $Revision$
  */
-public class DbNavCopyButtonTag extends DbBaseButtonTag
+public class DbNavCopyButtonTag extends AbstractDbBaseButtonTag
    implements javax.servlet.jsp.tagext.TryCatchFinally {
    /** Holds value of property showAlwaysInFooter. */
    private String showAlwaysInFooter = "true";

@@ -51,7 +51,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author Joachim Peer
  */
-public class TableData extends EmbeddedData
+public class TableData extends AbstractEmbeddedData
    implements javax.servlet.jsp.tagext.TryCatchFinally {
    private static Log logCat = LogFactory.getLog(TableData.class.getName());
 

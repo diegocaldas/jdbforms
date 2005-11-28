@@ -42,7 +42,7 @@ import javax.servlet.jsp.*;
  *
  * @author Joachim Peer
  */
-public class DbRadioTag extends DbBaseHandlerTag implements IDataContainer,
+public class DbRadioTag extends AbstractDbBaseHandlerTag implements IDataContainer,
                                                             javax.servlet.jsp.tagext.TryCatchFinally {
    private static Log logCat = LogFactory.getLog(DbRadioTag.class.getName()); // logging category for this class
    private List       embeddedData  = null;

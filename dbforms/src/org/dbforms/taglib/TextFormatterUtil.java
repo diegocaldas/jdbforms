@@ -38,7 +38,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author hkk
  */
-public class TextFormatterUtil extends DbBaseHandlerTag {
+public class TextFormatterUtil extends AbstractDbBaseHandlerTag {
    private Locale locale;
    private Object obj;
 

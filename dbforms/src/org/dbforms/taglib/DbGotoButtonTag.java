@@ -38,7 +38,7 @@ import javax.servlet.jsp.JspException;
  *
  * @author Joachim Peer
  */
-public class DbGotoButtonTag extends DbBaseButtonTag
+public class DbGotoButtonTag extends AbstractDbBaseButtonTag
    implements javax.servlet.jsp.tagext.TryCatchFinally {
    private String childField;
    private String destPos;

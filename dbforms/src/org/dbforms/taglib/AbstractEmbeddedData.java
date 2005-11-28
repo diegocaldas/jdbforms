@@ -54,9 +54,9 @@ import javax.servlet.jsp.PageContext;
  * @author $author$
  * @version $Revision$
  */
-public abstract class EmbeddedData extends DbBaseHandlerTag
+public abstract class AbstractEmbeddedData extends AbstractDbBaseHandlerTag
    implements javax.servlet.jsp.tagext.TryCatchFinally  {
-   private static Log          logCat           = LogFactory.getLog(EmbeddedData.class
+   private static Log          logCat           = LogFactory.getLog(AbstractEmbeddedData.class
          .getName());
    private IFormatEmbeddedData printfFormat;
    private List                data;

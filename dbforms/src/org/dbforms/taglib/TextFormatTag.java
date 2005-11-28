@@ -42,7 +42,7 @@ import javax.servlet.jsp.JspException;
  *
  * @author hkk
  */
-public class TextFormatTag extends DbBaseHandlerTag
+public class TextFormatTag extends AbstractDbBaseHandlerTag
    implements javax.servlet.jsp.tagext.TryCatchFinally {
    private static Log logCat      = LogFactory.getLog(TextFormatTag.class);
    private Object     fieldObject; // Holds the object to retrieve.

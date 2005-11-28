@@ -47,7 +47,7 @@ import javax.servlet.jsp.tagext.TryCatchFinally;
  * @author Sergio Moretti
  * @version $Revision$
  */
-public class DbFilterConditionTag extends TagSupportWithScriptHandler
+public class DbFilterConditionTag extends AbstractTagSupportWithScriptHandler
    implements TryCatchFinally {
 
    /** object containing tag's state */

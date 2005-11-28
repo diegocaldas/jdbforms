@@ -36,7 +36,7 @@ import javax.servlet.jsp.JspException;
  *
  * @author Henner Kollmann
  */
-public class DbNavReloadButtonTag extends DbBaseButtonTag
+public class DbNavReloadButtonTag extends AbstractDbBaseButtonTag
    implements javax.servlet.jsp.tagext.TryCatchFinally {
    private String forceReload = null;
 

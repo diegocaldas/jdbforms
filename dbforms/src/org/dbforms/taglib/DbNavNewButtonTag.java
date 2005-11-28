@@ -38,7 +38,7 @@ import javax.servlet.jsp.JspException;
  *
  * @author Joachim Peer
  */
-public class DbNavNewButtonTag extends DbBaseButtonTag
+public class DbNavNewButtonTag extends AbstractDbBaseButtonTag
    implements javax.servlet.jsp.tagext.TryCatchFinally {
    private String destTable;
 

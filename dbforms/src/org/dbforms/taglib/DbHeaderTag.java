@@ -35,7 +35,7 @@ import javax.servlet.jsp.*;
  *
  * @author Joachim Peer
  */
-public class DbHeaderTag extends DbBaseHandlerTag {
+public class DbHeaderTag extends AbstractDbBaseHandlerTag {
    /**
     * DOCUMENT ME!
     *

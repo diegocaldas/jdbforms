@@ -24,7 +24,8 @@
 package customFormatters;
 
 import java.util.Locale;
-import org.dbforms.util.ICustomFormat;
+
+import org.dbforms.interfaces.ICustomFormat;
 
 
 

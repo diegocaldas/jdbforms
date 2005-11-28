@@ -43,7 +43,7 @@ import javax.servlet.jsp.PageContext;
  * @author $author$
  * @version $Revision$
  */
-public class StaticData extends TagSupportWithScriptHandler
+public class StaticData extends AbstractTagSupportWithScriptHandler
    implements javax.servlet.jsp.tagext.TryCatchFinally, IKeyValuePairList {
    private String name;
    private Vector data;

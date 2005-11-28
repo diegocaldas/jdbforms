@@ -42,7 +42,7 @@ import javax.servlet.jsp.JspException;
  *
  * @author Joachim Peer
  */
-public class DbDeleteButtonTag extends DbBaseButtonTag
+public class DbDeleteButtonTag extends AbstractDbBaseButtonTag
    implements javax.servlet.jsp.tagext.TryCatchFinally {
    private static Log logCat   = LogFactory.getLog(DbDeleteButtonTag.class);
    private static int uniqueID;

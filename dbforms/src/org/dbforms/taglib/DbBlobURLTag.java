@@ -35,7 +35,7 @@ import org.dbforms.util.Util;
  * @author Joe Peer
  *
  */
-public class DbBlobURLTag extends DbBaseHandlerTag
+public class DbBlobURLTag extends AbstractDbBaseHandlerTag
    implements javax.servlet.jsp.tagext.TryCatchFinally {
    /** DOCUMENT ME! */
    protected String nameField;

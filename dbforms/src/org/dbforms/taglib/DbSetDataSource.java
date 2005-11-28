@@ -36,7 +36,7 @@ import javax.sql.DataSource;
  * @author $author$
  * @version $Revision$
  */
-public class DbSetDataSource extends DbBaseHandlerTag
+public class DbSetDataSource extends AbstractDbBaseHandlerTag
    implements javax.servlet.jsp.tagext.TryCatchFinally {
    private String dataSource;
    private String dbConnectionName;

@@ -37,7 +37,7 @@ import javax.servlet.jsp.JspException;
  *
  * @author Joachim Peer
  */
-public class DbDateFieldTag extends DbBaseInputTag
+public class DbDateFieldTag extends AbstractDbBaseInputTag
    implements javax.servlet.jsp.tagext.TryCatchFinally {
    /** Holds value of property jsCalendarDateFormat. */
    private String jsCalendarDateFormat;

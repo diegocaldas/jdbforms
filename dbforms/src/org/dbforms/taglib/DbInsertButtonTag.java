@@ -44,7 +44,7 @@ import javax.servlet.jsp.JspException;
  *
  * @author Joachim Peer
  */
-public class DbInsertButtonTag extends DbBaseButtonTag
+public class DbInsertButtonTag extends AbstractDbBaseButtonTag
    implements javax.servlet.jsp.tagext.TryCatchFinally {
    private static Log logCat = LogFactory.getLog(DbInsertButtonTag.class
                                                  .getName());

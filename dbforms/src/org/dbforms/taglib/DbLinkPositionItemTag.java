@@ -35,7 +35,7 @@ import javax.servlet.jsp.*;
  * fieldName="id" value="103" /&gt; &lt;position fieldName="cust_lang"
  * value="2" /&gt; &lt;/link&gt;
  */
-public class DbLinkPositionItemTag extends DbBaseHandlerTag
+public class DbLinkPositionItemTag extends AbstractDbBaseHandlerTag
    implements javax.servlet.jsp.tagext.TryCatchFinally {
    String value;
 

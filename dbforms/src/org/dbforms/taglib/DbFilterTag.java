@@ -126,7 +126,7 @@ import javax.servlet.jsp.JspWriter;
  * @author Sergio Moretti
  * @version $Revision$
  */
-public class DbFilterTag extends DbBaseHandlerTag implements
+public class DbFilterTag extends AbstractDbBaseHandlerTag implements
 		javax.servlet.jsp.tagext.TryCatchFinally {
 	/** DOCUMENT ME! */
 	protected static final String FLT_COND = "_cond_";

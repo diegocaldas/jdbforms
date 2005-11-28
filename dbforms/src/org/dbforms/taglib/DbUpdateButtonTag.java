@@ -41,7 +41,7 @@ import javax.servlet.jsp.JspException;
  *
  * @author Joachim Peer
  */
-public class DbUpdateButtonTag extends DbBaseButtonTag
+public class DbUpdateButtonTag extends AbstractDbBaseButtonTag
    implements javax.servlet.jsp.tagext.TryCatchFinally {
    private String associatedRadio;
    private String showAlways = "false";

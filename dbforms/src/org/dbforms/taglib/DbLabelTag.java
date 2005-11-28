@@ -40,7 +40,7 @@ import javax.servlet.jsp.JspException;
  * @author Joachim Peer
  *
  */
-public class DbLabelTag extends DbBaseHandlerTag
+public class DbLabelTag extends AbstractDbBaseHandlerTag
    implements javax.servlet.jsp.tagext.TryCatchFinally {
    // logging category for this class
    static Log logCat = LogFactory.getLog(DbLabelTag.class.getName());

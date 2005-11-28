@@ -33,7 +33,7 @@ import javax.servlet.jsp.JspException;
  *
  * @author Joachim Peer
  */
-public class DbFooterTag extends DbBaseHandlerTag {
+public class DbFooterTag extends AbstractDbBaseHandlerTag {
    /**
     * DOCUMENT ME!
     *

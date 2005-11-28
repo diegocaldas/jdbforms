@@ -33,7 +33,7 @@ import org.dbforms.util.Util;
  * would be used as value in the DbassociatedRadioTag.
  * </p>
  */
-public class DbPosTag extends DbBaseHandlerTag
+public class DbPosTag extends AbstractDbBaseHandlerTag
    implements javax.servlet.jsp.tagext.TryCatchFinally {
    /**
     * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)

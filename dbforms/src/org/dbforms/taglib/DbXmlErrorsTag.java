@@ -51,7 +51,7 @@ import javax.servlet.jsp.PageContext;
  * @author $author$
  * @version $Revision$
  */
-public class DbXmlErrorsTag extends TagSupportWithScriptHandler
+public class DbXmlErrorsTag extends AbstractTagSupportWithScriptHandler
    implements javax.servlet.jsp.tagext.TryCatchFinally {
    private transient DbFormsErrors errors;
    private String                  caption = "Error:";

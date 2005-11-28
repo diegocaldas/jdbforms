@@ -44,7 +44,7 @@ import javax.servlet.jsp.*;
  * @author Joachim Peer
  * @author Philip Grunikiewicz
  */
-public class DbSelectTag extends DbBaseHandlerTag implements IDataContainer,
+public class DbSelectTag extends AbstractDbBaseHandlerTag implements IDataContainer,
                                                              javax.servlet.jsp.tagext.TryCatchFinally {
    private List   embeddedData     = null;
    private String customEntry;

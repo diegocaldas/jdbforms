@@ -2,7 +2,15 @@
    <formset>
      <form name="AUTHOR">
          <field    property="NAME" depends="required">
- 				<msg name="required" key="field name required"  resource="false"/>
+				<msg name="required" key="field name required"  resource="false"/>
+	     </field>   
+         <field    property="ORGANISATION" depends="date">
+			  <msg name="date" key="Invalid date entered "
+			       resource="false"/>
+			  <var>
+			    <var-name>datePatternStrict</var-name>
+			    <var-value>dd-MM-yyyy</var-value>
+			  </var>
 	     </field>   
       </form>
      <form name="BOOK">

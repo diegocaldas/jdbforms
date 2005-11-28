@@ -41,7 +41,7 @@ import javax.servlet.jsp.JspException;
  *
  * @author Joachim Peer (modified this class for DbForms-Project)
  */
-public abstract class DbBaseInputTag extends DbBaseHandlerTag {
+public abstract class AbstractDbBaseInputTag extends AbstractDbBaseHandlerTag {
    /**
     * The number of character columns for this field, or negative for no limit.
     */

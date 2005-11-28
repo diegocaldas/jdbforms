@@ -36,7 +36,7 @@ import javax.servlet.jsp.JspException;
  *
  * @author Joachim Peer
  */
-public class DbTextFieldTag extends DbBaseInputTag
+public class DbTextFieldTag extends AbstractDbBaseInputTag
    implements javax.servlet.jsp.tagext.TryCatchFinally {
    private java.lang.String password = "false";
 

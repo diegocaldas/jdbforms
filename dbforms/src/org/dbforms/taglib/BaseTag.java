@@ -41,7 +41,7 @@ import javax.servlet.jsp.JspWriter;
  * @author Luis Arias
  * @author Joe Peer (changed class for use in DbForms-Framework)
  */
-public class BaseTag extends TagSupportWithScriptHandler {
+public class BaseTag extends AbstractTagSupportWithScriptHandler {
    /**
     * Process the start of this tag.
     *

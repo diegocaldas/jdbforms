@@ -78,7 +78,7 @@ import javax.servlet.jsp.JspException;
  *
  * @author Joachim Peer
  */
-public class DbLinkURLTag extends DbBaseHandlerTag
+public class DbLinkURLTag extends AbstractDbBaseHandlerTag
    implements javax.servlet.jsp.tagext.TryCatchFinally {
    private static Log            logCat = LogFactory.getLog(DbLinkURLTag.class
                                                             .getName()); // logging category for this class

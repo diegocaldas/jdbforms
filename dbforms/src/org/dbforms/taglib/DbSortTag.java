@@ -42,7 +42,7 @@ import javax.servlet.jsp.*;
  *
  * @author Joachim Peer
  */
-public class DbSortTag extends DbBaseHandlerTag
+public class DbSortTag extends AbstractDbBaseHandlerTag
    implements javax.servlet.jsp.tagext.TryCatchFinally {
    private static Log logCat = LogFactory.getLog(DbSortTag.class); // logging category for this class
 

@@ -41,7 +41,7 @@ import javax.servlet.jsp.JspWriter;
  * @author $author$
  * @version $Revision$
  */
-public class HasNoRecordsTag extends DbBaseHandlerTag
+public class HasNoRecordsTag extends AbstractDbBaseHandlerTag
    implements javax.servlet.jsp.tagext.TryCatchFinally {
    private transient DbFormsErrors errors;
    private String                  message = null;

@@ -44,7 +44,7 @@ import javax.servlet.jsp.*;
  * 
  * @author Henner Kollmann
  */
-public class DbSearchTag extends DbBaseHandlerTag implements
+public class DbSearchTag extends AbstractDbBaseHandlerTag implements
 		javax.servlet.jsp.tagext.TryCatchFinally {
 	private String defaultValue = null;
 

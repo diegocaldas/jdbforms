@@ -70,7 +70,7 @@ import javax.servlet.jsp.*;
  *
  * @author Joachim Peer
  */
-public class DbAssociatedRadioTag extends DbBaseHandlerTag
+public class DbAssociatedRadioTag extends AbstractDbBaseHandlerTag
    implements javax.servlet.jsp.tagext.TryCatchFinally {
    private String name;
 

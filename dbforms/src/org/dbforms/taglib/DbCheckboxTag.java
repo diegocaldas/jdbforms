@@ -45,7 +45,7 @@ import javax.servlet.jsp.*;
  *
  * @author Joachim Peer
  */
-public class DbCheckboxTag extends DbBaseHandlerTag implements IDataContainer,
+public class DbCheckboxTag extends AbstractDbBaseHandlerTag implements IDataContainer,
                                                                javax.servlet.jsp.tagext.TryCatchFinally {
    private static Log logCat        = LogFactory.getLog(DbCheckboxTag.class); // logging category for this class
    private List       embeddedData  = null;

@@ -36,7 +36,7 @@ import javax.servlet.jsp.JspException;
  *
  * @author Joachim Peer
  */
-public class DbNavPrevButtonTag extends DbBaseButtonTag
+public class DbNavPrevButtonTag extends AbstractDbBaseButtonTag
    implements javax.servlet.jsp.tagext.TryCatchFinally {
    private String stepWidth;
 

@@ -40,7 +40,7 @@ import javax.servlet.jsp.JspException;
  * 
  * @author Joachim Peer
  */
-public abstract class DbBaseButtonTag extends DbBaseHandlerTag {
+public abstract class AbstractDbBaseButtonTag extends AbstractDbBaseHandlerTag {
 
     /** DOCUMENT ME! */
     protected static final int FLAVOR_STANDARD = 0;

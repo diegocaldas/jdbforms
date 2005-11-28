@@ -46,7 +46,7 @@ import javax.servlet.jsp.*;
  * 
  * @author Joe Peer
  */
-public class DbBlobContentTag extends DbBaseHandlerTag implements
+public class DbBlobContentTag extends AbstractDbBaseHandlerTag implements
         javax.servlet.jsp.tagext.TryCatchFinally {
     private static Log logCat = LogFactory.getLog(DbBlobContentTag.class);
 

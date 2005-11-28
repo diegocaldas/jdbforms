@@ -39,7 +39,7 @@ import javax.servlet.jsp.*;
  *
  * @author Joachim Peer
  */
-public class DbFileTag extends DbBaseInputTag
+public class DbFileTag extends AbstractDbBaseInputTag
    implements javax.servlet.jsp.tagext.TryCatchFinally {
    private static Log logCat = LogFactory.getLog(DbFileTag.class.getName());
    private String     accept;

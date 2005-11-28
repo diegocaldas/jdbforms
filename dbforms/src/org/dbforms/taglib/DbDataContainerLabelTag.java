@@ -49,7 +49,7 @@ import javax.servlet.jsp.JspException;
  *
  * @author Joachim Peer
  */
-public class DbDataContainerLabelTag extends DbBaseHandlerTag
+public class DbDataContainerLabelTag extends AbstractDbBaseHandlerTag
    implements IDataContainer, javax.servlet.jsp.tagext.TryCatchFinally {
    // logging category for this class
    private List   embeddedData = null;

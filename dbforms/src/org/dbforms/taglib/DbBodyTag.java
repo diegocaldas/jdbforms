@@ -45,7 +45,7 @@ import javax.servlet.jsp.JspException;
  *
  * @author Joachim Peer
  */
-public class DbBodyTag extends DbBaseHandlerTag
+public class DbBodyTag extends AbstractDbBaseHandlerTag
    implements javax.servlet.jsp.tagext.TryCatchFinally {
    private String allowNew = "true";
 

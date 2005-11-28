@@ -41,7 +41,7 @@ import javax.servlet.jsp.JspException;
  * @author $author$
  * @version $Revision$
  */
-public class StaticDataItem extends DbBaseHandlerTag
+public class StaticDataItem extends AbstractDbBaseHandlerTag
    implements javax.servlet.jsp.tagext.TryCatchFinally {
    private static Log logCat = LogFactory.getLog(StaticDataItem.class.getName()); // logging category for this class
    private String     key;

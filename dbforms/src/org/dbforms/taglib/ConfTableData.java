@@ -56,7 +56,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author Henner Kollmann
  */
-public class ConfTableData extends EmbeddedData
+public class ConfTableData extends AbstractEmbeddedData
    implements javax.servlet.jsp.tagext.TryCatchFinally {
    private String filter;
 
