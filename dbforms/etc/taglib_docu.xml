@@ -10904,12 +10904,12 @@ pageContext or pass in a value directly and then use the textFormat tag to forma
 			<!-- **************************** parameter tag ***********************************-->
 			<tag>
 			    <name>property</name>
-			    <tagclass>org.dbforms.taglib.PropertyTag</tagclass>
-				<bodycontent>empty</bodycontent>
-			    <description>
+			    <summary>
 			        Name/value-pair to paramterize a surrounding tag whose handler must 
 			        implement the IPropertyList interface.
-			    </description>
+			    </summary>
+			    <tagclass>org.dbforms.taglib.PropertyTag</tagclass>
+				<bodycontent>empty</bodycontent>
 			    <attribute>
 			        <name>name</name>
 			        <required>true</required>
