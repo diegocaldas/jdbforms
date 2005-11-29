@@ -21,12 +21,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package interceptors;
-import org.dbforms.config.DbEventInterceptorData;
 import org.dbforms.config.MultipleValidationException;
 import org.dbforms.config.ResultSetVector;
 import org.dbforms.config.ValidationException;
 
 import org.dbforms.event.DbEventInterceptorSupport;
+import org.dbforms.interfaces.DbEventInterceptorData;
 
 
 

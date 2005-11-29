@@ -24,8 +24,8 @@ package org.dbforms.taglib;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.dbforms.config.DbEventInterceptorData;
 import org.dbforms.config.ResultSetVector;
+import org.dbforms.interfaces.DbEventInterceptorData;
 
 import org.dbforms.util.StringUtil;
 

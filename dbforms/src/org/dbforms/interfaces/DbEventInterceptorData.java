@@ -20,13 +20,16 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-package org.dbforms.config;
+package org.dbforms.interfaces;
 import java.sql.Connection;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+
+import org.dbforms.config.DbFormsConfig;
+import org.dbforms.config.Table;
 
 
 
@@ -58,6 +61,9 @@ public class DbEventInterceptorData {
    /** filled with affected rows during insert/update/delete event */
    public static final String ROWSAFFECTED = "rowsAffected";
 
+   /** filled with form tag during presetFormValues call */
+   public static final String FORMTAG = "FormTag";
+  
    
    private HttpServletRequest request;
    private DbFormsConfig      config;
@@ -110,6 +116,15 @@ public class DbEventInterceptorData {
     */
    public void setAttribute(String key, Object value) {
       attributes.put(key, value);
+   }
+
+   /**
+    * Removes a value in the attributes list
+    *
+    * @param key key for the value
+    */
+   public void removeAttribute(String key) {
+      attributes.remove(key);
    }
 
 

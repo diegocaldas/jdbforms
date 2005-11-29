@@ -21,9 +21,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 
-package org.dbforms.config;
+package org.dbforms.interfaces;
 
 import java.util.Map;
+
+import org.dbforms.config.MultipleValidationException;
+import org.dbforms.config.ValidationException;
 
 
 
@@ -45,7 +48,7 @@ import java.util.Map;
  * @author $author$
  * @version $Revision$
  */
-public interface DbEventInterceptor {
+public interface IDbEventInterceptor {
    /** DOCUMENT ME! */
    public static final int PRE_INSERT = 0;
 

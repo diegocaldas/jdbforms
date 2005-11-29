@@ -24,11 +24,11 @@ package org.dbforms.event.datalist.dao;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.dbforms.config.DbEventInterceptorData;
 import org.dbforms.config.FieldValue;
 import org.dbforms.config.FieldValues;
 import org.dbforms.config.ResultSetVector;
 import org.dbforms.config.Table;
+import org.dbforms.interfaces.DbEventInterceptorData;
 
 import org.dbforms.util.ReflectionUtil;
 import org.dbforms.util.Util;

@@ -27,7 +27,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.dbforms.config.Constants;
-import org.dbforms.config.DbEventInterceptorData;
 import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.Field;
 import org.dbforms.config.FieldTypes;
@@ -35,6 +34,7 @@ import org.dbforms.config.FieldValue;
 import org.dbforms.config.FieldValues;
 import org.dbforms.config.JDBCDataHelper;
 import org.dbforms.config.ResultSetVector;
+import org.dbforms.interfaces.DbEventInterceptorData;
 
 import org.dbforms.util.FileHolder;
 import org.dbforms.util.UniqueIDGenerator;

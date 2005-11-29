@@ -23,8 +23,6 @@
 package org.dbforms.event.datalist;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.dbforms.config.DbEventInterceptor;
-import org.dbforms.config.DbEventInterceptorData;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.Field;
 import org.dbforms.config.FieldValues;
@@ -34,6 +32,8 @@ import org.dbforms.config.MultipleValidationException;
 import org.dbforms.event.ValidationEvent;
 import org.dbforms.event.datalist.dao.DataSourceFactory;
 import org.dbforms.event.datalist.dao.DataSourceSessionList;
+import org.dbforms.interfaces.DbEventInterceptorData;
+import org.dbforms.interfaces.IDbEventInterceptor;
 
 import org.dbforms.util.MessageResourcesInternal;
 import org.dbforms.util.StringUtil;
@@ -136,10 +136,10 @@ public class InsertEvent extends ValidationEvent {
          fieldValues);
 
       // process the interceptors associated to this table
-      int operation = getTable().processInterceptors(DbEventInterceptor.PRE_INSERT,
+      int operation = getTable().processInterceptors(IDbEventInterceptor.PRE_INSERT,
             interceptorData);
 
-      if ((operation == DbEventInterceptor.GRANT_OPERATION)
+      if ((operation == IDbEventInterceptor.GRANT_OPERATION)
                && (fieldValues.size() > 0)) {
          // End of interceptor processing
          if (!checkSufficentValues(fieldValues)) {
@@ -183,7 +183,7 @@ public class InsertEvent extends ValidationEvent {
 
          // finally, we process interceptor again (post-insert)
          // process the interceptors associated to this table
-         getTable().processInterceptors(DbEventInterceptor.POST_INSERT,
+         getTable().processInterceptors(IDbEventInterceptor.POST_INSERT,
             interceptorData);
       }
    }

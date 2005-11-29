@@ -29,6 +29,8 @@ import org.apache.commons.logging.LogFactory;
 import org.dbforms.config.*;
 
 import org.dbforms.event.DatabaseEvent;
+import org.dbforms.interfaces.DbEventInterceptorData;
+import org.dbforms.interfaces.IDbEventInterceptor;
 
 import org.dbforms.util.*;
 
@@ -145,11 +147,11 @@ public void processEvent(Connection con) throws SQLException, MultipleValidation
 
       // part 2b: process the interceptors associated to this table
       int operation = getTable()
-                         .processInterceptors(DbEventInterceptor.PRE_DELETE,
+                         .processInterceptors(IDbEventInterceptor.PRE_DELETE,
                                               interceptorData);
 
       // End of interceptor processing
-      if (operation == DbEventInterceptor.GRANT_OPERATION) {
+      if (operation == IDbEventInterceptor.GRANT_OPERATION) {
          // we check if the table the delete should be applied to contains
          // field(s)
          // of the type "DISKBLOB"
@@ -235,7 +237,7 @@ public void processEvent(Connection con) throws SQLException, MultipleValidation
          // finally, we process interceptor again (post-delete)
          // process the interceptors associated to this table
          getTable()
-            .processInterceptors(DbEventInterceptor.POST_DELETE, interceptorData);
+            .processInterceptors(IDbEventInterceptor.POST_DELETE, interceptorData);
       }
 
       // End of interceptor processing

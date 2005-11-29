@@ -23,8 +23,6 @@
 
 package org.dbforms.event;
 
-import org.dbforms.config.DbEventInterceptor;
-import org.dbforms.config.DbEventInterceptorData;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.Field;
 import org.dbforms.config.FieldValue;
@@ -32,6 +30,8 @@ import org.dbforms.config.FieldValues;
 import org.dbforms.config.MultipleValidationException;
 import org.dbforms.config.Table;
 import org.dbforms.config.ValidationException;
+import org.dbforms.interfaces.DbEventInterceptorData;
+import org.dbforms.interfaces.IDbEventInterceptor;
 
 import java.sql.Connection;
 
@@ -46,7 +46,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author Joe Peer
  */
-public class DbEventInterceptorSupport implements DbEventInterceptor {
+public class DbEventInterceptorSupport implements IDbEventInterceptor {
    private Map params;
 
    /* (non-Javadoc)

@@ -33,7 +33,6 @@ import org.dbforms.config.ResultSetVector;
 
 import org.dbforms.event.WebEvent;
 import org.dbforms.event.eventtype.EventType;
-import org.dbforms.interfaces.ICustomFormat;
 import org.dbforms.interfaces.IEscaper;
 
 import org.dbforms.util.MessageResources;
@@ -44,12 +43,10 @@ import org.dbforms.util.Util;
 
 import java.text.Format;
 
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Vector;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspException;
 
 /**
@@ -376,23 +373,7 @@ public abstract class AbstractDbBaseHandlerTag extends AbstractTagSupportWithScr
 	 * @return
 	 */
 	protected String customFormat(String s) {
-		if (!Util.isNull(customFormatter)) {
-			HttpSession session = pageContext.getSession();
-			HashMap hm = (HashMap) session
-					.getAttribute(SetCustomFormatterTag.sessionKey);
-			if (hm != null) {
-				Object obj = hm.get(customFormatter);
-				if (obj instanceof ICustomFormat) {
-					ICustomFormat cf = (ICustomFormat) obj;
-					Locale locale = MessageResources
-							.getLocale((HttpServletRequest) pageContext
-									.getRequest());
-					cf.setLocale(locale);
-					s = cf.sprintf(s);
-				}
-			}
-		}
-		return s;
+		return SetCustomFormatterTag.sprintf(customFormatter, pageContext, s);
 	}
 
 	/**

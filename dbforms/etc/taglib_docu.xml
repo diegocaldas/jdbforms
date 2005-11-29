@@ -10701,7 +10701,7 @@
 				<info>
 					<p>
 						The registered class must implement the
-						org.dbforms.util.Formatter interface. A new
+						org.dbforms.interface.ICustomFormat interface. A new
 						instance of the object will be instantiated and
 						initialized with the 'arg' value, this instance
 						will be given the name 'name'. The name exists
@@ -10899,6 +10899,56 @@ pageContext or pass in a value directly and then use the textFormat tag to forma
 					   used for getting the values for the dataset.
 					   This field must be a numeric value!
 					</info>
+				</attribute>
+			</tag>
+			<!-- **************************** parameter tag ***********************************-->
+			<tag>
+			    <name>property</name>
+			    <tagclass>org.dbforms.taglib.PropertyTag</tagclass>
+				<bodycontent>empty</bodycontent>
+			    <description>
+			        Name/value-pair to paramterize a surrounding tag whose handler must 
+			        implement the IPropertyList interface.
+			    </description>
+			    <attribute>
+			        <name>name</name>
+			        <required>true</required>
+			        <rtexprvalue>true</rtexprvalue>
+			        <description>
+			            Name of the property.
+			        </description>
+			    </attribute>
+			    <attribute>
+			        <name>value</name>
+			        <required>true</required>
+			        <rtexprvalue>true</rtexprvalue>
+			        <description>
+			            Value of the attribute. 
+			        </description>
+			    </attribute>
+			</tag>
+			<!-- **************************** PresetFormValuesTag tag ***********************************-->
+			<tag>
+				<name>presetFormValues</name>
+				<summary>
+					Register a custom handler which is called before the filter values are retrieved, just after calling the table before select handler.
+					This handler can be used to preset form values 
+				</summary>
+				<tagclass>org.dbforms.taglib.PresetFormValuesTag</tagclass>
+				<bodycontent>JSP</bodycontent>
+				<info>
+					<p>
+						The registered class must implement the
+						org.dbforms.interface.IPresetFormValues interface. A new
+						instance of the object will be instantiated and
+						initialized with the attribute list.
+					</p>
+				</info>
+				<attribute>
+					<name>className</name>
+					<required>true</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>ClassName to load</info>
 				</attribute>
 			</tag>
 		</taglib>

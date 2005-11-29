@@ -23,11 +23,11 @@
 
 package interceptors;
 
-import org.dbforms.config.DbEventInterceptorData;
 import org.dbforms.config.MultipleValidationException;
 import org.dbforms.config.ValidationException;
 
 import org.dbforms.event.DbEventInterceptorSupport;
+import org.dbforms.interfaces.DbEventInterceptorData;
 
 
 

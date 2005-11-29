@@ -24,8 +24,6 @@ package org.dbforms.event.datalist;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.dbforms.config.DbEventInterceptor;
-import org.dbforms.config.DbEventInterceptorData;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.FieldValues;
 import org.dbforms.config.GrantedPrivileges;
@@ -34,6 +32,8 @@ import org.dbforms.config.MultipleValidationException;
 import org.dbforms.event.DatabaseEvent;
 import org.dbforms.event.datalist.dao.DataSourceFactory;
 import org.dbforms.event.datalist.dao.DataSourceSessionList;
+import org.dbforms.interfaces.DbEventInterceptorData;
+import org.dbforms.interfaces.IDbEventInterceptor;
 
 import org.dbforms.util.MessageResourcesInternal;
 import org.dbforms.util.StringUtil;
@@ -132,10 +132,10 @@ public class DeleteEvent extends DatabaseEvent {
       // part 2: check if there are interceptors to be processed (as definied by
       // "interceptor" element embedded in table element in dbforms-config xml file)
       // process the interceptors associated to this table
-      int operation = getTable().processInterceptors(DbEventInterceptor.PRE_DELETE,
+      int operation = getTable().processInterceptors(IDbEventInterceptor.PRE_DELETE,
             interceptorData);
 
-      if (operation == DbEventInterceptor.GRANT_OPERATION) {
+      if (operation == IDbEventInterceptor.GRANT_OPERATION) {
          // DELETE operation;
          DataSourceSessionList ds  = DataSourceSessionList.getInstance(getRequest());
          DataSourceFactory     qry = ds.get(getTable(), getRequest());
@@ -160,7 +160,7 @@ public class DeleteEvent extends DatabaseEvent {
 
          // finally, we process interceptor again (post-delete)
          // process the interceptors associated to this table
-         getTable().processInterceptors(DbEventInterceptor.POST_DELETE,
+         getTable().processInterceptors(IDbEventInterceptor.POST_DELETE,
             interceptorData);
       }
 

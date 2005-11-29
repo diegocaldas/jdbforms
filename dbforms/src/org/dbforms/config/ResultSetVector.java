@@ -27,6 +27,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.dbforms.config.MultipleValidationException;
+import org.dbforms.interfaces.DbEventInterceptorData;
+import org.dbforms.interfaces.IDbEventInterceptor;
 import org.dbforms.interfaces.IEscaper;
 
 import org.dbforms.util.Util;
@@ -571,16 +573,16 @@ public class ResultSetVector implements java.io.Serializable {
 				interceptorData.setAttribute(DbEventInterceptorData.OBJECTROW,
 						newRow);
 
-				int res = DbEventInterceptor.GRANT_OPERATION;
+				int res = IDbEventInterceptor.GRANT_OPERATION;
 
 				try {
 					res = interceptorData.getTable().processInterceptors(
-							DbEventInterceptor.PRE_ADDROW, interceptorData);
+							IDbEventInterceptor.PRE_ADDROW, interceptorData);
 				} catch (MultipleValidationException e) {
 					;
 				}
 
-				doit = (res == DbEventInterceptor.GRANT_OPERATION);
+				doit = (res == IDbEventInterceptor.GRANT_OPERATION);
 			}
 
 			if (doit) {
@@ -591,7 +593,7 @@ public class ResultSetVector implements java.io.Serializable {
 					try {
 						interceptorData.getTable()
 								.processInterceptors(
-										DbEventInterceptor.POST_ADDROW,
+										IDbEventInterceptor.POST_ADDROW,
 										interceptorData);
 					} catch (MultipleValidationException e) {
 						;

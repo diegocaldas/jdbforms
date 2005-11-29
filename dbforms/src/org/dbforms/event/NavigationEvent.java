@@ -27,7 +27,7 @@ import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.FieldValue;
 import org.dbforms.config.ResultSetVector;
 import org.dbforms.config.Table;
-import org.dbforms.config.DbEventInterceptorData;
+import org.dbforms.interfaces.DbEventInterceptorData;
 
 import org.dbforms.util.StringUtil;
 

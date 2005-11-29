@@ -26,6 +26,8 @@ package org.dbforms.config;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.dbforms.interfaces.DbEventInterceptorData;
+import org.dbforms.interfaces.IDbEventInterceptor;
 import org.dbforms.interfaces.IEscaper;
 import org.dbforms.util.MessageResourcesInternal;
 import org.dbforms.util.ParseUtil;
@@ -1978,7 +1980,7 @@ public class Table implements Serializable {
 						.elementAt(i);
 				Class interceptorClass = Class.forName(interceptor
 						.getClassName());
-				DbEventInterceptor dbi = (DbEventInterceptor) interceptorClass
+				IDbEventInterceptor dbi = (IDbEventInterceptor) interceptorClass
 						.newInstance();
 
 				// J.Peer 03/18/2004 - plug in some additional config data for
@@ -1987,44 +1989,44 @@ public class Table implements Serializable {
 
 				// (Sunil_Mishra@adp.com) - The return type to check for the
 				// IGNORE_OPERATION
-				int operation = DbEventInterceptor.GRANT_OPERATION;
+				int operation = IDbEventInterceptor.GRANT_OPERATION;
 				String denyMessage = null;
 
-				if (action == DbEventInterceptor.PRE_INSERT) {
+				if (action == IDbEventInterceptor.PRE_INSERT) {
 					operation = dbi.preInsert(data);
 					denyMessage = "dbforms.events.insert.nogrant";
-				} else if (action == DbEventInterceptor.POST_INSERT) {
+				} else if (action == IDbEventInterceptor.POST_INSERT) {
 					dbi.postInsert(data);
-				} else if (action == DbEventInterceptor.PRE_UPDATE) {
+				} else if (action == IDbEventInterceptor.PRE_UPDATE) {
 					operation = dbi.preUpdate(data);
 					denyMessage = "dbforms.events.update.nogrant";
-				} else if (action == DbEventInterceptor.POST_UPDATE) {
+				} else if (action == IDbEventInterceptor.POST_UPDATE) {
 					dbi.postUpdate(data);
-				} else if (action == DbEventInterceptor.PRE_DELETE) {
+				} else if (action == IDbEventInterceptor.PRE_DELETE) {
 					operation = dbi.preDelete(data);
 					denyMessage = "dbforms.events.delete.nogrant";
-				} else if (action == DbEventInterceptor.POST_DELETE) {
+				} else if (action == IDbEventInterceptor.POST_DELETE) {
 					dbi.postDelete(data);
-				} else if (action == DbEventInterceptor.PRE_SELECT) {
+				} else if (action == IDbEventInterceptor.PRE_SELECT) {
 					operation = dbi.preSelect(data);
 					denyMessage = "dbforms.events.view.nogrant";
-				} else if (action == DbEventInterceptor.POST_SELECT) {
+				} else if (action == IDbEventInterceptor.POST_SELECT) {
 					dbi.postSelect(data);
-				} else if (action == DbEventInterceptor.PRE_ADDROW) {
+				} else if (action == IDbEventInterceptor.PRE_ADDROW) {
 					operation = dbi.preAddRow(data);
 					denyMessage = "dbforms.events.addrow.nogrant";
-				} else if (action == DbEventInterceptor.POST_ADDROW) {
+				} else if (action == IDbEventInterceptor.POST_ADDROW) {
 					dbi.postAddRow(data);
 				}
 
 				switch (operation) {
-				case DbEventInterceptor.DENY_OPERATION:
+				case IDbEventInterceptor.DENY_OPERATION:
 					s = MessageResourcesInternal.getMessage(denyMessage, data
 							.getRequest().getLocale(),
 							new String[] { getName() });
 					throw new MultipleValidationException(s);
 
-				case DbEventInterceptor.IGNORE_OPERATION:
+				case IDbEventInterceptor.IGNORE_OPERATION:
 					return operation;
 
 				default:
@@ -2046,7 +2048,7 @@ public class Table implements Serializable {
 			throw new MultipleValidationException(ve.getMessage());
 		}
 
-		return DbEventInterceptor.GRANT_OPERATION;
+		return IDbEventInterceptor.GRANT_OPERATION;
 	}
 
 	// ------------------------------ utility / helper methods

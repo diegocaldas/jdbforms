@@ -22,10 +22,10 @@
  */
 package org.dbforms.event;
 
-import org.dbforms.config.DbEventInterceptorData;
 import org.dbforms.config.MultipleValidationException;
 import org.dbforms.config.ValidationException;
 import org.dbforms.config.ResultSetVector;
+import org.dbforms.interfaces.DbEventInterceptorData;
 
 public class InterceptorTest extends DbEventInterceptorSupport {
    public int preAddRow(DbEventInterceptorData data)

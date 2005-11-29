@@ -9958,5 +9958,40 @@ pageContext or pass in a value directly and then use the textFormat tag to forma
 				   You can copy them from the bookstore example!
 				</example>
 </tag>
+			<tag>
+			    <name>property</name>
+			    <tag-class>org.dbforms.taglib.PropertyTag</tag-class>
+				<bodycontent>empty</bodycontent>
+			    <description>
+			        Name/value-pair to paramterize a surrounding tag whose handler must 
+			        implement the IAttributeList interface.
+			    </description>
+			    <attribute>
+			        <name>name</name>
+			        <required>true</required>
+			        <rtexprvalue>true</rtexprvalue>
+			        <description>
+			            Name of the attribute.
+			        </description>
+			    </attribute>
+			    <attribute>
+			        <name>value</name>
+			        <required>true</required>
+			        <rtexprvalue>true</rtexprvalue>
+			        <description>
+			            Value of the attribute. 
+			        </description>
+			    </attribute>
+			</tag>
+			<tag>
+				<name>presetFormValues</name>
+				<tag-class>org.dbforms.taglib.PresetFormValuesTag</tag-class>
+				<bodycontent>JSP</bodycontent>
+				<attribute>
+					<name>className</name>
+					<required>true</required>
+					<rtexprvalue>true</rtexprvalue>
+				</attribute>
+			</tag>
 </taglib>
 	

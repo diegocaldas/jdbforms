@@ -26,11 +26,16 @@ package org.dbforms.taglib;
 import org.dbforms.interfaces.ICustomFormat;
 
 import java.util.HashMap;
+import java.util.Locale;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.PageContext;
 
+
+import org.dbforms.util.MessageResources;
 import org.dbforms.util.ReflectionUtil;
+import org.dbforms.util.Util;
 
 /**
  * DOCUMENT ME!
@@ -41,12 +46,33 @@ import org.dbforms.util.ReflectionUtil;
 public class SetCustomFormatterTag extends AbstractTagSupportWithScriptHandler
    implements javax.servlet.jsp.tagext.TryCatchFinally {
    
-   static final String sessionKey = "dbforms.org.tag.CustomFormatterTag";
+   private static final String sessionKey = "dbforms.org.tag.CustomFormatterTag";
    
    Object              arg       = null;
    String              className = null;
    String              name      = null;
 
+
+   public static String sprintf(String customFormatter, PageContext pageContext, String s) {
+		if (!Util.isNull(customFormatter)) {
+			HashMap hm = (HashMap) pageContext
+					.getAttribute(SetCustomFormatterTag.sessionKey);
+			if (hm != null) {
+				Object obj = hm.get(customFormatter);
+				if (obj instanceof ICustomFormat) {
+					ICustomFormat cf = (ICustomFormat) obj;
+					Locale locale = MessageResources
+							.getLocale((HttpServletRequest) pageContext
+									.getRequest());
+					cf.setLocale(locale);
+					s = cf.sprintf(s);
+				}
+			}
+		}
+		return s;
+	   
+   }
+   
    /**
     * optional argument passed to CustomFormatter instance init()
     *
@@ -93,11 +119,10 @@ public class SetCustomFormatterTag extends AbstractTagSupportWithScriptHandler
     */
    public int doEndTag() throws JspException {
       if ((name != null) && (name.length() > 0)) {
-         HttpSession session = pageContext.getSession();
-         HashMap     hm = (HashMap) session.getAttribute(sessionKey);
+         HashMap     hm = (HashMap) pageContext.getAttribute(sessionKey);
          if (hm == null) {
             hm = new HashMap();
-            session.setAttribute(sessionKey, hm);
+            pageContext.setAttribute(sessionKey, hm);
          }
          try {
             ICustomFormat cf = (ICustomFormat) hm.get(name);

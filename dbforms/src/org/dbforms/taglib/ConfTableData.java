@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.taglib;
-import org.dbforms.config.DbEventInterceptorData;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.FieldValue;
@@ -29,6 +28,7 @@ import org.dbforms.config.ResultSetVector;
 import org.dbforms.config.Table;
 
 import org.dbforms.event.datalist.dao.DataSourceFactory;
+import org.dbforms.interfaces.DbEventInterceptorData;
 
 import java.sql.Connection;
 import java.sql.SQLException;

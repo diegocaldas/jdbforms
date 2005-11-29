@@ -27,6 +27,7 @@ import org.apache.commons.logging.LogFactory;
 import org.dbforms.config.*;
 
 import org.dbforms.event.*;
+import org.dbforms.interfaces.DbEventInterceptorData;
 
 import java.sql.*;
 

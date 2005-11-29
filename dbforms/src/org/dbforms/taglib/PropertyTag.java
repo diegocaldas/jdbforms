@@ -23,18 +23,18 @@
 
 package org.dbforms.taglib;
 
-import org.dbforms.interfaces.IAttributeList;
+import org.dbforms.interfaces.IPropertyList;
 
 import javax.servlet.jsp.JspException;
 
 
 /** 
- * Tag &lt;param&gt; which defines a key/value pair which is set in the parent
+ * Tag &lt;attribute&gt; which defines a key/value pair which is set in the parent
  * tag. This must implement the Parameterized interface.
- * @see IAttributeList
+ * @see IPropertyList
  * @author  Henner Kollmann 
  */
-public class AttributeTag extends AbstractDbBaseHandlerTag
+public class PropertyTag extends AbstractDbBaseHandlerTag
 	implements javax.servlet.jsp.tagext.TryCatchFinally {
 
     private String name;
@@ -42,8 +42,8 @@ public class AttributeTag extends AbstractDbBaseHandlerTag
 
     public int doStartTag() throws JspException {
         if ((getParent() != null)
-                  && getParent() instanceof IAttributeList) {
-           ((IAttributeList) getParent()).addParameter(name, value);
+                  && getParent() instanceof IPropertyList) {
+           ((IPropertyList) getParent()).addProperty(name, value);
            } else {
            throw new JspException("AttributeTag element must be placed inside a IParameterized element!");
         }

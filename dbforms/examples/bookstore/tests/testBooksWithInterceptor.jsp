@@ -4,6 +4,17 @@
 	   <db:base />
 	</head>
    <body >
+   	  <db:presetFormValues className="interceptors.BookStoreFormInterceptor"
+   	  >
+   	  	<db:property
+			name="field1"
+			value="test1"
+   	  	/>
+   	  	<db:property
+			name="field2"
+			value="test2"
+   	  	/>
+   	  </db:presetFormValues>
       <db:dbform autoUpdate="false" 
                  followUp="/tests/testBooksWithInterceptor.jsp" 
                  maxRows="1" 

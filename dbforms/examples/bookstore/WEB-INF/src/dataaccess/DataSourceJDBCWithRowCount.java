@@ -23,10 +23,10 @@
 
 package dataaccess;
 
-import org.dbforms.config.DbEventInterceptorData;
 import org.dbforms.config.ResultSetVector;
 
 import org.dbforms.event.datalist.dao.DataSourceJDBC;
+import org.dbforms.interfaces.DbEventInterceptorData;
 
 import java.sql.SQLException;
 

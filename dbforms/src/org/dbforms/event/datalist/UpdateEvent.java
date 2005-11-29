@@ -27,8 +27,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.dbforms.config.Constants;
-import org.dbforms.config.DbEventInterceptor;
-import org.dbforms.config.DbEventInterceptorData;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.FieldValues;
 import org.dbforms.config.GrantedPrivileges;
@@ -37,6 +35,8 @@ import org.dbforms.config.MultipleValidationException;
 import org.dbforms.event.ValidationEvent;
 import org.dbforms.event.datalist.dao.DataSourceFactory;
 import org.dbforms.event.datalist.dao.DataSourceSessionList;
+import org.dbforms.interfaces.DbEventInterceptorData;
+import org.dbforms.interfaces.IDbEventInterceptor;
 
 import org.dbforms.util.MessageResourcesInternal;
 import org.dbforms.util.ParseUtil;
@@ -154,10 +154,10 @@ public class UpdateEvent extends ValidationEvent {
 
       // process the interceptors associated to this table
       int operation = getTable()
-                         .processInterceptors(DbEventInterceptor.PRE_UPDATE,
+                         .processInterceptors(IDbEventInterceptor.PRE_UPDATE,
                                               interceptorData);
 
-      if ((operation == DbEventInterceptor.GRANT_OPERATION)
+      if ((operation == IDbEventInterceptor.GRANT_OPERATION)
                 && (fieldValues.size() > 0)) {
          // UPDATE operation;
          DataSourceSessionList    ds  = DataSourceSessionList.getInstance(getRequest());
@@ -182,7 +182,7 @@ public class UpdateEvent extends ValidationEvent {
          // finally, we process interceptor again (post-update)
          // process the interceptors associated to this table
          getTable()
-            .processInterceptors(DbEventInterceptor.POST_UPDATE, interceptorData);
+            .processInterceptors(IDbEventInterceptor.POST_UPDATE, interceptorData);
       }
 
       // End of interceptor processing

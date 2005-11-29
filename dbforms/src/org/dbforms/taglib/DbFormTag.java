@@ -28,8 +28,6 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.commons.validator.ValidatorResources;
 
 import org.dbforms.config.Constants;
-import org.dbforms.config.DbEventInterceptor;
-import org.dbforms.config.DbEventInterceptorData;
 import org.dbforms.config.DbFormsErrors;
 import org.dbforms.config.Field;
 import org.dbforms.config.FieldTypes;
@@ -45,6 +43,8 @@ import org.dbforms.event.NavEventFactoryImpl;
 import org.dbforms.event.NavigationEvent;
 import org.dbforms.event.WebEvent;
 import org.dbforms.event.eventtype.EventType;
+import org.dbforms.interfaces.DbEventInterceptorData;
+import org.dbforms.interfaces.IDbEventInterceptor;
 
 import org.dbforms.util.MessageResources;
 import org.dbforms.util.MessageResourcesInternal;
@@ -270,8 +270,6 @@ public class DbFormTag extends AbstractTagSupportWithScriptHandler implements
 	 */
 	private boolean footerReached = false;
 
-	/** subform flag */
-	private boolean isSubForm = false;
 
 	/**
 	 * count (multiplicity, view-mode) of this form (n || -1), whereby n E N
@@ -834,7 +832,7 @@ public class DbFormTag extends AbstractTagSupportWithScriptHandler implements
 	 * @return The subForm value
 	 */
 	public boolean isSubForm() {
-		return isSubForm;
+		return parentForm != null;
 	}
 
 	/**
@@ -1199,7 +1197,7 @@ public class DbFormTag extends AbstractTagSupportWithScriptHandler implements
 	 * 
 	 * @return Description of the Return Value
 	 */
-	public int doStartTag() {
+	public int doStartTag() throws JspException {
 		try {
 			Connection con = getConfig().getConnection(dbConnectionName);
 
@@ -1220,24 +1218,19 @@ public class DbFormTag extends AbstractTagSupportWithScriptHandler implements
 			logCat.info("servlet getRequestURI = " + request.getRequestURI());
 
 			String strFollowUp = getFollowUp();
-
 			if (Util.isNull(strFollowUp)) {
 				strFollowUp = request.getRequestURI();
-
 				String contextPath = request.getContextPath();
-
 				if (!Util.isNull(contextPath)) {
 					strFollowUp = strFollowUp.substring(contextPath.length(),
 							strFollowUp.length());
 				}
-
 				if (!Util.isNull(request.getQueryString())) {
 					strFollowUp += ("?" + request.getQueryString());
 				}
 			}
 
 			logCat.debug("pos1");
-
 			// part I/a - security
 			JspWriter out = pageContext.getOut();
 
@@ -1266,13 +1259,17 @@ public class DbFormTag extends AbstractTagSupportWithScriptHandler implements
 					dbConnectionName);
 			interceptorData.setAttribute(DbEventInterceptorData.PAGECONTEXT,
 					pageContext);
+			interceptorData.setAttribute(DbEventInterceptorData.FORMTAG,
+					this);
+			PresetFormValuesTag.presetFormValues(interceptorData);
+			interceptorData.removeAttribute(DbEventInterceptorData.FORMTAG);
 
 			// part II/b - processing interceptors
 			if ((getTable() != null) && getTable().hasInterceptors()) {
 				try {
 					logCat.debug("pos5");
 					getTable().processInterceptors(
-							DbEventInterceptor.PRE_SELECT, interceptorData);
+							IDbEventInterceptor.PRE_SELECT, interceptorData);
 				} catch (Exception sqle) {
 					logCat.error("pos6");
 					logCat.error(sqle.getMessage(), sqle);
@@ -1304,7 +1301,7 @@ public class DbFormTag extends AbstractTagSupportWithScriptHandler implements
 
 			// if main form
 			// we write out the form-tag which points to the controller-servlet
-			if (parentForm == null) {
+			if (!isSubForm()) {
 				tagBuf.append("<form ");
 
 				if (!Util.isNull(getId())) {
@@ -1421,7 +1418,6 @@ public class DbFormTag extends AbstractTagSupportWithScriptHandler implements
 			} else {
 				// if sub-form, we dont write out html tags; this has been done
 				// already by a parent form
-				this.isSubForm = true;
 				positionPathCore = parentForm.getPositionPath();
 
 				// If whereClause is not supplied by developer
@@ -1847,7 +1843,7 @@ public class DbFormTag extends AbstractTagSupportWithScriptHandler implements
 				// process the interceptors associated to this table
 				interceptorData.setAttribute(DbEventInterceptorData.RESULTSET,
 						resultSetVector);
-				getTable().processInterceptors(DbEventInterceptor.POST_SELECT,
+				getTable().processInterceptors(IDbEventInterceptor.POST_SELECT,
 						interceptorData);
 			}
 
@@ -1883,7 +1879,7 @@ public class DbFormTag extends AbstractTagSupportWithScriptHandler implements
 				}
 			}
 
-			if (!isSubForm) {
+			if (!isSubForm()) {
 				pageContext.setAttribute("dbforms", new Hashtable());
 			}
 
@@ -2437,7 +2433,7 @@ public class DbFormTag extends AbstractTagSupportWithScriptHandler implements
 							.getSearchAlgoName());
 
 					if (ptable.getId() != getTable().getId()) {
-						if (this.isSubForm) {
+						if (isSubForm()) {
 							f = null;
 						} else {
 							// Table from request is different to table of form

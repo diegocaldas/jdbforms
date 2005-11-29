@@ -25,11 +25,11 @@ package org.dbforms.event;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.dbforms.config.DbEventInterceptorData;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.FieldValue;
 import org.dbforms.config.ResultSetVector;
 import org.dbforms.config.Table;
+import org.dbforms.interfaces.DbEventInterceptorData;
 
 import java.sql.SQLException;
 

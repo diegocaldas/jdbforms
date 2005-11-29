@@ -29,6 +29,8 @@ import org.apache.commons.logging.LogFactory;
 import org.dbforms.config.*;
 
 import org.dbforms.event.*;
+import org.dbforms.interfaces.DbEventInterceptorData;
+import org.dbforms.interfaces.IDbEventInterceptor;
 
 import org.dbforms.util.*;
 
@@ -150,10 +152,10 @@ public class UpdateEvent extends ValidationEvent {
 
       // process the interceptors associated to this table
       int operation = getTable()
-                         .processInterceptors(DbEventInterceptor.PRE_UPDATE,
+                         .processInterceptors(IDbEventInterceptor.PRE_UPDATE,
                                               interceptorData);
 
-      if ((operation == DbEventInterceptor.GRANT_OPERATION)
+      if ((operation == IDbEventInterceptor.GRANT_OPERATION)
                 && (fieldValues.size() > 0)) {
          // End of interceptor processing
          // now we start building the UPDATE statement
@@ -290,7 +292,7 @@ public class UpdateEvent extends ValidationEvent {
          // finally, we process interceptor again (post-update)
          // process the interceptors associated to this table
          getTable()
-            .processInterceptors(DbEventInterceptor.POST_UPDATE, interceptorData);
+            .processInterceptors(IDbEventInterceptor.POST_UPDATE, interceptorData);
       }
 
       // End of interceptor processing

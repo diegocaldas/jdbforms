@@ -29,6 +29,7 @@ import org.apache.commons.logging.LogFactory;
 import org.dbforms.config.*;
 
 import org.dbforms.event.NavigationEvent;
+import org.dbforms.interfaces.DbEventInterceptorData;
 
 import org.dbforms.util.*;
 

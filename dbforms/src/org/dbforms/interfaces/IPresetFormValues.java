@@ -23,14 +23,12 @@
 
 package org.dbforms.interfaces;
 
-/** 
- * Tags implementing this interface can be paramterized by a nested &lt;param&gt;
- * tag.
- * @see AttributeTag
- * @author  Henner Kollmann 
+import java.util.Map;
+
+
+/**
+ * Interface describing an formatter used in EmbeddedData
  */
-public interface IAttributeList {
-
-    void addParameter(String name, Object value);
-
+public interface IPresetFormValues {
+   void presetFormValues(Map properties, DbEventInterceptorData data);
 }
