@@ -102,7 +102,13 @@ public class BookstoreWithInterceptorTest extends DbEventInterceptorSupport {
 			if (new_id == 0) {
 				throw new ValidationException("Error generating automatic IDs");
 			}
-
+			
+			String test = fieldValues.get("ISBN").getFieldValue();
+			if ("exception".equals(test)) {
+				throw new ValidationException("test exception");
+			}
+			
+			
 			fieldValues.remove(strID);
 			setValue(table, fieldValues, strID, Long.toString(new_id));
 			setValue(table, fieldValues, strParentID, Long.toString(1));

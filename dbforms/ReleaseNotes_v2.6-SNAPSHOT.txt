@@ -4,6 +4,10 @@ Contents:
 1)      About this release
 2)      Details about enhancements and changes
 2-1)  Remove the formatter attribute
+2-2)  Added new chart type: Category Data 
+2-3)  Refactor the dbforms package
+2-4)  New presetFormValues tag 
+2-5)  Add hidden attribute to search tag
 
 
 1) About this release
@@ -30,3 +34,7 @@ source code (e.g. code cleanup, improved algorithms).
 2-1)  Remove the formatter attribute
 --------------------------------------------
 The formatter attribute has been deprecated in version 2.5 and is removed now.
+
+2-3)  Refactor the dbforms package: 
+--------------------------------------------
+new folder for interfaces, Rename abstract classes to Abstract...

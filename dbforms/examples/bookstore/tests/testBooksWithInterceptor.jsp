@@ -19,6 +19,7 @@
                  followUp="/tests/testBooksWithInterceptor.jsp" 
                  maxRows="1" 
                  tableName="BOOKWITHINTERCEPTOR"
+                  redisplayFieldsOnError="true" 
                  
       >
          <db:header>
@@ -60,6 +61,7 @@
                </td>
             </tr>
             </table>
+            <p>To test insert exception move to new page and enter the string "exception" as ISBN. This will generate an exception</p>
          </db:footer>
       </db:dbform>
 
