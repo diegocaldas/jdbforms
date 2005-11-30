@@ -31,7 +31,7 @@ import javax.servlet.jsp.JspException;
 
 /**
  * Philip Grunikiewicz 2001-05-14 This class inherits from DbLabelTag.  It
- * allows2 a developer to specify the displayed date format.
+ * allows a developer to specify the displayed date format.
  */
 public class DbDateLabelTag extends DbLabelTag
    implements javax.servlet.jsp.tagext.TryCatchFinally {
