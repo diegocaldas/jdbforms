@@ -23,7 +23,7 @@
 
 package org.dbforms.taglib;
 
-import org.dbforms.event.WebEvent;
+import org.dbforms.event.AbstractWebEvent;
 import org.dbforms.event.eventtype.EventType;
 import org.dbforms.interfaces.IDataContainer;
 
@@ -214,7 +214,7 @@ public class DbSelectTag extends AbstractDbBaseHandlerTag implements IDataContai
       HttpServletRequest request = (HttpServletRequest) this.pageContext
                                    .getRequest();
       List               errors = (List) request.getAttribute("errors");
-      WebEvent           we     = getParentForm()
+      AbstractWebEvent           we     = getParentForm()
                                      .getWebEvent();
 
       StringBuffer tagBuf           = new StringBuffer();

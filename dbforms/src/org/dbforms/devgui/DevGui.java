@@ -92,12 +92,12 @@ public class DevGui extends javax.swing.JFrame implements ActionListener {
 
    // other variables
    private ProjectData   projectData;
-   private PropertyPanel tab_configFilePanel;
+   private AbstractPropertyPanel tab_configFilePanel;
 
    // windows (tabs)
-   private PropertyPanel tab_dbPanel;
-   private PropertyPanel tab_webAppPanel;
-   private PropertyPanel tab_xslTranformPanel;
+   private AbstractPropertyPanel tab_dbPanel;
+   private AbstractPropertyPanel tab_webAppPanel;
+   private AbstractPropertyPanel tab_xslTranformPanel;
    private String        dbFormsHomeStr;
    private String        fileSeparator;
    private final String  titleCore = "DbForms Developers' GUI - ";

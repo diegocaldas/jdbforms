@@ -36,7 +36,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author Luca Fossato
  */
-public abstract class NavEventFactory extends EventFactory {
+public abstract class AbstractNavEventFactory extends AbstractEventFactory {
    /** classes used as constructor arguments types */
    static final Class[] actionConstructorArgsTypes = new Class[] {
                                                                   Table.class,
@@ -71,7 +71,7 @@ public abstract class NavEventFactory extends EventFactory {
     *
     * @return a new navigation event
     */
-   public abstract NavigationEvent createEvent(String             action,
+   public abstract AbstractNavigationEvent createEvent(String             action,
                                                HttpServletRequest request,
                                                DbFormsConfig      config,
                                                Table              table);
@@ -87,7 +87,7 @@ public abstract class NavEventFactory extends EventFactory {
     *
     * @return a new navGoto event
     */
-   public abstract NavigationEvent createGotoEvent(Table              table,
+   public abstract AbstractNavigationEvent createGotoEvent(Table              table,
                                                    HttpServletRequest request,
                                                    DbFormsConfig      config,
                                                    String             positionString);
@@ -104,7 +104,7 @@ public abstract class NavEventFactory extends EventFactory {
     *
     * @return a new navGoto event
     */
-   public abstract NavigationEvent createGotoEvent(Table              table,
+   public abstract AbstractNavigationEvent createGotoEvent(Table              table,
                                                    HttpServletRequest request,
                                                    DbFormsConfig      config,
                                                    String             whereClause,

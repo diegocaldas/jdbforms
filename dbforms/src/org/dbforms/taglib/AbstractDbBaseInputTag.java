@@ -23,7 +23,7 @@
 
 package org.dbforms.taglib;
 
-import org.dbforms.event.WebEvent;
+import org.dbforms.event.AbstractWebEvent;
 import org.dbforms.event.eventtype.EventType;
 
 import org.dbforms.util.Util;
@@ -248,7 +248,7 @@ public abstract class AbstractDbBaseInputTag extends AbstractDbBaseHandlerTag {
       HttpServletRequest request = (HttpServletRequest) this.pageContext
                                    .getRequest();
       Vector             errors = (Vector) request.getAttribute("errors");
-      WebEvent           we     = getParentForm()
+      AbstractWebEvent           we     = getParentForm()
                                      .getWebEvent();
 
       if ((this.getOverrideValue() != null)

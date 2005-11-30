@@ -36,7 +36,7 @@ import java.util.Properties;
  *
  * @author Henner Kollmann
  */
-public class SinglePerThreadConnectionProvider extends ConnectionProvider {
+public class SinglePerThreadConnectionProvider extends AbstractConnectionProvider {
    private static final ThreadLocal singlePerThread = new ThreadLocal();
 
    /**

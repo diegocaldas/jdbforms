@@ -46,7 +46,7 @@ import java.util.Properties;
  *
  * @author Luca Fossato
  */
-public class JakartaConnectionProvider extends ConnectionProvider {
+public class JakartaConnectionProvider extends AbstractConnectionProvider {
    /**
     * The SQL query that will be used to validate connections from this pool
     * before returning them to the caller.

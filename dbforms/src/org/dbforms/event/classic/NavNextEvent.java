@@ -44,7 +44,7 @@ import javax.servlet.http.*;
  *             data. <br>
  *             Provides bounded navigation.
  */
-public class NavNextEvent extends NavigationEvent {
+public class NavNextEvent extends AbstractNavigationEvent {
    private static Log logCat = LogFactory.getLog(NavNextEvent.class.getName()); // logging category for this class
 
    /**

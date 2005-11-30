@@ -52,9 +52,9 @@ import javax.servlet.http.HttpServletRequest;
  * @author Luca Fossato
  *
  */
-public abstract class EventFactory {
+public abstract class AbstractEventFactory {
    /** logging category */
-   private static Log logCat = LogFactory.getLog(EventFactory.class);
+   private static Log logCat = LogFactory.getLog(AbstractEventFactory.class);
 
    /** classes used as "non keyInfo" constructor arguments types */
    static final Class[] constructorArgsTypes = new Class[] {
@@ -69,7 +69,7 @@ public abstract class EventFactory {
    /**
     * Creates a new EventFactory object.
     */
-   protected EventFactory() {
+   protected AbstractEventFactory() {
       eventInfoMap = new HashMap();
 
       try {
@@ -88,7 +88,7 @@ public abstract class EventFactory {
     *
     * @return a new navigation event
     */
-   public abstract WebEvent createEvent(String             action,
+   public abstract AbstractWebEvent createEvent(String             action,
                                         HttpServletRequest request,
                                         DbFormsConfig      config);
 
@@ -147,14 +147,14 @@ public abstract class EventFactory {
     *
     * @return the event object, or null if any problem occurs
     */
-   protected WebEvent getEvent(EventInfo einfo,
+   protected AbstractWebEvent getEvent(EventInfo einfo,
                                Class[]   aconstructorArgsTypes,
                                Object[]  constructorArgs) {
-      WebEvent event = null;
+      AbstractWebEvent event = null;
 
       if (einfo != null) {
          try {
-            event = (WebEvent) ReflectionUtil.newInstance(einfo.getClassName(),
+            event = (AbstractWebEvent) ReflectionUtil.newInstance(einfo.getClassName(),
                                                           aconstructorArgsTypes,
                                                           constructorArgs);
 

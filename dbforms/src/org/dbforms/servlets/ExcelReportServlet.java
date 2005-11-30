@@ -25,7 +25,7 @@ package org.dbforms.servlets;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.dbforms.servlets.reports.LineReportServletAbstract;
+import org.dbforms.servlets.reports.AbstractLineReportServlet;
 import org.dbforms.util.ParseUtil;
 import org.dbforms.util.MessageResourcesInternal;
 import org.dbforms.util.MessageResources;
@@ -63,7 +63,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
  * 
  * @author Neal Katz
  */
-public class ExcelReportServlet extends LineReportServletAbstract {
+public class ExcelReportServlet extends AbstractLineReportServlet {
 
 	private static final String SHEETNAMEPARAM = "sheetname";
 

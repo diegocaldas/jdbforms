@@ -42,7 +42,7 @@ import javax.swing.*;
  * @author $author$
  * @version $Revision$
  */
-public class ConfigFilePanel extends PropertyPanel implements ActionListener {
+public class ConfigFilePanel extends AbstractPropertyPanel implements ActionListener {
    private javax.swing.ButtonGroup catalogButtonGroup;
    private javax.swing.ButtonGroup forkeyButtonGroup;
    private javax.swing.ButtonGroup schemaButtonGroup;

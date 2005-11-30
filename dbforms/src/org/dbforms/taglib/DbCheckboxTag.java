@@ -26,7 +26,7 @@ package org.dbforms.taglib;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.dbforms.event.WebEvent;
+import org.dbforms.event.AbstractWebEvent;
 import org.dbforms.event.eventtype.EventType;
 import org.dbforms.interfaces.IDataContainer;
 
@@ -209,7 +209,7 @@ public class DbCheckboxTag extends AbstractDbBaseHandlerTag implements IDataCont
     */
    public int doEndTag() throws javax.servlet.jsp.JspException {
       StringBuffer tagBuf = new StringBuffer();
-      WebEvent     we = getParentForm()
+      AbstractWebEvent     we = getParentForm()
                            .getWebEvent();
 
       // current Value from Database; or if no data: explicitly set by user; or ""

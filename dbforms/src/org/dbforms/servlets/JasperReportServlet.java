@@ -39,11 +39,11 @@ import org.apache.commons.logging.LogFactory;
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.DbFormsConfigRegistry;
 
-import org.dbforms.event.WebEvent;
+import org.dbforms.event.AbstractWebEvent;
 
-import org.dbforms.servlets.reports.JRDataSourceAbstract;
+import org.dbforms.servlets.reports.AbstractJRDataSource;
 import org.dbforms.servlets.reports.ReportParameter;
-import org.dbforms.servlets.reports.ReportServletAbstract;
+import org.dbforms.servlets.reports.AbstractReportServlet;
 import org.dbforms.servlets.reports.ReportWriter;
 
 import org.dbforms.util.ParseUtil;
@@ -70,7 +70,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Henner Kollmann
  */
-public class JasperReportServlet extends ReportServletAbstract {
+public class JasperReportServlet extends AbstractReportServlet {
    /** DOCUMENT ME! */
    private static Log logCat = LogFactory.getLog(JasperReportServlet.class
                                                  .getName());
@@ -139,7 +139,7 @@ public class JasperReportServlet extends ReportServletAbstract {
     * @return DOCUMENT ME!
     */
    protected ReportWriter processReport(String               reportFileFullName,
-                                        JRDataSourceAbstract dataSource,
+                                        AbstractJRDataSource dataSource,
                                         ServletContext       context,
                                         HttpServletRequest   request,
                                         HttpServletResponse  response) {
@@ -168,7 +168,7 @@ public class JasperReportServlet extends ReportServletAbstract {
          try {
             // Fill the report with data
             JasperPrint jPrint   = null;
-            WebEvent    webEvent = (WebEvent) request.getAttribute("webEvent");
+            AbstractWebEvent    webEvent = (AbstractWebEvent) request.getAttribute("webEvent");
             Connection  con      = null;
 
             if ((webEvent != null) && (webEvent.getTable() == null)) {
@@ -242,7 +242,7 @@ public class JasperReportServlet extends ReportServletAbstract {
     * @return DOCUMENT ME!
     */
    private static String getConnectionName(HttpServletRequest request) {
-      WebEvent webEvent = (WebEvent) request.getAttribute("webEvent");
+      AbstractWebEvent webEvent = (AbstractWebEvent) request.getAttribute("webEvent");
       String   res = null;
 
       if ((webEvent != null) && (webEvent.getTable()

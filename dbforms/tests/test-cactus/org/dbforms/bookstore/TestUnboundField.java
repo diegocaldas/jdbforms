@@ -23,7 +23,7 @@
 
 package org.dbforms.bookstore;
 
-import org.dbforms.util.HttpTestCase;
+import org.dbforms.util.AbstractHttpTestCase;
 import org.dbforms.util.KeyValuePair;
 import org.dbforms.util.MessageResources;
 import org.dbforms.util.MessageResourcesInternal;
@@ -33,7 +33,7 @@ import java.util.*;
 
 
 // definition of test class
-public class TestUnboundField extends HttpTestCase {
+public class TestUnboundField extends AbstractHttpTestCase {
    private static String nodata = null;
 
    /**

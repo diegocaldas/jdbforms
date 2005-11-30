@@ -32,7 +32,7 @@ import org.dbforms.config.FieldValues;
 import org.dbforms.config.GrantedPrivileges;
 import org.dbforms.config.MultipleValidationException;
 
-import org.dbforms.event.ValidationEvent;
+import org.dbforms.event.AbstractValidationEvent;
 import org.dbforms.event.datalist.dao.DataSourceFactory;
 import org.dbforms.event.datalist.dao.DataSourceSessionList;
 import org.dbforms.interfaces.DbEventInterceptorData;
@@ -56,7 +56,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author Henner Kollmann
  */
-public class UpdateEvent extends ValidationEvent {
+public class UpdateEvent extends AbstractValidationEvent {
    // logging category for this class
    private static Log logCat = LogFactory.getLog(UpdateEvent.class.getName());
 

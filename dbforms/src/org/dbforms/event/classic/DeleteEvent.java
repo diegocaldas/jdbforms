@@ -28,7 +28,7 @@ import org.apache.commons.logging.LogFactory;
 
 import org.dbforms.config.*;
 
-import org.dbforms.event.DatabaseEvent;
+import org.dbforms.event.AbstractDatabaseEvent;
 import org.dbforms.interfaces.DbEventInterceptorData;
 import org.dbforms.interfaces.IDbEventInterceptor;
 
@@ -50,7 +50,7 @@ import javax.servlet.http.*;
  * @deprecated
  * <p>
  */
-public class DeleteEvent extends DatabaseEvent {
+public class DeleteEvent extends AbstractDatabaseEvent {
 	// logging category for this class
 	static Log logCat = LogFactory.getLog(DeleteEvent.class.getName());
 

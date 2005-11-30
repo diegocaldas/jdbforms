@@ -28,7 +28,7 @@ import org.apache.commons.logging.LogFactory;
 
 import org.dbforms.config.FieldTypes;
 
-import org.dbforms.dom.DOMFactory;
+import org.dbforms.dom.AbstractDOMFactory;
 
 import org.dbforms.util.TimeUtil;
 import org.dbforms.util.Util;
@@ -64,7 +64,7 @@ public class XMLDataResult {
    public XMLDataResult(Element root,
                         String  qry) {
       this.root      = root;
-      this.evaluator = DOMFactory.instance()
+      this.evaluator = AbstractDOMFactory.instance()
                                  .newXPathEvaluator();
       resolver = evaluator.createNSResolver(root);
 

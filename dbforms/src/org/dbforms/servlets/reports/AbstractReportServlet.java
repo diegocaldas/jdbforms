@@ -33,7 +33,7 @@ import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.ResultSetVector;
 import org.dbforms.config.Table;
 
-import org.dbforms.event.WebEvent;
+import org.dbforms.event.AbstractWebEvent;
 
 import org.dbforms.taglib.DbFormTag;
 
@@ -63,9 +63,9 @@ import javax.servlet.jsp.PageContext;
  * 
  * @author Henner Kollmann
  */
-public abstract class ReportServletAbstract extends HttpServlet {
+public abstract class AbstractReportServlet extends HttpServlet {
 
-	private static Log logCat = LogFactory.getLog(ReportServletAbstract.class
+	private static Log logCat = LogFactory.getLog(AbstractReportServlet.class
 			.getName());
 
 	private static final String REPORTCONFIGDIR = "reportdirs";
@@ -141,7 +141,7 @@ public abstract class ReportServletAbstract extends HttpServlet {
 	 *            HTTPServletResponse
 	 */
 	protected abstract ReportWriter processReport(String reportFileFullName,
-			JRDataSourceAbstract dataSource, ServletContext context,
+			AbstractJRDataSource dataSource, ServletContext context,
 			HttpServletRequest request, HttpServletResponse response);
 
 	protected abstract String getReportFileExtension();
@@ -216,7 +216,7 @@ public abstract class ReportServletAbstract extends HttpServlet {
 
 			if (!Util.isNull(reportFile)) {
 				compileReport(getServletContext(), reportFile);
-				JRDataSourceAbstract dataSource = getDataForReport(request, response);
+				AbstractJRDataSource dataSource = getDataForReport(request, response);
 				if (!response.isCommitted()) {
 					if (dataSource == null) {
 						handleNoData(request, response);
@@ -316,8 +316,8 @@ public abstract class ReportServletAbstract extends HttpServlet {
 	 * 
 	 * @return
 	 */
-	private JRDataSourceAbstract getDataForReport(HttpServletRequest request, HttpServletResponse response) {
-		JRDataSourceAbstract dataSource = null;
+	private AbstractJRDataSource getDataForReport(HttpServletRequest request, HttpServletResponse response) {
+		AbstractJRDataSource dataSource = null;
 		Table table = null;
 		ResultSetVector rsv = null;
 
@@ -351,7 +351,7 @@ public abstract class ReportServletAbstract extends HttpServlet {
 					.initialize(this, request, response, null, true, 0, true);
 
 			// Create form to get the resultsetvector
-			WebEvent webEvent = (WebEvent) request.getAttribute("webEvent");
+			AbstractWebEvent webEvent = (AbstractWebEvent) request.getAttribute("webEvent");
 			table = webEvent.getTable();
 
 			if (table == null) {

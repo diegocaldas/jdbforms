@@ -59,13 +59,13 @@ public class EventEngine {
    private static Log logCat = LogFactory.getLog(EventEngine.class.getName());
 
    /** instance of DatabaseEventFactory */
-   private DatabaseEventFactory dbEventFactory = DatabaseEventFactoryImpl
+   private AbstractDatabaseEventFactory dbEventFactory = DatabaseEventFactoryImpl
                                                  .instance();
    private DbFormsConfig        config;
    private HttpServletRequest   request;
 
    /** instance of NavigationEventFactory */
-   private NavEventFactory navEventFactory = NavEventFactoryImpl.instance();
+   private AbstractNavEventFactory navEventFactory = NavEventFactoryImpl.instance();
 
    /**
     * this vector will contain which tables where on the jsp page: one jsp file
@@ -105,8 +105,8 @@ public class EventEngine {
     *
     * @return a new WebEvent object
     */
-   public WebEvent generatePrimaryEvent() {
-      WebEvent e      = null;
+   public AbstractWebEvent generatePrimaryEvent() {
+      AbstractWebEvent e      = null;
       String   action = ParseUtil.getFirstParameterStartingWith(request, "ac_");
       String   customEvent = ParseUtil.getParameter(request, "customEvent");
 
@@ -191,7 +191,7 @@ public class EventEngine {
     * @return DOCUMENT ME!
     */
    public Enumeration generateSecundaryEvents(Table    actTable,
-                                              WebEvent exclude) {
+                                              AbstractWebEvent exclude) {
       Vector  result           = new Vector();
       int     excludeTableId   = -1;
       String  excludeKeyId     = null;
@@ -199,11 +199,11 @@ public class EventEngine {
 
       // first of all, we check if there is some real potential for collisions
       // in the "to exclude"-event
-      if (exclude instanceof DatabaseEvent) {
+      if (exclude instanceof AbstractDatabaseEvent) {
          collissionDanger = true;
          excludeTableId   = exclude.getTable()
                                    .getId();
-         excludeKeyId = ((DatabaseEvent) exclude).getKeyId();
+         excludeKeyId = ((AbstractDatabaseEvent) exclude).getKeyId();
       }
 
       String param = "autoupdate_" + String.valueOf(actTable.getId());
@@ -231,7 +231,7 @@ public class EventEngine {
             if (!collissionDanger
                       || (excludeTableId != actTable.getId())
                       || !keyId.equals(excludeKeyId)) {
-               DatabaseEvent e = dbEventFactory.createUpdateEvent(actTable
+               AbstractDatabaseEvent e = dbEventFactory.createUpdateEvent(actTable
                                                                   .getId(),
                                                                   keyId,
                                                                   request,
@@ -253,7 +253,7 @@ public class EventEngine {
                String keyId = aKeyParam.substring(paramStub.length());
                keyId = StringUtil.getEmbeddedString(keyId, 0, '_');
 
-               DatabaseEvent e = dbEventFactory.createInsertEvent(actTable
+               AbstractDatabaseEvent e = dbEventFactory.createInsertEvent(actTable
                                                                   .getId(),
                                                                   keyId,
                                                                   request,
@@ -274,7 +274,7 @@ public class EventEngine {
     * @param e the event object
     * @param action the action string
     */
-   private void setEventFollowUp(WebEvent e,
+   private void setEventFollowUp(AbstractWebEvent e,
                                  String   action) {
       // now we have to find the followup-site the app-developer wants us to
       // display.
@@ -384,7 +384,7 @@ public class EventEngine {
     *
     * @param e the web event to initialize
     */
-   private void initializeWebEvent(WebEvent e) {
+   private void initializeWebEvent(AbstractWebEvent e) {
       String contextPath = request.getContextPath();
       String sourcePath = ParseUtil.getParameter(request, "source");
 

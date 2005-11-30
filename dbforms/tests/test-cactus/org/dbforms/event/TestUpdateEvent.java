@@ -82,7 +82,7 @@ public class TestUpdateEvent extends JspTestCase {
     * @throws Exception DOCUMENT ME!
     */
    public void testUpdate() throws Exception {
-      DatabaseEvent evt = DatabaseEventFactoryImpl.instance()
+      AbstractDatabaseEvent evt = DatabaseEventFactoryImpl.instance()
                                                   .createUpdateEvent(0,
                                                                      "0@root",
                                                                      request,

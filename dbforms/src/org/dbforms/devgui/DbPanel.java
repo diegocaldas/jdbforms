@@ -43,7 +43,7 @@ import javax.swing.*;
  * @author Joachim Peer
  * @version
  */
-public class DbPanel extends PropertyPanel implements ActionListener {
+public class DbPanel extends AbstractPropertyPanel implements ActionListener {
    private JButton b_testConnection;
 
    // Variables declaration - do not modify//GEN-BEGIN:variables

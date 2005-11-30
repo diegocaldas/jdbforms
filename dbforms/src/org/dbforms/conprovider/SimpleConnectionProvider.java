@@ -36,7 +36,7 @@ import java.util.Properties;
  *
  * @author Luca Fossato
  */
-public class SimpleConnectionProvider extends ConnectionProvider {
+public class SimpleConnectionProvider extends AbstractConnectionProvider {
    /**
     * Default constructor.
     *

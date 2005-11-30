@@ -35,7 +35,7 @@ import org.apache.commons.logging.LogFactory;
  * @author Luca Fossato
  *
  */
-public class DbFormsEventTypeStrategy extends CompositeEventTypeStrategy {
+public class DbFormsEventTypeStrategy extends AbstractCompositeEventTypeStrategy {
    /** logging category */
    private static Log logCat = LogFactory.getLog(DbFormsEventTypeStrategy.class
                                                  .getName());

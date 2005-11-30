@@ -33,12 +33,12 @@ import org.apache.commons.logging.LogFactory;
 
 import java.util.Map;
 
-public abstract class JRDataSourceAbstract implements JRDataSource {
-	private static Log logCat = LogFactory.getLog(JRDataSourceAbstract.class
+public abstract class AbstractJRDataSource implements JRDataSource {
+	private static Log logCat = LogFactory.getLog(AbstractJRDataSource.class
 			.getName());
 	private Map attributes;
 	
-	JRDataSourceAbstract(Map attributes) {
+	AbstractJRDataSource(Map attributes) {
 		this.attributes = attributes;
 	}
 	/**

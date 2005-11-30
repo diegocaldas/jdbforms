@@ -56,9 +56,9 @@ import javax.servlet.http.HttpServletRequest;
  * 
  * @author Joe Peer
  */
-public abstract class DatabaseEvent extends WebEvent {
+public abstract class AbstractDatabaseEvent extends AbstractWebEvent {
 	private static Log logCat = LogFactory
-			.getLog(DatabaseEvent.class.getName()); // logging category for this
+			.getLog(AbstractDatabaseEvent.class.getName()); // logging category for this
 													// class
 
 	/** key identifier */
@@ -76,7 +76,7 @@ public abstract class DatabaseEvent extends WebEvent {
 	 * @param config
 	 *            the configuration object
 	 */
-	public DatabaseEvent(int tableId, String keyId, HttpServletRequest request,
+	public AbstractDatabaseEvent(int tableId, String keyId, HttpServletRequest request,
 			DbFormsConfig config) {
 		super(tableId, request, config);
 		this.keyId = keyId;

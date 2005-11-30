@@ -31,9 +31,9 @@ import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.MultipleValidationException;
 import org.dbforms.config.Table;
 
-import org.dbforms.event.DatabaseEvent;
+import org.dbforms.event.AbstractDatabaseEvent;
 import org.dbforms.event.EventEngine;
-import org.dbforms.event.WebEvent;
+import org.dbforms.event.AbstractWebEvent;
 
 import org.dbforms.util.MessageResources;
 import org.dbforms.util.MultipartRequest;
@@ -272,7 +272,7 @@ public class Controller extends HttpServlet {
       }
 
       Connection con    = null;
-      WebEvent   e      = null;
+      AbstractWebEvent   e      = null;
       Vector     errors = new Vector();
 
       try {
@@ -293,7 +293,7 @@ public class Controller extends HttpServlet {
                                 connections);
 
             // primary event can be any kind of event (database, navigation...)
-            if (e instanceof DatabaseEvent) {
+            if (e instanceof AbstractDatabaseEvent) {
                try {
                   // if hidden formValidatorName exist and it's an Update or Insert event,
                   // doValidation with Commons-Validator
@@ -302,11 +302,11 @@ public class Controller extends HttpServlet {
                                                                   + e.getTable().getId());
 
                   if (formValidatorName != null) {
-                     ((DatabaseEvent) e).doValidation(formValidatorName,
+                     ((AbstractDatabaseEvent) e).doValidation(formValidatorName,
                                                       getServletContext());
                   }
 
-                  ((DatabaseEvent) e).processEvent(con);
+                  ((AbstractDatabaseEvent) e).processEvent(con);
                } catch (SQLException sqle) {
                   logCat.error("::process - SQLException:", sqle);
                   errors.addElement(sqle);
@@ -384,7 +384,7 @@ public class Controller extends HttpServlet {
    private void processInvolvedTables(DbFormsConfig      config,
                                       HttpServletRequest request,
                                       Hashtable          connections,
-                                      WebEvent           e,
+                                      AbstractWebEvent           e,
                                       Vector             errors,
                                       EventEngine        engine)
                                throws SQLException {
@@ -400,7 +400,7 @@ public class Controller extends HttpServlet {
 
          // scan all the secundary events for the current secundary table;
          while (eventEnum.hasMoreElements()) {
-            DatabaseEvent dbE = (DatabaseEvent) eventEnum.nextElement();
+            AbstractDatabaseEvent dbE = (AbstractDatabaseEvent) eventEnum.nextElement();
 
             // 2003-02-03 HKK: do not do the work twice - without this every event 
             // would be generated for each table and event

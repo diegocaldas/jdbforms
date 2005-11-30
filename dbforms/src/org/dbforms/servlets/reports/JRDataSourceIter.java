@@ -48,7 +48,7 @@ import org.apache.commons.logging.LogFactory;
 
 
 
-public final class JRDataSourceIter extends JRDataSourceAbstract {
+public final class JRDataSourceIter extends AbstractJRDataSource {
    private static Log  logCat = LogFactory.getLog(JRDataSourceIter.class
                                                   .getName());
    Object              current     = null;

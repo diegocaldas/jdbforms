@@ -61,7 +61,7 @@ import javax.swing.event.ListSelectionListener;
  * @version
  *
  */
-public class XSLTransformPanel extends PropertyPanel implements ActionListener,
+public class XSLTransformPanel extends AbstractPropertyPanel implements ActionListener,
                                                                 ListSelectionListener {
    private DevGui              parent;
    private EditorPanel         panel_editor;

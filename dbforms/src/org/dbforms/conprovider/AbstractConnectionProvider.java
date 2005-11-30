@@ -36,7 +36,7 @@ import java.sql.SQLException;
  *
  * @author Luca Fossato
  */
-public abstract class ConnectionProvider {
+public abstract class AbstractConnectionProvider {
    /** ConnectionProvider preferences */
    private ConnectionProviderPrefs prefs = null;
 
@@ -45,7 +45,7 @@ public abstract class ConnectionProvider {
     *
     * @exception Exception Description of the Exception
     */
-   public ConnectionProvider() throws Exception {
+   public AbstractConnectionProvider() throws Exception {
    }
 
    /**

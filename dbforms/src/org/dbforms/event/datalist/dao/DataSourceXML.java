@@ -32,7 +32,7 @@ import org.dbforms.config.Field;
 import org.dbforms.config.FieldValue;
 import org.dbforms.config.FieldValues;
 
-import org.dbforms.dom.DOMFactory;
+import org.dbforms.dom.AbstractDOMFactory;
 
 import org.dbforms.util.Util;
 
@@ -55,7 +55,7 @@ import java.util.Vector;
  *
  * @author hkk
  */
-public class DataSourceXML extends DataSource {
+public class DataSourceXML extends AbstractDataSource {
    private Hashtable     keys;
    private Log           logCat           = LogFactory.getLog(this.getClass().getName());
    private String        sqlFilter;
@@ -288,7 +288,7 @@ public class DataSourceXML extends DataSource {
     * @throws Exception Exception during processing IO
     */
    protected Document read(String url) throws Exception {
-      return DOMFactory.instance()
+      return AbstractDOMFactory.instance()
                        .read(url);
    }
 
@@ -303,7 +303,7 @@ public class DataSourceXML extends DataSource {
     */
    protected void write(String  url,
                         Element root) throws Exception {
-      DOMFactory.instance()
+      AbstractDOMFactory.instance()
                 .write(url, root);
    }
 

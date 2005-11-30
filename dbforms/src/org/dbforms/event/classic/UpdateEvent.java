@@ -51,7 +51,7 @@ import javax.servlet.http.*;
  *
  * @deprecated <p>
  */
-public class UpdateEvent extends ValidationEvent {
+public class UpdateEvent extends AbstractValidationEvent {
    static Log logCat = LogFactory.getLog(UpdateEvent.class.getName()); // logging category for this class
 
    /**

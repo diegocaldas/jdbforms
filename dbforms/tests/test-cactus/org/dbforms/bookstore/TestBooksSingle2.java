@@ -23,7 +23,7 @@
 
 package org.dbforms.bookstore;
 
-import org.dbforms.util.HttpTestCase;
+import org.dbforms.util.AbstractHttpTestCase;
 import org.dbforms.util.KeyValuePair;
 
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ import java.util.List;
 
 
 // definition of test class
-public class TestBooksSingle2 extends HttpTestCase {
+public class TestBooksSingle2 extends AbstractHttpTestCase {
    // Test method generated from the MaxQ Java generator
    public TestBooksSingle2(String name) {
       super(name);

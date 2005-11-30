@@ -34,7 +34,7 @@ import java.util.Map;
 /**
  * use a ResultSetVector as data source.
  */
-public final class JRDataSourceRSV extends JRDataSourceAbstract  {
+public final class JRDataSourceRSV extends AbstractJRDataSource  {
 	private static Log logCat = LogFactory.getLog(JRDataSourceRSV.class
 			.getName());
 

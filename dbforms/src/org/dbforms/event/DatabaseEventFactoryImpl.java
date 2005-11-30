@@ -44,14 +44,14 @@ import javax.servlet.http.HttpServletRequest;
  * @author Luca Fossato
  * 
  */
-public class DatabaseEventFactoryImpl extends DatabaseEventFactory {
+public class DatabaseEventFactoryImpl extends AbstractDatabaseEventFactory {
 	/** classes used as "keyInfo" constructor arguments types */
 	private static final Class[] keyInfoConstructorArgsTypes = new Class[] {
 			Integer.class, String.class, HttpServletRequest.class,
 			DbFormsConfig.class };
 
 	/** an handle to the unique DatabaseEventFactory instance */
-	private static DatabaseEventFactory instance = null;
+	private static AbstractDatabaseEventFactory instance = null;
 
 	private static Log logCat = LogFactory.getLog(NavEventFactoryImpl.class);
 
@@ -60,7 +60,7 @@ public class DatabaseEventFactoryImpl extends DatabaseEventFactory {
 	 * 
 	 * @return the instance of DAO class.
 	 */
-	public static synchronized DatabaseEventFactory instance() {
+	public static synchronized AbstractDatabaseEventFactory instance() {
 		if (instance == null) {
 			instance = new DatabaseEventFactoryImpl();
 		}
@@ -80,9 +80,9 @@ public class DatabaseEventFactoryImpl extends DatabaseEventFactory {
 	 * 
 	 * @return a new database event, or null if any error occurs
 	 */
-	public WebEvent createEvent(String action, HttpServletRequest request,
+	public AbstractWebEvent createEvent(String action, HttpServletRequest request,
 			DbFormsConfig config) {
-		WebEvent event = null;
+		AbstractWebEvent event = null;
 		Object[] constructorArgs = null;
 
 		// get the event id of the destination table
@@ -135,9 +135,9 @@ public class DatabaseEventFactoryImpl extends DatabaseEventFactory {
 	 * 
 	 * @return The updateEvent object
 	 */
-	public DatabaseEvent createInsertEvent(int tableId, String keyId,
+	public AbstractDatabaseEvent createInsertEvent(int tableId, String keyId,
 			HttpServletRequest request, DbFormsConfig config) {
-		DatabaseEvent event = null;
+		AbstractDatabaseEvent event = null;
 		Object[] constructorArgs = new Object[] { new Integer(tableId), keyId,
 				request, config };
 		Table table = config.getTable(tableId);
@@ -145,7 +145,7 @@ public class DatabaseEventFactoryImpl extends DatabaseEventFactory {
 		String eventId = tableEvents
 				.getEventId(EventType.EVENT_DATABASE_INSERT);
 		EventInfo einfo = getEventInfo(eventId);
-		event = (DatabaseEvent) getEvent(einfo, keyInfoConstructorArgsTypes,
+		event = (AbstractDatabaseEvent) getEvent(einfo, keyInfoConstructorArgsTypes,
 				constructorArgs);
 
 		return event;
@@ -165,9 +165,9 @@ public class DatabaseEventFactoryImpl extends DatabaseEventFactory {
 	 * 
 	 * @return The updateEvent object
 	 */
-	public DatabaseEvent createUpdateEvent(int tableId, String keyId,
+	public AbstractDatabaseEvent createUpdateEvent(int tableId, String keyId,
 			HttpServletRequest request, DbFormsConfig config) {
-		DatabaseEvent event = null;
+		AbstractDatabaseEvent event = null;
 		Object[] constructorArgs = new Object[] { new Integer(tableId), keyId,
 				request, config };
 		Table table = config.getTable(tableId);
@@ -175,7 +175,7 @@ public class DatabaseEventFactoryImpl extends DatabaseEventFactory {
 		String eventId = tableEvents
 				.getEventId(EventType.EVENT_DATABASE_UPDATE);
 		EventInfo einfo = getEventInfo(eventId);
-		event = (DatabaseEvent) getEvent(einfo, keyInfoConstructorArgsTypes,
+		event = (AbstractDatabaseEvent) getEvent(einfo, keyInfoConstructorArgsTypes,
 				constructorArgs);
 
 		return event;

@@ -60,7 +60,7 @@ import java.util.Vector;
  * 
  * @author hkk
  */
-public class DataSourceJDBC extends DataSource {
+public class DataSourceJDBC extends AbstractDataSource {
 	private static Log logCat = LogFactory.getLog(DataSourceJDBC.class);
 
 	private Connection connection;

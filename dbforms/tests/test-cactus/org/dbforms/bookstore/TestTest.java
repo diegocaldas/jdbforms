@@ -23,13 +23,13 @@
 
 package org.dbforms.bookstore;
 
-import org.dbforms.util.HttpTestCase;
+import org.dbforms.util.AbstractHttpTestCase;
 
 
 
 // imports
 // definition of test class
-public class TestTest extends HttpTestCase {
+public class TestTest extends AbstractHttpTestCase {
    // Test method generated from the MaxQ Java generator
    public TestTest(String name) {
       super(name);

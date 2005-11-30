@@ -73,9 +73,9 @@ import javax.servlet.http.HttpSession;
  * 
  * @author Neal Katz
  */
-public abstract class LineReportServletAbstract extends ReportServletAbstract {
+public abstract class AbstractLineReportServlet extends AbstractReportServlet {
 	private static Log logCat = LogFactory
-			.getLog(LineReportServletAbstract.class);
+			.getLog(AbstractLineReportServlet.class);
 
 	protected abstract String getMimeType();
 
@@ -108,7 +108,7 @@ public abstract class LineReportServletAbstract extends ReportServletAbstract {
 	}
 
 	private Object getFieldValue(HttpServletRequest request,
-			JRDataSourceAbstract dataSource, String search) {
+			AbstractJRDataSource dataSource, String search) {
 		Object o = null;
 		search = search.replaceAll("__", ".");
 
@@ -201,7 +201,7 @@ public abstract class LineReportServletAbstract extends ReportServletAbstract {
 	}
 
 	private ByteArrayOutputStream fillReport(HttpServletRequest request,
-			String[] header, String[] fields, JRDataSourceAbstract dataSource)
+			String[] header, String[] fields, AbstractJRDataSource dataSource)
 			throws Exception {
         ByteArrayOutputStream res = new ByteArrayOutputStream();
 		openStream(res);
@@ -237,7 +237,7 @@ public abstract class LineReportServletAbstract extends ReportServletAbstract {
 	 *            HTTPServletResponse
 	 */
 	protected ReportWriter processReport(String reportFileFullName,
-			JRDataSourceAbstract dataSource, ServletContext context,
+			AbstractJRDataSource dataSource, ServletContext context,
 			HttpServletRequest request, HttpServletResponse response) {
 
 		try {

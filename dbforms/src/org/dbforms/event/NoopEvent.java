@@ -34,7 +34,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author Joe Peer
  */
-public class NoopEvent extends WebEvent {
+public class NoopEvent extends AbstractWebEvent {
    /**
     * Creates a new NoopEvent object.
     *

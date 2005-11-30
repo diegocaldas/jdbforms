@@ -45,7 +45,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author Joe Peer
  *
  */
-public abstract class WebEvent {
+public abstract class AbstractWebEvent {
 
    /** the configuration object */
    private DbFormsConfig config;
@@ -75,7 +75,7 @@ public abstract class WebEvent {
     * @param request the request object
     * @param config the configuration object
     */
-   public WebEvent(int                tableId,
+   public AbstractWebEvent(int                tableId,
                    HttpServletRequest request,
                    DbFormsConfig      config) {
       setTable(config.getTable(tableId));

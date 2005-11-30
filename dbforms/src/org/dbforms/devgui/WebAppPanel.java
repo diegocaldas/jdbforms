@@ -43,7 +43,7 @@ import javax.swing.*;
  * @author Administrator
  * @version
  */
-public class WebAppPanel extends PropertyPanel implements ActionListener {
+public class WebAppPanel extends AbstractPropertyPanel implements ActionListener {
    private JButton b_browseApp;
    private JButton b_chooseRoot;
 

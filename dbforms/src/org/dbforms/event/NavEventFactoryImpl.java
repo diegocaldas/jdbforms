@@ -42,9 +42,9 @@ import javax.servlet.http.HttpServletRequest;
  * @author Luca Fossato
  *
  */
-public class NavEventFactoryImpl extends NavEventFactory {
+public class NavEventFactoryImpl extends AbstractNavEventFactory {
    /** an handle to the unique NavigationEventFactory instance */
-   private static NavEventFactory instance = null;
+   private static AbstractNavEventFactory instance = null;
    private static Log             logCat = LogFactory.getLog(NavEventFactoryImpl.class);
 
    /**
@@ -58,7 +58,7 @@ public class NavEventFactoryImpl extends NavEventFactory {
     *
     * @return the instance of NavEventFactoryImpl class.
     */
-   public static synchronized NavEventFactory instance() {
+   public static synchronized AbstractNavEventFactory instance() {
       if (instance == null) {
          instance = new NavEventFactoryImpl();
       }
@@ -76,7 +76,7 @@ public class NavEventFactoryImpl extends NavEventFactory {
     *
     * @return a new navigation event
     */
-   public WebEvent createEvent(String             action,
+   public AbstractWebEvent createEvent(String             action,
                                HttpServletRequest request,
                                DbFormsConfig      config) {
       Object[] constructorArgs = new Object[] {
@@ -106,7 +106,7 @@ public class NavEventFactoryImpl extends NavEventFactory {
     *
     * @return a new navigation event
     */
-   public NavigationEvent createEvent(String             action,
+   public AbstractNavigationEvent createEvent(String             action,
                                       HttpServletRequest request,
                                       DbFormsConfig      config,
                                       Table              table) {
@@ -122,7 +122,7 @@ public class NavEventFactoryImpl extends NavEventFactory {
       logCat.info("::createEvent - got event [" + einfo + "] from action ["
                   + action + "]");
 
-      return (NavigationEvent) getEvent(einfo, actionConstructorArgsTypes,
+      return (AbstractNavigationEvent) getEvent(einfo, actionConstructorArgsTypes,
                                         constructorArgs);
    }
 
@@ -138,7 +138,7 @@ public class NavEventFactoryImpl extends NavEventFactory {
     *
     * @return a new navGoto event
     */
-   public NavigationEvent createGotoEvent(Table              table,
+   public AbstractNavigationEvent createGotoEvent(Table              table,
                                           HttpServletRequest request,
                                           DbFormsConfig      config,
                                           String             positionString) {
@@ -152,7 +152,7 @@ public class NavEventFactoryImpl extends NavEventFactory {
                                      positionString
                                   };
 
-      return (NavigationEvent) getEvent(einfo, goToConstructorArgsTypes,
+      return (AbstractNavigationEvent) getEvent(einfo, goToConstructorArgsTypes,
                                         constructorArgs);
    }
 
@@ -169,7 +169,7 @@ public class NavEventFactoryImpl extends NavEventFactory {
     *
     * @return a new navGoto event
     */
-   public NavigationEvent createGotoEvent(Table              table,
+   public AbstractNavigationEvent createGotoEvent(Table              table,
                                           HttpServletRequest request,
                                           DbFormsConfig      config,
                                           String             whereClause,
@@ -185,7 +185,7 @@ public class NavEventFactoryImpl extends NavEventFactory {
                                      tableList
                                   };
 
-      return (NavigationEvent) getEvent(einfo, goToConstructorArgsTypes2,
+      return (AbstractNavigationEvent) getEvent(einfo, goToConstructorArgsTypes2,
                                         constructorArgs);
    }
 

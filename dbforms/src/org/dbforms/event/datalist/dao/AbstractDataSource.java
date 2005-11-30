@@ -51,15 +51,15 @@ import java.util.Iterator;
  *
  * @author hkk
  */
-public abstract class DataSource {
+public abstract class AbstractDataSource {
    /** log4j category class */
-   private static Log logCat = LogFactory.getLog(DataSource.class);
+   private static Log logCat = LogFactory.getLog(AbstractDataSource.class);
    private Table      table;
 
    /**
     * Creates a new DataSource object.
     */
-   public DataSource() {
+   public AbstractDataSource() {
    }
 
    /**

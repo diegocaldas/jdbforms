@@ -36,7 +36,7 @@ import java.util.Properties;
  *
  * @author Henner Kollmann
  */
-public class SingleConnectionProvider extends ConnectionProvider {
+public class SingleConnectionProvider extends AbstractConnectionProvider {
    private static Connection con;
 
    /**

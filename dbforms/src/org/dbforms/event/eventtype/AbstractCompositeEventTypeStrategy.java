@@ -35,7 +35,7 @@ import java.util.ArrayList;
  * @author Luca Fossato
  *
  */
-public abstract class CompositeEventTypeStrategy implements EventTypeStrategy {
+public abstract class AbstractCompositeEventTypeStrategy implements EventTypeStrategy {
    /** the list of EventTypeStrategy objects */
    protected ArrayList strategyList = new ArrayList();
 

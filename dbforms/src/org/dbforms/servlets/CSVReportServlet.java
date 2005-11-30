@@ -23,7 +23,7 @@
 
 package org.dbforms.servlets;
 
-import org.dbforms.servlets.reports.LineReportServletAbstract;
+import org.dbforms.servlets.reports.AbstractLineReportServlet;
 
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -58,7 +58,7 @@ import java.io.PrintWriter;
  * 
  * @author Neal Katz
  */
-public class CSVReportServlet extends LineReportServletAbstract {
+public class CSVReportServlet extends AbstractLineReportServlet {
 
 	private static final char Q = '\"';
 

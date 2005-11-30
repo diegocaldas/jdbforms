@@ -26,7 +26,7 @@ package org.dbforms.config;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.dbforms.dom.DOMFactory;
+import org.dbforms.dom.AbstractDOMFactory;
 import org.dbforms.interfaces.IEscaper;
 
 import org.dbforms.util.ReflectionUtil;
@@ -144,7 +144,7 @@ public class DbFormsConfig {
     * @param string
     */
    public void setDOMFactoryClass(String string) {
-      DOMFactory.setFactoryClass(string);
+      AbstractDOMFactory.setFactoryClass(string);
    }
 
 

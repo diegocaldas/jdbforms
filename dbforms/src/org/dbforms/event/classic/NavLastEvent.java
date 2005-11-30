@@ -28,7 +28,7 @@ import org.apache.commons.logging.LogFactory;
 
 import org.dbforms.config.*;
 
-import org.dbforms.event.NavigationEvent;
+import org.dbforms.event.AbstractNavigationEvent;
 import org.dbforms.interfaces.DbEventInterceptorData;
 
 import java.sql.*;
@@ -44,7 +44,7 @@ import javax.servlet.http.*;
  *
  * @deprecated <p>
  */
-public class NavLastEvent extends NavigationEvent {
+public class NavLastEvent extends AbstractNavigationEvent {
    static Log logCat = LogFactory.getLog(NavLastEvent.class.getName()); // logging category for this class
 
    /**

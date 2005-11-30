@@ -47,7 +47,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author Joe Peer
  */
-public class NavNewEvent extends NavigationEvent {
+public class NavNewEvent extends AbstractNavigationEvent {
    private static Log logCat = LogFactory.getLog(NavNewEvent.class.getName()); // logging category for this class
 
    /**

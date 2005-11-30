@@ -56,7 +56,7 @@ import javax.xml.transform.stream.StreamResult;
  *
  * @author Henner Kollmann
  */
-public class DOMFactoryXALANImpl extends DOMFactory {
+public class DOMFactoryXALANImpl extends AbstractDOMFactory {
    private DocumentBuilder builder     = createDOMBuilder();
    private Log             logCat      = LogFactory.getLog(this.getClass().getName());
    private Transformer     transformer = createDOMWriter();

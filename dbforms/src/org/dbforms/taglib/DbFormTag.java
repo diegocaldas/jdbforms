@@ -38,10 +38,10 @@ import org.dbforms.config.ResultSetVector;
 import org.dbforms.config.Table;
 import org.dbforms.config.MultipleValidationException;
 
-import org.dbforms.event.NavEventFactory;
+import org.dbforms.event.AbstractNavEventFactory;
 import org.dbforms.event.NavEventFactoryImpl;
-import org.dbforms.event.NavigationEvent;
-import org.dbforms.event.WebEvent;
+import org.dbforms.event.AbstractNavigationEvent;
+import org.dbforms.event.AbstractWebEvent;
 import org.dbforms.event.eventtype.EventType;
 import org.dbforms.interfaces.DbEventInterceptorData;
 import org.dbforms.interfaces.IDbEventInterceptor;
@@ -90,7 +90,7 @@ public class DbFormTag extends AbstractTagSupportWithScriptHandler implements
 	private static Log logCat = LogFactory.getLog(DbFormTag.class.getName());
 
 	/** NavigationEvent factory */
-	private static NavEventFactory navEventFactory = NavEventFactoryImpl
+	private static AbstractNavEventFactory navEventFactory = NavEventFactoryImpl
 			.instance();
 
 	/** reference to a parent DBFormTag (if any) */
@@ -256,7 +256,7 @@ public class DbFormTag extends AbstractTagSupportWithScriptHandler implements
 	private Vector validationForms;
 
 	/** Keep trace of witch event is use */
-	private transient WebEvent webEvent = null;
+	private transient AbstractWebEvent webEvent = null;
 
 	/**
 	 * used in sub-form: this data structure holds the linked childfield(s) and
@@ -917,7 +917,7 @@ public class DbFormTag extends AbstractTagSupportWithScriptHandler implements
 	 * 
 	 * @return
 	 */
-	public WebEvent getWebEvent() {
+	public AbstractWebEvent getWebEvent() {
 		return webEvent;
 	}
 
@@ -1672,7 +1672,7 @@ public class DbFormTag extends AbstractTagSupportWithScriptHandler implements
 			// is there a NAVIGATION event (like "nav to first row" or "nav to
 			// previous row", or "nav back 4 rows"?
 			// if so...
-			webEvent = (WebEvent) request.getAttribute("webEvent");
+			webEvent = (AbstractWebEvent) request.getAttribute("webEvent");
 
 			// set actual request to webEvent. Otherwise webEvent will not
 			// reflect current requestURI!
@@ -1698,13 +1698,13 @@ public class DbFormTag extends AbstractTagSupportWithScriptHandler implements
 			}
 
 			// will be used to cast the webEvent to a navigation event;
-			NavigationEvent navEvent = null;
+			AbstractNavigationEvent navEvent = null;
 
 			//
 			// 1. possibility: webEvent is a navigation event ?
 			//
-			if ((webEvent != null) && webEvent instanceof NavigationEvent) {
-				navEvent = (NavigationEvent) webEvent;
+			if ((webEvent != null) && webEvent instanceof AbstractNavigationEvent) {
+				navEvent = (AbstractNavigationEvent) webEvent;
 
 				if ((navEvent.getTable() == null)
 						|| (navEvent.getTable().getId() != tableId)) {

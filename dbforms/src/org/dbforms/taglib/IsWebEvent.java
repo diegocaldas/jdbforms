@@ -26,7 +26,7 @@ package org.dbforms.taglib;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.dbforms.event.WebEvent;
+import org.dbforms.event.AbstractWebEvent;
 
 import org.dbforms.util.Util;
 
@@ -111,7 +111,7 @@ public class IsWebEvent extends AbstractDbBaseHandlerTag
     * @throws JspException DOCUMENT ME!
     */
    public int doStartTag() throws JspException {
-      WebEvent we = getParentForm()
+      AbstractWebEvent we = getParentForm()
                        .getWebEvent();
 
       if ((we == null) || (event == null) || (value == null)) {

@@ -42,7 +42,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author Joe Peer
  */
-public abstract class NavigationEvent extends WebEvent {
+public abstract class AbstractNavigationEvent extends AbstractWebEvent {
    /**
     * called by event engine
     *
@@ -50,7 +50,7 @@ public abstract class NavigationEvent extends WebEvent {
     * @param request DOCUMENT ME!
     * @param config DOCUMENT ME!
     */
-   public NavigationEvent(String             action,
+   public AbstractNavigationEvent(String             action,
                           HttpServletRequest request,
                           DbFormsConfig      config) {
       super(getTableId(action), request, config);
@@ -64,7 +64,7 @@ public abstract class NavigationEvent extends WebEvent {
     * @param request DOCUMENT ME!
     * @param config DOCUMENT ME!
     */
-   public NavigationEvent(Table              table,
+   public AbstractNavigationEvent(Table              table,
                           HttpServletRequest request,
                           DbFormsConfig      config) {
       super(table.getId(), request, config);

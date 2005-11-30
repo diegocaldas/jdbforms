@@ -48,7 +48,7 @@ public class DataSourceFactory {
    // logging category for this class;
    private static Log logCat = LogFactory.getLog(DataSourceFactory.class
          .getName());
-   private DataSource dataHandler;
+   private AbstractDataSource dataHandler;
 
    /**
     * Creates a new DataSourceFactory object.
@@ -70,7 +70,7 @@ public class DataSourceFactory {
       }
 
       try {
-         dataHandler = (DataSource) ReflectionUtil.newInstance(dataAccessClass);
+         dataHandler = (AbstractDataSource) ReflectionUtil.newInstance(dataAccessClass);
          dataHandler.setTable(table);
          dataHandler.setConnection(connection, dbConnectionName);
       } catch (Exception e) {
@@ -101,7 +101,7 @@ public class DataSourceFactory {
     *
     * @return the DataSource element
     */
-   public DataSource getDataHandler() {
+   public AbstractDataSource getDataHandler() {
       return dataHandler;
    }
 

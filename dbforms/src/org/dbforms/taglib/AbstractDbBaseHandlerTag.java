@@ -31,7 +31,7 @@ import org.dbforms.config.Field;
 import org.dbforms.config.FieldTypes;
 import org.dbforms.config.ResultSetVector;
 
-import org.dbforms.event.WebEvent;
+import org.dbforms.event.AbstractWebEvent;
 import org.dbforms.event.eventtype.EventType;
 import org.dbforms.interfaces.IEscaper;
 
@@ -535,7 +535,7 @@ public abstract class AbstractDbBaseHandlerTag extends AbstractTagSupportWithScr
 		HttpServletRequest request = (HttpServletRequest) this.pageContext
 				.getRequest();
 		Vector errors = (Vector) request.getAttribute("errors");
-		WebEvent we = getParentForm().getWebEvent();
+		AbstractWebEvent we = getParentForm().getWebEvent();
 
 		// Are we in Update mode
 		if (!getParentForm().isFooterReached()) {

@@ -46,7 +46,7 @@ import java.util.Properties;
  *
  * @author Luca Fossato
  */
-public class ProtomatterConnectionProvider extends ConnectionProvider {
+public class ProtomatterConnectionProvider extends AbstractConnectionProvider {
    /** the initial pool size (default is 0) */
    protected static final String CP_PROPS_INITIALSIZE = "pool.initialSize";
 

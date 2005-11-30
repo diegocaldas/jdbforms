@@ -49,8 +49,8 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author hkk
  */
-public abstract class ValidationEvent extends DatabaseEvent {
-   private static Log logCat = LogFactory.getLog(ValidationEvent.class.getName()); // logging category for this class
+public abstract class AbstractValidationEvent extends AbstractDatabaseEvent {
+   private static Log logCat = LogFactory.getLog(AbstractValidationEvent.class.getName()); // logging category for this class
 
    /**
     * Creates a new ValidationEvent object.
@@ -60,7 +60,7 @@ public abstract class ValidationEvent extends DatabaseEvent {
     * @param request DOCUMENT ME!
     * @param config DOCUMENT ME!
     */
-   public ValidationEvent(int tableId, String keyId,
+   public AbstractValidationEvent(int tableId, String keyId,
       HttpServletRequest request, DbFormsConfig config) {
       super(tableId, keyId, request, config);
    }

@@ -37,7 +37,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author Eric Beaumier
  */
-public class PageReloadEvent extends WebEvent {
+public class PageReloadEvent extends AbstractWebEvent {
    /**
     * Creates a new ReloadEvent object.
     *

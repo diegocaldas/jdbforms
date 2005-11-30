@@ -123,7 +123,7 @@ public class TestValidationEvent extends JspTestCase {
     * @throws Exception DOCUMENT ME!
     */
    public void testValidationError() throws Exception {
-      DatabaseEvent evt = DatabaseEventFactoryImpl.instance()
+      AbstractDatabaseEvent evt = DatabaseEventFactoryImpl.instance()
                                                   .createUpdateEvent(0,
                                                                      "0@root",
                                                                      (HttpServletRequest) this.pageContext
@@ -149,7 +149,7 @@ public class TestValidationEvent extends JspTestCase {
     * @throws Exception DOCUMENT ME!
     */
    public void testValidationNoError() throws Exception {
-      DatabaseEvent evt = DatabaseEventFactoryImpl.instance()
+      AbstractDatabaseEvent evt = DatabaseEventFactoryImpl.instance()
                                                   .createUpdateEvent(0,
                                                                      "0@root",
                                                                      (HttpServletRequest) this.pageContext

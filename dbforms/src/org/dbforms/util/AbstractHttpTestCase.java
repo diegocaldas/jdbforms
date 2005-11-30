@@ -38,7 +38,7 @@ import java.util.List;
 
 
 // definition of test class
-public abstract class HttpTestCase extends TestCase {
+public abstract class AbstractHttpTestCase extends TestCase {
    private String          paramReplace;
    private String          paramSearch;
    private String          urlReplace;
@@ -51,7 +51,7 @@ public abstract class HttpTestCase extends TestCase {
     *
     * @param name DOCUMENT ME!
     */
-   public HttpTestCase(String name) {
+   public AbstractHttpTestCase(String name) {
       super(name);
 
       String context = System.getProperty("cactus.contextURL");

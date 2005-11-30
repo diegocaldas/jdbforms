@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.bookstore;
-import org.dbforms.util.HttpTestCase;
+import org.dbforms.util.AbstractHttpTestCase;
 import org.dbforms.util.KeyValuePair;
 import org.dbforms.util.MessageResources;
 import org.dbforms.util.MessageResourcesInternal;
@@ -37,7 +37,7 @@ import java.util.Locale;
 
 
 // definition of test class
-public class TestSearchAndCalcFields extends HttpTestCase {
+public class TestSearchAndCalcFields extends AbstractHttpTestCase {
    private String nodata = null;
 
    // Test method generated from the MaxQ Java generator

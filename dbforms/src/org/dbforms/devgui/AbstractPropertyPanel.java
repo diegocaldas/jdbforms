@@ -38,7 +38,7 @@ import javax.swing.*;
  * @author Joachim Peer
  * @version
  */
-public abstract class PropertyPanel extends javax.swing.JPanel
+public abstract class AbstractPropertyPanel extends javax.swing.JPanel
    implements PropertyNames {
    /** DOCUMENT ME! */
    protected ProjectData projectData;
@@ -48,7 +48,7 @@ public abstract class PropertyPanel extends javax.swing.JPanel
     *
     * @param projectData DOCUMENT ME!
     */
-   public PropertyPanel(ProjectData projectData) {
+   public AbstractPropertyPanel(ProjectData projectData) {
       this.projectData = projectData;
 
       //ToolTipManager.sharedInstance().registerComponent(this);

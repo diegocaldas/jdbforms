@@ -39,7 +39,7 @@ import org.dbforms.config.ResultSetVector;
 import org.dbforms.config.MultipleValidationException;
 
 
-import org.dbforms.event.ValidationEvent;
+import org.dbforms.event.AbstractValidationEvent;
 import org.dbforms.interfaces.DbEventInterceptorData;
 import org.dbforms.interfaces.IDbEventInterceptor;
 
@@ -72,7 +72,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @deprecated This event prepares and performs a SQL-Insert operation.
  */
-public class InsertEvent extends ValidationEvent {
+public class InsertEvent extends AbstractValidationEvent {
    /** logging category for this class */
    static Log logCat = LogFactory.getLog(InsertEvent.class.getName());
 

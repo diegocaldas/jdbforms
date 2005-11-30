@@ -26,10 +26,10 @@ package org.dbforms.bookstore;
 import java.util.List;
 import java.util.ArrayList;
 import org.dbforms.util.KeyValuePair;
-import org.dbforms.util.HttpTestCase;
+import org.dbforms.util.AbstractHttpTestCase;
 
 // definition of test class
-public class TestValidationServer extends HttpTestCase {
+public class TestValidationServer extends AbstractHttpTestCase {
     // Test method generated from the MaxQ Java generator
     public TestValidationServer(String name) {
         super(name);

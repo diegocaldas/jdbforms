@@ -30,7 +30,7 @@ import org.dbforms.config.FieldValue;
 import org.dbforms.config.ResultSetVector;
 import org.dbforms.config.Table;
 
-import org.dbforms.event.NavigationEvent;
+import org.dbforms.event.AbstractNavigationEvent;
 import org.dbforms.event.datalist.dao.DataSourceFactory;
 import org.dbforms.event.datalist.dao.DataSourceSessionList;
 import org.dbforms.interfaces.DbEventInterceptorData;
@@ -45,7 +45,7 @@ import javax.servlet.http.HttpServletRequest;
  * 
  * @author Henner Kollmann
  */
-public class NavFirstEvent extends NavigationEvent {
+public class NavFirstEvent extends AbstractNavigationEvent {
 	// logging category for this class
 	private static Log logCat = LogFactory
 			.getLog(NavFirstEvent.class.getName());

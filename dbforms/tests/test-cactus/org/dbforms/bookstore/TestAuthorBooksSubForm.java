@@ -23,7 +23,7 @@
 
 package org.dbforms.bookstore;
 
-import org.dbforms.util.HttpTestCase;
+import org.dbforms.util.AbstractHttpTestCase;
 import org.dbforms.util.KeyValuePair;
 import org.dbforms.util.MessageResources;
 import org.dbforms.util.MessageResourcesInternal;
@@ -37,7 +37,7 @@ import java.util.Locale;
 
 
 // definition of test class
-public class TestAuthorBooksSubForm extends HttpTestCase {
+public class TestAuthorBooksSubForm extends AbstractHttpTestCase {
    private String nodata = null;
 
    // Test method generated from the MaxQ Java generator

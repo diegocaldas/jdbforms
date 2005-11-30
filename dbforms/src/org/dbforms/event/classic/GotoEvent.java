@@ -28,7 +28,7 @@ import org.apache.commons.logging.LogFactory;
 
 import org.dbforms.config.*;
 
-import org.dbforms.event.NavigationEvent;
+import org.dbforms.event.AbstractNavigationEvent;
 import org.dbforms.interfaces.DbEventInterceptorData;
 
 import org.dbforms.util.*;
@@ -50,7 +50,7 @@ import javax.servlet.http.*;
  *             to a Request-Dispatcher specified by the Application-Developer
  *             in a "org.dbforms.taglib.DbGotoButton".
  */
-public class GotoEvent extends NavigationEvent {
+public class GotoEvent extends AbstractNavigationEvent {
    // logging category for this class;
    static Log     logCat      = LogFactory.getLog(GotoEvent.class.getName());
    private String childField;

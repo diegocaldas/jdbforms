@@ -43,7 +43,7 @@ public class ConnectionFactory {
    private static ConnectionFactory instance = null;
 
    /** default ConnectionProvider instance */
-   private ConnectionProvider provider = null;
+   private AbstractConnectionProvider provider = null;
 
    /** Log4j category */
    private Log cat = LogFactory.getLog(this.getClass());
@@ -108,7 +108,7 @@ public class ConnectionFactory {
    public void setProvider(ConnectionProviderPrefs prefs)
                     throws Exception {
       String providerClass = prefs.getConnectionProviderClass();
-      provider = (ConnectionProvider) Class.forName(providerClass)
+      provider = (AbstractConnectionProvider) Class.forName(providerClass)
                                            .newInstance();
       provider.setPrefs(prefs);
       provider.init();

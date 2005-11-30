@@ -35,7 +35,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author Luca Fossato
  *
  */
-public abstract class DatabaseEventFactory extends EventFactory {
+public abstract class AbstractDatabaseEventFactory extends AbstractEventFactory {
    /**
     * Create and return a new InsertEvent as secondary event.
     *
@@ -46,7 +46,7 @@ public abstract class DatabaseEventFactory extends EventFactory {
     *
     * @return The updateEvent object
     */
-   public abstract DatabaseEvent createInsertEvent(int                tableId,
+   public abstract AbstractDatabaseEvent createInsertEvent(int                tableId,
                                                    String             keyId,
                                                    HttpServletRequest request,
                                                    DbFormsConfig      config);
@@ -62,7 +62,7 @@ public abstract class DatabaseEventFactory extends EventFactory {
     *
     * @return The updateEvent object
     */
-   public abstract DatabaseEvent createUpdateEvent(int                tableId,
+   public abstract AbstractDatabaseEvent createUpdateEvent(int                tableId,
                                                    String             keyId,
                                                    HttpServletRequest request,
                                                    DbFormsConfig      config);

@@ -30,11 +30,11 @@ package org.dbforms.bookstore;
 import java.util.List;
 import java.util.ArrayList;
 import org.dbforms.util.KeyValuePair;
-import org.dbforms.util.HttpTestCase;
+import org.dbforms.util.AbstractHttpTestCase;
 
 // definition of test class
 public class TestAuthorBooksSubFormWithJavascriptFieldsArray extends
-		HttpTestCase {
+		AbstractHttpTestCase {
 	// Test method generated from the MaxQ Java generator
 	public TestAuthorBooksSubFormWithJavascriptFieldsArray(String name) {
 		super(name);

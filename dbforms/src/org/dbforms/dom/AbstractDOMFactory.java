@@ -50,16 +50,16 @@ import java.net.URLConnection;
  *
  * @author Henner Kollmann
  */
-public abstract class DOMFactory {
+public abstract class AbstractDOMFactory {
    private static final ThreadLocal singlePerThread = new ThreadLocal();
-   private static Log               logCat = LogFactory.getLog(DOMFactory.class
+   private static Log               logCat = LogFactory.getLog(AbstractDOMFactory.class
                                                                .getName());
    private static String            factoryClass = "org.dbforms.dom.DOMFactoryXALANImpl";
 
    /**
     * Creates a new DOMFactory object.
     */
-   protected DOMFactory() {
+   protected AbstractDOMFactory() {
    }
 
    /**
@@ -67,12 +67,12 @@ public abstract class DOMFactory {
     *
     * @return a DOMFactory instance per thread
     */
-   public static DOMFactory instance() {
-      DOMFactory fact = (DOMFactory) singlePerThread.get();
+   public static AbstractDOMFactory instance() {
+      AbstractDOMFactory fact = (AbstractDOMFactory) singlePerThread.get();
 
       if (fact == null) {
          try {
-            fact = (DOMFactory) ReflectionUtil.newInstance(factoryClass);
+            fact = (AbstractDOMFactory) ReflectionUtil.newInstance(factoryClass);
          } catch (Exception e) {
             logCat.error("instance", e);
          }

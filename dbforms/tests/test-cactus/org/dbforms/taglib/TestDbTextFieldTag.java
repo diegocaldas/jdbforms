@@ -34,7 +34,7 @@ import org.dbforms.config.FieldValue;
 import org.dbforms.config.FieldValues;
 import org.dbforms.config.Table;
 
-import org.dbforms.event.DatabaseEvent;
+import org.dbforms.event.AbstractDatabaseEvent;
 import org.dbforms.event.datalist.DeleteEvent;
 import org.dbforms.event.eventtype.EventType;
 
@@ -278,7 +278,7 @@ public class TestDbTextFieldTag extends JspTestCase {
       form.doStartTag();
 
       Table         table   = dbconfig.getTableByName("TIMEPLAN");
-      DatabaseEvent dbEvent = new DeleteEvent(new Integer(table.getId()),
+      AbstractDatabaseEvent dbEvent = new DeleteEvent(new Integer(table.getId()),
                                               "null", request, dbconfig);
 
       // Set type to delete so that all fieldvalues will be parsed!!
