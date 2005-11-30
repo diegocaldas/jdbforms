@@ -1785,7 +1785,7 @@ public class DbFormTag extends AbstractTagSupportWithScriptHandler implements
 								.getType()) && (errors != null)
 						&& (errors.size() > 0)
 						&& (webEvent.getTable().getId() == getTable().getId())
-						&& !hasRedisplayFieldsOnErrorSet()) {
+					) {
 					// error in insert event, nothing to do!
 					navEvent = null;
 					resultSetVector = null;
