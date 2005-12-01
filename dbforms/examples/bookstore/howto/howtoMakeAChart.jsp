@@ -35,6 +35,21 @@
 				    </cewolf:data>
 				</cewolf:chart>
 				<cewolf:img chartid="pieChart" renderer="/cewolf" width="800" height="400"/>
+
+				<cewolf:chart 
+					id="categoryChart" 
+					title='Books per Author' 
+					type="category"
+				>
+				    <cewolf:data>
+				        <db:categoryData  
+				        	categoryField="NAME" 
+				        	dataField="C"
+				        />
+				    </cewolf:data>
+				</cewolf:chart>
+				<cewolf:img chartid="categoryChart" renderer="/cewolf" width="800" height="400"/>
+
 			</db:footer>
 		</db:dbform>
 </body>
