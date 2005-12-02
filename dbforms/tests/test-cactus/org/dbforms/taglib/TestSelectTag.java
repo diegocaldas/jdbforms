@@ -48,9 +48,9 @@ import java.util.Locale;
 public class TestSelectTag extends JspTestCase {
    private static DbFormsConfig dbconfig;
    DbSelectTag                  selectTag;
-   StaticData                   staticData;
-   StaticDataItem               staticDataItem1;
-   StaticDataItem               staticDataItem2;
+   StaticDataTag                   staticData;
+   StaticDataItemTag               staticDataItem1;
+   StaticDataItemTag               staticDataItem2;
    private DbFormTag            form;
 
    /**
@@ -83,18 +83,18 @@ public class TestSelectTag extends JspTestCase {
       selectTag.setParent(form);
       selectTag.setFieldName("AUTHOR_ID");
 
-      staticData = new StaticData();
+      staticData = new StaticDataTag();
       staticData.setPageContext(this.pageContext);
       staticData.setParent(selectTag);
       staticData.setName("AUTHOR_ID");
 
-      staticDataItem1 = new StaticDataItem();
+      staticDataItem1 = new StaticDataItemTag();
       staticDataItem1.setPageContext(this.pageContext);
       staticDataItem1.setParent(staticData);
       staticDataItem1.setKey("1");
       staticDataItem1.setValue("Eco");
 
-      staticDataItem2 = new StaticDataItem();
+      staticDataItem2 = new StaticDataItemTag();
       staticDataItem2.setPageContext(this.pageContext);
       staticDataItem2.setParent(staticData);
       staticDataItem2.setKey("2");

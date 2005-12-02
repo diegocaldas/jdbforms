@@ -23,8 +23,8 @@
 
 package org.dbforms.bookstore;
 
+import org.dbforms.interfaces.StaticData;
 import org.dbforms.util.AbstractHttpTestCase;
-import org.dbforms.util.KeyValuePair;
 
 // imports
 import java.util.ArrayList;
@@ -52,209 +52,209 @@ public class TestBooksSingleXML extends AbstractHttpTestCase {
       assertTrue(responseContains("Die Insel des vorigen Tages"));
 
       list = new ArrayList();
-      list.add(new KeyValuePair("invtable", "7"));
-      list.add(new KeyValuePair("invname_7", "null"));
-      list.add(new KeyValuePair("autoupdate_7", "false"));
-      list.add(new KeyValuePair("fu_7", "/tests/testBOOKSSingleXML.jsp"));
-      list.add(new KeyValuePair("source",
+      list.add(new StaticData("invtable", "7"));
+      list.add(new StaticData("invname_7", "null"));
+      list.add(new StaticData("autoupdate_7", "false"));
+      list.add(new StaticData("fu_7", "/tests/testBOOKSSingleXML.jsp"));
+      list.add(new StaticData("source",
                                 "/bookstore/tests/testBOOKSSingleXML.jsp"));
-      list.add(new KeyValuePair("customEvent", ""));
-      list.add(new KeyValuePair("firstpos_7",
+      list.add(new StaticData("customEvent", ""));
+      list.add(new StaticData("firstpos_7",
                                 "0%3A1%3A1-2%3A1%3A1-3%3A27%3ADie+Insel+des+vorigen+Tages"));
-      list.add(new KeyValuePair("lastpos_7",
+      list.add(new StaticData("lastpos_7",
                                 "0%3A1%3A1-2%3A1%3A1-3%3A27%3ADie+Insel+des+vorigen+Tages"));
-      list.add(new KeyValuePair("ac_next_7", "next"));
-      list.add(new KeyValuePair("k_7_0@root",
+      list.add(new StaticData("ac_next_7", "next"));
+      list.add(new StaticData("k_7_0@root",
                                 "0%3A1%3A1-2%3A1%3A1-3%3A27%3ADie+Insel+des+vorigen+Tages"));
       post("http://localhost/bookstore/servlet/control", list);
       printResponse();
       assertTrue(responseContains("Das Foucaltsche Pendel"));
 
       list = new ArrayList();
-      list.add(new KeyValuePair("invtable", "7"));
-      list.add(new KeyValuePair("invname_7", "null"));
-      list.add(new KeyValuePair("autoupdate_7", "false"));
-      list.add(new KeyValuePair("fu_7", "/tests/testBOOKSSingleXML.jsp"));
-      list.add(new KeyValuePair("source",
+      list.add(new StaticData("invtable", "7"));
+      list.add(new StaticData("invname_7", "null"));
+      list.add(new StaticData("autoupdate_7", "false"));
+      list.add(new StaticData("fu_7", "/tests/testBOOKSSingleXML.jsp"));
+      list.add(new StaticData("source",
                                 "/bookstore/tests/testBOOKSSingleXML.jsp"));
-      list.add(new KeyValuePair("customEvent", ""));
-      list.add(new KeyValuePair("firstpos_7",
+      list.add(new StaticData("customEvent", ""));
+      list.add(new StaticData("firstpos_7",
                                 "0%3A1%3A2-2%3A1%3A1-3%3A22%3ADas+Foucaltsche+Pendel"));
-      list.add(new KeyValuePair("lastpos_7",
+      list.add(new StaticData("lastpos_7",
                                 "0%3A1%3A2-2%3A1%3A1-3%3A22%3ADas+Foucaltsche+Pendel"));
-      list.add(new KeyValuePair("ac_next_7", "next"));
-      list.add(new KeyValuePair("k_7_0@root",
+      list.add(new StaticData("ac_next_7", "next"));
+      list.add(new StaticData("k_7_0@root",
                                 "0%3A1%3A2-2%3A1%3A1-3%3A22%3ADas+Foucaltsche+Pendel"));
       post("http://localhost/bookstore/servlet/control", list);
       printResponse();
       assertTrue(responseContains("Hijacking through the Galaxy 1"));
 
       list = new ArrayList();
-      list.add(new KeyValuePair("invtable", "7"));
-      list.add(new KeyValuePair("invname_7", "null"));
-      list.add(new KeyValuePair("autoupdate_7", "false"));
-      list.add(new KeyValuePair("fu_7", "/tests/testBOOKSSingleXML.jsp"));
-      list.add(new KeyValuePair("source",
+      list.add(new StaticData("invtable", "7"));
+      list.add(new StaticData("invname_7", "null"));
+      list.add(new StaticData("autoupdate_7", "false"));
+      list.add(new StaticData("fu_7", "/tests/testBOOKSSingleXML.jsp"));
+      list.add(new StaticData("source",
                                 "/bookstore/tests/testBOOKSSingleXML.jsp"));
-      list.add(new KeyValuePair("customEvent", ""));
-      list.add(new KeyValuePair("firstpos_7",
+      list.add(new StaticData("customEvent", ""));
+      list.add(new StaticData("firstpos_7",
                                 "0%3A1%3A3-2%3A1%3A2-3%3A30%3AHijacking+through+the+Galaxy+1"));
-      list.add(new KeyValuePair("lastpos_7",
+      list.add(new StaticData("lastpos_7",
                                 "0%3A1%3A3-2%3A1%3A2-3%3A30%3AHijacking+through+the+Galaxy+1"));
-      list.add(new KeyValuePair("ac_next_7", "next"));
-      list.add(new KeyValuePair("k_7_0@root",
+      list.add(new StaticData("ac_next_7", "next"));
+      list.add(new StaticData("k_7_0@root",
                                 "0%3A1%3A3-2%3A1%3A2-3%3A30%3AHijacking+through+the+Galaxy+1"));
       post("http://localhost/bookstore/servlet/control", list);
       printResponse();
       assertTrue(responseContains("Hijacking through the Galaxy 2"));
 
       list = new ArrayList();
-      list.add(new KeyValuePair("invtable", "7"));
-      list.add(new KeyValuePair("invname_7", "null"));
-      list.add(new KeyValuePair("autoupdate_7", "false"));
-      list.add(new KeyValuePair("fu_7", "/tests/testBOOKSSingleXML.jsp"));
-      list.add(new KeyValuePair("source",
+      list.add(new StaticData("invtable", "7"));
+      list.add(new StaticData("invname_7", "null"));
+      list.add(new StaticData("autoupdate_7", "false"));
+      list.add(new StaticData("fu_7", "/tests/testBOOKSSingleXML.jsp"));
+      list.add(new StaticData("source",
                                 "/bookstore/tests/testBOOKSSingleXML.jsp"));
-      list.add(new KeyValuePair("customEvent", ""));
-      list.add(new KeyValuePair("firstpos_7",
+      list.add(new StaticData("customEvent", ""));
+      list.add(new StaticData("firstpos_7",
                                 "0%3A1%3A4-2%3A1%3A2-3%3A30%3AHijacking+through+the+Galaxy+2"));
-      list.add(new KeyValuePair("lastpos_7",
+      list.add(new StaticData("lastpos_7",
                                 "0%3A1%3A4-2%3A1%3A2-3%3A30%3AHijacking+through+the+Galaxy+2"));
-      list.add(new KeyValuePair("ac_next_7", "next"));
-      list.add(new KeyValuePair("k_7_0@root",
+      list.add(new StaticData("ac_next_7", "next"));
+      list.add(new StaticData("k_7_0@root",
                                 "0%3A1%3A4-2%3A1%3A2-3%3A30%3AHijacking+through+the+Galaxy+2"));
       post("http://localhost/bookstore/servlet/control", list);
       printResponse();
       assertTrue(responseContains("Hijacking through the Galaxy 3"));
 
       list = new ArrayList();
-      list.add(new KeyValuePair("invtable", "7"));
-      list.add(new KeyValuePair("invname_7", "null"));
-      list.add(new KeyValuePair("autoupdate_7", "false"));
-      list.add(new KeyValuePair("fu_7", "/tests/testBOOKSSingleXML.jsp"));
-      list.add(new KeyValuePair("source",
+      list.add(new StaticData("invtable", "7"));
+      list.add(new StaticData("invname_7", "null"));
+      list.add(new StaticData("autoupdate_7", "false"));
+      list.add(new StaticData("fu_7", "/tests/testBOOKSSingleXML.jsp"));
+      list.add(new StaticData("source",
                                 "/bookstore/tests/testBOOKSSingleXML.jsp"));
-      list.add(new KeyValuePair("customEvent", ""));
-      list.add(new KeyValuePair("firstpos_7",
+      list.add(new StaticData("customEvent", ""));
+      list.add(new StaticData("firstpos_7",
                                 "0%3A1%3A5-2%3A1%3A2-3%3A30%3AHijacking+through+the+Galaxy+3"));
-      list.add(new KeyValuePair("lastpos_7",
+      list.add(new StaticData("lastpos_7",
                                 "0%3A1%3A5-2%3A1%3A2-3%3A30%3AHijacking+through+the+Galaxy+3"));
-      list.add(new KeyValuePair("ac_next_7", "next"));
-      list.add(new KeyValuePair("k_7_0@root",
+      list.add(new StaticData("ac_next_7", "next"));
+      list.add(new StaticData("k_7_0@root",
                                 "0%3A1%3A5-2%3A1%3A2-3%3A30%3AHijacking+through+the+Galaxy+3"));
       post("http://localhost/bookstore/servlet/control", list);
       printResponse();
       assertTrue(responseContains("Hijacking through the Galaxy 4"));
 
       list = new ArrayList();
-      list.add(new KeyValuePair("invtable", "7"));
-      list.add(new KeyValuePair("invname_7", "null"));
-      list.add(new KeyValuePair("autoupdate_7", "false"));
-      list.add(new KeyValuePair("fu_7", "/tests/testBOOKSSingleXML.jsp"));
-      list.add(new KeyValuePair("source",
+      list.add(new StaticData("invtable", "7"));
+      list.add(new StaticData("invname_7", "null"));
+      list.add(new StaticData("autoupdate_7", "false"));
+      list.add(new StaticData("fu_7", "/tests/testBOOKSSingleXML.jsp"));
+      list.add(new StaticData("source",
                                 "/bookstore/tests/testBOOKSSingleXML.jsp"));
-      list.add(new KeyValuePair("customEvent", ""));
-      list.add(new KeyValuePair("firstpos_7",
+      list.add(new StaticData("customEvent", ""));
+      list.add(new StaticData("firstpos_7",
                                 "0%3A1%3A6-2%3A1%3A2-3%3A30%3AHijacking+through+the+Galaxy+4"));
-      list.add(new KeyValuePair("lastpos_7",
+      list.add(new StaticData("lastpos_7",
                                 "0%3A1%3A6-2%3A1%3A2-3%3A30%3AHijacking+through+the+Galaxy+4"));
-      list.add(new KeyValuePair("ac_next_7", "next"));
-      list.add(new KeyValuePair("k_7_0@root",
+      list.add(new StaticData("ac_next_7", "next"));
+      list.add(new StaticData("k_7_0@root",
                                 "0%3A1%3A6-2%3A1%3A2-3%3A30%3AHijacking+through+the+Galaxy+4"));
       post("http://localhost/bookstore/servlet/control", list);
       printResponse();
       assertTrue(responseContains("Test null value"));
 
       list = new ArrayList();
-      list.add(new KeyValuePair("invtable", "7"));
-      list.add(new KeyValuePair("invname_7", "null"));
-      list.add(new KeyValuePair("autoupdate_7", "false"));
-      list.add(new KeyValuePair("fu_7", "/tests/testBOOKSSingleXML.jsp"));
-      list.add(new KeyValuePair("source",
+      list.add(new StaticData("invtable", "7"));
+      list.add(new StaticData("invname_7", "null"));
+      list.add(new StaticData("autoupdate_7", "false"));
+      list.add(new StaticData("fu_7", "/tests/testBOOKSSingleXML.jsp"));
+      list.add(new StaticData("source",
                                 "/bookstore/tests/testBOOKSSingleXML.jsp"));
-      list.add(new KeyValuePair("customEvent", ""));
-      list.add(new KeyValuePair("firstpos_7",
+      list.add(new StaticData("customEvent", ""));
+      list.add(new StaticData("firstpos_7",
                                 "0%3A1%3A7-2%3A0%3A-3%3A15%3ATest+null+value"));
-      list.add(new KeyValuePair("lastpos_7",
+      list.add(new StaticData("lastpos_7",
                                 "0%3A1%3A7-2%3A0%3A-3%3A15%3ATest+null+value"));
-      list.add(new KeyValuePair("ac_next_7", "next"));
-      list.add(new KeyValuePair("k_7_0@root",
+      list.add(new StaticData("ac_next_7", "next"));
+      list.add(new StaticData("k_7_0@root",
                                 "0%3A1%3A7-2%3A0%3A-3%3A15%3ATest+null+value"));
       post("http://localhost/bookstore/servlet/control", list);
       printResponse();
       assertTrue(responseContains("Luca's favorite thing to eat is  &quot;delicious Italian pasta&quot;"));
 
       list = new ArrayList();
-      list.add(new KeyValuePair("invtable", "7"));
-      list.add(new KeyValuePair("invname_7", "null"));
-      list.add(new KeyValuePair("autoupdate_7", "false"));
-      list.add(new KeyValuePair("fu_7", "/tests/testBOOKSSingleXML.jsp"));
-      list.add(new KeyValuePair("source",
+      list.add(new StaticData("invtable", "7"));
+      list.add(new StaticData("invname_7", "null"));
+      list.add(new StaticData("autoupdate_7", "false"));
+      list.add(new StaticData("fu_7", "/tests/testBOOKSSingleXML.jsp"));
+      list.add(new StaticData("source",
                                 "/bookstore/tests/testBOOKSSingleXML.jsp"));
-      list.add(new KeyValuePair("customEvent", ""));
-      list.add(new KeyValuePair("firstpos_7",
+      list.add(new StaticData("customEvent", ""));
+      list.add(new StaticData("firstpos_7",
                                 "0%3A1%3A8-2%3A1%3A2-3%3A58%3ALuca%27s+favorite+thing+to+eat+is++%22delicious+Italian+pasta%22"));
-      list.add(new KeyValuePair("lastpos_7",
+      list.add(new StaticData("lastpos_7",
                                 "0%3A1%3A8-2%3A1%3A2-3%3A58%3ALuca%27s+favorite+thing+to+eat+is++%22delicious+Italian+pasta%22"));
-      list.add(new KeyValuePair("ac_next_7", "next"));
-      list.add(new KeyValuePair("k_7_0@root",
+      list.add(new StaticData("ac_next_7", "next"));
+      list.add(new StaticData("k_7_0@root",
                                 "0%3A1%3A8-2%3A1%3A2-3%3A58%3ALuca%27s+favorite+thing+to+eat+is++%22delicious+Italian+pasta%22"));
       post("http://localhost/bookstore/servlet/control", list);
       printResponse();
       assertTrue(responseContains("Hijacking through the Galaxy 6"));
 
       list = new ArrayList();
-      list.add(new KeyValuePair("invtable", "7"));
-      list.add(new KeyValuePair("invname_7", "null"));
-      list.add(new KeyValuePair("autoupdate_7", "false"));
-      list.add(new KeyValuePair("fu_7", "/tests/testBOOKSSingleXML.jsp"));
-      list.add(new KeyValuePair("source",
+      list.add(new StaticData("invtable", "7"));
+      list.add(new StaticData("invname_7", "null"));
+      list.add(new StaticData("autoupdate_7", "false"));
+      list.add(new StaticData("fu_7", "/tests/testBOOKSSingleXML.jsp"));
+      list.add(new StaticData("source",
                                 "/bookstore/tests/testBOOKSSingleXML.jsp"));
-      list.add(new KeyValuePair("customEvent", ""));
-      list.add(new KeyValuePair("firstpos_7",
+      list.add(new StaticData("customEvent", ""));
+      list.add(new StaticData("firstpos_7",
                                 "0%3A1%3A9-2%3A1%3A2-3%3A30%3AHijacking+through+the+Galaxy+6"));
-      list.add(new KeyValuePair("lastpos_7",
+      list.add(new StaticData("lastpos_7",
                                 "0%3A1%3A9-2%3A1%3A2-3%3A30%3AHijacking+through+the+Galaxy+6"));
-      list.add(new KeyValuePair("ac_next_7", "next"));
-      list.add(new KeyValuePair("k_7_0@root",
+      list.add(new StaticData("ac_next_7", "next"));
+      list.add(new StaticData("k_7_0@root",
                                 "0%3A1%3A9-2%3A1%3A2-3%3A30%3AHijacking+through+the+Galaxy+6"));
       post("http://localhost/bookstore/servlet/control", list);
       printResponse();
       assertTrue(responseContains("Hijacking through the Galaxy 6"));
 
       list = new ArrayList();
-      list.add(new KeyValuePair("invtable", "7"));
-      list.add(new KeyValuePair("invname_7", "null"));
-      list.add(new KeyValuePair("autoupdate_7", "false"));
-      list.add(new KeyValuePair("fu_7", "/tests/testBOOKSSingleXML.jsp"));
-      list.add(new KeyValuePair("source",
+      list.add(new StaticData("invtable", "7"));
+      list.add(new StaticData("invname_7", "null"));
+      list.add(new StaticData("autoupdate_7", "false"));
+      list.add(new StaticData("fu_7", "/tests/testBOOKSSingleXML.jsp"));
+      list.add(new StaticData("source",
                                 "/bookstore/tests/testBOOKSSingleXML.jsp"));
-      list.add(new KeyValuePair("customEvent", ""));
-      list.add(new KeyValuePair("firstpos_7",
+      list.add(new StaticData("customEvent", ""));
+      list.add(new StaticData("firstpos_7",
                                 "0%3A1%3A9-2%3A1%3A2-3%3A30%3AHijacking+through+the+Galaxy+6"));
-      list.add(new KeyValuePair("lastpos_7",
+      list.add(new StaticData("lastpos_7",
                                 "0%3A1%3A9-2%3A1%3A2-3%3A30%3AHijacking+through+the+Galaxy+6"));
-      list.add(new KeyValuePair("ac_first_7", "first"));
-      list.add(new KeyValuePair("k_7_0@root",
+      list.add(new StaticData("ac_first_7", "first"));
+      list.add(new StaticData("k_7_0@root",
                                 "0%3A1%3A9-2%3A1%3A2-3%3A30%3AHijacking+through+the+Galaxy+6"));
       post("http://localhost/bookstore/servlet/control", list);
       printResponse();
       assertTrue(responseContains("Die Insel des vorigen Tages"));
 
       list = new ArrayList();
-      list.add(new KeyValuePair("invtable", "7"));
-      list.add(new KeyValuePair("invname_7", "null"));
-      list.add(new KeyValuePair("autoupdate_7", "false"));
-      list.add(new KeyValuePair("fu_7", "/tests/testBOOKSSingleXML.jsp"));
-      list.add(new KeyValuePair("source",
+      list.add(new StaticData("invtable", "7"));
+      list.add(new StaticData("invname_7", "null"));
+      list.add(new StaticData("autoupdate_7", "false"));
+      list.add(new StaticData("fu_7", "/tests/testBOOKSSingleXML.jsp"));
+      list.add(new StaticData("source",
                                 "/bookstore/tests/testBOOKSSingleXML.jsp"));
-      list.add(new KeyValuePair("customEvent", ""));
-      list.add(new KeyValuePair("firstpos_7",
+      list.add(new StaticData("customEvent", ""));
+      list.add(new StaticData("firstpos_7",
                                 "0%3A1%3A1-2%3A1%3A1-3%3A27%3ADie+Insel+des+vorigen+Tages"));
-      list.add(new KeyValuePair("lastpos_7",
+      list.add(new StaticData("lastpos_7",
                                 "0%3A1%3A1-2%3A1%3A1-3%3A27%3ADie+Insel+des+vorigen+Tages"));
-      list.add(new KeyValuePair("ac_last_7", "last"));
-      list.add(new KeyValuePair("k_7_0@root",
+      list.add(new StaticData("ac_last_7", "last"));
+      list.add(new StaticData("k_7_0@root",
                                 "0%3A1%3A1-2%3A1%3A1-3%3A27%3ADie+Insel+des+vorigen+Tages"));
       post("http://localhost/bookstore/servlet/control", list);
       printResponse();

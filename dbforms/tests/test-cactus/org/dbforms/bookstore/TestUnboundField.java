@@ -23,8 +23,8 @@
 
 package org.dbforms.bookstore;
 
+import org.dbforms.interfaces.StaticData;
 import org.dbforms.util.AbstractHttpTestCase;
-import org.dbforms.util.KeyValuePair;
 import org.dbforms.util.MessageResources;
 import org.dbforms.util.MessageResourcesInternal;
 
@@ -61,48 +61,48 @@ public class TestUnboundField extends AbstractHttpTestCase {
       assertTrue(responseContains("name=\"f_0_0@root_1\" value=\"Eco, Umberto\""));
 
       list = new ArrayList();
-      list.add(new KeyValuePair("invtable", "0"));
-      list.add(new KeyValuePair("invname_0", ""));
-      list.add(new KeyValuePair("autoupdate_0", "false"));
-      list.add(new KeyValuePair("fu_0", "/tests/testUnboundField.jsp"));
-      list.add(new KeyValuePair("lang", "de"));
-      list.add(new KeyValuePair("source",
+      list.add(new StaticData("invtable", "0"));
+      list.add(new StaticData("invname_0", ""));
+      list.add(new StaticData("autoupdate_0", "false"));
+      list.add(new StaticData("fu_0", "/tests/testUnboundField.jsp"));
+      list.add(new StaticData("lang", "de"));
+      list.add(new StaticData("source",
                                 "/bookstore/tests/testUnboundField.jsp"));
-      list.add(new KeyValuePair("customEvent", ""));
-      list.add(new KeyValuePair("firstpos_0", "0%3A1%3A1"));
-      list.add(new KeyValuePair("lastpos_0", "0%3A1%3A1"));
-      list.add(new KeyValuePair("f_0_0@root_1", "Eco, Umberto"));
-      list.add(new KeyValuePair("of_0_0@root_1", "Eco, Umberto"));
-      list.add(new KeyValuePair("f_0_0@root_2", "organisation 11"));
-      list.add(new KeyValuePair("of_0_0@root_2", "organisation 11"));
-      list.add(new KeyValuePair("UNBOUNDED", "[NULL]"));
-      list.add(new KeyValuePair("oUNBOUNDED", "[NULL]"));
-      list.add(new KeyValuePair("ac_next_0_46", ">  Next"));
-      list.add(new KeyValuePair("k_0_0@root", "0%3A1%3A1"));
+      list.add(new StaticData("customEvent", ""));
+      list.add(new StaticData("firstpos_0", "0%3A1%3A1"));
+      list.add(new StaticData("lastpos_0", "0%3A1%3A1"));
+      list.add(new StaticData("f_0_0@root_1", "Eco, Umberto"));
+      list.add(new StaticData("of_0_0@root_1", "Eco, Umberto"));
+      list.add(new StaticData("f_0_0@root_2", "organisation 11"));
+      list.add(new StaticData("of_0_0@root_2", "organisation 11"));
+      list.add(new StaticData("UNBOUNDED", "[NULL]"));
+      list.add(new StaticData("oUNBOUNDED", "[NULL]"));
+      list.add(new StaticData("ac_next_0_46", ">  Next"));
+      list.add(new StaticData("k_0_0@root", "0%3A1%3A1"));
       post("http://localhost/bookstore/servlet/control", list);
       printResponse();
       assertTrue(responseContains("name=\"UNBOUNDED\" value=\"" + nodata + "\""));
       assertTrue(responseContains("name=\"f_0_0@root_1\" value=\"Douglas, Adam\""));
 
       list = new ArrayList();
-      list.add(new KeyValuePair("invtable", "0"));
-      list.add(new KeyValuePair("invname_0", ""));
-      list.add(new KeyValuePair("autoupdate_0", "false"));
-      list.add(new KeyValuePair("fu_0", "/tests/testUnboundField.jsp"));
-      list.add(new KeyValuePair("lang", "de"));
-      list.add(new KeyValuePair("source",
+      list.add(new StaticData("invtable", "0"));
+      list.add(new StaticData("invname_0", ""));
+      list.add(new StaticData("autoupdate_0", "false"));
+      list.add(new StaticData("fu_0", "/tests/testUnboundField.jsp"));
+      list.add(new StaticData("lang", "de"));
+      list.add(new StaticData("source",
                                 "/bookstore/tests/testUnboundField.jsp"));
-      list.add(new KeyValuePair("customEvent", ""));
-      list.add(new KeyValuePair("firstpos_0", "0%3A1%3A2"));
-      list.add(new KeyValuePair("lastpos_0", "0%3A1%3A2"));
-      list.add(new KeyValuePair("f_0_0@root_1", "Douglas, Adam"));
-      list.add(new KeyValuePair("of_0_0@root_1", "Douglas, Adam"));
-      list.add(new KeyValuePair("f_0_0@root_2", "organisation 2"));
-      list.add(new KeyValuePair("of_0_0@root_2", "organisation 2"));
-      list.add(new KeyValuePair("UNBOUNDED", "[NULL]"));
-      list.add(new KeyValuePair("oUNBOUNDED", "[NULL]"));
-      list.add(new KeyValuePair("ac_next_0_52", ">  Next"));
-      list.add(new KeyValuePair("k_0_0@root", "0%3A1%3A2"));
+      list.add(new StaticData("customEvent", ""));
+      list.add(new StaticData("firstpos_0", "0%3A1%3A2"));
+      list.add(new StaticData("lastpos_0", "0%3A1%3A2"));
+      list.add(new StaticData("f_0_0@root_1", "Douglas, Adam"));
+      list.add(new StaticData("of_0_0@root_1", "Douglas, Adam"));
+      list.add(new StaticData("f_0_0@root_2", "organisation 2"));
+      list.add(new StaticData("of_0_0@root_2", "organisation 2"));
+      list.add(new StaticData("UNBOUNDED", "[NULL]"));
+      list.add(new StaticData("oUNBOUNDED", "[NULL]"));
+      list.add(new StaticData("ac_next_0_52", ">  Next"));
+      list.add(new StaticData("k_0_0@root", "0%3A1%3A2"));
       post("http://localhost/bookstore/servlet/control", list);
       printResponse();
       assertTrue(responseContains("name=\"UNBOUNDED\" value=\"" + nodata + "\""));

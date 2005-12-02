@@ -25,7 +25,7 @@
  * this class was introduced in DbForms 0.9 it is used for holding simple data
  * for example in EmbeddedData - Classes
  */
-package org.dbforms.util;
+package org.dbforms.interfaces;
 
 
 /**
@@ -34,14 +34,14 @@ package org.dbforms.util;
  * @author foxat
  *
  */
-public class KeyValuePair {
+public class StaticData {
    private String key;
    private String value;
 
    /**
     * Creates a new KeyValuePair object.
     */
-   public KeyValuePair() {
+   public StaticData() {
    }
 
 
@@ -51,7 +51,7 @@ public class KeyValuePair {
     * @param key the key value
     * @param value the value related to the key
     */
-   public KeyValuePair(String key,
+   public StaticData(String key,
                        String value) {
       this.key   = key;
       this.value = value;

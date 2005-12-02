@@ -29,7 +29,8 @@ package org.dbforms.bookstore;
 // imports
 import java.util.List;
 import java.util.ArrayList;
-import org.dbforms.util.KeyValuePair;
+
+import org.dbforms.interfaces.StaticData;
 import org.dbforms.util.AbstractHttpTestCase;
 
 // definition of test class
@@ -52,58 +53,58 @@ public class TestAuthorBooksSubFormWithJavascriptFieldsArray extends
 
 		
 		list = new ArrayList();
-		list.add(new KeyValuePair("invtable", "0"));
-		list.add(new KeyValuePair("invname_0", ""));
-		list.add(new KeyValuePair("autoupdate_0", "false"));
-		list.add(new KeyValuePair("fu_0",
+		list.add(new StaticData("invtable", "0"));
+		list.add(new StaticData("invname_0", ""));
+		list.add(new StaticData("autoupdate_0", "false"));
+		list.add(new StaticData("fu_0",
 				"/tests/testAuthorBooksSubFormWithJavascriptFieldsArray.jsp"));
-		list.add(new KeyValuePair("lang", "de"));
+		list.add(new StaticData("lang", "de"));
 		list
-				.add(new KeyValuePair("source",
+				.add(new StaticData("source",
 						"/bookstore/tests/testAuthorBooksSubFormWithJavascriptFieldsArray.jsp"));
-		list.add(new KeyValuePair("customEvent", ""));
-		list.add(new KeyValuePair("firstpos_0",
+		list.add(new StaticData("customEvent", ""));
+		list.add(new StaticData("firstpos_0",
 				"0%3A1%3A1-1%3A12%3AEco%2C+Umberto-2%3A15%3Aorganisation+11"));
-		list.add(new KeyValuePair("lastpos_0",
+		list.add(new StaticData("lastpos_0",
 				"0%3A1%3A1-1%3A12%3AEco%2C+Umberto-2%3A15%3Aorganisation+11"));
-		list.add(new KeyValuePair("f_0_0@root_1", "Eco, Umberto"));
-		list.add(new KeyValuePair("of_0_0@root_1", "Eco, Umberto"));
-		list.add(new KeyValuePair("f_0_0@root_2", "organisation 11"));
-		list.add(new KeyValuePair("of_0_0@root_2", "organisation 11"));
-		list.add(new KeyValuePair("invtable", "1"));
-		list.add(new KeyValuePair("invname_1", ""));
-		list.add(new KeyValuePair("autoupdate_1", "false"));
-		list.add(new KeyValuePair("fu_1",
+		list.add(new StaticData("f_0_0@root_1", "Eco, Umberto"));
+		list.add(new StaticData("of_0_0@root_1", "Eco, Umberto"));
+		list.add(new StaticData("f_0_0@root_2", "organisation 11"));
+		list.add(new StaticData("of_0_0@root_2", "organisation 11"));
+		list.add(new StaticData("invtable", "1"));
+		list.add(new StaticData("invname_1", ""));
+		list.add(new StaticData("autoupdate_1", "false"));
+		list.add(new StaticData("fu_1",
 				"/tests/testAuthorBooksSubFormWithJavascriptFieldsArray.jsp"));
-		list.add(new KeyValuePair("lang", "de"));
+		list.add(new StaticData("lang", "de"));
 		list
-				.add(new KeyValuePair("source",
+				.add(new StaticData("source",
 						"/bookstore/tests/testAuthorBooksSubFormWithJavascriptFieldsArray.jsp"));
-		list.add(new KeyValuePair("customEvent", ""));
-		list.add(new KeyValuePair("firstpos_1", "0%3A1%3A1-2%3A1%3A1"));
-		list.add(new KeyValuePair("lastpos_1", "0%3A1%3A2-2%3A1%3A1"));
-		list.add(new KeyValuePair("f_1_0@0@root_1", "Click here to check!"));
-		list.add(new KeyValuePair("of_1_0@0@root_1", "3-423-12445-4"));
-		list.add(new KeyValuePair("f_1_0@0@root_1", "3-423-12445-4"));
-		list.add(new KeyValuePair("of_1_0@0@root_1", "3-423-12445-4"));
-		list.add(new KeyValuePair("f_1_0@0@root_3",
+		list.add(new StaticData("customEvent", ""));
+		list.add(new StaticData("firstpos_1", "0%3A1%3A1-2%3A1%3A1"));
+		list.add(new StaticData("lastpos_1", "0%3A1%3A2-2%3A1%3A1"));
+		list.add(new StaticData("f_1_0@0@root_1", "Click here to check!"));
+		list.add(new StaticData("of_1_0@0@root_1", "3-423-12445-4"));
+		list.add(new StaticData("f_1_0@0@root_1", "3-423-12445-4"));
+		list.add(new StaticData("of_1_0@0@root_1", "3-423-12445-4"));
+		list.add(new StaticData("f_1_0@0@root_3",
 				"Die Insel des vorigen Tages"));
-		list.add(new KeyValuePair("of_1_0@0@root_3",
+		list.add(new StaticData("of_1_0@0@root_3",
 				"Die Insel des vorigen Tages"));
-		list.add(new KeyValuePair("f_1_1@0@root_1", "Click here to check!"));
-		list.add(new KeyValuePair("of_1_1@0@root_1", "3-423-12445-5"));
-		list.add(new KeyValuePair("f_1_1@0@root_1", "3-423-12445-5"));
-		list.add(new KeyValuePair("of_1_1@0@root_1", "3-423-12445-5"));
-		list.add(new KeyValuePair("f_1_1@0@root_3", "Das Foucaltsche Pendel"));
-		list.add(new KeyValuePair("of_1_1@0@root_3", "Das Foucaltsche Pendel"));
-		list.add(new KeyValuePair("ac_new_1_14", "New"));
-		list.add(new KeyValuePair("k_1_0@0@root", "0%3A1%3A1-2%3A1%3A1"));
-		list.add(new KeyValuePair("f_1_0@0@root_2", "1"));
-		list.add(new KeyValuePair("pf_1_0@0@root_2", "#,##0"));
-		list.add(new KeyValuePair("k_1_1@0@root", "0%3A1%3A2-2%3A1%3A1"));
-		list.add(new KeyValuePair("f_1_1@0@root_2", "1"));
-		list.add(new KeyValuePair("pf_1_1@0@root_2", "#,##0"));
-		list.add(new KeyValuePair("k_0_0@root", "0%3A1%3A1"));
+		list.add(new StaticData("f_1_1@0@root_1", "Click here to check!"));
+		list.add(new StaticData("of_1_1@0@root_1", "3-423-12445-5"));
+		list.add(new StaticData("f_1_1@0@root_1", "3-423-12445-5"));
+		list.add(new StaticData("of_1_1@0@root_1", "3-423-12445-5"));
+		list.add(new StaticData("f_1_1@0@root_3", "Das Foucaltsche Pendel"));
+		list.add(new StaticData("of_1_1@0@root_3", "Das Foucaltsche Pendel"));
+		list.add(new StaticData("ac_new_1_14", "New"));
+		list.add(new StaticData("k_1_0@0@root", "0%3A1%3A1-2%3A1%3A1"));
+		list.add(new StaticData("f_1_0@0@root_2", "1"));
+		list.add(new StaticData("pf_1_0@0@root_2", "#,##0"));
+		list.add(new StaticData("k_1_1@0@root", "0%3A1%3A2-2%3A1%3A1"));
+		list.add(new StaticData("f_1_1@0@root_2", "1"));
+		list.add(new StaticData("pf_1_1@0@root_2", "#,##0"));
+		list.add(new StaticData("k_0_0@root", "0%3A1%3A1"));
 		post(
 				"http://localhost/bookstore/servlet/control;jsessionid=76AF3491CCEEEDA0F3F549C6E017217E",
 				list);

@@ -51,9 +51,9 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author Joachim Peer
  */
-public class TableData extends AbstractEmbeddedData
+public class TableDataTag extends AbstractEmbeddedDataTag
    implements javax.servlet.jsp.tagext.TryCatchFinally {
-   private static Log logCat = LogFactory.getLog(TableData.class.getName());
+   private static Log logCat = LogFactory.getLog(TableDataTag.class.getName());
 
    // logging category for this class
    private String foreignTable;

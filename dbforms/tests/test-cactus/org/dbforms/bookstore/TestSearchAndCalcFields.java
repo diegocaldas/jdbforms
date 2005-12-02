@@ -21,8 +21,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.bookstore;
+import org.dbforms.interfaces.StaticData;
 import org.dbforms.util.AbstractHttpTestCase;
-import org.dbforms.util.KeyValuePair;
 import org.dbforms.util.MessageResources;
 import org.dbforms.util.MessageResourcesInternal;
 
@@ -80,29 +80,29 @@ public class TestSearchAndCalcFields extends AbstractHttpTestCase {
             "8&nbsp;9&nbsp;42-6&nbsp;Hijacking through the Galaxy 6&nbsp;" + nodata + "&nbsp;+-42-6-CALC-Hijacking through the Galaxy 6-+&nbsp;<br/>"));
 
       list = new ArrayList();
-      list.add(new KeyValuePair("invtable", "2"));
-      list.add(new KeyValuePair("invname_2", ""));
-      list.add(new KeyValuePair("autoupdate_2", "false"));
-      list.add(new KeyValuePair("fu_2", "/tests/testSearchAndCalcFields.jsp"));
-      list.add(new KeyValuePair("lang", "de"));
-      list.add(new KeyValuePair("source",
+      list.add(new StaticData("invtable", "2"));
+      list.add(new StaticData("invname_2", ""));
+      list.add(new StaticData("autoupdate_2", "false"));
+      list.add(new StaticData("fu_2", "/tests/testSearchAndCalcFields.jsp"));
+      list.add(new StaticData("lang", "de"));
+      list.add(new StaticData("source",
             "/bookstore/tests/testSearchAndCalcFields.jsp"));
-      list.add(new KeyValuePair("customEvent", ""));
-      list.add(new KeyValuePair("firstpos_2", "0%3A1%3A1"));
-      list.add(new KeyValuePair("lastpos_2", "0%3A1%3A9"));
-      list.add(new KeyValuePair("psearch_2_1000", "#,##0"));
-      list.add(new KeyValuePair("searchalgo_2_1000", "sharp"));
-      list.add(new KeyValuePair("searchmode_2_1000", "and"));
-      list.add(new KeyValuePair("search_2_1000", "2"));
-      list.add(new KeyValuePair("k_2_0@root", "0%3A1%3A1"));
-      list.add(new KeyValuePair("k_2_1@root", "0%3A1%3A2"));
-      list.add(new KeyValuePair("k_2_2@root", "0%3A1%3A3"));
-      list.add(new KeyValuePair("k_2_3@root", "0%3A1%3A4"));
-      list.add(new KeyValuePair("k_2_4@root", "0%3A1%3A5"));
-      list.add(new KeyValuePair("k_2_5@root", "0%3A1%3A6"));
-      list.add(new KeyValuePair("k_2_6@root", "0%3A1%3A7"));
-      list.add(new KeyValuePair("k_2_7@root", "0%3A1%3A8"));
-      list.add(new KeyValuePair("k_2_8@root", "0%3A1%3A9"));
+      list.add(new StaticData("customEvent", ""));
+      list.add(new StaticData("firstpos_2", "0%3A1%3A1"));
+      list.add(new StaticData("lastpos_2", "0%3A1%3A9"));
+      list.add(new StaticData("psearch_2_1000", "#,##0"));
+      list.add(new StaticData("searchalgo_2_1000", "sharp"));
+      list.add(new StaticData("searchmode_2_1000", "and"));
+      list.add(new StaticData("search_2_1000", "2"));
+      list.add(new StaticData("k_2_0@root", "0%3A1%3A1"));
+      list.add(new StaticData("k_2_1@root", "0%3A1%3A2"));
+      list.add(new StaticData("k_2_2@root", "0%3A1%3A3"));
+      list.add(new StaticData("k_2_3@root", "0%3A1%3A4"));
+      list.add(new StaticData("k_2_4@root", "0%3A1%3A5"));
+      list.add(new StaticData("k_2_5@root", "0%3A1%3A6"));
+      list.add(new StaticData("k_2_6@root", "0%3A1%3A7"));
+      list.add(new StaticData("k_2_7@root", "0%3A1%3A8"));
+      list.add(new StaticData("k_2_8@root", "0%3A1%3A9"));
       post("http://localhost/bookstore/servlet/control", list);
       printResponse();
       assertTrue(responseContains(
@@ -119,26 +119,26 @@ public class TestSearchAndCalcFields extends AbstractHttpTestCase {
             "6&nbsp;9&nbsp;42-6&nbsp;Hijacking through the Galaxy 6&nbsp;" + nodata + "&nbsp;+-42-6-CALC-Hijacking through the Galaxy 6-+&nbsp;<br/>"));
 
       list = new ArrayList();
-      list.add(new KeyValuePair("invtable", "2"));
-      list.add(new KeyValuePair("invname_2", ""));
-      list.add(new KeyValuePair("autoupdate_2", "false"));
-      list.add(new KeyValuePair("fu_2", "/tests/testSearchAndCalcFields.jsp"));
-      list.add(new KeyValuePair("lang", "de"));
-      list.add(new KeyValuePair("source",
+      list.add(new StaticData("invtable", "2"));
+      list.add(new StaticData("invname_2", ""));
+      list.add(new StaticData("autoupdate_2", "false"));
+      list.add(new StaticData("fu_2", "/tests/testSearchAndCalcFields.jsp"));
+      list.add(new StaticData("lang", "de"));
+      list.add(new StaticData("source",
             "/bookstore/tests/testSearchAndCalcFields.jsp"));
-      list.add(new KeyValuePair("customEvent", ""));
-      list.add(new KeyValuePair("firstpos_2", "0%3A1%3A3"));
-      list.add(new KeyValuePair("lastpos_2", "0%3A1%3A9"));
-      list.add(new KeyValuePair("psearch_2_1000", "#,##0"));
-      list.add(new KeyValuePair("searchalgo_2_1000", "sharp"));
-      list.add(new KeyValuePair("searchmode_2_1000", "and"));
-      list.add(new KeyValuePair("search_2_1000", "1"));
-      list.add(new KeyValuePair("k_2_0@root", "0%3A1%3A3"));
-      list.add(new KeyValuePair("k_2_1@root", "0%3A1%3A4"));
-      list.add(new KeyValuePair("k_2_2@root", "0%3A1%3A5"));
-      list.add(new KeyValuePair("k_2_3@root", "0%3A1%3A6"));
-      list.add(new KeyValuePair("k_2_4@root", "0%3A1%3A8"));
-      list.add(new KeyValuePair("k_2_5@root", "0%3A1%3A9"));
+      list.add(new StaticData("customEvent", ""));
+      list.add(new StaticData("firstpos_2", "0%3A1%3A3"));
+      list.add(new StaticData("lastpos_2", "0%3A1%3A9"));
+      list.add(new StaticData("psearch_2_1000", "#,##0"));
+      list.add(new StaticData("searchalgo_2_1000", "sharp"));
+      list.add(new StaticData("searchmode_2_1000", "and"));
+      list.add(new StaticData("search_2_1000", "1"));
+      list.add(new StaticData("k_2_0@root", "0%3A1%3A3"));
+      list.add(new StaticData("k_2_1@root", "0%3A1%3A4"));
+      list.add(new StaticData("k_2_2@root", "0%3A1%3A5"));
+      list.add(new StaticData("k_2_3@root", "0%3A1%3A6"));
+      list.add(new StaticData("k_2_4@root", "0%3A1%3A8"));
+      list.add(new StaticData("k_2_5@root", "0%3A1%3A9"));
       post("http://localhost/bookstore/servlet/control", list);
       printResponse();
       assertTrue(responseContains(

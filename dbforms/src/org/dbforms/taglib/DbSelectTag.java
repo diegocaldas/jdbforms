@@ -26,6 +26,7 @@ package org.dbforms.taglib;
 import org.dbforms.event.AbstractWebEvent;
 import org.dbforms.event.eventtype.EventType;
 import org.dbforms.interfaces.IDataContainer;
+import org.dbforms.interfaces.StaticData;
 
 import org.dbforms.util.*;
 
@@ -284,7 +285,7 @@ public class DbSelectTag extends AbstractDbBaseHandlerTag implements IDataContai
 
          if (drawIt) {
             for (int i = 0; i < embeddedDataSize; i++) {
-               KeyValuePair aKeyValuePair = (KeyValuePair) embeddedData.get(i);
+               StaticData aKeyValuePair = (StaticData) embeddedData.get(i);
                String       aKey   = aKeyValuePair.getKey();
                String       aValue = aKeyValuePair.getValue();
 

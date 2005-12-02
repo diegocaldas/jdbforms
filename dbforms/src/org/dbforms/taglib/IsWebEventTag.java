@@ -40,17 +40,17 @@ import javax.servlet.jsp.JspException;
  * @author $author$
  * @version $Revision$
  */
-public class IsWebEvent extends AbstractDbBaseHandlerTag
+public class IsWebEventTag extends AbstractDbBaseHandlerTag
    implements javax.servlet.jsp.tagext.TryCatchFinally {
    // logging category for this class
-   private static Log logCat = LogFactory.getLog(IsWebEvent.class.getName());
+   private static Log logCat = LogFactory.getLog(IsWebEventTag.class.getName());
    private String     event;
    private String     value;
 
    /**
     * Creates a new IsWebEvent object.
     */
-   public IsWebEvent() {
+   public IsWebEventTag() {
       value = "true";
       event = null;
    }

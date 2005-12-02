@@ -2749,7 +2749,7 @@
 					select - tag!(useful only in conjunction with radio,
 					checkbox or select - tag)
 				</summary>
-				<tagclass>org.dbforms.taglib.TableData</tagclass>
+				<tagclass>org.dbforms.taglib.TableDataTag</tagclass>
 				<bodycontent>JSP</bodycontent>
 				<info>
 					<p>
@@ -2921,7 +2921,7 @@
 					use the table data given in the conf file and use a
 					filter clause like in dbform tag
 				</summary>
-				<tagclass>org.dbforms.taglib.ConfTableData</tagclass>
+				<tagclass>org.dbforms.taglib.ConfTableDataTag</tagclass>
 				<bodycontent>JSP</bodycontent>
 				<info>
 					<p>
@@ -3093,7 +3093,7 @@
 			</tag>
 			<!-- **************************** queryData tag ***********************************-->
 			<tag>
-				<name>queryData</name>
+				<name>queryDataTag</name>
 				<summary>
 					external data to be nested into radio, checkbox or
 					select - tag!(useful only in conjunction with radio,
@@ -3268,7 +3268,7 @@
 					select - tag!(useful only in conjunction with radio,
 					checkbox or select - tag)
 				</summary>
-				<tagclass>org.dbforms.taglib.StaticData</tagclass>
+				<tagclass>org.dbforms.taglib.StaticDataTag</tagclass>
 				<bodycontent>JSP</bodycontent>
 				<info>
 					<p>
@@ -3346,7 +3346,7 @@
 					data to be nested into staticData element! (see
 					description of staticData for further details)
 				</summary>
-				<tagclass>org.dbforms.taglib.StaticDataItem</tagclass>
+				<tagclass>org.dbforms.taglib.StaticDataItemTag</tagclass>
 				<bodycontent>empty</bodycontent>
 				<attribute>
 					<name>key</name>
@@ -3367,7 +3367,7 @@
 					database connection object using the same settings
 					found in dbForms-config.xml
 				</summary>
-				<tagclass>org.dbforms.taglib.DbGetConnection</tagclass>
+				<tagclass>org.dbforms.taglib.DbGetConnectionTag</tagclass>
 				<bodycontent>JSP</bodycontent>
 				<attribute>
 					<name>id</name>
@@ -3424,7 +3424,7 @@
 					DataSource using the same settings found in
 					dbForms-config.xml
 				</summary>
-				<tagclass>org.dbforms.taglib.DbSetDataSource</tagclass>
+				<tagclass>org.dbforms.taglib.DbSetDataSourceTag</tagclass>
 				<bodycontent>JSP</bodycontent>
 				<attribute>
 					<name>dataSource</name>
@@ -9709,7 +9709,7 @@
 			</tag>
 			<!-- **************************** isWebEvent tag ***********************************-->
 			<tag>
-				<name>isWebEvent</name>
+				<name>isWebEventTag</name>
 				<summary>
 					Allows a developer to detect which type of event is
 					being processed by the DbForms controller. The

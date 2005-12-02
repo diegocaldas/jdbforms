@@ -36,7 +36,7 @@ import javax.servlet.jsp.JspException;
 /**
  * 2002-09-23 HKK: Extented to support parameters
  */
-public class MessageTag extends AbstractTagSupportWithScriptHandler
+public class MessageTag extends AbstractScriptHandlerTag
    implements javax.servlet.jsp.tagext.TryCatchFinally {
    private String key   = null;
    private String param = null;

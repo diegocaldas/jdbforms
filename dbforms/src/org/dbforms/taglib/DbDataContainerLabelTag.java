@@ -28,8 +28,8 @@ import org.apache.commons.logging.LogFactory;
 
 import org.dbforms.config.ResultSetVector;
 import org.dbforms.interfaces.IDataContainer;
+import org.dbforms.interfaces.StaticData;
 
-import org.dbforms.util.KeyValuePair;
 import org.dbforms.util.Util;
 
 import java.util.List;
@@ -124,7 +124,7 @@ public class DbDataContainerLabelTag extends AbstractDbBaseHandlerTag
                String embeddedDataValue = null;
 
                while (i < embeddedDataSize) {
-                  KeyValuePair aKeyValuePair = (KeyValuePair) embeddedData.get(i);
+                  StaticData aKeyValuePair = (StaticData) embeddedData.get(i);
 
                   if (aKeyValuePair.getKey()
                                          .equals(compareValue)) {

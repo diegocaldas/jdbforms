@@ -51,7 +51,7 @@ import javax.servlet.jsp.PageContext;
  *
  * @author Joe Peer
  */
-public class ErrorsTag extends AbstractTagSupportWithScriptHandler
+public class ErrorsTag extends AbstractScriptHandlerTag
    implements javax.servlet.jsp.tagext.TryCatchFinally {
    private String caption       = "Error:";
    private String messagePrefix;

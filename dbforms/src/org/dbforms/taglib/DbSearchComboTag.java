@@ -25,6 +25,7 @@ package org.dbforms.taglib;
 
 import org.dbforms.config.*;
 import org.dbforms.interfaces.IDataContainer;
+import org.dbforms.interfaces.StaticData;
 
 import org.dbforms.util.*;
 
@@ -221,7 +222,7 @@ public class DbSearchComboTag extends DbSearchTag implements IDataContainer,
          }
 
          for (int i = 0; i < embeddedDataSize; i++) {
-            KeyValuePair aKeyValuePair = (KeyValuePair) embeddedData.get(i);
+            StaticData aKeyValuePair = (StaticData) embeddedData.get(i);
             String       aKey   = aKeyValuePair.getKey();
             String       aValue = aKeyValuePair.getValue();
 

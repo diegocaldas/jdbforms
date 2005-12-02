@@ -29,6 +29,7 @@ import org.apache.commons.logging.LogFactory;
 import org.dbforms.event.AbstractWebEvent;
 import org.dbforms.event.eventtype.EventType;
 import org.dbforms.interfaces.IDataContainer;
+import org.dbforms.interfaces.StaticData;
 
 import org.dbforms.util.*;
 
@@ -260,7 +261,7 @@ public class DbCheckboxTag extends AbstractDbBaseHandlerTag implements IDataCont
          tagBuf.append("<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\"><tr valign=\"top\">");
 
          for (int i = 0; i < embeddedDataSize; i++) {
-            KeyValuePair aKeyValuePair = (KeyValuePair) embeddedData.get(i);
+            StaticData aKeyValuePair = (StaticData) embeddedData.get(i);
             String       aKey   = aKeyValuePair.getKey();
             String       aValue = aKeyValuePair.getValue();
 

@@ -28,6 +28,7 @@ import org.apache.commons.logging.LogFactory;
 
 import org.dbforms.interfaces.IDataContainer;
 import org.dbforms.interfaces.IEscaper;
+import org.dbforms.interfaces.StaticData;
 import org.dbforms.util.*;
 
 import java.util.List;
@@ -45,7 +46,7 @@ import javax.servlet.jsp.*;
  *
  * @author Eric Beaumier
  */
-public class JavascriptArrayTag extends AbstractTagSupportWithScriptHandler
+public class JavascriptArrayTag extends AbstractScriptHandlerTag
    implements IDataContainer, javax.servlet.jsp.tagext.TryCatchFinally {
    private static Log logCat = LogFactory.getLog(JavascriptArrayTag.class
                                                  .getName()); // logging category for this class
@@ -121,7 +122,7 @@ public class JavascriptArrayTag extends AbstractTagSupportWithScriptHandler
          int embeddedDataSize = embeddedData.size();
 
          for (int i = 0; i < embeddedDataSize; i++) {
-            KeyValuePair aKeyValuePair = (KeyValuePair) embeddedData.get(i);
+            StaticData aKeyValuePair = (StaticData) embeddedData.get(i);
             String       aKey = aKeyValuePair.getKey();
             tagBuf.append("   ")
                   .append(name)

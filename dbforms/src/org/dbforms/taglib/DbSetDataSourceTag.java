@@ -23,31 +23,31 @@
 
 package org.dbforms.taglib;
 
-import org.dbforms.util.SqlUtil;
-
-import java.sql.Connection;
-
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
+
+import javax.sql.DataSource;
 
 
 
 /**
- * Grunikiewicz.philip 2001-12-18 Obtain a connection (from the connection
- * pool) using same settings defined in dbForms-config.xml file
+ * DOCUMENT ME!
+ *
+ * @author $author$
+ * @version $Revision$
  */
-public class DbGetConnection extends AbstractTagSupportWithScriptHandler
+public class DbSetDataSourceTag extends AbstractDbBaseHandlerTag
    implements javax.servlet.jsp.tagext.TryCatchFinally {
-   private transient Connection conn;
-   private String               dbConnectionName;
+   private String dataSource;
+   private String dbConnectionName;
 
    /**
     * DOCUMENT ME!
     *
-    * @param connection
+    * @param string
     */
-   public void setConn(Connection connection) {
-      conn = connection;
+   public void setDataSource(String string) {
+      dataSource = string;
    }
 
 
@@ -56,8 +56,8 @@ public class DbGetConnection extends AbstractTagSupportWithScriptHandler
     *
     * @return
     */
-   public Connection getConn() {
-      return conn;
+   public String getDataSource() {
+      return dataSource;
    }
 
 
@@ -91,31 +91,10 @@ public class DbGetConnection extends AbstractTagSupportWithScriptHandler
 
    /**
     * DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    *
-    * @throws javax.servlet.jsp.JspException DOCUMENT ME!
-    * @throws JspException DOCUMENT ME!
-    */
-   public int doEndTag() throws javax.servlet.jsp.JspException {
-      try {
-         // get the connection and place it in attribute;
-         SqlUtil.closeConnection(this.getConn());
-         this.setConn(null);
-         pageContext.removeAttribute(getId(), PageContext.PAGE_SCOPE);
-      } catch (Exception e) {
-         throw new JspException("Connection error" + e.getMessage());
-      }
-
-      return EVAL_PAGE;
-   }
-
-
-   /**
-    * DOCUMENT ME!
     */
    public void doFinally() {
       dbConnectionName = null;
+      super.doFinally();
    }
 
 
@@ -130,13 +109,13 @@ public class DbGetConnection extends AbstractTagSupportWithScriptHandler
    public int doStartTag() throws JspException {
       try {
          // get the connection and place it in attribute;
-         this.setConn(getConfig().getConnection(dbConnectionName));
-         pageContext.setAttribute(getId(), this.getConn(),
-                                  PageContext.PAGE_SCOPE);
+         DataSource ds = getConfig()
+                            .getDataSource(dbConnectionName);
+         pageContext.setAttribute(getDataSource(), ds, PageContext.PAGE_SCOPE);
       } catch (Exception e) {
-         throw new JspException("Connection error" + e.getMessage());
+         throw new JspException("Database error" + e.getMessage());
       }
 
-      return EVAL_BODY_INCLUDE;
+      return SKIP_BODY;
    }
 }

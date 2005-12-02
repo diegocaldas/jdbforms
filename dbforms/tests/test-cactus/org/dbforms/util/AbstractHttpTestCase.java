@@ -35,6 +35,8 @@ import junit.framework.TestCase;
 import java.util.Iterator;
 import java.util.List;
 
+import org.dbforms.interfaces.StaticData;
+
 
 
 // definition of test class
@@ -194,7 +196,7 @@ public abstract class AbstractHttpTestCase extends TestCase {
          Iterator iter = args.iterator();
 
          while (iter.hasNext()) {
-            KeyValuePair pair = (KeyValuePair) iter.next();
+            StaticData pair = (StaticData) iter.next();
             println(pair.getKey() + " = " + pair.getValue());
             request.setParameter(pair.getKey(), replaceParam(pair.getValue()));
          }

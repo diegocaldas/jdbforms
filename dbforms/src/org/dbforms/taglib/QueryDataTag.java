@@ -64,9 +64,9 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author Joachim Peer
  */
-public class QueryData extends AbstractEmbeddedData
+public class QueryDataTag extends AbstractEmbeddedDataTag
    implements javax.servlet.jsp.tagext.TryCatchFinally {
-   private static Log logCat = LogFactory.getLog(QueryData.class.getName());
+   private static Log logCat = LogFactory.getLog(QueryDataTag.class.getName());
 
    // logging category for this class
    private String query;

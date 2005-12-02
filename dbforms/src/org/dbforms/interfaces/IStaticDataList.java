@@ -23,7 +23,6 @@
 
 package org.dbforms.interfaces;
 
-import org.dbforms.util.KeyValuePair;
 
 
 
@@ -33,6 +32,6 @@ import org.dbforms.util.KeyValuePair;
  *
  * @author hkk
  */
-public interface IKeyValuePairList {
-   void addElement(KeyValuePair pair);
+public interface IStaticDataList {
+   void addElement(StaticData pair);
 }

@@ -26,8 +26,8 @@ package org.dbforms.taglib;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.dbforms.interfaces.IKeyValuePairList;
-import org.dbforms.util.KeyValuePair;
+import org.dbforms.interfaces.IStaticDataList;
+import org.dbforms.interfaces.StaticData;
 import org.dbforms.util.MessageResources;
 import org.dbforms.util.Util;
 
@@ -41,9 +41,9 @@ import javax.servlet.jsp.JspException;
  * @author $author$
  * @version $Revision$
  */
-public class StaticDataItem extends AbstractDbBaseHandlerTag
+public class StaticDataItemTag extends AbstractDbBaseHandlerTag
    implements javax.servlet.jsp.tagext.TryCatchFinally {
-   private static Log logCat = LogFactory.getLog(StaticDataItem.class.getName()); // logging category for this class
+   private static Log logCat = LogFactory.getLog(StaticDataItemTag.class.getName()); // logging category for this class
    private String     key;
    private String     value;
 
@@ -86,7 +86,7 @@ public class StaticDataItem extends AbstractDbBaseHandlerTag
       String message = null;
 
       if ((value != null)
-                && (getParent() instanceof StaticData
+                && (getParent() instanceof StaticDataTag
                 && (getParentForm() != null)
                 && getParentForm()
                             .hasCaptionResourceSet())) {
@@ -133,8 +133,8 @@ public class StaticDataItem extends AbstractDbBaseHandlerTag
     */
    public int doStartTag() throws JspException {
       if ((getParent() != null)
-                && getParent() instanceof IKeyValuePairList) {
-         ((IKeyValuePairList) getParent()).addElement(new KeyValuePair(key,
+                && getParent() instanceof IStaticDataList) {
+         ((IStaticDataList) getParent()).addElement(new StaticData(key,
                                                                             getValue()));
       } else {
          throw new JspException("StaticDataItem element must be placed inside a AddStaticData element!");

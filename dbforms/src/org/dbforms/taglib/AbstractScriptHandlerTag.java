@@ -46,7 +46,7 @@ import javax.servlet.jsp.tagext.BodyTagSupport;
  * Clasen for Apache Groups's Jakarta-Struts project.
  * </p>
  */
-public abstract class AbstractTagSupportWithScriptHandler extends BodyTagSupport {
+public abstract class AbstractScriptHandlerTag extends BodyTagSupport {
    private static Log logCat = LogFactory.getLog(AbstractDbBaseHandlerTag.class.getName());
 
    /** DOCUMENT ME! */

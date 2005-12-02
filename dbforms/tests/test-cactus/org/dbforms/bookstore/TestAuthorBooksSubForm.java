@@ -23,8 +23,8 @@
 
 package org.dbforms.bookstore;
 
+import org.dbforms.interfaces.StaticData;
 import org.dbforms.util.AbstractHttpTestCase;
-import org.dbforms.util.KeyValuePair;
 import org.dbforms.util.MessageResources;
 import org.dbforms.util.MessageResourcesInternal;
 
@@ -78,42 +78,42 @@ public class TestAuthorBooksSubForm extends AbstractHttpTestCase {
       assertTrue(responseContains("<input type=\"submit\"  value=\"Copy\"  style=\"width:100\" name=\"ac_copy_0"));
 
       list = new ArrayList();
-      list.add(new KeyValuePair("invtable", "0"));
-      list.add(new KeyValuePair("invname_0", "null"));
-      list.add(new KeyValuePair("autoupdate_0", "false"));
-      list.add(new KeyValuePair("fu_0", "/tests/testAuthorBooksSubForm.jsp"));
-      list.add(new KeyValuePair("source",
+      list.add(new StaticData("invtable", "0"));
+      list.add(new StaticData("invname_0", "null"));
+      list.add(new StaticData("autoupdate_0", "false"));
+      list.add(new StaticData("fu_0", "/tests/testAuthorBooksSubForm.jsp"));
+      list.add(new StaticData("source",
                                 "/bookstore/tests/testAuthorBooksSubForm.jsp"));
-      list.add(new KeyValuePair("customEvent", ""));
-      list.add(new KeyValuePair("firstpos_0",
+      list.add(new StaticData("customEvent", ""));
+      list.add(new StaticData("firstpos_0",
                                 "0%3A1%3A1-1%3A12%3AEco%2C+Umberto-2%3A15%3Aorganisation+11"));
-      list.add(new KeyValuePair("lastpos_0",
+      list.add(new StaticData("lastpos_0",
                                 "0%3A1%3A1-1%3A12%3AEco%2C+Umberto-2%3A15%3Aorganisation+11"));
-      list.add(new KeyValuePair("f_0_0@root_1", "Eco, Umberto"));
-      list.add(new KeyValuePair("f_0_0@root_2", "organisation 11"));
-      list.add(new KeyValuePair("ac_copy_0", "Copy"));
-      list.add(new KeyValuePair("invtable", "1"));
-      list.add(new KeyValuePair("invname_1", "null"));
-      list.add(new KeyValuePair("autoupdate_1", "false"));
-      list.add(new KeyValuePair("fu_1", "/tests/testAuthorBooksSubForm.jsp"));
-      list.add(new KeyValuePair("source",
+      list.add(new StaticData("f_0_0@root_1", "Eco, Umberto"));
+      list.add(new StaticData("f_0_0@root_2", "organisation 11"));
+      list.add(new StaticData("ac_copy_0", "Copy"));
+      list.add(new StaticData("invtable", "1"));
+      list.add(new StaticData("invname_1", "null"));
+      list.add(new StaticData("autoupdate_1", "false"));
+      list.add(new StaticData("fu_1", "/tests/testAuthorBooksSubForm.jsp"));
+      list.add(new StaticData("source",
                                 "/bookstore/tests/testAuthorBooksSubForm.jsp"));
-      list.add(new KeyValuePair("customEvent", ""));
-      list.add(new KeyValuePair("firstpos_1",
+      list.add(new StaticData("customEvent", ""));
+      list.add(new StaticData("firstpos_1",
                                 "0%3A1%3A1-2%3A1%3A1-3%3A27%3ADie+Insel+des+vorigen+Tages"));
-      list.add(new KeyValuePair("lastpos_1",
+      list.add(new StaticData("lastpos_1",
                                 "0%3A1%3A2-2%3A1%3A1-3%3A22%3ADas+Foucaltsche+Pendel"));
-      list.add(new KeyValuePair("f_1_0@0@root_1", "3-423-12445-4"));
-      list.add(new KeyValuePair("f_1_0@0@root_3", "Die Insel des vorigen Tages"));
-      list.add(new KeyValuePair("f_1_1@0@root_1", "3-423-12445-5"));
-      list.add(new KeyValuePair("f_1_1@0@root_3", "Das Foucaltsche Pendel"));
-      list.add(new KeyValuePair("k_1_0@0@root",
+      list.add(new StaticData("f_1_0@0@root_1", "3-423-12445-4"));
+      list.add(new StaticData("f_1_0@0@root_3", "Die Insel des vorigen Tages"));
+      list.add(new StaticData("f_1_1@0@root_1", "3-423-12445-5"));
+      list.add(new StaticData("f_1_1@0@root_3", "Das Foucaltsche Pendel"));
+      list.add(new StaticData("k_1_0@0@root",
                                 "0%3A1%3A1-2%3A1%3A1-3%3A27%3ADie+Insel+des+vorigen+Tages"));
-      list.add(new KeyValuePair("f_1_ins0@root_2", "1"));
-      list.add(new KeyValuePair("k_1_1@0@root",
+      list.add(new StaticData("f_1_ins0@root_2", "1"));
+      list.add(new StaticData("k_1_1@0@root",
                                 "0%3A1%3A2-2%3A1%3A1-3%3A22%3ADas+Foucaltsche+Pendel"));
-      list.add(new KeyValuePair("f_1_ins0@root_2", "1"));
-      list.add(new KeyValuePair("k_0_0@root", "0%3A1%3A1"));
+      list.add(new StaticData("f_1_ins0@root_2", "1"));
+      list.add(new StaticData("k_0_0@root", "0%3A1%3A1"));
       post("http://localhost/bookstore/servlet/control", list);
       printResponse();
       assertFalse(responseContains("<input type=\"submit\"  value=\"New\"  style=\"width:100\" name=\"ac_new_0"));
@@ -139,42 +139,42 @@ public class TestAuthorBooksSubForm extends AbstractHttpTestCase {
       assertTrue(responseContains("<input type=\"submit\"  value=\"Copy\"  style=\"width:100\" name=\"ac_copy_1"));
 
       list = new ArrayList();
-      list.add(new KeyValuePair("invtable", "0"));
-      list.add(new KeyValuePair("invname_0", "null"));
-      list.add(new KeyValuePair("autoupdate_0", "false"));
-      list.add(new KeyValuePair("fu_0", "/tests/testAuthorBooksSubForm.jsp"));
-      list.add(new KeyValuePair("source",
+      list.add(new StaticData("invtable", "0"));
+      list.add(new StaticData("invname_0", "null"));
+      list.add(new StaticData("autoupdate_0", "false"));
+      list.add(new StaticData("fu_0", "/tests/testAuthorBooksSubForm.jsp"));
+      list.add(new StaticData("source",
                                 "/bookstore/tests/testAuthorBooksSubForm.jsp"));
-      list.add(new KeyValuePair("customEvent", ""));
-      list.add(new KeyValuePair("firstpos_0",
+      list.add(new StaticData("customEvent", ""));
+      list.add(new StaticData("firstpos_0",
                                 "0%3A1%3A1-1%3A12%3AEco%2C+Umberto-2%3A15%3Aorganisation+11"));
-      list.add(new KeyValuePair("lastpos_0",
+      list.add(new StaticData("lastpos_0",
                                 "0%3A1%3A1-1%3A12%3AEco%2C+Umberto-2%3A15%3Aorganisation+11"));
-      list.add(new KeyValuePair("f_0_0@root_1", "Eco, Umberto"));
-      list.add(new KeyValuePair("f_0_0@root_2", "organisation 11"));
-      list.add(new KeyValuePair("invtable", "1"));
-      list.add(new KeyValuePair("invname_1", "null"));
-      list.add(new KeyValuePair("autoupdate_1", "false"));
-      list.add(new KeyValuePair("fu_1", "/tests/testAuthorBooksSubForm.jsp"));
-      list.add(new KeyValuePair("source",
+      list.add(new StaticData("f_0_0@root_1", "Eco, Umberto"));
+      list.add(new StaticData("f_0_0@root_2", "organisation 11"));
+      list.add(new StaticData("invtable", "1"));
+      list.add(new StaticData("invname_1", "null"));
+      list.add(new StaticData("autoupdate_1", "false"));
+      list.add(new StaticData("fu_1", "/tests/testAuthorBooksSubForm.jsp"));
+      list.add(new StaticData("source",
                                 "/bookstore/tests/testAuthorBooksSubForm.jsp"));
-      list.add(new KeyValuePair("customEvent", ""));
-      list.add(new KeyValuePair("firstpos_1",
+      list.add(new StaticData("customEvent", ""));
+      list.add(new StaticData("firstpos_1",
                                 "0%3A1%3A1-2%3A1%3A1-3%3A27%3ADie+Insel+des+vorigen+Tages"));
-      list.add(new KeyValuePair("lastpos_1",
+      list.add(new StaticData("lastpos_1",
                                 "0%3A1%3A2-2%3A1%3A1-3%3A22%3ADas+Foucaltsche+Pendel"));
-      list.add(new KeyValuePair("f_1_0@0@root_1", "3-423-12445-4"));
-      list.add(new KeyValuePair("f_1_0@0@root_3", "Die Insel des vorigen Tages"));
-      list.add(new KeyValuePair("f_1_1@0@root_1", "3-423-12445-5"));
-      list.add(new KeyValuePair("f_1_1@0@root_3", "Das Foucaltsche Pendel"));
-      list.add(new KeyValuePair("ac_copy_1", "Copy"));
-      list.add(new KeyValuePair("k_1_0@0@root",
+      list.add(new StaticData("f_1_0@0@root_1", "3-423-12445-4"));
+      list.add(new StaticData("f_1_0@0@root_3", "Die Insel des vorigen Tages"));
+      list.add(new StaticData("f_1_1@0@root_1", "3-423-12445-5"));
+      list.add(new StaticData("f_1_1@0@root_3", "Das Foucaltsche Pendel"));
+      list.add(new StaticData("ac_copy_1", "Copy"));
+      list.add(new StaticData("k_1_0@0@root",
                                 "0%3A1%3A1-2%3A1%3A1-3%3A27%3ADie+Insel+des+vorigen+Tages"));
-      list.add(new KeyValuePair("f_1_ins0@root_2", "1"));
-      list.add(new KeyValuePair("k_1_1@0@root",
+      list.add(new StaticData("f_1_ins0@root_2", "1"));
+      list.add(new StaticData("k_1_1@0@root",
                                 "0%3A1%3A2-2%3A1%3A1-3%3A22%3ADas+Foucaltsche+Pendel"));
-      list.add(new KeyValuePair("f_1_ins0@root_2", "1"));
-      list.add(new KeyValuePair("k_0_0@root", "0%3A1%3A1"));
+      list.add(new StaticData("f_1_ins0@root_2", "1"));
+      list.add(new StaticData("k_0_0@root", "0%3A1%3A1"));
       post("http://localhost/bookstore/servlet/control", list);
       printResponse();
       assertTrue(responseContains("<td>" + nodata + "&nbsp;</td>"));
@@ -198,73 +198,73 @@ public class TestAuthorBooksSubForm extends AbstractHttpTestCase {
       assertTrue(responseContains("<input type=\"submit\"  value=\"Copy\"  style=\"width:100\" name=\"ac_copy_1"));
 
       list = new ArrayList();
-      list.add(new KeyValuePair("invtable", "0"));
-      list.add(new KeyValuePair("invname_0", "null"));
-      list.add(new KeyValuePair("autoupdate_0", "false"));
-      list.add(new KeyValuePair("fu_0", "/tests/testAuthorBooksSubForm.jsp"));
-      list.add(new KeyValuePair("source",
+      list.add(new StaticData("invtable", "0"));
+      list.add(new StaticData("invname_0", "null"));
+      list.add(new StaticData("autoupdate_0", "false"));
+      list.add(new StaticData("fu_0", "/tests/testAuthorBooksSubForm.jsp"));
+      list.add(new StaticData("source",
                                 "/bookstore/tests/testAuthorBooksSubForm.jsp"));
-      list.add(new KeyValuePair("customEvent", ""));
-      list.add(new KeyValuePair("firstpos_0",
+      list.add(new StaticData("customEvent", ""));
+      list.add(new StaticData("firstpos_0",
                                 "0%3A1%3A1-1%3A12%3AEco%2C+Umberto-2%3A15%3Aorganisation+11"));
-      list.add(new KeyValuePair("lastpos_0",
+      list.add(new StaticData("lastpos_0",
                                 "0%3A1%3A1-1%3A12%3AEco%2C+Umberto-2%3A15%3Aorganisation+11"));
-      list.add(new KeyValuePair("f_0_0@root_1", "Eco, Umberto"));
-      list.add(new KeyValuePair("f_0_0@root_2", "organisation 11"));
-      list.add(new KeyValuePair("invtable", "1"));
-      list.add(new KeyValuePair("invname_1", "null"));
-      list.add(new KeyValuePair("autoupdate_1", "false"));
-      list.add(new KeyValuePair("fu_1", "/tests/testAuthorBooksSubForm.jsp"));
-      list.add(new KeyValuePair("source",
+      list.add(new StaticData("f_0_0@root_1", "Eco, Umberto"));
+      list.add(new StaticData("f_0_0@root_2", "organisation 11"));
+      list.add(new StaticData("invtable", "1"));
+      list.add(new StaticData("invname_1", "null"));
+      list.add(new StaticData("autoupdate_1", "false"));
+      list.add(new StaticData("fu_1", "/tests/testAuthorBooksSubForm.jsp"));
+      list.add(new StaticData("source",
                                 "/bookstore/tests/testAuthorBooksSubForm.jsp"));
-      list.add(new KeyValuePair("customEvent", ""));
-      list.add(new KeyValuePair("firstpos_1",
+      list.add(new StaticData("customEvent", ""));
+      list.add(new StaticData("firstpos_1",
                                 "0%3A1%3A1-2%3A1%3A1-3%3A27%3ADie+Insel+des+vorigen+Tages"));
-      list.add(new KeyValuePair("lastpos_1",
+      list.add(new StaticData("lastpos_1",
                                 "0%3A1%3A2-2%3A1%3A1-3%3A22%3ADas+Foucaltsche+Pendel"));
-      list.add(new KeyValuePair("f_1_0@0@root_1", "3-423-12445-4"));
-      list.add(new KeyValuePair("f_1_0@0@root_3", "Die Insel des vorigen Tages"));
-      list.add(new KeyValuePair("f_1_1@0@root_1", "3-423-12445-5"));
-      list.add(new KeyValuePair("f_1_1@0@root_3", "Das Foucaltsche Pendel"));
-      list.add(new KeyValuePair("ac_new_1", "New"));
-      list.add(new KeyValuePair("k_1_0@0@root",
+      list.add(new StaticData("f_1_0@0@root_1", "3-423-12445-4"));
+      list.add(new StaticData("f_1_0@0@root_3", "Die Insel des vorigen Tages"));
+      list.add(new StaticData("f_1_1@0@root_1", "3-423-12445-5"));
+      list.add(new StaticData("f_1_1@0@root_3", "Das Foucaltsche Pendel"));
+      list.add(new StaticData("ac_new_1", "New"));
+      list.add(new StaticData("k_1_0@0@root",
                                 "0%3A1%3A1-2%3A1%3A1-3%3A27%3ADie+Insel+des+vorigen+Tages"));
-      list.add(new KeyValuePair("f_1_ins0@root_2", "1"));
-      list.add(new KeyValuePair("k_1_1@0@root",
+      list.add(new StaticData("f_1_ins0@root_2", "1"));
+      list.add(new StaticData("k_1_1@0@root",
                                 "0%3A1%3A2-2%3A1%3A1-3%3A22%3ADas+Foucaltsche+Pendel"));
-      list.add(new KeyValuePair("f_1_ins0@root_2", "1"));
-      list.add(new KeyValuePair("k_0_0@root", "0%3A1%3A1"));
+      list.add(new StaticData("f_1_ins0@root_2", "1"));
+      list.add(new StaticData("k_0_0@root", "0%3A1%3A1"));
       post("http://localhost/bookstore/servlet/control", list);
       printResponse();
       assertTrue(responseContains("<input type=\"submit\"  value=\"New\"  style=\"width:100\" name=\"ac_new_1"));
       assertTrue(responseContains("<input type=\"submit\"  value=\"Copy\"  style=\"width:100\" name=\"ac_copy_1"));
 
       list = new ArrayList();
-      list.add(new KeyValuePair("invtable", "0"));
-      list.add(new KeyValuePair("invname_0", "null"));
-      list.add(new KeyValuePair("autoupdate_0", "false"));
-      list.add(new KeyValuePair("fu_0", "/tests/testAuthorBooksSubForm.jsp"));
-      list.add(new KeyValuePair("source",
+      list.add(new StaticData("invtable", "0"));
+      list.add(new StaticData("invname_0", "null"));
+      list.add(new StaticData("autoupdate_0", "false"));
+      list.add(new StaticData("fu_0", "/tests/testAuthorBooksSubForm.jsp"));
+      list.add(new StaticData("source",
                                 "/bookstore/tests/testAuthorBooksSubForm.jsp"));
-      list.add(new KeyValuePair("customEvent", ""));
-      list.add(new KeyValuePair("firstpos_0",
+      list.add(new StaticData("customEvent", ""));
+      list.add(new StaticData("firstpos_0",
                                 "0%3A1%3A1-1%3A12%3AEco%2C+Umberto-2%3A15%3Aorganisation+11"));
-      list.add(new KeyValuePair("lastpos_0",
+      list.add(new StaticData("lastpos_0",
                                 "0%3A1%3A1-1%3A12%3AEco%2C+Umberto-2%3A15%3Aorganisation+11"));
-      list.add(new KeyValuePair("f_0_0@root_1", "Eco, Umberto"));
-      list.add(new KeyValuePair("f_0_0@root_2", "organisation 11"));
-      list.add(new KeyValuePair("ac_next_0", ">  Next"));
-      list.add(new KeyValuePair("invtable", "1"));
-      list.add(new KeyValuePair("invname_1", "null"));
-      list.add(new KeyValuePair("autoupdate_1", "false"));
-      list.add(new KeyValuePair("fu_1", "/tests/testAuthorBooksSubForm.jsp"));
-      list.add(new KeyValuePair("source",
+      list.add(new StaticData("f_0_0@root_1", "Eco, Umberto"));
+      list.add(new StaticData("f_0_0@root_2", "organisation 11"));
+      list.add(new StaticData("ac_next_0", ">  Next"));
+      list.add(new StaticData("invtable", "1"));
+      list.add(new StaticData("invname_1", "null"));
+      list.add(new StaticData("autoupdate_1", "false"));
+      list.add(new StaticData("fu_1", "/tests/testAuthorBooksSubForm.jsp"));
+      list.add(new StaticData("source",
                                 "/bookstore/tests/testAuthorBooksSubForm.jsp"));
-      list.add(new KeyValuePair("f_1_ins0@root_1", ""));
-      list.add(new KeyValuePair("f_1_ins0@root_3", ""));
-      list.add(new KeyValuePair("k_1_0@0@root", "null"));
-      list.add(new KeyValuePair("f_1_ins0@root_2", "1"));
-      list.add(new KeyValuePair("k_0_0@root", "0%3A1%3A1"));
+      list.add(new StaticData("f_1_ins0@root_1", ""));
+      list.add(new StaticData("f_1_ins0@root_3", ""));
+      list.add(new StaticData("k_1_0@0@root", "null"));
+      list.add(new StaticData("f_1_ins0@root_2", "1"));
+      list.add(new StaticData("k_0_0@root", "0%3A1%3A1"));
       post("http://localhost/bookstore/servlet/control", list);
       printResponse();
       assertTrue(responseContains("<input type=\"text\" name=\"f_0_0@root_1\" value=\"Douglas, Adam\"  size=\"25\"/>"));
@@ -284,176 +284,176 @@ public class TestAuthorBooksSubForm extends AbstractHttpTestCase {
       printResponse();
 
       list = new ArrayList();
-      list.add(new KeyValuePair("invtable", "0"));
-      list.add(new KeyValuePair("invname_0", "null"));
-      list.add(new KeyValuePair("autoupdate_0", "false"));
-      list.add(new KeyValuePair("fu_0", "/tests/testAuthorBooksSubForm.jsp"));
-      list.add(new KeyValuePair("source",
+      list.add(new StaticData("invtable", "0"));
+      list.add(new StaticData("invname_0", "null"));
+      list.add(new StaticData("autoupdate_0", "false"));
+      list.add(new StaticData("fu_0", "/tests/testAuthorBooksSubForm.jsp"));
+      list.add(new StaticData("source",
                                 "/bookstore/tests/testAuthorBooksSubForm.jsp"));
-      list.add(new KeyValuePair("customEvent", ""));
-      list.add(new KeyValuePair("firstpos_0",
+      list.add(new StaticData("customEvent", ""));
+      list.add(new StaticData("firstpos_0",
                                 "0%3A1%3A1-1%3A12%3AEco%2C+Umberto-2%3A15%3Aorganisation+11"));
-      list.add(new KeyValuePair("lastpos_0",
+      list.add(new StaticData("lastpos_0",
                                 "0%3A1%3A1-1%3A12%3AEco%2C+Umberto-2%3A15%3Aorganisation+11"));
-      list.add(new KeyValuePair("f_0_0@root_1", "Eco, Umberto"));
-      list.add(new KeyValuePair("f_0_0@root_2", "organisation 11"));
-      list.add(new KeyValuePair("ac_next_0", ">  Next"));
-      list.add(new KeyValuePair("invtable", "1"));
-      list.add(new KeyValuePair("invname_1", "null"));
-      list.add(new KeyValuePair("autoupdate_1", "false"));
-      list.add(new KeyValuePair("fu_1", "/tests/testAuthorBooksSubForm.jsp"));
-      list.add(new KeyValuePair("source",
+      list.add(new StaticData("f_0_0@root_1", "Eco, Umberto"));
+      list.add(new StaticData("f_0_0@root_2", "organisation 11"));
+      list.add(new StaticData("ac_next_0", ">  Next"));
+      list.add(new StaticData("invtable", "1"));
+      list.add(new StaticData("invname_1", "null"));
+      list.add(new StaticData("autoupdate_1", "false"));
+      list.add(new StaticData("fu_1", "/tests/testAuthorBooksSubForm.jsp"));
+      list.add(new StaticData("source",
                                 "/bookstore/tests/testAuthorBooksSubForm.jsp"));
-      list.add(new KeyValuePair("customEvent", ""));
-      list.add(new KeyValuePair("firstpos_1",
+      list.add(new StaticData("customEvent", ""));
+      list.add(new StaticData("firstpos_1",
                                 "0%3A1%3A1-2%3A1%3A1-3%3A27%3ADie+Insel+des+vorigen+Tages"));
-      list.add(new KeyValuePair("lastpos_1",
+      list.add(new StaticData("lastpos_1",
                                 "0%3A1%3A2-2%3A1%3A1-3%3A22%3ADas+Foucaltsche+Pendel"));
-      list.add(new KeyValuePair("f_1_0@0@root_1", "3-423-12445-4"));
-      list.add(new KeyValuePair("f_1_0@0@root_3", "Die Insel des vorigen Tages"));
-      list.add(new KeyValuePair("f_1_1@0@root_1", "3-423-12445-5"));
-      list.add(new KeyValuePair("f_1_1@0@root_3", "Das Foucaltsche Pendel"));
-      list.add(new KeyValuePair("k_1_0@0@root",
+      list.add(new StaticData("f_1_0@0@root_1", "3-423-12445-4"));
+      list.add(new StaticData("f_1_0@0@root_3", "Die Insel des vorigen Tages"));
+      list.add(new StaticData("f_1_1@0@root_1", "3-423-12445-5"));
+      list.add(new StaticData("f_1_1@0@root_3", "Das Foucaltsche Pendel"));
+      list.add(new StaticData("k_1_0@0@root",
                                 "0%3A1%3A1-2%3A1%3A1-3%3A27%3ADie+Insel+des+vorigen+Tages"));
-      list.add(new KeyValuePair("f_1_ins0@root_2", "1"));
-      list.add(new KeyValuePair("k_1_1@0@root",
+      list.add(new StaticData("f_1_ins0@root_2", "1"));
+      list.add(new StaticData("k_1_1@0@root",
                                 "0%3A1%3A2-2%3A1%3A1-3%3A22%3ADas+Foucaltsche+Pendel"));
-      list.add(new KeyValuePair("f_1_ins0@root_2", "1"));
-      list.add(new KeyValuePair("k_0_0@root", "0%3A1%3A1"));
+      list.add(new StaticData("f_1_ins0@root_2", "1"));
+      list.add(new StaticData("k_0_0@root", "0%3A1%3A1"));
       post("http://localhost/bookstore/servlet/control", list);
       printResponse();
 
       list = new ArrayList();
-      list.add(new KeyValuePair("invtable", "0"));
-      list.add(new KeyValuePair("invname_0", "null"));
-      list.add(new KeyValuePair("autoupdate_0", "false"));
-      list.add(new KeyValuePair("fu_0", "/tests/testAuthorBooksSubForm.jsp"));
-      list.add(new KeyValuePair("source",
+      list.add(new StaticData("invtable", "0"));
+      list.add(new StaticData("invname_0", "null"));
+      list.add(new StaticData("autoupdate_0", "false"));
+      list.add(new StaticData("fu_0", "/tests/testAuthorBooksSubForm.jsp"));
+      list.add(new StaticData("source",
                                 "/bookstore/tests/testAuthorBooksSubForm.jsp"));
-      list.add(new KeyValuePair("customEvent", ""));
-      list.add(new KeyValuePair("firstpos_0",
+      list.add(new StaticData("customEvent", ""));
+      list.add(new StaticData("firstpos_0",
                                 "0%3A1%3A2-1%3A13%3ADouglas%2C+Adam-2%3A14%3Aorganisation+2"));
-      list.add(new KeyValuePair("lastpos_0",
+      list.add(new StaticData("lastpos_0",
                                 "0%3A1%3A2-1%3A13%3ADouglas%2C+Adam-2%3A14%3Aorganisation+2"));
-      list.add(new KeyValuePair("f_0_0@root_1", "Douglas, Adam"));
-      list.add(new KeyValuePair("f_0_0@root_2", "organisation 2"));
-      list.add(new KeyValuePair("ac_next_0", ">  Next"));
-      list.add(new KeyValuePair("invtable", "1"));
-      list.add(new KeyValuePair("invname_1", "null"));
-      list.add(new KeyValuePair("autoupdate_1", "false"));
-      list.add(new KeyValuePair("fu_1", "/tests/testAuthorBooksSubForm.jsp"));
-      list.add(new KeyValuePair("source",
+      list.add(new StaticData("f_0_0@root_1", "Douglas, Adam"));
+      list.add(new StaticData("f_0_0@root_2", "organisation 2"));
+      list.add(new StaticData("ac_next_0", ">  Next"));
+      list.add(new StaticData("invtable", "1"));
+      list.add(new StaticData("invname_1", "null"));
+      list.add(new StaticData("autoupdate_1", "false"));
+      list.add(new StaticData("fu_1", "/tests/testAuthorBooksSubForm.jsp"));
+      list.add(new StaticData("source",
                                 "/bookstore/tests/testAuthorBooksSubForm.jsp"));
-      list.add(new KeyValuePair("customEvent", ""));
-      list.add(new KeyValuePair("firstpos_1",
+      list.add(new StaticData("customEvent", ""));
+      list.add(new StaticData("firstpos_1",
                                 "0%3A1%3A3-2%3A1%3A2-3%3A30%3AHijacking+through+the+Galaxy+1"));
-      list.add(new KeyValuePair("lastpos_1",
+      list.add(new StaticData("lastpos_1",
                                 "0%3A1%3A9-2%3A1%3A2-3%3A30%3AHijacking+through+the+Galaxy+6"));
-      list.add(new KeyValuePair("f_1_0@0@root_1", "42-1"));
-      list.add(new KeyValuePair("f_1_0@0@root_3",
+      list.add(new StaticData("f_1_0@0@root_1", "42-1"));
+      list.add(new StaticData("f_1_0@0@root_3",
                                 "Hijacking through the Galaxy 1"));
-      list.add(new KeyValuePair("f_1_1@0@root_1", "42-2"));
-      list.add(new KeyValuePair("f_1_1@0@root_3",
+      list.add(new StaticData("f_1_1@0@root_1", "42-2"));
+      list.add(new StaticData("f_1_1@0@root_3",
                                 "Hijacking through the Galaxy 2"));
-      list.add(new KeyValuePair("f_1_2@0@root_1", "42-3"));
-      list.add(new KeyValuePair("f_1_2@0@root_3",
+      list.add(new StaticData("f_1_2@0@root_1", "42-3"));
+      list.add(new StaticData("f_1_2@0@root_3",
                                 "Hijacking through the Galaxy 3"));
-      list.add(new KeyValuePair("f_1_3@0@root_1", "42-4"));
-      list.add(new KeyValuePair("f_1_3@0@root_3",
+      list.add(new StaticData("f_1_3@0@root_1", "42-4"));
+      list.add(new StaticData("f_1_3@0@root_3",
                                 "Hijacking through the Galaxy 4"));
-      list.add(new KeyValuePair("f_1_4@0@root_1", "42-5"));
-      list.add(new KeyValuePair("f_1_4@0@root_3",
+      list.add(new StaticData("f_1_4@0@root_1", "42-5"));
+      list.add(new StaticData("f_1_4@0@root_3",
                                 "Luca\'s favorite thing to eat is  "));
-      list.add(new KeyValuePair("f_1_5@0@root_1", "42-6"));
-      list.add(new KeyValuePair("f_1_5@0@root_3",
+      list.add(new StaticData("f_1_5@0@root_1", "42-6"));
+      list.add(new StaticData("f_1_5@0@root_3",
                                 "Hijacking through the Galaxy 6"));
-      list.add(new KeyValuePair("k_1_0@0@root",
+      list.add(new StaticData("k_1_0@0@root",
                                 "0%3A1%3A3-2%3A1%3A2-3%3A30%3AHijacking+through+the+Galaxy+1"));
-      list.add(new KeyValuePair("f_1_ins0@root_2", "2"));
-      list.add(new KeyValuePair("k_1_1@0@root",
+      list.add(new StaticData("f_1_ins0@root_2", "2"));
+      list.add(new StaticData("k_1_1@0@root",
                                 "0%3A1%3A4-2%3A1%3A2-3%3A30%3AHijacking+through+the+Galaxy+2"));
-      list.add(new KeyValuePair("f_1_ins0@root_2", "2"));
-      list.add(new KeyValuePair("k_1_2@0@root",
+      list.add(new StaticData("f_1_ins0@root_2", "2"));
+      list.add(new StaticData("k_1_2@0@root",
                                 "0%3A1%3A5-2%3A1%3A2-3%3A30%3AHijacking+through+the+Galaxy+3"));
-      list.add(new KeyValuePair("f_1_ins0@root_2", "2"));
-      list.add(new KeyValuePair("k_1_3@0@root",
+      list.add(new StaticData("f_1_ins0@root_2", "2"));
+      list.add(new StaticData("k_1_3@0@root",
                                 "0%3A1%3A6-2%3A1%3A2-3%3A30%3AHijacking+through+the+Galaxy+4"));
-      list.add(new KeyValuePair("f_1_ins0@root_2", "2"));
-      list.add(new KeyValuePair("k_1_4@0@root",
+      list.add(new StaticData("f_1_ins0@root_2", "2"));
+      list.add(new StaticData("k_1_4@0@root",
                                 "0%3A1%3A8-2%3A1%3A2-3%3A58%3ALuca%27s+favorite+thing+to+eat+is++%22delicious+Italian+pasta%22"));
-      list.add(new KeyValuePair("f_1_ins0@root_2", "2"));
-      list.add(new KeyValuePair("k_1_5@0@root",
+      list.add(new StaticData("f_1_ins0@root_2", "2"));
+      list.add(new StaticData("k_1_5@0@root",
                                 "0%3A1%3A9-2%3A1%3A2-3%3A30%3AHijacking+through+the+Galaxy+6"));
-      list.add(new KeyValuePair("f_1_ins0@root_2", "2"));
-      list.add(new KeyValuePair("k_0_0@root", "0%3A1%3A2"));
+      list.add(new StaticData("f_1_ins0@root_2", "2"));
+      list.add(new StaticData("k_0_0@root", "0%3A1%3A2"));
       post("http://localhost/bookstore/servlet/control", list);
       printResponse();
       assertTrue(responseContains("<input type=\"submit\"  value=\"New\"  style=\"width:100\" name=\"ac_new_0"));
       assertTrue(responseContains("<input type=\"submit\"  value=\"Copy\"  style=\"width:100\" name=\"ac_copy_0"));
 
       list = new ArrayList();
-      list.add(new KeyValuePair("invtable", "0"));
-      list.add(new KeyValuePair("invname_0", "null"));
-      list.add(new KeyValuePair("autoupdate_0", "false"));
-      list.add(new KeyValuePair("fu_0", "/tests/testAuthorBooksSubForm.jsp"));
-      list.add(new KeyValuePair("source",
+      list.add(new StaticData("invtable", "0"));
+      list.add(new StaticData("invname_0", "null"));
+      list.add(new StaticData("autoupdate_0", "false"));
+      list.add(new StaticData("fu_0", "/tests/testAuthorBooksSubForm.jsp"));
+      list.add(new StaticData("source",
                                 "/bookstore/tests/testAuthorBooksSubForm.jsp"));
-      list.add(new KeyValuePair("customEvent", ""));
-      list.add(new KeyValuePair("firstpos_0",
+      list.add(new StaticData("customEvent", ""));
+      list.add(new StaticData("firstpos_0",
                                 "0%3A1%3A2-1%3A13%3ADouglas%2C+Adam-2%3A14%3Aorganisation+2"));
-      list.add(new KeyValuePair("lastpos_0",
+      list.add(new StaticData("lastpos_0",
                                 "0%3A1%3A2-1%3A13%3ADouglas%2C+Adam-2%3A14%3Aorganisation+2"));
-      list.add(new KeyValuePair("f_0_0@root_1", "Douglas, Adam"));
-      list.add(new KeyValuePair("f_0_0@root_2", "organisation 2"));
-      list.add(new KeyValuePair("ac_new_0", "New"));
-      list.add(new KeyValuePair("invtable", "1"));
-      list.add(new KeyValuePair("invname_1", "null"));
-      list.add(new KeyValuePair("autoupdate_1", "false"));
-      list.add(new KeyValuePair("fu_1", "/tests/testAuthorBooksSubForm.jsp"));
-      list.add(new KeyValuePair("source",
+      list.add(new StaticData("f_0_0@root_1", "Douglas, Adam"));
+      list.add(new StaticData("f_0_0@root_2", "organisation 2"));
+      list.add(new StaticData("ac_new_0", "New"));
+      list.add(new StaticData("invtable", "1"));
+      list.add(new StaticData("invname_1", "null"));
+      list.add(new StaticData("autoupdate_1", "false"));
+      list.add(new StaticData("fu_1", "/tests/testAuthorBooksSubForm.jsp"));
+      list.add(new StaticData("source",
                                 "/bookstore/tests/testAuthorBooksSubForm.jsp"));
-      list.add(new KeyValuePair("customEvent", ""));
-      list.add(new KeyValuePair("firstpos_1",
+      list.add(new StaticData("customEvent", ""));
+      list.add(new StaticData("firstpos_1",
                                 "0%3A1%3A3-2%3A1%3A2-3%3A30%3AHijacking+through+the+Galaxy+1"));
-      list.add(new KeyValuePair("lastpos_1",
+      list.add(new StaticData("lastpos_1",
                                 "0%3A1%3A9-2%3A1%3A2-3%3A30%3AHijacking+through+the+Galaxy+6"));
-      list.add(new KeyValuePair("f_1_0@0@root_1", "42-1"));
-      list.add(new KeyValuePair("f_1_0@0@root_3",
+      list.add(new StaticData("f_1_0@0@root_1", "42-1"));
+      list.add(new StaticData("f_1_0@0@root_3",
                                 "Hijacking through the Galaxy 1"));
-      list.add(new KeyValuePair("f_1_1@0@root_1", "42-2"));
-      list.add(new KeyValuePair("f_1_1@0@root_3",
+      list.add(new StaticData("f_1_1@0@root_1", "42-2"));
+      list.add(new StaticData("f_1_1@0@root_3",
                                 "Hijacking through the Galaxy 2"));
-      list.add(new KeyValuePair("f_1_2@0@root_1", "42-3"));
-      list.add(new KeyValuePair("f_1_2@0@root_3",
+      list.add(new StaticData("f_1_2@0@root_1", "42-3"));
+      list.add(new StaticData("f_1_2@0@root_3",
                                 "Hijacking through the Galaxy 3"));
-      list.add(new KeyValuePair("f_1_3@0@root_1", "42-4"));
-      list.add(new KeyValuePair("f_1_3@0@root_3",
+      list.add(new StaticData("f_1_3@0@root_1", "42-4"));
+      list.add(new StaticData("f_1_3@0@root_3",
                                 "Hijacking through the Galaxy 4"));
-      list.add(new KeyValuePair("f_1_4@0@root_1", "42-5"));
-      list.add(new KeyValuePair("f_1_4@0@root_3",
+      list.add(new StaticData("f_1_4@0@root_1", "42-5"));
+      list.add(new StaticData("f_1_4@0@root_3",
                                 "Luca\'s favorite thing to eat is  "));
-      list.add(new KeyValuePair("f_1_5@0@root_1", "42-6"));
-      list.add(new KeyValuePair("f_1_5@0@root_3",
+      list.add(new StaticData("f_1_5@0@root_1", "42-6"));
+      list.add(new StaticData("f_1_5@0@root_3",
                                 "Hijacking through the Galaxy 6"));
-      list.add(new KeyValuePair("k_1_0@0@root",
+      list.add(new StaticData("k_1_0@0@root",
                                 "0%3A1%3A3-2%3A1%3A2-3%3A30%3AHijacking+through+the+Galaxy+1"));
-      list.add(new KeyValuePair("f_1_ins0@root_2", "2"));
-      list.add(new KeyValuePair("k_1_1@0@root",
+      list.add(new StaticData("f_1_ins0@root_2", "2"));
+      list.add(new StaticData("k_1_1@0@root",
                                 "0%3A1%3A4-2%3A1%3A2-3%3A30%3AHijacking+through+the+Galaxy+2"));
-      list.add(new KeyValuePair("f_1_ins0@root_2", "2"));
-      list.add(new KeyValuePair("k_1_2@0@root",
+      list.add(new StaticData("f_1_ins0@root_2", "2"));
+      list.add(new StaticData("k_1_2@0@root",
                                 "0%3A1%3A5-2%3A1%3A2-3%3A30%3AHijacking+through+the+Galaxy+3"));
-      list.add(new KeyValuePair("f_1_ins0@root_2", "2"));
-      list.add(new KeyValuePair("k_1_3@0@root",
+      list.add(new StaticData("f_1_ins0@root_2", "2"));
+      list.add(new StaticData("k_1_3@0@root",
                                 "0%3A1%3A6-2%3A1%3A2-3%3A30%3AHijacking+through+the+Galaxy+4"));
-      list.add(new KeyValuePair("f_1_ins0@root_2", "2"));
-      list.add(new KeyValuePair("k_1_4@0@root",
+      list.add(new StaticData("f_1_ins0@root_2", "2"));
+      list.add(new StaticData("k_1_4@0@root",
                                 "0%3A1%3A8-2%3A1%3A2-3%3A58%3ALuca%27s+favorite+thing+to+eat+is++%22delicious+Italian+pasta%22"));
-      list.add(new KeyValuePair("f_1_ins0@root_2", "2"));
-      list.add(new KeyValuePair("k_1_5@0@root",
+      list.add(new StaticData("f_1_ins0@root_2", "2"));
+      list.add(new StaticData("k_1_5@0@root",
                                 "0%3A1%3A9-2%3A1%3A2-3%3A30%3AHijacking+through+the+Galaxy+6"));
-      list.add(new KeyValuePair("f_1_ins0@root_2", "2"));
-      list.add(new KeyValuePair("k_0_0@root", "0%3A1%3A2"));
+      list.add(new StaticData("f_1_ins0@root_2", "2"));
+      list.add(new StaticData("k_0_0@root", "0%3A1%3A2"));
       post("http://localhost/bookstore/servlet/control", list);
       printResponse();
       assertFalse(responseContains("<input type=\"submit\"  value=\"New\"  style=\"width:100\" name=\"ac_new_0"));
@@ -479,42 +479,42 @@ public class TestAuthorBooksSubForm extends AbstractHttpTestCase {
       assertTrue(responseContains("<input type=\"submit\"  value=\"Copy\"  style=\"width:100\" name=\"ac_copy_1"));
 
       list = new ArrayList();
-      list.add(new KeyValuePair("invtable", "0"));
-      list.add(new KeyValuePair("invname_0", "null"));
-      list.add(new KeyValuePair("autoupdate_0", "false"));
-      list.add(new KeyValuePair("fu_0", "/tests/testAuthorBooksSubForm.jsp"));
-      list.add(new KeyValuePair("source",
+      list.add(new StaticData("invtable", "0"));
+      list.add(new StaticData("invname_0", "null"));
+      list.add(new StaticData("autoupdate_0", "false"));
+      list.add(new StaticData("fu_0", "/tests/testAuthorBooksSubForm.jsp"));
+      list.add(new StaticData("source",
                                 "/bookstore/tests/testAuthorBooksSubForm.jsp"));
-      list.add(new KeyValuePair("customEvent", ""));
-      list.add(new KeyValuePair("firstpos_0",
+      list.add(new StaticData("customEvent", ""));
+      list.add(new StaticData("firstpos_0",
                                 "0%3A1%3A1-1%3A12%3AEco%2C+Umberto-2%3A15%3Aorganisation+11"));
-      list.add(new KeyValuePair("lastpos_0",
+      list.add(new StaticData("lastpos_0",
                                 "0%3A1%3A1-1%3A12%3AEco%2C+Umberto-2%3A15%3Aorganisation+11"));
-      list.add(new KeyValuePair("f_0_0@root_1", "Eco, Umberto"));
-      list.add(new KeyValuePair("f_0_0@root_2", "organisation 11"));
-      list.add(new KeyValuePair("invtable", "1"));
-      list.add(new KeyValuePair("invname_1", "null"));
-      list.add(new KeyValuePair("autoupdate_1", "false"));
-      list.add(new KeyValuePair("fu_1", "/tests/testAuthorBooksSubForm.jsp"));
-      list.add(new KeyValuePair("source",
+      list.add(new StaticData("f_0_0@root_1", "Eco, Umberto"));
+      list.add(new StaticData("f_0_0@root_2", "organisation 11"));
+      list.add(new StaticData("invtable", "1"));
+      list.add(new StaticData("invname_1", "null"));
+      list.add(new StaticData("autoupdate_1", "false"));
+      list.add(new StaticData("fu_1", "/tests/testAuthorBooksSubForm.jsp"));
+      list.add(new StaticData("source",
                                 "/bookstore/tests/testAuthorBooksSubForm.jsp"));
-      list.add(new KeyValuePair("customEvent", ""));
-      list.add(new KeyValuePair("firstpos_1",
+      list.add(new StaticData("customEvent", ""));
+      list.add(new StaticData("firstpos_1",
                                 "0%3A1%3A1-2%3A1%3A1-3%3A27%3ADie+Insel+des+vorigen+Tages"));
-      list.add(new KeyValuePair("lastpos_1",
+      list.add(new StaticData("lastpos_1",
                                 "0%3A1%3A2-2%3A1%3A1-3%3A22%3ADas+Foucaltsche+Pendel"));
-      list.add(new KeyValuePair("f_1_0@0@root_1", "3-423-12445-4"));
-      list.add(new KeyValuePair("f_1_0@0@root_3", "Die Insel des vorigen Tages"));
-      list.add(new KeyValuePair("f_1_1@0@root_1", "3-423-12445-5"));
-      list.add(new KeyValuePair("f_1_1@0@root_3", "Das Foucaltsche Pendel"));
-      list.add(new KeyValuePair("ac_new_1", "New"));
-      list.add(new KeyValuePair("k_1_0@0@root",
+      list.add(new StaticData("f_1_0@0@root_1", "3-423-12445-4"));
+      list.add(new StaticData("f_1_0@0@root_3", "Die Insel des vorigen Tages"));
+      list.add(new StaticData("f_1_1@0@root_1", "3-423-12445-5"));
+      list.add(new StaticData("f_1_1@0@root_3", "Das Foucaltsche Pendel"));
+      list.add(new StaticData("ac_new_1", "New"));
+      list.add(new StaticData("k_1_0@0@root",
                                 "0%3A1%3A1-2%3A1%3A1-3%3A27%3ADie+Insel+des+vorigen+Tages"));
-      list.add(new KeyValuePair("f_1_ins0@root_2", "1"));
-      list.add(new KeyValuePair("k_1_1@0@root",
+      list.add(new StaticData("f_1_ins0@root_2", "1"));
+      list.add(new StaticData("k_1_1@0@root",
                                 "0%3A1%3A2-2%3A1%3A1-3%3A22%3ADas+Foucaltsche+Pendel"));
-      list.add(new KeyValuePair("f_1_ins0@root_2", "1"));
-      list.add(new KeyValuePair("k_0_0@root", "0%3A1%3A1"));
+      list.add(new StaticData("f_1_ins0@root_2", "1"));
+      list.add(new StaticData("k_0_0@root", "0%3A1%3A1"));
       post("http://localhost/bookstore/servlet/control", list);
       printResponse();
       assertTrue(responseContains("<input type=\"submit\"  value=\"New\"  style=\"width:100\" name=\"ac_new_1"));

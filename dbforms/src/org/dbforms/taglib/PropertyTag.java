@@ -23,7 +23,7 @@
 
 package org.dbforms.taglib;
 
-import org.dbforms.interfaces.IPropertyList;
+import org.dbforms.interfaces.IPropertyMap;
 
 import javax.servlet.jsp.JspException;
 
@@ -31,7 +31,7 @@ import javax.servlet.jsp.JspException;
 /** 
  * Tag &lt;attribute&gt; which defines a key/value pair which is set in the parent
  * tag. This must implement the Parameterized interface.
- * @see IPropertyList
+ * @see IPropertyMap
  * @author  Henner Kollmann 
  */
 public class PropertyTag extends AbstractDbBaseHandlerTag
@@ -42,8 +42,8 @@ public class PropertyTag extends AbstractDbBaseHandlerTag
 
     public int doStartTag() throws JspException {
         if ((getParent() != null)
-                  && getParent() instanceof IPropertyList) {
-           ((IPropertyList) getParent()).addProperty(name, value);
+                  && getParent() instanceof IPropertyMap) {
+           ((IPropertyMap) getParent()).addProperty(name, value);
            } else {
            throw new JspException("AttributeTag element must be placed inside a IParameterized element!");
         }

@@ -23,8 +23,8 @@
 
 package org.dbforms.bookstore;
 
+import org.dbforms.interfaces.StaticData;
 import org.dbforms.util.AbstractHttpTestCase;
-import org.dbforms.util.KeyValuePair;
 
 import java.util.ArrayList;
 
@@ -51,135 +51,135 @@ public class TestMenu extends AbstractHttpTestCase {
       printResponse();
 
       list = new ArrayList();
-      list.add(new KeyValuePair("source", "/bookstore/tests/testMenu.jsp"));
-      list.add(new KeyValuePair("dataac_goto_-1_25_fu",
+      list.add(new StaticData("source", "/bookstore/tests/testMenu.jsp"));
+      list.add(new StaticData("dataac_goto_-1_25_fu",
                                 "/tests/testMenuPage1.jsp"));
-      list.add(new KeyValuePair("dataac_goto_-1_25_singleRow", "false"));
-      list.add(new KeyValuePair("ac_goto_-1_25", "test goto menu page 1"));
-      list.add(new KeyValuePair("dataac_goto_-1_26_fu",
+      list.add(new StaticData("dataac_goto_-1_25_singleRow", "false"));
+      list.add(new StaticData("ac_goto_-1_25", "test goto menu page 1"));
+      list.add(new StaticData("dataac_goto_-1_26_fu",
                                 "/tests/testMenuPage2.jsp"));
-      list.add(new KeyValuePair("dataac_goto_-1_26_singleRow", "false"));
-      list.add(new KeyValuePair("dataac_goto_-1_27_fu",
+      list.add(new StaticData("dataac_goto_-1_26_singleRow", "false"));
+      list.add(new StaticData("dataac_goto_-1_27_fu",
                                 "/tests/testPositionAuthorEdit.jsp"));
-      list.add(new KeyValuePair("dataac_goto_-1_27_singleRow", "false"));
-      list.add(new KeyValuePair("dataac_goto_-1_28_fu",
+      list.add(new StaticData("dataac_goto_-1_27_singleRow", "false"));
+      list.add(new StaticData("dataac_goto_-1_28_fu",
                                 "/tests/testPositionAuthorEdit.jsp"));
-      list.add(new KeyValuePair("dataac_goto_-1_28_destTable", "AUTHOR_VIEW"));
-      list.add(new KeyValuePair("dataac_goto_-1_28_singleRow", "false"));
-      list.add(new KeyValuePair("dataac_new_0_29_fu", "/tests/testMenuPage1.jsp"));
-      list.add(new KeyValuePair("dataac_new_0_30_fu", "/tests/testMenuPage2.jsp"));
+      list.add(new StaticData("dataac_goto_-1_28_destTable", "AUTHOR_VIEW"));
+      list.add(new StaticData("dataac_goto_-1_28_singleRow", "false"));
+      list.add(new StaticData("dataac_new_0_29_fu", "/tests/testMenuPage1.jsp"));
+      list.add(new StaticData("dataac_new_0_30_fu", "/tests/testMenuPage2.jsp"));
       post("http://localhost/bookstore/servlet/control", list);
       printResponse();
       assertTrue(responseContains("This is testMenuPage1"));
 
       list = new ArrayList();
-      list.add(new KeyValuePair("source", "/bookstore/tests/testMenu.jsp"));
-      list.add(new KeyValuePair("dataac_goto_-1_25_fu",
+      list.add(new StaticData("source", "/bookstore/tests/testMenu.jsp"));
+      list.add(new StaticData("dataac_goto_-1_25_fu",
                                 "/tests/testMenuPage1.jsp"));
-      list.add(new KeyValuePair("dataac_goto_-1_25_singleRow", "false"));
-      list.add(new KeyValuePair("dataac_goto_-1_26_fu",
+      list.add(new StaticData("dataac_goto_-1_25_singleRow", "false"));
+      list.add(new StaticData("dataac_goto_-1_26_fu",
                                 "/tests/testMenuPage2.jsp"));
-      list.add(new KeyValuePair("dataac_goto_-1_26_singleRow", "false"));
-      list.add(new KeyValuePair("ac_goto_-1_26", "test goto menu page 2"));
-      list.add(new KeyValuePair("dataac_goto_-1_27_fu",
+      list.add(new StaticData("dataac_goto_-1_26_singleRow", "false"));
+      list.add(new StaticData("ac_goto_-1_26", "test goto menu page 2"));
+      list.add(new StaticData("dataac_goto_-1_27_fu",
                                 "/tests/testPositionAuthorEdit.jsp"));
-      list.add(new KeyValuePair("dataac_goto_-1_27_singleRow", "false"));
-      list.add(new KeyValuePair("dataac_goto_-1_28_fu",
+      list.add(new StaticData("dataac_goto_-1_27_singleRow", "false"));
+      list.add(new StaticData("dataac_goto_-1_28_fu",
                                 "/tests/testPositionAuthorEdit.jsp"));
-      list.add(new KeyValuePair("dataac_goto_-1_28_destTable", "AUTHOR_VIEW"));
-      list.add(new KeyValuePair("dataac_goto_-1_28_singleRow", "false"));
-      list.add(new KeyValuePair("dataac_new_0_29_fu", "/tests/testMenuPage1.jsp"));
-      list.add(new KeyValuePair("dataac_new_0_30_fu", "/tests/testMenuPage2.jsp"));
+      list.add(new StaticData("dataac_goto_-1_28_destTable", "AUTHOR_VIEW"));
+      list.add(new StaticData("dataac_goto_-1_28_singleRow", "false"));
+      list.add(new StaticData("dataac_new_0_29_fu", "/tests/testMenuPage1.jsp"));
+      list.add(new StaticData("dataac_new_0_30_fu", "/tests/testMenuPage2.jsp"));
       post("http://localhost/bookstore/servlet/control", list);
       printResponse();
       assertTrue(responseContains("This is testMenuPage2"));
 
       list = new ArrayList();
-      list.add(new KeyValuePair("source", "/bookstore/tests/testMenu.jsp"));
-      list.add(new KeyValuePair("dataac_goto_-1_25_fu",
+      list.add(new StaticData("source", "/bookstore/tests/testMenu.jsp"));
+      list.add(new StaticData("dataac_goto_-1_25_fu",
                                 "/tests/testMenuPage1.jsp"));
-      list.add(new KeyValuePair("dataac_goto_-1_25_singleRow", "false"));
-      list.add(new KeyValuePair("dataac_goto_-1_26_fu",
+      list.add(new StaticData("dataac_goto_-1_25_singleRow", "false"));
+      list.add(new StaticData("dataac_goto_-1_26_fu",
                                 "/tests/testMenuPage2.jsp"));
-      list.add(new KeyValuePair("dataac_goto_-1_26_singleRow", "false"));
-      list.add(new KeyValuePair("dataac_goto_-1_27_fu",
+      list.add(new StaticData("dataac_goto_-1_26_singleRow", "false"));
+      list.add(new StaticData("dataac_goto_-1_27_fu",
                                 "/tests/testPositionAuthorEdit.jsp"));
-      list.add(new KeyValuePair("dataac_goto_-1_27_singleRow", "false"));
-      list.add(new KeyValuePair("dataac_goto_-1_28_fu",
+      list.add(new StaticData("dataac_goto_-1_27_singleRow", "false"));
+      list.add(new StaticData("dataac_goto_-1_28_fu",
                                 "/tests/testPositionAuthorEdit.jsp"));
-      list.add(new KeyValuePair("dataac_goto_-1_28_destTable", "AUTHOR_VIEW"));
-      list.add(new KeyValuePair("dataac_goto_-1_28_singleRow", "false"));
-      list.add(new KeyValuePair("dataac_new_0_29_fu", "/tests/testMenuPage1.jsp"));
-      list.add(new KeyValuePair("ac_new_0_29", "testMenuPage1"));
-      list.add(new KeyValuePair("dataac_new_0_30_fu", "/tests/testMenuPage2.jsp"));
+      list.add(new StaticData("dataac_goto_-1_28_destTable", "AUTHOR_VIEW"));
+      list.add(new StaticData("dataac_goto_-1_28_singleRow", "false"));
+      list.add(new StaticData("dataac_new_0_29_fu", "/tests/testMenuPage1.jsp"));
+      list.add(new StaticData("ac_new_0_29", "testMenuPage1"));
+      list.add(new StaticData("dataac_new_0_30_fu", "/tests/testMenuPage2.jsp"));
       post("http://localhost/bookstore/servlet/control", list);
       printResponse();
       assertTrue(responseContains("This is testMenuPage1"));
 
       list = new ArrayList();
-      list.add(new KeyValuePair("source", "/bookstore/tests/testMenu.jsp"));
-      list.add(new KeyValuePair("dataac_goto_-1_25_fu",
+      list.add(new StaticData("source", "/bookstore/tests/testMenu.jsp"));
+      list.add(new StaticData("dataac_goto_-1_25_fu",
                                 "/tests/testMenuPage1.jsp"));
-      list.add(new KeyValuePair("dataac_goto_-1_25_singleRow", "false"));
-      list.add(new KeyValuePair("dataac_goto_-1_26_fu",
+      list.add(new StaticData("dataac_goto_-1_25_singleRow", "false"));
+      list.add(new StaticData("dataac_goto_-1_26_fu",
                                 "/tests/testMenuPage2.jsp"));
-      list.add(new KeyValuePair("dataac_goto_-1_26_singleRow", "false"));
-      list.add(new KeyValuePair("dataac_goto_-1_27_fu",
+      list.add(new StaticData("dataac_goto_-1_26_singleRow", "false"));
+      list.add(new StaticData("dataac_goto_-1_27_fu",
                                 "/tests/testPositionAuthorEdit.jsp"));
-      list.add(new KeyValuePair("dataac_goto_-1_27_singleRow", "false"));
-      list.add(new KeyValuePair("dataac_goto_-1_28_fu",
+      list.add(new StaticData("dataac_goto_-1_27_singleRow", "false"));
+      list.add(new StaticData("dataac_goto_-1_28_fu",
                                 "/tests/testPositionAuthorEdit.jsp"));
-      list.add(new KeyValuePair("dataac_goto_-1_28_destTable", "AUTHOR_VIEW"));
-      list.add(new KeyValuePair("dataac_goto_-1_28_singleRow", "false"));
-      list.add(new KeyValuePair("dataac_new_0_29_fu", "/tests/testMenuPage1.jsp"));
-      list.add(new KeyValuePair("dataac_new_0_30_fu", "/tests/testMenuPage2.jsp"));
-      list.add(new KeyValuePair("ac_new_0_30", "testMenuPage2"));
+      list.add(new StaticData("dataac_goto_-1_28_destTable", "AUTHOR_VIEW"));
+      list.add(new StaticData("dataac_goto_-1_28_singleRow", "false"));
+      list.add(new StaticData("dataac_new_0_29_fu", "/tests/testMenuPage1.jsp"));
+      list.add(new StaticData("dataac_new_0_30_fu", "/tests/testMenuPage2.jsp"));
+      list.add(new StaticData("ac_new_0_30", "testMenuPage2"));
       post("http://localhost/bookstore/servlet/control", list);
       printResponse();
       assertTrue(responseContains("This is testMenuPage2"));
 
       list = new ArrayList();
-      list.add(new KeyValuePair("source", "/bookstore/tests/testMenu.jsp"));
-      list.add(new KeyValuePair("dataac_goto_-1_25_fu",
+      list.add(new StaticData("source", "/bookstore/tests/testMenu.jsp"));
+      list.add(new StaticData("dataac_goto_-1_25_fu",
                                 "/tests/testMenuPage1.jsp"));
-      list.add(new KeyValuePair("dataac_goto_-1_25_singleRow", "false"));
-      list.add(new KeyValuePair("dataac_goto_-1_26_fu",
+      list.add(new StaticData("dataac_goto_-1_25_singleRow", "false"));
+      list.add(new StaticData("dataac_goto_-1_26_fu",
                                 "/tests/testMenuPage2.jsp"));
-      list.add(new KeyValuePair("dataac_goto_-1_26_singleRow", "false"));
-      list.add(new KeyValuePair("dataac_goto_-1_27_fu",
+      list.add(new StaticData("dataac_goto_-1_26_singleRow", "false"));
+      list.add(new StaticData("dataac_goto_-1_27_fu",
                                 "/tests/testPositionAuthorEdit.jsp"));
-      list.add(new KeyValuePair("dataac_goto_-1_27_singleRow", "false"));
-      list.add(new KeyValuePair("ac_goto_-1_27",
+      list.add(new StaticData("dataac_goto_-1_27_singleRow", "false"));
+      list.add(new StaticData("ac_goto_-1_27",
                                 "test goto testPositionAuthorEdit.jsp"));
-      list.add(new KeyValuePair("dataac_goto_-1_28_fu",
+      list.add(new StaticData("dataac_goto_-1_28_fu",
                                 "/tests/testPositionAuthorEdit.jsp"));
-      list.add(new KeyValuePair("dataac_goto_-1_28_destTable", "AUTHOR_VIEW"));
-      list.add(new KeyValuePair("dataac_goto_-1_28_singleRow", "false"));
-      list.add(new KeyValuePair("dataac_new_0_29_fu", "/tests/testMenuPage1.jsp"));
-      list.add(new KeyValuePair("dataac_new_0_30_fu", "/tests/testMenuPage2.jsp"));
+      list.add(new StaticData("dataac_goto_-1_28_destTable", "AUTHOR_VIEW"));
+      list.add(new StaticData("dataac_goto_-1_28_singleRow", "false"));
+      list.add(new StaticData("dataac_new_0_29_fu", "/tests/testMenuPage1.jsp"));
+      list.add(new StaticData("dataac_new_0_30_fu", "/tests/testMenuPage2.jsp"));
       post("http://localhost/bookstore/servlet/control", list);
       printResponse();
       assertTrue(responseContains("Edit Authors"));
 
       list = new ArrayList();
-      list.add(new KeyValuePair("source", "/bookstore/tests/testMenu.jsp"));
-      list.add(new KeyValuePair("dataac_goto_-1_25_fu",
+      list.add(new StaticData("source", "/bookstore/tests/testMenu.jsp"));
+      list.add(new StaticData("dataac_goto_-1_25_fu",
                                 "/tests/testMenuPage1.jsp"));
-      list.add(new KeyValuePair("dataac_goto_-1_25_singleRow", "false"));
-      list.add(new KeyValuePair("dataac_goto_-1_26_fu",
+      list.add(new StaticData("dataac_goto_-1_25_singleRow", "false"));
+      list.add(new StaticData("dataac_goto_-1_26_fu",
                                 "/tests/testMenuPage2.jsp"));
-      list.add(new KeyValuePair("dataac_goto_-1_26_singleRow", "false"));
-      list.add(new KeyValuePair("dataac_goto_-1_27_fu",
+      list.add(new StaticData("dataac_goto_-1_26_singleRow", "false"));
+      list.add(new StaticData("dataac_goto_-1_27_fu",
                                 "/tests/testPositionAuthorEdit.jsp"));
-      list.add(new KeyValuePair("dataac_goto_-1_27_singleRow", "false"));
-      list.add(new KeyValuePair("dataac_goto_-1_28_fu",
+      list.add(new StaticData("dataac_goto_-1_27_singleRow", "false"));
+      list.add(new StaticData("dataac_goto_-1_28_fu",
                                 "/tests/testPositionAuthorEdit.jsp"));
-      list.add(new KeyValuePair("dataac_goto_-1_28_destTable", "AUTHOR_VIEW"));
-      list.add(new KeyValuePair("dataac_goto_-1_28_singleRow", "false"));
-      list.add(new KeyValuePair("ac_goto_-1_28",
+      list.add(new StaticData("dataac_goto_-1_28_destTable", "AUTHOR_VIEW"));
+      list.add(new StaticData("dataac_goto_-1_28_singleRow", "false"));
+      list.add(new StaticData("ac_goto_-1_28",
                                 "test goto testPositionAuthorEdit.jsp with AUTHORVIEW"));
-      list.add(new KeyValuePair("dataac_new_0_29_fu", "/tests/testMenuPage1.jsp"));
-      list.add(new KeyValuePair("dataac_new_0_30_fu", "/tests/testMenuPage2.jsp"));
+      list.add(new StaticData("dataac_new_0_29_fu", "/tests/testMenuPage1.jsp"));
+      list.add(new StaticData("dataac_new_0_30_fu", "/tests/testMenuPage2.jsp"));
       post("http://localhost/bookstore/servlet/control", list);
       printResponse();
       assertTrue(responseContains("Edit Authors"));

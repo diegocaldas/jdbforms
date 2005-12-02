@@ -36,7 +36,7 @@ import javax.servlet.jsp.JspException;
  *
  * @author Joe Peer
  */
-public class StyleTag extends AbstractTagSupportWithScriptHandler
+public class StyleTag extends AbstractScriptHandlerTag
    implements javax.servlet.jsp.tagext.TryCatchFinally {
    private Hashtable params;
    private String    paramList;

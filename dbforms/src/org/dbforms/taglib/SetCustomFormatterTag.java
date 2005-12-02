@@ -43,7 +43,7 @@ import org.dbforms.util.Util;
  * @author Neal Katz &lt;db:setCustomFormater name="foo" class="" arg=""
  *         reset="" &gt; arg and reset are optional
  */
-public class SetCustomFormatterTag extends AbstractTagSupportWithScriptHandler
+public class SetCustomFormatterTag extends AbstractScriptHandlerTag
    implements javax.servlet.jsp.tagext.TryCatchFinally {
    
    private static final String sessionKey = "dbforms.org.tag.CustomFormatterTag";

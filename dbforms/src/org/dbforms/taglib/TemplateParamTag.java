@@ -36,7 +36,7 @@ import javax.servlet.jsp.JspException;
  *
  * @author Joe Peer
  */
-public class TemplateParamTag extends AbstractTagSupportWithScriptHandler
+public class TemplateParamTag extends AbstractScriptHandlerTag
    implements javax.servlet.jsp.tagext.TryCatchFinally {
    private Hashtable sp;
    private String    baseDir;

@@ -33,8 +33,8 @@ import org.dbforms.config.FieldValue;
 import org.dbforms.config.FieldValues;
 import org.dbforms.config.Table;
 import org.dbforms.interfaces.IDataContainer;
+import org.dbforms.interfaces.StaticData;
 
-import org.dbforms.util.KeyValuePair;
 import org.dbforms.util.MessageResources;
 import org.dbforms.util.ParseUtil;
 import org.dbforms.util.StringUtil;
@@ -631,7 +631,7 @@ public class DbFilterValueTag extends AbstractDbBaseHandlerTag implements IDataC
       int embeddedDataSize = state.embeddedData.size();
 
       for (int i = 0; i < embeddedDataSize; i++) {
-         KeyValuePair aKeyValuePair = (KeyValuePair) state.embeddedData.get(i);
+         StaticData aKeyValuePair = (StaticData) state.embeddedData.get(i);
          String       aKey   = aKeyValuePair.getKey();
          String       aValue = aKeyValuePair.getValue();
 

@@ -84,7 +84,7 @@ import javax.servlet.jsp.tagext.TryCatchFinally;
  * 
  * @author Joachim Peer
  */
-public class DbFormTag extends AbstractTagSupportWithScriptHandler implements
+public class DbFormTag extends AbstractScriptHandlerTag implements
 		TryCatchFinally {
 	/** logging category for this class */
 	private static Log logCat = LogFactory.getLog(DbFormTag.class.getName());

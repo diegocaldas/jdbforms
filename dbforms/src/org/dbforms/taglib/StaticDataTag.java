@@ -24,8 +24,8 @@
 package org.dbforms.taglib;
 
 import org.dbforms.interfaces.IDataContainer;
-import org.dbforms.interfaces.IKeyValuePairList;
-import org.dbforms.util.KeyValuePair;
+import org.dbforms.interfaces.IStaticDataList;
+import org.dbforms.interfaces.StaticData;
 
 import java.sql.Connection;
 
@@ -43,8 +43,8 @@ import javax.servlet.jsp.PageContext;
  * @author $author$
  * @version $Revision$
  */
-public class StaticData extends AbstractTagSupportWithScriptHandler
-   implements javax.servlet.jsp.tagext.TryCatchFinally, IKeyValuePairList {
+public class StaticDataTag extends AbstractScriptHandlerTag
+   implements javax.servlet.jsp.tagext.TryCatchFinally, IStaticDataList {
    private String name;
    private Vector data;
 
@@ -77,7 +77,7 @@ public class StaticData extends AbstractTagSupportWithScriptHandler
     *
     * @param pair DOCUMENT ME!
     */
-   public void addElement(KeyValuePair pair) {
+   public void addElement(StaticData pair) {
       data.add(pair);
    }
 

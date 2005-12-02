@@ -23,7 +23,7 @@
 
 package org.dbforms.taglib;
 
-import org.dbforms.interfaces.IPropertyList;
+import org.dbforms.interfaces.IPropertyMap;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,7 +34,7 @@ import java.util.Map;
  * @author  Henner Kollmann 
  */
 public abstract class AbstractAttributeObjectTag extends
-		AbstractTagSupportWithScriptHandler implements IPropertyList,
+		AbstractScriptHandlerTag implements IPropertyMap,
 		javax.servlet.jsp.tagext.TryCatchFinally {
 
 	private Map params = new HashMap();

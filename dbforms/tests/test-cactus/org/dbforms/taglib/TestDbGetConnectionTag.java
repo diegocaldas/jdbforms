@@ -42,7 +42,7 @@ import javax.servlet.jsp.tagext.BodyTag;
  *
  */
 public class TestDbGetConnectionTag extends JspTestCase {
-   private DbGetConnection tag;
+   private DbGetConnectionTag tag;
 
    /**
     * In addition to creating the tag instance and adding the pageContext to
@@ -59,7 +59,7 @@ public class TestDbGetConnectionTag extends JspTestCase {
 
       ConfigServlet configServlet = new ConfigServlet();
       configServlet.init(config);
-      tag = new DbGetConnection();
+      tag = new DbGetConnectionTag();
       tag.setId("con");
       tag.setPageContext(this.pageContext);
    }

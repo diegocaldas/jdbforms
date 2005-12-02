@@ -27,6 +27,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.dbforms.interfaces.IDataContainer;
+import org.dbforms.interfaces.StaticData;
 import org.dbforms.util.*;
 
 import java.util.List;
@@ -128,7 +129,7 @@ public class DbRadioTag extends AbstractDbBaseHandlerTag implements IDataContain
                                           .hasReadOnlySet()) {
             // First pass to retreive radio selectedIndex, because in Javascript it use only this index (Netscape 4.x)
             for (int i = 0; i < embeddedDataSize; i++) {
-               KeyValuePair aKeyValuePair = (KeyValuePair) embeddedData.get(i);
+               StaticData aKeyValuePair = (StaticData) embeddedData.get(i);
                String       aKey = aKeyValuePair.getKey();
 
                if (aKey.equals(currentValue)) {
@@ -152,7 +153,7 @@ public class DbRadioTag extends AbstractDbBaseHandlerTag implements IDataContain
          tagBuf.append("<table  BORDER=\"0\" cellspacing=\"0\" cellpadding=\"0\"><tr valign=\"top\">");
 
          for (int i = 0; i < embeddedDataSize; i++) {
-            KeyValuePair aKeyValuePair = (KeyValuePair) embeddedData.get(i);
+            StaticData aKeyValuePair = (StaticData) embeddedData.get(i);
             String       aKey   = aKeyValuePair.getKey();
             String       aValue = aKeyValuePair.getValue();
 

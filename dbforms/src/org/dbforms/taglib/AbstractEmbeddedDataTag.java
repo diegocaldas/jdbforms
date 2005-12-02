@@ -30,8 +30,8 @@ import org.dbforms.config.ResultSetVector;
 import org.dbforms.interfaces.IDataContainer;
 import org.dbforms.interfaces.IEscaper;
 import org.dbforms.interfaces.IFormatEmbeddedData;
+import org.dbforms.interfaces.StaticData;
 
-import org.dbforms.util.KeyValuePair;
 import org.dbforms.util.MessageResources;
 import org.dbforms.util.ReflectionUtil;
 import org.dbforms.util.SqlUtil;
@@ -54,9 +54,9 @@ import javax.servlet.jsp.PageContext;
  * @author $author$
  * @version $Revision$
  */
-public abstract class AbstractEmbeddedData extends AbstractDbBaseHandlerTag
+public abstract class AbstractEmbeddedDataTag extends AbstractDbBaseHandlerTag
    implements javax.servlet.jsp.tagext.TryCatchFinally  {
-   private static Log          logCat           = LogFactory.getLog(AbstractEmbeddedData.class
+   private static Log          logCat           = LogFactory.getLog(AbstractEmbeddedDataTag.class
          .getName());
    private IFormatEmbeddedData printfFormat;
    private List                data;
@@ -366,7 +366,7 @@ public abstract class AbstractEmbeddedData extends AbstractDbBaseHandlerTag
                }
 
                String htValue = printfFormat.sprintf(objs2);
-               result.add(new KeyValuePair(htKey, htValue));
+               result.add(new StaticData(htKey, htValue));
                rsv.moveNext();
             }
 
@@ -407,7 +407,7 @@ public abstract class AbstractEmbeddedData extends AbstractDbBaseHandlerTag
 
             String htValue = htValueBuf.toString(); //
 
-            result.add(new KeyValuePair(htKey, htValue));
+            result.add(new StaticData(htKey, htValue));
             rsv.moveNext();
          }
       }

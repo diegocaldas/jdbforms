@@ -42,7 +42,7 @@ import javax.sql.DataSource;
  *
  */
 public class TestDbSetDataSourceTag extends JspTestCase {
-   private DbSetDataSource tag;
+   private DbSetDataSourceTag tag;
 
    /**
     * In addition to creating the tag instance and adding the pageContext to
@@ -58,7 +58,7 @@ public class TestDbSetDataSourceTag extends JspTestCase {
 
       ConfigServlet configServlet = new ConfigServlet();
       configServlet.init(config);
-      tag = new DbSetDataSource();
+      tag = new DbSetDataSourceTag();
       tag.setDataSource("con");
       tag.setPageContext(this.pageContext);
    }
