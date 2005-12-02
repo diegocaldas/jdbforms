@@ -9709,7 +9709,7 @@
 			</tag>
 			<!-- **************************** isWebEvent tag ***********************************-->
 			<tag>
-				<name>isWebEventTag</name>
+				<name>isWebEvent</name>
 				<summary>
 					Allows a developer to detect which type of event is
 					being processed by the DbForms controller. The
@@ -9717,7 +9717,7 @@
 					dbForms: navFirst,navPrev, navNext, navLast, navNew,
 					noop, goto, insert, update, delete
 				</summary>
-				<tagclass>org.dbforms.taglib.IsWebEvent</tagclass>
+				<tagclass>org.dbforms.taglib.IsWebEventTag</tagclass>
 				<bodycontent>JSP</bodycontent>
 				<attribute>
 					<name>event</name>
