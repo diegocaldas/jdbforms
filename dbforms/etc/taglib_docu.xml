@@ -3093,13 +3093,13 @@
 			</tag>
 			<!-- **************************** queryData tag ***********************************-->
 			<tag>
-				<name>queryDataTag</name>
+				<name>queryData</name>
 				<summary>
 					external data to be nested into radio, checkbox or
 					select - tag!(useful only in conjunction with radio,
 					checkbox or select - tag)
 				</summary>
-				<tagclass>org.dbforms.taglib.QueryData</tagclass>
+				<tagclass>org.dbforms.taglib.QueryDataTag</tagclass>
 				<bodycontent>JSP</bodycontent>
 				<info>
 					<p>
