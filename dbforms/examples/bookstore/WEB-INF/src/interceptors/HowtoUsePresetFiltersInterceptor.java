@@ -24,39 +24,29 @@
 package interceptors;
 
 import java.util.Map;
+import java.util.Iterator;
 
 import org.dbforms.config.Field;
-
-import org.dbforms.util.Util;
 
 import org.dbforms.interfaces.IPresetFormValues;
 import org.dbforms.interfaces.DbEventInterceptorData;
 
 public class HowtoUsePresetFiltersInterceptor implements IPresetFormValues {
 
+	
 	public void presetFormValues(Map properties, DbEventInterceptorData data) {
-		String s = (String) properties.get("AUTHOR_ID");
-		if (!Util.isNull(s)) {
-		    Field f = data.getTable().getFieldByName("AUTHOR_ID");
-		    if (f != null) {
-				String searchName = f.getSearchFieldName();
-				data.getRequest().setAttribute(searchName, s);
-		    }
-		}
-	}
-
-	private void loadDefaults(Map properties, DbEventInterceptorData data) {
-		Iterator iter = properties.keySet().iterator();
-		while (iter.hasNext()) {
-			String key = (String) iter.next();
-			String value = (String) properties.get(key);
-			Field f = data.getTable().getFieldByName(key);
-			if (f != null) {
-				key = f.getSearchFieldName();
+		if (data.getRequest().getAttribute("webEvent") == null) {
+			Iterator iter = properties.keySet().iterator();
+			while (iter.hasNext()) {
+				String key = (String) iter.next();
+				String value = (String) properties.get(key);
+				Field f = data.getTable().getFieldByName(key);
+				if (f != null) {
+					key = f.getSearchFieldName();
+				}
+				data.getRequest().setAttribute(key, value);
 			}
-			data.getRequest().setAttribute(key, value);
 		}
 	}
-
 
 }
