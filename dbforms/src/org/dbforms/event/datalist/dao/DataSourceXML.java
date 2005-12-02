@@ -32,7 +32,7 @@ import org.dbforms.config.Field;
 import org.dbforms.config.FieldValue;
 import org.dbforms.config.FieldValues;
 
-import org.dbforms.dom.AbstractDOMFactory;
+import org.dbforms.dom.DOMFactory;
 
 import org.dbforms.util.Util;
 
@@ -288,7 +288,7 @@ public class DataSourceXML extends AbstractDataSource {
     * @throws Exception Exception during processing IO
     */
    protected Document read(String url) throws Exception {
-      return AbstractDOMFactory.instance()
+      return DOMFactory.instance()
                        .read(url);
    }
 
@@ -303,7 +303,7 @@ public class DataSourceXML extends AbstractDataSource {
     */
    protected void write(String  url,
                         Element root) throws Exception {
-      AbstractDOMFactory.instance()
+      DOMFactory.instance()
                 .write(url, root);
    }
 
