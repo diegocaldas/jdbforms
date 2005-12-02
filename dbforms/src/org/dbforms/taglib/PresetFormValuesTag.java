@@ -27,6 +27,8 @@ import java.util.HashMap;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.dbforms.util.ReflectionUtil;
 import org.dbforms.util.Util;
 
@@ -44,6 +46,7 @@ public class PresetFormValuesTag extends AbstractScriptHandlerTag
 		implements IPropertyMap, javax.servlet.jsp.tagext.TryCatchFinally {
 
 	private static final String sessionKey = "dbforms.org.tag.PresetFormValuesTag";
+    private static Log logCat = LogFactory.getLog(IsWebEventTag.class.getName());
 
 	private String className = null;
 
@@ -79,9 +82,8 @@ public class PresetFormValuesTag extends AbstractScriptHandlerTag
 						.newInstance(className);
 				cf.presetFormValues(properties, data);
 			} catch (Exception e) {
-				throw new JspException(e.getLocalizedMessage());
+			   logCat.error("privatePresetFormValues", e);
 			}
-
 		}
 	}
 
