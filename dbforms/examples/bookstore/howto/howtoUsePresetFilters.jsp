@@ -9,7 +9,7 @@
 	<db:property name="AUTHOR_ID" value="1" />
 </db:presetFormValues>
 <db:dbform autoUpdate="false"
-	followUp="/howto/howtoUsePresetFilters.jspp" tableName="BOOKSPERAUTHOR">
+	followUp="/howto/howtoUsePresetFilters.jsp" tableName="BOOKSPERAUTHOR">
 	<db:header>
 		<h1 align="center">Book with preset filter</h1>
 		<table class="fixed" align="center">

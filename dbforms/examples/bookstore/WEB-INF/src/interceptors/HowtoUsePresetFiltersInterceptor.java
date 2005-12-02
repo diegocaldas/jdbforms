@@ -45,4 +45,18 @@ public class HowtoUsePresetFiltersInterceptor implements IPresetFormValues {
 		}
 	}
 
+	private void loadDefaults(Map properties, DbEventInterceptorData data) {
+		Iterator iter = properties.keySet().iterator();
+		while (iter.hasNext()) {
+			String key = (String) iter.next();
+			String value = (String) properties.get(key);
+			Field f = data.getTable().getFieldByName(key);
+			if (f != null) {
+				key = f.getSearchFieldName();
+			}
+			data.getRequest().setAttribute(key, value);
+		}
+	}
+
+
 }
