@@ -63,7 +63,7 @@ public class DbFormsConfig {
    /** DOCUMENT ME! */
    public static final String CONFIG = "dbformsConfig";
 
-   private final String REALPATH = "$(SERVLETCONTEXT_REALPATH)";
+   private static final String REALPATH = "$(SERVLETCONTEXT_REALPATH)";
 
    /** contains connection put by addDbConnection */
    private ArrayList dbConnectionsList = new ArrayList();

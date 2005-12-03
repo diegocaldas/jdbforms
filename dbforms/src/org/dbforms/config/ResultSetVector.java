@@ -26,7 +26,6 @@ package org.dbforms.config;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.dbforms.config.MultipleValidationException;
 import org.dbforms.interfaces.DbEventInterceptorData;
 import org.dbforms.interfaces.IDbEventInterceptor;
 import org.dbforms.interfaces.IEscaper;
@@ -348,6 +347,7 @@ public class ResultSetVector implements java.io.Serializable {
 				Object[] objRow = (Object[]) objectVector.elementAt(row);
 				objRow[i] = obj;
 			} catch (Exception e) {
+				logCat.error("setFieldAsObject", e);
 			}
 		}
 	}
@@ -579,7 +579,7 @@ public class ResultSetVector implements java.io.Serializable {
 					res = interceptorData.getTable().processInterceptors(
 							IDbEventInterceptor.PRE_ADDROW, interceptorData);
 				} catch (MultipleValidationException e) {
-					;
+					logCat.error("addRow", e);
 				}
 
 				doit = (res == IDbEventInterceptor.GRANT_OPERATION);
@@ -596,7 +596,7 @@ public class ResultSetVector implements java.io.Serializable {
 										IDbEventInterceptor.POST_ADDROW,
 										interceptorData);
 					} catch (MultipleValidationException e) {
-						;
+						logCat.error("addRow", e);
 					}
 				}
 			}

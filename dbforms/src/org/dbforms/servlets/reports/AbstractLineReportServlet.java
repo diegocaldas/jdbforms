@@ -27,7 +27,6 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-
 import org.dbforms.util.Util;
 import org.dbforms.util.external.FileUtil;
 
@@ -63,10 +62,9 @@ import javax.servlet.http.HttpSession;
  * &lt;servlet-name/&gt;startreport&lt;/servlet-name/&gt;
  * &lt;url-pattern/&gt;/reports/&lt;/url-pattern/&gt; &lt;/servlet-mapping&gt;
  * web.xml optional parameters reportdirs list of directories to search for
- * report file reportMimeType mime type 
- * to send to browser Parameters filename=xyz.csv name the output file 
- * Support for grabbing data from a Collection or an existing ResultSetVector 
- * set session variable "jasper.input"
+ * report file reportMimeType mime type to send to browser Parameters
+ * filename=xyz.csv name the output file Support for grabbing data from a
+ * Collection or an existing ResultSetVector set session variable "jasper.input"
  * to use a Collection object set session variable "jasper.rsv" to use a
  * ResultSetVector object ex &ltc:set var="jasper.rsv" value="${rsv_xxxxx}"
  * scope="session" /&gt
@@ -82,7 +80,9 @@ public abstract class AbstractLineReportServlet extends AbstractReportServlet {
 	protected abstract String getFileExtension();
 
 	protected abstract void writeData(Object[] data) throws Exception;
+
 	protected abstract void openStream(OutputStream out) throws Exception;
+
 	protected abstract void closeStream(OutputStream out) throws Exception;
 
 	private static final String REPORTMIMETYPEPARAM = "reportMimeType";
@@ -157,15 +157,15 @@ public abstract class AbstractLineReportServlet extends AbstractReportServlet {
 				obj = request.getAttribute(search);
 			} else {
 				// complex, 'search' is really a bean
-	               // complex, 'search' is really a bean
-	               String search_bean = search.substring(0, pos);
-	               search = search.substring(pos + 1);
-	               Object   bean = request.getAttribute(search_bean);
-	               if (bean != null) {
-	                  logCat.debug("calling PropertyUtils.getProperty " + search_bean
-	                     + " " + search);
-	                  obj = PropertyUtils.getProperty(bean, search);
-	               }
+				// complex, 'search' is really a bean
+				String search_bean = search.substring(0, pos);
+				search = search.substring(pos + 1);
+				Object bean = request.getAttribute(search_bean);
+				if (bean != null) {
+					logCat.debug("calling PropertyUtils.getProperty "
+							+ search_bean + " " + search);
+					obj = PropertyUtils.getProperty(bean, search);
+				}
 			}
 		} catch (Exception e) {
 			logCat.error("getPageContextValue: " + e);
@@ -183,15 +183,15 @@ public abstract class AbstractLineReportServlet extends AbstractReportServlet {
 				// simple type, 'search' is an object in the session
 				obj = session.getAttribute(search);
 			} else {
-	               // complex, 'search' is really a bean
-	               String search_bean = search.substring(0, pos);
-	               search = search.substring(pos + 1);
-	               Object   bean = session.getAttribute(search_bean);
-	               if (bean != null) {
-	                  logCat.debug("calling PropertyUtils.getProperty " + search_bean
-	                     + " " + search);
-	                  obj = PropertyUtils.getProperty(bean, search);
-	               }
+				// complex, 'search' is really a bean
+				String search_bean = search.substring(0, pos);
+				search = search.substring(pos + 1);
+				Object bean = session.getAttribute(search_bean);
+				if (bean != null) {
+					logCat.debug("calling PropertyUtils.getProperty "
+							+ search_bean + " " + search);
+					obj = PropertyUtils.getProperty(bean, search);
+				}
 			}
 		} catch (Exception e) {
 			logCat.error("getSessionValue: " + e);
@@ -203,7 +203,7 @@ public abstract class AbstractLineReportServlet extends AbstractReportServlet {
 	private ByteArrayOutputStream fillReport(HttpServletRequest request,
 			String[] header, String[] fields, AbstractJRDataSource dataSource)
 			throws Exception {
-        ByteArrayOutputStream res = new ByteArrayOutputStream();
+		ByteArrayOutputStream res = new ByteArrayOutputStream();
 		openStream(res);
 		writeHeader(header);
 		// Write out the data
@@ -243,50 +243,54 @@ public abstract class AbstractLineReportServlet extends AbstractReportServlet {
 		try {
 			File f = new File(reportFileFullName + getReportFileExtension());
 			BufferedReader in = new BufferedReader(new FileReader(f));
-			String line1 = in.readLine();
-			String line2 = in.readLine();
-			String fields = null;
-			String headers = null;
-			if (Util.isNull(line2)) {
-				fields = line1;
-			} else {
-				headers = line1;
-				fields = line2;
-			}
-			if (Util.isNull(fields)) {
-				logCat.error("no fields found");
-				return null;
-			}
-			String[] reportFields = fields.split(",");
-			String[] headerFields;
-			if (headers != null) {
-				headerFields = headers.split(",");
-			} else {
-				headerFields = new String[] {};
-			}
-			if (reportFields.length != headerFields.length) {
-				logCat.error("reportFields.length != headerFields.length");
-				headerFields = reportFields;
-			}
-			if (reportFields.length == 0) {
-				logCat.error("no fields found");
-				return null;
-			}
+			try {
+				String line1 = in.readLine();
+				String line2 = in.readLine();
+				String fields = null;
+				String headers = null;
+				if (Util.isNull(line2)) {
+					fields = line1;
+				} else {
+					headers = line1;
+					fields = line2;
+				}
+				if (Util.isNull(fields)) {
+					logCat.error("no fields found");
+					return null;
+				}
+				String[] reportFields = fields.split(",");
+				String[] headerFields;
+				if (headers != null) {
+					headerFields = headers.split(",");
+				} else {
+					headerFields = new String[] {};
+				}
+				if (reportFields.length != headerFields.length) {
+					logCat.error("reportFields.length != headerFields.length");
+					headerFields = reportFields;
+				}
+				if (reportFields.length == 0) {
+					logCat.error("no fields found");
+					return null;
+				}
 
-            ReportWriter res = new ReportWriter();
-			res.data = fillReport(request, headerFields, reportFields,
-					dataSource);
-			if (res.data != null) {
-				res.fileName = FileUtil.filename(reportFileFullName) + getFileExtension();
-                res.mimeType = mimeType;
+				ReportWriter res = new ReportWriter();
+				res.data = fillReport(request, headerFields, reportFields,
+						dataSource);
+				if (res.data != null) {
+					res.fileName = FileUtil.filename(reportFileFullName)
+							+ getFileExtension();
+					res.mimeType = mimeType;
+				}
+				return res;
+			} finally {
+				in.close();
 			}
-            return res;
 		} catch (Exception e) {
 			logCat.error("read report file", e);
 			handleException(request, response, e);
 			return null;
 		}
 	}
-	
 
 }

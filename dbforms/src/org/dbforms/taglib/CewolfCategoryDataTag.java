@@ -62,11 +62,11 @@ public class CewolfCategoryDataTag extends AbstractDbBaseHandlerTag  {
     	for (int i = 0; i < rsv.size(); i++) {
         	Comparable c = (Comparable) rsv.getFieldAsObject(i, getCategoryField());
     		if (c == null)
-     		   c = new String("");	
+     		   c = new String();	
         	Comparable s = (Comparable) rsv.getFieldAsObject(i, getSeriesField());
     		Number n = (Number) rsv.getFieldAsObject(i, getDataField());
     		if (s == null)
-    		   s = new String("");	
+    		   s = new String();	
     		ds.addValue(n, s, c);
     	}
     	DatasetProducer dataProducer = new CewolfDatasetProducer(ds);
