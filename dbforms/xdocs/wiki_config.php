@@ -10,9 +10,7 @@ chdir(dirname(__FILE__)."/_ewiki");
 
 #-- OPEN DATABASE for ewiki
 #
-echo "connect";
 if (function_exists("mysql_connect")) {
-   echo "connect2";
    $ok = mysql_connect("mysql4-j", "j17608rw", "db4712forms-rw") &&  mysql_select_db('j17608_dbforms');
 }
 
