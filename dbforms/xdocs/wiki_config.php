@@ -10,8 +10,10 @@ chdir(dirname(__FILE__)."/_ewiki");
 
 #-- OPEN DATABASE for ewiki
 #
+echo "connect";
 if (function_exists("mysql_connect")) {
-   $ok = @mysql_connect('mysql', 'jdbforms', 'db4712forms') && mysql_query("USE jdbforms");
+   echo "connect2";
+   $ok = mysql_connect("mysql4-j", "j17608rw", "db4712forms-rw") &&  mysql_select_db('j17608_dbforms');
 }
 
 #-- or use the flat file database backend as fallback
@@ -26,9 +28,9 @@ define("EWIKI_NAME", 'DbFormsWiki');
 define("EWIKI_PAGE_INDEX",   'WiKi');
 define("EWIKI_SCRIPT", "http://jdbforms.sourceforge.net/wiki.php?page=");
 define("EWIKI_LOGFILE", '/home/groups/j/jd/jdbforms/htdocs/_log/ewiki.txt');
-#define("EWIKI_TMP", "/home/groups/j/jd/jdbforms/htdocs/tmp");
-define("EWIKI_TMP", "/tmp");
-define("EWIKI_LOGLEVEL", '3');
+define("EWIKI_TMP", "/home/groups/j/jd/jdbforms/htdocs/tmp");
+#define("EWIKI_TMP", "/tmp");
+define("EWIKI_LOGLEVEL", '9');
 define("EWIKI_EDIT_REDIRECT", 0);
 define("EWIKI_NOTIFY_WITH_DIFF", 1);
 define("EWIKI_PROTECTED_MODE", 1);
