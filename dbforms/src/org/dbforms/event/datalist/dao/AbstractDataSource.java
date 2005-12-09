@@ -568,48 +568,68 @@ public abstract class AbstractDataSource {
 	 * 
 	 * @throws SQLException
 	 */
-	private ResultSetVector getResultSetVector(
+	protected ResultSetVector getResultSetVector(
 			DbEventInterceptorData interceptorData, int startRow, int count)
 			throws SQLException {
 		ResultSetVector result;
+		int cCount = count;
 		do {
-			result = getResultSetVectorInternal(interceptorData, startRow, count);
-		} while ( false );
+			result = getResultSetVectorInternal(interceptorData, startRow,
+					cCount);
+			if ((count < 0) && result.isFirstPage())
+				break;
+			else if ((count > 0) && result.isLastPage())
+				break;
+			cCount = count + (count - result.size());
+		} while (result.size() < Math.abs(count));
 		return result;
 	}
 
 	private ResultSetVector getResultSetVectorInternal(
 			DbEventInterceptorData interceptorData, int startRow, int count)
 			throws SQLException {
+		ResultSetVector result = null;
+		result = new ResultSetVector(table);
 
 		int begin = 0;
 		int ende = 0;
 
+		Object[] row;
+
 		if (count > 0) {
 			begin = startRow;
-			ende  = startRow + count;
+
+			for (ende = begin; ende < (startRow + count); ende++) {
+				row = getRow(ende);
+
+				if (row == null) {
+					break;
+				}
+
+				result.addRow(interceptorData, row);
+			}
 		} else if (count < 0) {
 			begin = startRow + count + 1;
+
 			if (begin < 0) {
 				begin = 0;
 			}
-			ende = startRow;
-		}
 
-		int counter = 0;
-		
-		ResultSetVector result = new ResultSetVector(table);
-		for (counter = begin; counter <= ende; counter++) {
-			Object[] row = getRow(counter);
-			if (row == null) {
-				break;
+			for (ende = begin; ende <= startRow; ende++) {
+				row = getRow(ende);
+
+				if (row == null) {
+					break;
+				}
+
+				result.addRow(interceptorData, row);
 			}
-			result.addRow(interceptorData, row);
 		}
 
 		result.setFirstPage(!(begin > 0));
-		result.setLastPage(!hasMore(counter));
-		
+		result.setLastPage(!hasMore(ende));
+
 		return result;
 	}
+
 }

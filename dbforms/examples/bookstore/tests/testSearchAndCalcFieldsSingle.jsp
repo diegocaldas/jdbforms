@@ -4,11 +4,11 @@
    </head>
    <body>
       <h1>
-         Tests search and calc fields
+         Tests search and calc fields Single
       </h1>
       <db:dbform  
-	      	maxRows="*" 
-	         followUp="/tests/testSearchAndCalcFields.jsp" 
+	      	maxRows="1" 
+	         followUp="/tests/testSearchAndCalcFieldsSingle.jsp" 
   	     	 autoUpdate="false" 
   	     	 tableName="BOOKLISTPERAUTHOR"
        >
@@ -18,7 +18,10 @@
          <db:label fieldName="ROW_NUM"/>&nbsp;<db:label fieldName="BOOK_ID"/>&nbsp;<db:label fieldName="ISBN"/>&nbsp;<db:label fieldName="TITLE"/>&nbsp;<db:label fieldName="AUTHOR_ID"/>&nbsp;<db:label fieldName="ISBN_TITLE"/>&nbsp;<br/>
          </db:body>
          <db:footer>
-            <br/><br/>Search for AUTHOR_ID: <db:search fieldName="AUTHOR_ID"/> 
+							<db:navFirstButton caption="first"/>
+							<db:navPrevButton  caption="previous"/>
+							<db:navNextButton  caption="next"/>
+							<db:navLastButton  caption="last"/>
          </db:footer>
       </db:dbform>
    </body>
