@@ -151,6 +151,12 @@ public class DbFormTag extends AbstractScriptHandlerTag implements
 	/** filter string */
 	private String filter;
 
+	/*
+	 * If set to true, resultSet is obtained only if search filters have been
+	 * specified
+	 */
+	private String searchFilterRequired = "false";
+
 	/**
 	 * site to be invoked after action - nota bene: this followUp may be
 	 * overruled by "followUp"-attributes of actionButtons
@@ -269,7 +275,6 @@ public class DbFormTag extends AbstractScriptHandlerTag implements
 	 * footer needs to be rendered yet
 	 */
 	private boolean footerReached = false;
-
 
 	/**
 	 * count (multiplicity, view-mode) of this form (n || -1), whereby n E N
@@ -1259,8 +1264,7 @@ public class DbFormTag extends AbstractScriptHandlerTag implements
 					dbConnectionName);
 			interceptorData.setAttribute(DbEventInterceptorData.PAGECONTEXT,
 					pageContext);
-			interceptorData.setAttribute(DbEventInterceptorData.FORMTAG,
-					this);
+			interceptorData.setAttribute(DbEventInterceptorData.FORMTAG, this);
 			PresetFormValuesTag.presetFormValues(interceptorData);
 			interceptorData.removeAttribute(DbEventInterceptorData.FORMTAG);
 
@@ -1703,7 +1707,8 @@ public class DbFormTag extends AbstractScriptHandlerTag implements
 			//
 			// 1. possibility: webEvent is a navigation event ?
 			//
-			if ((webEvent != null) && webEvent instanceof AbstractNavigationEvent) {
+			if ((webEvent != null)
+					&& webEvent instanceof AbstractNavigationEvent) {
 				navEvent = (AbstractNavigationEvent) webEvent;
 
 				if ((navEvent.getTable() == null)
@@ -1784,8 +1789,7 @@ public class DbFormTag extends AbstractScriptHandlerTag implements
 						&& EventType.EVENT_DATABASE_INSERT.equals(webEvent
 								.getType()) && (errors != null)
 						&& (errors.size() > 0)
-						&& (webEvent.getTable().getId() == getTable().getId())
-					) {
+						&& (webEvent.getTable().getId() == getTable().getId())) {
 					// error in insert event, nothing to do!
 					navEvent = null;
 					resultSetVector = null;
@@ -1815,9 +1819,34 @@ public class DbFormTag extends AbstractScriptHandlerTag implements
 			if (navEvent != null) {
 				logCat.info("about to process nav event:"
 						+ navEvent.getClass().getName());
-				resultSetVector = navEvent.processEvent(mergedFieldValues,
-						orderConstraint, sqlFilterString, sqlFilterParams,
-						count, firstPosition, lastPosition, interceptorData);
+				/*
+				 * Philip Grunikiewicz 2005-12-08
+				 * 
+				 * Added a new attribute which allows the developer to control
+				 * if data should be retrieved when search filters are empty.
+				 * searchFilterRequired="true" verifies if the user has
+				 * specified search filter(s). If so, the query is allowed to
+				 * proceed, if not, return empty data
+				 * 
+				 * A check is made to see if: a searchTag contains a value the
+				 * filter attribute (dbforms tag) contains a value a filter tag
+				 * is specified
+				 */
+
+				if (Util.getTrue(getSearchFilterRequired())
+						&& searchFieldValues == null
+						&& Util.isNull(filter)
+						&& Util.isNull(sqlFilterString) ) {
+					// ResultSet is going to be hardcoded empty
+					resultSetVector = new ResultSetVector(getTable());
+				} else {
+					// Business as usual
+					resultSetVector = navEvent
+							.processEvent(mergedFieldValues, orderConstraint,
+									sqlFilterString, sqlFilterParams, count,
+									firstPosition, lastPosition,
+									interceptorData);
+				}
 
 				if (ResultSetVector.isNull(resultSetVector)) {
 					setFooterReached(true);
@@ -2858,5 +2887,13 @@ public class DbFormTag extends AbstractScriptHandlerTag implements
 		}
 
 		return arr;
+	}
+
+	public String getSearchFilterRequired() {
+		return searchFilterRequired;
+	}
+
+	public void setSearchFilterRequired(String searchFilterRequired) {
+		this.searchFilterRequired = searchFilterRequired;
 	}
 }

@@ -264,6 +264,31 @@
 					</info>
 				</attribute>
 				<attribute>
+					<name>searchFilterRequired</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						<p>
+							If set to true, the actual resultSet is
+							obtained only if search filters have been
+							specified, otherwise an empty resultset is
+							returned. Perfect for situations where,
+							without search filters, the resultset would
+							be much too large.
+
+							This feature validates the following:
+							<ul>
+								<li>searchTag contains a value</li>
+								<li>
+									the filter attribute (dbforms tag)
+									contains a value
+								</li>
+								<li>a filter tag is specified</li>
+							</ul>
+						</p>
+					</info>
+				</attribute>
+				<attribute>
 					<name>maxRows</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
@@ -1213,7 +1238,9 @@
 						EDITING (=> can never be used as input field)
 					</p>
 				</summary>
-				<tagclass>org.dbforms.taglib.DbDataContainerLabelTag</tagclass>
+				<tagclass>
+					org.dbforms.taglib.DbDataContainerLabelTag
+				</tagclass>
 				<bodycontent>JSP</bodycontent>
 				<info>
 					<p>
@@ -2387,7 +2414,9 @@
 			<tag>
 				<name>textAreaForBlobs</name>
 				<summary>renders a HTML TEXTAREA element</summary>
-				<tagclass>org.dbforms.taglib.DbTextAreaForBlobsTag</tagclass>
+				<tagclass>
+					org.dbforms.taglib.DbTextAreaForBlobsTag
+				</tagclass>
 				<bodycontent>JSP</bodycontent>
 				<info>
 					i/o textarea for character diskblobs. use it if you
@@ -3346,7 +3375,9 @@
 					data to be nested into staticData element! (see
 					description of staticData for further details)
 				</summary>
-				<tagclass>org.dbforms.taglib.StaticDataItemTag</tagclass>
+				<tagclass>
+					org.dbforms.taglib.StaticDataItemTag
+				</tagclass>
 				<bodycontent>empty</bodycontent>
 				<attribute>
 					<name>key</name>
@@ -3367,7 +3398,9 @@
 					database connection object using the same settings
 					found in dbForms-config.xml
 				</summary>
-				<tagclass>org.dbforms.taglib.DbGetConnectionTag</tagclass>
+				<tagclass>
+					org.dbforms.taglib.DbGetConnectionTag
+				</tagclass>
 				<bodycontent>JSP</bodycontent>
 				<attribute>
 					<name>id</name>
@@ -3424,7 +3457,9 @@
 					DataSource using the same settings found in
 					dbForms-config.xml
 				</summary>
-				<tagclass>org.dbforms.taglib.DbSetDataSourceTag</tagclass>
+				<tagclass>
+					org.dbforms.taglib.DbSetDataSourceTag
+				</tagclass>
 				<bodycontent>JSP</bodycontent>
 				<attribute>
 					<name>dataSource</name>
@@ -4509,17 +4544,17 @@
 						</p>
 					</info>
 				</attribute>
-<!--
-				<attribute>
+				<!--
+					<attribute>
 					<name>overrideReadOnly</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
 					<info>
-						[EXPERIMENTAL] override the read only attribute
-						of the parent form
+					[EXPERIMENTAL] override the read only attribute
+					of the parent form
 					</info>
-				</attribute>
--->
+					</attribute>
+				-->
 				<attribute>
 					<name>pattern</name>
 					<required>false</required>
@@ -4566,11 +4601,11 @@
 					<info>
 						<p style="    text-autospace:none">
 							Item to be used if there is no embedded data
-							 Arguments to this tag are as follows:
+							Arguments to this tag are as follows:
 							<span
 								style="font-size:8.0pt;font-family:Courier;     ">
 								Key,Description
-							</span>					
+							</span>
 						</p>
 					</info>
 				</attribute>
@@ -4966,7 +5001,9 @@
 				<summary>
 					element to be embedded inside a linkURL-element
 				</summary>
-				<tagclass>org.dbforms.taglib.DbLinkPositionItemTag</tagclass>
+				<tagclass>
+					org.dbforms.taglib.DbLinkPositionItemTag
+				</tagclass>
 				<bodycontent>empty</bodycontent>
 				<info>
 					example:
@@ -5005,7 +5042,9 @@
 			<tag>
 				<name>insertButton</name>
 				<summary>this tag renders an INSERT-button</summary>
-				<tagclass>org.dbforms.taglib.DbInsertButtonTag</tagclass>
+				<tagclass>
+					org.dbforms.taglib.DbInsertButtonTag
+				</tagclass>
 				<bodycontent>JSP</bodycontent>
 				<info>
 					<p>this tag renders an insert-button</p>
@@ -5333,7 +5372,9 @@
 			<tag>
 				<name>deleteButton</name>
 				<summary>this tag renders a DELETE-button</summary>
-				<tagclass>org.dbforms.taglib.DbDeleteButtonTag</tagclass>
+				<tagclass>
+					org.dbforms.taglib.DbDeleteButtonTag
+				</tagclass>
 				<bodycontent>JSP</bodycontent>
 				<info>
 					<p>delete button</p>
@@ -5667,7 +5708,9 @@
 			<tag>
 				<name>updateButton</name>
 				<summary>this tag renders an UPDATE-button</summary>
-				<tagclass>org.dbforms.taglib.DbUpdateButtonTag</tagclass>
+				<tagclass>
+					org.dbforms.taglib.DbUpdateButtonTag
+				</tagclass>
 				<bodycontent>JSP</bodycontent>
 				<info>
 					<p>update button</p>
@@ -6005,7 +6048,9 @@
 					this tag renders a navigation button for scrolling
 					to previous row(s) of the current table
 				</summary>
-				<tagclass>org.dbforms.taglib.DbNavPrevButtonTag</tagclass>
+				<tagclass>
+					org.dbforms.taglib.DbNavPrevButtonTag
+				</tagclass>
 				<bodycontent>JSP</bodycontent>
 				<info>navigation button to scroll back</info>
 				<attribute>
@@ -6382,7 +6427,9 @@
 					this tag renders a navigation button for scrolling
 					to next row(s) of the current table
 				</summary>
-				<tagclass>org.dbforms.taglib.DbNavNextButtonTag</tagclass>
+				<tagclass>
+					org.dbforms.taglib.DbNavNextButtonTag
+				</tagclass>
 				<bodycontent>empty</bodycontent>
 				<info>
 					navigation button to scroll to next dataset(s)
@@ -6760,7 +6807,9 @@
 					this tag renders a navigation button for scrolling
 					to the first row(s) of the current table
 				</summary>
-				<tagclass>org.dbforms.taglib.DbNavFirstButtonTag</tagclass>
+				<tagclass>
+					org.dbforms.taglib.DbNavFirstButtonTag
+				</tagclass>
 				<bodycontent>JSP</bodycontent>
 				<info>
 					navigation button to scroll to first dataset
@@ -7131,7 +7180,9 @@
 					this tag renders a navigation button for scrolling
 					to the last row(s) of the current table
 				</summary>
-				<tagclass>org.dbforms.taglib.DbNavLastButtonTag</tagclass>
+				<tagclass>
+					org.dbforms.taglib.DbNavLastButtonTag
+				</tagclass>
 				<bodycontent>JSP</bodycontent>
 				<info>navigation button to scroll to last dataset</info>
 				<attribute>
@@ -7499,7 +7550,9 @@
 					this tag renders a navigation button for creating a
 					new row of data
 				</summary>
-				<tagclass>org.dbforms.taglib.DbNavNewButtonTag</tagclass>
+				<tagclass>
+					org.dbforms.taglib.DbNavNewButtonTag
+				</tagclass>
 				<bodycontent>JSP</bodycontent>
 				<info>
 					<p>
@@ -7839,7 +7892,9 @@
 					copy of a row of data that you can then modify and
 					insert
 				</summary>
-				<tagclass>org.dbforms.taglib.DbNavCopyButtonTag</tagclass>
+				<tagclass>
+					org.dbforms.taglib.DbNavCopyButtonTag
+				</tagclass>
 				<bodycontent>JSP</bodycontent>
 				<info>
 					<p>
@@ -8165,7 +8220,9 @@
 					this tag renders a navigation button for reloading
 					and moving to the first row of the current table
 				</summary>
-				<tagclass>org.dbforms.taglib.DbNavReloadButtonTag</tagclass>
+				<tagclass>
+					org.dbforms.taglib.DbNavReloadButtonTag
+				</tagclass>
 				<bodycontent>JSP</bodycontent>
 				<info>
 					navigation button for reloading and moving to the
@@ -9203,14 +9260,14 @@
 					<rtexprvalue>true</rtexprvalue>
 					<info>
 						<p>
-						   if set to TRUE body will be rendered if an error as occured.
+							if set to TRUE body will be rendered if an
+							error as occured.
 						</p>
 						<p>
-						   if set to FALSE body will be rendered if no error has occured.
+							if set to FALSE body will be rendered if no
+							error has occured.
 						</p>
-						<p>
-						   Default: TRUE
-						</p>
+						<p>Default: TRUE</p>
 					</info>
 				</attribute>
 			</tag>
@@ -9221,7 +9278,9 @@
 					Verifies if the number of records in the result set
 					is larger then the number specified
 				</summary>
-				<tagclass>org.dbforms.taglib.HasMoreRecordsTag</tagclass>
+				<tagclass>
+					org.dbforms.taglib.HasMoreRecordsTag
+				</tagclass>
 				<bodycontent>JSP</bodycontent>
 				<attribute>
 					<name>count</name>
@@ -9322,7 +9381,9 @@
 						selecting the radio-buttonrendered by this tag
 					</p>
 				</summary>
-				<tagclass>org.dbforms.taglib.DbAssociatedRadioTag</tagclass>
+				<tagclass>
+					org.dbforms.taglib.DbAssociatedRadioTag
+				</tagclass>
 				<bodycontent>empty</bodycontent>
 				<info>
 					<p>
@@ -9632,7 +9693,9 @@
 				<summary>
 					writes out base dir of the current template
 				</summary>
-				<tagclass>org.dbforms.taglib.TemplateBasedirTag</tagclass>
+				<tagclass>
+					org.dbforms.taglib.TemplateBasedirTag
+				</tagclass>
 				<bodycontent>empty</bodycontent>
 				<info>
 					<p>
@@ -9698,7 +9761,9 @@
 					This tag was added to allow the generation of a
 					javascript array from EmbeddedData.
 				</summary>
-				<tagclass>org.dbforms.taglib.JavascriptArrayTag</tagclass>
+				<tagclass>
+					org.dbforms.taglib.JavascriptArrayTag
+				</tagclass>
 				<bodycontent>JSP</bodycontent>
 				<attribute>
 					<name>name</name>
@@ -9789,10 +9854,13 @@
 					</info>
 				</attribute>
 				<attribute>
-							<name>hidden</name>
-							<required>false</required>
-							<rtexprvalue>true</rtexprvalue>
-							<description>A true value will render the search field hidden.</description>
+					<name>hidden</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<description>
+						A true value will render the search field
+						hidden.
+					</description>
 				</attribute>
 				<attribute>
 					<name>searchAlgo</name>
@@ -10083,7 +10151,9 @@
 						from the JSP developer.
 					</p>
 				</summary>
-				<tagclass>org.dbforms.taglib.DbSearchCheckBoxTag</tagclass>
+				<tagclass>
+					org.dbforms.taglib.DbSearchCheckBoxTag
+				</tagclass>
 				<bodycontent>empty</bodycontent>
 				<info>
 					<p>example of result:</p>
@@ -10335,8 +10405,9 @@
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
 					<info>
-						CSS stylesheet class to be applied to the SET button.
-						If not provided, the styleClass attribute is used.
+						CSS stylesheet class to be applied to the SET
+						button. If not provided, the styleClass
+						attribute is used.
 					</info>
 				</attribute>
 				<attribute>
@@ -10344,8 +10415,9 @@
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
 					<info>
-						CSS stylesheet class to be applied to the UNSET button.
-						If not provided, the styleClass attribute is used.
+						CSS stylesheet class to be applied to the UNSET
+						button. If not provided, the styleClass
+						attribute is used.
 					</info>
 				</attribute>
 			</tag>
@@ -10355,7 +10427,9 @@
 					a DbFilterTag.
 				</summary>
 				<name>filterCondition</name>
-				<tagclass>org.dbforms.taglib.DbFilterConditionTag</tagclass>
+				<tagclass>
+					org.dbforms.taglib.DbFilterConditionTag
+				</tagclass>
 				<bodycontent>JSP</bodycontent>
 				<info>
 					A condition is specified as sql code in the body of
@@ -10696,20 +10770,22 @@
 				<summary>
 					Register a Custom Formatter for later use
 				</summary>
-				<tagclass>org.dbforms.taglib.SetCustomFormatterTag</tagclass>
+				<tagclass>
+					org.dbforms.taglib.SetCustomFormatterTag
+				</tagclass>
 				<bodycontent>JSP</bodycontent>
 				<info>
 					<p>
 						The registered class must implement the
-						org.dbforms.interface.ICustomFormat interface. A new
-						instance of the object will be instantiated and
-						initialized with the 'arg' value, this instance
-						will be given the name 'name'. The name exists
-						in the session space. Other tags that utilize
-						the custom formatter will use the attribute
-						customFormatter='xyz', where 'xyz' is the name
-						registered. Multiple instances of the same
-						object can exist with different names and
+						org.dbforms.interface.ICustomFormat interface. A
+						new instance of the object will be instantiated
+						and initialized with the 'arg' value, this
+						instance will be given the name 'name'. The name
+						exists in the session space. Other tags that
+						utilize the custom formatter will use the
+						attribute customFormatter='xyz', where 'xyz' is
+						the name registered. Multiple instances of the
+						same object can exist with different names and
 						initial values for arg.
 					</p>
 					<p>
@@ -10755,8 +10831,14 @@
 				</summary>
 				<tagclass>org.dbforms.taglib.TextFormatTag</tagclass>
 				<bodycontent>empty</bodycontent>
-				<info>either the contextVar -OR- type and value must be set!  This allows you to calculate a value in your jsp, store this into the
-pageContext or pass in a value directly and then use the textFormat tag to format it with the settings used in dbforms - with locale support.</info>
+				<info>
+					either the contextVar -OR- type and value must be
+					set! This allows you to calculate a value in your
+					jsp, store this into the pageContext or pass in a
+					value directly and then use the textFormat tag to
+					format it with the settings used in dbforms - with
+					locale support.
+				</info>
 				<attribute>
 					<name>type</name>
 					<required>false</required>
@@ -10781,7 +10863,10 @@ pageContext or pass in a value directly and then use the textFormat tag to forma
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
 					<info>
-						<p>Name of a context variable which should be formatted</p>
+						<p>
+							Name of a context variable which should be
+							formatted
+						</p>
 					</info>
 				</attribute>
 				<attribute>
@@ -10830,22 +10915,23 @@ pageContext or pass in a value directly and then use the textFormat tag to forma
 			<tag>
 				<name>pieData</name>
 				<summary>
-					This datatag generates a cewolf DatasetProducer with PieDataSet included.
-					Data is taken from the dbforms resultsetvector.
+					This datatag generates a cewolf DatasetProducer with
+					PieDataSet included. Data is taken from the dbforms
+					resultsetvector.
 				</summary>
 				<tagclass>org.dbforms.taglib.CewolfPieDataTag</tagclass>
 				<bodycontent>empty</bodycontent>
 				<info>
-				   You need to install batik jars to use this tag!
-				   You can copy them from the bookstore example!
+					You need to install batik jars to use this tag! You
+					can copy them from the bookstore example!
 				</info>
 				<attribute>
 					<name>categoryField</name>
 					<required>true</required>
 					<rtexprvalue>true</rtexprvalue>
 					<info>
-					   Name of the field in the resultsetvector which should be 
-					   used as the key in the pie dataset.
+						Name of the field in the resultsetvector which
+						should be used as the key in the pie dataset.
 					</info>
 				</attribute>
 				<attribute>
@@ -10853,9 +10939,9 @@ pageContext or pass in a value directly and then use the textFormat tag to forma
 					<required>true</required>
 					<rtexprvalue>true</rtexprvalue>
 					<info>
-					   Name of the field in the resultsetvector which should be 
-					   used for getting the values for the pie dataset.
-					   This field must be a numeric value!
+						Name of the field in the resultsetvector which
+						should be used for getting the values for the
+						pie dataset. This field must be a numeric value!
 					</info>
 				</attribute>
 			</tag>
@@ -10863,22 +10949,26 @@ pageContext or pass in a value directly and then use the textFormat tag to forma
 			<tag>
 				<name>categoryData</name>
 				<summary>
-					This datatag generates a cewolf DatasetProducer with CategoryDataSet included.
-					Data is taken from the dbforms resultsetvector.
+					This datatag generates a cewolf DatasetProducer with
+					CategoryDataSet included. Data is taken from the
+					dbforms resultsetvector.
 				</summary>
-				<tagclass>org.dbforms.taglib.CewolfCategoryDataTag</tagclass>
+				<tagclass>
+					org.dbforms.taglib.CewolfCategoryDataTag
+				</tagclass>
 				<bodycontent>empty</bodycontent>
 				<info>
-				   You need to install batik jars to use this tag!
-				   You can copy them from the bookstore example!
+					You need to install batik jars to use this tag! You
+					can copy them from the bookstore example!
 				</info>
 				<attribute>
 					<name>categoryField</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
 					<info>
-					   Name of the field in the resultsetvector which should be 
-					   used as the category field in the dataset.
+						Name of the field in the resultsetvector which
+						should be used as the category field in the
+						dataset.
 					</info>
 				</attribute>
 				<attribute>
@@ -10886,8 +10976,9 @@ pageContext or pass in a value directly and then use the textFormat tag to forma
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
 					<info>
-					   Name of the field in the resultsetvector which should be 
-					   used as the series field in the dataset.
+						Name of the field in the resultsetvector which
+						should be used as the series field in the
+						dataset.
 					</info>
 				</attribute>
 				<attribute>
@@ -10895,53 +10986,55 @@ pageContext or pass in a value directly and then use the textFormat tag to forma
 					<required>true</required>
 					<rtexprvalue>true</rtexprvalue>
 					<info>
-					   Name of the field in the resultsetvector which should be 
-					   used for getting the values for the dataset.
-					   This field must be a numeric value!
+						Name of the field in the resultsetvector which
+						should be used for getting the values for the
+						dataset. This field must be a numeric value!
 					</info>
 				</attribute>
 			</tag>
 			<!-- **************************** parameter tag ***********************************-->
 			<tag>
-			    <name>property</name>
-			    <summary>
-			        Name/value-pair to paramterize a surrounding tag whose handler must 
-			        implement the IPropertyList interface.
-			    </summary>
-			    <tagclass>org.dbforms.taglib.PropertyTag</tagclass>
+				<name>property</name>
+				<summary>
+					Name/value-pair to paramterize a surrounding tag
+					whose handler must implement the IPropertyList
+					interface.
+				</summary>
+				<tagclass>org.dbforms.taglib.PropertyTag</tagclass>
 				<bodycontent>empty</bodycontent>
-			    <attribute>
-			        <name>name</name>
-			        <required>true</required>
-			        <rtexprvalue>true</rtexprvalue>
-			        <description>
-			            Name of the property.
-			        </description>
-			    </attribute>
-			    <attribute>
-			        <name>value</name>
-			        <required>true</required>
-			        <rtexprvalue>true</rtexprvalue>
-			        <description>
-			            Value of the attribute. 
-			        </description>
-			    </attribute>
+				<attribute>
+					<name>name</name>
+					<required>true</required>
+					<rtexprvalue>true</rtexprvalue>
+					<description>Name of the property.</description>
+				</attribute>
+				<attribute>
+					<name>value</name>
+					<required>true</required>
+					<rtexprvalue>true</rtexprvalue>
+					<description>Value of the attribute.</description>
+				</attribute>
 			</tag>
 			<!-- **************************** PresetFormValuesTag tag ***********************************-->
 			<tag>
 				<name>presetFormValues</name>
 				<summary>
-					Register a custom handler which is called before the filter values are retrieved, just after calling the table before select handler.
-					This handler can be used to preset form values 
+					Register a custom handler which is called before the
+					filter values are retrieved, just after calling the
+					table before select handler. This handler can be
+					used to preset form values
 				</summary>
-				<tagclass>org.dbforms.taglib.PresetFormValuesTag</tagclass>
+				<tagclass>
+					org.dbforms.taglib.PresetFormValuesTag
+				</tagclass>
 				<bodycontent>JSP</bodycontent>
 				<info>
 					<p>
 						The registered class must implement the
-						org.dbforms.interface.IPresetFormValues interface. A new
-						instance of the object will be instantiated and
-						initialized with the attribute list.
+						org.dbforms.interface.IPresetFormValues
+						interface. A new instance of the object will be
+						instantiated and initialized with the attribute
+						list.
 					</p>
 				</info>
 				<attribute>
