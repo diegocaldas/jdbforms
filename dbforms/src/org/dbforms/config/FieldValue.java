@@ -571,6 +571,15 @@ public class FieldValue implements Cloneable, Serializable {
 
 			break;
 
+		/*
+		 * Philip Grunikiewicz 2005-12-07
+		 * 
+		 * Added support for boolean fields
+		 */
+		case FieldTypes.BOOLEAN:
+			res = parseBOOLEAN(value);
+
+			break;
 		case FieldTypes.BLOB:
 
 			// FileHolder object might not be initialized if textarea is used
@@ -601,6 +610,21 @@ public class FieldValue implements Cloneable, Serializable {
 			res = null;
 		} else {
 			res = value;
+		}
+		return res;
+	}
+
+	/*
+	 * Philip Grunikiewicz 2005-12-07
+	 * 
+	 * Added support for boolean fields
+	 */
+	private Boolean parseBOOLEAN(String value) {
+		Boolean res;
+		if (value == null || value.trim().length() == 0) {
+			res = null;
+		} else {
+			res = new Boolean(value);
 		}
 		return res;
 	}
