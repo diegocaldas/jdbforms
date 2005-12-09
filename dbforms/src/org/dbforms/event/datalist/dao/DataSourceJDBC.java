@@ -191,7 +191,7 @@ public class DataSourceJDBC extends AbstractDataSource {
 			queryBuf.append(getTable().getDisblobSelectStatement());
 			queryBuf.append(" WHERE ");
 			queryBuf.append(getTable().getWhereClauseForKeyFields());
-            
+
 			PreparedStatement diskblobsPs = interceptorData.getConnection()
 					.prepareStatement(queryBuf.toString());
 
@@ -252,9 +252,10 @@ public class DataSourceJDBC extends AbstractDataSource {
 	 */
 	public int doInsert(DbEventInterceptorData interceptorData,
 			FieldValues fieldValues) throws SQLException {
-        String query = getTable().getInsertStatement(fieldValues);
-        
-		PreparedStatement ps = interceptorData.getConnection().prepareStatement(query);
+		String query = getTable().getInsertStatement(fieldValues);
+
+		PreparedStatement ps = interceptorData.getConnection()
+				.prepareStatement(query);
 
 		int res = 0;
 		try {
@@ -292,9 +293,10 @@ public class DataSourceJDBC extends AbstractDataSource {
 	public int doUpdate(DbEventInterceptorData interceptorData,
 			FieldValues fieldValues, String keyValuesStr) throws SQLException {
 		int res = 0;
-        
-        String query = getTable().getUpdateStatement(fieldValues);
-		PreparedStatement ps = interceptorData.getConnection().prepareStatement(query);
+
+		String query = getTable().getUpdateStatement(fieldValues);
+		PreparedStatement ps = interceptorData.getConnection()
+				.prepareStatement(query);
 		try {
 			int col = fillWithData(ps, fieldValues);
 			getTable().populateWhereClauseWithKeyFields(keyValuesStr, ps, col);
@@ -353,14 +355,11 @@ public class DataSourceJDBC extends AbstractDataSource {
 				if (!fetchedAll) {
 					while (rs.next()) {
 						addRow();
-
 						if (i < data.size()) {
 							result = (Object[]) data.get(i);
-
 							break;
 						}
 					}
-
 					checkResultSetEnd();
 				}
 			}
@@ -443,7 +442,7 @@ public class DataSourceJDBC extends AbstractDataSource {
 	 * @throws SQLException
 	 */
 	protected final boolean hasMore(int i) throws SQLException {
-		return !fetchedAll || (i < size());
+		return !fetchedAll || (i < data.size());
 	}
 
 	/**
@@ -556,14 +555,11 @@ public class DataSourceJDBC extends AbstractDataSource {
 					addRow();
 				} catch (Exception e) {
 					logCat.error("size", e);
-
 					break;
 				}
 			}
-
 			closeConnection();
 		}
-
 		return data.size();
 	}
 
@@ -613,7 +609,6 @@ public class DataSourceJDBC extends AbstractDataSource {
 			} catch (SQLException e) {
 				logCat.info("closeConnection", e);
 			}
-
 			rs = null;
 		}
 
@@ -623,7 +618,6 @@ public class DataSourceJDBC extends AbstractDataSource {
 			} catch (SQLException e) {
 				logCat.info("closeConnection", e);
 			}
-
 			stmt = null;
 		}
 
@@ -635,7 +629,6 @@ public class DataSourceJDBC extends AbstractDataSource {
 			} catch (SQLException e) {
 				logCat.info("closeConnection", e);
 			}
-
 			connection = null;
 		}
 	}
