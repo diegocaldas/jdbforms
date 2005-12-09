@@ -57,15 +57,15 @@ public class BookstoreCalcFieldAndSearchInterceptor extends
 		Object[] row = (Object[]) data
 				.getAttribute(DbEventInterceptorData.OBJECTROW);
 		int colISBN = rsv.getFieldIndex("ISBN");
-		int colBOOK_ID = rsv.getFieldIndex("BOOK_ID");
 		int res = GRANT_OPERATION;
-
+/*
+		int colBOOK_ID = rsv.getFieldIndex("BOOK_ID");
 		if ("1".equals(row[colBOOK_ID].toString()))
 			res = IGNORE_OPERATION;
 
 		if ("9".equals(row[colBOOK_ID].toString()))
 			res = IGNORE_OPERATION;
-		
+*/		
 		if (row[colISBN] == null)
 			res = IGNORE_OPERATION;
 		return res;
