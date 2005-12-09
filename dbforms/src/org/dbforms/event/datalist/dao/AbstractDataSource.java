@@ -108,8 +108,8 @@ public abstract class AbstractDataSource {
       } catch (Exception e) {
          logCat.error("getCurrent", e);
          close();
-
-         return new ResultSetVector();
+         // Valid result is required!!!
+         return new ResultSetVector(getTable());
       }
    }
 
@@ -137,7 +137,8 @@ public abstract class AbstractDataSource {
          logCat.error("getFirst", e);
          close();
 
-         return new ResultSetVector();
+         // Valid result is required!!!
+         return new ResultSetVector(getTable());
       }
    }
 
@@ -161,7 +162,8 @@ public abstract class AbstractDataSource {
          logCat.error("getLast", e);
          close();
 
-         return new ResultSetVector();
+         // Valid result is required!!!
+         return new ResultSetVector(getTable());
       }
    }
 
@@ -198,7 +200,8 @@ public abstract class AbstractDataSource {
          logCat.error("getNext", e);
          close();
 
-         return new ResultSetVector();
+         // Valid result is required!!!
+         return new ResultSetVector(getTable());
       }
    }
 
@@ -235,7 +238,8 @@ public abstract class AbstractDataSource {
          logCat.error("getPrev", e);
          close();
 
-         return new ResultSetVector();
+         // Valid result is required!!!
+         return new ResultSetVector(getTable());
       }
    }
 
