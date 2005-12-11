@@ -26,6 +26,9 @@ import org.dbforms.config.MultipleValidationException;
 import org.dbforms.config.ResultSetVector;
 import org.dbforms.config.ValidationException;
 
+import org.dbforms.util.ParseUtil;
+import org.dbforms.util.Util;
+
 import org.dbforms.event.DbEventInterceptorSupport;
 import org.dbforms.interfaces.DbEventInterceptorData;
 
@@ -58,14 +61,21 @@ public class BookstoreCalcFieldAndSearchInterceptor extends
 				.getAttribute(DbEventInterceptorData.OBJECTROW);
 		int colISBN = rsv.getFieldIndex("ISBN");
 		int res = GRANT_OPERATION;
-/*
-		int colBOOK_ID = rsv.getFieldIndex("BOOK_ID");
-		if ("1".equals(row[colBOOK_ID].toString()))
-			res = IGNORE_OPERATION;
 
-		if ("9".equals(row[colBOOK_ID].toString()))
-			res = IGNORE_OPERATION;
-*/		
+		String s = ParseUtil.getParameter(data.getRequest(), "FILTER5");
+		if (Util.getTrue(s)) {
+			int colBOOK_ID = rsv.getFieldIndex("BOOK_ID");
+			if ("1".equals(row[colBOOK_ID].toString()))
+				res = IGNORE_OPERATION;
+			if ("3".equals(row[colBOOK_ID].toString()))
+				res = IGNORE_OPERATION;
+			if ("5".equals(row[colBOOK_ID].toString()))
+				res = IGNORE_OPERATION;
+			if ("7".equals(row[colBOOK_ID].toString()))
+				res = IGNORE_OPERATION;
+			if ("9".equals(row[colBOOK_ID].toString()))
+				res = IGNORE_OPERATION;
+		}
 		if (row[colISBN] == null)
 			res = IGNORE_OPERATION;
 		return res;

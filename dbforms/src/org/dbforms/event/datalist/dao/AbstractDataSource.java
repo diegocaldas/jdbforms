@@ -580,7 +580,7 @@ public abstract class AbstractDataSource {
 				break;
 			else if ((count > 0) && result.isLastPage())
 				break;
-			cCount = count + (count - result.size());
+			cCount = cCount + (count - result.size());
 		} while (result.size() < Math.abs(count));
 		return result;
 	}
