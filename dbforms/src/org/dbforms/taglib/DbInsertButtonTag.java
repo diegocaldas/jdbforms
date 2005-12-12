@@ -26,12 +26,14 @@ package org.dbforms.taglib;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.dbforms.config.GrantedPrivileges;
 import org.dbforms.config.ResultSetVector;
 
 import org.dbforms.util.Util;
 
 import org.dbforms.validation.ValidatorConstants;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 
 
@@ -99,6 +101,15 @@ public class DbInsertButtonTag extends AbstractDbBaseButtonTag
       super.doStartTag();
 
       logCat.info("pos DbInsertButtonTag 1");
+      /*
+       * 2005-12-12
+       * Philip Grunikiewicz
+       * 
+       * Check table priviledges, if user is not allowed to insert into table - don't show button
+       */
+      if (!getTable().hasUserPrivileg((HttpServletRequest)this.pageContext.getRequest(), GrantedPrivileges.PRIVILEG_INSERT)){
+    	  return SKIP_BODY; 
+      }
 
       if (!Util.getTrue(showAlways)
                 && !(getParentForm()

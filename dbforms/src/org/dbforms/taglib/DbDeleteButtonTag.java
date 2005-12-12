@@ -26,6 +26,7 @@ package org.dbforms.taglib;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.dbforms.config.GrantedPrivileges;
 import org.dbforms.config.ResultSetVector;
 
 import org.dbforms.util.MessageResources;
@@ -45,11 +46,6 @@ import javax.servlet.jsp.JspException;
 public class DbDeleteButtonTag extends AbstractDbBaseButtonTag
    implements javax.servlet.jsp.tagext.TryCatchFinally {
    private static Log logCat   = LogFactory.getLog(DbDeleteButtonTag.class);
-   private static int uniqueID;
-
-   static {
-      uniqueID = 1;
-   }
 
    private String associatedRadio;
    private String confirmMessage = null;
@@ -123,7 +119,15 @@ public class DbDeleteButtonTag extends AbstractDbBaseButtonTag
    public int doStartTag() throws javax.servlet.jsp.JspException {
       super.doStartTag();
 
-      DbDeleteButtonTag.uniqueID++; // make sure that we don't mix up buttons
+      /*
+       * 2005-12-12
+       * Philip Grunikiewicz
+       * 
+       * Check table priviledges, if user is not allowed to delete table - don't show button
+       */
+      if (!getTable().hasUserPrivileg((HttpServletRequest)this.pageContext.getRequest(), GrantedPrivileges.PRIVILEG_DELETE)){
+    	  return SKIP_BODY; 
+      }
 
       if (getConfirmMessage() != null) {
          String onclick = (getOnClick() != null) ? getOnClick()
@@ -175,7 +179,7 @@ public class DbDeleteButtonTag extends AbstractDbBaseButtonTag
 
          // PG - Render the name unique
          tagNameBuf.append("_");
-         tagNameBuf.append(uniqueID);
+         tagNameBuf.append(getUniqueID());
 
          String tagName = tagNameBuf.toString();
 

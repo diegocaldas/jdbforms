@@ -23,12 +23,14 @@
 
 package org.dbforms.taglib;
 
+import org.dbforms.config.GrantedPrivileges;
 import org.dbforms.config.ResultSetVector;
 
 import org.dbforms.event.eventtype.EventType;
 
 import org.dbforms.util.Util;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 
 
@@ -113,6 +115,15 @@ public class DbNavNewButtonTag extends AbstractDbBaseButtonTag
     */
    public int doStartTag() throws javax.servlet.jsp.JspException {
       super.doStartTag();
+      /*
+       * 2005-12-12
+       * Philip Grunikiewicz
+       * 
+       * Check table priviledges, if user is not allowed to insert into table - don't show button
+       */
+      if (!getTable().hasUserPrivileg((HttpServletRequest)this.pageContext.getRequest(), GrantedPrivileges.PRIVILEG_INSERT)){
+    	  return SKIP_BODY; 
+      }
 
       if (getParentForm()
                    .isFooterReached()
