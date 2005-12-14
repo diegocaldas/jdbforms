@@ -160,7 +160,7 @@ public class UpdateEvent extends AbstractValidationEvent {
          // End of interceptor processing
          // now we start building the UPDATE statement
          // 20021031-HKK: Moved into table
-         PreparedStatement ps = con.prepareStatement(getTable().getUpdateStatement(fieldValues));
+         PreparedStatement ps = con.prepareStatement(getTable().getUpdateStatement(fieldValues, keyValuesStr));
 
          // now we provide the values
          // first, we provide the "new" values for fields

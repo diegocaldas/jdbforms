@@ -121,7 +121,7 @@ public class FileServlet extends HttpServlet {
 				queryBuf.append(" FROM ");
 				queryBuf.append(table.getQueryFrom());
 				queryBuf.append(" WHERE ");
-				queryBuf.append(table.getWhereClauseForKeyFields());
+				queryBuf.append(table.getWhereClauseForKeyFields(keyValuesStr));
 
 				// example: SELECT imageNameField FROM myTable WHERE myTable.key
 				// = ?

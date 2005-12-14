@@ -190,7 +190,7 @@ public class DataSourceJDBC extends AbstractDataSource {
 			StringBuffer queryBuf = new StringBuffer();
 			queryBuf.append(getTable().getDisblobSelectStatement());
 			queryBuf.append(" WHERE ");
-			queryBuf.append(getTable().getWhereClauseForKeyFields());
+			queryBuf.append(getTable().getWhereClauseForKeyFields(keyValuesStr));
 
 			PreparedStatement diskblobsPs = interceptorData.getConnection()
 					.prepareStatement(queryBuf.toString());
@@ -220,7 +220,7 @@ public class DataSourceJDBC extends AbstractDataSource {
 
 		// 20021031-HKK: Build in table!!
 		PreparedStatement ps = interceptorData.getConnection()
-				.prepareStatement(getTable().getDeleteStatement());
+				.prepareStatement(getTable().getDeleteStatement(keyValuesStr));
 
 		try {
 			// now we provide the values
@@ -294,7 +294,7 @@ public class DataSourceJDBC extends AbstractDataSource {
 			FieldValues fieldValues, String keyValuesStr) throws SQLException {
 		int res = 0;
 
-		String query = getTable().getUpdateStatement(fieldValues);
+		String query = getTable().getUpdateStatement(fieldValues, keyValuesStr);
 		PreparedStatement ps = interceptorData.getConnection()
 				.prepareStatement(query);
 		try {

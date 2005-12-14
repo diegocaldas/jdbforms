@@ -95,6 +95,7 @@ public class DbBlobContentTag extends AbstractDbBaseHandlerTag implements
                 return EVAL_PAGE; // nothing to do when no data available..
             }
 
+            String keyVal = getKeyVal();
             StringBuffer queryBuf = new StringBuffer();
             queryBuf.append("SELECT ");
             queryBuf.append(getField().getName());
@@ -102,7 +103,7 @@ public class DbBlobContentTag extends AbstractDbBaseHandlerTag implements
             queryBuf.append(getParentForm().getTable().getQueryFrom());
             queryBuf.append(" WHERE ");
             queryBuf.append(getParentForm().getTable()
-                    .getWhereClauseForKeyFields());
+                    .getWhereClauseForKeyFields(keyVal));
             logCat.info("blobcontent query- " + queryBuf.toString());
 
             StringBuffer contentBuf = new StringBuffer();
@@ -112,7 +113,7 @@ public class DbBlobContentTag extends AbstractDbBaseHandlerTag implements
                 PreparedStatement ps = con
                         .prepareStatement(queryBuf.toString());
                 getParentForm().getTable().populateWhereClauseWithKeyFields(
-                        getKeyVal(), ps, 1);
+                        keyVal, ps, 1);
 
                 ResultSet rs = ps.executeQuery();
 

@@ -164,7 +164,7 @@ public void processEvent(Connection con) throws SQLException, MultipleValidation
             StringBuffer queryBuf = new StringBuffer();
             queryBuf.append(getTable().getDisblobSelectStatement());
             queryBuf.append(" WHERE ");
-            queryBuf.append(getTable().getWhereClauseForKeyFields());
+            queryBuf.append(getTable().getWhereClauseForKeyFields(keyValuesStr));
 
             diskblobsPs = con.prepareStatement(queryBuf.toString());
             getTable()
@@ -173,7 +173,7 @@ public void processEvent(Connection con) throws SQLException, MultipleValidation
          }
 
          // 20021031-HKK: build in table!!
-         PreparedStatement ps = con.prepareStatement(getTable().getDeleteStatement());
+         PreparedStatement ps = con.prepareStatement(getTable().getDeleteStatement(keyValuesStr));
 
          // now we provide the values
          // of the key-fields, so that the WHERE clause matches the right

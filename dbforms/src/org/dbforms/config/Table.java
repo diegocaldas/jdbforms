@@ -290,13 +290,13 @@ public class Table implements Serializable {
 	 * 
 	 * @return the SQL delete statement
 	 */
-	public String getDeleteStatement() {
+	public String getDeleteStatement(String keyValString) {
 		// now we start building the DELETE statement
 		StringBuffer queryBuf = new StringBuffer();
 		queryBuf.append("DELETE FROM ");
 		queryBuf.append(getQueryToChange());
 		queryBuf.append(" WHERE ");
-		queryBuf.append(getWhereClauseForKeyFields());
+		queryBuf.append(getWhereClauseForKeyFields(keyValString));
 
 		logCat.info("::deleteQuery - [" + queryBuf.toString() + "]");
 		return queryBuf.toString();
@@ -1353,7 +1353,7 @@ public class Table implements Serializable {
 	 * 
 	 * @return the SQL update statement
 	 */
-	public String getUpdateStatement(FieldValues fieldValues) {
+	public String getUpdateStatement(FieldValues fieldValues, String keyValStr) {
 		StringBuffer queryBuf = new StringBuffer();
 		queryBuf.append("UPDATE ");
 		queryBuf.append(getQueryToChange());
@@ -1380,7 +1380,7 @@ public class Table implements Serializable {
 			}
 		}
 		queryBuf.append(" WHERE ");
-		queryBuf.append(getWhereClauseForKeyFields());
+		queryBuf.append(getWhereClauseForKeyFields(keyValStr));
 		logCat.info("::updateQuery - [" + queryBuf.toString() + "]");
 
 		return queryBuf.toString();
@@ -1432,17 +1432,24 @@ public class Table implements Serializable {
 	 * @return a part of the SQL where clause needed to select a distinguished
 	 *         row form the table
 	 */
-	public String getWhereClauseForKeyFields() {
+	public String getWhereClauseForKeyFields(String keyValuesStr) {
 		StringBuffer buf = new StringBuffer();
+		FieldValues keyValuesHt = getFieldValues(keyValuesStr);
+
 		int cnt = this.getKey().size();
 
 		for (int i = 0; i < cnt; i++) {
 			Field keyField = (Field) this.getKey().elementAt(i);
 
+			FieldValue aFieldValue = keyValuesHt.get(keyField.getName());
+			Object value = aFieldValue.getFieldValueAsObject();
 			// get the name of the encoded key field
 			buf.append(keyField.getName());
-			buf.append(" = ?");
-
+			if (value == null) {
+				buf.append(" is null");
+			} else {
+				buf.append(" = ?");
+			}
 			if (i < (cnt - 1)) {
 				buf.append(" AND ");
 			}
@@ -1914,9 +1921,11 @@ public class Table implements Serializable {
 			Field curField = (Field) this.getKey().elementAt(i);
 			FieldValue aFieldValue = keyValuesHt.get(curField.getName());
 			Object value = aFieldValue.getFieldValueAsObject();
-			JDBCDataHelper.fillWithData(ps, curField.getEscaper(), col, value,
+			if (value != null) {
+				JDBCDataHelper.fillWithData(ps, curField.getEscaper(), col, value,
 					curField.getType(), this.getBlobHandlingStrategy());
-			col++;
+				col++;
+			}
 		}
 	}
 
