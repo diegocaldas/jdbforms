@@ -18,18 +18,15 @@
 					<td><db:textField fieldName="ISBN"/></td>
 					<td><db:textField fieldName="AUTHOR_ID"/></td>
 					<td><db:textField fieldName="TITLE"/></td>
-				</tr>
-			</db:body>
-			<db:footer>
-				</table>
-				<table>
 					<tr>
 						<td>
 		        	         <db:updateButton style="width:100" caption="Save"/>
         		    	     <db:deleteButton style="width:100" caption="Delete"/>
-			                 <db:insertButton style="width:100" caption="Insert" showAlways="false" />
 						</td>
 					</tr>
+				</tr>
+			</db:body>
+			<db:footer>
 				</table>
 			</db:footer>
 		</db:dbform>
