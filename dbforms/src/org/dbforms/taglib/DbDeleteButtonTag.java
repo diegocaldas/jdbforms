@@ -125,7 +125,7 @@ public class DbDeleteButtonTag extends AbstractDbBaseButtonTag
        * 
        * Check table priviledges, if user is not allowed to delete table - don't show button
        */
-      if (!getTable().hasUserPrivileg((HttpServletRequest)this.pageContext.getRequest(), GrantedPrivileges.PRIVILEG_DELETE)){
+      if ((getTable() != null) && !getTable().hasUserPrivileg((HttpServletRequest)this.pageContext.getRequest(), GrantedPrivileges.PRIVILEG_DELETE)){
     	  return SKIP_BODY; 
       }
 

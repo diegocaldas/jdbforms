@@ -107,7 +107,7 @@ public class DbInsertButtonTag extends AbstractDbBaseButtonTag
        * 
        * Check table priviledges, if user is not allowed to insert into table - don't show button
        */
-      if (!getTable().hasUserPrivileg((HttpServletRequest)this.pageContext.getRequest(), GrantedPrivileges.PRIVILEG_INSERT)){
+      if ((getTable() != null) && !getTable().hasUserPrivileg((HttpServletRequest)this.pageContext.getRequest(), GrantedPrivileges.PRIVILEG_INSERT)){
     	  return SKIP_BODY; 
       }
 

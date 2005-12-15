@@ -122,7 +122,7 @@ public class DbUpdateButtonTag extends AbstractDbBaseButtonTag
        * 
        * Check table priviledges, if user is not allowed to update table - don't show button
        */
-      if (!getTable().hasUserPrivileg((HttpServletRequest)this.pageContext.getRequest(), GrantedPrivileges.PRIVILEG_UPDATE)){
+      if ((getTable() != null) && !getTable().hasUserPrivileg((HttpServletRequest)this.pageContext.getRequest(), GrantedPrivileges.PRIVILEG_UPDATE)){
     	  return SKIP_BODY; 
       }
 
