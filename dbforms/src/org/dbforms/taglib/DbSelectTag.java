@@ -252,8 +252,12 @@ public class DbSelectTag extends AbstractDbBaseHandlerTag implements
 					 * Philip Grunikiewicz 2005-12-05
 					 * 
 					 * If in INSERT Mode and custom entry is set as default
+					 * 
+					 * Henner Kollmann 2005-12-15 
+					 * 
+					 * Only if this is a valid field!
 					 */
-					if (getParentForm().isFooterReached()) {
+					if (getParentForm().isFooterReached() && getField() != null) {
 						currentValue = aKey;
 					}
 				}
