@@ -127,7 +127,7 @@ public class DbSearchCheckBoxTag extends DbSearchTag
          tagBuf.append(getValue());
 
          if (Util.getTrue(getChecked())) {
-            tagBuf.append(" checked=\"checked\" ");
+            tagBuf.append("\" checked=\"checked");
          }
 
          tagBuf.append("\"");
