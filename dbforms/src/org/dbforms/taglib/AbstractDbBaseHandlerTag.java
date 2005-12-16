@@ -104,8 +104,6 @@ public abstract class AbstractDbBaseHandlerTag extends AbstractScriptHandlerTag 
 
 	private String nullFieldValue;
 
-	// n.k. allow the FormFieldName to be overridden
-	private String overrideFormFieldName;
 
 	private String pattern;
 
@@ -277,15 +275,6 @@ public abstract class AbstractDbBaseHandlerTag extends AbstractScriptHandlerTag 
 	/**
 	 * DOCUMENT ME!
 	 * 
-	 * @param string
-	 */
-	public void setOverrideFormFieldName(String string) {
-		overrideFormFieldName = string;
-	}
-
-	/**
-	 * DOCUMENT ME!
-	 * 
 	 * @param parent
 	 *            DOCUMENT ME!
 	 */
@@ -390,7 +379,6 @@ public abstract class AbstractDbBaseHandlerTag extends AbstractScriptHandlerTag 
 		escaperClass = null;
 		escaper = null;
 		customFormatter = null;
-		overrideFormFieldName = null;
 		super.doFinally();
 	}
 
@@ -496,9 +484,6 @@ public abstract class AbstractDbBaseHandlerTag extends AbstractScriptHandlerTag 
 	 * @return DOCUMENT ME!
 	 */
 	protected String getFormFieldName() {
-		if (hasOverrideFormFieldNameSet()) {
-			return getOverrideFormFieldName();
-		}
 
 		StringBuffer buf = new StringBuffer();
 
@@ -671,14 +656,6 @@ public abstract class AbstractDbBaseHandlerTag extends AbstractScriptHandlerTag 
 		return getParentForm().getLocale();
 	}
 
-	/**
-	 * DOCUMENT ME!
-	 * 
-	 * @return
-	 */
-	protected String getOverrideFormFieldName() {
-		return overrideFormFieldName;
-	}
 
 	/**
 	 * DOCUMENT ME!
@@ -699,15 +676,6 @@ public abstract class AbstractDbBaseHandlerTag extends AbstractScriptHandlerTag 
 	 */
 	protected String escapeHTML(String html) {
 		return (getEscaper() == null) ? html : getEscaper().escapeHTML(html);
-	}
-
-	/**
-	 * DOCUMENT ME!
-	 * 
-	 * @return
-	 */
-	protected boolean hasOverrideFormFieldNameSet() {
-		return overrideFormFieldName != null;
 	}
 
 	/**
