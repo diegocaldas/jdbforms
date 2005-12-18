@@ -4618,14 +4618,6 @@
 					</info>
 				</attribute>
 				<attribute>
-					<name>overrideFormFieldName</name>
-					<required>false</required>
-					<rtexprvalue>true</rtexprvalue>
-					<info>
-						override the generated name for the html widget
-					</info>
-				</attribute>
-				<attribute>
 					<name>onBlur</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
