@@ -441,7 +441,7 @@ public class Query extends Table {
          } else if (!hatSchonWhere) {
             buf.append(" WHERE ( ");
          } else {
-            if (!Util.isNull(where) && !hatSchonFollowAfterWhere) {
+            if (!Util.isNull(where) && !hatSchonFollowAfterWhere && !Util.isNull(followAfterWhere)) {
                buf.append(" ");
                buf.append(followAfterWhere);
                buf.append(" (");
