@@ -23,6 +23,9 @@
 
 package org.dbforms.taglib;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -552,6 +555,17 @@ public abstract class AbstractScriptHandlerTag extends BodyTagSupport {
       title       = null;
    }
 
+	/**
+	 * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
+	 */
+	public void doCatch(Throwable t) throws Throwable {
+		StringWriter sw = new StringWriter();
+		PrintWriter pw = new PrintWriter(sw);
+		t.printStackTrace(pw);
+		logCat.error("DbFormTag.doCatch called - " + t.toString() + "\n"
+				+ sw.toString());
+		throw t;
+	}
 
    /**
     * Prepares the event handlers for inclusion in the component's HTML tag.

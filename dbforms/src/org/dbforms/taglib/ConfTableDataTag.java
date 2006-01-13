@@ -166,13 +166,6 @@ public class ConfTableDataTag extends AbstractEmbeddedDataTag
    }
 
 
-   /**
-    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
-    */
-   public void doCatch(Throwable t) throws Throwable {
-      throw t;
-   }
-
 
    /**
     * returns Hashtable with data. Its keys represent the "value"-fields for

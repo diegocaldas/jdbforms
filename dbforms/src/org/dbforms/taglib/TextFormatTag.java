@@ -47,7 +47,6 @@ public class TextFormatTag extends AbstractDbBaseHandlerTag
    private static Log logCat      = LogFactory.getLog(TextFormatTag.class);
    private Object     fieldObject; // Holds the object to retrieve.
    private String contextVar;
-   private String pattern;
    private String type;
    private String value;
 
@@ -78,26 +77,6 @@ public class TextFormatTag extends AbstractDbBaseHandlerTag
     */
    public Object getFieldObject() {
       return fieldObject;
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @param pattern The pattern to set.
-    */
-   public void setPattern(String pattern) {
-      this.pattern = pattern;
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
-    * @return Returns the pattern.
-    */
-   public String getPattern() {
-      return pattern;
    }
 
 
@@ -139,15 +118,6 @@ public class TextFormatTag extends AbstractDbBaseHandlerTag
    public String getValue() {
       return value;
    }
-
-
-   /**
-    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
-    */
-   public void doCatch(Throwable t) throws Throwable {
-      throw t;
-   }
-
 
    /**
     * Description of the Method
@@ -249,7 +219,6 @@ public class TextFormatTag extends AbstractDbBaseHandlerTag
     * DOCUMENT ME!
     */
    public void doFinally() {
-      pattern    = null;
       type       = null;
       value      = null;
       contextVar = null;

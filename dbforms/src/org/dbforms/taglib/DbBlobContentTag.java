@@ -70,12 +70,6 @@ public class DbBlobContentTag extends AbstractDbBaseHandlerTag implements
         return dbConnectionName;
     }
 
-    /**
-     * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
-     */
-    public void doCatch(Throwable t) throws Throwable {
-        throw t;
-    }
 
     /**
      * DOCUMENT ME!

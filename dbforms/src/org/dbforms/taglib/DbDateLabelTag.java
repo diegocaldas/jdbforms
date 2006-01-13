@@ -35,13 +35,6 @@ import javax.servlet.jsp.JspException;
  */
 public class DbDateLabelTag extends DbLabelTag
    implements javax.servlet.jsp.tagext.TryCatchFinally {
-   /**
-    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
-    */
-   public void doCatch(Throwable t) throws Throwable {
-      throw t;
-   }
-
 
    /**
     * Philip Grunikiewicz 2001-05-14  If user has specified a date format - use

@@ -254,13 +254,6 @@ public class DbFilterTag extends AbstractDbBaseHandlerTag implements
 	}
 
 	/**
-	 * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
-	 */
-	public void doCatch(Throwable t) throws Throwable {
-		throw t;
-	}
-
-	/**
 	 * here we read information from nested tags and we render output to the
 	 * page.
 	 * 

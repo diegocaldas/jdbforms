@@ -97,14 +97,6 @@ public class DbFilterConditionTag extends AbstractScriptHandlerTag
 
 
    /**
-    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
-    */
-   public void doCatch(Throwable t) throws Throwable {
-      throw t;
-   }
-
-
-   /**
     * reset tag state
     *
     * @see javax.servlet.jsp.tagext.TryCatchFinally#doFinally()

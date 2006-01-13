@@ -61,14 +61,6 @@ public class DbTextFieldTag extends AbstractDbBaseInputTag
 
 
    /**
-    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
-    */
-   public void doCatch(Throwable t) throws Throwable {
-      throw t;
-   }
-
-
-   /**
     * DOCUMENT ME!
     *
     * @return DOCUMENT ME!

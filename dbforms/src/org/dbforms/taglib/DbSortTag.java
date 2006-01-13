@@ -47,14 +47,6 @@ public class DbSortTag extends AbstractDbBaseHandlerTag
    private static Log logCat = LogFactory.getLog(DbSortTag.class); // logging category for this class
 
    /**
-    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
-    */
-   public void doCatch(Throwable t) throws Throwable {
-      throw t;
-   }
-
-
-   /**
     * DOCUMENT ME!
     *
     * @return DOCUMENT ME!

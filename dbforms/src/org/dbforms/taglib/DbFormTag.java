@@ -57,8 +57,6 @@ import org.dbforms.validation.DbFormsValidatorUtil;
 import org.dbforms.validation.ValidatorConstants;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -1065,23 +1063,6 @@ public class DbFormTag extends AbstractScriptHandlerTag implements
 		}
 	}
 
-	/**
-	 * DOCUMENT ME!
-	 * 
-	 * @param t
-	 *            DOCUMENT ME!
-	 * 
-	 * @throws Throwable
-	 *             DOCUMENT ME!
-	 */
-	public void doCatch(Throwable t) throws Throwable {
-		StringWriter sw = new StringWriter();
-		PrintWriter pw = new PrintWriter(sw);
-		t.printStackTrace(pw);
-		logCat.error("DbFormTag.doCatch called - " + t.toString() + "\n"
-				+ sw.toString());
-		throw t;
-	}
 
 	/**
 	 * D O E N D T A G

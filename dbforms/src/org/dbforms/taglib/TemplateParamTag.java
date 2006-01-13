@@ -125,18 +125,6 @@ public class TemplateParamTag extends AbstractScriptHandlerTag
    /**
     * DOCUMENT ME!
     *
-    * @param t DOCUMENT ME!
-    *
-    * @throws Throwable DOCUMENT ME!
-    */
-   public void doCatch(Throwable t) throws Throwable {
-      throw t;
-   }
-
-
-   /**
-    * DOCUMENT ME!
-    *
     * @return DOCUMENT ME!
     *
     * @throws JspException DOCUMENT ME!

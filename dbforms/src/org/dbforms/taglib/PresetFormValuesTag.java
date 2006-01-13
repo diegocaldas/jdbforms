@@ -92,15 +92,6 @@ public class PresetFormValuesTag extends AbstractScriptHandlerTag
 		return super.doStartTag();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
-	 */
-	public void doCatch(Throwable t) throws Throwable {
-		throw t;
-	}
-
 	/**
 	 * DOCUMENT ME!
 	 * 

@@ -38,13 +38,6 @@ import javax.servlet.jsp.JspException;
  */
 public class DbNavLastButtonTag extends AbstractDbBaseButtonTag
    implements javax.servlet.jsp.tagext.TryCatchFinally {
-   /**
-    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
-    */
-   public void doCatch(Throwable t) throws Throwable {
-      throw t;
-   }
-
 
    /**
     * DOCUMENT ME!

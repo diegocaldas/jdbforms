@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 
-package org.dbforms.taglib;
+package org.dbforms.taglib.cewolf;
 
 import java.util.HashMap;
 
@@ -32,13 +32,14 @@ import de.laures.cewolf.DatasetProducer;
 
 import org.jfree.data.category.DefaultCategoryDataset;
 
+import org.dbforms.taglib.AbstractDbBaseHandlerTag;
 import org.dbforms.util.CewolfDatasetProducer;
 import org.dbforms.config.ResultSetVector;
 
 /** 
  * Tag &lt;producer&gt; which defines a DatasetProducer.
  * @see DataTag
- * @author  Guido Laures 
+ * @author  Henner Kollmann 
  */
 public class CewolfCategoryDataTag extends AbstractDbBaseHandlerTag  {
 	private String categoryField;

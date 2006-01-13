@@ -121,18 +121,6 @@ public class ErrorsTag extends AbstractScriptHandlerTag
 
    /**
     * DOCUMENT ME!
-    *
-    * @param t DOCUMENT ME!
-    *
-    * @throws Throwable DOCUMENT ME!
-    */
-   public void doCatch(Throwable t) throws Throwable {
-      throw t;
-   }
-
-
-   /**
-    * DOCUMENT ME!
     */
    public void doFinally() {
       messagePrefix = null;

@@ -175,13 +175,6 @@ public abstract class AbstractEmbeddedDataTag extends AbstractDbBaseHandlerTag
    }
 
 
-   /**
-    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
-    */
-   public void doCatch(Throwable t) throws Throwable {
-      throw t;
-   }
-
 
    /**
     * DOCUMENT ME!

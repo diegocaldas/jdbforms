@@ -46,14 +46,6 @@ public class DbLabelTag extends AbstractDbBaseHandlerTag
    static Log logCat = LogFactory.getLog(DbLabelTag.class.getName());
 
    /**
-    * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
-    */
-   public void doCatch(Throwable t) throws Throwable {
-      throw t;
-   }
-
-
-   /**
     * Description of the Method
     *
     * @return Description of the Return Value

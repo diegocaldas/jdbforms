@@ -60,14 +60,6 @@ public class PropertyTag extends AbstractDbBaseHandlerTag
 
     
     /**
-     * @see javax.servlet.jsp.tagext.TryCatchFinally#doCatch(java.lang.Throwable)
-     */
-    public void doCatch(Throwable t) throws Throwable {
-       throw t;
-    }
-
-    
-    /**
      * @see javax.servlet.jsp.tagext.TryCatchFinally#doFinally(java.lang.Throwable)
      */
     public void doFinally() {
