@@ -551,6 +551,8 @@ public class FieldValue implements Cloneable, Serializable {
 
 			break;
 
+		case FieldTypes.LONGVARCHAR:
+		case FieldTypes.VARCHAR:
 		case FieldTypes.CHAR:
 			res = parseCHAR(value);
 

@@ -226,12 +226,16 @@ public class Field implements Serializable {
 	public void setFieldType(String aFieldType) {
 		this.fieldType = aFieldType.toLowerCase();
 
-		if (fieldType.startsWith("char") || fieldType.startsWith("varchar")
-				|| fieldType.startsWith("nvarchar")
-				|| fieldType.startsWith("longchar")
-				|| fieldType.startsWith("long varchar")
+		//  FIXME - someone check is this types are good for all databases
+		if (fieldType.startsWith("char")
 				|| fieldType.startsWith("text")) {
 			type = FieldTypes.CHAR;
+		} else if (fieldType.startsWith("varchar")
+				|| fieldType.startsWith("nvarchar")
+				|| fieldType.startsWith("longchar")) {
+			type = FieldTypes.VARCHAR;
+		} else if (fieldType.startsWith("long varchar")) {
+			type = FieldTypes.LONGVARCHAR;
 		} else if (fieldType.startsWith("int")
 				|| fieldType.startsWith("smallint")
 				|| fieldType.startsWith("long")

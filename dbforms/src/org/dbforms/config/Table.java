@@ -2279,7 +2279,7 @@ public class Table implements Serializable {
 
 		case Constants.FILTER_LIKE:
 
-			if (f.getType() == FieldTypes.CHAR) {
+			if (FieldTypes.isCHAR(f.getType())) {
 				buf.append(" LIKE ");
 			} else {
 				buf.append(" = ");
@@ -2301,7 +2301,7 @@ public class Table implements Serializable {
 
 		case Constants.FILTER_EMPTY:
 
-			if (f.getType() == FieldTypes.CHAR) {
+			if (FieldTypes.isCHAR(f.getType())) {
 				buf.append(" = '' ");
 				buf.append(" OR ");
 			}
@@ -2313,7 +2313,7 @@ public class Table implements Serializable {
 
 		case Constants.FILTER_NOT_EMPTY:
 
-			if (f.getType() == FieldTypes.CHAR) {
+			if (FieldTypes.isCHAR(f.getType())) {
 				buf.append(" <> '' ");
 				buf.append(" OR ");
 			}
@@ -2720,7 +2720,7 @@ public class Table implements Serializable {
 		// 20020703-HKK: Extending search algorithm with WEAK_START, WEAK_END,
 		// WEAK_START_END
 		// results in like '%search', 'search%', '%search%'
-		if (curField.getType() == FieldTypes.CHAR) {
+		if (FieldTypes.isCHAR(curField.getType())) {
 			String valueStr = cur.getFieldValue();
 
 			switch (cur.getSearchAlgorithm()) {

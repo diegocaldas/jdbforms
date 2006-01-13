@@ -36,6 +36,8 @@ public class FieldTypes {
 
    /** DOCUMENT ME! */
    public static final int CHAR = java.sql.Types.CHAR;
+   public static final int VARCHAR = java.sql.Types.VARCHAR;
+   public static final int LONGVARCHAR = java.sql.Types.LONGVARCHAR;
 
    /** DOCUMENT ME! */
    public static final int DATE = java.sql.Types.DATE;
@@ -63,4 +65,7 @@ public class FieldTypes {
 
    /** DOCUMENT ME! */
    public static final int BOOLEAN = java.sql.Types.BOOLEAN;
+   public static boolean isCHAR(int type) {
+       return (type == CHAR) || (type == VARCHAR) || (type == LONGVARCHAR);
+   }
 }

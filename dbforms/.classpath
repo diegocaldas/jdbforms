@@ -5,19 +5,15 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="tests/test"/>
 	<classpathentry kind="src" path="tests/test-cactus"/>
-	<classpathentry kind="lib" path="dependend/cactus-13-1.7dev20041109.jar"/>
 	<classpathentry kind="lib" path="dependend/commons-beanutils-1.6.jar"/>
 	<classpathentry kind="lib" path="dependend/commons-collections-2.1.jar"/>
 	<classpathentry kind="lib" path="dependend/commons-dbcp-1.1.jar"/>
 	<classpathentry kind="lib" path="dependend/commons-el-1.0.jar"/>
 	<classpathentry kind="lib" path="dependend/commons-fileupload-1.0.jar"/>
-	<classpathentry kind="lib" path="dependend/commons-httpclient-2.0.jar"/>
 	<classpathentry kind="lib" path="dependend/commons-lang-2.0.jar"/>
-	<classpathentry kind="lib" path="dependend/commons-logging-1.0.3.jar"/>
 	<classpathentry kind="lib" path="dependend/commons-pool-1.1.jar"/>
 	<classpathentry kind="lib" path="dependend/commons-validator-1.0.2.jar"/>
 	<classpathentry kind="lib" path="dependend/hsqldb-1.7.1.jar"/>
-	<classpathentry kind="lib" path="dependend/httpunit-1.5.4.jar"/>
 	<classpathentry kind="lib" path="dependend/junit-3.8.1.jar"/>
 	<classpathentry kind="lib" path="dependend/log4j-1.2.8.jar"/>
 	<classpathentry kind="lib" path="dependend/maxq-0.95dev.jar"/>
@@ -51,5 +47,9 @@
 	<classpathentry kind="lib" path="dependend/commons-digester-1.7.jar"/>
 	<classpathentry kind="lib" path="dependend/itext-1.3.1.jar"/>
 	<classpathentry kind="lib" path="dependend/jasperreports-1.0.2.jar"/>
+	<classpathentry kind="lib" path="dependend/cactus-13-1.7dev20041109.jar"/>
+	<classpathentry kind="lib" path="dependend/commons-httpclient-2.0.jar"/>
+	<classpathentry kind="lib" path="dependend/commons-logging-1.0.3.jar"/>
+	<classpathentry kind="lib" path="dependend/httpunit-1.5.4.jar"/>
 	<classpathentry kind="output" path="examples/bookstore/WEB-INF/classes"/>
 </classpath>

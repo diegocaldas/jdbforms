@@ -9,20 +9,20 @@
     <extraInfo></extraInfo>
     <webPath>/bookstore</webPath>
     <webClassPathEntries>
-        <webClassPathEntry>/dbforms/dependend/cactus-13-1.7dev20041109.jar</webClassPathEntry>
+        <webClassPathEntry>/dbforms/dependend/aspectjrt-1.2.1.jar</webClassPathEntry>
+        <webClassPathEntry>/dbforms/dependend/cactus-1.7.1.jar</webClassPathEntry>
         <webClassPathEntry>/dbforms/dependend/cewolf-0.10.3.jar</webClassPathEntry>
         <webClassPathEntry>/dbforms/dependend/commons-beanutils-1.6.jar</webClassPathEntry>
         <webClassPathEntry>/dbforms/dependend/commons-collections-2.1.jar</webClassPathEntry>
         <webClassPathEntry>/dbforms/dependend/commons-dbcp-1.1.jar</webClassPathEntry>
         <webClassPathEntry>/dbforms/dependend/commons-digester-1.7.jar</webClassPathEntry>
         <webClassPathEntry>/dbforms/dependend/commons-fileupload-1.0.jar</webClassPathEntry>
-        <webClassPathEntry>/dbforms/dependend/commons-httpclient-2.0.jar</webClassPathEntry>
         <webClassPathEntry>/dbforms/dependend/commons-lang-2.0.jar</webClassPathEntry>
-        <webClassPathEntry>/dbforms/dependend/commons-logging-1.0.3.jar</webClassPathEntry>
+        <webClassPathEntry>/dbforms/dependend/commons-logging-1.0.4.jar</webClassPathEntry>
         <webClassPathEntry>/dbforms/dependend/commons-pool-1.1.jar</webClassPathEntry>
         <webClassPathEntry>/dbforms/dependend/commons-validator-1.0.2.jar</webClassPathEntry>
         <webClassPathEntry>/dbforms/dependend/hsqldb-1.7.1.jar</webClassPathEntry>
-        <webClassPathEntry>/dbforms/dependend/httpunit-1.5.4.jar</webClassPathEntry>
+        <webClassPathEntry>/dbforms/dependend/httpunit-1.6.jar</webClassPathEntry>
         <webClassPathEntry>/dbforms/dependend/itext-1.3.1.jar</webClassPathEntry>
         <webClassPathEntry>/dbforms/dependend/jasperreports-1.0.2.jar</webClassPathEntry>
         <webClassPathEntry>/dbforms/dependend/jcommon-0.9.6.jar</webClassPathEntry>

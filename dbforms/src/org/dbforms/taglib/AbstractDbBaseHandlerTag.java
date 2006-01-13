@@ -633,6 +633,8 @@ public abstract class AbstractDbBaseHandlerTag extends AbstractScriptHandlerTag 
 				case FieldTypes.BLOB:
 				case FieldTypes.DISKBLOB:
 				case FieldTypes.CHAR:
+				case FieldTypes.VARCHAR:
+				case FieldTypes.LONGVARCHAR:
 				default:
 					res = fieldValueObj.toString();
 

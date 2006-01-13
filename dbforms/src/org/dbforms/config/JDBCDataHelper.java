@@ -207,12 +207,14 @@ public class JDBCDataHelper {
             }
             break;
 
+        case FieldTypes.LONGVARCHAR:
+        case FieldTypes.VARCHAR:
         case FieldTypes.CHAR:
             if (value == null) {
-                ps.setNull(col, FieldTypes.CHAR);
+                ps.setNull(col, fieldType);
             } else {
             ps.setObject(col, (escaper == null) ? value : escaper
-                    .escapeJDBC((String) value), FieldTypes.CHAR);
+                    .escapeJDBC((String) value), fieldType);
 
             }
             break;

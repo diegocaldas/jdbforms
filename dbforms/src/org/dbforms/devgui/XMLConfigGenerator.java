@@ -693,9 +693,15 @@ public class XMLConfigGenerator implements PropertyNames {
                         break;
 
                      case java.sql.Types.CHAR:
-                     case java.sql.Types.LONGVARCHAR:
-                     case java.sql.Types.VARCHAR:
                         typeName = "char";
+                        break;
+                        
+                     case java.sql.Types.LONGVARCHAR:
+                        typeName = "long varchar";
+
+                        break;
+                     case java.sql.Types.VARCHAR:
+                        typeName = "varchar";
 
                         break;
 
