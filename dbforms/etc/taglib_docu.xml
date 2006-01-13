@@ -10984,6 +10984,132 @@
 					</info>
 				</attribute>
 			</tag>
+			<!-- **************************** CewolfhighLowData tag ***********************************-->
+			<tag>
+				<name>highLowData</name>
+				<summary>
+					This datatag generates a cewolf DatasetProducer with a OHCDDataSet included. This can be
+					used to produce a HighLow plot.
+					Data is taken from the dbforms resultsetvector.
+				</summary>
+v				<tagclass>org.dbforms.taglib.cewolf.CewolfHighLowSeriesDataTag</tagclass>
+				<bodycontent>empty</bodycontent>
+				<attribute>
+					<name>timeField</name>
+					<required>true</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+					   Name of the field in the resultsetvector which should be 
+					   used for the x axis.
+					   This field must be a datetime value!
+					</info>
+				</attribute>
+				<attribute>
+					<name>title</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						The title for the series
+					</info>
+				</attribute>
+				<attribute>
+					<name>openField</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						The field for the open value
+					</info>
+				</attribute>
+				<attribute>
+					<name>highField</name>
+					<required>true</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						The field for the high value
+					</info>
+				</attribute>
+				<attribute>
+					<name>lowField</name>
+					<required>true</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						The field for the low value
+					</info>
+				</attribute>
+				<attribute>
+					<name>closeField</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						The field for the close value
+					</info>
+				</attribute>
+			</tag>
+			<!-- **************************** CewolftimeSeriesData tag ***********************************-->
+			<tag>
+				<name>timeSeriesData</name>
+				<summary>
+					This datatag generates a cewolf DatasetProducer for a timeSeriesDataSet included.
+					Data is taken from the dbforms resultsetvector.
+					Inside this tag must be at least one timeSeriesField tag defined which will helds the 
+					information for the values
+				</summary>
+				<tagclass>org.dbforms.taglib.cewolf.CewolfTimeSeriesDataTag</tagclass>
+				<bodycontent>JSP</bodycontent>
+				<attribute>
+					<name>timeField</name>
+					<required>true</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+					   Name of the field in the resultsetvector which should be 
+					   used for the x axis.
+					   This field must be a datetime value!
+					</info>
+				</attribute>
+			</tag>
+			<!-- **************************** CewolftimeSeriesField tag ***********************************-->
+			<tag>
+				<name>timeSeriesField</name>
+				<summary>
+					This tags defines the fields for a cewolf timeSeries data tag
+				</summary>
+				<tagclass>org.dbforms.taglib.cewolf.CewolfTimeSeriesFieldTag</tagclass>
+				<bodycontent>empty</bodycontent>
+				<attribute>
+					<name>fieldName</name>
+					<required>true</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+					   Name of the field in the resultsetvector which should be 
+					   used for the y axis.
+					   This field must be a numric value!
+					</info>
+				</attribute>
+				<attribute>
+					<name>title</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						The title for the series
+					</info>
+				</attribute>
+				   <attribute>
+				     <name>showValueTicks</name>
+				     <required>false</required>
+				     <rtexprvalue>true</rtexprvalue>
+					<info>
+						true if ticks should be shown
+					</info>
+				   </attribute>
+				   <attribute>
+					     <name>color</name>
+					    <required>false</required>
+					    <rtexprvalue>true</rtexprvalue>
+					<info>
+						the color of the series
+					</info>
+				   </attribute>
+			</tag>
 			<!-- **************************** parameter tag ***********************************-->
 			<tag>
 				<name>property</name>
