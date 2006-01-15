@@ -222,6 +222,13 @@
      <ant:delete dir="${maven.appserver.conf.dir}/webapps/bookstore" />
      <ant:echo message="generate dbforms documentation" />
      <attainGoal name="dbforms:doc" />
+
+     <ant:echo message="copy bookstore test script" />
+     <ant:copy tofile="examples/bookstore/WEB-INF/db_hsqldb/bookstore.script" overwrite="true">
+        <ant:fileset dir="examples/bookstore/WEB-INF/db_hsqldb">
+           <ant:include name="bookstore.script.test" />
+      </ant:fileset>
+     </ant:copy>
   </preGoal>
 
   <postGoal name="site">

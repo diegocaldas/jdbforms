@@ -132,14 +132,18 @@ public class TestField extends AbstractTestCase {
 
       f.setFieldType("char");
       assertTrue("Should be FieldTypes.CHAR", f.getType() == FieldTypes.CHAR);
-      f.setFieldType("varchar");
-      assertTrue("Should be FieldTypes.CHAR", f.getType() == FieldTypes.CHAR);
-      f.setFieldType("nvarchar");
-      assertTrue("Should be FieldTypes.CHAR", f.getType() == FieldTypes.CHAR);
-      f.setFieldType("longchar");
-      assertTrue("Should be FieldTypes.CHAR", f.getType() == FieldTypes.CHAR);
       f.setFieldType("text");
       assertTrue("Should be FieldTypes.CHAR", f.getType() == FieldTypes.CHAR);
+
+      f.setFieldType("varchar");
+      assertTrue("Should be FieldTypes.VARCHAR", f.getType() == FieldTypes.VARCHAR);
+      f.setFieldType("longchar");
+      assertTrue("Should be FieldTypes.VARCHAR", f.getType() == FieldTypes.VARCHAR);
+      f.setFieldType("nvarchar");
+      assertTrue("Should be FieldTypes.VARCHAR", f.getType() == FieldTypes.VARCHAR);
+
+      f.setFieldType("long varchar");
+      assertTrue("Should be FieldTypes.LONGVARCHAR", f.getType() == FieldTypes.LONGVARCHAR);
 
       f.setFieldType("date");
       assertTrue("Should be FieldTypes.DATE", f.getType() == FieldTypes.DATE);
