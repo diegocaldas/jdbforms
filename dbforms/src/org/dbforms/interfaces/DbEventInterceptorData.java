@@ -61,16 +61,13 @@ public class DbEventInterceptorData {
    /** filled with affected rows during insert/update/delete event */
    public static final String ROWSAFFECTED = "rowsAffected";
 
-   /** filled with form tag during presetFormValues call */
-   public static final String FORMTAG = "FormTag";
-  
    
    private HttpServletRequest request;
    private DbFormsConfig      config;
    private Connection         connection;
    private Table              table;
    private Map                attributes = new HashMap();
-
+   private ISqlFilter		  sqlFilterTag;	
    /**
     * Creates a new DbEventInterceptorData object.
     *
@@ -158,4 +155,12 @@ public class DbEventInterceptorData {
    public Table getTable() {
       return table;
    }
+
+public ISqlFilter getSqlFilterTag() {
+	return sqlFilterTag;
+}
+
+public void setSqlFilterTag(ISqlFilter sqlFilterTag) {
+	this.sqlFilterTag = sqlFilterTag;
+}
 }

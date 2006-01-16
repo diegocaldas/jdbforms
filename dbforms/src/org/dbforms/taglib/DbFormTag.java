@@ -56,6 +56,8 @@ import org.dbforms.util.Util;
 import org.dbforms.validation.DbFormsValidatorUtil;
 import org.dbforms.validation.ValidatorConstants;
 
+import org.dbforms.interfaces.ISqlFilter;
+
 import java.io.IOException;
 
 import java.sql.Connection;
@@ -83,7 +85,8 @@ import javax.servlet.jsp.tagext.TryCatchFinally;
  * @author Joachim Peer
  */
 public class DbFormTag extends AbstractScriptHandlerTag implements
-		TryCatchFinally {
+		     ISqlFilter,
+             TryCatchFinally {
 	/** logging category for this class */
 	private static Log logCat = LogFactory.getLog(DbFormTag.class.getName());
 
@@ -1245,10 +1248,9 @@ public class DbFormTag extends AbstractScriptHandlerTag implements
 					dbConnectionName);
 			interceptorData.setAttribute(DbEventInterceptorData.PAGECONTEXT,
 					pageContext);
-			interceptorData.setAttribute(DbEventInterceptorData.FORMTAG, this);
-			PresetFormValuesTag.presetFormValues(interceptorData);
-			interceptorData.removeAttribute(DbEventInterceptorData.FORMTAG);
+			interceptorData.setSqlFilterTag(this);
 
+			PresetFormValuesTag.presetFormValues(interceptorData);
 			// part II/b - processing interceptors
 			if ((getTable() != null) && getTable().hasInterceptors()) {
 				try {
@@ -1263,6 +1265,7 @@ public class DbFormTag extends AbstractScriptHandlerTag implements
 					return SKIP_BODY;
 				}
 			}
+			interceptorData.setSqlFilterTag(null);
 
 			logCat.debug("pos7");
 
