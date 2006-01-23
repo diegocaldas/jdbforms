@@ -62,15 +62,11 @@ public class ConfTableDataTag extends AbstractEmbeddedDataTag implements
 		javax.servlet.jsp.tagext.TryCatchFinally {
 	private String filter;
 
-	// logging category for this class
 	private String foreignTable;
-
 	private String orderBy;
-
 	private String storeField;
 
-	private String visibleFields;
-    String SQLFilter;
+	private String SQLFilter;
     
 	/**
 	 * DOCUMENT ME!
@@ -145,25 +141,6 @@ public class ConfTableDataTag extends AbstractEmbeddedDataTag implements
 	 */
 	public String getStoreField() {
 		return storeField;
-	}
-
-	/**
-	 * DOCUMENT ME!
-	 * 
-	 * @param visibleFields
-	 *            DOCUMENT ME!
-	 */
-	public void setVisibleFields(String visibleFields) {
-		this.visibleFields = visibleFields;
-	}
-
-	/**
-	 * DOCUMENT ME!
-	 * 
-	 * @return DOCUMENT ME!
-	 */
-	public String getVisibleFields() {
-		return visibleFields;
 	}
 
 	/**

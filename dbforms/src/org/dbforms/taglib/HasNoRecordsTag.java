@@ -89,10 +89,16 @@ public class HasNoRecordsTag extends AbstractDbBaseHandlerTag
    public int doEndTag() throws javax.servlet.jsp.JspException {
       // Get result set vector from parent and calculate size
       try {
-         int rsvSize = getParentForm()
-                          .getResultSetVector()
-                          .size();
-
+     	 //
+          // 20060117-David Horkoff: Add a check to avoid nullvalue exceptions.
+          //
+     	 int rsvSize = 0;
+     	 if (!ResultSetVector.isNull(getParentForm().getResultSetVector())) {
+     		rsvSize = getParentForm()
+                           .getResultSetVector()
+                           .size();
+     	 }
+     	 // End 20060117 patch.
          if (rsvSize == 0) {
             if (bodyContent != null) {
                bodyContent.writeOut(bodyContent.getEnclosingWriter());

@@ -28,6 +28,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import java.util.Properties;
+import java.util.Timer;
+
 
 
 
@@ -38,7 +40,9 @@ import java.util.Properties;
  */
 public class SingleConnectionProvider extends AbstractConnectionProvider {
    private static Connection con;
+   private static Timer timer = new Timer();
 
+   
    /**
     * Default constructor.
     *

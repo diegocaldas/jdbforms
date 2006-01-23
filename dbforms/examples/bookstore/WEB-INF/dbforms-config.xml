@@ -219,6 +219,10 @@
 			conClass  = "org.hsqldb.jdbcDriver"
 			username  = "sa"
 			password  = ""
+			<pool-property>
+				<property name="checkSQL" value="select * from dual" />
+				<property name="checkInterval" value="60" />				
+			</pool-property>
 		/>
 
 	    <dbconnection 

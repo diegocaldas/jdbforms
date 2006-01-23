@@ -3049,8 +3049,6 @@
 						<p>
 							&lt;db:tableData name=&quot;aQuery&quot;
 							foreignTable=&quot;Cities&quot;
-							visibleFields=&quot;city_id, city_name,
-							city_state&quot;
 							<br />
 							format = &quot;%i, %s / %s&quot;
 							storeField=&quot;city_id&quot;/&gt;
@@ -3060,6 +3058,10 @@
 							database.
 						</p>
 						<p>Result -&gt; 014, Naples / Florida</p>
+						<p> 
+							if you need the second field of the table you can
+						    use the notation format=&quot;%2$s&quot!
+						</p>
 					</info>
 				</attribute>
 				<attribute>
@@ -3083,11 +3085,6 @@
 					<required>true</required>
 					<rtexprvalue>true</rtexprvalue>
 					<info>the name of the table where</info>
-				</attribute>
-				<attribute>
-					<name>visibleFields</name>
-					<required>true</required>
-					<rtexprvalue>true</rtexprvalue>
 				</attribute>
 				<attribute>
 					<name>disableCache</name>

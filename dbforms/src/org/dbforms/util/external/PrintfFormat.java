@@ -163,7 +163,6 @@ import java.util.Vector;
  * The following table lists escape sequences and associated actions on display
  * devices capable of the action.
  * </p>
- * <h4>
  *
  * <p>
  * Each conversion specification is introduced by the percent sign character
@@ -234,7 +233,6 @@ import java.util.Vector;
  * results of mixing numbered and unnumbered argument specifications in a
  * format string are undefined.
  * </p>
- * <h4>
  *
  * <p>
  * The flags and their meanings are:
