@@ -25,72 +25,140 @@ package org.dbforms.conprovider;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-
+import java.sql.Statement;
+import java.util.Date;
 import java.util.Properties;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
+import org.dbforms.util.Util;
 
 /**
- * Single Connection per thread provider. <br> provides one connection for all
- *
+ * Single Connection per thread provider. <br>
+ * provides one connection for all
+ * 
  * @author Henner Kollmann
  */
-public class SinglePerThreadConnectionProvider extends AbstractConnectionProvider {
-   private static final ThreadLocal singlePerThread = new ThreadLocal();
+public class SinglePerThreadConnectionProvider extends
+		AbstractConnectionProvider {
+	private static final ThreadLocal singlePerThread = new ThreadLocal();
+	private static final ThreadLocal singlePerThreadDateNext = new ThreadLocal();
+	private static Log logCat = LogFactory.getLog(SinglePerThreadConnectionProvider.class);
 
-   /**
-    * Default constructor.
-    *
-    * @exception Exception Description of the Exception
-    * @throws Exception because of the <code>throws Exception</code> clause of
-    *         the  <code>init</code> method.
-    */
-   public SinglePerThreadConnectionProvider() throws Exception {
-      super();
-   }
+	// End 20060117
 
-   /**
-    * Get a JDBC Connection
-    *
-    * @return a JDBC Connection
-    *
-    * @exception SQLException Description of the Exception
-    */
-   protected synchronized Connection getConnection() throws SQLException {
-      Connection con = (Connection) singlePerThread.get();
+	/**
+	 * Default constructor.
+	 * 
+	 * @exception Exception
+	 *                Description of the Exception
+	 * @throws Exception
+	 *             because of the <code>throws Exception</code> clause of the
+	 *             <code>init</code> method.
+	 */
+	public SinglePerThreadConnectionProvider() throws Exception {
+		super();
+	}
 
-      if (con == null) {
-         Properties props = getPrefs()
-                               .getProperties();
+	/**
+	 * Get a JDBC Connection
+	 * 
+	 * @return a JDBC Connection
+	 * 
+	 * @exception SQLException
+	 *                Description of the Exception
+	 */
+	protected synchronized Connection getConnection() throws SQLException {
+		Connection con = (Connection) singlePerThread.get();
 
-         // uses custom jdbc properties;
-         if ((props != null) && !props.isEmpty()) {
-            props.put("user", getPrefs().getUser());
-            props.put("password", getPrefs().getPassword());
-            con = DriverManager.getConnection(getPrefs().getJdbcURL(), props);
-         }
-         // "plain" flavour;
-         else {
-            con = DriverManager.getConnection(getPrefs().getJdbcURL(),
-                                              getPrefs().getUser(),
-                                              getPrefs().getPassword());
-         }
+		long validationInterval;
+		// Get Validation Interval from the config and convert to seconds.
+		// Default interval is six hours (21,600,000 milliseconds).
+		try {
+			validationInterval = Long.parseLong(getPrefs().getPoolProperties()
+					.getProperty("validationInterval", "21600"));
+			// Convert from seconds as expressed in property to milliseconds.
+			validationInterval = validationInterval * 1000;
+		} catch (NumberFormatException ex) {
+			validationInterval = 21600000;
+		}
 
-         singlePerThread.set(con);
-      }
+		Date rightNow = new Date();
+		Date conNextValidationDate = (Date) singlePerThreadDateNext.get();
+		// Initialise the validation check time, validationInterval into the
+		// future from now.
+		if (conNextValidationDate == null) {
+			conNextValidationDate = new Date(validationInterval
+					+ rightNow.getTime());
+			;
+			singlePerThreadDateNext.set(conNextValidationDate);
+		}
 
-      return new SingleConnectionWrapper(con);
-   }
+		if (con != null && conNextValidationDate.before(rightNow)) {
+			conNextValidationDate.setTime(validationInterval
+					+ rightNow.getTime());
+			String validationQuery = getPrefs().getPoolProperties()
+					.getProperty("validationQuery", "");
+			if (!Util.isNull(validationQuery)) {
+				logCat.debug("Testing connection: checking validation timestamp='"
+								+ rightNow.toString() + "'.");
+				logCat.debug("Testing connection: next validation check='"
+						+ conNextValidationDate.toString() + "'.");
+				logCat.debug("Testing connection: validationQuery='"
+						+ validationQuery + "'.");
+				// Test the connection.
+				try {
+					Statement st = con.createStatement();
+					ResultSet rs = st.executeQuery(validationQuery);
+					try {
+						rs.next();
+						logCat.debug("Testing connection: Connection is valid.");
+					} finally {
+						rs.close();
+						st.close();
+					}
+				} catch (SQLException sqlex) {
+					// Exception, so close the connection and set to null
+					// so it is recreated in the body of the "if (con == null)"
+					// below.
+					logCat.debug("Testing connection: Connection is invalid. Forcing recreate.");
+					con.close();
+					con = null;
+				}
+			}
+		}
 
+		if (con == null) {
+			Properties props = getPrefs().getProperties();
+			// uses custom jdbc properties;
+			if ((props != null) && !props.isEmpty()) {
+				props.put("user", getPrefs().getUser());
+				props.put("password", getPrefs().getPassword());
+				con = DriverManager.getConnection(getPrefs().getJdbcURL(),
+						props);
+			}
+			// "plain" flavour;
+			else {
+				con = DriverManager.getConnection(getPrefs().getJdbcURL(),
+						getPrefs().getUser(), getPrefs().getPassword());
+			}
 
-   /**
-    * Initialize the ConnectionProvider.
-    *
-    * @throws Exception if any error occurs
-    */
-   protected void init() throws Exception {
-      Class.forName(getPrefs().getJdbcDriver())
-           .newInstance();
-   }
+			singlePerThread.set(con);
+		}
+
+		return new SingleConnectionWrapper(con);
+	}
+
+	/**
+	 * Initialize the ConnectionProvider.
+	 * 
+	 * @throws Exception
+	 *             if any error occurs
+	 */
+	protected void init() throws Exception {
+		Class.forName(getPrefs().getJdbcDriver()).newInstance();
+	}
 }
