@@ -37,7 +37,7 @@ public class CewolfDatasetProducer implements DatasetProducer {
 	 * @see de.laures.cewolf.DatasetProducer#getProducerId()
 	 */
 	public String getProducerId() {
-		return "org.dbforms.util.CewolfDatasetProducer";
+		return getClass().getName();
 	}
 	/* (non-Javadoc)
 	 * @see de.laures.cewolf.DatasetProducer#hasExpired(java.util.Map, java.util.Date)

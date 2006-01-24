@@ -497,12 +497,10 @@ public class FieldValue implements Cloneable, Serializable {
 	 */
 	public String toString() {
 		StringBuffer buf = new StringBuffer();
-
-		String fieldName = getField().getName();
+		String fieldName = (getField() != null)?getField().getName():"unknown field";
 		buf.append("  ").append("field [").append(fieldName).append(
-				"] has value, oldvalue [").append(getFieldValue()).append(", ")
-				.append(getOldValue()).append("]\n");
-
+			"] has value, oldvalue [").append(getFieldValue()).append(", ")
+			.append(getOldValue()).append("]\n");
 		return buf.toString();
 	}
 
@@ -623,7 +621,7 @@ public class FieldValue implements Cloneable, Serializable {
 	 */
 	private Boolean parseBOOLEAN(String value) {
 		Boolean res;
-		if (value == null || value.trim().length() == 0) {
+		if (Util.isNull(value)) {
 			res = null;
 		} else {
 			res = new Boolean(value);

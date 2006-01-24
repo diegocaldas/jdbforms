@@ -676,12 +676,12 @@ public class Table implements Serializable {
 			} else if ((n = aKeyValPair.toUpperCase().indexOf("NOTISNULL")) != -1) {
 				// Check for not is null
 				// LIKE found! - Store the operator for use later on
-				jump = 9;
+				jump = -1;
 				operator = Constants.FILTER_NOT_NULL;
 			} else if ((n = aKeyValPair.toUpperCase().indexOf("ISNULL")) != -1) {
 				// Check for null
 				// LIKE found! - Store the operator for use later on
-				jump = 6;
+				jump = -1;
 				operator = Constants.FILTER_NULL;
 			}
 
@@ -705,7 +705,9 @@ public class Table implements Serializable {
 			Field filterField = getFieldByName(fieldName);
 
 			// Increment by 1 or 2 depending on operator
-			String value = aKeyValPair.substring(n + jump).trim();
+		    String value  = "";
+		    if (jump >= 0)
+			   value = aKeyValPair.substring(n + jump).trim();
 
 			// i.e. "2"
 			logCat.debug("Filter value=" + value);

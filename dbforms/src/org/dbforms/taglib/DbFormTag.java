@@ -2495,11 +2495,9 @@ public class DbFormTag extends AbstractScriptHandlerTag implements
 								operator = Constants.FILTER_NOT_EQUAL;
 							} else if (aSearchAlgorithm.startsWith("sharpNULL")) {
 								operator = Constants.FILTER_NULL;
-							} else if (aSearchAlgorithm
-									.startsWith("sharpNOTNULL")) {
+							} else if (aSearchAlgorithm.startsWith("sharpNOTNULL")) {
 								operator = Constants.FILTER_NOT_NULL;
-							} else if (aSearchAlgorithm
-									.startsWith("weakStartEnd")) {
+							} else if (aSearchAlgorithm.startsWith("weakStartEnd")) {
 								algorithm = Constants.SEARCH_ALGO_WEAK_START_END;
 								operator = Constants.FILTER_LIKE;
 							} else if (aSearchAlgorithm.startsWith("weakStart")) {
@@ -2662,18 +2660,22 @@ public class DbFormTag extends AbstractScriptHandlerTag implements
 							} else if (aSearchFieldValue.startsWith("[NULL]")) {
 								algorithm = Constants.SEARCH_ALGO_EXTENDED;
 								operator = Constants.FILTER_NULL;
+								aSearchFieldValue = "";
 								jump = 0;
 							} else if (aSearchFieldValue.startsWith("[!NULL]")) {
 								algorithm = Constants.SEARCH_ALGO_EXTENDED;
 								operator = Constants.FILTER_NOT_NULL;
+								aSearchFieldValue = "";
 								jump = 0;
 							} else if (aSearchFieldValue.startsWith("[EMPTY]")) {
 								algorithm = Constants.SEARCH_ALGO_EXTENDED;
 								operator = Constants.FILTER_EMPTY;
+								aSearchFieldValue = "";
 								jump = 0;
 							} else if (aSearchFieldValue.startsWith("[!EMPTY]")) {
 								algorithm = Constants.SEARCH_ALGO_EXTENDED;
 								operator = Constants.FILTER_NOT_EMPTY;
+								aSearchFieldValue = "";
 								jump = 0;
 							}
 
