@@ -25,10 +25,16 @@ package org.dbforms.conprovider;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
+import java.util.Date;
 import java.util.Properties;
-import java.util.Timer;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.dbforms.util.Util;
 
 
 
@@ -40,7 +46,8 @@ import java.util.Timer;
  */
 public class SingleConnectionProvider extends AbstractConnectionProvider {
    private static Connection con;
-   private static Timer timer = new Timer();
+   private static Date conNextValidationDate;
+   private static Log logCat = LogFactory.getLog(SinglePerThreadConnectionProvider.class);
 
    
    /**
@@ -62,7 +69,59 @@ public class SingleConnectionProvider extends AbstractConnectionProvider {
     * @exception SQLException Description of the Exception
     */
    protected synchronized Connection getConnection() throws SQLException {
-      if (con == null) {
+		long validationInterval;
+		// Get Validation Interval from the config and convert to seconds.
+		// Default interval is six hours (21,600,000 milliseconds).
+		try {
+			validationInterval = Long.parseLong(getPrefs().getPoolProperties()
+					.getProperty("validationInterval", "21600"));
+			// Convert from seconds as expressed in property to milliseconds.
+			validationInterval = validationInterval * 1000;
+		} catch (NumberFormatException ex) {
+			validationInterval = 21600000;
+		}
+
+		Date rightNow = new Date();
+		// Initialise the validation check time, validationInterval into the
+		// future from now.
+		if (conNextValidationDate == null) {
+			conNextValidationDate = new Date(validationInterval + rightNow.getTime());
+		}
+
+		if (con != null && conNextValidationDate.before(rightNow)) {
+			conNextValidationDate.setTime(validationInterval
+					+ rightNow.getTime());
+			String validationQuery = getPrefs().getPoolProperties().getProperty("validationQuery", "");
+			if (!Util.isNull(validationQuery)) {
+				logCat.debug("Testing connection: checking validation timestamp='"
+								+ rightNow.toString() + "'.");
+				logCat.debug("Testing connection: next validation check='"
+						+ conNextValidationDate.toString() + "'.");
+				logCat.debug("Testing connection: validationQuery='"
+						+ validationQuery + "'.");
+				// Test the connection.
+				try {
+					Statement st = con.createStatement();
+					ResultSet rs = st.executeQuery(validationQuery);
+					try {
+						rs.next();
+						logCat.debug("Testing connection: Connection is valid.");
+					} finally {
+						rs.close();
+						st.close();
+					}
+				} catch (SQLException sqlex) {
+					// Exception, so close the connection and set to null
+					// so it is recreated in the body of the "if (con == null)"
+					// below.
+					logCat.debug("Testing connection: Connection is invalid. Forcing recreate.");
+					con.close();
+					con = null;
+				}
+			}
+		}
+	   
+	   if (con == null) {
          Properties props = getPrefs()
                                .getProperties();
 
