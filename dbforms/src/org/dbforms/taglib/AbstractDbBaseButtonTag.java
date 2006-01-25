@@ -51,7 +51,6 @@ public abstract class AbstractDbBaseButtonTag extends AbstractDbBaseHandlerTag {
     /** DOCUMENT ME! */
     protected static final int FLAVOR_MODERN = 2;
 
-    // logging category for this class
     private static int uniqueID = 0;
 
     private String alt; // used if flavor is "image"

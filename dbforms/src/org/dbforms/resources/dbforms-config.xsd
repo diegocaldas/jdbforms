@@ -110,6 +110,9 @@
 	<xs:element name="dbforms-config">
 		<xs:complexType>
             <xs:sequence>
+               <xs:element name="DOMFactoryClass" type="xs:string" minOccurs="0" />
+               <xs:element name="DefaultEscaperClass" type="xs:string" minOccurs="0" />
+               <xs:element name="ResolveConfigPropertyClass" type="xs:string" minOccurs="0" />
 				<xs:element name="table" type="table" minOccurs="0" maxOccurs="unbounded" />
 				<xs:element name="query" minOccurs="0" maxOccurs="unbounded">
 					<xs:complexType>
@@ -198,8 +201,6 @@
 						<xs:attribute name="contextDataSource" type="xs:string" use="optional" />
 					</xs:complexType>
 				</xs:element>
-				<xs:element name="DOMFactoryClass" type="xs:string" minOccurs="0" />
-				<xs:element name="DefaultEscaperClass" type="xs:string" minOccurs="0" />
 				<xs:element name="interceptors" minOccurs="0">
 					<xs:complexType>
 						<xs:sequence minOccurs="0" maxOccurs="unbounded">

@@ -235,7 +235,7 @@ public class InsertEvent extends AbstractValidationEvent {
                String directory = null;
 
                try {
-                  directory = DbFormsConfigRegistry.instance().lookup().replaceRealPath(curField.getDirectory());
+                  directory = DbFormsConfigRegistry.instance().lookup().replaceVariables(curField.getDirectory());
                } catch (Exception e) {
                   throw new SQLException(e.getMessage());
                }

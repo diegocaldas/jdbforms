@@ -208,7 +208,7 @@ public void processEvent(Connection con) throws SQLException, MultipleValidation
                         String directory = null;
 
                         try {
-                           directory = DbFormsConfigRegistry.instance().lookup().replaceRealPath(aField.getDirectory());
+                           directory = DbFormsConfigRegistry.instance().lookup().replaceVariables(aField.getDirectory());
                         } catch (Exception e) {
                            throw new SQLException(e.getMessage());
                         }

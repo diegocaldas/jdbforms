@@ -451,7 +451,7 @@ public abstract class AbstractDataSource {
 
 				try {
 					directory = DbFormsConfigRegistry.instance().lookup()
-							.replaceRealPath(curField.getDirectory());
+							.replaceVariables(curField.getDirectory());
 				} catch (Exception e) {
 					logCat.error("deleteBlobFilesFromDisk", e);
 					throw new SQLException(e.getMessage());
@@ -512,7 +512,7 @@ public abstract class AbstractDataSource {
 
 					try {
 						directory = DbFormsConfigRegistry.instance().lookup()
-								.replaceRealPath(directory);
+								.replaceVariables(directory);
 					} catch (Exception e) {
 						logCat.error("saveBlobFilesToDisk", e);
 					}

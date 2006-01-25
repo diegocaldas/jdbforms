@@ -271,11 +271,7 @@ public class ConfigServlet extends HttpServlet {
     */
    protected void initXMLConfigFile(String config)
                              throws IOException, ServletException {
-      // Build a digester to process our configuration resource
-      String realPath = getServletContext()
-                           .getRealPath("/");
 
-      // Acquire an input stream to our configuration resource
       InputStream input = getServletContext()
                              .getResourceAsStream(config);
 
@@ -296,7 +292,7 @@ public class ConfigServlet extends HttpServlet {
          }
 
          if (dbFormsConfig == null) {
-            dbFormsConfig = new DbFormsConfig(realPath);
+            dbFormsConfig = new DbFormsConfig();
 
             // store a reference to ServletConfig (for interoperation with other parts of the Web-App!)
             dbFormsConfig.setServletConfig(getServletConfig());

@@ -139,7 +139,7 @@ public class FileServlet extends HttpServlet {
 						fileName = rs.getString(1);
 						String directory = field.getDirectory();
 						try {
-							directory = DbFormsConfigRegistry.instance().lookup().replaceRealPath(directory);
+							directory = DbFormsConfigRegistry.instance().lookup().replaceVariables(directory);
 						} catch (Exception ex) {
 							logCat
 									.error(

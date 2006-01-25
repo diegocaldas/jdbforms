@@ -29,6 +29,6 @@ package org.dbforms.interfaces;
  * @see PropertyTag
  * @author  Henner Kollmann 
  */
-public interface IPropertyMap {
+public interface IAddProperty {
     void addProperty(String name, String value);
 }

@@ -34,7 +34,7 @@ import org.dbforms.util.Util;
 
 import org.dbforms.interfaces.DbEventInterceptorData;
 import org.dbforms.interfaces.IPresetFormValues;
-import org.dbforms.interfaces.IPropertyMap;
+import org.dbforms.interfaces.IAddProperty;
 
 /**
  * 
@@ -43,7 +43,7 @@ import org.dbforms.interfaces.IPropertyMap;
  * &lt;db:presetFormValues class=""
  */
 public class PresetFormValuesTag extends AbstractScriptHandlerTag
-		implements IPropertyMap, javax.servlet.jsp.tagext.TryCatchFinally {
+		implements IAddProperty, javax.servlet.jsp.tagext.TryCatchFinally {
 
 	private static final String sessionKey = "dbforms.org.tag.PresetFormValuesTag";
     private static Log logCat = LogFactory.getLog(IsWebEventTag.class.getName());
