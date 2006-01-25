@@ -471,8 +471,8 @@ public class DbConnection implements javax.sql.DataSource {
     *
     * @param prop The feature to be added to the PoolProperty attribute
     */
-   public void addPoolProperty(DbConnectionProperty prop) {
-      poolProperties.put(prop.getName(), prop.getValue());
+   public void addPoolProperty(String name, String prop) {
+      poolProperties.put(prop, prop);
    }
 
 
@@ -481,8 +481,8 @@ public class DbConnection implements javax.sql.DataSource {
     *
     * @param prop The feature to be added to the Property attribute
     */
-   public void addProperty(DbConnectionProperty prop) {
-      properties.put(prop.getName(), prop.getValue());
+   public void addProperty(String name, String prop) {
+      properties.put(prop, prop);
    }
 
 

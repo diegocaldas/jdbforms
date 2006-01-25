@@ -249,13 +249,9 @@ public class ConfigServlet extends HttpServlet {
     */
    protected void initXMLConfig() throws IOException, ServletException {
       // Initialize the context-relative path to our configuration resources
-      String value = getServletConfig()
-                        .getInitParameter(DbFormsConfig.CONFIG);
-
+      String value = getServletConfig().getInitParameter(DbFormsConfig.CONFIG);
       loader.setConfig(value);
-
       String[] s = StringUtils.split(loader.getConfig(), ",");
-
       for (int i = 0; i < s.length; i++)
          initXMLConfigFile(s[i]);
    }

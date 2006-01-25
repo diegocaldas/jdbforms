@@ -327,8 +327,11 @@ public class ConfigLoader {
                              "setDOMFactoryClass", 0);
       digester.addCallMethod("dbforms-config/DefaultEscaperClass",
                              "setDefaultEscaperClass", 0);
-      digester.addCallMethod("dbforms-config/ResolveConfigPropertyClass",
-              "setResolveConfigPropertyClass", 0);
+
+      digester.addCallMethod("dbforms-config/var", "addVar", 2);
+      digester.addCallParam("dbforms-config/var", 0, "name");
+      digester.addCallParam("dbforms-config/var", 1, "value");
+
 
       // parse "Table" - object + add it to parent
       digester.addObjectCreate("dbforms-config/table", tableClassName);
@@ -338,18 +341,15 @@ public class ConfigLoader {
       // parse "Field" - object + add it to parent (which is "Table")
       digester.addObjectCreate("dbforms-config/table/field", fieldClassName);
       digester.addSetProperties("dbforms-config/table/field");
-      digester.addSetNext("dbforms-config/table/field", "addField",
-                          BASE_CLASS_FIELD);
+      digester.addSetNext("dbforms-config/table/field", "addField", BASE_CLASS_FIELD);
 
       // parse "calc" - object + add it to parent (which is "Table")
       digester.addObjectCreate("dbforms-config/table/calc", fieldClassName);
       digester.addSetProperties("dbforms-config/table/calc");
-      digester.addSetNext("dbforms-config/table/calc", "addCalcField",
-                          BASE_CLASS_FIELD);
+      digester.addSetNext("dbforms-config/table/calc", "addCalcField", BASE_CLASS_FIELD);
 
       // parse "Foreign-Key" - object + add it to parent (which is "Table")
-      digester.addObjectCreate("dbforms-config/table/foreign-key",
-                               foreignKeyClassName);
+      digester.addObjectCreate("dbforms-config/table/foreign-key", foreignKeyClassName);
       digester.addSetProperties("dbforms-config/table/foreign-key");
       digester.addSetNext("dbforms-config/table/foreign-key", "addForeignKey",
                           BASE_CLASS_FOREIGNKEY);
@@ -377,8 +377,7 @@ public class ConfigLoader {
                           "org.dbforms.config.Interceptor");
 
       // J.Peer 03/2004: parse interceptor "param"s + add it to parent (which is "Interceptor")
-      digester.addCallMethod("dbforms-config/table/interceptor/param",
-                             "addParam", 2);
+      digester.addCallMethod("dbforms-config/table/interceptor/param","addParam", 2);
       digester.addCallParam("dbforms-config/table/interceptor/param", 0, "name");
       digester.addCallParam("dbforms-config/table/interceptor/param", 1, "value");
 
@@ -392,19 +391,14 @@ public class ConfigLoader {
       // 6) register the Property object into the EventInfo object
       digester.addObjectCreate("dbforms-config/table/events",
                                "org.dbforms.config.TableEvents");
-      digester.addSetNext("dbforms-config/table/events", "setTableEvents",
-                          "org.dbforms.config.TableEvents");
-      digester.addObjectCreate("dbforms-config/table/events/event",
-                               "org.dbforms.config.EventInfo");
+      digester.addSetNext("dbforms-config/table/events", "setTableEvents", "org.dbforms.config.TableEvents");
+      digester.addObjectCreate("dbforms-config/table/events/event", "org.dbforms.config.EventInfo");
       digester.addSetProperties("dbforms-config/table/events/event");
-      digester.addSetNext("dbforms-config/table/events/event", "addEventInfo",
-                          "org.dbforms.config.EventInfo");
-      digester.addObjectCreate("dbforms-config/table/events/event/property",
-                               "org.dbforms.config.DbConnectionProperty");
-      digester.addSetProperties("dbforms-config/table/events/event/property");
-      digester.addSetNext("dbforms-config/table/events/event/property",
-                          "addProperty",
-                          "org.dbforms.config.DbConnectionProperty");
+      digester.addSetNext("dbforms-config/table/events/event", "addEventInfo", "org.dbforms.config.EventInfo");
+      digester.addCallMethod("dbforms-config/table/events/event/property","addProperty", 2);
+      digester.addCallParam("dbforms-config/table/events/event/property", 0, "name");
+      digester.addCallParam("dbforms-config/table/events/event/property", 1, "value");
+
 
       // parse "Query" - object + add it to parent
       digester.addObjectCreate("dbforms-config/query", queryClassName);
@@ -456,12 +450,10 @@ public class ConfigLoader {
       digester.addObjectCreate("dbforms-config/query/interceptor",
                                "org.dbforms.config.Interceptor");
       digester.addSetProperties("dbforms-config/query/interceptor");
-      digester.addSetNext("dbforms-config/query/interceptor", "addInterceptor",
-                          "org.dbforms.config.Interceptor");
+      digester.addSetNext("dbforms-config/query/interceptor", "addInterceptor", "org.dbforms.config.Interceptor");
 
       // J.Peer 03/2004: parse interceptor "param"s + add it to parent (which is "Interceptor")
-      digester.addCallMethod("dbforms-config/query/interceptor/param",
-                             "addParam", 2);
+      digester.addCallMethod("dbforms-config/query/interceptor/param", "addParam", 2);
       digester.addCallParam("dbforms-config/query/interceptor/param", 0, "name");
       digester.addCallParam("dbforms-config/query/interceptor/param", 1, "value");
 
@@ -482,12 +474,10 @@ public class ConfigLoader {
       digester.addSetProperties("dbforms-config/query/events/event");
       digester.addSetNext("dbforms-config/query/events/event", "addEventInfo",
                           "org.dbforms.config.EventInfo");
-      digester.addObjectCreate("dbforms-config/query/events/event/property",
-                               "org.dbforms.config.DbConnectionProperty");
-      digester.addSetProperties("dbforms-config/query/events/event/property");
-      digester.addSetNext("dbforms-config/query/events/event/property",
-                          "addProperty",
-                          "org.dbforms.config.DbConnectionProperty");
+
+      digester.addCallMethod("dbforms-config/query/events/event/property","addProperty", 2);
+      digester.addCallParam("dbforms-config/query/events/event/property", 0, "name");
+      digester.addCallParam("dbforms-config/query/events/event/property", 1, "value");
 
       // parse "DbConnecion" - object
       digester.addObjectCreate("dbforms-config/dbconnection",
@@ -497,20 +487,16 @@ public class ConfigLoader {
                           "org.dbforms.config.DbConnection");
 
       // parse "property" - object + add it to parent (which is "DbConnection")
-      digester.addObjectCreate("dbforms-config/dbconnection/property",
-                               "org.dbforms.config.DbConnectionProperty");
-      digester.addSetProperties("dbforms-config/dbconnection/property");
-      digester.addSetNext("dbforms-config/dbconnection/property",
-                          "addProperty",
-                          "org.dbforms.config.DbConnectionProperty");
+      digester.addCallMethod("dbforms-config/dbconnection/property","addProperty", 2);
+      digester.addCallParam("dbforms-config/dbconnection/property", 0, "name");
+      digester.addCallParam("dbforms-config/dbconnection/property", 1, "value");
+      
 
       // parse "pool-property" - object + add it to parent (which is "DbConnection")
-      digester.addObjectCreate("dbforms-config/dbconnection/pool-property",
-                               "org.dbforms.config.DbConnectionProperty");
-      digester.addSetProperties("dbforms-config/dbconnection/pool-property");
-      digester.addSetNext("dbforms-config/dbconnection/pool-property",
-                          "addPoolProperty",
-                          "org.dbforms.config.DbConnectionProperty");
+      digester.addCallMethod("dbforms-config/dbconnection/pool-property","addPoolProperty", 2);
+      digester.addCallParam("dbforms-config/dbconnection/pool-property", 0, "name");
+      digester.addCallParam("dbforms-config/dbconnection/pool-property", 1, "value");
+
 
       // parse "Interceptor" - object + add it to parent (which is "DbConfig")
       digester.addObjectCreate("dbforms-config/interceptors/interceptor",
@@ -520,12 +506,9 @@ public class ConfigLoader {
                           "addInterceptor", "org.dbforms.config.Interceptor");
 
       // J.Peer 03/2004: parse interceptor "param"s + add it to parent (which is "Interceptor")
-      digester.addCallMethod("dbforms-config/interceptors/interceptor/param",
-                             "addParam", 2);
-      digester.addCallParam("dbforms-config/interceptors/interceptor/param", 0,
-                            "name");
-      digester.addCallParam("dbforms-config/interceptors/interceptor/param", 1,
-                            "value");
+      digester.addCallMethod("dbforms-config/interceptors/interceptor/param", "addParam", 2);
+      digester.addCallParam("dbforms-config/interceptors/interceptor/param", 0, "name");
+      digester.addCallParam("dbforms-config/interceptors/interceptor/param", 1, "value");
 
       // parse "database-events/database-event" - object and register them into the DatabaseEventsFactory
       digester.addFactoryCreate("dbforms-config/events/database-events",

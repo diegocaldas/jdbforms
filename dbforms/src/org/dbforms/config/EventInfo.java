@@ -145,9 +145,7 @@ public class EventInfo implements Serializable{
     *
     * @param property The feature to be added to the Property attribute
     */
-   public void addProperty(DbConnectionProperty property) {
-      String name  = property.getName();
-      String value = property.getValue();
+   public void addProperty(String name, String value) {
       properties.put(name, value);
       logCat.info("::addProperty - added the property [" + name + ", " + value
                   + "] to event [" + getId() + "]");

@@ -77,6 +77,8 @@ public class DbFormsConfig {
 
 	private String resolveConfigPropertyClass;
 
+	private Hashtable vars = new Hashtable();
+
 	/**
 	 * Creates a new DbFormsConfig object.
 	 * 
@@ -367,6 +369,10 @@ public class DbFormsConfig {
 		interceptors.addElement(interceptor);
 	}
 
+	public void addVar(String name, String value) {
+		vars.put(name, value);
+	}
+
 	/**
 	 * DOCUMENT ME!
 	 * 
@@ -418,14 +424,16 @@ public class DbFormsConfig {
 	 * @return the input string, with the REALPATH token replaced with the
 	 *         realpath value
 	 */
-public String replaceVariables(String s) {
+	public String replaceVariables(String s) {
 		ExpressionEvaluator elExprEval = new org.apache.commons.el.ExpressionEvaluatorImpl();
-		VariableResolver extResolver = null; 
+		VariableResolver extResolver = null;
 		if (!Util.isNull(resolveConfigPropertyClass)) {
 			try {
-				extResolver = (VariableResolver) ReflectionUtil.newInstance(resolveConfigPropertyClass);
+				extResolver = (VariableResolver) ReflectionUtil
+						.newInstance(resolveConfigPropertyClass);
 			} catch (Exception e) {
-				logCat.error("cannot create the new resolver [" + resolveConfigPropertyClass + "]", e);
+				logCat.error("cannot create the new resolver ["
+						+ resolveConfigPropertyClass + "]", e);
 			}
 		}
 		VariableResolver resolver = new Resolver(this, extResolver);
@@ -437,13 +445,14 @@ public String replaceVariables(String s) {
 		return s;
 	}
 
-
 	private class Resolver implements VariableResolver {
-		private static final String REALPATH = "$(SERVLETCONTEXT_REALPATH)";
+
+		private static final String REALPATH = "SERVLETCONTEXT_REALPATH";
 
 		DbFormsConfig conf;
+
 		VariableResolver resolver;
-		
+
 		private Resolver(DbFormsConfig conf, VariableResolver resolver) {
 			this.conf = conf;
 			this.resolver = resolver;
@@ -453,10 +462,12 @@ public String replaceVariables(String s) {
 			if (REALPATH.equals(arg0)) {
 				return conf.getRealPath();
 			}
-			if (resolver != null)
-				return resolver.resolveVariable(arg0);
-			return null;
+			Object res = null;
+			res = vars.get(arg0);
+			if (Util.isNull((String) res) && (resolver != null)) {
+				res = resolver.resolveVariable(arg0);
+			}
+			return res;
 		}
 	}
-
 }

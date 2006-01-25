@@ -35,7 +35,8 @@ import javax.servlet.ServletContext;
  */
 public class DbFormsConfigRegistry {
    /** unique instance for this class */
-   private static DbFormsConfigRegistry instance = null;
+
+	private static DbFormsConfigRegistry instance = null;
 
    /** servlet config */
    private ServletContext servletContext = null;

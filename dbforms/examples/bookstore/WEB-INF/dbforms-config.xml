@@ -4,6 +4,8 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
     xsi:noNamespaceSchemaLocation="http://jdbforms.sourceforge.net/dbforms-config.xsd"
 >
+		<var name="databaseName" value="bookstore" />
+		
 	    <table name="AUTHOR">
 	        <field name="AUTHOR_ID" fieldType="int" isKey="true" autoInc="true"/>
 	        <field name="NAME" fieldType="varchar"  sortable="true"/>
@@ -214,17 +216,16 @@
 	    <dbconnection
 		    isPow2		   			= "true"
 		    connectionProviderClass = "org.dbforms.conprovider.SingleConnectionProvider"
-			name      = "jdbc:hsqldb:$(SERVLETCONTEXT_REALPATH)/WEB-INF/db_hsqldb/bookstore"
+			name      = "jdbc:hsqldb:${SERVLETCONTEXT_REALPATH}/WEB-INF/db_hsqldb/${databaseName}"
 			isJndi    = "false"
 			conClass  = "org.hsqldb.jdbcDriver"
 			username  = "sa"
 			password  = ""
-			<pool-property>
-				<property name="checkSQL" value="select * from dual" />
-				<property name="checkInterval" value="60" />				
-			</pool-property>
-		/>
-
+		>
+			<pool-property name="validationQuery" value="select * from AUTHOR" />
+			<pool-property name="validationInterval" value="60" />				
+		</dbconnection>
+		
 	    <dbconnection 
 	    		id="asoexdb" 
 			    isPow2		   			= "true"
