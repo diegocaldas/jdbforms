@@ -77,7 +77,7 @@ public class DbFormsConfig {
 
 	private String resolveConfigPropertyClass;
 
-	private Hashtable vars = new Hashtable();
+	private Hashtable params = new Hashtable();
 
 	/**
 	 * Creates a new DbFormsConfig object.
@@ -369,8 +369,8 @@ public class DbFormsConfig {
 		interceptors.addElement(interceptor);
 	}
 
-	public void addVar(String name, String value) {
-		vars.put(name, value);
+	public void addParam(String name, String value) {
+		params.put(name, value);
 	}
 
 	/**
@@ -463,7 +463,7 @@ public class DbFormsConfig {
 				return conf.getRealPath();
 			}
 			Object res = null;
-			res = vars.get(arg0);
+			res = params.get(arg0);
 			if (Util.isNull((String) res) && (resolver != null)) {
 				res = resolver.resolveVariable(arg0);
 			}

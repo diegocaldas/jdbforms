@@ -328,9 +328,9 @@ public class ConfigLoader {
       digester.addCallMethod("dbforms-config/DefaultEscaperClass",
                              "setDefaultEscaperClass", 0);
 
-      digester.addCallMethod("dbforms-config/var", "addVar", 2);
-      digester.addCallParam("dbforms-config/var", 0, "name");
-      digester.addCallParam("dbforms-config/var", 1, "value");
+      digester.addCallMethod("dbforms-config/param", "addParam", 2);
+      digester.addCallParam("dbforms-config/param", 0, "name");
+      digester.addCallParam("dbforms-config/param", 1, "value");
 
 
       // parse "Table" - object + add it to parent
