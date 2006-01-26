@@ -1427,6 +1427,15 @@
 					</info>
 				</attribute>
 				<attribute>
+					<name>defaultValue</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						default field name to use if the specified field
+						is empty.
+					</info>
+				</attribute>
+				<attribute>
 					<name>pattern</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
@@ -2102,6 +2111,15 @@
 					<rtexprvalue>true</rtexprvalue>
 					<info>
 						<p>name of the field this tag references to</p>
+					</info>
+				</attribute>
+				<attribute>
+					<name>defaultValue</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						default field name to use if the specified field
+						is empty.
 					</info>
 				</attribute>
 				<attribute>
