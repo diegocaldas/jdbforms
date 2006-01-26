@@ -3078,7 +3078,7 @@
 						<p>Result -&gt; 014, Naples / Florida</p>
 						<p> 
 							if you need the second field of the table you can
-						    use the notation format=&quot;%2$s&quot!
+						    use the notation format=&quot;%2$s&quot;!
 						</p>
 					</info>
 				</attribute>
