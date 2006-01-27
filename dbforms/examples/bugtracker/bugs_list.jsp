@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <%@ taglib uri="/WEB-INF/dbforms.tld" prefix="db" %>
-<%@ taglib uri="/WEB-INF/tags/request.tld" prefix="request" %>
+<%@ taglib uri="/WEB-INF/request.tld" prefix="request" %>
 
 
 <html>

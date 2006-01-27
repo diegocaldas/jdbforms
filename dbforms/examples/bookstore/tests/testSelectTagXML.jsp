@@ -14,7 +14,6 @@
 						<db:confTableData
 						   name="XMLBOOKS"
 						   foreignTable="XMLBOOKS"
-						   visibleFields="ISBN, TITLE"
 						   storeField="BOOK_ID"
 						/>
 				   	</db:select>
