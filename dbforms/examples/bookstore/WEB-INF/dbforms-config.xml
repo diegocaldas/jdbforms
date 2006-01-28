@@ -4,7 +4,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
     xsi:noNamespaceSchemaLocation="http://jdbforms.sourceforge.net/dbforms-config.xsd"
 >
-		<var name="databaseName" value="bookstore" />
+		<param name="databaseName" value="bookstore" />
 		
 	    <table name="AUTHOR">
 	        <field name="AUTHOR_ID" fieldType="int" isKey="true" autoInc="true"/>
@@ -230,7 +230,7 @@
 	    		id="asoexdb" 
 			    isPow2		   			= "true"
 			    connectionProviderClass = "org.dbforms.conprovider.SingleConnectionProvider"
-				name   = "jdbc:hsqldb:$(SERVLETCONTEXT_REALPATH)/WEB-INF/db_hsqldb/bookstore"
+				name   = "jdbc:hsqldb:${SERVLETCONTEXT_REALPATH}//WEB-INF/db_hsqldb/bookstore"
 				isJndi = "false"
 				conClass  = "org.hsqldb.jdbcDriver"
 				username = "sa"

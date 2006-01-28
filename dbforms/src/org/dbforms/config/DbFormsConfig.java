@@ -261,12 +261,15 @@ public class DbFormsConfig {
 	}
 
 	public String getRealPath() {
-		String realPath = getServletConfig().getServletContext().getRealPath(
-				"/");
-		// 20030604-HKK: Bugfixing for different engine, e.g. cactus. Path
-		// maybe without trailing '/'!!!
-		if (realPath.charAt(realPath.length() - 1) != File.separatorChar) {
-			realPath = realPath + File.separatorChar;
+		String realPath = getServletConfig().getServletContext().getRealPath("/");
+		if (!Util.isNull(realPath)) {
+			realPath = realPath.replace('/', File.separatorChar);
+			realPath = realPath.replace('\\', File.separatorChar);
+			// 20030604-HKK: Bugfixing for different engine, e.g. cactus. Path
+			// maybe without trailing '/'!!!
+			if (realPath.charAt(realPath.length() - 1) != File.separatorChar) {
+				realPath = realPath + File.separatorChar;
+			}
 		}
 		return realPath;
 	}
