@@ -57,143 +57,148 @@ import javax.servlet.http.HttpServletRequest;
  * 
  * @author Henner Kollmann
  */
-public class ConfTableDataTag extends AbstractEmbeddedDataTag implements
-		ISqlFilter,
-		javax.servlet.jsp.tagext.TryCatchFinally {
-	private String filter;
+public class ConfTableDataTag extends AbstractEmbeddedDataTag implements ISqlFilter, javax.servlet.jsp.tagext.TryCatchFinally {
+   private String filter;
 
-	private String foreignTable;
-	private String orderBy;
-	private String storeField;
+   private String foreignTable;
 
-	private String SQLFilter;
-    
-	/**
-	 * DOCUMENT ME!
-	 * 
-	 * @param string
-	 */
-	public void setFilter(String string) {
-		filter = string;
-	}
+   private String orderBy;
 
-	/**
-	 * DOCUMENT ME!
-	 * 
-	 * @return the filter
-	 */
-	public String getFilter() {
-		return filter;
-	}
+   private String storeField;
 
-	/**
-	 * DOCUMENT ME!
-	 * 
-	 * @param foreignTable
-	 *            DOCUMENT ME!
-	 */
-	public void setForeignTable(String foreignTable) {
-		this.foreignTable = foreignTable;
-	}
+   private String SQLFilter;
 
-	/**
-	 * DOCUMENT ME!
-	 * 
-	 * @return DOCUMENT ME!
-	 */
-	public String getForeignTable() {
-		return foreignTable;
-	}
+   /**
+    * DOCUMENT ME!
+    * 
+    * @param string
+    */
+   public void setFilter(String string) {
+      filter = string;
+   }
 
-	/**
-	 * DOCUMENT ME!
-	 * 
-	 * @param orderBy
-	 *            DOCUMENT ME!
-	 */
-	public void setOrderBy(String orderBy) {
-		this.orderBy = orderBy;
-	}
+   /**
+    * DOCUMENT ME!
+    * 
+    * @return the filter
+    */
+   public String getFilter() {
+      return filter;
+   }
 
-	/**
-	 * DOCUMENT ME!
-	 * 
-	 * @return DOCUMENT ME!
-	 */
-	public String getOrderBy() {
-		return orderBy;
-	}
+   /**
+    * DOCUMENT ME!
+    * 
+    * @param foreignTable
+    *           DOCUMENT ME!
+    */
+   public void setForeignTable(String foreignTable) {
+      this.foreignTable = foreignTable;
+   }
 
-	/**
-	 * DOCUMENT ME!
-	 * 
-	 * @param storeField
-	 *            DOCUMENT ME!
-	 */
-	public void setStoreField(String storeField) {
-		this.storeField = storeField;
-	}
+   /**
+    * DOCUMENT ME!
+    * 
+    * @return DOCUMENT ME!
+    */
+   public String getForeignTable() {
+      return foreignTable;
+   }
 
-	/**
-	 * DOCUMENT ME!
-	 * 
-	 * @return DOCUMENT ME!
-	 */
-	public String getStoreField() {
-		return storeField;
-	}
+   /**
+    * DOCUMENT ME!
+    * 
+    * @param orderBy
+    *           DOCUMENT ME!
+    */
+   public void setOrderBy(String orderBy) {
+      this.orderBy = orderBy;
+   }
 
-	/**
-	 * returns Hashtable with data. Its keys represent the "value"-fields for
-	 * the DataContainer-Tag, its values represent the visible fields for the
-	 * Multitags. (DataContainer are: select, radio, checkbox and a special
-	 * flavour of Label).
-	 * 
-	 * @param con
-	 *            DOCUMENT ME!
-	 * 
-	 * @return DOCUMENT ME!
-	 */
-	protected List fetchData(Connection con) throws SQLException {
-		try {
-			DbFormsConfig config = DbFormsConfigRegistry.instance().lookup();
-			Table table = config.getTableByName(getForeignTable());
+   /**
+    * DOCUMENT ME!
+    * 
+    * @return DOCUMENT ME!
+    */
+   public String getOrderBy() {
+      return orderBy;
+   }
 
-			HttpServletRequest request = (HttpServletRequest) pageContext
-					.getRequest();
-			DbEventInterceptorData interceptorData = new DbEventInterceptorData(
-					request, getConfig(), con, table);
-			interceptorData.setAttribute(DbEventInterceptorData.PAGECONTEXT,
-					pageContext);
-			interceptorData.setSqlFilterTag(this);
-			if ((table != null) && table.hasInterceptors()) {
-				table.processInterceptors(IDbEventInterceptor.PRE_SELECT,
-						interceptorData);
-			}
-			interceptorData.setSqlFilterTag(null);
+   /**
+    * DOCUMENT ME!
+    * 
+    * @param storeField
+    *           DOCUMENT ME!
+    */
+   public void setStoreField(String storeField) {
+      this.storeField = storeField;
+   }
 
-			FieldValue[] orderConstraint = table.createOrderFieldValues(
-					getOrderBy(), null, false);
+   /**
+    * DOCUMENT ME!
+    * 
+    * @return DOCUMENT ME!
+    */
+   public String getStoreField() {
+      return storeField;
+   }
 
-			FieldValue[] childFieldValues = table.getFilterFieldArray(
-					getFilter(), getParentForm().getLocale());
-			DataSourceFactory qry = new DataSourceFactory(null, con, table);
-			qry.setSelect(childFieldValues, orderConstraint, getSqlFilter(), null);
+   /**
+    * returns Hashtable with data. Its keys represent the "value"-fields for the
+    * DataContainer-Tag, its values represent the visible fields for the
+    * Multitags. (DataContainer are: select, radio, checkbox and a special
+    * flavour of Label).
+    * 
+    * @param con
+    *           DOCUMENT ME!
+    * 
+    * @return DOCUMENT ME!
+    */
+   protected List fetchData(Connection con) throws SQLException {
+      try {
+         DbFormsConfig config = DbFormsConfigRegistry.instance().lookup();
+         Table table = config.getTableByName(getForeignTable());
 
-			ResultSetVector rsv = qry.getCurrent(interceptorData, null, 0);
-			qry.close();
+         HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
+         DbEventInterceptorData interceptorData = new DbEventInterceptorData(request, getConfig(), con, table);
+         interceptorData.setAttribute(DbEventInterceptorData.PAGECONTEXT, pageContext);
 
-			return formatEmbeddedResultRows(rsv);
-		} catch (Exception e) {
-			throw new SQLException(e.getMessage());
-		}
-	}
+         interceptorData.setSqlFilterTag(this);
+         if ((table != null) && table.hasInterceptors()) {
+            table.processInterceptors(IDbEventInterceptor.PRE_SELECT, interceptorData);
+         }
+         interceptorData.setSqlFilterTag(null);
 
-	public String getSqlFilter() {
-		return SQLFilter;
-	}
+         FieldValue[] orderConstraint = table.createOrderFieldValues(getOrderBy(), null, false);
 
-	public void setSqlFilter(String sqlFilter) {
-		SQLFilter = sqlFilter;	
-	}
+         FieldValue[] childFieldValues = table.getFilterFieldArray(getFilter(), getParentForm().getLocale());
+         DataSourceFactory qry = new DataSourceFactory(null, con, table);
+         qry.setSelect(childFieldValues, orderConstraint, getSqlFilter(), null);
+
+         ResultSetVector rsv = qry.getCurrent(interceptorData, null, 0);
+         qry.close();
+
+         return formatEmbeddedResultRows(rsv);
+      } catch (Exception e) {
+         throw new SQLException(e.getMessage());
+      }
+   }
+
+   public String getSqlFilter() {
+      return SQLFilter;
+   }
+
+   public void setSqlFilter(String sqlFilter) {
+      SQLFilter = sqlFilter;
+   }
+
+   /**
+    * reset tag state
+    * 
+    * @see javax.servlet.jsp.tagext.TryCatchFinally#doFinally()
+    */
+   public void doFinally() {
+      SQLFilter = null;
+      super.doFinally();
+   }
 }
