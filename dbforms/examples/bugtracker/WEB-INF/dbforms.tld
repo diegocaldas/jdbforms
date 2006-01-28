@@ -1395,6 +1395,15 @@
 					</description>
 </attribute>
 <attribute>
+<name>defaultValue</name>
+<required>false</required>
+<rtexprvalue>true</rtexprvalue>
+<description>
+						default field name to use if the specified field
+						is empty.
+					</description>
+</attribute>
+<attribute>
 <name>pattern</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
@@ -2072,6 +2081,15 @@
 <rtexprvalue>true</rtexprvalue>
 <description>
 						name of the field this tag references to
+					</description>
+</attribute>
+<attribute>
+<name>defaultValue</name>
+<required>false</required>
+<rtexprvalue>true</rtexprvalue>
+<description>
+						default field name to use if the specified field
+						is empty.
 					</description>
 </attribute>
 <attribute>
@@ -2987,8 +3005,6 @@
 						
 							&lt;db:tableData name="aQuery"
 							foreignTable="Cities"
-							visibleFields="city_id, city_name,
-							city_state"
 							
 							format = "%i, %s / %s"
 							storeField="city_id"/&gt;
@@ -2998,6 +3014,10 @@
 							database.
 						
 						Result -&gt; 014, Naples / Florida
+						 
+							if you need the second field of the table you can
+						    use the notation format="%2$s"!
+						
 					</description>
 </attribute>
 <attribute>
@@ -3021,11 +3041,6 @@
 <required>true</required>
 <rtexprvalue>true</rtexprvalue>
 <description>the name of the table where</description>
-</attribute>
-<attribute>
-<name>visibleFields</name>
-<required>true</required>
-<rtexprvalue>true</rtexprvalue>
 </attribute>
 <attribute>
 <name>disableCache</name>

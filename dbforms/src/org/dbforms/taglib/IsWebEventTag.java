@@ -23,11 +23,14 @@
 
 package org.dbforms.taglib;
 
+import java.util.StringTokenizer;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.dbforms.event.AbstractWebEvent;
 
+import org.dbforms.util.ParseUtil;
 import org.dbforms.util.Util;
 
 import javax.servlet.jsp.JspException;
@@ -113,9 +116,21 @@ public class IsWebEventTag extends AbstractDbBaseHandlerTag
       }
 
       String  className = we.getType();
-
-      boolean eventNameMatch = className.toUpperCase()
-                                        .indexOf(event.toUpperCase()) != -1;
+      
+      /*
+       * Philip Grunikiewicz
+       * 2006-01-27
+       * 
+       * Events can be concatenated together to form a logical OR
+       */
+      boolean eventNameMatch = false;
+      StringTokenizer st = new StringTokenizer(event, ",");
+      while (st.hasMoreTokens()) {
+    	  
+    	  String anEvent = st.nextToken().trim();
+    	  eventNameMatch = className.toUpperCase().indexOf(anEvent.toUpperCase()) != -1;
+    	  if (eventNameMatch == true) break;
+      }
 
       if (logCat.isDebugEnabled()) {
          logCat.debug(" IsLocalWebEvent webEvent className: " + className

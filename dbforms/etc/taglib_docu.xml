@@ -10926,7 +10926,7 @@
 					PieDataSet included. Data is taken from the dbforms
 					resultsetvector.
 				</summary>
-				<tagclass>org.dbforms.taglib.CewolfPieDataTag</tagclass>
+				<tagclass>org.dbforms.taglib.cewolf.CewolfPieDataTag</tagclass>
 				<bodycontent>empty</bodycontent>
 				<info>
 					You need to install batik jars to use this tag! You
@@ -10961,7 +10961,7 @@
 					dbforms resultsetvector.
 				</summary>
 				<tagclass>
-					org.dbforms.taglib.CewolfCategoryDataTag
+					org.dbforms.taglib.cewolf.CewolfCategoryDataTag
 				</tagclass>
 				<bodycontent>empty</bodycontent>
 				<info>
