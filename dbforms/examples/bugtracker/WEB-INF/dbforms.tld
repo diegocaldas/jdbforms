@@ -10894,7 +10894,7 @@
 
 <tag>
 <name>pieData</name>
-<tag-class>org.dbforms.taglib.CewolfPieDataTag</tag-class>
+<tag-class>org.dbforms.taglib.cewolf.CewolfPieDataTag</tag-class>
 <body-content>empty</body-content>
 <description>
 					This datatag generates a cewolf DatasetProducer with
@@ -10930,7 +10930,7 @@
 <tag>
 <name>categoryData</name>
 <tag-class>
-					org.dbforms.taglib.CewolfCategoryDataTag
+					org.dbforms.taglib.cewolf.CewolfCategoryDataTag
 				</tag-class>
 <body-content>empty</body-content>
 <description>
