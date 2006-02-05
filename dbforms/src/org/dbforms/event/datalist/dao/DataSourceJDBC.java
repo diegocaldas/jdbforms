@@ -646,7 +646,7 @@ public class DataSourceJDBC extends AbstractDataSource {
 			String fieldName = (String) e.next();
 			Field curField = getTable().getFieldByName(fieldName);
 
-			if ((curField != null) && !getTable().isCalcField(curField.getId())) {
+			if ((curField != null) && !getTable().isCalcField(curField.getId()) && Util.isNull(curField.getExpression())) {
 				FieldValue fv = fieldValues.get(fieldName);
 
 				logCat.debug("Retrieved curField:" + curField.getName()

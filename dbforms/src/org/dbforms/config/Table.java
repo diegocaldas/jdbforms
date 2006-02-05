@@ -823,7 +823,7 @@ public class Table implements Serializable {
 		while (e.hasNext()) {
 			String fieldName = (String) e.next();
 			FieldValue fv = fieldValues.get(fieldName);
-			if (!checkFieldId(CALC_FIELD, fv.getField().getId())) {
+			if (!isCalcField(fv.getField().getId()) && Util.isNull(fv.getField().getExpression()) ) {
 				queryBuf.append(fieldName);
 				if (e.hasNext()) {
 					queryBuf.append(",");
@@ -837,7 +837,7 @@ public class Table implements Serializable {
 		while (e.hasNext()) {
 			String fieldName = (String) e.next();
 			FieldValue fv = fieldValues.get(fieldName);
-			if (!checkFieldId(CALC_FIELD, fv.getField().getId())) {
+			if (!isCalcField(fv.getField().getId()) && Util.isNull(fv.getField().getExpression()) ) {
 				queryBuf.append("?");
 				if (e.hasNext()) {
 					queryBuf.append(",");
@@ -1371,7 +1371,7 @@ public class Table implements Serializable {
 		while (e.hasNext()) {
 			String fieldName = (String) e.next();
 			FieldValue fv = fieldValues.get(fieldName);
-			if (!checkFieldId(CALC_FIELD, fv.getField().getId())) {
+			if (!isCalcField(fv.getField().getId()) && Util.isNull(fv.getField().getExpression())) {
 				if (kommaNeeded) {
 					queryBuf.append(", ");
 				} else {
