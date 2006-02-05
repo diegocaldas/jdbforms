@@ -135,6 +135,41 @@ public class TimeUtil {
       return zeit;
    }
 
+   /**
+    * Reformats minutes to time string with format: dd:hh:mm
+    *
+    * @param seconds string to format
+    *
+    * @return String
+    */
+   public static final String minutes2String(long minutes) {
+      long   d;
+      long   h;
+      long   m;
+      String zeit;
+      d       = (minutes / SECSPERDAY * 60);
+      minutes = minutes - (d * SECSPERDAY * 60);
+      h       = minutes / (60);
+      minutes = minutes - (h * 60);
+
+      if (d > 0) {
+         Object[] o = {
+                         new Long(d),
+                         new Long(h),
+                         new Long(minutes)
+                      };
+         zeit = Util.sprintf("%i:%02i:%02i", o);
+      } else {
+         Object[] o = {
+                         new Long(h),
+                         new Long(minutes),
+                      };
+         zeit = Util.sprintf("%i:%02i", o);
+      }
+
+      return zeit;
+   }
+
 
    /**
     * finds the end of the given day
