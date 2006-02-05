@@ -842,6 +842,15 @@ public class DbFormTag extends AbstractScriptHandlerTag implements
 	}
 
 	/**
+	 * Gets the parentForm DbFormTag object
+	 * 
+	 * @return The parentForm value
+	 */
+	public DbFormTag getParentForm() {
+		return parentForm;
+	}
+
+	/**
 	 * Gets the table attribute of the DbFormTag object
 	 * 
 	 * @return The table value
@@ -1248,6 +1257,7 @@ public class DbFormTag extends AbstractScriptHandlerTag implements
 					dbConnectionName);
 			interceptorData.setAttribute(DbEventInterceptorData.PAGECONTEXT,
 					pageContext);
+			interceptorData.setAttribute(DbEventInterceptorData.FORMTAG, this);
 			interceptorData.setSqlFilterTag(this);
 
 			PresetFormValuesTag.presetFormValues(interceptorData);
@@ -2176,7 +2186,7 @@ public class DbFormTag extends AbstractScriptHandlerTag implements
 				throw new IllegalArgumentException(
 						"ERROR: Make sure that field "
 								+ f.getName()
-								+ " is a KEY of the table "
+								+ " is a KEY or a SORTFIELD of the table "
 								+ getTable().getName()
 								+ "! Otherwise you can not use it as PARENT/CHILD LINK argument!");
 			}

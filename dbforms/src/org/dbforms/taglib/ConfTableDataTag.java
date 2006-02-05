@@ -162,6 +162,7 @@ public class ConfTableDataTag extends AbstractEmbeddedDataTag implements ISqlFil
          HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
          DbEventInterceptorData interceptorData = new DbEventInterceptorData(request, getConfig(), con, table);
          interceptorData.setAttribute(DbEventInterceptorData.PAGECONTEXT, pageContext);
+ 		 interceptorData.setAttribute(DbEventInterceptorData.FORMTAG, getParentForm());
 
          interceptorData.setSqlFilterTag(this);
          if ((table != null) && table.hasInterceptors()) {
