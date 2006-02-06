@@ -30,6 +30,7 @@ import org.dbforms.config.ResultSetVector;
 import org.dbforms.interfaces.IDataContainer;
 import org.dbforms.interfaces.IEscaper;
 import org.dbforms.interfaces.IFormatEmbeddedData;
+import org.dbforms.interfaces.IStaticDataList;
 import org.dbforms.interfaces.StaticData;
 
 import org.dbforms.util.MessageResources;
@@ -50,12 +51,12 @@ import javax.servlet.jsp.PageContext;
 
 /**
  * DOCUMENT ME!
- *
+ * 
  * @author $author$
  * @version $Revision$
  */
 public abstract class AbstractEmbeddedDataTag extends AbstractDbBaseHandlerTag
-   implements javax.servlet.jsp.tagext.TryCatchFinally  {
+   implements javax.servlet.jsp.tagext.TryCatchFinally, IStaticDataList  {
    private static Log          logCat           = LogFactory.getLog(AbstractEmbeddedDataTag.class
          .getName());
    private IFormatEmbeddedData printfFormat;
@@ -67,52 +68,54 @@ public abstract class AbstractEmbeddedDataTag extends AbstractDbBaseHandlerTag
    private String              name;
 
    /**
-    * DOCUMENT ME!
-    *
-    * @param name DOCUMENT ME!
-    */
+	 * DOCUMENT ME!
+	 * 
+	 * @param name
+	 *            DOCUMENT ME!
+	 */
    public void setDbConnectionName(String name) {
       dbConnectionName = name;
    }
 
 
    /**
-    * DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    */
+	 * DOCUMENT ME!
+	 * 
+	 * @return DOCUMENT ME!
+	 */
    public String getDbConnectionName() {
       return dbConnectionName;
    }
 
 
    /**
-    * Insert the method's description here. Creation date: (2001-09-21
-    * 12:20:42)
-    *
-    * @param newDisableCache java.lang.String
-    */
+	 * Insert the method's description here. Creation date: (2001-09-21
+	 * 12:20:42)
+	 * 
+	 * @param newDisableCache
+	 *            java.lang.String
+	 */
    public void setDisableCache(java.lang.String newDisableCache) {
       disableCache = newDisableCache;
    }
 
 
    /**
-    * Insert the method's description here. Creation date: (2001-09-21
-    * 12:20:42)
-    *
-    * @return java.lang.String
-    */
+	 * Insert the method's description here. Creation date: (2001-09-21
+	 * 12:20:42)
+	 * 
+	 * @return java.lang.String
+	 */
    public java.lang.String getDisableCache() {
       return disableCache;
    }
 
 
    /**
-    * DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    */
+	 * DOCUMENT ME!
+	 * 
+	 * @return DOCUMENT ME!
+	 */
    public IEscaper getEscaper() {
       IDataContainer parent = ((IDataContainer) getParent());
       IEscaper      res = parent.getEscaper();
@@ -122,54 +125,56 @@ public abstract class AbstractEmbeddedDataTag extends AbstractDbBaseHandlerTag
 
 
    /**
-    * DOCUMENT ME!
-    *
-    * @param format DOCUMENT ME!
-    */
+	 * DOCUMENT ME!
+	 * 
+	 * @param format
+	 *            DOCUMENT ME!
+	 */
    public void setFormat(java.lang.String format) {
       this.format = format;
    }
 
 
    /**
-    * Sets the formatClass.
-    *
-    * @param formatClass The formatClass to set
-    */
+	 * Sets the formatClass.
+	 * 
+	 * @param formatClass
+	 *            The formatClass to set
+	 */
    public void setFormatClass(String formatClass) {
       this.formatClass = formatClass;
    }
 
 
    /**
-    * Returns the formatClass.
-    *
-    * @return String
-    */
+	 * Returns the formatClass.
+	 * 
+	 * @return String
+	 */
    public String getFormatClass() {
       return formatClass;
    }
 
 
    /**
-    * set the name of the embedded data. every embedded data entity on a jsp
-    * page has to have a unique name. this name is used for storing (caching)
-    * and retrieving data in Page-Scope. this is useful if a tag gets
-    * evaluated many times -> we do not want the queries etc. to be executed
-    * every time!
-    *
-    * @param name DOCUMENT ME!
-    */
+	 * set the name of the embedded data. every embedded data entity on a jsp
+	 * page has to have a unique name. this name is used for storing (caching)
+	 * and retrieving data in Page-Scope. this is useful if a tag gets evaluated
+	 * many times -> we do not want the queries etc. to be executed every time!
+	 * 
+	 * @param name
+	 *            DOCUMENT ME!
+	 */
    public void setName(String name) {
       this.name = name;
    }
 
 
    /**
-    * returns the unique name of the embedded data
-    *
-    * @return DOCUMENT ME!
-    */
+	 * returns the unique name of the embedded data
+	 * 
+	 * @return DOCUMENT ME!
+	 */
    public String getName() {
       return name;
    }
@@ -177,8 +182,8 @@ public abstract class AbstractEmbeddedDataTag extends AbstractDbBaseHandlerTag
 
 
    /**
-    * DOCUMENT ME!
-    */
+	 * DOCUMENT ME!
+	 */
    public void doFinally() {
       name                = null;
       dbConnectionName    = null;
@@ -190,22 +195,24 @@ public abstract class AbstractEmbeddedDataTag extends AbstractDbBaseHandlerTag
 
 
    /**
-    * DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    *
-    * @throws JspException DOCUMENT ME!
-    * @throws IllegalArgumentException DOCUMENT ME!
-    */
+	 * DOCUMENT ME!
+	 * 
+	 * @return DOCUMENT ME!
+	 * 
+	 * @throws JspException
+	 *             DOCUMENT ME!
+	 * @throws IllegalArgumentException
+	 *             DOCUMENT ME!
+	 */
    public int doStartTag() throws JspException {
       /**
-       * Grunikiewicz.philip 2001-09-21  Sometimes a developer may want to
-       * execute the embedded data query for each row. i.e. not cache the
-       * result set. Example:  Table contains 1000+ of rows, use queryData
-       * with qualified 'where' clause. Data cannot be cached because each
-       * subsequent row need to execute a different query (whereClause with
-       * different parameters)
-       */
+		 * Grunikiewicz.philip 2001-09-21 Sometimes a developer may want to
+		 * execute the embedded data query for each row. i.e. not cache the
+		 * result set. Example: Table contains 1000+ of rows, use queryData with
+		 * qualified 'where' clause. Data cannot be cached because each
+		 * subsequent row need to execute a different query (whereClause with
+		 * different parameters)
+		 */
       printfFormat = null;
 
       if (!Util.isNull(format) || !Util.isNull(getFormatClass())) {
@@ -217,7 +224,9 @@ public abstract class AbstractEmbeddedDataTag extends AbstractDbBaseHandlerTag
             setFormat("%s");
          }
 
-         if (format.indexOf('%') < 0) // try cheap compatibility mode for old applications without '%'// within patterns
+         if (format.indexOf('%') < 0) // try cheap compatibility mode for old
+										// applications without '%'// within
+										// patterns
           {
             StringBuffer newFormat = new StringBuffer();
 
@@ -305,27 +314,41 @@ public abstract class AbstractEmbeddedDataTag extends AbstractDbBaseHandlerTag
 
 
    /**
-    * this method is implemented by subclasses in order to match the user's
-    * need for specific data.
-    *
-    * @param con DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    */
+	 * this method is implemented by subclasses in order to match the user's
+	 * need for specific data.
+	 * 
+	 * @param con
+	 *            DOCUMENT ME!
+	 * 
+	 * @return DOCUMENT ME!
+	 */
    protected abstract List fetchData(Connection con) throws SQLException;
+
+   /**
+	 * DOCUMENT ME!
+	 * 
+	 * @param pair
+	 *            DOCUMENT ME!
+	 */
+   public void addElement(StaticData pair) {
+      data.add(pair);
+   }
+
+
 
 
    /**
-    * formatEmbeddedResultRows() formats a result set accornding to a
-    * eventually given format string. If no format string is given, the output
-    * format is a comma separated list of values. This method is called by
-    * subclasses TableData and QueryData
-    *
-    * @param rsv result set vector to be formatted
-    *
-    * @return a vector of key-value pairs, the values eventually formatted
-    *         according to a given format string
-    */
+	 * formatEmbeddedResultRows() formats a result set accornding to a
+	 * eventually given format string. If no format string is given, the output
+	 * format is a comma separated list of values. This method is called by
+	 * subclasses TableData and QueryData
+	 * 
+	 * @param rsv
+	 *            result set vector to be formatted
+	 * 
+	 * @return a vector of key-value pairs, the values eventually formatted
+	 *         according to a given format string
+	 */
    protected List formatEmbeddedResultRows(ResultSetVector rsv) {
       List    result                     = new java.util.Vector();
       boolean resultSuccessFullyFormated = false;
@@ -370,7 +393,8 @@ public abstract class AbstractEmbeddedDataTag extends AbstractDbBaseHandlerTag
             logCat.error(
                "Using fallback method of comma separated list instead");
             result = new java.util.Vector();
-         } catch (NullPointerException npe) // npe will be thrown if null// value returned from database
+         } catch (NullPointerException npe) // npe will be thrown if null//
+											// value returned from database
           {
             logCat.error("Could not format result using format '" + format
                + "', error message is " + npe.getMessage());
@@ -410,10 +434,10 @@ public abstract class AbstractEmbeddedDataTag extends AbstractDbBaseHandlerTag
 
 
    /**
-    * DOCUMENT ME!
-    *
-    * @return DOCUMENT ME!
-    */
+	 * DOCUMENT ME!
+	 * 
+	 * @return DOCUMENT ME!
+	 */
    protected boolean useCache() {
       return !(Util.getTrue(this.getDisableCache()));
    }

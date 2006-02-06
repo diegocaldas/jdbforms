@@ -153,7 +153,6 @@ public class TableDataTag extends AbstractEmbeddedDataTag
       super.doFinally();
    }
 
-
    /**
     * returns Hashtable with data. Its keys represent the "value"-fields for
     * the DataContainer-Tag, its values     represent the visible fields for
