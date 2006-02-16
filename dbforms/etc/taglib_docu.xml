@@ -2089,6 +2089,17 @@
 						manual for details.
 					</info>
 				</attribute>
+				<attribute>
+					<name>classicCalendar</name>
+					<required>false</required>
+					<rtexprvalue>true</rtexprvalue>
+					<info>
+						Determinate whether the classic javascript 
+						calendar should be used.[may
+						be deprecated soon]
+					</info>
+				</attribute>
+
 			</tag>
 			<!-- **************************** textArea tag ***********************************-->
 			<tag>
