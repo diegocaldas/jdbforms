@@ -451,8 +451,7 @@ public class DbLinkURLTag extends AbstractDbBaseHandlerTag
                                            pageContext.getRequest().getCharacterEncoding())));
 
       // 2002-11-21 HKK: New: send parent table name as parameter if it is different to table
-      if (getTable() != getParentForm()
-                                 .getTable()) {
+      if ( (getParentForm().getTable() != null) && (getTable() != getParentForm().getTable()) ) {
          tagBuf.append(getDataTag(tagName, "srcTable",
                                   getParentForm().getTable().getName()));
          tagBuf.append(getDataTag(tagName, "childField",
