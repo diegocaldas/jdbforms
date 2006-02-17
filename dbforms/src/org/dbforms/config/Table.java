@@ -1471,11 +1471,6 @@ public class Table implements Serializable {
 	 *             DOCUMENT ME!
 	 */
 	public void addCalcField(Field field) throws Exception {
-		if (field.getType() == 0) {
-			throw new Exception("Table " + getName() + " Field "
-					+ field.getName() + ": no type!");
-		}
-
 		field.setId(encodeFieldId(CALC_FIELD, calcFields.size()));
 		field.setTable(this);
 		calcFields.addElement(field);
