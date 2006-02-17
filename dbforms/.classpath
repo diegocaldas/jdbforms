@@ -6,7 +6,6 @@
 	<classpathentry kind="src" path="tests/test"/>
 	<classpathentry kind="src" path="tests/test-cactus"/>
 	<classpathentry kind="lib" path="dependend/commons-beanutils-1.6.jar"/>
-	<classpathentry kind="lib" path="dependend/commons-collections-2.1.jar"/>
 	<classpathentry kind="lib" path="dependend/commons-dbcp-1.1.jar"/>
 	<classpathentry sourcepath="D:/Projekte/webapps/commons-el-1.0-src/src/java" kind="lib" path="dependend/commons-el-1.0.jar"/>
 	<classpathentry kind="lib" path="dependend/commons-fileupload-1.0.jar"/>
@@ -51,5 +50,6 @@
 	<classpathentry kind="lib" path="dependend/jcommon-1.0.0.jar"/>
 	<classpathentry kind="lib" path="dependend/jfreechart-1.0.0.jar"/>
 	<classpathentry sourcepath="D:/Projekte/webapps/commons-lang-2.1-src.zip" kind="lib" path="dependend/commons-lang-2.1.jar"/>
+	<classpathentry kind="lib" path="dependend/commons-collections-3.1.jar"/>
 	<classpathentry kind="output" path="examples/bookstore/WEB-INF/classes"/>
 </classpath>
