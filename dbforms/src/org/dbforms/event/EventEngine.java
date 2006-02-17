@@ -201,19 +201,15 @@ public class EventEngine {
       // in the "to exclude"-event
       if (exclude instanceof AbstractDatabaseEvent) {
          collissionDanger = true;
-         excludeTableId   = exclude.getTable()
-                                   .getId();
-         excludeKeyId = ((AbstractDatabaseEvent) exclude).getKeyId();
+         excludeTableId   = exclude.getTable().getId();
+         excludeKeyId     = ((AbstractDatabaseEvent) exclude).getKeyId();
       }
 
       String param = "autoupdate_" + String.valueOf(actTable.getId());
       String res = ParseUtil.getParameter(request, param);
 
       // auto-updating may be disabled, so we have to check:
-      if (res.equalsIgnoreCase("true")
-                || (res.equalsIgnoreCase("OnUpdateOnly")
-                && exclude.getType()
-                                .equals("update"))) {
+      if (res.equalsIgnoreCase("true") || (res.equalsIgnoreCase("OnUpdateOnly") && exclude.getType().equals("update"))) {
          // we can only update existing rowsets. so we just look for
          // key-values
          String      paramStub          = "k_" + actTable.getId() + "_";
@@ -228,11 +224,8 @@ public class EventEngine {
             logCat.info("autoaupdate debug info: keyId=" + keyId
                         + " excludeKeyId=" + excludeKeyId);
 
-            if (!collissionDanger
-                      || (excludeTableId != actTable.getId())
-                      || !keyId.equals(excludeKeyId)) {
-               AbstractDatabaseEvent e = dbEventFactory.createUpdateEvent(actTable
-                                                                  .getId(),
+            if ( !collissionDanger || (excludeTableId != actTable.getId()) || !keyId.equals(excludeKeyId) ) {
+               AbstractDatabaseEvent e = dbEventFactory.createUpdateEvent(actTable.getId(),
                                                                   keyId,
                                                                   request,
                                                                   config);
@@ -241,18 +234,14 @@ public class EventEngine {
          }
 
          // now try the same with insert records
-         // but only if
-         if (collissionDanger && (excludeTableId != actTable.getId())) {
+         if ( !collissionDanger || (excludeTableId != actTable.getId()) ) {
             paramStub = "f_" + actTable.getId() + "_"
                         + Constants.FIELDNAME_INSERTPREFIX;
-
             Vector v = ParseUtil.getParametersStartingWith(request, paramStub);
-
             if (v.size() > 0) {
                String aKeyParam = (String) v.firstElement();
                String keyId = aKeyParam.substring(paramStub.length());
                keyId = StringUtil.getEmbeddedString(keyId, 0, '_');
-
                AbstractDatabaseEvent e = dbEventFactory.createInsertEvent(actTable
                                                                   .getId(),
                                                                   keyId,
