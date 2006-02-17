@@ -382,6 +382,8 @@ public abstract class AbstractReportServlet extends HttpServlet {
 				form.setMaxRows(maxRows);
 				form.setFollowUp("");
 				form.setAutoUpdate("false");
+				String sqlFilter = ParseUtil.getParameter(request, "sqlFilter", ""); 
+				form.setSqlFilter(sqlFilter);
 
 				// set the source attribute to the requestURI.
 				// So the form will think that the source is equal to the target
