@@ -224,44 +224,44 @@ public class Field implements Serializable {
 	 *            the type string value (example: "int", "char", "numeric", etc)
 	 */
 	public void setFieldType(String aFieldType) {
-		this.fieldType = aFieldType.toLowerCase();
-
+		this.fieldType = aFieldType;
+        String tFieldType = aFieldType.toLowerCase(); 
 		//  FIXME - someone check is this types are good for all databases
-		if (fieldType.startsWith("char")
-				|| fieldType.startsWith("text")) {
+		if (tFieldType.startsWith("char")
+				|| tFieldType.startsWith("text")) {
 			type = FieldTypes.CHAR;
-		} else if (fieldType.startsWith("varchar")
-				|| fieldType.startsWith("nvarchar")
-				|| fieldType.startsWith("longchar")) {
+		} else if (tFieldType.startsWith("varchar")
+				|| tFieldType.startsWith("nvarchar")
+				|| tFieldType.startsWith("longchar")) {
 			type = FieldTypes.VARCHAR;
-		} else if (fieldType.startsWith("long varchar")) {
+		} else if (tFieldType.startsWith("long varchar")) {
 			type = FieldTypes.LONGVARCHAR;
-		} else if (fieldType.startsWith("int")
-				|| fieldType.startsWith("smallint")
-				|| fieldType.startsWith("long")
-				|| fieldType.startsWith("tinyint")) {
+		} else if (tFieldType.startsWith("int")
+				|| tFieldType.startsWith("smallint")
+				|| tFieldType.startsWith("long")
+				|| tFieldType.startsWith("tinyint")) {
 			type = FieldTypes.INTEGER;
-		} else if (fieldType.startsWith("numeric")
-				|| fieldType.startsWith("number")
-				|| fieldType.startsWith("decimal")) {
+		} else if (tFieldType.startsWith("numeric")
+				|| tFieldType.startsWith("number")
+				|| tFieldType.startsWith("decimal")) {
 			type = FieldTypes.NUMERIC;
-		} else if (fieldType.startsWith("date")) {
+		} else if (tFieldType.startsWith("date")) {
 			type = FieldTypes.DATE;
-		} else if (fieldType.startsWith("timestamp")) {
+		} else if (tFieldType.startsWith("timestamp")) {
 			type = FieldTypes.TIMESTAMP;
-		} else if (fieldType.startsWith("time")) {
+		} else if (tFieldType.startsWith("time")) {
 			type = FieldTypes.TIME;
-		} else if (fieldType.startsWith("double")
-				|| fieldType.startsWith("float")) {
+		} else if (tFieldType.startsWith("double")
+				|| tFieldType.startsWith("float")) {
 			type = FieldTypes.DOUBLE;
-		} else if (fieldType.startsWith("real")) {
+		} else if (tFieldType.startsWith("real")) {
 			type = FieldTypes.FLOAT;
-		} else if (fieldType.startsWith("blob")
-				|| fieldType.startsWith("image")) {
+		} else if (tFieldType.startsWith("blob")
+				|| tFieldType.startsWith("image")) {
 			type = FieldTypes.BLOB;
-		} else if (fieldType.startsWith("diskblob")) {
+		} else if (tFieldType.startsWith("diskblob")) {
 			type = FieldTypes.DISKBLOB;
-		} else if (fieldType.startsWith("bool")) {
+		} else if (tFieldType.startsWith("bool")) {
 			type = FieldTypes.BOOLEAN;
 		}
 	}
@@ -495,9 +495,10 @@ public class Field implements Serializable {
 		}
 
 		Class clazz = obj.getClass();
-		Vector v = StringUtil.splitString(clazz.getName().toLowerCase(), ".");
-		fieldType = (String) v.lastElement();
+//		Vector v = StringUtil.splitString(clazz.getName().toLowerCase(), ".");
+//		fieldType = (String) v.lastElement();
 
+		fieldType = clazz.getName();
 		if (clazz.isAssignableFrom(java.lang.Integer.class)) {
 			type = FieldTypes.INTEGER;
 		} else if (clazz.isAssignableFrom(java.lang.Long.class)) {
