@@ -786,7 +786,9 @@
 					<name>sqlFilter</name>
 					<required>false</required>
 					<rtexprvalue>true</rtexprvalue>
-					<info />
+               <info>
+                  a filter in sql syntax which will be added to the where clause
+               </info>
 				</attribute>
 				<attribute>
 					<name>gotoPrefix</name>
@@ -3145,6 +3147,14 @@
 						filter tag in dbform
 					</info>
 				</attribute>
+            <attribute>
+               <name>sqlFilter</name>
+               <required>false</required>
+               <rtexprvalue>true</rtexprvalue>
+               <info>
+                  a filter in sql syntax which will be added to the where clause
+               </info>
+            </attribute>
 			</tag>
 			<!-- **************************** queryData tag ***********************************-->
 			<tag>
