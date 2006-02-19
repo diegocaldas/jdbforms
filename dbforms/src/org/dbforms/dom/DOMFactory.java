@@ -78,7 +78,7 @@ public class DOMFactory {
     * @param string
     */
    public static void setFactoryClass(String string) {
-      singlePerThread.remove();
+      singlePerThread.set(null);
       factoryClass = string;
    }
    
