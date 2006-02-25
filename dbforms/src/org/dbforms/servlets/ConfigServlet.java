@@ -32,6 +32,7 @@ import org.apache.commons.validator.ValidatorResourcesInitializer;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.PropertyConfigurator;
+import org.apache.log4j.xml.DOMConfigurator;
 
 import org.dbforms.config.ConfigLoader;
 import org.dbforms.config.DbFormsConfig;
@@ -146,7 +147,7 @@ public class ConfigServlet extends HttpServlet {
 
    /**
     * Initialize Logging for this web application a url/path to a log4j
-    * properties file should be defined by the servlet init parameter
+    * properties or xml file should be defined by the servlet init parameter
     * "log4j.configuration"
     */
    public void initLogging() {
@@ -162,10 +163,17 @@ public class ConfigServlet extends HttpServlet {
 
             if (fis != null) {
                try {
-                  Properties log4jProperties = new Properties();
-                  log4jProperties.load(fis);
-                  LogManager.resetConfiguration();
-                  PropertyConfigurator.configure(log4jProperties);
+            	   LogManager.resetConfiguration();
+            	   if (configurationStr.endsWith(".xml")) {
+            		  // log4j config in xml format
+            		  new DOMConfigurator().doConfigure(fis,LogManager.getLoggerRepository());
+            	   }
+            	   else {
+            	      // log4j config in properties format
+            		  Properties log4jProperties = new Properties();
+	                  log4jProperties.load(fis);	                  
+	                  PropertyConfigurator.configure(log4jProperties);
+            	   }
                } finally {
                   fis.close();
                }
