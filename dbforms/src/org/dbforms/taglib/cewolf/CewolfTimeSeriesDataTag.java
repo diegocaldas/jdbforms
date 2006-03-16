@@ -44,63 +44,53 @@ import org.jfree.data.xy.XYDataset;
 
 import org.jfree.data.time.Millisecond;
 import org.jfree.data.time.TimeSeries;
-import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.time.TimeSeriesDataItem;
+import org.jfree.data.time.TimeSeriesCollection;
 
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.xy.AbstractXYItemRenderer;
+import org.jfree.chart.renderer.xy.XYItemRenderer;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.dbforms.taglib.AbstractDbBaseHandlerTag;
-import org.dbforms.util.CewolfDatasetProducer;
+import org.dbforms.util.ReflectionUtil;
 import org.dbforms.util.Util;
 import org.dbforms.config.ResultSetVector;
-
 /**
- * Tag &lt;producer&gt; which defines a DatasetProducer.
  * 
- * @see DataTag
+ * This tag defines TimeSeries for cewolf
+ * 
  * @author Henner Kollmann
+ * 
  */
+
 public class CewolfTimeSeriesDataTag extends AbstractDbBaseHandlerTag implements
 		javax.servlet.jsp.tagext.TryCatchFinally {
 
 	private String timeField;
 
+	private String rendererclass;
+
 	private Vector fieldList = new Vector();
 
 	private Log logCat = LogFactory.getLog(this.getClass().getName());
 
-	public static class CewolfTimeSeriesData implements java.io.Serializable {
+	private static class CewolfTimeSeriesData implements java.io.Serializable {
+
 		private String title;
 		private String fieldName;
 		private Paint color;
-		private boolean showValueTicks;
-		private Paint commentColor;
-		private String commentFieldName;
 
-		protected CewolfTimeSeriesData(CewolfTimeSeriesFieldTag tag) {
+		public CewolfTimeSeriesData(CewolfTimeSeriesFieldTag tag) {
 			title = tag.getTitle();
 			fieldName = tag.getFieldName();
 			color = ColorHelper.getColor(tag.getColor());
-			showValueTicks = Util.getTrue(tag.getShowValueTicks());
-			commentColor = ColorHelper.getColor(tag.getCommentColor());
-			commentFieldName = tag.getFieldName();
 		}
 
 		public Paint getColor() {
 			return color;
-		}
-
-		public Paint getCommentColor() {
-			return commentColor;
-		}
-
-		public String getCommentFieldName() {
-			return commentFieldName;
 		}
 
 		public String getFieldName() {
@@ -111,40 +101,49 @@ public class CewolfTimeSeriesDataTag extends AbstractDbBaseHandlerTag implements
 			return title;
 		}
 
-		public boolean isShowValueTicks() {
-			return showValueTicks;
-		}
-
 	}
 
-	private class ChartProcessor implements ChartPostProcessor {
-		private XYDataset ds;
-
-		public ChartProcessor(XYDataset ds) {
-			this.ds = ds;
-		}
+	private class MyChartPostProcessor implements ChartPostProcessor {
 
 		public void processChart(Object chart, Map args) {
+		    XYItemRenderer rend = null;
 			XYPlot plot = ((JFreeChart) chart).getXYPlot();
 
-			if (plot.getRendererForDataset(ds) instanceof AbstractXYItemRenderer) {
-				AbstractXYItemRenderer renderer = (AbstractXYItemRenderer) plot.getRendererForDataset(ds);
+			XYDataset ds = (XYDataset) args.get("dataset");
+		    int rendererIndex = plot.getIndexOf(plot.getRendererForDataset(ds));
 
-				for (int i = 0; i < ds.getSeriesCount(); i++) {
-					Object o = ds.getSeriesKey(i);
-					CewolfTimeSeriesData series = (CewolfTimeSeriesData) args.get(o);
-					renderer.setSeriesPaint(i, series.getColor());
+			String rendClass = (String) args.get("renderer");
+			if (!Util.isNull(rendClass)) {
+				try {
+					rend = (XYItemRenderer) ReflectionUtil.newInstance(rendClass);
+					plot.setRenderer(rendererIndex, rend);
+				} catch (Exception e) {
+					logCat.error("::getEvent - cannot create the new renderer ["
+							+ rendClass + "]", e);
 				}
+			}
+
+			if (rend == null) {
+				rend = plot.getRenderer(rendererIndex);
+			}
+			
+			for (int i = 0; i < ds.getSeriesCount(); i++) {
+				Object o = ds.getSeriesKey(i);
+				CewolfTimeSeriesData series = (CewolfTimeSeriesData) args.get(o);
+				rend.setSeriesPaint(i, series.getColor());
 			}
 		}
 	};
 
-	public void addField(CewolfTimeSeriesData field) {
-		fieldList.add(field);
+	public void addField(CewolfTimeSeriesFieldTag field) {
+		fieldList.add(new CewolfTimeSeriesData(field));
 	}
 
 	public int doEndTag() throws JspException {
-		TimeSeriesCollection ds = new TimeSeriesCollection();
+
+		ResultSetVector rsv = getParentForm().getResultSetVector();
+
+		TimeSeriesCollection ds = new DbFormsTimeSeriesCollection(rsv);
 		HashMap map = new HashMap();
 
 		Iterator iterator = fieldList.iterator();
@@ -158,7 +157,6 @@ public class CewolfTimeSeriesDataTag extends AbstractDbBaseHandlerTag implements
 			map.put(title, field);
 		}
 
-		ResultSetVector rsv = getParentForm().getResultSetVector();
 		if (!ResultSetVector.isNull(rsv)) {
 			logCat.debug("rsv.size() = " + String.valueOf(rsv.size()));
 			rsv.moveFirst();
@@ -167,20 +165,23 @@ public class CewolfTimeSeriesDataTag extends AbstractDbBaseHandlerTag implements
 				if (o != null) {
 					Millisecond t = new Millisecond((Date) o);
 					for (int j = 0; j < ds.getSeriesCount(); j++) {
-						CewolfTimeSeriesData field = (CewolfTimeSeriesData) fieldList.elementAt(j);
-						Double d = (Double) rsv.getFieldAsObject(field.getFieldName());
+						CewolfTimeSeriesData field = (CewolfTimeSeriesData) fieldList
+								.elementAt(j);
+						Double d = (Double) rsv.getFieldAsObject(field
+								.getFieldName());
 						ds.getSeries(j).add(new TimeSeriesDataItem(t, d));
 					}
 				}
 				rsv.moveNext();
 			}
 		}
+		map.put("renderer", getRendererclass());
+		map.put("dataset", ds);
 
-		AbstractChartTag rt = (AbstractChartTag) PageUtils.findRoot(this,
-				pageContext);
-		rt.addChartPostProcessor(new ChartProcessor(ds), map);
+		AbstractChartTag rt = (AbstractChartTag) PageUtils.findRoot(this, pageContext);
+		rt.addChartPostProcessor(new MyChartPostProcessor(), map);
 
-		DatasetProducer dataProducer = new CewolfDatasetProducer(ds);
+		DatasetProducer dataProducer = new DbFormsDatasetProducer(ds);
 		DataAware dw = (DataAware) findAncestorWithClass(this, DataAware.class);
 		dw.setDataProductionConfig(dataProducer, new HashMap(), false);
 		return SKIP_BODY;
@@ -205,6 +206,14 @@ public class CewolfTimeSeriesDataTag extends AbstractDbBaseHandlerTag implements
 		super.doFinally();
 		timeField = null;
 		fieldList.clear();
+	}
+
+	public String getRendererclass() {
+		return rendererclass;
+	}
+
+	public void setRendererclass(String rendererclass) {
+		this.rendererclass = rendererclass;
 	}
 
 }

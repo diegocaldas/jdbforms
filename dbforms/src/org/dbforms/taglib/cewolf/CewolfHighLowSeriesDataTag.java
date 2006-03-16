@@ -37,15 +37,15 @@ import org.jfree.data.xy.OHLCDataItem;
 import org.jfree.data.xy.OHLCDataset;
 
 import org.dbforms.taglib.AbstractDbBaseHandlerTag;
-import org.dbforms.util.CewolfDatasetProducer;
 import org.dbforms.config.ResultSetVector;
 import org.dbforms.util.Util;
 
 /**
- * Tag &lt;producer&gt; which defines a DatasetProducer.
  * 
- * @see DataTag
+ * This tag defines a HighLow Series for use inside a cewolf timeseries
+ * 
  * @author Henner Kollmann
+ * 
  */
 public class CewolfHighLowSeriesDataTag extends AbstractDbBaseHandlerTag {
 
@@ -77,7 +77,7 @@ public class CewolfHighLowSeriesDataTag extends AbstractDbBaseHandlerTag {
 			ds.add(0, new OHLCDataItem(d, o, h, l, c, 0));
 		}
 
-		DatasetProducer dataProducer = new CewolfDatasetProducer(ds);
+		DatasetProducer dataProducer = new DbFormsDatasetProducer(ds);
 		DataAware dw = (DataAware) findAncestorWithClass(this, DataAware.class);
 		dw.setDataProductionConfig(dataProducer, new HashMap(), false);
 

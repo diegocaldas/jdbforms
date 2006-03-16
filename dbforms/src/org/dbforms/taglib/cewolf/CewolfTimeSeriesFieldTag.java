@@ -3,19 +3,31 @@
  * $Revision$
  * $Date$
  *
+ * DbForms - a Rapid Application Development Framework
+ * Copyright (C) 2001 Joachim Peer <joepeer@excite.com>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 package org.dbforms.taglib.cewolf;
 
 import javax.servlet.jsp.JspException;
 
 import org.dbforms.taglib.AbstractDbBaseHandlerTag;
-import org.dbforms.util.Util;
-
-import java.awt.Color;
-
 /**
  * 
- * This tag is a sub tag of DbTimeChart and describes a series for the chart.
+ * This tag is a sub tag of DbTimeChart and describes a single series for the chart.
  * 
  * @author Henner Kollmann
  * 
@@ -26,9 +38,6 @@ public class CewolfTimeSeriesFieldTag extends AbstractDbBaseHandlerTag
 	private String title;
 	private String fieldName;
 	private String color;
-	private String showValueTicks;
-	private String commentColor;
-	private String commentFieldName;
 
 
 	public void doFinally() {
@@ -36,16 +45,13 @@ public class CewolfTimeSeriesFieldTag extends AbstractDbBaseHandlerTag
 		title = null;
 		fieldName = null;
 		color = null;
-		showValueTicks = null;
-		commentColor = null;
-		commentFieldName = null;
 	}
 
 	public int doStartTag() throws JspException {
 		if (getParent() != null
 				&& getParent() instanceof CewolfTimeSeriesDataTag) {
 			CewolfTimeSeriesDataTag p = (CewolfTimeSeriesDataTag) getParent();	
-			p.addField(new CewolfTimeSeriesDataTag.CewolfTimeSeriesData(this));
+			p.addField(this);
 		} else {
 			throw new JspException(
 					"TimeSeries element must be placed inside a TimeChart element!");
@@ -95,79 +101,7 @@ public class CewolfTimeSeriesFieldTag extends AbstractDbBaseHandlerTag
 		this.color = color;
 	}
 
-	/**
-	 * @return
-	 */
-	public Color Color() {
-		return String2Color(color);
-	}
-
-	/**
-	 * @return
-	 */
-	public Color CommentColor() {
-		return String2Color(commentColor);
-	}
-
-	public void setShowValueTicks(String showValueTicks) {
-		this.showValueTicks = showValueTicks;
-	}
-
-	/**
-	 * @return
-	 */
-	public boolean hasShowValueTicks() {
-		return "true".equalsIgnoreCase(showValueTicks);
-	}
-
-	private Color String2Color(String color) {
-		Color res = null;
-		if (!Util.isNull(color)) {
-			String tok = color.trim();
-			try {
-				int radix = 10;
-				if (tok.charAt(0) == '#') {
-					radix = 16;
-					tok = tok.substring(1, tok.length());
-				}
-				res = new Color(Integer.parseInt(tok, radix));
-			} catch (NumberFormatException exp) {
-			}
-		}
-		return res;
-	}
-
-	/**
-	 * @return
-	 */
-	public String getCommentFieldName() {
-		return commentFieldName;
-	}
-
-	/**
-	 * @param string
-	 */
-	public void setCommentColor(String string) {
-		commentColor = string;
-	}
-
-	/**
-	 * @param string
-	 */
-	public void setCommentFieldName(String string) {
-		commentFieldName = string;
-	}
-
 	public String getColor() {
 		return color;
 	}
-
-	public String getCommentColor() {
-		return commentColor;
-	}
-
-	public String getShowValueTicks() {
-		return showValueTicks;
-	}
-
 }

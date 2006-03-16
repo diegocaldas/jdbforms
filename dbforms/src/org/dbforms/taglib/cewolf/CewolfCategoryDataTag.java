@@ -33,14 +33,15 @@ import de.laures.cewolf.DatasetProducer;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 import org.dbforms.taglib.AbstractDbBaseHandlerTag;
-import org.dbforms.util.CewolfDatasetProducer;
 import org.dbforms.config.ResultSetVector;
-
-/** 
- * Tag &lt;producer&gt; which defines a DatasetProducer.
- * @see DataTag
- * @author  Henner Kollmann 
+/**
+ * 
+ * This tag defines CategoryData for cewolf
+ * 
+ * @author Henner Kollmann
+ * 
  */
+
 public class CewolfCategoryDataTag extends AbstractDbBaseHandlerTag  {
 	private String categoryField;
 	private String dataField;
@@ -70,7 +71,7 @@ public class CewolfCategoryDataTag extends AbstractDbBaseHandlerTag  {
     		   s = new String();	
     		ds.addValue(n, s, c);
     	}
-    	DatasetProducer dataProducer = new CewolfDatasetProducer(ds);
+    	DatasetProducer dataProducer = new DbFormsDatasetProducer(ds);
         DataAware dw = (DataAware) findAncestorWithClass(this, DataAware.class);
         dw.setDataProductionConfig(dataProducer, new HashMap(), false);
         return SKIP_BODY;

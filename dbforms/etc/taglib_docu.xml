@@ -11102,6 +11102,15 @@ v				<tagclass>org.dbforms.taglib.cewolf.CewolfHighLowSeriesDataTag</tagclass>
 					   This field must be a datetime value!
 					</info>
 				</attribute>
+            <attribute>
+               <name>rendererclass</name>
+               <required>false</required>
+               <rtexprvalue>true</rtexprvalue>
+               <info>
+                  classname of an specialized XYItemRenderer. During construcution this renderer will be 
+                  created and used instead of the cewolf default renderer.
+                </info>
+            </attribute>
 			</tag>
 			<!-- **************************** CewolftimeSeriesField tag ***********************************-->
 			<tag>
@@ -11129,14 +11138,6 @@ v				<tagclass>org.dbforms.taglib.cewolf.CewolfHighLowSeriesDataTag</tagclass>
 						The title for the series
 					</info>
 				</attribute>
-				   <attribute>
-				     <name>showValueTicks</name>
-				     <required>false</required>
-				     <rtexprvalue>true</rtexprvalue>
-					<info>
-						true if ticks should be shown
-					</info>
-				   </attribute>
 				   <attribute>
 					     <name>color</name>
 					    <required>false</required>

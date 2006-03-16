@@ -33,15 +33,16 @@ import de.laures.cewolf.DatasetProducer;
 import org.jfree.data.general.DefaultPieDataset;
 
 import org.dbforms.taglib.AbstractDbBaseHandlerTag;
-import org.dbforms.util.CewolfDatasetProducer;
 import org.dbforms.config.ResultSetVector;
 
 /**
- * Tag &lt;producer&gt; which defines a DatasetProducer.
  * 
- * @see DataTag
+ * This tag defines PieData for cewolf
+ * 
  * @author Henner Kollmann
+ * 
  */
+
 public class CewolfPieDataTag extends AbstractDbBaseHandlerTag {
 	private String categoryField;
 
@@ -56,7 +57,7 @@ public class CewolfPieDataTag extends AbstractDbBaseHandlerTag {
 			Number n = (Number) rsv.getFieldAsObject(i, getDataField());
 			ds.setValue(c, n);
 		}
-		DatasetProducer dataProducer = new CewolfDatasetProducer(ds);
+		DatasetProducer dataProducer = new DbFormsDatasetProducer(ds);
 		DataAware dw = (DataAware) findAncestorWithClass(this, DataAware.class);
 		dw.setDataProductionConfig(dataProducer, new HashMap(), false);
 		return SKIP_BODY;
