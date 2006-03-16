@@ -92,7 +92,7 @@ public class HasRecordsTag extends AbstractDbBaseHandlerTag
          // 20060117-David Horkoff: Add a check to avoid nullvalue exceptions.
          //
     	 int rsvSize = 0;
-    	 if (!ResultSetVector.isNull(getParentForm().getResultSetVector())) {
+    	 if ((getParentForm() != null) && !ResultSetVector.isNull(getParentForm().getResultSetVector())) {
     		rsvSize = getParentForm()
                           .getResultSetVector()
                           .size();
