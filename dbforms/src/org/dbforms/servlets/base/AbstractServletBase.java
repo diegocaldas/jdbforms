@@ -110,14 +110,13 @@ public abstract class AbstractServletBase extends HttpServlet {
       // #fixme taglib needed for convenient access to ParseUtil wrapper methods
       String contentType = request.getContentType();
 
-      if ((contentType != null) && contentType.startsWith("multipart")) {
+      if (!Util.isNull(contentType) && contentType.startsWith("multipart")) {
          try {
             MultipartRequest multipartRequest = new MultipartRequest(request, maxUploadSize);
             request.setAttribute("multipartRequest", multipartRequest);
          } catch (IOException ioe) {
             logCat.error("::process - check if uploaded file(s) exceeded allowed size", ioe);
             sendErrorMessage("Check if uploaded file(s) exceeded allowed size.", response);
-
             return;
          }
       }
@@ -134,10 +133,6 @@ public abstract class AbstractServletBase extends HttpServlet {
     */
    abstract protected void process(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException;
 
-   // if existing and valid, override default maxUploadSize, which determinates
-   // how
-   // big the http/multipart uploads may get
-   String maxUploadSizeStr = this.getServletConfig().getInitParameter("maxUploadSize");
 
    /**
     * Initialize this servlet.
@@ -146,8 +141,11 @@ public abstract class AbstractServletBase extends HttpServlet {
     *               if the initialization fails
     */
    public void init() throws ServletException {
-      super.init();
-      if (maxUploadSizeStr != null) {
+      // if existing and valid, override default maxUploadSize, which determinates
+      // how
+      // big the http/multipart uploads may get
+      String maxUploadSizeStr = this.getServletConfig().getInitParameter("maxUploadSize");
+      if (!Util.isNull(maxUploadSizeStr)) {
          try {
             this.maxUploadSize = Integer.parseInt(maxUploadSizeStr);
          } catch (NumberFormatException nfe) {
