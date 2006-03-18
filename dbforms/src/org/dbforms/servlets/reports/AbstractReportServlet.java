@@ -28,6 +28,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.dbforms.servlets.base.AbstractServletBase;
+
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.ResultSetVector;
@@ -53,7 +55,6 @@ import java.util.Vector;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.PageContext;
@@ -63,7 +64,7 @@ import javax.servlet.jsp.PageContext;
  * 
  * @author Henner Kollmann
  */
-public abstract class AbstractReportServlet extends HttpServlet {
+public abstract class AbstractReportServlet extends AbstractServletBase {
 
 	private static Log logCat = LogFactory.getLog(AbstractReportServlet.class
 			.getName());
@@ -73,41 +74,6 @@ public abstract class AbstractReportServlet extends HttpServlet {
 
 	private String[] reportdirs;
 
-	/**
-	 * Basic servlet method, answers requests from the browser.
-	 * 
-	 * @param request
-	 *            HTTPServletRequest
-	 * @param response
-	 *            HTTPServletResponse
-	 * 
-	 * @throws ServletException
-	 *             if there is a servlet problem.
-	 * @throws IOException
-	 *             if there is an I/O problem.
-	 */
-	public final void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		process(request, response);
-	}
-
-	/**
-	 * Basic servlet method, answers requests fromt the browser.
-	 * 
-	 * @param request
-	 *            HTTPServletRequest
-	 * @param response
-	 *            HTTPServletResponse
-	 * 
-	 * @throws ServletException
-	 *             if there is a servlet problem.
-	 * @throws IOException
-	 *             if there is an I/O problem.
-	 */
-	public final void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		process(request, response);
-	}
 
 	/**
 	 * Initialize this servlet.
@@ -116,7 +82,8 @@ public abstract class AbstractReportServlet extends HttpServlet {
 	 *                if we cannot configure ourselves correctly
 	 */
 	public void init() throws ServletException {
-		String value = getServletConfig().getInitParameter(REPORTCONFIGDIR);
+		super.init();
+      String value = getServletConfig().getInitParameter(REPORTCONFIGDIR);
 		if (value == null) {
 			value = "WEB-INF/reports/";
 		}

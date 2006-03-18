@@ -26,6 +26,8 @@ package org.dbforms.servlets;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.dbforms.servlets.base.AbstractServletBase;
+
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.Field;
@@ -47,7 +49,6 @@ import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -56,7 +57,7 @@ import javax.servlet.http.HttpServletResponse;
  * 
  * @author joe peer
  */
-public class FileServlet extends HttpServlet {
+public class FileServlet extends AbstractServletBase {
 	// logging category for this class
 	private static Log logCat = LogFactory.getLog(FileServlet.class.getName());
 
@@ -73,7 +74,7 @@ public class FileServlet extends HttpServlet {
 	 * @exception IOException
 	 *                Description of the Exception
 	 */
-	public void doGet(HttpServletRequest request, HttpServletResponse response)
+	public void process(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
 		// take Config-Object from application context - this object should have
@@ -175,24 +176,6 @@ public class FileServlet extends HttpServlet {
 		} catch (SQLException sqle) {
 			logCat.error("::doGet - SQL exception", sqle);
 		}
-	}
-
-	/**
-	 * Process the HTTP Post request
-	 * 
-	 * @param request
-	 *            Description of the Parameter
-	 * @param response
-	 *            Description of the Parameter
-	 * 
-	 * @exception ServletException
-	 *                Description of the Exception
-	 * @exception IOException
-	 *                Description of the Exception
-	 */
-	public void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		doGet(request, response);
 	}
 
 	/**

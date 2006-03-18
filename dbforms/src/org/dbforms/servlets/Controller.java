@@ -26,6 +26,8 @@ package org.dbforms.servlets;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.dbforms.servlets.base.AbstractServletBase;
+
 import org.dbforms.config.DbFormsConfig;
 import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.config.MultipleValidationException;
@@ -35,8 +37,6 @@ import org.dbforms.event.AbstractDatabaseEvent;
 import org.dbforms.event.EventEngine;
 import org.dbforms.event.AbstractWebEvent;
 
-import org.dbforms.util.MessageResources;
-import org.dbforms.util.MultipartRequest;
 import org.dbforms.util.ParseUtil;
 import org.dbforms.util.SqlUtil;
 import org.dbforms.util.Util;
@@ -44,18 +44,15 @@ import org.dbforms.util.Util;
 import org.dbforms.validation.ValidatorConstants;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
 import java.util.Enumeration;
 import java.util.Hashtable;
-import java.util.Locale;
 import java.util.Vector;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -69,43 +66,10 @@ import javax.servlet.http.HttpSession;
  *
  * @author Joe Peer
  */
-public class Controller extends HttpServlet {
+public class Controller extends AbstractServletBase {
+
    /** logging category for this class */
-   private static Log logCat = LogFactory.getLog(Controller.class.getName());
-
-   /** 100KB default upload size */
-   private int maxUploadSize = 102400;
-
-   /**
-    * Process an HTTP "GET" request.
-    *
-    * @param request The servlet request we are processing
-    * @param response The servlet response we are creating
-    *
-    * @exception IOException if an input/output error occurs
-    * @exception ServletException if a servlet exception occurs
-    */
-   public void doGet(HttpServletRequest  request,
-                     HttpServletResponse response)
-              throws IOException, ServletException {
-      process(request, response);
-   }
-
-
-   /**
-    * Process an HTTP "POST" request.
-    *
-    * @param request The servlet request we are processing
-    * @param response The servlet response we are creating
-    *
-    * @exception IOException if an input/output error occurs
-    * @exception ServletException if a servlet exception occurs
-    */
-   public void doPost(HttpServletRequest  request,
-                      HttpServletResponse response)
-               throws IOException, ServletException {
-      process(request, response);
-   }
+   private static Log logCat        = LogFactory.getLog(Controller.class.getName());
 
 
    /**
@@ -114,18 +78,7 @@ public class Controller extends HttpServlet {
     * @exception ServletException if the initialization fails
     */
    public void init() throws ServletException {
-      // if existing and valid, override default maxUploadSize, which determinates how
-      // big the http/multipart uploads may get
-      String maxUploadSizeStr = this.getServletConfig()
-                                    .getInitParameter("maxUploadSize");
-
-      if (maxUploadSizeStr != null) {
-         try {
-            this.maxUploadSize = Integer.parseInt(maxUploadSizeStr);
-         } catch (NumberFormatException nfe) {
-            logCat.error("maxUploadSize not a valid number => using default.");
-         }
-      }
+      super.init();
    }
 
 
@@ -224,12 +177,14 @@ public class Controller extends HttpServlet {
     * @throws IOException
     * @throws ServletException
     */
-   private void process(HttpServletRequest  request,
+   protected void process(HttpServletRequest  request,
                         HttpServletResponse response)
                  throws IOException, ServletException {
+
       HttpSession session = request.getSession(true);
       logCat.debug("session timeout: " + session.getMaxInactiveInterval());
-
+      
+      
       // take Config-Object from application context - this object should have been
       // initalized by Config-Servlet on Webapp/server-startup!
       DbFormsConfig config = null;
@@ -242,35 +197,8 @@ public class Controller extends HttpServlet {
          throw new ServletException(e);
       }
 
-      // create RFC-1867 data wrapper for the case the form was sent in multipart mode
-      // this is needed because common HttpServletRequestImpl - classes do not support it
-      // the whole application has to access Request via the "ParseUtil" class
-      // this is also true for jsp files written by the user
-      // #fixme taglib needed for convenient access to ParseUtil wrapper methods
+
       Hashtable connections = new Hashtable();
-      String    contentType = request.getContentType();
-
-      // Verify if Locale have been setted in session with "LOCALE_KEY"
-      // if not, take the request.getLocale() as default and put it in session
-      // Verify if Locale have been setted in session with "LOCALE_KEY"
-      // if not, take the request.getLocale() as default and put it in session
-      processLocale(request);
-
-      if ((contentType != null) && contentType.startsWith("multipart")) {
-         try {
-            MultipartRequest multipartRequest = new MultipartRequest(request,
-                                                                     maxUploadSize);
-            request.setAttribute("multipartRequest", multipartRequest);
-         } catch (IOException ioe) {
-            logCat.error("::process - check if uploaded file(s) exceeded allowed size",
-                         ioe);
-            sendErrorMessage("Check if uploaded file(s) exceeded allowed size.",
-                             response);
-
-            return;
-         }
-      }
-
       Connection con    = null;
       AbstractWebEvent   e      = null;
       Vector     errors = new Vector();
@@ -436,26 +364,6 @@ public class Controller extends HttpServlet {
    }
 
 
-   /**
-    * Set the default locale
-    *
-    * @param request the request object
-    */
-   private void processLocale(HttpServletRequest request) {
-      String lang    = ParseUtil.getParameter(request, "lang");
-      String country = ParseUtil.getParameter(request, "country", "");
-      Locale locale  = null;
-
-      if (!Util.isNull(lang)) {
-         locale = new Locale(lang, country);
-      } else if (MessageResources.getLocale(request) == null) {
-         MessageResources.setLocale(request, request.getLocale());
-      }
-
-      if (locale != null) {
-         MessageResources.setLocale(request, locale);
-      }
-   }
 
 
    /**
@@ -484,23 +392,4 @@ public class Controller extends HttpServlet {
    }
 
 
-   /**
-    * Send error messages to the servlet's output stream
-    *
-    * @param message the message to display
-    * @param response the response object
-    */
-   private void sendErrorMessage(String              message,
-                                 HttpServletResponse response) {
-      try {
-         PrintWriter out = response.getWriter();
-
-         response.setContentType("text/html");
-         out.println("<html><body><h1>ERROR:</h1><p>");
-         out.println(message);
-         out.println("</p></body></html>");
-      } catch (IOException ioe) {
-         logCat.error("::sendErrorMessage - senderror message crashed", ioe);
-      }
-   }
 }

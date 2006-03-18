@@ -48,7 +48,7 @@
 	<classpathentry kind="lib" path="dependend/httpunit-1.5.4.jar"/>
 	<classpathentry kind="lib" path="dependend/cewolf-1.0.jar"/>
 	<classpathentry kind="lib" path="dependend/jcommon-1.0.0.jar"/>
-	<classpathentry sourcepath="D:/Projekte/webapps/jfreechart-1.0.0" kind="lib" path="dependend/jfreechart-1.0.0.jar"/>
+	<classpathentry kind="lib" path="dependend/jfreechart-1.0.0.jar"/>
 	<classpathentry sourcepath="D:/Projekte/webapps/commons-lang-2.1-src.zip" kind="lib" path="dependend/commons-lang-2.1.jar"/>
 	<classpathentry kind="lib" path="dependend/commons-collections-3.1.jar"/>
 	<classpathentry kind="output" path="examples/bookstore/WEB-INF/classes"/>
