@@ -85,6 +85,18 @@ public class MultipartRequest {
    //private File dir;
    private Hashtable parameters = new Hashtable(); // name - Vector of values
 
+   private String fileName2SystemFileName(String filename) {
+      String filenm = "";
+      if ('/' != File.separatorChar) {
+         filenm = filename.replace('/', File.separatorChar);
+      }
+      if ('\\' != File.separatorChar) {
+         filenm = filename.replace('\\', File.separatorChar);
+      }
+      return filenm;
+   }
+
+
    /**
     * Constructs a new MultipartRequest to handle the specified request,
     * {saving any uploaded files to the given directory}, and limiting the
@@ -144,10 +156,9 @@ public class MultipartRequest {
                String fileName = item.getName();
 
                if (!Util.isNull(fileName)) {
-                  File f = new File(fileName);
                   // 2004-08-05-HKK/Dziugas Baltrunas: 
                   // FileItem always returns the full pathname!
-                  fileName = FileUtil.filename(f.getName());
+                  fileName = FileUtil.filename(fileName2SystemFileName(fileName));
 
                   // The part actually contained a file
                   // #changes by joe peer:
