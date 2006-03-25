@@ -40,7 +40,7 @@ import javax.servlet.jsp.JspException;
  * example:
  * </p>
  * &lt;input type="hidden" name="searchalgo_0_1" value="weakEnd"/&gt; &lt;input
- * type="hidden" name="searchmode_0_1" value="AND"/&gt; &lt;input type="input"
+ * type="hidden" name="searchmode_0_1" value="AND"/&gt; &lt;input type="text"
  * name="search_0_1"/&gt; searchalgo and searchmode are set by parameter.
  *
  * @author Henner Kollmann
@@ -104,7 +104,7 @@ public class DbSearchCheckBoxTag extends DbSearchTag
          /*
                             <input type="hidden" name="searchalgo_0_1" value="weakEnd"/>
                             <input type="hidden" name="searchmode_0_1" value="AND"/>
-                            <input type="input" name="search_0_1"/>
+                            <input type="text" name="search_0_1"/>
          */
          StringBuffer tagBuf = new StringBuffer();
 

@@ -39,7 +39,7 @@ import javax.servlet.jsp.*;
  * example:
  * </p>
  * &lt;input type="hidden" name="searchalgo_0_1" value="weakEnd"/&gt; &lt;input
- * type="hidden" name="searchmode_0_1" value="AND"/&gt; &lt;input type="input"
+ * type="hidden" name="searchmode_0_1" value="AND"/&gt; &lt;input type="text"
  * name="search_0_1"/&gt; searchalgo and searchmode are set by parameter.
  * 
  * @author Henner Kollmann
@@ -128,7 +128,7 @@ public class DbSearchTag extends AbstractDbBaseHandlerTag implements
 			/*
 			 * <input type="hidden" name="searchalgo_0_1" value="weakEnd"/>
 			 * <input type="hidden" name="searchmode_0_1" value="AND"/> <input
-			 * type="input" name="search_0_1"/>
+			 * type="text" name="search_0_1"/>
 			 */
 			HttpServletRequest request = (HttpServletRequest) pageContext
 					.getRequest();
@@ -145,7 +145,7 @@ public class DbSearchTag extends AbstractDbBaseHandlerTag implements
 			if (Util.getTrue(this.getHidden())) {
 				tagBuf.append("<input type=\"hidden\" name=\"");
 			} else {
-				tagBuf.append("<input type=\"input\" name=\"");
+				tagBuf.append("<input type=\"text\" name=\"");
 			}
 
 			tagBuf.append(paramNameBuf.toString());
