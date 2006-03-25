@@ -237,7 +237,9 @@ public class Util {
 			buf.append(String.valueOf(port));
 		}
 		buf.append(request.getContextPath());
-		buf.append("/");
+		if (buf.charAt(buf.length() - 1) != '/') { 
+		   buf.append("/");
+		}
 		return buf.toString();
 	}
 
