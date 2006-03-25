@@ -1315,8 +1315,12 @@ public class DbFormTag extends AbstractScriptHandlerTag implements
 						&& (this.getAction().trim().length() > 0)) {
 					tagBuf.append(this.getAction());
 				} else {
-					tagBuf.append(response.encodeURL(request.getContextPath()
-							+ "/servlet/control"));
+					String s = "";
+					if (!"/".equals(request.getContextPath())) {
+						s = s + request.getContextPath();
+					}
+					s = s + "/servlet/control";
+					tagBuf.append(response.encodeURL(s));
 				}
 
 				tagBuf.append("\"");
@@ -2135,15 +2139,19 @@ public class DbFormTag extends AbstractScriptHandlerTag implements
 		String reqSource = (String) request.getAttribute("dbforms.source");
 
 		// if not set, everything works as usual
-		if (reqSource == null) {
-			tagBuf.append(request.getRequestURI());
+		if (Util.isNull(reqSource)) {
+			String s = request.getRequestURI();
+			if (s.startsWith("//")) {
+				s = s.substring(1);
+			}
+			tagBuf.append(s);
 		}
 		// if set, we use this value instead of getRequestURI()
 		else {
 			tagBuf.append(reqSource);
 		}
 
-		if (request.getQueryString() != null) {
+		if (!Util.isNull(request.getQueryString())) {
 			tagBuf.append("?").append(request.getQueryString());
 		}
 
