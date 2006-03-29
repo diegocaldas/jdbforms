@@ -42,71 +42,55 @@
 <name>name</name>
 <required>false</required>
 <rtexprvalue>false</rtexprvalue>
-<description>
-						the name of this dbform tag
-						
+<description>the name of this dbform tag
 							needed to reference the tag if tableName
 							attribute is calculated at runtime
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>tableName</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							the name of the table/view referenced by the
 							dbform
-						
-						not required if form is empty!
-					</description>
+						not required if form is empty!</description>
 </attribute>
 <attribute>
 <name>action</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							Override the servlet to which the dbform
 							should be submitted
-						
 						
 							Default is the org.dbforms.Controller
 							servlet
 						
-						
 							Useful when dbForms is used in read-only
 							mode.
-						
 						Example:
-						
 							&lt; db:dbform table="TABLE1"
 							followUp="this.jsp" action =
 							"/demo/servlet/com.abc.myServlet"&gt;
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>readOnly</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
-<description>
-						Rendering of read-only html widgets
-						
+<description>Rendering of read-only html widgets
 							WARNING: This is not terribly secure as it
 							becomes editable if javascript is disabled
 							in the browser. A More secure option is not
 							placing an update button on your form.
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>tableList</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							Allows a user to specify a list of tables to
 							select from
 							
@@ -119,8 +103,6 @@
 							part of the Select query. Hence the name:
 							table list.
 							
-						
-						
 							The conditions used to define the table
 							associations are specified in the
 							whereClause attribute.( along with other
@@ -132,60 +114,31 @@
 							Insert, Update, and Delete are not
 							supported.
 							
-						
-						
 							Example:
-							
-						
-						
 							
 								In dbForms-config.xml:
 							
-						
-						
-							
 								&lt;table name="AnyName"&gt;
-							
-						
-						
 							
 								&lt;field name="Table1.id"
 								fieldType="VARCHAR2"
 								isKey="true"/&gt;
 							
-						
-						
-							
 								&lt;field name="Table2.id"
 								fieldType="VARCHAR2"
 								isKey="true"/&gt;
-							
-						
-						
 							
 								&lt;field
 								name="Table1.fieldName"
 								fieldType="VARCHAR2"/&gt;
 							
-						
-						
-							
 								&lt;field
 								name="Table2.OtherField"
 								fieldType="NUMBER"/&gt;
 							
-						
-						
-							
 								&lt;/table&gt;
 							
-						
-						
-							
 								In jsp:
-							
-						
-						
 							
 								&lt;db:form
 								tableName="AnyName"
@@ -194,58 +147,40 @@
 							
 								followUp="next.jsp"
 							
-							
 								tableList="Table1,Table2"
-							
 							
 								whereClause="Where Table1.id =
 								Table2.id"&gt;
 							
-							
 								&lt;db:header/&gt;
 							
-						
-						
-							
 								&lt;db:body&gt;
-							
 							
 								&lt;db:textField
 								fieldName="Table1.fieldName"/&gt;
 							
-							
 								&lt;db:textField
 								fieldName="Table2.otherField"/&gt;
 							
-						
-						
-							
 								&lt;/db:body&gt;
-							
 							
 								&lt;db:footer/&gt;
 							
-							
 								&lt;/db:form&gt;
 							
-						
-						
 							Resulting Query:
-						
 						
 							SELECT Table1.id,
 							Table2.id,Table1.fieldName,Table2.otherField
 							FROM Table1,Table2 WHERE Table1.id =
 							Table2.id
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>searchFilterRequired</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							If set to true, the actual resultSet is
 							obtained only if search filters have been
 							specified, otherwise an empty resultset is
@@ -254,72 +189,50 @@
 							be much too large.
 
 							This feature validates the following:
-							
-								searchTag contains a value
-								
+							searchTag contains a value
 									the filter attribute (dbforms tag)
 									contains a value
-								
-								a filter tag is specified
-							
-						
-					</description>
+								a filter tag is specified</description>
 </attribute>
 <attribute>
 <name>maxRows</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							Determines how many times the body tag and
 							its sub-elements get executed (evaluated and
 							rendered):
 						
-						
-							
-								
 									maxRows = n =&gt; body gets executed n
 									times (with n elementOF N)
-								
 								
 									maxRows = "*" =&gt; body gets executed
 									for every row in the table (=&gt;
 									"endless" form)
-								
-							
-						
-						not required if form is empty!
-					</description>
+								not required if form is empty!</description>
 </attribute>
 <attribute>
 <name>whereClause</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							Replaces the filter attribute in situations
 							where the whereClause is more complex.
 							Allows a developer to specify a free form
 							conditional clause (where Clause + order +
 							etc).
 						
-						
 							Also, the whereClause can not be used with
 							orderBy or filter attributes. They will be
 							ignored. Order by should be used within the
 							whereClause instead.
-						
 						
 							If you use the whereClause searching and
 							sorting will not work!
 							
 								See the new &lt;filter&gt; tag to
 								search/sort with complex where clauses.
-							
-						
-						Example:
-						
-							
+							Example:
 								&lt;% StringBuffer whereClause = new
 								StringBuffer();
 								
@@ -328,17 +241,11 @@
 								FIELD2 NOT NULL ORDERBY FIELD7");
 								%&gt;
 							
-						
-						
-							
 								&lt;db:dbform table="TABLE1"
 								followUp="this.jsp"
 								whereClause =
 								"&lt;%whereClause.toString()%&gt;"&gt;
-							
-							
-						
-					</description>
+							</description>
 </attribute>
 <attribute>
 <name>formValidatorName</name>
@@ -392,7 +299,6 @@
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							this attribute is used to specify if dbForms
 							should generate a javascript method which
 							can be used by (javascript) developers for
@@ -400,21 +306,13 @@
 							By default, this attribute is set to
 							'false'.
 						
-						
 							Generated code example:
 						
-						
-							
 								&lt;SCRIPT
 								language="javascript"&gt;
 							
-						
-						
-							
 								&lt;!--
 							
-						
-						
 							var dbformFields = new Array();
 							
 							dbformFields["phone"] =
@@ -435,7 +333,6 @@
 							dbformFields["category"] =
 							"f_0_0@root_1";
 							
-							
 							function getDbFormFieldName(name){
 							
 							return dbformFields[name];
@@ -445,8 +342,7 @@
 							--&gt;
 							
 							&lt;/SCRIPT&gt;
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>redisplayFieldsOnError</name>
@@ -467,30 +363,24 @@
 <name>followUp</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
-<description>
-						site to be invoked after action
-						
+<description>site to be invoked after action
 							Note that buttons can override followUp (and
 							followUpOnError) settings defined in the
 							dbform tag
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>followUpOnError</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							site to be invoked after action, if error
 							occured on page
-						
 						
 							Note that buttons can override followUp (and
 							followUpOnError) settings defined in the
 							dbform tag
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>autoUpdate</name>
@@ -541,10 +431,8 @@
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							used in sub-form: field(s) in the main form
 							that is/are linked to this form
-						
 						
 							Should either be a key or set to
 							
@@ -553,19 +441,15 @@
 							in
 							
 								dbforms-config.xml
-							
-						
-					</description>
+							</description>
 </attribute>
 <attribute>
 <name>childField</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							used in sub-form: field(s) in this form that
 							is/are linked to the parent form
-						
 						
 							Should either be a key or set to
 							
@@ -574,27 +458,22 @@
 							in
 							
 								dbforms-config.xml
-							
-						
-					</description>
+							</description>
 </attribute>
 <attribute>
 <name>target</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							pendant to the html-target attribute in
 							html-form tag: the target frame to jump to
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>multipart</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							multipart
 							must
 							be set to "true" if the form
@@ -603,36 +482,22 @@
 							tags, orif it containts fields of BLOB or
 							DISKBLOB.
 						
-						
 							default is "false"
 							(multipart-support off)
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>orderBy</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							a SQL orderBy-CLAUSE (without the keyword
 							"ORDER BY")
-						
-						example:
-						
-							"id, name desc"
-							"id"
-							"id asc"
-							"firstname asc, lastname desc"
-						
-						important:
-						
-							
+						example:"id, name desc""id""id asc""firstname asc, lastname desc"important:
 								if you use a non-primary key, you MUST
 								specify sortable="true" within your
 								dbforms-config.xml file for the key you
 								want to sort by
-							
 							
 								if you do not specify it here, you may
 								define it globally in your
@@ -641,48 +506,31 @@
 								automatically takes the key-fields for
 								sorting.
 							
-							
 								remember field names are CASE SENSITIVE
 								in DbForms framework (at least in
 								current version)
-							
-						
-					</description>
+							</description>
 </attribute>
 <attribute>
 <name>filter</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							definition of a FILTER. Format:
 							Fieldname/Fielvalue pairs, seperated by , or
 							; symbol.
-						
-						Examples:
-						
-							filter="id=2"
-							filter="id=2;name=Hugo Berger"
-							
+						Examples:filter="id=2"filter="id=2;name=Hugo Berger"
 								filter="deptno=101,salery&gt;=30000,name~Peter"
 								
 									the ~ symbol is an aquivalant to the
 									SQL keyword "LIKE" used in SELECT
 									statements!
 								
-							
-						
-						
 							since version 0.9, you can use &lt;, &gt;
 							&lt;= and &gt;= operators, too!
 						
-						
-							
-								
 									&lt;db:dbform
 								
-							
-							
 								tableName="employee"
 								maxRows="*"
 								followUp="/employees.jsp"
@@ -690,75 +538,47 @@
 								filter
 								="deptno=101,salary&gt;=30000,name~Peter%"
 							
-							
 								...
-							
-							
 							
 								&lt;
 								/db:dbform
 								&gt;
-							
-						
-						Operator: Meaning: Example:
-						= Equals aField=value
-						
+							Operator: Meaning: Example:= Equals aField=value
 							&lt;&gt; Not Equal aField&lt;&gt;value
-						
-						&lt; Smaller then aField&lt;100
-						&gt; Greater then aField&gt;0
-						
+						&lt; Smaller then aField&lt;100&gt; Greater then aField&gt;0
 							&lt;= Smaller then or equal aField&lt;=100
 						
-						
 							&gt;= Greater then or equal aField&gt;=0
-						
-						~ Like aField~%P%
-						Since version 1.1.3pr1:
-						ISNULL is null aField ISNULL
-						
+						~ Like aField~%P%Since version 1.1.3pr1:ISNULL is null aField ISNULL
 							NOTISNULL is not null aField NOTISNULL
-						
 						
 							By default, all filter definitions are ANDed
 							together. If you wish to use OR, you may
 							prefix your filter definition with the '|'
 							symbol. (even better! - use the whereClause
 							attribute )
-						
 						Example:
-						
-							
 								aFieldVal=3, |anotherField&gt;3
-							
-						
-						
 							
 								would produce the following:
 							
-						
-						
-							
 								... where aFieldVal=3 OR
 								anotherField&gt;3
-							
-							
-						
-						filter will be overwritten by searching!
-					</description>
+							filter will be overwritten by searching!</description>
 </attribute>
 <attribute>
 <name>sqlFilter</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
-<description/>
+<description>
+                  a filter in sql syntax which will be added to the where clause
+               </description>
 </attribute>
 <attribute>
 <name>gotoPrefix</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							allows to define a prefix applied to request
 							parameters in order to provide
 							
@@ -767,25 +587,15 @@
 							
 							substitute the use of the more complicated
 							and not very convenient GotoButton-Tag!
-						
-						example:
-						
-							
-								if you define gotoPrefix="fv_"
-								
+						example:if you define gotoPrefix="fv_"
 									then you can call your jsp that way:
 									customers.jsp?fv_id=4
 								
-							
-						
-						
 							=&gt; DbForms fetches the value of fv_
 							id
 							which is "4" and then navigates to
 							the row where id is 4.
-						
-						this attribute was added in release 0.9
-					</description>
+						this attribute was added in release 0.9</description>
 </attribute>
 <attribute>
 <name>gotoHt</name>
@@ -793,16 +603,12 @@
 <rtexprvalue>true</rtexprvalue>
 <type>java.util.Hashtable</type>
 <description>
-						
 							allows to define a hashtable containing
 							fieldName / fieldValue combinations which
 							represent the valueof a key
-							
 							(which can consist of more than one field,
 							of course!)
-						
 						example:
-						
 							you could define a hashtable
 							"myGotoHash" and apply it to the
 							attribute
@@ -818,12 +624,9 @@
 								myGotoHash %&gt;" &gt; ... some code
 								...&lt;/db:form&gt;
 							
-						
-						
 							now, when a user calls aview.jsp?goto=234,
 							then DbForms will navigate thetable to the
 							row where id==234!
-						
 						
 							there are many other ways you can use this
 							facility. the only important thing is that
@@ -831,23 +634,19 @@
 							the key value(s) in the hashtables refer to
 							valid field names of the table.
 						
-						
 							BE SURE TO SPECIFY ALL YOUR KEYS OR
 							NAVIGATION WILL BE UNPREDICTABLE [ if you do
 							not know what all the values should be, use
 							a wildcard like:
 							myGotoHash.put("how_used","*");
 							and navigation will be to the first instance
-						
-						this attribute was added in release 0.9
-					</description>
+						this attribute was added in release 0.9</description>
 </attribute>
 <attribute>
 <name>localWebEvent</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							this attribute allows a JSP view developer
 							to trigger WebEvents(NavigationsEvents)on
 							the JSP.
@@ -856,18 +655,9 @@
 							attribute aims to make linkage between
 							dialogs easier.
 						
-						
 							currently, the available "local web
 							event"-commands are:
-						
-						
-							navFirst
-							navPrev
-							navNext
-							navLast
-							navNew
-						
-						
+						navFirstnavPrevnavNextnavLastnavNew
 							if a developer wants to show the last row of
 							a table, then she/he could apply the value
 							
@@ -875,31 +665,26 @@
 							that this attribute is evaluated in runtime,
 							
 							this gives additional flexibility
-						
-						this attribute was added in release 0.9
-					</description>
+						this attribute was added in release 0.9</description>
 </attribute>
 <attribute>
 <name>onSubmit</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							JavaScript event handler executed before the
 							form is submited. If the event handler
 							returns FALSE,
 							
 							the form will not be submitted. When the
 							result is TRUE, the form will be submitted
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>autocomplete</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							if the autocomplete value is specified then
 							the attribute is inserted in the form tag.
 							
@@ -915,8 +700,7 @@
 							
 							&lt;form name="dbforms" ...
 							autocomplete="any" ... &gt;
-						
-					</description>
+						</description>
 </attribute>
 <example>
 					this is the root element of a data manipulation form
@@ -933,7 +717,6 @@
 					within a dbform-tag
 				</description>
 <example>
-					
 						this tag renders a Header-tag. Itshould to be
 						nested within a dbform-tag.because this tag
 						
@@ -942,8 +725,7 @@
 						
 						but it gets only rendered at the FIRST
 						evalation-loop.
-					
-				</example>
+					</example>
 </tag>
 <!--*******************************************************************-->
 
@@ -970,9 +752,7 @@
 						set to "false"
 					</description>
 </attribute>
-<example>
-					the body grouping tag
-					
+<example>the body grouping tag
 						this tag renders a Body-tag. It should to be
 						nested within a dbform-tag.because this tag
 						
@@ -981,8 +761,7 @@
 						
 						AND it gets rendered in every evalation-loop (if
 						there exists data to be rendered)
-					
-				</example>
+					</example>
 </tag>
 <!--*******************************************************************-->
 
@@ -995,15 +774,13 @@
 					within a dbform-tag
 				</description>
 <example>
-					
 						this tag renders a Footer-tag. it should be
 						nested within a dbform-tag.because this tag is
 						nested within a dbform-tag it is invoked every
 						time the parent dbform-tag getsevaluated, but it
 						gets only rendered at the end of the last
 						evaluation-loop.
-					
-				</example>
+					</example>
 </tag>
 <!--*******************************************************************-->
 
@@ -1022,33 +799,27 @@
 <name>fieldName</name>
 <required>true</required>
 <rtexprvalue>true</rtexprvalue>
-<description>
-						name of the field this tag references to
-					</description>
+<description>name of the field this tag references to</description>
 </attribute>
 <attribute>
 <name>maxlength</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							Set a limit to the number of characters
 							visible
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>nullFieldValue</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							If the value (retrieved from the database)
 							is null, allow the user to replace the text
 							to display by a custom value. May be used in
 							conjunction with dbForm's I18N support.
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>pattern</name>
@@ -1084,12 +855,10 @@
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							The name of a formatting instance registered
 							previously by using the setCustomFormatter
 							tag
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>styleClass</name>
@@ -1118,12 +887,10 @@
 <tag-class>org.dbforms.taglib.DbDateLabelTag</tag-class>
 <body-content>empty</body-content>
 <description>
-					
 						label - a tag for date data PRESENTATION, NOT
 						data EDITING (=&gt; can never be used as input
 						field)
-					
-				</description>
+					</description>
 <attribute>
 <name>fieldName</name>
 <required>true</required>
@@ -1163,25 +930,21 @@
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							The name of a formatting instance registered
 							previously by using the setCustomFormatter
 							tag
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>nullFieldValue</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							If the value (retrieved from the database)
 							is null, allow the user to replace the text
 							to display by a custom value. May be used in
 							conjunction with dbForm's I18N support.
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>styleClass</name>
@@ -1211,70 +974,54 @@
 				</tag-class>
 <body-content>JSP</body-content>
 <description>
-					
 						label - a tag for data PRESENTATION, NOT data
 						EDITING (=&gt; can never be used as input field)
-					
-				</description>
+					</description>
 <attribute>
 <name>fieldName</name>
 <required>true</required>
 <rtexprvalue>true</rtexprvalue>
-<description>
-						name of the field this tag references to
-					</description>
+<description>name of the field this tag references to</description>
 </attribute>
 <attribute>
 <name>strict</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							if strict is true, value is set to empty
 							string if it's not found in the embedded
 							data. otherwise it's set to the formatted
 							field value. default is false, so that it
 							act's like before.
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>maxlength</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							Allows a developer to limit the amount of
 							characters displayed on screen. If the label
 							to display exceeds the limit, trim and
 							display '...'
-						
 						Example:
-						
-							
 								&lt;db:dataLabel
 								fieldName="ABC"
 								maxlength="10"&gt;
 							
-							
 								&lt;/db:dataLabel&gt;
-							
-							
-						
-					</description>
+							</description>
 </attribute>
 <attribute>
 <name>nullFieldValue</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							If the value (retrieved from the database)
 							is null, allow the user to replace the text
 							to display by a custom value. May be used in
 							conjunction with dbForm's I18N support.
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>styleClass</name>
@@ -1295,13 +1042,11 @@
 					</description>
 </attribute>
 <example>
-					
 						this tag renders a dabase-datadriven LABEL,
 						which is a passive element (it can't be changed
 						bythe user) - it is predestinated for use with
 						read-only data (i.e. primary keys you don't
 						wantthe user to change, etc)
-					
 					
 						so far it is equivalent to DbLabelTag.
 						
@@ -1313,18 +1058,14 @@
 						overheadof pushing and poping the jsp writer to
 						and off the stack)
 					
-					
 						The dataLabel tag contains an EmbeddedData tag
 						(TableData, QueryData, or StaticData) The
 						fieldName (defined in dataLabel) is used as a
 						lookup for an element in the embeddedData
 						collection.
 					
-					
 						Example:
 						
-					
-					
 						&lt;!We have an ID, we want to display the
 						Description -look it up in the Priorities table
 						--&gt;
@@ -1337,8 +1078,7 @@
 						Priorities"/&gt;
 						
 						&lt;/db:dataLabel&gt;
-					
-				</example>
+					</example>
 </tag>
 <!--*******************************************************************-->
 
@@ -1362,37 +1102,25 @@
 							JavaScript methods. Nota bene: Not supported
 							by all browser!
 						
-						
-							
 								Example:
-							
-						
-						
 							
 								&lt;db:textField
 								fieldName="FIELD1"
 								maxlength="15"
 								id="InputField1"/&gt;
-							
-							
-						
-					</description>
+							</description>
 </attribute>
 <attribute>
 <name>fieldName</name>
 <required>true</required>
 <rtexprvalue>true</rtexprvalue>
-<description>
-						name of the field this tag references to
-					</description>
+<description>name of the field this tag references to</description>
 </attribute>
 <attribute>
 <name>password</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
-<description>
-						visually encrypted input field
-					</description>
+<description>visually encrypted input field</description>
 </attribute>
 <attribute>
 <name>defaultValue</name>
@@ -1437,12 +1165,10 @@
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							The name of a formatting instance registered
 							previously by using the setCustomFormatter
 							tag
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>hidden</name>
@@ -1468,13 +1194,11 @@
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							If the value (retrieved from the database)
 							is null, allow the user to replace the text
 							to display by a custom value. May be used in
 							conjunction with dbForm's I18N support.
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>accessKey</name>
@@ -1497,15 +1221,12 @@
 <name>readOnly</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
-<description>
-						Rendering of read-only html widgets
-						
+<description>Rendering of read-only html widgets
 							WARNING: This is not terribly secure as it
 							becomes editable if javascript is disabled
 							in the browser. A More secure option is not
 							placing an update button on your form.
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>onBlur</name>
@@ -1717,9 +1438,7 @@
 <name>fieldName</name>
 <required>true</required>
 <rtexprvalue>true</rtexprvalue>
-<description>
-						name of the field this tag references to
-					</description>
+<description>name of the field this tag references to</description>
 </attribute>
 <attribute>
 <name>pattern</name>
@@ -1755,48 +1474,40 @@
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							The name of a formatting instance registered
 							previously by using the setCustomFormatter
 							tag
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>hidden</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							Determines if the text field should be
 							hidden or displayed.
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>nullFieldValue</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							if the value (retrieved from the database)
 							is null, allow the user to replace the text
 							to display by a custom value. May be used
 							inconjunction with dbForm's I18N support.
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>overrideValue</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							Defines the text field's default value. When
 							this attribute is set,the value retrieved
 							from the database is ignored.
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>accessKey</name>
@@ -1819,15 +1530,12 @@
 <name>readOnly</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
-<description>
-						Rendering of read-only html widgets
-						
+<description>Rendering of read-only html widgets
 							WARNING: This is not terribly secure as it
 							becomes editable if javascript is disabled
 							in the browser. A More secure option is not
 							placing an update button on your form.
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>onBlur</name>
@@ -2040,25 +1748,28 @@
 						manual for details.
 					</description>
 </attribute>
+<attribute>
+<name>classicCalendar</name>
+<required>false</required>
+<rtexprvalue>true</rtexprvalue>
+<description>
+						Determinate whether the classic javascript 
+						calendar should be used.[may
+						be deprecated soon]
+					</description>
+</attribute>
 <example>
-					
 						Example:
 						
 							&lt;dateField pattern="date"
 						
-					
-					
 						To set the pattern which data is displayed in
 						use a resource bundle (See the UsersGuide
 						chapter on Internationalization).
-					
 					Example of ApplicationResources.properties:
-					
 						dbforms.pattern.date=yyyy-MM-dd
 						dbforms.pattern.timestamp=yyyy-MM-dd HH:mm
-					
-
-				</example>
+					</example>
 </tag>
 <!--*******************************************************************-->
 
@@ -2079,9 +1790,7 @@
 <name>fieldName</name>
 <required>true</required>
 <rtexprvalue>true</rtexprvalue>
-<description>
-						name of the field this tag references to
-					</description>
+<description>name of the field this tag references to</description>
 </attribute>
 <attribute>
 <name>defaultValue</name>
@@ -2097,13 +1806,11 @@
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							If the value (retrieved from the database)
 							is null, allow the user to replace the text
 							to display by a custom value. May be used in
 							conjunction with dbForm's I18N support.
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>pattern</name>
@@ -2139,12 +1846,10 @@
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							The name of a formatting instance registered
 							previously by using the setCustomFormatter
 							tag
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>rows</name>
@@ -2165,27 +1870,21 @@
 <description>
 						may be:
 						
-							
 								"virtual" - text get wrapped optically
-							
 							
 								"phyiscal" - text get wrapped optically
 								and physically (line breaks)
-							
-						
-					</description>
+							</description>
 </attribute>
 <attribute>
 <name>overrideValue</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							Defines the textarea's default value. When
 							this attribute is set,the value retrieved
 							from the database is ignored.
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>renderBody</name>
@@ -2210,15 +1909,12 @@
 <name>readOnly</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
-<description>
-						Rendering of read-only html widgets
-						
+<description>Rendering of read-only html widgets
 							WARNING: This is not terribly secure as it
 							becomes editable if javascript is disabled
 							in the browser. A More secure option is not
 							placing an update button on your form.
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>onBlur</name>
@@ -2421,16 +2117,12 @@
 <required>true</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							name of the field this tag references to
 							
 							This tag is used to display
 							disk-blob-generated text fields which may,
 							or may not require scrolling.
-						
 						Example:
-						
-							
 								&lt;db:textAreaForBlobs fieldName =
 								"filePath"
 								
@@ -2446,15 +2138,12 @@
 								
 								&lt;/db:textAreaForBlobs&gt;
 							
-						
-						
 							Note:
 							
 							renderBody attribute must be set to true.
 							
 							fieldPath is of type DISKBLOB.
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>pattern</name>
@@ -2490,12 +2179,10 @@
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							The name of a formatting instance registered
 							previously by using the setCustomFormatter
 							tag
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>rows</name>
@@ -2516,27 +2203,21 @@
 <description>
 						may be:
 						
-							
 								"virtual" - text get wrapped optically
-							
 							
 								"phyiscal" - text get wrapped optically
 								and physically (line breaks)
-							
-						
-					</description>
+							</description>
 </attribute>
 <attribute>
 <name>overrideValue</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							Defines the textarea's default value. When
 							this attribute is set,the value retrieved
 							from the database is ignored.
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>renderBody</name>
@@ -2567,15 +2248,12 @@
 <name>readOnly</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
-<description>
-						Rendering of read-only html widgets
-						
+<description>Rendering of read-only html widgets
 							WARNING: This is not terribly secure as it
 							becomes editable if javascript is disabled
 							in the browser. A More secure option is not
 							placing an update button on your form.
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>onBlur</name>
@@ -2794,7 +2472,6 @@
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							specify a format to be used in concatenating
 							several display fields.
 							
@@ -2802,22 +2479,17 @@
 							fields are, by default, separated by a
 							comma.
 						
-						
 							The format attribute was strengthened to
 							make it similar to the Unix sprintf utility.
-							
 							
 								There is now a need to be type specific
 								with the attribute.
 							
-						
-						
 							For example,
 							
 							format="%s is about %.2f" would be
 							where your float (ie%.2f) would be truncated
 							to two decimals.
-							
 							
 								ONLY THE DISPLAY VALUE WILL BE TRUNCATED
 							
@@ -2827,10 +2499,7 @@
 							http://developer.java.sun.com/developer/technicalArticles/Programming/sprintf/
 							
 							or the javadocs
-							
-						
-						Example:
-						
+							Example:
 							&lt;db:tableData name="aQuery"
 							foreignTable="Cities"
 							visibleFields="city_id, city_name,
@@ -2842,9 +2511,7 @@
 							Can be used when city_id is an integer,
 							city_name and city_state are strings in your
 							database.
-						
-						Result -&gt; 014, Naples / Florida
-					</description>
+						Result -&gt; 014, Naples / Florida</description>
 </attribute>
 <attribute>
 <name>formatClass</name>
@@ -2895,16 +2562,12 @@
 					</description>
 </attribute>
 <example>
-					
 						this tag provides data to radio, checkbox or
 						select - tags. It may be used for cross
 						references to other tables.
 					
-					
 						Example:
 						
-					
-					
 						&lt;We want to display a drop down list with
 						data from the Cities table,
 						
@@ -2925,8 +2588,7 @@
 						storeField="city_id"/&gt;
 						
 						&lt;/db:select&gt;
-					
-				</example>
+					</example>
 </tag>
 <!--*******************************************************************-->
 
@@ -2966,7 +2628,6 @@
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							specify a format to be used in concatenating
 							several display fields.
 							
@@ -2974,22 +2635,17 @@
 							fields are, by default, separated by a
 							comma.
 						
-						
 							The format attribute was strengthened to
 							make it similar to the Unix sprintf utility.
-							
 							
 								There is now a need to be type specific
 								with the attribute.
 							
-						
-						
 							For example,
 							
 							format="%s is about %.2f" would be
 							where your float (ie%.2f) would be truncated
 							to two decimals.
-							
 							
 								ONLY THE DISPLAY VALUE WILL BE TRUNCATED
 							
@@ -2999,10 +2655,7 @@
 							http://developer.java.sun.com/developer/technicalArticles/Programming/sprintf/
 							
 							or the javadocs
-							
-						
-						Example:
-						
+							Example:
 							&lt;db:tableData name="aQuery"
 							foreignTable="Cities"
 							
@@ -3012,13 +2665,10 @@
 							Can be used when city_id is an integer,
 							city_name and city_state are strings in your
 							database.
-						
-						Result -&gt; 014, Naples / Florida
-						 
+						Result -&gt; 014, Naples / Florida 
 							if you need the second field of the table you can
 						    use the notation format="%2$s"!
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>formatClass</name>
@@ -3072,17 +2722,21 @@
 						filter tag in dbform
 					</description>
 </attribute>
+<attribute>
+<name>sqlFilter</name>
+<required>false</required>
+<rtexprvalue>true</rtexprvalue>
+<description>
+                  a filter in sql syntax which will be added to the where clause
+               </description>
+</attribute>
 <example>
-					
 						this tag provides data to radio, checkbox or
 						select - tags. It may be used for cross
 						references to other tables.
 					
-					
 						Example:
 						
-					
-					
 						&lt;We want to display a drop down list with
 						data from the Cities table,
 						
@@ -3103,8 +2757,7 @@
 						storeField="city_id"/&gt;
 						
 						&lt;/db:select&gt;
-					
-				</example>
+					</example>
 </tag>
 <!--*******************************************************************-->
 
@@ -3141,7 +2794,6 @@
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							specify a format to be used in concatenating
 							several display fields.
 							
@@ -3149,22 +2801,17 @@
 							fields are, by default, separated by a
 							comma.
 						
-						
 							The format attribute was strengthened to
 							make it similar to the Unix sprintf utility.
-							
 							
 								There is now a need to be type specific
 								with the attribute.
 							
-						
-						
 							For example,
 							
 							format="%s is about %.2f" would be
 							where your float (ie%.2f) would be truncated
 							to two decimals.
-							
 							
 								ONLY THE DISPLAY VALUE WILL BE TRUNCATED
 							
@@ -3174,10 +2821,7 @@
 							http://developer.java.sun.com/developer/technicalArticles/Programming/sprintf/
 							
 							or the javadocs
-							
-						
-						Example:
-						
+							Example:
 							&lt;db:tableData name="aQuery"
 							foreignTable="Cities"
 							visibleFields="city_id, city_name,
@@ -3189,9 +2833,7 @@
 							Can be used when city_id is an integer,
 							city_name and city_state are strings in your
 							database.
-						
-						Result -&gt; 014, Naples / Florida
-					</description>
+						Result -&gt; 014, Naples / Florida</description>
 </attribute>
 <attribute>
 <name>formatClass</name>
@@ -3213,10 +2855,7 @@
 <name>query</name>
 <required>true</required>
 <rtexprvalue>true</rtexprvalue>
-<description>
-						the query used to retrieve the data
-						
-							query building convention:
+<description>the query used to retrieve the dataquery building convention:
 							first column is the "key" column
 							for the radio/check/selectelements, all
 							other colums are just "data"
@@ -3231,8 +2870,7 @@
 							- "id" will be threaten as
 							key-value in select box, "name and
 							address will be shown in select box
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>disableCache</name>
@@ -3241,10 +2879,8 @@
 <description>Each query is executed independently</description>
 </attribute>
 <example>
-					
 						this tag provides data (provided by query
 						result) to radio, checkbox or select - tags.
-					
 					
 						this tag provides similar functionlaity like
 						"TableData", but as it allows
@@ -3254,7 +2890,6 @@
 						supports, you have muchmore flexibility using
 						this tag than using TableData (which is easier
 						to use, on the other hand)
-					
 					
 						&lt;!We want to display a drop down list with
 						data from the Cities table,
@@ -3271,10 +2906,7 @@
 						city_state from Cities"/&gt;
 						
 						&lt;/db:select&gt;
-						
-						
-					
-				</example>
+						</example>
 </tag>
 <!--*******************************************************************-->
 
@@ -3299,11 +2931,9 @@
 					</description>
 </attribute>
 <example>
-					
 						this tag provides data to radio, checkbox or
 						select - tags. This data is provided byembedded
 						"StaticDataItem"-elements
-					
 					
 						this tag provides similar functionlaity like
 						"TableData" or "QueryData"
@@ -3312,11 +2942,8 @@
 						in StaticDataItem comes from the jsp page (from
 						"StaticDataItem"-elements)
 					
-					
 						Example:
 						
-					
-					
 						&lt;!We want to display a drop down list with
 						days of the week,
 						
@@ -3352,8 +2979,7 @@
 						&lt;/db:staticData&gt;
 						
 						&lt;/db:select&gt;
-					
-				</example>
+					</example>
 </tag>
 <!--*******************************************************************-->
 
@@ -3426,8 +3052,7 @@
 						&lt;/db:getConnection&gt;
 						
 						&lt;!-- close connection --&gt;
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>dbConnectionName</name>
@@ -3456,13 +3081,11 @@
 <required>true</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							Attribute in page that will be used to
 							reference the connection object Allows other
 							tags (and/or java scriptlets) to obtain a
 							connection via the same settings as defined
 							in dbForms
-						
 						
 							Example: (using Jakarta dbTags)
 							
@@ -3479,9 +3102,7 @@
 							Value: &lt;c:out value="{row.field}" /&gt;
 							
 							&lt;/c:forEach&gt;
-							
-						
-					</description>
+							</description>
 </attribute>
 <attribute>
 <name>dbConnectionName</name>
@@ -3507,52 +3128,37 @@
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							Identification which can be used to
 							'pinpoint' dbForms fields for use in
 							JavaScript methods. Note: Not supported by
 							all browser!
 						
-						
-							
 								Example:
-							
-						
-						
 							
 								&lt;db:file fieldName="page"
 								id="file2"/&gt;
-							
-							
-						
-					</description>
+							</description>
 </attribute>
 <attribute>
 <name>fieldName</name>
 <required>true</required>
 <rtexprvalue>true</rtexprvalue>
-<description>
-						name of the field this tag references to
-					</description>
+<description>name of the field this tag references to</description>
 </attribute>
 <attribute>
 <name>accept</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							MIME(s)-types of the fields to be uploaded.
 							you may use wildcards as well
-						
 						
 							example: accept="text/*" for text, htm,
 							html,etc.
 						
-						
 							keep in mind that not all browsers support
 							MIME type filtering.
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>accessKey</name>
@@ -3575,15 +3181,12 @@
 <name>readOnly</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
-<description>
-						Rendering of read-only html widgets
-						
+<description>Rendering of read-only html widgets
 							WARNING: This is not terribly secure as it
 							becomes editable if javascript is disabled
 							in the browser. A More secure option is not
 							placing an update button on your form.
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>onBlur</name>
@@ -3769,13 +3372,11 @@
 					</description>
 </attribute>
 <example>
-					
 						version 0.7 provides a first implementation of
 						file upload support. It is far from being
 						completed. Improvementsin functionality and
 						performance can be expected.
-					
-				</example>
+					</example>
 </tag>
 <!--*******************************************************************-->
 
@@ -3792,35 +3393,24 @@
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							Identification which can be used to
 							'pinpoint' dbForms fields for use in
 							JavaScript methods. Note: Not supported by
 							all browser!
 						
-						
-							
 								Example:
-							
-						
-						
 							
 								&lt;db:radio
 								fieldName="FIELD3"
 								id="radioGroup"&gt;
 								&lt;/db:radio&gt;
-							
-							
-						
-					</description>
+							</description>
 </attribute>
 <attribute>
 <name>fieldName</name>
 <required>true</required>
 <rtexprvalue>true</rtexprvalue>
-<description>
-						name of the field this tag references to
-					</description>
+<description>name of the field this tag references to</description>
 </attribute>
 <attribute>
 <name>defaultValue</name>
@@ -3864,15 +3454,12 @@
 <name>readOnly</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
-<description>
-						Rendering of read-only html widgets
-						
+<description>Rendering of read-only html widgets
 							WARNING: This is not terribly secure as it
 							becomes editable if javascript is disabled
 							in the browser. A More secure option is not
 							placing an update button on your form.
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>onBlur</name>
@@ -4044,16 +3631,12 @@
 					</description>
 </attribute>
 <example>
-					
 						radio tag, may be a radio group as well and it
 						may contain nested DbData-Tags(like tableData,
 						queryData, staticData, ...)
 					
-					
 						Example:
 						
-					
-					
 						&lt;!We want to display a group of radio button,
 						use the value of fieldName 'timeframe' for the
 						default list selection. In INSERT mode, use the
@@ -4083,9 +3666,7 @@
 						&lt;/db:staticData&gt;
 						
 						&lt;/db:radio&gt;
-						
-					
-				</example>
+						</example>
 </tag>
 <!--*******************************************************************-->
 
@@ -4109,64 +3690,52 @@
 <name>fieldName</name>
 <required>true</required>
 <rtexprvalue>true</rtexprvalue>
-<description>
-						name of the field this tag references to
-					</description>
+<description>name of the field this tag references to</description>
 </attribute>
 <attribute>
 <name>value</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							value that should be used if checkbox is
 							checked
 						
-						
 							dbforms will compare this value with the
 							value in the database
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>novalue</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							value that should be used if check box is
 							not checked
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>checked</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							determinates if this checkbox should be
 							checked by default when form is in insert
 							mode
-						
 						
 							only needed if parentForm is in
 							"insert-mode", otherwise the
 							DbForms-Framework determinates whether a
 							checkbox should be selected or not.
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>force</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							If true value of checked attribute is always
 							used.
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>growDirection</name>
@@ -4201,15 +3770,12 @@
 <name>readOnly</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
-<description>
-						Rendering of read-only html widgets
-						
+<description>Rendering of read-only html widgets
 							WARNING: This is not terribly secure as it
 							becomes editable if javascript is disabled
 							in the browser. A More secure option is not
 							placing an update button on your form.
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>onBlur</name>
@@ -4381,16 +3947,11 @@
 					</description>
 </attribute>
 <example>
-					
 						radio tag, may be a radio group as well and it
 						may contain nested DbData-Tags(like tableData,
 						queryData, staticData, ...)
 					
-					
 						Example:
-						
-					
-					
 						
 							&lt;!We want to display a checkbox which,
 							when checked, is set to "yes"
@@ -4399,10 +3960,7 @@
 							&lt;db:checkbox fieldName="yesNo"
 							value="yes"
 							checked="true"/&gt;
-							
-						
-					
-				</example>
+							</example>
 </tag>
 <!--*******************************************************************-->
 
@@ -4419,42 +3977,29 @@
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							Identification which can be used to
 							'pinpoint' dbForms fields for use in
 							JavaScript methods. Note: Not supported by
 							all browser!
 						
-						
-							
 								Example:
-							
-						
-						
 							
 								&lt;db:select
 								fieldName="FIELD3"
 								id="mySelect"&gt;&lt;/db:select&gt;
-							
-							
-						
-					</description>
+							</description>
 </attribute>
 <attribute>
 <name>fieldName</name>
 <required>true</required>
 <rtexprvalue>true</rtexprvalue>
-<description>
-						name of the field this tag references to
-					</description>
+<description>name of the field this tag references to</description>
 </attribute>
 <attribute>
 <name>size</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
-<description>
-						how many rows should the select box have
-					</description>
+<description>how many rows should the select box have</description>
 </attribute>
 <attribute>
 <name>selectedIndex</name>
@@ -4474,15 +4019,12 @@
 <name>readOnly</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
-<description>
-						Rendering of read-only html widgets
-						
+<description>Rendering of read-only html widgets
 							WARNING: This is not terribly secure as it
 							becomes editable if javascript is disabled
 							in the browser. A More secure option is not
 							placing an update button on your form.
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>pattern</name>
@@ -4505,36 +4047,27 @@
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							Allows the possibility of adding an entry in
 							the select list which is independent of data
 							retrieved via tableData, queryData or
 						
-						
 							staticData. Arguments to this tag are as
 							follows:
 						
-						
-							
 								Key,Description,boolean (default
 								selection?)
-							
-						
-					</description>
+							</description>
 </attribute>
 <attribute>
 <name>ifEmptyItem</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							Item to be used if there is no embedded data
 							Arguments to this tag are as follows:
 							
 								Key,Description
-							
-						
-					</description>
+							</description>
 </attribute>
 <attribute>
 <name>ifEmptyDontDraw</name>
@@ -4722,18 +4255,14 @@
 					</description>
 </attribute>
 <example>
-					
 						select tag, may contain nested "DbData"-Tags (OR
 						"dboption" tags, which are not implemented yet)
 						
 						examples for DbData-Tags are tableData,
 						queryData, staticData
 					
-					
 						Example:
 						
-					
-					
 						&lt;!We want to display a drop down list with
 						data from the Cities table,
 						
@@ -4755,16 +4284,11 @@
 						
 						&lt;/db:select&gt;
 					
-					
 						info
 						
-							
 								"dboption"- tags are expected for the
 								next release
-							
-						
-					
-				</example>
+							</example>
 </tag>
 <!--*******************************************************************-->
 
@@ -4799,55 +4323,45 @@
 						
 							for backwards compatibility is the same as
 							destPos!
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>parentField</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							used if parentTable is different to
 							tableName: field(s) in the main form that
 							is/are linked to this form
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>childField</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							used if parentTable is different to
 							tableName: field(s) in this form that is/are
 							linked to the parent form
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>destPos</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							a value indicating the row to navigate to.
 							Position strings are used as request
 							parameters allowing the framework to keep
 							track of the position the user comes from or
 							goes to. This string is structured as
 							follows:
-						
 						fieldId : fieldValueLength : fieldValue
-						
 							It is important to note that if multiple
 							keys exist in the definition of the table,
 							your position string must includes values
 							for each key. (separated by dashes (-))
-						
 						Example:
-						
 							&lt;! Jump to another JSP, specify position
 							using multiple keys--&gt;
 							
@@ -4857,17 +4371,13 @@
 							
 							destTable="Sample"
 							destPos="1:6:widget-3:2:23"/&gt;
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>keyToDestPos</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
-<description>
-						a key indicating the row to navigate to.
-						Example:
-						
+<description>a key indicating the row to navigate to.Example:
 							&lt;! Jump to another JSP, specify position
 							through a key --&gt;
 							
@@ -4877,29 +4387,24 @@
 							
 							destTable="Sample"
 							keyToDestPos="k_1_1@root"/&gt;
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>keyToKeyToDestPos</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							a key to the key indicating the row to
 							navigate to. For each record in the
 							result-set, the associatedRadio tag
 							generates a key reference which can be used
 							to retrieve a position string.
-						
 						Example:
-						
 							&lt;!for each record, generate a key to the
 							position string --&gt;
 							
 							&lt;db:body&gt;&lt;db:associatedRadio
 							name="test"/&gt;&lt;/db:body&gt;
-							
 							
 							&lt;db:footer&gt;
 							
@@ -4933,20 +4438,15 @@
 					positionattribute will force DbForms to navigate to
 					this position within the destination-table
 					
-						
 							the 3 examles below produce all the same
 							result
 						
-					
-					
 						&lt;linkURL href="customer.jsp"
 						tableName="customer" position="103~2"/&gt;
-					
 					
 						&lt;linkURL href="customer.jsp"
 						tableName="customer" position="&lt;%= currentKey
 						%&gt;"/&gt;
-					
 					
 						&lt;linkURL href="customer.jsp"
 						tableName="customer"&gt;
@@ -4956,8 +4456,7 @@
 						&lt;position field="cust_lang" value="2"/&gt;
 						
 						&lt;/linkURL&gt;
-					
-				</example>
+					</example>
 </tag>
 <!--*******************************************************************-->
 
@@ -4995,13 +4494,9 @@
 						
 						&lt;/linkURL&gt;
 					
-					
-						
 							Attention: field to reference must be a key
 							field in the target table!
-						
-					
-				</example>
+						</example>
 </tag>
 <!--*******************************************************************-->
 
@@ -5024,49 +4519,34 @@
 <name>flavor</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
-<description>
-						styling of the button
+<description>styling of the button
 						choices:
-						
-							
-								standard
+						standard
 								a standard form button. if you use it
 								you should specify "caption"
-							
-							
-								image
+							image
 								an image-button. if you use it you
 								should specify "src" and
 								"alt"
-							
-							
-								modern
+							modern
 								a fancy button according to HTML4; dont
 								use if no all of your users have got
 								5th-generation browsers! You may embed
 								any code into this tag. (see docu or
 								www.w3.org)
-							
-						
-					</description>
+							</description>
 </attribute>
 <attribute>
 <name>showAlways</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
-<description>
-						
-							From v_1_1_3pr1:
-						
-						
+<description>From v_1_1_3pr1:
 							If false (which is the default setting), the
 							input button will be rendered
 							
 							only in insert mode -- such as through a
 							NavNewEvent.
 							
-						
-						
 							For previously generated list_and_single.jsp
 							or self coded pages,
 							
@@ -5075,13 +4555,11 @@
 							
 							unless it will be used in insert mode.
 						
-						
 							&lt;db:insertButton caption="Insert new
 							..."
 							styleClass="clsButtonStyle"
 							showAlways="true"/&gt;
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>caption</name>
@@ -5121,33 +4599,27 @@
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							site to be invoked after this button has
 							been clicked and the associated actions are
 							done
 						
-						
 							this attribute over-rules the
 							followUp-attribute of the parent form(s)!
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>followUpOnError</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							site to be invoked after this button has
 							been clicked and the associated actions are
 							done
 						
-						
 							this attribute over-rules the
 							followUpOnError-attribute of the parent
 							form(s)!
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>accessKey</name>
@@ -5326,13 +4798,10 @@
 						this element.
 					</description>
 </attribute>
-<example>
-					this tag renders an insert-button
-					
+<example>this tag renders an insert-button
 						the button is hidden if embedding form is not in
 						insert mode
-					
-				</example>
+					</example>
 </tag>
 <!--*******************************************************************-->
 
@@ -5355,31 +4824,22 @@
 <name>flavor</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
-<description>
-						styling of the button
+<description>styling of the button
 						choices:
-						
-							
-								standard
+						standard
 								a standard form button. if you use it
 								you should specify "caption"
-							
-							
-								image
+							image
 								an image-button. if you use it you
 								should specify "src" and
 								"alt"
-							
-							
-								modern
+							modern
 								a fancy button according to HTML4; dont
 								use if no all of your users have got
 								5th-generation browsers! You may embed
 								any code into this tag. (see docu or
 								www.w3.org)
-							
-						
-					</description>
+							</description>
 </attribute>
 <attribute>
 <name>caption</name>
@@ -5436,55 +4896,45 @@
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							site to be invoked after this button has
 							been clicked and the associated actions are
 							done
 						
-						
 							this attribute over-rules the
 							followUp-attribute of the parent form(s)!
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>followUpOnError</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							site to be invoked after this button has
 							been clicked and the associated actions are
 							done
 						
-						
 							this attribute over-rules the
 							followUpOnError-attribute of the parent
 							form(s)!
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>associatedRadio</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							determinates the unique name of a
 							data-row-marking "radio"-element
 							(this MUST extist on thesame JSP - page as
 							this button!
 						
-						
 							it should be used if this button should be
 							rendered only once and not for every rowthat
 							could/should be deleted
 						
-						
 							see "associatedRadio"-tag for further
 							information!
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>accessKey</name>
@@ -5663,13 +5113,10 @@
 						this element.
 					</description>
 </attribute>
-<example>
-					delete button
-					
+<example>delete button
 						the button is hidden if embedding form is in
 						insert mode
-					
-				</example>
+					</example>
 </tag>
 <!--*******************************************************************-->
 
@@ -5692,45 +5139,33 @@
 <name>flavor</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
-<description>
-						styling of the button
+<description>styling of the button
 						choices:
-						
-							
-								standard
+						standard
 								a standard form button. if you use it
 								you should specify "caption"
-							
-							
-								image
+							image
 								an image-button. if you use it you
 								should specify "src" and
 								"alt"
-							
-							
-								modern
+							modern
 								a fancy button according to HTML4; dont
 								use if no all of your users have got
 								5th-generation browsers! You may embed
 								any code into this tag. (see docu or
 								www.w3.org)
-							
-						
-					</description>
+							</description>
 </attribute>
 <attribute>
 <name>showAlways</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							If false (which is the default setting), the
 							update button will be rendered
 							
 							only if resultset contains data
-							
-						
-					</description>
+							</description>
 </attribute>
 <attribute>
 <name>caption</name>
@@ -5774,55 +5209,45 @@
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							site to be invoked after this button has
 							been clicked and the associated actions are
 							done
 						
-						
 							this attribute over-rules the
 							followUp-attribute of the parent form(s)!
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>followUpOnError</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							site to be invoked after this button has
 							been clicked and the associated actions are
 							done
 						
-						
 							this attribute over-rules the
 							followUpOnError-attribute of the parent
 							form(s)!
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>associatedRadio</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							determinates the unique name of a
 							data-row-marking "radio"-element
 							(this MUST extist on thesame JSP - page as
 							this button!
 						
-						
 							it should be used if this button should be
 							rendered only once and not for every rowthat
 							could/should be updated
 						
-						
 							see "associatedRadio"-tag for further
 							information!
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>accessKey</name>
@@ -6001,13 +5426,10 @@
 						this element.
 					</description>
 </attribute>
-<example>
-					update button
-					
+<example>update button
 						the button is hidden if embedding form is in
 						insert mode
-					
-				</example>
+					</example>
 </tag>
 <!--*******************************************************************-->
 
@@ -6033,31 +5455,22 @@
 <name>flavor</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
-<description>
-						styling of the button
+<description>styling of the button
 						choices:
-						
-							
-								standard
+						standard
 								a standard form button. if you use it
 								you should specify "caption"
-							
-							
-								image
+							image
 								an image-button. if you use it you
 								should specify "src" and
 								"alt"
-							
-							
-								modern
+							modern
 								a fancy button according to HTML4; dont
 								use if no all of your users have got
 								5th-generation browsers! You may embed
 								any code into this tag. (see docu or
 								www.w3.org)
-							
-						
-					</description>
+							</description>
 </attribute>
 <attribute>
 <name>caption</name>
@@ -6109,33 +5522,27 @@
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							site to be invoked after this button has
 							been clicked and the associated actions are
 							done
 						
-						
 							this attribute over-rules the
 							followUp-attribute of the parent form(s)!
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>followUpOnError</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							site to be invoked after this button has
 							been clicked and the associated actions are
 							done
 						
-						
 							this attribute over-rules the
 							followUpOnError-attribute of the parent
 							form(s)!
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>accessKey</name>
@@ -6321,9 +5728,7 @@
 <description>
 						Describes the behaviour of this button if it is
 						on the first page. possible values:
-						
-							nohtml: no HTML output
-							
+						nohtml: no HTML output
 								altimage: only an image with no
 								functionality is displayed. The src for
 								that image can be specified in the
@@ -6333,13 +5738,9 @@
 								specified by disabledImageWidth and
 								disabledImageHeight.
 							
-							
 								disabled (default): The image specified
 								in scr is used but disabled.
 							
-						
-
-						
 							example:
 							
 							&lt;db:navPrevButton
@@ -6358,8 +5759,7 @@
 							
 							&lt;img src="images/transparent.gif" alt="my
 							alt text" width="50" height="1" /&gt;
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>disabledImageSrc</name>
@@ -6411,31 +5811,22 @@
 <name>flavor</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
-<description>
-						styling of the button
+<description>styling of the button
 						choices:
-						
-							
-								standard
+						standard
 								a standard form button. if you use it
 								you should specify "caption"
-							
-							
-								image
+							image
 								an image-button. if you use it you
 								should specify "src" and
 								"alt"
-							
-							
-								modern
+							modern
 								a fancy button according to HTML4; dont
 								use if no all of your users have got
 								5th-generation browsers! You may embed
 								any code into this tag. (see docu or
 								www.w3.org)
-							
-						
-					</description>
+							</description>
 </attribute>
 <attribute>
 <name>caption</name>
@@ -6487,33 +5878,27 @@
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							site to be invoked after this button has
 							been clicked and the associated actions are
 							done
 						
-						
 							this attribute over-rules the
 							followUp-attribute of the parent form(s)!
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>followUpOnError</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							site to be invoked after this button has
 							been clicked and the associated actions are
 							done
 						
-						
 							this attribute over-rules the
 							followUpOnError-attribute of the parent
 							form(s)!
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>accessKey</name>
@@ -6699,9 +6084,7 @@
 <description>
 						Describes the behaviour of this button if it is
 						on the last page. possible values:
-						
-							nohtml: no HTML output
-							
+						nohtml: no HTML output
 								altimage: only an image with no
 								functionality is displayed. The src for
 								that image can be specified in the
@@ -6711,13 +6094,9 @@
 								specified by disabledImageWidth and
 								disabledImageHeight.
 							
-							
 								disabled (default): The image specified
 								in scr is used but disabled.
 							
-						
-
-						
 							example:
 							
 							&lt;db:navNextButton
@@ -6735,8 +6114,7 @@
 							
 							&lt;img src="images/transparent.gif" alt="my
 							alt text" width="50" height="1" /&gt;
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>disabledImageSrc</name>
@@ -6790,31 +6168,22 @@
 <name>flavor</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
-<description>
-						styling of the button
+<description>styling of the button
 						choices:
-						
-							
-								standard
+						standard
 								a standard form button. if you use it
 								you should specify "caption"
-							
-							
-								image
+							image
 								an image-button. if you use it you
 								should specify "src" and
 								"alt"
-							
-							
-								modern
+							modern
 								a fancy button according to HTML4; dont
 								use if no all of your users have got
 								5th-generation browsers! You may embed
 								any code into this tag. (see docu or
 								www.w3.org)
-							
-						
-					</description>
+							</description>
 </attribute>
 <attribute>
 <name>caption</name>
@@ -6858,33 +6227,27 @@
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							site to be invoked after this button has
 							been clicked and the associated actions are
 							done
 						
-						
 							this attribute over-rules the
 							followUp-attribute of the parent form(s)!
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>followUpOnError</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							site to be invoked after this button has
 							been clicked and the associated actions are
 							done
 						
-						
 							this attribute over-rules the
 							followUpOnError-attribute of the parent
 							form(s)!
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>accessKey</name>
@@ -7070,9 +6433,7 @@
 <description>
 						Describes the behaviour of this button if it is
 						on the first page. possible values:
-						
-							nohtml: no HTML output
-							
+						nohtml: no HTML output
 								altimage: only an image with no
 								functionality is displayed. The src for
 								that image can be specified in the
@@ -7082,13 +6443,9 @@
 								specified by disabledImageWidth and
 								disabledImageHeight.
 							
-							
 								disabled (default): The image specified
 								in scr is used but disabled.
 							
-						
-
-						
 							example:
 							
 							&lt;db:navFirstButton
@@ -7107,8 +6464,7 @@
 							
 							&lt;img src="images/transparent.gif" alt="my
 							alt text" width="50" height="1" /&gt;
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>disabledImageSrc</name>
@@ -7162,31 +6518,22 @@
 <name>flavor</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
-<description>
-						styling of the button
+<description>styling of the button
 						choices:
-						
-							
-								standard
+						standard
 								a standard form button. if you use it
 								you should specify "caption"
-							
-							
-								image
+							image
 								an image-button. if you use it you
 								should specify "src" and
 								"alt"
-							
-							
-								modern
+							modern
 								a fancy button according to HTML4; dont
 								use if no all of your users have got
 								5th-generation browsers! You may embed
 								any code into this tag. (see docu or
 								www.w3.org)
-							
-						
-					</description>
+							</description>
 </attribute>
 <attribute>
 <name>caption</name>
@@ -7230,33 +6577,27 @@
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							site to be invoked after this button has
 							been clicked and the associated actions are
 							done
 						
-						
 							this attribute over-rules the
 							followUp-attribute of the parent form(s)!
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>followUpOnError</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							site to be invoked after this button has
 							been clicked and the associated actions are
 							done
 						
-						
 							this attribute over-rules the
 							followUpOnError-attribute of the parent
 							form(s)!
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>accessKey</name>
@@ -7442,9 +6783,7 @@
 <description>
 						Describes the behaviour of this button if it is
 						on the last page. possible values:
-						
-							nohtml: no HTML output
-							
+						nohtml: no HTML output
 								altimage: only an image with no
 								functionality is displayed. The src for
 								that image can be specified in the
@@ -7454,13 +6793,9 @@
 								specified by disabledImageWidth and
 								disabledImageHeight.
 							
-							
 								disabled (default): The image specified
 								in scr is used but disabled.
 							
-						
-
-						
 							example:
 							
 							&lt;db:navLastButton
@@ -7478,8 +6813,7 @@
 							
 							&lt;img src="images/transparent.gif" alt="my
 							alt text" width="50" height="1" /&gt;
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>disabledImageSrc</name>
@@ -7540,31 +6874,22 @@
 <name>flavor</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
-<description>
-						styling of the button
+<description>styling of the button
 						choices:
-						
-							
-								standard
+						standard
 								a standard form button. if you use it
 								you should specify "caption"
-							
-							
-								image
+							image
 								an image-button. if you use it you
 								should specify "src" and
 								"alt"
-							
-							
-								modern
+							modern
 								a fancy button according to HTML4; dont
 								use if no all of your users have got
 								5th-generation browsers! You may embed
 								any code into this tag. (see docu or
 								www.w3.org)
-							
-						
-					</description>
+							</description>
 </attribute>
 <attribute>
 <name>caption</name>
@@ -7602,7 +6927,6 @@
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							A NavNewButton is different from other
 							buttons, it will normally even been shown if
 							it is placed within footer of a dbforms tag
@@ -7618,8 +6942,7 @@
 							attribute showAlwaysInFooter to
 							"false". Then the button will not
 							be shown if result set is empty.
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>border</name>
@@ -7632,33 +6955,27 @@
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							site to be invoked after this button has
 							been clicked and the associated actions are
 							done
 						
-						
 							this attribute over-rules the
 							followUp-attribute of the parent form(s)!
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>followUpOnError</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							site to be invoked after this button has
 							been clicked and the associated actions are
 							done
 						
-						
 							this attribute over-rules the
 							followUpOnError-attribute of the parent
 							form(s)!
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>accessKey</name>
@@ -7838,16 +7155,13 @@
 					</description>
 </attribute>
 <example>
-					
 						navigation button to scroll to new, empty
 						dataset
-					
 					
 						the "allowNew"-attribute of the parten
 						"body"-tag MUEST NOT set to "false" in order to
 						get this to work.
-					
-				</example>
+					</example>
 </tag>
 <!--*******************************************************************-->
 
@@ -7875,7 +7189,6 @@
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							A NavNewCopy is different from other
 							buttons, it will normally even been shown if
 							it is placed within footer of a dbforms tag
@@ -7891,38 +7204,28 @@
 							attribute showAlwaysInFooter to
 							"false". Then the button will not
 							be shown if result set is empty.
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>flavor</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
-<description>
-						styling of the button
+<description>styling of the button
 						choices:
-						
-							
-								standard
+						standard
 								a standard form button. if you use it
 								you should specify "caption"
-							
-							
-								image
+							image
 								an image-button. if you use it you
 								should specify "src" and
 								"alt"
-							
-							
-								modern
+							modern
 								a fancy button according to HTML4; dont
 								use if no all of your users have got
 								5th-generation browsers! You may embed
 								any code into this tag. (see docu or
 								www.w3.org)
-							
-						
-					</description>
+							</description>
 </attribute>
 <attribute>
 <name>caption</name>
@@ -7962,33 +7265,27 @@
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							site to be invoked after this button has
 							been clicked and the associated actions are
 							done
 						
-						
 							this attribute over-rules the
 							followUp-attribute of the parent form(s)!
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>followUpOnError</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							site to be invoked after this button has
 							been clicked and the associated actions are
 							done
 						
-						
 							this attribute over-rules the
 							followUpOnError-attribute of the parent
 							form(s)!
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>accessKey</name>
@@ -8168,16 +7465,13 @@
 					</description>
 </attribute>
 <example>
-					
 						navigation button to scroll to a copy of an
 						existent dataset
-					
 					
 						It works with elements such as textField and
 						textArea (even when hidden) but not with
 						dataLabel.
-					
-				</example>
+					</example>
 </tag>
 <!--*******************************************************************-->
 
@@ -8203,31 +7497,22 @@
 <name>flavor</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
-<description>
-						styling of the button
+<description>styling of the button
 						choices:
-						
-							
-								standard
+						standard
 								a standard form button. if you use it
 								you should specify "caption"
-							
-							
-								image
+							image
 								an image-button. if you use it you
 								should specify "src" and
 								"alt"
-							
-							
-								modern
+							modern
 								a fancy button according to HTML4; dont
 								use if no all of your users have got
 								5th-generation browsers! You may embed
 								any code into this tag. (see docu or
 								www.w3.org)
-							
-						
-					</description>
+							</description>
 </attribute>
 <attribute>
 <name>caption</name>
@@ -8271,33 +7556,27 @@
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							site to be invoked after this button has
 							been clicked and the associated actions are
 							done
 						
-						
 							this attribute over-rules the
 							followUp-attribute of the parent form(s)!
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>followUpOnError</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							site to be invoked after this button has
 							been clicked and the associated actions are
 							done
 						
-						
 							this attribute over-rules the
 							followUpOnError-attribute of the parent
 							form(s)!
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>accessKey</name>
@@ -8500,31 +7779,22 @@
 <name>flavor</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
-<description>
-						styling of the button
+<description>styling of the button
 						choices:
-						
-							
-								standard
+						standard
 								a standard form button. if you use it
 								you should specify "caption"
-							
-							
-								image
+							image
 								an image-button. if you use it you
 								should specify "src" and
 								"alt"
-							
-							
-								modern
+							modern
 								a fancy button according to HTML4; dont
 								use if no all of your users have got
 								5th-generation browsers! You may embed
 								any code into this tag. (see docu or
 								www.w3.org)
-							
-						
-					</description>
+							</description>
 </attribute>
 <attribute>
 <name>caption</name>
@@ -8582,23 +7852,18 @@
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							a value indicating the row to navigate to.
 							Position strings are used as request
 							parameters allowing the framework to keep
 							track of the position the user comes from or
 							goes to. This string is structured as
 							follows:
-						
 						fieldId : fieldValueLength : fieldValue
-						
 							It is important to note that if multiple
 							keys exist in the definition of the table,
 							your position string must includes values
 							for each key. (separated by dashes (-))
-						
 						Example:
-						
 							&lt;! Jump to another JSP, specify position
 							using multiple keys--&gt;
 							
@@ -8608,17 +7873,13 @@
 							
 							destTable="Sample"
 							destPos="1:6:widget-3:2:23"/&gt;
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>keyToDestPos</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
-<description>
-						a key indicating the row to navigate to.
-						Example:
-						
+<description>a key indicating the row to navigate to.Example:
 							&lt;! Jump to another JSP, specify position
 							through a key --&gt;
 							
@@ -8628,29 +7889,24 @@
 							
 							destTable="Sample"
 							keyToDestPos="k_1_1@root"/&gt;
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>keyToKeyToDestPos</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							a key to the key indicating the row to
 							navigate to. For each record in the
 							result-set, the associatedRadio tag
 							generates a key reference which can be used
 							to retrieve a position string.
-						
 						Example:
-						
 							&lt;!for each record, generate a key to the
 							position string --&gt;
 							
 							&lt;db:body&gt;&lt;db:associatedRadio
 							name="test"/&gt;&lt;/db:body&gt;
-							
 							
 							&lt;db:footer&gt;
 							
@@ -8664,12 +7920,9 @@
 							
 							destTable="Sample"
 							keyToKeyDestPos="test"/&gt;
-						
 						Check "customerlist.jsp" in example!
-						
 							Example for single form (works with mutilple
 							key columns):
-						
 						
 							&lt;db:body&gt;
 							
@@ -8690,8 +7943,7 @@
 							
 							destTable="Sample"
 							keyToDestPos="currentRow"/&gt;
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>singleRow</name>
@@ -8709,10 +7961,8 @@
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							used in sub-form: field(s) in the main form
 							that is/are linked to this form
-						
 						
 							Should either be a key or set to
 							
@@ -8721,19 +7971,15 @@
 							in
 							
 								dbforms-config.xml
-							
-						
-					</description>
+							</description>
 </attribute>
 <attribute>
 <name>childField</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							used in sub-form: field(s) in this form that
 							is/are linked to the parent form
-						
 						
 							Should either be a key or set to
 							
@@ -8742,9 +7988,7 @@
 							in
 							
 								dbforms-config.xml
-							
-						
-					</description>
+							</description>
 </attribute>
 <attribute>
 <name>accessKey</name>
@@ -8924,34 +8168,26 @@
 					</description>
 </attribute>
 <example>
-					
 						The gotoButton tag can be used to forward
 						processing to another JSP. Setting the position
 						(via various gotoButton attributes) will force
 						DbForms to navigate to this position within the
 						destination-table.
 					
-					
 						Example:
 						
-					
-					
 						&lt;!Caption text should be retrieved via a
 						resource bundle --&gt;
 						
 						&lt;db:dbform tableName="MyTABLE"
 						captionResource="true"&gt;
 						
-						
 						&lt;! Jump to another JSP, no positionning
 						--&gt;
 						
 						&lt;db:gotoButton caption="menu"
 						destination="/menu.jsp"/&gt;
-						
-						
-					
-				</example>
+						</example>
 </tag>
 <!--*******************************************************************-->
 
@@ -8961,7 +8197,6 @@
 <body-content>empty</body-content>
 <description>renders a HTML-BASE tag</description>
 <example>
-					
 						Renders a HTML "base" element with a
 						"href"-attribute pointing to the
 						absolute location of the enclosing JSP page. The
@@ -8972,10 +8207,8 @@
 						should use this tag in all your JSP-views
 						(seeexamples in distribution)
 					
-					
 						There are no attributes associated withthis tag.
-					
-				</example>
+					</example>
 </tag>
 <!--*******************************************************************-->
 
@@ -8991,35 +8224,27 @@
 <name>caption</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
-<description>
-						caption of the error-list
-						default = "Error:"
-					</description>
+<description>caption of the error-listdefault = "Error:"</description>
 </attribute>
 <attribute>
 <name>name</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							the name that should be used for retrieving
 							the error-data from the session
-						
-						default = "errors"
-					</description>
+						default = "errors"</description>
 </attribute>
 <attribute>
 <name>messagePrefix</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							Note: DbForms v1.0 no longer appends
 							Exception messages together. Therefore the
 							exception message you input is the only text
 							contained in the message. Hence, no need for
 							message Prefix anymore.
-						
 						
 							The user may define a messagePrefix
 							attribute to specify a delimiter. If
@@ -9030,8 +8255,7 @@
 							contain a value formessagePrefix, the tag
 							works as normal (prints out the exception
 							information)
-						
-					</description>
+						</description>
 </attribute>
 <example>renders errors stored in request</example>
 </tag>
@@ -9050,25 +8274,18 @@
 <name>caption</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
-<description>
-						caption of the error-list
-						default = "Error:"
-					</description>
+<description>caption of the error-listdefault = "Error:"</description>
 </attribute>
 <attribute>
 <name>name</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							the name that should be used for retrieving
 							the error-data from the session
-						
-						default = "errors"
-					</description>
+						default = "errors"</description>
 </attribute>
 <example>
-					
 						In order to manage error messages more
 						efficiently, we introduced the new XmlError tag.
 						Instead of hard coding your error messages
@@ -9079,16 +8296,13 @@
 						messages may be stored (and retrieved) for any
 						given language. Here is how it works
 					
-					
 						Create an xml error file called
 						dbForms-errors.xml with the following structure:
-					
 					
 						&lt;dbforms-errors&gt;
 						
 						&lt;error id="001"
 						type="WARN"&gt;
-						
 						
 							&lt;message
 							language="Fracais"&gt;% - Champ
@@ -9104,90 +8318,50 @@
 						
 							&lt;/dbforms-errors&gt;
 						
-					
-					
 						Replace the errors tag by the xmlErrors tag (in
 						your jsp's).
-					
 					
 						In your interceptor, throw a ValidationException
 						with the following message construct:
 						
-						
 							Language-MessageID:parameter,parameter,parameter
 						
-						
-						
 							Where:
-						
-						
 						
 							Language = used to locate which message to
 							return, ends with a dash (-)
 						
-						
-						
 							Message ID = error ID used for lookup, ends
 							with a colon (:)
-						
-						
 						
 							Parameter(s) = separated by commas, read in
 							sequence, replaces placeholders (%) in
 							message
-						
-						
-					
-					
 						Example:
-					
-					
-						
 							String messageConstruct =
 							"English-001:param1,param2";
-						
-					
-					
 						
 							throw new
 							ValidationException(messageConstruct);
 						
-					
-					
 						Note that you may also use this mechanism to
 						intercept error messages which are generated by
 						the database. Ie: Oracle throws the following
 						message: ORA-0001: blah blah blah
 					
-					
-						
 							&lt;dbforms-errors&gt;
-						
-					
-					
 						
 							&lt;error id="0001"
 							type="WARN"&gt;
-						
-					
-					
 						
 							&lt;message
 							language="ORA"&gt;Oracle message:
 							% &lt;/message&gt;
 						
-					
-					
-						
 							&lt;/error&gt;
 						
-					
-					
-						
 							&lt;/dbforms-errors&gt;
-						
-					
-				</example>
+						</example>
 </tag>
 <!--*******************************************************************-->
 
@@ -9203,28 +8377,21 @@
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							the name that should be used for retrieving
 							the error-data from the session
-						
-						default = "errors"
-					</description>
+						default = "errors"</description>
 </attribute>
 <attribute>
 <name>value</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							if set to TRUE body will be rendered if an
 							error as occured.
 						
-						
 							if set to FALSE body will be rendered if no
 							error has occured.
-						
-						Default: TRUE
-					</description>
+						Default: TRUE</description>
 </attribute>
 <example>renders errors stored in request</example>
 </tag>
@@ -9244,18 +8411,14 @@
 <name>count</name>
 <required>true</required>
 <rtexprvalue>true</rtexprvalue>
-<description>
-						Number of records allowed
-						
+<description>Number of records allowed
 							If the result Set contains &gt;= the number
 							of elements specified, display the
 							appropriate message (XML error file). As
 							with error messages, arguments may be passed
 							to the message string via a comma delimited
 							string.
-						
 						Example:
-						
 							&lt;db:dbform table="TABLE"
 							
 							maxRows="200"
@@ -9272,22 +8435,16 @@
 							
 							&lt;/db:header&gt;
 							
-							
 							&lt;/db:dbform&gt;
-							
-							
-						
-					</description>
+							</description>
 </attribute>
 <attribute>
 <name>message</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							Message to display (see xml error manager)
-						
-					</description>
+						</description>
 </attribute>
 </tag>
 <!--*******************************************************************-->
@@ -9305,10 +8462,8 @@
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							Message to display (see xml error manager)
-						
-					</description>
+						</description>
 </attribute>
 </tag>
 <!--*******************************************************************-->
@@ -9326,10 +8481,8 @@
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							Message to display (see xml error manager)
-						
-					</description>
+						</description>
 </attribute>
 </tag>
 <!--*******************************************************************-->
@@ -9341,31 +8494,25 @@
 				</tag-class>
 <body-content>empty</body-content>
 <description>
-					
 						This tag enables the end-user to define a row by
 						selecting the radio-buttonrendered by this tag
-					
-				</description>
+					</description>
 <attribute>
 <name>name</name>
 <required>true</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							a unique name for the radio box. this name
 							is used by buttons like
 							"deleteButton" or
 							"updateButton"to lookup the valio
 							of this radio!
 						
-						
 							see "deleteButton" or "updateButton" for
 							further information!
-						
-					</description>
+						</description>
 </attribute>
 <example>
-					
 						example: imagine a table "customer".
 						The rows of this table should be listed. The
 						user shouldbe able to delete a customer.
@@ -9382,7 +8529,6 @@
 						rendered, which takes awaylots of space and
 						makes layouting more difficult
 					
-					
 						to put an "associatedRadio" into the body and
 						the "deleteButton" on the footer (or header)
 						
@@ -9392,10 +8538,8 @@
 						radioButton (to mark the row he/she wants to be
 						deleted)and then to press the deleteButton.
 					
-					
 						the more buttons you have the better this method
 						is!!
-					
 					
 						nota bene: you have to tell the delete (or
 						insert, update...) - button that there exists an
@@ -9403,8 +8547,7 @@
 						action should be applied to, by defining the
 						"associatedRadio"attribute of that
 						respective button.
-					
-				</example>
+					</example>
 </tag>
 <!--*******************************************************************-->
 
@@ -9413,38 +8556,30 @@
 <tag-class>org.dbforms.taglib.DbBlobURLTag</tag-class>
 <body-content>empty</body-content>
 <description>
-					
 						This tag generates an URL pointing to a servlet
 						downloading the DISKBLOB referenced by fieldName
-					
-				</description>
+					</description>
 <attribute>
 <name>fieldName</name>
 <required>true</required>
 <rtexprvalue>true</rtexprvalue>
-<description>
-						name of the field this tag references to
-					</description>
+<description>name of the field this tag references to</description>
 </attribute>
 <attribute>
 <name>defaultValue</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							default field name to use if the specified
 							field is empty.
 							
 
 							"Filesystem blob" example:
 							
-							
 							&lt;img src="&lt;db:blobURL
 							fieldName="THUMBNAIL"
 							defaultValue="myImage.jpg"/&gt;" border="0"
 							width="xx" height="yy"&gt;
-							
-							
 							Developers Note:
 							this attribute (up to now) is not used for
 							"database blob" data, works only for "Disk
@@ -9452,20 +8587,16 @@
 							Update 03/2004:
 							works now for BLOB data as well (if BLOB is
 							not in classic mode and nameField is used)
-						
-
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>nameField</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							this optional attribute may be used to tell
 							the fileservlet in which table column
 							(field) the name of the file is stored.
-						
 						
 							This is (only) needed if you use the new
 							(default) BLOB model which does not rely on
@@ -9475,24 +8606,17 @@
 							means: During upload we use the
 							BlobInterceptor, and during download we use
 							this "nameField" argument.
-						
-					</description>
+						</description>
 </attribute>
-<example>
-					use cases:
-					
-						
+<example>use cases:
 							rendering an image: &lt;img
 							src="&lt;db:diskblob fieldName="pic""/&gt;"
 							alt="a picture"&gt;
 						
-						
 							rendering a (download-)hyperlink: &lt;a
 							href="&lt;db:diskblob
 							fieldName="pic""/&gt;"&gt;download!&lt;/a&gt;
-						
-					
-				</example>
+						</example>
 </tag>
 <!--*******************************************************************-->
 
@@ -9505,9 +8629,7 @@
 <name>fieldName</name>
 <required>true</required>
 <rtexprvalue>true</rtexprvalue>
-<description>
-						name of the field this tag references to
-					</description>
+<description>name of the field this tag references to</description>
 </attribute>
 <attribute>
 <name>dbConnectionName</name>
@@ -9525,23 +8647,18 @@
 <tag-class>org.dbforms.taglib.DbSortTag</tag-class>
 <body-content>empty</body-content>
 <description>
-					
 						this tag rendes a select box for switching the
 						order-state of a field (ascending, descending,
 						none)
 					
-					
 						(this tag is full functional but still subject
 						of change)
-					
-				</description>
+					</description>
 <attribute>
 <name>fieldName</name>
 <required>true</required>
 <rtexprvalue>true</rtexprvalue>
-<description>
-						name of the field this tag references to
-					</description>
+<description>name of the field this tag references to</description>
 </attribute>
 </tag>
 <!--*******************************************************************-->
@@ -9555,28 +8672,22 @@
 <name>template</name>
 <required>true</required>
 <rtexprvalue>true</rtexprvalue>
-<description>
-						name of the template to be included
-					</description>
+<description>name of the template to be included</description>
 </attribute>
 <attribute>
 <name>part</name>
 <required>true</required>
 <rtexprvalue>true</rtexprvalue>
-<description>
-						part of the template to be invoked
-					</description>
+<description>part of the template to be invoked</description>
 </attribute>
 <attribute>
 <name>paramList</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							parameter list used to specify rendering
 							properties for the template
-						
-					</description>
+						</description>
 </attribute>
 </tag>
 <!--*******************************************************************-->
@@ -9590,36 +8701,26 @@
 <name>name</name>
 <required>true</required>
 <rtexprvalue>true</rtexprvalue>
-<description>
-						name of the template param to evaluate
-						
-							
+<description>name of the template param to evaluate
 								only used in template (_begin.jsp /
 								_end.jsp) - definition files!
-							
-						
-					</description>
+							</description>
 </attribute>
 <attribute>
 <name>defaultValue</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							default value to choose if no value
 							specified in paramList - attribute in the
 							db:style tag of the embedded jsp
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>dir</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
-							
-								
 									if the parameter describes a
 									ressource then
 									dir
@@ -9637,7 +8738,6 @@
 									the /templates/mytemplateyou may set
 									dir to "."
 								
-								
 									if you skip this attribute, then no
 									directory will be written out. then
 									only the actual valueof the param
@@ -9647,10 +8747,7 @@
 									"bgcolor=#343434" then you
 									definitly wouldnot want any
 									directories to be involved!!
-								
-							
-						
-					</description>
+								</description>
 </attribute>
 </tag>
 <!--*******************************************************************-->
@@ -9665,13 +8762,9 @@
 					writes out base dir of the current template
 				</description>
 <example>
-					
-						
 							only used in template (_begin.jsp /
 							_end.jsp) - definition files!
-						
-					
-				</example>
+						</example>
 </tag>
 <!--*******************************************************************-->
 
@@ -9703,24 +8796,19 @@
 						wich is used in xmlErrors!
 					</description>
 </attribute>
-<example>
-					Example:
-					
+<example>Example:
 						&lt;db:message key="testkey"
 						param="param0, param1, param2" /&gt;
-					
 					
 						testkey in resourcefile
 						
 						This is a testmessage with {0}, {1}, {2} params!
 					
-					
 						Result
 						
 						This is a testmessage with param0, param1,
 						param2 params!
-					
-				</example>
+					</example>
 </tag>
 <!--*******************************************************************-->
 
@@ -9789,13 +8877,11 @@
 <tag-class>org.dbforms.taglib.DbSearchTag</tag-class>
 <body-content>empty</body-content>
 <description>
-					
 						Renders all the needed fields for searching.
 						Hides the searchfieldName stuff from the JSP
 						developer. Rewrites the input field with the old
 						value.
-					
-				</description>
+					</description>
 <attribute>
 <name>fieldName</name>
 <required>true</required>
@@ -9912,26 +8998,17 @@
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 </attribute>
-<example>
-					example of result:
-					
-						
-							
+<example>example of result:
 								&lt;input type="hidden"
 								name="searchalgo_0_1"
 								value="weakEnd"/&gt;
 							
-							
 								&lt;input type="hidden"
 								name="searchmode_0_1" value="AND"/&gt;
 							
-							
 								&lt;input type="input"
 								name="search_0_1"/&gt;
-							
-						
-					
-				</example>
+							</example>
 </tag>
 <!--*******************************************************************-->
 
@@ -9940,14 +9017,12 @@
 <tag-class>org.dbforms.taglib.DbSearchComboTag</tag-class>
 <body-content>JSP</body-content>
 <description>
-					
 						Renders all the needed fields for searching with
 						a comboBox. Hides the searchfieldName stuff from
 						the JSP developer. Rewrites the input field with
 						the old value. Can be used together with
 						tableData, queryData or staticData.
-					
-				</description>
+					</description>
 <attribute>
 <name>fieldName</name>
 <required>true</required>
@@ -10018,9 +9093,7 @@
 <name>size</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
-<description>
-						how many rows should the select box have
-					</description>
+<description>how many rows should the select box have</description>
 </attribute>
 <attribute>
 <name>onBlur</name>
@@ -10098,15 +9171,13 @@
 <rtexprvalue>true</rtexprvalue>
 </attribute>
 <example>
-					
 						example of result: &lt;input type="hidden"
 						name="searchalgo_0_1" value="weakEnd"/&gt;
 						&lt;input type="hidden" name="searchmode_0_1"
 						value="AND"/&gt; &lt;select
 						name="search_0_1"&gt; &lt;option&gt;from
 						datatag&lt;/option&gt; &lt;/select&gt;
-					
-				</example>
+					</example>
 </tag>
 <!--*******************************************************************-->
 
@@ -10117,14 +9188,12 @@
 				</tag-class>
 <body-content>empty</body-content>
 <description>
-					
 						Renders a CheckBox for searching. The field
 						value wich is searched for is the value of the
 						value attribute. Renders all the needed fields
 						for searching. Hides the searchfieldName stuff
 						from the JSP developer.
-					
-				</description>
+					</description>
 <attribute>
 <name>fieldName</name>
 <required>true</required>
@@ -10242,26 +9311,17 @@
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 </attribute>
-<example>
-					example of result:
-					
-						
-							
+<example>example of result:
 								&lt;input type="hidden"
 								name="searchalgo_0_1"
 								value="weakEnd"/&gt;
 							
-							
 								&lt;input type="hidden"
 								name="searchmode_0_1" value="AND"/&gt;
 							
-							
 								&lt;input type="input"
 								name="search_0_1"/&gt;
-							
-						
-					
-				</example>
+							</example>
 </tag>
 <!--*******************************************************************-->
 
@@ -10355,7 +9415,6 @@
 					input tag, with "select" you'll have an html select,
 					and so on. An example is like this:
 					
-						
 							&lt;db:filter&gt; &lt;db:filterCondition
 							label="author name like"&gt; NAME LIKE %?%
 							&lt;db:filterValue/&gt;
@@ -10381,7 +9440,6 @@
 							user input"&gt; AUTHOR_ID &gt; 10
 							&lt;/db:filterCondition&gt; &lt;/db:filter&gt;
 						
-					
 					This structure will be rendered as a html select
 					element to select the condition the you want to
 					apply. On the onchange event there is a submit, so
@@ -10448,35 +9506,23 @@
 <description>
 						type of the input element that will be rendered,
 						possible values are:
-						
-							text
-							text input
-							date
-							
+						texttext inputdate
 								input text for date type, a validation
 								of the value will be done, and it
 								supports the jscal object
-							
 							timestamp
-							
 								input text for timestamp type, a
 								validation of the value will be done,
 								and it supports the jscal object (it
 								doesn't fit very well, anyway ...)
-							
 							numeric
-							
 								input text for number, a validation of
 								the value will be done
-							
 							select
-							
 								render an html select element, filled
 								with nested tags like queryData,
 								staticData and so on.
-							
-						
-					</description>
+							</description>
 </attribute>
 <attribute>
 <name>searchAlgo</name>
@@ -10484,23 +9530,13 @@
 <rtexprvalue>true</rtexprvalue>
 <description>
 						The search algorithm. possible values:
-						
-							sharp
-							
+						sharp
 								this is the default behavior, do
 								nothing.
-							
-							weakStart
-							like, % is added in front of value
-							weakEnd
-							like, % is appended to value
-							weakStartEnd
-							
+							weakStartlike, % is added in front of valueweakEndlike, % is appended to valueweakStartEnd
 								like, % is added in front of value and %
 								is appended to value
-							
-						
-					</description>
+							</description>
 </attribute>
 <attribute>
 <name>customEntry</name>
@@ -10610,55 +9646,45 @@
 						
 							for backwards compatibility is the same as
 							destPos!
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>parentField</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							used if parentTable is different to
 							tableName: field(s) in the main form that
 							is/are linked to this form
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>childField</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							used if parentTable is different to
 							tableName: field(s) in this form that is/are
 							linked to the parent form
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>destPos</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							a value indicating the row to navigate to.
 							Position strings are used as request
 							parameters allowing the framework to keep
 							track of the position the user comes from or
 							goes to. This string is structured as
 							follows:
-						
 						fieldId : fieldValueLength : fieldValue
-						
 							It is important to note that if multiple
 							keys exist in the definition of the table,
 							your position string must includes values
 							for each key. (separated by dashes (-))
-						
 						Example:
-						
 							&lt;! Jump to another JSP, specify position
 							using multiple keys--&gt;
 							
@@ -10668,17 +9694,13 @@
 							
 							destTable="Sample"
 							destPos="1:6:widget-3:2:23"/&gt;
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>keyToDestPos</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
-<description>
-						a key indicating the row to navigate to.
-						Example:
-						
+<description>a key indicating the row to navigate to.Example:
 							&lt;! Jump to another JSP, specify position
 							through a key --&gt;
 							
@@ -10688,29 +9710,24 @@
 							
 							destTable="Sample"
 							keyToDestPos="k_1_1@root"/&gt;
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>keyToKeyToDestPos</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							a key to the key indicating the row to
 							navigate to. For each record in the
 							result-set, the associatedRadio tag
 							generates a key reference which can be used
 							to retrieve a position string.
-						
 						Example:
-						
 							&lt;!for each record, generate a key to the
 							position string --&gt;
 							
 							&lt;db:body&gt;&lt;db:associatedRadio
 							name="test"/&gt;&lt;/db:body&gt;
-							
 							
 							&lt;db:footer&gt;
 							
@@ -10775,7 +9792,6 @@
 <description>optional: arg passed to instance</description>
 </attribute>
 <example>
-					
 						The registered class must implement the
 						org.dbforms.interface.ICustomFormat interface. A
 						new instance of the object will be instantiated
@@ -10788,7 +9804,6 @@
 						same object can exist with different names and
 						initial values for arg.
 					
-					
 						At runtime the class's setLocale() method will
 						be called. Then the sprintf(Object[] data)
 						method will be called, data will be an array of
@@ -10797,8 +9812,7 @@
 						current field of type Field, and data[2] is the
 						invoking tag of type Tag. The methods should
 						check for null values in the input.
-					
-				</example>
+					</example>
 </tag>
 <!--*******************************************************************-->
 
@@ -10815,30 +9829,24 @@
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							Fieldtype. Must match a dbforms field type
 							declaration
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>value</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
-<description>
-						The value which should be formatted
-					</description>
+<description>The value which should be formatted</description>
 </attribute>
 <attribute>
 <name>contextVar</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							Name of a context variable which should be
 							formatted
-						
-					</description>
+						</description>
 </attribute>
 <attribute>
 <name>pattern</name>
@@ -10874,12 +9882,10 @@
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
 <description>
-						
 							The name of a formatting instance registered
 							previously by using the setCustomFormatter
 							tag
-						
-					</description>
+						</description>
 </attribute>
 <example>
 					either the contextVar -OR- type and value must be
@@ -11057,6 +10063,15 @@
 					   This field must be a datetime value!
 					</description>
 </attribute>
+<attribute>
+<name>rendererclass</name>
+<required>false</required>
+<rtexprvalue>true</rtexprvalue>
+<description>
+                  classname of an specialized XYItemRenderer. During construcution this renderer will be 
+                  created and used instead of the cewolf default renderer.
+                </description>
+</attribute>
 </tag>
 <!--*******************************************************************-->
 
@@ -11083,14 +10098,6 @@
 <rtexprvalue>true</rtexprvalue>
 <description>
 						The title for the series
-					</description>
-</attribute>
-<attribute>
-<name>showValueTicks</name>
-<required>false</required>
-<rtexprvalue>true</rtexprvalue>
-<description>
-						true if ticks should be shown
 					</description>
 </attribute>
 <attribute>
@@ -11145,14 +10152,12 @@
 <description>ClassName to load</description>
 </attribute>
 <example>
-					
 						The registered class must implement the
 						org.dbforms.interface.IPresetFormValues
 						interface. A new instance of the object will be
 						instantiated and initialized with the attribute
 						list.
-					
-				</example>
+					</example>
 </tag>
 </taglib>
 	
