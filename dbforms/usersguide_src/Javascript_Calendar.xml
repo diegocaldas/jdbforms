@@ -32,12 +32,6 @@
         </para>
       </listitem>
       <listitem>
-        <para>Set a global date format for your application by using tag 
-          <emphasis role="italic">date-format</emphasis> within dbforms-config.xml:
-
-          <blockquote>
-            <screen>
-    &lt;date-format&gt;yyyy-MM-dd&lt;/date-format&gt;</screen>
             <para>See Javadoc for class 
               <emphasis role="italic">java.text.SimpleDateFormat</emphasis> to find more information about supported formats and date patterns. Be aware that the pattern is case sensitive and that lowercase 'm' does not mean 'month' but 'minute'. The format handling inside the JavaScript calendar is separated from the handling inside dbforms Java code. And unfortunately the meaning of subpatterns is somtimes different in both worlds. E.g. 'mm' means 'minute' in Java patterns and '1 or 2 digit month' for the calendar. For the beginning it is recommended to build a pattern out of the following subpatterns:
 
@@ -46,7 +40,6 @@
               <itemizedlist mark="opencircle">
                 <listitem>
                   <para>'dd': two digit day of month
-</para>
                 </listitem>
                 <listitem>
                   <para>'MM': two digit month of year (uppercase!)
