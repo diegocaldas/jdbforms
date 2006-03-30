@@ -195,6 +195,12 @@ public class DbSearchComboTag extends DbSearchTag implements IDataContainer,
             String aValue = org.dbforms.util.StringUtil
                             .getEmbeddedStringWithoutDots(customEntry, 1, ',');
 
+         	// is captionResource is activated, retrieve the value from the MessageResources bundle
+            if (getParentForm().hasCaptionResourceSet()) {
+              aValue = MessageResources.getMessage(request,aValue);
+            }
+
+            
             if (Util.isNull(selectedIndex)) {
                isSelected = Util.getTrue(org.dbforms.util.StringUtil.getEmbeddedStringWithoutDots(customEntry,
                                                                                                  2,

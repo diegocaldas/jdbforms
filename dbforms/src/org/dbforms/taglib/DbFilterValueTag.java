@@ -607,6 +607,12 @@ public class DbFilterValueTag extends AbstractDbBaseHandlerTag implements IDataC
                                                                                ',');
          String aValue = org.dbforms.util.StringUtil
                          .getEmbeddedStringWithoutDots(state.customEntry, 1, ',');
+                   
+    	 // is captionResource is activated, retrieve the value from the MessageResources bundle
+         if (getParentForm().hasCaptionResourceSet()) {
+        	 aValue = MessageResources.getMessage((HttpServletRequest)pageContext.getRequest(),aValue);
+         }
+        	 
          boolean isSelected = false;
 
          if ((state.selectedIndex == null)

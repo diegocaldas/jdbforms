@@ -225,6 +225,12 @@ public class DbSelectTag extends AbstractDbBaseHandlerTag implements
 				String aValue = org.dbforms.util.StringUtil
 						.getEmbeddedStringWithoutDots(ce, 1, ',');
 
+           	    // is captionResource is activated, retrieve the value from the MessageResources bundle
+				if (getParentForm().hasCaptionResourceSet()) {
+                  aValue = MessageResources.getMessage(request,aValue);
+	            }
+
+				
 				// Check if we are in redisplayFieldsOnError mode and errors
 				// have occured
 				// If so, only set to selected if currentRow is equal to custom
