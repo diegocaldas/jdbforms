@@ -39,7 +39,7 @@
             <para>
               <itemizedlist mark="opencircle">
                 <listitem>
-                  <para>'dd': two digit day of month
+                     'dd': two digit day of month
                 </listitem>
                 <listitem>
                   <para>'MM': two digit month of year (uppercase!)
