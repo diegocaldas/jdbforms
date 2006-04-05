@@ -4117,6 +4117,14 @@
 						element (read-only mode).
 					</info>
 				</attribute>
+            <attribute>
+               <name>style</name>
+               <required>false</required>
+               <rtexprvalue>true</rtexprvalue>
+               <info>
+                  CSS styles to be applied to this HTML element.
+               </info>
+            </attribute>
 				<attribute>
 					<name>title</name>
 					<required>false</required>
