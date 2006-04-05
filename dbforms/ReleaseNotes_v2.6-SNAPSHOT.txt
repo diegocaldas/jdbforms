@@ -5,9 +5,13 @@ Contents:
 2)    Details about enhancements and changes
 2-1)     Remove the formatter attribute
 2-2)     Added new chart type: Category Data 
-2-3)     Refactor the dbforms package
-2-4)     New presetFormValues tag 
-2-5)     Add hidden attribute to search tag
+2-3)     Added new chart type: TimeSeries Data
+2-4)     Refactor the dbforms package
+2-5)     New presetFormValues tag 
+2-6)     Add hidden attribute to search tag
+2-7)     New calendar control
+2-9)     Use of variables in the config file
+2-10)    Moved to actual libs 
 
 
 1) About this release
