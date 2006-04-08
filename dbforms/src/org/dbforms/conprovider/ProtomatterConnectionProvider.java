@@ -28,6 +28,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.dbforms.util.Util;
+import org.dbforms.util.ReflectionUtil;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -181,7 +182,7 @@ public class ProtomatterConnectionProvider extends AbstractConnectionProvider {
       setIntegerArg(args, props, CP_PROPS_MAIDTHREADCHECKINTERVAL, null);
 
       // finally create the pool and we're ready to go!
-      Class.forName(CP_DRIVER).newInstance();
+      ReflectionUtil.newInstance(CP_DRIVER);
    }
 
 

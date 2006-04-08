@@ -35,7 +35,7 @@ import java.util.Properties;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.dbforms.util.Util;
-
+import org.dbforms.util.ReflectionUtil;
 
 
 
@@ -149,7 +149,6 @@ public class SingleConnectionProvider extends AbstractConnectionProvider {
     * @throws Exception if any error occurs
     */
    protected void init() throws Exception {
-      Class.forName(getPrefs().getJdbcDriver())
-           .newInstance();
+	   ReflectionUtil.newInstance(getPrefs().getJdbcDriver());
    }
 }

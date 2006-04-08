@@ -30,6 +30,7 @@ import org.dbforms.conprovider.ConnectionFactory;
 import org.dbforms.conprovider.ConnectionProviderPrefs;
 
 import org.dbforms.util.Util;
+import org.dbforms.util.ReflectionUtil;
 
 import java.io.PrintWriter;
 
@@ -541,8 +542,7 @@ public class DbConnection implements javax.sql.DataSource {
       Connection con = null;
 
       try {
-         Class.forName(conClass)
-              .newInstance();
+         ReflectionUtil.newInstance(conClass);
 
          if (!properties.isEmpty()) {
             if (!isPropSetup) {

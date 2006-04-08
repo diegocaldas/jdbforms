@@ -34,6 +34,7 @@ import java.util.Properties;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.dbforms.util.ReflectionUtil;
 import org.dbforms.util.Util;
 
 /**
@@ -45,10 +46,11 @@ import org.dbforms.util.Util;
 public class SinglePerThreadConnectionProvider extends
 		AbstractConnectionProvider {
 	private static final ThreadLocal singlePerThread = new ThreadLocal();
-	private static final ThreadLocal singlePerThreadDateNext = new ThreadLocal();
-	private static Log logCat = LogFactory.getLog(SinglePerThreadConnectionProvider.class);
 
-	// End 20060117
+	private static final ThreadLocal singlePerThreadDateNext = new ThreadLocal();
+
+	private static Log logCat = LogFactory
+			.getLog(SinglePerThreadConnectionProvider.class);
 
 	/**
 	 * Default constructor.
@@ -103,7 +105,8 @@ public class SinglePerThreadConnectionProvider extends
 			String validationQuery = getPrefs().getPoolProperties()
 					.getProperty("validationQuery", "");
 			if (!Util.isNull(validationQuery)) {
-				logCat.debug("Testing connection: checking validation timestamp='"
+				logCat
+						.debug("Testing connection: checking validation timestamp='"
 								+ rightNow.toString() + "'.");
 				logCat.debug("Testing connection: next validation check='"
 						+ conNextValidationDate.toString() + "'.");
@@ -115,7 +118,8 @@ public class SinglePerThreadConnectionProvider extends
 					ResultSet rs = st.executeQuery(validationQuery);
 					try {
 						rs.next();
-						logCat.debug("Testing connection: Connection is valid.");
+						logCat
+								.debug("Testing connection: Connection is valid.");
 					} finally {
 						rs.close();
 						st.close();
@@ -124,7 +128,8 @@ public class SinglePerThreadConnectionProvider extends
 					// Exception, so close the connection and set to null
 					// so it is recreated in the body of the "if (con == null)"
 					// below.
-					logCat.debug("Testing connection: Connection is invalid. Forcing recreate.");
+					logCat
+							.debug("Testing connection: Connection is invalid. Forcing recreate.");
 					con.close();
 					con = null;
 				}
@@ -159,6 +164,6 @@ public class SinglePerThreadConnectionProvider extends
 	 *             if any error occurs
 	 */
 	protected void init() throws Exception {
-		Class.forName(getPrefs().getJdbcDriver()).newInstance();
+		ReflectionUtil.newInstance(getPrefs().getJdbcDriver());
 	}
 }

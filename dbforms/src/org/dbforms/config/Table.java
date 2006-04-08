@@ -478,7 +478,7 @@ public class Table implements Serializable {
 	}
 
 	public boolean isCalcField(int fieldId) {
-		return checkFieldId(CALC_FIELD, fieldId); 
+		return checkFieldId(CALC_FIELD, fieldId);
 	}
 
 	/**
@@ -705,9 +705,9 @@ public class Table implements Serializable {
 			Field filterField = getFieldByName(fieldName);
 
 			// Increment by 1 or 2 depending on operator
-		    String value  = "";
-		    if (jump >= 0)
-			   value = aKeyValPair.substring(n + jump).trim();
+			String value = "";
+			if (jump >= 0)
+				value = aKeyValPair.substring(n + jump).trim();
 
 			// i.e. "2"
 			logCat.debug("Filter value=" + value);
@@ -823,7 +823,8 @@ public class Table implements Serializable {
 		while (e.hasNext()) {
 			String fieldName = (String) e.next();
 			FieldValue fv = fieldValues.get(fieldName);
-			if (!isCalcField(fv.getField().getId()) && Util.isNull(fv.getField().getExpression()) ) {
+			if (!isCalcField(fv.getField().getId())
+					&& Util.isNull(fv.getField().getExpression())) {
 				queryBuf.append(fieldName);
 				if (e.hasNext()) {
 					queryBuf.append(",");
@@ -837,7 +838,8 @@ public class Table implements Serializable {
 		while (e.hasNext()) {
 			String fieldName = (String) e.next();
 			FieldValue fv = fieldValues.get(fieldName);
-			if (!isCalcField(fv.getField().getId()) && Util.isNull(fv.getField().getExpression()) ) {
+			if (!isCalcField(fv.getField().getId())
+					&& Util.isNull(fv.getField().getExpression())) {
 				queryBuf.append("?");
 				if (e.hasNext()) {
 					queryBuf.append(",");
@@ -1371,7 +1373,8 @@ public class Table implements Serializable {
 		while (e.hasNext()) {
 			String fieldName = (String) e.next();
 			FieldValue fv = fieldValues.get(fieldName);
-			if (!isCalcField(fv.getField().getId()) && Util.isNull(fv.getField().getExpression())) {
+			if (!isCalcField(fv.getField().getId())
+					&& Util.isNull(fv.getField().getExpression())) {
 				if (kommaNeeded) {
 					queryBuf.append(", ");
 				} else {
@@ -1919,8 +1922,9 @@ public class Table implements Serializable {
 			FieldValue aFieldValue = keyValuesHt.get(curField.getName());
 			Object value = aFieldValue.getFieldValueAsObject();
 			if (value != null) {
-				JDBCDataHelper.fillWithData(ps, curField.getEscaper(), col, value,
-					curField.getType(), this.getBlobHandlingStrategy());
+				JDBCDataHelper.fillWithData(ps, curField.getEscaper(), col,
+						value, curField.getType(), this
+								.getBlobHandlingStrategy());
 				col++;
 			}
 		}
@@ -1984,10 +1988,7 @@ public class Table implements Serializable {
 			for (int i = 0; i < interceptorsCnt; i++) {
 				Interceptor interceptor = (Interceptor) allInterceptors
 						.elementAt(i);
-				Class interceptorClass = Class.forName(interceptor
-						.getClassName());
-				IDbEventInterceptor dbi = (IDbEventInterceptor) interceptorClass
-						.newInstance();
+				IDbEventInterceptor dbi = (IDbEventInterceptor)ReflectionUtil.newInstance(interceptor.getClassName());
 
 				// J.Peer 03/18/2004 - plug in some additional config data for
 				// interceptor
@@ -2332,29 +2333,29 @@ public class Table implements Serializable {
 	 * shortly described the following rule is applied:
 	 * 
 	 * <pre>
-	 *  
-	 *  
-	 *  
-	 *  
-	 *  
-	 *  
-	 *  
-	 *  
-	 *  
-	 *           +--------------------------------------------------------------------------------------------------+
-	 *           |  RULE = R1 AND R2 AND ... AND Rn                                                                 |
-	 *           |  Ri = fi OpA(i) fi* OR  f(i-1) OpB(i-1) f(i-1)* OR f(i-2) OpB(i-2) f(i-2)* OR ... OR f1 OpB f1*  |
-	 *           +--------------------------------------------------------------------------------------------------+
-	 *           For background info email joepeer@wap-force.net
-	 *  
-	 *  
-	 *  
-	 *  
-	 *  
-	 *  
-	 *  
-	 *  
-	 *  
+	 *   
+	 *   
+	 *   
+	 *   
+	 *   
+	 *   
+	 *   
+	 *   
+	 *   
+	 *            +--------------------------------------------------------------------------------------------------+
+	 *            |  RULE = R1 AND R2 AND ... AND Rn                                                                 |
+	 *            |  Ri = fi OpA(i) fi* OR  f(i-1) OpB(i-1) f(i-1)* OR f(i-2) OpB(i-2) f(i-2)* OR ... OR f1 OpB f1*  |
+	 *            +--------------------------------------------------------------------------------------------------+
+	 *            For background info email joepeer@wap-force.net
+	 *   
+	 *   
+	 *   
+	 *   
+	 *   
+	 *   
+	 *   
+	 *   
+	 *   
 	 * </pre>
 	 * 
 	 * IMPORTANT NOTE: the indizes of the fv-array indicate implicitly the
@@ -2443,34 +2444,34 @@ public class Table implements Serializable {
 	 * should restrict the resultset in matching to the search fields].
 	 * 
 	 * <pre>
-	 *  
-	 *  
-	 *  
-	 *  
-	 *  
-	 *  
-	 *  
-	 *  
-	 *  
-	 *           convention:    index 0-n =&gt; AND
-	 *                          index (n+1)-m =&gt; OR
-	 *           examples
-	 *                      (A = 'meier' AND X = 'joseph') AND (AGE = '10')
-	 *                      (A = 'meier' ) AND (X = 'joseph' OR AGE = '10')
-	 *                      (X = 'joseph' OR AGE = '10')
-	 *                      (A = 'meier' AND X = 'joseph')
-	 *           for comparing to code:
-	 *             §1     §2        §3      §2          §4    §5   §6      §2      §7
-	 *             (   A = 'smith' AND   X LIKE 'jose%' )    AND    (  AGE = '10'   )
-	 *  
-	 *  
-	 *  
-	 *  
-	 *  
-	 *  
-	 *  
-	 *  
-	 *  
+	 *   
+	 *   
+	 *   
+	 *   
+	 *   
+	 *   
+	 *   
+	 *   
+	 *   
+	 *            convention:    index 0-n =&gt; AND
+	 *                           index (n+1)-m =&gt; OR
+	 *            examples
+	 *                       (A = 'meier' AND X = 'joseph') AND (AGE = '10')
+	 *                       (A = 'meier' ) AND (X = 'joseph' OR AGE = '10')
+	 *                       (X = 'joseph' OR AGE = '10')
+	 *                       (A = 'meier' AND X = 'joseph')
+	 *            for comparing to code:
+	 *              §1     §2        §3      §2          §4    §5   §6      §2      §7
+	 *              (   A = 'smith' AND   X LIKE 'jose%' )    AND    (  AGE = '10'   )
+	 *   
+	 *   
+	 *   
+	 *   
+	 *   
+	 *   
+	 *   
+	 *   
+	 *   
 	 * </pre>
 	 * 
 	 * @param fv
@@ -2559,7 +2560,7 @@ public class Table implements Serializable {
 
 				// Blank space used between field and command
 				if (index != -1) // Do we have a command, if not assume ASC
-									// order
+				// order
 				{
 					String command = token.substring(index).toUpperCase();
 					int pos = command.indexOf("ASC");
@@ -2642,25 +2643,25 @@ public class Table implements Serializable {
 	 * Creates a token string with the format:
 	 * 
 	 * <pre>
-	 *  
-	 *  
-	 *  
-	 *  
-	 *  
-	 *  
-	 *  
-	 *  
-	 *  
-	 *              field.id : field.length : field.value
-	 *  
-	 *  
-	 *  
-	 *  
-	 *  
-	 *  
-	 *  
-	 *  
-	 *  
+	 *   
+	 *   
+	 *   
+	 *   
+	 *   
+	 *   
+	 *   
+	 *   
+	 *   
+	 *               field.id : field.length : field.value
+	 *   
+	 *   
+	 *   
+	 *   
+	 *   
+	 *   
+	 *   
+	 *   
+	 *   
 	 * </pre>
 	 * 
 	 * @param field

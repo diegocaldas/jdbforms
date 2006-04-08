@@ -29,6 +29,7 @@ import org.apache.commons.logging.LogFactory;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import org.dbforms.util.ReflectionUtil;
 
 
 /**
@@ -108,8 +109,7 @@ public class ConnectionFactory {
    public void setProvider(ConnectionProviderPrefs prefs)
                     throws Exception {
       String providerClass = prefs.getConnectionProviderClass();
-      provider = (AbstractConnectionProvider) Class.forName(providerClass)
-                                           .newInstance();
+      provider = (AbstractConnectionProvider) ReflectionUtil.newInstance(providerClass);
       provider.setPrefs(prefs);
       provider.init();
 
