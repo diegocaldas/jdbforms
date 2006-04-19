@@ -103,6 +103,18 @@ public class TimeUtil {
     *
     * @return String
     */
+   public static final String seconds2String(Number seconds) {
+      return seconds2String(seconds.longValue());
+   }
+
+
+   /**
+    * Reformats seconds to time string with format: dd:hh:mm:ss
+    *
+    * @param seconds string to format
+    *
+    * @return String
+    */
    public static final String seconds2String(long seconds) {
       long   d;
       long   h;
