@@ -1291,7 +1291,12 @@ public class DbFormTag extends AbstractScriptHandlerTag implements ISqlFilter, T
             if ((this.getAction() != null) && (this.getAction().trim().length() > 0)) {
                tagBuf.append(this.getAction());
             } else {
-               tagBuf.append(response.encodeURL(FileUtil.normalize(request.getContextPath()) + "servlet/control"));
+            	String contextPath = FileUtil.normalize(request.getContextPath());
+                if (!contextPath.endsWith("/")) {
+                    contextPath += "/"; 
+                }
+                contextPath += "servlet/control";
+            	tagBuf.append(response.encodeURL(contextPath));
             }
 
             tagBuf.append("\"");
