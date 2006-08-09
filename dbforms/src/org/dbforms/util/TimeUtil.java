@@ -157,7 +157,6 @@ public class TimeUtil {
    public static final String minutes2String(long minutes) {
       long   d;
       long   h;
-      long   m;
       String zeit;
       d       = (minutes / SECSPERDAY * 60);
       minutes = minutes - (d * SECSPERDAY * 60);

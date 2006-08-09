@@ -18,14 +18,17 @@
 					<td><db:sort fieldName="AUTHOR_ID"/>&nbsp;</td>
 					<td><db:sort fieldName="TITLE"/>&nbsp;</td>
 				</tr>
+				</table>
 			</db:header>
 			<db:body allowNew="false">
+				<table>
 				<tr>
 					<td><db:label fieldName="BOOK_ID"/></a>&nbsp;</td>
 					<td><db:label fieldName="ISBN"/>&nbsp;</td>
 					<td><db:label fieldName="AUTHOR_ID"/>&nbsp;</td>
 					<td><db:label fieldName="TITLE"/>&nbsp;</td>
 				</tr>
+				</table>
 			</db:body>
 			<db:footer>
 				</table>
