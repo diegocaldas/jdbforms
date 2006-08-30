@@ -27,9 +27,9 @@
    <siteAddress>shell.sourceforge.net</siteAddress>
    <siteDirectory>/home/groups/j/jd/jdbforms/htdocs</siteDirectory>
    <repository>
-      <connection>scm:cvs:pserver:anonymous@cvs.sourceforge.net:/cvsroot/jdbforms:dbforms</connection>
-      <developerConnection>scm:cvs:ext:${maven.username}@cvs.sourceforge.net:/cvsroot/jdbforms:dbforms</developerConnection>
-      <url>http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/jdbforms/dbforms/</url>
+      <connection>scm:cvs:pserver:anonymous@jdbforms.cvs.sourceforge.net:/cvsroot/jdbforms:dbforms</connection>
+      <developerConnection>scm:cvs:ext:${maven.username}@jdbforms.cvs.sourceforge.net:/cvsroot/jdbforms:dbforms</developerConnection>
+      <url>http://jdbforms.cvs.sourceforge.net/jdbforms/</url>
    </repository>
    <mailingLists>
       <mailingList>
