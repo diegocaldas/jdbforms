@@ -1586,7 +1586,7 @@ public class Table implements Serializable {
 		Vector result = null;
 
 		if (request != null) {
-			String paramStub = Constants.FIELDNAME_SORT + this.getId();
+			String paramStub = Constants.FIELDNAME_SORT + this.getId() + "_";
 			Vector sortFields = ParseUtil.getParametersStartingWith(request,
 					paramStub);
 
@@ -2461,7 +2461,7 @@ public class Table implements Serializable {
 	 *                       (X = 'joseph' OR AGE = '10')
 	 *                       (A = 'meier' AND X = 'joseph')
 	 *            for comparing to code:
-	 *              §1     §2        §3      §2          §4    §5   §6      §2      §7
+	 *              ï¿½1     ï¿½2        ï¿½3      ï¿½2          ï¿½4    ï¿½5   ï¿½6      ï¿½2      ï¿½7
 	 *              (   A = 'smith' AND   X LIKE 'jose%' )    AND    (  AGE = '10'   )
 	 *   
 	 *   
@@ -2497,10 +2497,10 @@ public class Table implements Serializable {
 					oldMode = mode;
 					buf.append("(");
 
-					// §1, §6
+					// ï¿½1, ï¿½6
 				}
 
-				// §2, i.e "A = 'smith'" or "X LIKE 'jose%'"
+				// ï¿½2, i.e "A = 'smith'" or "X LIKE 'jose%'"
 				buf.append(getSQLExpression(fv[i]));
 
 				if ((i < (fv.length - 1))
@@ -2508,16 +2508,16 @@ public class Table implements Serializable {
 					buf.append((mode == Constants.SEARCHMODE_AND) ? "AND "
 							: "OR ");
 
-					// §3
+					// ï¿½3
 				} else {
 					// if(i==fv.length-1 || fv[i+1].getSearchMode()!=mode) {
 					buf.append(")");
 
-					// §4, §7
+					// ï¿½4, ï¿½7
 					if (i != (fv.length - 1)) {
 						buf.append(" OR ");
 
-						// §5 #checkme
+						// ï¿½5 #checkme
 					}
 				}
 			}
@@ -2612,7 +2612,7 @@ public class Table implements Serializable {
 	private Vector createOrderFVFromRequest(HttpServletRequest request,
 			String paramStub, Vector sortFields) {
 		Vector result = new Vector();
-		int fieldIndex = paramStub.length() + 1;
+		int fieldIndex = paramStub.length();
 
 		// "sort_1" -> fieldindex= 8 (length of paramStub "order_1" is 7)
 		for (int i = 0; i < sortFields.size(); i++) {

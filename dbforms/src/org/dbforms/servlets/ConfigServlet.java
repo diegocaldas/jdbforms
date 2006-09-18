@@ -335,6 +335,12 @@ public class ConfigServlet extends HttpServlet {
       // Look to see if developer has specified his/her own errors filename & location
       String value = getServletConfig()
                         .getInitParameter(DbFormsErrors.ERRORS);
+      
+      // no xmlError file specified in web.xml. Skip this step
+      if (value == null) {
+    	  logCat.warn("XML Errors file not configured, XML error handler disabled!");
+    	  return;
+      }
 
       loader.setErrors(value);
 

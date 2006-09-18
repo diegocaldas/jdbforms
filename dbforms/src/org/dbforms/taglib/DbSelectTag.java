@@ -59,6 +59,8 @@ public class DbSelectTag extends AbstractDbBaseHandlerTag implements
 
 	private String size;
 
+	private boolean disabled = false; 
+	
 	/**
 	 * Sets the customEntry
 	 * 
@@ -190,6 +192,24 @@ public class DbSelectTag extends AbstractDbBaseHandlerTag implements
 		return size;
 	}
 
+    /**
+	 * if disabled is set to true, the generated drop down list
+	 * will be greyed out, i.e. read-only
+	 *
+	 * @param b
+	 */
+	public void setDisabled(boolean b) {
+		disabled = b;
+	}
+
+
+    /**
+     * @return true if the field is read only
+     */
+    public boolean isDisabled() {
+        return disabled;
+    }
+
 	/**
 	 * DOCUMENT ME!
 	 * 
@@ -317,27 +337,8 @@ public class DbSelectTag extends AbstractDbBaseHandlerTag implements
 		if (((!hasOverrideReadOnlySet()) && hasReadOnlySet())
 				|| getParentForm().hasReadOnlySet()) {
 			selectedOptions.append("-");
-
-			String onChange = "resetSelect(this,'" + selectedOptions.toString()
-					+ "');";
-			setOnChange(onChange
-					+ ((getOnChange() != null) ? getOnChange() : ""));
-
-			if (!getParentForm().existJavascriptFunction("resetSelect")) {
-				StringBuffer buf = new StringBuffer();
-				buf.append("\nfunction resetSelect(sel,x){\n");
-				buf.append("   for(i=0;i<sel.length;i++){\n");
-				buf.append("      var tmp = sel.options[i].value;\n");
-				buf.append("      if(x.indexOf(('-'+tmp+'-'))!=-1){\n");
-				buf.append("         sel.options[i].selected=true;\n");
-				buf.append("      }else{;\n");
-				buf.append("         sel.options[i].selected=false;\n");
-				buf.append("      }\n");
-				buf.append("   }\n");
-				buf.append("}\n");
-
-				getParentForm().addJavascriptFunction("resetSelect", buf);
-			}
+			
+			setDisabled(true);
 		}
 
 		// For generation Javascript Validation. Need original and modified
@@ -410,8 +411,13 @@ public class DbSelectTag extends AbstractDbBaseHandlerTag implements
 		return (super.typicalDefaultValue());
 	}
 
+	/**
+	 * generates the html select start tag including its attributes
+	 *
+	 * @return the complete start tag
+	 * @throws javax.servlet.jsp.JspException
+	 */
 	private String generateSelectHeader() throws javax.servlet.jsp.JspException {
-		// This method have been
 		StringBuffer tagBuf = new StringBuffer();
 
 		tagBuf.append("<select name=\"");
@@ -436,6 +442,10 @@ public class DbSelectTag extends AbstractDbBaseHandlerTag implements
 			tagBuf.append(getTabIndex());
 			tagBuf.append("\"");
 		}
+       
+        if (isDisabled()) {
+            tagBuf.append(" disabled");
+        }
 
 		tagBuf.append(prepareStyles());
 		tagBuf.append(prepareEventHandlers());

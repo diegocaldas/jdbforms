@@ -588,7 +588,7 @@ public abstract class AbstractDataSource {
 	private ResultSetVector getResultSetVectorInternal(
 			DbEventInterceptorData interceptorData, int startRow, int count)
 			throws SQLException {
-		ResultSetVector result = result = new ResultSetVector(table);
+		ResultSetVector result = new ResultSetVector(table);
 
 		int begin = 0;
 		int ende = 0;
