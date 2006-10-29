@@ -12,6 +12,7 @@ Contents:
 2-7)     New calendar control
 2-9)     Use of variables in the config file
 2-10)    Moved to actual libs 
+2-11)	 Changed readOnly attribute in select tag
 
 
 1) About this release
@@ -42,3 +43,9 @@ The formatter attribute has been deprecated in version 2.5 and is removed now.
 2-3)  Refactor the dbforms package: 
 --------------------------------------------
 new folder for interfaces, Rename abstract classes to Abstract...
+
+2-11) Changed readOnly attribute in select tag
+----------------------------------------------
+Disable html select tag if readOnly is set to true, instead of 
+resetting it with javascript as this was confusing to users.
+
