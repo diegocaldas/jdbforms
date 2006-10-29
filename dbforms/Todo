@@ -2,30 +2,6 @@ $Header$
 $Revision$
 $Date$
 
+The todo list has moved to the wiki.
 
-				DbForms v.1.1.3
-				===============
-
-TO DO
-------
-
-* Possibility of selecting several items from a select box.
-
-* Limit the select list (in query)to fields used in the body tag (useFieldsInBody attribute in form tag)
-
-* Devise a technique (tag?) for 'populating' a child select box, given a selection in the parent select box. 
-  (Assigned Eric Beaumier) (We now have a howto for this written by Henner.Kollmann@gmx.de!!)
-
-* Make the resultSetVector class more accessible.  Allow it to be cached and manipulated.
-
-* Generate DTD files for dbForms-config.xml and dbForms-errors.xml.  (done in v.1.1.4)
-
-* Include support for DBCS. 
-
-* On multiple-row updates, update only the rows for which fields have been modified. (done in v.1.1.4)
-
-
-If you wish to participate in the development of any of the above tasks, or have your own dbForms wish list.
-Please contact me...
-
-Grunikiewicz.philip@hydro.qc.ca
+See http://jdbforms.sourceforge.net/wiki.php?page=ToDoList
