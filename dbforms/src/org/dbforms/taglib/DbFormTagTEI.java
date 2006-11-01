@@ -30,6 +30,8 @@ import org.dbforms.util.Util;
 
 import javax.servlet.jsp.tagext.*;
 
+import java.io.Serializable;
+
 
 
 /**
@@ -38,7 +40,7 @@ import javax.servlet.jsp.tagext.*;
  * @author $author$
  * @version $Revision$
  */
-public class DbFormTagTEI extends TagExtraInfo {
+public class DbFormTagTEI extends TagExtraInfo implements Serializable {
    // logging category for this class
    static Log logCat = LogFactory.getLog(DbFormTagTEI.class.getName());
 

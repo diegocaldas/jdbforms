@@ -60,6 +60,7 @@ import org.dbforms.validation.ValidatorConstants;
 import org.dbforms.interfaces.ISqlFilter;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -85,7 +86,7 @@ import javax.servlet.jsp.tagext.TryCatchFinally;
  * 
  * @author Joachim Peer
  */
-public class DbFormTag extends AbstractScriptHandlerTag implements ISqlFilter, TryCatchFinally {
+public class DbFormTag extends AbstractScriptHandlerTag implements ISqlFilter, TryCatchFinally, Serializable {
    /** logging category for this class */
    private static Log                     logCat                      = LogFactory.getLog(DbFormTag.class.getName());
 

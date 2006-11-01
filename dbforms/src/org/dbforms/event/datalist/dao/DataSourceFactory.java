@@ -36,6 +36,7 @@ import org.dbforms.util.Util;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import java.io.Serializable;
 
 
 /**
@@ -44,7 +45,7 @@ import java.sql.SQLException;
  *
  * @author hkk
  */
-public class DataSourceFactory {
+public class DataSourceFactory implements Serializable {
    // logging category for this class;
    private static Log logCat = LogFactory.getLog(DataSourceFactory.class
          .getName());

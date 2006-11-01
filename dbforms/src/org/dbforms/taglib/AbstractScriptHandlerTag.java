@@ -25,6 +25,7 @@ package org.dbforms.taglib;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.io.Serializable;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -35,6 +36,8 @@ import org.dbforms.config.DbFormsConfigRegistry;
 import org.dbforms.util.Util;
 
 import javax.servlet.jsp.tagext.BodyTagSupport;
+
+
 
 
 
@@ -49,7 +52,7 @@ import javax.servlet.jsp.tagext.BodyTagSupport;
  * Clasen for Apache Groups's Jakarta-Struts project.
  * </p>
  */
-public abstract class AbstractScriptHandlerTag extends BodyTagSupport {
+public abstract class AbstractScriptHandlerTag extends BodyTagSupport implements Serializable {
    private static Log logCat = LogFactory.getLog(AbstractDbBaseHandlerTag.class.getName());
 
    /** DOCUMENT ME! */

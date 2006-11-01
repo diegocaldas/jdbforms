@@ -39,6 +39,7 @@ import org.dbforms.util.Util;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -50,7 +51,7 @@ import java.util.Iterator;
  * 
  * @author hkk
  */
-public abstract class AbstractDataSource {
+public abstract class AbstractDataSource implements Serializable {
 	/** log4j category class */
 	private static Log logCat = LogFactory.getLog(AbstractDataSource.class);
 

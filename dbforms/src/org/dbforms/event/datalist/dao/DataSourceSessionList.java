@@ -38,6 +38,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionBindingListener;
 
+import java.io.Serializable;
+
 /**
  * Holds a list of DataSourceFactory object in the session context. Needed by
  * the navigation events to store the datasource by a per session mode. So it is
@@ -46,7 +48,7 @@ import javax.servlet.http.HttpSessionBindingListener;
  * 
  * @author hkk
  */
-public class DataSourceSessionList implements HttpSessionBindingListener {
+public class DataSourceSessionList implements HttpSessionBindingListener, Serializable {
 	/** Hashtable to hold all DataSource objects. Key is queryString. */
 
 	// logging category for this class;

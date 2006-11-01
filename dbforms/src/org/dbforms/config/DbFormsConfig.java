@@ -33,6 +33,8 @@ import javax.servlet.jsp.el.ELException;
 import javax.servlet.jsp.el.ExpressionEvaluator;
 import javax.servlet.jsp.el.VariableResolver;
 
+import java.io.Serializable;
+
 /**
  * <p>
  * This class gets populated with data from the dbforms-config.xml file by the
@@ -45,7 +47,7 @@ import javax.servlet.jsp.el.VariableResolver;
  * 
  * @author Joe Peer
  */
-public class DbFormsConfig {
+public class DbFormsConfig implements Serializable {
 	/** DOCUMENT ME! */
 	public static final String CONFIG = "dbformsConfig";
 

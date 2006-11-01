@@ -54,13 +54,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import java.io.Serializable;
+
 /**
  * Special implementation of DataSource. This is the default class and deals
  * with JDBC Connections.
  * 
  * @author hkk
  */
-public class DataSourceJDBC extends AbstractDataSource {
+public class DataSourceJDBC extends AbstractDataSource implements Serializable {
 	private static Log logCat = LogFactory.getLog(DataSourceJDBC.class);
 
 	private Connection connection;
