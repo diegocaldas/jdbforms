@@ -20,7 +20,7 @@
 			<db:body allowNew="false">
 				<tr>
 					<td><db:associatedRadio name="currentRow" /></td>
-					<td><db:label fieldName="BOOK_ID"/></a>&nbsp;</td>
+					<td><db:label fieldName="BOOK_ID"/>&nbsp;</td>
 					<td><db:label fieldName="ISBN"/>&nbsp;</td>
 					<td><db:label fieldName="AUTHOR_ID"/>&nbsp;</td>
 					<td><db:label fieldName="TITLE"/>&nbsp;</td>

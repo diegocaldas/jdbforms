@@ -15,7 +15,7 @@
 			</db:header>
 			<db:body>
 				<tr>
-					<td><db:textField fieldName="BOOK_ID"/></a>&nbsp;</td>
+					<td><db:textField fieldName="BOOK_ID"/>&nbsp;</td>
 					<td><db:textField fieldName="ISBN"/>&nbsp;</td>
 					<td><db:textField fieldName="AUTHOR_ID"/>&nbsp;</td>
 					<td><db:textField fieldName="TITLE"/>&nbsp;</td>

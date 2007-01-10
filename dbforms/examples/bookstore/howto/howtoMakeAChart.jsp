@@ -15,7 +15,7 @@
 			</db:header>
 			<db:body allowNew="false">
 				<tr>
-					<td><db:label fieldName="NAME" /></a>&nbsp;</td>
+					<td><db:label fieldName="NAME" />&nbsp;</td>
 					<td><db:label fieldName="C" />&nbsp;</td>
 				</tr>
 			</db:body>

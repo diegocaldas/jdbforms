@@ -169,7 +169,11 @@ public class CewolfTimeSeriesDataTag extends AbstractDbBaseHandlerTag implements
 								.elementAt(j);
 						Double d = (Double) rsv.getFieldAsObject(field
 								.getFieldName());
-						ds.getSeries(j).add(new TimeSeriesDataItem(t, d));
+						try {
+						   ds.getSeries(j).add(new TimeSeriesDataItem(t, d));
+						} catch (Exception e) {
+							logCat.error("add Value", e);
+						}
 					}
 				}
 				rsv.moveNext();

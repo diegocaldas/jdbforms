@@ -16,8 +16,7 @@
                <tr>
                   <td>
                      <%= currentRow_KEYTEST.get("KEY_1") %>
-                  </a>
-                  &nbsp;
+                      &nbsp;
                </td>
                <td>
                   <%= currentRow_KEYTEST.get("KEY_2") %>

@@ -23,12 +23,12 @@
       <!-- language file for the calendar -->
       <script
          type="text/javascript"
-         src="<%=org.dbforms.util.Util.getBaseURL(request) + "dbformslib/jscal2/lang/calendar-en.js" %>"
+         src="<%=org.dbforms.util.Util.getBaseURL(request) + "dbformslib/jscal2/lang/calendar-en.js" %>">
       </script>
       <!-- calendar helper functions -->
       <script
          type="text/javascript"
-         src="<%=org.dbforms.util.Util.getBaseURL(request) + "dbformslib/jscal2/calendar-helper.js" %>"
+         src="<%=org.dbforms.util.Util.getBaseURL(request) + "dbformslib/jscal2/calendar-helper.js" %>">
       </script>
    </head>
    <body>
