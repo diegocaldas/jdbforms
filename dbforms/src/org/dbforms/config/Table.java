@@ -392,7 +392,7 @@ public class Table implements Serializable {
 			populateWhereAfterClause(fvOrder, ps, curCol);
 		}
 
-		logCat.debug("###getDoSelectResultSet pos3");
+		logCat.debug("###getDoSelectResultSet pos4");
 
 		ResultSet result = null;
 
