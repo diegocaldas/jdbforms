@@ -507,8 +507,11 @@ public class DataSourceJDBC extends AbstractDataSource implements Serializable {
 				ResultSet prs = null;
 				if (Util.isNull(whereClause)) {
 					String pquery = getTable().getSelectQuery(v,
-							filterConstraint, orderConstraint, sqlFilter,
-							Constants.COMPARE_NONE);
+                            filterConstraint, null, sqlFilter,
+                            Constants.COMPARE_NONE); // DJH - Don't need ordering when doing row count.
+					//String pquery = getTable().getSelectQuery(v,
+					//		filterConstraint, orderConstraint, sqlFilter,
+					//		Constants.COMPARE_NONE);
 					PreparedStatement pstmt = connection
 							.prepareStatement(pquery);
 
