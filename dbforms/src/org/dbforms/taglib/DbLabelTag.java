@@ -45,6 +45,27 @@ public class DbLabelTag extends AbstractDbBaseHandlerTag
    // logging category for this class
    static Log logCat = LogFactory.getLog(DbLabelTag.class.getName());
 
+   private String escapeData = "true";
+   
+   /**
+    * Set escapeData attribute
+    *
+    * @param string
+    */
+   public void setEscapeData(String string) {
+       escapeData = string;
+   }
+
+
+   /**
+    * Return escapeData attribute
+    *
+    * @return
+    */
+   public String getEscapeData() {
+      return escapeData;
+   }
+
    /**
     * Description of the Method
     *
@@ -76,7 +97,9 @@ public class DbLabelTag extends AbstractDbBaseHandlerTag
          // SM 2003-08-05
          // if styleClass is present, render a SPAN with text included
          String s = prepareStyles();
-         fieldValue = escapeHTML(fieldValue);
+         if (Util.getTrue(getEscapeData())) { // DJH 2008-01-25 Handle escapeData attribute.
+             fieldValue = escapeHTML(fieldValue);
+         }
 
          if (Util.isNull(s)) {
             pageContext.getOut()
