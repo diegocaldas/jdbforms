@@ -861,6 +861,22 @@
 						</description>
 </attribute>
 <attribute>
+<name>escapeData</name>
+<required>false</required>
+<rtexprvalue>true</rtexprvalue>
+<description>
+							Boolean value ("true" or "false") indicating
+							whether the data displayed should have HTML
+							special characters escaped or not. This
+							defaults to true but would be set to "false"
+							if the you were using a customFormatter
+							that you wanted to insert html into your text
+							(i.e. &lt;br&gt; in place of line breaks to preserve
+							formatting). In this instance you don't want
+							the "&lt;br&gt;" to be escaped to "&amp;ltbr&amp;gt".
+						</description>
+</attribute>
+<attribute>
 <name>styleClass</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
@@ -1011,6 +1027,16 @@
 							
 								&lt;/db:dataLabel&gt;
 							</description>
+</attribute>
+<attribute>
+<name>customFormatter</name>
+<required>false</required>
+<rtexprvalue>true</rtexprvalue>
+<description>
+							The name of a formatting instance registered
+							previously by using the setCustomFormatter
+							tag
+						</description>
 </attribute>
 <attribute>
 <name>nullFieldValue</name>
@@ -9782,7 +9808,7 @@
 <name>className</name>
 <required>true</required>
 <rtexprvalue>true</rtexprvalue>
-<description>FQ ClassName to load</description>
+<description>Fully Qualified ClassName to load</description>
 </attribute>
 <attribute>
 <name>arg</name>
