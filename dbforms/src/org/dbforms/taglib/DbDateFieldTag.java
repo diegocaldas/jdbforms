@@ -139,7 +139,19 @@ public class DbDateFieldTag extends AbstractDbBaseInputTag implements javax.serv
             tagBuf.append("calDateFormat='" + jsCalendarDateFormat + "';");
          }
 
-         tagBuf.append("setDateField(document.dbform['")
+         // DJH - Get the parent's form name to correctly
+         //       navigate on pages with multiple, non-nested dbforms.
+         DbFormTag parentForm = getParentForm();
+         while (parentForm.isSubForm()) {
+            parentForm = parentForm.getParentForm();
+         }
+         String parentFormName = parentForm.getName();
+         
+         // DJH - Use parent's form name rather than old 
+         //       generic name 'dbform'
+         tagBuf.append("setDateField(document.") 
+         .append(parentFormName) 
+         .append("['")
          .append(getFormFieldName())
          .append("']);")
          .append(" top.newWin = window.open('")
