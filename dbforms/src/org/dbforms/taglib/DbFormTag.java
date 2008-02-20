@@ -1058,6 +1058,21 @@ public class DbFormTag extends AbstractScriptHandlerTag implements ISqlFilter, T
 
       getResultSetVector().moveNext();
 
+// DJH Fix for when using nested, recursive DBForms where the last row wasn't updating properly.
+        try {
+            pageContext.setAttribute("currentRow_"
+                    + this.getTableName().replace('.', '_'),
+                    getResultSetVector().getCurrentRowAsMap());
+
+            pageContext.setAttribute("position_"
+                           + this.getTableName().replace('.', '_'),
+                           Util.encode(this.getTable().getPositionString(getResultSetVector()),
+                                       pageContext.getRequest().getCharacterEncoding()));
+        } catch (Exception e) {
+            throw new JspException(e.getMessage());
+        }
+// DJH end fix
+
       // rsv may be null in empty-forms (where not tableName attribute is
       // provided)
       if (renderPage) {
@@ -1286,7 +1301,10 @@ public class DbFormTag extends AbstractScriptHandlerTag implements ISqlFilter, T
                tagBuf.append("\" ");
             }
 
-            tagBuf.append("name=\"dbform\" action=\"");
+// DJH - Change to name forms after the table so that date pop-ups
+// 		 works on pages with multiple non-nested dbforms.
+//            tagBuf.append("name=\"dbform\" action=\"");
+			tagBuf.append("name=\"" + getName() + "\" action=\"");
 
             // Check if developer has overriden action
             if ((this.getAction() != null) && (this.getAction().trim().length() > 0)) {
@@ -1663,7 +1681,7 @@ public class DbFormTag extends AbstractScriptHandlerTag implements ISqlFilter, T
          if (navEvent == null) {
             // we need to parse request using the given goto prefix
             if (!Util.isNull(gotoPrefix)) {
-               logCat.info("§§§§ NAV GOTO §§§§");
+               logCat.info("???? NAV GOTO ????");
 
                Vector v = ParseUtil.getParametersStartingWith(request, gotoPrefix);
                gotoHt = new Hashtable();
@@ -1737,7 +1755,7 @@ public class DbFormTag extends AbstractScriptHandlerTag implements ISqlFilter, T
          }
 
          // Now we have a NAVIGATION event to process
-         logCat.info("§§§ NAV/I §§§");
+         logCat.info("??? NAV/I ???");
 
          if (navEvent != null) {
             logCat.info("about to process nav event:" + navEvent.getClass().getName());
