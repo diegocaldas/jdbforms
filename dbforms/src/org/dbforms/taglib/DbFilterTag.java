@@ -435,10 +435,19 @@ public class DbFilterTag extends AbstractDbBaseHandlerTag implements
 			throws JspException {
 		StringBuffer buf = new StringBuffer();
 
+		String parentFormName;
+        DbFormTag parentForm = getParentForm();
+        while (parentForm.isSubForm()) {
+        	parentForm = parentForm.getParentForm();
+        }
+        parentFormName = parentForm.getName();
+        
 		// render main select
 		buf.append("\n<select name=\"" + filterName + FLT_SEL + "\" class=\""
 				+ getStyleClass() + "\" size=\"" + size
-				+ "\" onchange=\"document.dbform.submit()\" >\n");
+				+ "\" onchange=\"document.")
+			.append(parentFormName)
+			.append(".submit()\" >\n");
 
 		int cnt = 0;
 		buf
@@ -504,7 +513,7 @@ public class DbFilterTag extends AbstractDbBaseHandlerTag implements
 						this.pageContext, this, DbNavReloadButtonTag.class);
 				((DbNavReloadButtonTag) btn.getTag()).setCaption(unsetCaption);
 				((DbNavReloadButtonTag) btn.getTag())
-						.setOnClick("document.dbform." + filterName + FLT_SEL
+						.setOnClick("document." + parentFormName + "." + filterName + FLT_SEL
 								+ ".selectedIndex = -1;");
 				((DbNavReloadButtonTag) btn.getTag()).setForceReload("true");
 				((DbNavReloadButtonTag) btn.getTag())
