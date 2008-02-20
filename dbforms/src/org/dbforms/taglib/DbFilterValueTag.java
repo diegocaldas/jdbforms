@@ -72,6 +72,9 @@ public class DbFilterValueTag extends AbstractDbBaseHandlerTag implements IDataC
    /** DOCUMENT ME! */
    private static String FLT_VALUETYPE_TEXT = "text";
 
+   /** Reuse the previous filter value from the list */
+   private static String FLT_VALUETYPE_REPEAT = "repeat_previous";
+
    /** DOCUMENT ME! */
    private static String FLT_VALUETYPE_TIMESTAMP = "timestamp";
    private static Log    logCat = LogFactory.getLog(DbFilterValueTag.class
@@ -336,11 +339,32 @@ public class DbFilterValueTag extends AbstractDbBaseHandlerTag implements IDataC
                                                                        conditionId)
                                  + DbFilterTag.FLT_SEARCHALGO + valueId;
 
-         String value     = ParseUtil.getParameter(request, paramValue);
          String valueType = ParseUtil.getParameter(request, paramType);
+         String value     = "";
+         String aSearchAlgorithm = "";
 
-         String aSearchAlgorithm = ParseUtil.getParameter(request,
-                                                          searchAlgoType);
+
+         /* Null filterValue types are always 'text' */
+         valueType = Util.isNull(valueType) ? FLT_VALUETYPE_TEXT
+                 : valueType;
+
+         /* DJH - Handle case of using "get previous" parameter type
+          * NOTE! This does not handle the case of two previous parameter types back to back... */
+         if (valueType.equalsIgnoreCase(DbFilterValueTag.FLT_VALUETYPE_REPEAT) && valueId > 0) {
+             String prev_paramValue = DbFilterConditionTag.getConditionName(tableId, conditionId) + DbFilterTag.FLT_VALUE + (valueId - 1);
+             String prev_paramType = DbFilterConditionTag.getConditionName(tableId, conditionId) + DbFilterTag.FLT_VALUETYPE + (valueId - 1);
+             String prev_searchAlgoType = DbFilterConditionTag.getConditionName(tableId, conditionId) + DbFilterTag.FLT_SEARCHALGO + (valueId - 1);
+             
+             /* Get the previous parameter valueType */
+             valueType = ParseUtil.getParameter(request, prev_paramType);
+             value     = ParseUtil.getParameter(request, prev_paramValue);
+             aSearchAlgorithm = ParseUtil.getParameter(request, prev_searchAlgoType);
+
+         } else { /* Get parameter value as normal (i.e. current) */
+             value     = ParseUtil.getParameter(request, paramValue);
+             aSearchAlgorithm = ParseUtil.getParameter(request, searchAlgoType);
+         }
+
          int    algorithm = Constants.SEARCH_ALGO_SHARP;
 
          if (!Util.isNull(aSearchAlgorithm)) {
@@ -355,6 +379,7 @@ public class DbFilterValueTag extends AbstractDbBaseHandlerTag implements IDataC
             }
          }
 
+         /* Null filterValue types are always 'text' */
          valueType = Util.isNull(valueType) ? FLT_VALUETYPE_TEXT
                                             : valueType;
 
@@ -457,6 +482,8 @@ public class DbFilterValueTag extends AbstractDbBaseHandlerTag implements IDataC
       } else if (FLT_VALUETYPE_SELECT.equalsIgnoreCase(state.type)
                        && (state.embeddedData != null)) {
          renderSelectElement(buf);
+      } else if (state.type.equalsIgnoreCase(FLT_VALUETYPE_REPEAT)) {
+          renderHiddenElement(buf);
       } else {
          throw new JspException("type not correct");
       }
@@ -656,6 +683,30 @@ public class DbFilterValueTag extends AbstractDbBaseHandlerTag implements IDataC
       }
 
       buf.append("<input type=\"text\" name=\"" + getValueName()
+                 + "\" value=\"" + this.getFormattedFieldValue() + "\""
+                 + sizestr + " class=\"" + state.styleClass + "\"/>\n");
+      buf.append("<input type=\"hidden\" name=\"" + getValueType()
+                 + "\" value=\"" + state.type.toLowerCase() + "\"/>\n");
+
+      if (!Util.isNull(state.searchAlgo)) {
+         buf.append("<input type=\"hidden\" name=\"" + getSearchAlgoType()
+                    + "\" value=\"" + state.searchAlgo + "\"/>\n");
+      }
+   }
+
+   /**
+    * render input's type "repeat_previous"
+    *
+    * @param buf
+    */
+   private void renderHiddenElement(StringBuffer buf) {
+      String sizestr = "";
+
+      if (state.size != null) {
+         sizestr = "size=\"" + state.size + "\" ";
+      }
+
+      buf.append("<input type=\"hidden\" name=\"" + getValueName()
                  + "\" value=\"" + this.getFormattedFieldValue() + "\""
                  + sizestr + " class=\"" + state.styleClass + "\"/>\n");
       buf.append("<input type=\"hidden\" name=\"" + getValueType()
