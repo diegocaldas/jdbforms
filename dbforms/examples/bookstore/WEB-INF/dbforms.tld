@@ -9532,7 +9532,9 @@
 <description>
 						type of the input element that will be rendered,
 						possible values are:
-						texttext inputdate
+							text
+								text
+							inputdate
 								input text for date type, a validation
 								of the value will be done, and it
 								supports the jscal object
@@ -9548,6 +9550,16 @@
 								render an html select element, filled
 								with nested tags like queryData,
 								staticData and so on.
+							repeat_previous
+								renders a hidden element that will
+								indicate to the code to reuse the immediately
+								previous filterValue element. This is useful
+								for filterConditions such as:
+								&lt;db:filterCondition label="Name contains"&gt;
+								UPPER(First_Name) LIKE UPPER(?) OR UPPER(Last_Name) LIKE UPPER(?)
+									&lt;db:filterValue searchAlgo="weakStartEnd"/&gt;
+									&lt;db:filterValue type="repeat_previous" searchAlgo="weakStartEnd"/&gt;
+								&lt;/db:filterCondition&gt;
 							</description>
 </attribute>
 <attribute>
