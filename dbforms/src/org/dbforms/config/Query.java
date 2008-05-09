@@ -278,21 +278,41 @@ public class Query extends Table {
 
 
    /**
-    * returns the from part of a query. overloaded from Table if from is defind
-    * in dbforms-config.xml use this, else method from Table
+    * returns the from part of a query. overloaded from Table if from is defined
+    * in dbforms-config.xml use this, else method from Table. Used in Delete/Insert/Update.
     *
     * @return sql from
     */
    public String getQueryFrom() {
       String res;
-   	  if (!Util.isNull(from)) {
-         res = from;
+
+      // DJH - Allow use of the alias attribute (as gotten through super.getQueryFrom()) if Query element
+      //       does not have a simple table in the from attribute. This is detected by
+      //       there being spaces in the trimmed from attribute string. e.g. from="t1 join t2 on (t1.id = t2.id)"
+      if (!Util.isNull(from) && from.trim().indexOf(" ") == -1) {
+          res = from;
       } else {
          res = super.getQueryFrom();
       }
    	  return res;
    }
 
+   /**
+    * returns the from part of a query. overloaded from Table if from is defind
+    * in dbforms-config.xml use this, else method from Table. Used in Select
+    *
+    * @return sql from
+    */
+   public String getSelectQueryFrom() {
+      String res;
+
+      if (!Util.isNull(from)) {
+          res = from;
+      } else {
+         res = super.getQueryFrom();
+      }
+      return res;
+   }
 
    /**
     * returns the select part of a query overloaded from Table extends
@@ -380,7 +400,7 @@ public class Query extends Table {
 
       buf.append(getQuerySelect(fieldsToSelect));
       buf.append(" FROM ");
-      buf.append(getQueryFrom());
+      buf.append(getSelectQueryFrom());
 
       s = getQueryWhere(fvWhere, null, 0);
 
