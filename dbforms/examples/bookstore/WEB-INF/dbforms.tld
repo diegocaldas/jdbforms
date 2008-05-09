@@ -4053,6 +4053,13 @@
 						</description>
 </attribute>
 <attribute>
+<name>disabled</name>
+<required>false</required>
+<rtexprvalue>true</rtexprvalue>
+<description>Sets the disabled HTML attribute on the control.
+</description>
+</attribute>
+<attribute>
 <name>pattern</name>
 <required>false</required>
 <rtexprvalue>true</rtexprvalue>
