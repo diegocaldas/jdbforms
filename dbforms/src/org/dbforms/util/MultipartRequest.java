@@ -305,9 +305,11 @@ public class MultipartRequest {
          if ((values == null) || (values.size() == 0)) {
             return null;
          }
-
-         String value = (String) values.elementAt(0);
-
+// DJH - Fix to handle Unicode encoding on forms that use multipart parameters, namely file upload pages.
+         String unencoded_value = (String) values.elementAt(0);
+         byte[] bytes = unencoded_value.getBytes("ISO-8859-1");
+         String value = new String(bytes, "UTF-8");
+// DJH - End Fix.
          return value;
       } catch (Exception e) {
          return null;
